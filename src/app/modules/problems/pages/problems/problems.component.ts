@@ -73,14 +73,10 @@ export class ProblemsComponent implements OnInit, OnDestroy {
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (user: User | null) => {
         this.currentUser = user;
-        this.reloadProblems();
       }
     )
 
-    this._problemsReloader.pipe(
-      debounceTime(500),
-    ).subscribe(() => this._reloadProblems());
-
+    this._problemsReloader.pipe(debounceTime(500)).subscribe(() => this._reloadProblems());
     this._problemsReloader.next();
   }
 
