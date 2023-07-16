@@ -1,48 +1,44 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CoreConfigService } from '@core/services/config.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
-import { bounceAnimation, shakeAnimation } from 'angular-animations';
 import { ApiService } from 'app/api.service';
 import { AuthenticationService } from 'app/auth/service';
 import { WebsocketService } from 'app/websocket';
 import { ToastrService } from 'ngx-toastr';
-import { ProblemsService } from '../../problems.service';
 import { Attempt, Verdicts, WSAttempt } from '../../attempts.models';
+import { ProblemsService } from '../../problems.service';
+import { Contest } from 'app/modules/contests/contests.models';
 
 @Component({
   selector: 'attempts-table',
   templateUrl: './attempts-table.component.html',
   styleUrls: ['./attempts-table.component.scss'],
-  animations: [bounceAnimation({ duration: 2000 }), shakeAnimation({ duration: 2000 })]
 })
 export class AttemptsTableComponent implements OnInit {
+  @Input() hideSourceCodeSize = false;
+  @Input() contest: Contest;
 
   @Input()
   get attempts(): Array<Attempt>{ return this._attempts; }
   set attempts(attempts: Array<Attempt>){
     this.wsService.send('lang-change', this.translationService.currentLang);
-    this._attempts = attempts.map((attempt: Attempt) => {
-      return Attempt.fromJSON(attempt);
-    });
-    attempts.forEach((attempt: Attempt) => {
-      this.wsService.send('attempt-add', attempt.id);
-    });
+    this._attempts = attempts.map((attempt: Attempt) => Attempt.fromJSON(attempt));
+    attempts.forEach((attempt: Attempt) => this.wsService.send('attempt-add', attempt.id));
   }
   private _attempts: Array<Attempt> = [];
 
-  currentUser: any;
-
-  selectedAttempt: Attempt;
-  editorOptions = {
+  public currentUser: any;
+  public selectedAttempt: Attempt | null;
+  public editorOptions = {
     language: 'python',
     theme: 'vs-light',
     readOnly: true,
   };
 
   @ViewChild('modal') public modalRef: TemplateRef<any>;
-  @ViewChild('successAudio') successAudio: any;
-  @ViewChild('wrongAudio') wrongAudio: any;
+  @ViewChild('successAudio') successAudio: ElementRef<any>;
+  @ViewChild('wrongAudio') wrongAudio: ElementRef<any>;
 
   constructor(
     public authService: AuthenticationService,
@@ -56,9 +52,11 @@ export class AttemptsTableComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.authService.currentUser.subscribe((user: any) => {
-      this.currentUser = user;
-    });
+    this.authService.currentUser.subscribe(
+      (user: any) => {
+        this.currentUser = user;
+      }
+    );
   
     this.coreConfigService.getConfig().subscribe((config: any) => {
       if(config.layout.skin == 'dark'){
@@ -75,17 +73,13 @@ export class AttemptsTableComponent implements OnInit {
           this.attempts[i] = Attempt.fromWSAttempt(attempt, wsAttempt);
           attempt = this.attempts[i];
           if(wsAttempt.verdict == Verdicts.Accepted){
-            setTimeout(() => {              
-              attempt.animationAcceptedState = true;
-            }, 0);
             if(this.attempts[i].canView){
+              setTimeout(() => attempt.animationAcceptedState = true, 0);
               this.successAudio.nativeElement.play();
             }
           } else if(wsAttempt.verdict != Verdicts.Running && wsAttempt.verdict != Verdicts.InQueue){
-            setTimeout(() => {              
-              attempt.animationWrongState = true;
-            }, 0);
             if(this.attempts[i].canView){
+              setTimeout(() => attempt.animationWrongState = true, 0);
               this.wrongAudio.nativeElement.play();
             }
           }
@@ -94,7 +88,7 @@ export class AttemptsTableComponent implements OnInit {
     });
   }
 
-  onClick(attemptId){
+  openModal(attemptId: number){
     this.api.get(`attempts/${attemptId}/`).subscribe((result: any) => {
       this.selectedAttempt = Attempt.fromJSON(result);
       this.editorOptions.language = this.selectedAttempt.getEditorLang();
@@ -111,10 +105,6 @@ export class AttemptsTableComponent implements OnInit {
 
   onPurchaseTestSuccess(attempt: Attempt){
     attempt.canTestView = true;
-  }
-
-  rerun(attemptId: number){
-    this.service.attemptRerun(attemptId).subscribe((result) => {})
   }
 
   ngOnDestroy() {

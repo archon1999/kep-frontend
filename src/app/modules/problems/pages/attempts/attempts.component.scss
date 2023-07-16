@@ -1,9 +1,0 @@
-@import 'bootstrap/scss/mixins';
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
-
-@include media-breakpoint-down(sm) {
-  .attempts-table {
-    zoom: 80%;
-  }
-}
