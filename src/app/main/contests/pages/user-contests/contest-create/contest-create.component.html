@@ -1,0 +1,151 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+      <!-- content-header component -->
+      <app-content-header [contentHeader]="contentHeader"></app-content-header>
+  
+      <section class="mt-2">
+        <div class="row">
+          <div class="col-lg-9 col-md-12 col-sm-12 order-lg-1 order-md-2 order-sm-2">
+            <div class="mb-2" *ngFor="let contestProblem of contest.problems; index as i, first as isFirst">
+              <hr *ngIf="!isFirst" class="mt-1 mb-1">
+              <div class="row">
+                <div class="col-6">
+                  <ng-select [(ngModel)]="contestProblem.id" placeholder="{{ 'Problem' | translate }}">
+                    <ng-option *ngFor="let problem of problemsList" [value]="problem.id">
+                      {{ problem.id }}. {{ problem.title }}
+                    </ng-option>
+                  </ng-select>
+                </div>
+                <div class="col">
+                  <input
+                    type="text"
+                    placeholder="{{ 'Symbol' | translate }}"
+                    class="form-control"
+                    name="symbol"
+                    [(ngModel)]="contestProblem.symbol"
+                    [ngModelOptions]="{standalone: true}"
+                  />
+                </div>
+                <div *ngIf="hasBall" class="col-2">
+                  <input
+                    type="number"
+                    placeholder="{{ 'Ball' | translate }}"
+                    class="form-control"
+                    name="ball"
+                    [(ngModel)]="contestProblem.ball"
+                    [ngModelOptions]="{standalone: true}"
+                  />
+                </div>
+                <div class="col-1">
+                  <button (click)="removeProblem(i)" class="btn btn-danger btn-sm">
+                    <i data-feather="x"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="contest.problems.length < 12">
+              <button (click)="addProblem()" class="btn btn-primary">
+                {{ 'Add' | translate }}
+              </button>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-12 col-sm-12 order-lg-2 order-md-1 order-sm-1">
+            <div class="card">
+              <div class="card-body">
+
+                <div class="form-group">
+                  <label class="text-primary" for="first-name-vertical">
+                    <strong>
+                      {{ 'TITLE' | translate }}:
+                    </strong>
+                  </label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="title"
+                    [(ngModel)]="contest.title"
+                    [ngModelOptions]="{standalone: true}"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label class="text-primary" for="first-name-vertical">
+                    <strong>
+                      {{ 'CONTESTS.START_TIME' | translate }}:
+                    </strong>
+                  </label>
+                  <div class="input-group">
+                    <input
+                      class="form-control"
+                      placeholder="yyyy-mm-dd"
+                      [(ngModel)]="contest.startDate"
+                      ngbDatepicker #startDate="ngbDatepicker">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary feather icon-calendar" (click)="startDate.toggle()"
+                        type="button" rippleEffect>
+                      </button>
+                    </div>
+                    
+                    <ngb-timepicker [spinners]="false" [(ngModel)]="contest.startTime"></ngb-timepicker>
+                  </div>                  
+                </div>
+
+                <div class="form-group">
+                  <label class="text-primary" for="first-name-vertical">
+                    <strong>
+                      {{ 'CONTESTS.FINISH_TIME' | translate }}:
+                    </strong>
+                  </label>
+                  <div class="input-group">
+                    <input
+                      class="form-control"
+                      placeholder="yyyy-mm-dd"
+                      [(ngModel)]="contest.finishDate"
+                      ngbDatepicker #endDate="ngbDatepicker">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary feather icon-calendar" (click)="endDate.toggle()"
+                        type="button" rippleEffect>
+                      </button>
+                    </div>
+
+                    <ngb-timepicker [spinners]="false" [(ngModel)]="contest.finishTime"></ngb-timepicker>
+                  </div>                  
+                </div>
+
+                <div class="form-group">
+                  <label class="text-primary" for="first-name-vertical">
+                    <strong>
+                      {{ 'CONTESTS.TYPE' | translate }}:
+                    </strong>
+                  </label>
+
+                  <ng-select [(ngModel)]="contest.type" (change)="onTypeChange()">
+                    <ng-option [value]="ContestTypes.ACM20M">{{ ContestTypes.ACM20M }}</ng-option>
+                    <ng-option [value]="ContestTypes.ACM2H">{{ ContestTypes.ACM2H }}</ng-option>
+                    <ng-option [value]="ContestTypes.BALL525">{{ ContestTypes.BALL525 }}</ng-option>
+                    <ng-option [value]="ContestTypes.BALL550">{{ ContestTypes.BALL550 }}</ng-option>
+                    <ng-option [value]="ContestTypes.LESS_CODE">{{ ContestTypes.LESS_CODE }}</ng-option>
+                    <ng-option [value]="ContestTypes.LESS_LINE">{{ ContestTypes.LESS_LINE }}</ng-option>
+                    <ng-option [value]="ContestTypes.ONE_ATTEMPT">{{ ContestTypes.ONE_ATTEMPT }}</ng-option>
+                    <ng-option [value]="ContestTypes.EXAM">{{ ContestTypes.EXAM }}</ng-option>
+                  </ng-select>
+                </div>
+
+              </div>
+
+              <div class="card-footer text-center">
+                <button (click)="createContest()" class="btn btn-relief-primary round">
+                  {{ 'Create' | translate }}
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+</div>
+
+<ng-select-css></ng-select-css>

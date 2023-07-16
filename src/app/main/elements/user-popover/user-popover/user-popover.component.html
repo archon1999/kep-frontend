@@ -1,0 +1,95 @@
+<ng-template #popContent>
+  <div [@fadeInOnEnter] class="card card-profile" *ngIf="userRatings">
+    <img [src]="user.coverPhoto" class="img-fluid card-img-top"
+      alt="Profile Cover Photo" />
+    <div class="card-body">
+      <div class="profile-image-wrapper">
+        <div class="profile-image">
+          <div class="avatar">
+            <img [src]="user.avatar" alt="Profile Picture" />
+            <span *ngIf="user.isOnline" class="avatar-status-online"></span>
+            <span *ngIf="!user.isOnline" class="avatar-status-offline"></span>
+          </div>
+        </div>
+      </div>
+      <h3>
+        {{ user.firstName }} {{ user.lastName }}
+        <span style="vertical-align: bottom;" *ngIf="user.streak >= 7">
+          <ng-template #tipContent>
+            <img src="assets/images/icons/fire_red.png" height="19" alt=""> {{ user.streak }}
+          </ng-template>
+          <span class="badge badge-pill badge-kep" [ngbTooltip]="tipContent">KEP</span>  
+        </span>
+      </h3>
+      <h6 class="text-muted">{{ user.username }}</h6>
+      <hr class="mb-2" />
+      <div *ngIf="userRatings" class="d-flex justify-content-between">
+        <div class="d-block">
+          <h6 class="">
+            <i [data-feather]="'contest' | iconName"></i> {{ 'MENU.CONTESTS' | translate }}
+          </h6>
+          <h4 class="mb-0 mt-1 text-center">
+            <ng-component [innerHTML]="userRatings.contestsRatingTitle | contestsRatingImg"></ng-component>
+            <span class="badge badge-light-{{ userRatings.contestsRating | contestsRatingColor }}">
+              {{ userRatings.contestsRating }}
+            </span>
+          </h4>
+        </div>
+      
+        <div class="d-block">
+          <h6 class="">
+            <i [data-feather]="'problem' | iconName"></i> {{ 'MENU.PROBLEMS' | translate }}
+          </h6>
+          <h4 class="mb-0 mt-1 text-center">
+            <span class="badge badge-primary">
+              {{ userRatings.problemsSolved }}
+            </span>
+            <span class="badge badge-light-success">
+              {{ userRatings.problemsRating }}
+            </span>
+          </h4>
+        </div>
+      
+        <div class="d-block">
+          <h6 class="">
+            <i [data-feather]="'zap'"></i> {{ 'MENU.CHALLENGES' | translate }}
+          </h6>
+          <div class="d-block mb-0 mt-1 text-center text-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+            <span class="badge badge-pill badge-glow badge-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+              {{ userRatings.challengesRankTitle }}
+            </span>
+      
+            <span class="badge badge-light-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+              {{ userRatings.challengesRating }}
+            </span>
+          </div>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+</ng-template>
+<a
+  [routerLink]="['/users', 'user', username]"
+  [ngbPopover]="popContent"
+  triggers="mouseenter:mouseleave"
+  [closeDelay]="1000"
+  [openDelay]="1000"
+  (shown)="loadUser()"
+  popoverClass="user-popover"
+  class="text-{{ textColor }} {{ customClass }}"
+  [placement]="placement"
+  container="body"
+>
+  <span *ngIf="!customContent">
+    {{ username }}
+  </span>
+  <ng-content *ngIf="customContent"></ng-content>
+</a>
+
+<span *ngIf="!customContent && streak >= 7">
+  <ng-template #tipContent>
+    <img src="assets/images/icons/fire_red.png" height="19" alt=""> {{ streak }}
+  </ng-template>
+  <span class="badge badge-pill badge-kep" [ngbTooltip]="tipContent">KEP</span>  
+</span>

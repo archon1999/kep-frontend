@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="offset-0 offset-lg-1 col-lg-7 col-12">
+    <div class="course-about">
+      <h2 class="title text-dark">
+        {{ 'AboutCourse' | translate }}
+      </h2>
+  
+      <p class="text-dark" [innerHTML]="course.description"></p>
+    </div>
+  </div>
+  
+  <div class="col-lg-3 col-12">
+    <div class="course-info">
+      <div class="card">
+        <div class="card-header d-block">
+          <div class="card-image text-center">
+            <img src="{{ course.logo }}" height="90" alt="">
+          </div>
+          <div class="card-title mt-1">
+            <i data-feather="activity" [size]="18" class="mr-25"></i>
+            Kurs {{ tasksRatio }}% amaliyotdan iborat
+          </div>
+        </div>
+        
+        <div class="card-body">
+          <p>
+            <i data-feather="info" [size]="18" class="mr-25"></i> Ushbu kurs <b>9 ta</b> mavzudan iborat, har bir mavzu kichik ma'ruzalar, misollar, topshiriq va masalalardan iborat.
+          </p>
+          <p>
+            <i data-feather="check-circle" [size]="18" class="mr-25"></i> Kurs davomida bajariladigan topshiriqlar soni <b>100 dan</b> ortiq.
+          </p>
+        </div>
+
+        <div class="card-footer">
+          <div class="text-center" *ngIf="currentUser">
+            <a routerLink="lesson/1" class="start-btn btn btn-sm btn-rounded" rippleEffect>
+              <span *ngIf="!course.isStarted">{{ 'COURSES.START' | translate }}</span>
+              <span *ngIf="course.isStarted"> {{ 'COURSES.CONTINUE' | translate }}</span>
+            </a>
+
+            <div *ngIf="course.isStarted" class="mt-2 progress-wrapper">
+              <div class="mb-25 text-white">{{ 'COURSES.PROGRESS' | translate }}: {{ course.participantProgress }}%</div>
+              <ngb-progressbar type="success" [value]="course.participantProgress"></ngb-progressbar>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

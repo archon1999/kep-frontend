@@ -1,0 +1,23 @@
+.btn-new-challenge {
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  color: #fff;
+  box-shadow: var(--box-shadow);
+  transition: .5s;
+  display: block;
+  border-radius: 10px;
+  background-size: 200% auto;
+  background-image: var(--bg-gradient);
+}
+
+.btn-new-challenge:hover {
+  background-position: right center;
+  color: #fff;
+  text-decoration: none;
+}

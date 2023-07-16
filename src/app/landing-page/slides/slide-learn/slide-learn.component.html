@@ -1,0 +1,53 @@
+<div class="text-center slide-learn">
+    <div class="img">
+      <img [@fadeInRight]="animationState" src="assets/images/illustration/pricing-Illustration.svg" alt="learn">
+    </div>
+    
+    <div [@fadeInLeft]="animationState" class="learn-text text-center">
+      <h2 class="text-primary" [class]="isDarkSkin ? 'text-lighten-4' : 'text-darken-4'">
+        {{ 'LandingPage.SectionLearnTitle' | translate }}
+      </h2>
+      <p class="text-primary" [class]="isDarkSkin ? 'text-lighten-2' : 'text-darken-2'">
+        {{ 'LandingPage.SectionLearnText' | translate }}
+      </p>
+    </div>
+    
+    <div class="sections d-flex justify-content-between">
+      <a routerLink="/learn/courses" [@fadeInUp]="animationState" class="section">
+        <div class="avatar p-md-2 p-1 bg-primary badge-glow">
+          <div class="avatar-content">
+            <i [data-feather]="'course' | iconName" class="font-medium-5"></i>
+          </div>
+        </div>    
+  
+        <div class="title text-primary" [class]="isDarkSkin ? 'text-lighten-4' : 'text-darken-4'">
+          {{ 'Courses' | translate }}
+        </div>
+      </a>
+  
+      <a routerLink="/learn/lugavar" [@fadeInUp]="animationState" class="section">
+        <div class="avatar p-md-2 p-1 bg-info badge-glow">
+          <div class="avatar-content">
+            <i [data-feather]="'lugavar' | iconName" class="font-medium-5"></i>
+          </div>
+        </div>    
+  
+        <div class="title text-info" [class]="isDarkSkin ? 'text-lighten-4' : 'text-darken-4'">
+          {{ 'Lugavar' | translate }}
+        </div>
+      </a>
+  
+      <a routerLink="/learn/blog" [@fadeInUp]="animationState" class="section">
+        <div class="avatar p-md-2 p-1 bg-success badge-glow">
+          <div class="avatar-content">
+            <i [data-feather]="'course' | iconName" class="font-medium-5"></i>
+          </div>
+        </div>    
+  
+        <div class="title text-success" [class]="isDarkSkin ? 'text-lighten-4' : 'text-darken-4'">
+          {{ 'Blog' | translate }}
+        </div>
+      </a>
+    </div>  
+  </div>
+  

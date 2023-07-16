@@ -1,0 +1,21 @@
+<div class="card-body">
+  <h5 [innerHTML]="questionBody">
+  </h5>
+  <br>
+  <div class="ml-1 mb-1 custom-control-info custom-control custom-radio" *ngFor="let option of questionOptions; index as i">
+    <input type="radio" id="radio-{{ i }}" name="singleRadio" [(ngModel)]="singleRadio" value="{{ i }}"
+      class="custom-control-input" />
+    <label class="custom-control-label" for="radio-{{ i }}">{{ option }}</label>
+  </div>
+
+  <div class="d-flex justify-content-between">
+    <button (click)="answerCheck()" class="mb-2 mt-2 btn btn-gradient-info">
+      <i data-feather="check"></i> {{ 'Check' | translate }}
+    </button>
+  </div>
+</div>
+
+<div class="card-footer">
+  <span class=""><strong>{{ 'COURSES.SCORE' | translate }}</strong>: {{ score }}/{{ all }}</span>
+  <ngb-progressbar type="info" showValue="true" [value]="100*score/all"></ngb-progressbar>
+</div>

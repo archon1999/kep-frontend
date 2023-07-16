@@ -1,0 +1,74 @@
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+.course-statistics {
+  margin-top: 5rem;
+  position: absolute;
+  height: 200px;
+  margin-left: -2rem;
+  width: calc(100% + 2rem);
+  background: linear-gradient(90deg, #16222a, #0c8491);
+}
+
+.statistics {
+  .count-item.decoration-bottom {
+    position: relative;
+  }
+
+  .count-item {
+    height: 160px;
+    position: relative;
+    float: left;
+    width: 100%;
+
+    strong {
+      color: #fff;
+      display: block;
+      text-align: center;
+      font-weight: 600;
+      font-size: 2rem;
+      margin-bottom: 10px;
+      margin-top: 40px;
+      -webkit-transition: all 0.3s ease 0s;
+      -moz-transition: all 0.3s ease 0s;
+      -o-transition: all 0.3s ease 0s;
+      transition: all 0.3s ease 0s;
+    }
+
+    span {
+      color: #fff;
+      display: block;
+      text-align: center;
+      font-weight: 500;
+      font-size: 1rem;
+      letter-spacing: 0.25px;
+    }
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  .course-statistics {
+    width: calc(100% + 1.2rem);
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .statistics {
+    .count-item {
+      strong {
+        font-size: 1.5rem;
+      }
+
+      span {
+        font-size: 0.75rem;
+      }
+    }
+  }
+}
+
+::ng-deep .dark-layout {
+  .course-statistcs {
+    background: linear-gradient(45deg, #2b2665, #393575, #463caa) !important;
+  }
+}

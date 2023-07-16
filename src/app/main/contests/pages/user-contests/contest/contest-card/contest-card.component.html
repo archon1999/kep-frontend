@@ -1,0 +1,65 @@
+<div class="card text-center" [ngClass]="{'bg-contest': coreConfig.layout.skin != 'dark'}">
+  <a [routerLink]="routerLink" class="card-header">
+    <div class="avatar bg-primary p-50 m-0 mb-1">
+      <div class="avatar-content">
+        <i data-feather="flag" class="font-medium-5"></i>
+      </div>
+    </div>
+    <br>
+    <h4 class="text-white">
+      {{ contest.title }}
+    </h4>
+  </a>
+
+  <a [routerLink]="routerLink" class="card-body mt-1">
+    <div *ngIf="contest.status == 0">
+      <h4 class="text-center text-white mb-4">
+        {{ 'CONTESTS.CONTEST_ENDS' | translate }}
+      </h4>
+      <div class="ml-1 mr-1">
+        <contest-countdown [clockColor]="textColor" [contest]="contest"></contest-countdown>
+      </div>
+    </div>
+
+    <div *ngIf="contest.status == -1">
+      <h4 class="text-center text-white mb-4">
+        {{ 'CONTESTS.CONTEST_STARTS' | translate }}
+      </h4>
+      <div class="ml-1 mr-1">
+        <contest-countdown [clockColor]="textColor" [contest]="contest"></contest-countdown>
+      </div>
+    </div>
+
+  </a>
+
+  <div class="card-footer justify-content-between d-flex">
+    <div>
+      <span class="badge badge-glow badge-primary">
+        <i data-feather="user"></i>
+        <span *ngIf="contest.status == -1">{{ contest.registrantsCount }}</span>
+        <span *ngIf="contest.status != -1">{{ contest.contestantsCount }}</span>
+      </span>
+      <span class="badge badge-glow badge-primary">
+        <i [data-feather]="'problem' | iconName"></i>
+        {{ contest.problemsCount }}
+      </span>
+      <span class="badge badge-glow badge-{{ contest.getBadgeType() }}">
+        {{ contest.type }}
+      </span>
+    </div>
+
+    <div>
+      <span *ngIf="contest.status != 1">
+        <button ngbTooltip="Bekor qilish" rippleEffect class="btn btn-sm round btn-gradient-success"
+          (click)="cancelRegistration()" *ngIf="contest.isRegistered">
+          <i data-feather="user" [size]="16"></i> Ro'yhatdan o'tilgan
+          <i data-feather="x" class="text-danger"></i>
+        </button>
+        <button rippleEffect class="btn btn-sm round btn-gradient-primary" (click)="openRegistrationModal(registration)"
+          *ngIf="!contest.isRegistered">
+          <i data-feather="user" [size]="16"></i> {{ 'CONTESTS.REGISTER' | translate }}
+        </button>
+      </span>
+    </div>
+  </div>
+</div>
