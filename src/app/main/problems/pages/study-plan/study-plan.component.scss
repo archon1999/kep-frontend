@@ -1,0 +1,240 @@
+@import 'bootstrap/scss/mixins'; 
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+
+.study-plan-page-top {
+  position: absolute;
+  top: -66px;
+  width: 95%;
+  z-index: -1;
+  height: 520px;
+
+  filter: blur(60px);
+  opacity: .3;
+  background-repeat: no-repeat;
+  background-position: 100%;
+  background-size: cover;
+}
+
+::ng-deep .dark-layout .study-plan-page-top {
+  background: linear-gradient(to right, #182848, #4b6cb7);
+}
+
+.study-plan {
+  margin-left: 20rem;
+  margin-right: 20rem;
+  
+  @include media-breakpoint-down(xl) {
+    margin-left: 15rem;
+    margin-right: 15rem;
+  }
+
+  @include media-breakpoint-down(lg) {
+    margin-left: 10rem;
+    margin-right: 10rem;
+  }
+
+  @include media-breakpoint-down(md) {
+    margin-left: 10rem;
+    margin-right: 10rem;
+  }
+
+  @include media-breakpoint-down(sm) {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .study-plan-header {
+    text-align: center;
+    margin-bottom: 4rem;
+
+    .study-plan-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+    
+    .study-plan-description {
+      margin-top: 1rem;
+    }
+  }
+
+  .study-plan-days {
+    .study-plan-day {
+      margin-top: 2rem;
+
+      .study-plan-day-title {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+
+        .title {
+          font-weight: 600;
+        }
+      }
+
+      .card {
+        border-radius: 7px;
+
+        .problems {
+          padding: 10px;
+          padding-left: 15px;
+
+          .problem {
+            display: grid;
+            grid-template-columns: 6fr 2fr 2fr 2fr;
+            
+            @include media-breakpoint-down(sm) {
+              grid-template-columns: 6fr 2fr 2fr;
+            }
+          
+            padding: 8px;
+            border-bottom: 1px solid #ebe9f1;
+            margin-bottom: 1rem;
+            
+            &:last-child {
+              border-bottom: 0px;
+              margin-bottom: 0rem;
+            }
+
+            .problem-title {
+              font-weight: 600;
+              margin-bottom: 0.5rem;
+
+              .problem-tags {   
+                margin-top: 0.5rem;
+
+                .problem-tag {
+                  margin-right: 0.25rem;
+                }
+              }
+            }
+
+            .problem-rating, .problem-difficulty, .problem-button { 
+              display: flex;
+              margin-left: 1rem;
+              text-align: center;
+              align-items: center;
+              vertical-align: middle;
+            }
+
+            .problem-rating {
+              @include media-breakpoint-down(sm) {
+                display: none;
+              }
+            }
+
+            .problem-button {
+              a {
+                background-color: #02bcb3;
+                font-weight: 500;
+
+                &:hover {
+                  background-color: #2af2e7;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.purchase-button {
+  button {
+    text-align: center;
+    align-items: center;
+    vertical-align: middle;
+    background-color: #02bcb3;
+    font-weight: 500;
+
+    &:hover {
+      background-color: #2af2e7;
+    }
+  }
+}
+
+.problem-tag {
+  color: #02bab4;
+  background-color: #dbf0f0; 
+}
+
+::ng-deep .dark-layout {
+  .problem-tag {
+    color: #02bab4;
+    background-color: rgba(40, 199, 111, 0.12);
+  }
+}
+
+.rating {
+  font-size: 18px !important;
+  color: #ff9f43 !important;
+}
+
+.swiper {
+  height: 180px;
+}
+
+.study-plan-progress {
+  .card {
+    height: 250px;
+
+    .card-header {
+      padding-bottom: 0.5rem;
+    }
+  
+    .card-body {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+    }
+  }
+}
+
+.difficulties {
+  .difficulty {
+    margin-bottom: 1rem;
+
+    .title {
+      font-weight: 400;
+    }
+  }
+
+  .swiper-slide {
+    &:nth-child(1){
+      ::ng-deep .progress {
+        background-color: rgba(40, 199, 111, 0.12);
+      }
+    }
+
+    &:nth-child(2){
+      ::ng-deep .progress {
+        background-color: rgba(0, 207, 232, 0.12);
+      }
+    }
+
+    &:nth-child(3){
+      ::ng-deep .progress {
+        background-color: rgba(67, 97, 238, 0.12);
+      }
+    }
+
+    &:nth-child(5){
+      ::ng-deep .progress {
+        background-color: rgba(255, 159, 67, 0.12);
+      }
+    }
+
+    &:nth-child(6){
+      ::ng-deep .progress {
+        background-color: rgba(234, 84, 85, 0.12);
+      }
+    }
+
+    &:nth-child(7){
+      ::ng-deep .progress {
+        background-color: rgba(75, 75, 75, 0.12);
+      }
+    }
+  }
+}

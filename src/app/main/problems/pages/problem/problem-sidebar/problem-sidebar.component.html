@@ -1,0 +1,122 @@
+<div class="layout-spacing">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">
+        {{ 'Statistics' | translate }}
+      </div>
+      <div>
+        <span ngbTooltip="{{ 'UsersSolved' | translate }}" class="text-success">
+          {{ problem.solved }}
+          <i data-feather="user-check"></i>
+        </span>
+
+        <span ngbTooltip="{{ 'UsersUnsolved' | translate }}" class="text-danger">
+          {{ problem.notSolved }}
+          <i data-feather="user-x"></i>
+        </span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div *ngIf="attemptStatisticsChart">
+        <apx-chart
+          [theme]="chartTheme"
+          [plotOptions]="attemptStatisticsChart.plotOptions"
+          [chart]="attemptStatisticsChart.chart"
+          [colors]="attemptStatisticsChart.colors"
+          [series]="attemptStatisticsChart.series"
+          [legend]="attemptStatisticsChart.legend"
+          [labels]="attemptStatisticsChart.labels">
+        </apx-chart>
+      </div>
+
+      <div class="mt-2" *ngIf="langStatisticsChart">
+        <apx-chart
+          [theme]="chartTheme"
+          [plotOptions]="langStatisticsChart.plotOptions"
+          [chart]="langStatisticsChart.chart"
+          [colors]="langStatisticsChart.colors"
+          [series]="langStatisticsChart.series"
+          [legend]="langStatisticsChart.legend"
+          [labels]="langStatisticsChart.labels">
+        </apx-chart>
+      </div>
+
+      <div class="mt-1" *ngIf="attemptsForSolveChart">
+        <h4 class="text-center">
+          {{ 'NumberOfAttemptsForSolve' | translate }}
+        </h4>
+        <apx-chart
+          [theme]="chartTheme"
+          [chart]="attemptsForSolveChart.chart"
+          [series]="attemptsForSolveChart.series"
+          [dataLabels]="attemptsForSolveChart.dataLabels"
+          [stroke]="attemptsForSolveChart.stroke"
+          [labels]="attemptsForSolveChart.labels"
+          [yaxis]="attemptsForSolveChart.yaxis"
+          [xaxis]="attemptsForSolveChart.xaxis"
+          [legend]="attemptsForSolveChart.legend"
+          [colors]="attemptsForSolveChart.colors"
+          [grid]="attemptsForSolveChart.grid">
+        </apx-chart>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">
+        {{ 'Rating' | translate }}
+      </div>
+
+      <div class="btn-group btn-group-toggle mt-md-0 mt-1" ngbRadioGroup name="radioBasic"
+        [(ngModel)]="topAttemptsOrdering">
+        <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
+          <input (click)="topAttemptsLoad('time')" type="radio" id="option_1" [value]="'time'" ngbButton />
+          <span>{{ 'Time' | translate }}</span>
+        </label>
+        <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
+          <input (click)="topAttemptsLoad('memory')" type="radio" id="option_2" [value]="'memory'" ngbButton />
+          <span>{{ 'Memory' | translate }}</span>
+        </label>
+        <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
+          <input (click)="topAttemptsLoad('source_code_size')" type="radio" id="option_3" [value]="'source_code_size'"
+            ngbButton />
+          <span>{{ 'Size' | translate }}</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr class="bg-gradient-primary">
+            <th>#</th>
+            <th>{{ 'User' | translate }}</th>
+            <th>{{ 'Verdict' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let attempt of topAttempts; index as i">
+            <td>{{ i+1 }}</td>
+            <td>
+              <contestant-view [imgSize]="28" [user]="attempt"></contestant-view>
+            </td>
+            <td>
+              <span [ngSwitch]="topAttemptsOrdering">
+                <span *ngSwitchCase="'time'" class="badge badge-info">
+                  {{ attempt.time }} ms
+                </span>
+                <span *ngSwitchCase="'memory'" class="badge badge-primary">
+                  {{ attempt.memory }} kb
+                </span>
+                <span *ngSwitchCase="'source_code_size'" class="badge badge-dark">
+                  {{ attempt.sourceCodeSize }}
+                </span>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

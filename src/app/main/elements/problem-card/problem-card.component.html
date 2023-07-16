@@ -1,0 +1,41 @@
+<a [routerLink]="['/practice', 'problems', 'problem', problem.id]">
+  <div class="card bg-primary" [ngClass]="{
+    'bg-lighten-1': !isDarkLayout
+  }">
+
+    <div class="card-header">
+      <div class="card-title text-white">
+        {{ problem.id }}. {{ problem.title }}
+      </div>
+
+      <span *ngIf="problem.hasSolved" class="text-success text-darken-4">
+        <i data-feather="check-circle"></i>
+      </span>
+      <span *ngIf="!problem.hasSolved && problem.hasAttempted" class="text-danger text-darken-4">
+        <i data-feather="x-circle"></i>
+      </span>
+    </div>
+
+    <div class="card-body">
+      <span class="badge badge-glow badge-{{ problem.difficulty | problemDifficultyColor }}">
+        {{ problem.difficultyTitle | translate }}
+      </span>
+      <span *ngFor="let tag of problem.tags" class="badge badge-primary">
+        {{ tag.name }}
+      </span>
+    </div>
+
+    <div class="card-footer">
+      <span class="text-white">
+        {{ problem.solved }}
+        <i data-feather="user-check"></i>
+      </span>
+
+      <span class="text-white pl-1">
+        {{ problem.notSolved }}
+        <i data-feather="user-x"></i>
+      </span>
+    </div>  
+
+  </div>
+</a>

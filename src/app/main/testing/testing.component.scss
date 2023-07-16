@@ -1,0 +1,52 @@
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+
+::ng-deep {
+  .tests-page-top {
+    margin-bottom: 8rem;
+  }
+
+  .tests-page-top:before {
+    content: "";
+    margin-left: -2rem;
+    position: absolute;
+    top: -150px;
+    width: calc(100% + 2rem);
+    z-index: -1;
+    height: 530px;
+    background: linear-gradient(to right, #FFFFFF, #ECE9E6);
+  }
+
+  .dark-layout .tests-page-top:before {
+    background: linear-gradient(to right, #283046, #3d4a6c) !important;
+  }
+
+  @include media-breakpoint-down(lg) {
+    .tests-page-top:before {
+      width: calc(100% + 1.2rem);
+    }
+  }
+}
+
+.chapters {
+  margin-bottom: 3rem;
+  padding: 20px;
+  border-radius: 10px;
+  height: 120px;
+  background: linear-gradient(to right, #FFFFFF, #ECE9E6);
+}
+
+::ng-deep {
+  .dark-layout .chapters {
+    background: linear-gradient(to right, #283046, #3d4a6c);  
+  }
+
+  .chapter-card.active {
+    .card {
+      box-shadow: 12px 15px 20px 0px rgba(46, 61, 73, 0.15);
+      transform: scale(1.00);
+    }
+  }
+}

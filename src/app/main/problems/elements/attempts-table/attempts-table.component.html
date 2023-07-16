@@ -1,0 +1,222 @@
+<div class="table-responsive">
+  <table class="table attempts-table">
+    <thead>
+      <tr class="bg-gradient-primary">
+        <th>ID</th>
+        <th>{{ 'SUBMITTED' | translate }}</th>
+        <th>{{ 'LANG' | translate }}</th>
+        <th>{{ 'USER' | translate }}</th>
+        <th>{{ 'PROBLEM' | translate }}</th>
+        <th>{{ 'VERDICT' | translate }}</th>
+        <th>{{ 'TIME' | translate }}</th>
+        <th>{{ 'MEMORY' | translate }}</th>
+        <th>{{ 'SIZE' | translate }}</th>
+        <th *ngIf="currentUser?.isSuperuser"></th>
+      </tr>
+    </thead>
+    <tbody> 
+      <tr *ngFor="let attempt of attempts; index as i" [ngClass]="{'bg-light-primary': attempt.user?.username == currentUser?.username}">
+        <td class="attempt-id">
+          <a
+            (click)="onClick(attempt.id)"
+            *ngIf="attempt.canView; else other;"
+          >
+            <u>
+              {{ attempt.id }}
+            </u>
+          </a>
+          <ng-template #other>
+            <span *ngIf="!currentUser">{{ attempt.id }}</span>            
+            <kepcoin-spend-swal
+              *ngIf="currentUser"
+              [purchaseUrl]="'attempts/' + attempt.id + '/purchase/'"
+              [value]="attempt.kepcoinValue"
+              (success)="onPurchaseSuccess(attempt)">
+            </kepcoin-spend-swal>
+          </ng-template>
+        </td>
+
+        <td>
+          <span class="badge badge-light-success text-center" style="width: 130px;">
+            {{ attempt.created | date:"yyyy/MM/dd HH:mm:ss" }}
+          </span>
+        </td>
+
+        <td>          
+          <span class="badge badge-glow badge-{{ attempt.lang }}">
+            {{ attempt.lang | langFullName }}
+          </span>
+        </td>
+
+        <td>
+          <contestant-view [user]="attempt.user" [team]="attempt.team"></contestant-view>
+        </td>
+
+        <td>
+          <a [routerLink]="['/practice', 'problems', 'problem', attempt.problemId]">
+            <u class="text-primary">{{ attempt.problemId }}. {{ attempt.problemTitle }}</u>
+          </a>
+        </td>
+
+        <td [@bounce]="attempt.animationAcceptedState"
+            [@shake]="attempt.animationWrongState">
+          <div [innerHTML]="attempt | attemptVerdictHTML"></div>
+        </td>
+
+        <td >
+          <span class="badge badge-info badge-pill">{{ attempt.time }} {{ 'MS' | translate }}</span>
+        </td>
+
+        <td>
+          <span class="badge badge-primary badge-pill">{{ attempt.memory }} {{ 'KB' | translate }}</span>
+        </td>
+
+        <td>
+          <span class="badge badge-dark badge-pill">{{ attempt.sourceCodeSize }}</span>
+        </td>
+
+        <td *ngIf="currentUser?.isSuperuser">
+          <button class="btn btn-sm round btn-primary" (click)="rerun(attempt.id)">
+            <i data-feather="refresh-cw"></i>
+          </button>
+        </td>
+
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th class="th-content">ID</th>
+        <th class="th-content">{{ 'SUBMITTED' | translate }}</th>
+        <th class="th-content">{{ 'LANG' | translate }}</th>
+        <th class="th-content">{{ 'USER' | translate }}</th>
+        <th class="th-content">{{ 'PROBLEM' | translate }}</th>
+        <th class="th-content">{{ 'VERDICT' | translate }}</th>
+        <th class="th-content">{{ 'TIME' | translate }}</th>
+        <th class="th-content">{{ 'MEMORY' | translate }}</th>
+        <th class="th-content">{{ 'SIZE' | translate }}</th>
+        <th *ngIf="currentUser?.isSuperuser"></th>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<!-- Modal -->
+<ng-template #modal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title mr-1">{{ 'Attempt' | translate }}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <div class="table-responsive mb-4">
+      <table class="table attempts-table">
+        <thead>
+          <tr class="bg-gradient-primary">
+            <th class="th-content">ID</th>
+            <th class="th-content">{{ 'SUBMITTED' | translate }}</th>
+            <th class="th-content">{{ 'LANG' | translate }}</th>
+            <th class="th-content">{{ 'USER' | translate }}</th>
+            <th class="th-content">{{ 'PROBLEM' | translate }}</th>
+            <th class="th-content">{{ 'VERDICT' | translate }}</th>
+            <th class="th-content">{{ 'TIME' | translate }}</th>
+            <th class="th-content">{{ 'MEMORY' | translate }}</th>
+            <th class="th-content">{{ 'SIZE' | translate }}</th>
+            <th><clipboard-button [text]="selectedAttempt.sourceCode"></clipboard-button></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {{ selectedAttempt.user.id }}
+            <td class="attempt-id">
+              {{ selectedAttempt.id }}
+            </td>
+    
+            <td>
+              <span class="badge badge-light-success text-center" style="width: 130px;">
+                {{ selectedAttempt.created | date:"yyyy/MM/dd HH:mm:ss" }}
+              </span>
+            </td>
+    
+            <td>          
+              <span class="badge badge-glow badge-{{ selectedAttempt.lang }}">
+                {{ selectedAttempt.lang | langFullName }}
+              </span>
+            </td>
+        
+            <td>
+              <contestant-view [user]="selectedAttempt.user" [team]="selectedAttempt.team"></contestant-view>
+            </td>
+    
+            <td class="problem-title">
+              <a [routerLink]="['/practice', 'problems', 'problem', selectedAttempt.problemId]">
+                <u class="text-primary">{{ selectedAttempt.problemId }}. {{ selectedAttempt.problemTitle }}</u>
+              </a>
+            </td>
+    
+            <td class="td-content">
+              <div *ngIf="selectedAttempt.verdict != 1 && selectedAttempt.testCaseNumber > 1; else elseBlock">
+                <div *ngIf="!selectedAttempt.canTestView">
+                  <ng-template #tipContent>
+                    Testni ko'rish <kepcoin-view [value]="1"></kepcoin-view>
+                  </ng-template>
+                  <kepcoin-spend-swal
+                    [ngbTooltip]="tipContent"
+                    [purchaseUrl]="'attempts/' + selectedAttempt.id + '/purchase-test/'"
+                    [value]="1"
+                    [customContent]="true"
+                    (success)="onPurchaseTestSuccess(selectedAttempt)">
+                    <div [innerHTML]="selectedAttempt | attemptVerdictHTML"></div>
+                  </kepcoin-spend-swal>
+                </div>
+
+                <div *ngIf="selectedAttempt.canTestView">
+                  <a ngbTooltip="Testni ko'rish"
+                    href="/api/attempts/{{ selectedAttempt.id }}/failed-test?number={{ selectedAttempt.testCaseNumber }}">
+                    <div [innerHTML]="selectedAttempt | attemptVerdictHTML"></div>
+                  </a>
+                </div>
+              </div>
+
+              <ng-template #elseBlock>
+                <div [innerHTML]="selectedAttempt | attemptVerdictHTML"></div>
+              </ng-template>
+            </td>
+    
+            <td class="td-content">
+              <span class="badge badge-info">{{ selectedAttempt.time }} {{ 'MS' | translate }}</span>
+            </td>
+    
+            <td class="td-content">
+              <span class="badge badge-primary">{{ selectedAttempt.memory }} {{ 'KB' | translate }}</span>
+            </td>
+    
+            <td class="td-content">
+              <span class="badge badge-dark">{{ selectedAttempt.sourceCodeSize }}</span>
+            </td>
+    
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <ngx-monaco-editor
+      [ngModelOptions]="{standalone: true}"
+      [options]="editorOptions"
+      [(ngModel)]="selectedAttempt.sourceCode"
+      style="height: 400px;"
+      class="mt-1"
+      ngDefaultControl
+    ></ngx-monaco-editor>
+  </div>
+</ng-template>
+<!-- / Modal -->
+
+<audio
+  #successAudio
+  src="assets/audio/success.mp3">
+</audio>
+
+<audio
+  #wrongAudio
+  src="assets/audio/wrong.mp3">
+</audio>

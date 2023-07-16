@@ -1,0 +1,59 @@
+<div
+  (mouseenter)="hover=true"
+  (mouseleave)="hover=false"
+  class="achievement achievement-{{ achievement.type }}"
+  [ngClass]="{
+    'bg-light-{{ getColor() }}': hover,
+    'done': achievement.userResult.done
+  }"
+  [ngbTooltip]="achievement.description">
+  <div class="achievement-icon">
+    <div *ngIf="achievement.type == 1" class="avatar p-50 bg-primary badge-glow">
+      <div class="avatar-content">
+        <i [data-feather]="'problem' | iconName" [size]="20"></i>
+      </div>
+  
+      <div class="achievement-pill badge badge-pill badge-primary">
+        {{ achievement.totalProgress }}
+      </div>
+    </div>
+    
+    <div style="position:relative;" *ngIf="achievement.type == 2">
+      <img height="36" src="assets/images/icons/fire_red.png" alt="streak">
+
+      <div class="achievement-pill badge badge-pill badge-danger">
+        {{ achievement.totalProgress }}
+      </div>
+    </div>
+
+    <div *ngIf="achievement.type == 4" class="avatar p-50 bg-warning badge-glow">
+      <img height="36" src="assets/images/icons/versus.png" alt="vs">
+
+      <div class="achievement-pill badge badge-pill badge-warning">
+        {{ achievement.totalProgress }}
+      </div>
+    </div>
+
+    <div *ngIf="achievement.type == 5" class="avatar p-50 bg-dark badge-glow">
+      <div class="avatar-content">
+        <i [data-feather]="'flag'" [size]="20"></i>
+      </div>
+  
+      <div class="achievement-pill badge badge-pill badge-dark">
+        {{ achievement.totalProgress }}
+      </div>
+    </div>
+  </div>
+
+  <div class="achievement-title text-center">
+    <span class="badge badge-light-{{ getColor() }}">
+      {{ achievement.title }}
+    </span>
+  </div>
+
+  <div class="achievement-progress" [ngbTooltip]="achievement.userResult.progress">
+    <div class="progress-wrapper">
+      <ngb-progressbar type="{{ getColor() }}" [value]="100 * achievement.userResult.progress / achievement.totalProgress"></ngb-progressbar>
+    </div>
+  </div>
+</div>

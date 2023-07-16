@@ -1,0 +1,19 @@
+<a class="card tournament-list-card" routerLink="tournament/{{ tournament.id }}">
+  <div class="card-header justify-content-start">
+    <div class="icon d-sm-block d-none">
+      <img src="assets/images/icons/tournament.png" alt="tournament-icon" width="90" height="90">
+    </div>
+    <div class="card-title">
+      <h3 class="text-white">
+        {{ tournament.title }}
+      </h3>
+      <p class="text-white">{{ tournament.startTime | localizedDate:'MMM dd, yyyy'}}</p>
+      <span class="badge">
+        <i data-feather="user"></i>
+        <span class="ml-25 mb-25">
+          {{ tournament.playersCount }}
+        </span>
+      </span>
+    </div>
+  </div>
+</a>

@@ -1,0 +1,50 @@
+.sample-test th {
+  border-bottom: none !important;
+  border-top: none !important;
+  border-right: none !important;
+  border-left: none !important;
+  border-top-left-radius: 10px !important;
+  border-top-right-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
+}
+
+textarea {
+  resize: none;
+}
+
+table.sample-test {
+  border-collapse: separate !important;
+  border-spacing: 10px 0px !important;
+
+  tr td:first-child {
+    width: 50%;
+  }
+
+  tr td:nth-child(2) {
+    width: 50%;
+  }
+}
+
+.sample-test td {
+  vertical-align: top !important;
+  padding: 20px !important;
+}
+
+tr:first-child td,
+th {
+  border-bottom: none !important;
+  border-top: none !important;
+}
+
+pre {
+  background-color: transparent !important;
+}
+
+code {
+  padding: 0px !important;
+}
+
+.dark-layout pre code {
+  color: white !important;
+}

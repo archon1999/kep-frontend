@@ -1,0 +1,151 @@
+.project-1 {
+  &.gradient, .gradient {
+    background: linear-gradient(to right, #3489c2d5, #6DD5FA);
+  }
+
+  &.shadow, .shadow {
+    box-shadow: 0 0 5px #40a4c8 !important;
+  }
+
+  &.bg, .bg {
+    background: #2980B9;
+  }
+  
+  &.border-top, .border-top {
+    border-top: 1px solid #2980B9 !important;    
+  }
+}
+
+.project-2 {
+  &.gradient, .gradient {
+    background: linear-gradient(to right, #01a3ff, #00a0d680);
+  }
+
+  &.shadow, .shadow {
+    box-shadow: 0 0 10px #00a0d680 !important;
+  }
+
+  &.border-top, .border-top {
+    border-top: 1px solid #0279be !important;
+  }
+
+  &.bg, .bg {
+    background: #0279be;
+  }
+}
+
+.project-3 {
+  &.gradient, .gradient {
+    background-image: linear-gradient(141deg, #00ced5aa, 50%, #02acafb6);
+  }
+
+  &.shadow, .shadow {
+    box-shadow: 0 0 10px #00ced5aa !important;
+  }
+
+  &.border-top, .border-top {
+    border-top: 1px solid rgb(34, 108, 158) !important;
+  }
+
+  &.bg, .bg {
+    background: #3a979a;
+  }
+}
+
+.project-4 {
+  &.gradient, .gradient {
+    background-image: linear-gradient(to right, #36638a, #02acafb6);
+  }
+
+  &.shadow, .shadow {
+    box-shadow: 0 0 10px #02acafb6 !important;
+  }
+
+  &.border-top, .border-top {
+    border-top: 1px solid #36638a;
+  }
+
+  &.bg, .bg {
+    background: #36638a;
+  }
+}
+
+.project-5 {
+  &.gradient, .gradient {
+    background: linear-gradient(180deg, #434343ec, #000000);
+  }
+
+  &.shadow, .shadow {
+    box-shadow: 0 0 10px #434343ec !important;
+  }
+
+  &.border-top, .border-top {
+    border-top: 1px solid #fff;
+  }
+
+  &.bg, .bg {
+    background: #000000;
+  }
+}
+
+.project-6 {
+  &.gradient, .gradient {
+    background-image: linear-gradient(141deg, #092e20, 60%, #b6d7cb);
+  }
+
+  &.shadow, .shadow {
+    box-shadow: 0 0 10px #b6d7cb !important;
+  }
+
+  &.border-top, .border-top {
+    border-top: 1px solid #092e20;
+  }
+
+  &.bg, .bg {
+    background: #092e20;
+  }
+}
+
+::ng-deep {
+  .project-1 {
+    .nav-tabs .nav-link.active {
+      color: #2980B9;
+    }
+
+    .nav-tabs .nav-link:after {
+      background: linear-gradient(to right, #3489c2d5, #6DD5FA) !important;
+    }
+  }
+
+  .project-2 {
+    .nav-tabs .nav-link.active {
+      color: #0279be;
+    }
+
+    .nav-tabs .nav-link:after {
+      background: linear-gradient(to right, #01a3ff, #00a0d680) !important;
+    }
+  }
+
+  .dark-layout {
+    .project-1 {
+      &.gradient, .gradient {
+        background: linear-gradient(to right, #245a7d, #6DD5FA);
+      }
+
+      &.bg, .bg {
+        background: #1e4c6b !important;
+      }
+    }
+  }
+}  
+
+.technology-Django {
+  background-image: linear-gradient(141deg, #092e20, 60%, #b6d7cb);
+  box-shadow: 0px 0px 10px #91aa91 !important;
+}
+
+.technology-Python {
+  background-image: linear-gradient(141deg, #3979aa, #ffe974);
+  box-shadow: 0px 0px 10px #91aa91;
+}

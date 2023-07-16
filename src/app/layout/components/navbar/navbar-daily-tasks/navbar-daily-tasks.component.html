@@ -1,0 +1,80 @@
+<li ngbDropdown class="nav-item mr-25">
+  <a class="nav-link" ngbDropdownToggle id="navbarDailyTasksDropdown" (click)="loadData()">
+    <img [src]="streak > 0 ? 'assets/images/icons/fire_red.png' : 'assets/images/icons/fire_blue.png'" height="19">
+    {{ streak }}
+  </a>
+  <ul ngbDropdownMenu aria-labelledby="navbarDailyTasksDropdown"
+    class="dropdown-menu bg-daily-tasks dropdown-menu-media dropdown-menu-right">
+    <!-- DailyTasks header -->
+    <li class="dropdown-menu-header">
+      <div class="dropdown-header d-flex">
+        <h4 class="notification-title text-white mb-50 mr-auto">{{ 'DailyTasks' | translate }}</h4>
+        <div class="badge color-daily-tasks badge-pill badge-light-primary">
+          {{ dailyTasks.length }} {{ 'Tasks' | translate }} 
+        </div>
+      </div>
+    </li>
+    <!--/ DailyTasks header -->
+
+    <!-- DailyTasks content -->
+    <li class="scrollable-container media-list" [perfectScrollbar]>
+      <div class="d-flex" *ngFor="let dailyTask of dailyTasks">
+        <div class="media d-flex align-items-start">
+          <div class="media-left text-dark" [ngSwitch]="dailyTask.type">
+            <div *ngSwitchCase="1" class="avatar bg-primary mt-50">
+              <div class="avatar-content">
+                <i class="avatar-icon" [data-feather]="'menu'"></i>
+              </div>
+            </div>
+
+            <div *ngSwitchCase="2" class="avatar bg-success mt-50">
+              <div class="avatar-content">
+                <i class="avatar-icon" [data-feather]="'edit-3'"></i>
+              </div>
+            </div>
+
+            <div *ngSwitchCase="3" class="avatar bg-primary mt-50">
+              <div class="avatar-content">
+                <i class="avatar-icon" [data-feather]="'zap'"></i>
+              </div>
+            </div>
+          </div>
+          <div class="media-body">
+            <p class="media-heading text-white">
+              {{ dailyTask.description }}
+              <img ngbTooltip="Kepcoin" height="19" src="assets/images/icons/kepcoin.png"> {{ dailyTask.kepcoin }}
+            </p>
+            <small class="notification-text">
+              <span class="text-success" *ngIf="dailyTask.completed">
+                <i data-feather="check-circle"></i>
+              </span>
+              <span *ngIf="!dailyTask.completed" class="badge badge-glow" [ngClass]="{
+                'badge-primary': dailyTask.type == 1 || dailyTask.type == 3,
+                'badge-success': dailyTask.type == 2
+              }">
+                {{ dailyTask.progress }}/{{ dailyTask.total }}
+              </span>
+            </small>
+          </div>                
+        </div>
+
+      </div>
+    </li>
+    <!--/ DailyTaskss content -->
+
+    <!-- DailyTaskss footer -->
+    <li class="dropdown-menu-footer">
+      <div class="progress-wrapper">
+        <ngb-progressbar
+          style="height: 1.3rem;"
+          type="primary"
+          class="mt-50"
+          showValue="true"
+          [value]="progress"
+          [animated]="true"
+        ></ngb-progressbar>
+      </div>
+    </li>
+    <!--/ DailyTaskss footer -->
+  </ul>
+</li>

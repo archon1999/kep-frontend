@@ -1,0 +1,54 @@
+<div class="table-responsive">
+  <table class="table bg-challenge-results">
+    <tbody>
+      <tr>
+        <td>
+          <challenges-user-view [user]="challenge.playerFirst" [withRating]="true"></challenges-user-view>
+        </td>
+
+        <td>
+          <span class="badge badge-glow" [ngClass]="{
+              'badge-success': challenge.playerFirst.result > challenge.playerSecond.result,
+              'badge-danger': challenge.playerFirst.result < challenge.playerSecond.result,
+              'badge-secondary': challenge.playerFirst.result == challenge.playerSecond.result
+            }">
+            {{ challenge.playerFirst.result }}
+          </span>
+        </td>
+
+        <td>
+          <span *ngFor="let result of challenge.playerFirst.results" [ngSwitch]="result">
+            <i *ngSwitchCase="-1" class="text-warning" data-feather="minus"></i>
+            <i *ngSwitchCase="0" class="text-danger" data-feather="x"></i>
+            <i *ngSwitchCase="1" class="text-success" data-feather="check"></i>
+          </span>
+        </td>
+
+      </tr>
+
+      <tr>
+        <td>
+          <challenges-user-view [user]="challenge.playerSecond" [withRating]="true"></challenges-user-view>
+        </td>
+
+        <td>
+          <span class="badge badge-glow" [ngClass]="{
+              'badge-danger': challenge.playerFirst.result > challenge.playerSecond.result,
+              'badge-success': challenge.playerFirst.result < challenge.playerSecond.result,
+              'badge-secondary': challenge.playerFirst.result == challenge.playerSecond.result
+            }">
+            {{ challenge.playerSecond.result }}
+          </span>
+        </td>
+
+        <td>
+          <span *ngFor="let result of challenge.playerSecond.results" [ngSwitch]="result">
+            <i *ngSwitchCase="-1" class="text-warning" data-feather="minus"></i>
+            <i *ngSwitchCase="0" class="text-danger" data-feather="x"></i>
+            <i *ngSwitchCase="1" class="text-success" data-feather="check"></i>
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
