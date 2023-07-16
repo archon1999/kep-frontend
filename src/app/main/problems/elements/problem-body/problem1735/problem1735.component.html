@@ -1,0 +1,38 @@
+
+<ngx-monaco-editor
+  [ngModelOptions]="{standalone: true}"
+  [options]="editorOptions"
+  [(ngModel)]="html"
+  (ngModelChange)="change()"
+  name="code"
+  class="mt-1"
+  style="height: 400px; width: 100%;" ngDefaultControl></ngx-monaco-editor>
+
+<div class="row">
+  <div class="col-lg-6 col-12">
+    <h4>Output</h4>
+    <div (mouseenter)="mouseEnter=true;" (mouseleave)="mouseEnter=false;" style="width: 250px; height: 200px; position: relative; cursor: col-resize;">
+      <div
+        #output
+        [ngStyle]="{
+            'width': outputWidth + '%',
+            'box-shadow': mouseEnter ? 'red 1px 0px 0px' : 'none'
+        }"
+        style="background: #fff; overflow: hidden; height: 100%; position: relative; z-index: 1; mix-blend-mode: normal; pointer-events: none;">
+        <iframe [srcdoc]="outputHtml | safe" style="width: 250px; height: 200px; border: 0px; outline: 0px;" title="Preview"
+          sandbox="allow-same-origin">
+        </iframe>
+      </div>
+      <img alt=""
+        src="{{ problem.image }}"
+        style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%;">
+    </div>
+  </div>
+
+  <div class="col-lg-6 col-12">
+    <h4>
+      Target
+    </h4>
+    <img src="{{ problem.image }}" height="200" width="250" alt="card">
+  </div>
+</div>

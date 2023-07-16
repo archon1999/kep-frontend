@@ -1,0 +1,81 @@
+<h3 class="mb-2 font-weight-bolder">{{ 'Activity' | translate }} </h3>
+
+<div [@fadeInOnEnter] class="card card-activity bg-gradient-primary" *ngIf="statistics">
+  <div class="card-header">
+    <div class="card-title">
+      {{ statistics.date }}
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="statistics-info">
+      <span *ngIf="statistics.dailyActivity" class="badge badge-success badge-glow">
+        <i data-feather="check-circle"></i>
+      </span>
+      <span *ngIf="!statistics.dailyActivity" class="badge badge-danger badge-glow">
+        <i data-feather="x-circle"></i>
+      </span>
+      <h5>
+        {{ 'DailyActivity' | translate }}
+      </h5>
+    </div>
+
+    <div class="statistics-info">
+      <span class="badge badge-primary badge-glow">
+        <i [data-feather]="'attempt' | iconName"></i>
+      </span>
+      <h5>
+        {{ 'Attempts' | translate }}:
+      </h5>
+      <strong class="font-medium-1">{{ statistics.attempts }}</strong>
+    </div>
+
+    <div class="statistics-info">
+      <span class="badge badge-primary badge-glow">
+        <i [data-feather]="'problem' | iconName"></i>
+      </span>
+      <h5>
+        {{ 'Problems' | translate }}:
+      </h5>
+      <strong class="font-medium-1">{{ statistics.problems }}</strong>
+    </div>
+
+    <div class="statistics-info">
+      <span class="badge badge-primary badge-glow">
+        <i [data-feather]="'challenge' | iconName"></i>
+      </span>
+      <h5>
+        {{ 'Challenges' | translate }}:
+      </h5>
+      <div class="font-medium-1">
+        <span class="text-success font-medium-2" ngbTooltip="{{ 'Wins' | translate }}">W</span>
+        {{ statistics.challenges.wins }}
+
+        <span class="ml-50 text-warning font-medium-2" ngbTooltip="{{ 'Draws' | translate }}">D</span>
+        {{ statistics.challenges.draws }}
+        
+        <span class="ml-50 text-danger font-medium-2" ngbTooltip="{{ 'Losses' | translate }}">L</span>
+        {{ statistics.challenges.losses }}
+      </div>
+    </div>
+
+    <div class="statistics-info">
+      <span class="badge badge-success badge-glow">
+        <i [data-feather]="'test' | iconName"></i>
+      </span>
+      <h5>
+        {{ 'Tests' | translate }}:
+      </h5>
+      <strong class="font-medium-1">{{ statistics.tests }}</strong>
+    </div>
+  </div>
+
+  <div class="card-footer d-flex justify-content-between">
+    <button (click)="loadStatistics(fromNow+1);" class="btn btn-sm btn-relief-primary round">
+      <i data-feather="arrow-left"></i>
+    </button>
+    <button *ngIf="fromNow > 0" (click)="loadStatistics(fromNow-1);" class="btn btn-sm btn-relief-primary round">
+      <i data-feather="arrow-right"></i>
+    </button>
+  </div>
+</div>

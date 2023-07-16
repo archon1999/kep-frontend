@@ -1,0 +1,54 @@
+@keyframes cardAnimation {
+  50% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.98);
+  }
+} 
+
+.card {
+  transform: scale(0.98);
+
+  .on-hover {
+    display: none;
+  }
+
+  &:hover {
+    animation: cardAnimation 0.5s;
+    box-shadow: 12px 15px 20px 0px rgba(46,61,73,0.15);    
+    
+    .on-hover {
+      display: inherit;
+    }
+  }
+
+  .card-header {
+    .chapter-title {
+      margin-top: 1rem;
+      font-size: 1rem;
+    }
+
+    .test-title {
+      margin-top: 1rem;
+      margin-bottom: 0.3rem;
+      font-size: 1.3rem;
+    }
+
+    .chapter-image {
+      height: 48px;
+
+      img {
+        object-fit: contain;
+        height: 100%;
+      }
+    }
+  }
+
+  .test-best-result {
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 5px;
+    padding: 5px
+  }
+}

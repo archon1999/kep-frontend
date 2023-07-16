@@ -1,0 +1,222 @@
+@import 'bootstrap/scss/mixins'; 
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+::ng-deep {
+  .project-page {
+    background: #fff !important;
+  }
+  
+  .project-page.dark-layout {
+    background: #161d31 !important;
+  }
+
+  .gtx-trans-icon {
+    display: none;
+  }
+}
+
+
+.project-page-top {
+  margin-left: -2rem;
+  position: absolute;
+  top: -70px;
+  width: calc(100% + 2rem);
+  height: 650px;
+
+  @include media-breakpoint-down(lg) {
+    width: calc(100% + 1.2rem);
+  }
+
+  @include media-breakpoint-down(xs) {
+    height: 800px;
+  }
+
+  & > svg {
+    position: absolute;
+    bottom: 0;
+    // stroke: #f8f8f8;
+    fill: #fff;
+    width: 100%;
+    height: auto;
+  }
+}
+
+::ng-deep .dark-layout .project-page-top > svg {
+  fill: #161d31 !important;
+}
+
+.project {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+
+  @include media-breakpoint-down(xs) {
+    grid-template-columns: 1fr;
+  }
+
+  .project-header {
+    margin-top: 10rem;
+    margin-left: 15rem;
+
+    @include media-breakpoint-down(md) {
+      margin-top: 8rem;
+      margin-left: 10rem;
+    }
+
+    @include media-breakpoint-down(sm) {
+      margin-left: 5rem;
+    }
+    
+    @include media-breakpoint-down(xs) {
+      margin-top: 2rem;
+      margin-right: 5rem;
+    }
+  
+    .project-stats {
+      margin-top: 2rem;
+
+      span {
+        margin-left: 0.1rem;
+      }
+
+      .project-rating {
+        font-size: 1.2rem;
+        color: #fff;
+  
+        ::ng-deep svg {
+          fill: #ff9f43;
+        }
+      }
+      
+      .project-users {
+        margin-left: 1.5rem;
+        font-size: 1.2rem;
+        color: #fff;
+
+        ::ng-deep svg {
+          color: #8fddc3;
+        }
+      }
+
+      .project-level {
+        margin-left: 1.5rem;
+        font-size: 1.2rem;
+        color: #fff;
+        border-radius: 5px;
+      }
+    }
+
+    .project-title {
+      color: #fff;
+      font-size: 3rem;
+    }
+
+    .project-description {
+      font-size: 1.375rem;
+      margin-top: 2rem;
+      font-weight: 400;
+      color: #fff;
+
+      ::ng-deep p {
+        line-height: 2rem;
+      }
+    }
+
+    .project-tags {
+      margin-top: 2rem;
+  
+      .project-tag {
+        color: #fff;
+        border-radius: 20px;
+        padding: .4rem .8rem;
+      }
+    }
+
+    .project-technologies {
+      margin-top: 2rem;
+  
+      .project-technology {
+        color: #fff;
+        border-radius: 10px;
+        padding: .4rem .8rem;
+      }
+    }
+  }
+
+  .project-image {
+    margin-top: 7rem; 
+    height: 200px;
+    margin-right: 15rem;
+
+    @include media-breakpoint-down(md) {
+      margin-top: 5rem;
+      margin-right: 10rem;
+    }
+
+    @include media-breakpoint-down(sm) {
+      margin-top: 5rem;
+      margin-right: 5rem;
+    }
+
+    img {
+      object-fit: contain;
+      height: 100%;
+      width: 100%;
+    }
+  }
+}
+
+.project-tasks {
+  margin-top: 650px;
+  margin-left: 14rem;
+  
+  @include media-breakpoint-down(md) {
+    margin-left: 4rem;
+  }
+
+  @include media-breakpoint-down(sm) {
+    margin-left: 2rem;
+    margin-right: 2rem;
+  }
+
+  @include media-breakpoint-down(xs) {
+    margin-top: 800px;
+  }
+
+  .title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    
+    @include media-breakpoint-down(md) {
+      font-size: 2rem;
+    }  
+  }
+
+  .project-task {
+    margin-bottom: 1.5rem;
+    border-radius: 5px;
+    padding: 15px;
+
+    .project-task-title {
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: 400;
+
+      @include media-breakpoint-down(md) {
+        font-size: 1.2rem;
+      }  
+    }
+  }
+}
+
+.project-button {
+  margin-top: 5rem;
+
+  a {
+    color: #fff;
+  }
+
+  button {
+    color: #fff;
+  }
+}

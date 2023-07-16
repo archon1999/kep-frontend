@@ -1,0 +1,34 @@
+.container {
+    display: none;
+    background-image: linear-gradient(127deg, #7367f0 0%, #7367f0 91%);
+    position: relative;
+}
+
+.social {
+    overflow: hidden;
+    margin-top: 10px;
+    text-align: center;
+}
+
+ul {
+    margin-bottom: 0px;
+}
+
+ul, li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.copyright {
+    text-align: center;
+    border-top: 1px solid rgba(250,250,250,0.2);
+    margin-top: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    font-weight: 400;
+    font-size: 12px;
+    color: #fff;
+    letter-spacing: 0.88px;
+    text-transform: uppercase;
+}

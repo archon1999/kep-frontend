@@ -1,0 +1,44 @@
+<h3 class="mb-2 mt-2 font-weight-bolder">{{ 'Ratings' | translate }} </h3>
+<div [@fadeInOnEnter] *ngIf="userRatings" class="d-flex justify-content-between mb-4">
+  <div class="d-block">
+    <h6 class="font-weight-bolder">
+      <i [data-feather]="'contest' | iconName"></i> {{ 'MENU.CONTESTS' | translate }}
+    </h6>
+    <h4 class="mb-0 mt-1 text-center">
+      <contests-rating-image [size]="24" [title]="userRatings.contestsRatingTitle"></contests-rating-image>
+      <span class="badge badge-light-{{ userRatings.contestsRating | contestsRatingColor }}">
+        {{ userRatings.contestsRating }}
+      </span>
+    </h4>
+  </div>
+
+  <div class="d-block">
+    <h6 class="font-weight-bolder">
+      <i [data-feather]="'problem' | iconName"></i> {{ 'MENU.PROBLEMS' | translate }}
+    </h6>
+    <h4 class="mb-0 mt-1 text-center">
+      <span class="badge badge-primary">
+        {{ userRatings.problemsSolved }}
+      </span>
+      <span class="badge badge-light-success">
+        {{ userRatings.problemsRating }}
+      </span>
+    </h4>
+  </div>
+
+  <div class="d-block">
+    <h6 class="font-weight-bolder">
+      <i [data-feather]="'zap'"></i> {{ 'MENU.CHALLENGES' | translate }}
+    </h6>
+    <div class="d-block mb-0 mt-1 text-center text-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+      <span class="badge badge-pill badge-glow badge-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+        {{ userRatings.challengesRankTitle }}
+      </span>
+
+      <span class="badge badge-light-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+        {{ userRatings.challengesRating }}
+      </span>
+    </div>
+  </div>
+
+</div>

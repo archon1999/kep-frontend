@@ -1,0 +1,21 @@
+<a routerLink="/practice/problems/study-plan/{{ studyPlan.id }}">
+  <div class="card bg-gradient-studyplan-{{ studyPlan.id }}">
+    <div class="card-header d-block">
+      <div class="study-plan-title">
+        {{ studyPlan.title }}
+      </div>
+      <div class="mt-1 study-plan-description">
+        {{ studyPlan.descriptionShort }}
+      </div>
+      <div class="on-hover">
+        <i data-feather="arrow-right"></i>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="study-plan-icon">
+        <img src="{{ studyPlan.icon }}" alt="study-plan-icon">
+      </div>
+    </div>
+  </div>
+</a>

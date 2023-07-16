@@ -1,0 +1,14 @@
+<div class="mt-4 col-lg-8 col-md-10 col-sm-12 offset-lg-2 offset-md-1 offset-sm-0">
+  <div *ngFor="let stage of tournament.stages">
+    <h3 class="mb-2 mt-2 text-dark text-center">
+      {{ stage.title }}
+      <hr>
+    </h3>
+  
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-12" *ngFor="let stageDuel of stage.duels">
+        <duel-card *ngIf="stageDuel.duel" [routerLink]="['/practice', 'duels', 'duel', stageDuel.duel.id]" [duel]="stageDuel.duel"></duel-card>
+      </div>
+    </div>
+  </div>
+</div>

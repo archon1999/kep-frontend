@@ -1,0 +1,11 @@
+<h3 class="ml-1 mb-2 font-weight-bolder">{{ 'LatestNews' | translate }} </h3>
+<swiper [config]="newsSwiperConfig" class="swiper swiper-lazy-loading" #newsSwiper>
+  <div class="swiper-wrapper">
+    <div [@fadeInRightOnEnter] class="swiper-slide" *ngFor="let news of lastNews">
+      <news-card [blog]="news.blog"></news-card>
+      <hr>
+    </div>
+  </div>
+  <!-- Add Pagination -->
+  <div class="swiper-pagination"></div>
+</swiper>

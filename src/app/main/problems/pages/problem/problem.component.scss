@@ -1,0 +1,59 @@
+.card .card-header {
+    padding-bottom: 0.5rem !important;
+}
+
+tr:first-child td, th {
+    border-bottom: none !important;
+    border-top: none !important;
+}
+
+th {
+    border-bottom: none !important;
+    border-top: none !important;
+}
+
+thead tr th, tfoot tr th {
+    font-size: 1rem;
+    font-weight: 600 !important;
+    text-transform: initial !important;
+}
+
+table > thead > tr > th:first-child {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+table > thead > tr > th:last-child {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.rating {
+    font-size: 22px !important;
+    color: #ff9f43 !important;
+}
+
+
+.problem-header-sep::before {
+    content: "|";
+}
+
+.problem-header-sep {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.badge.badge-pill {
+    display: inline-block !important;
+    padding: 0.3rem 0.5rem !important;
+    padding-right: 0.5rem !important;
+    padding-left: 0.5rem !important;
+    border-radius: 10rem !important;
+    font-size: 85% !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    vertical-align: baseline !important;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, background 0s, border 0s !important;
+}

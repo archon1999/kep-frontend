@@ -1,0 +1,54 @@
+@keyframes cardAnimation {
+  50% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0.98);
+  }
+} 
+
+.bg-gradient-chapter-6, .bg-gradient-chapter-8 {
+  .card-title {
+    margin-left: 0.5rem !important;
+    font-size: 0.9rem !important;
+  }
+}
+
+.card {
+  transform: scale(0.98);
+  cursor: pointer;
+
+  &:hover {
+    animation: cardAnimation 0.5s;
+    box-shadow: 12px 15px 20px 0px rgba(46,61,73,0.15);    
+    
+    .on-hover {
+      display: inherit;
+    }
+  }
+
+  .card-header {
+    display: flex;
+
+    .card-title {
+      margin-left: 0.75rem;
+      font-size: 1rem;
+
+      .tests-count {
+        font-size: 0.8rem;
+        padding-bottom: 0.3rem;
+        opacity: 0.5;
+        margin-left: 1rem;
+      }
+    }
+  }
+
+  .card-image {
+    height: 32px;
+
+    img {
+      object-fit: contain;
+      height: 100%;
+    }
+  }
+}
