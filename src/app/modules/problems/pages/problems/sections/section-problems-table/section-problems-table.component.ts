@@ -3,7 +3,7 @@ import { CoreConfigService } from '@core/services/config.service';
 import { CoreConfig } from '@core/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Problem } from '../../../../../problems/problems.models';
+import { Problem } from '../../../../models/problems.models';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 
 @Component({

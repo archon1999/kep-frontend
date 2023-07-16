@@ -1,4 +1,4 @@
-import { Problem } from "../problems/problems.models";
+import { Problem } from "../problems/models/problems.models";
 
 export type DuelStatus = -1 | 0 | 1;
 

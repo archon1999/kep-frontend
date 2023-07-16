@@ -9,7 +9,7 @@ import { ContentHeader } from 'app/layout/components/content-header/content-head
 import { TitleService } from 'app/title.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Problem } from '../../problems.models';
+import { Problem } from '../../models/problems.models';
 import { ProblemsService } from '../../problems.service';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Attempt } from '../../attempts.models';
+import { Attempt } from '../../models/attempts.models';
 import { ApiService } from 'app/api.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from 'app/auth/service';

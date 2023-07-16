@@ -4,7 +4,7 @@ import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AvailableLanguage, Problem } from '../../../problems.models';
+import { AvailableLanguage, Problem } from '../../../models/problems.models';
 import { ProblemsService } from '../../../problems.service';
 
 @Component({

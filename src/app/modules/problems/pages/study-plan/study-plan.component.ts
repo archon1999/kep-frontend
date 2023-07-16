@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { TitleService } from 'app/title.service';
 import { SwiperOptions } from 'swiper';
-import { StudyPlan } from '../../problems.models';
+import { StudyPlan } from '../../models/problems.models';
 import { ProblemsService } from '../../problems.service';
 
 @Component({

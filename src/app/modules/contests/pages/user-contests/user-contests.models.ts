@@ -1,4 +1,4 @@
-import { Problem } from "../../../problems/problems.models";
+import { Problem } from "../../../problems/models/problems.models";
 import { ContestStatus, ContestTypes } from "../../contests.models";
 
 export class Contest {
