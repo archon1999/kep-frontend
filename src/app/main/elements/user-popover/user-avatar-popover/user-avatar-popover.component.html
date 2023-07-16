@@ -1,0 +1,77 @@
+<ng-template #popContent>
+  <div class="card card-profile" *ngIf="user">
+    <img [src]="user.coverPhoto" class="img-fluid card-img-top"
+      alt="Profile Cover Photo" />
+    <div class="card-body">
+      <div class="profile-image-wrapper">
+        <div class="profile-image">
+          <div class="avatar">
+            <img [src]="user.avatar" alt="Profile Picture" />
+            <span *ngIf="user.isOnline" class="avatar-status-online"></span>
+            <span *ngIf="!user.isOnline" class="avatar-status-offline"></span>
+          </div>
+        </div>
+      </div>
+      <h3>{{ user.firstName }} {{ user.lastName }}</h3>
+      <h6 class="text-muted">{{ user.username }}</h6>
+      <hr class="mb-2" />
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <div>
+          <h6 class="font-weight-bolder">
+            <i [data-feather]="'contest' | iconName"></i> {{ 'MENU.CONTESTS' | translate }}
+          </h6>
+          <h4 class="mb-0 mt-1">
+            <ng-component [innerHTML]="userRatings.contestsRatingTitle | contestsRatingImg"></ng-component>
+            <span class="badge badge-light-{{ contestsRating | contestsRatingColor }}">{{ userRatings.contestsRating }}</span>
+          </h4>
+        </div>
+
+        <div>
+          <h6 class="font-weight-bolder">
+            <i [data-feather]="'problem' | iconName"></i> {{ 'MENU.PROBLEMS' | translate }}
+          </h6>
+          <h4 class="mb-0 mt-1">
+            <span class="badge badge-primary">
+              {{ userRatings.problemsSolved }}
+            </span>
+            <span class="badge badge-light-success">
+              {{ userRatings.problemsRating }}
+            </span>
+          </h4>
+        </div>
+
+        <div>
+          <h6 class="font-weight-bolder">
+            <i [data-feather]="'activity'"></i> {{ 'MENU.CHALLENGES' | translate }}
+          </h6>
+          <p class="mb-0 mt-1">
+            <span class="badge badge-success badge-glow">{{ userRatings.challengesRankTitle }}</span>
+            <span class="text-success">
+              {{ userRatings.challengesRating }}
+            </span>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<a
+  [routerLink]="['/users', 'user', username]"
+>
+  <img
+    [src]="avatar"
+    alt="Avatar"
+    width="33"
+    height="33"
+  
+    popoverClass="user-popover"
+    [ngbPopover]="popContent"
+    triggers="mouseenter:mouseleave"
+    [closeDelay]="30000"
+    [openDelay]="1000"
+    (shown)="loadUser()"
+    container="body"
+  />
+</a>

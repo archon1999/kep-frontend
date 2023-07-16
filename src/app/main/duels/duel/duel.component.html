@@ -1,0 +1,165 @@
+<div class="row">
+    <div class="col-lg-9 col-12">
+      <div class="card">
+        <div class="table-responsive bg-results-table bg-primary">
+          <table class="table">
+            <thead>
+              <tr>
+                <th><i class="text-white ml-1" data-feather="user"></i></th>
+                <th class="text-center"><i ngbTooltip="{{ 'Points' | translate }}" class="text-white" [data-feather]="'rating' | iconName"></i></th>
+                <th class="text-center text-white" *ngFor="let duelProblem of duel.problems">
+                  {{ duelProblem.symbol }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <contestant-view [textColor]="'white'" [user]="duel.playerFirst"></contestant-view>
+                </td>
+                <td class="text-center">
+                  <span class="badge badge-glow badge-primary bg-primary bg-darken-1">
+                    {{ duel.playerFirst.balls }}
+                  </span>
+                </td>
+                <td *ngFor="let duelProblem of duel.problems" class="text-center">
+                  <span *ngIf="duelProblem.playerFirstBall > 0" class="badge badge-success badge-glow">
+                    {{ duelProblem.playerFirstBall }}
+                  </span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <contestant-view *ngIf="duel.playerSecond" [textColor]="'white'" [user]="duel.playerSecond"></contestant-view>
+                  <span *ngIf="!duel.playerSecond" class="text-white ml-1 mb-1">
+                    BYE
+                  </span>
+                </td>
+                <td class="text-center">
+                  <span class="badge badge-glow badge-primary bg-primary bg-darken-1">
+                    {{ duel.playerSecond?.balls || 0 }}
+                  </span>
+                </td>
+                <td *ngFor="let duelProblem of duel.problems" class="text-center">
+                  <span *ngIf="duelProblem.playerSecondBall > 0" class="badge badge-success badge-glow">
+                    {{ duelProblem.playerSecondBall }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card" *ngIf="duelProblem">
+        <div class="card-body">
+          <h2 class="text-center mb-2">
+            {{ duelProblem.symbol }}. {{ duelProblem.problem.title }}
+          </h2>
+
+          <div class="row justify-content-center mt-1">
+            <div class="col text-right problem-header">
+              <small class="text-center pr-1">
+                {{ 'Languages' | translate }}:
+              </small>
+            </div>
+
+            <div class="col problem-header">
+              <small class="text-center">
+                <span *ngFor="let availableLanguage of duelProblem.problem.availableLanguages">
+                  <a
+                    (click)="changeLang(availableLanguage.lang)"
+                    class="badge-pill text-white badge badge-{{ availableLanguage.lang }}">
+                    {{ availableLanguage.lang | langFullName }}
+                  </a>
+                </span>
+              </small>
+            </div>
+          </div>
+
+          <div *ngIf="duel.isPlayer" class="row justify-content-center mt-1">
+            <div class="col text-right problem-header">
+              <small class="text-center pr-1">
+               {{ 'SelectedLanguage' | translate }}:
+              </small>
+            </div>
+
+            <div class="col problem-header">
+              <small class="text-center">
+                <span class="badge badge-pill badge-{{ selectedLang }}">
+                  {{ selectedLang | langFullName }}
+                </span>      
+              </small>
+            </div>
+          </div>
+
+          <div class="row justify-content-center mt-1">
+            <div class="col text-right problem-header">
+              <small class="text-center pr-1">
+                {{ 'TIME_LIMIT' | translate }}:
+              </small>
+            </div>
+
+            <div class="col problem-header">
+              <small class="text-center">
+                <span class="text-info">
+                  {{ availableLang.timeLimit || duelProblem.problem.timeLimit }} {{ 'MS' | translate }}
+                </span>
+              </small>
+            </div>
+          </div>
+
+          <div class="row justify-content-center mt-1">
+            <div class="col text-right problem-header">
+              <small class="text-center pr-1">
+                {{ 'MEMORY_LIMIT' | translate }}:
+              </small>
+            </div>
+
+            <div class="col mb-2 problem-header">
+              <small class="text-center">
+                <span class="text-primary">
+                  {{ availableLang.memoryLimit || duelProblem.problem.memoryLimit }} {{ 'MB' | translate }}
+                </span>
+              </small>
+            </div>
+          </div>
+
+          <problem-body [problem]="duelProblem.problem"></problem-body>
+
+          <code-editor-modal
+            *ngIf="duel.status == 0 && duel.isPlayer && currentUser"
+            [uniqueName]="'duel-problem-' + duelProblem.problem.id"
+            [sampleTests]="duelProblem.problem.sampleTests"
+            [availableLanguages]="duelProblem.problem.availableLanguages"
+            [submitUrl]="'duels/' + duel.id + '/submit/'"
+            [submitParams]="{ duelProblem: duelProblem.symbol }"
+            (submittedEvent)="reloadAttempts()"
+          ></code-editor-modal>
+        </div>
+      </div>
+
+      <div class="card" *ngIf="attempts.length > 0">
+        <div class="card-header">
+          <div class="card-title">
+            {{ 'Attempts' | translate }}
+          </div>
+        </div>
+        <div class="card-body">
+          <attempts-table [duel]="duel" [attempts]="attempts"></attempts-table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-12">
+      <duel-countdown [duel]="duel"></duel-countdown>
+
+      <ng-container *ngIf="duel.problems">
+        <problem-list-card
+          (click)="changeProblem(duelProblem)"
+          [duelProblem]="duelProblem"
+          *ngFor="let duelProblem of duel.problems">
+        </problem-list-card>
+      </ng-container>
+    </div>
+</div>

@@ -1,0 +1,71 @@
+<div class="row">
+  <div class="col-lg-4 col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          {{ 'ByWeekday' | translate }}
+        </div>
+      </div>
+    
+      <div class="card-body">
+        <apx-chart
+          *ngIf="byWeekdayChart"
+          [theme]="chartTheme"
+          [series]="byWeekdayChart.series"
+          [chart]="byWeekdayChart.chart"
+          [dataLabels]="byWeekdayChart.dataLabels"
+          [plotOptions]="byWeekdayChart.plotOptions"
+          [xaxis]="byWeekdayChart.xaxis"
+          [colors]="byWeekdayChart.colors"
+        ></apx-chart>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4 col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          {{ 'ByMonth' | translate }}
+        </div>
+      </div>
+    
+      <div class="card-body">
+        <apx-chart
+          *ngIf="byMonthChart"
+          [theme]="chartTheme"
+          [series]="byMonthChart.series"
+          [chart]="byMonthChart.chart"
+          [dataLabels]="byMonthChart.dataLabels"
+          [plotOptions]="byMonthChart.plotOptions"
+          [xaxis]="byMonthChart.xaxis"
+          [colors]="byMonthChart.colors"
+        ></apx-chart>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4 col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          {{ 'ByPeriod' | translate }}
+        </div>
+      </div>
+    
+      <div class="card-body">
+        <apx-chart
+          *ngIf="byPeriodChart"
+          [theme]="chartTheme"
+          [series]="byPeriodChart.series"
+          [chart]="byPeriodChart.chart"
+          [dataLabels]="byPeriodChart.dataLabels"
+          [plotOptions]="byPeriodChart.plotOptions"
+          [xaxis]="byPeriodChart.xaxis"
+          [colors]="byPeriodChart.colors"
+        ></apx-chart>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<div *ngFor="let part of lecture.parts">
+  <mathjax *ngIf="part.type == 1" [content]="part.text"></mathjax>
+  <pre class="mt-2" *ngIf="part.type == 2"><code [lineNumbers]="true" [languages]="['python']" [highlight]="part.sourceCode"></code></pre>
+  <div class="mb-2 text-right">
+    <clipboard-button *ngIf="part.type == 2" [text]="part.sourceCode"></clipboard-button>
+  </div>
+</div>
+
+<code-editor-modal *ngIf="lecture.sourceCode.length > 0"
+  [availableLanguages]="[{'lang': 'py', 'codeTemplate': lecture.sourceCode}]">
+</code-editor-modal>

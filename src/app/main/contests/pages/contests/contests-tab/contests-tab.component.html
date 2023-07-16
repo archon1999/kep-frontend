@@ -1,0 +1,28 @@
+<ul ngbNav #navWithIcons="ngbNav" class="nav-tabs" [(activeId)]="activeId">
+    <li ngbNavItem>
+        <a ngbNavLink [routerLink]="['/competitions', 'contests']" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">
+            <span [data-feather]="'contest' | iconName"></span> {{ 'CONTESTS.CONTESTS' | translate }}</a>
+        <ng-template ngbNavContent>
+        </ng-template>
+    </li>
+    <li ngbNavItem>
+        <a ngbNavLink [routerLink]="['/competitions', 'contests', 'rating']" routerLinkActive="active">
+            <span [data-feather]="'rating' | iconName"></span> {{ 'RATING' | translate }}</a>
+        <ng-template ngbNavContent>
+        </ng-template>
+    </li>
+    <li ngbNavItem *ngIf="currentUser">
+        <a ngbNavLink [routerLink]="['/competitions', 'contests', 'profile']" routerLinkActive="active">
+            <span [data-feather]="'user' | iconName"></span> {{ 'PROFILE' | translate }}</a>
+        <ng-template ngbNavContent>
+        </ng-template>
+    </li>
+    <li ngbNavItem *ngIf="currentUser">
+        <a ngbNavLink [routerLink]="['/competitions/contests/user-contests']" routerLinkActive="active">
+            <span [data-feather]="'contest' | iconName"></span> {{ 'MyContests' | translate }}</a>
+        <ng-template ngbNavContent>
+        </ng-template>
+    </li>
+</ul>
+
+<div [ngbNavOutlet]="navWithIcons" class="mt-2"></div>

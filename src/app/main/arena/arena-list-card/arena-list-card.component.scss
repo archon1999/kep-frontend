@@ -1,0 +1,59 @@
+@import 'bootstrap/scss/mixins'; 
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+
+.card {
+  margin-bottom: 0.5rem !important;
+  cursor: pointer;
+  border: none;
+
+  .card-header {
+    color: #000;
+  }
+  
+  .card-countdown .clock-val {
+    color: #000;
+  }
+}
+
+.card:hover {
+  padding-left: 10px !important;
+  color: #604f99;
+  transition: .5s;
+}
+
+.card-header>div:nth-child(1) {
+  width: 40%;
+}
+
+.card-header>div:nth-child(2) {
+  width: 20%;
+}
+
+.card-header>div:nth-child(3) {
+  width: 20%;
+}
+
+.card-header>div:nth-child(4) {
+  width: 20%;
+}
+
+@include media-breakpoint-down(sm) {
+  .card-header>div:nth-child(1) {
+    width: 60% !important;
+  }
+  
+  .card-header>div:nth-child(2) {
+    width: 20% !important;
+  }
+  
+  .card-header>div:nth-child(3) {
+    width: 20% !important;
+  }
+  
+  .card-header>div:nth-child(4) {
+    width: 0% !important;
+    display: none !important;
+  }  
+}

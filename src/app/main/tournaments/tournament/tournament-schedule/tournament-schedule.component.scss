@@ -1,0 +1,21 @@
+@import '../../scss/variables.scss';
+
+
+.bg-tournament {
+  background: $tournaments-bg !important;
+}
+
+::ng-deep .dark-layout .bg-tournament {
+  background: $tournaments-bg-dark !important;
+}
+
+th,
+td {
+  border-bottom: 0px;
+  border-top: 0px;
+}
+
+.badge-schedule {
+  background: $tournaments-bg;
+  box-shadow: 0 0 10px $tournaments-color;
+}

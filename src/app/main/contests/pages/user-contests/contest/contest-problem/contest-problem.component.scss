@@ -1,0 +1,17 @@
+.card .card-header {
+    display: block;
+}
+
+.contest-problems td:first-child {
+    max-width: 70px;
+    min-width: 70px;
+}
+
+.col.problem-header {
+    padding-right: 0rem !important;
+    padding-left: 0rem !important;
+}
+
+.contest-problems td:first-child {
+    white-space: nowrap;
+}

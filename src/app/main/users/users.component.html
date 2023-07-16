@@ -1,0 +1,62 @@
+<div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+      <!-- content-header component -->
+      <app-content-header [contentHeader]="contentHeader"></app-content-header>
+  
+      <section class="mt-2">
+        <div class="row">
+          <div class="col-lg-8 col-md-6 col-sm-12">
+            <div class="row">
+              <div class="col-lg-6 col-md-12 col-sm-12" *ngFor="let username of mostActiveUsers">
+                <user-card [username]="username"></user-card>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="card">
+              <div class="card-header d-flex align-items-start pb-0">
+                <div>
+                  <h2 class="font-weight-bolder">{{ usersTotal }}</h2>
+                  <p class="mb-0">{{ 'Users' | translate }}</p>
+                </div>
+                <div class="avatar bg-light-primary p-50">
+                  <div class="avatar-content">
+                    <i [data-feather]="'user' | iconName" class="font-medium-5"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div #usersChartoptionsRef *ngIf="usersChart">
+                <apx-chart
+                  [yaxis]="usersChart.yaxis"
+                  [series]="usersChart.series"
+                  [chart]="usersChart.chart"
+                  [stroke]="usersChart.stroke"
+                  [tooltip]="usersChart.tooltip"
+                  [colors]="usersChart.colors"
+                  [dataLabels]="usersChart.dataLabels">
+                </apx-chart>
+              </div>
+
+              <div class="card-body custom">
+                <div class="avatar-group">
+                  <div
+                    *ngFor="let user of onlineUsers"
+                    placement="bottom"
+                    container="body"
+                    class="avatar pull-up">
+                    <user-popover [username]="user.username" [customContent]="true">
+                      <img [src]="user.avatar" alt="Avatar" width="33" height="33">
+                      <span class="avatar-status-online"></span>
+                    </user-popover>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>

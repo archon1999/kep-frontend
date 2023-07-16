@@ -1,0 +1,12 @@
+<user-popover [customContent]="true" [username]="user.username">
+  <div class="text-{{ user.rankTitle | challengesRankColor }}">
+    <span class="badge badge-pill badge-glow badge-{{ user.rankTitle | challengesRankColor }}">
+      {{ user.rankTitle }}
+    </span>
+    {{ user.username }}
+
+    <span *ngIf="withRating" class="badge badge-light-{{ user.rankTitle | challengesRankColor }}">
+      {{ user.rating }}
+    </span>
+  </div>
+</user-popover>
