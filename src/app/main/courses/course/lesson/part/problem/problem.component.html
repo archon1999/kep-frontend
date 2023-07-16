@@ -1,0 +1,134 @@
+<h3 class="mb-2">
+  {{ problem.title }}
+</h3>
+
+<text
+  ngbTooltip="{{ 'DIFFICULTY' | translate }}"
+  class="text-{{ problem.difficulty | problemDifficultyColor }}">
+  {{ problem.difficultyTitle | translate }}
+</text>
+
+<span class="problem-header-sep"></span>
+
+<div class="d-flex justify-content-between">
+  <div class="likes-count">
+    <button class="btn btn-sm btn-relief-primary">
+      <i data-feather="thumbs-up"></i>
+      {{ problem.likesCount }}
+    </button>
+  </div>
+  <div class="dislikes-count">
+    <button class="btn btn-sm btn-relief-primary">
+      <i data-feather="thumbs-down"></i>
+      {{ problem.dislikesCount }}
+    </button>
+  </div>
+</div>
+
+<span class="problem-header-sep"></span>
+
+<span class="text-success">
+  {{ problem.solved }}
+  <i data-feather="user-check"></i>
+</span>
+
+<span class="text-danger">
+  {{ problem.notSolved }}
+  <i data-feather="user-x"></i>
+</span>
+
+<hr>
+
+<mathjax [content]="problem.body"></mathjax>
+<hr>
+
+<ng-container *ngIf="problem.inputData?.length > 0">
+  <h4 class="mt-2">
+    <strong>
+      {{ 'INPUT_DATA' | translate }}:
+    </strong>
+  </h4>
+
+  <mathjax class="mt-2" [content]="problem.inputData"></mathjax>
+</ng-container>
+
+<ng-container *ngIf="problem.outputData?.length > 0">
+  <h4 class="mt-3">
+    <strong>
+      {{ 'OUTPUT_DATA' | translate }}:
+    </strong>
+  </h4>
+
+  <mathjax class="mt-2" [content]="problem.outputData"></mathjax>
+  <hr>
+</ng-container>
+
+<ng-container *ngIf="problem?.sampleTests.length > 0">
+  <h4 class="mt-2 mb-1">
+    <strong>
+      {{ 'SAMPLE_TESTS' | translate }}
+    </strong>
+  </h4>
+
+  <ng-container *ngFor="let sampleTest of problem.sampleTests">
+    <div class="mt-3 mb-2 table-responsive">
+      <table class="table sample-test">
+        <thead>
+          <tr class="bg-gradient-primary">
+            <th>
+              <div class="row justify-content-between">
+                <div class="pl-1">
+                  {{ 'INPUT' | translate }}
+                </div>
+                <clipboard-button [text]="sampleTest.input"></clipboard-button>
+              </div>
+            </th>
+            <th>
+              <div class="row justify-content-between">
+                <div class="pl-1">
+                  {{ 'OUTPUT' | translate }}
+                </div>
+                <clipboard-button [text]="sampleTest.output"></clipboard-button>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="pl-2" [innerText]="sampleTest.input">
+            </td>
+            <td class="pl-2" [innerText]="sampleTest.output">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+
+</ng-container>
+
+<ng-container *ngIf="problem.comment?.length > 0">
+  <h4 class="mt-3">
+    <strong>
+      {{ 'COMMENT' | translate }}:
+    </strong>
+  </h4>
+
+  <mathjax class="mt-2" [content]="problem.comment"></mathjax>
+  <hr>
+</ng-container>
+
+<code-editor-modal
+  [uniqueName]="'problem-' + problem.id"
+  [sampleTests]="problem.sampleTests"
+  [submitUrl]="'problems/' + problem.id + '/submit/'"
+  [availableLanguages]="[{'lang': 'py', 'codeTemplate': problem.availableLanguages[0].codeTemplate}]"
+  (submittedEvent)="onSubmitted()">
+</code-editor-modal>
+
+<div *ngIf="attempts.length > 0">
+  <h3 class="card-title text-center mt-2 mb-1">{{ 'ATTEMPTS' | translate }}</h3>
+  <problem-attempts-table
+    [attempts]="attempts"
+    (onCheckFinished)="onCheckFinished($event)"></problem-attempts-table>
+</div>

@@ -1,0 +1,29 @@
+.card-activity {
+  box-shadow: 0 0 10px #7367f0 !important;
+  border: none !important;
+}
+
+::ng-deep .dark-layout .card-activity {
+  background: linear-gradient(92.32deg, #393575, #463caa) !important;
+}
+
+h2 {
+  background: #7367f0;
+  border-radius: 15px;
+  color: #fff;
+  padding: 0.7rem;
+  width: 150px;
+  text-align: center;
+  box-shadow: 0 0 10px #7367f0 !important;
+}
+
+.statistics-info {
+  display: flex;
+  margin-bottom: 1rem;
+
+  h5 {
+    color: #fff;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+}

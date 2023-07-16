@@ -1,0 +1,38 @@
+<challenges-user-view [user]="statistics"></challenges-user-view>
+
+<div ngbTooltip="{{ 'Perfomance' | translate }}" class="mt-2 text-dark">
+  <i data-feather="activity" class="font-medium-3"></i>
+  <span class="font-medium-4">
+    {{ statistics.perfomance }}
+  </span>
+</div>
+
+<div ngbTooltip="{{ 'Wins' | translate }}" class="mt-1 text-dark">
+  <span class="font-medium-2 text-success">W</span>
+  <span class="font-medium-2">
+    {{ statistics.winRate }}% ({{ statistics.wins }})
+  </span>
+</div>
+
+<div ngbTooltip="{{ 'Draws' | translate }}" class="mt-1 text-dark">
+  <span class="font-medium-2 text-secondary">D</span>
+  <span class="font-medium-2">
+    {{ statistics.drawRate }}% ({{ statistics.draws }})
+  </span>
+</div>
+
+<div ngbTooltip="{{ 'Losses' | translate }}" class="mt-1 mb-2 text-dark">
+  <span class="font-medium-2 text-danger">L</span>
+  <span class="font-medium-2">
+    {{ statistics.lossRate }}% ({{ statistics.losses }})
+  </span>
+</div>
+
+<div *ngIf="withOpponents">
+  <div class="mb-2 d-sm-none d-md-none d-lg-flex justify-content-center text-dark" *ngFor="let opponent of statistics.opponents">
+    <challenges-user-view [user]="opponent"></challenges-user-view>
+    <span class="ml-1 font-medium-2 text-success" *ngIf="opponent.status == 1">W</span>
+    <span class="ml-1 font-medium-2 text-secondary" *ngIf="opponent.status == 0">D</span>
+    <span class="ml-1 font-medium-2 text-danger" *ngIf="opponent.status == -1">L</span>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div rippleEffect class="card" [ngClass]="{'bg-contest': coreConfig.layout.skin != 'dark'}">
+  <a [routerLink]="routerLink">
+    <div class="card-header">
+      <h5 class="card-title text-white">{{ contest.title }}</h5>
+      <span class="date text-white">
+        {{ contest.startTime | localizedDate:'EEEE, MMM d | HH:mm' }} -
+        <span *ngIf="contest.finishTime.getDate() == contest.startTime.getDate()">
+          {{ contest.finishTime | date:'HH:mm' }}
+        </span>
+      </span>
+    </div>
+    <div class="card-body">
+      <div *ngIf="contest.status == 1">
+        <button class="btn text-white btn-contest btn-sm">{{ 'Standings' | translate }}</button>
+      </div>
+      <div *ngIf="contest.status != 1">
+        <button class="btn text-white btn-contest btn-sm">{{ 'Join' | translate }}</button>
+      </div>
+    </div>
+  </a>
+</div>

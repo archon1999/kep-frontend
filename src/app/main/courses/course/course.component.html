@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-12 course-header">
+    <course-header [course]="course"></course-header>
+  </div>
+
+  <div class="col-12">
+    <course-info [course]="course"></course-info>
+  </div>
+
+  <div class="col-12">
+    <!--
+      <course-statistics [course]="course"></course-statistics>
+    -->
+  </div>
+
+  <div class="col-12">
+    <course-lessons [lessons]="courseLessons"></course-lessons>
+  </div>
+
+  <div class="col-12">
+    <course-reviews [courseId]="course.id"></course-reviews>
+  </div>
+
+  <div class="col-12">
+    <course-best-participants [course]="course"></course-best-participants>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+.card .card-header {
+    display: block;
+}
+
+th {
+    border-bottom: none !important;
+    border-top: none !important;
+}
+
+thead tr th, tfoot tr th {
+    font-size: 1rem;
+    font-weight: 600 !important;
+    text-transform: initial !important;
+}
+
+table > thead > tr > th:first-child {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+table > thead > tr > th:last-child {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+th, td {
+    padding: 15px !important;
+}
+
+th:nth-child(1) {
+    min-width: 80px;
+}
+
+tr:first-child td, th {
+    border-bottom: none !important;
+    border-top: none !important;
+}
+
+th:nth-child(2) {
+    min-width: 300px;
+    white-space: nowrap;
+}

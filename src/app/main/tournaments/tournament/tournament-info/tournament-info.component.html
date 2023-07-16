@@ -1,0 +1,37 @@
+<div class="col-lg-8 col-12 offset-lg-2 offset-0">
+  <div class="card">
+    <div class="card-body">
+      <div [innerHTML]="tournament.description"></div>
+
+      <h4 class="mt-2 mb-1">
+        <strong>
+          {{ 'Players' | translate }}
+        </strong>
+      </h4>
+
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr class="bg-tournament">
+              <th class="text-white">#</th>
+              <th class="text-white">{{ 'User' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let player of tournament.players; index as i"
+              [ngClass]="{ 'bg-light-dark': player.username == currentUser?.username }"
+            >
+              <td>
+                {{ i+1 }}
+              </td>
+              <td>
+                <contestant-view [user]="player"></contestant-view>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

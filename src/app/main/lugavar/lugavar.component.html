@@ -1,0 +1,171 @@
+<div class="lugavar-page-top">
+  <div class="text-center mt-3">
+    <div [@fadeInUpOnEnter] class="avatar badge-glow avatar-lg bg-info p-50 m-0 mb-1">
+      <div class="avatar-content">
+        <i [data-feather]="'bookmark'" class="font-large-1"></i>
+      </div>
+    </div>
+    <h2 [@fadeInUpOnEnter] class="mt-1">
+      <div class="text-white">{{ 'Lugavar' | translate }}</div>
+    </h2>
+  </div>
+
+  <div class="row mt-4 pt-4">
+    <code-editor-modal
+      [availableLanguages]="[{lang: 'py', codeTemplate: dailyTrick.codeTemplate}]">
+    </code-editor-modal>
+
+    <div [@fadeInRightOnEnter] class="col-lg-8 col-12 offset-0 offset-lg-2">
+      <div class="card gradient-border lugavar-shadow">
+        <div class="card-header">
+          <h2 class="text-dark">
+            {{ 'DailyTrick' | translate }}
+          </h2>
+        </div>
+
+        <div class="card-body">
+          <div [innerHTML]="dailyTrick.text"></div>
+        </div>
+
+        <div class="card-footer d-flex justify-content-between">
+          <like-button [likes]="dailyTrick.likes" [submitUrl]="'daily-trick-like'"></like-button>
+          <clipboard-button [text]="dailyTrick.codeTemplate" [buttonClass]="'btn btn-relief-info btn-sm'">
+          </clipboard-button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-2 col-lg-6 col-12 offset-0 offset-lg-3">
+      <div class="card gradient-border lugavar-shadow daily-question-card">
+        <div class="card-header">
+          <h2 class="text-dark">
+            {{ 'DailyQuestion' | translate }}
+          </h2>
+        </div>
+
+        <div class="card-body">
+          <h5 class="pl-1 d-flex">
+            <span class="pl-50" [innerHTML]="dailyQuestion.body"></span>
+          </h5>
+          <br>
+          <div *ngFor="let option of dailyQuestion.options; index as i">
+            <div class="ml-1 mb-1 question-option" [ngClass]="{'true': option.isAnswer}"
+              *ngIf="dailyQuestion.isAnswered">
+
+              <i class="text-success" *ngIf="option.isAnswer" data-feather="check-circle"></i>
+              {{ option.option }}
+
+              <div class="mt-50 progress-wrapper">
+                <ngb-progressbar showValue="true" [type]="option.isAnswer ? 'success' : 'secondary'"
+                  [value]="100*option.selected / dailyQuestion.totalAnswered"></ngb-progressbar>
+              </div>
+
+            </div>
+
+            <div class="ml-1 mb-1 custom-control custom-control-info custom-radio" *ngIf="!dailyQuestion.isAnswered">
+              <input type="radio" id="radio-{{ i }}" name="selectedOption" (click)="optionClick(i)" [value]="i"
+                class="custom-control-input" />
+              <label class="custom-control-label" for="radio-{{ i }}">{{ option.option }}</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer" *ngIf="dailyQuestion.isAnswered">
+          <like-button [likes]="dailyQuestion.likes" [submitUrl]="'daily-question-like'"></like-button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="mt-2 col-lg-8 col-12 offset-0 offset-lg-2">
+      <div class="card gradient-border lugavar-shadow">
+        <div class="card-header">
+          <h2 class="text-dark">
+            {{ 'DailyInterestingFact' | translate }}
+          </h2>
+        </div>
+
+        <div class="card-body">
+          <div [innerHTML]="dailyInterestingFact.body"></div>
+        </div>
+
+        <div class="card-footer d-flex justify-content-between">
+          <like-button [likes]="dailyInterestingFact.likes" [submitUrl]="'daily-interesting-fact-like'"></like-button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-2 col-lg-10 col-12 offset-0 offset-lg-1">
+      <div class="card gradient-border lugavar-shadow">
+        <div class="card-header">
+          <h2 class="text-dark">
+            <span *ngIf="!training">
+              {{ 'Dictionary' | translate }}
+              <button class="btn btn-sm round btn-gradient-info" (click)="training=true;" ngbTooltip="{{ 'Training' | translate }}">
+                <i data-feather="activity"></i>
+              </button>
+            </span>
+            <span *ngIf="training">
+              {{ 'Training' | translate }}
+              <button class="btn btn-sm btn-gradient-info" (click)="training=false;" ngbTooltip="{{ 'Dictionary' | translate }}">
+                <i data-feather="book"></i>
+              </button>
+            </span>
+          </h2>
+          <input *ngIf="!training" [(ngModel)]="searchText" (ngModelChange)="updateWords()" style="width: 40%;" class="form-control"  type="text" placeholder="{{ 'Search' | translate }}">
+        </div>
+
+        <dictionary-training *ngIf="training" [dictionary]="dictionary"></dictionary-training>
+
+        <div class="table-responsive" *ngIf="!training">
+          <table class="table">
+            <thead>
+              <tr class="bg-gradient-info">
+                <th>{{ 'Word' | translate }}</th>
+                <th>{{ 'Meaning' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let word of selectedWords">
+                <td>
+                  <span class="badge badge-info badge-glow">
+                    {{ word.word }}
+                  </span>
+                </td>
+                <td>
+                  <div [innerHTML]="word.meaning"></div>
+                  <like-button [likes]="word.likes" [submitUrl]="'dictionary/' + word.id + '/like/'"></like-button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <ngb-pagination
+            *ngIf="!training && totalWords > 0 && searchText.length <= 1"
+            [collectionSize]="totalWords"
+            [(page)]="pageNumber"
+            [pageSize]="10"
+            [maxSize]="5"
+            [rotate]="true"
+            (pageChange)="updateWords()"
+            aria-label="Default pagination"
+            class="d-flex justify-content-center pagination-info mt-2">
+            <ng-template ngbPaginationPrevious
+              ><span [data-feather]="'chevron-left'" [size]="18" [class]="'font-weight-bolder'"></span>
+            </ng-template>
+            <ng-template ngbPaginationNext
+              ><span [data-feather]="'chevron-right'" [size]="18" [class]="'font-weight-bolder'"></span
+            ></ng-template>
+          </ngb-pagination>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!--
+  <a class="font-large-1 underlined">The Best Features Coming to iOS and Web design</a>
+-->

@@ -1,0 +1,52 @@
+@import 'bootstrap/scss/mixins'; 
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+.card .card-header {
+    display: block;
+}
+
+.contest-problems td:first-child {
+    max-width: 70px;
+    min-width: 70px;
+}
+
+.col.problem-header {
+    padding-right: 0rem !important;
+    padding-left: 0rem !important;
+}
+
+.contest-problems td:first-child {
+    white-space: nowrap;
+}
+
+.results-button {
+    position: fixed;
+    right: 2rem;
+    bottom: 5%;
+
+    @include media-breakpoint-down(lg) {
+        display: none;
+    }
+}
+
+
+.results {
+    z-index: 1000;
+    background-image: linear-gradient(47deg, #1c1368, #9e95f5);
+    border: none;
+    box-shadow: 0 0 10px #9e95f5;
+    border-radius: 10px;
+  
+    position: fixed;
+    left: 2rem;
+    bottom: 2rem;
+
+    .result {
+        padding: 5px;   
+    }
+
+    @include media-breakpoint-down(lg) {
+        display: none;
+    }
+}

@@ -1,0 +1,28 @@
+.bg-contest {
+  background-size: 200% auto;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 10px #9e95f5;
+  // background-image: linear-gradient(47deg, #1c1368, #9e95f5);
+  background: linear-gradient(45deg, #1c1368, #393575, #463caa, rgb(99, 88, 223)) !important;
+  // background: linear-gradient(-45deg, #463caa, #7367f0, #8a80f3, rgba(115, 103, 240, 0.7));
+  background-repeat: repeat;
+  border: none;
+  border-radius: 0px;
+}
+
+
+.bg-contest:hover {
+  background-position: right center;
+  color: #fff;
+  text-decoration: none;
+}
+
+.start-time {
+  font-size: 1.25rem;
+  color: #fff;
+}
+
+
+.card-header {
+  display: initial !important;
+}

@@ -1,0 +1,41 @@
+@import 'bootstrap/scss/mixins'; 
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+.projects-page-top:before {
+  content: "";
+  margin-left: -2rem;
+  position: absolute;
+  top: -150px;
+  width: calc(100% + 2rem);
+  z-index: -1;
+  height: 650px;
+  background: linear-gradient(to right, #0083b0, #00b4db, );
+}
+
+::ng-deep .dark-layout .projects-page-top:before {
+  background: linear-gradient(to right, #004f69, #0083b0);
+}
+
+.bg-projects {
+  background: linear-gradient(to right, #004f69, #0083b0);
+  box-shadow: 0 0 10px #0083b0;
+}
+
+@include media-breakpoint-down(lg) {
+  .projects-page-top:before {
+    width: calc(100% + 1.2rem);
+  }
+}
+
+.info-img {
+  border-radius: 13px;
+  object-fit: cover;
+  height: 120px;
+}
+
+@include media-breakpoint-up(sm) {
+  section {
+    margin: 0.6rem 2rem 0.8rem 2rem;
+  }
+}

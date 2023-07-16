@@ -1,0 +1,81 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- content-header component -->
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <div *ngIf="currentUser" class="text-right">      
+      <button (click)="startTour()" class="mt-1 btn btn-sm round btn-primary">
+        <i [data-feather]="'question' | iconName"></i>
+      </button>
+    </div>
+
+    <section class="mt-2">
+      <div class="row">
+
+        <div class="col-lg-9 col-md-12 col-sm-12" [@fadeInLeftOnEnter]>
+          <div class="card">
+            <div class="card-header">
+              <ul ngbNav #navWithIcons="ngbNav" class="nav-tabs" [destroyOnHide]="false" [(activeId)]="activeId">
+                <li [ngbNavItem]="1">
+                  <a ngbNavLink>
+                    <span [data-feather]="'problem' | iconName"></span> {{ 'Problem' | translate }}
+                  </a>
+                  <ng-template ngbNavContent>
+                    <problem-description [problem]="problem"></problem-description>
+                  </ng-template>
+                </li>
+                <li [ngbNavItem]="2">
+                  <a ngbNavLink>
+                    <span [data-feather]="'attempt' | iconName"></span> {{ 'Attempts' | translate }}
+                  </a>
+                  <ng-template ngbNavContent>
+                    <problem-attempts [submitEvent]="submitEvent?.asObservable()" [problem]="problem"></problem-attempts>
+                  </ng-template>
+                </li>
+                <li [ngbNavItem]="3" *ngIf="studyPlanId">
+                  <a ngbNavLink routerLink="/practice/problems/study-plan/{{ studyPlanId }}">
+                    <span [data-feather]="'activity'"></span> {{ 'StudyPlan' | translate }}
+                  </a>
+                  <ng-template ngbNavContent>
+                    <problem-description [problem]="problem"></problem-description>
+                  </ng-template>
+                </li>
+                <li [ngbNavItem]="3" *ngIf="contestId">
+                  <a ngbNavLink routerLink="/competitions/contests/contest/{{ contestId }}/problems">
+                    <span [data-feather]="'flag'"></span> {{ 'Contest' | translate }}
+                  </a>
+                  <ng-template ngbNavContent>
+                    <problem-description [problem]="problem"></problem-description>
+                  </ng-template>
+                </li>
+              </ul>
+          
+            </div>
+          
+            <div class="card-body">
+              <div [ngbNavOutlet]="navWithIcons" class="mt-2"></div>
+            </div>
+    
+          </div>
+        
+        </div>
+
+        <div class="col-lg-3 col-md-12 col-sm-12" [@fadeInRightOnEnter]>  
+          <problem-sidebar [problem]="problem"></problem-sidebar>
+        </div>
+
+      </div>
+
+      <code-editor-modal
+        *ngIf="problem && currentUser"
+        [customClass]="'tour-step-2'"
+        [uniqueName]="'problem-' + problem.id"
+        [sampleTests]="problem.sampleTests"
+        [submitUrl]="'problems/' + problem.id + '/submit/'"
+        [codeTemplate]="problem.codeTemplate"
+        [availableLanguages]="problem.availableLanguages"
+        (submittedEvent)="submitEvent.next();activeId=2;"></code-editor-modal>
+    </section>
+  </div>
+</div>
+
+<tour-css></tour-css>

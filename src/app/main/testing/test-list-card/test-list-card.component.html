@@ -1,0 +1,24 @@
+<a routerLink="test/{{ test.id }}">
+  <div [@fadeInOnEnter] class="card bg-gradient-chapter-{{ test.chapter.id }}">
+    <div class="card-header">
+      <div class="card-title">
+        <div class="chapter-image">
+          <img src="{{ test.chapter.icon }}" alt="">
+        </div>
+        <div class="chapter-title">
+          {{ test.chapter.title }}
+        </div>
+        <div class="test-title d-flex">
+          {{ test.title }}
+          <div class="on-hover ml-50 mt-50">
+            <i data-feather="arrow-right"></i>
+          </div>
+        </div>
+      </div>
+  
+      <div class="test-best-result bg-chapter-{{ test.chapter.id }}">
+        {{ test.userBestResult }} / {{ test.questionsCount }}
+      </div>
+    </div>
+  </div>
+</a>
