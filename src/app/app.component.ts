@@ -22,7 +22,7 @@ import localeEn from '@angular/common/locales/en';
 import localeRu from '@angular/common/locales/ru';
 import localeUz from '@angular/common/locales/uz';
 
-import { menu } from 'app/menu/menu';
+import { menu } from './layout/components/menu/menu';
 
 import { ApiService } from './api.service';
 import { AuthenticationService } from './auth/service';
@@ -74,13 +74,13 @@ export class AppComponent implements OnInit, OnDestroy {
     private authService: AuthenticationService,
     public wsService: WebsocketService,
   ) {
-    // Get the application main menu
+    // Get the application modules menu
     this.menu = menu;
 
     // Register the menu to the menu service
     this._coreMenuService.register('main', this.menu);
 
-    // Set the main menu as our current menu
+    // Set the modules menu as our current menu
     this._coreMenuService.setCurrentMenu('main');
 
     // Add languages to the translation service
