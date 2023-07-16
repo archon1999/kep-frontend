@@ -1,6 +1,7 @@
 .card {
   height: 210px;
   border-radius: 10px !important;
+  transform: scale(0.98);
 
   .card-header {
     min-height: 140px !important;
@@ -9,28 +10,28 @@
 }
 
 .bg-contest {
-  background-size: 200% auto;
-  color: #fff;
-  transition: all 0.2s ease;
+  box-shadow: 0 0 5px #4e5e99 !important;
+  transition: all 0.5s ease;
   opacity: 0.9;
-  background-image: linear-gradient(47deg, #1c1368, #9f95f5);
+  background-image: linear-gradient(47deg, #1c1368, #756cc3);
   background-repeat: repeat;
   border: none;
 
   &:hover {
-    background-position: right center;
-    color: #fff;
-    text-decoration: none;
-
-    .btn-contest {
-      background-color: #9e95f5;
-    }
+    transform: scale(1);
   }
 }
 
-::ng-deep .dark-layout .bg-contest {
-  box-shadow: 0 0 20px #4e5e99 !important;
-}
+::ng-deep .dark-layout {
+ .bg-contest {
+    background: linear-gradient(to right, #182848, #4b6cb7);
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+  }
+
+  .btn-contest {
+    background-color: #4b6cb7 !important;
+  }
+}  
 
 .btn-contest {
   position: absolute;
@@ -43,10 +44,6 @@
   display: block;
   border-radius: 15px !important;
   background-color: #4e5e99;
-}
-
-::ng-deep .dark-layout .btn-contest {
-  background-image: linear-gradient(20deg, #0a0d13, #0a0d13);
 }
 
 .date {
