@@ -19,6 +19,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { UserCardComponent } from './user-card/user-card.component';
 import { UserAchievementsComponent } from './user-profile/user-achievements/user-achievements.component';
 import { AchievementComponent } from './user-profile/user-achievements/achievement/achievement.component';
+import { UsersChartModule } from 'app/shared/components/users-chart/users-chart.module';
 
 const routes: Routes = [
   { 
@@ -78,6 +79,7 @@ const routes: Routes = [
     FormsModule,
     NgApexchartsModule,
     ContestantViewModule,
+    UsersChartModule,
   ],
   providers: [
     UserResolver,
