@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { AttemptLangs } from 'app/main/problems/attempts.models';
+import { AttemptLangs } from '../../app/modules/problems/attempts.models';
 
 let cache = {};
 
