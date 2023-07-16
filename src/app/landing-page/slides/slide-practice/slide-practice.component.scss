@@ -1,0 +1,167 @@
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+.slide-practice {
+  margin-top: 4rem;
+
+  .img {
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    
+    @include media-breakpoint-up(lg) {
+      height: 300px;
+      width: 300px;
+    }
+
+    @include media-breakpoint-up(xl) {
+      height: 350px;
+      width: 350px;
+      top: 2rem;
+      left: 2rem;  
+    }
+
+    @include media-breakpoint-down(lg) {
+      bottom: 2rem;
+      right: -2rem;
+    }
+
+    img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .top-text {
+    text-align: center;
+    color: #fff;
+    padding-bottom: 20px;
+
+    h2 {
+      color: #fff;
+      font-weight: 500;
+      font-size: 2.5rem;
+      letter-spacing: 0.25px;
+      margin-bottom: 30px;
+      
+      @include media-breakpoint-down(sm) {
+        font-size: 2rem;
+      }
+    }
+
+    p {
+      letter-spacing: 1px;
+      margin-bottom: 40px;
+      color: #fff;
+      letter-spacing: 0.25px;
+      line-height: 26px;
+      font-weight: 400;
+      font-size: 15px;
+    }
+  }
+
+  .sections {
+    @include media-breakpoint-down(xs) {
+      margin-left: 2rem;
+      margin-right: 2rem;
+    }
+
+    @include media-breakpoint-up(sm) {
+      margin-left: 6rem;
+      margin-right: 6rem;
+    }
+
+    @include media-breakpoint-up(md) {
+      margin-left: 4rem;
+      margin-right: 4rem;
+    }
+
+    @include media-breakpoint-up(lg) {
+      margin-left: 8rem;
+      margin-right: 8rem;
+    }
+
+    @include media-breakpoint-up(xl) {
+      margin-left: 20rem;
+      margin-right: 20rem;
+    }
+
+    @media (min-width: 1400px){
+      margin-left: 30rem;
+      margin-right: 30rem;
+    }
+
+    .section:nth-child(2){
+      @include media-breakpoint-down(sm) {
+        display: none;
+      }
+    }
+
+    .card-item:before {
+      content: none;
+      position: absolute;
+      background: linear-gradient(118deg, #7367f0, rgba(115, 103, 240, 0.7));
+      width: 100%;
+      opacity: .3;
+      height: 100%;
+      bottom: -10px;
+      left: 0px;
+      right: -20px;
+      margin: auto;
+      border-radius: 20px;
+
+      @include media-breakpoint-down(sm) {
+        content: none;
+      }
+    }
+  
+    .card-item {
+      cursor: pointer;
+      height: 200px;
+      background: linear-gradient(118deg, #7267f0b4, rgba(114, 103, 240, 0.564));
+      padding: 20px;
+      width: 160px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px #7267f0b4;
+      margin-bottom: 30px;
+      position: relative;
+      -webkit-transition: all 0.3s ease 0s;
+      -moz-transition: all 0.3s ease 0s;
+      -o-transition: all 0.3s ease 0s;
+      transition: all 0.3s ease 0s;
+      text-align: center;
+  
+      strong {
+        display: block;
+        font-size: 17px;
+        color: #fff;
+        letter-spacing: 0.25px;
+        margin-bottom: 5px;
+        margin-top: 20px;
+        font-weight: 500;
+      }
+  
+      span {
+        display: block;
+        font-weight: 400;
+        font-size: 14px;
+        color: #fff;
+        margin-top: 10px;
+        letter-spacing: .75px;
+      }
+  
+      .icon {
+        display: block;
+        font-size: 20px;
+        margin-bottom: 15px;
+  
+        img {
+          top: 10px;
+          height: 40px;
+          position: relative;
+        }
+      }
+    }  
+  }
+}

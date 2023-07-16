@@ -1,0 +1,84 @@
+<div class="project-{{ project.id }} project-header">
+  <div class="project-title">
+    {{ project.id }}. {{ project.title }}
+  </div>
+
+  <div class="project-image">
+    <img src="{{ project.logo }}" height="90" alt="">
+  </div>
+
+  <div class="project-info d-flex">
+    <div class="project-rating">
+      <i class="text-warning" [size]="18" data-feather="star"></i>
+      <span>
+        5.0
+      </span>
+    </div>
+    <div class="project-users">
+      <i data-feather="users" [size]="18">
+      </i>
+      <span>
+        1
+      </span>
+    </div>
+    <div class="level">
+      <span class="badge badge-pill bg shadow">
+        {{ project.levelTitle }}
+      </span>
+    </div>
+    <div class="project-tags">
+      <span
+        class="badge-pill gradient project-tag"
+        *ngFor="let tag of project.tags">
+        {{ tag.name }}
+      </span>
+    </div>
+    <div class="project-technologies">
+      <span
+        class="badge-pill project-technology technology-{{ technology.technology }}"
+        *ngFor="let technology of project.availableTechnologies">
+        {{ technology.technology }}
+      </span>
+    </div>
+  </div>
+  <hr>
+</div>
+
+<div class="project-body">
+  <div class="project-description" [innerHTML]="project.description">
+  </div>
+
+  <hr>
+
+  <div class="project-tasks">
+    <div class="title">{{ 'Tasks' | translate }}</div>
+    <div class="accordion collapse-margin">
+      <ngb-accordion [destroyOnHide]="false" [closeOthers]="true">
+        <ngb-panel *ngFor="let task of project.tasks" id="panelMargin{{ task.number }}" [cardClass]="'collapse-margin'">
+          <ng-template ngbPanelTitle>
+            <span>{{ task.number }}. {{ task.title }}</span>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div [innerHTML]="task.description"></div>
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+    </div>
+  </div>
+
+  <div class="project-technologies">
+    <div class="title">{{ 'Technologies' | translate }}</div>
+    <div class="accordion collapse-margin">
+      <ngb-accordion [destroyOnHide]="false" [closeOthers]="true">
+        <ngb-panel *ngFor="let technology of project.availableTechnologies; index as i" id="panelMargin{{ i }}" [cardClass]="'collapse-margin'">
+          <ng-template ngbPanelTitle>
+            <span>{{ technology.technology }}</span>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div [innerHTML]="technology.info"></div>
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+    </div>
+  </div>
+</div>

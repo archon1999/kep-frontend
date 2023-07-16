@@ -1,0 +1,7 @@
+<swiper [config]="swiperConfig" class="swiper-contests">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide" *ngFor="let contest of contests">
+      <contest-card-small [contest]="contest"></contest-card-small>
+    </div>
+  </div>
+</swiper>

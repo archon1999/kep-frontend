@@ -1,0 +1,50 @@
+<ng-template #popContent>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="text-center mt-1 mb-1">
+        <i [data-feather]="'contest' | iconName" [size]="20"></i>
+        {{ contest.title }}
+      </h5>
+    </div>
+
+    <div class="table-responsive mb-1">
+      <table class="table table-hover">
+        <thead>
+          <tr class="bg-gradient-primary">
+            <th class="text-center">#</th>
+            <th>{{ 'CONTESTS.CONTESTANT' | translate }}</th>
+            <th class="text-center"><i [data-feather]="'rating' | iconName"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="dropdown-standings text-dark" *ngFor="let contestant of contestants">
+            <td class="text-center">{{ contestant.rank }}</td>
+            <td>
+              <contestant-view [user]="contestant.user" [team]="contestant.team"></contestant-view>
+            </td>
+            <td class="text-center">
+              <span class="badge badge-glow badge-primary">
+                {{ contestant.points }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+
+<a
+  [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'standings']"
+  [ngbPopover]="popContent"
+  triggers="mouseenter:mouseleave"
+  [closeDelay]="3000"
+  [openDelay]="1000"
+  (shown)="loadContestants()"
+  popoverClass="contest-standings-popover"
+  rippleEffect class="btn btn-primary btn-sm round"
+  [placement]="'bottom'"
+  container="body"
+>
+  {{ 'CONTESTS.STANDINGS' | translate }}
+</a>

@@ -1,0 +1,74 @@
+@keyframes cardAnimation {
+  50% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0.98);
+  }
+}
+
+a {
+  transform: scale(0.98);
+  height: 300px;
+  display: block;
+
+  .on-hover {
+    display: none;
+  }
+
+  &:hover {
+    animation: cardAnimation 0.5s;
+    box-shadow: 12px 15px 20px 0px rgba(46, 61, 73, 0.15);
+
+    .on-hover {
+      display: inherit;
+    }
+  }
+
+  .card {
+    height: 100%;
+    border: none;
+
+    .card-header {
+      padding: 34px 33px 0 33px;
+
+      .study-plan-title {
+        color: #fff;
+        font-weight: normal;
+        font-size: 20px;
+        line-height: 1.1;
+        letter-spacing: 0;
+        margin-top: 14px;
+      }
+
+      .study-plan-description {
+        color: #fff;
+        opacity: 0.6;
+        font-size: 11px;
+        letter-spacing: 0.7px;
+      }
+    }
+
+    .study-plan-icon {
+      img {
+        max-width: 90%;
+        position: absolute;
+        right: 15px;
+        height: 120px;
+        bottom: 15px;
+        z-index: 1;
+      }
+    }
+  }
+}
+
+.bg-gradient-studyplan-1 {
+  background: linear-gradient(to right, #01e2d3, #00fff4);
+}
+
+::ng-deep .dark-layout {
+  .bg-gradient-studyplan-1 {
+    background: linear-gradient(to right, #047572, #07a8a5);
+  }
+}

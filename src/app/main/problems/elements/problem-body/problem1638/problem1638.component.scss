@@ -1,0 +1,41 @@
+.card {
+  user-select: none;
+  background-color: #000000 !important;
+  width: 300px;
+
+  .card-header {
+    display: block;
+    text-align: center;
+  }
+
+  p {
+    color: #fff;
+
+    span {
+      font-size: 1rem;
+    }
+
+  }
+
+  p:nth-child(1) {
+    span:nth-child(31) {
+      font-size: 1.05rem;
+      font-weight: 500;
+    }
+  }
+
+  p:nth-child(2) {
+    span:nth-child(39) {
+      font-size: 1.05rem;
+      font-weight: 500;
+    }
+  }
+
+  p:nth-child(3) {
+    span:nth-child(55) {
+      font-size: 1.05rem;
+      font-weight: 500;
+    }
+  }
+
+}

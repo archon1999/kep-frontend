@@ -1,0 +1,22 @@
+@import '@core/scss/angular/libs/toastr.component.scss';
+@import '@core/scss/angular/libs/select.component.scss';
+
+.editor-button {
+  position: fixed;
+  bottom: 5%;
+  height: 40px;
+  width: 50px;
+  right: 80px;
+  z-index: 99;
+  opacity: 1;
+  display: block;
+  transition: all 0.2s ease-in-out;
+}
+
+.dark-layout .editor-button {
+  background-color: #fefefe !important;
+
+  svg {
+    color: #000;
+  }
+}

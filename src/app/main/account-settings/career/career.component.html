@@ -1,0 +1,186 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex align-items-center mb-2">
+          <i data-feather="activity" class="font-medium-3"></i>
+          <h4 class="mb-0 ml-75">Education</h4>
+        </div>
+      </div>
+      <div class="col-12">
+        <div action="#" class="invoice-repeater">
+          <div *ngFor="let userEducation of userEducations; let i = index" @heightIn>
+            <div class="row d-flex align-items-end">
+              <div class="col-md-4 col-12">
+                <div class="form-group">
+                  <label for="organization{{ i }}">Organization</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="userEducation.organization"
+                    name="organization{{ i }}"
+                    id="organization{{ i }}"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+        
+              <div class="col-md-2 col-12">
+                <div class="form-group">
+                  <label for="degree{{ i }}">Degree</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="userEducation.degree"
+                    name="degree{{ i }}"
+                    id="degree{{ i }}"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+        
+              <div class="col-md-2 col-12">
+                <div class="form-group">
+                  <label for="fromyear{{ i }}">From year</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="userEducation.fromYear"
+                    name="fromyear{{ i }}"
+                    id="fromyear{{ i }}"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-2 col-12">
+                <div class="form-group">
+                  <label for="toyear{{ i }}">To year</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="to{{ i }}"
+                    [(ngModel)]="userEducation.toYear"
+                    name="toyear{{ i }}"
+                    id="toyear{{ i }}"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+        
+              <div class="col-md-2 col-12 mb-50">
+                <div class="form-group">
+                  <button class="btn btn-outline-danger text-nowrap px-1" (click)="deleteEducation(i)" rippleEffect>
+                    <i data-feather="x" class="mr-25"></i>
+                    <span>Delete</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <hr />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <button class="btn btn-icon btn-primary" type="button" (click)="addEducation()" rippleEffect>
+              <i data-feather="plus" class="mr-25"></i>
+              <span>Add New</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 mt-4">
+        <div class="d-flex align-items-center mb-2">
+          <i data-feather="activity" class="font-medium-3"></i>
+          <h4 class="mb-0 ml-75">Work Experience</h4>
+        </div>
+      </div>
+      <div class="col-12">
+        <div action="#" class="invoice-repeater">
+          <div *ngFor="let userWorkExperience of userWorkExperiences; let i = index" @heightIn>
+            <div class="row d-flex align-items-end">
+              <div class="col-md-4 col-12">
+                <div class="form-group">
+                  <label for="company{{ i }}">Company</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="userWorkExperience.company"
+                    name="company{{ i }}"
+                    id="company{{ i }}"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+        
+              <div class="col-md-2 col-12">
+                <div class="form-group">
+                  <label for="job{{ i }}">Job title</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="userWorkExperience.jobTitle"
+                    name="job{{ i }}"
+                    id="job{{ i }}"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+        
+              <div class="col-md-2 col-12">
+                <div class="form-group">
+                  <label for="fromyear{{ i }}">From year</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="userWorkExperience.fromYear"
+                    name="fromyear{{ i }}"
+                    id="fromyear{{ i }}"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-2 col-12">
+                <div class="form-group">
+                  <label for="toyear{{ i }}">To year</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="to{{ i }}"
+                    [(ngModel)]="userWorkExperience.toYear"
+                    name="toyear{{ i }}"
+                    id="toyear{{ i }}"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+        
+              <div class="col-md-2 col-12 mb-50">
+                <div class="form-group">
+                  <button class="btn btn-outline-danger text-nowrap px-1" (click)="deleteWorkExperience(i)" rippleEffect>
+                    <i data-feather="x" class="mr-25"></i>
+                    <span>Delete</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <hr />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <button class="btn btn-icon btn-primary" type="button" (click)="addWorkExperience()" rippleEffect>
+              <i data-feather="plus" class="mr-25"></i>
+              <span>Add New</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <button (click)="save()" type="submit" class="btn btn-primary mt-1 mr-1" rippleEffect>Save</button>
+        <button (click)="reset()" type="reset" class="btn btn-outline-secondary mt-1" rippleEffect>Reset</button>
+      </div>
+    </div>
+  </div>
+</div>

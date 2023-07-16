@@ -1,0 +1,42 @@
+@import 'bootstrap/scss/mixins'; 
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+.arena-page-top:before {
+  content: "";
+  margin-left: -2rem;
+  position: absolute;
+  top: -150px;
+  width: calc(100% + 2rem);
+  z-index: -1;
+  height: 650px;
+  background: linear-gradient(to right, #FFBC56, #FFF556);
+}
+
+::ng-deep .dark-layout .arena-page-top:before {
+  background: linear-gradient(to right, #4B1248, #A66F1C);
+}
+
+@include media-breakpoint-down(lg) {
+  .arena-page-top:before {
+    width: calc(100% + 1.2rem);
+  }
+}
+
+.info-img {
+  border-radius: 13px;
+  object-fit: cover;
+  height: 120px;
+}
+
+::ng-deep .bg-arena-list:nth-child(odd) .card {
+  background: #F2994A;
+  background: -webkit-linear-gradient(to right, #F2C94C, #F2994A);
+  background: linear-gradient(to right, #F2C94C, #F2994A);
+}
+
+::ng-deep .bg-arena-list:nth-child(even) .card {
+  background: #F2994A;
+  background: -webkit-linear-gradient(to right, #F2C94C, #F2994A);
+  background: linear-gradient(to left, #F2C94C, #F2994A);
+}

@@ -1,0 +1,131 @@
+@import 'bootstrap/scss/mixins'; 
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+section.challenges {
+  --bg-gradient: linear-gradient(to right, #5DA2EE, #8A61B3);
+  --box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1) !important;
+  --bg: #a5cdfba2;
+}
+
+::ng-deep .dark-layout section.challenges {
+  --bg-gradient: linear-gradient(to right, #1E599B, #5C1E9B);
+  --box-shadow: 0 4px 24px 0 rgba(255, 255, 255, 0.1) !important;
+  --bg: #1a3567;
+}
+
+.challenges-page-top {
+  margin-left: -2rem;
+  position: absolute;
+  top: -150px;
+  width: calc(100% + 2rem);
+  z-index: -1;
+  height: 650px;
+  // background: linear-gradient(to right, #4389A2, #5C258D) !important;
+  background: var(--bg-gradient);
+
+  @include media-breakpoint-down(lg) {
+    width: calc(100% + 1.2rem);
+  }  
+}
+
+.card.card-info {
+  border: none;
+  opacity: 1;
+  height: 150px;
+  box-shadow: var(--box-shadow);
+  background: inherit !important;
+  background-image: linear-gradient(rgba(0,0,0,var(--bg-filter-opacity)),rgba(0,0,0,var(--bg-filter-opacity))), var(--bg-img) !important;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  .card-header .card-title {
+    color: #fff;
+  }
+
+  .info-img {
+    position: absolute;
+    height: 120px;
+    width: 120px;
+    bottom: 0.5rem;
+    right: 0.5rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+.card.in-queue {
+  background: #A5CDFB;
+
+  .card-footer {
+    border-top: 1px solid #1E599B;
+  }
+}
+
+::ng-deep .dark-layout .card.in-queue {
+  background: #1a3567 !important;
+}
+
+.card.top-rating {
+  border: none;
+  box-shadow: var(--box-shadow) !important;
+  background-image: linear-gradient(rgba(0,0,0,var(--bg-filter-opacity)),rgba(0,0,0,var(--bg-filter-opacity))), var(--bg-img) !important;
+
+  .avatar {
+  }
+
+  thead tr {
+    background-size: 200% auto;
+  }
+    
+  button {
+    color: #fff;
+    box-shadow: 0 0 20px #1E599B;
+    border-radius: 10px;
+    background: linear-gradient(to right, #1E599B, #1E599B) !important;
+  }
+
+  button:hover {
+    background-position: right center;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  td {
+    height: 50px;
+  }
+
+  th, td {
+    border-top: none !important;
+    border-bottom: none !important;
+  }  
+}
+
+::ng-deep .dark-layout .card.top-rating {
+  background: var(--bg) !important;
+}
+
+::ng-deep .slider-custom .noUi-connect {
+  background: linear-gradient(to right,#1E599B, 	#1E599B) !important;
+  box-shadow: 0 0 20px #1E599B;
+}
+
+.btn-new-challenge { 
+  background: linear-gradient(to right, 	#1E599B, #1E599B) !important;
+  background-size: 200% auto;
+  box-shadow: 0 0 20px #4e5e99;
+  color: #fff;
+}
+
+.btn-new-challenge:hover {
+  background-position: right center;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(to right, #2c66a7, #2b77cf) !important;
+}

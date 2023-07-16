@@ -1,0 +1,21 @@
+<a [@fadeInLeftOnEnter] routerLink="test/{{ test.id }}">
+  <div class="card bg-gradient-chapter-{{ test.chapter.id }}">
+    <div class="card-header d-block">
+      <div class="chapter-title">
+        {{ test.chapter.title }}
+      </div>
+      <div class="mt-1 test-title">
+        {{ test.title }}
+      </div>
+      <div class="on-hover">
+        <i data-feather="arrow-right"></i>
+      </div>
+    </div>
+  
+    <div class="card-body">
+      <div class="chapter-image">
+        <img src="{{ test.chapter.icon }}">
+      </div>
+    </div>
+  </div>
+</a>

@@ -1,0 +1,215 @@
+<li ngbDropdown class="nav-item dropdown-notification mr-25" #dropdown="ngbDropdown">
+  <a class="nav-link" ngbDropdownToggle id="navbarNotificationDropdown">
+    <i class="ficon" data-feather="bell"></i>
+    <span [@bounce]="animationState" class="badge badge-glow badge-pill badge-primary badge-up" *ngIf="notifications.length > 0">
+      {{ notifications.length }}
+    </span>
+  </a>
+  <ul ngbDropdownMenu aria-labelledby="navbarNotificationDropdown"
+    class="dropdown-menu dropdown-menu-media dropdown-menu-right">
+    <!-- Notifications header -->
+    <li class="dropdown-menu-header">
+      <div class="dropdown-header d-flex">
+        <h4 class="notification-title mb-0 mr-auto">{{ 'Notifications' | translate }}</h4>
+        <div class="badge badge-pill badge-light-primary">
+          {{ notifications.length }} {{ 'New' | translate }}
+        </div>
+      </div>
+    </li>
+    <!--/ Notifications header -->
+
+    <li class="scrollable-container media-list text-center mb-1 mt-1" *ngIf="notifications.length == 0">
+      <span class="badge badge-light-primary">
+        {{ 'NoNotifications' | translate }}
+      </span>
+    </li>
+
+    <!-- Notifications content -->
+    <li class="scrollable-container media-list" [perfectScrollbar]>
+      <a class="d-flex"
+        [@fadeOutOnLeave]
+        (click)="notificationClick(notification)"
+        *ngFor="let notification of notifications"
+        [ngSwitch]="notification.type">
+
+        <div class="media d-flex align-items-start" *ngSwitchCase="1">
+          <div class="media-left">
+            <div class="avatar bg-light-info mt-50">
+              <div class="avatar-content">
+                <i class="avatar-icon" [data-feather]="'info'"></i>
+              </div>
+            </div>
+          </div>
+          <div class="media-body">
+            <p class="media-heading">
+              <strong>
+                {{ notification.message }}
+              </strong>
+            </p>
+            <small class="notification-text">{{ notification.createdNaturaltime }}</small>
+          </div>                
+        </div>
+
+        <a
+          (click)="dropdown.close()" 
+          routerLink="/competitions/contests/contest/{{ notification.content.contestId }}/standings"
+          class="media d-flex align-items-start" *ngSwitchCase="2">
+          <div class="media-left">
+            <div class="avatar bg-light-primary mt-50">
+              <div class="avatar-content">
+                <i class="avatar-icon" [data-feather]="'flag'"></i>
+              </div>
+            </div>
+          </div>
+          <div class="media-body">
+            <p class="media-heading">
+              <strong>{{ notification.content.contestTitle }}</strong> | {{ 'ContestFinishedNotification' | translate }}
+              <span class="ml-25 badge" [ngClass]="{
+                'badge-light-success': notification.content.delta > 0,
+                'badge-light-dark': notification.content.delta == 0,
+                'badge-light-danger': notification.content.delta < 0
+              }">
+                <span *ngIf="notification.content.delta > 0">+</span>{{ notification.content.delta }}
+              </span>
+            </p>
+            <small class="notification-text">{{ notification.createdNaturaltime }}</small>
+          </div>                
+        </a>
+
+        <div class="media d-flex align-items-start" *ngSwitchCase="3">
+          <div class="media-left text-dark">
+            <img height="30" src="assets/images/icons/kepcoin.png">
+          </div>
+          <div class="media-body">
+            <p class="media-heading">
+              <span [ngSwitch]="notification.content.earnType" class="mr-25 text-dark">
+                <span *ngSwitchCase="4">
+                  {{ 'BonusFromAdmin' | translate }}
+                </span>
+                <span *ngSwitchCase="7">
+                  {{ 'DailyProblemsRatingWinner' | translate }}
+                </span>
+                <span *ngSwitchCase="8">
+                  {{ 'WeeklyProblemsRatingWinner' | translate }}
+                </span>
+                <span *ngSwitchCase="9">
+                  {{ 'MonthlyProblemsRatingWinner' | translate }}
+                </span>
+              </span>
+              <img height="18" src="assets/images/icons/kepcoin.png"> {{ notification.content.kepcoin }}
+            </p>
+            <small class="notification-text">{{ notification.createdNaturaltime }}</small>
+          </div>                
+        </div>
+
+        <a (click)="dropdown.close()" 
+           class="media d-flex align-items-start"*ngSwitchCase="4"
+           routerLink="/practice/challenges/challenge/{{ notification.content.challengeId }}">
+          <div class="media-left">
+            <div class="avatar bg-light-primary mt-50">
+              <div class="avatar-content">
+                <i class="avatar-icon" [data-feather]="'zap'"></i>
+              </div>
+            </div>
+          </div>
+          <div class="media-body">
+            <p class="media-heading">
+              {{ 'ChallengeCallAcceptedNotification' | translate }}
+            </p>
+            <small class="notification-text">{{ notification.createdNaturaltime }}</small>
+          </div>                
+        </a>
+
+        <a (click)="dropdown.close()" 
+           class="media d-flex align-items-start"*ngSwitchCase="5"
+           routerLink="/practice/challenges/challenge/{{ notification.content.challengeId }}">
+          <div class="media-left">
+            <div class="avatar bg-light-primary mt-50">
+              <div class="avatar-content">
+                <i class="avatar-icon" [data-feather]="'zap'"></i>
+              </div>
+            </div>
+          </div>
+          <div class="media-body">
+            <p class="media-heading">
+              {{ 'ChallengeFinishedNotification' | translate }}
+            </p>
+            <small class="notification-text">{{ notification.createdNaturaltime }}</small>
+          </div>                
+        </a>
+
+        <a
+          (click)="dropdown.close()" 
+          routerLink="/competitions/arena/tournament/{{ notification.content.arena.id }}"
+          class="media d-flex align-items-start" *ngSwitchCase="6">
+          <div class="media-left">
+            <div class="avatar bg-light-primary mt-50">
+              <div class="avatar-content">
+                <i class="avatar-icon" [data-feather]="'flag'"></i>
+              </div>
+            </div>
+          </div>
+          <div class="media-body">
+            <p class="media-heading">
+              <strong>{{ notification.content.arena.title }}</strong> | {{ 'ArenaFinishedNotification' | translate }}
+            </p>
+            <small class="notification-text">{{ notification.createdNaturaltime }}</small>
+          </div>                
+        </a>
+
+        <a
+          (click)="dropdown.close()" 
+          routerLink="/practice/duels/duel/{{ notification.content.duel.id }}"
+          class="media d-flex align-items-start" *ngSwitchCase="7">
+          <div class="media-left">
+            <div class="avatar bg-light-primary mt-50">
+              <div class="avatar-content">
+                <i class="avatar-icon" [data-feather]="'flag'"></i>
+              </div>
+            </div>
+          </div>
+          <div class="media-body">
+            <p class="media-heading">
+              <strong>{{ 'DuelStarts' | translate }}:</strong>
+              {{ notification.content.duel.startTime | date:'MMM dd, HH:mm' }}
+            </p>
+            <small class="notification-text">{{ notification.createdNaturaltime }}</small>
+          </div>                
+        </a>
+
+        <a
+          (click)="dropdown.close()" 
+          routerLink="/users/user/{{ currentUser?.username }}"
+          class="media d-flex align-items-start" *ngSwitchCase="8">
+          <div class="media-left">
+            <div class="avatar bg-light-primary mt-50">
+              <div class="avatar-content">
+                <i class="avatar-icon" [data-feather]="'achievement' | iconName"></i>
+              </div>
+            </div>
+          </div>
+          <div class="media-body">
+            <p class="media-heading">
+              <strong>{{ 'NewAchievement' | translate }}</strong>
+            </p>
+            <small class="notification-text">{{ notification.createdNaturaltime }}</small>
+          </div>                
+        </a>
+      
+      </a>
+    </li>
+    <!--/ Notifications content -->
+
+    <!-- Notifications footer -->
+    <li class="dropdown-menu-footer">
+      <a class="btn btn-outline-primary btn-block" (click)="readAll()" *ngIf="notifications.length > 0">{{ 'ReadAll' | translate }}</a>
+      <a class="btn btn-primary btn-block" routerLink="/notifications">{{ 'AllNotifications' | translate }}</a>
+    </li>
+    <!--/ Notifications footer -->
+  </ul>
+</li>
+
+<audio
+  #notificationAudio
+  src="assets/audio/notification.mp3">
+</audio>
