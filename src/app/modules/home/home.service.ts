@@ -26,14 +26,6 @@ export class HomeService {
     return this.api.get('users/top-rating');
   }
 
-  getOnlineUsers(){
-    return this.api.get('users/online');
-  }
-  
-  getUsersChartSeries(){
-    return this.api.get('users/chart-statistics');
-  }
-
   getContests(page: number, pageSize: number){
     return this.contestsService.getContests(page, pageSize);
   }
