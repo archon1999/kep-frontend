@@ -8,7 +8,7 @@ import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil, tap, throttleTime } from 'rxjs/operators';
-import { Problem, ProblemFilter } from '../../problems.models';
+import { Problem, ProblemFilter } from '../../models/problems.models';
 import { ProblemsService } from '../../problems.service';
 import { ProblemsStatisticsService } from '../../problems-statistics.service';
 

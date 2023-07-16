@@ -1,4 +1,4 @@
-import { Problem } from "../problems/problems.models";
+import { Problem } from "../problems/models/problems.models";
 
 export enum ContestTypes {
     ACM20M = 'ACM20M',

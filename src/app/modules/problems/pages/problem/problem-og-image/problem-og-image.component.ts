@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'app/api.service';
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs/operators';
-import { Problem } from '../../../problems.models';
+import { Problem } from '../../../models/problems.models';
 
 @Component({
   selector: 'app-problem-og-image',

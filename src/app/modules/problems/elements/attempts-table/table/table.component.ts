@@ -3,7 +3,7 @@ import { bounceAnimation, shakeAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { Contest } from 'app/modules/contests/contests.models';
-import { Attempt } from 'app/modules/problems/attempts.models';
+import { Attempt } from '../../../models/attempts.models';
 import { ProblemsService } from 'app/modules/problems/problems.service';
 
 @Component({

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'app/api.service';
-import { ProblemFilter } from './problems.models';
+import { ProblemFilter } from './models/problems.models';
 import { debounceTime, throttleTime } from 'rxjs/operators';
 
 @Injectable({

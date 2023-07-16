@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
-import { ProblemFilter, Tag } from '../../../../../problems/problems.models';
+import { ProblemFilter, Tag } from '../../../../models/problems.models';
 import { ProblemsService } from '../../../../../problems/problems.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

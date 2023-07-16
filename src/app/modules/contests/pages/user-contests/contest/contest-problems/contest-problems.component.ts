@@ -6,7 +6,7 @@ import { fadeInLeftAnimation, fadeInRightAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
-import { Problem } from '../../../../../problems/problems.models';
+import { Problem } from '../../../../../problems/models/problems.models';
 import { TitleService } from 'app/title.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

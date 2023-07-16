@@ -3,8 +3,8 @@ import { ApiService } from 'app/api.service';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { CoursesService } from '../../../../../courses/courses.service';
-import { Attempt } from '../../../../../problems/attempts.models';
-import { Problem } from '../../../../../problems/problems.models';
+import { Attempt } from '../../../../../problems/models/attempts.models';
+import { Problem } from '../../../../../problems/models/problems.models';
 
 @Component({
   selector: 'part-problem',
