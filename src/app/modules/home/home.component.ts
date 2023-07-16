@@ -11,7 +11,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SwiperOptions } from 'swiper';
 import { Blog } from '../blog/blog.models';
-import { Comment } from '../blog/comment';
 import { Contest } from '../contests/contests.models';
 import { HomeService } from './home.service';
 
@@ -27,63 +26,6 @@ import { HomeService } from './home.service';
 export class HomeComponent implements OnInit, OnDestroy {
   public isMenuToggled: boolean;
   public isMenuCollapsed: boolean;
-
-  public usersChartoptions = {
-    chart: {
-      height: 100,
-      type: 'line',
-      dropShadow: {
-        enabled: true,
-        top: 5,
-        left: 0,
-        blur: 4,
-        opacity: 0.1
-      },
-      toolbar: {
-        show: false
-      },
-      sparkline: {
-        enabled: true
-      }
-    },
-    colors: ['#7367F0'],
-    dataLabels: {
-      enabled: false
-    },
-    stroke: {
-      curve: 'smooth',
-      width: 5
-    },
-    fill: {
-      type: 'gradient',
-      gradient: {
-        shadeIntensity: 1,
-        gradientToColors: ['#A9A2F6'],
-        opacityFrom: 1,
-        opacityTo: 1,
-        stops: [0, 100, 100, 100]
-      }
-    },
-    yaxis: {
-      labels: {
-        show: false,
-        formatter: function (val) {
-          return val + "";
-        },
-      }
-    },
-    series: [
-      {
-        name: '',
-        data: []
-      }
-    ],
-    tooltip: {
-      x: { show: false }
-    }
-  };
-
-  public newUsersText: string;
 
   public postsSwiperConfig: SwiperOptions = {
     pagination: { el: '.swiper-pagination', clickable: true },
@@ -109,7 +51,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     pagination: { el: '.swiper-pagination', clickable: true },
     lazy: true,
     spaceBetween: 30
-  }
+  };
 
   public chartTheme: {
     mode: string,
@@ -123,36 +65,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   public lastContests: Array<Contest> = [];
   public contestsCurrentPage = 1;
 
-  public onlineUsers: Array<any> = [];
-
   public lastPosts: Array<Blog> = [];
   public lastPostsPage = 1;
 
-  public lastComments: Array<Comment> = [];
   public topUsers: Array<User> = [];
-  public usersTotal = 0;
 
-  public contentHeader = {
-    headerTitle: 'MENU.HOME',
-    actionButton: true,
-    breadcrumb: {
-      type: '',
-      links: [
-        {
-          name: 'CPython.uz',
-          isLink: false,
-        }
-      ]
-    }
-  };
   public coreConfig: CoreConfig;
 
   public today: number = Date.now();
   public days = Math.trunc((Date.now() - new Date('2021-07-07').valueOf()) / 1000 / 60 / 60 / 24);
 
-  private _unsubscribeAll = new Subject();
-
   public currentUser: User;
+
+  private _unsubscribeAll = new Subject();
 
   constructor(
     public coreConfigService: CoreConfigService,
@@ -170,20 +95,14 @@ export class HomeComponent implements OnInit, OnDestroy {
       (user: any) => {
         this.currentUser = user;
       }
-    )
-
-    this.translateService.get('NewUsers').subscribe(
-      (text: string) => {
-        this.newUsersText = text;
-      }
-    )
+    );
 
     this.coreConfigService.getConfig()
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((config: any) => {
         this.coreConfig = config;
         this.isMenuCollapsed = this.coreConfig.layout.menu.collapsed;
-        if (this.coreConfig.layout.type == 'horizontal') {
+        if (this.coreConfig.layout.type === 'horizontal') {
           this.isMenuToggled = false;
         } else {
           this.isMenuToggled = true;
@@ -249,21 +168,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe((result: any) => {
         this.topUsers = result;
       })
-
-    this.service.getOnlineUsers()
-      .subscribe((result: any) => {
-        this.onlineUsers = result;
-      })
-
-
-    this.service.getUsersChartSeries()
-      .subscribe((result: any) => {
-        this.usersChartoptions.series[0].data = result.series;
-        this.usersChartoptions.series[0].name = this.newUsersText;
-        this.usersTotal = result.total;
-      })
-
-
 
   }
 

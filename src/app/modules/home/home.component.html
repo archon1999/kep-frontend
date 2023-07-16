@@ -70,46 +70,8 @@
             'col-lg-4 col-md-12 col-sm-12': !isMenuToggled || isMenuCollapsed,
             'col-lg-6 col-md-12 col-sm-12': isMenuToggled && !isMenuCollapsed
           }">
-        <div class="card">
-          <div class="card-header d-flex align-items-start pb-0">
-            <div>
-              <h2 class="font-weight-bolder">{{ usersTotal }}</h2>
-              <p class="mb-0">{{ 'Users' | translate }}</p>
-            </div>
-            <div class="avatar bg-light-primary p-50">
-              <div class="avatar-content">
-                <i [data-feather]="'user' | iconName" class="font-medium-5"></i>
-              </div>
-            </div>
-          </div>
-
-          <div #usersChartoptionsRef *ngIf="usersChartoptions.series[0].data.length > 0">
-            <apx-chart
-              [yaxis]="usersChartoptions.yaxis"
-              [series]="usersChartoptions.series"
-              [chart]="usersChartoptions.chart"
-              [stroke]="usersChartoptions.stroke"
-              [tooltip]="usersChartoptions.tooltip"
-              [colors]="usersChartoptions.colors"
-              [theme]="chartTheme"
-              [dataLabels]="usersChartoptions.dataLabels">
-            </apx-chart>
-          </div>
-
-          <div class="card-body custom">
-            <div class="avatar-group">
-              <div *ngFor="let user of onlineUsers" placement="bottom" container="body" class="avatar pull-up">
-                <user-popover [username]="user.username" [customContent]="true">
-                  <img [src]="user.avatar" alt="Avatar" width="33" height="33">
-                  <span class="avatar-status-online"></span>
-                </user-popover>
-              </div>
-            </div>
-          </div>
-
-        </div>
+        <users-chart-card></users-chart-card>
       </div>
-
     </div>
   </div>
 

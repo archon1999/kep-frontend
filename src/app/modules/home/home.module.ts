@@ -23,6 +23,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthGuard } from 'app/auth/helpers';
 import { SlideMainComponent } from './header-section/slides/slide-main/slide-main.component';
 import { SlideContestsComponent } from './header-section/slides/slide-contests/slide-contests.component';
+import { UsersChartModule } from "../../shared/components/users-chart/users-chart.module";
 
 const routes: Routes = [
   {
@@ -61,6 +62,7 @@ const routes: Routes = [
     ContestantViewModule,
     NgbTooltipModule,
     ContestCardModule,
+    UsersChartModule,
   ],
   exports: [
     HomeComponent
