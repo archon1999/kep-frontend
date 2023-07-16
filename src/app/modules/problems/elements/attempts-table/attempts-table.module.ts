@@ -10,10 +10,13 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { KepcoinSpendSwalModule } from '../../../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
+import { TableComponent } from './table/table.component';
+import { ClipboardModule } from 'app/shared/components/clipboard/clipboard.module';
 
 @NgModule({
   declarations: [
-    AttemptsTableComponent
+    AttemptsTableComponent,
+    TableComponent
   ],
   imports: [
     CommonModule,
@@ -26,6 +29,7 @@ import { KepcoinSpendSwalModule } from '../../../kepcoin/kepcoin-spend-swal/kepc
     KepcoinSpendSwalModule,
     RouterModule,
     MonacoEditorModule,
+    ClipboardModule,
   ],
   exports: [
     AttemptsTableComponent
