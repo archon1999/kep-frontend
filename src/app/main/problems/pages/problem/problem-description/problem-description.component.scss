@@ -1,0 +1,29 @@
+.problem-header {
+  display: inline-block;
+}
+
+.col.problem-header {
+  padding-right: 0rem !important;
+  padding-left: 0rem !important;
+}
+
+.btn-like,
+.btn-dislike {
+  padding: 0.36rem 0.9rem;
+}
+
+.problem-header div {
+  display: inline-block;
+}
+
+.problem-header div:not(:first-child) {
+  &::before {
+    content: "|";
+    margin-right: 0.5rem;
+    margin-left: 0.5rem; 
+  }
+}
+
+.problem-description {
+  padding-left: 1rem;
+}

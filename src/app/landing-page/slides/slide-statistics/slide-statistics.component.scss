@@ -1,0 +1,129 @@
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+.slide-statistics {
+  .img {
+    position: absolute;
+    right: 3rem;
+    bottom: 3rem;
+    height: 300px;
+
+    @include media-breakpoint-down(md) {
+      height: 200px;
+      right: 1rem;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .title {
+    font-weight: 500;
+    margin-top: 6rem;
+    font-size: 2.5rem;
+    
+    @include media-breakpoint-down(md) {
+      margin-top: 2rem;
+    }
+
+  }
+
+  .statistics-container {
+    @include media-breakpoint-up(lg) {
+      margin-top: 6rem;
+    }
+    
+    @include media-breakpoint-down(md) {
+      margin-top: 4rem;
+    }
+
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+
+    .count-item.decoration-bottom {
+      position: relative;
+    }
+
+    .count-item {
+      height: 140px;
+      position: relative;
+      float: left;
+      width: 100%;
+
+      strong {
+        display: block;
+        text-align: center;
+        font-weight: 600;
+        font-size: 36px;
+        letter-spacing: 0.25px;
+        margin-bottom: 10px;
+        color: #fff;
+        -webkit-transition: all 0.3s ease 0s;
+        -moz-transition: all 0.3s ease 0s;
+        -o-transition: all 0.3s ease 0s;
+        transition: all 0.3s ease 0s;
+
+        @include media-breakpoint-down(sm) {
+          font-size: 1.5rem;
+        }
+      }
+
+      span {
+        display: block;
+        text-align: center;
+        color: #fff;
+        font-weight: 500;
+        font-size: 17px;
+        letter-spacing: 0.25px;
+      }
+    }
+
+    .count-item.decoration-bottom:after {
+      @media (min-width: 0px) {
+        height: 0px;
+      }
+
+      @media (min-width: 992px) {
+        height: 32px;
+      }
+
+      content: '';
+      margin-top: -4rem;
+      position: absolute;
+      width: 70%;
+      left: 70%;
+      background: url('https://templatemo.com/templates/templatemo_535_softy_pinko/assets/images/circle-dec.png') center center no-repeat;
+      -webkit-transition: all 0.3s ease 0s;
+      -moz-transition: all 0.3s ease 0s;
+      -o-transition: all 0.3s ease 0s;
+      transition: all 0.3s ease 0s;
+    }
+
+    .count-item.decoration-top:after {
+      @media (min-width: 0px) {
+        height: 0px;
+      }
+
+      @media (min-width: 992px) {
+        height: 32px;
+      }
+
+      content: '';
+      position: absolute;
+      width: 70%;
+      left: 70%;
+      margin-top: -4rem;
+      background: url('https://templatemo.com/templates/templatemo_535_softy_pinko/assets/images/circle-dec.png') center center no-repeat;
+      -webkit-transition: all 0.3s ease 0s;
+      -moz-transition: all 0.3s ease 0s;
+      -o-transition: all 0.3s ease 0s;
+      transition: all 0.3s ease 0s;
+    }
+  }
+}

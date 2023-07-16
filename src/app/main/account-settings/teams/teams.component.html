@@ -1,0 +1,44 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex align-items-center mb-2">
+          <i data-feather="users" class="font-medium-3"></i>
+          <h4 class="mb-0 ml-75">Teams</h4>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <!--
+        <users-select></users-select>
+      -->
+      <div class="row">
+        <div class="col-12 text-center" *ngFor="let team of teams; index as i">
+          <h3 class="mb-2">
+            {{ team.name }}
+          </h3>
+          <div class="row">
+            <div class="col">
+              <div class="avatar">
+                <img [src]="team.createrAvatar" width="60" height="60" alt="member-avatar">
+              </div>
+              <br>
+              <user-popover [username]="team.createrUsername">
+              </user-popover>
+            </div>
+            <div *ngFor="let member of team.members" [ngClass]="{'col': member.username != team.createrUsername}">
+              <div *ngIf="member.username != team.createrUsername">
+                <div class="avatar">
+                  <img [src]="member.avatar" width="60" height="60" alt="member-avatar">
+                </div>
+                <br>
+                <user-popover [username]="member.username">
+                </user-popover>
+              </div>
+            </div>
+          </div>
+        </div>          
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,106 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12">
+        <div class="form-group">
+          <label for="accountTextarea">Bio</label>
+          <quill-editor [(ngModel)]="userInfo.bio">
+            <div quill-editor-toolbar>
+              <span class="ql-formats">
+                <button class="ql-bold" [title]="'Bold'"></button>
+                <button class="ql-italic" [title]="'italic'"></button>
+                <button class="ql-underline" [title]="'underline'"></button>
+              </span>
+              <span class="ql-formats">
+                <select class="ql-align" [title]="'Alignment'">
+                  <option selected></option>
+                  <option value="center"></option>
+                  <option value="right"></option>
+                  <option value="justify"></option>
+                </select>
+              </span>
+              <span class="ql-formats">
+                <button class="ql-list" value="ordered" type="button"></button>
+              </span>
+              <span class="ql-formats">
+                <button class="ql-link" value="ordered" type="button"></button>
+              </span>
+              <span class="ql-formats">
+                <button class="ql-formula" value="ordered" type="button"></button>
+                <button class="ql-code-block" value="ordered" type="button"></button>
+              </span>
+              <span class="ql-formats">
+                <button class="ql-clean" value="ordered" type="button"></button>
+              </span>
+            </div>
+      
+          </quill-editor>
+
+          <p class="text-danger" *ngIf="errors?.bio">{{ errors.bio[0] }}</p>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6">
+        <div class="form-group">
+          <label for="account-birth-date">Birth date</label>
+          <ng2-flatpickr
+            [config]="birthDateOptions"
+            [(ngModel)]="birthDate"
+            [setDate]="birthDate"
+            (change)="onDateChange()"
+            id="account-birth-date"
+            name="account-birth-date">
+          </ng2-flatpickr>
+          <p class="text-danger" *ngIf="errors?.dateOfBirth">{{ errors.dateOfBirth[0] }}</p>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6">
+        <div class="form-group">
+          <label for="account-website">Website</label>
+          <input
+            type="text"
+            [ngModelOptions]="{standalone: true}"
+            [(ngModel)]="userInfo.website"
+            class="form-control"
+            name="website"
+            id="account-website"/>
+            <p class="text-danger" *ngIf="errors?.website">{{ errors.website[0] }}</p>
+          </div>
+      </div>
+      <div class="col-12 col-sm-6">
+        <div class="form-group">
+          <label for="user-country">Country</label>
+          <select
+            class="form-control"
+            [ngModelOptions]="{standalone: true}"
+            [(ngModel)]="userInfo.country"
+            id="user-country"
+            name="user-country">
+            <option *ngFor="let country of countries">{{ country }}</option>
+          </select>
+          <p class="text-danger" *ngIf="errors?.country">{{ errors.country[0] }}</p>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6">
+        <div class="form-group">
+          <label for="user-region">Region</label>
+          <input
+            type="text"
+            [ngModelOptions]="{standalone: true}"
+            [(ngModel)]="userInfo.region"
+            class="form-control"
+            name="user-region"
+            id="user-region"/>
+          <p class="text-danger" *ngIf="errors?.region">{{ errors.region[0] }}</p>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <button (click)="save()" type="submit" class="btn btn-primary mt-1 mr-1" rippleEffect>Save</button>
+        <button (click)="reset()" type="reset" class="btn btn-outline-secondary mt-1" rippleEffect>Reset</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<quill-css></quill-css>
+<ng2-flatpickr-css></ng2-flatpickr-css>

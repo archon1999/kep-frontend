@@ -1,0 +1,47 @@
+.blog-card {
+  &:hover {
+    .card {
+      background: linear-gradient(to right, #6c72e0c5, #7c7affc7) !important;
+    }
+  }
+
+  .card {
+    border: none;
+    margin-bottom: 1rem;
+    height: 100px;
+    background: linear-gradient(to right, #6c72e0, #7c7aff);
+
+    .card-header {
+      .card-title {
+        color: #fff;
+      }
+    }
+
+    .card-img {
+      position: absolute;
+      height: 90px;
+      width: 90px;
+      bottom: 0rem;
+      right: 0rem;
+
+      img {
+        border-radius: 13px;
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
+}
+
+::ng-deep .dark-layout .problems-section-info .blog-card {
+  &:hover {
+    .card {
+      background: linear-gradient(to right, #182848ab, #4b6bb796) !important;
+    }
+  }
+
+  .card {
+    background: linear-gradient(to right, #182848, #4b6cb7) !important;
+  }
+}  

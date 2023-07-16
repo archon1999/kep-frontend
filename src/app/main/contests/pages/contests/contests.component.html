@@ -1,0 +1,209 @@
+<section class="mt-2 contests">
+  <div class="row">
+    <div class="col-12 contests-page-top">
+      <div class="text-center mt-1">
+        <div [@fadeInUpOnEnter] ngbTooltip="{{ 'Rating' | translate }}"
+          class="avatar ml-1 avatar-lg bg-primary p-50 m-0 mb-1">
+          <a routerLink="rating" class="text-white">
+            <div class="avatar-content">
+              <i [data-feather]="'rating' | iconName" class="font-large-1"></i>
+            </div>
+          </a>
+        </div>
+        <div [@fadeInUpOnEnter] ngbTooltip="{{ 'Profile' | translate }}"
+          class="avatar ml-1 avatar-lg bg-primary p-50 m-0 mb-1">
+          <a routerLink="profile" class="text-white">
+            <div class="avatar-content">
+              <i [data-feather]="'user'" class="font-large-1"></i>
+            </div>
+          </a>
+        </div>
+        <div [@fadeInUpOnEnter] ngbTooltip="{{ 'MyContests' | translate }}"
+          class="avatar ml-1 avatar-lg bg-primary p-50 m-0 mb-1">
+          <a routerLink="user-contests" class="text-white">
+            <div class="avatar-content">
+              <i [data-feather]="'flag'" class="font-large-1"></i>
+            </div>
+          </a>
+        </div>
+
+        <div class="mt-4 col-lg-8 col-12 offset-lg-2 offset-0">
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <a [@fadeInLeftOnEnter] class="card card-info" routerLink="/learn/blog/post/54">
+                <div class="card-header">
+                  <div class="card-title">
+                    {{ 'AboutContestTypes' | translate }}
+                  </div>
+                </div>
+                <div class="info-img">
+                  <img src="assets/images/pages/graphic-3.png" alt="info-img">
+                </div>
+              </a>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <a [@fadeInRightOnEnter] class="card card-info" routerLink="/learn/blog/post/55">
+                <div class="card-header">
+                  <div class="card-title">
+                    {{ 'RecommendationsForParticipateContests' | translate }}
+                  </div>
+                </div>
+                <div class="info-img">
+                  <img src="assets/images/pages/graphic-2.png" alt="info-img">
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-8 offset-lg-2 mb-2">
+      <contests-section-categories (change)="contestCategoryClick($event)"></contests-section-categories>
+    </div>
+
+    <div class="col-lg-8 offset-lg-2">
+      <h1 [@fadeInUpOnEnter] class="mb-3">
+        <div spellcheck="false" class="text-dark">{{ 'Contests' | translate }}</div>
+      </h1>
+
+      <div class="row">
+        <div class="col-12" *ngFor="let contest of contests">
+          <contest-card-big [contest]="contest"></contest-card-big>
+        </div>
+      </div>
+
+      <ngb-pagination *ngIf="contests.length > 0" [collectionSize]="totalContests" [(page)]="currentPage"
+        [pageSize]="7" [maxSize]="5" [rotate]="true" (pageChange)="reloadContests()"
+        class="d-flex justify-content-center mt-2">
+        <ng-template ngbPaginationPrevious><span [data-feather]="'chevron-left'" [size]="18"
+            [class]="'font-weight-bolder'"></span>
+        </ng-template>
+        <ng-template ngbPaginationNext><span [data-feather]="'chevron-right'" [size]="18"
+            [class]="'font-weight-bolder'"></span></ng-template>
+      </ngb-pagination>  
+    </div>
+
+    <div class="col-lg-2 mt-4 pt-2 d-none d-xl-block">
+      <div *ngIf="currentUser" class="card filter">
+        <div class="card-header">
+          <div class="card-title">
+            {{ 'Status' | translate }}
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="form-group">
+            <div
+              class="ml-1 mt-1 custom-control custom-radio">
+              <input
+                type="radio"
+                id="radio-2"
+                name="status"
+                (click)="contestStatusClick(2)"
+                [(ngModel)]="contestStatus"
+                [value]="2"
+                class="custom-control-input" />
+              <label class="custom-control-label" for="radio-2">{{ 'All' | translate }}</label>
+            </div>
+            <div
+              class="ml-1 mt-1 custom-control custom-radio">
+              <input
+                type="radio"
+                id="radio-1"
+                name="status"
+                (click)="contestStatusClick(1)"
+                [(ngModel)]="contestStatus"
+                [value]="1"
+                class="custom-control-input" />
+              <label class="custom-control-label" for="radio-1">{{ 'CONTESTS.PARTICIPATED' | translate }}</label>
+            </div>
+            <div
+              class="ml-1 mt-1 custom-control custom-radio">
+              <input
+                type="radio"
+                id="radio-0"
+                name="status"
+                (click)="contestStatusClick(0)"
+                [(ngModel)]="contestStatus"
+                [value]="0"
+                class="custom-control-input" />
+              <label class="custom-control-label" for="radio-0">{{ 'CONTESTS.NOT_PARTICIPATED' | translate }}</label>
+            </div>
+          </div>    
+        </div>
+      </div>
+
+      <div class="card filter">
+        <div class="card-header">
+          <div class="card-title">
+            {{ 'CONTESTS.TYPE' | translate }}
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <div
+              *ngFor="let type of contestTypes; index as i"
+              class="ml-1 mt-1 custom-control custom-radio">
+              <input
+                type="radio"
+                id="type-{{ i }}"
+                name="type"
+                (click)="contestTypeClick(i)"
+                [(ngModel)]="contestType"
+                [value]="i"
+                class="custom-control-input" />
+              <label class="custom-control-label" for="type-{{ i }}">{{ type | translate }}</label>
+            </div>
+          </div>    
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!--
+  <div class="card">
+    <div class="card-header">
+      <div class="avatar bg-light-primary p-50 m-0">
+        <div class="avatar-content">
+          <i data-feather="award" class="font-medium-5"></i>
+        </div>
+      </div>
+      <h4 class="mt-1 pl-1">{{ 'RATING' | translate }}</h4>
+    </div>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr class="bg-gradient-primary">
+            <th class="text-center text-white">#</th>
+            <th class="text-center text-white">{{ 'USER' | translate }}</th>
+            <th class="text-center text-white"><i [data-feather]="'rating' | iconName"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let contestsRating of topContestsRating; index as i">
+            <td class="text-dark text-center">{{ i + 1 }}</td>
+            <td class="text-dark text-center top-rating">
+              <contestant-view [user]="contestsRating"></contestant-view>
+            </td>
+            <td class="text-center">
+              <span class="badge badge-light-{{ contestsRating.getBadgeClass() }}">
+                {{ contestsRating.rating }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <a routerLink="rating" class="btn btn-primary">
+      {{ 'OVERALL_RATING' | translate }}
+      <i data-feather="arrow-right"></i>
+    </a>
+  </div>
+-->
+
+<ng-select-css></ng-select-css>

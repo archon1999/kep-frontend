@@ -1,0 +1,93 @@
+<div class="row">
+  <div class="col-12">
+    <div class="project-page-top project-{{ project.id }} gradient">
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 103" width="3000" height="103">
+        <path class="shp0" d="M-66 35C-66 35 713.2 -45 1488 41C2157.44 115.31 3042 6.8 3042 5C3042 3.2 3037.6 102.8 3033.2 103C3028.79 103.2 -41.79 103 -41.79 103L-66 35Z" />
+      </svg>
+
+      <div class="project">
+        <div [@fadeInLeftOnEnter] class="project-header order-sm-1 order-2">
+          <h1 class="project-title">
+            {{ project.title }}
+          </h1>
+          <div class="project-stats d-flex">
+            <div class="project-rating">
+              <i class="text-warning" [size]="18" data-feather="star"></i>
+              <span>
+                5.0
+              </span>
+            </div>
+            <div class="project-users">
+              <i data-feather="users" [size]="18">
+              </i>
+              <span>
+                1
+              </span>
+            </div>
+            <div class="project-level">
+              <span class="badge bg level-{{ project.level }}">
+                {{ project.levelTitle }}
+              </span>
+            </div>
+          </div>
+          <div class="project-description">
+            <p [innerHTML]="project.description"></p>
+          </div>
+          <div class="project-tags">
+            <span class="project-tag bg" *ngFor="let tag of project.tags">
+              {{ tag.name }}
+            </span>
+          </div>
+          <div class="project-technologies">
+            <span
+              class="project-technology technology-{{ technology.technology }}"
+              *ngFor="let technology of project.availableTechnologies">
+              {{ technology.technology }}
+            </span>
+          </div>
+        </div>
+        <div [@fadeInUpOnEnter] class="project-image order-sm-2 order-1">
+          <img src="{{ project.logo }}" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="project-tasks">
+      <div class="row">
+        <div [@fadeInRightOnEnter] class="col-lg-8 col-md-8 col-12">
+          <div class="">
+            <h2 class="title">{{ 'Tasks' | translate }}</h2>
+            <div class="project-task project-{{ project.id }} gradient" *ngFor="let task of project.tasks">
+              <div class="project-task-title">
+                {{ task.number }}. {{ task.title }}
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div [@fadeInOnEnter] class="col-lg-4 col-md-4 col-12">
+          <div class="project-button text-center">
+            <kepcoin-spend-swal
+              [value]="project.purchaseKepcoinValue"
+              [customContent]="true"
+              [purchaseUrl]="'projects/' + project.id + '/purchase'"
+              (success)="project.purchased=true;"
+            >
+              <button *ngIf="!project.purchased" class="btn shadow project-{{ project.id }} bg">
+                {{ 'Purchase' | translate }}
+                <img height="20" src="assets/images/icons/kepcoin.png">
+                {{ project.purchaseKepcoinValue }}
+              </button>
+            </kepcoin-spend-swal>
+            <a routerLink="detail" *ngIf="project.purchased" class="btn shadow project-{{ project.id }} bg">
+              {{ 'Practice' | translate }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

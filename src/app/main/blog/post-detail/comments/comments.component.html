@@ -1,0 +1,76 @@
+<h2 class="mb-2">
+  {{ 'Comments' | translate }}
+  <span class="comment-count">({{ comments.length }})</span>
+</h2>
+
+<div style="border-radius: 5px;" [ngClass]="{'bg-light-secondary': comment.username == currentUser?.username }" *ngFor="let comment of comments; index as i">
+  <div class="media pt-1 mb-4 pl-1">
+    <img class="rounded" [src]="comment.userAvatar" alt="pic1">
+    <div class="media-body">
+      <div class="row pl-1">
+        <h4 class="media-heading text-dark">
+          <user-popover [username]="comment.username"></user-popover>,
+        </h4>
+        <p class="meta-time-date pl-1">{{ comment.created }}</p>
+      </div>
+      <h6 class="comment">
+        <mathjax [content]="comment.body"></mathjax>
+      </h6>
+      <div class="media-notation pb-1">
+        <button
+          (click)="like(i)"
+          *ngIf="comment.username != currentUser.username"
+          class="mr-1 btn btn-sm round btn-relief-success"
+        >
+          <i data-feather="thumbs-up"></i>
+          <span class="ml-1" *ngIf="comment.likes > 0">{{ comment.likes }}</span>
+        </button>
+        <button
+          *ngIf="0"
+          class="mr-1 btn btn-sm round btn-relief-secondary"
+        >
+          <i data-feather="message-square"></i>
+        </button>
+        <button *ngIf="currentUser.isSuperuser" class="btn btn-sm round btn-relief-dark">
+          <i data-feather="x"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h4 class="mb-1">{{ 'WriteComment' | translate }}</h4>
+<quill-editor [(ngModel)]="comment">
+  <div quill-editor-toolbar>
+    <span class="ql-formats">
+      <button class="ql-bold" [title]="'Bold'"></button>
+      <button class="ql-italic" [title]="'italic'"></button>
+      <button class="ql-underline" [title]="'underline'"></button>
+    </span>
+    <span class="ql-formats">
+      <select class="ql-align" [title]="'Alignment'">
+        <option selected></option>
+        <option value="center"></option>
+        <option value="right"></option>
+        <option value="justify"></option>
+      </select>
+    </span>
+    <span class="ql-formats">
+      <button class="ql-list" value="ordered" type="button"></button>
+    </span>
+    <span class="ql-formats">
+      <button class="ql-link" value="ordered" type="button"></button>
+      <button class="ql-image" value="ordered" type="button"></button>
+      <button class="ql-video" value="ordered" type="button"></button>
+    </span>
+    <span class="ql-formats">
+      <button class="ql-formula" value="ordered" type="button"></button>
+      <button class="ql-code-block" value="ordered" type="button"></button>
+    </span>
+    <span class="ql-formats">
+      <button class="ql-clean" value="ordered" type="button"></button>
+    </span>
+  </div>
+</quill-editor>
+
+<button (click)="submit()" class="btn btn-relief-primary mb-1 mt-1">{{ 'Send' | translate }}</button>

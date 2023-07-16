@@ -1,0 +1,91 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="form-group">
+          <label class="text-primary" for="first-name-vertical">
+            <strong>
+              {{ 'TITLE' | translate }}:
+            </strong>
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            name="title"
+            (ngModelChange)="reload()"
+            [(ngModel)]="filter.title"
+          />
+        </div>
+      </div>
+    
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <label class="text-primary">
+          <strong>
+            {{ 'TAGS' | translate }}:
+          </strong>
+        </label>
+      <div class="form-group">
+        <ng-select
+            [multiple]="true"
+            placeholder="{{ 'SELECT' | translate }}:"
+            (change)="reload()"
+            [(ngModel)]="filter.tags"
+            [ngModelOptions]="{standalone: true}"
+        >
+          <ng-option *ngFor="let tag of tags" [value]="tag.id">{{ tag.name }}</ng-option>
+        </ng-select>
+        </div>    
+      </div>
+    
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <label class="text-primary">
+          <strong>
+            {{ 'DIFFICULTY' | translate }}:
+          </strong>
+        </label>
+        <div class="form-group">
+          <ng-select          
+            (change)="reload()"
+            [(ngModel)]="filter.difficulty"
+            [ngModelOptions]="{standalone: true}"
+          >
+              <ng-option *ngFor="let item of difficulties" [value]="item.value">
+                <span class="text-{{ item.value | problemDifficultyColor }}">
+                  {{ item.name }}
+                </span>
+              </ng-option>
+            </ng-select>                      
+          </div>    
+      </div>
+    
+      <div class="col-lg-3 col-md-6 col-sm-6" *ngIf="currentUser">
+        <label class="text-primary">
+          <strong>
+            {{ 'STATUS' | translate }}:
+          </strong>
+        </label>
+        <div class="form-group">
+          <ng-select
+            (change)="reload()"
+            [(ngModel)]="filter.status"
+            [ngModelOptions]="{standalone: true}"
+          >
+              <ng-option [value]="1">
+                <i class="text-success" [data-feather]="'exists' | iconName"></i>
+                {{ 'Solved' | translate }}
+              </ng-option>
+              <ng-option [value]="2">
+                <i class="text-danger" [data-feather]="'not_exists' | iconName"></i>
+                {{ 'Unsolved' | translate }}
+              </ng-option>
+              <ng-option [value]="3">
+                <i class="text-warning" [data-feather]="'minus'"></i>
+                {{ 'Unknown' | translate }}
+              </ng-option>
+            </ng-select>                      
+          </div>    
+      </div>
+    
+    </div>     
+  </div>      
+</div>

@@ -1,0 +1,13 @@
+tr:first-child td, th {
+    border-bottom: none !important;
+    border-top: none !important;
+}
+
+td:nth-child(4) {
+    padding: 15px;
+    white-space: nowrap;
+}
+
+td {
+    padding: 7px;
+}

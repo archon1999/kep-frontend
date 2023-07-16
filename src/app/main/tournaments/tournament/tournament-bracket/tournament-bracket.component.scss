@@ -1,0 +1,58 @@
+@import '../../scss/variables.scss';
+
+.brackets-viewer {
+  font-family: inherit;
+  background: none;
+  color: var(--font-color);
+  font-size: var(--text-size);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow: auto;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  margin: 0 auto;
+  padding: 10px 50px;
+}
+
+
+::ng-deep .brackets-viewer h3 {
+  text-align: center;
+  background: $tournaments-bg !important;
+  box-shadow: 0 0 10px $tournaments-color !important;
+  color: #fff;
+  font-size: 1.1em;
+  padding: 10px 0px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: var(--match-width);
+}
+
+::ng-deep .dark.layout .brackets-viewer h3 {
+  background: $tournaments-bg-dark !important;
+}
+
+.brackets-viewer .participant {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px var(--match-horizontal-padding);
+  background: $tournaments-color !important;
+}
+
+::ng-deep .brackets-viewer .opponents {
+  width: 100%;
+  position: relative;
+  box-shadow: 0 0 5px $tournaments-color !important;
+  border: none !important;
+  border-radius: var(--match-border-radius);
+}
+
+::ng-deep .dark-layout .brackets-viewer .participant {
+  background: $tournaments-bg-dark !important;
+  border: none !important;
+  box-shadow: 0 0 5px $tournaments-color !important;
+  color: #fff !important;
+}
