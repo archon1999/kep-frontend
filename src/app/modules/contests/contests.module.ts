@@ -21,7 +21,6 @@ import { ProblemBodyModule } from '../problems/elements/problem-body/problem-bod
 import { MathjaxModule } from '../../shared/third-part-modules/mathjax/mathjax.module';
 import { ContestGuard } from './contests.guard';
 import { ContestProblemResolver, ContestProblemsResolver, ContestResolver, OngoingContestsResolver, UpcomingContestsResolver } from './contests.resolver';
-import { ContestAttemptsTableComponent } from './pages/contest/contest-attempts/contest-attempts-table/contest-attempts-table.component';
 import { ContestAttemptsComponent } from './pages/contest/contest-attempts/contest-attempts.component';
 import { ContestOgImageComponent } from './pages/contest/contest-og-image/contest-og-image.component';
 import { ContestProblemComponent } from './pages/contest/contest-problem/contest-problem.component';
@@ -39,6 +38,7 @@ import { RatingComponent } from './pages/rating/rating.component';
 import { ContestsTableModule } from './elements/contests-table/contests-table.module';
 import { ContestCardModule } from './elements/contest-card/contest-card.module';
 import { ContestantViewModule } from '../../shared/components/contestant-view/contestant-view.module';
+import { AttemptsTableModule } from '../problems/elements/attempts-table/attempts-table.module';
 
 
 const routes: Routes = [
@@ -172,7 +172,6 @@ const routes: Routes = [
     ContestProblemComponent,
     ContestQuestionsComponent,
     ContestProblemsComponent,
-    ContestAttemptsTableComponent,
   ],
   imports: [
     CommonModule,
@@ -201,6 +200,7 @@ const routes: Routes = [
     NgxUsefulSwiperModule,
     NgbPopoverModule,
     ProblemBodyModule,
+    AttemptsTableModule,
   ],
   providers: [
     ContestGuard,
