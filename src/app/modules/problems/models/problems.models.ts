@@ -80,11 +80,12 @@ export class Tag {
   ) { }
 }
 
-export class ProblemFilter {
+export interface ProblemFilter {
   title?: string;
   tags?: Array<number>;
   difficulty?: number;
   status?: number;
+  topic?: number;
 }
 
 export interface StudyPlanDay {

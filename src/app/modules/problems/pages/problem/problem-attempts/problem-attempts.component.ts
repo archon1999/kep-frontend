@@ -3,8 +3,8 @@ import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Attempt } from '../../../attempts.models';
-import { Problem } from '../../../problems.models';
+import { Attempt } from '../../../models/attempts.models';
+import { Problem } from '../../../models/problems.models';
 import { ProblemsService } from '../../../problems.service';
 
 @Component({

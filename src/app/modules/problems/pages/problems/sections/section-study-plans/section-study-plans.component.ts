@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { StudyPlan } from '../../../../../problems/problems.models';
+import { StudyPlan } from '../../../../models/problems.models';
 
 @Component({
   selector: 'section-study-plans',

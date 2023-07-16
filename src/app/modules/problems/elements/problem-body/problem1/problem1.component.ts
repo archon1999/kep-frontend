@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Problem } from '../../../../problems/problems.models';
+import { Problem } from '../../../models/problems.models';
 
 @Component({
   selector: 'problem1',
