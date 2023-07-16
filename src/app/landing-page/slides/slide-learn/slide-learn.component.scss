@@ -1,0 +1,87 @@
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+.slide-learn {
+  .learn-text {
+    margin-top: 6rem;
+
+    h2 {
+      font-size: 3rem;
+      margin-top: 2rem;
+
+      @include media-breakpoint-down(sm) {
+        font-size: 2.5rem;
+      }
+    }
+
+    p {
+      margin-top: 2rem;
+      font-size: 1.5rem;
+
+      @include media-breakpoint-down(sm) {
+        font-size: 1.25rem;
+      }
+    }
+  }
+
+  .sections {
+    margin-top: 8rem;
+    margin-left: 12rem;
+    margin-right: 12rem;
+
+    @include media-breakpoint-down(md) {
+      margin-left: 8rem;
+      margin-right: 8rem;
+    }
+
+    @include media-breakpoint-down(sm) {
+      margin-top: 4rem;
+      margin-left: 2rem;
+      margin-right: 2rem;
+    }
+
+    .section {
+      .title {
+        margin-top: 1rem;
+        font-size: 1.5rem;
+        font-weight: 500;
+
+        @include media-breakpoint-down(sm) {
+          font-size: 1.2rem;
+        }
+      }
+    }
+  }
+}
+
+.img {
+  position: absolute;
+
+  @include media-breakpoint-down(xl) {
+    height: 200px;
+  }
+
+  @include media-breakpoint-down(lg) {
+    height: 150px;
+  }
+
+  @include media-breakpoint-down(md) {
+    height: 100px;
+  }
+
+  @include media-breakpoint-up(md) {
+    top: 3rem;
+    right: 3rem;
+  }
+
+  @include media-breakpoint-down(sm) {
+    height: 150px;
+    bottom: 2rem;
+    right: 2rem;
+  }
+
+  img {
+    height: 100%;
+  }
+}

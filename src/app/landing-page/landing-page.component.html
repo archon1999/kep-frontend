@@ -1,0 +1,113 @@
+<div class="col-12 landing-page" [style.height.px]="windowHeight">
+  <div class="bg-img">
+    <img src="assets/images/banner/banner.png" alt="img">
+  </div>
+
+  <div class="navbar">
+    <div class="navbar-container">
+      <div class="inner">
+        <div class="navbar-left" [@fadeInLeft]="startAnimationState">
+          <img height="32" src="assets/images/logo/logo.svg" alt="logo">
+          <h2 class="font-weight-bolder text-primary ml-1">{{ appName }}</h2>
+        </div>
+
+        <div class="nav-right" [@fadeInRight]="startAnimationState">
+          <div class="nav-menu text-primary" [class]="isDarkSkin ? 'text-lighten-4' : 'text-darken-4'">
+            <span [ngClass]="{'active': activeSlide == 1}" (click)="slideTo(1)">
+              {{ 'Learn' | translate }}
+            </span>
+            <span [ngClass]="{'active': activeSlide == 2}" (click)="slideTo(2)">
+              {{ 'Practice' | translate }}
+            </span>
+            <span [ngClass]="{'active': activeSlide == 3}" (click)="slideTo(3)">
+              {{ 'Competitions' | translate }}
+            </span>
+            <span [ngClass]="{'active': activeSlide == 4}" (click)="slideTo(4)">
+              {{ 'Statistics' | translate }}
+            </span>
+            <a class="text-primary" [class]="isDarkSkin ? 'text-lighten-4' : 'text-darken-4'" routerLink="/login">
+              <i data-feather="log-in"></i>
+              {{ 'Login' | translate }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <swiper [config]="swiperConfig" class="swiper swiper-lazy-loading" #swiper [style.height.px]="windowHeight-67">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <slide-main [animationState]="slideMainAnimationState"></slide-main>
+      </div>
+      <div class="swiper-slide">
+        <slide-learn [animationState]="slideLearnAnimationState"></slide-learn>
+      </div>
+      <div class="swiper-slide">
+        <slide-practice [animationState]="slidePracticeAnimationState"></slide-practice>
+      </div>
+      <div class="swiper-slide">
+        <slide-competitions [animationState]="slideCompetitionsAnimationState"></slide-competitions>
+      </div>
+      <div class="swiper-slide">
+        <slide-statistics [animationState]="slideStatisticsAnimationState"></slide-statistics>
+      </div>
+    </div>
+  </swiper>
+
+</div>
+
+<!--
+
+
+
+
+
+<div class="col-12 col-lg-10 offset-lg-1 section-blog" #blog>
+  <div class="info" [@fadeInDown]="sectionBlogAnimationState">
+    <h2>
+      {{ 'LandingPage.SectionUsefulResourcesTitle' | translate }}
+    </h2>
+    <p [innerHTML]="'LandingPage.SectionUsefulResourcesText' | translate">
+    </p>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="blog-post" [@fadeInLeft]="sectionBlogAnimationState">
+        <img src="assets/images/pages/graphic-1.png" alt="problems">
+        <div class="blog-content">
+          <h3>
+            <a href="#">Masalalar bo'limi haqida</a>
+          </h3>
+          <button class="round text-white btn-sm btn btn-relief-primary">O`qish <i data-feather="arrow-right"></i> </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6 col-sm-12 mt-lg-4">
+      <div class="blog-post" [@fadeInUp]="sectionBlogAnimationState">
+        <img src="assets/images/pages/graphic-2.png" alt="contest">
+        <div class="blog-content">
+          <h3>
+            <a href="#">Kontestda qatnashish bo'yicha tavsiyalar</a>
+          </h3>
+          <button class="round text-white btn-sm btn btn-relief-primary">O`qish <i data-feather="arrow-right"></i> </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="blog-post" [@fadeInRight]="sectionBlogAnimationState">
+        <img src="assets/images/pages/graphic-3.png" alt="contest-types">
+        <div class="blog-content">
+          <h3>
+            <a href="#">Kontest turlari haqida</a>
+          </h3>
+          <button class="round text-white btn-sm btn btn-relief-primary">O`qish <i data-feather="arrow-right"></i> </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+-->

@@ -1,0 +1,27 @@
+<div class="card">
+  <div class="card-header">
+    <h4><strong>{{ 'BirthDays' | translate }}</strong></h4>
+  </div>
+
+  <div class="media-list">
+    <div class="media" *ngFor="let birthDay of birthDays">
+      <a class="media-left" href="javascript:void(0)">
+        <img
+          class="media-object rounded-circle"
+          src="{{ birthDay.avatar }}"
+          alt="Avatar"
+          height="48"
+          width="48"
+        />
+      </a>
+      <div class="media-body">
+        <h5 class="media-heading">
+          <user-popover [username]="birthDay.username"></user-popover>
+        </h5>
+        <span class="badge badge-light-primary">
+          {{ birthDay.date }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

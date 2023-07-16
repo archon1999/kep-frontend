@@ -1,0 +1,9 @@
+<button *ngIf="currentUser" class="btn btn-gradient-info btn-sm" (click)="click()">
+  <span class="mr-50" *ngIf="likes > 0">{{ likes }}</span>
+  <i data-feather="thumbs-up"></i>
+</button>
+
+<span *ngIf="!currentUser" class="badge badge-info badge-glow">
+  <span class="mr-50" *ngIf="likes > 0">{{ likes }}</span>
+  <i data-feather="thumbs-up"></i>
+</span>

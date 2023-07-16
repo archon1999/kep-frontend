@@ -1,0 +1,44 @@
+<div class="slide-statistics">
+  <div [@fadeInDown]="animationState" class="title text-center text-primary" [class]="isDarkSkin ? 'text-darken-1' : 'text-darken-4'">
+    {{ 'Statistics' | translate }}
+  </div>
+
+  <div [@fadeInLeft]="animationState" class="img">
+    <img rel="preload" as="image" width="480" height="480" class="img-fluid" alt="main-img"
+      [src]="isDarkSkin ? 'assets/images/pages/coming-soon-dark.svg'
+                        : 'assets/images/pages/coming-soon.svg'" />
+  </div>
+
+  <div [@fadeInUp]="animationState" class="statistics-container">
+    <div class="row">
+      <div class="col-lg-3 col-6">
+        <div class="count-item decoration-bottom">
+          <strong [countUp]="usersCount"
+            [options]="{ enableScrollSpy: true, duration: 5, reanimateOnClick: false }">0</strong>
+          <span>{{ 'Users' | translate }}</span>
+        </div>
+      </div>
+      <div class="col-lg-3 col-6">
+        <div class="count-item decoration-top">
+          <strong [countUp]="contestsCount"
+            [options]="{ enableScrollSpy: true, duration: 5, reanimateOnClick: false }">0</strong>
+          <span>{{ 'Contests' | translate }}</span>
+        </div>
+      </div>
+      <div class="col-lg-3 col-6">
+        <div class="count-item decoration-bottom">
+          <strong [countUp]="problemsCount"
+            [options]="{ enableScrollSpy: true, duration: 5, reanimateOnClick: false }">0</strong>
+          <span>{{ 'Problems' | translate }}</span>
+        </div>
+      </div>
+      <div class="col-lg-3 col-6">
+        <div class="count-item">
+          <strong [countUp]="attemptsCount"
+            [options]="{ enableScrollSpy: true, duration: 5, reanimateOnClick: false }">0</strong>
+          <span>{{ 'Attempts' | translate }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

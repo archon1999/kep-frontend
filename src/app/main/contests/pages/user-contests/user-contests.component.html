@@ -1,0 +1,26 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- content-header component -->
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <section class="mt-2">
+      <div class="row">
+        <div class="col-12">
+
+          <div class="text-right">
+            <kepcoin-spend-swal
+              [customContent]="true"
+              [value]="5"
+              [purchaseUrl]="'user-contests/purchase-create/'"
+              (success)="success()"
+            >
+              <button class="mb-2 btn btn-relief-primary">Yaratish</button>
+            </kepcoin-spend-swal>
+          </div>
+          <contests-table [contests]="contests"></contests-table>
+
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

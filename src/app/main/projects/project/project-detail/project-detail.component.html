@@ -1,0 +1,48 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- content-header component -->
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <section class="mt-2">
+      <div class="row">
+
+        <div [@fadeInLeftOnEnter] class="col-lg-9 col-md-12 col-sm-12">
+          <div class="card project-{{ project.id }}">
+            <div class="card-header">
+              <ul ngbNav #navWithIcons="ngbNav" class="nav-tabs" [(activeId)]="activeId">
+                <li [ngbNavItem]="1">
+                  <a ngbNavLink>
+                    <span [data-feather]="'project' | iconName"></span> {{ 'Project' | translate }}
+                  </a>
+                  <ng-template ngbNavContent>
+                    <project-description [project]="project"></project-description>
+                  </ng-template>
+                </li>
+                <li [ngbNavItem]="2">
+                  <a ngbNavLink>
+                    <span [data-feather]="'attempt' | iconName"></span> {{ 'Attempts' | translate }}
+                  </a>
+                  <ng-template ngbNavContent>
+                    <project-attempts [project]="project"></project-attempts>
+                  </ng-template>
+                </li>
+              </ul>
+
+            </div>
+
+            <div class="card-body">
+              <div [ngbNavOutlet]="navWithIcons" class="mt-2"></div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div [@fadeInRightOnEnter] class="col-lg-3 col-md-12 col-sm-12">
+          <project-sidebar [project]="project" (submitEvent)="activeId=2;"></project-sidebar>
+        </div>
+
+      </div>
+    </section>
+  </div>
+</div>

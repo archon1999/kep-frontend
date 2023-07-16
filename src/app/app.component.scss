@@ -1,0 +1,180 @@
+@mixin define-new-color($name, $bg-color, $color, $box-shadow, $bg-light-color: false) {
+  .bg-#{$name} {
+    background-color: $bg-color;
+  }
+
+  .text-#{$name} {
+    color: $color;
+  }
+
+  .badge-#{$name} {
+    background-color: $bg-color;
+  }
+
+  .badge-#{$name}.badge-glow {
+    box-shadow: $box-shadow;
+  }
+
+  @if $bg-light-color != false {
+    .badge.badge-light-#{$name} {
+      color: $color;
+      background-color: $bg-light-color;
+    } 
+  }
+}
+
+@include define-new-color(
+  $name: 'blue',
+  $bg-color: #4362eef0,
+  $bg-light-color: rgba(0, 62, 232, 0.12),
+  $color: #4362eef0,
+  $box-shadow: 0px 0px 10px #93bae9,
+);
+
+@include define-new-color(
+  $name: 'yellow',
+  $bg-color: rgb(191 200 0 / 94%),
+  $bg-light-color: rgba(162, 232, 0, 0.12),
+  $color: #e8f400f0,
+  $box-shadow: 0px 0px 10px #e3e993,
+);
+
+.badge {
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  font-size: 12px !important;
+  transition: all 0.3s ease-out !important;
+  -webkit-transition: all 0.3s ease-out !important;
+  display: inline-block !important;
+  padding: 4.6px 8px !important;
+  border-radius: 6px !important;
+}
+
+.badge-pill {
+  display: inline-block !important;
+  padding: 0.3rem 0.5rem !important;
+  padding-right: 0.5rem !important;
+  padding-left: 0.5rem !important;
+  border-radius: 10rem !important;
+  font-size: 85% !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  vertical-align: baseline !important;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, background 0s, border 0s !important;
+}
+
+apx-chart {
+  svg {
+    background-color: inherit !important;
+  }
+
+  .apexcharts-tooltip {
+    .card {
+      margin-bottom: 0rem !important;
+    }
+  }
+}
+
+th {
+  font-weight: 400 !important;
+  text-transform: initial !important;
+}
+
+html {
+  overflow: -moz-scrollbars-vertical;
+  overflow-y: scroll
+}
+
+.dark-layout ::-webkit-scrollbar {
+  width: 15px;
+  background-color: #2a2a2a;
+}
+
+code {
+  padding: 0;
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+  background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px #8070d4;
+  background-color: #D62929;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 5px solid transparent;
+  border-radius: 100px;
+  background-color: #8070d4;
+  background-clip: content-box;
+}
+
+body {
+  padding-right: 0 !important
+}
+
+pre {
+  all: revert;
+  margin: 1em 0;
+  padding: 1rem;
+  border-radius: .375em;
+  border: 1px solid #ededed !important;
+  background-color: #fafafa !important;
+  font-size: 87.5%;
+  font-family: 'Inconsolata';
+  overflow: auto;
+}
+
+.hljs {
+  font-size: 1rem !important;
+}
+
+.hljs-ln-line.hljs-ln-numbers {
+  padding-right: 0.8rem;
+}
+
+.hljs-ln-line.hljs-ln-code {
+  padding-left: 0.8rem;
+}
+
+.dark-layout pre {
+  background-color: inherit !important;
+  color: white;
+}
+
+:focus {
+  outline: none;
+}
+
+::selection {
+  color: #8f84f3;
+  background: #e3e1fc;
+}
+
+.dark-layout .badge.badge-light-dark {
+  color: #e9e7e7 !important;
+}
+
+.hljs-ln-numbers {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  text-align: center;
+  color: #ccc;
+  border-right: 1px solid #CCC;
+  vertical-align: top;
+  padding-right: 5px;
+}
+
+.hljs-ln-code {
+  padding-left: 10px;
+}

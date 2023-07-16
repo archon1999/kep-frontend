@@ -1,0 +1,27 @@
+@import 'bootstrap/scss/mixins'; 
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+section.problems {
+  --bg-gradient: linear-gradient(to right, #8f94fb, #4e54c8);
+  --inherit-bg-box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1);
+}
+
+::ng-deep .dark-layout section.problems {
+  --bg-gradient: linear-gradient(to right, #182848, #4b6cb7);
+  --inherit-bg-box-shadow: 0 4px 24px 0 rgba(255, 255, 255, 0.1);
+}
+
+.problems-page-top {
+  position: absolute;
+  top: -66px;
+  margin-left: -2rem;
+  width: calc(100% + 2rem);
+  z-index: -1;
+  height: 620px;
+  background: var(--bg-gradient);
+
+  @include media-breakpoint-down(lg) {
+    width: calc(100% + 1.2rem);
+  }
+}

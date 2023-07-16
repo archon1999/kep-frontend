@@ -1,0 +1,14 @@
+<sweet-alert-css></sweet-alert-css>
+
+<a [swal]="sweet">
+  <kepcoin-view
+    *ngIf="!customContent"
+    [value]="value"
+    [imgSize]="16"
+    [fontSize]="10"
+    [customClass]="customClass">
+  </kepcoin-view>
+  <ng-content *ngIf="customContent"></ng-content>
+</a>
+
+<swal #sweet (open)="ConfirmTextOpen()"></swal>

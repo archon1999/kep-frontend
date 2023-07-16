@@ -1,0 +1,13 @@
+.bg-kepcoin {
+  background: radial-gradient(circle at 10% 20%, rgb(255, 200, 124) 0%, rgb(252, 251, 121) 90%);
+  color: #7e663d !important;
+}
+
+::ng-deep .dark-layout .bg-kepcoin {
+  background: radial-gradient(circle at 10% 20%, rgb(206, 124, 8) 0%, rgb(201, 201, 29) 90%);
+  color: #fff !important;
+}
+
+.earn, .spend {
+  margin-top: 1rem;
+}

@@ -1,0 +1,33 @@
+<div class="card bg-challenge-call">
+  <div class="card-header">
+    <challenges-user-view [user]="challengeCall"></challenges-user-view>
+    <i data-feather="zap" class="text-primary"></i>
+  </div>
+
+  <div class="card-body">
+    <span ngbTooltip="{{ 'Time' | translate }}" class="mr-25 badge badge-primary badge-glow">
+      <i data-feather="clock"></i>
+      {{ challengeCall.timeSeconds }}
+    </span>
+
+    <span ngbTooltip="{{ 'Questions' | translate }}"  class="badge badge-primary badge-glow">
+      <i data-feather="activity"></i>
+      {{ challengeCall.questionsCount }}
+    </span>
+  </div>
+
+  <div class="card-footer d-flex justify-content-between">
+    <button (click)="acceptChallengeCall()" class="btn btn-sm btn-relief-info btn-glow" *ngIf="currentUser?.username != challengeCall.username">
+      {{ 'ToChallenge' | translate }}
+    </button>
+
+    <button (click)="deleteChallengeCall()" class="btn btn-sm btn-relief-danger btn-glow" *ngIf="currentUser?.username == challengeCall.username">
+      <i data-feather="x"></i>
+    </button>
+
+    <span class="font-small-2 text-white badge badge-light-primary">
+      {{ challengeCall.created }}
+    </span>
+  </div>
+
+</div>
