@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Problem } from '../../../problems.models';
+import { Problem } from '../../../models/problems.models';
 import { ProblemsService } from '../../../problems.service';
 import { colors as Colors } from 'app/colors.const';
 import { TranslateService } from '@ngx-translate/core';

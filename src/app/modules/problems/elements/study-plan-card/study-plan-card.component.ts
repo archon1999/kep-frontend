@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { fadeInRightOnEnterAnimation } from 'angular-animations';
-import { StudyPlan } from '../../problems.models';
+import { StudyPlan } from '../../models/problems.models';
 
 @Component({
   selector: 'study-plan-card',

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild, TemplateRef, ViewEncapsulation, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { Attempt, Verdicts, WSAttempt } from '../../../../../../problems/attempts.models';
+import { Attempt, Verdicts, WSAttempt } from '../../../../../../problems/models/attempts.models';
 import { AuthenticationService } from 'app/auth/service';
 import { WebsocketService } from 'app/websocket';
 import { ApiService } from 'app/api.service';

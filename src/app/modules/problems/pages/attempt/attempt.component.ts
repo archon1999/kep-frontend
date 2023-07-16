@@ -4,7 +4,7 @@ import { CoreConfigService } from '@core/services/config.service';
 import { TitleService } from 'app/title.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Attempt } from '../../attempts.models';
+import { Attempt } from '../../models/attempts.models';
 import { ProblemsService } from '../../problems.service';
 
 @Component({

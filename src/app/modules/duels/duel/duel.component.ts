@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
-import { Attempt } from '../../problems/attempts.models';
+import { Attempt } from '../../problems/models/attempts.models';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Duel, DuelProblem } from '../duels.models';

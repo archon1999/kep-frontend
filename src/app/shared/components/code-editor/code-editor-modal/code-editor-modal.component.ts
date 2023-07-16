@@ -3,8 +3,8 @@ import { CoreConfigService } from '../../../../../@core/services/config.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from '../../../../api.service';
-import { getEditorLang } from '../../../../modules/problems/attempts.models';
-import { AvailableLanguage, SampleTest } from '../../../../modules/problems/problems.models';
+import { getEditorLang } from '../../../../modules/problems/models/attempts.models';
+import { AvailableLanguage, SampleTest } from '../../../../modules/problems/models/problems.models';
 import { WebsocketService } from '../../../../websocket';
 import { ToastrService } from 'ngx-toastr';
 

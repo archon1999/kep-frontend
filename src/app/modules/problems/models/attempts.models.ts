@@ -1,5 +1,5 @@
-import { ContestProblem } from "../contests/contests.models";
-import { User } from "../users/users.models";
+import { ContestProblem } from "../../contests/contests.models";
+import { User } from "../../users/users.models";
 
 export function getEditorLang(lang: string) {
   if (lang == AttemptLangs.CPP) {

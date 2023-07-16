@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Attempt, Verdicts } from '../../app/modules/problems/attempts.models';
+import { Attempt, Verdicts } from '../../app/modules/problems/models/attempts.models';
 
 
 @Pipe({

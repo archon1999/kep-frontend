@@ -6,7 +6,7 @@ import { bounceAnimation, shakeAnimation } from 'angular-animations';
 import { ApiService } from 'app/api.service';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
-import { Attempt, Verdicts, WSAttempt } from '../../../problems/attempts.models';
+import { Attempt, Verdicts, WSAttempt } from '../../../problems/models/attempts.models';
 import { WebsocketService } from 'app/websocket';
 import { Duel } from 'brackets-manager';
 import { ToastrService } from 'ngx-toastr';
