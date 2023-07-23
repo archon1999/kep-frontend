@@ -38,8 +38,14 @@ const routes: Routes = [
     }
   },
   {
-    path: 'tournament-versus',
+    path: 'tournament/:id/versus',
     component: TournamentVersusComponent,
+    resolve: {
+      tournament: TournamentResolver,
+    },
+    data: {
+      title: 'Tournaments.Tournament',
+    }
   }
 ];
 
