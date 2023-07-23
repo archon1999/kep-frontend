@@ -55,33 +55,29 @@
 
                 <div class="row justify-content-center mt-1">
                   <div class="col text-right problem-header">
-                    <small class="text-center pr-1">
+                    <span class="text-center pr-1 font-small-3">
                       {{ 'TIME_LIMIT' | translate }}:
-                    </small>
+                    </span>
                   </div>
 
                   <div class="col problem-header">
-                    <small class="text-center">
-                      <span class="text-info">
-                        {{ availableLang.timeLimit || problem.timeLimit }} {{ 'MS' | translate }}
-                      </span>
-                    </small>
+                    <span class="badge-pill badge-info badge">
+                      {{ availableLang.timeLimit || problem.timeLimit }} {{ 'MS' | translate }}
+                    </span>
                   </div>
                 </div>
 
                 <div class="row justify-content-center mt-1">
                   <div class="col text-right problem-header">
-                    <small class="text-center pr-1">
+                    <span class="text-center pr-1 font-small-3">
                       {{ 'MEMORY_LIMIT' | translate }}:
-                    </small>
+                    </span>
                   </div>
 
                   <div class="col problem-header">
-                    <small class="text-center">
-                      <span class="text-primary">
-                        {{ availableLang.memoryLimit || problem.memoryLimit }} {{ 'MB' | translate }}
-                      </span>
-                    </small>
+                    <span class="badge badge-pill badge-primary">
+                      {{ availableLang.memoryLimit || problem.memoryLimit }} {{ 'MB' | translate }}
+                    </span>
                   </div>
                 </div>
 
@@ -106,39 +102,36 @@
             </div>
           </div>
 
-          <div class="layout-spacing" *ngIf="currentUser">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title text-center mt-2 mb-1">{{ 'ATTEMPTS' | translate }}</h3>
-              </div>
-              <div class="card-body">
-                <contest-attempts-table
-                  [attempts]="attempts"
-                  [contest]="contest"
-                  (checkFinishEvent)="reloadProblems()"
-                >
-                </contest-attempts-table>
-                <ngb-pagination
-                  *ngIf="attempts.length > 0"
-                  [collectionSize]="totalAttemptsCount"
-                  [(page)]="currentPage"
-                  [pageSize]="50"
-                  [maxSize]="5"
-                  (pageChange)="reloadAttempts()"
-                  aria-label="Default pagination"
-                  class="d-flex justify-content-center mt-2"
-                >
-                  <ng-template ngbPaginationPrevious><span [data-feather]="'chevron-left'" [size]="18"
-                      [class]="'font-weight-bolder'"></span>
-                  </ng-template>
-                  <ng-template ngbPaginationNext><span [data-feather]="'chevron-right'" [size]="18"
-                      [class]="'font-weight-bolder'"></span></ng-template>
-                </ngb-pagination>
+          <div class="card" *ngIf="attempts?.length > 0">
+            <div class="card-header">
+              <h3 class="card-title text-center mt-2 mb-1">{{ 'ATTEMPTS' | translate }}</h3>
+            </div>
+            <div class="card-body">
+              <contest-attempts-table
+                [attempts]="attempts"
+                [contest]="contest"
+                (checkFinishEvent)="reloadProblems()"
+              >
+              </contest-attempts-table>
+              <ngb-pagination
+                *ngIf="attempts.length > 0"
+                [collectionSize]="totalAttemptsCount"
+                [(page)]="currentPage"
+                [pageSize]="50"
+                [maxSize]="5"
+                (pageChange)="reloadAttempts()"
+                aria-label="Default pagination"
+                class="d-flex justify-content-center mt-2"
+              >
+                <ng-template ngbPaginationPrevious><span [data-feather]="'chevron-left'" [size]="18"
+                    [class]="'font-weight-bolder'"></span>
+                </ng-template>
+                <ng-template ngbPaginationNext><span [data-feather]="'chevron-right'" [size]="18"
+                    [class]="'font-weight-bolder'"></span></ng-template>
+              </ngb-pagination>
 
-              </div>
             </div>
           </div>
-
         </div>
 
         <div [@fadeInRightOnEnter] class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">
@@ -146,7 +139,13 @@
             <contest-card-countdown [contest]="contest"></contest-card-countdown>
           </div>
 
-          <a *ngIf="contest.status == 1" routerLink="/practice/problems/problem/{{ contestProblem.problem.id }}" [queryParams]="{'contest': contest.id}" class="mb-2 btn btn-relief-primary btn-sm">{{ 'Upsolve' | translate }}</a>
+          <a
+            *ngIf="contest.status == 1"
+            routerLink="/practice/problems/problem/{{ contestProblem.problem.id }}"
+            [queryParams]="{'contest': contest.id}"
+            class="mb-2 btn-block btn btn-primary">
+            {{ 'Upsolve' | translate }}
+          </a>
 
           <div class="layout-spacing">
             <div class="card">
@@ -215,7 +214,7 @@
   </div>
 </div>
 
-<div (click)="resultsVisible=!resultsVisible;" class="results-button">
+<div *ngIf="contestant" (click)="resultsVisible=!resultsVisible;" class="results-button">
   <button class="btn btn-sm btn-relief-primary">
     <i [data-feather]="'rating' | iconName"></i>
   </button>
