@@ -359,6 +359,7 @@ export const locale = {
     AboutQuestionTypes: 'Savol turlari haqida',
     AboutTournaments: 'Turnirlar haqida',
     AboutDuels: 'Duellar haqida',
+    Upsolve: 'Ishlash',
     ContestRules: {
       ACM20H: ``,
     },
