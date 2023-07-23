@@ -23,15 +23,17 @@
   
           <td>
             <a [routerLink]="['problem', problem.id]">
-              {{ problem.title }}
-              <br>
-              <span ngbTooltip="{{ 'Solution' | translate }}"  placement="left" container="body">
-                <i *ngIf="problem.hasSolution" [data-feather]="'exists' | iconName" class="text-primary" [size]="16"></i>
-                <i *ngIf="!problem.hasSolution" [data-feather]="'not_exists' | iconName" class="text-danger" [size]="16"></i>  
+              <div>
+                {{ problem.title }}
+              </div>
+
+              <span *ngIf="problem.hasSolution" class="badge mt-50 badge-pill badge-light-success">
+                <i [data-feather]="'exists' | iconName" class="text-success" [size]="16"></i>
+                {{ 'Solution' | translate }}
               </span>
-              <span class="ml-1" ngbTooltip="{{ 'Checker' | translate }}"  placement="left" container="body">
-                <i *ngIf="problem.hasChecker" [data-feather]="'exists' | iconName" class="text-primary" [size]="16"></i>
-                <i *ngIf="!problem.hasChecker" [data-feather]="'not_exists' | iconName" class="text-danger" [size]="16"></i>  
+              <span *ngIf="!problem.hasChecker" class="badge mt-50 badge-pill badge-light-danger">
+                <i [data-feather]="'not_exists' | iconName" class="text-danger" [size]="16"></i>  
+                {{ 'Checker' | translate }}
               </span>
             </a>
           </td>
