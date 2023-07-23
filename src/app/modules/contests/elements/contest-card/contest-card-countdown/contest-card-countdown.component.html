@@ -12,5 +12,7 @@
   </div>
   <div class="card-footer">
     <contest-countdown [clockColor]="clockColor" [textColor]="textColor" [contest]="contest"></contest-countdown>
+
+    <h3 [ngClass]="{'text-primary': coreConfig.layout.skin != 'dark'}" class="text-center" *ngIf="contest.status == 1">{{ contest.finishTime | localizedDate:'medium' }}</h3>
   </div>
 </div>
