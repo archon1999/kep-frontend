@@ -359,6 +359,7 @@ export const locale = {
     AboutQuestionTypes: 'О типах вопросов',
     AboutTournaments: 'О турнирах',
     AboutDuels: 'О дуэлях',
+    Upsolve: 'Дорешать',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',
