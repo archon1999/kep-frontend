@@ -130,10 +130,16 @@
     --bg-gradient: linear-gradient(-45deg, #b2010acc, 50%, rgba(204, 1, 11, 0.644));
   }
 
-  &.contest-264, &.contest-154, &.contest-60, &.contest-68, &.contest-70 {
+  &[class*="SQL"]{
     --bg: #e19327;
     --box-shadow: 0 0 5px #e39425;
     --bg-gradient: linear-gradient(-45deg, rgba(234, 134, 71, 0.849), 50%, #ffad3bec);
+  }
+
+  &[class*="NASM"]{
+    --bg: #0c4c90;
+    --box-shadow: 0 0 5px #0c4c90;
+    --bg-gradient: linear-gradient(-45deg, #0c4c90c8, #0c4c90c2);
   }
 
   &.contest-253 {    
@@ -192,8 +198,14 @@
     --bg-gradient: linear-gradient(141deg, #064d52, 50%, #02989b);
   }
 
-  &.contest-264, &.contest-154, &.contest-60, &.contest-68, &.contest-70 {
+  &[class*="SQL"]{
     --bg-gradient: linear-gradient(45deg, #936028, 60%, #7e5420);
+  }
+
+  &[class*="NASM"]{
+    --bg: #0c4c90;
+    --box-shadow: 0 0 5px #0c4c90;
+    --bg-gradient: linear-gradient(-45deg, #10559e, #0c4c9094);
   }
 
   &.contest-type-LessCode {    
