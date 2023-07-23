@@ -7,7 +7,7 @@ import { fadeInAnimation, fadeInLeftAnimation, fadeInRightAnimation } from 'angu
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { Subject } from 'rxjs';
-import { debounceTime, takeUntil, tap, throttleTime } from 'rxjs/operators';
+import { takeUntil, throttleTime } from 'rxjs/operators';
 import { Problem, ProblemFilter } from '../../models/problems.models';
 import { ProblemsService } from '../../problems.service';
 import { ProblemsStatisticsService } from '../../problems-statistics.service';
@@ -73,11 +73,13 @@ export class ProblemsComponent implements OnInit, OnDestroy {
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (user: User | null) => {
         this.currentUser = user;
+        if(user){
+          this._problemsReloader.next();
+        }
       }
     )
 
-    this._problemsReloader.pipe(debounceTime(500)).subscribe(() => this._reloadProblems());
-    this._problemsReloader.next();
+    this._problemsReloader.pipe(throttleTime(500)).subscribe(() => this._reloadProblems());
   }
 
   reloadProblems() {
