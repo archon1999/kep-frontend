@@ -362,6 +362,7 @@ export const locale = {
     AboutQuestionTypes: 'About question types',
     AboutTournaments: 'About tournaments',
     AboutDuels: 'About duels',
+    Upsolve: 'Upsolve',
     ProblemTourSteps: [
       {
         title: 'Available languages',
