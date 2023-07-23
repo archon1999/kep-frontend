@@ -1,10 +1,12 @@
 .bg-kepcoin {
   background: radial-gradient(circle at 10% 20%, rgb(255, 200, 124) 0%, rgb(252, 251, 121) 90%);
   color: #7e663d !important;
+  box-shadow: 0 0 10px rgb(255, 200, 124) !important;
 }
 
 ::ng-deep .dark-layout .bg-kepcoin {
-  background: radial-gradient(circle at 10% 20%, rgb(206, 124, 8) 0%, rgb(201, 201, 29) 90%);
+  background: radial-gradient(circle at 10% 20%, rgb(172, 104, 8) 0%, rgb(153, 153, 13) 90%);
+  box-shadow: 0 0 10px rgb(255, 200, 124) !important;
   color: #fff !important;
 }
 
