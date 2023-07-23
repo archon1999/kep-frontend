@@ -1,124 +1,76 @@
 import { Component, OnInit } from '@angular/core';
-import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation, fadeInUpOnEnterAnimation, fadeOutDownAnimation, fadeOutDownOnLeaveAnimation, fadeOutLeftAnimation, fadeOutLeftOnLeaveAnimation, fadeOutRightAnimation, fadeOutRightOnLeaveAnimation } from 'angular-animations';
-import { User } from '../../../users/users.models';
+import { ActivatedRoute } from '@angular/router';
+import { fadeInDownOnEnterAnimation, fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation, fadeInUpOnEnterAnimation, fadeOutDownOnLeaveAnimation, fadeOutLeftOnLeaveAnimation, fadeOutOnLeaveAnimation, fadeOutRightOnLeaveAnimation, fadeOutUpOnLeaveAnimation } from 'angular-animations';
 import { UsersService } from '../../../users/users.service';
+import { Tournament, TournamentStage, TournamentStageDuel } from '../../tournaments.models';
+
+const STAGE_NUMBER = 2;
 
 @Component({
   selector: 'app-tournament-versus',
   templateUrl: './tournament-versus.component.html',
   styleUrls: ['./tournament-versus.component.scss'],
   animations: [
+    fadeInOnEnterAnimation({ duration: 3000 }),
+    fadeOutOnLeaveAnimation({ duration: 3000 }),
     fadeInLeftOnEnterAnimation({ duration: 3000 }),
     fadeInRightOnEnterAnimation({ duration: 3000 }),
     fadeInUpOnEnterAnimation({ duration: 3000 }),
-    fadeOutLeftAnimation({ duration: 3000 }),
-    fadeOutRightAnimation({ duration: 3000 }),
-    fadeOutDownAnimation({ duration: 3000 }),
+    fadeInDownOnEnterAnimation({ duration: 3000 }),
+    fadeOutLeftOnLeaveAnimation({ duration: 3000 }),
+    fadeOutRightOnLeaveAnimation({ duration: 3000 }),
+    fadeOutDownOnLeaveAnimation({ duration: 3000 }),
+    fadeOutUpOnLeaveAnimation({ duration: 3000 }),
   ]
 })
 export class TournamentVersusComponent implements OnInit {
 
   public state = false;
+  public tournament: Tournament;
 
-  public userFirst: User;
-  public userSecond: User;
+  public duels: Array<TournamentStageDuel> = [];
+  public stage: TournamentStage;
 
-  public usernameFirst = 'MDSPro';
-  public usernameSecond = 'Haytboyev.Asadbek';
-
-  public textColor = 'text-danger';
-  public style = 'text-decoration: line-through;';
-
-  public round = '1/8 Final';
+  public userFirst;
+  public userSecond;
 
   constructor(
     public usersService: UsersService,
+    public route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
-    this.loadUsers();
-
+    setTimeout(() => this.state = true, 0);
     setTimeout(() => {
-      this.state = !this.state;
-      setTimeout(() => {
-        this.round = '1/4 Final';
-        this.usernameSecond = 'jshohrux';
-        this.userSecond = null;
-        this.userFirst = null;
-        this.loadUsers();        
+      this.state = false;
 
+      for(let i = 0; i < this.duels.length; i++){
         setTimeout(() => {
-          this.state = !this.state;
-          setTimeout(() => {
-            this.round = '1/2 Final';
-            this.usernameSecond = 'The_Samurai';
-            this.userSecond = null;
-            this.userFirst = null;
-            this.loadUsers();
+          this.usersService.getUser(this.duels[i].duel.playerFirst.username).subscribe(
+            (user) => {
+              this.userFirst = user;
+            }
+          )
+          this.usersService.getUser(this.duels[i].duel.playerSecond.username).subscribe(
+            (user) => {
+              this.userSecond = user;
+            }
+          )
+        }, 10000 * i);
+        setTimeout(() => {
+          this.userFirst = null;
+          this.userSecond = null;
+        }, 7000 + 10000*i);
+      }
 
-            setTimeout(() => {
-              this.userFirst = null;
-              this.round = '1/8 Final';
-              this.usernameFirst = 'NarzullayevMe';
-              this.usernameSecond = 'Shoxrux';
-              this.loadUsers();        
-              this.state = !this.state;
-              
-              setTimeout(() => {
-                this.userSecond = null;
-                this.userFirst = null;
-                this.round = '1/4 Final';
-                this.usernameSecond = 'ThA';
-                this.loadUsers();        
-                this.state = !this.state;
-  
-                setTimeout(() => {
-                  this.userSecond = null;
-                  this.userFirst = null;
-                  this.round = '1/2 Final';
-                  this.usernameSecond = 'anonim.ghost.uz';
-                  this.loadUsers();
-                  setTimeout(() => {
-                    this.userFirst = null;
-                    setTimeout(() => {
-                      setTimeout(() => {
-                        this.userSecond = null;
-                        this.userFirst = null;
-                        this.textColor = 'text-dark';
-                        this.round = 'Final';
-                        this.style = '';
-                        this.usernameFirst = 'MDSPro';
-                        this.usernameSecond = 'NarzullayevMe';
-                        this.loadUsers();
-    
-                        setTimeout(() => {
-                          this.state = !this.state
-                        }, 3000);
-      
-                      }, 3000);    
-                    }, 3000);
-                  }, 3000);
-                }, 3000);    
-              }, 3000);
-            }, 3000);
-      
-          }, 3000);
-        }, 3000);
-      }, 3000);
-    }, 3000);
+      setTimeout(() => this.state = true, this.duels.length * 10000 - 2000)
+    }, 5000);
+
+    this.route.data.subscribe(({ tournament }) => {
+      this.tournament = tournament;
+      this.stage = tournament.stages[STAGE_NUMBER];
+      this.duels = this.stage.duels;
+    })
   }
 
-  loadUsers(){
-    this.usersService.getUser(this.usernameFirst).subscribe(
-      (user: any) => {
-        this.userFirst = user;
-      }
-    )
-
-    this.usersService.getUser(this.usernameSecond).subscribe(
-      (user: any) => {
-        this.userSecond = user;
-      }
-    )
-  }
 }
