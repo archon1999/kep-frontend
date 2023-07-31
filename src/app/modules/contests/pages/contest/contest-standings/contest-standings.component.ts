@@ -8,11 +8,13 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Contest, Contestant, ContestProblem, ContestProblemInfo, ContestStatus } from '../../../contests.models';
 import { ContestsService } from '../../../contests.service';
+import { fadeInOnEnterAnimation } from 'angular-animations';
 
 @Component({
   selector: 'app-contest-standings',
   templateUrl: './contest-standings.component.html',
-  styleUrls: ['./contest-standings.component.scss']
+  styleUrls: ['./contest-standings.component.scss'],
+  animations: [fadeInOnEnterAnimation()]
 })
 export class ContestStandingsComponent implements OnInit, OnDestroy {
 

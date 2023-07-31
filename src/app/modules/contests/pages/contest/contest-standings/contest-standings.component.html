@@ -54,7 +54,10 @@
                       </tr>
                     </thead>
                     <tbody *ngIf="contestants">
-                      <tr *ngFor="let contestant of contestants" [ngClass]="{'bg-light-primary': currentUser?.username == contestant.username }">
+                      <tr 
+                        [@fadeInOnEnter]
+                        *ngFor="let contestant of contestants"
+                        [ngClass]="{'bg-light-primary': currentUser?.username == contestant.username }">
                         <td class="text-center">
                           <b>
                             {{ contestant.rank }}
