@@ -124,9 +124,9 @@ export class ContestantTeamMember {
 
 export class Contestant {
     constructor(
-        public type: number,
         public username: string,
         public team: Array<ContestantTeamMember>,
+        public type: number,
         public problemsInfo: Array<ContestProblemInfo>,
         public points: number,
         public penalties: number,
@@ -140,18 +140,16 @@ export class Contestant {
         public perfomanceTitle: string,
         public newRating: number,
         public newRatingTitle: string,
+        public doubleRatingPurchased: boolean,
+        public saveRatingPurchased: boolean,
     ){}
 
     static fromJSON(data: any){
-        let problemsInfo: Array<ContestProblemInfo> = [];
-        for(let problemInfo of data.problemsInfo){
-            problemsInfo.push(ContestProblemInfo.fromJSON(problemInfo));
-        }
         return new Contestant(
-            data.type,
             data.username,
             data.team,
-            problemsInfo,
+            data.type,
+            data.problemsInfo.map(problemInfo => ContestProblemInfo.fromJSON(problemInfo)),
             data.points,
             data.penalties,
             data.rank,
@@ -164,6 +162,8 @@ export class Contestant {
             data.perfomanceTitle,
             data.newRating,
             data.newRatingTitle,
+            data.doubleRatingPurchased,
+            data.saveRatingPurchased,
         );
     }
 }
