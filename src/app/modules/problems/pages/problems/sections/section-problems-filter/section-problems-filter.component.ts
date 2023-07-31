@@ -5,6 +5,7 @@ import { ProblemFilter, Tag } from '../../../../models/problems.models';
 import { ProblemsService } from '../../../../../problems/problems.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { LocalStorageService } from 'app/shared/storages/local-storage.service';
 
 interface Difficulty {
   id: number;
@@ -32,6 +33,7 @@ export class SectionProblemsFilterComponent implements OnInit, OnDestroy {
   constructor(
     public service: ProblemsService,
     public authService: AuthenticationService,
+    public localStorageService: LocalStorageService,
   ) { }
 
   ngOnInit(): void {
@@ -63,9 +65,9 @@ export class SectionProblemsFilterComponent implements OnInit, OnDestroy {
   }
 
   reload() {
-    setTimeout(() => {    
+    setTimeout(() => {      
       this.filterChange.emit(this.filter);
-      localStorage.setItem('problemsFilter', JSON.stringify(this.filter));
+      this.localStorageService.set('problemsFilter', this.filter);
     }, 100);
   }
 
