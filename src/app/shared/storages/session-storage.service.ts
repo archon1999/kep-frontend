@@ -8,7 +8,7 @@ export class SessionStorageService {
   constructor() { }
 
   public get(key: string){
-    return JSON.parse(localStorage.getItem(key));
+    return JSON.parse(sessionStorage.getItem(key));
   }
 
   public set(key: string, value: any){
