@@ -547,7 +547,7 @@ export const locale = {
         Tournament: '{{ arenaTitle }} | Турнир',
       },
       Duels: {
-        Duel: 'Дуэль',
+        Duel: 'Дуэль | {{ playerFirstUsername }} vs {{ playerSecondUsername }}',
       },
       Projects: {
         Projects: 'Проекты',
