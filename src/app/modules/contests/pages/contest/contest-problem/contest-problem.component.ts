@@ -82,7 +82,6 @@ export class ContestProblemComponent implements OnInit, OnDestroy {
       this.service.getMe(this.contest.id).subscribe(
         (contestant: Contestant | null) => {
           if(contestant){
-            console.log(contestant);
             this.contestant = Contestant.fromJSON(contestant);
             if(this.contest.status == 0){
               this._intervalId = setInterval(() => {
