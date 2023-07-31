@@ -13,14 +13,17 @@ import { ContestantViewModule } from '../../shared/components/contestant-view/co
 import { ProblemBodyModule } from '../problems/elements/problem-body/problem-body.module';
 import { ProblemListCardComponent } from './duel/problem-list-card/problem-list-card.component';
 import { CodeEditorModule } from '../../shared/components/code-editor/code-editor.module';
-import { AttemptsTableComponent } from './duel/attempts-table/attempts-table.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { AttemptsTableModule } from '../problems/elements/attempts-table/attempts-table.module';
 
 
 const routes: Routes = [
   {
     path: 'duel/:id',
     component: DuelComponent,
+    data: {
+      title: 'Duels.Duel',
+    },
     resolve: {
       duel: DuelResolver,
     }
@@ -33,7 +36,6 @@ const routes: Routes = [
     DuelComponent,
     DuelCountdownComponent,
     ProblemListCardComponent,
-    AttemptsTableComponent
   ],
   imports: [
     CommonModule,
@@ -45,6 +47,7 @@ const routes: Routes = [
     ContestantViewModule,
     ProblemBodyModule,
     CodeEditorModule,
+    AttemptsTableModule,
     NgbTooltipModule,
   ],
   providers: [
