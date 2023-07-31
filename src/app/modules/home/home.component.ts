@@ -149,7 +149,7 @@ export class HomeComponent implements OnInit, OnDestroy {
               return +(ca.startTime < cb.startTime);
             }
           }
-        });
+        }).map(contest => Contest.fromJSON(contest));
         this.contestsSwiper.swiper.on('slideChange', () => {
           var index = this.contestsSwiper.swiper.realIndex;
           if (index + 1 == this.lastContests.length && index < 15) {
