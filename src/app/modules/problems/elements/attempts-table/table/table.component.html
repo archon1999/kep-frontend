@@ -56,9 +56,15 @@
         </td>
 
         <td>
-          <a *ngIf="contest" [routerLink]="['/competitions', 'contests', 'contest', attempt.contestProblem.contest, 'problem', attempt.contestProblem.symbol]">
-            <u class="text-primary">{{ attempt.contestProblem.symbol }}. {{ attempt.problemTitle }}</u>
-          </a>
+          <div *ngIf="contest">
+            <a *ngIf="attempt?.contestProblem?.contest; else elseBlock" [routerLink]="['/competitions', 'contests', 'contest', attempt.contestProblem.contest, 'problem', attempt.contestProblem.symbol]">
+              <u class="text-primary">{{ attempt.contestProblem.symbol }}. {{ attempt.problemTitle }}</u>
+            </a>
+            
+            <ng-template #elseBlock>
+              <u class="text-primary">{{ attempt.contestProblem.symbol }}. {{ attempt.problemTitle }}</u>
+            </ng-template>
+          </div>
 
           <a *ngIf="!contest" [routerLink]="['/practice', 'problems', 'problem', attempt.problemId]">
             <u class="text-primary">{{ attempt.problemId }}. {{ attempt.problemTitle }}</u>
