@@ -33,5 +33,6 @@ export const colors = {
     bash: '#7b8e94',
     text: '#000',
     cs: '#88359e',
+    java: '#5283a2',
   }
 };

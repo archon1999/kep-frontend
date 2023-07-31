@@ -1,0 +1,51 @@
+<div class="text-center slide-competitions">
+  <div class="img">
+    <img [@fadeInRight]="animationState" src="../../../../../assets/images/pages/500.png" alt="learn">
+  </div>
+
+  <div [@fadeInLeft]="animationState" class="top-text text-center">
+    <h2 class="text-primary" [class]="isDarkSkin ? 'text-lighten-4' : 'text-darken-4'">
+      {{ 'LandingPage.SectionCompetitionsTitle' | translate }}
+    </h2>
+    <p class="text-primary" [class]="isDarkSkin ? 'text-lighten-2' : 'text-darken-2'">
+      {{ 'LandingPage.SectionCompetitionsText' | translate }}    </p>
+  </div>
+  
+  <div class="sections d-flex justify-content-between">
+    <a routerLink="/competitions/contests" [@fadeInUp]="animationState" class="section">
+      <div class="avatar p-md-2 p-1 bg-primary badge-glow">
+        <div class="avatar-content">
+          <i [data-feather]="'contest' | iconName" class="font-medium-5"></i>
+        </div>
+      </div>    
+
+      <div class="title text-primary" [class]="isDarkSkin ? 'text-lighten-4' : 'text-darken-4'">
+        {{ 'Contests' | translate }}
+      </div>
+    </a>
+
+    <a routerLink="/competitions/arena" [@fadeInUp]="animationState" class="section">
+      <div class="avatar p-md-2 p-1 bg-warning badge-glow">
+        <div class="avatar-content">
+          <i [data-feather]="'arena' | iconName" class="font-medium-5"></i>
+        </div>
+      </div>    
+
+      <div class="title text-warning" [class]="isDarkSkin ? 'text-lighten-4' : 'text-darken-4'">
+        {{ 'Arena' | translate }}
+      </div>
+    </a>
+
+    <a routerLink="/competitions/tournaments" [@fadeInUp]="animationState" class="section">
+      <div class="avatar p-md-2 p-1 bg-dark badge-glow">
+        <div class="avatar-content">
+          <i [data-feather]="'tournament' | iconName" class="font-medium-5"></i>
+        </div>
+      </div>    
+
+      <div class="title text-dark" [class]="isDarkSkin ? 'text-lighten-4' : 'text-darken-4'">
+        {{ 'Tournaments' | translate }}
+      </div>
+    </a>
+  </div>  
+</div>

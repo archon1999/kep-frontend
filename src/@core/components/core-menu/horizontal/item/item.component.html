@@ -24,7 +24,7 @@
   <ng-template #itemContent>
     <span [data-feather]="item.icon" *ngIf="item.icon"></span>
     <span [translate]="item.translate">{{ item.title }}</span>
-    <span *ngIf="item.newEventsCount" class="badge ml-25 mb-1 new-events badge-pill badge-primary badge-glow">
+    <span *ngIf="item.newEventsCount" class="badge ml-25 new-events-count badge-pill badge-primary badge-glow">
       {{ item.newEventsCount }}
     </span>
   </ng-template>

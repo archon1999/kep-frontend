@@ -1,0 +1,290 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- content-header component -->
+
+    <div id="user-profile" class="">
+      <!-- profile header -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card profile-header mb-2">
+            <!-- profile cover photo -->
+            <img class="card-img-top" [src]="user.coverPhoto" alt="User Profile Image" />
+            <!--/ profile cover photo -->
+
+            <div class="position-relative">
+              <!-- profile picture -->
+              <div class="profile-img-container d-flex align-items-center">
+                <div class="profile-img">
+                  <img [src]="user.avatar" class="rounded img-fluid" alt="Card image" />
+                </div>
+                <!-- profile title -->
+                <div class="profile-title ml-3">
+                  <h2 class="text-white">
+                    {{ user.firstName }} {{ user.lastName }}
+                    <span *ngIf="user.streak >= 7">
+                      <ng-template #tipContent>
+                        <img src="assets/images/icons/fire_red.png" height="19" alt=""> {{ user.streak }}
+                      </ng-template>
+                      <span class="badge badge-pill badge-kep" [ngbTooltip]="tipContent">KEP</span>  
+                    </span>
+                    <span *ngIf="user.isOnline" class="avatar-status-online" ngbTooltip="{{ 'Online' | translate }}"></span>
+                    <span *ngIf="!user.isOnline" class="avatar-status-offline" ngbTooltip="{{ user.lastSeen }}"></span>  
+                  </h2>
+                  <p class="text-white">{{ user.username }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- tabs pill -->
+            <div class="profile-header-nav">
+              <!-- navbar -->
+              <nav class="navbar navbar-expand-md navbar-light justify-content-end justify-content-md-between w-100">
+                <button
+                  class="btn btn-icon navbar-toggler"
+                  type="button"
+                  data-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation"
+                  (click)="toggleMenu = !toggleMenu"
+                  rippleEffect
+                >
+                  <i data-feather="align-justify" class="font-medium-5"></i>
+                </button>
+                
+                
+                <!-- collapse  -->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngbCollapse]="toggleMenu">
+                  <div class="profile-tabs d-flex justify-content-between flex-wrap mt-1 mt-md-0">
+                    <ul class="nav nav-pills mb-0">
+                      <li class="nav-item">
+                        <a class="nav-link font-weight-bold" (click)="activeId=1" [ngClass]="{'active': activeId == 1}">
+                          <span class="d-none d-md-block">{{ 'Ratings' | translate }}</span>
+                          <i [data-feather]="'rating' | iconName" class="d-block d-md-none"></i>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link font-weight-bold" (click)="activeId=2" [ngClass]="{'active': activeId == 2}">
+                          <span class="d-none d-md-block">{{ 'Blog' | translate }}</span>
+                          <i [data-feather]="'edit-3'" class="d-block d-md-none"></i>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link font-weight-bold" (click)="activeId=3" [ngClass]="{'active': activeId == 3}">
+                          <span class="d-none d-md-block">{{ 'Achievements' | translate }}</span>
+                          <i [data-feather]="'achievement' | iconName" class="d-block d-md-none"></i>
+                        </a>
+                      </li>
+                    </ul>
+                    <!-- edit button -->
+                    <a routerLink="/settings" class="btn btn-primary" *ngIf="currentUser?.username == user.username" rippleEffect>
+                      <i data-feather="edit" class="d-block d-md-none"></i>
+                      <span class="font-weight-bold d-none d-md-block">{{ 'Edit' | translate }}</span>
+                    </a>
+                  </div>
+                </div>
+                <!--/ collapse  -->
+              </nav>
+              <!--/ navbar -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--/ profile header -->
+
+      <!-- profile info section -->
+      <section id="profile-info">
+        <div class="row">
+          <!-- left profile info section -->
+          <div class="col-12 order-1 col-lg-3 col-12">
+            <!-- about -->
+            <div class="card">
+              <div class="card-body">
+                <h4 class="mb-75">
+                  <i data-feather="info"></i>
+                  {{ 'USER_INFO.ABOUT' | translate }}
+                </h4>
+                <p class="card-text" [innerHTML]="userInfo.bio"></p>
+                <div class="mt-2" *ngIf="userInfo.dateOfBirth">
+                  <h5 class="mb-75">
+                    <i data-feather="calendar"></i>
+                    {{ 'USER_INFO.WAS_BORN' | translate }}:
+                  </h5>
+                  <p class="card-text">{{ userInfo.dateOfBirth | date:'MMM d, y' }}</p>
+                </div>
+                <div class="mt-2" *ngIf="userInfo.country || userInfo.region">
+                  <h5 class="mb-75">
+                    <i data-feather="map-pin"></i>
+                    {{ 'USER_INFO.LIVES' | translate }}:
+                  </h5>
+                  <p class="card-text">{{ userInfo.country }}
+                    <span *ngIf="userInfo.region">, {{ userInfo.region }}</span>
+                  </p>
+                </div>
+                <div class="mt-2" *ngIf="userInfo.email">
+                  <h5 class="mb-75">
+                    <i data-feather="mail"></i>
+                    {{ 'USER_INFO.EMAIL' | translate }}:
+                  </h5>
+                  <p class="card-text">{{ userInfo.email }}</p>
+                </div>
+                <div class="mt-2" *ngIf="userInfo.website">
+                  <h5 class="mb-50">
+                    <i data-feather="globe"></i>
+                    {{ 'USER_INFO.WEBSITE' | translate }}:
+                  </h5>
+                  <a href="{{ userInfo.website }}">{{ userInfo.website }}</a>
+                </div>
+                <div class="mt-2">
+                  <h5 class="mb-75">
+                    <i data-feather="calendar"></i>
+                    {{ 'USER_INFO.JOINED' | translate }}:
+                  </h5>
+                  <p class="card-text">{{ userInfo.dateJoined | date:'MMM d, y, H:mm'}}</p>
+                </div>
+                <div class="mt-2" *ngIf="userSocial.telegram">
+                  <h5 class="mb-50">
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/2048px-Telegram_logo.svg.png"
+                      height="16" width="16">
+                    {{ 'USER_INFO.TELEGRAM' | translate }}:
+                  </h5>
+                  <a href="https://t.me/{{ userSocial.telegram }}" class="card-text mb-0">@{{ userSocial.telegram }}</a>
+                </div>
+                <div class="mt-2" *ngIf="userSocial.codeforcesHandle">
+                  <a href="https://codeforces.com/profile/{{ userSocial.codeforcesHandle }}">
+                    <h5 class="mb-50">
+                      <img width="16" height="16"
+                        src="https://cdn-1.webcatalog.io/catalog/codeforces/codeforces-icon-filled.png">
+                      {{ 'USER_INFO.CODEFORCES' | translate }}:
+                    </h5>
+                    <p class="card-text mb-0">
+                      <span class="badge badge-glow badge-warning">
+                        {{ userSocial.codeforcesHandle }}
+                      </span>
+                      <img class="ml-1" src="https://cp-logo.vercel.app/codeforces/{{ userSocial.codeforcesHandle }}">
+                    </p>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <!--/ about -->
+
+            <!-- education -->
+            <div class="card" *ngIf="userEducations.length > 0">
+              <div class="card-body">
+                <h4 class="mb-4">
+                  <i data-feather="info"></i>
+                  {{ 'USER_INFO.EDUCATION' | translate }}
+                </h4>
+
+                <ul class="timeline">
+                  <li class="timeline-item" *ngFor="let education of userEducations">
+                    <span class="timeline-point timeline-point-primary timeline-point-indicator"></span>
+                    <div class="timeline-event">
+                      <h6>
+                        {{ education.organization }}
+                        <br>
+                        {{ education.degree }}
+                      </h6>
+                      <span class="timeline-event-time">{{ education.fromYear }} - {{ education.toYear }}</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- job -->
+            <div class="card" *ngIf="userWorkExperiences.length > 0">
+              <div class="card-body">
+                <h4 class="mb-4">
+                  <i data-feather="info"></i>
+                  {{ 'USER_INFO.WORK_EXPERIENCE' | translate }}
+                </h4>
+
+                <ul class="timeline">
+                  <li class="timeline-item" *ngFor="let workExperience of userWorkExperiences">
+                    <span class="timeline-point timeline-point-primary timeline-point-indicator"></span>
+                    <div class="timeline-event">
+                      <h6>
+                        {{ workExperience.company }}
+                        <br>
+                        {{ workExperience.jobTitle }}
+                      </h6>
+                      <span class="timeline-event-time">{{ workExperience.fromYear }} - {{ workExperience.toYear
+                        }}</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-lg-6 col-12 order-1 order-lg-2">
+            <div *ngIf="activeId == 1">
+              <user-ratings></user-ratings>
+            </div>
+            <div *ngIf="activeId == 2">
+              <user-blog></user-blog>
+            </div>
+            <div *ngIf="activeId == 3">
+              <user-achievements></user-achievements>
+            </div>
+          </div>
+
+          <div class="order-lg-3 order-2 col-lg-3 col-12">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="mb-0">
+                  <i data-feather="activity"></i>
+                  {{ 'USER_INFO.SKILLS' | translate }}
+                </h4>
+                <div class="progress-wrapper mt-2">
+                  <div class="mb-25">Python</div>
+                  <ngb-progressbar type="primary" [value]="userSkills.python" [showValue]="true"></ngb-progressbar>
+                </div>
+                <div class="progress-wrapper mt-2">
+                  <div class="mb-25">{{ 'WebDevelopment' | translate }}</div>
+                  <ngb-progressbar type="primary" [value]="userSkills.webDevelopment" [showValue]="true"></ngb-progressbar>
+                </div>
+                <div class="progress-wrapper mt-2">
+                  <div class="mb-25">{{ 'WebScraping' | translate }}</div>
+                  <ngb-progressbar type="primary" [value]="userSkills.webScraping" [showValue]="true"></ngb-progressbar>
+                </div>
+                <div class="progress-wrapper mt-2">
+                  <div class="mb-25">{{ 'Algorithms' | translate }}</div>
+                  <ngb-progressbar type="primary" [value]="userSkills.algorithms" [showValue]="true"></ngb-progressbar>
+                </div>
+                <div class="progress-wrapper mt-2">
+                  <div class="mb-25">{{ 'DataScience' | translate }}</div>
+                  <ngb-progressbar type="primary" [value]="userSkills.dataScience" [showValue]="true"></ngb-progressbar>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" *ngIf="userTechnologies.length > 0">
+              <div class="card-body">
+                <h4 class="mb-0">
+                  <i data-feather="slack"></i>
+                  {{ 'USER_INFO.TECHNOLOGIES' | translate }}
+                </h4>
+                <div class="user-technologies mt-2">
+                  <span *ngFor="let technology of userTechnologies" class="badge"
+                    [style.background]="technology.badgeColor"
+                    [style.box-shadow]="'0px 0px 10px' + technology.badgeColor"
+                  >
+                    <i class="{{ technology.devIconClass }} "></i>
+                    {{ technology.text }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!--/ profile info section -->
+    </div>
+  </div>
+</div>
