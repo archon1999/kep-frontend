@@ -80,20 +80,23 @@
       <thead>
         <tr class="bg-gradient-primary">
           <th class="text-center text-white">#</th>
-          <th class="text-center text-white">{{ 'USER' | translate }}</th>
+          <th class="text-white">
+            <i class="mr-50" data-feather="user"></i>
+            {{ 'USER' | translate }}
+          </th>
           <th class="text-center text-white"><i [data-feather]="'rating' | iconName"></i></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let rating of topRating; index as i">
-          <td class="text-center">
+          <td class="text-center text-dark">
             {{ i+1 }}
           </td>
           <td class="">
             <contestant-view [imgSize]="28" [user]="rating"></contestant-view>
           </td>
           <td class="text-center">
-            <span class="badge badge-primary">
+            <span class="badge badge-primary badge-glow">
               {{ rating.solved }}
             </span>
           </td>
@@ -119,23 +122,29 @@
   <table class="table attempts">
     <thead class="bg-gradient-primary">
       <tr>
-        <th class="text-center text-white">{{ 'Problem' | translate }}</th>
-        <th class="text-center text-white">{{ 'Verdict' | translate }}</th>
+        <th class="ml-50 text-white">
+          <i class="mr-50" [data-feather]="'problem' | iconName"></i>
+          {{ 'Problem' | translate }}
+        </th>
+        <th class="mr-50 text-right text-white">
+          <i class="mr-50" [data-feather]="'activity'"></i>
+          {{ 'Verdict' | translate }}
+        </th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let attempt of lastAttempts">
-        <td class="text-center">
+        <td class="ml-50">
           <a [routerLink]="['/practice', 'problems', 'problem', attempt.problemId]">
             <span class="text-primary">{{ attempt.problemId }}. {{ attempt.problemTitle }}</span>
           </a>
         </td>
 
-        <td class="text-center" [ngClass]="{
+        <td class="text-right" [ngClass]="{
             'text-success': attempt.verdict == 1,
             'text-danger': attempt.verdict != 1
           }">
-          <span class="font-small-3">
+          <span class="font-small-3 mr-1">
             {{ attempt.verdictTitle }}
           </span>
         </td>
