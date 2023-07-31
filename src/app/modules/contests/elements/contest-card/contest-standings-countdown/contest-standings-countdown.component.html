@@ -1,13 +1,13 @@
-<h4 *ngIf="contest.status == 0" class="text-center mb-1">
+<h4 *ngIf="contest.status == 0" class="text-center mb-2">
   {{ 'CONTESTS.CONTEST_ENDS' | translate }}
 </h4>
-<h4 *ngIf="contest.status == -1" class="text-center mb-1">
+<h4 *ngIf="contest.status == -1" class="text-center mb-2">
   {{ 'CONTESTS.CONTEST_STARTS' | translate }}
 </h4>
-<h4 *ngIf="contest.status == 1" class="text-center mb-1">
+<h4 *ngIf="contest.status == 1" class="text-center mb-2">
   {{ 'CONTESTS.CONTEST_FINISHED' | translate }}
 </h4>
-<hr>
+
 <div *ngIf="!contest.isFinished()" class="mb-2 col-lg-10 col-12 offset-lg-1 offset-0">
   <ngx-countdown [time]="leftTime" [render]="render" format="DD:HH:mm:ss" (finish)="finish()">
     <ng-template #render let-data>
