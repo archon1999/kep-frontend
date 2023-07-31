@@ -107,12 +107,8 @@
               <h3 class="card-title text-center mt-2 mb-1">{{ 'ATTEMPTS' | translate }}</h3>
             </div>
             <div class="card-body">
-              <contest-attempts-table
-                [attempts]="attempts"
-                [contest]="contest"
-                (checkFinishEvent)="reloadProblems()"
-              >
-              </contest-attempts-table>
+              <attempts-table [hideSourceCodeSize]="true" [attempts]="attempts" [contest]="contest"></attempts-table>
+
               <ngb-pagination
                 *ngIf="attempts.length > 0"
                 [collectionSize]="totalAttemptsCount"
@@ -140,10 +136,11 @@
           </div>
 
           <a
+            rippleEffect
             *ngIf="contest.status == 1"
             routerLink="/practice/problems/problem/{{ contestProblem.problem.id }}"
             [queryParams]="{'contest': contest.id}"
-            class="mb-2 btn-block btn btn-primary">
+            class="mb-2 btn-block btn btn-primary bg-primary badge-glow">
             {{ 'Upsolve' | translate }}
           </a>
 
