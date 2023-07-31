@@ -1,7 +1,10 @@
 <div class="card">
   <div class="card-body">
     <div class="row">
-      <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="col-md-6 col-sm-6" [ngClass]="{
+        'col-lg-3': currentUser,
+        'col-lg-4': !currentUser
+      }">
         <div class="form-group">
           <label class="text-primary" for="first-name-vertical">
             <strong>
@@ -18,7 +21,10 @@
         </div>
       </div>
     
-      <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="col-md-6 col-sm-6" [ngClass]="{
+        'col-lg-3': currentUser,
+        'col-lg-4': !currentUser
+      }">
         <label class="text-primary">
           <strong>
             {{ 'TAGS' | translate }}:
@@ -37,7 +43,10 @@
         </div>    
       </div>
     
-      <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="col-md-6 col-sm-6" [ngClass]="{
+        'col-lg-3': currentUser,
+        'col-lg-4': !currentUser
+      }">
         <label class="text-primary">
           <strong>
             {{ 'DIFFICULTY' | translate }}:
