@@ -360,6 +360,10 @@ export const locale = {
     AboutTournaments: 'Turnirlar haqida',
     AboutDuels: 'Duellar haqida',
     Upsolve: 'Ishlash',
+    WebDevelopment: 'Veb dasturlash',
+    Algorithms: 'Algoritmlar',
+    DataScience: 'Malumotlar tahlili',
+    WebScraping: 'Veb skreyping',
     ContestRules: {
       ACM20H: ``,
     },

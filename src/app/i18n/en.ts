@@ -363,6 +363,10 @@ export const locale = {
     AboutTournaments: 'About tournaments',
     AboutDuels: 'About duels',
     Upsolve: 'Upsolve',
+    WebDevelopment: 'Web development',
+    Algorithms: 'Algorithms',
+    DataScience: 'DataScience',
+    WebScraping: 'Web scraping',
     ProblemTourSteps: [
       {
         title: 'Available languages',
