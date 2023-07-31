@@ -360,6 +360,10 @@ export const locale = {
     AboutTournaments: 'О турнирах',
     AboutDuels: 'О дуэлях',
     Upsolve: 'Дорешать',
+    WebDevelopment: 'Веб программирование',
+    Algorithms: 'Алгоритмы',
+    DataScience: 'Наука о данных',
+    WebScraping: 'Веб скрейпинг',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',

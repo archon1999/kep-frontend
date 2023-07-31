@@ -60,11 +60,11 @@ export class UserSocial {
 
 export class UserSkills {
   constructor(
-    public python: string,
-    public django: string,
-    public webScraping: string,
-    public algo: string,
-    public dataScience: string,
+    public python: number,
+    public webDevelopment: number,
+    public webScraping: number,
+    public algorithms: number,
+    public dataScience: number,
   ) { }
 }
 
