@@ -103,12 +103,12 @@
     color: $theme-dark-text-muted-color;
   }
 
-  // main navbar and header navbar shadow(generic navbar)
+  // modules navbar and header navbar shadow(generic navbar)
   .header-navbar-shadow {
     background: linear-gradient(180deg, rgba(22, 29, 49, 0.9) 44%, rgba(22, 29, 49, 0.43) 73%, rgba(22, 29, 49, 0));
   }
 
-  // main header navbar dark style
+  // modules header navbar dark style
 
   .horizontal-layout {
     .header-navbar {
@@ -297,7 +297,7 @@
     }
   }
 
-  // main menu
+  // modules menu
   .main-menu {
     background-color: $theme-dark-card-bg;
 
@@ -354,7 +354,7 @@
     background-color: $theme-dark-body-color;
   }
 
-  // main menu content
+  // modules menu content
   .main-menu-content {
     .navigation-main {
       background-color: $theme-dark-card-bg;
@@ -1970,7 +1970,7 @@
       }
     }
 
-    // main content
+    // modules content
     .content-right,
     .content-body {
       // header items

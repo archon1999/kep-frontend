@@ -1,0 +1,30 @@
+@import '../../../scss/variables.scss';
+
+.card {
+  transition: all 0.2s ease;
+  background: $tournaments-bg !important;
+  border: none;
+  box-shadow: 0 0 10px #29323c !important;
+  border-radius: 10px;
+  
+  &:hover {
+    transform: scale(1.02);
+    transition: 0.5s ease;
+  }
+
+  th,
+  td {
+    border-top: none;
+    padding-top: 1.15rem;
+    padding-bottom: 1.15rem;
+  }
+}
+
+.badge {
+  background-color: $tournaments-color;
+  box-shadow: 0 0 10px $tournaments-color;
+}
+
+::ng-deep .dark-layout .duel-card {
+  background: $tournaments-bg-dark !important;
+}

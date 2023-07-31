@@ -1,0 +1,42 @@
+<div class="text-center">
+  <div style="height: 200px;">
+    <div *ngIf="state" [@fadeOutOnLeave] [@fadeInOnEnter]>
+      <img src="assets/images/icons/tournament.png" alt="tournament-icon" width="90" height="90">
+      <h2 class="mt-2 text-center">
+        {{ tournament.title }}
+      </h2>
+    
+      <h3 class="mt-2">
+        {{ stage.title }}
+      </h3>
+    </div>
+  </div>
+
+  <div style="padding-left: 20rem;padding-right: 20rem;" class="mt-4 d-flex justify-content-between">
+    <div *ngIf="userFirst && userSecond" class="text-center" [@fadeInRightOnEnter] [@fadeOutRightOnLeave]>
+      <div class="avatar">
+        <img src="{{ userFirst.avatar }}" height="120">
+      </div>
+      <h3 class="mt-1 text-dark text-center">{{ userFirst.username }}</h3>
+    </div>
+  
+    <div *ngIf="userFirst && userSecond" class="text-center" [@fadeInDownOnEnter] [@fadeOutUpOnLeave]>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/70/Street_Fighter_VS_logo.png" alt="">
+      <h3 class="mt-1 text-dark">{{ round }}</h3>
+    </div>
+  
+    <div *ngIf="userFirst && userSecond" class="text-center" [@fadeInLeftOnEnter] [@fadeOutLeftOnLeave]>
+      <div class="avatar">
+        <img src="{{ userSecond.avatar }}" height="120">
+      </div>
+      <h3 class="mt-1 text-center text-dark">{{ userSecond.username }}</h3>
+    </div>
+  </div>
+</div>
+
+
+
+<!--
+
+
+-->
