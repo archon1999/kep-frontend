@@ -6,7 +6,7 @@ import { CoreConfig } from '@core/types';
 import { fadeInAnimation, fadeInLeftAnimation, fadeInRightAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
-import { Subject } from 'rxjs';
+import { Subject, asyncScheduler } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 import { Problem, ProblemFilter } from '../../models/problems.models';
 import { ProblemsService } from '../../problems.service';
@@ -30,6 +30,7 @@ export class ProblemsComponent implements OnInit, OnDestroy {
 
   public activeTopic = 0;
   public filter: ProblemFilter;
+  public ordering = 'id';
 
   public currentPage: number = 1;
   public problemsCount: number = 0;
@@ -73,13 +74,13 @@ export class ProblemsComponent implements OnInit, OnDestroy {
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (user: User | null) => {
         this.currentUser = user;
-        if(user){
-          this._problemsReloader.next();
-        }
+        this._problemsReloader.next();
       }
     )
 
-    this._problemsReloader.pipe(throttleTime(500)).subscribe(() => this._reloadProblems());
+    this._problemsReloader.pipe(
+      throttleTime(500, asyncScheduler, { leading: false, trailing: true })
+    ).subscribe(() => this._reloadProblems());
   }
 
   reloadProblems() {
@@ -99,12 +100,17 @@ export class ProblemsComponent implements OnInit, OnDestroy {
   }
 
   _reloadProblems(){
-    this.service.getProblems(this.filter, this.activeTopic, this.currentPage, 20).subscribe(
+    this.service.getProblems(this.filter, this.activeTopic, this.currentPage, this.ordering, 20).subscribe(
       (result: any) => {
         this.problems = result.data;
         this.problemsCount = result.total;
       }
     );
+  }
+
+  setOrdering(ordering){
+    this.ordering = ordering;
+    this._problemsReloader.next();
   }
 
   tagClick(tagId: number){
