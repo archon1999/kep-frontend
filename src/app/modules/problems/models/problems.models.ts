@@ -27,6 +27,7 @@ export class Problem {
     public codeTemplate: string,
     public availableLanguages: Array<AvailableLanguage>,
     public image: string,
+    public hidden: boolean,
   ) { }
 }
 
