@@ -359,6 +359,11 @@ export const locale = {
     AboutQuestionTypes: 'Savol turlari haqida',
     AboutTournaments: 'Turnirlar haqida',
     AboutDuels: 'Duellar haqida',
+    Upsolve: 'Ishlash',
+    WebDevelopment: 'Veb dasturlash',
+    Algorithms: 'Algoritmlar',
+    DataScience: 'Malumotlar tahlili',
+    WebScraping: 'Veb skreyping',
     ContestRules: {
       ACM20H: ``,
     },
@@ -549,7 +554,7 @@ export const locale = {
         Tournament: '{{ arenaTitle }} | Turnir',
       },
       Duels: {
-        Duel: 'Duel',
+        Duel: 'Duel | {{ playerFirstUsername }} vs {{ playerSecondUsername }}',
       },
       Projects: {
         Projects: 'Loyihalar',

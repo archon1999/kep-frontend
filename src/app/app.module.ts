@@ -8,7 +8,7 @@ import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import 'hammerjs';
-import { ToastrModule } from './main/third-part-modules/toastr/toastr.module';
+import { ToastrModule } from './shared/third-part-modules/toastr/toastr.module';
 
 import { CoreCommonModule } from '@core/common.module';
 import { CoreSidebarModule, CoreThemeCustomizerModule } from '@core/components';
@@ -21,37 +21,37 @@ import { coreConfig } from 'app/app-config';
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
 import { AuthModalComponent } from './auth/auth-modal/auth-modal.component';
-import { ErrorComponent } from './main/pages/miscellaneous/error/error.component';
+import { ErrorComponent } from './modules/pages/miscellaneous/error/error.component';
 import { WebsocketModule } from './websocket';
 
 import { APP_BASE_HREF } from '@angular/common';
-import { UserPopoverModule } from './main/elements/user-popover/user-popover.module';
+import { UserPopoverModule } from './shared/components/user-popover/user-popover.module';
 
 import { environment } from 'environments/environment';
 import { HighlightModule, HighlightOptions, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 
 const appRoutes: Routes = [
-  { path: '', loadChildren: () => import('./landing-page/landing-page.module').then(m => m.LandingPageModule) },
-  { path: '', loadChildren: () => import('./main/pages/pages.module').then(m => m.PagesModule) },
-  { path: 'home', loadChildren: () => import('./main/home/home.module').then(m => m.HomeModule) },
-  { path: 'settings', loadChildren: () => import('./main/account-settings/account-settings.module').then(m => m.AccountSettingsModule) },
-  { path: 'kepcoin', loadChildren: () => import('./main/kepcoin/kepcoin.module').then(m => m.KepcoinModule) },
-  { path: 'learn/courses', loadChildren: () => import('./main/courses/courses.module').then(m => m.CoursesModule) },
-  { path: 'learn/lugavar', loadChildren: () => import('./main/lugavar/lugavar.module').then(m => m.LugavarModule) },
-  { path: 'learn/blog', loadChildren: () => import('./main/blog/blog.module').then(m => m.BlogModule) },
-  { path: 'practice/problems', loadChildren: () => import('./main/problems/problems.module').then(m => m.ProblemsModule) },
-  { path: 'practice/challenges', loadChildren: () => import('./main/challenges/challenges.module').then(m => m.ChallengesModule) },
-  { path: 'practice/tests', loadChildren: () => import('./main/testing/testing.module').then(m => m.TestingModule) },
-  { path: 'practice/projects', loadChildren: () => import('./main/projects/projects.module').then(m => m.ProjectsModule) },
-  { path: 'practice/duels', loadChildren: () => import('./main/duels/duels.module').then(m => m.DuelsModule) },
-  { path: 'competitions/contests', loadChildren: () => import('./main/contests/contests.module').then(m => m.ContestsModule) },
-  { path: 'competitions/arena', loadChildren: () => import('./main/arena/arena.module').then(m => m.ArenaModule) },
-  { path: 'competitions/tournaments', loadChildren: () => import('./main/tournaments/tournaments.module').then(m => m.TournamentsModule) },
-  { path: 'users', loadChildren: () => import('./main/users/users.module').then(m => m.UsersModule) },
-  { path: 'help', loadChildren: () => import('./main/help/help.module').then(m => m.HelpModule) },
-  { path: 'my-blog', loadChildren: () => import('./main/users/my-blog/my-blog.module').then(m => m.MyBlogModule) },
-  { path: 'cpython-cup', loadChildren: () => import('./main/cpython-cup/cpython-cup.module').then(m => m.CpythonCupModule) },
-  { path: 'tour', loadChildren: () => import('./main/third-part-modules/tour/tour.module').then(m => m.TourModule) },
+  { path: '', loadChildren: () => import('./modules/landing-page/landing-page.module').then(m => m.LandingPageModule) },
+  { path: '', loadChildren: () => import('./modules/pages/pages.module').then(m => m.PagesModule) },
+  { path: 'home', loadChildren: () => import('./modules/home/home.module').then(m => m.HomeModule) },
+  { path: 'settings', loadChildren: () => import('./modules/account-settings/account-settings.module').then(m => m.AccountSettingsModule) },
+  { path: 'kepcoin', loadChildren: () => import('./modules/kepcoin/kepcoin.module').then(m => m.KepcoinModule) },
+  { path: 'learn/courses', loadChildren: () => import('./modules/courses/courses.module').then(m => m.CoursesModule) },
+  { path: 'learn/lugavar', loadChildren: () => import('./modules/lugavar/lugavar.module').then(m => m.LugavarModule) },
+  { path: 'learn/blog', loadChildren: () => import('./modules/blog/blog.module').then(m => m.BlogModule) },
+  { path: 'practice/problems', loadChildren: () => import('./modules/problems/problems.module').then(m => m.ProblemsModule) },
+  { path: 'practice/challenges', loadChildren: () => import('./modules/challenges/challenges.module').then(m => m.ChallengesModule) },
+  { path: 'practice/tests', loadChildren: () => import('./modules/testing/testing.module').then(m => m.TestingModule) },
+  { path: 'practice/projects', loadChildren: () => import('./modules/projects/projects.module').then(m => m.ProjectsModule) },
+  { path: 'practice/duels', loadChildren: () => import('./modules/duels/duels.module').then(m => m.DuelsModule) },
+  { path: 'competitions/contests', loadChildren: () => import('./modules/contests/contests.module').then(m => m.ContestsModule) },
+  { path: 'competitions/arena', loadChildren: () => import('./modules/arena/arena.module').then(m => m.ArenaModule) },
+  { path: 'competitions/tournaments', loadChildren: () => import('./modules/tournaments/tournaments.module').then(m => m.TournamentsModule) },
+  { path: 'users', loadChildren: () => import('./modules/users/users.module').then(m => m.UsersModule) },
+  { path: 'help', loadChildren: () => import('./modules/help/help.module').then(m => m.HelpModule) },
+  { path: 'my-blog', loadChildren: () => import('./modules/users/my-blog/my-blog.module').then(m => m.MyBlogModule) },
+  { path: 'cpython-cup', loadChildren: () => import('./modules/cpython-cup/cpython-cup.module').then(m => m.CpythonCupModule) },
+  { path: 'tour', loadChildren: () => import('./shared/third-part-modules/tour/tour.module').then(m => m.TourModule) },
   { path: '**', component: ErrorComponent },
 ];
 

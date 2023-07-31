@@ -1,0 +1,129 @@
+<div class="row">
+  <div class="col-12 header-section">
+    <header-section></header-section>
+  </div>
+
+  <div class="offset-lg-1 offset-0 col-lg-6 col-md-8 col-12">
+    <news-section></news-section>
+  </div>
+
+  <div class="col-lg-4 col-md-4 col-sm-12">
+    <activity-section></activity-section>
+    <profile-section></profile-section>
+  </div>
+
+  <div class="col-12">
+    <div class="row">
+      <div [ngClass]="{
+            'col-lg-4 col-md-12 col-sm-12 order-1': !isMenuToggled || isMenuCollapsed,
+            'col-lg-6 col-md-12 col-sm-12 order-2': isMenuToggled && !isMenuCollapsed
+          }">
+        <div class="card card-congratulation-medal" style="min-height: 235px;">
+          <div class="card-body">
+            <h4><strong>{{ 'TopRating' | translate }}</strong></h4>
+
+            <div class="mt-3" *ngIf="topUsers.length > 0">
+              <img width="32" height="32" src="assets/images/icons/medal-award-1.png">
+              <user-popover [username]="topUsers[0].username" [streak]="topUsers[0].streak"></user-popover>
+            </div>
+            <div class="mt-1" *ngIf="topUsers.length > 0">
+              <img width="32" height="32" src="assets/images/icons/medal-award-2.png">
+              <user-popover [username]="topUsers[1].username" [streak]="topUsers[1].streak"></user-popover>
+            </div>
+            <div class="mt-1" *ngIf="topUsers.length > 0">
+              <img width="32" height="32" src="assets/images/icons/medal-award-3.png">
+              <user-popover [username]="topUsers[2].username" [streak]="topUsers[2].streak"></user-popover>
+            </div>
+
+            <img src="assets/images/illustration/badge.svg" class="congratulation-medal" alt="Medal Pic" />
+          </div>
+        </div>
+      </div>
+      <div [ngClass]="{
+            'col-lg-4 col-md-12 col-sm-12 order-2': !isMenuToggled || isMenuCollapsed,
+            'col-lg-8 offset-lg-2 col-md-12 col-sm-12 order-1': isMenuToggled && !isMenuCollapsed
+          }">
+        <div class="card card-developer-meetup">
+          <div class="card-body">
+            <div class="meetup-header d-flex align-items-center">
+              <div class="meetup-day">
+                <h6 class="mb-0">{{ today | localizedDate:'EEE' }}</h6>
+                <h3 class="mb-0">{{ today | date:'d' }}</h3>
+              </div>
+              <div class="my-auto">
+                <h4 class="card-title mb-25">{{ 'System' | translate }}</h4>
+              </div>
+            </div>
+            <div class="card-body custom mb-2 text-center ml-4 mr-4">
+              <div class="avatar bg-primary p-50 m-0 mb-1">
+                <div class="avatar-content">
+                  <i data-feather="calendar" class="font-medium-5"></i>
+                </div>
+              </div>
+              <h2 class="font-weight-bolder">{{ days }}</h2>
+              <p class="mb-0 line-ellipsis">{{ 'Day' | translate }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="order-3" [ngClass]="{
+            'col-lg-4 col-md-12 col-sm-12': !isMenuToggled || isMenuCollapsed,
+            'col-lg-6 col-md-12 col-sm-12': isMenuToggled && !isMenuCollapsed
+          }">
+        <users-chart-card></users-chart-card>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div style="padding: 0px !important;" [ngClass]="{
+          'col-lg-6 offset-lg-3 col-12 offset-0':  !isMenuToggled || isMenuCollapsed,
+          'col-lg-10 offset-lg-1 col-12 offset-0': isMenuToggled && !isMenuCollapsed
+        }">
+      <div class="layout-spacing mt-2">
+        <swiper [config]="contestsSwiperConfig" class="swiper-contests swiper-lazy-loading" #contestsSwiper>
+          <div class="swiper-wrapper">
+            <div class="swiper-slide" *ngFor="let contest of lastContests">
+              <contest-card [contest]="contest"></contest-card>
+            </div>
+          </div>
+          <!-- Add Pagination -->
+          <div class="swiper-pagination"></div>
+        </swiper>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 mt-3">
+    <div class="row">
+      <div class="col-lg-3 col-md-6 col-sm-12">
+        <birthdays-section></birthdays-section>        
+      </div>
+      <div class="col-lg-9 col-md-6 col-sm-12">
+        <div class="mb-4 layout-spacing">
+          <swiper [config]="postsSwiperConfig" class="swiper-news swiper-lazy-loading" #postsSwiper>
+            <div class="swiper-wrapper">
+              <div class="swiper-slide" *ngFor="let post of lastPosts">
+                <blog-post-card [blog]="post"></blog-post-card>
+              </div>
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+          </swiper>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="col-12">
+    <statistics-section></statistics-section>
+  </div>
+
+</div>
+
+<audio
+  #audio
+  muted="muted"
+  src="assets/audio/intro.mp3">
+</audio>

@@ -362,6 +362,11 @@ export const locale = {
     AboutQuestionTypes: 'About question types',
     AboutTournaments: 'About tournaments',
     AboutDuels: 'About duels',
+    Upsolve: 'Upsolve',
+    WebDevelopment: 'Web development',
+    Algorithms: 'Algorithms',
+    DataScience: 'DataScience',
+    WebScraping: 'Web scraping',
     ProblemTourSteps: [
       {
         title: 'Available languages',
@@ -549,7 +554,7 @@ export const locale = {
         Tournament: '{{ arenaTitle }} | Tournament',
       },
       Duels: {
-        Duel: 'Duel',
+        Duel: 'Duel | {{ playerFirstUsername }} vs {{ playerSecondUsername }}',
       },
       Projects: {
         Projects: 'Projects',
