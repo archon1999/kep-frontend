@@ -48,9 +48,6 @@
                         }">
                           <span *ngIf="contestant.delta > 0">+</span>{{ contestant.delta }}
                         </span>
-                        <span *ngIf="contestant.bonus > 0" class="ml-1 badge badge-light-primary">
-                          +{{ contestant.bonus }}
-                        </span>
                       </td>
 
                       <td>
@@ -59,10 +56,31 @@
                             {{ contestant.rating }}
                           </span>
                           <i data-feather="arrow-right"></i>
+  
                           <span class="badge badge-light-{{ contestant.newRating | contestsRatingColor }}">
                             {{ contestant.newRating }}
                           </span>
-                          <contests-rating-image *ngIf="contestant.newRatingTitle != contestant.ratingTitle" [title]="contestant.newRatingTitle"></contests-rating-image>
+  
+                          <contests-rating-image
+                            class="ml-50"
+                            *ngIf="contestant.newRatingTitle != contestant.ratingTitle"
+                            [title]="contestant.newRatingTitle">
+                          </contests-rating-image>
+
+                          <img
+                            *ngIf="contestant.doubleRatingPurchased"
+                            height="25"
+                            class="ml-50"
+                            ngbTooltip="{{ 'DoubleRating' | translate }}"
+                            src="assets/images/icons/x2-delta.png"
+                          >
+                          <img
+                            *ngIf="contestant.saveRatingPurchased"
+                            height="25"
+                            class="ml-75"
+                            ngbTooltip="{{ 'SaveRating' | translate }}"
+                            src="assets/images/icons/save-rating.png"
+                          >
                         </div>
                         <div *ngIf="contestant.type == 2">
                           <div class="mb-1" *ngFor="let member of contestant.team.members">
@@ -80,7 +98,6 @@
                             </contests-rating-image>
                           </div>
                         </div>
-
                       </td>
                     </tr>
                   </tbody>
