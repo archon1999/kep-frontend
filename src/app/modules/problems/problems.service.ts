@@ -12,8 +12,12 @@ export class ProblemsService {
     public api: ApiService,
   ) { }
 
-  getProblems(filter: ProblemFilter, topic=0, page=1, pageSize=9){
-    var params: any = { page: page, page_size: pageSize };
+  getProblems(filter: ProblemFilter, topic=0, page=1, ordering='id', pageSize=9){
+    var params: any = {
+      page: page,
+      page_size: pageSize,
+      ordering: ordering,
+    };
 
     if(filter?.difficulty){
       params.difficulty = filter.difficulty;
@@ -43,7 +47,6 @@ export class ProblemsService {
         params.has_attempted = 0;
       }
     }
-    params.ordering = 'id';
 
     return this.api.get('problems', params);
   }
