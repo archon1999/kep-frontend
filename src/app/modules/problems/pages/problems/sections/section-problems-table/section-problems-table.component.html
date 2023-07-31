@@ -3,12 +3,50 @@
     <table class="table table-striped">
       <thead>
         <tr class="bg-gradient-primary">
-          <th>ID</th>
-          <th>{{ 'TITLE' | translate }}</th>
-          <th>{{ 'TAGS' | translate }}</th>
-          <th class="text-center">{{ 'DIFFICULTY' | translate }}</th>
-          <th class="text-center">{{ 'RATING' | translate }}</th>
-          <th class="text-center">{{ 'ATTEMPTS' | translate }}</th>
+          <th>            
+            <a (click)="setOrdering('id')">
+              <i class="mr-50" [data-feather]="'problem' | iconName"></i>
+              ID
+              <span *ngIf="ordering == 'id'"><i data-feather="chevron-up"></i></span>
+              <span *ngIf="ordering == '-id'"><i data-feather="chevron-down"></i></span>
+            </a>
+          </th>
+          <th>
+            <a (click)="setOrdering('title')">
+              <i class="mr-50" [data-feather]="'edit-3'"></i>
+              {{ 'TITLE' | translate }}
+              <span *ngIf="ordering == 'title'"><i data-feather="chevron-up"></i></span>
+              <span *ngIf="ordering == '-title'"><i data-feather="chevron-down"></i></span>
+            </a>
+          </th>
+          <th>
+            <i class="mr-50" [data-feather]="'activity'"></i>
+            {{ 'TAGS' | translate }}
+          </th>
+          <th class="text-center">
+            <a (click)="setOrdering('difficulty')">
+              <i class="mr-50" [data-feather]="'bar-chart'"></i>
+              {{ 'DIFFICULTY' | translate }}
+              <span *ngIf="ordering == 'difficulty'"><i data-feather="chevron-up"></i></span>
+              <span *ngIf="ordering == '-difficulty'"><i data-feather="chevron-down"></i></span>
+            </a>
+          </th>
+          <th class="text-center">
+            <a (click)="setOrdering('rating')">
+              <i class="mr-50" [data-feather]="'star'"></i>
+              {{ 'RATING' | translate }}
+              <span *ngIf="ordering == 'rating'"><i data-feather="chevron-up"></i></span>
+              <span *ngIf="ordering == '-rating'"><i data-feather="chevron-down"></i></span>
+            </a>
+          </th>
+          <th class="text-center">
+            <a (click)="setOrdering('solved')">
+              <i class="mr-50" [data-feather]="'attempt' | iconName"></i>
+              {{ 'ATTEMPTS' | translate }}
+              <span *ngIf="ordering == 'solved'"><i data-feather="chevron-up"></i></span>
+              <span *ngIf="ordering == '-solved'"><i data-feather="chevron-down"></i></span>
+            </a>
+          </th>
         </tr>
       </thead>
   
@@ -35,12 +73,17 @@
                 <i [data-feather]="'not_exists' | iconName" class="text-danger" [size]="16"></i>  
                 {{ 'Checker' | translate }}
               </span>
+
+              <span *ngIf="problem.hidden" class="badge mt-50 badge-pill badge-light-warning">
+                <i [data-feather]="'eye-off'" class="text-warning" [size]="16"></i>
+                {{ 'Hidden' | translate }}
+              </span>
             </a>
           </td>
   
           <td>
             <button
-              class="btn btn-gradient-primary round btn-sm"
+              class="btn btn-primary round btn-sm"
               *ngFor="let tag of problem.tags"
               (click)="tagOnClick(tag.id)"
             >
@@ -76,12 +119,30 @@
       </tbody>
       <tfoot>
         <tr>
-          <th>ID</th>
-          <th>{{ 'TITLE' | translate }}</th>
-          <th>{{ 'TAGS' | translate }}</th>
-          <th class="text-center">{{ 'DIFFICULTY' | translate }}</th>
-          <th class="text-center">{{ 'RATING' | translate }}</th>
-          <th class="text-center">{{ 'ATTEMPTS' | translate }}</th>
+          <th>
+            <i class="mr-50" [data-feather]="'problem' | iconName"></i>
+            ID
+          </th>
+          <th>
+            <i class="mr-50" [data-feather]="'edit-3'"></i>
+            {{ 'TITLE' | translate }}
+          </th>
+          <th>
+            <i class="mr-50" [data-feather]="'activity'"></i>
+            {{ 'TAGS' | translate }}
+          </th>
+          <th class="text-center">
+            <i class="mr-50" [data-feather]="'bar-chart'"></i>
+            {{ 'DIFFICULTY' | translate }}
+          </th>
+          <th class="text-center">
+            <i class="mr-50" [data-feather]="'star'"></i>
+            {{ 'RATING' | translate }}
+          </th>
+          <th class="text-center">
+            <i class="mr-50" [data-feather]="'attempt' | iconName"></i>
+            {{ 'ATTEMPTS' | translate }}
+          </th>
         </tr>
       </tfoot>
     </table>
