@@ -1,0 +1,53 @@
+.header-section {
+  margin-bottom: 530px;
+  
+  @media (min-width: 1799px) {
+    margin-bottom: 630px;
+  }
+}
+
+swiper.swiper-news {
+  height: 570px !important;
+}
+
+swiper.swiper-contests {
+  height: 100%;
+}
+
+section {
+  margin: 0.6rem 0rem 0.8rem 0rem;
+
+  swiper {
+    height: 190px;
+    width: 100%;
+
+    .swiper-slide {
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .container-image {
+      position: relative;
+      text-align: center;
+      color: white;
+
+      h3 {
+        position: absolute;
+        top: 8px;
+        left: 16px;
+      }
+    }
+
+    img {
+      border-radius: 8px;
+      background-position: center center;
+      background-size: cover;
+      overflow: hidden;
+      position: relative;
+    }
+  }
+}
+
+::ng-deep .dark-layout .section-statistics {
+  background: linear-gradient(92.32deg, #283046 47.03%, #536492 100.95%) !important;
+}
