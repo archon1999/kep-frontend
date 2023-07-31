@@ -19,26 +19,32 @@
   </div>
 </div>
 
-<ul [@fadeInLeftOnEnter] ngbNav #navFilled="ngbNav" class="nav-tabs nav-fill nav-tournament">
-  <li ngbNavItem>
+<ul
+  [(activeId)]="activeId"
+  (navChange)="tabChange($event)"
+  [@fadeInLeftOnEnter]
+  ngbNav
+  #navFilled="ngbNav"
+  class="nav-tabs nav-fill nav-tournament">
+  <li ngbNavItem [ngbNavItem]="1">
     <a ngbNavLink>{{ 'Info' | translate }}</a>
     <ng-template ngbNavContent>
       <tournament-info [tournament]="tournament"></tournament-info>
     </ng-template>
   </li>
-  <li ngbNavItem>
+  <li ngbNavItem [ngbNavItem]="2">
     <a ngbNavLink>{{ 'Duels' | translate }}</a>
     <ng-template ngbNavContent>
       <tournament-duels [tournament]="tournament"></tournament-duels>
     </ng-template>
   </li>
-  <li ngbNavItem>
+  <li ngbNavItem [ngbNavItem]="3">
     <a ngbNavLink>{{ 'Results' | translate }}</a>
     <ng-template ngbNavContent>
       <tournament-bracket [tournament]="tournament"></tournament-bracket>
     </ng-template>
   </li>
-  <li ngbNavItem>
+  <li ngbNavItem [ngbNavItem]="4">
     <a ngbNavLink>{{ 'Schedule' | translate }}</a>
     <ng-template ngbNavContent>
       <tournament-schedule [tournament]="tournament"></tournament-schedule>

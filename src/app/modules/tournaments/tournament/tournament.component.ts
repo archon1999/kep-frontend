@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Tournament } from '../tournaments.models';
 import { TournamentsService } from '../tournaments.service';
+import { SessionStorageService } from 'app/shared/storages/session-storage.service';
 
 @Component({
   selector: 'app-tournament',
@@ -22,7 +23,10 @@ export class TournamentComponent implements OnInit, OnDestroy {
 
   public tournament: Tournament;
 
-  public currentUser: User;
+  public activeId = 0;
+  public tournamentTabKeyName: string;
+
+  public currentUser: User | null;
   public canRegistration = false;
 
   private _unsubscribeAll = new Subject();
@@ -32,11 +36,14 @@ export class TournamentComponent implements OnInit, OnDestroy {
     public authService: AuthenticationService,
     public service: TournamentsService,
     public titleService: TitleService,
+    public sessionStorageService: SessionStorageService,
   ) { }
 
   ngOnInit(): void {
     this.route.data.subscribe(({ tournament }) => {
       this.tournament = tournament;
+      this.tournamentTabKeyName = `tournament-${this.tournament.id}-tab`;
+      this.activeId = this.sessionStorageService.get(this.tournamentTabKeyName) || 1;
       this.titleService.updateTitle(this.route, { tournamentTitle: this.tournament.title });
       if((new Date(this.tournament.startTime).valueOf() - Date.now()) >= 1000*60*10){
         this.canRegistration = true;
@@ -48,6 +55,10 @@ export class TournamentComponent implements OnInit, OnDestroy {
         this.currentUser = user;
       }
     )
+  }
+
+  tabChange(event){
+    this.sessionStorageService.set(this.tournamentTabKeyName, event.nextId);
   }
 
   registration(){
