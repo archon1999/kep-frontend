@@ -59,7 +59,7 @@
       </div>
     </div>
 
-    <div class="col-lg-8 offset-lg-2 mb-2">
+    <div class="col-lg-8 offset-lg-2 mb-2 mt-md-0 mt-4">
       <contests-section-categories (change)="contestCategoryClick($event)"></contests-section-categories>
     </div>
 
@@ -76,7 +76,7 @@
 
       <ngb-pagination *ngIf="contests.length > 0" [collectionSize]="totalContests" [(page)]="currentPage"
         [pageSize]="7" [maxSize]="5" [rotate]="true" (pageChange)="reloadContests()"
-        class="d-flex justify-content-center mt-2">
+        class="d-flex mb-2 justify-content-center mt-2">
         <ng-template ngbPaginationPrevious><span [data-feather]="'chevron-left'" [size]="18"
             [class]="'font-weight-bolder'"></span>
         </ng-template>
