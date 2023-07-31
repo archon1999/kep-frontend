@@ -12,13 +12,26 @@
             <div [@fadeInRight]="startAnimationState" class="col-lg-3 col-md-6 col-sm-12">
               <section-info></section-info>
             </div>
-            <div class="col-12" [@fadeInLeft]="startAnimationState">
-              <section-study-plans></section-study-plans>                  
-            </div>
           </div>
-          <section-topics (topicClick)="topicClick($event)"></section-topics>
-          <section-problems-filter (filterChange)="filterChange($event)"></section-problems-filter>
-          <section-problems-table (tagClick)="tagClick($event)" [problems]="problems"></section-problems-table>
+
+          <div class="col-12" [@fadeInLeft]="startAnimationState">
+            <section-study-plans></section-study-plans>                  
+          </div>
+
+          <section-topics
+            (topicClick)="topicClick($event)">
+          </section-topics>
+
+          <section-problems-filter
+            (filterChange)="filterChange($event)">
+          </section-problems-filter>
+
+          <section-problems-table
+            (changeOrdering)="setOrdering($event)"
+            (tagClick)="tagClick($event)"
+            [problems]="problems">
+          </section-problems-table>
+
           <ngb-pagination
             *ngIf="problems.length > 0"
             [collectionSize]="problemsCount"
@@ -26,7 +39,7 @@
             [pageSize]="20"
             [maxSize]="5"
             [rotate]="true"
-            (pageChange)="reloadProblems()"
+            (pageChange)="_problemsReloader.next()"
             class="d-flex justify-content-center mt-1 mb-1">
             <ng-template ngbPaginationPrevious>
               <span [data-feather]="'chevron-left'" [size]="18" [class]="'font-weight-bolder'"></span>
