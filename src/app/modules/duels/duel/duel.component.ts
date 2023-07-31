@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Duel, DuelProblem } from '../duels.models';
 import { DuelsService } from '../duels.service';
+import { TitleService } from 'app/title.service';
 
 @Component({
   templateUrl: './duel.component.html',
@@ -30,15 +31,23 @@ export class DuelComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     public authService: AuthenticationService,
     public service: DuelsService,
+    public titleService: TitleService,
   ) { }
 
   ngOnInit(): void {
     this.route.data.subscribe(({ duel }) => {
       this.duel = duel;
+      this.titleService.updateTitle(this.route, {
+        playerFirstUsername: duel.playerFirst.username,
+        playerSecondUsername: duel.playerSecond.username,
+      })
+
       if(this.duel.problems){
         this.changeProblem(this.duel.problems[0]);
       }
+
       this.changeLang(localStorage.getItem('problems-selected-lang')||'py');
+
       if(this.duel.status == 0){
         this._intervalId = setInterval(
           () => {
