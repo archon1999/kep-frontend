@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Attempt } from '../../models/attempts.models';
-import { ApiService } from 'app/api.service';
 import { ActivatedRoute } from '@angular/router';
-import { AuthenticationService } from 'app/auth/service';
+import { ApiService } from 'app/api.service';
 import { User } from 'app/auth/models';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { AuthenticationService } from 'app/auth/service';
+import { Subject, asyncScheduler } from 'rxjs';
+import { takeUntil, throttleTime } from 'rxjs/operators';
+import { Attempt } from '../../models/attempts.models';
+
+const RELOAD_INTERVAL_TIME = 30000;
 
 @Component({
   selector: 'app-attempts',
@@ -14,7 +16,7 @@ import { Subject } from 'rxjs';
 })
 export class AttemptsComponent implements OnInit, OnDestroy {
 
-  public contentHeader =  {
+  public contentHeader = {
     headerTitle: 'Attempts',
     actionButton: true,
     breadcrumb: {
@@ -29,14 +31,16 @@ export class AttemptsComponent implements OnInit, OnDestroy {
     }
   };
 
-  currentPage: number = 1;
-  totalAttemptsCount: number;
-  attempts: Array<Attempt> = [];
+  public currentPage: number = 1;
+  public totalAttemptsCount: number;
+  public attempts: Array<Attempt> = [];
 
-  myAttempts: boolean = false;
-  currentUser: User;
+  public myAttempts: boolean = false;
+  public currentUser: User;
 
-  _unsubscribeAll = new Subject();
+  private _reloader = new Subject();
+  private _unsubscribeAll = new Subject();
+  private _intervalId: any;
 
   constructor(
     public api: ApiService,
@@ -45,31 +49,42 @@ export class AttemptsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.authService.currentUser
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((user: any) => {
+    this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      (user: any) => {
         this.currentUser = user;
-        if(user){
+        if (user) {
           this.myAttempts = true;
         }
-        this.loadPage(this.currentPage);
-      });    
+        this._reloader.next();
+        this._intervalId = setInterval(() => this._reloader.next(), RELOAD_INTERVAL_TIME);
+      }
+    );
+
+    this._reloader.pipe(
+      throttleTime(500, asyncScheduler, { leading: true, trailing: true }),
+      takeUntil(this._unsubscribeAll),
+    ).subscribe(
+      () => {
+        this._loadPage();
+      }
+    )
   }
 
-  loadPage(pageNumber){
-    var params = { page: pageNumber };
-    if(this.myAttempts && this.currentUser){
-      params['username'] = this.currentUser.username;
+  private _loadPage() {
+    var params: any = { page: this.currentPage };
+    if (this.myAttempts && this.currentUser) {
+      params.username = this.currentUser.username;
     }
     this.api.get('attempts', params).subscribe((result: any) => {
-      if(this.myAttempts && params['username'] || !this.myAttempts && !params['username']){
-        this.attempts = result.data;
-        this.totalAttemptsCount = result.total;
-      }
+      this.attempts = result.data;
+      this.totalAttemptsCount = result.total;
     });
   }
 
   ngOnDestroy(): void {
+    if(this._intervalId){
+      clearInterval(this._intervalId);
+    }
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
   }
