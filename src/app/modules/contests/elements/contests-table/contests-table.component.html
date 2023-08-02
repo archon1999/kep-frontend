@@ -12,7 +12,13 @@
             {{ 'CONTESTS.PROBLEMS_COUNT' | translate }}
           </div>
         </th>
-        <th class="text-center">{{ 'CONTESTS.REGISTRANTS_COUNT' | translate }}
+        <th class="text-center">
+          <span *ngIf="contests.length > 0 && contests[0].status == -1">
+            {{ 'CONTESTS.REGISTRANTS_COUNT' | translate }}
+          </span>
+          <span *ngIf="contests.length > 0 && contests[0].status != -1">
+            {{ 'CONTESTS.CONTESTANTS_COUNT' | translate }}
+          </span>
         </th>
       </tr>
     </thead>
@@ -91,7 +97,13 @@
         <th class="text-center">{{ 'CONTESTS.FINISH_TIME' | translate }}</th>
         <th class="text-center">{{ 'CONTESTS.TYPE' | translate }}</th>
         <th class="text-center"></th>
-        <th class="text-center">{{ 'CONTESTS.REGISTRANTS_COUNT' | translate }}
+        <th class="text-center">
+          <span *ngIf="contests.length > 0 && contests[0].status == -1">
+            {{ 'CONTESTS.REGISTRANTS_COUNT' | translate }}
+          </span>
+          <span *ngIf="contests.length > 0 && contests[0].status != -1">
+            {{ 'CONTESTS.CONTESTANTS_COUNT' | translate }}
+          </span>
         </th>
       </tr>
     </tfoot>
