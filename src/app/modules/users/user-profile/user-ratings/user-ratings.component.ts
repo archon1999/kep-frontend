@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ContestsService } from '../../../contests/contests.service';
-import { ProblemsStatisticsService } from '../../../problems/problems-statistics.service';
+import { ProblemsStatisticsService } from '../../../problems/services/problems-statistics.service';
 import { UserChallengesRating, UserContestsRating, UserProblemsRating } from '../../users.models';
 import { UsersService } from '../../users.service';
 import { colors } from 'app/colors.const';
