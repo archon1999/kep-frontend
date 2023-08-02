@@ -5,7 +5,7 @@ import { fadeInOnEnterAnimation } from 'angular-animations';
 import { TitleService } from 'app/title.service';
 import { SwiperOptions } from 'swiper';
 import { StudyPlan } from '../../models/problems.models';
-import { ProblemsService } from '../../problems.service';
+import { ProblemsService } from '../../services/problems.service';
 
 @Component({
   selector: 'app-study-plan',

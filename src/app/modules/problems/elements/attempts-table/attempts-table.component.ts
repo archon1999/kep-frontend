@@ -7,7 +7,7 @@ import { AuthenticationService } from 'app/auth/service';
 import { WebsocketService } from 'app/websocket';
 import { ToastrService } from 'ngx-toastr';
 import { Attempt, Verdicts, WSAttempt } from '../../models/attempts.models';
-import { ProblemsService } from '../../problems.service';
+import { ProblemsService } from '../../services/problems.service';
 import { Contest } from 'app/modules/contests/contests.models';
 
 @Component({
@@ -97,14 +97,6 @@ export class AttemptsTableComponent implements OnInit {
         size: 'xl'
       });
     })
-  }
-
-  onPurchaseSuccess(attempt: Attempt){
-    attempt.canView = true;
-  }
-
-  onPurchaseTestSuccess(attempt: Attempt){
-    attempt.canTestView = true;
   }
 
   ngOnDestroy() {
