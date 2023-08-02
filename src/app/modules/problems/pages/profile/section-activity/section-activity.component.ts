@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { colors } from 'app/colors.const';
-import { ProblemsStatisticsService } from '../../../problems-statistics.service';
+import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
 
 @Component({
   selector: 'section-activity',

@@ -5,7 +5,7 @@ import { TitleService } from 'app/title.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Attempt } from '../../models/attempts.models';
-import { ProblemsService } from '../../problems.service';
+import { ProblemsService } from '../../services/problems.service';
 
 @Component({
   selector: 'app-attempt',

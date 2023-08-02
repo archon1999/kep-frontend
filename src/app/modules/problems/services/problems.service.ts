@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'app/api.service';
-import { ProblemFilter } from './models/problems.models';
-import { debounceTime, throttleTime } from 'rxjs/operators';
+import { ProblemFilter } from '../models/problems.models';
 
 @Injectable({
   providedIn: 'root'
@@ -86,6 +85,7 @@ export class ProblemsService {
     };
     return this.api.get('attempts', params);
   }
+
   getTags(){
     return this.api.get('tags');
   }
@@ -128,8 +128,8 @@ export class ProblemsService {
     return this.api.get(`problems/${problemId}/lang-statistics/`);
   }
   
-  getProblemTopAttempts(problemId: number, ordering: string, page: number=1, pageSize: number=10){
-    var params = { ordering: ordering };
+  getProblemTopAttempts(problemId: number, ordering: string, lang=null, page: number=1, pageSize: number=10){
+    var params = { ordering: ordering, lang: lang };
     return this.api.get(`problems/${problemId}/top-attempts/`, params);
   }
   
@@ -166,4 +166,5 @@ export class ProblemsService {
   problemDislike(problemId: number){
     return this.api.post(`problems/${problemId}/dislike/`);
   }
+
 }

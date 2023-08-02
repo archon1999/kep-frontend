@@ -144,9 +144,11 @@
             'text-success': attempt.verdict == 1,
             'text-danger': attempt.verdict != 1
           }">
-          <span class="font-small-3 mr-1">
-            {{ attempt.verdictTitle }}
-          </span>
+          <div class="mr-1">
+            <span class="font-small-3">
+              {{ attempt.verdictTitle }}
+            </span>
+          </div>
         </td>
       </tr>
     </tbody>
