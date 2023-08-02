@@ -54,4 +54,8 @@ export class BlogService {
     return this.api.post(`blog-comments/${commentId}/like/`);
   }
 
+  commentDelete(commentId: number | string){
+    return this.api.delete(`blog-comments/${commentId}/delete/`);
+  }
+
 }
