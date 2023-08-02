@@ -9,8 +9,8 @@ import { AuthenticationService } from 'app/auth/service';
 import { Subject, asyncScheduler } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 import { Problem, ProblemFilter } from '../../models/problems.models';
-import { ProblemsService } from '../../problems.service';
-import { ProblemsStatisticsService } from '../../problems-statistics.service';
+import { ProblemsService } from '../../services/problems.service';
+import { ProblemsStatisticsService } from '../../services/problems-statistics.service';
 
 @Component({
   selector: 'app-problems',

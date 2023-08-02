@@ -15,8 +15,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let attempt of attempts; index as i"
-          [ngClass]="{'bg-light-primary': attempt?.user?.username == currentUser?.username}">
+      <tr
+        *ngFor="let attempt of attempts; index as i"
+        [@fadeInOnEnter]  
+        [ngClass]="{'bg-light-primary': attempt?.user?.username == currentUser?.username}">
         <td>
           <a (click)="clicked.emit(attempt.id)" *ngIf="attempt.canView; else other;">
             <u>

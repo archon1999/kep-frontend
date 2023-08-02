@@ -3,7 +3,7 @@ import { CoreConfigService } from '@core/services/config.service';
 import { TranslateService } from '@ngx-translate/core';
 import { colors } from 'app/colors.const';
 import { takeUntil } from 'rxjs/operators';
-import { ProblemsStatisticsService } from '../../../problems-statistics.service';
+import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
 
 @Component({
   selector: 'section-heatmap',
