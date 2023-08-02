@@ -1,12 +1,13 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Problem } from '../../../models/problems.models';
-import { ProblemsService } from '../../../problems.service';
+import { ProblemsService } from 'app/modules/problems/services/problems.service';
 import { colors as Colors } from 'app/colors.const';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreConfig } from '@core/types';
 import { takeUntil } from 'rxjs/operators';
+import { LocalStorageService } from 'app/shared/storages/local-storage.service';
 
 @Component({
   selector: 'problem-sidebar',
@@ -34,6 +35,7 @@ export class ProblemSidebarComponent implements OnInit, OnDestroy {
     public service: ProblemsService,
     public translate: TranslateService,
     public coreConfigService: CoreConfigService,
+    public localStorageService: LocalStorageService,
   ) { }
 
   ngOnInit(): void {
@@ -234,7 +236,8 @@ export class ProblemSidebarComponent implements OnInit, OnDestroy {
 
   topAttemptsLoad(ordering: string){
     this.topAttemptsOrdering = ordering;
-    this.service.getProblemTopAttempts(this.problem.id, ordering).subscribe((result: any) => {
+    let lang = this.localStorageService.get('problems-selected-lang');
+    this.service.getProblemTopAttempts(this.problem.id, ordering, lang).subscribe((result: any) => {
       this.topAttempts = result;
     })
   }

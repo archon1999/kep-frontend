@@ -5,7 +5,7 @@ import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 import { Attempt } from '../../../../../problems/models/attempts.models';
-import { ProblemsService } from '../../../../../problems/problems.service';
+import { ProblemsService } from 'app/modules/problems/services/problems.service';
 import { TitleService } from 'app/title.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

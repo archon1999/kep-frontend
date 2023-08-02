@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { ProblemFilter, Tag } from '../../../../models/problems.models';
-import { ProblemsService } from '../../../../../problems/problems.service';
+import { ProblemsService } from 'app/modules/problems/services/problems.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LocalStorageService } from 'app/shared/storages/local-storage.service';

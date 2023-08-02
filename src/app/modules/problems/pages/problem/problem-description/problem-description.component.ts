@@ -5,7 +5,8 @@ import { AuthenticationService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AvailableLanguage, Problem } from '../../../models/problems.models';
-import { ProblemsService } from '../../../problems.service';
+import { ProblemsService } from 'app/modules/problems/services/problems.service';
+import { LocalStorageService } from 'app/shared/storages/local-storage.service';
 
 @Component({
   selector: 'problem-description',
@@ -31,11 +32,12 @@ export class ProblemDescriptionComponent implements OnInit, OnDestroy {
   constructor(
     public authService: AuthenticationService,
     public service: ProblemsService,
-    public modalService: NgbModal
+    public modalService: NgbModal,
+    public localStorageService: LocalStorageService,
   ) { }
 
   ngOnInit(): void {
-    this.changeLang(localStorage.getItem('problems-selected-lang')||'py');
+    this.changeLang(this.localStorageService.get('problems-selected-lang')||'py');
     window.onbeforeunload = () => this.ngOnDestroy();
 
     this.authService.currentUser
@@ -59,7 +61,7 @@ export class ProblemDescriptionComponent implements OnInit, OnDestroy {
       this.availableLang = this.problem.availableLanguages[0];
       this.selectedLang = this.availableLang.lang;
     }
-    localStorage.setItem('problems-selected-lang', this.selectedLang);
+    this.localStorageService.set('problems-selected-lang', this.selectedLang);
   }
 
   onPurchaseSolution(){
