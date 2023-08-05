@@ -34,5 +34,6 @@ export const colors = {
     text: '#000',
     cs: '#88359e',
     java: '#5283a2',
+    rs: '#999999',
   }
 };
