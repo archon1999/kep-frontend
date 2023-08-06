@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { fadeInRightOnEnterAnimation } from 'angular-animations';
+import { ProblemsFilterService } from 'app/modules/problems/services/problems-filter.service';
 import { SwiperOptions } from 'swiper';
 
 @Component({
@@ -9,8 +10,6 @@ import { SwiperOptions } from 'swiper';
   animations: [fadeInRightOnEnterAnimation({ duration: 3000 })]
 })
 export class SectionTopicsComponent implements OnInit {
-
-  @Output() topicClick = new EventEmitter<number>();
 
   public activeTopic = 0;
 
@@ -37,13 +36,15 @@ export class SectionTopicsComponent implements OnInit {
     }
   }
 
-  constructor() { }
+  constructor(
+    public filterService: ProblemsFilterService,
+  ) { }
 
   ngOnInit(): void {}
 
   click(topicId: number) {
     this.activeTopic = topicId;
-    this.topicClick.emit(topicId);
+    this.filterService.updateFilter({ topic: topicId });
   }
 
 }

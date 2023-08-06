@@ -37,19 +37,19 @@
 
       <div *ngIf="top3Contestants.length > 0" class="mt-2 row">
         <div class="col contestant mt-1" [@bounce]="animationState[0]" (mouseenter)="animationState[0]=true;">
-          <img width="32" height="32" src="assets/images/icons/contest-medal-2.png">
+          <img width="32" height="32" src="../../../../../../assets/images/icons/contest-medal-2.png">
           <br>
           <contestant-view [teamNameColor]="'white'" [textColor]="'white'" [user]="top3Contestants[1].user" [team]="top3Contestants[1].team"></contestant-view>
         </div>
 
         <div class="col contestant" [@bounce]="animationState[1]" (mouseenter)="animationState[1]=true;">
-          <img width="32" height="32" src="assets/images/icons/contest-medal-1.png">
+          <img width="32" height="32" src="../../../../../../assets/images/icons/contest-medal-1.png">
           <br>
           <contestant-view [teamNameColor]="'white'" [textColor]="'white'" [user]="top3Contestants[0].user" [team]="top3Contestants[0].team"></contestant-view>
         </div>
 
         <div class="col contestant mt-2" [@bounce]="animationState[2]" (mouseenter)="animationState[2]=true;">
-          <img width="32" height="32" src="assets/images/icons/contest-medal-3.png">
+          <img width="32" height="32" src="../../../../../../assets/images/icons/contest-medal-3.png">
           <br>
           <contestant-view [teamNameColor]="'white'" [textColor]="'white'" [user]="top3Contestants[2].user" [team]="top3Contestants[2].team"></contestant-view>
         </div>
@@ -85,13 +85,13 @@
           class="mr-1"
           ngbTooltip="{{ 'DoubleRating' | translate }}"
         >
-          <img height="25" src="assets/images/icons/x2-delta.png">
+          <img height="25" src="../../../../../../assets/images/icons/x2-delta.png">
         </kepcoin-spend-swal>
         <img
           ngbTooltip="{{ 'Purchased' | translate }}"
           *ngIf="contest.isRegistered && contest.isRated && contest.doubleRatingPurchased"
           height="25"
-          src="assets/images/icons/x2-delta.png"
+          src="../../../../../../assets/images/icons/x2-delta.png"
           class="mr-1"
         >    
         <kepcoin-spend-swal
@@ -103,13 +103,13 @@
           class="mr-1"
           ngbTooltip="{{ 'SaveRating' | translate }}"
         >
-          <img height="25" src="assets/images/icons/save-rating.png">    
+          <img height="25" src="../../../../../../assets/images/icons/save-rating.png">
         </kepcoin-spend-swal>
         <img
           ngbTooltip="{{ 'Purchased' | translate }}"
           *ngIf="contest.isRegistered && contest.isRated && contest.saveRatingPurchased"
           height="25"
-          src="assets/images/icons/save-rating.png"
+          src="../../../../../../assets/images/icons/save-rating.png"
           class="mr-1"
         >    
         <button

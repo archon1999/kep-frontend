@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreConfig } from '@core/types';
-import { Contest } from '../../../../contests/contests.models';
+import { CoreConfigService } from '../../../../../../@core/services/config.service';
+import { CoreConfig } from '../../../../../../@core/types';
+import { Contest } from '../../../contests.models';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

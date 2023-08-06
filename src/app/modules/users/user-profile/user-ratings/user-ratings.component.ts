@@ -6,7 +6,7 @@ import { ProblemsStatisticsService } from '../../../problems/services/problems-s
 import { UserChallengesRating, UserContestsRating, UserProblemsRating } from '../../users.models';
 import { UsersService } from '../../users.service';
 import { colors } from 'app/colors.const';
-import { ChallengesService } from '../../../challenges/challenges.service';
+import { ChallengesService } from '../../../challenges/services/challenges.service';
 import { Subject } from 'rxjs';
 import { CoreConfigService } from '@core/services/config.service';
 import { takeUntil } from 'rxjs/operators';

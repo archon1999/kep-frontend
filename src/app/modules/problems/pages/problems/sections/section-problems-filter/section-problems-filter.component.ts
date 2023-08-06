@@ -1,11 +1,12 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
-import { ProblemFilter, Tag } from '../../../../models/problems.models';
+import { ProblemsFilter, Tag } from '../../../../models/problems.models';
 import { ProblemsService } from 'app/modules/problems/services/problems.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LocalStorageService } from 'app/shared/storages/local-storage.service';
+import { ProblemsFilterService } from 'app/modules/problems/services/problems-filter.service';
 
 interface Difficulty {
   id: number;
@@ -19,9 +20,7 @@ interface Difficulty {
 })
 export class SectionProblemsFilterComponent implements OnInit, OnDestroy {
 
-  @Output() filterChange = new EventEmitter<ProblemFilter>();
-
-  public filter: ProblemFilter;
+  public filter: ProblemsFilter;
 
   public tags: Array<Tag> = [];
   public difficulties: Array<Difficulty> = [];
@@ -34,6 +33,7 @@ export class SectionProblemsFilterComponent implements OnInit, OnDestroy {
     public service: ProblemsService,
     public authService: AuthenticationService,
     public localStorageService: LocalStorageService,
+    public problemsFilterService: ProblemsFilterService,
   ) { }
 
   ngOnInit(): void {
@@ -43,13 +43,11 @@ export class SectionProblemsFilterComponent implements OnInit, OnDestroy {
       }
     )
 
-    let problemsFilter = localStorage.getItem('problemsFilter');
-    if(problemsFilter){
-      this.filter = JSON.parse(problemsFilter);
-      this.reload();
-    } else {
-      this.resetFilter();
-    }
+    this.problemsFilterService.getFilter().subscribe(
+      (filter: ProblemsFilter) => {
+        this.filter = filter;
+      }
+    )
 
     this.service.getTags().subscribe(
       (tags: any) => {
@@ -65,20 +63,9 @@ export class SectionProblemsFilterComponent implements OnInit, OnDestroy {
   }
 
   reload() {
-    setTimeout(() => {      
-      this.filterChange.emit(this.filter);
-      this.localStorageService.set('problemsFilter', this.filter);
+    setTimeout(() => {    
+      this.problemsFilterService.updateFilter(this.filter);
     }, 100);
-  }
-
-  resetFilter() {
-    this.filter = {
-      title: '',
-      tags: [],
-      difficulty: null,
-      status: null,
-    };
-    this.reload();
   }
 
   ngOnDestroy(): void {

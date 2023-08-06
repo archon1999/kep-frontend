@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { fadeInOnEnterAnimation } from 'angular-animations';
-import { ApiService } from 'app/shared/services/api.service';
-import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
-import { Contest, ContestStatus } from '../../../../contests/contests.models';
+import { ApiService } from '../../../../../shared/services/api.service';
+import { User } from '../../../../../auth/models';
+import { AuthenticationService } from '../../../../../auth/service';
+import { Contest, ContestStatus } from '../../../contests.models';
 
 @Component({
   selector: 'contest-card-big',

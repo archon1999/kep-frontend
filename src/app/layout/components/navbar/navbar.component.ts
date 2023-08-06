@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthModalComponent } from 'app/auth/auth-modal/auth-modal.component';
-import { ApiService } from 'app/api.service';
+import { ApiService } from 'app/shared/services/api.service';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
