@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
-import { Attempt } from '../../problems/models/attempts.models';
+import { User } from '../../../../auth/models';
+import { AuthenticationService } from '../../../../auth/service';
+import { Attempt } from '../../../problems/models/attempts.models';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Duel, DuelProblem } from '../duels.models';
-import { DuelsService } from '../duels.service';
-import { TitleService } from 'app/shared/services/title.service';
+import { Duel, DuelProblem } from '../../duels.models';
+import { DuelsService } from '../../duels.service';
+import { TitleService } from '../../../../shared/services/title.service';
 
 @Component({
   templateUrl: './duel.component.html',

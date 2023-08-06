@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { fadeInLeftAnimation, fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightAnimation, fadeInRightOnEnterAnimation, fadeInUpAnimation, fadeInUpOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthenticationService } from '../../../../auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { User } from '../users/users.models';
-import { Challenge, ChallengeCall, ChallengesRating } from './challenges.models';
-import { ChallengesService } from './challenges.service';
+import { User } from '../../../users/users.models';
+import { Challenge, ChallengeCall, ChallengesRating } from '../../models/challenges.models';
+import { ChallengesService } from '../../services/challenges.service';
 
 interface NewChallengeCall {
   timeSeconds: number;

@@ -16,7 +16,7 @@
     </thead>
     <tbody>
       <tr
-        *ngFor="let attempt of attempts; index as i"
+        *ngFor="let attempt of attempts; index as i; trackBy:identify"
         [@fadeInOnEnter]  
         [ngClass]="{'bg-light-primary': attempt?.user?.username == currentUser?.username}">
         <td>

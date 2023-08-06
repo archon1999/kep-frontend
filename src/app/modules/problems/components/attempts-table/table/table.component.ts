@@ -50,4 +50,8 @@ export class TableComponent implements OnInit {
     attempt.canTestView = true;
   }
 
+  identify(index, attempt){
+    return attempt.id;
+  }
+
 }

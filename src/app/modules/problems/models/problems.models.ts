@@ -1,92 +1,65 @@
-export class Problem {
-  constructor(
-    public id: number,
-    public authorUsername: string,
-    public title: string,
-    public difficulty: number,
-    public difficultyTitle: string,
-    public likesCount: number,
-    public dislikesCount: number,
-    public voteType: number,
-    public solved: number,
-    public notSolved: number,
-    public attemptsCount: number,
-    public hasSolved: boolean,
-    public canViewSolution: boolean,
-    public hasAttempted: boolean,
-    public hasChecker: boolean,
-    public hasSolution: boolean,
-    public tags: Array<Tag>,
-    public timeLimit: number,
-    public memoryLimit: number,
-    public body: string,
-    public inputData: string,
-    public outputData: string,
-    public comment: string,
-    public sampleTests: Array<SampleTest>,
-    public codeTemplate: string,
-    public availableLanguages: Array<AvailableLanguage>,
-    public image: string,
-    public hidden: boolean,
-  ) { }
+import { AttemptLangs } from "../enums";
+
+export interface Problem {
+  id: number;
+  authorUsername: string;
+  title: string
+  difficulty: number;
+  difficultyTitle: string;
+  likesCount: number;
+  dislikesCount: number;
+  voteType: number;
+  solved: number;
+  notSolved: number;
+  attemptsCount: number;
+  hasSolved: boolean;
+  canViewSolution: boolean;
+  hasAttempted: boolean;
+  hasChecker: boolean;
+  hasSolution: boolean;
+  tags: Array<Tag>;
+  timeLimit: number;
+  memoryLimit: number;
+  body: string;
+  inputData: string;
+  outputData: string;
+  comment: string;
+  sampleTests: Array<SampleTest>;
+  codeTemplate: string;
+  availableLanguages: Array<AvailableLanguage>;
+  image: string;
+  hidden: boolean;
 }
 
-export class AvailableLanguage {
-  constructor(
-    public lang: string,
-    public timeLimit: number | null,
-    public memoryLimit: number | null,
-    public codeTemplate: string,
-  ) { }
+export interface AvailableLanguage {
+  lang: AttemptLangs;
+  timeLimit: number | null;
+  memoryLimit: number | null;
+  codeTemplate: string;
 }
 
-export class SampleTest {
-  constructor(
-    public input: string,
-    public output: string
-  ) { }
+export interface SampleTest {
+  input: string;
+  output: string
 }
 
-export class Difficulty {
-  constructor(
-    public value: number,
-    public name: string,
-  ) { }
+export interface Difficulty {
+  value: number;
+  name: string;
 }
 
-export enum Difficulties {
-  Beginner = 1,
-  Basic = 2,
-  Normal = 3,
-  Medium = 4,
-  Advanced = 5,
-  Hard = 6,
-  Extremal = 7,
+export interface Tag {
+  name: string;
+  id: number;
 }
 
-export enum DifficultyLabels {
-  Beginner = 'beginner',
-  Basic = 'basic',
-  Normal = 'normal',
-  Medium = 'medium',
-  Advanced = 'advanced',
-  Hard = 'hard',
-  Extremal = 'extremal',
-}
-
-export class Tag {
-  constructor(
-    public name: string,
-    public id: number,
-  ) { }
-}
-
-export interface ProblemFilter {
-  title?: string;
-  tags?: Array<number>;
-  difficulty?: number;
-  status?: number;
-  topic?: number;
+export interface ProblemsFilter {
+  title: string;
+  tags: Array<number>;
+  difficulty: number;
+  status: number;
+  topic: number;
+  ordering: string;
 }
 
 export interface StudyPlanDay {

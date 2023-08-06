@@ -1,12 +1,13 @@
-import { Component, Input, OnInit, ViewChild, TemplateRef, ViewEncapsulation, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { Attempt, Verdicts, WSAttempt } from '../../../../../../problems/models/attempts.models';
-import { AuthenticationService } from 'app/auth/service';
-import { WebsocketService } from 'app/websocket';
-import { ApiService } from 'app/api.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { CoreConfigService } from '@core/services/config.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
+import { ApiService } from 'app/shared/services/api.service';
+import { AuthenticationService } from 'app/auth/service';
+import { Verdicts } from 'app/modules/problems/enums/verdicts.enum';
+import { Attempt, WSAttempt } from 'app/modules/problems/models/attempts.models';
+import { WebsocketService } from 'app/websocket';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'problem-attempts-table',

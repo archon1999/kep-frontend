@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { Blog } from '../../../../modules/blog/blog.models';
+import { Blog } from '../../../blog.models';
 
 @Component({
   selector: 'blog-post-card',

@@ -1,16 +1,16 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Challenge } from '../challenges.models';
-import { ChallengesService } from '../challenges.service';
+import { Challenge } from '../../models/challenges.models';
+import { ChallengesService } from '../../services/challenges.service';
 import Swal from 'sweetalert2';
 import { SwalComponent, SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2';
-import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfigService } from '../../../../../@core/services/config.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { CoreConfig } from '@core/types';
+import { CoreConfig } from '../../../../../@core/types';
 import { CountdownComponent } from '@ciri/ngx-countdown';
 import { DragulaService } from 'ng2-dragula';
-import { TitleService } from 'app/shared/services/title.service';
+import { TitleService } from '../../../../shared/services/title.service';
 
 @Component({
   selector: 'app-challenge',
@@ -62,29 +62,29 @@ export class ChallengeComponent implements OnInit, OnDestroy {
     });
 
     this.route.data.subscribe(({ challenge }) => {
-      this.challenge = Challenge.fronJSON(challenge);
+      this.challenge = Challenge.fromJSON(challenge);
       this.titleService.updateTitle(this.route, {
         playerFirstUsername: challenge.playerFirst.username,
         playerSecondUsername: challenge.playerSecond.username,
-      })
+      });
       this.updateStatus();
-    })
+    });
 
     this.coreConfigService.getConfig()
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((config: CoreConfig) => {
-        if(config.layout.skin == 'dark'){
+        if (config.layout.skin === 'dark'){
           this.editorOptions = {
             theme: 'vs-dark',
             language: 'python',
-          }
+          };
         } else {
           this.editorOptions = {
             theme: 'vs-light',
             language: 'python',
-          }
+          };
         }
-      })
+      });
   }
 
   updateStatus(){
@@ -182,7 +182,7 @@ export class ChallengeComponent implements OnInit, OnDestroy {
   challengeUpdate(){
     this.service.getChallenge(this.challenge.id).subscribe(
       (challenge: Challenge) => {
-        this.challenge = Challenge.fronJSON(challenge);
+        this.challenge = Challenge.fromJSON(challenge);
         this.updateStatus();
       }
     )

@@ -8,6 +8,8 @@ import { CoreConfigService } from '@core/services/config.service';
 import { CoreConfig } from '@core/types';
 import { takeUntil } from 'rxjs/operators';
 import { LocalStorageService } from 'app/shared/storages/local-storage.service';
+import { LanguageService } from 'app/modules/problems/services/language.service';
+import { AttemptLangs } from 'app/modules/problems/enums';
 
 @Component({
   selector: 'problem-sidebar',
@@ -22,6 +24,7 @@ export class ProblemSidebarComponent implements OnInit, OnDestroy {
   public langStatisticsChart: any;
   public attemptsForSolveChart: any;
 
+  public selectedLang: string;
   public topAttemptsOrdering = 'source_code_size';
   public topAttempts: Array<any> = [];
 
@@ -35,7 +38,7 @@ export class ProblemSidebarComponent implements OnInit, OnDestroy {
     public service: ProblemsService,
     public translate: TranslateService,
     public coreConfigService: CoreConfigService,
-    public localStorageService: LocalStorageService,
+    public langService: LanguageService,
   ) { }
 
   ngOnInit(): void {
@@ -53,7 +56,12 @@ export class ProblemSidebarComponent implements OnInit, OnDestroy {
       }
     )
 
-    this.topAttemptsLoad(this.topAttemptsOrdering);
+    this.langService.getLanguage().pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      (lang: AttemptLangs) => {
+        this.selectedLang = lang;
+        this.topAttemptsLoad(this.topAttemptsOrdering);
+      }
+    )
 
     this.service.getProblemVerdictStatistics(this.problem.id).subscribe((result: any) => {
       let series = [];
@@ -236,10 +244,11 @@ export class ProblemSidebarComponent implements OnInit, OnDestroy {
 
   topAttemptsLoad(ordering: string){
     this.topAttemptsOrdering = ordering;
-    let lang = this.localStorageService.get('problems-selected-lang');
-    this.service.getProblemTopAttempts(this.problem.id, ordering, lang).subscribe((result: any) => {
-      this.topAttempts = result;
-    })
+    this.service.getProblemTopAttempts(this.problem.id, ordering, this.selectedLang).subscribe(
+      (result: any) => {
+        this.topAttempts = result;
+      }
+    )
   }
 
   ngOnDestroy(): void {    

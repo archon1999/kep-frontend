@@ -8,8 +8,8 @@ import { ContentHeaderModule } from 'app/layout/components/content-header/conten
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { CountUpModule } from 'ngx-countup';
 import { NgxUsefulSwiperModule } from 'ngx-useful-swiper';
-import { BlogPostCardModule } from '../../shared/components/blog-post-card/blog-post-card.module';
-import { ContestCardModule } from '../contests/elements/contest-card/contest-card.module';
+import { BlogPostCardModule } from '../blog/components/blog-post-card/blog-post-card.module';
+import { ContestCardModule } from '../contests/components/contest-card/contest-card.module';
 import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
 import { HomeComponent } from './home.component';
 import { NewsSectionComponent } from './news-section/news-section.component';

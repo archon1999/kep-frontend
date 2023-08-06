@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ArenaPlayerStatistics } from '../arena.models';
+import { ArenaPlayerStatistics } from '../../arena.models';
 
 @Component({
   selector: 'arena-player-statistics',

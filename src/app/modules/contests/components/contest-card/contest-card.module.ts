@@ -5,8 +5,8 @@ import { TranslateModule } from "@ngx-translate/core";
 import { ContestCardBigComponent } from "./contest-card-big/contest-card-big.component";
 import { ContestCardComponent } from "./contest-card/contest-card.component";
 import { ContestCardSmallComponent } from "./contest-card-small/contest-card-small.component";
-import { CorePipesModule } from "@core/pipes/pipes.module";
-import { CoreDirectivesModule } from "@core/directives/directives";
+import { CorePipesModule } from "../../../../../@core/pipes/pipes.module";
+import { CoreDirectivesModule } from "../../../../../@core/directives/directives";
 import { KepcoinSpendSwalModule } from "../../../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module";
 import { NgbTooltipModule } from "@ng-bootstrap/ng-bootstrap";
 import { CountdownModule } from '@ciri/ngx-countdown'
