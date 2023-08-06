@@ -20,7 +20,7 @@
         [@fadeInOnEnter]  
         [ngClass]="{'bg-light-primary': attempt?.user?.username == currentUser?.username}">
         <td>
-          <a (click)="clicked.emit(attempt.id)" *ngIf="attempt.canView; else other;">
+          <a  href="javascript:;" (click)="clicked.emit(attempt.id)" *ngIf="attempt.canView; else other;">
             <u>
               {{ attempt.id }}
             </u>
@@ -49,7 +49,7 @@
 
         <td>
           <span class="badge badge-glow badge-{{ attempt.lang }}">
-            {{ attempt.lang | langFullName }}
+            {{ attempt.langFull }}
           </span>
         </td>
 
@@ -74,44 +74,55 @@
         </td>
 
         <td [@bounce]="attempt.animationAcceptedState" [@shake]="attempt.animationWrongState">
-          <div *ngIf="attempt.verdict != 1 && attempt.testCaseNumber > 1; else elseBlock">
-            <div *ngIf="!attempt.canTestView">
-              <ng-template #tipContent>
-                Testni ko'rish <kepcoin-view [value]="1"></kepcoin-view>
-              </ng-template>
-              <kepcoin-spend-swal
-                [ngbTooltip]="tipContent"
-                [purchaseUrl]="'attempts/' + attempt.id + '/purchase-test/'"
-                [value]="1"
-                [customContent]="true"
-                (success)="onPurchaseTestSuccess(attempt)">
-                <div [innerHTML]="attempt | attemptVerdictHTML"></div>
-              </kepcoin-spend-swal>
-            </div>
-
-            <div *ngIf="attempt.canTestView">
-              <a ngbTooltip="Testni ko'rish"
-                href="/api/attempts/{{ attempt.id }}/failed-test?number={{ attempt.testCaseNumber }}">
-                <div [innerHTML]="attempt | attemptVerdictHTML"></div>
-              </a>
-            </div>
+          <div *ngIf="contest && !currentUser?.isSuperuser; else elseBlock" [innerHTML]="attempt | attemptVerdictHTML">
           </div>
 
           <ng-template #elseBlock>
-            <div [innerHTML]="attempt | attemptVerdictHTML"></div>
+            <div *ngIf="attempt.verdict != 1 && attempt.testCaseNumber > 1; else elseBlock">
+              <div *ngIf="!attempt.canTestView">
+                <ng-template #tipContent>
+                  {{ 'ViewTest' | translate }} <kepcoin-view [value]="1"></kepcoin-view>
+                </ng-template>
+                <kepcoin-spend-swal
+                  [ngbTooltip]="tipContent"
+                  [purchaseUrl]="'attempts/' + attempt.id + '/purchase-test/'"
+                  [value]="1"
+                  [customContent]="true"
+                  (success)="onPurchaseTestSuccess(attempt)">
+                  <div [innerHTML]="attempt | attemptVerdictHTML"></div>
+                </kepcoin-spend-swal>
+              </div>
+  
+              <div *ngIf="attempt.canTestView">
+                <a ngbTooltip="{{ 'ViewTest' | translate }}"
+                  href="https://cpython.uz/api/attempts/{{ attempt.id }}/failed-test?number={{ attempt.testCaseNumber }}">
+                  <div [innerHTML]="attempt | attemptVerdictHTML"></div>
+                </a>
+              </div>
+            </div>
+  
+            <ng-template #elseBlock>
+              <div [innerHTML]="attempt | attemptVerdictHTML"></div>
+            </ng-template>  
           </ng-template>
         </td>
 
         <td>
-          <span class="badge badge-info badge-pill">{{ attempt.time }} {{ 'MS' | translate }}</span>
+          <span class="badge badge-info badge-pill">
+            {{ attempt.time }} {{ 'MS' | translate }}
+          </span>
         </td>
 
         <td>
-          <span class="badge badge-primary badge-pill">{{ attempt.memory }} {{ 'KB' | translate }}</span>
+          <span class="badge badge-primary badge-pill">
+            {{ attempt.memory }} {{ 'KB' | translate }}
+          </span>
         </td>
 
         <td *ngIf="!hideSourceCodeSize">
-          <span class="badge badge-dark badge-pill">{{ attempt.sourceCodeSize }}</span>
+          <span class="badge badge-dark badge-pill">
+            {{ attempt.sourceCodeSize }}
+          </span>
         </td>
 
         <td *ngIf="currentUser?.isSuperuser">
