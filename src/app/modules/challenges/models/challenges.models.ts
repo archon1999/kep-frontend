@@ -44,13 +44,13 @@ export class Challenge {
     public status?: number,
   ) {}
 
-  static fronJSON(challenge: Challenge){
-    if(challenge.nextQuestion.number > 0){
-      for(let i = challenge.nextQuestion.number-1; i < challenge.questionsCount; i++){
-        if(challenge.playerFirst.results[i] == 1){
+  static fromJSON(challenge: Challenge) {
+    if (challenge.nextQuestion.number > 0) {
+      for (let i = challenge.nextQuestion.number - 1; i < challenge.questionsCount; i++){
+        if (challenge.playerFirst.results[i] === 1) {
           challenge.playerFirst.result--;
         }
-        if(challenge.playerSecond.results[i] == 1){
+        if (challenge.playerSecond.results[i] === 1) {
           challenge.playerSecond.result--;
         }
         challenge.playerFirst.results[i] = -1;

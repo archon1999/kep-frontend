@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { fadeInOnEnterAnimation } from 'angular-animations';
-import { ApiService } from 'app/api.service';
+import { ApiService } from 'app/shared/services/api.service';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { Contest, ContestStatus } from '../../../../contests/contests.models';

@@ -183,9 +183,19 @@
     background-color: #8BC6EC !important;
     box-shadow: 0px 0px 10px #8BC6EC !important;
   }
+
+
+  .bg-gradient-chapter-13 {
+    background-image: linear-gradient(45deg, #6295cb, #00427e);
+  }
   
-  .text-chapter-12 {
-    color: #8BC6EC;
+  .bg-chapter-13 {
+    background-color: #74b1f1 !important;
+    box-shadow: 0px 0px 10px #74b1f1 !important;
+  }
+  
+  .text-chapter-13 {
+    color: #74b1f1;
   }
 
   .dark-layout {
@@ -296,6 +306,20 @@
       background-color: #4889b4 !important;
       box-shadow: 0px 0px 10px #4889b4 !important;
     }
+
+    .bg-gradient-chapter-13 {
+      background-image: linear-gradient(45deg, #00294d, #00427e);
+    }
+    
+    .bg-chapter-13 {
+      background-color: #3973b2 !important;
+      box-shadow: 0px 0px 10px #3973b2 !important;
+    }
+    
+    .text-chapter-13 {
+      color: #3973b2;
+    }
+  
   }
     
 
