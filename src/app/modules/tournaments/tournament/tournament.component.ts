@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInUpOnEnterAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
-import { TitleService } from 'app/title.service';
+import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Tournament } from '../tournaments.models';

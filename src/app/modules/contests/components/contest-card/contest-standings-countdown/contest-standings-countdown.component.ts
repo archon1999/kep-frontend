@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Contest, ContestStatus } from '../../../../contests/contests.models';
+import { Contest, ContestStatus } from '../../../contests.models';
 
 @Component({
   selector: 'contest-standings-countdown',

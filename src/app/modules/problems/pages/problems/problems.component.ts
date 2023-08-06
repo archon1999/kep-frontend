@@ -7,10 +7,11 @@ import { fadeInAnimation, fadeInLeftAnimation, fadeInRightAnimation } from 'angu
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { Subject, asyncScheduler } from 'rxjs';
-import { takeUntil, throttleTime } from 'rxjs/operators';
-import { Problem, ProblemFilter } from '../../models/problems.models';
+import { auditTime, debounceTime, delay, sampleTime, takeUntil, throttleTime } from 'rxjs/operators';
+import { Problem, ProblemsFilter } from '../../models/problems.models';
 import { ProblemsService } from '../../services/problems.service';
 import { ProblemsStatisticsService } from '../../services/problems-statistics.service';
+import { ProblemsFilterService } from '../../services/problems-filter.service';
 
 @Component({
   selector: 'app-problems',
@@ -28,9 +29,7 @@ export class ProblemsComponent implements OnInit, OnDestroy {
 
   public problems: Array<Problem> = [];
 
-  public activeTopic = 0;
-  public filter: ProblemFilter;
-  public ordering = 'id';
+  public filter: ProblemsFilter;
 
   public currentPage: number = 1;
   public problemsCount: number = 0;
@@ -52,6 +51,7 @@ export class ProblemsComponent implements OnInit, OnDestroy {
     public statisticsService: ProblemsStatisticsService,
     public route: ActivatedRoute,
     public router: Router,
+    public problemsFilterService: ProblemsFilterService,
   ) { }
 
   ngOnInit(): void {
@@ -70,21 +70,34 @@ export class ProblemsComponent implements OnInit, OnDestroy {
         }
       }
     )
+    
+    this._problemsReloader.pipe(
+      sampleTime(500)
+    ).subscribe(
+      () => this._reloadProblems()
+    );
 
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (user: User | null) => {
         this.currentUser = user;
-        this._problemsReloader.next();
+        this.reloadProblems();
       }
     )
 
-    this._problemsReloader.pipe(
-      throttleTime(500, asyncScheduler, { leading: false, trailing: true })
-    ).subscribe(() => this._reloadProblems());
+    this.problemsFilterService.getFilter().pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      (filter: ProblemsFilter) => {   
+        this.filter = filter;
+        this.currentPage = 1;
+        this.reloadProblems();
+      }
+    )
+
   }
 
-  reloadProblems() {
-    if(!this.isFirst){
+  reloadProblems() {   
+    /*
+    if(this.isFirst){
+      this.isFirst = false;
       let currentScrollHeight = window.pageYOffset;
       this.router.navigate([], 
         {
@@ -92,46 +105,20 @@ export class ProblemsComponent implements OnInit, OnDestroy {
           queryParams: { page: this.currentPage },
         }
       ).then(() => window.scrollTo({ top: currentScrollHeight }));
+      return;
     }
-
-    this.isFirst = false;
-
+    
+    */    
     this._problemsReloader.next();
   }
 
-  _reloadProblems(){
-    this.service.getProblems(this.filter, this.activeTopic, this.currentPage, this.ordering, 20).subscribe(
+  _reloadProblems(){    
+    this.service.getProblems(this.filter, this.currentPage, 20).subscribe(
       (result: any) => {
         this.problems = result.data;
         this.problemsCount = result.total;
       }
     );
-  }
-
-  setOrdering(ordering){
-    this.ordering = ordering;
-    this._problemsReloader.next();
-  }
-
-  tagClick(tagId: number){
-    var index = this.filter.tags.indexOf(tagId);
-    if (index == -1) {
-      this.filter.tags.push(tagId);
-    } else {
-      this.filter.tags.splice(index, 1);
-    }
-    this.reloadProblems();
-  }
-
-  topicClick(topicId: number){
-    this.activeTopic = topicId;
-    this.reloadProblems();
-  }
-
-  filterChange(filter: ProblemFilter){
-    this.filter = filter;
-    this.currentPage = 1;
-    this.reloadProblems();
   }
 
   ngOnDestroy(): void {

@@ -8,13 +8,13 @@ import { CoreDirectivesModule } from '@core/directives/directives';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgbAlertModule, NgbPaginationModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ArenaResolver } from './arena.resolver';
-import { ArenaListCardComponent } from './arena-list-card/arena-list-card.component';
+import { ArenaListCardComponent } from './components/arena-list-card/arena-list-card.component';
 import { CountdownModule } from '@ciri/ngx-countdown';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { ChallengesUserViewModule } from '../../shared/components/challenges-user-view/challenges-user-view.module';
 import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { ArenaPlayerStatisticsComponent } from './arena-player-statistics/arena-player-statistics.component';
+import { ArenaPlayerStatisticsComponent } from './components/arena-player-statistics/arena-player-statistics.component';
 
 const routes: Routes = [
   {
