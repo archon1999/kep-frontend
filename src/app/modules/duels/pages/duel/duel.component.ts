@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Duel, DuelProblem } from '../duels.models';
 import { DuelsService } from '../duels.service';
-import { TitleService } from 'app/title.service';
+import { TitleService } from 'app/shared/services/title.service';
 
 @Component({
   templateUrl: './duel.component.html',

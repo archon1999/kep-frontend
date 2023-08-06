@@ -2,13 +2,18 @@ import { Component, ElementRef, Input, OnInit, TemplateRef, ViewChild } from '@a
 import { CoreConfigService } from '@core/services/config.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
-import { ApiService } from 'app/api.service';
+import { ApiService } from 'app/shared/services/api.service';
 import { AuthenticationService } from 'app/auth/service';
 import { WebsocketService } from 'app/websocket';
 import { ToastrService } from 'ngx-toastr';
-import { Attempt, Verdicts, WSAttempt } from '../../models/attempts.models';
+import { Attempt, WSAttempt } from '../../models/attempts.models';
+import { Verdicts } from '../../enums/verdicts.enum';
 import { ProblemsService } from '../../services/problems.service';
 import { Contest } from 'app/modules/contests/contests.models';
+
+const LANG_CHANGE_EVENT = 'lang-change';
+const ATTEMPT_ADD_EVENT = 'attempt-add';
+const ATTEMPT_DELETE_EVENT = 'attempt-delete';
 
 @Component({
   selector: 'attempts-table',
@@ -19,15 +24,17 @@ export class AttemptsTableComponent implements OnInit {
   @Input() hideSourceCodeSize = false;
   @Input() contest: Contest;
 
+  private _attempts: Array<Attempt> = [];
   @Input()
   get attempts(): Array<Attempt>{ return this._attempts; }
   set attempts(attempts: Array<Attempt>){
-    this.wsService.send('lang-change', this.translationService.currentLang);
-    this._attempts = attempts.map((attempt: Attempt) => Attempt.fromJSON(attempt));
-    attempts.forEach((attempt: Attempt) => this.wsService.send('attempt-add', attempt.id));
-  }
-  private _attempts: Array<Attempt> = [];
+    this.wsService.send(LANG_CHANGE_EVENT, this.translationService.currentLang);
+    this._attempts = attempts.map(attempt => Attempt.fromJSON(attempt));
 
+    
+    attempts.forEach(attempt => this.wsService.send(ATTEMPT_ADD_EVENT, attempt.id));
+  }
+  
   public currentUser: any;
   public selectedAttempt: Attempt | null;
   public editorOptions = {
@@ -89,19 +96,23 @@ export class AttemptsTableComponent implements OnInit {
   }
 
   openModal(attemptId: number){
-    this.api.get(`attempts/${attemptId}/`).subscribe((result: any) => {
-      this.selectedAttempt = Attempt.fromJSON(result);
-      this.editorOptions.language = this.selectedAttempt.getEditorLang();
-      this.modalService.open(this.modalRef, {
-        centered: true,
-        size: 'xl'
-      });
-    })
+    this.service.getAttempt(attemptId).subscribe(
+      (attempt: Attempt) => {
+        this.selectedAttempt = attempt;
+        this.editorOptions.language = this.selectedAttempt.getEditorLang();
+        setTimeout(() => {
+          this.modalService.open(this.modalRef, {
+            centered: true,
+            size: 'xl'
+          });          
+        }, 0);
+      }
+    )
   }
 
   ngOnDestroy() {
     this.attempts.forEach((attempt: Attempt) => {
-      this.wsService.send('attempt-delete', attempt.id);
+      this.wsService.send(ATTEMPT_DELETE_EVENT, attempt.id);
     });
   }
 

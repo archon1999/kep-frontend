@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 import { CoreConfig } from '@core/types';
 import { CountdownComponent } from '@ciri/ngx-countdown';
 import { DragulaService } from 'ng2-dragula';
-import { TitleService } from 'app/title.service';
+import { TitleService } from 'app/shared/services/title.service';
 
 @Component({
   selector: 'app-challenge',
