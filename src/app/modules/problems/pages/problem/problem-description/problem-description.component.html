@@ -54,17 +54,17 @@
 
     <div class="problem-contstraints" *ngIf="problem.timeLimit && problem.memoryLimit">
       <span class="badge badge-info badge-pill" ngbTooltip="{{ 'TIME_LIMIT' | translate }}">
-        {{ availableLang.timeLimit || problem.timeLimit }} {{ 'MS' | translate }}
-      </span>    
+        {{ selectedAvailableLang.timeLimit || problem.timeLimit }} {{ 'MS' | translate }}
+      </span>
 
       <span class="badge badge-pill badge-primary" ngbTooltip="{{ 'MEMORY_LIMIT' | translate }}">
-        {{ availableLang.memoryLimit || problem.memoryLimit }} {{ 'MB' | translate }}
+        {{ selectedAvailableLang.memoryLimit || problem.memoryLimit }} {{ 'MB' | translate }}
       </span>
     </div>
     
     <div class="problem-selected-lang">
       <span *ngIf="currentUser" class="badge badge-pill badge-{{ selectedLang }}">
-        {{ selectedLang | langFullName }}
+        {{ selectedAvailableLang.langFull }}
       </span>    
     </div>
   </div>
@@ -73,10 +73,10 @@
   <div class="mt-2 tour-step-1" *ngIf="currentUser">
     <span *ngFor="let availableLanguage of problem.availableLanguages">
       <a
-        (click)="changeLang(availableLanguage.lang)"
+        (click)="langService.setLanguage(availableLanguage.lang)"
         *ngIf="selectedLang != availableLanguage.lang"
         class="badge-pill text-white badge badge-{{ availableLanguage.lang }}">
-        {{ availableLanguage.lang | langFullName }}
+        {{ availableLanguage.langFull }}
       </a>
     </span>
   </div>
@@ -91,7 +91,7 @@
         <span>{{ 'Tags' | translate }}</span>
       </ng-template>
       <ng-template ngbPanelContent>
-        <div *ngIf="currentUser?.permissions.canChangeProblemTags && problem.hasSolved else elseBlock">
+        <div *ngIf="currentUser?.isSuperUser || currentUser?.permissions.canChangeProblemTags && problem.hasSolved else elseBlock">
           <button *ngFor="let tag of problem.tags" (click)="removeTag(tag)" class="btn mb-2 mr-50 btn-relief-primary btn-sm">
             {{ tag.name }} <i data-feather="x"></i>
           </button>

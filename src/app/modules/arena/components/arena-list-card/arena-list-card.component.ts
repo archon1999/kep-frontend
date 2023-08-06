@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Arena } from '../arena.models';
+import { Arena } from '../../arena.models';
 
 @Component({
   selector: 'arena-list-card',

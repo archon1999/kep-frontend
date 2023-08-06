@@ -1,10 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreConfig } from '@core/types';
+import { CoreConfigService } from '../../../../../../@core/services/config.service';
+import { CoreConfig } from '../../../../../../@core/types';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { bounceAnimation } from 'angular-animations';
-import { ApiService } from 'app/shared/services/api.service';
-import { Contest, ContestStatus } from '../../../../contests/contests.models';
+import { ApiService } from '../../../../../shared/services/api.service';
+import { Contest, ContestStatus } from '../../../contests.models';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

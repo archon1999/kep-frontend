@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { fadeInUpAnimation } from 'angular-animations';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
-import { TitleService } from 'app/title.service';
+import { TitleService } from 'app/shared/services/title.service';
 import { Contest } from '../user-contests.models';
 
 @Component({

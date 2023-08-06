@@ -1,36 +1,36 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Routes, RouterModule } from '@angular/router';
-import { UserContestsComponent } from './user-contests.component';
-import { CorePipesModule } from '@core/pipes/pipes.module';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
+import { CountdownModule } from '@ciri/ngx-countdown';
 import { CoreDirectivesModule } from '@core/directives/directives';
+import { CorePipesModule } from '@core/pipes/pipes.module';
+import { NgbDatepickerModule, NgbNavModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
-import { ContestsTableComponent } from './contests-table/contests-table.component';
+import { AttemptsTableModule } from '../../../problems/components/attempts-table/attempts-table.module';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { CodeEditorModule } from '../../../../shared/components/code-editor/code-editor.module';
+import { ContestantViewModule } from '../../../../shared/components/contestant-view/contestant-view.module';
+import { MathjaxModule } from '../../../../shared/third-part-modules/mathjax/mathjax.module';
+import { NgSelectModule } from '../../../../shared/third-part-modules/ng-select/ng-select.module';
 import { KepcoinSpendSwalModule } from '../../../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
-import { NgbDatepickerModule, NgbNavModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { ProblemBodyModule } from '../../../problems/components/problem-body/problem-body.module';
 import { ContestCreateComponent } from './contest-create/contest-create.component';
 import { ContestEditComponent } from './contest-edit/contest-edit.component';
-import { ContestCreateGuard, ContestGuard } from './user-contests.guard';
-import { FormsModule } from '@angular/forms';
-import { NgSelectModule } from '../../../../shared/third-part-modules/ng-select/ng-select.module';
-import { ContestComponent } from './contest/contest.component';
-import { ContestProblemResolver, ContestProblemsResolver, ContestResolver } from './user-contests.resolver';
-import { ContestTabComponent } from './contest/contest-tab/contest-tab.component';
+import { ContestAttemptsComponent } from './contest/contest-attempts/contest-attempts.component';
+import { ContestCardCountdownComponent } from './contest/contest-card-countdown/contest-card-countdown.component';
 import { ContestCardComponent } from './contest/contest-card/contest-card.component';
 import { ContestCountdownComponent } from './contest/contest-countdown/contest-countdown.component';
-import { CountdownModule } from '@ciri/ngx-countdown'
-import { ContestProblemsComponent } from './contest/contest-problems/contest-problems.component';
-import { ContestCardCountdownComponent } from './contest/contest-card-countdown/contest-card-countdown.component';
 import { ContestProblemComponent } from './contest/contest-problem/contest-problem.component';
-import { MathjaxModule } from '../../../../shared/third-part-modules/mathjax/mathjax.module';
+import { ContestProblemsComponent } from './contest/contest-problems/contest-problems.component';
 import { ContestStandingsComponent } from './contest/contest-standings/contest-standings.component';
-import { CodeEditorModule } from '../../../../shared/components/code-editor/code-editor.module';
-import { MonacoEditorModule } from 'ngx-monaco-editor';
-import { ContestAttemptsComponent } from './contest/contest-attempts/contest-attempts.component';
-import { ContestAttemptsTableComponent } from './contest/contest-attempts/contest-attempts-table/contest-attempts-table.component';
-import { ContestantViewModule } from '../../../../shared/components/contestant-view/contestant-view.module';
-import { ProblemBodyModule } from '../../../problems/elements/problem-body/problem-body.module';
+import { ContestTabComponent } from './contest/contest-tab/contest-tab.component';
+import { ContestComponent } from './contest/contest.component';
+import { ContestsTableComponent } from './contests-table/contests-table.component';
+import { UserContestsComponent } from './user-contests.component';
+import { ContestCreateGuard, ContestGuard } from './user-contests.guard';
+import { ContestProblemResolver, ContestProblemsResolver, ContestResolver } from './user-contests.resolver';
 const routes: Routes = [
   {
     path: '',
@@ -123,7 +123,6 @@ const routes: Routes = [
     ContestProblemComponent,
     ContestStandingsComponent,
     ContestAttemptsComponent,
-    ContestAttemptsTableComponent,
   ],
   imports: [
     CommonModule,
@@ -144,6 +143,7 @@ const routes: Routes = [
     MonacoEditorModule,
     ContestantViewModule,
     ProblemBodyModule,
+    AttemptsTableModule,
   ],
   providers: [
     ContestCreateGuard,

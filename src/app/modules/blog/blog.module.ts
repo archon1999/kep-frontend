@@ -13,7 +13,7 @@ import { BlogPostResolver } from './blog.resolver';
 import { PostDetailComponent } from './post-detail/post-detail.component';
 import { CommentsComponent } from './post-detail/comments/comments.component';
 import { FormsModule } from '@angular/forms';
-import { BlogPostCardModule } from '../../shared/components/blog-post-card/blog-post-card.module';
+import { BlogPostCardModule } from './components/blog-post-card/blog-post-card.module';
 import { NgSelectModule } from '../../shared/third-part-modules/ng-select/ng-select.module';
 import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 

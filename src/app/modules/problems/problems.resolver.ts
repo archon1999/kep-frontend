@@ -4,7 +4,7 @@ import {
   Resolve,
   RouterStateSnapshot
 } from '@angular/router';
-import { ApiService } from 'app/api.service';
+import { ApiService } from 'app/shared/services/api.service';
 import { Observable } from 'rxjs';
 import { ProblemsService } from './services/problems.service';
 

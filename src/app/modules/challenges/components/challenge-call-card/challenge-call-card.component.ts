@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { User } from '../../../../auth/models';
+import { AuthenticationService } from '../../../../auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ChallengeCall } from '../challenges.models';
-import { ChallengesService } from '../challenges.service';
+import { ChallengeCall } from '../../models/challenges.models';
+import { ChallengesService } from '../../services/challenges.service';
 
 @Component({
   selector: 'challenge-call-card',

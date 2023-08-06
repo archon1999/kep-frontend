@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from 'app/api.service';
-import { ProblemFilter } from '../models/problems.models';
+import { ApiService } from 'app/shared/services/api.service';
+import { ProblemsFilter } from '../models/problems.models';
+import { map } from 'rxjs/operators';
+import { Attempt } from '../models/attempts.models';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +13,11 @@ export class ProblemsService {
     public api: ApiService,
   ) { }
 
-  getProblems(filter: ProblemFilter, topic=0, page=1, ordering='id', pageSize=9){
+  getProblems(filter: ProblemsFilter, page=1, pageSize=20){
     var params: any = {
       page: page,
       page_size: pageSize,
-      ordering: ordering,
+      ordering: filter.ordering,
     };
 
     if(filter?.difficulty){
@@ -30,8 +32,8 @@ export class ProblemsService {
       params.tags = filter.tags.join(',');
     }
 
-    if(topic){
-      params.topic = topic;
+    if(filter?.topic){
+      params.topic = filter.topic;
     }
 
     if(filter?.status){
@@ -63,7 +65,9 @@ export class ProblemsService {
   }
   
   getAttempt(id: number | string){
-    return this.api.get(`attempts/${id}`);
+    return this.api.get(`attempts/${id}`).pipe(
+      map(attempt => Attempt.fromJSON(attempt))
+    );
   }
 
   getUserAttempts(username: string, page: number, pageSize: number){

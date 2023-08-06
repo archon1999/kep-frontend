@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CoreMenuService } from '@core/components/core-menu/core-menu.service';
-import { ApiService } from 'app/api.service';
+import { ApiService } from 'app/shared/services/api.service';
 
 @Component({
   selector: '[core-menu]',

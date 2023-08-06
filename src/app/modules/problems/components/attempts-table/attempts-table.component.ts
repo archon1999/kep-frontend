@@ -26,15 +26,13 @@ export class AttemptsTableComponent implements OnInit {
 
   private _attempts: Array<Attempt> = [];
   @Input()
-  get attempts(): Array<Attempt>{ return this._attempts; }
-  set attempts(attempts: Array<Attempt>){
+  get attempts(): Array<Attempt> { return this._attempts; }
+  set attempts(attempts: Array<Attempt>) {
     this.wsService.send(LANG_CHANGE_EVENT, this.translationService.currentLang);
     this._attempts = attempts.map(attempt => Attempt.fromJSON(attempt));
-
-    
     attempts.forEach(attempt => this.wsService.send(ATTEMPT_ADD_EVENT, attempt.id));
   }
-  
+
   public currentUser: any;
   public selectedAttempt: Attempt | null;
   public editorOptions = {
@@ -64,9 +62,9 @@ export class AttemptsTableComponent implements OnInit {
         this.currentUser = user;
       }
     );
-  
+
     this.coreConfigService.getConfig().subscribe((config: any) => {
-      if(config.layout.skin == 'dark'){
+      if (config.layout.skin == 'dark') {
         this.editorOptions.theme = 'vs-dark';
       } else {
         this.editorOptions.theme = 'vs-light';
@@ -74,18 +72,18 @@ export class AttemptsTableComponent implements OnInit {
     });
 
     this.wsService.on<WSAttempt>('attempt-update').subscribe((wsAttempt: WSAttempt) => {
-      for(var i = 0; i < this.attempts.length; i++){
-        if(this.attempts[i].id == wsAttempt.id){
+      for (var i = 0; i < this.attempts.length; i++) {
+        if (this.attempts[i].id == wsAttempt.id) {
           var attempt = this.attempts[i];
           this.attempts[i] = Attempt.fromWSAttempt(attempt, wsAttempt);
           attempt = this.attempts[i];
-          if(wsAttempt.verdict == Verdicts.Accepted){
-            if(this.attempts[i].canView){
+          if (wsAttempt.verdict == Verdicts.Accepted) {
+            if (this.attempts[i].canView) {
               setTimeout(() => attempt.animationAcceptedState = true, 0);
               this.successAudio.nativeElement.play();
             }
-          } else if(wsAttempt.verdict != Verdicts.Running && wsAttempt.verdict != Verdicts.InQueue){
-            if(this.attempts[i].canView){
+          } else if (wsAttempt.verdict != Verdicts.Running && wsAttempt.verdict != Verdicts.InQueue) {
+            if (this.attempts[i].canView) {
               setTimeout(() => attempt.animationWrongState = true, 0);
               this.wrongAudio.nativeElement.play();
             }
@@ -95,17 +93,15 @@ export class AttemptsTableComponent implements OnInit {
     });
   }
 
-  openModal(attemptId: number){
+  openModal(attemptId: number) {
     this.service.getAttempt(attemptId).subscribe(
       (attempt: Attempt) => {
         this.selectedAttempt = attempt;
         this.editorOptions.language = this.selectedAttempt.getEditorLang();
-        setTimeout(() => {
-          this.modalService.open(this.modalRef, {
-            centered: true,
-            size: 'xl'
-          });          
-        }, 0);
+        this.modalService.open(this.modalRef, {
+          centered: true,
+          size: 'xl'
+        })
       }
     )
   }
