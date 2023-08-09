@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { fadeInUpAnimation } from 'angular-animations';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
-import { TitleService } from 'app/title.service';
+import { TitleService } from 'app/shared/services/title.service';
 import { Contest } from '../../contests.models';
 
 @Component({
@@ -28,11 +28,11 @@ export class ContestComponent implements OnInit {
     this.route.data.subscribe(({ contest }) => {
       this.contest = Contest.fromJSON(contest);
       this.loadContentHeader();
-      this.titleService.updateTitle(this.route, { contestTitle: contest.title } );
-    })
+      this.titleService.updateTitle(this.route, { contestTitle: contest.title });
+    });
   }
-  
-  loadContentHeader(){
+
+  loadContentHeader() {
     this.contentHeader = {
       headerTitle: this.contest.title,
       actionButton: true,
@@ -45,7 +45,7 @@ export class ContestComponent implements OnInit {
             link: '../..'
           },
           {
-            name: this.contest.id+'',
+            name: this.contest.id + '',
             isLink: true,
             link: '.'
           },

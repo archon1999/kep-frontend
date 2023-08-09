@@ -7,8 +7,8 @@ import { AuthenticationService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Attempt } from '../../../../models/attempts.models';
-import { ProblemsService } from '../../../../../problems/problems.service';
-import { ProblemsStatisticsService } from '../../../../../problems/problems-statistics.service';
+import { ProblemsService } from 'app/modules/problems/services/problems.service';
+import { ProblemsStatisticsService } from '../../../../services/problems-statistics.service';
 
 export interface TopRating {
   username: string;

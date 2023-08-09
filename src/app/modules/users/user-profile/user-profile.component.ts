@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from 'app/auth/service';
-import { TitleService } from 'app/title.service';
+import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';
 import { User, UserEducation, UserInfo, UserSkills, UserSocial, UserTechnology, UserWorkExperience } from '../users.models';
 import { User as AuthUser } from '../users.models';

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation, fadeInUpOnEnterAnimation } from 'angular-animations';
-import { TitleService } from 'app/title.service';
+import { TitleService } from 'app/shared/services/title.service';
 import { Project } from '../projects.models';
 
 @Component({

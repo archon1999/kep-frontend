@@ -3,12 +3,13 @@ import { ActivatedRoute } from '@angular/router';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
-import { TitleService } from 'app/title.service';
+import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Contest, Contestant, ContestProblem, ContestProblemInfo, ContestStatus } from '../../../contests.models';
 import { ContestsService } from '../../../contests.service';
 import { fadeInOnEnterAnimation } from 'angular-animations';
+import { sortContestProblems } from '../../../utils/sort-contest-problems';
 
 @Component({
   selector: 'app-contest-standings',
@@ -34,30 +35,30 @@ export class ContestStandingsComponent implements OnInit, OnDestroy {
     public service: ContestsService,
     public authService: AuthenticationService,
     public titleService: TitleService,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.route.data.subscribe(({ contest, contestProblems }) => {
       this.contest = Contest.fromJSON(contest);
-      this.contestProblems = contestProblems;
+      this.contestProblems = sortContestProblems(contestProblems);
       this.loadContentHeader();
-      this.titleService.updateTitle(this.route, { contestTitle: contest.title } );
+      this.titleService.updateTitle(this.route, { contestTitle: contest.title });
       this.reloadContestants();
-      this.sortProblems();
-    })
-  
+    });
+
     this.authService.currentUser
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((user: any) => this.currentUser = user)
+      .subscribe((user: any) => this.currentUser = user);
 
-    if(this.contest.status == ContestStatus.ALREADY){
+    if (this.contest.status === ContestStatus.ALREADY) {
       this._intervalId = setInterval(() => {
         this.reloadPage();
       }, 60000);
     }
   }
-  
-  loadContentHeader(){
+
+  loadContentHeader() {
     this.contentHeader = {
       headerTitle: 'CONTESTS.STANDINGS',
       actionButton: true,
@@ -70,7 +71,7 @@ export class ContestStandingsComponent implements OnInit, OnDestroy {
             link: '../../..'
           },
           {
-            name: this.contest.id+'',
+            name: this.contest.id + '',
             isLink: true,
             link: '..'
           },
@@ -84,72 +85,43 @@ export class ContestStandingsComponent implements OnInit, OnDestroy {
     };
   }
 
-  reloadContestants(){
+  reloadContestants() {
     this.service.getContestants(this.contest.id).subscribe((result: any) => {
       this.contestants = result.map((data: any) => {
-        return Contestant.fromJSON(data);    
+        return Contestant.fromJSON(data);
       });
       this.reassignRanks();
     });
   }
 
-  reassignRanks(){
-    for(var index = 0; index < this.contestants.length; index++){
-      if(index == 0){
+  reassignRanks() {
+    for (let index = 0; index < this.contestants.length; index++) {
+      if (index === 0) {
         this.contestants[index].rank = 1;
       } else {
         this.contestants[index].rank = this.contestants[index - 1].rank;
-        if(this.contestants[index].points != this.contestants[index - 1].points ||
-           this.contestants[index].penalties != this.contestants[index - 1].penalties){
-             this.contestants[index].rank = index+1;
+        if (this.contestants[index].points !== this.contestants[index - 1].points ||
+          this.contestants[index].penalties !== this.contestants[index - 1].penalties) {
+          this.contestants[index].rank = index + 1;
         }
       }
     }
   }
 
-  reloadPage(){
-    this.service.getContestProblems(this.contest.id).subscribe((result: any) => {
-      this.contestProblems = result;
-      this.sortProblems();
-    });
+  reloadPage() {
+    this.service.getContestProblems(this.contest.id).subscribe(
+      (problems: any) => {
+        this.contestProblems = sortContestProblems(problems);
+      }
+    );
     this.reloadContestants();
-  }
-
-  sortProblems(){
-    this.contestProblems = this.contestProblems.sort(function(a, b) {
-      let s1 = a.symbol;
-      let s2 = b.symbol;
-      let a1 = "", a2 = "";
-      let x1 = 0, x2 = 0;
-      for(let c of s1){
-        if(c >= '0' && c <= '9'){
-          x1 = x1*10 + +c;
-        } else {
-          a1 += c;
-        }
-      }
-      for(let c of s2){
-        if(c >= '0' && c <= '9'){
-          x2 = x2*10 + +c;
-        } else {
-          a2 += c;
-        }
-      }
-
-      let x = a1 < a2 || (a1 == a2 && x1 < x2);
-      if(x){
-        return -1;
-      } else {
-        return 1;
-      }
-    });
   }
 
   getProblemInfoBySymbol(
     problemsInfo: Array<ContestProblemInfo>,
     problemSymbol: string
-  ) : ContestProblemInfo | undefined {
-    return problemsInfo.find((problemInfo: any) => problemInfo.problemSymbol == problemSymbol);
+  ): ContestProblemInfo | undefined {
+    return problemsInfo.find(problemInfo => problemInfo.problemSymbol === problemSymbol);
   }
 
   ngOnDestroy() {
