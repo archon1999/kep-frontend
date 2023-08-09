@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { colors } from 'app/colors.const';
-import { ProblemsStatisticsService } from '../../../problems-statistics.service';
+import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
 
 @Component({
   selector: 'section-attempts-for-solve',

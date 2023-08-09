@@ -4,7 +4,7 @@
       <thead>
         <tr class="bg-gradient-primary">
           <th>            
-            <a (click)="setOrdering('id')">
+            <a class="d-flex" (click)="setOrdering('id')">
               <i class="mr-50" [data-feather]="'problem' | iconName"></i>
               ID
               <span *ngIf="ordering == 'id'"><i data-feather="chevron-up"></i></span>
@@ -12,7 +12,7 @@
             </a>
           </th>
           <th>
-            <a (click)="setOrdering('title')">
+            <a class="d-flex" (click)="setOrdering('title')">
               <i class="mr-50" [data-feather]="'edit-3'"></i>
               {{ 'TITLE' | translate }}
               <span *ngIf="ordering == 'title'"><i data-feather="chevron-up"></i></span>
@@ -24,7 +24,7 @@
             {{ 'TAGS' | translate }}
           </th>
           <th class="text-center">
-            <a (click)="setOrdering('difficulty')">
+            <a class="d-flex" (click)="setOrdering('difficulty')">
               <i class="mr-50" [data-feather]="'bar-chart'"></i>
               {{ 'DIFFICULTY' | translate }}
               <span *ngIf="ordering == 'difficulty'"><i data-feather="chevron-up"></i></span>
@@ -32,7 +32,7 @@
             </a>
           </th>
           <th class="text-center">
-            <a (click)="setOrdering('rating')">
+            <a class="d-flex" (click)="setOrdering('rating')">
               <i class="mr-50" [data-feather]="'star'"></i>
               {{ 'RATING' | translate }}
               <span *ngIf="ordering == 'rating'"><i data-feather="chevron-up"></i></span>
@@ -40,7 +40,7 @@
             </a>
           </th>
           <th class="text-center">
-            <a (click)="setOrdering('solved')">
+            <a class="d-flex" (click)="setOrdering('solved')">
               <i class="mr-50" [data-feather]="'attempt' | iconName"></i>
               {{ 'ATTEMPTS' | translate }}
               <span *ngIf="ordering == 'solved'"><i data-feather="chevron-up"></i></span>

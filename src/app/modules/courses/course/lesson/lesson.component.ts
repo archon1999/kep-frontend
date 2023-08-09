@@ -5,11 +5,11 @@ import { Course, CourseLesson, CourseLessonPart, CourseLessonPartComment, Course
 import { CoursesService } from '../../courses.service';
 import { AuthenticationService } from 'app/auth/service';
 import { User } from 'app/auth/models';
-import { ApiService } from 'app/api.service';
+import { ApiService } from 'app/shared/services/api.service';
 import { ShepherdService } from 'angular-shepherd';
 import { lessonTourSteps } from './lesson.tour';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
-import { TitleService } from 'app/title.service';
+import { TitleService } from 'app/shared/services/title.service';
 
 @Component({
   selector: 'app-lesson',

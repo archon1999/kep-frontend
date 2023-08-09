@@ -14,7 +14,7 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { NgxUsefulSwiperModule } from 'ngx-useful-swiper';
 import { ClipboardModule } from '../../shared/components/clipboard/clipboard.module';
 import { CodeEditorModule } from '../../shared/components/code-editor/code-editor.module';
-import { ContestCardModule } from '../contests/elements/contest-card/contest-card.module';
+import { ContestCardModule } from '../contests/components/contest-card/contest-card.module';
 import { ContestantViewModule } from '../../shared/components/contestant-view/contestant-view.module';
 import { KepcoinViewModule } from '../../shared/components/kepcoin-view/kepcoin-view.module';
 import { ProblemCardModule } from '../../shared/components/problem-card/problem-card.module';
@@ -24,7 +24,7 @@ import { MathjaxModule } from '../../shared/third-part-modules/mathjax/mathjax.m
 import { NgSelectModule } from '../../shared/third-part-modules/ng-select/ng-select.module';
 import { NouisliderModule } from '../../shared/third-part-modules/nouislider/nouislider.module';
 import { TourModule } from '../../shared/third-part-modules/tour/tour.module';
-import { ProblemBodyModule } from './elements/problem-body/problem-body.module';
+import { ProblemBodyModule } from './components/problem-body/problem-body.module';
 import { AttemptComponent } from './pages/attempt/attempt.component';
 import { AttemptsComponent } from './pages/attempts/attempts.component';
 import { ProblemAttemptsComponent } from './pages/problem/problem-attempts/problem-attempts.component';
@@ -54,8 +54,8 @@ import { StudyPlanComponent } from './pages/study-plan/study-plan.component';
 import { AttemptGuard, ProblemGuard } from './problems.guard';
 import { ContestsResolver, ProblemResolver, StudyPlanResolver, StudyPlansResolver } from './problems.resolver';
 import { SectionProfileComponent } from './pages/profile/section-profile/section-profile.component';
-import { AttemptsTableModule } from './elements/attempts-table/attempts-table.module';
-import { StudyPlanCardModule } from './elements/study-plan-card/study-plan-card.module';
+import { AttemptsTableModule } from './components/attempts-table/attempts-table.module';
+import { StudyPlanCardModule } from './components/study-plan-card/study-plan-card.module';
 
 const routes: Routes = [
   { 

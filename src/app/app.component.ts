@@ -24,7 +24,7 @@ import localeUz from '@angular/common/locales/uz';
 
 import { menu } from './layout/components/menu/menu';
 
-import { ApiService } from './api.service';
+import { ApiService } from './shared/services/api.service';
 import { AuthenticationService } from './auth/service';
 import { WebsocketService } from './websocket';
 import { environment } from 'environments/environment';

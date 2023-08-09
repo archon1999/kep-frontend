@@ -1,38 +1,7 @@
 import { ContestProblem } from "../../contests/contests.models";
 import { User } from "../../users/users.models";
+import { getEditorLang } from "../utils/editor-lang";
 
-export function getEditorLang(lang: string) {
-  if (lang == AttemptLangs.CPP) {
-    return 'cpp';
-  } else if (lang == AttemptLangs.PYTHON) {
-    return 'python';
-  } else if (lang == AttemptLangs.HASKELL) {
-    return 'haskell';
-  } else if (lang == AttemptLangs.KOTLIN) {
-    return 'kotlin';
-  } else if (lang == AttemptLangs.CSHARP) {
-    return 'csharp';
-  }
-  return lang;
-}
-
-export enum AttemptLangs {
-  PYTHON = 'py',
-  CPP = 'cpp',
-  R = 'r',
-  HASKELL = 'hs',
-  KEP = 'kep',
-  C = 'c',
-  KOTLIN = 'kt',
-  TEXT = 'text',
-  HTML = 'html',
-  SQL = 'sql',
-  BASH = 'bash',
-  JS = 'js',
-  PHP = 'php',
-  CSHARP = 'cs',
-  JAVA = 'java',
-}
 
 export class Attempt {
   constructor(
@@ -44,6 +13,7 @@ export class Attempt {
     public verdict: number,
     public verdictTitle: string,
     public lang: string,
+    public langFull: string,
     public canView: boolean,
     public canTestView: boolean,
     public kepcoinValue: number,
@@ -86,6 +56,7 @@ export class Attempt {
       data.verdict,
       data.verdictTitle,
       data.lang,
+      data.langFull,
       data.canView,
       data.canTestView,
       data.kepcoinValue,
@@ -110,6 +81,7 @@ export class Attempt {
       wsAttempt.verdict,
       wsAttempt.verdictTitle,
       attempt.lang,
+      attempt.langFull,
       attempt.canView,
       attempt.canTestView,
       attempt.kepcoinValue,
@@ -125,36 +97,12 @@ export class Attempt {
   }
 }
 
-export class WSAttempt {
-  constructor(
-    public id: number,
-    public verdict: number,
-    public verdictTitle: string,
-    public testCaseNumber: number,
-    public time: number,
-    public memory: number,
-    public balls: number,
-  ) { }
-}
-
-export enum Verdicts {
-  InQueue = -2,
-  Running,
-  JudgementFailed,
-  Accepted,
-  WrongAnswer,
-  TimeLimitExceeded,
-  RuntimeError,
-  OutputFormatError,
-  MemoryLimitExceeded,
-  Rejected,
-  CompilationError,
-  CommandExecutingError,
-  IdlenessLimitExceeded,
-  SyntaxError,
-  CheckerNotFound,
-  OnlyPython,
-  ObjectNotFound,
-  FakeAccepted,
-  PartialSolution,
+export interface WSAttempt {
+  id: number;
+  verdict: number;
+  verdictTitle: string;
+  testCaseNumber: number;
+  time: number;
+  memory: number;
+  balls: number;
 }

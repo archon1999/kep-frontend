@@ -6,10 +6,10 @@ import { fadeInLeftAnimation, fadeInRightAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
-import { Problem } from '../../../../problems/models/problems.models';
-import { TitleService } from 'app/title.service';
+import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Problem } from '../../../../problems/models/problems.models';
 import { Contest, ContestProblem } from '../../../contests.models';
 import { ContestsService } from '../../../contests.service';
 

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
-import { ApiService } from '../../../../api.service';
+import { ApiService } from '../../../services/api.service';
 import { User } from '../../../../modules/users/users.models';
 
 @Component({

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CoreConfigService } from '@core/services/config.service';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation, fadeInUpOnEnterAnimation } from 'angular-animations';
-import { ApiService } from 'app/api.service';
+import { ApiService } from 'app/shared/services/api.service';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { Subject } from 'rxjs';

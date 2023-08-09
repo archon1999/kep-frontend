@@ -5,12 +5,14 @@ import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 import { Attempt } from '../../../../problems/models/attempts.models';
-import { ProblemsService } from '../../../../problems/problems.service';
-import { TitleService } from 'app/title.service';
+import { ProblemsService } from 'app/modules/problems/services/problems.service';
+import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Contest, ContestAttemptsFilter, ContestProblem, ContestStatus } from '../../../contests.models';
 import { ContestsService } from '../../../contests.service';
+
+const REFRESH_TIME = 30000;
 
 @Component({
   selector: 'app-contest-attempts',
@@ -22,7 +24,7 @@ import { ContestsService } from '../../../contests.service';
   ]
 })
 export class ContestAttemptsComponent implements OnInit, OnDestroy {
-  
+
   public startAnimationState = false;
   public contentHeader: ContentHeader;
 
@@ -43,8 +45,6 @@ export class ContestAttemptsComponent implements OnInit, OnDestroy {
 
   public currentUser: User;
 
-  public refreshTime: number = 30;
-  
   private _intervalId: any;
   private _unsubscribeAll = new Subject();
 
@@ -62,28 +62,28 @@ export class ContestAttemptsComponent implements OnInit, OnDestroy {
     this.route.data.subscribe(({ contest }) => {
       this.contest = Contest.fromJSON(contest);
       this.loadContentHeader();
-      this.titleService.updateTitle(this.route, { contestTitle: contest.title } );
-    })
-    
-    this.authService.currentUser
-      .pipe(takeUntil(this._unsubscribeAll))  
-      .subscribe((user: any) => {
+      this.titleService.updateTitle(this.route, { contestTitle: contest.title });
+    });
+
+    this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      (user: any) => {
         this.currentUser = user;
         this.reloadPage();
-      })
+      }
+    );
 
     this.problemsService.getVerdicts().subscribe((data: any) => {
       this.verdicts = data;
-    })
+    });
 
-    if(this.contest.status == ContestStatus.ALREADY){
+    if (this.contest.status === ContestStatus.ALREADY) {
       this._intervalId = setInterval(() => {
         this.reloadAttempts();
-      }, 30000);
+      }, REFRESH_TIME);
     }
   }
 
-  loadContentHeader(){
+  loadContentHeader() {
     this.contentHeader = {
       headerTitle: this.contest.title,
       actionButton: true,
@@ -96,7 +96,7 @@ export class ContestAttemptsComponent implements OnInit, OnDestroy {
             link: '../../..'
           },
           {
-            name: this.contest.id+'',
+            name: this.contest.id + '',
             isLink: true,
             link: '..'
           },
@@ -110,18 +110,18 @@ export class ContestAttemptsComponent implements OnInit, OnDestroy {
     };
   }
 
-  reloadPage(){
+  reloadPage() {
     this.reloadAttempts();
     this.reloadProblems();
   }
 
-  reloadProblems(){
+  reloadProblems() {
     this.service.getContestProblems(this.contest.id).subscribe((result: any) => {
-      this.contestProblems = result.map((data: any) => ContestProblem.fromJSON(data))
-    })
+      this.contestProblems = result.map((data: any) => ContestProblem.fromJSON(data));
+    });
   }
-  
-  reloadAttempts(){
+
+  reloadAttempts() {
     this.service.getContestAttempts(
       this.contest.id, this.currentPage, 20, this.filter
     ).subscribe((result: any) => {
@@ -131,7 +131,7 @@ export class ContestAttemptsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if(this._intervalId){
+    if (this._intervalId) {
       clearInterval(this._intervalId);
     }
     this._unsubscribeAll.next();

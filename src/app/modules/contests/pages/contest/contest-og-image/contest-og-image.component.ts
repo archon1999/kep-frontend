@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ApiService } from 'app/api.service';
+import { ApiService } from 'app/shared/services/api.service';
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs/operators';
 import { Contest } from '../../../contests.models';
