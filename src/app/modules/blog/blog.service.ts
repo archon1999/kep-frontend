@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from 'app/api.service';
+import { ApiService } from 'app/shared/services/api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +52,10 @@ export class BlogService {
 
   commentLike(commentId: number | string){
     return this.api.post(`blog-comments/${commentId}/like/`);
+  }
+
+  commentDelete(commentId: number | string){
+    return this.api.delete(`blog-comments/${commentId}/delete/`);
   }
 
 }

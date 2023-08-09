@@ -17,7 +17,7 @@ import { NgxUsefulSwiperModule } from 'ngx-useful-swiper';
 import { ClipboardModule } from '../../shared/components/clipboard/clipboard.module';
 import { CodeEditorModule } from '../../shared/components/code-editor/code-editor.module';
 import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
-import { ProblemBodyModule } from '../problems/elements/problem-body/problem-body.module';
+import { ProblemBodyModule } from '../problems/components/problem-body/problem-body.module';
 import { MathjaxModule } from '../../shared/third-part-modules/mathjax/mathjax.module';
 import { ContestGuard } from './contests.guard';
 import { ContestProblemResolver, ContestProblemsResolver, ContestResolver, OngoingContestsResolver, UpcomingContestsResolver } from './contests.resolver';
@@ -35,10 +35,10 @@ import { ContestsComponent } from './pages/contests/contests.component';
 import { ContestsSectionCategoriesComponent } from './pages/contests/sections/contests-section-categories/contests-section-categories.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { RatingComponent } from './pages/rating/rating.component';
-import { ContestsTableModule } from './elements/contests-table/contests-table.module';
-import { ContestCardModule } from './elements/contest-card/contest-card.module';
+import { ContestsTableModule } from './components/contests-table/contests-table.module';
+import { ContestCardModule } from './components/contest-card/contest-card.module';
 import { ContestantViewModule } from '../../shared/components/contestant-view/contestant-view.module';
-import { AttemptsTableModule } from '../problems/elements/attempts-table/attempts-table.module';
+import { AttemptsTableModule } from '../problems/components/attempts-table/attempts-table.module';
 
 
 const routes: Routes = [

@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { AuthenticationService } from 'app/auth/service';
 import { Subject } from 'rxjs';
-import { ProblemsStatisticsService } from '../../../problems-statistics.service';
+import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
 
 interface General {
   solved: number;

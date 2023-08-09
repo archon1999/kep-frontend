@@ -5,11 +5,16 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Blog, BlogPostComment } from '../../blog.models';
 import { BlogService } from '../../blog.service';
+import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 
 @Component({
   selector: 'comments',
   templateUrl: './comments.component.html',
-  styleUrls: ['./comments.component.scss']
+  styleUrls: ['./comments.component.scss'],
+  animations: [
+    fadeInOnEnterAnimation(),
+    fadeOutOnLeaveAnimation(),
+  ]
 })
 export class CommentsComponent implements OnInit, OnDestroy {
 
@@ -57,6 +62,15 @@ export class CommentsComponent implements OnInit, OnDestroy {
     this.service.commentLike(this.comments[index].id).subscribe(
       (likes: any) => {
         this.comments[index].likes = likes;
+      }
+    )
+  }
+
+  deleteComment(index: number){
+    let comment = this.comments[index];
+    this.service.commentDelete(comment.id).subscribe(
+      () => {
+        this.comments.splice(index, 1);
       }
     )
   }

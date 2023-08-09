@@ -28,7 +28,7 @@
                     <small class="text-center">
                       <span *ngFor="let availableLanguage of problem.availableLanguages">
                         <a
-                          (click)="changeLang(availableLanguage.lang)"
+                          (click)="langService.setLanguage(availableLanguage.lang)"
                           class="badge-pill text-white badge badge-{{ availableLanguage.lang }}">
                           {{ availableLanguage.lang | langFullName }}
                         </a>

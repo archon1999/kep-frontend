@@ -7,7 +7,7 @@ import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 import { Problem } from '../../../../../problems/models/problems.models';
-import { TitleService } from 'app/title.service';
+import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Contest, ContestProblem } from '../../user-contests.models';

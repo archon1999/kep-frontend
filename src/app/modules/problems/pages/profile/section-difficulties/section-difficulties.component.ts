@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { fadeInUpOnEnterAnimation } from 'angular-animations';
-import { ProblemsStatisticsService } from '../../../../problems/problems-statistics.service';
+import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
 import { SwiperOptions } from 'swiper';
 
 export interface Difficulties {

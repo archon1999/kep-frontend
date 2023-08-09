@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ApiService } from 'app/api.service';
+import { ApiService } from 'app/shared/services/api.service';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { Subject, asyncScheduler } from 'rxjs';
@@ -55,8 +55,7 @@ export class AttemptsComponent implements OnInit, OnDestroy {
         if (user) {
           this.myAttempts = true;
         }
-        this._reloader.next();
-        this._intervalId = setInterval(() => this._reloader.next(), RELOAD_INTERVAL_TIME);
+        setTimeout(() => this._reloader.next(), 100);
       }
     );
 
@@ -68,9 +67,13 @@ export class AttemptsComponent implements OnInit, OnDestroy {
         this._loadPage();
       }
     )
+
+    this._intervalId = setInterval(() => this._reloader.next(), RELOAD_INTERVAL_TIME);
   }
 
   private _loadPage() {
+    console.log(123);
+    
     var params: any = { page: this.currentPage };
     if (this.myAttempts && this.currentUser) {
       params.username = this.currentUser.username;

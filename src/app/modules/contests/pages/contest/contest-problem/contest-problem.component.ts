@@ -4,17 +4,20 @@ import { CoreConfigService } from '@core/services/config.service';
 import { CoreConfig } from '@core/types';
 import { TranslateService } from '@ngx-translate/core';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
-import { ApiService } from 'app/api.service';
+import { ApiService } from 'app/shared/services/api.service';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 import { Attempt } from '../../../../problems/models/attempts.models';
 import { Problem } from '../../../../problems/models/problems.models';
-import { TitleService } from 'app/title.service';
-import { Subject } from 'rxjs';
+import { TitleService } from 'app/shared/services/title.service';
+import { Subject, pipe } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Contest, Contestant, ContestProblem, ContestProblemInfo } from '../../../contests.models';
 import { ContestsService } from '../../../contests.service';
+import { LanguageService } from 'app/modules/problems/services/language.service';
+import { findAvailableLang } from 'app/modules/problems/utils';
+import { AttemptLangs } from 'app/modules/problems/enums';
 
 @Component({
   selector: 'app-contest-problem',
@@ -64,6 +67,7 @@ export class ContestProblemComponent implements OnInit, OnDestroy {
     public coreConfigService: CoreConfigService,
     public translationService: TranslateService,
     public service: ContestsService,
+    public langService: LanguageService,
   ) { }
 
   ngOnInit(): void {
@@ -76,7 +80,6 @@ export class ContestProblemComponent implements OnInit, OnDestroy {
         problemSymbol: contestProblem.symbol,
         problemTitle: this.problem.title,
       });
-      this.changeLang(localStorage.getItem('problems-selected-lang')||'py'); 
       this.updateContentHeader();
 
       this.service.getMe(this.contest.id).subscribe(
@@ -92,13 +95,22 @@ export class ContestProblemComponent implements OnInit, OnDestroy {
         }
       )
 
+      this.langService.getLanguage().pipe(takeUntil(this._unsubscribeAll)).subscribe(
+        (lang: AttemptLangs) => {
+          this.selectedLang = lang;
+          this.availableLang = findAvailableLang(this.problem.availableLanguages, lang);
+          if(!this.availableLang){
+            this.langService.setLanguage(lang);
+          }
+        }
+      )
+  
       this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
         (user: User | null) => {
           this.currentUser = user;
           this.reloadProblems();
         }
-      );
-  
+      );  
     });
 
     this.coreConfigService.getConfig()
@@ -144,31 +156,6 @@ export class ContestProblemComponent implements OnInit, OnDestroy {
         ]
       }
     };
-  }
-
-  changeLang(lang: string){
-    this.selectedLang = lang;
-    for(let availableLang of this.problem.availableLanguages){
-      if(availableLang.lang == this.selectedLang){
-        this.availableLang = availableLang;
-      }
-    }
-    if(!this.availableLang){
-      this.availableLang = this.problem.availableLanguages[0];
-      this.selectedLang = this.availableLang.lang;
-    }
-    let ok = false;
-    for(let availableLang of this.problem.availableLanguages){
-      if(availableLang.lang == this.selectedLang){
-        ok = true;
-        break;
-      }
-    }
-    if(!ok){
-      this.availableLang = this.problem.availableLanguages[0];
-      this.selectedLang = this.availableLang.lang;
-    }
-    localStorage.setItem('problems-selected-lang', this.selectedLang);
   }
 
   reloadProblems(){

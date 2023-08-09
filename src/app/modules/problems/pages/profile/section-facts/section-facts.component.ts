@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ProblemsStatisticsService } from '../../../problems-statistics.service';
+import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
 
 export interface Facts {
   firstAttempt: any;
