@@ -18,19 +18,11 @@
             <section-study-plans></section-study-plans>                  
           </div>
 
-          <section-topics
-            (topicClick)="topicClick($event)">
-          </section-topics>
+          <section-topics></section-topics>
 
-          <section-problems-filter
-            (filterChange)="filterChange($event)">
-          </section-problems-filter>
+          <section-problems-filter></section-problems-filter>
 
-          <section-problems-table
-            (changeOrdering)="setOrdering($event)"
-            (tagClick)="tagClick($event)"
-            [problems]="problems">
-          </section-problems-table>
+          <section-problems-table [problems]="problems"></section-problems-table>
 
           <ngb-pagination
             *ngIf="problems.length > 0"

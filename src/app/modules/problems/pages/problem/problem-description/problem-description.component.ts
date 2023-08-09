@@ -4,8 +4,12 @@ import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AvailableLanguage, Problem } from '../../../models/problems.models';
-import { ProblemsService } from '../../../problems.service';
+import { AvailableLanguage, Problem, Tag } from '../../../models/problems.models';
+import { ProblemsService } from 'app/modules/problems/services/problems.service';
+import { LocalStorageService } from 'app/shared/storages/local-storage.service';
+import { LanguageService } from 'app/modules/problems/services/language.service';
+import { findAvailableLang } from 'app/modules/problems/utils';
+import { AttemptLangs } from 'app/modules/problems/enums';
 
 @Component({
   selector: 'problem-description',
@@ -17,49 +21,42 @@ export class ProblemDescriptionComponent implements OnInit, OnDestroy {
   @Input() problem: Problem;
 
   public selectedLang: string;
-  public availableLang: AvailableLanguage;
-
-  public currentUser: User;
-
+  public selectedAvailableLang: AvailableLanguage;
+  
   public problemSolution: any;
-
-  public tags = [];
+  public tags: Array<Tag> = [];
   public selectedTag: number;
-
+  
+  public currentUser: User;
   private _unsubscribeAll = new Subject();
 
   constructor(
     public authService: AuthenticationService,
     public service: ProblemsService,
-    public modalService: NgbModal
+    public modalService: NgbModal,
+    public localStorageService: LocalStorageService,
+    public langService: LanguageService,
   ) { }
 
   ngOnInit(): void {
-    this.changeLang(localStorage.getItem('problems-selected-lang')||'py');
-    window.onbeforeunload = () => this.ngOnDestroy();
-
-    this.authService.currentUser
-     .pipe(takeUntil(this._unsubscribeAll))
-     .subscribe((user: any) => {
-      this.currentUser = user;
-      if(this.currentUser && this.currentUser.permissions.canChangeProblemTags){
-        this.service.getTags().subscribe((tags: any) => this.tags = tags);
+    this.langService.getLanguage().pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      (lang: AttemptLangs) => {
+        this.selectedAvailableLang = findAvailableLang(this.problem.availableLanguages, lang);
+        this.selectedLang = lang;
+        if(!this.selectedAvailableLang){
+          this.langService.setLanguage(this.problem.availableLanguages[0].lang);
+        }
       }
-    });
-  }
+    )
 
-  changeLang(lang: string){
-    this.selectedLang = lang;
-    for(let availableLang of this.problem.availableLanguages){
-      if(availableLang.lang == this.selectedLang){
-        this.availableLang = availableLang;
+    this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      (user: User | null) => {
+        this.currentUser = user;
+        if(this.currentUser?.permissions.canChangeProblemTags){
+          this.service.getTags().subscribe((tags: Array<Tag>) => this.tags = tags);
+        }
       }
-    }
-    if(!this.availableLang){
-      this.availableLang = this.problem.availableLanguages[0];
-      this.selectedLang = this.availableLang.lang;
-    }
-    localStorage.setItem('problems-selected-lang', this.selectedLang);
+    );
   }
 
   onPurchaseSolution(){
@@ -67,15 +64,17 @@ export class ProblemDescriptionComponent implements OnInit, OnDestroy {
   }
 
   openSolutionModal(content){
-    this.service.getProblemSolution(this.problem.id).subscribe((result: any) => {
-      this.problemSolution = result;
-      this.modalService.open(content, {
-        scrollable: true,
-      });
+    this.service.getProblemSolution(this.problem.id).subscribe(
+      (solution: any) => {
+        this.problemSolution = solution;
+        this.modalService.open(content, {
+          scrollable: true,
+        }
+      );
     })
   }
 
-  removeTag(tag){
+  removeTag(tag: Tag){
     let index = this.problem.tags.findIndex((value) => value.id == tag.id);
     let tagId = this.problem.tags[index].id;
     this.service.removeTag(this.problem.id, tagId).subscribe((result: any) => {

@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from "@angular/router";
 import { Observable, of } from "rxjs";
 import { catchError } from "rxjs/operators";
-import { ChallengesService } from "./challenges.service";
+import { ChallengesService } from "./services/challenges.service";
 
 @Injectable()
 export class ChallengeResolver implements Resolve<any> {

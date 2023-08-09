@@ -1,0 +1,44 @@
+.bg-challenge {
+  box-shadow: var(--box-shadow) !important;
+  border-radius: 5px;
+  background: linear-gradient(294deg, #c296f4c4, 30%, #97c8ff);
+}
+
+::ng-deep .dark-layout .bg-challenge {
+  background: var(--bg-gradient);
+  background-size: 200% auto;
+}
+
+td:nth-child(1) {
+  width: 320px;
+  min-width: 320px;
+  white-space: nowrap;
+}
+
+td:nth-child(2) {
+  width: 120px;
+  min-width: 120px;
+  white-space: nowrap;
+}
+
+th, td {
+    border-top: 0px solid #ebe9f1;
+}
+
+
+table {
+  margin-bottom: 1px !important;
+  padding-bottom: 0px !important;
+}
+
+@media (max-width: 740px) {
+  td:nth-child(4) {
+    display: none;
+  }
+}
+
+@media (max-width: 500px) {
+  td:nth-child(3) {
+    display: none;
+  }
+}

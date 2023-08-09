@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CoreConfigService } from '../../../../../@core/services/config.service';
 import { CoreConfig } from '../../../../../@core/types';
 import { fadeInDownAnimation, fadeInLeftAnimation, fadeInUpAnimation } from 'angular-animations';
-import { ApiService } from '../../../../api.service';
+import { ApiService } from '../../../../shared/services/api.service';
 
 @Component({
   selector: 'slide-statistics',

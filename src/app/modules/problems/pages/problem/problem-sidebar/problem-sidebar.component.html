@@ -92,7 +92,7 @@
           <tr class="bg-gradient-primary">
             <th>#</th>
             <th>{{ 'User' | translate }}</th>
-            <th>{{ 'Verdict' | translate }}</th>
+            <th>{{ 'Result' | translate }}</th>
           </tr>
         </thead>
         <tbody>
@@ -103,13 +103,13 @@
             </td>
             <td>
               <span [ngSwitch]="topAttemptsOrdering">
-                <span *ngSwitchCase="'time'" class="badge badge-info">
+                <span *ngSwitchCase="'time'" class="badge badge-info badge-glow">
                   {{ attempt.time }} ms
                 </span>
-                <span *ngSwitchCase="'memory'" class="badge badge-primary">
+                <span *ngSwitchCase="'memory'" class="badge badge-primary badge-glow">
                   {{ attempt.memory }} kb
                 </span>
-                <span *ngSwitchCase="'source_code_size'" class="badge badge-dark">
+                <span *ngSwitchCase="'source_code_size'" class="badge badge-dark badge-glow">
                   {{ attempt.sourceCodeSize }}
                 </span>
               </span>

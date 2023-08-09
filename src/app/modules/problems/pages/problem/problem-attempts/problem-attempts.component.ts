@@ -5,7 +5,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Attempt } from '../../../models/attempts.models';
 import { Problem } from '../../../models/problems.models';
-import { ProblemsService } from '../../../problems.service';
+import { ProblemsService } from 'app/modules/problems/services/problems.service';
 
 @Component({
   selector: 'problem-attempts',

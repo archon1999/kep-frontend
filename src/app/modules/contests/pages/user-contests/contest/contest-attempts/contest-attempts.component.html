@@ -28,7 +28,7 @@
                   <label class="custom-control-label" for="filterOnlyUser">{{ 'MY_ATTEMPTS' | translate }}</label>
                 </div>
 
-                <contest-attempts-table [attempts]="attempts" [contest]="contest"></contest-attempts-table>
+                <attempts-table [attempts]="attempts" [contest]="contest"></attempts-table>
 
                 <ngb-pagination
                   *ngIf="attempts.length > 0"

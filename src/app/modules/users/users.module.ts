@@ -6,7 +6,7 @@ import { CorePipesModule } from '@core/pipes/pipes.module';
 import { NgbModule, NgbPaginationModule, NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
-import { BlogPostCardModule } from '../../shared/components/blog-post-card/blog-post-card.module';
+import { BlogPostCardModule } from '../blog/components/blog-post-card/blog-post-card.module';
 import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
 import { UsersComponent } from './users.component';
 import { UserBlogResolver, UserChallengesRatingResolver, UserContestsRatingResolver, UserEducationsResolver, UserInfoResolver, UserProblemsRatingResolver, UserResolver, UserSkillsResolver, UserSocialResolver, UserTechnologiesResolver, UserWorkExperiencesResolver } from './users.resolver';

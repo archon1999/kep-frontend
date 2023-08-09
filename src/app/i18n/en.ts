@@ -410,6 +410,7 @@ export const locale = {
       FINISH_TIME: 'Finish time',
       TYPE: 'Type',
       REGISTRANTS_COUNT: 'Number of registrants',
+      CONTESTANTS_COUNT: 'Number of contestants',
       RATED: 'Rated',
       UNRATED: 'Unrated',
       PROBLEMS_COUNT: 'Number of problems',

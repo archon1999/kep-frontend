@@ -3,11 +3,12 @@ import { CoreConfigService } from '@core/services/config.service';
 import { CoreConfig } from '@core/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Problem } from '../../../../models/problems.models';
+import { Problem, ProblemsFilter } from '../../../../models/problems.models';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { LocalStorageService } from 'app/shared/storages/local-storage.service';
+import { ProblemsFilterService } from '../../../../services/problems-filter.service';
 
 @Component({
   selector: 'section-problems-table',
@@ -18,12 +19,11 @@ import { LocalStorageService } from 'app/shared/storages/local-storage.service';
 export class SectionProblemsTableComponent implements OnInit, OnDestroy {
 
   @Input() problems: Array<Problem>;
-  @Output() tagClick = new EventEmitter<number>();
-  @Output() changeOrdering = new EventEmitter<string>();
 
   public isDarkSkin = false;
   public currentUser: User | null;
 
+  public filter: ProblemsFilter;
   public ordering: string;
 
   private _unsubscribeAll = new Subject();
@@ -32,14 +32,13 @@ export class SectionProblemsTableComponent implements OnInit, OnDestroy {
     public coreConfigService: CoreConfigService,
     public authService: AuthenticationService,
     public localStorageService: LocalStorageService,
+    public filterService: ProblemsFilterService,
   ) { }
 
   ngOnInit(): void {
-    this.setOrdering(this.localStorageService.get('problemsOrdering') || 'id');
-
     this.coreConfigService.getConfig().pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (config: CoreConfig) => {
-        this.isDarkSkin = config.layout.skin == 'dark';
+        this.isDarkSkin = config.layout.skin === 'dark';
       }
     )
 
@@ -48,19 +47,31 @@ export class SectionProblemsTableComponent implements OnInit, OnDestroy {
         this.currentUser = user;
       }
     )
+
+    this.filterService.getFilter().pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      (filter: ProblemsFilter) => {
+        this.filter = filter;
+        this.ordering = filter.ordering;
+      }
+    )
   }
 
-  setOrdering(ordering: string){
-    if(this.ordering == ordering){
+  setOrdering(ordering: string) {
+    if (this.filter.ordering === ordering) {
       ordering = '-' + ordering;
     }
-    this.localStorageService.set('problemsOrdering', ordering);
-    this.ordering = ordering;
-    this.changeOrdering.emit(ordering);
+    this.filterService.updateFilter({ ordering: ordering });
   }
 
   tagOnClick(tagId: number) {
-    this.tagClick.emit(tagId);
+    let tags = this.filter.tags;
+    var index = this.filter.tags.indexOf(tagId);
+    if (index == -1) {
+      tags.push(tagId);
+    } else {
+      tags.splice(index, 1);
+    }
+    this.filterService.updateFilter({ tags: tags });
   }
 
   ngOnDestroy(): void {
