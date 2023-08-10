@@ -366,6 +366,8 @@ export const locale = {
     Algorithms: 'Алгоритмы',
     DataScience: 'Наука о данных',
     WebScraping: 'Веб скрейпинг',
+    ChallengeQuestionRight: 'Правильно',
+    ChallengeQuestionWrong: 'Неправильно',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',
