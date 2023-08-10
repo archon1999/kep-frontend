@@ -368,6 +368,7 @@ export const locale = {
     WebScraping: 'Veb skreyping',
     ChallengeQuestionRight: 'To`g`ri',
     ChallengeQuestionWrong: 'Noto`g`ri',
+    ChallengeBlurError: 'Bellashuv paytida brauzer fokusini boshqa narsaga o`zgartirishga ruxsat berilmaydi.',
     ContestRules: {
       ACM20H: ``,
     },
