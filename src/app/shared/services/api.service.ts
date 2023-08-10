@@ -27,7 +27,7 @@ export class ApiService {
     this.initOptions(options);
     options.params = params;
     return this.http.get(url, options).pipe(
-      this.handleRetryError(2000, 2),
+      this.handleRetryError(3000, 5),
       catchError(err => {
         if(!err.status){
           this.handleConnectionError();
