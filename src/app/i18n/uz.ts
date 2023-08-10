@@ -366,6 +366,8 @@ export const locale = {
     Algorithms: 'Algoritmlar',
     DataScience: 'Malumotlar tahlili',
     WebScraping: 'Veb skreyping',
+    ChallengeQuestionRight: 'To`g`ri',
+    ChallengeQuestionWrong: 'Noto`g`ri',
     ContestRules: {
       ACM20H: ``,
     },
