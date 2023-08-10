@@ -359,6 +359,8 @@ export const locale = {
     AboutQuestionTypes: 'Savol turlari haqida',
     AboutTournaments: 'Turnirlar haqida',
     AboutDuels: 'Duellar haqida',
+    AboutArena: 'Arena haqida',
+    ArenaDrawOver: 'Qur`a tashlash yakunlandi. Natijalarni kuting',
     Upsolve: 'Ishlash',
     WebDevelopment: 'Veb dasturlash',
     Algorithms: 'Algoritmlar',

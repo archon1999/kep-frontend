@@ -359,6 +359,8 @@ export const locale = {
     AboutQuestionTypes: 'О типах вопросов',
     AboutTournaments: 'О турнирах',
     AboutDuels: 'О дуэлях',
+    AboutArena: 'О арене',
+    ArenaDrawOver: 'Жеребьевка закончена. Ждите результаты',
     Upsolve: 'Дорешать',
     WebDevelopment: 'Веб программирование',
     Algorithms: 'Алгоритмы',

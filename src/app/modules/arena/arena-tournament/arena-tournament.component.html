@@ -40,6 +40,26 @@
             </div>
 
           </div>
+
+          <div class="card bg-arena">
+            <div class="card-header text-center">
+              <div class="card-title">
+                <i data-feather="edit-3" class="font-large-1 mr-25"></i>
+                {{ 'Chapters' | translate }}
+              </div>
+            </div>
+
+            <div class="card-body text-center">
+              <img
+                *ngFor="let chapter of arena.chapters"
+                [src]="chapter.icon"
+                height="48"
+                alt="chapter-icon"
+                class="mr-50"
+                [ngbTooltip]="chapter.title"
+              >
+            </div>
+          </div>
         </div>
         
         <div class="col-lg-6 col-12 order-lg-2 order-3" [@fadeIn]="startAnimationState">
@@ -65,7 +85,14 @@
           <ngx-skeleton-loader [count]="1" class="d-none"></ngx-skeleton-loader>
 
           <div *ngIf="arena.isRegistrated && arena.status == 0" class="text-center">
-            <div *ngIf="arena.pause">
+            <div *ngIf="remainingTime && remainingTime <= 1000*60*2; else elseBlock">
+              <ngb-alert [type]="'info'" [dismissible]="false">
+                <h4 class="alert-heading animate">
+                  {{ 'ArenaDrawOver' | translate }}
+                </h4>
+              </ngb-alert>           
+            </div>
+            <ng-template #elseBlock>
               <div *ngIf="arena.pause">
                 <ngb-alert [type]="'warning'" [dismissible]="false">
                   <h4 class="alert-heading animate">
@@ -73,16 +100,16 @@
                     <button (click)="arenaStart()" class="ml-50 btn btn-sm btn-relief-warning">{{ 'Start' | translate }}</button>
                   </h4>
                 </ngb-alert>
+              </div>
+              <div *ngIf="!arena.pause">
+                <ngb-alert [type]="'success'" [dismissible]="false">
+                  <h4 class="alert-heading animate">
+                    {{ 'ArenaStartText' | translate }}
+                    <button (click)="arenaPause()" class="ml-50 btn btn-sm btn-relief-success">{{ 'Pause' | translate }}</button>
+                  </h4>
+                </ngb-alert>
               </div>  
-            </div>
-            <div *ngIf="!arena.pause">
-              <ngb-alert [type]="'success'" [dismissible]="false">
-                <h4 class="alert-heading animate">
-                  {{ 'ArenaStartText' | translate }}
-                  <button (click)="arenaPause()" class="ml-50 btn btn-sm btn-relief-success">{{ 'Pause' | translate }}</button>
-                </h4>
-              </ngb-alert>
-            </div>
+            </ng-template>
           </div>
 
           <div class="card">
