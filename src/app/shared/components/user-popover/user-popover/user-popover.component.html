@@ -16,7 +16,7 @@
         {{ user.firstName }} {{ user.lastName }}
         <span style="vertical-align: bottom;" *ngIf="user.streak >= 7">
           <ng-template #tipContent>
-            <img src="../../../../../assets/images/icons/fire_red.png" height="19" alt=""> {{ user.streak }}
+            <img src="assets/images/icons/fire_red.png" height="19" alt=""> {{ user.streak }}
           </ng-template>
           <span class="badge badge-pill badge-kep" [ngbTooltip]="tipContent">KEP</span>  
         </span>
@@ -89,7 +89,7 @@
 
 <span *ngIf="!customContent && streak >= 7">
   <ng-template #tipContent>
-    <img src="../../../../../assets/images/icons/fire_red.png" height="19" alt=""> {{ streak }}
+    <img src="assets/images/icons/fire_red.png" height="19" alt=""> {{ streak }}
   </ng-template>
   <span class="badge badge-pill badge-kep" [ngbTooltip]="tipContent">KEP</span>  
 </span>

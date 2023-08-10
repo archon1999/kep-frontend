@@ -46,19 +46,19 @@
     
           <div [@fadeInOnEnter] *ngIf="top3Contestants.length > 0" class="mt-2 row">
             <div *ngIf="top3Contestants.length > 1" class="col contestant mt-1">
-              <img width="32" height="32" src="../../../../../../assets/images/icons/contest-medal-2.png">
+              <img width="32" height="32" src="assets/images/icons/contest-medal-2.png">
               <br>
               <contestant-view [teamNameColor]="'white'" [textColor]="'white'" [user]="top3Contestants[1].user" [team]="top3Contestants[1].team"></contestant-view>
             </div>
     
             <div class="col contestant">
-              <img width="32" height="32" src="../../../../../../assets/images/icons/contest-medal-1.png">
+              <img width="32" height="32" src="assets/images/icons/contest-medal-1.png">
               <br>
               <contestant-view [teamNameColor]="'white'" [textColor]="'white'" [user]="top3Contestants[0].user" [team]="top3Contestants[0].team"></contestant-view>
             </div>
     
             <div *ngIf="top3Contestants.length > 2" class="col contestant mt-2">
-              <img width="32" height="32" src="../../../../../../assets/images/icons/contest-medal-3.png">
+              <img width="32" height="32" src="assets/images/icons/contest-medal-3.png">
               <br>
               <contestant-view [teamNameColor]="'white'" [textColor]="'white'" [user]="top3Contestants[2].user" [team]="top3Contestants[2].team"></contestant-view>
             </div>
@@ -96,19 +96,19 @@
           [customContent]="true" [purchaseUrl]="'contests/' + contest.id + '/purchase-double-rating/'"
           (success)="contest.doubleRatingPurchased=true;" [value]="25" class="mr-1"
           ngbTooltip="{{ 'DoubleRating' | translate }}">
-          <img height="25" src="../../../../../../assets/images/icons/x2-delta.png">
+          <img height="25" src="assets/images/icons/x2-delta.png">
         </kepcoin-spend-swal>
         <img ngbTooltip="{{ 'Purchased' | translate }}"
              *ngIf="contest.isRegistered && contest.isRated && contest.doubleRatingPurchased" height="25"
-             src="../../../../../../assets/images/icons/x2-delta.png" class="mr-1">
+             src="assets/images/icons/x2-delta.png" class="mr-1">
         <kepcoin-spend-swal
           *ngIf="contest.status != 0 && contest.isRated && contest.isRegistered && !contest.saveRatingPurchased"
           [customContent]="true" [purchaseUrl]="'contests/' + contest.id + '/purchase-save-rating/'" [value]="25"
           (success)="contest.saveRatingPurchased=true;" class="mr-1" ngbTooltip="{{ 'SaveRating' | translate }}">
-          <img height="25" src="../../../../../../assets/images/icons/save-rating.png">
+          <img height="25" src="assets/images/icons/save-rating.png">
         </kepcoin-spend-swal>
         <img ngbTooltip="{{ 'Purchased' | translate }}" *ngIf="contest.isRegistered && contest.isRated && contest.saveRatingPurchased"
-             height="25" src="../../../../../../assets/images/icons/save-rating.png" class="mr-1">
+             height="25" src="assets/images/icons/save-rating.png" class="mr-1">
         <button ngbTooltip="{{ 'Cancel' | translate }}" rippleEffect class="btn btn-sm round btn-gradient-success"
           (click)="cancelRegistration()" *ngIf="contest.isRegistered">
           <i data-feather="user" [size]="16"></i> {{ 'Registered' | translate }}
