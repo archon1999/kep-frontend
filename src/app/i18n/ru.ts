@@ -366,6 +366,7 @@ export const locale = {
     Algorithms: 'Алгоритмы',
     DataScience: 'Наука о данных',
     WebScraping: 'Веб скрейпинг',
+    ChallengeBlurError: 'Во время вызова запрещается изменить фокус браузера на что-либо другое.',
     ChallengeQuestionRight: 'Правильно',
     ChallengeQuestionWrong: 'Неправильно',
     ProblemTourSteps: [
