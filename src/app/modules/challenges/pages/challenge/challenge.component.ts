@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Challenge } from '../../models/challenges.models';
 import { ChallengesService } from '../../services/challenges.service';
@@ -54,7 +54,7 @@ export class ChallengeComponent implements OnInit, OnDestroy {
     private dragulaService: DragulaService,
     public titleService: TitleService,
     public translateService: TranslateService,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.dragulaService.createGroup('handle-list', {
@@ -256,6 +256,23 @@ export class ChallengeComponent implements OnInit, OnDestroy {
     }
   
     return array;
+  }
+
+  @HostListener('window:blur', ['$event'])
+  onBlur(event: any): void {
+    if(this.challenge.nextQuestion.number > 0){
+      let translations = this.translateService.translations[this.translateService.currentLang];
+      let title = translations['ChallengeBlurError'];
+      Swal.fire({
+        title: title,
+        icon: 'error',
+      }).then((result) => {
+        this.challengeUpdate();
+        this.counter.reset();
+        this.counter.start();  
+      })
+
+    }
   }
 
   ngOnDestroy(): void {
