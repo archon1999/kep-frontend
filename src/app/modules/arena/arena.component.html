@@ -1,42 +1,56 @@
-<div class="row">
-  <div class="col-12 mb-4 mt-2 arena-page-top">
-    <div class="text-center">
-      <div [@fadeInUpOnEnter] class="avatar avatar-lg p-50 m-0 mt-1 mb-1 bg-warning badge-glow">
-        <div class="avatar-content" ngbTooltip="{{ 'Challenges' | translate }}">
-          <i class="font-large-1" data-feather="shield"></i>
-        </div>
-      </div>
-
-      <h2 [@fadeInUpOnEnter] class="mt-2">
-        <span class="text-white">{{ 'Arena' | translate }}</span>
-      </h2>
-
-      <div class="mt-3 col-lg-8 col-12 offset-lg-2 offset-0">
-        <div class="row">
-          <div [@fadeInLeftOnEnter] class="col-6">
-            <a routerLink="/learn/blog/post/72">
-              <img class="info-img" src="assets/images/pages/graphic-5.png" alt="">
-              <h4 class="mt-2 text-white">Arena haqida</h4>
-            </a>
-          </div>
-
-          <div [@fadeInRightOnEnter] class="col-6">
-            <a routerLink="/learn/blog/post/69">
-              <img class="info-img" src="assets/images/pages/graphic-1.png" alt="">
-              <h4 class="mt-2 text-white">Bellashuvlar haqida</h4>
-            </a>
+<section class="arena">
+  <div class="row">
+    <div class="col-12 mb-4 mt-2 arena-page-top">
+      <div class="text-center">
+        <div [@fadeInUpOnEnter] class="avatar avatar-lg p-50 m-0 mt-1 mb-1 bg-warning badge-glow">
+          <div class="avatar-content">
+            <i class="font-large-1" data-feather="shield"></i>
           </div>
         </div>
-      </div>
   
-    </div>
-  </div>
-
-  <div class="mt-2 col-lg-8 col-12 offset-lg-2">
-    <div class="row">
-      <div class="col-12 bg-arena-list" *ngFor="let arena of arenaList">
-        <arena-list-card [@fadeInOnEnter] [arena]="arena"></arena-list-card>
+        <h2 [@fadeInUpOnEnter] class="mt-2">
+          <span class="text-white">{{ 'Arena' | translate }}</span>
+        </h2>
+  
+        <div class="mt-3 col-lg-8 col-12 offset-lg-2 offset-0">
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <a [@fadeInLeftOnEnter] class="card card-info" routerLink="/learn/blog/post/72">
+                <div class="card-header">
+                  <div class="card-title">
+                    {{ 'AboutArena' | translate }}
+                  </div>
+                </div>
+                <div class="info-img">
+                  <img src="assets/images/pages/graphic-5.png" alt="info-img">
+                </div>
+              </a>
+            </div>
+  
+            <div class="col-12 col-md-6">
+              <a [@fadeInRightOnEnter] class="card card-info" routerLink="/learn/blog/post/69">
+                <div class="card-header">
+                  <div class="card-title">
+                    {{ 'AboutChallenges' | translate }}
+                  </div>
+                </div>
+                <div class="info-img">
+                  <img src="assets/images/pages/graphic-1.png" alt="info-img">
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+    
       </div>
     </div>
-  </div>
-</div>
+  
+    <div class="col-lg-8 col-12 offset-lg-2">
+      <div class="row">
+        <div class="col-12 bg-arena-list" *ngFor="let arena of arenaList">
+          <arena-list-card [@fadeInOnEnter] [arena]="arena"></arena-list-card>
+        </div>
+      </div>
+    </div>
+  </div>  
+</section>
