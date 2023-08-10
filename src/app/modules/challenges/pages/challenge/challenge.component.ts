@@ -260,7 +260,7 @@ export class ChallengeComponent implements OnInit, OnDestroy {
 
   @HostListener('window:blur', ['$event'])
   onBlur(event: any): void {
-    if(this.challenge.nextQuestion.number > 0){
+    if(this.challenge.nextQuestion?.question){
       let translations = this.translateService.translations[this.translateService.currentLang];
       let title = translations['ChallengeBlurError'];
       Swal.fire({

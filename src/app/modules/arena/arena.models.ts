@@ -27,6 +27,7 @@ export interface ArenaPlayer {
   points: number;
   streak: boolean;
   results: Array<number>;
+  isBot: boolean;
 }
 
 export interface ArenaPlayerStatistics {
