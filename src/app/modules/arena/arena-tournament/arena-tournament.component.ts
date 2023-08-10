@@ -47,6 +47,9 @@ export class ArenaTournamentComponent implements OnInit, OnDestroy {
 
   private _unsubscribeAll = new Subject();
   private _intervalId: any;
+  private _intervalId2: any;
+
+  public remainingTime: number;
 
   constructor(
     public route: ActivatedRoute,
@@ -87,6 +90,13 @@ export class ArenaTournamentComponent implements OnInit, OnDestroy {
       }
     })
 
+    if(this.arena.status == 0){
+      this.updateReaminingTime();
+      this._intervalId2 = setInterval(() => {
+        this.updateReaminingTime();
+      }, 5000);
+    }
+
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (user: any) => {
         this.currentUser = user;
@@ -95,6 +105,10 @@ export class ArenaTournamentComponent implements OnInit, OnDestroy {
         }
       }
     )
+  }
+  
+  updateReaminingTime(){
+    this.remainingTime = new Date(this.arena.finishTime).valueOf() - Date.now();
   }
 
   loadArenaPlayerStatistics(username: string){
@@ -182,6 +196,9 @@ export class ArenaTournamentComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.complete();    
     if(this._intervalId){
       clearInterval(this._intervalId);
+    }
+    if(this._intervalId2){
+      clearInterval(this._intervalId2);
     }
   }
 
