@@ -8,5 +8,9 @@
     <span *ngIf="withRating" class="badge badge-light-{{ user.rankTitle | challengesRankColor }}">
       {{ user.rating }}
     </span>
+
+    <span *ngIf="user?.isBot" class="ml-50 mb-50 badge badge-pill badge-light-{{ user.rankTitle | challengesRankColor }}">
+      bot
+    </span>
   </div>
 </user-popover>

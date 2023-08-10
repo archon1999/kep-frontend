@@ -369,6 +369,7 @@ export const locale = {
     Algorithms: 'Algorithms',
     DataScience: 'DataScience',
     WebScraping: 'Web scraping',
+    ChallengeBlurError: 'During a challenge, it is forbidden to change the browser focus to something else.',
     ChallengeQuestionRight: 'Right',
     ChallengeQuestionWrong: 'Wrong',
     ProblemTourSteps: [
