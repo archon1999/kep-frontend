@@ -11,11 +11,12 @@ import { CoreConfig } from '../../../../../@core/types';
 import { CountdownComponent } from '@ciri/ngx-countdown';
 import { DragulaService } from 'ng2-dragula';
 import { TitleService } from '../../../../shared/services/title.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-challenge',
   templateUrl: './challenge.component.html',
-  styleUrls: ['./challenge.component.scss']
+  styleUrls: ['./challenge.component.scss', '../../../testing/chapters.scss']
 })
 export class ChallengeComponent implements OnInit, OnDestroy {
 
@@ -52,6 +53,7 @@ export class ChallengeComponent implements OnInit, OnDestroy {
     public coreConfigService: CoreConfigService,
     private dragulaService: DragulaService,
     public titleService: TitleService,
+    public translateService: TranslateService,
   ) { }
 
   ngOnInit(): void {
@@ -215,13 +217,14 @@ export class ChallengeComponent implements OnInit, OnDestroy {
     }
     this.service.checkAnswer(this.challenge.id, data).subscribe(
       (result: any) => {
+        let translations = this.translateService.translations[this.translateService.currentLang];
         let title: string, icon;
         if(result.success){
-          title = 'To`g`ri';
+          title = translations['ChallengeQuestionRight'];
           icon = 'success';
           this.successAudio.nativeElement.play();
         } else {
-          title = 'Noto`g`ri';
+          title = translations['ChallengeQuestionWrong'];
           icon = 'error';
           this.wrongAudio.nativeElement.play();
         }
