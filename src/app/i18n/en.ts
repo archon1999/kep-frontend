@@ -362,6 +362,8 @@ export const locale = {
     AboutQuestionTypes: 'About question types',
     AboutTournaments: 'About tournaments',
     AboutDuels: 'About duels',
+    AboutArena: 'About arena',
+    ArenaDrawOver: 'The draw is over. Wait for the results',
     Upsolve: 'Upsolve',
     WebDevelopment: 'Web development',
     Algorithms: 'Algorithms',
