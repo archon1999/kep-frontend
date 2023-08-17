@@ -74,15 +74,15 @@
         </div>
       </div>
 
-      <ngb-pagination *ngIf="contests.length > 0" [collectionSize]="totalContests" [(page)]="currentPage"
-        [pageSize]="7" [maxSize]="5" [rotate]="true" (pageChange)="reloadContests()"
-        class="d-flex mb-2 justify-content-center mt-2">
-        <ng-template ngbPaginationPrevious><span [data-feather]="'chevron-left'" [size]="18"
-            [class]="'font-weight-bolder'"></span>
-        </ng-template>
-        <ng-template ngbPaginationNext><span [data-feather]="'chevron-right'" [size]="18"
-            [class]="'font-weight-bolder'"></span></ng-template>
-      </ngb-pagination>  
+      <pagination
+        *ngIf="contests.length > 0"
+        [collectionSize]="totalContests"
+        [(page)]="currentPage"
+        [pageSize]="7"
+        [maxSize]="5"
+        [rotate]="true"
+        (pageChange)="reloadContests()">
+      </pagination>  
     </div>
 
     <div class="col-lg-2 mt-4 pt-2 d-none d-xl-block">

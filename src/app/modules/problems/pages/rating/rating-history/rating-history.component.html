@@ -65,15 +65,13 @@
                     </table>
                   </div>
   
-                  <ngb-pagination [collectionSize]="dailyRatingHistoryTotal" [(page)]="dailyRatingHistoryPage"
-                    [pageSize]="20" [maxSize]="5" (pageChange)="reloadDailyHistoryPage()"
-                    class="pagination-success d-flex justify-content-center mt-2">
-                    <ng-template ngbPaginationPrevious><span [data-feather]="'chevron-left'" [size]="18"
-                        [class]="'font-weight-bolder'"></span>
-                    </ng-template>
-                    <ng-template ngbPaginationNext><span [data-feather]="'chevron-right'" [size]="18"
-                        [class]="'font-weight-bolder'"></span></ng-template>
-                  </ngb-pagination>
+                  <pagination
+                    [collectionSize]="dailyRatingHistoryTotal"
+                    [(page)]="dailyRatingHistoryPage"
+                    [pageSize]="20"
+                    [maxSize]="5"
+                    (pageChange)="reloadDailyHistoryPage()">
+                  </pagination>
                 </div>
 
               </div>
@@ -137,15 +135,13 @@
                     </table>
                   </div>
   
-                  <ngb-pagination [collectionSize]="weeklyRatingHistoryTotal" [(page)]="weeklyRatingHistoryPage"
-                    [pageSize]="20" [maxSize]="5" (pageChange)="reloadWeeklyHistoryPage()"
-                    class="pagination-info d-flex justify-content-center mt-2">
-                    <ng-template ngbPaginationPrevious><span [data-feather]="'chevron-left'" [size]="18"
-                        [class]="'font-weight-bolder'"></span>
-                    </ng-template>
-                    <ng-template ngbPaginationNext><span [data-feather]="'chevron-right'" [size]="18"
-                        [class]="'font-weight-bolder'"></span></ng-template>
-                  </ngb-pagination>
+                  <pagination
+                    [collectionSize]="weeklyRatingHistoryTotal"
+                    [(page)]="weeklyRatingHistoryPage"
+                    [pageSize]="20"
+                    [maxSize]="5"
+                    (pageChange)="reloadWeeklyHistoryPage()">
+                  </pagination>
                 </div>
 
               </div>
@@ -209,15 +205,13 @@
                     </table>
                   </div>
   
-                  <ngb-pagination [collectionSize]="monthlyRatingHistoryTotal" [(page)]="monthlyRatingHistoryPage"
-                    [pageSize]="20" [maxSize]="5" (pageChange)="reloadMonthlyHistoryPage()"
-                    class="d-flex justify-content-center mt-2">
-                    <ng-template ngbPaginationPrevious><span [data-feather]="'chevron-left'" [size]="18"
-                        [class]="'font-weight-bolder'"></span>
-                    </ng-template>
-                    <ng-template ngbPaginationNext><span [data-feather]="'chevron-right'" [size]="18"
-                        [class]="'font-weight-bolder'"></span></ng-template>
-                  </ngb-pagination>
+                  <pagination
+                    [collectionSize]="monthlyRatingHistoryTotal"
+                    [(page)]="monthlyRatingHistoryPage"
+                    [pageSize]="20"
+                    [maxSize]="5"
+                    (pageChange)="reloadMonthlyHistoryPage()">
+                  </pagination>
                 </div>
 
               </div>
