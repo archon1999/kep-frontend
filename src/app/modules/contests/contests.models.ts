@@ -26,6 +26,14 @@ export interface ContestAuthor {
     ratingitle: string;
 }
 
+export interface ContestUserInfo {
+    isParticipated: boolean,
+    isRegistered: boolean,
+    doubleRatingPurchased: boolean,
+    saveRatingPurchased: boolean,
+    virtualContestPurchased: boolean,
+}
+
 export class Contest {
     constructor(
         public id: number,
@@ -34,8 +42,6 @@ export class Contest {
         public status: number,
         public authors: Array<ContestAuthor>,
         public problemsCount: number,
-        public solved: number,
-        public isRegistered: boolean,
         public registrantsCount: number,
         public contestantsCount: number,
         public startTime: Date,
@@ -46,8 +52,7 @@ export class Contest {
         public categoryTitle: string,
         public participationType: number,
         public isRated: boolean,
-        public doubleRatingPurchased: boolean,
-        public saveRatingPurchased: boolean,
+        public userInfo: ContestUserInfo,
     ){}
 
     hasPenalties(): boolean {
@@ -96,8 +101,6 @@ export class Contest {
             data.status,
             data.authors,
             data.problemsCount,
-            data.solved,
-            data.isRegistered,
             data.registrantsCount,
             data.contestantsCount,
             new Date(data.startTime),
@@ -108,8 +111,7 @@ export class Contest {
             data.categoryTitle,
             data.participationType,
             data.isRated,
-            data.doubleRatingPurchased,
-            data.saveRatingPurchased,
+            data.userInfo,
         )
     }
 }
