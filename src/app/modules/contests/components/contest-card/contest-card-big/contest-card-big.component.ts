@@ -5,6 +5,7 @@ import { ApiService } from '../../../../../shared/services/api.service';
 import { User } from '../../../../../auth/models';
 import { AuthenticationService } from '../../../../../auth/service';
 import { Contest, ContestStatus } from '../../../contests.models';
+import { ContestsService } from 'app/modules/contests/contests.service';
 
 @Component({
   selector: 'contest-card-big',
@@ -24,6 +25,7 @@ export class ContestCardBigComponent implements OnInit {
     public api: ApiService,
     public modalService: NgbModal,
     public authService: AuthenticationService,
+    public service: ContestsService,
   ) { }
 
   ngOnInit(): void {
@@ -42,9 +44,9 @@ export class ContestCardBigComponent implements OnInit {
 
   openRegistrationModal(content){
     if(this.contest.participationType == 1){
-      this.api.post(`contests/${this.contest.id}/registration/`).subscribe((result: any) => {
+      this.service.contestRegistration(this.contest.id).subscribe((result: any) => {
         if(result.success){
-          this.contest.isRegistered = true;
+          this.contest.userInfo.isRegistered = true;
         }
       })
     } else {
@@ -56,10 +58,25 @@ export class ContestCardBigComponent implements OnInit {
     if(this.contest.participationType == 1){
       this.api.get(`contests/${this.contest.id}/cancel-registration/`).subscribe((result: any) => {
         if(result.success){
-          this.contest.isRegistered = false;
+          this.contest.userInfo.isRegistered = false;
         }
       })
     }
   }
 
+  virtualContestPurchaseSuccess(){
+    this.contest.userInfo.virtualContestPurchased = true;
+  }
+
+  virtualContestStart(){
+    this.service.virtualContestStart(this.contest.id).subscribe(
+      () => {
+        this.service.getContest(this.contest.id).subscribe(
+          (contest: Contest) => {
+            this.contest = contest;
+          }
+        )    
+      }
+    )
+  }
 }

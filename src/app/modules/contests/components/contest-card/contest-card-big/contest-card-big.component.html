@@ -90,32 +90,56 @@
     </div>
 
     <div class="registration text-center">
+      <!--Virtual contest-->
+      <ng-container *ngIf="contest.isFinished()">
+        <kepcoin-spend-swal
+          *ngIf="!contest.userInfo.virtualContestPurchased"
+          [customContent]="true"
+          [purchaseUrl]="'contests/' + contest.id + '/purchase-virtual-contest/'"
+          [value]="5"
+          (success)="virtualContestPurchaseSuccess()"
+          class="mr-1">
+          <button class="btn btn-primary btn-sm round">
+            <i [data-feather]="'contest' | iconName" [size]="16"></i>
+            {{ 'Virtual' | translate }}
+          </button>
+        </kepcoin-spend-swal>
+
+        <button
+          *ngIf="contest.userInfo.virtualContestPurchased"
+          (click)="virtualContestStart()"
+          class="btn btn-primary btn-sm round">
+          <i [data-feather]="'contest' | iconName" [size]="16"></i>
+          {{ 'StartVirtual' | translate }}
+        </button>
+      </ng-container>
+
       <span *ngIf="contest.status != 1">
         <kepcoin-spend-swal
-          *ngIf="contest.status != 0 && contest.isRated && contest.isRegistered && !contest.doubleRatingPurchased"
+          *ngIf="contest.status != 0 && contest.userInfo.isRated && contest.userInfo.isRegistered && !contest.userInfo.doubleRatingPurchased"
           [customContent]="true" [purchaseUrl]="'contests/' + contest.id + '/purchase-double-rating/'"
           (success)="contest.doubleRatingPurchased=true;" [value]="25" class="mr-1"
           ngbTooltip="{{ 'DoubleRating' | translate }}">
           <img height="25" src="assets/images/icons/x2-delta.png">
         </kepcoin-spend-swal>
         <img ngbTooltip="{{ 'Purchased' | translate }}"
-             *ngIf="contest.isRegistered && contest.isRated && contest.doubleRatingPurchased" height="25"
+             *ngIf="contest.userInfo.isRegistered && contest.userInfo.isRated && contest.userInfo.doubleRatingPurchased" height="25"
              src="assets/images/icons/x2-delta.png" class="mr-1">
         <kepcoin-spend-swal
-          *ngIf="contest.status != 0 && contest.isRated && contest.isRegistered && !contest.saveRatingPurchased"
+          *ngIf="contest.status != 0 && contest.userInfo.isRated && contest.userInfo.isRegistered && !contest.userInfo.saveRatingPurchased"
           [customContent]="true" [purchaseUrl]="'contests/' + contest.id + '/purchase-save-rating/'" [value]="25"
-          (success)="contest.saveRatingPurchased=true;" class="mr-1" ngbTooltip="{{ 'SaveRating' | translate }}">
+          (success)="contest.userInfo.saveRatingPurchased=true;" class="mr-1" ngbTooltip="{{ 'SaveRating' | translate }}">
           <img height="25" src="assets/images/icons/save-rating.png">
         </kepcoin-spend-swal>
-        <img ngbTooltip="{{ 'Purchased' | translate }}" *ngIf="contest.isRegistered && contest.isRated && contest.saveRatingPurchased"
+        <img ngbTooltip="{{ 'Purchased' | translate }}" *ngIf="contest.userInfo.isRegistered && contest.userInfo.isRated && contest.userInfo.saveRatingPurchased"
              height="25" src="assets/images/icons/save-rating.png" class="mr-1">
         <button ngbTooltip="{{ 'Cancel' | translate }}" rippleEffect class="btn btn-sm round btn-gradient-success"
-          (click)="cancelRegistration()" *ngIf="contest.isRegistered">
+          (click)="cancelRegistration()" *ngIf="contest.userInfo.isRegistered">
           <i data-feather="user" [size]="16"></i> {{ 'Registered' | translate }}
           <i data-feather="x" class="text-danger"></i>
         </button>
         <button rippleEffect class="btn btn-sm round btn-gradient-primary" (click)="openRegistrationModal(registration)"
-          *ngIf="currentUser && !contest.isRegistered">
+          *ngIf="currentUser && !contest.userInfo.isRegistered">
           <i data-feather="user" [size]="16"></i> {{ 'CONTESTS.REGISTER' | translate }}
         </button>
       </span>
