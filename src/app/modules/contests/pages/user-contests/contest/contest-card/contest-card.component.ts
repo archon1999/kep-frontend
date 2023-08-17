@@ -53,7 +53,7 @@ export class ContestCardComponent implements OnInit, OnDestroy {
   openRegistrationModal(content){
     this.api.post(`user-contests/${this.contest.id}/registration/`).subscribe((result: any) => {
       if(result.success){
-        this.contest.isRegistered = true;
+        this.contest.userInfo.isRegistered = true;
       }
     })
   }
@@ -61,7 +61,7 @@ export class ContestCardComponent implements OnInit, OnDestroy {
   cancelRegistration(){
     this.api.get(`contests/${this.contest.id}/cancel-registration/`).subscribe((result: any) => {
       if(result.success){
-        this.contest.isRegistered = false;
+        this.contest.userInfo.isRegistered = false;
       }
     })
   }
