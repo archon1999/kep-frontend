@@ -47,7 +47,7 @@
                   <div class="col problem-header">
                     <small class="text-center">
                       <span class="badge badge-pill badge-{{ selectedLang }}">
-                        {{ availableLang?.langFull }}
+                        {{ selectedAvailableLang.langFull }}
                       </span>      
                     </small>
                   </div>
@@ -62,7 +62,7 @@
 
                   <div class="col problem-header">
                     <span class="badge-pill badge-info badge">
-                      {{ availableLang?.timeLimit || problem?.timeLimit }} {{ 'MS' | translate }}
+                      {{ selectedAvailableLang.timeLimit || problem.timeLimit }} {{ 'MS' | translate }}
                     </span>
                   </div>
                 </div>
@@ -76,12 +76,12 @@
 
                   <div class="col problem-header">
                     <span class="badge badge-pill badge-primary">
-                      {{ availableLang?.memoryLimit || problem?.memoryLimit }} {{ 'MB' | translate }}
+                      {{ selectedAvailableLang.memoryLimit || problem.memoryLimit }} {{ 'MB' | translate }}
                     </span>
                   </div>
                 </div>
 
-                <div *ngIf="availableLang?.codeGolf && contest.type == 'CodeGolf'" class="row justify-content-center mt-1">
+                <div *ngIf="selectedAvailableLang.codeGolf && contest.type == 'CodeGolf'" class="row justify-content-center mt-1">
                   <div class="col text-right problem-header">
                     <small class="text-center pr-1">
                       Code Golf:
@@ -91,7 +91,7 @@
                   <div class="col problem-header">
                     <small class="text-center">
                       <span class="badge badge-primary badge-pill">
-                        {{ availableLang?.codeGolf }}
+                        {{ selectedAvailableLang.codeGolf }}
                       </span>
                     </small>
                   </div>
@@ -109,22 +109,15 @@
             <div class="card-body">
               <attempts-table [hideSourceCodeSize]="true" [attempts]="attempts" [contest]="contest"></attempts-table>
 
-              <ngb-pagination
+              <pagination
                 *ngIf="attempts.length > 0"
                 [collectionSize]="totalAttemptsCount"
                 [(page)]="currentPage"
                 [pageSize]="50"
                 [maxSize]="5"
                 (pageChange)="reloadAttempts()"
-                aria-label="Default pagination"
-                class="d-flex justify-content-center mt-2"
               >
-                <ng-template ngbPaginationPrevious><span [data-feather]="'chevron-left'" [size]="18"
-                    [class]="'font-weight-bolder'"></span>
-                </ng-template>
-                <ng-template ngbPaginationNext><span [data-feather]="'chevron-right'" [size]="18"
-                    [class]="'font-weight-bolder'"></span></ng-template>
-              </ngb-pagination>
+              </pagination>
 
             </div>
           </div>
