@@ -24,22 +24,17 @@
 
           <section-problems-table [problems]="problems"></section-problems-table>
 
-          <ngb-pagination
-            *ngIf="problems.length > 0"
-            [collectionSize]="problemsCount"
-            [(page)]="currentPage"
-            [pageSize]="20"
-            [maxSize]="5"
-            [rotate]="true"
-            (pageChange)="_problemsReloader.next()"
-            class="d-flex justify-content-center mt-1 mb-1">
-            <ng-template ngbPaginationPrevious>
-              <span [data-feather]="'chevron-left'" [size]="18" [class]="'font-weight-bolder'"></span>
-            </ng-template>
-            <ng-template ngbPaginationNext>
-              <span [data-feather]="'chevron-right'" [size]="18" [class]="'font-weight-bolder'"></span>
-            </ng-template>
-          </ngb-pagination>
+          <div class="mb-2">
+            <pagination
+              *ngIf="problems.length > 0"
+              [collectionSize]="problemsCount"
+              [(page)]="currentPage"
+              [pageSize]="20"
+              [maxSize]="5"
+              [rotate]="true"
+              (pageChange)="_problemsReloader.next()">
+            </pagination>
+          </div>
         </div>
         <div [@fadeInRight]="startAnimationState" class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
           <section-sidebar></section-sidebar>
