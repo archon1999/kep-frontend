@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { CoreDirectivesModule } from '@core/directives/directives';
 import { CorePipesModule } from '@core/pipes/pipes.module';
-import { NgbModule, NgbNavModule, NgbPaginationModule, NgbRatingModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbNavModule, NgbRatingModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthGuard } from 'app/auth/helpers';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
@@ -56,6 +56,7 @@ import { ContestsResolver, ProblemResolver, StudyPlanResolver, StudyPlansResolve
 import { SectionProfileComponent } from './pages/profile/section-profile/section-profile.component';
 import { AttemptsTableModule } from './components/attempts-table/attempts-table.module';
 import { StudyPlanCardModule } from './components/study-plan-card/study-plan-card.module';
+import { PaginationModule } from 'app/shared/components/pagination/pagination.module';
 
 const routes: Routes = [
   { 
@@ -173,7 +174,6 @@ const routes: Routes = [
     TranslateModule,
     NgbRatingModule,
     NgbNavModule,
-    NgbPaginationModule,
     CorePipesModule,
     NgbTooltipModule,
     ProblemBodyModule,
@@ -195,6 +195,7 @@ const routes: Routes = [
     NgxCaptureModule,
     ProblemCardModule,
     TourModule,
+    PaginationModule,
   ],
   providers: [
     ProblemGuard,
