@@ -102,6 +102,7 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   modalOpen(modal) {
+    this.hasSubmitted = false;
     this.editor.code = this.templateCodeService.get(this.uniqueName, this.editor.lang) || this.availableLanguages[0].codeTemplate;
 
     if(this.editor.lang == 'text'){
