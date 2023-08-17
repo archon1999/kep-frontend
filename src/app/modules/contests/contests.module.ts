@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { CoreDirectivesModule } from '@core/directives/directives';
 import { CorePipesModule } from '@core/pipes/pipes.module';
-import { NgbDropdownModule, NgbNavModule, NgbPaginationModule, NgbPopoverModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbNavModule, NgbPopoverModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 
@@ -39,6 +39,7 @@ import { ContestsTableModule } from './components/contests-table/contests-table.
 import { ContestCardModule } from './components/contest-card/contest-card.module';
 import { ContestantViewModule } from '../../shared/components/contestant-view/contestant-view.module';
 import { AttemptsTableModule } from '../problems/components/attempts-table/attempts-table.module';
+import { PaginationModule } from 'app/shared/components/pagination/pagination.module';
 
 
 const routes: Routes = [
@@ -186,7 +187,6 @@ const routes: Routes = [
     ContestCardModule,
     ContestantViewModule,
     NgbTooltipModule,
-    NgbPaginationModule,
     FormsModule,
     NgSelectModule,
     NgbDropdownModule,
@@ -201,6 +201,7 @@ const routes: Routes = [
     NgbPopoverModule,
     ProblemBodyModule,
     AttemptsTableModule,
+    PaginationModule,
   ],
   providers: [
     ContestGuard,

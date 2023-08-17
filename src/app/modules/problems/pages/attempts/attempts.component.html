@@ -19,29 +19,13 @@
 
           <attempts-table [attempts]="attempts"></attempts-table>
 
-          <ngb-pagination
-            *ngIf="attempts.length > 0"
+          <pagination
             [collectionSize]="totalAttemptsCount"
             [(page)]="currentPage"
-            [pageSize]="20" [maxSize]="5"
+            [pageSize]="20"
+            [maxSize]="7"
             (pageChange)="_reloader.next()"
-            aria-label="Default pagination"
-            class="d-flex justify-content-center mt-2">
-            <ng-template ngbPaginationPrevious>
-              <span
-                [data-feather]="'chevron-left'"
-                [size]="18"
-                [class]="'font-weight-bolder'">
-              </span>
-            </ng-template>
-            <ng-template ngbPaginationNext>
-              <span
-                [data-feather]="'chevron-right'"
-                [size]="18"
-                [class]="'font-weight-bolder'">
-              </span>
-            </ng-template>
-          </ngb-pagination>
+          ></pagination>
         </div>
       </div>
     </section>

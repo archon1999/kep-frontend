@@ -43,27 +43,15 @@
                 </table>
               </div>
 
-              <ngb-pagination
+              <pagination
                 *ngIf="contestsRating.length > 0"
                 [collectionSize]="totalUsersCount"
                 [(page)]="currentPage"
                 [pageSize]="10"
                 [maxSize]="5"
                 [rotate]="true"
-                (pageChange)="reloadPage()"
-                aria-label="Default pagination"
-                class="d-flex justify-content-center mt-2">
-                <ng-template ngbPaginationPrevious>
-                  <span [data-feather]="'chevron-left'" [size]="18"
-                    [class]="'font-weight-bolder'">
-                  </span>
-                </ng-template>
-                <ng-template ngbPaginationNext>
-                  <span [data-feather]="'chevron-right'" [size]="18"
-                    [class]="'font-weight-bolder'">
-                  </span>
-                </ng-template>
-              </ngb-pagination>
+                (pageChange)="reloadPage()">
+              </pagination>
             </div>
           </div>
         </div>
