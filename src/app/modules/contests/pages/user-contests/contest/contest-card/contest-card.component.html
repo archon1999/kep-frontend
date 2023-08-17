@@ -47,19 +47,5 @@
         {{ contest.type }}
       </span>
     </div>
-
-    <div>
-      <span *ngIf="contest.status != 1">
-        <button ngbTooltip="Bekor qilish" rippleEffect class="btn btn-sm round btn-gradient-success"
-          (click)="cancelRegistration()" *ngIf="contest.isRegistered">
-          <i data-feather="user" [size]="16"></i> Ro'yhatdan o'tilgan
-          <i data-feather="x" class="text-danger"></i>
-        </button>
-        <button rippleEffect class="btn btn-sm round btn-gradient-primary" (click)="openRegistrationModal(registration)"
-          *ngIf="!contest.isRegistered">
-          <i data-feather="user" [size]="16"></i> {{ 'CONTESTS.REGISTER' | translate }}
-        </button>
-      </span>
-    </div>
   </div>
 </div>
