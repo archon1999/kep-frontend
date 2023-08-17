@@ -59,28 +59,6 @@ export class ContestCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  openRegistrationModal(content){
-    if(this.contest.participationType == 1){
-      this.api.post(`contests/${this.contest.id}/registration/`).subscribe((result: any) => {
-        if(result.success){
-          this.contest.isRegistered = true;
-        }
-      })
-    } else {
-      this.modalService.open(content, { centered: true });
-    }
-  }
-
-  cancelRegistration(){
-    if(this.contest.participationType == 1){
-      this.api.get(`contests/${this.contest.id}/cancel-registration/`).subscribe((result: any) => {
-        if(result.success){
-          this.contest.isRegistered = false;
-        }
-      })
-    }
-  }
-
   ngOnDestroy(): void {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
