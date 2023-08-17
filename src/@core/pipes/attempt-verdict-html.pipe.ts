@@ -9,10 +9,10 @@ export class AttemptVerdictHTMLPipe implements PipeTransform {
 
   transform(attempt: Attempt): string {
     var badgeColor = 'danger';
-    if(attempt.verdict in [Verdicts.Accepted, Verdicts.FakeAccepted]){
+    if(attempt.verdict == Verdicts.Accepted || attempt.verdict == Verdicts.FakeAccepted){
       badgeColor = 'success';
-    } else if(attempt.verdict in [Verdicts.JudgementFailed, Verdicts.CheckerNotFound]){
-      badgeColor = 'dark';
+    } else if(attempt.verdict == Verdicts.JudgementFailed || attempt.verdict == Verdicts.CheckerNotFound){
+      badgeColor = 'dark';      
     } else if(attempt.verdict == Verdicts.InQueue){
       badgeColor = 'primary';
     } else if(attempt.verdict == Verdicts.Running){

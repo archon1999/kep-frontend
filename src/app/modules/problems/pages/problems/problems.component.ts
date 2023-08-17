@@ -52,7 +52,7 @@ export class ProblemsComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     public router: Router,
     public problemsFilterService: ProblemsFilterService,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     setTimeout(() => {

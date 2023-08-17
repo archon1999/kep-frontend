@@ -7,7 +7,7 @@ import { KepcoinViewModule } from '../../shared/components/kepcoin-view/kepcoin-
 import { CoreDirectivesModule } from '@core/directives/directives';
 import { KepcoinSpendSwalModule } from './kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { PaginationModule } from 'app/shared/components/pagination/pagination.module';
 
 
 const routes: Routes = [
@@ -31,7 +31,7 @@ const routes: Routes = [
     CoreDirectivesModule,
     KepcoinSpendSwalModule,
     TranslateModule,
-    NgbPaginationModule,
+    PaginationModule,
   ]
 })
 export class KepcoinModule { }
