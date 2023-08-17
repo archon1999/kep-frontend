@@ -30,7 +30,7 @@
                         <a
                           (click)="langService.setLanguage(availableLanguage.lang)"
                           class="badge-pill text-white badge badge-{{ availableLanguage.lang }}">
-                          {{ availableLanguage.lang | langFullName }}
+                          {{ availableLanguage.langFull }}
                         </a>
                       </span>
                     </small>
@@ -47,7 +47,7 @@
                   <div class="col problem-header">
                     <small class="text-center">
                       <span class="badge badge-pill badge-{{ selectedLang }}">
-                        {{ selectedLang | langFullName }}
+                        {{ availableLang.langFull }}
                       </span>      
                     </small>
                   </div>
