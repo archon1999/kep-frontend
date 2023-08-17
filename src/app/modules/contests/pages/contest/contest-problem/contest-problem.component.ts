@@ -41,7 +41,7 @@ export class ContestProblemComponent implements OnInit, OnDestroy {
 
   public attempts: Array<Attempt> = [];
 
-  public availableLang: any;
+  public selectedAvailableLang: any;
   public selectedLang: string;
 
   public totalAttemptsCount = 0;
@@ -96,12 +96,12 @@ export class ContestProblemComponent implements OnInit, OnDestroy {
       )
 
       this.langService.getLanguage().pipe(takeUntil(this._unsubscribeAll)).subscribe(
-        (lang: AttemptLangs) => {
+        (lang: AttemptLangs) => {          
+          this.selectedAvailableLang = findAvailableLang(this.problem.availableLanguages, lang);
           this.selectedLang = lang;
-          this.availableLang = findAvailableLang(this.problem.availableLanguages, lang);
-          if(!this.availableLang){
-            this.langService.setLanguage(lang);
-          }
+          if(!this.selectedAvailableLang){
+            this.langService.setLanguage(this.problem.availableLanguages[0].lang);
+          }  
         }
       )
   

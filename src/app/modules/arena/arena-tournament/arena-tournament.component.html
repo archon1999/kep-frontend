@@ -157,23 +157,16 @@
 
           </div>
 
-          <ngb-pagination
+          <pagination
             *ngIf="total > 0"
             [collectionSize]="total"
             [(page)]="pageNumber"
             [pageSize]="10"
             [maxSize]="5"
             [rotate]="true"
-            (pageChange)="updateArenaPlayers()"
-            aria-label="Default pagination"
-            class="d-flex justify-content-center pagination-warning mt-2">
-            <ng-template ngbPaginationPrevious
-              ><span [data-feather]="'chevron-left'" [size]="18" [class]="'font-weight-bolder'"></span>
-            </ng-template>
-            <ng-template ngbPaginationNext
-              ><span [data-feather]="'chevron-right'" [size]="18" [class]="'font-weight-bolder'"></span
-            ></ng-template>
-          </ngb-pagination>
+            [color]="'warning'"
+            (pageChange)="updateArenaPlayers()">
+          </pagination>
 
           <div class="col-12" *ngIf="arena.status != 1">
             <div class="row">

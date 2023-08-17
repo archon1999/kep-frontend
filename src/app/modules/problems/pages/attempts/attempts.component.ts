@@ -38,7 +38,7 @@ export class AttemptsComponent implements OnInit, OnDestroy {
   public myAttempts: boolean = false;
   public currentUser: User;
 
-  private _reloader = new Subject();
+  protected _reloader = new Subject();
   private _unsubscribeAll = new Subject();
   private _intervalId: any;
 
