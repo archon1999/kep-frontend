@@ -52,7 +52,7 @@
                   </div>
                 </div>
               </div>
-              <div class="card-footer" *ngIf="contest.isRegistered && contest.status == 0">
+              <div class="card-footer" *ngIf="contest.userInfo.isRegistered && contest.status == 0">
                 <h4 class="mb-2">{{ 'AskQuestion' | translate }}</h4>
                 <div class="row">
                   <div class="col-lg-6 col-md-8 col-sm-12">

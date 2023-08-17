@@ -192,7 +192,7 @@
       </div>
 
       <code-editor-modal
-        *ngIf="contest?.isAlready() && contest?.isRegistered && currentUser"
+        *ngIf="contest?.isAlready() && contest?.userInfo.isRegistered && currentUser"
         [uniqueName]="'contest-problem-' + problem.id"
         [sampleTests]="problem.sampleTests"
         [availableLanguages]="problem.availableLanguages"
