@@ -85,21 +85,14 @@
                     <i data-feather="arrow-right"></i>
                   </a>
                 </div>
-                <ngb-pagination
+                <pagination
                   *ngIf="problemsRatingList.length > 0"
                   [collectionSize]="total"
                   [(page)]="currentPage"
                   [pageSize]="10"
                   [maxSize]="5"
-                  (pageChange)="reloadPage()"
-                  class="d-flex justify-content-center mt-2 mb-2">
-                  <ng-template ngbPaginationPrevious
-                    ><span [data-feather]="'chevron-left'" [size]="18" [class]="'font-weight-bolder'"></span>
-                  </ng-template>
-                  <ng-template ngbPaginationNext
-                    ><span [data-feather]="'chevron-right'" [size]="18" [class]="'font-weight-bolder'"></span
-                  ></ng-template>
-                </ngb-pagination>
+                  (pageChange)="reloadPage()">
+                </pagination>
               </div>
             </div>
             <div class="col-lg-12">
