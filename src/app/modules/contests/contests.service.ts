@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
 import { AuthenticationService } from 'app/auth/service';
-import { ContestAttemptsFilter, ContestStatus } from './contests.models';
+import { Contest, ContestAttemptsFilter, ContestStatus } from './contests.models';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +16,18 @@ export class ContestsService {
 
   getContests(page: number, pageSize: number) {
     var params = {page: page, page_size: pageSize};
-    return this.api.get('contests', params);
+    return this.api.get('contests', params).pipe(
+      map((result: any) => {
+        result.data = result.data.map(contest => Contest.fromJSON(contest));
+        return result;
+      })
+    );
   }
 
   getContest(contestId: number | string) {
-    return this.api.get(`contests/${contestId}`);
+    return this.api.get(`contests/${contestId}`).pipe(
+      map(contest => Contest.fromJSON(contest))
+    );
   }
   
   getContestants(contestId: number | string){
@@ -90,6 +98,14 @@ export class ContestsService {
       problem: problem,
       question: question,
     });
+  }
+
+  contestRegistration(contestId: number | string){
+    return this.api.post(`contests/${contestId}/registration/`);
+  }
+
+  virtualContestStart(contestId: number | string){
+    return this.api.post(`contests/${contestId}/virtual-contest-start/`);
   }
 
 }
