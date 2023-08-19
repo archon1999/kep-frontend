@@ -171,4 +171,18 @@ export class ProblemsService {
     return this.api.post(`problems/${problemId}/dislike/`);
   }
 
+  getTopics(){
+    return this.api.get('problems/topics');
+  }
+
+  addTopic(problemId: number | string, topicId: number){
+    let params = { topic_id: topicId };
+    return this.api.post(`problems/${problemId}/add-topic/`, params);
+  }
+
+  removeTopic(problemId: number | string, topicId: number){
+    let params = { topic_id: topicId };
+    return this.api.post(`problems/${problemId}/remove-topic/`, params);
+  }
+
 }
