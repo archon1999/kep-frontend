@@ -8,10 +8,10 @@
         {{ problem.id }}. {{ problem.title }}
       </div>
 
-      <span *ngIf="problem.hasSolved" class="text-success text-darken-4">
+      <span *ngIf="problem.userInfo.hasSolved" class="text-success text-darken-4">
         <i data-feather="check-circle"></i>
       </span>
-      <span *ngIf="!problem.hasSolved && problem.hasAttempted" class="text-danger text-darken-4">
+      <span *ngIf="!problem.userInfo.hasSolved && problem.userInfo.hasAttempted" class="text-danger text-darken-4">
         <i data-feather="x-circle"></i>
       </span>
     </div>

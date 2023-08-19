@@ -52,8 +52,8 @@
   
       <tbody>
         <tr [@fadeInOnEnter] [ngClass]="{
-          'bg-light-success': problem.hasSolved,
-          'bg-light-danger': !problem.hasSolved && problem.hasAttempted
+          'bg-light-success': problem.userInfo.hasSolved,
+          'bg-light-danger': !problem.userInfo.hasSolved && problem.userInfo.hasAttempted
         }" *ngFor="let problem of problems; index as i">
           <td>
             {{ problem.id }}
@@ -65,7 +65,7 @@
                 {{ problem.title }}
               </div>
 
-              <span *ngIf="problem.hasSolution" class="badge mt-50 badge-pill badge-light-success">
+              <span *ngIf="problem.userInfo.hasSolution" class="badge mt-50 badge-pill badge-light-success">
                 <i [data-feather]="'exists' | iconName" class="text-success" [size]="16"></i>
                 {{ 'Solution' | translate }}
               </span>
