@@ -27,14 +27,14 @@
   
     <div class="problem-vote" *ngIf="currentUser">
       <button (click)="like()" class="btn btn-like btn-sm btn-relief-info round" [ngClass]="{
-        'btn-gradient-success': problem.voteType == 1
+        'btn-gradient-success': problem.userInfo.voteType === 1
       }">
         <i data-feather="thumbs-up"></i>
         {{ problem.likesCount }}
       </button>
       
       <button (click)="dislike()" class="btn btn-dislike btn-sm btn-relief-info round" [ngClass]="{
-        'btn-gradient-success': problem.voteType == 0
+        'btn-gradient-success': problem.userInfo.voteType === 0
       }">
         <i data-feather="thumbs-down"></i>
         {{ problem.dislikesCount }}
@@ -91,8 +91,11 @@
         <span>{{ 'Tags' | translate }}</span>
       </ng-template>
       <ng-template ngbPanelContent>
-        <div *ngIf="currentUser?.isSuperUser || currentUser?.permissions.canChangeProblemTags && problem.hasSolved else elseBlock">
-          <button *ngFor="let tag of problem.tags" (click)="removeTag(tag)" class="btn mb-2 mr-50 btn-relief-primary btn-sm">
+        <div *ngIf="currentUser?.isSuperuser || currentUser?.permissions.canChangeProblemTags && problem.hasSolved else elseBlock">
+          <button
+            *ngFor="let tag of problem.tags"
+            (click)="removeTag(tag)"
+            class="btn mb-2 mr-50 btn-relief-primary btn-sm">
             {{ tag.name }} <i data-feather="x"></i>
           </button>
 
@@ -116,12 +119,49 @@
       </ng-template>
     </ngb-panel>
 
-    <ngb-panel *ngIf="currentUser && problem.hasSolution" id="panelMargin2" [cardClass]="'collapse-margin'">
+    <ngb-panel id="panelMargin2" [cardClass]="'collapse-margin'">
+      <ng-template ngbPanelTitle>
+        <span>{{ 'Topics' | translate }}</span>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <div *ngIf="currentUser?.isSuperuser else elseBlock">
+          <button
+            *ngFor="let topic of problem.topics"
+            (click)="removeTopic(topic)"
+            class="btn mb-2 mr-50 btn-relief-primary btn-sm">
+            {{ topic.name }} <i data-feather="x"></i>
+          </button>
+
+          <ng-select
+            appendTo="body"  
+            [items]="topics"
+            bindValue="id"
+            bindLabel="name"
+            [dropdownPosition]="'bottom'"
+            [(ngModel)]="selectedTopic">
+          </ng-select>
+
+          <button class="mt-2 btn btn-relief-primary btn-sm" (click)="addTopic()">
+            {{ 'Add' | translate }}
+          </button>
+        </div>
+
+        <ng-template #elseBlock>
+          <span
+            *ngFor="let topic of problem.topics"
+            class="badge badge-pill badge-primary">
+            {{ topic.name }}
+          </span>
+        </ng-template>
+      </ng-template>
+    </ngb-panel>
+
+    <ngb-panel *ngIf="currentUser && problem.hasSolution" id="panelMargin3" [cardClass]="'collapse-margin'">
       <ng-template ngbPanelTitle>
         <span>{{ 'Solution' | translate }}</span>
       </ng-template>
       <ng-template ngbPanelContent>
-        <div *ngIf="problem.canViewSolution else elseBlock;">
+        <div *ngIf="problem.userInfo.canViewSolution else elseBlock;">
           <button class="btn btn-sm btn-relief-primary" (click)="openSolutionModal(solution)">
             {{ 'View' | translate }}
           </button>
