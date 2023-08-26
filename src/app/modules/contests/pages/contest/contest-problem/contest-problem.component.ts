@@ -17,7 +17,7 @@ import { Contest, Contestant, ContestProblem, ContestProblemInfo } from '../../.
 import { ContestsService } from '../../../contests.service';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { findAvailableLang } from 'app/modules/problems/utils';
-import { AttemptLangs } from 'app/modules/problems/enums';
+import { AttemptLangs } from 'app/modules/problems/constants';
 
 @Component({
   selector: 'app-contest-problem',
