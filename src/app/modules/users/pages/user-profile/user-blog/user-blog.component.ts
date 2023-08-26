@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Blog } from '../../../blog/blog.models';
+import { Blog } from '../../../../blog/blog.models';
 
 @Component({
   selector: 'user-blog',
@@ -13,12 +13,12 @@ export class UserBlogComponent implements OnInit {
 
   constructor(
     public route: ActivatedRoute,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe(({ userBlog }) => {
       this.userBlog = userBlog.data;
-    })
+    });
   }
 
 }
