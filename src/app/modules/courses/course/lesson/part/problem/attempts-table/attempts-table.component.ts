@@ -6,7 +6,7 @@ import { ApiService } from 'app/shared/services/api.service';
 import { AuthenticationService } from 'app/auth/service';
 import { Verdicts } from '../../../../../../problems/constants/verdicts.enum';
 import { Attempt, WSAttempt } from 'app/modules/problems/models/attempts.models';
-import { WebsocketService } from 'app/websocket';
+import { WebsocketService } from 'app/shared/services/websocket';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

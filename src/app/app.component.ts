@@ -26,7 +26,7 @@ import { menu } from './layout/components/menu/menu';
 
 import { ApiService } from './shared/services/api.service';
 import { AuthenticationService } from './auth/service';
-import { WebsocketService } from './websocket';
+import { WebsocketService } from './shared/services/websocket';
 import { environment } from 'environments/environment';
 import { Router } from '@angular/router';
 
