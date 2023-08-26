@@ -1,0 +1,35 @@
+<div class="card bg-duel bg-primary">
+  <div class="card-body mt-1">
+    <h4 *ngIf="codeRush.status == 0" class="text-center text-white mb-1">
+      {{ 'DuelEnds' | translate }}
+    </h4>
+    <h4 *ngIf="codeRush.status == -1" class="text-center text-white mb-1">
+      {{ 'DuelStarts' | translate }}
+    </h4>
+    <h4 *ngIf="codeRush.status == 1" class="text-center text-white mb-1">
+      {{ 'DuelFinished' | translate }}
+    </h4>
+  </div>
+  <div class="card-footer">
+    <ngx-countdown [time]="leftTime" [render]="render" format="HH:mm:ss" (finish)="finish()">
+      <ng-template #render let-data>
+        <div class="d-flex justify-content-between">
+          <div class="countdown text-center">
+            <h5 class="clock-val">{{ data.fragments[0] }}</h5>
+            <h5 class="text-white clock-text">{{ 'HOUR' | translate }}</h5>
+          </div>
+      
+          <div class="countdown text-center">
+            <h5 class="clock-val">{{ data.fragments[1] }}</h5>
+            <h5 class="text-white clock-text">{{ 'MINUTE' | translate }}</h5>
+          </div>
+      
+          <div class="countdown text-center">
+            <h5 class="clock-val">{{ data.fragments[2] }}</h5>
+            <h5 class="text-white clock-text">{{ 'SECOND' | translate }}</h5>
+          </div>
+        </div>    
+      </ng-template>
+    </ngx-countdown>
+  </div>
+</div>

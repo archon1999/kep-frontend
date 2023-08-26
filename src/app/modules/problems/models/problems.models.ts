@@ -1,8 +1,16 @@
 import { AttemptLangs } from "../enums";
 
+export interface ProblemUserInfo {
+  hasAttempted: boolean;
+  hasSolved: boolean;
+  voteType?: number | null;
+  canViewSolution?: boolean;
+}
+
 export interface Problem {
   id: number;
   authorUsername: string;
+  userInfo: ProblemUserInfo;
   title: string
   difficulty: number;
   difficultyTitle: string;
@@ -12,23 +20,21 @@ export interface Problem {
   solved: number;
   notSolved: number;
   attemptsCount: number;
-  hasSolved: boolean;
-  canViewSolution: boolean;
-  hasAttempted: boolean;
   hasChecker: boolean;
+  canViewSolution: boolean;
   hasSolution: boolean;
   tags: Array<Tag>;
+  topics: Array<Topic>;
   timeLimit: number;
   memoryLimit: number;
-  body: string;
-  inputData: string;
-  outputData: string;
-  comment: string;
-  sampleTests: Array<SampleTest>;
-  codeTemplate: string;
-  availableLanguages: Array<AvailableLanguage>;
-  image: string;
-  hidden: boolean;
+  body?: string;
+  inputData?: string;
+  outputData?: string;
+  comment?: string;
+  sampleTests?: Array<SampleTest>;
+  availableLanguages?: Array<AvailableLanguage>;
+  image?: string;
+  hidden?: boolean;
 }
 
 export interface AvailableLanguage {
@@ -49,6 +55,11 @@ export interface Difficulty {
 }
 
 export interface Tag {
+  name: string;
+  id: number;
+}
+
+export interface Topic {
   name: string;
   id: number;
 }
