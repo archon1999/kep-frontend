@@ -22,7 +22,7 @@ import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
 import { AuthModalComponent } from './auth/auth-modal/auth-modal.component';
 import { ErrorComponent } from './modules/pages/miscellaneous/error/error.component';
-import { WebsocketModule } from './websocket';
+import { WebsocketModule } from './shared/services/websocket';
 
 import { APP_BASE_HREF } from '@angular/common';
 import { UserPopoverModule } from './shared/components/user-popover/user-popover.module';

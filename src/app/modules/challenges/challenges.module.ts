@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '../../shared/third-part-modules/ng-select/ng-select.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
-import { ChallengesUserViewModule } from '../../shared/components/challenges-user-view/challenges-user-view.module';
+import { ChallengesUserViewModule } from './components/challenges-user-view/challenges-user-view.module';
 import { ChallengeCallCardComponent } from './components/challenge-call-card/challenge-call-card.component';
 import { ChallengeCardComponent } from './components/challenge-card/challenge-card.component';
 import { NewChallengeButtonComponent } from './components/new-challenge-button/new-challenge-button.component';

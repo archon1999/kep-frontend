@@ -4,7 +4,7 @@ import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 
 import { NotificationsService } from 'app/layout/components/navbar/navbar-notification/notifications.service';
-import { WebsocketService } from 'app/websocket';
+import { WebsocketService } from 'app/shared/services/websocket';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
