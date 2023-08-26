@@ -1,15 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { CoreConfigService } from '../../../../../@core/services/config.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
-import { ApiService } from '../../../services/api.service';
-import { getEditorLang } from 'app/modules/problems/utils/editor-lang';
-import { AvailableLanguage, SampleTest } from '../../../../modules/problems/models/problems.models';
-import { WebsocketService } from '../../../../websocket';
-import { ToastrService } from 'ngx-toastr';
-import { LocalStorageService } from 'app/shared/storages/local-storage.service';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { TemplateCodeService } from 'app/shared/services/template-code.service';
+import { LocalStorageService } from 'app/shared/storages/local-storage.service';
+import { ToastrService } from 'ngx-toastr';
+import { CoreConfigService } from '../../../../../@core/services/config.service';
+import { AvailableLanguage, SampleTest } from '../../../../modules/problems/models/problems.models';
+import { ApiService } from '../../../services/api.service';
+import { WebsocketService } from '../../../services/websocket';
 
 @Component({
   selector: 'code-editor-modal',

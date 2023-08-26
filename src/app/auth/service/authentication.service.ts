@@ -6,7 +6,7 @@ import { catchError, map } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 import { User } from 'app/auth/models';
 import { ApiService } from 'app/shared/services/api.service';
-import { WebsocketService } from 'app/websocket';
+import { WebsocketService } from 'app/shared/services/websocket';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({ providedIn: 'root' })
