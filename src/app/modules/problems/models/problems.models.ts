@@ -1,4 +1,4 @@
-import { AttemptLangs } from "../enums";
+import { AttemptLangs } from "../constants";
 
 export interface ProblemUserInfo {
   hasAttempted: boolean;
@@ -39,6 +39,7 @@ export interface Problem {
 
 export interface AvailableLanguage {
   lang: AttemptLangs;
+  langFull: string;
   timeLimit: number | null;
   memoryLimit: number | null;
   codeTemplate: string;
