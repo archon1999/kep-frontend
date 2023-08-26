@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { ContestsService } from '../../../contests/contests.service';
-import { ProblemsStatisticsService } from '../../../problems/services/problems-statistics.service';
-import { UserChallengesRating, UserContestsRating, UserProblemsRating } from '../../users.models';
-import { UsersService } from '../../users.service';
-import { colors } from 'app/colors.const';
-import { ChallengesService } from '../../../challenges/services/challenges.service';
+import { ContestsService } from '../../../../contests/contests.service';
+import { ProblemsStatisticsService } from '../../../../problems/services/problems-statistics.service';
+import { UserChallengesRating, UserContestsRating, UserProblemsRating } from '../../../users.models';
+import { UsersService } from '../../../users.service';
+import { colors } from '../../../../../colors.const';
+import { ChallengesService } from '../../../../challenges/services/challenges.service';
 import { Subject } from 'rxjs';
-import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfigService } from '../../../../../../@core/services/config.service';
 import { takeUntil } from 'rxjs/operators';
-import { CoreConfig } from '@core/types';
+import { CoreConfig } from '../../../../../../@core/types';
 
 @Component({
   selector: 'user-ratings',
@@ -48,44 +48,45 @@ export class UserRatingsComponent implements OnInit {
     public contestsService: ContestsService,
     public challengesService: ChallengesService,
     public coreConfigService: CoreConfigService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.route.data.subscribe(({ userProblemsRating, userContestsRating, userChallengesRating }) => {
       this.userProblemsRating = userProblemsRating;
       this.userContestsRating = userContestsRating;
       this.userChallengesRating = userChallengesRating;
-    })
+    });
 
     this.route.params.subscribe((params: any) => {
       this.username = params['username'];
       this.activityDataUpdate(this.activityDays);
       this.loadContestRatingChanges();
       this.loadChallengesRatingChanges();
-    })
+    });
 
     this.coreConfigService.getConfig().pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (config: CoreConfig) => {
-        if(config.layout.skin == 'dark'){
+        if (config.layout.skin == 'dark') {
           this.chartTheme = {
             mode: 'dark',
-          }
+          };
         } else {
           this.chartTheme = {
             mode: 'light',
-          }
+          };
         }
       }
-    )
+    );
 
     this.translateService.get('Solved').subscribe(
       (text: string) => {
         this.solvedText = text;
       }
-    )
+    );
   }
 
-  activityDataUpdate(days: number){
+  activityDataUpdate(days: number) {
     this.activityDays = days;
     let username = this.username;
     this.problemsService.getLastDays(username, days).subscribe((result: any) => {
@@ -133,7 +134,7 @@ export class UserRatingsComponent implements OnInit {
           labels: {
             show: false,
             formatter: function (val) {
-              return val + "";
+              return val + '';
             },
           }
         },
@@ -148,24 +149,24 @@ export class UserRatingsComponent implements OnInit {
         },
       };
 
-    })
+    });
   }
 
-  loadContestRatingChanges(){
+  loadContestRatingChanges() {
     let username = this.username;
     let router = this.router;
     this.contestsService.getContestsRatingChanges(this.username).subscribe(
       (ratingChanges: any) => {
         let data = [];
-        for(let ratingChange of ratingChanges){
+        for (let ratingChange of ratingChanges) {
           data.push({
             x: ratingChange.contestStartDate,
             y: ratingChange.newRating,
-          })
+          });
         }
         this.contestRatingChangesChart = {
           series: [{
-            name: "",
+            name: '',
             data: data,
           }],
           chart: {
@@ -180,7 +181,7 @@ export class UserRatingsComponent implements OnInit {
               enabled: false,
             },
             events: {
-              click: function(event, chartContext, config) {
+              click: function (event, chartContext, config) {
                 let contestId = ratingChanges[config.dataPointIndex].contestId;
                 console.log(ratingChanges[config.dataPointIndex]);
                 router.navigate(['/competitions', 'contests', 'contest', contestId, 'standings']);
@@ -188,7 +189,7 @@ export class UserRatingsComponent implements OnInit {
             }
           },
           fill: {
-            type: "gradient",
+            type: 'gradient',
             gradient: {
               shadeIntensity: 1,
               opacityFrom: 0.7,
@@ -197,20 +198,22 @@ export class UserRatingsComponent implements OnInit {
             }
           },
           xaxis: {
-            type: "datetime"
+            type: 'datetime'
           },
           yaxis: {
             labels: {
-              formatter: (value) => { return value; },
+              formatter: (value) => {
+                return value;
+              },
             }
           },
           tooltip: {
-            custom: function({series, seriesIndex, dataPointIndex, w}) {
+            custom: function ({ series, seriesIndex, dataPointIndex, w }) {
               let data = ratingChanges[dataPointIndex];
               let deltaColor: string;
-              if(data.delta > 0){
+              if (data.delta > 0) {
                 deltaColor = 'success';
-              } else if(data.delta == 0){
+              } else if (data.delta == 0) {
                 deltaColor = 'secondary';
               } else {
                 deltaColor = 'danger';
@@ -219,41 +222,41 @@ export class UserRatingsComponent implements OnInit {
               <div class="card">
                 <div class="card-body">
                   <h4 class="text-center">
-                    ${data.contestTitle}
+                    ${ data.contestTitle }
                   </h4>
                   <div class="d-flex">
-                    <div class="text-dark">#${data.rank}</div>
+                    <div class="text-dark">#${ data.rank }</div>
                     <div class="text-dark ml-1">
-                      ${username}
-                      <img src="assets/images/contests/ratings/${data.newRatingTitle.toLowerCase()}.png" height=20>
-                      ${data.newRating}
+                      ${ username }
+                      <img src="assets/images/contests/ratings/${ data.newRatingTitle.toLowerCase() }.png" height=20>
+                      ${ data.newRating }
                     </div>
-                    <span class="ml-1 badge badge-light-${deltaColor}">${data.delta}</span>
+                    <span class="ml-1 badge badge-light-${ deltaColor }">${ data.delta }</span>
                   </div>
                 </div>
               </div>
-              `
+              `;
             }
           },
           colors: [colors.solid.primary],
-        }
+        };
       }
-    )
+    );
   }
 
-  loadChallengesRatingChanges(){
+  loadChallengesRatingChanges() {
     this.challengesService.getRatingChanges(this.username).subscribe(
       (ratingChanges: any) => {
         let data = [];
-        for(let ratingChange of ratingChanges){
+        for (let ratingChange of ratingChanges) {
           data.push({
             x: ratingChange.date,
             y: ratingChange.value,
-          })
+          });
         }
         this.challengesRatingChangesChart = {
           series: [{
-            name: "",
+            name: '',
             data: data,
           }],
           chart: {
@@ -269,7 +272,7 @@ export class UserRatingsComponent implements OnInit {
             },
           },
           fill: {
-            type: "gradient",
+            type: 'gradient',
             gradient: {
               shadeIntensity: 1,
               opacityFrom: 0.7,
@@ -278,19 +281,21 @@ export class UserRatingsComponent implements OnInit {
             }
           },
           xaxis: {
-            type: "datetime"
+            type: 'datetime'
           },
           yaxis: {
             labels: {
-              formatter: (value) => { return value; },
+              formatter: (value) => {
+                return value;
+              },
             }
           },
           tooltip: {
             show: false,
           },
           colors: [colors.solid.primary],
-        }
+        };
       }
-    )
+    );
   }
 }
