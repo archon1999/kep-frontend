@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Achievement } from '../../../../users/users.models';
+import { Achievement } from '../../../../users.models';
 
 @Component({
   selector: 'achievement',

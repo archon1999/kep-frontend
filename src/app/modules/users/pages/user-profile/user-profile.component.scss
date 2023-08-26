@@ -1,8 +1,8 @@
-@import 'bootstrap/scss/mixins'; 
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
+@import 'mixins';
+@import 'functions';
+@import 'variables';
 
-@import '@core/scss/base/pages/page-profile';
+@import 'page-profile';
 
 @import url('https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css');
 
