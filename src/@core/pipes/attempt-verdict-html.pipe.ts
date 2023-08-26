@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Attempt } from '../../app/modules/problems/models/attempts.models';
-import { Verdicts } from 'app/modules/problems/enums';
+import { Verdicts } from 'app/modules/problems/constants';
 
 @Pipe({
   name: 'attemptVerdictHTML'

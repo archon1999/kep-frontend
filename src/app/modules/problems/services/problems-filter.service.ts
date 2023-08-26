@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { AttemptLangs } from '../enums';
-import { LocalStorageService } from 'app/shared/storages/local-storage.service';
 import { SessionStorageService } from 'app/shared/storages/session-storage.service';
+import { BehaviorSubject } from 'rxjs';
 import { ProblemsFilter } from '../models/problems.models';
 
 const KEY = 'problems-filter';
