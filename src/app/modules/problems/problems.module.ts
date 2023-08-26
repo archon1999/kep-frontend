@@ -57,6 +57,9 @@ import { SectionProfileComponent } from './pages/profile/section-profile/section
 import { AttemptsTableModule } from './components/attempts-table/attempts-table.module';
 import { StudyPlanCardModule } from './components/study-plan-card/study-plan-card.module';
 import { PaginationModule } from 'app/shared/components/pagination/pagination.module';
+import { ProblemSidebarInfoComponent } from './pages/problem/problem-sidebar/problem-sidebar-info/problem-sidebar-info.component';
+import { ProblemSidebarStatisticsComponent } from './pages/problem/problem-sidebar/problem-sidebar-statistics/problem-sidebar-statistics.component';
+import { ProblemSidebarTopAttemptsComponent } from './pages/problem/problem-sidebar/problem-sidebar-top-attempts/problem-sidebar-top-attempts.component';
 
 const routes: Routes = [
   { 
@@ -162,6 +165,9 @@ const routes: Routes = [
     SectionStudyPlansComponent,
     SectionInfoComponent,
     SectionProfileComponent,
+    ProblemSidebarInfoComponent,
+    ProblemSidebarStatisticsComponent,
+    ProblemSidebarTopAttemptsComponent,
   ], 
   imports: [
     CommonModule,

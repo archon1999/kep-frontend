@@ -1,0 +1,54 @@
+<div class="text-center mb-2">
+  <span ngbTooltip="{{ 'UsersSolved' | translate }}" class="text-success">
+    {{ problem.solved }}
+    <i data-feather="user-check"></i>
+  </span>
+  
+  <span ngbTooltip="{{ 'UsersUnsolved' | translate }}" class="text-danger">
+    {{ problem.notSolved }}
+    <i data-feather="user-x"></i>
+  </span>
+</div>
+
+<div *ngIf="attemptStatisticsChart">
+  <apx-chart
+    [theme]="chartTheme"
+    [plotOptions]="attemptStatisticsChart.plotOptions"
+    [chart]="attemptStatisticsChart.chart"
+    [colors]="attemptStatisticsChart.colors"
+    [series]="attemptStatisticsChart.series"
+    [legend]="attemptStatisticsChart.legend"
+    [labels]="attemptStatisticsChart.labels">
+  </apx-chart>
+</div>
+
+<div class="mt-2" *ngIf="langStatisticsChart">
+  <apx-chart
+    [theme]="chartTheme"
+    [plotOptions]="langStatisticsChart.plotOptions"
+    [chart]="langStatisticsChart.chart"
+    [colors]="langStatisticsChart.colors"
+    [series]="langStatisticsChart.series"
+    [legend]="langStatisticsChart.legend"
+    [labels]="langStatisticsChart.labels">
+  </apx-chart>
+</div>
+
+<div *ngIf="attemptsForSolveChart">
+  <h4 class="text-center">
+    {{ 'NumberOfAttemptsForSolve' | translate }}
+  </h4>
+  <apx-chart
+    [theme]="chartTheme"
+    [chart]="attemptsForSolveChart.chart"
+    [series]="attemptsForSolveChart.series"
+    [dataLabels]="attemptsForSolveChart.dataLabels"
+    [stroke]="attemptsForSolveChart.stroke"
+    [labels]="attemptsForSolveChart.labels"
+    [yaxis]="attemptsForSolveChart.yaxis"
+    [xaxis]="attemptsForSolveChart.xaxis"
+    [legend]="attemptsForSolveChart.legend"
+    [colors]="attemptsForSolveChart.colors"
+    [grid]="attemptsForSolveChart.grid">
+  </apx-chart>
+</div>

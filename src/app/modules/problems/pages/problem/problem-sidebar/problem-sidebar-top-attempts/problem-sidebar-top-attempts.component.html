@@ -1,0 +1,62 @@
+<div class="card">
+  <div class="card-header">
+    <div class="d-flex">
+      <div class="card-title">
+        {{ 'Rating' | translate }}
+      </div>
+      <span class="ml-50 font-small-4 badge badge-pill badge-glow badge-{{ selectedLang }}">
+        {{ selectedLang }}
+      </span>
+    </div>
+
+    <div class="btn-group btn-group-toggle mt-md-0 mt-1" ngbRadioGroup name="radioBasic"
+      [(ngModel)]="topAttemptsOrdering">
+      <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
+        <input (click)="topAttemptsLoad('time')" type="radio" id="option_1" [value]="'time'" ngbButton />
+        <span>{{ 'Time' | translate }}</span>
+      </label>
+      <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
+        <input (click)="topAttemptsLoad('memory')" type="radio" id="option_2" [value]="'memory'" ngbButton />
+        <span>{{ 'Memory' | translate }}</span>
+      </label>
+      <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
+        <input (click)="topAttemptsLoad('source_code_size')" type="radio" id="option_3" [value]="'source_code_size'"
+          ngbButton />
+        <span>{{ 'Size' | translate }}</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr class="bg-gradient-primary">
+          <th>#</th>
+          <th>{{ 'User' | translate }}</th>
+          <th>{{ 'Result' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let attempt of topAttempts; index as i">
+          <td>{{ i+1 }}</td>
+          <td>
+            <contestant-view [imgSize]="28" [user]="attempt"></contestant-view>
+          </td>
+          <td>
+            <span [ngSwitch]="topAttemptsOrdering">
+              <span *ngSwitchCase="'time'" class="badge badge-info badge-glow">
+                {{ attempt.time }} ms
+              </span>
+              <span *ngSwitchCase="'memory'" class="badge badge-primary badge-glow">
+                {{ attempt.memory }} kb
+              </span>
+              <span *ngSwitchCase="'source_code_size'" class="badge badge-dark badge-glow">
+                {{ attempt.sourceCodeSize }}
+              </span>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
