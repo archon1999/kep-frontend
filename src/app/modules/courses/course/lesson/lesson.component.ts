@@ -67,7 +67,7 @@ export class LessonComponent implements OnInit{
     public api: ApiService,
     public titleService: TitleService,
     private shepherdService: ShepherdService
-  ) { }
+  ) {}
   
   ngOnInit(): void {
     this.route.data.subscribe(({ course, courseLessons, courseLesson }) => {
@@ -83,6 +83,14 @@ export class LessonComponent implements OnInit{
       this.currentLessonPart = this.courseLesson.parts[0];
       this.contentHeader.headerTitle = this.courseLesson.title;
       this.contentHeader.breadcrumb.links[1].name = this.course.title;
+
+      this.route.queryParams.subscribe(
+        (params: any) => {
+          if('page' in params){
+            this.changeLessonPart(+params.page - 1);
+          }
+        }
+      )  
     })
 
     this.authService.currentUser.subscribe((user: any) => {
@@ -95,6 +103,14 @@ export class LessonComponent implements OnInit{
   }
 
   changeLessonPart(lessonPartIndex: number){
+    let currentScrollHeight = window.pageYOffset;
+    this.router.navigate([], 
+      {
+        relativeTo: this.route,
+        queryParams: { page: lessonPartIndex+1 },
+      }
+    ).then(() => window.scrollTo({ top: currentScrollHeight }));
+
     let parts = this.courseLesson.parts.length;
     this.lessonPartIndex = (lessonPartIndex + parts) % parts;
     this.currentLessonPart = this.courseLesson.parts[this.lessonPartIndex];
