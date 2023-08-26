@@ -7,7 +7,6 @@
 
       <div class="col-lg-9 col-md-9 col-sm-12">
         <div class="card">
-
           <div class="card-body">
             <div *ngIf="question.type == 1" (keyup.enter)="checkAnswer()">
               <h5 class="pl-1 d-flex">
@@ -176,7 +175,11 @@
           </div>
 
           <div class="card-footer text-right">
-            <button type="submit" class="btn btn-gradient-primary" (click)="counter.pause();checkAnswer()">
+            <button
+              rippleEffect
+              type="submit"
+              class="btn btn-block btn-primary badge-glow"
+              (click)="counter.pause();checkAnswer()">
               <i data-feather="check"></i>
               {{ 'Check' | translate }}
             </button>
