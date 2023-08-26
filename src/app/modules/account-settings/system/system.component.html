@@ -1,0 +1,68 @@
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex align-items-center mb-2">
+      <i data-feather="settings" class="font-medium-3"></i>
+      <h4 class="mb-0 ml-75">System</h4>
+    </div>
+
+    <div id="customizer-menu-type mt-2">
+      <p class="font-weight-bold font-medium-3 mb-2">Menu Layout</p>
+      <div class="d-flex">
+        <div class="ml-1 mb-1 custom-control custom-radio">
+          <input
+            type="radio"
+            id="radio-1"
+            name="menu-layout"
+            [(ngModel)]="menuLayout"
+            (change)="changeMenuLayout()"
+            [value]="'vertical'"
+            class="custom-control-input" />
+          <label class="custom-control-label" for="radio-1">
+            Vertical
+          </label>
+        </div>
+
+        <div class="ml-1 mb-1 custom-control custom-radio">
+          <input
+            type="radio"
+            id="radio-2"
+            name="menu-layout"
+            [(ngModel)]="menuLayout"
+            (change)="changeMenuLayout()"
+            [value]="'horizontal'"
+            class="custom-control-input" />
+          <label class="custom-control-label" for="radio-2">
+            Horizontal
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="sounds">
+      <p class="font-weight-bold font-medium-3 mb-2 mt-1">Sounds</p>
+
+      <div class="rows">
+        <div class="col-6">
+          <label>Success</label>
+          <ng-select
+            appendTo="body"  
+            [items]="successSounds"
+            bindLabel="name"
+            bindValue="id"
+            (change)="successSoundChange()"
+            [dropdownPosition]="'bottom'"
+            [(ngModel)]="successSound">
+          </ng-select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-select-css></ng-select-css>
+
+<audio
+  *ngIf="successSound != SuccessSoundEnum.NoSound"
+  #successAudio
+  src="assets/audio/success/{{ successSound }}.mp3">
+</audio>

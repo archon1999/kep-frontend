@@ -7,9 +7,11 @@ import { AuthenticationService } from 'app/auth/service';
 import { WebsocketService } from 'app/shared/services/websocket';
 import { ToastrService } from 'ngx-toastr';
 import { Attempt, WSAttempt } from '../../models/attempts.models';
-import { Verdicts } from '../../constants/verdicts.enum';
+import { Verdicts } from '../../constants';
 import { ProblemsService } from '../../services/problems.service';
 import { Contest } from 'app/modules/contests/contests.models';
+import { SoundsService } from '../../../../shared/services/sounds/sounds.service';
+import { SuccessSoundEnum } from 'app/shared/services/sounds/success-sound.enum';
 
 const LANG_CHANGE_EVENT = 'lang-change';
 const ATTEMPT_ADD_EVENT = 'attempt-add';
@@ -41,6 +43,8 @@ export class AttemptsTableComponent implements OnInit {
     readOnly: true,
   };
 
+  public successSoundName = this.soundsService.getSuccessSound();
+
   @ViewChild('modal') public modalRef: TemplateRef<any>;
   @ViewChild('successAudio') successAudio: ElementRef<any>;
   @ViewChild('wrongAudio') wrongAudio: ElementRef<any>;
@@ -54,6 +58,7 @@ export class AttemptsTableComponent implements OnInit {
     public coreConfigService: CoreConfigService,
     public translationService: TranslateService,
     public service: ProblemsService,
+    public soundsService: SoundsService,
   ) { }
 
   ngOnInit(): void {
@@ -80,7 +85,7 @@ export class AttemptsTableComponent implements OnInit {
           if (wsAttempt.verdict == Verdicts.Accepted) {
             if (this.attempts[i].canView) {
               setTimeout(() => attempt.animationAcceptedState = true, 0);
-              this.successAudio.nativeElement.play();
+              this.successAudio?.nativeElement?.play();
             }
           } else if (wsAttempt.verdict != Verdicts.Running && wsAttempt.verdict != Verdicts.InQueue) {
             if (this.attempts[i].canView) {
