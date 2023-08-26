@@ -11,7 +11,7 @@ import { ArenaResolver } from './arena.resolver';
 import { ArenaListCardComponent } from './components/arena-list-card/arena-list-card.component';
 import { CountdownModule } from '@ciri/ngx-countdown';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
-import { ChallengesUserViewModule } from '../../shared/components/challenges-user-view/challenges-user-view.module';
+import { ChallengesUserViewModule } from '../challenges/components/challenges-user-view/challenges-user-view.module';
 import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { ArenaPlayerStatisticsComponent } from './components/arena-player-statistics/arena-player-statistics.component';
