@@ -2,10 +2,11 @@
   .badge-#{$name} {
     color: $color;
     background: $background;
+    border: none;
   }
 
   .badge-#{$name}.badge-glow {
-    box-shadow: $box-shadow;    
+    box-shadow: $box-shadow;
   }
 
   @if $background-dark != false {
