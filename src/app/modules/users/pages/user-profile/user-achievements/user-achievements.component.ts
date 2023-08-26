@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Achievement } from '../../users.models';
-import { UsersService } from '../../users.service';
+import { Achievement } from '../../../users.models';
+import { UsersService } from '../../../users.service';
 
 @Component({
   selector: 'user-achievements',
@@ -20,7 +20,8 @@ export class UserAchievementsComponent implements OnInit {
   constructor(
     public service: UsersService,
     public route: ActivatedRoute,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.route.data.subscribe(({ user }) => {
@@ -31,23 +32,23 @@ export class UserAchievementsComponent implements OnInit {
             (achievement: Achievement) => {
               return achievement.userResult.done;
             }
-          )
+          );
           this.notCompletedAchievements = achievements.filter(
             (achievement: Achievement) => {
               return !achievement.userResult.done;
             }
-          )
+          );
           this.achievements = this.completedAchievements;
         }
-      )
-    })
+      );
+    });
   }
 
-  update(type: number){
+  update(type: number) {
     this.type = type;
-    if(type == 1){
+    if (type === 1) {
       this.achievements = this.completedAchievements;
-    } else if(type == 2){
+    } else if (type === 2) {
       this.achievements = this.notCompletedAchievements;
     } else {
       this.achievements = this.allAchievements;

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { User } from '../users.models';
-import { UsersService } from '../users.service';
+import { User } from '../../users.models';
+import { UsersService } from '../../users.service';
 
 @Component({
   selector: 'user-card',

@@ -10,15 +10,15 @@ import { BlogPostCardModule } from '../blog/components/blog-post-card/blog-post-
 import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
 import { UsersComponent } from './users.component';
 import { UserBlogResolver, UserChallengesRatingResolver, UserContestsRatingResolver, UserEducationsResolver, UserInfoResolver, UserProblemsRatingResolver, UserResolver, UserSkillsResolver, UserSocialResolver, UserTechnologiesResolver, UserWorkExperiencesResolver } from './users.resolver';
-import { UserProfileComponent } from './user-profile/user-profile.component';
-import { UserBlogComponent } from './user-profile/user-blog/user-blog.component';
-import { UserRatingsComponent } from './user-profile/user-ratings/user-ratings.component';
+import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { UserBlogComponent } from './pages/user-profile/user-blog/user-blog.component';
+import { UserRatingsComponent } from './pages/user-profile/user-ratings/user-ratings.component';
 import { ContestantViewModule } from '../../shared/components/contestant-view/contestant-view.module';
 import { FormsModule } from '@angular/forms';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import { UserCardComponent } from './user-card/user-card.component';
-import { UserAchievementsComponent } from './user-profile/user-achievements/user-achievements.component';
-import { AchievementComponent } from './user-profile/user-achievements/achievement/achievement.component';
+import { UserCardComponent } from './components/user-card/user-card.component';
+import { UserAchievementsComponent } from './pages/user-profile/user-achievements/user-achievements.component';
+import { AchievementComponent } from './pages/user-profile/user-achievements/achievement/achievement.component';
 import { UsersChartModule } from 'app/shared/components/users-chart/users-chart.module';
 
 const routes: Routes = [
