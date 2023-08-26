@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Difficulties } from 'app/modules/problems/enums';
+import { Difficulties } from 'app/modules/problems/constants';
 
 let colors = new Map<Number, string>()
   .set(Difficulties.Beginner, 'success')

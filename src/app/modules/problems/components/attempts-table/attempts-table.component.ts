@@ -7,7 +7,7 @@ import { AuthenticationService } from 'app/auth/service';
 import { WebsocketService } from 'app/websocket';
 import { ToastrService } from 'ngx-toastr';
 import { Attempt, WSAttempt } from '../../models/attempts.models';
-import { Verdicts } from '../../enums/verdicts.enum';
+import { Verdicts } from '../../constants/verdicts.enum';
 import { ProblemsService } from '../../services/problems.service';
 import { Contest } from 'app/modules/contests/contests.models';
 
