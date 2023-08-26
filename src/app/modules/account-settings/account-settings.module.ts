@@ -25,6 +25,7 @@ import { InformationComponent } from './information/information.component';
 import { SkillsComponent } from './skills/skills.component';
 import { SocialComponent } from './social/social.component';
 import { TeamsComponent } from './teams/teams.component';
+import { SystemComponent } from './system/system.component';
 
 const routes: Routes = [
   {
@@ -58,6 +59,7 @@ const routes: Routes = [
     SkillsComponent,
     CareerComponent,
     TeamsComponent,
+    SystemComponent,
   ],
   imports: [
     CommonModule,
