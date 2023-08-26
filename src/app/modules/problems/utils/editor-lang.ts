@@ -1,4 +1,4 @@
-import { AttemptLangs } from "../enums/attempt-lang.enum";
+import { AttemptLangs } from "../constants/attempt-lang.enum";
 
 export function getEditorLang(lang: string) {
     if (lang == AttemptLangs.CPP) {
