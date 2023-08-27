@@ -12,9 +12,11 @@ export class PaginationComponent implements OnInit {
   @Input() pageSize: number;
   @Input() maxSize: number;
   @Input() @Output() page: number;
-  @Input() rotate = false;
+  @Input() rotate = true;
   @Input() color = 'primary';
   @Output() pageChange = new EventEmitter<number>;
+  @Input() ellipses = false;
+  @Input() boundaryLinks = true;
 
   constructor(
     public router: Router,

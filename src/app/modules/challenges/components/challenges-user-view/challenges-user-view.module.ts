@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { ChallengesUserViewComponent } from './challenges-user-view.component';
 import { CorePipesModule } from '../../../../../@core/pipes/pipes.module';
 import { UserPopoverModule } from '../../../../shared/components/user-popover/user-popover.module';
+import { ChallengesRankBadgeComponent } from './challenges-rank-badge/challenges-rank-badge.component';
 
 
 @NgModule({
   declarations: [
-    ChallengesUserViewComponent
+    ChallengesUserViewComponent,
+    ChallengesRankBadgeComponent
   ],
   imports: [
     CommonModule,
@@ -16,6 +18,7 @@ import { UserPopoverModule } from '../../../../shared/components/user-popover/us
   ],
   exports: [
     ChallengesUserViewComponent,
+    ChallengesRankBadgeComponent,
   ]
 })
 export class ChallengesUserViewModule { }
