@@ -371,6 +371,9 @@ export const locale = {
     ChallengeBlurError: 'Bellashuv paytida brauzer fokusini boshqa narsaga o`zgartirishga ruxsat berilmaydi.',
     FullName: 'To`liq ismi',
     ActivityRating: 'Faollik reytingi',
+    Name: 'Nomi',
+    Country: 'Davlat',
+    Age: 'Yosh',
     ContestRules: {
       ACM20H: ``,
     },
