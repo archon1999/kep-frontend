@@ -371,6 +371,9 @@ export const locale = {
     ChallengeQuestionWrong: 'Неправильно',
     FullName: 'Полное имя',
     ActivityRating: 'Рейтинг активности',
+    Name: 'Имя',
+    Country: 'Страна',
+    Age: 'Возраст',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',
