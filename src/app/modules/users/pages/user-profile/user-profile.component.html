@@ -116,10 +116,10 @@
                   <h5 class="mb-75">
                     <i data-feather="map-pin"></i>
                     {{ 'USER_INFO.LIVES' | translate }}:
-                  </h5>
-                  <p class="card-text">{{ userInfo.country }}
-                    <span *ngIf="userInfo.region">, {{ userInfo.region }}</span>
-                  </p>
+                  </h5>                  
+                  <p class="card-text">
+                    <span class="flag-icon mr-25 flag-icon-{{ userInfo.country }}"></span>
+                    {{ countriesService.getName(userInfo.country) }}<span *ngIf="userInfo.region">, {{ userInfo.region }}</span></p>
                 </div>
                 <div class="mt-2" *ngIf="userInfo.email">
                   <h5 class="mb-75">

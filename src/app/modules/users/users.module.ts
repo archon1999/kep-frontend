@@ -37,6 +37,7 @@ import {
   UserTechnologiesResolver,
   UserWorkExperiencesResolver
 } from './users.resolver';
+import { NgSelectModule } from 'app/shared/third-part-modules/ng-select/ng-select.module';
 
 const routes: Routes = [
   {
@@ -101,6 +102,7 @@ const routes: Routes = [
     StreakModule,
     TableOrderingModule,
     PaginationModule,
+    NgSelectModule,
   ],
   providers: [
     UserResolver,
