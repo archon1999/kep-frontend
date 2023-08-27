@@ -1,3 +1,13 @@
+section.users {
+  --bg-gradient: linear-gradient(to right, #8f94fb, #4e54c8);
+  --inherit-bg-box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1);
+}
+
+::ng-deep .dark-layout section.users {
+  --bg-gradient: linear-gradient(to right, #182848, #4b6cb7);
+  --inherit-bg-box-shadow: 0 4px 24px 0 rgba(255, 255, 255, 0.1);
+}
+
 .font-weight-500 {
   font-weight: 500;
 }
@@ -6,7 +16,7 @@
   transition: all 0.2s ease;
   opacity: 0.9;
   border: none;
-  box-shadow: 0 0 10px #9e95f5;
+  box-shadow: var(--inherit-bg-box-shadow) !important;
   border-radius: 10px;
 
   th,
@@ -15,4 +25,10 @@
     padding-top: 1.15rem;
     padding-bottom: 1.15rem;
   }
+}
+
+.users-filter {
+  border: none;
+  box-shadow: var(--inherit-bg-box-shadow) !important;
+  background: inherit !important;
 }
