@@ -29,6 +29,7 @@ import { UserPopoverModule } from './shared/components/user-popover/user-popover
 
 import { environment } from 'environments/environment';
 import { HighlightModule, HighlightOptions, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
+import { NgxCountriesModule } from '@ngx-countries/core';
 
 const appRoutes: Routes = [
   { path: '', loadChildren: () => import('./modules/landing-page/landing-page.module').then(m => m.LandingPageModule) },
@@ -108,6 +109,10 @@ export class CustomTitleStrategy extends TitleStrategy {
     CoreSidebarModule,
     CoreThemeCustomizerModule,
     HighlightModule,
+    NgxCountriesModule.forRoot({
+      defaultLocale: 'en',
+      locales: ['en', 'uz', 'ru']
+    }),
 
     // App modules
     LayoutModule,
@@ -124,7 +129,7 @@ export class CustomTitleStrategy extends TitleStrategy {
         lineNumbersLoader: () => import('highlightjs-line-numbers.js'),
         coreLibraryLoader: () => import('highlight.js/lib/core'),
         languages: {
-          python: () => import('highlight.js/lib/languages/python'), 
+          python: () => import('highlight.js/lib/languages/python'),
         },
       }
     }
