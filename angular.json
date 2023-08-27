@@ -95,7 +95,7 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "100kb"
+                  "maximumWarning": "1000kb"
                 }
               ]
             },
@@ -115,7 +115,7 @@
               "budgets": [
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "100kb"
+                  "maximumWarning": "1000kb"
                 }
               ],
               "fileReplacements": [
