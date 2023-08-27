@@ -8,10 +8,10 @@ export class UsersService {
 
   constructor(public api: ApiService) {}
 
-  getUsers(page=1, full=false, ordering='-rating'){
-    let params: any = {'page': page, ordering: ordering};
-    if(full){
-      params.full = true;
+  getUsers(page=1, otherParams: any){
+    let params = {
+      page: page,
+      ...otherParams,
     }
     return this.api.get('users', params)
   }
@@ -79,6 +79,10 @@ export class UsersService {
 
   getOnlineUsers(){
     return this.api.get('users/online');
+  }
+  
+  getCountries(){
+    return this.api.get('users/countries');
   }
 
 }

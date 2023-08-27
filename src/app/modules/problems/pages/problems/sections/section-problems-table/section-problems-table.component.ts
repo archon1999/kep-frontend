@@ -56,10 +56,8 @@ export class SectionProblemsTableComponent implements OnInit, OnDestroy {
     )
   }
 
-  setOrdering(ordering: string) {
-    if (this.filter.ordering === ordering) {
-      ordering = '-' + ordering;
-    }
+  changeOrdering(ordering: string){
+    this.ordering = ordering;
     this.filterService.updateFilter({ ordering: ordering });
   }
 
