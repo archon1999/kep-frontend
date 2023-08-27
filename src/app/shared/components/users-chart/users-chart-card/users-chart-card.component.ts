@@ -67,6 +67,7 @@ export class UsersChartCardComponent implements OnInit, OnDestroy {
   initChart() {
     this.usersChart = {
       chart: {
+        fontFamily: 'QuickSand, Roboto',
         height: 100,
         type: 'line',
         dropShadow: {
