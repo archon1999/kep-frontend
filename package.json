@@ -12,7 +12,7 @@
     "build:prod-stats": "node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --configuration production --stats-json",
     "bundle-analyzer": "webpack-bundle-analyzer /home/cpython/server/static/frontend/stats.json",
     "test": "ng test",
-    "build-prod": "ng build --configuration production --base-href /static/frontend/ && npm run remove-map && npm run compress && npm run move-index",
+    "build-prod": "node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --configuration production --base-href /static/frontend/ && npm run remove-map && npm run compress && npm run move-index",
     "remove-map": "cd /home/cpython/server/static/frontend && grep -rli 'sourceMappingURL' * | xargs -i@ sed -i 's/sourceMappingURL/a/g' @",
     "compress": "gzipper compress /home/cpython/server/static/frontend",
     "move-index": "mv /home/cpython/server/static/frontend/index.html /home/cpython/server/apps/angular/templates/",
