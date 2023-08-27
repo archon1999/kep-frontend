@@ -14,9 +14,11 @@ export class PaginationComponent implements OnInit {
   @Input() @Output() page: number;
   @Input() rotate = true;
   @Input() color = 'primary';
-  @Output() pageChange = new EventEmitter<number>;
   @Input() ellipses = false;
   @Input() boundaryLinks = true;
+  @Input() checkParams = true;
+  
+  @Output() pageChange = new EventEmitter<number>;
 
   constructor(
     public router: Router,
@@ -24,16 +26,18 @@ export class PaginationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(
-      (params: any) => {
-        if('page' in params){
-          // this.page = +params.page;
-          setTimeout(() => {
-            this.pageChange.next(+params.page);
-          }, 100);
+    if(this.checkParams){
+      this.route.queryParams.subscribe(
+        (params: any) => {
+          if('page' in params){
+            // this.page = +params.page;
+            setTimeout(() => {
+              this.pageChange.next(+params.page);
+            }, 100);
+          }
         }
-      }
-    )
+      )
+    }
   }
 
   change(page: number){

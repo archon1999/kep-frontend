@@ -69,14 +69,16 @@
       <div class="col-12 col-sm-6">
         <div class="form-group">
           <label for="user-country">Country</label>
-          <select
-            class="form-control"
+          <ng-select
             [ngModelOptions]="{standalone: true}"
             [(ngModel)]="userInfo.country"
-            id="user-country"
-            name="user-country">
-            <option *ngFor="let country of countries">{{ country }}</option>
-          </select>
+            appendTo="body">
+            <ng-option *ngFor="let country of countries" [value]="country.id.toLowerCase()">
+              <span class="flag-icon flag-icon-{{ country.id.toLowerCase() }}"></span>
+              {{ country.name }}
+            </ng-option>
+          </ng-select>
+
           <p class="text-danger" *ngIf="errors?.country">{{ errors.country[0] }}</p>
         </div>
       </div>
@@ -104,3 +106,4 @@
 
 <quill-css></quill-css>
 <ng2-flatpickr-css></ng2-flatpickr-css>
+<ng-select-css></ng-select-css>

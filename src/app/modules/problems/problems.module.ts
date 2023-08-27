@@ -60,6 +60,7 @@ import { PaginationModule } from 'app/shared/components/pagination/pagination.mo
 import { ProblemSidebarInfoComponent } from './pages/problem/problem-sidebar/problem-sidebar-info/problem-sidebar-info.component';
 import { ProblemSidebarStatisticsComponent } from './pages/problem/problem-sidebar/problem-sidebar-statistics/problem-sidebar-statistics.component';
 import { ProblemSidebarTopAttemptsComponent } from './pages/problem/problem-sidebar/problem-sidebar-top-attempts/problem-sidebar-top-attempts.component';
+import { TableOrderingModule } from 'app/shared/components/table-ordering/table-ordering.module';
 
 const routes: Routes = [
   { 
@@ -202,6 +203,7 @@ const routes: Routes = [
     ProblemCardModule,
     TourModule,
     PaginationModule,
+    TableOrderingModule,
   ],
   providers: [
     ProblemGuard,
