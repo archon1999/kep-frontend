@@ -14,7 +14,7 @@
     "test": "ng test",
     "build-prod": "ng build --configuration production --base-href /static/frontend/ && npm run remove-map && npm run compress && npm run move-index",
     "remove-map": "cd /home/cpython/server/static/frontend && grep -rli 'sourceMappingURL' * | xargs -i@ sed -i 's/sourceMappingURL/a/g' @",
-    "compress": "cd /home/cpython/server && python3.10 manage.py collectstatic && cp -rf /static/* /home/cpython/server/static/frontend && rm -r /static/",
+    "compress": "gzipper compress /home/cpython/server/static/frontend",
     "move-index": "mv /home/cpython/server/static/frontend/index.html /home/cpython/server/apps/angular/templates/",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -67,6 +67,7 @@
     "core-js": "3.14.0",
     "feather-icons": "4.28.0",
     "flatpickr": "4.6.9",
+    "gzipper": "^7.2.0",
     "hammerjs": "^2.0.8",
     "katex": "0.13.11",
     "lodash": "4.17.21",
