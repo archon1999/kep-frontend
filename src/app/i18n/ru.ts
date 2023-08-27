@@ -369,6 +369,8 @@ export const locale = {
     ChallengeBlurError: 'Во время вызова запрещается изменить фокус браузера на что-либо другое.',
     ChallengeQuestionRight: 'Правильно',
     ChallengeQuestionWrong: 'Неправильно',
+    FullName: 'Полное имя',
+    ActivityRating: 'Рейтинг активности',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',

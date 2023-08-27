@@ -372,6 +372,8 @@ export const locale = {
     ChallengeBlurError: 'During a challenge, it is forbidden to change the browser focus to something else.',
     ChallengeQuestionRight: 'Right',
     ChallengeQuestionWrong: 'Wrong',
+    FullName: 'Full name',
+    ActivityRating: 'Activity rating',
     ProblemTourSteps: [
       {
         title: 'Available languages',
