@@ -1,51 +1,61 @@
 <div class="card">
-  <div class="table-responsive mb-2">
+  <div class="custom-table table-responsive">
     <table class="table table-striped">
       <thead>
         <tr class="bg-gradient-primary">
-          <th>            
-            <a class="d-flex" (click)="setOrdering('id')">
+          <th>
+            <table-ordering
+              [value]="ordering"
+              [justifyContent]="'start'"
+              [ordering]="'id'"
+              (change)="changeOrdering($event)">
               <i class="mr-50" [data-feather]="'problem' | iconName"></i>
               ID
-              <span *ngIf="ordering == 'id'"><i data-feather="chevron-up"></i></span>
-              <span *ngIf="ordering == '-id'"><i data-feather="chevron-down"></i></span>
-            </a>
+            </table-ordering>
           </th>
           <th>
-            <a class="d-flex" (click)="setOrdering('title')">
+            <table-ordering
+              [value]="ordering"
+              [justifyContent]="'start'"
+              [ordering]="'title'"
+              (change)="changeOrdering($event)">
               <i class="mr-50" [data-feather]="'edit-3'"></i>
               {{ 'TITLE' | translate }}
-              <span *ngIf="ordering == 'title'"><i data-feather="chevron-up"></i></span>
-              <span *ngIf="ordering == '-title'"><i data-feather="chevron-down"></i></span>
-            </a>
+            </table-ordering>
           </th>
           <th>
             <i class="mr-50" [data-feather]="'activity'"></i>
             {{ 'TAGS' | translate }}
           </th>
           <th class="text-center">
-            <a class="d-flex" (click)="setOrdering('difficulty')">
+            <table-ordering
+              [value]="ordering"
+              [justifyContent]="'center'"
+              [ordering]="'difficulty'"
+              (change)="changeOrdering($event)">
               <i class="mr-50" [data-feather]="'bar-chart'"></i>
               {{ 'DIFFICULTY' | translate }}
-              <span *ngIf="ordering == 'difficulty'"><i data-feather="chevron-up"></i></span>
-              <span *ngIf="ordering == '-difficulty'"><i data-feather="chevron-down"></i></span>
-            </a>
+            </table-ordering>
           </th>
           <th class="text-center">
-            <a class="d-flex" (click)="setOrdering('rating')">
+            <table-ordering
+              [value]="ordering"
+              [justifyContent]="'center'"
+              [ordering]="'rating'"
+              (change)="changeOrdering($event)">
               <i class="mr-50" [data-feather]="'star'"></i>
               {{ 'RATING' | translate }}
-              <span *ngIf="ordering == 'rating'"><i data-feather="chevron-up"></i></span>
-              <span *ngIf="ordering == '-rating'"><i data-feather="chevron-down"></i></span>
-            </a>
+            </table-ordering>
           </th>
           <th class="text-center">
-            <a class="d-flex" (click)="setOrdering('solved')">
+            <table-ordering
+              [value]="ordering"
+              [justifyContent]="'center'"
+              [ordering]="'solved'"
+              (change)="changeOrdering($event)">
               <i class="mr-50" [data-feather]="'attempt' | iconName"></i>
               {{ 'ATTEMPTS' | translate }}
-              <span *ngIf="ordering == 'solved'"><i data-feather="chevron-up"></i></span>
-              <span *ngIf="ordering == '-solved'"><i data-feather="chevron-down"></i></span>
-            </a>
+            </table-ordering>
           </th>
         </tr>
       </thead>
@@ -65,10 +75,11 @@
                 {{ problem.title }}
               </div>
 
-              <span *ngIf="problem.userInfo.hasSolution" class="badge mt-50 badge-pill badge-light-success">
+              <span *ngIf="problem.hasSolution" class="badge mt-50 badge-pill badge-light-success">
                 <i [data-feather]="'exists' | iconName" class="text-success" [size]="16"></i>
                 {{ 'Solution' | translate }}
               </span>
+
               <span *ngIf="!problem.hasChecker" class="badge mt-50 badge-pill badge-light-danger">
                 <i [data-feather]="'not_exists' | iconName" class="text-danger" [size]="16"></i>  
                 {{ 'Checker' | translate }}
