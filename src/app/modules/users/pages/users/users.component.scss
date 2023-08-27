@@ -1,0 +1,18 @@
+.font-weight-500 {
+  font-weight: 500;
+}
+
+.custom-table {
+  transition: all 0.2s ease;
+  opacity: 0.9;
+  border: none;
+  box-shadow: 0 0 10px #9e95f5;
+  border-radius: 10px;
+
+  th,
+  td {
+    border-top: none;
+    padding-top: 1.15rem;
+    padding-bottom: 1.15rem;
+  }
+}

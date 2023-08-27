@@ -8,8 +8,12 @@ export class UsersService {
 
   constructor(public api: ApiService) {}
 
-  getUsers(page=1){
-    return this.api.get('users', {'page': page})
+  getUsers(page=1, full=false, ordering='-rating'){
+    let params: any = {'page': page, ordering: ordering};
+    if(full){
+      params.full = true;
+    }
+    return this.api.get('users', params)
   }
 
   getUser(username: string){

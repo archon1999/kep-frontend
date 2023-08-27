@@ -369,6 +369,8 @@ export const locale = {
     ChallengeQuestionRight: 'To`g`ri',
     ChallengeQuestionWrong: 'Noto`g`ri',
     ChallengeBlurError: 'Bellashuv paytida brauzer fokusini boshqa narsaga o`zgartirishga ruxsat berilmaydi.',
+    FullName: 'To`liq ismi',
+    ActivityRating: 'Faollik reytingi',
     ContestRules: {
       ACM20H: ``,
     },

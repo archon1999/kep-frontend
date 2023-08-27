@@ -1,0 +1,211 @@
+<div class="content-wrapper p-0">
+    <div class="content-body">
+      <!-- content-header component -->
+      <app-content-header [contentHeader]="contentHeader"></app-content-header>
+  
+      <section class="mt-2">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="custom-table table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr class="bg-gradient-primary">
+                      <th>
+                        <table-ordering
+                          [value]="ordering"
+                          [justifyContent]="'start'"
+                          [ordering]="'username'"
+                          (change)="changeOrdering($event)">
+                          <i class="mr-25" data-feather="user"></i>
+                          {{ 'User' | translate }}
+                        </table-ordering>
+                      </th>
+
+                      <th>
+                        <table-ordering
+                          [value]="ordering"
+                          [justifyContent]="'start'"
+                          [ordering]="'first_name'"
+                          (change)="changeOrdering($event)">
+                          <i class="mr-25" data-feather="edit"></i>
+                          {{ 'FullName' | translate }}
+                        </table-ordering>
+                      </th>
+
+                      <th class="text-center">
+                        <table-ordering
+                          [value]="ordering"
+                          [ordering]="'skills_rating'"
+                          [reverse]="true"
+                          (change)="changeOrdering($event)">
+                          <i class="mr-25" [data-feather]="'bar-chart'"></i>
+                          {{ 'Rating' | translate }}  
+                        </table-ordering>
+                      </th>
+
+                      <th class="text-center">
+                        <table-ordering
+                          [value]="ordering"
+                          [ordering]="'activity_rating'"
+                          [reverse]="true"
+                          (change)="changeOrdering($event)">
+                          <i class="mr-25" [data-feather]="'bar-chart'"></i>
+                          {{ 'ActivityRating' | translate }}  
+                        </table-ordering>
+                      </th>
+
+                      <th class="text-center">
+                        <table-ordering
+                          [value]="ordering"
+                          [ordering]="'contests_rating__rating'"
+                          [reverse]="true"
+                          (change)="changeOrdering($event)">
+                          <i class="mr-25" [data-feather]="'contest' | iconName"></i>
+                          {{ 'Contests' | translate }}  
+                        </table-ordering>
+                      </th>
+
+                      <th class="text-center">
+                        <table-ordering
+                          [value]="ordering"
+                          [ordering]="'challenges_rating__rating'"
+                          [reverse]="true"
+                          (change)="changeOrdering($event)">
+                          <i class="mr-25" [data-feather]="'challenge' | iconName"></i>
+                          {{ 'Challenges' | translate }}
+                       </table-ordering>
+                      </th>
+
+                      <th class="text-center">
+                        <table-ordering
+                          [value]="ordering"
+                          [ordering]="'problems_rating__solved'"
+                          [reverse]="true"
+                          (change)="changeOrdering($event)">
+                          <i class="mr-25" [data-feather]="'problem' | iconName"></i>
+                          {{ 'Problems' | translate }}
+                       </table-ordering>
+                      </th>
+
+                      <th class="text-center">
+                        <table-ordering
+                          [value]="ordering"
+                          [ordering]="'streak'"
+                          [reverse]="true"
+                          (change)="changeOrdering($event)">
+                          <i class="mr-25" [data-feather]="'activity'"></i>
+                          {{ 'Streak' | translate }}
+                       </table-ordering>
+                      </th>
+
+                      <th class="text-center">
+                        <table-ordering
+                          [value]="ordering"
+                          [ordering]="'kepcoin'"
+                          [reverse]="true"
+                          (change)="changeOrdering($event)">
+                          <i class="mr-25" data-feather="dollar-sign"></i>
+                          {{ 'Kepcoin' | translate }}
+                       </table-ordering>
+                      </th>
+                      
+                      <th class="text-center">
+                        <table-ordering
+                          [value]="ordering"
+                          [ordering]="'kepcoin'"
+                          [reverse]="true"
+                          (change)="changeOrdering($event)">
+                          <i data-feather="clock"></i>
+                          {{ 'LastSeen' | translate }}
+                       </table-ordering>
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr
+                      *ngFor="let user of users"
+                      [class]="{'bg-light-primary': user.username == currentUser?.username}">
+                      <td>
+                        <a href="users/user/{{ user.username }}">
+                          <div class="avatar mr-50">
+                            <img alt="Avatar" width="48" height="48" src="{{ user.avatar }}">
+                          </div>
+                          <span class="font-weight-500 font-medium-1 ml-50 text-dark">
+                            {{ user.username }}
+                          </span>
+                        </a>
+                      </td>
+
+                      <td>
+                        <span class="font-weight-500">
+                          {{ user.firstName }} {{ user.lastName }}
+                        </span>
+                      </td>
+
+                      <td class="text-center">
+                        <span class="badge badge-primary badge-pill badge-glow">
+                          {{ user.skillsRating }}
+                        </span>
+                      </td>
+
+                      <td class="text-center">
+                        <span class="badge badge-info badge-pill badge-glow">
+                          {{ user.activityRating }}
+                        </span>
+                      </td>
+
+                        <td class="text-center">
+                        <contests-rating-image [title]="user.contestsRatingTitle"></contests-rating-image>
+                        <span class="ml-25 font-weight-500">
+                          {{ user.contestsRating }}
+                        </span>
+                      </td>
+
+                      <td class="text-center">
+                        <challenges-rank-badge
+                          [title]="user.challengesRankTitle"
+                          [rating]="user.challengesRating">
+                        </challenges-rank-badge>
+                      </td>
+
+                      <td class="text-center">
+                        <span class="badge badge-primary badge-glow">
+                          {{ user.problemsSolved }}
+                        </span>
+                      </td>
+
+                      <td class="text-center">
+                        <streak [streak]="user.streak"></streak>
+                      </td>
+
+                      <td class="text-center">
+                        <kepcoin [value]="user.kepcoin"></kepcoin>
+                      </td>
+
+                      <td class="text-center">
+                        <span class="badge badge-light-success badge-glow">
+                          {{ user.lastSeen }}
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="mb-2">
+              <pagination
+                [collectionSize]="totalUsers"
+                [(page)]="currentPage"
+                [pageSize]="10"
+                [maxSize]="5"
+                (pageChange)="loadUsers()"
+              ></pagination>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
