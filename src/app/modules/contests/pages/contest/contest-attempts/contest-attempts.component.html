@@ -35,6 +35,8 @@
                   [collectionSize]="totalAttemptsCount"
                   [(page)]="currentPage"
                   [pageSize]="20"
+                  [boundaryLinks]="false"
+                  [ellipses]="true"
                   [maxSize]="5"
                   (pageChange)="reloadAttempts()"
                 >

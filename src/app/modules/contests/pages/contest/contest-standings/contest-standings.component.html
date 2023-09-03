@@ -23,12 +23,12 @@
                         <th class="text-center">#</th>
                         <th>{{ 'CONTESTS.CONTESTANT' | translate }}</th>
                         <th class="text-center">
-                          <a ngbTooltip="{{ 'CONTESTS.POINTS' | translate }} "container="body">
+                          <a ngbTooltip="{{ 'CONTESTS.POINTS' | translate }}" container="body">
                             <i [data-feather]="'rating' | iconName"></i>
                           </a>
                         </th>
 
-                        <th class="text-center" *ngIf="contest.status == 0 && contest.isRated">
+                        <th ngbTooltip="{{ 'RatingChange' | translate }}" container="body" class="text-center" *ngIf="contest.status == 0 && contest.isRated">
                           <i [data-feather]="'delta' | iconName"></i>
                         </th>
 
@@ -58,14 +58,23 @@
                         [@fadeInOnEnter]
                         *ngFor="let contestant of contestants"
                         [ngClass]="{'bg-light-primary': currentUser?.username == contestant.username }">
-                        <td class="text-center">
-                          <b>
-                            {{ contestant.rank }}
-                          </b>
+                        <td class="text-center text-dark">
+                          {{ contestant.rank }}
                         </td>
 
-                        <td>
+                        <td style="position: relative;">
                           <contestant-view [user]="contestant" [team]="contestant.team"></contestant-view>
+                          <div class="absolute d-flex justify-content-start">
+                            <span class="badge badge-info badge-pill" *ngIf="contestant.isUnrated && !contestant.isVirtual">
+                              {{ 'Unrated' | translate }}
+                            </span>
+                            <span class="badge badge-warning badge-pill" *ngIf="contestant.isVirtual">
+                              {{ 'Virtual' | translate }}
+                            </span>
+                            <span class="badge badge-success badge-pill" *ngIf="contestant.virtualTime">
+                              {{ contestant.virtualTime }}
+                            </span>  
+                          </div>
                         </td>
 
                         <td class="text-center">
@@ -82,9 +91,6 @@
                           }">
                             <span *ngIf="contestant.delta > 0">+</span>{{ contestant.delta }}
                           </span>
-                          <span *ngIf="contestant.bonus > 0" class="ml-1 badge badge-light-primary">
-                            +{{ contestant.bonus }}
-                          </span>
                         </td>
 
                         <td *ngIf="contest?.hasPenalties()" class="text-center">
@@ -96,8 +102,8 @@
                         <td class="text-center" style="white-space: nowrap;">
                           <contests-rating-image [title]="contestant.perfomanceTitle" [class]="'mr-50'"></contests-rating-image>
                           <span class="text-dark">
-                            <span *ngIf="contestant.perfomance >= 3499">∞</span>
-                            <span *ngIf="contestant.perfomance < 3499">{{ contestant.perfomance }}</span>
+                            <span *ngIf="contestant.perfomance >= 3400">∞</span>
+                            <span *ngIf="contestant.perfomance < 3400">{{ contestant.perfomance }}</span>
                           </span>
                         </td>
 
@@ -121,11 +127,11 @@
                         <th class="text-center text-dark">#</th>
                         <th class="text-dark">{{ 'CONTESTS.CONTESTANT' | translate }}</th>
                         <th class="text-center text-dark"><i [data-feather]="'rating' | iconName"></i></th>
-                        <th *ngIf="contest?.hasPenalties()" class="text-center">{{ 'CONTESTS.PENALTIES' | translate }}</th>
-                        <th class="text-center"><i data-feather="activity"></i></th>
                         <th class="text-center" *ngIf="contest.isAlready() && contest.isRated">
                           <i [data-feather]="'delta' | iconName"></i>
                         </th>
+                        <th *ngIf="contest?.hasPenalties()" class="text-center">{{ 'CONTESTS.PENALTIES' | translate }}</th>
+                        <th class="text-center"><i data-feather="activity"></i></th>
                         <th *ngFor="let contestProblem of contestProblems" class="text-dark text-center">
                           {{ contestProblem.symbol }}
                           <br>

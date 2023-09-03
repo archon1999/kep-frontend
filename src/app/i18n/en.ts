@@ -377,6 +377,10 @@ export const locale = {
     Name: 'Name',
     Country: 'Country',
     Age: 'Age',
+    StartVirtual: 'Start virtual',
+    RatingChange: 'Rating change',
+    Virtual: 'Virtual',
+    Unrated: 'Unrated',
     ProblemTourSteps: [
       {
         title: 'Available languages',

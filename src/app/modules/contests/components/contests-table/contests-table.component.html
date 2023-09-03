@@ -68,7 +68,7 @@
             <contest-standings-popover [contest]="contest"></contest-standings-popover>
             <br>
             <span *ngIf="currentUser" class="badge mt-1 badge-light-primary badge-glow">
-              {{ contest.solved }} / {{ contest.problemsCount }}
+              {{ contest.solved || 0 }} / {{ contest.problemsCount }}
             </span>
           </div>
         </td>

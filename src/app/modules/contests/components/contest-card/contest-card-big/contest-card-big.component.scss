@@ -92,7 +92,9 @@
 
     .registration {
       button {
-        background: var(--bg);
+        background: var(--bg) !important;
+        border: var(--bg) !important;
+        box-shadow: var(--box-shadow) !important;
       }
     }
 

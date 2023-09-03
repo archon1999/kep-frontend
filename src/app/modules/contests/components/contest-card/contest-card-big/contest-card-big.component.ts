@@ -6,6 +6,7 @@ import { User } from '../../../../../auth/models';
 import { AuthenticationService } from '../../../../../auth/service';
 import { Contest, ContestStatus } from '../../../contests.models';
 import { ContestsService } from 'app/modules/contests/contests.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'contest-card-big',
@@ -26,6 +27,7 @@ export class ContestCardBigComponent implements OnInit {
     public modalService: NgbModal,
     public authService: AuthenticationService,
     public service: ContestsService,
+    public router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -71,11 +73,12 @@ export class ContestCardBigComponent implements OnInit {
   virtualContestStart(){
     this.service.virtualContestStart(this.contest.id).subscribe(
       () => {
+        this.router.navigate(['/competitions', 'contests', 'contest', this.contest.id]);
         this.service.getContest(this.contest.id).subscribe(
-          (contest: Contest) => {
+          (contest: any) => {
             this.contest = contest;
           }
-        )    
+        )
       }
     )
   }

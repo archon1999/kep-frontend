@@ -39,7 +39,7 @@
 
         <td>
           <span *ngIf="contest" class="badge badge-light-success text-center" ngbTooltip="{{ attempt.created | date:'yyyy/MM/dd HH:mm:ss' }}">
-            {{ attempt.getContestTime(contest.startTime) }}
+            {{ attempt.contestTime }}
           </span>
 
           <span *ngIf="!contest" class="badge badge-light-success text-center" style="width: 130px;">

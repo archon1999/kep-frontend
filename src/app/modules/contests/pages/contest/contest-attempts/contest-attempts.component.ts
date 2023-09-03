@@ -79,7 +79,7 @@ export class ContestAttemptsComponent implements OnInit, OnDestroy {
     if (this.contest.status === ContestStatus.ALREADY) {
       this._intervalId = setInterval(() => {
         this.reloadAttempts();
-      }, REFRESH_TIME);
+      }, this.contest.userInfo.virtualContestPurchased ? REFRESH_TIME*2 : REFRESH_TIME);
     }
   }
 
