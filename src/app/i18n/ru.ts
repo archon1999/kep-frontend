@@ -374,6 +374,10 @@ export const locale = {
     Name: 'Имя',
     Country: 'Страна',
     Age: 'Возраст',
+    StartVirtual: 'Начать виртуальное участие',
+    RatingChange: 'Изменение рейтинга',
+    Virtual: 'Виртуально',
+    Unrated: 'Вне рейтинга',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',

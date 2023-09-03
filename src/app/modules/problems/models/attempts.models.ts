@@ -25,6 +25,7 @@ export class Attempt {
     public sourceCodeSize: number,
     public contestProblem: ContestProblem,
     public balls: number,
+    public contestTime: string,
     public animationWrongState = false,
     public animationAcceptedState = false,
   ) { }
@@ -68,6 +69,7 @@ export class Attempt {
       data.sourceCodeSize,
       data.contestProblem,
       data.balls,
+      data.contestTime,
     );
   }
 
@@ -93,6 +95,7 @@ export class Attempt {
       attempt.sourceCodeSize,
       attempt.contestProblem,
       wsAttempt.balls,
+      attempt.contestTime,
     );
   }
 }
