@@ -374,6 +374,10 @@ export const locale = {
     Name: 'Nomi',
     Country: 'Davlat',
     Age: 'Yosh',
+    StartVirtual: 'Virtual boshlash',
+    RatingChange: 'Reyting o`zgarishi',
+    Virtual: 'Virtual',
+    Unrated: 'Reytingsiz',
     ContestRules: {
       ACM20H: ``,
     },
