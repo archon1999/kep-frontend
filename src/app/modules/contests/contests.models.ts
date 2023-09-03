@@ -32,6 +32,7 @@ export interface ContestUserInfo {
     doubleRatingPurchased: boolean,
     saveRatingPurchased: boolean,
     virtualContestPurchased: boolean,
+    unratedContestPurchased: boolean,
 }
 
 export class Contest {
@@ -144,6 +145,9 @@ export class Contestant {
         public newRatingTitle: string,
         public doubleRatingPurchased: boolean,
         public saveRatingPurchased: boolean,
+        public isVirtual: boolean,
+        public isUnrated: boolean,
+        public virtualTime: string,
     ){}
 
     static fromJSON(data: any){
@@ -166,6 +170,9 @@ export class Contestant {
             data.newRatingTitle,
             data.doubleRatingPurchased,
             data.saveRatingPurchased,
+            data.isVirtual,
+            data.isUnrated,
+            data.virtualTime,
         );
     }
 }
@@ -228,25 +235,11 @@ export class ContestProblemInfo {
         public attemptsCount: number,
         public firstAcceptedTime: string,
         public theBest: boolean,
+        public contestTime: string,
     ){}
 
     solved() : boolean {
         return this.firstAcceptedTime != null;
-    }
-
-    getContestTimeStr(contestTime, contestStartTime) : string {
-        let milliSeconds = new Date(contestTime).getTime() - new Date(contestStartTime).getTime();
-        let seconds = Math.trunc(milliSeconds / 1000);
-        let minute = Math.trunc(seconds / 60);
-        let hour = Math.trunc(minute / 60);
-        minute %= 60;
-        let result = '';
-        result += hour < 10 ? '0' : Math.trunc(hour / 10);
-        result += hour % 10;
-        result += ':';
-        result += minute < 10 ? '0' : Math.trunc(minute / 10);
-        result += minute % 10;
-        return result;
     }
 
     getHTML(contest: Contest): string {
@@ -268,7 +261,7 @@ export class ContestProblemInfo {
                     html += this.attemptsCount;
                 }
                 html += '<br>';
-                html += this.getContestTimeStr(this.firstAcceptedTime, contest.startTime);
+                html += this.contestTime;
                 html += '</span>';
             } else if(this.attemptsCount > 0) {
                 let badgeClass: string;
@@ -300,7 +293,7 @@ export class ContestProblemInfo {
                 html += '</b>';
                 html += '<br>';
                 html += '<span class="contest-time-sm">';
-                html += this.getContestTimeStr(this.firstAcceptedTime, contest.startTime);
+                html += this.contestTime;
                 html += '</span>';
                 html += '</span>';
             } else {
@@ -408,6 +401,7 @@ export class ContestProblemInfo {
             data.attemptsCount,
             data.firstAcceptedTime,
             data.theBest,
+            data.contestTime,
         );
     }
 

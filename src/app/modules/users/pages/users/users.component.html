@@ -194,7 +194,7 @@
                     *ngFor="let user of users"
                     [class]="{'bg-light-primary': user.username == currentUser?.username}">
                     <td>
-                      <a href="/users/user/{{ user.username }}" class="d-flex">
+                      <a href="/users/user/{{ user.username }}" class="d-flex align-items-center">
                         <div class="avatar mr-50">
                           <img alt="Avatar" width="48" height="48" src="{{ user.avatar }}">
                         </div>
@@ -245,6 +245,9 @@
 
                     <td class="text-center">
                       <streak [streak]="user.streak"></streak>
+                      <div [ngbTooltip]="'Max streak'">
+                        <streak [streak]="user.maxStreak"></streak>
+                      </div>
                     </td>
 
                     <td class="text-center">
