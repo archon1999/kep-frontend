@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CoderRushCountdownComponent } from './coder-rush-countdown.component';
+import { CodeRushCountdownComponent } from './code-rush-countdown.component';
 
 describe('DuelCountdownComponent', () => {
-  let component: CoderRushCountdownComponent;
-  let fixture: ComponentFixture<CoderRushCountdownComponent>;
+  let component: CodeRushCountdownComponent;
+  let fixture: ComponentFixture<CodeRushCountdownComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CoderRushCountdownComponent ]
+      declarations: [ CodeRushCountdownComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CoderRushCountdownComponent);
+    fixture = TestBed.createComponent(CodeRushCountdownComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
