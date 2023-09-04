@@ -1,13 +1,19 @@
-<div class="card bg-duel bg-primary">
-  <div class="card-body mt-1">
+<div class="card bg-danger bg-darken-4 badge-glow">
+  <div class="text-center card-title mt-2">
+    <h3 class="text-white">
+      Code Rush #{{ codeRush.id }}
+    </h3>
+  </div>
+
+  <div class="card-body">
     <h4 *ngIf="codeRush.status == 0" class="text-center text-white mb-1">
-      {{ 'DuelEnds' | translate }}
+      {{ 'Rush ends in' | translate }}
     </h4>
     <h4 *ngIf="codeRush.status == -1" class="text-center text-white mb-1">
-      {{ 'DuelStarts' | translate }}
+      {{ 'Starts' | translate }}
     </h4>
     <h4 *ngIf="codeRush.status == 1" class="text-center text-white mb-1">
-      {{ 'DuelFinished' | translate }}
+      {{ 'Finished' | translate }}
     </h4>
   </div>
   <div class="card-footer">
