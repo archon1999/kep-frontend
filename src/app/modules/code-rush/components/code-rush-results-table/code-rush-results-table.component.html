@@ -1,0 +1,40 @@
+<div class="card">
+  <div class="table-responsive bg-results-table bg-danger bg-darken-4 badge-glow">
+    <table class="table">
+      <thead>
+        <tr>
+          <td class="text-white"><i data-feather="bar-chart"></i></td>
+          <td class="text-white">{{ 'Participant' | translate }}</td>
+          <td class="text-white"><i data-feather="activity" ngbTooltip="{{ 'Score' | translate }}"></i></td>
+          <td
+            *ngFor="let problem of codeRush.problems"
+            class="text-white text-center">
+            {{ problem.symbol }}
+          </td>
+        </tr>
+      </thead>
+  
+      <tbody>
+        <tr *ngFor="let player of codeRush.players">
+          <td class="text-white">{{ player.rank }}</td>
+          <td>
+            <contestant-view [textColor]="'white'" [user]="player"></contestant-view>
+          </td>
+          <td>
+            <span class="badge badge-danger badge-glow">{{ player.score }}</span>
+          </td>
+          <td
+            *ngFor="let problemInfo of player.problemsInfo"
+            class="text-white text-center">
+            <span class="badge badge-success badge-glow" *ngIf="problemInfo.isSolved === true">
+              {{ problemInfo.acceptedTime }}
+            </span>
+            <span class="badge badge-warning badge-glow" *ngIf="problemInfo.isSolved === false">
+              -
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

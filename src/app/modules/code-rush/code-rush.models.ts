@@ -1,29 +1,41 @@
 import { Problem } from "../problems/models/problems.models";
 
-export type CodeRushStatus = -1 | 0 | 1;
+export enum CodeRushStatus {
+  NOT_STARTED = -1,
+  ALREADY = 0,
+  FINISHED = 1,
+}
+
+export interface CodeRushPlayerProblemInfo {
+  problemSymbol: string;
+  isSolved: boolean;
+  acceptedTime: string;
+}
 
 export interface CodeRushPlayer {
-    id: number;
-    username: string;
-    status: number;
-    ratingTitle: string;
-    score: number;
+  rank: number;
+  username: string;
+  score: number;
+  ratingTitle: string;
+  lastAcceptedTime: string | null;
+  problemsInfo: Array<CodeRushPlayerProblemInfo>;
 }
 
 export interface CodeRushProblem {
-    symbol: string;
-    playerFirstStatus: number;
-    playerSecondStatus: number;
-    problem: Problem;
+  symbol: string;
+  problem: Problem;
+}
+
+export interface CodeRushUserInfo {
+  isPlayer: boolean;
 }
 
 export interface CodeRush {
-    id: number;
-    startTime: Date;
-    finished: Date;
-    status: CodeRushStatus;
-    isPlayer: boolean;
-    playerFirst: CodeRushPlayer;
-    playerSecond: CodeRushPlayer;
-    problems?: Array<CodeRushProblem>;
+  id: number;
+  startTime: Date;
+  finishTime: Date;
+  status: CodeRushStatus;
+  players: Array<CodeRushPlayer>
+  userInfo?: CodeRushUserInfo;
+  problems?: Array<CodeRushProblem>;
 }
