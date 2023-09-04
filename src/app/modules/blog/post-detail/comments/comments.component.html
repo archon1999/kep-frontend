@@ -25,7 +25,7 @@
       <div class="media-notation pb-1">
         <button
           (click)="like(i)"
-          *ngIf="comment.username != currentUser.username"
+          *ngIf="comment.username != currentUser?.username"
           class="mr-1 btn btn-sm round btn-relief-success"
         >
           <i data-feather="thumbs-up"></i>
