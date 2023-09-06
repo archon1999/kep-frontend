@@ -6,14 +6,12 @@
         <div class="col-12">
           <div class="card users-filter">
             <div class="card-body">
-              <div class="row">
+              <div [formGroup]="filterForm" class="row">
                 <div class="col-6 col-md-3">
                   <div class="form-group">
                     <label for="user-country">{{ 'Username' | translate }}</label>
                     <input
-                      (ngModelChange)="loadUsers()"
-                      [ngModelOptions]="{standalone: true}"
-                      [(ngModel)]="filter.username"
+                      formControlName="username"
                       type="text"
                       class="form-control">
                   </div>
@@ -23,9 +21,7 @@
                   <div class="form-group">
                     <label for="user-country">{{ 'Name' | translate }}</label>
                     <input
-                      (ngModelChange)="loadUsers()"
-                      [ngModelOptions]="{standalone: true}"
-                      [(ngModel)]="filter.firstName"
+                      formControlName="firstName"
                       type="text"
                       class="form-control">
                   </div>
@@ -35,10 +31,11 @@
                   <div class="form-group">
                     <label for="user-country">{{ 'Country' | translate }}</label>
                     <ng-select
-                      [ngModelOptions]="{standalone: true}"
-                      [(ngModel)]="filter.country"
-                      (change)="loadUsers()"
+                      formControlName="country"
+                      [clearable]="false"
                       appendTo="body">
+                      <ng-option [value]="''">
+                      </ng-option>
                       <ng-option *ngFor="let country of countries" [value]="country.id.toLowerCase()">
                         <span class="flag-icon flag-icon-{{ country.id.toLowerCase() }}"></span>
                         {{ country.name }}
@@ -52,18 +49,14 @@
                     <label for="user-country">{{ 'Age' | translate }}</label>
                     <div class="d-flex" style="align-items: center;">
                       <input
-                        (ngModelChange)="loadUsers()"
-                        [ngModelOptions]="{standalone: true}"
-                        [(ngModel)]="filter.ageFrom"
+                        formControlName="ageFrom"
                         type="number"
                         class="form-control">
                       <span class="ml-25 mr-25">
                         —
                       </span>
                       <input
-                        (ngModelChange)="loadUsers()"
-                        [ngModelOptions]="{standalone: true}"
-                        [(ngModel)]="filter.ageTo"
+                        formControlName="ageTo"
                         type="number"
                         class="form-control">
                     </div>

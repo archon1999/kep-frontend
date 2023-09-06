@@ -6,8 +6,10 @@ import { CurrentUser } from 'app/shared/components/classes/current-user.componen
 import { AuthenticationService } from 'app/auth/service';
 import { NgxCountriesIsoService } from '@ngx-countries/core';
 import { Subject, asyncScheduler } from 'rxjs';
-import { sampleTime, takeUntil, throttleTime } from 'rxjs/operators';
+import { takeUntil, throttleTime } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { FormControl, FormGroup } from '@angular/forms';
+import { paramsMapper } from 'app/shared/utils';
 
 @Component({
   selector: 'app-users',
@@ -31,13 +33,14 @@ export class UsersComponent extends CurrentUser {
     }
   };
 
-  public filter = {
-    country: '',
-    ageFrom: null,
-    username: '',
-    firstName: '',
-    ageTo: null,
-  }
+  public filterForm = new FormGroup({
+    country: new FormControl(''),
+    ageFrom: new FormControl(null),
+    ageTo: new FormControl(null),
+    username: new FormControl(''),
+    firstName: new FormControl(''),
+  })
+
   public countries = [];
   public ordering = '-skills_rating';
 
@@ -89,6 +92,12 @@ export class UsersComponent extends CurrentUser {
         }
       }
     )
+
+    this.filterForm.valueChanges.subscribe(
+      () => {
+        this.loadUsers();
+      }
+    )
   }
 
   pageChange(page: number){
@@ -105,23 +114,9 @@ export class UsersComponent extends CurrentUser {
     let params: any = {
       full: true,
       ordering: this.ordering,
+      ...this.filterForm.value
     }
-    if(this.filter.country){
-      params.country = this.filter.country;
-    }
-    if(this.filter.ageFrom){
-      params.age_from = this.filter.ageFrom;
-    }
-    if(this.filter.ageTo){
-      params.age_to = this.filter.ageTo;
-    }
-    if(this.filter.username){
-      params.username = this.filter.username;
-    }
-    if(this.filter.firstName){
-      params.first_name = this.filter.firstName;
-    }
-    this.service.getUsers(this.currentPage, params).subscribe(
+    this.service.getUsers(this.currentPage, paramsMapper(params)).subscribe(
       (result: any) => {
         this.users = result.data;
         this.totalUsers = result.total;
