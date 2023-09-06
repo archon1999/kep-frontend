@@ -2,6 +2,8 @@
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
 
+@import url('./colors.scss');
+
 
 .study-plan-page-top {
   position: absolute;
@@ -26,8 +28,8 @@
   margin-right: 20rem;
   
   @include media-breakpoint-down(xl) {
-    margin-left: 15rem;
-    margin-right: 15rem;
+    margin-left: 12rem;
+    margin-right: 12rem;
   }
 
   @include media-breakpoint-down(lg) {
@@ -86,11 +88,16 @@
             
             @include media-breakpoint-down(sm) {
               grid-template-columns: 6fr 2fr 2fr;
+
+              .problem-rating {
+                display: none !important;
+              }
             }
-          
-            padding: 8px;
+
+            border-radius: 10px;
+            padding: 10px;
             border-bottom: 1px solid #ebe9f1;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             
             &:last-child {
               border-bottom: 0px;
@@ -126,11 +133,13 @@
 
             .problem-button {
               a {
-                background-color: #02bcb3;
+                background-color:  var(--bg-study-plan) !important;
+                border: 0px;
                 font-weight: 500;
 
                 &:hover {
-                  background-color: #2af2e7;
+                  background-color: var(--bg-study-plan) !important;
+                  box-shadow: 0 0 10px var(--bg-study-plan) !important;
                 }
               }
             }
@@ -235,6 +244,15 @@
       ::ng-deep .progress {
         background-color: rgba(75, 75, 75, 0.12);
       }
+    }
+  }
+}
+
+.study-plan-2 {
+  .study-plan-icon {
+    img {
+      margin-bottom: 2rem;
+      margin-top: 2rem;
     }
   }
 }
