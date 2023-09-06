@@ -5,7 +5,7 @@
     <div [@fadeInOnEnter] class="study-plan study-plan-{{ studyPlan.id }}">
       <div class="study-plan-header">
         <div class="study-plan-icon">
-          <img height="90" src="{{ studyPlan.icon }}" alt="">
+          <img width="90" src="{{ studyPlan.icon }}" alt="">
         </div>
         <div class="study-plan-title text-dark">
           {{ studyPlan.title }}
@@ -250,7 +250,7 @@
                     <div class="problem-button">
                       <a [routerLink]="['/practice', 'problems', 'problem', problem.id]"
                          [queryParams]="{'study-plan': studyPlan.id}"
-                         rippleEffect class="text-white btn btn-relief-success btn-sm">
+                         rippleEffect class="text-white btn btn-primary btn-sm">
                         {{ 'Solve' | translate }}
                       </a>
                     </div>

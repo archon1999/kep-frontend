@@ -1,3 +1,5 @@
+@import url('../../pages/study-plan/colors.scss');
+
 @keyframes cardAnimation {
   50% {
     transform: scale(1);
@@ -27,6 +29,7 @@ a {
   }
 
   .card {
+    background: var(--bg-gradient-study-plan);
     height: 100%;
     border: none;
 
@@ -52,7 +55,6 @@ a {
 
     .study-plan-icon {
       img {
-        max-width: 90%;
         position: absolute;
         right: 15px;
         height: 120px;
@@ -63,12 +65,10 @@ a {
   }
 }
 
-.bg-gradient-studyplan-1 {
-  background: linear-gradient(to right, #01e2d3, #00fff4);
-}
-
-::ng-deep .dark-layout {
-  .bg-gradient-studyplan-1 {
-    background: linear-gradient(to right, #047572, #07a8a5);
+.study-plan-2 {
+  img {
+    width: 40%;
+    height: auto !important;
+    bottom: 20px !important;
   }
 }
