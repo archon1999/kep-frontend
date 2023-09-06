@@ -10,7 +10,7 @@ import { ProblemsService } from '../../services/problems.service';
 @Component({
   selector: 'app-study-plan',
   templateUrl: './study-plan.component.html',
-  styleUrls: ['./study-plan.component.scss'],
+  styleUrls: ['./study-plan.component.scss', './colors.scss'],
   animations: [fadeInOnEnterAnimation({ duration: 3000 })]
 })
 export class StudyPlanComponent implements OnInit {
@@ -43,6 +43,7 @@ export class StudyPlanComponent implements OnInit {
         series: [100 * this.difficulties.totalSolved / this.studyPlan.problemsCount],
         chart: {
           height: '200px',
+          fontFamily: 'Quicksand, Roboto',
           type: "radialBar",
           toolbar: {
             show: false,
@@ -119,11 +120,13 @@ export class StudyPlanComponent implements OnInit {
   }
 
   purchaseSuccess(){
-    this.service.getStudyPlan(this.studyPlan.id).subscribe(
-      (studyPlan: StudyPlan) => {
-        this.studyPlan = studyPlan;
-      }
-    )
+    setTimeout(() => {
+      this.service.getStudyPlan(this.studyPlan.id).subscribe(
+        (studyPlan: StudyPlan) => {
+          this.studyPlan = studyPlan;
+        }
+      )        
+    }, 1000);
   }
 
 }
