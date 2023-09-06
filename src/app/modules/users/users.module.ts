@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { CoreDirectivesModule } from '@core/directives/directives';
 import { CorePipesModule } from '@core/pipes/pipes.module';
@@ -38,6 +38,7 @@ import {
   UserWorkExperiencesResolver
 } from './users.resolver';
 import { NgSelectModule } from 'app/shared/third-part-modules/ng-select/ng-select.module';
+import { NgxCountriesModule } from '@ngx-countries/core';
 
 const routes: Routes = [
   {
@@ -103,6 +104,10 @@ const routes: Routes = [
     TableOrderingModule,
     PaginationModule,
     NgSelectModule,
+    ReactiveFormsModule,
+    NgxCountriesModule.forRoot({
+      locales: ['en', 'ru', 'uz']
+    }),
   ],
   providers: [
     UserResolver,
