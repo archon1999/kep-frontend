@@ -20,8 +20,14 @@ export class AttemptVerdictHTMLPipe implements PipeTransform {
     } else if(attempt.verdict == Verdicts.PartialSolution){
       badgeColor = 'warning';
     }
+    var verdicts = [Verdicts.Accepted,
+                    Verdicts.InQueue,
+                    Verdicts.Rejected,
+                    Verdicts.JudgementFailed,
+                    Verdicts.CheckerNotFound,
+                    Verdicts.PartialSolution];
     var verdictInfo = attempt.verdictTitle;
-    if(attempt.testCaseNumber > 0 && attempt.verdict != Verdicts.Accepted){
+    if(attempt.testCaseNumber > 0 && verdicts.indexOf(attempt.verdict) == -1){
       verdictInfo += ` #${attempt.testCaseNumber}`;
     }
     if(attempt.verdict == Verdicts.PartialSolution){
