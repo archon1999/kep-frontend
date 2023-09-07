@@ -5,7 +5,7 @@ import { ChallengesService } from '../../services/challenges.service';
 import Swal from 'sweetalert2';
 import { SwalComponent, SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2';
 import { CoreConfigService } from '../../../../../@core/services/config.service';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { CoreConfig } from '../../../../../@core/types';
 import { CountdownComponent } from '@ciri/ngx-countdown';
@@ -176,17 +176,17 @@ export class ChallengeComponent implements OnInit, OnDestroy {
   challengeStart(){
     this.service.challengeStart(this.challenge.id).subscribe(
       (result: any) => {
-        this.challengeUpdate();
+        this.challengeUpdate().subscribe();
       }
     );
   }
 
   challengeUpdate(){
-    this.service.getChallenge(this.challenge.id).subscribe(
-      (challenge: Challenge) => {
+    return this.service.getChallenge(this.challenge.id).pipe(
+      tap((challenge: Challenge) => {
         this.challenge = Challenge.fromJSON(challenge);
         this.updateStatus();
-      }
+      })
     )
   }
 
@@ -232,9 +232,12 @@ export class ChallengeComponent implements OnInit, OnDestroy {
           title: title,
           icon: icon,
         }).then((result) => {
-          this.challengeUpdate();
-          this.counter.reset();
-          this.counter.start();  
+          this.challengeUpdate().subscribe(
+            () => {
+              this.counter.reset();
+              this.counter.start();      
+            }
+          );
         })
       }
     )
@@ -267,10 +270,13 @@ export class ChallengeComponent implements OnInit, OnDestroy {
         title: title,
         icon: 'error',
       }).then((result) => {
-        this.challengeUpdate();
-        this.counter.reset();
-        this.counter.start();  
-      })
+        this.challengeUpdate().subscribe(
+          () => {
+            this.counter.reset();
+            this.counter.start();      
+          }
+        );
+    })
 
     }
   }
