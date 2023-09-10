@@ -1,6 +1,8 @@
-<div [@fadeInOnEnter] class="card contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
+<div [@fadeInOnEnter] class="card contests-colors contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
   <a [routerLink]="['/competitions', 'contests', 'contest', contest.id]">
-    <div *ngIf="contest.logo" class="card-bg" style="background-image: url('{{ contest.logo }}');"></div>
+    <div *ngIf="contest.logo" class="card-bg" style="background-image: url('{{ contest.logo }}');">
+    </div>
+
     <div class="card-header d-block">
       <div class="d-flex justify-content-between">
         <div class="category">

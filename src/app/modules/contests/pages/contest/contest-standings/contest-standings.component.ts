@@ -14,7 +14,7 @@ import { sortContestProblems } from '../../../utils/sort-contest-problems';
 @Component({
   selector: 'app-contest-standings',
   templateUrl: './contest-standings.component.html',
-  styleUrls: ['./contest-standings.component.scss'],
+  styleUrls: ['./contest-standings.component.scss', '../../../contests.colors.scss'],
   animations: [fadeInOnEnterAnimation()]
 })
 export class ContestStandingsComponent implements OnInit, OnDestroy {

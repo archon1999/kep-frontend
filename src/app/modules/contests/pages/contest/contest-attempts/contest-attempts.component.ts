@@ -17,7 +17,7 @@ const REFRESH_TIME = 30000;
 @Component({
   selector: 'app-contest-attempts',
   templateUrl: './contest-attempts.component.html',
-  styleUrls: ['./contest-attempts.component.scss'],
+  styleUrls: ['./contest-attempts.component.scss', '../../../contests.colors.scss'],
   animations: [
     fadeInLeftAnimation({ duration: 1500 }),
     fadeInRightAnimation({ duration: 1000 })

@@ -1,4 +1,4 @@
-<div class="content-wrapper p-0">
+<div class="content-wrapper p-0 contests-colors contests-color contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
   <div class="content-body">
     <!-- content-header component -->
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
@@ -13,89 +13,9 @@
                 <hr>
               </div>
               <div class="card-body">
-                <h2 class="text-center mb-2">
+                <h2 class="text-center mb-4">
                   {{ contestProblem.symbol }}. {{ problem.title }}
                 </h2>
-
-                <div class="row justify-content-center mt-1">
-                  <div class="col text-right problem-header">
-                    <small class="text-center pr-1">
-                      {{ 'Languages' | translate }}:
-                    </small>
-                  </div>
-
-                  <div class="col problem-header">
-                    <small class="text-center">
-                      <span *ngFor="let availableLanguage of problem.availableLanguages">
-                        <a
-                          (click)="langService.setLanguage(availableLanguage.lang)"
-                          class="badge-pill text-white badge badge-{{ availableLanguage.lang }}">
-                          {{ availableLanguage.langFull }}
-                        </a>
-                      </span>
-                    </small>
-                  </div>
-                </div>
-
-                <div *ngIf="currentUser" class="row justify-content-center mt-1">
-                  <div class="col text-right problem-header">
-                    <small class="text-center pr-1">
-                     {{ 'SelectedLanguage' | translate }}:
-                    </small>
-                  </div>
-
-                  <div class="col problem-header">
-                    <small class="text-center">
-                      <span class="badge badge-pill badge-{{ selectedLang }}">
-                        {{ selectedAvailableLang.langFull }}
-                      </span>      
-                    </small>
-                  </div>
-                </div>
-
-                <div class="row justify-content-center mt-1">
-                  <div class="col text-right problem-header">
-                    <span class="text-center pr-1 font-small-3">
-                      {{ 'TIME_LIMIT' | translate }}:
-                    </span>
-                  </div>
-
-                  <div class="col problem-header">
-                    <span class="badge-pill badge-info badge">
-                      {{ selectedAvailableLang.timeLimit || problem.timeLimit }} {{ 'MS' | translate }}
-                    </span>
-                  </div>
-                </div>
-
-                <div class="row justify-content-center mt-1">
-                  <div class="col text-right problem-header">
-                    <span class="text-center pr-1 font-small-3">
-                      {{ 'MEMORY_LIMIT' | translate }}:
-                    </span>
-                  </div>
-
-                  <div class="col problem-header">
-                    <span class="badge badge-pill badge-primary">
-                      {{ selectedAvailableLang.memoryLimit || problem.memoryLimit }} {{ 'MB' | translate }}
-                    </span>
-                  </div>
-                </div>
-
-                <div *ngIf="selectedAvailableLang.codeGolf && contest.type == 'CodeGolf'" class="row justify-content-center mt-1">
-                  <div class="col text-right problem-header">
-                    <small class="text-center pr-1">
-                      Code Golf:
-                    </small>
-                  </div>
-
-                  <div class="col problem-header">
-                    <small class="text-center">
-                      <span class="badge badge-primary badge-pill">
-                        {{ selectedAvailableLang.codeGolf }}
-                      </span>
-                    </small>
-                  </div>
-                </div>
 
                 <problem-body [problem]="problem"></problem-body>
               </div>
@@ -137,47 +57,115 @@
             {{ 'Upsolve' | translate }}
           </a>
 
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <i data-feather="info"></i>
+                Info
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div class="limits">
+                <div class="d-flex justify-content-between">
+                  <h5>
+                    <i data-feather="clock" class="text-info"></i>
+                    {{ 'TIME_LIMIT' | translate }}
+                  </h5>
+              
+                  <h5>
+                    <i data-feather="hard-drive" class="text-warning"></i>
+                    {{ 'MEMORY_LIMIT' | translate }}
+                  </h5>
+                </div>
+              
+                <div class="mt-50 d-flex justify-content-between">
+                  <span class="badge badge-info badge-glow">
+                    {{ selectedAvailableLang.timeLimit || problem.timeLimit }} {{ 'MS' | translate }}
+                  </span>
+              
+                  <span class="badge badge-warning badge-glow">
+                    {{ selectedAvailableLang.memoryLimit || problem.memoryLimit }} {{ 'MB' | translate }}
+                  </span>
+                </div>
+              </div>
+                            
+              <div class="languages mt-2">
+                <div class="d-flex mb-1">
+                  <h5>
+                    <i data-feather="code"></i>
+                    {{ 'Languages' | translate }}
+                  </h5>
+                </div>
+              
+                <button
+                  *ngFor="let availableLanguage of problem.availableLanguages"
+                  (click)="langService.setLanguage(availableLanguage.lang)"
+                  class="mr-50 mb-50 badge badge-{{ availableLanguage.lang }} badge-glow">
+                  {{ availableLanguage.langFull }}
+                </button>
+              </div>
+              
+              <div class="selected-language mt-2">
+                <div class="d-flex mb-1">
+                  <h5>
+                    <i data-feather="code"></i>
+                    {{ 'SelectedLanguage' | translate }}
+                  </h5>
+                </div>
+              
+                <span
+                  class="badge badge-{{ selectedLang }} badge-glow">
+                  {{ selectedAvailableLang.langFull }}
+                </span>
+              </div>
+              
+            </div>
+          </div>
+
           <div class="layout-spacing">
             <div class="card">
 
               <div class="">
-                <div class="table-responsive contest-problems">
+                <div class="table-responsive custom-table contest-problems">
                   <table class="table">
                     <tbody>
-                      <tr *ngFor="let contestProblem of contestProblems">
+                      <tr [ngClass]="{
+                        'bg-light': _contestProblem.symbol == contestProblem.symbol
+                      }" *ngFor="let _contestProblem of contestProblems">
                         <td [ngClass]="{
-                          'bg-success': contestProblem.isSolved,
-                          'bg-danger': !contestProblem.isSolved && contestProblem.isAttempted,
+                          'bg-success': _contestProblem.isSolved,
+                          'bg-danger': !_contestProblem.isSolved && _contestProblem.isAttempted,
                           'bg-darken-1': coreConfig.layout.skin == 'dark',
                           'bg-lighten-4': coreConfig.layout.skin != 'dark'
                         }">
-                          <a [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problem', contestProblem.symbol]">
-                            {{ contestProblem.symbol }}
+                          <a [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problem', _contestProblem.symbol]">
+                            {{ _contestProblem.symbol }}
                           </a>
                         </td>  
                         <td>
-                          <a [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problem', contestProblem.symbol]">
+                          <a [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problem', _contestProblem.symbol]">
                             <span class="text-primary">
                             </span>
-                            {{ contestProblem.problem.title }}                              
+                            {{ _contestProblem.problem.title }}                              
                             
                             <br>
                             <small>
                               <span class="text-success">
-                                {{ contestProblem.solved }}
+                                {{ _contestProblem.solved }}
                                 <i data-feather="user-check"></i>
                               </span>
     
                               <span class="pl-1 text-danger">
-                                {{ contestProblem.attemptUsersCount - contestProblem.solved }}
+                                {{ _contestProblem.attemptUsersCount - _contestProblem.solved }}
                                 <i data-feather="user-x"></i>
                               </span> 
                             </small>
                           </a>
                         </td>
-                        <td *ngIf="contestProblem.ball > 1 && contest.isAlready()">
+                        <td *ngIf="_contestProblem.ball > 1 && contest.isAlready()">
                           <span class="badge badge-success badge-glow">
-                            {{ contestProblem.getCurrentBall(contest) }}
+                            {{ _contestProblem.getCurrentBall(contest) }}
                           </span>
                         </td>
                       </tr>

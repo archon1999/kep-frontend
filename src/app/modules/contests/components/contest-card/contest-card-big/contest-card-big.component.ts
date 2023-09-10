@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'contest-card-big',
   templateUrl: './contest-card-big.component.html',
-  styleUrls: ['./contest-card-big.component.scss'],
+  styleUrls: ['./contest-card-big.component.scss', '../../../contests.colors.scss'],
   animations: [fadeInOnEnterAnimation({ duration: 1000 })]
 })
 export class ContestCardBigComponent implements OnInit {
