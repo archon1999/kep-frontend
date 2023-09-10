@@ -21,6 +21,13 @@
     position: absolute;
     top: 0;
     width: 100%;
+    text-align: center;
+    vertical-align: middle;
+
+    // img {
+    //   max-width: 100%;
+    //   max-height: 100%;
+    // }
   }
 
   
@@ -108,146 +115,3 @@
 
 }
 
-.card {
-  --text-color: #fff;
-  --bg-gradient: linear-gradient(42.32deg, #7367f0, #978EF8);
-  --bg: #7367f0;
-  --box-shadow: 0px 0px 10px #7367f0;
-
-  &.contest-254 {
-    --bg-gradient: linear-gradient(to right, #38CCBC, #07e4cf);
-    --bg: #2db3a5;
-    --box-shadow: 0 0 5px #32b9ac;
-  }
-
-  &.contest-251, &.contest-250 {
-    --bg-gradient: linear-gradient(to right, #3E9773, #56977D);
-    --bg: #56977D;
-    --box-shadow: 0 0 5px #3E9773;
-  }
-
-  &[class*="One"][class*="Line"] {
-    --bg: #d54f56;
-    --box-shadow: 0 0 5px #d54f56;
-    --bg-gradient: linear-gradient(-45deg, #b2010ac4, 50%, rgba(190, 18, 27, 0.719));
-  }
-
-  &[class*="Hack"][class*="it"] {
-    --bg: #524180;
-    --box-shadow: 0 0 5px #524180;
-    --bg-gradient: linear-gradient(-45deg, #645294, 50%, #453572);
-
-    .card-bg {
-      zoom: 70% !important;
-    }
-  }
-
-  &[class*="SQL"]{
-    --bg: #e19327;
-    --box-shadow: 0 0 5px #e39425;
-    --bg-gradient: linear-gradient(-45deg, rgba(234, 134, 71, 0.849), 50%, #ffad3bec);
-  }
-
-  &[class*="NASM"]{
-    --bg: #0c4c90;
-    --box-shadow: 0 0 5px #0c4c90;
-    --bg-gradient: linear-gradient(-45deg, #0c4c90c8, #0c4c90c2);
-  }
-
-  &.contest-253 {
-    --bg-gradient: linear-gradient(141deg, #00ced5c5, 50%, #02abaf);
-    --bg: #36b3e9;
-    --box-shadow: 0px 0px 5px #36b3e9;
-  }
-
-  &.contest-type-LessCode {
-    --bg-gradient: linear-gradient(141deg, #dee7e9b9, 50%, rgba(222, 231, 233, 0.74)e9);
-    --bg: #b0b5b6c4;
-    --box-shadow: 0px 0px 5px #b0b5b6c4;
-    --text-color: #000;
-  }
-
-  &.contest-297 {
-    --text-color: #fff;
-  }
-  
-  &[class*="Uzinfocom"]{
-    --bg-gradient: linear-gradient(45deg, #005ea2bb, rgba(24, 111, 182, 0.623));
-    --bg: #186fb6d0;
-    --box-shadow: 0px 0px 5px #186fb6d3;
-  }
-  
-  &[class*="contest-type-MultiL"]{
-    --bg-gradient: linear-gradient(45deg, #010c80be, #010c8094);
-    --bg: #081386b0;
-    --box-shadow: 0px 0px 5px #010c80a6;
-
-    .card-bg {
-      zoom: 50% !important;
-    }
-  }
-
-  &[class*="contest-type-CodeGolf"]{
-    --bg-gradient: linear-gradient(45deg, #4d7e3ea5, #4d7e3e98);
-    --bg: #4d7e3ede;
-    --box-shadow: 0px 0px 5px #4d7e3ed4;
-
-    .card-bg {
-      zoom: 50% !important;
-    }
-  }
-}
-
-::ng-deep .dark-layout .card {
-  --bg-gradient: linear-gradient(42.32deg, #2b2665, #393575, #463caa);
-
-  &.contest-254 {
-    --bg: #037166;
-    --bg-gradient: linear-gradient(to right, #024b44, #037166);
-  }
-
-  &.contest-251, &.contest-250 {
-    --bg-gradient: linear-gradient(to right, #024b44, #024b44);
-  }
-
-  &.contest-253 {
-    --bg-gradient: linear-gradient(141deg, #064d52, 50%, #02989b);
-  }
-
-  &[class*="SQL"]{
-    --bg-gradient: linear-gradient(45deg, #936028, 60%, #7e5420);
-  }
-
-  &[class*="NASM"]{
-    --bg: #0c4c90;
-    --box-shadow: 0 0 5px #0c4c90;
-    --bg-gradient: linear-gradient(-45deg, #10559e, #0c4c9094);
-  }
-
-  &.contest-type-LessCode {    
-    --bg-gradient: linear-gradient(141deg, #4d5051, 50%, #4d5051);
-    --bg: #b0b5b6;
-    --box-shadow: 0px 0px 5px #b0b5b6;
-    --text-color: #fff;
-  }
-
-  &[class*="Hack"][class*="it"] {
-    --bg-gradient: linear-gradient(-45deg, #524180c0, 50%, #524180da);
-  }
-
-  &[class*="Uzinfocom"]{
-    --bg-gradient: linear-gradient(45deg, #042c4bde, #005ea2c9);
-    --bg: #1870b6;
-    --box-shadow: 0px 0px 5px #1870b6;
-  }
-
-  &[class*="contest-type-MultiL"]{
-    --bg-gradient: linear-gradient(45deg, #2a3186be, #19217488);
-    --bg: #010c80;
-    --box-shadow: 0px 0px 5px #010c80;
-
-    .card-bg {
-      zoom: 50% !important;
-    }
-  }
-}
