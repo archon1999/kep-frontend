@@ -22,7 +22,7 @@ import { AttemptLangs } from 'app/modules/problems/constants';
 @Component({
   selector: 'app-contest-problem',
   templateUrl: './contest-problem.component.html',
-  styleUrls: ['./contest-problem.component.scss'],
+  styleUrls: ['./contest-problem.component.scss', '../../../contests.colors.scss'],
   animations: [
     fadeInLeftOnEnterAnimation({ duration: 1500 }),
     fadeInRightOnEnterAnimation({ duration: 1000 })

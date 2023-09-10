@@ -251,9 +251,9 @@ export class ContestProblemInfo {
             if(this.solved()){
                 let badgeClass: string;
                 if(this.theBest){
-                    badgeClass = 'badge bg-success bg-darken-1 badge-glow';
+                    badgeClass = 'badge problem-points the-best';
                 } else {
-                    badgeClass = 'badge badge-light-success';
+                    badgeClass = 'badge problem-points';
                 }
                 html = `<span class="${badgeClass}">`;
                 html += '+';
@@ -283,9 +283,9 @@ export class ContestProblemInfo {
             if(this.solved()){
                 let badgeClass: string;
                 if(this.theBest){
-                    badgeClass = 'badge bg-success bg-darken-1 badge-glow';
+                    badgeClass = 'badge problem-points the-best';
                 } else {
-                    badgeClass = 'badge badge-light-success';
+                    badgeClass = 'badge problem-points';
                 }
                 html += `<span class="${badgeClass}">`;
                 html += '<b class="text-dark">';
@@ -357,9 +357,9 @@ export class ContestProblemInfo {
             if(this.solved()){
                 let badgeClass: string;
                 if(this.theBest){
-                    badgeClass = 'badge badge-blue badge-glow';
+                    badgeClass = 'badge problem-points the-best';
                 } else {
-                    badgeClass = 'badge badge-light-blue';
+                    badgeClass = 'badge problem-points';
                 }
                 html += `<span class="${badgeClass}">`;
                 html += '<span class="multi-l">'
@@ -375,9 +375,9 @@ export class ContestProblemInfo {
             if(this.solved()){
                 let badgeClass: string;
                 if(this.theBest){
-                    badgeClass = 'badge badge-primary badge-glow';
+                    badgeClass = 'badge problem-points the-best';
                 } else {
-                    badgeClass = 'badge badge-light-primary';
+                    badgeClass = 'badge problem-points';
                 }
                 html += `<span class="${badgeClass}">`;
                 html += '<span class="multi-l">'

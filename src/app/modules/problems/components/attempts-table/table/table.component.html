@@ -20,7 +20,7 @@
         [@fadeInOnEnter]  
         [ngClass]="{'bg-light-primary': attempt?.user?.username == currentUser?.username}">
         <td>
-          <a  href="javascript:;" (click)="clicked.emit(attempt.id)" *ngIf="attempt.canView; else other;">
+          <a href="javascript:;" (click)="clicked.emit(attempt.id)" *ngIf="attempt.canView; else other;">
             <u>
               {{ attempt.id }}
             </u>
