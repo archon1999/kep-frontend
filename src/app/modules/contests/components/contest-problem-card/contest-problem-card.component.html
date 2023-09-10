@@ -1,0 +1,60 @@
+<a (mouseleave)="removeProblem()" [routerLink]="['..', 'problem', contestProblem.symbol]">
+  <div
+    class="card contests-colors contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}"
+    [ngClass]="{
+      'border-success': contestProblem.isSolved,
+      'border-danger': !contestProblem.isSolved && contestProblem.isAttempted
+    }">
+    <div *ngIf="contest.logo" class="card-bg">
+      <img [src]="contest.logo" alt="">
+    </div>
+    
+    <div *ngIf="problem" class="card-header">
+      <div class="card-title text-white mb-2">
+        {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
+      </div>
+      <div class="text-white">
+        <mathjax [content]="problem.body"></mathjax>
+      </div>
+    </div>
+
+    <div *ngIf="!problem">
+      <div class="card-header justify-content-start">
+        <span *ngIf="contestProblem.isSolved" class="text-success">
+          <i data-feather="check-circle"></i>
+        </span>
+        <span *ngIf="!contestProblem.isSolved && contestProblem.isAttempted" class="text-danger">
+          <i data-feather="x-circle"></i>
+        </span>
+
+        <span class="text-white ml-50" (mouseenter)="onProblemFocus()">
+          {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
+          <span *ngIf="contestProblem.ball > 1">
+            ({{ contestProblem.ball }})
+          </span>
+        </span>
+      </div>
+
+      <div class="card-body">
+        <span class="badge badge-{{ availableLanguage.lang }} badge-pill mr-25 mb-25"
+          *ngFor="let availableLanguage of contestProblem.problem.availableLanguages">
+          {{ availableLanguage.langFull }}
+        </span>
+      </div>
+
+      <div class="card-footer">
+        <span class="text-white">
+          {{ contestProblem.solved }}
+          <i data-feather="user-check"></i>
+        </span>
+
+        <span class="text-white pl-1">
+          {{ contestProblem.attemptUsersCount - contestProblem.solved }}
+          <i data-feather="user-x"></i>
+        </span>
+      </div>
+    </div>
+
+  </div>
+
+</a>

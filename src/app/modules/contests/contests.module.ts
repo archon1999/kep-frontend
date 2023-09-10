@@ -40,6 +40,7 @@ import { ContestCardModule } from './components/contest-card/contest-card.module
 import { ContestantViewModule } from '../../shared/components/contestant-view/contestant-view.module';
 import { AttemptsTableModule } from '../problems/components/attempts-table/attempts-table.module';
 import { PaginationModule } from 'app/shared/components/pagination/pagination.module';
+import { ContestProblemCardComponent } from './components/contest-problem-card/contest-problem-card.component';
 
 
 const routes: Routes = [
@@ -173,6 +174,7 @@ const routes: Routes = [
     ContestProblemComponent,
     ContestQuestionsComponent,
     ContestProblemsComponent,
+    ContestProblemCardComponent,
   ],
   imports: [
     CommonModule,

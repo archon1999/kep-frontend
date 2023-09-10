@@ -1,4 +1,4 @@
-<div class="content-wrapper p-0">
+<div class="content-wrapper p-0 contests-colors contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
   <div class="content-body">
     <!-- content-header component -->
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
@@ -16,7 +16,7 @@
               <div class="table-responsive">
                 <table class="table">
                   <thead>
-                    <tr class="bg-gradient-primary">
+                    <tr>
                       <th class="text-center">#</th>
                       <th>{{ 'CONTESTS.CONTESTANT' | translate }}</th>
                       <th class="text-center"><i [data-feather]="'rating' | iconName"></i></th>

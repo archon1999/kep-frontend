@@ -8,7 +8,7 @@ import { Contest } from '../../../contests.models';
 @Component({
   selector: 'contest-card-countdown',
   templateUrl: './contest-card-countdown.component.html',
-  styleUrls: ['./contest-card-countdown.component.scss']
+  styleUrls: ['./contest-card-countdown.component.scss', '../../../contests.colors.scss']
 })
 export class ContestCardCountdownComponent implements OnInit {
 

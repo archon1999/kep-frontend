@@ -16,7 +16,7 @@ import { ContestsService } from '../../../contests.service';
 @Component({
   selector: 'app-contest-problems',
   templateUrl: './contest-problems.component.html',
-  styleUrls: ['./contest-problems.component.scss'],
+  styleUrls: ['./contest-problems.component.scss', '../../../contests.colors.scss'],
   animations: [
     fadeInLeftAnimation({ duration: 1000 }),
     fadeInRightAnimation({ duration: 1000 })
@@ -134,20 +134,6 @@ export class ContestProblemsComponent implements OnInit, OnDestroy {
         return 1;
       }
     });
-  }
-
-  onProblemFocus(symbol: string){
-    this.service.getContestProblem(this.contest.id, symbol).subscribe((result: any) => {
-      let problem = result.problem;
-      if(problem.id != 1637){
-        this.problems.set(symbol, problem);
-        this.problemShow.set(symbol, true);
-      }
-    });
-  }
-
-  removeProblem(symbol: string){
-    this.problemShow.set(symbol, false);
   }
 
   ngOnDestroy(): void {

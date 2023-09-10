@@ -5,7 +5,7 @@ import { Contest } from '../../../contests.models';
 @Component({
   selector: 'contest-standings-popover',
   templateUrl: './contest-standings-popover.component.html',
-  styleUrls: ['./contest-standings-popover.component.scss']
+  styleUrls: ['./contest-standings-popover.component.scss', '../../../contests.colors.scss']
 })
 export class ContestStandingsPopoverComponent implements OnInit {
 
