@@ -13,40 +13,39 @@ export class KepcoinSpendSwalComponent implements OnInit {
 
   @Input() value: number;
   @Input() purchaseUrl: string;
-  @Input() customContent: boolean = false;
-  @Input() customClass: string = 'mt-2';
-  @Output() success = new EventEmitter<void>();
+  @Input() customContent = false;
+  @Input() customClass = 'mt-2';
+  @Input() requestBody = {};
+  @Output() success = new EventEmitter<any>();
 
   constructor(
     public api: ApiService,
     public authService: AuthenticationService,
     public translateService: TranslateService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
   }
 
   ConfirmTextOpen() {
-    let translations = this.translateService.translations[this.translateService.currentLang];
-    let api = this.api;
-    let purchaseUrl = this.purchaseUrl;
-    let success = this.success;
-    if(this.authService.currentUserValue.kepcoin < this.value){
+    const translations = this.translateService.translations[this.translateService.currentLang];
+    if (this.authService.currentUserValue.kepcoin < this.value) {
       Swal.fire({
         icon: 'error',
         title: translations['NotEnoughKepcoin'],
-        html: `<img height="25" src="assets/images/icons/kepcoin.webp"> ${this.value}`,
+        html: `<img height="25" src="assets/images/icons/kepcoin.webp"> ${ this.value }`,
         customClass: {
           confirmButton: 'btn btn-success'
         }
       });
       return;
     }
-  
+
     Swal.fire({
       title: translations['WantToBuy'],
-      html: `<img height="25" src="assets/images/icons/kepcoin.webp"> ${this.value}`,
-      text: "You won't be able to revert this!",
+      html: `<img height="25" src="assets/images/icons/kepcoin.webp"> ${ this.value }`,
+      text: 'You won\'t be able to revert this!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#7367F0',
@@ -57,19 +56,20 @@ export class KepcoinSpendSwalComponent implements OnInit {
         confirmButton: 'btn btn-relief-primary',
         cancelButton: 'btn btn-relief-danger ml-1'
       }
-    }).then(function (result) {
-      if(result.value){
-        api.post(purchaseUrl).subscribe((result: any) => {
-          if(result?.success){
+    }).then((result) => {
+      if (result.value) {
+        this.api.post(this.purchaseUrl, this.requestBody).subscribe((result: any) => {
+          if (result?.success) {
             Swal.fire({
               icon: 'success',
               title: translations['Successfully'] + '!',
               customClass: {
                 confirmButton: 'btn btn-success'
               }
-            }).then((result) => {
-              success.emit();
-            });  
+            }).then(() => {
+              console.log(result);
+              this.success.emit(result);
+            });
           } else {
             Swal.fire({
               icon: 'error',
@@ -77,7 +77,7 @@ export class KepcoinSpendSwalComponent implements OnInit {
               customClass: {
                 confirmButton: 'btn btn-success'
               }
-            });  
+            });
           }
         }, () => {
           Swal.fire({
@@ -87,7 +87,7 @@ export class KepcoinSpendSwalComponent implements OnInit {
               confirmButton: 'btn btn-success'
             }
           });
-        })          
+        });
       }
     });
   }
