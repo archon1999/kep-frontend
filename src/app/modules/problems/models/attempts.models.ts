@@ -1,6 +1,6 @@
-import { ContestProblem } from "../../contests/contests.models";
-import { User } from "../../users/users.models";
-import { getEditorLang } from "../utils/editor-lang";
+import { ContestProblem } from '../../contests/contests.models';
+import { User } from '../../users/users.models';
+import { getEditorLang } from '../utils';
 
 
 export class Attempt {
@@ -32,19 +32,6 @@ export class Attempt {
 
   getEditorLang() {
     return getEditorLang(this.lang);
-  }
-
-  getContestTime(startTime: Date | string) {
-    startTime = new Date(startTime);
-    let seconds = Math.trunc((this.created.valueOf() - startTime.valueOf()) / 1000);
-    let minutes = Math.trunc(seconds / 60);
-    let hours = Math.trunc(minutes / 60);
-    minutes %= 60;
-    seconds %= 60;
-    let time = (hours + '').padStart(2, '0');
-    time += ':' + (minutes + '').padStart(2, '0');
-    time += ':' + (seconds + '').padStart(2, '0');
-    return time;
   }
 
   static fromJSON(data: any) {
