@@ -470,6 +470,7 @@ export const locale = {
       SAMPLE_TEST: 'Тест',
       ANSWER: 'Ответ',
       TEST: 'Проверка',
+      ANSWER_FOR_INPUT: 'Ответ на тест',
     },
     COURSES: {
       COURSES: 'Курсы',

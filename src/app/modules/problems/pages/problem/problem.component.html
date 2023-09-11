@@ -71,7 +71,8 @@
         [uniqueName]="'problem-' + problem.id"
         [sampleTests]="problem.sampleTests"
         [submitUrl]="'problems/' + problem.id + '/submit/'"
-        [codeTemplate]="problem.codeTemplate"
+        [problem]="problem"
+        [answerForInputEnabled]="problem.hasSolution"
         [availableLanguages]="problem.availableLanguages"
         (submittedEvent)="submitEvent.next();activeId=2;"></code-editor-modal>
     </section>
