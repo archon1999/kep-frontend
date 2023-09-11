@@ -74,7 +74,8 @@
                       <table-ordering
                         [value]="ordering"
                         [justifyContent]="'start'"
-                        [ordering]="'username'"
+                        [ordering]="'id'"
+                        [reverse]="true"
                         (change)="changeOrdering($event)">
                         <i class="mr-25" data-feather="user"></i>
                         {{ 'User' | translate }}
