@@ -72,7 +72,7 @@
         [sampleTests]="problem.sampleTests"
         [submitUrl]="'problems/' + problem.id + '/submit/'"
         [problem]="problem"
-        [answerForInputEnabled]="problem.hasSolution"
+        [answerForInputEnabled]="problem.hasSolution && problem.hasCheckInput"
         [availableLanguages]="problem.availableLanguages"
         (submittedEvent)="submitEvent.next();activeId=2;"></code-editor-modal>
     </section>
