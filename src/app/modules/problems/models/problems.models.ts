@@ -23,6 +23,7 @@ export interface Problem {
   hasChecker: boolean;
   canViewSolution: boolean;
   hasSolution: boolean;
+  hasCheckInput: boolean;
   tags: Array<Tag>;
   topics: Array<Topic>;
   timeLimit: number;
