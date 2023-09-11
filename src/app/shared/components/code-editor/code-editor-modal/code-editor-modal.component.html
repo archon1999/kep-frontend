@@ -65,6 +65,7 @@
             [(ngModel)]="editor.input"
           ></textarea>
         </div>
+
         <div class="form-group mt-1">
           <label>{{ 'CODE_EDITOR.OUTPUT' | translate }}:</label>
           <textarea
@@ -75,6 +76,7 @@
             [(ngModel)]="editor.output"
           ></textarea>
         </div>
+
         <div class="form-group mt-1">
           <label>{{ 'CODE_EDITOR.ANSWER' | translate }}:</label>
           <textarea
@@ -89,29 +91,28 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button *ngIf="sampleTests.length > 0 && 0" type="button" class="btn btn-glow btn-gradient-dark" (click)="test()">
-      <kepcoin-spend-swal
-        [value]="50"
-        [customContent]="true"
-      >
-        <span *ngIf="editor.isTesting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        <span *ngIf="!editor.isTesting">
-          <i data-feather="check"></i>
-        </span>
-        {{ 'CODE_EDITOR.TEST' | translate }}
-      </kepcoin-spend-swal>
+    <button *ngIf="editor.lang != 'text'" type="button" class="btn btn-glow btn-dark bg-dark" (click)="run()">
+      <span *ngIf="editor.isRunning" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      <span *ngIf="!editor.isRunning"><i data-feather="terminal"></i></span>
+      {{ 'CODE_EDITOR.RUN' | translate }}
     </button>
-    <div class="run-button">
-      <button *ngIf="editor.lang != 'text'" type="button" class="btn btn-glow btn-gradient-dark" (click)="run()">
-        <span *ngIf="editor.isRunning" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        <span *ngIf="!editor.isRunning">
-          <i data-feather="terminal"></i>
-        </span>
-        {{ 'CODE_EDITOR.RUN' | translate }}
-      </button>
-    </div>
 
-    <button *ngIf="submitUrl" type="button" class="btn btn-glow btn-relief-dark" (click)="submit()">
+    <kepcoin-spend-swal
+      *ngIf="answerForInputEnabled"
+      [value]="1"
+      [customContent]="true"
+      [purchaseUrl]="'problems/' + problem.id + '/answer-for-input/'"
+      [requestBody]="{input_data: editor.input}"
+      (success)="answerForInput($event)"
+    >
+      <button type="button" class="btn btn-glow btn-dark bg-dark">
+        <span *ngIf="editor.isAnswerForInput" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        <span *ngIf="!editor.isAnswerForInput"><i data-feather="check-square"></i></span>
+        {{ 'CODE_EDITOR.ANSWER_FOR_INPUT' | translate }}
+      </button>
+    </kepcoin-spend-swal>
+
+    <button *ngIf="submitUrl" type="button" class="btn btn-glow btn-dark bg-dark" (click)="submit()">
       <i data-feather="send"></i>
       {{ 'CODE_EDITOR.SUBMIT' | translate }}
     </button>
