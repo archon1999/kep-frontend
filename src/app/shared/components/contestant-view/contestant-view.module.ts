@@ -4,6 +4,7 @@ import { ContestantViewComponent } from './contestant-view.component';
 import { UserPopoverModule } from '../user-popover/user-popover.module';
 import { ContestsRatingImageComponent } from './contests-rating-image/contests-rating-image.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { ProblemsPipesModule } from '../../../modules/problems/pipes/problems-pipes.module';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     CommonModule,
     UserPopoverModule,
     NgbTooltipModule,
+    ProblemsPipesModule,
   ],
   exports: [
     ContestantViewComponent,

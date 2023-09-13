@@ -43,6 +43,7 @@ import { CourseGuard } from './courses.guard';
 import { CourseDictionaryResolver, CourseLessonResolver, CourseLessonsResolver, CourseResolver, CoursesResolver } from './courses.resolver';
 import { SidebarComponent as CoursesSidebarComponent } from './sidebar/sidebar.component';
 import { ReviewCardComponent } from './course/course-reviews/review-card/review-card.component';
+import { ProblemsPipesModule } from '../problems/pipes/problems-pipes.module';
 
 const routes: Routes = [
   { 
@@ -149,6 +150,7 @@ const routes: Routes = [
     NgxUsefulSwiperModule,
     QuillModule,
     CountUpModule,
+    ProblemsPipesModule,
   ],
   providers: [
     CourseGuard,

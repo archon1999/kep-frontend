@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ShepherdService } from 'angular-shepherd';
@@ -11,6 +11,10 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Problem } from '../../models/problems.models';
 import { ProblemsService } from '../../services/problems.service';
+import { Location } from '@angular/common';
+import { CoreConfigService } from '../../../../../@core/services/config.service';
+import { ApiService } from '../../../../shared/services/api.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-problem',
@@ -21,7 +25,7 @@ import { ProblemsService } from '../../services/problems.service';
     fadeInRightOnEnterAnimation({ duration: 1000 }),
   ],
 })
-export class ProblemComponent implements OnInit, OnDestroy {
+export class ProblemComponent implements OnInit, OnDestroy, AfterViewInit {
   public contentHeader: ContentHeader;
 
   public problem: Problem;
@@ -34,6 +38,13 @@ export class ProblemComponent implements OnInit, OnDestroy {
 
   public submitEvent = new Subject();
 
+  public checkInput = '';
+  public editorOptions = {
+    theme: 'vs-light',
+    language: 'python',
+  };
+
+
   private _unsubscribeAll = new Subject();
 
   constructor(
@@ -43,19 +54,44 @@ export class ProblemComponent implements OnInit, OnDestroy {
     public titleService: TitleService,
     public translateService: TranslateService,
     private shepherdService: ShepherdService,
-  ) { }
+    public router: Router,
+    public location: Location,
+    public coreConfigService: CoreConfigService,
+    public api: ApiService,
+    public toastr: ToastrService,
+  ) {
+    if (this.router.url.endsWith('hacks')) {
+      this.activeId = 3;
+    } else if (this.router.url.endsWith('attempts')) {
+      this.activeId = 2;
+    }
+  }
 
   ngOnInit(): void {
+    this.coreConfigService.getConfig().subscribe((config: any) => {
+      if (config.layout.skin === 'dark') {
+        this.editorOptions = {
+          theme: 'vs-dark',
+          language: 'python',
+        };
+      } else {
+        this.editorOptions = {
+          theme: 'vs-light',
+          language: 'python',
+        };
+      }
+    });
+
     this.route.queryParams.subscribe(
       (params: any) => {
-        if(params['study-plan']){
+        if (params['study-plan']) {
           this.studyPlanId = params['study-plan'];
         }
-        if(params['contest']){
+        if (params['contest']) {
           this.contestId = params['contest'];
         }
       }
-    )
+    );
 
     this.route.data.subscribe(({ problem }) => {
       this.problem = problem;
@@ -64,25 +100,25 @@ export class ProblemComponent implements OnInit, OnDestroy {
         problemId: this.problem.id
       });
       this.loadContentHeader();
-    })
+    });
 
     this.authService.currentUser
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((user: any) => {
-        if (user != this.currentUser) {
-          this.service.getProblem(this.problem.id).subscribe((problem: any) => this.problem = problem)
+        if (user !== this.currentUser) {
+          this.service.getProblem(this.problem.id).subscribe((problem: any) => this.problem = problem);
         }
         this.currentUser = user;
       });
   }
 
   ngAfterViewInit() {
-    let backBtnClass = 'btn btn-sm btn-outline-primary';
-    let nextBtnClass = 'btn btn-sm btn-primary btn-next';
-    
-    let translations = this.translateService.translations[this.translateService.currentLang];
+    const backBtnClass = 'btn btn-sm btn-outline-primary';
+    const nextBtnClass = 'btn btn-sm btn-primary btn-next';
 
-    let tourSteps = [
+    const translations = this.translateService.translations[this.translateService.currentLang];
+
+    const tourSteps = [
       {
         title: translations['ProblemTourSteps'][0].title,
         text: translations['ProblemTourSteps'][0].text,
@@ -135,7 +171,7 @@ export class ProblemComponent implements OnInit, OnDestroy {
     this.shepherdService.addSteps(tourSteps);
   }
 
-  loadContentHeader(){
+  loadContentHeader() {
     this.contentHeader = {
       headerTitle: this.problem.title,
       actionButton: true,
@@ -148,7 +184,7 @@ export class ProblemComponent implements OnInit, OnDestroy {
             link: '/practice/problems',
           },
           {
-            name: this.problem.id+"",
+            name: this.problem.id + '',
             isLink: false,
           },
         ]
@@ -156,8 +192,28 @@ export class ProblemComponent implements OnInit, OnDestroy {
     };
   }
 
-  startTour(){
+  startTour() {
     this.shepherdService.start();
+  }
+
+  activeIdChange(index: number) {
+    if (index === 1) {
+      this.location.go(`/practice/problems/problem/${this.problem.id}`);
+    } else if (index === 2) {
+      this.location.go(`/practice/problems/problem/${this.problem.id}/attempts`);
+    } else if (index === 3) {
+      this.location.go(`/practice/problems/problem/${this.problem.id}/hacks`);
+    }
+  }
+
+  saveCheckInput() {
+    this.api.post(`problems/${this.problem.id}/save-check-input`).subscribe(
+      () => {
+        this.toastr.success('', 'Success');
+      }, () => {
+        this.toastr.error('', 'Error');
+      }
+    );
   }
 
   ngOnDestroy(): void {
