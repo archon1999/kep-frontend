@@ -11,5 +11,5 @@
     canCreateProblems: boolean;
     canChangeProblemSimilar: boolean;
     canChangeProblemTags: boolean;
-  }
+  };
 }

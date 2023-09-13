@@ -145,7 +145,7 @@ export const locale = {
     UsersSolved: 'Solved',
     UsersUnsolved: 'Unsolved',
     Languages: 'Languages',
-    Attempt: 'Attempts',
+    Attempt: 'Attempt',
     SelectedLanguage: 'Selected language',
     User: 'User',
     View: 'View',
