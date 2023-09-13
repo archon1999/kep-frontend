@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Difficulties } from 'app/modules/problems/constants';
+import { Difficulties } from '../constants';
 
-let colors = new Map<Number, string>()
+const colors = new Map<Number, string>()
   .set(Difficulties.Beginner, 'success')
   .set(Difficulties.Basic, 'info')
   .set(Difficulties.Normal, 'blue')

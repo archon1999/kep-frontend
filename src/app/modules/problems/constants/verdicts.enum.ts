@@ -18,4 +18,6 @@ export enum Verdicts {
   ObjectNotFound,
   FakeAccepted,
   PartialSolution,
+  NotAvailableLanguage,
+  Hacked,
 }

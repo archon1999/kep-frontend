@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CoreConfigService } from '@core/services/config.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
@@ -11,7 +11,7 @@ import { Verdicts } from '../../constants';
 import { ProblemsService } from '../../services/problems.service';
 import { Contest } from 'app/modules/contests/contests.models';
 import { SoundsService } from '../../../../shared/services/sounds/sounds.service';
-import { SuccessSoundEnum } from 'app/shared/services/sounds/success-sound.enum';
+import { FormControl, FormGroup } from '@angular/forms';
 
 const LANG_CHANGE_EVENT = 'lang-change';
 const ATTEMPT_ADD_EVENT = 'attempt-add';
@@ -22,13 +22,16 @@ const ATTEMPT_DELETE_EVENT = 'attempt-delete';
   templateUrl: './attempts-table.component.html',
   styleUrls: ['./attempts-table.component.scss'],
 })
-export class AttemptsTableComponent implements OnInit {
+export class AttemptsTableComponent implements OnInit, OnDestroy {
   @Input() hideSourceCodeSize = false;
   @Input() contest: Contest;
 
   private _attempts: Array<Attempt> = [];
   @Input()
-  get attempts(): Array<Attempt> { return this._attempts; }
+  get attempts(): Array<Attempt> {
+    return this._attempts;
+  }
+
   set attempts(attempts: Array<Attempt>) {
     this.wsService.send(LANG_CHANGE_EVENT, this.translationService.currentLang);
     this._attempts = attempts.map(attempt => Attempt.fromJSON(attempt));
@@ -42,6 +45,12 @@ export class AttemptsTableComponent implements OnInit {
     theme: 'vs-light',
     readOnly: true,
   };
+
+  public hackForm = new FormGroup({
+    input: new FormControl(''),
+    generatorSource: new FormControl(''),
+    generatorLang: new FormControl(''),
+  });
 
   public successSoundName = this.soundsService.getSuccessSound();
 
@@ -59,7 +68,8 @@ export class AttemptsTableComponent implements OnInit {
     public translationService: TranslateService,
     public service: ProblemsService,
     public soundsService: SoundsService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.authService.currentUser.subscribe(
@@ -77,9 +87,9 @@ export class AttemptsTableComponent implements OnInit {
     });
 
     this.wsService.on<WSAttempt>('attempt-update').subscribe((wsAttempt: WSAttempt) => {
-      for (var i = 0; i < this.attempts.length; i++) {
+      for (let i = 0; i < this.attempts.length; i++) {
         if (this.attempts[i].id == wsAttempt.id) {
-          var attempt = this.attempts[i];
+          let attempt = this.attempts[i];
           this.attempts[i] = Attempt.fromWSAttempt(attempt, wsAttempt);
           attempt = this.attempts[i];
           if (wsAttempt.verdict == Verdicts.Accepted) {
@@ -106,9 +116,16 @@ export class AttemptsTableComponent implements OnInit {
         this.modalService.open(this.modalRef, {
           centered: true,
           size: 'xl'
-        })
+        });
       }
-    )
+    );
+  }
+
+  hackSubmit(attemptId: number | string) {
+    this.service.hackSubmit(attemptId, this.hackForm.value).subscribe(
+      () => {
+      }
+    );
   }
 
   ngOnDestroy() {

@@ -58,12 +58,20 @@ import { AttemptsTableModule } from './components/attempts-table/attempts-table.
 import { StudyPlanCardModule } from './components/study-plan-card/study-plan-card.module';
 import { PaginationModule } from 'app/shared/components/pagination/pagination.module';
 import { ProblemSidebarInfoComponent } from './pages/problem/problem-sidebar/problem-sidebar-info/problem-sidebar-info.component';
-import { ProblemSidebarStatisticsComponent } from './pages/problem/problem-sidebar/problem-sidebar-statistics/problem-sidebar-statistics.component';
-import { ProblemSidebarTopAttemptsComponent } from './pages/problem/problem-sidebar/problem-sidebar-top-attempts/problem-sidebar-top-attempts.component';
+import {
+  ProblemSidebarStatisticsComponent
+} from './pages/problem/problem-sidebar/problem-sidebar-statistics/problem-sidebar-statistics.component';
+import {
+  ProblemSidebarTopAttemptsComponent
+} from './pages/problem/problem-sidebar/problem-sidebar-top-attempts/problem-sidebar-top-attempts.component';
 import { TableOrderingModule } from 'app/shared/components/table-ordering/table-ordering.module';
+import { HackAttemptsComponent } from './pages/hack-attempts/hack-attempts.component';
+import { HackAttemptsTableModule } from './components/hack-attempts-table/hack-attempts-table.module';
+import { ProblemsPipesModule } from './pipes/problems-pipes.module';
+import { ProblemHacksComponent } from './pages/problem/problem-hacks/problem-hacks.component';
 
 const routes: Routes = [
-  { 
+  {
     path: '',
     component: ProblemsComponent,
     title: 'Problems.Problems',
@@ -72,7 +80,7 @@ const routes: Routes = [
       studyPlans: StudyPlansResolver,
     }
   },
-  { 
+  {
     path: 'study-plan/:id',
     component: StudyPlanComponent,
     data: {
@@ -82,7 +90,7 @@ const routes: Routes = [
       studyPlan: StudyPlanResolver,
     }
   },
-  { 
+  {
     path: 'problem/:id',
     component: ProblemComponent,
     data: {
@@ -93,7 +101,29 @@ const routes: Routes = [
     },
     canActivate: [ProblemGuard],
   },
-  { 
+  {
+    path: 'problem/:id/attempts',
+    component: ProblemComponent,
+    data: {
+      title: 'Problems.Problem',
+    },
+    resolve: {
+      problem: ProblemResolver,
+    },
+    canActivate: [ProblemGuard],
+  },
+  {
+    path: 'problem/:id/hacks',
+    component: ProblemComponent,
+    data: {
+      title: 'Problems.Problem',
+    },
+    resolve: {
+      problem: ProblemResolver,
+    },
+    canActivate: [ProblemGuard],
+  },
+  {
     path: 'problem/:id/og-image',
     component: ProblemOgImageComponent,
     resolve: {
@@ -117,21 +147,26 @@ const routes: Routes = [
     path: 'profile',
     component: ProfileComponent,
     title: 'Problems.Profile',
-    data: { animation: 'profile'},
+    data: { animation: 'profile' },
     canActivate: [AuthGuard],
   },
-  { 
+  {
     path: 'rating',
     component: RatingComponent,
     title: 'Problems.Rating',
     data: { animation: 'problems-rating' }
   },
-
-  { 
+  {
     path: 'rating/history',
     component: RatingHistoryComponent,
     title: 'Problems.RatingHistory',
     data: { animation: 'problems-rating-history' }
+  },
+  {
+    path: 'hacks',
+    component: HackAttemptsComponent,
+    data: { animation: 'hack-attempts' },
+    title: 'Problems.HackAttempts',
   },
 ];
 
@@ -169,7 +204,9 @@ const routes: Routes = [
     ProblemSidebarInfoComponent,
     ProblemSidebarStatisticsComponent,
     ProblemSidebarTopAttemptsComponent,
-  ], 
+    HackAttemptsComponent,
+    ProblemHacksComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -204,10 +241,13 @@ const routes: Routes = [
     TourModule,
     PaginationModule,
     TableOrderingModule,
+    HackAttemptsTableModule,
+    ProblemsPipesModule,
   ],
   providers: [
     ProblemGuard,
     AttemptGuard,
   ]
 })
-export class ProblemsModule { }
+export class ProblemsModule {
+}
