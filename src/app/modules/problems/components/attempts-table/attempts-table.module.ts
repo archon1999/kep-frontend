@@ -7,11 +7,12 @@ import { ContestantViewModule } from '../../../../shared/components/contestant-v
 import { CoreDirectivesModule } from '@core/directives/directives';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { KepcoinSpendSwalModule } from '../../../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { TableComponent } from './table/table.component';
 import { ClipboardModule } from 'app/shared/components/clipboard/clipboard.module';
+import { ProblemsPipesModule } from '../../pipes/problems-pipes.module';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,8 @@ import { ClipboardModule } from 'app/shared/components/clipboard/clipboard.modul
     RouterModule,
     MonacoEditorModule,
     ClipboardModule,
+    ReactiveFormsModule,
+    ProblemsPipesModule,
   ],
   exports: [
     AttemptsTableComponent

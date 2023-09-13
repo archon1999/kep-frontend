@@ -32,6 +32,12 @@
       ngDefaultControl
     ></ngx-monaco-editor>
   </div>
+
+  <div [formGroup]="hackForm">
+    <textarea formControlName="input"></textarea>
+    <button (click)="hackSubmit(selectedAttempt.id)" class="btn btn-primary btn-sm">Hack</button>
+  </div>
+
 </ng-template>
 
 <audio

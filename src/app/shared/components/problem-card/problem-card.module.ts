@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { CoreDirectivesModule } from '../../../../@core/directives/directives';
 import { CorePipesModule } from '../../../../@core/pipes/pipes.module';
+import { ProblemsPipesModule } from '../../../modules/problems/pipes/problems-pipes.module';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { CorePipesModule } from '../../../../@core/pipes/pipes.module';
     TranslateModule,
     CoreDirectivesModule,
     CorePipesModule,
+    ProblemsPipesModule,
   ],
   exports: [
     ProblemCardComponent,
