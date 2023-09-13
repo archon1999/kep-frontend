@@ -1,0 +1,33 @@
+<div class="content-wrapper p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <section class="mt-2">
+      <div class="row">
+        <div class="col-12 attempts-table">
+          <div class="form-group">
+            <div class="custom-control custom-checkbox" *ngIf="currentUser">
+              <input
+                type="checkbox"
+                class="custom-control-input"
+                [(ngModel)]="myAttempts"
+                (change)="_reloader.next()"
+                [ngModelOptions]="{standalone: true}" id="myAttempts" />
+              <label class="custom-control-label" for="myAttempts">{{ 'MY_ATTEMPTS' | translate }}</label>
+            </div>
+          </div>
+
+          <hack-attempts-table [hackAttempts]="hackAttempts"></hack-attempts-table>
+
+          <pagination
+            [collectionSize]="totalAttemptsCount"
+            [(page)]="currentPage"
+            [pageSize]="20"
+            [maxSize]="7"
+            (pageChange)="_reloader.next()"
+          ></pagination>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
