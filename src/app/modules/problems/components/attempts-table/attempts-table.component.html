@@ -8,11 +8,11 @@
 <ng-template #modal let-modal>
   <div class="modal-header">
     <h5 class="modal-title mr-1">{{ 'Attempt' | translate }}</h5>
-    <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+    <button type="button" class="close" (click)="modal.dismiss()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body" tabindex="0" ngbAutofocus>
+  <div class="modal-body">
     <base-table
       *ngIf="selectedAttempt"
       [attempts]="[selectedAttempt]"
@@ -21,23 +21,44 @@
     >
     </base-table>
 
-    <clipboard-button [text]="selectedAttempt.sourceCode"></clipboard-button>
+    <ul ngbNav #navWithIcons="ngbNav" class="nav-tabs" [destroyOnHide]="false">
+      <li ngbNavItem>
+        <a ngbNavLink>
+          <span [data-feather]="'code'"></span> {{ 'Code' | translate }}
+        </a>
+        <ng-template ngbNavContent>
+          <clipboard-button
+            style="
+              position: absolute;
+              top: 165px;
+              right: 20px;"
+            [text]="selectedAttempt.sourceCode"></clipboard-button>
 
-    <ngx-monaco-editor
-      [ngModelOptions]="{standalone: true}"
-      [options]="editorOptions"
-      [(ngModel)]="selectedAttempt.sourceCode"
-      style="height: 400px;"
-      class="mt-1"
-      ngDefaultControl
-    ></ngx-monaco-editor>
+          <div [style.height.px]="window.innerHeight - 350">
+            <monaco-editor
+              [lang]="selectedAttempt.lang"
+              [ngModelOptions]="{standalone: true}"
+              [(ngModel)]="selectedAttempt.sourceCode">
+            </monaco-editor>
+          </div>
+        </ng-template>
+      </li>
+
+      <li ngbNavItem *ngIf="hackEnabled">
+        <a ngbNavLink>
+          <span [data-feather]="'hack' | iconName"></span> {{ 'Hack' | translate }}
+        </a>
+        <ng-template ngbNavContent>
+          <div [formGroup]="hackForm">
+            <textarea formControlName="input"></textarea>
+            <button (click)="hackSubmit(selectedAttempt.id)" class="btn btn-primary btn-sm">Hack</button>
+          </div>
+        </ng-template>
+      </li>
+    </ul>
+
+    <div [ngbNavOutlet]="navWithIcons" class="mt-2"></div>
   </div>
-
-  <div [formGroup]="hackForm">
-    <textarea formControlName="input"></textarea>
-    <button (click)="hackSubmit(selectedAttempt.id)" class="btn btn-primary btn-sm">Hack</button>
-  </div>
-
 </ng-template>
 
 <audio
