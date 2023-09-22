@@ -3,14 +3,17 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { TemplateCodeService } from 'app/shared/services/template-code.service';
-import { LocalStorageService } from 'app/shared/storages/local-storage.service';
 import { ToastrService } from 'ngx-toastr';
 import { CoreConfigService } from '../../../../../@core/services/config.service';
 import { AvailableLanguage, Problem, SampleTest } from '../../../../modules/problems/models/problems.models';
 import { ApiService } from '../../../services/api.service';
 import { WebsocketService } from '../../../services/websocket';
+import { FormControl, FormGroup } from '@angular/forms';
+import { CValidators } from '../../../c-validators/c-validators';
+import { AttemptLangs } from '../../../../modules/problems/constants';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'code-editor-modal',
   templateUrl: './code-editor-modal.component.html',
   styleUrls: ['./code-editor-modal.component.scss'],
@@ -30,23 +33,17 @@ export class CodeEditorModalComponent implements OnInit {
 
   public hasSubmitted = false;
 
-  public editor = {
-    options: {
-      theme: 'vs-light',
-      language: 'python',
-    },
-    input: '',
-    output: '',
-    answer: '',
-    testCaseNumber: 1,
-    lang: 'py',
-    code: '',
-    isRunning: false,
-    isAnswerForInput: false,
-    isTesting: false,
-  };
+  public editorForm = new FormGroup({
+    code: new FormControl('', [CValidators.maxLength({ value: 60000 })]),
+    input: new FormControl('', [CValidators.maxLength({ value: 1000 })]),
+    lang: new FormControl('', []),
+    output: new FormControl('', []),
+    answer: new FormControl('', []),
+    testCaseNumber: new FormControl(1),
+  });
 
-  public codeSaveName: string;
+  public isRunning = false;
+  public isAnswerForInput = false;
 
   @ViewChild('modal') public modalRef: TemplateRef<any>;
 
@@ -57,7 +54,6 @@ export class CodeEditorModalComponent implements OnInit {
     public toastr: ToastrService,
     public translateService: TranslateService,
     public wsService: WebsocketService,
-    public localStorageService: LocalStorageService,
     public langService: LanguageService,
     public templateCodeService: TemplateCodeService,
   ) {
@@ -66,48 +62,41 @@ export class CodeEditorModalComponent implements OnInit {
   ngOnInit(): void {
     this.langService.getLanguage().subscribe(
       (lang: string) => {
-        this.editor.lang = lang;
+        this.editorForm.get('lang').setValue(lang);
       }
     );
 
     this.wsService.on('custom-test-result').subscribe(
       (result: any) => {
-        this.editor.output = result.output + result.error;
-        this.editor.output += `\n=========\nTime: ${ result.time }ms`;
-        this.editor.output += `\nMemory: ${ result.memory }KB`;
-        this.editor.isRunning = false;
+        let output = result.output + result.error;
+        output += `\n=========\nTime: ${result.time}ms`;
+        output += `\nMemory: ${result.memory}KB`;
+        this.isRunning = false;
+        this.editorForm.get('output').setValue(output);
       }
     );
 
     this.wsService.on('answer-for-input-result').subscribe(
-      (result: any) => {
-        this.editor.answer = 'Answer:\n' + result.answer;
-        this.editor.isAnswerForInput = false;
+      (result: { answer: string }) => {
+        this.editorForm.get('answer').setValue('Answer:\n' + result.answer);
+        this.isAnswerForInput = false;
       }
     );
 
-    this.coreConfigService.getConfig().subscribe((config: any) => {
-      if (config.layout.skin === 'dark') {
-        this.editor.options.theme = 'vs-dark';
-      } else {
-        this.editor.options.theme = 'vs-light';
+    this.editorForm.get('code').valueChanges.subscribe(
+      (code: string) => {
+        this.templateCodeService.save(this.uniqueName, this.editorForm.get('lang').value, code);
       }
-    });
+    );
   }
 
-  onCodeChange() {
-    if (this.uniqueName) {
-      setTimeout(() => {
-        this.templateCodeService.save(this.uniqueName, this.editor.lang, this.editor.code);
-      }, 100);
-    }
-  }
-
-  modalOpen(modal) {
+  modalOpen(modal: TemplateRef<any>) {
     this.hasSubmitted = false;
-    this.editor.code = this.templateCodeService.get(this.uniqueName, this.editor.lang) || this.availableLanguages[0].codeTemplate;
+    const editorLang = this.editorForm.get('lang').value;
+    const code = this.templateCodeService.get(this.uniqueName, editorLang) || this.availableLanguages[0].codeTemplate;
+    this.editorForm.get('code').setValue(code);
 
-    if (this.editor.lang === 'text') {
+    if (this.isSelectedLangText()) {
       this.modalService.open(modal, {
         size: 'md',
         centered: true,
@@ -123,49 +112,49 @@ export class CodeEditorModalComponent implements OnInit {
 
   onSampleTestChange() {
     if (this.sampleTests.length === 0) {
-      this.editor.testCaseNumber = null;
+      this.editorForm.get('testCaseNumber').setValue(null);
     } else {
-      const sampleTest = this.sampleTests[this.editor.testCaseNumber - 1];
-      this.editor.input = sampleTest.input;
-      this.editor.answer = sampleTest.output;
-      this.editor.output = '';
+      const testCaseNumber = this.editorForm.get('testCaseNumber').value;
+      const sampleTest = this.sampleTests[testCaseNumber - 1];
+      this.editorForm.get('input').setValue(sampleTest.input);
+      this.editorForm.get('answer').setValue(sampleTest.output);
+      this.editorForm.get('output').setValue('');
     }
   }
 
   run() {
-    if (this.editor.isRunning) {
+    if (this.isRunning) {
       return;
     }
-    this.editor.isRunning = true;
-    this.editor.output = '';
+    this.isRunning = true;
+
+    this.editorForm.get('output').setValue('');
     const data = {
-      sourceCode: this.editor.code,
-      lang: this.editor.lang,
-      inputData: this.editor.input,
+      sourceCode: this.editorForm.get('code').value,
+      lang: this.editorForm.get('lang').value,
+      inputData: this.editorForm.get('input').value,
     };
+
     this.api.post('problems/custom-test/', data).subscribe(
       (result: any) => {
         this.wsService.send('custom-test-add', result.id);
       }
     );
+
     setTimeout(() => {
-      this.editor.isRunning = false;
+      this.isRunning = false;
     }, 5000);
   }
 
-  answerForInput(result) {
-    if (this.editor.isAnswerForInput) {
+  answerForInput(result: { id: number }) {
+    if (this.isAnswerForInput) {
       return;
     }
-    this.editor.isAnswerForInput = true;
+    this.isAnswerForInput = true;
     this.wsService.send('answer-for-input-add', result.id);
     setTimeout(() => {
-      this.editor.isAnswerForInput = false;
+      this.isAnswerForInput = false;
     }, 15000);
-  }
-
-  addTest() {
-    this.sampleTests.push(this.sampleTests[0]);
   }
 
   submit() {
@@ -175,17 +164,23 @@ export class CodeEditorModalComponent implements OnInit {
     }
     this.hasSubmitted = true;
     const data = {
-      sourceCode: this.editor.code,
-      lang: this.editor.lang,
+      sourceCode: this.editorForm.get('code').value,
+      lang: this.editorForm.get('lang').value,
       ...this.submitParams
     };
 
-    this.api.post(this.submitUrl, data).subscribe((result: any) => {
-      const translations = this.translateService.translations[this.translateService.currentLang];
-      const text = translations['SubmittedSuccess'];
-      this.toastr.success(text);
-      this.submittedEvent.emit();
-    });
+    this.api.post(this.submitUrl, data).subscribe(
+      () => {
+        const translations = this.translateService.translations[this.translateService.currentLang];
+        const text = translations['SubmittedSuccess'];
+        this.toastr.success(text);
+        this.submittedEvent.emit();
+      }
+    );
+  }
+
+  isSelectedLangText() {
+    return (this.editorForm.get('lang').value === AttemptLangs.TEXT);
   }
 
 }
