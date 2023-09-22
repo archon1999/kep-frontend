@@ -12,6 +12,7 @@ import { ProblemsService } from '../../services/problems.service';
 import { Contest } from 'app/modules/contests/contests.models';
 import { SoundsService } from '../../../../shared/services/sounds/sounds.service';
 import { FormControl, FormGroup } from '@angular/forms';
+import { getEditorLang } from '../../utils';
 
 const LANG_CHANGE_EVENT = 'lang-change';
 const ATTEMPT_ADD_EVENT = 'attempt-add';
@@ -46,6 +47,7 @@ export class AttemptsTableComponent implements OnInit, OnDestroy {
     readOnly: true,
   };
 
+  public hackEnabled = true;
   public hackForm = new FormGroup({
     input: new FormControl(''),
     generatorSource: new FormControl(''),
@@ -134,4 +136,6 @@ export class AttemptsTableComponent implements OnInit, OnDestroy {
     });
   }
 
+  protected readonly window = window;
+  protected readonly getEditorLang = getEditorLang;
 }
