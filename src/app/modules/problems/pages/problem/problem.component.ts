@@ -99,6 +99,7 @@ export class ProblemComponent implements OnInit, OnDestroy, AfterViewInit {
         problemTitle: this.problem.title,
         problemId: this.problem.id
       });
+      this.checkInput = this.problem.checkInputSource;
       this.loadContentHeader();
     });
 
@@ -207,11 +208,11 @@ export class ProblemComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   saveCheckInput() {
-    this.api.post(`problems/${this.problem.id}/save-check-input`).subscribe(
+    this.api.post(`problems/${this.problem.id}/save-check-input`, { source: this.checkInput }).subscribe(
       () => {
-        this.toastr.success('', 'Success');
+        this.toastr.success('Success');
       }, () => {
-        this.toastr.error('', 'Error');
+        this.toastr.error('Error');
       }
     );
   }
