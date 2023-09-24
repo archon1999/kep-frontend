@@ -10,7 +10,8 @@ import uzLocale from '@fullcalendar/core/locales/uz';
 import ruLocale from '@fullcalendar/core/locales/ru';
 import enLocale from '@fullcalendar/core/locales/es-us';
 import { TranslateService } from '@ngx-translate/core';
-import { ApiService } from '../../../shared/services/api.service';
+import { HomeService } from '../home.service';
+import { LocalStorageService } from '../../../shared/storages/local-storage.service';
 
 enum CalendarEventType {
   CONTEST = 1,
@@ -65,7 +66,7 @@ export class CalendarSectionComponent implements OnInit {
     },
     locale: this.translateService.currentLang,
     locales: [uzLocale, ruLocale, enLocale],
-    initialView: 'dayGridMonth',
+    initialView: this.localStorageService.get('calendarViewType') || 'dayGridMonth',
     weekends: true,
     editable: false,
     eventResizableFromStart: true,
@@ -74,30 +75,34 @@ export class CalendarSectionComponent implements OnInit {
     dayMaxEvents: 2,
     navLinks: true,
     datesSet: (dateInfo) => {
-      console.log(dateInfo);
+      this.localStorageService.set('calendarViewType', dateInfo.view.type);
+      // console.log(dateInfo);
     }
   };
 
-  constructor(public translateService: TranslateService, public api: ApiService) {
-  }
+  constructor(
+    public translateService: TranslateService,
+    public service: HomeService,
+    public localStorageService: LocalStorageService
+  ) {}
 
   ngOnInit(): void {
-    this.api.get('calendar-events').subscribe(
+    this.service.getCalendarEvents().subscribe(
       (events: Array<any>) => {
         this.calendarOptions.events = events.map((event) => {
           event.start = new Date(event.startTime);
           event.end = new Date(event.finishTime);
-          switch (event.type) {
+          switch(event.type) {
             case CalendarEventType.CONTEST:
-              event.url = `/competitions/contests/contest/${event.uid}`;
+              event.url = `/competitions/contests/contest/${ event.uid }`;
               event.className = 'bg-light-primary';
               break;
             case CalendarEventType.ARENA:
-              event.url = `/competitions/arena/tournament/${event.uid}`;
+              event.url = `/competitions/arena/tournament/${ event.uid }`;
               event.className = 'bg-light-warning';
               break;
             case CalendarEventType.TOURNAMENT:
-              event.url = `/competitions/tournaments/tournament/${event.uid}`;
+              event.url = `/competitions/tournaments/tournament/${ event.uid }`;
               event.className = 'bg-light-dark';
               break;
             case CalendarEventType.HOLIDAY:
