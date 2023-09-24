@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 
 import { SafePipe } from '@core/pipes/safe.pipe';
-import { StripHtmlPipe } from '@core/pipes/stripHtml.pipe';
+import { StripHtmlPipe } from './strip-html.pipe';
 
 import { IconNamePipe } from './icons.pipe';
-import { ContestsRatingImgPipe } from './contestsRatingImg.pipe';
+import { ContestsRatingImgPipe } from './contests-rating-img.pipe';
 import { FilterPipe } from './filter.pipe';
-import { ContestsRatingColorPipe } from './contestsRatingColor.pipe';
-import { ChallengesRankColorPipe } from './challengesRankColor.pipe';
+import { ContestsRatingColorPipe } from './contests-rating-color.pipe';
+import { ChallengesRankColorPipe } from './challenges-rank-color.pipe';
 import { LocalizedDatePipe } from './localized-date.pipe';
+import { ErrorMessagePipe } from './error-message.pipe';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { LocalizedDatePipe } from './localized-date.pipe';
     ContestsRatingImgPipe,
     ContestsRatingColorPipe,
     ChallengesRankColorPipe,
-    LocalizedDatePipe
+    LocalizedDatePipe,
+    ErrorMessagePipe
   ],
   imports: [],
   exports: [
@@ -31,6 +33,7 @@ import { LocalizedDatePipe } from './localized-date.pipe';
     ContestsRatingColorPipe,
     ChallengesRankColorPipe,
     LocalizedDatePipe,
+    ErrorMessagePipe,
   ]
 })
 export class CorePipesModule {
