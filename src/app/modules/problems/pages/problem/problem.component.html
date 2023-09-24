@@ -28,11 +28,16 @@
                     <span [data-feather]="'attempt' | iconName"></span> {{ 'Attempts' | translate }}
                   </a>
                   <ng-template ngbNavContent>
-                    <problem-attempts [submitEvent]="submitEvent?.asObservable()" [problem]="problem"></problem-attempts>
+                    <problem-attempts
+                      [submitEvent]="submitEvent?.asObservable()"
+                      [problem]="problem"
+                      (hackSubmitted)="activeId = 3;"
+                    >
+                    </problem-attempts>
                   </ng-template>
                 </li>
 
-                <li [ngbNavItem]="3">
+                <li *ngIf="problem.hasCheckInput" [ngbNavItem]="3" destroyOnHide="true">
                   <a ngbNavLink>
                     <span [data-feather]="'hack' | iconName"></span> {{ 'Hacks' | translate }}
                   </a>
