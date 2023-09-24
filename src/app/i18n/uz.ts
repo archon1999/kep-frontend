@@ -208,7 +208,7 @@ export const locale = {
     CorrectAnswer: 'To`g`ri javob',
     IncorrectAnswer: 'Noto`g`ri javob',
     All: 'Barchasi',
-    MyChallenges: 'Mening bellashuvlarim', 
+    MyChallenges: 'Mening bellashuvlarim',
     Perfomance: 'Perfomance',
     System: 'Tizim',
     TopRating: 'Top Reyting',
@@ -266,7 +266,7 @@ export const locale = {
     Projects: 'Loyihalar',
     StreakFreeze: 'Muzlatish',
     YouHave: 'Sizda bor',
-    StreakFreezeText: "Agar kunni o'tkazib yuborsangiz va kundalik vazifalarni bajarmasangiz, muzlatish avtomatik ravishda natijani saqlaydi.",
+    StreakFreezeText: 'Agar kunni o\'tkazib yuborsangiz va kundalik vazifalarni bajarmasangiz, muzlatish avtomatik ravishda natijani saqlaydi.',
     Spends: 'Sarflandi',
     Earns: 'Topildi',
     DailyTasks: 'Kundalik topshiriqlar',
@@ -378,6 +378,11 @@ export const locale = {
     RatingChange: 'Reyting o`zgarishi',
     Virtual: 'Virtual',
     Unrated: 'Reytingsiz',
+    When: 'Qachon',
+    Hacker: 'Hack qilgan',
+    Defender: 'Himoyachi',
+    Generator: 'Generator',
+    Text: 'Matn',
     ContestRules: {
       ACM20H: ``,
     },
@@ -581,6 +586,9 @@ export const locale = {
         Course: '{{ courseTitle }} | Kurs',
         CourseLesson: '{{ lessonTitle }} | {{ courseTitle }} | Kurs',
       }
+    },
+    Errors: {
+      MAX_LENGTH_ERROR: 'Maksimal uzunlik: {{ value }} | Sizda: {{ controlValueLength }}'
     }
   }
-}
+};

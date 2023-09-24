@@ -268,7 +268,7 @@ export const locale = {
     Projects: 'Projects',
     StreakFreeze: 'Streak freeze',
     YouHave: 'You have',
-    StreakFreezeText: "Freezing automatically saves your streak if you miss a day and don't complete daily tasks.",
+    StreakFreezeText: 'Freezing automatically saves your streak if you miss a day and don\'t complete daily tasks.',
     Spends: 'Spends',
     Earns: 'Earns',
     DailyTasks: 'Daily tasks',
@@ -381,6 +381,11 @@ export const locale = {
     RatingChange: 'Rating change',
     Virtual: 'Virtual',
     Unrated: 'Unrated',
+    When: 'When',
+    Hacker: 'Hacker',
+    Defender: 'Defender',
+    Generator: 'Generator',
+    Text: 'Text',
     ProblemTourSteps: [
       {
         title: 'Available languages',
@@ -485,7 +490,7 @@ export const locale = {
       RATING: 'Rating',
       LEVEL: 'Level',
       LESSON: 'Lesson',
-      PROGRESS:' Progress',
+      PROGRESS: ' Progress',
       SYLLABUS: 'Syllabus',
       CHECK: 'Check',
       DICTIONARY: 'Dictionary',
@@ -581,6 +586,9 @@ export const locale = {
         Course: '{{ courseTitle }} | Course',
         CourseLesson: '{{ lessonTitle }} | {{ courseTitle }} | Course',
       }
+    },
+    Errors: {
+      MAX_LENGTH_ERROR: 'Max length: {{ value }} | Currently: {{ controlValueLength }}'
     }
   }
-}
+};
