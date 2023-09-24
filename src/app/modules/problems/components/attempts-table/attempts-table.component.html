@@ -44,14 +44,75 @@
         </ng-template>
       </li>
 
-      <li ngbNavItem *ngIf="hackEnabled">
+      <li ngbNavItem *ngIf="hackEnabled && selectedAttempt?.verdict == 1 && selectedAttempt?.problemHasCheckInput">
         <a ngbNavLink>
           <span [data-feather]="'hack' | iconName"></span> {{ 'Hack' | translate }}
         </a>
         <ng-template ngbNavContent>
-          <div [formGroup]="hackForm">
-            <textarea formControlName="input"></textarea>
-            <button (click)="hackSubmit(selectedAttempt.id)" class="btn btn-primary btn-sm">Hack</button>
+          <div class="nav-vertical" [formGroup]="hackForm">
+            <ul ngbNav #navVertical="ngbNav" class="nav-tabs nav-left flex-column" [destroyOnHide]="false">
+              <li ngbNavItem>
+                <a ngbNavLink>
+                  <span [data-feather]="'edit'"></span> {{ 'Text' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="half-width">
+                    <textarea class="form-control" formControlName="input"></textarea>
+                  </div>
+                  <button (click)="hackSubmit(selectedAttempt.id)" class="mt-1 mb-50 btn btn-primary">
+                    {{ 'Submit' | translate }}
+                  </button>
+                </ng-template>
+              </li>
+
+              <li ngbNavItem>
+                <a ngbNavLink>
+                  <span [data-feather]="'terminal'"></span> {{ 'Generator' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="languages">
+                    <div class="d-flex mb-50">
+                      <h5>
+                        <i data-feather="code"></i>
+                        {{ 'Languages' | translate }}
+                      </h5>
+                    </div>
+
+                    <button
+                      *ngFor="let lang of hackAvailableLanguages"
+                      (click)="hackForm.controls.generatorLang.setValue(lang)"
+                      class="mr-50 mb-50 btn btn-primary badge badge-{{ lang }} badge-glow">
+                      {{ lang }}
+                    </button>
+                  </div>
+
+                  <div class="selected-language mt-1">
+                    <div class="d-flex mb-50">
+                      <h5>
+                        <i data-feather="code"></i>
+                        {{ 'SelectedLanguage' | translate }}
+                      </h5>
+                    </div>
+
+                    <span
+                      class="badge badge-{{ hackForm.controls.generatorLang.value }} badge-glow">
+                      {{ hackForm.controls.generatorLang.value }}
+                    </span>
+                  </div>
+
+                  <div class="mt-1" [style.height.px]="400">
+                    <monaco-editor
+                      formControlName="generatorSource">
+                    </monaco-editor>
+                  </div>
+
+                  <button (click)="hackSubmit(selectedAttempt.id)" class="mt-1 mb-50 btn btn-primary">
+                    {{ 'Submit' | translate }}
+                  </button>
+                </ng-template>
+              </li>
+            </ul>
+            <div [ngbNavOutlet]="navVertical"></div>
           </div>
         </ng-template>
       </li>
