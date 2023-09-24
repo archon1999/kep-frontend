@@ -46,24 +46,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   };
 
-  public contestsSwiperConfig: SwiperOptions = {
-    slidesPerView: 1,
-    pagination: { el: '.swiper-pagination', clickable: true },
-    lazy: true,
-    spaceBetween: 30
-  };
-
   public chartTheme: {
     mode: string,
   };
 
   @ViewChild('postsSwiper') postsSwiper: SwiperComponent;
-  @ViewChild('contestsSwiper') contestsSwiper: SwiperComponent;
 
   @ViewChild('audio') audio: any;
-
-  public lastContests: Array<Contest> = [];
-  public contestsCurrentPage = 1;
 
   public lastPosts: Array<Blog> = [];
   public lastPostsPage = 1;
@@ -84,7 +73,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     public service: HomeService,
     public authService: AuthenticationService,
     public translateService: TranslateService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -108,14 +98,14 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.isMenuToggled = true;
         }
 
-        if(config.layout.skin == 'dark'){
+        if (config.layout.skin == 'dark') {
           this.chartTheme = {
             mode: 'dark',
-          }
+          };
         } else {
           this.chartTheme = {
             mode: 'light',
-          }
+          };
         }
       });
 
@@ -132,34 +122,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                 for (let post of result.data) {
                   this.lastPosts.push(post);
                 }
-              })
-          }
-        });
-      });
-
-    this.service.getContests(1, 3)
-      .subscribe((result: any) => {
-        this.lastContests = result.data.sort((ca, cb) => {
-          if(ca.status != cb.status){
-            return +(ca.status < cb.status);
-          } else {
-            if(ca.status == -1){
-              return -(ca.startTime < cb.startTime);
-            } else {
-              return +(ca.startTime < cb.startTime);
-            }
-          }
-        }).map(contest => Contest.fromJSON(contest));
-        this.contestsSwiper.swiper.on('slideChange', () => {
-          var index = this.contestsSwiper.swiper.realIndex;
-          if (index + 1 == this.lastContests.length && index < 15) {
-            this.contestsCurrentPage++;
-            this.service.getContests(this.contestsCurrentPage+2, 1)
-              .subscribe((result: any) => {
-                for (let contest of result.data) {
-                  this.lastContests.push(contest);
-                }
-              })
+              });
           }
         });
       });
@@ -167,7 +130,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.service.getTopUsers()
       .subscribe((result: any) => {
         this.topUsers = result;
-      })
+      });
 
   }
 

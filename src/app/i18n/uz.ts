@@ -383,6 +383,7 @@ export const locale = {
     Defender: 'Himoyachi',
     Generator: 'Generator',
     Text: 'Matn',
+    Holidays: 'Bayramlar',
     ContestRules: {
       ACM20H: ``,
     },

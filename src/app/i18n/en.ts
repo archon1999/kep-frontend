@@ -386,6 +386,7 @@ export const locale = {
     Defender: 'Defender',
     Generator: 'Generator',
     Text: 'Text',
+    Holidays: 'Holidays',
     ProblemTourSteps: [
       {
         title: 'Available languages',
