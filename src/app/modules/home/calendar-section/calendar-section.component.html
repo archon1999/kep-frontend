@@ -30,7 +30,17 @@
     <div class="col position-relative">
       <div class="card border-0 mb-0 rounded-0">
         <div class="card-body">
-          <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+          <full-calendar #calendar [options]="calendarOptions">
+<!--            <ng-template #eventContent let-arg>-->
+<!--              <div class="fc-daygrid-event-dot"></div>-->
+<!--              <div class="fc-event-time">-->
+<!--                {{ arg.event.start | date : 'HH:mm' }}-->
+<!--              </div>-->
+<!--              <div container="body" ngbTooltip="{{ arg.event.title }}" class="fc-event-title">-->
+<!--                {{ arg.event.title }}-->
+<!--              </div>-->
+<!--            </ng-template>-->
+          </full-calendar>
         </div>
       </div>
     </div>
