@@ -383,6 +383,7 @@ export const locale = {
     Defender: 'Защитник',
     Generator: 'Генератор',
     Text: 'Текст',
+    Holidays: 'Праздники',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',

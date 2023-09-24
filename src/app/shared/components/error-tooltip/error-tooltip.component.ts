@@ -1,5 +1,4 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { er } from '@fullcalendar/core/internal-common';
 
 @Component({
   // tslint:disable-next-line:component-selector

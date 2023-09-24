@@ -23,7 +23,9 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthGuard } from 'app/auth/helpers';
 import { SlideMainComponent } from './header-section/slides/slide-main/slide-main.component';
 import { SlideContestsComponent } from './header-section/slides/slide-contests/slide-contests.component';
-import { UsersChartModule } from "../../shared/components/users-chart/users-chart.module";
+import { UsersChartModule } from '../../shared/components/users-chart/users-chart.module';
+import { CalendarSectionComponent } from './calendar-section/calendar-section.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 const routes: Routes = [
   {
@@ -45,6 +47,7 @@ const routes: Routes = [
     BirthdaysSectionComponent,
     SlideMainComponent,
     SlideContestsComponent,
+    CalendarSectionComponent,
   ],
   imports: [
     CommonModule,
@@ -63,10 +66,12 @@ const routes: Routes = [
     NgbTooltipModule,
     ContestCardModule,
     UsersChartModule,
+    FullCalendarModule
   ],
   exports: [
     HomeComponent
   ],
 
 })
-export class HomeModule { }
+export class HomeModule {
+}
