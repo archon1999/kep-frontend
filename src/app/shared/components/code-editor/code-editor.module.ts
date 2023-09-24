@@ -11,6 +11,7 @@ import { monacoConfig } from '../../../monaco-config';
 import { ToastrModule } from 'ngx-toastr';
 import { CodeEditorModalComponent } from './code-editor-modal/code-editor-modal.component';
 import { MonacoEditorModule } from '../../third-part-modules/monaco-editor/monaco-editor.module';
+import { ErrorTooltipModule } from '../error-tooltip/error-tooltip.module';
 
 @NgModule({
   declarations: [
@@ -28,9 +29,11 @@ import { MonacoEditorModule } from '../../third-part-modules/monaco-editor/monac
     KepcoinSpendSwalModule,
     NgbTooltipModule,
     ReactiveFormsModule,
+    ErrorTooltipModule
   ],
   exports: [
     CodeEditorModalComponent,
   ]
 })
-export class CodeEditorModule { }
+export class CodeEditorModule {
+}

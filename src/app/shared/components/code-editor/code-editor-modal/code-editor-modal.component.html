@@ -21,9 +21,16 @@
 
     <div *ngIf="!isSelectedLangText()" class="row">
       <div class="col-lg-8 col-md-7 col-12">
-        <monaco-editor
-          [formControl]="editorForm.controls.code">
-        </monaco-editor>
+        <div
+          [style.height.%]="100"
+          container="body"
+          [ngbTooltip]="editorForm.controls.code.errors | errorMessage"
+          tooltipClass="tooltip-danger"
+        >
+          <monaco-editor
+            [formControl]="editorForm.controls.code">
+          </monaco-editor>
+        </div>
       </div>
 
       <div class="col-lg-4 col-md-5 col-0">
@@ -59,6 +66,8 @@
             formControlName="input"
             placeholder=""
             rows="3"
+            [ngbTooltip]="editorForm.controls.input.errors | errorMessage"
+            tooltipClass="tooltip-danger"
           ></textarea>
         </div>
 
