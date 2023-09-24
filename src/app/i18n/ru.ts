@@ -266,7 +266,7 @@ export const locale = {
     Projects: 'Проекты',
     StreakFreeze: 'Заморозка',
     YouHave: 'У вас есть',
-    StreakFreezeText: "Заморозка автоматически сохраняет ваш прогресс, если вы пропустите день и не выполните ежедневные задании.",
+    StreakFreezeText: 'Заморозка автоматически сохраняет ваш прогресс, если вы пропустите день и не выполните ежедневные задании.',
     Spends: 'Траты',
     Earns: 'Заработки',
     DailyTasks: 'Ежедневнвые задании',
@@ -378,6 +378,11 @@ export const locale = {
     RatingChange: 'Изменение рейтинга',
     Virtual: 'Виртуально',
     Unrated: 'Вне рейтинга',
+    When: 'Когда',
+    Hacker: 'Хакер',
+    Defender: 'Защитник',
+    Generator: 'Генератор',
+    Text: 'Текст',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',
@@ -578,6 +583,9 @@ export const locale = {
         Course: '{{ courseTitle }} | Курс',
         CourseLesson: '{{ lessonTitle }} | {{ courseTitle }} | Курс',
       }
+    },
+    Errors: {
+      MAX_LENGTH_ERROR: 'Максимальная длина: {{ value }} | У вас: {{ controlValueLength }}'
     }
   },
-}
+};
