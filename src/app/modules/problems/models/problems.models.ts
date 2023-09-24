@@ -36,6 +36,7 @@ export interface Problem {
   availableLanguages?: Array<AvailableLanguage>;
   image?: string;
   hidden?: boolean;
+  checkInputSource?: string;
 }
 
 export interface AvailableLanguage {
