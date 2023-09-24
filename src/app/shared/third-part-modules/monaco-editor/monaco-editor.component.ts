@@ -1,5 +1,5 @@
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { AfterViewInit, Component, forwardRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { EditorComponent } from 'ngx-monaco-editor';
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreConfig } from '@core/types';
@@ -11,7 +11,7 @@ import { getEditorLang } from 'app/modules/problems/utils';
   // tslint:disable-next-line:component-selector
   selector: 'monaco-editor',
   template: `
-    <ngx-monaco-editor style="height: 100%;" [options]="options" [(ngModel)]="value"></ngx-monaco-editor>`,
+    <ngx-monaco-editor [style.height.px]="height" [options]="options" [(ngModel)]="value"></ngx-monaco-editor>`,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -20,11 +20,13 @@ import { getEditorLang } from 'app/modules/problems/utils';
     }
   ]
 })
-export class MonacoEditorComponent implements ControlValueAccessor, OnInit, AfterViewInit {
+export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnChanges, AfterViewChecked {
 
   @ViewChild(EditorComponent) editorComponent: EditorComponent;
 
   @Input() lang: AttemptLangs;
+  @Input() height = 300;
+
   public options = {
     theme: 'vs-light',
     language: 'python',
@@ -56,14 +58,28 @@ export class MonacoEditorComponent implements ControlValueAccessor, OnInit, Afte
 
     this.languageService.getLanguage().subscribe(
       (lang: AttemptLangs) => {
-        this.options.language = getEditorLang(this.lang || lang);
+        this.lang = this.lang || lang;
+        this.options = {
+          ...this.options,
+          language: getEditorLang(this.lang),
+        };
       }
     );
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewChecked(): void {
     this.editorComponent.registerOnChange(this.onChange);
     this.editorComponent.registerOnTouched(this.onTouched);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
+    if ('lang' in changes) {
+      this.options = {
+        ...this.options,
+        language: getEditorLang(changes['lang'].currentValue),
+      };
+    }
   }
 
   writeValue(obj: any): void {
