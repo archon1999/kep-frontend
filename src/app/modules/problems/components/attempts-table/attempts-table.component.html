@@ -32,15 +32,14 @@
               position: absolute;
               top: 165px;
               right: 20px;"
-            [text]="selectedAttempt.sourceCode"></clipboard-button>
+            [text]="selectedAttempt.sourceCode">
+          </clipboard-button>
 
-          <div [style.height.px]="window.innerHeight - 350">
-            <monaco-editor
-              [lang]="selectedAttempt.lang"
-              [ngModelOptions]="{standalone: true}"
-              [(ngModel)]="selectedAttempt.sourceCode">
-            </monaco-editor>
-          </div>
+          <monaco-editor
+            [lang]="selectedAttempt.lang"
+            [ngModelOptions]="{standalone: true}"
+            [(ngModel)]="selectedAttempt.sourceCode">
+          </monaco-editor>
         </ng-template>
       </li>
 
@@ -57,7 +56,7 @@
                 </a>
                 <ng-template ngbNavContent>
                   <div class="half-width">
-                    <textarea class="form-control" formControlName="input"></textarea>
+                    <textarea class="form-control" rows="8" formControlName="input"></textarea>
                   </div>
                   <button (click)="hackSubmit(selectedAttempt.id)" class="mt-1 mb-50 btn btn-primary">
                     {{ 'Submit' | translate }}
@@ -100,9 +99,10 @@
                     </span>
                   </div>
 
-                  <div class="mt-1" [style.height.px]="400">
+                  <div class="mt-1">
                     <monaco-editor
-                      formControlName="generatorSource">
+                      [lang]="hackForm.controls.generatorLang.value"
+                      [formControlName]="'generatorSource'">
                     </monaco-editor>
                   </div>
 
