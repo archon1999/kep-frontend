@@ -32,7 +32,7 @@ export class ProblemHacksComponent extends CurrentUser implements OnInit {
   }
 
   loadHackAttempts() {
-    this.service.getHackAttempts({}).subscribe(
+    this.service.getHackAttempts({problemId: this.problem.id}).subscribe(
       (result: PageResult) => {
         this.hackAttempts = result.data;
         this.totalAttemptsCount = result.total;
