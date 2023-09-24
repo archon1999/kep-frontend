@@ -69,8 +69,8 @@ export class CodeEditorModalComponent implements OnInit {
     this.wsService.on('custom-test-result').subscribe(
       (result: any) => {
         let output = result.output + result.error;
-        output += `\n=========\nTime: ${result.time}ms`;
-        output += `\nMemory: ${result.memory}KB`;
+        output += `\n=========\nTime: ${ result.time }ms`;
+        output += `\nMemory: ${ result.memory }KB`;
         this.isRunning = false;
         this.editorForm.get('output').setValue(output);
       }
