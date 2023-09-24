@@ -1,6 +1,7 @@
 import { ContestProblem } from '../../contests/contests.models';
 import { User } from '../../users/users.models';
 import { getEditorLang } from '../utils';
+import { AttemptLangs } from '../constants';
 
 
 export class Attempt {
@@ -10,9 +11,10 @@ export class Attempt {
     public team: any,
     public problemId: number,
     public problemTitle: string,
+    public problemHasCheckInput: boolean,
     public verdict: number,
     public verdictTitle: string,
-    public lang: string,
+    public lang: AttemptLangs,
     public langFull: string,
     public canView: boolean,
     public canTestView: boolean,
@@ -41,6 +43,7 @@ export class Attempt {
       data.team,
       data.problemId,
       data.problemTitle,
+      data.problemHasCheckInput,
       data.verdict,
       data.verdictTitle,
       data.lang,
@@ -67,6 +70,7 @@ export class Attempt {
       attempt.team,
       attempt.problemId,
       attempt.problemTitle,
+      attempt.problemHasCheckInput,
       wsAttempt.verdict,
       wsAttempt.verdictTitle,
       attempt.lang,
