@@ -38,6 +38,22 @@ export class ProblemsService {
       params.topic = filter.topic;
     }
 
+    if(filter?.hasChecker !== null){
+      params.has_checker = filter.hasChecker;
+    }
+
+    if(filter?.hasCheckInput !== null){
+      params.has_check_input = filter.hasCheckInput;
+    }
+
+    if(filter?.hasSolution !== null){
+      params.has_solution = filter.hasSolution;
+    }
+
+    if(filter?.partialSolvable !== null){
+      params.partial_solvable = filter.partialSolvable;
+    }
+
     if (filter?.status) {
       var status = filter.status;
       if (status == 1) {
