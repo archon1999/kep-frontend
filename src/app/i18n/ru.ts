@@ -384,6 +384,8 @@ export const locale = {
     Generator: 'Генератор',
     Text: 'Текст',
     Holidays: 'Праздники',
+    CheckInput: 'Check input',
+    PartialSolvable: 'Частичное решение',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',

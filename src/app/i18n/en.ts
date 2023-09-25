@@ -387,6 +387,8 @@ export const locale = {
     Generator: 'Generator',
     Text: 'Text',
     Holidays: 'Holidays',
+    CheckInput: 'Check input',
+    PartialSolvable: 'Partial Solvable',
     ProblemTourSteps: [
       {
         title: 'Available languages',

@@ -11,27 +11,32 @@ const DEFAULT_FILTER: ProblemsFilter = {
   status: null,
   topic: null,
   ordering: 'id',
-}
+  hasChecker: null,
+  hasCheckInput: null,
+  hasSolution: null,
+  partialSolvable: null,
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProblemsFilterService {
 
-  constructor(public sessionStorageService: SessionStorageService){}
+  constructor(public sessionStorageService: SessionStorageService) {
+  }
 
   private _currentFilter = this.sessionStorageService.get(KEY) || DEFAULT_FILTER;
   private _filter = new BehaviorSubject<ProblemsFilter>(this._currentFilter);
 
-  getFilter(){
+  getFilter() {
     return this._filter;
   }
 
-  updateFilter(filter: Partial<ProblemsFilter>){
+  updateFilter(filter: Partial<ProblemsFilter>) {
     this._currentFilter = {
       ...this._currentFilter,
       ...filter,
-    }
+    };
     this._filter.next(this._currentFilter);
     this.sessionStorageService.set(KEY, this._currentFilter);
   }
