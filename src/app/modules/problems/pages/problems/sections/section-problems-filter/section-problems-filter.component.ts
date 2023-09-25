@@ -32,7 +32,6 @@ export class SectionProblemsFilterComponent implements OnInit, OnDestroy {
   constructor(
     public service: ProblemsService,
     public authService: AuthenticationService,
-    public localStorageService: LocalStorageService,
     public problemsFilterService: ProblemsFilterService,
   ) { }
 

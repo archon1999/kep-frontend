@@ -384,6 +384,8 @@ export const locale = {
     Generator: 'Generator',
     Text: 'Matn',
     Holidays: 'Bayramlar',
+    CheckInput: 'Check input',
+    PartialSolvable: 'Qisman yechim',
     ContestRules: {
       ACM20H: ``,
     },

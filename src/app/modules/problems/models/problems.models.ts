@@ -74,6 +74,10 @@ export interface ProblemsFilter {
   status: number;
   topic: number;
   ordering: string;
+  hasChecker: boolean;
+  hasCheckInput: boolean;
+  hasSolution: boolean;
+  partialSolvable: boolean;
 }
 
 export interface StudyPlanDay {
