@@ -106,6 +106,7 @@
 		<h4 class="modal-title">{{ 'Solution' | translate }}</h4>
 	</div>
 	<div class="modal-body">
+    {{ problemSolution.solution }}
     <ul ngbNav #nav="ngbNav" class="nav-tabs">
       <li [ngbNavItem]="1" *ngIf="problemSolution.codeCpp">
         <a ngbNavLink>C++</a>
