@@ -66,7 +66,7 @@ export class CalendarSectionComponent implements OnInit {
     },
     locale: this.translateService.currentLang,
     locales: [uzLocale, ruLocale, enLocale],
-    initialView: this.localStorageService.get('calendarViewType') || 'dayGridMonth',
+    initialView: this.localStorageService.get('calendarViewType') || 'listMonth',
     weekends: true,
     editable: false,
     eventResizableFromStart: true,
