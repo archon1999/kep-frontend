@@ -20,6 +20,7 @@ export const locale = {
       LUGAVAR: 'Lugavar',
       TOURNAMENTS: 'Tournaments',
       BLOG: 'Blog',
+      CODE_RUSH: 'Code Rush',
     },
     LOGIN: 'Login',
     LOGOUT: 'Logout',
