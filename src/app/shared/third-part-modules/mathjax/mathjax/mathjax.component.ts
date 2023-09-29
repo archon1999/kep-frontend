@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from "@angular/core";
+import { AfterViewInit, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 // const MathJax = Window['mathjax'];
 @Component({
   selector: "mathjax",
@@ -6,7 +6,7 @@ import { Component, Input, OnChanges, SimpleChanges } from "@angular/core";
   templateUrl: "./mathjax.component.html",
   styleUrls: ["./mathjax.component.scss"]
 })
-export class MathjaxComponent implements OnChanges {
+export class MathjaxComponent implements AfterViewInit, OnChanges {
   @Input() content: string;
 
   constructor() {}
@@ -47,7 +47,7 @@ export class MathjaxComponent implements OnChanges {
     });
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.loadMathConfig();
     this.renderMath();
   }
