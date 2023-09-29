@@ -99,6 +99,13 @@
       zoom: 50% !important;
     }
   }
+
+  &.contest-309 {
+    --bg-gradient: linear-gradient(to right, #605ee3, #484ed0);
+    --bg: #1c25c1;
+    --bg-light: rgba(96, 94, 227, 0.1);
+    --box-shadow: 0 0 10px #1c25c1;
+  }
 }
 
 ::ng-deep .dark-layout .contests-colors {
@@ -154,6 +161,14 @@
       zoom: 50% !important;
     }
   }
+
+  &.contest-309 {
+    --bg-gradient: linear-gradient(to right, rgba(47, 45, 161, 0.8), #484ed0);
+    --bg: #1c25c1;
+    --bg-light: rgba(96, 94, 227, 0.1);
+    --box-shadow: 0 0 10px #1c25c1;
+  }
+
 }
 
 ::ng-deep .contests-colors {
