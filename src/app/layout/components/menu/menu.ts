@@ -115,14 +115,14 @@ export const menu: CoreMenu[] = [
         icon: 'award',
         url: '/competitions/tournaments',
       },
-      {
-        id: 'code-rush',
-        title: 'Code rush',
-        translate: 'MENU.CODE_RUSH',
-        type: 'item',
-        icon: 'code',
-        url: '/competitions/code-rush',
-      },
+      // {
+      //   id: 'code-rush',
+      //   title: 'Code rush',
+      //   translate: 'MENU.CODE_RUSH',
+      //   type: 'item',
+      //   icon: 'code',
+      //   url: '/competitions/code-rush',
+      // },
     ]
   },
   {
