@@ -17,7 +17,7 @@ import { takeUntil } from 'rxjs/operators';
   ]
 })
 export class ContestCardComponent implements OnInit, OnDestroy {
-  @Input() contest: Contest;
+  @Input() contest: any;
 
   coreConfig: CoreConfig;
   routerLink = "";
@@ -50,10 +50,10 @@ export class ContestCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  openRegistrationModal(content){
+  openRegistrationModal(){
     this.api.post(`user-contests/${this.contest.id}/registration/`).subscribe((result: any) => {
       if(result.success){
-        this.contest.userInfo.isRegistered = true;
+        this.contest.isRegistered = true;
       }
     })
   }
@@ -61,7 +61,7 @@ export class ContestCardComponent implements OnInit, OnDestroy {
   cancelRegistration(){
     this.api.get(`contests/${this.contest.id}/cancel-registration/`).subscribe((result: any) => {
       if(result.success){
-        this.contest.userInfo.isRegistered = false;
+        this.contest.isRegistered = false;
       }
     })
   }

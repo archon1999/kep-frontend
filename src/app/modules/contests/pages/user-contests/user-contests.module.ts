@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CountdownModule } from '@ciri/ngx-countdown';
 import { CoreDirectivesModule } from '@core/directives/directives';
 import { CorePipesModule } from '@core/pipes/pipes.module';
-import { NgbDatepickerModule, NgbNavModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepickerModule, NgbNavModule, NgbTimepickerModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { AttemptsTableModule } from '../../../problems/components/attempts-table/attempts-table.module';
@@ -144,6 +144,7 @@ const routes: Routes = [
     ContestantViewModule,
     ProblemBodyModule,
     AttemptsTableModule,
+    NgbTooltipModule,
   ],
   providers: [
     ContestCreateGuard,
