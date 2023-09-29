@@ -47,5 +47,25 @@
         {{ contest.type }}
       </span>
     </div>
+    <div>
+      <button
+        ngbTooltip="{{ 'Cancel' | translate }}"
+        rippleEffect
+        class="btn btn-sm round btn-gradient-success"
+        (click)="cancelRegistration()"
+        *ngIf="contest.isRegistered"
+      >
+        <i data-feather="user" [size]="16"></i> {{ 'Registered' | translate }}
+        <i data-feather="x" class="text-danger"></i>
+      </button>
+      <button
+        rippleEffect
+        class="btn btn-sm round btn-gradient-primary"
+        (click)="openRegistrationModal()"
+        *ngIf="!contest.isRegistered"
+      >
+        <i data-feather="user" [size]="16"></i> {{ 'CONTESTS.REGISTER' | translate }}
+      </button>
+    </div>
   </div>
 </div>
