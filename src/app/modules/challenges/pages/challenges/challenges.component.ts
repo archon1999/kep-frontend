@@ -23,7 +23,7 @@ interface NewChallengeCall {
 @Component({
   selector: 'app-challenges',
   templateUrl: './challenges.component.html',
-  styleUrls: ['./challenges.component.scss'],
+  styleUrls: ['./challenges.component.scss', '../../challenges.styles.scss'],
   animations: [
     fadeOutOnLeaveAnimation(),
     fadeInOnEnterAnimation(),

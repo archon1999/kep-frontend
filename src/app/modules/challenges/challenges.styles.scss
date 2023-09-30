@@ -1,0 +1,87 @@
+$bg-primary: #5456da;
+$bg-darken: #484ed0;
+$bg-lighten: #6c6aef;
+$bg-gradient-primary: linear-gradient(to right, $bg-primary, $bg-lighten);
+$bg-gradient-primary-reversed: linear-gradient(to right, $bg-lighten, $bg-primary);
+
+$dark-layout-bg-primary: rgba(47, 45, 161, 0.8);
+$dark-layout-bg-lighten: #484ed0;
+$dark-layout-bg-darken: rgba(47, 45, 161, 0.8);
+$dark-layout-bg-gradient-primary: linear-gradient(to right, $dark-layout-bg-primary, $dark-layout-bg-lighten);
+$dark-layout-bg-gradient-primary-reversed: linear-gradient(to right, $dark-layout-bg-lighten, $dark-layout-bg-primary);
+
+::ng-deep section.challenges {
+  --bg-primary: #{$bg-primary};
+  --bg-darken: #{$bg-darken};
+  --bg-lighten: #{$bg-lighten};
+  --bg-gradient: #{$bg-gradient-primary};
+  --bg-gradient-reversed: #{$bg-gradient-primary-reversed};
+
+  .text-primary {
+    color: var(--bg-primary) !important;
+  }
+
+  .badge-primary, .bg-primary {
+    background-color: var(--bg-primary) !important;
+  }
+
+  .bg-primary-lighten {
+    background-color: var(--bg-lighten) !important;
+  }
+
+  .bg-primary-darken {
+    background-color: var(--bg-darken) !important;
+  }
+
+  .bg-gradient-primary {
+    background: var(--bg-gradient) !important;
+  }
+
+  .bg-gradient-primary-reversed {
+    background: var(--bg-gradient-reversed) !important;
+  }
+
+  .top-rating div, .top-rating span {
+    color: #fff !important;
+  }
+
+  .ng-select-container {
+    background: var(--bg-primary);
+
+    .ng-value {
+      background: inherit !important;
+    }
+  }
+
+  .btn-primary {
+    color: #fff;
+    box-shadow: 0 0 20px var(--bg-lighten);
+    border-radius: 10px;
+    border: none;
+    background-color: var(--bg-darken) !important;
+
+    &:hover {
+      background-color: var(--bg-lighten) !important;
+    }
+  }
+
+  .pagination-primary .page-item.active .page-link {
+    background: var(--bg-primary) !important;
+  }
+}
+
+::ng-deep .dark-layout section.challenges {
+  --bg-primary: #{$dark-layout-bg-primary};
+  --bg-darken: #{$dark-layout-bg-darken};
+  --bg-lighten: #{$dark-layout-bg-lighten};
+  --bg-gradient: #{$dark-layout-bg-gradient-primary};
+  --bg-gradient-reversed: #{$dark-layout-bg-gradient-primary-reversed};
+
+  .top-rating {
+    background: var(--bg-primary) !important;
+
+    thead th {
+      background: var(--bg-darken) !important;
+    }
+  }
+}
