@@ -19,6 +19,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthModalComponent } from 'app/auth/auth-modal/auth-modal.component';
 import { ApiService } from 'app/shared/services/api.service';
 import { CookieService } from 'ngx-cookie-service';
+import { CurrentUser } from '../../../shared/components/classes/current-user.component';
 
 @Component({
   selector: 'app-navbar',
@@ -26,7 +27,7 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./navbar.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class NavbarComponent implements OnInit, OnDestroy {
+export class NavbarComponent extends CurrentUser implements OnInit, OnDestroy {
   public horizontalMenu: boolean;
   public hiddenMenu: boolean;
 
@@ -43,43 +44,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   @HostBinding('class.fixed-top')
   public isFixed = false;
 
-  @HostBinding('class.navbar-static-style-on-scroll')
-  public windowScrolled = false;
-
-  /*
-  // Add .navbar-static-style-on-scroll on scroll using HostListener & HostBinding
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    if (
-      (window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop > 100) &&
-      this.coreConfig.layout.navbar.type == 'navbar-static-top' &&
-      this.coreConfig.layout.type == 'horizontal'
-    ) {
-      this.windowScrolled = true;
-    } else if (
-      (this.windowScrolled && window.pageYOffset) ||
-      document.documentElement.scrollTop ||
-      document.body.scrollTop < 10
-    ) {
-      this.windowScrolled = false;
-    }
-  }
-   */
-
-  // Private
-  private _unsubscribeAll: Subject<any>;
-
-  /**
-   * Constructor
-   *
-   * @param {Router} _router
-   * @param {AuthenticationService} _authenticationService
-   * @param {CoreConfigService} _coreConfigService
-   * @param {CoreSidebarService} _coreSidebarService
-   * @param {CoreMediaService} _coreMediaService
-   * @param {MediaObserver} _mediaObserver
-   * @param {TranslateService} _translateService
-   */
   constructor(
     private _router: Router,
     private _authenticationService: AuthenticationService,
@@ -90,8 +54,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     public _translateService: TranslateService,
     public modalService: NgbModal,
     public api: ApiService,
-    public cookies: CookieService,
   ) {
+    super(_authenticationService);
+
     this._authenticationService.currentUser.subscribe(x => (this.currentUser = x));
 
     this.languageOptions = {
@@ -108,46 +73,27 @@ export class NavbarComponent implements OnInit, OnDestroy {
         flag: 'uz'
       }
     };
-
-    // Set the private defaults
-    this._unsubscribeAll = new Subject();
   }
 
-  // Public Methods
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * Toggle sidebar open
-   *
-   * @param key
-   */
   toggleSidebar(key): void {
     this._coreSidebarService.getSidebarRegistry(key).toggleOpen();
   }
 
-  /**
-   * Set the language
-   *
-   * @param language
-   */
-
   refreshPage() {
     this._router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this._router.navigate([this._router.url], {skipLocationChange: true})
+    this._router.navigate([this._router.url], { skipLocationChange: true });
   }
 
   setLanguage(language: string): void {
-    this.api.post('set-language/', { language: language } ).subscribe(() => {
+    this.api.post('set-language/', { language: language }).subscribe(() => {
       this.selectedLanguage = language;
-      this._translateService.use(language);    
+      this._translateService.use(language);
       this._coreConfigService.setConfig({ app: { appLanguage: language } }, { emitEvent: true });
-      location.reload();
+      // location.reload();
+      this.refreshPage();
     });
   }
 
-  /**
-   * Toggle Dark Skin
-   */
   toggleDarkSkin() {
     // Get the current skin
     this._coreConfigService
@@ -171,10 +117,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Logout method
-   */
-
   loginModalOpenForm() {
     this.modalService.open(AuthModalComponent);
   }
@@ -184,9 +126,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this._router.navigateByUrl(this._router.url);
   }
 
-  isAuthenticated(){
-    return this.currentUser != null;
-  }
   // Lifecycle Hooks
   // -----------------------------------------------------------------------------------------------------
 
@@ -194,10 +133,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
    * On init
    */
   ngOnInit(): void {
+    super.ngOnInit();
 
-    // get the currentUser details from localStorage
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    
     // Subscribe to the config changes
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       this.coreConfig = config;
@@ -216,15 +153,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
 
     // Horizontal Layout Only: Add class fixed-top to navbar below large screen
-    if (this.coreConfig.layout.type == 'horizontal') {
+    if (this.coreConfig.layout.type === 'horizontal') {
       // On every media(screen) change
       this._coreMediaService.onMediaUpdate.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => {
         const isFixedTop = this._mediaObserver.isActive('bs-gt-xl');
-        if (isFixedTop) {
-          this.isFixed = false;
-        } else {
-          this.isFixed = true;
-        }
+        this.isFixed = !isFixedTop;
       });
     }
 
