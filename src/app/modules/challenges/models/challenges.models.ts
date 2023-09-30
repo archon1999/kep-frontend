@@ -1,3 +1,5 @@
+import { Chapter } from '../../testing/testing.models';
+
 export interface ChallengesRating {
   username: string;
   rating: number;
@@ -13,6 +15,7 @@ export interface ChallengeCall {
   rankTitle: string;
   timeSeconds: number;
   questionsCount: number;
+  chapters: Array<Chapter>;
   created: string;
 }
 
