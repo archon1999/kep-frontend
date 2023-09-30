@@ -5,12 +5,12 @@
   </div>
 
   <div class="card-body">
-    <span ngbTooltip="{{ 'Time' | translate }}" class="mr-25 badge badge-primary badge-glow">
+    <span ngbTooltip="{{ 'Time' | translate }}" class="mr-25 badge badge-primary bg-primary-darken badge-glow">
       <i data-feather="clock"></i>
       {{ challengeCall.timeSeconds }}
     </span>
 
-    <span ngbTooltip="{{ 'Questions' | translate }}"  class="badge badge-primary badge-glow">
+    <span ngbTooltip="{{ 'Questions' | translate }}"  class="badge badge-primary bg-primary-darken badge-glow">
       <i data-feather="activity"></i>
       {{ challengeCall.questionsCount }}
     </span>
@@ -21,15 +21,15 @@
   </div>
 
   <div class="card-footer d-flex justify-content-between">
-    <button (click)="acceptChallengeCall()" class="btn btn-sm btn-relief-info btn-glow" *ngIf="currentUser?.username != challengeCall.username">
+    <button (click)="acceptChallengeCall()" class="btn btn-sm btn-success btn-glow" *ngIf="currentUser?.username != challengeCall.username">
       {{ 'ToChallenge' | translate }}
     </button>
 
-    <button (click)="deleteChallengeCall()" class="btn btn-sm btn-relief-danger btn-glow" *ngIf="currentUser?.username == challengeCall.username">
+    <button (click)="deleteChallengeCall()" class="btn btn-sm btn-danger btn-glow" *ngIf="currentUser?.username == challengeCall.username">
       <i data-feather="x"></i>
     </button>
 
-    <span class="font-small-2 text-white badge badge-light-primary">
+    <span class="font-small-2 text-white badge bg-primary-darken">
       {{ challengeCall.created }}
     </span>
   </div>

@@ -23,6 +23,8 @@ import { ChallengeResultsCardComponent } from './components/challenge-results-ca
 import { CountdownModule } from '@ciri/ngx-countdown'
 import { DragulaModule } from 'ng2-dragula';
 import { MathjaxModule } from '../../shared/third-part-modules/mathjax/mathjax.module';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { PaginationModule } from '../../shared/components/pagination/pagination.module';
 
 
 const routes: Routes = [
@@ -68,6 +70,8 @@ const routes: Routes = [
     CountdownModule,
     DragulaModule.forRoot(),
     MathjaxModule,
+    NgxSkeletonLoaderModule.forRoot(),
+    PaginationModule,
   ],
   providers: [ChallengeResolver],
 })
