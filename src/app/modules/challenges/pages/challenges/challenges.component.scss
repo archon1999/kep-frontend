@@ -1,26 +1,93 @@
-@import 'bootstrap/scss/mixins'; 
+@import 'bootstrap/scss/mixins';
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
 
-section.challenges {
-  --bg-gradient: linear-gradient(to right, #5DA2EE, #8A61B3);
-  --box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1) !important;
-  --bg: #a5cdfba2;
+$bg-primary: #5456da;
+$bg-darken: #484ed0;
+$bg-lighten: #6c6aef;
+$bg-gradient-primary: linear-gradient(to right, $bg-primary, $bg-lighten);
+$bg-gradient-primary-reversed: linear-gradient(to right, $bg-lighten, $bg-primary);
+
+$dark-layout-bg-primary: rgba(47, 45, 161, 0.8);
+$dark-layout-bg-lighten: #484ed0;
+$dark-layout-bg-darken: rgba(47, 45, 161, 0.8);
+$dark-layout-bg-gradient-primary: linear-gradient(to right, $dark-layout-bg-primary, $dark-layout-bg-lighten);
+$dark-layout-bg-gradient-primary-reversed: linear-gradient(to right, $dark-layout-bg-lighten, $dark-layout-bg-primary);
+
+::ng-deep section.challenges {
+  --bg-primary: #{$bg-primary};
+  --bg-darken: #{$bg-darken};
+  --bg-lighten: #{$bg-lighten};
+  --bg-gradient: #{$bg-gradient-primary};
+  --bg-gradient-reversed: #{$bg-gradient-primary-reversed};
+
+  .text-primary {
+    color: var(--bg-primary) !important;
+  }
+
+  .badge-primary, .bg-primary {
+    background-color: var(--bg-primary) !important;
+  }
+
+  .bg-primary-lighten {
+    background-color: var(--bg-lighten) !important;
+  }
+
+  .bg-primary-darken {
+    background-color: var(--bg-darken) !important;
+  }
+
+  .bg-gradient-primary {
+    background: var(--bg-gradient) !important;
+  }
+
+  .bg-gradient-primary-reversed {
+    background: var(--bg-gradient-reversed) !important;
+  }
+
+  .top-rating div, .top-rating span {
+    color: #fff !important;
+  }
+
+  .ng-select-container {
+    background: var(--bg-primary);
+
+    .ng-value {
+      background: inherit !important;
+    }
+  }
+
+  .btn-primary {
+    color: #fff;
+    box-shadow: 0 0 20px var(--bg-lighten);
+    border-radius: 10px;
+    background-color: var(--bg-darken) !important;
+
+    &:hover {
+      background-color: var(--bg-lighten) !important;
+    }
+  }
+
+  .pagination-primary .page-item.active .page-link {
+    background: var(--bg-primary) !important;
+  }
 }
 
 ::ng-deep .dark-layout section.challenges {
-  --bg-gradient: linear-gradient(to right, #1E599B, #5C1E9B);
-  --box-shadow: 0 4px 24px 0 rgba(255, 255, 255, 0.1) !important;
-  --bg: #1a3567;
+  --bg-primary: #{$dark-layout-bg-primary};
+  --bg-darken: #{$dark-layout-bg-darken};
+  --bg-lighten: #{$dark-layout-bg-lighten};
+  --bg-gradient: #{$dark-layout-bg-gradient-primary};
+  --bg-gradient-reversed: #{$dark-layout-bg-gradient-primary-reversed};
+
+  .top-rating {
+    background: var(--bg-primary) !important;
+  }
 }
 
 .avatar-lg {
-  background: #5c8ec8a2;
-  box-shadow: var(--box-shadow);
-}
-
-::ng-deep .dark-layout .challenges .avatar-lg {
-  background: #1a3567;
+  background: var(--bg-darken);
+  box-shadow: 0 0 10px var(--bg-lighten);
 }
 
 .challenges-page-top {
@@ -30,22 +97,21 @@ section.challenges {
   width: calc(100% + 2rem);
   z-index: -1;
   height: 650px;
-  // background: linear-gradient(to right, #4389A2, #5C258D) !important;
   background: var(--bg-gradient);
 
   @include media-breakpoint-down(lg) {
     width: calc(100% + 1.2rem);
-  }  
+  }
 }
 
 .card.card-info {
   border: none;
   opacity: 1;
   height: 150px;
-  box-shadow: var(--box-shadow);
+  box-shadow: 0 0 10px var(--bg-lighten) !important;
   background: inherit !important;
-  background-image: linear-gradient(rgba(0,0,0,var(--bg-filter-opacity)),rgba(0,0,0,var(--bg-filter-opacity))), var(--bg-img) !important;
-  
+  background-image: linear-gradient(rgba(0, 0, 0, var(--bg-filter-opacity)), rgba(0, 0, 0, var(--bg-filter-opacity))), var(--bg-img) !important;
+
   &:hover {
     transform: scale(1.05);
   }
@@ -70,42 +136,26 @@ section.challenges {
 }
 
 .card.in-queue {
-  background: #A5CDFB;
+  background-size: 200% auto;
+  background-color: var(--bg-primary) !important;
 
   .card-footer {
-    border-top: 1px solid #1E599B;
+    border-top: 1px solid var(--bg-darken);
   }
-}
-
-::ng-deep .dark-layout .card.in-queue {
-  background: #1a3567 !important;
 }
 
 .card.top-rating {
   border: none;
-  box-shadow: var(--box-shadow) !important;
-  background: #7fbbffa2;;
+  box-shadow: 0 0 10px var(--bg-lighten) !important;
+  background: var(--bg-darken);
 
   .avatar {
-    background: #5e7db5 !important;
-    box-shadow: 0 0 5px #5e7db5;
+    background: var(--bg-darken) !important;
+    box-shadow: 0 0 5px var(--bg-lighten);
   }
 
   thead tr {
     background-size: 200% auto;
-  }
-    
-  button {
-    color: #fff;
-    box-shadow: 0 0 20px #1E599B;
-    border-radius: 10px;
-    background: linear-gradient(to right, #1E599B, #1E599B) !important;
-  }
-
-  button:hover {
-    background-position: right center;
-    color: #fff;
-    text-decoration: none;
   }
 
   td {
@@ -115,28 +165,10 @@ section.challenges {
   th, td {
     border-top: none !important;
     border-bottom: none !important;
-  }  
-}
-
-::ng-deep .dark-layout .card.top-rating {
-  background: var(--bg) !important;
+  }
 }
 
 ::ng-deep .slider-custom .noUi-connect {
-  background: linear-gradient(to right,#1E599B, 	#1E599B) !important;
-  box-shadow: 0 0 20px #1E599B;
-}
-
-.btn-new-challenge { 
-  background: linear-gradient(to right, 	#1E599B, #1E599B) !important;
-  background-size: 200% auto;
-  box-shadow: 0 0 20px #4e5e99;
-  color: #fff;
-}
-
-.btn-new-challenge:hover {
-  background-position: right center;
-  color: #fff;
-  text-decoration: none;
-  background: linear-gradient(to right, #2c66a7, #2b77cf) !important;
+  background: var(--bg-gradient) !important;
+  box-shadow: 0 0 10px var(--bg-primary);
 }
