@@ -16,7 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-challenge',
   templateUrl: './challenge.component.html',
-  styleUrls: ['./challenge.component.scss']
+  styleUrls: ['./challenge.component.scss', '../../challenges.styles.scss']
 })
 export class ChallengeComponent implements OnInit, OnDestroy {
 
