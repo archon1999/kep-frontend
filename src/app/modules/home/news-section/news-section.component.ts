@@ -3,8 +3,12 @@ import { fadeInRightOnEnterAnimation } from 'angular-animations';
 import { SwiperComponent } from 'ngx-useful-swiper';
 import { SwiperOptions } from 'swiper';
 import { HomeService } from '../home.service';
+import { PageResult } from '../../../shared/page-result';
+
+const NEWS_MAX_LIMIT = 50;
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'news-section',
   templateUrl: './news-section.component.html',
   styleUrls: ['./news-section.component.scss'],
@@ -14,10 +18,10 @@ export class NewsSectionComponent implements OnInit {
 
   public lastNews: Array<any> = [];
   public newsCurrentPage = 1;
-  public NEWS_MAX_LIMIT = 50;
+  public skeletonVisible = true;
 
   public newsSwiperConfig: SwiperOptions = {
-    direction: "vertical",
+    direction: 'vertical',
     slidesPerView: 3,
     spaceBetween: 10,
   };
@@ -26,25 +30,29 @@ export class NewsSectionComponent implements OnInit {
 
   constructor(
     public service: HomeService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
-    this.service.getNews(1, 4)
-      .subscribe((result: any) => {
+    this.service.getNews(1, 4).subscribe(
+      (result: PageResult) => {
+        this.skeletonVisible = false;
         this.lastNews = result.data;
         this.newsSwiper.swiper.on('slideChange', () => {
-          var index = this.newsSwiper.swiper.realIndex;
-          if (index + 3 == this.lastNews.length && index < this.NEWS_MAX_LIMIT) {
-            this.newsCurrentPage++;
-            this.service.getNews(this.newsCurrentPage + 1, 2)
-              .subscribe((result: any) => {
-                for (let news of result.data) {
-                  this.lastNews.push(news);
+            const index = this.newsSwiper.swiper.realIndex;
+            if (index + 3 === this.lastNews.length && index < NEWS_MAX_LIMIT) {
+              this.newsCurrentPage++;
+              this.service.getNews(this.newsCurrentPage + 1, 2).subscribe(
+                // tslint:disable-next-line:no-shadowed-variable
+                (result: PageResult) => {
+                  this.lastNews = this.lastNews.concat(result.data);
                 }
-              })
+              );
+            }
           }
-        });
-      });
+        );
+      }
+    );
   }
 
 }

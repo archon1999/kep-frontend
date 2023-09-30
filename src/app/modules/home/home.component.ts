@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreConfig } from '@core/types';
 import { TranslateService } from '@ngx-translate/core';
@@ -11,7 +10,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SwiperOptions } from 'swiper';
 import { Blog } from '../blog/blog.models';
-import { Contest } from '../contests/contests.models';
 import { HomeService } from './home.service';
 
 @Component({
@@ -58,6 +56,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public lastPostsPage = 1;
 
   public topUsers: Array<User> = [];
+  public topRatingSkeletonVisible = true;
 
   public coreConfig: CoreConfig;
 
@@ -73,8 +72,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     public service: HomeService,
     public authService: AuthenticationService,
     public translateService: TranslateService,
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -114,12 +112,12 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe((result: any) => {
         this.lastPosts = result.data;
         this.postsSwiper.swiper.on('slideChange', () => {
-          var index = this.postsSwiper.swiper.realIndex;
+          const index = this.postsSwiper.swiper.realIndex;
           if (index + 2 >= this.lastPosts.length && index < 50) {
             this.lastPostsPage++;
             this.service.getLastPosts(this.lastPostsPage, 3)
               .subscribe((result: any) => {
-                for (let post of result.data) {
+                for (const post of result.data) {
                   this.lastPosts.push(post);
                 }
               });
@@ -130,8 +128,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.service.getTopUsers()
       .subscribe((result: any) => {
         this.topUsers = result;
+        this.topRatingSkeletonVisible = false;
       });
-
   }
 
   ngOnDestroy(): void {

@@ -28,7 +28,7 @@ export class ActivitySectionComponent implements OnInit, OnDestroy {
       draws: 0,
       losses: 0,
     },
-    date: '',
+    date: new Date(),
   };
 
   private _unsubscribeAll = new Subject();
