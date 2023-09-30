@@ -25,6 +25,9 @@ import { DragulaModule } from 'ng2-dragula';
 import { MathjaxModule } from '../../shared/third-part-modules/mathjax/mathjax.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { PaginationModule } from '../../shared/components/pagination/pagination.module';
+import { ChallengesRatingComponent } from './pages/challenges-rating/challenges-rating.component';
+import { ContentHeaderModule } from '../../layout/components/content-header/content-header.module';
+import { ContestantViewModule } from '../../shared/components/contestant-view/contestant-view.module';
 
 
 const routes: Routes = [
@@ -40,7 +43,11 @@ const routes: Routes = [
     resolve: {
       challenge: ChallengeResolver,
     }
-  }
+  },{
+    path: 'rating',
+    component: ChallengesRatingComponent,
+    data: { title: 'Challenges.ChallengesRating' },
+  },
 ];
 
 @NgModule({
@@ -50,7 +57,8 @@ const routes: Routes = [
     ChallengeCardComponent,
     NewChallengeButtonComponent,
     ChallengeComponent,
-    ChallengeResultsCardComponent
+    ChallengeResultsCardComponent,
+    ChallengesRatingComponent
   ],
   imports: [
     CommonModule,
@@ -72,6 +80,8 @@ const routes: Routes = [
     MathjaxModule,
     NgxSkeletonLoaderModule.forRoot(),
     PaginationModule,
+    ContentHeaderModule,
+    ContestantViewModule,
   ],
   providers: [ChallengeResolver],
 })
