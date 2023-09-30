@@ -22,6 +22,15 @@
           <div class="card-body">
             <h4><strong>{{ 'TopRating' | translate }}</strong></h4>
 
+            <div class="item mt-3" *ngIf="topRatingSkeletonVisible">
+              <ngx-skeleton-loader
+                count="3"
+                animation="pulse"
+                appearance="line"
+                [theme]="{height: '30px', width: '250px', background: 'var(--skeleton-color)'}"
+              ></ngx-skeleton-loader>
+            </div>
+
             <div class="mt-3" *ngIf="topUsers.length > 0">
               <img width="32" height="32" src="assets/images/icons/medal-award-1.png">
               <user-popover [username]="topUsers[0].username" [streak]="topUsers[0].streak"></user-popover>
