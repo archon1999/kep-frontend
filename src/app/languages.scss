@@ -55,7 +55,7 @@
 
 @include define-badge-lang(
   $name: 'html',
-  $background: linear-gradient(141deg, #ff5959d6, 50%, #e04f5f),
+  $background: linear-gradient(141deg, #ff5959d6, #e04f5f),
   $box-shadow: #ff5959d6
 );
 
@@ -67,26 +67,26 @@
 
 @include define-badge-lang(
   $name: 'bash',
-  $background: linear-gradient(45deg, #3c4548, 50%, #7b8e94),
+  $background: linear-gradient(45deg, #3c4548, #7b8e94),
   $box-shadow: 0px 0px 10px #3c4548
 );
 
 @include define-badge-lang(
   $name: 'cs',
-  $background: linear-gradient(45deg, #68217a, 50%, #953dac),
+  $background: linear-gradient(45deg, #68217a, #953dac),
   $box-shadow: 0px 0px 10px #953dac
 );
 
 @include define-badge-lang(
   $name: 'js',
-  $background: linear-gradient(45deg, #e8d44d, 50%, #f7d724),
+  $background: linear-gradient(45deg, #e8d44d, #f7d724),
   $background-dark: linear-gradient(45deg, #b4a53c, #e8d44d),
   $box-shadow: 0px 0px 10px #e8d44d
 );
 
 @include define-badge-lang(
   $name: 'php',
-  $background: linear-gradient(45deg, #7377ad, 50%, #7377ad),
+  $background: linear-gradient(45deg, #7377ad, #7377ad),
   $box-shadow: 0px 0px 10px #7377ad
 );
 
