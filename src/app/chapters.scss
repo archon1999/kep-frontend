@@ -135,10 +135,10 @@
 
 @include define-chapter-colors(
   $id: 14,
-  $gradient-color: linear-gradient(141deg, #ff5959d6, #e04f5f),
-  $gradient-dark-color: linear-gradient(141deg, #d2424e, #76292f),
-  $color: #ff5959d6,
-  $dark-color: #76292f,
+  $gradient-color: linear-gradient(141deg, #ff692c, #e34f26),
+  $gradient-dark-color: linear-gradient(141deg, #963419, #d9541e),
+  $color: #ff692c,
+  $dark-color: #b03d1d,
 );
 
 @include define-chapter-colors(
