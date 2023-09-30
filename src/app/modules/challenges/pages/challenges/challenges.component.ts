@@ -7,13 +7,13 @@ import {
   fadeInUpOnEnterAnimation,
   fadeOutOnLeaveAnimation
 } from 'angular-animations';
-import { AuthenticationService } from '../../../../auth/service';
+import { AuthenticationService } from 'app/auth/service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { User } from '../../../users/users.models';
 import { Challenge, ChallengeCall, ChallengesRating } from '../../models/challenges.models';
 import { ChallengesService } from '../../services/challenges.service';
-import { Chapter } from '../../../testing/testing.models';
+import { Chapter } from 'app/modules/testing/testing.models';
+import { CurrentUser } from '../../../../shared/components/classes/current-user.component';
+import { PageResult } from '../../../../shared/page-result';
 
 interface NewChallengeCall {
   timeSeconds: number;
@@ -32,10 +32,18 @@ interface NewChallengeCall {
     fadeInUpOnEnterAnimation({ duration: 3000 }),
   ],
 })
-export class ChallengesComponent implements OnInit, OnDestroy {
-  public challengesRating: Array<ChallengesRating> = [];
+export class ChallengesComponent extends CurrentUser implements OnInit, OnDestroy {
   public challengeCalls: Array<ChallengeCall> = [];
+  public challengeCallsSkeletonVisible = true;
+
+  public challengesRating: Array<ChallengesRating> = [];
+  public challengesRatingSkeletonVisible = true;
+
   public challenges: Array<Challenge> = [];
+  public challengesPage = 1;
+  public challengesTotal = 0;
+  public challengesSkeletonVisible = true;
+
   public myChallenges = false;
 
   public chapters: Chapter[] = [];
@@ -45,24 +53,18 @@ export class ChallengesComponent implements OnInit, OnDestroy {
     questionsCount: 6,
   };
 
-  public currentUser: User;
-
   private _intervalId: any;
-  private _unsubscribeAll = new Subject();
 
   constructor(
     public service: ChallengesService,
     public authService: AuthenticationService,
     public router: Router,
   ) {
+    super(authService);
   }
 
   ngOnInit(): void {
-    this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (user: any) => {
-        this.currentUser = user;
-      }
-    );
+    super.ngOnInit();
 
     this.service.getChapters().subscribe(
       (chapters: Array<Chapter>) => {
@@ -72,6 +74,7 @@ export class ChallengesComponent implements OnInit, OnDestroy {
 
     this.service.getChallengesRating(1).subscribe(
       (result: any) => {
+        this.challengesRatingSkeletonVisible = false;
         this.challengesRating = result.data;
       }
     );
@@ -83,13 +86,11 @@ export class ChallengesComponent implements OnInit, OnDestroy {
   }
 
   updateChallenges() {
-    let username = null;
-    if (this.myChallenges) {
-      username = this.currentUser?.username;
-    }
-    this.service.getChallenges(1, username).subscribe(
-      (result: any) => {
+    this.service.getChallenges(this.challengesPage, null, 7).subscribe(
+      (result: PageResult) => {
+        this.challengesSkeletonVisible = false;
         this.challenges = result.data;
+        this.challengesTotal = result.total;
       }
     );
   }
@@ -107,11 +108,17 @@ export class ChallengesComponent implements OnInit, OnDestroy {
             this.challengeCalls.push(challengeCall);
           }
         }
+        this.challengeCallsSkeletonVisible = false;
       }
     );
   }
 
   newChallenge() {
+    if (!this.currentUser) {
+      this.router.navigateByUrl('login');
+      return;
+    }
+
     this.service.newChallengeCall(
       this.newChallengeCall.timeSeconds,
       this.newChallengeCall.questionsCount,
