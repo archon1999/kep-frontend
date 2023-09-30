@@ -61,6 +61,7 @@ $dark-layout-bg-gradient-primary-reversed: linear-gradient(to right, $dark-layou
     color: #fff;
     box-shadow: 0 0 20px var(--bg-lighten);
     border-radius: 10px;
+    border: none;
     background-color: var(--bg-darken) !important;
 
     &:hover {
@@ -82,6 +83,10 @@ $dark-layout-bg-gradient-primary-reversed: linear-gradient(to right, $dark-layou
 
   .top-rating {
     background: var(--bg-primary) !important;
+
+    thead th {
+      background: var(--bg-darken) !important;
+    }
   }
 }
 
