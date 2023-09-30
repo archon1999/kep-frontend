@@ -8,6 +8,7 @@ import { ChallengeCall } from '../../models/challenges.models';
 import { ChallengesService } from '../../services/challenges.service';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'challenge-call-card',
   templateUrl: './challenge-call-card.component.html',
   styleUrls: ['./challenge-call-card.component.scss']

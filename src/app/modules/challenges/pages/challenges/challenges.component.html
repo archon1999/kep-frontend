@@ -130,7 +130,18 @@
                   [(ngModel)]="newChallengeCall.timeSeconds"
                   [ngClass]="'circle-filled slider-custom'"
                 ></nouislider>
-    
+
+                <h5 class="mb-1 text-white">{{ 'Chapters' | translate }}</h5>
+                <ng-select
+                  [multiple]="true"
+                  [(ngModel)]="selectedChapters"
+                >
+                  <ng-option *ngFor="let chapter of chapters" [value]="chapter.id">
+                    <span class="badge text-white bg-gradient-chapter-{{ chapter.id }}">
+                      {{ chapter.title }}
+                    </span>
+                  </ng-option>
+                </ng-select>
                 <div class="text-center">
                   <button (click)="newChallenge()" class="btn btn-new-challenge mt-2 btn-sm">
                     {{ 'NewChallenge' | translate }}
@@ -154,8 +165,8 @@
             </button>
           </div>
     
-          <div class="row">
-            <div *ngFor="let challenge of challenges" class="col-lg-12 col-12">
+          <div class="row mb-2">
+            <div *ngFor="let challenge of challenges" class="col-12">
               <a *ngIf="myChallenges;else elseBlock" routerLink="challenge/{{ challenge.id }}">
                 <challenge-card [challenge]="challenge"></challenge-card>
               </a>
@@ -224,3 +235,4 @@
 </section>
 
 <nouslider-css></nouslider-css>
+<ng-select-css></ng-select-css>
