@@ -1,0 +1,158 @@
+@mixin define-chapter-colors($id, $gradient-color, $gradient-dark-color, $color, $dark-color) {
+  .bg-gradient-chapter-#{$id} {
+    color: #fff;
+    background: $gradient-color;
+  }
+
+  .dark-layout .bg-gradient-chapter-#{$id} {
+    color: #fff;
+    background: $gradient-dark-color;
+  }
+
+  .text-chapter-#{$id} {
+    color: $color;
+  }
+
+  .dark-layout .text-chapter-#{$id} {
+    color: $color;
+  }
+
+  .bg-chapter-#{$id} {
+    background: $color;
+    box-shadow: 0 0 10px $color !important;
+  }
+
+  .dark-layout .bg-chapter-#{$id} {
+    background: $dark-color;
+    box-shadow: 0 0 10px $dark-color !important;
+  }
+
+}
+
+@include define-chapter-colors(
+  $id: 1,
+  $gradient-color: linear-gradient(141deg, #3b7aa9, #ffe974),
+  $gradient-dark-color: linear-gradient(141deg, #25445b, #b9ae5e),
+  $color: #3b7aa9,
+  $dark-color: #3b7aa9,
+);
+
+@include define-chapter-colors(
+  $id: 2,
+  $gradient-color: linear-gradient(141deg, #3b7aa9, #ffe974),
+  $gradient-dark-color: linear-gradient(141deg, #25445b, #b9ae5e),
+  $color: #3b7aa9,
+  $dark-color: #3b7aa9,
+);
+
+@include define-chapter-colors(
+  $id: 3,
+  $gradient-color: linear-gradient(141deg, #1b91c3, #36b3e9),
+  $gradient-dark-color: linear-gradient(141deg, #25445b, #b9ae5e),
+  $color: #1b91c3,
+  $dark-color: #1b91c3,
+);
+
+@include define-chapter-colors(
+  $id: 4,
+  $gradient-color: linear-gradient(141deg, #092e20, #6b8f82),
+  $gradient-dark-color: linear-gradient(141deg, #092e20, #5b736a),
+  $color: #587b6e,
+  $dark-color: #5b736a,
+);
+
+@include define-chapter-colors(
+  $id: 5,
+  $gradient-color: linear-gradient(141deg, #00ced5c5, #02abaf),
+  $gradient-dark-color: linear-gradient(141deg, #064d52, #02989b),
+  $color: #00cfd5,
+  $dark-color: #02abaf,
+);
+
+@include define-chapter-colors(
+  $id: 6,
+  $gradient-color: linear-gradient(141deg, #6a81ff, #6a80ffae),
+  $gradient-dark-color: linear-gradient(141deg, #313c76, #5264c5),
+  $color: #6a81ff,
+  $dark-color: #5264c5,
+);
+
+@include define-chapter-colors(
+  $id: 7,
+  $gradient-color: linear-gradient(-45deg, rgba(234, 134, 71, 0.849), 50%, #ffad3bec),
+  $gradient-dark-color: linear-gradient(45deg, #936028, #7e5420),
+  $color: #ffac3b,
+  $dark-color: #7e5420,
+);
+
+@include define-chapter-colors(
+  $id: 8,
+  $gradient-color: linear-gradient(-45deg, #8d9ae5, #76d8fd),
+  $gradient-dark-color: linear-gradient(-45deg, #46507b, #508ca7),
+  $color: #76d8fd,
+  $dark-color: #30485e,
+);
+
+@include define-chapter-colors(
+  $id: 9,
+  $gradient-color: linear-gradient(141deg, #ff5959d6, #e04f5f),
+  $gradient-dark-color: linear-gradient(141deg, #d2424e, #76292f),
+  $color: #ff5959,
+  $dark-color: #76292f,
+);
+
+@include define-chapter-colors(
+  $id: 10,
+  $gradient-color: linear-gradient(141deg, #655f9a, #53a5c9),
+  $gradient-dark-color: linear-gradient(141deg, #353451, #5a8bb7),
+  $color: #53a5c9,
+  $dark-color: #5a8bb7,
+);
+
+@include define-chapter-colors(
+  $id: 11,
+  $gradient-color: linear-gradient(141deg, #623f98, #8fd3ed),
+  $gradient-dark-color: linear-gradient(141deg, #412965, #0579a7),
+  $color: #0579a7,
+  $dark-color: #0579a7,
+);
+
+@include define-chapter-colors(
+  $id: 12,
+  $gradient-color: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%),
+  $gradient-dark-color: linear-gradient(135deg, #4889b4 0%, #5e61a7 100%),
+  $color: #8BC6EC,
+  $dark-color: #4889b4,
+);
+
+@include define-chapter-colors(
+  $id: 13,
+  $gradient-color: linear-gradient(45deg, #6295cb, #00427e),
+  $gradient-dark-color: linear-gradient(45deg, #00294d, #00427e),
+  $color: #74b1f1,
+  $dark-color: #3973b2,
+);
+
+@include define-chapter-colors(
+  $id: 14,
+  $gradient-color: linear-gradient(141deg, #ff5959d6, #e04f5f),
+  $gradient-dark-color: linear-gradient(141deg, #d2424e, #76292f),
+  $color: #ff5959d6,
+  $dark-color: #76292f,
+);
+
+@include define-chapter-colors(
+  $id: 15,
+  $gradient-color: linear-gradient(45deg, #2465f1, #214ce5),
+  $gradient-dark-color: linear-gradient(45deg, #173c9f, #214ce5),
+  $color: #2465f1,
+  $dark-color: #2465f1,
+);
+
+@include define-chapter-colors(
+  $id: 16,
+  $gradient-color: linear-gradient(45deg, #e8d44d, #f7d724),
+  $gradient-dark-color: linear-gradient(45deg, #a78d23, #e8d44d),
+  $color: #cebb3a,
+  $dark-color: #b4a53c,
+);

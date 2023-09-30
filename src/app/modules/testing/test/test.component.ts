@@ -7,7 +7,7 @@ import { TestingService } from '../testing.service';
 
 @Component({
   templateUrl: './test.component.html',
-  styleUrls: ['./test.component.scss', '../chapters.scss'],
+  styleUrls: ['./test.component.scss'],
   animations: [
     fadeInOnEnterAnimation({  duration: 3000 }),
   ]

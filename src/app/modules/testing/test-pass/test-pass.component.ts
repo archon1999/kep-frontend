@@ -14,7 +14,7 @@ import { DragulaService } from 'ng2-dragula';
 @Component({
   selector: 'app-test-pass',
   templateUrl: './test-pass.component.html',
-  styleUrls: ['./test-pass.component.scss', '../chapters.scss'],
+  styleUrls: ['./test-pass.component.scss'],
   animations: [
     fadeInLeftAnimation({ duration: 3000 }),
     fadeInRightAnimation({ duration: 2500 }),

@@ -14,6 +14,10 @@
       <i data-feather="activity"></i>
       {{ challengeCall.questionsCount }}
     </span>
+
+    <span *ngFor="let chapter of challengeCall.chapters" class="badge ml-25 mb-25 bg-chapter-{{ chapter.id }}">
+      {{ chapter.title }}
+    </span>
   </div>
 
   <div class="card-footer d-flex justify-content-between">
