@@ -11,19 +11,23 @@
               <i class="font-medium-3" data-feather="zap"></i>
             </div>
           </div>
-      
-          <div [@fadeInUpOnEnter] class="avatar mr-2 avatar-lg">
-            <div class="avatar-content" ngbTooltip="{{ 'Profile' | translate }}">
-              <i class="font-medium-3" data-feather="bar-chart-2"></i>
+
+          <a routerLink="profile">
+            <div [@fadeInUpOnEnter] class="avatar mr-2 avatar-lg">
+              <div class="avatar-content" ngbTooltip="{{ 'Profile' | translate }}">
+                <i class="font-medium-3" data-feather="bar-chart-2"></i>
+              </div>
             </div>
-          </div>
-      
-          <div [@fadeInUpOnEnter] class="avatar avatar-lg">
-            <div class="avatar-content" ngbTooltip="{{ 'Rating' | translate }}">
-              <i class="font-medium-3" data-feather="bar-chart"></i>
+          </a>
+
+          <a routerLink="rating">
+            <div [@fadeInUpOnEnter] class="avatar avatar-lg">
+              <div class="avatar-content" ngbTooltip="{{ 'Rating' | translate }}">
+                <i class="font-medium-3" data-feather="bar-chart"></i>
+              </div>
             </div>
-          </div>
-    
+          </a>
+
           <h2 [@fadeInUpOnEnter] class="mt-4">
             <span class="text-white">{{ 'Challenges' | translate }}</span>
           </h2>
@@ -91,10 +95,21 @@
             </div>
     
             <div class="card-body">
+              <div class="row" *ngIf="challengeCallsSkeletonVisible">
+                <div class="col-xl-4 col-md-6 col-12" *ngFor="let item of [].constructor(3)">
+                  <ngx-skeleton-loader
+                    count="2"
+                    animation="pulse"
+                    appearance="line"
+                    [theme]="{height: '185px', background: 'var(--bg-gradient)'}"
+                  ></ngx-skeleton-loader>
+                </div>
+              </div>
+
               <div class="row">
                 <div
                   *ngFor="let challengeCall of challengeCalls"
-                  class="col-xl-4 col-lg-6 col-md-6 col-sm-6"
+                  class="col-xl-4 col-md-6 col-12"
                   [@fadeInOnEnter]
                   [@fadeOutOnLeave]>
                   <challenge-call-card
@@ -105,7 +120,7 @@
               </div>
             </div>
     
-            <div class="card-footer" *ngIf="currentUser">
+            <div class="card-footer">
               <div class="col-lg-6 col-md-8 col-sm-12 offset-lg-3 offset-md-2">
                 <h5 class="mb-2 text-white">{{ 'Questions' | translate }}</h5>
                 <nouislider
@@ -143,7 +158,7 @@
                   </ng-option>
                 </ng-select>
                 <div class="text-center">
-                  <button (click)="newChallenge()" class="btn btn-new-challenge mt-2 btn-sm">
+                  <button (click)="newChallenge()" class="btn btn-primary btn-sm mt-2">
                     {{ 'NewChallenge' | translate }}
                   </button>
                 </div>
@@ -156,15 +171,24 @@
     
         <div class="col-lg-8 col-md-12 col-sm-12"> 
     
-          <div *ngIf="currentUser" class="mb-50">
-            <button *ngIf="!myChallenges" class="btn btn-new-challenge btn-sm" (click)="myChallenges=true;updateChallenges()">
-              {{ 'MyChallenges' | translate }}
-            </button>
-            <button *ngIf="myChallenges" class="btn btn-new-challenge btn-sm" (click)="myChallenges=false;updateChallenges()">
-              {{ 'All' | translate }}
-            </button>
+<!--          <div *ngIf="currentUser" class="mb-50">-->
+<!--            <button *ngIf="!myChallenges" class="btn btn-new-challenge btn-sm" (click)="myChallenges=true;updateChallenges()">-->
+<!--              {{ 'MyChallenges' | translate }}-->
+<!--            </button>-->
+<!--            <button *ngIf="myChallenges" class="btn btn-new-challenge btn-sm" (click)="myChallenges=false;updateChallenges()">-->
+<!--              {{ 'All' | translate }}-->
+<!--            </button>-->
+<!--          </div>-->
+
+          <div class="item" *ngIf="challengesSkeletonVisible">
+            <ngx-skeleton-loader
+              count="8"
+              animation="pulse"
+              appearance="line"
+              [theme]="{height: '92px', background: 'var(--bg-gradient)'}"
+            ></ngx-skeleton-loader>
           </div>
-    
+
           <div class="row mb-2">
             <div *ngFor="let challenge of challenges" class="col-12">
               <a *ngIf="myChallenges;else elseBlock" routerLink="challenge/{{ challenge.id }}">
@@ -175,13 +199,17 @@
               </ng-template>
             </div>
           </div>
-    
+
+          <pagination
+            [(page)]="challengesPage"
+            [pageSize]="7"
+            [collectionSize]="challengesTotal"
+            [maxSize]="5"
+            (pageChange)="updateChallenges()">
+          </pagination>
         </div>
     
-        <div class="col-lg-4 col-md-12 col-sm-12 mt-4" [ngClass]="{
-          'mt-lg-2 pt-lg-75': currentUser,
-          'mt-lg-0': !currentUser
-        }">
+        <div class="col-lg-4 col-md-12 col-sm-12 mt-md-0 mt-2">
           <div class="card top-rating">
             <div class="card-header d-flex justify-content-start">
               <div class="avatar badge-glow p-50 m-0">
@@ -189,13 +217,13 @@
                   <i data-feather="award" class="font-medium-5"></i>
                 </div>
               </div>
-              <h4 class="mt-1 pl-1">{{ 'RATING' | translate }}</h4>
+              <h4 class="text-white mt-1 pl-1">{{ 'RATING' | translate }}</h4>
             </div>
-    
+
             <div class="table-responsive">
               <table class="table">
                 <thead>
-                  <tr class="text-white bg-gradient-info">
+                  <tr class="text-white bg-gradient-primary">
                     <th>#</th>
                     <th>{{ 'User' | translate }}</th>
                     <th><i data-feather="bar-chart"></i></th>
@@ -203,9 +231,8 @@
                 </thead>
                 <tbody>
                   <tr
-                    *ngFor="let challengesRating of challengesRating; index as i"
-                    class="text-{{ challengesRating.rankTitle | challengesRankColor }}">
-                    <td>
+                    *ngFor="let challengesRating of challengesRating; index as i">
+                    <td class="text-white">
                       {{ i+1 }}
                     </td>
                     <td>
@@ -219,12 +246,21 @@
                   </tr>
                 </tbody>
               </table>
+
+              <div class="item" *ngIf="challengesRatingSkeletonVisible">
+                <ngx-skeleton-loader
+                  count="10"
+                  animation="pulse"
+                  appearance="line"
+                  [theme]="{height: '40px', background: 'var(--bg-primary)'}"
+                ></ngx-skeleton-loader>
+              </div>
             </div>
     
             <div class="card-footer text-center">
-              <button class="btn btn-sm btn-relief-primary round">
+              <a routerLink="rating" class="btn btn-sm btn-primary round">
                 {{ 'OverallRating' | translate }}
-              </button>
+              </a>
             </div>
           </div>
         </div>
