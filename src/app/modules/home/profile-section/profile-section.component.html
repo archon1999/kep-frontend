@@ -1,4 +1,13 @@
 <h3 class="mb-2 mt-2 font-weight-bolder">{{ 'Ratings' | translate }} </h3>
+<div class="item" *ngIf="skeletonVisible">
+  <ngx-skeleton-loader
+    count="1"
+    animation="pulse"
+    appearance="line"
+    [theme]="{height: '80px', background: 'var(--skeleton-color)'}"
+  ></ngx-skeleton-loader>
+</div>
+
 <div [@fadeInOnEnter] *ngIf="userRatings" class="d-flex justify-content-between mb-4">
   <div class="d-block">
     <h6 class="font-weight-bolder">

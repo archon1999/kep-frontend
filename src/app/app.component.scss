@@ -19,7 +19,7 @@
     .badge.badge-light-#{$name} {
       color: $color;
       background-color: $bg-light-color;
-    } 
+    }
   }
 }
 
@@ -205,4 +205,12 @@ pre {
 
 .ng-invalid.ng-touched {
   border-color: #ea5455 !important;
+}
+
+:root {
+  --skeleton-color: #dedede;
+}
+
+:root .dark-layout {
+  --skeleton-color: #273357;
 }
