@@ -26,6 +26,7 @@ import { SlideContestsComponent } from './header-section/slides/slide-contests/s
 import { UsersChartModule } from '../../shared/components/users-chart/users-chart.module';
 import { CalendarSectionComponent } from './calendar-section/calendar-section.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 const routes: Routes = [
   {
@@ -66,7 +67,8 @@ const routes: Routes = [
     NgbTooltipModule,
     ContestCardModule,
     UsersChartModule,
-    FullCalendarModule
+    FullCalendarModule,
+    NgxSkeletonLoaderModule,
   ],
   exports: [
     HomeComponent
