@@ -89,8 +89,8 @@ export class NavbarComponent extends CurrentUser implements OnInit, OnDestroy {
       this.selectedLanguage = language;
       this._translateService.use(language);
       this._coreConfigService.setConfig({ app: { appLanguage: language } }, { emitEvent: true });
-      // location.reload();
-      this.refreshPage();
+      location.reload();
+      // this.refreshPage();
     });
   }
 
