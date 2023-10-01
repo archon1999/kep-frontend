@@ -2,6 +2,12 @@
   background: var(--bg-gradient);
   border: none;
   border-radius: 10px;
+
+  ::ng-deep {
+    .text-blue, .text-primary {
+      color: #ffffff !important;
+    }
+  }
 }
 
 td:nth-child(1) {
