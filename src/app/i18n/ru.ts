@@ -387,6 +387,8 @@ export const locale = {
     Holidays: 'Праздники',
     CheckInput: 'Check input',
     PartialSolvable: 'Частичное решение',
+    LastChallenges: 'Последние вызовы',
+    RatingChanges: 'Изменения рейтинга',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',
@@ -399,7 +401,7 @@ export const locale = {
     ],
     LandingPage: {
       SectionTopTitle: 'Учитесь программированию с CPython',
-      SectionTopText: 'CPython эта платформа для развития навыков и улучшения конкурентоспособности',
+      SectionTopText: 'CPython.uz - эта платформа для развития навыков и улучшения конкурентоспособности',
       SectionLearnTitle: 'Обучение программированию',
       SectionLearnText: 'Новый подход к изучению',
       SectionPracticeTitle: 'Практиковать',
@@ -559,7 +561,9 @@ export const locale = {
       Kepcoin: 'Kepcoin',
       Challenges: {
         Challenges: 'Вызовы',
-        Challenge: '{{ playerFirstUsername }} против {{ playerSecondUsername }} | Вызов'
+        Challenge: '{{ playerFirstUsername }} против {{ playerSecondUsername }} | Вызов',
+        ChallengesRating: 'Рейтинг вызовов',
+        ChallengesProfile: 'Статистика вызовов',
       },
       Lugavar: 'Лугаварь',
       Users: {

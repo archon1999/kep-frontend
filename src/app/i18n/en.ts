@@ -390,6 +390,8 @@ export const locale = {
     Holidays: 'Holidays',
     CheckInput: 'Check input',
     PartialSolvable: 'Partial Solvable',
+    LastChallenges: 'Last challenges',
+    RatingChanges: 'Rating changes',
     ProblemTourSteps: [
       {
         title: 'Available languages',
@@ -523,7 +525,7 @@ export const locale = {
     },
     PageTitle: {
       Home: 'Home',
-      Landing: 'CPython - Dasturlashni o`rganish uchun platforma',
+      Landing: 'CPython.uz - A platform for learning programming',
       Problems: {
         Problems: 'Problems',
         Problem: '{{ problemId }}. {{ problemTitle }} | Problem',
@@ -562,7 +564,9 @@ export const locale = {
       Kepcoin: 'Kepcoin',
       Challenges: {
         Challenges: 'Challenges',
-        Challenge: '{{ playerFirstUsername }} vs {{ playerSecondUsername }} | Challenge'
+        Challenge: '{{ playerFirstUsername }} vs {{ playerSecondUsername }} | Challenge',
+        ChallengesRating: 'Challenges Rating',
+        ChallengesProfile: 'Challenges Profile',
       },
       Lugavar: 'Lugavar',
       Users: {

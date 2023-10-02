@@ -387,6 +387,8 @@ export const locale = {
     Holidays: 'Bayramlar',
     CheckInput: 'Check input',
     PartialSolvable: 'Qisman yechim',
+    LastChallenges: 'So`ngi bellashuvlar',
+    RatingChanges: 'Reyting o`zgarishlari',
     ContestRules: {
       ACM20H: ``,
     },
@@ -401,8 +403,8 @@ export const locale = {
       }
     ],
     LandingPage: {
-      SectionTopTitle: 'CPython bilan dasturlashni o`rganing',
-      SectionTopText: 'CPython dasturlash mahoratlaringiz va raqobatni oshirish uchun mo`ljanlangan platforma',
+      SectionTopTitle: 'CPython.uz bilan dasturlashni o`rganing',
+      SectionTopText: 'CPython.uz dasturlash mahoratlaringiz va raqobatni oshirish uchun mo`ljanlangan platforma',
       SectionLearnTitle: 'Dasturlashni o`rganish',
       SectionLearnText: 'Ta`limga yangi yondashuv',
       SectionPracticeTitle: 'Ishlash',
@@ -523,7 +525,7 @@ export const locale = {
     },
     PageTitle: {
       Home: 'Bosh sahifa',
-      Landing: 'CPython - Dasturlashni o`rganish uchun platforma',
+      Landing: 'CPython.uz - Dasturlashni o`rganish uchun platforma',
       Problems: {
         Problems: 'Masalalar',
         Problem: '{{ problemId }}. {{ problemTitle }} | Masala',
@@ -562,7 +564,9 @@ export const locale = {
       Kepcoin: 'Kepcoin',
       Challenges: {
         Challenges: 'Bellashuvlar',
-        Challenge: '{{ playerFirstUsername }} vs {{ playerSecondUsername }} | Bellashuv'
+        Challenge: '{{ playerFirstUsername }} vs {{ playerSecondUsername }} | Bellashuv',
+        ChallengesRating: 'Bellashuvlar reytingi',
+        ChallengesProfile: 'Bellashuvlar statistikasi',
       },
       Lugavar: 'Lugavar',
       Users: {
