@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { ChallengesComponent } from './pages/challenges/challenges.component';
 import { CorePipesModule } from '@core/pipes/pipes.module';
 import { CoreDirectivesModule } from '@core/directives/directives';
@@ -20,7 +20,7 @@ import { SweetAlertModule } from '../../shared/third-part-modules/sweet-alert/sw
 import { CodeEditorModule } from '../../shared/components/code-editor/code-editor.module';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { ChallengeResultsCardComponent } from './components/challenge-results-card/challenge-results-card.component';
-import { CountdownModule } from '@ciri/ngx-countdown'
+import { CountdownModule } from '@ciri/ngx-countdown';
 import { DragulaModule } from 'ng2-dragula';
 import { MathjaxModule } from '../../shared/third-part-modules/mathjax/mathjax.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -28,6 +28,12 @@ import { PaginationModule } from '../../shared/components/pagination/pagination.
 import { ChallengesRatingComponent } from './pages/challenges-rating/challenges-rating.component';
 import { ContentHeaderModule } from '../../layout/components/content-header/content-header.module';
 import { ContestantViewModule } from '../../shared/components/contestant-view/contestant-view.module';
+import { ChallengesProfileComponent } from './pages/challenges-profile/challenges-profile.component';
+import { AuthGuard } from '../../auth/helpers';
+import { SectionProfileComponent } from './pages/challenges-profile/section-profile/section-profile.component';
+import { SectionRatingChangesComponent } from './pages/challenges-profile/section-rating-changes/section-rating-changes.component';
+import { SectionLastChallengesComponent } from './pages/challenges-profile/section-last-challenges/section-last-challenges.component';
+import { ApexChartModule } from '../../shared/third-part-modules/apex-chart/apex-chart.module';
 
 
 const routes: Routes = [
@@ -43,10 +49,17 @@ const routes: Routes = [
     resolve: {
       challenge: ChallengeResolver,
     }
-  },{
+  },
+  {
     path: 'rating',
     component: ChallengesRatingComponent,
-    data: { title: 'Challenges.ChallengesRating' },
+    title: 'Challenges.ChallengesRating',
+  },
+  {
+    path: 'profile',
+    component: ChallengesProfileComponent,
+    title: 'Challenges.ChallengesProfile',
+    canActivate: [AuthGuard],
   },
 ];
 
@@ -58,7 +71,11 @@ const routes: Routes = [
     NewChallengeButtonComponent,
     ChallengeComponent,
     ChallengeResultsCardComponent,
-    ChallengesRatingComponent
+    ChallengesRatingComponent,
+    ChallengesProfileComponent,
+    SectionProfileComponent,
+    SectionRatingChangesComponent,
+    SectionLastChallengesComponent
   ],
   imports: [
     CommonModule,
@@ -82,7 +99,9 @@ const routes: Routes = [
     PaginationModule,
     ContentHeaderModule,
     ContestantViewModule,
+    ApexChartModule,
   ],
   providers: [ChallengeResolver],
 })
-export class ChallengesModule { }
+export class ChallengesModule {
+}

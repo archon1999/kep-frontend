@@ -1,0 +1,17 @@
+<h3 class="card-title">
+  {{ 'LastChallenges' | translate }}
+</h3>
+
+<div *ngFor="let challenge of challenges">
+  <a [routerLink]="['..', 'challenge', challenge.id]">
+    <challenge-card [challenge]="challenge"></challenge-card>
+  </a>
+</div>
+
+<pagination
+  [(page)]="currentPage"
+  (pageChange)="loadChallenges()"
+  [collectionSize]="total"
+  [maxSize]="5"
+  [pageSize]="pageSize">
+</pagination>
