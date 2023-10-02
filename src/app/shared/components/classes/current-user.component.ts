@@ -22,14 +22,18 @@ export class CurrentUser implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (user: User | null) => {
-        console.log(user);
         this.currentUser = user;
+        this.afterChangeCurrentUser();
       }
     );
   }
 
   isAuthenticated() {
     return this.currentUser !== null;
+  }
+
+  afterChangeCurrentUser() {
+
   }
 
   ngOnDestroy(): void {
