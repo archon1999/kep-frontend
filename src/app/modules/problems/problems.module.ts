@@ -69,6 +69,7 @@ import { HackAttemptsComponent } from './pages/hack-attempts/hack-attempts.compo
 import { HackAttemptsTableModule } from './components/hack-attempts-table/hack-attempts-table.module';
 import { ProblemsPipesModule } from './pipes/problems-pipes.module';
 import { ProblemHacksComponent } from './pages/problem/problem-hacks/problem-hacks.component';
+import { MonacoEditorModule as MonacoModule } from '../../shared/third-part-modules/monaco-editor/monaco-editor.module';
 
 const routes: Routes = [
   {
@@ -243,6 +244,11 @@ const routes: Routes = [
     TableOrderingModule,
     HackAttemptsTableModule,
     ProblemsPipesModule,
+    MonacoEditorModule,
+    MonacoModule,
+  ],
+  exports: [
+    SectionProfileComponent
   ],
   providers: [
     ProblemGuard,
