@@ -8,6 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Problem, Tag, Topic } from '../../../models/problems.models';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'problem-description',
   templateUrl: './problem-description.component.html',
   styleUrls: ['./problem-description.component.scss']
@@ -23,7 +24,7 @@ export class ProblemDescriptionComponent implements OnInit, OnDestroy {
 
   public topics: Array<Topic> = [];
   public selectedTopic: number;
-  
+
   public currentUser: User;
   private _unsubscribeAll = new Subject();
 
@@ -31,86 +32,88 @@ export class ProblemDescriptionComponent implements OnInit, OnDestroy {
     public authService: AuthenticationService,
     public service: ProblemsService,
     public modalService: NgbModal,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (user: User | null) => {
         this.currentUser = user;
-        if(this.currentUser?.isSuperuser){
+        if (this.currentUser?.isSuperuser) {
           this.service.getTopics().subscribe((topics: Array<Topic>) => this.topics = topics);
         }
 
-        if(this.currentUser?.permissions.canChangeProblemTags){
+        if (this.currentUser?.permissions.canChangeProblemTags) {
           this.service.getTags().subscribe((tags: Array<Tag>) => this.tags = tags);
         }
       }
     );
   }
 
-  onPurchaseSolution(){
+  onPurchaseSolution() {
     this.problem.canViewSolution = true;
   }
 
-  openSolutionModal(content){
+  openSolutionModal(content) {
     this.service.getProblemSolution(this.problem.id).subscribe(
       (solution: any) => {
         this.problemSolution = solution;
         this.modalService.open(content, {
-          scrollable: true,
-        }
-      );
-    })
+            size: 'lg',
+            scrollable: true,
+          }
+        );
+      });
   }
 
-  addTag(){
-    if(this.selectedTag){
-      let tag = this.getTag(this.selectedTag);
+  addTag() {
+    if (this.selectedTag) {
+      const tag = this.getTag(this.selectedTag);
       this.service.addTag(this.problem.id, tag.id).subscribe((result: any) => {
-        if(result.success){
+        if (result.success) {
           this.problem.tags.push(tag);
         }
-      })
+      });
     }
   }
 
-  removeTag(tag: Tag){
-    let index = this.problem.tags.findIndex((value) => value.id == tag.id);
-    let tagId = this.problem.tags[index].id;
+  removeTag(tag: Tag) {
+    const index = this.problem.tags.findIndex((value) => value.id === tag.id);
+    const tagId = this.problem.tags[index].id;
     this.service.removeTag(this.problem.id, tagId).subscribe((result: any) => {
-      if(result.success){
+      if (result.success) {
         this.problem.tags.splice(index, 1);
       }
-    })
+    });
   }
 
-  getTag(tagId: number){
-    return this.tags.find((value) => tagId == value.id);
+  getTag(tagId: number) {
+    return this.tags.find((value) => tagId === value.id);
   }
 
-  addTopic(){
-    if(this.selectedTopic){
-      let topic = this.getTopic(this.selectedTopic);
+  addTopic() {
+    if (this.selectedTopic) {
+      const topic = this.getTopic(this.selectedTopic);
       this.service.addTopic(this.problem.id, topic.id).subscribe(
         () => {
           this.problem.topics.push(topic);
         }
-      )
+      );
     }
   }
 
-  removeTopic(tag: Topic){
-    let index = this.problem.topics.findIndex((value) => value.id == tag.id);
-    let topicId = this.problem.topics[index].id;
+  removeTopic(tag: Topic) {
+    const index = this.problem.topics.findIndex((value) => value.id === tag.id);
+    const topicId = this.problem.topics[index].id;
     this.service.removeTopic(this.problem.id, topicId).subscribe(
       () => {
         this.problem.topics.splice(index, 1);
       }
-    )
+    );
   }
 
-  getTopic(topicId: number){
-    return this.topics.find((value) => topicId == value.id);
+  getTopic(topicId: number) {
+    return this.topics.find((value) => topicId === value.id);
   }
 
   ngOnDestroy(): void {
