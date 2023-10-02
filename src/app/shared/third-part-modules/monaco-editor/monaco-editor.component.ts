@@ -26,6 +26,7 @@ export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnCh
 
   @Input() lang: AttemptLangs;
   @Input() height = 300;
+  @Input() tabSize = 4;
 
   public options = {
     theme: 'vs-light',
@@ -36,6 +37,7 @@ export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnCh
     fontFamily: 'Inconsolata',
     fontSize: 15,
     roundedSelection: true,
+    tabSize: 4,
   };
   public value: string;
   public disabled: boolean;
@@ -50,6 +52,8 @@ export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnCh
   }
 
   ngOnInit() {
+    this.options.tabSize = this.tabSize;
+
     this.coreConfigService.getConfig().subscribe(
       (config: CoreConfig) => {
         this.options.theme = (config.layout.skin === 'dark' ? 'vs-dark' : 'vs-light');
