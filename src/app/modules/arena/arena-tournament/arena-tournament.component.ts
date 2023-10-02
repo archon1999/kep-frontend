@@ -34,10 +34,14 @@ export class ArenaTournamentComponent implements OnInit, OnDestroy {
   public me = false;
 
   public arenaChallenges: Array<Challenge> = [];
+  public arenaChallengesPage = 1;
+  public arenaChallengesPageSize = 8;
+  public arenaChallengesTotal = 0;
+
   public arenaStatistics = {
     averageRating: 0,
     challenges: 0,
-  }
+  };
   public arenaPlayerStatistics: ArenaPlayerStatistics;
   public top3: Array<ArenaPlayerStatistics> = [];
 
@@ -57,7 +61,8 @@ export class ArenaTournamentComponent implements OnInit, OnDestroy {
     public service: ArenaService,
     public authService: AuthenticationService,
     public titleService: TitleService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     setTimeout(() => this.startAnimationState = true);
@@ -66,12 +71,12 @@ export class ArenaTournamentComponent implements OnInit, OnDestroy {
       this.titleService.updateTitle(this.route, { arenaTitle: arena.title });
       this.updateArenaChallenges();
       this.updateArenaPlayers();
-      if(this.arena.status == -1){
+      if (this.arena.status == -1) {
         this.leftTime = new Date(arena.startTime).valueOf() - Date.now();
-      } else if(this.arena.status == 0){
+      } else if (this.arena.status == 0) {
         this.leftTime = new Date(arena.finishTime).valueOf() - Date.now();
         this._intervalId = setInterval(() => {
-          if(this.arena.isRegistrated){
+          if (this.arena.isRegistrated) {
             this.nextChallenge();
           }
           this.updateArenaPlayers();
@@ -81,55 +86,55 @@ export class ArenaTournamentComponent implements OnInit, OnDestroy {
           (result: any) => {
             this.top3 = result;
           }
-        )
+        );
         this.service.getArenaStatistics(this.arena.id).subscribe(
           (result: any) => {
             this.arenaStatistics = result;
           }
-        )
+        );
       }
-    })
+    });
 
-    if(this.arena.status == 0){
-      this.updateReaminingTime();
+    if (this.arena.status == 0) {
+      this.updateRemainingTime();
       this._intervalId2 = setInterval(() => {
-        this.updateReaminingTime();
+        this.updateRemainingTime();
       }, 5000);
     }
 
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (user: any) => {
         this.currentUser = user;
-        if(this.currentUser && this.arena.status != -1){
-         this.loadArenaPlayerStatistics(user.username); 
+        if (this.currentUser && this.arena.status != -1) {
+          this.loadArenaPlayerStatistics(user.username);
         }
       }
-    )
+    );
   }
-  
-  updateReaminingTime(){
+
+  updateRemainingTime() {
     this.remainingTime = new Date(this.arena.finishTime).valueOf() - Date.now();
   }
 
-  loadArenaPlayerStatistics(username: string){
+  loadArenaPlayerStatistics(username: string) {
     this.service.getArenaPlayerStatistics(this.arena.id, username).subscribe(
       (result: any) => {
         this.arenaPlayerStatistics = result;
       }
-    )
+    );
   }
 
-  updateArenaPlayers(){
-    if(!this.me){
+  updateArenaPlayers() {
+    if (!this.me) {
       this.me = true;
-      if(this.arena.isRegistrated){
+      if (this.arena.isRegistrated) {
         this.service.getStandingsPage(this.arena.id).subscribe(
           (result: any) => {
             this.total = result.total;
             this.pageNumber = result.page;
             this.updateArenaPlayers();
           }
-        )
+        );
       } else {
         this.me = true;
         this.pageNumber = 1;
@@ -141,48 +146,49 @@ export class ArenaTournamentComponent implements OnInit, OnDestroy {
           this.arenaPlayers = result.data;
           this.total = result.total;
         }
-      )
+      );
     }
   }
 
-  updateArenaChallenges(){
+  updateArenaChallenges() {
     this.service.getArenaChallenges(this.arena.id).subscribe(
       (challenges: any) => {
         this.arenaChallenges = challenges;
       }
-    )
-  }
-  
-  nextChallenge(){
-    this.service.nextChallenge(this.arena.id).subscribe(
-      (result: any) => {
-        if(result.success){
-          this.router.navigate(
-            ['/practice', 'challenges', 'challenge', result.challengeId],
-            { queryParams: {'arena': this.arena.id } }
-          )
-        }
-      }, (err: any) => {}
-    )
+    );
   }
 
-  register(){
+  nextChallenge() {
+    this.service.nextChallenge(this.arena.id).subscribe(
+      (result: any) => {
+        if (result.success) {
+          this.router.navigate(
+            ['/practice', 'challenges', 'challenge', result.challengeId],
+            { queryParams: { 'arena': this.arena.id } }
+          );
+        }
+      }, (err: any) => {
+      }
+    );
+  }
+
+  register() {
     this.service.arenaRegistration(this.arena.id).subscribe((result) => {
       this.arena.isRegistrated = true;
       this.arena.pause = true;
-    })
+    });
   }
 
-  arenaPause(){
+  arenaPause() {
     this.service.arenaPause(this.arena.id).subscribe((result: any) => {
       this.arena.pause = true;
-    })
+    });
   }
 
-  arenaStart(){
+  arenaStart() {
     this.service.arenaStart(this.arena.id).subscribe((result: any) => {
       this.arena.pause = false;
-    })
+    });
   }
 
   refreshPage() {
@@ -192,12 +198,12 @@ export class ArenaTournamentComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._unsubscribeAll.next();    
-    this._unsubscribeAll.complete();    
-    if(this._intervalId){
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
+    if (this._intervalId) {
       clearInterval(this._intervalId);
     }
-    if(this._intervalId2){
+    if (this._intervalId2) {
       clearInterval(this._intervalId2);
     }
   }
