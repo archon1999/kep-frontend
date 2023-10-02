@@ -1,6 +1,6 @@
-$bg-primary: #5456da;
-$bg-darken: #484ed0;
-$bg-lighten: #6c6aef;
+$bg-primary: rgba(84, 86, 218, 0.92);
+$bg-darken: rgba(72, 78, 208, 0.8);
+$bg-lighten: #807fee;
 $bg-gradient-primary: linear-gradient(to right, $bg-primary, $bg-lighten);
 $bg-gradient-primary-reversed: linear-gradient(to right, $bg-lighten, $bg-primary);
 
