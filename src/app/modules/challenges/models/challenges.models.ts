@@ -7,6 +7,12 @@ export interface ChallengesRating {
   wins: number;
   draws: number;
   losses: number;
+  all: number;
+}
+
+export interface ChallengesRatingChange {
+  date: Date | string;
+  value: Number;
 }
 
 export interface ChallengeCall {
