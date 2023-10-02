@@ -36,6 +36,13 @@ import { Problem1741Component } from './problem1741/problem1741.component';
 import { Problem1742Component } from './problem1742/problem1742.component';
 import { Problem1743Component } from './problem1743/problem1743.component';
 import { Problem1744Component } from './problem1744/problem1744.component';
+import { Problem1840Component } from './problem1840/problem1840.component';
+import { Problem1841Component } from './problem1841/problem1841.component';
+import { MonacoEditorModule as MonacoModule } from 'app/shared/third-part-modules/monaco-editor/monaco-editor.module';
+import { HtmlProblemBodyComponent } from './html-problem-body/html-problem-body.component';
+import { Problem1842Component } from './problem1842/problem1842.component';
+import { Problem1843Component } from './problem1843/problem1843.component';
+import { ToastrModule } from '../../../../shared/third-part-modules/toastr/toastr.module';
 
 
 @NgModule({
@@ -65,7 +72,12 @@ import { Problem1744Component } from './problem1744/problem1744.component';
     Problem1741Component,
     Problem1742Component,
     Problem1743Component,
-    Problem1744Component
+    Problem1744Component,
+    Problem1840Component,
+    Problem1841Component,
+    HtmlProblemBodyComponent,
+    Problem1842Component,
+    Problem1843Component
   ],
   imports: [
     CommonModule,
@@ -79,6 +91,9 @@ import { Problem1744Component } from './problem1744/problem1744.component';
     MonacoEditorModule,
     CodeEditorModule,
     FormsModule,
+    MonacoEditorModule,
+    MonacoModule,
+    ToastrModule,
   ],
   exports: [
     ProblemBodyComponent,

@@ -3,12 +3,12 @@ import { Problem } from '../../../models/problems.models';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'problem1740',
-  templateUrl: './problem1740.component.html',
-  styleUrls: ['./problem1740.component.scss'],
+  selector: 'problem1840',
+  templateUrl: './problem1840.component.html',
+  styleUrls: ['./problem1840.component.scss'],
   encapsulation: ViewEncapsulation.Emulated,
 })
-export class Problem1740Component implements OnInit {
+export class Problem1840Component implements OnInit {
 
   @Input() problem: Problem;
 
