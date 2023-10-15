@@ -28,7 +28,7 @@ export class MathjaxComponent implements AfterViewInit, OnChanges {
       angObj.mathJaxObject.Hub.Queue(
         ["Typeset", angObj.mathJaxObject.Hub],
       );
-    }, 1);
+    }, 50);
   }
   loadMathConfig() {
     this.mathJaxObject = window["MathJax"];

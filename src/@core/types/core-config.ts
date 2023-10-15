@@ -5,6 +5,7 @@ export interface CoreConfig {
     appName     : string;
     appTitle    : string;
     appLogoImage: string;
+    appLogoImageWithTitle: string;
     appLanguage :'en' | 'ru' | 'uz';
   };
   layout: {

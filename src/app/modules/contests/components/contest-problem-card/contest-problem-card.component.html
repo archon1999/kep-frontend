@@ -29,7 +29,7 @@
 
         <span class="text-white ml-50" (mouseenter)="onProblemFocus()">
           {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
-          <span *ngIf="contestProblem.ball > 1">
+          <span *ngIf="contest.hasBalls()">
             ({{ contestProblem.ball }})
           </span>
         </span>

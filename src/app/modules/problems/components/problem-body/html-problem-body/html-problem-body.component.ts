@@ -2,6 +2,7 @@ import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { Problem } from '../../../models/problems.models';
 import { CoreConfigService } from '../../../../../../@core/services/config.service';
 import { TemplateCodeService } from '../../../../../shared/services/template-code.service';
+import { AttemptLangs } from '../../../constants';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -10,6 +11,11 @@ import { TemplateCodeService } from '../../../../../shared/services/template-cod
   styleUrls: ['./html-problem-body.component.scss']
 })
 export class HtmlProblemBodyComponent implements OnInit {
+
+  constructor(
+    public coreConfigService: CoreConfigService,
+    public templateCodeService: TemplateCodeService,
+  ) {}
 
   @Input() problem: Problem;
   @Input() frameHeight: number;
@@ -24,11 +30,7 @@ export class HtmlProblemBodyComponent implements OnInit {
 
   public uniqueName: string;
 
-  constructor(
-    public coreConfigService: CoreConfigService,
-    public templateCodeService: TemplateCodeService,
-  ) {
-  }
+  protected readonly AttemptLangs = AttemptLangs;
 
   ngOnInit(): void {
     this.uniqueName = `problem-${ this.problem.id }`;
@@ -62,5 +64,4 @@ export class HtmlProblemBodyComponent implements OnInit {
       </html>
     `;
   }
-
 }

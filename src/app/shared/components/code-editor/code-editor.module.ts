@@ -4,14 +4,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreDirectivesModule } from '../../../../@core/directives/directives';
 import { CorePipesModule } from '../../../../@core/pipes/pipes.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule } from '@ngx-translate/core';
 import { KepcoinSpendSwalModule } from '../../../modules/kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
-import { monacoConfig } from '../../../monaco-config';
 import { ToastrModule } from 'ngx-toastr';
 import { CodeEditorModalComponent } from './code-editor-modal/code-editor-modal.component';
 import { MonacoEditorModule } from '../../third-part-modules/monaco-editor/monaco-editor.module';
 import { ErrorTooltipModule } from '../error-tooltip/error-tooltip.module';
+import { NgSelectModule } from '../../third-part-modules/ng-select/ng-select.module';
 
 @NgModule({
   declarations: [
@@ -29,11 +28,11 @@ import { ErrorTooltipModule } from '../error-tooltip/error-tooltip.module';
     KepcoinSpendSwalModule,
     NgbTooltipModule,
     ReactiveFormsModule,
-    ErrorTooltipModule
+    ErrorTooltipModule,
+    NgSelectModule
   ],
   exports: [
     CodeEditorModalComponent,
   ]
 })
-export class CodeEditorModule {
-}
+export class CodeEditorModule {}
