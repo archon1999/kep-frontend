@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { takeUntil } from 'rxjs/operators';
 import { CoreConfigService } from '../../../../../@core/services/config.service';
 import { Subject } from 'rxjs';
+import { colors } from '../../../../colors.const';
 
 @Component({
   selector: 'users-chart-card',
@@ -84,7 +85,7 @@ export class UsersChartCardComponent implements OnInit, OnDestroy {
           enabled: true
         }
       },
-      colors: ['#7367F0'],
+      colors: [colors.solid.primary],
       dataLabels: {
         enabled: false
       },

@@ -1,6 +1,6 @@
-@import 'bootstrap/scss/mixins'; 
+@import 'bootstrap/scss/mixins';
 @import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
+@import '@core/scss/base/bootstrap-extended/variables';
 
 section.contests {
   --box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1);
@@ -49,8 +49,8 @@ section.contests {
   width: calc(100% + 2rem);
   height: 650px;
   z-index: -1;
-  background: linear-gradient(42.32deg, #7367f0, #978EF8);
-  
+  background: linear-gradient(to right, $primary, lighten($primary, 10%));
+
   @include media-breakpoint-down(lg) {
     width: calc(100% + 1.2rem);
   }
@@ -58,7 +58,7 @@ section.contests {
 
 ::ng-deep .dark-layout {
  .contests-page-top:before {
-    background: linear-gradient(42.32deg, #2b2665, #393575, #463caa);
+   background: linear-gradient(to right, mix(black, $primary, 50), mix(black, $primary, 15));
   }
 }  
 

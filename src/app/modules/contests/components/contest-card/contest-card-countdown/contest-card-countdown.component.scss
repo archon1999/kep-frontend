@@ -12,15 +12,13 @@
   }
 
   .card-bg {
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-    height: 100%;
     left: 0;
-    opacity: .1;
+    opacity: 0.1;
     position: absolute;
     top: 0;
-    width: 100%;
+    width: auto;
     text-align: center;
+    height: auto;
 
     img {
       max-width: 100%;

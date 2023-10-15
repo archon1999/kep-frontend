@@ -1,3 +1,21 @@
+@mixin define-contest-colors($name, $background, $box-shadow, $color: #fff, $background-dark: false) {
+  .badge-#{$name} {
+    color: $color;
+    background: $background;
+    border: none;
+  }
+
+  .badge-#{$name}.badge-glow {
+    box-shadow: $box-shadow;
+  }
+
+  @if $background-dark != false {
+    .dark-layout .badge-#{$name} {
+      background: $background-dark;
+    }
+  }
+}
+
 .contests-colors {
   --text-color: #fff;
   --bg-gradient: linear-gradient(42.32deg, #7367f0, #978EF8);
