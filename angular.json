@@ -64,7 +64,11 @@
             "extractLicenses": false,
             "buildOptimizer": true,
             "sourceMap": true,
-            "optimization": true,
+            "optimization": {
+              "scripts": true,
+              "styles": true,
+              "fonts": false
+            },
             "namedChunks": true
           },
           "configurations": {
@@ -86,7 +90,7 @@
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
+              "buildOptimizer": false,
               "budgets": [
                 {
                   "type": "initial",
