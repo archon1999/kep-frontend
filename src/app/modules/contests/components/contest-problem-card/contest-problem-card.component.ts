@@ -9,6 +9,7 @@ import { CoreConfig } from '@core/types';
 import { AuthenticationService } from 'app/auth/service';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'contest-problem-card',
   templateUrl: './contest-problem-card.component.html',
   styleUrls: ['./contest-problem-card.component.scss', '../../contests.colors.scss']
