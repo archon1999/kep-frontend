@@ -80,7 +80,7 @@
     &.navbar-brand-center {
       .navbar-header {
         position: absolute;
-        left: calc(50% - 56px); // left 50% - branding width
+        left: calc(50% - 100px); // left 50% - branding width
         padding: 0;
         z-index: 1000;
         .navbar-brand {
