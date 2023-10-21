@@ -33,21 +33,10 @@
         <p class="mb-0 line-ellipsis">{{ 'Problem' | translate }}</p>
       </div>
 
-      <apx-chart
-        *ngIf="activitySolved"
-        [yaxis]="activityChart.yaxis"
-        [series]="activityChart.series"
-        [chart]="activityChart.chart"
-        [stroke]="activityChart.stroke"
-        [tooltip]="activityChart.tooltip"
-        [colors]="activityChart.colors"
-        [dataLabels]="activityChart.dataLabels"
-        [theme]="chartTheme"
-      >
-      </apx-chart>
+      <apex-chart *ngIf="activityChart" [options]="activityChart"></apex-chart>
     </div>
     <div class="card-footer text-center">
-      <a class="btn btn-relief-primary btn-sm round" routerLink="profile">
+      <a class="btn btn-primary bg-primary badge-glow btn-sm round" routerLink="profile">
         {{ 'DetailedStatistics' | translate }}
         <i data-feather="arrow-right"></i>
       </a>
@@ -106,7 +95,7 @@
   </div>
 
   <div class="card-footer text-center">
-    <a class="btn btn-relief-primary btn-sm round" routerLink="rating">
+    <a class="btn btn-primary bg-primary badge-glow btn-sm round" routerLink="rating">
       {{ 'OverallRating' | translate }}
       <i data-feather="arrow-right"></i>
     </a>
@@ -155,7 +144,7 @@
   </table>
 
   <div class="card-footer text-center">
-    <a class="btn btn-relief-primary btn-sm round" routerLink="attempts">
+    <a class="btn btn-primary bg-primary badge-glow btn-sm round" routerLink="attempts">
       {{ 'AllAttempts' | translate }}
       <i data-feather="arrow-right"></i>
     </a>

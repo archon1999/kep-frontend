@@ -1,5 +1,7 @@
-$tournaments-bg: linear-gradient(47deg, #45578a, #27324f);
+@import '@core/scss/base/bootstrap-extended/variables';
+
+$tournaments-color: mix(black, $primary, 50);
+$tournaments-bg: linear-gradient(47deg, $tournaments-color, $tournaments-color);
 $tournaments-bg-dark: linear-gradient(47deg, #161d31, 60%, #384a7d);
-$tournaments-color: #161d31;
 
 // $tournaments-bg: linear-gradient(to right, #29323c, #485563);

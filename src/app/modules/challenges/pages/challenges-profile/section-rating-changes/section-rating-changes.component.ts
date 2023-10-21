@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CurrentUser } from 'app/shared/components/classes/current-user.component';
+import { BaseComponent } from '../../../../../shared/components/classes/base.component';
 import { ChallengesStatisticsService } from '../../../services';
 import { AuthenticationService } from 'app/auth/service';
 import { ChallengesRatingChange } from '../../../models/challenges.models';
@@ -11,7 +11,7 @@ import { ChartOptions } from '../../../../../shared/third-part-modules/apex-char
   templateUrl: './section-rating-changes.component.html',
   styleUrls: ['./section-rating-changes.component.scss']
 })
-export class SectionRatingChangesComponent extends CurrentUser implements OnInit {
+export class SectionRatingChangesComponent extends BaseComponent implements OnInit {
 
   public challengesRatingChangesChart: ChartOptions;
 
@@ -19,7 +19,7 @@ export class SectionRatingChangesComponent extends CurrentUser implements OnInit
     public statisticsService: ChallengesStatisticsService,
     public authService: AuthenticationService,
   ) {
-    super(authService);
+    super();
   }
 
   ngOnInit(): void {

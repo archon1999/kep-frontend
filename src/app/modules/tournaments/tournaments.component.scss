@@ -1,6 +1,6 @@
-@import 'bootstrap/scss/mixins'; 
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
+@import '@core/scss/base/bootstrap-extended/variables';
+@import 'bootstrap/scss/mixins/dark-layout';
+@import 'bootstrap/scss/mixins/breakpoints';
 
 @import 'scss/variables.scss';
 

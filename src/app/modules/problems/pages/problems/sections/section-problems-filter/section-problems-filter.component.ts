@@ -1,52 +1,55 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
-import { ProblemsFilter, Tag } from '../../../../models/problems.models';
-import { ProblemsService } from 'app/modules/problems/services/problems.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { LocalStorageService } from 'app/shared/storages/local-storage.service';
+import { Component, OnInit } from '@angular/core';
+import { ProblemsFilter, Tag } from '@problems/models/problems.models';
+import { ProblemsService } from '@problems/services/problems.service';
 import { ProblemsFilterService } from 'app/modules/problems/services/problems-filter.service';
+import { BaseComponent } from '@shared/components/classes/base.component';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { equalsCheck } from '@shared/utils';
 
 interface Difficulty {
-  id: number;
   name: string;
+  value: number;
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'section-problems-filter',
   templateUrl: './section-problems-filter.component.html',
   styleUrls: ['./section-problems-filter.component.scss']
 })
-export class SectionProblemsFilterComponent implements OnInit, OnDestroy {
+export class SectionProblemsFilterComponent extends BaseComponent implements OnInit {
 
-  public filter: ProblemsFilter;
+  public filterForm = new FormGroup({
+    title: new FormControl(),
+    tags: new FormControl(),
+    difficulty: new FormControl(),
+    status: new FormControl(),
+    hasChecker: new FormControl(),
+    hasCheckInput: new FormControl(),
+    hasSolution: new FormControl(),
+    partialSolvable: new FormControl(),
+  });
 
   public tags: Array<Tag> = [];
   public difficulties: Array<Difficulty> = [];
 
-  public currentUser: User;
-
-  private _unsubscribeAll = new Subject();
-
   constructor(
     public service: ProblemsService,
-    public authService: AuthenticationService,
     public problemsFilterService: ProblemsFilterService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
-    this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (user: User | null) => {
-        this.currentUser = user;
-      }
-    )
+    super.ngOnInit();
 
-    this.problemsFilterService.getFilter().subscribe(
-      (filter: ProblemsFilter) => {
-        this.filter = filter;
+    this.filterForm.valueChanges.subscribe(
+      (filterValue: ProblemsFilter) => {
+        this.updateQueryParams(filterValue);
+        this.problemsFilterService.updateFilter(filterValue);
+        this.problemsFilterService.updateFilter({ page: 1 });
       }
-    )
+    );
 
     this.service.getTags().subscribe(
       (tags: any) => {
@@ -61,15 +64,13 @@ export class SectionProblemsFilterComponent implements OnInit, OnDestroy {
     );
   }
 
-  reload() {
-    setTimeout(() => {    
-      this.problemsFilterService.updateFilter(this.filter);
-    }, 100);
+  afterChangeQueryParams() {
+    this.problemsFilterService.setFilter(this._queryParams);
+    this.filterForm.patchValue(this.problemsFilterService.currentFilterValue, { emitEvent: false });
   }
 
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+  compareEqual(a, b) {
+    return equalsCheck(a, b) || a?.toString() === b?.toString();
   }
 
 }

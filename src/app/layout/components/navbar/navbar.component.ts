@@ -19,7 +19,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthModalComponent } from 'app/auth/auth-modal/auth-modal.component';
 import { ApiService } from 'app/shared/services/api.service';
 import { CookieService } from 'ngx-cookie-service';
-import { CurrentUser } from '../../../shared/components/classes/current-user.component';
+import { BaseComponent } from '../../../shared/components/classes/base.component';
 
 @Component({
   selector: 'app-navbar',
@@ -27,7 +27,7 @@ import { CurrentUser } from '../../../shared/components/classes/current-user.com
   styleUrls: ['./navbar.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class NavbarComponent extends CurrentUser implements OnInit, OnDestroy {
+export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy {
   public horizontalMenu: boolean;
   public hiddenMenu: boolean;
 
@@ -55,7 +55,7 @@ export class NavbarComponent extends CurrentUser implements OnInit, OnDestroy {
     public modalService: NgbModal,
     public api: ApiService,
   ) {
-    super(_authenticationService);
+    super();
 
     this._authenticationService.currentUser.subscribe(x => (this.currentUser = x));
 
