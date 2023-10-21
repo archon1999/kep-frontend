@@ -26,15 +26,17 @@
 
           <div class="mb-2">
             <pagination
-              *ngIf="problems.length > 0"
-              [collectionSize]="problemsCount"
-              [(page)]="currentPage"
-              [pageSize]="20"
+              *ngIf="page"
+              [collectionSize]="problemsTotal"
+              [pageOptions]="[10, 20, 50]"
+              [(page)]="page"
+              [pageSize]="pageSize"
               [maxSize]="5"
               [rotate]="true"
               [boundaryLinks]="false"
               [ellipses]="true"
-              (pageChange)="_problemsReloader.next()">
+              (pageSizeChange)="pageSizeChange($event)"
+              (pageChange)="pageChange($event)">
             </pagination>
           </div>
         </div>

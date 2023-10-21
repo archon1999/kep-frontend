@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AuthenticationService } from 'app/auth/service';
 import { Problem } from '../../../models/problems.models';
 import { ProblemsService } from 'app/modules/problems/services/problems.service';
-import { CurrentUser } from '../../../../../shared/components/classes/current-user.component';
+import { BaseComponent } from '../../../../../shared/components/classes/base.component';
 import { PageResult } from '../../../../../shared/page-result';
 import { HackAttempt } from '../../../models/hack-attempt.models';
 
@@ -11,7 +11,7 @@ import { HackAttempt } from '../../../models/hack-attempt.models';
   templateUrl: './problem-hacks.component.html',
   styleUrls: ['./problem-hacks.component.scss']
 })
-export class ProblemHacksComponent extends CurrentUser implements OnInit {
+export class ProblemHacksComponent extends BaseComponent implements OnInit {
 
   @Input() problem: Problem;
 
@@ -21,10 +21,9 @@ export class ProblemHacksComponent extends CurrentUser implements OnInit {
   public myAttempts = true;
 
   constructor(
-    public authService: AuthenticationService,
     public service: ProblemsService,
   ) {
-    super(authService);
+    super();
   }
 
   ngOnInit(): void {

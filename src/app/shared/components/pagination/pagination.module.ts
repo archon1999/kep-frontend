@@ -4,7 +4,8 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { PaginationComponent } from './pagination.component';
 import { FormsModule } from '@angular/forms';
 import { CoreDirectivesModule } from '@core/directives/directives';
-
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,8 @@ import { CoreDirectivesModule } from '@core/directives/directives';
     NgbPaginationModule,
     FormsModule,
     CoreDirectivesModule,
+    NgSelectModule,
+    TranslateModule,
   ],
   exports: [
     PaginationComponent,

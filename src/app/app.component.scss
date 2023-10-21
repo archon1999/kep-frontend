@@ -53,8 +53,6 @@
 .badge-pill {
   display: inline-block !important;
   padding: 0.3rem 0.5rem !important;
-  padding-right: 0.5rem !important;
-  padding-left: 0.5rem !important;
   border-radius: 10rem !important;
   font-size: 85% !important;
   font-weight: 600 !important;
@@ -71,7 +69,7 @@ apx-chart {
 
   .apexcharts-tooltip {
     .card {
-      margin-bottom: 0rem !important;
+      margin-bottom: 0 !important;
     }
   }
 }
@@ -82,7 +80,6 @@ th {
 }
 
 html {
-  overflow: -moz-scrollbars-vertical;
   overflow-y: scroll
 }
 
@@ -214,3 +211,12 @@ pre {
 :root .dark-layout {
   --skeleton-color: #273357;
 }
+
+:root {
+  --inherit-bg-box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1);
+}
+
+:root .dark-layout {
+  --inherit-bg-box-shadow: 0 4px 24px 0 rgba(255, 255, 255, 0.1);
+}
+
