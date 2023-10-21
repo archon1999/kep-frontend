@@ -53,19 +53,19 @@
       </div>
     </li>
 
-    <div *ngIf="!isAuthenticated()">
+    <div *ngIf="!isAuthenticated">
       <a (click)="loginModalOpenForm()" class="btn" rippleEffect>
         <i data-feather="log-in"></i>
         {{ 'LOGIN' | translate }}
       </a>
     </div>
 
-    <app-navbar-daily-tasks *ngIf="isAuthenticated()"></app-navbar-daily-tasks>
-    <app-navbar-kepcoin *ngIf="isAuthenticated()"></app-navbar-kepcoin>
+    <app-navbar-daily-tasks *ngIf="isAuthenticated"></app-navbar-daily-tasks>
+    <app-navbar-kepcoin *ngIf="isAuthenticated"></app-navbar-kepcoin>
 
-    <app-navbar-notification *ngIf="isAuthenticated()"></app-navbar-notification>
+    <app-navbar-notification *ngIf="isAuthenticated"></app-navbar-notification>
     <!-- User Dropdown -->
-    <li ngbDropdown class="nav-item dropdown-user" *ngIf="isAuthenticated()">
+    <li ngbDropdown class="nav-item dropdown-user" *ngIf="isAuthenticated">
       <a
         class="nav-link dropdown-toggle dropdown-user-link"
         id="dropdown-user"

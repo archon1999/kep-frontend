@@ -1,62 +1,40 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreConfig } from '@core/types';
-import { Subject } from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { Problem, ProblemsFilter } from '../../../../models/problems.models';
+import { Problem, ProblemsFilter } from '@problems/models/problems.models';
 import { fadeInOnEnterAnimation } from 'angular-animations';
-import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
-import { LocalStorageService } from 'app/shared/storages/local-storage.service';
-import { ProblemsFilterService } from '../../../../services/problems-filter.service';
+import { ProblemsFilterService } from '@problems/services/problems-filter.service';
+import { BaseComponent } from '@shared/components/classes/base.component';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'section-problems-table',
   templateUrl: './section-problems-table.component.html',
   styleUrls: ['./section-problems-table.component.scss'],
   animations: [fadeInOnEnterAnimation({ duration: 1000 })]
 })
-export class SectionProblemsTableComponent implements OnInit, OnDestroy {
+export class SectionProblemsTableComponent extends BaseComponent implements OnInit, OnDestroy {
 
   @Input() problems: Array<Problem>;
-
-  public isDarkSkin = false;
-  public currentUser: User | null;
 
   public filter: ProblemsFilter;
   public ordering: string;
 
-  private _unsubscribeAll = new Subject();
-
   constructor(
-    public coreConfigService: CoreConfigService,
-    public authService: AuthenticationService,
-    public localStorageService: LocalStorageService,
     public filterService: ProblemsFilterService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
-    this.coreConfigService.getConfig().pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (config: CoreConfig) => {
-        this.isDarkSkin = config.layout.skin === 'dark';
-      }
-    )
-
-    this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (user: User | null) => {
-        this.currentUser = user;
-      }
-    )
-
     this.filterService.getFilter().pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (filter: ProblemsFilter) => {
         this.filter = filter;
         this.ordering = filter.ordering;
       }
-    )
+    );
   }
 
-  changeOrdering(ordering: string){
+  changeOrdering(ordering: string) {
     this.ordering = ordering;
     this.filterService.updateFilter({ ordering: ordering });
   }
@@ -72,9 +50,8 @@ export class SectionProblemsTableComponent implements OnInit, OnDestroy {
     this.filterService.updateFilter({ tags: tags });
   }
 
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+  identify(index, item){
+    return item.id;
   }
 
 }

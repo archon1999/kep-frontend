@@ -1,54 +1,34 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'pagination',
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.scss']
 })
 export class PaginationComponent implements OnInit {
 
-  @Input() collectionSize: number;
-  @Input() pageSize: number;
-  @Input() maxSize: number;
   @Input() @Output() page: number;
+  @Input() @Output() pageSize: number;
+  @Input() pageOptions: Array<number> = [];
+  @Input() collectionSize: number;
+  @Input() maxSize: number;
   @Input() rotate = true;
   @Input() color = 'primary';
   @Input() ellipses = false;
   @Input() boundaryLinks = true;
-  @Input() checkParams = true;
-  
+
   @Output() pageChange = new EventEmitter<number>;
+  @Output() pageSizeChange = new EventEmitter<number>;
 
-  constructor(
-    public router: Router,
-    public route: ActivatedRoute,
-  ) { }
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
-    if(this.checkParams){
-      this.route.queryParams.subscribe(
-        (params: any) => {
-          if('page' in params){
-            // this.page = +params.page;
-            setTimeout(() => {
-              this.pageChange.next(+params.page);
-            }, 100);
-          }
-        }
-      )
-    }
+  change(page: number) {
+    this.pageChange.next(page);
   }
 
-  change(page: number){
-    let currentScrollHeight = window.pageYOffset;
-    this.router.navigate([], 
-      {
-        relativeTo: this.route,
-        queryParams: { page: this.page },
-      }
-    ).then(() => window.scrollTo({ top: currentScrollHeight }));
-    this.pageChange.next(page);
+  sizeChange(pageSize: number) {
+    this.pageSizeChange.next(pageSize);
   }
 
 }

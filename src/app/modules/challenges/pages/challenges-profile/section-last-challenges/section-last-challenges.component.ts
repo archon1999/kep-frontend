@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CurrentUser } from 'app/shared/components/classes/current-user.component';
+import { BaseComponent } from '../../../../../shared/components/classes/base.component';
 import { ChallengesStatisticsService } from '../../../services';
 import { AuthenticationService } from '../../../../../auth/service';
 import { Challenge } from '../../../models/challenges.models';
@@ -11,7 +11,7 @@ import { PageResult } from '../../../../../shared/page-result';
   templateUrl: './section-last-challenges.component.html',
   styleUrls: ['./section-last-challenges.component.scss']
 })
-export class SectionLastChallengesComponent extends CurrentUser implements OnInit {
+export class SectionLastChallengesComponent extends BaseComponent implements OnInit {
 
   public challenges: Array<Challenge> = [];
   public pageSize = 7;
@@ -20,9 +20,8 @@ export class SectionLastChallengesComponent extends CurrentUser implements OnIni
 
   constructor(
     public statisticsService: ChallengesStatisticsService,
-    public authService: AuthenticationService,
   ) {
-    super(authService);
+    super();
   }
 
   ngOnInit(): void {

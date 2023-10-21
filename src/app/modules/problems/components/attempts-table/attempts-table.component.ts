@@ -12,7 +12,7 @@ import { ProblemsService } from '../../services/problems.service';
 import { Contest } from 'app/modules/contests/contests.models';
 import { SoundsService } from 'app/shared/services/sounds/sounds.service';
 import { FormControl, FormGroup } from '@angular/forms';
-import { CurrentUser } from 'app/shared/components/classes/current-user.component';
+import { BaseComponent } from '../../../../shared/components/classes/base.component';
 
 const LANG_CHANGE_EVENT = 'lang-change';
 const ATTEMPT_ADD_EVENT = 'attempt-add';
@@ -24,7 +24,7 @@ const ATTEMPT_DELETE_EVENT = 'attempt-delete';
   templateUrl: './attempts-table.component.html',
   styleUrls: ['./attempts-table.component.scss'],
 })
-export class AttemptsTableComponent extends CurrentUser implements OnInit, OnDestroy {
+export class AttemptsTableComponent extends BaseComponent implements OnInit, OnDestroy {
   @Input()
   get attempts(): Array<Attempt> {
     return this._attempts;
@@ -89,7 +89,7 @@ export class AttemptsTableComponent extends CurrentUser implements OnInit, OnDes
     public service: ProblemsService,
     public soundsService: SoundsService,
   ) {
-    super(authService);
+    super();
   }
 
   ngOnInit(): void {

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { colors } from '../../../../colors.const';
 import { UsersService } from '../../users.service';
-import { CurrentUser } from 'app/shared/components/classes/current-user.component';
+import { BaseComponent } from '../../../../shared/components/classes/base.component';
 import { AuthenticationService } from 'app/auth/service';
 import { NgxCountriesIsoService } from '@ngx-countries/core';
 import { Subject, asyncScheduler } from 'rxjs';
@@ -16,7 +16,7 @@ import { paramsMapper } from 'app/shared/utils';
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent extends CurrentUser {
+export class UsersComponent extends BaseComponent {
 
   public contentHeader = {
     headerTitle: 'MENU.USERS',
@@ -53,11 +53,10 @@ export class UsersComponent extends CurrentUser {
   constructor(
     public service: UsersService,
     public translateService: TranslateService,
-    public authService: AuthenticationService,
     public countriesService: NgxCountriesIsoService,
     public route: ActivatedRoute,
   ) {
-    super(authService);
+    super();
   }
 
   ngOnInit(): void {

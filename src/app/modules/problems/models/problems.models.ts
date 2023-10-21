@@ -68,6 +68,8 @@ export interface Topic {
 }
 
 export interface ProblemsFilter {
+  page: number;
+  pageSize: number;
   title: string;
   tags: Array<number>;
   difficulty: number;

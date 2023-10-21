@@ -15,59 +15,19 @@ export class ProblemsService {
   ) {
   }
 
-  getProblems(filter: ProblemsFilter, page = 1, pageSize = 20) {
-    let params: any = {
-      page: page,
-      page_size: pageSize,
-      ordering: filter.ordering,
-    };
-
-    if (filter?.difficulty) {
-      params.difficulty = filter.difficulty;
+  getProblems(filter: ProblemsFilter) {
+    const params: any = filter;
+    if (filter.status == 1) {
+      params.hasSolved = 1;
+    } else if (filter.status == 2) {
+      params.hasSolved = 0;
+      params.hasAttempted = 1;
+    } else if (filter.status == 3) {
+      params.hasSolved = 0;
+      params.hasAttempted = 0;
     }
 
-    if (filter?.title) {
-      params.title = filter.title;
-    }
-
-    if (filter?.tags?.length > 0) {
-      params.tags = filter.tags.join(',');
-    }
-
-    if (filter?.topic) {
-      params.topic = filter.topic;
-    }
-
-    if(filter?.hasChecker !== null){
-      params.has_checker = filter.hasChecker;
-    }
-
-    if(filter?.hasCheckInput !== null){
-      params.has_check_input = filter.hasCheckInput;
-    }
-
-    if(filter?.hasSolution !== null){
-      params.has_solution = filter.hasSolution;
-    }
-
-    if(filter?.partialSolvable !== null){
-      params.partial_solvable = filter.partialSolvable;
-    }
-
-    if (filter?.status) {
-      var status = filter.status;
-      if (status == 1) {
-        params.has_solved = 1;
-      } else if (status == 2) {
-        params.has_solved = 0;
-        params.has_attempted = 1;
-      } else if (status == 3) {
-        params.has_solved = 0;
-        params.has_attempted = 0;
-      }
-    }
-
-    return this.api.get('problems', params);
+    return this.api.get('problems', paramsMapper(params));
   }
 
   getProblem(id: number | string) {
