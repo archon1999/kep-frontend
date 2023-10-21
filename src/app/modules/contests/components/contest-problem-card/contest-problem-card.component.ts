@@ -3,7 +3,7 @@ import { Contest, ContestProblem } from '../../contests.models';
 import { ContestsService } from '../../contests.service';
 import { Problem } from 'app/modules/problems/models/problems.models';
 import { CoreConfigService } from '@core/services/config.service';
-import { CurrentUser } from 'app/shared/components/classes/current-user.component';
+import { BaseComponent } from '../../../../shared/components/classes/base.component';
 import { takeUntil } from 'rxjs/operators';
 import { CoreConfig } from '@core/types';
 import { AuthenticationService } from 'app/auth/service';
@@ -14,29 +14,21 @@ import { AuthenticationService } from 'app/auth/service';
   templateUrl: './contest-problem-card.component.html',
   styleUrls: ['./contest-problem-card.component.scss', '../../contests.colors.scss']
 })
-export class ContestProblemCardComponent extends CurrentUser implements OnInit {
+export class ContestProblemCardComponent extends BaseComponent implements OnInit {
 
   @Input() contest: Contest;
   @Input() contestProblem: ContestProblem;
 
   public problem: Problem;
-  public isDarkMode: boolean;
 
   constructor(
     public service: ContestsService,
     public coreConfigService: CoreConfigService,
-    public authService: AuthenticationService,
-  ) { 
-    super(authService);
+  ) {
+    super();
   }
 
-  ngOnInit(): void {
-    this.coreConfigService.getConfig().pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (coreConfig: CoreConfig) => {
-        this.isDarkMode = coreConfig.layout.skin == 'dark';
-      }
-    )
-  }
+  ngOnInit(): void {}
 
   onProblemFocus(symbol: string){
     this.service.getContestProblem(this.contest.id, this.contestProblem.symbol).subscribe(

@@ -1,0 +1,5 @@
+@mixin dark-layout() {
+  ::ng-deep .dark-layout & {
+    @content;
+  }
+}

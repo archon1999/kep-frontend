@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { SessionStorageService } from 'app/shared/storages/session-storage.service';
-import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { ProblemsFilter } from '../models/problems.models';
 
-const KEY = 'problems-filter';
 const DEFAULT_FILTER: ProblemsFilter = {
+  page: 1,
+  pageSize: 20,
   title: null,
   tags: null,
   difficulty: null,
@@ -22,11 +22,14 @@ const DEFAULT_FILTER: ProblemsFilter = {
 })
 export class ProblemsFilterService {
 
-  constructor(public sessionStorageService: SessionStorageService) {
-  }
+  private _currentFilter = DEFAULT_FILTER;
+  private _filter = new Subject<ProblemsFilter>();
 
-  private _currentFilter = this.sessionStorageService.get(KEY) || DEFAULT_FILTER;
-  private _filter = new BehaviorSubject<ProblemsFilter>(this._currentFilter);
+  constructor() {}
+
+  get currentFilterValue(){
+    return this._currentFilter;
+  }
 
   getFilter() {
     return this._filter;
@@ -38,7 +41,14 @@ export class ProblemsFilterService {
       ...filter,
     };
     this._filter.next(this._currentFilter);
-    this.sessionStorageService.set(KEY, this._currentFilter);
+  }
+
+  setFilter(filter: Partial<ProblemsFilter>) {
+    this._currentFilter = {
+      ...DEFAULT_FILTER,
+      ...filter,
+    };
+    this._filter.next(this._currentFilter);
   }
 
 }

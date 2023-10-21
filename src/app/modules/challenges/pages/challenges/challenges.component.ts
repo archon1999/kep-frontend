@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 import { Challenge, ChallengeCall, ChallengesRating } from '../../models/challenges.models';
 import { ChallengesService } from '../../services/challenges.service';
 import { Chapter } from 'app/modules/testing/testing.models';
-import { CurrentUser } from '../../../../shared/components/classes/current-user.component';
+import { BaseComponent } from '../../../../shared/components/classes/base.component';
 import { PageResult } from '../../../../shared/page-result';
 
 interface NewChallengeCall {
@@ -32,7 +32,7 @@ interface NewChallengeCall {
     fadeInUpOnEnterAnimation({ duration: 3000 }),
   ],
 })
-export class ChallengesComponent extends CurrentUser implements OnInit, OnDestroy {
+export class ChallengesComponent extends BaseComponent implements OnInit, OnDestroy {
   public challengeCalls: Array<ChallengeCall> = [];
   public challengeCallsSkeletonVisible = true;
 
@@ -60,7 +60,7 @@ export class ChallengesComponent extends CurrentUser implements OnInit, OnDestro
     public authService: AuthenticationService,
     public router: Router,
   ) {
-    super(authService);
+    super();
   }
 
   ngOnInit(): void {

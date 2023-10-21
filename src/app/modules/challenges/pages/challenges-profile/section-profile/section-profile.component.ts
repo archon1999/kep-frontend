@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChallengesRating } from '../../../models/challenges.models';
 import { ChallengesStatisticsService } from '../../../services';
 import { AuthenticationService } from 'app/auth/service';
-import { CurrentUser } from 'app/shared/components/classes/current-user.component';
+import { BaseComponent } from '../../../../../shared/components/classes/base.component';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -10,13 +10,13 @@ import { CurrentUser } from 'app/shared/components/classes/current-user.componen
   templateUrl: './section-profile.component.html',
   styleUrls: ['./section-profile.component.scss']
 })
-export class SectionProfileComponent extends CurrentUser implements OnInit {
+export class SectionProfileComponent extends BaseComponent implements OnInit {
 
   constructor(
     public statisticsService: ChallengesStatisticsService,
     public authService: AuthenticationService,
   ) {
-    super(authService);
+    super();
   }
 
   public challengesRating: ChallengesRating;

@@ -4,6 +4,7 @@ import { ProblemsFilterService } from 'app/modules/problems/services/problems-fi
 import { SwiperOptions } from 'swiper';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'section-topics',
   templateUrl: './section-topics.component.html',
   styleUrls: ['./section-topics.component.scss'],
@@ -43,6 +44,9 @@ export class SectionTopicsComponent implements OnInit {
   ngOnInit(): void {}
 
   click(topicId: number) {
+    if (this.activeTopic === topicId){
+      topicId = null;
+    }
     this.activeTopic = topicId;
     this.filterService.updateFilter({ topic: topicId });
   }

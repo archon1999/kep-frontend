@@ -1,6 +1,8 @@
-export interface PageResult {
+export interface PageResult<T = any> {
+  page: number;
+  pageSize: number;
   count: number;
   total: number;
   pagesCount: number;
-  data: any;
+  data: Array<T>;
 }

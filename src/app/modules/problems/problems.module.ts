@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { CoreDirectivesModule } from '@core/directives/directives';
 import { CorePipesModule } from '@core/pipes/pipes.module';
@@ -70,6 +70,7 @@ import { HackAttemptsTableModule } from './components/hack-attempts-table/hack-a
 import { ProblemsPipesModule } from './pipes/problems-pipes.module';
 import { ProblemHacksComponent } from './pages/problem/problem-hacks/problem-hacks.component';
 import { MonacoEditorModule as MonacoModule } from '../../shared/third-part-modules/monaco-editor/monaco-editor.module';
+import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 
 const routes: Routes = [
   {
@@ -246,6 +247,8 @@ const routes: Routes = [
     ProblemsPipesModule,
     MonacoEditorModule,
     MonacoModule,
+    ReactiveFormsModule,
+    ApexChartModule,
   ],
   exports: [
     SectionProfileComponent
