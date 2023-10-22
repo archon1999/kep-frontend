@@ -1,4 +1,13 @@
 <div class="card">
+  <div class="card-header">
+    <div class="card-title">
+      {{ 'Filter' | translate }}
+    </div>
+    <button class="btn btn-sm btn-primary" (click)="filterCollapsed=!filterCollapsed;">
+      <span *ngIf="!filterCollapsed"><i data-feather="chevrons-down"></i></span>
+      <span *ngIf="filterCollapsed"><i data-feather="chevrons-up"></i></span>
+    </button>
+  </div>
   <div class="card-body">
     <form [formGroup]="filterForm">
       <div class="row">
@@ -79,7 +88,7 @@
 
       </div>
 
-      <div class="row">
+      <div class="row" *ngIf="filterCollapsed">
         <div class="col-lg-3 col-6">
           <label class="text-primary">
             <strong>

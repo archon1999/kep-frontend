@@ -5,6 +5,76 @@
 
 @include define-page-top(
   $name: 'problems',
-  $light-background: linear-gradient(to right, $primary, mix(white, $primary, 30)),
+  $light-background: linear-gradient(to right, mix($green, mix(black, $primary, 5), 10), mix(white, $primary, 15)),
   $dark-background: linear-gradient(to right, mix($green, mix(black, $primary, 50), 25), mix(black, $primary, 25))
-)
+);
+
+::ng-deep .problems-sidebar {
+  width: 400px;
+  right: -400px;
+  padding: 0;
+  background-color: $white;
+  z-index: 1051;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  height: calc(var(--vh, 1vh) * 100);
+  transition: right 0.4s cubic-bezier(0.05, 0.74, 0.2, 0.99);
+  backface-visibility: hidden;
+  border-left: 1px solid rgba($black, 0.05);
+
+  &.show {
+    box-shadow: 0 15px 30px 0 rgba($black, 0.11), 0 5px 15px 0 rgba($black, 0.08);
+    right: 0;
+  }
+
+  .content {
+    position: relative;
+    height: 100%;
+  }
+
+  .btn-toggle {
+    background: $primary;
+    color: $white !important;
+    display: block;
+    box-shadow: -3px 0px 8px rgba($black, 0.1);
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    position: absolute;
+    top: 50%;
+    width: 38px;
+    height: 38px;
+    left: -39px;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+  }
+
+  // theme color box styles
+  .color-box {
+    height: 24px;
+    width: 24px;
+    margin: 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    position: relative;
+    &.selected {
+      &:after {
+        content: '';
+        border: 1px solid $primary;
+        height: 30px;
+        width: 30px;
+        top: -3px;
+        left: -3px;
+        position: absolute;
+        border-radius: 0.5rem;
+      }
+      &.border {
+        &:after {
+          top: -4px;
+          left: -4px;
+        }
+      }
+    }
+  }
+}

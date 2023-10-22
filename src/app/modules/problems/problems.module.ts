@@ -71,6 +71,8 @@ import { ProblemsPipesModule } from './pipes/problems-pipes.module';
 import { ProblemHacksComponent } from './pages/problem/problem-hacks/problem-hacks.component';
 import { MonacoEditorModule as MonacoModule } from '../../shared/third-part-modules/monaco-editor/monaco-editor.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
+import { CoreSidebarModule } from '../../../@core/components';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 const routes: Routes = [
   {
@@ -249,6 +251,8 @@ const routes: Routes = [
     MonacoModule,
     ReactiveFormsModule,
     ApexChartModule,
+    CoreSidebarModule,
+    PerfectScrollbarModule,
   ],
   exports: [
     SectionProfileComponent
