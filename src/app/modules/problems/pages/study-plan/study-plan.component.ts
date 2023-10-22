@@ -10,7 +10,7 @@ import { ProblemsService } from '../../services/problems.service';
 @Component({
   selector: 'app-study-plan',
   templateUrl: './study-plan.component.html',
-  styleUrls: ['./study-plan.component.scss', './colors.scss'],
+  styleUrls: ['./study-plan.component.scss'],
   animations: [fadeInOnEnterAnimation({ duration: 3000 })]
 })
 export class StudyPlanComponent implements OnInit {

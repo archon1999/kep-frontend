@@ -1,8 +1,8 @@
-@import 'bootstrap/scss/mixins'; 
+@import 'app/colors/study-plans';
+@import 'bootstrap/scss/mixins';
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
-
-@import url('./colors.scss');
+@import 'bootstrap/scss/mixins/dark-layout';
 
 
 .study-plan-page-top {
@@ -100,8 +100,8 @@
             margin-bottom: 0.5rem;
             
             &:last-child {
-              border-bottom: 0px;
-              margin-bottom: 0rem;
+              border-bottom: 0;
+              margin-bottom: 0;
             }
 
             .problem-title {
@@ -133,14 +133,8 @@
 
             .problem-button {
               a {
-                background-color:  var(--bg-study-plan) !important;
-                border: 0px;
+                border: 0;
                 font-weight: 500;
-
-                &:hover {
-                  background-color: var(--bg-study-plan) !important;
-                  box-shadow: 0 0 10px var(--bg-study-plan) !important;
-                }
               }
             }
           }
@@ -253,6 +247,42 @@
     img {
       margin-bottom: 2rem;
       margin-top: 2rem;
+    }
+  }
+}
+
+.study-plan-1 .problem-button {
+  a {
+    background-color: $study-plan-1 !important;
+    border: 0;
+    font-weight: 500;
+
+    &:hover {
+      box-shadow: 0 0 10px $study-plan-1 !important;
+    }
+  }
+}
+
+.study-plan-2 .problem-button {
+  a {
+    background-color: $study-plan-2 !important;
+    border: 0;
+    font-weight: 500;
+
+    &:hover {
+      box-shadow: 0 0 10px $study-plan-2 !important;
+    }
+  }
+}
+
+.study-plan-3 .problem-button {
+  a {
+    background-color: $study-plan-3 !important;
+    border: 0;
+    font-weight: 500;
+
+    &:hover {
+      box-shadow: 0 0 10px $study-plan-3 !important;
     }
   }
 }
