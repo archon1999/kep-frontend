@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, Inject, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, HostBinding, Inject, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -29,6 +29,7 @@ import { AuthenticationService } from './auth/service';
 import { WebsocketService } from './shared/services/websocket';
 import { environment } from 'environments/environment';
 import { Router } from '@angular/router';
+import { isPresent } from '@shared/c-validators/utils';
 
 @Component({
   selector: 'app-root',
@@ -116,6 +117,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // Subscribe to config changes
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
+      if (!isPresent(config.layout.enableAnimation)) {
+        this._coreConfigService.setConfig({ layout: { enableAnimation: true } } );
+      }
+      this.animationsDisabled = !config.layout.enableAnimation;
       this.coreConfig = config;
 
       // Set application default language.
@@ -274,6 +279,9 @@ export class AppComponent implements OnInit, OnDestroy {
    *
    * @param key
    */
+  @HostBinding('@.disabled')
+  public animationsDisabled = false;
+
   toggleSidebar(key): void {
     this._coreSidebarService.getSidebarRegistry(key).toggleOpen();
   }
