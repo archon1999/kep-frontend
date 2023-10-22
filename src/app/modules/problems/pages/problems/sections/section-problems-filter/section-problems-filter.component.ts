@@ -33,6 +33,8 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
   public tags: Array<Tag> = [];
   public difficulties: Array<Difficulty> = [];
 
+  public filterCollapsed = false;
+
   constructor(
     public service: ProblemsService,
     public problemsFilterService: ProblemsFilterService,

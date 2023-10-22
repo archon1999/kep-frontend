@@ -1,52 +1,42 @@
-<section class="problems" [@mobile]="startAnimationMobileState">
-  <div class="row">
-    <div class="col-12">
-      <div class="problems-page-top"></div>
-  
-      <div class="row">
-        <div class="col-xl-9 col-lg-8 col-md-8 col-sm-12">
-          <div class="row">
-            <div [@fadeInRight]="startAnimationState" class="col-lg-9 col-md-6 col-sm-12">
-              <section-contests></section-contests>            
-            </div>
-            <div [@fadeInRight]="startAnimationState" class="col-lg-3 col-md-6 col-sm-12">
-              <section-info></section-info>
-            </div>
-          </div>
-
-          <div class="col-12" [@fadeInLeft]="startAnimationState">
-            <section-study-plans></section-study-plans>                  
-          </div>
-
-          <section-topics></section-topics>
-
-          <section-problems-filter></section-problems-filter>
-
-          <section-problems-table [problems]="problems"></section-problems-table>
-
-          <div class="mb-2">
-            <pagination
-              *ngIf="page"
-              [collectionSize]="problemsTotal"
-              [pageOptions]="[10, 20, 50]"
-              [(page)]="page"
-              [pageSize]="pageSize"
-              [maxSize]="5"
-              [rotate]="true"
-              [boundaryLinks]="false"
-              [ellipses]="true"
-              (pageSizeChange)="pageSizeChange($event)"
-              (pageChange)="pageChange($event)">
-            </pagination>
-          </div>
-        </div>
-        <div [@fadeInRight]="startAnimationState" class="col-xl-3 col-lg-4 col-md-4 col-sm-12">
-          <section-sidebar></section-sidebar>
+<section class="problems">
+  <div class="problems-page-top">
+    <div class="row">
+      <div class="col-12">
+        <section-info></section-info>
+      </div>
+      <div class="col-lg-10 col-12 offset-0 offset-lg-1">
+        <section-study-plans [@fadeInLeft]="startAnimationState"></section-study-plans>
+        <section-topics></section-topics>
+        <section-problems-filter></section-problems-filter>
+        <section-problems-table [problems]="problems"></section-problems-table>
+        <div class="mb-2">
+          <pagination
+            *ngIf="page"
+            [collectionSize]="problemsTotal"
+            [pageOptions]="[10, 20, 50]"
+            [(page)]="page"
+            [pageSize]="pageSize"
+            [maxSize]="5"
+            [rotate]="true"
+            [boundaryLinks]="false"
+            [ellipses]="true"
+            (pageSizeChange)="pageSizeChange($event)"
+            (pageChange)="pageChange($event)">
+          </pagination>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<core-sidebar [hideOnEsc]="true" class="problems-sidebar" [name]="'problemsSidebar'">
+  <a
+    (click)="toggleSidebar('problemsSidebar')"
+    class="btn-toggle d-flex align-items-center justify-content-center">
+    <span [data-feather]="'chevrons-left'"></span>
+  </a>
+  <section-sidebar [perfectScrollbar]></section-sidebar>
+</core-sidebar>
 
 <nouslider-css></nouslider-css>
 <ng-select-css></ng-select-css>
