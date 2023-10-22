@@ -2,21 +2,18 @@
 @import "breakpoints";
 
 @mixin define-page-top($name, $light-background, $dark-background) {
-  .#{$name}-page-top {
+  .#{$name}-page-top:before {
+    content: "";
     position: absolute;
-    top: -66px;
+    top: -20px;
     margin-left: -2rem;
-    width: calc(100% + 2rem);
+    width: calc(100%);
     z-index: -1;
-    height: 620px;
+    height: 666px;
     background: $light-background;
 
     @include dark-layout {
       background: $dark-background;
-    }
-
-    @include media-breakpoint-down(lg) {
-      width: calc(100% + 1.2rem);
     }
   }
 }
