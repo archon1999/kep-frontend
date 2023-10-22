@@ -5,7 +5,7 @@ import { StudyPlan } from '../../models/problems.models';
 @Component({
   selector: 'study-plan-card',
   templateUrl: './study-plan-card.component.html',
-  styleUrls: ['./study-plan-card.component.scss', '../../pages/study-plan/colors.scss'],
+  styleUrls: ['./study-plan-card.component.scss'],
   animations: [fadeInRightOnEnterAnimation({ duration: 3000 })]
 })
 export class StudyPlanCardComponent implements OnInit {
