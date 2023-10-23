@@ -37,6 +37,7 @@ export class SectionProblemsTableComponent extends BaseComponent implements OnIn
   changeOrdering(ordering: string) {
     this.ordering = ordering;
     this.filterService.updateFilter({ ordering: ordering });
+    this.updateQueryParams({ ordering: ordering });
   }
 
   tagOnClick(tagId: number) {

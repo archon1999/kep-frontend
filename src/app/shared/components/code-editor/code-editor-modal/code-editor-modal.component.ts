@@ -1,17 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { TemplateCodeService } from 'app/shared/services/template-code.service';
 import { ToastrService } from 'ngx-toastr';
-import { CoreConfigService } from '../../../../../@core/services/config.service';
-import { AvailableLanguage, Problem, SampleTest } from '../../../../modules/problems/models/problems.models';
-import { ApiService } from '../../../services/api.service';
-import { WebsocketService } from '../../../services/websocket';
+import { CoreConfigService } from '@core/services/config.service';
+import { AvailableLanguage, Problem, SampleTest } from '@problems/models/problems.models';
+import { ApiService } from '@shared/services/api.service';
+import { WebsocketService } from '@shared/services/websocket';
 import { FormControl, FormGroup } from '@angular/forms';
-import { CValidators } from '../../../c-validators/c-validators';
-import { AttemptLangs } from '../../../../modules/problems/constants';
-import { CoreSidebarService } from '../../../../../@core/components/core-sidebar/core-sidebar.service';
+import { CValidators } from '@shared/c-validators/c-validators';
+import { AttemptLangs } from '@problems/constants';
+import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { SwipeService } from '@shared/services/swipe.service';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -46,7 +47,7 @@ export class CodeEditorModalComponent implements OnInit {
   public isRunning = false;
   public isAnswerForInput = false;
 
-  @ViewChild('modal') public modalRef: TemplateRef<any>;
+  public sidebarName = 'codeEditorSidebar';
 
   constructor(
     public api: ApiService,
@@ -58,7 +59,12 @@ export class CodeEditorModalComponent implements OnInit {
     public langService: LanguageService,
     public templateCodeService: TemplateCodeService,
     public coreSidebarService: CoreSidebarService,
+    public swipeService: SwipeService,
   ) {
+  }
+
+  get sidebarIsOpened() {
+    return this.coreSidebarService.getSidebarRegistry(this.sidebarName).isOpened;
   }
 
   ngOnInit(): void {
@@ -71,8 +77,8 @@ export class CodeEditorModalComponent implements OnInit {
     this.wsService.on('custom-test-result').subscribe(
       (result: any) => {
         let output = result.output + result.error;
-        output += `\n=========\nTime: ${ result.time }ms`;
-        output += `\nMemory: ${ result.memory }KB`;
+        output += `\n=========\nTime: ${result.time}ms`;
+        output += `\nMemory: ${result.memory}KB`;
         this.isRunning = false;
         this.editorForm.get('output').setValue(output);
       }
@@ -90,26 +96,23 @@ export class CodeEditorModalComponent implements OnInit {
         this.templateCodeService.save(this.uniqueName, this.editorForm.get('lang').value, code);
       }
     );
-  }
 
-  modalOpen(modal: TemplateRef<any>) {
-    this.hasSubmitted = false;
-    const editorLang = this.editorForm.get('lang').value;
-    const code = this.templateCodeService.get(this.uniqueName, editorLang) || this.availableLanguages[0].codeTemplate;
-    this.editorForm.get('code').setValue(code);
+    this.swipeService.swipeLeft$.subscribe(
+      (event) => {
+        console.log(Math.abs(event.deltaX) + event.pageX, window.innerWidth);
+        if (Math.abs(event.deltaX) + event.pageX + 100 >= window.innerWidth) {
+          this.openSidebar();
+        }
+      }
+    );
 
-    if (this.isSelectedLangText()) {
-      this.modalService.open(modal, {
-        size: 'md',
-        centered: true,
-      });
-    } else {
-      this.modalService.open(modal, {
-        size: 'xl',
-        scrollable: true,
-      });
-    }
-    this.onSampleTestChange();
+    this.swipeService.swipeRight$.subscribe(
+      (event) => {
+        if (Math.abs(event.deltaX) >= 100) {
+          this.closeSidebar();
+        }
+      }
+    );
   }
 
   onSampleTestChange() {
@@ -160,7 +163,7 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   submit() {
-    this.modalService.dismissAll(0);
+    this.toggleSidebar();
     if (this.hasSubmitted) {
       return;
     }
@@ -186,7 +189,30 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   toggleSidebar(): void {
-    this.coreSidebarService.getSidebarRegistry('codeEditorSidebar').toggleOpen();
+    if (!this.sidebarIsOpened) {
+      this.openSidebar();
+    } else {
+      this.closeSidebar();
+    }
+  }
+
+  openSidebar() {
+    if (this.sidebarIsOpened) {
+      return;
+    }
+    this.coreSidebarService.getSidebarRegistry(this.sidebarName).toggleOpen();
+    this.hasSubmitted = false;
+    const editorLang = this.editorForm.get('lang').value;
+    const code = this.templateCodeService.get(this.uniqueName, editorLang) || this.availableLanguages[0].codeTemplate;
+    this.editorForm.get('code').setValue(code);
+    this.onSampleTestChange();
+  }
+
+  closeSidebar() {
+    if (!this.sidebarIsOpened) {
+      return;
+    }
+    this.coreSidebarService.getSidebarRegistry(this.sidebarName).toggleOpen();
   }
 
 }
