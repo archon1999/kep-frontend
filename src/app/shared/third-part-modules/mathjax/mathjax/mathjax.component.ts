@@ -13,15 +13,11 @@ export class MathjaxComponent implements AfterViewInit, OnChanges {
   mathJaxObject;
   ngOnChanges(changes: SimpleChanges) {
     if (changes["content"]) {
-      // console.log("content chnaged")
       this.renderMath();
     }
   }
 
   renderMath() {
-    // console.log("render math")
-    // MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-
     this.mathJaxObject = window["MathJax"];
     let angObj = this;
     setTimeout(() => {

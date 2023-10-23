@@ -67,7 +67,6 @@ export class KepcoinSpendSwalComponent implements OnInit {
                 confirmButton: 'btn btn-success'
               }
             }).then(() => {
-              console.log(result);
               this.success.emit(result);
             });
           } else {

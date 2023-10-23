@@ -76,7 +76,6 @@ export class CalendarSectionComponent implements OnInit {
     navLinks: true,
     datesSet: (dateInfo) => {
       this.localStorageService.set('calendarViewType', dateInfo.view.type);
-      // console.log(dateInfo);
     }
   };
 
