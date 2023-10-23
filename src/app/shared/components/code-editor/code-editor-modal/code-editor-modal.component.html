@@ -140,3 +140,153 @@
 </ng-template>
 
 <ng-select-css></ng-select-css>
+
+
+<core-sidebar [hideOnEsc]="true" class="code-editor-sidebar" [name]="'codeEditorSidebar'">
+  <a
+    (click)="toggleSidebar()"
+    class="btn-toggle d-flex align-items-center justify-content-center">
+    <span [data-feather]="'terminal'"></span>
+  </a>
+
+
+  <div class="full-height position-relative" [perfectScrollbar]>
+    <div class="">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{ 'CODE_EDITOR.EDITOR' | translate }}</h5>
+          <button (click)="toggleSidebar()" aria-label="Close" class="close" type="button">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div
+          [formGroup]="editorForm"
+          class="modal-body">
+          <div *ngIf="isSelectedLangText()" class="col-12 mx-auto">
+            <input class="form-control" formControlName="code" type="text">
+          </div>
+
+          <div *ngIf="!isSelectedLangText()" class="row">
+            <div class="col-lg-8 col-md-7 col-12">
+              <div
+                [style.height.%]="100"
+                container="body"
+                [ngbTooltip]="editorForm.controls.code.errors | errorMessage"
+                tooltipClass="tooltip-danger"
+              >
+                <monaco-editor
+                  [height]="540"
+                  [formControl]="editorForm.controls.code">
+                </monaco-editor>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-5 col-0">
+              <div class="form-group mt-2">
+          <span class="badge badge-{{ editorForm.get('lang').value }}">
+            {{ editorForm.get('lang').value }}
+          </span>
+              </div>
+
+              <div *ngIf="sampleTests.length > 0" class="mt-2">
+                <div class="d-flex justify-content-between">
+                  <div class="form-group" style="width: 100%;">
+                    <label>{{ 'CODE_EDITOR.SAMPLE_TEST' | translate }}: </label>
+                    <ng-select
+                      (change)="onSampleTestChange()"
+                      [clearable]="false"
+                      formControlName="testCaseNumber"
+                    >
+                      <ng-option
+                        *ngFor="let sampleTest of sampleTests;index as i"
+                        value="{{ i + 1 }}">
+                        {{ i + 1 }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group mt-1">
+                <label>{{ 'CODE_EDITOR.INPUT' | translate }}:</label>
+                <textarea
+                  class="form-control"
+                  formControlName="input"
+                  placeholder=""
+                  rows="3"
+                  [ngbTooltip]="editorForm.controls.input.errors | errorMessage"
+                  tooltipClass="tooltip-danger"
+                ></textarea>
+              </div>
+
+              <div class="form-group mt-1">
+                <label>{{ 'CODE_EDITOR.OUTPUT' | translate }}:</label>
+                <textarea
+                  class="form-control"
+                  formControlName="output"
+                  placeholder=""
+                  rows="3"
+                ></textarea>
+              </div>
+
+              <div class="form-group mt-1">
+                <label>{{ 'CODE_EDITOR.ANSWER' | translate }}:</label>
+                <textarea
+                  class="form-control"
+                  formControlName="answer"
+                  placeholder=""
+                  rows="3"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            (click)="run()"
+            *ngIf="!isSelectedLangText()"
+            class="btn btn-glow btn-dark bg-dark"
+            type="button">
+            <span *ngIf="isRunning" aria-hidden="true" class="spinner-border spinner-border-sm" role="status"></span>
+            <span *ngIf="!isRunning"><i data-feather="terminal"></i></span>
+            {{ 'CODE_EDITOR.RUN' | translate }}
+          </button>
+
+          <kepcoin-spend-swal
+            (success)="answerForInput($event)"
+            *ngIf="answerForInputEnabled"
+            [customContent]="true"
+            [purchaseUrl]="'problems/' + problem.id + '/answer-for-input/'"
+            [requestBody]="{input_data: editorForm.get('input').value}"
+            [value]="1"
+          >
+            <button class="btn btn-glow btn-dark bg-dark" type="button">
+        <span
+          *ngIf="isAnswerForInput"
+          class="spinner-border spinner-border-sm"
+          role="status">
+        </span>
+              <span *ngIf="!isAnswerForInput">
+          <i data-feather="check-square"></i>
+        </span>
+              {{ 'CODE_EDITOR.ANSWER_FOR_INPUT' | translate }}
+            </button>
+          </kepcoin-spend-swal>
+
+          <button
+            (click)="submit()"
+            *ngIf="submitUrl"
+            [disabled]="!editorForm.valid"
+            class="btn btn-glow btn-dark bg-dark"
+            type="submit">
+            <i data-feather="send"></i>
+            {{ 'CODE_EDITOR.SUBMIT' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</core-sidebar>

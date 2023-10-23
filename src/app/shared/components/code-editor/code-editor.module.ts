@@ -11,6 +11,8 @@ import { CodeEditorModalComponent } from './code-editor-modal/code-editor-modal.
 import { MonacoEditorModule } from '../../third-part-modules/monaco-editor/monaco-editor.module';
 import { ErrorTooltipModule } from '../error-tooltip/error-tooltip.module';
 import { NgSelectModule } from '../../third-part-modules/ng-select/ng-select.module';
+import { CoreSidebarModule } from '../../../../@core/components';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { NgSelectModule } from '../../third-part-modules/ng-select/ng-select.mod
     NgbTooltipModule,
     ReactiveFormsModule,
     ErrorTooltipModule,
-    NgSelectModule
+    NgSelectModule,
+    CoreSidebarModule,
+    PerfectScrollbarModule
   ],
   exports: [
     CodeEditorModalComponent,
