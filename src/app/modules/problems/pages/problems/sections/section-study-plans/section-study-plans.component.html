@@ -2,7 +2,7 @@
   {{ 'StudyPlans' | translate }}
 </h3>
 
-<swiper [config]="swiperConfig" class="mt-2 swiper-lazy-loading">
+<swiper *ngIf="swiperVisible" [config]="swiperConfig" class="mt-2">
   <div class="swiper-wrapper">
     <div class="swiper-slide" *ngFor="let studyPlan of studyPlans">
       <study-plan-card [studyPlan]="studyPlan"></study-plan-card>
