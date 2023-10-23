@@ -42,7 +42,6 @@ export class ApexChartComponent implements OnInit, OnDestroy {
         this.chartTheme = {
           mode: config.layout.skin === 'dark' ? 'dark' : 'light',
         };
-        console.log(this.chartTheme);
       });
   }
 

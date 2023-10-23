@@ -183,7 +183,6 @@ export class UserRatingsComponent implements OnInit {
             events: {
               click: function (event, chartContext, config) {
                 let contestId = ratingChanges[config.dataPointIndex].contestId;
-                console.log(ratingChanges[config.dataPointIndex]);
                 router.navigate(['/competitions', 'contests', 'contest', contestId, 'standings']);
               }
             }

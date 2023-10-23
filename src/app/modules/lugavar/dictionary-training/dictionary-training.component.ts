@@ -46,7 +46,6 @@ export class DictionaryTrainingComponent implements OnInit {
   makeRandomQuestion(){
     let randomIndex = randomInt(0, this.dictionary.length-1);
     let randomKeyword = this.dictionary[randomIndex];
-    console.log(randomIndex, randomKeyword, this.dictionary.length);
     this.questionBody = randomKeyword.meaning;
     this.questionOptions = [];
     while(this.questionOptions.length != 4){
