@@ -35,7 +35,6 @@ export class ProblemOgImageComponent implements OnInit {
       this.captureService.getImage(this.screen.nativeElement, true)
         .pipe(
           tap(img => {
-            console.log(this.problem.id);
             this.api.post(`problems/${this.problem.id}/og-image/`, { og_image: img }).subscribe(() => {
 
             })

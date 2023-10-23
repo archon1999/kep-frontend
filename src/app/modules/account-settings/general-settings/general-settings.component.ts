@@ -48,7 +48,6 @@ export class GeneralSettingsComponent implements OnInit {
       reader.onload = (event: any) => {
         this.generalInfo.avatar = event.target.result;
         this.generalSettings.avatar = event.target.result;
-        console.log(this.generalSettings);
       };
 
       reader.readAsDataURL(event.target.files[0]);

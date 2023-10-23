@@ -28,7 +28,6 @@ export class LectureComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.lecture);
     if(this.lessonPartStatus != CourseLessonPartStatus.COMPLETED){
       this.service.checkLessonPartCompletion(this.lessonPartId).subscribe((result: any) => {
         this.checkCompletionEvent.emit(result);

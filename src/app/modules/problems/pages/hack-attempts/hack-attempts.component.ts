@@ -74,8 +74,6 @@ export class HackAttemptsComponent implements OnInit, OnDestroy {
   }
 
   private _loadPage() {
-    console.log(123);
-
     var params: any = { page: this.currentPage };
     if (this.myAttempts && this.currentUser) {
       params.username = this.currentUser.username;
