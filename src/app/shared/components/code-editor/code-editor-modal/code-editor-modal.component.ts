@@ -36,8 +36,8 @@ export class CodeEditorModalComponent implements OnInit {
   public hasSubmitted = false;
 
   public editorForm = new FormGroup({
-    code: new FormControl('', [CValidators.maxLength({ value: 60000 })]),
-    input: new FormControl('', [CValidators.maxLength({ value: 1000 })]),
+    code: new FormControl('', [CValidators.maxLength({ value: 65536 })]),
+    input: new FormControl('', [CValidators.maxLength({ value: 2048 })]),
     lang: new FormControl('', []),
     output: new FormControl('', []),
     answer: new FormControl('', []),
