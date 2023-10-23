@@ -2,4 +2,8 @@
   ::ng-deep .dark-layout & {
     @content;
   }
+
+  .dark-layout & {
+    @content;
+  }
 }

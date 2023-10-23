@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ProblemsFilter } from '../models/problems.models';
 
-const DEFAULT_FILTER: ProblemsFilter = {
+export const DEFAULT_FILTER: ProblemsFilter = {
   page: 1,
   pageSize: 20,
   title: null,
-  tags: null,
+  tags: [],
   difficulty: null,
   status: null,
   topic: null,

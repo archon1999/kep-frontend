@@ -389,6 +389,8 @@ export const locale = {
     PartialSolvable: 'Qisman yechim',
     LastChallenges: 'So`ngi bellashuvlar',
     RatingChanges: 'Reyting o`zgarishlari',
+    ProblemsPageTitleText: 'Ishlang va mahoratingizni oshiring',
+    Page: 'Bet',
     ContestRules: {
       ACM20H: ``,
     },

@@ -11,6 +11,7 @@ import { WebsocketService } from '../../../services/websocket';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CValidators } from '../../../c-validators/c-validators';
 import { AttemptLangs } from '../../../../modules/problems/constants';
+import { CoreSidebarService } from '../../../../../@core/components/core-sidebar/core-sidebar.service';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -56,6 +57,7 @@ export class CodeEditorModalComponent implements OnInit {
     public wsService: WebsocketService,
     public langService: LanguageService,
     public templateCodeService: TemplateCodeService,
+    public coreSidebarService: CoreSidebarService,
   ) {
   }
 
@@ -181,6 +183,10 @@ export class CodeEditorModalComponent implements OnInit {
 
   isSelectedLangText() {
     return (this.editorForm.get('lang').value === AttemptLangs.TEXT);
+  }
+
+  toggleSidebar(): void {
+    this.coreSidebarService.getSidebarRegistry('codeEditorSidebar').toggleOpen();
   }
 
 }

@@ -392,6 +392,8 @@ export const locale = {
     PartialSolvable: 'Partial Solvable',
     LastChallenges: 'Last challenges',
     RatingChanges: 'Rating changes',
+    ProblemsPageTitleText: 'Practice and improve your skills',
+    Page: 'Page',
     ProblemTourSteps: [
       {
         title: 'Available languages',
