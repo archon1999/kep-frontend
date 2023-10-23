@@ -389,6 +389,8 @@ export const locale = {
     PartialSolvable: 'Частичное решение',
     LastChallenges: 'Последние вызовы',
     RatingChanges: 'Изменения рейтинга',
+    ProblemsPageTitleText: 'Практикуйтесь и улучшайте свои навыки',
+    Page: 'Страница',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',

@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Problem, ProblemsFilter } from '@problems/models/problems.models';
 import { fadeInOnEnterAnimation } from 'angular-animations';
-import { ProblemsFilterService } from '@problems/services/problems-filter.service';
+import { DEFAULT_FILTER, ProblemsFilterService } from '@problems/services/problems-filter.service';
 import { BaseComponent } from '@shared/components/classes/base.component';
 
 @Component({
@@ -16,7 +16,7 @@ export class SectionProblemsTableComponent extends BaseComponent implements OnIn
 
   @Input() problems: Array<Problem>;
 
-  public filter: ProblemsFilter;
+  public filter: ProblemsFilter = DEFAULT_FILTER;
   public ordering: string;
 
   constructor(
@@ -40,9 +40,10 @@ export class SectionProblemsTableComponent extends BaseComponent implements OnIn
   }
 
   tagOnClick(tagId: number) {
-    let tags = this.filter.tags;
-    var index = this.filter.tags.indexOf(tagId);
-    if (index == -1) {
+    console.log(this.filter);
+    const tags = this.filter.tags;
+    const index = this.filter.tags.indexOf(tagId);
+    if (index === -1) {
       tags.push(tagId);
     } else {
       tags.splice(index, 1);
@@ -50,7 +51,7 @@ export class SectionProblemsTableComponent extends BaseComponent implements OnIn
     this.filterService.updateFilter({ tags: tags });
   }
 
-  identify(index, item){
+  identify(index, item) {
     return item.id;
   }
 
