@@ -17,6 +17,7 @@ export class PaginationComponent implements OnInit {
   @Input() color = 'primary';
   @Input() ellipses = false;
   @Input() boundaryLinks = true;
+  @Input() customClass = 'mt-2';
 
   @Output() pageChange = new EventEmitter<number>;
   @Output() pageSizeChange = new EventEmitter<number>;

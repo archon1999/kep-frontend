@@ -11,7 +11,7 @@
     <li class="dropdown-menu-header">
       <div class="dropdown-header d-flex">
         <h4 class="notification-title mb-0 mr-auto">{{ 'Notifications' | translate }}</h4>
-        <div class="badge badge-pill badge-light-primary">
+        <div class="badge badge-pill badge-light-primary" *ngIf="!isAll">
           {{ notifications.length }} {{ 'New' | translate }}
         </div>
       </div>
@@ -202,8 +202,22 @@
 
     <!-- Notifications footer -->
     <li class="dropdown-menu-footer">
-      <a class="btn btn-outline-primary btn-block" (click)="readAll()" *ngIf="notifications.length > 0">{{ 'ReadAll' | translate }}</a>
-      <a class="btn btn-primary btn-block" routerLink="/notifications">{{ 'AllNotifications' | translate }}</a>
+      <pagination
+        *ngIf="pagesCount > 1"
+        [@fadeInOnEnter]
+        [@fadeOutOnLeave]
+        [(page)]="pageNumber"
+        (pageChange)="updateNotifications()"
+        [maxSize]="3"
+        [boundaryLinks]="false"
+        [pageSize]="10"
+        [collectionSize]="total"
+        [customClass]="'mb-1'"
+      >
+      </pagination>
+      <button *ngIf="!isAll && notifications.length > 0" class="btn btn-outline-primary btn-block" (click)="readAll()">{{ 'ReadAll' | translate }}</button>
+      <button *ngIf="!isAll" class="btn btn-primary btn-block" (click)="isAll=true;updateNotifications();">{{ 'AllNotifications' | translate }}</button>
+      <button *ngIf="isAll" class="btn btn-primary btn-block" (click)="isAll=false;updateNotifications();">{{ 'Unread' | translate }}</button>
     </li>
     <!--/ Notifications footer -->
   </ul>

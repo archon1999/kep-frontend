@@ -394,6 +394,7 @@ export const locale = {
     RatingChanges: 'Rating changes',
     ProblemsPageTitleText: 'Practice and improve your skills',
     Page: 'Page',
+    Unread: 'Unread',
     ProblemTourSteps: [
       {
         title: 'Available languages',
