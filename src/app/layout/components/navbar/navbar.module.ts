@@ -20,6 +20,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NavbarKepcoinComponent } from './navbar-kepcoin/navbar-kepcoin.component';
 import { CoreDirectivesModule } from '@core/directives/directives';
 import { NavbarDailyTasksComponent } from './navbar-daily-tasks/navbar-daily-tasks.component';
+import { PaginationModule } from '@shared/components/pagination/pagination.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -28,7 +29,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 
 @NgModule({
   declarations: [NavbarComponent, NavbarSearchComponent, NavbarBookmarkComponent, NavbarNotificationComponent, NavbarKepcoinComponent, NavbarDailyTasksComponent],
-  imports: [RouterModule, NgbModule, CoreCommonModule, PerfectScrollbarModule, CoreTouchspinModule, TranslateModule, NgbPopoverModule, CoreDirectivesModule],
+  imports: [RouterModule, NgbModule, CoreCommonModule, PerfectScrollbarModule, CoreTouchspinModule, TranslateModule, NgbPopoverModule, CoreDirectivesModule, PaginationModule],
   providers: [
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
