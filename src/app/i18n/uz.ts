@@ -391,6 +391,7 @@ export const locale = {
     RatingChanges: 'Reyting o`zgarishlari',
     ProblemsPageTitleText: 'Ishlang va mahoratingizni oshiring',
     Page: 'Bet',
+    Unread: 'O`qilmagan',
     ContestRules: {
       ACM20H: ``,
     },

@@ -391,6 +391,7 @@ export const locale = {
     RatingChanges: 'Изменения рейтинга',
     ProblemsPageTitleText: 'Практикуйтесь и улучшайте свои навыки',
     Page: 'Страница',
+    Unread: 'Непрочитанные',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',

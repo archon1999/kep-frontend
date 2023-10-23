@@ -8,7 +8,7 @@
     [rotate]="rotate"
     [boundaryLinks]="boundaryLinks"
     (pageChange)="change($event)"
-    class="d-flex justify-content-center pagination-{{ color }} mt-2">
+    class="d-flex justify-content-center pagination-{{ color }} {{ customClass }}">
     <ng-template ngbPaginationFirst>
     <span
       [data-feather]="'chevrons-left'"
