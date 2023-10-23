@@ -41,7 +41,6 @@ export class SectionProblemsTableComponent extends BaseComponent implements OnIn
   }
 
   tagOnClick(tagId: number) {
-    console.log(this.filter);
     const tags = this.filter.tags;
     const index = this.filter.tags.indexOf(tagId);
     if (index === -1) {

@@ -77,7 +77,6 @@ export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnCh
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
     if ('lang' in changes) {
       this.options = {
         ...this.options,

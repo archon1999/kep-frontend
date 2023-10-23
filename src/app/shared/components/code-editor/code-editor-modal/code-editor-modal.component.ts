@@ -99,7 +99,6 @@ export class CodeEditorModalComponent implements OnInit {
 
     this.swipeService.swipeLeft$.subscribe(
       (event) => {
-        console.log(Math.abs(event.deltaX) + event.pageX, window.innerWidth);
         if (Math.abs(event.deltaX) + event.pageX + 100 >= window.innerWidth) {
           this.openSidebar();
         }
