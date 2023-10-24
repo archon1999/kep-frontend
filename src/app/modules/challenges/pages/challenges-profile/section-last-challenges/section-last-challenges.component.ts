@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { BaseComponent } from '../../../../../shared/components/classes/base.component';
-import { ChallengesStatisticsService } from '../../../services';
-import { AuthenticationService } from '../../../../../auth/service';
-import { Challenge } from '../../../models/challenges.models';
-import { PageResult } from '../../../../../shared/page-result';
+import { BaseComponent } from '@shared/components/classes/base.component';
+import { ChallengesStatisticsService } from 'app/modules/challenges/services';
+import { Challenge } from 'app/modules/challenges/models/challenges.models';
+import { PageResult } from '@shared/page-result';
+import { User } from 'app/auth/models';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -28,7 +28,7 @@ export class SectionLastChallengesComponent extends BaseComponent implements OnI
     super.ngOnInit();
   }
 
-  afterChangeCurrentUser() {
+  afterChangeCurrentUser(currentUser: User) {
     if (this.currentUser) {
       this.loadChallenges();
     }
