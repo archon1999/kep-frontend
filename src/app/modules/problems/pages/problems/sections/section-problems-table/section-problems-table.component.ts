@@ -34,10 +34,14 @@ export class SectionProblemsTableComponent extends BaseComponent implements OnIn
     );
   }
 
+  afterChangeQueryParams() {
+    console.log(this._queryParams);
+  }
+
   changeOrdering(ordering: string) {
     this.ordering = ordering;
-    this.filterService.updateFilter({ ordering: ordering });
     this.updateQueryParams({ ordering: ordering });
+    this.filterService.updateFilter({ ordering: ordering });
   }
 
   tagOnClick(tagId: number) {

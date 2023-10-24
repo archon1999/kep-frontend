@@ -5,7 +5,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CoreConfig } from '@core/types';
 import { CoreConfigService } from '@core/services/config.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { GlobalService } from '@shared/services/global.service';
 
 @Component({
   template: '',
@@ -16,6 +17,7 @@ export class BaseComponent implements OnInit, OnDestroy {
   public coreConfigService = inject(CoreConfigService);
   public router = inject(Router);
   public route = inject(ActivatedRoute);
+  public globalService = inject(GlobalService);
 
   public currentUser: User | null;
   public coreConfig: CoreConfig;
@@ -29,45 +31,41 @@ export class BaseComponent implements OnInit, OnDestroy {
   private _firstQueryParamsLoad = false;
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(
-      (params: any) => {
-        this._queryParams = params;
-        this.afterChangeQueryParams();
+    this.globalService.afterChangeQueryParams.asObservable().subscribe(
+      (params) => {
+        this.afterChangeQueryParams(params);
         if (!this._firstQueryParamsLoad) {
           this._firstQueryParamsLoad = true;
-          this.afterFirstChangeQueryParams();
+          this.afterFirstChangeQueryParams(params);
         }
       }
     );
 
-    this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (user: User | null) => {
-        this.currentUser = user;
-        this.afterChangeCurrentUser();
-        this.isAuthenticated = (this.currentUser !== null);
+    this.globalService.afterChangeCurrentUser.asObservable().subscribe(
+      (currentUser) => {
+        this.afterChangeCurrentUser(currentUser);
       }
     );
 
-    this.coreConfigService.getConfig().pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (coreConfig: CoreConfig) => {
-        this.coreConfig = coreConfig;
-        this.isDarkMode = (this.coreConfig.layout.skin === 'dark');
-        this.afterChangeCoreConfig();
+    this.globalService.afterChangeCoreConfig.asObservable().subscribe(
+      (coreConfig) => {
+        this.afterChangeCoreConfig(coreConfig);
       }
     );
   }
 
-  afterChangeCurrentUser() {}
-  afterChangeCoreConfig() {}
-  afterChangeQueryParams() {}
-  afterFirstChangeQueryParams() {}
+  afterChangeCurrentUser(currentUser: User) {}
+  afterChangeCoreConfig(coreConfig: CoreConfig) {}
+  afterChangeQueryParams(params: Params) {}
+  afterFirstChangeQueryParams(params: Params) {}
 
   updateQueryParams(params: any) {
     const currentScrollHeight = window.pageYOffset;
+    this._queryParams = { ...this._queryParams, ...params };
     this.router.navigate([],
       {
         relativeTo: this.route,
-        queryParams: { ...this._queryParams, ...params },
+        queryParams: this._queryParams,
       }
     ).then(() => window.scrollTo({ top: currentScrollHeight }));
   }

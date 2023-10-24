@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ChallengesRating } from '../../../models/challenges.models';
 import { ChallengesStatisticsService } from '../../../services';
 import { AuthenticationService } from 'app/auth/service';
-import { BaseComponent } from '../../../../../shared/components/classes/base.component';
+import { BaseComponent } from '@shared/components/classes/base.component';
+import { User } from 'app/auth/models';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -27,8 +28,8 @@ export class SectionProfileComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
   }
 
-  afterChangeCurrentUser() {
-    if (this.currentUser) {
+  afterChangeCurrentUser(currentUser: User) {
+    if (currentUser) {
       this.statisticsService.getUserChallengesRating(this.currentUser?.username).subscribe(
         (challengesRating: ChallengesRating) => {
           challengesRating.all = (challengesRating.wins + challengesRating.draws + challengesRating.losses) || 1;
