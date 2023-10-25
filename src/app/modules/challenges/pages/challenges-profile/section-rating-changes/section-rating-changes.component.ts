@@ -26,8 +26,8 @@ export class SectionRatingChangesComponent extends BaseComponent implements OnIn
     super.ngOnInit();
   }
 
-  afterChangeCurrentUser(currentUser:User) {
-    if (this.currentUser) {
+  beforeChangeCurrentUser(currentUser) {
+    if (currentUser) {
       this.statisticsService.getUserChallengesRatingChanges(this.currentUser.username).subscribe(
         (challengesRatingChanges: Array<ChallengesRatingChange>) => {
           const data = challengesRatingChanges.map(
