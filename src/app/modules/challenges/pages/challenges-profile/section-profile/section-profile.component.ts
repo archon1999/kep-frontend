@@ -28,7 +28,7 @@ export class SectionProfileComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
   }
 
-  afterChangeCurrentUser(currentUser: User) {
+  beforeChangeCurrentUser(currentUser: User) {
     if (currentUser) {
       this.statisticsService.getUserChallengesRating(this.currentUser?.username).subscribe(
         (challengesRating: ChallengesRating) => {

@@ -18,6 +18,8 @@
       "@shared/*": ["app/shared/*"],
       "@problems/*": ["app/modules/problems/*"],
       "@contests/*": ["app/modules/contests/*"],
+      "@challenges/*": ["app/modules/challenges/*"],
+      "@users/*": ["app/modules/users/*"],
       "@fake-db": ["@fake-db/"],
       "environments": ["environments/"]
     }

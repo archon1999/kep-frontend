@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { ProblemsFilter } from '../models/problems.models';
 
 export const DEFAULT_FILTER: ProblemsFilter = {
@@ -23,11 +23,9 @@ export const DEFAULT_FILTER: ProblemsFilter = {
 export class ProblemsFilterService {
 
   private _currentFilter = DEFAULT_FILTER;
-  private _filter = new Subject<ProblemsFilter>();
+  private _filter = new BehaviorSubject<ProblemsFilter>(DEFAULT_FILTER);
 
-  constructor() {}
-
-  get currentFilterValue(){
+  get currentFilterValue() {
     return this._currentFilter;
   }
 
