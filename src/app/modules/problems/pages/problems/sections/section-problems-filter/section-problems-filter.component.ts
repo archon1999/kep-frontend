@@ -66,8 +66,8 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
     );
   }
 
-  afterChangeQueryParams() {
-    this.problemsFilterService.setFilter(this._queryParams);
+  afterChangeQueryParams(params) {
+    this.problemsFilterService.setFilter(params);
     this.filterForm.patchValue(this.problemsFilterService.currentFilterValue, { emitEvent: false });
   }
 
