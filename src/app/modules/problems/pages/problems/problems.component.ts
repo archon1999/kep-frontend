@@ -39,7 +39,6 @@ export class ProblemsComponent extends BaseComponent implements OnInit, OnDestro
     public router: Router,
     public problemsFilterService: ProblemsFilterService,
     public coreSidebarService: CoreSidebarService,
-    public swipeService: SwipeService,
   ) {
     super();
   }

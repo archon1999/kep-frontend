@@ -31,8 +31,11 @@ export class BaseComponent implements OnInit, OnDestroy {
   private _firstQueryParamsLoad = false;
 
   ngOnInit(): void {
-    this.globalService.afterChangeQueryParams.asObservable().subscribe(
+    this.globalService.queryParams$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(
       (params) => {
+        this._queryParams = params;
         this.afterChangeQueryParams(params);
         if (!this._firstQueryParamsLoad) {
           this._firstQueryParamsLoad = true;
@@ -41,33 +44,34 @@ export class BaseComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.globalService.afterChangeCurrentUser.asObservable().subscribe(
+    this.globalService.currentUser$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(
       (currentUser) => {
-        this.afterChangeCurrentUser(currentUser);
+        this.beforeChangeCurrentUser(currentUser);
+        this.currentUser = currentUser;
+        this.isAuthenticated = (this.currentUser !== null);
       }
     );
 
-    this.globalService.afterChangeCoreConfig.asObservable().subscribe(
+    this.globalService.coreConfig$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(
       (coreConfig) => {
+        this.coreConfig = coreConfig;
+        this.isDarkMode = (coreConfig.layout.skin === 'dark');
         this.afterChangeCoreConfig(coreConfig);
       }
     );
   }
 
-  afterChangeCurrentUser(currentUser: User) {}
+  beforeChangeCurrentUser(currentUser: User) {}
   afterChangeCoreConfig(coreConfig: CoreConfig) {}
   afterChangeQueryParams(params: Params) {}
   afterFirstChangeQueryParams(params: Params) {}
 
-  updateQueryParams(params: any) {
-    const currentScrollHeight = window.pageYOffset;
-    this._queryParams = { ...this._queryParams, ...params };
-    this.router.navigate([],
-      {
-        relativeTo: this.route,
-        queryParams: this._queryParams,
-      }
-    ).then(() => window.scrollTo({ top: currentScrollHeight }));
+  updateQueryParams(params: Params) {
+    this.globalService.updateQueryParams(params);
   }
 
   ngOnDestroy(): void {

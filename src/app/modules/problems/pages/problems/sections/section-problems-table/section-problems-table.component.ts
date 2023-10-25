@@ -34,8 +34,8 @@ export class SectionProblemsTableComponent extends BaseComponent implements OnIn
     );
   }
 
-  afterChangeQueryParams() {
-    console.log(this._queryParams);
+  afterChangeQueryParams(params) {
+    console.log(params);
   }
 
   changeOrdering(ordering: string) {

@@ -1,3 +1,7 @@
+@import '@core/scss/base/bootstrap-extended/variables';
+@import 'bootstrap/scss/mixins';
+
+
 @mixin define-contest-colors($name, $background, $box-shadow, $color: #fff, $background-dark: false) {
   .badge-#{$name} {
     color: $color;
@@ -18,10 +22,10 @@
 
 .contests-colors {
   --text-color: #fff;
-  --bg-gradient: linear-gradient(42.32deg, #7367f0, #978EF8);
-  --bg: #7367f0;
+  --bg-gradient: linear-gradient(42.32deg, $primary, mix(white, $primary, 10));
+  --bg: $primary;
   --bg-light: rgb(115, 103, 240, 0.1);
-  --box-shadow: 0px 0px 10px #7367f0;
+  --box-shadow: 0px 0px 10px $primary;
 
   &.contest-254 {
     --bg-gradient: linear-gradient(to right, #38CCBC, #07e4cf);
@@ -127,7 +131,7 @@
 }
 
 ::ng-deep .dark-layout .contests-colors {
-  --bg-gradient: linear-gradient(42.32deg, #2b2665, #393575, #463caa);
+  --bg-gradient: linear-gradient(mix(black, $primary, 60), mix(black, $primary, 40));
 
   &.contest-254 {
     --bg: #037166;

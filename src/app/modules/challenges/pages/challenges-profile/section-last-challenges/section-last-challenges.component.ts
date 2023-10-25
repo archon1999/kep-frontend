@@ -28,7 +28,7 @@ export class SectionLastChallengesComponent extends BaseComponent implements OnI
     super.ngOnInit();
   }
 
-  afterChangeCurrentUser(currentUser: User) {
+  beforeChangeCurrentUser(currentUser: User) {
     if (this.currentUser) {
       this.loadChallenges();
     }
