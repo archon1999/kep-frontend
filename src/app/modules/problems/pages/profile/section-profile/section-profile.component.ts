@@ -63,25 +63,25 @@ export class SectionProfileComponent implements OnInit, OnDestroy {
       (general: General) => {
         this.general = general;
       }
-    )
+    );
 
     this.statisticsService.getByLang(this.username).subscribe(
       (langs: Array<LangInfo>) => {
         this.langs = langs.sort((a, b) => b.solved - a.solved);
       }
-    )
+    );
 
     this.statisticsService.getByTag(this.username).subscribe(
       (tags: Array<TagInfo>) => {
         this.tags = tags.sort((a, b) => b.value - a.value);
       }
-    )
+    );
 
     this.statisticsService.getByTopic(this.username).subscribe(
       (topics: Array<TopicInfo>) => {
         this.topics = topics.sort((a, b) => b.solved - a.solved);
       }
-    )
+    );
   }
 
   ngOnDestroy(): void {
