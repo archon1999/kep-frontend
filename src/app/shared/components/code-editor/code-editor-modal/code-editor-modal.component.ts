@@ -49,6 +49,8 @@ export class CodeEditorModalComponent implements OnInit {
 
   public sidebarName = 'codeEditorSidebar';
 
+  public prevKeyCode: string;
+
   constructor(
     public api: ApiService,
     public modalService: NgbModal,
@@ -112,6 +114,19 @@ export class CodeEditorModalComponent implements OnInit {
         }
       }
     );
+  }
+
+  init() {
+    this.hasSubmitted = false;
+    const editorLang = this.editorForm.get('lang').value;
+    const code = this.templateCodeService.get(this.uniqueName, editorLang) || this.availableLanguages[0].codeTemplate;
+    this.editorForm.get('code').setValue(code);
+    this.onSampleTestChange();
+  }
+
+  langChange(lang: AttemptLangs) {
+    this.langService.setLanguage(lang);
+    this.init();
   }
 
   onSampleTestChange() {
@@ -200,11 +215,7 @@ export class CodeEditorModalComponent implements OnInit {
       return;
     }
     this.coreSidebarService.getSidebarRegistry(this.sidebarName).toggleOpen();
-    this.hasSubmitted = false;
-    const editorLang = this.editorForm.get('lang').value;
-    const code = this.templateCodeService.get(this.uniqueName, editorLang) || this.availableLanguages[0].codeTemplate;
-    this.editorForm.get('code').setValue(code);
-    this.onSampleTestChange();
+    this.init();
   }
 
   closeSidebar() {
@@ -212,6 +223,16 @@ export class CodeEditorModalComponent implements OnInit {
       return;
     }
     this.coreSidebarService.getSidebarRegistry(this.sidebarName).toggleOpen();
+  }
+
+  onKeyDown(event) {
+    if (this.prevKeyCode === 'AltLeft' && event.code === 'Enter') {
+      this.submit();
+    }
+    if (this.prevKeyCode === 'AltLeft' && event.code === 'KeyX') {
+      this.run();
+    }
+    this.prevKeyCode = event.code;
   }
 
 }

@@ -2,15 +2,9 @@
   <div class="content-body">
     <!-- content-header component -->
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
-    <div *ngIf="currentUser" class="text-right">      
-      <button (click)="startTour()" class="mt-1 btn btn-sm round btn-primary">
-        <i [data-feather]="'question' | iconName"></i>
-      </button>
-    </div>
-
     <section class="mt-2">
       <div class="row">
-        <div class="col-lg-9 col-md-12 col-sm-12" [@fadeInLeftOnEnter]>
+        <div class="col-lg-9 col-md-12 col-sm-12" [@fadeInLeftOnEnter]="">
           <div class="card">
             <div class="card-header">
               <ul ngbNav #navWithIcons="ngbNav" class="nav-tabs" [destroyOnHide]="false" (activeIdChange)="activeIdChange($event)" [(activeId)]="activeId">
@@ -65,6 +59,7 @@
                 </li>
               </ul>
 
+              <button *ngIf="isAuthenticated" (click)="codeEditorSidebarToggle()" class="btn btn-sm btn-primary">{{ 'Submit' | translate }}</button>
             </div>
 
             <div class="card-body">
