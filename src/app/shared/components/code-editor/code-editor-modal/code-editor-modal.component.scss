@@ -33,7 +33,7 @@
   z-index: 1051;
   position: fixed;
   top: 5%;
-  height: 660px;
+  height: 630px;
   transition: right 0.4s cubic-bezier(0.05, 0.74, 0.2, 0.99);
   backface-visibility: hidden;
   border-left: 1px solid rgba($black, 0.05);
@@ -81,7 +81,12 @@
     }
 
     .card-body {
-      padding: 0 0.5rem 0 0;
+      padding: 0 1.5rem 0 0;
+    }
+
+    .card-footer {
+      padding-top: 1rem;
+      padding-bottom: 0.5rem;
     }
   }
 }

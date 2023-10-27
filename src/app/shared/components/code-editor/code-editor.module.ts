@@ -13,6 +13,7 @@ import { ErrorTooltipModule } from '../error-tooltip/error-tooltip.module';
 import { NgSelectModule } from '../../third-part-modules/ng-select/ng-select.module';
 import { CoreSidebarModule } from '../../../../@core/components';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
     ErrorTooltipModule,
     NgSelectModule,
     CoreSidebarModule,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    DragDropModule
   ],
   exports: [
     CodeEditorModalComponent,
