@@ -7,10 +7,14 @@
     position: absolute;
     top: -20px;
     margin-left: -2rem;
-    width: calc(100%);
+    width: 100%;
     z-index: -1;
     height: 700px;
     background: $light-background;
+
+    @include media-breakpoint-down(md){
+      width: calc(100% + 0.8rem);
+    }
 
     @include dark-layout {
       background: $dark-background;
