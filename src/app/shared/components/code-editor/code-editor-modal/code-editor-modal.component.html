@@ -110,6 +110,7 @@
 
       <div class="card-footer d-flex justify-content-end">
         <button
+          ngbTooltip="Alt+X"
           (click)="run()"
           *ngIf="!isSelectedLangText()"
           class="btn btn-glow btn-dark bg-dark mr-50 d-md-block d-none"
@@ -141,6 +142,7 @@
         </kepcoin-spend-swal>
 
         <button
+          ngbTooltip="Alt+Enter"
           (click)="submit()"
           *ngIf="submitUrl"
           [disabled]="!editorForm.valid"
