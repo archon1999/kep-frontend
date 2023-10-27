@@ -43,7 +43,7 @@
         <div class="d-flex language justify-content-between" *ngFor="let data of langs">
           <div class="lang">
             <span class="badge badge-glow badge-{{ data.lang }}">
-              {{ data.lang | langFullName }}
+              {{ data.langFull }}
             </span>
           </div>
     
@@ -82,7 +82,7 @@
         <div class="topic d-flex justify-content-between" *ngFor="let topic of topics">
           <div class="d-flex topic-info justify-content-start">
             <div class="topic-image">
-              <img src="assets/images/icons/topic-{{ topic.topic == 'Tricks' ? 'python-tricks' : topic.topic.toLowerCase() }}.png">
+              <img src="assets/images/problems/topics/topic-{{ topic.topic == 'Tricks' ? 'python-tricks' : topic.topic.toLowerCase() }}.png">
             </div>
             <div class="topic-title">
               {{ topic.topic }}
