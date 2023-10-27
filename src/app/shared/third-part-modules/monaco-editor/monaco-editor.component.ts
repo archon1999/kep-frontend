@@ -56,7 +56,10 @@ export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnCh
 
     this.coreConfigService.getConfig().subscribe(
       (config: CoreConfig) => {
-        this.options.theme = (config.layout.skin === 'dark' ? 'vs-dark' : 'vs-light');
+        this.options = {
+          ...this.options,
+          theme: (config.layout.skin === 'dark' ? 'vs-dark' : 'vs-light'),
+        };
       }
     );
 

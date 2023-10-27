@@ -1,4 +1,4 @@
-<core-sidebar [hideOnEsc]="true" [name]="'codeEditorSidebar'" class="code-editor-sidebar">
+<core-sidebar cdkDrag [hideOnEsc]="true" [name]="'codeEditorSidebar'" class="code-editor-sidebar">
   <a
     (click)="toggleSidebar()"
     class="btn-toggle d-flex align-items-center justify-content-center">
@@ -6,14 +6,24 @@
   </a>
 
   <div [perfectScrollbar] class="card full-height position-relative">
-    <div class="">
+    <div class="" (keydown)="onKeyDown($event)">
       <div class="card-header">
         <div class="card-title">
           {{ 'CODE_EDITOR.EDITOR' | translate }}
         </div>
-        <button (click)="toggleSidebar()" aria-label="Close" class="close" type="button">
-          <span aria-hidden="true">&times;</span>
-        </button>
+
+        <div class="d-flex justify-content-between">
+          <div class="mr-2 cursor-pointer" cdkDragHandle>
+            <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+              <path d="M0 0h24v24H0z" fill="none"></path>
+            </svg>
+          </div>
+
+          <button (click)="toggleSidebar()" aria-label="Close" class="close" type="button">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
       </div>
       <hr class="mt-0">
       <div class="card-body" [formGroup]="editorForm">
@@ -26,36 +36,41 @@
               tooltipClass="tooltip-danger"
             >
               <monaco-editor
+                [lang]="editorForm.controls.lang.value"
                 [formControl]="editorForm.controls.code"
-                [height]="500">
+                [height]="480">
               </monaco-editor>
             </div>
           </div>
 
           <div class="col-lg-4 col-md-5 d-none d-md-block">
             <div class="form-group">
-            <span class="badge badge-{{ editorForm.get('lang').value }}">
-              {{ editorForm.get('lang').value }}
-            </span>
+              <label>{{ 'Language' | translate }}: </label>
+              <ng-select
+                [clearable]="false"
+                [formControl]="editorForm.controls.lang"
+                (change)="langChange($event)">
+                <ng-option
+                  *ngFor="let availableLanguage of availableLanguages"
+                  [value]="availableLanguage.lang">
+                  {{ availableLanguage.langFull || availableLanguage.lang }}
+                </ng-option>
+              </ng-select>
             </div>
 
-            <div *ngIf="sampleTests.length > 0" class="mt-1">
-              <div class="d-flex justify-content-between">
-                <div class="form-group full-width">
-                  <label>{{ 'CODE_EDITOR.SAMPLE_TEST' | translate }}: </label>
-                  <ng-select
-                    (change)="onSampleTestChange()"
-                    [clearable]="false"
-                    formControlName="testCaseNumber"
-                  >
-                    <ng-option
-                      *ngFor="let sampleTest of sampleTests;index as i"
-                      value="{{ i + 1 }}">
-                      {{ i + 1 }}
-                    </ng-option>
-                  </ng-select>
-                </div>
-              </div>
+            <div *ngIf="sampleTests.length > 0" class="form-group">
+              <label>{{ 'CODE_EDITOR.SAMPLE_TEST' | translate }}: </label>
+              <ng-select
+                (change)="onSampleTestChange()"
+                [clearable]="false"
+                formControlName="testCaseNumber"
+              >
+                <ng-option
+                  *ngFor="let sampleTest of sampleTests;index as i"
+                  value="{{ i + 1 }}">
+                  {{ i + 1 }}
+                </ng-option>
+              </ng-select>
             </div>
 
             <div *ngIf="!isSelectedLangText()" class="form-group">
@@ -70,23 +85,23 @@
               ></textarea>
             </div>
 
-            <div *ngIf="!isSelectedLangText()" class="form-group mt-1">
+            <div *ngIf="!isSelectedLangText()" class="form-group">
               <label>{{ 'CODE_EDITOR.OUTPUT' | translate }}:</label>
               <textarea
                 class="form-control"
                 formControlName="output"
                 placeholder=""
-                rows="3"
+                rows="2"
               ></textarea>
             </div>
 
-            <div *ngIf="!isSelectedLangText()" class="form-group mt-1">
+            <div *ngIf="!isSelectedLangText()" class="form-group">
               <label>{{ 'CODE_EDITOR.ANSWER' | translate }}:</label>
               <textarea
                 class="form-control"
                 formControlName="answer"
                 placeholder=""
-                rows="3"
+                rows="2"
               ></textarea>
             </div>
           </div>
