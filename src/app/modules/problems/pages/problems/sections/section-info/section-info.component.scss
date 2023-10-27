@@ -1,9 +1,17 @@
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
 .card.card-info {
   border: none;
   opacity: 1;
   height: 150px;
   box-shadow: var(--inherit-bg-box-shadow) !important;
   background: inherit !important;
+
+  @include media-breakpoint-down(sm){
+    margin-left: -1rem !important;
+  }
 
   &:hover {
     transform: scale(1.05);
