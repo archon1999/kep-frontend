@@ -1,4 +1,19 @@
 tr:first-child td, th {
-    border-bottom: none !important;
-    border-top: none !important;
+  border-bottom: none !important;
+  border-top: none !important;
+}
+
+.custom-table {
+  transition: all 0.2s ease;
+  opacity: 0.9;
+  border: none;
+  box-shadow: var(--inherit-bg-box-shadow) !important;
+  border-radius: 10px;
+
+  th,
+  td {
+    border-top: none;
+    padding-top: 1.15rem;
+    padding-bottom: 1.15rem;
+  }
 }

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CurrentProblemsRating, ProblemsRating } from './rating';
+import { CurrentProblemsRating, ProblemsRating } from './rating.models';
 import { ApiService } from 'app/shared/services/api.service';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
+import { PageResult } from '@shared/page-result';
+import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 
 @Component({
   selector: 'app-rating',
@@ -10,9 +12,9 @@ import { AuthenticationService } from 'app/auth/service';
   styleUrls: ['./rating.component.scss']
 })
 export class RatingComponent implements OnInit {
-  difficulties = ['beginner', 'basic', 'normal', 'medium', 'advanced', 'hard', 'extremal'];
+  public difficulties = ['beginner', 'basic', 'normal', 'medium', 'advanced', 'hard', 'extremal'];
 
-  contentHeader = {
+  public contentHeader: ContentHeader = {
     headerTitle: 'RATING',
     breadcrumb: {
       type: '',
@@ -26,22 +28,22 @@ export class RatingComponent implements OnInit {
     }
   };
 
-  currentPage: number = 1;
-  total: number = 0;
+  public currentPage = 1;
+  public total = 0;
 
-  problemsRatingList: Array<ProblemsRating> = [];
-  ordering = '-solved';
+  public problemsRatingList: Array<ProblemsRating> = [];
+  public ordering = '-solved';
 
-  ratingToday: Array<CurrentProblemsRating> = [];
-  ratingWeek: Array<CurrentProblemsRating> = [];
-  ratingMonth: Array<CurrentProblemsRating> = [];
+  public ratingToday: Array<CurrentProblemsRating> = [];
+  public ratingWeek: Array<CurrentProblemsRating> = [];
+  public ratingMonth: Array<CurrentProblemsRating> = [];
 
-  currentUser: User;
+  public currentUser: User;
 
   constructor(
     public api: ApiService,
     public authService: AuthenticationService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.authService.currentUser.subscribe((user: any) => {
@@ -50,24 +52,31 @@ export class RatingComponent implements OnInit {
     });
   }
 
-  reloadPage(){
-    this.api.get('problems-rating/today/').subscribe((result: any) => {
-      this.ratingToday = result;
-    })
+  reloadPage() {
+    this.api.get('problems-rating/today/').subscribe(
+      (result: Array<CurrentProblemsRating>) => {
+        this.ratingToday = result;
+      }
+    );
 
-    this.api.get('problems-rating/week/').subscribe((result: any) => {
-      this.ratingWeek = result;
-    })
+    this.api.get('problems-rating/week/').subscribe(
+      (result: Array<CurrentProblemsRating>) => {
+        this.ratingWeek = result;
+      }
+    );
 
-    this.api.get('problems-rating/month/').subscribe((result: any) => {
-      this.ratingMonth = result;
-    })
+    this.api.get('problems-rating/month/').subscribe((result: Array<CurrentProblemsRating>) => {
+        this.ratingMonth = result;
+      }
+    );
 
-    var params = { 'page': this.currentPage, 'ordering': this.ordering };
-    this.api.get('problems-rating', params).subscribe((result: any) => {
-      this.problemsRatingList = result.data;
-      this.total = result.total;
-    })
+    const params = { page: this.currentPage, ordering: this.ordering };
+    this.api.get('problems-rating', params).subscribe(
+      (result: PageResult<ProblemsRating>) => {
+        this.problemsRatingList = result.data;
+        this.total = result.total;
+      }
+    );
   }
 
 }
