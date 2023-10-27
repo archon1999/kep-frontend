@@ -11,7 +11,13 @@
   <h2 [@fadeInUpOnEnter] class="mt-1 text-white">{{ 'Problems' | translate }}</h2>
   <h5 [@fadeInUpOnEnter] class="mt-2 text-white">{{ 'ProblemsPageTitleText' | translate }}</h5>
 
-  <div class="mt-4 col-lg-8 col-12 offset-lg-2 offset-0">
+  <div [@fadeInUpOnEnter] class="mt-2">
+    <a routerLink="rating" class="btn btn-primary mr-md-1">{{ 'Rating' | translate }}</a>
+    <a routerLink="profile" class="btn btn-primary mr-md-1">{{ 'Profile' | translate }}</a>
+    <a routerLink="attempts" class="btn btn-primary">{{ 'Attempts' | translate }}</a>
+  </div>
+
+  <div class="mt-2 col-lg-8 col-12 offset-lg-2 offset-0">
     <div class="row">
       <div class="col-12 col-md-6">
         <a [@fadeInLeftOnEnter] class="card card-info" routerLink="/learn/blog/post/52">
@@ -39,5 +45,6 @@
         </a>
       </div>
     </div>
+
   </div>
 </div>
