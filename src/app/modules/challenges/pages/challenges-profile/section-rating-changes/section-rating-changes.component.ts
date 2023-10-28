@@ -28,7 +28,7 @@ export class SectionRatingChangesComponent extends BaseComponent implements OnIn
 
   beforeChangeCurrentUser(currentUser) {
     if (currentUser) {
-      this.statisticsService.getUserChallengesRatingChanges(this.currentUser.username).subscribe(
+      this.statisticsService.getUserChallengesRatingChanges(currentUser.username).subscribe(
         (challengesRatingChanges: Array<ChallengesRatingChange>) => {
           const data = challengesRatingChanges.map(
             (ratingChanges: ChallengesRatingChange) => {
