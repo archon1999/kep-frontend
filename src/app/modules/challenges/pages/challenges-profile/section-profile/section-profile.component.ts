@@ -30,7 +30,7 @@ export class SectionProfileComponent extends BaseComponent implements OnInit {
 
   beforeChangeCurrentUser(currentUser: User) {
     if (currentUser) {
-      this.statisticsService.getUserChallengesRating(this.currentUser?.username).subscribe(
+      this.statisticsService.getUserChallengesRating(currentUser?.username).subscribe(
         (challengesRating: ChallengesRating) => {
           challengesRating.all = (challengesRating.wins + challengesRating.draws + challengesRating.losses) || 1;
           this.challengesRating = challengesRating;

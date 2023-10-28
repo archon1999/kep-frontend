@@ -51,6 +51,7 @@ export class BaseComponent implements OnInit, OnDestroy {
         this.beforeChangeCurrentUser(currentUser);
         this.currentUser = currentUser;
         this.isAuthenticated = (this.currentUser !== null);
+        this.afterChangeCurrentUser(currentUser);
       }
     );
 
@@ -66,6 +67,7 @@ export class BaseComponent implements OnInit, OnDestroy {
   }
 
   beforeChangeCurrentUser(currentUser: User) {}
+  afterChangeCurrentUser(currentUser: User) {}
   afterChangeCoreConfig(coreConfig: CoreConfig) {}
   afterChangeQueryParams(params: Params) {}
   afterFirstChangeQueryParams(params: Params) {}
