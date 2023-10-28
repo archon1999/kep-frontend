@@ -1,31 +1,14 @@
 @import '@core/scss/base/bootstrap-extended/variables';
 @import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/functions';
 
-
-@mixin define-contest-colors($name, $background, $box-shadow, $color: #fff, $background-dark: false) {
-  .badge-#{$name} {
-    color: $color;
-    background: $background;
-    border: none;
-  }
-
-  .badge-#{$name}.badge-glow {
-    box-shadow: $box-shadow;
-  }
-
-  @if $background-dark != false {
-    .dark-layout .badge-#{$name} {
-      background: $background-dark;
-    }
-  }
-}
 
 .contests-colors {
   --text-color: #fff;
-  --bg-gradient: linear-gradient(42.32deg, $primary, mix(white, $primary, 10));
-  --bg: $primary;
+  --bg-gradient: linear-gradient(42.32deg, $default, mix(white, $default, 10));
+  --bg: $default;
   --bg-light: rgb(115, 103, 240, 0.1);
-  --box-shadow: 0px 0px 10px $primary;
+  --box-shadow: 0px 0px 10px $default;
 
   &.contest-254 {
     --bg-gradient: linear-gradient(to right, #38CCBC, #07e4cf);
