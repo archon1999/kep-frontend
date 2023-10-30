@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ChallengesService } from '../../services/challenges.service';
-import { ChallengesStatisticsService } from '../../services/challenges-statistics.service';
+import { ChallengesStatisticsService } from '@challenges/services';
 import { ChallengesRating } from '../../models/challenges.models';
-import { BaseComponent } from '../../../../shared/components/classes/base.component';
-import { AuthenticationService } from '../../../../auth/service';
+import { BaseComponent } from '@shared/components/classes/base.component';
 
 @Component({
   selector: 'app-challenges-profile',
@@ -22,7 +20,6 @@ export class ChallengesProfileComponent extends BaseComponent implements OnInit 
 
   ngOnInit(): void {
     super.ngOnInit();
-
   }
 
 }
