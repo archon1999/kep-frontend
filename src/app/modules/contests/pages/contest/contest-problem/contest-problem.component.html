@@ -10,6 +10,13 @@
             <div class="card">
               <div class="card-header">
                 <contest-tab [contest]="contest"></contest-tab>
+                <button
+                  *ngIf="contest.userInfo?.isRegistered && contest.status == 0"
+                  (click)="codeEditorSidebarToggle()"
+                  class="btn btn-sm btn-primary position-absolute"
+                  style="top: 2rem; right: 2rem;">
+                  {{ 'Submit' | translate }}
+                </button>
                 <hr>
               </div>
               <div class="card-body">

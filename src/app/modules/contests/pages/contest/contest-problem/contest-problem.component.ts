@@ -18,6 +18,7 @@ import { ContestsService } from '../../../contests.service';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { findAvailableLang } from 'app/modules/problems/utils';
 import { AttemptLangs } from 'app/modules/problems/constants';
+import { CoreSidebarService } from '../../../../../../@core/components/core-sidebar/core-sidebar.service';
 
 @Component({
   selector: 'app-contest-problem',
@@ -67,6 +68,7 @@ export class ContestProblemComponent implements OnInit, OnDestroy {
     public coreConfigService: CoreConfigService,
     public translationService: TranslateService,
     public service: ContestsService,
+    public coreSidebarService: CoreSidebarService,
     public langService: LanguageService,
   ) { }
 
@@ -221,6 +223,10 @@ export class ContestProblemComponent implements OnInit, OnDestroy {
       this.attempts = result.data;
       this.totalAttemptsCount = result.total;
     });
+  }
+
+  codeEditorSidebarToggle(){
+    this.coreSidebarService.getSidebarRegistry('codeEditorSidebar').toggleOpen();
   }
 
   ngOnDestroy(): void {
