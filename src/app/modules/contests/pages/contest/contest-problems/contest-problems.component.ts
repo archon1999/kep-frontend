@@ -16,7 +16,7 @@ import { ContestsService } from '../../../contests.service';
 @Component({
   selector: 'app-contest-problems',
   templateUrl: './contest-problems.component.html',
-  styleUrls: ['./contest-problems.component.scss', '../../../contests.colors.scss'],
+  styleUrls: ['./contest-problems.component.scss'],
   animations: [
     fadeInLeftAnimation({ duration: 1000 }),
     fadeInRightAnimation({ duration: 1000 })
