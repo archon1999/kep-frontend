@@ -12,7 +12,7 @@ import { ContestsService } from '../../../contests.service';
 @Component({
   selector: 'app-contest-rating-changes',
   templateUrl: './contest-rating-changes.component.html',
-  styleUrls: ['./contest-rating-changes.component.scss', '../../../contests.colors.scss']
+  styleUrls: ['./contest-rating-changes.component.scss']
 })
 export class ContestRatingChangesComponent implements OnInit, OnDestroy {
 
