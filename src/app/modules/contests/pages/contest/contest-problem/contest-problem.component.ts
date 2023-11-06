@@ -1,24 +1,24 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreConfig } from '@core/types';
-import { TranslateService } from '@ngx-translate/core';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ApiService } from 'app/shared/services/api.service';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
-import { Attempt } from '../../../../problems/models/attempts.models';
-import { Problem } from '../../../../problems/models/problems.models';
+import { Attempt } from '@problems/models/attempts.models';
+import { AvailableLanguage, Problem } from '@problems/models/problems.models';
 import { TitleService } from 'app/shared/services/title.service';
-import { Subject, pipe } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Contest, Contestant, ContestProblem, ContestProblemInfo } from '../../../contests.models';
-import { ContestsService } from '../../../contests.service';
+import { Contest, Contestant, ContestProblem, ContestProblemInfo, ContestStatus } from '@contests/contests.models';
+import { ContestsService } from '@contests/contests.service';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { findAvailableLang } from 'app/modules/problems/utils';
 import { AttemptLangs } from 'app/modules/problems/constants';
-import { CoreSidebarService } from '../../../../../../@core/components/core-sidebar/core-sidebar.service';
+import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { BaseComponent } from '@shared/components/classes/base.component';
+import { sortContestProblems } from '@contests/utils/sort-contest-problems';
+import { paramsMapper } from '@shared/utils';
+import { PageResult } from '@shared/page-result';
+
+const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
 
 @Component({
   selector: 'app-contest-problem',
@@ -29,48 +29,40 @@ import { CoreSidebarService } from '../../../../../../@core/components/core-side
     fadeInRightOnEnterAnimation({ duration: 1000 })
   ]
 })
-export class ContestProblemComponent implements OnInit, OnDestroy {
+export class ContestProblemComponent extends BaseComponent implements OnInit, OnDestroy {
 
   public contentHeader: ContentHeader;
-  
+
   public contest: Contest;
   public contestProblems: Array<ContestProblem> = [];
-  
+
   public problemSymbol: string;
   public contestProblem: ContestProblem;
   public problem: Problem;
 
   public attempts: Array<Attempt> = [];
 
-  public selectedAvailableLang: any;
+  public selectedAvailableLang: AvailableLanguage;
   public selectedLang: string;
 
   public totalAttemptsCount = 0;
   public currentPage = 1;
 
-  public currentUser: User;
-
   public contestant: Contestant | null;
 
-  public coreConfig: CoreConfig;
+  public resultsVisible = this.sessionStorageService.get(CONTESTANT_RESULTS_VISIBLE_KEY) || false;
 
-  public resultsVisible = true;
-
-  private _unsubscribeAll = new Subject();
   private _intervalId: any;
 
   constructor(
     public api: ApiService,
-    public route: ActivatedRoute,
-    public router: Router,
     public titleService: TitleService,
-    public authService: AuthenticationService,
-    public coreConfigService: CoreConfigService,
-    public translationService: TranslateService,
     public service: ContestsService,
     public coreSidebarService: CoreSidebarService,
     public langService: LanguageService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.route.data.subscribe(({ contest, contestProblem }) => {
@@ -82,53 +74,49 @@ export class ContestProblemComponent implements OnInit, OnDestroy {
         problemSymbol: contestProblem.symbol,
         problemTitle: this.problem.title,
       });
+
+      super.ngOnInit();
       this.updateContentHeader();
 
       this.service.getMe(this.contest.id).subscribe(
         (contestant: Contestant | null) => {
-          if(contestant){
+          if (contestant) {
             this.contestant = Contestant.fromJSON(contestant);
-            if(this.contest.status == 0){
+            if (this.contest.status === ContestStatus.ALREADY) {
               this._intervalId = setInterval(() => {
                 this.updateContestant();
               }, 30000);
             }
           }
         }
-      )
+      );
 
       this.langService.getLanguage().pipe(takeUntil(this._unsubscribeAll)).subscribe(
-        (lang: AttemptLangs) => {          
+        (lang: AttemptLangs) => {
           this.selectedAvailableLang = findAvailableLang(this.problem.availableLanguages, lang);
           this.selectedLang = lang;
-          if(!this.selectedAvailableLang){
+          if (!this.selectedAvailableLang) {
             this.langService.setLanguage(this.problem.availableLanguages[0].lang);
-          }  
+          }
         }
-      )
-  
-      this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-        (user: User | null) => {
-          this.currentUser = user;
-          this.reloadProblems();
-        }
-      );  
+      );
     });
 
-    this.coreConfigService.getConfig()
-      .pipe(takeUntil(this._unsubscribeAll))  
-      .subscribe((config: any) => this.coreConfig = config);
   }
 
-  updateContestant(){
+  afterChangeCurrentUser(currentUser: User) {
+    this.reloadProblems();
+  }
+
+  updateContestant() {
     this.service.getMe(this.contest.id).subscribe(
       (contestant: Contestant | null) => {
         this.contestant = contestant;
       }
-    )
+    );
   }
 
-  updateContentHeader(){
+  updateContentHeader() {
     this.contentHeader = {
       headerTitle: this.problem.title,
       actionButton: true,
@@ -141,7 +129,7 @@ export class ContestProblemComponent implements OnInit, OnDestroy {
             link: '../../../../'
           },
           {
-            name: this.contest.id+'',
+            name: this.contest.id + '',
             isLink: true,
             link: '../../'
           },
@@ -160,49 +148,23 @@ export class ContestProblemComponent implements OnInit, OnDestroy {
     };
   }
 
-  reloadProblems(){
+  reloadProblems() {
     this.api.get(`contests/${this.contest.id}/problems`).subscribe((result: any) => {
       this.contestProblems = result.map((data: any) => {
         return ContestProblem.fromJSON(data);
       });
       this.sortProblems();
       this.reloadAttempts();
-    })
-  }
-
-  sortProblems(){
-    this.contestProblems = this.contestProblems.sort(function(a, b) {
-      let s1 = a.symbol;
-      let s2 = b.symbol;
-      let a1 = "", a2 = "";
-      let x1 = 0, x2 = 0;
-      for(let c of s1){
-        if(c >= '0' && c <= '9'){
-          x1 = x1*10 + +c;
-        } else {
-          a1 += c;
-        }
-      }
-      for(let c of s2){
-        if(c >= '0' && c <= '9'){
-          x2 = x2*10 + +c;
-        } else {
-          a2 += c;
-        }
-      }
-
-      let x = a1 < a2 || (a1 == a2 && x1 < x2);
-      if(x){
-        return -1;
-      } else {
-        return 1;
-      }
     });
   }
 
-  getProblemBySymbol(symbol: string) : ContestProblem | undefined {
-    for(let contestProblem of this.contestProblems){
-      if(contestProblem.symbol == symbol){
+  sortProblems() {
+    this.contestProblems = sortContestProblems(this.contestProblems);
+  }
+
+  getProblemBySymbol(symbol: string): ContestProblem | undefined {
+    for (const contestProblem of this.contestProblems) {
+      if (contestProblem.symbol === symbol) {
         return contestProblem;
       }
     }
@@ -211,28 +173,37 @@ export class ContestProblemComponent implements OnInit, OnDestroy {
   getProblemInfoBySymbol(
     problemsInfo: Array<ContestProblemInfo>,
     problemSymbol: string
-  ) : ContestProblemInfo | undefined {
-    return problemsInfo.find((problemInfo: any) => problemInfo.problemSymbol == problemSymbol);
+  ): ContestProblemInfo | undefined {
+    return problemsInfo.find(problemInfo => problemInfo.problemSymbol === problemSymbol);
   }
 
-  reloadAttempts(){
-    let params = {'contest_id': this.contest.id,
-                  'contest_problem': this.contestProblem.symbol,
-                  'username': this.currentUser.username};
-    this.api.get('attempts', params).subscribe((result: any) => {
-      this.attempts = result.data;
-      this.totalAttemptsCount = result.total;
-    });
+  reloadAttempts() {
+    const params = {
+      contestId: this.contest.id,
+      contestProblem: this.contestProblem.symbol,
+      username: this.currentUser.username
+    };
+    this.api.get('attempts', paramsMapper(params)).subscribe(
+      (result: PageResult<Attempt>) => {
+        this.attempts = result.data;
+        this.totalAttemptsCount = result.total;
+      }
+    );
   }
 
-  codeEditorSidebarToggle(){
+  codeEditorSidebarToggle() {
     this.coreSidebarService.getSidebarRegistry('codeEditorSidebar').toggleOpen();
+  }
+
+  resultsButtonClick() {
+    this.resultsVisible = !this.resultsVisible;
+    this.sessionStorageService.set(CONTESTANT_RESULTS_VISIBLE_KEY, this.resultsVisible);
   }
 
   ngOnDestroy(): void {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
-    if(this._intervalId){
+    if (this._intervalId) {
       clearInterval(this._intervalId);
     }
   }

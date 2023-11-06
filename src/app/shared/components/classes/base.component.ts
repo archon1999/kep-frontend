@@ -7,6 +7,8 @@ import { CoreConfig } from '@core/types';
 import { CoreConfigService } from '@core/services/config.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { GlobalService } from '@shared/services/global.service';
+import { LocalStorageService } from '@shared/storages/local-storage.service';
+import { SessionStorageService } from '@shared/storages/session-storage.service';
 
 @Component({
   template: '',
@@ -18,6 +20,8 @@ export class BaseComponent implements OnInit, OnDestroy {
   public router = inject(Router);
   public route = inject(ActivatedRoute);
   public globalService = inject(GlobalService);
+  public localStorageService = inject(LocalStorageService);
+  public sessionStorageService = inject(SessionStorageService);
 
   public currentUser: User | null;
   public coreConfig: CoreConfig;
