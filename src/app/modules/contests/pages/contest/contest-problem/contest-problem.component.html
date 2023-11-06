@@ -197,57 +197,54 @@
       ></code-editor-modal>
     </section>
   </div>
-</div>
 
-<div *ngIf="contestant" (click)="resultsVisible=!resultsVisible;" class="results-button">
-  <button class="btn btn-sm btn-relief-primary">
-    <i [data-feather]="'rating' | iconName"></i>
-  </button>
-</div>
+  <div *ngIf="contestant" (click)="resultsVisible=!resultsVisible;" class="results-button">
+    <button class="btn btn-sm btn-primary">
+      <i [data-feather]="'rating' | iconName"></i>
+    </button>
+  </div>
 
-<div [@fadeInLeftOnEnter] class="card results" *ngIf="!resultsVisible && contestant">
-  <div class="table-responsive bg-results-table">
-    <table class="table">
-      <thead>
+  <div [@fadeInLeftOnEnter] class="card results" *ngIf="!resultsVisible && contestant">
+    <div class="table-responsive custom-table">
+      <table class="table">
+        <thead>
         <tr>
           <th class="text-white">#</th>
           <th><i class="text-white ml-1" data-feather="user"></i></th>
           <th class="text-center"><i class="text-white" [data-feather]="'rating' | iconName"></i></th>
-          <th class="text-center text-white" *ngFor="let contestProblem of contestProblems">
-            {{ contestProblem.symbol }}
+          <th class="text-center text-white" container="body" [ngbTooltip]="contestProblem.problem.title" *ngFor="let contestProblem of contestProblems">
+            <a [routerLink]="['..', contestProblem.symbol]" class="btn btn-primary btn-sm">
+              {{ contestProblem.symbol }}
+            </a>
           </th>
         </tr>
-      </thead>
-      <tbody>
+        </thead>
+        <tbody>
         <tr>
-          <td class="text-white">
-            <strong>
-              {{ contestant.rank }}
-            </strong>
+          <td>
+            {{ contestant.rank }}
           </td>
           <td>
-            <contestant-view [textColor]="'white'" [user]="contestant"></contestant-view>
+            <contestant-view [user]="contestant"></contestant-view>
           </td>
-          <td class="text-center">    
+          <td class="text-center">
             <span class="badge badge-glow badge-primary">
               {{ contestant.points }}
             </span>
           </td>
           <td *ngFor="let contestProblem of contestProblems" class="text-center">
             <ng-template #selfie [ngTemplateOutlet]="selfie" let-problemInfo="aVariable"
-            [ngTemplateOutletContext]="{ aVariable: getProblemInfoBySymbol(contestant.problemsInfo, contestProblem.symbol) }">
-            <div>
+                         [ngTemplateOutletContext]="{ aVariable: getProblemInfoBySymbol(contestant.problemsInfo, contestProblem.symbol) }">
+              <div>
                 <div *ngIf="problemInfo">
                   <div [innerHTML]="problemInfo.getHTML(contest)"></div>
-                  <!--
-                    <contest-problem-info [contest]="contest" [problemInfo]="problemInfo"></contest-problem-info>
-                  -->
                 </div>
               </div>
             </ng-template>
           </td>
         </tr>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
