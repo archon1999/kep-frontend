@@ -4,7 +4,7 @@ import { Contest } from '../../../contests.models';
 @Component({
   selector: 'contest-tab',
   templateUrl: './contest-tab.component.html',
-  styleUrls: ['./contest-tab.component.scss', '../../../contests.colors.scss']
+  styleUrls: ['./contest-tab.component.scss']
 })
 export class ContestTabComponent implements OnInit {
 

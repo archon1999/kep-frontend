@@ -256,9 +256,9 @@ export class ContestProblemInfo {
       if (this.solved()) {
         let badgeClass: string;
         if (this.theBest) {
-          badgeClass = 'badge problem-points the-best';
+          badgeClass = 'badge badge-glow badge-success the-best';
         } else {
-          badgeClass = 'badge problem-points';
+          badgeClass = 'badge badge-light-success';
         }
         html = `<span class="${ badgeClass }">`;
         html += '+';
