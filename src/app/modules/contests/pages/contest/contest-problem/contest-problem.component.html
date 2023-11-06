@@ -198,13 +198,13 @@
     </section>
   </div>
 
-  <div *ngIf="contestant" (click)="resultsVisible=!resultsVisible;" class="results-button">
+  <div *ngIf="contestant" (click)="resultsButtonClick()" class="results-button">
     <button class="btn btn-sm btn-primary">
       <i [data-feather]="'rating' | iconName"></i>
     </button>
   </div>
 
-  <div [@fadeInLeftOnEnter] class="card results" *ngIf="!resultsVisible && contestant">
+  <div [@fadeInLeftOnEnter] class="card results" *ngIf="resultsVisible && contestant">
     <div class="table-responsive custom-table">
       <table class="table">
         <thead>
