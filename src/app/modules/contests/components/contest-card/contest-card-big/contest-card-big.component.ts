@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 export class ContestCardBigComponent implements OnInit {
 
   @Input() contest: Contest;
+  public routerLink: string | Array<string | number>;
 
   public top3Contestants: Array<any> = [];
 
@@ -31,6 +32,11 @@ export class ContestCardBigComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.routerLink = ['/competitions', 'contests', 'contest', this.contest.id];
+    if (this.router.url.endsWith(this.contest.id.toString())) {
+      this.routerLink.push('problems');
+    }
+
     this.authService.currentUser.subscribe(
       (user: any) => {
         this.currentUser = user;
