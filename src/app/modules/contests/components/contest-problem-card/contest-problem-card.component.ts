@@ -12,7 +12,7 @@ import { AuthenticationService } from 'app/auth/service';
   // tslint:disable-next-line:component-selector
   selector: 'contest-problem-card',
   templateUrl: './contest-problem-card.component.html',
-  styleUrls: ['./contest-problem-card.component.scss', '../../contests.colors.scss']
+  styleUrls: ['./contest-problem-card.component.scss']
 })
 export class ContestProblemCardComponent extends BaseComponent implements OnInit {
 
