@@ -5,10 +5,10 @@ import { CorePipesModule } from '@core/pipes/pipes.module';
 import { CoreDirectivesModule } from '@core/directives/directives';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { MathjaxModule } from '../../../../shared/third-part-modules/mathjax/mathjax.module';
+import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
 import { Problem1Component } from './problem1/problem1.component';
-import { ClipboardModule } from '../../../../shared/components/clipboard/clipboard.module';
-import { CountdownModule } from '@ciri/ngx-countdown'
+import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
+import { CountdownModule } from '@ciri/ngx-countdown';
 import { Problem1615Component } from './problem1615/problem1615.component';
 import { Problem1623Component } from './problem1623/problem1623.component';
 import { Problem1624Component } from './problem1624/problem1624.component';
@@ -23,8 +23,8 @@ import { Problem1638Component } from './problem1638/problem1638.component';
 import { Problem1639Component } from './problem1639/problem1639.component';
 import { Problem1703Component } from './problem1703/problem1703.component';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
-import { CodeEditorModule } from '../../../../shared/components/code-editor/code-editor.module';
-import { FormsModule } from '@angular/forms';
+import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Problem1733Component } from './problem1733/problem1733.component';
 import { Problem1734Component } from './problem1734/problem1734.component';
 import { Problem1735Component } from './problem1735/problem1735.component';
@@ -42,7 +42,8 @@ import { MonacoEditorModule as MonacoModule } from 'app/shared/third-part-module
 import { HtmlProblemBodyComponent } from './html-problem-body/html-problem-body.component';
 import { Problem1842Component } from './problem1842/problem1842.component';
 import { Problem1843Component } from './problem1843/problem1843.component';
-import { ToastrModule } from '../../../../shared/third-part-modules/toastr/toastr.module';
+import { ToastrModule } from '@shared/third-part-modules/toastr/toastr.module';
+import { Problem1870Component } from './problem1870/problem1870.component';
 
 
 @NgModule({
@@ -77,7 +78,8 @@ import { ToastrModule } from '../../../../shared/third-part-modules/toastr/toast
     Problem1841Component,
     HtmlProblemBodyComponent,
     Problem1842Component,
-    Problem1843Component
+    Problem1843Component,
+    Problem1870Component,
   ],
   imports: [
     CommonModule,
@@ -94,9 +96,10 @@ import { ToastrModule } from '../../../../shared/third-part-modules/toastr/toast
     MonacoEditorModule,
     MonacoModule,
     ToastrModule,
+    ReactiveFormsModule,
   ],
   exports: [
     ProblemBodyComponent,
   ]
 })
-export class ProblemBodyModule { }
+export class ProblemBodyModule {}
