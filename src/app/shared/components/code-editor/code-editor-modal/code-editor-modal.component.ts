@@ -33,7 +33,7 @@ export class CodeEditorModalComponent implements OnInit {
   @Input() problem: Problem;
   @Output() submittedEvent = new EventEmitter<null>();
 
-  public hasSubmitted = false;
+  public canSubmit = true;
 
   public editorForm = new FormGroup({
     code: new FormControl('', [CValidators.maxLength({ value: 65536 })]),
@@ -117,7 +117,6 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   init() {
-    this.hasSubmitted = false;
     const editorLang = this.editorForm.get('lang').value;
     const code = this.templateCodeService.get(this.uniqueName, editorLang) || this.availableLanguages[0].codeTemplate;
     this.editorForm.get('code').setValue(code);
@@ -177,11 +176,12 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   submit() {
-    this.toggleSidebar();
-    if (this.hasSubmitted) {
+    if (!this.canSubmit) {
       return;
     }
-    this.hasSubmitted = true;
+
+    this.toggleSidebar();
+    this.canSubmit = false;
     const data = {
       sourceCode: this.editorForm.get('code').value,
       lang: this.editorForm.get('lang').value,
@@ -194,6 +194,7 @@ export class CodeEditorModalComponent implements OnInit {
         const text = translations['SubmittedSuccess'];
         this.toastr.success(text);
         this.submittedEvent.emit();
+        this.canSubmit = true;
       }
     );
   }
