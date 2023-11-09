@@ -29,7 +29,7 @@
     "@angular/flex-layout": "15.0.0-beta.42",
     "@angular/forms": "17.0.1",
     "@angular/google-maps": "17.0.0",
-    "@angular/localize": "15.2.10",
+    "@angular/localize": "16.2.12",
     "@angular/platform-browser": "17.0.1",
     "@angular/platform-browser-dynamic": "17.0.1",
     "@angular/router": "17.0.1",
@@ -116,10 +116,10 @@
     "zone.js": "0.14.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "15.2.10",
-    "@angular/cli": "15.2.10",
-    "@angular/compiler-cli": "15.2.10",
-    "@angular/language-service": "15.2.10",
+    "@angular-devkit/build-angular": "16.2.10",
+    "@angular/cli": "16.2.10",
+    "@angular/compiler-cli": "16.2.12",
+    "@angular/language-service": "16.2.12",
     "@angularclass/hmr": "3.0.0",
     "@types/jasmine": "3.6.3",
     "@types/node": "12.11.1",
