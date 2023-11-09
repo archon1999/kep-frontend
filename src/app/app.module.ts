@@ -87,11 +87,10 @@ export class CustomTitleStrategy extends TitleStrategy {
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes, {
-      scrollPositionRestoration: 'enabled',
-      relativeLinkResolution: 'legacy',
-      onSameUrlNavigation: 'reload',
-      anchorScrolling: 'enabled',
-    }),
+    scrollPositionRestoration: 'enabled',
+    onSameUrlNavigation: 'reload',
+    anchorScrolling: 'enabled'
+}),
     TranslateModule.forRoot(),
 
     //NgBootstrap
