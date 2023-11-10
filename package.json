@@ -93,7 +93,6 @@
     "ngx-highlightjs": "^10.0.0",
     "ngx-katex": "^0.0.2",
     "ngx-mask": "16.4.1",
-    "ngx-mathjax": "^0.0.13",
     "ngx-monaco-editor": "^12.0.0",
     "ngx-online-status": "^2.0.0",
     "ngx-perfect-scrollbar": "10.1.1",
