@@ -33,10 +33,10 @@ export class CoreMediaService {
    * @private
    */
   private _init(): void {
-    this._mediaObserver.media$.pipe(debounceTime(500), distinctUntilChanged()).subscribe((change: MediaChange) => {
-      if (this.currentMediaQuery !== change.mqAlias) {
-        this.currentMediaQuery = change.mqAlias;
-        this.onMediaUpdate.next(change.mqAlias);
+    this._mediaObserver.asObservable().pipe(debounceTime(500), distinctUntilChanged()).subscribe((change: MediaChange[]) => {
+      if (this.currentMediaQuery !== change[0].mqAlias) {
+        this.currentMediaQuery = change[0].mqAlias;
+        this.onMediaUpdate.next(change[0].mqAlias);
       }
     });
   }

@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { AuthenticationService } from 'app/auth/service';
 import { Subject } from 'rxjs';
-import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
+import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 
 interface General {
   solved: number;
@@ -56,7 +56,8 @@ export class SectionProfileComponent implements OnInit, OnDestroy {
   constructor(
     public authService: AuthenticationService,
     public statisticsService: ProblemsStatisticsService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.statisticsService.getGeneral(this.username).subscribe(
@@ -85,7 +86,7 @@ export class SectionProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._unsubscribeAll.next();
+    this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 

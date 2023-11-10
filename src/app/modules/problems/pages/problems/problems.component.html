@@ -35,7 +35,9 @@
     class="btn-toggle d-flex align-items-center justify-content-center">
     <span [data-feather]="'chevrons-left'"></span>
   </a>
-  <section-sidebar [perfectScrollbar]></section-sidebar>
+  <ng-scrollbar autoHeightDisabled="false">
+    <section-sidebar></section-sidebar>
+  </ng-scrollbar>
 </core-sidebar>
 
 <nouslider-css></nouslider-css>

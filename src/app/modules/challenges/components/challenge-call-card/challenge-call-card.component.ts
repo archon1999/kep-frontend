@@ -40,7 +40,7 @@ export class ChallengeCallCardComponent implements OnInit, OnDestroy {
     this.service.deleteChallengeCall(this.challengeCall.id).subscribe(
       (result: any) => {
         if(result.success){
-          this.delete.next();
+          this.delete.next(null);
         }
       }
     )

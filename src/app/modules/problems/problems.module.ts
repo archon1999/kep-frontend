@@ -11,19 +11,18 @@ import { ContentHeaderModule } from 'app/layout/components/content-header/conten
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgxCaptureModule } from 'ngx-capture';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
-import { NgxUsefulSwiperModule } from 'ngx-useful-swiper';
-import { ClipboardModule } from '../../shared/components/clipboard/clipboard.module';
-import { CodeEditorModule } from '../../shared/components/code-editor/code-editor.module';
-import { ContestCardModule } from '../contests/components/contest-card/contest-card.module';
-import { ContestantViewModule } from '../../shared/components/contestant-view/contestant-view.module';
-import { KepcoinViewModule } from '../../shared/components/kepcoin-view/kepcoin-view.module';
-import { ProblemCardModule } from '../../shared/components/problem-card/problem-card.module';
-import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
+import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
+import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
+import { ContestCardModule } from '@contests/components/contest-card/contest-card.module';
+import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
+import { ProblemCardModule } from '@shared/components/problem-card/problem-card.module';
+import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { KepcoinSpendSwalModule } from '../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
-import { MathjaxModule } from '../../shared/third-part-modules/mathjax/mathjax.module';
-import { NgSelectModule } from '../../shared/third-part-modules/ng-select/ng-select.module';
-import { NouisliderModule } from '../../shared/third-part-modules/nouislider/nouislider.module';
-import { TourModule } from '../../shared/third-part-modules/tour/tour.module';
+import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { NouisliderModule } from '@shared/third-part-modules/nouislider/nouislider.module';
+import { TourModule } from '@shared/third-part-modules/tour/tour.module';
 import { ProblemBodyModule } from './components/problem-body/problem-body.module';
 import { AttemptComponent } from './pages/attempt/attempt.component';
 import { AttemptsComponent } from './pages/attempts/attempts.component';
@@ -71,8 +70,8 @@ import { ProblemsPipesModule } from './pipes/problems-pipes.module';
 import { ProblemHacksComponent } from './pages/problem/problem-hacks/problem-hacks.component';
 import { MonacoEditorModule as MonacoModule } from '../../shared/third-part-modules/monaco-editor/monaco-editor.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
-import { CoreSidebarModule } from '../../../@core/components';
-import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { CoreSidebarModule } from '@core/components';
+import { NgScrollbar } from 'ngx-scrollbar';
 
 const routes: Routes = [
   {
@@ -237,7 +236,7 @@ const routes: Routes = [
     ProblemCardModule,
     ContestantViewModule,
     ContestCardModule,
-    NgxUsefulSwiperModule,
+    // NgxUsefulSwiperModule,
     KepcoinViewModule,
     KepcoinSpendSwalModule,
     NgxCaptureModule,
@@ -252,7 +251,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     ApexChartModule,
     CoreSidebarModule,
-    PerfectScrollbarModule,
+    NgScrollbar,
+    // PerfectScrollbarModule,
   ],
   exports: [
     SectionProfileComponent

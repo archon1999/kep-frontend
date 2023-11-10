@@ -49,7 +49,7 @@ const routes: Routes = [
     CoreDirectivesModule,
     TranslateModule,
     NgbTooltipModule,
-    CountdownModule,
+    // CountdownModule,
     ContentHeaderModule,
     ChallengesUserViewModule,
     NgbAlertModule,

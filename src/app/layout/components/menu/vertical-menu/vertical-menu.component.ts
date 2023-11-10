@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild, HostListener, ViewEncapsulation } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 
 import { Subject } from 'rxjs';
-import { take, takeUntil, filter } from 'rxjs/operators';
+import { filter, take, takeUntil } from 'rxjs/operators';
 import { PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 
 import { CoreConfigService } from '@core/services/config.service';
@@ -19,19 +19,11 @@ export class VerticalMenuComponent implements OnInit, OnDestroy {
   coreConfig: any;
   menu: any;
   isCollapsed: boolean;
-  isScrolled: boolean = false;
-
+  isScrolled = false;
+  @ViewChild(PerfectScrollbarDirective, { static: false }) directiveRef?: PerfectScrollbarDirective;
   // Private
   private _unsubscribeAll: Subject<any>;
 
-  /**
-   * Constructor
-   *
-   * @param {CoreConfigService} _coreConfigService
-   * @param {CoreMenuService} _coreMenuService
-   * @param {CoreSidebarService} _coreSidebarService
-   * @param {Router} _router
-   */
   constructor(
     private _coreConfigService: CoreConfigService,
     private _coreMenuService: CoreMenuService,
@@ -41,8 +33,6 @@ export class VerticalMenuComponent implements OnInit, OnDestroy {
     // Set the private defaults
     this._unsubscribeAll = new Subject();
   }
-
-  @ViewChild(PerfectScrollbarDirective, { static: false }) directiveRef?: PerfectScrollbarDirective;
 
   // Lifecycle Hooks
   // -----------------------------------------------------------------------------------------------------
@@ -78,7 +68,7 @@ export class VerticalMenuComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         setTimeout(() => {
-          this.directiveRef.scrollToElement('.navigation .active', -180, 500);
+          // this.directiveRef.scrollToElement('.navigation .active', -180, 500);
         });
       });
 
@@ -98,7 +88,7 @@ export class VerticalMenuComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
+    this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 
@@ -109,11 +99,11 @@ export class VerticalMenuComponent implements OnInit, OnDestroy {
    * On Sidebar scroll set isScrolled as true
    */
   onSidebarScroll(): void {
-    if (this.directiveRef.position(true).y > 3) {
-      this.isScrolled = true;
-    } else {
-      this.isScrolled = false;
-    }
+    // if (+this.directiveRef.position(true).y > 3) {
+    //   this.isScrolled = true;
+    // } else {
+    //   this.isScrolled = false;
+    // }
   }
 
   /**

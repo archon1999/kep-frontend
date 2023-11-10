@@ -8,7 +8,6 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
 import { Problem1Component } from './problem1/problem1.component';
 import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
-import { CountdownModule } from '@ciri/ngx-countdown';
 import { Problem1615Component } from './problem1615/problem1615.component';
 import { Problem1623Component } from './problem1623/problem1623.component';
 import { Problem1624Component } from './problem1624/problem1624.component';
@@ -89,7 +88,7 @@ import { Problem1870Component } from './problem1870/problem1870.component';
     NgbTooltipModule,
     MathjaxModule,
     ClipboardModule,
-    CountdownModule,
+    // CountdownModule,
     MonacoEditorModule,
     CodeEditorModule,
     FormsModule,
@@ -102,4 +101,5 @@ import { Problem1870Component } from './problem1870/problem1870.component';
     ProblemBodyComponent,
   ]
 })
-export class ProblemBodyModule {}
+export class ProblemBodyModule {
+}

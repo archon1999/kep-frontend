@@ -132,7 +132,7 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
     this.service.hackSubmit(attemptId, this.hackForm.value).subscribe(
       () => {
         this.modalService.dismissAll();
-        this.hackSubmitted.next();
+        this.hackSubmitted.next(null);
       }
     );
   }
