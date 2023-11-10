@@ -2,10 +2,10 @@ import { DOCUMENT } from '@angular/common';
 import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 import { CoreConfigService } from '../../../@core/services/config.service';
 import { CoreConfig } from '../../../@core/types';
-import { SwiperComponent } from 'ngx-useful-swiper';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SwiperOptions } from 'swiper/types/swiper-options';
+import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 
 @Component({
   selector: 'app-landing-page',
@@ -75,7 +75,7 @@ export class LandingPageComponent implements OnInit {
 
     this.coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (config: CoreConfig) => {
-        this.isDarkSkin = config.layout.skin == 'dark';
+        this.isDarkSkin = config.layout.skin === 'dark';
         this.appName = config.app.appName;
       }
     );
