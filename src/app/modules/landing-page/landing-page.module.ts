@@ -13,6 +13,7 @@ import { SlideLearnComponent } from './slides/slide-learn/slide-learn.component'
 import { SlidePracticeComponent } from './slides/slide-practice/slide-practice.component';
 import { SlideStatisticsComponent } from './slides/slide-statistics/slide-statistics.component';
 import { SlideCompetitionsComponent } from './slides/slide-competitions/slide-competitions.component';
+import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 
 
 const routes: Routes = [
@@ -41,6 +42,7 @@ const routes: Routes = [
     FooterModule,
     CountUpModule,
     CorePipesModule,
+    SwiperComponent,
     // NgxUsefulSwiperModule,
   ]
 })
