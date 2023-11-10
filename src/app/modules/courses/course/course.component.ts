@@ -45,7 +45,7 @@ export class CourseComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     document.getElementsByTagName('body')[0].classList.remove('course-detail-page');
-    this._unsubscribeAll.next();
+    this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 

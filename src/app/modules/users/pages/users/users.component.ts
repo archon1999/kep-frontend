@@ -105,7 +105,7 @@ export class UsersComponent extends BaseComponent {
 
   loadUsers(){
     setTimeout(() => {
-      this._loader.next();
+      this._loader.next(null);
     }, 100);
   }
 

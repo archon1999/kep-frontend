@@ -135,7 +135,7 @@ export class ContestAttemptsComponent implements OnInit, OnDestroy {
     if(this._intervalId){
       clearInterval(this._intervalId);
     }
-    this._unsubscribeAll.next();
+    this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 

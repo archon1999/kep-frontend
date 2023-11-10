@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { fadeInRightOnEnterAnimation } from 'angular-animations';
 import { SwiperComponent } from 'ngx-useful-swiper';
-import { SwiperOptions } from 'swiper';
 import { HomeService } from '../home.service';
-import { PageResult } from '../../../shared/page-result';
+import { PageResult } from '@shared/page-result';
+import { SwiperOptions } from 'swiper/types/swiper-options';
 
 const NEWS_MAX_LIMIT = 50;
 

@@ -40,7 +40,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    CountdownModule,
+    // CountdownModule,
     CorePipesModule,
     CoreDirectivesModule,
     TranslateModule,

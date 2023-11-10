@@ -92,7 +92,7 @@ const routes: Routes = [
     SweetAlertModule,
     CodeEditorModule,
     MonacoEditorModule,
-    CountdownModule,
+    // CountdownModule,
     DragulaModule.forRoot(),
     MathjaxModule,
     NgxSkeletonLoaderModule.forRoot(),

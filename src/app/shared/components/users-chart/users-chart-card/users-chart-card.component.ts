@@ -124,7 +124,7 @@ export class UsersChartCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this._unsubscribeAll.next();
+    this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 }

@@ -1,5 +1,5 @@
 <div *ngIf="!contest.isFinished()">
-  <ngx-countdown [time]="leftTime" [render]="render" format="DD:HH:mm:ss" (finish)="finish()">
+  <!--<ngx-countdown [time]="leftTime" [render]="render" format="DD:HH:mm:ss" (finish)="finish()">
     <ng-template #render let-data>
       <div class="d-flex justify-content-between" [ngbTooltip]="contest.startTime | localizedDate:'medium'">
         <div class="countdown text-center">
@@ -23,7 +23,7 @@
         </div>
       </div>    
     </ng-template>
-  </ngx-countdown>
+  </ngx-countdown>-->
 </div>
 
 <ng-template #finishModal let-modal>

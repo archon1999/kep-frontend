@@ -17,49 +17,51 @@
     <!--/ DailyTasks header -->
 
     <!-- DailyTasks content -->
-    <li class="scrollable-container media-list" [perfectScrollbar]>
-      <div class="d-flex" *ngFor="let dailyTask of dailyTasks">
-        <div class="media d-flex align-items-start">
-          <div class="media-left text-dark" [ngSwitch]="dailyTask.type">
-            <div *ngSwitchCase="1" class="avatar bg-primary mt-50">
-              <div class="avatar-content">
-                <i class="avatar-icon" [data-feather]="'menu'"></i>
+    <ng-scrollbar autoHeightDisabled="false">
+      <li class="scrollable-container media-list">
+        <div class="d-flex" *ngFor="let dailyTask of dailyTasks">
+          <div class="media d-flex align-items-start">
+            <div class="media-left text-dark" [ngSwitch]="dailyTask.type">
+              <div *ngSwitchCase="1" class="avatar bg-primary mt-50">
+                <div class="avatar-content">
+                  <i class="avatar-icon" [data-feather]="'menu'"></i>
+                </div>
               </div>
-            </div>
 
-            <div *ngSwitchCase="2" class="avatar bg-success mt-50">
-              <div class="avatar-content">
-                <i class="avatar-icon" [data-feather]="'edit-3'"></i>
+              <div *ngSwitchCase="2" class="avatar bg-success mt-50">
+                <div class="avatar-content">
+                  <i class="avatar-icon" [data-feather]="'edit-3'"></i>
+                </div>
               </div>
-            </div>
 
-            <div *ngSwitchCase="3" class="avatar bg-primary mt-50">
-              <div class="avatar-content">
-                <i class="avatar-icon" [data-feather]="'zap'"></i>
+              <div *ngSwitchCase="3" class="avatar bg-primary mt-50">
+                <div class="avatar-content">
+                  <i class="avatar-icon" [data-feather]="'zap'"></i>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="media-body">
-            <p class="media-heading text-white">
-              {{ dailyTask.description }}
-              <img ngbTooltip="Kepcoin" height="19" src="assets/images/icons/kepcoin.webp"> {{ dailyTask.kepcoin }}
-            </p>
-            <small class="notification-text">
+            <div class="media-body">
+              <p class="media-heading text-white">
+                {{ dailyTask.description }}
+                <img ngbTooltip="Kepcoin" height="19" src="assets/images/icons/kepcoin.webp"> {{ dailyTask.kepcoin }}
+              </p>
+              <small class="notification-text">
               <span class="text-success" *ngIf="dailyTask.completed">
                 <i data-feather="check-circle"></i>
               </span>
-              <span *ngIf="!dailyTask.completed" class="badge badge-glow" [ngClass]="{
+                <span *ngIf="!dailyTask.completed" class="badge badge-glow" [ngClass]="{
                 'badge-primary': dailyTask.type == 1 || dailyTask.type == 3,
                 'badge-success': dailyTask.type == 2
               }">
                 {{ dailyTask.progress }}/{{ dailyTask.total }}
               </span>
-            </small>
-          </div>                
-        </div>
+              </small>
+            </div>
+          </div>
 
-      </div>
-    </li>
+        </div>
+      </li>
+    </ng-scrollbar>
     <!--/ DailyTaskss content -->
 
     <!-- DailyTaskss footer -->

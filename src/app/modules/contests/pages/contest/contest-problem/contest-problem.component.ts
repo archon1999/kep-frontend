@@ -201,7 +201,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
   }
 
   ngOnDestroy(): void {
-    this._unsubscribeAll.next();
+    this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
     if (this._intervalId) {
       clearInterval(this._intervalId);

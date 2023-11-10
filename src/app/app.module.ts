@@ -108,10 +108,10 @@ export class CustomTitleStrategy extends TitleStrategy {
     CoreSidebarModule,
     CoreThemeCustomizerModule,
     HighlightModule,
-    NgxCountriesModule.forRoot({
-      defaultLocale: 'en',
-      locales: ['en', 'uz', 'ru']
-    }),
+    // NgxCountriesModule.forRoot({
+    //   defaultLocale: 'en',
+    //   locales: ['en', 'uz', 'ru']
+    // }),
 
     // App modules
     LayoutModule,

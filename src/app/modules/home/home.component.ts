@@ -8,9 +8,9 @@ import { AuthenticationService } from 'app/auth/service';
 import { SwiperComponent } from 'ngx-useful-swiper';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { SwiperOptions } from 'swiper';
 import { Blog } from '../blog/blog.models';
 import { HomeService } from './home.service';
+import { SwiperOptions } from 'swiper/types/swiper-options';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +27,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public postsSwiperConfig: SwiperOptions = {
     pagination: { el: '.swiper-pagination', clickable: true },
-    lazy: true,
     breakpoints: {
       1024: {
         slidesPerView: 2,
@@ -96,7 +95,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.isMenuToggled = true;
         }
 
-        if (config.layout.skin == 'dark') {
+        if (config.layout.skin === 'dark') {
           this.chartTheme = {
             mode: 'dark',
           };
@@ -133,7 +132,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._unsubscribeAll.next();
+    this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 
