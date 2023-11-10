@@ -6,7 +6,9 @@
       </div>
       <div class="col-lg-10 col-12 offset-0 offset-lg-1">
         <section-study-plans [@fadeInLeft]="startAnimationState"></section-study-plans>
-        <section-topics></section-topics>
+        @defer {
+          <section-topics></section-topics>
+        }
         <section-problems-filter></section-problems-filter>
         <section-problems-table [problems]="problems"></section-problems-table>
         <div class="mb-2">

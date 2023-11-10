@@ -72,6 +72,7 @@ import { MonacoEditorModule as MonacoModule } from '../../shared/third-part-modu
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { CoreSidebarModule } from '@core/components';
 import { NgScrollbar } from 'ngx-scrollbar';
+import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 
 const routes: Routes = [
   {
@@ -189,7 +190,6 @@ const routes: Routes = [
     AttemptComponent,
     ProblemOgImageComponent,
     SectionContestsComponent,
-    SectionTopicsComponent,
     SectionProblemsTableComponent,
     SectionProblemsFilterComponent,
     SectionSidebarComponent,
@@ -237,6 +237,7 @@ const routes: Routes = [
     ContestantViewModule,
     ContestCardModule,
     // NgxUsefulSwiperModule,
+    SectionTopicsComponent,
     KepcoinViewModule,
     KepcoinSpendSwalModule,
     NgxCaptureModule,
@@ -252,7 +253,7 @@ const routes: Routes = [
     ApexChartModule,
     CoreSidebarModule,
     NgScrollbar,
-    // PerfectScrollbarModule,
+    SwiperComponent,
   ],
   exports: [
     SectionProfileComponent

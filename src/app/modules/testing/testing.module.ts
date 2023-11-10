@@ -21,6 +21,7 @@ import { TestComponent } from './test/test.component';
 import { TestingComponent } from './testing.component';
 import { ChaptersResolver, LastTestsResolver, TestPassResolver, TestResolver } from './testing.resolver';
 import { TestListCardComponent } from './test-list-card/test-list-card.component';
+import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 
 const routes: Routes = [
   {
@@ -82,6 +83,7 @@ const routes: Routes = [
     SweetAlertModule,
     // NgxUsefulSwiperModule,
     DragulaModule.forRoot(),
+    SwiperComponent,
   ],
   providers: [
     TestResolver,
