@@ -7,7 +7,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { CountUpModule } from 'ngx-countup';
-import { NgxUsefulSwiperModule } from 'ngx-useful-swiper';
 import { BlogPostCardModule } from '../blog/components/blog-post-card/blog-post-card.module';
 import { ContestCardModule } from '../contests/components/contest-card/contest-card.module';
 import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
@@ -59,7 +58,7 @@ const routes: Routes = [
     TranslateModule,
     CoreDirectivesModule,
     UserPopoverModule,
-    NgxUsefulSwiperModule,
+    // NgxUsefulSwiperModule,
     BlogPostCardModule,
     NgApexchartsModule,
     CountUpModule,

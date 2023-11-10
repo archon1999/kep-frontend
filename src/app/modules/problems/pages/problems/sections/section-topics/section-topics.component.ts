@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ProblemsFilterService } from 'app/modules/problems/services/problems-filter.service';
-import { SwiperOptions } from 'swiper';
+import { SwiperOptions } from 'swiper/types/swiper-options';
 
 @Component({
   // tslint:disable-next-line:component-selector

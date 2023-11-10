@@ -2,11 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import {
-  PerfectScrollbarConfigInterface,
-  PerfectScrollbarModule,
-  PERFECT_SCROLLBAR_CONFIG
-} from 'ngx-perfect-scrollbar';
+import { PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 
 import { CoreCommonModule } from '@core/common.module';
 import { CoreTouchspinModule } from '@core/components/core-touchspin/core-touchspin.module';
@@ -21,6 +17,7 @@ import { NavbarKepcoinComponent } from './navbar-kepcoin/navbar-kepcoin.componen
 import { CoreDirectivesModule } from '@core/directives/directives';
 import { NavbarDailyTasksComponent } from './navbar-daily-tasks/navbar-daily-tasks.component';
 import { PaginationModule } from '@shared/components/pagination/pagination.module';
+import { NgScrollbar } from 'ngx-scrollbar';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -29,7 +26,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 
 @NgModule({
   declarations: [NavbarComponent, NavbarSearchComponent, NavbarBookmarkComponent, NavbarNotificationComponent, NavbarKepcoinComponent, NavbarDailyTasksComponent],
-  imports: [RouterModule, NgbModule, CoreCommonModule, PerfectScrollbarModule, CoreTouchspinModule, TranslateModule, NgbPopoverModule, CoreDirectivesModule, PaginationModule],
+  imports: [RouterModule, NgbModule, CoreCommonModule,
+    // PerfectScrollbarModule,
+    CoreTouchspinModule, TranslateModule, NgbPopoverModule, CoreDirectivesModule, PaginationModule, NgScrollbar],
   providers: [
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
@@ -38,4 +37,5 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   ],
   exports: [NavbarComponent]
 })
-export class NavbarModule {}
+export class NavbarModule {
+}

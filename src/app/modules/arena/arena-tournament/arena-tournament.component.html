@@ -248,26 +248,26 @@
                   </span>  
                 </div>
               </div>
-              <ngx-countdown *ngIf="arena.status != 1" [time]="leftTime" [render]="render" format="HH:mm:ss" (finish)="refreshPage()">
-                <ng-template #render let-data>
-                  <div class="d-flex justify-content-between">
-                    <div class="countdown text-center">
-                      <h5 class="clock-val">{{ data.fragments[0] }}</h5>
-                      <h5 class="clock-text">{{ 'HOUR' | translate }}</h5>
-                    </div>
-                
-                    <div class="countdown text-center">
-                      <h5 class="clock-val">{{ data.fragments[1] }}</h5>
-                      <h5 class="clock-text">{{ 'MINUTE' | translate }}</h5>
-                    </div>
-                
-                    <div class="countdown text-center">
-                      <h5 class="clock-val">{{ data.fragments[2] }}</h5>
-                      <h5 class="clock-text">{{ 'SECOND' | translate }}</h5>
-                    </div>          
-                  </div>    
-                </ng-template>
-              </ngx-countdown>
+<!--              <ngx-countdown *ngIf="arena.status != 1" [time]="leftTime" [render]="render" format="HH:mm:ss" (finish)="refreshPage()">-->
+<!--                <ng-template #render let-data>-->
+<!--                  <div class="d-flex justify-content-between">-->
+<!--                    <div class="countdown text-center">-->
+<!--                      <h5 class="clock-val">{{ data.fragments[0] }}</h5>-->
+<!--                      <h5 class="clock-text">{{ 'HOUR' | translate }}</h5>-->
+<!--                    </div>-->
+<!--                -->
+<!--                    <div class="countdown text-center">-->
+<!--                      <h5 class="clock-val">{{ data.fragments[1] }}</h5>-->
+<!--                      <h5 class="clock-text">{{ 'MINUTE' | translate }}</h5>-->
+<!--                    </div>-->
+<!--                -->
+<!--                    <div class="countdown text-center">-->
+<!--                      <h5 class="clock-val">{{ data.fragments[2] }}</h5>-->
+<!--                      <h5 class="clock-text">{{ 'SECOND' | translate }}</h5>-->
+<!--                    </div>          -->
+<!--                  </div>    -->
+<!--                </ng-template>-->
+<!--              </ngx-countdown>-->
             </div>
           </div>
 
