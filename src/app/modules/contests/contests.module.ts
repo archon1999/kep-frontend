@@ -13,14 +13,19 @@ import { NgSelectModule } from '../../shared/third-part-modules/ng-select/ng-sel
 import { AuthGuard } from 'app/auth/helpers';
 import { CountUpModule } from 'ngx-countup';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
-import { NgxUsefulSwiperModule } from 'ngx-useful-swiper';
 import { ClipboardModule } from '../../shared/components/clipboard/clipboard.module';
 import { CodeEditorModule } from '../../shared/components/code-editor/code-editor.module';
 import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
 import { ProblemBodyModule } from '../problems/components/problem-body/problem-body.module';
 import { MathjaxModule } from '../../shared/third-part-modules/mathjax/mathjax.module';
 import { ContestGuard } from './contests.guard';
-import { ContestProblemResolver, ContestProblemsResolver, ContestResolver, OngoingContestsResolver, UpcomingContestsResolver } from './contests.resolver';
+import {
+  ContestProblemResolver,
+  ContestProblemsResolver,
+  ContestResolver,
+  OngoingContestsResolver,
+  UpcomingContestsResolver
+} from './contests.resolver';
 import { ContestAttemptsComponent } from './pages/contest/contest-attempts/contest-attempts.component';
 import { ContestOgImageComponent } from './pages/contest/contest-og-image/contest-og-image.component';
 import { ContestProblemComponent } from './pages/contest/contest-problem/contest-problem.component';
@@ -32,7 +37,9 @@ import { ContestTabComponent } from './pages/contest/contest-tab/contest-tab.com
 import { ContestComponent } from './pages/contest/contest.component';
 import { ContestsTabComponent } from './pages/contests/contests-tab/contests-tab.component';
 import { ContestsComponent } from './pages/contests/contests.component';
-import { ContestsSectionCategoriesComponent } from './pages/contests/sections/contests-section-categories/contests-section-categories.component';
+import {
+  ContestsSectionCategoriesComponent
+} from './pages/contests/sections/contests-section-categories/contests-section-categories.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { RatingComponent } from './pages/rating/rating.component';
 import { ContestsTableModule } from './components/contests-table/contests-table.module';
@@ -151,7 +158,7 @@ const routes: Routes = [
       contest: ContestResolver,
     },
   },
-  { 
+  {
     path: 'user-contests',
     loadChildren: () => import('./pages/user-contests/user-contests.module').then(m => m.UserContestsModule)
   },
@@ -199,7 +206,7 @@ const routes: Routes = [
     MathjaxModule,
     UserPopoverModule,
     CountUpModule,
-    NgxUsefulSwiperModule,
+    // NgxUsefulSwiperModule,
     NgbPopoverModule,
     ProblemBodyModule,
     AttemptsTableModule,
@@ -214,4 +221,5 @@ const routes: Routes = [
     UpcomingContestsResolver
   ]
 })
-export class ContestsModule { }
+export class ContestsModule {
+}

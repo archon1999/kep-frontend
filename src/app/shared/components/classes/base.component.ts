@@ -12,6 +12,7 @@ import { SessionStorageService } from '@shared/storages/session-storage.service'
 
 @Component({
   template: '',
+  standalone: true
 })
 export class BaseComponent implements OnInit, OnDestroy {
 
@@ -81,7 +82,7 @@ export class BaseComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._unsubscribeAll.next();
+    this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 

@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { fadeInLeftOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { Subject } from 'rxjs';
-import { SwiperOptions } from 'swiper';
 import { Chapter, Test } from './testing.models';
 import { TestingService } from './testing.service';
+import { SwiperOptions } from 'swiper/types/swiper-options';
 
 @Component({
   selector: 'app-testing',
@@ -23,7 +22,6 @@ export class TestingComponent implements OnInit, OnDestroy {
   public isLastPage = true;
 
   public testsSwiperConfig: SwiperOptions = {
-    lazy: true,
     breakpoints: {
       1300: {
         slidesPerView: 5,
@@ -49,7 +47,6 @@ export class TestingComponent implements OnInit, OnDestroy {
   };
 
   public chaptersSwiperConfig: SwiperOptions = {
-    lazy: true,
     breakpoints: {
       1300: {
         slidesPerView: 5,
@@ -79,8 +76,7 @@ export class TestingComponent implements OnInit, OnDestroy {
   constructor(
     public service: TestingService,
     public route: ActivatedRoute,
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe(({ chapters, lastTests }) => {
@@ -92,7 +88,7 @@ export class TestingComponent implements OnInit, OnDestroy {
   }
 
   loadTests() {
-    let params: any = {};
+    const params: any = {};
     if (this.selectedChapter) {
       params.chapter_id = this.selectedChapter;
     }
@@ -108,7 +104,7 @@ export class TestingComponent implements OnInit, OnDestroy {
 
   moreLoad() {
     this.currentPage++;
-    let params: any = {
+    const params: any = {
       page: this.currentPage,
     };
     if (this.selectedChapter) {
@@ -125,7 +121,7 @@ export class TestingComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._unsubscribeAll.next();
+    this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 

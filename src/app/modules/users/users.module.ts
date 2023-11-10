@@ -13,10 +13,10 @@ import { StreakModule } from 'app/shared/components/streak/streak.module';
 import { TableOrderingModule } from 'app/shared/components/table-ordering/table-ordering.module';
 import { UsersChartModule } from 'app/shared/components/users-chart/users-chart.module';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import { ContestantViewModule } from '../../shared/components/contestant-view/contestant-view.module';
-import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
+import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { BlogPostCardModule } from '../blog/components/blog-post-card/blog-post-card.module';
-import { ChallengesUserViewModule } from '../challenges/components/challenges-user-view/challenges-user-view.module';
+import { ChallengesUserViewModule } from '@challenges/components/challenges-user-view/challenges-user-view.module';
 import { UserCardComponent } from './components/user-card/user-card.component';
 import { AchievementComponent } from './pages/user-profile/user-achievements/achievement/achievement.component';
 import { UserAchievementsComponent } from './pages/user-profile/user-achievements/user-achievements.component';
@@ -38,8 +38,7 @@ import {
   UserWorkExperiencesResolver
 } from './users.resolver';
 import { NgSelectModule } from 'app/shared/third-part-modules/ng-select/ng-select.module';
-import { NgxCountriesModule } from '@ngx-countries/core';
-import { ProblemsPipesModule } from '../problems/pipes/problems-pipes.module';
+import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 
 const routes: Routes = [
   {
@@ -107,9 +106,9 @@ const routes: Routes = [
     NgSelectModule,
     ReactiveFormsModule,
     ProblemsPipesModule,
-    NgxCountriesModule.forRoot({
-      locales: ['en', 'ru', 'uz']
-    }),
+    // NgxCountriesModule.forRoot({
+    //   locales: ['en', 'ru', 'uz']
+    // }),
   ],
   providers: [
     UserResolver,

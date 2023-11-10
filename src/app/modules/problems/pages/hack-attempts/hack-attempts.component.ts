@@ -57,7 +57,7 @@ export class HackAttemptsComponent implements OnInit, OnDestroy {
         if (user) {
           this.myAttempts = true;
         }
-        setTimeout(() => this._reloader.next(), 100);
+        setTimeout(() => this._reloader.next(null), 100);
       }
     );
 
@@ -70,7 +70,7 @@ export class HackAttemptsComponent implements OnInit, OnDestroy {
       }
     );
 
-    this._intervalId = setInterval(() => this._reloader.next(), RELOAD_INTERVAL_TIME);
+    this._intervalId = setInterval(() => this._reloader.next(null), RELOAD_INTERVAL_TIME);
   }
 
   private _loadPage() {
@@ -88,7 +88,7 @@ export class HackAttemptsComponent implements OnInit, OnDestroy {
     if (this._intervalId) {
       clearInterval(this._intervalId);
     }
-    this._unsubscribeAll.next();
+    this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 

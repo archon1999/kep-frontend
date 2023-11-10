@@ -42,14 +42,14 @@
       <div class="col-12 col-sm-6">
         <div class="form-group">
           <label for="account-birth-date">Birth date</label>
-          <ng2-flatpickr
-            [config]="birthDateOptions"
-            [(ngModel)]="birthDate"
-            [setDate]="birthDate"
-            (change)="onDateChange()"
-            id="account-birth-date"
-            name="account-birth-date">
-          </ng2-flatpickr>
+<!--          <ng2-flatpickr-->
+<!--            [config]="birthDateOptions"-->
+<!--            [(ngModel)]="birthDate"-->
+<!--            [setDate]="birthDate"-->
+<!--            (change)="onDateChange()"-->
+<!--            id="account-birth-date"-->
+<!--            name="account-birth-date">-->
+<!--          </ng2-flatpickr>-->
           <p class="text-danger" *ngIf="errors?.dateOfBirth">{{ errors.dateOfBirth[0] }}</p>
         </div>
       </div>

@@ -33,7 +33,7 @@ import { ContestantViewModule } from "../../../../shared/components/contestant-v
     KepcoinSpendSwalModule,
     NgbTooltipModule,
     ContestantViewModule,
-    CountdownModule,
+    // CountdownModule,
   ],
   exports: [
     ContestCardBigComponent,

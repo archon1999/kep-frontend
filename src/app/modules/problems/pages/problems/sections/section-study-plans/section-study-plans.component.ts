@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { StudyPlan } from '@problems/models/problems.models';
-import { SwiperOptions } from 'swiper';
+import { SwiperOptions } from 'swiper/types/swiper-options';
 
 @Component({
   // tslint:disable-next-line:component-selector

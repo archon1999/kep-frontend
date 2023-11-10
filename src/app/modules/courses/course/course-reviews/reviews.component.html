@@ -4,13 +4,13 @@
     <span class="reviews-count">({{ reviews.length }})</span>
   </div>
 
-  <swiper [config]="reviewsSwiperConfig" class="swiper-review swiper-lazy-loading">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide" *ngFor="let review of reviews">
-        <review-card [review]="review"></review-card>
-      </div>
-    </div>
-  </swiper>
+<!--  <swiper [config]="reviewsSwiperConfig" class="swiper-review swiper-lazy-loading">-->
+<!--    <div class="swiper-wrapper">-->
+<!--      <div class="swiper-slide" *ngFor="let review of reviews">-->
+<!--        <review-card [review]="review"></review-card>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </swiper>-->
 </div>
 
 <div class="card" *ngIf="currentUser">

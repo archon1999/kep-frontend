@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Contest } from '../../../../../contests/contests.models';
-import { SwiperOptions } from 'swiper';
+import { Contest } from '@contests/contests.models';
+import { SwiperOptions } from 'swiper/types/swiper-options';
 
 @Component({
   selector: 'section-contests',
@@ -30,16 +30,16 @@ export class SectionContestsComponent implements OnInit {
         spaceBetween: 50
       },
     }
-  }
+  };
 
   constructor(
     public route: ActivatedRoute,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe(({ contests }) => {
       this.contests = contests.map((contest: any) => Contest.fromJSON(contest));
-    })
+    });
   }
 
 }

@@ -12,8 +12,8 @@ import { MonacoEditorModule } from '../../third-part-modules/monaco-editor/monac
 import { ErrorTooltipModule } from '../error-tooltip/error-tooltip.module';
 import { NgSelectModule } from '../../third-part-modules/ng-select/ng-select.module';
 import { CoreSidebarModule } from '../../../../@core/components';
-import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { NgScrollbar } from 'ngx-scrollbar';
 
 @NgModule({
   declarations: [
@@ -34,11 +34,13 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ErrorTooltipModule,
     NgSelectModule,
     CoreSidebarModule,
-    PerfectScrollbarModule,
-    DragDropModule
+    // PerfectScrollbarModule,
+    DragDropModule,
+    NgScrollbar
   ],
   exports: [
     CodeEditorModalComponent,
   ]
 })
-export class CodeEditorModule {}
+export class CodeEditorModule {
+}
