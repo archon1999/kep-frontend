@@ -95,15 +95,13 @@
       </div>
       <div class="col-lg-9 col-md-6 col-sm-12">
         <div class="mb-4 layout-spacing">
-<!--          <swiper [config]="postsSwiperConfig" class="swiper-news swiper-lazy-loading" #postsSwiper>-->
-<!--            <div class="swiper-wrapper">-->
-<!--              <div class="swiper-slide" *ngFor="let post of lastPosts">-->
-<!--                <blog-post-card [blog]="post"></blog-post-card>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            &lt;!&ndash; Add Pagination &ndash;&gt;-->
-<!--            <div class="swiper-pagination"></div>-->
-<!--          </swiper>-->
+          <swiper [config]="postsSwiperConfig" class="swiper-news swiper-lazy-loading" #postsSwiper>
+            <div class="swiper-slide" *ngFor="let post of lastPosts">
+              <blog-post-card [blog]="post"></blog-post-card>
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+          </swiper>
         </div>
       </div>
 

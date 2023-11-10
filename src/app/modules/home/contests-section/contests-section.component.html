@@ -3,14 +3,12 @@
           'col-lg-10 offset-lg-1 col-12 offset-0': isMenuToggled && !isMenuCollapsed
         }">
   <div class="layout-spacing mt-2">
-<!--    <swiper [config]="contestsSwiperConfig" class="swiper-contests swiper-lazy-loading" #contestsSwiper>-->
-<!--      <div class="swiper-wrapper">-->
-<!--        <div class="swiper-slide" *ngFor="let contest of lastContests">-->
-<!--          <contest-card [contest]="contest"></contest-card>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      &lt;!&ndash; Add Pagination &ndash;&gt;-->
-<!--      <div class="swiper-pagination"></div>-->
-<!--    </swiper>-->
+    <swiper [config]="contestsSwiperConfig" class="swiper-contests" #contestsSwiper>
+      <div class="swiper-slide" *ngFor="let contest of lastContests">
+        <contest-card [contest]="contest"></contest-card>
+      </div>
+      <!-- Add Pagination -->
+      <div class="swiper-pagination"></div>
+    </swiper>
   </div>
 </div>
