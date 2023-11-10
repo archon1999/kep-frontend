@@ -43,6 +43,7 @@ import { CourseDictionaryResolver, CourseLessonResolver, CourseLessonsResolver, 
 import { SidebarComponent as CoursesSidebarComponent } from './sidebar/sidebar.component';
 import { ReviewCardComponent } from './course/course-reviews/review-card/review-card.component';
 import { ProblemsPipesModule } from '../problems/pipes/problems-pipes.module';
+import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 
 const routes: Routes = [
   {
@@ -150,6 +151,7 @@ const routes: Routes = [
     QuillModule,
     CountUpModule,
     ProblemsPipesModule,
+    SwiperComponent,
   ],
   providers: [
     CourseGuard,

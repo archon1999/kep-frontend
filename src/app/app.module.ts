@@ -8,7 +8,7 @@ import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import 'hammerjs';
-import { ToastrModule } from './shared/third-part-modules/toastr/toastr.module';
+import { ToastrModule } from '@shared/third-part-modules/toastr/toastr.module';
 
 import { CoreCommonModule } from '@core/common.module';
 import { CoreSidebarModule, CoreThemeCustomizerModule } from '@core/components';
@@ -22,14 +22,17 @@ import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
 import { AuthModalComponent } from './auth/auth-modal/auth-modal.component';
 import { ErrorComponent } from './modules/pages/miscellaneous/error/error.component';
-import { WebsocketModule } from './shared/services/websocket';
+import { WebsocketModule } from '@shared/services/websocket';
 
 import { APP_BASE_HREF } from '@angular/common';
-import { UserPopoverModule } from './shared/components/user-popover/user-popover.module';
+import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 
 import { environment } from 'environments/environment';
-import { HighlightModule, HighlightOptions, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
-import { NgxCountriesModule } from '@ngx-countries/core';
+import { HIGHLIGHT_OPTIONS, HighlightModule, HighlightOptions } from 'ngx-highlightjs';
+
+import { register } from 'swiper/element/bundle';
+
+register();
 
 const appRoutes: Routes = [
   { path: '', loadChildren: () => import('./modules/landing-page/landing-page.module').then(m => m.LandingPageModule) },
@@ -57,7 +60,7 @@ const appRoutes: Routes = [
   { path: '**', component: ErrorComponent },
 ];
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class CustomTitleStrategy extends TitleStrategy {
   constructor(
     private readonly title: Title,
@@ -69,7 +72,7 @@ export class CustomTitleStrategy extends TitleStrategy {
   override updateTitle(routerState: RouterStateSnapshot) {
     const title = this.buildTitle(routerState);
     if (title !== undefined) {
-      let key = `PageTitle.${title}`;
+      const key = `PageTitle.${title}`;
       this.translateService.get(key).subscribe((value: any) => {
         this.title.setTitle(`${value} | CPython.uz`);
       });
@@ -87,13 +90,12 @@ export class CustomTitleStrategy extends TitleStrategy {
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes, {
-    scrollPositionRestoration: 'enabled',
-    onSameUrlNavigation: 'reload',
-    anchorScrolling: 'enabled'
-}),
+      scrollPositionRestoration: 'enabled',
+      onSameUrlNavigation: 'reload',
+      anchorScrolling: 'enabled'
+    }),
     TranslateModule.forRoot(),
 
-    //NgBootstrap
     NgbModule,
     ToastrModule,
 
@@ -101,7 +103,6 @@ export class CustomTitleStrategy extends TitleStrategy {
       url: environment.wsUrl,
     }),
 
-    // Core modules
     CoreModule.forRoot(coreConfig),
     CorePipesModule,
     CoreCommonModule,
@@ -113,18 +114,17 @@ export class CustomTitleStrategy extends TitleStrategy {
     //   locales: ['en', 'uz', 'ru']
     // }),
 
-    // App modules
     LayoutModule,
     UserPopoverModule,
     LoadingBarRouterModule,
     LoadingBarHttpClientModule,
   ],
   providers: [
-    {provide: TitleStrategy, useClass: CustomTitleStrategy},
-    {provide: APP_BASE_HREF, useValue: '/'},
+    { provide: TitleStrategy, useClass: CustomTitleStrategy },
+    { provide: APP_BASE_HREF, useValue: '/' },
     {
       provide: HIGHLIGHT_OPTIONS,
-      useValue: <HighlightOptions> {
+      useValue: <HighlightOptions>{
         lineNumbersLoader: () => import('highlightjs-line-numbers.js'),
         coreLibraryLoader: () => import('highlight.js/lib/core'),
         languages: {
@@ -135,4 +135,5 @@ export class CustomTitleStrategy extends TitleStrategy {
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

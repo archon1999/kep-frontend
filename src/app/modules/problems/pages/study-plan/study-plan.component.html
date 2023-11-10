@@ -42,136 +42,133 @@
                   </div>
                 </div>
                 <div class="difficulties">
-                  <!--<swiper [config]="swiperConfig" class="swiper swiper-lazy-loading">
-                    <div class="swiper-wrapper">
-                      <div class="swiper-slide" *ngIf="difficulties?.allBeginner">
-                        <div class="difficulty">
-                          <div class="d-flex justify-content-between info">
-                            <div class="title">
-                              {{ 'Beginner' | translate }}
-                            </div>
-                            <div class="solved">
-                              <strong class="text-{{ 1 | problemDifficultyColor }}">{{ difficulties.beginner }}</strong>
-                              /
-                              {{ difficulties.allBeginner }}
-                            </div>
+                  <swiper [config]="swiperConfig" class="swiper swiper-lazy-loading">
+                    <div class="swiper-slide" *ngIf="difficulties?.allBeginner">
+                      <div class="difficulty">
+                        <div class="d-flex justify-content-between info">
+                          <div class="title">
+                            {{ 'Beginner' | translate }}
                           </div>
-                          <div class="mt-50 progress-wrapper">
-                            <ngb-progressbar type="{{ 1 | problemDifficultyColor }}" [value]="100 * difficulties.beginner / difficulties.allBeginner"></ngb-progressbar>
+                          <div class="solved">
+                            <strong class="text-{{ 1 | problemDifficultyColor }}">{{ difficulties.beginner }}</strong>
+                            /
+                            {{ difficulties.allBeginner }}
                           </div>
-                        </div>      
+                        </div>
+                        <div class="mt-50 progress-wrapper">
+                          <ngb-progressbar type="{{ 1 | problemDifficultyColor }}" [value]="100 * difficulties.beginner / difficulties.allBeginner"></ngb-progressbar>
+                        </div>
                       </div>
-            
-                      <div class="swiper-slide" *ngIf="difficulties?.allBasic">
-                        <div class="difficulty">
-                          <div class="d-flex justify-content-between info">
-                            <div class="title">
-                              {{ 'Basic' | translate }}
-                            </div>
-                            <div class="solved">
-                              <strong class="text-{{ 2 | problemDifficultyColor }}">{{ difficulties.basic }}</strong>
-                              /
-                              {{ difficulties.allBasic }}
-                            </div>
-                          </div>
-                          <div class="mt-50 progress-wrapper">
-                            <ngb-progressbar type="{{ 2 | problemDifficultyColor }}" [value]="100 * difficulties.basic / difficulties.allBasic"></ngb-progressbar>
-                          </div>
-                        </div>      
-                      </div>
-            
-                      <div class="swiper-slide"  *ngIf="difficulties?.allNormal">
-                        <div class="difficulty">
-                          <div class="d-flex justify-content-between info">
-                            <div class="title">
-                              {{ 'Normal' | translate }}
-                            </div>
-                            <div class="solved">
-                              <strong class="text-{{ 3 | problemDifficultyColor }}">{{ difficulties.normal }}</strong>
-                              /
-                              {{ difficulties.allNormal }}
-                            </div>
-                          </div>
-                          <div class="mt-50 progress-wrapper">
-                            <ngb-progressbar type="{{ 3 | problemDifficultyColor }}" [value]="100 * difficulties.normal / difficulties.allNormal"></ngb-progressbar>
-                          </div>
-                        </div>      
-                      </div>
-            
-                      <div class="swiper-slide" *ngIf="difficulties?.allMedium">
-                        <div class="difficulty">
-                          <div class="d-flex justify-content-between info">
-                            <div class="title">
-                              {{ 'Medium' | translate }}
-                            </div>
-                            <div class="solved">
-                              <strong class="text-{{ 4 | problemDifficultyColor }}">{{ difficulties.medium }}</strong>
-                              /
-                              {{ difficulties.allMedium }}
-                            </div>
-                          </div>
-                          <div class="mt-50 progress-wrapper">
-                            <ngb-progressbar type="{{ 4 | problemDifficultyColor }}" [value]="100 * difficulties.medium / difficulties.allMedium"></ngb-progressbar>
-                          </div>
-                        </div>      
-                      </div>
-            
-                      <div class="swiper-slide" *ngIf="difficulties?.allAdvanced">
-                        <div class="difficulty">
-                          <div class="d-flex justify-content-between info">
-                            <div class="title">
-                              {{ 'Advanced' | translate }}
-                            </div>
-                            <div class="solved">
-                              <strong class="text-{{ 5 | problemDifficultyColor }}">{{ difficulties.advanced }}</strong>
-                              /
-                              {{ difficulties.allAdvanced }}
-                            </div>
-                          </div>
-                          <div class="mt-50 progress-wrapper">
-                            <ngb-progressbar type="{{ 5 | problemDifficultyColor }}" [value]="100 * difficulties.advanced / difficulties.allAdvanced"></ngb-progressbar>
-                          </div>
-                        </div>      
-                      </div>
-            
-                      <div class="swiper-slide" *ngIf="difficulties?.allHard">
-                        <div class="difficulty">
-                          <div class="d-flex justify-content-between info">
-                            <div class="title">
-                              {{ 'Hard' | translate }}
-                            </div>
-                            <div class="solved">
-                              <strong class="text-{{ 6 | problemDifficultyColor }}">{{ difficulties.hard }}</strong>
-                              /
-                              {{ difficulties.allHard }}
-                            </div>
-                          </div>
-                          <div class="mt-50 progress-wrapper">
-                            <ngb-progressbar type="{{ 6 | problemDifficultyColor }}" [value]="100 * difficulties.hard / difficulties.allHard"></ngb-progressbar>
-                          </div>
-                        </div>      
-                      </div>
-            
-                      <div class="swiper-slide" *ngIf="difficulties?.allExtremal">
-                        <div class="difficulty">
-                          <div class="d-flex justify-content-between info">
-                            <div class="title">
-                              {{ 'Extremal' | translate }}
-                            </div>
-                            <div class="solved">
-                              <strong class="text-{{ 7 | problemDifficultyColor }}">{{ difficulties.extremal }}</strong>
-                              /
-                              {{ difficulties.allExtremal }}
-                            </div>
-                          </div>
-                          <div class="mt-50 progress-wrapper">
-                            <ngb-progressbar type="{{ 7 | problemDifficultyColor }}" [value]="100 * difficulties.extremal / difficulties.allExtremal"></ngb-progressbar>
-                          </div>
-                        </div>      
-                      </div>
-            
                     </div>
-                  </swiper>-->
+
+                    <div class="swiper-slide" *ngIf="difficulties?.allBasic">
+                      <div class="difficulty">
+                        <div class="d-flex justify-content-between info">
+                          <div class="title">
+                            {{ 'Basic' | translate }}
+                          </div>
+                          <div class="solved">
+                            <strong class="text-{{ 2 | problemDifficultyColor }}">{{ difficulties.basic }}</strong>
+                            /
+                            {{ difficulties.allBasic }}
+                          </div>
+                        </div>
+                        <div class="mt-50 progress-wrapper">
+                          <ngb-progressbar type="{{ 2 | problemDifficultyColor }}" [value]="100 * difficulties.basic / difficulties.allBasic"></ngb-progressbar>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="swiper-slide"  *ngIf="difficulties?.allNormal">
+                      <div class="difficulty">
+                        <div class="d-flex justify-content-between info">
+                          <div class="title">
+                            {{ 'Normal' | translate }}
+                          </div>
+                          <div class="solved">
+                            <strong class="text-{{ 3 | problemDifficultyColor }}">{{ difficulties.normal }}</strong>
+                            /
+                            {{ difficulties.allNormal }}
+                          </div>
+                        </div>
+                        <div class="mt-50 progress-wrapper">
+                          <ngb-progressbar type="{{ 3 | problemDifficultyColor }}" [value]="100 * difficulties.normal / difficulties.allNormal"></ngb-progressbar>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="swiper-slide" *ngIf="difficulties?.allMedium">
+                      <div class="difficulty">
+                        <div class="d-flex justify-content-between info">
+                          <div class="title">
+                            {{ 'Medium' | translate }}
+                          </div>
+                          <div class="solved">
+                            <strong class="text-{{ 4 | problemDifficultyColor }}">{{ difficulties.medium }}</strong>
+                            /
+                            {{ difficulties.allMedium }}
+                          </div>
+                        </div>
+                        <div class="mt-50 progress-wrapper">
+                          <ngb-progressbar type="{{ 4 | problemDifficultyColor }}" [value]="100 * difficulties.medium / difficulties.allMedium"></ngb-progressbar>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="swiper-slide" *ngIf="difficulties?.allAdvanced">
+                      <div class="difficulty">
+                        <div class="d-flex justify-content-between info">
+                          <div class="title">
+                            {{ 'Advanced' | translate }}
+                          </div>
+                          <div class="solved">
+                            <strong class="text-{{ 5 | problemDifficultyColor }}">{{ difficulties.advanced }}</strong>
+                            /
+                            {{ difficulties.allAdvanced }}
+                          </div>
+                        </div>
+                        <div class="mt-50 progress-wrapper">
+                          <ngb-progressbar type="{{ 5 | problemDifficultyColor }}" [value]="100 * difficulties.advanced / difficulties.allAdvanced"></ngb-progressbar>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="swiper-slide" *ngIf="difficulties?.allHard">
+                      <div class="difficulty">
+                        <div class="d-flex justify-content-between info">
+                          <div class="title">
+                            {{ 'Hard' | translate }}
+                          </div>
+                          <div class="solved">
+                            <strong class="text-{{ 6 | problemDifficultyColor }}">{{ difficulties.hard }}</strong>
+                            /
+                            {{ difficulties.allHard }}
+                          </div>
+                        </div>
+                        <div class="mt-50 progress-wrapper">
+                          <ngb-progressbar type="{{ 6 | problemDifficultyColor }}" [value]="100 * difficulties.hard / difficulties.allHard"></ngb-progressbar>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="swiper-slide" *ngIf="difficulties?.allExtremal">
+                      <div class="difficulty">
+                        <div class="d-flex justify-content-between info">
+                          <div class="title">
+                            {{ 'Extremal' | translate }}
+                          </div>
+                          <div class="solved">
+                            <strong class="text-{{ 7 | problemDifficultyColor }}">{{ difficulties.extremal }}</strong>
+                            /
+                            {{ difficulties.allExtremal }}
+                          </div>
+                        </div>
+                        <div class="mt-50 progress-wrapper">
+                          <ngb-progressbar type="{{ 7 | problemDifficultyColor }}" [value]="100 * difficulties.extremal / difficulties.allExtremal"></ngb-progressbar>
+                        </div>
+                      </div>
+                    </div>
+                  </swiper>
                 </div>
               </div>
             </div>            
