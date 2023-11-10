@@ -5,12 +5,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
-import { SwiperComponent } from 'ngx-useful-swiper';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Blog } from '../blog/blog.models';
 import { HomeService } from './home.service';
 import { SwiperOptions } from 'swiper/types/swiper-options';
+import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 
 @Component({
   selector: 'app-home',
@@ -71,7 +71,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     public service: HomeService,
     public authService: AuthenticationService,
     public translateService: TranslateService,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     setTimeout(() => {
