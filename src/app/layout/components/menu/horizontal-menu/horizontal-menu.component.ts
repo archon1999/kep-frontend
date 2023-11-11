@@ -3,9 +3,9 @@ import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil, filter } from 'rxjs/operators';
 
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreMenuService } from '@core/components/core-menu/core-menu.service';
-import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { CoreConfigService } from 'core/services/config.service';
+import { CoreMenuService } from 'core/components/core-menu/core-menu.service';
+import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.service';
 
 @Component({
   selector: 'horizontal-menu',

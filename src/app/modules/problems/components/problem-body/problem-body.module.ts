@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProblemBodyComponent } from './problem-body.component';
-import { CorePipesModule } from '@core/pipes/pipes.module';
-import { CoreDirectivesModule } from '@core/directives/directives';
+import { CorePipesModule } from 'core/pipes/pipes.module';
+import { CoreDirectivesModule } from 'core/directives/directives';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';

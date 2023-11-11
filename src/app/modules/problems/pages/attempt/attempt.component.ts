@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfigService } from 'core/services/config.service';
 import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

@@ -1,4 +1,4 @@
-import { CoreConfig } from '@core/types';
+import { CoreConfig } from 'core/types';
 
 export const coreConfig: CoreConfig = {
   app: {

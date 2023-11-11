@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { colors } from '../../../../colors.const';
-import { UsersService } from '../../users.service';
-import { BaseComponent } from '../../../../shared/components/classes/base.component';
-import { AuthenticationService } from 'app/auth/service';
-import { NgxCountriesIsoService } from '@ngx-countries/core';
+import { UsersService } from '@users/users.service';
+import { BaseComponent } from '@shared/components/classes/base.component';
 import { Subject, asyncScheduler } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
@@ -39,13 +36,13 @@ export class UsersComponent extends BaseComponent {
     ageTo: new FormControl(null),
     username: new FormControl(''),
     firstName: new FormControl(''),
-  })
+  });
 
   public countries = [];
   public ordering = '-skills_rating';
 
   public users: Array<any> = [];
-  public totalUsers: number = 0;
+  public totalUsers = 0;
   public currentPage = 1;
 
   private _loader = new Subject();
@@ -53,7 +50,7 @@ export class UsersComponent extends BaseComponent {
   constructor(
     public service: UsersService,
     public translateService: TranslateService,
-    public countriesService: NgxCountriesIsoService,
+    // public countriesService: NgxCountriesIsoService,
     public route: ActivatedRoute,
   ) {
     super();
@@ -62,11 +59,11 @@ export class UsersComponent extends BaseComponent {
   ngOnInit(): void {
     this.route.queryParams.subscribe(
       (params: any) => {
-        if('page' in params){
+        if ('page' in params) {
           this.currentPage = +params.page;
         }
       }
-    )
+    );
 
     super.ngOnInit();
 
@@ -77,53 +74,53 @@ export class UsersComponent extends BaseComponent {
       () => {
         this._loadUsers();
       }
-    )
+    );
 
     this.loadUsers();
 
-    this.service.getCountries().subscribe(
-      (countries: Array<string>) => {
-        for(let country of countries){
-          this.countries.push({
-            id: country,
-            name: this.countriesService.getName(country, this.translateService.currentLang),
-          })
-        }
-      }
-    )
+    // this.service.getCountries().subscribe(
+    //   (countries: Array<string>) => {
+    //     for (let country of countries) {
+    //       this.countries.push({
+    //         id: country,
+    //         name: this.countriesService.getName(country, this.translateService.currentLang),
+    //       });
+    //     }
+    //   }
+    // );
 
     this.filterForm.valueChanges.subscribe(
       () => {
         this.loadUsers();
       }
-    )
+    );
   }
 
-  pageChange(page: number){
+  pageChange(page: number) {
     this.loadUsers();
   }
 
-  loadUsers(){
+  loadUsers() {
     setTimeout(() => {
       this._loader.next(null);
     }, 100);
   }
 
-  _loadUsers(){
-    let params: any = {
+  _loadUsers() {
+    const params: any = {
       full: true,
       ordering: this.ordering,
       ...this.filterForm.value
-    }
+    };
     this.service.getUsers(this.currentPage, paramsMapper(params)).subscribe(
       (result: any) => {
         this.users = result.data;
         this.totalUsers = result.total;
       }
-    )
+    );
   }
 
-  changeOrdering(ordering: string){
+  changeOrdering(ordering: string) {
     this.ordering = ordering;
     this.loadUsers();
   }

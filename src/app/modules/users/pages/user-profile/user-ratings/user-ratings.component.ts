@@ -8,9 +8,9 @@ import { UsersService } from '../../../users.service';
 import { colors } from '../../../../../colors.const';
 import { ChallengesService } from '../../../../challenges/services/challenges.service';
 import { Subject } from 'rxjs';
-import { CoreConfigService } from '../../../../../../@core/services/config.service';
+import { CoreConfigService } from '../../../../../../core/services/config.service';
 import { takeUntil } from 'rxjs/operators';
-import { CoreConfig } from '../../../../../../@core/types';
+import { CoreConfig } from '../../../../../../core/types';
 
 @Component({
   selector: 'user-ratings',

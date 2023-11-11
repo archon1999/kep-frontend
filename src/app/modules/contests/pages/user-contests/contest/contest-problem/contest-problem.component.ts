@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreConfig } from '@core/types';
+import { CoreConfigService } from 'core/services/config.service';
+import { CoreConfig } from 'core/types';
 import { TranslateService } from '@ngx-translate/core';
 import { fadeInLeftAnimation, fadeInRightAnimation } from 'angular-animations';
 import { ApiService } from 'app/shared/services/api.service';

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UsersService } from '../../../../modules/users/users.service';
 import { TranslateService } from '@ngx-translate/core';
 import { takeUntil } from 'rxjs/operators';
-import { CoreConfigService } from '../../../../../@core/services/config.service';
+import { CoreConfigService } from '../../../../../core/services/config.service';
 import { Subject } from 'rxjs';
 import { colors } from '../../../../colors.const';
 

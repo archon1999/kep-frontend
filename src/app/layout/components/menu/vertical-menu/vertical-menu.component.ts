@@ -3,11 +3,10 @@ import { NavigationEnd, Router } from '@angular/router';
 
 import { Subject } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
-import { PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreMenuService } from '@core/components/core-menu/core-menu.service';
-import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { CoreConfigService } from 'core/services/config.service';
+import { CoreMenuService } from 'core/components/core-menu/core-menu.service';
+import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.service';
 
 @Component({
   selector: 'vertical-menu',
@@ -20,8 +19,7 @@ export class VerticalMenuComponent implements OnInit, OnDestroy {
   menu: any;
   isCollapsed: boolean;
   isScrolled = false;
-  @ViewChild(PerfectScrollbarDirective, { static: false }) directiveRef?: PerfectScrollbarDirective;
-  // Private
+  // @ViewChild(PerfectScrollbarDirective, { static: false }) directiveRef?: PerfectScrollbarDirective;
   private _unsubscribeAll: Subject<any>;
 
   constructor(
