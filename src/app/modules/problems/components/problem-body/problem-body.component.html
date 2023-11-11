@@ -1,4 +1,4 @@
-<div class="mt-2">
+<div class="mt-2 text-dark font-weight-bold">
   <mathjax [content]="problem.body" *ngIf="problem.id != 1637"></mathjax>
 </div>
 
@@ -40,7 +40,7 @@
     </strong>
   </h4>
 
-  <mathjax class="mt-2" [content]="problem.inputData"></mathjax>
+  <mathjax class="mt-2 text-dark font-weight-bold" [content]="problem.inputData"></mathjax>
 </ng-container>
 
 <ng-container *ngIf="problem.outputData?.length > 0">
@@ -50,7 +50,7 @@
     </strong>
   </h4>
 
-  <mathjax class="mt-2" [content]="problem.outputData"></mathjax>
+  <mathjax class="mt-2 text-dark font-weight-bold" [content]="problem.outputData"></mathjax>
   <hr>
 </ng-container>
 
@@ -107,7 +107,7 @@
     </strong>
   </h4>
 
-  <mathjax class="mt-2" [content]="problem.comment"></mathjax>
+  <mathjax class="mt-2 text-dark font-weight-bold" [content]="problem.comment"></mathjax>
   <hr>
 </ng-container>
 
