@@ -4,8 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { CpythonCupComponent } from './cpython-cup.component';
 import { SectionHeaderComponent } from './section-header/section-header.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { CorePipesModule } from '@core/pipes/pipes.module';
-import { CoreDirectivesModule } from '@core/directives/directives';
+import { CorePipesModule } from 'core/pipes/pipes.module';
+import { CoreDirectivesModule } from 'core/directives/directives';
 import { SectionTimelineComponent } from './section-timeline/section-timeline.component';
 
 const routes: Routes = [

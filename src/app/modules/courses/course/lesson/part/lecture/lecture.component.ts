@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreConfig } from '@core/types';
+import { CoreConfigService } from 'core/services/config.service';
+import { CoreConfig } from 'core/types';
 import { CourseLessonPartStatus } from '../../../../../courses/courses.models';
 import { CoursesService } from '../../../../../courses/courses.service';
 import { HighlightLoader } from 'ngx-highlightjs';

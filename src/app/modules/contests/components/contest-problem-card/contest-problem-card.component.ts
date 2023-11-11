@@ -2,10 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Contest, ContestProblem } from '../../contests.models';
 import { ContestsService } from '../../contests.service';
 import { Problem } from 'app/modules/problems/models/problems.models';
-import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfigService } from 'core/services/config.service';
 import { BaseComponent } from '../../../../shared/components/classes/base.component';
 import { takeUntil } from 'rxjs/operators';
-import { CoreConfig } from '@core/types';
+import { CoreConfig } from 'core/types';
 import { AuthenticationService } from 'app/auth/service';
 
 @Component({

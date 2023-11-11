@@ -13,7 +13,7 @@ import { Location } from '@angular/common';
 import { ApiService } from '@shared/services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { BaseComponent } from '@shared/components/classes/base.component';
-import { CoreSidebarService } from '../../../../../@core/components/core-sidebar/core-sidebar.service';
+import { CoreSidebarService } from '../../../../../core/components/core-sidebar/core-sidebar.service';
 
 @Component({
   selector: 'app-problem',

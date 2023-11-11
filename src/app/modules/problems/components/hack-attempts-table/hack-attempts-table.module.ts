@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { HackAttemptsTableComponent } from './hack-attempts-table.component';
-import { CorePipesModule } from '@core/pipes/pipes.module';
+import { CorePipesModule } from 'core/pipes/pipes.module';
 import { CommonModule } from '@angular/common';
 import { ContestantViewModule } from '../../../../shared/components/contestant-view/contestant-view.module';
-import { CoreDirectivesModule } from '@core/directives/directives';
+import { CoreDirectivesModule } from 'core/directives/directives';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { FormsModule } from '@angular/forms';

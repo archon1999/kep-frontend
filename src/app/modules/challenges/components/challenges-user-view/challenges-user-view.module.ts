@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChallengesUserViewComponent } from './challenges-user-view.component';
-import { CorePipesModule } from '../../../../../@core/pipes/pipes.module';
+import { CorePipesModule } from '../../../../../core/pipes/pipes.module';
 import { UserPopoverModule } from '../../../../shared/components/user-popover/user-popover.module';
 import { ChallengesRankBadgeComponent } from './challenges-rank-badge/challenges-rank-badge.component';
 

@@ -1,14 +1,14 @@
 @use "sass:meta";
 
-@import '@core/scss/core.scss';
+@import 'scss/core.scss';
 @import './assets/scss/styles';
 
-@import 'app/colors/study-plans.scss';
-@import 'app/colors/languages.scss';
-@import 'app/colors/chapters.scss';
-@import 'app/colors/contests.scss';
+@import 'colors/study-plans.scss';
+@import 'colors/languages.scss';
+@import 'colors/chapters.scss';
+@import 'colors/contests.scss';
 
-@import "~highlight.js/styles/vs.css";
+@import "highlight.js/styles/vs.css";
 
 .dark-layout {
   @include meta.load-css("highlight.js/styles/vs2015.css");
