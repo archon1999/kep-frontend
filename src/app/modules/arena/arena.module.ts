@@ -15,6 +15,7 @@ import { UserPopoverModule } from '@shared/components/user-popover/user-popover.
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { ArenaPlayerStatisticsComponent } from './components/arena-player-statistics/arena-player-statistics.component';
 import { PaginationModule } from 'app/shared/components/pagination/pagination.module';
+import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 
 const routes: Routes = [
   {
@@ -55,6 +56,7 @@ const routes: Routes = [
     UserPopoverModule,
     PaginationModule,
     NgxSkeletonLoaderModule,
+    CountdownComponent,
   ],
   providers: [ArenaResolver]
 })

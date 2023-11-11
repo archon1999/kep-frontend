@@ -192,22 +192,22 @@
         <div class="col-lg-3 col-md-3 col-sm-12">
           <div class="card countdown bg-gradient-chapter-{{ challenge?.nextQuestion.question.chapterId }}">
             <div class="card-body">
-<!--              <ngx-countdown-->
-<!--                  #counter-->
-<!--                  [time]="challenge.timeSeconds*1000"-->
-<!--                  [render]="render"-->
-<!--                  format="ss"-->
-<!--                  (finish)="checkAnswer()"-->
-<!--              >-->
-<!--                <ng-template #render let-data>-->
-<!--                  <div class="d-flex justify-content-center">-->
-<!--                    <div class="text-center">-->
-<!--                      <h5 class="clock-val mb-50 text-white">{{ data.fragments[0] }}</h5>-->
-<!--                      <h5 class="text-white clock-text">{{ 'SECOND' | translate }}</h5>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </ng-template>-->
-<!--              </ngx-countdown>-->
+              <ngx-countdown
+                  #counter
+                  [time]="challenge.timeSeconds*1000"
+                  [render]="render"
+                  format="ss"
+                  (finish)="checkAnswer()"
+              >
+                <ng-template #render let-data>
+                  <div class="d-flex justify-content-center">
+                    <div class="text-center">
+                      <h5 class="clock-val mb-50 text-white">{{ data.fragments[0] }}</h5>
+                      <h5 class="text-white clock-text">{{ 'SECOND' | translate }}</h5>
+                    </div>
+                  </div>
+                </ng-template>
+              </ngx-countdown>
             </div>
           </div>
         </div>
