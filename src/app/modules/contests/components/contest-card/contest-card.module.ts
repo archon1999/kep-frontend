@@ -13,6 +13,7 @@ import { ContestCountdownComponent } from './contest-countdown/contest-countdown
 import { ContestStandingsCountdownComponent } from './contest-standings-countdown/contest-standings-countdown.component';
 import { ContestCardCountdownComponent } from './contest-card-countdown/contest-card-countdown.component';
 import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { ContestantViewModule } from '@shared/components/contestant-view/contest
     KepcoinSpendSwalModule,
     NgbTooltipModule,
     ContestantViewModule,
-    // CountdownModule,
+    CountdownComponent
   ],
   exports: [
     ContestCardBigComponent,
@@ -43,4 +44,5 @@ import { ContestantViewModule } from '@shared/components/contestant-view/contest
     ContestCardCountdownComponent,
   ]
 })
-export class ContestCardModule { }
+export class ContestCardModule {
+}
