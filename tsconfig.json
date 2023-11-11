@@ -20,7 +20,7 @@
     ],
     "paths": {
       "@core": [
-        "core/"
+        "core/*"
       ],
       "@shared/*": [
         "app/shared/*"
@@ -36,9 +36,6 @@
       ],
       "@users/*": [
         "app/modules/users/*"
-      ],
-      "@fake-db": [
-        "@fake-db/"
       ],
       "environments": [
         "environments/"

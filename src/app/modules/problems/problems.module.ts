@@ -69,7 +69,7 @@ import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-char
 import { CoreSidebarModule } from 'core/components';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
-import { CoreCommonModule } from '../../../core/common.module';
+import { CoreCommonModule } from 'core/common.module';
 
 const routes: Routes = [
   {
