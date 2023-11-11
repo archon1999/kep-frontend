@@ -7,13 +7,14 @@ import { CodeRushCountdownComponent } from './components/code-rush-countdown/cod
 import { CorePipesModule } from 'core/pipes/pipes.module';
 import { CoreDirectivesModule } from 'core/directives/directives';
 import { TranslateModule } from '@ngx-translate/core';
-import { ContestantViewModule } from '../../shared/components/contestant-view/contestant-view.module';
-import { ProblemBodyModule } from '../problems/components/problem-body/problem-body.module';
-import { CodeEditorModule } from '../../shared/components/code-editor/code-editor.module';
+import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { ProblemBodyModule } from '@problems/components/problem-body/problem-body.module';
+import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { AttemptsTableModule } from '../problems/components/attempts-table/attempts-table.module';
+import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { CodeRushResultsTableComponent } from './components/code-rush-results-table/code-rush-results-table.component';
+import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 
 
 const routes: Routes = [
@@ -48,6 +49,7 @@ const routes: Routes = [
     AttemptsTableModule,
     NgbTooltipModule,
     ContentHeaderModule,
+    CountdownComponent,
   ],
   providers: [
     CodeRushResolver,

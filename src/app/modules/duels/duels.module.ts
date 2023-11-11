@@ -14,6 +14,7 @@ import { ProblemListCardComponent } from './components/problem-list-card/problem
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
+import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 
 
 const routes: Routes = [
@@ -48,6 +49,7 @@ const routes: Routes = [
     CodeEditorModule,
     AttemptsTableModule,
     NgbTooltipModule,
+    CountdownComponent,
   ],
   providers: [
     DuelResolver,
