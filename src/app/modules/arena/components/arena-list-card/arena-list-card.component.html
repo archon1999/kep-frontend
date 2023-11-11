@@ -14,13 +14,13 @@
 
     <div class="card-countdown">
       <span *ngIf="arena.status == -1">
-<!--        <ngx-countdown [time]="leftTime" [render]="render" format="HH:mm:ss" (finish)="finish()">-->
-<!--          <ng-template #render let-data>-->
-<!--            <div class="d-flex justify-content-between" [ngbTooltip]="arena.startTime | date:'dd-MM-y HH:mm'">-->
-<!--              <h5 class="clock-val">{{ data.fragments[0] }}:{{ data.fragments[1] }}:{{ data.fragments[2] }}</h5>-->
-<!--            </div>    -->
-<!--          </ng-template>-->
-<!--        </ngx-countdown>-->
+        <ngx-countdown [time]="leftTime" [render]="render" format="HH:mm:ss" (finish)="finish()">
+          <ng-template #render let-data>
+            <div class="d-flex justify-content-between" [ngbTooltip]="arena.startTime | date:'dd-MM-y HH:mm'">
+              <h5 class="clock-val">{{ data.fragments[0] }}:{{ data.fragments[1] }}:{{ data.fragments[2] }}</h5>
+            </div>
+          </ng-template>
+        </ngx-countdown>
       </span>
       <span *ngIf="arena.status == 0" class="badge badge-glow badge-warning">
         {{ 'Now' | translate }}
