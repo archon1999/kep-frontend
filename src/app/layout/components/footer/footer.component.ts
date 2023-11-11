@@ -3,7 +3,7 @@ import { OnInit, OnDestroy, Component } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfigService } from 'core/services/config.service';
 
 @Component({
   selector: 'footer',

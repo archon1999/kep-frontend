@@ -7,9 +7,9 @@ import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
 import { AuthenticationService } from 'app/auth/service';
-import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreMediaService } from '@core/services/media.service';
+import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.service';
+import { CoreConfigService } from 'core/services/config.service';
+import { CoreMediaService } from 'core/services/media.service';
 
 import { User } from 'app/auth/models';
 
@@ -18,8 +18,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthModalComponent } from 'app/auth/auth-modal/auth-modal.component';
 import { ApiService } from 'app/shared/services/api.service';
-import { CookieService } from 'ngx-cookie-service';
-import { BaseComponent } from '../../../shared/components/classes/base.component';
+import { BaseComponent } from '@shared/components/classes/base.component';
 
 @Component({
   selector: 'app-navbar',

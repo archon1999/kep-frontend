@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreConfig } from '@core/types';
+import { CoreConfigService } from 'core/services/config.service';
+import { CoreConfig } from 'core/types';
 import { SoundsService } from '@shared/services/sounds/sounds.service';
 import { SuccessSoundEnum } from 'app/shared/services/sounds/success-sound.enum';
 

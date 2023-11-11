@@ -1,9 +1,5 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
-import { CoreDirectivesModule } from '@core/directives/directives';
-import { CorePipesModule } from '@core/pipes/pipes.module';
 import { NgbModule, NgbNavModule, NgbRatingModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthGuard } from 'app/auth/helpers';
@@ -70,9 +66,10 @@ import { ProblemsPipesModule } from './pipes/problems-pipes.module';
 import { ProblemHacksComponent } from './pages/problem/problem-hacks/problem-hacks.component';
 import { MonacoEditorModule as MonacoModule } from '../../shared/third-part-modules/monaco-editor/monaco-editor.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
-import { CoreSidebarModule } from '@core/components';
+import { CoreSidebarModule } from 'core/components';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
+import { CoreCommonModule } from '../../../core/common.module';
 
 const routes: Routes = [
   {
@@ -211,22 +208,19 @@ const routes: Routes = [
     ProblemHacksComponent,
   ],
   imports: [
-    CommonModule,
+    CoreCommonModule,
     RouterModule.forChild(routes),
     MathjaxModule,
     AttemptsTableModule,
     StudyPlanCardModule,
     ContentHeaderModule,
-    CoreDirectivesModule,
     TranslateModule,
     NgbRatingModule,
     NgbNavModule,
-    CorePipesModule,
     NgbTooltipModule,
     ProblemBodyModule,
     NgSelectModule,
     NgbModule,
-    FormsModule,
     ClipboardModule,
     CodeEditorModule,
     MonacoEditorModule,
@@ -236,7 +230,6 @@ const routes: Routes = [
     ProblemCardModule,
     ContestantViewModule,
     ContestCardModule,
-    // NgxUsefulSwiperModule,
     SectionTopicsComponent,
     KepcoinViewModule,
     KepcoinSpendSwalModule,
@@ -249,7 +242,6 @@ const routes: Routes = [
     ProblemsPipesModule,
     MonacoEditorModule,
     MonacoModule,
-    ReactiveFormsModule,
     ApexChartModule,
     CoreSidebarModule,
     NgScrollbar,

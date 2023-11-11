@@ -1,6 +1,6 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { Problem } from '../../../models/problems.models';
-import { CoreConfigService } from '../../../../../../@core/services/config.service';
+import { CoreConfigService } from '../../../../../../core/services/config.service';
 import { TemplateCodeService } from '../../../../../shared/services/template-code.service';
 import { AttemptLangs } from '../../../constants';
 

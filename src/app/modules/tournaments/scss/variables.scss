@@ -1,4 +1,4 @@
-@import '@core/scss/base/bootstrap-extended/variables';
+@import 'scss/base/bootstrap-extended/variables';
 
 $tournaments-color: mix(black, $primary, 50);
 $tournaments-bg: linear-gradient(47deg, $tournaments-color, $tournaments-color);

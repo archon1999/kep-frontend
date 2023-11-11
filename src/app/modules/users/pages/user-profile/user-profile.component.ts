@@ -5,7 +5,6 @@ import { TitleService } from '../../../../shared/services/title.service';
 import { Subject } from 'rxjs';
 import { User, UserEducation, UserInfo, UserSkills, UserSocial, UserTechnology, UserWorkExperience } from '../../users.models';
 import { User as AuthUser } from '../../users.models';
-import { NgxCountriesIsoService } from '@ngx-countries/core';
 
 @Component({
   selector: 'app-user-profile',
@@ -33,7 +32,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     public authService: AuthenticationService,
     public titleService: TitleService,
-    public countriesService: NgxCountriesIsoService,
+    // public countriesService: NgxCountriesIsoService,
   ) {
   }
 

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { CoreCommonModule } from '@core/common.module';
-import { CoreSidebarModule } from '@core/components';
+import { CoreCommonModule } from 'core/common.module';
+import { CoreSidebarModule } from 'core/components';
 
 import { NavbarModule } from 'app/layout/components/navbar/navbar.module';
 import { ContentModule } from 'app/layout/components/content/content.module';

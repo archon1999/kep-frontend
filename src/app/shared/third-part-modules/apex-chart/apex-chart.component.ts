@@ -1,8 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ChartOptions } from './chart-options.type';
 import { takeUntil } from 'rxjs/operators';
-import { CoreConfig } from '../../../../@core/types';
-import { CoreConfigService } from '../../../../@core/services/config.service';
+import { CoreConfig } from '../../../../core/types';
+import { CoreConfigService } from '../../../../core/services/config.service';
 import { Subject } from 'rxjs';
 import { colors } from '../../../colors.const';
 import { ApexTheme } from 'ng-apexcharts';
