@@ -1,8 +1,8 @@
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AfterViewChecked, AfterViewInit, Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { EditorComponent } from 'ngx-monaco-editor';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreConfig } from '@core/types';
+import { CoreConfigService } from 'core/services/config.service';
+import { CoreConfig } from 'core/types';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { AttemptLangs } from 'app/modules/problems/constants';
 import { getEditorLang } from 'app/modules/problems/utils';

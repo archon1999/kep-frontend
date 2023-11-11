@@ -53,11 +53,10 @@
             ],
             "styles": [
               "src/styles.scss",
-              "./node_modules/swiper/swiper-bundle.min.css",
-              "src/assets/fonts/flag-icon-css/css/flag-icon.min.css"
+              "./node_modules/swiper/swiper-bundle.min.css"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["node_modules", "src/assets/"]
+              "includePaths": ["node_modules", "src/assets/", "src/core", "src/app"]
             },
             "scripts": ["./node_modules/katex/dist/katex.min.js", "./node_modules/quill/dist/quill.min.js"],
             "vendorChunk": true,

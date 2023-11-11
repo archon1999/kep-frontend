@@ -1,0 +1,11 @@
+@import 'nouislider/dist/nouislider.min.css';
+@import 'scss/base/plugins/extensions/ext-component-sliders';
+@import 'scss/base/core/colors/palette-noui';
+
+@import 'scss/base/bootstrap-extended/include'; // Bootstrap includes
+@import 'scss/base/components/include'; // Components includes
+
+.noUi-vertical {
+  height: 200px;
+  display: inline-block !important;
+}

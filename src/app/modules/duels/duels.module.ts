@@ -5,16 +5,15 @@ import { DuelsComponent } from './pages/duels/duels.component';
 import { DuelComponent } from './pages/duel/duel.component';
 import { DuelResolver } from './duels.resolver';
 import { DuelCountdownComponent } from './components/duel-countdown/duel-countdown.component';
-import { CountdownModule } from '@ciri/ngx-countdown'
-import { CorePipesModule } from '@core/pipes/pipes.module';
-import { CoreDirectivesModule } from '@core/directives/directives';
+import { CorePipesModule } from 'core/pipes/pipes.module';
+import { CoreDirectivesModule } from 'core/directives/directives';
 import { TranslateModule } from '@ngx-translate/core';
-import { ContestantViewModule } from '../../shared/components/contestant-view/contestant-view.module';
-import { ProblemBodyModule } from '../problems/components/problem-body/problem-body.module';
+import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { ProblemBodyModule } from '@problems/components/problem-body/problem-body.module';
 import { ProblemListCardComponent } from './components/problem-list-card/problem-list-card.component';
-import { CodeEditorModule } from '../../shared/components/code-editor/code-editor.module';
+import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { AttemptsTableModule } from '../problems/components/attempts-table/attempts-table.module';
+import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
 
 
 const routes: Routes = [

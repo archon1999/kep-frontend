@@ -16,9 +16,9 @@ import {
   ApexResponsive,
 } from 'ng-apexcharts';
 import { AuthenticationService } from 'app/auth/service';
-import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfigService } from 'core/services/config.service';
 import { takeUntil } from 'rxjs/operators';
-import { CoreConfig } from '@core/types';
+import { CoreConfig } from 'core/types';
 import { ActivatedRoute } from '@angular/router';
 
 export type ChartOptions = {

@@ -8,7 +8,7 @@ import { ProblemsStatisticsService } from '@problems/services/problems-statistic
 import { ProblemsFilterService } from '@problems/services/problems-filter.service';
 import { BaseComponent } from '@shared/components/classes/base.component';
 import { PageResult } from 'app/shared/page-result';
-import { CoreSidebarService } from '../../../../../@core/components/core-sidebar/core-sidebar.service';
+import { CoreSidebarService } from '../../../../../core/components/core-sidebar/core-sidebar.service';
 import { SwipeService } from '@shared/services/swipe.service';
 
 @Component({

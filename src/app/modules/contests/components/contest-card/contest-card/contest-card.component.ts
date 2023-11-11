@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { CoreConfigService } from '../../../../../../@core/services/config.service';
-import { CoreConfig } from '../../../../../../@core/types';
+import { CoreConfigService } from '../../../../../../core/services/config.service';
+import { CoreConfig } from '../../../../../../core/types';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { bounceAnimation } from 'angular-animations';
 import { ApiService } from '../../../../../shared/services/api.service';
