@@ -2,14 +2,13 @@
   <div class="card">
     <div class="card-header">
       <div class="card-title">
-        <span *ngIf="sidebarType == SidebarType.INFO">
-          <i data-feather="info"></i>
+        @if (sidebarType == SidebarType.INFO) {
+          <span><i data-feather="info"></i></span>
           {{ 'Info' | translate }}
-        </span>
-        <span *ngIf="sidebarType == SidebarType.STATISTICS">
-          <i data-feather="bar-chart"></i>
+        } @else {
+          <span><i data-feather="bar-chart"></i></span>
           {{ 'Statistics' | translate }}
-        </span>
+        }
       </div>
 
       <div class="sidebar-type">
@@ -17,29 +16,22 @@
           rippleEffect
           class="btn btn-sm btn-primary bg-primary badge-glow"
           (click)="sidebarType=(sidebarType == SidebarType.INFO ? SidebarType.STATISTICS : SidebarType.INFO)">
-          <span *ngIf="sidebarType == SidebarType.INFO">
+          @if (sidebarType == SidebarType.INFO) {
             {{ 'Statistics' | translate }}
-          </span>
-          <span *ngIf="sidebarType == SidebarType.STATISTICS">
+          } @else {
             {{ 'Info' | translate }}
-          </span>
+          }
         </button>
       </div>
     </div>
     <div class="card-body">
-      <problem-sidebar-info
-        *ngIf="sidebarType == SidebarType.INFO"
-        [problem]="problem"
-      >
-      </problem-sidebar-info>
-      <problem-sidebar-statistics
-        *ngIf="sidebarType == SidebarType.STATISTICS"
-        [problem]="problem"
-      >
-      </problem-sidebar-statistics>
+      @if (sidebarType == SidebarType.INFO) {
+        <problem-info-card [problem]="problem"></problem-info-card>
+      } @else {
+        <problem-sidebar-statistics [problem]="problem"></problem-sidebar-statistics>
+      }
     </div>
   </div>
-
 
   <problem-sidebar-top-attempts [problem]="problem"></problem-sidebar-top-attempts>
 </div>

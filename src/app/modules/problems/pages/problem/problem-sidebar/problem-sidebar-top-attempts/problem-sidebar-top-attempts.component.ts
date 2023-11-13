@@ -24,7 +24,7 @@ export class ProblemSidebarTopAttemptsComponent implements OnInit, OnDestroy {
   constructor(
     public langService: LanguageService,
     public service: ProblemsService,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.langService.getLanguage().pipe(takeUntil(this._unsubscribeAll)).subscribe(
@@ -32,16 +32,16 @@ export class ProblemSidebarTopAttemptsComponent implements OnInit, OnDestroy {
         this.selectedLang = lang;
         this.topAttemptsLoad(this.topAttemptsOrdering);
       }
-    )
+    );
   }
 
-  topAttemptsLoad(ordering: string){
+  topAttemptsLoad(ordering: string) {
     this.topAttemptsOrdering = ordering;
     this.service.getProblemTopAttempts(this.problem.id, ordering, this.selectedLang).subscribe(
       (result: any) => {
         this.topAttempts = result;
       }
-    )
+    );
   }
 
   ngOnDestroy(): void {

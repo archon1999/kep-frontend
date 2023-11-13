@@ -39,6 +39,9 @@
       "@users/*": [
         "app/modules/users/*"
       ],
+      "@auth/*": [
+        "app/auth/*"
+      ],
       "environments": [
         "environments/"
       ]

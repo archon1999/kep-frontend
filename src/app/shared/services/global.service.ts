@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { AuthenticationService } from '../../auth/service';
-import { User } from '../../auth/models';
-import { CoreConfig } from '../../../core/types';
+import { AuthenticationService } from '@auth/service';
+import { User } from '@auth/models';
+import { CoreConfig } from 'core/types';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { CoreConfigService } from '../../../core/services/config.service';
+import { CoreConfigService } from 'core/services/config.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Injectable({
@@ -18,18 +18,6 @@ export class GlobalService {
   private _queryParamsSubject = new ReplaySubject<Params>(1);
   private _currentUserSubject = new ReplaySubject<User | null>(1);
   private _coreConfigSubject = new ReplaySubject<CoreConfig>(1);
-
-  get queryParams$() {
-    return this._queryParamsSubject.asObservable();
-  }
-
-  get currentUser$() {
-    return this._currentUserSubject.asObservable();
-  }
-
-  get coreConfig$() {
-    return this._coreConfigSubject.asObservable();
-  }
 
   constructor(
     public authService: AuthenticationService,
@@ -57,6 +45,18 @@ export class GlobalService {
     );
   }
 
+  get queryParams$() {
+    return this._queryParamsSubject.asObservable();
+  }
+
+  get currentUser$() {
+    return this._currentUserSubject.asObservable();
+  }
+
+  get coreConfig$() {
+    return this._coreConfigSubject.asObservable();
+  }
+
   updateQueryParams(params: Params) {
     const currentScrollHeight = window.pageYOffset;
     this._queryParams = { ...this._queryParams, ...params };
@@ -64,8 +64,14 @@ export class GlobalService {
       {
         relativeTo: this.route,
         queryParams: this._queryParams,
+        queryParamsHandling: 'merge',
+        replaceUrl: true
       }
-    ).then(() => window.scrollTo({ top: currentScrollHeight }));
+    ).then(() => {
+      if (currentScrollHeight) {
+        setTimeout(() => window.scrollTo({ top: currentScrollHeight }));
+      }
+    });
   }
 
 }
