@@ -5,11 +5,14 @@ import { AuthenticationService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SwiperOptions } from 'swiper/types/swiper-options';
+import { CoreCommonModule } from '../../../../core/common.module';
 
 @Component({
   selector: 'header-section',
   templateUrl: './header-section.component.html',
   styleUrls: ['./header-section.component.scss'],
+  standalone: true,
+  imports: [CoreCommonModule],
   animations: [
     fadeInOnEnterAnimation({ duration: 3000 }),
     fadeInUpOnEnterAnimation({ duration: 3000 }),
@@ -18,8 +21,6 @@ import { SwiperOptions } from 'swiper/types/swiper-options';
 export class HeaderSectionComponent implements OnInit, OnDestroy {
 
   public currentUser: User;
-
-  public layoutColor = '#161d31';
 
   public swiperConfig: SwiperOptions = {
     slidesPerView: 1,

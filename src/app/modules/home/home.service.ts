@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
-import { ContestsService } from '../contests/contests.service';
+import { ContestsService } from '@contests/contests.service';
 
 @Injectable({
   providedIn: 'root'
@@ -36,14 +36,14 @@ export class HomeService {
   }
 
   getUserDailyStatistics(username: string, fromNow: number = 0) {
-    return this.api.get(`users/${ username }/daily-statistics`, { from_now: fromNow });
+    return this.api.get(`users/${username}/daily-statistics`, { from_now: fromNow });
   }
 
   getNextBirthdays() {
     return this.api.get('users/next-birthdays');
   }
 
-  getCalendarEvents(){
+  getCalendarEvents() {
     return this.api.get('calendar-events');
   }
 
