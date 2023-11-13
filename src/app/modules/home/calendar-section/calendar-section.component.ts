@@ -4,14 +4,15 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import interactionPlugin from '@fullcalendar/interaction';
-import { FullCalendarComponent } from '@fullcalendar/angular';
+import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
 
 import uzLocale from '@fullcalendar/core/locales/uz';
 import ruLocale from '@fullcalendar/core/locales/ru';
 import enLocale from '@fullcalendar/core/locales/es-us';
 import { TranslateService } from '@ngx-translate/core';
 import { HomeService } from '../home.service';
-import { LocalStorageService } from '../../../shared/storages/local-storage.service';
+import { LocalStorageService } from '@shared/storages/local-storage.service';
+import { CommonModule } from '@angular/common';
 
 enum CalendarEventType {
   CONTEST = 1,
@@ -21,11 +22,12 @@ enum CalendarEventType {
 }
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'calendar-section',
   templateUrl: './calendar-section.component.html',
   styleUrls: ['./calendar-section.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [CommonModule, FullCalendarModule],
 })
 export class CalendarSectionComponent implements OnInit {
 

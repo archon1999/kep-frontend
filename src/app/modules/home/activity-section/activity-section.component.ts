@@ -5,11 +5,15 @@ import { AuthenticationService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { HomeService } from '../home.service';
+import { CoreCommonModule } from '../../../../core/common.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'activity-section',
   templateUrl: './activity-section.component.html',
   styleUrls: ['./activity-section.component.scss'],
+  standalone: true,
+  imports: [CoreCommonModule, NgbTooltipModule],
   animations: [fadeInOnEnterAnimation({ duration: 3000 })]
 })
 export class ActivitySectionComponent implements OnInit, OnDestroy {
@@ -46,7 +50,7 @@ export class ActivitySectionComponent implements OnInit, OnDestroy {
           this.loadStatistics(this.fromNow);
         }
       }
-    )
+    );
   }
 
   loadStatistics(fromNow: number) {
@@ -55,7 +59,7 @@ export class ActivitySectionComponent implements OnInit, OnDestroy {
       (statistics: any) => {
         this.statistics = statistics;
       }
-    )
+    );
   }
 
   ngOnDestroy(): void {
