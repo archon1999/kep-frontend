@@ -32,6 +32,6 @@ export class UserProfileComponent extends BaseComponent implements OnInit {
       this.userSkills = userSkills;
       this.userWorkExperiences = userWorkExperiences;
     });
-  }
 
+  }
 }
