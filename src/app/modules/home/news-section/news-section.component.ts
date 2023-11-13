@@ -4,15 +4,20 @@ import { HomeService } from '../home.service';
 import { PageResult } from '@shared/page-result';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
+import { CommonModule } from '@angular/common';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { BlogPostCardModule } from '../../blog/components/blog-post-card/blog-post-card.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 const NEWS_MAX_LIMIT = 50;
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'news-section',
   templateUrl: './news-section.component.html',
   styleUrls: ['./news-section.component.scss'],
-  animations: [fadeInRightOnEnterAnimation({ duration: 3000 })]
+  animations: [fadeInRightOnEnterAnimation({ duration: 3000 })],
+  standalone: true,
+  imports: [CommonModule, NgxSkeletonLoaderModule, SwiperComponent, BlogPostCardModule, TranslateModule]
 })
 export class NewsSectionComponent implements OnInit, AfterViewInit {
 
@@ -23,6 +28,7 @@ export class NewsSectionComponent implements OnInit, AfterViewInit {
   public newsSwiperConfig: SwiperOptions = {
     direction: 'vertical',
     slidesPerView: 3,
+    autoHeight: false,
     spaceBetween: 10,
   };
 

@@ -8,19 +8,19 @@
 
   <div class="statistics d-flex justify-content-between">
     <div class="count-item decoration-bottom">
-      <strong [countUp]="statistics?.usersCount" [options]="{ duration: 5, reanimateOnClick: false }">0</strong>
+      <strong [countUp]="statistics?.usersCount" [options]="{ duration: 5 }">0</strong>
       <span>{{ 'Users' | translate }}</span>
     </div>
     <div class="count-item decoration-top">
-      <strong [countUp]="statistics?.contestsCount" [options]="{ duration: 5, reanimateOnClick: false }">0</strong>
+      <strong [countUp]="statistics?.contestsCount" [options]="{ duration: 5 }">0</strong>
       <span>{{ 'Contests' | translate }}</span>
     </div>
     <div class="count-item decoration-bottom">
-      <strong [countUp]="statistics?.problemsCount" [options]="{ duration: 5, reanimateOnClick: false }">0</strong>
+      <strong [countUp]="statistics?.problemsCount" [options]="{ duration: 5 }">0</strong>
       <span>{{ 'Problems' | translate }}</span>
     </div>
     <div class="count-item">
-      <strong [countUp]="statistics?.attemptsCount" [options]="{ duration: 5, reanimateOnClick: false }">0</strong>
+      <strong [countUp]="statistics?.attemptsCount" [options]="{ duration: 5 }">0</strong>
       <span>{{ 'Attempts' | translate }}</span>
     </div>
   </div>
