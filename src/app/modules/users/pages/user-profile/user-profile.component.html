@@ -120,8 +120,8 @@
                     {{ 'USER_INFO.LIVES' | translate }}:
                   </h5>
                   <p class="card-text">
-                    <span class="flag-icon mr-25 flag-icon-{{ userInfo.country }}"></span>
-                    {{ countriesService.getName(userInfo.country) }}
+                    <span class="mr-25 fi fi-{{ userInfo.country }}"></span>
+                    {{ userInfo.country | countryName }}
                     <span *ngIf="userInfo.region">, {{ userInfo.region }}</span></p>
                 </div>
                 <div class="mt-2" *ngIf="userInfo.email">
