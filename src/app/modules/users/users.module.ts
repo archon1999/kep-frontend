@@ -39,6 +39,7 @@ import {
 } from './users.resolver';
 import { NgSelectModule } from 'app/shared/third-part-modules/ng-select/ng-select.module';
 import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
+import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
 
 const routes: Routes = [
   {
@@ -106,9 +107,9 @@ const routes: Routes = [
     NgSelectModule,
     ReactiveFormsModule,
     ProblemsPipesModule,
-    // NgxCountriesModule.forRoot({
-    //   locales: ['en', 'ru', 'uz']
-    // }),
+    NgxCountriesModule.forRoot({
+      defaultLocale: 'en'
+    }),
   ],
   providers: [
     UserResolver,
