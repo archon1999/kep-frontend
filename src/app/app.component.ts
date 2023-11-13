@@ -64,40 +64,29 @@ export class AppComponent implements OnInit, OnDestroy {
     public wsService: WebsocketService,
     public swipeService: SwipeService,
   ) {
-    // Get the application modules menu
     this.menu = menu;
 
-    // Register the menu to the menu service
     this._coreMenuService.register('main', this.menu);
 
-    // Set the modules menu as our current menu
     this._coreMenuService.setCurrentMenu('main');
 
-    // Add languages to the translation service
     this._translateService.addLangs(['en', 'ru', 'uz']);
 
-    // This language will be used as a fallback when a translation isn't found in the current language
     let browserLang = this._translateService.getBrowserLang();
-    if (browserLang !== 'en' && browserLang !== 'ru' && browserLang !== 'uz') {
+    if (!_translateService.langs.includes(browserLang)) {
       browserLang = 'en';
     }
     this._translateService.setDefaultLang(browserLang);
 
-    // Set the translations for the menu
     this._coreTranslationService.translate(menuEnglish, menuRussian, menuUzbek);
 
-    // Set the private defaults
     this._unsubscribeAll = new Subject();
   }
 
   setLanguage(language: string): void {
-    this.api.post('set-language/', { language: language }).subscribe(() => {
-    });
+    this.api.post('set-language/', { language: language }).subscribe();
   }
 
-  /**
-   * On init
-   */
   ngOnInit(): void {
     // Init wave effect (Ripple effect)
     Waves.init();
@@ -116,13 +105,12 @@ export class AppComponent implements OnInit, OnDestroy {
 
       // ? Use app-config.ts file to set default language
       let appLanguage = this.coreConfig.app.appLanguage || this._translateService.getBrowserLang();
-      if (appLanguage !== 'en' && appLanguage !== 'ru' && appLanguage !== 'uz') {
+      if (!this._translateService.langs.includes(appLanguage)) {
         appLanguage = 'en';
       }
       this._translateService.use(appLanguage);
 
       setTimeout(() => {
-        this._translateService.setDefaultLang('en');
         this._translateService.setDefaultLang(appLanguage);
         if (environment.production) {
           this.setLanguage(appLanguage);
@@ -238,7 +226,7 @@ export class AppComponent implements OnInit, OnDestroy {
           .subscribe((user: any) => {
             if (user) {
               this.wsService.send('kepcoin-add', user.username);
-              this.wsService.on<number>(`kepcoin-${user.username}`).subscribe((kepcoin: number) => {
+              this.wsService.on<number>(`kepcoin-${ user.username }`).subscribe((kepcoin: number) => {
                 this.authService.updateKepcoin(kepcoin);
               });
             }
@@ -252,7 +240,6 @@ export class AppComponent implements OnInit, OnDestroy {
   @HostListener('touchcancel', ['$event'])
   handleTouch(event: any) {
     const touch = event.touches[0] || event.changedTouches[0];
-
     // check the events
     if (event.type === 'touchstart') {
       this.defaultTouch.x = touch.pageX;
@@ -294,12 +281,6 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Public methods
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * On destroy
-   */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
     this._unsubscribeAll.next(null);
