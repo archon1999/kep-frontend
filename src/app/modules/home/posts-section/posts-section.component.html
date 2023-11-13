@@ -1,0 +1,6 @@
+<swiper [config]="postsSwiperConfig" #postsSwiper>
+  <div class="swiper-slide" *ngFor="let post of lastPosts">
+    <blog-post-card [blog]="post"></blog-post-card>
+  </div>
+  <div class="swiper-pagination"></div>
+</swiper>

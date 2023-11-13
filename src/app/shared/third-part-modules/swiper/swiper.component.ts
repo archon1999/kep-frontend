@@ -15,6 +15,7 @@ import { SwiperDirective } from '@shared/directives/swiper.directive';
 export class SwiperComponent implements OnInit {
 
   @Input() config: SwiperOptions;
+  @Input() height: number;
   @ViewChild('swiper') swiperRef: ElementRef;
 
   public defaultConfig = {

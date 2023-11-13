@@ -9,8 +9,11 @@
     ></ngx-skeleton-loader>
   </div>
 
-  <swiper *ngIf="!skeletonVisible" [config]="newsSwiperConfig" #newsSwiper>
-    <div class="swiper-slide" [@fadeInRightOnEnter] *ngFor="let news of lastNews">
+  <swiper *ngIf="!skeletonVisible" [config]="newsSwiperConfig" [height]="600" #newsSwiper>
+    <div
+      class="swiper-slide"
+      [@fadeInRightOnEnter]
+      *ngFor="let news of lastNews">
       <news-card [blog]="news.blog"></news-card>
       <hr>
     </div>
