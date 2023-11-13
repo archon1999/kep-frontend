@@ -12,7 +12,6 @@ interface Difficulty {
 }
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'section-problems-filter',
   templateUrl: './section-problems-filter.component.html',
   styleUrls: ['./section-problems-filter.component.scss']
@@ -47,7 +46,6 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
 
     this.filterForm.valueChanges.subscribe(
       (filterValue: ProblemsFilter) => {
-        this.updateQueryParams(filterValue);
         this.problemsFilterService.updateFilter(filterValue);
         this.problemsFilterService.updateFilter({ page: 1 });
       }

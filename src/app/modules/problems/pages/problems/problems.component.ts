@@ -60,6 +60,7 @@ export class ProblemsComponent extends BaseComponent implements OnInit, OnDestro
     ).subscribe(
       (filter: ProblemsFilter) => {
         this.filter = filter;
+        this.updateQueryParams(this.filter);
         this.reloadProblems();
       }
     );
