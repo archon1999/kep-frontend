@@ -1,4 +1,5 @@
-<div class="content-wrapper p-0 contests-colors contests-color contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
+<div
+  class="content-wrapper p-0 contests-colors contests-color contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
   <div class="content-body">
     <!-- content-header component -->
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
@@ -73,60 +74,11 @@
             </div>
 
             <div class="card-body">
-              <div class="limits">
-                <div class="d-flex justify-content-between">
-                  <h5>
-                    <i data-feather="clock" class="text-info"></i>
-                    {{ 'TIME_LIMIT' | translate }}
-                  </h5>
-              
-                  <h5>
-                    <i data-feather="hard-drive" class="text-warning"></i>
-                    {{ 'MEMORY_LIMIT' | translate }}
-                  </h5>
-                </div>
-              
-                <div class="mt-50 d-flex justify-content-between">
-                  <span class="badge badge-info badge-glow">
-                    {{ selectedAvailableLang.timeLimit || problem.timeLimit }} {{ 'MS' | translate }}
-                  </span>
-              
-                  <span class="badge badge-warning badge-glow">
-                    {{ selectedAvailableLang.memoryLimit || problem.memoryLimit }} {{ 'MB' | translate }}
-                  </span>
-                </div>
-              </div>
-                            
-              <div class="languages mt-2">
-                <div class="d-flex mb-1">
-                  <h5>
-                    <i data-feather="code"></i>
-                    {{ 'Languages' | translate }}
-                  </h5>
-                </div>
-              
-                <button
-                  *ngFor="let availableLanguage of problem.availableLanguages"
-                  (click)="langService.setLanguage(availableLanguage.lang)"
-                  class="mr-50 mb-50 badge badge-{{ availableLanguage.lang }} badge-glow">
-                  {{ availableLanguage.langFull }}
-                </button>
-              </div>
-              
-              <div class="selected-language mt-2">
-                <div class="d-flex mb-1">
-                  <h5>
-                    <i data-feather="code"></i>
-                    {{ 'SelectedLanguage' | translate }}
-                  </h5>
-                </div>
-              
-                <span
-                  class="badge badge-{{ selectedLang }} badge-glow">
-                  {{ selectedAvailableLang.langFull }}
-                </span>
-              </div>
-              
+              <problem-info-card
+                [hideAuthorAndDifficulty]="true"
+                [hideLikes]="true"
+                [problem]="contestProblem?.problem">
+              </problem-info-card>
             </div>
           </div>
 
@@ -137,49 +89,51 @@
                 <div class="table-responsive custom-table contest-problems">
                   <table class="table">
                     <tbody>
-                      <tr [ngClass]="{
+                    <tr [ngClass]="{
                         'bg-light': _contestProblem.symbol == contestProblem.symbol
                       }" *ngFor="let _contestProblem of contestProblems">
-                        <td [ngClass]="{
+                      <td [ngClass]="{
                           'bg-success': _contestProblem.isSolved,
                           'bg-danger': !_contestProblem.isSolved && _contestProblem.isAttempted,
                           'bg-darken-1': coreConfig.layout.skin == 'dark',
                           'bg-lighten-4': coreConfig.layout.skin != 'dark'
                         }">
-                          <a [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problem', _contestProblem.symbol]">
-                            {{ _contestProblem.symbol }}
-                          </a>
-                        </td>  
-                        <td>
-                          <a [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problem', _contestProblem.symbol]">
+                        <a
+                          [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problem', _contestProblem.symbol]">
+                          {{ _contestProblem.symbol }}
+                        </a>
+                      </td>
+                      <td>
+                        <a
+                          [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problem', _contestProblem.symbol]">
                             <span class="text-primary">
                             </span>
-                            {{ _contestProblem.problem.title }}                              
-                            
-                            <br>
-                            <small>
+                          {{ _contestProblem.problem.title }}
+
+                          <br>
+                          <small>
                               <span class="text-success">
                                 {{ _contestProblem.solved }}
                                 <i data-feather="user-check"></i>
                               </span>
-    
-                              <span class="pl-1 text-danger">
+
+                            <span class="pl-1 text-danger">
                                 {{ _contestProblem.attemptUsersCount - _contestProblem.solved }}
-                                <i data-feather="user-x"></i>
-                              </span> 
-                            </small>
-                          </a>
-                        </td>
-                        <td *ngIf="_contestProblem.ball > 1 && contest.isAlready()">
+                              <i data-feather="user-x"></i>
+                              </span>
+                          </small>
+                        </a>
+                      </td>
+                      <td *ngIf="_contestProblem.ball > 1 && contest.isAlready()">
                           <span class="badge badge-success badge-glow">
                             {{ _contestProblem.getCurrentBall(contest) }}
                           </span>
-                        </td>
-                      </tr>
+                      </td>
+                    </tr>
                     </tbody>
                   </table>
-                </div>                
-              </div>  
+                </div>
+              </div>
             </div>
 
           </div>
@@ -212,7 +166,8 @@
           <th class="text-white">#</th>
           <th><i class="text-white ml-1" data-feather="user"></i></th>
           <th class="text-center"><i class="text-white" [data-feather]="'rating' | iconName"></i></th>
-          <th class="text-center text-white" container="body" [ngbTooltip]="contestProblem.problem.title" *ngFor="let contestProblem of contestProblems">
+          <th class="text-center text-white" container="body" [ngbTooltip]="contestProblem.problem.title"
+              *ngFor="let contestProblem of contestProblems">
             <a [routerLink]="['..', contestProblem.symbol]" class="btn btn-primary btn-sm">
               {{ contestProblem.symbol }}
             </a>

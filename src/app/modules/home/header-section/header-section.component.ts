@@ -5,7 +5,7 @@ import { AuthenticationService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SwiperOptions } from 'swiper/types/swiper-options';
-import { CoreCommonModule } from '../../../../core/common.module';
+import { CoreCommonModule } from 'core/common.module';
 
 @Component({
   selector: 'header-section',
@@ -31,8 +31,7 @@ export class HeaderSectionComponent implements OnInit, OnDestroy {
 
   constructor(
     public authService: AuthenticationService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
