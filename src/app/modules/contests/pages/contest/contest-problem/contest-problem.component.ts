@@ -17,6 +17,7 @@ import { BaseComponent } from '@shared/components/classes/base.component';
 import { sortContestProblems } from '@contests/utils/sort-contest-problems';
 import { paramsMapper } from '@shared/utils';
 import { PageResult } from '@shared/page-result';
+import { interval } from 'rxjs';
 
 const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
 

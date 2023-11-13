@@ -52,7 +52,6 @@ import { SectionProfileComponent } from './pages/profile/section-profile/section
 import { AttemptsTableModule } from './components/attempts-table/attempts-table.module';
 import { StudyPlanCardModule } from './components/study-plan-card/study-plan-card.module';
 import { PaginationModule } from 'app/shared/components/pagination/pagination.module';
-import { ProblemSidebarInfoComponent } from './pages/problem/problem-sidebar/problem-sidebar-info/problem-sidebar-info.component';
 import {
   ProblemSidebarStatisticsComponent
 } from './pages/problem/problem-sidebar/problem-sidebar-statistics/problem-sidebar-statistics.component';
@@ -70,6 +69,7 @@ import { CoreSidebarModule } from 'core/components';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { CoreCommonModule } from 'core/common.module';
+import { ProblemInfoCardComponent } from '@problems/components/problem-info-card/problem-info-card.component';
 
 const routes: Routes = [
   {
@@ -201,7 +201,6 @@ const routes: Routes = [
     SectionStudyPlansComponent,
     SectionInfoComponent,
     SectionProfileComponent,
-    ProblemSidebarInfoComponent,
     ProblemSidebarStatisticsComponent,
     ProblemSidebarTopAttemptsComponent,
     HackAttemptsComponent,
@@ -246,6 +245,7 @@ const routes: Routes = [
     CoreSidebarModule,
     NgScrollbar,
     SwiperComponent,
+    ProblemInfoCardComponent,
   ],
   exports: [
     SectionProfileComponent

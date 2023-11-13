@@ -1,16 +1,3 @@
-<div class="form-group">
-  <div *ngIf="currentUser" class="custom-control custom-checkbox">
-    <input
-      (change)="loadHackAttempts()"
-      [(ngModel)]="myAttempts"
-      [ngModelOptions]="{standalone: true}"
-      class="custom-control-input"
-      id="myAttempts"
-      type="checkbox"/>
-    <label class="custom-control-label" for="myAttempts">{{ 'MY_ATTEMPTS' | translate }}</label>
-  </div>
-</div>
-
 <hack-attempts-table [hackAttempts]="hackAttempts"></hack-attempts-table>
 
 <pagination
