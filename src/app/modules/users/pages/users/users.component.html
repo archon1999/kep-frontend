@@ -9,7 +9,7 @@
               <div [formGroup]="filterForm" class="row">
                 <div class="col-6 col-md-3">
                   <div class="form-group">
-                    <label for="user-country">{{ 'Username' | translate }}</label>
+                    <label>{{ 'Username' | translate }}</label>
                     <input
                       formControlName="username"
                       type="text"
@@ -19,7 +19,7 @@
 
                 <div class="col-6 col-md-3">
                   <div class="form-group">
-                    <label for="user-country">{{ 'Name' | translate }}</label>
+                    <label>{{ 'Name' | translate }}</label>
                     <input
                       formControlName="firstName"
                       type="text"
@@ -29,7 +29,7 @@
 
                 <div class="col-6 col-md-3">
                   <div class="form-group">
-                    <label for="user-country">{{ 'Country' | translate }}</label>
+                    <label>{{ 'Country' | translate }}</label>
                     <ng-select
                       formControlName="country"
                       [clearable]="false"
@@ -37,7 +37,7 @@
                       <ng-option [value]="''">
                       </ng-option>
                       <ng-option *ngFor="let country of countries" [value]="country.id.toLowerCase()">
-                        <span class="flag-icon flag-icon-{{ country.id.toLowerCase() }}"></span>
+                        <span class="fi fi-{{ country.id.toLowerCase() }}"></span>
                         {{ country.name }}
                       </ng-option>
                     </ng-select>
@@ -192,15 +192,15 @@
                         <div class="avatar mr-50">
                           <img alt="Avatar" width="48" height="48" src="{{ user.avatar }}">
                         </div>
-                        <span class="font-weight-500 font-medium-1 ml-50 text-dark">
+                        <span class="font-weight-bold font-medium-1 ml-50 text-dark">
                           {{ user.username }}
-                          <span class="ml-25 flag-icon flag-icon-{{ user.country }}"></span>
+                          <span class="ml-25 fi fi-{{ user.country }}"></span>
                         </span>
                       </a>
                     </td>
 
                     <td>
-                      <span class="font-weight-500">
+                      <span class="font-weight-bold">
                         {{ user.firstName }} {{ user.lastName }}
                       </span>
                     </td>
@@ -219,7 +219,7 @@
 
                       <td class="text-center">
                       <contests-rating-image [title]="user.contestsRatingTitle"></contests-rating-image>
-                      <span class="ml-25 font-weight-500">
+                      <span class="ml-25 font-weight-bold">
                         {{ user.contestsRating }}
                       </span>
                     </td>
@@ -266,7 +266,6 @@
               [(page)]="currentPage"
               [pageSize]="10"
               [maxSize]="5"
-              [checkParams]="false"
               (pageChange)="pageChange($event)"
             ></pagination>
           </div>

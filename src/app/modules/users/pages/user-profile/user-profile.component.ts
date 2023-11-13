@@ -1,17 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AuthenticationService } from '../../../../auth/service';
-import { TitleService } from '../../../../shared/services/title.service';
-import { Subject } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { User, UserEducation, UserInfo, UserSkills, UserSocial, UserTechnology, UserWorkExperience } from '../../users.models';
-import { User as AuthUser } from '../../users.models';
+import { BaseComponent } from '@shared/components/classes/base.component';
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss'],
 })
-export class UserProfileComponent implements OnInit, OnDestroy {
+export class UserProfileComponent extends BaseComponent implements OnInit {
 
   public user: User;
   public userInfo: UserInfo;
@@ -25,17 +21,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   public toggleMenu = true;
 
-  public currentUser: AuthUser;
-  private _unsubscribeAll = new Subject();
-
-  constructor(
-    public route: ActivatedRoute,
-    public authService: AuthenticationService,
-    public titleService: TitleService,
-    // public countriesService: NgxCountriesIsoService,
-  ) {
-  }
-
   ngOnInit(): void {
     this.route.data.subscribe(({ user, userInfo, userSocial, userSkills, userTechnologies, userEducations, userWorkExperiences }) => {
       this.user = user;
@@ -47,17 +32,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       this.userSkills = userSkills;
       this.userWorkExperiences = userWorkExperiences;
     });
-
-    this.authService.currentUser.subscribe(
-      (user: any) => {
-        this.currentUser = user;
-      }
-    );
-  }
-
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
   }
 
 }
