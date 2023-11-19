@@ -70,6 +70,7 @@ import { NgScrollbar } from 'ngx-scrollbar';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { CoreCommonModule } from 'core/common.module';
 import { ProblemInfoCardComponent } from '@problems/components/problem-info-card/problem-info-card.component';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 
 const routes: Routes = [
   {
@@ -246,6 +247,7 @@ const routes: Routes = [
     NgScrollbar,
     SwiperComponent,
     ProblemInfoCardComponent,
+    EmptyResultComponent,
   ],
   exports: [
     SectionProfileComponent
