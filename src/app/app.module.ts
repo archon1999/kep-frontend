@@ -20,7 +20,7 @@ import { coreConfig } from 'app/app-config';
 
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
-import { AuthModalComponent } from './auth/auth-modal/auth-modal.component';
+import { AuthModalComponent } from '@auth/auth-modal/auth-modal.component';
 import { ErrorComponent } from './modules/pages/miscellaneous/error/error.component';
 import { WebsocketModule } from '@shared/services/websocket';
 
