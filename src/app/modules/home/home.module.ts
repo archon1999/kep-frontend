@@ -3,9 +3,9 @@ import { NgModule } from '@angular/core';
 import { PostsSectionComponent } from './posts-section/posts-section.component';
 import { TopRatingSectionComponent } from './top-rating-section/top-rating-section.component';
 import { SystemSectionComponent } from './system-section/system-section.component';
-import { Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
-import { AuthGuard } from '../../auth/helpers';
+import { AuthGuard } from '@auth/helpers';
 import { BirthdaysSectionComponent } from './birthdays-section/birthdays-section.component';
 import { CalendarSectionComponent } from './calendar-section/calendar-section.component';
 import { StatisticsSectionComponent } from './statistics-section/statistics-section.component';
@@ -30,6 +30,7 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
+    RouterModule.forChild(routes),
     PostsSectionComponent,
     BirthdaysSectionComponent,
     CalendarSectionComponent,
