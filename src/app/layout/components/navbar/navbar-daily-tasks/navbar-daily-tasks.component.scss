@@ -20,7 +20,7 @@ a {
   margin-bottom: 0px !important;
   box-shadow: 0 4px 6px 0 rgb(85 85 85 / 9%), 0 1px 20px 0 rgb(0 0 0 / 8%), 0px 1px 11px 0px rgb(0 0 0 / 6%) !important;
   transition: all 0.2s ease;
-  background-image: linear-gradient(to right, $primary, mix(white, $primary, 10)) !important;
+  background-image: linear-gradient(to right, rgba($primary, 0.9), mix(white, $primary, 15)) !important;
   opacity: 0.9;
   background-repeat: repeat;
 }
