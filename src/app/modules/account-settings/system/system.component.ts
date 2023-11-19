@@ -2,10 +2,10 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CoreConfigService } from 'core/services/config.service';
 import { CoreConfig } from 'core/types';
 import { SoundsService } from '@shared/services/sounds/sounds.service';
-import { SuccessSoundEnum } from 'app/shared/services/sounds/success-sound.enum';
+import { SuccessSoundEnum, SuccessSoundList } from '@shared/services/sounds/enums/success-sound.enum';
+import { HomeSoundEnum, HomeSoundList } from '@shared/services/sounds/enums/home-sound.enum';
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'system',
   templateUrl: './system.component.html',
   styleUrls: ['./system.component.scss']
@@ -15,25 +15,17 @@ export class SystemComponent implements OnInit {
   public menuLayout: string;
 
   public SuccessSoundEnum = SuccessSoundEnum;
-  public successSound: string = this.soundsService.getSuccessSound();
-  public successSounds = [
-    {
-      name: SuccessSoundEnum.Default,
-      id: SuccessSoundEnum.Default,
-    },
-    {
-      name: SuccessSoundEnum.RickRoll,
-      id: SuccessSoundEnum.RickRoll,
-    },
-    {
-      name: SuccessSoundEnum.NoSound,
-      id: SuccessSoundEnum.NoSound,
-    },
-  ];
+  public successSound: SuccessSoundEnum = this.soundsService.getSuccessSound();
+  public successSoundList = SuccessSoundList;
+
+  public HomeSoundEnum = HomeSoundEnum;
+  public homeSound: HomeSoundEnum = this.soundsService.getHomeSound();
+  public homeSoundList = HomeSoundList;
 
   public enableAnimation: string;
 
-  @ViewChild('successAudio') successAudio: ElementRef<any>;
+  @ViewChild('successAudio') successAudio: ElementRef<HTMLAudioElement>;
+  @ViewChild('homeAudio') homeAudio: ElementRef<HTMLAudioElement>;
 
   constructor(
     public coreConfigService: CoreConfigService,
@@ -64,7 +56,7 @@ export class SystemComponent implements OnInit {
     setTimeout(() => {
       this.coreConfigService.setConfig({
         layout: {
-          enableAnimation: this.enableAnimation == 'enable',
+          enableAnimation: this.enableAnimation === 'enable',
         }
       });
     }, 500);
@@ -74,6 +66,13 @@ export class SystemComponent implements OnInit {
     setTimeout(() => {
       this.soundsService.setSuccessSound(this.successSound);
       this.successAudio?.nativeElement?.play();
+    }, 100);
+  }
+
+  homeSoundChange() {
+    setTimeout(() => {
+      this.soundsService.setHomeSound(this.homeSound);
+      this.homeAudio?.nativeElement?.play();
     }, 100);
   }
 

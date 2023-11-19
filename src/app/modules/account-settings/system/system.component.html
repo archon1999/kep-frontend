@@ -46,12 +46,21 @@
           <label>Success</label>
           <ng-select
             appendTo="body"  
-            [items]="successSounds"
-            bindLabel="name"
-            bindValue="id"
+            [items]="successSoundList"
             (change)="successSoundChange()"
             [dropdownPosition]="'bottom'"
             [(ngModel)]="successSound">
+          </ng-select>
+        </div>
+
+        <div class="mt-1 col-6">
+          <label>Home</label>
+          <ng-select
+            appendTo="body"
+            [items]="homeSoundList"
+            (change)="homeSoundChange()"
+            [dropdownPosition]="'bottom'"
+            [(ngModel)]="homeSound">
           </ng-select>
         </div>
       </div>
@@ -98,5 +107,11 @@
 <audio
   *ngIf="successSound != SuccessSoundEnum.NoSound"
   #successAudio
-  src="assets/audio/success/{{ successSound }}.mp3">
+  [src]="soundsService.getSuccessSoundSrc()">
+</audio>
+
+<audio
+  *ngIf="homeSound != HomeSoundEnum.NoSound"
+  #homeAudio
+  [src]="soundsService.getHomeSoundSrc()">
 </audio>
