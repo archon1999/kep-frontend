@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Blog } from '../../../blog.models';
 
 @Component({
@@ -6,17 +6,7 @@ import { Blog } from '../../../blog.models';
   templateUrl: './blog-post-card.component.html',
   styleUrls: ['./blog-post-card.component.scss']
 })
-export class BlogPostCardComponent implements OnInit {
-
+export class BlogPostCardComponent {
   @Input() blog: Blog;
-
   @Input() cardImgHeight = 250;
-
-  @ViewChild('container') container: ElementRef;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

@@ -37,12 +37,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let attempt of topAttempts; index as i">
-          <td>{{ i+1 }}</td>
-          <td>
-            <contestant-view [imgSize]="28" [user]="attempt"></contestant-view>
-          </td>
-          <td>
+        @for (attempt of topAttempts; track attempt.id){
+          <tr>
+            <td>{{ $index + 1 }}</td>
+            <td>
+              <contestant-view [imgSize]="28" [user]="attempt"></contestant-view>
+            </td>
+            <td>
             <span [ngSwitch]="topAttemptsOrdering">
               <span *ngSwitchCase="'time'" class="badge badge-info badge-glow">
                 {{ attempt.time }} ms
@@ -54,8 +55,13 @@
                 {{ attempt.sourceCodeSize }}
               </span>
             </span>
-          </td>
-        </tr>
+            </td>
+          </tr>
+        } @empty {
+          <div class="half-width">
+            <empty-result></empty-result>
+          </div>
+        }
       </tbody>
     </table>
   </div>
