@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { paramsMapper } from 'app/shared/utils';
 import { NgxCountriesService } from '@shared/third-part-modules/ngx-countries/ngx-countries.service';
+import { SpinnersEnum } from '@shared/components/spinner/spinners.enum';
 
 @Component({
   selector: 'app-users',
@@ -46,6 +47,9 @@ export class UsersComponent extends BaseComponent {
   public totalUsers = 0;
   public currentPage = 1;
 
+  public SpinnersEnum = SpinnersEnum;
+  public spinnerShow = true;
+
   private _loader = new Subject();
 
   constructor(
@@ -58,6 +62,12 @@ export class UsersComponent extends BaseComponent {
   }
 
   ngOnInit(): void {
+    this.spinner.getSpinner(SpinnersEnum.UsersTable).subscribe(
+      (spinner) => {
+        this.spinnerShow = spinner.show;
+      }
+    );
+
     this.route.queryParams.subscribe(
       (params: any) => {
         if ('page' in params) {
@@ -108,6 +118,7 @@ export class UsersComponent extends BaseComponent {
   }
 
   _loadUsers() {
+    this.spinner.show(SpinnersEnum.UsersTable);
     const params: any = {
       full: true,
       ordering: this.ordering,
@@ -117,6 +128,7 @@ export class UsersComponent extends BaseComponent {
       (result: any) => {
         this.users = result.data;
         this.totalUsers = result.total;
+        this.spinner.hide(SpinnersEnum.UsersTable);
       }
     );
   }

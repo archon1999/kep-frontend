@@ -40,6 +40,8 @@ import {
 import { NgSelectModule } from 'app/shared/third-part-modules/ng-select/ng-select.module';
 import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 const routes: Routes = [
   {
@@ -110,6 +112,8 @@ const routes: Routes = [
     NgxCountriesModule.forRoot({
       defaultLocale: 'en'
     }),
+    EmptyResultComponent,
+    SpinnerComponent,
   ],
   providers: [
     UserResolver,
