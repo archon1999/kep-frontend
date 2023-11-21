@@ -66,9 +66,18 @@
             </div>
           </div>
           <div class="card">
-            <div class="custom-table table-responsive">
-              <table class="table table-striped">
-                <thead>
+            @if (spinnerShow) {
+              <div class="card-body" [style.height.px]="300">
+                <spinner [name]="SpinnersEnum.UsersTable" type="ball-clip-rotate-pulse"></spinner>
+              </div>
+            } @else if (users.length == 0){
+              <div class="card-body" [style.height.px]="300">
+                <empty-result imgHeight="150px"></empty-result>
+              </div>
+            } @else {
+              <div class="custom-table table-responsive">
+                <table class="table table-striped">
+                  <thead>
                   <tr class="bg-gradient-primary">
                     <th>
                       <table-ordering
@@ -100,7 +109,7 @@
                         [reverse]="true"
                         (change)="changeOrdering($event)">
                         <i class="mr-25" [data-feather]="'bar-chart'"></i>
-                        {{ 'Rating' | translate }}  
+                        {{ 'Rating' | translate }}
                       </table-ordering>
                     </th>
 
@@ -111,7 +120,7 @@
                         [reverse]="true"
                         (change)="changeOrdering($event)">
                         <i class="mr-25" [data-feather]="'bar-chart'"></i>
-                        {{ 'ActivityRating' | translate }}  
+                        {{ 'ActivityRating' | translate }}
                       </table-ordering>
                     </th>
 
@@ -122,7 +131,7 @@
                         [reverse]="true"
                         (change)="changeOrdering($event)">
                         <i class="mr-25" [data-feather]="'contest' | iconName"></i>
-                        {{ 'Contests' | translate }}  
+                        {{ 'Contests' | translate }}
                       </table-ordering>
                     </th>
 
@@ -169,7 +178,7 @@
                         {{ 'Kepcoin' | translate }}
                       </table-ordering>
                     </th>
-                    
+
                     <th class="text-center">
                       <table-ordering
                         [value]="ordering"
@@ -181,9 +190,9 @@
                       </table-ordering>
                     </th>
                   </tr>
-                </thead>
+                  </thead>
 
-                <tbody>
+                  <tbody>
                   <tr
                     *ngFor="let user of users"
                     [class]="{'bg-light-primary': user.username == currentUser?.username}">
@@ -217,7 +226,7 @@
                       </span>
                     </td>
 
-                      <td class="text-center">
+                    <td class="text-center">
                       <contests-rating-image [title]="user.contestsRatingTitle"></contests-rating-image>
                       <span class="ml-25 font-weight-bold">
                         {{ user.contestsRating }}
@@ -254,9 +263,10 @@
                       </span>
                     </td>
                   </tr>
-                </tbody>
-              </table>
-            </div>
+                  </tbody>
+                </table>
+              </div>
+            }
           </div>
 
           <div class="mb-2">
