@@ -13,6 +13,8 @@ import { CValidators } from '@shared/c-validators/c-validators';
 import { AttemptLangs } from '@problems/constants';
 import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.service';
 import { SwipeService } from '@shared/services/swipe.service';
+import { AuthenticationService } from '@auth/service';
+import { paramsMapper } from '@shared/utils';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -46,6 +48,7 @@ export class CodeEditorModalComponent implements OnInit {
 
   public isRunning = false;
   public isAnswerForInput = false;
+  public isCheckSamples = false;
 
   public sidebarName = 'codeEditorSidebar';
 
@@ -62,6 +65,7 @@ export class CodeEditorModalComponent implements OnInit {
     public templateCodeService: TemplateCodeService,
     public coreSidebarService: CoreSidebarService,
     public swipeService: SwipeService,
+    public authService: AuthenticationService,
   ) {
   }
 
@@ -90,6 +94,13 @@ export class CodeEditorModalComponent implements OnInit {
       (result: { answer: string }) => {
         this.editorForm.get('answer').setValue('Answer:\n' + result.answer);
         this.isAnswerForInput = false;
+      }
+    );
+
+    this.wsService.on('check-sample-tests-result').subscribe(
+      (result) => {
+        console.log(result);
+        this.isCheckSamples = false;
       }
     );
 
@@ -234,6 +245,28 @@ export class CodeEditorModalComponent implements OnInit {
       this.run();
     }
     this.prevKeyCode = event.code;
+  }
+
+  checkSamplesPurchaseSuccess() {
+    this.authService.currentUserValue.permissions.canUseCheckSamples = true;
+  }
+
+  checkSamples() {
+    if (this.isCheckSamples) {
+      return;
+    }
+    this.isCheckSamples = true;
+    const data = {
+      lang: this.editorForm.controls.lang.value,
+      sourceCode: this.editorForm.controls.code.value,
+
+    };
+    this.api.post(`problems/${this.problem.id}/check-sample-tests`, paramsMapper(data)).subscribe(
+      (result) => {
+        this.wsService.send('check-sample-tests-add', result.id);
+      }
+    );
+    setTimeout(() => this.isCheckSamples = false, 15000);
   }
 
 }
