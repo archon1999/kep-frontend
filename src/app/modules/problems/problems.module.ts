@@ -71,6 +71,7 @@ import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.compon
 import { CoreCommonModule } from 'core/common.module';
 import { ProblemInfoCardComponent } from '@problems/components/problem-info-card/problem-info-card.component';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 const routes: Routes = [
   {
@@ -248,6 +249,7 @@ const routes: Routes = [
     SwiperComponent,
     ProblemInfoCardComponent,
     EmptyResultComponent,
+    SpinnerComponent,
   ],
   exports: [
     SectionProfileComponent
