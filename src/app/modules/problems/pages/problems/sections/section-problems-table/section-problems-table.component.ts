@@ -4,9 +4,9 @@ import { Problem, ProblemsFilter } from '@problems/models/problems.models';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { DEFAULT_FILTER, ProblemsFilterService } from '@problems/services/problems-filter.service';
 import { BaseComponent } from '@shared/components/classes/base.component';
+import { SpinnersEnum } from '@shared/components/spinner/spinners.enum';
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'section-problems-table',
   templateUrl: './section-problems-table.component.html',
   styleUrls: ['./section-problems-table.component.scss'],
@@ -19,6 +19,9 @@ export class SectionProblemsTableComponent extends BaseComponent implements OnIn
   public filter: ProblemsFilter = DEFAULT_FILTER;
   public ordering: string;
 
+  public spinnerShow = true;
+  public SpinnersEnum = SpinnersEnum;
+
   constructor(
     public filterService: ProblemsFilterService,
   ) {
@@ -26,16 +29,18 @@ export class SectionProblemsTableComponent extends BaseComponent implements OnIn
   }
 
   ngOnInit(): void {
+    this.spinner.getSpinner(SpinnersEnum.ProblemsTable).subscribe(
+      (spinner) => {
+        this.spinnerShow = spinner.show;
+      }
+    );
+
     this.filterService.getFilter().pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (filter: ProblemsFilter) => {
         this.filter = filter;
         this.ordering = filter.ordering;
       }
     );
-  }
-
-  afterChangeQueryParams(params) {
-    console.log(params);
   }
 
   changeOrdering(ordering: string) {
@@ -53,10 +58,6 @@ export class SectionProblemsTableComponent extends BaseComponent implements OnIn
       tags.splice(index, 1);
     }
     this.filterService.updateFilter({ tags: tags });
-  }
-
-  identify(index, item) {
-    return item.id;
   }
 
 }

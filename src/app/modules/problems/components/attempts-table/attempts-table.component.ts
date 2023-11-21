@@ -12,38 +12,22 @@ import { ProblemsService } from '../../services/problems.service';
 import { Contest } from 'app/modules/contests/contests.models';
 import { SoundsService } from 'app/shared/services/sounds/sounds.service';
 import { FormControl, FormGroup } from '@angular/forms';
-import { BaseComponent } from '../../../../shared/components/classes/base.component';
+import { BaseComponent } from '@shared/components/classes/base.component';
 
 const LANG_CHANGE_EVENT = 'lang-change';
 const ATTEMPT_ADD_EVENT = 'attempt-add';
 const ATTEMPT_DELETE_EVENT = 'attempt-delete';
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'attempts-table',
   templateUrl: './attempts-table.component.html',
   styleUrls: ['./attempts-table.component.scss'],
 })
 export class AttemptsTableComponent extends BaseComponent implements OnInit, OnDestroy {
-  @Input()
-  get attempts(): Array<Attempt> {
-    return this._attempts;
-  }
-
-  set attempts(attempts: Array<Attempt>) {
-    this.wsService.send(LANG_CHANGE_EVENT, this.translationService.currentLang);
-    this._attempts = attempts.map(attempt => Attempt.fromJSON(attempt));
-    attempts.forEach(attempt => this.wsService.send(ATTEMPT_ADD_EVENT, attempt.id));
-  }
-
   @Input() hideSourceCodeSize = false;
   @Input() contest: Contest;
   @Input() hackEnabled = false;
-
   @Output() hackSubmitted = new EventEmitter<null>;
-
-  private _attempts: Array<Attempt> = [];
-
   public currentUser: any;
   public selectedAttempt: Attempt | null;
   public editorOptions = {
@@ -51,19 +35,15 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
     theme: 'vs-light',
     readOnly: true,
   };
-
   public hackForm = new FormGroup({
     input: new FormControl(''),
     generatorSource: new FormControl(''),
     generatorLang: new FormControl('py'),
   });
-
   public successSoundName = this.soundsService.getSuccessSound();
-
   @ViewChild('modal') public modalRef: TemplateRef<any>;
   @ViewChild('successAudio') successAudio: ElementRef;
   @ViewChild('wrongAudio') wrongAudio: ElementRef;
-
   public hackAvailableLanguages = [
     AttemptLangs.PYTHON,
     AttemptLangs.CPP,
@@ -75,8 +55,6 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
     AttemptLangs.HASKELL,
     AttemptLangs.R,
   ];
-
-  protected readonly window = window;
 
   constructor(
     public authService: AuthenticationService,
@@ -92,27 +70,42 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
     super();
   }
 
+  private _attempts: Array<Attempt> = [];
+
+  @Input() get attempts(): Array<Attempt> {
+    return this._attempts;
+  }
+
+  set attempts(attempts: Array<Attempt>) {
+    this.wsService.send(LANG_CHANGE_EVENT, this.translationService.currentLang);
+    this.removeAttemptsFromWS();
+    this._attempts = attempts.map(attempt => Attempt.fromJSON(attempt));
+    this.addAttemptsToWS();
+  }
+
   ngOnInit(): void {
-    this.wsService.on<WSAttempt>('attempt-update').subscribe((wsAttempt: WSAttempt) => {
-      for (let i = 0; i < this.attempts.length; i++) {
-        if (this.attempts[i].id === wsAttempt.id) {
-          let attempt = this.attempts[i];
-          this.attempts[i] = Attempt.fromWSAttempt(attempt, wsAttempt);
-          attempt = this.attempts[i];
-          if (wsAttempt.verdict === Verdicts.Accepted) {
-            if (this.attempts[i].canView) {
-              setTimeout(() => attempt.animationAcceptedState = true, 0);
-              this.successAudio?.nativeElement?.play();
-            }
-          } else if (wsAttempt.verdict !== Verdicts.Running && wsAttempt.verdict !== Verdicts.InQueue) {
-            if (this.attempts[i].canView) {
-              setTimeout(() => attempt.animationWrongState = true, 0);
-              this.wrongAudio.nativeElement.play();
+    this.wsService.on<WSAttempt>('attempt-update').subscribe(
+      (wsAttempt: WSAttempt) => {
+        for (let i = 0; i < this.attempts.length; i++) {
+          if (this.attempts[i].id === wsAttempt.id) {
+            let attempt = this.attempts[i];
+            this.attempts[i] = Attempt.fromWSAttempt(attempt, wsAttempt);
+            attempt = this.attempts[i];
+            if (wsAttempt.verdict === Verdicts.Accepted) {
+              if (this.attempts[i].canView) {
+                setTimeout(() => attempt.animationAcceptedState = true, 0);
+                this.successAudio?.nativeElement?.play();
+              }
+            } else if (wsAttempt.verdict !== Verdicts.Running && wsAttempt.verdict !== Verdicts.InQueue) {
+              if (this.attempts[i].canView) {
+                setTimeout(() => attempt.animationWrongState = true, 0);
+                this.wrongAudio.nativeElement.play();
+              }
             }
           }
         }
       }
-    });
+    );
   }
 
   openModal(attemptId: number) {
@@ -137,10 +130,16 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
     );
   }
 
+  addAttemptsToWS() {
+    this._attempts.forEach(attempt => this.wsService.send(ATTEMPT_ADD_EVENT, attempt.id));
+  }
+
+  removeAttemptsFromWS() {
+    this.attempts.forEach((attempt: Attempt) => this.wsService.send(ATTEMPT_DELETE_EVENT, attempt.id));
+  }
+
   ngOnDestroy() {
-    this.attempts.forEach((attempt: Attempt) => {
-      this.wsService.send(ATTEMPT_DELETE_EVENT, attempt.id);
-    });
+    this.removeAttemptsFromWS();
   }
 
 }

@@ -17,7 +17,15 @@
             </div>
           </div>
 
-          <attempts-table [hackEnabled]="true" [attempts]="attempts"></attempts-table>
+          @if (isLoading) {
+            <div class="card">
+              <div class="card-body" [style.height.px]="200">
+                <spinner [name]="SpinnersEnum.AttemptsTable"></spinner>
+              </div>
+            </div>
+          } @else {
+            <attempts-table [hackEnabled]="true" [attempts]="attempts"></attempts-table>
+          }
 
           <pagination
             [collectionSize]="totalAttemptsCount"
