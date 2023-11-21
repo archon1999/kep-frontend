@@ -10,6 +10,7 @@ import { GlobalService } from '@shared/services/global.service';
 import { LocalStorageService } from '@shared/storages/local-storage.service';
 import { SessionStorageService } from '@shared/storages/session-storage.service';
 import { TitleService } from '@shared/services/title.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   template: '',
@@ -25,6 +26,7 @@ export class BaseComponent implements OnInit, OnDestroy {
   public localStorageService = inject(LocalStorageService);
   public sessionStorageService = inject(SessionStorageService);
   public titleService = inject(TitleService);
+  public spinner = inject(NgxSpinnerService);
 
   public currentUser: User | null;
   public coreConfig: CoreConfig;
