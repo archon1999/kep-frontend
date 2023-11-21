@@ -10,6 +10,7 @@ import { BaseComponent } from '@shared/components/classes/base.component';
 import { PageResult } from 'app/shared/page-result';
 import { CoreSidebarService } from '../../../../../core/components/core-sidebar/core-sidebar.service';
 import { SwipeService } from '@shared/services/swipe.service';
+import { SpinnersEnum } from '@shared/components/spinner/spinners.enum';
 
 @Component({
   selector: 'app-problems',
@@ -35,8 +36,6 @@ export class ProblemsComponent extends BaseComponent implements OnInit, OnDestro
   constructor(
     public service: ProblemsService,
     public statisticsService: ProblemsStatisticsService,
-    public route: ActivatedRoute,
-    public router: Router,
     public problemsFilterService: ProblemsFilterService,
     public coreSidebarService: CoreSidebarService,
   ) {
@@ -68,12 +67,14 @@ export class ProblemsComponent extends BaseComponent implements OnInit, OnDestro
   }
 
   reloadProblems() {
+    this.spinner.show(SpinnersEnum.ProblemsTable);
     this.service.getProblems(this.filter).subscribe(
       (result: PageResult<Problem>) => {
         this.problems = result.data;
         this.page = result.page;
         this.pageSize = result.pageSize;
         this.problemsTotal = result.total;
+        this.spinner.hide(SpinnersEnum.ProblemsTable);
       }
     );
   }

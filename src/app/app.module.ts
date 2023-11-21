@@ -31,6 +31,7 @@ import { environment } from 'environments/environment';
 import { HIGHLIGHT_OPTIONS, HighlightModule, HighlightOptions } from 'ngx-highlightjs';
 
 import { register } from 'swiper/element/bundle';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 register();
 
@@ -113,6 +114,7 @@ export class CustomTitleStrategy extends TitleStrategy {
     UserPopoverModule,
     LoadingBarRouterModule,
     LoadingBarHttpClientModule,
+    NgxSpinnerModule
   ],
   providers: [
     { provide: TitleStrategy, useClass: CustomTitleStrategy },
