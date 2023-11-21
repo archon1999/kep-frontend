@@ -24,7 +24,6 @@
   }
 }
 
-
 .code-editor-sidebar {
   width: 60%;
   right: -60%;
@@ -33,7 +32,7 @@
   z-index: 1051;
   position: fixed;
   top: 5%;
-  height: 630px;
+  height: 627px;
   transition: right 0.4s cubic-bezier(0.05, 0.74, 0.2, 0.99);
   backface-visibility: hidden;
   border-left: 1px solid rgba($black, 0.05);
@@ -48,8 +47,10 @@
   }
 
   &.show {
-    box-shadow: 0 15px 30px 0 rgba($black, 0.11), 0 5px 15px 0 rgba($black, 0.08);
+    // box-shadow: 0 15px 30px 0 rgba($black, 0.11), 0 5px 15px 0 rgba($black, 0.08);
+    box-shadow: 0 0 10px rgba(34, 41, 47, 0.1);
     right: 0;
+    border-left: 0;
   }
 
   .btn-toggle {
@@ -76,6 +77,8 @@
   }
 
   .card {
+    margin-bottom: 0;
+
     .card-header {
       padding: 1rem !important;
     }
@@ -87,6 +90,37 @@
     .card-footer {
       padding-top: 1rem;
       padding-bottom: 0.5rem;
+    }
+  }
+
+}
+
+.check-samples-result {
+  width: 250px;
+  right: -250px;
+  padding: 0;
+  background-color: inherit;
+  z-index: 1051;
+  position: fixed;
+  top: 5%;
+  height: 625px;
+  transition: right 0.4s cubic-bezier(0.05, 0.74, 0.2, 0.99);
+  backface-visibility: hidden;
+
+  &.show {
+    box-shadow: 0 0 10px rgba(34, 41, 47, 0.1);
+    right: calc(60% + 1px);
+  }
+
+  .ng-scroll-content {
+    height: 100%;
+  }
+
+  .results-card {
+    box-shadow: none;
+
+    & > .card-header {
+      padding: 1rem !important;
     }
   }
 }

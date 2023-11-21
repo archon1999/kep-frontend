@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreDirectivesModule } from '../../../../core/directives/directives';
 import { CorePipesModule } from '../../../../core/pipes/pipes.module';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAccordionModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { KepcoinSpendSwalModule } from '../../../modules/kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { ToastrModule } from 'ngx-toastr';
@@ -16,6 +16,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
 import { NewFeatureDirective } from '@shared/directives/new-feature.directive';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,9 @@ import { NewFeatureDirective } from '@shared/directives/new-feature.directive';
     DragDropModule,
     NgScrollbar,
     KepcoinViewModule,
-    NewFeatureDirective
+    NewFeatureDirective,
+    NgbAccordionModule,
+    SpinnerComponent
   ],
   exports: [
     CodeEditorModalComponent,

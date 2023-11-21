@@ -15,6 +15,14 @@ import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.se
 import { SwipeService } from '@shared/services/swipe.service';
 import { AuthenticationService } from '@auth/service';
 import { paramsMapper } from '@shared/utils';
+import { NgxSpinnerService } from 'ngx-spinner';
+
+interface CheckSamplesResultOne {
+  verdict: number;
+  input: string;
+  output: string;
+  answer: string;
+}
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -51,8 +59,11 @@ export class CodeEditorModalComponent implements OnInit {
   public isCheckSamples = false;
 
   public sidebarName = 'codeEditorSidebar';
+  public checkSamplesResultSidebarName = 'checkSamplesResult';
 
   public prevKeyCode: string;
+
+  public checkSamplesResult: Array<CheckSamplesResultOne> = [];
 
   constructor(
     public api: ApiService,
@@ -66,11 +77,16 @@ export class CodeEditorModalComponent implements OnInit {
     public coreSidebarService: CoreSidebarService,
     public swipeService: SwipeService,
     public authService: AuthenticationService,
+    public spinner: NgxSpinnerService,
   ) {
   }
 
   get sidebarIsOpened() {
     return this.coreSidebarService.getSidebarRegistry(this.sidebarName).isOpened;
+  }
+
+  get resultSidebarIsOpened() {
+    return this.coreSidebarService.getSidebarRegistry(this.checkSamplesResultSidebarName).isOpened;
   }
 
   ngOnInit(): void {
@@ -98,8 +114,10 @@ export class CodeEditorModalComponent implements OnInit {
     );
 
     this.wsService.on('check-sample-tests-result').subscribe(
-      (result) => {
-        console.log(result);
+      (result: Array<CheckSamplesResultOne>) => {
+        this.spinner.hide(this.checkSamplesResultSidebarName);
+        this.openResultSidebar();
+        this.checkSamplesResult = result;
         this.isCheckSamples = false;
       }
     );
@@ -234,7 +252,22 @@ export class CodeEditorModalComponent implements OnInit {
     if (!this.sidebarIsOpened) {
       return;
     }
+    this.closeResultSidebar();
     this.coreSidebarService.getSidebarRegistry(this.sidebarName).toggleOpen();
+  }
+
+  openResultSidebar() {
+    if (this.resultSidebarIsOpened) {
+      return;
+    }
+    this.coreSidebarService.getSidebarRegistry(this.checkSamplesResultSidebarName).toggleOpen();
+  }
+
+  closeResultSidebar() {
+    if (!this.resultSidebarIsOpened) {
+      return;
+    }
+    this.coreSidebarService.getSidebarRegistry(this.checkSamplesResultSidebarName).toggleOpen();
   }
 
   onKeyDown(event) {
@@ -243,6 +276,9 @@ export class CodeEditorModalComponent implements OnInit {
     }
     if (this.prevKeyCode === 'AltLeft' && event.code === 'KeyX') {
       this.run();
+    }
+    if (this.prevKeyCode === 'AltLeft' && event.code === 'KeyZ') {
+      this.checkSamples();
     }
     this.prevKeyCode = event.code;
   }
@@ -255,11 +291,12 @@ export class CodeEditorModalComponent implements OnInit {
     if (this.isCheckSamples) {
       return;
     }
+    this.spinner.show(this.checkSamplesResultSidebarName);
     this.isCheckSamples = true;
+    this.openResultSidebar();
     const data = {
       lang: this.editorForm.controls.lang.value,
       sourceCode: this.editorForm.controls.code.value,
-
     };
     this.api.post(`problems/${this.problem.id}/check-sample-tests`, paramsMapper(data)).subscribe(
       (result) => {
