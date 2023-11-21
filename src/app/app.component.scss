@@ -220,3 +220,13 @@ pre {
   --inherit-bg-box-shadow: 0 4px 24px 0 rgba(255, 255, 255, 0.1);
 }
 
+.new-feature {
+  position: absolute;
+  top: -0.5rem;
+  left: -0.8rem;
+  width: 35px;
+  height: 16px;
+  font-size: 10px !important;
+  padding: 1px !important;
+  transform: rotate(332deg);
+}
