@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
   templateUrl: './kepcoin-spend-swal.component.html',
   styleUrls: ['./kepcoin-spend-swal.component.scss']
 })
-export class KepcoinSpendSwalComponent implements OnInit {
+export class KepcoinSpendSwalComponent {
 
   @Input() value: number;
   @Input() purchaseUrl: string;
@@ -22,11 +22,7 @@ export class KepcoinSpendSwalComponent implements OnInit {
     public api: ApiService,
     public authService: AuthenticationService,
     public translateService: TranslateService,
-  ) {
-  }
-
-  ngOnInit(): void {
-  }
+  ) {}
 
   ConfirmTextOpen() {
     const translations = this.translateService.translations[this.translateService.currentLang];
@@ -39,55 +35,54 @@ export class KepcoinSpendSwalComponent implements OnInit {
           confirmButton: 'btn btn-success'
         }
       });
-      return;
-    }
-
-    Swal.fire({
-      title: translations['WantToBuy'],
-      html: `<img height="25" src="assets/images/icons/kepcoin.webp"> ${ this.value }`,
-      text: 'You won\'t be able to revert this!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#7367F0',
-      cancelButtonColor: '#E42728',
-      cancelButtonText: translations['Cancel'],
-      confirmButtonText: translations['Purchase'],
-      customClass: {
-        confirmButton: 'btn btn-relief-primary',
-        cancelButton: 'btn btn-relief-danger ml-1'
-      }
-    }).then((result) => {
-      if (result.value) {
-        this.api.post(this.purchaseUrl, this.requestBody).subscribe((result: any) => {
-          if (result?.success) {
-            Swal.fire({
-              icon: 'success',
-              title: translations['Successfully'] + '!',
-              customClass: {
-                confirmButton: 'btn btn-success'
-              }
-            }).then(() => {
-              this.success.emit(result);
-            });
-          } else {
+    } else {
+      Swal.fire({
+        title: translations['WantToBuy'],
+        html: `<img height="25" src="assets/images/icons/kepcoin.webp"> ${ this.value }`,
+        text: 'You won\'t be able to revert this!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: 'var(--primary)',
+        cancelButtonColor: 'var(--danger)',
+        cancelButtonText: translations['Cancel'],
+        confirmButtonText: translations['Purchase'],
+        customClass: {
+          confirmButton: 'btn btn-relief-primary',
+          cancelButton: 'btn btn-relief-danger ml-1'
+        }
+      }).then((result) => {
+        if (result.value) {
+          this.api.post(this.purchaseUrl, this.requestBody).subscribe((result: any) => {
+            if (result?.success) {
+              Swal.fire({
+                icon: 'success',
+                title: translations['Successfully'] + '!',
+                customClass: {
+                  confirmButton: 'btn btn-success'
+                }
+              }).then(() => {
+                this.success.emit(result);
+              });
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: translations['Error'] + '!',
+                customClass: {
+                  confirmButton: 'btn btn-success'
+                }
+              });
+            }
+          }, () => {
             Swal.fire({
               icon: 'error',
-              title: translations['Error'] + '!',
+              title: translations['ServerError'] + '!',
               customClass: {
                 confirmButton: 'btn btn-success'
               }
             });
-          }
-        }, () => {
-          Swal.fire({
-            icon: 'error',
-            title: translations['ServerError'] + '!',
-            customClass: {
-              confirmButton: 'btn btn-success'
-            }
           });
-        });
-      }
-    });
+        }
+      });
+    }
   }
 }
