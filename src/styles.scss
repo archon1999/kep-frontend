@@ -1,4 +1,6 @@
 @use "sass:meta";
+@import 'ngx-spinner/animations/ball-clip-rotate-multiple';
+@import 'ngx-spinner/animations/ball-clip-rotate-pulse';
 
 @import 'scss/core.scss';
 @import './assets/scss/styles';
