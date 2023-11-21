@@ -14,6 +14,8 @@ import { NgSelectModule } from '../../third-part-modules/ng-select/ng-select.mod
 import { CoreSidebarModule } from '../../../../core/components';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgScrollbar } from 'ngx-scrollbar';
+import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
+import { NewFeatureDirective } from '@shared/directives/new-feature.directive';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { NgScrollbar } from 'ngx-scrollbar';
     CoreSidebarModule,
     // PerfectScrollbarModule,
     DragDropModule,
-    NgScrollbar
+    NgScrollbar,
+    KepcoinViewModule,
+    NewFeatureDirective
   ],
   exports: [
     CodeEditorModalComponent,

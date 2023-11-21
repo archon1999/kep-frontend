@@ -109,39 +109,82 @@
           </div>
         </div>
 
-        <div class="card-footer d-flex justify-content-end">
-          <button
-            ngbTooltip="Alt+X"
-            (click)="run()"
-            *ngIf="!isSelectedLangText()"
-            class="btn btn-glow btn-dark bg-dark mr-50 d-md-block d-none"
-            type="button">
-            <span *ngIf="isRunning" aria-hidden="true" class="spinner-border spinner-border-sm" role="status"></span>
-            <span *ngIf="!isRunning"><i data-feather="terminal"></i></span>
-            {{ 'CODE_EDITOR.RUN' | translate }}
-          </button>
-
+        <div class="card-footer d-none d-md-flex" [class]="{
+          'justify-content-between': authService.currentUserValue?.permissions?.canUseCheckSamples === false,
+          'justify-content-end': authService.currentUserValue?.permissions?.canUseCheckSamples === true,
+        }">
           <kepcoin-spend-swal
-            (success)="answerForInput($event)"
-            *ngIf="answerForInputEnabled"
+            *ngIf="authService.currentUserValue?.permissions?.canUseCheckSamples === false"
+            (success)="checkSamplesPurchaseSuccess()"
             [customContent]="true"
-            [purchaseUrl]="'problems/' + problem.id + '/answer-for-input/'"
-            [requestBody]="{input_data: editorForm.get('input').value}"
-            [value]="1"
+            [purchaseUrl]="'problems/' + problem.id + '/purchase-check-samples/'"
+            [value]="100"
           >
-            <button class="btn btn-glow btn-dark bg-dark mr-50 d-md-block d-none" type="button">
-        <span
-          *ngIf="isAnswerForInput"
-          class="spinner-border spinner-border-sm"
-          role="status">
-        </span>
-              <span *ngIf="!isAnswerForInput">
-          <i data-feather="check-square"></i>
-        </span>
-              {{ 'CODE_EDITOR.ANSWER_FOR_INPUT' | translate }}
-            </button>
+            <div new-feature class="position-relative">
+              <button class="btn btn-glow btn-dark bg-dark">
+                {{ 'Check samples' | translate }}
+                <i data-feather="shopping-cart"></i>
+              </button>
+            </div>
           </kepcoin-spend-swal>
 
+          <div class="d-flex">
+            <button
+              *ngIf="authService.currentUserValue?.permissions?.canUseCheckSamples === true"
+              (click)="checkSamples()"
+              class="btn btn-glow btn-dark bg-dark mr-50"
+              type="button">
+              <span *ngIf="isCheckSamples" aria-hidden="true" class="spinner-border spinner-border-sm" role="status"></span>
+              <span *ngIf="!isCheckSamples"><i data-feather="terminal"></i></span>
+              {{ 'Check samples' | translate }}
+            </button>
+
+            <button
+              ngbTooltip="Alt+X"
+              (click)="run()"
+              *ngIf="!isSelectedLangText()"
+              class="btn btn-glow btn-dark bg-dark mr-50"
+              type="button">
+              <span *ngIf="isRunning" aria-hidden="true" class="spinner-border spinner-border-sm" role="status"></span>
+              <span *ngIf="!isRunning"><i data-feather="terminal"></i></span>
+              {{ 'CODE_EDITOR.RUN' | translate }}
+            </button>
+
+            <kepcoin-spend-swal
+              (success)="answerForInput($event)"
+              *ngIf="answerForInputEnabled"
+              [customContent]="true"
+              [purchaseUrl]="'problems/' + problem.id + '/answer-for-input/'"
+              [requestBody]="{input_data: editorForm.get('input').value}"
+              [value]="1"
+            >
+              <button class="btn btn-glow btn-dark bg-dark mr-50" type="button">
+              <span
+                *ngIf="isAnswerForInput"
+                class="spinner-border spinner-border-sm"
+                role="status">
+              </span>
+                <span *ngIf="!isAnswerForInput">
+                <i data-feather="check-square"></i>
+              </span>
+                {{ 'CODE_EDITOR.ANSWER_FOR_INPUT' | translate }}
+              </button>
+            </kepcoin-spend-swal>
+
+            <button
+              ngbTooltip="Alt+Enter"
+              (click)="submit()"
+              *ngIf="submitUrl"
+              [disabled]="!editorForm.valid"
+              class="btn btn-glow btn-dark bg-dark"
+              type="submit">
+              <i data-feather="send"></i>
+              {{ 'CODE_EDITOR.SUBMIT' | translate }}
+            </button>
+          </div>
+        </div>
+
+        <div class="card-footer d-md-none d-block text-right">
           <button
             ngbTooltip="Alt+Enter"
             (click)="submit()"
