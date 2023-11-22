@@ -13,6 +13,7 @@ import { TitleService } from '@shared/services/title.service';
 import { TranslateService } from '@ngx-translate/core';
 import { randomShuffle } from '@shared/utils';
 import { randomChoice } from '@shared/utils/random';
+import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 
 @Component({
   selector: 'app-challenge',
@@ -40,7 +41,7 @@ export class ChallengeComponent implements OnInit, OnDestroy {
 
   @ViewChild('startSwal') startSwal: SwalComponent;
   @ViewChild('finishSwal') finishSwal: SwalComponent;
-  // @ViewChild('counter') counter: CountdownComponent;
+  @ViewChild('counter') counter: CountdownComponent;
   @ViewChild('successAudio') successAudio: any;
   @ViewChild('wrongAudio') wrongAudio: any;
 
@@ -235,8 +236,8 @@ export class ChallengeComponent implements OnInit, OnDestroy {
         }).then((result) => {
           this.challengeUpdate().subscribe(
             () => {
-              // this.counter.reset();
-              // this.counter.start();
+              this.counter.reset();
+              this.counter.start();
             }
           );
         });
@@ -255,8 +256,8 @@ export class ChallengeComponent implements OnInit, OnDestroy {
       }).then((result) => {
         this.challengeUpdate().subscribe(
           () => {
-            // this.counter.reset();
-            // this.counter.start();
+            this.counter.reset();
+            this.counter.start();
           }
         );
       });
