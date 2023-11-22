@@ -10,7 +10,7 @@ import { ApiService } from '@shared/services/api.service';
 import { WebsocketService } from '@shared/services/websocket';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CValidators } from '@shared/c-validators/c-validators';
-import { AttemptLangs } from '@problems/constants';
+import { AttemptLangs, Verdicts } from '@problems/constants';
 import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.service';
 import { SwipeService } from '@shared/services/swipe.service';
 import { AuthenticationService } from '@auth/service';
@@ -64,6 +64,7 @@ export class CodeEditorModalComponent implements OnInit {
   public prevKeyCode: string;
 
   public checkSamplesResult: Array<CheckSamplesResultOne> = [];
+  protected readonly Verdicts = Verdicts;
 
   constructor(
     public api: ApiService,
@@ -305,5 +306,4 @@ export class CodeEditorModalComponent implements OnInit {
     );
     setTimeout(() => this.isCheckSamples = false, 15000);
   }
-
 }
