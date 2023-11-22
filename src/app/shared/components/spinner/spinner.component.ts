@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgxSpinnerModule } from 'ngx-spinner';
+import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
+import { randomInt } from '@shared/utils';
 
 @Component({
   selector: 'spinner',
@@ -9,9 +10,22 @@ import { NgxSpinnerModule } from 'ngx-spinner';
   templateUrl: './spinner.component.html',
   styleUrl: './spinner.component.scss'
 })
-export class SpinnerComponent {
+export class SpinnerComponent implements OnInit, OnDestroy {
   @Input() name: string;
   @Input() type = 'ball-clip-rotate-multiple';
   @Input() color = 'var(--primary)';
   @Input() bdColor = 'inherit';
+
+  constructor(public spinner: NgxSpinnerService) {}
+
+  ngOnInit() {
+    if (!this.name) {
+      this.name = randomInt(1, 10000).toString();
+    }
+    this.spinner.show(this.name);
+  }
+
+  ngOnDestroy() {
+    this.spinner.hide(this.name);
+  }
 }
