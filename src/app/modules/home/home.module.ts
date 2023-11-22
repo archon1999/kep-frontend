@@ -14,6 +14,7 @@ import { ProfileSectionComponent } from './profile-section/profile-section.compo
 import { HeaderSectionComponent } from './header-section/header-section.component';
 import { ActivitySectionComponent } from './activity-section/activity-section.component';
 import { UsersChartModule } from '@shared/components/users-chart/users-chart.module';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,7 @@ const routes: Routes = [
     HeaderSectionComponent,
     ActivitySectionComponent,
     UsersChartModule,
+    SpinnerComponent,
   ],
   exports: [
     HomeComponent

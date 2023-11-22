@@ -15,40 +15,52 @@
   <div class="col-12 mt-1">
     <div class="row">
       <div class="col-lg-4 col-12">
-        @defer {
+        @defer (on viewport){
           <top-rating-section></top-rating-section>
+        } @placeholder (minimum 500ms) {
+          <spinner></spinner>
         }
       </div>
       <div class="col-lg-4 col-12">
-        @defer {
+        @defer (on viewport){
           <system-section></system-section>
+        } @placeholder (minimum 500ms) {
+          <spinner></spinner>
         }
       </div>
       <div class="col-lg-4 col-12">
-        @defer {
+        @defer (on viewport){
           <users-chart-card></users-chart-card>
+        } @placeholder (minimum 500ms) {
+          <spinner></spinner>
         }
       </div>
     </div>
   </div>
 
   <div class="col-lg-8 offset-lg-2 col-12 text-center">
-    @defer {
+    @defer (on viewport){
       <calendar-section></calendar-section>
+    } @placeholder (minimum 500ms) {
+      <spinner></spinner>
     }
   </div>
 
   <div class="col-12 mt-1">
     <div class="row">
       <div class="col-lg-3 col-md-6 col-sm-12">
-        @defer {
+        @defer (on viewport){
           <birthdays-section></birthdays-section>
+        } @placeholder (minimum 500ms) {
+          <spinner></spinner>
         }
       </div>
       <div class="col-lg-9 col-md-6 col-sm-12">
         <div class="mb-4">
-          @defer {
+          @defer (on viewport){
             <posts-section></posts-section>
+          } @placeholder (minimum 500ms) {
+            <spinner></spinner>
           }
         </div>
       </div>
@@ -57,8 +69,10 @@
   </div>
 
   <div class="col-12">
-    @defer {
+    @defer (on viewport) {
       <statistics-section></statistics-section>
+    } @placeholder (minimum 500ms) {
+      <spinner></spinner>
     }
   </div>
 
