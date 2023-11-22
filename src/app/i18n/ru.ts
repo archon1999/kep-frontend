@@ -485,6 +485,7 @@ export const locale = {
       ANSWER: 'Ответ',
       TEST: 'Проверка',
       ANSWER_FOR_INPUT: 'Ответ на тест',
+      CHECK_SAMPLES: 'Проверить на тестах',
     },
     COURSES: {
       COURSES: 'Курсы',
