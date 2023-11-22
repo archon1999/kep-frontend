@@ -59,6 +59,7 @@
     "core-js": "3.33.2",
     "feather-icons": "4.29.1",
     "flag-icons": "^6.15.0",
+    "flatpickr": "^4.6.13",
     "gzipper": "^7.2.0",
     "hammerjs": "^2.0.8",
     "i18n-iso-countries": "^7.7.0",
