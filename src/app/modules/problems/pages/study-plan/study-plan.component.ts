@@ -6,12 +6,28 @@ import { TitleService } from 'app/shared/services/title.service';
 import { StudyPlan } from '../../models/problems.models';
 import { ProblemsService } from '../../services/problems.service';
 import { SwiperOptions } from 'swiper/types/swiper-options';
+import { CoreCommonModule } from '@core/common.module';
+import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
+import { NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
+import { KepcoinSpendSwalModule } from '../../../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
+import { StudyPlanCardModule } from '@problems/components/study-plan-card/study-plan-card.module';
 
 @Component({
   selector: 'app-study-plan',
   templateUrl: './study-plan.component.html',
   styleUrls: ['./study-plan.component.scss'],
-  animations: [fadeInOnEnterAnimation({ duration: 3000 })]
+  animations: [fadeInOnEnterAnimation({ duration: 3000 })],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    SwiperComponent,
+    NgbProgressbarModule,
+    ProblemsPipesModule,
+    NgbTooltipModule,
+    KepcoinSpendSwalModule,
+    StudyPlanCardModule,
+  ]
 })
 export class StudyPlanComponent implements OnInit {
 

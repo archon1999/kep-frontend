@@ -11,7 +11,8 @@ const colors = new Map<Number, string>()
   .set(Difficulties.Extremal, 'dark');
 
 @Pipe({
-  name: 'problemDifficultyColor'
+  name: 'problemDifficultyColor',
+  standalone: true,
 })
 export class ProblemDifficultyColorPipe implements PipeTransform {
 

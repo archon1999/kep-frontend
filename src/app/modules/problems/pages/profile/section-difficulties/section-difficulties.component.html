@@ -8,19 +8,14 @@
   <div class="card-body">
     <div class="total">
       <div class="chart">
-        <apx-chart
+        <apex-chart
           *ngIf="chartOptions"
-          [series]="chartOptions.series"
-          [chart]="chartOptions.chart"
-          [plotOptions]="chartOptions.plotOptions"
-          [labels]="chartOptions.labels"
-          [fill]="chartOptions.fill"
-          [stroke]="chartOptions.stroke"
-        ></apx-chart>
+          [options]="chartOptions"
+        ></apex-chart>
       </div>
     </div>
     <div class="difficulties">
-      <swiper [config]="swiperConfig" class="swiper swiper-lazy-loading">
+      <swiper [config]="swiperConfig" [height]="180">
         <div class="swiper-slide">
           <div class="difficulty">
             <div class="d-flex justify-content-between info">

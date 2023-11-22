@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
+import { CoreCommonModule } from '@core/common.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 export interface Facts {
   firstAttempt: any;
@@ -8,12 +10,16 @@ export interface Facts {
   lastAccepted: any;
   mostAttemptedProblem: any;
   mostAttemptedForSolveProblem: any;
-  solvedWithSingleAttempt: any;
+  solvedWithSingleAttempt: number;
+  solvedWithSingleAttemptPercentage: number;
 }
+
 @Component({
   selector: 'section-facts',
   templateUrl: './section-facts.component.html',
-  styleUrls: ['./section-facts.component.scss']
+  styleUrls: ['./section-facts.component.scss'],
+  standalone: true,
+  imports: [CoreCommonModule, NgbTooltipModule],
 })
 export class SectionFactsComponent implements OnInit {
 
@@ -30,7 +36,7 @@ export class SectionFactsComponent implements OnInit {
       (facts: Facts) => {
         this.facts = facts;
       }
-    )
+    );
   }
 
 }

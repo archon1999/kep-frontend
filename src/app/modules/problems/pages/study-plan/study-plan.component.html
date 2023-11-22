@@ -10,12 +10,12 @@
         <div class="study-plan-title text-dark">
           {{ studyPlan.title }}
         </div>
-    
+
         <div class="study-plan-description text-dark">
           <div [innerHTML]="studyPlan.description"></div>
         </div>
       </div>
-    
+
       <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12">
 
@@ -26,19 +26,14 @@
                   {{ 'Progress' | translate }}
                 </div>
               </div>
-            
+
               <div class="card-body">
                 <div class="total">
                   <div class="chart">
-                    <apx-chart
+                    <apex-chart
                       *ngIf="chartOptions"
-                      [series]="chartOptions.series"
-                      [chart]="chartOptions.chart"
-                      [plotOptions]="chartOptions.plotOptions"
-                      [labels]="chartOptions.labels"
-                      [fill]="chartOptions.fill"
-                      [stroke]="chartOptions.stroke"
-                    ></apx-chart>
+                      [options]="chartOptions"
+                    ></apex-chart>
                   </div>
                 </div>
                 <div class="difficulties">
@@ -56,7 +51,8 @@
                           </div>
                         </div>
                         <div class="mt-50 progress-wrapper">
-                          <ngb-progressbar type="{{ 1 | problemDifficultyColor }}" [value]="100 * difficulties.beginner / difficulties.allBeginner"></ngb-progressbar>
+                          <ngb-progressbar type="{{ 1 | problemDifficultyColor }}"
+                                           [value]="100 * difficulties.beginner / difficulties.allBeginner"></ngb-progressbar>
                         </div>
                       </div>
                     </div>
@@ -74,12 +70,13 @@
                           </div>
                         </div>
                         <div class="mt-50 progress-wrapper">
-                          <ngb-progressbar type="{{ 2 | problemDifficultyColor }}" [value]="100 * difficulties.basic / difficulties.allBasic"></ngb-progressbar>
+                          <ngb-progressbar type="{{ 2 | problemDifficultyColor }}"
+                                           [value]="100 * difficulties.basic / difficulties.allBasic"></ngb-progressbar>
                         </div>
                       </div>
                     </div>
 
-                    <div class="swiper-slide"  *ngIf="difficulties?.allNormal">
+                    <div class="swiper-slide" *ngIf="difficulties?.allNormal">
                       <div class="difficulty">
                         <div class="d-flex justify-content-between info">
                           <div class="title">
@@ -92,7 +89,8 @@
                           </div>
                         </div>
                         <div class="mt-50 progress-wrapper">
-                          <ngb-progressbar type="{{ 3 | problemDifficultyColor }}" [value]="100 * difficulties.normal / difficulties.allNormal"></ngb-progressbar>
+                          <ngb-progressbar type="{{ 3 | problemDifficultyColor }}"
+                                           [value]="100 * difficulties.normal / difficulties.allNormal"></ngb-progressbar>
                         </div>
                       </div>
                     </div>
@@ -110,7 +108,8 @@
                           </div>
                         </div>
                         <div class="mt-50 progress-wrapper">
-                          <ngb-progressbar type="{{ 4 | problemDifficultyColor }}" [value]="100 * difficulties.medium / difficulties.allMedium"></ngb-progressbar>
+                          <ngb-progressbar type="{{ 4 | problemDifficultyColor }}"
+                                           [value]="100 * difficulties.medium / difficulties.allMedium"></ngb-progressbar>
                         </div>
                       </div>
                     </div>
@@ -128,7 +127,8 @@
                           </div>
                         </div>
                         <div class="mt-50 progress-wrapper">
-                          <ngb-progressbar type="{{ 5 | problemDifficultyColor }}" [value]="100 * difficulties.advanced / difficulties.allAdvanced"></ngb-progressbar>
+                          <ngb-progressbar type="{{ 5 | problemDifficultyColor }}"
+                                           [value]="100 * difficulties.advanced / difficulties.allAdvanced"></ngb-progressbar>
                         </div>
                       </div>
                     </div>
@@ -146,7 +146,8 @@
                           </div>
                         </div>
                         <div class="mt-50 progress-wrapper">
-                          <ngb-progressbar type="{{ 6 | problemDifficultyColor }}" [value]="100 * difficulties.hard / difficulties.allHard"></ngb-progressbar>
+                          <ngb-progressbar type="{{ 6 | problemDifficultyColor }}"
+                                           [value]="100 * difficulties.hard / difficulties.allHard"></ngb-progressbar>
                         </div>
                       </div>
                     </div>
@@ -164,14 +165,15 @@
                           </div>
                         </div>
                         <div class="mt-50 progress-wrapper">
-                          <ngb-progressbar type="{{ 7 | problemDifficultyColor }}" [value]="100 * difficulties.extremal / difficulties.allExtremal"></ngb-progressbar>
+                          <ngb-progressbar type="{{ 7 | problemDifficultyColor }}"
+                                           [value]="100 * difficulties.extremal / difficulties.allExtremal"></ngb-progressbar>
                         </div>
                       </div>
                     </div>
                   </swiper>
                 </div>
               </div>
-            </div>            
+            </div>
           </div>
 
           <div class="mb-2" *ngIf="!studyPlan.isPurchased">
@@ -208,16 +210,16 @@
               <div class="study-plan-day-title text-secondary">
                 <span class="title text-dark">{{ day.title }}</span>
               </div>
-    
+
               <div class="study-plan-day-description">
                 <div [innerHTML]="day.description"></div>
               </div>
-    
+
               <div class="card" *ngIf="day.problems?.length > 0">
                 <div class="problems">
                   <div class="problem" [ngClass]="{
-                    'bg-light-success': problem.hasSolved,
-                    'bg-light-danger': !problem.hasSolved && problem.hasAttempted
+                    'bg-light-success': problem.userInfo.hasSolved,
+                    'bg-light-danger': !problem.userInfo.hasSolved && problem.userInfo.hasAttempted
                   }" *ngFor="let problem of day.problems">
                     <div class="problem-title text-dark">
                       {{ problem.id }}. {{ problem.title }}
@@ -225,15 +227,15 @@
                         <span class="badge problem-tag badge-pill" *ngFor="let tag of problem.tags">
                           {{ tag.name }}
                         </span>
-                      </div>  
+                      </div>
                     </div>
-    
+
                     <div class="problem-difficulty">
                       <span class="badge badge-glow badge-pill badge-{{ problem.difficulty | problemDifficultyColor }}">
                         {{ problem.difficultyTitle | translate }}
-                      </span>        
+                      </span>
                     </div>
-    
+
                     <div class="problem-rating d-block">
                       <div class="likes-count">
                         <i data-feather="thumbs-up"></i>
@@ -242,7 +244,7 @@
                       <div class="dislikes-count">
                         <i data-feather="thumbs-down"></i>
                         {{ problem.dislikesCount }}
-                      </div>        
+                      </div>
                     </div>
                     <div class="problem-button">
                       <a [routerLink]="['/practice', 'problems', 'problem', problem.id]"
@@ -257,12 +259,12 @@
             </div>
           </div>
         </div>
-    
+
         <div class="col-lg-3 col-12">
           <h3 class="text-dark mb-1">{{ 'StudyPlans' | translate }}</h3>
           <study-plan-card [studyPlan]="studyPlan"></study-plan-card>
         </div>
       </div>
-    </div>    
+    </div>
   </div>
 </div>

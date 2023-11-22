@@ -21,8 +21,11 @@
       "dom"
     ],
     "paths": {
-      "@core": [
+      "@core/*": [
         "core/*"
+      ],
+      "@layout/*": [
+        "app/layout/*"
       ],
       "@shared/*": [
         "app/shared/*"

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
-import { ShepherdService } from 'angular-shepherd';
 import { User } from 'app/auth/models';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 import { TitleService } from 'app/shared/services/title.service';
@@ -13,7 +12,18 @@ import { Location } from '@angular/common';
 import { ApiService } from '@shared/services/api.service';
 import { ToastrService } from 'ngx-toastr';
 import { BaseComponent } from '@shared/components/classes/base.component';
-import { CoreSidebarService } from '../../../../../core/components/core-sidebar/core-sidebar.service';
+import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { CoreCommonModule } from '@core/common.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { ProblemDescriptionComponent } from '@problems/pages/problem/problem-description/problem-description.component';
+import { ProblemAttemptsComponent } from '@problems/pages/problem/problem-attempts/problem-attempts.component';
+import { ProblemHacksComponent } from '@problems/pages/problem/problem-hacks/problem-hacks.component';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
+import { ProblemSidebarComponent } from '@problems/pages/problem/problem-sidebar/problem-sidebar.component';
+import { TourModule } from '@shared/third-part-modules/tour/tour.module';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 
 @Component({
   selector: 'app-problem',
@@ -23,6 +33,20 @@ import { CoreSidebarService } from '../../../../../core/components/core-sidebar/
     fadeInLeftOnEnterAnimation({ duration: 1500 }),
     fadeInRightOnEnterAnimation({ duration: 1000 }),
   ],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ContentHeaderModule,
+    NgbNavModule,
+    ProblemDescriptionComponent,
+    ProblemAttemptsComponent,
+    ProblemHacksComponent,
+    MonacoEditorModule,
+    CodeEditorModule,
+    ProblemSidebarComponent,
+    TourModule,
+    NgSelectModule,
+  ]
 })
 export class ProblemComponent extends BaseComponent implements OnInit {
   public contentHeader: ContentHeader;
@@ -112,16 +136,16 @@ export class ProblemComponent extends BaseComponent implements OnInit {
 
   activeIdChange(index: number) {
     if (index === 1) {
-      this.location.go(`/practice/problems/problem/${this.problem.id}`);
+      this.location.go(`/practice/problems/problem/${ this.problem.id }`);
     } else if (index === 2) {
-      this.location.go(`/practice/problems/problem/${this.problem.id}/attempts`);
+      this.location.go(`/practice/problems/problem/${ this.problem.id }/attempts`);
     } else if (index === 3) {
-      this.location.go(`/practice/problems/problem/${this.problem.id}/hacks`);
+      this.location.go(`/practice/problems/problem/${ this.problem.id }/hacks`);
     }
   }
 
   saveCheckInput() {
-    this.api.post(`problems/${this.problem.id}/save-check-input`, { source: this.checkInput }).subscribe(
+    this.api.post(`problems/${ this.problem.id }/save-check-input`, { source: this.checkInput }).subscribe(
       () => {
         this.toastr.success('Success');
       }, () => {
@@ -130,7 +154,7 @@ export class ProblemComponent extends BaseComponent implements OnInit {
     );
   }
 
-  codeEditorSidebarToggle(){
+  codeEditorSidebarToggle() {
     this.coreSidebarService.getSidebarRegistry('codeEditorSidebar').toggleOpen();
   }
 

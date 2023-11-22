@@ -3,6 +3,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { fadeInUpOnEnterAnimation } from 'angular-animations';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { SwiperOptions } from 'swiper/types/swiper-options';
+import { CoreCommonModule } from '@core/common.module';
+import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
+import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
+import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
+import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 
 export interface Difficulties {
   beginner: number;
@@ -27,7 +32,15 @@ export interface Difficulties {
   selector: 'section-difficulties',
   templateUrl: './section-difficulties.component.html',
   styleUrls: ['./section-difficulties.component.scss'],
-  animations: [fadeInUpOnEnterAnimation({ duration: 3000 })]
+  animations: [fadeInUpOnEnterAnimation({ duration: 3000 })],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ApexChartModule,
+    SwiperComponent,
+    NgbProgressbarModule,
+    ProblemsPipesModule,
+  ]
 })
 export class SectionDifficultiesComponent implements OnInit {
 
@@ -58,6 +71,7 @@ export class SectionDifficultiesComponent implements OnInit {
     direction: 'vertical',
     slidesPerView: 3,
     spaceBetween: 10,
+    autoHeight: false,
   };
 
   constructor(

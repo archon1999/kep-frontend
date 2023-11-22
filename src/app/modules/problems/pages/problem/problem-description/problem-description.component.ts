@@ -1,17 +1,33 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAccordionModule, NgbModal, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { ProblemsService } from 'app/modules/problems/services/problems.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Problem, Tag, Topic } from '../../../models/problems.models';
+import { CoreCommonModule } from '@core/common.module';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { ProblemBodyModule } from '@problems/components/problem-body/problem-body.module';
+import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
+import { MonacoEditorModule } from '@shared/third-part-modules/monaco-editor/monaco-editor.module';
+import { KepcoinSpendSwalModule } from '../../../../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'problem-description',
   templateUrl: './problem-description.component.html',
-  styleUrls: ['./problem-description.component.scss']
+  styleUrls: ['./problem-description.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgSelectModule,
+    NgbAccordionModule,
+    ProblemBodyModule,
+    NgbNavModule,
+    ClipboardModule,
+    MonacoEditorModule,
+    KepcoinSpendSwalModule,
+  ]
 })
 export class ProblemDescriptionComponent implements OnInit, OnDestroy {
 
