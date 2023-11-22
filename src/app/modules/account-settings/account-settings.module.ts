@@ -35,6 +35,7 @@ import { SocialComponent } from './social/social.component';
 import { TeamsComponent } from './teams/teams.component';
 import { SystemComponent } from './system/system.component';
 import { Ng2FlatpickrModule } from '@shared/third-part-modules/ng2-flatpickr/ng2-flatpickr.module';
+import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
 
 const routes: Routes = [
   {
@@ -87,6 +88,9 @@ const routes: Routes = [
     UsersSelectModule,
     KepcoinSpendSwalModule,
     Ng2FlatpickrModule,
+    NgxCountriesModule.forRoot({
+      defaultLocale: 'en',
+    }),
   ],
   providers: [
     GeneralInfoResolver,

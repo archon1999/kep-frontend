@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
-import { UserGeneralInfo } from '../../users/users.models';
+import { UserGeneralInfo } from '@users/users.models';
 import { ToastrService } from 'ngx-toastr';
 import { AccountSettingsService } from '../account-settings.service';
 
@@ -12,7 +12,7 @@ import { AccountSettingsService } from '../account-settings.service';
   styleUrls: ['./general-settings.component.scss']
 })
 export class GeneralSettingsComponent implements OnInit {
-  
+
   public generalInfo: UserGeneralInfo;
   public generalSettings: UserGeneralInfo;
 
@@ -33,17 +33,17 @@ export class GeneralSettingsComponent implements OnInit {
     this.route.data.subscribe(({ generalInfo }) => {
       this.generalInfo = generalInfo;
       this.generalSettings = {
-        username: generalInfo.username,        
-        firstName: generalInfo.firstName,        
+        username: generalInfo.username,
+        firstName: generalInfo.firstName,
         lastName: generalInfo.lastName,
-        email: generalInfo.email,        
-      }
-    })
+        email: generalInfo.email,
+      };
+    });
   }
 
   uploadImage(event: any) {
     if (event.target.files && event.target.files[0]) {
-      let reader = new FileReader();
+      const reader = new FileReader();
 
       reader.onload = (event: any) => {
         this.generalInfo.avatar = event.target.result;
@@ -56,7 +56,7 @@ export class GeneralSettingsComponent implements OnInit {
 
   uploadCover(event: any) {
     if (event.target.files && event.target.files[0]) {
-      let reader = new FileReader();
+      const reader = new FileReader();
 
       reader.onload = (event: any) => {
         this.generalInfo.coverPhoto = event.target.result;
@@ -67,7 +67,7 @@ export class GeneralSettingsComponent implements OnInit {
     }
   }
 
-  save(){
+  save() {
     this.service.updateUserGeneralInfo(this.generalSettings).subscribe((result: any) => {
       this.toastr.success('Saved');
       this.errors = null;
@@ -77,8 +77,8 @@ export class GeneralSettingsComponent implements OnInit {
       this.toastr.error('Error');
     });
   }
-  
-  reset(){
+
+  reset() {
     this.service.getUserGeneralInfo().subscribe((generalInfo: any) => {
       this.generalInfo = generalInfo;
     });

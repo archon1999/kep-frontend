@@ -4,7 +4,7 @@
       <div class="col-12">
         <div class="form-group">
           <label for="accountTextarea">Bio</label>
-          <quill-editor [(ngModel)]="userInfo.bio">
+          <quill-editor class="full-width" [(ngModel)]="userInfo.bio">
             <div quill-editor-toolbar>
               <span class="ql-formats">
                 <button class="ql-bold" [title]="'Bold'"></button>
@@ -74,7 +74,7 @@
             [(ngModel)]="userInfo.country"
             appendTo="body">
             <ng-option *ngFor="let country of countries" [value]="country.id.toLowerCase()">
-              <span class="flag-icon flag-icon-{{ country.id.toLowerCase() }}"></span>
+              <span class="fi fi-{{ country.id.toLowerCase() }}"></span>
               {{ country.name }}
             </ng-option>
           </ng-select>
