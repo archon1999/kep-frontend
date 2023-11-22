@@ -3,7 +3,8 @@ import { HackAttempt } from '../models/hack-attempt.models';
 import { HackAttemptVerdicts } from '../constants';
 
 @Pipe({
-  name: 'hackAttemptVerdictColor'
+  name: 'hackAttemptVerdictColor',
+  standalone: true,
 })
 export class HackAttemptVerdictColorPipe implements PipeTransform {
 

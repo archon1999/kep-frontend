@@ -10,18 +10,18 @@
     </div>
 
     <div class="btn-group btn-group-toggle mt-md-0 mt-1" ngbRadioGroup name="radioBasic"
-      [(ngModel)]="topAttemptsOrdering">
+         [(ngModel)]="topAttemptsOrdering">
       <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
-        <input (click)="topAttemptsLoad('time')" type="radio" id="option_1" [value]="'time'" ngbButton />
+        <input (click)="topAttemptsLoad('time')" type="radio" id="option_1" [value]="'time'" ngbButton/>
         <span>{{ 'Time' | translate }}</span>
       </label>
       <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
-        <input (click)="topAttemptsLoad('memory')" type="radio" id="option_2" [value]="'memory'" ngbButton />
+        <input (click)="topAttemptsLoad('memory')" type="radio" id="option_2" [value]="'memory'" ngbButton/>
         <span>{{ 'Memory' | translate }}</span>
       </label>
       <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
         <input (click)="topAttemptsLoad('source_code_size')" type="radio" id="option_3" [value]="'source_code_size'"
-          ngbButton />
+               ngbButton/>
         <span>{{ 'Size' | translate }}</span>
       </label>
     </div>
@@ -30,14 +30,14 @@
   <div class="table-responsive">
     <table class="table">
       <thead>
-        <tr class="bg-gradient-primary">
-          <th>#</th>
-          <th>{{ 'User' | translate }}</th>
-          <th>{{ 'Result' | translate }}</th>
-        </tr>
+      <tr class="bg-gradient-primary">
+        <th>#</th>
+        <th>{{ 'User' | translate }}</th>
+        <th>{{ 'Result' | translate }}</th>
+      </tr>
       </thead>
       <tbody>
-        @for (attempt of topAttempts; track attempt.id){
+        @for (attempt of topAttempts;track attempt.id) {
           <tr>
             <td>{{ $index + 1 }}</td>
             <td>

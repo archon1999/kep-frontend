@@ -3,6 +3,8 @@ import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterA
 import { AuthenticationService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
+import { CoreCommonModule } from '@core/common.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 interface General {
   solved: number;
@@ -13,6 +15,7 @@ interface General {
 
 interface LangInfo {
   lang: string;
+  langFull: string;
   solved: number;
 }
 
@@ -34,9 +37,14 @@ interface TopicInfo {
     fadeInLeftOnEnterAnimation({ duration: 3000 }),
     fadeInRightOnEnterAnimation({ duration: 3000 }),
     fadeInOnEnterAnimation({ duration: 3000 }),
+  ],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgbTooltipModule,
   ]
 })
-export class SectionProfileComponent implements OnInit, OnDestroy {
+export class SectionProfileComponent implements OnInit {
 
   @Input() username: string;
 
@@ -50,8 +58,6 @@ export class SectionProfileComponent implements OnInit, OnDestroy {
   public langs: Array<LangInfo> = [];
   public tags: Array<TagInfo> = [];
   public topics: Array<TopicInfo> = [];
-
-  private _unsubscribeAll = new Subject();
 
   constructor(
     public authService: AuthenticationService,
@@ -83,11 +89,6 @@ export class SectionProfileComponent implements OnInit, OnDestroy {
         this.topics = topics.sort((a, b) => b.solved - a.solved);
       }
     );
-  }
-
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
   }
 
 }

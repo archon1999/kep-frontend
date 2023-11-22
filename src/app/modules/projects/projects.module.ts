@@ -75,5 +75,8 @@ const routes: Routes = [
     ProjectsService,
     ProjectResolver,
   ],
+  exports: [
+    AttemptsTableComponent
+  ]
 })
 export class ProjectsModule { }

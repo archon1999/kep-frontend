@@ -2,13 +2,21 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CoreConfigService } from 'core/services/config.service';
 import { TranslateService } from '@ngx-translate/core';
 import { colors } from 'app/colors.const';
-import { takeUntil } from 'rxjs/operators';
-import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
+import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
+import { CoreCommonModule } from '@core/common.module';
+import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 
 @Component({
   selector: 'section-heatmap',
   templateUrl: './section-heatmap.component.html',
-  styleUrls: ['./section-heatmap.component.scss']
+  styleUrls: ['./section-heatmap.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgbButtonsModule,
+    ApexChartModule,
+  ]
 })
 export class SectionHeatmapComponent implements OnInit {
 
@@ -29,36 +37,36 @@ export class SectionHeatmapComponent implements OnInit {
     this.heatmapUpdate(0);
   }
 
-  heatmapUpdate(year: number){
+  heatmapUpdate(year: number) {
     this.heatmapYear = year;
-    let username = this.username;
-    let translations = this.translateService.translations[this.translateService.currentLang];
+    const username = this.username;
+    const translations = this.translateService.translations[this.translateService.currentLang];
     this.statisticsService.getHeatmap(username, this.heatmapYear).subscribe((result: any) => {
-      let series = [{
+      const series = [{
         name: translations['Monday'],
         data: [],
-      },{
+      }, {
         name: translations['Tuesday'],
         data: [],
-      },{
+      }, {
         name: translations['Wednesday'],
         data: [],
-      },{
+      }, {
         name: translations['Thursday'],
         data: [],
-      },{
+      }, {
         name: translations['Friday'],
         data: [],
-      },{
+      }, {
         name: translations['Saturday'],
         data: [],
-      },{
+      }, {
         name: translations['Sunday'],
         data: [],
       }];
-      for(let data of result){
-        let date = new Date(data.date);
-        let weekday = date.getDay();
+      for (const data of result) {
+        const date = new Date(data.date);
+        const weekday = date.getDay();
         series[weekday].data.push({
           x: date,
           y: data.solved,
@@ -79,15 +87,15 @@ export class SectionHeatmapComponent implements OnInit {
         xaxis: {
           type: 'datetime',
           labels: {
-              format: 'MMM',
+            format: 'MMM',
           }
         },
         yaxis: {
           show: false,
         }
-      }
+      };
       this.heatmap = result;
-    })
+    });
   }
 
 }

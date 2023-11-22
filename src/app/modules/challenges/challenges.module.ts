@@ -103,6 +103,9 @@ const routes: Routes = [
     CountdownComponent,
   ],
   providers: [ChallengeResolver],
+  exports: [
+    SectionProfileComponent
+  ]
 })
 export class ChallengesModule {
 }

@@ -5,12 +5,26 @@ import { fadeInOnEnterAnimation } from 'angular-animations';
 import { DEFAULT_FILTER, ProblemsFilterService } from '@problems/services/problems-filter.service';
 import { BaseComponent } from '@shared/components/classes/base.component';
 import { SpinnersEnum } from '@shared/components/spinner/spinners.enum';
+import { CoreCommonModule } from '@core/common.module';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
+import { ProblemDifficultyColorPipe } from '@problems/pipes/problem-difficulty-color.pipe';
+import { RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'section-problems-table',
   templateUrl: './section-problems-table.component.html',
   styleUrls: ['./section-problems-table.component.scss'],
-  animations: [fadeInOnEnterAnimation({ duration: 1000 })]
+  animations: [fadeInOnEnterAnimation({ duration: 1000 })],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    SpinnerComponent,
+    EmptyResultComponent,
+    TableOrderingModule,
+    ProblemDifficultyColorPipe,
+  ]
 })
 export class SectionProblemsTableComponent extends BaseComponent implements OnInit, OnDestroy {
 

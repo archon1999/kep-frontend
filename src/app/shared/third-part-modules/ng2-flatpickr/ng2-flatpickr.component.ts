@@ -1,12 +1,8 @@
 import { AfterViewInit, Component, forwardRef, Input, OnChanges, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FlatpickrOptions } from './flatpickr-options.interface';
+import * as flatpickr from 'flatpickr';
 
-declare var require: any;
-
-if (typeof window !== 'undefined') {
-  require('flatpickr');
-}
 
 @Component({
   selector: 'ng2-flatpickr',

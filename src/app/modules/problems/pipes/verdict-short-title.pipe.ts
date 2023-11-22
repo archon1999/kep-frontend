@@ -3,7 +3,7 @@ import { Verdicts } from '@problems/constants';
 
 @Pipe({
   name: 'verdictShortTitle',
-  standalone: true
+  standalone: true,
 })
 export class VerdictShortTitlePipe implements PipeTransform {
 

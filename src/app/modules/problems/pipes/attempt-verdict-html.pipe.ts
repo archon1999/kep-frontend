@@ -3,7 +3,8 @@ import { Attempt } from '../models/attempts.models';
 import { Verdicts } from '../constants';
 
 @Pipe({
-  name: 'attemptVerdictHTML'
+  name: 'attemptVerdictHTML',
+  standalone: true,
 })
 export class AttemptVerdictHTMLPipe implements PipeTransform {
 

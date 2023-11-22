@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation, fadeInUpOnEnterAnimation } from 'angular-animations';
+import { CoreCommonModule } from '@core/common.module';
 
 @Component({
   selector: 'section-info',
@@ -9,13 +10,10 @@ import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation, fadeInUpOnEnte
     fadeInUpOnEnterAnimation(),
     fadeInLeftOnEnterAnimation(),
     fadeInRightOnEnterAnimation(),
+  ],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
   ]
 })
-export class SectionInfoComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class SectionInfoComponent {}

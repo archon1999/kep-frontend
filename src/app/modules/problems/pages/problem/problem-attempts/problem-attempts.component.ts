@@ -3,15 +3,19 @@ import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Attempt } from '../../../models/attempts.models';
-import { Problem } from '../../../models/problems.models';
+import { Attempt } from '@problems/models/attempts.models';
+import { Problem } from '@problems/models/problems.models';
 import { ProblemsService } from 'app/modules/problems/services/problems.service';
+import { CoreCommonModule } from '@core/common.module';
+import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
+import { PaginationModule } from '@shared/components/pagination/pagination.module';
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'problem-attempts',
   templateUrl: './problem-attempts.component.html',
-  styleUrls: ['./problem-attempts.component.scss']
+  styleUrls: ['./problem-attempts.component.scss'],
+  standalone: true,
+  imports: [CoreCommonModule, AttemptsTableModule, PaginationModule],
 })
 export class ProblemAttemptsComponent implements OnInit {
 
