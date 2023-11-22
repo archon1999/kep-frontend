@@ -8,16 +8,24 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthGuard } from 'app/auth/helpers';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { ColorPickerModule } from 'ngx-color-picker';
-import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
-import { UsersSelectModule } from '../../shared/components/users-select/users-select.module';
+import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
+import { UsersSelectModule } from '@shared/components/users-select/users-select.module';
 import { KepcoinSpendSwalModule } from '../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
-import { NgSelectModule } from '../../shared/third-part-modules/ng-select/ng-select.module';
-import { Ng2FlatpickrModule } from '../../shared/third-part-modules/ng2-flatpickr/ng2-flatpickr.module';
-import { NouisliderModule } from '../../shared/third-part-modules/nouislider/nouislider.module';
-import { QuillModule } from '../../shared/third-part-modules/quill/quill.module';
-import { ToastrModule } from '../../shared/third-part-modules/toastr/toastr.module';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { NouisliderModule } from '@shared/third-part-modules/nouislider/nouislider.module';
+import { QuillModule } from '@shared/third-part-modules/quill/quill.module';
+import { ToastrModule } from '@shared/third-part-modules/toastr/toastr.module';
 import { AccountSettingsComponent } from './account-settings.component';
-import { GeneralInfoResolver, UserEducationsResolver, UserInfoResolver, UserSkillsResolver, UserSocialResolver, UserTeamsResolver, UserTechnologiesResolver, UserWorkExperiencesResolver } from './account-settings.resolver';
+import {
+  GeneralInfoResolver,
+  UserEducationsResolver,
+  UserInfoResolver,
+  UserSkillsResolver,
+  UserSocialResolver,
+  UserTeamsResolver,
+  UserTechnologiesResolver,
+  UserWorkExperiencesResolver
+} from './account-settings.resolver';
 import { CareerComponent } from './career/career.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { GeneralSettingsComponent } from './general-settings/general-settings.component';
@@ -26,6 +34,7 @@ import { SkillsComponent } from './skills/skills.component';
 import { SocialComponent } from './social/social.component';
 import { TeamsComponent } from './teams/teams.component';
 import { SystemComponent } from './system/system.component';
+import { Ng2FlatpickrModule } from '@shared/third-part-modules/ng2-flatpickr/ng2-flatpickr.module';
 
 const routes: Routes = [
   {
@@ -71,13 +80,13 @@ const routes: Routes = [
     FormsModule,
     ToastrModule,
     QuillModule,
-    Ng2FlatpickrModule,
     NouisliderModule,
     ColorPickerModule,
     NgSelectModule,
     UserPopoverModule,
     UsersSelectModule,
     KepcoinSpendSwalModule,
+    Ng2FlatpickrModule,
   ],
   providers: [
     GeneralInfoResolver,
@@ -90,4 +99,4 @@ const routes: Routes = [
     UserWorkExperiencesResolver
   ]
 })
-export class AccountSettingsModule { }
+export class AccountSettingsModule {}
