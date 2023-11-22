@@ -5,6 +5,7 @@ import { AuthenticationService } from 'app/auth/service';
 import { UserInfo } from '@users/users.models';
 import { ToastrService } from 'ngx-toastr';
 import { AccountSettingsService } from '../account-settings.service';
+import { NgxCountriesService } from '@shared/third-part-modules/ngx-countries/ngx-countries.service';
 
 @Component({
   selector: 'information',
@@ -33,27 +34,27 @@ export class InformationComponent implements OnInit {
     public route: ActivatedRoute,
     public toastr: ToastrService,
     public service: AccountSettingsService,
-    // public countriesService: NgxCountriesIsoService,
+    public countriesService: NgxCountriesService,
   ) {
   }
 
   ngOnInit(): void {
-    // let countries = this.countriesService.getNames();
-    // for(let country of Object.keys(countries)){
-    //   this.countries.push({
-    //     id: country,
-    //     name: countries[country],
-    //   })
-    // }
-    // this.countries = this.countries.sort((a, b) => {
-    //   if(a.name < b.name){
-    //     return -1;
-    //   } else if(a.name == b.name){
-    //     return 0;
-    //   } else {
-    //     return 1;
-    //   }
-    // });
+    const countries = this.countriesService.getNames();
+    for (const country of Object.keys(countries)) {
+      this.countries.push({
+        id: country,
+        name: countries[country],
+      });
+    }
+    this.countries = this.countries.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      } else if (a.name === b.name) {
+        return 0;
+      } else {
+        return 1;
+      }
+    });
 
     this.route.data.subscribe(({ userInfo }) => {
       this.userInfo = userInfo;
@@ -62,7 +63,7 @@ export class InformationComponent implements OnInit {
   }
 
   onDateChange() {
-    let date = this.birthDate[0];
+    const date = this.birthDate[0];
     this.userInfo.dateOfBirth = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
   }
 
