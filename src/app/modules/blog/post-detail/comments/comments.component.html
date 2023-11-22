@@ -1,4 +1,4 @@
-<h2 class="mb-2">
+<script src="../../../account-settings/general-settings/general-settings.component.ts"></script><h2 class="mb-2">
   {{ 'Comments' | translate }}
   <span class="comment-count">({{ comments.length }})</span>
 </h2>
@@ -46,7 +46,7 @@
 </div>
 
 <h4 class="mb-1">{{ 'WriteComment' | translate }}</h4>
-<quill-editor [(ngModel)]="comment">
+<quill-editor class="full-width" [(ngModel)]="comment">
   <div quill-editor-toolbar>
     <span class="ql-formats">
       <button class="ql-bold" [title]="'Bold'"></button>
