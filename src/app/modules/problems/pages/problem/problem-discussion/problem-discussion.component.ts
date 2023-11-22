@@ -1,15 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { CoreCommonModule } from '@core/common.module';
 
 @Component({
   selector: 'app-problem-discussion',
   templateUrl: './problem-discussion.component.html',
-  styleUrls: ['./problem-discussion.component.scss']
+  styleUrls: ['./problem-discussion.component.scss'],
+  standalone: true,
+  imports: [CoreCommonModule]
 })
-export class ProblemDiscussionComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class ProblemDiscussionComponent {}

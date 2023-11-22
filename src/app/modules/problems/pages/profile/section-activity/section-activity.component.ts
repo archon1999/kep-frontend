@@ -2,12 +2,21 @@ import { Component, Input, OnInit } from '@angular/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { colors } from 'app/colors.const';
 import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
+import { CoreCommonModule } from '@core/common.module';
+import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 
 @Component({
   selector: 'section-activity',
   templateUrl: './section-activity.component.html',
   styleUrls: ['./section-activity.component.scss'],
-  animations: [fadeInOnEnterAnimation({ duration: 3000 })]
+  animations: [fadeInOnEnterAnimation({ duration: 3000 })],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgbButtonsModule,
+    ApexChartModule,
+  ]
 })
 export class SectionActivityComponent implements OnInit {
 
@@ -30,15 +39,15 @@ export class SectionActivityComponent implements OnInit {
     this.activityDataUpdate(this.activityDays);
   }
 
-  activityDataUpdate(days: number){
+  activityDataUpdate(days: number) {
     this.activityDays = days;
-    let username = this.username;
+    const username = this.username;
     this.statisticsService.getLastDays(username, days).subscribe((result: any) => {
       this.activitySolved = result.solved;
-      let data = [];
+      const data = [];
       let days = 0;
-      for (let y of result.series) {
-        let dt = new Date(Date.now() - days * 1000 * 60 * 60 * 24);
+      for (const y of result.series) {
+        const dt = new Date(Date.now() - days * 1000 * 60 * 60 * 24);
         data.push({
           x: dt.toDateString(),
           y: y,
@@ -79,7 +88,7 @@ export class SectionActivityComponent implements OnInit {
           labels: {
             show: false,
             formatter: function (val) {
-              return val + "";
+              return val + '';
             },
           }
         },
@@ -94,7 +103,7 @@ export class SectionActivityComponent implements OnInit {
         },
       };
 
-    })
+    });
   }
 
 }

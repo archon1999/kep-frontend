@@ -7,6 +7,12 @@ import { ProblemsService } from 'app/modules/problems/services/problems.service'
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 import { BaseComponent } from '@shared/components/classes/base.component';
+import { CoreCommonModule } from '@core/common.module';
+import { NgScrollbar } from 'ngx-scrollbar';
+import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
+import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { RouterModule } from '@angular/router';
 
 export interface TopRating {
   username: string;
@@ -15,10 +21,17 @@ export interface TopRating {
 }
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'section-sidebar',
   templateUrl: './section-sidebar.component.html',
   styleUrls: ['./section-sidebar.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgScrollbar,
+    NgbButtonsModule,
+    ApexChartModule,
+    ContestantViewModule,
+  ]
 })
 export class SectionSidebarComponent extends BaseComponent implements OnInit {
 

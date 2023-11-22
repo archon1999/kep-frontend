@@ -8,13 +8,17 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'section-topics',
   templateUrl: './section-topics.component.html',
   styleUrls: ['./section-topics.component.scss'],
   animations: [fadeInRightOnEnterAnimation({ duration: 3000 })],
   standalone: true,
-  imports: [NgbTooltipModule, CommonModule, TranslateModule, SwiperComponent],
+  imports: [
+    NgbTooltipModule,
+    CommonModule,
+    TranslateModule,
+    SwiperComponent,
+  ],
 })
 export class SectionTopicsComponent implements OnInit {
 

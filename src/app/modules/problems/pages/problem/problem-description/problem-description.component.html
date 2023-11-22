@@ -14,7 +14,7 @@
       </ng-template>
       <ng-template ngbPanelContent>
         <div
-          *ngIf="currentUser?.isSuperuser || currentUser?.permissions.canChangeProblemTags && problem.hasSolved else elseBlock">
+          *ngIf="currentUser?.isSuperuser || currentUser?.permissions.canChangeProblemTags && problem.userInfo.hasSolved else elseBlock">
           <button
             (click)="removeTag(tag)"
             *ngFor="let tag of problem.tags"

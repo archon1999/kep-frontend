@@ -8,16 +8,10 @@
       </div>
     
       <div class="card-body">
-        <apx-chart
+        <apex-chart
           *ngIf="byWeekdayChart"
-          [theme]="chartTheme"
-          [series]="byWeekdayChart.series"
-          [chart]="byWeekdayChart.chart"
-          [dataLabels]="byWeekdayChart.dataLabels"
-          [plotOptions]="byWeekdayChart.plotOptions"
-          [xaxis]="byWeekdayChart.xaxis"
-          [colors]="byWeekdayChart.colors"
-        ></apx-chart>
+          [options]="byWeekdayChart"
+        ></apex-chart>
       </div>
     </div>
   </div>
@@ -31,16 +25,10 @@
       </div>
     
       <div class="card-body">
-        <apx-chart
+        <apex-chart
           *ngIf="byMonthChart"
-          [theme]="chartTheme"
-          [series]="byMonthChart.series"
-          [chart]="byMonthChart.chart"
-          [dataLabels]="byMonthChart.dataLabels"
-          [plotOptions]="byMonthChart.plotOptions"
-          [xaxis]="byMonthChart.xaxis"
-          [colors]="byMonthChart.colors"
-        ></apx-chart>
+          [options]="byMonthChart"
+        ></apex-chart>
       </div>
     </div>
   </div>
@@ -54,16 +42,10 @@
       </div>
     
       <div class="card-body">
-        <apx-chart
+        <apex-chart
           *ngIf="byPeriodChart"
-          [theme]="chartTheme"
-          [series]="byPeriodChart.series"
-          [chart]="byPeriodChart.chart"
-          [dataLabels]="byPeriodChart.dataLabels"
-          [plotOptions]="byPeriodChart.plotOptions"
-          [xaxis]="byPeriodChart.xaxis"
-          [colors]="byPeriodChart.colors"
-        ></apx-chart>
+          [options]="byPeriodChart"
+        ></apex-chart>
       </div>
     </div>
 

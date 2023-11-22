@@ -5,6 +5,9 @@ import { ProblemsFilterService } from 'app/modules/problems/services/problems-fi
 import { BaseComponent } from '@shared/components/classes/base.component';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { equalsCheck } from '@shared/utils';
+import { CoreCommonModule } from '@core/common.module';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 
 interface Difficulty {
   name: string;
@@ -14,7 +17,13 @@ interface Difficulty {
 @Component({
   selector: 'section-problems-filter',
   templateUrl: './section-problems-filter.component.html',
-  styleUrls: ['./section-problems-filter.component.scss']
+  styleUrls: ['./section-problems-filter.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgSelectModule,
+    ProblemsPipesModule,
+  ]
 })
 export class SectionProblemsFilterComponent extends BaseComponent implements OnInit {
 

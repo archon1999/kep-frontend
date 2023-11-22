@@ -1,7 +1,7 @@
 import { HomeComponent } from './home.component';
 import { AuthGuard } from '@auth/helpers';
 
-export const homeRoutes = [
+export const routes = [
   {
     path: '',
     component: HomeComponent,

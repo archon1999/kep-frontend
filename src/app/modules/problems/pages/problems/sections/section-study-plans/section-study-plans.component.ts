@@ -2,12 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { StudyPlan } from '@problems/models/problems.models';
 import { SwiperOptions } from 'swiper/types/swiper-options';
+import { CoreCommonModule } from '@core/common.module';
+import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
+import { StudyPlanCardModule } from '@problems/components/study-plan-card/study-plan-card.module';
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'section-study-plans',
   templateUrl: './section-study-plans.component.html',
   styleUrls: ['./section-study-plans.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    SwiperComponent,
+    StudyPlanCardModule,
+  ]
 })
 export class SectionStudyPlansComponent implements OnInit {
 

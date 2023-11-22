@@ -11,6 +11,21 @@ import { PageResult } from 'app/shared/page-result';
 import { CoreSidebarService } from '../../../../../core/components/core-sidebar/core-sidebar.service';
 import { SwipeService } from '@shared/services/swipe.service';
 import { SpinnersEnum } from '@shared/components/spinner/spinners.enum';
+import { CoreCommonModule } from '@core/common.module';
+import { SectionStudyPlansComponent } from '@problems/pages/problems/sections/section-study-plans/section-study-plans.component';
+import { SectionTopicsComponent } from '@problems/pages/problems/sections/section-topics/section-topics.component';
+import {
+  SectionProblemsFilterComponent
+} from '@problems/pages/problems/sections/section-problems-filter/section-problems-filter.component';
+import { SectionProblemsTableComponent } from '@problems/pages/problems/sections/section-problems-table/section-problems-table.component';
+import { PaginationModule } from '@shared/components/pagination/pagination.module';
+import { CoreSidebarModule } from '@core/components';
+import { NgScrollbar } from 'ngx-scrollbar';
+import { SectionSidebarComponent } from '@problems/pages/problems/sections/section-sidebar/section-sidebar.component';
+import { NouisliderModule } from '@shared/third-part-modules/nouislider/nouislider.module';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { SectionInfoComponent } from '@problems/pages/problems/sections/section-info/section-info.component';
 
 @Component({
   selector: 'app-problems',
@@ -20,6 +35,22 @@ import { SpinnersEnum } from '@shared/components/spinner/spinners.enum';
     fadeInRightAnimation({ duration: 2000 }),
     fadeInLeftAnimation({ duration: 2000 }),
     fadeInAnimation({ anchor: 'mobile', duration: 1000 }),
+  ],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    SectionStudyPlansComponent,
+    SectionTopicsComponent,
+    SectionProblemsFilterComponent,
+    SectionProblemsTableComponent,
+    PaginationModule,
+    CoreSidebarModule,
+    NgScrollbar,
+    SectionSidebarComponent,
+    NouisliderModule,
+    NgSelectModule,
+    SpinnerComponent,
+    SectionInfoComponent,
   ]
 })
 export class ProblemsComponent extends BaseComponent implements OnInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { AttemptLangs } from "../constants";
+import { AttemptLangs } from '../constants';
 
 export interface ProblemUserInfo {
   hasAttempted: boolean;
@@ -11,7 +11,7 @@ export interface Problem {
   id: number;
   authorUsername: string;
   userInfo: ProblemUserInfo;
-  title: string
+  title: string;
   difficulty: number;
   difficultyTitle: string;
   likesCount: number;
@@ -37,6 +37,7 @@ export interface Problem {
   image?: string;
   hidden?: boolean;
   checkInputSource?: string;
+  solutionKepcoinValue: number;
 }
 
 export interface AvailableLanguage {
@@ -49,7 +50,7 @@ export interface AvailableLanguage {
 
 export interface SampleTest {
   input: string;
-  output: string
+  output: string;
 }
 
 export interface Difficulty {

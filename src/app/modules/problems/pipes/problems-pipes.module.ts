@@ -6,14 +6,12 @@ import { ProblemDifficultyColorPipe } from './problem-difficulty-color.pipe';
 import { VerdictShortTitlePipe } from '@problems/pipes/verdict-short-title.pipe';
 
 @NgModule({
-  declarations: [
+  imports: [
+    CommonModule,
+    VerdictShortTitlePipe,
     HackAttemptVerdictColorPipe,
     AttemptVerdictHTMLPipe,
     ProblemDifficultyColorPipe,
-  ],
-  imports: [
-    CommonModule,
-    VerdictShortTitlePipe
   ],
   exports: [
     HackAttemptVerdictColorPipe,

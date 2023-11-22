@@ -7,11 +7,20 @@ import { CoreConfigService } from 'core/services/config.service';
 import { CoreConfig } from 'core/types';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { CoreCommonModule } from '@core/common.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 
 @Component({
   selector: 'problem-sidebar-statistics',
   templateUrl: './problem-sidebar-statistics.component.html',
-  styleUrls: ['./problem-sidebar-statistics.component.scss']
+  styleUrls: ['./problem-sidebar-statistics.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgbTooltipModule,
+    ApexChartModule,
+  ]
 })
 export class ProblemSidebarStatisticsComponent implements OnInit, OnDestroy {
   @Input() problem: Problem;
