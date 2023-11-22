@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CorePipesModule } from '../../../../core/pipes/pipes.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { CoreCommonModule } from '../../../../core/common.module';
 
 @Component({
   selector: 'system-section',
   standalone: true,
-  imports: [CommonModule, CorePipesModule, TranslateModule],
+  imports: [CoreCommonModule, TranslateModule],
   templateUrl: './system-section.component.html',
   styleUrl: './system-section.component.scss'
 })
