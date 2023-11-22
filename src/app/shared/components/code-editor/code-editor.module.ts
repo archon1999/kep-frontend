@@ -17,6 +17,7 @@ import { NgScrollbar } from 'ngx-scrollbar';
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
 import { NewFeatureDirective } from '@shared/directives/new-feature.directive';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { VerdictShortTitlePipe } from '@problems/pipes/verdict-short-title.pipe';
 
 @NgModule({
   declarations: [
@@ -37,13 +38,13 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
     ErrorTooltipModule,
     NgSelectModule,
     CoreSidebarModule,
-    // PerfectScrollbarModule,
     DragDropModule,
     NgScrollbar,
     KepcoinViewModule,
     NewFeatureDirective,
     NgbAccordionModule,
-    SpinnerComponent
+    SpinnerComponent,
+    VerdictShortTitlePipe
   ],
   exports: [
     CodeEditorModalComponent,

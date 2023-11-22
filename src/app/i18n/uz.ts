@@ -488,6 +488,7 @@ export const locale = {
       ANSWER: 'Javob',
       TEST: 'Test',
       ANSWER_FOR_INPUT: 'Test uchun javob',
+      CHECK_SAMPLES: 'Misollarda testlash',
     },
     COURSES: {
       COURSES: 'Kurslar',
