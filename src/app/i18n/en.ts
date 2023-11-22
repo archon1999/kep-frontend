@@ -488,6 +488,7 @@ export const locale = {
       SUBMIT: 'Submit',
       SAMPLE_TEST: 'Sample test',
       ANSWER_FOR_INPUT: 'Answer for input',
+      CHECK_SAMPLES: 'Check on samples',
     },
     COURSES: {
       COURSES: 'Courses',

@@ -116,7 +116,7 @@
           >
             <div new-feature class="position-relative">
               <button class="btn btn-glow btn-dark bg-dark">
-                {{ 'Check samples' | translate }}
+                {{ 'CODE_EDITOR.CHECK_SAMPLES' | translate }}
                 <i data-feather="shopping-cart"></i>
               </button>
             </div>
@@ -129,7 +129,7 @@
             type="button">
             <span *ngIf="isCheckSamples" aria-hidden="true" class="spinner-border spinner-border-sm" role="status"></span>
             <span *ngIf="!isCheckSamples"><i data-feather="terminal"></i></span>
-            {{ 'Check samples' | translate }}
+            {{ 'CODE_EDITOR.CHECK_SAMPLES' | translate }}
           </button>
         }
         <div class="d-flex">
@@ -204,9 +204,10 @@
       } @else {
         <div class="card-header">
           <div class="card-title">
-            {{ 'Result' | translate }}
+            {{ 'RESULT' | translate }}
           </div>
         </div>
+        <hr class="mt-0 mb-0">
         <div class="card-body">
           <ngb-accordion [closeOthers]="false" [destroyOnHide]="false">
             @for (result of checkSamplesResult; track result.input){
@@ -214,11 +215,10 @@
                 <ng-template ngbPanelTitle>
                   <div class="font-weight-bolder d-flex justify-content-between">
                     <span>TC #{{ $index + 1 }}</span>
-                    @if (result.verdict == 1){
-                      <span class="text-success">OK</span>
-                    } @else {
-                      <span class="text-danger">WA</span>
-                    }
+                    <span [class]="{
+                      'text-success': result.verdict == Verdicts.Accepted,
+                      'text-danger': result.verdict != Verdicts.Accepted,
+                    }">{{ result.verdict | verdictShortTitle }}</span>
                   </div>
                 </ng-template>
                 <ng-template ngbPanelContent>
