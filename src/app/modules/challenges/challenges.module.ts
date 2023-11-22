@@ -33,6 +33,7 @@ import { SectionProfileComponent } from './pages/challenges-profile/section-prof
 import { SectionRatingChangesComponent } from './pages/challenges-profile/section-rating-changes/section-rating-changes.component';
 import { SectionLastChallengesComponent } from './pages/challenges-profile/section-last-challenges/section-last-challenges.component';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
+import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 
 
 const routes: Routes = [
@@ -99,6 +100,7 @@ const routes: Routes = [
     ContentHeaderModule,
     ContestantViewModule,
     ApexChartModule,
+    CountdownComponent,
   ],
   providers: [ChallengeResolver],
 })
