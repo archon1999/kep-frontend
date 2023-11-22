@@ -2,7 +2,7 @@ import {
   ApexAxisChartSeries,
   ApexChart,
   ApexDataLabels, ApexFill,
-  ApexGrid,
+  ApexGrid, ApexPlotOptions,
   ApexStroke,
   ApexTitleSubtitle, ApexTooltip,
   ApexXAxis,
@@ -21,4 +21,6 @@ export interface ChartOptions {
   stroke?: ApexStroke;
   title?: ApexTitleSubtitle;
   tooltip?: ApexTooltip;
+  plotOptions?: ApexPlotOptions;
+  labels?: string[];
 }

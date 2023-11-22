@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
+import { CoreCommonModule } from '@core/common.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ɵEmptyOutletComponent } from '@angular/router';
+import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
+import { PaginationModule } from '@shared/components/pagination/pagination.module';
 
 
 enum RatingType {
@@ -17,13 +22,21 @@ class RatingHistory {
     public contestsRatingTitle: string,
     public result: number,
     public date: Date,
-  ){}
+  ) {}
 }
 
 @Component({
   selector: 'app-rating-history',
   templateUrl: './rating-history.component.html',
-  styleUrls: ['./rating-history.component.scss']
+  styleUrls: ['./rating-history.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ContentHeaderModule,
+    ɵEmptyOutletComponent,
+    UserPopoverModule,
+    PaginationModule,
+  ]
 })
 export class RatingHistoryComponent implements OnInit {
 
@@ -76,7 +89,7 @@ export class RatingHistoryComponent implements OnInit {
     });
   }
 
-  reloadPage(){
+  reloadPage() {
     this.api.get('problems-rating-history', {
       'type': RatingType.DAILY,
       'page_size': 1,
@@ -106,24 +119,24 @@ export class RatingHistoryComponent implements OnInit {
     this.reloadMonthlyHistoryPage();
   }
 
-  reloadDailyHistoryPage(){
-    var params = {'type': RatingType.DAILY, 'page': this.dailyRatingHistoryPage, page_size: 10 };
+  reloadDailyHistoryPage() {
+    const params = { 'type': RatingType.DAILY, 'page': this.dailyRatingHistoryPage, page_size: 10 };
     this.api.get('problems-rating-history', params).subscribe((result: any) => {
       this.dailyRatingHistory = result.data;
       this.dailyRatingHistoryTotal = result.total;
     });
   }
 
-  reloadWeeklyHistoryPage(){
-    var params = {'type': RatingType.WEEKLY, 'page': this.weeklyRatingHistoryPage, page_size: 10 };
+  reloadWeeklyHistoryPage() {
+    const params = { 'type': RatingType.WEEKLY, 'page': this.weeklyRatingHistoryPage, page_size: 10 };
     this.api.get('problems-rating-history', params).subscribe((result: any) => {
       this.weeklyRatingHistory = result.data;
       this.weeklyRatingHistoryTotal = result.total;
     });
   }
 
-  reloadMonthlyHistoryPage(){
-    var params = {'type': RatingType.MONTHLY, 'page': this.monthlyRatingHistoryPage, page_size: 10 };
+  reloadMonthlyHistoryPage() {
+    const params = { 'type': RatingType.MONTHLY, 'page': this.monthlyRatingHistoryPage, page_size: 10 };
     this.api.get('problems-rating-history', params).subscribe((result: any) => {
       this.monthlyRatingHistory = result.data;
       this.monthlyRatingHistoryTotal = result.total;

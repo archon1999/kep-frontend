@@ -11,44 +11,16 @@
 </div>
 
 <div *ngIf="attemptStatisticsChart">
-  <apx-chart
-    [theme]="chartTheme"
-    [plotOptions]="attemptStatisticsChart.plotOptions"
-    [chart]="attemptStatisticsChart.chart"
-    [colors]="attemptStatisticsChart.colors"
-    [series]="attemptStatisticsChart.series"
-    [legend]="attemptStatisticsChart.legend"
-    [labels]="attemptStatisticsChart.labels">
-  </apx-chart>
+  <apex-chart [options]="attemptStatisticsChart"></apex-chart>
 </div>
 
 <div class="mt-2" *ngIf="langStatisticsChart">
-  <apx-chart
-    [theme]="chartTheme"
-    [plotOptions]="langStatisticsChart.plotOptions"
-    [chart]="langStatisticsChart.chart"
-    [colors]="langStatisticsChart.colors"
-    [series]="langStatisticsChart.series"
-    [legend]="langStatisticsChart.legend"
-    [labels]="langStatisticsChart.labels">
-  </apx-chart>
+  <apex-chart [options]="langStatisticsChart"></apex-chart>
 </div>
 
 <div *ngIf="attemptsForSolveChart">
   <h4 class="text-center">
     {{ 'NumberOfAttemptsForSolve' | translate }}
   </h4>
-  <apx-chart
-    [theme]="chartTheme"
-    [chart]="attemptsForSolveChart.chart"
-    [series]="attemptsForSolveChart.series"
-    [dataLabels]="attemptsForSolveChart.dataLabels"
-    [stroke]="attemptsForSolveChart.stroke"
-    [labels]="attemptsForSolveChart.labels"
-    [yaxis]="attemptsForSolveChart.yaxis"
-    [xaxis]="attemptsForSolveChart.xaxis"
-    [legend]="attemptsForSolveChart.legend"
-    [colors]="attemptsForSolveChart.colors"
-    [grid]="attemptsForSolveChart.grid">
-  </apx-chart>
+  <apex-chart [options]="attemptsForSolveChart"></apex-chart>
 </div>

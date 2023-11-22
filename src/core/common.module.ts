@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreDirectivesModule } from 'core/directives/directives';
 import { CorePipesModule } from 'core/pipes/pipes.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { TranslateModule } from '@ngx-translate/core';
     CoreDirectivesModule,
     CorePipesModule,
     TranslateModule,
+    RouterModule,
   ],
   exports: [
     CommonModule,
@@ -25,6 +27,7 @@ import { TranslateModule } from '@ngx-translate/core';
     CoreDirectivesModule,
     CorePipesModule,
     TranslateModule,
+    RouterModule,
   ]
 })
 export class CoreCommonModule {}

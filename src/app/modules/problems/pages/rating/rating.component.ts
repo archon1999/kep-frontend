@@ -1,15 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { CurrentProblemsRating, ProblemsRating } from './rating.models';
+import { CurrentProblemsRating, ProblemsRating } from '../../models/rating.models';
 import { ApiService } from 'app/shared/services/api.service';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { PageResult } from '@shared/page-result';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
+import { CoreCommonModule } from '@core/common.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { PaginationModule } from '@shared/components/pagination/pagination.module';
 
 @Component({
   selector: 'app-rating',
   templateUrl: './rating.component.html',
-  styleUrls: ['./rating.component.scss']
+  styleUrls: ['./rating.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ContentHeaderModule,
+    ContestantViewModule,
+    PaginationModule,
+  ],
 })
 export class RatingComponent implements OnInit {
   public difficulties = ['beginner', 'basic', 'normal', 'medium', 'advanced', 'hard', 'extremal'];

@@ -6,20 +6,21 @@
           <div class="card-title">
             {{ 'Activity' | translate }}
           </div>
-          <div class="btn-group btn-group-toggle mt-md-0 mt-1" ngbRadioGroup name="radioBasic" [(ngModel)]="activityDays">
+          <div class="btn-group btn-group-toggle mt-md-0 mt-1" ngbRadioGroup name="radioBasic"
+               [(ngModel)]="activityDays">
             <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
               <input (click)="activityDataUpdate(7)" type="radio" name="last_days_option" id="last_days_option_1"
-                     [value]="7" ngbButton />
+                     [value]="7" ngbButton/>
               <span>7</span>
             </label>
             <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
               <input (click)="activityDataUpdate(14)" type="radio" name="last_days_option" id="last_days_option_2"
-                     [value]="14" ngbButton />
+                     [value]="14" ngbButton/>
               <span>14</span>
             </label>
             <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
               <input (click)="activityDataUpdate(30)" type="radio" name="last_days_option" id="last_days_option_3"
-                     [value]="30" ngbButton />
+                     [value]="30" ngbButton/>
               <span>30</span>
             </label>
           </div>
@@ -52,15 +53,15 @@
         <div class="btn-group btn-group-toggle mt-md-0 mt-1" ngbRadioGroup name="radioBasic"
              [(ngModel)]="topRatingOption">
           <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
-            <input (click)="loadTopRating(1)" type="radio" name="top-rating" id="top-rating-1" [value]="1" ngbButton />
+            <input (click)="loadTopRating(1)" type="radio" name="top-rating" id="top-rating-1" [value]="1" ngbButton/>
             <span>{{ 'Today' | translate }}</span>
           </label>
           <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
-            <input (click)="loadTopRating(2)" type="radio" name="top-rating" id="top-rating-1" [value]="2" ngbButton />
+            <input (click)="loadTopRating(2)" type="radio" name="top-rating" id="top-rating-1" [value]="2" ngbButton/>
             <span>{{ 'Week' | translate }}</span>
           </label>
           <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
-            <input (click)="loadTopRating(3)" type="radio" name="top-rating" id="top-rating-1" [value]="3" ngbButton />
+            <input (click)="loadTopRating(3)" type="radio" name="top-rating" id="top-rating-1" [value]="3" ngbButton/>
             <span>{{ 'Month' | translate }}</span>
           </label>
         </div>
@@ -81,7 +82,7 @@
           <tbody>
           <tr *ngFor="let rating of topRating; index as i">
             <td class="text-center text-dark">
-              {{ i+1 }}
+              {{ i + 1 }}
             </td>
             <td class="">
               <contestant-view [imgSize]="28" [user]="rating"></contestant-view>

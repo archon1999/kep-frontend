@@ -2,20 +2,32 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'app/shared/services/api.service';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
-import { Subject, asyncScheduler, interval } from 'rxjs';
+import { asyncScheduler, interval, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
-import { Attempt } from '../../models/attempts.models';
+import { Attempt } from '@problems/models/attempts.models';
 import { GlobalService } from '@shared/services/global.service';
 import { SpinnersEnum } from '@shared/components/spinner/spinners.enum';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CoreCommonModule } from '@core/common.module';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
+import { PaginationModule } from '@shared/components/pagination/pagination.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 
 const RELOAD_INTERVAL_TIME = 30000;
 
 @Component({
   selector: 'app-attempts',
   templateUrl: './attempts.component.html',
-  styleUrls: ['./attempts.component.scss']
+  styleUrls: ['./attempts.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    SpinnerComponent,
+    AttemptsTableModule,
+    PaginationModule,
+    ContentHeaderModule,
+  ]
 })
 export class AttemptsComponent implements OnInit, OnDestroy {
 

@@ -1,12 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { colors } from 'app/colors.const';
-import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
+import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
+import { CoreCommonModule } from '@core/common.module';
+import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 
 @Component({
   selector: 'section-time',
   templateUrl: './section-time.component.html',
-  styleUrls: ['./section-time.component.scss']
+  styleUrls: ['./section-time.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ApexChartModule,
+  ]
 })
 export class SectionTimeComponent implements OnInit {
 
@@ -23,13 +30,13 @@ export class SectionTimeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    let translations = this.translateService.translations[this.translateService.currentLang];
+    const translations = this.translateService.translations[this.translateService.currentLang];
 
     this.statisticsService.getByWeekday(this.username).subscribe(
-      (result: any) =>{
-        let values = [];
-        let labels = [];
-        for(let data of result){
+      (result: any) => {
+        const values = [];
+        const labels = [];
+        for (const data of result) {
           labels.push(translations[data.day]);
           values.push(data.solved);
         }
@@ -41,7 +48,7 @@ export class SectionTimeComponent implements OnInit {
             }
           ],
           chart: {
-            type: "bar",
+            type: 'bar',
             height: 350,
             toolbar: {
               show: false,
@@ -62,13 +69,13 @@ export class SectionTimeComponent implements OnInit {
           }
         };
       }
-    )
+    );
 
     this.statisticsService.getByMonth(this.username).subscribe(
-      (result: any) =>{
-        let values = [];
-        let labels = [];
-        for(let data of result){
+      (result: any) => {
+        const values = [];
+        const labels = [];
+        for (const data of result) {
           labels.push(translations[data.month]);
           values.push(data.solved);
         }
@@ -80,7 +87,7 @@ export class SectionTimeComponent implements OnInit {
             }
           ],
           chart: {
-            type: "bar",
+            type: 'bar',
             height: 350,
             toolbar: {
               show: false,
@@ -101,13 +108,13 @@ export class SectionTimeComponent implements OnInit {
           }
         };
       }
-    )
+    );
 
     this.statisticsService.getByPeriod(this.username).subscribe(
-      (result: any) =>{
-        let values = [];
-        let labels = [];
-        for(let data of result){
+      (result: any) => {
+        const values = [];
+        const labels = [];
+        for (const data of result) {
           labels.push(data.period);
           values.push(data.solved);
         }
@@ -119,7 +126,7 @@ export class SectionTimeComponent implements OnInit {
             }
           ],
           chart: {
-            type: "bar",
+            type: 'bar',
             height: 350,
             toolbar: {
               show: false,
@@ -140,7 +147,7 @@ export class SectionTimeComponent implements OnInit {
           }
         };
       }
-    )
+    );
   }
 
 }

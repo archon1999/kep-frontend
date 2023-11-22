@@ -5,19 +5,8 @@
   </div>
   <div class="card-body">
     <div *ngIf="numberOfAttemptsForSolve">
-      <apx-chart
-        [theme]="chartTheme"
-        [chart]="numberOfAttemptsForSolveChart.chart"
-        [series]="numberOfAttemptsForSolveChart.series"
-        [dataLabels]="numberOfAttemptsForSolveChart.dataLabels"
-        [stroke]="numberOfAttemptsForSolveChart.stroke"
-        [labels]="numberOfAttemptsForSolveChart.labels"
-        [yaxis]="numberOfAttemptsForSolveChart.yaxis"
-        [xaxis]="numberOfAttemptsForSolveChart.xaxis"
-        [legend]="numberOfAttemptsForSolveChart.legend"
-        [colors]="numberOfAttemptsForSolveChart.colors"
-      >
-      </apx-chart>
+      <apex-chart [options]="numberOfAttemptsForSolveChart">
+      </apex-chart>
     </div>
   </div>
 </div>

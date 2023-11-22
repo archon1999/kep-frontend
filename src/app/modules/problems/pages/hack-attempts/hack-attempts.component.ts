@@ -5,15 +5,25 @@ import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { asyncScheduler, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
-import { Attempt } from '../../models/attempts.models';
-import { HackAttempt } from '../../models/hack-attempt.models';
+import { HackAttempt } from '@problems/models/hack-attempt.models';
+import { CoreCommonModule } from '@core/common.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { PaginationModule } from '@shared/components/pagination/pagination.module';
+import { HackAttemptsTableModule } from '@problems/components/hack-attempts-table/hack-attempts-table.module';
 
 const RELOAD_INTERVAL_TIME = 30000;
 
 @Component({
   selector: 'app-hack-attempts',
   templateUrl: './hack-attempts.component.html',
-  styleUrls: ['./hack-attempts.component.scss']
+  styleUrls: ['./hack-attempts.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ContentHeaderModule,
+    PaginationModule,
+    HackAttemptsTableModule,
+  ],
 })
 export class HackAttemptsComponent implements OnInit, OnDestroy {
 
@@ -73,8 +83,16 @@ export class HackAttemptsComponent implements OnInit, OnDestroy {
     this._intervalId = setInterval(() => this._reloader.next(null), RELOAD_INTERVAL_TIME);
   }
 
+  ngOnDestroy(): void {
+    if (this._intervalId) {
+      clearInterval(this._intervalId);
+    }
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
+  }
+
   private _loadPage() {
-    var params: any = { page: this.currentPage };
+    const params: any = { page: this.currentPage };
     if (this.myAttempts && this.currentUser) {
       params.username = this.currentUser.username;
     }
@@ -82,14 +100,6 @@ export class HackAttemptsComponent implements OnInit, OnDestroy {
       this.hackAttempts = result.data;
       this.totalAttemptsCount = result.total;
     });
-  }
-
-  ngOnDestroy(): void {
-    if (this._intervalId) {
-      clearInterval(this._intervalId);
-    }
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
   }
 
 }
