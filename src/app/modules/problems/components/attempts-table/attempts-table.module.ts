@@ -3,7 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AttemptsTableComponent } from './attempts-table.component';
 import { CorePipesModule } from 'core/pipes/pipes.module';
 import { CommonModule } from '@angular/common';
-import { ContestantViewModule } from '../../../../shared/components/contestant-view/contestant-view.module';
+import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
 import { CoreDirectivesModule } from 'core/directives/directives';
 import { NgbModalModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -12,7 +12,7 @@ import { KepcoinSpendSwalModule } from '../../../kepcoin/kepcoin-spend-swal/kepc
 import { TableComponent } from './table/table.component';
 import { ClipboardModule } from 'app/shared/components/clipboard/clipboard.module';
 import { ProblemsPipesModule } from '../../pipes/problems-pipes.module';
-import { MonacoEditorModule } from '../../../../shared/third-part-modules/monaco-editor/monaco-editor.module';
+import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 
 @NgModule({
   declarations: [
@@ -29,15 +29,14 @@ import { MonacoEditorModule } from '../../../../shared/third-part-modules/monaco
     FormsModule,
     KepcoinSpendSwalModule,
     RouterModule,
-    MonacoEditorModule,
     ClipboardModule,
     ReactiveFormsModule,
     ProblemsPipesModule,
-    MonacoEditorModule,
     NgbNavModule,
+    MonacoEditorComponent,
   ],
   exports: [
     AttemptsTableComponent
   ]
 })
-export class AttemptsTableModule { }
+export class AttemptsTableModule {}

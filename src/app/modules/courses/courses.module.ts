@@ -12,13 +12,12 @@ import { BlockUIModule } from 'ng-block-ui';
 import { DragulaModule } from 'ng2-dragula';
 import { CountUpModule } from 'ngx-countup';
 import { HighlightModule } from 'ngx-highlightjs';
-import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { ToastrModule } from 'ngx-toastr';
-import { ClipboardModule } from '../../shared/components/clipboard/clipboard.module';
-import { CodeEditorModule } from '../../shared/components/code-editor/code-editor.module';
-import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
-import { MathjaxModule } from '../../shared/third-part-modules/mathjax/mathjax.module';
-import { QuillModule } from '../../shared/third-part-modules/quill/quill.module';
+import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
+import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
+import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
+import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
+import { QuillModule } from '@shared/third-part-modules/quill/quill.module';
 import { CourseBestParticipantsComponent } from './course/course-best-participants/course-best-participants.component';
 import { CourseHeaderComponent } from './course/course-header/course-header.component';
 import { CourseInfoComponent } from './course/course-info/course-info.component';
@@ -42,8 +41,9 @@ import { CourseGuard } from './courses.guard';
 import { CourseDictionaryResolver, CourseLessonResolver, CourseLessonsResolver, CourseResolver, CoursesResolver } from './courses.resolver';
 import { SidebarComponent as CoursesSidebarComponent } from './sidebar/sidebar.component';
 import { ReviewCardComponent } from './course/course-reviews/review-card/review-card.component';
-import { ProblemsPipesModule } from '../problems/pipes/problems-pipes.module';
+import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
+import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 
 const routes: Routes = [
   {
@@ -142,12 +142,11 @@ const routes: Routes = [
     FormsModule,
     ClipboardModule,
     ToastrModule,
-    MonacoEditorModule,
     DragulaModule.forRoot(),
     UserPopoverModule,
     BlockUIModule.forRoot(),
     HighlightModule,
-    // NgxUsefulSwiperModule,
+    MonacoEditorComponent,
     QuillModule,
     CountUpModule,
     ProblemsPipesModule,
