@@ -111,7 +111,7 @@
           <kepcoin-spend-swal
             (success)="checkSamplesPurchaseSuccess()"
             [customContent]="true"
-            [purchaseUrl]="'problems/' + problem.id + '/purchase-check-samples/'"
+            [purchaseUrl]="'problems/' + problem?.id + '/purchase-check-samples/'"
             [value]="100"
           >
             <div new-feature class="position-relative">
@@ -148,7 +148,7 @@
             (success)="answerForInput($event)"
             *ngIf="answerForInputEnabled"
             [customContent]="true"
-            [purchaseUrl]="'problems/' + problem.id + '/answer-for-input/'"
+            [purchaseUrl]="'problems/' + problem?.id + '/answer-for-input/'"
             [requestBody]="{input_data: editorForm.get('input').value}"
             [value]="1"
           >

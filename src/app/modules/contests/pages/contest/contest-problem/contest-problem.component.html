@@ -1,5 +1,5 @@
 <div
-  class="content-wrapper p-0 contests-colors contests-color contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
+  class="content-wrapper p-0 contests-colors contests-color contest-{{ contest?.id }} {{ contest?.title }} contest-type-{{ contest?.type }}">
   <div class="content-body">
     <!-- content-header component -->
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
@@ -12,7 +12,7 @@
               <div class="card-header">
                 <contest-tab [contest]="contest"></contest-tab>
                 <button
-                  *ngIf="contest.userInfo?.isRegistered && contest.status == 0"
+                  *ngIf="contest?.userInfo?.isRegistered && contest?.status == 0"
                   (click)="codeEditorSidebarToggle()"
                   class="btn btn-sm btn-primary position-absolute"
                   style="top: 2rem; right: 2rem;">
@@ -58,9 +58,9 @@
 
           <a
             rippleEffect
-            *ngIf="contest.status == 1"
-            routerLink="/practice/problems/problem/{{ contestProblem.problem.id }}"
-            [queryParams]="{'contest': contest.id}"
+            *ngIf="contest?.status == 1"
+            routerLink="/practice/problems/problem/{{ contestProblem?.problem?.id }}"
+            [queryParams]="{'contest': contest?.id}"
             class="mb-2 btn-block btn btn-primary bg-primary badge-glow">
             {{ 'Upsolve' | translate }}
           </a>
@@ -99,13 +99,13 @@
                           'bg-lighten-4': coreConfig.layout.skin != 'dark'
                         }">
                         <a
-                          [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problem', _contestProblem.symbol]">
+                          [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problem', _contestProblem.symbol]">
                           {{ _contestProblem.symbol }}
                         </a>
                       </td>
                       <td>
                         <a
-                          [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problem', _contestProblem.symbol]">
+                          [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problem', _contestProblem.symbol]">
                             <span class="text-primary">
                             </span>
                           {{ _contestProblem.problem.title }}
@@ -124,7 +124,7 @@
                           </small>
                         </a>
                       </td>
-                      <td *ngIf="_contestProblem.ball > 1 && contest.isAlready()">
+                      <td *ngIf="_contestProblem.ball > 1 && contest?.isAlready()">
                           <span class="badge badge-success badge-glow">
                             {{ _contestProblem.getCurrentBall(contest) }}
                           </span>
@@ -142,10 +142,10 @@
 
       <code-editor-modal
         *ngIf="contest?.isAlready() && contest?.userInfo.isRegistered && currentUser"
-        [uniqueName]="'contest-problem-' + problem.id"
+        [uniqueName]="'contest-problem-' + problem?.id"
         [sampleTests]="problem.sampleTests"
         [availableLanguages]="problem.availableLanguages"
-        [submitUrl]="'contests/' + contest.id + '/submit/'"
+        [submitUrl]="'contests/' + contest?.id + '/submit/'"
         [submitParams]="{ contestProblem: contestProblem.symbol }"
         (submittedEvent)="reloadAttempts()"
       ></code-editor-modal>

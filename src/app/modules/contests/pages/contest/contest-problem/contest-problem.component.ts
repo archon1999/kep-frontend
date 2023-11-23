@@ -79,7 +79,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
       super.ngOnInit();
       this.updateContentHeader();
 
-      this.service.getMe(this.contest.id).subscribe(
+      this.service.getMe(this.contest?.id).subscribe(
         (contestant: Contestant | null) => {
           if (contestant) {
             this.contestant = Contestant.fromJSON(contestant);
@@ -110,7 +110,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
   }
 
   updateContestant() {
-    this.service.getMe(this.contest.id).subscribe(
+    this.service.getMe(this.contest?.id).subscribe(
       (contestant: Contestant | null) => {
         this.contestant = contestant;
       }
@@ -130,7 +130,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
             link: '../../../../'
           },
           {
-            name: this.contest.id + '',
+            name: this.contest?.id + '',
             isLink: true,
             link: '../../'
           },
@@ -150,7 +150,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
   }
 
   reloadProblems() {
-    this.api.get(`contests/${this.contest.id}/problems`).subscribe((result: any) => {
+    this.api.get(`contests/${this.contest?.id}/problems`).subscribe((result: any) => {
       this.contestProblems = result.map((data: any) => {
         return ContestProblem.fromJSON(data);
       });
@@ -180,7 +180,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
 
   reloadAttempts() {
     const params = {
-      contestId: this.contest.id,
+      contestId: this.contest?.id,
       contestProblem: this.contestProblem.symbol,
       username: this.currentUser.username
     };
