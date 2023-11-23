@@ -85,7 +85,7 @@ export class ContestProblemsComponent implements OnInit, OnDestroy {
             link: '../../..'
           },
           {
-            name: this.contest.id+'',
+            name: this.contest?.id+'',
             isLink: true,
             link: '..'
           },
@@ -100,7 +100,7 @@ export class ContestProblemsComponent implements OnInit, OnDestroy {
   }
 
   reloadProblems(){
-    this.service.getContestProblems(this.contest.id).subscribe((result: any) => {
+    this.service.getContestProblems(this.contest?.id).subscribe((result: any) => {
       this.contestProblems = result.map((data: any) => ContestProblem.fromJSON(data));
       this.sortProblems();
     })
