@@ -10,8 +10,8 @@ import { CoreCommonModule } from '@core/common.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { ProblemBodyModule } from '@problems/components/problem-body/problem-body.module';
 import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
-import { MonacoEditorModule } from '@shared/third-part-modules/monaco-editor/monaco-editor.module';
 import { KepcoinSpendSwalModule } from '../../../../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
+import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 
 @Component({
   selector: 'problem-description',
@@ -25,7 +25,7 @@ import { KepcoinSpendSwalModule } from '../../../../kepcoin/kepcoin-spend-swal/k
     ProblemBodyModule,
     NgbNavModule,
     ClipboardModule,
-    MonacoEditorModule,
+    MonacoEditorComponent,
     KepcoinSpendSwalModule,
   ]
 })
