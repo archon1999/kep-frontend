@@ -96,6 +96,12 @@
     --box-shadow: 0px 0px 5px #186fb6d3;
   }
 
+  &[class*="UBTUIT"] {
+    --bg-gradient: linear-gradient(42.32deg, rgba(172, 161, 6, 0.89), #dfd108);
+    --bg: rgba(98, 102, 5, 0.88);
+    --box-shadow: 0px 0px 5px rgba(98, 102, 5, 0.85);
+  }
+
   &[class*="contest-type-MultiL"] {
     --bg-gradient: linear-gradient(45deg, #010c80be, #010c8094);
     --bg: #081386b0;
@@ -168,6 +174,12 @@
     --bg-gradient: linear-gradient(45deg, #042c4bde, #005ea2c9);
     --bg: #1870b6;
     --box-shadow: 0px 0px 5px #1870b6;
+  }
+
+  &[class*="UBTUIT"] {
+    --bg-gradient: linear-gradient(42.32deg, #797104, #aca106);
+    --bg: #626605;
+    --box-shadow: 0px 0px 5px #626605;
   }
 
   &[class*="contest-type-MultiL"] {

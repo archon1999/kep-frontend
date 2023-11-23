@@ -39,7 +39,7 @@
               "sweetalert2",
               "bs-stepper"
             ],
-            "outputPath": "/home/cpython/server/static/frontend",
+            "outputPath": "../server/static/frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
