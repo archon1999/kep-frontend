@@ -19,7 +19,7 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProblemDescriptionComponent } from '@problems/pages/problem/problem-description/problem-description.component';
 import { ProblemAttemptsComponent } from '@problems/pages/problem/problem-attempts/problem-attempts.component';
 import { ProblemHacksComponent } from '@problems/pages/problem/problem-hacks/problem-hacks.component';
-import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
 import { ProblemSidebarComponent } from '@problems/pages/problem/problem-sidebar/problem-sidebar.component';
 import { TourModule } from '@shared/third-part-modules/tour/tour.module';
