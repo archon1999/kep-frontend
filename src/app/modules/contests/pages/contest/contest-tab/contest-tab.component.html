@@ -1,4 +1,4 @@
-<div class="contests-colors contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
+<div class="contests-colors contest-{{ contest?.id }} {{ contest?.title }} contest-type-{{ contest?.type }}">
   <ul ngbNav #navWithIcons="ngbNav" class="nav-tabs" [(activeId)]="activeId">
     <li ngbNavItem>
       <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id]"
