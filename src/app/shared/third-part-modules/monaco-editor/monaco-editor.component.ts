@@ -1,24 +1,26 @@
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { AfterViewChecked, AfterViewInit, Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { EditorComponent } from 'ngx-monaco-editor';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { AfterViewChecked, Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { EditorComponent, MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { CoreConfigService } from 'core/services/config.service';
 import { CoreConfig } from 'core/types';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { AttemptLangs } from 'app/modules/problems/constants';
 import { getEditorLang } from 'app/modules/problems/utils';
+import { CommonModule } from '@angular/common';
+import { monacoConfig } from '../../../monaco-config';
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'monaco-editor',
-  template: `
-    <ngx-monaco-editor [style.height.px]="height" [options]="options" [(ngModel)]="value"></ngx-monaco-editor>`,
+  template: `<ngx-monaco-editor [style.height.px]="height" [options]="options" [(ngModel)]="value"></ngx-monaco-editor>`,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => MonacoEditorComponent),
       multi: true
     }
-  ]
+  ],
+  standalone: true,
+  imports: [MonacoEditorModule, FormsModule, CommonModule],
 })
 export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnChanges, AfterViewChecked {
 

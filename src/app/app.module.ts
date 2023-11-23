@@ -32,6 +32,8 @@ import { HIGHLIGHT_OPTIONS, HighlightModule, HighlightOptions } from 'ngx-highli
 
 import { register } from 'swiper/element/bundle';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
+import { monacoConfig } from './monaco-config';
 
 register();
 
@@ -114,7 +116,8 @@ export class CustomTitleStrategy extends TitleStrategy {
     UserPopoverModule,
     LoadingBarRouterModule,
     LoadingBarHttpClientModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    MonacoEditorModule.forRoot(monacoConfig),
   ],
   providers: [
     { provide: TitleStrategy, useClass: CustomTitleStrategy },
