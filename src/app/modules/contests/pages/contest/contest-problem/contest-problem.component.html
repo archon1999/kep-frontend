@@ -59,8 +59,8 @@
           <a
             rippleEffect
             *ngIf="contest.status == 1"
-            routerLink="/practice/problems/problem/{{ contestProblem.problem.id }}"
-            [queryParams]="{'contest': contest.id}"
+            routerLink="/practice/problems/problem/{{ contestProblem?.problem?.id }}"
+            [queryParams]="{'contest': contest?.id}"
             class="mb-2 btn-block btn btn-primary bg-primary badge-glow">
             {{ 'Upsolve' | translate }}
           </a>
@@ -99,13 +99,13 @@
                           'bg-lighten-4': coreConfig.layout.skin != 'dark'
                         }">
                         <a
-                          [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problem', _contestProblem.symbol]">
+                          [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problem', _contestProblem.symbol]">
                           {{ _contestProblem.symbol }}
                         </a>
                       </td>
                       <td>
                         <a
-                          [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problem', _contestProblem.symbol]">
+                          [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problem', _contestProblem.symbol]">
                             <span class="text-primary">
                             </span>
                           {{ _contestProblem.problem.title }}
@@ -142,10 +142,10 @@
 
       <code-editor-modal
         *ngIf="contest?.isAlready() && contest?.userInfo.isRegistered && currentUser"
-        [uniqueName]="'contest-problem-' + problem.id"
+        [uniqueName]="'contest-problem-' + problem?.id"
         [sampleTests]="problem.sampleTests"
         [availableLanguages]="problem.availableLanguages"
-        [submitUrl]="'contests/' + contest.id + '/submit/'"
+        [submitUrl]="'contests/' + contest?.id + '/submit/'"
         [submitParams]="{ contestProblem: contestProblem.symbol }"
         (submittedEvent)="reloadAttempts()"
       ></code-editor-modal>
