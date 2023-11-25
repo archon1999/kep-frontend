@@ -2,139 +2,167 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <title>CPython</title>
-  <base href="/" />
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="CPython" />
-  <meta name="keywords" content="python, c++, cpp, cp, learn" />
-  <meta name="author" content="PIXINVENT" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta charset="utf-8"/>
+  <title>CPython.uz</title>
+  <base href="/"/>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <meta content="CPython" name="description"/>
+  <meta content="python, c++, cpp, cp, learn" name="keywords"/>
+  <meta content="PIXINVENT" name="author"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0" name="viewport"/>
 
-  <link rel="icon" type="image/x-icon" href="favicon.ico" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="favicon.ico" rel="icon" type="image/x-icon"/>
+
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+<!--  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">-->
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&display=swap" rel="stylesheet">
 
   <!-- CPython loading Screen CSS -->
   <style type="text/css">
-    #loading-bg {
-      width: 100%;
-      height: 100%;
-      background: #fff;
-      display: block;
-      position: absolute;
-      z-index: 99999;
-      pointer-events: none;
-    }
-
-    .loading-logo {
-      position: absolute;
-      left: calc(50% - 45px);
-      top: 40%;
-    }
-
-    .loading {
-      position: absolute;
-      left: calc(50% - 35px);
-      top: 50%;
-      width: 55px;
-      height: 55px;
-      border-radius: 50%;
-      -webkit-box-sizing: border-box;
-      box-sizing: border-box;
-      border: 3px solid transparent;
-    }
-
-    .loading .effect-1,
-    .loading .effect-2 {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      -webkit-box-sizing: border-box;
-      box-sizing: border-box;
-    }
-
-    .loading .effect-1 {
-      animation: rotate s ease infinite;
-    }
-
-    .loading .effect-2 {
-      animation: rotateOpacity 1s ease infinite 0.1s;
-    }
-
-    .loading .effect-3 {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border: 3px solid transparent;
-      border-left: 3px solid rgba(121, 97, 249, 1);
-      -webkit-animation: rotateOpacity 1s ease infinite 0.2s;
-      animation: rotateOpacity 1s ease infinite 0.2s;
-      border-radius: 50%;
-      -webkit-box-sizing: border-box;
-      box-sizing: border-box;
-    }
-
-    .loading .effects {
-      transition: all 0.3s ease;
-    }
-
-    @keyframes rotate {
-      0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
+      #loading-bg {
+          width: 100%;
+          height: 100%;
+          background: #fff;
+          display: block;
+          position: absolute;
+          z-index: 99999;
+          pointer-events: none;
       }
 
-      100% {
-        -webkit-transform: rotate(1turn);
-        transform: rotate(1turn);
-      }
-    }
-
-    @keyframes rotateOpacity {
-      0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-        opacity: 0.1;
+      .loading-logo {
+          position: absolute;
+          left: calc(50% - 45px);
+          top: 40%;
       }
 
-      100% {
-        -webkit-transform: rotate(1turn);
-        transform: rotate(1turn);
-        opacity: 1;
+      .loading {
+          position: absolute;
+          left: calc(50% - 35px);
+          top: 50%;
+          width: 55px;
+          height: 55px;
+          border-radius: 50%;
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+          border: 3px solid transparent;
       }
-    }
+
+      .loading .effect-1,
+      .loading .effect-2 {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+      }
+
+      .loading .effect-1 {
+          animation: rotate s ease infinite;
+      }
+
+      .loading .effect-2 {
+          animation: rotateOpacity 1s ease infinite 0.1s;
+      }
+
+      .loading .effect-3 {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          border: 3px solid transparent;
+          border-left: 3px solid rgba(121, 97, 249, 1);
+          -webkit-animation: rotateOpacity 1s ease infinite 0.2s;
+          animation: rotateOpacity 1s ease infinite 0.2s;
+          border-radius: 50%;
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+      }
+
+      .loading .effects {
+          transition: all 0.3s ease;
+      }
+
+      @keyframes rotate {
+          0% {
+              -webkit-transform: rotate(0deg);
+              transform: rotate(0deg);
+          }
+
+          100% {
+              -webkit-transform: rotate(1turn);
+              transform: rotate(1turn);
+          }
+      }
+
+      @keyframes rotateOpacity {
+          0% {
+              -webkit-transform: rotate(0deg);
+              transform: rotate(0deg);
+              opacity: 0.1;
+          }
+
+          100% {
+              -webkit-transform: rotate(1turn);
+              transform: rotate(1turn);
+              opacity: 1;
+          }
+      }
   </style>
   <!-- / CPython loading Screen CSS -->
 </head>
 
 <body>
-  <!-- CPython loading Screen -->
-  <core-loading-screen id="loading-bg">
-    <div class="loading-logo">
-      <img src="assets/images/logo/logo.png" alt="Logo" />
-    </div>
-    <div class="loading">
-      <div class="effect-1 effects"></div>
-      <div class="effect-2 effects"></div>
-      <div class="effect-3 effects"></div>
-    </div>
-  </core-loading-screen>
-  <!-- / CPython loading Screen -->
+<!-- CPython loading Screen -->
+<core-loading-screen id="loading-bg">
+  <div class="loading-logo">
+    <img alt="Logo" src="assets/images/logo/logo.png" width="71"/>
+  </div>
+  <div class="loading">
+    <div class="effect-1 effects"></div>
+    <div class="effect-2 effects"></div>
+    <div class="effect-3 effects"></div>
+  </div>
+</core-loading-screen>
+<!-- / CPython loading Screen -->
 
-  <!-- CPython root component -->
-  <app-root> </app-root>
-  <!-- / CPython root component -->
+<!-- CPython root component -->
+<app-root></app-root>
+<!-- / CPython root component -->
 </body>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/brackets-viewer/dist/brackets-viewer.min.css" />
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/brackets-viewer/dist/brackets-viewer.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/brackets-viewer/dist/brackets-viewer.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/brackets-viewer/dist/brackets-viewer.min.js" type="text/javascript"></script>
 
 <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/highlightjs-line-numbers.js/dist/highlightjs-line-numbers.min.js"></script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script>
+    MathJax = {
+        tex: {
+            inlineMath: [
+                ['$', '$'],
+                ['\\(', '\\)']
+            ]
+        }
+    };
+</script>
+<script async id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+        type="text/javascript">
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        CommonHTML: {linebreaks: {automatic: true}},
+        "HTML-CSS": {linebreaks: {automatic: true}},
+        SVG: {linebreaks: {automatic: true}}
+    });
+</script>
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.14.0/css/flag-icons.min.css"
+/>
 </html>

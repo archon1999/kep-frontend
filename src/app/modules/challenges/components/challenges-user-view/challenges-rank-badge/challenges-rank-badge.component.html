@@ -1,0 +1,7 @@
+<span class="badge badge-pill badge-glow badge-{{ title | challengesRankColor }}">
+  {{ title }}
+</span>
+
+<span *ngIf="rating" class="ml-50 badge badge-light-{{ title | challengesRankColor }}">
+  {{ rating }}
+</span>

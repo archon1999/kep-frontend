@@ -2,10 +2,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
-import { CountdownModule } from '@ciri/ngx-countdown';
-import { CoreDirectivesModule } from '@core/directives/directives';
-import { CorePipesModule } from '@core/pipes/pipes.module';
-import { NgbDatepickerModule, NgbNavModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { CoreDirectivesModule } from 'core/directives/directives';
+import { CorePipesModule } from 'core/pipes/pipes.module';
+import { NgbDatepickerModule, NgbNavModule, NgbTimepickerModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { AttemptsTableModule } from '../../../problems/components/attempts-table/attempts-table.module';
@@ -31,6 +30,7 @@ import { ContestsTableComponent } from './contests-table/contests-table.componen
 import { UserContestsComponent } from './user-contests.component';
 import { ContestCreateGuard, ContestGuard } from './user-contests.guard';
 import { ContestProblemResolver, ContestProblemsResolver, ContestResolver } from './user-contests.resolver';
+
 const routes: Routes = [
   {
     path: '',
@@ -137,13 +137,14 @@ const routes: Routes = [
     NgbDatepickerModule,
     NgbTimepickerModule,
     NgSelectModule,
-    CountdownModule,
+    // CountdownModule,
     MathjaxModule,
     CodeEditorModule,
     MonacoEditorModule,
     ContestantViewModule,
     ProblemBodyModule,
     AttemptsTableModule,
+    NgbTooltipModule,
   ],
   providers: [
     ContestCreateGuard,
@@ -153,4 +154,5 @@ const routes: Routes = [
     ContestGuard,
   ]
 })
-export class UserContestsModule { }
+export class UserContestsModule {
+}

@@ -1,0 +1,74 @@
+<div class="content-wrapper p-0">
+  <div class="content-body">
+    <!-- content-header component -->
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <section class="mt-2">
+      <div class="row">
+        <div class="col-12">
+          <div class="layout-spacing">
+            <div class="card">
+              <div class="card-header">
+              </div>
+              <h3 class="mb-2 text-center">{{ 'RATING' | translate }}</h3>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                  <tr class="text-white bg-gradient-primary">
+                    <th>#</th>
+                    <th>{{ 'User' | translate }}</th>
+                    <th>{{ 'Wins' | translate }}</th>
+                    <th>{{ 'Draws' | translate }}</th>
+                    <th>{{ 'Losses' | translate }}</th>
+                    <th><i data-feather="bar-chart"></i></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr
+                    *ngFor="let challengesRating of challengesRating; index as i">
+                    <td class="text-black">
+                      {{ i+1 }}
+                    </td>
+                    <td>
+                      <challenges-user-view [user]="challengesRating"></challenges-user-view>
+                    </td>
+                    <td>
+                      <span class="badge badge-success badge-glow">
+                        {{ challengesRating.wins }}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="badge badge-secondary badge-glow">
+                        {{ challengesRating.draws }}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="badge badge-danger badge-glow">
+                        {{ challengesRating.losses }}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="badge badge-light-{{ challengesRating.rankTitle | challengesRankColor }}">
+                        {{ challengesRating.rating }}
+                      </span>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <pagination
+                [collectionSize]="total"
+                [(page)]="currentPage"
+                [pageSize]="10"
+                [maxSize]="5"
+                [rotate]="true"
+                (pageChange)="updateChallengesRating()">
+              </pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

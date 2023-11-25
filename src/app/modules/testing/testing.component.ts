@@ -1,15 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { fadeInLeftOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { Subject } from 'rxjs';
-import { SwiperOptions } from 'swiper';
 import { Chapter, Test } from './testing.models';
 import { TestingService } from './testing.service';
+import { SwiperOptions } from 'swiper/types/swiper-options';
 
 @Component({
   selector: 'app-testing',
   templateUrl: './testing.component.html',
-  styleUrls: ['./testing.component.scss', './chapters.scss'],
+  styleUrls: ['./testing.component.scss'],
   animations: [],
 })
 export class TestingComponent implements OnInit, OnDestroy {
@@ -21,9 +20,8 @@ export class TestingComponent implements OnInit, OnDestroy {
   public selectedChapter = 0;
   public currentPage = 1;
   public isLastPage = true;
-  
+
   public testsSwiperConfig: SwiperOptions = {
-    lazy: true,
     breakpoints: {
       1300: {
         slidesPerView: 5,
@@ -46,10 +44,9 @@ export class TestingComponent implements OnInit, OnDestroy {
         spaceBetween: 20
       },
     }
-  }
+  };
 
   public chaptersSwiperConfig: SwiperOptions = {
-    lazy: true,
     breakpoints: {
       1300: {
         slidesPerView: 5,
@@ -72,59 +69,59 @@ export class TestingComponent implements OnInit, OnDestroy {
         spaceBetween: 20
       },
     }
-  }
-  
+  };
+
   private _unsubscribeAll = new Subject();
-  
+
   constructor(
     public service: TestingService,
     public route: ActivatedRoute,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe(({ chapters, lastTests }) => {
       this.chapters = chapters;
       this.lastTests = lastTests.data;
-    })
+    });
 
     this.loadTests();
   }
 
-  loadTests(){
-    let params: any = {};
-    if(this.selectedChapter){
+  loadTests() {
+    const params: any = {};
+    if (this.selectedChapter) {
       params.chapter_id = this.selectedChapter;
     }
     this.service.getTests(params).subscribe(
-      (result: any) =>{
+      (result: any) => {
         this.tests = result.data;
-        if(result.total != this.tests.length){
+        if (result.total != this.tests.length) {
           this.isLastPage = false;
         }
       }
-    )
+    );
   }
-  
-  moreLoad(){
+
+  moreLoad() {
     this.currentPage++;
-    let params: any = {
+    const params: any = {
       page: this.currentPage,
     };
-    if(this.selectedChapter){
+    if (this.selectedChapter) {
       params.chapter_id = this.selectedChapter;
     }
     this.service.getTests(params).subscribe(
-      (result: any) =>{
+      (result: any) => {
         this.tests = this.tests.concat(result.data);
-        if(result.total == this.tests.length){
+        if (result.total == this.tests.length) {
           this.isLastPage = true;
         }
       }
-    )
+    );
   }
 
   ngOnDestroy(): void {
-    this._unsubscribeAll.next();
+    this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 

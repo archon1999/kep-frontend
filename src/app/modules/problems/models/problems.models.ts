@@ -1,9 +1,17 @@
-import { AttemptLangs } from "../enums";
+import { AttemptLangs } from '../constants';
+
+export interface ProblemUserInfo {
+  hasAttempted: boolean;
+  hasSolved: boolean;
+  voteType?: number | null;
+  canViewSolution?: boolean;
+}
 
 export interface Problem {
   id: number;
   authorUsername: string;
-  title: string
+  userInfo: ProblemUserInfo;
+  title: string;
   difficulty: number;
   difficultyTitle: string;
   likesCount: number;
@@ -12,27 +20,29 @@ export interface Problem {
   solved: number;
   notSolved: number;
   attemptsCount: number;
-  hasSolved: boolean;
-  canViewSolution: boolean;
-  hasAttempted: boolean;
   hasChecker: boolean;
+  canViewSolution: boolean;
   hasSolution: boolean;
+  hasCheckInput: boolean;
   tags: Array<Tag>;
+  topics: Array<Topic>;
   timeLimit: number;
   memoryLimit: number;
-  body: string;
-  inputData: string;
-  outputData: string;
-  comment: string;
-  sampleTests: Array<SampleTest>;
-  codeTemplate: string;
-  availableLanguages: Array<AvailableLanguage>;
-  image: string;
-  hidden: boolean;
+  body?: string;
+  inputData?: string;
+  outputData?: string;
+  comment?: string;
+  sampleTests?: Array<SampleTest>;
+  availableLanguages?: Array<AvailableLanguage>;
+  image?: string;
+  hidden?: boolean;
+  checkInputSource?: string;
+  solutionKepcoinValue: number;
 }
 
 export interface AvailableLanguage {
   lang: AttemptLangs;
+  langFull: string;
   timeLimit: number | null;
   memoryLimit: number | null;
   codeTemplate: string;
@@ -40,7 +50,7 @@ export interface AvailableLanguage {
 
 export interface SampleTest {
   input: string;
-  output: string
+  output: string;
 }
 
 export interface Difficulty {
@@ -53,13 +63,24 @@ export interface Tag {
   id: number;
 }
 
+export interface Topic {
+  name: string;
+  id: number;
+}
+
 export interface ProblemsFilter {
+  page: number;
+  pageSize: number;
   title: string;
   tags: Array<number>;
   difficulty: number;
   status: number;
   topic: number;
   ordering: string;
+  hasChecker: boolean;
+  hasCheckInput: boolean;
+  hasSolution: boolean;
+  partialSolvable: boolean;
 }
 
 export interface StudyPlanDay {

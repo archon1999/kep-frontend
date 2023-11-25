@@ -1,0 +1,23 @@
+@import "dark-layout";
+@import "breakpoints";
+
+@mixin define-page-top($name, $light-background, $dark-background) {
+  .#{$name}-page-top:before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    margin-left: -2rem;
+    width: 100%;
+    z-index: -1;
+    height: 700px;
+    background: $light-background;
+
+    @include media-breakpoint-down(md){
+      width: calc(100% + 0.8rem);
+    }
+
+    @include dark-layout {
+      background: $dark-background;
+    }
+  }
+}

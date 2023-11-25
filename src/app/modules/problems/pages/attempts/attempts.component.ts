@@ -2,17 +2,32 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'app/shared/services/api.service';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
-import { Subject, asyncScheduler } from 'rxjs';
+import { asyncScheduler, interval, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
-import { Attempt } from '../../models/attempts.models';
+import { Attempt } from '@problems/models/attempts.models';
+import { GlobalService } from '@shared/services/global.service';
+import { SpinnersEnum } from '@shared/components/spinner/spinners.enum';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { CoreCommonModule } from '@core/common.module';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
+import { PaginationModule } from '@shared/components/pagination/pagination.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 
 const RELOAD_INTERVAL_TIME = 30000;
 
 @Component({
   selector: 'app-attempts',
   templateUrl: './attempts.component.html',
-  styleUrls: ['./attempts.component.scss']
+  styleUrls: ['./attempts.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    SpinnerComponent,
+    AttemptsTableModule,
+    PaginationModule,
+    ContentHeaderModule,
+  ]
 })
 export class AttemptsComponent implements OnInit, OnDestroy {
 
@@ -31,31 +46,37 @@ export class AttemptsComponent implements OnInit, OnDestroy {
     }
   };
 
-  public currentPage: number = 1;
+  public currentPage = 1;
+  public isLoading = true;
   public totalAttemptsCount: number;
   public attempts: Array<Attempt> = [];
 
-  public myAttempts: boolean = false;
+  public myAttempts = false;
   public currentUser: User;
 
-  private _reloader = new Subject();
+  protected readonly SpinnersEnum = SpinnersEnum;
+  protected _reloader = new Subject();
   private _unsubscribeAll = new Subject();
   private _intervalId: any;
 
   constructor(
     public api: ApiService,
     public route: ActivatedRoute,
-    public authService: AuthenticationService,
-  ) { }
+    public globalService: GlobalService,
+    public spinner: NgxSpinnerService,
+  ) {
+  }
 
   ngOnInit(): void {
-    this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
+    this.globalService.currentUser$.subscribe(
       (user: any) => {
         this.currentUser = user;
         if (user) {
           this.myAttempts = true;
+          setTimeout(() => this._reloader.next(null), 100);
+        } else {
+          this.myAttempts = false;
         }
-        setTimeout(() => this._reloader.next(), 100);
       }
     );
 
@@ -66,30 +87,35 @@ export class AttemptsComponent implements OnInit, OnDestroy {
       () => {
         this._loadPage();
       }
-    )
+    );
 
-    this._intervalId = setInterval(() => this._reloader.next(), RELOAD_INTERVAL_TIME);
+    interval(RELOAD_INTERVAL_TIME).pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      () => {
+        this._reloader.next(null);
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    if (this._intervalId) {
+      clearInterval(this._intervalId);
+    }
+    this._unsubscribeAll.next(null);
+    this._unsubscribeAll.complete();
   }
 
   private _loadPage() {
-    console.log(123);
-    
-    var params: any = { page: this.currentPage };
+    this.spinner.show(SpinnersEnum.AttemptsTable);
+    const params: any = { page: this.currentPage };
+    this.isLoading = true;
     if (this.myAttempts && this.currentUser) {
       params.username = this.currentUser.username;
     }
     this.api.get('attempts', params).subscribe((result: any) => {
       this.attempts = result.data;
       this.totalAttemptsCount = result.total;
+      this.isLoading = false;
+      this.spinner.hide(SpinnersEnum.AttemptsTable);
     });
   }
-
-  ngOnDestroy(): void {
-    if(this._intervalId){
-      clearInterval(this._intervalId);
-    }
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
-  }
-
 }

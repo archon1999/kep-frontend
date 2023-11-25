@@ -1,4 +1,4 @@
-import { CoreMenu } from '../../../../@core/types'
+import { CoreMenu } from '../../../../core/types';
 
 export const menu: CoreMenu[] = [
   {
@@ -23,7 +23,7 @@ export const menu: CoreMenu[] = [
         translate: 'MENU.COURSES',
         type: 'item',
         icon: 'book-open',
-        url: '/learn/courses',  
+        url: '/learn/courses',
       },
       {
         id: 'lugavar',
@@ -31,7 +31,7 @@ export const menu: CoreMenu[] = [
         translate: 'MENU.LUGAVAR',
         type: 'item',
         icon: 'bookmark',
-        url: '/learn/lugavar',  
+        url: '/learn/lugavar',
       },
       {
         id: 'blog',
@@ -39,7 +39,7 @@ export const menu: CoreMenu[] = [
         translate: 'MENU.BLOG',
         type: 'item',
         icon: 'edit-2',
-        url: '/learn/blog',  
+        url: '/learn/blog',
       },
     ]
   },
@@ -115,6 +115,14 @@ export const menu: CoreMenu[] = [
         icon: 'award',
         url: '/competitions/tournaments',
       },
+      // {
+      //   id: 'code-rush',
+      //   title: 'Code rush',
+      //   translate: 'MENU.CODE_RUSH',
+      //   type: 'item',
+      //   icon: 'code',
+      //   url: '/competitions/code-rush',
+      // },
     ]
   },
   {
@@ -125,25 +133,4 @@ export const menu: CoreMenu[] = [
     icon: 'users',
     url: '/users',
   },
-
-  {
-    id: 'help',
-    title: 'Help',
-    translate: 'MENU.HELP',
-    type: 'section',
-    icon: 'help-circle',
-    children: [
-      
-    ]
-  },
-  {
-    id: 'help_project',
-    title: 'Help project',
-    translate: 'MENU.HELP_PROJECT',
-    type: 'section',
-    icon: 'git-pull-request',
-    children: [
-      
-    ]
-  },
-]
+];

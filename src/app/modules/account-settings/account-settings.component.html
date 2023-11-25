@@ -104,6 +104,21 @@
               </ng-template>
             </li>
 
+            <li class="nav-item" ngbNavItem>
+              <a
+                ngbNavLink class="nav-link d-flex py-75"
+                id="system"
+                data-toggle="pill"
+                href="#system"
+                aria-expanded="false">
+                <i data-feather="settings" class="font-medium-3 mr-1"></i>
+                <span class="font-weight-bold">System</span>
+              </a>
+              <ng-template ngbNavContent>
+                <system></system>
+              </ng-template>
+            </li>
+
           </ul>
         </div>
         <div [ngbNavOutlet]="navVertical" class="col-12 col-md-9"></div>

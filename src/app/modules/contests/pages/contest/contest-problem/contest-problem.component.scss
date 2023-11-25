@@ -1,52 +1,132 @@
-@import 'bootstrap/scss/mixins'; 
+@import 'bootstrap/scss/mixins';
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
 
 .card .card-header {
-    display: block;
+  display: block;
 }
 
 .contest-problems td:first-child {
-    max-width: 70px;
-    min-width: 70px;
+  max-width: 70px;
+  min-width: 70px;
 }
 
 .col.problem-header {
-    padding-right: 0rem !important;
-    padding-left: 0rem !important;
+  padding-right: 0rem !important;
+  padding-left: 0rem !important;
 }
 
 .contest-problems td:first-child {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 .results-button {
-    position: fixed;
-    right: 2rem;
-    bottom: 5%;
+  position: fixed;
+  right: 2rem;
+  bottom: 5%;
 
-    @include media-breakpoint-down(lg) {
-        display: none;
-    }
+  @include media-breakpoint-down(lg) {
+    display: none;
+  }
 }
 
+.bg-light {
+  background-color: var(--bg-light);
+}
+
+::ng-deep .dark-layout .contests-colors .bg-light {
+  background-color: var(--bg) !important;
+}
 
 .results {
-    z-index: 1000;
-    background-image: linear-gradient(47deg, #1c1368, #9e95f5);
-    border: none;
-    box-shadow: 0 0 10px #9e95f5;
-    border-radius: 10px;
+  z-index: 1000;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  width: calc(100% - 4rem);
+
+  position: fixed;
+  left: 2rem;
+  bottom: 0;
+
+  .result {
+    padding: 5px;
+  }
+
+  @include media-breakpoint-down(md) {
+    width: calc(100% - 2.4rem);
+    left: 1.2rem;
+  }
+}
+
+.custom-table {
+  transition: all 0.2s ease;
+  opacity: 0.9;
+  border: none;
+  box-shadow: var(--inherit-bg-box-shadow) !important;
+  border-radius: 10px;
+
+  th,
+  td {
+    border-top: none;
+    padding-top: 1.15rem;
+    padding-bottom: 1.15rem;
+  }
+}
+
+::ng-deep .contests-color {
+  thead tr {
+    background: var(--bg-gradient) !important;
+    // box-shadow: var(--box-shadow) !important;
+    color: var(--text-color);
+  }
+
+  .bg-light-primary {
+    background-color: var(--bg-light) !important;
+  }
+
+  .pagination-primary .page-item.active .page-link {
+    background: var(--bg) !important;
+  }
+}
+
+.btn {
+  background-color: var(--bg) !important;
+  border: 1px var(--bg-gradient) !important;
+  box-shadow: var(--box-shadow) !important;
   
-    position: fixed;
-    left: 2rem;
-    bottom: 2rem;
+  &:hover {
+    background: var(--bg-gradient) !important;
+  }
+}
 
-    .result {
-        padding: 5px;   
-    }
+.badge-glow:hover {
+  box-shadow: none;
+}
 
-    @include media-breakpoint-down(lg) {
-        display: none;
-    }
+::ng-deep .contests-colors .sample-test .btn {
+  background-color: var(--bg) !important;
+  border: 1px var(--bg-gradient) !important;
+  box-shadow: var(--box-shadow) !important;
+  
+  &:hover {
+    background: var(--bg-gradient) !important;
+  }
+}
+
+span.points {
+  background: var(--bg) !important;
+  box-shadow: var(--box-shadow) !important;
+  color: var(--text-color);
+}
+
+::ng-deep span.problem-points {
+  background: var(--bg-light) !important;
+  color: var(--bg);
+}
+
+::ng-deep span.problem-points.the-best {
+  background: var(--bg) !important;
+  box-shadow: var(--box-shadow) !important;
+  color: var(--text-color);
 }

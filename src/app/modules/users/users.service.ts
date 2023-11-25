@@ -8,8 +8,12 @@ export class UsersService {
 
   constructor(public api: ApiService) {}
 
-  getUsers(page=1){
-    return this.api.get('users', {'page': page})
+  getUsers(page=1, otherParams: any){
+    let params = {
+      page: page,
+      ...otherParams,
+    }
+    return this.api.get('users', params)
   }
 
   getUser(username: string){
@@ -75,6 +79,10 @@ export class UsersService {
 
   getOnlineUsers(){
     return this.api.get('users/online');
+  }
+  
+  getCountries(){
+    return this.api.get('users/countries');
   }
 
 }

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreConfig } from '@core/types';
+import { CoreConfigService } from 'core/services/config.service';
+import { CoreConfig } from 'core/types';
 import { CourseLessonPartStatus } from '../../../../../courses/courses.models';
 import { CoursesService } from '../../../../../courses/courses.service';
 import { HighlightLoader } from 'ngx-highlightjs';
@@ -28,7 +28,6 @@ export class LectureComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.lecture);
     if(this.lessonPartStatus != CourseLessonPartStatus.COMPLETED){
       this.service.checkLessonPartCompletion(this.lessonPartId).subscribe((result: any) => {
         this.checkCompletionEvent.emit(result);

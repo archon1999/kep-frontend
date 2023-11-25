@@ -4,10 +4,9 @@
     <li class="nav-item mr-auto">
       <!-- App Branding -->
       <a class="navbar-brand" [routerLink]="['/']">
-        <span class="brand-logo">
-          <img src="{{ coreConfig.app.appLogoImage }}" alt="brand-logo" />
+        <span class="brand-logo mb-2">
+          <img style="max-width: 180px !important;" src="assets/images/logo/logo-with-title.svg" alt="brand-logo" width="180" />
         </span>
-        <h2 class="brand-text mb-0">{{ coreConfig.app.appName }}</h2>
       </a>
     </li>
 
@@ -31,7 +30,9 @@
 <div class="shadow-bottom" [ngClass]="{ 'd-block': isScrolled }"></div>
 
 <!-- Main menu -->
-<div class="main-menu-content" [perfectScrollbar] (scroll)="onSidebarScroll()">
-  <ul class="navigation navigation-main" layout="vertical" core-menu></ul>
-</div>
+<ng-scrollbar autoHeightDisabled="false">
+  <div class="main-menu-content" (scroll)="onSidebarScroll()">
+    <ul class="navigation navigation-main" layout="vertical" core-menu></ul>
+  </div>
+</ng-scrollbar>
 <!--/ Main menu -->

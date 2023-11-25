@@ -1,0 +1,22 @@
+<div class="card card-developer-meetup">
+  <div class="card-body">
+    <div class="meetup-header d-flex align-items-center">
+      <div class="meetup-day">
+        <h6 class="mb-0">{{ today | localizedDate:'EEE' }}</h6>
+        <h3 class="mb-0">{{ today | date:'d' }}</h3>
+      </div>
+      <div class="my-auto">
+        <h4 class="card-title mb-25">{{ 'System' | translate }}</h4>
+      </div>
+    </div>
+    <div class="card-body custom mb-2 text-center ml-4 mr-4">
+      <div class="avatar bg-primary p-50 m-0 mb-1">
+        <div class="avatar-content">
+          <i data-feather="calendar" class="font-medium-5"></i>
+        </div>
+      </div>
+      <h2 class="font-weight-bolder">{{ days }}</h2>
+      <p class="mb-0 line-ellipsis">{{ 'Day' | translate }}</p>
+    </div>
+  </div>
+</div>

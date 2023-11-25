@@ -1,82 +1,77 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreConfig } from '@core/types';
-import { Subject } from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { Problem, ProblemsFilter } from '../../../../models/problems.models';
+import { Problem, ProblemsFilter } from '@problems/models/problems.models';
 import { fadeInOnEnterAnimation } from 'angular-animations';
-import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
-import { LocalStorageService } from 'app/shared/storages/local-storage.service';
-import { ProblemsFilterService } from '../../../../services/problems-filter.service';
+import { DEFAULT_FILTER, ProblemsFilterService } from '@problems/services/problems-filter.service';
+import { BaseComponent } from '@shared/components/classes/base.component';
+import { SpinnersEnum } from '@shared/components/spinner/spinners.enum';
+import { CoreCommonModule } from '@core/common.module';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
+import { ProblemDifficultyColorPipe } from '@problems/pipes/problem-difficulty-color.pipe';
+import { RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'section-problems-table',
   templateUrl: './section-problems-table.component.html',
   styleUrls: ['./section-problems-table.component.scss'],
-  animations: [fadeInOnEnterAnimation({ duration: 1000 })]
+  animations: [fadeInOnEnterAnimation({ duration: 1000 })],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    SpinnerComponent,
+    EmptyResultComponent,
+    TableOrderingModule,
+    ProblemDifficultyColorPipe,
+  ]
 })
-export class SectionProblemsTableComponent implements OnInit, OnDestroy {
+export class SectionProblemsTableComponent extends BaseComponent implements OnInit, OnDestroy {
 
   @Input() problems: Array<Problem>;
 
-  public isDarkSkin = false;
-  public currentUser: User | null;
-
-  public filter: ProblemsFilter;
+  public filter: ProblemsFilter = DEFAULT_FILTER;
   public ordering: string;
 
-  private _unsubscribeAll = new Subject();
+  public spinnerShow = true;
+  public SpinnersEnum = SpinnersEnum;
 
   constructor(
-    public coreConfigService: CoreConfigService,
-    public authService: AuthenticationService,
-    public localStorageService: LocalStorageService,
     public filterService: ProblemsFilterService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
-    this.coreConfigService.getConfig().pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (config: CoreConfig) => {
-        this.isDarkSkin = config.layout.skin === 'dark';
+    this.spinner.getSpinner(SpinnersEnum.ProblemsTable).subscribe(
+      (spinner) => {
+        this.spinnerShow = spinner.show;
       }
-    )
-
-    this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (user: User | null) => {
-        this.currentUser = user;
-      }
-    )
+    );
 
     this.filterService.getFilter().pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (filter: ProblemsFilter) => {
         this.filter = filter;
         this.ordering = filter.ordering;
       }
-    )
+    );
   }
 
-  setOrdering(ordering: string) {
-    if (this.filter.ordering === ordering) {
-      ordering = '-' + ordering;
-    }
+  changeOrdering(ordering: string) {
+    this.ordering = ordering;
+    this.updateQueryParams({ ordering: ordering });
     this.filterService.updateFilter({ ordering: ordering });
   }
 
   tagOnClick(tagId: number) {
-    let tags = this.filter.tags;
-    var index = this.filter.tags.indexOf(tagId);
-    if (index == -1) {
+    const tags = this.filter.tags;
+    const index = this.filter.tags.indexOf(tagId);
+    if (index === -1) {
       tags.push(tagId);
     } else {
       tags.splice(index, 1);
     }
     this.filterService.updateFilter({ tags: tags });
-  }
-
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
   }
 
 }

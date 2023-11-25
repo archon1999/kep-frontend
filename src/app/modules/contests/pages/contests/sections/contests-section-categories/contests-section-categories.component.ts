@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { fadeInRightOnEnterAnimation } from 'angular-animations';
-import { SwiperOptions } from 'swiper';
+import { SwiperOptions } from 'swiper/types/swiper-options';
 
 @Component({
   selector: 'contests-section-categories',
@@ -35,15 +35,16 @@ export class ContestsSectionCategoriesComponent implements OnInit {
         spaceBetween: 30
       },
     }
-  }
+  };
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
 
-  click(categoryId: number){
-    if(categoryId == this.activeCategory){
+  click(categoryId: number) {
+    if (categoryId === this.activeCategory) {
       this.activeCategory = 0;
     } else {
       this.activeCategory = categoryId;

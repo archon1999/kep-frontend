@@ -7,7 +7,7 @@ import { TestingService } from '../testing.service';
 
 @Component({
   templateUrl: './test.component.html',
-  styleUrls: ['./test.component.scss', '../chapters.scss'],
+  styleUrls: ['./test.component.scss'],
   animations: [
     fadeInOnEnterAnimation({  duration: 3000 }),
   ]
@@ -56,7 +56,7 @@ export class TestComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._unsubscribeAll.next();
+    this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 
