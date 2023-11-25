@@ -2,20 +2,18 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
-import { CountdownModule } from '@ciri/ngx-countdown';
-import { CoreDirectivesModule } from '@core/directives/directives';
-import { CorePipesModule } from '@core/pipes/pipes.module';
+import { CoreDirectivesModule } from 'core/directives/directives';
+import { CorePipesModule } from 'core/pipes/pipes.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { DragulaModule } from 'ng2-dragula';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
-import { NgxUsefulSwiperModule } from 'ngx-useful-swiper';
-import { CodeEditorModule } from '../../shared/components/code-editor/code-editor.module';
-import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
+import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
+import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { KepcoinSpendSwalModule } from '../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
-import { MathjaxModule } from '../../shared/third-part-modules/mathjax/mathjax.module';
-import { SweetAlertModule } from '../../shared/third-part-modules/sweet-alert/sweet-alert.module';
+import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
+import { SweetAlertModule } from '@shared/third-part-modules/sweet-alert/sweet-alert.module';
 import { ChapterCardComponent } from './chapter-card/chapter-card.component';
 import { TestCardComponent } from './test-card/test-card.component';
 import { TestPassComponent } from './test-pass/test-pass.component';
@@ -23,6 +21,7 @@ import { TestComponent } from './test/test.component';
 import { TestingComponent } from './testing.component';
 import { ChaptersResolver, LastTestsResolver, TestPassResolver, TestResolver } from './testing.resolver';
 import { TestListCardComponent } from './test-list-card/test-list-card.component';
+import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 
 const routes: Routes = [
   {
@@ -80,10 +79,11 @@ const routes: Routes = [
     CodeEditorModule,
     MonacoEditorModule,
     MathjaxModule,
-    CountdownModule,
+    // CountdownModule,
     SweetAlertModule,
-    NgxUsefulSwiperModule,
+    // NgxUsefulSwiperModule,
     DragulaModule.forRoot(),
+    SwiperComponent,
   ],
   providers: [
     TestResolver,
@@ -92,4 +92,5 @@ const routes: Routes = [
     LastTestsResolver
   ]
 })
-export class TestingModule { }
+export class TestingModule {
+}

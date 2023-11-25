@@ -1,52 +1,40 @@
-import { CoreConfig } from '@core/types';
+import { CoreConfig } from 'core/types';
 
-/**
- * Default App Config
- *
- * ? TIP:
- *
- * Change app config based on your preferences.
- * You can also change them on each component basis. i.e `app/modules/pages/authentication/auth-login-v1/auth-login-v1.component.ts`
- *
- * ! IMPORTANT: If the enableLocalStorage option is true then make sure you clear the browser local storage(https://developers.google.com/web/tools/chrome-devtools/storage/localstorage#delete).
- *  ! Otherwise, it will not take the below config changes and use stored config from local storage.
- *
- */
-
-// prettier-ignore
 export const coreConfig: CoreConfig = {
   app: {
-    appName     : 'CPython',                                        // App Name
-    appTitle    : 'CPython', // App Title
-    appLogoImage: 'assets/images/logo/logo.svg',                  // App Logo
-    appLanguage : 'en',                                           // App Default Language (en, fr, de, pt etc..)
+    appName: 'CPython.uz',                                        // App Name
+    appTitle: 'CPython.uz', // App Title
+    appLogoImage: 'assets/images/logo/logo.png',                  // App Logo
+    appLogoImageWithTitle: 'assets/images/logo/logo-with-title.svg',                  // App Logo
+    appLanguage: 'en',                                           // App Default Language (en, fr, de, pt etc..)
   },
   layout: {
-    skin  : 'default',                        // default, dark, bordered, semi-dark
-    type  : 'horizontal',                       // vertical, horizontal
-    animation : 'fadeIn',                     // fadeInLeft, zoomIn , fadeIn, none
-    menu : {
-      hidden               : false,           // Boolean: true, false
-      collapsed            : true,            // Boolean: true, false
+    skin: 'default',                        // default, dark, bordered, semi-dark
+    type: 'horizontal',                       // vertical, horizontal
+    animation: 'fadeIn',                     // fadeInLeft, zoomIn , fadeIn, none
+    enableAnimation: true,
+    menu: {
+      hidden: false,           // Boolean: true, false
+      collapsed: true,            // Boolean: true, false
     },
     // ? For horizontal menu, navbar type will work for navMenu type
     navbar: {
-      hidden               : false,           // Boolean: true, false
-      type                 : 'fixed-top',     // navbar-static-top, fixed-top, floating-nav, d-none
-      background           : 'navbar-light',  // navbar-light. navbar-dark
+      hidden: false,           // Boolean: true, false
+      type: 'fixed-top',     // navbar-static-top, fixed-top, floating-nav, d-none
+      background: 'navbar-light',  // navbar-light. navbar-dark
       customBackgroundColor: true,            // Boolean: true, false
-      backgroundColor      : ''               // BS color i.e bg-primary, bg-success
+      backgroundColor: ''               // BS color i.e bg-primary, bg-success
     },
     footer: {
-      hidden               : true,           // Boolean: true, false
-      type                 : 'd-none', // footer-static, footer-sticky, d-none
-      background           : 'footer-light',  // footer-light. footer-dark
+      hidden: true,           // Boolean: true, false
+      type: 'd-none', // footer-static, footer-sticky, d-none
+      background: 'footer-light',  // footer-light. footer-dark
       customBackgroundColor: false,           // Boolean: true, false
-      backgroundColor      : ''               // BS color i.e bg-primary, bg-success
+      backgroundColor: ''               // BS color i.e bg-primary, bg-success
     },
     enableLocalStorage: true,
-    customizer  : false,                       // Boolean: true, false (Enable theme customizer)
-    scrollTop   : false,                       // Boolean: true, false (Enable scroll to top button)
-    buyNow      : false                        // Boolean: true, false (Set false in real project, For demo purpose only)
+    customizer: false,                       // Boolean: true, false (Enable theme customizer)
+    scrollTop: false,                       // Boolean: true, false (Enable scroll to top button)
+    buyNow: false,                        // Boolean: true, false (Set false in real project, For demo purpose only)
   }
-}
+};

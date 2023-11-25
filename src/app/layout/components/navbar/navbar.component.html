@@ -4,9 +4,9 @@
     <li class="nav-item">
       <a class="navbar-brand" [routerLink]="['/']">
         <span class="brand-logo">
-          <img src="{{ coreConfig.app.appLogoImage }}" alt="brand-logo" width="36" />
+          <img style="max-width: 200px !important;" src="assets/images/logo/logo-with-title.svg" alt="brand-logo" width="200" />
         </span>
-        <h2 class="brand-text mb-0">{{ coreConfig.app.appName }}</h2>
+<!--        <h2 class="brand-text mb-0">{{ coreConfig.app.appName }}</h2>-->
       </a>
     </li>
   </ul>
@@ -43,29 +43,29 @@
   <ul class="nav navbar-nav align-items-center ml-auto">
     <li ngbDropdown class="nav-item dropdown dropdown-language">
       <a class="nav-link dropdown-toggle" id="dropdown-flag" ngbDropdownToggle>
-        <i class="flag-icon flag-icon-{{ languageOptions[_translateService.currentLang].flag }}"></i
-        ><span class="selected-language">{{ languageOptions[_translateService.currentLang].title }}</span></a
-      >
+        <i class="fi fi-{{ languageOptions[_translateService.currentLang].flag }}"></i>
+        <span class="ml-50 selected-language">{{ languageOptions[_translateService.currentLang].title }}</span>
+      </a>
       <div ngbDropdownMenu aria-labelledby="dropdown-flag">
         <a *ngFor="let lang of _translateService.getLangs()" ngbDropdownItem (click)="setLanguage(lang)">
-          <i class="flag-icon flag-icon-{{ languageOptions[lang].flag }}"></i> {{ languageOptions[lang].title }}
+          <i class="fi fi-{{ languageOptions[lang].flag }}"></i> {{ languageOptions[lang].title }}
         </a>
       </div>
     </li>
 
-    <div *ngIf="!isAuthenticated()">
+    <div *ngIf="!isAuthenticated">
       <a (click)="loginModalOpenForm()" class="btn" rippleEffect>
         <i data-feather="log-in"></i>
         {{ 'LOGIN' | translate }}
       </a>
     </div>
 
-    <app-navbar-daily-tasks *ngIf="isAuthenticated()"></app-navbar-daily-tasks>
-    <app-navbar-kepcoin *ngIf="isAuthenticated()"></app-navbar-kepcoin>
+    <app-navbar-daily-tasks *ngIf="isAuthenticated"></app-navbar-daily-tasks>
+    <app-navbar-kepcoin *ngIf="isAuthenticated"></app-navbar-kepcoin>
 
-    <app-navbar-notification *ngIf="isAuthenticated()"></app-navbar-notification>
+    <app-navbar-notification *ngIf="isAuthenticated"></app-navbar-notification>
     <!-- User Dropdown -->
-    <li ngbDropdown class="nav-item dropdown-user" *ngIf="isAuthenticated()">
+    <li ngbDropdown class="nav-item dropdown-user" *ngIf="isAuthenticated">
       <a
         class="nav-link dropdown-toggle dropdown-user-link"
         id="dropdown-user"

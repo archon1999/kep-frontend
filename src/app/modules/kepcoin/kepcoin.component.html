@@ -155,24 +155,16 @@
           </ul>  
         </div>
 
-        <ngb-pagination
+        <pagination
           *ngIf="total > 0"
           [collectionSize]="total"
           [(page)]="currentPage"
           [pageSize]="10"
           [maxSize]="5"
+          [color]="'warning'"
           [rotate]="true"
-          (pageChange)="updatePage()"
-          aria-label="Default pagination"
-          class="d-flex justify-content-center pagination-warning mt-2">
-          <ng-template ngbPaginationPrevious
-            ><span [data-feather]="'chevron-left'" [size]="18" [class]="'font-weight-bolder'"></span>
-          </ng-template>
-          <ng-template ngbPaginationNext
-            ><span [data-feather]="'chevron-right'" [size]="18" [class]="'font-weight-bolder'"></span
-          ></ng-template>
-        </ngb-pagination>
-
+          (pageChange)="updatePage()">
+        </pagination>
       </div>
     </div>
   </div>

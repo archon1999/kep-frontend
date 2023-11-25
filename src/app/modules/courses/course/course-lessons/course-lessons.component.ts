@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { SwiperOptions } from 'swiper';
-import { Course, CourseLesson } from '../../courses.models';
+import { CourseLesson } from '../../courses.models';
+import { SwiperOptions } from 'swiper/types/swiper-options';
 
 @Component({
   selector: 'course-lessons',
@@ -12,7 +12,6 @@ export class CourseLessonsComponent implements OnInit {
   @Input() lessons: Array<CourseLesson> = [];
 
   public lessonsSwiperConfig: SwiperOptions = {
-    lazy: true,
     breakpoints: {
       1300: {
         slidesPerView: 3,
@@ -27,9 +26,10 @@ export class CourseLessonsComponent implements OnInit {
         spaceBetween: 60
       }
     }
-  }
+  };
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }

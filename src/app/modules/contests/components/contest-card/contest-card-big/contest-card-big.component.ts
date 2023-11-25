@@ -6,6 +6,7 @@ import { User } from '../../../../../auth/models';
 import { AuthenticationService } from '../../../../../auth/service';
 import { Contest, ContestStatus } from '../../../contests.models';
 import { ContestsService } from 'app/modules/contests/contests.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'contest-card-big',
@@ -16,6 +17,7 @@ import { ContestsService } from 'app/modules/contests/contests.service';
 export class ContestCardBigComponent implements OnInit {
 
   @Input() contest: Contest;
+  public routerLink: string | Array<string | number>;
 
   public top3Contestants: Array<any> = [];
 
@@ -26,9 +28,15 @@ export class ContestCardBigComponent implements OnInit {
     public modalService: NgbModal,
     public authService: AuthenticationService,
     public service: ContestsService,
+    public router: Router,
   ) { }
 
   ngOnInit(): void {
+    this.routerLink = ['/competitions', 'contests', 'contest', this.contest.id];
+    if (this.router.url.endsWith(this.contest.id.toString())) {
+      this.routerLink.push('problems');
+    }
+
     this.authService.currentUser.subscribe(
       (user: any) => {
         this.currentUser = user;
@@ -71,11 +79,12 @@ export class ContestCardBigComponent implements OnInit {
   virtualContestStart(){
     this.service.virtualContestStart(this.contest.id).subscribe(
       () => {
+        this.router.navigate(['/competitions', 'contests', 'contest', this.contest.id]);
         this.service.getContest(this.contest.id).subscribe(
-          (contest: Contest) => {
+          (contest: any) => {
             this.contest = contest;
           }
-        )    
+        )
       }
     )
   }

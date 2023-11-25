@@ -1,86 +1,19 @@
-import { Component, HostListener, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreConfig } from '@core/types';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { Problem } from '../../../models/problems.models';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'problem1744',
   templateUrl: './problem1744.component.html',
   styleUrls: ['./problem1744.component.scss'],
   encapsulation: ViewEncapsulation.Emulated,
 })
-export class Problem1744Component implements OnInit, OnDestroy {
+export class Problem1744Component implements OnInit {
 
   @Input() problem: Problem;
 
-  public html = ``;
+  constructor() {}
 
-  public outputHtml = '';
+  ngOnInit() {}
 
-  public editorOptions: any;
-
-  public outputX = 0;
-  public outputWidth = 100;
-  public mouseEnter = false;
-
-  public saveCodeName = 'problem-1744code-editor-codehtml';
-
-  private _unsubscribeAll = new Subject();
-
-  constructor(public coreConfigService: CoreConfigService) { }
-
-  ngOnInit(): void {
-    this.coreConfigService.getConfig().pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (coreConfig: CoreConfig) => {
-        if(coreConfig.layout.skin == 'dark'){
-          this.editorOptions = {
-            language: 'html',
-            theme: 'vs-dark',
-            tabSize: 2,
-          }
-        } else {
-          this.editorOptions = {
-            language: 'html',
-            theme: 'vs-light',
-            tabSize: 2,
-          }
-        }
-      }
-    )
-
-    this.html = localStorage.getItem(this.saveCodeName) || this.problem.availableLanguages[0].codeTemplate;
-    this.setOutputHtml();
-  }
-
-  @HostListener('document:mousemove', ['$event']) 
-  onMouseMove(e) {
-    if(this.mouseEnter){
-      this.outputWidth = 100 * e.layerX / 300;
-    } else {
-      this.outputWidth = 100;
-    }
-  }
-
-  change(){
-    this.setOutputHtml();
-  }
-
-  setOutputHtml(){
-    localStorage.setItem(this.saveCodeName, this.html);
-    let html = this.html.replace(/<\s*img/, '<imga');
-    this.outputHtml = `
-      <html style="height: 100%; width: 100%;">
-        <body style="overflow: hidden; height: 100%; width: 100%;">
-          ${html}
-        </body>
-      </html>
-    `
-  }
-  
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
-  }
 }

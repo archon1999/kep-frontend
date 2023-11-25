@@ -1,6 +1,7 @@
-import { ContestProblem } from "../../contests/contests.models";
-import { User } from "../../users/users.models";
-import { getEditorLang } from "../utils/editor-lang";
+import { ContestProblem } from '@contests/contests.models';
+import { User } from '@users/users.models';
+import { getEditorLang } from '../utils';
+import { AttemptLangs } from '../constants';
 
 
 export class Attempt {
@@ -10,9 +11,10 @@ export class Attempt {
     public team: any,
     public problemId: number,
     public problemTitle: string,
+    public problemHasCheckInput: boolean,
     public verdict: number,
     public verdictTitle: string,
-    public lang: string,
+    public lang: AttemptLangs,
     public langFull: string,
     public canView: boolean,
     public canTestView: boolean,
@@ -25,25 +27,13 @@ export class Attempt {
     public sourceCodeSize: number,
     public contestProblem: ContestProblem,
     public balls: number,
+    public contestTime: string,
     public animationWrongState = false,
     public animationAcceptedState = false,
   ) { }
 
   getEditorLang() {
     return getEditorLang(this.lang);
-  }
-
-  getContestTime(startTime: Date | string) {
-    startTime = new Date(startTime);
-    let seconds = Math.trunc((this.created.valueOf() - startTime.valueOf()) / 1000);
-    let minutes = Math.trunc(seconds / 60);
-    let hours = Math.trunc(minutes / 60);
-    minutes %= 60;
-    seconds %= 60;
-    let time = (hours + '').padStart(2, '0');
-    time += ':' + (minutes + '').padStart(2, '0');
-    time += ':' + (seconds + '').padStart(2, '0');
-    return time;
   }
 
   static fromJSON(data: any) {
@@ -53,6 +43,7 @@ export class Attempt {
       data.team,
       data.problemId,
       data.problemTitle,
+      data.problemHasCheckInput,
       data.verdict,
       data.verdictTitle,
       data.lang,
@@ -68,6 +59,7 @@ export class Attempt {
       data.sourceCodeSize,
       data.contestProblem,
       data.balls,
+      data.contestTime,
     );
   }
 
@@ -78,6 +70,7 @@ export class Attempt {
       attempt.team,
       attempt.problemId,
       attempt.problemTitle,
+      attempt.problemHasCheckInput,
       wsAttempt.verdict,
       wsAttempt.verdictTitle,
       attempt.lang,
@@ -93,6 +86,7 @@ export class Attempt {
       attempt.sourceCodeSize,
       attempt.contestProblem,
       wsAttempt.balls,
+      attempt.contestTime,
     );
   }
 }

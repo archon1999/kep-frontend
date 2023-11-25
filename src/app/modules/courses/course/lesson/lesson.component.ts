@@ -17,7 +17,7 @@ import { TitleService } from 'app/shared/services/title.service';
   styleUrls: ['./lesson.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class LessonComponent implements OnInit{
+export class LessonComponent implements OnInit {
 
   course: Course;
   courseLessons: Array<CourseLesson> = [];
@@ -67,8 +67,9 @@ export class LessonComponent implements OnInit{
     public api: ApiService,
     public titleService: TitleService,
     private shepherdService: ShepherdService
-  ) { }
-  
+  ) {
+  }
+
   ngOnInit(): void {
     this.route.data.subscribe(({ course, courseLessons, courseLesson }) => {
       this.course = course;
@@ -79,14 +80,22 @@ export class LessonComponent implements OnInit{
       this.titleService.updateTitle(this.route, {
         lessonTitle: this.courseLesson.title,
         courseTitle: this.course.title,
-      })
+      });
       this.currentLessonPart = this.courseLesson.parts[0];
       this.contentHeader.headerTitle = this.courseLesson.title;
       this.contentHeader.breadcrumb.links[1].name = this.course.title;
-    })
+
+      this.route.queryParams.subscribe(
+        (params: any) => {
+          if ('page' in params) {
+            this.changeLessonPart(+params.page - 1);
+          }
+        }
+      );
+    });
 
     this.authService.currentUser.subscribe((user: any) => {
-      if(!user){
+      if (!user) {
         this.router.navigate(['/404'], { skipLocationChange: true });
       }
       this.currentUser = user;
@@ -94,11 +103,19 @@ export class LessonComponent implements OnInit{
 
   }
 
-  changeLessonPart(lessonPartIndex: number){
-    let parts = this.courseLesson.parts.length;
+  changeLessonPart(lessonPartIndex: number) {
+    const currentScrollHeight = window.pageYOffset;
+    this.router.navigate([],
+      {
+        relativeTo: this.route,
+        queryParams: { page: lessonPartIndex + 1 },
+      }
+    ).then(() => window.scrollTo({ top: currentScrollHeight }));
+
+    const parts = this.courseLesson.parts.length;
     this.lessonPartIndex = (lessonPartIndex + parts) % parts;
     this.currentLessonPart = this.courseLesson.parts[this.lessonPartIndex];
-    if(this.currentLessonPart.contentType == 'problem'){
+    if (this.currentLessonPart.contentType === 'problem') {
       this.currentLessonPart.contentType = '';
       this.lessonPartBlockUI.start();
       setTimeout(() => {
@@ -109,11 +126,13 @@ export class LessonComponent implements OnInit{
     this.isCommentsShow = false;
   }
 
-  checkPartCompletionEvent(result: any){
-    if(this.courseLesson.parts[this.lessonPartIndex].id != this.currentLessonPart.id) return;
-    if(result.success){
+  checkPartCompletionEvent(result: any) {
+    if (this.courseLesson.parts[this.lessonPartIndex].id !== this.currentLessonPart.id) {
+      return;
+    }
+    if (result.success) {
       this.currentLessonPart.updateStatus(CourseLessonPartStatus.COMPLETED);
-    } else if(this.currentLessonPart.status == CourseLessonPartStatus.NOT_COMPLETED){
+    } else if (this.currentLessonPart.status === CourseLessonPartStatus.NOT_COMPLETED) {
       this.currentLessonPart.updateStatus(CourseLessonPartStatus.FAILED);
     }
     this.courseLesson.progress = result.lessonProgress;
@@ -121,12 +140,12 @@ export class LessonComponent implements OnInit{
     this.course.participantPoints = result.participantPoints;
   }
 
-  toogleCommentsButton(){
-    if(!this.isCommentsShow){
+  toogleCommentsButton() {
+    if (!this.isCommentsShow) {
       this.service.getCourseLessonPartComments(this.currentLessonPart.id).subscribe((result: any) => {
-        this.lessonPartComments = result;  
+        this.lessonPartComments = result;
         this.isCommentsShow = true;
-      });      
+      });
     } else {
       this.isCommentsShow = false;
     }
@@ -139,8 +158,8 @@ export class LessonComponent implements OnInit{
       }
     };
     this.shepherdService.modal = true;
-    this.shepherdService.addSteps(lessonTourSteps);
-    if(this.course.participantProgress == 0){
+    // this.shepherdService.addSteps(lessonTourSteps);
+    if (this.course.participantProgress === 0) {
       this.startTour();
     }
   }

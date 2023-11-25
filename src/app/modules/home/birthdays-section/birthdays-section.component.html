@@ -3,6 +3,15 @@
     <h4><strong>{{ 'BirthDays' | translate }}</strong></h4>
   </div>
 
+  <div class="item" *ngIf="skeletonVisible">
+    <ngx-skeleton-loader
+      count="5"
+      animation="pulse"
+      appearance="line"
+      [theme]="{height: '70px', background: 'var(--skeleton-color)'}"
+    ></ngx-skeleton-loader>
+  </div>
+
   <div class="media-list">
     <div class="media" *ngFor="let birthDay of birthDays">
       <a class="media-left" href="javascript:void(0)">

@@ -2,7 +2,9 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { AuthenticationService } from 'app/auth/service';
 import { Subject } from 'rxjs';
-import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
+import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
+import { CoreCommonModule } from '@core/common.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 interface General {
   solved: number;
@@ -13,6 +15,7 @@ interface General {
 
 interface LangInfo {
   lang: string;
+  langFull: string;
   solved: number;
 }
 
@@ -34,9 +37,14 @@ interface TopicInfo {
     fadeInLeftOnEnterAnimation({ duration: 3000 }),
     fadeInRightOnEnterAnimation({ duration: 3000 }),
     fadeInOnEnterAnimation({ duration: 3000 }),
+  ],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgbTooltipModule,
   ]
 })
-export class SectionProfileComponent implements OnInit, OnDestroy {
+export class SectionProfileComponent implements OnInit {
 
   @Input() username: string;
 
@@ -51,42 +59,36 @@ export class SectionProfileComponent implements OnInit, OnDestroy {
   public tags: Array<TagInfo> = [];
   public topics: Array<TopicInfo> = [];
 
-  private _unsubscribeAll = new Subject();
-
   constructor(
     public authService: AuthenticationService,
     public statisticsService: ProblemsStatisticsService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.statisticsService.getGeneral(this.username).subscribe(
       (general: General) => {
         this.general = general;
       }
-    )
+    );
 
     this.statisticsService.getByLang(this.username).subscribe(
       (langs: Array<LangInfo>) => {
         this.langs = langs.sort((a, b) => b.solved - a.solved);
       }
-    )
+    );
 
     this.statisticsService.getByTag(this.username).subscribe(
       (tags: Array<TagInfo>) => {
         this.tags = tags.sort((a, b) => b.value - a.value);
       }
-    )
+    );
 
     this.statisticsService.getByTopic(this.username).subscribe(
       (topics: Array<TopicInfo>) => {
         this.topics = topics.sort((a, b) => b.solved - a.solved);
       }
-    )
-  }
-
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    );
   }
 
 }

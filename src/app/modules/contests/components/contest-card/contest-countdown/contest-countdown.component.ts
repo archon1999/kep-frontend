@@ -14,6 +14,7 @@ export class ContestCountdownComponent implements OnInit {
   @Input() contest: Contest;
 
   public leftTime = 0;
+  public stopTime = 0;
 
   @ViewChild('finishModal') public finishModalRef: TemplateRef<any>;
   @ViewChild('startModal') public startModalRef: TemplateRef<any>;
@@ -22,18 +23,19 @@ export class ContestCountdownComponent implements OnInit {
     private modalService: NgbModal,
   ) {}
 
-  ngOnInit(): void {  
-    let time = this.contest.status == ContestStatus.ALREADY ? this.contest.finishTime : this.contest.startTime;
+  ngOnInit(): void {
+    const time = this.contest.status === ContestStatus.ALREADY ? this.contest.finishTime : this.contest.startTime;
+    this.stopTime = new Date(time).valueOf();
     this.leftTime = (new Date(time).valueOf() - Date.now());
   }
 
-  finish(){
-    if(this.contest.status == ContestStatus.NOT_STARTED){
+  finish() {
+    if (this.contest.status === ContestStatus.NOT_STARTED) {
       this.contest.status = ContestStatus.ALREADY;
-      this.modalService.open(this.startModalRef);        
-    } else if(this.contest.status == ContestStatus.ALREADY){
+      this.modalService.open(this.startModalRef);
+    } else if (this.contest.status === ContestStatus.ALREADY) {
       this.contest.status = ContestStatus.FINISHED;
-      this.modalService.open(this.finishModalRef);        
+      this.modalService.open(this.finishModalRef);
     }
   }
 

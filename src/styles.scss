@@ -1,11 +1,16 @@
 @use "sass:meta";
+@import 'ngx-spinner/animations/ball-clip-rotate-multiple';
+@import 'ngx-spinner/animations/ball-clip-rotate-pulse';
 
-@import '@core/scss/core.scss';
+@import 'scss/core.scss';
 @import './assets/scss/styles';
 
-@import 'app/languages.scss';
+@import 'colors/study-plans.scss';
+@import 'colors/languages.scss';
+@import 'colors/chapters.scss';
+@import 'colors/contests.scss';
 
-@import "~highlight.js/styles/vs.css";
+@import "highlight.js/styles/vs.css";
 
 .dark-layout {
   @include meta.load-css("highlight.js/styles/vs2015.css");

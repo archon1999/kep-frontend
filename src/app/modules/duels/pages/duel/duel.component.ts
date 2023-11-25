@@ -118,7 +118,7 @@ export class DuelComponent implements OnInit, OnDestroy {
       clearInterval(this._intervalId);
     }
 
-    this._unsubscribeAll.next();
+    this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 

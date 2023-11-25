@@ -5,10 +5,8 @@
   </div>
 
   <swiper [config]="reviewsSwiperConfig" class="swiper-review swiper-lazy-loading">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide" *ngFor="let review of reviews">
-        <review-card [review]="review"></review-card>
-      </div>
+    <div class="swiper-slide" *ngFor="let review of reviews">
+      <review-card [review]="review"></review-card>
     </div>
   </swiper>
 </div>
@@ -33,7 +31,7 @@
       </span>
     </div>
 
-    <quill-editor [(ngModel)]="review">
+    <quill-editor class="full-width" [(ngModel)]="review">
       <div quill-editor-toolbar>
         <span class="ql-formats">
           <button class="ql-bold" [title]="'Bold'"></button>

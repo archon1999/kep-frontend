@@ -1,10 +1,14 @@
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/functions';
+@import 'scss/base/bootstrap-extended/variables';
+
 .card-activity {
-  box-shadow: 0 0 10px #7367f0 !important;
+  box-shadow: 0 0 10px $primary !important;
   border: none !important;
 }
 
 ::ng-deep .dark-layout .card-activity {
-  background: linear-gradient(92.32deg, #393575, #463caa) !important;
+  background: linear-gradient(92.32deg, mix(black, $primary, 50), mix(black, $primary, 35)) !important;
 }
 
 h2 {

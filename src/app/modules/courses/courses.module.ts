@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
-import { CoreDirectivesModule } from '@core/directives/directives';
-import { CorePipesModule } from '@core/pipes/pipes.module';
+import { CoreDirectivesModule } from 'core/directives/directives';
+import { CorePipesModule } from 'core/pipes/pipes.module';
 import { NgbModule, NgbProgressbarModule, NgbRatingModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthGuard } from 'app/auth/helpers';
@@ -14,7 +14,6 @@ import { CountUpModule } from 'ngx-countup';
 import { HighlightModule } from 'ngx-highlightjs';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { ToastrModule } from 'ngx-toastr';
-import { NgxUsefulSwiperModule } from 'ngx-useful-swiper';
 import { ClipboardModule } from '../../shared/components/clipboard/clipboard.module';
 import { CodeEditorModule } from '../../shared/components/code-editor/code-editor.module';
 import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
@@ -43,9 +42,11 @@ import { CourseGuard } from './courses.guard';
 import { CourseDictionaryResolver, CourseLessonResolver, CourseLessonsResolver, CourseResolver, CoursesResolver } from './courses.resolver';
 import { SidebarComponent as CoursesSidebarComponent } from './sidebar/sidebar.component';
 import { ReviewCardComponent } from './course/course-reviews/review-card/review-card.component';
+import { ProblemsPipesModule } from '../problems/pipes/problems-pipes.module';
+import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 
 const routes: Routes = [
-  { 
+  {
     path: '',
     component: CoursesComponent,
     data: { animation: 'courses' },
@@ -146,9 +147,11 @@ const routes: Routes = [
     UserPopoverModule,
     BlockUIModule.forRoot(),
     HighlightModule,
-    NgxUsefulSwiperModule,
+    // NgxUsefulSwiperModule,
     QuillModule,
     CountUpModule,
+    ProblemsPipesModule,
+    SwiperComponent,
   ],
   providers: [
     CourseGuard,
@@ -159,4 +162,5 @@ const routes: Routes = [
     CoursesResolver,
   ],
 })
-export class CoursesModule { }
+export class CoursesModule {
+}
