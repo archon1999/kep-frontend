@@ -1,6 +1,5 @@
 <div class="content-wrapper p-0">
   <div class="content-body">
-    <!-- content-header component -->
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
     <section class="mt-2">
@@ -8,12 +7,8 @@
         <div class="col-12">
           <div class="layout-spacing">
             <div class="card">
-              <div class="card-header">
-                <contests-tab></contests-tab>
-              </div>
-              <h3 class="mb-2 text-center">{{ 'RATING' | translate }}</h3>
-              <div class="table-responsive">
-                <table class="table">
+              <div class="table-responsive beautiful-table">
+                <table class="table table-striped">
                   <thead>
                     <tr class="bg-gradient-primary">
                       <th class="text-center text-white">#</th>
@@ -42,7 +37,8 @@
                   </tbody>
                 </table>
               </div>
-
+            </div>
+            <div class="mb-1">
               <pagination
                 *ngIf="contestsRating.length > 0"
                 [collectionSize]="totalUsersCount"
