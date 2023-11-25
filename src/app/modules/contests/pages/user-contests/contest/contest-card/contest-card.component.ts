@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreConfig } from '@core/types';
+import { CoreConfigService } from 'core/services/config.service';
+import { CoreConfig } from 'core/types';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { bounceAnimation } from 'angular-animations';
 import { ApiService } from 'app/shared/services/api.service';
@@ -17,7 +17,7 @@ import { takeUntil } from 'rxjs/operators';
   ]
 })
 export class ContestCardComponent implements OnInit, OnDestroy {
-  @Input() contest: Contest;
+  @Input() contest: any;
 
   coreConfig: CoreConfig;
   routerLink = "";
@@ -50,10 +50,10 @@ export class ContestCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  openRegistrationModal(content){
+  openRegistrationModal(){
     this.api.post(`user-contests/${this.contest.id}/registration/`).subscribe((result: any) => {
       if(result.success){
-        this.contest.userInfo.isRegistered = true;
+        this.contest.isRegistered = true;
       }
     })
   }
@@ -61,13 +61,13 @@ export class ContestCardComponent implements OnInit, OnDestroy {
   cancelRegistration(){
     this.api.get(`contests/${this.contest.id}/cancel-registration/`).subscribe((result: any) => {
       if(result.success){
-        this.contest.userInfo.isRegistered = false;
+        this.contest.isRegistered = false;
       }
     })
   }
 
   ngOnDestroy(): void {
-    this._unsubscribeAll.next();
+    this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 }

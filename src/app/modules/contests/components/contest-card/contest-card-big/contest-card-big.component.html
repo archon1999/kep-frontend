@@ -1,6 +1,8 @@
-<div [@fadeInOnEnter] class="card contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
-  <a [routerLink]="['/competitions', 'contests', 'contest', contest.id]">
-    <div *ngIf="contest.logo" class="card-bg" style="background-image: url('{{ contest.logo }}');"></div>
+<div [@fadeInOnEnter] class="card contests-colors contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
+  <a [routerLink]="routerLink">
+    <div *ngIf="contest.logo" class="card-bg" style="background-image: url('{{ contest.logo }}');">
+    </div>
+
     <div class="card-header d-block">
       <div class="d-flex justify-content-between">
         <div class="category">
@@ -84,7 +86,7 @@
         <i [data-feather]="'problem' | iconName"></i>
         {{ contest.problemsCount }}
       </span>
-      <span class="badge badge-glow badge-{{ contest.getBadgeType() }}">
+      <span class="badge badge-glow badge-primary">
         {{ contest.type }}
       </span>
     </div>
@@ -97,8 +99,7 @@
           [customContent]="true"
           [purchaseUrl]="'contests/' + contest.id + '/purchase-virtual-contest/'"
           [value]="5"
-          (success)="virtualContestPurchaseSuccess()"
-          class="mr-1">
+          (success)="virtualContestPurchaseSuccess()">
           <button class="btn btn-primary btn-sm round">
             <i [data-feather]="'contest' | iconName" [size]="16"></i>
             {{ 'Virtual' | translate }}
@@ -114,26 +115,22 @@
         </button>
       </ng-container>
 
-      <span *ngIf="contest.status != 1">
+      <span *ngIf="contest.status != 1 && !contest.userInfo.virtualContestPurchased">
         <kepcoin-spend-swal
-          *ngIf="contest.status != 0 && contest.userInfo.isRated && contest.userInfo.isRegistered && !contest.userInfo.doubleRatingPurchased"
-          [customContent]="true" [purchaseUrl]="'contests/' + contest.id + '/purchase-double-rating/'"
-          (success)="contest.doubleRatingPurchased=true;" [value]="25" class="mr-1"
-          ngbTooltip="{{ 'DoubleRating' | translate }}">
-          <img height="25" src="assets/images/icons/x2-delta.png">
+          *ngIf="contest.status != 0 && contest.isRated && contest.userInfo.isRegistered && !contest.userInfo.unratedContestPurchased"
+          [customContent]="true"
+          [purchaseUrl]="'contests/' + contest.id + '/purchase-unrated-contest/'"
+          [value]="10"
+          class="mr-1" ngbTooltip="{{ 'Unrated' | translate }}"
+          (success)="contest.userInfo.unratedContestPurchased=true;">
+          <img height="25" src="assets/images/icons/unrated.png">
         </kepcoin-spend-swal>
-        <img ngbTooltip="{{ 'Purchased' | translate }}"
-             *ngIf="contest.userInfo.isRegistered && contest.userInfo.isRated && contest.userInfo.doubleRatingPurchased" height="25"
-             src="assets/images/icons/x2-delta.png" class="mr-1">
-        <kepcoin-spend-swal
-          *ngIf="contest.status != 0 && contest.userInfo.isRated && contest.userInfo.isRegistered && !contest.userInfo.saveRatingPurchased"
-          [customContent]="true" [purchaseUrl]="'contests/' + contest.id + '/purchase-save-rating/'" [value]="25"
-          (success)="contest.userInfo.saveRatingPurchased=true;" class="mr-1" ngbTooltip="{{ 'SaveRating' | translate }}">
-          <img height="25" src="assets/images/icons/save-rating.png">
-        </kepcoin-spend-swal>
-        <img ngbTooltip="{{ 'Purchased' | translate }}" *ngIf="contest.userInfo.isRegistered && contest.userInfo.isRated && contest.userInfo.saveRatingPurchased"
-             height="25" src="assets/images/icons/save-rating.png" class="mr-1">
-        <button ngbTooltip="{{ 'Cancel' | translate }}" rippleEffect class="btn btn-sm round btn-gradient-success"
+        <img
+          *ngIf="contest.userInfo.isRegistered && contest.isRated && contest.userInfo.unratedContestPurchased"
+          ngbTooltip="{{ 'Purchased' | translate }}"
+          height="25" src="assets/images/icons/unrated.png" class="mr-1">
+
+          <button ngbTooltip="{{ 'Cancel' | translate }}" rippleEffect class="btn btn-sm round btn-gradient-success"
           (click)="cancelRegistration()" *ngIf="contest.userInfo.isRegistered">
           <i data-feather="user" [size]="16"></i> {{ 'Registered' | translate }}
           <i data-feather="x" class="text-danger"></i>

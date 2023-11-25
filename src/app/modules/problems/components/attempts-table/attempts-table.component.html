@@ -8,11 +8,11 @@
 <ng-template #modal let-modal>
   <div class="modal-header">
     <h5 class="modal-title mr-1">{{ 'Attempt' | translate }}</h5>
-    <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+    <button type="button" class="close" (click)="modal.dismiss()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body" tabindex="0" ngbAutofocus>
+  <div class="modal-body">
     <base-table
       *ngIf="selectedAttempt"
       [attempts]="[selectedAttempt]"
@@ -21,22 +21,110 @@
     >
     </base-table>
 
-    <clipboard-button [text]="selectedAttempt.sourceCode"></clipboard-button>
+    <ul ngbNav #navWithIcons="ngbNav" class="nav-tabs" [destroyOnHide]="false">
+      <li ngbNavItem>
+        <a ngbNavLink>
+          <span [data-feather]="'code'"></span> {{ 'Code' | translate }}
+        </a>
+        <ng-template ngbNavContent>
+          <clipboard-button
+            style="
+              position: absolute;
+              top: 165px;
+              right: 20px;"
+            [text]="selectedAttempt.sourceCode">
+          </clipboard-button>
 
-    <ngx-monaco-editor
-      [ngModelOptions]="{standalone: true}"
-      [options]="editorOptions"
-      [(ngModel)]="selectedAttempt.sourceCode"
-      style="height: 400px;"
-      class="mt-1"
-      ngDefaultControl
-    ></ngx-monaco-editor>
+          <monaco-editor
+            [lang]="selectedAttempt.lang"
+            [ngModelOptions]="{standalone: true}"
+            [(ngModel)]="selectedAttempt.sourceCode">
+          </monaco-editor>
+        </ng-template>
+      </li>
+
+      <li ngbNavItem *ngIf="hackEnabled && selectedAttempt?.verdict == 1 && selectedAttempt?.problemHasCheckInput">
+        <a ngbNavLink>
+          <span [data-feather]="'hack' | iconName"></span> {{ 'Hack' | translate }}
+        </a>
+        <ng-template ngbNavContent>
+          <div class="nav-vertical" [formGroup]="hackForm">
+            <ul ngbNav #navVertical="ngbNav" class="nav-tabs nav-left flex-column" [destroyOnHide]="false">
+              <li ngbNavItem>
+                <a ngbNavLink>
+                  <span [data-feather]="'edit'"></span> {{ 'Text' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="half-width">
+                    <textarea class="form-control" rows="8" formControlName="input"></textarea>
+                  </div>
+                  <button (click)="hackSubmit(selectedAttempt.id)" class="mt-1 mb-50 btn btn-primary">
+                    {{ 'Submit' | translate }}
+                  </button>
+                </ng-template>
+              </li>
+
+              <li ngbNavItem>
+                <a ngbNavLink>
+                  <span [data-feather]="'terminal'"></span> {{ 'Generator' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <div class="languages">
+                    <div class="d-flex mb-50">
+                      <h5>
+                        <i data-feather="code"></i>
+                        {{ 'Languages' | translate }}
+                      </h5>
+                    </div>
+
+                    <button
+                      *ngFor="let lang of hackAvailableLanguages"
+                      (click)="hackForm.controls.generatorLang.setValue(lang)"
+                      class="mr-50 mb-50 btn btn-primary badge badge-{{ lang }} badge-glow">
+                      {{ lang }}
+                    </button>
+                  </div>
+
+                  <div class="selected-language mt-1">
+                    <div class="d-flex mb-50">
+                      <h5>
+                        <i data-feather="code"></i>
+                        {{ 'SelectedLanguage' | translate }}
+                      </h5>
+                    </div>
+
+                    <span
+                      class="badge badge-{{ hackForm.controls.generatorLang.value }} badge-glow">
+                      {{ hackForm.controls.generatorLang.value }}
+                    </span>
+                  </div>
+
+                  <div class="mt-1">
+                    <monaco-editor
+                      [lang]="hackForm.controls.generatorLang.value"
+                      [formControlName]="'generatorSource'">
+                    </monaco-editor>
+                  </div>
+
+                  <button (click)="hackSubmit(selectedAttempt.id)" class="mt-1 mb-50 btn btn-primary">
+                    {{ 'Submit' | translate }}
+                  </button>
+                </ng-template>
+              </li>
+            </ul>
+            <div [ngbNavOutlet]="navVertical"></div>
+          </div>
+        </ng-template>
+      </li>
+    </ul>
+
+    <div [ngbNavOutlet]="navWithIcons" class="mt-2"></div>
   </div>
 </ng-template>
 
 <audio
   #successAudio
-  src="assets/audio/success.mp3">
+  src="assets/audio/success/{{ successSoundName }}.mp3">
 </audio>
 
 <audio

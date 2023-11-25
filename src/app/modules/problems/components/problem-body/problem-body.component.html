@@ -1,4 +1,4 @@
-<div class="mt-2">
+<div class="mt-2 text-dark font-weight-bold">
   <mathjax [content]="problem.body" *ngIf="problem.id != 1637"></mathjax>
 </div>
 
@@ -26,6 +26,10 @@
 <problem1742 [problem]="problem" *ngIf="problem.id == 1742"></problem1742>
 <problem1743 [problem]="problem" *ngIf="problem.id == 1743"></problem1743>
 <problem1744 [problem]="problem" *ngIf="problem.id == 1744"></problem1744>
+<problem1840 [problem]="problem" *ngIf="problem.id == 1840"></problem1840>
+<problem1841 [problem]="problem" *ngIf="problem.id == 1841"></problem1841>
+<problem1842 *ngIf="problem.id == 1842"></problem1842>
+<problem1843 *ngIf="problem.id == 1843"></problem1843>
 
 <hr>
 
@@ -36,7 +40,7 @@
     </strong>
   </h4>
 
-  <mathjax class="mt-2" [content]="problem.inputData"></mathjax>
+  <mathjax class="mt-2 text-dark font-weight-bold" [content]="problem.inputData"></mathjax>
 </ng-container>
 
 <ng-container *ngIf="problem.outputData?.length > 0">
@@ -46,7 +50,7 @@
     </strong>
   </h4>
 
-  <mathjax class="mt-2" [content]="problem.outputData"></mathjax>
+  <mathjax class="mt-2 text-dark font-weight-bold" [content]="problem.outputData"></mathjax>
   <hr>
 </ng-container>
 
@@ -82,9 +86,11 @@
         </thead>
         <tbody>
           <tr>
-            <td class="pl-2" [innerText]="sampleTest.input">
+            <td class="pl-2">
+              <pre [innerText]="sampleTest.input"></pre>
             </td>
-            <td class="pl-2" [innerText]="sampleTest.output">
+            <td class="pl-2">
+              <pre [innerText]="sampleTest.output"></pre>
             </td>
           </tr>
         </tbody>
@@ -101,6 +107,8 @@
     </strong>
   </h4>
 
-  <mathjax class="mt-2" [content]="problem.comment"></mathjax>
+  <mathjax class="mt-2 text-dark font-weight-bold" [content]="problem.comment"></mathjax>
   <hr>
 </ng-container>
+
+<problem1870 *ngIf="problem.id == 1870"></problem1870>

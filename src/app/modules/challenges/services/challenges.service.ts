@@ -10,10 +10,11 @@ export class ChallengesService {
   constructor(
     public api: ApiService,
     public authService: AuthenticationService,
-  ) {}
+  ) {
+  }
 
-  getChallengesRating(page: number) {
-    return this.api.get('challenges-rating');
+  getChallengesRating(page: number, pageSize = 10) {
+    return this.api.get('challenges-rating', { page: page, page_size: pageSize });
   }
 
   getChallengeCalls() {
@@ -21,7 +22,7 @@ export class ChallengesService {
   }
 
   getChallenges(page: number, username = null, pageSize = 10) {
-    let params: any = { page: page, page_size: pageSize };
+    const params: any = { page: page, page_size: pageSize };
     if (username) {
       params.username = username;
     }
@@ -44,8 +45,12 @@ export class ChallengesService {
     return this.api.delete(`challenge-calls/${ challengeCallId }/delete`);
   }
 
-  newChallengeCall(timeSeconds: number, questionsCount: number) {
-    const data = { time_seconds: timeSeconds, questions_count: questionsCount };
+  newChallengeCall(timeSeconds: number, questionsCount: number, chapters: Number[]) {
+    const data = {
+      time_seconds: timeSeconds,
+      questions_count: questionsCount,
+      chapters: chapters,
+    };
     return this.api.post('challenge-calls/new/', data);
   }
 
@@ -55,6 +60,10 @@ export class ChallengesService {
 
   getRatingChanges(username: string) {
     return this.api.get(`challenges-rating/${ username }/rating-changes`);
+  }
+
+  getChapters() {
+    return this.api.get('chapters');
   }
 
 }

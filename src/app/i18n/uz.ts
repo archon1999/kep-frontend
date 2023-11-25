@@ -19,6 +19,7 @@ export const locale = {
       LUGAVAR: 'Lugavar',
       TOURNAMENTS: 'Turnirlar',
       BLOG: 'Blog',
+      CODE_RUSH: 'Code Rush',
     },
     RESET: 'Reset',
     LOGIN: 'Kirish',
@@ -208,7 +209,7 @@ export const locale = {
     CorrectAnswer: 'To`g`ri javob',
     IncorrectAnswer: 'Noto`g`ri javob',
     All: 'Barchasi',
-    MyChallenges: 'Mening bellashuvlarim', 
+    MyChallenges: 'Mening bellashuvlarim',
     Perfomance: 'Perfomance',
     System: 'Tizim',
     TopRating: 'Top Reyting',
@@ -266,7 +267,7 @@ export const locale = {
     Projects: 'Loyihalar',
     StreakFreeze: 'Muzlatish',
     YouHave: 'Sizda bor',
-    StreakFreezeText: "Agar kunni o'tkazib yuborsangiz va kundalik vazifalarni bajarmasangiz, muzlatish avtomatik ravishda natijani saqlaydi.",
+    StreakFreezeText: 'Agar kunni o\'tkazib yuborsangiz va kundalik vazifalarni bajarmasangiz, muzlatish avtomatik ravishda natijani saqlaydi.',
     Spends: 'Sarflandi',
     Earns: 'Topildi',
     DailyTasks: 'Kundalik topshiriqlar',
@@ -369,6 +370,28 @@ export const locale = {
     ChallengeQuestionRight: 'To`g`ri',
     ChallengeQuestionWrong: 'Noto`g`ri',
     ChallengeBlurError: 'Bellashuv paytida brauzer fokusini boshqa narsaga o`zgartirishga ruxsat berilmaydi.',
+    FullName: 'To`liq ismi',
+    ActivityRating: 'Faollik reytingi',
+    Name: 'Nomi',
+    Country: 'Davlat',
+    Age: 'Yosh',
+    StartVirtual: 'Virtual boshlash',
+    RatingChange: 'Reyting o`zgarishi',
+    Virtual: 'Virtual',
+    Unrated: 'Reytingsiz',
+    When: 'Qachon',
+    Hacker: 'Hack qilgan',
+    Defender: 'Himoyachi',
+    Generator: 'Generator',
+    Text: 'Matn',
+    Holidays: 'Bayramlar',
+    CheckInput: 'Check input',
+    PartialSolvable: 'Qisman yechim',
+    LastChallenges: 'So`ngi bellashuvlar',
+    RatingChanges: 'Reyting o`zgarishlari',
+    ProblemsPageTitleText: 'Ishlang va mahoratingizni oshiring',
+    Page: 'Bet',
+    Unread: 'O`qilmagan',
     ContestRules: {
       ACM20H: ``,
     },
@@ -383,8 +406,8 @@ export const locale = {
       }
     ],
     LandingPage: {
-      SectionTopTitle: 'CPython bilan dasturlashni o`rganing',
-      SectionTopText: 'CPython dasturlash mahoratlaringiz va raqobatni oshirish uchun mo`ljanlangan platforma',
+      SectionTopTitle: 'CPython.uz bilan dasturlashni o`rganing',
+      SectionTopText: 'CPython.uz dasturlash mahoratlaringiz va raqobatni oshirish uchun mo`ljanlangan platforma',
       SectionLearnTitle: 'Dasturlashni o`rganish',
       SectionLearnText: 'Ta`limga yangi yondashuv',
       SectionPracticeTitle: 'Ishlash',
@@ -464,6 +487,8 @@ export const locale = {
       SAMPLE_TEST: 'Test',
       ANSWER: 'Javob',
       TEST: 'Test',
+      ANSWER_FOR_INPUT: 'Test uchun javob',
+      CHECK_SAMPLES: 'Misollarda testlash',
     },
     COURSES: {
       COURSES: 'Kurslar',
@@ -504,7 +529,7 @@ export const locale = {
     },
     PageTitle: {
       Home: 'Bosh sahifa',
-      Landing: 'CPython - Dasturlashni o`rganish uchun platforma',
+      Landing: 'CPython.uz - Dasturlashni o`rganish uchun platforma',
       Problems: {
         Problems: 'Masalalar',
         Problem: '{{ problemId }}. {{ problemTitle }} | Masala',
@@ -543,7 +568,9 @@ export const locale = {
       Kepcoin: 'Kepcoin',
       Challenges: {
         Challenges: 'Bellashuvlar',
-        Challenge: '{{ playerFirstUsername }} vs {{ playerSecondUsername }} | Bellashuv'
+        Challenge: '{{ playerFirstUsername }} vs {{ playerSecondUsername }} | Bellashuv',
+        ChallengesRating: 'Bellashuvlar reytingi',
+        ChallengesProfile: 'Bellashuvlar statistikasi',
       },
       Lugavar: 'Lugavar',
       Users: {
@@ -571,6 +598,9 @@ export const locale = {
         Course: '{{ courseTitle }} | Kurs',
         CourseLesson: '{{ lessonTitle }} | {{ courseTitle }} | Kurs',
       }
+    },
+    Errors: {
+      MAX_LENGTH_ERROR: 'Maksimal uzunlik: {{ value }} | Sizda: {{ controlValueLength }}'
     }
   }
-}
+};

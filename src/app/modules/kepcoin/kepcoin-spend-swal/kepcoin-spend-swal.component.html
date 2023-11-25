@@ -1,6 +1,6 @@
 <sweet-alert-css></sweet-alert-css>
 
-<a [swal]="sweet">
+<a (click)="ConfirmTextOpen()">
   <kepcoin-view
     *ngIf="!customContent"
     [value]="value"
@@ -8,7 +8,7 @@
     [fontSize]="10"
     [customClass]="customClass">
   </kepcoin-view>
-  <ng-content *ngIf="customContent"></ng-content>
+  <ng-container *ngIf="customContent">
+    <ng-content></ng-content>
+  </ng-container>
 </a>
-
-<swal #sweet (open)="ConfirmTextOpen()"></swal>

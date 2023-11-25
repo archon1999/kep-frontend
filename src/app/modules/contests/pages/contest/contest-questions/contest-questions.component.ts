@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfigService } from 'core/services/config.service';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';

@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { CoreCommonModule } from '@core/common.module';
+import { CoreCommonModule } from 'core/common.module';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { IsAuthenticatedGuard } from 'app/auth/helpers';

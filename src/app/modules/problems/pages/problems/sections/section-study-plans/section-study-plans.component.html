@@ -1,8 +1,9 @@
 <h3 *ngIf="studyPlans.length > 0" class="text-white d-md-block d-none">
   {{ 'StudyPlans' | translate }}
 </h3>
-<div class="row mt-2">
-  <div class="col-lg-4 col-md-6 col-sm-12" *ngFor="let studyPlan of studyPlans">
+
+<swiper *ngIf="swiperVisible" [config]="swiperConfig" class="mt-2">
+  <div class="swiper-slide" *ngFor="let studyPlan of studyPlans">
     <study-plan-card [studyPlan]="studyPlan"></study-plan-card>
   </div>
-</div>
+</swiper>

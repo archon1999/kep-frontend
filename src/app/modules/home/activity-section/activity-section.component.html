@@ -3,7 +3,7 @@
 <div [@fadeInOnEnter] class="card card-activity bg-gradient-primary" *ngIf="statistics">
   <div class="card-header">
     <div class="card-title">
-      {{ statistics.date }}
+      {{ statistics.date | date:'yyyy-MM-dd' }}
     </div>
   </div>
 

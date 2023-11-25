@@ -7,7 +7,7 @@
     <div class="navbar-container">
       <div class="inner">
         <div class="navbar-left" [@fadeInLeft]="startAnimationState">
-          <img height="32" src="assets/images/logo/logo.svg" alt="logo">
+          <img height="32" src="assets/images/logo/logo-with-title.png" alt="logo">
           <h2 class="font-weight-bolder text-primary ml-1">{{ appName }}</h2>
         </div>
 
@@ -36,22 +36,20 @@
   </div>
 
   <swiper [config]="swiperConfig" class="swiper swiper-lazy-loading" #swiper [style.height.px]="windowHeight-67">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide">
-        <slide-main [animationState]="slideMainAnimationState"></slide-main>
-      </div>
-      <div class="swiper-slide">
-        <slide-learn [animationState]="slideLearnAnimationState"></slide-learn>
-      </div>
-      <div class="swiper-slide">
-        <slide-practice [animationState]="slidePracticeAnimationState"></slide-practice>
-      </div>
-      <div class="swiper-slide">
-        <slide-competitions [animationState]="slideCompetitionsAnimationState"></slide-competitions>
-      </div>
-      <div class="swiper-slide">
-        <slide-statistics [animationState]="slideStatisticsAnimationState"></slide-statistics>
-      </div>
+    <div class="swiper-slide">
+      <slide-main [animationState]="slideMainAnimationState"></slide-main>
+    </div>
+    <div class="swiper-slide">
+      <slide-learn [animationState]="slideLearnAnimationState"></slide-learn>
+    </div>
+    <div class="swiper-slide">
+      <slide-practice [animationState]="slidePracticeAnimationState"></slide-practice>
+    </div>
+    <div class="swiper-slide">
+      <slide-competitions [animationState]="slideCompetitionsAnimationState"></slide-competitions>
+    </div>
+    <div class="swiper-slide">
+      <slide-statistics [animationState]="slideStatisticsAnimationState"></slide-statistics>
     </div>
   </swiper>
 

@@ -4,8 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { ProjectsComponent } from './projects.component';
 import { ProjectsService } from './projects.service';
 import { ProjectCardComponent } from './project-card/project-card.component';
-import { CoreDirectivesModule } from '@core/directives/directives';
-import { CorePipesModule } from '@core/pipes/pipes.module';
+import { CoreDirectivesModule } from 'core/directives/directives';
+import { CorePipesModule } from 'core/pipes/pipes.module';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { KepcoinSpendSwalModule } from '../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { TranslateModule } from '@ngx-translate/core';
@@ -75,5 +75,8 @@ const routes: Routes = [
     ProjectsService,
     ProjectResolver,
   ],
+  exports: [
+    AttemptsTableComponent
+  ]
 })
 export class ProjectsModule { }

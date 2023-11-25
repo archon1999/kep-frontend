@@ -8,15 +8,21 @@ export class NotificationsService {
 
   constructor(public api: ApiService) {}
 
-  getNotifications(pageNumber: number){
+  getNotifications(pageNumber: number, isAll = false) {
+    if (isAll) { return this.getNotificationsAll(pageNumber); }
     return this.api.get('notifications', { page: pageNumber });
   }
 
-  readNotification(notificationId: number){
+  getNotificationsAll(pageNumber: number) {
+    return this.api.get('notifications-all', { page: pageNumber });
+  }
+
+
+  readNotification(notificationId: number) {
     return this.api.post(`notifications/${notificationId}/read/`);
   }
 
-  readAllNotification(){
+  readAllNotification() {
     return this.api.post(`notifications/read-all/`);
   }
 

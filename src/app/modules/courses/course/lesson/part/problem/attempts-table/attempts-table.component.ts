@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfigService } from 'core/services/config.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'app/shared/services/api.service';
 import { AuthenticationService } from 'app/auth/service';
-import { Verdicts } from 'app/modules/problems/enums/verdicts.enum';
+import { Verdicts } from '../../../../../../problems/constants/verdicts.enum';
 import { Attempt, WSAttempt } from 'app/modules/problems/models/attempts.models';
-import { WebsocketService } from 'app/websocket';
+import { WebsocketService } from 'app/shared/services/websocket';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

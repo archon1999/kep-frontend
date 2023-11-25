@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
-import { ContestsService } from '../contests/contests.service';
+import { ContestsService } from '@contests/contests.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,36 +10,41 @@ export class HomeService {
   constructor(
     public api: ApiService,
     public contestsService: ContestsService,
-  ) { }
+  ) {
+  }
 
   getNews(page: number, pageSize: number) {
-    var params = { page: page, page_size: pageSize };
+    const params = { page: page, page_size: pageSize };
     return this.api.get('news', params);
   }
 
   getLastPosts(page: number, pageSize: number) {
-    var params = { page: page, page_size: pageSize, 'not_news': 1 };
+    const params = { page: page, page_size: pageSize, 'not_news': 1 };
     return this.api.get('blog', params);
   }
 
-  getTopUsers(){
+  getTopUsers() {
     return this.api.get('users/top-rating');
   }
 
-  getContests(page: number, pageSize: number){
+  getContests(page: number, pageSize: number) {
     return this.contestsService.getContests(page, pageSize);
   }
 
-  getStatistics(){
+  getStatistics() {
     return this.api.get('landing-page-statistics');
   }
 
-  getUserDailyStatistics(username: string, fromNow: number=0){
+  getUserDailyStatistics(username: string, fromNow: number = 0) {
     return this.api.get(`users/${username}/daily-statistics`, { from_now: fromNow });
   }
 
-  getNextBirthdays(){
+  getNextBirthdays() {
     return this.api.get('users/next-birthdays');
+  }
+
+  getCalendarEvents() {
+    return this.api.get('calendar-events');
   }
 
 }
