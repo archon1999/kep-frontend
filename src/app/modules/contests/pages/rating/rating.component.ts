@@ -46,13 +46,13 @@ export class RatingComponent implements OnInit {
     this.authService.currentUser.subscribe((user: any) => {
       this.currentUser = user;
       this.reloadPage();
-    })
+    });
   }
 
-  reloadPage(){
+  reloadPage() {
     this.service.getContestsRating(this.currentPage, 10).subscribe((result: any) => {
       this.contestsRating = result.data.map((data: any) => ContestsRating.fromJSON(data));
       this.totalUsersCount = result.total;
-    })
+    });
   }
 }
