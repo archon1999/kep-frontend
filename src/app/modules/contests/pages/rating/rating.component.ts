@@ -21,7 +21,7 @@ export class RatingComponent implements OnInit {
         {
           name: 'CONTESTS.CONTESTS',
           isLink: true,
-          link: '.'
+          link: '..'
         },
         {
           name: 'RATING',

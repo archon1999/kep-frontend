@@ -1,62 +1,120 @@
-.bg-contest {
-  background-size: 200% auto;
-  transition: all 0.2s ease;
-  background-image: linear-gradient(47deg, #1c1368, #9e95f5);
-  background-repeat: repeat;
+@import 'bootstrap/scss/mixins'; 
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+.card {
+  background: var(--bg-gradient);
+  box-shadow: var(--box-shadow) !important;
   border: none;
-}
+  opacity: 1;
 
-.bg-contest:hover {
-  background-position: right center;
-  color: #fff;
-  text-decoration: none;
-}
-
-
-.contestant {
-  white-space: nowrap !important;
-}
-
-
-:host ::ng-deep .cd-circle {
-  justify-content: space-around;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-
-  .countdown {
-    margin-bottom: 23px;
+  &:hover {
+    transform: scale(1.02);
   }
 
-  .clock-count-container {
-    width: 85px;
-    height: 85px;
-    -webkit-box-shadow: 1px 2px 12px 0 rgba(31, 45, 61, 0.1);
-    box-shadow: 1px 2px 12px 0 rgba(31, 45, 61, 0.1);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    border: 1px solid #e0e6ed;
-    margin: 0 0 12px 0;
+  .card-bg {
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    height: 100%;
+    left: 0;
+    opacity: .2;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+
+    // img {
+    //   max-width: 100%;
+    //   max-height: 100%;
+    // }
   }
 
-  .clock-val {
-    font-size: 20px;
-    margin-bottom: 0;
+  
+  .card-header, .card-body {
+    @include media-breakpoint-up(md) {
+      margin-left: 1rem;
+      margin-right: 1rem;
+    }
   }
 
-  .clock-text {
-    font-size: 14px;
-    margin-bottom: 0;
-    margin-top: 16px;
-    font-weight: 400;
+  .card-header {
+    .contest-category {
+      padding: 7px;
+      border-radius: 20px;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    .category span {
+      background: var(--bg);
+      box-shadow: var(--box-shadow);
+    }
+
+    .card-title {
+      margin-top: 1.5rem;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--text-color);
+      
+      @include media-breakpoint-down(sm) {
+        font-size: 2rem;
+      }
+    }
   }
+
+  .card-body {
+    display: grid;
+    z-index: 1001;
+
+    h3 {
+      color: var(--text-color);
+    }
+
+    .already {
+      position: absolute;
+      top: -1rem;
+      left: -1rem;
+      transform: rotate(-19deg);
+    }
+
+    ::ng-deep .contest-time {
+      z-index: 10;
+    }
+
+    ::ng-deep .contest-description {
+      font-size: 1.125rem;
+      z-index: 10;
+      color: var(--text-color);
+
+      @include media-breakpoint-down(sm) {
+        display: none;
+      }
+    }
+  }
+
+  .card-footer {
+    z-index: 1;
+    border-top: 1px solid var(--bg);
+
+    .registration {
+      button {
+        background: var(--bg) !important;
+        border: var(--bg) !important;
+        box-shadow: var(--box-shadow) !important;
+      }
+    }
+
+    .meta-info {
+      &>.badge {
+        background-color: var(--bg);
+        box-shadow: var(--box-shadow);
+      }
+    }
+  }
+
 }
 
-.dark-layout .clock-val {
-  color: #ffffff !important;
-}
-
-.card-header {
-  display: initial !important;
+::ng-deep contest-card .ngx-spinner-overlay > div {
+  top: 63% !important;
 }
