@@ -33,12 +33,12 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body" tabindex="0" ngbAutofocus>
+  <div class="modal-body" tabindex="0">
     {{ 'CONTESTS.CONTEST_FINISHED' | translate }}
   </div>
   <div class="modal-footer">
     <a [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'standings']"
-      class="btn btn-primary btn-relief" rippleEffect (click)="modal.dismiss('Cross click')">
+       class="btn btn-primary btn-relief" rippleEffect (click)="modal.dismiss('Cross click')">
       {{ 'CONTESTS.STANDINGS' | translate }}
     </a>
   </div>
@@ -51,12 +51,12 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body" tabindex="0" ngbAutofocus>
+  <div class="modal-body" tabindex="0">
     {{ 'CONTESTS.CONTEST_STARTED' | translate }}
   </div>
   <div class="modal-footer">
     <a [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problems']"
-      class="btn btn-primary btn-relief" rippleEffect (click)="modal.dismiss('Cross click')">
+       class="btn btn-primary btn-relief" rippleEffect (click)="modal.dismiss('Cross click')">
       {{ 'CONTESTS.PROBLEMS' | translate }}
     </a>
   </div>

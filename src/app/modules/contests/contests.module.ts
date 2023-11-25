@@ -50,6 +50,7 @@ import { ContestProblemCardComponent } from './components/contest-problem-card/c
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { ProblemInfoCardComponent } from '@problems/components/problem-info-card/problem-info-card.component';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
+import { ContestCardComponent } from '@contests/components/contest-card/contest-card/contest-card.component';
 
 
 const routes: Routes = [
@@ -195,6 +196,7 @@ const routes: Routes = [
     CorePipesModule,
     NgbNavModule,
     ContestsTableModule,
+    ContestCardComponent,
     ContestCardModule,
     ContestantViewModule,
     NgbTooltipModule,
