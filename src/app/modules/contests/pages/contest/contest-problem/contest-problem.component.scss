@@ -43,6 +43,7 @@
   border: none;
   border-radius: 10px;
   margin-bottom: 1rem;
+  width: calc(100% - 4rem);
 
   position: fixed;
   left: 2rem;
@@ -52,8 +53,9 @@
     padding: 5px;
   }
 
-  @include media-breakpoint-down(lg) {
-    display: none;
+  @include media-breakpoint-down(md) {
+    width: calc(100% - 2.4rem);
+    left: 1.2rem;
   }
 }
 
