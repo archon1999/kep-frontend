@@ -58,7 +58,6 @@ const appRoutes: Routes = [
   { path: 'users', loadChildren: () => import('./modules/users/users.module').then(m => m.UsersModule) },
   { path: 'help', loadChildren: () => import('./modules/help/help.module').then(m => m.HelpModule) },
   { path: 'my-blog', loadChildren: () => import('./modules/users/my-blog/my-blog.module').then(m => m.MyBlogModule) },
-  { path: 'cpython-cup', loadChildren: () => import('./modules/cpython-cup/cpython-cup.module').then(m => m.CpythonCupModule) },
   { path: 'tour', loadChildren: () => import('./shared/third-part-modules/tour/tour.module').then(m => m.TourModule) },
   { path: '**', component: ErrorComponent },
 ];
