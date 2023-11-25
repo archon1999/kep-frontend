@@ -13,7 +13,6 @@ export class MathjaxComponent implements OnInit, OnChanges {
   constructor() {}
 
   ngOnInit() {
-    console.log(window['MathJax']);
     window['MathJax'].typeset();
   }
 
