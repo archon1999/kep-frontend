@@ -132,8 +132,6 @@ export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy 
    * On init
    */
   ngOnInit(): void {
-    super.ngOnInit();
-
     // Subscribe to the config changes
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       this.coreConfig = config;
