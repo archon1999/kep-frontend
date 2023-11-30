@@ -1,12 +1,20 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CoreCommonModule } from '@core/common.module';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 
 @Component({
-  // tslint:disable-next-line:component-selector
-  selector: 'pagination',
-  templateUrl: './pagination.component.html',
-  styleUrls: ['./pagination.component.scss']
+  selector: 'kep-pagination',
+  templateUrl: './kep-pagination.component.html',
+  styleUrls: ['./kep-pagination.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgbPaginationModule,
+    NgSelectModule,
+  ]
 })
-export class PaginationComponent implements OnInit {
+export class KepPaginationComponent implements OnInit {
 
   @Input() @Output() page: number;
   @Input() @Output() pageSize: number;
