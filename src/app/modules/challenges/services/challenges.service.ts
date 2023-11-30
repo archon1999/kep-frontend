@@ -13,8 +13,8 @@ export class ChallengesService {
   ) {
   }
 
-  getChallengesRating(page: number, pageSize = 10) {
-    return this.api.get('challenges-rating', { page: page, page_size: pageSize });
+  getChallengesRating(page: number, pageSize = 10, ordering: string = null) {
+    return this.api.get('challenges-rating', { page: page, page_size: pageSize, ordering: ordering });
   }
 
   getChallengeCalls() {
