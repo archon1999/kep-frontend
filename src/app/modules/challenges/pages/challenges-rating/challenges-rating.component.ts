@@ -10,6 +10,9 @@ import { KepPaginationComponent } from '@shared/components/pagination/kep-pagina
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
+import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
+
+const DEFAULT_ORDERING = '-rating';
 
 @Component({
   selector: 'app-challenges-rating',
@@ -23,10 +26,10 @@ import { KepTableComponent } from '@shared/components/kep-table/kep-table.compon
     ContentHeaderModule,
     SpinnerComponent,
     KepTableComponent,
+    TableOrderingModule,
   ]
 })
 export class ChallengesRatingComponent extends BaseTablePageComponent<ChallengesRating> implements OnInit {
-  override pageNumber = 1;
   override pageSize = 20;
   override maxSize = 5;
 
@@ -44,7 +47,8 @@ export class ChallengesRatingComponent extends BaseTablePageComponent<Challenges
   }
 
   getPage(): Observable<PageResult<ChallengesRating>> {
-    return this.service.getChallengesRating(this.pageNumber, this.pageSize);
+    this.ordering ||= DEFAULT_ORDERING;
+    return this.service.getChallengesRating(this.pageNumber, this.pageSize, this.ordering);
   }
 
   protected getContentHeader() {
