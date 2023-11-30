@@ -22,7 +22,7 @@ import { ChallengeResultsCardComponent } from './components/challenge-results-ca
 import { DragulaModule } from 'ng2-dragula';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { PaginationModule } from '@shared/components/pagination/pagination.module';
+import { KepPaginationComponent } from '@shared/components/pagination/kep-pagination.component';
 import { ChallengesRatingComponent } from './pages/challenges-rating/challenges-rating.component';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
@@ -34,6 +34,7 @@ import { SectionLastChallengesComponent } from './pages/challenges-profile/secti
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 
 const routes: Routes = [
@@ -71,7 +72,6 @@ const routes: Routes = [
     NewChallengeButtonComponent,
     ChallengeComponent,
     ChallengeResultsCardComponent,
-    ChallengesRatingComponent,
     ChallengesProfileComponent,
     SectionProfileComponent,
     SectionRatingChangesComponent,
@@ -81,6 +81,7 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     CorePipesModule,
+    ChallengesRatingComponent,
     CoreDirectivesModule,
     TranslateModule,
     FormsModule,
@@ -95,11 +96,12 @@ const routes: Routes = [
     DragulaModule.forRoot(),
     MathjaxModule,
     NgxSkeletonLoaderModule.forRoot(),
-    PaginationModule,
+    KepPaginationComponent,
     ContentHeaderModule,
     ContestantViewModule,
     ApexChartModule,
     CountdownComponent,
+    SpinnerComponent,
   ],
   providers: [ChallengeResolver],
   exports: [
