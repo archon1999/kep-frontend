@@ -14,8 +14,8 @@ import { ChallengesUserViewModule } from '@challenges/components/challenges-user
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { ArenaPlayerStatisticsComponent } from './components/arena-player-statistics/arena-player-statistics.component';
-import { PaginationModule } from 'app/shared/components/pagination/pagination.module';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
+import { KepPaginationComponent } from '@shared/components/pagination/kep-pagination.component';
 
 const routes: Routes = [
   {
@@ -54,7 +54,7 @@ const routes: Routes = [
     ChallengesUserViewModule,
     NgbAlertModule,
     UserPopoverModule,
-    PaginationModule,
+    KepPaginationComponent,
     NgxSkeletonLoaderModule,
     CountdownComponent,
   ],

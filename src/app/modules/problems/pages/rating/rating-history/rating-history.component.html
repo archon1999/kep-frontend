@@ -64,13 +64,13 @@
                     </table>
                   </div>
 
-                  <pagination
+                  <kep-pagination
                     [collectionSize]="dailyRatingHistoryTotal"
                     [(page)]="dailyRatingHistoryPage"
                     [pageSize]="20"
                     [maxSize]="5"
                     (pageChange)="reloadDailyHistoryPage()">
-                  </pagination>
+                  </kep-pagination>
                 </div>
 
               </div>
@@ -134,13 +134,13 @@
                     </table>
                   </div>
 
-                  <pagination
+                  <kep-pagination
                     [collectionSize]="weeklyRatingHistoryTotal"
                     [(page)]="weeklyRatingHistoryPage"
                     [pageSize]="20"
                     [maxSize]="5"
                     (pageChange)="reloadWeeklyHistoryPage()">
-                  </pagination>
+                  </kep-pagination>
                 </div>
 
               </div>
@@ -204,13 +204,13 @@
                     </table>
                   </div>
 
-                  <pagination
+                  <kep-pagination
                     [collectionSize]="monthlyRatingHistoryTotal"
                     [(page)]="monthlyRatingHistoryPage"
                     [pageSize]="20"
                     [maxSize]="5"
                     (pageChange)="reloadMonthlyHistoryPage()">
-                  </pagination>
+                  </kep-pagination>
                 </div>
 
               </div>

@@ -27,13 +27,13 @@
             <attempts-table [hackEnabled]="true" [attempts]="attempts"></attempts-table>
           }
 
-          <pagination
+          <kep-pagination
             [collectionSize]="totalAttemptsCount"
             [(page)]="currentPage"
             [pageSize]="20"
             [maxSize]="7"
             (pageChange)="_reloader.next(null)"
-          ></pagination>
+          ></kep-pagination>
         </div>
       </div>
     </section>

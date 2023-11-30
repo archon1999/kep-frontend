@@ -270,14 +270,14 @@
           </div>
 
           <div class="mb-2">
-            <pagination
+            <kep-pagination
               *ngIf="totalUsers > 0"
               [collectionSize]="totalUsers"
               [(page)]="currentPage"
               [pageSize]="10"
               [maxSize]="5"
               (pageChange)="pageChange($event)"
-            ></pagination>
+            ></kep-pagination>
           </div>
         </div>
       </div>

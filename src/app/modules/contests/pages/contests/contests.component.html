@@ -74,7 +74,7 @@
         </div>
       </div>
 
-      <pagination
+      <kep-pagination
         *ngIf="contests.length > 0"
         [collectionSize]="totalContests"
         [(page)]="currentPage"
@@ -82,7 +82,7 @@
         [maxSize]="5"
         [rotate]="true"
         (pageChange)="reloadContests()">
-      </pagination>  
+      </kep-pagination>
     </div>
 
     <div class="col-lg-2 mt-4 pt-2 d-none d-xl-block">

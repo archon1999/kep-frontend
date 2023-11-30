@@ -8,7 +8,7 @@ import { ContentHeader } from 'app/layout/components/content-header/content-head
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
-import { PaginationModule } from '@shared/components/pagination/pagination.module';
+import { KepPaginationComponent } from '@shared/components/pagination/kep-pagination.component';
 
 @Component({
   selector: 'app-rating',
@@ -19,7 +19,7 @@ import { PaginationModule } from '@shared/components/pagination/pagination.modul
     CoreCommonModule,
     ContentHeaderModule,
     ContestantViewModule,
-    PaginationModule,
+    KepPaginationComponent,
   ],
 })
 export class RatingComponent implements OnInit {

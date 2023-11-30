@@ -1,10 +1,10 @@
 <hack-attempts-table [hackAttempts]="hackAttempts"></hack-attempts-table>
 
-<pagination
+<kep-pagination
   (pageChange)="loadHackAttempts()"
   *ngIf="hackAttempts.length > 0"
   [(page)]="currentPage"
   [collectionSize]="totalAttemptsCount"
   [maxSize]="5"
   [pageSize]="10">
-</pagination>
+</kep-pagination>

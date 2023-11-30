@@ -12,7 +12,7 @@
         <section-problems-filter></section-problems-filter>
         <section-problems-table [problems]="problems"></section-problems-table>
         <div class="mb-2">
-          <pagination
+          <kep-pagination
             *ngIf="page"
             [collectionSize]="problemsTotal"
             [pageOptions]="[10, 20, 50]"
@@ -24,7 +24,7 @@
             [ellipses]="true"
             (pageSizeChange)="pageSizeChange($event)"
             (pageChange)="pageChange($event)">
-          </pagination>
+          </kep-pagination>
         </div>
       </div>
     </div>

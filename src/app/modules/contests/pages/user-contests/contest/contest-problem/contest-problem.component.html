@@ -102,7 +102,7 @@
                   (checkFinishEvent)="reloadProblems()"
                 >
                 </contest-attempts-table>
-                <pagination
+                <kep-pagination
                   *ngIf="attempts.length > 0"
                   [collectionSize]="totalAttemptsCount"
                   [(page)]="currentPage"
@@ -110,7 +110,7 @@
                   [maxSize]="5"
                   (pageChange)="reloadAttempts()"
                 >
-                </pagination>
+                </kep-pagination>
               </div>
             </div>
           </div>

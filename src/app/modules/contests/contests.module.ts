@@ -45,12 +45,12 @@ import { ContestsTableModule } from './components/contests-table/contests-table.
 import { ContestCardModule } from './components/contest-card/contest-card.module';
 import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
-import { PaginationModule } from 'app/shared/components/pagination/pagination.module';
 import { ContestProblemCardComponent } from './components/contest-problem-card/contest-problem-card.component';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { ProblemInfoCardComponent } from '@problems/components/problem-info-card/problem-info-card.component';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { ContestCardComponent } from '@contests/components/contest-card/contest-card/contest-card.component';
+import { KepPaginationComponent } from '@shared/components/pagination/kep-pagination.component';
 
 
 const routes: Routes = [
@@ -213,7 +213,7 @@ const routes: Routes = [
     NgbPopoverModule,
     ProblemBodyModule,
     AttemptsTableModule,
-    PaginationModule,
+    KepPaginationComponent,
     SwiperComponent,
     ProblemInfoCardComponent,
   ],
