@@ -1,0 +1,27 @@
+<div class="card">
+  @if (loading) {
+    <div [style.height.px]="200">
+      <spinner></spinner>
+    </div>
+  } @else if(empty) {
+    <empty-result></empty-result>
+  } @else {
+    <div class="table-responsive beautiful-table">
+      <table class="table table-striped">
+        <thead>
+         <ng-content select="[header]"></ng-content>
+        </thead>
+        <tbody>
+          <ng-content select="[body]"></ng-content>
+        </tbody>
+        <tfoot>
+          <ng-content select="[header]"></ng-content>
+        </tfoot>
+      </table>
+    </div>
+  }
+</div>
+
+@if(!empty){
+  <ng-content select="[pagination]"></ng-content>
+}
