@@ -1,7 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
-import { CoreConfigService } from '../../../core/services/config.service';
-import { CoreConfig } from '../../../core/types';
+import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfig } from '@core/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SwiperOptions } from 'swiper/types/swiper-options';
@@ -26,6 +26,7 @@ export class LandingPageComponent implements OnInit {
   public isDarkSkin = false;
   public appName: string;
   public swiperConfig: SwiperOptions = {
+    autoHeight: false,
     slidesPerView: 1,
     spaceBetween: 30,
     navigation: {},
