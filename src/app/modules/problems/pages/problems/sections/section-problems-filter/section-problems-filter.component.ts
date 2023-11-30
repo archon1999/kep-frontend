@@ -51,8 +51,6 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
   }
 
   ngOnInit(): void {
-    super.ngOnInit();
-
     this.filterForm.valueChanges.subscribe(
       (filterValue: ProblemsFilter) => {
         this.problemsFilterService.updateFilter(filterValue);

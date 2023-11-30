@@ -90,8 +90,6 @@ export class ProblemComponent extends BaseComponent implements OnInit {
       this.checkInput = this.problem.checkInputSource;
       this.loadContentHeader();
     });
-
-    super.ngOnInit();
   }
 
   afterFirstChangeQueryParams(params: Params) {
