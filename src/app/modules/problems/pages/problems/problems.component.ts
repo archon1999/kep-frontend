@@ -53,7 +53,7 @@ import { SectionInfoComponent } from '@problems/pages/problems/sections/section-
     SectionInfoComponent,
   ]
 })
-export class ProblemsComponent extends BaseComponent implements OnInit, OnDestroy {
+export class ProblemsComponent extends BaseComponent implements OnDestroy {
   public startAnimationState = false;
   public startAnimationMobileState = false;
 
@@ -74,8 +74,6 @@ export class ProblemsComponent extends BaseComponent implements OnInit, OnDestro
   }
 
   ngOnInit(): void {
-    super.ngOnInit();
-
     setTimeout(() => {
       if (window.innerWidth < 768) {
         this.startAnimationMobileState = true;
@@ -90,7 +88,7 @@ export class ProblemsComponent extends BaseComponent implements OnInit, OnDestro
     ).subscribe(
       (filter: ProblemsFilter) => {
         this.filter = filter;
-        this.updateQueryParams(this.filter);
+        this.updateQueryParams(this.filter, true);
         this.reloadProblems();
       }
     );
