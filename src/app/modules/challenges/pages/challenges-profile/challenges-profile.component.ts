@@ -8,7 +8,7 @@ import { BaseComponent } from '@shared/components/classes/base.component';
   templateUrl: './challenges-profile.component.html',
   styleUrls: ['./challenges-profile.component.scss', '../../challenges.styles.scss']
 })
-export class ChallengesProfileComponent extends BaseComponent implements OnInit {
+export class ChallengesProfileComponent extends BaseComponent {
 
   public challengesRating: ChallengesRating;
 
@@ -16,10 +16,6 @@ export class ChallengesProfileComponent extends BaseComponent implements OnInit 
     public statisticsService: ChallengesStatisticsService,
   ) {
     super();
-  }
-
-  ngOnInit(): void {
-    super.ngOnInit();
   }
 
 }
