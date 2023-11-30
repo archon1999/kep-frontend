@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BaseComponent } from '@shared/components/classes/base.component';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { PageResult } from '@shared/page-result';
+import { BasePageComponent } from '@shared/components/classes/base-page.component';
 
 @Component({
   template: '',
   standalone: true
 })
-export class BaseTablePageComponent<T> extends BaseComponent implements OnInit, OnDestroy {
+export class BaseTablePageComponent<T> extends BasePageComponent implements OnInit, OnDestroy {
   public pageNumber: number;
   public pageSize: number;
   public total: number;
