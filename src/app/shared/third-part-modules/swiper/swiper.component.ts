@@ -2,7 +2,7 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, Input, OnInit, ViewChild
 import { CommonModule } from '@angular/common';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { A11y, Mousewheel, Navigation, Pagination } from 'swiper/modules';
-import { SwiperDirective } from '@shared/directives/swiper.directive';
+import { SwiperDirective } from '@shared/third-part-modules/swiper/swiper.directive';
 
 @Component({
   selector: 'swiper',
