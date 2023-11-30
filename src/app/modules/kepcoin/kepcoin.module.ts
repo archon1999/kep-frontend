@@ -3,12 +3,11 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { KepcoinComponent } from './kepcoin.component';
 import { AuthGuard } from 'app/auth/helpers';
-import { KepcoinViewModule } from '../../shared/components/kepcoin-view/kepcoin-view.module';
+import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
 import { CoreDirectivesModule } from 'core/directives/directives';
 import { KepcoinSpendSwalModule } from './kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { PaginationModule } from 'app/shared/components/pagination/pagination.module';
-
+import { KepPaginationComponent, } from '@shared/components/pagination/kep-pagination.component';
 
 const routes: Routes = [
   {
@@ -31,7 +30,7 @@ const routes: Routes = [
     CoreDirectivesModule,
     KepcoinSpendSwalModule,
     TranslateModule,
-    PaginationModule,
+    KepPaginationComponent,
   ]
 })
 export class KepcoinModule { }
