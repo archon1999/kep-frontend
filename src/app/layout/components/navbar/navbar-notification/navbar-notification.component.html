@@ -204,7 +204,7 @@
 
     <!-- Notifications footer -->
     <li class="dropdown-menu-footer">
-      <pagination
+      <kep-pagination
         *ngIf="pagesCount > 1"
         [@fadeInOnEnter]
         [@fadeOutOnLeave]
@@ -216,7 +216,7 @@
         [collectionSize]="total"
         [customClass]="'mb-1'"
       >
-      </pagination>
+      </kep-pagination>
       <button *ngIf="!isAll && notifications.length > 0" class="btn btn-outline-primary btn-block" (click)="readAll()">{{ 'ReadAll' | translate }}</button>
       <button *ngIf="!isAll" class="btn btn-primary btn-block" (click)="isAll=true;updateNotifications();">{{ 'AllNotifications' | translate }}</button>
       <button *ngIf="isAll" class="btn btn-primary btn-block" (click)="isAll=false;updateNotifications();">{{ 'Unread' | translate }}</button>

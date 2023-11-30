@@ -18,7 +18,7 @@ import {
   SectionProblemsFilterComponent
 } from '@problems/pages/problems/sections/section-problems-filter/section-problems-filter.component';
 import { SectionProblemsTableComponent } from '@problems/pages/problems/sections/section-problems-table/section-problems-table.component';
-import { PaginationModule } from '@shared/components/pagination/pagination.module';
+import { KepPaginationComponent } from '@shared/components/pagination/kep-pagination.component';
 import { CoreSidebarModule } from '@core/components';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { SectionSidebarComponent } from '@problems/pages/problems/sections/section-sidebar/section-sidebar.component';
@@ -43,7 +43,7 @@ import { SectionInfoComponent } from '@problems/pages/problems/sections/section-
     SectionTopicsComponent,
     SectionProblemsFilterComponent,
     SectionProblemsTableComponent,
-    PaginationModule,
+    KepPaginationComponent,
     CoreSidebarModule,
     NgScrollbar,
     SectionSidebarComponent,
