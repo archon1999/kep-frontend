@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
@@ -14,7 +14,7 @@ import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.m
     NgSelectModule,
   ]
 })
-export class KepPaginationComponent implements OnInit {
+export class KepPaginationComponent {
 
   @Input() @Output() page: number;
   @Input() @Output() pageSize: number;
@@ -29,8 +29,6 @@ export class KepPaginationComponent implements OnInit {
 
   @Output() pageChange = new EventEmitter<number>;
   @Output() pageSizeChange = new EventEmitter<number>;
-
-  ngOnInit(): void {}
 
   change(page: number) {
     this.pageChange.next(page);
