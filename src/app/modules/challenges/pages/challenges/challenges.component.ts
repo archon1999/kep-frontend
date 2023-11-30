@@ -64,8 +64,6 @@ export class ChallengesComponent extends BaseComponent implements OnInit, OnDest
   }
 
   ngOnInit(): void {
-    super.ngOnInit();
-
     this.service.getChapters().subscribe(
       (chapters: Array<Chapter>) => {
         this.chapters = chapters;
