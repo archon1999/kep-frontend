@@ -11,7 +11,7 @@ import { ChartOptions } from '../../../../../shared/third-part-modules/apex-char
   templateUrl: './section-rating-changes.component.html',
   styleUrls: ['./section-rating-changes.component.scss']
 })
-export class SectionRatingChangesComponent extends BaseComponent implements OnInit {
+export class SectionRatingChangesComponent extends BaseComponent {
 
   public challengesRatingChangesChart: ChartOptions;
 
@@ -20,10 +20,6 @@ export class SectionRatingChangesComponent extends BaseComponent implements OnIn
     public authService: AuthenticationService,
   ) {
     super();
-  }
-
-  ngOnInit(): void {
-    super.ngOnInit();
   }
 
   beforeChangeCurrentUser(currentUser) {

@@ -76,7 +76,6 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
         problemTitle: this.problem.title,
       });
 
-      super.ngOnInit();
       this.updateContentHeader();
 
       this.service.getMe(this.contest?.id).subscribe(

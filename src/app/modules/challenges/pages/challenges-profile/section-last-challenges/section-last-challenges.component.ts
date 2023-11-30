@@ -11,7 +11,7 @@ import { User } from 'app/auth/models';
   templateUrl: './section-last-challenges.component.html',
   styleUrls: ['./section-last-challenges.component.scss']
 })
-export class SectionLastChallengesComponent extends BaseComponent implements OnInit {
+export class SectionLastChallengesComponent extends BaseComponent {
 
   public challenges: Array<Challenge> = [];
   public pageSize = 7;
@@ -22,10 +22,6 @@ export class SectionLastChallengesComponent extends BaseComponent implements OnI
     public statisticsService: ChallengesStatisticsService,
   ) {
     super();
-  }
-
-  ngOnInit(): void {
-    super.ngOnInit();
   }
 
   afterChangeCurrentUser(currentUser: User) {
