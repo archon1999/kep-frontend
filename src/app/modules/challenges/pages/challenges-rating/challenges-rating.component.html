@@ -8,10 +8,46 @@
           <tr class="text-white bg-gradient-primary">
             <th>#</th>
             <th>{{ 'User' | translate }}</th>
-            <th>{{ 'Wins' | translate }}</th>
-            <th>{{ 'Draws' | translate }}</th>
-            <th>{{ 'Losses' | translate }}</th>
-            <th><i data-feather="bar-chart"></i></th>
+            <th>
+              <table-ordering
+                [value]="ordering"
+                [justifyContent]="'start'"
+                [ordering]="'wins'"
+                [reverse]="true"
+                (change)="orderingChange($event)">
+                {{ 'Wins' | translate }}
+              </table-ordering>
+            </th>
+            <th>
+              <table-ordering
+                [value]="ordering"
+                [justifyContent]="'start'"
+                [ordering]="'draws'"
+                [reverse]="true"
+                (change)="orderingChange($event)">
+                {{ 'Draws' | translate }}
+              </table-ordering>
+            </th>
+            <th>
+              <table-ordering
+                [value]="ordering"
+                [justifyContent]="'start'"
+                [ordering]="'losses'"
+                [reverse]="true"
+                (change)="orderingChange($event)">
+                {{ 'Losses' | translate }}
+              </table-ordering>
+            </th>
+            <th>
+              <table-ordering
+                [value]="ordering"
+                [justifyContent]="'start'"
+                [ordering]="'rating'"
+                [reverse]="false"
+                (change)="orderingChange($event)">
+                <i data-feather="bar-chart"></i>
+              </table-ordering>
+            </th>
           </tr>
         </ng-container>
         <ng-container body>
@@ -29,11 +65,11 @@
         <ng-container pagination>
           <kep-pagination
             [collectionSize]="total"
-            [(page)]="pageNumber"
+            [page]="pageNumber"
             [pageSize]="pageSize"
             [maxSize]="maxSize"
             [rotate]="true"
-            (pageChange)="reloadPage()">
+            (pageChange)="pageChange($event)">
           </kep-pagination>
         </ng-container>
       </kep-table>

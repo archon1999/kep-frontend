@@ -23,7 +23,6 @@ export class BaseTablePageComponent<T> extends BasePageComponent {
   public pageResult: PageResult<T>;
 
   afterFirstChangeQueryParams(params: Params) {
-    console.log(params);
     if (params.page) {
       this.pageNumber = +params.page;
     }
