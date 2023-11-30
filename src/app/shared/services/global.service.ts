@@ -57,7 +57,7 @@ export class GlobalService {
     return this._coreConfigSubject.asObservable();
   }
 
-  updateQueryParams(params: Params) {
+  updateQueryParams(params: Params, replaceUrl = false) {
     const currentScrollHeight = window.pageYOffset;
     this._queryParams = { ...this._queryParams, ...params };
     this.router.navigate([],
@@ -65,7 +65,7 @@ export class GlobalService {
         relativeTo: this.route,
         queryParams: this._queryParams,
         queryParamsHandling: 'merge',
-        replaceUrl: true
+        replaceUrl: replaceUrl,
       }
     ).then(() => {
       if (currentScrollHeight) {
