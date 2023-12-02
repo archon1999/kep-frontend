@@ -66,25 +66,18 @@
   color: #000;
 }
 
-.animate {
-  box-sizing: border-box;
-  overflow: hidden;
-  position: relative;
-  border-radius: 4px;
-  width: 100%;
-  display: inline-block;
-  will-change: transform;
-}
-
-.animate:before {
-  background-image: linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.6),rgba(255,255,255,0));
-  animation: progress 2s ease-in-out infinite;
-  background-size: 200px 100%;
+::ng-deep .custom-skeleton {
   position: absolute;
-  z-index: 1;
-  top: 0;
   left: 0;
-  width: 200px;
+  top: 0;
+  z-index: -4;
+  opacity: 0.5;
+  background: inherit;
   height: 100%;
-  content: "";
+  width: 100%;
+
+  .skeleton-loader.progress {
+    background: inherit;
+    height: 100%;
+  }
 }
