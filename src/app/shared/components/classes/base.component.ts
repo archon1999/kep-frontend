@@ -85,8 +85,8 @@ export class BaseComponent {
 
   afterFirstChangeQueryParams(params: Params) {}
 
-  updateQueryParams(params: Params, replaceUrl = false) {
-    this.globalService.updateQueryParams(params, replaceUrl);
+  updateQueryParams(params: Params, extras?: NavigationExtras) {
+    this.globalService.updateQueryParams(params, extras);
   }
 
   ngOnDestroy(): void {
