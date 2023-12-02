@@ -88,7 +88,9 @@ export class ProblemsComponent extends BaseComponent implements OnDestroy {
     ).subscribe(
       (filter: ProblemsFilter) => {
         this.filter = filter;
-        this.updateQueryParams(this.filter, true);
+        this.updateQueryParams(this.filter, {
+          replaceUrl: true,
+        });
         this.reloadProblems();
       }
     );
