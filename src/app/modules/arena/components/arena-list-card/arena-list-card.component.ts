@@ -1,11 +1,23 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Arena } from '../../arena.models';
+import { CommonModule } from '@angular/common';
+import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { ChallengesUserViewModule } from '@challenges/components/challenges-user-view/challenges-user-view.module';
+import { CoreCommonModule } from '@core/common.module';
 
 @Component({
   selector: 'arena-list-card',
   templateUrl: './arena-list-card.component.html',
-  styleUrls: ['./arena-list-card.component.scss']
+  styleUrls: ['./arena-list-card.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    CountdownComponent,
+    NgbTooltipModule,
+    ChallengesUserViewModule,
+  ]
 })
 export class ArenaListCardComponent implements OnInit {
 

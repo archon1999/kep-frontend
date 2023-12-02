@@ -8,7 +8,6 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { DragulaModule } from 'ng2-dragula';
-import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { KepcoinSpendSwalModule } from '../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
@@ -22,6 +21,7 @@ import { TestingComponent } from './testing.component';
 import { ChaptersResolver, LastTestsResolver, TestPassResolver, TestResolver } from './testing.resolver';
 import { TestListCardComponent } from './test-list-card/test-list-card.component';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
+import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 
 const routes: Routes = [
   {
@@ -77,11 +77,9 @@ const routes: Routes = [
     TranslateModule,
     FormsModule,
     CodeEditorModule,
-    MonacoEditorModule,
     MathjaxModule,
-    // CountdownModule,
     SweetAlertModule,
-    // NgxUsefulSwiperModule,
+    MonacoEditorComponent,
     DragulaModule.forRoot(),
     SwiperComponent,
   ],

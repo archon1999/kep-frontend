@@ -32,31 +32,32 @@ import { HIGHLIGHT_OPTIONS, HighlightModule, HighlightOptions } from 'ngx-highli
 
 import { register } from 'swiper/element/bundle';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
+import { monacoConfig } from './monaco-config';
 
 register();
 
 const appRoutes: Routes = [
   { path: '', loadChildren: () => import('./modules/landing-page/landing-page.module').then(m => m.LandingPageModule) },
   { path: '', loadChildren: () => import('./modules/pages/pages.module').then(m => m.PagesModule) },
-  { path: 'home', loadChildren: () => import('./modules/home/home.routing').then(r => r.routes) },
+  { path: 'home', loadChildren: () => import('./modules/home/home.routing') },
   { path: 'settings', loadChildren: () => import('./modules/account-settings/account-settings.module').then(m => m.AccountSettingsModule) },
   { path: 'kepcoin', loadChildren: () => import('./modules/kepcoin/kepcoin.module').then(m => m.KepcoinModule) },
   { path: 'learn/courses', loadChildren: () => import('./modules/courses/courses.module').then(m => m.CoursesModule) },
   { path: 'learn/lugavar', loadChildren: () => import('./modules/lugavar/lugavar.module').then(m => m.LugavarModule) },
   { path: 'learn/blog', loadChildren: () => import('./modules/blog/blog.module').then(m => m.BlogModule) },
-  { path: 'practice/problems', loadChildren: () => import('./modules/problems/problems.routing').then(r => r.routes) },
+  { path: 'practice/problems', loadChildren: () => import('@problems/problems.routing') },
   { path: 'practice/challenges', loadChildren: () => import('./modules/challenges/challenges.module').then(m => m.ChallengesModule) },
   { path: 'practice/tests', loadChildren: () => import('./modules/testing/testing.module').then(m => m.TestingModule) },
   { path: 'practice/projects', loadChildren: () => import('./modules/projects/projects.module').then(m => m.ProjectsModule) },
   { path: 'practice/duels', loadChildren: () => import('./modules/duels/duels.module').then(m => m.DuelsModule) },
   { path: 'competitions/code-rush', loadChildren: () => import('./modules/code-rush/code-rush.module').then(m => m.CodeRushModule) },
   { path: 'competitions/contests', loadChildren: () => import('./modules/contests/contests.module').then(m => m.ContestsModule) },
-  { path: 'competitions/arena', loadChildren: () => import('./modules/arena/arena.module').then(m => m.ArenaModule) },
+  { path: 'competitions/arena', loadChildren: () => import('./modules/arena/arena.routing') },
   { path: 'competitions/tournaments', loadChildren: () => import('./modules/tournaments/tournaments.module').then(m => m.TournamentsModule) },
   { path: 'users', loadChildren: () => import('./modules/users/users.module').then(m => m.UsersModule) },
   { path: 'help', loadChildren: () => import('./modules/help/help.module').then(m => m.HelpModule) },
   { path: 'my-blog', loadChildren: () => import('./modules/users/my-blog/my-blog.module').then(m => m.MyBlogModule) },
-  { path: 'cpython-cup', loadChildren: () => import('./modules/cpython-cup/cpython-cup.module').then(m => m.CpythonCupModule) },
   { path: 'tour', loadChildren: () => import('./shared/third-part-modules/tour/tour.module').then(m => m.TourModule) },
   { path: '**', component: ErrorComponent },
 ];
@@ -114,7 +115,8 @@ export class CustomTitleStrategy extends TitleStrategy {
     UserPopoverModule,
     LoadingBarRouterModule,
     LoadingBarHttpClientModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    MonacoEditorModule.forRoot(monacoConfig),
   ],
   providers: [
     { provide: TitleStrategy, useClass: CustomTitleStrategy },

@@ -6,7 +6,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ɵEmptyOutletComponent } from '@angular/router';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
-import { PaginationModule } from '@shared/components/pagination/pagination.module';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 
 
 enum RatingType {
@@ -35,7 +35,7 @@ class RatingHistory {
     ContentHeaderModule,
     ɵEmptyOutletComponent,
     UserPopoverModule,
-    PaginationModule,
+    KepPaginationComponent,
   ]
 })
 export class RatingHistoryComponent implements OnInit {

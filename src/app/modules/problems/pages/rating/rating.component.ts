@@ -3,12 +3,12 @@ import { CurrentProblemsRating, ProblemsRating } from '../../models/rating.model
 import { ApiService } from 'app/shared/services/api.service';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
-import { PageResult } from '@shared/page-result';
+import { PageResult } from '@shared/components/classes/page-result';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
-import { PaginationModule } from '@shared/components/pagination/pagination.module';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 
 @Component({
   selector: 'app-rating',
@@ -19,7 +19,7 @@ import { PaginationModule } from '@shared/components/pagination/pagination.modul
     CoreCommonModule,
     ContentHeaderModule,
     ContestantViewModule,
-    PaginationModule,
+    KepPaginationComponent,
   ],
 })
 export class RatingComponent implements OnInit {

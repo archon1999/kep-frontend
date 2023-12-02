@@ -10,10 +10,10 @@ import {
 import { AuthenticationService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { Challenge, ChallengeCall, ChallengesRating } from '../../models/challenges.models';
-import { ChallengesService } from '../../services/challenges.service';
+import { ChallengesService } from '@challenges/services';
 import { Chapter } from 'app/modules/testing/testing.models';
-import { BaseComponent } from '../../../../shared/components/classes/base.component';
-import { PageResult } from '../../../../shared/page-result';
+import { BaseComponent } from '@shared/components/classes/base.component';
+import { PageResult } from '@shared/components/classes/page-result';
 
 interface NewChallengeCall {
   timeSeconds: number;
@@ -27,9 +27,9 @@ interface NewChallengeCall {
   animations: [
     fadeOutOnLeaveAnimation(),
     fadeInOnEnterAnimation(),
-    fadeInLeftOnEnterAnimation({ duration: 3000 }),
-    fadeInRightOnEnterAnimation({ duration: 3000 }),
-    fadeInUpOnEnterAnimation({ duration: 3000 }),
+    fadeInLeftOnEnterAnimation({ duration: 1000 }),
+    fadeInRightOnEnterAnimation({ duration: 1000 }),
+    fadeInUpOnEnterAnimation({ duration: 1000 }),
   ],
 })
 export class ChallengesComponent extends BaseComponent implements OnInit, OnDestroy {
@@ -64,8 +64,6 @@ export class ChallengesComponent extends BaseComponent implements OnInit, OnDest
   }
 
   ngOnInit(): void {
-    super.ngOnInit();
-
     this.service.getChapters().subscribe(
       (chapters: Array<Chapter>) => {
         this.chapters = chapters;

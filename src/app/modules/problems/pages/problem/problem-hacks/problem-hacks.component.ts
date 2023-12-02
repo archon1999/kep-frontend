@@ -2,10 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Problem } from '@problems/models/problems.models';
 import { ProblemsService } from 'app/modules/problems/services/problems.service';
 import { BaseComponent } from '@shared/components/classes/base.component';
-import { PageResult } from '@shared/page-result';
+import { PageResult } from '@shared/components/classes/page-result';
 import { HackAttempt } from '@problems/models/hack-attempt.models';
 import { CoreCommonModule } from '@core/common.module';
-import { PaginationModule } from '@shared/components/pagination/pagination.module';
+import { KepPaginationComponent, } from '@shared/components/kep-pagination/kep-pagination.component';
 import { HackAttemptsTableModule } from '@problems/components/hack-attempts-table/hack-attempts-table.module';
 
 @Component({
@@ -15,7 +15,7 @@ import { HackAttemptsTableModule } from '@problems/components/hack-attempts-tabl
   standalone: true,
   imports: [
     CoreCommonModule,
-    PaginationModule,
+    KepPaginationComponent,
     HackAttemptsTableModule,
   ]
 })

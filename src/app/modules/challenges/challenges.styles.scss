@@ -1,12 +1,18 @@
-$bg-primary: rgba(84, 86, 218, 0.92);
-$bg-darken: rgba(72, 78, 208, 0.8);
-$bg-lighten: #807fee;
+@import 'scss/base/bootstrap-extended/functions';
+@import 'scss/base/bootstrap-extended/mixins';
+@import 'scss/base/bootstrap-extended/variables';
+@import 'bootstrap/scss/mixins/dark-layout';
+
+
+$bg-primary: $primary;
+$bg-darken: mix(black, $primary, 10);
+$bg-lighten: mix(white, $primary, 10);
 $bg-gradient-primary: linear-gradient(to right, $bg-primary, $bg-lighten);
 $bg-gradient-primary-reversed: linear-gradient(to right, $bg-lighten, $bg-primary);
 
-$dark-layout-bg-primary: rgba(47, 45, 161, 0.8);
-$dark-layout-bg-lighten: #484ed0;
-$dark-layout-bg-darken: rgba(47, 45, 161, 0.8);
+$dark-layout-bg-primary: mix(black, $primary, 35);
+$dark-layout-bg-lighten: mix(black, $primary, 10);
+$dark-layout-bg-darken: mix(black, $primary, 40);
 $dark-layout-bg-gradient-primary: linear-gradient(to right, $dark-layout-bg-primary, $dark-layout-bg-lighten);
 $dark-layout-bg-gradient-primary-reversed: linear-gradient(to right, $dark-layout-bg-lighten, $dark-layout-bg-primary);
 

@@ -8,7 +8,6 @@ import { NgbModule, NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap
 import { TranslateModule } from '@ngx-translate/core';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { KepcoinViewModule } from 'app/shared/components/kepcoin-view/kepcoin-view.module';
-import { PaginationModule } from 'app/shared/components/pagination/pagination.module';
 import { StreakModule } from 'app/shared/components/streak/streak.module';
 import { TableOrderingModule } from 'app/shared/components/table-ordering/table-ordering.module';
 import { UsersChartModule } from 'app/shared/components/users-chart/users-chart.module';
@@ -42,6 +41,7 @@ import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 
 const routes: Routes = [
   {
@@ -105,7 +105,7 @@ const routes: Routes = [
     KepcoinViewModule,
     StreakModule,
     TableOrderingModule,
-    PaginationModule,
+    KepPaginationComponent,
     NgSelectModule,
     ReactiveFormsModule,
     ProblemsPipesModule,

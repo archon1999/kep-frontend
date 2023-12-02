@@ -49,7 +49,7 @@
               "src/assets",
               "src/sitemap.xml",
               "src/robots.txt",
-              { "glob": "**/*", "input": "node_modules/monaco-editor", "output": "assets/monaco-editor" }
+              { "glob": "**/*", "input": "node_modules/monaco-editor", "output": "assets/monaco" }
             ],
             "styles": [
               "src/styles.scss",

@@ -155,7 +155,7 @@
           </ul>  
         </div>
 
-        <pagination
+        <kep-pagination
           *ngIf="total > 0"
           [collectionSize]="total"
           [(page)]="currentPage"
@@ -164,7 +164,7 @@
           [color]="'warning'"
           [rotate]="true"
           (pageChange)="updatePage()">
-        </pagination>
+        </kep-pagination>
       </div>
     </div>
   </div>

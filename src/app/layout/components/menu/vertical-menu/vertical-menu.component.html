@@ -1,12 +1,13 @@
 <!-- Menu header -->
 <div class="navbar-header">
   <ul class="nav navbar-nav flex-row">
-    <li class="nav-item mr-auto">
+    <li class="nav-item mb-2 mr-auto">
       <!-- App Branding -->
       <a class="navbar-brand" [routerLink]="['/']">
-        <span class="brand-logo mb-2">
-          <img style="max-width: 180px !important;" src="assets/images/logo/logo-with-title.svg" alt="brand-logo" width="180" />
+        <span class="brand-logo">
+          <img style="max-width: 180px !important;" src="assets/images/logo/logo.png" alt="brand-logo" height="36" />
         </span>
+        <h2 class="brand-text mb-0">CPython.uz</h2>
       </a>
     </li>
 
@@ -14,8 +15,8 @@
     <li class="nav-item nav-toggle">
       <a class="nav-link modern-nav-toggle d-none d-xl-block pr-0" (click)="toggleSidebarCollapsible()">
         <i
-          [ngClass]="isCollapsed === true ? 'icon-circle' : 'icon-disc'"
-          class="toggle-icon feather font-medium-4 collapse-toggle-icon text-primary"
+          [data-feather]="'disc'"
+          class="toggle-icon font-medium-4 collapse-toggle-icon text-primary"
         ></i>
       </a>
       <a class="nav-link modern-nav-toggle d-block d-xl-none pr-0" (click)="toggleSidebar()">

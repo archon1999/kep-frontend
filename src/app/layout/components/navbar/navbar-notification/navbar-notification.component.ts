@@ -7,7 +7,7 @@ import { NotificationsService } from 'app/layout/components/navbar/navbar-notifi
 import { WebsocketService } from 'app/shared/services/websocket';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { PageResult } from '@shared/page-result';
+import { PageResult } from '@shared/components/classes/page-result';
 
 interface Notification {
   id: number;
@@ -61,7 +61,7 @@ export class NavbarNotificationComponent implements OnInit, OnDestroy {
           (user: User) => {
             if (user) {
               this.wsService.send('notification-add', user.username);
-              this.wsService.on(`notification-${user.username}`).subscribe(
+              this.wsService.on(`notification-${ user.username }`).subscribe(
                 (notification: Notification) => {
                   const notifications = this.notifications.reverse();
                   notifications.push(notification);
@@ -92,7 +92,7 @@ export class NavbarNotificationComponent implements OnInit, OnDestroy {
   }
 
   notificationClick(notification: Notification) {
-    if (!this.isAll){
+    if (!this.isAll) {
       this.notificationsService.readNotification(notification.id).subscribe(
         (result: any) => {
           if (result.success) {

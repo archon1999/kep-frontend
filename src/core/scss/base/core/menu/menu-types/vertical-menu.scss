@@ -41,6 +41,10 @@
 
     //Vertical menu [Expanded]
     &.menu-expanded {
+      .menu-title {
+        margin-left: 1rem !important;
+      }
+
       // Main menu expanded
       .main-menu {
         width: $menu-expanded-width;
@@ -74,6 +78,10 @@
     }
     //Vertical menu [Collapsed]
     &.menu-collapsed {
+      .menu-title {
+        margin-left: 1rem !important;
+      }
+
       //Navbar collapsed
       .navbar {
         .navbar-header {

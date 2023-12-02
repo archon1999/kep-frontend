@@ -37,7 +37,7 @@
             <div class="card-body">
               <attempts-table [hideSourceCodeSize]="true" [attempts]="attempts" [contest]="contest"></attempts-table>
 
-              <pagination
+              <kep-pagination
                 *ngIf="attempts.length > 0"
                 [collectionSize]="totalAttemptsCount"
                 [(page)]="currentPage"
@@ -45,7 +45,7 @@
                 [maxSize]="5"
                 (pageChange)="reloadAttempts()"
               >
-              </pagination>
+              </kep-pagination>
 
             </div>
           </div>
@@ -86,7 +86,7 @@
             <div class="card">
 
               <div class="">
-                <div class="table-responsive custom-table contest-problems">
+                <div class="table-responsive beautiful-table contest-problems">
                   <table class="table">
                     <tbody>
                     <tr [ngClass]="{
@@ -159,7 +159,7 @@
   </div>
 
   <div [@fadeInLeftOnEnter] class="card results" *ngIf="resultsVisible && contestant">
-    <div class="table-responsive custom-table">
+    <div class="table-responsive beautiful-table">
       <table class="table">
         <thead>
         <tr>

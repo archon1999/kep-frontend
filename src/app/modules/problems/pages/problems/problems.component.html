@@ -5,27 +5,10 @@
         <section-info></section-info>
       </div>
       <div class="col-lg-10 col-12 offset-0 offset-lg-1">
-        <section-study-plans [@fadeInLeft]="startAnimationState"></section-study-plans>
-        @defer {
-          <section-topics></section-topics>
-        }
+        <section-study-plans></section-study-plans>
+        <section-topics></section-topics>
         <section-problems-filter></section-problems-filter>
-        <section-problems-table [problems]="problems"></section-problems-table>
-        <div class="mb-2">
-          <pagination
-            *ngIf="page"
-            [collectionSize]="problemsTotal"
-            [pageOptions]="[10, 20, 50]"
-            [(page)]="page"
-            [pageSize]="pageSize"
-            [maxSize]="5"
-            [rotate]="true"
-            [boundaryLinks]="false"
-            [ellipses]="true"
-            (pageSizeChange)="pageSizeChange($event)"
-            (pageChange)="pageChange($event)">
-          </pagination>
-        </div>
+        <section-problems-table></section-problems-table>
       </div>
     </div>
   </div>
@@ -37,7 +20,7 @@
     class="btn-toggle d-flex align-items-center justify-content-center">
     <span [data-feather]="'chevrons-left'"></span>
   </a>
-  @defer (on viewport){
+  @defer (on viewport) {
     <ng-scrollbar autoHeightDisabled="false">
       <section-sidebar></section-sidebar>
     </ng-scrollbar>
@@ -45,6 +28,3 @@
     <spinner></spinner>
   }
 </core-sidebar>
-
-<nouslider-css></nouslider-css>
-<ng-select-css></ng-select-css>

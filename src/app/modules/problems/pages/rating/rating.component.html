@@ -4,7 +4,7 @@
 
     <section class="mt-2">
       <div class="card">
-        <div class="custom-table table-responsive">
+        <div class="beautiful-table table-responsive">
           <table class="table table-striped">
             <thead>
             <tr class="bg-gradient-primary">
@@ -71,14 +71,14 @@
         </div>
       </div>
 
-      <pagination
+      <kep-pagination
         (pageChange)="reloadPage()"
         *ngIf="problemsRatingList.length > 0"
         [(page)]="currentPage"
         [collectionSize]="total"
         [maxSize]="5"
         [pageSize]="10">
-      </pagination>
+      </kep-pagination>
 
       <div class="row mt-1">
         <div class="col-lg-4 col-12">
