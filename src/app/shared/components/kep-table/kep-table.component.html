@@ -1,6 +1,6 @@
 <div [class]="cardClass">
   @if (loading) {
-    <div [style.height.px]="200">
+    <div style="background: none;" [style.height]="spinnerHeight">
       <spinner></spinner>
     </div>
   } @else if(empty) {
