@@ -1,11 +1,11 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AuthenticationService } from '@auth/service';
 import { User } from '@auth/models';
 import { CoreConfig } from 'core/types';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CoreConfigService } from 'core/services/config.service';
-import { ActivatedRoute, NavigationExtras, Params, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, NavigationExtras, Params, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +14,7 @@ export class GlobalService {
 
   protected _unsubscribeAll = new Subject();
   protected _queryParams: any;
+  protected _lastUrl: string;
 
   private _queryParamsSubject = new ReplaySubject<Params>(1);
   private _currentUserSubject = new ReplaySubject<User | null>(1);
@@ -43,6 +44,14 @@ export class GlobalService {
         this._coreConfigSubject.next(coreConfig);
       }
     );
+
+    this.router.events.subscribe(
+      (event) => {
+        if (event instanceof NavigationEnd) {
+          this._lastUrl = event.url;
+        }
+      }
+    );
   }
 
   get queryParams$() {
@@ -55,6 +64,10 @@ export class GlobalService {
 
   get coreConfig$() {
     return this._coreConfigSubject.asObservable();
+  }
+
+  getLastUrl() {
+    return this._lastUrl;
   }
 
   updateQueryParams(params: Params, extras?: NavigationExtras) {
