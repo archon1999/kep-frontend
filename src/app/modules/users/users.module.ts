@@ -41,7 +41,7 @@ import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { KepPaginationComponent } from '@shared/components/pagination/kep-pagination.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 
 const routes: Routes = [
   {

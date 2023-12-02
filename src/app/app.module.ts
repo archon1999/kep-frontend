@@ -53,7 +53,7 @@ const appRoutes: Routes = [
   { path: 'practice/duels', loadChildren: () => import('./modules/duels/duels.module').then(m => m.DuelsModule) },
   { path: 'competitions/code-rush', loadChildren: () => import('./modules/code-rush/code-rush.module').then(m => m.CodeRushModule) },
   { path: 'competitions/contests', loadChildren: () => import('./modules/contests/contests.module').then(m => m.ContestsModule) },
-  { path: 'competitions/arena', loadChildren: () => import('./modules/arena/arena.module').then(m => m.ArenaModule) },
+  { path: 'competitions/arena', loadChildren: () => import('./modules/arena/arena.routing') },
   { path: 'competitions/tournaments', loadChildren: () => import('./modules/tournaments/tournaments.module').then(m => m.TournamentsModule) },
   { path: 'users', loadChildren: () => import('./modules/users/users.module').then(m => m.UsersModule) },
   { path: 'help', loadChildren: () => import('./modules/help/help.module').then(m => m.HelpModule) },

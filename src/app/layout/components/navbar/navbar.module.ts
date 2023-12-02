@@ -15,7 +15,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NavbarKepcoinComponent } from './navbar-kepcoin/navbar-kepcoin.component';
 import { CoreDirectivesModule } from 'core/directives/directives';
 import { NavbarDailyTasksComponent } from './navbar-daily-tasks/navbar-daily-tasks.component';
-import { KepPaginationComponent } from '@shared/components/pagination/kep-pagination.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { NgScrollbar } from 'ngx-scrollbar';
 
 @NgModule({

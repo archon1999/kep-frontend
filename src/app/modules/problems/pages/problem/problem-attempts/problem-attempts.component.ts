@@ -8,7 +8,7 @@ import { Problem } from '@problems/models/problems.models';
 import { ProblemsService } from 'app/modules/problems/services/problems.service';
 import { CoreCommonModule } from '@core/common.module';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
-import { KepPaginationComponent } from '@shared/components/pagination/kep-pagination.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 
 @Component({
   selector: 'problem-attempts',

@@ -12,7 +12,7 @@ import { BaseTablePageComponent } from '@shared/components/classes/base-table-pa
 import { Observable } from 'rxjs';
 import { PageResult } from '@shared/components/classes/page-result';
 import { ProblemsService } from '@problems/services/problems.service';
-import { KepPaginationComponent } from '@shared/components/pagination/kep-pagination.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 

@@ -11,7 +11,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { CoreCommonModule } from '@core/common.module';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
-import { KepPaginationComponent } from '@shared/components/pagination/kep-pagination.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 
 const RELOAD_INTERVAL_TIME = 30000;

@@ -6,7 +6,7 @@ import { BaseTablePageComponent } from '@shared/components/classes/base-table-pa
 import { Observable } from 'rxjs';
 import { CoreCommonModule } from '@core/common.module';
 import { ChallengesUserViewModule } from '@challenges/components/challenges-user-view/challenges-user-view.module';
-import { KepPaginationComponent } from '@shared/components/pagination/kep-pagination.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
