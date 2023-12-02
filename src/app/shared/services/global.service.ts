@@ -5,7 +5,7 @@ import { CoreConfig } from 'core/types';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CoreConfigService } from 'core/services/config.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Params, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -57,15 +57,14 @@ export class GlobalService {
     return this._coreConfigSubject.asObservable();
   }
 
-  updateQueryParams(params: Params, replaceUrl = false) {
+  updateQueryParams(params: Params, extras?: NavigationExtras) {
     const currentScrollHeight = window.pageYOffset;
     this._queryParams = { ...this._queryParams, ...params };
     this.router.navigate([],
       {
         relativeTo: this.route,
         queryParams: this._queryParams,
-        queryParamsHandling: 'merge',
-        replaceUrl: replaceUrl,
+        ...extras,
       }
     ).then(() => {
       if (currentScrollHeight) {
