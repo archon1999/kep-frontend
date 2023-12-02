@@ -89,6 +89,8 @@ export class BaseComponent {
     this.globalService.updateQueryParams(params, extras);
   }
 
+  getLastUrl = () => this.globalService.getLastUrl();
+
   ngOnDestroy(): void {
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();

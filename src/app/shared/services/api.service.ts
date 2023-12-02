@@ -7,13 +7,13 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
 import { isPresent } from '@shared/c-validators/utils';
 
+export const BASE_URL = environment.apiUrl;
+export const BASE_API_URL = BASE_URL + '/api/';
+
+
 @Injectable({
   providedIn: 'root'
-})
-export class ApiService {
-
-  BASE_URL = environment.apiUrl;
-  BASE_API_URL = this.BASE_URL + '/api/';
+})export class ApiService {
 
   constructor(
     public http: HttpClient,
@@ -22,7 +22,7 @@ export class ApiService {
   ) {}
 
   get(prefix: string, params: any = {}, otherOptions: any = {}): Observable<any> {
-    const url = this.BASE_API_URL + prefix;
+    const url = BASE_API_URL + prefix;
     const options = otherOptions;
     const filteredParams: any = {};
     for (const key of Object.keys(params)) {
@@ -45,19 +45,19 @@ export class ApiService {
   }
 
   post(prefix: string, body: any = {}, options: any = {}): any {
-    const url = this.BASE_API_URL + prefix;
+    const url = BASE_API_URL + prefix;
     this.initOptions(options);
     return this.http.post(url, body, options);
   }
 
   put(prefix: string, body: any = {}, options: any = {}): any {
-    const url = this.BASE_API_URL + prefix;
+    const url = BASE_API_URL + prefix;
     this.initOptions(options);
     return this.http.put(url, body, options);
   }
 
   delete(prefix: string, params: any = {}, otherOptions: any = {}): any {
-    const url = this.BASE_API_URL + prefix;
+    const url = BASE_API_URL + prefix;
     const options = otherOptions;
     this.initOptions(options);
     options.params = params;
