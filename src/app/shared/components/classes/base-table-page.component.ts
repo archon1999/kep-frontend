@@ -61,6 +61,7 @@ export class BaseTablePageComponent<T> extends BasePageComponent {
 
   pageSizeChange(pageSize: number) {
     this.pageSize = pageSize;
+    this.pageNumber = this.defaultPageNumber;
     this.reloadPage();
   }
 
