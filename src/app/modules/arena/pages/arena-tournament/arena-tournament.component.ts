@@ -49,8 +49,9 @@ import { switchMap } from 'rxjs/operators';
 })
 export class ArenaTournamentComponent extends BaseTablePageComponent<ArenaPlayer> implements OnInit, OnDestroy {
   override defaultPageNumber = 1;
-  override pageSize = 10;
+  override defaultPageSize = 10;
   override maxSize = 5;
+  override pageOptions = [10, 20, 50];
 
   public arena: Arena;
   public me = false;
@@ -135,12 +136,15 @@ export class ArenaTournamentComponent extends BaseTablePageComponent<ArenaPlayer
         return this.service.getStandingsPage(this.arena.id).pipe(
           switchMap((result: any) => {
             this.pageNumber = result.page;
-            return this.service.getArenaPlayers(this.arena.id, this.pageNumber);
+            return this.getPage();
           })
         );
       }
     }
-    return this.service.getArenaPlayers(this.arena.id, this.pageNumber);
+    return this.service.getArenaPlayers(this.arena.id, {
+      page: this.pageNumber,
+      page_size: this.pageSize,
+    });
   }
 
   nextChallenge() {
