@@ -5,7 +5,7 @@ import { BaseComponent } from '@shared/components/classes/base.component';
 import { PageResult } from '@shared/components/classes/page-result';
 import { HackAttempt } from '@problems/models/hack-attempt.models';
 import { CoreCommonModule } from '@core/common.module';
-import { KepPaginationComponent, } from '@shared/components/pagination/kep-pagination.component';
+import { KepPaginationComponent, } from '@shared/components/kep-pagination/kep-pagination.component';
 import { HackAttemptsTableModule } from '@problems/components/hack-attempts-table/hack-attempts-table.module';
 
 @Component({

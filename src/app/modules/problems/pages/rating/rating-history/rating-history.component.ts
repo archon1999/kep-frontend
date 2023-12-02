@@ -6,7 +6,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ɵEmptyOutletComponent } from '@angular/router';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
-import { KepPaginationComponent } from '@shared/components/pagination/kep-pagination.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 
 
 enum RatingType {

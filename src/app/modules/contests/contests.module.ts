@@ -50,7 +50,7 @@ import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.compon
 import { ProblemInfoCardComponent } from '@problems/components/problem-info-card/problem-info-card.component';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { ContestCardComponent } from '@contests/components/contest-card/contest-card/contest-card.component';
-import { KepPaginationComponent } from '@shared/components/pagination/kep-pagination.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 
 
 const routes: Routes = [

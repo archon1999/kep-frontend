@@ -1,4 +1,4 @@
-<div class="card">
+<div [class]="cardClass">
   @if (loading) {
     <div [style.height.px]="200">
       <spinner></spinner>
@@ -6,7 +6,7 @@
   } @else if(empty) {
     <empty-result></empty-result>
   } @else {
-    <div class="table-responsive beautiful-table">
+    <div class="table-responsive" [class]="tableClass">
       <table class="table table-striped">
         <thead>
          <ng-content select="[header]"></ng-content>
