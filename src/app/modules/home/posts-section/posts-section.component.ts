@@ -5,7 +5,7 @@ import { HomeService } from '../home.service';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { BlogPostCardModule } from '../../blog/components/blog-post-card/blog-post-card.module';
-import { PageResult } from '@shared/page-result';
+import { PageResult } from '@shared/components/classes/page-result';
 
 const PAGE_SIZE = 3;
 

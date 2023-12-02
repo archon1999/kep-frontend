@@ -3,7 +3,7 @@ import { CurrentProblemsRating, ProblemsRating } from '../../models/rating.model
 import { ApiService } from 'app/shared/services/api.service';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
-import { PageResult } from '@shared/page-result';
+import { PageResult } from '@shared/components/classes/page-result';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';

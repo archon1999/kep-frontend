@@ -37,10 +37,11 @@
             <ng-select
               formControlName="tags"
               [multiple]="true"
+              [items]="tags"
+              [bindLabel]="'name'"
+              [bindValue]="'id'"
               placeholder="{{ 'SELECT' | translate }}:"
-              [compareWith]="compareEqual"
-            >
-              <ng-option *ngFor="let tag of tags" [value]="tag.id">{{ tag.name }}</ng-option>
+              [compareWith]="compareEqual">
             </ng-select>
           </div>
         </div>

@@ -13,7 +13,7 @@ import { Challenge, ChallengeCall, ChallengesRating } from '../../models/challen
 import { ChallengesService } from '@challenges/services';
 import { Chapter } from 'app/modules/testing/testing.models';
 import { BaseComponent } from '@shared/components/classes/base.component';
-import { PageResult } from '@shared/page-result';
+import { PageResult } from '@shared/components/classes/page-result';
 
 interface NewChallengeCall {
   timeSeconds: number;

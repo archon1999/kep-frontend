@@ -7,7 +7,7 @@ import { NotificationsService } from 'app/layout/components/navbar/navbar-notifi
 import { WebsocketService } from 'app/shared/services/websocket';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { PageResult } from '@shared/page-result';
+import { PageResult } from '@shared/components/classes/page-result';
 
 interface Notification {
   id: number;

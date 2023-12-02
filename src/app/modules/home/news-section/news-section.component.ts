@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { fadeInRightOnEnterAnimation } from 'angular-animations';
 import { HomeService } from '../home.service';
-import { PageResult } from '@shared/page-result';
+import { PageResult } from '@shared/components/classes/page-result';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { CommonModule } from '@angular/common';

@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CoreConfig } from 'core/types';
 import { CoreConfigService } from 'core/services/config.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Params, Router } from '@angular/router';
 import { GlobalService } from '@shared/services/global.service';
 import { LocalStorageService } from '@shared/storages/local-storage.service';
 import { SessionStorageService } from '@shared/storages/session-storage.service';
