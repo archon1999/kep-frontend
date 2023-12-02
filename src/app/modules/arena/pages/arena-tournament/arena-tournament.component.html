@@ -82,12 +82,12 @@
             </div>
           </div>
 
-          <ngx-skeleton-loader [count]="1" class="d-none"></ngx-skeleton-loader>
 
           <div *ngIf="arena.isRegistrated && arena.status == 0" class="text-center">
             <div *ngIf="remainingTime && remainingTime <= 1000*60*2; else elseBlock">
               <ngb-alert [type]="'info'" [dismissible]="false">
-                <h4 class="alert-heading animate">
+                <h4 class="alert-heading">
+                  <ngx-skeleton-loader [count]="1" animation="progress" class="custom-skeleton"></ngx-skeleton-loader>
                   {{ 'ArenaDrawOver' | translate }}
                 </h4>
               </ngb-alert>
@@ -96,6 +96,7 @@
               <div *ngIf="arena.pause">
                 <ngb-alert [type]="'warning'" [dismissible]="false">
                   <h4 class="alert-heading animate">
+                    <ngx-skeleton-loader [count]="1" animation="progress" class="custom-skeleton"></ngx-skeleton-loader>
                     {{ 'ArenaPauseText' | translate }}
                     <button (click)="arenaStart()" class="ml-50 btn btn-sm btn-relief-warning">{{ 'Start' | translate }}</button>
                   </h4>
