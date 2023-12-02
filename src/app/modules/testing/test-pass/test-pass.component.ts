@@ -8,7 +8,7 @@ import { CoreConfig } from 'core/types';
 import { takeUntil } from 'rxjs/operators';
 import { CoreConfigService } from 'core/services/config.service';
 import { Subject } from 'rxjs';
-import { randomShuffle } from '../../../shared/utils/random';
+import { randomShuffle } from '@shared/utils';
 import { DragulaService } from 'ng2-dragula';
 
 @Component({
@@ -16,9 +16,9 @@ import { DragulaService } from 'ng2-dragula';
   templateUrl: './test-pass.component.html',
   styleUrls: ['./test-pass.component.scss'],
   animations: [
-    fadeInLeftAnimation({ duration: 3000 }),
-    fadeInRightAnimation({ duration: 2500 }),
-    fadeInUpAnimation({ duration: 2500 }),
+    fadeInLeftAnimation({ duration: 1500 }),
+    fadeInRightAnimation({ duration: 1000 }),
+    fadeInUpAnimation({ duration: 1000 }),
   ]
 })
 export class TestPassComponent implements OnInit, OnDestroy {
