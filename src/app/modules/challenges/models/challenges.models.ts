@@ -1,6 +1,7 @@
 import { Chapter } from '../../testing/testing.models';
 
 export interface ChallengesRating {
+  rowIndex: number;
   username: string;
   rating: number;
   rankTitle: string;

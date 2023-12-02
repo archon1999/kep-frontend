@@ -12,11 +12,11 @@
   [attempts]="attempts">
 </attempts-table>
 
-<pagination
+<kep-pagination
   *ngIf="attempts.length > 0"
   [collectionSize]="totalAttemptsCount"
   [(page)]="currentPage"
   [pageSize]="10"
   [maxSize]="5"
   (pageChange)="reloadAttempts()">
-</pagination>
+</kep-pagination>

@@ -3,14 +3,11 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { ProblemsFilter } from '../models/problems.models';
 
 export const DEFAULT_FILTER: ProblemsFilter = {
-  page: 1,
-  pageSize: 20,
   title: null,
   tags: [],
   difficulty: null,
   status: null,
   topic: null,
-  ordering: 'id',
   hasChecker: null,
   hasCheckInput: null,
   hasSolution: null,
@@ -33,12 +30,14 @@ export class ProblemsFilterService {
     return this._filter;
   }
 
-  updateFilter(filter: Partial<ProblemsFilter>) {
+  updateFilter(filter: Partial<ProblemsFilter>, emit = true) {
     this._currentFilter = {
       ...this._currentFilter,
       ...filter,
     };
-    this._filter.next(this._currentFilter);
+    if (emit) {
+      this._filter.next(this._currentFilter);
+    }
   }
 
   setFilter(filter: Partial<ProblemsFilter>) {

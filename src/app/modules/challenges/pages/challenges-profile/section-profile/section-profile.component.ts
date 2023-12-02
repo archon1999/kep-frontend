@@ -11,7 +11,7 @@ import { User } from 'app/auth/models';
   templateUrl: './section-profile.component.html',
   styleUrls: ['./section-profile.component.scss']
 })
-export class SectionProfileComponent extends BaseComponent implements OnInit {
+export class SectionProfileComponent extends BaseComponent {
 
   constructor(
     public statisticsService: ChallengesStatisticsService,
@@ -23,10 +23,6 @@ export class SectionProfileComponent extends BaseComponent implements OnInit {
   public challengesRating: ChallengesRating;
 
   protected readonly Math = Math;
-
-  ngOnInit(): void {
-    super.ngOnInit();
-  }
 
   beforeChangeCurrentUser(currentUser: User) {
     if (currentUser) {

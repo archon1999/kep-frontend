@@ -16,7 +16,7 @@ import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.se
 import { BaseComponent } from '@shared/components/classes/base.component';
 import { sortContestProblems } from '@contests/utils/sort-contest-problems';
 import { paramsMapper } from '@shared/utils';
-import { PageResult } from '@shared/page-result';
+import { PageResult } from '@shared/components/classes/page-result';
 import { interval } from 'rxjs';
 
 const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
@@ -76,7 +76,6 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
         problemTitle: this.problem.title,
       });
 
-      super.ngOnInit();
       this.updateContentHeader();
 
       this.service.getMe(this.contest?.id).subscribe(

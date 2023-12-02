@@ -15,6 +15,7 @@ export class SpinnerComponent implements OnInit, OnDestroy {
   @Input() type = 'ball-clip-rotate-multiple';
   @Input() color = 'var(--primary)';
   @Input() bdColor = 'inherit';
+  @Input() size: 'small' | 'default' | 'medium' | 'large' = 'large';
 
   constructor(public spinner: NgxSpinnerService) {}
 

@@ -8,16 +8,15 @@ import { NgbDropdownModule, NgbNavModule, NgbPopoverModule, NgbTooltipModule } f
 import { TranslateModule } from '@ngx-translate/core';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 
-import { NgSelectModule } from '../../shared/third-part-modules/ng-select/ng-select.module';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 
 import { AuthGuard } from 'app/auth/helpers';
 import { CountUpModule } from 'ngx-countup';
-import { MonacoEditorModule } from 'ngx-monaco-editor';
-import { ClipboardModule } from '../../shared/components/clipboard/clipboard.module';
-import { CodeEditorModule } from '../../shared/components/code-editor/code-editor.module';
-import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
-import { ProblemBodyModule } from '../problems/components/problem-body/problem-body.module';
-import { MathjaxModule } from '../../shared/third-part-modules/mathjax/mathjax.module';
+import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
+import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
+import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
+import { ProblemBodyModule } from '@problems/components/problem-body/problem-body.module';
+import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
 import { ContestGuard } from './contests.guard';
 import {
   ContestProblemResolver,
@@ -44,12 +43,14 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { RatingComponent } from './pages/rating/rating.component';
 import { ContestsTableModule } from './components/contests-table/contests-table.module';
 import { ContestCardModule } from './components/contest-card/contest-card.module';
-import { ContestantViewModule } from '../../shared/components/contestant-view/contestant-view.module';
-import { AttemptsTableModule } from '../problems/components/attempts-table/attempts-table.module';
-import { PaginationModule } from 'app/shared/components/pagination/pagination.module';
+import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
 import { ContestProblemCardComponent } from './components/contest-problem-card/contest-problem-card.component';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { ProblemInfoCardComponent } from '@problems/components/problem-info-card/problem-info-card.component';
+import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
+import { ContestCardComponent } from '@contests/components/contest-card/contest-card/contest-card.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 
 
 const routes: Routes = [
@@ -195,6 +196,7 @@ const routes: Routes = [
     CorePipesModule,
     NgbNavModule,
     ContestsTableModule,
+    ContestCardComponent,
     ContestCardModule,
     ContestantViewModule,
     NgbTooltipModule,
@@ -204,15 +206,14 @@ const routes: Routes = [
     MathjaxModule,
     ClipboardModule,
     CodeEditorModule,
-    MonacoEditorModule,
+    MonacoEditorComponent,
     MathjaxModule,
     UserPopoverModule,
     CountUpModule,
-    // NgxUsefulSwiperModule,
     NgbPopoverModule,
     ProblemBodyModule,
     AttemptsTableModule,
-    PaginationModule,
+    KepPaginationComponent,
     SwiperComponent,
     ProblemInfoCardComponent,
   ],
