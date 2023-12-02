@@ -7,7 +7,7 @@ import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.
 import { CoreDirectivesModule } from 'core/directives/directives';
 import { KepcoinSpendSwalModule } from './kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { KepPaginationComponent, } from '@shared/components/pagination/kep-pagination.component';
+import { KepPaginationComponent, } from '@shared/components/kep-pagination/kep-pagination.component';
 
 const routes: Routes = [
   {

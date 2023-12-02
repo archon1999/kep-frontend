@@ -22,7 +22,7 @@ import { ChallengeResultsCardComponent } from './components/challenge-results-ca
 import { DragulaModule } from 'ng2-dragula';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { KepPaginationComponent } from '@shared/components/pagination/kep-pagination.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { ChallengesRatingComponent } from './pages/challenges-rating/challenges-rating.component';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
