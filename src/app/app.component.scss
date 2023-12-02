@@ -249,3 +249,7 @@ pre {
     transform: none !important;
   }
 }
+
+.ngx-spinner-overlay {
+  z-index: inherit !important;
+}
