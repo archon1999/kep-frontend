@@ -12,8 +12,6 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
 
-const DEFAULT_ORDERING = '-rating';
-
 @Component({
   selector: 'app-challenges-rating',
   templateUrl: './challenges-rating.component.html',
@@ -33,6 +31,8 @@ export class ChallengesRatingComponent extends BaseTablePageComponent<Challenges
   override pageSize = 20;
   override maxSize = 5;
 
+  override defaultOrdering = '-rating';
+
   constructor(public service: ChallengesService) {
     super();
   }
@@ -47,7 +47,6 @@ export class ChallengesRatingComponent extends BaseTablePageComponent<Challenges
   }
 
   getPage(): Observable<PageResult<ChallengesRating>> {
-    this.ordering ||= DEFAULT_ORDERING;
     return this.service.getChallengesRating(this.pageNumber, this.pageSize, this.ordering);
   }
 
