@@ -162,15 +162,12 @@
                 </h5>
                 <br>
                 <div style="height: 250px;">
-                  <ngx-monaco-editor
-                    [ngModelOptions]="{standalone: true}"
-                    [options]="editorOptions"
+                  <monaco-editor
+                    [lang]="'py'"
                     [(ngModel)]="input"
-                    name="code"
-                    class="mt-1"
-                    style="height: 100%; width: 100%;"
-                    ngDefaultControl>
-                  </ngx-monaco-editor>
+                    [ngModelOptions]="{standalone: true}"
+                    class="mt-1">
+                  </monaco-editor>
                 </div>
               </div>
             </div>
