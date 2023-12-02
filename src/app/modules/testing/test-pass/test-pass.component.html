@@ -130,16 +130,13 @@
           </h5>
           <br>
           <div style="height: 250px;">
-            <ngx-monaco-editor
-              [ngModelOptions]="{standalone: true}"
-              [options]="editorOptions"
-              [(ngModel)]="question.input"
-              name="code"
+            <monaco-editor
               class="mt-1"
-              style="height: 100%;"
-              ngDefaultControl>
-            </ngx-monaco-editor>
-          </div>          
+              [(ngModel)]="question.input"
+              [ngModelOptions]="{standalone: true}"
+              [lang]="'py'">
+            </monaco-editor>
+          </div>
         </div>
       </div>
 
@@ -155,26 +152,26 @@
   <div class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">
     <div [@fadeInRight]="startAnimationState" class="card bg-gradient-chapter-{{ test.chapterId }}">
       <div class="card-body mt-1">
-<!--        <ngx-countdown [time]="leftTime" [render]="render" format="HH:mm:ss" (finish)="testPassFinish()">-->
-<!--          <ng-template #render let-data>-->
-<!--            <div class="d-flex justify-content-between">          -->
-<!--              <div class="countdown text-center">-->
-<!--                <h5 class="clock-val text-white">{{ data.fragments[0] }}</h5>-->
-<!--                <h5 class="text-white clock-text">{{ 'HOUR' | translate }}</h5>-->
-<!--              </div>-->
+        <ngx-countdown [time]="leftTime" [render]="render" format="HH:mm:ss" (finish)="testPassFinish()">
+          <ng-template #render let-data>
+            <div class="d-flex justify-content-between">
+              <div class="countdown text-center">
+                <h5 class="clock-val text-white">{{ data.fragments[0] }}</h5>
+                <h5 class="text-white clock-text">{{ 'HOUR' | translate }}</h5>
+              </div>
 
-<!--              <div class="countdown text-center">-->
-<!--                <h5 class="clock-val text-white" >{{ data.fragments[1] }}</h5>-->
-<!--                <h5 class="text-white clock-text">{{ 'MINUTE' | translate }}</h5>-->
-<!--              </div>-->
-<!--          -->
-<!--              <div class="countdown text-center">-->
-<!--                <h5 class="clock-val text-white">{{ data.fragments[2] }}</h5>-->
-<!--                <h5 class="text-white clock-text">{{ 'SECOND' | translate }}</h5>-->
-<!--              </div>-->
-<!--            </div>    -->
-<!--          </ng-template>-->
-<!--        </ngx-countdown>-->
+              <div class="countdown text-center">
+                <h5 class="clock-val text-white" >{{ data.fragments[1] }}</h5>
+                <h5 class="text-white clock-text">{{ 'MINUTE' | translate }}</h5>
+              </div>
+
+              <div class="countdown text-center">
+                <h5 class="clock-val text-white">{{ data.fragments[2] }}</h5>
+                <h5 class="text-white clock-text">{{ 'SECOND' | translate }}</h5>
+              </div>
+            </div>
+          </ng-template>
+        </ngx-countdown>
       </div>
     </div>
 
