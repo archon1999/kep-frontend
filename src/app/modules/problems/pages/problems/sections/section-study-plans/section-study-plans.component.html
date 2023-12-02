@@ -1,9 +1,11 @@
-<h3 *ngIf="studyPlans.length > 0" class="text-white d-md-block d-none">
-  {{ 'StudyPlans' | translate }}
-</h3>
+<div *ngIf="studyPlans.length > 0" [@fadeInLeftOnEnter]>
+  <h3 class="text-white d-md-block d-none">
+    {{ 'StudyPlans' | translate }}
+  </h3>
 
-<swiper *ngIf="swiperVisible" [config]="swiperConfig" class="mt-2">
-  <div class="swiper-slide" *ngFor="let studyPlan of studyPlans">
-    <study-plan-card [studyPlan]="studyPlan"></study-plan-card>
-  </div>
-</swiper>
+  <swiper [config]="swiperConfig" class="mt-2">
+    <div class="swiper-slide" *ngFor="let studyPlan of studyPlans">
+      <study-plan-card [studyPlan]="studyPlan"></study-plan-card>
+    </div>
+  </swiper>
+</div>

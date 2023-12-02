@@ -69,14 +69,11 @@ export interface Topic {
 }
 
 export interface ProblemsFilter {
-  page: number;
-  pageSize: number;
   title: string;
   tags: Array<number>;
   difficulty: number;
   status: number;
   topic: number;
-  ordering: string;
   hasChecker: boolean;
   hasCheckInput: boolean;
   hasSolution: boolean;
