@@ -4,6 +4,7 @@ import { ProblemsFilter } from '../models/problems.models';
 import { map } from 'rxjs/operators';
 import { Attempt } from '../models/attempts.models';
 import { paramsMapper } from '../../../shared/utils';
+import { Pageable } from '@shared/components/classes/pageable';
 
 @Injectable({
   providedIn: 'root'
@@ -15,23 +16,22 @@ export class ProblemsService {
   ) {
   }
 
-  getProblems(filter: ProblemsFilter) {
-    const params: any = filter;
-    if (filter.status == 1) {
+  getProblems(params: Partial<ProblemsFilter & Pageable & { hasSolved, hasAttempted }>) {
+    if (params.status === 1) {
       params.hasSolved = 1;
-    } else if (filter.status == 2) {
+    } else if (params.status === 2) {
       params.hasSolved = 0;
       params.hasAttempted = 1;
-    } else if (filter.status == 3) {
+    } else if (params.status === 3) {
       params.hasSolved = 0;
       params.hasAttempted = 0;
     }
-
+    delete params.status;
     return this.api.get('problems', paramsMapper(params));
   }
 
   getProblem(id: number | string) {
-    return this.api.get(`problems/${id}`);
+    return this.api.get(`problems/${ id }`);
   }
 
   getStudyPlans() {
@@ -39,27 +39,27 @@ export class ProblemsService {
   }
 
   getStudyPlan(id: number | string) {
-    return this.api.get(`study-plans/${id}`);
+    return this.api.get(`study-plans/${ id }`);
   }
 
   getAttempt(id: number | string) {
-    return this.api.get(`attempts/${id}`).pipe(
+    return this.api.get(`attempts/${ id }`).pipe(
       map(attempt => Attempt.fromJSON(attempt))
     );
   }
 
   getUserAttempts(username: string, page: number, pageSize: number) {
-    var params = { username: username, page: page, page_size: pageSize };
+    const params = { username: username, page: page, page_size: pageSize };
     return this.api.get('attempts', params);
   }
 
   getProblemAttempts(problemId: number, page: number, pageSize: number) {
-    var params = { problem_id: problemId, page: page, page_size: pageSize };
+    const params = { problem_id: problemId, page: page, page_size: pageSize };
     return this.api.get('attempts', params);
   }
 
   getUserProblemAttempts(username: string, problemId: number, page: number, pageSize: number) {
-    var params = {
+    const params = {
       'username': username,
       'problem_id': problemId,
       'page_size': pageSize,
@@ -77,7 +77,7 @@ export class ProblemsService {
   }
 
   getProblemsRating(page: number, pageSize = 10, ordering = '-solved') {
-    let params = { page: page, ordering: ordering, page_size: pageSize };
+    const params = { page: page, ordering: ordering, page_size: pageSize };
     return this.api.get('problems-rating', params);
   }
 
@@ -98,39 +98,39 @@ export class ProblemsService {
   }
 
   getProblemRatingHistory(type: number) {
-    let params = { type: type, ordering: '-result' };
+    const params = { type: type, ordering: '-result' };
     return this.api.get('problems-rating-history', params);
   }
 
   getProblemVerdictStatistics(problemId: number) {
-    return this.api.get(`problems/${problemId}/attempt-statistics/`);
+    return this.api.get(`problems/${ problemId }/attempt-statistics/`);
   }
 
   getProblemLangStatistics(problemId: number) {
-    return this.api.get(`problems/${problemId}/lang-statistics/`);
+    return this.api.get(`problems/${ problemId }/lang-statistics/`);
   }
 
   getProblemTopAttempts(problemId: number, ordering: string, lang = null, page: number = 1, pageSize: number = 10) {
-    var params = { ordering: ordering, lang: lang };
-    return this.api.get(`problems/${problemId}/top-attempts/`, params);
+    const params = { ordering: ordering, lang: lang };
+    return this.api.get(`problems/${ problemId }/top-attempts/`, params);
   }
 
   getAttemptsForSolveStatistics(problemId) {
-    return this.api.get(`problems/${problemId}/attempts-for-solve-statistics/`);
+    return this.api.get(`problems/${ problemId }/attempts-for-solve-statistics/`);
   }
 
   getProblemSolution(problemId) {
-    return this.api.get(`problems/${problemId}/solution/`);
+    return this.api.get(`problems/${ problemId }/solution/`);
   }
 
   addTag(problemId, tagId) {
-    let params = { tag_id: tagId };
-    return this.api.post(`problems/${problemId}/add-tag/`, params);
+    const params = { tag_id: tagId };
+    return this.api.post(`problems/${ problemId }/add-tag/`, params);
   }
 
   removeTag(problemId, tagId) {
-    let params = { tag_id: tagId };
-    return this.api.post(`problems/${problemId}/remove-tag/`, params);
+    const params = { tag_id: tagId };
+    return this.api.post(`problems/${ problemId }/remove-tag/`, params);
   }
 
   getVerdicts() {
@@ -138,15 +138,15 @@ export class ProblemsService {
   }
 
   attemptRerun(attemptId: number) {
-    return this.api.post(`attempts/${attemptId}/rerun/`);
+    return this.api.post(`attempts/${ attemptId }/rerun/`);
   }
 
   problemLike(problemId: number) {
-    return this.api.post(`problems/${problemId}/like/`);
+    return this.api.post(`problems/${ problemId }/like/`);
   }
 
   problemDislike(problemId: number) {
-    return this.api.post(`problems/${problemId}/dislike/`);
+    return this.api.post(`problems/${ problemId }/dislike/`);
   }
 
   getTopics() {
@@ -154,21 +154,21 @@ export class ProblemsService {
   }
 
   addTopic(problemId: number | string, topicId: number) {
-    let params = { topic_id: topicId };
-    return this.api.post(`problems/${problemId}/add-topic/`, params);
+    const params = { topic_id: topicId };
+    return this.api.post(`problems/${ problemId }/add-topic/`, params);
   }
 
   removeTopic(problemId: number | string, topicId: number) {
-    let params = { topic_id: topicId };
-    return this.api.post(`problems/${problemId}/remove-topic/`, params);
+    const params = { topic_id: topicId };
+    return this.api.post(`problems/${ problemId }/remove-topic/`, params);
   }
 
   hackSubmit(attemptId: number | string, body: { input?: string, generatorSource?: string, generatorLang?: string }) {
-    return this.api.post(`attempts/${attemptId}/hack-submit`, paramsMapper(body));
+    return this.api.post(`attempts/${ attemptId }/hack-submit`, paramsMapper(body));
   }
 
   hackAttemptRerun(hackAttemptId: number) {
-    return this.api.post(`hack-attempts/${hackAttemptId}/rerun/`);
+    return this.api.post(`hack-attempts/${ hackAttemptId }/rerun/`);
   }
 
   getHackAttempts(params: any) {

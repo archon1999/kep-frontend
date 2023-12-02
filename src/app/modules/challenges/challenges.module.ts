@@ -6,34 +6,35 @@ import { CorePipesModule } from 'core/pipes/pipes.module';
 import { CoreDirectivesModule } from 'core/directives/directives';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
-import { NgSelectModule } from '../../shared/third-part-modules/ng-select/ng-select.module';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
+import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { ChallengesUserViewModule } from './components/challenges-user-view/challenges-user-view.module';
 import { ChallengeCallCardComponent } from './components/challenge-call-card/challenge-call-card.component';
 import { ChallengeCardComponent } from './components/challenge-card/challenge-card.component';
 import { NewChallengeButtonComponent } from './components/new-challenge-button/new-challenge-button.component';
-import { NouisliderModule } from '../../shared/third-part-modules/nouislider/nouislider.module';
+import { NouisliderModule } from '@shared/third-part-modules/nouislider/nouislider.module';
 import { ChallengeComponent } from './pages/challenge/challenge.component';
 import { ChallengeResolver } from './challenges.resolver';
 import { SweetAlertModule } from '@shared/third-part-modules/sweet-alert/sweet-alert.module';
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
-import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { ChallengeResultsCardComponent } from './components/challenge-results-card/challenge-results-card.component';
 import { DragulaModule } from 'ng2-dragula';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { PaginationModule } from '@shared/components/pagination/pagination.module';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { ChallengesRatingComponent } from './pages/challenges-rating/challenges-rating.component';
-import { ContentHeaderModule } from '../../layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
 import { ChallengesProfileComponent } from './pages/challenges-profile/challenges-profile.component';
-import { AuthGuard } from '../../auth/helpers';
+import { AuthGuard } from '@auth/helpers';
 import { SectionProfileComponent } from './pages/challenges-profile/section-profile/section-profile.component';
 import { SectionRatingChangesComponent } from './pages/challenges-profile/section-rating-changes/section-rating-changes.component';
 import { SectionLastChallengesComponent } from './pages/challenges-profile/section-last-challenges/section-last-challenges.component';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
+import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 
 const routes: Routes = [
@@ -71,7 +72,6 @@ const routes: Routes = [
     NewChallengeButtonComponent,
     ChallengeComponent,
     ChallengeResultsCardComponent,
-    ChallengesRatingComponent,
     ChallengesProfileComponent,
     SectionProfileComponent,
     SectionRatingChangesComponent,
@@ -81,6 +81,7 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     CorePipesModule,
+    ChallengesRatingComponent,
     CoreDirectivesModule,
     TranslateModule,
     FormsModule,
@@ -91,16 +92,16 @@ const routes: Routes = [
     NouisliderModule,
     SweetAlertModule,
     CodeEditorModule,
-    MonacoEditorModule,
-    // CountdownModule,
+    MonacoEditorComponent,
     DragulaModule.forRoot(),
     MathjaxModule,
     NgxSkeletonLoaderModule.forRoot(),
-    PaginationModule,
+    KepPaginationComponent,
     ContentHeaderModule,
     ContestantViewModule,
     ApexChartModule,
     CountdownComponent,
+    SpinnerComponent,
   ],
   providers: [ChallengeResolver],
   exports: [

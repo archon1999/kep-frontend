@@ -1,0 +1,73 @@
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/mixins/define-page-top';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'scss/base/bootstrap-extended/variables';
+
+@include define-page-top(
+  $name: 'arena',
+  $light-background: linear-gradient(to right, $yellow, lighten($yellow, 10)),
+  // $dark-background: linear-gradient(to right, mix(black, mix(red, $warning, 20), 20), darken($warning, 10)),
+  $dark-background: linear-gradient(to left, #c09c2e, #b86d2b),
+);
+
+.arena {
+  .arena-avatar {
+    background: $warning;
+    box-shadow: 0 0 10px lighten($warning, 5);
+
+    @include dark-layout {
+      background: mix(black, mix(red, $warning, 20), 10) !important;
+      box-shadow: 0 0 10px mix(black, $warning, 20) !important;
+    }
+  }
+}
+.card.card-info {
+  border: none;
+  opacity: 1;
+  height: 150px;
+  box-shadow: var(--inherit-bg-box-shadow);
+  background: inherit !important;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  .card-header .card-title {
+    color: #fff;
+  }
+
+  .info-img {
+    position: absolute;
+    height: 120px;
+    width: 120px;
+    bottom: 0.5rem;
+    right: 0.5rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+::ng-deep .bg-arena-list:nth-child(odd) .card {
+  background: linear-gradient(to right, $yellow, mix(white, $yellow, 20));
+}
+
+::ng-deep .bg-arena-list:nth-child(even) .card {
+  background: linear-gradient(to left, $yellow, mix(white, $yellow, 20));
+}
+
+::ng-deep .dark-layout {
+  .bg-arena-list:nth-child(odd) .card {
+    background: #db8438;
+    background: linear-gradient(to right, #c09c2e, #b86d2b);
+  }
+
+  .bg-arena-list:nth-child(even) .card {
+    background: #F2994A;
+    background: linear-gradient(to left, #c09c2e, #b86d2b);
+  }
+}

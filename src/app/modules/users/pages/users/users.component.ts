@@ -76,8 +76,6 @@ export class UsersComponent extends BaseComponent {
       }
     );
 
-    super.ngOnInit();
-
     this._loader.pipe(
       takeUntil(this._unsubscribeAll),
       throttleTime(500, asyncScheduler, { leading: false, trailing: true }),

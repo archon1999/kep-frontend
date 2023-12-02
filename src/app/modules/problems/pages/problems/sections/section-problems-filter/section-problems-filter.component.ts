@@ -3,7 +3,7 @@ import { ProblemsFilter, Tag } from '@problems/models/problems.models';
 import { ProblemsService } from '@problems/services/problems.service';
 import { ProblemsFilterService } from 'app/modules/problems/services/problems-filter.service';
 import { BaseComponent } from '@shared/components/classes/base.component';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { equalsCheck } from '@shared/utils';
 import { CoreCommonModule } from '@core/common.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
@@ -51,12 +51,9 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
   }
 
   ngOnInit(): void {
-    super.ngOnInit();
-
     this.filterForm.valueChanges.subscribe(
       (filterValue: ProblemsFilter) => {
         this.problemsFilterService.updateFilter(filterValue);
-        this.problemsFilterService.updateFilter({ page: 1 });
       }
     );
 
@@ -71,11 +68,6 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
         this.difficulties = difficulties;
       }
     );
-  }
-
-  afterChangeQueryParams(params) {
-    this.problemsFilterService.setFilter(params);
-    this.filterForm.patchValue(this.problemsFilterService.currentFilterValue, { emitEvent: false });
   }
 
   compareEqual(a, b) {

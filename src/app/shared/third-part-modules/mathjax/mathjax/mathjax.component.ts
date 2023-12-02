@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'mathjax',
@@ -6,19 +6,19 @@ import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, Input, OnChanges, OnI
   templateUrl: './mathjax.component.html',
   styleUrls: ['./mathjax.component.scss'],
 })
-export class MathjaxComponent implements OnInit, OnChanges {
+export class MathjaxComponent implements AfterViewInit, OnChanges {
 
   @Input() content: string;
 
   constructor() {}
 
-  ngOnInit() {
-    window['MathJax'].typeset();
+  ngAfterViewInit() {
+    window['MathJax'].typesetPromise();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['content']) {
-      window['MathJax'].typeset();
+      window['MathJax'].typesetPromise();
     }
   }
 

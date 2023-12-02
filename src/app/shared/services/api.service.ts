@@ -5,6 +5,7 @@ import { environment } from 'environments/environment';
 import { catchError, concatMap, delay, retryWhen } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
+import { isPresent } from '@shared/c-validators/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,15 @@ export class ApiService {
   get(prefix: string, params: any = {}, otherOptions: any = {}): Observable<any> {
     const url = this.BASE_API_URL + prefix;
     const options = otherOptions;
+    const filteredParams: any = {};
+    for (const key of Object.keys(params)) {
+      const value = params[key];
+      if (isPresent(value)) {
+        filteredParams[key] = value;
+      }
+    }
     this.initOptions(options);
-    options.params = params;
+    options.params = filteredParams;
     return this.http.get(url, options).pipe(
       this.handleRetryError(3000, 5),
       catchError(err => {
