@@ -89,11 +89,9 @@ export class ArenaTournamentComponent extends BaseTablePageComponent<ArenaPlayer
           if (this.arena.isRegistrated) {
             this.nextChallenge();
           }
-          if (this.currentUser) {
-            this.loadArenaPlayerStatistics(this.currentUser.username);
-          }
           this.reloadPage();
         }, 5000);
+        this.loadArenaPlayerStatistics(this.currentUser.username);
       } else {
         this.service.getTop3(this.arena.id).subscribe(
           (result: any) => {
