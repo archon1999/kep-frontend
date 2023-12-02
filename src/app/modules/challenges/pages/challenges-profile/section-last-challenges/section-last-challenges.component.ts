@@ -6,7 +6,6 @@ import { PageResult } from '@shared/components/classes/page-result';
 import { User } from 'app/auth/models';
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'section-last-challenges',
   templateUrl: './section-last-challenges.component.html',
   styleUrls: ['./section-last-challenges.component.scss']
@@ -26,7 +25,7 @@ export class SectionLastChallengesComponent extends BaseComponent {
 
   afterChangeCurrentUser(currentUser: User) {
     if (currentUser) {
-      this.loadChallenges();
+      setTimeout(() => this.loadChallenges());
     }
   }
 
