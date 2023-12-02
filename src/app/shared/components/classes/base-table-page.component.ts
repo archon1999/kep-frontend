@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PageResult } from '@shared/page-result';
+import { PageResult } from '@shared/components/classes/page-result';
 import { BasePageComponent } from '@shared/components/classes/base-page.component';
-import { Params } from '@angular/router';
+import { NavigationStart, Params } from '@angular/router';
 
 @Component({
   template: '',
@@ -15,20 +15,38 @@ export class BaseTablePageComponent<T> extends BasePageComponent {
   public pagesCount: number;
   public maxSize: number;
   public ordering: string;
+  public defaultOrdering: string;
 
+  public pageOptions = [];
   public pageQueryParam = 'page';
+  public pageSizeQueryParam = 'pageSize';
+  public defaultPageNumber = 1;
+  public defaultPageSize = 10;
 
   public isLoading = true;
   public isError = false;
   public pageResult: PageResult<T>;
 
-  afterFirstChangeQueryParams(params: Params) {
-    if (params.page) {
-      this.pageNumber = +params.page;
-    }
-    if (params.ordering) {
-      this.ordering = params.ordering;
-    }
+  constructor() {
+    super();
+    setTimeout(() => this.updatePageParams());
+    this.router.events.subscribe(
+      (event: NavigationStart) => {
+        if (event.navigationTrigger === 'popstate') {
+          setTimeout(() => {
+            this.updatePageParams();
+            this.reloadPage();
+          });
+        }
+      }
+    );
+  }
+
+  updatePageParams() {
+    const params = this._queryParams;
+    this.pageNumber = +params.page || this.defaultPageNumber;
+    this.pageSize = +params.pageSize || this.defaultPageSize;
+    this.ordering = params.ordering || this.defaultOrdering;
   }
 
   getPage(): Observable<PageResult<T>> | null {
@@ -40,18 +58,27 @@ export class BaseTablePageComponent<T> extends BasePageComponent {
     this.reloadPage();
   }
 
+  pageSizeChange(pageSize: number) {
+    this.pageSize = pageSize;
+    this.reloadPage();
+  }
+
   orderingChange(ordering: string) {
     this.ordering = ordering;
-    this.updateQueryParams({ ordering: ordering }, true);
+    this.updateQueryParams({ ordering: ordering });
+    this.pageNumber = this.defaultPageNumber;
     this.reloadPage();
   }
 
   reloadPage() {
     this.isLoading = true;
     this.isError = false;
-    this.getPage().subscribe(
-      (pageResult: PageResult<T>) => {
-        this.updateQueryParams({ [this.pageQueryParam]: pageResult.page });
+    this.getPage().subscribe({
+      next: (pageResult: PageResult<T>) => {
+        this.updateQueryParams({
+          [this.pageQueryParam]: pageResult.page !== this.defaultPageNumber ? pageResult.page : null,
+          [this.pageSizeQueryParam]: pageResult.pageSize !== this.defaultPageSize ? pageResult.pageSize: null,
+        });
         this.pageResult = pageResult;
         this.pageNumber = pageResult.page;
         this.pageSize = pageResult.pageSize;
@@ -59,11 +86,12 @@ export class BaseTablePageComponent<T> extends BasePageComponent {
         this.total = pageResult.total;
         this.reCalcIndexes();
         this.isLoading = false;
-      }, () => {
+      },
+      error: () => {
         this.isError = true;
         this.isLoading = false;
       }
-    );
+    });
   }
 
   reCalcIndexes() {

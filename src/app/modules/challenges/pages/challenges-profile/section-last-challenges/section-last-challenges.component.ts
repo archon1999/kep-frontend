@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@shared/components/classes/base.component';
 import { ChallengesStatisticsService } from 'app/modules/challenges/services';
 import { Challenge } from 'app/modules/challenges/models/challenges.models';
-import { PageResult } from '@shared/page-result';
+import { PageResult } from '@shared/components/classes/page-result';
 import { User } from 'app/auth/models';
 
 @Component({

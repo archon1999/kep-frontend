@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChallengesRating } from '@challenges/models/challenges.models';
 import { ChallengesService } from '@challenges/services';
-import { PageResult } from '@shared/page-result';
+import { PageResult } from '@shared/components/classes/page-result';
 import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
 import { Observable } from 'rxjs';
 import { CoreCommonModule } from '@core/common.module';
