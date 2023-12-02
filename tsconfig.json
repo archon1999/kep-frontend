@@ -39,6 +39,9 @@
       "@challenges/*": [
         "app/modules/challenges/*"
       ],
+      "@arena/*": [
+        "app/modules/arena/*"
+      ],
       "@users/*": [
         "app/modules/users/*"
       ],

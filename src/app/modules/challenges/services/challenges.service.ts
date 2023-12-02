@@ -21,8 +21,8 @@ export class ChallengesService {
     return this.api.get('challenge-calls');
   }
 
-  getChallenges(page: number, username = null, pageSize = 10) {
-    const params: any = { page: page, page_size: pageSize };
+  getChallenges(page: number, username = null, pageSize = 10, otherParams?: any) {
+    const params: any = { page: page, page_size: pageSize, ...otherParams };
     if (username) {
       params.username = username;
     }

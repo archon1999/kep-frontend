@@ -44,8 +44,8 @@ export class BaseTablePageComponent<T> extends BasePageComponent {
 
   updatePageParams() {
     const params = this._queryParams;
-    this.pageNumber = +params.page || this.defaultPageNumber;
-    this.pageSize = +params.pageSize || this.defaultPageSize;
+    this.pageNumber = +params[this.pageQueryParam] || this.defaultPageNumber;
+    this.pageSize = +params[this.pageSizeQueryParam] || this.defaultPageSize;
     this.ordering = params.ordering || this.defaultOrdering;
   }
 

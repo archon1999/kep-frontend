@@ -8,7 +8,7 @@ import { takeUntil, throttleTime } from 'rxjs/operators';
 import { HackAttempt } from '@problems/models/hack-attempt.models';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
-import { KepPaginationComponent } from '@shared/components/pagination/kep-pagination.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { HackAttemptsTableModule } from '@problems/components/hack-attempts-table/hack-attempts-table.module';
 
 const RELOAD_INTERVAL_TIME = 30000;
