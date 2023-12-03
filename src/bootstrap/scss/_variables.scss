@@ -83,7 +83,10 @@ $theme-colors: map-merge(
     "warning":    $warning,
     "danger":     $danger,
     "light":      $light,
-    "dark":       $dark
+    "dark":       $dark,
+    "yellow":     rgb(191 200 0 / 94%),
+    "blue":       #4362eef0,
+    "brown":      #ba782b,
   ),
   $theme-colors
 );
