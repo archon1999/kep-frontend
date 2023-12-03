@@ -1,17 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { Params } from '@angular/router';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
-import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
-import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';
 import { Problem } from '@problems/models/problems.models';
 import { ProblemsService } from '../../services/problems.service';
 import { Location } from '@angular/common';
 import { ApiService } from '@shared/services/api.service';
 import { ToastrService } from 'ngx-toastr';
-import { BaseComponent } from '@shared/components/classes/base.component';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
@@ -24,6 +20,8 @@ import { CodeEditorModule } from '@shared/components/code-editor/code-editor.mod
 import { ProblemSidebarComponent } from '@problems/pages/problem/problem-sidebar/problem-sidebar.component';
 import { TourModule } from '@shared/third-part-modules/tour/tour.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
+import { BasePageComponent } from '@shared/components/classes/base-page.component';
 
 @Component({
   selector: 'app-problem',
@@ -46,11 +44,10 @@ import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.m
     ProblemSidebarComponent,
     TourModule,
     NgSelectModule,
+    MonacoEditorComponent,
   ]
 })
-export class ProblemComponent extends BaseComponent implements OnInit {
-  public contentHeader: ContentHeader;
-
+export class ProblemComponent extends BasePageComponent implements OnInit {
   public problem: Problem;
 
   public activeId = 1;
@@ -58,29 +55,22 @@ export class ProblemComponent extends BaseComponent implements OnInit {
   public contestId: number;
 
   public submitEvent = new Subject();
-
   public checkInput = '';
 
   constructor(
-    public route: ActivatedRoute,
     public service: ProblemsService,
-    public titleService: TitleService,
-    public translateService: TranslateService,
-    public router: Router,
-    public location: Location,
     public api: ApiService,
-    public toastr: ToastrService,
-    public coreSidebarService: CoreSidebarService,
   ) {
     super();
-    if (this.router.url.endsWith('hacks')) {
-      this.activeId = 3;
-    } else if (this.router.url.endsWith('attempts')) {
-      this.activeId = 2;
-    }
   }
 
   ngOnInit(): void {
+    if (this._queryParams.tab === 'hacks') {
+      this.activeId = 3;
+    } else if (this._queryParams.tab === 'attempts') {
+      this.activeId = 2;
+    }
+
     this.route.data.subscribe(({ problem }) => {
       this.problem = problem;
       this.titleService.updateTitle(this.route, {
@@ -111,8 +101,8 @@ export class ProblemComponent extends BaseComponent implements OnInit {
     }
   }
 
-  loadContentHeader() {
-    this.contentHeader = {
+  getContentHeader() {
+    return this.contentHeader = {
       headerTitle: this.problem.title,
       actionButton: true,
       breadcrumb: {
@@ -134,11 +124,11 @@ export class ProblemComponent extends BaseComponent implements OnInit {
 
   activeIdChange(index: number) {
     if (index === 1) {
-      this.location.go(`/practice/problems/problem/${ this.problem.id }`);
+      this.updateQueryParams({ tab: null });
     } else if (index === 2) {
-      this.location.go(`/practice/problems/problem/${ this.problem.id }/attempts`);
+      this.updateQueryParams({ tab: 'attempts' });
     } else if (index === 3) {
-      this.location.go(`/practice/problems/problem/${ this.problem.id }/hacks`);
+      this.updateQueryParams({ tab: 'hacks' });
     }
   }
 
