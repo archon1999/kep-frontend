@@ -52,7 +52,7 @@ export class CoreLoadingScreenService {
         .subscribe(() => {
           setTimeout(() => {
             this.hide();
-          });
+          }, 1000);
         });
     }
   }

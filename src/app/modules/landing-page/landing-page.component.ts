@@ -53,6 +53,7 @@ export class LandingPageComponent implements OnInit {
     this.updateWindowHeight();
     this.coreConfigService.config = {
       layout: {
+        skin: 'light',
         navbar: {
           hidden: true
         },
