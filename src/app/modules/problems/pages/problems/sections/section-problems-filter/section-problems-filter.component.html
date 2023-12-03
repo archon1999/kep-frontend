@@ -34,8 +34,7 @@
             </strong>
           </label>
           <div class="form-group">
-            {{ filterForm.value.tags }}
-            <div ngbDropdown [placement]="'bottom'" class="select-tags btn-group full-width">
+            <div ngbDropdown [placement]="'bottom'" class="select-tags btn-group full-width d-md-block d-none">
               <button type="button" class="btn btn-outline-primary" [style.width.%]="70" rippleEffect>
                 {{ selectedTagsName || ('SELECT' | translate) }}
               </button>
@@ -67,6 +66,24 @@
                 </ngb-accordion>
               </div>
             </div>
+
+            <ng-select
+              class="d-md-none tags-select"
+              formControlName="tags"
+              [dropdownPosition]="'top'"
+              [multiple]="true"
+              [items]="tags"
+              [closeOnSelect]="false"
+              [maxSelectedItems]="3"
+              [groupBy]="'category'"
+              [bindLabel]="'name'"
+              [bindValue]="'id'"
+              placeholder="{{ 'SELECT' | translate }}:"
+              [compareWith]="compareEqual">
+              <ng-template ng-optgroup-tmp let-item="item">
+                {{ item.category }}
+              </ng-template>
+            </ng-select>
           </div>
         </div>
 

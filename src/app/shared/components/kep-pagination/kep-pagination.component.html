@@ -42,11 +42,14 @@
   <div *ngIf="pageOptions?.length > 0" class="position-absolute position-right-0 position-top-0 d-none d-md-block">
     <ng-select
       [clearable]="false"
+      [searchable]="false"
       [(ngModel)]="pageSize"
       (change)="sizeChange($event)">
-      <ng-option *ngFor="let pageOption of pageOptions" [value]="pageOption">
-        {{ pageOption }} / {{ 'Page' | translate }}
-      </ng-option>
+      @for (pageOption of pageOptions; track pageOption){
+        <ng-option [value]="pageOption">
+          {{ pageOption }} / {{ 'Page' | translate }}
+        </ng-option>
+      }
     </ng-select>
   </div>
 

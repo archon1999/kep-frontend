@@ -38,3 +38,7 @@
     color: $light;
   }
 }
+
+::ng-deep .tags-select .ng-value {
+  color: white !important;
+}
