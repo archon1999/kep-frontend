@@ -13,6 +13,7 @@ import { TitleService } from '@shared/services/title.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { ApiService } from '@shared/services/api.service';
 
 @Component({
   template: '',
@@ -20,6 +21,7 @@ import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.s
 })
 export class BaseComponent {
 
+  public api = inject(ApiService);
   public authService = inject(AuthenticationService);
   public coreConfigService = inject(CoreConfigService);
   public router = inject(Router);
