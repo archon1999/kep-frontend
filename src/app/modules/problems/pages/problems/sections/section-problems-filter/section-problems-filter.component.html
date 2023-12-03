@@ -34,7 +34,7 @@
             </strong>
           </label>
           <div class="form-group">
-            <div ngbDropdown [placement]="'bottom'" class="select-tags btn-group full-width d-md-block d-none">
+            <div ngbDropdown [placement]="'bottom'" class="select-tags btn-group full-width d-lg-block d-none">
               <button type="button" class="btn btn-outline-primary" [style.width.%]="70" rippleEffect>
                 {{ selectedTagsName || ('SELECT' | translate) }}
               </button>
@@ -68,7 +68,7 @@
             </div>
 
             <ng-select
-              class="d-md-none tags-select"
+              class="d-lg-none tags-select"
               formControlName="tags"
               [dropdownPosition]="'top'"
               [multiple]="true"
