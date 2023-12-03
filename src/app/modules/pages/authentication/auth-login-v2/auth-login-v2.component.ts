@@ -91,14 +91,17 @@ export class AuthLoginV2Component implements OnInit {
         this.loading = true;
         setTimeout(() => {
           this._router.navigate(['/home']);
-          this.toastr.success(this.loginSuccessText, `👋 ${this.welcomeText}, ` + user.firstName||user.username + '!', {
+          this.toastr.success(this.loginSuccessText, `👋 ${this.welcomeText}, ` + user.firstName || user.username + '!', {
             toastClass: 'toast ngx-toastr',
             closeButton: true
           });
           this.authService.updateMe();
         }, 1000);
       }, (err) => {
-        this.toastr.error(this.loginErrorText);
+        this.toastr.error('', this.loginErrorText, {
+          toastClass: 'toast ngx-toastr',
+          closeButton: true
+        });
       }
     );
   }
