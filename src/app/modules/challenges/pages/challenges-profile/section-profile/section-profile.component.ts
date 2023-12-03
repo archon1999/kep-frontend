@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ChallengesRating } from '../../../models/challenges.models';
 import { ChallengesStatisticsService } from '../../../services';
 import { AuthenticationService } from 'app/auth/service';
@@ -6,12 +6,14 @@ import { BaseComponent } from '@shared/components/classes/base.component';
 import { User } from 'app/auth/models';
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'section-profile',
   templateUrl: './section-profile.component.html',
   styleUrls: ['./section-profile.component.scss']
 })
 export class SectionProfileComponent extends BaseComponent {
+
+  public challengesRating: ChallengesRating;
+  protected readonly Math = Math;
 
   constructor(
     public statisticsService: ChallengesStatisticsService,
@@ -20,19 +22,18 @@ export class SectionProfileComponent extends BaseComponent {
     super();
   }
 
-  public challengesRating: ChallengesRating;
-
-  protected readonly Math = Math;
-
   beforeChangeCurrentUser(currentUser: User) {
     if (currentUser) {
-      this.statisticsService.getUserChallengesRating(currentUser?.username).subscribe(
-        (challengesRating: ChallengesRating) => {
-          challengesRating.all = (challengesRating.wins + challengesRating.draws + challengesRating.losses) || 1;
-          this.challengesRating = challengesRating;
-        }
-      );
+      setTimeout(() => this.loadData());
     }
   }
 
+  loadData() {
+    this.statisticsService.getUserChallengesRating(this.currentUser?.username).subscribe(
+      (challengesRating: ChallengesRating) => {
+        challengesRating.all = (challengesRating.wins + challengesRating.draws + challengesRating.losses) || 1;
+        this.challengesRating = challengesRating;
+      }
+    );
+  }
 }

@@ -111,7 +111,54 @@ $danger-color: (
   'accent-3': #ffecee,
   'accent-4': #ffd3d7
 );
-
+$yellow-color: (
+  'lighten-5': lighten(theme-color('yellow'), 25%),
+  'lighten-4': lighten(theme-color('yellow'), 20%),
+  'lighten-3': lighten(theme-color('yellow'), 15%),
+  'lighten-2': lighten(theme-color('yellow'), 10%),
+  'lighten-1': lighten(theme-color('yellow'), 5%),
+  'base': theme-color('yellow'),
+  'darken-1': darken(theme-color('yellow'), 5%),
+  'darken-2': darken(theme-color('yellow'), 10%),
+  'darken-3': darken(theme-color('yellow'), 15%),
+  'darken-4': darken(theme-color('yellow'), 20%),
+  'accent-1': #fff5ef,
+  'accent-2': #ffe5d8,
+  'accent-3': #fff6f3,
+  'accent-4': #ffe3da
+);
+$blue-color: (
+  'lighten-5': lighten(theme-color('blue'), 25%),
+  'lighten-4': lighten(theme-color('blue'), 20%),
+  'lighten-3': lighten(theme-color('blue'), 15%),
+  'lighten-2': lighten(theme-color('blue'), 10%),
+  'lighten-1': lighten(theme-color('blue'), 5%),
+  'base': theme-color('blue'),
+  'darken-1': darken(theme-color('blue'), 5%),
+  'darken-2': darken(theme-color('blue'), 10%),
+  'darken-3': darken(theme-color('blue'), 15%),
+  'darken-4': darken(theme-color('blue'), 20%),
+  'accent-1': #bdfdff,
+  'accent-2': #8afbff,
+  'accent-3': #57faff,
+  'accent-4': #3df9ff
+);
+$brown-color: (
+  'lighten-5': lighten(theme-color('brown'), 25%),
+  'lighten-4': lighten(theme-color('brown'), 20%),
+  'lighten-3': lighten(theme-color('brown'), 15%),
+  'lighten-2': lighten(theme-color('brown'), 10%),
+  'lighten-1': lighten(theme-color('brown'), 5%),
+  'base': theme-color('brown'),
+  'darken-1': darken(theme-color('brown'), 5%),
+  'darken-2': darken(theme-color('brown'), 10%),
+  'darken-3': darken(theme-color('brown'), 15%),
+  'darken-4': darken(theme-color('brown'), 20%),
+  'accent-1': #bdfdff,
+  'accent-2': #8afbff,
+  'accent-3': #57faff,
+  'accent-4': #3df9ff
+);
 $colors: (
   'white': $white-color,
   'black': $black-color,
@@ -122,5 +169,8 @@ $colors: (
   'success': $success-color,
   'info': $info-color,
   'warning': $warning-color,
-  'danger': $danger-color
+  'danger': $danger-color,
+  'yellow': $yellow-color,
+  'blue': $blue-color,
+  'brown': $brown-color,
 );

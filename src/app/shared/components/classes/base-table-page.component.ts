@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageResult } from '@shared/components/classes/page-result';
 import { BasePageComponent } from '@shared/components/classes/base-page.component';
-import { NavigationStart, Params } from '@angular/router';
+import { NavigationStart } from '@angular/router';
+import { BASE_URL } from '@shared/services/api.service';
 
 @Component({
   template: '',
@@ -31,12 +32,12 @@ export class BaseTablePageComponent<T> extends BasePageComponent {
     super();
     setTimeout(() => this.updatePageParams());
     this.router.events.subscribe(
-      (event: NavigationStart) => {
-        if (event.navigationTrigger === 'popstate') {
-          setTimeout(() => {
-            this.updatePageParams();
-            this.reloadPage();
-          });
+      (event) => {
+        if (event instanceof NavigationStart && event.navigationTrigger === 'popstate') {
+          setTimeout(() => this.updatePageParams());
+          if (new URL(event.url, BASE_URL).pathname === new URL(this.getLastUrl(), BASE_URL).pathname) {
+            setTimeout(() => this.reloadPage());
+          }
         }
       }
     );
@@ -60,6 +61,7 @@ export class BaseTablePageComponent<T> extends BasePageComponent {
 
   pageSizeChange(pageSize: number) {
     this.pageSize = pageSize;
+    this.pageNumber = this.defaultPageNumber;
     this.reloadPage();
   }
 
@@ -77,7 +79,7 @@ export class BaseTablePageComponent<T> extends BasePageComponent {
       next: (pageResult: PageResult<T>) => {
         this.updateQueryParams({
           [this.pageQueryParam]: pageResult.page !== this.defaultPageNumber ? pageResult.page : null,
-          [this.pageSizeQueryParam]: pageResult.pageSize !== this.defaultPageSize ? pageResult.pageSize: null,
+          [this.pageSizeQueryParam]: pageResult.pageSize !== this.defaultPageSize ? pageResult.pageSize : null,
         });
         this.pageResult = pageResult;
         this.pageNumber = pageResult.page;

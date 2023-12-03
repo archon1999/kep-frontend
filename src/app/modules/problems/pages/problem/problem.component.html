@@ -1,6 +1,5 @@
 <div class="content-wrapper p-0">
   <div class="content-body">
-    <!-- content-header component -->
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
     <section class="mt-2">
       <div class="row">
@@ -77,14 +76,12 @@
             </div>
 
             <div class="card-body">
-              <ngx-monaco-editor
-                [ngModelOptions]="{standalone: true}"
-                [options]="editorOptions"
-                [(ngModel)]="checkInput"
+              <monaco-editor
+                [lang]="'py'"
                 class="mt-1"
-                style="height: 300px;"
-                ngDefaultControl
-              ></ngx-monaco-editor>
+                [ngModelOptions]="{standalone: true}"
+                [(ngModel)]="checkInput"
+              ></monaco-editor>
               <div class="btn mt-2 btn-primary btn-sm" (click)="saveCheckInput()">Save</div>
             </div>
 
