@@ -8,6 +8,7 @@ import { WebsocketService } from 'app/shared/services/websocket';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PageResult } from '@shared/components/classes/page-result';
+import Swal from 'sweetalert2';
 
 interface Notification {
   id: number;
@@ -63,6 +64,13 @@ export class NavbarNotificationComponent implements OnInit, OnDestroy {
               this.wsService.send('notification-add', user.username);
               this.wsService.on(`notification-${ user.username }`).subscribe(
                 (notification: Notification) => {
+                  if (notification.type === 1) {
+                    Swal.fire({
+                      title: 'Information',
+                      html: notification.message,
+                      icon: 'info',
+                    });
+                  }
                   const notifications = this.notifications.reverse();
                   notifications.push(notification);
                   this.notifications = notifications.reverse();
