@@ -25,14 +25,14 @@ export const menu: CoreMenu[] = [
         icon: 'book-open',
         url: '/learn/courses',
       },
-      {
-        id: 'lugavar',
-        title: 'Lugavar',
-        translate: 'MENU.LUGAVAR',
-        type: 'item',
-        icon: 'bookmark',
-        url: '/learn/lugavar',
-      },
+      // {
+      //   id: 'lugavar',
+      //   title: 'Lugavar',
+      //   translate: 'MENU.LUGAVAR',
+      //   type: 'item',
+      //   icon: 'bookmark',
+      //   url: '/learn/lugavar',
+      // },
       {
         id: 'blog',
         title: 'Blog',
