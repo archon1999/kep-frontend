@@ -1,32 +1,36 @@
-<app-content-header [contentHeader]="contentHeader"></app-content-header>
+<div class="content-wrapper">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
-<div class="mt-2 form-group">
-  <div class="custom-control custom-checkbox" *ngIf="currentUser">
-    <input
-      [disabled]="isLoading"
-      type="checkbox"
-      class="custom-control-input"
-      [(ngModel)]="myAttempts"
-      (change)="reloadPage()"
-      [ngModelOptions]="{standalone: true}"
-      id="myAttempts" />
-    <label class="custom-control-label" for="myAttempts">{{ 'MY_ATTEMPTS' | translate }}</label>
+    <div class="mt-2 form-group">
+      <div class="custom-control custom-checkbox" *ngIf="currentUser">
+        <input
+          [disabled]="isLoading"
+          type="checkbox"
+          class="custom-control-input"
+          [(ngModel)]="myAttempts"
+          (change)="reloadPage()"
+          [ngModelOptions]="{standalone: true}"
+          id="myAttempts" />
+        <label class="custom-control-label" for="myAttempts">{{ 'MY_ATTEMPTS' | translate }}</label>
+      </div>
+    </div>
+
+    @if (!attempts && isLoading){
+      <div class="card" [style.height.px]='300'>
+        <spinner></spinner>
+      </div>
+    } @else {
+      <attempts-table [hackEnabled]="true" [attempts]="attempts"></attempts-table>
+    }
+
+
+    <kep-pagination
+      [collectionSize]="total"
+      [(page)]="pageNumber"
+      [pageSize]="20"
+      [maxSize]="maxSize"
+      (pageChange)="reloadPage()">
+    </kep-pagination>
   </div>
 </div>
-
-@if (!attempts && isLoading){
-  <div class="card" [style.height.px]='300'>
-    <spinner></spinner>
-  </div>
-} @else {
-  <attempts-table [hackEnabled]="true" [attempts]="attempts"></attempts-table>
-}
-
-
-<kep-pagination
-  [collectionSize]="total"
-  [(page)]="pageNumber"
-  [pageSize]="20"
-  [maxSize]="maxSize"
-  (pageChange)="reloadPage()">
-</kep-pagination>
