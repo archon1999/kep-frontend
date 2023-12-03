@@ -15,6 +15,7 @@ export class SwiperDirective implements AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.config.injectStyles = [':host { --swiper-theme-color: var(--primary); }'];
     Object.assign(this.el.nativeElement, this.config);
 
     // @ts-ignore
