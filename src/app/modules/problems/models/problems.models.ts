@@ -61,6 +61,7 @@ export interface Difficulty {
 export interface Tag {
   name: string;
   id: number;
+  category: string;
 }
 
 export interface Topic {
@@ -98,4 +99,10 @@ export interface StudyPlan {
   isPurchased: boolean;
   kepcoinValue: number;
   days: Array<StudyPlanDay>;
+}
+
+export interface Category {
+  id: number;
+  title: string;
+  tags: Array<Tag>;
 }

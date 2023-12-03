@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProblemsFilter, Tag } from '@problems/models/problems.models';
+import { Category, ProblemsFilter, Tag } from '@problems/models/problems.models';
 import { ProblemsService } from '@problems/services/problems.service';
 import { ProblemsFilterService } from 'app/modules/problems/services/problems-filter.service';
 import { BaseComponent } from '@shared/components/classes/base.component';
@@ -8,6 +8,7 @@ import { equalsCheck } from '@shared/utils';
 import { CoreCommonModule } from '@core/common.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
+import { NgbAccordionModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 interface Difficulty {
   name: string;
@@ -23,13 +24,15 @@ interface Difficulty {
     CoreCommonModule,
     NgSelectModule,
     ProblemsPipesModule,
+    NgbDropdownModule,
+    NgbAccordionModule,
   ]
 })
 export class SectionProblemsFilterComponent extends BaseComponent implements OnInit {
 
   public filterForm = new FormGroup({
     title: new FormControl(),
-    tags: new FormControl(),
+    tags: new FormControl([]),
     difficulty: new FormControl(),
     status: new FormControl(),
     hasChecker: new FormControl(),
@@ -39,7 +42,10 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
   });
 
   public tags: Array<Tag> = [];
+  public categories: Array<Category> = [];
   public difficulties: Array<Difficulty> = [];
+
+  public selectedTagsName: string;
 
   public filterCollapsed = false;
 
@@ -57,11 +63,34 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
       }
     );
 
-    this.service.getTags().subscribe(
-      (tags: any) => {
+    this.service.getCategories().subscribe(
+      (categories: Array<Category>) => {
+        this.categories = categories;
+        const tags = [];
+        this.categories.forEach(category => {
+          category.tags.forEach(tag => {
+            tags.push({
+              ...tag,
+              category: category.title,
+            });
+          });
+        });
         this.tags = tags;
       }
     );
+
+    this.filterForm.controls.tags.valueChanges.subscribe(
+      (tags) => {
+        console.log(tags);
+        this.selectedTagsName = Array.from(new Set(this.tags.filter(tag => tags.indexOf(tag.id) !== -1).map(tag => tag.name))).join(', ')
+      }
+    );
+
+    // this.service.getTags().subscribe(
+    //   (tags: any) => {
+    //     this.tags = tags;
+    //   }
+    // );
 
     this.service.getDifficulties().subscribe(
       (difficulties: any) => {
@@ -74,4 +103,14 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
     return equalsCheck(a, b) || a?.toString() === b?.toString();
   }
 
+  tagOnClick(tagId: number) {
+    const tags = this.filterForm.value.tags || [];
+    const index = tags.indexOf(tagId);
+    if (index === -1) {
+      tags.push(tagId);
+    } else {
+      tags.splice(index, 1);
+    }
+    this.filterForm.patchValue({ tags: tags });
+  }
 }

@@ -1,16 +1,19 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CoreConfig } from 'core/types';
 import { CoreConfigService } from 'core/services/config.service';
-import { ActivatedRoute, NavigationExtras, Params, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, NavigationStart, Params, Router } from '@angular/router';
 import { GlobalService } from '@shared/services/global.service';
 import { LocalStorageService } from '@shared/storages/local-storage.service';
 import { SessionStorageService } from '@shared/storages/session-storage.service';
 import { TitleService } from '@shared/services/title.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
+import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { ApiService } from '@shared/services/api.service';
 
 @Component({
   template: '',
@@ -18,6 +21,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class BaseComponent {
 
+  public api = inject(ApiService);
   public authService = inject(AuthenticationService);
   public coreConfigService = inject(CoreConfigService);
   public router = inject(Router);
@@ -27,6 +31,8 @@ export class BaseComponent {
   public sessionStorageService = inject(SessionStorageService);
   public titleService = inject(TitleService);
   public spinner = inject(NgxSpinnerService);
+  public toastr = inject(ToastrService);
+  public coreSidebarService = inject(CoreSidebarService);
 
   public currentUser: User | null;
   public coreConfig: CoreConfig;
@@ -57,10 +63,12 @@ export class BaseComponent {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(
         (currentUser) => {
-          this.beforeChangeCurrentUser(currentUser);
-          this.currentUser = currentUser;
-          this.isAuthenticated = (this.currentUser !== null);
-          this.afterChangeCurrentUser(currentUser);
+          setTimeout(() => {
+            this.beforeChangeCurrentUser(currentUser);
+            this.currentUser = currentUser;
+            this.isAuthenticated = (this.currentUser !== null);
+            this.afterChangeCurrentUser(currentUser);
+          });
         }
       );
 
@@ -87,6 +95,13 @@ export class BaseComponent {
 
   updateQueryParams(params: Params, extras?: NavigationExtras) {
     this.globalService.updateQueryParams(params, extras);
+  }
+
+  getLastUrl = () => this.globalService.getLastUrl();
+
+  refreshPage() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.navigate([this.router.url], { skipLocationChange: true });
   }
 
   ngOnDestroy(): void {

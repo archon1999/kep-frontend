@@ -5,7 +5,6 @@ import {
   fadeInOnEnterAnimation,
   fadeInRightOnEnterAnimation
 } from 'angular-animations';
-import { User } from '@auth/models';
 import { Arena, ArenaPlayer, ArenaPlayerStatistics, ArenaStatus } from '../../arena.models';
 import { ArenaService } from '../../arena.service';
 import { CoreCommonModule } from '@core/common.module';
@@ -17,7 +16,7 @@ import { ChallengesUserViewModule } from '@challenges/components/challenges-user
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
 import { ArenaChallengesComponent } from '@arena/pages/arena-tournament/arena-challenges/arena-challenges.component';
-import { interval, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { PageResult } from '@shared/components/classes/page-result';
 import { switchMap } from 'rxjs/operators';
@@ -50,8 +49,9 @@ import { switchMap } from 'rxjs/operators';
 })
 export class ArenaTournamentComponent extends BaseTablePageComponent<ArenaPlayer> implements OnInit, OnDestroy {
   override defaultPageNumber = 1;
-  override pageSize = 10;
+  override defaultPageSize = 10;
   override maxSize = 5;
+  override pageOptions = [10, 20, 50];
 
   public arena: Arena;
   public me = false;
@@ -66,8 +66,8 @@ export class ArenaTournamentComponent extends BaseTablePageComponent<ArenaPlayer
   public leftTime = 0;
   public remainingTime: number;
 
-  private _intervalId: any;
-  private _intervalId2: any;
+  public _intervalId1: any;
+  public _intervalId2: any;
 
   constructor(public service: ArenaService) {
     super();
@@ -86,15 +86,13 @@ export class ArenaTournamentComponent extends BaseTablePageComponent<ArenaPlayer
         this.leftTime = new Date(arena.startTime).valueOf() - Date.now();
       } else if (this.arena.status === ArenaStatus.Already) {
         this.leftTime = new Date(arena.finishTime).valueOf() - Date.now();
-        interval(5000).subscribe(() => {
+        this._intervalId1 = setInterval(() => {
           if (this.arena.isRegistrated) {
             this.nextChallenge();
           }
-          if (this.currentUser) {
-            this.loadArenaPlayerStatistics(this.currentUser.username);
-          }
           this.reloadPage();
-        });
+        }, 5000);
+        this.loadArenaPlayerStatistics(this.currentUser.username);
       } else {
         this.service.getTop3(this.arena.id).subscribe(
           (result: any) => {
@@ -113,9 +111,9 @@ export class ArenaTournamentComponent extends BaseTablePageComponent<ArenaPlayer
     });
 
     if (this.arena.status === ArenaStatus.Already) {
-      interval(5000).subscribe(() => {
+      this._intervalId2 = setInterval(() => {
         this.updateRemainingTime();
-      });
+      }, 5000);
     }
   }
 
@@ -138,12 +136,15 @@ export class ArenaTournamentComponent extends BaseTablePageComponent<ArenaPlayer
         return this.service.getStandingsPage(this.arena.id).pipe(
           switchMap((result: any) => {
             this.pageNumber = result.page;
-            return this.service.getArenaPlayers(this.arena.id, this.pageNumber);
+            return this.getPage();
           })
         );
       }
     }
-    return this.service.getArenaPlayers(this.arena.id, this.pageNumber);
+    return this.service.getArenaPlayers(this.arena.id, {
+      page: this.pageNumber,
+      page_size: this.pageSize,
+    });
   }
 
   nextChallenge() {
@@ -182,14 +183,14 @@ export class ArenaTournamentComponent extends BaseTablePageComponent<ArenaPlayer
     setTimeout(() => window.location.reload(), 1000);
   }
 
-  ngOnDestroy(): void {
-    if (this._intervalId) {
-      clearInterval(this._intervalId);
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    if (this._intervalId1) {
+      clearInterval(this._intervalId1);
     }
     if (this._intervalId2) {
       clearInterval(this._intervalId2);
     }
-    super.ngOnDestroy();
   }
 
 }

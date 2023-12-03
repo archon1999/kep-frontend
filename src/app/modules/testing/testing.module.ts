@@ -22,6 +22,7 @@ import { ChaptersResolver, LastTestsResolver, TestPassResolver, TestResolver } f
 import { TestListCardComponent } from './test-list-card/test-list-card.component';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
+import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 
 const routes: Routes = [
   {
@@ -82,6 +83,7 @@ const routes: Routes = [
     MonacoEditorComponent,
     DragulaModule.forRoot(),
     SwiperComponent,
+    CountdownComponent,
   ],
   providers: [
     TestResolver,
