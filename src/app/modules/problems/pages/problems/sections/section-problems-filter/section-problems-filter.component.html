@@ -34,15 +34,39 @@
             </strong>
           </label>
           <div class="form-group">
-            <ng-select
-              formControlName="tags"
-              [multiple]="true"
-              [items]="tags"
-              [bindLabel]="'name'"
-              [bindValue]="'id'"
-              placeholder="{{ 'SELECT' | translate }}:"
-              [compareWith]="compareEqual">
-            </ng-select>
+            {{ filterForm.value.tags }}
+            <div ngbDropdown [placement]="'bottom'" class="select-tags btn-group full-width">
+              <button type="button" class="btn btn-outline-primary" [style.width.%]="70" rippleEffect>
+                {{ selectedTagsName || ('SELECT' | translate) }}
+              </button>
+              <button
+                [style.width.%]="30"
+                ngbDropdownToggle
+                type="button"
+                class="btn btn-outline-primary dropdown-toggle-split"
+                rippleEffect>
+              </button>
+              <div ngbDropdownMenu [style.min-width.rem]="32" aria-labelledby="dropdownMenuButton902">
+                <ngb-accordion [closeOthers]="false" [destroyOnHide]="false">
+                  @for(category of categories; track category.id){
+                    <ngb-panel [cardClass]="'card-category'" [id]="'i' + category.id">
+                      <ng-template ngbPanelTitle>
+                        <span>{{ category.title }}</span>
+                      </ng-template>
+                      <ng-template ngbPanelContent>
+                        @for(tag of category.tags; track tag.id){
+                          <span (click)="tagOnClick(tag.id)" class="cursor-pointer badge-pill ml-25 mr-25 mb-50 badge badge-primary" [class]="{
+                            'badge-light-primary': filterForm.value.tags?.indexOf(tag.id) == -1
+                          }">
+                            {{ tag.name }}
+                          </span>
+                        }
+                      </ng-template>
+                    </ngb-panel>
+                  }
+                </ngb-accordion>
+              </div>
+            </div>
           </div>
         </div>
 
