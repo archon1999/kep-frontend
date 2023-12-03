@@ -1,1 +1,9 @@
 @import 'scss/angular/libs/select.component.scss';
+
+.ng-value {
+  color: white !important;
+}
+
+ng-select, .ng-select-container, .ng-dropdown-panel {
+  z-index: 2 !important;
+}
