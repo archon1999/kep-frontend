@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
-import { ProblemsFilter } from '../models/problems.models';
+import { ProblemsFilter } from '@problems/models/problems.models';
 import { map } from 'rxjs/operators';
-import { Attempt } from '../models/attempts.models';
-import { paramsMapper } from '../../../shared/utils';
+import { Attempt } from '@problems/models/attempts.models';
+import { paramsMapper } from '@shared/utils';
 import { Pageable } from '@shared/components/classes/pageable';
 
 @Injectable({
@@ -11,10 +11,7 @@ import { Pageable } from '@shared/components/classes/pageable';
 })
 export class ProblemsService {
 
-  constructor(
-    public api: ApiService,
-  ) {
-  }
+  constructor(public api: ApiService) {}
 
   getProblems(params: Partial<ProblemsFilter & Pageable & { hasSolved, hasAttempted }>) {
     if (params.status === 1) {
@@ -175,4 +172,7 @@ export class ProblemsService {
     return this.api.get('hack-attempts', paramsMapper(params));
   }
 
+  getCategories() {
+    return this.api.get('categories');
+  }
 }

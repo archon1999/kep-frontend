@@ -22,8 +22,8 @@ export class ArenaService {
     return this.api.post(`arena/${ id }/registration/`);
   }
 
-  getArenaPlayers(id: number | string, page = 1) {
-    return this.api.get('arena-players', { page: page, arena_id: id });
+  getArenaPlayers(id: number | string, params: any) {
+    return this.api.get('arena-players', { ...params, arena_id: id });
   }
 
   getStandingsPage(id: number | string) {

@@ -1,43 +1,6 @@
-@mixin define-new-color($name, $bg-color, $color, $box-shadow, $bg-light-color: false) {
-  .bg-#{$name} {
-    background-color: $bg-color;
-  }
-
-  .text-#{$name} {
-    color: $color;
-  }
-
-  .badge-#{$name} {
-    background-color: $bg-color;
-  }
-
-  .badge-#{$name}.badge-glow {
-    box-shadow: $box-shadow;
-  }
-
-  @if $bg-light-color != false {
-    .badge.badge-light-#{$name} {
-      color: $color;
-      background-color: $bg-light-color;
-    }
-  }
-}
-
-@include define-new-color(
-  $name: 'blue',
-  $bg-color: #4362eef0,
-  $bg-light-color: rgba(0, 62, 232, 0.12),
-  $color: #4362eef0,
-  $box-shadow: 0px 0px 10px #93bae9,
-);
-
-@include define-new-color(
-  $name: 'yellow',
-  $bg-color: rgb(191 200 0 / 94%),
-  $bg-light-color: rgba(162, 232, 0, 0.12),
-  $color: #adb51b,
-  $box-shadow: 0px 0px 10px #e3e993,
-);
+@import 'scss/base/bootstrap-extended/variables';
+@import 'bootstrap/scss/mixins/dark-layout';
+@import 'bootstrap/scss/mixins/breakpoints';
 
 .badge {
   font-weight: 500 !important;
@@ -171,8 +134,8 @@ pre {
 }
 
 .tooltip-primary .tooltip-inner {
-  color: #805dca;
-  background-color: #f3effc;
+  color: $primary;
+  background-color: rgba($primary, 0.1);
 }
 
 .tooltip-success .tooltip-inner {
@@ -248,4 +211,8 @@ pre {
   thead tr:hover {
     transform: none !important;
   }
+}
+
+.ngx-spinner-overlay {
+  z-index: inherit !important;
 }

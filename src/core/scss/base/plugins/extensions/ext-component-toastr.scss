@@ -60,6 +60,8 @@
 // we are using only few colors in toast so not adding in palette.scss
 // plugin class name 'error' is also differ then ours so not useful to add in palette
 .toast-success {
+  background: white !important;
+
   .toast-title {
     color: $success;
   }
@@ -72,6 +74,8 @@
   }
 }
 .toast-error {
+  background: white !important;
+
   .toast-title {
     color: $danger;
   }
@@ -84,6 +88,8 @@
   }
 }
 .toast-info {
+  background: white !important;
+
   .toast-title {
     color: $info;
   }
@@ -96,6 +102,8 @@
   }
 }
 .toast-warning {
+  background: white !important;
+
   .toast-title {
     color: $warning;
   }
