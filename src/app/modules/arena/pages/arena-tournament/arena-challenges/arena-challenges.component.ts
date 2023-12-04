@@ -37,7 +37,7 @@ export class ArenaChallengesComponent extends BaseTablePageComponent<Challenge> 
     this.route.data.subscribe(
       ({ arena }) => {
         this.arena = arena;
-        this.reloadPage();
+        setTimeout(() => this.reloadPage());
       }
     );
   }
