@@ -74,14 +74,14 @@ export const menu: CoreMenu[] = [
         icon: 'zap',
         url: '/practice/challenges',
       },
-      {
-        id: 'projects',
-        title: 'Projects',
-        translate: 'MENU.PROJECTS',
-        type: 'item',
-        icon: 'slack',
-        url: '/practice/projects',
-      },
+      // {
+      //   id: 'projects',
+      //   title: 'Projects',
+      //   translate: 'MENU.PROJECTS',
+      //   type: 'item',
+      //   icon: 'slack',
+      //   url: '/practice/projects',
+      // },
     ]
   },
   {
