@@ -59,7 +59,6 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
     ).subscribe(
       (filter: ProblemsFilter) => {
         this.filter = filter;
-        console.log(filter);
         this.pageNumber = 1;
         this.reloadPage();
         this.updateQueryParams(filter, {

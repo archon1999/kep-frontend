@@ -29,9 +29,9 @@ import { switchMap } from 'rxjs/operators';
     bounceOnEnterAnimation({ anchor: 'bounce3', delay: 1000, duration: 1000 }),
     bounceOnEnterAnimation({ anchor: 'bounce2', delay: 2000, duration: 1000 }),
     bounceOnEnterAnimation({ anchor: 'bounce1', delay: 3000, duration: 1000 }),
-    fadeInOnEnterAnimation({ duration: 1500 }),
-    fadeInLeftOnEnterAnimation({ duration: 1500 }),
-    fadeInRightOnEnterAnimation({ duration: 1500 }),
+    fadeInOnEnterAnimation(),
+    fadeInLeftOnEnterAnimation(),
+    fadeInRightOnEnterAnimation(),
   ],
   standalone: true,
   imports: [
