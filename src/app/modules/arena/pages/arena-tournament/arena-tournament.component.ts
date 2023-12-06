@@ -29,9 +29,9 @@ import { switchMap } from 'rxjs/operators';
     bounceOnEnterAnimation({ anchor: 'bounce3', delay: 1000, duration: 1000 }),
     bounceOnEnterAnimation({ anchor: 'bounce2', delay: 2000, duration: 1000 }),
     bounceOnEnterAnimation({ anchor: 'bounce1', delay: 3000, duration: 1000 }),
-    fadeInOnEnterAnimation({ duration: 1500 }),
-    fadeInLeftOnEnterAnimation({ duration: 1500 }),
-    fadeInRightOnEnterAnimation({ duration: 1500 }),
+    fadeInOnEnterAnimation(),
+    fadeInLeftOnEnterAnimation(),
+    fadeInRightOnEnterAnimation(),
   ],
   standalone: true,
   imports: [
@@ -81,7 +81,7 @@ export class ArenaTournamentComponent extends BaseTablePageComponent<ArenaPlayer
     this.route.data.subscribe(({ arena }) => {
       this.arena = arena;
       this.titleService.updateTitle(this.route, { arenaTitle: arena.title });
-      this.reloadPage();
+      setTimeout(() => this.reloadPage());
       if (this.arena.status === ArenaStatus.NotStarted) {
         this.leftTime = new Date(arena.startTime).valueOf() - Date.now();
       } else if (this.arena.status === ArenaStatus.Already) {
@@ -90,7 +90,7 @@ export class ArenaTournamentComponent extends BaseTablePageComponent<ArenaPlayer
           if (this.arena.isRegistrated) {
             this.nextChallenge();
           }
-          this.reloadPage();
+          setTimeout(() => this.reloadPage())
         }, 5000);
         this.loadArenaPlayerStatistics(this.currentUser.username);
       } else {
