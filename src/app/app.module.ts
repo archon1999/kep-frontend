@@ -58,7 +58,7 @@ const appRoutes: Routes = [
   { path: 'users', loadChildren: () => import('./modules/users/users.module').then(m => m.UsersModule) },
   { path: 'help', loadChildren: () => import('./modules/help/help.module').then(m => m.HelpModule) },
   { path: 'my-blog', loadChildren: () => import('./modules/users/my-blog/my-blog.module').then(m => m.MyBlogModule) },
-  { path: 'tour', loadChildren: () => import('./shared/third-part-modules/tour/tour.module').then(m => m.TourModule) },
+  { path: 'todo', loadComponent: () => import('./modules/todo/todo.component').then(c => c.TodoComponent) },
   { path: '**', component: ErrorComponent },
 ];
 
