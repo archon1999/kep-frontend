@@ -28,7 +28,7 @@ import { TableOrderingModule } from '@shared/components/table-ordering/table-ord
   ]
 })
 export class ChallengesRatingComponent extends BaseTablePageComponent<ChallengesRating> implements OnInit {
-  override pageSize = 20;
+  override defaultPageSize = 20;
   override maxSize = 5;
 
   override defaultOrdering = '-rating';
@@ -43,7 +43,7 @@ export class ChallengesRatingComponent extends BaseTablePageComponent<Challenges
 
   ngOnInit() {
     this.loadContentHeader();
-    this.reloadPage();
+    setTimeout(() => this.reloadPage());
   }
 
   getPage(): Observable<PageResult<ChallengesRating>> {
