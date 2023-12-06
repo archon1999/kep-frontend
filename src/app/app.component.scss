@@ -216,3 +216,9 @@ pre {
 .ngx-spinner-overlay {
   z-index: inherit !important;
 }
+
+@media (min-width: 1440px) {
+  .container-xxl {
+    max-width: 1440px;
+  }
+}
