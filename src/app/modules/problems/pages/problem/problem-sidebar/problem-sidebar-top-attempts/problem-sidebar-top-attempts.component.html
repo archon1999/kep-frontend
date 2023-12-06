@@ -4,27 +4,16 @@
       <div class="card-title">
         {{ 'Rating' | translate }}
       </div>
-      <span class="ml-50 font-small-4 badge badge-pill badge-glow badge-{{ selectedLang }}">
+      <span class="ml-50 badge badge-{{ selectedLang }}">
         {{ selectedLang }}
       </span>
     </div>
 
-    <div class="btn-group btn-group-toggle mt-md-0 mt-1" ngbRadioGroup name="radioBasic"
-         [(ngModel)]="topAttemptsOrdering">
-      <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
-        <input (click)="topAttemptsLoad('time')" type="radio" id="option_1" [value]="'time'" ngbButton/>
-        <span>{{ 'Time' | translate }}</span>
-      </label>
-      <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
-        <input (click)="topAttemptsLoad('memory')" type="radio" id="option_2" [value]="'memory'" ngbButton/>
-        <span>{{ 'Memory' | translate }}</span>
-      </label>
-      <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
-        <input (click)="topAttemptsLoad('source_code_size')" type="radio" id="option_3" [value]="'source_code_size'"
-               ngbButton/>
-        <span>{{ 'Size' | translate }}</span>
-      </label>
-    </div>
+    <ng-select [clearable]="false" (change)="topAttemptsLoad($event)" [(ngModel)]="topAttemptsOrdering">
+      <ng-option [value]="'time'">{{ 'Time' | translate }}</ng-option>
+      <ng-option [value]="'memory'">{{ 'Memory' | translate }}</ng-option>
+      <ng-option [value]="'source_code_size'">{{ 'Size' | translate }}</ng-option>
+    </ng-select>
   </div>
 
   <div class="table-responsive">
@@ -33,7 +22,7 @@
       <tr class="bg-gradient-primary">
         <th>#</th>
         <th>{{ 'User' | translate }}</th>
-        <th>{{ 'Result' | translate }}</th>
+        <th>{{ 'RESULT' | translate }}</th>
       </tr>
       </thead>
       <tbody>
@@ -43,7 +32,7 @@
             <td>
               <contestant-view [imgSize]="28" [user]="attempt"></contestant-view>
             </td>
-            <td>
+            <td class="text-center">
             <span [ngSwitch]="topAttemptsOrdering">
               <span *ngSwitchCase="'time'" class="badge badge-info badge-glow">
                 {{ attempt.time }} ms
