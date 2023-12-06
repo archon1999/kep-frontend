@@ -392,6 +392,8 @@ export const locale = {
     ProblemsPageTitleText: 'Практикуйтесь и улучшайте свои навыки',
     Page: 'Страница',
     Unread: 'Непрочитанные',
+    Dislikes: 'Дизлайки',
+    Hacks: 'Взломы',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',
