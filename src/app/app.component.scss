@@ -216,3 +216,24 @@ pre {
 .ngx-spinner-overlay {
   z-index: inherit !important;
 }
+
+@media (min-width: 1440px) {
+  .container-xxl {
+    max-width: 1440px;
+  }
+}
+
+#main-menu-navigation > li[core-menu-horizontal-item], li[core-menu-horizontal-collapsible], .main-menu.expanded li[core-menu-vertical-item] {
+  &.active > a > keenicon > span {
+    color: white !important;
+  }
+}
+
+.main-menu {
+  transition: 1s ease;
+}
+
+.main-menu:not(.expanded) keenicon > span {
+  margin-right: 1rem;
+  transition: 1s ease-in;
+}

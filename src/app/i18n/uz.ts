@@ -20,6 +20,7 @@ export const locale = {
       TOURNAMENTS: 'Turnirlar',
       BLOG: 'Blog',
       CODE_RUSH: 'Code Rush',
+      TODO: 'Todo',
     },
     RESET: 'Reset',
     LOGIN: 'Kirish',
@@ -392,6 +393,8 @@ export const locale = {
     ProblemsPageTitleText: 'Ishlang va mahoratingizni oshiring',
     Page: 'Bet',
     Unread: 'O`qilmagan',
+    Dislikes: 'Dizlayklar',
+    Hacks: 'Buzishlar',
     ContestRules: {
       ACM20H: ``,
     },

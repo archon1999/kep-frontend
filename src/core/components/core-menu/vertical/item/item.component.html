@@ -22,17 +22,18 @@
   </a>
 
   <ng-template #itemContent>
-    <span [data-feather]="item.icon" *ngIf="item.icon"></span>
-    <span class="menu-title text-truncate" [translate]="item.translate">{{ item.title }}</span>
+    <span [data-feather]="item.icon" *ngIf="item.icon && 0"></span>
+    <keenicon class="font-large-1 text-primary" type="duotone" [name]="item.icon"></keenicon>
+    <span class="menu-title text-truncate">{{ item.translate | translate }}</span>
     <span
       class="badge ml-auto mr-1"
       *ngIf="item.badge"
-      [translate]="item.badge.translate"
+      font-weight: 400="item.badge.translate"
       [ngClass]="item.badge.classes"
     >
       {{ item.badge.title }}
     </span>
-    <span *ngIf="item.newEventsCount" style="transition: 0.5s ease;" class="badge ml-25 mb-1 new-events badge-pill badge-primary badge-glow">
+    <span *ngIf="item.newEventsCount" style="transition: 0.5s ease;" class="badge ml-1 new-events badge-pill badge-primary badge-glow">
       {{ item.newEventsCount }}
     </span>
   </ng-template>

@@ -1,16 +1,16 @@
-<div class="row">
-  <div class="col-12">
-    <app-content-header [contentHeader]="contentHeader"></app-content-header>
-  </div>
 
-  <div class="col-12 mt-2 px-lg-2">  
-    <contest-card [contest]="contest"></contest-card>
-  </div>
-</div>
-
-<div class="content-wrapper p-0">
+<div class="content-wrapper container-xxl container-xxl p-0">
   <div class="content-body">
     <!-- content-header component -->
+    <div class="row">
+      <div class="col-12">
+        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+      </div>
+
+      <div class="col-12 mt-2 px-lg-2">
+        <contest-card [contest]="contest"></contest-card>
+      </div>
+    </div>
 
     <section class="mt-2">
       <div class="row">

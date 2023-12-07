@@ -8,13 +8,14 @@ import { takeUntil } from 'rxjs/operators';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 
 @Component({
   selector: 'problem-sidebar-top-attempts',
   templateUrl: './problem-sidebar-top-attempts.component.html',
   styleUrls: ['./problem-sidebar-top-attempts.component.scss'],
   standalone: true,
-  imports: [CoreCommonModule, NgbButtonsModule, ContestantViewModule],
+  imports: [CoreCommonModule, NgbButtonsModule, ContestantViewModule, NgSelectModule],
 })
 export class ProblemSidebarTopAttemptsComponent implements OnInit, OnDestroy {
 

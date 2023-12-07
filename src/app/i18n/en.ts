@@ -21,6 +21,7 @@ export const locale = {
       TOURNAMENTS: 'Tournaments',
       BLOG: 'Blog',
       CODE_RUSH: 'Code Rush',
+      TODO: 'Todo',
     },
     LOGIN: 'Login',
     LOGOUT: 'Logout',
@@ -395,6 +396,8 @@ export const locale = {
     ProblemsPageTitleText: 'Practice and improve your skills',
     Page: 'Page',
     Unread: 'Unread',
+    Dislikes: 'Dislikes',
+    Hacks: 'Hacks',
     ProblemTourSteps: [
       {
         title: 'Available languages',
