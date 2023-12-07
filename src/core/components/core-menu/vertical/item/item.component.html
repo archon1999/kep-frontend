@@ -22,7 +22,8 @@
   </a>
 
   <ng-template #itemContent>
-    <span [data-feather]="item.icon" *ngIf="item.icon"></span>
+    <span [data-feather]="item.icon" *ngIf="item.icon && 0"></span>
+    <keenicon class="font-large-1 text-primary" type="duotone" [name]="item.icon"></keenicon>
     <span class="menu-title text-truncate">{{ item.translate | translate }}</span>
     <span
       class="badge ml-auto mr-1"
