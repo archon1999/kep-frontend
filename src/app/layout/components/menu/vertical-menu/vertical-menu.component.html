@@ -7,7 +7,7 @@
         <span class="brand-logo">
           <img style="max-width: 180px !important;" src="assets/images/logo/logo.png" alt="brand-logo" height="36" />
         </span>
-        <h2 class="brand-text mb-0">CPython.uz</h2>
+        <h2 class="brand-text mb-0">{{ coreConfig.app.appTitle }}</h2>
       </a>
     </li>
 
@@ -31,7 +31,7 @@
 <div class="shadow-bottom" [ngClass]="{ 'd-block': isScrolled }"></div>
 
 <!-- Main menu -->
-<ng-scrollbar autoHeightDisabled="false">
+<ng-scrollbar [visibility]="'hover'" autoHeightDisabled="false">
   <div class="main-menu-content" (scroll)="onSidebarScroll()">
     <ul class="navigation navigation-main" layout="vertical" core-menu></ul>
   </div>
