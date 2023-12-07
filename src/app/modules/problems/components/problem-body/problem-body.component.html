@@ -1,4 +1,4 @@
-<div class="mt-2 text-dark font-weight-bold">
+<div class="mt-2 text-dark">
   <mathjax [content]="problem.body" *ngIf="problem.id != 1637"></mathjax>
 </div>
 
@@ -34,31 +34,25 @@
 <hr>
 
 <ng-container *ngIf="problem.inputData?.length > 0">
-  <h4 class="mt-2 mb-2">
-    <strong>
-      {{ 'INPUT_DATA' | translate }}:
-    </strong>
+  <h4 class="mt-2 mb-2 text-dark font-medium-5">
+    {{ 'INPUT_DATA' | translate }}:
   </h4>
 
-  <mathjax class="mt-2 text-dark font-weight-bold" [content]="problem.inputData"></mathjax>
+  <mathjax class="mt-2 text-dark" [content]="problem.inputData"></mathjax>
 </ng-container>
 
 <ng-container *ngIf="problem.outputData?.length > 0">
-  <h4 class="mt-2 mb-2">
-    <strong>
-      {{ 'OUTPUT_DATA' | translate }}:
-    </strong>
+  <h4 class="mt-2 mb-2 text-dark font-medium-5">
+    {{ 'OUTPUT_DATA' | translate }}:
   </h4>
 
-  <mathjax class="mt-2 text-dark font-weight-bold" [content]="problem.outputData"></mathjax>
+  <mathjax class="mt-2 text-dark" [content]="problem.outputData"></mathjax>
   <hr>
 </ng-container>
 
 <ng-container *ngIf="problem.sampleTests.length > 0">
-  <h4 class="mt-2 mb-1">
-    <strong>
-      {{ 'SAMPLE_TESTS' | translate }}
-    </strong>
+  <h4 class="mt-2 mb-1 font-medium-5 text-dark">
+    {{ 'SAMPLE_TESTS' | translate }}
   </h4>
 
   <ng-container *ngFor="let sampleTest of problem.sampleTests">
@@ -101,13 +95,11 @@
 </ng-container>
 
 <ng-container *ngIf="problem.comment?.length > 0">
-  <h4 class="mt-3">
-    <strong>
-      {{ 'COMMENT' | translate }}:
-    </strong>
+  <h4 class="mt-3 text-dark">
+    {{ 'COMMENT' | translate }}:
   </h4>
 
-  <mathjax class="mt-2 text-dark font-weight-bold" [content]="problem.comment"></mathjax>
+  <mathjax class="mt-2 font-medium-4 text-dark text-dark" [content]="problem.comment"></mathjax>
   <hr>
 </ng-container>
 
