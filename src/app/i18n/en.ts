@@ -21,6 +21,7 @@ export const locale = {
       TOURNAMENTS: 'Tournaments',
       BLOG: 'Blog',
       CODE_RUSH: 'Code Rush',
+      TODO: 'Todo',
     },
     LOGIN: 'Login',
     LOGOUT: 'Logout',
