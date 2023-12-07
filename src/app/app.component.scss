@@ -223,8 +223,17 @@ pre {
   }
 }
 
-#main-menu-navigation > li[core-menu-horizontal-item], li[core-menu-horizontal-collapsible] {
+#main-menu-navigation > li[core-menu-horizontal-item], li[core-menu-horizontal-collapsible], .main-menu.expanded li[core-menu-vertical-item] {
   &.active > a > keenicon > span {
     color: white !important;
   }
+}
+
+.main-menu {
+  transition: 1s ease;
+}
+
+.main-menu:not(.expanded) keenicon > span {
+  margin-right: 1rem;
+  transition: 1s ease-in;
 }
