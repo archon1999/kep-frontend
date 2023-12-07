@@ -20,6 +20,7 @@ export const locale = {
       TOURNAMENTS: 'Turnirlar',
       BLOG: 'Blog',
       CODE_RUSH: 'Code Rush',
+      TODO: 'Todo',
     },
     RESET: 'Reset',
     LOGIN: 'Kirish',
