@@ -1,5 +1,13 @@
 @import 'scss/angular/libs/select.component.scss';
 
-ng-select, .ng-select-container, .ng-dropdown-panel {
+ng-select {
   z-index: 1 !important;
+}
+
+.ng-dropdown-panel {
+  z-index: 2 !important;
+}
+
+ng-select[formcontrolname="testCaseNumber"] {
+  z-index: initial !important;
 }

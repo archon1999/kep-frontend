@@ -20,7 +20,7 @@ export const DEFAULT_FILTER: ProblemsFilter = {
 export class ProblemsFilterService {
 
   private _currentFilter = DEFAULT_FILTER;
-  private _filter = new BehaviorSubject<ProblemsFilter>(DEFAULT_FILTER);
+  private _filter = new Subject<ProblemsFilter>();
 
   get currentFilterValue() {
     return this._currentFilter;

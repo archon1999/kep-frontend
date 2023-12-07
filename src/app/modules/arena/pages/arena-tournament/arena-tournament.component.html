@@ -1,4 +1,4 @@
-<div class="content-wrapper p-0">
+<div class="content-wrapper container-xxl p-0">
   <div class="content-body">
     <!-- content-header component -->
 
@@ -113,7 +113,7 @@
             </ng-template>
           </div>
 
-          <kep-table [loading]="isLoading && arena.status == 1" [tableClass]="'arena-table'">
+          <kep-table [loading]="isLoading && !arenaPlayers" [tableClass]="'arena-table'">
             <ng-container header>
               <tr class="bg-arena">
                 <th class="text-dark">#</th>
@@ -125,6 +125,7 @@
             <ng-container body>
               @for(player of arenaPlayers; track player.username){
                 <tr
+                  [@fadeInOnEnter]=""
                   class="cursor-pointer"
                   (click)="loadArenaPlayerStatistics(player.username)"
                   [ngClass]="{

@@ -22,8 +22,8 @@
   </a>
 
   <ng-template #itemContent>
-    <span [data-feather]="item.icon" *ngIf="item.icon"></span>
-    <span [translate]="item.translate">{{ item.title }}</span>
+    <keenicon class="font-medium-4 text-primary mr-50" type="duotone" [name]="item.icon"></keenicon>
+    <span>{{ item.translate | translate }}</span>
     <span *ngIf="item.newEventsCount" class="badge ml-25 new-events-count badge-pill badge-primary badge-glow">
       {{ item.newEventsCount }}
     </span>
