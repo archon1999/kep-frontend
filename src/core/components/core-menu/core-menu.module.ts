@@ -12,13 +12,14 @@ import { CoreMenuVerticalItemComponent } from 'core/components/core-menu/vertica
 import { CoreMenuVerticalCollapsibleComponent } from 'core/components/core-menu/vertical/collapsible/collapsible.component';
 import { CoreMenuHorizontalItemComponent } from 'core/components/core-menu/horizontal/item/item.component';
 import { CoreMenuHorizontalCollapsibleComponent } from 'core/components/core-menu/horizontal/collapsible/collapsible.component';
+import { KeeniconComponent } from '@shared/components/keenicon/keenicon.component';
 
 CoreMenuVerticalSectionComponent;
 CoreMenuVerticalItemComponent;
 CoreMenuVerticalCollapsibleComponent;
 
 @NgModule({
-  imports: [CommonModule, RouterModule, TranslateModule.forChild(), CoreCommonModule],
+  imports: [CommonModule, RouterModule, TranslateModule.forChild(), CoreCommonModule, KeeniconComponent],
   exports: [CoreMenuComponent],
   declarations: [
     CoreMenuComponent,
