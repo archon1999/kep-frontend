@@ -133,12 +133,12 @@ export const menu: CoreMenu[] = [
     icon: 'profile-user',
     url: '/users',
   },
-  {
-    id: 'todo',
-    title: 'Todo',
-    translate: 'MENU.TODO',
-    type: 'item',
-    icon: 'check-square',
-    url: '/todo',
-  },
+  // {
+  //   id: 'todo',
+  //   title: 'Todo',
+  //   translate: 'MENU.TODO',
+  //   type: 'item',
+  //   icon: 'check-square',
+  //   url: '/todo',
+  // },
 ];
