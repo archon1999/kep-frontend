@@ -26,7 +26,7 @@ $secondary: #82868b !default;
 $info: $blue !default;
 $warning: $orange !default;
 $light: $gray-50 !default;
-$dark: #4b4b4b !default;
+$dark: #071437 !default;
 
 // Spacing
 //
@@ -92,7 +92,7 @@ $spacers: map-merge(
 // Body
 //
 // Settings for the `<body>` element.
-$body-bg: #f8f8f8 !default;
+$body-bg: #f5f8fa !default;
 $body-color: #6e6b7b !default;
 
 // Links
@@ -130,8 +130,8 @@ $box-shadow: 0 4px 24px 0 rgba($black, 0.1) !default;
 // Font, line-height, and color for body text, headings, and more.
 
 // stylelint-disable value-keyword-case
-$font-family-sans-serif: 'Quicksand', 'Roboto', Helvetica, Arial, sans-serif !default;
-$font-family-monospace: 'Quicksand', 'Roboto', Helvetica, Arial, sans-serif !default;
+$font-family-sans-serif: 'Montserrat', 'Quicksand', 'Roboto', Helvetica, Arial, sans-serif !default;
+$font-family-monospace: 'Montserrat', 'Quicksand', 'Roboto', Helvetica, Arial, sans-serif !default;
 
 // stylelint-enable value-keyword-case
 $font-size-base: 1rem !default;

@@ -53,7 +53,10 @@
             ],
             "styles": [
               "src/styles.scss",
-              "./node_modules/swiper/swiper-bundle.min.css"
+              "./node_modules/swiper/swiper-bundle.min.css",
+              "src/assets/plugins/keenicons/duotone/style.css",
+              "src/assets/plugins/keenicons/outline/style.css",
+              "src/assets/plugins/keenicons/solid/style.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": ["node_modules", "src/assets/", "src/core", "src/app"]

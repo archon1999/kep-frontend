@@ -38,7 +38,7 @@ export const menu: CoreMenu[] = [
         title: 'Blog',
         translate: 'MENU.BLOG',
         type: 'item',
-        icon: 'edit-2',
+        icon: 'note-2',
         url: '/learn/blog',
       },
     ]
@@ -48,14 +48,14 @@ export const menu: CoreMenu[] = [
     title: 'Practice',
     translate: 'MENU.PRACTICE',
     type: 'section',
-    icon: 'edit',
+    icon: 'abstract-45',
     children: [
       {
         id: 'problems',
         title: 'Problems',
         translate: 'MENU.PROBLEMS',
         type: 'item',
-        icon: 'menu',
+        icon: 'message-programming',
         url: '/practice/problems',
       },
       {
@@ -63,7 +63,7 @@ export const menu: CoreMenu[] = [
         title: 'Tests',
         translate: 'MENU.TESTS',
         type: 'item',
-        icon: 'edit-3',
+        icon: 'teacher',
         url: '/practice/tests',
       },
       {
@@ -71,17 +71,17 @@ export const menu: CoreMenu[] = [
         title: 'Challenges',
         translate: 'MENU.CHALLENGES',
         type: 'item',
-        icon: 'zap',
+        icon: 'abstract-22',
         url: '/practice/challenges',
       },
-      {
-        id: 'projects',
-        title: 'Projects',
-        translate: 'MENU.PROJECTS',
-        type: 'item',
-        icon: 'slack',
-        url: '/practice/projects',
-      },
+      // {
+      //   id: 'projects',
+      //   title: 'Projects',
+      //   translate: 'MENU.PROJECTS',
+      //   type: 'item',
+      //   icon: 'slack',
+      //   url: '/practice/projects',
+      // },
     ]
   },
   {
@@ -89,7 +89,7 @@ export const menu: CoreMenu[] = [
     title: 'Competitions',
     translate: 'MENU.COMPETITIONS',
     type: 'section',
-    icon: 'zap',
+    icon: 'cup',
     children: [
       {
         id: 'contests',
@@ -130,7 +130,15 @@ export const menu: CoreMenu[] = [
     title: 'Users',
     translate: 'MENU.USERS',
     type: 'item',
-    icon: 'users',
+    icon: 'profile-user',
     url: '/users',
   },
+  // {
+  //   id: 'todo',
+  //   title: 'Todo',
+  //   translate: 'MENU.TODO',
+  //   type: 'item',
+  //   icon: 'check-square',
+  //   url: '/todo',
+  // },
 ];

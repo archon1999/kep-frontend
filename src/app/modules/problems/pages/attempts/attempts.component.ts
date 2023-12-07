@@ -27,6 +27,7 @@ import { KepTableComponent } from '@shared/components/kep-table/kep-table.compon
 })
 export class AttemptsComponent extends BaseTablePageComponent<Attempt> implements OnInit, OnDestroy {
   override maxSize = 7;
+  override defaultPageSize = 20;
 
   public myAttempts = false;
 

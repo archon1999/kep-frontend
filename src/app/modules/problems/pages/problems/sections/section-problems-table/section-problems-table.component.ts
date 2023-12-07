@@ -66,6 +66,7 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
         });
       }
     );
+    setTimeout(() => this.reloadPage());
   }
 
   getPage(): Observable<PageResult<Problem>> {

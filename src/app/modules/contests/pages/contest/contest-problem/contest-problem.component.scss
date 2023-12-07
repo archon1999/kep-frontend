@@ -24,10 +24,6 @@
   position: fixed;
   right: 2rem;
   bottom: 5%;
-
-  @include media-breakpoint-down(lg) {
-    display: none;
-  }
 }
 
 .bg-light {
@@ -43,7 +39,7 @@
   border: none;
   border-radius: 10px;
   margin-bottom: 1rem;
-  width: calc(100% - 4rem);
+  width: calc(100% - 7rem);
 
   position: fixed;
   left: 2rem;
@@ -54,7 +50,7 @@
   }
 
   @include media-breakpoint-down(md) {
-    width: calc(100% - 2.4rem);
+    width: calc(100% - 6.4rem);
     left: 1.2rem;
   }
 }

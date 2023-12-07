@@ -11,8 +11,8 @@
 
   <!-- itemContent template -->
   <ng-template #itemContent>
-    <span [data-feather]="item.icon" *ngIf="item.icon"></span>
-    <span [translate]="item.translate">{{ item.title }}</span>
+    <keenicon class="font-medium-4 mr-50 text-primary" type="duotone" [name]="item.icon"></keenicon>
+    <span>{{ item.translate | translate }}</span>
     <span *ngIf="item.hasNewEvent" class="badge ml-25 badge-yellow badge-pill badge-glow">New</span>
   </ng-template>
 
