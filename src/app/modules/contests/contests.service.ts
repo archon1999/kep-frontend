@@ -3,6 +3,8 @@ import { ApiService } from 'app/shared/services/api.service';
 import { AuthenticationService } from 'app/auth/service';
 import { Contest, ContestAttemptsFilter, ContestStatus } from './contests.models';
 import { map } from 'rxjs/operators';
+import { Pageable } from '@shared/components/classes/pageable';
+import { paramsMapper } from '@shared/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +16,17 @@ export class ContestsService {
     public authService: AuthenticationService,
   ) { }
 
-  getContests(page: number, pageSize: number) {
-    const params = { page: page, page_size: pageSize };
-    return this.api.get('contests', params).pipe(
+  getContests(params: Partial<Pageable> & { category?: number, type?: string, isParticipated?: boolean, creator?: string }) {
+    return this.api.get('contests', paramsMapper(params)).pipe(
+      map((result: any) => {
+        result.data = result.data.map(contest => Contest.fromJSON(contest));
+        return result;
+      })
+    );
+  }
+
+  getUserContests(params: Partial<Pageable> & { category?: number, type?: string, isParticipated?: boolean, creator?: string }) {
+    return this.api.get('user-contests', paramsMapper(params)).pipe(
       map((result: any) => {
         result.data = result.data.map(contest => Contest.fromJSON(contest));
         return result;
@@ -110,6 +120,14 @@ export class ContestsService {
 
   getTop3Contestants(contestId: number | string) {
     return this.api.get(`contests/${ contestId }/top3-contestants`);
+  }
+
+  createContest(contest: any) {
+    return this.api.post('contests/create-contest/', contest);
+  }
+
+  getProblemsList() {
+    return this.api.get('problems/list');
   }
 
 }

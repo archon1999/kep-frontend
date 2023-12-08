@@ -1,9 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { User } from '../../../../auth/models';
-import { AuthenticationService } from '../../../../auth/service';
+import { User } from '@auth/models';
+import { AuthenticationService } from '@auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Contest, ContestStatus } from '../../contests.models';
+import { Contest, ContestStatus } from '@contests/contests.models';
 
 @Component({
   selector: 'contests-table',
@@ -26,8 +26,8 @@ export class ContestsTableComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.authService.currentUser
-      .pipe(takeUntil(this._unsubscribeAll))  
-      .subscribe((user: User) => this.currentUser = user)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((user: User) => this.currentUser = user);
   }
 
   ngOnDestroy(): void {
