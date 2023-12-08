@@ -9,6 +9,7 @@ import { CorePipesModule } from "../../../../../core/pipes/pipes.module";
 import { CoreDirectivesModule } from "../../../../../core/directives/directives";
 import { ContestantViewModule } from "../../../../shared/components/contestant-view/contestant-view.module";
 import { CountUpModule } from "ngx-countup";
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { CountUpModule } from "ngx-countup";
     CoreDirectivesModule,
     ContestantViewModule,
     CountUpModule,
+    KepPaginationComponent,
   ],
   exports: [    
     ContestsTableComponent,

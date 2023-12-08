@@ -2,23 +2,28 @@
   <div class="content-body">
     <!-- content-header component -->
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
-
     <section class="mt-2">
       <div class="row">
         <div class="col-12">
-
           <div class="text-right">
             <kepcoin-spend-swal
-              [customContent]="true"
-              [value]="5"
-              [purchaseUrl]="'user-contests/purchase-create/'"
               (success)="success()"
-            >
-              <button class="mb-2 btn btn-relief-primary">Yaratish</button>
+              [customContent]="true"
+              [purchaseUrl]="'contests/purchase-create/'"
+              [value]="5">
+              <button class="mb-2 btn btn-relief-primary">{{ 'Create' | translate }}</button>
             </kepcoin-spend-swal>
           </div>
-          <contests-table [contests]="contests"></contests-table>
-
+          <empty-result *ngIf="contests.length == 0 && !isLoading"></empty-result>
+          <contests-table *ngIf="contests?.length > 0" [contests]="contests"></contests-table>
+          <kep-pagination
+            (pageChange)="pageChange($event)"
+            *ngIf="total"
+            [(page)]="pageNumber"
+            [collectionSize]="total"
+            [maxSize]="maxSize"
+            [pageSize]="pageSize">
+          </kep-pagination>
         </div>
       </div>
     </section>

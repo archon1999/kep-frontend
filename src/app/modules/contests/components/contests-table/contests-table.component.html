@@ -1,7 +1,8 @@
-<div class="table-responsive contests-colors contest-{{ contests[0].id }} {{ contests[0].title }} contest-type-{{ contests[0].type }}">
-  <table class="table">
-    <thead>
-      <tr>
+<div class="card">
+  <div class="table-responsive contests-colors contest-{{ contests[0].id }} {{ contests[0].title }} contest-type-{{ contests[0].type }}">
+    <table class="table beautiful-table">
+      <thead>
+      <tr class="bg-gradient-primary">
         <th class="text-center">{{ 'CONTESTS.TITLE' | translate }}</th>
         <th class="text-center">{{ 'CONTESTS.AUTHORS' | translate }}</th>
         <th class="text-center">{{ 'CONTESTS.START_TIME' | translate }}</th>
@@ -21,12 +22,12 @@
           </span>
         </th>
       </tr>
-    </thead>
-    <tbody>
+      </thead>
+      <tbody>
       <tr *ngFor="let contest of contests">
         <td class="text-center text-dark">
           <i [data-feather]="'contest' | iconName" [size]="20"></i>
-          <a [routerLink]="['/competitions', 'contests', 'contest', contest.id]">            
+          <a [routerLink]="['/competitions', 'contests', 'contest', contest.id]">
             {{ contest.title }}
           </a>
           <br>
@@ -71,7 +72,7 @@
             </a>
             <br>
             <span *ngIf="currentUser" class="badge mt-1 contest-badge-light">
-              {{ contest.solved || 0 }} / {{ contest.problemsCount }}
+              {{ 0 }} / {{ contest.problemsCount }}
             </span>
           </div>
         </td>
@@ -91,8 +92,8 @@
           </h5>
         </td>
       </tr>
-    </tbody>
-    <tfoot *ngIf="contests.length > 1">
+      </tbody>
+      <tfoot *ngIf="contests.length > 1">
       <tr>
         <th class="text-center">{{ 'CONTESTS.TITLE' | translate }}</th>
         <th class="text-center">{{ 'CONTESTS.AUTHORS' | translate }}</th>
@@ -109,6 +110,7 @@
           </span>
         </th>
       </tr>
-    </tfoot>
-  </table>
+      </tfoot>
+    </table>
+  </div>
 </div>
