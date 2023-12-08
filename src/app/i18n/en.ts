@@ -398,6 +398,7 @@ export const locale = {
     Unread: 'Unread',
     Dislikes: 'Dislikes',
     Hacks: 'Hacks',
+    MyContests: 'My contests',
     ProblemTourSteps: [
       {
         title: 'Available languages',

@@ -400,43 +400,12 @@ export class ContestProblemInfo {
 
 }
 
-export class ContestsRating {
-  constructor(
-    public username: string,
-    public rating: number,
-    public ratingTitle: string,
-    public contestantsCount: number,
-  ) {
-  }
-
-  static fromJSON(data: any) {
-    return new ContestsRating(
-      data.username,
-      data.rating,
-      data.ratingTitle,
-      data.contestantsCount,
-    );
-  }
-
-  getBadgeClass() {
-    if (this.rating >= 2000) {
-      return 'dark';
-    }
-
-    if (this.rating >= 1800) {
-      return 'warning';
-    }
-
-    if (this.rating >= 1600) {
-      return 'primary';
-    }
-
-    if (this.rating >= 1200) {
-      return 'success';
-    }
-
-    return 'secondary';
-  }
+export interface ContestsRating {
+  rowIndex: number;
+  username: string;
+  rating: number;
+  ratingTitle: string;
+  contestantsCount: number;
 }
 
 export class ContestAttemptsFilter {

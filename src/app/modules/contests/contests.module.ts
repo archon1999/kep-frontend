@@ -51,6 +51,7 @@ import { ProblemInfoCardComponent } from '@problems/components/problem-info-card
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { ContestCardComponent } from '@contests/components/contest-card/contest-card/contest-card.component';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 
 
 const routes: Routes = [
@@ -170,13 +171,11 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    ContestsComponent,
     ContestComponent,
     RatingComponent,
     ProfileComponent,
     ContestTabComponent,
     ContestsTabComponent,
-    ContestsSectionCategoriesComponent,
     ContestOgImageComponent,
     ContestRatingChangesComponent,
     ContestStandingsComponent,
@@ -187,6 +186,7 @@ const routes: Routes = [
     ContestProblemCardComponent,
   ],
   imports: [
+    ContestsComponent,
     CommonModule,
     RouterModule.forChild(routes),
     CoreDirectivesModule,
@@ -216,6 +216,7 @@ const routes: Routes = [
     KepPaginationComponent,
     SwiperComponent,
     ProblemInfoCardComponent,
+    KepTableComponent,
   ],
   providers: [
     ContestGuard,

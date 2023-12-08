@@ -27,10 +27,6 @@ export class HomeService {
     return this.api.get('users/top-rating');
   }
 
-  getContests(page: number, pageSize: number) {
-    return this.contestsService.getContests(page, pageSize);
-  }
-
   getStatistics() {
     return this.api.get('landing-page-statistics');
   }
