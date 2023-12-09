@@ -1,4 +1,4 @@
-<div class="content-wrapper p-0">
+<div class="content-wrapper container-xxl p-0 contests-colors contests-color contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
     <div class="content-body">
       <!-- content-header component -->
       <app-content-header [contentHeader]="contentHeader"></app-content-header>
@@ -30,15 +30,17 @@
 
                 <attempts-table [hideSourceCodeSize]="true" [attempts]="attempts" [contest]="contest"></attempts-table>
 
-                <pagination
+                <kep-pagination
                   *ngIf="attempts.length > 0"
                   [collectionSize]="totalAttemptsCount"
                   [(page)]="currentPage"
                   [pageSize]="20"
+                  [boundaryLinks]="false"
+                  [ellipses]="true"
                   [maxSize]="5"
                   (pageChange)="reloadAttempts()"
                 >
-                </pagination>
+                </kep-pagination>
               </div>
             </div>
           </div>

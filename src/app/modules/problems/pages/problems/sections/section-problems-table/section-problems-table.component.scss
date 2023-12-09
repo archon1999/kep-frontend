@@ -36,7 +36,6 @@ thead tr th, tfoot tr th {
   text-transform: initial !important;
 }
 
-
 @include media-breakpoint-down(lg) {
   table tr td:nth-child(3) {
     display: none;

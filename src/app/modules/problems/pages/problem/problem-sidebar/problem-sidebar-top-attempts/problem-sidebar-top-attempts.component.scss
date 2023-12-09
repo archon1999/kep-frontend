@@ -1,0 +1,11 @@
+.table th, .table td {
+  padding: 0.72rem 1rem;
+}
+
+.table th:first-child, .table td:first-child {
+  padding-left: 2rem;
+}
+
+.table th:nth-child(2), .table td:nth-child(2) {
+  padding-right: 0;
+}

@@ -4,21 +4,21 @@ import { TitleService } from 'app/shared/services/title.service';
 import { TestingService } from '../testing.service';
 import Swal from 'sweetalert2';
 import { fadeInLeftAnimation, fadeInRightAnimation, fadeInUpAnimation } from 'angular-animations';
-import { CoreConfig } from '@core/types';
+import { CoreConfig } from 'core/types';
 import { takeUntil } from 'rxjs/operators';
-import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfigService } from 'core/services/config.service';
 import { Subject } from 'rxjs';
-import { randomShuffle } from '../../../shared/utils/random';
+import { randomShuffle } from '@shared/utils';
 import { DragulaService } from 'ng2-dragula';
 
 @Component({
   selector: 'app-test-pass',
   templateUrl: './test-pass.component.html',
-  styleUrls: ['./test-pass.component.scss', '../chapters.scss'],
+  styleUrls: ['./test-pass.component.scss'],
   animations: [
-    fadeInLeftAnimation({ duration: 3000 }),
-    fadeInRightAnimation({ duration: 2500 }),
-    fadeInUpAnimation({ duration: 2500 }),
+    fadeInLeftAnimation({ duration: 1500 }),
+    fadeInRightAnimation({ duration: 1000 }),
+    fadeInUpAnimation({ duration: 1000 }),
   ]
 })
 export class TestPassComponent implements OnInit, OnDestroy {
@@ -170,7 +170,7 @@ export class TestPassComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.dragulaService.destroy('handle-list');
-    this._unsubscribeAll.next();
+    this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 

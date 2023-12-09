@@ -1,0 +1,9 @@
+@if (type === 'duotone') {
+  <span class="ki-{{ type }} ki-{{ name }}{{ class ? ' ' + class : '' }}">
+  @for (i of [].constructor(pathsNumber);track i;let idx = $index) {
+    <span class="path{{ idx + 1 }}"></span>
+  }
+</span>
+} @else {
+  <span class="ki-{{ type }} ki-{{ name }}{{ class ? ' ' + class : '' }}"></span>
+}

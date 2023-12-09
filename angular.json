@@ -15,7 +15,7 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:browser-esbuild",
           "options": {
             "allowedCommonJsDependencies": [
               "hammerjs",
@@ -39,7 +39,7 @@
               "sweetalert2",
               "bs-stepper"
             ],
-            "outputPath": "/home/cpython/server/static/frontend",
+            "outputPath": "../server/static/frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -49,22 +49,28 @@
               "src/assets",
               "src/sitemap.xml",
               "src/robots.txt",
-              { "glob": "**/*", "input": "node_modules/monaco-editor", "output": "assets/monaco-editor" }
+              { "glob": "**/*", "input": "node_modules/monaco-editor", "output": "assets/monaco" }
             ],
             "styles": [
               "src/styles.scss",
               "./node_modules/swiper/swiper-bundle.min.css",
-              "src/assets/fonts/flag-icon-css/css/flag-icon.min.css"
+              "src/assets/plugins/keenicons/duotone/style.css",
+              "src/assets/plugins/keenicons/outline/style.css",
+              "src/assets/plugins/keenicons/solid/style.css"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["node_modules", "src/assets/"]
+              "includePaths": ["node_modules", "src/assets/", "src/core", "src/app"]
             },
             "scripts": ["./node_modules/katex/dist/katex.min.js", "./node_modules/quill/dist/quill.min.js"],
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": true,
             "sourceMap": true,
-            "optimization": true,
+            "optimization": {
+              "scripts": true,
+              "styles": true,
+              "fonts": false
+            },
             "namedChunks": true
           },
           "configurations": {
@@ -79,7 +85,7 @@
               "optimization": {
                 "scripts": true,
                 "styles": true,
-                "fonts": true
+                "fonts": false
               },
               "outputHashing": "all",
               "sourceMap": true,
@@ -95,7 +101,7 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "100kb"
+                  "maximumWarning": "1000kb"
                 }
               ]
             },
@@ -115,7 +121,7 @@
               "budgets": [
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "100kb"
+                  "maximumWarning": "1000kb"
                 }
               ],
               "fileReplacements": [
@@ -131,22 +137,22 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "vuexy:build"
+            "buildTarget": "vuexy:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "vuexy:build:production"
+              "buildTarget": "vuexy:build:production"
             },
             "hmr": {
               "hmr": true,
-              "browserTarget": "vuexy:build:hmr"
+              "buildTarget": "vuexy:build:hmr"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "vuexy:build"
+            "buildTarget": "vuexy:build"
           }
         },
         "test": {

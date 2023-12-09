@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CourseParticipantReview } from '../../../../courses/courses.models';
-import { SwiperOptions } from 'swiper';
+import { CourseParticipantReview } from '../../../courses.models';
+import { SwiperOptions } from 'swiper/types/swiper-options';
 
 @Component({
   selector: 'review-card',
@@ -12,7 +12,6 @@ export class ReviewCardComponent implements OnInit {
   @Input() review: CourseParticipantReview;
 
   public lessonsSwiperConfig: SwiperOptions = {
-    lazy: true,
     breakpoints: {
       1300: {
         slidesPerView: 3,
@@ -27,9 +26,9 @@ export class ReviewCardComponent implements OnInit {
         spaceBetween: 60
       }
     }
-  }
+  };
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
   }

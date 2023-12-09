@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation, ElementRef } from '@an
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfigService } from 'core/services/config.service';
 
 @Component({
   selector: 'vertical-layout',
@@ -45,7 +45,7 @@ export class VerticalLayoutComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
+    this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 }

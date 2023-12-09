@@ -1,4 +1,4 @@
-import { AttemptLangs } from "../enums";
+import { AttemptLangs } from '../constants';
 
 export interface ProblemUserInfo {
   hasAttempted: boolean;
@@ -11,7 +11,7 @@ export interface Problem {
   id: number;
   authorUsername: string;
   userInfo: ProblemUserInfo;
-  title: string
+  title: string;
   difficulty: number;
   difficultyTitle: string;
   likesCount: number;
@@ -23,6 +23,7 @@ export interface Problem {
   hasChecker: boolean;
   canViewSolution: boolean;
   hasSolution: boolean;
+  hasCheckInput: boolean;
   tags: Array<Tag>;
   topics: Array<Topic>;
   timeLimit: number;
@@ -35,10 +36,13 @@ export interface Problem {
   availableLanguages?: Array<AvailableLanguage>;
   image?: string;
   hidden?: boolean;
+  checkInputSource?: string;
+  solutionKepcoinValue: number;
 }
 
 export interface AvailableLanguage {
   lang: AttemptLangs;
+  langFull: string;
   timeLimit: number | null;
   memoryLimit: number | null;
   codeTemplate: string;
@@ -46,7 +50,7 @@ export interface AvailableLanguage {
 
 export interface SampleTest {
   input: string;
-  output: string
+  output: string;
 }
 
 export interface Difficulty {
@@ -57,6 +61,7 @@ export interface Difficulty {
 export interface Tag {
   name: string;
   id: number;
+  category: string;
 }
 
 export interface Topic {
@@ -70,7 +75,10 @@ export interface ProblemsFilter {
   difficulty: number;
   status: number;
   topic: number;
-  ordering: string;
+  hasChecker: boolean;
+  hasCheckInput: boolean;
+  hasSolution: boolean;
+  partialSolvable: boolean;
 }
 
 export interface StudyPlanDay {
@@ -91,4 +99,10 @@ export interface StudyPlan {
   isPurchased: boolean;
   kepcoinValue: number;
   days: Array<StudyPlanDay>;
+}
+
+export interface Category {
+  id: number;
+  title: string;
+  tags: Array<Tag>;
 }

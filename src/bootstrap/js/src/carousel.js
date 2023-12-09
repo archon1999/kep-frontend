@@ -129,7 +129,7 @@ class Carousel {
     // or the carousel or its parent isn't visible
     if (!document.hidden &&
       ($element.is(':visible') && $element.css('visibility') !== 'hidden')) {
-      this.next()
+      this.next(null)
     }
   }
 
@@ -242,7 +242,7 @@ class Carousel {
 
     // swipe right
     if (direction < 0) {
-      this.next()
+      this.next(null)
     }
   }
 
@@ -333,7 +333,7 @@ class Carousel {
         break
       case ARROW_RIGHT_KEYCODE:
         event.preventDefault()
-        this.next()
+        this.next(null)
         break
       default:
     }

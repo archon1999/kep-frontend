@@ -1,11 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { fadeInLeftAnimation, fadeInUpAnimation } from 'angular-animations';
 
-// ContentHeader component interface
 export interface ContentHeader {
   headerTitle: string;
-  actionButton: boolean;
+  actionButton?: boolean;
   breadcrumb?: {
     type?: string;
     links?: Array<{
@@ -14,6 +13,7 @@ export interface ContentHeader {
       link?: string;
     }>;
   };
+  refreshVisible?: boolean;
 }
 
 @Component({
@@ -22,23 +22,17 @@ export interface ContentHeader {
   animations: [fadeInLeftAnimation({ duration: 2000 }), fadeInUpAnimation()]
 })
 export class ContentHeaderComponent implements OnInit {
-  animationState: boolean = false;
-
   @Input() contentHeader: ContentHeader;
+  @Input() refreshVisible = false;
+  @Output() refresh = new EventEmitter<null>();
+
+  public animationState = false;
 
   constructor(
     public router: Router,
   ) {}
 
   ngOnInit() {
-    setTimeout(() => {
-      this.animationState = true;
-    }, 0);
+    setTimeout(() => this.animationState = true);
   }
-
-  refreshPage() {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.navigate([this.router.url], {skipLocationChange: true})
-  }
-
 }

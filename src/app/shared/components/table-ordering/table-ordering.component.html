@@ -1,0 +1,8 @@
+<a class="d-flex justify-content-{{ justifyContent }}" (click)="click()">
+  <ng-content></ng-content>
+  @if(value == ordering){
+    <span><i class="ml-50" data-feather="chevron-up"></i></span>
+  } @else if(value == '-' + ordering) {
+    <span><i class="ml-50" data-feather="chevron-down"></i></span>
+  }
+</a>

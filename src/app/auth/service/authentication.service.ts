@@ -6,27 +6,18 @@ import { catchError, map } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 import { User } from 'app/auth/models';
 import { ApiService } from 'app/shared/services/api.service';
-import { WebsocketService } from 'app/websocket';
-import { CookieService } from 'ngx-cookie-service';
+import { WebsocketService } from 'app/shared/services/websocket';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
-  //public
   public currentUser: Observable<User>;
 
-  //private
   private currentUserSubject: BehaviorSubject<User>;
 
-  /**
-   *
-   * @param {HttpClient} _http
-   * @param {ToastrService} _toastrService
-   */
   constructor(
     private api: ApiService,
     private _http: HttpClient,
     public wsService: WebsocketService,
-    public cookies: CookieService,
   ) {
     this.currentUserSubject = new BehaviorSubject<User>(null);
     this.currentUser = this.currentUserSubject.asObservable();
@@ -45,24 +36,24 @@ export class AuthenticationService {
     return this.currentUser;
   }
 
-  login(username: string, password: string) {
-    const token = btoa(`${username}:${password}`);
-    const headers = { 'Authorization': `Basic ${token}` }
-    return this._http
-    .post<any>(`${environment.apiUrl}/api/login/`, {}, { headers: headers })
-    .pipe(
-      map(user => {
-        this.currentUserSubject.next(user);
-        return user;
-      })
-    );
-  }
-
-  get me(){
+  get me() {
     return this.api.get('me');
   }
 
-  updateMe(){
+  login(username: string, password: string) {
+    const token = btoa(`${ username }:${ password }`);
+    const headers = { 'Authorization': `Basic ${ token }` };
+    return this._http
+      .post<any>(`${ environment.apiUrl }/api/login/`, {}, { headers: headers })
+      .pipe(
+        map(user => {
+          this.currentUserSubject.next(user);
+          return user;
+        })
+      );
+  }
+
+  updateMe() {
     this.me.subscribe(
       (user: User) => {
         this.currentUserSubject.next(user);
@@ -70,18 +61,19 @@ export class AuthenticationService {
       (error: any) => {
         this.currentUserSubject.next(null);
       }
-    )
+    );
   }
 
-  updateKepcoin(kepcoin: number){
-    if(this.currentUserValue){
+  updateKepcoin(kepcoin: number) {
+    if (this.currentUserValue) {
       this.currentUserValue.kepcoin = kepcoin;
     }
   }
 
-  checkDailyActivity(){
-    if(this.currentUserValue){
-      this.api.get('users/check-daily-activity').subscribe((result: any) => {})
+  checkDailyActivity() {
+    if (this.currentUserValue) {
+      this.api.get('users/check-daily-activity').subscribe((result: any) => {
+      });
     }
   }
 

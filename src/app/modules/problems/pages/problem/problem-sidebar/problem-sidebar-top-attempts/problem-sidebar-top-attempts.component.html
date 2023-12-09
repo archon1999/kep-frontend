@@ -1,0 +1,54 @@
+<div class="card">
+  <div class="card-header">
+    <div class="d-flex">
+      <div class="card-title">
+        {{ 'Rating' | translate }}
+      </div>
+      <span class="ml-50 badge badge-{{ selectedLang }}">
+        {{ selectedLang }}
+      </span>
+    </div>
+
+    <ng-select [clearable]="false" (change)="topAttemptsLoad($event)" [(ngModel)]="topAttemptsOrdering">
+      <ng-option [value]="'time'">{{ 'Time' | translate }}</ng-option>
+      <ng-option [value]="'memory'">{{ 'Memory' | translate }}</ng-option>
+      <ng-option [value]="'source_code_size'">{{ 'Size' | translate }}</ng-option>
+    </ng-select>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+      <tr class="bg-gradient-primary">
+        <th>#</th>
+        <th>{{ 'User' | translate }}</th>
+        <th>{{ 'RESULT' | translate }}</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (attempt of topAttempts;track attempt.id) {
+          <tr>
+            <td>{{ $index + 1 }}</td>
+            <td>
+              <contestant-view [imgSize]="28" [user]="attempt"></contestant-view>
+            </td>
+            <td class="text-center">
+            <span [ngSwitch]="topAttemptsOrdering">
+              <span *ngSwitchCase="'time'" class="badge badge-info badge-glow">
+                {{ attempt.time }} ms
+              </span>
+              <span *ngSwitchCase="'memory'" class="badge badge-primary badge-glow">
+                {{ attempt.memory }} kb
+              </span>
+              <span *ngSwitchCase="'source_code_size'" class="badge badge-dark badge-glow">
+                {{ attempt.sourceCodeSize }}
+              </span>
+            </span>
+            </td>
+          </tr>
+        } @empty {
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

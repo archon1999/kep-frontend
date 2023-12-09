@@ -1,13 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { CoreConfigService } from '@core/services/config.service';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation, fadeInUpOnEnterAnimation } from 'angular-animations';
-import { ApiService } from 'app/shared/services/api.service';
-import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { Contest, ContestsRating } from '../../contests.models';
+import { Observable } from 'rxjs';
+import { Contest } from '@contests/contests.models';
+import { CoreCommonModule } from '@core/common.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { ContestCardComponent } from '@contests/components/contest-card/contest-card/contest-card.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { ContestsSectionCategoriesComponent } from './sections/contests-section-categories/contests-section-categories.component';
+import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
+import { PageResult } from '@shared/components/classes/page-result';
+import { ContestsService } from '@contests/contests.service';
 
 @Component({
   selector: 'app-contests',
@@ -18,107 +21,77 @@ import { Contest, ContestsRating } from '../../contests.models';
     fadeInRightOnEnterAnimation({ delay: 900, duration: 2000 }),
     fadeInRightOnEnterAnimation({ anchor: 'contests', duration: 3000 }),
     fadeInUpOnEnterAnimation({ delay: 0, duration: 1500 }),
+  ],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgbTooltipModule,
+    ContestCardComponent,
+    KepPaginationComponent,
+    NgSelectModule,
+    ContestsSectionCategoriesComponent,
   ]
 })
-export class ContestsComponent implements OnInit, OnDestroy {
+export class ContestsComponent extends BaseTablePageComponent<Contest> implements OnInit, OnDestroy {
+  override maxSize = 5;
+  override defaultPageSize = 7;
+  override pageOptions = [7, 10, 20];
 
-  public contests: Array<Contest> = [];
-  public currentPage: number = 1;
-  public totalContests: number = 0;
-
-  public topContestsRating: Array<ContestsRating> = [];
-
-  public currentUser: User = this.authService.currentUserValue;
-
-  public contestTypes = ['All', 'ACM20M', 'ACM2H', 'Ball525',
-                         'Ball550', 'LessLine', 'LessCode',
-                         'OneAttempt', 'IQ', 'Exam', 'MultiL', 'CodeGolf'];
-  contestType: number = 0;
-  contestStatus: number = 2;
+  public contestTypes = [
+    'All',
+    'ACM20M',
+    'ACM2H',
+    'Ball525',
+    'Ball550',
+    'LessLine',
+    'LessCode',
+    'OneAttempt',
+    'IQ',
+    'Exam',
+    'MultiL',
+    'CodeGolf',
+  ];
+  contestType = 0;
+  contestStatus = 2;
   contestCategory = 0;
 
-  private _unsubscribeAll = new Subject();
+  constructor(public service: ContestsService) {
+    super();
+  }
 
-  constructor(
-    public coreConfigService: CoreConfigService,
-    public api: ApiService,
-    public route: ActivatedRoute,
-    public authService: AuthenticationService,
-  ) { }
+  get contests() {
+    return this.pageResult?.data;
+  }
 
   ngOnInit(): void {
-    this.api.get('contests-rating').subscribe((result: any) => {
-      this.topContestsRating = result.data.map((data: any) => {
-        return ContestsRating.fromJSON(data);
-      });
-    })
-
-    this.authService.currentUser
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((user: any) => {
-        this.currentUser = user;
-      });
-
-    this.reloadContests();
+    setTimeout(() => this.reloadPage());
   }
 
-  reloadContests() {
-    let params: any = { page_size: 7 };
-    params.page = this.currentPage;
-
-    if(this.contestCategory){
-      params.category = this.contestCategory;
-    }
-
-    if (this.contestType) {
-      params.type = this.contestTypes[this.contestType];
-    }
-
-    if (this.contestStatus != 2) {
-      params.is_participated = this.contestStatus;
-    }
-
-    this.api.get('contests', params).subscribe(
-      (result: any) => {
-        this.contests = result.data.map((contest: Contest) => {
-          return Contest.fromJSON(contest);
-        }).sort((ca, cb) => {
-          if(ca.status != cb.status){
-            return +(ca.status < cb.status);
-          } else {
-            if(ca.status == -1){
-              return -(ca.startTime < cb.startTime);
-            } else {
-              return +(ca.startTime < cb.startTime);
-            }
-          }
-        });
-        this.totalContests = result.total;
-      }
-    )
+  getPage(): Observable<PageResult<Contest>> | null {
+    return this.service.getContests({
+      page: this.pageNumber,
+      pageSize: this.pageSize,
+      category: this.contestCategory || null,
+      isParticipated: this.contestStatus !== 2 ? !!this.contestStatus : null,
+      type: this.contestType ? this.contestTypes[this.contestType] : null,
+    });
   }
 
-  contestCategoryClick(category: number){
-    this.currentPage = 1;
+  contestCategoryClick(category: number) {
+    this.pageNumber = 1;
     this.contestCategory = category;
-    this.reloadContests();
+    this.reloadPage();
   }
 
-  contestTypeClick(index: number){
-    this.currentPage = 1;
+  contestTypeClick(index: number) {
+    this.pageNumber = 1;
     this.contestType = index;
-    this.reloadContests();
+    this.reloadPage();
   }
 
   contestStatusClick(status: number) {
-    this.currentPage = 1;
+    this.pageNumber = 1;
     this.contestStatus = status;
-    this.reloadContests();
+    this.reloadPage();
   }
-
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
-  }
-
 }

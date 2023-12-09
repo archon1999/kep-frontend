@@ -2,8 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UsersService } from '../../../../modules/users/users.service';
 import { TranslateService } from '@ngx-translate/core';
 import { takeUntil } from 'rxjs/operators';
-import { CoreConfigService } from '../../../../../@core/services/config.service';
+import { CoreConfigService } from '../../../../../core/services/config.service';
 import { Subject } from 'rxjs';
+import { colors } from '../../../../colors.const';
 
 @Component({
   selector: 'users-chart-card',
@@ -67,6 +68,7 @@ export class UsersChartCardComponent implements OnInit, OnDestroy {
   initChart() {
     this.usersChart = {
       chart: {
+        fontFamily: 'QuickSand, Roboto',
         height: 100,
         type: 'line',
         dropShadow: {
@@ -83,7 +85,7 @@ export class UsersChartCardComponent implements OnInit, OnDestroy {
           enabled: true
         }
       },
-      colors: ['#7367F0'],
+      colors: [colors.solid.primary],
       dataLabels: {
         enabled: false
       },
@@ -122,7 +124,7 @@ export class UsersChartCardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this._unsubscribeAll.next();
+    this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 }

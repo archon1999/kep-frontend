@@ -2,25 +2,25 @@
   <div class="row">
     <div class="col-12 contests-page-top">
       <div class="text-center mt-1">
-        <div [@fadeInUpOnEnter] ngbTooltip="{{ 'Rating' | translate }}"
-          class="avatar ml-1 avatar-lg badge-glow bg-primary p-50 m-0 mb-1">
-          <a routerLink="rating" class="text-white">
+        <div [@fadeInUpOnEnter] class="avatar ml-1 avatar-lg badge-glow bg-primary p-50 m-0 mb-1"
+             ngbTooltip="{{ 'Rating' | translate }}">
+          <a class="text-white" routerLink="rating">
             <div class="avatar-content">
               <i [data-feather]="'rating' | iconName" class="font-large-1"></i>
             </div>
           </a>
         </div>
-        <div [@fadeInUpOnEnter] ngbTooltip="{{ 'Profile' | translate }}"
-          class="avatar ml-1 avatar-lg badge-glow bg-primary p-50 m-0 mb-1">
-          <a routerLink="profile" class="text-white">
+        <div [@fadeInUpOnEnter] class="avatar ml-1 avatar-lg badge-glow bg-primary p-50 m-0 mb-1"
+             ngbTooltip="{{ 'Profile' | translate }}">
+          <a class="text-white" routerLink="profile">
             <div class="avatar-content">
               <i [data-feather]="'user'" class="font-large-1"></i>
             </div>
           </a>
         </div>
-        <div [@fadeInUpOnEnter] ngbTooltip="{{ 'MyContests' | translate }}"
-          class="avatar ml-1 avatar-lg badge-glow bg-primary p-50 m-0 mb-1">
-          <a routerLink="user-contests" class="text-white">
+        <div [@fadeInUpOnEnter] class="avatar ml-1 avatar-lg badge-glow bg-primary p-50 m-0 mb-1"
+             ngbTooltip="{{ 'MyContests' | translate }}">
+          <a class="text-white" routerLink="user-contests">
             <div class="avatar-content">
               <i [data-feather]="'flag'" class="font-large-1"></i>
             </div>
@@ -37,7 +37,7 @@
                   </div>
                 </div>
                 <div class="info-img">
-                  <img src="assets/images/pages/graphic-3.png" alt="info-img">
+                  <img alt="info-img" src="assets/images/pages/graphic-3.png">
                 </div>
               </a>
             </div>
@@ -50,7 +50,7 @@
                   </div>
                 </div>
                 <div class="info-img">
-                  <img src="assets/images/pages/graphic-2.png" alt="info-img">
+                  <img alt="info-img" src="assets/images/pages/graphic-2.png">
                 </div>
               </a>
             </div>
@@ -65,24 +65,26 @@
 
     <div class="col-lg-8 offset-lg-2">
       <h1 [@fadeInUpOnEnter] class="mb-3">
-        <div spellcheck="false" class="text-dark">{{ 'Contests' | translate }}</div>
+        <div class="text-dark" spellcheck="false">{{ 'Contests' | translate }}</div>
       </h1>
 
       <div class="row">
-        <div class="col-12" *ngFor="let contest of contests">
-          <contest-card-big [contest]="contest"></contest-card-big>
+        <div *ngFor="let contest of contests" class="col-12">
+          <contest-card [contest]="contest"></contest-card>
         </div>
       </div>
 
-      <pagination
-        *ngIf="contests.length > 0"
-        [collectionSize]="totalContests"
-        [(page)]="currentPage"
-        [pageSize]="7"
-        [maxSize]="5"
-        [rotate]="true"
-        (pageChange)="reloadContests()">
-      </pagination>  
+      <kep-pagination
+        (pageChange)="pageChange($event)"
+        (pageSizeChange)="pageSizeChange($event)"
+        *ngIf="total > 0"
+        [(page)]="pageNumber"
+        [collectionSize]="total"
+        [maxSize]="maxSize"
+        [pageOptions]="pageOptions"
+        [pageSize]="pageSize"
+        [rotate]="true">
+      </kep-pagination>
     </div>
 
     <div class="col-lg-2 mt-4 pt-2 d-none d-xl-block">
@@ -98,40 +100,40 @@
             <div
               class="ml-1 mt-1 custom-control custom-radio">
               <input
-                type="radio"
-                id="radio-2"
-                name="status"
                 (click)="contestStatusClick(2)"
                 [(ngModel)]="contestStatus"
                 [value]="2"
-                class="custom-control-input" />
+                class="custom-control-input"
+                id="radio-2"
+                name="status"
+                type="radio"/>
               <label class="custom-control-label" for="radio-2">{{ 'All' | translate }}</label>
             </div>
             <div
               class="ml-1 mt-1 custom-control custom-radio">
               <input
-                type="radio"
-                id="radio-1"
-                name="status"
                 (click)="contestStatusClick(1)"
                 [(ngModel)]="contestStatus"
                 [value]="1"
-                class="custom-control-input" />
+                class="custom-control-input"
+                id="radio-1"
+                name="status"
+                type="radio"/>
               <label class="custom-control-label" for="radio-1">{{ 'CONTESTS.PARTICIPATED' | translate }}</label>
             </div>
             <div
               class="ml-1 mt-1 custom-control custom-radio">
               <input
-                type="radio"
-                id="radio-0"
-                name="status"
                 (click)="contestStatusClick(0)"
                 [(ngModel)]="contestStatus"
                 [value]="0"
-                class="custom-control-input" />
+                class="custom-control-input"
+                id="radio-0"
+                name="status"
+                type="radio"/>
               <label class="custom-control-label" for="radio-0">{{ 'CONTESTS.NOT_PARTICIPATED' | translate }}</label>
             </div>
-          </div>    
+          </div>
         </div>
       </div>
 
@@ -147,16 +149,16 @@
               *ngFor="let type of contestTypes; index as i"
               class="ml-1 mt-1 custom-control custom-radio">
               <input
-                type="radio"
-                id="type-{{ i }}"
-                name="type"
                 (click)="contestTypeClick(i)"
                 [(ngModel)]="contestType"
                 [value]="i"
-                class="custom-control-input" />
+                class="custom-control-input"
+                id="type-{{ i }}"
+                name="type"
+                type="radio"/>
               <label class="custom-control-label" for="type-{{ i }}">{{ type | translate }}</label>
             </div>
-          </div>    
+          </div>
         </div>
       </div>
 

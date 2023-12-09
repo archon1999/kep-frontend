@@ -1,5 +1,44 @@
+@import 'scss/base/bootstrap-extended/variables';
+
 .card {
   border: none;
   box-shadow: var(--inherit-bg-box-shadow) !important;
   background: inherit !important;
+}
+
+.select-tags {
+  background: white;
+}
+
+::ng-deep .dark-layout .select-tags {
+  background: inherit;
+}
+
+::ng-deep .card-category {
+  border-bottom: 1px solid #ebe9f1 !important;
+
+  .btn {
+    border: none !important;
+  }
+
+  .card-header:hover {
+    background-color: rgba($primary, 0.1) !important;
+    color: $primary !important;
+  }
+}
+
+::ng-deep .dropdown-menu:has(.card-category) {
+  padding: 0 !important;
+}
+
+::ng-deep .dark-layout .card-category {
+  border-bottom-color: #161d31 !important;
+
+  .card-header {
+    color: $light;
+  }
+}
+
+::ng-deep .tags-select .ng-value {
+  color: white !important;
 }

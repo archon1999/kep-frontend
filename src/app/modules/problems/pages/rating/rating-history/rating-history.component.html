@@ -1,6 +1,5 @@
-<div class="content-wrapper p-0">
+<div class="content-wrapper container-xxl p-0">
   <div class="content-body">
-    <!-- content-header component -->
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
     <section class="mt-2">
@@ -36,42 +35,42 @@
                   <div class="table-responsive mt-1">
                     <table class="table">
                       <thead>
-                        <tr class="bg-gradient-success">
-                          <th class="text-center"><i [data-feather]="'calendar'"></i></th>
-                          <th>{{ 'USER' | translate }}</th>
-                          <th class="text-center"><i [data-feather]="'problem' | iconName"></i></th>
-                        </tr>
+                      <tr class="bg-gradient-success">
+                        <th class="text-center"><i [data-feather]="'calendar'"></i></th>
+                        <th>{{ 'USER' | translate }}</th>
+                        <th class="text-center"><i [data-feather]="'problem' | iconName"></i></th>
+                      </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let ratingHistory of dailyRatingHistory"
+                      <tr *ngFor="let ratingHistory of dailyRatingHistory"
                           [ngClass]="{'bg-light-success': currentUser?.username == ratingHistory.username }">
-                          <td class="text-center">
+                        <td class="text-center">
                             <span class="badge badge-light-success">
-                              {{ ratingHistory.date | date:'dd/MM/y'}}
+                              {{ ratingHistory.date | date:'dd/MM/y' }}
                             </span>
-                          </td>
-                          <td>
-                            <ng-component [innerHTML]="ratingHistory.contestsRatingTitle | contestsRatingImg">
-                            </ng-component>
-                            <user-popover [username]="ratingHistory.username"></user-popover>
-                          </td>
-                          <td class="text-center">
+                        </td>
+                        <td>
+                          <ng-component [innerHTML]="ratingHistory.contestsRatingTitle | contestsRatingImg">
+                          </ng-component>
+                          <user-popover [username]="ratingHistory.username"></user-popover>
+                        </td>
+                        <td class="text-center">
                             <span class="badge badge-glow badge-success">
                               {{ ratingHistory.result }}
                             </span>
-                          </td>
-                        </tr>
+                        </td>
+                      </tr>
                       </tbody>
                     </table>
                   </div>
-  
-                  <pagination
+
+                  <kep-pagination
                     [collectionSize]="dailyRatingHistoryTotal"
                     [(page)]="dailyRatingHistoryPage"
                     [pageSize]="20"
                     [maxSize]="5"
                     (pageChange)="reloadDailyHistoryPage()">
-                  </pagination>
+                  </kep-pagination>
                 </div>
 
               </div>
@@ -106,42 +105,42 @@
                   <div class="table-responsive mt-1">
                     <table class="table">
                       <thead>
-                        <tr class="bg-gradient-info">
-                          <th class="text-center"><i [data-feather]="'calendar'"></i></th>
-                          <th>{{ 'USER' | translate }}</th>
-                          <th class="text-center"><i [data-feather]="'problem' | iconName"></i></th>
-                        </tr>
+                      <tr class="bg-gradient-info">
+                        <th class="text-center"><i [data-feather]="'calendar'"></i></th>
+                        <th>{{ 'USER' | translate }}</th>
+                        <th class="text-center"><i [data-feather]="'problem' | iconName"></i></th>
+                      </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let ratingHistory of weeklyRatingHistory"
+                      <tr *ngFor="let ratingHistory of weeklyRatingHistory"
                           [ngClass]="{'bg-light-info': currentUser?.username == ratingHistory.username }">
-                          <td class="text-center">
+                        <td class="text-center">
                             <span class="badge badge-light-info">
-                              {{ ratingHistory.date | date:'dd/MM/y'}}
+                              {{ ratingHistory.date | date:'dd/MM/y' }}
                             </span>
-                          </td>
-                          <td>
-                            <ng-component [innerHTML]="ratingHistory.contestsRatingTitle | contestsRatingImg">
-                            </ng-component>
-                            <user-popover [username]="ratingHistory.username"></user-popover>
-                          </td>
-                          <td class="text-center">
+                        </td>
+                        <td>
+                          <ng-component [innerHTML]="ratingHistory.contestsRatingTitle | contestsRatingImg">
+                          </ng-component>
+                          <user-popover [username]="ratingHistory.username"></user-popover>
+                        </td>
+                        <td class="text-center">
                             <span class="badge badge-glow badge-info">
                               {{ ratingHistory.result }}
                             </span>
-                          </td>
-                        </tr>
+                        </td>
+                      </tr>
                       </tbody>
                     </table>
                   </div>
-  
-                  <pagination
+
+                  <kep-pagination
                     [collectionSize]="weeklyRatingHistoryTotal"
                     [(page)]="weeklyRatingHistoryPage"
                     [pageSize]="20"
                     [maxSize]="5"
                     (pageChange)="reloadWeeklyHistoryPage()">
-                  </pagination>
+                  </kep-pagination>
                 </div>
 
               </div>
@@ -176,42 +175,42 @@
                   <div class="table-responsive mt-1">
                     <table class="table">
                       <thead>
-                        <tr class="bg-gradient-primary">
-                          <th class="text-center"><i [data-feather]="'calendar'"></i></th>
-                          <th>{{ 'USER' | translate }}</th>
-                          <th class="text-center"><i [data-feather]="'problem' | iconName"></i></th>
-                        </tr>
+                      <tr class="bg-gradient-primary">
+                        <th class="text-center"><i [data-feather]="'calendar'"></i></th>
+                        <th>{{ 'USER' | translate }}</th>
+                        <th class="text-center"><i [data-feather]="'problem' | iconName"></i></th>
+                      </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let ratingHistory of monthlyRatingHistory"
+                      <tr *ngFor="let ratingHistory of monthlyRatingHistory"
                           [ngClass]="{'bg-light-primary': currentUser?.username == ratingHistory.username }">
-                          <td class="text-center">
+                        <td class="text-center">
                             <span class="badge badge-light-primary">
-                              {{ ratingHistory.date | date:'dd/MM/y'}}
+                              {{ ratingHistory.date | date:'dd/MM/y' }}
                             </span>
-                          </td>
-                          <td>
-                            <ng-component [innerHTML]="ratingHistory.contestsRatingTitle | contestsRatingImg">
-                            </ng-component>
-                            <user-popover [username]="ratingHistory.username"></user-popover>
-                          </td>
-                          <td class="text-center">
+                        </td>
+                        <td>
+                          <ng-component [innerHTML]="ratingHistory.contestsRatingTitle | contestsRatingImg">
+                          </ng-component>
+                          <user-popover [username]="ratingHistory.username"></user-popover>
+                        </td>
+                        <td class="text-center">
                             <span class="badge badge-glow badge-primary">
                               {{ ratingHistory.result }}
                             </span>
-                          </td>
-                        </tr>
+                        </td>
+                      </tr>
                       </tbody>
                     </table>
                   </div>
-  
-                  <pagination
+
+                  <kep-pagination
                     [collectionSize]="monthlyRatingHistoryTotal"
                     [(page)]="monthlyRatingHistoryPage"
                     [pageSize]="20"
                     [maxSize]="5"
                     (pageChange)="reloadMonthlyHistoryPage()">
-                  </pagination>
+                  </kep-pagination>
                 </div>
 
               </div>
