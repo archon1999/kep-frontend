@@ -6,13 +6,15 @@ import { AuthGuard } from '@auth/helpers';
 import { ContestComponent } from '@contests/pages/contest/contest.component';
 import { ContestProblemResolver, ContestProblemsResolver, ContestResolver } from '@contests/contests.resolver';
 import { ContestProblemsComponent } from '@contests/pages/contest/contest-problems/contest-problems.component';
-import { ContestGuard } from '@contests/contests.guard';
+import { ContestCreateGuard, ContestGuard } from '@contests/contests.guard';
 import { ContestQuestionsComponent } from '@contests/pages/contest/contest-questions/contest-questions.component';
 import { ContestProblemComponent } from '@contests/pages/contest/contest-problem/contest-problem.component';
 import { ContestAttemptsComponent } from '@contests/pages/contest/contest-attempts/contest-attempts.component';
 import { ContestStandingsComponent } from '@contests/pages/contest/contest-standings/contest-standings.component';
 import { ContestRatingChangesComponent } from '@contests/pages/contest/contest-rating-changes/contest-rating-changes.component';
 import { ContestOgImageComponent } from '@contests/pages/contest/contest-og-image/contest-og-image.component';
+import { UserContestsComponent } from '@contests/pages/user-contests/user-contests.component';
+import { ContestCreateComponent } from '@contests/pages/user-contests/contest-create/contest-create.component';
 
 export default [
   {
@@ -124,6 +126,17 @@ export default [
   },
   {
     path: 'user-contests',
-    loadChildren: () => import('./pages/user-contests/user-contests.module').then(m => m.UserContestsModule)
+    component: UserContestsComponent,
+    data: { animation: 'user-contests' },
+    title: 'Contests.MyContests',
+  },
+  {
+    path: 'user-contests/create',
+    component: ContestCreateComponent,
+    data: {
+      animation: 'user-contest-create',
+    },
+    title: 'Contests.CreateContest',
+    canActivate: [ContestCreateGuard],
   },
 ]  satisfies Route[];
