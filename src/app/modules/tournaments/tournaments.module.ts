@@ -11,8 +11,8 @@ import { TournamentScheduleComponent } from './tournament/tournament-schedule/to
 import { TournamentInfoComponent } from './tournament/tournament-info/tournament-info.component';
 import { DuelCardComponent } from './tournament/tournament-duels/duel-card/duel-card.component';
 import { ContestantViewModule } from '../../shared/components/contestant-view/contestant-view.module';
-import { CorePipesModule } from 'core/pipes/pipes.module';
-import { CoreDirectivesModule } from 'core/directives/directives';
+import { CorePipesModule } from '@shared/pipes/pipes.module';
+import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { TournamentListCardComponent } from './tournament-list-card/tournament-list-card.component';
 import { TournamentVersusComponent } from './tournament/tournament-versus/tournament-versus.component';
