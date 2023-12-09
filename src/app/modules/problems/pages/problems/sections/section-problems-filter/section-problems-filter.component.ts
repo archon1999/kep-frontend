@@ -9,6 +9,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 import { NgbAccordionModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 
 interface Difficulty {
   name: string;
@@ -26,6 +27,7 @@ interface Difficulty {
     ProblemsPipesModule,
     NgbDropdownModule,
     NgbAccordionModule,
+    KepIconComponent,
   ]
 })
 export class SectionProblemsFilterComponent extends BaseComponent implements OnInit {
