@@ -1,11 +1,11 @@
 <div class="card">
   <div class="card-header">
     <div class="card-title">
+      <kep-icon name="filter"></kep-icon>
       {{ 'Filter' | translate }}
     </div>
     <button class="btn btn-sm btn-primary" (click)="filterCollapsed=!filterCollapsed;">
-      <span *ngIf="!filterCollapsed"><i data-feather="chevrons-down"></i></span>
-      <span *ngIf="filterCollapsed"><i data-feather="chevrons-up"></i></span>
+      <kep-icon [name]="filterCollapsed ? 'double-up' : 'double-down'"></kep-icon>
     </button>
   </div>
   <div class="card-body">
@@ -14,6 +14,7 @@
         <div class="col-6 col-lg-3">
           <div class="form-group">
             <label class="text-primary">
+              <kep-icon name="pencil"></kep-icon>
               <strong>
                 {{ 'TITLE' | translate }}:
               </strong>
@@ -29,6 +30,7 @@
 
         <div class="col-6 col-lg-3">
           <label class="text-primary">
+            <kep-icon name="data"></kep-icon>
             <strong>
               {{ 'TAGS' | translate }}:
             </strong>
@@ -89,6 +91,7 @@
 
         <div class="col-6 col-lg-3">
           <label class="text-primary">
+            <kep-icon name="graph-2"></kep-icon>
             <strong>
               {{ 'DIFFICULTY' | translate }}:
             </strong>
@@ -106,6 +109,7 @@
 
         <div class="col-lg-3 col-6">
           <label class="text-primary">
+            <kep-icon name="check-square"></kep-icon>
             <strong>
               {{ 'STATUS' | translate }}:
             </strong>
@@ -113,15 +117,15 @@
           <div class="form-group">
             <ng-select formControlName="status" [compareWith]="compareEqual">
               <ng-option [value]="3">
-                <i [data-feather]="'minus'" class="text-warning"></i>
+                <kep-icon name="minus" class="text-warning"></kep-icon>
                 {{ 'Unknown' | translate }}
               </ng-option>
               <ng-option [value]="1">
-                <i [data-feather]="'exists' | iconName" class="text-success"></i>
+                <kep-icon name="check" class="text-success"></kep-icon>
                 {{ 'Solved' | translate }}
               </ng-option>
               <ng-option [value]="2">
-                <i [data-feather]="'not_exists' | iconName" class="text-danger"></i>
+                <kep-icon name="cross" class="text-danger"></kep-icon>
                 {{ 'Unsolved' | translate }}
               </ng-option>
             </ng-select>
@@ -133,6 +137,7 @@
       <div class="row" *ngIf="filterCollapsed">
         <div class="col-lg-3 col-6">
           <label class="text-primary">
+            <kep-icon name="filter-search"></kep-icon>
             <strong>
               {{ 'Checker' | translate }}:
             </strong>
@@ -153,6 +158,7 @@
 
         <div class="col-lg-3 col-6">
           <label class="text-primary">
+            <kep-icon name="filter-search"></kep-icon>
             <strong>
               {{ 'CheckInput' | translate }}:
             </strong>
@@ -173,6 +179,7 @@
 
         <div class="col-lg-3 col-6">
           <label class="text-primary">
+            <kep-icon name="filter-search"></kep-icon>
             <strong>
               {{ 'Solution' | translate }}:
             </strong>
@@ -193,6 +200,7 @@
 
         <div class="col-lg-3 col-6">
           <label class="text-primary">
+            <kep-icon name="filter-search"></kep-icon>
             <strong>
               {{ 'PartialSolvable' | translate }}:
             </strong>
