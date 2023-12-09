@@ -1,4 +1,4 @@
-export var icons = {
+export const icons = {
   like: 'heart',
   learn: 'book',
   course: 'book-open',
