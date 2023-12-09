@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, Inject, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Directive, ElementRef, Inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import * as Feather from 'feather-icons';
 
@@ -6,19 +6,13 @@ import * as Feather from 'feather-icons';
   selector: '[data-feather]'
 })
 export class FeatherIconDirective implements OnChanges {
-  // Private
-  private _nativeElement: any;
-
   @Input('data-feather') name!: string;
   @Input() class!: string;
   @Input() size!: string;
   @Input() inner!: boolean;
+  // Private
+  private _nativeElement: any;
 
-  /**
-   * Constructor
-   *
-   * @param {ElementRef} _elementRef
-   */
   constructor(
     @Inject(ElementRef) private _elementRef: ElementRef,
     @Inject(ChangeDetectorRef) private _changeDetector: ChangeDetectorRef
