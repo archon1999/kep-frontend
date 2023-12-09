@@ -17,6 +17,7 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { NavbarDailyTasksComponent } from './navbar-daily-tasks/navbar-daily-tasks.component';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { NgScrollbar } from 'ngx-scrollbar';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { NgScrollbar } from 'ngx-scrollbar';
     NgbPopoverModule,
     CoreDirectivesModule,
     KepPaginationComponent,
-    NgScrollbar
+    NgScrollbar,
+    KepIconComponent
   ],
   exports: [
     NavbarComponent,
