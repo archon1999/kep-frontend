@@ -16,7 +16,7 @@ import { CoreModule } from 'core/core.module';
 import { CorePipesModule } from 'core/pipes/pipes.module';
 
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
-import { coreConfig } from 'app/app-config';
+import { coreConfig } from './app-config';
 
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
