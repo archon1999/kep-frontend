@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CoreDirectivesModule } from '@core/directives/directives';
-import { CorePipesModule } from '@core/pipes/pipes.module';
+import { CoreDirectivesModule } from '@shared/directives/directives.module';
+import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';

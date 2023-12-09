@@ -4,16 +4,16 @@ import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'environments/environment';
 import { catchError, concatMap, delay, retryWhen } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { isPresent } from '@shared/c-validators/utils';
+
+export const BASE_URL = environment.apiUrl;
+export const BASE_API_URL = BASE_URL + '/api/';
+
 
 @Injectable({
   providedIn: 'root'
-})
-
-export class ApiService {
-
-  BASE_URL = environment.apiUrl;
-  BASE_API_URL = this.BASE_URL + '/api/';
+})export class ApiService {
 
   constructor(
     public http: HttpClient,
@@ -21,15 +21,22 @@ export class ApiService {
     public toastr: ToastrService,
   ) {}
 
-  get(prefix: string, params: any = {}, otherOptions: any = {}) {
-    let url = this.BASE_API_URL + prefix;
-    let options = otherOptions;
+  get(prefix: string, params: any = {}, otherOptions: any = {}): Observable<any> {
+    const url = BASE_API_URL + prefix;
+    const options = otherOptions;
+    const filteredParams: any = {};
+    for (const key of Object.keys(params)) {
+      const value = params[key];
+      if (isPresent(value)) {
+        filteredParams[key] = value;
+      }
+    }
     this.initOptions(options);
-    options.params = params;
+    options.params = filteredParams;
     return this.http.get(url, options).pipe(
       this.handleRetryError(3000, 5),
       catchError(err => {
-        if(!err.status){
+        if (!err.status) {
           this.handleConnectionError();
         }
         throw new Error(err);
@@ -37,49 +44,37 @@ export class ApiService {
     );
   }
 
-  post(prefix: string, body: any = {}, options: any = {}) {
-    let url = this.BASE_API_URL + prefix;
+  post(prefix: string, body: any = {}, options: any = {}): any {
+    const url = BASE_API_URL + prefix;
     this.initOptions(options);
     return this.http.post(url, body, options);
   }
 
-  put(prefix: string, body: any = {}, options: any = {}) {
-    let url = this.BASE_API_URL + prefix;
+  put(prefix: string, body: any = {}, options: any = {}): any {
+    const url = BASE_API_URL + prefix;
     this.initOptions(options);
     return this.http.put(url, body, options);
   }
 
-  delete(prefix: string, params: any = {}, otherOptions: any = {}) {
-    let url = this.BASE_API_URL + prefix;
-    let options = otherOptions;
+  delete(prefix: string, params: any = {}, otherOptions: any = {}): any {
+    const url = BASE_API_URL + prefix;
+    const options = otherOptions;
     this.initOptions(options);
     options.params = params;
     return this.http.delete(url, options);
   }
 
-  initOptions(options: any){
-    /*
-    if(localStorage.getItem('currentUser')){
-      var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      var token = currentUser.token;
-      options.headers = options.headers.set('Authorization', `Token ${token}`)      
-      
-    }
-    options.headers = options.headers.set('Django-Language', lang);
-    this.cookies.set('django_language', lang, {secure: false});
-    let lang = this.translate.currentLang;
-    */
-   
+  initOptions(options: any) {
     options.headers = new HttpHeaders();
-    if(!environment.production){
-      let username = 'admin';
-      let password = 'htUgctJ4rYUWxt5';
+    if (!environment.production) {
+      const username = 'admin';
+      const password = 'htUgctJ4rYUWxt5';
       // username = 'NaZaR.IO';
       // password = 'cpython2428';
       // username = 'CPython.uz';
       // password = 'cpython';
-      const token = btoa(`${username}:${password}`);
-      options.headers = options.headers.set('Authorization', `Basic ${token}`);
+      const token = btoa(`${ username }:${ password }`);
+      options.headers = options.headers.set('Authorization', `Basic ${ token }`);
     }
     options.headers = options.headers.set('Content-Type', 'application/json; charset=utf-8');
     options.withCredentials = true;
@@ -106,9 +101,9 @@ export class ApiService {
     });
   }
 
-  handleConnectionError(){
-    if(!this.toastr.currentlyActive){
-      this.toastr.error('', 'Connection Error', { 
+  handleConnectionError() {
+    if (!this.toastr.currentlyActive) {
+      this.toastr.error('', 'Connection Error', {
         timeOut: 5000,
         positionClass: 'toast-bottom-left',
         toastClass: 'toast ngx-toastr',

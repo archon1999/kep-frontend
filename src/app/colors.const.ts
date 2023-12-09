@@ -1,6 +1,6 @@
 export const colors = {
   solid: {
-    primary: '#7367F0',
+    primary: '#4d4ae8',
     secondary: '#82868b',
     success: '#28C76F',
     info: '#00cfe8',
@@ -9,10 +9,10 @@ export const colors = {
     dark: '#4b4b4b',
     black: '#000',
     white: '#fff',
-    body: '#f8f8f8'
+    body: '#f5f8fa'
   },
   light: {
-    primary: '#7367F01a',
+    primary: '#4d4ae81a',
     secondary: '#82868b1a',
     success: '#28C76F1a',
     info: '#00cfe81a',

@@ -1,0 +1,67 @@
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+
+@import 'scss/base/pages/page-profile';
+
+@import url('https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css');
+
+@include media-breakpoint-down(sm) {
+  .profile-img-container {
+    bottom: -1rem !important;
+  }
+}
+
+.nav-link-text {
+  padding-left: 6px !important;
+}
+
+.badge i {
+  vertical-align: unset !important;
+}
+
+.img-fluid {
+  text-align: center !important;
+}
+
+.avatar-status-offline {
+  background-color: #82868b;
+}
+
+.avatar-status-online {
+  background-color: #28c76f;
+}
+
+[class*=avatar-status-] {
+  border-radius: 50%;
+  width: 11px;
+  display: inline-block;
+  height: 11px;
+  right: 0;
+  bottom: 0;
+}
+
+@include media-breakpoint-down(sm) {
+  .profile-img-container {
+    bottom: -1rem !important;
+  }
+}
+
+.badge-kep {
+  margin-left: 0.2rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  color: #6a5026;
+  box-shadow: 0 0 5px rgb(255, 200, 124) !important;
+  background: radial-gradient(circle at 10% 20%, rgb(255, 200, 124) 0%, rgb(252, 251, 121) 90%);
+
+  &:hover {
+    transform: scale(1.04);
+    transition: 0.5s;
+  }
+}
+
+::ng-deep .dark-layout .badge-kep {
+  background: radial-gradient(circle at 10% 20%, rgb(165, 99, 6) 0%, rgb(159, 159, 20)90%);
+  color: rgb(252, 251, 121);
+}

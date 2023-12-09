@@ -30,18 +30,8 @@
   </div>
   <div class="card-body">
     <div *ngIf="heatmap" #heatmapChartRef>
-      <apx-chart
-        [theme]="chartTheme"
-        [series]="heatmapChart.series"
-        [chart]="heatmapChart.chart"
-        [dataLabels]="heatmapChart.dataLabels"
-        [colors]="heatmapChart.colors"
-        [title]="heatmapChart.title"
-        [xaxis]="heatmapChart.xaxis"
-        [yaxis]="heatmapChart.yaxis"
-        [plotOptions]="heatmapChart.plotOptions"
-      >
-      </apx-chart>
+      <apex-chart [options]="heatmapChart">
+      </apex-chart>
     </div>
   </div>
 </div>

@@ -6,11 +6,4 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
   styleUrls: ['./sweet-alert.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class SweetAlertComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class SweetAlertComponent {}

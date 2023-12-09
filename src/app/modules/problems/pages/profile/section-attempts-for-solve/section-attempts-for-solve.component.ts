@@ -2,11 +2,18 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { colors } from 'app/colors.const';
 import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
+import { CoreCommonModule } from '@core/common.module';
+import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 
 @Component({
   selector: 'section-attempts-for-solve',
   templateUrl: './section-attempts-for-solve.component.html',
-  styleUrls: ['./section-attempts-for-solve.component.scss']
+  styleUrls: ['./section-attempts-for-solve.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ApexChartModule,
+  ]
 })
 export class SectionAttemptsForSolveComponent implements OnInit {
 
@@ -29,26 +36,26 @@ export class SectionAttemptsForSolveComponent implements OnInit {
       (text: string) => {
         this.solvedText = text;
       }
-    )
+    );
 
     this.translateService.get('NumberOfAttempts').subscribe(
       (text: string) => {
         this.numberOfAttemptsText = text;
       }
-    )
+    );
     this.numberOfAttemptsForSolveChartLoad();
   }
 
-  numberOfAttemptsForSolveChartLoad(){
-    let username = this.username;
-    let data = [];
-    let labels = [];
+  numberOfAttemptsForSolveChartLoad() {
+    const username = this.username;
+    const data = [];
+    const labels = [];
     this.statisticsService.getNumberOfAttemptsForSolve(username).subscribe((result: any) => {
-      for(let A of result.chartSeries){
+      for (const A of result.chartSeries) {
         data.push({
           x: this.numberOfAttemptsText + ': ' + A.attemptsCount,
           y: A.value,
-        })
+        });
         labels.push(A.attemptsCount);
       }
       this.numberOfAttemptsForSolveChart = {
@@ -57,7 +64,7 @@ export class SectionAttemptsForSolveComponent implements OnInit {
           data: data,
         }],
         chart: {
-          type: "area",
+          type: 'area',
           height: 300,
           zoom: {
             enabled: false
@@ -69,7 +76,7 @@ export class SectionAttemptsForSolveComponent implements OnInit {
           enabled: false
         },
         stroke: {
-          curve: "straight"
+          curve: 'straight'
         },
         xaxis: {
           labels: {
@@ -80,14 +87,14 @@ export class SectionAttemptsForSolveComponent implements OnInit {
         yaxis: {
           opposite: true,
           labels: {
-            formatter: function(val) {
-              return Math.trunc(val) + "%";
+            formatter: function (val) {
+              return Math.trunc(val) + '%';
             },
           },
           max: 100,
         },
         legend: {
-          horizontalAlign: "left"
+          horizontalAlign: 'left'
         }
       };
       this.numberOfAttemptsForSolve = result;

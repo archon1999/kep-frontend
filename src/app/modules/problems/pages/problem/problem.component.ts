@@ -1,16 +1,27 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, OnInit } from '@angular/core';
+import { Params } from '@angular/router';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
-import { ShepherdService } from 'angular-shepherd';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
-import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
-import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { Problem } from '../../models/problems.models';
+import { Problem } from '@problems/models/problems.models';
 import { ProblemsService } from '../../services/problems.service';
+import { Location } from '@angular/common';
+import { ApiService } from '@shared/services/api.service';
+import { ToastrService } from 'ngx-toastr';
+import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { CoreCommonModule } from '@core/common.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { ProblemDescriptionComponent } from '@problems/pages/problem/problem-description/problem-description.component';
+import { ProblemAttemptsComponent } from '@problems/pages/problem/problem-attempts/problem-attempts.component';
+import { ProblemHacksComponent } from '@problems/pages/problem/problem-hacks/problem-hacks.component';
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
+import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
+import { ProblemSidebarComponent } from '@problems/pages/problem/problem-sidebar/problem-sidebar.component';
+import { TourModule } from '@shared/third-part-modules/tour/tour.module';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
+import { BasePageComponent } from '@shared/components/classes/base-page.component';
 
 @Component({
   selector: 'app-problem',
@@ -20,42 +31,45 @@ import { ProblemsService } from '../../services/problems.service';
     fadeInLeftOnEnterAnimation({ duration: 1500 }),
     fadeInRightOnEnterAnimation({ duration: 1000 }),
   ],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ContentHeaderModule,
+    NgbNavModule,
+    ProblemDescriptionComponent,
+    ProblemAttemptsComponent,
+    ProblemHacksComponent,
+    MonacoEditorModule,
+    CodeEditorModule,
+    ProblemSidebarComponent,
+    TourModule,
+    NgSelectModule,
+    MonacoEditorComponent,
+  ]
 })
-export class ProblemComponent implements OnInit, OnDestroy {
-  public contentHeader: ContentHeader;
-
+export class ProblemComponent extends BasePageComponent implements OnInit {
   public problem: Problem;
-
-  public currentUser: User = this.authService.currentUserValue;
 
   public activeId = 1;
   public studyPlanId: number;
   public contestId: number;
 
   public submitEvent = new Subject();
-
-  private _unsubscribeAll = new Subject();
+  public checkInput = '';
 
   constructor(
-    public route: ActivatedRoute,
-    public authService: AuthenticationService,
     public service: ProblemsService,
-    public titleService: TitleService,
-    public translateService: TranslateService,
-    private shepherdService: ShepherdService,
-  ) { }
+    public api: ApiService,
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(
-      (params: any) => {
-        if(params['study-plan']){
-          this.studyPlanId = params['study-plan'];
-        }
-        if(params['contest']){
-          this.contestId = params['contest'];
-        }
-      }
-    )
+    if (this._queryParams.tab === 'hacks') {
+      this.activeId = 3;
+    } else if (this._queryParams.tab === 'attempts') {
+      this.activeId = 2;
+    }
 
     this.route.data.subscribe(({ problem }) => {
       this.problem = problem;
@@ -63,80 +77,32 @@ export class ProblemComponent implements OnInit, OnDestroy {
         problemTitle: this.problem.title,
         problemId: this.problem.id
       });
+      this.checkInput = this.problem.checkInputSource;
       this.loadContentHeader();
-    })
+    });
+  }
 
-    this.authService.currentUser
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((user: any) => {
-        if (user != this.currentUser) {
-          this.service.getProblem(this.problem.id).subscribe((problem: any) => this.problem = problem)
+  afterFirstChangeQueryParams(params: Params) {
+    if (params['study-plan']) {
+      this.studyPlanId = params['study-plan'];
+    }
+    if (params['contest']) {
+      this.contestId = params['contest'];
+    }
+  }
+
+  beforeChangeCurrentUser(currentUser: User) {
+    if (currentUser !== this.currentUser) {
+      this.service.getProblem(this.problem.id).subscribe(
+        (problem: Problem) => {
+          this.problem = problem;
         }
-        this.currentUser = user;
-      });
+      );
+    }
   }
 
-  ngAfterViewInit() {
-    let backBtnClass = 'btn btn-sm btn-outline-primary';
-    let nextBtnClass = 'btn btn-sm btn-primary btn-next';
-    
-    let translations = this.translateService.translations[this.translateService.currentLang];
-
-    let tourSteps = [
-      {
-        title: translations['ProblemTourSteps'][0].title,
-        text: translations['ProblemTourSteps'][0].text,
-        attachTo: {
-          element: '.tour-step-1',
-          on: 'bottom'
-        },
-        buttons: [
-          {
-            text: translations['Finish'],
-            type: 'cancel',
-            classes: backBtnClass
-          },
-          {
-            text: translations['Next'],
-            type: 'next',
-            classes: nextBtnClass
-          }
-        ],
-        useModalOverlay: true
-      },
-      {
-        title: translations['ProblemTourSteps'][1].title,
-        text: translations['ProblemTourSteps'][1].text,
-        attachTo: {
-          element: '.tour-step-2',
-          on: 'top'
-        },
-        buttons: [
-          {
-            text: translations['Finish'],
-            type: 'cancel',
-            classes: backBtnClass
-          },
-          {
-            text: translations['Back'],
-            type: 'back',
-            classes: backBtnClass
-          },
-        ]
-      },
-    ];
-
-    this.shepherdService.defaultStepOptions = {
-      cancelIcon: {
-        enabled: true
-      }
-    };
-    this.shepherdService.modal = true;
-    this.shepherdService.addSteps(tourSteps);
-  }
-
-  loadContentHeader(){
-    this.contentHeader = {
+  getContentHeader() {
+    return this.contentHeader = {
       headerTitle: this.problem.title,
       actionButton: true,
       breadcrumb: {
@@ -148,7 +114,7 @@ export class ProblemComponent implements OnInit, OnDestroy {
             link: '/practice/problems',
           },
           {
-            name: this.problem.id+"",
+            name: this.problem.id + '',
             isLink: false,
           },
         ]
@@ -156,12 +122,28 @@ export class ProblemComponent implements OnInit, OnDestroy {
     };
   }
 
-  startTour(){
-    this.shepherdService.start();
+  activeIdChange(index: number) {
+    if (index === 1) {
+      this.updateQueryParams({ tab: null });
+    } else if (index === 2) {
+      this.updateQueryParams({ tab: 'attempts' });
+    } else if (index === 3) {
+      this.updateQueryParams({ tab: 'hacks' });
+    }
   }
 
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+  saveCheckInput() {
+    this.api.post(`problems/${ this.problem.id }/save-check-input`, { source: this.checkInput }).subscribe(
+      () => {
+        this.toastr.success('Success');
+      }, () => {
+        this.toastr.error('Error');
+      }
+    );
   }
+
+  codeEditorSidebarToggle() {
+    this.coreSidebarService.getSidebarRegistry('codeEditorSidebar').toggleOpen();
+  }
+
 }

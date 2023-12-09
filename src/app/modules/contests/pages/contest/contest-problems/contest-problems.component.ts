@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreConfig } from '@core/types';
+import { CoreConfigService } from 'core/services/config.service';
+import { CoreConfig } from 'core/types';
 import { fadeInLeftAnimation, fadeInRightAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
@@ -85,7 +85,7 @@ export class ContestProblemsComponent implements OnInit, OnDestroy {
             link: '../../..'
           },
           {
-            name: this.contest.id+'',
+            name: this.contest?.id+'',
             isLink: true,
             link: '..'
           },
@@ -100,7 +100,7 @@ export class ContestProblemsComponent implements OnInit, OnDestroy {
   }
 
   reloadProblems(){
-    this.service.getContestProblems(this.contest.id).subscribe((result: any) => {
+    this.service.getContestProblems(this.contest?.id).subscribe((result: any) => {
       this.contestProblems = result.map((data: any) => ContestProblem.fromJSON(data));
       this.sortProblems();
     })
@@ -134,20 +134,6 @@ export class ContestProblemsComponent implements OnInit, OnDestroy {
         return 1;
       }
     });
-  }
-
-  onProblemFocus(symbol: string){
-    this.service.getContestProblem(this.contest.id, symbol).subscribe((result: any) => {
-      let problem = result.problem;
-      if(problem.id != 1637){
-        this.problems.set(symbol, problem);
-        this.problemShow.set(symbol, true);
-      }
-    });
-  }
-
-  removeProblem(symbol: string){
-    this.problemShow.set(symbol, false);
   }
 
   ngOnDestroy(): void {

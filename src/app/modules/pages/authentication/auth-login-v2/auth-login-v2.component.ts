@@ -4,7 +4,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
-import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfigService } from 'core/services/config.service';
 import { AuthenticationService } from 'app/auth/service';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
@@ -91,14 +91,17 @@ export class AuthLoginV2Component implements OnInit {
         this.loading = true;
         setTimeout(() => {
           this._router.navigate(['/home']);
-          this.toastr.success(this.loginSuccessText, `👋 ${this.welcomeText}, ` + user.firstName||user.username + '!', {
+          this.toastr.success(this.loginSuccessText, `👋 ${this.welcomeText}, ` + user.firstName || user.username + '!', {
             toastClass: 'toast ngx-toastr',
             closeButton: true
           });
           this.authService.updateMe();
         }, 1000);
       }, (err) => {
-        this.toastr.error(this.loginErrorText);
+        this.toastr.error('', this.loginErrorText, {
+          toastClass: 'toast ngx-toastr',
+          closeButton: true
+        });
       }
     );
   }
@@ -147,7 +150,7 @@ export class AuthLoginV2Component implements OnInit {
    */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next();
+    this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 }

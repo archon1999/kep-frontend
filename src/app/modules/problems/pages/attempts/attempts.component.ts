@@ -1,95 +1,68 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ApiService } from 'app/shared/services/api.service';
-import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
-import { Subject, asyncScheduler } from 'rxjs';
-import { takeUntil, throttleTime } from 'rxjs/operators';
-import { Attempt } from '../../models/attempts.models';
-
-const RELOAD_INTERVAL_TIME = 30000;
+import { Observable } from 'rxjs';
+import { Attempt } from '@problems/models/attempts.models';
+import { CoreCommonModule } from '@core/common.module';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
+import { ContentHeader } from '@layout/components/content-header/content-header.component';
+import { PageResult } from '@shared/components/classes/page-result';
+import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 
 @Component({
   selector: 'app-attempts',
   templateUrl: './attempts.component.html',
-  styleUrls: ['./attempts.component.scss']
+  styleUrls: ['./attempts.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    SpinnerComponent,
+    AttemptsTableModule,
+    KepPaginationComponent,
+    ContentHeaderModule,
+    KepTableComponent,
+  ]
 })
-export class AttemptsComponent implements OnInit, OnDestroy {
+export class AttemptsComponent extends BaseTablePageComponent<Attempt> implements OnInit, OnDestroy {
+  override maxSize = 7;
+  override defaultPageSize = 20;
 
-  public contentHeader = {
-    headerTitle: 'Attempts',
-    actionButton: true,
-    breadcrumb: {
-      type: '',
-      links: [
-        {
-          name: 'Problems',
-          isLink: true,
-          link: '/practice/problems'
-        }
-      ]
-    }
-  };
+  public myAttempts = false;
 
-  public currentPage: number = 1;
-  public totalAttemptsCount: number;
-  public attempts: Array<Attempt> = [];
-
-  public myAttempts: boolean = false;
-  public currentUser: User;
-
-  protected _reloader = new Subject();
-  private _unsubscribeAll = new Subject();
-  private _intervalId: any;
-
-  constructor(
-    public api: ApiService,
-    public route: ActivatedRoute,
-    public authService: AuthenticationService,
-  ) { }
-
-  ngOnInit(): void {
-    this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (user: any) => {
-        this.currentUser = user;
-        if (user) {
-          this.myAttempts = true;
-        }
-        setTimeout(() => this._reloader.next(), 100);
-      }
-    );
-
-    this._reloader.pipe(
-      throttleTime(500, asyncScheduler, { leading: true, trailing: true }),
-      takeUntil(this._unsubscribeAll),
-    ).subscribe(
-      () => {
-        this._loadPage();
-      }
-    )
-
-    this._intervalId = setInterval(() => this._reloader.next(), RELOAD_INTERVAL_TIME);
+  get attempts() {
+    return this.pageResult?.data;
   }
 
-  private _loadPage() {
-    console.log(123);
-    
-    var params: any = { page: this.currentPage };
+  ngOnInit(): void {
+    this.loadContentHeader();
+    this.reloadPage();
+  }
+
+  getPage(): Observable<PageResult<Attempt>> {
+    const params: any = { page: this.pageNumber };
     if (this.myAttempts && this.currentUser) {
       params.username = this.currentUser.username;
     }
-    this.api.get('attempts', params).subscribe((result: any) => {
-      this.attempts = result.data;
-      this.totalAttemptsCount = result.total;
-    });
+    return this.api.get('attempts', params);
   }
 
-  ngOnDestroy(): void {
-    if(this._intervalId){
-      clearInterval(this._intervalId);
-    }
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+  protected getContentHeader(): ContentHeader {
+    return {
+      headerTitle: 'Attempts',
+      actionButton: true,
+      breadcrumb: {
+        type: '',
+        links: [
+          {
+            name: 'Problems',
+            isLink: true,
+            link: '/practice/problems'
+          }
+        ]
+      },
+      refreshVisible: true,
+    };
   }
-
 }

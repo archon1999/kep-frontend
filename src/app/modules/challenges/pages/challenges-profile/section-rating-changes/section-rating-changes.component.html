@@ -1,0 +1,13 @@
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">
+      {{ 'RatingChanges' | translate }}
+    </div>
+  </div>
+  <div class="card-body">
+    <apex-chart
+      *ngIf="challengesRatingChangesChart"
+      [options]="challengesRatingChangesChart"
+    ></apex-chart>
+  </div>
+</div>

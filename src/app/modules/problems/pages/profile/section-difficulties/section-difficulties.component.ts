@@ -1,8 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { fadeInUpOnEnterAnimation } from 'angular-animations';
-import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
-import { SwiperOptions } from 'swiper';
+import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
+import { SwiperOptions } from 'swiper/types/swiper-options';
+import { CoreCommonModule } from '@core/common.module';
+import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
+import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
+import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
+import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 
 export interface Difficulties {
   beginner: number;
@@ -27,7 +32,15 @@ export interface Difficulties {
   selector: 'section-difficulties',
   templateUrl: './section-difficulties.component.html',
   styleUrls: ['./section-difficulties.component.scss'],
-  animations: [fadeInUpOnEnterAnimation({ duration: 3000 })]
+  animations: [fadeInUpOnEnterAnimation({ duration: 3000 })],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ApexChartModule,
+    SwiperComponent,
+    NgbProgressbarModule,
+    ProblemsPipesModule,
+  ]
 })
 export class SectionDifficultiesComponent implements OnInit {
 
@@ -50,23 +63,24 @@ export class SectionDifficultiesComponent implements OnInit {
     allExtremal: 1,
     totalSolved: 0,
     totalProblems: 1,
-  }
+  };
 
   public chartOptions: any;
 
   public swiperConfig: SwiperOptions = {
-    direction: "vertical",
+    direction: 'vertical',
     slidesPerView: 3,
     spaceBetween: 10,
+    autoHeight: false,
   };
 
   constructor(
     public statisticsService: ProblemsStatisticsService,
     public translateService: TranslateService,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    let translations = this.translateService.translations[this.translateService.currentLang];
+    const translations = this.translateService.translations[this.translateService.currentLang];
 
     this.statisticsService.getByDifficulty(this.username).subscribe(
       (difficulties: Difficulties) => {
@@ -75,7 +89,7 @@ export class SectionDifficultiesComponent implements OnInit {
           series: [100 * difficulties.totalSolved / difficulties.totalProblems],
           chart: {
             height: '200px',
-            type: "radialBar",
+            type: 'radialBar',
             toolbar: {
               show: false,
             }
@@ -86,9 +100,9 @@ export class SectionDifficultiesComponent implements OnInit {
               endAngle: 225,
               hollow: {
                 margin: 0,
-                size: "70%",
+                size: '70%',
                 image: undefined,
-                position: "front",
+                position: 'front',
                 dropShadow: {
                   enabled: true,
                   top: 3,
@@ -98,7 +112,7 @@ export class SectionDifficultiesComponent implements OnInit {
                 }
               },
               track: {
-                strokeWidth: "67%",
+                strokeWidth: '67%',
                 margin: 0, // margin is in pixels
                 dropShadow: {
                   enabled: true,
@@ -108,33 +122,33 @@ export class SectionDifficultiesComponent implements OnInit {
                   opacity: 0.35
                 }
               },
-    
+
               dataLabels: {
                 show: true,
                 name: {
                   offsetY: -10,
                   show: true,
-                  color: "#888",
-                  fontSize: "17px"
+                  color: '#888',
+                  fontSize: '17px'
                 },
                 value: {
-                  formatter: function(val) {
+                  formatter: function (val) {
                     return parseInt(val.toString(), 10).toString();
                   },
-                  color: "#111",
-                  fontSize: "36px",
+                  color: '#111',
+                  fontSize: '36px',
                   show: true
                 }
               }
             }
           },
           fill: {
-            type: "gradient",
+            type: 'gradient',
             gradient: {
-              shade: "dark",
-              type: "horizontal",
+              shade: 'dark',
+              type: 'horizontal',
               shadeIntensity: 0.5,
-              gradientToColors: ["#ABE5A1"],
+              gradientToColors: ['#ABE5A1'],
               inverseColors: true,
               opacityFrom: 1,
               opacityTo: 1,
@@ -142,12 +156,12 @@ export class SectionDifficultiesComponent implements OnInit {
             }
           },
           stroke: {
-            lineCap: "round"
+            lineCap: 'round'
           },
           labels: [translations['Percent']]
         };
       }
-    )
+    );
   }
 
 }

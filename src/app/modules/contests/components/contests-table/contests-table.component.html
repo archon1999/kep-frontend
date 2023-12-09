@@ -1,6 +1,7 @@
-<div class="table-responsive">
-  <table class="table">
-    <thead>
+<div class="card">
+  <div class="table-responsive contests-colors contest-{{ contests[0].id }} {{ contests[0].title }} contest-type-{{ contests[0].type }}">
+    <table class="table beautiful-table">
+      <thead>
       <tr class="bg-gradient-primary">
         <th class="text-center">{{ 'CONTESTS.TITLE' | translate }}</th>
         <th class="text-center">{{ 'CONTESTS.AUTHORS' | translate }}</th>
@@ -21,12 +22,12 @@
           </span>
         </th>
       </tr>
-    </thead>
-    <tbody>
+      </thead>
+      <tbody>
       <tr *ngFor="let contest of contests">
         <td class="text-center text-dark">
           <i [data-feather]="'contest' | iconName" [size]="20"></i>
-          <a [routerLink]="['/competitions', 'contests', 'contest', contest.id]">            
+          <a [routerLink]="['/competitions', 'contests', 'contest', contest.id]">
             {{ contest.title }}
           </a>
           <br>
@@ -40,56 +41,59 @@
           </div>
         </td>
 
-        <td class="text-center text-primary">
+        <td class="text-center text-dark">
           <u>{{ contest.startTime | date:'y/MM/dd'}}</u>
           <br>
           <u>{{ contest.startTime | date:'H:mm'}}</u>
         </td>
 
-        <td class="text-center text-primary">
+        <td class="text-center text-dark">
           <u>{{ contest.finishTime | date:'y/MM/dd'}}</u>
           <br>
           <u>{{ contest.finishTime | date:'H:mm'}}</u>
         </td>
 
         <td class="text-center">
-          <span class="badge badge-glow badge-light-{{ contest.getBadgeType() }}">
+          <span class="badge contest-badge">
             {{ contest.type }}
           </span>
         </td>
 
         <td class="text-center">
           <div *ngIf="contest.status == -1">
-            <span class="badge badge-glow badge-primary">
+            <span class="badge contest-badge">
               {{ contest.problemsCount }}
             </span>
           </div>
           <div *ngIf="contest.status != -1">
-            <contest-standings-popover [contest]="contest"></contest-standings-popover>
+            <!-- <contest-standings-popover [contest]="contest"></contest-standings-popover> -->
+            <a class="btn btn-sm round" [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'standings']">
+              {{ 'CONTESTS.STANDINGS' | translate }}
+            </a>
             <br>
-            <span *ngIf="currentUser" class="badge mt-1 badge-light-primary badge-glow">
-              {{ contest.solved }} / {{ contest.problemsCount }}
+            <span *ngIf="currentUser" class="badge mt-1 contest-badge-light">
+              {{ 0 }} / {{ contest.problemsCount }}
             </span>
           </div>
         </td>
 
         <td class="text-center text-primary">
-          <div class="avatar bg-light-primary p-50 m-0 mb-1">
+          <div class="avatar p-50 m-0 mb-1">
             <div class="avatar-content">
               <i data-feather="users" class="font-medium-3"></i>
             </div>
           </div>
           <h5 class="font-weight-bolder">
             <span
-              class="badge-glow badge badge-primary"
+              class="badge contest-badge"
               [countUp]="contest.contestantsCount || contest.registrantsCount"
               [options]="{ duration: 5, reanimateOnClick: false }">
             </span>
           </h5>
         </td>
       </tr>
-    </tbody>
-    <tfoot *ngIf="contests.length > 1">
+      </tbody>
+      <tfoot *ngIf="contests.length > 1">
       <tr>
         <th class="text-center">{{ 'CONTESTS.TITLE' | translate }}</th>
         <th class="text-center">{{ 'CONTESTS.AUTHORS' | translate }}</th>
@@ -106,6 +110,7 @@
           </span>
         </th>
       </tr>
-    </tfoot>
-  </table>
+      </tfoot>
+    </table>
+  </div>
 </div>

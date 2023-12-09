@@ -1,43 +1,6 @@
-@mixin define-new-color($name, $bg-color, $color, $box-shadow, $bg-light-color: false) {
-  .bg-#{$name} {
-    background-color: $bg-color;
-  }
-
-  .text-#{$name} {
-    color: $color;
-  }
-
-  .badge-#{$name} {
-    background-color: $bg-color;
-  }
-
-  .badge-#{$name}.badge-glow {
-    box-shadow: $box-shadow;
-  }
-
-  @if $bg-light-color != false {
-    .badge.badge-light-#{$name} {
-      color: $color;
-      background-color: $bg-light-color;
-    } 
-  }
-}
-
-@include define-new-color(
-  $name: 'blue',
-  $bg-color: #4362eef0,
-  $bg-light-color: rgba(0, 62, 232, 0.12),
-  $color: #4362eef0,
-  $box-shadow: 0px 0px 10px #93bae9,
-);
-
-@include define-new-color(
-  $name: 'yellow',
-  $bg-color: rgb(191 200 0 / 94%),
-  $bg-light-color: rgba(162, 232, 0, 0.12),
-  $color: #adb51b,
-  $box-shadow: 0px 0px 10px #e3e993,
-);
+@import 'scss/base/bootstrap-extended/variables';
+@import 'bootstrap/scss/mixins/dark-layout';
+@import 'bootstrap/scss/mixins/breakpoints';
 
 .badge {
   font-weight: 500 !important;
@@ -52,13 +15,11 @@
 
 .badge-pill {
   display: inline-block !important;
-  padding: 0.3rem 0.5rem !important;
-  padding-right: 0.5rem !important;
-  padding-left: 0.5rem !important;
+  // padding: 0.3rem 0.5rem !important;
+  padding: 0.2rem 0.6rem !important;
   border-radius: 10rem !important;
   font-size: 85% !important;
-  font-weight: 600 !important;
-  line-height: 1 !important;
+  // font-weight: 600 !important;
   text-align: center !important;
   white-space: nowrap !important;
   vertical-align: baseline !important;
@@ -72,7 +33,7 @@ apx-chart {
 
   .apexcharts-tooltip {
     .card {
-      margin-bottom: 0rem !important;
+      margin-bottom: 0 !important;
     }
   }
 }
@@ -83,7 +44,6 @@ th {
 }
 
 html {
-  overflow: -moz-scrollbars-vertical;
   overflow-y: scroll
 }
 
@@ -152,8 +112,8 @@ pre {
 }
 
 ::selection {
-  color: #8f84f3;
-  background: #e3e1fc;
+  color: rgb(115, 103, 240, 0.8);
+  background: rgb(115, 103, 240, 0.1);
 }
 
 .dark-layout .badge.badge-light-dark {
@@ -161,11 +121,6 @@ pre {
 }
 
 .hljs-ln-numbers {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 
   text-align: center;
@@ -177,4 +132,109 @@ pre {
 
 .hljs-ln-code {
   padding-left: 10px;
+}
+
+.tooltip-primary .tooltip-inner {
+  color: $primary;
+  background-color: rgba($primary, 0.1);
+}
+
+.tooltip-success .tooltip-inner {
+  color: #8ca49f;
+  background-color: #ddf5f0;
+}
+
+.tooltip-danger .tooltip-inner {
+  //color: #ea5455;
+  //background-color: rgba(234, 84, 85, 0.1);
+  color: white;
+  background-color: #ea5455;
+  box-shadow: 0 0 10px #ea5455 !important;
+}
+
+.tooltip-primary .arrow:before {
+  border-top-color: #f3effc;
+}
+
+.tooltip-success .arrow:before {
+  border-top-color: #ddf5f0;
+}
+
+.tooltip-danger .arrow:before {
+  border-top-color: #ea5455;
+}
+
+.ng-invalid.ng-touched {
+  border-color: #ea5455 !important;
+}
+
+:root {
+  --skeleton-color: #dedede;
+}
+
+:root .dark-layout {
+  --skeleton-color: #273357;
+}
+
+:root {
+  --inherit-bg-box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1);
+}
+
+:root .dark-layout {
+  --inherit-bg-box-shadow: 0 4px 24px 0 rgba(255, 255, 255, 0.1);
+}
+
+.new-feature {
+  position: absolute;
+  top: -0.5rem;
+  left: -0.8rem;
+  width: 35px;
+  height: 16px;
+  font-size: 10px !important;
+  padding: 1px !important;
+  transform: rotate(332deg);
+}
+
+.beautiful-table {
+  transition: all 0.2s ease;
+  opacity: 0.9;
+  border: none;
+  box-shadow: var(--inherit-bg-box-shadow) !important;
+  border-radius: 10px;
+
+  th,
+  td {
+    border-top: none;
+    padding-top: 1.15rem;
+    padding-bottom: 1.15rem;
+  }
+
+  thead tr:hover {
+    transform: none !important;
+  }
+}
+
+.ngx-spinner-overlay {
+  z-index: inherit !important;
+}
+
+@media (min-width: 1440px) {
+  .container-xxl {
+    max-width: 1440px;
+  }
+}
+
+#main-menu-navigation > li[core-menu-horizontal-item], li[core-menu-horizontal-collapsible], .main-menu.expanded li[core-menu-vertical-item] {
+  &.active > a > kep-icon > span {
+    color: white !important;
+  }
+}
+
+.main-menu {
+  transition: 1s ease;
+}
+
+.main-menu:not(.expanded) kep-icon > span {
+  margin-right: 1rem;
+  transition: 1s ease-in;
 }

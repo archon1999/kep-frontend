@@ -1,16 +1,11 @@
-import { AttemptLangs } from "../enums/attempt-lang.enum";
+import { AttemptLangs } from '../constants';
 
 export function getEditorLang(lang: string) {
-    if (lang == AttemptLangs.CPP) {
-      return 'cpp';
-    } else if (lang == AttemptLangs.PYTHON) {
-      return 'python';
-    } else if (lang == AttemptLangs.HASKELL) {
-      return 'haskell';
-    } else if (lang == AttemptLangs.KOTLIN) {
-      return 'kotlin';
-    } else if (lang == AttemptLangs.CSHARP) {
-      return 'csharp';
-    }
-    return lang;
-  }
+  return {
+    [AttemptLangs.PYTHON]: 'python',
+    [AttemptLangs.KOTLIN]: 'kotlin',
+    [AttemptLangs.CSHARP]: 'csharp',
+    [AttemptLangs.JS]: 'javascript',
+    [AttemptLangs.RUST]: 'rust',
+  }[lang] || lang;
+}

@@ -45,16 +45,10 @@
         </div>
   
         <div class="col-6">
-          <apx-chart *ngIf="activityChart && activitySolved > 0"
-            [chart]="activityChart.chart"
-            [colors]="activityChart.colors"
-            [series]="activityChart.series"
-            [yaxis]="activityChart.yaxis"
-            [plotOptions]="activityChart.plotOptions"
-            [tooltip]="activityChart.tooltip"
-            [grid]="activityChart.grid"
-            [theme]="chartTheme"
-          ></apx-chart>
+          <apex-chart
+            *ngIf="activityChart && activitySolved > 0"
+            [options]="activityChart"
+          ></apex-chart>
         </div>
       </div>
     </div>

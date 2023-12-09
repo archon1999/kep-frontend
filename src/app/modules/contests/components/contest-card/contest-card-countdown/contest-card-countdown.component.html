@@ -1,18 +1,21 @@
-<div class="card" [ngClass]="{'bg-contest': coreConfig.layout.skin != 'dark'}">
+<div class="card contests-colors contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
+  <div *ngIf="contest.logo" class="card-bg">
+    <img [src]="contest.logo" alt="">
+  </div>
+
   <div class="card-body mt-1">
-    <h4 *ngIf="contest.status == 0" [ngClass]="{'text-primary': coreConfig.layout.skin != 'dark'}" class="text-center mb-1">
+    <h4 *ngIf="contest.status == 0" class="text-center mb-1">
       {{ 'CONTESTS.CONTEST_ENDS' | translate }}
     </h4>
-    <h4 *ngIf="contest.status == -1" [ngClass]="{'text-primary': coreConfig.layout.skin != 'dark'}" class="text-center mb-1">
+    <h4 *ngIf="contest.status == -1" class="text-center mb-1">
       {{ 'CONTESTS.CONTEST_STARTS' | translate }}
     </h4>
-    <h4 *ngIf="contest.status == 1" [ngClass]="{'text-primary': coreConfig.layout.skin != 'dark'}" class="text-center mb-1">
+    <h4 *ngIf="contest.status == 1" class="text-center mb-1">
       {{ 'CONTESTS.CONTEST_FINISHED' | translate }}
     </h4>
   </div>
   <div class="card-footer">
-    <contest-countdown [clockColor]="clockColor" [textColor]="textColor" [contest]="contest"></contest-countdown>
-
-    <h3 [ngClass]="{'text-primary': coreConfig.layout.skin != 'dark'}" class="text-center" *ngIf="contest.status == 1">{{ contest.finishTime | localizedDate:'medium' }}</h3>
+    <contest-countdown [clockColor]="'#fff'" [textColor]="'#fff'" [contest]="contest"></contest-countdown>
+    <h3 class="text-center mb-1 mt-1" *ngIf="contest.status == 1">{{ contest.finishTime | localizedDate:'medium' }}</h3>
   </div>
 </div>

@@ -1,28 +1,50 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
-import { CoreDirectivesModule } from '@core/directives/directives';
-import { CorePipesModule } from '@core/pipes/pipes.module';
-import { NgbModule, NgbPaginationModule, NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { CoreDirectivesModule } from '@shared/directives/directives.module';
+import { CorePipesModule } from '@shared/pipes/pipes.module';
+import { NgbModule, NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
-import { BlogPostCardModule } from '../blog/components/blog-post-card/blog-post-card.module';
-import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
-import { UsersComponent } from './users.component';
-import { UserBlogResolver, UserChallengesRatingResolver, UserContestsRatingResolver, UserEducationsResolver, UserInfoResolver, UserProblemsRatingResolver, UserResolver, UserSkillsResolver, UserSocialResolver, UserTechnologiesResolver, UserWorkExperiencesResolver } from './users.resolver';
-import { UserProfileComponent } from './user-profile/user-profile.component';
-import { UserBlogComponent } from './user-profile/user-blog/user-blog.component';
-import { UserRatingsComponent } from './user-profile/user-ratings/user-ratings.component';
-import { ContestantViewModule } from '../../shared/components/contestant-view/contestant-view.module';
-import { FormsModule } from '@angular/forms';
-import { NgApexchartsModule } from 'ng-apexcharts';
-import { UserCardComponent } from './user-card/user-card.component';
-import { UserAchievementsComponent } from './user-profile/user-achievements/user-achievements.component';
-import { AchievementComponent } from './user-profile/user-achievements/achievement/achievement.component';
+import { KepcoinViewModule } from 'app/shared/components/kepcoin-view/kepcoin-view.module';
+import { StreakModule } from 'app/shared/components/streak/streak.module';
+import { TableOrderingModule } from 'app/shared/components/table-ordering/table-ordering.module';
 import { UsersChartModule } from 'app/shared/components/users-chart/users-chart.module';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
+import { BlogPostCardModule } from '../blog/components/blog-post-card/blog-post-card.module';
+import { ChallengesUserViewModule } from '@challenges/components/challenges-user-view/challenges-user-view.module';
+import { UserCardComponent } from './components/user-card/user-card.component';
+import { AchievementComponent } from './pages/user-profile/user-achievements/achievement/achievement.component';
+import { UserAchievementsComponent } from './pages/user-profile/user-achievements/user-achievements.component';
+import { UserBlogComponent } from './pages/user-profile/user-blog/user-blog.component';
+import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { UserRatingsComponent } from './pages/user-profile/user-ratings/user-ratings.component';
+import { UsersComponent } from './pages/users/users.component';
+import {
+  UserBlogResolver,
+  UserChallengesRatingResolver,
+  UserContestsRatingResolver,
+  UserEducationsResolver,
+  UserInfoResolver,
+  UserProblemsRatingResolver,
+  UserResolver,
+  UserSkillsResolver,
+  UserSocialResolver,
+  UserTechnologiesResolver,
+  UserWorkExperiencesResolver
+} from './users.resolver';
+import { NgSelectModule } from 'app/shared/third-part-modules/ng-select/ng-select.module';
+import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
+import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 
 const routes: Routes = [
-  { 
+  {
     path: 'user/:username',
     component: UserProfileComponent,
     data: {
@@ -46,8 +68,8 @@ const routes: Routes = [
   {
     path: '',
     component: UsersComponent,
-    data: { animation: 'users '},
-    title: 'Users.Users',   
+    data: { animation: 'users ' },
+    title: 'Users.Users',
   }
 ];
 
@@ -72,7 +94,6 @@ const routes: Routes = [
     NgbModule,
     UserPopoverModule,
     NgbTooltipModule,
-    NgbPaginationModule,
     BlogPostCardModule,
     NgbTooltipModule,
     ContestantViewModule,
@@ -80,6 +101,19 @@ const routes: Routes = [
     NgApexchartsModule,
     ContestantViewModule,
     UsersChartModule,
+    ChallengesUserViewModule,
+    KepcoinViewModule,
+    StreakModule,
+    TableOrderingModule,
+    KepPaginationComponent,
+    NgSelectModule,
+    ReactiveFormsModule,
+    ProblemsPipesModule,
+    NgxCountriesModule.forRoot({
+      defaultLocale: 'en'
+    }),
+    EmptyResultComponent,
+    SpinnerComponent,
   ],
   providers: [
     UserResolver,
@@ -102,4 +136,5 @@ const routes: Routes = [
     UserChallengesRatingResolver,
   ]
 })
-export class UsersModule { }
+export class UsersModule {
+}

@@ -53,6 +53,7 @@ export class UserInfo {
 export class UserSocial {
   constructor(
     public codeforcesHandle: string,
+    public codeforcesBadge: string,
     public telegram: string,
   ) { }
 }

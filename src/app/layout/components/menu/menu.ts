@@ -1,4 +1,4 @@
-import { CoreMenu } from '../../../../@core/types'
+import { CoreMenu } from '@core/types';
 
 export const menu: CoreMenu[] = [
   {
@@ -15,31 +15,31 @@ export const menu: CoreMenu[] = [
     title: 'Learn',
     translate: 'MENU.LEARN',
     type: 'section',
-    icon: 'book',
+    icon: 'learn',
     children: [
       {
         id: 'courses',
         title: 'Courses',
         translate: 'MENU.COURSES',
         type: 'item',
-        icon: 'book-open',
-        url: '/learn/courses',  
+        icon: 'course',
+        url: '/learn/courses',
       },
-      {
-        id: 'lugavar',
-        title: 'Lugavar',
-        translate: 'MENU.LUGAVAR',
-        type: 'item',
-        icon: 'bookmark',
-        url: '/learn/lugavar',  
-      },
+      // {
+      //   id: 'lugavar',
+      //   title: 'Lugavar',
+      //   translate: 'MENU.LUGAVAR',
+      //   type: 'item',
+      //   icon: 'bookmark',
+      //   url: '/learn/lugavar',
+      // },
       {
         id: 'blog',
         title: 'Blog',
         translate: 'MENU.BLOG',
         type: 'item',
-        icon: 'edit-2',
-        url: '/learn/blog',  
+        icon: 'blog',
+        url: '/learn/blog',
       },
     ]
   },
@@ -48,14 +48,14 @@ export const menu: CoreMenu[] = [
     title: 'Practice',
     translate: 'MENU.PRACTICE',
     type: 'section',
-    icon: 'edit',
+    icon: 'practice',
     children: [
       {
         id: 'problems',
         title: 'Problems',
         translate: 'MENU.PROBLEMS',
         type: 'item',
-        icon: 'menu',
+        icon: 'problem',
         url: '/practice/problems',
       },
       {
@@ -63,7 +63,7 @@ export const menu: CoreMenu[] = [
         title: 'Tests',
         translate: 'MENU.TESTS',
         type: 'item',
-        icon: 'edit-3',
+        icon: 'test',
         url: '/practice/tests',
       },
       {
@@ -71,17 +71,17 @@ export const menu: CoreMenu[] = [
         title: 'Challenges',
         translate: 'MENU.CHALLENGES',
         type: 'item',
-        icon: 'zap',
+        icon: 'challenge',
         url: '/practice/challenges',
       },
-      {
-        id: 'projects',
-        title: 'Projects',
-        translate: 'MENU.PROJECTS',
-        type: 'item',
-        icon: 'slack',
-        url: '/practice/projects',
-      },
+      // {
+      //   id: 'projects',
+      //   title: 'Projects',
+      //   translate: 'MENU.PROJECTS',
+      //   type: 'item',
+      //   icon: 'slack',
+      //   url: '/practice/projects',
+      // },
     ]
   },
   {
@@ -89,14 +89,14 @@ export const menu: CoreMenu[] = [
     title: 'Competitions',
     translate: 'MENU.COMPETITIONS',
     type: 'section',
-    icon: 'zap',
+    icon: 'cup',
     children: [
       {
         id: 'contests',
         title: 'Contests',
         translate: 'MENU.CONTESTS',
         type: 'item',
-        icon: 'flag',
+        icon: 'contest',
         url: '/competitions/contests',
       },
       {
@@ -104,7 +104,7 @@ export const menu: CoreMenu[] = [
         title: 'Arena',
         translate: 'MENU.ARENA',
         type: 'item',
-        icon: 'shield',
+        icon: 'arena',
         url: '/competitions/arena',
       },
       {
@@ -112,9 +112,17 @@ export const menu: CoreMenu[] = [
         title: 'Tournaments',
         translate: 'MENU.TOURNAMENTS',
         type: 'item',
-        icon: 'award',
+        icon: 'tournament',
         url: '/competitions/tournaments',
       },
+      // {
+      //   id: 'code-rush',
+      //   title: 'Code rush',
+      //   translate: 'MENU.CODE_RUSH',
+      //   type: 'item',
+      //   icon: 'code',
+      //   url: '/competitions/code-rush',
+      // },
     ]
   },
   {
@@ -125,25 +133,12 @@ export const menu: CoreMenu[] = [
     icon: 'users',
     url: '/users',
   },
-
   {
-    id: 'help',
-    title: 'Help',
-    translate: 'MENU.HELP',
-    type: 'section',
-    icon: 'help-circle',
-    children: [
-      
-    ]
+    id: 'todo',
+    title: 'Todo',
+    translate: 'MENU.TODO',
+    type: 'item',
+    icon: 'todo',
+    url: '/todo',
   },
-  {
-    id: 'help_project',
-    title: 'Help project',
-    translate: 'MENU.HELP_PROJECT',
-    type: 'section',
-    icon: 'git-pull-request',
-    children: [
-      
-    ]
-  },
-]
+];

@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Contest } from '../../../../../contests/contests.models';
-import { SwiperOptions } from 'swiper';
+import { Contest } from '@contests/contests.models';
+import { SwiperOptions } from 'swiper/types/swiper-options';
+import { CoreCommonModule } from '@core/common.module';
 
 @Component({
   selector: 'section-contests',
   templateUrl: './section-contests.component.html',
   styleUrls: ['./section-contests.component.scss'],
-  animations: []
+  animations: [],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+  ]
 })
 export class SectionContestsComponent implements OnInit {
 
@@ -30,16 +35,16 @@ export class SectionContestsComponent implements OnInit {
         spaceBetween: 50
       },
     }
-  }
+  };
 
   constructor(
     public route: ActivatedRoute,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe(({ contests }) => {
       this.contests = contests.map((contest: any) => Contest.fromJSON(contest));
-    })
+    });
   }
 
 }

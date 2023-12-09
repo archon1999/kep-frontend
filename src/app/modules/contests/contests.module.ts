@@ -2,25 +2,36 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
-import { CoreDirectivesModule } from '@core/directives/directives';
-import { CorePipesModule } from '@core/pipes/pipes.module';
-import { NgbDropdownModule, NgbNavModule, NgbPopoverModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { CoreDirectivesModule } from '@shared/directives/directives.module';
+import { CorePipesModule } from '@shared/pipes/pipes.module';
+import {
+  NgbDatepickerModule,
+  NgbDropdownModule,
+  NgbNavModule,
+  NgbPopoverModule,
+  NgbTimepickerModule,
+  NgbTooltipModule
+} from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 
-import { NgSelectModule } from '../../shared/third-part-modules/ng-select/ng-select.module';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 
 import { AuthGuard } from 'app/auth/helpers';
 import { CountUpModule } from 'ngx-countup';
-import { MonacoEditorModule } from 'ngx-monaco-editor';
-import { NgxUsefulSwiperModule } from 'ngx-useful-swiper';
-import { ClipboardModule } from '../../shared/components/clipboard/clipboard.module';
-import { CodeEditorModule } from '../../shared/components/code-editor/code-editor.module';
-import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
-import { ProblemBodyModule } from '../problems/components/problem-body/problem-body.module';
-import { MathjaxModule } from '../../shared/third-part-modules/mathjax/mathjax.module';
-import { ContestGuard } from './contests.guard';
-import { ContestProblemResolver, ContestProblemsResolver, ContestResolver, OngoingContestsResolver, UpcomingContestsResolver } from './contests.resolver';
+import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
+import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
+import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
+import { ProblemBodyModule } from '@problems/components/problem-body/problem-body.module';
+import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
+import { ContestCreateGuard, ContestGuard } from './contests.guard';
+import {
+  ContestProblemResolver,
+  ContestProblemsResolver,
+  ContestResolver,
+  OngoingContestsResolver,
+  UpcomingContestsResolver
+} from './contests.resolver';
 import { ContestAttemptsComponent } from './pages/contest/contest-attempts/contest-attempts.component';
 import { ContestOgImageComponent } from './pages/contest/contest-og-image/contest-og-image.component';
 import { ContestProblemComponent } from './pages/contest/contest-problem/contest-problem.component';
@@ -32,14 +43,23 @@ import { ContestTabComponent } from './pages/contest/contest-tab/contest-tab.com
 import { ContestComponent } from './pages/contest/contest.component';
 import { ContestsTabComponent } from './pages/contests/contests-tab/contests-tab.component';
 import { ContestsComponent } from './pages/contests/contests.component';
-import { ContestsSectionCategoriesComponent } from './pages/contests/sections/contests-section-categories/contests-section-categories.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { RatingComponent } from './pages/rating/rating.component';
 import { ContestsTableModule } from './components/contests-table/contests-table.module';
 import { ContestCardModule } from './components/contest-card/contest-card.module';
-import { ContestantViewModule } from '../../shared/components/contestant-view/contestant-view.module';
-import { AttemptsTableModule } from '../problems/components/attempts-table/attempts-table.module';
-import { PaginationModule } from 'app/shared/components/pagination/pagination.module';
+import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
+import { ContestProblemCardComponent } from './components/contest-problem-card/contest-problem-card.component';
+import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
+import { ProblemInfoCardComponent } from '@problems/components/problem-info-card/problem-info-card.component';
+import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
+import { ContestCardComponent } from '@contests/components/contest-card/contest-card/contest-card.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
+import { UserContestsComponent } from '@contests/pages/user-contests/user-contests.component';
+import { ContestCreateComponent } from '@contests/pages/user-contests/contest-create/contest-create.component';
+import { KepcoinSpendSwalModule } from '../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 
 
 const routes: Routes = [
@@ -150,22 +170,31 @@ const routes: Routes = [
       contest: ContestResolver,
     },
   },
-  { 
+  {
     path: 'user-contests',
-    loadChildren: () => import('./pages/user-contests/user-contests.module').then(m => m.UserContestsModule)
+    component: UserContestsComponent,
+    data: { animation: 'user-contests' },
+    title: 'Contests.MyContests',
+  },
+  {
+    path: 'user-contests/create',
+    component: ContestCreateComponent,
+    data: {
+      animation: 'user-contest-create',
+    },
+    title: 'Contests.CreateContest',
+    canActivate: [ContestCreateGuard],
   },
 ];
 
 
 @NgModule({
   declarations: [
-    ContestsComponent,
     ContestComponent,
     RatingComponent,
     ProfileComponent,
     ContestTabComponent,
     ContestsTabComponent,
-    ContestsSectionCategoriesComponent,
     ContestOgImageComponent,
     ContestRatingChangesComponent,
     ContestStandingsComponent,
@@ -173,8 +202,12 @@ const routes: Routes = [
     ContestProblemComponent,
     ContestQuestionsComponent,
     ContestProblemsComponent,
+    ContestProblemCardComponent,
+    UserContestsComponent,
+    ContestCreateComponent,
   ],
   imports: [
+    ContestsComponent,
     CommonModule,
     RouterModule.forChild(routes),
     CoreDirectivesModule,
@@ -184,6 +217,7 @@ const routes: Routes = [
     CorePipesModule,
     NgbNavModule,
     ContestsTableModule,
+    ContestCardComponent,
     ContestCardModule,
     ContestantViewModule,
     NgbTooltipModule,
@@ -193,15 +227,21 @@ const routes: Routes = [
     MathjaxModule,
     ClipboardModule,
     CodeEditorModule,
-    MonacoEditorModule,
+    MonacoEditorComponent,
     MathjaxModule,
     UserPopoverModule,
     CountUpModule,
-    NgxUsefulSwiperModule,
     NgbPopoverModule,
     ProblemBodyModule,
+    KepcoinSpendSwalModule,
     AttemptsTableModule,
-    PaginationModule,
+    KepPaginationComponent,
+    SwiperComponent,
+    ProblemInfoCardComponent,
+    KepTableComponent,
+    NgbTimepickerModule,
+    NgbDatepickerModule,
+    EmptyResultComponent,
   ],
   providers: [
     ContestGuard,
@@ -212,4 +252,5 @@ const routes: Routes = [
     UpcomingContestsResolver
   ]
 })
-export class ContestsModule { }
+export class ContestsModule {
+}

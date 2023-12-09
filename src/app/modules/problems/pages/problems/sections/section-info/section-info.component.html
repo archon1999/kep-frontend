@@ -1,28 +1,59 @@
-<div class="problems-section-info">
-  <a class="blog-card" routerLink="/learn/blog/post/52">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          {{ 'AboutProblems' | translate }}
-        </div>
+<div class="text-center">
+  <div [@fadeInUpOnEnter]
+       class="avatar avatar-lg badge-glow bg-primary p-50 m-0 mb-1">
+    <a class="text-white">
+      <div class="avatar-content">
+        <kep-icon type="solid" name="problem"></kep-icon>
       </div>
-  
-      <div class="card-img">
-        <img class="info-img" src="assets/images/pages/graphic-3.png" alt="">
+    </a>
+  </div>
+
+  <h2 [@fadeInUpOnEnter] class="mt-1 text-white">{{ 'Problems' | translate }}</h2>
+  <h5 [@fadeInUpOnEnter] class="mt-2 text-white">{{ 'ProblemsPageTitleText' | translate }}</h5>
+
+  <div [@fadeInUpOnEnter] class="mt-2">
+    <a routerLink="rating" class="btn btn-primary mr-md-1 mr-25">
+      <kep-icon name="rating"></kep-icon>
+      {{ 'Rating' | translate }}
+    </a>
+    <a routerLink="profile" class="btn btn-primary mr-md-1 mr-25">
+      <kep-icon name="profile"></kep-icon>
+      {{ 'Profile' | translate }}
+    </a>
+    <a routerLink="attempts" class="btn btn-primary">
+      <kep-icon name="attempt"></kep-icon>
+      {{ 'Attempts' | translate }}
+    </a>
+  </div>
+
+  <div class="mt-2 col-lg-8 col-12 offset-lg-2 offset-0">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <a [@fadeInLeftOnEnter] class="card card-info" routerLink="/learn/blog/post/52">
+          <div class="card-header">
+            <div class="card-title">
+              {{ 'AboutProblems' | translate }}
+            </div>
+          </div>
+          <div class="info-img">
+            <img src="assets/images/pages/graphic-3.png" alt="info-img">
+          </div>
+        </a>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <a [@fadeInRightOnEnter] class="card card-info" routerLink="/learn/blog/post/46">
+          <div class="card-header">
+            <div class="card-title">
+              {{ 'AboutVerdicts' | translate }}
+            </div>
+          </div>
+          <div class="info-img">
+            <img src="assets/images/pages/graphic-2.png" alt="info-img">
+          </div>
+        </a>
       </div>
     </div>
-  </a>
-  
-  <a class="blog-card" routerLink="/learn/blog/post/46">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          {{ 'AboutVerdicts' | translate }}
-        </div>
-      </div>
-      <div class="card-img">
-        <img class="info-img" src="assets/images/pages/graphic-2.png" alt="">
-      </div>
-    </div>
-  </a>
+
+  </div>
 </div>

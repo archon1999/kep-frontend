@@ -6,78 +6,76 @@
   </div>
 
   <div class="card-body">
-    <swiper [config]="swiperConfig" class="swiper-lazy-loading">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide">
-          <a container="body" ngbTooltip="{{ 'CompetitiveProgramming' | translate }}" [@fadeInRightOnEnter]
-            (click)="click(1)" class="category category-1" [ngClass]="{'active': activeCategory == 1}">
-            <div class="icon">
-              <img src="assets/images/contests/category/category-1.png">
-            </div>
-          </a>
-        </div>
+    <swiper [config]="swiperConfig">
+      <div class="swiper-slide">
+        <a container="body" ngbTooltip="{{ 'CompetitiveProgramming' | translate }}" [@fadeInRightOnEnter]
+          (click)="click(1)" class="category category-1" [ngClass]="{'active': activeCategory == 1}">
+          <div class="icon">
+            <img src="assets/images/contests/category/category-1.png">
+          </div>
+        </a>
+      </div>
 
-        <div class="swiper-slide">
-          <a container="body" ngbTooltip="{{ 'Technologies' | translate }}" [@fadeInRightOnEnter] (click)="click(2)"
-            class="category category-2" [ngClass]="{'active': activeCategory == 2}">
-            <div class="icon">
-              <img src="assets/images/contests/category/category-2.png">
-            </div>
-          </a>
-        </div>
+      <div class="swiper-slide">
+        <a container="body" ngbTooltip="{{ 'Technologies' | translate }}" [@fadeInRightOnEnter] (click)="click(2)"
+          class="category category-2" [ngClass]="{'active': activeCategory == 2}">
+          <div class="icon">
+            <img src="assets/images/contests/category/category-2.png">
+          </div>
+        </a>
+      </div>
 
-        <div class="swiper-slide">
-          <a container="body" ngbTooltip="{{ 'Math' | translate }}" [@fadeInRightOnEnter] (click)="click(3)"
-            class="category category-3" [ngClass]="{'active': activeCategory == 3}">
-            <div class="icon">
-              <img src="assets/images/contests/category/category-3.png">
-            </div>
-          </a>
-        </div>
-        <div class="swiper-slide">
-          <a container="body" ngbTooltip="{{ 'NonStandart' | translate }}" [@fadeInRightOnEnter] (click)="click(4)"
-            class="category category-4" [ngClass]="{'active': activeCategory == 4}">
-            <div class="icon">
-              <img src="assets/images/contests/category/category-4.png">
-            </div>
-          </a>
-        </div>
+      <div class="swiper-slide">
+        <a container="body" ngbTooltip="{{ 'Math' | translate }}" [@fadeInRightOnEnter] (click)="click(3)"
+          class="category category-3" [ngClass]="{'active': activeCategory == 3}">
+          <div class="icon">
+            <img src="assets/images/contests/category/category-3.png">
+          </div>
+        </a>
+      </div>
+      <div class="swiper-slide">
+        <a container="body" ngbTooltip="{{ 'NonStandart' | translate }}" [@fadeInRightOnEnter] (click)="click(4)"
+          class="category category-4" [ngClass]="{'active': activeCategory == 4}">
+          <div class="icon">
+            <img src="assets/images/contests/category/category-4.png">
+          </div>
+        </a>
+      </div>
 
-        <div class="swiper-slide">
-          <a container="body" ngbTooltip="{{ 'IQ' | translate }}" [@fadeInRightOnEnter] (click)="click(5)"
-            class="category category-5" [ngClass]="{'active': activeCategory == 5}">
-            <div class="icon">
-              <img src="assets/images/contests/category/category-5.png">
-            </div>
-          </a>
+      <div class="swiper-slide">
+        <a container="body" ngbTooltip="{{ 'IQ' | translate }}" [@fadeInRightOnEnter] (click)="click(5)"
+          class="category category-5" [ngClass]="{'active': activeCategory == 5}">
+          <div class="icon">
+            <img src="assets/images/contests/category/category-5.png">
+          </div>
+        </a>
 
-        </div>
-        <div class="swiper-slide">
-          <a container="body" ngbTooltip="{{ 'Mixed' | translate }}" [@fadeInRightOnEnter] (click)="click(6)"
-            class="category category-6" [ngClass]="{'active': activeCategory == 6}">
-            <div class="icon">
-              <img src="assets/images/contests/category/category-6.png">
-            </div>
-          </a>
-        </div>
+      </div>
+      <div class="swiper-slide">
+        <a container="body" ngbTooltip="{{ 'Mixed' | translate }}" [@fadeInRightOnEnter] (click)="click(6)"
+          class="category category-6" [ngClass]="{'active': activeCategory == 6}">
+          <div class="icon">
+            <img src="assets/images/contests/category/category-6.png">
+          </div>
+        </a>
+      </div>
 
-        <div class="swiper-slide">
-          <a container="body" ngbTooltip="{{ 'Training' | translate }}" [@fadeInRightOnEnter] (click)="click(7)"
-            class="category category-7" [ngClass]="{'active': activeCategory == 7}">
-            <div class="icon">
-              <img src="assets/images/contests/category/category-7.png">
-            </div>
-          </a>
-        </div>
+      <div class="swiper-slide">
+        <a container="body" ngbTooltip="{{ 'Training' | translate }}" [@fadeInRightOnEnter] (click)="click(7)"
+          class="category category-7" [ngClass]="{'active': activeCategory == 7}">
+          <div class="icon">
+            <img src="assets/images/contests/category/category-7.png">
+          </div>
+        </a>
+      </div>
 
-        <div class="swiper-slide">
-          <a container="body" ngbTooltip="{{ 'Other' | translate }}" [@fadeInRightOnEnter] (click)="click(8)"
-            class="category category-8" [ngClass]="{'active': activeCategory == 8}">
-            <div class="icon">
-              <img src="assets/images/contests/category/category-8.png">
-            </div>
-          </a>
-        </div>
+      <div class="swiper-slide">
+        <a container="body" ngbTooltip="{{ 'Other' | translate }}" [@fadeInRightOnEnter] (click)="click(8)"
+          class="category category-8" [ngClass]="{'active': activeCategory == 8}">
+          <div class="icon">
+            <img src="assets/images/contests/category/category-8.png">
+          </div>
+        </a>
       </div>
     </swiper>
   </div>
