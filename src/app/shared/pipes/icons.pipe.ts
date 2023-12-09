@@ -1,7 +1,9 @@
-import { icons } from 'app/feather-icons';
+import { icons } from '../../feather-icons';
 import { Pipe, PipeTransform } from '@angular/core';
+
 @Pipe({
-  name: 'iconName'
+  name: 'iconName',
+  standalone: true,
 })
 
 export class IconNamePipe implements PipeTransform {

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { CoreDirectivesModule } from 'core/directives/directives';
+import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CoreSidebarModule } from 'core/components/core-sidebar/core-sidebar.module';
 
 import { CoreThemeCustomizerComponent } from 'core/components/theme-customizer/theme-customizer.component';
