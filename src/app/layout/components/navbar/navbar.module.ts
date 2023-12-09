@@ -13,7 +13,7 @@ import { NavbarSearchComponent } from 'app/layout/components/navbar/navbar-searc
 import { NavbarNotificationComponent } from 'app/layout/components/navbar/navbar-notification/navbar-notification.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NavbarKepcoinComponent } from './navbar-kepcoin/navbar-kepcoin.component';
-import { CoreDirectivesModule } from 'core/directives/directives';
+import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { NavbarDailyTasksComponent } from './navbar-daily-tasks/navbar-daily-tasks.component';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { NgScrollbar } from 'ngx-scrollbar';

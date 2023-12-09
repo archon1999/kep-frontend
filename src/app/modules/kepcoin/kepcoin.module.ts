@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { KepcoinComponent } from './kepcoin.component';
 import { AuthGuard } from 'app/auth/helpers';
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
-import { CoreDirectivesModule } from 'core/directives/directives';
+import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { KepcoinSpendSwalModule } from './kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { KepPaginationComponent, } from '@shared/components/kep-pagination/kep-pagination.component';

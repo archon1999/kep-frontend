@@ -1,6 +1,7 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import icons from './icons.json';
 import { CommonModule } from '@angular/common';
+import { keenIcons } from '../../../keen-icons';
 
 @Component({
   standalone: true,
@@ -11,6 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class KeeniconComponent implements OnInit {
   @Input() name: string;
+  @Input() kepName: string;
   @Input() class: string;
   @Input() type: 'outline' | 'solid' | 'duotone' = 'outline';
 
@@ -22,6 +24,11 @@ export class KeeniconComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.kepName) {
+      this.name = keenIcons[this.kepName] || this.kepName;
+    }
+    console.log(this.name);
+
     if (this.type === 'duotone') {
       this.pathsNumber = icons[this.type + '-paths'][this.name] ?? 0;
     }
