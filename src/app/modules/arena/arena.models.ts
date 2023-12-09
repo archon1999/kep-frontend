@@ -1,3 +1,9 @@
+export enum ArenaStatus {
+  NotStarted= -1,
+  Already,
+  Finished,
+}
+
 export interface ArenaChapter {
   id: number;
   title: string;
@@ -21,6 +27,7 @@ export interface Arena {
 }
 
 export interface ArenaPlayer {
+  rowIndex: number;
   username: string;
   rankTitle: string;
   rating: string;

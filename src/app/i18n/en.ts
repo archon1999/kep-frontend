@@ -20,6 +20,8 @@ export const locale = {
       LUGAVAR: 'Lugavar',
       TOURNAMENTS: 'Tournaments',
       BLOG: 'Blog',
+      CODE_RUSH: 'Code Rush',
+      TODO: 'Todo',
     },
     LOGIN: 'Login',
     LOGOUT: 'Logout',
@@ -145,7 +147,7 @@ export const locale = {
     UsersSolved: 'Solved',
     UsersUnsolved: 'Unsolved',
     Languages: 'Languages',
-    Attempt: 'Attempts',
+    Attempt: 'Attempt',
     SelectedLanguage: 'Selected language',
     User: 'User',
     View: 'View',
@@ -268,7 +270,7 @@ export const locale = {
     Projects: 'Projects',
     StreakFreeze: 'Streak freeze',
     YouHave: 'You have',
-    StreakFreezeText: "Freezing automatically saves your streak if you miss a day and don't complete daily tasks.",
+    StreakFreezeText: 'Freezing automatically saves your streak if you miss a day and don\'t complete daily tasks.',
     Spends: 'Spends',
     Earns: 'Earns',
     DailyTasks: 'Daily tasks',
@@ -372,6 +374,31 @@ export const locale = {
     ChallengeBlurError: 'During a challenge, it is forbidden to change the browser focus to something else.',
     ChallengeQuestionRight: 'Right',
     ChallengeQuestionWrong: 'Wrong',
+    FullName: 'Full name',
+    ActivityRating: 'Activity rating',
+    Name: 'Name',
+    Country: 'Country',
+    Age: 'Age',
+    StartVirtual: 'Start virtual',
+    RatingChange: 'Rating change',
+    Virtual: 'Virtual',
+    Unrated: 'Unrated',
+    When: 'When',
+    Hacker: 'Hacker',
+    Defender: 'Defender',
+    Generator: 'Generator',
+    Text: 'Text',
+    Holidays: 'Holidays',
+    CheckInput: 'Check input',
+    PartialSolvable: 'Partial Solvable',
+    LastChallenges: 'Last challenges',
+    RatingChanges: 'Rating changes',
+    ProblemsPageTitleText: 'Practice and improve your skills',
+    Page: 'Page',
+    Unread: 'Unread',
+    Dislikes: 'Dislikes',
+    Hacks: 'Hacks',
+    MyContests: 'My contests',
     ProblemTourSteps: [
       {
         title: 'Available languages',
@@ -464,6 +491,8 @@ export const locale = {
       TEST: 'Test',
       SUBMIT: 'Submit',
       SAMPLE_TEST: 'Sample test',
+      ANSWER_FOR_INPUT: 'Answer for input',
+      CHECK_SAMPLES: 'Check on samples',
     },
     COURSES: {
       COURSES: 'Courses',
@@ -475,7 +504,7 @@ export const locale = {
       RATING: 'Rating',
       LEVEL: 'Level',
       LESSON: 'Lesson',
-      PROGRESS:' Progress',
+      PROGRESS: ' Progress',
       SYLLABUS: 'Syllabus',
       CHECK: 'Check',
       DICTIONARY: 'Dictionary',
@@ -504,7 +533,7 @@ export const locale = {
     },
     PageTitle: {
       Home: 'Home',
-      Landing: 'CPython - Dasturlashni o`rganish uchun platforma',
+      Landing: 'CPython.uz - A platform for learning programming',
       Problems: {
         Problems: 'Problems',
         Problem: '{{ problemId }}. {{ problemTitle }} | Problem',
@@ -543,7 +572,9 @@ export const locale = {
       Kepcoin: 'Kepcoin',
       Challenges: {
         Challenges: 'Challenges',
-        Challenge: '{{ playerFirstUsername }} vs {{ playerSecondUsername }} | Challenge'
+        Challenge: '{{ playerFirstUsername }} vs {{ playerSecondUsername }} | Challenge',
+        ChallengesRating: 'Challenges Rating',
+        ChallengesProfile: 'Challenges Profile',
       },
       Lugavar: 'Lugavar',
       Users: {
@@ -571,6 +602,9 @@ export const locale = {
         Course: '{{ courseTitle }} | Course',
         CourseLesson: '{{ lessonTitle }} | {{ courseTitle }} | Course',
       }
+    },
+    Errors: {
+      MAX_LENGTH_ERROR: 'Max length: {{ value }} | Currently: {{ controlValueLength }}'
     }
   }
-}
+};

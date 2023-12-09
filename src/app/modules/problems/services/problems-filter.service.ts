@@ -1,41 +1,51 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { AttemptLangs } from '../enums';
-import { LocalStorageService } from 'app/shared/storages/local-storage.service';
-import { SessionStorageService } from 'app/shared/storages/session-storage.service';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { ProblemsFilter } from '../models/problems.models';
 
-const KEY = 'problems-filter';
-const DEFAULT_FILTER: ProblemsFilter = {
+export const DEFAULT_FILTER: ProblemsFilter = {
   title: null,
-  tags: null,
+  tags: [],
   difficulty: null,
   status: null,
   topic: null,
-  ordering: 'id',
-}
+  hasChecker: null,
+  hasCheckInput: null,
+  hasSolution: null,
+  partialSolvable: null,
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProblemsFilterService {
 
-  constructor(public sessionStorageService: SessionStorageService){}
+  private _currentFilter = DEFAULT_FILTER;
+  private _filter = new Subject<ProblemsFilter>();
 
-  private _currentFilter = this.sessionStorageService.get(KEY) || DEFAULT_FILTER;
-  private _filter = new BehaviorSubject<ProblemsFilter>(this._currentFilter);
+  get currentFilterValue() {
+    return this._currentFilter;
+  }
 
-  getFilter(){
+  getFilter() {
     return this._filter;
   }
 
-  updateFilter(filter: Partial<ProblemsFilter>){
+  updateFilter(filter: Partial<ProblemsFilter>, emit = true) {
     this._currentFilter = {
       ...this._currentFilter,
       ...filter,
+    };
+    if (emit) {
+      this._filter.next(this._currentFilter);
     }
+  }
+
+  setFilter(filter: Partial<ProblemsFilter>) {
+    this._currentFilter = {
+      ...DEFAULT_FILTER,
+      ...filter,
+    };
     this._filter.next(this._currentFilter);
-    this.sessionStorageService.set(KEY, this._currentFilter);
   }
 
 }

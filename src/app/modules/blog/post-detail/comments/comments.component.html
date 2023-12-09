@@ -1,4 +1,4 @@
-<h2 class="mb-2">
+<script src="../../../account-settings/general-settings/general-settings.component.ts"></script><h2 class="mb-2">
   {{ 'Comments' | translate }}
   <span class="comment-count">({{ comments.length }})</span>
 </h2>
@@ -25,7 +25,7 @@
       <div class="media-notation pb-1">
         <button
           (click)="like(i)"
-          *ngIf="comment.username != currentUser.username"
+          *ngIf="comment.username != currentUser?.username"
           class="mr-1 btn btn-sm round btn-relief-success"
         >
           <i data-feather="thumbs-up"></i>
@@ -46,7 +46,7 @@
 </div>
 
 <h4 class="mb-1">{{ 'WriteComment' | translate }}</h4>
-<quill-editor [(ngModel)]="comment">
+<quill-editor class="full-width" [(ngModel)]="comment">
   <div quill-editor-toolbar>
     <span class="ql-formats">
       <button class="ql-bold" [title]="'Bold'"></button>

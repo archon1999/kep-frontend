@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CoreConfigService } from '../../../../../@core/services/config.service';
-import { CoreConfig } from '../../../../../@core/types';
+import { CoreConfigService } from '../../../../../core/services/config.service';
+import { CoreConfig } from '../../../../../core/types';
 import { fadeInLeftAnimation, fadeInRightAnimation, fadeInUpAnimation } from 'angular-animations';
 
 @Component({

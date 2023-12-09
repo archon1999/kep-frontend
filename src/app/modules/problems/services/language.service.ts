@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AttemptLangs } from '../enums';
+import { AttemptLangs } from '../constants';
 import { LocalStorageService } from 'app/shared/storages/local-storage.service';
 
 const LANG_KEY = 'problem-submit-lang';

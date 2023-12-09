@@ -1,5 +1,5 @@
 <div class="table-responsive">
-  <table class="table bg-challenge">
+  <table class="table challenge-card">
     <tbody>
       <tr>
         <td>
@@ -31,11 +31,11 @@
         </td>
 
         <td class="text-right">
-          <span ngbTooltip="{{ 'Time' | translate }}" class="badge mr-25 badge-glow badge-primary">
+          <span ngbTooltip="{{ 'Time' | translate }}" class="badge mr-25 badge-glow badge-primary bg-primary">
             <i data-feather="clock"></i>
             {{ challenge.timeSeconds }}
           </span>
-          <span ngbTooltip="{{ 'Questions' | translate }}" class="badge badge-glow badge-primary">
+          <span ngbTooltip="{{ 'Questions' | translate }}" class="badge badge-glow badge-primary bg-primary">
             <i data-feather="activity"></i>
             {{ challenge.questionsCount }}
           </span>
@@ -75,7 +75,7 @@
           <span *ngIf="!challenge.finished" class="badge badge-glow badge-success">
             {{ 'Now' | translate }}
           </span>
-          <span *ngIf="challenge.finished" class="badge badge-glow badge-light-primary">
+          <span *ngIf="challenge.finished" class="badge bg-primary">
             {{ challenge.finished }}
           </span>
         </td>

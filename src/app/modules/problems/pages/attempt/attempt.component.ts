@@ -1,32 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfigService } from 'core/services/config.service';
 import { TitleService } from 'app/shared/services/title.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { Attempt } from '../../models/attempts.models';
-import { ProblemsService } from '../../services/problems.service';
+import { Attempt } from '@problems/models/attempts.models';
+import { ProblemsService } from '@problems/services/problems.service';
+import { CoreCommonModule } from '@core/common.module';
+import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 
 @Component({
   selector: 'app-attempt',
   templateUrl: './attempt.component.html',
-  styleUrls: ['./attempt.component.scss']
+  styleUrls: ['./attempt.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    AttemptsTableModule,
+    ContentHeaderModule,
+  ],
 })
 export class AttemptComponent implements OnInit {
 
-  public contentHeader =  {
+  public contentHeader = {
     headerTitle: 'ATTEMPT',
     actionButton: true,
     breadcrumb: {
       type: '',
       links: [
         {
-          name: 'PROBLEMS',
+          name: 'Problems',
           isLink: true,
           link: '/practice/problems'
         },
         {
-          name: 'ATTEMPTS',
+          name: 'Attempts',
           isLink: true,
           link: '/practice/problems/attempts'
         },
@@ -40,42 +47,24 @@ export class AttemptComponent implements OnInit {
 
   public attempt: Attempt;
 
-  public editorOptions = {
-    language: 'python',
-    theme: 'vs-light',
-    readOnly: true,
-  };
-
-  private _unsubscribeAll = new Subject();
-
   constructor(
     public route: ActivatedRoute,
     public service: ProblemsService,
     public coreConfigService: CoreConfigService,
     public titleService: TitleService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params: any) => {
-      let attemptId = params.params['id'];
+      const attemptId = params.params['id'];
       this.service.getAttempt(attemptId).subscribe((result: any) => {
         this.attempt = Attempt.fromJSON(result);
-        this.contentHeader.breadcrumb.links[2].name = this.attempt.id+"";
+        this.contentHeader.breadcrumb.links[2].name = this.attempt.id + '';
         this.titleService.updateTitle(this.route, {
           attemptId: attemptId,
         });
-      })
-    });
-
-    this.coreConfigService.getConfig()
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((config: any) => {
-        this.editorOptions.language = this.attempt.getEditorLang();
-        if(config.layout.skin == 'dark'){
-          this.editorOptions.theme = 'vs-dark';
-        } else {
-          this.editorOptions.theme = 'vs-light';
-        }
+      });
     });
   }
 

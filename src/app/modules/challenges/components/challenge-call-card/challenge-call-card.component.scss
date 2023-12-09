@@ -1,11 +1,12 @@
 .bg-challenge-call {
-  background: transparent;
-  // background: #86BBF6 !important;
-  box-shadow: 0 0 5px #fff !important;
+  background-size: 200% auto;
+  background-image: var(--bg-gradient);
+  box-shadow: 0 0 10px var(--bg-lighten) !important;
   border: none;
-}
 
-::ng-deep .dark-layout .bg-challenge-call {
-  background: #393575 !important;
-  box-shadow: 0 0 10px #4e5e99 !important;
+  ::ng-deep {
+    .text-blue, .text-primary {
+      color: #ffffff !important;
+    }
+  }
 }

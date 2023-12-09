@@ -1,11 +1,10 @@
-import { NgxMonacoEditorConfig } from 'ngx-monaco-editor';
+import { NgxMonacoEditorConfig } from 'ngx-monaco-editor-v2';
 
 declare let monaco: any;
 
 export function myMonacoLoad() {
-  let keywords = ['ButunSon', 'KasrSon', 'Satr', 'Belgi', 'Agar', 'Yemasa',
-    'Sikl', 'uchun', 'dan', 'gacha', 'Toki', 'inkor', 'yoz']
-  let langName = 'kep';
+  const keywords = ['ButunSon', 'KasrSon', 'Satr', 'Belgi', 'Agar', 'Yemasa', 'Sikl', 'uchun', 'dan', 'gacha', 'Toki', 'inkor', 'yoz'];
+  const langName = 'kep';
 
   monaco.languages.register({ id: langName });
 
@@ -48,7 +47,7 @@ export function myMonacoLoad() {
 
   monaco.languages.registerCompletionItemProvider(langName, {
     provideCompletionItems: () => {
-      var suggestions = [
+      const suggestions = [
         {
           label: 'agar',
           kind: monaco.languages.CompletionItemKind.Snippet,
@@ -70,13 +69,13 @@ export function myMonacoLoad() {
           documentation: 'If-Else Statement'
         },
       ];
-      for (let keyword of keywords) {
+      for (const keyword of keywords) {
         suggestions.push({
           label: keyword,
           kind: monaco.languages.CompletionItemKind.Keyword,
           insertText: keyword,
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
-        })
+        });
       }
       return { suggestions: suggestions };
     }
@@ -103,9 +102,9 @@ export function myMonacoLoad() {
       return {
         suggestions: [
           {
-            label: `</${tag}>`,
+            label: `</${ tag }>`,
             kind: monaco.languages.CompletionItemKind.EnumMember,
-            insertText: `$1</${tag}>`,
+            insertText: `$1</${ tag }>`,
             insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
             range: {
               startLineNumber: position.lineNumber,
@@ -118,8 +117,8 @@ export function myMonacoLoad() {
       };
     },
   });
-  
-  
+
+
 }
 
 export const monacoConfig: NgxMonacoEditorConfig = {

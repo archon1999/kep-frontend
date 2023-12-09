@@ -5,143 +5,66 @@
     </h3>
   </div>
 
-  <div class="problem-header d-grid">
-    <div class="problem-difficulty">
-      <span
-        ngbTooltip="{{ 'DIFFICULTY' | translate }}"
-        class="badge-pill badge-glow badge badge-{{ problem.difficulty | problemDifficultyColor }}">
-        {{ problem.difficultyTitle | translate }}
-      </span>  
-    </div>
-
-    <div class="problem-author" ngbTooltip="{{ 'Author' | translate }}">
-      <span class="badge badge-primary badge-pill">
-        <i [data-feather]="'user' | iconName"></i>
-        <user-popover
-          [textColor]="'white'"
-          [placement]="'bottom'"
-          [username]="problem.authorUsername">
-        </user-popover>
-      </span>  
-    </div>
-  
-    <div class="problem-vote" *ngIf="currentUser">
-      <button (click)="like()" class="btn btn-like btn-sm btn-relief-info round" [ngClass]="{
-        'btn-gradient-success': problem.userInfo.voteType === 1
-      }">
-        <i data-feather="thumbs-up"></i>
-        {{ problem.likesCount }}
-      </button>
-      
-      <button (click)="dislike()" class="btn btn-dislike btn-sm btn-relief-info round" [ngClass]="{
-        'btn-gradient-success': problem.userInfo.voteType === 0
-      }">
-        <i data-feather="thumbs-down"></i>
-        {{ problem.dislikesCount }}
-      </button>  
-    </div>
-    
-    <div class="problem-vote" *ngIf="!currentUser">
-      <span class="badge badge-info badge-pill">
-        <i data-feather="thumbs-up"></i>
-        {{ problem.likesCount }}
-      </span>
-      <span class="badge badge-info badge-pill">
-        <i data-feather="thumbs-down"></i>
-        {{ problem.dislikesCount }}
-      </span>
-    </div>
-
-    <div class="problem-contstraints" *ngIf="problem.timeLimit && problem.memoryLimit">
-      <span class="badge badge-info badge-pill" ngbTooltip="{{ 'TIME_LIMIT' | translate }}">
-        {{ selectedAvailableLang.timeLimit || problem.timeLimit }} {{ 'MS' | translate }}
-      </span>
-
-      <span class="badge badge-pill badge-primary" ngbTooltip="{{ 'MEMORY_LIMIT' | translate }}">
-        {{ selectedAvailableLang.memoryLimit || problem.memoryLimit }} {{ 'MB' | translate }}
-      </span>
-    </div>
-    
-    <div class="problem-selected-lang">
-      <span *ngIf="currentUser" class="badge badge-pill badge-{{ selectedLang }}">
-        {{ selectedAvailableLang.langFull }}
-      </span>    
-    </div>
-  </div>
-
-
-  <div class="mt-2 tour-step-1" *ngIf="currentUser">
-    <span *ngFor="let availableLanguage of problem.availableLanguages">
-      <a
-        (click)="langService.setLanguage(availableLanguage.lang)"
-        *ngIf="selectedLang != availableLanguage.lang"
-        class="badge-pill text-white badge badge-{{ availableLanguage.lang }}">
-        {{ availableLanguage.langFull }}
-      </a>
-    </span>
-  </div>
-
-  <hr>
-  
   <problem-body [problem]="problem"></problem-body>
 
-  <ngb-accordion [destroyOnHide]="false" [closeOthers]="false">
-    <ngb-panel id="panelMargin1" [cardClass]="'collapse-margin'">
+  <ngb-accordion [closeOthers]="false" [destroyOnHide]="false">
+    <ngb-panel [cardClass]="'collapse-margin'" id="panelMargin1">
       <ng-template ngbPanelTitle>
         <span>{{ 'Tags' | translate }}</span>
       </ng-template>
       <ng-template ngbPanelContent>
-        <div *ngIf="currentUser?.isSuperuser || currentUser?.permissions.canChangeProblemTags && problem.hasSolved else elseBlock">
+        <div
+          *ngIf="currentUser?.isSuperuser || currentUser?.permissions.canChangeProblemTags && problem.userInfo.hasSolved else elseBlock">
           <button
-            *ngFor="let tag of problem.tags"
             (click)="removeTag(tag)"
+            *ngFor="let tag of problem.tags"
             class="btn mb-2 mr-50 btn-relief-primary btn-sm">
             {{ tag.name }} <i data-feather="x"></i>
           </button>
 
           <ng-select
-            appendTo="body"  
-            [items]="tags"
-            bindValue="id"
-            bindLabel="name"
+            [(ngModel)]="selectedTag"
             [dropdownPosition]="'bottom'"
-            [(ngModel)]="selectedTag">
+            [items]="tags"
+            appendTo="body"
+            bindLabel="name"
+            bindValue="id">
           </ng-select>
 
-          <button class="mt-2 btn btn-relief-primary btn-sm" (click)="addTag()">{{ 'Add' | translate }}</button>
+          <button (click)="addTag()" class="mt-2 btn btn-relief-primary btn-sm">{{ 'Add' | translate }}</button>
         </div>
 
         <ng-template #elseBlock>
-          <span class="badge badge-pill badge-primary" *ngFor="let tag of problem.tags">
+          <span *ngFor="let tag of problem.tags" class="badge badge-pill badge-primary">
             {{ tag.name }}
           </span>
         </ng-template>
       </ng-template>
     </ngb-panel>
 
-    <ngb-panel id="panelMargin2" [cardClass]="'collapse-margin'">
+    <ngb-panel [cardClass]="'collapse-margin'" id="panelMargin2">
       <ng-template ngbPanelTitle>
         <span>{{ 'Topics' | translate }}</span>
       </ng-template>
       <ng-template ngbPanelContent>
         <div *ngIf="currentUser?.isSuperuser else elseBlock">
           <button
-            *ngFor="let topic of problem.topics"
             (click)="removeTopic(topic)"
+            *ngFor="let topic of problem.topics"
             class="btn mb-2 mr-50 btn-relief-primary btn-sm">
             {{ topic.name }} <i data-feather="x"></i>
           </button>
 
           <ng-select
-            appendTo="body"  
-            [items]="topics"
-            bindValue="id"
-            bindLabel="name"
+            [(ngModel)]="selectedTopic"
             [dropdownPosition]="'bottom'"
-            [(ngModel)]="selectedTopic">
+            [items]="topics"
+            appendTo="body"
+            bindLabel="name"
+            bindValue="id">
           </ng-select>
 
-          <button class="mt-2 btn btn-relief-primary btn-sm" (click)="addTopic()">
+          <button (click)="addTopic()" class="mt-2 btn btn-relief-primary btn-sm">
             {{ 'Add' | translate }}
           </button>
         </div>
@@ -156,21 +79,21 @@
       </ng-template>
     </ngb-panel>
 
-    <ngb-panel *ngIf="currentUser && problem.hasSolution" id="panelMargin3" [cardClass]="'collapse-margin'">
+    <ngb-panel *ngIf="currentUser && problem.hasSolution" [cardClass]="'collapse-margin'" id="panelMargin3">
       <ng-template ngbPanelTitle>
         <span>{{ 'Solution' | translate }}</span>
       </ng-template>
       <ng-template ngbPanelContent>
         <div *ngIf="problem.userInfo.canViewSolution else elseBlock;">
-          <button class="btn btn-sm btn-relief-primary" (click)="openSolutionModal(solution)">
+          <button (click)="openSolutionModal(solution)" class="btn btn-sm btn-relief-primary">
             {{ 'View' | translate }}
           </button>
         </div>
         <ng-template #elseBlock>
           <kepcoin-spend-swal
-            [value]="problem.solutionKepcoinValue"
+            (success)="onPurchaseSolution()"
             [purchaseUrl]="'problems/' + problem.id + '/purchase-solution/'"
-            (success)="problem.canViewSolution=true;">
+            [value]="problem.solutionKepcoinValue">
           </kepcoin-spend-swal>
         </ng-template>
       </ng-template>
@@ -180,27 +103,21 @@
 </div>
 
 <ng-template #solution let-modal>
-	<div class="modal-header" *ngIf="problem.hasSolution">
-		<h4 class="modal-title">{{ 'Solution' | translate }}</h4>
-	</div>
-	<div class="modal-body">
-    <ul ngbNav #nav="ngbNav" class="nav-tabs">
-      <li [ngbNavItem]="1" *ngIf="problemSolution.codeCpp">
-        <a ngbNavLink>C++</a>
+  <div *ngIf="problem.hasSolution" class="modal-header">
+    <h4 class="modal-title">{{ 'Solution' | translate }}</h4>
+  </div>
+  <div class="modal-body">
+    <div [innerHTML]="problemSolution.solution"></div>
+    <ul #nav="ngbNav" class="nav-tabs" ngbNav>
+      <li *ngFor="let code of problemSolution.codes; let i = index" [ngbNavItem]="i+1">
+        <a ngbNavLink>{{ code.lang }}</a>
         <ng-template ngbNavContent>
-          <clipboard-button [text]="problemSolution.codeCpp"></clipboard-button>
-          <pre>{{ problemSolution.codeCpp }}</pre>
-        </ng-template>
-      </li>
-      <li [ngbNavItem]="2" *ngIf="problemSolution.codePy">
-        <a ngbNavLink>Python</a>
-        <ng-template ngbNavContent>
-          <clipboard-button [text]="problemSolution.codePy"></clipboard-button>
-          <pre>{{ problemSolution.codePy }}</pre>
+          <clipboard-button [text]="code.code"></clipboard-button>
+          <div class="mb-1"></div>
+          <monaco-editor [(ngModel)]="code.code" [lang]="code.lang"></monaco-editor>
         </ng-template>
       </li>
     </ul>
-
     <div [ngbNavOutlet]="nav" class="mt-2"></div>
-	</div>
+  </div>
 </ng-template>

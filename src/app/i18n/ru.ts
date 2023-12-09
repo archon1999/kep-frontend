@@ -19,6 +19,8 @@ export const locale = {
       LUGAVAR: 'Лугаварь',
       TOURNAMENTS: 'Турниры',
       BLOG: 'Блог',
+      CODE_RUSH: 'Код Раш',
+      TODO: 'Todo',
     },
     RESET: 'Сброс',
     LOGIN: 'Войти',
@@ -266,7 +268,7 @@ export const locale = {
     Projects: 'Проекты',
     StreakFreeze: 'Заморозка',
     YouHave: 'У вас есть',
-    StreakFreezeText: "Заморозка автоматически сохраняет ваш прогресс, если вы пропустите день и не выполните ежедневные задании.",
+    StreakFreezeText: 'Заморозка автоматически сохраняет ваш прогресс, если вы пропустите день и не выполните ежедневные задании.',
     Spends: 'Траты',
     Earns: 'Заработки',
     DailyTasks: 'Ежедневнвые задании',
@@ -369,6 +371,30 @@ export const locale = {
     ChallengeBlurError: 'Во время вызова запрещается изменить фокус браузера на что-либо другое.',
     ChallengeQuestionRight: 'Правильно',
     ChallengeQuestionWrong: 'Неправильно',
+    FullName: 'Полное имя',
+    ActivityRating: 'Рейтинг активности',
+    Name: 'Имя',
+    Country: 'Страна',
+    Age: 'Возраст',
+    StartVirtual: 'Начать виртуальное участие',
+    RatingChange: 'Изменение рейтинга',
+    Virtual: 'Виртуально',
+    Unrated: 'Вне рейтинга',
+    When: 'Когда',
+    Hacker: 'Хакер',
+    Defender: 'Защитник',
+    Generator: 'Генератор',
+    Text: 'Текст',
+    Holidays: 'Праздники',
+    CheckInput: 'Check input',
+    PartialSolvable: 'Частичное решение',
+    LastChallenges: 'Последние вызовы',
+    RatingChanges: 'Изменения рейтинга',
+    ProblemsPageTitleText: 'Практикуйтесь и улучшайте свои навыки',
+    Page: 'Страница',
+    Unread: 'Непрочитанные',
+    Dislikes: 'Дизлайки',
+    Hacks: 'Взломы',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',
@@ -381,7 +407,7 @@ export const locale = {
     ],
     LandingPage: {
       SectionTopTitle: 'Учитесь программированию с CPython',
-      SectionTopText: 'CPython эта платформа для развития навыков и улучшения конкурентоспособности',
+      SectionTopText: 'CPython.uz - эта платформа для развития навыков и улучшения конкурентоспособности',
       SectionLearnTitle: 'Обучение программированию',
       SectionLearnText: 'Новый подход к изучению',
       SectionPracticeTitle: 'Практиковать',
@@ -461,6 +487,8 @@ export const locale = {
       SAMPLE_TEST: 'Тест',
       ANSWER: 'Ответ',
       TEST: 'Проверка',
+      ANSWER_FOR_INPUT: 'Ответ на тест',
+      CHECK_SAMPLES: 'Проверить на тестах',
     },
     COURSES: {
       COURSES: 'Курсы',
@@ -540,7 +568,9 @@ export const locale = {
       Kepcoin: 'Kepcoin',
       Challenges: {
         Challenges: 'Вызовы',
-        Challenge: '{{ playerFirstUsername }} против {{ playerSecondUsername }} | Вызов'
+        Challenge: '{{ playerFirstUsername }} против {{ playerSecondUsername }} | Вызов',
+        ChallengesRating: 'Рейтинг вызовов',
+        ChallengesProfile: 'Статистика вызовов',
       },
       Lugavar: 'Лугаварь',
       Users: {
@@ -568,6 +598,9 @@ export const locale = {
         Course: '{{ courseTitle }} | Курс',
         CourseLesson: '{{ lessonTitle }} | {{ courseTitle }} | Курс',
       }
+    },
+    Errors: {
+      MAX_LENGTH_ERROR: 'Максимальная длина: {{ value }} | У вас: {{ controlValueLength }}'
     }
   },
-}
+};

@@ -1,46 +1,48 @@
-<ul ngbNav #navWithIcons="ngbNav" class="nav-tabs" [(activeId)]="activeId">
-  <li ngbNavItem>
-    <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id]"
-      [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">
-      <span [data-feather]="'contest' | iconName"></span> {{ 'CONTESTS.CONTEST' | translate }}</a>
-    <ng-template ngbNavContent>
-    </ng-template>
-  </li>
-  <li ngbNavItem *ngIf="contest?.status != -1">
-    <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problems']"
-      routerLinkActive="active">
-      <span [data-feather]="'problem' | iconName"></span> {{ 'Problems' | translate }}</a>
-    <ng-template ngbNavContent>
-    </ng-template>
-  </li>
-  <li ngbNavItem *ngIf="contest?.status != -1">
-    <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'attempts']"
-      routerLinkActive="active">
-      <span [data-feather]="'attempt' | iconName"></span> {{ 'Attempts' | translate }}</a>
-    <ng-template ngbNavContent>
-    </ng-template>
-  </li>
-  <li ngbNavItem *ngIf="contest?.status != -1">
-    <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'standings']"
-      routerLinkActive="active">
-      <span [data-feather]="'rating' | iconName"></span> {{ 'CONTESTS.STANDINGS' | translate }}</a>
-    <ng-template ngbNavContent>
-    </ng-template>
-  </li>
-  <li ngbNavItem *ngIf="contest?.status == 1 && contest?.isRated">
-    <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'rating-changes']"
-      routerLinkActive="active">
-      <span [data-feather]="'trending-up'"></span> {{ 'CONTESTS.RATING_CHANGES' | translate }}</a>
-    <ng-template ngbNavContent>
-    </ng-template>
-  </li>
-  <li ngbNavItem *ngIf="contest?.status != -1">
-    <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'questions']"
-      routerLinkActive="active">
-      <span [data-feather]="'help-circle'"></span> {{ 'Questions' | translate }}</a>
-    <ng-template ngbNavContent>
-    </ng-template>
-  </li>
-</ul>
+<div class="contests-colors contest-{{ contest?.id }} {{ contest?.title }} contest-type-{{ contest?.type }}">
+  <ul ngbNav #navWithIcons="ngbNav" class="nav-tabs" [(activeId)]="activeId">
+    <li ngbNavItem>
+      <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id]"
+        [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">
+        <span [data-feather]="'contest' | iconName"></span> {{ 'CONTESTS.CONTEST' | translate }}</a>
+      <ng-template ngbNavContent>
+      </ng-template>
+    </li>
+    <li ngbNavItem *ngIf="contest?.status != -1">
+      <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problems']"
+        routerLinkActive="active">
+        <span [data-feather]="'problem' | iconName"></span> {{ 'Problems' | translate }}</a>
+      <ng-template ngbNavContent>
+      </ng-template>
+    </li>
+    <li ngbNavItem *ngIf="contest?.status != -1">
+      <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'attempts']"
+        routerLinkActive="active">
+        <span [data-feather]="'attempt' | iconName"></span> {{ 'Attempts' | translate }}</a>
+      <ng-template ngbNavContent>
+      </ng-template>
+    </li>
+    <li ngbNavItem *ngIf="contest?.status != -1">
+      <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'standings']"
+        routerLinkActive="active">
+        <span [data-feather]="'rating' | iconName"></span> {{ 'CONTESTS.STANDINGS' | translate }}</a>
+      <ng-template ngbNavContent>
+      </ng-template>
+    </li>
+    <li ngbNavItem *ngIf="contest?.status == 1 && contest?.isRated">
+      <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'rating-changes']"
+        routerLinkActive="active">
+        <span [data-feather]="'trending-up'"></span> {{ 'CONTESTS.RATING_CHANGES' | translate }}</a>
+      <ng-template ngbNavContent>
+      </ng-template>
+    </li>
+    <li ngbNavItem *ngIf="contest?.status != -1">
+      <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'questions']"
+        routerLinkActive="active">
+        <span [data-feather]="'help-circle'"></span> {{ 'Questions' | translate }}</a>
+      <ng-template ngbNavContent>
+      </ng-template>
+    </li>
+  </ul>
+</div>
 
 <div [ngbNavOutlet]="navWithIcons" class="mt-2"></div>

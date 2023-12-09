@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 
-import { CoreCommonModule } from '@core/common.module';
+import { CoreCommonModule } from 'core/common.module';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 
 import { AuthenticationModule } from './authentication/authentication.module';

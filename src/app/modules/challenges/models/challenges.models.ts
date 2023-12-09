@@ -1,10 +1,19 @@
+import { Chapter } from '../../testing/testing.models';
+
 export interface ChallengesRating {
+  rowIndex: number;
   username: string;
   rating: number;
   rankTitle: string;
   wins: number;
   draws: number;
   losses: number;
+  all: number;
+}
+
+export interface ChallengesRatingChange {
+  date: Date | string;
+  value: Number;
 }
 
 export interface ChallengeCall {
@@ -13,6 +22,7 @@ export interface ChallengeCall {
   rankTitle: string;
   timeSeconds: number;
   questionsCount: number;
+  chapters: Array<Chapter>;
   created: string;
 }
 

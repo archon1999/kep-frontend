@@ -1,43 +1,15 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { Subject } from 'rxjs';
-import {
-  ApexAxisChartSeries,
-  ApexChart,
-  ApexDataLabels,
-  ApexPlotOptions,
-  ApexYAxis,
-  ApexTitleSubtitle,
-  ApexXAxis,
-  ApexFill,
-  ApexGrid,
-  ApexTooltip,
-  ApexLegend,
-  ApexStroke,
-  ApexResponsive,
-} from 'ng-apexcharts';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AuthenticationService } from 'app/auth/service';
-import { CoreConfigService } from '@core/services/config.service';
-import { takeUntil } from 'rxjs/operators';
-import { CoreConfig } from '@core/types';
+import { CoreConfigService } from 'core/services/config.service';
 import { ActivatedRoute } from '@angular/router';
-
-export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  plotOptions?: ApexPlotOptions;
-  labels?: Array<string>;
-  dataLabels?: ApexDataLabels;
-  yaxis?: ApexYAxis;
-  xaxis?: ApexXAxis;
-  fill?: ApexFill;
-  title?: ApexTitleSubtitle;
-  colors?: Array<string>;
-  grid?: ApexGrid;
-  tooltip?: ApexTooltip;
-  legend?: ApexLegend;
-  stroke?: ApexStroke;
-  responsive?: Array<ApexResponsive>;
-};
+import { CoreCommonModule } from '@core/common.module';
+import { SectionProfileComponent } from '@problems/pages/profile/section-profile/section-profile.component';
+import { SectionDifficultiesComponent } from '@problems/pages/profile/section-difficulties/section-difficulties.component';
+import { SectionActivityComponent } from '@problems/pages/profile/section-activity/section-activity.component';
+import { SectionHeatmapComponent } from '@problems/pages/profile/section-heatmap/section-heatmap.component';
+import { SectionFactsComponent } from '@problems/pages/profile/section-facts/section-facts.component';
+import { SectionTimeComponent } from '@problems/pages/profile/section-time/section-time.component';
+import { SectionAttemptsForSolveComponent } from '@problems/pages/profile/section-attempts-for-solve/section-attempts-for-solve.component';
 
 @Component({
   selector: 'app-profile',
@@ -45,19 +17,22 @@ export type ChartOptions = {
   styleUrls: ['./profile.component.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: [],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    SectionProfileComponent,
+    SectionDifficultiesComponent,
+    SectionActivityComponent,
+    SectionHeatmapComponent,
+    SectionFactsComponent,
+    SectionTimeComponent,
+    SectionAttemptsForSolveComponent
+  ]
 })
-export class ProfileComponent implements OnInit, OnDestroy {
-
-  public coreConfig: CoreConfig;
+export class ProfileComponent implements OnInit {
 
   public currentUser = this.authService.currentUserValue;
   public username: string;
-
-  public chartTheme: {
-    mode: string,
-  };
-
-  private _unsubscribeAll = new Subject();
 
   constructor(
     public authService: AuthenticationService,
@@ -68,32 +43,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.queryParams.subscribe(
       (params: any) => {
-        if(params['username']) {
+        if (params['username']) {
           this.username = params['username'];
         } else {
           this.username = this.currentUser.username;
         }
       }
-    )
-
-    this.coreConfigService.getConfig().pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (config: CoreConfig) => {
-        if(config.layout.skin == 'dark'){
-          this.chartTheme = {
-            mode: 'dark',
-          }
-        } else {
-          this.chartTheme = {
-            mode: 'light',
-          }
-        }
-      }
-    )
-  }
-
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+    );
   }
 
 }

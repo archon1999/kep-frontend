@@ -1,82 +1,84 @@
-<div class="card topics">
-  <swiper [config]="swiperConfig" class="swiper-lazy-loading">
-    <div class="swiper-wrapper">
-      <div [@fadeInRightOnEnter] class="swiper-slide topic topic-all" [ngClass]="{'active': activeTopic == 0}">
-        <a (click)="click(0)">
-          <div class="icon">
-            <img src="assets/images/icons/topic-all.png">
-          </div>
-          <div class="text">
-            All Topics
-          </div>
-        </a>
-      </div>
-  
-      <div [@fadeInRightOnEnter] class="swiper-slide topic topic-best" [ngClass]="{'active': activeTopic == 1}">
-        <a (click)="click(1)">
-          <div class="icon">
-            <img src="assets/images/icons/topic-best.png">
-          </div>
-          <div class="text">
-            Best
-          </div>
-        </a>
-      </div>
-  
-      <div [@fadeInRightOnEnter] class="swiper-slide topic topic-coding" [ngClass]="{'active': activeTopic == 2}">
-        <a (click)="click(2)">
-          <div class="icon">
-            <img src="assets/images/icons/topic-coding.png">
-          </div>
-          <div class="text">
-            Coding
-          </div>
-        </a>
-      </div>
-  
-      <div [@fadeInRightOnEnter] class="swiper-slide topic topic-python-tricks" [ngClass]="{'active': activeTopic == 3}">
-        <a (click)="click(3)">
-          <div class="icon">
-            <img src="assets/images/icons/topic-python-tricks.png">
-          </div>
-          <div class="text">
-            Python Tricks
-          </div>
-        </a>
-      </div>
-  
-      <div [@fadeInRightOnEnter] class="swiper-slide topic topic-bash" [ngClass]="{'active': activeTopic == 4}">
-        <a (click)="click(4)">
-          <div class="icon">
-            <img src="assets/images/icons/topic-bash.png">
-          </div>
-          <div class="text">
-            Bash
-          </div>
-        </a>
-      </div>
-  
-      <div [@fadeInRightOnEnter] class="swiper-slide topic topic-database" [ngClass]="{'active': activeTopic == 5}">
-        <a (click)="click(5)">
-          <div class="icon">
-            <img src="assets/images/icons/topic-database.png">
-          </div>
-          <div class="text">
-            Database
-          </div>
-        </a>
-      </div>
-  
-      <div [@fadeInRightOnEnter] class="swiper-slide topic topic-math" [ngClass]="{'active': activeTopic == 6}">
-        <a (click)="click(6)">
-          <div class="icon">
-            <img src="assets/images/icons/topic-math.png">
-          </div>
-          <div class="text">
-            Math
-          </div>
-        </a>
-      </div>
+<div class="card mt-2">
+  <div class="card-header">
+    <div [@fadeInRightOnEnter] class="card-title text-dark">
+      {{ 'Topics' | translate }}
     </div>
-  </swiper>
+  </div>
+
+  <div class="card-body">
+    <swiper [config]="swiperConfig">
+      <div class="swiper-slide">
+        <a
+          container="body"
+          ngbTooltip="{{ 'Best' | translate }}"
+          [@fadeInRightOnEnter]
+          (click)="click(1)"
+          class="topic"
+          [ngClass]="{'active': activeTopic == 1}">
+          <div class="icon">
+            <img src="assets/images/problems/topics/topic-best.png" alt="topic-best">
+          </div>
+        </a>
+      </div>
+
+      <div class="swiper-slide">
+        <a
+          container="body"
+          ngbTooltip="{{ 'Coding' | translate }}"
+          [@fadeInRightOnEnter]
+          (click)="click(2)"
+          class="topic"
+          [ngClass]="{'active': activeTopic == 2}">
+          <div class="icon">
+            <img src="assets/images/problems/topics/topic-coding.png">
+          </div>
+        </a>
+      </div>
+
+      <div class="swiper-slide">
+        <a container="body" ngbTooltip="{{ 'Python Tricks' | translate }}" [@fadeInRightOnEnter]
+           (click)="click(3)" class="topic" [ngClass]="{'active': activeTopic == 3}">
+          <div class="icon">
+            <img src="assets/images/problems/topics/topic-python-tricks.png">
+          </div>
+        </a>
+      </div>
+
+      <div class="swiper-slide">
+        <a container="body" ngbTooltip="{{ 'Bash' | translate }}" [@fadeInRightOnEnter]
+           (click)="click(4)" class="topic" [ngClass]="{'active': activeTopic == 4}">
+          <div class="icon">
+            <img src="assets/images/problems/topics/topic-bash.png">
+          </div>
+        </a>
+      </div>
+
+      <div class="swiper-slide">
+        <a container="body" ngbTooltip="{{ 'Database' | translate }}" [@fadeInRightOnEnter]
+           (click)="click(5)" class="topic" [ngClass]="{'active': activeTopic == 5}">
+          <div class="icon">
+            <img src="assets/images/problems/topics/topic-database.png">
+          </div>
+        </a>
+      </div>
+
+      <div class="swiper-slide">
+        <a container="body" ngbTooltip="{{ 'Math' | translate }}" [@fadeInRightOnEnter]
+           (click)="click(6)" class="topic" [ngClass]="{'active': activeTopic == 6}">
+          <div class="icon">
+            <img src="assets/images/problems/topics/topic-math.png">
+          </div>
+        </a>
+      </div>
+
+      <div class="swiper-slide">
+        <a container="body" ngbTooltip="{{ 'IQ' | translate }}" [@fadeInRightOnEnter]
+           (click)="click(7)" class="topic" [ngClass]="{'active': activeTopic == 7}">
+          <div class="icon">
+            <img src="assets/images/problems/topics/topic-iq.png">
+          </div>
+        </a>
+      </div>
+    </swiper>
+  </div>
 </div>

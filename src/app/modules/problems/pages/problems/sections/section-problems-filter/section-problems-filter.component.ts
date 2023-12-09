@@ -1,59 +1,98 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
-import { ProblemsFilter, Tag } from '../../../../models/problems.models';
-import { ProblemsService } from 'app/modules/problems/services/problems.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { LocalStorageService } from 'app/shared/storages/local-storage.service';
+import { Component, OnInit } from '@angular/core';
+import { Category, ProblemsFilter, Tag } from '@problems/models/problems.models';
+import { ProblemsService } from '@problems/services/problems.service';
 import { ProblemsFilterService } from 'app/modules/problems/services/problems-filter.service';
+import { BaseComponent } from '@shared/components/classes/base.component';
+import { FormControl, FormGroup } from '@angular/forms';
+import { equalsCheck } from '@shared/utils';
+import { CoreCommonModule } from '@core/common.module';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
+import { NgbAccordionModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 
 interface Difficulty {
-  id: number;
   name: string;
+  value: number;
 }
 
 @Component({
   selector: 'section-problems-filter',
   templateUrl: './section-problems-filter.component.html',
-  styleUrls: ['./section-problems-filter.component.scss']
+  styleUrls: ['./section-problems-filter.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgSelectModule,
+    ProblemsPipesModule,
+    NgbDropdownModule,
+    NgbAccordionModule,
+    KepIconComponent,
+  ]
 })
-export class SectionProblemsFilterComponent implements OnInit, OnDestroy {
+export class SectionProblemsFilterComponent extends BaseComponent implements OnInit {
 
-  public filter: ProblemsFilter;
+  public filterForm = new FormGroup({
+    title: new FormControl(),
+    tags: new FormControl([]),
+    difficulty: new FormControl(),
+    status: new FormControl(),
+    hasChecker: new FormControl(),
+    hasCheckInput: new FormControl(),
+    hasSolution: new FormControl(),
+    partialSolvable: new FormControl(),
+  });
 
   public tags: Array<Tag> = [];
+  public categories: Array<Category> = [];
   public difficulties: Array<Difficulty> = [];
 
-  public currentUser: User;
+  public selectedTagsName: string;
 
-  private _unsubscribeAll = new Subject();
+  public filterCollapsed = false;
 
   constructor(
     public service: ProblemsService,
-    public authService: AuthenticationService,
-    public localStorageService: LocalStorageService,
     public problemsFilterService: ProblemsFilterService,
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
-    this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (user: User | null) => {
-        this.currentUser = user;
+    this.filterForm.valueChanges.subscribe(
+      (filterValue: ProblemsFilter) => {
+        this.problemsFilterService.updateFilter(filterValue);
       }
-    )
+    );
 
-    this.problemsFilterService.getFilter().subscribe(
-      (filter: ProblemsFilter) => {
-        this.filter = filter;
-      }
-    )
-
-    this.service.getTags().subscribe(
-      (tags: any) => {
+    this.service.getCategories().subscribe(
+      (categories: Array<Category>) => {
+        this.categories = categories;
+        const tags = [];
+        this.categories.forEach(category => {
+          category.tags.forEach(tag => {
+            tags.push({
+              ...tag,
+              category: category.title,
+            });
+          });
+        });
         this.tags = tags;
       }
     );
+
+    this.filterForm.controls.tags.valueChanges.subscribe(
+      (tags) => {
+        console.log(tags);
+        this.selectedTagsName = Array.from(new Set(this.tags.filter(tag => tags.indexOf(tag.id) !== -1).map(tag => tag.name))).join(', ')
+      }
+    );
+
+    // this.service.getTags().subscribe(
+    //   (tags: any) => {
+    //     this.tags = tags;
+    //   }
+    // );
 
     this.service.getDifficulties().subscribe(
       (difficulties: any) => {
@@ -62,15 +101,18 @@ export class SectionProblemsFilterComponent implements OnInit, OnDestroy {
     );
   }
 
-  reload() {
-    setTimeout(() => {    
-      this.problemsFilterService.updateFilter(this.filter);
-    }, 100);
+  compareEqual(a, b) {
+    return equalsCheck(a, b) || a?.toString() === b?.toString();
   }
 
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next();
-    this._unsubscribeAll.complete();
+  tagOnClick(tagId: number) {
+    const tags = this.filterForm.value.tags || [];
+    const index = tags.indexOf(tagId);
+    if (index === -1) {
+      tags.push(tagId);
+    } else {
+      tags.splice(index, 1);
+    }
+    this.filterForm.patchValue({ tags: tags });
   }
-
 }

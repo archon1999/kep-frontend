@@ -1,150 +1,156 @@
-<div class="card">
-  <div class="table-responsive mb-2">
-    <table class="table table-striped">
-      <thead>
-        <tr class="bg-gradient-primary">
-          <th>            
-            <a class="d-flex" (click)="setOrdering('id')">
-              <i class="mr-50" [data-feather]="'problem' | iconName"></i>
-              ID
-              <span *ngIf="ordering == 'id'"><i data-feather="chevron-up"></i></span>
-              <span *ngIf="ordering == '-id'"><i data-feather="chevron-down"></i></span>
-            </a>
-          </th>
-          <th>
-            <a class="d-flex" (click)="setOrdering('title')">
-              <i class="mr-50" [data-feather]="'edit-3'"></i>
-              {{ 'TITLE' | translate }}
-              <span *ngIf="ordering == 'title'"><i data-feather="chevron-up"></i></span>
-              <span *ngIf="ordering == '-title'"><i data-feather="chevron-down"></i></span>
-            </a>
-          </th>
-          <th>
-            <i class="mr-50" [data-feather]="'activity'"></i>
-            {{ 'TAGS' | translate }}
-          </th>
-          <th class="text-center">
-            <a class="d-flex" (click)="setOrdering('difficulty')">
-              <i class="mr-50" [data-feather]="'bar-chart'"></i>
-              {{ 'DIFFICULTY' | translate }}
-              <span *ngIf="ordering == 'difficulty'"><i data-feather="chevron-up"></i></span>
-              <span *ngIf="ordering == '-difficulty'"><i data-feather="chevron-down"></i></span>
-            </a>
-          </th>
-          <th class="text-center">
-            <a class="d-flex" (click)="setOrdering('rating')">
-              <i class="mr-50" [data-feather]="'star'"></i>
-              {{ 'RATING' | translate }}
-              <span *ngIf="ordering == 'rating'"><i data-feather="chevron-up"></i></span>
-              <span *ngIf="ordering == '-rating'"><i data-feather="chevron-down"></i></span>
-            </a>
-          </th>
-          <th class="text-center">
-            <a class="d-flex" (click)="setOrdering('solved')">
-              <i class="mr-50" [data-feather]="'attempt' | iconName"></i>
-              {{ 'ATTEMPTS' | translate }}
-              <span *ngIf="ordering == 'solved'"><i data-feather="chevron-up"></i></span>
-              <span *ngIf="ordering == '-solved'"><i data-feather="chevron-down"></i></span>
-            </a>
-          </th>
-        </tr>
-      </thead>
-  
-      <tbody>
-        <tr [@fadeInOnEnter] [ngClass]="{
-          'bg-light-success': problem.userInfo.hasSolved,
-          'bg-light-danger': !problem.userInfo.hasSolved && problem.userInfo.hasAttempted
-        }" *ngFor="let problem of problems; index as i">
-          <td>
-            {{ problem.id }}
-          </td>
-  
-          <td>
-            <a [routerLink]="['problem', problem.id]">
-              <div>
-                {{ problem.title }}
-              </div>
-
-              <span *ngIf="problem.userInfo.hasSolution" class="badge mt-50 badge-pill badge-light-success">
-                <i [data-feather]="'exists' | iconName" class="text-success" [size]="16"></i>
-                {{ 'Solution' | translate }}
-              </span>
-              <span *ngIf="!problem.hasChecker" class="badge mt-50 badge-pill badge-light-danger">
-                <i [data-feather]="'not_exists' | iconName" class="text-danger" [size]="16"></i>  
-                {{ 'Checker' | translate }}
-              </span>
-
-              <span *ngIf="problem.hidden" class="badge mt-50 badge-pill badge-light-warning">
-                <i [data-feather]="'eye-off'" class="text-warning" [size]="16"></i>
-                {{ 'Hidden' | translate }}
-              </span>
-            </a>
-          </td>
-  
-          <td>
-            <button
-              class="btn btn-primary round btn-sm"
-              *ngFor="let tag of problem.tags"
-              (click)="tagOnClick(tag.id)"
-            >
-              <small>
-                {{ tag.name }}
-              </small>
-            </button>
-          </td>
-  
-          <td class="text-center">
-            <span class="badge badge-glow badge-{{ problem.difficulty | problemDifficultyColor }}">
-              {{ problem.difficultyTitle | translate }}
-            </span>
-          </td>
-  
-          <td class="text-center">
-            <div class="likes-count">
-              <i data-feather="thumbs-up"></i>
-              {{ problem.likesCount }}
-            </div>
-            <div class="dislikes-count">
-              <i data-feather="thumbs-down"></i>
-              {{ problem.dislikesCount }}
-            </div>
-          </td>
-  
-          <td class="text-center">
-            <span class="badge badge-light-info text-center">
-              <small class="text-success">{{ problem.solved }}</small><small class="text-dark">/</small><small class="text-info">{{ problem.attemptsCount }}</small>
-            </span>
-          </td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <th>
+<kep-table [loading]="isLoading" [empty]="pageResult?.data.length == 0">
+  <ng-container header>
+    <tr class="bg-gradient-primary">
+      <th>
+        <table-ordering
+          [value]="ordering"
+          [justifyContent]="'start'"
+          [ordering]="'id'"
+          [reverse]="true"
+          (change)="orderingChange($event)">
+          <div class="align-middle">
             <i class="mr-50" [data-feather]="'problem' | iconName"></i>
             ID
-          </th>
-          <th>
+          </div>
+        </table-ordering>
+      </th>
+      <th>
+        <table-ordering
+          [value]="ordering"
+          [justifyContent]="'start'"
+          [ordering]="'title'"
+          (change)="orderingChange($event)">
+          <div class="align-middle">
             <i class="mr-50" [data-feather]="'edit-3'"></i>
             {{ 'TITLE' | translate }}
-          </th>
-          <th>
-            <i class="mr-50" [data-feather]="'activity'"></i>
-            {{ 'TAGS' | translate }}
-          </th>
-          <th class="text-center">
+          </div>
+        </table-ordering>
+      </th>
+      <th>
+        <i class="mr-50" [data-feather]="'activity'"></i>
+        {{ 'TAGS' | translate }}
+      </th>
+      <th class="text-center">
+        <table-ordering
+          [value]="ordering"
+          [justifyContent]="'center'"
+          [ordering]="'difficulty'"
+          (change)="orderingChange($event)">
+          <div class="align-middle">
             <i class="mr-50" [data-feather]="'bar-chart'"></i>
             {{ 'DIFFICULTY' | translate }}
-          </th>
-          <th class="text-center">
+          </div>
+        </table-ordering>
+      </th>
+      <th class="text-center">
+        <table-ordering
+          [value]="ordering"
+          [justifyContent]="'center'"
+          [ordering]="'rating'"
+          (change)="orderingChange($event)">
+          <div class="align-middle">
             <i class="mr-50" [data-feather]="'star'"></i>
             {{ 'RATING' | translate }}
-          </th>
-          <th class="text-center">
+          </div>
+        </table-ordering>
+      </th>
+      <th class="text-center">
+        <table-ordering
+          [value]="ordering"
+          [justifyContent]="'center'"
+          [ordering]="'solved'"
+          (change)="orderingChange($event)">
+          <div class="align-middle">
             <i class="mr-50" [data-feather]="'attempt' | iconName"></i>
             {{ 'ATTEMPTS' | translate }}
-          </th>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-</div>
+          </div>
+        </table-ordering>
+      </th>
+    </tr>
+  </ng-container>
+
+  <ng-container body>
+    @for (problem of problems; track problem.id) {
+      <tr [@fadeInOnEnter] [ngClass]="{
+          'bg-light-success': problem.userInfo.hasSolved,
+          'bg-light-danger': !problem.userInfo.hasSolved && problem.userInfo.hasAttempted
+        }">
+        <td>{{ problem.id }}</td>
+        <td>
+          <a [routerLink]="['problem', problem.id]">
+            <div class="font-weight-bold">
+              {{ problem.title }}
+            </div>
+
+            <span *ngIf="problem.hasSolution" class="badge mt-50 badge-pill badge-light-success">
+              <i [data-feather]="'exists' | iconName" class="text-success" [size]="'16px'"></i>
+              {{ 'Solution' | translate }}
+            </span>
+
+            <span *ngIf="!problem.hasChecker" class="badge mt-50 badge-pill badge-light-danger">
+              <i [data-feather]="'not_exists' | iconName" class="text-danger" [size]="'16px'"></i>
+              {{ 'Checker' | translate }}
+            </span>
+
+            <span *ngIf="problem.hidden" class="badge mt-50 badge-pill badge-light-warning">
+              <i [data-feather]="'eye-off'" class="text-warning" [size]="'16px'"></i>
+              {{ 'Hidden' | translate }}
+            </span>
+          </a>
+        </td>
+
+        <td>
+          <button
+            class="btn btn-primary round btn-sm font-small-2"
+            *ngFor="let tag of problem.tags"
+            (click)="tagOnClick(tag.id)">
+            {{ tag.name }}
+          </button>
+        </td>
+
+        <td class="text-center">
+          <span class="badge badge-glow badge-{{ problem.difficulty | problemDifficultyColor }}">
+            {{ problem.difficultyTitle | translate }}
+          </span>
+        </td>
+
+        <td class="text-center">
+          <div class="likes-count">
+            <i data-feather="thumbs-up"></i>
+            {{ problem.likesCount }}
+          </div>
+          <div class="dislikes-count">
+            <i data-feather="thumbs-down"></i>
+            {{ problem.dislikesCount }}
+          </div>
+        </td>
+
+        <td class="text-center">
+          <span class="badge badge-light-info text-center">
+            <small class="text-success">{{ problem.solved }}</small><small class="text-dark">/</small><small class="text-info">{{ problem.attemptsCount }}</small>
+          </span>
+        </td>
+      </tr>
+    }
+  </ng-container>
+
+  <ng-container pagination>
+    <div class="mb-2">
+      <kep-pagination
+        *ngIf="total"
+        [collectionSize]="total"
+        [pageOptions]="pageOptions"
+        [(page)]="pageNumber"
+        [pageSize]="pageSize"
+        [maxSize]="maxSize"
+        [rotate]="true"
+        [boundaryLinks]="false"
+        [ellipses]="true"
+        (pageSizeChange)="pageSizeChange($event)"
+        (pageChange)="pageChange($event)">
+      </kep-pagination>
+    </div>
+  </ng-container>
+</kep-table>
+
+<ng-select-css></ng-select-css>

@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthenticationService } from '../service';
-import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-auth-modal',
@@ -31,8 +31,8 @@ export class AuthModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      "username": ["", [Validators.required]],
-      "password": ["", [Validators.required]],
+      'username': ['', [Validators.required]],
+      'password': ['', [Validators.required]],
     });
 
     this.username = this.loginForm.controls['username'];
@@ -42,24 +42,24 @@ export class AuthModalComponent implements OnInit {
       (text: string) => {
         this.loginSuccessText = text;
       }
-    )
+    );
 
     this.translateService.get('LoginErrorText').subscribe(
       (text: string) => {
         this.loginErrorText = text;
       }
-    )
+    );
 
     this.translateService.get('Welcome').subscribe(
       (text: string) => {
         this.welcomeText = text;
       }
-    )
+    );
   }
 
-  login(){
+  login() {
     this.authService.login(this.username.value, this.password.value).subscribe((user: any) => {
-      this.toastr.success(this.loginSuccessText, `👋 ${this.welcomeText}, ` + user.firstName||user.username + '!', {
+      this.toastr.success(this.loginSuccessText, `👋 ${ this.welcomeText }, ` + user.firstName || user.username + '!', {
         toastClass: 'toast ngx-toastr',
         closeButton: true
       });

@@ -1,12 +1,17 @@
-.bg-challenge {
-  box-shadow: var(--box-shadow) !important;
+.challenge-card {
+  background: var(--bg-darken);
+  box-shadow: 0 0 5px var(--bg-lighten) !important;
   border-radius: 5px;
-  background: linear-gradient(294deg, #c296f4c4, 30%, #97c8ff);
+
+  ::ng-deep {
+    .text-blue, .text-primary {
+      color: #ffffff !important;
+    }
+  }
 }
 
-::ng-deep .dark-layout .bg-challenge {
+::ng-deep .dark-layout .challenge-card {
   background: var(--bg-gradient);
-  background-size: 200% auto;
 }
 
 td:nth-child(1) {
@@ -22,23 +27,14 @@ td:nth-child(2) {
 }
 
 th, td {
-    border-top: 0px solid #ebe9f1;
+  border-top: 0px solid #ebe9f1;
 }
-
 
 table {
   margin-bottom: 1px !important;
   padding-bottom: 0px !important;
 }
 
-@media (max-width: 740px) {
-  td:nth-child(4) {
-    display: none;
-  }
-}
-
-@media (max-width: 500px) {
-  td:nth-child(3) {
-    display: none;
-  }
+::ng-deep .dark-layout table.challenge-card {
+  margin-bottom: 10px !important;
 }

@@ -1,0 +1,47 @@
+@import 'bootstrap/scss/mixins/dark-layout';
+
+.root {
+  display: grid;
+  grid-template-columns: 40px repeat(5, 245px);
+  gap: 15px;
+}
+
+.wrapper {
+  background-color: #f7f7f7;
+  padding: 5px;
+
+  @include dark-layout {
+    background-color: #161d31;
+  }
+}
+
+.day {
+  position: relative;
+}
+
+.event {
+  background-color: khaki;
+  border: 1px solid yellowgreen;
+  border-radius: 8px;
+  position: absolute;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.timeline {
+}
+
+.timeline>div {
+  height: 30px;
+  width: 50px;
+  margin-right: 4rem;
+}
+
+.timeline>div:nth-child(2n+1) {
+  color: #ccc
+}
+
+
+problem-body:has(problem1870) img {
+  width: 200px !important;
+}

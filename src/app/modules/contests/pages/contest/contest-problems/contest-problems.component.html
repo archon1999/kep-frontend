@@ -1,4 +1,4 @@
-<div class="content-wrapper p-0">
+<div class="content-wrapper container-xxl p-0 contests-colors contests-color contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
   <div class="content-body">
     <!-- content-header component -->
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
@@ -19,69 +19,11 @@
                   <div
                     *ngFor="let contestProblem of contestProblems"
                     class="col-lg-4 col-md-6 col-sm-12"
-                    (mouseleave)="removeProblem(contestProblem.symbol)"
-                    #container
-                  >                  
-                    <a [routerLink]="['..', 'problem', contestProblem.symbol]">
-                      <div class="card" [ngClass]="{
-                          'bg-success bg-lighten-4': contestProblem.isSolved && coreConfig.layout.skin != 'dark',
-                          'border-success': contestProblem.isSolved && coreConfig.layout.skin == 'dark',
-                          'bg-danger bg-lighten-3': !contestProblem.isSolved && contestProblem.isAttempted && coreConfig.layout.skin != 'dark',
-                          'border-danger': !contestProblem.isSolved && contestProblem.isAttempted && coreConfig.layout.skin == 'dark',
-                          'bg-gradient-primary': !contestProblem.isSolved && !contestProblem.isAttempted && coreConfig.layout.skin != 'dark',
-                          'border-primary': !contestProblem.isSolved && !contestProblem.isAttempted && coreConfig.layout.skin == 'dark'
-                        }">
-
-                        <div *ngIf="problemShow.get(contestProblem.symbol)">
-                          <h5 class="text-center mt-2 mb-2">
-                            <strong class="text-white">
-                              {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
-                            </strong>
-                          </h5>
-                          <div class="pl-1 pr-1 text-white">
-                            <mathjax [content]="problems.get(contestProblem.symbol).body"></mathjax>
-                          </div>
-                        </div>
-
-                        <div *ngIf="!problemShow.get(contestProblem.symbol)">
-                          <div class="card-header">
-                            <span *ngIf="contestProblem.isSolved" class="text-success">
-                              <i data-feather="check-circle"></i>
-                            </span>
-                            <span *ngIf="!contestProblem.isSolved && contestProblem.isAttempted" class="text-danger">
-                              <i data-feather="x-circle"></i>
-                            </span>
-  
-                            <span class="text-white" (mouseenter)="onProblemFocus(contestProblem.symbol)">
-                              {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
-                              <span *ngIf="contestProblem.ball > 1">
-                                ({{ contestProblem.ball }})
-                              </span>
-                            </span>
-                          </div>
-  
-                          <div class="card-body">
-                            <span class="badge badge-{{ availableLanguage.lang }} badge-pill" *ngFor="let availableLanguage of contestProblem.problem.availableLanguages">
-                              {{ availableLanguage.langFull }}
-                            </span>        
-                          </div>
-  
-                          <div class="card-footer">
-                            <span class="text-white">
-                              {{ contestProblem.solved }}
-                              <i data-feather="user-check"></i>
-                            </span>
-  
-                            <span class="text-white pl-1">
-                              {{ contestProblem.attemptUsersCount - contestProblem.solved }}
-                              <i data-feather="user-x"></i>
-                            </span>
-                          </div>  
-                        </div>
-  
-                      </div>
-
-                    </a>
+                  >
+                    <contest-problem-card
+                      [contest]="contest"
+                      [contestProblem]="contestProblem">
+                    </contest-problem-card>
                   </div>
                 </div>
               </div>

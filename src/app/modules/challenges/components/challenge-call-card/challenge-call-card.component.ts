@@ -8,6 +8,7 @@ import { ChallengeCall } from '../../models/challenges.models';
 import { ChallengesService } from '../../services/challenges.service';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'challenge-call-card',
   templateUrl: './challenge-call-card.component.html',
   styleUrls: ['./challenge-call-card.component.scss']
@@ -39,7 +40,7 @@ export class ChallengeCallCardComponent implements OnInit, OnDestroy {
     this.service.deleteChallengeCall(this.challengeCall.id).subscribe(
       (result: any) => {
         if(result.success){
-          this.delete.next();
+          this.delete.next(null);
         }
       }
     )
