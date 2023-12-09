@@ -124,6 +124,12 @@ export class NavbarNotificationComponent implements OnInit, OnDestroy {
     );
   }
 
+  click() {
+    this.isAll = !this.isAll;
+    this.notifications = [];
+    this.updateNotifications();
+  }
+
   ngOnDestroy(): void {
     if (this._intervalId) {
       clearInterval(this._intervalId);

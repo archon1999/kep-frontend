@@ -1,7 +1,8 @@
 <li ngbDropdown class="nav-item dropdown-notification mr-25" #dropdown="ngbDropdown">
-  <a class="nav-link" ngbDropdownToggle id="navbarNotificationDropdown">
-    <i class="ficon" data-feather="bell"></i>
-    <span [@bounce]="animationState" class="badge badge-glow badge-pill badge-primary badge-up" *ngIf="notifications.length > 0">
+  <a class="nav-link d-flex align-items-center" ngbDropdownToggle id="navbarNotificationDropdown">
+    <kep-icon *ngIf="notifications.length && !isAll" class="font-large-1" type="duotone" [name]="'notification-on'"></kep-icon>
+    <kep-icon *ngIf="!notifications.length || isAll" class="font-large-1" type="duotone" [name]="'notification'"></kep-icon>
+    <span [@bounce]="animationState" class="badge badge-pill badge-success badge-up" *ngIf="!isAll && notifications.length > 0">
       {{ notifications.length }}
     </span>
   </a>
@@ -11,7 +12,7 @@
     <li class="dropdown-menu-header">
       <div class="dropdown-header d-flex">
         <h4 class="notification-title mb-0 mr-auto">{{ 'Notifications' | translate }}</h4>
-        <div class="badge badge-pill badge-light-primary" *ngIf="!isAll">
+        <div class="badge badge-pill badge-light-primary" *ngIf="!isAll && notifications.length">
           {{ notifications.length }} {{ 'New' | translate }}
         </div>
       </div>
@@ -218,8 +219,8 @@
       >
       </kep-pagination>
       <button *ngIf="!isAll && notifications.length > 0" class="btn btn-outline-primary btn-block" (click)="readAll()">{{ 'ReadAll' | translate }}</button>
-      <button *ngIf="!isAll" class="btn btn-primary btn-block" (click)="isAll=true;updateNotifications();">{{ 'AllNotifications' | translate }}</button>
-      <button *ngIf="isAll" class="btn btn-primary btn-block" (click)="isAll=false;updateNotifications();">{{ 'Unread' | translate }}</button>
+      <button *ngIf="!isAll" class="btn btn-primary btn-block" (click)="click()">{{ 'AllNotifications' | translate }}</button>
+      <button *ngIf="isAll" class="btn btn-primary btn-block" (click)="click()">{{ 'Unread' | translate }}</button>
     </li>
     <!--/ Notifications footer -->
   </ul>
