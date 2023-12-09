@@ -15,6 +15,7 @@ import { ProblemsService } from '@problems/services/problems.service';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 
 @Component({
   selector: 'section-problems-table',
@@ -31,6 +32,7 @@ import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.m
     KepPaginationComponent,
     KepTableComponent,
     NgSelectModule,
+    KepIconComponent,
   ]
 })
 export class SectionProblemsTableComponent extends BaseTablePageComponent<Problem> implements OnInit, OnDestroy {

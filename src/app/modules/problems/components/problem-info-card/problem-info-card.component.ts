@@ -12,7 +12,7 @@ import { LanguageService } from '@problems/services/language.service';
 import { takeUntil } from 'rxjs/operators';
 import { AttemptLangs } from '@problems/constants';
 import { findAvailableLang } from '@problems/utils';
-import { KeeniconComponent } from '@shared/components/keenicon/keenicon.component';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 
 interface IVoteResult {
   likesCount: number;
@@ -22,7 +22,7 @@ interface IVoteResult {
 @Component({
   selector: 'problem-info-card',
   standalone: true,
-  imports: [CoreCommonModule, ProblemsPipesModule, UserPopoverModule, KeeniconComponent],
+  imports: [CoreCommonModule, ProblemsPipesModule, UserPopoverModule, KepIconComponent],
   templateUrl: './problem-info-card.component.html',
   styleUrl: './problem-info-card.component.scss'
 })
