@@ -1,6 +1,16 @@
 <li ngbDropdown class="nav-item mr-25">
-  <a class="nav-link" ngbDropdownToggle id="navbarDailyTasksDropdown" (click)="loadData()">
-    <img [src]="streak > 0 ? 'assets/images/icons/fire_red.png' : 'assets/images/icons/fire_blue.png'" height="19">
+  <a class="nav-link text-dark d-flex align-items-center" ngbDropdownToggle id="navbarDailyTasksDropdown" (click)="loadData()">
+    @if (streak == 0){
+      @if (maxStreak == 0){
+        <img height="20" class="mr-50" src="assets/images/icons/fire-1.webp">
+      } @else {
+        <img height="20" class="mr-50" src="assets/images/icons/fire-2.webp">
+      }
+    } @else if(streak < 7){
+      <img height="20" class="mr-50" src="assets/images/icons/fire-3.webp">
+    } @else {
+      <img height="20" class="mr-50" src="assets/images/icons/fire-4.webp">
+    }
     {{ streak }}
   </a>
   <ul ngbDropdownMenu aria-labelledby="navbarDailyTasksDropdown"

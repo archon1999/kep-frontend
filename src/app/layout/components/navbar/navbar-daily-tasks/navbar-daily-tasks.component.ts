@@ -3,6 +3,7 @@ import { AuthenticationService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NavbarService } from '../navbar.service';
+import { User } from '@auth/models';
 
 interface DailyTask {
   type: number;
@@ -21,6 +22,7 @@ interface DailyTask {
 export class NavbarDailyTasksComponent implements OnInit, OnDestroy {
 
   public streak = 0;
+  public maxStreak = 0;
   public dailyTasks: Array<DailyTask> = [];
   public completed = 0;
   public progress = 0;
@@ -33,27 +35,28 @@ export class NavbarDailyTasksComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.authService.currentUser
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((user: any) => {
-        if(user){
+    this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      (user: User) => {
+        if (user) {
           this.loadData();
         }
-      })
+      }
+    );
   }
 
-  loadData(){
+  loadData() {
     this.completed = 0;
     this.service.getDailyTasks().subscribe((result: any) => {
       this.streak = result.streak;
+      this.maxStreak = result.maxStreak;
       this.dailyTasks = result.dailyTasks;
-      for(let dailyTask of this.dailyTasks){
-        if(dailyTask.completed){
+      for (const dailyTask of this.dailyTasks) {
+        if (dailyTask.completed) {
           this.completed++;
         }
       }
       this.progress = Math.trunc(100 * this.completed / this.dailyTasks.length);
-    })
+    });
   }
 
   ngOnDestroy(): void {
