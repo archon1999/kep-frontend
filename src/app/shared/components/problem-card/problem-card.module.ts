@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ProblemCardComponent } from './problem-card.component';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { CoreDirectivesModule } from '../../../../core/directives/directives';
-import { CorePipesModule } from '../../../../core/pipes/pipes.module';
+import { CoreDirectivesModule } from '@shared/directives/directives.module';
+import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { ProblemsPipesModule } from '../../../modules/problems/pipes/problems-pipes.module';
 
 @NgModule({
