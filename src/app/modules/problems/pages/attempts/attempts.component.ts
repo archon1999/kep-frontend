@@ -61,7 +61,8 @@ export class AttemptsComponent extends BaseTablePageComponent<Attempt> implement
             link: '/practice/problems'
           }
         ]
-      }
+      },
+      refreshVisible: true,
     };
   }
 }

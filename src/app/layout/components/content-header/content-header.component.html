@@ -1,22 +1,25 @@
-<!-- app-content-header start -->
-<ng-container *ngIf="contentHeader">
-  <div class="content-header row" [@fadeInLeft]="animationState">
-    <div class="content-header-left col-md-9 col-12 mb-0">
-      <div class="row breadcrumbs-top">
-        <div class="col-12 d-flex mt-1">
-          <h2 class="content-header-title pl-1 float-left mb-0">
-            {{ contentHeader.headerTitle | translate }}
-          </h2>
-          <!-- app-breadcrumb component -->
-          <app-breadcrumb [breadcrumb]="contentHeader.breadcrumb"></app-breadcrumb>
+@if (contentHeader){
+  <div class="mb-3" [ngClass]="{
+    'd-flex justify-content-between align-items-center': contentHeader.refreshVisible
+  }">
+    <div class="content-header row" [@fadeInLeft]="animationState">
+      <div class="content-header-left col-md-9 col-12 mb-0">
+        <div class="row breadcrumbs-top">
+          <div class="col-12 d-flex mt-1">
+            <h2 class="content-header-title pl-1 float-left mb-0">
+              {{ contentHeader.headerTitle | translate }}
+            </h2>
+            <!-- app-breadcrumb component -->
+            <app-breadcrumb [breadcrumb]="contentHeader.breadcrumb"></app-breadcrumb>
+          </div>
         </div>
       </div>
     </div>
+
+    <div *ngIf="contentHeader.refreshVisible" class="text-right" [@fadeInUp]="animationState">
+      <button ngbTooltip="{{ 'Update' | translate }}" (click)="refresh.next(null)" rippleEffect class="btn btn-sm round btn-primary">
+        <i data-feather="refresh-cw"></i>
+      </button>
+    </div>
   </div>
-  <div class="text-right" [@fadeInUp]="animationState">
-    <button (click)="refreshPage()" rippleEffect class="btn btn-sm round btn-primary">
-      <i data-feather="refresh-cw"></i>
-    </button>
-  </div>
-</ng-container>
-<!-- app-content-header end -->
+}
