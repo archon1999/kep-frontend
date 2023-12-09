@@ -23,16 +23,8 @@
 
   <ng-template #itemContent>
     <span [data-feather]="item.icon" *ngIf="item.icon && 0"></span>
-    <keenicon class="font-large-1 text-primary" type="duotone" [name]="item.icon"></keenicon>
+    <kep-icon class="font-large-1 text-primary" type="duotone" [name]="item.icon"></kep-icon>
     <span class="menu-title text-truncate">{{ item.translate | translate }}</span>
-    <span
-      class="badge ml-auto mr-1"
-      *ngIf="item.badge"
-      font-weight: 400="item.badge.translate"
-      [ngClass]="item.badge.classes"
-    >
-      {{ item.badge.title }}
-    </span>
     <span *ngIf="item.newEventsCount" style="transition: 0.5s ease;" class="badge ml-1 new-events badge-pill badge-primary badge-glow">
       {{ item.newEventsCount }}
     </span>

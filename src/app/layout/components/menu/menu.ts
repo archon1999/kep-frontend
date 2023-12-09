@@ -1,4 +1,4 @@
-import { CoreMenu } from '../../../../core/types';
+import { CoreMenu } from '@core/types';
 
 export const menu: CoreMenu[] = [
   {
@@ -15,14 +15,14 @@ export const menu: CoreMenu[] = [
     title: 'Learn',
     translate: 'MENU.LEARN',
     type: 'section',
-    icon: 'book',
+    icon: 'learn',
     children: [
       {
         id: 'courses',
         title: 'Courses',
         translate: 'MENU.COURSES',
         type: 'item',
-        icon: 'book-open',
+        icon: 'course',
         url: '/learn/courses',
       },
       // {
@@ -38,7 +38,7 @@ export const menu: CoreMenu[] = [
         title: 'Blog',
         translate: 'MENU.BLOG',
         type: 'item',
-        icon: 'note-2',
+        icon: 'blog',
         url: '/learn/blog',
       },
     ]
@@ -48,14 +48,14 @@ export const menu: CoreMenu[] = [
     title: 'Practice',
     translate: 'MENU.PRACTICE',
     type: 'section',
-    icon: 'abstract-45',
+    icon: 'practice',
     children: [
       {
         id: 'problems',
         title: 'Problems',
         translate: 'MENU.PROBLEMS',
         type: 'item',
-        icon: 'message-programming',
+        icon: 'problem',
         url: '/practice/problems',
       },
       {
@@ -63,7 +63,7 @@ export const menu: CoreMenu[] = [
         title: 'Tests',
         translate: 'MENU.TESTS',
         type: 'item',
-        icon: 'teacher',
+        icon: 'test',
         url: '/practice/tests',
       },
       {
@@ -71,7 +71,7 @@ export const menu: CoreMenu[] = [
         title: 'Challenges',
         translate: 'MENU.CHALLENGES',
         type: 'item',
-        icon: 'abstract-22',
+        icon: 'challenge',
         url: '/practice/challenges',
       },
       // {
@@ -96,7 +96,7 @@ export const menu: CoreMenu[] = [
         title: 'Contests',
         translate: 'MENU.CONTESTS',
         type: 'item',
-        icon: 'flag',
+        icon: 'contest',
         url: '/competitions/contests',
       },
       {
@@ -104,7 +104,7 @@ export const menu: CoreMenu[] = [
         title: 'Arena',
         translate: 'MENU.ARENA',
         type: 'item',
-        icon: 'shield',
+        icon: 'arena',
         url: '/competitions/arena',
       },
       {
@@ -112,7 +112,7 @@ export const menu: CoreMenu[] = [
         title: 'Tournaments',
         translate: 'MENU.TOURNAMENTS',
         type: 'item',
-        icon: 'award',
+        icon: 'tournament',
         url: '/competitions/tournaments',
       },
       // {
@@ -130,15 +130,15 @@ export const menu: CoreMenu[] = [
     title: 'Users',
     translate: 'MENU.USERS',
     type: 'item',
-    icon: 'profile-user',
+    icon: 'users',
     url: '/users',
   },
-  // {
-  //   id: 'todo',
-  //   title: 'Todo',
-  //   translate: 'MENU.TODO',
-  //   type: 'item',
-  //   icon: 'check-square',
-  //   url: '/todo',
-  // },
+  {
+    id: 'todo',
+    title: 'Todo',
+    translate: 'MENU.TODO',
+    type: 'item',
+    icon: 'todo',
+    url: '/todo',
+  },
 ];
