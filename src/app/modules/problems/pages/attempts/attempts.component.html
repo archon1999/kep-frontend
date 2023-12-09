@@ -1,6 +1,6 @@
 <div class="content-wrapper container-xxl">
   <div class="content-body">
-    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <app-content-header (refresh)="reloadPage()" [contentHeader]="contentHeader"></app-content-header>
 
     <div class="mt-2 form-group">
       <div class="custom-control custom-checkbox" *ngIf="currentUser">
