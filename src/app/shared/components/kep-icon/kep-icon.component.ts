@@ -5,14 +5,13 @@ import { keenIcons } from '../../../keen-icons';
 
 @Component({
   standalone: true,
-  selector: 'keenicon',
-  templateUrl: './keenicon.component.html',
-  styleUrls: ['./keenicon.component.scss'],
+  selector: 'kep-icon',
+  templateUrl: './kep-icon.component.html',
+  styleUrls: ['./kep-icon.component.scss'],
   imports: [CommonModule]
 })
-export class KeeniconComponent implements OnInit {
+export class KepIconComponent implements OnInit {
   @Input() name: string;
-  @Input() kepName: string;
   @Input() class: string;
   @Input() type: 'outline' | 'solid' | 'duotone' = 'outline';
 
@@ -24,11 +23,7 @@ export class KeeniconComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.kepName) {
-      this.name = keenIcons[this.kepName] || this.kepName;
-    }
-    console.log(this.name);
-
+    this.name = keenIcons[this.name] || this.name;
     if (this.type === 'duotone') {
       this.pathsNumber = icons[this.type + '-paths'][this.name] ?? 0;
     }

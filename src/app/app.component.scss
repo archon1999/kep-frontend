@@ -224,7 +224,7 @@ pre {
 }
 
 #main-menu-navigation > li[core-menu-horizontal-item], li[core-menu-horizontal-collapsible], .main-menu.expanded li[core-menu-vertical-item] {
-  &.active > a > keenicon > span {
+  &.active > a > kep-icon > span {
     color: white !important;
   }
 }
@@ -233,7 +233,7 @@ pre {
   transition: 1s ease;
 }
 
-.main-menu:not(.expanded) keenicon > span {
+.main-menu:not(.expanded) kep-icon > span {
   margin-right: 1rem;
   transition: 1s ease-in;
 }

@@ -11,7 +11,7 @@
 
   <!-- itemContent template -->
   <ng-template #itemContent>
-    <keenicon class="font-medium-4 mr-50 text-primary" type="duotone" [name]="item.icon"></keenicon>
+    <kep-icon class="font-medium-4 mr-50 text-primary" type="duotone" [name]="item.icon"></kep-icon>
     <span>{{ item.translate | translate }}</span>
     <span *ngIf="item.hasNewEvent" class="badge ml-25 badge-yellow badge-pill badge-glow">New</span>
   </ng-template>
