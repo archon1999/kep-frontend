@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
-import { UserSkills, UserTechnology } from '../../users/users.models';
+import { UserSkills, UserTechnology } from '@users/users.models';
 import { ToastrService } from 'ngx-toastr';
 import { AccountSettingsService } from '../account-settings.service';
 import { repeaterAnimation } from './repeater-animation';
-import { devIcons } from '../../../dev-icons';
+import { devIcons } from './dev-icons';
 
 @Component({
   selector: 'skills',
