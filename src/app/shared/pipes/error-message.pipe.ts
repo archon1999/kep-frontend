@@ -1,14 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { BaseConfig } from '../../app/shared/c-validators/basic/base-config';
+import { BaseConfig } from '../c-validators/basic/base-config';
 
 @Pipe({
-  name: 'errorMessage'
+  name: 'errorMessage',
+  standalone: true,
 })
 export class ErrorMessagePipe implements PipeTransform {
-  constructor(public translateService: TranslateService) {
-  }
-
+  constructor(public translateService: TranslateService) {}
   transform(errors: { [index: string]: BaseConfig }): unknown {
     const translations = this.translateService.translations;
     let errorMessage = '';
@@ -18,5 +17,4 @@ export class ErrorMessagePipe implements PipeTransform {
     }
     return errorMessage;
   }
-
 }

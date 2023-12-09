@@ -13,7 +13,7 @@ import { ToastrModule } from '@shared/third-part-modules/toastr/toastr.module';
 import { CoreCommonModule } from 'core/common.module';
 import { CoreSidebarModule, CoreThemeCustomizerModule } from 'core/components';
 import { CoreModule } from 'core/core.module';
-import { CorePipesModule } from 'core/pipes/pipes.module';
+import { CorePipesModule } from '@shared/pipes/pipes.module';
 
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { coreConfig } from './app-config';
