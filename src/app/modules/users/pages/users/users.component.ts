@@ -24,7 +24,7 @@ export class UsersComponent extends BaseComponent {
       type: '',
       links: [
         {
-          name: 'CPython.uz',
+          name: this.coreConfig.app.appTitle,
           isLink: false,
           link: '/'
         },
