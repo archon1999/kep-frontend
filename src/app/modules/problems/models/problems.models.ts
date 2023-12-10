@@ -46,6 +46,7 @@ export interface AvailableLanguage {
   timeLimit: number | null;
   memoryLimit: number | null;
   codeTemplate: string;
+  codeGolf?: number;
 }
 
 export interface SampleTest {
