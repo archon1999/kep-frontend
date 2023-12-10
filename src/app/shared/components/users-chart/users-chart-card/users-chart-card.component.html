@@ -12,27 +12,17 @@
   </div>
 
   <div *ngIf="usersChart.series[0].data.length > 0">
-    <apx-chart
-      [yaxis]="usersChart.yaxis"
-      [series]="usersChart.series"
-      [chart]="usersChart.chart"
-      [stroke]="usersChart.stroke"
-      [tooltip]="usersChart.tooltip"
-      [colors]="usersChart.colors"
-      [theme]="chartTheme"
-      [dataLabels]="usersChart.dataLabels">
-    </apx-chart>
+    <apex-chart [options]="usersChart"></apex-chart>
   </div>
 
   <div class="card-body">
     <div class="avatar-group">
-      <div *ngFor="let user of onlineUsers" placement="bottom" container="body" class="avatar pull-up">
-        <user-popover [username]="user.username" [customContent]="true">
-          <img [src]="user.avatar" alt="Avatar" width="33" height="33">
+      <div *ngFor="let user of onlineUsers" class="avatar pull-up">
+        <user-popover [customContent]="true" [username]="user.username">
+          <img [src]="user.avatar" alt="Avatar" height="33" width="33">
           <span class="avatar-status-online"></span>
         </user-popover>
       </div>
     </div>
   </div>
-
 </div>
