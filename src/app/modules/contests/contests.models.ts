@@ -424,3 +424,9 @@ export interface ContestQuestion {
   answer: string | null;
   created: string;
 }
+
+export interface ContestRegistrant {
+  username: string;
+  rating: number;
+  ratingTitle: string;
+}

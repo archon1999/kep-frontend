@@ -60,6 +60,8 @@ import { UserContestsComponent } from '@contests/pages/user-contests/user-contes
 import { ContestCreateComponent } from '@contests/pages/user-contests/contest-create/contest-create.component';
 import { KepcoinSpendSwalModule } from '../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { ContestRegistrantsComponent } from '@contests/pages/contest/contest-registrants/contest-registrants.component';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 
 
 const routes: Routes = [
@@ -164,6 +166,17 @@ const routes: Routes = [
     },
   },
   {
+    path: 'contest/:id/registrants',
+    component: ContestRegistrantsComponent,
+    data: {
+      animation: 'contest-registrants',
+      title: 'Contests.ContestRegistrants',
+    },
+    resolve: {
+      contest: ContestResolver,
+    },
+  },
+  {
     path: 'contest/:id/og-image',
     component: ContestOgImageComponent,
     resolve: {
@@ -205,6 +218,7 @@ const routes: Routes = [
     ContestProblemCardComponent,
     UserContestsComponent,
     ContestCreateComponent,
+    ContestRegistrantsComponent,
   ],
   imports: [
     ContestsComponent,
@@ -242,6 +256,7 @@ const routes: Routes = [
     NgbTimepickerModule,
     NgbDatepickerModule,
     EmptyResultComponent,
+    KepIconComponent,
   ],
   providers: [
     ContestGuard,
