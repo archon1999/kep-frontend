@@ -12,6 +12,7 @@ import { KepcoinSpendSwalModule } from '../../../../kepcoin/kepcoin-spend-swal/k
 import { ContestCountdownComponent } from '@contests/components/contest-card/contest-card/contest-countdown/contest-countdown.component';
 import { Top3ContestantsComponent } from '@contests/components/contest-card/contest-card/top3-contestants/top3-contestants.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
 
 @Component({
   selector: 'contest-card',
@@ -26,6 +27,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
     ContestCountdownComponent,
     Top3ContestantsComponent,
     SpinnerComponent,
+    MathjaxModule,
   ]
 })
 export class ContestCardComponent implements OnInit {

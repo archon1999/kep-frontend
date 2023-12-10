@@ -24,7 +24,9 @@
     </div>
 
     <div class="card-body">
-      <div class="contest-description" [innerHTML]="contest.description"></div>
+      <div class="contest-description">
+        <mathjax [content]="contest.description"></mathjax>
+      </div>
       <div class="contest-time">
         <div *ngIf="contest.status == 0">
           <h3 class="text-center mt-1 mb-3">
