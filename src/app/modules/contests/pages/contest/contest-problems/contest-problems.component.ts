@@ -85,7 +85,7 @@ export class ContestProblemsComponent implements OnInit, OnDestroy {
             link: '../../..'
           },
           {
-            name: this.contest?.id+'',
+            name: this.contest?.id.toString(),
             isLink: true,
             link: '..'
           },

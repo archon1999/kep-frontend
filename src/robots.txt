@@ -1,4 +1,4 @@
 # Allow all URLs (see https://www.robotstxt.org/robotstxt.html)
 User-agent: *
 Disallow:
-Sitemap: https://cpython.uz/static/sitemap.xml
+Sitemap: https://kep.uz/static/sitemap.xml

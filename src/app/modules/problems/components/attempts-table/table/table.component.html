@@ -95,7 +95,7 @@
   
               <div *ngIf="attempt.canTestView">
                 <a ngbTooltip="{{ 'ViewTest' | translate }}"
-                  href="https://cpython.uz/api/attempts/{{ attempt.id }}/failed-test?number={{ attempt.testCaseNumber }}">
+                  href="/api/attempts/{{ attempt.id }}/failed-test?number={{ attempt.testCaseNumber }}">
                   <div [innerHTML]="attempt | attemptVerdictHTML"></div>
                 </a>
               </div>
