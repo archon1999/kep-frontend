@@ -1,15 +1,29 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UsersService } from '../../../../modules/users/users.service';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { takeUntil } from 'rxjs/operators';
 import { CoreConfigService } from '../../../../../core/services/config.service';
 import { Subject } from 'rxjs';
 import { colors } from '../../../../colors.const';
+import { CoreCommonModule } from '@core/common.module';
+import { CorePipesModule } from '@shared/pipes/pipes.module';
+import { CoreDirectivesModule } from '@shared/directives/directives.module';
+import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
+import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 
 @Component({
   selector: 'users-chart-card',
   templateUrl: './users-chart-card.component.html',
-  styleUrls: ['./users-chart-card.component.scss']
+  styleUrls: ['./users-chart-card.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    CorePipesModule,
+    CoreDirectivesModule,
+    TranslateModule,
+    UserPopoverModule,
+    ApexChartModule
+  ]
 })
 export class UsersChartCardComponent implements OnInit, OnDestroy {
 
