@@ -130,6 +130,12 @@
     --bg-light: rgba(96, 94, 227, 0.1);
     --box-shadow: 0 0 10px #1c25c1;
   }
+
+  &.contest-type-CodeGolf {
+    .card-bg img {
+      max-width: 59% !important;
+    }
+  }
 }
 
 .dark-layout .contests-colors {
