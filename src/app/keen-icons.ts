@@ -24,4 +24,6 @@ export const keenIcons = {
   rating: 'chart-simple-2',
   attempt: 'filter-tick',
   attempts: 'filter-tick',
+  'rating-changes': 'chart-line-up',
+  question: 'question-2',
 };
