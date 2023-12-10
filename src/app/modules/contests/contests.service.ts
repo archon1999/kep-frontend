@@ -130,4 +130,7 @@ export class ContestsService {
     return this.api.get('problems/list');
   }
 
+  getContestRegistrants(contestId: number | string) {
+    return this.api.get(`contests/${contestId}/registrants`);
+  }
 }
