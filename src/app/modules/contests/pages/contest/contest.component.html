@@ -1,31 +1,16 @@
 
 <div class="content-wrapper container-xxl container-xxl p-0">
   <div class="content-body">
-    <!-- content-header component -->
-    <div class="row">
-      <div class="col-12">
-        <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <contest-card [contest]="contest"></contest-card>
+    <div class="card" [@fadeInUpOnEnter]>
+      <div class="card-header">
+        <contest-tab [contest]="contest"></contest-tab>
+        <hr>
       </div>
-
-      <div class="col-12 mt-2 px-lg-2">
-        <contest-card [contest]="contest"></contest-card>
+      <div class="card-body">
+        <contests-table [contests]="[contest]"></contests-table>
       </div>
     </div>
-
-    <section class="mt-2">
-      <div class="row">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-header">
-              <contest-tab [contest]="contest"></contest-tab>
-              <hr>
-            </div>
-            <div [@fadeInUp]="startAnimationState" class="card-body">
-              <contests-table [contests]="[contest]"></contests-table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
   </div>
 </div>
