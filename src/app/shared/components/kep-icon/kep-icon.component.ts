@@ -12,7 +12,7 @@ import { keenIcons } from '../../../keen-icons';
 })
 export class KepIconComponent implements OnInit {
   @Input() name: string;
-  @Input() class: string;
+  @Input() class = 'mr-25 font-medium-3';
   @Input() type: 'outline' | 'solid' | 'duotone' = 'outline';
 
   pathsNumber = 0;
