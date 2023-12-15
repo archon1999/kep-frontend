@@ -2,7 +2,7 @@ import { CoreConfig } from 'core/types';
 
 export const coreConfig: CoreConfig = {
   app: {
-    appName: 'KEP.uz',                                        // App Name
+    appName: 'KEP',                                        // App Name
     appTitle: 'KEP.uz', // App Title
     appLogoImage: 'assets/images/logo/logo.png',                  // App Logo
     appLogoImageWithTitle: 'assets/images/logo/logo-with-title.svg',                  // App Logo
