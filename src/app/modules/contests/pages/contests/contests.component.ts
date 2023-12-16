@@ -18,10 +18,10 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
   templateUrl: './contests.component.html',
   styleUrls: ['./contests.component.scss'],
   animations: [
-    fadeInLeftOnEnterAnimation({ delay: 700, duration: 2000 }),
-    fadeInRightOnEnterAnimation({ delay: 900, duration: 2000 }),
-    fadeInRightOnEnterAnimation({ anchor: 'contests', duration: 3000 }),
-    fadeInUpOnEnterAnimation({ delay: 0, duration: 1500 }),
+    fadeInLeftOnEnterAnimation({ duration: 1000 }),
+    fadeInRightOnEnterAnimation({ duration: 1000 }),
+    fadeInRightOnEnterAnimation({ anchor: 'contests', duration: 1000 }),
+    fadeInUpOnEnterAnimation({ delay: 0, duration: 1000 }),
   ],
   standalone: true,
   imports: [
@@ -74,7 +74,7 @@ export class ContestsComponent extends BaseTablePageComponent<Contest> implement
       page: this.pageNumber,
       pageSize: this.pageSize,
       category: this.contestCategory || null,
-      isParticipated: this.contestStatus !== 2 ? !!this.contestStatus : null,
+      isParticipated: this.contestStatus !== 2 ? +!!this.contestStatus : null,
       type: this.contestType ? this.contestTypes[this.contestType] : null,
     });
   }

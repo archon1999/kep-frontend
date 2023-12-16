@@ -65,7 +65,7 @@
 
   <div class="card-footer justify-content-between d-flex">
     <div class="meta-info text-center">
-      <span class="badge badge-glow badge-primary">
+      <span class="badge badge-glow mr-25 badge-primary">
         <i data-feather="user"></i>
         <span *ngIf="contest.status == -1" ngbTooltip="{{ 'Registrants' | translate }}">
           {{ contest.registrantsCount }}
@@ -74,7 +74,7 @@
           {{ contest.contestantsCount }}
         </span>
       </span>
-      <span class="badge badge-glow badge-primary" ngbTooltip="{{ 'Problems' | translate }}">
+      <span class="badge badge-glow mr-25 badge-primary" ngbTooltip="{{ 'Problems' | translate }}">
         <i [data-feather]="'problem' | iconName"></i>
         {{ contest.problemsCount }}
       </span>
