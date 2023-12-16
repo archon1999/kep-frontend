@@ -75,7 +75,7 @@
 
             <div class="card-body">
               <problem-info-card
-                [hideCodeGolf]="false"
+                [hideCodeGolf]="contest?.type !== 'CodeGolf'"
                 [hideAuthorAndDifficulty]="true"
                 [hideLikes]="true"
                 [problem]="contestProblem?.problem">
