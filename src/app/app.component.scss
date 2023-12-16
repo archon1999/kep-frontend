@@ -86,7 +86,7 @@ pre {
   border: 1px solid #ededed !important;
   background-color: #fafafa !important;
   font-size: 87.5%;
-  font-family: 'Inconsolata';
+  font-family: 'Inconsolata', serif;
   overflow: auto;
 }
 
@@ -242,4 +242,10 @@ pre {
 .main-menu:not(.expanded) kep-icon > span {
   margin-right: 1rem;
   transition: 1s ease-in;
+}
+
+@include media-breakpoint-down(sm) {
+  .nav-tabs .nav-item {
+    width: 100%;
+  }
 }
