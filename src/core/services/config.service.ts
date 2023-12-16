@@ -38,10 +38,6 @@ export class CoreConfigService {
     }
 
     _config.app.appLanguage = this.translateService.getBrowserLang();
-    let now = new Date(Date.now());
-    if(now.getHours() > 18 || now.getHours() < 6){
-      _config.layout.skin = 'dark';
-    }
 
     this._defaultConfig = this.localConfig ? this.localConfig : _config;
 
