@@ -26,4 +26,7 @@ export const keenIcons = {
   attempts: 'filter-tick',
   'rating-changes': 'chart-line-up',
   question: 'question-2',
+
+  'challenge-time': 'watch',
+  'challenge-task': 'abstract-45',
 };

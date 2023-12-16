@@ -35,6 +35,7 @@ import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-char
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 
 
 const routes: Routes = [
@@ -102,6 +103,7 @@ const routes: Routes = [
     ApexChartModule,
     CountdownComponent,
     SpinnerComponent,
+    KepIconComponent,
   ],
   providers: [ChallengeResolver],
   exports: [
