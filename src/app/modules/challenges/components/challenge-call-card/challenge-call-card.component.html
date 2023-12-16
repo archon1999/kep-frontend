@@ -1,17 +1,17 @@
 <div class="card bg-challenge-call">
   <div class="card-header">
     <challenges-user-view [user]="challengeCall"></challenges-user-view>
-    <i data-feather="zap" class="text-primary"></i>
+    <kep-icon name="challenge"></kep-icon>
   </div>
 
   <div class="card-body">
     <span ngbTooltip="{{ 'Time' | translate }}" class="mr-25 badge badge-primary bg-primary-darken badge-glow">
-      <i data-feather="clock"></i>
+      <kep-icon class="font-medium-1" name="challenge-time"></kep-icon>
       {{ challengeCall.timeSeconds }}
     </span>
 
     <span ngbTooltip="{{ 'Questions' | translate }}"  class="badge badge-primary bg-primary-darken badge-glow">
-      <i data-feather="activity"></i>
+      <kep-icon class="font-medium-1" name="challenge-task"></kep-icon>
       {{ challengeCall.questionsCount }}
     </span>
 

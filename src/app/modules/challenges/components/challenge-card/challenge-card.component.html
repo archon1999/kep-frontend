@@ -25,18 +25,18 @@
             'badge-danger': challenge.playerFirst.delta < 0,
             'badge-secondary': challenge.playerFirst.delta == 0
           }">
-            <i [data-feather]="'trending-up'"></i>
+            <kep-icon class="font-medium-1" name="rating-changes"></kep-icon>
             {{ challenge.playerFirst.delta }}
           </span>
         </td>
 
         <td class="text-right">
           <span ngbTooltip="{{ 'Time' | translate }}" class="badge mr-25 badge-glow badge-primary bg-primary">
-            <i data-feather="clock"></i>
+            <kep-icon class="font-small-3" name="challenge-time"></kep-icon>
             {{ challenge.timeSeconds }}
           </span>
           <span ngbTooltip="{{ 'Questions' | translate }}" class="badge badge-glow badge-primary bg-primary">
-            <i data-feather="activity"></i>
+            <kep-icon class="font-small-3" name="challenge-task"></kep-icon>
             {{ challenge.questionsCount }}
           </span>
         </td>
@@ -66,7 +66,7 @@
             'badge-danger': challenge.playerSecond.delta < 0,
             'badge-secondary': challenge.playerSecond.delta == 0
           }">
-            <i [data-feather]="'trending-up'"></i>
+            <kep-icon class="font-medium-1" name="rating-changes"></kep-icon>
             {{ challenge.playerSecond.delta }}
           </span>
         </td>
