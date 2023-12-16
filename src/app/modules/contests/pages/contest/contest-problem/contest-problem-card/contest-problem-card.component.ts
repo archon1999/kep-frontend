@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Contest, ContestProblem } from '@contests/contests.models';
 import { ContestsService } from '@contests/contests.service';
-import { Problem } from 'app/modules/problems/models/problems.models';
+import { Problem } from '@problems/models/problems.models';
 import { BaseComponent } from '@shared/components/classes/base.component';
 
 @Component({
@@ -40,6 +40,5 @@ export class ContestProblemCardComponent extends BaseComponent {
   onLoad(event: any) {
     this.logoHeight = this.contestLogoRef.nativeElement.naturalHeight;
     this.logoWidth = this.contestLogoRef.nativeElement.naturalWidth;
-    console.log(this.logoHeight, this.logoHeight);
   }
 }
