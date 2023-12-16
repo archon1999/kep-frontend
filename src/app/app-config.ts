@@ -9,7 +9,7 @@ export const coreConfig: CoreConfig = {
     appLanguage: 'en',                                           // App Default Language (en, fr, de, pt etc..)
   },
   layout: {
-    skin: 'default',                        // default, dark, bordered, semi-dark
+    skin: 'dark',                        // default, dark, bordered, semi-dark
     type: 'horizontal',                       // vertical, horizontal
     animation: 'fadeIn',                     // fadeInLeft, zoomIn , fadeIn, none
     enableAnimation: true,
