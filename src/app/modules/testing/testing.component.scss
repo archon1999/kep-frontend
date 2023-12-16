@@ -20,7 +20,7 @@
   }
 
   .dark-layout .tests-page-top:before {
-    background: linear-gradient(to right, #283046, #3d4a6c) !important;
+    background: linear-gradient(to right, #15171c, #3d4a6c) !important;
   }
 
   @include media-breakpoint-down(lg) {
@@ -40,7 +40,7 @@
 
 ::ng-deep {
   .dark-layout .chapters {
-    background: linear-gradient(to right, #283046, #3d4a6c);  
+    background: linear-gradient(to right, #15171c, #3d4a6c);
   }
 
   .chapter-card.active {

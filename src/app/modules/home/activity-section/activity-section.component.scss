@@ -8,7 +8,8 @@
 }
 
 ::ng-deep .dark-layout .card-activity {
-  background: linear-gradient(92.32deg, mix(black, $primary, 50), mix(black, $primary, 35)) !important;
+  background: linear-gradient(92.32deg, mix(black, $primary, 55), mix(black, $primary, 40)) !important;
+  box-shadow: none !important;
 }
 
 h2 {
