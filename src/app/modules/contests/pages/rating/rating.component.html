@@ -8,8 +8,8 @@
           <tr class="bg-gradient-primary">
             <th class="text-center text-white">#</th>
             <th class="text-white">{{ 'USER' | translate }}</th>
-            <th class="text-center text-white"><i [data-feather]="'contest' | iconName" [size]="'20'"></i></th>
-            <th class="text-center text-white"><i [data-feather]="'rating' | iconName" [size]="'20'"></i></th>
+            <th class="text-center text-white"><kep-icon name="contest"></kep-icon></th>
+            <th class="text-center text-white"><kep-icon name="rating"></kep-icon></th>
           </tr>
         </ng-container>
         <ng-container body>
@@ -20,12 +20,12 @@
                 <contestant-view [user]="contestsRating"></contestant-view>
               </td>
               <td class="text-dark text-center">
-              <span class="badge badge-light-primary">
+              <span class="badge badge-light-info">
                 {{ contestsRating.contestantsCount }}
               </span>
               </td>
               <td class="text-center">
-              <span class="badge badge-light-{{ contestsRating.rating | contestsRatingColor }}">
+              <span class="badge badge-{{ contestsRating.rating | contestsRatingColor }} badge-glow">
                 {{ contestsRating.rating }}
               </span>
               </td>
