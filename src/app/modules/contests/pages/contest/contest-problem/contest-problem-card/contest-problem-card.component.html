@@ -1,15 +1,26 @@
 <a (mouseleave)="removeProblem()" [routerLink]="['..', 'problem', contestProblem.symbol]">
   <div
-    class="card contests-colors contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}"
+    [class]="contest | contestClasses"
     [ngClass]="{
       'border-success': contestProblem.isSolved,
       'border-danger': !contestProblem.isSolved && contestProblem.isAttempted
-    }">
-    <div *ngIf="contest.logo" class="card-bg">
-      <img [src]="contest.logo" alt="">
+    }"
+    class="card">
+
+    <div
+      class="contest-logo"
+      [ngClass]="{
+        'full-height': logoHeight >= logoWidth,
+        'full-width': logoHeight < logoWidth
+      }">
+      <img
+        #contestLogo
+        (load)="onLoad($event)"
+        [src]="contest.logo"
+        alt="contest-logo">
     </div>
-    
-    <div *ngIf="problem" class="card-header">
+
+    <div *ngIf="problem" class="card-header full-width">
       <div class="card-title text-white mb-2">
         {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
       </div>
@@ -18,7 +29,7 @@
       </div>
     </div>
 
-    <div *ngIf="!problem">
+    <div *ngIf="!problem" class="full-width">
       <div class="card-header justify-content-start">
         <span *ngIf="contestProblem.isSolved" class="text-success">
           <i data-feather="check-circle"></i>
@@ -27,7 +38,7 @@
           <i data-feather="x-circle"></i>
         </span>
 
-        <span class="text-white ml-50" (mouseenter)="onProblemFocus()">
+        <span (mouseenter)="onProblemFocus()" class="text-white ml-50">
           {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
           <span *ngIf="contest.hasBalls()">
             ({{ contestProblem.ball }})
@@ -36,8 +47,8 @@
       </div>
 
       <div class="card-body">
-        <span class="badge badge-{{ availableLanguage.lang }} badge-pill mr-25 mb-25"
-          *ngFor="let availableLanguage of contestProblem.problem.availableLanguages">
+        <span *ngFor="let availableLanguage of contestProblem.problem.availableLanguages"
+              class="badge badge-{{ availableLanguage.lang }} badge-pill mr-25 mb-25">
           {{ availableLanguage.langFull }}
         </span>
       </div>
