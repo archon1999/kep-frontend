@@ -6,7 +6,7 @@
 @include define-page-top(
   $name: 'problems',
   $light-background: linear-gradient(to right, mix($green, mix(black, $primary, 5), 10), mix(white, $primary, 15)),
-  $dark-background: linear-gradient(to right, mix($green, mix(black, $primary, 50), 25), mix(black, $primary, 25))
+  $dark-background: linear-gradient(to right, mix($green, mix(black, $primary, 70), 25), mix(black, $primary, 40))
 );
 
 ::ng-deep .problems-sidebar {

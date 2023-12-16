@@ -11,6 +11,7 @@ import { ContestsSectionCategoriesComponent } from './sections/contests-section-
 import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
 import { PageResult } from '@shared/components/classes/page-result';
 import { ContestsService } from '@contests/contests.service';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 
 @Component({
   selector: 'app-contests',
@@ -30,6 +31,7 @@ import { ContestsService } from '@contests/contests.service';
     KepPaginationComponent,
     NgSelectModule,
     ContestsSectionCategoriesComponent,
+    KepIconComponent,
   ]
 })
 export class ContestsComponent extends BaseTablePageComponent<Contest> implements OnInit, OnDestroy {

@@ -6,13 +6,14 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { CoreCommonModule } from 'core/common.module';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 
 @Component({
   selector: 'header-section',
   templateUrl: './header-section.component.html',
   styleUrls: ['./header-section.component.scss'],
   standalone: true,
-  imports: [CoreCommonModule],
+  imports: [CoreCommonModule, KepIconComponent],
   animations: [
     fadeInOnEnterAnimation({ duration: 3000 }),
     fadeInUpOnEnterAnimation({ duration: 3000 }),

@@ -52,7 +52,7 @@ section.contests {
   background: linear-gradient(to right, $primary, lighten($primary, 10%));
 
   @include dark-layout {
-    background: linear-gradient(to right, mix(black, $primary, 50), mix(black, $primary, 15));
+    background: linear-gradient(to right, mix(black, $primary, 55), mix(black, $primary, 30));
   }
 
   @include media-breakpoint-down(lg) {
