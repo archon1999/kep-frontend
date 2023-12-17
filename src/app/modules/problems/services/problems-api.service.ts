@@ -3,14 +3,12 @@ import { ApiService } from 'app/shared/services/api.service';
 import { ProblemsFilter } from '@problems/models/problems.models';
 import { map } from 'rxjs/operators';
 import { Attempt } from '@problems/models/attempts.models';
-import { paramsMapper } from '@shared/utils';
 import { Pageable } from '@shared/components/classes/pageable';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProblemsService {
-
+export class ProblemsApiService {
   constructor(public api: ApiService) {}
 
   getProblems(params: Partial<ProblemsFilter & Pageable & { hasSolved: number, hasAttempted: number }>) {
@@ -24,7 +22,7 @@ export class ProblemsService {
       params.hasAttempted = 0;
     }
     delete params.status;
-    return this.api.get('problems', paramsMapper(params));
+    return this.api.get('problems', params);
   }
 
   getProblem(id: number | string) {
@@ -161,7 +159,7 @@ export class ProblemsService {
   }
 
   hackSubmit(attemptId: number | string, body: { input?: string, generatorSource?: string, generatorLang?: string }) {
-    return this.api.post(`attempts/${ attemptId }/hack-submit`, paramsMapper(body));
+    return this.api.post(`attempts/${ attemptId }/hack-submit`, body);
   }
 
   hackAttemptRerun(hackAttemptId: number) {
@@ -169,10 +167,15 @@ export class ProblemsService {
   }
 
   getHackAttempts(params: any) {
-    return this.api.get('hack-attempts', paramsMapper(params));
+    return this.api.get('hack-attempts', params);
   }
 
   getCategories() {
     return this.api.get('categories');
   }
+
+  getCurrentProblemRating(period: 'day' | 'week' | 'month') {
+    return this.api.get(`problems-rating/${ period }`);
+  }
 }
+
