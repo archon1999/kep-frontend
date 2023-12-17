@@ -15,27 +15,29 @@ $colors: (
 
 .dark-layout {
   @each $color_name, $color in $colors {
+    $dark-color: mix(black, $color, 30);
+
     .btn-#{$color_name} {
-      background-color: mix(black, $color, 30) !important;
-      border-color: mix(black, $color, 30) !important;
+      background-color: $dark-color !important;
+      border-color: $dark-color !important;
     }
 
     .badge.badge-#{$color_name} {
-      background-color: mix(black, $color, 30);
+      background-color: $dark-color;
 
       &.badge-glow {
-        box-shadow: 0 0 5px mix(black, $color, 30);
+        box-shadow: 0 0 5px $dark-color;
       }
     }
 
     .bg-#{$color_name} {
-      background-color: mix(black, $color, 30);
+      background-color: $dark-color;
 
       &.badge-glow {
-        box-shadow: 0 0 5px mix(black, $color, 30);
+        box-shadow: 0 0 5px $dark-color;
       }
     }
 
-    --#{$color_name}: mix(black, $color, 30);
+    --#{$color_name}: #{$dark-color};
   }
 }
