@@ -6,7 +6,7 @@ import { UserPopoverModule } from '@shared/components/user-popover/user-popover.
 import { User } from '@auth/models';
 import { Subject } from 'rxjs';
 import { AuthenticationService } from '@auth/service';
-import { ProblemsService } from '@problems/services/problems.service';
+import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { LanguageService } from '@problems/services/language.service';
 import { takeUntil } from 'rxjs/operators';
 import { AttemptLangs } from '@problems/constants';
@@ -41,7 +41,7 @@ export class ProblemInfoCardComponent implements OnInit, OnDestroy {
 
   constructor(
     public authService: AuthenticationService,
-    public service: ProblemsService,
+    public service: ProblemsApiService,
     public langService: LanguageService,
   ) {
   }

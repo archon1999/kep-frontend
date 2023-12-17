@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbAccordionModule, NgbModal, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
-import { ProblemsService } from 'app/modules/problems/services/problems.service';
+import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Problem, Tag, Topic } from '../../../models/problems.models';
@@ -46,7 +46,7 @@ export class ProblemDescriptionComponent implements OnInit, OnDestroy {
 
   constructor(
     public authService: AuthenticationService,
-    public service: ProblemsService,
+    public service: ProblemsApiService,
     public modalService: NgbModal,
   ) {
   }

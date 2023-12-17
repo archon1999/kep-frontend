@@ -12,7 +12,7 @@ import { ProfileSectionComponent } from './profile-section/profile-section.compo
 import { HeaderSectionComponent } from './header-section/header-section.component';
 import { ActivitySectionComponent } from './activity-section/activity-section.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { UsersChartCardComponent } from '@shared/components/users-chart/users-chart-card/users-chart-card.component';
+import { UsersChartCardComponent } from '@users/components/users-chart-card/users-chart-card.component';
 
 @Component({
   selector: 'app-home',
