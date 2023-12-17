@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Problem } from 'app/modules/problems/models/problems.models';
-import { ProblemsService } from 'app/modules/problems/services/problems.service';
+import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { colors as Colors } from 'app/colors.const';
 import { CoreConfigService } from 'core/services/config.service';
 import { CoreConfig } from 'core/types';
@@ -36,7 +36,7 @@ export class ProblemSidebarStatisticsComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject();
 
   constructor(
-    public service: ProblemsService,
+    public service: ProblemsApiService,
     public translate: TranslateService,
     public coreConfigService: CoreConfigService,
   ) { }

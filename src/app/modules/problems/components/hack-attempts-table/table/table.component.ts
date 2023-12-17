@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { bounceAnimation, fadeInOnEnterAnimation, shakeAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
-import { ProblemsService } from 'app/modules/problems/services/problems.service';
+import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { HackAttempt } from '../../../models/hack-attempt.models';
 
 @Component({
@@ -24,7 +24,7 @@ export class TableComponent implements OnInit {
 
   constructor(
     public authService: AuthenticationService,
-    public service: ProblemsService,
+    public service: ProblemsApiService,
   ) {
   }
 

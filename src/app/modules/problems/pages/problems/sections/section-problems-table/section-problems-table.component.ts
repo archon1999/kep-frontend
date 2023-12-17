@@ -11,7 +11,7 @@ import { ProblemDifficultyColorPipe } from '@problems/pipes/problem-difficulty-c
 import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
 import { Observable } from 'rxjs';
 import { PageResult } from '@shared/components/classes/page-result';
-import { ProblemsService } from '@problems/services/problems.service';
+import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
@@ -44,7 +44,7 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
   public filter: ProblemsFilter = DEFAULT_FILTER;
 
   constructor(
-    public service: ProblemsService,
+    public service: ProblemsApiService,
     public filterService: ProblemsFilterService,
   ) {
     super();

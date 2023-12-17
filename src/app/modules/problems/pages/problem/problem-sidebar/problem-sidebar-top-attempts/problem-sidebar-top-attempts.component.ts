@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AttemptLangs } from 'app/modules/problems/constants';
 import { Problem } from 'app/modules/problems/models/problems.models';
 import { LanguageService } from 'app/modules/problems/services/language.service';
-import { ProblemsService } from 'app/modules/problems/services/problems.service';
+import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CoreCommonModule } from '@core/common.module';
@@ -29,7 +29,7 @@ export class ProblemSidebarTopAttemptsComponent implements OnInit, OnDestroy {
 
   constructor(
     public langService: LanguageService,
-    public service: ProblemsService,
+    public service: ProblemsApiService,
   ) {}
 
   ngOnInit(): void {

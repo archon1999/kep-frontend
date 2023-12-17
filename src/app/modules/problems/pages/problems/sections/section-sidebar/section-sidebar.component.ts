@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { User } from 'app/auth/models';
 import { takeUntil } from 'rxjs/operators';
 import { Attempt } from '@problems/models/attempts.models';
-import { ProblemsService } from 'app/modules/problems/services/problems.service';
+import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 import { BaseComponent } from '@shared/components/classes/base.component';
@@ -47,7 +47,7 @@ export class SectionSidebarComponent extends BaseComponent implements OnInit {
   public solvedText: string;
 
   constructor(
-    public service: ProblemsService,
+    public service: ProblemsApiService,
     public translateService: TranslateService,
     public statisticsService: ProblemsStatisticsService,
   ) {

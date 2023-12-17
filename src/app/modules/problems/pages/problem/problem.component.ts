@@ -4,7 +4,7 @@ import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular
 import { User } from 'app/auth/models';
 import { Subject } from 'rxjs';
 import { Problem } from '@problems/models/problems.models';
-import { ProblemsService } from '../../services/problems.service';
+import { ProblemsApiService } from '../../services/problems-api.service';
 import { Location } from '@angular/common';
 import { ApiService } from '@shared/services/api.service';
 import { ToastrService } from 'ngx-toastr';
@@ -58,7 +58,7 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
   public checkInput = '';
 
   constructor(
-    public service: ProblemsService,
+    public service: ProblemsApiService,
     public api: ApiService,
   ) {
     super();

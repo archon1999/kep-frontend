@@ -8,7 +8,7 @@ import { WebsocketService } from 'app/shared/services/websocket';
 import { ToastrService } from 'ngx-toastr';
 import { Attempt, WSAttempt } from '../../models/attempts.models';
 import { AttemptLangs, Verdicts } from '../../constants';
-import { ProblemsService } from '../../services/problems.service';
+import { ProblemsApiService } from '../../services/problems-api.service';
 import { Contest } from 'app/modules/contests/contests.models';
 import { SoundsService } from 'app/shared/services/sounds/sounds.service';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -64,7 +64,7 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
     public toastr: ToastrService,
     public coreConfigService: CoreConfigService,
     public translationService: TranslateService,
-    public service: ProblemsService,
+    public service: ProblemsApiService,
     public soundsService: SoundsService,
   ) {
     super();

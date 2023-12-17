@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Problem } from '@problems/models/problems.models';
-import { ProblemsService } from 'app/modules/problems/services/problems.service';
+import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { BaseComponent } from '@shared/components/classes/base.component';
 import { PageResult } from '@shared/components/classes/page-result';
 import { HackAttempt } from '@problems/models/hack-attempt.models';
@@ -29,7 +29,7 @@ export class ProblemHacksComponent extends BaseComponent implements OnInit {
   public myAttempts = true;
 
   constructor(
-    public service: ProblemsService,
+    public service: ProblemsApiService,
   ) {
     super();
   }

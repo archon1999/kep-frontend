@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Category, ProblemsFilter, Tag } from '@problems/models/problems.models';
-import { ProblemsService } from '@problems/services/problems.service';
+import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { ProblemsFilterService } from 'app/modules/problems/services/problems-filter.service';
 import { BaseComponent } from '@shared/components/classes/base.component';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -52,7 +52,7 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
   public filterCollapsed = false;
 
   constructor(
-    public service: ProblemsService,
+    public service: ProblemsApiService,
     public problemsFilterService: ProblemsFilterService,
   ) {
     super();
