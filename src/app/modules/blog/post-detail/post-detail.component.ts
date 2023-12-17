@@ -9,7 +9,7 @@ import { BlogService } from '../blog.service';
   templateUrl: './post-detail.component.html',
   styleUrls: ['./post-detail.component.scss']
 })
-export class PostDetailComponent implements OnInit, OnDestroy {
+export class PostDetailComponent implements OnInit {
 
   public blogPost: Blog;
 
@@ -20,12 +20,10 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    document.getElementsByTagName('body')[0].classList.add('post-detail-page');
     this.route.data.subscribe(({ blogPost }) => {
       this.blogPost = blogPost;
       this.titleService.updateTitle(this.route, { postTitle: blogPost.title });
-    })
-
+    });
   }
 
   like() {
@@ -33,11 +31,7 @@ export class PostDetailComponent implements OnInit, OnDestroy {
       (likes: any) => {
         this.blogPost.likesCount = likes;
       }
-    )
-  }
-
-  ngOnDestroy(): void {
-    document.getElementsByTagName('body')[0].classList.remove('post-detail-page');
+    );
   }
 
 }
