@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'table-ordering',
   templateUrl: './table-ordering.component.html',
   styleUrls: ['./table-ordering.component.scss']
 })
-export class TableOrderingComponent implements OnInit {
+export class TableOrderingComponent {
 
   @Input() value: string;
   @Input() ordering: string;
@@ -14,14 +14,9 @@ export class TableOrderingComponent implements OnInit {
 
   @Output() change = new EventEmitter<string>();
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-  click(){
+  click() {
     let value: string;
-    if(this.reverse){
+    if (this.reverse) {
       value = '-' + this.ordering;
       if (this.value === '-' + this.ordering) {
         value = this.ordering;
