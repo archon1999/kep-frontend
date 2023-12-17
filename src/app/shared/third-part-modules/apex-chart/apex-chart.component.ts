@@ -1,48 +1,56 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ChartOptions } from './chart-options.type';
 import { takeUntil } from 'rxjs/operators';
-import { CoreConfig } from '../../../../core/types';
-import { CoreConfigService } from '../../../../core/services/config.service';
+import { CoreConfigService } from '@core/services/config.service';
 import { Subject } from 'rxjs';
-import { colors } from '../../../colors.const';
-import { ApexTheme } from 'ng-apexcharts';
+import { colors } from '@app/colors.const';
+import { ApexTheme, ChartComponent } from 'ng-apexcharts';
+import { TranslateService } from '@ngx-translate/core';
 
+import ru from 'apexcharts/dist/locales/ru.json';
+import en from 'apexcharts/dist/locales/en.json';
+import uz from './locale-uz.json';
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'apex-chart',
   templateUrl: './apex-chart.component.html',
   styleUrls: ['./apex-chart.component.scss']
 })
 export class ApexChartComponent implements OnInit, OnDestroy {
+  @ViewChild('chart') chart: ChartComponent;
+
+  public chartTheme: ApexTheme;
+  private _unsubscribeAll = new Subject();
+
+  constructor(
+    public coreConfigService: CoreConfigService,
+    public translateService: TranslateService,
+  ) {}
 
   private _options: ChartOptions;
-  @Input() set options(options: ChartOptions) {
-    this._options = options;
-    this.options.chart.fontFamily = this.options.chart.fontFamily || 'Quicksand, Roboto';
-    this.options.colors = this.options.colors || [colors.solid.primary];
-    this.options.chart.toolbar = this.options.chart.toolbar || { show: false };
-    this.options.chart.zoom = this.options.chart.zoom || { enabled: false };
-  }
 
-  get options(){
+  get options() {
     return this._options;
   }
 
-  public chartTheme: ApexTheme;
-
-  private _unsubscribeAll = new Subject();
-
-  constructor(public coreConfigService: CoreConfigService) {}
+  @Input() set options(options: ChartOptions) {
+    this._options = options;
+    this.options.chart.fontFamily = this.options.chart.fontFamily || 'Montserrat';
+    this.options.colors = this.options.colors || [colors.solid.primary];
+    this.options.chart.toolbar = this.options.chart.toolbar || { show: false };
+    this.options.chart.zoom = this.options.chart.zoom || { enabled: false };
+    this.options.chart.locales = [ru, en, uz];
+    this.options.chart.defaultLocale = this.translateService.currentLang;
+  }
 
   ngOnInit(): void {
-    this.coreConfigService.getConfig()
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((config: CoreConfig) => {
+    this.coreConfigService.getConfig().pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      (config) => {
         this.chartTheme = {
           mode: config.layout.skin === 'dark' ? 'dark' : 'light',
         };
-      });
+      }
+    );
   }
 
   ngOnDestroy() {
