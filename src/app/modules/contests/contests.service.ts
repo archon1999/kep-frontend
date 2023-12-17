@@ -67,8 +67,7 @@ export class ContestsService {
     return this.api.get('contests', { status: ContestStatus.FINISHED, page: page });
   }
 
-  getContestsRating(page: number, pageSize) {
-    const params = { page: page, page_size: pageSize };
+  getContestsRating(params: Partial<Pageable>) {
     return this.api.get('contests-rating', params);
   }
 
