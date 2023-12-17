@@ -14,26 +14,26 @@
       <h6 class="font-weight-bolder">
         <kep-icon class="font-small-4" name="contest"></kep-icon> {{ 'MENU.CONTESTS' | translate }}
       </h6>
-      <h4 class="mb-0 mt-1 text-center">
+      <div class="mb-0 mt-1 text-center">
         <contests-rating-image [size]="24" [title]="userRatings.contestsRatingTitle"></contests-rating-image>
         <span class="badge badge-light-{{ userRatings.contestsRating | contestsRatingColor }}">
-        {{ userRatings.contestsRating }}
-      </span>
-      </h4>
+          {{ userRatings.contestsRating }}
+        </span>
+      </div>
     </div>
 
     <div class="d-block">
       <h6 class="font-weight-bolder">
         <kep-icon class="font-small-4" name="problem"></kep-icon> {{ 'MENU.PROBLEMS' | translate }}
       </h6>
-      <h4 class="mb-0 mt-1 text-center">
-      <span class="badge badge-primary">
-        {{ userRatings.problemsSolved }}
-      </span>
-        <span class="badge badge-light-success">
-        {{ userRatings.problemsRating }}
-      </span>
-      </h4>
+      <div class="mb-0 mt-1 text-center">
+        <span class="badge badge-primary">
+          {{ userRatings.problemsSolved }}
+        </span>
+        <span class="badge ml-25 badge-light-success">
+          {{ userRatings.problemsRating }}
+        </span>
+      </div>
     </div>
 
     <div class="d-block">
