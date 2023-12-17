@@ -6,8 +6,8 @@
   } @else if(empty) {
     <empty-result></empty-result>
   } @else {
-    <div class="table-responsive" [class]="tableClass">
-      <table class="table table-striped">
+    <div class="table-responsive" [class]="tableCardClass">
+      <table class="table" [class]="tableClass">
         <thead>
          <ng-content select="[header]"></ng-content>
         </thead>
