@@ -1,78 +1,72 @@
-<section class="mt-2 contests">
-  <div class="row">
-    <div class="col-12 contests-page-top">
-      <div class="text-center mt-1">
-        <div [@fadeInUpOnEnter] class="avatar ml-1 avatar-lg badge-glow bg-primary p-50 m-0 mb-1"
-             ngbTooltip="{{ 'Rating' | translate }}">
-          <a class="text-white" routerLink="rating">
-            <div class="avatar-content">
-              <kep-icon name="rating" class="font-medium-5"></kep-icon>
-            </div>
-          </a>
+<section class="contests-page-top">
+  <div class="text-center mt-1">
+    <div [@fadeInUpOnEnter] class="avatar ml-1 avatar-lg badge-glow bg-primary p-50 m-0 mb-1"
+         ngbTooltip="{{ 'Rating' | translate }}">
+      <a class="text-white" routerLink="rating">
+        <div class="avatar-content">
+          <kep-icon class="font-medium-5" name="rating"></kep-icon>
         </div>
-        <div [@fadeInUpOnEnter] class="avatar ml-1 avatar-lg badge-glow bg-primary p-50 m-0 mb-1"
-             ngbTooltip="{{ 'Profile' | translate }}">
-          <a class="text-white" routerLink="profile">
-            <div class="avatar-content">
-              <kep-icon name="profile" class="font-medium-5"></kep-icon>
-            </div>
-          </a>
+      </a>
+    </div>
+    <div [@fadeInUpOnEnter] class="avatar ml-1 avatar-lg badge-glow bg-primary p-50 m-0 mb-1"
+         ngbTooltip="{{ 'Profile' | translate }}">
+      <a class="text-white" routerLink="profile">
+        <div class="avatar-content">
+          <kep-icon class="font-medium-5" name="profile"></kep-icon>
         </div>
-        <div [@fadeInUpOnEnter] class="avatar ml-1 avatar-lg badge-glow bg-primary p-50 m-0 mb-1"
-             ngbTooltip="{{ 'MyContests' | translate }}">
-          <a class="text-white" routerLink="user-contests">
-            <div class="avatar-content">
-              <kep-icon name="contest" class="font-medium-5"></kep-icon>
-            </div>
-          </a>
+      </a>
+    </div>
+    <div [@fadeInUpOnEnter] class="avatar ml-1 avatar-lg badge-glow bg-primary p-50 m-0 mb-1"
+         ngbTooltip="{{ 'MyContests' | translate }}">
+      <a class="text-white" routerLink="user-contests">
+        <div class="avatar-content">
+          <kep-icon class="font-medium-5" name="contest"></kep-icon>
         </div>
+      </a>
+    </div>
+  </div>
 
-        <div class="mt-4 col-lg-8 col-12 offset-lg-2 offset-0">
-          <div class="row">
-            <div class="col-12 col-md-6">
-              <a [@fadeInLeftOnEnter] class="card card-info" routerLink="/learn/blog/post/54">
-                <div class="card-header">
-                  <div class="card-title">
-                    {{ 'AboutContestTypes' | translate }}
-                  </div>
-                </div>
-                <div class="info-img">
-                  <img alt="info-img" src="assets/images/pages/graphic-3.png">
-                </div>
-              </a>
-            </div>
-
-            <div class="col-12 col-md-6">
-              <a [@fadeInRightOnEnter] class="card card-info" routerLink="/learn/blog/post/55">
-                <div class="card-header">
-                  <div class="card-title">
-                    {{ 'RecommendationsForParticipateContests' | translate }}
-                  </div>
-                </div>
-                <div class="info-img">
-                  <img alt="info-img" src="assets/images/pages/graphic-2.png">
-                </div>
-              </a>
+  <div class="mt-4 col-lg-8 col-12 offset-lg-2 offset-0">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <a [@fadeInLeftOnEnter] class="card card-info" routerLink="/learn/blog/post/54">
+          <div class="card-header">
+            <div class="card-title">
+              {{ 'AboutContestTypes' | translate }}
             </div>
           </div>
-        </div>
+          <div class="info-img">
+            <img alt="info-img" src="assets/images/pages/graphic-3.png">
+          </div>
+        </a>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <a [@fadeInRightOnEnter] class="card card-info" routerLink="/learn/blog/post/55">
+          <div class="card-header">
+            <div class="card-title">
+              {{ 'RecommendationsForParticipateContests' | translate }}
+            </div>
+          </div>
+          <div class="info-img">
+            <img alt="info-img" src="assets/images/pages/graphic-2.png">
+          </div>
+        </a>
       </div>
     </div>
+  </div>
 
-    <div class="col-lg-8 offset-lg-2 mb-2 mt-md-0 mt-4">
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2 mb-3 mt-md-0 mt-4">
       <contests-section-categories (change)="contestCategoryClick($event)"></contests-section-categories>
     </div>
 
     <div class="col-lg-8 offset-lg-2">
       <h1 [@fadeInUpOnEnter] class="mb-3">
-        <div class="text-dark" spellcheck="false">{{ 'Contests' | translate }}</div>
+        <div class="text-dark">{{ 'Contests' | translate }}</div>
       </h1>
 
-      <div class="row">
-        <div *ngFor="let contest of contests" class="col-12">
-          <contest-card [contest]="contest"></contest-card>
-        </div>
-      </div>
+      <contest-card *ngFor="let contest of contests" [contest]="contest"></contest-card>
 
       <kep-pagination
         (pageChange)="pageChange($event)"
@@ -86,6 +80,7 @@
         [rotate]="true">
       </kep-pagination>
     </div>
+
 
     <div class="col-lg-2 mt-4 pt-2 d-none d-xl-block">
       <div *ngIf="currentUser" class="card filter">
@@ -112,7 +107,7 @@
             <div
               class="ml-1 mt-1 custom-control custom-radio">
               <input
-                (click)="contestStatusClick(1)"
+                (click)="contestStatusClick(ContestStatus.PARTICIPATED)"
                 [(ngModel)]="contestStatus"
                 [value]="1"
                 class="custom-control-input"
@@ -124,7 +119,7 @@
             <div
               class="ml-1 mt-1 custom-control custom-radio">
               <input
-                (click)="contestStatusClick(0)"
+                (click)="contestStatusClick(ContestStatus.NOT_PARTICIPATED)"
                 [(ngModel)]="contestStatus"
                 [value]="0"
                 class="custom-control-input"
@@ -161,51 +156,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
-
-<!--
-  <div class="card">
-    <div class="card-header">
-      <div class="avatar bg-light-primary p-50 m-0">
-        <div class="avatar-content">
-          <i data-feather="award" class="font-medium-5"></i>
-        </div>
-      </div>
-      <h4 class="mt-1 pl-1">{{ 'RATING' | translate }}</h4>
-    </div>
-    <div class="table-responsive">
-      <table class="table">
-        <thead>
-          <tr class="bg-gradient-primary">
-            <th class="text-center text-white">#</th>
-            <th class="text-center text-white">{{ 'USER' | translate }}</th>
-            <th class="text-center text-white"><i [data-feather]="'rating' | iconName"></i></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let contestsRating of topContestsRating; index as i">
-            <td class="text-dark text-center">{{ i + 1 }}</td>
-            <td class="text-dark text-center top-rating">
-              <contestant-view [user]="contestsRating"></contestant-view>
-            </td>
-            <td class="text-center">
-              <span class="badge badge-light-{{ contestsRating.getBadgeClass() }}">
-                {{ contestsRating.rating }}
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  
-    <a routerLink="rating" class="btn btn-primary">
-      {{ 'OVERALL_RATING' | translate }}
-      <i data-feather="arrow-right"></i>
-    </a>
-  </div>
--->
-
-<ng-select-css></ng-select-css>

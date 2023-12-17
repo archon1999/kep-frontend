@@ -4,7 +4,6 @@ import { AuthenticationService } from 'app/auth/service';
 import { Contest, ContestAttemptsFilter, ContestStatus } from './contests.models';
 import { map } from 'rxjs/operators';
 import { Pageable } from '@shared/components/classes/pageable';
-import { paramsMapper } from '@shared/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -17,18 +16,18 @@ export class ContestsService {
   ) { }
 
   getContests(params: Partial<Pageable> & { category?: number, type?: string, isParticipated?: number, creator?: string }) {
-    return this.api.get('contests', paramsMapper(params)).pipe(
+    return this.api.get('contests', params).pipe(
       map((result: any) => {
-        result.data = result.data.map(contest => Contest.fromJSON(contest));
+        result.data = result.data.map((contest: Contest) => Contest.fromJSON(contest));
         return result;
       })
     );
   }
 
   getUserContests(params: Partial<Pageable> & { category?: number, type?: string, isParticipated?: boolean, creator?: string }) {
-    return this.api.get('user-contests', paramsMapper(params)).pipe(
+    return this.api.get('user-contests', params).pipe(
       map((result: any) => {
-        result.data = result.data.map(contest => Contest.fromJSON(contest));
+        result.data = result.data.map((contest: Contest) => Contest.fromJSON(contest));
         return result;
       })
     );
@@ -131,6 +130,6 @@ export class ContestsService {
   }
 
   getContestRegistrants(contestId: number | string) {
-    return this.api.get(`contests/${contestId}/registrants`);
+    return this.api.get(`contests/${ contestId }/registrants`);
   }
 }
