@@ -1,37 +1,8 @@
-@import 'scss/base/bootstrap-extended/variables';
-@import 'bootstrap/scss/mixins/dark-layout';
-@import 'bootstrap/scss/mixins/breakpoints';
+@import 'styles/kep-imports.scss';
 
-section.contests {
-  --box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1);
-}
-
-::ng-deep .dark-layout section.contests {
-  --box-shadow: 0 4px 24px 0 rgba(255, 255, 255, 0.1);
-}
-
-.contests-page-top:before {
-  content: "";
-  margin-left: -2rem;
-  position: absolute;
-  top: -150px;
-  width: calc(100% + 2rem);
-  height: 650px;
-  z-index: -1;
-  background: linear-gradient(to right, $primary, lighten($primary, 10%));
-
-  @include dark-layout {
-    background: linear-gradient(to right, mix(black, $primary, 55), mix(black, $primary, 30));
-  }
-
-  @include media-breakpoint-down(lg) {
-    width: calc(100% + 1.2rem);
-  }
-}
-
-.card.filter {
-  border: none;
-  box-shadow: var(--box-shadow) !important;
-  background: inherit !important;
-  background-image: linear-gradient(rgba(0,0,0,var(--bg-filter-opacity)),rgba(0,0,0,var(--bg-filter-opacity))), var(--bg-img) !important; 
-}
+@include define-page-top(
+  $name: 'contests',
+  $light-background: linear-gradient(to right, $primary, lighten($primary, 10%)),
+  $dark-background: linear-gradient(to right, mix(black, $primary, 55), mix(black, $primary, 30)),
+  $height: 660px,
+);
