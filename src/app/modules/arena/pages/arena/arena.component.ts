@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {
   fadeInLeftOnEnterAnimation,
   fadeInOnEnterAnimation,
   fadeInRightOnEnterAnimation,
   fadeInUpOnEnterAnimation
 } from 'angular-animations';
-import { Arena } from '../../arena.models';
-import { ArenaService } from '../../arena.service';
+import { Arena } from '@arena/arena.models';
+import { ArenaService } from '@arena/arena.service';
 import { CoreCommonModule } from '@core/common.module';
-import { ArenaListCardComponent } from '../../components/arena-list-card/arena-list-card.component';
+import { ArenaListCardComponent } from '@arena/components/arena-list-card/arena-list-card.component';
 
 @Component({
   selector: 'app-arena',
@@ -24,7 +24,8 @@ import { ArenaListCardComponent } from '../../components/arena-list-card/arena-l
   imports: [
     CoreCommonModule,
     ArenaListCardComponent,
-  ]
+  ],
+  encapsulation: ViewEncapsulation.None
 })
 export class ArenaComponent implements OnInit {
 
