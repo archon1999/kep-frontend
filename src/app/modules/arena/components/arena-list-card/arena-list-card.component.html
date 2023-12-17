@@ -1,52 +1,52 @@
 <div class="card" routerLink="tournament/{{ arena.id }}">
   <div class="card-header">
-    <div class="card-title">
-      <i data-feather="shield" class="font-large-1 mr-1"></i>
-      {{ arena.title }}
+    <div class="card-title text-dark">
+      <kep-icon class="font-large-1" name="arena" type="duotone"></kep-icon>
+      <span class="ml-50">
+        {{ arena.title }}
+      </span>
       <br>
-      <span class="ml-4 font-small-3 font-weight-bolder">
+      <span class="ml-3 font-small-2 text-dark">
         {{ 'Rated' | translate }},
       </span>
-      <span class="ml-25 font-small-3 font-weight-bolder">
+      <span class="ml-25 font-small-2 text-dark">
         {{ durationMinute }}m
       </span>
     </div>
 
     <div class="card-countdown">
-      <span *ngIf="arena.status == -1">
-        <ngx-countdown [time]="leftTime" [render]="render" format="HH:mm:ss" (finish)="finish()">
+      <span *ngIf="arena.status == ArenaStatus.NotStarted">
+        <ngx-countdown (finish)="finish()" [render]="render" [time]="leftTime" format="HH:mm:ss">
           <ng-template #render let-data>
-            <div class="d-flex justify-content-between" [ngbTooltip]="arena.startTime | date:'dd-MM-y HH:mm'">
+            <div [ngbTooltip]="arena.startTime | date:'dd-MM-y HH:mm'" class="d-flex justify-content-between">
               <h5 class="clock-val">{{ data.fragments[0] }}:{{ data.fragments[1] }}:{{ data.fragments[2] }}</h5>
             </div>
           </ng-template>
         </ngx-countdown>
       </span>
-      <span *ngIf="arena.status == 0" class="badge badge-glow badge-warning">
+      <span *ngIf="arena.status == ArenaStatus.Already" class="badge badge-glow badge-warning">
         {{ 'Now' | translate }}
       </span>
-      <span *ngIf="arena.status == 1">
+      <span *ngIf="arena.status == ArenaStatus.Finished" class="text-dark font-small-3">
         {{ arena.finishNaturaltime }}
       </span>
     </div>
 
     <div class="card-info">
-      <span ngbTooltip="{{ 'Time' | translate }}" class="mr-25 badge badge-warning badge-glow">
-        <i data-feather="clock"></i>
+      <span class="mr-25 badge badge-warning badge-glow" ngbTooltip="{{ 'Time' | translate }}">
+        <kep-icon class="font-small-4" name="challenge-time"></kep-icon>
         {{ arena.timeSeconds }}
       </span>
-  
-      <span ngbTooltip="{{ 'Questions' | translate }}"  class="badge badge-warning badge-glow">
-        <i data-feather="activity"></i>
+
+      <span class="badge badge-warning badge-glow" ngbTooltip="{{ 'Questions' | translate }}">
+        <kep-icon class="font-small-4" name="challenge-task"></kep-icon>
         {{ arena.questionsCount }}
       </span>
     </div>
 
-    <div>
-      <div class="d-flex" *ngIf="arena.status == 1">
-        <challenges-user-view [user]="arena.winner"></challenges-user-view>
-        <img src="assets/images/icons/cup.png" width="20" height="20" alt="winner" class="ml-1">
-      </div>
+    <div *ngIf="arena.status == ArenaStatus.Finished" class="d-flex justify-content-between">
+      <challenges-user-view [user]="arena.winner"></challenges-user-view>
+      <img alt="winner" class="ml-1" height="20" src="assets/images/icons/cup.png" width="20">
     </div>
   </div>
 </div>
