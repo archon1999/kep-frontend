@@ -1,27 +1,93 @@
-@import 'bootstrap/scss/mixins';
-@import 'bootstrap/scss/functions';
-@import 'scss/base/bootstrap-extended/variables';
+@import '../../../bootstrap/scss/mixins';
+@import '../../../bootstrap/scss/functions';
+@import '../../../core/scss/base/bootstrap-extended/variables';
 
-@mixin define-contest-colors($selector, $background, $box-shadow, $color: #fff, $background-dark: false) {
+@mixin define-contest-colors($selector, $color, $background-light, $background-dark, $color-dark: false) {
   #{$selector} {
-    color: $color;
-    background: $background;
-    border: none;
+    --bg: #{$color};
+    --bg-gradient: #{$background-light};
+    --box-shadow: 0 0 10px #{$color};
+    --text-color: white;
+    @content;
   }
 
-  @if $background-dark != false {
-    .dark-layout .badge-#{$name} {
-      background: $background-dark;
+  @include dark-layout(){
+    #{$selector} {
+      --bg-gradient: #{$background-dark};
+      --box-shadow: 0 0 5px #{$color};
+
+      @if $background-dark != false {
+        --bg: #{$color-dark};
+      }
     }
   }
 }
 
+$code-golf-color: #4d7e3e;
+$code-golf-selector: '&.contest-type-CodeGolf';
+
+$one-line-color: #d1151d;
+$one-line-selector: '&[class*="One"][class*="Line"]';
+
+$hack-it-selector: '&[class*="Hack"][class*="it"]';
+$hack-it-color: #71609f;
+
+$sql-selector: '&[class*="SQL"]';
+$sql-color: #dc7433;
+
 .contests-colors {
-  --text-color: #fff;
-  --bg-gradient: linear-gradient(42.32deg, rgba(77, 74, 232, 0.9), rgba(77, 74, 232, 0.8));
-  --bg: #4d4ae8;
-  --bg-light: rgb(115, 103, 240, 0.1);
-  --box-shadow: 0px 0px 10px #4d4ae8;
+  // Primary color
+  @include define-contest-colors(
+    $selector: '&',
+    $color: $primary,
+    $color-dark: mix(black, $primary, 20),
+    $background-light: linear-gradient(to right, mix(white, $primary, 20), mix(white, $primary, 30)),
+    $background-dark: linear-gradient(to right, mix(black, $primary, 50), mix(black, $primary, 30)),
+  );
+
+  // Code Golf
+  @include define-contest-colors(
+    $selector: $code-golf-selector,
+    $color: $code-golf-color,
+    $color-dark: mix(black, $code-golf-color, 20),
+    $background-light: linear-gradient(to right, mix(white, $code-golf-color, 20), mix(white, $code-golf-color, 30)),
+    $background-dark: linear-gradient(to right, mix(black, $code-golf-color, 50), mix(black, $code-golf-color, 30)),
+  ) {
+    .card-bg {
+      zoom: 50% !important;
+    }
+  }
+
+  // One Line
+  @include define-contest-colors(
+    $selector: $one-line-selector,
+    $color: $one-line-color,
+    $color-dark: mix(black, $one-line-color, 30),
+    $background-light: linear-gradient(to right, mix(white, $one-line-color, 20), mix(white, $one-line-color, 30)),
+    $background-dark: linear-gradient(to right, mix(black, $one-line-color, 50), mix(black, $one-line-color, 30)),
+  ) {
+    .card-bg {
+      zoom: 137% !important;
+    }
+  }
+
+  // Hack it
+  @include define-contest-colors(
+    $selector: $hack-it-selector,
+    $color: $hack-it-color,
+    $color-dark: mix(black, $hack-it-color, 30),
+    $background-light: linear-gradient(to right, mix(white, $hack-it-color, 5), mix(white, $hack-it-color, 10)),
+    $background-dark: linear-gradient(to right, mix(black, $hack-it-color, 50), mix(black, $hack-it-color, 40)),
+  );
+
+  // SQL
+  @include define-contest-colors(
+    $selector: $sql-selector,
+    $color: $sql-color,
+    $color-dark: mix(black, $sql-color, 30),
+    $background-light: linear-gradient(to right, mix(white, $sql-color, 20), mix(white, $sql-color, 30)),
+    $background-dark: linear-gradient(to right, mix(black, $sql-color, 50), mix(black, $sql-color, 40)),
+  );
 
   &.contest-254 {
     --bg-gradient: linear-gradient(to right, #38CCBC, #07e4cf);
@@ -36,31 +102,6 @@
     --bg: #56977D;
     --bg-light: rgb(86, 151, 125, 0.1);
     --box-shadow: 0 0 5px #3E9773;
-  }
-
-  &[class*="One"][class*="Line"] {
-    --bg: #d54f56;
-    --bg-light: rgb(213, 79, 86, 0.1);
-    --box-shadow: 0 0 5px #d54f56;
-    --bg-gradient: linear-gradient(-45deg, #b2010ac4, 50%, rgba(190, 18, 27, 0.719));
-  }
-
-  &[class*="Hack"][class*="it"] {
-    --bg: #71609f;
-    --bg-light: rgb(82, 65, 128, 0.2);
-    --box-shadow: 0 0 5px #524180;
-    --bg-gradient: linear-gradient(-45deg, #645294, 50%, #453572);
-
-    .card-bg {
-      zoom: 70% !important;
-    }
-  }
-
-  &[class*="SQL"] {
-    --bg: #e19327;
-    --box-shadow: 0 0 5px #e39425;
-    --bg-light: rgb(225, 147, 39, 0.1);
-    --bg-gradient: linear-gradient(-45deg, rgba(234, 134, 71, 0.849), 50%, #ffad3bec);
   }
 
   &[class*="NASM"] {
@@ -113,17 +154,6 @@
     }
   }
 
-  &[class*="contest-type-CodeGolf"] {
-    --bg-gradient: linear-gradient(45deg, #4d7e3ea5, #4d7e3e98);
-    --bg: #4d7e3ede;
-    --bg-light: rgb(77 126 62 / 10%);
-    --box-shadow: 0px 0px 5px #4d7e3ed4;
-
-    .card-bg {
-      zoom: 50% !important;
-    }
-  }
-
   &.contest-309 {
     --bg-gradient: linear-gradient(to right, #605ee3, #484ed0);
     --bg: #1c25c1;
@@ -139,7 +169,6 @@
 }
 
 .dark-layout .contests-colors {
-  --bg-gradient: linear-gradient(42.32deg, #33319b, #3c39b4, #4d4ae8);
 
   &.contest-254 {
     --bg: #037166;
@@ -155,10 +184,6 @@
     --bg-gradient: linear-gradient(141deg, #064d52, 50%, #02989b);
   }
 
-  &[class*="SQL"] {
-    --bg-gradient: linear-gradient(45deg, #936028, 60%, #7e5420);
-  }
-
   &[class*="NASM"] {
     --bg: #0c4c90;
     --box-shadow: 0 0 5px #0c4c90;
@@ -170,10 +195,6 @@
     --bg: #b0b5b6;
     --box-shadow: 0px 0px 5px #b0b5b6;
     --text-color: #fff;
-  }
-
-  &[class*="Hack"][class*="it"] {
-    --bg-gradient: linear-gradient(-45deg, #524180c0, 50%, #524180da);
   }
 
   &[class*="Uzinfocom"] {
@@ -203,10 +224,6 @@
     --bg: #1c25c1;
     --bg-light: rgba(96, 94, 227, 0.1);
     --box-shadow: 0 0 10px #1c25c1;
-  }
-
-  &[class*="contest-type-CodeGolf"] {
-    --bg-gradient: linear-gradient(45deg, rgba(45, 75, 36, 0.92), rgba(77, 126, 62, 0.87));
   }
 
 }

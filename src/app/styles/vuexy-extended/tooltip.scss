@@ -1,0 +1,36 @@
+@import 'styles/kep-imports';
+
+.tooltip-primary .tooltip-inner {
+  color: white;
+  background-color: mix(white, $primary, 20);
+}
+
+.dark-layout .tooltip-primary .tooltip-inner {
+  color: white !important;
+  background-color: mix(black, $primary, 20) !important;
+}
+
+.tooltip-success .tooltip-inner {
+  color: #8ca49f;
+  background-color: #ddf5f0;
+}
+
+.tooltip-danger .tooltip-inner {
+  //color: #ea5455;
+  //background-color: rgba(234, 84, 85, 0.1);
+  color: white;
+  background-color: #ea5455;
+  box-shadow: 0 0 10px #ea5455 !important;
+}
+
+.tooltip-primary .arrow:before {
+  border-top-color: #f3effc;
+}
+
+.tooltip-success .arrow:before {
+  border-top-color: #ddf5f0;
+}
+
+.tooltip-danger .arrow:before {
+  border-top-color: #ea5455;
+}

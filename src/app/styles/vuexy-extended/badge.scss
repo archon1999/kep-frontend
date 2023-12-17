@@ -1,0 +1,26 @@
+.badge {
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  font-size: 12px !important;
+  transition: all 0.3s ease-out !important;
+  -webkit-transition: all 0.3s ease-out !important;
+  display: inline-block !important;
+  padding: 4.6px 8px !important;
+  border-radius: 6px !important;
+}
+
+.badge-pill {
+  display: inline-block !important;
+  // padding: 0.3rem 0.5rem !important;
+  padding: 0.2rem 0.6rem !important;
+  border-radius: 10rem !important;
+  font-size: 85% !important;
+  // font-weight: 600 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  vertical-align: baseline !important;
+}
+
+.dark-layout .badge.badge-light-dark {
+  color: #e9e7e7 !important;
+}

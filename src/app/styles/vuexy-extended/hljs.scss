@@ -1,0 +1,24 @@
+.hljs {
+  font-size: 1rem !important;
+}
+
+.hljs-ln-line.hljs-ln-numbers {
+  padding-right: 0.8rem;
+}
+
+.hljs-ln-line.hljs-ln-code {
+  padding-left: 0.8rem;
+}
+
+.hljs-ln-code {
+  padding-left: 10px;
+}
+
+.hljs-ln-numbers {
+  user-select: none;
+  text-align: center;
+  color: #ccc;
+  border-right: 1px solid #CCC;
+  vertical-align: top;
+  padding-right: 5px;
+}
