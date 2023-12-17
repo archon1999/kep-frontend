@@ -95,6 +95,7 @@ export const locale = {
     SOURCE_CODE: 'Source code',
     USER: 'User',
     DAY: 'Day',
+    TODAY: 'Today',
     WEEK: 'Week',
     MONTH: 'Month',
     OVERALL_RATING: 'Overall rating',

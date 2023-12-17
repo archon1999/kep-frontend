@@ -174,7 +174,7 @@ export class ProblemsApiService {
     return this.api.get('categories');
   }
 
-  getCurrentProblemRating(period: 'day' | 'week' | 'month') {
+  getCurrentProblemsRating(period: 'today' | 'week' | 'month') {
     return this.api.get(`problems-rating/${ period }`);
   }
 }

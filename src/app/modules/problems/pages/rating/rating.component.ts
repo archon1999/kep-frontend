@@ -1,14 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { CurrentProblemsRating, ProblemsRating } from '../../models/rating.models';
-import { ApiService } from 'app/shared/services/api.service';
-import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { CurrentProblemsRating, ProblemsRating } from '@problems/models/rating.models';
 import { PageResult } from '@shared/components/classes/page-result';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
+import { Resources } from '@app/resources';
+import { Observable } from 'rxjs';
+import { difficultyLabels } from '@problems/constants/difficulties.enum';
+import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
+import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { ProblemsApiService } from '@problems/services/problems-api.service';
+
+export interface CurrentRating {
+  period: 'today' | 'week' | 'month';
+  color: string;
+  data: Array<CurrentProblemsRating>;
+}
 
 @Component({
   selector: 'app-rating',
@@ -20,74 +31,78 @@ import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pa
     ContentHeaderModule,
     ContestantViewModule,
     KepPaginationComponent,
+    KepTableComponent,
+    TableOrderingModule,
+    KepIconComponent,
   ],
 })
-export class RatingComponent implements OnInit {
-  public difficulties = ['beginner', 'basic', 'normal', 'medium', 'advanced', 'hard', 'extremal'];
+export class RatingComponent extends BaseTablePageComponent<ProblemsRating> implements OnInit {
+  override defaultPageSize = 10;
+  override defaultOrdering = '-solved';
+  override maxSize = 5;
 
-  public contentHeader: ContentHeader = {
-    headerTitle: 'RATING',
-    breadcrumb: {
-      type: '',
-      links: [
-        {
-          name: 'Problems',
-          isLink: true,
-          link: '/practice/problems'
-        }
-      ]
-    }
-  };
+  public currentRatings: CurrentRating[] = [
+    {
+      period: 'today',
+      color: 'success',
+      data: [],
+    },
+    {
+      period: 'week',
+      color: 'info',
+      data: [],
+    },
+    {
+      period: 'month',
+      color: 'primary',
+      data: [],
+    },
+  ];
 
-  public currentPage = 1;
-  public total = 0;
+  protected readonly difficultyLabels = difficultyLabels;
 
-  public problemsRatingList: Array<ProblemsRating> = [];
-  public ordering = '-solved';
+  constructor(public service: ProblemsApiService) {
+    super();
+  }
 
-  public ratingToday: Array<CurrentProblemsRating> = [];
-  public ratingWeek: Array<CurrentProblemsRating> = [];
-  public ratingMonth: Array<CurrentProblemsRating> = [];
-
-  public currentUser: User;
-
-  constructor(
-    public api: ApiService,
-    public authService: AuthenticationService
-  ) {}
+  get problemsRatingList() {
+    return this.pageResult?.data;
+  }
 
   ngOnInit(): void {
-    this.authService.currentUser.subscribe((user: any) => {
-      this.currentUser = user;
-      this.reloadPage();
+    this.loadContentHeader();
+    setTimeout(() => this.reloadPage());
+    this.currentRatings.forEach(
+      (rating) => {
+        this.service.getCurrentProblemsRating(rating.period).subscribe(
+          (result: Array<CurrentProblemsRating>) => {
+            rating.data = result;
+          }
+        );
+      }
+    );
+  }
+
+  getPage(): Observable<PageResult<ProblemsRating>> {
+    return this.api.get('problems-rating', {
+      page: this.pageNumber,
+      pageSize: this.pageSize,
+      ordering: this.ordering,
     });
   }
 
-  reloadPage() {
-    this.api.get('problems-rating/today/').subscribe(
-      (result: Array<CurrentProblemsRating>) => {
-        this.ratingToday = result;
+  protected getContentHeader(): ContentHeader {
+    return {
+      headerTitle: 'RATING',
+      breadcrumb: {
+        links: [
+          {
+            name: 'Problems',
+            isLink: true,
+            link: Resources.Problems
+          }
+        ]
       }
-    );
-
-    this.api.get('problems-rating/week/').subscribe(
-      (result: Array<CurrentProblemsRating>) => {
-        this.ratingWeek = result;
-      }
-    );
-
-    this.api.get('problems-rating/month/').subscribe((result: Array<CurrentProblemsRating>) => {
-        this.ratingMonth = result;
-      }
-    );
-
-    const params = { page: this.currentPage, ordering: this.ordering };
-    this.api.get('problems-rating', params).subscribe(
-      (result: PageResult<ProblemsRating>) => {
-        this.problemsRatingList = result.data;
-        this.total = result.total;
-      }
-    );
+    };
   }
-
 }

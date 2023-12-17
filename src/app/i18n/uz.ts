@@ -85,6 +85,7 @@ export const locale = {
     SIZE: 'O`lcham',
     SOURCE_CODE: 'Kod',
     DAY: 'Kun',
+    TODAY: 'Bugun',
     WEEK: 'Hafta',
     MONTH: 'Oy',
     OVERALL_RATING: 'Umumiy reyting',
