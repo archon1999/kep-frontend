@@ -8,7 +8,7 @@
 @include define-page-top(
   $name: 'arena',
   $light-background: linear-gradient(to right, $warning, lighten($warning, 10)),
-  $dark-background: linear-gradient(to right, #161512, #1c1b17),
+  $dark-background: linear-gradient(to right, #120e00, #221b00),
 );
 
 .arena {
@@ -17,7 +17,7 @@
     box-shadow: 0 0 10px lighten($warning, 5);
 
     @include dark-layout {
-      background: mix(black, mix(red, $warning, 20), 40) !important;
+      background: mix(black, mix(red, $warning, 20), 60) !important;
       box-shadow: 0 0 2px mix(black, $warning, 40) !important;
     }
   }
