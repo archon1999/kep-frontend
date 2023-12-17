@@ -7,7 +7,7 @@ import {
   fadeInUpOnEnterAnimation,
   fadeOutOnLeaveAnimation
 } from 'angular-animations';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { Challenge, ChallengeCall, ChallengesRating } from '../../models/challenges.models';
 import { ChallengesService } from '@challenges/services';
@@ -57,7 +57,7 @@ export class ChallengesComponent extends BaseComponent implements OnInit, OnDest
 
   constructor(
     public service: ChallengesService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public router: Router,
   ) {
     super();

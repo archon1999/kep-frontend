@@ -36,7 +36,7 @@ import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { monacoConfig } from './monaco-config';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
 import { map } from 'rxjs/operators';
-import { AuthenticationService } from '@auth/service';
+import { AuthService } from '@auth/service';
 
 register();
 
@@ -87,7 +87,7 @@ export class CustomTitleStrategy extends TitleStrategy {
   }
 }
 
-export function authFactory(authService: AuthenticationService) {
+export function authFactory(authService: AuthService) {
   return () => authService.getMe().pipe(
     map(user => {
       return true;
@@ -150,7 +150,7 @@ export function authFactory(authService: AuthenticationService) {
     {
       provide: APP_INITIALIZER,
       useFactory: authFactory,
-      deps: [AuthenticationService],
+      deps: [AuthService],
       multi: true
     },
   ],

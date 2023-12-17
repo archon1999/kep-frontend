@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { KepcoinService } from './kepcoin.service';
@@ -29,7 +29,7 @@ export class KepcoinComponent implements OnInit, OnDestroy {
 
   constructor(
     public api: ApiService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public service: KepcoinService,
   ) { }
 

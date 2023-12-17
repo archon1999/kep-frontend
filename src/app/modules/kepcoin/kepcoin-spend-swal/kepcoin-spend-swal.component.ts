@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'app/shared/services/api.service';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -20,7 +20,7 @@ export class KepcoinSpendSwalComponent {
 
   constructor(
     public api: ApiService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public translateService: TranslateService,
   ) {}
 

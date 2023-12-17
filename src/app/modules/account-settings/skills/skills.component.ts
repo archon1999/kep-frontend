@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { UserSkills, UserTechnology } from '@users/users.models';
 import { ToastrService } from 'ngx-toastr';
 import { AccountSettingsService } from '../account-settings.service';
@@ -23,7 +23,7 @@ export class SkillsComponent implements OnInit {
   public devIcons = devIcons;
 
   constructor(
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public route: ActivatedRoute,
     public toastr: ToastrService,
     public service: AccountSettingsService,

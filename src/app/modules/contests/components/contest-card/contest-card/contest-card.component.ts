@@ -3,7 +3,7 @@ import { NgbModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ApiService } from '@shared/services/api.service';
 import { User } from '@auth/models';
-import { AuthenticationService } from '@auth/service';
+import { AuthService } from '@auth/service';
 import { Contest, ContestStatus } from '@contests/contests.models';
 import { ContestsService } from 'app/modules/contests/contests.service';
 import { Router } from '@angular/router';
@@ -42,7 +42,7 @@ export class ContestCardComponent implements OnInit {
   constructor(
     public api: ApiService,
     public modalService: NgbModal,
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public service: ContestsService,
     public router: Router,
   ) { }

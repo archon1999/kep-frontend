@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Course, CourseLesson, CourseLessonPart, CourseLessonPartComment, CourseLessonPartStatus } from '../../courses.models';
 import { CoursesService } from '../../courses.service';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { User } from 'app/auth/models';
 import { ApiService } from 'app/shared/services/api.service';
 import { ShepherdService } from 'angular-shepherd';
@@ -63,7 +63,7 @@ export class LessonComponent implements OnInit {
     public router: Router,
     public service: CoursesService,
     public toastr: ToastrService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public api: ApiService,
     public titleService: TitleService,
     private shepherdService: ShepherdService

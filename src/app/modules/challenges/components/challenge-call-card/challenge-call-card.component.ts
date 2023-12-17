@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../../../../auth/models';
-import { AuthenticationService } from '../../../../auth/service';
+import { AuthService } from '../../../../auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ChallengeCall } from '../../models/challenges.models';
@@ -23,7 +23,7 @@ export class ChallengeCallCardComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject();
 
   constructor(
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public service: ChallengesService,
     public router: Router,
   ) { }

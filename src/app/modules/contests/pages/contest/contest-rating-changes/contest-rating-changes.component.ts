@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';
@@ -30,7 +30,7 @@ export class ContestRatingChangesComponent implements OnInit, OnDestroy {
     public route: ActivatedRoute,
     public router: Router,
     public titleService: TitleService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
   ) { }
 
   ngOnInit(): void {

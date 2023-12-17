@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.service';
 import { CoreConfigService } from 'core/services/config.service';
 import { CoreMediaService } from 'core/services/media.service';
@@ -45,7 +45,7 @@ export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy 
 
   constructor(
     private _router: Router,
-    private _authenticationService: AuthenticationService,
+    private _authenticationService: AuthService,
     private _coreConfigService: CoreConfigService,
     private _coreMediaService: CoreMediaService,
     private _coreSidebarService: CoreSidebarService,

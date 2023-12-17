@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../../../auth/models';
-import { AuthenticationService } from '../../../../auth/service';
+import { AuthService } from '../../../../auth/service';
 import { Attempt } from '../../../problems/models/attempts.models';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -31,7 +31,7 @@ export class CodeRushComponent implements OnInit, OnDestroy {
 
   constructor(
     public route: ActivatedRoute,
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public service: CodeRushApiService,
     public titleService: TitleService,
   ) {}

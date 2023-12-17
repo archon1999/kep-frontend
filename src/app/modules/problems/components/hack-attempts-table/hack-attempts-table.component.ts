@@ -3,7 +3,7 @@ import { CoreConfigService } from 'core/services/config.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'app/shared/services/api.service';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { WebsocketService } from 'app/shared/services/websocket';
 import { ToastrService } from 'ngx-toastr';
 import { ProblemsApiService } from '../../services/problems-api.service';
@@ -27,7 +27,7 @@ export class HackAttemptsTableComponent implements OnInit, OnDestroy {
   @ViewChild('wrongAudio') wrongAudio: ElementRef<any>;
 
   constructor(
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public wsService: WebsocketService,
     public api: ApiService,
     public modalService: NgbModal,

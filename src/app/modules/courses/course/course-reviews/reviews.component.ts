@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { CourseParticipantReview } from '../../courses.models';
 import { CoursesService } from '../../courses.service';
 import { SwiperOptions } from 'swiper/types/swiper-options';
@@ -40,7 +40,7 @@ export class ReviewsComponent implements OnInit {
 
   constructor(
     public service: CoursesService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
   ) {
   }
 

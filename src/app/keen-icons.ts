@@ -32,4 +32,7 @@ export const keenIcons = {
 
   username: 'user-edit',
   streak: 'calendar-tick',
+
+  tags: 'data',
+  difficulty: 'graph-2',
 };

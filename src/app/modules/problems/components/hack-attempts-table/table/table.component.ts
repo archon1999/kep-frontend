@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { bounceAnimation, fadeInOnEnterAnimation, shakeAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { HackAttempt } from '../../../models/hack-attempt.models';
 
@@ -23,7 +23,7 @@ export class TableComponent implements OnInit {
   public currentUser: User | null;
 
   constructor(
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public service: ProblemsApiService,
   ) {
   }

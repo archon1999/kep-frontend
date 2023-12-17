@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { Project, ProjectAttempt, ProjectAttemptTaskLog } from '../../../../../projects/projects.models';
 import { ProjectsService } from '../../../../../projects/projects.service';
 import { Subject } from 'rxjs';
@@ -25,7 +25,7 @@ export class AttemptsTableComponent implements OnInit {
   private _unsubscribeAll = new Subject();
 
   constructor(
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public modalService: NgbModal,
     public service: ProjectsService,
   ) { }

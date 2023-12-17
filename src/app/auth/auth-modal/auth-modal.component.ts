@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { AuthenticationService } from '../service';
+import { AuthService } from '../service';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
@@ -23,7 +23,7 @@ export class AuthModalComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    public authService: AuthenticationService,
+    public authService: AuthService,
     private formBuilder: FormBuilder,
     public toastr: ToastrService,
     public translateService: TranslateService,

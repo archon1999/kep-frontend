@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../../shared/services/api.service';
-import { AuthenticationService } from '../../../auth/service';
+import { AuthService } from '../../../auth/service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,7 @@ export class ChallengesService {
 
   constructor(
     public api: ApiService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
   ) {
   }
 

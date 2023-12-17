@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from "@angular/router";
-import { AuthenticationService } from "app/auth/service";
+import { AuthService } from "app/auth/service";
 import { Observable, of } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
 import { ProjectsService } from "./projects.service";
@@ -10,7 +10,7 @@ export class ProjectResolver implements Resolve<any> {
   constructor(
     private service: ProjectsService,
     public router: Router,
-    public authService: AuthenticationService,
+    public authService: AuthService,
   ) {}
 
   resolve(
