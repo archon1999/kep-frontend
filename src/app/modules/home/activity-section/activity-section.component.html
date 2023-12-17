@@ -10,10 +10,10 @@
   <div class="card-body">
     <div class="statistics-info">
       <span *ngIf="statistics.dailyActivity" class="badge badge-success badge-glow">
-        <i data-feather="check-circle"></i>
+        <kep-icon class="font-small-2" name="check-circle"></kep-icon>
       </span>
       <span *ngIf="!statistics.dailyActivity" class="badge badge-danger badge-glow">
-        <i data-feather="x-circle"></i>
+        <kep-icon class="font-small-2" name="minus-circle"></kep-icon>
       </span>
       <h5>
         {{ 'DailyActivity' | translate }}
@@ -22,7 +22,7 @@
 
     <div class="statistics-info">
       <span class="badge badge-primary badge-glow">
-        <i [data-feather]="'attempt' | iconName"></i>
+        <kep-icon class="font-small-2" name="attempt"></kep-icon>
       </span>
       <h5>
         {{ 'Attempts' | translate }}:
@@ -32,7 +32,7 @@
 
     <div class="statistics-info">
       <span class="badge badge-primary badge-glow">
-        <i [data-feather]="'problem' | iconName"></i>
+        <kep-icon class="font-small-2" name="problem"></kep-icon>
       </span>
       <h5>
         {{ 'Problems' | translate }}:
@@ -42,7 +42,7 @@
 
     <div class="statistics-info">
       <span class="badge badge-primary badge-glow">
-        <i [data-feather]="'challenge' | iconName"></i>
+        <kep-icon class="font-small-2" name="challenge"></kep-icon>
       </span>
       <h5>
         {{ 'Challenges' | translate }}:
@@ -61,7 +61,7 @@
 
     <div class="statistics-info">
       <span class="badge badge-success badge-glow">
-        <i [data-feather]="'test' | iconName"></i>
+        <kep-icon class="font-small-2" name="test"></kep-icon>
       </span>
       <h5>
         {{ 'Tests' | translate }}:
