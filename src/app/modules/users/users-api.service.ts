@@ -1,87 +1,86 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
+import { Pageable } from '@shared/components/classes/pageable';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UsersService {
+export class UsersApiService {
 
   constructor(public api: ApiService) {}
 
-  getUsers(page=1, otherParams: any){
-    let params = {
-      page: page,
-      ...otherParams,
-    }
-    return this.api.get('users', params)
+  getUsers(params: Partial<Pageable> & any) {
+    return this.api.get('users', params);
   }
 
-  getUser(username: string){
-    return this.api.get(`users/${username}`);
-  }
-  
-  getUserInfo(username: string){
-    return this.api.get(`users/${username}/info`);
+  getUser(username: string) {
+    return this.api.get(`users/${ username }`);
   }
 
-  getUserSkills(username: string){
-    return this.api.get(`users/${username}/skills`);
+  getUserInfo(username: string) {
+    return this.api.get(`users/${ username }/info`);
   }
 
-  getUserSocial(username: string){
-    return this.api.get(`users/${username}/social`);
+  getUserSkills(username: string) {
+    return this.api.get(`users/${ username }/skills`);
   }
 
-  getUserTechnologies(username: string){
-    return this.api.get(`users/${username}/technologies`);
+  getUserSocial(username: string) {
+    return this.api.get(`users/${ username }/social`);
   }
 
-  getUserAchievements(username: string){
-    return this.api.get(`users/${username}/achievements`);
+  getUserTechnologies(username: string) {
+    return this.api.get(`users/${ username }/technologies`);
   }
 
-  getUserEducations(username: string){
-    return this.api.get(`users/${username}/educations`);
+  getUserAchievements(username: string) {
+    return this.api.get(`users/${ username }/achievements`);
   }
 
-  getUserWorkExperiences(username: string){
-    return this.api.get(`users/${username}/work-experiences`);
+  getUserEducations(username: string) {
+    return this.api.get(`users/${ username }/educations`);
   }
 
-  getUserBlog(username: string, page=1, pageSize=3){
-    var params = {'author': username, 'page': page, 'page_size': pageSize};
-    return this.api.get('blog/', params);
+  getUserWorkExperiences(username: string) {
+    return this.api.get(`users/${ username }/work-experiences`);
+  }
+
+  getUserBlog(username: string, params?: Partial<Pageable>) {
+    return this.api.get('blog/', {
+      author: username,
+      ...params
+    });
   }
 
   getUserContestsRating(username: string) {
-    return this.api.get(`contests-rating/${username}`);    
+    return this.api.get(`contests-rating/${ username }`);
   }
 
   getUserProblemsRating(username: string) {
-    return this.api.get(`problems-rating/${username}`);
+    return this.api.get(`problems-rating/${ username }`);
   }
 
   getUserChallengesRating(username: string) {
-    return this.api.get(`challenges-rating/${username}`);    
+    return this.api.get(`challenges-rating/${ username }`);
   }
 
-  getUserRatings(username: string){
-    return this.api.get(`users/${username}/ratings`);
+  getUserRatings(username: string) {
+    return this.api.get(`users/${ username }/ratings`);
   }
 
-  getMostActiveUsers(){
+  getMostActiveUsers() {
     return this.api.get('users/most-active-users');
   }
 
-  getUsersChartSeries(){
+  getUsersChartSeries() {
     return this.api.get('users/chart-statistics');
   }
 
-  getOnlineUsers(){
+  getOnlineUsers() {
     return this.api.get('users/online');
   }
-  
-  getCountries(){
+
+  getCountries() {
     return this.api.get('users/countries');
   }
 

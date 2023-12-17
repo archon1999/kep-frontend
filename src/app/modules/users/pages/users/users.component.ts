@@ -1,36 +1,54 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { UsersService } from '@users/users.service';
-import { BaseComponent } from '@shared/components/classes/base.component';
-import { asyncScheduler, Subject } from 'rxjs';
-import { takeUntil, throttleTime } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import { UsersApiService } from '@users/users-api.service';
+import { Observable } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
-import { paramsMapper } from 'app/shared/utils';
 import { NgxCountriesService } from '@shared/third-part-modules/ngx-countries/ngx-countries.service';
-import { SpinnersEnum } from '@shared/components/spinner/spinners.enum';
+import { CoreCommonModule } from '@core/common.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
+import { ChallengesUserViewModule } from '@challenges/components/challenges-user-view/challenges-user-view.module';
+import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
+import { User } from '@users/users.models';
+import { ContentHeader } from '@layout/components/content-header/content-header.component';
+import { PageResult } from '@shared/components/classes/page-result';
+import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { KepStreakComponent } from '@shared/components/kep-streak/kep-streak.component';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  styleUrls: ['./users.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ContentHeaderModule,
+    NgSelectModule,
+    SpinnerComponent,
+    EmptyResultComponent,
+    TableOrderingModule,
+    ChallengesUserViewModule,
+    KepcoinViewModule,
+    NgbTooltipModule,
+    KepPaginationComponent,
+    ContestantViewModule,
+    KepTableComponent,
+    KepIconComponent,
+    KepStreakComponent,
+  ]
 })
-export class UsersComponent extends BaseComponent {
-
-  public contentHeader = {
-    headerTitle: 'MENU.USERS',
-    actionButton: true,
-    breadcrumb: {
-      type: '',
-      links: [
-        {
-          name: this.coreConfig.app.appTitle,
-          isLink: false,
-          link: '/'
-        },
-      ]
-    }
-  };
+export class UsersComponent extends BaseTablePageComponent<User> {
+  override defaultPageSize = 10;
+  override maxSize = 5;
+  override defaultOrdering = '-skills_rating';
 
   public filterForm = new FormGroup({
     country: new FormControl(''),
@@ -41,51 +59,21 @@ export class UsersComponent extends BaseComponent {
   });
 
   public countries = [];
-  public ordering = '-skills_rating';
 
-  public users: Array<any> = [];
-  public totalUsers = 0;
-  public currentPage = 1;
-
-  public SpinnersEnum = SpinnersEnum;
-  public spinnerShow = true;
-
-  private _loader = new Subject();
+  get users() {
+    return this.pageResult?.data;
+  }
 
   constructor(
-    public service: UsersService,
-    public translateService: TranslateService,
+    public service: UsersApiService,
     public countriesService: NgxCountriesService,
-    public route: ActivatedRoute,
   ) {
     super();
   }
 
   ngOnInit(): void {
-    this.spinner.getSpinner(SpinnersEnum.UsersTable).subscribe(
-      (spinner) => {
-        this.spinnerShow = spinner.show;
-      }
-    );
-
-    this.route.queryParams.subscribe(
-      (params: any) => {
-        if ('page' in params) {
-          this.currentPage = +params.page;
-        }
-      }
-    );
-
-    this._loader.pipe(
-      takeUntil(this._unsubscribeAll),
-      throttleTime(500, asyncScheduler, { leading: false, trailing: true }),
-    ).subscribe(
-      () => {
-        this._loadUsers();
-      }
-    );
-
-    this.loadUsers();
+    this.loadContentHeader();
+    setTimeout(() => this.reloadPage());
 
     this.service.getCountries().subscribe(
       (countries: Array<string>) => {
@@ -98,42 +86,37 @@ export class UsersComponent extends BaseComponent {
       }
     );
 
-    this.filterForm.valueChanges.subscribe(
+    this.filterForm.valueChanges.pipe(debounceTime(1000)).subscribe(
       () => {
-        this.loadUsers();
+        this.reloadPage();
       }
     );
   }
 
-  pageChange(_: number) {
-    this.loadUsers();
-  }
-
-  loadUsers() {
-    setTimeout(() => {
-      this._loader.next(null);
-    }, 100);
-  }
-
-  _loadUsers() {
-    this.spinner.show(SpinnersEnum.UsersTable);
+  getPage(): Observable<PageResult<User>> | null {
     const params: any = {
       full: true,
       ordering: this.ordering,
-      ...this.filterForm.value
+      page: this.pageNumber,
+      ...this.filterForm.value,
     };
-    this.service.getUsers(this.currentPage, paramsMapper(params)).subscribe(
-      (result: any) => {
-        this.users = result.data;
-        this.totalUsers = result.total;
-        this.spinner.hide(SpinnersEnum.UsersTable);
+    return this.service.getUsers(params);
+  }
+
+  protected getContentHeader(): ContentHeader {
+    return {
+      headerTitle: 'MENU.USERS',
+      actionButton: true,
+      breadcrumb: {
+        type: '',
+        links: [
+          {
+            name: this.coreConfig.app.appTitle,
+            isLink: true,
+            link: '/'
+          },
+        ]
       }
-    );
+    };
   }
-
-  changeOrdering(ordering: string) {
-    this.ordering = ordering;
-    this.loadUsers();
-  }
-
 }

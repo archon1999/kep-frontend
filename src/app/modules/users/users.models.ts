@@ -1,18 +1,25 @@
-export class User {
-  constructor(
-    public username: string,
-    public firstName: string,
-    public lastName: string,
-    public email: string,
-    public dateJoined: string,
-    public avatar: string,
-    public coverPhoto: string,
-    public balls: number,
-    public isOnline: boolean,
-    public lastSeen: Date,
-    public kepcoin: number,
-    public streak: number,
-  ) { }
+export interface User {
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  dateJoined: string;
+  avatar: string;
+  coverPhoto: string;
+  balls: number;
+  isOnline: boolean;
+  lastSeen: string;
+  kepcoin: number;
+  streak: number;
+  maxStreak: number;
+  country: string;
+  skillsRating: number;
+  activityRating: number;
+  contestsRating: number;
+  contestsRatingTitle: string;
+  challengesRating: number;
+  challengesRankTitle: string;
+  problemsSolved: number;
 }
 
 export interface UserGeneralInfo {
@@ -33,7 +40,7 @@ export interface Achievement {
   userResult: {
     progress: number;
     done: boolean;
-  }
+  };
 }
 
 export class UserInfo {

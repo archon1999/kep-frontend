@@ -34,6 +34,7 @@ import { register } from 'swiper/element/bundle';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { monacoConfig } from './monaco-config';
+import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
 
 register();
 
@@ -55,9 +56,8 @@ const appRoutes: Routes = [
   { path: 'competitions/contests', loadChildren: () => import('./modules/contests/contests.module').then(m => m.ContestsModule) },
   { path: 'competitions/arena', loadChildren: () => import('./modules/arena/arena.routing') },
   { path: 'competitions/tournaments', loadChildren: () => import('./modules/tournaments/tournaments.module').then(m => m.TournamentsModule) },
-  { path: 'users', loadChildren: () => import('./modules/users/users.module').then(m => m.UsersModule) },
+  { path: 'users', loadChildren: () => import('./modules/users/users.routing') },
   { path: 'help', loadChildren: () => import('./modules/help/help.module').then(m => m.HelpModule) },
-  { path: 'my-blog', loadChildren: () => import('./modules/users/my-blog/my-blog.module').then(m => m.MyBlogModule) },
   { path: 'todo', loadComponent: () => import('./modules/todo/todo.component').then(c => c.TodoComponent) },
   { path: '**', component: ErrorComponent },
 ];
@@ -117,6 +117,9 @@ export class CustomTitleStrategy extends TitleStrategy {
     LoadingBarHttpClientModule,
     NgxSpinnerModule,
     MonacoEditorModule.forRoot(monacoConfig),
+    NgxCountriesModule.forRoot({
+      defaultLocale: 'en',
+    })
   ],
   providers: [
     { provide: TitleStrategy, useClass: CustomTitleStrategy },
