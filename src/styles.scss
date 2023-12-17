@@ -1,14 +1,13 @@
 @use "sass:meta";
-@import 'ngx-spinner/animations/ball-clip-rotate-multiple';
-@import 'ngx-spinner/animations/ball-clip-rotate-pulse';
 
 @import 'scss/core.scss';
 @import './assets/scss/styles';
 
-@import 'colors/study-plans.scss';
-@import 'colors/languages.scss';
-@import 'colors/chapters.scss';
-@import 'colors/contests.scss';
+@import 'styles/colors/study-plans.scss';
+@import 'styles/colors/languages.scss';
+@import 'styles/colors/chapters.scss';
+@import 'styles/colors/contests.scss';
+@import 'styles/vuexy-extended';
 
 @import "highlight.js/styles/vs.css";
 
