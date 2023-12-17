@@ -1,15 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UsersService } from '../../../../modules/users/users.service';
+import { Component, OnInit } from '@angular/core';
+import { UsersService } from '@users/users.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { takeUntil } from 'rxjs/operators';
-import { CoreConfigService } from '../../../../../core/services/config.service';
-import { Subject } from 'rxjs';
-import { colors } from '../../../../colors.const';
 import { CoreCommonModule } from '@core/common.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
+import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 
 @Component({
   selector: 'users-chart-card',
@@ -22,34 +20,23 @@ import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-char
     CoreDirectivesModule,
     TranslateModule,
     UserPopoverModule,
-    ApexChartModule
+    ApexChartModule,
+    KepIconComponent
   ]
 })
-export class UsersChartCardComponent implements OnInit, OnDestroy {
+export class UsersChartCardComponent implements OnInit {
 
   public onlineUsers: Array<{ username: string, avatar: string }> = [];
   public usersTotal = 0;
-  public newUsersText: string;
-  public chartTheme: { mode: string };
-  public usersChart: any;
-
-  private _unsubscribeAll = new Subject();
+  public usersChart: ChartOptions;
 
   constructor(
     public usersService: UsersService,
     public translateService: TranslateService,
-    public coreConfigService: CoreConfigService,
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.initChart();
-
-    this.translateService.get('NewUsers').subscribe(
-      (text: string) => {
-        this.newUsersText = text;
-      }
-    );
 
     this.usersService.getOnlineUsers().subscribe(
       (result: any) => {
@@ -57,23 +44,10 @@ export class UsersChartCardComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.coreConfigService.getConfig().pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((config: any) => {
-        if (config.layout.skin == 'dark') {
-          this.chartTheme = {
-            mode: 'dark',
-          };
-        } else {
-          this.chartTheme = {
-            mode: 'light',
-          };
-        }
-      });
-
     this.usersService.getUsersChartSeries().subscribe(
       (result: any) => {
         this.usersChart.series[0].data = result.series;
-        this.usersChart.series[0].name = this.newUsersText;
+        this.usersChart.series[0].name = this.translateService.instant('NewUsers');
         this.usersTotal = result.total;
       }
     );
@@ -82,7 +56,6 @@ export class UsersChartCardComponent implements OnInit, OnDestroy {
   initChart() {
     this.usersChart = {
       chart: {
-        fontFamily: 'QuickSand, Roboto',
         height: 100,
         type: 'line',
         dropShadow: {
@@ -92,14 +65,10 @@ export class UsersChartCardComponent implements OnInit, OnDestroy {
           blur: 4,
           opacity: 0.1
         },
-        toolbar: {
-          show: false
-        },
         sparkline: {
           enabled: true
         }
       },
-      colors: [colors.solid.primary],
       dataLabels: {
         enabled: false
       },
@@ -107,22 +76,9 @@ export class UsersChartCardComponent implements OnInit, OnDestroy {
         curve: 'smooth',
         width: 5
       },
-      fill: {
-        type: 'gradient',
-        gradient: {
-          shadeIntensity: 1,
-          gradientToColors: ['#A9A2F6'],
-          opacityFrom: 1,
-          opacityTo: 1,
-          stops: [0, 100, 100, 100]
-        }
-      },
-      yaxis: {
-        labels: {
-          show: false,
-          formatter: function (val) {
-            return val + '';
-          },
+      tooltip: {
+        x: {
+          show: false
         }
       },
       series: [
@@ -131,14 +87,6 @@ export class UsersChartCardComponent implements OnInit, OnDestroy {
           data: []
         }
       ],
-      tooltip: {
-        x: {show: false}
-      }
     };
-  }
-
-  ngOnDestroy() {
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
   }
 }

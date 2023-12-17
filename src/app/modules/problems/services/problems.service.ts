@@ -13,7 +13,7 @@ export class ProblemsService {
 
   constructor(public api: ApiService) {}
 
-  getProblems(params: Partial<ProblemsFilter & Pageable & { hasSolved, hasAttempted }>) {
+  getProblems(params: Partial<ProblemsFilter & Pageable & { hasSolved: number, hasAttempted: number }>) {
     if (params.status === 1) {
       params.hasSolved = 1;
     } else if (params.status === 2) {
@@ -74,7 +74,7 @@ export class ProblemsService {
   }
 
   getProblemsRating(page: number, pageSize = 10, ordering = '-solved') {
-    const params = { page: page, ordering: ordering, page_size: pageSize };
+    const params = { page, ordering, pageSize };
     return this.api.get('problems-rating', params);
   }
 
@@ -108,25 +108,25 @@ export class ProblemsService {
   }
 
   getProblemTopAttempts(problemId: number, ordering: string, lang = null, page: number = 1, pageSize: number = 10) {
-    const params = { ordering: ordering, lang: lang };
+    const params = { ordering, lang };
     return this.api.get(`problems/${ problemId }/top-attempts/`, params);
   }
 
-  getAttemptsForSolveStatistics(problemId) {
+  getAttemptsForSolveStatistics(problemId: number) {
     return this.api.get(`problems/${ problemId }/attempts-for-solve-statistics/`);
   }
 
-  getProblemSolution(problemId) {
+  getProblemSolution(problemId: number) {
     return this.api.get(`problems/${ problemId }/solution/`);
   }
 
-  addTag(problemId, tagId) {
-    const params = { tag_id: tagId };
+  addTag(problemId: number, tagId: number) {
+    const params = { tagId };
     return this.api.post(`problems/${ problemId }/add-tag/`, params);
   }
 
-  removeTag(problemId, tagId) {
-    const params = { tag_id: tagId };
+  removeTag(problemId: number, tagId: number) {
+    const params = { tagId };
     return this.api.post(`problems/${ problemId }/remove-tag/`, params);
   }
 
