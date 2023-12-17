@@ -7,6 +7,7 @@ export interface CurrentProblemsRating {
 }
 
 export interface ProblemsRating {
+  rowIndex: number;
   hard: number;
   extremal: number;
   user: User;

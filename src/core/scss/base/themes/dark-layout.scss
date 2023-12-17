@@ -124,7 +124,8 @@
   .navbar-sticky {
     .header-navbar {
       &.navbar-shadow {
-        box-shadow: 0 4px 24px 0 rgba($black, 0.75);
+        // box-shadow: 0 4px 24px 0 rgba($black, 0.75);
+        box-shadow: none;
       }
     }
   }
@@ -2304,7 +2305,8 @@
   /********** HORIZONTAL LAYOUT **********/
   .horizontal-layout {
     &.navbar-sticky .horizontal-menu-wrapper .navbar-horizontal.header-navbar.fixed-top {
-      box-shadow: 0 4px 24px 0 rgba($black, 0.75) !important;
+      // box-shadow: 0 4px 24px 0 rgba($black, 0.8) !important;
+      box-shadow: none !important;
     }
     .horizontal-menu-wrapper {
       background: linear-gradient(

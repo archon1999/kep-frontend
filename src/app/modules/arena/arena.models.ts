@@ -17,7 +17,7 @@ export interface Arena {
   startTime: string;
   finishTime: string;
   startNaturaltime: string;
-  finishNatuarltime: string;
+  finishNaturaltime: string;
   timeSeconds: number;
   questionsCount: number;
   isRegistrated: boolean;

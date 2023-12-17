@@ -1,0 +1,70 @@
+@import 'styles/kep-imports';
+
+html {
+  overflow-y: scroll
+}
+
+th {
+  font-weight: 400 !important;
+  text-transform: initial !important;
+}
+
+code {
+  padding: 0;
+}
+
+body {
+  padding-right: 0 !important
+}
+
+pre {
+  all: revert;
+  margin: 1em 0;
+  padding: 1rem;
+  border-radius: .375em;
+  border: 1px solid #ededed !important;
+  background-color: #fafafa !important;
+  font-size: 87.5%;
+  font-family: 'Inconsolata', serif;
+  overflow: auto;
+}
+
+.dark-layout pre {
+  background-color: inherit !important;
+  color: white;
+}
+
+@media (min-width: 1440px) {
+  .container-xxl {
+    max-width: 1440px;
+  }
+}
+
+#main-menu-navigation > li[core-menu-horizontal-item], li[core-menu-horizontal-collapsible], .main-menu.expanded li[core-menu-vertical-item] {
+  &.active > a > kep-icon > span {
+    color: white !important;
+  }
+}
+
+.main-menu {
+  transition: 1s ease;
+}
+
+.main-menu:not(.expanded) kep-icon > span {
+  margin-right: 1rem;
+  transition: 1s ease-in;
+}
+
+@include media-breakpoint-down(sm) {
+  .nav-tabs .nav-item {
+    width: 100%;
+  }
+}
+
+:root {
+  --inherit-bg-box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1);
+}
+
+:root .dark-layout {
+  --inherit-bg-box-shadow: 0 2px 12px 0 rgba(255, 255, 255, 0.05);
+}

@@ -1,0 +1,55 @@
+{
+  "name": "uz",
+  "options": {
+    "months": [
+      "Yanvar",
+      "Fevral",
+      "Mart",
+      "Aprel",
+      "May",
+      "Iyun",
+      "Iyul",
+      "Avgust",
+      "Sentabr",
+      "Oktabr",
+      "Noyabr",
+      "Dekabr"
+    ],
+    "shortMonths": [
+      "Yan",
+      "Fev",
+      "Mar",
+      "Apr",
+      "May",
+      "Iyn",
+      "Iyl",
+      "Avg",
+      "Sen",
+      "Okt",
+      "Noy",
+      "Dek"
+    ],
+    "days": [
+      "Yakshanba",
+      "Dushanba",
+      "Seshanba",
+      "Chorshanba",
+      "Payshanba",
+      "Juma",
+      "Shanba"
+    ],
+    "shortDays": ["Ya", "Du", "Se", "Ch", "Pa", "Ju", "Sh"],
+    "toolbar": {
+      "exportToSVG": "Сохранить SVG",
+      "exportToPNG": "Сохранить PNG",
+      "exportToCSV": "Сохранить CSV",
+      "menu": "Меню",
+      "selection": "Выбор",
+      "selectionZoom": "Выбор с увеличением",
+      "zoomIn": "Увеличить",
+      "zoomOut": "Уменьшить",
+      "pan": "Перемещение",
+      "reset": "Сбросить увеличение"
+    }
+  }
+}

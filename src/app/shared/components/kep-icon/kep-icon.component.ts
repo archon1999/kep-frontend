@@ -11,8 +11,8 @@ import { keenIcons } from '../../../keen-icons';
   imports: [CommonModule]
 })
 export class KepIconComponent implements OnInit {
-  @Input() name: string;
-  @Input() class: string;
+  @Input() name: keyof typeof keenIcons | string;
+  @Input() class = 'mr-25 font-medium-3';
   @Input() type: 'outline' | 'solid' | 'duotone' = 'outline';
 
   pathsNumber = 0;

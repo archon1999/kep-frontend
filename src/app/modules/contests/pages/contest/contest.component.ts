@@ -1,30 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { fadeInUpAnimation } from 'angular-animations';
+import { fadeInUpOnEnterAnimation } from 'angular-animations';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
-import { TitleService } from 'app/shared/services/title.service';
-import { Contest } from '../../contests.models';
+import { Contest } from '@contests/contests.models';
+import { BasePageComponent } from '@shared/components/classes/base-page.component';
 
 @Component({
   selector: 'app-contest',
   templateUrl: './contest.component.html',
   styleUrls: ['./contest.component.scss'],
-  animations: [fadeInUpAnimation({ duration: 1500 })]
+  animations: [fadeInUpOnEnterAnimation()]
 })
-export class ContestComponent implements OnInit {
-
-  public startAnimationState = false;
-  public contentHeader: ContentHeader;
+export class ContestComponent extends BasePageComponent implements OnInit {
 
   public contest: Contest;
 
-  constructor(
-    public route: ActivatedRoute,
-    public titleService: TitleService,
-  ) { }
-
   ngOnInit(): void {
-    setTimeout(() => this.startAnimationState = true, 0);
     this.route.data.subscribe(({ contest }) => {
       this.contest = Contest.fromJSON(contest);
       this.loadContentHeader();
@@ -32,8 +22,8 @@ export class ContestComponent implements OnInit {
     });
   }
 
-  loadContentHeader() {
-    this.contentHeader = {
+  protected getContentHeader(): ContentHeader {
+    return {
       headerTitle: this.contest.title,
       actionButton: true,
       breadcrumb: {

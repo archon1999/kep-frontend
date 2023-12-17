@@ -1,6 +1,7 @@
 @import 'bootstrap/scss/mixins'; 
 @import 'bootstrap/scss/functions';
 @import 'scss/base/bootstrap-extended/variables';
+@import 'scss/base/components/variables-dark';
 
 .statistics-section {
   position: absolute;
@@ -10,10 +11,10 @@
   background: linear-gradient(to right, $primary, mix(white, $primary, 15));
 
   @include dark-layout() {
-    background: linear-gradient(to right, mix(black, $primary, 15), mix(black, $primary, 30));
+    background: linear-gradient(to right, mix(black, $primary, 65), mix(black, $primary, 60));
 
     svg {
-      stroke: #161d31 !important;
+      stroke: $theme-dark-body-bg !important;
     }
   }
 

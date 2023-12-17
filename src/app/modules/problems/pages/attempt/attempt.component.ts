@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CoreConfigService } from 'core/services/config.service';
 import { TitleService } from 'app/shared/services/title.service';
 import { Attempt } from '@problems/models/attempts.models';
-import { ProblemsService } from '@problems/services/problems.service';
+import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { CoreCommonModule } from '@core/common.module';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
@@ -49,7 +49,7 @@ export class AttemptComponent implements OnInit {
 
   constructor(
     public route: ActivatedRoute,
-    public service: ProblemsService,
+    public service: ProblemsApiService,
     public coreConfigService: CoreConfigService,
     public titleService: TitleService,
   ) {

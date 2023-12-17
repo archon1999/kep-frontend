@@ -6,6 +6,7 @@ import { catchError, concatMap, delay, retryWhen } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
 import { isPresent } from '@shared/c-validators/utils';
+import { paramsMapper } from '@shared/utils';
 
 export const BASE_URL = environment.apiUrl;
 export const BASE_API_URL = BASE_URL + '/api/';
@@ -32,7 +33,7 @@ export const BASE_API_URL = BASE_URL + '/api/';
       }
     }
     this.initOptions(options);
-    options.params = filteredParams;
+    options.params = paramsMapper(filteredParams);
     return this.http.get(url, options).pipe(
       this.handleRetryError(3000, 5),
       catchError(err => {

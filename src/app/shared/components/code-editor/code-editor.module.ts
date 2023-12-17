@@ -6,7 +6,6 @@ import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { NgbAccordionModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { KepcoinSpendSwalModule } from '../../../modules/kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
-import { ToastrModule } from 'ngx-toastr';
 import { CodeEditorModalComponent } from './code-editor-modal/code-editor-modal.component';
 import { ErrorTooltipModule } from '../error-tooltip/error-tooltip.module';
 import { NgSelectModule } from '../../third-part-modules/ng-select/ng-select.module';
@@ -18,6 +17,7 @@ import { NewFeatureDirective } from '@shared/directives/new-feature.directive';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { VerdictShortTitlePipe } from '@problems/pipes/verdict-short-title.pipe';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
+import { ToastrModule } from '@shared/third-part-modules/toastr/toastr.module';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,6 @@ import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/
     NgSelectModule,
     FormsModule,
     CoreDirectivesModule,
-    ToastrModule,
     CorePipesModule,
     TranslateModule,
     MonacoEditorComponent,
@@ -44,7 +43,8 @@ import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/
     NewFeatureDirective,
     NgbAccordionModule,
     SpinnerComponent,
-    VerdictShortTitlePipe
+    VerdictShortTitlePipe,
+    ToastrModule
   ],
   exports: [
     CodeEditorModalComponent,

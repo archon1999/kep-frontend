@@ -1,4 +1,4 @@
-@import 'colors/study-plans';
+@import 'styles/colors/study-plans';
 @import 'bootstrap/scss/mixins/dark-layout';
 @import 'bootstrap/scss/mixins';
 
@@ -6,7 +6,7 @@
   background: linear-gradient(to right, lighten($study-plan-1, 5), lighten($study-plan-1, 25));
 
   @include dark-layout {
-    background: linear-gradient(to right, darken($study-plan-1, 20), darken($study-plan-1, 10)) !important;
+    background: linear-gradient(to right, darken($study-plan-1, 25), darken($study-plan-1, 20)) !important;
   }
 }
 
@@ -14,7 +14,7 @@
   background: linear-gradient(to right, mix(white, $study-plan-2, 5), mix(white, $study-plan-2, 25));
 
   @include dark-layout {
-    background: linear-gradient(to right, mix(black, $study-plan-2, 40), mix(black, $study-plan-2, 20)) !important;
+    background: linear-gradient(to right, mix(black, $study-plan-2, 55), mix(black, $study-plan-2, 45)) !important;
   }
 }
 
@@ -22,7 +22,7 @@
   background: linear-gradient(to right, mix(white, $study-plan-3, 5), mix(white, $study-plan-3, 25));
 
   @include dark-layout {
-    background: linear-gradient(to right, mix(black, $study-plan-3, 25), mix(black, $study-plan-3, 10)) !important;
+    background: linear-gradient(to right, mix(black, $study-plan-3, 40), mix(black, $study-plan-3, 30)) !important;
   }
 }
 

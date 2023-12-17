@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { BlogPostCardModule } from './components/blog-post-card/blog-post-card.module';
 import { NgSelectModule } from '../../shared/third-part-modules/ng-select/ng-select.module';
 import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 
 const routes: Routes = [
   {
@@ -57,6 +58,7 @@ const routes: Routes = [
     BlogPostCardModule,
     NgSelectModule,
     NgbPaginationModule,
+    KepIconComponent,
   ],
   exports: [
     PostDetailComponent,

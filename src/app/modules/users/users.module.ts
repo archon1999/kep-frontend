@@ -10,7 +10,6 @@ import { ContentHeaderModule } from 'app/layout/components/content-header/conten
 import { KepcoinViewModule } from 'app/shared/components/kepcoin-view/kepcoin-view.module';
 import { StreakModule } from 'app/shared/components/streak/streak.module';
 import { TableOrderingModule } from 'app/shared/components/table-ordering/table-ordering.module';
-import { UsersChartModule } from 'app/shared/components/users-chart/users-chart.module';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
@@ -100,7 +99,6 @@ const routes: Routes = [
     FormsModule,
     NgApexchartsModule,
     ContestantViewModule,
-    UsersChartModule,
     ChallengesUserViewModule,
     KepcoinViewModule,
     StreakModule,

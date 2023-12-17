@@ -76,7 +76,7 @@ export class CustomTitleStrategy extends TitleStrategy {
     if (title !== undefined) {
       const key = `PageTitle.${title}`;
       this.translateService.get(key).subscribe((value: any) => {
-        this.title.setTitle(`${value} | CPython.uz`);
+        this.title.setTitle(`${value} | KEP.uz`);
       });
     }
   }

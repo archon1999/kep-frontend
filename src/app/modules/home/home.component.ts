@@ -11,8 +11,8 @@ import { NewsSectionComponent } from './news-section/news-section.component';
 import { ProfileSectionComponent } from './profile-section/profile-section.component';
 import { HeaderSectionComponent } from './header-section/header-section.component';
 import { ActivitySectionComponent } from './activity-section/activity-section.component';
-import { UsersChartModule } from '@shared/components/users-chart/users-chart.module';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { UsersChartCardComponent } from '@users/components/users-chart-card/users-chart-card.component';
 
 @Component({
   selector: 'app-home',
@@ -31,8 +31,8 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
     ProfileSectionComponent,
     HeaderSectionComponent,
     ActivitySectionComponent,
-    UsersChartModule,
     SpinnerComponent,
+    UsersChartCardComponent,
   ]
 })
 export class HomeComponent implements OnInit {

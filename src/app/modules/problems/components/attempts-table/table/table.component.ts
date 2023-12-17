@@ -3,7 +3,7 @@ import { bounceAnimation, fadeInOnEnterAnimation, shakeAnimation } from 'angular
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
 import { Contest } from 'app/modules/contests/contests.models';
-import { ProblemsService } from 'app/modules/problems/services/problems.service';
+import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { Attempt } from '../../../models/attempts.models';
 
 @Component({
@@ -27,7 +27,7 @@ export class TableComponent implements OnInit {
 
   constructor(
     public authService: AuthenticationService,
-    public service: ProblemsService,
+    public service: ProblemsApiService,
   ) { }
 
   ngOnInit(): void {

@@ -1,5 +1,15 @@
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { AfterViewChecked, Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  forwardRef,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { EditorComponent, MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { CoreConfigService } from 'core/services/config.service';
 import { CoreConfig } from 'core/types';
@@ -7,7 +17,6 @@ import { LanguageService } from 'app/modules/problems/services/language.service'
 import { AttemptLangs } from 'app/modules/problems/constants';
 import { getEditorLang } from 'app/modules/problems/utils';
 import { CommonModule } from '@angular/common';
-import { monacoConfig } from '../../../monaco-config';
 
 @Component({
   selector: 'monaco-editor',
@@ -19,6 +28,8 @@ import { monacoConfig } from '../../../monaco-config';
       multi: true
     }
   ],
+  styleUrl: './monaco-editor.component.scss',
+  encapsulation: ViewEncapsulation.None,
   standalone: true,
   imports: [MonacoEditorModule, FormsModule, CommonModule],
 })

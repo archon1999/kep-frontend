@@ -129,5 +129,18 @@
     class="badge badge-{{ selectedLang }} badge-glow">
     {{ selectedAvailableLang.langFull }}
   </span>
+</div>
 
+<div *ngIf="!hideCodeGolf" class="code-golf mt-2">
+  <div class="d-flex mb-1">
+    <h5>
+      <kep-icon name="code" class="text-dark" type="duotone"></kep-icon>
+      {{ 'CodeGolf' | translate }}
+    </h5>
+  </div>
+
+  <span
+    class="badge badge-dark">
+    {{ selectedAvailableLang.codeGolf }}
+  </span>
 </div>

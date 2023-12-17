@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { User } from 'app/auth/models';
-import { takeUntil } from 'rxjs/operators';
 import { Attempt } from '@problems/models/attempts.models';
-import { ProblemsService } from 'app/modules/problems/services/problems.service';
+import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 import { BaseComponent } from '@shared/components/classes/base.component';
@@ -12,7 +9,8 @@ import { NgScrollbar } from 'ngx-scrollbar';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
-import { RouterModule } from '@angular/router';
+import { PageResult } from '@shared/components/classes/page-result';
+import { Observable } from 'rxjs';
 
 export interface TopRating {
   username: string;
@@ -44,38 +42,25 @@ export class SectionSidebarComponent extends BaseComponent implements OnInit {
 
   public lastAttempts: Array<Attempt> = [];
 
-  public solvedText: string;
-
   constructor(
-    public service: ProblemsService,
-    public translateService: TranslateService,
+    public service: ProblemsApiService,
     public statisticsService: ProblemsStatisticsService,
   ) {
     super();
   }
 
   ngOnInit(): void {
-    this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (user: User | null) => {
-        this.currentUser = user;
-        if (this.currentUser) {
-          this.service
-            .getUserAttempts(this.currentUser.username, 1, 10)
-            .subscribe((result: any) => this.lastAttempts = result.data);
-        } else {
-          this.lastAttempts = [];
-        }
-        this.loadTopRating(this.topRatingOption);
+    setTimeout(() => {
+      if (this.currentUser) {
+        this.service.getUserAttempts(this.currentUser.username, 1, 10).subscribe(
+          (result: PageResult<Attempt>) => {
+            this.lastAttempts = result.data;
+          }
+        );
       }
-    );
-
-    this.translateService.get('Solved').subscribe(
-      (text: string) => {
-        this.solvedText = text;
-      }
-    );
-
-    this.activityDataUpdate(this.activityDays);
+      this.activityDataUpdate(this.activityDays);
+      this.loadTopRating(this.topRatingOption);
+    });
   }
 
   loadTopRating(option: number) {
@@ -90,13 +75,13 @@ export class SectionSidebarComponent extends BaseComponent implements OnInit {
         });
       });
     } else {
-      let obs;
+      let obs: Observable<any>;
       if (option === 1) {
-        obs = this.service.getProblemsRatingToday();
+        obs = this.service.getCurrentProblemsRating('today');
       } else if (option === 2) {
-        obs = this.service.getProblemsRatingWeek();
+        obs = this.service.getCurrentProblemsRating('week');
       } else {
-        obs = this.service.getProblemsRatingMonth();
+        obs = this.service.getCurrentProblemsRating('month');
       }
       obs.subscribe((result: any) => {
         this.topRating = result;
@@ -106,18 +91,16 @@ export class SectionSidebarComponent extends BaseComponent implements OnInit {
 
 
   activityDataUpdate(days: number) {
-    if (!this.currentUser) {
-      return;
-    }
     const username = this.currentUser.username;
     this.statisticsService.getLastDays(username, days).subscribe((result: any) => {
       this.activitySolved = result.solved;
       const data = [];
       let days = 0;
       for (const y of result.series) {
-        const dt = new Date(Date.now() - days * 1000 * 60 * 60 * 24);
+        const dt = new Date();
+        dt.setDate(dt.getDate() - days);
         data.push({
-          x: dt.toDateString(),
+          x: dt,
           y: y,
         });
         days++;
@@ -127,26 +110,26 @@ export class SectionSidebarComponent extends BaseComponent implements OnInit {
           type: 'line',
           sparkline: {
             enabled: true
-          }
+          },
         },
         dataLabels: {
           enabled: false
         },
+        xaxis: {
+          type: 'datetime',
+        },
         stroke: {
           curve: 'smooth',
-          width: 5
+          width: 2
         },
         yaxis: {
           labels: {
             show: false,
-            formatter: function (val) {
-              return val + '';
-            },
           }
         },
         series: [
           {
-            name: this.solvedText,
+            name: this.translateService.instant('Solved'),
             data: data,
           }
         ],

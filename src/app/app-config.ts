@@ -2,14 +2,14 @@ import { CoreConfig } from 'core/types';
 
 export const coreConfig: CoreConfig = {
   app: {
-    appName: 'CPython.uz',                                        // App Name
-    appTitle: 'CPython.uz', // App Title
+    appName: 'KEP',                                        // App Name
+    appTitle: 'KEP.uz', // App Title
     appLogoImage: 'assets/images/logo/logo.png',                  // App Logo
     appLogoImageWithTitle: 'assets/images/logo/logo-with-title.svg',                  // App Logo
     appLanguage: 'en',                                           // App Default Language (en, fr, de, pt etc..)
   },
   layout: {
-    skin: 'default',                        // default, dark, bordered, semi-dark
+    skin: 'dark',                        // default, dark, bordered, semi-dark
     type: 'horizontal',                       // vertical, horizontal
     animation: 'fadeIn',                     // fadeInLeft, zoomIn , fadeIn, none
     enableAnimation: true,

@@ -70,6 +70,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
       this.contest = Contest.fromJSON(contest);
       this.contestProblem = contestProblem;
       this.problem = contestProblem.problem;
+      setTimeout(() => this.langService.setLanguage(this.selectedLang as any));
       this.titleService.updateTitle(this.route, {
         contestTitle: contest.title,
         problemSymbol: contestProblem.symbol,

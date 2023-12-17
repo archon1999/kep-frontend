@@ -28,6 +28,10 @@ $warning: $orange !default;
 $light: $gray-50 !default;
 $dark: #071437 !default;
 
+$yellow: rgb(191 200 0 / 94%);
+$blue: #4362eef0;
+$brown: #ba782b;
+
 // Spacing
 //
 // Control the default styling of most Bootstrap elements by modifying these
@@ -130,8 +134,8 @@ $box-shadow: 0 4px 24px 0 rgba($black, 0.1) !default;
 // Font, line-height, and color for body text, headings, and more.
 
 // stylelint-disable value-keyword-case
-$font-family-sans-serif: 'Montserrat', 'Quicksand', 'Roboto', Helvetica, Arial, sans-serif !default;
-$font-family-monospace: 'Montserrat', 'Quicksand', 'Roboto', Helvetica, Arial, sans-serif !default;
+$font-family-sans-serif: 'Montserrat', Helvetica, Arial, sans-serif !default;
+$font-family-monospace: 'Montserrat', Helvetica, Arial, sans-serif !default;
 
 // stylelint-enable value-keyword-case
 $font-size-base: 1rem !default;
@@ -377,7 +381,7 @@ $floating-nav-margin: 1.3rem;
 
 // Tooltips
 
-$tooltip-bg: #323232 !default;
+$tooltip-bg: #0f1014 !default;
 $tooltip-padding-y: 0.4rem !default;
 $tooltip-padding-x: 0.775rem !default;
 $tooltip-font-size: 0.857rem !default;

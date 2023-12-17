@@ -1,0 +1,27 @@
+.card {
+  background: var(--bg-gradient) !important;
+  box-shadow: var(--box-shadow) !important;
+  display: flex;
+  // justify-content: space-around;
+  align-items: center;
+
+  h4, h3 {
+    color: var(--text-color);
+  }
+
+  .card-footer {
+    z-index: 1;
+    border-top: 1px solid var(--bg);
+    // border-top: 0;
+  }
+
+  .contest-logo {
+    opacity: 0.1;
+    position: absolute;
+
+    img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+}

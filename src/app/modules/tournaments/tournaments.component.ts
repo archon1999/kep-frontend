@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation, fadeInUpOnEnterAnimation } from 'angular-animations';
+import {
+  fadeInLeftOnEnterAnimation,
+  fadeInOnEnterAnimation,
+  fadeInRightOnEnterAnimation,
+  fadeInUpOnEnterAnimation
+} from 'angular-animations';
 import { Tournament } from './tournaments.models';
 import { TournamentsService } from './tournaments.service';
 
@@ -9,10 +14,10 @@ import { TournamentsService } from './tournaments.service';
   templateUrl: './tournaments.component.html',
   styleUrls: ['./tournaments.component.scss'],
   animations: [
-    fadeInOnEnterAnimation({ duration: 3000 }),
-    fadeInUpOnEnterAnimation({ duration: 3000 }),
-    fadeInLeftOnEnterAnimation({ duration: 3000 }),
-    fadeInRightOnEnterAnimation({ duration: 3000 }),
+    fadeInOnEnterAnimation(),
+    fadeInUpOnEnterAnimation(),
+    fadeInLeftOnEnterAnimation(),
+    fadeInRightOnEnterAnimation(),
   ]
 })
 export class TournamentsComponent implements OnInit {
@@ -22,12 +27,12 @@ export class TournamentsComponent implements OnInit {
   constructor(
     public service: TournamentsService,
     public route: ActivatedRoute,
-  ){}
+  ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe(({ tournaments }) => {
       this.tournaments = tournaments;
-    })
+    });
   }
 
 }

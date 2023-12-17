@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { TableOrderingComponent } from './table-ordering.component';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { TableOrderingComponent } from './table-ordering.component';
     TranslateModule,
     CoreDirectivesModule,
     CorePipesModule,
+    KepIconComponent,
   ],
   exports: [
     TableOrderingComponent,

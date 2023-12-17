@@ -8,35 +8,27 @@
   cursor: pointer;
   border: none;
 
-  .card-header {
-    color: #000;
+  &:hover {
+    padding-left: 10px !important;
+    color: #604f99;
+    transition: .5s;
   }
-  
-  .card-countdown .clock-val {
-    color: #000;
+
+  .card-header>div:nth-child(1) {
+    width: 40%;
   }
-}
 
-.card:hover {
-  padding-left: 10px !important;
-  color: #604f99;
-  transition: .5s;
-}
+  .card-header>div:nth-child(2) {
+    width: 20%;
+  }
 
-.card-header>div:nth-child(1) {
-  width: 40%;
-}
+  .card-header>div:nth-child(3) {
+    width: 20%;
+  }
 
-.card-header>div:nth-child(2) {
-  width: 20%;
-}
-
-.card-header>div:nth-child(3) {
-  width: 20%;
-}
-
-.card-header>div:nth-child(4) {
-  width: 20%;
+  .card-header>div:nth-child(4) {
+    width: 20%;
+  }
 }
 
 @include media-breakpoint-down(sm) {
@@ -53,7 +45,7 @@
   }
   
   .card-header>div:nth-child(4) {
-    width: 0% !important;
+    width: 0 !important;
     display: none !important;
   }  
 }

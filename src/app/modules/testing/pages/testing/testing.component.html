@@ -1,0 +1,33 @@
+<section class="testing-page-top">
+  <swiper [config]="testsSwiperConfig" class="swiper-tests">
+    <div *ngFor="let test of lastTests" class="swiper-slide">
+      <test-card [test]="test"></test-card>
+    </div>
+  </swiper>
+
+  <div class="col-lg-10 offset-lg-1 col-12 offset-0">
+    <div class="chapters">
+      <swiper [config]="chaptersSwiperConfig" class="swiper-chapters swiper-lazy-loading">
+        <div *ngFor="let chapter of chapters" class="swiper-slide">
+          <div [ngClass]="{'active': chapter.id == selectedChapter}" class="chapter-card">
+            <chapter-card (click)="selectedChapter=chapter.id;loadTests()" [chapter]="chapter"></chapter-card>
+          </div>
+        </div>
+      </swiper>
+    </div>
+
+    <div class="tests-list">
+      <div class="row">
+        <div *ngFor="let test of tests" class="col-10 offset-1">
+          <test-list-card [test]="test"></test-list-card>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button (click)="moreLoad()" *ngIf="!isLastPage" class="btn btn-relief-primary">
+          {{ 'More' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

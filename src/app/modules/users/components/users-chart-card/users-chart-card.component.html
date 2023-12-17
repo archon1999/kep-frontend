@@ -1,0 +1,28 @@
+<div class="card">
+  <div class="card-header d-flex align-items-start">
+    <div class="top">
+      <h2 class="font-weight-bolder">{{ usersTotal }}</h2>
+      <p class="mb-0">{{ 'Users' | translate }}</p>
+    </div>
+    <div class="avatar bg-light-primary p-50">
+      <div class="avatar-content">
+        <kep-icon name="user" class="font-medium-4"></kep-icon>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="usersChart.series[0].data.length > 0">
+    <apex-chart [options]="usersChart"></apex-chart>
+  </div>
+
+  <div class="card-body">
+    <div class="avatar-group">
+      <div *ngFor="let user of onlineUsers" class="avatar pull-up">
+        <user-popover [customContent]="true" [username]="user.username">
+          <img [src]="user.avatar" alt="Avatar" height="32" width="32">
+          <span class="avatar-status-online"></span>
+        </user-popover>
+      </div>
+    </div>
+  </div>
+</div>

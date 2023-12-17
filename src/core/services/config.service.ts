@@ -6,6 +6,7 @@ import { filter } from 'rxjs/operators';
 
 import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { CoreConfig } from '@core/types';
 
 // Injection token for the core custom settings
 export const CORE_CUSTOM_CONFIG = new InjectionToken('coreCustomConfig');
@@ -38,10 +39,6 @@ export class CoreConfigService {
     }
 
     _config.app.appLanguage = this.translateService.getBrowserLang();
-    let now = new Date(Date.now());
-    if(now.getHours() > 18 || now.getHours() < 6){
-      _config.layout.skin = 'dark';
-    }
 
     this._defaultConfig = this.localConfig ? this.localConfig : _config;
 
@@ -164,7 +161,7 @@ export class CoreConfigService {
    *
    * @returns {Observable<any>}
    */
-  getConfig(): Observable<any> {
+  getConfig(): Observable<CoreConfig> {
     return this._configSubject.asObservable();
   }
 

@@ -49,7 +49,7 @@ import { ContestsTableModule } from './components/contests-table/contests-table.
 import { ContestCardModule } from './components/contest-card/contest-card.module';
 import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
-import { ContestProblemCardComponent } from './components/contest-problem-card/contest-problem-card.component';
+import { ContestProblemCardComponent } from '@contests/pages/contest/contest-problem/contest-problem-card/contest-problem-card.component';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { ProblemInfoCardComponent } from '@problems/components/problem-info-card/problem-info-card.component';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
@@ -60,6 +60,9 @@ import { UserContestsComponent } from '@contests/pages/user-contests/user-contes
 import { ContestCreateComponent } from '@contests/pages/user-contests/contest-create/contest-create.component';
 import { KepcoinSpendSwalModule } from '../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { ContestRegistrantsComponent } from '@contests/pages/contest/contest-registrants/contest-registrants.component';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 
 
 const routes: Routes = [
@@ -164,6 +167,17 @@ const routes: Routes = [
     },
   },
   {
+    path: 'contest/:id/registrants',
+    component: ContestRegistrantsComponent,
+    data: {
+      animation: 'contest-registrants',
+      title: 'Contests.ContestRegistrants',
+    },
+    resolve: {
+      contest: ContestResolver,
+    },
+  },
+  {
     path: 'contest/:id/og-image',
     component: ContestOgImageComponent,
     resolve: {
@@ -205,6 +219,7 @@ const routes: Routes = [
     ContestProblemCardComponent,
     UserContestsComponent,
     ContestCreateComponent,
+    ContestRegistrantsComponent,
   ],
   imports: [
     ContestsComponent,
@@ -242,6 +257,8 @@ const routes: Routes = [
     NgbTimepickerModule,
     NgbDatepickerModule,
     EmptyResultComponent,
+    KepIconComponent,
+    ContestClassesPipe,
   ],
   providers: [
     ContestGuard,

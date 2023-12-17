@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { TitleService } from 'app/shared/services/title.service';
 import { StudyPlan } from '../../models/problems.models';
-import { ProblemsService } from '../../services/problems.service';
+import { ProblemsApiService } from '../../services/problems-api.service';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { CoreCommonModule } from '@core/common.module';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
@@ -43,7 +43,7 @@ export class StudyPlanComponent implements OnInit {
 
   constructor(
     public route: ActivatedRoute,
-    public service: ProblemsService,
+    public service: ProblemsApiService,
     public translateService: TranslateService,
     public titleService: TitleService,
   ) {}

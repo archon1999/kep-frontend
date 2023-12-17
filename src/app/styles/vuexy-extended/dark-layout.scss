@@ -1,0 +1,41 @@
+@import 'styles/kep-imports';
+
+$colors : (
+  'secondary': $secondary,
+  'primary': $primary,
+  'success': $green,
+  'info': $info,
+  'warning': $warning,
+  'danger': $red,
+  'yellow': $yellow,
+  'blue': $blue,
+  'brown': $brown,
+  'dark': $dark,
+);
+
+@each $color_name, $color in $colors {
+  .dark-layout {
+    .btn-#{$color_name} {
+      background-color: mix(black, $color, 30) !important;
+      border-color: mix(black, $color, 30) !important;
+    }
+
+    .badge.badge-#{$color_name} {
+      background-color: mix(black, $color, 30);
+
+      &.badge-glow {
+        box-shadow: 0 0 5px mix(black, $color, 30);
+      }
+    }
+
+    .bg-#{$color_name} {
+      background-color: mix(black, $color, 30);
+
+      &.badge-glow {
+        box-shadow: 0 0 5px mix(black, $color, 30);
+      }
+    }
+
+    --#{$color_name}: mix(black, $color, 30);
+  }
+}

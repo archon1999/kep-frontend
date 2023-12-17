@@ -5,7 +5,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Attempt } from '@problems/models/attempts.models';
 import { Problem } from '@problems/models/problems.models';
-import { ProblemsService } from 'app/modules/problems/services/problems.service';
+import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { CoreCommonModule } from '@core/common.module';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
@@ -35,7 +35,7 @@ export class ProblemAttemptsComponent implements OnInit {
 
   constructor(
     public authService: AuthenticationService,
-    public service: ProblemsService,
+    public service: ProblemsApiService,
   ) {
   }
 

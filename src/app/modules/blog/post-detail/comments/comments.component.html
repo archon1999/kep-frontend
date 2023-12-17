@@ -1,49 +1,50 @@
-<script src="../../../account-settings/general-settings/general-settings.component.ts"></script><h2 class="mb-2">
+<h2 class="mb-2">
   {{ 'Comments' | translate }}
   <span class="comment-count">({{ comments.length }})</span>
 </h2>
 
-<div
-  *ngFor="let comment of comments; index as i"
-  [@fadeInOnEnter]
-  [@fadeOutOnLeave]
-  style="border-radius: 5px;"
-  [ngClass]="{'bg-light-secondary': comment.username == currentUser?.username }"
->
-  <div class="media pt-1 mb-4 pl-1">
-    <img class="rounded" [src]="comment.userAvatar" alt="pic1">
-    <div class="media-body">
-      <div class="row pl-1">
-        <h4 class="media-heading text-dark">
-          <user-popover [username]="comment.username"></user-popover>,
-        </h4>
-        <p class="meta-time-date pl-1">{{ comment.created }}</p>
-      </div>
-      <h6 class="comment">
-        <mathjax [content]="comment.body"></mathjax>
-      </h6>
-      <div class="media-notation pb-1">
-        <button
-          (click)="like(i)"
-          *ngIf="comment.username != currentUser?.username"
-          class="mr-1 btn btn-sm round btn-relief-success"
-        >
-          <i data-feather="thumbs-up"></i>
-          <span class="ml-1" *ngIf="comment.likes > 0">{{ comment.likes }}</span>
-        </button>
-        <button
-          *ngIf="0"
-          class="mr-1 btn btn-sm round btn-relief-secondary"
-        >
-          <i data-feather="message-square"></i>
-        </button>
-        <button *ngIf="currentUser?.isSuperuser" (click)="deleteComment(i)" class="btn btn-sm round btn-relief-dark">
-          <i data-feather="x"></i>
-        </button>
+@for (comment of comments; track comment.id){
+  <div
+    [@fadeInOnEnter]
+    [@fadeOutOnLeave]
+    style="border-radius: 5px;"
+    [ngClass]="{'bg-light-secondary': comment.username == currentUser?.username }"
+  >
+    <div class="media pt-1 mb-4 pl-1">
+      <img class="rounded" [src]="comment.userAvatar" alt="pic1">
+      <div class="media-body">
+        <div class="row pl-1">
+          <h4 class="media-heading text-dark">
+            <user-popover [username]="comment.username"></user-popover>,
+          </h4>
+          <p class="meta-time-date pl-1">{{ comment.created }}</p>
+        </div>
+        <h6 class="comment">
+          <mathjax [content]="comment.body"></mathjax>
+        </h6>
+        <div class="media-notation pb-1">
+          <button
+            (click)="like($index)"
+            *ngIf="comment.username != currentUser?.username"
+            class="mr-1 btn btn-sm round btn-relief-success"
+          >
+            <kep-icon name="like" class=""></kep-icon>
+            <span class="ml-1" *ngIf="comment.likes > 0">{{ comment.likes }}</span>
+          </button>
+          <button
+            *ngIf="0"
+            class="mr-1 btn btn-sm round btn-relief-secondary"
+          >
+            <i data-feather="message-square"></i>
+          </button>
+          <button *ngIf="currentUser?.isSuperuser" (click)="deleteComment($index)" class="btn btn-sm round btn-relief-dark">
+            <i data-feather="x"></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+}
 
 <h4 class="mb-1">{{ 'WriteComment' | translate }}</h4>
 <quill-editor class="full-width" [(ngModel)]="comment">

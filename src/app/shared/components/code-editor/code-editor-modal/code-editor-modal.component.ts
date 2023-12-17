@@ -222,7 +222,10 @@ export class CodeEditorModalComponent implements OnInit {
       () => {
         const translations = this.translateService.translations[this.translateService.currentLang];
         const text = translations['SubmittedSuccess'];
-        this.toastr.success(text);
+        this.toastr.success('', text, {
+          toastClass: 'toast ngx-toastr',
+          closeButton: true
+        });
         this.submittedEvent.emit();
         this.canSubmit = true;
       }
