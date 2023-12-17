@@ -1,0 +1,20 @@
+@import 'styles/kep-imports';
+
+.badge-kep {
+  margin-left: 0.2rem;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  color: #6a5026;
+  box-shadow: 0 0 5px rgb(255, 200, 124) !important;
+  background: radial-gradient(circle at 10% 20%, rgb(255, 200, 124) 0%, rgb(252, 251, 121) 90%);
+
+  &:hover {
+    transform: scale(1.04);
+    transition: 0.5s;
+  }
+
+  @include dark-layout {
+    background: radial-gradient(circle at 10% 20%, rgb(165, 99, 6) 0%, rgb(159, 159, 20)90%);
+    color: rgb(252, 251, 121);
+  }
+}
