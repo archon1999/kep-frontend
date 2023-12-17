@@ -34,6 +34,9 @@ export const BASE_API_URL = BASE_URL + '/api/';
     }
     this.initOptions(options);
     options.params = paramsMapper(filteredParams);
+    if (!environment.production) {
+      options.headers = options.headers.set('django-language', this.translate.currentLang);
+    }
     return this.http.get(url, options).pipe(
       this.handleRetryError(3000, 5),
       catchError(err => {
