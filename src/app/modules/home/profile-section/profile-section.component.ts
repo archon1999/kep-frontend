@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
 import { AuthenticationService } from 'app/auth/service';
-import { UsersService } from '@users/users.service';
+import { UsersApiService } from '@users/users-api.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -26,7 +26,7 @@ export class ProfileSectionComponent implements OnInit {
   private _unsubscribeAll = new Subject();
 
   constructor(
-    public service: UsersService,
+    public service: UsersApiService,
     public authService: AuthenticationService,
   ) {}
 

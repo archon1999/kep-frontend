@@ -10,6 +10,8 @@ import { SectionHeatmapComponent } from '@problems/pages/profile/section-heatmap
 import { SectionFactsComponent } from '@problems/pages/profile/section-facts/section-facts.component';
 import { SectionTimeComponent } from '@problems/pages/profile/section-time/section-time.component';
 import { SectionAttemptsForSolveComponent } from '@problems/pages/profile/section-attempts-for-solve/section-attempts-for-solve.component';
+import { BaseComponent } from '@shared/components/classes/base.component';
+import { User } from '@auth/models';
 
 @Component({
   selector: 'app-profile',
@@ -29,27 +31,20 @@ import { SectionAttemptsForSolveComponent } from '@problems/pages/profile/sectio
     SectionAttemptsForSolveComponent
   ]
 })
-export class ProfileComponent implements OnInit {
-
-  public currentUser = this.authService.currentUserValue;
+export class ProfileComponent extends BaseComponent implements OnInit {
   public username: string;
-
-  constructor(
-    public authService: AuthenticationService,
-    public coreConfigService: CoreConfigService,
-    public route: ActivatedRoute,
-  ) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(
       (params: any) => {
         if (params['username']) {
           this.username = params['username'];
-        } else {
-          this.username = this.currentUser.username;
         }
       }
     );
   }
 
+  afterChangeCurrentUser(currentUser: User) {
+    this.username = currentUser.username;
+  }
 }
