@@ -76,27 +76,6 @@ export class ProblemsApiService {
     return this.api.get('problems-rating', params);
   }
 
-  getProblemsList() {
-    return this.api.get('problems/list');
-  }
-
-  getProblemsRatingToday() {
-    return this.api.get('problems-rating/today/');
-  }
-
-  getProblemsRatingWeek() {
-    return this.api.get('problems-rating/week/');
-  }
-
-  getProblemsRatingMonth() {
-    return this.api.get('problems-rating/month/');
-  }
-
-  getProblemRatingHistory(type: number) {
-    const params = { type: type, ordering: '-result' };
-    return this.api.get('problems-rating-history', params);
-  }
-
   getProblemVerdictStatistics(problemId: number) {
     return this.api.get(`problems/${ problemId }/attempt-statistics/`);
   }
