@@ -1,7 +1,7 @@
 @import "dark-layout";
 @import "breakpoints";
 
-@mixin define-page-top($name, $light-background, $dark-background) {
+@mixin define-page-top($name, $light-background, $dark-background, $height: 700px) {
   .#{$name}-page-top:before {
     content: "";
     position: absolute;
@@ -9,7 +9,7 @@
     margin-left: -2rem;
     width: 100%;
     z-index: -1;
-    height: 700px;
+    height: $height;
     background: $light-background;
 
     @include media-breakpoint-down(md){
