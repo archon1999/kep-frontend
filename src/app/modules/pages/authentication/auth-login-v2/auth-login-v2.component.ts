@@ -4,7 +4,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { CoreConfigService } from 'core/services/config.service';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 
@@ -31,7 +31,7 @@ export class AuthLoginV2Component implements OnInit {
     private _formBuilder: UntypedFormBuilder,
     private _route: ActivatedRoute,
     private _router: Router,
-    private authService: AuthenticationService,
+    private authService: AuthService,
     public translateService: TranslateService,
     public toastr: ToastrService,
   ) {

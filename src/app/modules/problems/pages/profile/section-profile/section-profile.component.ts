@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { CoreCommonModule } from '@core/common.module';
@@ -60,7 +60,7 @@ export class SectionProfileComponent implements OnInit {
   public topics: Array<TopicInfo> = [];
 
   constructor(
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public statisticsService: ProblemsStatisticsService,
   ) {
   }

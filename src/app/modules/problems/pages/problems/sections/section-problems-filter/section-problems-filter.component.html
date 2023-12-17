@@ -30,7 +30,7 @@
 
         <div class="col-6 col-lg-3">
           <label class="text-primary">
-            <kep-icon name="data"></kep-icon>
+            <kep-icon name="tags"></kep-icon>
             <strong>
               {{ 'TAGS' | translate }}:
             </strong>
@@ -56,8 +56,9 @@
                       </ng-template>
                       <ng-template ngbPanelContent>
                         @for(tag of category.tags; track tag.id){
-                          <span (click)="tagOnClick(tag.id)" class="cursor-pointer badge-pill ml-25 mr-25 mb-50 badge badge-primary" [class]="{
-                            'badge-light-primary': filterForm.value.tags?.indexOf(tag.id) == -1
+                          <span (click)="tagOnClick(tag.id)" class="cursor-pointer badge-pill ml-25 mr-25 mb-50 badge" [class]="{
+                            'badge-light-primary': filterForm.value.tags?.indexOf(tag.id) === -1,
+                            'badge-primary': filterForm.value.tags?.indexOf(tag.id) !== -1,
                           }">
                             {{ tag.name }}
                           </span>

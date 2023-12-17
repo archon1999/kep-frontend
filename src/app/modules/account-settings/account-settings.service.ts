@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { UserEducation, UserGeneralInfo, UserInfo, UserSkills, UserSocial, UserTechnology, UserWorkExperience } from '../users/users.models';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class AccountSettingsService {
 
   constructor(
     public api: ApiService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
   ) { }
 
   getUserGeneralInfo(){

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ChallengesRating } from '../../../models/challenges.models';
 import { ChallengesStatisticsService } from '../../../services';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { BaseComponent } from '@shared/components/classes/base.component';
 import { User } from 'app/auth/models';
 
@@ -17,7 +17,7 @@ export class SectionProfileComponent extends BaseComponent {
 
   constructor(
     public statisticsService: ChallengesStatisticsService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
   ) {
     super();
   }

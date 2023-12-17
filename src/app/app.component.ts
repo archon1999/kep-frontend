@@ -22,7 +22,7 @@ import localeUz from '@angular/common/locales/uz';
 import { menu } from '@layout/components/menu/menu';
 
 import { ApiService } from '@shared/services/api.service';
-import { AuthenticationService } from '@auth/service';
+import { AuthService } from '@auth/service';
 import { WebsocketService } from '@shared/services/websocket';
 import { environment } from 'environments/environment';
 import { Router } from '@angular/router';
@@ -56,7 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private _translateService: TranslateService,
     private api: ApiService,
     public router: Router,
-    private authService: AuthenticationService,
+    private authService: AuthService,
     public wsService: WebsocketService,
     public swipeService: SwipeService,
   ) {

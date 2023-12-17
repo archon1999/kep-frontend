@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NavbarService } from '../navbar.service';
@@ -31,7 +31,7 @@ export class NavbarDailyTasksComponent implements OnInit, OnDestroy {
 
   constructor(
     public service: NavbarService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
   ) { }
 
   ngOnInit(): void {

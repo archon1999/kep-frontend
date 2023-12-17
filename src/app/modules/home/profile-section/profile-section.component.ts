@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { UsersApiService } from '@users/users-api.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -28,7 +28,7 @@ export class ProfileSectionComponent implements OnInit {
 
   constructor(
     public service: UsersApiService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
   ) {}
 
   ngOnInit(): void {

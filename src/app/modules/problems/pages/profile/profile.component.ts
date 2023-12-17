@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { CoreConfigService } from 'core/services/config.service';
 import { ActivatedRoute } from '@angular/router';
 import { CoreCommonModule } from '@core/common.module';

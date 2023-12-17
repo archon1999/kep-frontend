@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { ApiService } from 'app/shared/services/api.service';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
@@ -37,7 +37,7 @@ export class AttemptGuard implements CanActivate {
   constructor(
     public api: ApiService,
     public router: Router,
-    public authService: AuthenticationService
+    public authService: AuthService
   ) {}
 
   canActivate(

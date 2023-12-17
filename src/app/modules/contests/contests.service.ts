@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { Contest, ContestAttemptsFilter, ContestStatus } from './contests.models';
 import { map } from 'rxjs/operators';
 import { Pageable } from '@shared/components/classes/pageable';
@@ -12,7 +12,7 @@ export class ContestsService {
 
   constructor(
     public api: ApiService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
   ) { }
 
   getContests(params: Partial<Pageable> & { category?: number, type?: string, isParticipated?: number, creator?: string }) {

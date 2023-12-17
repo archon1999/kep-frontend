@@ -9,7 +9,7 @@ import { ApiService } from 'app/shared/services/api.service';
 import { WebsocketService } from 'app/shared/services/websocket';
 
 @Injectable({ providedIn: 'root' })
-export class AuthenticationService {
+export class AuthService {
   private currentUserSubject = new BehaviorSubject<User>(null);
   public currentUser = this.currentUserSubject.asObservable();
 

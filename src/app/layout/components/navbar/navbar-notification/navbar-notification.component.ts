@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { bounceAnimation, fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 
 import { NotificationsService } from 'app/layout/components/navbar/navbar-notification/notifications.service';
 import { WebsocketService } from 'app/shared/services/websocket';
@@ -48,7 +48,7 @@ export class NavbarNotificationComponent implements OnInit, OnDestroy {
   constructor(
     public notificationsService: NotificationsService,
     public wsService: WebsocketService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
   ) {}
 
   ngOnInit(): void {

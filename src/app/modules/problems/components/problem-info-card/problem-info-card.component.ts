@@ -5,7 +5,7 @@ import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { User } from '@auth/models';
 import { Subject } from 'rxjs';
-import { AuthenticationService } from '@auth/service';
+import { AuthService } from '@auth/service';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { LanguageService } from '@problems/services/language.service';
 import { takeUntil } from 'rxjs/operators';
@@ -40,7 +40,7 @@ export class ProblemInfoCardComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject();
 
   constructor(
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public service: ProblemsApiService,
     public langService: LanguageService,
   ) {

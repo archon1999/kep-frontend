@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Blog, BlogPostComment } from '../../blog.models';
@@ -29,7 +29,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
 
   constructor(
     public service: BlogService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
   ) { }
 
   ngOnInit(): void {

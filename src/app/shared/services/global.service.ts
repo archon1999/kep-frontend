@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthenticationService } from '@auth/service';
+import { AuthService } from '@auth/service';
 import { User } from '@auth/models';
 import { CoreConfig } from 'core/types';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -21,7 +21,7 @@ export class GlobalService {
   private _coreConfigSubject = new ReplaySubject<CoreConfig>(1);
 
   constructor(
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public coreConfigService: CoreConfigService,
     public router: Router,
     public route: ActivatedRoute,

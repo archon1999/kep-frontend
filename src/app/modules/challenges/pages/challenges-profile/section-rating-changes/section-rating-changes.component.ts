@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BaseComponent } from '../../../../../shared/components/classes/base.component';
 import { ChallengesStatisticsService } from '../../../services';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { ChallengesRatingChange } from '../../../models/challenges.models';
 import { ChartOptions } from '../../../../../shared/third-part-modules/apex-chart/chart-options.type';
 
@@ -16,7 +16,7 @@ export class SectionRatingChangesComponent extends BaseComponent {
 
   constructor(
     public statisticsService: ChallengesStatisticsService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
   ) {
     super();
   }

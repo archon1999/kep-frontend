@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NavbarService } from '../navbar.service';
@@ -20,7 +20,7 @@ export class NavbarKepcoinComponent implements OnInit, OnDestroy {
   public spend = 0;
 
   constructor(
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public service: NavbarService,
   ) { }
 

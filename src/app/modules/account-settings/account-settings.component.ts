@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'app/shared/services/api.service';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -29,7 +29,7 @@ export class AccountSettingsComponent implements OnInit {
   currentUser: User = this.authService.currentUserValue;
 
   constructor(
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public api: ApiService,
     public router: Router,
     public toastr: ToastrService,

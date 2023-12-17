@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 
 @Component({
   selector: 'problem1635',
@@ -14,7 +14,7 @@ export class Problem1635Component implements OnInit {
   public index = 7;
 
   constructor(
-    public authService: AuthenticationService
+    public authService: AuthService
   ) {
     this.authService.currentUser.subscribe(
       (user: User) => {

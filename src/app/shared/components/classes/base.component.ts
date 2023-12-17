@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CoreConfig } from 'core/types';
@@ -24,7 +24,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class BaseComponent {
 
   public api = inject(ApiService);
-  public authService = inject(AuthenticationService);
+  public authService = inject(AuthService);
   public coreConfigService = inject(CoreConfigService);
   public router = inject(Router);
   public route = inject(ActivatedRoute);
