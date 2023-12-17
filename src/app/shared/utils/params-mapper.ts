@@ -1,20 +1,20 @@
-function toUndescore(name: string) {
-  let undescoreName = "";
-  for (let c of name) {
-    if (c == c.toUpperCase()) {
-      undescoreName += "_";
+function toSnakeCase(name: string) {
+  let snakeCaseName = '';
+  for (const c of name) {
+    if (c === c.toUpperCase() && c !== c.toLowerCase()) {
+      snakeCaseName += '_';
     }
-    undescoreName += c.toLowerCase();
+    snakeCaseName += c.toLowerCase();
   }
-  return undescoreName;
+  return snakeCaseName;
 }
 
 export function paramsMapper(obj: any) {
-  let params = {};
-  for (let key of Object.keys(obj)) {
-    let value = obj[key];
+  const params = {};
+  for (const key of Object.keys(obj)) {
+    const value = obj[key];
     if (value !== null) {
-      params[toUndescore(key)] = value;
+      params[toSnakeCase(key)] = value;
     }
   }
   return params;
