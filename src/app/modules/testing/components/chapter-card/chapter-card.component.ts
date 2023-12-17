@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
-import { Chapter } from '../testing.models';
+import { Chapter } from '../../testing.models';
 
 @Component({
   selector: 'chapter-card',

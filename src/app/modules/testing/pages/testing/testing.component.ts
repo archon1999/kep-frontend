@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
-import { Chapter, Test } from './testing.models';
-import { TestingService } from './testing.service';
+import { Chapter, Test } from '../../testing.models';
+import { TestingApiService } from '../../testing-api.service';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 
 @Component({
@@ -10,6 +10,7 @@ import { SwiperOptions } from 'swiper/types/swiper-options';
   templateUrl: './testing.component.html',
   styleUrls: ['./testing.component.scss'],
   animations: [],
+  encapsulation: ViewEncapsulation.None,
 })
 export class TestingComponent implements OnInit, OnDestroy {
 
@@ -74,7 +75,7 @@ export class TestingComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject();
 
   constructor(
-    public service: TestingService,
+    public service: TestingApiService,
     public route: ActivatedRoute,
   ) {}
 

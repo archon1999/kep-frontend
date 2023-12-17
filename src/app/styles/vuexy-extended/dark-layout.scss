@@ -1,28 +1,41 @@
 @import 'styles/kep-imports';
 
-$primary-dark: mix(black, $primary, 30);
+$colors : (
+  'secondary': $secondary,
+  'primary': $primary,
+  'success': $green,
+  'info': $info,
+  'warning': $warning,
+  'danger': $red,
+  'yellow': $yellow,
+  'blue': $blue,
+  'brown': $brown,
+  'dark': $dark,
+);
 
-.dark-layout {
-  --primary: #{$primary-dark};
-
-  .btn-primary {
-    background-color: $primary-dark !important;
-    border-color: $primary-dark !important;
-  }
-
-  .badge.badge-success {
-    background-color: mix(black, $green, 30);
-
-    &.badge-glow {
-      box-shadow: 0 0 5px mix(black, $green, 30);
+@each $color_name, $color in $colors {
+  .dark-layout {
+    .btn-#{$color_name} {
+      background-color: mix(black, $color, 30) !important;
+      border-color: mix(black, $color, 30) !important;
     }
-  }
 
-  .badge.badge-info {
-    background-color: mix(black, $info, 30);
-  }
+    .badge.badge-#{$color_name} {
+      background-color: mix(black, $color, 30);
 
-  .badge.badge-blue {
-    background-color: mix(black, $blue, 30);
+      &.badge-glow {
+        box-shadow: 0 0 5px mix(black, $color, 30);
+      }
+    }
+
+    .bg-#{$color_name} {
+      background-color: mix(black, $color, 30);
+
+      &.badge-glow {
+        box-shadow: 0 0 5px mix(black, $color, 30);
+      }
+    }
+
+    --#{$color_name}: mix(black, $color, 30);
   }
 }

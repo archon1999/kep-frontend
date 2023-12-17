@@ -1,8 +1,14 @@
+@import 'styles/kep-imports';
+
 .bg-challenge-call {
   background-size: 200% auto;
   background-image: var(--bg-gradient);
   box-shadow: 0 0 10px var(--bg-lighten) !important;
   border: none;
+
+  @include dark-layout {
+    box-shadow: 0 0 5px var(--bg-lighten) !important;
+  }
 
   ::ng-deep {
     .text-blue, .text-primary {
