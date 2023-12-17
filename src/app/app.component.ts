@@ -1,5 +1,5 @@
 import { DOCUMENT, registerLocaleData } from '@angular/common';
-import { Component, ElementRef, HostBinding, HostListener, Inject, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, HostBinding, HostListener, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -8,7 +8,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CoreMenuService } from 'core/components/core-menu/core-menu.service';
-import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.service';
 import { CoreConfigService } from 'core/services/config.service';
 import { CoreLoadingScreenService } from 'core/services/loading-screen.service';
 import { CoreTranslationService } from 'core/services/translation.service';
@@ -20,10 +19,10 @@ import localeEn from '@angular/common/locales/en';
 import localeRu from '@angular/common/locales/ru';
 import localeUz from '@angular/common/locales/uz';
 
-import { menu } from './layout/components/menu/menu';
+import { menu } from '@layout/components/menu/menu';
 
 import { ApiService } from '@shared/services/api.service';
-import { AuthenticationService } from './auth/service';
+import { AuthenticationService } from '@auth/service';
 import { WebsocketService } from '@shared/services/websocket';
 import { environment } from 'environments/environment';
 import { Router } from '@angular/router';
@@ -33,8 +32,6 @@ import { SwipeService } from '@shared/services/swipe.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit, OnDestroy {
   coreConfig: any;
@@ -54,7 +51,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private _elementRef: ElementRef,
     public _coreConfigService: CoreConfigService,
     private _coreLoadingScreenService: CoreLoadingScreenService,
-    private _coreSidebarService: CoreSidebarService,
     private _coreMenuService: CoreMenuService,
     private _coreTranslationService: CoreTranslationService,
     private _translateService: TranslateService,
@@ -240,7 +236,6 @@ export class AppComponent implements OnInit, OnDestroy {
   @HostListener('touchcancel', ['$event'])
   handleTouch(event: any) {
     const touch = event.touches[0] || event.changedTouches[0];
-    // check the events
     if (event.type === 'touchstart') {
       this.defaultTouch.x = touch.pageX;
       this.defaultTouch.y = touch.pageY;
@@ -282,12 +277,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 
-  toggleSidebar(key): void {
-    this._coreSidebarService.getSidebarRegistry(key).toggleOpen();
-  }
 }
