@@ -29,4 +29,7 @@ export const keenIcons = {
 
   'challenge-time': 'watch',
   'challenge-task': 'abstract-45',
+
+  username: 'user-edit',
+  streak: 'calendar-tick',
 };

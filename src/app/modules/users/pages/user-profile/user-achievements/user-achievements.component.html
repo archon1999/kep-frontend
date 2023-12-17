@@ -1,35 +1,40 @@
 <div class="card">
-  <div class="card-header">
-    <div class="card-title">
-      {{ 'Achievements' | translate }}
+  @if (isLoading){
+    <div class="card-body" [style.height.px]="400">
+      <spinner></spinner>
     </div>
-
-    <div
-      class="btn-group btn-group-toggle mt-md-0 mt-1"
-      ngbRadioGroup
-      name="radioBasic"
-      [(ngModel)]="type"
-    >
-      <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
-        <input (click)="update(1)" type="radio" name="type_1" id="type_1" [value]="1" ngbButton />
-        <span>{{ 'Completed' | translate }} {{ completedAchievements.length }}</span>
-      </label>
-      <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
-        <input (click)="update(2)" type="radio" name="type_2" id="type_2" [value]="2" ngbButton />
-        <span>{{ 'NotCompleted' | translate }} {{ notCompletedAchievements.length }}</span>
-      </label>
-      <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
-        <input (click)="update(3)" type="radio" name="type_3" id="type_3" [value]="3" ngbButton />
-        <span>{{ 'All' | translate }}</span>
-      </label>
+  } @else {
+    <div class="card-header">
+      <div class="card-title">
+        {{ 'Achievements' | translate }}
       </div>
-  </div>
 
-  <div class="card-body">
-    <div class="row">
-      <div class="col-xl-3 col-lg-4 col-md-3 col-sm-4 col-6 text-center" *ngFor="let achievement of achievements">
-        <achievement [achievement]="achievement"></achievement>
+      <div
+        class="btn-group btn-group-toggle mt-md-0 mt-1"
+        ngbRadioGroup
+        name="radioBasic"
+        [(ngModel)]="tab">
+        <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
+          <input (click)="update(Tab.CompletedAchievements)" type="radio" name="type_1" id="type_1" [value]="1" ngbButton />
+          <span>{{ 'Completed' | translate }} {{ completedAchievements.length }}</span>
+        </label>
+        <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
+          <input (click)="update(Tab.NotCompletedAchievements)" type="radio" name="type_2" id="type_2" [value]="2" ngbButton />
+          <span>{{ 'NotCompleted' | translate }} {{ notCompletedAchievements.length }}</span>
+        </label>
+        <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
+          <input (click)="update(Tab.AllAchievements)" type="radio" name="type_3" id="type_3" [value]="3" ngbButton />
+          <span>{{ 'All' | translate }}</span>
+        </label>
       </div>
     </div>
-  </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-xl-3 col-lg-4 col-md-3 col-sm-4 col-6 text-center" *ngFor="let achievement of achievements">
+          <achievement [achievement]="achievement"></achievement>
+        </div>
+      </div>
+    </div>
+  }
 </div>

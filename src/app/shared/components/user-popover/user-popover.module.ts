@@ -7,6 +7,7 @@ import { NgbPopoverModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserPopoverComponent } from './user-popover/user-popover.component';
 import { UserAvatarPopoverComponent } from './user-avatar-popover/user-avatar-popover.component';
+import { KepBadgeComponent } from '@shared/components/kep-badge/kep-badge.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { UserAvatarPopoverComponent } from './user-avatar-popover/user-avatar-po
     CoreDirectivesModule,
     TranslateModule,
     RouterModule,
-    NgbTooltipModule
+    NgbTooltipModule,
+    KepBadgeComponent
   ],
   exports: [
     UserPopoverComponent,

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { User } from '../../users.models';
-import { UsersService } from '../../users.service';
+import { UsersApiService } from '../../users-api.service';
 
 @Component({
   selector: 'user-card',
@@ -15,7 +15,7 @@ export class UserCardComponent implements OnInit {
   public userRatings: any;
 
   constructor(
-    public service: UsersService,
+    public service: UsersApiService,
   ) { }
 
   ngOnInit(): void {
