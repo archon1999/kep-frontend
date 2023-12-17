@@ -253,6 +253,7 @@ export const locale = {
     Topics: 'Топики',
     Likes: 'Лайки',
     Views: 'Просмотры',
+    LastSeen: 'Последнее посещение',
     Chapters: 'Главы',
     LastUpdate: 'Последнее обновление',
     Language: 'Язык',

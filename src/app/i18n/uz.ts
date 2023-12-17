@@ -356,6 +356,7 @@ export const locale = {
     Categories: 'Toifasi',
     Math: 'Matematika',
     NonStandart: 'Nostandart',
+    LastSeen: 'Ohirgi ko`rish',
     Mixed: 'Aralash',
     Other: 'Boshqa',
     AboutChallenges: 'Bellashuvlar haqida',
