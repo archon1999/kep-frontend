@@ -14,6 +14,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 import { ApiService } from '@shared/services/api.service';
+import { Resources } from '@app/resources';
 
 @Component({
   template: '',
@@ -39,6 +40,8 @@ export class BaseComponent {
 
   public isDarkMode: boolean;
   public isAuthenticated: boolean;
+
+  public readonly Resources = Resources;
 
   protected _unsubscribeAll = new Subject();
   protected _queryParams: any;
