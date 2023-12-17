@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TitleService } from 'app/shared/services/title.service';
-import { TestingService } from '../testing.service';
+import { TitleService } from '@shared/services/title.service';
+import { TestingApiService } from '../../testing-api.service';
 import Swal from 'sweetalert2';
 import { fadeInLeftAnimation, fadeInRightAnimation, fadeInUpAnimation } from 'angular-animations';
-import { CoreConfig } from 'core/types';
+import { CoreConfig } from '@core/types';
 import { takeUntil } from 'rxjs/operators';
-import { CoreConfigService } from 'core/services/config.service';
+import { CoreConfigService } from '@core/services/config.service';
 import { Subject } from 'rxjs';
 import { randomShuffle } from '@shared/utils';
 import { DragulaService } from 'ng2-dragula';
@@ -42,7 +42,7 @@ export class TestPassComponent implements OnInit, OnDestroy {
 
   constructor(
     public route: ActivatedRoute,
-    public service: TestingService,
+    public service: TestingApiService,
     public dragulaService: DragulaService,
     public titleService: TitleService,
     public router: Router,

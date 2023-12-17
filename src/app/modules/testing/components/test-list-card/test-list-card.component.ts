@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
-import { Test } from '../testing.models';
+import { Test } from '../../testing.models';
 
 @Component({
   selector: 'test-list-card',

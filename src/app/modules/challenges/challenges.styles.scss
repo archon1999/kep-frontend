@@ -10,9 +10,9 @@ $bg-lighten: mix(white, $primary, 10);
 $bg-gradient-primary: linear-gradient(to right, $bg-primary, $bg-lighten);
 $bg-gradient-primary-reversed: linear-gradient(to right, $bg-lighten, $bg-primary);
 
-$dark-layout-bg-primary: mix(black, $primary, 50);
-$dark-layout-bg-lighten: mix(black, $primary, 30);
-$dark-layout-bg-darken: mix(black, $primary, 50);
+$dark-layout-bg-primary: mix(black, $primary, 60);
+$dark-layout-bg-lighten: mix(black, $primary, 40);
+$dark-layout-bg-darken: mix(black, $primary, 60);
 $dark-layout-bg-gradient-primary: linear-gradient(to right, $dark-layout-bg-primary, $dark-layout-bg-lighten);
 $dark-layout-bg-gradient-primary-reversed: linear-gradient(to right, $dark-layout-bg-lighten, $dark-layout-bg-primary);
 

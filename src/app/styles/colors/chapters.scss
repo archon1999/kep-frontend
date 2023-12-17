@@ -24,51 +24,57 @@
 
   .dark-layout .bg-chapter-#{$id} {
     background: $dark-color;
-    box-shadow: 0 0 10px $dark-color !important;
+    box-shadow: 0 0 5px $dark-color !important;
   }
 
 }
 
+// Python
 @include define-chapter-colors(
   $id: 1,
   $gradient-color: linear-gradient(141deg, #3b7aa9, #ffe974),
-  $gradient-dark-color: linear-gradient(141deg, #25445b, #b9ae5e),
+  $gradient-dark-color: linear-gradient(141deg, #1b3446, #978d45),
   $color: #3b7aa9,
-  $dark-color: #3b7aa9,
+  $dark-color: #285b80,
 );
 
+// Python Advanced
 @include define-chapter-colors(
   $id: 2,
   $gradient-color: linear-gradient(141deg, #3b7aa9, #ffe974),
-  $gradient-dark-color: linear-gradient(141deg, #25445b, #b9ae5e),
+  $gradient-dark-color: linear-gradient(141deg, #1d384c, #847b3d),
   $color: #3b7aa9,
-  $dark-color: #3b7aa9,
+  $dark-color: #29597d,
 );
 
+// Telegram bots
 @include define-chapter-colors(
   $id: 3,
   $gradient-color: linear-gradient(141deg, #1b91c3, #36b3e9),
-  $gradient-dark-color: linear-gradient(141deg, #25445b, #b9ae5e),
+  $gradient-dark-color: linear-gradient(141deg, #1a3446, #867e40),
   $color: #1b91c3,
   $dark-color: #1b91c3,
 );
 
+// Django
 @include define-chapter-colors(
   $id: 4,
   $gradient-color: linear-gradient(141deg, #092e20, #6b8f82),
-  $gradient-dark-color: linear-gradient(141deg, #092e20, #5b736a),
+  $gradient-dark-color: linear-gradient(141deg, #07251a, #314337),
   $color: #587b6e,
-  $dark-color: #5b736a,
+  $dark-color: #07251a,
 );
 
+// Web scraping
 @include define-chapter-colors(
   $id: 5,
   $gradient-color: linear-gradient(141deg, #00ced5c5, #02abaf),
-  $gradient-dark-color: linear-gradient(141deg, #064d52, #02989b),
+  $gradient-dark-color: linear-gradient(141deg, #043d41, #007072),
   $color: #00cfd5,
-  $dark-color: #02abaf,
+  $dark-color: #008184,
 );
 
+// Algorithms & DS
 @include define-chapter-colors(
   $id: 6,
   $gradient-color: linear-gradient(141deg, #6a81ff, #6a80ffae),
@@ -77,6 +83,7 @@
   $dark-color: #5264c5,
 );
 
+// SQL
 @include define-chapter-colors(
   $id: 7,
   $gradient-color: linear-gradient(-45deg, rgba(234, 134, 71, 0.849), 50%, #ffad3bec),
@@ -85,22 +92,25 @@
   $dark-color: #7e5420,
 );
 
+// OS
 @include define-chapter-colors(
   $id: 8,
   $gradient-color: linear-gradient(-45deg, #8d9ae5, #76d8fd),
-  $gradient-dark-color: linear-gradient(-45deg, #46507b, #508ca7),
+  $gradient-dark-color: linear-gradient(-45deg, #363f64, #3b6f86),
   $color: #76d8fd,
   $dark-color: #30485e,
 );
 
+// HTML
 @include define-chapter-colors(
   $id: 9,
   $gradient-color: linear-gradient(141deg, #ff5959d6, #e04f5f),
-  $gradient-dark-color: linear-gradient(141deg, #d2424e, #76292f),
+  $gradient-dark-color: linear-gradient(141deg, #6f1b22, #76292f),
   $color: #ff5959,
-  $dark-color: #76292f,
+  $dark-color: #622025,
 );
 
+// Data science
 @include define-chapter-colors(
   $id: 10,
   $gradient-color: linear-gradient(141deg, #655f9a, #53a5c9),
@@ -109,22 +119,25 @@
   $dark-color: #5a8bb7,
 );
 
+// Dev Ops
 @include define-chapter-colors(
   $id: 11,
   $gradient-color: linear-gradient(141deg, #623f98, #8fd3ed),
-  $gradient-dark-color: linear-gradient(141deg, #412965, #0579a7),
+  $gradient-dark-color: linear-gradient(141deg, #331f51, #035e82),
   $color: #0579a7,
   $dark-color: #0579a7,
 );
 
+// Math
 @include define-chapter-colors(
   $id: 12,
   $gradient-color: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%),
-  $gradient-dark-color: linear-gradient(135deg, #4889b4 0%, #5e61a7 100%),
+  $gradient-dark-color: linear-gradient(135deg, #295774 0%, #4b4e90 100%),
   $color: #8BC6EC,
-  $dark-color: #4889b4,
+  $dark-color: #366c90,
 );
 
+// C++
 @include define-chapter-colors(
   $id: 13,
   $gradient-color: linear-gradient(45deg, #6295cb, #00427e),
@@ -133,6 +146,7 @@
   $dark-color: #3973b2,
 );
 
+// HTML
 @include define-chapter-colors(
   $id: 14,
   $gradient-color: linear-gradient(141deg, #ff692c, #e34f26),
@@ -141,18 +155,20 @@
   $dark-color: #b03d1d,
 );
 
+// CSS
 @include define-chapter-colors(
   $id: 15,
   $gradient-color: linear-gradient(45deg, #2465f1, #214ce5),
-  $gradient-dark-color: linear-gradient(45deg, #173c9f, #214ce5),
+  $gradient-dark-color: linear-gradient(45deg, #102d79, #1234a9),
   $color: #2465f1,
-  $dark-color: #2465f1,
+  $dark-color: #102d79,
 );
 
+// Javascript
 @include define-chapter-colors(
   $id: 16,
   $gradient-color: linear-gradient(45deg, #e8d44d, #f7d724),
-  $gradient-dark-color: linear-gradient(45deg, #a78d23, #e8d44d),
+  $gradient-dark-color: linear-gradient(45deg, #7f6b18, #9e8f27),
   $color: #cebb3a,
-  $dark-color: #b4a53c,
+  $dark-color: #9e8f27,
 );

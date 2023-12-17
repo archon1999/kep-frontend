@@ -4,50 +4,48 @@ import { ApiService } from 'app/shared/services/api.service';
 @Injectable({
   providedIn: 'root'
 })
-export class TestingService {
+export class TestingApiService {
 
-  constructor(
-    public api: ApiService,
-  ) { }
+  constructor(public api: ApiService) { }
 
-  getChapters(){
+  getChapters() {
     return this.api.get('chapters');
   }
 
-  getTest(testId: number | string){
-    return this.api.get(`tests/${testId}`);  
+  getTest(testId: number | string) {
+    return this.api.get(`tests/${ testId }`);
   }
 
-  getTests(params: any = {}){
-    return this.api.get('tests', params);  
+  getTests(params: any = {}) {
+    return this.api.get('tests', params);
   }
 
-  getTestBestResults(testId: number | string){
-    return this.api.get(`tests/${testId}/best-results`);
+  getTestBestResults(testId: number | string) {
+    return this.api.get(`tests/${ testId }/best-results`);
   }
 
-  getTestLastResults(testId: number | string){
-    return this.api.get(`tests/${testId}/last-results`);
+  getTestLastResults(testId: number | string) {
+    return this.api.get(`tests/${ testId }/last-results`);
   }
 
-  testStart(testId: number){
-    return this.api.get(`tests/${testId}/start`);
+  testStart(testId: number) {
+    return this.api.get(`tests/${ testId }/start`);
   }
-  
-  getTestPass(testPassId: number | string){
-    return this.api.get(`test-pass/${testPassId}`);
+
+  getTestPass(testPassId: number | string) {
+    return this.api.get(`test-pass/${ testPassId }`);
   }
-  
-  answerSubmit(testPassId: number, questionNumber: number, answer: any){
-    let data = {
+
+  answerSubmit(testPassId: number, questionNumber: number, answer: any) {
+    const data = {
       questionNumber: questionNumber,
       answer: answer,
-    }
-    return this.api.post(`test-pass/${testPassId}/submit-answer/`, data);
+    };
+    return this.api.post(`test-pass/${ testPassId }/submit-answer/`, data);
   }
-  
-  testPassFinish(testPassId: number){
-    return this.api.get(`test-pass/${testPassId}/finish`);
+
+  testPassFinish(testPassId: number) {
+    return this.api.get(`test-pass/${ testPassId }/finish`);
   }
 
 }
