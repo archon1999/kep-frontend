@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 import { ApiService } from '@shared/services/api.service';
 import { Resources } from '@app/resources';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   template: '',
@@ -34,6 +35,7 @@ export class BaseComponent {
   public spinner = inject(NgxSpinnerService);
   public toastr = inject(ToastrService);
   public coreSidebarService = inject(CoreSidebarService);
+  public translateService = inject(TranslateService);
 
   public currentUser: User | null;
   public coreConfig: CoreConfig;
