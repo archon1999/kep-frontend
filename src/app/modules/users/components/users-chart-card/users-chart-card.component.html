@@ -1,12 +1,12 @@
 <div class="card">
-  <div class="card-header d-flex align-items-start pb-0">
-    <div>
+  <div class="card-header d-flex align-items-start">
+    <div class="top">
       <h2 class="font-weight-bolder">{{ usersTotal }}</h2>
       <p class="mb-0">{{ 'Users' | translate }}</p>
     </div>
     <div class="avatar bg-light-primary p-50">
       <div class="avatar-content">
-        <i [data-feather]="'user' | iconName" class="font-medium-5"></i>
+        <kep-icon name="user" class="font-medium-4"></kep-icon>
       </div>
     </div>
   </div>
@@ -19,7 +19,7 @@
     <div class="avatar-group">
       <div *ngFor="let user of onlineUsers" class="avatar pull-up">
         <user-popover [customContent]="true" [username]="user.username">
-          <img [src]="user.avatar" alt="Avatar" height="33" width="33">
+          <img [src]="user.avatar" alt="Avatar" height="32" width="32">
           <span class="avatar-status-online"></span>
         </user-popover>
       </div>
