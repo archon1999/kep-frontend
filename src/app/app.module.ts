@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { Injectable, NgModule } from '@angular/core';
+import { APP_INITIALIZER, Injectable, NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, RouterStateSnapshot, Routes, TitleStrategy } from '@angular/router';
@@ -35,6 +35,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { monacoConfig } from './monaco-config';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
+import { map } from 'rxjs/operators';
+import { AuthenticationService } from '@auth/service';
 
 register();
 
@@ -55,7 +57,10 @@ const appRoutes: Routes = [
   { path: 'competitions/code-rush', loadChildren: () => import('./modules/code-rush/code-rush.module').then(m => m.CodeRushModule) },
   { path: 'competitions/contests', loadChildren: () => import('./modules/contests/contests.module').then(m => m.ContestsModule) },
   { path: 'competitions/arena', loadChildren: () => import('./modules/arena/arena.routing') },
-  { path: 'competitions/tournaments', loadChildren: () => import('./modules/tournaments/tournaments.module').then(m => m.TournamentsModule) },
+  {
+    path: 'competitions/tournaments',
+    loadChildren: () => import('./modules/tournaments/tournaments.module').then(m => m.TournamentsModule)
+  },
   { path: 'users', loadChildren: () => import('./modules/users/users.routing') },
   { path: 'help', loadChildren: () => import('./modules/help/help.module').then(m => m.HelpModule) },
   { path: 'todo', loadComponent: () => import('./modules/todo/todo.component').then(c => c.TodoComponent) },
@@ -74,12 +79,20 @@ export class CustomTitleStrategy extends TitleStrategy {
   override updateTitle(routerState: RouterStateSnapshot) {
     const title = this.buildTitle(routerState);
     if (title !== undefined) {
-      const key = `PageTitle.${title}`;
+      const key = `PageTitle.${ title }`;
       this.translateService.get(key).subscribe((value: any) => {
-        this.title.setTitle(`${value} | KEP.uz`);
+        this.title.setTitle(`${ value } | KEP.uz`);
       });
     }
   }
+}
+
+export function authFactory(authService: AuthenticationService) {
+  return () => authService.getMe().pipe(
+    map(user => {
+      return true;
+    })
+  );
 }
 
 @NgModule({
@@ -133,7 +146,13 @@ export class CustomTitleStrategy extends TitleStrategy {
           python: () => import('highlight.js/lib/languages/python'),
         },
       }
-    }
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: authFactory,
+      deps: [AuthenticationService],
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })
