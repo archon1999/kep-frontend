@@ -86,6 +86,7 @@ export const locale = {
     SOURCE_CODE: 'Исходный код',
     USER: 'Пользователь',
     DAY: 'День',
+    TODAY: 'Сегодня',
     WEEK: 'Неделя',
     MONTH: 'Месяц',
     OVERALL_RATING: 'Общий рейтинг',

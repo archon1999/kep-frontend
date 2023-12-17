@@ -17,3 +17,13 @@ export enum DifficultyLabels {
   Hard = 'hard',
   Extremal = 'extremal',
 }
+
+export const difficultyLabels = [
+  DifficultyLabels.Beginner,
+  DifficultyLabels.Basic,
+  DifficultyLabels.Normal,
+  DifficultyLabels.Medium,
+  DifficultyLabels.Advanced,
+  DifficultyLabels.Hard,
+  DifficultyLabels.Extremal,
+];

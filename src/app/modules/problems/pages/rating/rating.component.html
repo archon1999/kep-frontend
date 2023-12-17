@@ -3,208 +3,127 @@
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
     <section class="mt-2">
-      <div class="card">
-        <div class="beautiful-table table-responsive">
-          <table class="table table-striped">
-            <thead>
-            <tr class="bg-gradient-primary">
-              <th>#</th>
-              <th>{{ 'USER' | translate }}</th>
-              <th *ngFor="let difficulty of difficulties" class="text-center">
-                <a (click)="ordering='-'+difficulty;reloadPage()">{{ difficulty | uppercase | translate }}</a>
-                <span *ngIf="ordering == '-'+difficulty"><i data-feather="chevron-down"></i></span>
-              </th>
+      <kep-table [loading]="!total && isLoading">
+        <ng-container header>
+          <tr class="bg-gradient-primary">
+            <th>#</th>
+            <th>{{ 'USER' | translate }}</th>
+            <th *ngFor="let difficulty of difficultyLabels" class="text-center">
+              <table-ordering
+                (change)="orderingChange($event)"
+                [justifyContent]="'between'"
+                [ordering]="difficulty"
+                [reverse]="true"
+                [value]="ordering">
+                {{ difficulty | uppercase | translate }}
+              </table-ordering>
+            </th>
 
-              <th class="text-center">
-                <a (click)="ordering='-solved';reloadPage()"><i [data-feather]="'problem' | iconName"></i></a>
-                <span *ngIf="ordering == '-solved'"><i data-feather="chevron-down"></i></span>
-              </th>
+            <th class="text-center">
+              <table-ordering
+                (change)="orderingChange($event)"
+                [justifyContent]="'center'"
+                [ordering]="'solved'"
+                [reverse]="true"
+                [value]="ordering">
+                <kep-icon name="problem"></kep-icon>
+              </table-ordering>
+            </th>
 
-              <th class="text-center">
-                <a (click)="ordering='-rating';reloadPage()"><i [data-feather]="'rating' | iconName"></i></a>
-                <span *ngIf="ordering == '-rating'"><i data-feather="chevron-down"></i></span>
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let problemsRating of problemsRatingList; index as i"
-                [ngClass]="{'bg-light-primary': currentUser?.username == problemsRating.user.username }">
-              <td>{{ i + 1 + (currentPage - 1) * 10 }}</td>
-              <td>
-                <contestant-view [user]="problemsRating.user"></contestant-view>
-              </td>
-              <td class="text-center text-success">{{ problemsRating.beginner }}</td>
-              <td class="text-center text-info">{{ problemsRating.basic }}</td>
-              <td class="text-center text-blue">{{ problemsRating.normal }}</td>
-              <td class="text-center text-primary">{{ problemsRating.medium }}</td>
-              <td class="text-center text-warning">{{ problemsRating.advanced }}</td>
-              <td class="text-center text-danger">{{ problemsRating.hard }}</td>
-              <td class="text-center text-dark">{{ problemsRating.extremal }}</td>
-              <td class="text-center">
+            <th class="text-center">
+              <table-ordering
+                (change)="orderingChange($event)"
+                [justifyContent]="'center'"
+                [ordering]="'rating'"
+                [reverse]="true"
+                [value]="ordering">
+                <kep-icon name="rating"></kep-icon>
+              </table-ordering>
+            </th>
+          </tr>
+        </ng-container>
+        <ng-container body>
+          <tr
+            *ngFor="let problemsRating of problemsRatingList; index as i"
+            [ngClass]="{'bg-light-primary': currentUser?.username == problemsRating.user.username }">
+            <td>{{ problemsRating.rowIndex }}</td>
+            <td>
+              <contestant-view [user]="problemsRating.user"></contestant-view>
+            </td>
+            <td class="text-center text-success">{{ problemsRating.beginner }}</td>
+            <td class="text-center text-info">{{ problemsRating.basic }}</td>
+            <td class="text-center text-blue">{{ problemsRating.normal }}</td>
+            <td class="text-center text-primary">{{ problemsRating.medium }}</td>
+            <td class="text-center text-warning">{{ problemsRating.advanced }}</td>
+            <td class="text-center text-danger">{{ problemsRating.hard }}</td>
+            <td class="text-center text-dark">{{ problemsRating.extremal }}</td>
+            <td class="text-center">
               <span class="badge badge-primary badge-glow">
                 {{ problemsRating.solved }}
               </span>
-              </td>
-              <td class="text-center">
+            </td>
+            <td class="text-center">
               <span class="badge badge-light-success badge-glow">
                 {{ problemsRating.rating }}
               </span>
-              </td>
-            </tr>
-            </tbody>
-            <tfoot>
-            <tr>
-              <td>#</td>
-              <td>{{ 'USER' | translate }}</td>
-              <td class="text-center">{{ 'BEGINNER' | translate }}</td>
-              <td class="text-center">{{ 'BASIC' | translate }}</td>
-              <td class="text-center">{{ 'NORMAL' | translate }}</td>
-              <td class="text-center">{{ 'MEDIUM' | translate }}</td>
-              <td class="text-center">{{ 'ADVANCED' | translate }}</td>
-              <td class="text-center">{{ 'HARD' | translate }}</td>
-              <td class="text-center">{{ 'EXTREMAL' | translate }}</td>
-              <td class="text-center"><i [data-feather]="'problem' | iconName"></i></td>
-              <td class="text-center"><i [data-feather]="'rating' | iconName"></i></td>
-            </tr>
-            </tfoot>
-          </table>
-        </div>
-      </div>
-
-      <kep-pagination
-        (pageChange)="reloadPage()"
-        *ngIf="problemsRatingList.length > 0"
-        [(page)]="currentPage"
-        [collectionSize]="total"
-        [maxSize]="5"
-        [pageSize]="10">
-      </kep-pagination>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-container pagination>
+          <kep-pagination
+            (pageChange)="pageChange($event)"
+            (pageSizeChange)="pageSizeChange($event)"
+            *ngIf="total"
+            [collectionSize]="total"
+            [maxSize]="maxSize"
+            [pageOptions]="pageOptions"
+            [pageSize]="pageSize"
+            [page]="pageNumber">
+          </kep-pagination>
+        </ng-container>
+      </kep-table>
 
       <div class="row mt-1">
-        <div class="col-lg-4 col-12">
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">
-                {{ 'DAY' | translate }}
+        @for (rating of currentRatings;track rating.period) {
+          <div class="col-lg-4 col-12">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  {{ rating.period | uppercase | translate }}
+                </div>
+                <a class="btn-sm btn btn-{{ rating.color }}" routerLink="history">
+                  {{ 'History' | translate }}
+                  <i data-feather="arrow-right"></i>
+                </a>
               </div>
-              <a class="btn-sm btn btn-success" routerLink="history">
-                {{ 'History' | translate }}
-                <i data-feather="arrow-right"></i>
-              </a>
-            </div>
 
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                <tr class="bg-gradient-success">
-                  <th class="text-white text-center">#</th>
-                  <th class="text-white">{{ 'USER' | translate }}</th>
-                  <th class="text-white text-center"><i [data-feather]="'problem' | iconName"></i></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr
-                  *ngFor="let rating of ratingToday; index as i"
-                  [ngClass]="{'bg-light-success': currentUser?.username == rating.username }">
-                  <td class="text-center">{{ i + 1 }}</td>
-                  <td>
-                    <contestant-view [user]="rating"></contestant-view>
-                  </td>
-                  <td class="text-center">
-                    <span class="badge badge-glow badge-success">
-                      {{ rating.solved }}
-                    </span>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="col-lg-4 col-12">
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">
-                {{ 'WEEK' | translate }}
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr class="bg-gradient-{{ rating.color }}">
+                      <th class="text-white text-center">#</th>
+                      <th class="text-white">{{ 'USER' | translate }}</th>
+                      <th class="text-white text-center"><i [data-feather]="'problem' | iconName"></i></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let userRating of rating.data; index as i"
+                      [class]="currentUser?.username == userRating.username ? 'bg-light'+rating.color : ''">
+                      <td class="text-center">{{ i + 1 }}</td>
+                      <td><contestant-view [user]="userRating"></contestant-view></td>
+                      <td class="text-center">
+                        <span class="badge badge-glow badge-{{ rating.color }}">
+                          {{ userRating.solved }}
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-              <a class="btn-sm btn btn-info" routerLink="history">
-                {{ 'History' | translate }}
-                <i data-feather="arrow-right"></i>
-              </a>
-            </div>
-
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                <tr class="bg-gradient-info">
-                  <th class="text-white text-center">#</th>
-                  <th class="text-white">{{ 'USER' | translate }}</th>
-                  <th class="text-white text-center"><i [data-feather]="'problem' | iconName"></i></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr
-                  *ngFor="let rating of ratingWeek; index as i"
-                  [ngClass]="{'bg-light-info': currentUser?.username == rating.username }">
-                  <td class="text-center">{{ i + 1 }}</td>
-                  <td>
-                    <contestant-view [user]="rating"></contestant-view>
-                  </td>
-                  <td class="text-center">
-                    <span class="badge badge-glow badge-info">
-                      {{ rating.solved }}
-                    </span>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="col-lg-4 col-12">
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">
-                {{ 'MONTH' | translate }}
-              </div>
-              <a class="btn-sm btn btn-primary" routerLink="history">
-                {{ 'History' | translate }}
-                <i data-feather="arrow-right"></i>
-              </a>
-            </div>
-
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                <tr class="bg-gradient-primary">
-                  <th class="text-white text-center">#</th>
-                  <th class="text-white">{{ 'USER' | translate }}</th>
-                  <th class="text-white text-center"><i [data-feather]="'problem' | iconName"></i></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr
-                  *ngFor="let rating of ratingMonth; index as i"
-                  [ngClass]="{'bg-light-primary': currentUser?.username == rating.username }">
-                  <td class="text-center">{{ i + 1 }}</td>
-                  <td>
-                    <contestant-view [user]="rating"></contestant-view>
-                  </td>
-                  <td class="text-center">
-                    <span class="badge badge-glow badge-primary">
-                      {{ rating.solved }}
-                    </span>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
             </div>
           </div>
-        </div>
+        }
       </div>
     </section>
   </div>
