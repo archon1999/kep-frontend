@@ -25,8 +25,9 @@ h2 {
 .statistics-info {
   display: flex;
   margin-bottom: 1rem;
+  align-items: center;
 
-  h5 {
+  .title {
     color: #fff;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
