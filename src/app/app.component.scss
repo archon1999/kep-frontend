@@ -186,7 +186,7 @@ pre {
 }
 
 :root .dark-layout {
-  --inherit-bg-box-shadow: 0 4px 24px 0 rgba(255, 255, 255, 0.1);
+  --inherit-bg-box-shadow: 0 2px 12px 0 rgba(255, 255, 255, 0.1);
 }
 
 .new-feature {
@@ -247,5 +247,35 @@ pre {
 @include media-breakpoint-down(sm) {
   .nav-tabs .nav-item {
     width: 100%;
+  }
+}
+
+.card.card-info {
+  border: none;
+  opacity: 1;
+  height: 150px;
+  box-shadow: var(--inherit-bg-box-shadow) !important;
+  background: inherit !important;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  .card-header .card-title {
+    color: #fff;
+  }
+
+  .info-img {
+    position: absolute;
+    height: 120px;
+    width: 120px;
+    bottom: 0.5rem;
+    right: 0.5rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 }
