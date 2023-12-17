@@ -2,8 +2,9 @@
 
 .tournament-list-card {
   background: $tournaments-bg;
-  box-shadow: 0 0 10px #1d1c1a !important;
+  box-shadow: 0 0 10px $tournaments-color !important;
   border: none;
+  margin-bottom: 1rem;
   
   .card-title {
     margin-left: 1rem;

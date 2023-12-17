@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-12 mb-4 mt-2 tournaments-page-top">
+  <div class="col-12 mb-4 tournaments-page-top">
     <div class="text-center">
       <div [@fadeInUpOnEnter] class="avatar avatar-lg p-50 m-0 mt-1 mb-1 tournaments-icon">
         <div class="avatar-content" ngbTooltip="{{ 'Challenges' | translate }}">
@@ -45,10 +45,8 @@
   </div>
 
   <div class="mt-2 col-lg-8 col-12 offset-lg-2">
-    <div class="row">
-      <div class="col-12 bg-tournaments-list" *ngFor="let tournament of tournaments">
-        <tournament-list-card [@fadeInOnEnter] [tournament]="tournament"></tournament-list-card>
-      </div>
+    <div class="bg-tournaments-list" *ngFor="let tournament of tournaments">
+      <tournament-list-card [@fadeInOnEnter] [tournament]="tournament"></tournament-list-card>
     </div>
   </div>
 </div>
