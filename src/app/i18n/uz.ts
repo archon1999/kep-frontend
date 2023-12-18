@@ -542,6 +542,7 @@ export const locale = {
         Attempts: 'Urinishlar | Masalalar',
         Attempt: 'Urinish {{ attemptId }} | Masalalar',
         Profile: 'Profil | Masalalar',
+        Statistics: 'Statistika | Masalalar',
         Rating: 'Reyting | Masalalar',
         RatingHistory: 'Reyting | Tarix | Masalalar',
         RatingOverall: 'Rating | Umumiy | Masalalar',
