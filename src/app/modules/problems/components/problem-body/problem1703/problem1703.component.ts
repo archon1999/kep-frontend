@@ -64,7 +64,6 @@ export class Problem1703Component implements OnInit, OnDestroy {
     margin-top: -2rem;
     margin-left: -2rem;
     background: #7367f0;
-    font-family: Quicksand;
   }
 
   h3 {

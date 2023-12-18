@@ -16,6 +16,7 @@ export class SpinnerComponent implements OnInit, OnDestroy {
   @Input() color = 'var(--primary)';
   @Input() bdColor = 'inherit';
   @Input() size: 'small' | 'default' | 'medium' | 'large' = 'large';
+  @Input() height: string;
 
   constructor(public spinner: NgxSpinnerService) {}
 
