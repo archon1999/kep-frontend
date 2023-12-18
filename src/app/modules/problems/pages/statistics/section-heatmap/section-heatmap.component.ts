@@ -5,6 +5,7 @@ import { ProblemsStatisticsService } from '@problems/services/problems-statistic
 import { CoreCommonModule } from '@core/common.module';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
+import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 
 @Component({
   selector: 'section-heatmap',
@@ -24,7 +25,7 @@ export class SectionHeatmapComponent implements OnInit {
 
   public heatmap: Array<any>;
   public heatmapYear = 0;
-  public heatmapChart: any;
+  public heatmapChart: ChartOptions;
 
   constructor(
     public statisticsService: ProblemsStatisticsService,
@@ -79,6 +80,9 @@ export class SectionHeatmapComponent implements OnInit {
         },
         dataLabels: {
           enabled: false
+        },
+        stroke: {
+          width: 1
         },
         xaxis: {
           type: 'datetime',
