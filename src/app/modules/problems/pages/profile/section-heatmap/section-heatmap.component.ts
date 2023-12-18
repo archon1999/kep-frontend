@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CoreConfigService } from 'core/services/config.service';
 import { TranslateService } from '@ngx-translate/core';
-import { colors } from 'app/colors.const';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
@@ -77,13 +76,10 @@ export class SectionHeatmapComponent implements OnInit {
         chart: {
           height: 350,
           type: 'heatmap',
-          toolbar: { show: false },
-          fontFamily: 'QuickSand, Roboto',
         },
         dataLabels: {
           enabled: false
         },
-        colors: [colors.solid.primary],
         xaxis: {
           type: 'datetime',
           labels: {

@@ -6,6 +6,8 @@ import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-char
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { TranslateService } from '@ngx-translate/core';
+import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'problems-activity-card',
@@ -18,6 +20,7 @@ import { TranslateService } from '@ngx-translate/core';
     NgbButtonsModule,
     ApexChartModule,
     KepIconComponent,
+    SpinnerComponent,
   ]
 })
 export class ProblemsActivityCardComponent implements OnInit {
@@ -26,7 +29,9 @@ export class ProblemsActivityCardComponent implements OnInit {
 
   public activityDays = 7;
   public activitySolved = 0;
-  public activityChart: any;
+  public activityChart: ChartOptions;
+
+  public isLoading = true;
 
   constructor(
     public statisticsService: ProblemsStatisticsService,
@@ -38,8 +43,10 @@ export class ProblemsActivityCardComponent implements OnInit {
   }
 
   activityDataUpdate(days: number) {
+    this.isLoading = true;
     const username = this.username;
     this.statisticsService.getLastDays(username, days).subscribe((result: any) => {
+      this.isLoading = false;
       this.activitySolved = result.solved;
       const data = [];
       let days = 0;

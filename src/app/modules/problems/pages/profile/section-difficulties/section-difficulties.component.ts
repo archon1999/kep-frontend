@@ -8,6 +8,7 @@ import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-char
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
+import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 
 export interface Difficulties {
   beginner: number;
@@ -65,7 +66,7 @@ export class SectionDifficultiesComponent implements OnInit {
     totalProblems: 1,
   };
 
-  public chartOptions: any;
+  public chartOptions: ChartOptions | any;
 
   public swiperConfig: SwiperOptions = {
     direction: 'vertical',
