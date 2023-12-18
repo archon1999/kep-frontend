@@ -77,10 +77,10 @@ export default [
     canActivate: [AttemptGuard],
   },
   {
-    path: 'profile',
-    loadComponent: () => import('./pages/profile/profile.component').then(c => c.ProfileComponent),
-    title: 'Problems.Profile',
-    data: { animation: 'profile' },
+    path: 'statistics',
+    loadComponent: () => import('./pages/statistics/statistics.component').then(c => c.StatisticsComponent),
+    title: 'Problems.Statistics',
+    data: { animation: 'statistics' },
     canActivate: [AuthGuard],
   },
   {
