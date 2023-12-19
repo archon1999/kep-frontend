@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { colors } from 'app/colors.const';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { CoreCommonModule } from '@core/common.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
@@ -30,37 +29,30 @@ export class SectionTimeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const translations = this.translateService.translations[this.translateService.currentLang];
-
     this.statisticsService.getByWeekday(this.username).subscribe(
       (result: any) => {
         const values = [];
         const labels = [];
         for (const data of result) {
-          labels.push(translations[data.day]);
+          labels.push(this.translateService.instant(data.day));
           values.push(data.solved);
         }
         this.byWeekdayChart = {
           series: [
             {
-              name: translations['Solved'],
+              name: this.translateService.instant('Solved'),
               data: values,
             }
           ],
           chart: {
             type: 'bar',
             height: 350,
-            toolbar: {
-              show: false,
-            },
-            fontFamily: 'QuickSand, Roboto',
           },
           plotOptions: {
             bar: {
               horizontal: true
             }
           },
-          colors: [colors.solid.primary],
           dataLabels: {
             enabled: false
           },
@@ -76,30 +68,25 @@ export class SectionTimeComponent implements OnInit {
         const values = [];
         const labels = [];
         for (const data of result) {
-          labels.push(translations[data.month]);
+          labels.push(this.translateService.instant(data.month));
           values.push(data.solved);
         }
         this.byMonthChart = {
           series: [
             {
-              name: translations['Solved'],
+              name: this.translateService.instant('Solved'),
               data: values,
             }
           ],
           chart: {
             type: 'bar',
             height: 350,
-            toolbar: {
-              show: false,
-            },
-            fontFamily: 'QuickSand, Roboto',
           },
           plotOptions: {
             bar: {
               horizontal: true
             }
           },
-          colors: [colors.solid.primary],
           dataLabels: {
             enabled: false
           },
@@ -121,24 +108,19 @@ export class SectionTimeComponent implements OnInit {
         this.byPeriodChart = {
           series: [
             {
-              name: translations['Solved'],
+              name: this.translateService.instant('Solved'),
               data: values,
             }
           ],
           chart: {
             type: 'bar',
             height: 350,
-            toolbar: {
-              show: false,
-            },
-            fontFamily: 'QuickSand, Roboto',
           },
           plotOptions: {
             bar: {
               horizontal: true
             }
           },
-          colors: [colors.solid.primary],
           dataLabels: {
             enabled: false
           },

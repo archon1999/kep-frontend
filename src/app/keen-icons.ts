@@ -21,6 +21,7 @@ export const keenIcons = {
   todo: 'check-square',
 
   profile: 'user-tick',
+  statistics: 'chart-pie-simple',
   rating: 'chart-simple-2',
   attempt: 'filter-tick',
   attempts: 'filter-tick',
