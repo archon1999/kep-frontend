@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CoreConfigService } from 'core/services/config.service';
 import { TranslateService } from '@ngx-translate/core';
-import { colors } from 'app/colors.const';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
+import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 
 @Component({
   selector: 'section-heatmap',
@@ -25,7 +25,7 @@ export class SectionHeatmapComponent implements OnInit {
 
   public heatmap: Array<any>;
   public heatmapYear = 0;
-  public heatmapChart: any;
+  public heatmapChart: ChartOptions;
 
   constructor(
     public statisticsService: ProblemsStatisticsService,
@@ -77,13 +77,13 @@ export class SectionHeatmapComponent implements OnInit {
         chart: {
           height: 350,
           type: 'heatmap',
-          toolbar: { show: false },
-          fontFamily: 'QuickSand, Roboto',
         },
         dataLabels: {
           enabled: false
         },
-        colors: [colors.solid.primary],
+        stroke: {
+          width: 1
+        },
         xaxis: {
           type: 'datetime',
           labels: {

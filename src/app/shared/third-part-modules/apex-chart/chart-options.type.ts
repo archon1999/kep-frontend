@@ -1,12 +1,16 @@
 import {
   ApexAxisChartSeries,
   ApexChart,
-  ApexDataLabels, ApexFill,
-  ApexGrid, ApexPlotOptions,
+  ApexDataLabels,
+  ApexFill,
+  ApexGrid,
+  ApexPlotOptions,
   ApexStroke,
-  ApexTitleSubtitle, ApexTooltip,
+  ApexTitleSubtitle,
+  ApexTooltip,
   ApexXAxis,
-  ApexYAxis
+  ApexYAxis,
+  ApexLegend,
 } from 'ng-apexcharts';
 
 export interface ChartOptions {
@@ -23,4 +27,5 @@ export interface ChartOptions {
   tooltip?: ApexTooltip;
   plotOptions?: ApexPlotOptions;
   labels?: string[];
+  legend?: ApexLegend;
 }

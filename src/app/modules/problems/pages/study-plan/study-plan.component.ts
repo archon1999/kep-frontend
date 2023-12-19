@@ -53,17 +53,12 @@ export class StudyPlanComponent implements OnInit {
       this.studyPlan = studyPlan;
       this.difficulties = studyPlan.statistics;
       this.titleService.updateTitle(this.route, { studyPlanTitle: studyPlan.title });
-      const translations = this.translateService.translations[this.translateService.currentLang];
 
       this.chartOptions = {
         series: [100 * this.difficulties.totalSolved / this.studyPlan.problemsCount],
         chart: {
           height: '200px',
-          fontFamily: 'Quicksand, Roboto',
           type: 'radialBar',
-          toolbar: {
-            show: false,
-          }
         },
         plotOptions: {
           radialBar: {
@@ -129,9 +124,8 @@ export class StudyPlanComponent implements OnInit {
         stroke: {
           lineCap: 'round'
         },
-        labels: [translations['Percent']]
+        labels: [this.translateService.instant('Percent')]
       };
-
     });
   }
 

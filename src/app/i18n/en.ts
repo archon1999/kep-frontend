@@ -543,6 +543,7 @@ export const locale = {
         Attempts: 'Attempts | Problems',
         Attempt: 'Attempt {{ attemptId }} | Problems',
         Profile: 'Profile | Problems',
+        Statistics: 'Statistics | Problems',
         Rating: 'Rating | Problems',
         RatingHistory: 'Rating | History | Problems',
         RatingOverall: 'Rating | Overall | Problems',

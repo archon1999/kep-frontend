@@ -539,6 +539,7 @@ export const locale = {
         ProblemAttempts: '{{ problemId }}. {{ problemTitle }} | Попытки',
         Attempts: 'Попытки | Задачи',
         Profile: 'Профиль | Задачи',
+        Statistics: 'Статистика | Задачи',
         Rating: 'Рейтинг | Задачи',
         RatingHistory: 'Рейтинг | История | Задачи',
         RatingOverall: 'Рейтинг | Общий | Задачи',
