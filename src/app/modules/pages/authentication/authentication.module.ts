@@ -3,13 +3,12 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 import { CoreCommonModule } from 'core/common.module';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { IsAuthenticatedGuard } from 'app/auth/helpers';
 import { AuthLoginV2Component } from '../../pages/authentication/auth-login-v2/auth-login-v2.component';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 
 // routing
 const routes: Routes = [
@@ -23,7 +22,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [AuthLoginV2Component],
-  imports: [CommonModule, RouterModule.forChild(routes), NgbModule, FormsModule, ReactiveFormsModule, CoreCommonModule, TranslateModule],
+  imports: [CommonModule, RouterModule.forChild(routes), FormsModule, ReactiveFormsModule, CoreCommonModule, TranslateModule, NgbAlertModule],
   providers: [IsAuthenticatedGuard]
 })
 export class AuthenticationModule { }
