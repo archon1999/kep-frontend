@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInUpOnEnterAnimation } from 'angular-animations';
+import { fadeInLeftOnEnterAnimation, fadeInUpOnEnterAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
 import { AuthService } from 'app/auth/service';
 import { TitleService } from 'app/shared/services/title.service';
@@ -42,31 +42,31 @@ export class TournamentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.data.subscribe(({ tournament }) => {
       this.tournament = tournament;
-      this.tournamentTabKeyName = `tournament-${this.tournament.id}-tab`;
+      this.tournamentTabKeyName = `tournament-${ this.tournament.id }-tab`;
       this.activeId = this.sessionStorageService.get(this.tournamentTabKeyName) || 1;
       this.titleService.updateTitle(this.route, { tournamentTitle: this.tournament.title });
-      if((new Date(this.tournament.startTime).valueOf() - Date.now()) >= 1000*60*10){
+      if ((new Date(this.tournament.startTime).valueOf() - Date.now()) >= 1000 * 60 * 10) {
         this.canRegistration = true;
       }
-    })    
+    });
 
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (user: any) => {
         this.currentUser = user;
       }
-    )
+    );
   }
 
-  tabChange(event){
+  tabChange(event) {
     this.sessionStorageService.set(this.tournamentTabKeyName, event.nextId);
   }
 
-  registration(){
+  registration() {
     this.service.tournamentRegister(this.tournament.id).subscribe(
       () => {
         window.location.reload();
       }
-    )
+    );
   }
 
   ngOnDestroy(): void {
