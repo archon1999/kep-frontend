@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModule, NgbPopoverModule, NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { CoreCommonModule } from 'core/common.module';
 import { CoreTouchspinModule } from 'core/components/core-touchspin/core-touchspin.module';
@@ -30,7 +30,6 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
   ],
   imports: [
     RouterModule,
-    NgbModule,
     CoreCommonModule,
     CoreTouchspinModule,
     TranslateModule,
@@ -38,7 +37,9 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
     CoreDirectivesModule,
     KepPaginationComponent,
     NgScrollbar,
-    KepIconComponent
+    KepIconComponent,
+    NgbDropdownModule,
+    NgbProgressbarModule
   ],
   exports: [
     NavbarComponent,

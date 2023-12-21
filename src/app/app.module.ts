@@ -5,15 +5,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, RouterStateSnapshot, Routes, TitleStrategy } from '@angular/router';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import 'hammerjs';
 import { ToastrModule } from '@shared/third-part-modules/toastr/toastr.module';
 
 import { CoreCommonModule } from 'core/common.module';
-import { CoreSidebarModule, CoreThemeCustomizerModule } from 'core/components';
+import { CoreSidebarModule } from 'core/components';
 import { CoreModule } from 'core/core.module';
-import { CorePipesModule } from '@shared/pipes/pipes.module';
 
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { coreConfig } from './app-config';
@@ -110,8 +108,6 @@ export function authFactory(authService: AuthService) {
       anchorScrolling: 'enabled'
     }),
     TranslateModule.forRoot(),
-
-    NgbModule,
     ToastrModule,
 
     WebsocketModule.config({
@@ -119,10 +115,8 @@ export function authFactory(authService: AuthService) {
     }),
 
     CoreModule.forRoot(coreConfig),
-    CorePipesModule,
     CoreCommonModule,
     CoreSidebarModule,
-    CoreThemeCustomizerModule,
     HighlightModule,
     LayoutModule,
     UserPopoverModule,
