@@ -854,12 +854,12 @@
 
   // BS toast
   .toast {
-    background-color: rgba($theme-dark-card-bg, 0.85);
+    background-color: $theme-dark-card-bg !important;
     box-shadow: $theme-dark-box-shadow;
     color: $theme-dark-body-color;
 
     .toast-header {
-      background-color: $theme-dark-card-bg;
+      background-color: $theme-dark-card-bg !important;
       color: $theme-dark-body-color;
 
       .close {
