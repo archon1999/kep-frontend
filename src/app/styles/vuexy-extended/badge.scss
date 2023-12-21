@@ -1,4 +1,30 @@
 .badge {
+  --bs-badge-padding-x: 0.9em;
+  --bs-badge-padding-y: 0.65em;
+  --bs-badge-font-size: 0.81em;
+  --bs-badge-font-weight: 500;
+  --bs-badge-color: #fff;
+  --bs-badge-border-radius: 0.25rem;
+  display: inline-block;
+  padding: var(--bs-badge-padding-y) var(--bs-badge-padding-x);
+  font-size: var(--bs-badge-font-size);
+  font-weight: var(--bs-badge-font-weight);
+  line-height: 1;
+  color: var(--bs-badge-color);
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: var(--bs-badge-border-radius);
+}
+
+.badge-pill {
+  --bs-badge-padding-x: 0.8em;
+  --bs-badge-padding-y: 0.55em;
+  --bs-badge-border-radius: 50rem;
+}
+
+/*
+.badge {
   font-weight: 500 !important;
   line-height: 1.4 !important;
   font-size: 12px !important;
@@ -20,7 +46,7 @@
   white-space: nowrap !important;
   vertical-align: baseline !important;
 }
-
+*/
 .dark-layout .badge.badge-light-dark {
   color: #e9e7e7 !important;
 }
