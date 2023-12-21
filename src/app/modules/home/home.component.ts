@@ -13,6 +13,7 @@ import { HeaderSectionComponent } from './header-section/header-section.componen
 import { ActivitySectionComponent } from './activity-section/activity-section.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { UsersChartCardComponent } from '@users/components/users-chart-card/users-chart-card.component';
+import { CoreConfigService } from '@core/services/config.service';
 
 @Component({
   selector: 'app-home',
@@ -40,7 +41,15 @@ export class HomeComponent implements OnInit {
 
   public homeSoundSrc: string;
 
-  constructor(public soundService: SoundsService) {}
+  constructor(public soundService: SoundsService, public coreConfigService: CoreConfigService) {
+    coreConfigService.config = {
+      layout: {
+        footer: {
+          hidden: true,
+        }
+      }
+    };
+  }
 
   ngOnInit(): void {
     this.homeSoundSrc = this.soundService.getHomeSoundSrc();
