@@ -16,6 +16,8 @@
   }
 
   .contest-logo {
+    display: flex;
+    justify-content: center;
     opacity: 0.1;
     position: absolute;
 
@@ -24,4 +26,11 @@
       width: 100%;
     }
   }
+}
+
+
+::ng-deep .contest-347 .contest-logo img {
+  zoom: 40% !important;
+  width: initial !important;
+  height: initial !important;
 }
