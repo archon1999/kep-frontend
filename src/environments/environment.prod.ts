@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
   hmr: false,
-  apiUrl: 'https://kep.uz',
-  wsUrl: 'wss://kep.uz/ws/',
+  apiUrl: 'https://cpython.uz',
+  wsUrl: 'wss://cpython.uz/ws/',
 };

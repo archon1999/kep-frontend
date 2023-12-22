@@ -40,7 +40,7 @@ export const BASE_API_URL = BASE_URL + '/api/';
     options.observe = 'response';
     return this.http.get(url, options).pipe(
       map((response: any) => {
-        console.log(new Date(response.headers.get('Date')));
+        // console.log(new Date(response.headers.get('Date')));
         return response.body;
       }),
       this.handleRetryError(3000, 5),
@@ -75,7 +75,7 @@ export const BASE_API_URL = BASE_URL + '/api/';
 
   initOptions(options: any) {
     options.headers = new HttpHeaders();
-    if (!environment.production) {
+    if (!environment.production || 1) {
       const username = 'admin';
       const password = 'htUgctJ4rYUWxt5';
       // username = 'NaZaR.IO';

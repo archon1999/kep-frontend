@@ -22,7 +22,7 @@ export class BlogComponent implements OnInit {
       type: '',
       links: [
         {
-          name: 'KEP.uz',
+          name: 'CPython.uz',
           isLink: false,
         },
       ]

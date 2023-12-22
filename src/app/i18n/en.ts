@@ -196,7 +196,7 @@ export const locale = {
     Password: 'Password',
     or: 'or',
     Welcome: 'Welcome',
-    WelcomeToKEP: 'Welcome to KEP',
+    WelcomeToCPython: 'Welcome to CPython',
     LoginText: 'Please sign-in to your account and start the adventure',
     LoginSuccessText: 'You have successfully logged',
     LoginErrorText: 'Login or password incorrect',
@@ -245,7 +245,7 @@ export const locale = {
     LatestNews: 'Latest news',
     DailyActivity: 'Daily activity',
     BirthDays: 'Birth days',
-    HomePageTitle: 'Stay with KEP',
+    HomePageTitle: 'Stay with CPython',
     Comments: 'Comments',
     WriteComment: 'Write a comment',
     OrderBy: 'OrderBy',
@@ -413,8 +413,8 @@ export const locale = {
       }
     ],
     LandingPage: {
-      SectionTopTitle: 'Learn Programming with KEP.uz',
-      SectionTopText: 'KEP.uz is platform for developing skills and improving competitiveness',
+      SectionTopTitle: 'Learn Programming with CPython.uz',
+      SectionTopText: 'CPython.uz is platform for developing skills and improving competitiveness',
       SectionLearnTitle: 'Learn Programming',
       SectionLearnText: 'A new way to learn',
       SectionPracticeTitle: 'Practice',
@@ -536,7 +536,7 @@ export const locale = {
     },
     PageTitle: {
       Home: 'Home',
-      Landing: 'KEP.uz - A platform for learning programming',
+      Landing: 'CPython.uz - A platform for learning programming',
       Problems: {
         Problems: 'Problems',
         Problem: '{{ problemId }}. {{ problemTitle }} | Problem',
