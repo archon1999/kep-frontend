@@ -61,16 +61,12 @@
             "stylePreprocessorOptions": {
               "includePaths": ["node_modules", "src/assets/", "src/core", "src/app"]
             },
-            "scripts": ["./node_modules/katex/dist/katex.min.js", "./node_modules/quill/dist/quill.min.js"],
+            "scripts": [],
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": true,
             "sourceMap": true,
-            "optimization": {
-              "scripts": true,
-              "styles": true,
-              "fonts": false
-            },
+            "optimization": false,
             "namedChunks": true
           },
           "configurations": {
