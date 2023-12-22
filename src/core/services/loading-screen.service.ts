@@ -13,56 +13,29 @@ export class CoreLoadingScreenService {
   loadingScreenEl: any;
   animationPlayer: AnimationPlayer;
 
-  /**
-   * Constructor
-   *
-   * @param _document
-   * @param {Router} _router
-   * @param {AnimationBuilder} _animationBuilder
-   */
   constructor(
     @Inject(DOCUMENT) private _document: any,
     private _router: Router,
     private _animationBuilder: AnimationBuilder
   ) {
-    // Initialize
     this._init();
   }
 
-  // Private methods
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * Initialize
-   *
-   * @private
-   */
   private _init(): void {
-    // Get the loading screen element
     this.loadingScreenEl = this._document.body.querySelector('#loading-bg');
 
-    // If loading screen element
     if (this.loadingScreenEl) {
-      // Hide it on the first NavigationEnd event
       this._router.events
         .pipe(
           filter(event => event instanceof NavigationEnd),
           take(1)
         )
         .subscribe(() => {
-          setTimeout(() => {
-            this.hide();
-          }, 1000);
+          this.hide();
         });
     }
   }
 
-  // Public methods
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * Show the loading screen
-   */
   show(): void {
     this.animationPlayer = this._animationBuilder
       .build([
@@ -79,9 +52,6 @@ export class CoreLoadingScreenService {
     }, 0);
   }
 
-  /**
-   * Hide the loading screen
-   */
   hide(): void {
     this.animationPlayer = this._animationBuilder
       .build([
