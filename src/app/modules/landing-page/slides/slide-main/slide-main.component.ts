@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CoreConfigService } from '../../../../../core/services/config.service';
-import { CoreConfig } from '../../../../../core/types';
+import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfig } from '@core/types';
 import { fadeInLeftAnimation, fadeInRightAnimation } from 'angular-animations';
+import { CoreCommonModule } from '@core/common.module';
 
 @Component({
   selector: 'slide-main',
@@ -10,22 +11,26 @@ import { fadeInLeftAnimation, fadeInRightAnimation } from 'angular-animations';
   animations: [
     fadeInLeftAnimation({ duration: 1000 }),
     fadeInRightAnimation({ duration: 1000 }),
+  ],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
   ]
 })
 export class SlideMainComponent implements OnInit {
 
   @Input() animationState: boolean;
 
-  public isDarkSkin: boolean = false;
+  public isDarkSkin = false;
 
   constructor(public coreConfigService: CoreConfigService) { }
 
   ngOnInit(): void {
     this.coreConfigService.getConfig().subscribe(
       (coreConfig: CoreConfig) => {
-        this.isDarkSkin = coreConfig.layout.skin == 'dark';
+        this.isDarkSkin = coreConfig.layout.skin === 'dark';
       }
-    )
+    );
   }
 
 }
