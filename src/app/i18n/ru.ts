@@ -194,7 +194,7 @@ export const locale = {
     Username: 'Ник',
     Password: 'Пароль',
     or: 'или',
-    WelcomeToKEP: 'Добро пожаловать в KEP',
+    WelcomeToCPython: 'Добро пожаловать в CPython',
     LoginText: 'Пожалуйста авторизуйте и продолжайте путешествовать',
     Welcome: 'Добро пожаловать',
     LoginSuccessText: 'Вы успешно авторизовались',
@@ -243,7 +243,7 @@ export const locale = {
     LatestNews: 'Последние новости',
     DailyActivity: 'Ежедневная активность',
     BirthDays: 'Дни рождения',
-    HomePageTitle: 'Оставайтесь с KEP',
+    HomePageTitle: 'Оставайтесь с CPython',
     Comments: 'Комментарии',
     WriteComment: 'Написать комментарий',
     OrderBy: 'Сортировать по',
@@ -409,8 +409,8 @@ export const locale = {
       }
     ],
     LandingPage: {
-      SectionTopTitle: 'Учитесь программированию с KEP.uz',
-      SectionTopText: 'KEP.uz - эта платформа для развития навыков и улучшения конкурентоспособности',
+      SectionTopTitle: 'Учитесь программированию с CPython.uz',
+      SectionTopText: 'CPython.uz - эта платформа для развития навыков и улучшения конкурентоспособности',
       SectionLearnTitle: 'Обучение программированию',
       SectionLearnText: 'Новый подход к изучению',
       SectionPracticeTitle: 'Практиковать',
@@ -532,7 +532,7 @@ export const locale = {
     },
     PageTitle: {
       Home: 'Главная',
-      Landing: 'KEP.uz - Платформа для обучения программированию',
+      Landing: 'CPython.uz - Платформа для обучения программированию',
       Problems: {
         Problems: 'Задачи',
         Problem: '{{ problemId }}. {{ problemTitle }} | Задача',
