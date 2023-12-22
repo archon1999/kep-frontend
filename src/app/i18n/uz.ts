@@ -397,6 +397,7 @@ export const locale = {
     Unread: 'O`qilmagan',
     Dislikes: 'Dizlayklar',
     Hacks: 'Buzishlar',
+    Registrants: 'Ishtirokchilar',
     ContestRules: {
       ACM20H: ``,
     },

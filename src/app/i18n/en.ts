@@ -401,6 +401,7 @@ export const locale = {
     Hacks: 'Hacks',
     MyContests: 'My contests',
     LastSeen: 'Last seen',
+    Registrants: 'Registrants',
     ProblemTourSteps: [
       {
         title: 'Available languages',
