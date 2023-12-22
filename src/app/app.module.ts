@@ -17,7 +17,6 @@ import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { coreConfig } from './app-config';
 
 import { AppComponent } from 'app/app.component';
-import { LayoutModule } from 'app/layout/layout.module';
 import { AuthModalComponent } from '@auth/auth-modal/auth-modal.component';
 import { ErrorComponent } from './modules/pages/miscellaneous/error/error.component';
 import { WebsocketModule } from '@shared/services/websocket';
@@ -35,11 +34,15 @@ import { monacoConfig } from './monaco-config';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
 import { map } from 'rxjs/operators';
 import { AuthService } from '@auth/service';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { VerticalLayoutComponent } from '@layout/vertical/vertical-layout.component';
+import { HorizontalLayoutComponent } from '@layout/horizontal/horizontal-layout.component';
+import { CustomBreakPointsProvider } from '@layout/custom-breakpoints';
 
 register();
 
 const appRoutes: Routes = [
-  { path: '', loadChildren: () => import('./modules/landing-page/landing-page.module').then(m => m.LandingPageModule) },
+  { path: '', loadChildren: () => import('./modules/landing-page/landing-page.routing') },
   { path: '', loadChildren: () => import('./modules/pages/pages.module').then(m => m.PagesModule) },
   { path: 'home', loadChildren: () => import('./modules/home/home.routing') },
   { path: 'settings', loadChildren: () => import('./modules/account-settings/account-settings.module').then(m => m.AccountSettingsModule) },
@@ -77,9 +80,9 @@ export class CustomTitleStrategy extends TitleStrategy {
   override updateTitle(routerState: RouterStateSnapshot) {
     const title = this.buildTitle(routerState);
     if (title !== undefined) {
-      const key = `PageTitle.${ title }`;
+      const key = `PageTitle.${title}`;
       this.translateService.get(key).subscribe((value: any) => {
-        this.title.setTitle(`${ value } - KEP.uz`);
+        this.title.setTitle(`${value} - KEP.uz`);
       });
     }
   }
@@ -114,11 +117,14 @@ export function authFactory(authService: AuthService) {
       url: environment.wsUrl,
     }),
 
+    FlexLayoutModule.withConfig({ disableDefaultBps: true }),
+    VerticalLayoutComponent,
+    HorizontalLayoutComponent,
+
     CoreModule.forRoot(coreConfig),
     CoreCommonModule,
     CoreSidebarModule,
     HighlightModule,
-    LayoutModule,
     UserPopoverModule,
     LoadingBarRouterModule,
     LoadingBarHttpClientModule,
@@ -147,6 +153,7 @@ export function authFactory(authService: AuthService) {
       deps: [AuthService],
       multi: true
     },
+    CustomBreakPointsProvider
   ],
   bootstrap: [AppComponent]
 })
