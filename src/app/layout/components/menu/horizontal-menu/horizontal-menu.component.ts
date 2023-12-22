@@ -1,32 +1,31 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { Subject } from 'rxjs';
-import { takeUntil, filter } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 
 import { CoreConfigService } from 'core/services/config.service';
 import { CoreMenuService } from 'core/components/core-menu/core-menu.service';
 import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.service';
+import { CoreCommonModule } from '@core/common.module';
+import { CoreMenuComponent } from '@core/components/core-menu/core-menu.component';
 
 @Component({
   selector: 'horizontal-menu',
   templateUrl: './horizontal-menu.component.html',
   styleUrls: ['./horizontal-menu.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    CoreMenuComponent,
+  ]
 })
 export class HorizontalMenuComponent implements OnInit, OnDestroy {
   coreConfig: any;
   menu: any;
 
-  // Private
   private _unsubscribeAll: Subject<any>;
 
-  /**
-   * Constructor
-   *
-   * @param {CoreConfigService} _coreConfigService
-   * @param {CoreMenuService} _coreMenuService
-   * @param {CoreSidebarService} _coreSidebarService
-   */
   constructor(
     private _coreConfigService: CoreConfigService,
     private _coreMenuService: CoreMenuService,
@@ -36,12 +35,6 @@ export class HorizontalMenuComponent implements OnInit, OnDestroy {
     this._unsubscribeAll = new Subject();
   }
 
-  // Lifecycle Hooks
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * On Init
-   */
   ngOnInit(): void {
     // Subscribe config change
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
@@ -59,11 +52,7 @@ export class HorizontalMenuComponent implements OnInit, OnDestroy {
       });
   }
 
-  /**
-   * On Destroy
-   */
   ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }

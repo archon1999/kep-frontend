@@ -8,10 +8,17 @@ import { CoreMenuItem } from 'core/types';
 import { CoreMenuService } from 'core/components/core-menu/core-menu.service';
 
 import { User } from 'app/auth/models';
+import { CoreCommonModule } from '@core/common.module';
+import { CoreMenuVerticalItemComponent } from '@core/components/core-menu/vertical/item/item.component';
 
 @Component({
   selector: '[core-menu-vertical-collapsible]',
-  templateUrl: './collapsible.component.html'
+  templateUrl: './collapsible.component.html',
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    CoreMenuVerticalItemComponent,
+  ]
 })
 export class CoreMenuVerticalCollapsibleComponent implements OnInit, OnDestroy {
   currentUser: User;

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
 import { Subject } from 'rxjs';
@@ -7,12 +7,21 @@ import { filter, take, takeUntil } from 'rxjs/operators';
 import { CoreConfigService } from 'core/services/config.service';
 import { CoreMenuService } from 'core/components/core-menu/core-menu.service';
 import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.service';
+import { CoreCommonModule } from '@core/common.module';
+import { NgScrollbar } from 'ngx-scrollbar';
+import { CoreMenuComponent } from '@core/components/core-menu/core-menu.component';
 
 @Component({
   selector: 'vertical-menu',
   templateUrl: './vertical-menu.component.html',
   styleUrls: ['./vertical-menu.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgScrollbar,
+    CoreMenuComponent,
+  ]
 })
 export class VerticalMenuComponent implements OnInit, OnDestroy {
   coreConfig: any;

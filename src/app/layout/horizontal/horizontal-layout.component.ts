@@ -7,10 +7,10 @@ import { CoreConfigService } from 'core/services/config.service';
 import { RouterModule } from '@angular/router';
 import { CoreCommonModule } from '@core/common.module';
 import { CoreSidebarModule } from '@core/components';
-import { MenuModule } from '@layout/components/menu/menu.module';
 import { ContentModule } from '@layout/components/content/content.module';
 import { FooterModule } from '@layout/components/footer/footer.module';
 import { NavbarComponent } from '@layout/components/navbar/navbar.component';
+import { MenuComponent } from '@layout/components/menu/menu.component';
 
 @Component({
   selector: 'horizontal-layout',
@@ -23,7 +23,7 @@ import { NavbarComponent } from '@layout/components/navbar/navbar.component';
     CoreCommonModule,
     CoreSidebarModule,
     NavbarComponent,
-    MenuModule,
+    MenuComponent,
     ContentModule,
     FooterModule
   ]
