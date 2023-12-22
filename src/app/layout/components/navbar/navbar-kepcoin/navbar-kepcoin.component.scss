@@ -1,19 +1,26 @@
+@import 'styles/kep-imports';
+
 ::ng-deep .kepcoin-popover .popover-body {
     padding: 0px !important;
     width: 200px !important;
 }
 
 .text-kepcoin {
-    color: #b18c51
+    color: #b18c51;
+    @include dark-layout {
+        color: $light;
+    }
 }
 
 a {
     font-weight: 500;
 }
 .bg-kepcoin {
-    background: #EDE574;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #E1F5C4, #EDE574);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #E1F5C4, #EDE574); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
+    background: linear-gradient(to right, #E1F5C4, #EDE574); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    @include dark-layout {
+        background: radial-gradient(circle at 10% 20%, rgb(172, 104, 8) 0%, rgb(153, 153, 13) 90%);
+    }
 }
 
 ::ng-deep .kepcoin-popover .card {
