@@ -397,6 +397,7 @@ export const locale = {
     Unread: 'Непрочитанные',
     Dislikes: 'Дизлайки',
     Hacks: 'Взломы',
+    Registrants: 'Участники',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',
