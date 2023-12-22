@@ -4,6 +4,9 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NavbarService } from '../navbar.service';
 import { User } from '@auth/models';
+import { CoreCommonModule } from '@core/common.module';
+import { NgScrollbar } from 'ngx-scrollbar';
+import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 
 interface DailyTask {
   type: number;
@@ -17,7 +20,13 @@ interface DailyTask {
 @Component({
   selector: 'app-navbar-daily-tasks',
   templateUrl: './navbar-daily-tasks.component.html',
-  styleUrls: ['./navbar-daily-tasks.component.scss']
+  styleUrls: ['./navbar-daily-tasks.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgScrollbar,
+    NgbProgressbarModule,
+  ]
 })
 export class NavbarDailyTasksComponent implements OnInit, OnDestroy {
 

@@ -3,10 +3,17 @@ import { Router } from '@angular/router';
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 
 import { SearchService } from 'app/layout/components/navbar/navbar-search/search.service';
+import { CoreCommonModule } from '@core/common.module';
+import { NgScrollbar } from 'ngx-scrollbar';
 
 @Component({
   selector: 'app-navbar-search',
-  templateUrl: './navbar-search.component.html'
+  templateUrl: './navbar-search.component.html',
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgScrollbar
+  ]
 })
 export class NavbarSearchComponent implements OnInit {
   // Public
@@ -23,19 +30,6 @@ export class NavbarSearchComponent implements OnInit {
   @ViewChild('openSearch') private _inputElement: ElementRef;
   @ViewChild('pageList') private _pageListElement: ElementRef;
 
-  @HostListener('keydown.escape') fn() {
-    this.removeOverlay();
-    this.openSearchRef = false;
-    this.searchText = '';
-  }
-  @HostListener('document:click', ['$event']) clickout(event) {
-    if (event.target.className === 'content-overlay') {
-      this.removeOverlay();
-      this.openSearchRef = false;
-      this.searchText = '';
-    }
-  }
-
   /**
    *
    * @param document
@@ -48,6 +42,20 @@ export class NavbarSearchComponent implements OnInit {
     private router: Router,
     public _searchService: SearchService
   ) {}
+
+  @HostListener('keydown.escape') fn() {
+    this.removeOverlay();
+    this.openSearchRef = false;
+    this.searchText = '';
+  }
+
+  @HostListener('document:click', ['$event']) clickout(event) {
+    if (event.target.className === 'content-overlay') {
+      this.removeOverlay();
+      this.openSearchRef = false;
+      this.searchText = '';
+    }
+  }
 
   // Public Methods
   // -----------------------------------------------------------------------------------------------------

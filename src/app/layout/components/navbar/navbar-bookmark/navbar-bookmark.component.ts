@@ -2,10 +2,19 @@ import { DOCUMENT } from '@angular/common';
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 
 import { SearchService } from 'app/layout/components/navbar/navbar-search/search.service';
+import { CoreCommonModule } from '@core/common.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgScrollbar } from 'ngx-scrollbar';
 
 @Component({
   selector: 'app-navbar-bookmark',
-  templateUrl: './navbar-bookmark.component.html'
+  templateUrl: './navbar-bookmark.component.html',
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgbTooltipModule,
+    NgScrollbar,
+  ]
 })
 export class NavbarBookmarkComponent implements OnInit {
   // Public
@@ -19,11 +28,20 @@ export class NavbarBookmarkComponent implements OnInit {
 
   // Decorator
   @ViewChild('openBookmark') private _bookmarkElement: ElementRef;
+
+  /**
+   *
+   * @param document
+   * @param _searchService
+   */
+  constructor(@Inject(DOCUMENT) private document, public _searchService: SearchService) {}
+
   @HostListener('keydown.escape') fn() {
     this.removeOverlay();
     this.openBookmarkRef = false;
     this.bookmarkText = '';
   }
+
   @HostListener('document:click', ['$event']) clickout(event) {
     // Close Bookmark if Clicked on Overlay
     if (event.target.className === 'content-overlay') {
@@ -39,13 +57,6 @@ export class NavbarBookmarkComponent implements OnInit {
       this.bookmarkText = '';
     }
   }
-
-  /**
-   *
-   * @param document
-   * @param _searchService
-   */
-  constructor(@Inject(DOCUMENT) private document, public _searchService: SearchService) {}
 
   // Public Methods
   // -----------------------------------------------------------------------------------------------------
