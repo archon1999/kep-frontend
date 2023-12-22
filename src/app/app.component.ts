@@ -90,7 +90,8 @@ export class AppComponent implements OnInit, OnDestroy {
     // Subscribe to config changes
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       if (!isPresent(config.layout.enableAnimation)) {
-        this._coreConfigService.setConfig({ layout: { enableAnimation: true } });
+        const enableAnimation = window.innerWidth > 1000;
+        this._coreConfigService.setConfig({ layout: { enableAnimation: enableAnimation } });
       }
       this.animationsDisabled = !config.layout.enableAnimation;
       this.coreConfig = config;

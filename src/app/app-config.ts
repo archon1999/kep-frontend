@@ -12,7 +12,7 @@ export const coreConfig: CoreConfig = {
     skin: 'dark',                        // default, dark, bordered, semi-dark
     type: 'horizontal',                       // vertical, horizontal
     animation: 'fadeIn',                     // fadeInLeft, zoomIn , fadeIn, none
-    enableAnimation: true,
+    enableAnimation: window.innerWidth > 1000,
     menu: {
       hidden: false,           // Boolean: true, false
       collapsed: true,            // Boolean: true, false
