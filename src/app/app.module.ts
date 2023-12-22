@@ -132,16 +132,6 @@ export function authFactory(authService: AuthService) {
     { provide: TitleStrategy, useClass: CustomTitleStrategy },
     { provide: APP_BASE_HREF, useValue: '/' },
     {
-      provide: HIGHLIGHT_OPTIONS,
-      useValue: <HighlightOptions>{
-        lineNumbersLoader: () => import('highlightjs-line-numbers.js'),
-        coreLibraryLoader: () => import('highlight.js/lib/core'),
-        languages: {
-          python: () => import('highlight.js/lib/languages/python'),
-        },
-      }
-    },
-    {
       provide: APP_INITIALIZER,
       useFactory: authFactory,
       deps: [AuthService],

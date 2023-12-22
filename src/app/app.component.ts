@@ -168,13 +168,13 @@ export class AppComponent implements OnInit, OnDestroy {
       } else {
         this._elementRef.nativeElement.classList.remove('blank-page');
         // ! Fix: Transition issue while coming from blank page
-        setTimeout(() => {
-          this._renderer.setAttribute(
-            this._elementRef.nativeElement.getElementsByClassName('app-content')[0],
-            'style',
-            'transition:300ms ease all'
-          );
-        }, 0);
+        // setTimeout(() => {
+        //   this._renderer.setAttribute(
+        //     this._elementRef.nativeElement.getElementsByClassName('app-content')[0],
+        //     'style',
+        //     'transition:300ms ease all'
+        //   );
+        // }, 0);
         // If navbar hidden
         if (this.coreConfig.layout.navbar.hidden) {
           this._elementRef.nativeElement.classList.add('navbar-hidden');
