@@ -6,7 +6,7 @@ import { NavbarService } from '../navbar.service';
 import { User } from '@auth/models';
 import { CoreCommonModule } from '@core/common.module';
 import { NgScrollbar } from 'ngx-scrollbar';
-import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 
 interface DailyTask {
   type: number;
@@ -26,6 +26,7 @@ interface DailyTask {
     CoreCommonModule,
     NgScrollbar,
     NgbProgressbarModule,
+    NgbDropdownModule,
   ]
 })
 export class NavbarDailyTasksComponent implements OnInit, OnDestroy {
