@@ -1,7 +1,11 @@
-@if (coreConfig.layout.type === 'vertical') {
-  <vertical-layout></vertical-layout>
-} @else if (coreConfig.layout.type === 'horizontal'){
-  <horizontal-layout></horizontal-layout>
+@if (coreConfig.layout.type === 'vertical'){
+  @defer {
+    <vertical-layout></vertical-layout>
+  }
+} @else if(coreConfig.layout.type === 'horizontal'){
+  @defer {
+    <horizontal-layout></horizontal-layout>
+  }
 }
 
 <!--<core-sidebar-->
