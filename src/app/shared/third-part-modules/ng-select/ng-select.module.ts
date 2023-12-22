@@ -4,10 +4,10 @@ import { NgSelectModule as Module } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
-    NgSelectComponent
   ],
   imports: [
     Module,
+    NgSelectComponent
   ],
   exports: [
     Module,
