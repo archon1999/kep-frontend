@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CoreConfigService } from '../../../../../core/services/config.service';
-import { CoreConfig } from '../../../../../core/types';
+import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfig } from '@core/types';
 import { fadeInLeftAnimation, fadeInRightAnimation, fadeInUpAnimation } from 'angular-animations';
+import { CoreCommonModule } from '@core/common.module';
 
 @Component({
   selector: 'slide-learn',
@@ -11,13 +12,17 @@ import { fadeInLeftAnimation, fadeInRightAnimation, fadeInUpAnimation } from 'an
     fadeInUpAnimation({ duration: 1000 }),
     fadeInLeftAnimation({ duration: 1000 }),
     fadeInRightAnimation({ duration: 1000 }),
+  ],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
   ]
 })
 export class SlideLearnComponent implements OnInit {
 
   @Input() animationState: boolean;
 
-  public isDarkSkin: boolean = false;
+  public isDarkSkin = false;
 
   constructor(public coreConfigService: CoreConfigService) {}
 
@@ -26,7 +31,7 @@ export class SlideLearnComponent implements OnInit {
       (coreConfig: CoreConfig) => {
         this.isDarkSkin = coreConfig.layout.skin == 'dark';
       }
-    )
+    );
   }
 
 }
