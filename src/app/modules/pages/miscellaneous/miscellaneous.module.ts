@@ -16,7 +16,6 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [ErrorComponent],
-  imports: [CommonModule, RouterModule.forChild(routes), CoreCommonModule]
+  imports: [CommonModule, ErrorComponent, RouterModule.forChild(routes), CoreCommonModule]
 })
 export class MiscellaneousModule {}
