@@ -39,11 +39,11 @@
 </section>
 
 <core-sidebar [hideOnEsc]="true" class="problems-sidebar" [name]="'problemsSidebar'">
-  <a
+  <div
     (click)="toggleSidebar('problemsSidebar')"
-    class="btn-toggle d-flex align-items-center justify-content-center">
+    class="btn-toggle d-flex align-items-center justify-content-center cursor-pointer">
     <span [data-feather]="'chevrons-left'"></span>
-  </a>
+  </div>
   @defer (on viewport) {
     <ng-scrollbar autoHeightDisabled="false">
       <section-sidebar></section-sidebar>
