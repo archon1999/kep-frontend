@@ -31,7 +31,7 @@ export class CoreLoadingScreenService {
           take(1)
         )
         .subscribe(() => {
-          this.hide();
+          setTimeout(() => this.hide())
         });
     }
   }

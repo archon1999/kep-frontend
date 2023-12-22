@@ -11,7 +11,7 @@ export const coreConfig: CoreConfig = {
   layout: {
     skin: 'dark',                        // default, dark, bordered, semi-dark
     type: 'horizontal',                       // vertical, horizontal
-    animation: 'fadeIn',                     // fadeInLeft, zoomIn , fadeIn, none
+    animation: 'none',                     // fadeInLeft, zoomIn , fadeIn, none
     enableAnimation: window.innerWidth > 1000,
     menu: {
       hidden: false,           // Boolean: true, false
@@ -26,7 +26,7 @@ export const coreConfig: CoreConfig = {
       backgroundColor: ''               // BS color i.e bg-primary, bg-success
     },
     footer: {
-      hidden: false,           // Boolean: true, false
+      hidden: true,           // Boolean: true, false
       type: 'footer-static', // footer-static, footer-sticky, d-none
       background: 'footer-light',  // footer-light. footer-dark
       customBackgroundColor: false,           // Boolean: true, false

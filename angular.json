@@ -39,7 +39,7 @@
               "sweetalert2",
               "bs-stepper"
             ],
-            "outputPath": "../server/static/frontend",
+            "outputPath": "../static/frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -52,11 +52,7 @@
               { "glob": "**/*", "input": "node_modules/monaco-editor", "output": "assets/monaco" }
             ],
             "styles": [
-              "src/styles.scss",
-              "./node_modules/swiper/swiper-bundle.min.css",
-              "src/assets/plugins/keenicons/duotone/style.css",
-              "src/assets/plugins/keenicons/outline/style.css",
-              "src/assets/plugins/keenicons/solid/style.css"
+              "src/styles.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": ["node_modules", "src/assets/", "src/core", "src/app"]

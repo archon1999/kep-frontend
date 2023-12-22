@@ -37,79 +37,24 @@ export class CoreMenuComponent implements OnInit {
   @Input()
   menu: any;
 
-  // Private
   private _unsubscribeAll: Subject<any>;
 
-  /**
-   *
-   * @param {ChangeDetectorRef} _changeDetectorRef
-   * @param {CoreMenuService} _coreMenuService
-   */
   constructor(
     private _changeDetectorRef: ChangeDetectorRef,
     private _coreMenuService: CoreMenuService,
     public api: ApiService,
   ) {
-    // Set the private defaults
     this._unsubscribeAll = new Subject();
   }
 
-  // Lifecycle hooks
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * On init
-   */
   ngOnInit(): void {
-    // Set the menu either from the input or from the service
     this.menu = this.menu || this._coreMenuService.getCurrentMenu();
 
-    // Subscribe to the current menu changes
     this._coreMenuService.onMenuChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => {
       this.currentUser = this._coreMenuService.currentUser;
-
-      // Load menu
       this.menu = this._coreMenuService.getCurrentMenu();
-
-      this.loadEvents();
-
       this._changeDetectorRef.markForCheck();
     });
-  }
-
-  loadEvents(){
-    for(let item of this.menu[3].children){
-      if(item.id == 'contests'){
-        this.api.get('contests/new-events').subscribe(
-          (result: number) => {
-            item.newEventsCount = result;
-            if(item.newEventsCount){
-              this.menu[3].hasNewEvent = true;
-            }
-          }
-        )
-      }
-      if(item.id == 'arena'){
-        this.api.get('arena/new-events').subscribe(
-          (result: number) => {
-            item.newEventsCount = result;
-            if(item.newEventsCount){
-              this.menu[3].hasNewEvent = true;
-            }
-          }
-        )
-      }
-      if(item.id == 'tournaments'){
-        this.api.get('tournaments/new-events').subscribe(
-          (result: number) => {
-            item.newEventsCount = result;
-            if(item.newEventsCount){
-              this.menu[3].hasNewEvent = true;
-            }
-          }
-        )
-      }
-    }
   }
 
 }

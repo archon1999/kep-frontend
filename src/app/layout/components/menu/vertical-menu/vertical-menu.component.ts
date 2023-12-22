@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
 import { Subject } from 'rxjs';
-import { filter, take, takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 
 import { CoreConfigService } from 'core/services/config.service';
 import { CoreMenuService } from 'core/components/core-menu/core-menu.service';
@@ -37,25 +37,16 @@ export class VerticalMenuComponent implements OnInit, OnDestroy {
     private _coreSidebarService: CoreSidebarService,
     private _router: Router
   ) {
-    // Set the private defaults
     this._unsubscribeAll = new Subject();
   }
 
-  // Lifecycle Hooks
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * On Init
-   */
   ngOnInit(): void {
-    // Subscribe config change
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       this.coreConfig = config;
     });
 
     this.isCollapsed = this._coreSidebarService.getSidebarRegistry('menu').collapsed;
 
-    // Close the menu on router NavigationEnd (Required for small screen to close the menu on select)
     this._router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
@@ -67,17 +58,16 @@ export class VerticalMenuComponent implements OnInit, OnDestroy {
         }
       });
 
-    // scroll to active on navigation end
-    this._router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd),
-        take(1)
-      )
-      .subscribe(() => {
-        setTimeout(() => {
-          // this.directiveRef.scrollToElement('.navigation .active', -180, 500);
-        });
-      });
+    // this._router.events
+    //   .pipe(
+    //     filter(event => event instanceof NavigationEnd),
+    //     take(1)
+    //   )
+    //   .subscribe(() => {
+    //     setTimeout(() => {
+    //       this.directiveRef.scrollToElement('.navigation .active', -180, 500);
+    //     });
+    //   });
 
     // Get current menu
     this._coreMenuService.onMenuChanged
@@ -90,41 +80,17 @@ export class VerticalMenuComponent implements OnInit, OnDestroy {
       });
   }
 
-  /**
-   * On Destroy
-   */
   ngOnDestroy(): void {
     // Unsubscribe from all subscriptions
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
 
-  // Public Methods
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * On Sidebar scroll set isScrolled as true
-   */
-  onSidebarScroll(): void {
-    // if (+this.directiveRef.position(true).y > 3) {
-    //   this.isScrolled = true;
-    // } else {
-    //   this.isScrolled = false;
-    // }
-  }
-
-  /**
-   * Toggle sidebar expanded status
-   */
   toggleSidebar(): void {
     this._coreSidebarService.getSidebarRegistry('menu').toggleOpen();
   }
 
-  /**
-   * Toggle sidebar collapsed status
-   */
   toggleSidebarCollapsible(): void {
-    // Get the current menu state
     this._coreConfigService
       .getConfig()
       .pipe(takeUntil(this._unsubscribeAll))

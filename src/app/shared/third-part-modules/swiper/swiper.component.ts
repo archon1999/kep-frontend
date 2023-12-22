@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { A11y, Mousewheel, Navigation, Pagination } from 'swiper/modules';
@@ -11,6 +11,7 @@ import { SwiperDirective } from '@shared/third-part-modules/swiper/swiper.direct
   templateUrl: './swiper.component.html',
   styleUrl: './swiper.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  encapsulation: ViewEncapsulation.None,
 })
 export class SwiperComponent implements OnInit {
 
