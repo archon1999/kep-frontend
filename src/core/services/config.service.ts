@@ -4,9 +4,11 @@ import { ResolveEnd, Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import * as _ from 'lodash';
+// import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
 import { CoreConfig } from '@core/types';
+import { deepCopy } from '@shared/utils';
+import { deepMerge } from '@shared/utils/deep-merge';
 
 // Injection token for the core custom settings
 export const CORE_CUSTOM_CONFIG = new InjectionToken('coreCustomConfig');
@@ -49,6 +51,11 @@ export class CoreConfigService {
   //  Accessors
   // -----------------------------------------------------------------------------------------------------
 
+  // Get the config
+  get config(): any | Observable<any> {
+    return this._configSubject.asObservable();
+  }
+
   // Set the config
   set config(data) {
     let config;
@@ -61,7 +68,7 @@ export class CoreConfigService {
     }
 
     // Merge provided data with config, and create new merged config
-    config = _.merge({}, config, data);
+    config = deepMerge(config, data);
 
     // Set config to local storage if enableLocalStorage parameter is true
     if (config.layout.enableLocalStorage) {
@@ -70,11 +77,6 @@ export class CoreConfigService {
 
     // Inform the observers
     this._configSubject.next(config);
-  }
-
-  // Get the config
-  get config(): any | Observable<any> {
-    return this._configSubject.asObservable();
   }
 
   /**
@@ -87,41 +89,6 @@ export class CoreConfigService {
   }
 
   // Private methods
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * Initialize
-   *
-   * @private
-   */
-  private _initConfig(): void {
-    // Set the config from the default config
-    this._configSubject = new BehaviorSubject(_.cloneDeep(this._defaultConfig));
-
-    // On every RoutesRecognized event
-    // Check if localDefault (localStorage if we have else defaultConfig) is different form the default one
-    this._router.events.pipe(filter(event => event instanceof ResolveEnd)).subscribe(() => {
-      // Get the local config from local storage
-      this.localConfig = JSON.parse(localStorage.getItem('config'));
-
-      // Set localDefault to localConfig if we have else defaultConfig
-      let localDefault = this.localConfig ? this.localConfig : this._defaultConfig;
-
-      // If localDefault is different form the provided config (page config)
-      if (!_.isEqual(this._configSubject.getValue().layout, localDefault.layout)) {
-        // Clone the current config
-        const config = _.cloneDeep(this._configSubject.getValue());
-
-        // Reset the layout from the default config
-        config.layout = _.cloneDeep(localDefault.layout);
-
-        // Set the config
-        this._configSubject.next(config);
-      }
-    });
-  }
-
-  // Public methods
   // -----------------------------------------------------------------------------------------------------
 
   /**
@@ -142,7 +109,7 @@ export class CoreConfigService {
     }
 
     // Merge provided value with config, and create new merged config
-    config = _.merge({}, config, data);
+    config = deepMerge(config, data);
 
     // Set config to local storage if enableLocalStorage parameter is true
     if (config.layout.enableLocalStorage) {
@@ -155,6 +122,9 @@ export class CoreConfigService {
       this._configSubject.next(config);
     }
   }
+
+  // Public methods
+  // -----------------------------------------------------------------------------------------------------
 
   /**
    * Get config
@@ -169,6 +139,38 @@ export class CoreConfigService {
    * Reset to the default config
    */
   resetConfig(): void {
-    this._configSubject.next(_.cloneDeep(this._defaultConfig));
+    this._configSubject.next(deepCopy(this._defaultConfig));
+  }
+
+  /**
+   * Initialize
+   *
+   * @private
+   */
+  private _initConfig(): void {
+    // Set the config from the default config
+    this._configSubject = new BehaviorSubject(deepCopy(this._defaultConfig));
+
+    // On every RoutesRecognized event
+    // Check if localDefault (localStorage if we have else defaultConfig) is different form the default one
+    this._router.events.pipe(filter(event => event instanceof ResolveEnd)).subscribe(() => {
+      // Get the local config from local storage
+      this.localConfig = JSON.parse(localStorage.getItem('config'));
+
+      // Set localDefault to localConfig if we have else defaultConfig
+      const localDefault = this.localConfig ? this.localConfig : this._defaultConfig;
+
+      // If localDefault is different form the provided config (page config)
+      if (JSON.stringify(this._configSubject.getValue().layout) === JSON.stringify(localDefault.layout)) {
+        // Clone the current config
+        const config = deepCopy(this._configSubject.getValue());
+
+        // Reset the layout from the default config
+        config.layout = deepCopy(localDefault.layout);
+
+        // Set the config
+        this._configSubject.next(config);
+      }
+    });
   }
 }

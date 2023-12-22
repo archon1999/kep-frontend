@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, HostBinding, HostListener, ViewEncapsulation } from '@angular/core';
 import { MediaObserver } from '@angular/flex-layout';
 
-import * as _ from 'lodash';
+// import * as _ from 'lodash';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,16 +15,30 @@ import { User } from 'app/auth/models';
 
 import { Router } from '@angular/router';
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthModalComponent } from 'app/auth/auth-modal/auth-modal.component';
 import { ApiService } from 'app/shared/services/api.service';
 import { BaseComponent } from '@shared/components/classes/base.component';
+import { CoreCommonModule } from '@core/common.module';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { NavbarDailyTasksComponent } from '@layout/components/navbar/navbar-daily-tasks/navbar-daily-tasks.component';
+import { NavbarKepcoinComponent } from '@layout/components/navbar/navbar-kepcoin/navbar-kepcoin.component';
+import { NavbarNotificationComponent } from '@layout/components/navbar/navbar-notification/navbar-notification.component';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    KepIconComponent,
+    NavbarDailyTasksComponent,
+    NavbarKepcoinComponent,
+    NavbarNotificationComponent,
+    NgbDropdownModule,
+  ]
 })
 export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy {
   public horizontalMenu: boolean;
@@ -159,9 +173,9 @@ export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy 
     }
 
     // Set the selected language from default languageOptions
-    this.selectedLanguage = _.find(this.languageOptions, {
-      id: this._translateService.currentLang
-    });
+    // this.selectedLanguage = _.find(this.languageOptions, {
+    //   id: this._translateService.currentLang
+    // });
   }
 
   /**
