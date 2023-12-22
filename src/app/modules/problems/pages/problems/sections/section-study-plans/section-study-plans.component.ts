@@ -6,6 +6,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { StudyPlanCardModule } from '@problems/components/study-plan-card/study-plan-card.module';
 import { fadeInLeftOnEnterAnimation } from 'angular-animations';
+import { ProblemsApiService } from '@problems/services/problems-api.service';
 
 @Component({
   selector: 'section-study-plans',
@@ -42,12 +43,15 @@ export class SectionStudyPlansComponent implements OnInit {
 
   constructor(
     public route: ActivatedRoute,
+    public service: ProblemsApiService,
   ) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ studyPlans }) => {
-      this.studyPlans = studyPlans;
-    });
+    this.service.getStudyPlans().subscribe(
+      (studyPlans: Array<StudyPlan>) => {
+        this.studyPlans = studyPlans;
+      }
+    );
   }
 
 }

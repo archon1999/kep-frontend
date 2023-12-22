@@ -5,6 +5,8 @@
 // Import first modules menu mixin
 @import '../../mixins/main-menu-mixin';
 
+@import 'styles/kep-imports';
+
 // Horizontal Menu
 //=========================
 .horizontal-menu {
@@ -100,6 +102,10 @@
             font-weight: 600;
             letter-spacing: 0.01rem;
             font-size: 1.45rem;
+
+            @include dark-layout {
+              color: mix(white, $primary, 30) !important;
+            }
           }
         }
       }

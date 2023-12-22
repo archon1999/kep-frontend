@@ -83,7 +83,7 @@ export const BASE_API_URL = BASE_URL + '/api/';
       // username = 'CPython.uz';
       // password = 'cpython';
       const token = btoa(`${ username }:${ password }`);
-      options.headers = options.headers.set('Authorization', `Basic ${ token }`);
+      // options.headers = options.headers.set('Authorization', `Basic ${ token }`);
     }
     options.headers = options.headers.set('Content-Type', 'application/json; charset=utf-8');
     options.withCredentials = true;

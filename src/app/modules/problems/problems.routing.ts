@@ -8,10 +8,6 @@ export default [
     path: '',
     loadComponent: () => import('./pages/problems/problems.component').then(c => c.ProblemsComponent),
     title: 'Problems.Problems',
-    resolve: {
-      contests: ContestsResolver,
-      studyPlans: StudyPlansResolver,
-    }
   },
   {
     path: 'study-plan/:id',
