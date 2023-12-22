@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { BehaviorSubject, of } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
 import { environment } from 'environments/environment';
 import { User } from 'app/auth/models';
@@ -31,7 +31,8 @@ export class AuthService {
         } else {
           this.currentUserSubject.next(null);
         }
-      })
+      }),
+      catchError(err => of(null))
     );
   }
 
