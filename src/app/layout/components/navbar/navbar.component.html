@@ -23,47 +23,47 @@
         </a>
       </li>
       <li class="nav-item d-lg-none d-md-block d-sm-block">
-        <button type="button" class="nav-link nav-link-style btn" (click)="toggleDarkSkin()">
+        <div class="nav-link nav-link-style btn cursor-pointer" (click)="toggleDarkSkin()">
           @if (currentSkin == 'dark'){
             <kep-icon name="sun" type="duotone" class="font-large-1"></kep-icon>
           } @else {
             <kep-icon name="moon" type="duotone" class="font-large-1"></kep-icon>
           }
-        </button>
+        </div>
       </li>  
     </ul>
     <!--/ Menu Toggler -->
 
     <!-- Toggle skin -->
     <div class="nav-item d-none d-lg-block">
-      <button type="button" class="nav-link nav-link-style btn" (click)="toggleDarkSkin()">
+      <div class="nav-link nav-link-style btn cursor-pointer" (click)="toggleDarkSkin()">
         @if (currentSkin == 'dark'){
           <kep-icon name="sun" type="duotone" class="font-large-1"></kep-icon>
         } @else {
           <kep-icon name="moon" type="duotone" class="font-large-1"></kep-icon>
         }
-      </button>
+      </div>
     </div>
     <!--/ Toggle skin -->
   </div>
   <ul class="nav navbar-nav align-items-center ml-auto">
     <li ngbDropdown class="nav-item dropdown dropdown-language">
-      <a class="nav-link dropdown-toggle" id="dropdown-flag" ngbDropdownToggle>
+      <div class="nav-link dropdown-toggle cursor-pointer" id="dropdown-flag" ngbDropdownToggle>
         <i class="fi fi-{{ languageOptions[_translateService.currentLang].flag }}"></i>
 <!--        <span class="ml-50 selected-language">{{ languageOptions[_translateService.currentLang].title }}</span>-->
-      </a>
+      </div>
       <div ngbDropdownMenu>
-        <a *ngFor="let lang of _translateService.getLangs()" ngbDropdownItem (click)="setLanguage(lang)">
+        <div class="cursor-pointer" *ngFor="let lang of _translateService.getLangs()" ngbDropdownItem (click)="setLanguage(lang)">
           <i class="fi fi-{{ languageOptions[lang].flag }}"></i> {{ languageOptions[lang].title }}
-        </a>
+        </div>
       </div>
     </li>
 
     <li *ngIf="!isAuthenticated">
-      <a (click)="loginModalOpenForm()" class="btn" rippleEffect>
+      <div (click)="loginModalOpenForm()" class="cursor-pointer btn" rippleEffect>
         <i data-feather="log-in"></i>
         {{ 'LOGIN' | translate }}
-      </a>
+      </div>
     </li>
 
     @defer {
