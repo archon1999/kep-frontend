@@ -5,34 +5,31 @@
         <section-info></section-info>
       </div>
       <div class="col-lg-10 col-12 offset-0 offset-lg-1">
-        @defer (on viewport) {
+        @defer (on viewport){
           <section-study-plans></section-study-plans>
         } @placeholder {
-          <div class="card" [style.height.400]="">
+          <div class="card" [style.height.px]="400">
             <spinner></spinner>
           </div>
         }
-
-        @defer (on viewport) {
+        @defer (on viewport){
           <section-topics></section-topics>
         } @placeholder {
-          <div class="card" [style.height.200]="">
+          <div class="card" [style.height.px]="200">
             <spinner></spinner>
           </div>
         }
-
-        @defer (on viewport) {
+        @defer (on viewport){
           <section-problems-filter></section-problems-filter>
         } @placeholder {
-          <div class="card" [style.height.200]="">
+          <div class="card" [style.height.px]="200">
             <spinner></spinner>
           </div>
         }
-
-        @defer (on viewport) {
+        @defer (on viewport){
           <section-problems-table></section-problems-table>
         } @placeholder {
-          <div class="card" [style.height.400]="">
+          <div class="card" [style.height.px]="500">
             <spinner></spinner>
           </div>
         }
