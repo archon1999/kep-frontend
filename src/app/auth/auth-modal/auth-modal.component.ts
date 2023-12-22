@@ -4,12 +4,17 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CoreCommonModule } from '@core/common.module';
 
 @Component({
   selector: 'app-auth-modal',
   templateUrl: './auth-modal.component.html',
   styleUrls: ['./auth-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+  ]
 })
 export class AuthModalComponent implements OnInit {
 

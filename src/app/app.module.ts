@@ -17,13 +17,9 @@ import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { coreConfig } from './app-config';
 
 import { AppComponent } from 'app/app.component';
-import { AuthModalComponent } from '@auth/auth-modal/auth-modal.component';
-import { ErrorComponent } from './modules/pages/miscellaneous/error/error.component';
 import { WebsocketModule } from '@shared/services/websocket';
 
 import { APP_BASE_HREF } from '@angular/common';
-import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
-
 import { environment } from 'environments/environment';
 import { HIGHLIGHT_OPTIONS, HighlightModule, HighlightOptions } from 'ngx-highlightjs';
 
@@ -65,7 +61,7 @@ const appRoutes: Routes = [
   { path: 'users', loadChildren: () => import('./modules/users/users.routing') },
   { path: 'help', loadChildren: () => import('./modules/help/help.module').then(m => m.HelpModule) },
   { path: 'todo', loadComponent: () => import('./modules/todo/todo.component').then(c => c.TodoComponent) },
-  { path: '**', component: ErrorComponent },
+  { path: '**', loadComponent: () => import('./modules/pages/miscellaneous/error/error.component').then(c => c.ErrorComponent) },
 ];
 
 @Injectable({ providedIn: 'root' })
@@ -99,7 +95,6 @@ export function authFactory(authService: AuthService) {
 @NgModule({
   declarations: [
     AppComponent,
-    AuthModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -125,7 +120,6 @@ export function authFactory(authService: AuthService) {
     CoreCommonModule,
     CoreSidebarModule,
     HighlightModule,
-    UserPopoverModule,
     LoadingBarRouterModule,
     LoadingBarHttpClientModule,
     NgxSpinnerModule,
