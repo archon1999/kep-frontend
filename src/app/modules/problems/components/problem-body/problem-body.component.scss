@@ -50,3 +50,7 @@ code {
 .dark-layout pre code {
   color: white !important;
 }
+
+::ng-deep problem-body img {
+  width: 50% !important;
+}
