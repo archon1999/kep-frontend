@@ -75,7 +75,7 @@ export const BASE_API_URL = BASE_URL + '/api/';
 
   initOptions(options: any) {
     options.headers = new HttpHeaders();
-    if (!environment.production || 1) {
+    if (!environment.production) {
       const username = 'admin';
       const password = 'htUgctJ4rYUWxt5';
       // username = 'NaZaR.IO';
