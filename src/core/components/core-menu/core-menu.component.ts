@@ -5,13 +5,28 @@ import { takeUntil } from 'rxjs/operators';
 
 import { CoreMenuService } from 'core/components/core-menu/core-menu.service';
 import { ApiService } from 'app/shared/services/api.service';
+import { CoreCommonModule } from '@core/common.module';
+import { CoreMenuVerticalItemComponent } from '@core/components/core-menu/vertical/item/item.component';
+import { CoreMenuVerticalSectionComponent } from '@core/components/core-menu/vertical/section/section.component';
+import { CoreMenuVerticalCollapsibleComponent } from '@core/components/core-menu/vertical/collapsible/collapsible.component';
+import { CoreMenuHorizontalItemComponent } from '@core/components/core-menu/horizontal/item/item.component';
+import { CoreMenuHorizontalCollapsibleComponent } from '@core/components/core-menu/horizontal/collapsible/collapsible.component';
 
 @Component({
   selector: '[core-menu]',
   templateUrl: './core-menu.component.html',
   styleUrls: ['./core-menu.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    CoreMenuVerticalItemComponent,
+    CoreMenuVerticalSectionComponent,
+    CoreMenuVerticalCollapsibleComponent,
+    CoreMenuHorizontalItemComponent,
+    CoreMenuHorizontalCollapsibleComponent,
+  ]
 })
 export class CoreMenuComponent implements OnInit {
   currentUser: any;

@@ -1,4 +1,4 @@
-import { Component, HostListener, HostBinding, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, HostBinding, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 
 import { Subject } from 'rxjs';
@@ -8,10 +8,19 @@ import { CoreConfigService } from 'core/services/config.service';
 import { CoreMenuService } from 'core/components/core-menu/core-menu.service';
 
 import { User } from 'app/auth/models';
+import { CoreCommonModule } from '@core/common.module';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { CoreMenuHorizontalItemComponent } from '@core/components/core-menu/horizontal/item/item.component';
 
 @Component({
   selector: '[core-menu-horizontal-collapsible]',
-  templateUrl: './collapsible.component.html'
+  templateUrl: './collapsible.component.html',
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    KepIconComponent,
+    CoreMenuHorizontalItemComponent,
+  ]
 })
 export class CoreMenuHorizontalCollapsibleComponent implements OnInit, OnDestroy {
   coreConfig: any;
@@ -30,29 +39,15 @@ export class CoreMenuHorizontalCollapsibleComponent implements OnInit, OnDestroy
   // Private
   private _unsubscribeAll: Subject<any>;
 
-  /**
-   * Constructor
-   *
-   * @param {Router} _router
-   * @param {CoreConfigService} _coreConfigService
-   * @param {CoreMenuService} _coreMenuService
-   */
   constructor(
     private el: ElementRef,
     private _router: Router,
     private _coreConfigService: CoreConfigService,
     private _coreMenuService: CoreMenuService
   ) {
-    // Set the private defaults
     this._unsubscribeAll = new Subject();
   }
 
-  // Lifecycle hooks
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * On init
-   */
   ngOnInit(): void {
     // Subscribe to config changes
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
