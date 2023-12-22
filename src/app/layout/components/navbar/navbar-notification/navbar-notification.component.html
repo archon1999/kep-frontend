@@ -205,19 +205,22 @@
 
     <!-- Notifications footer -->
     <li class="dropdown-menu-footer">
-      <kep-pagination
-        *ngIf="pagesCount > 1"
-        [@fadeInOnEnter]
-        [@fadeOutOnLeave]
-        [(page)]="pageNumber"
-        (pageChange)="updateNotifications()"
-        [maxSize]="3"
-        [boundaryLinks]="false"
-        [pageSize]="10"
-        [collectionSize]="total"
-        [customClass]="'mb-1'"
-      >
-      </kep-pagination>
+      @defer (on viewport){
+        <kep-pagination
+          *ngIf="pagesCount > 1"
+          [@fadeInOnEnter]
+          [@fadeOutOnLeave]
+          [(page)]="pageNumber"
+          (pageChange)="updateNotifications()"
+          [maxSize]="3"
+          [boundaryLinks]="false"
+          [pageSize]="10"
+          [collectionSize]="total"
+          [customClass]="'mb-1'">
+        </kep-pagination>
+      } @placeholder {
+        <spinner height="100"></spinner>
+      }
       <button *ngIf="!isAll && notifications.length > 0" class="btn btn-outline-primary btn-block" (click)="readAll()">{{ 'ReadAll' | translate }}</button>
       <button *ngIf="!isAll" class="btn btn-primary btn-block" (click)="click()">{{ 'AllNotifications' | translate }}</button>
       <button *ngIf="isAll" class="btn btn-primary btn-block" (click)="click()">{{ 'Unread' | translate }}</button>

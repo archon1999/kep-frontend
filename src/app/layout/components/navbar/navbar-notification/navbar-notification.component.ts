@@ -9,6 +9,12 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PageResult } from '@shared/components/classes/page-result';
 import Swal from 'sweetalert2';
+import { CoreCommonModule } from '@core/common.module';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgScrollbar } from 'ngx-scrollbar';
 
 interface Notification {
   id: number;
@@ -27,6 +33,15 @@ interface Notification {
     fadeInOnEnterAnimation(),
     fadeOutOnLeaveAnimation(),
   ],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    KepPaginationComponent,
+    SpinnerComponent,
+    KepIconComponent,
+    NgbDropdownModule,
+    NgScrollbar,
+  ]
 })
 export class NavbarNotificationComponent implements OnInit, OnDestroy {
 

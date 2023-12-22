@@ -66,10 +66,17 @@
       </a>
     </div>
 
-    <app-navbar-daily-tasks *ngIf="isAuthenticated"></app-navbar-daily-tasks>
-    <app-navbar-kepcoin *ngIf="isAuthenticated"></app-navbar-kepcoin>
+    @defer {
+      <app-navbar-daily-tasks *ngIf="isAuthenticated"></app-navbar-daily-tasks>
+    }
 
-    <app-navbar-notification *ngIf="isAuthenticated"></app-navbar-notification>
+    @defer {
+      <app-navbar-kepcoin *ngIf="isAuthenticated"></app-navbar-kepcoin>
+    }
+
+    @defer {
+      <app-navbar-notification *ngIf="isAuthenticated"></app-navbar-notification>
+    }
     <!-- User Dropdown -->
     <li ngbDropdown class="nav-item dropdown-user" *ngIf="isAuthenticated">
       <a
