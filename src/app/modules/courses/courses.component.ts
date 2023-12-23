@@ -24,7 +24,7 @@ export class CoursesComponent implements OnInit {
       type: '',
       links: [
         {
-          name: 'CPython.uz',
+          name: 'KEP.uz',
           isLink: false,
         },
       ]

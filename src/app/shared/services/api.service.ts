@@ -80,10 +80,10 @@ export const BASE_API_URL = BASE_URL + '/api/';
       const password = 'htUgctJ4rYUWxt5';
       // username = 'NaZaR.IO';
       // password = 'cpython2428';
-      // username = 'CPython.uz';
+      // username = 'KEP.uz';
       // password = 'cpython';
       const token = btoa(`${ username }:${ password }`);
-      options.headers = options.headers.set('Authorization', `Basic ${ token }`);
+      // options.headers = options.headers.set('Authorization', `Basic ${ token }`);
     }
     options.headers = options.headers.set('Content-Type', 'application/json; charset=utf-8');
     options.withCredentials = true;
