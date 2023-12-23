@@ -46,7 +46,9 @@ export class MathjaxComponent implements OnInit, OnChanges {
     if (changes['content']) {
       setTimeout(() => {
         if (window['MathJax']) {
-          window['MathJax'].typesetPromise();
+          try {
+            window['MathJax'].typesetPromise();
+          } catch (e) {}
         }
       });
     }

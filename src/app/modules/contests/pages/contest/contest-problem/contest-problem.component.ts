@@ -70,7 +70,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
       this.contest = Contest.fromJSON(contest);
       this.contestProblem = contestProblem;
       this.problem = contestProblem.problem;
-      setTimeout(() => this.langService.setLanguage(this.selectedLang as any));
+      // setTimeout(() => this.langService.setLanguage(this.selectedLang as any));
       this.titleService.updateTitle(this.route, {
         contestTitle: contest.title,
         problemSymbol: contestProblem.symbol,
@@ -97,7 +97,9 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
           this.selectedAvailableLang = findAvailableLang(this.problem.availableLanguages, lang);
           this.selectedLang = lang;
           if (!this.selectedAvailableLang) {
-            this.langService.setLanguage(this.problem.availableLanguages[0].lang);
+            setTimeout(() => {
+              this.langService.setLanguage(this.problem.availableLanguages[0].lang);
+            }, 1000);
           }
         }
       );
@@ -182,7 +184,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
     const params = {
       contestId: this.contest?.id,
       contestProblem: this.contestProblem.symbol,
-      username: this.currentUser.username
+      username: this.currentUser?.username
     };
     this.api.get('attempts', paramsMapper(params)).subscribe(
       (result: PageResult<Attempt>) => {

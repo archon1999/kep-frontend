@@ -6,10 +6,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
   templateUrl: './ng-select.component.html',
   styleUrls: ['./ng-select.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  standalone: true,
-  imports: [
-    NgSelectModule,
-  ]
 })
 export class NgSelectComponent implements OnInit {
 
