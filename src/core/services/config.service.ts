@@ -3,12 +3,11 @@ import { ResolveEnd, Router } from '@angular/router';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-
-// import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
 import { CoreConfig } from '@core/types';
-import { deepCopy } from '@shared/utils';
 import { deepMerge } from '@shared/utils/deep-merge';
+import { deepCopy } from '@shared/utils';
+import { deepEquals } from '@shared/utils/deep-equals';
 
 export const CORE_CUSTOM_CONFIG = new InjectionToken('coreCustomConfig');
 
@@ -40,7 +39,7 @@ export class CoreConfigService {
   }
 
   set config(data) {
-    let config;
+    let config: CoreConfig;
 
     if (this.localConfig) {
       config = this.localConfig;
@@ -48,6 +47,7 @@ export class CoreConfigService {
       config = this._configSubject.getValue();
     }
 
+    // config = _.merge({}, config, data);
     config = deepMerge(config, data);
 
     if (config.layout.enableLocalStorage) {
@@ -71,6 +71,7 @@ export class CoreConfigService {
       config = this._configSubject.getValue();
     }
 
+    // config = _.merge({}, config, data);
     config = deepMerge(config, data);
 
     if (config.layout.enableLocalStorage) {
@@ -92,16 +93,14 @@ export class CoreConfigService {
 
   private _initConfig(): void {
     this._configSubject = new BehaviorSubject(deepCopy(this._defaultConfig));
+
     this._router.events.pipe(filter(event => event instanceof ResolveEnd)).subscribe(() => {
       this.localConfig = JSON.parse(localStorage.getItem('config'));
       const localDefault = this.localConfig ? this.localConfig : this._defaultConfig;
-      if (JSON.stringify(this._configSubject.getValue().layout) === JSON.stringify(localDefault.layout)) {
+      if (!deepEquals(this._configSubject.getValue().layout, localDefault.layout)) {
         const config = deepCopy(this._configSubject.getValue());
         config.layout = deepCopy(localDefault.layout);
         this._configSubject.next(config);
-        if (config.layout.enableLocalStorage) {
-          localStorage.setItem('config', JSON.stringify(config));
-        }
       }
     });
   }
