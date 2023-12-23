@@ -20,7 +20,13 @@
           </div>
         }
 
-        <section-problems-filter></section-problems-filter>
+        @defer (on viewport){
+          <section-problems-filter></section-problems-filter>
+        } @placeholder {
+          <div class="card" [style.height.px]="200">
+            <spinner></spinner>
+          </div>
+        }
 
         @defer (on viewport){
           <section-problems-table></section-problems-table>

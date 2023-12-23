@@ -16,15 +16,17 @@ export class LanguageService {
 
   constructor(
     public localStorageService: LocalStorageService,
-  ){}
+  ) {}
 
-  getLanguage(){
+  getLanguage() {
     return this._currentLang;
   }
 
-  setLanguage(lang: AttemptLangs){
+  setLanguage(lang: AttemptLangs, eventEmit = true) {
     this.localStorageService.set(LANG_KEY, lang);
-    this._currentLang.next(lang);
+    if (eventEmit) {
+      this._currentLang.next(lang);
+    }
   }
 
 }

@@ -125,9 +125,9 @@
                           </small>
                         </a>
                       </td>
-                      <td *ngIf="_contestProblem.ball > 1 && contest?.isAlready()">
+                      <td *ngIf="contest.hasBalls()">
                           <span class="badge badge-success badge-glow">
-                            {{ _contestProblem.getCurrentBall(contest) }}
+                            {{ _contestProblem.ball }}
                           </span>
                       </td>
                     </tr>

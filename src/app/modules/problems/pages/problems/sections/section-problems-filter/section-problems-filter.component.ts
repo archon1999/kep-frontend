@@ -84,7 +84,7 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
     this.filterForm.controls.tags.valueChanges.subscribe(
       (tags) => {
         console.log(tags);
-        this.selectedTagsName = Array.from(new Set(this.tags.filter(tag => tags.indexOf(tag.id) !== -1).map(tag => tag.name))).join(', ')
+        this.selectedTagsName = Array.from(new Set(this.tags.filter(tag => tags.indexOf(tag.id) !== -1).map(tag => tag.name))).join(', ');
       }
     );
 
