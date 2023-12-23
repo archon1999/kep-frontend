@@ -94,9 +94,14 @@
     rel="stylesheet"
   />
   <script>
-      snowf.init({
+    setTimeout(() => {
+      let snow = snowf.init({
           size: 5,
-          amount: 50
+          amount: 50,
       });
+      window.onresize = function() {
+          snow.resize();
+      };
+    }, 10000);
   </script>
 </html>

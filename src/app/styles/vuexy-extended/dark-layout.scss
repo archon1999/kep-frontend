@@ -31,10 +31,10 @@ $colors: (
     }
 
     .bg-#{$color_name} {
-      background-color: $dark-color;
+      background-color: $dark-color !important;
 
       &.badge-glow {
-        box-shadow: 0 0 5px $dark-color;
+        box-shadow: 0 0 5px $dark-color !important;
       }
     }
 
