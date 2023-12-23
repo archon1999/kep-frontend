@@ -44,7 +44,7 @@ pre {
 li[core-menu-horizontal-collapsible],
 .main-menu.expanded li[core-menu-vertical-item],
 .menu-expanded li[core-menu-vertical-item] {
-  &.active > a > kep-icon > span {
+  &.active > a > kep-icon > span, &.active > div > kep-icon > span {
     color: white !important;
   }
 }
