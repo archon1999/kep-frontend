@@ -195,7 +195,7 @@ export const locale = {
     Password: 'Parol',
     or: 'yoki',
     Welcome: 'Xush kelibsiz',
-    WelcomeToCPython: 'Xush kelibsiz CPythonga',
+    WelcomeToKEP: 'Xush kelibsiz KEPga',
     LoginText: 'Iltimos avtorizatsiyadan o`ting va sayohatni davom ettiring',
     LoginSuccessText: 'Muvaffaqiyatli kirdingiz',
     LoginErrorText: 'Login yoki parol noto`g`ri',
@@ -243,7 +243,7 @@ export const locale = {
     LatestNews: 'So`ngi yangiliklar',
     DailyActivity: 'Kunlik faollik',
     BirthDays: 'Tug`ilgan kunlar',
-    HomePageTitle: 'CPython bilan qoling',
+    HomePageTitle: 'KEP bilan qoling',
     Comments: 'Izohlar',
     WriteComment: 'Izoh yozish',
     OrderBy: 'Saralash',
@@ -412,8 +412,8 @@ export const locale = {
       }
     ],
     LandingPage: {
-      SectionTopTitle: 'CPython.uz bilan dasturlashni o`rganing',
-      SectionTopText: 'CPython.uz dasturlash mahoratlaringiz va raqobatni oshirish uchun mo`ljanlangan platforma',
+      SectionTopTitle: 'KEP.uz bilan dasturlashni o`rganing',
+      SectionTopText: 'KEP.uz dasturlash mahoratlaringiz va raqobatni oshirish uchun mo`ljanlangan platforma',
       SectionLearnTitle: 'Dasturlashni o`rganish',
       SectionLearnText: 'Ta`limga yangi yondashuv',
       SectionPracticeTitle: 'Ishlash',
@@ -535,7 +535,7 @@ export const locale = {
     },
     PageTitle: {
       Home: 'Bosh sahifa',
-      Landing: 'CPython.uz - Dasturlashni o`rganish uchun platforma',
+      Landing: 'KEP.uz - Dasturlashni o`rganish uchun platforma',
       Problems: {
         Problems: 'Masalalar',
         Problem: '{{ problemId }}. {{ problemTitle }} | Masala',

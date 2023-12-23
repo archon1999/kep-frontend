@@ -17,7 +17,7 @@ export class TitleService {
   updateTitle(route: ActivatedRoute, params: object) {
     const key = `PageTitle.${ route.snapshot.data['title'] }`;
     this.translateService.get(key, params).subscribe((value: string) => {
-      this.title.setTitle(`${ value } | CPython.uz`);
+      this.title.setTitle(`${ value } | KEP.uz`);
     });
   }
 
