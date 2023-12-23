@@ -24,6 +24,9 @@ export class AuthService {
   }
 
   getMe() {
+    if (!localStorage.getItem('config')) {
+      return of(null);
+    }
     return this.api.get('me').pipe(
       tap((user: User) => {
         if (user) {
