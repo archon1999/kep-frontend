@@ -4,7 +4,7 @@
       <kep-icon name="filter"></kep-icon>
       {{ 'Filter' | translate }}
     </div>
-    <button class="btn btn-sm btn-primary" (click)="filterCollapsed=!filterCollapsed;">
+    <button aria-label="filter-collapsed" class="btn btn-sm btn-primary" (click)="filterCollapsed=!filterCollapsed;">
       <kep-icon [name]="filterCollapsed ? 'double-up' : 'double-down'"></kep-icon>
     </button>
   </div>
@@ -13,7 +13,7 @@
       <div class="row">
         <div class="col-6 col-lg-3">
           <div class="form-group">
-            <label class="text-primary">
+            <label class="text-primary" aria-label="Title">
               <kep-icon name="pencil"></kep-icon>
               <strong>
                 {{ 'TITLE' | translate }}:
@@ -29,7 +29,7 @@
         </div>
 
         <div class="col-6 col-lg-3">
-          <label class="text-primary">
+          <label class="text-primary" aria-label="Tags">
             <kep-icon name="tags"></kep-icon>
             <strong>
               {{ 'TAGS' | translate }}:
@@ -91,7 +91,7 @@
         </div>
 
         <div class="col-6 col-lg-3">
-          <label class="text-primary">
+          <label class="text-primary" aria-label="Difficulty">
             <kep-icon name="graph-2"></kep-icon>
             <strong>
               {{ 'DIFFICULTY' | translate }}:
@@ -109,7 +109,7 @@
         </div>
 
         <div class="col-lg-3 col-6">
-          <label class="text-primary">
+          <label class="text-primary" aria-label="Status">
             <kep-icon name="check-square"></kep-icon>
             <strong>
               {{ 'STATUS' | translate }}:
