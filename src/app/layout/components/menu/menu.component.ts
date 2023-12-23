@@ -17,7 +17,7 @@ import { VerticalMenuComponent } from '@layout/components/menu/vertical-menu/ver
 })
 export class MenuComponent {
   constructor(private _elementRef: ElementRef, private _renderer: Renderer2) {
-    this._menuType = 'vertical-menu';
+    this._menuType = 'horizontal-menu';
   }
 
   private _menuType: string;

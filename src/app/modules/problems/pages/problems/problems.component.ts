@@ -11,6 +11,7 @@ import { SectionSidebarComponent } from '@problems/pages/problems/sections/secti
 import { SectionInfoComponent } from '@problems/pages/problems/sections/section-info/section-info.component';
 import { BaseComponent } from '@shared/components/classes/base.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 
 @Component({
   selector: 'app-problems',
@@ -28,6 +29,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
     SectionSidebarComponent,
     SectionInfoComponent,
     SpinnerComponent,
+    NgSelectModule
   ],
 })
 export class ProblemsComponent extends BaseComponent {
