@@ -26,14 +26,9 @@
 <ng-template #navbar>
   <app-navbar
     *ngIf="!coreConfig.layout.navbar.hidden"
-    [ngClass]="[
-      coreConfig.layout.navbar.customBackgroundColor === true
-        ? coreConfig.layout.navbar.background +
-          ' ' +
-          coreConfig.layout.navbar.type +
-          ' ' +
-          coreConfig.layout.navbar.backgroundColor
-        : coreConfig.layout.navbar.background + ' ' + coreConfig.layout.navbar.type,
+    [class]="[
+      coreConfig.layout.navbar.background,
+      coreConfig.layout.navbar.type,
       coreConfig.layout.navbar.type === 'floating-nav' ? 'container-xxl' : ''
     ]"
     class="header-navbar navbar navbar-expand-lg align-items-center navbar-shadow"
@@ -66,15 +61,7 @@
   <footer
     *ngIf="!coreConfig.layout.footer.hidden"
     class="footer"
-    [ngClass]="
-      coreConfig.layout.footer.customBackgroundColor === true
-        ? coreConfig.layout.footer.background +
-          ' ' +
-          coreConfig.layout.footer.type +
-          ' ' +
-          coreConfig.layout.footer.backgroundColor
-        : coreConfig.layout.footer.background + ' ' + coreConfig.layout.footer.type
-    "
+    [class]="[coreConfig.layout.footer.background, coreConfig.layout.footer.type]"
   ></footer>
 </ng-template>
 <!-- / FOOTER -->

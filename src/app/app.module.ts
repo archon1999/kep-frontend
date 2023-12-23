@@ -21,9 +21,7 @@ import { WebsocketModule } from '@shared/services/websocket';
 
 import { APP_BASE_HREF } from '@angular/common';
 import { environment } from 'environments/environment';
-import { HIGHLIGHT_OPTIONS, HighlightModule, HighlightOptions } from 'ngx-highlightjs';
 
-import { register } from 'swiper/element/bundle';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { monacoConfig } from './monaco-config';
@@ -31,14 +29,15 @@ import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx
 import { map } from 'rxjs/operators';
 import { AuthService } from '@auth/service';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { VerticalLayoutComponent } from '@layout/vertical/vertical-layout.component';
-import { HorizontalLayoutComponent } from '@layout/horizontal/horizontal-layout.component';
 import { CustomBreakPointsProvider } from '@layout/custom-breakpoints';
+
+import { register } from 'swiper/element/bundle';
+import { LayoutComponent } from '@layout/layout.component';
 
 register();
 
 const appRoutes: Routes = [
-  { path: '', loadChildren: () => import('./modules/landing-page/landing-page.routing') },
+  { path: '', loadChildren: () => import('./modules/landing-page/landing-page.routing'), pathMatch: 'full' },
   { path: '', loadChildren: () => import('./modules/pages/pages.module').then(m => m.PagesModule) },
   { path: 'home', loadChildren: () => import('./modules/home/home.routing') },
   { path: 'settings', loadChildren: () => import('./modules/account-settings/account-settings.module').then(m => m.AccountSettingsModule) },
@@ -76,9 +75,9 @@ export class CustomTitleStrategy extends TitleStrategy {
   override updateTitle(routerState: RouterStateSnapshot) {
     const title = this.buildTitle(routerState);
     if (title !== undefined) {
-      const key = `PageTitle.${title}`;
+      const key = `PageTitle.${ title }`;
       this.translateService.get(key).subscribe((value: any) => {
-        this.title.setTitle(`${value} - CPython.uz`);
+        this.title.setTitle(`${ value } - CPython.uz`);
       });
     }
   }
@@ -113,20 +112,18 @@ export function authFactory(authService: AuthService) {
     }),
 
     FlexLayoutModule.withConfig({ disableDefaultBps: true }),
-    VerticalLayoutComponent,
-    HorizontalLayoutComponent,
 
     CoreModule.forRoot(coreConfig),
     CoreCommonModule,
     CoreSidebarModule,
-    HighlightModule,
     LoadingBarRouterModule,
     LoadingBarHttpClientModule,
     NgxSpinnerModule,
     MonacoEditorModule.forRoot(monacoConfig),
     NgxCountriesModule.forRoot({
       defaultLocale: 'en',
-    })
+    }),
+    LayoutComponent
   ],
   providers: [
     { provide: TitleStrategy, useClass: CustomTitleStrategy },

@@ -1,9 +1,11 @@
-@if (menuType === 'vertical-menu'){
-  @defer {
+@defer (when menuType === 'vertical-menu') {
+  @if (menuType === 'vertical-menu'){
     <vertical-menu></vertical-menu>
   }
-} @else if (menuType === 'horizontal-menu'){
-  @defer {
+}
+
+@defer (when menuType === 'horizontal-menu') {
+  @if (menuType === 'horizontal-menu'){
     <horizontal-menu></horizontal-menu>
   }
 }

@@ -22,15 +22,11 @@ export const coreConfig: CoreConfig = {
       hidden: false,           // Boolean: true, false
       type: 'fixed-top',     // navbar-static-top, fixed-top, floating-nav, d-none
       background: 'navbar-light',  // navbar-light. navbar-dark
-      customBackgroundColor: true,            // Boolean: true, false
-      backgroundColor: ''               // BS color i.e bg-primary, bg-success
     },
     footer: {
       hidden: true,           // Boolean: true, false
       type: 'footer-static', // footer-static, footer-sticky, d-none
       background: 'footer-light',  // footer-light. footer-dark
-      customBackgroundColor: false,           // Boolean: true, false
-      backgroundColor: ''               // BS color i.e bg-primary, bg-success
     },
     enableLocalStorage: true,
     customizer: false,                       // Boolean: true, false (Enable theme customizer)

@@ -20,15 +20,11 @@ export interface CoreConfig {
       hidden: boolean;
       type: 'navbar-static-top' | 'fixed-top' | 'floating-nav' | 'd-none';
       background: 'navbar-dark' | 'navbar-light';
-      customBackgroundColor: boolean;
-      backgroundColor: string;
     };
     footer: {
       hidden: boolean;
       type: 'footer-static' | 'footer-sticky' | 'd-none';
       background: 'footer-dark' | 'footer-light';
-      customBackgroundColor: boolean;
-      backgroundColor: string;
     };
     enableLocalStorage: boolean;
     customizer: boolean;

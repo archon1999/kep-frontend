@@ -1,25 +1,4 @@
-@if (coreConfig.layout.type === 'vertical'){
-  @defer {
-    <vertical-layout></vertical-layout>
-  }
-} @else if(coreConfig.layout.type === 'horizontal'){
-  @defer {
-    <horizontal-layout></horizontal-layout>
-  }
-}
-
-<!--<core-sidebar-->
-<!--  name="themeCustomizer"-->
-<!--  class="customizer d-none d-md-block"-->
-<!--&gt;-->
-<!--  <a-->
-<!--    class="customizer-toggle d-flex align-items-center justify-content-center"-->
-<!--    (click)="toggleSidebar('themeCustomizer')"-->
-<!--  >-->
-<!--    <span [data-feather]="'settings'" [class]="'spinner'"></span>-->
-<!--  </a>-->
-<!--  <core-theme-customizer></core-theme-customizer>-->
-<!--</core-sidebar>-->
+<app-layout></app-layout>
 
 <ngx-loading-bar></ngx-loading-bar>
 

@@ -6,10 +6,10 @@ import { BaseComponent } from '@shared/components/classes/base.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { equalsCheck } from '@shared/utils';
 import { CoreCommonModule } from '@core/common.module';
-import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 import { NgbAccordionModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 
 interface Difficulty {
   name: string;
@@ -23,11 +23,11 @@ interface Difficulty {
   standalone: true,
   imports: [
     CoreCommonModule,
-    NgSelectModule,
     ProblemsPipesModule,
     NgbDropdownModule,
     NgbAccordionModule,
     KepIconComponent,
+    NgSelectModule,
   ]
 })
 export class SectionProblemsFilterComponent extends BaseComponent implements OnInit {
@@ -83,7 +83,6 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
 
     this.filterForm.controls.tags.valueChanges.subscribe(
       (tags) => {
-        console.log(tags);
         this.selectedTagsName = Array.from(new Set(this.tags.filter(tag => tags.indexOf(tag.id) !== -1).map(tag => tag.name))).join(', ');
       }
     );
