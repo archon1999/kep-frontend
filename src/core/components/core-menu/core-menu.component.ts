@@ -17,7 +17,6 @@ import { CoreMenuHorizontalCollapsibleComponent } from '@core/components/core-me
   templateUrl: './core-menu.component.html',
   styleUrls: ['./core-menu.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
     CoreCommonModule,
@@ -53,7 +52,6 @@ export class CoreMenuComponent implements OnInit {
     this._coreMenuService.onMenuChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => {
       this.currentUser = this._coreMenuService.currentUser;
       this.menu = this._coreMenuService.getCurrentMenu();
-      this._changeDetectorRef.markForCheck();
     });
   }
 

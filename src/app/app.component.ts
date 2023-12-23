@@ -124,7 +124,10 @@ export class AppComponent implements OnInit, OnDestroy {
       if (this.coreConfig.layout.type === 'vertical') {
         this._elementRef.nativeElement.classList.add('vertical-layout', 'vertical-menu-modern');
       } else if (this.coreConfig.layout.type === 'horizontal') {
-        this._elementRef.nativeElement.classList.add('horizontal-layout', 'horizontal-menu');
+        this._elementRef.nativeElement.classList.add('horizontal-layout');
+        if (window.innerWidth > 1199) {
+          this._elementRef.nativeElement.classList.add('horizontal-menu');
+        }
       }
 
       this._elementRef.nativeElement.classList.remove(
@@ -168,13 +171,13 @@ export class AppComponent implements OnInit, OnDestroy {
       } else {
         this._elementRef.nativeElement.classList.remove('blank-page');
         // ! Fix: Transition issue while coming from blank page
-        // setTimeout(() => {
-        //   this._renderer.setAttribute(
-        //     this._elementRef.nativeElement.getElementsByClassName('app-content')[0],
-        //     'style',
-        //     'transition:300ms ease all'
-        //   );
-        // }, 0);
+        setTimeout(() => {
+          this._renderer.setAttribute(
+            this._elementRef.nativeElement.getElementsByClassName('app-content')[0],
+            'style',
+            'transition:300ms ease all'
+          );
+        }, 1000);
         // If navbar hidden
         if (this.coreConfig.layout.navbar.hidden) {
           this._elementRef.nativeElement.classList.add('navbar-hidden');
