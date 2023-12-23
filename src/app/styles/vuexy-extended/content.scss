@@ -40,7 +40,10 @@ pre {
   }
 }
 
-#main-menu-navigation > li[core-menu-horizontal-item], li[core-menu-horizontal-collapsible], .main-menu.expanded li[core-menu-vertical-item] {
+#main-menu-navigation > li[core-menu-horizontal-item],
+li[core-menu-horizontal-collapsible],
+.main-menu.expanded li[core-menu-vertical-item],
+.menu-expanded li[core-menu-vertical-item] {
   &.active > a > kep-icon > span {
     color: white !important;
   }

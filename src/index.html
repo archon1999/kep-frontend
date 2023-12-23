@@ -96,12 +96,29 @@
   <script>
     setTimeout(() => {
       let snow = snowf.init({
-          size: 5,
-          amount: 50,
+        size: 2,
+        amount: 20,
+        speed: 1
       });
       window.onresize = function() {
-          snow.resize();
+        snow.resize();
       };
+      setTimeout(() => {
+        snow.setOptions({
+            size: 5,
+            amount: 50,
+            speed: 1.5
+        })
+        setTimeout(() => {
+            snow.setOptions({
+                size: 7,
+                amount: 75,
+                speed: 2,
+                wind: 1,
+            })
+        }, 5*60*1000);
+
+      }, 20000);
     }, 10000);
   </script>
 </html>
