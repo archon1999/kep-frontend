@@ -7,6 +7,7 @@ import { User } from '@auth/models';
 import { CoreCommonModule } from '@core/common.module';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { NgbDropdownModule, NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
+import { KepStreakComponent } from '@shared/components/kep-streak/kep-streak.component';
 
 interface DailyTask {
   type: number;
@@ -27,6 +28,7 @@ interface DailyTask {
     NgScrollbar,
     NgbProgressbarModule,
     NgbDropdownModule,
+    KepStreakComponent,
   ]
 })
 export class NavbarDailyTasksComponent implements OnInit, OnDestroy {

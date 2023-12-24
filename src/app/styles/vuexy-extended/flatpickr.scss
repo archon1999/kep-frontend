@@ -11,3 +11,11 @@
     background-color: #1d2028 !important;
   }
 }
+
+.flatpickr-calendar {
+  display: none !important;
+
+  &.open {
+    display: block !important;
+  }
+}
