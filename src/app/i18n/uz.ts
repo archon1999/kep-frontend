@@ -105,6 +105,7 @@ export const locale = {
     Learn: 'O`rganish',
     Practice: 'Ishlash',
     Competitions: 'Musobaqalar',
+    UnofficialParticipation: 'Norasmiy qatnashish',
     Statistics: 'Statistika',
     Blog: 'Blog',
     Login: 'Kirish',

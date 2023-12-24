@@ -45,8 +45,10 @@ export class ProblemsActivityCardComponent implements OnInit {
   activityDataUpdate(days: number) {
     this.isLoading = true;
     const username = this.username;
+    this.activityDays = days;
     this.statisticsService.getLastDays(username, days).subscribe((result: any) => {
       this.isLoading = false;
+      console.log(this.isLoading);
       this.activitySolved = result.solved;
       const data = [];
       let days = 0;

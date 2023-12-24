@@ -113,7 +113,7 @@
           [customContent]="true"
           [purchaseUrl]="'contests/' + contest.id + '/purchase-unrated-contest/'"
           [value]="10"
-          class="mr-1" ngbTooltip="{{ 'Unrated' | translate }}"
+          class="mr-1" ngbTooltip="{{ 'UnofficialParticipation' | translate }}"
           (success)="contest.userInfo.unratedContestPurchased=true;">
           <img height="25" src="assets/images/icons/unrated.png">
         </kepcoin-spend-swal>

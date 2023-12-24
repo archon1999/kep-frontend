@@ -1,7 +1,4 @@
-@import 'bootstrap/scss/mixins'; 
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
-
+@import 'styles/kep-imports';
 
 .card {
   margin-bottom: 0.5rem !important;
@@ -12,6 +9,12 @@
     padding-left: 10px !important;
     color: #604f99;
     transition: .5s;
+  }
+
+  .card-title {
+    @include dark-layout {
+      color: #f1e5d9 !important;
+    }
   }
 
   .card-header>div:nth-child(1) {

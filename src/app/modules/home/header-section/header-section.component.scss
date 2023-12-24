@@ -110,6 +110,7 @@ header {
 ::ng-deep .dark-layout {
   header {
     background: linear-gradient(-45deg, mix(black, $primary, 80), mix(black, $primary, 60), mix(black, $primary, 40), mix(black, $primary, 30));
+    animation: none;
 
     & > svg {
       stroke: $theme-dark-body-bg !important;

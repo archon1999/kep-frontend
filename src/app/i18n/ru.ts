@@ -170,6 +170,7 @@ export const locale = {
     Registration: 'Зарегистрироваться',
     Registrated: 'Зарегистрировано',
     Pefomance: 'Перфоманс',
+    UnofficialParticipation: 'Неофициальное участие',
     Wins: 'Выигрыши',
     Draws: 'Ничьи',
     Losses: 'Проигрыши',
