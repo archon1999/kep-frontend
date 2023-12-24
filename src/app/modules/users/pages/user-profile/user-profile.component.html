@@ -1,12 +1,12 @@
 <div class="content-wrapper container-xxl p-0">
   <div class="content-body" id="user-profile">
     <div class="card profile-header mb-2">
-      <img class="card-img-top" [src]="user.coverPhoto" alt="User Profile Image"/>
+      <img class="card-img-top" loading="lazy" [src]="user.coverPhoto" alt="User Profile Image"/>
 
       <div class="position-relative">
         <div class="profile-img-container d-flex align-items-center">
           <div class="profile-img">
-            <img [src]="user.avatar" class="rounded img-fluid" alt="Card image"/>
+            <img [src]="user.avatar" loading="lazy"  class="rounded img-fluid" alt="Card image"/>
           </div>
           <div class="profile-title ml-3">
             <h2 class="text-white">
