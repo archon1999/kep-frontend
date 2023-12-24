@@ -25,7 +25,8 @@ import { CoreMenuHorizontalCollapsibleComponent } from '@core/components/core-me
     CoreMenuVerticalCollapsibleComponent,
     CoreMenuHorizontalItemComponent,
     CoreMenuHorizontalCollapsibleComponent,
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoreMenuComponent implements OnInit {
   currentUser: any;
@@ -52,6 +53,10 @@ export class CoreMenuComponent implements OnInit {
     this._coreMenuService.onMenuChanged.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => {
       this.currentUser = this._coreMenuService.currentUser;
       this.menu = this._coreMenuService.getCurrentMenu();
+
+      // this.loadEvents();
+
+      this._changeDetectorRef.markForCheck();
     });
   }
 

@@ -1,6 +1,8 @@
 <div class="card">
   @if (isLoading) {
-    <spinner height="200px"></spinner>
+    <div [style.height.px]="200">
+      <spinner></spinner>
+    </div>
   } @else {
     <div class="card-header">
       <div class="card-title">
