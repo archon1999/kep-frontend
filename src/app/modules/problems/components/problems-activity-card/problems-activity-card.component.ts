@@ -81,6 +81,9 @@ export class ProblemsActivityCardComponent implements OnInit {
         yaxis: {
           labels: {
             show: false,
+            formatter(val: number): string {
+              return val.toFixed(0);
+            }
           }
         },
         series: [
