@@ -45,13 +45,16 @@ export class ProblemSidebarStatisticsComponent implements OnInit {
       }
       this.attemptStatisticsChart = {
         series: series,
-        labels: labels,
         colors: colors,
+        labels: labels,
         chart: {
           type: 'donut',
+          height: 500,
         },
         legend: {
-          show: false,
+          show: true,
+          position: 'bottom',
+          horizontalAlign: 'center'
         },
         plotOptions: {
           pie: {
@@ -94,10 +97,11 @@ export class ProblemSidebarStatisticsComponent implements OnInit {
         colors: colors,
         chart: {
           type: 'pie',
+          height: 500,
         },
         legend: {
           show: true,
-          position: 'top',
+          position: 'bottom',
         },
         plotOptions: {
           pie: {
@@ -144,11 +148,11 @@ export class ProblemSidebarStatisticsComponent implements OnInit {
     this.service.getAttemptsForSolveStatistics(this.problem.id).subscribe((result: any) => {
       const labels = [];
       const data = [];
-      for (const data of result) {
-        labels.push(data.attempts);
+      for (const A of result) {
+        labels.push(A.attempts);
         data.push({
-          'x': numberOfAttemptsText + ': ' + data.attempts,
-          'y': data.value,
+          'x': numberOfAttemptsText + ': ' + A.attempts,
+          'y': A.value,
         });
       }
       this.attemptsForSolveChart = {
