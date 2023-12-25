@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Renderer2, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, Renderer2, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HorizontalLayoutComponent } from '@layout/horizontal/horizontal-layout.component';
 import { VerticalLayoutComponent } from '@layout/vertical/vertical-layout.component';
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreConfig } from '@core/types';
 import { ScriptService } from '@shared/services/script.service';
-import { ChangeDetection } from '@angular/cli/lib/config/workspace-schema';
 
 const SCRIPT_PATH = 'assets/plugins/snowf/snowf.min.js';
 
@@ -19,6 +18,7 @@ const SCRIPT_PATH = 'assets/plugins/snowf/snowf.min.js';
 })
 export class LayoutComponent {
   public coreConfig: CoreConfig;
+  public lightsCount = 0;
 
   constructor(
     public coreConfigService: CoreConfigService,
@@ -26,6 +26,8 @@ export class LayoutComponent {
     private scriptService: ScriptService,
     public changeDetection: ChangeDetectorRef,
   ) {
+    this.lightsCount = Math.trunc(window.innerHeight / 30);
+
     coreConfigService.getConfig().subscribe(
       (config) => {
         this.coreConfig = config;
@@ -34,14 +36,19 @@ export class LayoutComponent {
     );
 
     const scriptElement = this.scriptService.loadJsScript(this.renderer, SCRIPT_PATH);
-      scriptElement.onload = (e) => {
+    scriptElement.onload = (e) => {
       window['snowf'].init({
         size: 5,
         amount: 50,
       });
-      window.onresize = function() {
+      window.onresize = function () {
         window['snowf'].resize();
       };
     };
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.lightsCount = Math.trunc(window.innerHeight / 30);
   }
 }
