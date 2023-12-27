@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { randomInt } from '../../../../../shared/utils/random';
+import { randomInt } from '@shared/utils';
+import { CoreCommonModule } from '@core/common.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'problem1630',
   templateUrl: './problem1630.component.html',
-  styleUrls: ['./problem1630.component.scss']
+  styleUrls: ['./problem1630.component.scss'],
+  standalone: true,
+  imports: [CoreCommonModule, NgbTooltipModule]
 })
 export class Problem1630Component implements OnInit {
 
@@ -18,7 +22,7 @@ export class Problem1630Component implements OnInit {
   ngOnInit(): void {
   }
 
-  changePosition(){
+  changePosition() {
     this.top = randomInt(1, 500);
     this.left = randomInt(1, 500);
   }

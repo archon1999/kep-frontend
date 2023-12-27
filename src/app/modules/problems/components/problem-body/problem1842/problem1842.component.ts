@@ -1,19 +1,14 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'problem1842',
   templateUrl: './problem1842.component.html',
-  styleUrls: ['./problem1842.component.scss']
+  styleUrls: ['./problem1842.component.scss'],
+  standalone: true,
 })
-export class Problem1842Component implements OnInit {
+export class Problem1842Component {
   public magicString = 'Answer02102023';
   public magicStringChar = '';
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {

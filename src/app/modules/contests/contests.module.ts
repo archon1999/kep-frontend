@@ -4,14 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
-import {
-  NgbDatepickerModule,
-  NgbDropdownModule,
-  NgbNavModule,
-  NgbPopoverModule,
-  NgbTimepickerModule,
-  NgbTooltipModule
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepickerModule, NgbDropdownModule, NgbNavModule, NgbPopoverModule, NgbTimepickerModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 
@@ -22,16 +15,9 @@ import { CountUpModule } from 'ngx-countup';
 import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
-import { ProblemBodyModule } from '@problems/components/problem-body/problem-body.module';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
 import { ContestCreateGuard, ContestGuard } from './contests.guard';
-import {
-  ContestProblemResolver,
-  ContestProblemsResolver,
-  ContestResolver,
-  OngoingContestsResolver,
-  UpcomingContestsResolver
-} from './contests.resolver';
+import { ContestProblemResolver, ContestProblemsResolver, ContestResolver, OngoingContestsResolver, UpcomingContestsResolver } from './contests.resolver';
 import { ContestAttemptsComponent } from './pages/contest/contest-attempts/contest-attempts.component';
 import { ContestOgImageComponent } from './pages/contest/contest-og-image/contest-og-image.component';
 import { ContestProblemComponent } from './pages/contest/contest-problem/contest-problem.component';
@@ -63,6 +49,7 @@ import { EmptyResultComponent } from '@shared/components/empty-result/empty-resu
 import { ContestRegistrantsComponent } from '@contests/pages/contest/contest-registrants/contest-registrants.component';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
+import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';
 
 
 const routes: Routes = [
@@ -247,7 +234,7 @@ const routes: Routes = [
     UserPopoverModule,
     CountUpModule,
     NgbPopoverModule,
-    ProblemBodyModule,
+    ProblemBodyComponent,
     KepcoinSpendSwalModule,
     AttemptsTableModule,
     KepPaginationComponent,

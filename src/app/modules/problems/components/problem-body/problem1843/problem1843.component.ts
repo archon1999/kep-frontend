@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { randomInt } from '../../../../../shared/utils';
+import { randomInt } from '@shared/utils';
 import { ToastrService } from 'ngx-toastr';
 
 let magicIntervalId: any = -1;
@@ -7,17 +7,16 @@ const _clearInterval = window.clearInterval;
 const _clearTimeout = window.clearTimeout;
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'problem1843',
   templateUrl: './problem1843.component.html',
-  styleUrls: ['./problem1843.component.scss']
+  styleUrls: ['./problem1843.component.scss'],
+  standalone: true,
 })
 export class Problem1843Component implements OnInit {
 
   public magicNumber = 0;
 
-  constructor(public toastr: ToastrService) {
-  }
+  constructor(public toastr: ToastrService) {}
 
   ngOnInit(): void {
     window.clearTimeout = (id) => {

@@ -4,12 +4,16 @@ import { CoreConfig } from 'core/types';
 import { Problem } from '../../../models/problems.models';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { CoreCommonModule } from '@core/common.module';
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 @Component({
   selector: 'problem1734',
   templateUrl: './problem1734.component.html',
   styleUrls: ['./problem1734.component.scss'],
   encapsulation: ViewEncapsulation.Emulated,
+  standalone: true,
+  imports: [CoreCommonModule, MonacoEditorModule]
 })
 export class Problem1734Component implements OnInit, OnDestroy {
 
