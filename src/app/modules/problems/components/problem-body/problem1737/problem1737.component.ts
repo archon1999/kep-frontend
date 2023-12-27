@@ -3,7 +3,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 @Component({
   selector: 'problem1737',
   templateUrl: './problem1737.component.html',
-  styleUrls: ['./problem1737.component.scss']
+  styleUrls: ['./problem1737.component.scss'],
+  standalone: true,
 })
 export class Problem1737Component implements OnInit, OnDestroy {
 

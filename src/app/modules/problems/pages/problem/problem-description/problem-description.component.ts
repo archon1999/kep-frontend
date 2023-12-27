@@ -8,10 +8,10 @@ import { takeUntil } from 'rxjs/operators';
 import { Problem, Tag, Topic } from '../../../models/problems.models';
 import { CoreCommonModule } from '@core/common.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
-import { ProblemBodyModule } from '@problems/components/problem-body/problem-body.module';
 import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
 import { KepcoinSpendSwalModule } from '../../../../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
+import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';
 
 @Component({
   selector: 'problem-description',
@@ -22,7 +22,7 @@ import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/
     CoreCommonModule,
     NgSelectModule,
     NgbAccordionModule,
-    ProblemBodyModule,
+    ProblemBodyComponent,
     NgbNavModule,
     ClipboardModule,
     MonacoEditorComponent,

@@ -3,13 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'problem1638',
   templateUrl: './problem1638.component.html',
-  styleUrls: ['./problem1638.component.scss']
+  styleUrls: ['./problem1638.component.scss'],
+  standalone: true,
 })
-export class Problem1638Component implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class Problem1638Component {}

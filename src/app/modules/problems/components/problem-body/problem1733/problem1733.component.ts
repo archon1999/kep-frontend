@@ -4,12 +4,16 @@ import { CoreConfig } from 'core/types';
 import { Problem } from '../../../models/problems.models';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { CoreCommonModule } from '@core/common.module';
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 @Component({
   selector: 'problem1733',
   templateUrl: './problem1733.component.html',
   styleUrls: ['./problem1733.component.scss'],
   encapsulation: ViewEncapsulation.Emulated,
+  standalone: true,
+  imports: [CoreCommonModule, MonacoEditorModule]
 })
 export class Problem1733Component implements OnInit, OnDestroy {
 
@@ -34,40 +38,40 @@ export class Problem1733Component implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.coreConfigService.getConfig().pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (coreConfig: CoreConfig) => {
-        if(coreConfig.layout.skin == 'dark'){
+        if (coreConfig.layout.skin == 'dark') {
           this.editorOptions = {
             language: 'html',
             theme: 'vs-dark',
             tabSize: 2,
-          }
+          };
         } else {
           this.editorOptions = {
             language: 'html',
             theme: 'vs-light',
             tabSize: 2,
-          }
+          };
         }
       }
-    )
+    );
 
     this.html = localStorage.getItem(this.saveCodeName) || this.problem.availableLanguages[0].codeTemplate;
     this.setOutputHtml();
   }
 
-  @HostListener('document:mousemove', ['$event']) 
+  @HostListener('document:mousemove', ['$event'])
   onMouseMove(e) {
-    if(this.mouseEnter){
+    if (this.mouseEnter) {
       this.outputWidth = 100 * e.layerX / 285;
     } else {
       this.outputWidth = 100;
     }
   }
 
-  change(){
+  change() {
     this.setOutputHtml();
   }
 
-  setOutputHtml(){
+  setOutputHtml() {
     localStorage.setItem(this.saveCodeName, this.html);
     let html = this.html.replace(/<\s*img/, '<imga');
     this.outputHtml = `
@@ -76,9 +80,9 @@ export class Problem1733Component implements OnInit, OnDestroy {
           ${html}
         </body>
       </html>
-    `
+    `;
   }
-  
+
   ngOnDestroy(): void {
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();

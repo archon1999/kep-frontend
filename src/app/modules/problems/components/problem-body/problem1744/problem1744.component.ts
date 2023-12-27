@@ -1,19 +1,14 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { Problem } from '../../../models/problems.models';
+import { Component, Input } from '@angular/core';
+import { Problem } from '@problems/models/problems.models';
+import { HtmlProblemBodyComponent } from '../html-problem-body/html-problem-body.component';
 
 @Component({
-  // tslint:disable-next-line:component-selector
   selector: 'problem1744',
   templateUrl: './problem1744.component.html',
   styleUrls: ['./problem1744.component.scss'],
-  encapsulation: ViewEncapsulation.Emulated,
+  standalone: true,
+  imports: [HtmlProblemBodyComponent]
 })
-export class Problem1744Component implements OnInit {
-
+export class Problem1744Component {
   @Input() problem: Problem;
-
-  constructor() {}
-
-  ngOnInit() {}
-
 }
