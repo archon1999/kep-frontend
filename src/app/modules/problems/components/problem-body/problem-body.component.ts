@@ -33,6 +33,7 @@ import { Problem1903Component } from '@problems/components/problem-body/problem1
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
 import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
 import { CoreCommonModule } from '@core/common.module';
+import { Problem1869Component } from '@problems/components/problem-body/problem1869/problem1869.component';
 
 @Component({
   selector: 'problem-body',
@@ -73,6 +74,7 @@ import { CoreCommonModule } from '@core/common.module';
     MathjaxModule,
     ClipboardModule,
     CoreCommonModule,
+    Problem1869Component,
   ]
 })
 export class ProblemBodyComponent {

@@ -1,11 +1,11 @@
-$background: #3A3A4D;
-$tile-color: yellowgreen;
+@import 'styles/kep-imports';
+
+$background: mix(black, $primary, 90);
+$tile-color: $primary;
 $color: #efefef;
 
 h1 {
   color: $color;
-  font-weight: normal;
-  font-weight: 300;
   margin-bottom: 30px;
 
   a {
@@ -40,9 +40,6 @@ button {
 }
 
 #list {
-  background-color: rgba(0, 0, 0, 0.2);
-  width: 250px;
-  width: 90%;
   width: 0;
   position: relative;
   display: block;
