@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UserPopoverComponent } from './user-popover/user-popover.component';
 import { UserAvatarPopoverComponent } from './user-avatar-popover/user-avatar-popover.component';
 import { KepBadgeComponent } from '@shared/components/kep-badge/kep-badge.component';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { KepBadgeComponent } from '@shared/components/kep-badge/kep-badge.compon
     TranslateModule,
     RouterModule,
     NgbTooltipModule,
-    KepBadgeComponent
+    KepBadgeComponent,
+    KepIconComponent
   ],
   exports: [
     UserPopoverComponent,

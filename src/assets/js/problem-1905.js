@@ -1,5 +1,6 @@
 // GRID OPTIONS
 const colspans = [7, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 1, 1];
+const weights = [5, 2, 7, 5, 5, 3, 4, 2, 6, 1, 4, 3, 3, 2, 3, 1, 4];
 
 var rowSize   = 50;
 var colSize   = 50;
@@ -125,8 +126,9 @@ let index = 0;
 function createTile() {
 
     var colspan = colspans[index];
+    var w = weights[index];
     index++;
-    var element = $(`<div>${colspan}</div>`).addClass("tile");
+    var element = $(`<div>${colspan}, w=${w}</div>`).addClass("tile");
     var lastX   = 0;
 
     Draggable.create(element, {
@@ -153,6 +155,7 @@ function createTile() {
         width      : 0,
         x          : 0,
         y          : 0,
+        w: w,
     };
 
     // Add tile properties to our element for quick lookup

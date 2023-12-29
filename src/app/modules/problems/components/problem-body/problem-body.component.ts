@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Problem } from '../../models/problems.models';
 import { Problem1615Component } from '@problems/components/problem-body/problem1615/problem1615.component';
 import { Problem1623Component } from '@problems/components/problem-body/problem1623/problem1623.component';
@@ -34,6 +34,8 @@ import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module
 import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
 import { CoreCommonModule } from '@core/common.module';
 import { Problem1869Component } from '@problems/components/problem-body/problem1869/problem1869.component';
+import Swal from 'sweetalert2';
+import { Problem1905Component } from '@problems/components/problem-body/problem1905/problem1905.component';
 
 @Component({
   selector: 'problem-body',
@@ -71,12 +73,84 @@ import { Problem1869Component } from '@problems/components/problem-body/problem1
     Problem1843Component,
     Problem1870Component,
     Problem1903Component,
+    Problem1905Component,
     MathjaxModule,
     ClipboardModule,
     CoreCommonModule,
     Problem1869Component,
   ]
 })
-export class ProblemBodyComponent {
+export class ProblemBodyComponent implements OnInit, OnDestroy {
   @Input() problem: Problem;
+
+  private _intervalId: any;
+
+  ngOnInit() {
+    if (this.problem.id === 1869) {
+      let show = false;
+      this._intervalId = setInterval(() => {
+        let sum = 0;
+        let prevTile: any;
+        let ok = true;
+        if (!window['tiles']) { return; }
+        for (const el of window['tiles']) {
+          if (prevTile && prevTile.y !== el.tile.y) {
+            if (sum !== 12) {
+              ok = false;
+            }
+            sum = 0;
+          }
+          prevTile = el.tile;
+          sum += el.tile.colspan;
+        }
+        if (ok && !show) {
+          show = true;
+          const html = 'An' + 'swer' + 'is ' + ' 20' + '23' + '2' + '912';
+          Swal.fire({
+            title: 'Success',
+            icon: 'success',
+            html: html,
+          });
+        }
+      }, 5000);
+    }
+
+    if (this.problem.id === 1905) {
+      let show = false;
+      this._intervalId = setInterval(() => {
+        let sumL = 0;
+        let sumX = 0;
+        let prevTile: any;
+        let ok = true;
+        if (!window['tiles']) { return; }
+        for (const el of window['tiles']) {
+          if (prevTile && prevTile.y !== el.tile.y) {
+            if (sumL !== 12 || sumX !== 12) {
+              ok = false;
+            }
+            sumL = 0;
+            sumX = 0;
+          }
+          prevTile = el.tile;
+          sumL += el.tile.colspan;
+          sumX += el.tile.w;
+        }
+        if (ok && !show) {
+          show = true;
+          const html = 'An' + 'swer' + 'is ' + ' ' + '23' + '2' + '912';
+          Swal.fire({
+            title: 'Success',
+            icon: 'success',
+            html: html,
+          });
+        }
+      }, 5000);
+    }
+  }
+
+  ngOnDestroy() {
+    if (this._intervalId) {
+      clearInterval(this._intervalId);
+    }
+  }
 }
