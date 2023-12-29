@@ -6,11 +6,18 @@ import { NavbarService } from '../navbar.service';
 import { User } from '@auth/models';
 import { CoreCommonModule } from '@core/common.module';
 import { NgScrollbar } from 'ngx-scrollbar';
-import { NgbDropdownModule, NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { KepStreakComponent } from '@shared/components/kep-streak/kep-streak.component';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+
+enum DailyTaskType {
+  Problem = 1,
+  Test,
+  Challenge
+}
 
 interface DailyTask {
-  type: number;
+  type: DailyTaskType;
   kepcoin: number;
   progress: number;
   total: number;
@@ -29,6 +36,8 @@ interface DailyTask {
     NgbProgressbarModule,
     NgbDropdownModule,
     KepStreakComponent,
+    KepIconComponent,
+    NgbTooltipModule,
   ]
 })
 export class NavbarDailyTasksComponent implements OnInit, OnDestroy {
@@ -38,6 +47,8 @@ export class NavbarDailyTasksComponent implements OnInit, OnDestroy {
   public dailyTasks: Array<DailyTask> = [];
   public completed = 0;
   public progress = 0;
+
+  protected readonly DailyTaskType = DailyTaskType;
 
   private _unsubscribeAll = new Subject();
 
@@ -62,6 +73,7 @@ export class NavbarDailyTasksComponent implements OnInit, OnDestroy {
       this.streak = result.streak;
       this.maxStreak = result.maxStreak;
       this.dailyTasks = result.dailyTasks;
+      this.completed = 0;
       for (const dailyTask of this.dailyTasks) {
         if (dailyTask.completed) {
           this.completed++;
