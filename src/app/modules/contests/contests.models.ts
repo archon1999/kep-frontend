@@ -410,6 +410,8 @@ export interface ContestQuestion {
   question: string;
   answer: string | null;
   created: string;
+  status: number;
+  statusTitle: string;
 }
 
 export interface ContestRegistrant {
