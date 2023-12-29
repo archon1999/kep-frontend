@@ -68,6 +68,7 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
         });
       }
     );
+    this.filterService.setFilter(this.route.snapshot.queryParams);
     setTimeout(() => this.reloadPage());
   }
 

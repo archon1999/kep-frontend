@@ -59,6 +59,7 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
   }
 
   ngOnInit(): void {
+    this.filterForm.patchValue(this.route.snapshot.queryParams);
     this.filterForm.valueChanges.subscribe(
       (filterValue: ProblemsFilter) => {
         this.problemsFilterService.updateFilter(filterValue);
@@ -86,12 +87,6 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
         this.selectedTagsName = Array.from(new Set(this.tags.filter(tag => tags.indexOf(tag.id) !== -1).map(tag => tag.name))).join(', ');
       }
     );
-
-    // this.service.getTags().subscribe(
-    //   (tags: any) => {
-    //     this.tags = tags;
-    //   }
-    // );
 
     this.service.getDifficulties().subscribe(
       (difficulties: any) => {

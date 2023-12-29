@@ -21,7 +21,8 @@ export class ProblemsApiService {
       params.hasSolved = 0;
       params.hasAttempted = 0;
     }
-    delete params.status;
+    // @ts-ignore
+    params.tags = params.tags.join(',');
     return this.api.get('problems', params);
   }
 
