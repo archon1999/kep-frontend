@@ -5,8 +5,11 @@ import { VerticalLayoutComponent } from '@layout/vertical/vertical-layout.compon
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreConfig } from '@core/types';
 import { ScriptService } from '@shared/services/script.service';
+import { LocalStorageService } from '@shared/storages/local-storage.service';
+import { randomInt } from '@shared/utils';
 
 const SCRIPT_PATH = 'assets/plugins/snowf/snowf.min.js';
+let snowf: any;
 
 @Component({
   selector: 'app-layout',
@@ -19,12 +22,14 @@ const SCRIPT_PATH = 'assets/plugins/snowf/snowf.min.js';
 export class LayoutComponent {
   public coreConfig: CoreConfig;
   public lightsCount = 0;
+  public lightsEnabled = !!this.localStorageService.get('lightsEnabled');
 
   constructor(
     public coreConfigService: CoreConfigService,
     private renderer: Renderer2,
     private scriptService: ScriptService,
     public changeDetection: ChangeDetectorRef,
+    public localStorageService: LocalStorageService,
   ) {
     this.lightsCount = Math.trunc(window.innerHeight / 30);
 
@@ -37,14 +42,38 @@ export class LayoutComponent {
 
     const scriptElement = this.scriptService.loadJsScript(this.renderer, SCRIPT_PATH);
     scriptElement.onload = (e) => {
-      window['snowf'].init({
-        size: 5,
-        amount: 50,
+      snowf = window['snowf'].init({
+        size: 2,
+        amount: 20,
+        speed: 1
       });
       window.onresize = function () {
-        window['snowf'].resize();
+        snowf.resize();
       };
+      setTimeout(() => {
+        snowf.setOptions({
+          size: 5,
+          amount: 50,
+          speed: 1.5
+        });
+        setTimeout(() => {
+          snowf.setOptions({
+            size: 7,
+            amount: 75,
+            speed: 2,
+            wind: 1,
+          });
+        }, 10 * 60 * 1000);
+      }, 30000);
+      setInterval(() => {
+        snowf.wind(randomInt(1, 4), randomInt(1000, 5000));
+      }, 100 * 1000);
     };
+  }
+
+  updateLightsEnabled() {
+    this.lightsEnabled = !this.lightsEnabled;
+    this.localStorageService.set('lightsEnabled', this.lightsEnabled);
   }
 
   @HostListener('window:resize')

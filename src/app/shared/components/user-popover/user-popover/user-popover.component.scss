@@ -1,6 +1,18 @@
+@import 'styles/kep-imports';
+
 ::ng-deep .user-popover .popover-body {
   padding: 0px !important;
   width: 400px !important;
+
+  @include media-breakpoint-down(sm){
+    width: 320px !important;
+    // zoom: 80% !important;
+    .card-body {
+      padding-right: 1rem !important;
+      padding-left: 1rem !important;
+      padding-bottom: 1rem !important;
+    }
+  }
 }
 
 ::ng-deep .user-popover .card {
@@ -28,21 +40,4 @@
 
 a {
   font-weight: 500;
-}
-
-.badge-kep {
-  margin-left: 0.2rem;
-  cursor: pointer;
-  color: #6a5026;
-  background: radial-gradient(circle at 10% 20%, rgb(255, 200, 124) 0%, rgb(252, 251, 121) 90%);
-
-  &:hover {
-    transform: scale(1.04);
-    transition: 0.5s;
-  }
-}
-
-::ng-deep .dark-layout .badge-kep {
-  background: radial-gradient(circle at 10% 20%, rgb(165, 99, 6) 0%, rgb(159, 159, 20)90%);
-  color: rgb(252, 251, 121);
 }

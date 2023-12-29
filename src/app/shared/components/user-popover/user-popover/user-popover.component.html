@@ -12,7 +12,7 @@
           </div>
         </div>
       </div>
-      <h3>
+      <div>
         {{ user.firstName }} {{ user.lastName }}
         <span style="vertical-align: bottom;" *ngIf="user.streak >= 7">
           <ng-template #tipContent>
@@ -20,40 +20,43 @@
           </ng-template>
           <span class="badge badge-pill badge-kep" [ngbTooltip]="tipContent">KEP</span>
         </span>
-      </h3>
+      </div>
       <h6 class="text-muted">{{ user.username }}</h6>
       <hr class="mb-2" />
       <div *ngIf="userRatings" class="d-flex justify-content-between">
         <div class="d-block">
-          <h6 class="">
-            <i [data-feather]="'contest' | iconName"></i> {{ 'MENU.CONTESTS' | translate }}
-          </h6>
-          <h4 class="mb-0 mt-1 text-center">
+          <div class="">
+            <kep-icon name="contest"></kep-icon>
+            {{ 'MENU.CONTESTS' | translate }}
+          </div>
+          <div class="mb-0 mt-1 text-center">
             <ng-component [innerHTML]="userRatings.contestsRatingTitle | contestsRatingImg"></ng-component>
             <span class="badge badge-light-{{ userRatings.contestsRating | contestsRatingColor }}">
               {{ userRatings.contestsRating }}
             </span>
-          </h4>
+          </div>
         </div>
       
         <div class="d-block">
           <h6 class="">
-            <i [data-feather]="'problem' | iconName"></i> {{ 'MENU.PROBLEMS' | translate }}
+            <kep-icon name="problem"></kep-icon>
+            {{ 'MENU.PROBLEMS' | translate }}
           </h6>
-          <h4 class="mb-0 mt-1 text-center">
+          <div class="mb-0 mt-1 text-center">
             <span class="badge badge-primary">
               {{ userRatings.problemsSolved }}
             </span>
             <span class="badge badge-light-success">
               {{ userRatings.problemsRating }}
             </span>
-          </h4>
+          </div>
         </div>
       
         <div class="d-block">
-          <h6 class="">
-            <i [data-feather]="'zap'"></i> {{ 'MENU.CHALLENGES' | translate }}
-          </h6>
+          <div class="">
+            <kep-icon name="challenge"></kep-icon>
+            {{ 'MENU.CHALLENGES' | translate }}
+          </div>
           <div class="d-block mb-0 mt-1 text-center text-{{ userRatings.challengesRankTitle | challengesRankColor }}">
             <span class="badge badge-pill badge-glow badge-{{ userRatings.challengesRankTitle | challengesRankColor }}">
               {{ userRatings.challengesRankTitle }}
@@ -73,7 +76,7 @@
   [routerLink]="['/users', 'user', username]"
   [ngbPopover]="popContent"
   triggers="mouseenter:mouseleave"
-  [closeDelay]="1000"
+  [closeDelay]="100000"
   [openDelay]="1000"
   (shown)="loadUser()"
   popoverClass="user-popover"

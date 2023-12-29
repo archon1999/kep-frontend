@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
-import { ApiService } from '../../../services/api.service';
-import { User } from '../../../../modules/users/users.models';
+import { ApiService } from '@shared/services/api.service';
+import { User } from '@users/users.models';
 
 @Component({
   selector: 'user-popover',
@@ -28,14 +28,14 @@ export class UserPopoverComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  loadUser(){
-    if(!this.user){
-      this.api.get(`users/${this.username}`).subscribe((user: any) => {
+  loadUser() {
+    if (!this.user) {
+      this.api.get(`users/${ this.username }`).subscribe((user: any) => {
         this.user = user;
-      })
-      this.api.get(`users/${this.username}/ratings`).subscribe((userRatings: any) => {
+      });
+      this.api.get(`users/${ this.username }/ratings`).subscribe((userRatings: any) => {
         this.userRatings = userRatings;
-      })  
+      });
     }
   }
 

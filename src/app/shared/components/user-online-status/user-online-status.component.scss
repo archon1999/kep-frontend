@@ -1,0 +1,16 @@
+.avatar-status-offline {
+  background-color: #82868b;
+}
+
+.avatar-status-online {
+  background-color: #28c76f;
+}
+
+[class*=avatar-status-] {
+  border-radius: 50%;
+  width: 11px;
+  display: inline-block;
+  height: 11px;
+  right: 0;
+  bottom: 0;
+}
