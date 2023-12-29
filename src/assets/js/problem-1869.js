@@ -1,5 +1,5 @@
 // GRID OPTIONS
-let colspans = [7, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 1, 1];
+var colspans = [7, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 1, 1];
 
 var rowSize   = 50;
 var colSize   = 50;
