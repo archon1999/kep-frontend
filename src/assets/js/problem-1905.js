@@ -121,7 +121,7 @@ function changePosition(from, to, rowToUpdate) {
 //  CREATE TILE
 // ========================================================================
 
-let index = 0;
+var index = 0;
 
 function createTile() {
 
