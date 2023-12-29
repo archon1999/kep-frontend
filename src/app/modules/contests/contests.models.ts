@@ -247,10 +247,7 @@ export class ContestProblemInfo {
           badgeClass = 'badge badge-light-success';
         }
         html = `<span class="${ badgeClass }">`;
-        html += '<div class="mb-25">+</div>';
-        if (this.attemptsCount > 0) {
-          html += this.attemptsCount;
-        }
+        html += `<div class="mb-25">+${this.attemptsCount > 0 ? this.attemptsCount : ""}</div>`;
         html += this.contestTime;
         html += '</span>';
       } else if (this.attemptsCount > 0) {
