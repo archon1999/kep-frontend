@@ -4,38 +4,35 @@
   </div>
   <ul ngbDropdownMenu aria-labelledby="navbarDailyTasksDropdown"
     class="dropdown-menu bg-daily-tasks dropdown-menu-media dropdown-menu-right">
-    <!-- DailyTasks header -->
     <li class="dropdown-menu-header">
       <div class="dropdown-header d-flex">
         <h4 class="notification-title text-white mb-50 mr-auto">{{ 'DailyTasks' | translate }}</h4>
-        <div class="badge color-daily-tasks badge-pill badge-light-primary">
+        <div class="badge badge-pill badge-primary d-flex align-items-center">
           {{ dailyTasks.length }} {{ 'Tasks' | translate }} 
         </div>
       </div>
     </li>
-    <!--/ DailyTasks header -->
 
-    <!-- DailyTasks content -->
     <ng-scrollbar autoHeightDisabled="false">
       <li class="scrollable-container media-list">
         <div class="d-flex" *ngFor="let dailyTask of dailyTasks">
           <div class="media d-flex align-items-start">
             <div class="media-left text-dark" [ngSwitch]="dailyTask.type">
-              <div *ngSwitchCase="1" class="avatar bg-primary mt-50">
+              <div *ngSwitchCase="DailyTaskType.Problem" class="avatar bg-primary mt-50">
                 <div class="avatar-content">
-                  <i class="avatar-icon" [data-feather]="'menu'"></i>
+                  <kep-icon class="font-medium-1" name="problem"></kep-icon>
                 </div>
               </div>
 
-              <div *ngSwitchCase="2" class="avatar bg-success mt-50">
+              <div *ngSwitchCase="DailyTaskType.Test" class="avatar bg-success mt-50">
                 <div class="avatar-content">
-                  <i class="avatar-icon" [data-feather]="'edit-3'"></i>
+                  <kep-icon class="font-medium-1" name="test"></kep-icon>
                 </div>
               </div>
 
-              <div *ngSwitchCase="3" class="avatar bg-primary mt-50">
+              <div *ngSwitchCase="DailyTaskType.Challenge" class="avatar bg-primary mt-50">
                 <div class="avatar-content">
-                  <i class="avatar-icon" [data-feather]="'zap'"></i>
+                  <kep-icon class="font-medium-1" name="challenge"></kep-icon>
                 </div>
               </div>
             </div>
@@ -49,8 +46,8 @@
                 <i data-feather="check-circle"></i>
               </span>
                 <span *ngIf="!dailyTask.completed" class="badge badge-glow" [ngClass]="{
-                'badge-primary': dailyTask.type == 1 || dailyTask.type == 3,
-                'badge-success': dailyTask.type == 2
+                'badge-primary': dailyTask.type == DailyTaskType.Problem || dailyTask.type == DailyTaskType.Challenge,
+                'badge-success': dailyTask.type == DailyTaskType.Test
               }">
                 {{ dailyTask.progress }}/{{ dailyTask.total }}
               </span>
@@ -61,9 +58,7 @@
         </div>
       </li>
     </ng-scrollbar>
-    <!--/ DailyTaskss content -->
 
-    <!-- DailyTaskss footer -->
     <li class="dropdown-menu-footer">
       <div class="progress-wrapper">
         <ngb-progressbar
@@ -76,6 +71,5 @@
         ></ngb-progressbar>
       </div>
     </li>
-    <!--/ DailyTaskss footer -->
   </ul>
 </li>
