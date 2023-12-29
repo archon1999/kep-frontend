@@ -1,6 +1,6 @@
 // GRID OPTIONS
-const colspans = [7, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 1, 1];
-const weights = [5, 2, 7, 5, 5, 3, 4, 2, 6, 1, 4, 3, 3, 2, 3, 1, 4];
+let colspans = [7, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 1, 1];
+let weights = [5, 2, 7, 5, 5, 3, 4, 2, 6, 1, 4, 3, 3, 2, 3, 1, 4];
 
 var rowSize   = 50;
 var colSize   = 50;

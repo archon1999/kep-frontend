@@ -20,36 +20,9 @@
                 <h4 *ngIf="questions.length > 0" class="mt-2 mb-2">{{ 'Questions' | translate }}</h4>
 
                 <div class="questions">
-                  <div class="question" *ngFor="let question of questions">
-                    <div *ngIf="question.problemSymbol" class="mb-25 problem">
-                      <i [size]="18" class="mr-25" [data-feather]="'problem' | iconName"></i>
-                      <strong>{{ 'Problem' | translate }}:</strong>
-
-                      <a routerLink="../problem/{{ question.problemSymbol }}" class="ml-25 text-primary"> {{ question.problemSymbol }}. {{ question.problemTitle }}</a>
-                    </div>
-
-                    <div class="mb-25 question">
-                      <i [size]="18" class="mr-25" [data-feather]="'help-circle'"></i>
-                      <strong>{{ 'Question' | translate }}:</strong>
-
-                      <span class="ml-25 text-dark"> {{ question.question }}</span>
-                    </div>
-
-                    <div class="mb-25 date">
-                      <i [size]="18" class="mr-25" [data-feather]="'clock'"></i>
-                      <strong>{{ 'Time' | translate }}:</strong>
-
-                      <span class="ml-25 text-success"> {{ question.created }}</span>
-                    </div>
-
-                    <div *ngIf="question.answer" class="mb-25 answer">
-                      <i [size]="18" class="mr-25" [data-feather]="'edit-2'"></i>
-                      <strong>{{ 'QuestionAnswer' | translate }}:</strong>
-
-                      <span class="ml-25 text-dark" [innerHTML]="question.answer"></span>
-                    </div>
-                    <hr>
-                  </div>
+                  @for (question of questions; track question){
+                    <contest-question-card [contest]="contest" [question]="question"></contest-question-card>
+                  }
                 </div>
               </div>
               <div class="card-footer" *ngIf="contest.userInfo.isRegistered && contest.status == 0">

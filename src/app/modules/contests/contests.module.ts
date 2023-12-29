@@ -50,6 +50,9 @@ import { ContestRegistrantsComponent } from '@contests/pages/contest/contest-reg
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';
+import {
+  ContestQuestionCardComponent
+} from '@contests/pages/contest/contest-questions/contest-question-card/contest-question-card.component';
 
 
 const routes: Routes = [
@@ -246,6 +249,7 @@ const routes: Routes = [
     EmptyResultComponent,
     KepIconComponent,
     ContestClassesPipe,
+    ContestQuestionCardComponent,
   ],
   providers: [
     ContestGuard,
