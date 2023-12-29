@@ -58,7 +58,7 @@
 
           <a
             rippleEffect
-            *ngIf="contest?.status == 1"
+            *ngIf="contest?.status == 1 || currentUser?.isSuperuser"
             routerLink="/practice/problems/problem/{{ contestProblem?.problem?.id }}"
             [queryParams]="{'contest': contest?.id}"
             class="mb-2 btn-block btn btn-primary bg-primary badge-glow">

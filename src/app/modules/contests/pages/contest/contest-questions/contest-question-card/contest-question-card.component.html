@@ -19,6 +19,8 @@
   </div>
 
   <div class="card-footer">
-    <span *ngIf="question.answer" class="text-dark" [innerHTML]="question.answer"></span>
+    <span *ngIf="question.answer" class="text-dark">
+      <mathjax [content]="question.answer"></mathjax>
+    </span>
   </div>
 </div>
