@@ -15,7 +15,6 @@ import { ContestsService } from '@contests/contests.service';
 export class ContestCreateComponent implements OnInit {
   public contentHeader: ContentHeader = {
     headerTitle: 'CreateContest',
-    actionButton: true,
     breadcrumb: {
       type: '',
       links: [

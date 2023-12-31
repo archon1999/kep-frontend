@@ -31,7 +31,6 @@ export class TrainingComponent implements OnInit {
 
   contentHeader = {
     headerTitle: 'COURSES.DICTIONARY',
-    actionButton: true,
     breadcrumb: {
       type: '',
       links: [

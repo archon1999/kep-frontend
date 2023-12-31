@@ -29,7 +29,6 @@ export class HackAttemptsComponent implements OnInit, OnDestroy {
 
   public contentHeader = {
     headerTitle: 'HackAttempts',
-    actionButton: true,
     breadcrumb: {
       type: '',
       links: [

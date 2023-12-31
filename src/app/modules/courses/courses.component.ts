@@ -19,7 +19,6 @@ export class CoursesComponent implements OnInit {
 
   contentHeader = {
     headerTitle: 'COURSES.COURSES',
-    actionButton: true,
     breadcrumb: {
       type: '',
       links: [

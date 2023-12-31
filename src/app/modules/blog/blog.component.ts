@@ -17,7 +17,6 @@ export class BlogComponent implements OnInit {
 
   public contentHeader: ContentHeader = {
     headerTitle: 'Blog',
-    actionButton: true,
     breadcrumb: {
       type: '',
       links: [

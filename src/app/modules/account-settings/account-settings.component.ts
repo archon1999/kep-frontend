@@ -14,7 +14,6 @@ export class AccountSettingsComponent implements OnInit {
 
   contentHeader = {
     headerTitle: 'SETTINGS',
-    actionButton: true,
     breadcrumb: {
       type: '',
       links: [

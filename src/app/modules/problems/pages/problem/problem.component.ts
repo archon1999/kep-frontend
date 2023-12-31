@@ -104,7 +104,6 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
   getContentHeader() {
     return this.contentHeader = {
       headerTitle: this.problem.title,
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

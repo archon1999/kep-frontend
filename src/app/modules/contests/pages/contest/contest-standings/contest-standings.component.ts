@@ -61,7 +61,6 @@ export class ContestStandingsComponent implements OnInit, OnDestroy {
   loadContentHeader() {
     this.contentHeader = {
       headerTitle: 'CONTESTS.STANDINGS',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [
