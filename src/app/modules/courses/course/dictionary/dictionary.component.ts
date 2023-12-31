@@ -15,7 +15,6 @@ export class DictionaryComponent implements OnInit {
 
   public contentHeader = {
     headerTitle: 'COURSES.DICTIONARY',
-    actionButton: true,
     breadcrumb: {
       type: '',
       links: [

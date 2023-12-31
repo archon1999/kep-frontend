@@ -33,7 +33,6 @@ export class LessonComponent implements OnInit {
 
   contentHeader = {
     headerTitle: '',
-    actionButton: true,
     breadcrumb: {
       type: '',
       links: [

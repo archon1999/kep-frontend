@@ -20,7 +20,6 @@ export class ProjectsComponent implements OnInit {
 
   public contentHeader = {
     headerTitle: 'MENU.PROJECTS',
-    actionButton: true,
     breadcrumb: {
       type: '',
       links: [

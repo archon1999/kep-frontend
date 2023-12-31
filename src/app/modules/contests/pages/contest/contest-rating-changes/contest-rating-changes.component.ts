@@ -49,7 +49,6 @@ export class ContestRatingChangesComponent implements OnInit, OnDestroy {
   loadContentHeader(){
     this.contentHeader = {
       headerTitle: 'CONTESTS.RATING_CHANGES',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

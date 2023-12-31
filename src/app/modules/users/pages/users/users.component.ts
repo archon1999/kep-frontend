@@ -106,7 +106,6 @@ export class UsersComponent extends BaseTablePageComponent<User> {
   protected getContentHeader(): ContentHeader {
     return {
       headerTitle: 'MENU.USERS',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

@@ -4,7 +4,6 @@ import { fadeInLeftAnimation, fadeInUpAnimation } from 'angular-animations';
 
 export interface ContentHeader {
   headerTitle: string;
-  actionButton?: boolean;
   breadcrumb?: {
     type?: string;
     links?: Array<{

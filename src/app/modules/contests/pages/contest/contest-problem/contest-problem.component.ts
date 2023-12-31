@@ -122,7 +122,6 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
   updateContentHeader() {
     this.contentHeader = {
       headerTitle: this.problem.title,
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

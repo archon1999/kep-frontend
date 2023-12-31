@@ -94,7 +94,6 @@ export class CodeRushComponent implements OnInit, OnDestroy {
   loadContentHeader() {
     this.contentHeader = {
       headerTitle: this.codeRush.id + '',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

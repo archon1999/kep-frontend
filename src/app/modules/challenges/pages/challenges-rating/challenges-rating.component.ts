@@ -53,7 +53,6 @@ export class ChallengesRatingComponent extends BaseTablePageComponent<Challenges
   protected getContentHeader() {
     return {
       headerTitle: 'Rating',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

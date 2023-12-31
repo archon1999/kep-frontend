@@ -23,7 +23,6 @@ export class AttemptComponent implements OnInit {
 
   public contentHeader = {
     headerTitle: 'ATTEMPT',
-    actionButton: true,
     breadcrumb: {
       type: '',
       links: [

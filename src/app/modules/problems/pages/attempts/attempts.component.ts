@@ -51,7 +51,6 @@ export class AttemptsComponent extends BaseTablePageComponent<Attempt> implement
   protected getContentHeader(): ContentHeader {
     return {
       headerTitle: 'Attempts',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

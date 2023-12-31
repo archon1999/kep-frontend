@@ -38,7 +38,6 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
   loadContentHeader() {
     this.contentHeader = {
       headerTitle: this.project.title,
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

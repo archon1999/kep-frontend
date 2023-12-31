@@ -81,7 +81,6 @@ export class ContestQuestionsComponent implements OnInit {
   loadContentHeader(){
     this.contentHeader = {
       headerTitle: 'Questions',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

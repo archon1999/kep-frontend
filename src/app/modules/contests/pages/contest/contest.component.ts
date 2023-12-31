@@ -25,7 +25,6 @@ export class ContestComponent extends BasePageComponent implements OnInit {
   protected getContentHeader(): ContentHeader {
     return {
       headerTitle: this.contest.title,
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [
