@@ -1,9 +1,19 @@
+@import 'bootstrap/scss/mixins';
 
 @function set-navbar-text-color($color) {
   @if (lightness($color) > 50) {
     @return $white; // Lighter backgorund, return dark color
   } @else {
     @return $black; // Darker background, return light color
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .vertical-layout.menu-expanded:not(.menu-hide) .header-navbar {
+    &.fixed-top,
+    &.floating-nav {
+      left: $menu-expanded-width;
+    }
   }
 }
 
@@ -16,7 +26,7 @@
 
   &.fixed-top,
   &.floating-nav {
-    left: $menu-expanded-width;
+    // left: $menu-expanded-width;
   }
 
   // Apply navbar color as per background
