@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { ContestsResolver, ProblemResolver, StudyPlanResolver, StudyPlansResolver } from '@problems/problems.resolver';
+import { ProblemResolver, StudyPlanResolver } from '@problems/problems.resolver';
 import { AttemptGuard, ProblemGuard } from '@problems/problems.guard';
 import { AuthGuard } from '@auth/helpers';
 
@@ -96,5 +96,10 @@ export default [
     loadComponent: () => import('./pages/hack-attempts/hack-attempts.component').then(c => c.HackAttemptsComponent),
     data: { animation: 'hack-attempts' },
     title: 'Problems.HackAttempts',
+  },
+  {
+    path: ':category',
+    loadComponent: () => import('./pages/problems/category/category.component').then(c => c.CategoryComponent),
+    title: 'Problems.Problems',
   },
 ] satisfies Route[];

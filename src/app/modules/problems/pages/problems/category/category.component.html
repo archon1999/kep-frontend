@@ -1,0 +1,87 @@
+<div class="content-wrapper container-xxl">
+  <div class="content-body">
+    <app-content-header *ngIf="contentHeader" (refresh)="reloadPage()" [contentHeader]="contentHeader"></app-content-header>
+
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-8">
+        <div class="card category-card">
+          @if (isCategoryLoading) {
+            <div [style.height.px]="200">
+              <spinner></spinner>
+            </div>
+          } @else {
+            <div class="card-body" [innerHTML]="category.description"></div>
+            <div class="card-footer" *ngIf="studyPlans.length > 0">
+              <div class="row">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-4" *ngFor="let studyPlan of studyPlans">
+                  <study-plan-card [studyPlan]="studyPlan"></study-plan-card>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4 order-md-1 order-2">
+        <div class="card">
+          @if (isTopUsersLoading){
+            <div [style.height.px]="400">
+              <spinner></spinner>
+            </div>
+          } @else {
+            <div class="table-responsive beautiful-table">
+              <table class="table table-striped">
+                <thead>
+                <tr class="bg-gradient-primary">
+                  <th>
+                    <kep-icon name="user"></kep-icon>
+                    {{ 'User' | translate }}
+                  </th>
+                  <th class="text-center">
+                    <div ngbTooltip="{{ 'Solved' | translate }}">
+                      <kep-icon name="check-square"></kep-icon>
+                    </div>
+                  </th>
+                  <th class="text-center">
+                    <div ngbTooltip="{{ 'Rating' | translate }}">
+                      <kep-icon name="rating"></kep-icon>
+                    </div>
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                  @for (user of topUsers; track user.username) {
+                    <tr>
+                      <td>
+                        <user-popover [customContent]="true" [username]="user.username">
+                          <img width="32" height="32" class="round mr-50" alt="user-avater" [src]="user.avatar">
+                          {{ user.username }}
+                        </user-popover>
+                      </td>
+                      <td class="text-center">
+                        <span class="badge badge-primary badge-pill">
+                          {{ user.solved }}
+                        </span>
+                      </td>
+                      <td class="text-center">
+                        <span class="badge badge-success">
+                          {{ user.rating }}
+                        </span>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="col-12 order-md-2 order-1">
+        <section-problems-filter></section-problems-filter>
+        <section-problems-table [defaultOrdering]="defaultOrdering"></section-problems-table>
+      </div>
+    </div>
+
+  </div>
+</div>
