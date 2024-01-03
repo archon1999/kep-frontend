@@ -78,15 +78,15 @@
           </div>
 
           <ng-template #elseBlock>
-            <div *ngIf="attempt.verdict != 1 && attempt.testCaseNumber > 1; else elseBlock">
+            <div *ngIf="attempt.verdict != 1 && attempt.testCaseNumber > 1 && attempt.user.username == currentUser?.username; else elseBlock">
               <div *ngIf="!attempt.canTestView">
                 <ng-template #tipContent>
-                  {{ 'ViewTest' | translate }} <kepcoin-view [value]="1"></kepcoin-view>
+                  {{ 'ViewTest' | translate }} <kepcoin [value]="attempt.testCaseKepcoinValue"></kepcoin>
                 </ng-template>
                 <kepcoin-spend-swal
                   [ngbTooltip]="tipContent"
                   [purchaseUrl]="'attempts/' + attempt.id + '/purchase-test/'"
-                  [value]="1"
+                  [value]="attempt.testCaseKepcoinValue"
                   [customContent]="true"
                   (success)="onPurchaseTestSuccess(attempt)">
                   <div [innerHTML]="attempt | attemptVerdictHTML"></div>
