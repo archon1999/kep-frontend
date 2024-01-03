@@ -1,17 +1,10 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { AuthService } from 'app/auth/service';
-import { Subject } from 'rxjs';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-
-interface General {
-  solved: number;
-  rating: number;
-  rank: number;
-  usersCount: number;
-}
+import { GeneralInfo } from '@problems/models/statistics.models';
 
 interface LangInfo {
   lang: string;
@@ -48,7 +41,7 @@ export class SectionProfileComponent implements OnInit {
 
   @Input() username: string;
 
-  public general: General = {
+  public general: GeneralInfo = {
     solved: 0,
     rating: 0,
     rank: 0,
@@ -67,7 +60,7 @@ export class SectionProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.statisticsService.getGeneral(this.username).subscribe(
-      (general: General) => {
+      (general: GeneralInfo) => {
         this.general = general;
       }
     );

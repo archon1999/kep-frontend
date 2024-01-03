@@ -10,6 +10,7 @@ import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 import { NgbAccordionModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { takeUntil } from 'rxjs/operators';
 
 interface Difficulty {
   name: string;
@@ -48,21 +49,31 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
   public difficulties: Array<Difficulty> = [];
 
   public selectedTagsName: string;
-
   public filterCollapsed = false;
+  public problemsCount = 0;
+
+  get filter() {
+    return this.filterService.currentFilterValue;
+  }
 
   constructor(
     public service: ProblemsApiService,
-    public problemsFilterService: ProblemsFilterService,
+    public filterService: ProblemsFilterService,
   ) {
     super();
   }
 
   ngOnInit(): void {
+    this.filterService.problemsCount$.pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      (value) => {
+        this.problemsCount = value;
+      }
+    );
+
     this.filterForm.patchValue(this.route.snapshot.queryParams);
-    this.filterForm.valueChanges.subscribe(
+    this.filterForm.valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (filterValue: ProblemsFilter) => {
-        this.problemsFilterService.updateFilter(filterValue);
+        this.filterService.updateFilter(filterValue);
       }
     );
 
@@ -70,6 +81,11 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
       (categories: Array<Category>) => {
         this.categories = categories;
         const tags = [];
+        const categoryId = this.filterService.currentFilterValue.category;
+        if (categoryId) {
+          this.categories = [this.categories.find(c => c.id === categoryId)];
+        }
+
         this.categories.forEach(category => {
           category.tags.forEach(tag => {
             tags.push({

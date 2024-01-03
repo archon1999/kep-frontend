@@ -1,61 +1,10 @@
-@import 'bootstrap/scss/mixins'; 
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
+@import 'styles/kep-imports';
 
-.rating {
-  font-size: 18px !important;
-  color: #ff9f43 !important;
-}
+.bg-problems-table {
+  background: mix(black, $primary, 10) !important;
+  color: white !important;
 
-label {
-  font-size: 1rem;
-}
-
-tr:first-child td,
-th {
-  border-bottom: none !important;
-  border-top: none !important;
-}
-
-table tr td:nth-child(1){
-  font-weight: 500;
-}
-
-table tr td:nth-child(2) {
-  font-weight: 500;
-}
-
-th {
-  border-bottom: none !important;
-  border-top: none !important;
-}
-
-thead tr th, tfoot tr th {
-  font-size: 1rem;
-  font-weight: 500 !important;
-  text-transform: initial !important;
-}
-
-@include media-breakpoint-down(lg) {
-  table tr td:nth-child(3) {
-    display: none;
+  th {
+    border: none !important;
   }
-
-  table tr th:nth-child(3) {
-    display: none;
-  }
-
-  table tr td:nth-child(5) {
-    display: none;
-  }
-
-  table tr th:nth-child(5) {
-    display: none;
-  }
-}
-
-.card {
-  border: none;
-  box-shadow: var(--inherit-bg-box-shadow) !important;
-  background: inherit !important;
 }

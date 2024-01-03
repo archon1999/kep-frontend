@@ -1,6 +1,6 @@
 <kep-table [loading]="!total && isLoading" [tableClass]="''" [empty]="problems?.length == 0">
   <ng-container header>
-    <tr class="bg-gradient-primary">
+    <tr class="bg-problems-table">
       <th>
         <table-ordering
           [value]="ordering"
@@ -21,7 +21,7 @@
           {{ 'TITLE' | translate }}
         </table-ordering>
       </th>
-      <th>
+      <th class="d-flex align-items-center">
         <kep-icon name="tags"></kep-icon>
         {{ 'TAGS' | translate }}
       </th>
@@ -64,9 +64,9 @@
           'bg-light-success': problem.userInfo.hasSolved,
           'bg-light-danger': !problem.userInfo.hasSolved && problem.userInfo.hasAttempted
         }">
-        <td>{{ problem.id }}</td>
+        <td class="text-dark">{{ problem.id }}</td>
         <td>
-          <a [routerLink]="['problem', problem.id]">
+          <a [routerLink]="Resources.Problem | resourceById : problem.id">
             <div class="font-weight-bold">
               {{ problem.title }}
             </div>
