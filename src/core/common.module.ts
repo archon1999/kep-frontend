@@ -7,6 +7,8 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 @NgModule({
   imports: [
@@ -18,6 +20,8 @@ import { RouterModule } from '@angular/router';
     CorePipesModule,
     TranslateModule,
     RouterModule,
+    KepIconComponent,
+    SpinnerComponent
   ],
   exports: [
     CommonModule,
@@ -28,6 +32,8 @@ import { RouterModule } from '@angular/router';
     CorePipesModule,
     TranslateModule,
     RouterModule,
+    KepIconComponent,
+    SpinnerComponent
   ]
 })
 export class CoreCommonModule {}
