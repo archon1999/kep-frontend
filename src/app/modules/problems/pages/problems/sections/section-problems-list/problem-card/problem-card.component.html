@@ -1,0 +1,52 @@
+<a [@fadeInOnEnter] class="card" [routerLink]="getResourceById(Resources.Problem, problem.id)" [ngClass]="{
+  'bg-solved': problem.userInfo.hasSolved,
+  'bg-not-solved': !problem.userInfo.hasSolved && problem.userInfo.hasAttempted
+}">
+  <div class="card-header">
+    <div class="card-title">{{ problem.id }}. {{ problem.title }}</div>
+    <div class="problem-difficulty">
+      <span class="badge badge-glow badge-{{ problem.difficulty | problemDifficultyColor }}">
+        {{ problem.difficultyTitle }}
+      </span>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <button
+      class="btn mr-25 mb-25 btn-primary btn-sm font-small-2"
+      *ngFor="let tag of problem.tags">
+      {{ tag.name }}
+    </button>
+  </div>
+
+  <div class="card-footer d-flex justify-content-between">
+    <div class="user-statistics">
+      <span class="text-success" ngbTooltip="{{ 'UsersSolved' | translate }}">
+        {{ problem.solved }}
+        <i data-feather="user-check"></i>
+      </span>
+
+      <span class="text-danger" ngbTooltip="{{ 'UsersUnsolved' | translate }}">
+        {{ problem.notSolved }}
+        <i data-feather="user-x"></i>
+      </span>
+    </div>
+
+    <div class="meta">
+      <span *ngIf="problem.hasSolution" class="badge mt-50 badge-pill badge-light-success">
+        <i [data-feather]="'exists' | iconName" class="text-success" [size]="'16px'"></i>
+        {{ 'Solution' | translate }}
+      </span>
+
+      <span *ngIf="!problem.hasChecker" class="badge mt-50 badge-pill badge-light-danger">
+        <i [data-feather]="'not_exists' | iconName" class="text-danger" [size]="'16px'"></i>
+        {{ 'Checker' | translate }}
+      </span>
+
+      <span *ngIf="problem.hidden" class="badge mt-50 badge-pill badge-light-warning">
+        <i [data-feather]="'eye-off'" class="text-warning" [size]="'16px'"></i>
+        {{ 'Hidden' | translate }}
+      </span>
+    </div>
+  </div>
+</a>

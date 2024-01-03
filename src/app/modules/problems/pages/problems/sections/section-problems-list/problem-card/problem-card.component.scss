@@ -1,0 +1,26 @@
+@import 'styles/kep-imports';
+
+.card {
+  box-shadow: none;
+  margin-bottom: 1rem !important;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.bg-solved {
+  background-color: rgba($green, 0.1) !important;
+
+  .card-footer {
+    border-color: rgba($green, 0.25) !important;
+  }
+}
+
+.bg-not-solved {
+  background-color: rgba($red, 0.1) !important;
+
+  .card-footer {
+    border-color: rgba($red, 0.25) !important;
+  }
+}
