@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { User } from '@auth/models';
 import { BaseLoadComponent } from '@shared/components/classes/base-load.component';
 import { GeneralInfo } from '@problems/models/statistics.models';
@@ -11,7 +11,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
   standalone: true,
   imports: [CoreCommonModule, FlexLayoutModule],
   templateUrl: './section-header.component.html',
-  styleUrl: './section-header.component.scss'
+  styleUrl: './section-header.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class SectionHeaderComponent extends BaseLoadComponent<GeneralInfo> implements OnInit {
   constructor(public statisticsService: ProblemsStatisticsService) {

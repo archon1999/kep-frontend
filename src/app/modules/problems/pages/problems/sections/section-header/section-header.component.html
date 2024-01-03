@@ -3,7 +3,7 @@
     <spinner></spinner>
   } @else {
     <div class="card-header">
-      <div class="card-title text-dark">{{ currentUser?.username || 'Links' | translate }}</div>
+      <div class="card-title text-white">{{ currentUser?.username || 'Links' | translate }}</div>
 
       <div class="links">
         <a routerLink="rating" class="btn btn-primary mr-1" [ngClass.lt-md]="'btn-sm'">
@@ -23,22 +23,22 @@
 
     <div *ngIf="currentUser" class="card-footer d-flex justify-content-between">
       <div class="solved text-center d-flex justify-content-between">
-        <div class="text-dark" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
-          <kep-icon type="duotone" class="text-primary mr-25" name="check-square"></kep-icon>
+        <div class="text-white" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+          <kep-icon type="duotone" class="text-white mr-25" name="check-square"></kep-icon>
           {{ 'Solved' | translate }}: {{ data.solved }}
         </div>
       </div>
 
       <div class="solved text-center d-flex justify-content-between">
-        <div class="text-dark" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
-          <kep-icon type="duotone"  class="text-primary mr-25" name="rating"></kep-icon>
+        <div class="text-white" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+          <kep-icon type="duotone"  class="text-white mr-25" name="rating"></kep-icon>
           {{ 'Rating' | translate }}: {{ data.rating }}
         </div>
       </div>
 
       <div class="solved text-center d-flex justify-content-between">
-        <div class="text-dark" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
-          <kep-icon type="duotone" class="text-primary mr-25" name="ranking"></kep-icon>
+        <div class="text-white" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+          <kep-icon type="duotone" class="text-white mr-25" name="ranking"></kep-icon>
           {{ 'Rank' | translate }}: {{ data.rank }} / {{ data.usersCount }}
         </div>
       </div>
