@@ -1,45 +1,64 @@
-<section class="problems">
-  <div class="problems-page-top">
-    <div class="row">
-      <div class="col-12">
-        <section-info></section-info>
-      </div>
-      <div class="col-lg-10 col-12 offset-0 offset-lg-1">
-<!--        @defer (on viewport){-->
-<!--          <section-study-plans></section-study-plans>-->
-<!--        } @placeholder {-->
-<!--          <div class="card" [style.height.px]="400">-->
-<!--            <spinner></spinner>-->
-<!--          </div>-->
-<!--        }-->
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
-        @defer (on viewport){
-          <section-topics></section-topics>
-        } @placeholder {
-          <div class="card" [style.height.px]="200">
-            <spinner></spinner>
-          </div>
-        }
+    <section-header></section-header>
 
-        @defer (on viewport){
-          <section-problems-filter></section-problems-filter>
-        } @placeholder {
-          <div class="card" [style.height.px]="200">
-            <spinner></spinner>
-          </div>
-        }
+    <ul ngbNav #navFilled="ngbNav" class="nav-tabs nav-fill">
+      <li ngbNavItem>
+        <a ngbNavLink>{{ 'AllProblems' | translate }}</a>
+        <ng-template ngbNavContent>
+          @defer (on viewport) {
+            <div class="mb-2">
+              <section-categories></section-categories>
+            </div>
+          } @placeholder  {
+            <div class="card" [style.height.px]="200">
+              <spinner></spinner>
+            </div>
+          }
+          @defer (on viewport) {
+            <section-problems-filter></section-problems-filter>
+          } @placeholder  {
+            <div class="card" [style.height.px]="200">
+              <spinner></spinner>
+            </div>
+          }
+          @defer (on viewport) {
+            <section-problems-list></section-problems-list>
+          } @placeholder  {
+            <div class="card" [style.height.px]="200">
+              <spinner></spinner>
+            </div>
+          }
+        </ng-template>
+      </li>
 
-        @defer (on viewport){
-          <section-problems-table></section-problems-table>
-        } @placeholder {
-          <div class="card" [style.height.px]="500">
-            <spinner></spinner>
+      <li ngbNavItem>
+        <a ngbNavLink>{{ 'MostViewedProblems' | translate }}</a>
+        <ng-template ngbNavContent>
+          <div class="row">
+            <div class="col-12 col-lg-6">
+              <section-most-viewed></section-most-viewed>
+            </div>
+            <div class="col-12 col-lg-6">
+              <section-last-attempts></section-last-attempts>
+            </div>
           </div>
-        }
-      </div>
-    </div>
+        </ng-template>
+      </li>
+
+      <li ngbNavItem>
+        <a ngbNavLink>{{ 'LastContestProblems' | translate }}</a>
+        <ng-template ngbNavContent>
+          <section-last-contest-problems></section-last-contest-problems>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="navFilled" class="mt-2"></div>
+
   </div>
-</section>
+</div>
 
 <core-sidebar [hideOnEsc]="true" class="problems-sidebar" [name]="'problemsSidebar'">
   <div
@@ -55,3 +74,42 @@
     <spinner></spinner>
   }
 </core-sidebar>
+
+<!--<div class="row">-->
+<!--  <div class="col-12">-->
+<!--    <section-info></section-info>-->
+<!--  </div>-->
+<!--  <div class="col-lg-10 col-12 offset-0 offset-lg-1">-->
+<!--    @defer (on viewport){-->
+<!--      <section-study-plans></section-study-plans>-->
+<!--    } @placeholder {-->
+<!--      <div class="card" [style.height.px]="400">-->
+<!--        <spinner></spinner>-->
+<!--      </div>-->
+<!--    }-->
+
+<!--    @defer (on viewport){-->
+<!--      <section-topics></section-topics>-->
+<!--    } @placeholder {-->
+<!--      <div class="card" [style.height.px]="200">-->
+<!--        <spinner></spinner>-->
+<!--      </div>-->
+<!--    }-->
+
+<!--    @defer (on viewport){-->
+<!--      <section-problems-filter></section-problems-filter>-->
+<!--    } @placeholder {-->
+<!--      <div class="card" [style.height.px]="200">-->
+<!--        <spinner></spinner>-->
+<!--      </div>-->
+<!--    }-->
+
+<!--    @defer (on viewport){-->
+<!--      <section-problems-table></section-problems-table>-->
+<!--    } @placeholder {-->
+<!--      <div class="card" [style.height.px]="500">-->
+<!--        <spinner></spinner>-->
+<!--      </div>-->
+<!--    }-->
+<!--  </div>-->
+<!--</div>-->

@@ -2,8 +2,17 @@
 
 .card {
   border: none;
-  box-shadow: var(--inherit-bg-box-shadow) !important;
-  background: inherit !important;
+  box-shadow: none;
+  // box-shadow: var(--inherit-bg-box-shadow) !important;
+  // background: inherit !important;
+}
+
+.problems-count {
+  font-size: 17px;
+  font-weight: 100;
+  vertical-align: super;
+  color: #888ea8;
+  letter-spacing: 2px;
 }
 
 .select-tags {
@@ -18,7 +27,7 @@
   border-bottom: 1px solid #ebe9f1 !important;
 
   .btn {
-    border: none !important;
+    // border: none !important;
   }
 
   .card-header:hover {

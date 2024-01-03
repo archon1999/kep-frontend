@@ -3,6 +3,7 @@
     <div class="card-title">
       <kep-icon name="filter"></kep-icon>
       {{ 'Filter' | translate }}
+      <span class="ml-25 problems-count">({{ problemsCount }})</span>
     </div>
     <button aria-label="filter-collapsed" class="btn btn-sm btn-primary" (click)="filterCollapsed=!filterCollapsed;">
       <kep-icon [name]="filterCollapsed ? 'double-up' : 'double-down'"></kep-icon>
@@ -37,18 +38,18 @@
           </label>
           <div class="form-group">
             <div ngbDropdown [placement]="'bottom'" class="select-tags btn-group full-width d-lg-block d-none">
-              <button type="button" class="btn btn-outline-primary" [style.width.%]="70" rippleEffect>
+              <button type="button" class="btn btn-outline-primary" [style.width.%]="80" rippleEffect>
                 {{ selectedTagsName || ('SELECT' | translate) }}
               </button>
               <button
-                [style.width.%]="30"
+                [style.width.%]="20"
                 ngbDropdownToggle
                 type="button"
                 class="btn btn-outline-primary dropdown-toggle-split"
                 rippleEffect>
               </button>
               <div ngbDropdownMenu [style.min-width.rem]="32" aria-labelledby="dropdownMenuButton902">
-                <ngb-accordion [closeOthers]="false" [destroyOnHide]="false">
+                <ngb-accordion [activeIds]="'i' + filter.category" [closeOthers]="false" [destroyOnHide]="false">
                   @for(category of categories; track category.id){
                     <ngb-panel [cardClass]="'card-category'" [id]="'i' + category.id">
                       <ng-template ngbPanelTitle>
@@ -56,12 +57,12 @@
                       </ng-template>
                       <ng-template ngbPanelContent>
                         @for(tag of category.tags; track tag.id){
-                          <span (click)="tagOnClick(tag.id)" class="cursor-pointer badge-pill ml-25 mr-25 mb-50 badge" [class]="{
-                            'badge-light-primary': filterForm.value.tags?.indexOf(tag.id) === -1,
-                            'badge-primary': filterForm.value.tags?.indexOf(tag.id) !== -1,
+                          <button (click)="tagOnClick(tag.id)" class="ml-25 mr-25 mb-50 btn btn-sm" [class]="{
+                            'btn-outline-primary': filterForm.value.tags?.indexOf(tag.id) === -1,
+                            'btn-primary': filterForm.value.tags?.indexOf(tag.id) !== -1,
                           }">
                             {{ tag.name }}
-                          </span>
+                          </button>
                         }
                       </ng-template>
                     </ngb-panel>

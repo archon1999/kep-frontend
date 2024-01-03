@@ -37,7 +37,7 @@ export class SectionSidebarComponent extends BaseComponent implements OnInit {
   public activityDays = 7;
   public activitySolved = 0;
 
-  public topRatingOption = 0;
+  public topRatingOption = 1;
   public topRating: Array<TopRating> = [];
 
   public lastAttempts: Array<Attempt> = [];
@@ -52,7 +52,10 @@ export class SectionSidebarComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     setTimeout(() => {
       if (this.currentUser) {
-        this.service.getUserAttempts(this.currentUser.username, 1, 10).subscribe(
+        this.service.getUserAttempts({
+          username: this.currentUser.username,
+          pageSize: 10,
+        }).subscribe(
           (result: PageResult<Attempt>) => {
             this.lastAttempts = result.data;
           }
