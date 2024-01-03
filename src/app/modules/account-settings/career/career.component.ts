@@ -33,7 +33,7 @@ export class CareerComponent implements OnInit {
     this.route.data.subscribe(({ userEducations, userWorkExperiences }) => {
       this.userEducations = userEducations;
       this.userWorkExperiences = userWorkExperiences;
-    })
+    });
   }
 
   addEducation() {
@@ -45,7 +45,7 @@ export class CareerComponent implements OnInit {
     });
   }
 
-  deleteEducation(index: number){
+  deleteEducation(index: number) {
     this.userEducations.splice(index, 1);
   }
 
@@ -58,42 +58,50 @@ export class CareerComponent implements OnInit {
     });
   }
 
-  deleteWorkExperience(index: number){
+  deleteWorkExperience(index: number) {
     this.userWorkExperiences.splice(index, 1);
   }
 
-  save(){
+  save() {
     this.service.updateUserEducations(this.userEducations).subscribe(
       () => {
-        this.toastr.success('Saved');
+        this.toastr.success('Saved', '', {
+          toastClass: 'toast ngx-toastr',
+        });
       }, (err: any) => {
-        this.toastr.error('Error');
+        this.toastr.error('Error', '', {
+          toastClass: 'toast ngx-toastr',
+        });
         this.errors = err.error;
       }
-    )
+    );
 
     this.service.updateUserWorkExperiences(this.userWorkExperiences).subscribe(
       () => {
-        this.toastr.success('Saved');
+        this.toastr.success('Saved', '', {
+          toastClass: 'toast ngx-toastr',
+        });
       }, (err: any) => {
-        this.toastr.error('Error');
+        this.toastr.error('Error', '', {
+          toastClass: 'toast ngx-toastr',
+        });
         this.errors = err.error;
       }
-    )
+    );
   }
 
-  reset(){
+  reset() {
     this.service.getUserEducations().subscribe(
       (userEducations: any) => {
         this.userEducations = userEducations;
       }
-    )
+    );
 
     this.service.getUserWorkExperiences().subscribe(
       (userWorkExperiences: any) => {
         this.userWorkExperiences = userWorkExperiences;
       }
-    )
+    );
   }
 
 }

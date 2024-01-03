@@ -70,9 +70,13 @@ export class InformationComponent implements OnInit {
   save() {
     this.service.updateUserInfo(this.userInfo).subscribe(
       () => {
-        this.toastr.success('Saved');
+        this.toastr.success('Saved', '', {
+          toastClass: 'toast ngx-toastr',
+        });
       }, (err: any) => {
-        this.toastr.error('Error');
+        this.toastr.error('Error', '', {
+          toastClass: 'toast ngx-toastr',
+        });
         this.errors = err.error;
       }
     );

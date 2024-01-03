@@ -5,10 +5,7 @@ import { User } from 'app/auth/models';
 import { Subject } from 'rxjs';
 import { Problem } from '@problems/models/problems.models';
 import { ProblemsApiService } from '../../services/problems-api.service';
-import { Location } from '@angular/common';
 import { ApiService } from '@shared/services/api.service';
-import { ToastrService } from 'ngx-toastr';
-import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
@@ -134,9 +131,13 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
   saveCheckInput() {
     this.api.post(`problems/${ this.problem.id }/save-check-input`, { source: this.checkInput }).subscribe(
       () => {
-        this.toastr.success('Success');
+        this.toastr.success('Success', '', {
+          toastClass: 'toast ngx-toastr',
+        });
       }, () => {
-        this.toastr.error('Error');
+        this.toastr.error('Error', '', {
+          toastClass: 'toast ngx-toastr',
+        });
       }
     );
   }

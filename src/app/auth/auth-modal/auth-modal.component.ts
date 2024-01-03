@@ -70,7 +70,9 @@ export class AuthModalComponent implements OnInit {
       });
       this.modalService.dismissAll(1);
     }, (err: any) => {
-      this.toastr.error(this.loginErrorText);
+      this.toastr.error(this.loginErrorText, '', {
+        toastClass: 'toast ngx-toastr',
+      });
     });
   }
 
