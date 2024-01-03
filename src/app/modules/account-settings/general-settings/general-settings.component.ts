@@ -69,12 +69,16 @@ export class GeneralSettingsComponent implements OnInit {
 
   save() {
     this.service.updateUserGeneralInfo(this.generalSettings).subscribe(() => {
-      this.toastr.success('Saved');
+      this.toastr.success('Saved', '', {
+        toastClass: 'toast ngx-toastr',
+      });
       this.errors = null;
       this.authService.getMe().subscribe();
     }, (err: any) => {
       this.errors = err.error;
-      this.toastr.error('Error');
+      this.toastr.error('Error', '', {
+        toastClass: 'toast ngx-toastr',
+      });
     });
   }
 

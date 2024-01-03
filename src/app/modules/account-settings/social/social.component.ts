@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { User } from 'app/auth/models';
 import { AuthService } from 'app/auth/service';
 import { UserSocial } from '../../users/users.models';
@@ -29,26 +29,30 @@ export class SocialComponent implements OnInit {
   ngOnInit(): void {
     this.route.data.subscribe(({ userSocial }) => {
       this.userSocial = userSocial;
-    })
+    });
   }
 
-  save(){
+  save() {
     this.service.updateUserSocial(this.userSocial).subscribe(
       () => {
-        this.toastr.success('Saved');
+        this.toastr.success('Saved', '', {
+          toastClass: 'toast ngx-toastr',
+        });
       }, (err: any) => {
         this.errors = err.error;
-        this.toastr.error('Error');
+        this.toastr.error('Error', '', {
+          toastClass: 'toast ngx-toastr',
+        });
       }
-    )
+    );
   }
 
-  reset(){
+  reset() {
     this.service.getUserSocial().subscribe(
       (userSocial: any) => {
         this.userSocial = userSocial;
       }
-    )
+    );
   }
 
 }
