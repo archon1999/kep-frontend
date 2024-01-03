@@ -1,0 +1,30 @@
+<div class="card">
+  @if (isLoading){
+    <div class="card-body" [style.height.px]="200">
+      <spinner></spinner>
+    </div>
+  } @else if(data) {
+    <div class="card-header">
+      <div class="card-title">
+        <kep-icon name="contest"></kep-icon> {{ contest?.title }}
+      </div>
+    </div>
+
+    <div class="card-body">
+      <ul class="list-group">
+        <a
+          *ngFor="let problem of contest?.problems" class="list-group-item"
+          [routerLink]="Resources.Problem | resourceById : problem.id">
+          {{ problem.symbol }}. {{ problem.title }}
+        </a>
+      </ul>
+    </div>
+
+    <div class="card-footer">
+      <a [routerLink]="Resources.Contest | resourceById : contest.id" class="btn btn-block btn-primary btn-sm">
+        <kep-icon class="font-medium-1" name="contest"></kep-icon>
+        {{ 'GoToContest' | translate }}
+      </a>
+    </div>
+  }
+</div>
