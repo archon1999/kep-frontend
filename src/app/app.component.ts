@@ -84,6 +84,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this._coreConfigService.config = {
+      layout: {
+        footer: {
+          hidden: false,
+        }
+      }
+    };
     // Init wave effect (Ripple effect)
     Waves.init();
 
