@@ -6,7 +6,7 @@
       <div class="content-header-left col-md-9 col-12 mb-0">
         <div class="row breadcrumbs-top">
           <div class="col-12 d-flex mt-1">
-            <h2 class="content-header-title pl-1 float-left mb-0">
+            <h2 class="content-header-title float-left mb-0">
               {{ contentHeader.headerTitle | translate }}
             </h2>
             <!-- app-breadcrumb component -->
@@ -17,7 +17,7 @@
     </div>
 
     <div *ngIf="contentHeader.refreshVisible" class="text-right" [@fadeInUp]="animationState">
-      <button ngbTooltip="{{ 'Update' | translate }}" (click)="refresh.next(null)" rippleEffect class="btn btn-sm round btn-primary">
+      <button ngbTooltip="{{ 'Reload' | translate }}" (click)="refresh.next(null)" rippleEffect class="btn btn-sm btn-primary">
         <i data-feather="refresh-cw"></i>
       </button>
     </div>
