@@ -29,7 +29,7 @@ import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx
 import { map } from 'rxjs/operators';
 import { AuthService } from '@auth/service';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { CustomBreakPointsProvider } from '@layout/custom-breakpoints';
+import { BS_BREAKPOINTS, CustomBreakPointsProvider } from '@layout/custom-breakpoints';
 
 import { register } from 'swiper/element/bundle';
 import { LayoutComponent } from '@layout/layout.component';
@@ -111,7 +111,7 @@ export function authFactory(authService: AuthService) {
       url: environment.wsUrl,
     }),
 
-    FlexLayoutModule.withConfig({ disableDefaultBps: true }),
+    FlexLayoutModule.withConfig({ disableDefaultBps: true }, BS_BREAKPOINTS ),
 
     CoreModule.forRoot(coreConfig),
     CoreCommonModule,
