@@ -24,7 +24,7 @@ export const coreConfig: CoreConfig = {
       background: 'navbar-light',  // navbar-light. navbar-dark
     },
     footer: {
-      hidden: true,           // Boolean: true, false
+      hidden: false,           // Boolean: true, false
       type: 'footer-static', // footer-static, footer-sticky, d-none
       background: 'footer-light',  // footer-light. footer-dark
     },

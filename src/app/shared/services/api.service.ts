@@ -14,7 +14,8 @@ export const BASE_API_URL = BASE_URL + '/api/';
 
 @Injectable({
   providedIn: 'root'
-})export class ApiService {
+})
+export class ApiService {
 
   constructor(
     public http: HttpClient,
@@ -43,8 +44,9 @@ export const BASE_API_URL = BASE_URL + '/api/';
         // console.log(new Date(response.headers.get('Date')));
         return response.body;
       }),
-      this.handleRetryError(3000, 5),
+      this.handleRetryError(2000, 5),
       catchError(err => {
+        console.log(err);
         if (!err.status) {
           this.handleConnectionError();
         }

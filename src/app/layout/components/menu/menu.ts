@@ -50,7 +50,17 @@ export const menu: CoreMenu[] = [
         translate: 'MENU.PROBLEMS',
         type: 'item',
         icon: 'problem',
-        url: '/practice/problems'
+        url: '/practice/problems',
+        // children: [
+        //   {
+        //     id: 'competitive-programming',
+        //     title: 'Competitive Programming',
+        //     translate: 'CompetitiveProgramming',
+        //     type: 'item',
+        //     url: '/practice/problems/competitive-programming',
+        //     icon: 'competitive-programming',
+        //   }
+        // ]
       },
       {
         id: 'tests',
