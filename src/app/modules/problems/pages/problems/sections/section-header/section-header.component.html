@@ -1,0 +1,58 @@
+<div class="card">
+  @if (isLoading){
+    <spinner></spinner>
+  } @else {
+    <div class="card-header">
+      <div class="card-title text-dark">{{ currentUser?.username || 'Links' | translate }}</div>
+
+      <div class="links">
+        <a routerLink="rating" class="btn btn-primary mr-1" [ngClass.lt-md]="'btn-sm'">
+          <kep-icon name="ranking" class="font-medium-1"></kep-icon>
+          {{ 'Rating' | translate }}
+        </a>
+        <a routerLink="statistics" class="btn btn-primary mr-1" [ngClass.lt-md]="'btn-sm'">
+          <kep-icon name="statistics" class="font-medium-1"></kep-icon>
+          {{ 'Statistics' | translate }}
+        </a>
+        <a routerLink="attempts" class="btn btn-primary" [ngClass.lt-md]="'btn-sm'">
+          <kep-icon name="attempt" class="font-medium-1"></kep-icon>
+          {{ 'Attempts' | translate }}
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="currentUser" class="card-footer d-flex justify-content-between">
+      <div class="solved text-center d-flex justify-content-between">
+        <div class="text-dark" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+          <kep-icon type="duotone" class="text-primary mr-25" name="check-square"></kep-icon>
+          {{ 'Solved' | translate }}: {{ data.solved }}
+        </div>
+      </div>
+
+      <div class="solved text-center d-flex justify-content-between">
+        <div class="text-dark" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+          <kep-icon type="duotone"  class="text-primary mr-25" name="rating"></kep-icon>
+          {{ 'Rating' | translate }}: {{ data.rating }}
+        </div>
+      </div>
+
+      <div class="solved text-center d-flex justify-content-between">
+        <div class="text-dark" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+          <kep-icon type="duotone" class="text-primary mr-25" name="ranking"></kep-icon>
+          {{ 'Rank' | translate }}: {{ data.rank }} / {{ data.usersCount }}
+        </div>
+      </div>
+
+    </div>
+  }
+</div>
+
+<!--<div class="rating text-center">-->
+<!--  <div class="avatar avatar-lg bg-primary">-->
+<!--    <div class="avatar-content">-->
+<!--      <kep-icon name="rating" class="font-medium-5"></kep-icon>-->
+<!--    </div>-->
+<!--  </div>-->
+
+<!--  <div class="font-medium-5 mt-1 text-dark font-weight-bolder">{{ data.rating }}</div>-->
+<!--</div>-->

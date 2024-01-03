@@ -1,0 +1,31 @@
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">
+      <kep-icon name="attempt"></kep-icon> {{ 'LastAttempts' | translate }}
+    </div>
+  </div>
+
+  @if (isLoading){
+    <div class="card-body" [style.height.px]="200">
+      <spinner></spinner>
+    </div>
+  } @else if(data) {
+    <div class="card-body">
+      <ul class="list-group">
+        <a
+          *ngFor="let attempt of attempts"
+          [routerLink]="Resources.Problem | resourceById : attempt.problemId" class="list-group-item">
+          {{ attempt.problemId }}. {{ attempt.problemTitle }}
+        </a>
+      </ul>
+    </div>
+
+    <div class="card-footer">
+      <a [routerLink]="Resources.Attempts" class="btn btn-block btn-primary btn-sm">
+        <kep-icon class="font-medium-1" name="attempt"></kep-icon>
+        {{ 'AllAttempts' | translate }}
+      </a>
+    </div>
+  }
+</div>

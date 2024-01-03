@@ -1,0 +1,20 @@
+@import 'styles/kep-imports';
+
+.card {
+  box-shadow: none;
+  margin-bottom: 1rem;
+
+  &:hover {
+    transition: 0.2s ease-in;
+    transform: scale(1.05);
+    box-shadow: initial;
+  }
+
+  .card-header {
+    flex-wrap: nowrap;
+
+    .card-title {
+      word-break: break-all;
+    }
+  }
+}
