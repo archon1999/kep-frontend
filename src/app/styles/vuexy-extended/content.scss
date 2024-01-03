@@ -81,3 +81,7 @@ a.nav-link:hover {
 .list-group-item:hover {
   background-color: rgba($primary, 0.05) !important;
 }
+
+.fc-list-empty {
+  background-color: inherit !important;
+}
