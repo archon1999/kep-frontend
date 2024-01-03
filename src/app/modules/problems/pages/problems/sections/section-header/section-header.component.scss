@@ -1,0 +1,13 @@
+@import 'styles/kep-imports';
+
+section-header .card {
+  background: linear-gradient(to right, mix($green, mix(black, $primary, 5), 10), mix(white, $primary, 15));
+
+  @include dark-layout {
+    background: linear-gradient(to right, mix($green, mix(black, $primary, 80), 25), mix(black, $primary, 60));
+  }
+
+  .card-footer {
+    border-color: rgba($primary, 0.1);
+  }
+}

@@ -9,7 +9,7 @@ export function getCategoryIcon(category: Categories) {
     [Categories.OS]: 'underlining',
     [Categories.BasicProgramming]: 'code',
     [Categories.Math]: 'abstract-10',
-    [Categories.IQ]: 'artificial-intelligence',
+    [Categories.Database]: 'data',
     [Categories.KEP]: 'setting-2',
     [Categories.CTF]: 'lock',
     [Categories.NonStandart]: 'scan-barcode',
@@ -26,7 +26,7 @@ export function getCategoryIdByCode(code: string): Categories {
     case 'web-scraping': return 5;
     case 'os': return 6;
     case 'math': return 7;
-    case 'iq': return 8;
+    case 'database': return 8;
     case 'industrial-programming': return 9;
     case 'kep': return 10;
     case 'non-standart': return 11;

@@ -12,6 +12,7 @@ import { NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstr
 import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 import { KepcoinSpendSwalModule } from '../../../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { StudyPlanCardModule } from '@problems/components/study-plan-card/study-plan-card.module';
+import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 
 @Component({
   selector: 'app-study-plan',
@@ -27,6 +28,7 @@ import { StudyPlanCardModule } from '@problems/components/study-plan-card/study-
     NgbTooltipModule,
     KepcoinSpendSwalModule,
     StudyPlanCardModule,
+    ApexChartModule,
   ]
 })
 export class StudyPlanComponent implements OnInit {
@@ -36,6 +38,7 @@ export class StudyPlanComponent implements OnInit {
   public difficulties: any;
   public chartOptions: any;
   public swiperConfig: SwiperOptions = {
+    autoHeight: false,
     direction: 'vertical',
     slidesPerView: 3,
     spaceBetween: 10,

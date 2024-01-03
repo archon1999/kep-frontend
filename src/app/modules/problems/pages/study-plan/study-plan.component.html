@@ -37,7 +37,7 @@
                   </div>
                 </div>
                 <div class="difficulties">
-                  <swiper [config]="swiperConfig" class="swiper swiper-lazy-loading">
+                  <swiper [config]="swiperConfig" class="swiper" height="200">
                     <div class="swiper-slide" *ngIf="difficulties?.allBeginner">
                       <div class="difficulty">
                         <div class="d-flex justify-content-between info">
@@ -218,8 +218,8 @@
               <div class="card" *ngIf="day.problems?.length > 0">
                 <div class="problems">
                   <div class="problem" [ngClass]="{
-                    'bg-light-success': problem.userInfo.hasSolved,
-                    'bg-light-danger': !problem.userInfo.hasSolved && problem.userInfo.hasAttempted
+                    'bg-light-success': problem?.hasSolved,
+                    'bg-light-danger': !problem?.hasSolved && problem?.hasAttempted
                   }" *ngFor="let problem of day.problems">
                     <div class="problem-title text-dark">
                       {{ problem.id }}. {{ problem.title }}

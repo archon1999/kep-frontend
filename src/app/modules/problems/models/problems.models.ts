@@ -87,7 +87,7 @@ export interface StudyPlanDay {
   day: number;
   title: string;
   description: string;
-  problems: Array<Problem>;
+  problems: Array<any>;
 }
 
 export interface StudyPlan {
@@ -121,7 +121,7 @@ export enum Categories {
   WebScraping,
   OS,
   Math,
-  IQ,
+  Database,
   IndustrialProgramming,
   KEP,
   NonStandart,
