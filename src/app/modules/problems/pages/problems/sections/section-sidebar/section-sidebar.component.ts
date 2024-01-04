@@ -8,7 +8,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
-import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { PageResult } from '@shared/components/classes/page-result';
 import { Observable } from 'rxjs';
 

@@ -14,7 +14,7 @@ import { ChallengesUserViewModule } from '@challenges/components/challenges-user
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
-import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
 import { User } from '@users/users.models';
 import { ContentHeader } from '@layout/components/content-header/content-header.component';

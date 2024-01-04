@@ -4,7 +4,7 @@ import { PageResult } from '@shared/components/classes/page-result';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
-import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
 import { Resources } from '@app/resources';

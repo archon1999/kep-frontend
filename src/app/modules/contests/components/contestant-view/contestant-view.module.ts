@@ -1,29 +1,26 @@
-import { CommonModule } from "@angular/common";
-import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router";
-import { TranslateModule } from "@ngx-translate/core";
-import { CorePipesModule } from "@shared/pipes/pipes.module";
-import { CoreDirectivesModule } from "@shared/directives/directives.module";
-import { ContestantViewComponent } from "./contestant-view.component";
-import { ContestsRatingImageComponent } from "./contests-rating-image/contests-rating-image.component";
-import { NgbTooltipModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ContestantViewComponent } from './contestant-view.component';
+import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
+import { ContestsRatingImageComponent } from './contests-rating-image/contests-rating-image.component';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
+
 
 @NgModule({
   declarations: [
     ContestantViewComponent,
-    ContestsRatingImageComponent,
+    ContestsRatingImageComponent
   ],
   imports: [
-    RouterModule,
     CommonModule,
-    TranslateModule,
+    UserPopoverModule,
     NgbTooltipModule,
-    CorePipesModule,
-    CoreDirectivesModule,
+    ProblemsPipesModule,
   ],
   exports: [
     ContestantViewComponent,
     ContestsRatingImageComponent,
   ]
 })
-export class ContestViewModuleModule { }
+export class ContestantViewModule {}

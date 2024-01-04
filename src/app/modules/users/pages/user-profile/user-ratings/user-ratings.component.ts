@@ -11,7 +11,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { NgbButtonsModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProblemDifficultyColorPipe } from '@problems/pipes/problem-difficulty-color.pipe';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
-import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { ProblemsActivityCardComponent } from '@problems/components/problems-activity-card/problems-activity-card.component';

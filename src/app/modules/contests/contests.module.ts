@@ -33,7 +33,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { RatingComponent } from './pages/rating/rating.component';
 import { ContestsTableModule } from './components/contests-table/contests-table.module';
 import { ContestCardModule } from './components/contest-card/contest-card.module';
-import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
 import { ContestProblemCardComponent } from '@contests/pages/contest/contest-problems/contest-problem-card/contest-problem-card.component';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';

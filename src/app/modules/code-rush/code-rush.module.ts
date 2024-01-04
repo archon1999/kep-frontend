@@ -7,7 +7,7 @@ import { CodeRushCountdownComponent } from './components/code-rush-countdown/cod
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
