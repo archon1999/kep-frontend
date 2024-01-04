@@ -3,7 +3,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AttemptsTableComponent } from './attempts-table.component';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { CommonModule } from '@angular/common';
-import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { NgbModalModule, NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';

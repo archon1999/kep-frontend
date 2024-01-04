@@ -8,7 +8,7 @@ import { DuelCountdownComponent } from './components/duel-countdown/duel-countdo
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { ProblemListCardComponent } from './components/problem-list-card/problem-list-card.component';
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';

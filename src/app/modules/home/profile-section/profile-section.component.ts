@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { CoreCommonModule } from 'core/common.module';
-import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 
 @Component({
