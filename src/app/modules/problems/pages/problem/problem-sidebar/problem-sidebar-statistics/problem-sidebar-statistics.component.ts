@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Problem } from 'app/modules/problems/models/problems.models';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
-import { colors as Colors } from 'app/colors.const';
+import { colors as Colors } from '@app/colors';
 import { CoreConfigService } from 'core/services/config.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';

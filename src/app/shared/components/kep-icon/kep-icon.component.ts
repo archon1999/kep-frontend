@@ -1,7 +1,7 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import icons from './icons.json';
 import { CommonModule } from '@angular/common';
-import { keenIcons } from '@app/keen-icons';
+import { keenIcons } from '@app/icons';
 
 @Component({
   standalone: true,

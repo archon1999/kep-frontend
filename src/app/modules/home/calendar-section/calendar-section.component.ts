@@ -11,7 +11,7 @@ import ruLocale from '@fullcalendar/core/locales/ru';
 import enLocale from '@fullcalendar/core/locales/es-us';
 import { TranslateService } from '@ngx-translate/core';
 import { HomeService } from '../home.service';
-import { LocalStorageService } from '@shared/storages/local-storage.service';
+import { LocalStorageService } from '@shared/services/storages/local-storage.service';
 import { CommonModule } from '@angular/common';
 
 enum CalendarEventType {
