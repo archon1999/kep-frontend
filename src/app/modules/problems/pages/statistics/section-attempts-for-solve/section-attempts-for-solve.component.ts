@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { colors } from 'app/colors.const';
+import { colors } from '@app/colors';
 import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
 import { CoreCommonModule } from '@core/common.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';

@@ -14,7 +14,7 @@ import { CoreSidebarModule } from 'core/components';
 import { CoreModule } from 'core/core.module';
 
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
-import { coreConfig } from './app-config';
+import { coreConfig } from './app.config';
 
 import { AppComponent } from 'app/app.component';
 import { WebsocketModule } from '@shared/services/websocket';
@@ -24,7 +24,7 @@ import { environment } from 'environments/environment';
 
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
-import { monacoConfig } from './monaco-config';
+import { monacoConfig } from './monaco.config';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
 import { map } from 'rxjs/operators';
 import { AuthService } from '@auth/service';
@@ -77,7 +77,7 @@ export class CustomTitleStrategy extends TitleStrategy {
     if (title !== undefined) {
       const key = `PageTitle.${ title }`;
       this.translateService.get(key).subscribe((value: any) => {
-        this.title.setTitle(`${ value } - KEP.uz`);
+        this.title.setTitle(`${ value } - ${ coreConfig.app.appTitle }`);
       });
     }
   }
