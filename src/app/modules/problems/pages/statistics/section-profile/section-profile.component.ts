@@ -5,6 +5,7 @@ import { ProblemsStatisticsService } from '@problems/services/problems-statistic
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { GeneralInfo } from '@problems/models/statistics.models';
+import { getCategoryIcon } from '@problems/utils/category';
 
 interface LangInfo {
   lang: string;
@@ -20,6 +21,9 @@ interface TagInfo {
 interface TopicInfo {
   topic: string;
   solved: number;
+  code: string;
+  id: number;
+  icon: string;
 }
 
 @Component({
@@ -79,7 +83,10 @@ export class SectionProfileComponent implements OnInit {
 
     this.statisticsService.getByTopic(this.username).subscribe(
       (topics: Array<TopicInfo>) => {
-        this.topics = topics.sort((a, b) => b.solved - a.solved);
+        this.topics = topics.map((topic) => {
+          topic.icon = getCategoryIcon(topic.id);
+          return topic;
+        });
       }
     );
   }
