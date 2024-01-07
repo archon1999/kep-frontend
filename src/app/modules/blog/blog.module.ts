@@ -17,6 +17,7 @@ import { BlogPostCardModule } from './components/blog-post-card/blog-post-card.m
 import { NgSelectModule } from '../../shared/third-part-modules/ng-select/ng-select.module';
 import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { KepImgComponent } from '@shared/components/kep-img/kep-img.component';
 
 const routes: Routes = [
   {
@@ -59,6 +60,7 @@ const routes: Routes = [
     NgSelectModule,
     NgbPaginationModule,
     KepIconComponent,
+    KepImgComponent,
   ],
   exports: [
     PostDetailComponent,
