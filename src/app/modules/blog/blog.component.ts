@@ -9,8 +9,8 @@ import { BlogService } from './blog.service';
   templateUrl: './blog.component.html',
   styleUrls: ['./blog.component.scss'],
   animations: [
-    fadeInRightOnEnterAnimation({ duration: 3000 }),
-    fadeInLeftOnEnterAnimation({ duration: 3000 }),
+    fadeInRightOnEnterAnimation(),
+    fadeInLeftOnEnterAnimation(),
   ]
 })
 export class BlogComponent implements OnInit {

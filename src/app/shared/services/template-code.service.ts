@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocalStorageService } from '../storages/local-storage.service';
+import { LocalStorageService } from '@shared/services/storages/local-storage.service';
 
 const PREFIX = 'template-code';
 

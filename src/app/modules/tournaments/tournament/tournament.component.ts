@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Tournament } from '../tournaments.models';
 import { TournamentsService } from '../tournaments.service';
-import { SessionStorageService } from 'app/shared/storages/session-storage.service';
+import { SessionStorageService } from '@shared/services/storages/session-storage.service';
 
 @Component({
   selector: 'app-tournament',

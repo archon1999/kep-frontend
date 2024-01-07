@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SafePipe } from '@shared/pipes/safe.pipe';
-import { IconNamePipe } from './icons.pipe';
+import { IconNamePipe } from './feather-icons.pipe';
 import { ContestsRatingImgPipe } from '@contests/pipes/contests-rating-img.pipe';
 import { FilterPipe } from './filter.pipe';
 import { ContestsRatingColorPipe } from '@contests/pipes/contests-rating-color.pipe';

@@ -3,7 +3,7 @@ import { ChartOptions } from './chart-options.type';
 import { takeUntil } from 'rxjs/operators';
 import { CoreConfigService } from '@core/services/config.service';
 import { Subject } from 'rxjs';
-import { colors } from '@app/colors.const';
+import { colors } from '@app/colors';
 import { ApexTheme, ChartComponent } from 'ng-apexcharts';
 import { TranslateService } from '@ngx-translate/core';
 
