@@ -36,6 +36,7 @@ import { CountdownComponent } from '@shared/third-part-modules/countdown/countdo
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 
 
 const routes: Routes = [
@@ -104,6 +105,7 @@ const routes: Routes = [
     CountdownComponent,
     SpinnerComponent,
     KepIconComponent,
+    ResourceByIdPipe,
   ],
   providers: [ChallengeResolver],
   exports: [
