@@ -1,22 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 
 @Component({
   selector: 'problem1639',
   templateUrl: './problem1639.component.html',
-  styleUrls: ['./problem1639.component.scss']
+  styleUrls: ['./problem1639.component.scss'],
+  standalone: true,
+  imports: [
+    CountdownComponent
+  ]
 })
-export class Problem1639Component implements OnInit {
-
+export class Problem1639Component {
   constructor(
     public toastr: ToastrService,
   ) { }
 
-  ngOnInit(): void {
+  finish() {
+    this.toastr.success('Oltinni tagi sabr!', '', {
+      toastClass: 'toast ngx-toastr',
+    });
   }
-  
-  finish(){
-    this.toastr.success('Oltinni tagi sabr!');
-  }
-
 }

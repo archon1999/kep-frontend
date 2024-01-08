@@ -1,5 +1,6 @@
 <apx-chart
   #chart
+  *ngIf="options"
   [chart]="options.chart"
   [colors]="options.colors"
   [fill]="options.fill"
@@ -13,5 +14,6 @@
   [title]="options.title"
   [plotOptions]="options.plotOptions"
   [labels]="options.labels"
+  [legend]="options.legend"
   [theme]="chartTheme"
 ></apx-chart>

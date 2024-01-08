@@ -1,0 +1,29 @@
+@if (isLoading && !total){
+  <div class="card" [style.height.px]="400">
+    <spinner></spinner>
+  </div>
+} @else {
+  <div class="row">
+    @for (problem of problems; track problem.id){
+      <div class="col-lg-4 col-md-6 col-12">
+        <problem-card [problem]="problem"></problem-card>
+      </div>
+    }
+  </div>
+}
+
+<div class="mb-2">
+  <kep-pagination
+    *ngIf="total"
+    [collectionSize]="total"
+    [pageOptions]="pageOptions"
+    [(page)]="pageNumber"
+    [pageSize]="pageSize"
+    [maxSize]="maxSize"
+    [rotate]="true"
+    [boundaryLinks]="false"
+    [ellipses]="true"
+    (pageSizeChange)="pageSizeChange($event)"
+    (pageChange)="pageChange($event)">
+  </kep-pagination>
+</div>

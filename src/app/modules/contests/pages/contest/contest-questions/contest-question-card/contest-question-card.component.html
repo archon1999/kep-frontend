@@ -1,0 +1,26 @@
+<div class="card question">
+  <div class="card-header">
+    <div *ngIf="question.problemSymbol" class="problem-title">
+      <a routerLink="../problem/{{ question.problemSymbol }}" class="ml-25 text-primary"> {{ question.problemSymbol }}. {{ question.problemTitle }}</a>
+    </div>
+    <div class="time">
+      <span class="badge mr-50" [class]="{
+        'badge-primary': question.status == 0,
+        'badge-warning': question.status == 1,
+        'badge-success': question.status == 2,
+        'badge-danger': question.status == 3
+      }"> {{ question.statusTitle }}</span>
+      <span class="badge badge-light-success"> {{ question.created }}</span>
+    </div>
+  </div>
+
+  <div class="card-body">
+    {{ question.question }}
+  </div>
+
+  <div class="card-footer">
+    <span *ngIf="question.answer" class="text-dark">
+      <mathjax [content]="question.answer"></mathjax>
+    </span>
+  </div>
+</div>

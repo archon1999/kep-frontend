@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { UserSkills, UserTechnology } from '@users/users.models';
 import { ToastrService } from 'ngx-toastr';
 import { AccountSettingsService } from '../account-settings.service';
@@ -23,7 +23,7 @@ export class SkillsComponent implements OnInit {
   public devIcons = devIcons;
 
   constructor(
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public route: ActivatedRoute,
     public toastr: ToastrService,
     public service: AccountSettingsService,
@@ -33,7 +33,7 @@ export class SkillsComponent implements OnInit {
     this.route.data.subscribe(({ userSkills, userTechnologies }) => {
       this.userSkills = userSkills;
       this.userTechnologies = userTechnologies;
-    })
+    });
 
   }
 
@@ -45,39 +45,47 @@ export class SkillsComponent implements OnInit {
     });
   }
 
-  deleteTechnology(index: number){
+  deleteTechnology(index: number) {
     this.userTechnologies.splice(index, 1);
   }
 
-  save(){
+  save() {
     this.service.updateUserSkills(this.userSkills).subscribe(
       () => {
-        this.toastr.success('Saved');
+        this.toastr.success('Saved', '', {
+          toastClass: 'toast ngx-toastr',
+        });
       }, (err: any) => {
-        this.toastr.error('Error');
+        this.toastr.error('Error', '', {
+          toastClass: 'toast ngx-toastr',
+        });
       }
-    )
+    );
 
     this.service.updateUserTechnologies(this.userTechnologies).subscribe(
       () => {
-        this.toastr.success('Saved');
+        this.toastr.success('Saved', '', {
+          toastClass: 'toast ngx-toastr',
+        });
       }, (err: any) => {
-        this.toastr.error('Error');
+        this.toastr.error('Error', '', {
+          toastClass: 'toast ngx-toastr',
+        });
       }
-    )
+    );
   }
 
-  reset(){
+  reset() {
     this.service.getUserSkills().subscribe(
       (userSkills: any) => {
         this.userSkills = userSkills;
       }
-    )
+    );
 
     this.service.getUserTechnologies().subscribe(
       (userTechnologies: any) => {
         this.userTechnologies = userTechnologies;
       }
-    )
+    );
   }
 }

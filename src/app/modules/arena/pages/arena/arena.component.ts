@@ -38,6 +38,7 @@ export class ArenaComponent implements OnInit {
   ngOnInit(): void {
     this.service.getArenaAll().subscribe(
       (result: any) => {
+        console.log(result);
         this.arenaList = result;
       }
     );

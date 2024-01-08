@@ -4,14 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
-import {
-  NgbDatepickerModule,
-  NgbDropdownModule,
-  NgbNavModule,
-  NgbPopoverModule,
-  NgbTimepickerModule,
-  NgbTooltipModule
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepickerModule, NgbDropdownModule, NgbNavModule, NgbPopoverModule, NgbTimepickerModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 
@@ -22,16 +15,9 @@ import { CountUpModule } from 'ngx-countup';
 import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
-import { ProblemBodyModule } from '@problems/components/problem-body/problem-body.module';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
 import { ContestCreateGuard, ContestGuard } from './contests.guard';
-import {
-  ContestProblemResolver,
-  ContestProblemsResolver,
-  ContestResolver,
-  OngoingContestsResolver,
-  UpcomingContestsResolver
-} from './contests.resolver';
+import { ContestProblemResolver, ContestProblemsResolver, ContestResolver, OngoingContestsResolver, UpcomingContestsResolver } from './contests.resolver';
 import { ContestAttemptsComponent } from './pages/contest/contest-attempts/contest-attempts.component';
 import { ContestOgImageComponent } from './pages/contest/contest-og-image/contest-og-image.component';
 import { ContestProblemComponent } from './pages/contest/contest-problem/contest-problem.component';
@@ -47,9 +33,9 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { RatingComponent } from './pages/rating/rating.component';
 import { ContestsTableModule } from './components/contests-table/contests-table.module';
 import { ContestCardModule } from './components/contest-card/contest-card.module';
-import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
-import { ContestProblemCardComponent } from '@contests/pages/contest/contest-problem/contest-problem-card/contest-problem-card.component';
+import { ContestProblemCardComponent } from '@contests/pages/contest/contest-problems/contest-problem-card/contest-problem-card.component';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { ProblemInfoCardComponent } from '@problems/components/problem-info-card/problem-info-card.component';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
@@ -63,6 +49,10 @@ import { EmptyResultComponent } from '@shared/components/empty-result/empty-resu
 import { ContestRegistrantsComponent } from '@contests/pages/contest/contest-registrants/contest-registrants.component';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
+import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';
+import {
+  ContestQuestionCardComponent
+} from '@contests/pages/contest/contest-questions/contest-question-card/contest-question-card.component';
 
 
 const routes: Routes = [
@@ -247,7 +237,7 @@ const routes: Routes = [
     UserPopoverModule,
     CountUpModule,
     NgbPopoverModule,
-    ProblemBodyModule,
+    ProblemBodyComponent,
     KepcoinSpendSwalModule,
     AttemptsTableModule,
     KepPaginationComponent,
@@ -259,6 +249,7 @@ const routes: Routes = [
     EmptyResultComponent,
     KepIconComponent,
     ContestClassesPipe,
+    ContestQuestionCardComponent,
   ],
   providers: [
     ContestGuard,

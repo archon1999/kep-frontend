@@ -1,22 +1,21 @@
-<!--
-
-    
--->
-<div class="container">
-  <div class="row">
-      <div class="col-lg-12 col-md-12 col-sm-12">
-          <ul class="social">
-              <li>
-                <img src="assets/images/icons/telegram-app.png">
-              </li>
-          </ul>
+<div class="content-wrapper container-xxl p-0 full-width mb-1">
+  <div class="content-body">
+    <div class="card">
+      <div class="card-body align-items-center d-flex justify-content-between">
+        <div class="text-dark">{{ coreConfig.app.appTitle }} ©</div>
+        <div>
+          Powered by
+          <a ngbTooltip="Django" href="https://www.djangoproject.com/">
+            <kep-icon type="duotone" name="dj"></kep-icon>
+          </a>
+          <a ngbTooltip="Angular" href="https://angular.io/">
+            <kep-icon type="duotone" name="angular"></kep-icon>
+          </a>
+        </div>
       </div>
-  </div>
-  <div class="row">
-      <div class="col-lg-12">
-          <p class="copyright">Copyright © 2023 KEP.uz</p>
-      </div>
+    </div>
   </div>
 </div>
 
-<app-scroll-top *ngIf="coreConfig.layout.scrollTop"></app-scroll-top>
+
+<!--<app-scroll-top *ngIf="coreConfig.layout.scrollTop"></app-scroll-top>-->

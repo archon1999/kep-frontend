@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CoreConfigService } from '../../../../../core/services/config.service';
-import { CoreConfig } from '../../../../../core/types';
+import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfig } from '@core/types';
 import { fadeInDownAnimation, fadeInLeftAnimation, fadeInRightAnimation, fadeInUpAnimation } from 'angular-animations';
+import { CoreCommonModule } from '@core/common.module';
 
 @Component({
   selector: 'slide-practice',
@@ -12,13 +13,17 @@ import { fadeInDownAnimation, fadeInLeftAnimation, fadeInRightAnimation, fadeInU
     fadeInDownAnimation({ duration: 1000 }),
     fadeInLeftAnimation({ duration: 1000 }),
     fadeInRightAnimation({ duration: 1000 }),
+  ],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
   ]
 })
 export class SlidePracticeComponent implements OnInit {
 
   @Input() animationState: boolean;
 
-  public isDarkSkin: boolean = false;
+  public isDarkSkin = false;
 
   constructor(public coreConfigService: CoreConfigService) { }
 

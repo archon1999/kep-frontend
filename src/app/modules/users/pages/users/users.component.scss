@@ -3,3 +3,18 @@
   box-shadow: var(--inherit-bg-box-shadow) !important;
   background: inherit !important;
 }
+
+th, td {
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+}
+
+th:first-child, td:first-child {
+  padding-left: 1.5rem !important;
+  padding-right: 1rem !important;
+}
+
+td:nth-child(3), td:nth-child(4) {
+  padding-left: 0.25rem !important;
+  padding-right: 0.25rem !important;
+}

@@ -1,12 +1,23 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NavbarService } from '../navbar.service';
 import { User } from '@auth/models';
+import { CoreCommonModule } from '@core/common.module';
+import { NgScrollbar } from 'ngx-scrollbar';
+import { NgbDropdownModule, NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { KepStreakComponent } from '@shared/components/kep-streak/kep-streak.component';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+
+enum DailyTaskType {
+  Problem = 1,
+  Test,
+  Challenge
+}
 
 interface DailyTask {
-  type: number;
+  type: DailyTaskType;
   kepcoin: number;
   progress: number;
   total: number;
@@ -17,7 +28,17 @@ interface DailyTask {
 @Component({
   selector: 'app-navbar-daily-tasks',
   templateUrl: './navbar-daily-tasks.component.html',
-  styleUrls: ['./navbar-daily-tasks.component.scss']
+  styleUrls: ['./navbar-daily-tasks.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgScrollbar,
+    NgbProgressbarModule,
+    NgbDropdownModule,
+    KepStreakComponent,
+    KepIconComponent,
+    NgbTooltipModule,
+  ]
 })
 export class NavbarDailyTasksComponent implements OnInit, OnDestroy {
 
@@ -27,11 +48,13 @@ export class NavbarDailyTasksComponent implements OnInit, OnDestroy {
   public completed = 0;
   public progress = 0;
 
+  protected readonly DailyTaskType = DailyTaskType;
+
   private _unsubscribeAll = new Subject();
 
   constructor(
     public service: NavbarService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
   ) { }
 
   ngOnInit(): void {
@@ -50,6 +73,7 @@ export class NavbarDailyTasksComponent implements OnInit, OnDestroy {
       this.streak = result.streak;
       this.maxStreak = result.maxStreak;
       this.dailyTasks = result.dailyTasks;
+      this.completed = 0;
       for (const dailyTask of this.dailyTasks) {
         if (dailyTask.completed) {
           this.completed++;

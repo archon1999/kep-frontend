@@ -1,7 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { fadeInDownOnEnterAnimation, fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation, fadeInUpOnEnterAnimation, fadeOutDownOnLeaveAnimation, fadeOutLeftOnLeaveAnimation, fadeOutOnLeaveAnimation, fadeOutRightOnLeaveAnimation, fadeOutUpOnLeaveAnimation } from 'angular-animations';
-import { UsersService } from '../../../users/users.service';
+import {
+  fadeInDownOnEnterAnimation,
+  fadeInLeftOnEnterAnimation,
+  fadeInOnEnterAnimation,
+  fadeInRightOnEnterAnimation,
+  fadeInUpOnEnterAnimation,
+  fadeOutDownOnLeaveAnimation,
+  fadeOutLeftOnLeaveAnimation,
+  fadeOutOnLeaveAnimation,
+  fadeOutRightOnLeaveAnimation,
+  fadeOutUpOnLeaveAnimation
+} from 'angular-animations';
+import { UsersApiService } from '@users/users-api.service';
 import { Tournament, TournamentStage, TournamentStageDuel } from '../../tournaments.models';
 
 const STAGE_NUMBER = 2;
@@ -35,7 +46,7 @@ export class TournamentVersusComponent implements OnInit {
   public userSecond;
 
   constructor(
-    public usersService: UsersService,
+    public usersService: UsersApiService,
     public route: ActivatedRoute,
   ) { }
 
@@ -44,33 +55,33 @@ export class TournamentVersusComponent implements OnInit {
     setTimeout(() => {
       this.state = false;
 
-      for(let i = 0; i < this.duels.length; i++){
+      for (let i = 0; i < this.duels.length; i++) {
         setTimeout(() => {
           this.usersService.getUser(this.duels[i].duel.playerFirst.username).subscribe(
             (user) => {
               this.userFirst = user;
             }
-          )
+          );
           this.usersService.getUser(this.duels[i].duel.playerSecond.username).subscribe(
             (user) => {
               this.userSecond = user;
             }
-          )
+          );
         }, 10000 * i);
         setTimeout(() => {
           this.userFirst = null;
           this.userSecond = null;
-        }, 7000 + 10000*i);
+        }, 7000 + 10000 * i);
       }
 
-      setTimeout(() => this.state = true, this.duels.length * 10000 - 2000)
+      setTimeout(() => this.state = true, this.duels.length * 10000 - 2000);
     }, 5000);
 
     this.route.data.subscribe(({ tournament }) => {
       this.tournament = tournament;
       this.stage = tournament.stages[STAGE_NUMBER];
       this.duels = this.stage.duels;
-    })
+    });
   }
 
 }

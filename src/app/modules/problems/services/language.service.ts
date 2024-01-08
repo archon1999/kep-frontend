@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { AttemptLangs } from '../constants';
-import { LocalStorageService } from 'app/shared/storages/local-storage.service';
+import { LocalStorageService } from '@shared/services/storages/local-storage.service';
 
 const LANG_KEY = 'problem-submit-lang';
 
@@ -16,15 +16,17 @@ export class LanguageService {
 
   constructor(
     public localStorageService: LocalStorageService,
-  ){}
+  ) {}
 
-  getLanguage(){
+  getLanguage() {
     return this._currentLang;
   }
 
-  setLanguage(lang: AttemptLangs){
+  setLanguage(lang: AttemptLangs, eventEmit = true) {
     this.localStorageService.set(LANG_KEY, lang);
-    this._currentLang.next(lang);
+    if (eventEmit) {
+      this._currentLang.next(lang);
+    }
   }
 
 }

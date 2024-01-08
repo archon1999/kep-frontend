@@ -10,7 +10,7 @@ import { TournamentDuelsComponent } from './tournament/tournament-duels/tourname
 import { TournamentScheduleComponent } from './tournament/tournament-schedule/tournament-schedule.component';
 import { TournamentInfoComponent } from './tournament/tournament-info/tournament-info.component';
 import { DuelCardComponent } from './tournament/tournament-duels/duel-card/duel-card.component';
-import { ContestantViewModule } from '../../shared/components/contestant-view/contestant-view.module';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { TranslateModule } from '@ngx-translate/core';

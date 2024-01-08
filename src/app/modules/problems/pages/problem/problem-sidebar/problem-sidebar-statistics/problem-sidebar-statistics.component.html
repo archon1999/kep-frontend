@@ -10,15 +10,13 @@
   </span>
 </div>
 
-<div *ngIf="attemptStatisticsChart">
-  <apex-chart [options]="attemptStatisticsChart"></apex-chart>
-</div>
+<apex-chart *ngIf="attemptStatisticsChart" [options]="attemptStatisticsChart"></apex-chart>
 
 <div class="mt-2" *ngIf="langStatisticsChart">
   <apex-chart [options]="langStatisticsChart"></apex-chart>
 </div>
 
-<div *ngIf="attemptsForSolveChart">
+<div class="mt-2" *ngIf="attemptsForSolveChart">
   <h4 class="text-center">
     {{ 'NumberOfAttemptsForSolve' | translate }}
   </h4>

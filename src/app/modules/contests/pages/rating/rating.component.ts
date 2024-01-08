@@ -14,6 +14,7 @@ import { PageResult } from '@shared/components/classes/page-result';
 export class RatingComponent extends BaseTablePageComponent<ContestsRating> implements OnInit {
   override maxSize = 5;
   override defaultPageSize = 20;
+  override pageOptions = [10, 20, 50];
 
   constructor(
     public service: ContestsService,
@@ -31,13 +32,15 @@ export class RatingComponent extends BaseTablePageComponent<ContestsRating> impl
   }
 
   getPage(): Observable<PageResult<ContestsRating>> | null {
-    return this.service.getContestsRating(this.pageNumber, this.pageSize);
+    return this.service.getContestsRating({
+      page: this.pageNumber,
+      pageSize: this.pageSize,
+    });
   }
 
   protected getContentHeader(): ContentHeader {
     return {
       headerTitle: 'CONTESTS.CONTESTS_RATING',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

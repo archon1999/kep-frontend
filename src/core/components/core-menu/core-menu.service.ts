@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { User } from 'app/auth/models';
 
 @Injectable({
@@ -25,9 +25,9 @@ export class CoreMenuService {
    * Constructor
    *
    * @param {Router} _router
-   * @param {AuthenticationService} _authenticationService
+   * @param {AuthService} _authenticationService
    */
-  constructor(private _router: Router, private _authenticationService: AuthenticationService) {
+  constructor(private _router: Router, private _authenticationService: AuthService) {
     this._authenticationService.currentUser.subscribe(x => (this.currentUser = x));
 
     // Set defaults

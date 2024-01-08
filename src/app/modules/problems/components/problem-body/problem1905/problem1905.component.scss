@@ -1,0 +1,39 @@
+@import 'styles/kep-imports';
+
+$background: mix(black, $primary, 90);
+$tile-color: $primary;
+$color: #efefef;
+
+#list {
+  width: 0;
+  position: relative;
+  display: block;
+  margin-top: 20px;
+}
+
+.tile {
+  position: absolute;
+  background-color: $tile-color;
+  color: $light;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.layout {
+  color: $color;
+  margin-bottom: 15px;
+
+  label {
+    margin-right: 15px;
+    cursor: pointer;
+
+    &:hover {
+      color: $tile-color;
+    }
+  }
+
+  input {
+    margin-right: 3px;
+  }
+}

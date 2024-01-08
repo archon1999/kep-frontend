@@ -1,15 +1,20 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { AuthenticationService } from '../service';
+import { AuthService } from '../service';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CoreCommonModule } from '@core/common.module';
 
 @Component({
   selector: 'app-auth-modal',
   templateUrl: './auth-modal.component.html',
   styleUrls: ['./auth-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+  ]
 })
 export class AuthModalComponent implements OnInit {
 
@@ -23,7 +28,7 @@ export class AuthModalComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    public authService: AuthenticationService,
+    public authService: AuthService,
     private formBuilder: FormBuilder,
     public toastr: ToastrService,
     public translateService: TranslateService,
@@ -65,7 +70,9 @@ export class AuthModalComponent implements OnInit {
       });
       this.modalService.dismissAll(1);
     }, (err: any) => {
-      this.toastr.error(this.loginErrorText);
+      this.toastr.error(this.loginErrorText, '', {
+        toastClass: 'toast ngx-toastr',
+      });
     });
   }
 

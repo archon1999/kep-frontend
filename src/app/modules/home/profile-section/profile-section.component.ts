@@ -1,20 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
-import { UsersService } from '@users/users.service';
+import { AuthService } from 'app/auth/service';
+import { UsersApiService } from '@users/users-api.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { CoreCommonModule } from 'core/common.module';
-import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 
 @Component({
   selector: 'profile-section',
   templateUrl: './profile-section.component.html',
   styleUrls: ['./profile-section.component.scss'],
   standalone: true,
-  imports: [CoreCommonModule, NgxSkeletonLoaderModule, ContestantViewModule],
+  imports: [CoreCommonModule, NgxSkeletonLoaderModule, ContestantViewModule, KepIconComponent],
   animations: [fadeInOnEnterAnimation({ duration: 3000 })],
 })
 export class ProfileSectionComponent implements OnInit {
@@ -26,8 +27,8 @@ export class ProfileSectionComponent implements OnInit {
   private _unsubscribeAll = new Subject();
 
   constructor(
-    public service: UsersService,
-    public authService: AuthenticationService,
+    public service: UsersApiService,
+    public authService: AuthService,
   ) {}
 
   ngOnInit(): void {

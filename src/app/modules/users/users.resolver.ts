@@ -1,11 +1,13 @@
-import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/router";
-import { Observable } from "rxjs";
-import { UsersService } from "./users.service";
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
+import { UsersApiService } from './users-api.service';
 
-@Injectable()
-export class UserResolver implements Resolve<any> {
-  constructor(private service: UsersService) { }
+@Injectable({
+  providedIn: 'root',
+})
+export class UserResolver {
+  constructor(private service: UsersApiService) { }
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -16,9 +18,11 @@ export class UserResolver implements Resolve<any> {
 
 }
 
-@Injectable()
-export class UserInfoResolver implements Resolve<any> {
-  constructor(private service: UsersService) { }
+@Injectable({
+  providedIn: 'root',
+})
+export class UserInfoResolver {
+  constructor(private service: UsersApiService) { }
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -29,9 +33,11 @@ export class UserInfoResolver implements Resolve<any> {
 
 }
 
-@Injectable()
-export class UserSkillsResolver implements Resolve<any> {
-  constructor(private service: UsersService) { }
+@Injectable({
+  providedIn: 'root',
+})
+export class UserSkillsResolver {
+  constructor(private service: UsersApiService) { }
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -42,9 +48,11 @@ export class UserSkillsResolver implements Resolve<any> {
 
 }
 
-@Injectable()
-export class UserSocialResolver implements Resolve<any> {
-  constructor(private service: UsersService) { }
+@Injectable({
+  providedIn: 'root',
+})
+export class UserSocialResolver {
+  constructor(private service: UsersApiService) { }
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -56,9 +64,11 @@ export class UserSocialResolver implements Resolve<any> {
 }
 
 
-@Injectable()
-export class UserTechnologiesResolver implements Resolve<any> {
-  constructor(private service: UsersService) { }
+@Injectable({
+  providedIn: 'root',
+})
+export class UserTechnologiesResolver {
+  constructor(private service: UsersApiService) { }
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -69,9 +79,11 @@ export class UserTechnologiesResolver implements Resolve<any> {
 
 }
 
-@Injectable()
-export class UserEducationsResolver implements Resolve<any> {
-  constructor(private service: UsersService) { }
+@Injectable({
+  providedIn: 'root',
+})
+export class UserEducationsResolver {
+  constructor(private service: UsersApiService) { }
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -82,9 +94,11 @@ export class UserEducationsResolver implements Resolve<any> {
 
 }
 
-@Injectable()
-export class UserWorkExperiencesResolver implements Resolve<any> {
-  constructor(private service: UsersService) { }
+@Injectable({
+  providedIn: 'root',
+})
+export class UserWorkExperiencesResolver {
+  constructor(private service: UsersApiService) { }
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -94,9 +108,11 @@ export class UserWorkExperiencesResolver implements Resolve<any> {
   }
 }
 
-@Injectable()
-export class UserBlogResolver implements Resolve<any> {
-  constructor(private service: UsersService) { }
+@Injectable({
+  providedIn: 'root',
+})
+export class UserBlogResolver {
+  constructor(private service: UsersApiService) { }
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -106,9 +122,11 @@ export class UserBlogResolver implements Resolve<any> {
   }
 }
 
-@Injectable()
-export class UserContestsRatingResolver implements Resolve<any> {
-  constructor(private service: UsersService) { }
+@Injectable({
+  providedIn: 'root',
+})
+export class UserContestsRatingResolver {
+  constructor(private service: UsersApiService) { }
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -118,9 +136,11 @@ export class UserContestsRatingResolver implements Resolve<any> {
   }
 }
 
-@Injectable()
-export class UserProblemsRatingResolver implements Resolve<any> {
-  constructor(private service: UsersService) { }
+@Injectable({
+  providedIn: 'root',
+})
+export class UserProblemsRatingResolver {
+  constructor(private service: UsersApiService) { }
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -130,9 +150,11 @@ export class UserProblemsRatingResolver implements Resolve<any> {
   }
 }
 
-@Injectable()
-export class UserChallengesRatingResolver implements Resolve<any> {
-  constructor(private service: UsersService) { }
+@Injectable({
+  providedIn: 'root',
+})
+export class UserChallengesRatingResolver {
+  constructor(private service: UsersApiService) { }
 
   resolve(
     route: ActivatedRouteSnapshot,

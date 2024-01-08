@@ -6,11 +6,27 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
+import { CoreCommonModule } from '@core/common.module';
+import { SlideMainComponent } from '@app/modules/landing-page/slides/slide-main/slide-main.component';
+import { SlideLearnComponent } from '@app/modules/landing-page/slides/slide-learn/slide-learn.component';
+import { SlidePracticeComponent } from '@app/modules/landing-page/slides/slide-practice/slide-practice.component';
+import { SlideCompetitionsComponent } from '@app/modules/landing-page/slides/slide-competitions/slide-competitions.component';
+import { SlideStatisticsComponent } from '@app/modules/landing-page/slides/slide-statistics/slide-statistics.component';
 
 @Component({
   selector: 'app-landing-page',
   templateUrl: './landing-page.component.html',
-  styleUrls: ['./landing-page.component.scss']
+  styleUrls: ['./landing-page.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    SlideMainComponent,
+    SlideLearnComponent,
+    SlidePracticeComponent,
+    SlideCompetitionsComponent,
+    SlideStatisticsComponent,
+    SwiperComponent,
+  ]
 })
 export class LandingPageComponent implements OnInit {
 

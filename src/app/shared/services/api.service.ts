@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'environments/environment';
-import { catchError, concatMap, delay, retryWhen } from 'rxjs/operators';
+import { catchError, concatMap, delay, map, retryWhen } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
 import { isPresent } from '@shared/c-validators/utils';
@@ -14,7 +14,8 @@ export const BASE_API_URL = BASE_URL + '/api/';
 
 @Injectable({
   providedIn: 'root'
-})export class ApiService {
+})
+export class ApiService {
 
   constructor(
     public http: HttpClient,
@@ -34,9 +35,18 @@ export const BASE_API_URL = BASE_URL + '/api/';
     }
     this.initOptions(options);
     options.params = paramsMapper(filteredParams);
+    if (!environment.production) {
+      options.headers = options.headers.set('django-language', this.translate.currentLang);
+    }
+    options.observe = 'response';
     return this.http.get(url, options).pipe(
-      this.handleRetryError(3000, 5),
+      map((response: any) => {
+        // console.log(new Date(response.headers.get('Date')));
+        return response.body;
+      }),
+      this.handleRetryError(2000, 5),
       catchError(err => {
+        console.log(err);
         if (!err.status) {
           this.handleConnectionError();
         }
@@ -72,7 +82,7 @@ export const BASE_API_URL = BASE_URL + '/api/';
       const password = 'htUgctJ4rYUWxt5';
       // username = 'NaZaR.IO';
       // password = 'cpython2428';
-      // username = 'CPython.uz';
+      // username = 'KEP.uz';
       // password = 'cpython';
       const token = btoa(`${ username }:${ password }`);
       options.headers = options.headers.set('Authorization', `Basic ${ token }`);

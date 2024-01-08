@@ -40,8 +40,11 @@ pre {
   }
 }
 
-#main-menu-navigation > li[core-menu-horizontal-item], li[core-menu-horizontal-collapsible], .main-menu.expanded li[core-menu-vertical-item] {
-  &.active > a > kep-icon > span {
+#main-menu-navigation > li[core-menu-horizontal-item],
+li[core-menu-horizontal-collapsible],
+.main-menu.expanded li[core-menu-vertical-item],
+.menu-expanded li[core-menu-vertical-item] {
+  &.active > a > kep-icon > span, &.active > div > kep-icon > span {
     color: white !important;
   }
 }
@@ -67,4 +70,18 @@ pre {
 
 :root .dark-layout {
   --inherit-bg-box-shadow: 0 2px 12px 0 rgba(255, 255, 255, 0.05);
+}
+
+a.nav-link:hover {
+  background-color: rgba($primary, 0.05);
+  border-radius: 5px;
+  transition: 0.2s ease-in;
+}
+
+.list-group-item:hover {
+  background-color: rgba($primary, 0.05) !important;
+}
+
+.fc-list-empty {
+  background-color: inherit !important;
 }

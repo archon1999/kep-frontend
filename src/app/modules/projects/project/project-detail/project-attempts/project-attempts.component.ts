@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { Project, ProjectAttempt } from '../../../../projects/projects.models';
 import { ProjectsService } from '../../../../projects/projects.service';
 import { Subject } from 'rxjs';
@@ -27,7 +27,7 @@ export class ProjectAttemptsComponent implements OnInit, OnDestroy {
 
   constructor(
     public service: ProjectsService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
     ) { }
 
   ngOnInit(): void {

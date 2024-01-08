@@ -1,15 +1,13 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Problem } from 'app/modules/problems/models/problems.models';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
-import { colors as Colors } from 'app/colors.const';
+import { colors as Colors } from '@app/colors';
 import { CoreConfigService } from 'core/services/config.service';
-import { CoreConfig } from 'core/types';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
+import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 
 @Component({
   selector: 'problem-sidebar-statistics',
@@ -22,18 +20,12 @@ import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-char
     ApexChartModule,
   ]
 })
-export class ProblemSidebarStatisticsComponent implements OnInit, OnDestroy {
+export class ProblemSidebarStatisticsComponent implements OnInit {
   @Input() problem: Problem;
 
-  public attemptStatisticsChart: any;
-  public langStatisticsChart: any;
-  public attemptsForSolveChart: any;
-
-  public chartTheme: {
-    mode: string,
-  };
-
-  private _unsubscribeAll = new Subject();
+  public attemptStatisticsChart: ChartOptions;
+  public langStatisticsChart: ChartOptions;
+  public attemptsForSolveChart: ChartOptions;
 
   constructor(
     public service: ProblemsApiService,
@@ -42,41 +34,27 @@ export class ProblemSidebarStatisticsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.coreConfigService.getConfig().pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (config: CoreConfig) => {
-        if(config.layout.skin == 'dark'){
-          this.chartTheme = {
-            mode: 'dark',
-          }
-        } else {
-          this.chartTheme = {
-            mode: 'light',
-          }
-        }
-      }
-    )
-
     this.service.getProblemVerdictStatistics(this.problem.id).subscribe((result: any) => {
-      let series = [];
-      let labels = [];
-      let colors = [];
-      for(let data of result){
+      const series = [];
+      const labels = [];
+      const colors = [];
+      for (const data of result) {
         series.push(data.value);
         colors.push(Colors.solid[data.color]);
         labels.push(data.verdictTitle);
       }
-      let attemptsText: string;
-      this.translate.get('Attempts').subscribe((text: string) => attemptsText = text)
       this.attemptStatisticsChart = {
         series: series,
-        labels: labels,
         colors: colors,
+        labels: labels,
         chart: {
           type: 'donut',
-          fontFamily: 'QuickSand, Roboto',
+          height: 500,
         },
         legend: {
-          show: false,
+          show: true,
+          position: 'bottom',
+          horizontalAlign: 'center'
         },
         plotOptions: {
           pie: {
@@ -90,12 +68,9 @@ export class ProblemSidebarStatisticsComponent implements OnInit, OnDestroy {
                 value: {
                   show: true,
                   fontSize: '26px',
-                  formatter: function (val) {
-                    return val+"";
-                  }
                 },
                 total: {
-                  label: attemptsText,
+                  label: this.translate.instant('Attempts'),
                   show: true,
                 },
               }
@@ -103,30 +78,30 @@ export class ProblemSidebarStatisticsComponent implements OnInit, OnDestroy {
           }
         }
       };
-    })
+    });
 
     this.service.getProblemLangStatistics(this.problem.id).subscribe((result: any) => {
-      let series = [];
-      let labels = [];
-      let colors = [];
-      for(let data of result){
+      const series = [];
+      const labels = [];
+      const colors = [];
+      for (const data of result) {
         series.push(data.value);
         colors.push(Colors.lang[data.lang]);
         labels.push(data.langFull);
       }
       let languagesText = '';
-      this.translate.get('Languages').subscribe((text: string) => languagesText = text)
+      this.translate.get('Languages').subscribe((text: string) => languagesText = text);
       this.langStatisticsChart = {
         series: series,
         labels: labels,
         colors: colors,
         chart: {
           type: 'pie',
-          fontFamily: 'QuickSand, Roboto',
+          height: 500,
         },
         legend: {
           show: true,
-          position: 'top',
+          position: 'bottom',
         },
         plotOptions: {
           pie: {
@@ -141,7 +116,7 @@ export class ProblemSidebarStatisticsComponent implements OnInit, OnDestroy {
                   show: true,
                   fontSize: '26px',
                   formatter: function (val) {
-                    return val+"";
+                    return val + '';
                   }
                 },
                 total: {
@@ -154,29 +129,29 @@ export class ProblemSidebarStatisticsComponent implements OnInit, OnDestroy {
           }
         }
       };
-    })
+    });
 
     let numberOfAttemptsText: string;
     this.translate.get('NumberOfAttempts').subscribe(
       (text: string) => {
         numberOfAttemptsText = text;
       }
-    )
+    );
 
     let percentageText: string;
     this.translate.get('Percent').subscribe(
       (text: string) => {
         percentageText = text;
       }
-    )
+    );
 
     this.service.getAttemptsForSolveStatistics(this.problem.id).subscribe((result: any) => {
-      let labels = [];
-      let data = [];
-      for(let A of result){
+      const labels = [];
+      const data = [];
+      for (const A of result) {
         labels.push(A.attempts);
         data.push({
-          'x': numberOfAttemptsText + ": " + A.attempts,
+          'x': numberOfAttemptsText + ': ' + A.attempts,
           'y': A.value,
         });
       }
@@ -187,19 +162,14 @@ export class ProblemSidebarStatisticsComponent implements OnInit, OnDestroy {
         }],
         colors: [Colors.solid.primary],
         chart: {
-          type: "area",
-          fontFamily: 'QuickSand, Roboto',
-          zoom: {
-            enabled: false
-          },
-          toolbar: { show: false }
+          type: 'area',
         },
         labels: labels,
         dataLabels: {
           enabled: false
         },
         stroke: {
-          curve: "straight"
+          curve: 'straight'
         },
         xaxis: {
           labels: {
@@ -222,24 +192,17 @@ export class ProblemSidebarStatisticsComponent implements OnInit, OnDestroy {
           },
           labels: {
             show: false,
-            formatter: function(val) {
-              return Math.trunc(val) + "%";
+            formatter: function (val) {
+              return Math.trunc(val) + '%';
             },
           },
           min: 50,
           max: 100,
         },
         legend: {
-          horizontalAlign: "left"
+          horizontalAlign: 'left'
         }
-      }
-    })
-
+      };
+    });
   }
-
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
-  }
-
 }

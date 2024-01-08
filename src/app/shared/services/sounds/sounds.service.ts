@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocalStorageService } from '../../storages/local-storage.service';
+import { LocalStorageService } from '@shared/services/storages/local-storage.service';
 import { SuccessSoundEnum } from './enums/success-sound.enum';
 import { HomeSoundEnum, HomeSoundList } from '@shared/services/sounds/enums/home-sound.enum';
 import { randomChoice } from '@shared/utils/random';

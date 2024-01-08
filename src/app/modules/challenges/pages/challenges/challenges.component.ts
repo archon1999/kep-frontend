@@ -7,13 +7,22 @@ import {
   fadeInUpOnEnterAnimation,
   fadeOutOnLeaveAnimation
 } from 'angular-animations';
-import { AuthenticationService } from 'app/auth/service';
-import { Subject } from 'rxjs';
+import { AuthService } from 'app/auth/service';
 import { Challenge, ChallengeCall, ChallengesRating } from '../../models/challenges.models';
-import { ChallengesService } from '@challenges/services';
+import { ChallengesApiService } from '@challenges/services';
 import { Chapter } from 'app/modules/testing/testing.models';
 import { BaseComponent } from '@shared/components/classes/base.component';
 import { PageResult } from '@shared/components/classes/page-result';
+import { CoreCommonModule } from '@core/common.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NewChallengeButtonComponent } from '@challenges/components/new-challenge-button/new-challenge-button.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { ChallengeCallCardComponent } from '@challenges/components/challenge-call-card/challenge-call-card.component';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { ChallengeCardComponent } from '@challenges/components/challenge-card/challenge-card.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { NouisliderModule } from '@shared/third-part-modules/nouislider/nouislider.module';
+import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
 
 interface NewChallengeCall {
   timeSeconds: number;
@@ -31,6 +40,19 @@ interface NewChallengeCall {
     fadeInRightOnEnterAnimation({ duration: 1000 }),
     fadeInUpOnEnterAnimation({ duration: 1000 }),
   ],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgbTooltipModule,
+    NewChallengeButtonComponent,
+    NgxSkeletonLoaderModule,
+    ChallengeCallCardComponent,
+    NgSelectModule,
+    ChallengeCardComponent,
+    KepPaginationComponent,
+    NouisliderModule,
+    ChallengesUserViewComponent,
+  ]
 })
 export class ChallengesComponent extends BaseComponent implements OnInit, OnDestroy {
   public challengeCalls: Array<ChallengeCall> = [];
@@ -56,8 +78,8 @@ export class ChallengesComponent extends BaseComponent implements OnInit, OnDest
   private _intervalId: any;
 
   constructor(
-    public service: ChallengesService,
-    public authService: AuthenticationService,
+    public service: ChallengesApiService,
+    public authService: AuthService,
     public router: Router,
   ) {
     super();
@@ -70,7 +92,10 @@ export class ChallengesComponent extends BaseComponent implements OnInit, OnDest
       }
     );
 
-    this.service.getChallengesRating(1).subscribe(
+    this.service.getChallengesRating({
+      page: 1,
+      pageSize: 10,
+    }).subscribe(
       (result: any) => {
         this.challengesRatingSkeletonVisible = false;
         this.challengesRating = result.data;
@@ -84,7 +109,10 @@ export class ChallengesComponent extends BaseComponent implements OnInit, OnDest
   }
 
   updateChallenges() {
-    this.service.getChallenges(this.challengesPage, null, 7).subscribe(
+    this.service.getChallenges({
+      page: this.challengesPage,
+      pageSize: 7,
+    }).subscribe(
       (result: PageResult) => {
         this.challengesSkeletonVisible = false;
         this.challenges = result.data;

@@ -3,50 +3,50 @@
 <div [@fadeInOnEnter] class="card card-activity bg-gradient-primary" *ngIf="statistics">
   <div class="card-header">
     <div class="card-title">
-      {{ statistics.date | date:'yyyy-MM-dd' }}
+      {{ statistics.date | localizedDate:'mediumDate' }}
     </div>
   </div>
 
   <div class="card-body">
     <div class="statistics-info">
       <span *ngIf="statistics.dailyActivity" class="badge badge-success badge-glow">
-        <i data-feather="check-circle"></i>
+        <kep-icon class="font-small-2" name="check-circle"></kep-icon>
       </span>
       <span *ngIf="!statistics.dailyActivity" class="badge badge-danger badge-glow">
-        <i data-feather="x-circle"></i>
+        <kep-icon class="font-small-2" name="minus-circle"></kep-icon>
       </span>
-      <h5>
+      <div class="title">
         {{ 'DailyActivity' | translate }}
-      </h5>
+      </div>
     </div>
 
     <div class="statistics-info">
       <span class="badge badge-primary badge-glow">
-        <i [data-feather]="'attempt' | iconName"></i>
+        <kep-icon class="font-small-2" name="attempt"></kep-icon>
       </span>
-      <h5>
+      <div class="title">
         {{ 'Attempts' | translate }}:
-      </h5>
+      </div>
       <strong class="font-medium-1">{{ statistics.attempts }}</strong>
     </div>
 
     <div class="statistics-info">
       <span class="badge badge-primary badge-glow">
-        <i [data-feather]="'problem' | iconName"></i>
+        <kep-icon class="font-small-2" name="problem"></kep-icon>
       </span>
-      <h5>
+      <div class="title">
         {{ 'Problems' | translate }}:
-      </h5>
+      </div>
       <strong class="font-medium-1">{{ statistics.problems }}</strong>
     </div>
 
     <div class="statistics-info">
       <span class="badge badge-primary badge-glow">
-        <i [data-feather]="'challenge' | iconName"></i>
+        <kep-icon class="font-small-2" name="challenge"></kep-icon>
       </span>
-      <h5>
+      <div class="title">
         {{ 'Challenges' | translate }}:
-      </h5>
+      </div>
       <div class="font-medium-1">
         <span class="text-success font-medium-2" ngbTooltip="{{ 'Wins' | translate }}">W</span>
         {{ statistics.challenges.wins }}
@@ -61,11 +61,11 @@
 
     <div class="statistics-info">
       <span class="badge badge-success badge-glow">
-        <i [data-feather]="'test' | iconName"></i>
+        <kep-icon class="font-small-2" name="test"></kep-icon>
       </span>
-      <h5>
+      <div class="title">
         {{ 'Tests' | translate }}:
-      </h5>
+      </div>
       <strong class="font-medium-1">{{ statistics.tests }}</strong>
     </div>
   </div>

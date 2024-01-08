@@ -11,7 +11,7 @@ import {
   ContestStandingsCountdownComponent
 } from '@contests/pages/contest/contest-standings/contest-standings-countdown/contest-standings-countdown.component';
 import { ContestCountdownCardComponent } from '@contests/components/contest-countdown-card/contest-countdown-card.component';
-import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 import { ContestCountdownComponent } from '@contests/components/contest-card/contest-card/contest-countdown/contest-countdown.component';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';

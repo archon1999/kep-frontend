@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { debounceTime, takeUntil, tap } from 'rxjs/operators';
 import { Problem, ProblemsFilter } from '@problems/models/problems.models';
 import { fadeInOnEnterAnimation } from 'angular-animations';
-import { DEFAULT_FILTER, ProblemsFilterService } from '@problems/services/problems-filter.service';
+import { ProblemsFilterService } from '@problems/services/problems-filter.service';
 import { CoreCommonModule } from '@core/common.module';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
@@ -16,6 +16,7 @@ import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pa
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 
 @Component({
   selector: 'section-problems-table',
@@ -33,21 +34,24 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
     KepTableComponent,
     NgSelectModule,
     KepIconComponent,
+    ResourceByIdPipe,
   ]
 })
 export class SectionProblemsTableComponent extends BaseTablePageComponent<Problem> implements OnInit, OnDestroy {
+  @Input() defaultOrdering = 'id';
   override defaultPageSize = 20;
-  override defaultOrdering = 'id';
   override maxSize = 5;
   override pageOptions = [10, 20, 50];
-
-  public filter: ProblemsFilter = DEFAULT_FILTER;
 
   constructor(
     public service: ProblemsApiService,
     public filterService: ProblemsFilterService,
   ) {
     super();
+  }
+
+  get filter() {
+    return this.filterService.currentFilterValue;
   }
 
   get problems(): Problem[] {
@@ -60,24 +64,31 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
       takeUntil(this._unsubscribeAll)
     ).subscribe(
       (filter: ProblemsFilter) => {
-        this.filter = filter;
         this.pageNumber = 1;
         this.reloadPage();
-        this.updateQueryParams(filter, {
+        this.updateQueryParams({
+          ...filter,
+          category: null,
+        }, {
           replaceUrl: true,
         });
       }
     );
+    this.filterService.updateFilter(this.route.snapshot.queryParams);
     setTimeout(() => this.reloadPage());
   }
 
   getPage(): Observable<PageResult<Problem>> {
     return this.service.getProblems({
+      ...this.filter,
       page: this.pageNumber,
       pageSize: this.pageSize,
       ordering: this.ordering,
-      ...this.filter,
-    });
+    }).pipe(
+      tap((pageResult: PageResult) => {
+        this.filterService.setProblemsCount(pageResult.total);
+      })
+    );
   }
 
   tagOnClick(tagId: number) {

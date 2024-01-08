@@ -1,0 +1,48 @@
+<div class="card">
+  <div class="card-body">
+    <h4 class="mb-0">
+      <i data-feather="activity"></i>
+      {{ 'USER_INFO.SKILLS' | translate }}
+    </h4>
+    <div class="progress-wrapper mt-2">
+      <div class="mb-25">Python</div>
+      <ngb-progressbar [showValue]="true" [value]="userSkills.python" type="primary"></ngb-progressbar>
+    </div>
+    <div class="progress-wrapper mt-2">
+      <div class="mb-25">{{ 'WebDevelopment' | translate }}</div>
+      <ngb-progressbar [showValue]="true" [value]="userSkills.webDevelopment" type="primary"></ngb-progressbar>
+    </div>
+    <div class="progress-wrapper mt-2">
+      <div class="mb-25">{{ 'WebScraping' | translate }}</div>
+      <ngb-progressbar [showValue]="true" [value]="userSkills.webScraping" type="primary"></ngb-progressbar>
+    </div>
+    <div class="progress-wrapper mt-2">
+      <div class="mb-25">{{ 'Algorithms' | translate }}</div>
+      <ngb-progressbar [showValue]="true" [value]="userSkills.algorithms" type="primary"></ngb-progressbar>
+    </div>
+    <div class="progress-wrapper mt-2">
+      <div class="mb-25">{{ 'DataScience' | translate }}</div>
+      <ngb-progressbar [showValue]="true" [value]="userSkills.dataScience" type="primary"></ngb-progressbar>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="userTechnologies.length > 0" class="card">
+  <div class="card-body">
+    <h4 class="mb-0">
+      <i data-feather="slack"></i>
+      {{ 'USER_INFO.TECHNOLOGIES' | translate }}
+    </h4>
+    <div class="user-technologies mt-2">
+      <span
+        *ngFor="let technology of userTechnologies"
+        [style.background]="technology.badgeColor"
+        [style.box-shadow]="'0px 0px 10px' + technology.badgeColor"
+        class="badge"
+      >
+        <i class="{{ technology.devIconClass }} "></i>
+        {{ technology.text }}
+      </span>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { ContestsResolver, ProblemResolver, StudyPlanResolver, StudyPlansResolver } from '@problems/problems.resolver';
+import { ProblemResolver, StudyPlanResolver } from '@problems/problems.resolver';
 import { AttemptGuard, ProblemGuard } from '@problems/problems.guard';
 import { AuthGuard } from '@auth/helpers';
 
@@ -8,10 +8,6 @@ export default [
     path: '',
     loadComponent: () => import('./pages/problems/problems.component').then(c => c.ProblemsComponent),
     title: 'Problems.Problems',
-    resolve: {
-      contests: ContestsResolver,
-      studyPlans: StudyPlansResolver,
-    }
   },
   {
     path: 'study-plan/:id',
@@ -77,10 +73,10 @@ export default [
     canActivate: [AttemptGuard],
   },
   {
-    path: 'profile',
-    loadComponent: () => import('./pages/profile/profile.component').then(c => c.ProfileComponent),
-    title: 'Problems.Profile',
-    data: { animation: 'profile' },
+    path: 'statistics',
+    loadComponent: () => import('./pages/statistics/statistics.component').then(c => c.StatisticsComponent),
+    title: 'Problems.Statistics',
+    data: { animation: 'statistics' },
     canActivate: [AuthGuard],
   },
   {
@@ -100,5 +96,10 @@ export default [
     loadComponent: () => import('./pages/hack-attempts/hack-attempts.component').then(c => c.HackAttemptsComponent),
     data: { animation: 'hack-attempts' },
     title: 'Problems.HackAttempts',
+  },
+  {
+    path: ':category',
+    loadComponent: () => import('./pages/problems/category/category.component').then(c => c.CategoryComponent),
+    title: 'Problems.Problems',
   },
 ] satisfies Route[];

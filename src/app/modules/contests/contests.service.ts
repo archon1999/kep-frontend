@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { Contest, ContestAttemptsFilter, ContestStatus } from './contests.models';
 import { map } from 'rxjs/operators';
 import { Pageable } from '@shared/components/classes/pageable';
-import { paramsMapper } from '@shared/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -13,22 +12,22 @@ export class ContestsService {
 
   constructor(
     public api: ApiService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
   ) { }
 
   getContests(params: Partial<Pageable> & { category?: number, type?: string, isParticipated?: number, creator?: string }) {
-    return this.api.get('contests', paramsMapper(params)).pipe(
+    return this.api.get('contests', params).pipe(
       map((result: any) => {
-        result.data = result.data.map(contest => Contest.fromJSON(contest));
+        result.data = result.data.map((contest: Contest) => Contest.fromJSON(contest));
         return result;
       })
     );
   }
 
   getUserContests(params: Partial<Pageable> & { category?: number, type?: string, isParticipated?: boolean, creator?: string }) {
-    return this.api.get('user-contests', paramsMapper(params)).pipe(
+    return this.api.get('user-contests', params).pipe(
       map((result: any) => {
-        result.data = result.data.map(contest => Contest.fromJSON(contest));
+        result.data = result.data.map((contest: Contest) => Contest.fromJSON(contest));
         return result;
       })
     );
@@ -68,8 +67,7 @@ export class ContestsService {
     return this.api.get('contests', { status: ContestStatus.FINISHED, page: page });
   }
 
-  getContestsRating(page: number, pageSize) {
-    const params = { page: page, page_size: pageSize };
+  getContestsRating(params: Partial<Pageable>) {
     return this.api.get('contests-rating', params);
   }
 
@@ -131,6 +129,6 @@ export class ContestsService {
   }
 
   getContestRegistrants(contestId: number | string) {
-    return this.api.get(`contests/${contestId}/registrants`);
+    return this.api.get(`contests/${ contestId }/registrants`);
   }
 }

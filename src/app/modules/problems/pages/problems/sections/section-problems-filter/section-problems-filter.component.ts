@@ -6,10 +6,11 @@ import { BaseComponent } from '@shared/components/classes/base.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { equalsCheck } from '@shared/utils';
 import { CoreCommonModule } from '@core/common.module';
-import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 import { NgbAccordionModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { takeUntil } from 'rxjs/operators';
 
 interface Difficulty {
   name: string;
@@ -23,11 +24,11 @@ interface Difficulty {
   standalone: true,
   imports: [
     CoreCommonModule,
-    NgSelectModule,
     ProblemsPipesModule,
     NgbDropdownModule,
     NgbAccordionModule,
     KepIconComponent,
+    NgSelectModule,
   ]
 })
 export class SectionProblemsFilterComponent extends BaseComponent implements OnInit {
@@ -48,20 +49,31 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
   public difficulties: Array<Difficulty> = [];
 
   public selectedTagsName: string;
-
   public filterCollapsed = false;
+  public problemsCount = 0;
+
+  get filter() {
+    return this.filterService.currentFilterValue;
+  }
 
   constructor(
     public service: ProblemsApiService,
-    public problemsFilterService: ProblemsFilterService,
+    public filterService: ProblemsFilterService,
   ) {
     super();
   }
 
   ngOnInit(): void {
-    this.filterForm.valueChanges.subscribe(
+    this.filterService.problemsCount$.pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      (value) => {
+        this.problemsCount = value;
+      }
+    );
+
+    this.filterForm.patchValue(this.route.snapshot.queryParams);
+    this.filterForm.valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (filterValue: ProblemsFilter) => {
-        this.problemsFilterService.updateFilter(filterValue);
+        this.filterService.updateFilter(filterValue);
       }
     );
 
@@ -69,6 +81,11 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
       (categories: Array<Category>) => {
         this.categories = categories;
         const tags = [];
+        const categoryId = this.filterService.currentFilterValue.category;
+        if (categoryId) {
+          this.categories = [this.categories.find(c => c.id === categoryId)];
+        }
+
         this.categories.forEach(category => {
           category.tags.forEach(tag => {
             tags.push({
@@ -83,16 +100,9 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
 
     this.filterForm.controls.tags.valueChanges.subscribe(
       (tags) => {
-        console.log(tags);
-        this.selectedTagsName = Array.from(new Set(this.tags.filter(tag => tags.indexOf(tag.id) !== -1).map(tag => tag.name))).join(', ')
+        this.selectedTagsName = Array.from(new Set(this.tags.filter(tag => tags.indexOf(tag.id) !== -1).map(tag => tag.name))).join(', ');
       }
     );
-
-    // this.service.getTags().subscribe(
-    //   (tags: any) => {
-    //     this.tags = tags;
-    //   }
-    // );
 
     this.service.getDifficulties().subscribe(
       (difficulties: any) => {

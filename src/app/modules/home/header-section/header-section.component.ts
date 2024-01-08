@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { fadeInOnEnterAnimation, fadeInUpOnEnterAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SwiperOptions } from 'swiper/types/swiper-options';
@@ -31,7 +31,7 @@ export class HeaderSectionComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject();
 
   constructor(
-    public authService: AuthenticationService
+    public authService: AuthService
   ) {}
 
   ngOnInit(): void {

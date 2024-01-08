@@ -25,8 +25,8 @@
     <span [data-feather]="item.icon" *ngIf="item.icon && 0"></span>
     <kep-icon class="font-large-1 text-primary" type="duotone" [name]="item.icon"></kep-icon>
     <span class="menu-title text-truncate">{{ item.translate | translate }}</span>
-    <span *ngIf="item.newEventsCount" style="transition: 0.5s ease;" class="badge ml-1 new-events badge-pill badge-primary">
-      {{ item.newEventsCount }}
+    <span *ngIf="item.id == 'contests' && 0" style="transition: 0.5s ease;" class="badge ml-1 new-events badge-pill badge-primary">
+      {{ 1 }}
     </span>
   </ng-template>
 </ng-container>

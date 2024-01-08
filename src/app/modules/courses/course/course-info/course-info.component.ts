@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Course } from '../../courses.models';
@@ -21,7 +21,7 @@ export class CourseInfoComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject();
 
   constructor(
-    public authService: AuthenticationService,
+    public authService: AuthService,
   ) { }
   
   ngOnInit(): void {

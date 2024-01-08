@@ -1,6 +1,4 @@
-@import '../../../bootstrap/scss/mixins';
-@import '../../../bootstrap/scss/functions';
-@import '../../../core/scss/base/bootstrap-extended/variables';
+@import 'styles/kep-imports';
 
 @mixin define-contest-colors($selector, $color, $background-light, $background-dark, $color-dark: false) {
   #{$selector} {
@@ -8,6 +6,7 @@
     --bg-gradient: #{$background-light};
     --box-shadow: 0 0 10px #{$color};
     --text-color: white;
+    --bg-light: #{mix(white, $color, 90)};
     @content;
   }
 
@@ -15,6 +14,7 @@
     #{$selector} {
       --bg-gradient: #{$background-dark};
       --box-shadow: 0 0 5px #{$color};
+      --bg-light: #{mix(black, $color, 60)};
 
       @if $background-dark != false {
         --bg: #{$color-dark};

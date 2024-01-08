@@ -1,14 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CoreConfig } from 'core/types';
 import { CoreConfigService } from 'core/services/config.service';
 import { ActivatedRoute, NavigationExtras, NavigationStart, Params, Router } from '@angular/router';
 import { GlobalService } from '@shared/services/global.service';
-import { LocalStorageService } from '@shared/storages/local-storage.service';
-import { SessionStorageService } from '@shared/storages/session-storage.service';
+import { LocalStorageService } from '@shared/services/storages/local-storage.service';
+import { SessionStorageService } from '@shared/services/storages/session-storage.service';
 import { TitleService } from '@shared/services/title.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -24,7 +24,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class BaseComponent {
 
   public api = inject(ApiService);
-  public authService = inject(AuthenticationService);
+  public authService = inject(AuthService);
   public coreConfigService = inject(CoreConfigService);
   public router = inject(Router);
   public route = inject(ActivatedRoute);

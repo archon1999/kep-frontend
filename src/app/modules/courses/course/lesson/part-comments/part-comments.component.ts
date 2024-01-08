@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { CourseLessonPartComment } from '../../../../courses/courses.models';
 import { CoursesService } from '../../../../courses/courses.service';
 
@@ -20,7 +20,7 @@ export class PartCommentsComponent implements OnInit {
 
   constructor(
     public service: CoursesService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
   ) { }
 
   ngOnInit(): void {

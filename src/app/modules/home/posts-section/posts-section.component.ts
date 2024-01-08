@@ -6,13 +6,14 @@ import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.compon
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { BlogPostCardModule } from '../../blog/components/blog-post-card/blog-post-card.module';
 import { PageResult } from '@shared/components/classes/page-result';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 const PAGE_SIZE = 3;
 
 @Component({
   selector: 'posts-section',
   standalone: true,
-  imports: [CommonModule, SwiperComponent, BlogPostCardModule],
+  imports: [CommonModule, SwiperComponent, BlogPostCardModule, SpinnerComponent],
   templateUrl: './posts-section.component.html',
   styleUrl: './posts-section.component.scss'
 })
@@ -22,7 +23,6 @@ export class PostsSectionComponent implements AfterViewInit {
   public lastPostsPage = 1;
 
   public postsSwiperConfig: SwiperOptions = {
-    pagination: { clickable: true },
     autoHeight: false,
     breakpoints: {
       1024: {

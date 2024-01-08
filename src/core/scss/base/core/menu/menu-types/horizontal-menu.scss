@@ -5,6 +5,8 @@
 // Import first modules menu mixin
 @import '../../mixins/main-menu-mixin';
 
+@import 'styles/kep-imports';
+
 // Horizontal Menu
 //=========================
 .horizontal-menu {
@@ -100,6 +102,10 @@
             font-weight: 600;
             letter-spacing: 0.01rem;
             font-size: 1.45rem;
+
+            @include dark-layout {
+              color: mix(white, $primary, 30) !important;
+            }
           }
         }
       }
@@ -131,7 +137,7 @@
         min-height: 52px;
         .disabled {
           pointer-events: none !important;
-          a {
+          div {
             color: $gray-600;
           }
         }
@@ -183,7 +189,7 @@
         padding-bottom: 0.857rem;
 
         > .dropdown-menu {
-          a {
+          div {
             & > * {
               font-weight: 500;
               transition: all 0.2s ease;
@@ -197,14 +203,14 @@
               }
             }
           }
-          .active > a {
+          .active > div {
             background: $body-bg;
             color: $primary;
             font-weight: 500;
           }
           .open {
             &.active {
-              > a {
+              > div {
                 color: $body-color;
                 font-weight: normal;
               }
@@ -218,20 +224,20 @@
           width: 17px;
           font-size: 1.2rem;
         }
-        > a {
+        > div {
           padding: 0.715rem 1.25rem;
           display: flex;
           margin-right: 0.715rem;
           font-weight: 500;
         }
         &:hover {
-          > a {
+          > div {
             background: $body-bg;
             border-radius: 4px;
           }
         }
         &.active {
-          > a {
+          > a, > div {
             background: linear-gradient(118deg, rgba($primary, 1), rgba($primary, 0.7));
             box-shadow: 0px 0px 6px 1px rgba($primary, 0.6);
             color: $white;

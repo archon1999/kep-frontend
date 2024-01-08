@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { UserInfo } from '@users/users.models';
 import { ToastrService } from 'ngx-toastr';
 import { AccountSettingsService } from '../account-settings.service';
@@ -30,7 +30,7 @@ export class InformationComponent implements OnInit {
   public countries = [];
 
   constructor(
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public route: ActivatedRoute,
     public toastr: ToastrService,
     public service: AccountSettingsService,
@@ -70,9 +70,13 @@ export class InformationComponent implements OnInit {
   save() {
     this.service.updateUserInfo(this.userInfo).subscribe(
       () => {
-        this.toastr.success('Saved');
+        this.toastr.success('Saved', '', {
+          toastClass: 'toast ngx-toastr',
+        });
       }, (err: any) => {
-        this.toastr.error('Error');
+        this.toastr.error('Error', '', {
+          toastClass: 'toast ngx-toastr',
+        });
         this.errors = err.error;
       }
     );

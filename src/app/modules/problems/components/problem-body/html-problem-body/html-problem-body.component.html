@@ -16,20 +16,25 @@
       [style.width.px]="frameWidth"
       style="position: relative; cursor: col-resize;">
       <div
-        #output
-        [ngStyle]="{
+          #output
+          [ngStyle]="{
           'width': outputWidth + '%',
           'box-shadow': mouseEnter ? 'red 1px 0px 0px' : 'none'
         }"
-        style="background: inherit; overflow: hidden; position: relative; z-index: 1; mix-blend-mode: normal; pointer-events: none;">
-        <iframe [srcdoc]="outputHtml | safe" [style.height.px]="frameHeight" [style.width.px]="frameWidth"
-                sandbox="allow-same-origin" style="border: 0px; outline: 0px;"
-                title="Preview">
+          style="background: inherit; overflow: hidden; position: relative; z-index: 1; mix-blend-mode: normal; pointer-events: none;">
+        <iframe
+          [srcdoc]="outputHtml | safe"
+          [style.height.px]="frameHeight"
+          [style.width.px]="frameWidth"
+          sandbox="allow-same-origin"
+          style="border: 0px; outline: 0px;"
+          title="Preview">
         </iframe>
       </div>
-      <img alt=""
-           src="{{ problem.image }}"
-           style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%;">
+      <img
+        alt=""
+        src="{{ problem.image }}"
+        style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%;">
     </div>
   </div>
 

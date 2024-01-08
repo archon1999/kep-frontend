@@ -1,19 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { HomeService } from '../home.service';
-import { CoreCommonModule } from '../../../../core/common.module';
+import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 
 @Component({
   selector: 'activity-section',
   templateUrl: './activity-section.component.html',
   styleUrls: ['./activity-section.component.scss'],
   standalone: true,
-  imports: [CoreCommonModule, NgbTooltipModule],
+  imports: [CoreCommonModule, NgbTooltipModule, KepIconComponent],
   animations: [fadeInOnEnterAnimation({ duration: 3000 })]
 })
 export class ActivitySectionComponent implements OnInit, OnDestroy {
@@ -38,7 +39,7 @@ export class ActivitySectionComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject();
 
   constructor(
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public service: HomeService,
   ) { }
 

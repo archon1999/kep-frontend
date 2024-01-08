@@ -58,7 +58,7 @@
 
           <a
             rippleEffect
-            *ngIf="contest?.status == 1"
+            *ngIf="contest?.status == 1 || currentUser?.isSuperuser"
             routerLink="/practice/problems/problem/{{ contestProblem?.problem?.id }}"
             [queryParams]="{'contest': contest?.id}"
             class="mb-2 btn-block btn btn-primary bg-primary badge-glow">
@@ -125,9 +125,9 @@
                           </small>
                         </a>
                       </td>
-                      <td *ngIf="_contestProblem.ball > 1 && contest?.isAlready()">
+                      <td *ngIf="contest.hasBalls()">
                           <span class="badge badge-success badge-glow">
-                            {{ _contestProblem.getCurrentBall(contest) }}
+                            {{ _contestProblem.ball }}
                           </span>
                       </td>
                     </tr>

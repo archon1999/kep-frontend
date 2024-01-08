@@ -37,7 +37,6 @@ export class ContestRegistrantsComponent extends BasePageComponent implements On
   protected getContentHeader(): ContentHeader {
     return {
       headerTitle: 'Registrants',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

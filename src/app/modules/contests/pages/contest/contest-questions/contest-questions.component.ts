@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CoreConfigService } from 'core/services/config.service';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';
@@ -41,7 +41,7 @@ export class ContestQuestionsComponent implements OnInit {
     public titleService: TitleService,
     public route: ActivatedRoute,
     public router: Router,
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public coreConfigService: CoreConfigService,
   ) { }
 
@@ -81,7 +81,6 @@ export class ContestQuestionsComponent implements OnInit {
   loadContentHeader(){
     this.contentHeader = {
       headerTitle: 'Questions',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

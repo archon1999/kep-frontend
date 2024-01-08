@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { bounceAnimation, fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 
 import { NotificationsService } from 'app/layout/components/navbar/navbar-notification/notifications.service';
 import { WebsocketService } from 'app/shared/services/websocket';
@@ -9,6 +9,12 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PageResult } from '@shared/components/classes/page-result';
 import Swal from 'sweetalert2';
+import { CoreCommonModule } from '@core/common.module';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgScrollbar } from 'ngx-scrollbar';
 
 interface Notification {
   id: number;
@@ -27,6 +33,15 @@ interface Notification {
     fadeInOnEnterAnimation(),
     fadeOutOnLeaveAnimation(),
   ],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    KepPaginationComponent,
+    SpinnerComponent,
+    KepIconComponent,
+    NgbDropdownModule,
+    NgScrollbar,
+  ]
 })
 export class NavbarNotificationComponent implements OnInit, OnDestroy {
 
@@ -48,7 +63,7 @@ export class NavbarNotificationComponent implements OnInit, OnDestroy {
   constructor(
     public notificationsService: NotificationsService,
     public wsService: WebsocketService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
   ) {}
 
   ngOnInit(): void {

@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
-import { ProblemsFilter } from '@problems/models/problems.models';
+import { Category, Problem, ProblemsFilter } from '@problems/models/problems.models';
 import { map } from 'rxjs/operators';
 import { Attempt } from '@problems/models/attempts.models';
 import { Pageable } from '@shared/components/classes/pageable';
+import { getCategoryIcon } from '@problems/utils/category';
+import { Observable } from 'rxjs';
+import { ContestProblem } from '@contests/contests.models';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +24,8 @@ export class ProblemsApiService {
       params.hasSolved = 0;
       params.hasAttempted = 0;
     }
-    delete params.status;
+    // @ts-ignore
+    params.tags = params.tags.join(',');
     return this.api.get('problems', params);
   }
 
@@ -43,8 +47,7 @@ export class ProblemsApiService {
     );
   }
 
-  getUserAttempts(username: string, page: number, pageSize: number) {
-    const params = { username: username, page: page, page_size: pageSize };
+  getUserAttempts(params: Partial<Pageable> & { username: string }) {
     return this.api.get('attempts', params);
   }
 
@@ -150,11 +153,40 @@ export class ProblemsApiService {
   }
 
   getCategories() {
-    return this.api.get('categories');
+    return this.api.get('categories').pipe(
+      map(
+        (categories: Array<Category>) => {
+          return categories.map((category) => {
+            category.icon = getCategoryIcon(category.id);
+            return category;
+          });
+        }
+      )
+    );
+  }
+
+  getCategory(categoryId: number) {
+    return this.api.get(`categories/${ categoryId }`);
+  }
+
+  getCategoryTopUsers(categoryId: number) {
+    return this.api.get(`categories/${ categoryId }/top-users`);
+  }
+
+  getCategoryStudyPlans(categoryId: number) {
+    return this.api.get(`categories/${ categoryId }/study-plans`);
   }
 
   getCurrentProblemsRating(period: 'today' | 'week' | 'month') {
     return this.api.get(`problems-rating/${ period }`);
+  }
+
+  getMostViewedProblems(): Observable<Array<Partial<Problem>>> {
+    return this.api.get('problems/most-viewed');
+  }
+
+  getLastContest() {
+    return this.api.get('problems/last-contest');
   }
 }
 

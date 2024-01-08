@@ -83,6 +83,7 @@ html {
         font-weight: 500;
         color: $gray-400;
         padding-right: $spacer;
+        white-space: nowrap;
         border-right: 1px solid lighten($gray-600, 10%);
       }
       .content-header-right {

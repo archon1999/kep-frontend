@@ -1,12 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Achievement } from '../../../users.models';
-import { UsersService } from '../../../users.service';
+import { Achievement } from '@users/users.models';
+import { UsersApiService } from '@users/users-api.service';
+import { CoreCommonModule } from '@core/common.module';
+import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
+import { AchievementComponent } from '@users/pages/user-profile/user-achievements/achievement/achievement.component';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+
+enum Tab {
+  CompletedAchievements = 1,
+  NotCompletedAchievements,
+  AllAchievements
+}
 
 @Component({
   selector: 'user-achievements',
   templateUrl: './user-achievements.component.html',
-  styleUrls: ['./user-achievements.component.scss']
+  styleUrls: ['./user-achievements.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgbButtonsModule,
+    AchievementComponent,
+    SpinnerComponent
+  ]
 })
 export class UserAchievementsComponent implements OnInit {
 
@@ -15,18 +32,21 @@ export class UserAchievementsComponent implements OnInit {
   public completedAchievements: Array<Achievement> = [];
   public notCompletedAchievements: Array<Achievement> = [];
 
-  public type = 1;
+  public tab = Tab.CompletedAchievements;
+
+  public isLoading = true;
+  protected readonly Tab = Tab;
 
   constructor(
-    public service: UsersService,
+    public service: UsersApiService,
     public route: ActivatedRoute,
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.route.data.subscribe(({ user }) => {
       this.service.getUserAchievements(user.username).subscribe(
         (achievements: Array<Achievement>) => {
+          this.isLoading = false;
           this.allAchievements = achievements;
           this.completedAchievements = achievements.filter(
             (achievement: Achievement) => {
@@ -45,14 +65,13 @@ export class UserAchievementsComponent implements OnInit {
   }
 
   update(type: number) {
-    this.type = type;
-    if (type === 1) {
+    this.tab = type;
+    if (type === Tab.CompletedAchievements) {
       this.achievements = this.completedAchievements;
-    } else if (type === 2) {
+    } else if (type === Tab.NotCompletedAchievements) {
       this.achievements = this.notCompletedAchievements;
-    } else {
+    } else if (type === Tab.AllAchievements) {
       this.achievements = this.allAchievements;
     }
   }
-
 }

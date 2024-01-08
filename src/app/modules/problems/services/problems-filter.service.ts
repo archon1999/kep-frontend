@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 import { ProblemsFilter } from '../models/problems.models';
 
 export const DEFAULT_FILTER: ProblemsFilter = {
@@ -12,6 +12,7 @@ export const DEFAULT_FILTER: ProblemsFilter = {
   hasCheckInput: null,
   hasSolution: null,
   partialSolvable: null,
+  category: null,
 };
 
 @Injectable({
@@ -20,10 +21,15 @@ export const DEFAULT_FILTER: ProblemsFilter = {
 export class ProblemsFilterService {
 
   private _currentFilter = DEFAULT_FILTER;
-  private _filter = new Subject<ProblemsFilter>();
+  private _filter = new ReplaySubject<ProblemsFilter>(1);
+  private _problemsCount = new Subject<number>();
 
   get currentFilterValue() {
     return this._currentFilter;
+  }
+
+  get problemsCount$() {
+    return this._problemsCount.asObservable();
   }
 
   getFilter() {
@@ -46,6 +52,10 @@ export class ProblemsFilterService {
       ...filter,
     };
     this._filter.next(this._currentFilter);
+  }
+
+  setProblemsCount(count: number) {
+    this._problemsCount.next(count);
   }
 
 }

@@ -39,7 +39,7 @@
           <apex-chart *ngIf="activityChart" [options]="activityChart"></apex-chart>
         </div>
         <div class="card-footer text-center">
-          <a class="btn btn-primary bg-primary badge-glow btn-sm round" routerLink="profile">
+          <a class="btn btn-primary bg-primary badge-glow btn-sm round" routerLink="statistics">
             {{ 'DetailedStatistics' | translate }}
             <i data-feather="arrow-right"></i>
           </a>
@@ -147,10 +147,10 @@
       </table>
 
       <div class="card-footer text-center">
-        <a class="btn btn-primary bg-primary badge-glow btn-sm round" routerLink="attempts">
+        <button class="btn btn-primary bg-primary badge-glow btn-sm round" routerLink="attempts">
           {{ 'AllAttempts' | translate }}
           <i data-feather="arrow-right"></i>
-        </a>
+        </button>
       </div>
     </div>
 

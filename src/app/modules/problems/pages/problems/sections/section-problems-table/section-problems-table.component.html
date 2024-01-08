@@ -1,6 +1,6 @@
-<kep-table [loading]="isLoading" [tableClass]="''" [empty]="pageResult?.data.length == 0">
+<kep-table [loading]="!total && isLoading" [tableClass]="''" [empty]="problems?.length == 0">
   <ng-container header>
-    <tr class="bg-gradient-primary">
+    <tr class="bg-problems-table">
       <th>
         <table-ordering
           [value]="ordering"
@@ -8,10 +8,7 @@
           [ordering]="'id'"
           [reverse]="true"
           (change)="orderingChange($event)">
-          <div class="align-middle">
-            <i class="mr-50" [data-feather]="'problem' | iconName"></i>
-            ID
-          </div>
+          ID
         </table-ordering>
       </th>
       <th>
@@ -20,14 +17,12 @@
           [justifyContent]="'start'"
           [ordering]="'title'"
           (change)="orderingChange($event)">
-          <div class="align-middle">
-            <i class="mr-50" [data-feather]="'edit-3'"></i>
-            {{ 'TITLE' | translate }}
-          </div>
+          <kep-icon name="text-align-center"></kep-icon>
+          {{ 'TITLE' | translate }}
         </table-ordering>
       </th>
-      <th>
-        <i class="mr-50" [data-feather]="'activity'"></i>
+      <th class="d-flex align-items-center">
+        <kep-icon name="tags"></kep-icon>
         {{ 'TAGS' | translate }}
       </th>
       <th class="text-center">
@@ -36,10 +31,8 @@
           [justifyContent]="'center'"
           [ordering]="'difficulty'"
           (change)="orderingChange($event)">
-          <div class="align-middle">
-            <i class="mr-50" [data-feather]="'bar-chart'"></i>
-            {{ 'DIFFICULTY' | translate }}
-          </div>
+          <kep-icon name="difficulty"></kep-icon>
+          {{ 'DIFFICULTY' | translate }}
         </table-ordering>
       </th>
       <th class="text-center">
@@ -48,10 +41,8 @@
           [justifyContent]="'center'"
           [ordering]="'rating'"
           (change)="orderingChange($event)">
-          <div class="align-middle">
-            <i class="mr-50" [data-feather]="'star'"></i>
-            {{ 'RATING' | translate }}
-          </div>
+          <kep-icon name="medal-star"></kep-icon>
+          {{ 'RATING' | translate }}
         </table-ordering>
       </th>
       <th class="text-center">
@@ -60,10 +51,8 @@
           [justifyContent]="'center'"
           [ordering]="'solved'"
           (change)="orderingChange($event)">
-          <div class="align-middle">
-            <i class="mr-50" [data-feather]="'attempt' | iconName"></i>
-            {{ 'ATTEMPTS' | translate }}
-          </div>
+          <kep-icon name="attempt"></kep-icon>
+          {{ 'ATTEMPTS' | translate }}
         </table-ordering>
       </th>
     </tr>
@@ -75,9 +64,9 @@
           'bg-light-success': problem.userInfo.hasSolved,
           'bg-light-danger': !problem.userInfo.hasSolved && problem.userInfo.hasAttempted
         }">
-        <td>{{ problem.id }}</td>
+        <td class="text-dark">{{ problem.id }}</td>
         <td>
-          <a [routerLink]="['problem', problem.id]">
+          <a [routerLink]="Resources.Problem | resourceById : problem.id">
             <div class="font-weight-bold">
               {{ problem.title }}
             </div>

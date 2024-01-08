@@ -1,0 +1,31 @@
+export enum ContestTypes {
+  ACM20M = 'ACM20M',
+  ACM2H = 'ACM2H',
+  BALL525 = 'Ball525',
+  BALL550 = 'Ball550',
+  LESS_CODE = 'LessCode',
+  LESS_LINE = 'LessLine',
+  ONE_ATTEMPT = 'OneAttempt',
+  EXAM = 'Exam',
+  IQ = 'IQ',
+  MULTI_LINGUAL = 'MultiL',
+  DC = 'DC',
+  CODE_GOLF = 'CodeGolf',
+  BALL = 'Ball',
+}
+
+export const contestTypes = [
+  ContestTypes.ACM20M,
+  ContestTypes.ACM2H,
+  ContestTypes.BALL525,
+  ContestTypes.BALL550,
+  ContestTypes.LESS_CODE,
+  ContestTypes.LESS_LINE,
+  ContestTypes.ONE_ATTEMPT,
+  ContestTypes.EXAM,
+  ContestTypes.IQ,
+  ContestTypes.MULTI_LINGUAL,
+  ContestTypes.DC,
+  ContestTypes.CODE_GOLF,
+  ContestTypes.BALL,
+];

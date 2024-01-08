@@ -4,9 +4,8 @@
 
 .card {
   border: none;
-  box-shadow: var(--box-shadow) !important;
+  box-shadow: var(--inherit-bg-box-shadow) !important;
   background: inherit !important;
-  background-image: linear-gradient(rgba(0,0,0,var(--bg-filter-opacity)),rgba(0,0,0,var(--bg-filter-opacity))), var(--bg-img) !important;
 
   .card-title {
     @include media-breakpoint-up(md) {

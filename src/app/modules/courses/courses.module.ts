@@ -11,7 +11,7 @@ import { ContentHeaderModule } from 'app/layout/components/content-header/conten
 import { BlockUIModule } from 'ng-block-ui';
 import { DragulaModule } from 'ng2-dragula';
 import { CountUpModule } from 'ngx-countup';
-import { HighlightModule } from 'ngx-highlightjs';
+import { HIGHLIGHT_OPTIONS, HighlightModule, HighlightOptions } from 'ngx-highlightjs';
 import { ToastrModule } from 'ngx-toastr';
 import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
@@ -159,6 +159,16 @@ const routes: Routes = [
     CourseLessonsResolver,
     CourseResolver,
     CoursesResolver,
+    {
+      provide: HIGHLIGHT_OPTIONS,
+      useValue: <HighlightOptions>{
+        lineNumbersLoader: () => import('highlightjs-line-numbers.js'),
+        coreLibraryLoader: () => import('highlight.js/lib/core'),
+        languages: {
+          python: () => import('highlight.js/lib/languages/python'),
+        },
+      }
+    },
   ],
 })
 export class CoursesModule {

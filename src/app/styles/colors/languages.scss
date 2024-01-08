@@ -1,11 +1,12 @@
 @mixin define-badge-lang($name, $background, $box-shadow, $color: #fff, $background-dark: false, $box-shadow-dark: false) {
   .badge-#{$name} {
-    color: $color;
+    color: $color !important;
     background: $background;
     border: none;
   }
 
   .badge-#{$name}.badge-glow {
+    color: $color !important;
     box-shadow: $box-shadow;
   }
 
@@ -131,7 +132,9 @@
   $name: 'text',
   $color: #000,
   $background: linear-gradient(45deg, #d1d5d8, #fafbfc),
-  $box-shadow: 0px 0px 10px #4c4d4d
+  $box-shadow: 0px 0px 5px #4c4d4d,
+  $background-dark: linear-gradient(45deg, #7a7d7f, #a1a3a5),
+  $box-shadow-dark: 0px 0px 10px #4c4d4d
 );
 
 @include define-badge-lang(

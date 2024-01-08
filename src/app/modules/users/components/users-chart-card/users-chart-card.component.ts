@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UsersService } from '@users/users.service';
+import { UsersApiService } from '@users/users-api.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CoreCommonModule } from '@core/common.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
@@ -31,7 +31,7 @@ export class UsersChartCardComponent implements OnInit {
   public usersChart: ChartOptions;
 
   constructor(
-    public usersService: UsersService,
+    public usersService: UsersApiService,
     public translateService: TranslateService,
   ) {}
 

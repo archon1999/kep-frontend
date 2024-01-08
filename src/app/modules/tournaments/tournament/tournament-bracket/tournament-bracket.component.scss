@@ -1,4 +1,5 @@
-@import '../../scss/variables.scss';
+@import './../../scss/variables';
+@import './brackets.css';
 
 .brackets-viewer {
   font-family: inherit;
@@ -17,8 +18,7 @@
   padding: 10px 50px;
 }
 
-
-::ng-deep .brackets-viewer h3 {
+.brackets-viewer h3 {
   text-align: center;
   background: $tournaments-bg !important;
   box-shadow: 0 0 10px $tournaments-color !important;
@@ -31,7 +31,7 @@
   width: var(--match-width);
 }
 
-::ng-deep .dark.layout .brackets-viewer h3 {
+.dark.layout .brackets-viewer h3 {
   background: $tournaments-bg-dark !important;
 }
 
@@ -42,7 +42,7 @@
   background: $tournaments-color !important;
 }
 
-::ng-deep .brackets-viewer .opponents {
+.brackets-viewer .opponents {
   width: 100%;
   position: relative;
   box-shadow: 0 0 5px $tournaments-color !important;
@@ -50,7 +50,7 @@
   border-radius: var(--match-border-radius);
 }
 
-::ng-deep .dark-layout .brackets-viewer .participant {
+.dark-layout .brackets-viewer .participant {
   background: $tournaments-bg-dark !important;
   border: none !important;
   box-shadow: 0 0 5px $tournaments-color !important;

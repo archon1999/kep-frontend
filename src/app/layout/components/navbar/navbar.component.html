@@ -4,7 +4,7 @@
     <li class="nav-item">
       <a class="navbar-brand" [routerLink]="['/']">
         <span class="brand-logo">
-          <img src="assets/images/logo/logo.png" alt="brand-logo" width="36" />
+          <img src="assets/images/logo/logo.webp" alt="brand-logo" height="24" width="36" />
         </span>
         <h2 class="brand-text mb-0">{{ coreConfig.app.appName }}</h2>
       </a>
@@ -16,60 +16,73 @@
 <div class="navbar-container d-flex content">
   <div class="bookmark-wrapper d-flex align-items-center">
     <!-- Menu Toggler | Menu icon will be hidden in case of layout without menu -->
-    <ul class="nav navbar-nav d-xl-none" *ngIf="!coreConfig.layout.menu.hidden">
+    <ul class="nav navbar-nav d-xl-none align-items-center" *ngIf="!coreConfig.layout.menu.hidden">
       <li class="nav-item">
         <a class="nav-link menu-toggle" (click)="toggleSidebar('menu')">
           <kep-icon name="element-11" type="duotone" class="font-large-1"></kep-icon>
         </a>
       </li>
       <li class="nav-item d-lg-none d-md-block d-sm-block">
-        <a type="button" class="nav-link nav-link-style btn" (click)="toggleDarkSkin()">
+        <div class="nav-link nav-link-style btn cursor-pointer" (click)="toggleDarkSkin()">
           @if (currentSkin == 'dark'){
             <kep-icon name="sun" type="duotone" class="font-large-1"></kep-icon>
           } @else {
             <kep-icon name="moon" type="duotone" class="font-large-1"></kep-icon>
           }
-        </a>
+        </div>
       </li>  
     </ul>
     <!--/ Menu Toggler -->
 
     <!-- Toggle skin -->
-    <li class="nav-item d-none d-lg-block">
-      <a type="button" class="nav-link nav-link-style btn" (click)="toggleDarkSkin()">
+    <div class="nav-item d-none d-lg-block">
+      <div class="nav-link nav-link-style btn cursor-pointer" (click)="toggleDarkSkin()">
         @if (currentSkin == 'dark'){
           <kep-icon name="sun" type="duotone" class="font-large-1"></kep-icon>
         } @else {
           <kep-icon name="moon" type="duotone" class="font-large-1"></kep-icon>
         }
-      </a>
-    </li>
+      </div>
+    </div>
     <!--/ Toggle skin -->
   </div>
   <ul class="nav navbar-nav align-items-center ml-auto">
-    <li ngbDropdown class="nav-item dropdown dropdown-language">
-      <a class="nav-link dropdown-toggle" id="dropdown-flag" ngbDropdownToggle>
+    <li ngbDropdown class="nav-item dropdown dropdown-language mr-lg-0 mr-50">
+      <div class="nav-link dropdown-toggle cursor-pointer" id="dropdown-flag" ngbDropdownToggle>
         <i class="fi fi-{{ languageOptions[_translateService.currentLang].flag }}"></i>
 <!--        <span class="ml-50 selected-language">{{ languageOptions[_translateService.currentLang].title }}</span>-->
-      </a>
-      <div ngbDropdownMenu aria-labelledby="dropdown-flag">
-        <a *ngFor="let lang of _translateService.getLangs()" ngbDropdownItem (click)="setLanguage(lang)">
+      </div>
+      <div ngbDropdownMenu>
+        <div class="cursor-pointer" *ngFor="let lang of _translateService.getLangs()" ngbDropdownItem (click)="setLanguage(lang)">
           <i class="fi fi-{{ languageOptions[lang].flag }}"></i> {{ languageOptions[lang].title }}
-        </a>
+        </div>
       </div>
     </li>
 
-    <div *ngIf="!isAuthenticated">
-      <a (click)="loginModalOpenForm()" class="btn" rippleEffect>
+    <li *ngIf="!isAuthenticated">
+      <div (click)="loginModalOpenForm()" class="cursor-pointer btn" rippleEffect>
         <i data-feather="log-in"></i>
         {{ 'LOGIN' | translate }}
-      </a>
-    </div>
+      </div>
+    </li>
 
-    <app-navbar-daily-tasks *ngIf="isAuthenticated"></app-navbar-daily-tasks>
-    <app-navbar-kepcoin *ngIf="isAuthenticated"></app-navbar-kepcoin>
+    @defer (when isAuthenticated) {
+      @if (isAuthenticated){
+        <app-navbar-daily-tasks></app-navbar-daily-tasks>
+      }
+    }
 
-    <app-navbar-notification *ngIf="isAuthenticated"></app-navbar-notification>
+    @defer (when isAuthenticated) {
+      @if (isAuthenticated){
+        <app-navbar-kepcoin></app-navbar-kepcoin>
+      }
+    }
+
+    @defer (when isAuthenticated) {
+      @if (isAuthenticated){
+        <app-navbar-notification></app-navbar-notification>
+      }
+    }
     <!-- User Dropdown -->
     <li ngbDropdown class="nav-item dropdown-user" *ngIf="isAuthenticated">
       <a

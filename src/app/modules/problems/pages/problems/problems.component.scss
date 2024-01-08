@@ -1,13 +1,10 @@
-@import 'scss/base/bootstrap-extended/variables';
-@import 'bootstrap/scss/mixins/dark-layout';
-@import 'bootstrap/scss/mixins/breakpoints';
-@import 'bootstrap/scss/mixins/define-page-top';
+@import 'styles/kep-imports';
 
-@include define-page-top(
-  $name: 'problems',
-  $light-background: linear-gradient(to right, mix($green, mix(black, $primary, 5), 10), mix(white, $primary, 15)),
-  $dark-background: linear-gradient(to right, mix($green, mix(black, $primary, 80), 25), mix(black, $primary, 60))
-);
+//@include define-page-top(
+//  $name: 'problems',
+//  $light-background: linear-gradient(to right, mix($green, mix(black, $primary, 5), 10), mix(white, $primary, 15)),
+//  $dark-background: linear-gradient(to right, mix($green, mix(black, $primary, 80), 25), mix(black, $primary, 60))
+//);
 
 ::ng-deep .problems-sidebar {
   width: 400px;

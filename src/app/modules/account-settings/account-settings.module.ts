@@ -9,7 +9,6 @@ import { AuthGuard } from 'app/auth/helpers';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
-import { UsersSelectModule } from '@shared/components/users-select/users-select.module';
 import { KepcoinSpendSwalModule } from '../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { NouisliderModule } from '@shared/third-part-modules/nouislider/nouislider.module';
@@ -85,7 +84,6 @@ const routes: Routes = [
     ColorPickerModule,
     NgSelectModule,
     UserPopoverModule,
-    UsersSelectModule,
     KepcoinSpendSwalModule,
     Ng2FlatpickrModule,
     NgxCountriesModule.forRoot({

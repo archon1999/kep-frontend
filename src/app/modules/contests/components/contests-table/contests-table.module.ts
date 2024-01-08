@@ -7,7 +7,7 @@ import { TranslateModule } from "@ngx-translate/core";
 import { NgbPopoverModule } from "@ng-bootstrap/ng-bootstrap";
 import { CorePipesModule } from "@shared/pipes/pipes.module";
 import { CoreDirectivesModule } from "@shared/directives/directives.module";
-import { ContestantViewModule } from "../../../../shared/components/contestant-view/contestant-view.module";
+import { ContestantViewModule } from "@contests/components/contestant-view/contestant-view.module";
 import { CountUpModule } from "ngx-countup";
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 

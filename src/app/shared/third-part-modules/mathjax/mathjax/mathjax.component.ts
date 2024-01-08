@@ -1,4 +1,7 @@
-import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, Renderer2, SimpleChanges } from '@angular/core';
+import { ScriptService } from '@shared/services/script.service';
+
+const SCRIPT_PATH = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js';
 
 @Component({
   selector: 'mathjax',
@@ -6,19 +9,48 @@ import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } fro
   templateUrl: './mathjax.component.html',
   styleUrls: ['./mathjax.component.scss'],
 })
-export class MathjaxComponent implements AfterViewInit, OnChanges {
+export class MathjaxComponent implements OnInit, OnChanges {
 
   @Input() content: string;
 
-  constructor() {}
+  constructor(
+    private renderer: Renderer2,
+    private scriptService: ScriptService
+  ) {
+  }
 
-  ngAfterViewInit() {
-    window['MathJax'].typesetPromise();
+  ngOnInit() {
+    if (!window['MathJax']) {
+      window['MathJax'] = {
+        tex: {
+          inlineMath: [
+            ['$', '$'],
+            ['\\(', '\\)']
+          ]
+        },
+        CommonHTML: { linebreaks: { automatic: true } },
+        'HTML-CSS': { linebreaks: { automatic: true } },
+        SVG: { linebreaks: { automatic: true } },
+        startup: {
+          ready: () => {
+            window['MathJax'].startup.defaultReady();
+          }
+        }
+      };
+      const scriptElement = this.scriptService.loadJsScript(this.renderer, SCRIPT_PATH);
+      scriptElement.onload = (e) => {};
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['content']) {
-      window['MathJax'].typesetPromise();
+      setTimeout(() => {
+        if (window['MathJax']) {
+          try {
+            window['MathJax'].typesetPromise();
+          } catch (e) {}
+        }
+      });
     }
   }
 

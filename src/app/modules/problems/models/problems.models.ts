@@ -80,13 +80,14 @@ export interface ProblemsFilter {
   hasCheckInput: boolean;
   hasSolution: boolean;
   partialSolvable: boolean;
+  category: Categories;
 }
 
 export interface StudyPlanDay {
   day: number;
   title: string;
   description: string;
-  problems: Array<Problem>;
+  problems: Array<any>;
 }
 
 export interface StudyPlan {
@@ -106,4 +107,23 @@ export interface Category {
   id: number;
   title: string;
   tags: Array<Tag>;
+  description: string;
+  code: string;
+  problemsCount: number;
+  icon?: string;
+}
+
+export enum Categories {
+  CompetitiveProgramming = 1,
+  Python,
+  BasicProgramming,
+  WebProgramming,
+  WebScraping,
+  OS,
+  Math,
+  Database,
+  IndustrialProgramming,
+  KEP,
+  NonStandart,
+  CTF,
 }

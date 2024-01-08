@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { ToastrService } from 'ngx-toastr';
 import { AccountSettingsService } from '../account-settings.service';
 
@@ -12,16 +12,16 @@ import { AccountSettingsService } from '../account-settings.service';
 export class ChangePasswordComponent implements OnInit {
 
   passwordOldType = false;
-  passwordOld = "";
+  passwordOld = '';
 
   passwordNewType = false;
-  passwordNew = "";
-  
+  passwordNew = '';
+
   passwordConfirmType = false;
-  passwordConfirm = "";
+  passwordConfirm = '';
 
   constructor(
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public route: ActivatedRoute,
     public toastr: ToastrService,
     public service: AccountSettingsService,
@@ -30,15 +30,21 @@ export class ChangePasswordComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  change(){
-    if(this.passwordNew != this.passwordConfirm){
-      this.toastr.error('Yangi parolni tasdiqlash noto`g`ri');
+  change() {
+    if (this.passwordNew != this.passwordConfirm) {
+      this.toastr.error('Yangi parolni tasdiqlash noto`g`ri', '', {
+        toastClass: 'toast ngx-toastr',
+      });
     } else {
       this.service.changePassword(this.passwordOld, this.passwordNew).subscribe((result: any) => {
-        this.toastr.success('Saqlandi');
+        this.toastr.success('Saqlandi', '', {
+          toastClass: 'toast ngx-toastr',
+        });
       }, (err: any) => {
-        this.toastr.error('Parol noto`g`ri');
-      })
+        this.toastr.error('Parol noto`g`ri', '', {
+          toastClass: 'toast ngx-toastr',
+        });
+      });
     }
   }
 

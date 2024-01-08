@@ -32,7 +32,7 @@ export class HomeService {
   }
 
   getUserDailyStatistics(username: string, fromNow: number = 0) {
-    return this.api.get(`users/${username}/daily-statistics`, { from_now: fromNow });
+    return this.api.get(`users/${username}/daily-statistics`, { fromNow });
   }
 
   getNextBirthdays() {

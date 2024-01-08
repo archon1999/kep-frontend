@@ -49,7 +49,6 @@ export class UserContestsComponent extends BaseTablePageComponent<Contest> imple
   protected getContentHeader(): ContentHeader {
     return {
       headerTitle: 'MyContests',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

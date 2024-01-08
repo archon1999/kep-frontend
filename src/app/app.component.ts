@@ -22,7 +22,7 @@ import localeUz from '@angular/common/locales/uz';
 import { menu } from '@layout/components/menu/menu';
 
 import { ApiService } from '@shared/services/api.service';
-import { AuthenticationService } from '@auth/service';
+import { AuthService } from '@auth/service';
 import { WebsocketService } from '@shared/services/websocket';
 import { environment } from 'environments/environment';
 import { Router } from '@angular/router';
@@ -56,7 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private _translateService: TranslateService,
     private api: ApiService,
     public router: Router,
-    private authService: AuthenticationService,
+    private authService: AuthService,
     public wsService: WebsocketService,
     public swipeService: SwipeService,
   ) {
@@ -84,13 +84,21 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this._coreConfigService.config = {
+      layout: {
+        footer: {
+          hidden: false,
+        }
+      }
+    };
     // Init wave effect (Ripple effect)
     Waves.init();
 
     // Subscribe to config changes
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       if (!isPresent(config.layout.enableAnimation)) {
-        this._coreConfigService.setConfig({ layout: { enableAnimation: true } });
+        const enableAnimation = window.innerWidth > 1000;
+        this._coreConfigService.setConfig({ layout: { enableAnimation: enableAnimation } });
       }
       this.animationsDisabled = !config.layout.enableAnimation;
       this.coreConfig = config;
@@ -123,7 +131,10 @@ export class AppComponent implements OnInit, OnDestroy {
       if (this.coreConfig.layout.type === 'vertical') {
         this._elementRef.nativeElement.classList.add('vertical-layout', 'vertical-menu-modern');
       } else if (this.coreConfig.layout.type === 'horizontal') {
-        this._elementRef.nativeElement.classList.add('horizontal-layout', 'horizontal-menu');
+        this._elementRef.nativeElement.classList.add('horizontal-layout');
+        if (window.innerWidth > 1199) {
+          this._elementRef.nativeElement.classList.add('horizontal-menu');
+        }
       }
 
       this._elementRef.nativeElement.classList.remove(
@@ -173,7 +184,7 @@ export class AppComponent implements OnInit, OnDestroy {
             'style',
             'transition:300ms ease all'
           );
-        }, 0);
+        }, 1000);
         // If navbar hidden
         if (this.coreConfig.layout.navbar.hidden) {
           this._elementRef.nativeElement.classList.add('navbar-hidden');

@@ -1,0 +1,19 @@
+.beautiful-table {
+  th, td {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+}
+
+::ng-deep .category-card {
+  box-shadow: none;
+
+  p {
+    font-size: 15px;
+    line-height: 25px;
+  }
+
+  li {
+    margin-bottom: 0.5rem;
+  }
+}

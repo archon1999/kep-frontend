@@ -4,7 +4,7 @@ import { CoreConfigService } from 'core/services/config.service';
 import { CoreConfig } from 'core/types';
 import { fadeInLeftAnimation, fadeInRightAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';
@@ -44,7 +44,7 @@ export class ContestProblemsComponent implements OnInit, OnDestroy {
     public titleService: TitleService,
     public route: ActivatedRoute,
     public router: Router,
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public coreConfigService: CoreConfigService,
   ) { }
 
@@ -75,7 +75,6 @@ export class ContestProblemsComponent implements OnInit, OnDestroy {
   loadContentHeader(){
     this.contentHeader = {
       headerTitle: 'CONTESTS.PROBLEMS',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

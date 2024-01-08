@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
-import { ContestantViewModule } from '@shared/components/contestant-view/contestant-view.module';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 
 @Component({

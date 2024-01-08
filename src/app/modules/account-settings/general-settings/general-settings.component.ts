@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { UserGeneralInfo } from '@users/users.models';
 import { ToastrService } from 'ngx-toastr';
 import { AccountSettingsService } from '../account-settings.service';
@@ -23,7 +23,7 @@ export class GeneralSettingsComponent implements OnInit {
   public errors: any;
 
   constructor(
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public route: ActivatedRoute,
     public toastr: ToastrService,
     public service: AccountSettingsService,
@@ -68,13 +68,17 @@ export class GeneralSettingsComponent implements OnInit {
   }
 
   save() {
-    this.service.updateUserGeneralInfo(this.generalSettings).subscribe((result: any) => {
-      this.toastr.success('Saved');
+    this.service.updateUserGeneralInfo(this.generalSettings).subscribe(() => {
+      this.toastr.success('Saved', '', {
+        toastClass: 'toast ngx-toastr',
+      });
       this.errors = null;
-      this.authService.updateMe();
+      this.authService.getMe().subscribe();
     }, (err: any) => {
       this.errors = err.error;
-      this.toastr.error('Error');
+      this.toastr.error('Error', '', {
+        toastClass: 'toast ngx-toastr',
+      });
     });
   }
 

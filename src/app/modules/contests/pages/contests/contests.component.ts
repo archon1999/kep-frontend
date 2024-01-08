@@ -12,6 +12,13 @@ import { BaseTablePageComponent } from '@shared/components/classes/base-table-pa
 import { PageResult } from '@shared/components/classes/page-result';
 import { ContestsService } from '@contests/contests.service';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { contestTypes } from '@contests/constants/contest-types';
+
+enum ContestStatus {
+  ALL = 2,
+  PARTICIPATED = 1,
+  NOT_PARTICIPATED = 0,
+}
 
 @Component({
   selector: 'app-contests',
@@ -39,23 +46,13 @@ export class ContestsComponent extends BaseTablePageComponent<Contest> implement
   override defaultPageSize = 7;
   override pageOptions = [7, 10, 20];
 
-  public contestTypes = [
-    'All',
-    'ACM20M',
-    'ACM2H',
-    'Ball525',
-    'Ball550',
-    'LessLine',
-    'LessCode',
-    'OneAttempt',
-    'IQ',
-    'Exam',
-    'MultiL',
-    'CodeGolf',
-  ];
-  contestType = 0;
-  contestStatus = 2;
-  contestCategory = 0;
+  public contestTypes = [this.translateService.instant('All')].concat(contestTypes);
+
+  public contestType: number;
+  public contestStatus = ContestStatus.ALL;
+  public contestCategory: number;
+
+  protected readonly ContestStatus = ContestStatus;
 
   constructor(public service: ContestsService) {
     super();
@@ -74,7 +71,7 @@ export class ContestsComponent extends BaseTablePageComponent<Contest> implement
       page: this.pageNumber,
       pageSize: this.pageSize,
       category: this.contestCategory || null,
-      isParticipated: this.contestStatus !== 2 ? +!!this.contestStatus : null,
+      isParticipated: this.contestStatus !== ContestStatus.ALL ? +!!this.contestStatus : null,
       type: this.contestType ? this.contestTypes[this.contestType] : null,
     });
   }

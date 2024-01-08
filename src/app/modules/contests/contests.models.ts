@@ -1,20 +1,6 @@
-import { Problem } from '../problems/models/problems.models';
-
-export enum ContestTypes {
-  ACM20M = 'ACM20M',
-  ACM2H = 'ACM2H',
-  BALL525 = 'Ball525',
-  BALL550 = 'Ball550',
-  LESS_CODE = 'LessCode',
-  LESS_LINE = 'LessLine',
-  ONE_ATTEMPT = 'OneAttempt',
-  EXAM = 'Exam',
-  IQ = 'IQ',
-  MULTI_LINGUAL = 'MultiL',
-  DC = 'DC',
-  CODE_GOLF = 'CodeGolf',
-  BALL = 'Ball',
-}
+import { Problem } from '@problems/models/problems.models';
+import { ContestTypes } from '@contests/constants/contest-types';
+export { ContestTypes } from '@contests/constants/contest-types';
 
 export enum ContestStatus {
   NOT_STARTED = -1,
@@ -195,23 +181,23 @@ export class ContestProblem {
   }
 
   getCurrentBall(contest: Contest) {
-    if (contest.type == ContestTypes.BALL525) {
-      let coef = 25;
-      let p = (Date.now().valueOf() - contest.startTime.valueOf()) / 1000;
-      let q = (contest.finishTime.valueOf() - contest.startTime.valueOf()) / 1000;
-      let c = p / q / 2;
-      let initialBall = this.ball;
-      let minPoints = initialBall * coef / 100;
-      let points = Math.max(minPoints, initialBall * (1 - c));
+    if (contest.type === ContestTypes.BALL525) {
+      const coef = 25;
+      const p = (Date.now().valueOf() - contest.startTime.valueOf()) / 1000;
+      const q = (contest.finishTime.valueOf() - contest.startTime.valueOf()) / 1000;
+      const c = p / q / 2;
+      const initialBall = this.ball;
+      const minPoints = initialBall * coef / 100;
+      const points = Math.max(minPoints, initialBall * (1 - c));
       return Math.trunc(Math.min(points, initialBall));
-    } else if (contest.type == ContestTypes.BALL550) {
-      let coef = 50;
-      let p = (Date.now().valueOf() - contest.startTime.valueOf()) / 1000;
-      let q = (contest.finishTime.valueOf() - contest.startTime.valueOf()) / 1000;
-      let c = p / q / 4;
-      let initialBall = this.ball;
-      let minPoints = initialBall * coef / 100;
-      let points = Math.max(minPoints, initialBall * (1 - c));
+    } else if (contest.type === ContestTypes.BALL550) {
+      const coef = 50;
+      const p = (Date.now().valueOf() - contest.startTime.valueOf()) / 1000;
+      const q = (contest.finishTime.valueOf() - contest.startTime.valueOf()) / 1000;
+      const c = p / q / 4;
+      const initialBall = this.ball;
+      const minPoints = initialBall * coef / 100;
+      const points = Math.max(minPoints, initialBall * (1 - c));
       return Math.trunc(Math.min(points, initialBall));
     } else {
       return this.ball;
@@ -249,10 +235,10 @@ export class ContestProblemInfo {
 
   getHTML(contest: Contest): string {
     let html = '';
-    if (contest.type == ContestTypes.ACM20M ||
-      contest.type == ContestTypes.ACM2H ||
-      contest.type == ContestTypes.ONE_ATTEMPT ||
-      contest.type == ContestTypes.IQ) {
+    if (contest.type === ContestTypes.ACM20M ||
+      contest.type === ContestTypes.ACM2H ||
+      contest.type === ContestTypes.ONE_ATTEMPT ||
+      contest.type === ContestTypes.IQ) {
       if (this.solved()) {
         let badgeClass: string;
         if (this.theBest) {
@@ -261,11 +247,7 @@ export class ContestProblemInfo {
           badgeClass = 'badge badge-light-success';
         }
         html = `<span class="${ badgeClass }">`;
-        html += '+';
-        if (this.attemptsCount > 0) {
-          html += this.attemptsCount;
-        }
-        html += '<br>';
+        html += `<div class="mb-25">+${this.attemptsCount > 0 ? this.attemptsCount : ""}</div>`;
         html += this.contestTime;
         html += '</span>';
       } else if (this.attemptsCount > 0) {
@@ -282,9 +264,11 @@ export class ContestProblemInfo {
         }
         html += '</span>';
       }
-    } else if (contest.type == ContestTypes.BALL525 ||
-      contest.type == ContestTypes.BALL550 ||
-      contest.type == ContestTypes.EXAM) {
+    } else if (
+      contest.type === ContestTypes.BALL525 ||
+      contest.type === ContestTypes.BALL550 ||
+      contest.type === ContestTypes.EXAM
+    ) {
       if (this.solved()) {
         let badgeClass: string;
         if (this.theBest) {
@@ -303,7 +287,7 @@ export class ContestProblemInfo {
         html += '</span>';
       } else {
         if (this.points > 0) {
-          let badgeClass = 'badge badge-light-dark';
+          const badgeClass = 'badge badge-light-dark';
           html += `<span class="${ badgeClass }">`;
           html += this.points;
           html += '</span>';
@@ -322,7 +306,7 @@ export class ContestProblemInfo {
           html += '</span>';
         }
       }
-    } else if (contest.type == ContestTypes.LESS_CODE) {
+    } else if (contest.type === ContestTypes.LESS_CODE) {
       if (this.solved()) {
         let badgeClass: string;
         if (this.theBest) {
@@ -340,7 +324,7 @@ export class ContestProblemInfo {
         html += '-';
         html += '</span>';
       }
-    } else if (contest.type == ContestTypes.LESS_LINE) {
+    } else if (contest.type === ContestTypes.LESS_LINE) {
       if (this.solved()) {
         let badgeClass: string;
         if (this.theBest) {
@@ -358,7 +342,7 @@ export class ContestProblemInfo {
         html += '-';
         html += '</span>';
       }
-    } else if (contest.type == ContestTypes.MULTI_LINGUAL) {
+    } else if (contest.type === ContestTypes.MULTI_LINGUAL) {
       if (this.solved()) {
         let badgeClass: string;
         if (this.theBest) {
@@ -376,7 +360,7 @@ export class ContestProblemInfo {
         html += '-';
         html += '</span>';
       }
-    } else if (contest.type == ContestTypes.DC || contest.type == ContestTypes.CODE_GOLF) {
+    } else if (contest.type === ContestTypes.DC || contest.type === ContestTypes.CODE_GOLF) {
       if (this.solved()) {
         let badgeClass: string;
         if (this.theBest) {
@@ -423,6 +407,8 @@ export interface ContestQuestion {
   question: string;
   answer: string | null;
   created: string;
+  status: number;
+  statusTitle: string;
 }
 
 export interface ContestRegistrant {

@@ -3,7 +3,6 @@ import { CoreMenu } from '@core/types';
 export const menu: CoreMenu[] = [
   {
     id: 'home',
-    title: 'Home',
     translate: 'MENU.HOME',
     type: 'item',
     icon: 'home',
@@ -12,14 +11,12 @@ export const menu: CoreMenu[] = [
   },
   {
     id: 'learn',
-    title: 'Learn',
     translate: 'MENU.LEARN',
     type: 'section',
     icon: 'learn',
     children: [
       {
         id: 'courses',
-        title: 'Courses',
         translate: 'MENU.COURSES',
         type: 'item',
         icon: 'course',
@@ -35,7 +32,6 @@ export const menu: CoreMenu[] = [
       // },
       {
         id: 'blog',
-        title: 'Blog',
         translate: 'MENU.BLOG',
         type: 'item',
         icon: 'blog',
@@ -45,22 +41,29 @@ export const menu: CoreMenu[] = [
   },
   {
     id: 'practice',
-    title: 'Practice',
     translate: 'MENU.PRACTICE',
     type: 'section',
     icon: 'practice',
     children: [
       {
         id: 'problems',
-        title: 'Problems',
         translate: 'MENU.PROBLEMS',
         type: 'item',
         icon: 'problem',
         url: '/practice/problems',
+        // children: [
+        //   {
+        //     id: 'competitive-programming',
+        //     title: 'Competitive Programming',
+        //     translate: 'CompetitiveProgramming',
+        //     type: 'item',
+        //     url: '/practice/problems/competitive-programming',
+        //     icon: 'competitive-programming',
+        //   }
+        // ]
       },
       {
         id: 'tests',
-        title: 'Tests',
         translate: 'MENU.TESTS',
         type: 'item',
         icon: 'test',
@@ -68,7 +71,6 @@ export const menu: CoreMenu[] = [
       },
       {
         id: 'challenges',
-        title: 'Challenges',
         translate: 'MENU.CHALLENGES',
         type: 'item',
         icon: 'challenge',
@@ -86,14 +88,12 @@ export const menu: CoreMenu[] = [
   },
   {
     id: 'competitions',
-    title: 'Competitions',
     translate: 'MENU.COMPETITIONS',
     type: 'section',
     icon: 'cup',
     children: [
       {
         id: 'contests',
-        title: 'Contests',
         translate: 'MENU.CONTESTS',
         type: 'item',
         icon: 'contest',
@@ -101,7 +101,6 @@ export const menu: CoreMenu[] = [
       },
       {
         id: 'arena',
-        title: 'Arena',
         translate: 'MENU.ARENA',
         type: 'item',
         icon: 'arena',
@@ -109,7 +108,6 @@ export const menu: CoreMenu[] = [
       },
       {
         id: 'tournaments',
-        title: 'Tournaments',
         translate: 'MENU.TOURNAMENTS',
         type: 'item',
         icon: 'tournament',
@@ -127,7 +125,6 @@ export const menu: CoreMenu[] = [
   },
   {
     id: 'users',
-    title: 'Users',
     translate: 'MENU.USERS',
     type: 'item',
     icon: 'users',

@@ -1,3 +1,9 @@
-<div class="layout-spacing" *ngFor="let blog of userBlog">
-  <blog-post-card [blog]="blog" [cardImgHeight]="350"></blog-post-card>
-</div>
+@if (isLoading) {
+  <div class="card" [style.height.px]="400">
+    <spinner></spinner>
+  </div>
+} @else {
+  @for (blog of userBlog; track blog.id){
+    <blog-post-card [blog]="blog" [cardImgHeight]="350"></blog-post-card>
+  }
+}

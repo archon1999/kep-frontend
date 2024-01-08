@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { fadeInLeftAnimation, fadeInRightAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
-import { AuthenticationService } from 'app/auth/service';
+import { AuthService } from 'app/auth/service';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 import { Attempt } from '../../../../problems/models/attempts.models';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
@@ -53,7 +53,7 @@ export class ContestAttemptsComponent implements OnInit, OnDestroy {
     public router: Router,
     public service: ContestsService,
     public problemsService: ProblemsApiService,
-    public authService: AuthenticationService,
+    public authService: AuthService,
     public titleService: TitleService,
   ) { }
 
@@ -86,7 +86,6 @@ export class ContestAttemptsComponent implements OnInit, OnDestroy {
   loadContentHeader() {
     this.contentHeader = {
       headerTitle: this.contest.title,
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [

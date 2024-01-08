@@ -15,7 +15,6 @@ import { ContestsService } from '@contests/contests.service';
 export class ContestCreateComponent implements OnInit {
   public contentHeader: ContentHeader = {
     headerTitle: 'CreateContest',
-    actionButton: true,
     breadcrumb: {
       type: '',
       links: [
@@ -79,7 +78,9 @@ export class ContestCreateComponent implements OnInit {
           const contestId = result.contestId;
           this.router.navigate(['/competitions', 'contests', 'user-contests']);
         } else {
-          this.toastr.error('', 'Error');
+          this.toastr.error( 'Error', '', {
+            toastClass: 'toast ngx-toastr',
+          });
         }
       }
     );

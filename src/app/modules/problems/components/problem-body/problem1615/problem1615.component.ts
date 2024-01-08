@@ -1,9 +1,12 @@
 import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { CoreCommonModule } from '@core/common.module';
 
 @Component({
   selector: 'problem1615',
   templateUrl: './problem1615.component.html',
-  styleUrls: ['./problem1615.component.scss']
+  styleUrls: ['./problem1615.component.scss'],
+  standalone: true,
+  imports: [CoreCommonModule]
 })
 export class Problem1615Component implements OnInit, OnDestroy {
 

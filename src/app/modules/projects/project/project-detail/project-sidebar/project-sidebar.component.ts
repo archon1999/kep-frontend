@@ -15,7 +15,7 @@ export class ProjectSidebarComponent implements OnInit {
 
   public selectedTechnology: string;
   public fileToUpload: File | null = null;
-  
+
   constructor(
     public toastr: ToastrService,
     public service: ProjectsService,
@@ -26,21 +26,27 @@ export class ProjectSidebarComponent implements OnInit {
   }
 
   handleFileInput(files: FileList) {
-    if(files.item(0).size > 1024*1024){
-      this.toastr.error('Max file size 1mb');
+    if (files.item(0).size > 1024 * 1024) {
+      this.toastr.error('Max file size 1mb', '', {
+        toastClass: 'toast ngx-toastr',
+      });
     } else {
       this.fileToUpload = files.item(0);
     }
   }
 
-  submit(){
-    if(!this.selectedTechnology || !this.fileToUpload) return;
+  submit() {
+    if (!this.selectedTechnology || !this.fileToUpload) {
+      return;
+    }
     this.service.submitAttempt(this.project.id, this.selectedTechnology, this.fileToUpload).subscribe(
       () => {
         this.submitEvent.emit();
-        this.toastr.success('Submitted');
+        this.toastr.success('Submitted', '', {
+          toastClass: 'toast ngx-toastr',
+        });
       }
-    )
+    );
   }
 
 }

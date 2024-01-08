@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ChallengesRating } from '@challenges/models/challenges.models';
-import { ChallengesService } from '@challenges/services';
+import { ChallengesApiService } from '@challenges/services';
 import { PageResult } from '@shared/components/classes/page-result';
 import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
 import { Observable } from 'rxjs';
 import { CoreCommonModule } from '@core/common.module';
-import { ChallengesUserViewModule } from '@challenges/components/challenges-user-view/challenges-user-view.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
+import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
 
 @Component({
   selector: 'app-challenges-rating',
@@ -19,7 +19,7 @@ import { TableOrderingModule } from '@shared/components/table-ordering/table-ord
   standalone: true,
   imports: [
     CoreCommonModule,
-    ChallengesUserViewModule,
+    ChallengesUserViewComponent,
     KepPaginationComponent,
     ContentHeaderModule,
     SpinnerComponent,
@@ -33,7 +33,7 @@ export class ChallengesRatingComponent extends BaseTablePageComponent<Challenges
 
   override defaultOrdering = '-rating';
 
-  constructor(public service: ChallengesService) {
+  constructor(public service: ChallengesApiService) {
     super();
   }
 
@@ -47,13 +47,12 @@ export class ChallengesRatingComponent extends BaseTablePageComponent<Challenges
   }
 
   getPage(): Observable<PageResult<ChallengesRating>> {
-    return this.service.getChallengesRating(this.pageNumber, this.pageSize, this.ordering);
+    return this.service.getChallengesRating(this.pageable);
   }
 
   protected getContentHeader() {
     return {
       headerTitle: 'Rating',
-      actionButton: true,
       breadcrumb: {
         type: '',
         links: [
