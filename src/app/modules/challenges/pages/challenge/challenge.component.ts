@@ -1,7 +1,7 @@
 import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Challenge } from '../../models/challenges.models';
-import { ChallengesService } from '../../services/challenges.service';
+import { ChallengesApiService } from '../../services/challenges-api.service';
 import Swal from 'sweetalert2';
 import { SwalComponent, SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2';
 import { CoreConfigService } from '../../../../../core/services/config.service';
@@ -48,7 +48,7 @@ export class ChallengeComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject();
 
   constructor(
-    public service: ChallengesService,
+    public service: ChallengesApiService,
     public route: ActivatedRoute,
     public router: Router,
     public readonly swalTargets: SwalPortalTargets,

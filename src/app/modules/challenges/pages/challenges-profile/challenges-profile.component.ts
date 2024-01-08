@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ChallengesStatisticsService } from '@challenges/services';
 import { ChallengesRating } from '../../models/challenges.models';
 import { BaseComponent } from '@shared/components/classes/base.component';

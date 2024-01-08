@@ -4,6 +4,7 @@ import { PageResult } from '@shared/components/classes/page-result';
 import { BasePageComponent } from '@shared/components/classes/base-page.component';
 import { NavigationStart } from '@angular/router';
 import { BASE_URL } from '@shared/services/api.service';
+import { Pageable } from '@shared/components/classes/pageable';
 
 @Component({
   template: '',
@@ -41,6 +42,14 @@ export class BaseTablePageComponent<T> extends BasePageComponent {
         }
       }
     );
+  }
+
+  get pageable(): Partial<Pageable> {
+    return {
+      page: this.pageNumber,
+      pageSize: this.pageSize,
+      ordering: this.ordering,
+    };
   }
 
   updatePageParams() {

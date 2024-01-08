@@ -5,7 +5,7 @@ import { AuthService } from '../../../../auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ChallengeCall } from '../../models/challenges.models';
-import { ChallengesService } from '../../services/challenges.service';
+import { ChallengesApiService } from '../../services/challenges-api.service';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -24,7 +24,7 @@ export class ChallengeCallCardComponent implements OnInit, OnDestroy {
 
   constructor(
     public authService: AuthService,
-    public service: ChallengesService,
+    public service: ChallengesApiService,
     public router: Router,
   ) { }
 
