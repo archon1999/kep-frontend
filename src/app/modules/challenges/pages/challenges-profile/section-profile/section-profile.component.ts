@@ -1,18 +1,20 @@
 import { Component } from '@angular/core';
-import { ChallengesRating } from '../../../models/challenges.models';
-import { ChallengesStatisticsService } from '../../../services';
+import { ChallengesRating } from '@challenges/models/challenges.models';
+import { ChallengesStatisticsService } from '@challenges/services';
 import { AuthService } from 'app/auth/service';
-import { BaseComponent } from '@shared/components/classes/base.component';
 import { User } from 'app/auth/models';
+import { BaseLoadComponent } from '@shared/components/classes/base-load.component';
+import { Observable } from 'rxjs';
+import { fadeInOnEnterAnimation } from 'angular-animations';
 
 @Component({
   selector: 'section-profile',
   templateUrl: './section-profile.component.html',
-  styleUrls: ['./section-profile.component.scss']
+  styleUrls: ['./section-profile.component.scss'],
+  animations: [fadeInOnEnterAnimation()]
 })
-export class SectionProfileComponent extends BaseComponent {
+export class SectionProfileComponent extends BaseLoadComponent<ChallengesRating> {
 
-  public challengesRating: ChallengesRating;
   protected readonly Math = Math;
 
   constructor(
@@ -22,18 +24,22 @@ export class SectionProfileComponent extends BaseComponent {
     super();
   }
 
-  beforeChangeCurrentUser(currentUser: User) {
+  get challengesRating() {
+    return this.data;
+  }
+
+  afterChangeCurrentUser(currentUser: User) {
     if (currentUser) {
       setTimeout(() => this.loadData());
     }
   }
 
-  loadData() {
-    this.statisticsService.getUserChallengesRating(this.currentUser?.username).subscribe(
-      (challengesRating: ChallengesRating) => {
-        challengesRating.all = (challengesRating.wins + challengesRating.draws + challengesRating.losses) || 1;
-        this.challengesRating = challengesRating;
-      }
-    );
+  getData(): Observable<ChallengesRating> | null {
+    return this.statisticsService.getUserChallengesRating(this.currentUser?.username);
   }
+
+  afterLoadData(challengesRating: ChallengesRating) {
+    challengesRating.all = (challengesRating.wins + challengesRating.draws + challengesRating.losses) || 1;
+  }
+
 }
