@@ -46,7 +46,7 @@ const appRoutes: Routes = [
   { path: 'learn/lugavar', loadChildren: () => import('./modules/lugavar/lugavar.module').then(m => m.LugavarModule) },
   { path: 'learn/blog', loadChildren: () => import('./modules/blog/blog.module').then(m => m.BlogModule) },
   { path: 'practice/problems', loadChildren: () => import('@problems/problems.routing') },
-  { path: 'practice/challenges', loadChildren: () => import('./modules/challenges/challenges.module').then(m => m.ChallengesModule) },
+  { path: 'practice/challenges', loadChildren: () => import('./modules/challenges/challenges.routing') },
   { path: 'practice/tests', loadChildren: () => import('./modules/testing/testing.module').then(m => m.TestingModule) },
   { path: 'practice/projects', loadChildren: () => import('./modules/projects/projects.module').then(m => m.ProjectsModule) },
   { path: 'practice/duels', loadChildren: () => import('./modules/duels/duels.module').then(m => m.DuelsModule) },
