@@ -26,17 +26,17 @@ import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pa
 import { ChallengesRatingComponent } from './pages/challenges-rating/challenges-rating.component';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
-import { ChallengesProfileComponent } from './pages/challenges-profile/challenges-profile.component';
 import { AuthGuard } from '@auth/helpers';
-import { SectionProfileComponent } from './pages/challenges-profile/section-profile/section-profile.component';
-import { SectionRatingChangesComponent } from './pages/challenges-profile/section-rating-changes/section-rating-changes.component';
-import { SectionLastChallengesComponent } from './pages/challenges-profile/section-last-challenges/section-last-challenges.component';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
+import { UserStatisticsComponent } from '@challenges/pages/user-statistics/user-statistics.component';
+import { SectionRatingChangesComponent } from './pages/user-statistics/section-rating-changes/section-rating-changes.component';
+import { SectionLastChallengesComponent } from './pages/user-statistics/section-last-challenges/section-last-challenges.component';
+import { SectionProfileComponent } from '@challenges/pages/user-statistics/section-profile/section-profile.component';
 
 
 const routes: Routes = [
@@ -59,9 +59,9 @@ const routes: Routes = [
     title: 'Challenges.ChallengesRating',
   },
   {
-    path: 'profile',
-    component: ChallengesProfileComponent,
-    title: 'Challenges.ChallengesProfile',
+    path: 'user-statistics',
+    component: UserStatisticsComponent,
+    title: 'Challenges.UserStatistics',
     canActivate: [AuthGuard],
   },
 ];
@@ -74,10 +74,10 @@ const routes: Routes = [
     NewChallengeButtonComponent,
     ChallengeComponent,
     ChallengeResultsCardComponent,
-    ChallengesProfileComponent,
-    SectionProfileComponent,
+    UserStatisticsComponent,
     SectionRatingChangesComponent,
-    SectionLastChallengesComponent
+    SectionLastChallengesComponent,
+    SectionProfileComponent
   ],
   imports: [
     CommonModule,
@@ -108,9 +108,6 @@ const routes: Routes = [
     ResourceByIdPipe,
   ],
   providers: [ChallengeResolver],
-  exports: [
-    SectionProfileComponent
-  ]
 })
 export class ChallengesModule {
 }
