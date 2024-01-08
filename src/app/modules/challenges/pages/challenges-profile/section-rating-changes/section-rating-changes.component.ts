@@ -1,75 +1,61 @@
 import { Component } from '@angular/core';
-import { BaseComponent } from '../../../../../shared/components/classes/base.component';
-import { ChallengesStatisticsService } from '../../../services';
-import { AuthService } from 'app/auth/service';
-import { ChallengesRatingChange } from '../../../models/challenges.models';
-import { ChartOptions } from '../../../../../shared/third-part-modules/apex-chart/chart-options.type';
+import { ChallengesStatisticsService } from '@challenges/services';
+import { ChallengesRatingChange } from '@challenges/models/challenges.models';
+import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
+import { BaseLoadComponent } from '@shared/components/classes/base-load.component';
+import { Observable } from 'rxjs';
+import { User } from '@auth/models';
+import { fadeInOnEnterAnimation } from 'angular-animations';
 
 @Component({
   selector: 'section-rating-changes',
   templateUrl: './section-rating-changes.component.html',
-  styleUrls: ['./section-rating-changes.component.scss']
+  styleUrls: ['./section-rating-changes.component.scss'],
+  animations: [fadeInOnEnterAnimation()]
 })
-export class SectionRatingChangesComponent extends BaseComponent {
-
+export class SectionRatingChangesComponent extends BaseLoadComponent<Array<ChallengesRatingChange>> {
+  override loadOnInit = false;
   public challengesRatingChangesChart: ChartOptions;
 
   constructor(
     public statisticsService: ChallengesStatisticsService,
-    public authService: AuthService,
   ) {
     super();
   }
 
-  afterChangeCurrentUser(currentUser) {
+  afterChangeCurrentUser(currentUser: User) {
     if (currentUser) {
       setTimeout(() => this.loadData());
     }
   }
 
-  loadData() {
-    this.statisticsService.getUserChallengesRatingChanges(this.currentUser.username).subscribe(
-      (challengesRatingChanges: Array<ChallengesRatingChange>) => {
-        const data = challengesRatingChanges.map(
-          (ratingChanges: ChallengesRatingChange) => {
-            return {
-              x: ratingChanges.date,
-              y: ratingChanges.value,
-            };
-          }
-        );
-        this.challengesRatingChangesChart = {
-          series: [{
-            name: '',
-            data: data,
-          }],
-          chart: {
-            type: 'area',
-            stacked: false,
-            height: 350,
-          },
-          fill: {
-            type: 'gradient',
-            gradient: {
-              shadeIntensity: 1,
-              opacityFrom: 0.7,
-              opacityTo: 0.9,
-              stops: [0, 90, 100]
-            }
-          },
-          xaxis: {
-            type: 'datetime'
-          },
-          yaxis: {
-            labels: {
-              formatter: (value) => {
-                return value.toString();
-              },
-            }
-          },
-          colors: ['#5456da'],
+  getData(): Observable<Array<ChallengesRatingChange>> | null {
+    return this.statisticsService.getUserChallengesRatingChanges(this.currentUser.username);
+  }
+
+  afterLoadData(challengesRatingChanges: Array<ChallengesRatingChange>) {
+
+    const data = challengesRatingChanges.map(
+      (ratingChanges: ChallengesRatingChange) => {
+        return {
+          x: ratingChanges.date,
+          y: ratingChanges.value,
         };
       }
     );
+    this.challengesRatingChangesChart = {
+      series: [{
+        name: '',
+        data: data,
+      }],
+      chart: {
+        type: 'area',
+        stacked: false,
+        height: 350,
+      },
+      xaxis: {
+        type: 'datetime'
+      },
+    };
   }
 }
