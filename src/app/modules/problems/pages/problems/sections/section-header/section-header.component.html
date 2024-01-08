@@ -1,6 +1,8 @@
 <div class="card">
   @if (isLoading){
-    <spinner></spinner>
+    <div [style.height.px]="150">
+      <spinner></spinner>
+    </div>
   } @else {
     <div class="card-header">
       <div class="card-title text-white">{{ currentUser?.username || 'Links' | translate }}</div>
