@@ -549,7 +549,7 @@ export const locale = {
         ProblemAttempts: '{{ problemId }}. {{ problemTitle }} | Попытки',
         Attempts: 'Попытки | Задачи',
         Profile: 'Профиль | Задачи',
-        Statistics: 'Статистика | Задачи',
+        Statistics: 'Статистика пользователя | Задачи',
         Rating: 'Рейтинг | Задачи',
         RatingHistory: 'Рейтинг | История | Задачи',
         RatingOverall: 'Рейтинг | Общий | Задачи',
@@ -583,7 +583,7 @@ export const locale = {
         Challenges: 'Вызовы',
         Challenge: '{{ playerFirstUsername }} против {{ playerSecondUsername }} | Вызов',
         ChallengesRating: 'Рейтинг вызовов',
-        UserStatistics: 'Статистика пользователя',
+        UserStatistics: 'Статистика пользователя | Вызовы',
       },
       Lugavar: 'Лугаварь',
       Users: {
