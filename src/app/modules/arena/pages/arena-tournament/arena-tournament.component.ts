@@ -1,10 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  bounceOnEnterAnimation,
-  fadeInLeftOnEnterAnimation,
-  fadeInOnEnterAnimation,
-  fadeInRightOnEnterAnimation
-} from 'angular-animations';
+import { bounceOnEnterAnimation, fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { Arena, ArenaPlayer, ArenaPlayerStatistics, ArenaStatus } from '../../arena.models';
 import { ArenaService } from '../../arena.service';
 import { CoreCommonModule } from '@core/common.module';
@@ -12,7 +7,6 @@ import { NgbAlertModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ArenaPlayerStatisticsComponent } from '../../components/arena-player-statistics/arena-player-statistics.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
-import { ChallengesUserViewModule } from '@challenges/components/challenges-user-view/challenges-user-view.module';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
 import { ArenaChallengesComponent } from '@arena/pages/arena-tournament/arena-challenges/arena-challenges.component';
@@ -20,6 +14,7 @@ import { Observable } from 'rxjs';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { PageResult } from '@shared/components/classes/page-result';
 import { switchMap } from 'rxjs/operators';
+import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
 
 @Component({
   selector: 'app-arena-tournament',
@@ -41,8 +36,8 @@ import { switchMap } from 'rxjs/operators';
     NgxSkeletonLoaderModule,
     NgbAlertModule,
     KepPaginationComponent,
-    ChallengesUserViewModule,
     CountdownComponent,
+    ChallengesUserViewComponent,
     ArenaChallengesComponent,
     KepTableComponent,
   ]
@@ -90,7 +85,7 @@ export class ArenaTournamentComponent extends BaseTablePageComponent<ArenaPlayer
           if (this.arena.isRegistrated) {
             this.nextChallenge();
           }
-          setTimeout(() => this.reloadPage())
+          setTimeout(() => this.reloadPage());
         }, 5000);
         this.loadArenaPlayerStatistics(this.currentUser.username);
       } else {

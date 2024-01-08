@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ArenaPlayerStatistics } from '../../arena.models';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { ChallengesUserViewModule } from '@challenges/components/challenges-user-view/challenges-user-view.module';
+import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
 
 @Component({
   selector: 'arena-player-statistics',
@@ -12,7 +12,7 @@ import { ChallengesUserViewModule } from '@challenges/components/challenges-user
   imports: [
     CoreCommonModule,
     NgbTooltipModule,
-    ChallengesUserViewModule,
+    ChallengesUserViewComponent,
   ]
 })
 export class ArenaPlayerStatisticsComponent {

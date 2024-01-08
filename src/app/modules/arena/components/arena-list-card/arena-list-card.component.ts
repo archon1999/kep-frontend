@@ -3,9 +3,9 @@ import { Router } from '@angular/router';
 import { Arena, ArenaStatus } from '../../arena.models';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { ChallengesUserViewModule } from '@challenges/components/challenges-user-view/challenges-user-view.module';
 import { CoreCommonModule } from '@core/common.module';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
 
 @Component({
   selector: 'arena-list-card',
@@ -16,7 +16,7 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
     CoreCommonModule,
     CountdownComponent,
     NgbTooltipModule,
-    ChallengesUserViewModule,
+    ChallengesUserViewComponent,
     KepIconComponent,
   ]
 })
@@ -26,6 +26,7 @@ export class ArenaListCardComponent implements OnInit {
 
   public leftTime: number;
   public durationMinute: number;
+  protected readonly ArenaStatus = ArenaStatus;
 
   constructor(
     public router: Router,
@@ -41,6 +42,4 @@ export class ArenaListCardComponent implements OnInit {
   finish() {
     this.router.navigate(['/competitions', 'arena', 'tournament', this.arena.id]);
   }
-
-  protected readonly ArenaStatus = ArenaStatus;
 }

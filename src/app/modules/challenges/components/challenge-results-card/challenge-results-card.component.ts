@@ -1,7 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Challenge } from '../../models/challenges.models';
 import { CoreCommonModule } from '@core/common.module';
-import { ChallengesUserViewModule } from '@challenges/components/challenges-user-view/challenges-user-view.module';
+import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
 
 @Component({
   selector: 'challenge-results-card',
@@ -10,7 +10,7 @@ import { ChallengesUserViewModule } from '@challenges/components/challenges-user
   standalone: true,
   imports: [
     CoreCommonModule,
-    ChallengesUserViewModule,
+    ChallengesUserViewComponent,
   ]
 })
 export class ChallengeResultsCardComponent {
