@@ -3,15 +3,15 @@
 </h3>
 
 <div *ngFor="let challenge of challenges">
-  <a [routerLink]="['..', 'challenge', challenge.id]">
+  <a [routerLink]="Resources.Challenge | resourceById:challenge.id">
     <challenge-card [challenge]="challenge"></challenge-card>
   </a>
 </div>
 
 <kep-pagination
-  [(page)]="currentPage"
-  (pageChange)="loadChallenges()"
+  [(page)]="pageNumber"
+  (pageChange)="reloadPage()"
   [collectionSize]="total"
-  [maxSize]="5"
+  [maxSize]="maxSize"
   [pageSize]="pageSize">
 </kep-pagination>
