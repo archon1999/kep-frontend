@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { BaseComponent } from '@shared/components/classes/base.component';
 import { ChallengesStatisticsService } from 'app/modules/challenges/services';
 import { Challenge } from 'app/modules/challenges/models/challenges.models';
@@ -30,11 +30,11 @@ export class SectionLastChallengesComponent extends BaseComponent {
   }
 
   loadChallenges() {
-    this.statisticsService.getUserLastChallenges(
-      this.currentUser.username,
-      this.currentPage,
-      this.pageSize,
-    ).subscribe(
+    this.statisticsService.getUserLastChallenges({
+      username: this.currentUser.username,
+      page: this.currentPage,
+      pageSize: this.pageSize,
+    }).subscribe(
       (result: PageResult) => {
         this.challenges = result.data;
         this.total = result.total;

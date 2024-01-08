@@ -8,9 +8,8 @@ import {
   fadeOutOnLeaveAnimation
 } from 'angular-animations';
 import { AuthService } from 'app/auth/service';
-import { Subject } from 'rxjs';
 import { Challenge, ChallengeCall, ChallengesRating } from '../../models/challenges.models';
-import { ChallengesService } from '@challenges/services';
+import { ChallengesApiService } from '@challenges/services';
 import { Chapter } from 'app/modules/testing/testing.models';
 import { BaseComponent } from '@shared/components/classes/base.component';
 import { PageResult } from '@shared/components/classes/page-result';
@@ -56,7 +55,7 @@ export class ChallengesComponent extends BaseComponent implements OnInit, OnDest
   private _intervalId: any;
 
   constructor(
-    public service: ChallengesService,
+    public service: ChallengesApiService,
     public authService: AuthService,
     public router: Router,
   ) {
@@ -70,7 +69,10 @@ export class ChallengesComponent extends BaseComponent implements OnInit, OnDest
       }
     );
 
-    this.service.getChallengesRating(1).subscribe(
+    this.service.getChallengesRating({
+      page: 1,
+      pageSize: 10,
+    }).subscribe(
       (result: any) => {
         this.challengesRatingSkeletonVisible = false;
         this.challengesRating = result.data;
@@ -84,7 +86,10 @@ export class ChallengesComponent extends BaseComponent implements OnInit, OnDest
   }
 
   updateChallenges() {
-    this.service.getChallenges(this.challengesPage, null, 7).subscribe(
+    this.service.getChallenges({
+      page: this.challengesPage,
+      pageSize: 7,
+    }).subscribe(
       (result: PageResult) => {
         this.challengesSkeletonVisible = false;
         this.challenges = result.data;

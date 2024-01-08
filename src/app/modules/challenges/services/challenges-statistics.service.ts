@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../../../shared/services/api.service';
+import { ChallengesApiService } from '@challenges/services/challenges-api.service';
+import { Pageable } from '@shared/components/classes/pageable';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChallengesStatisticsService {
 
-  constructor(public api: ApiService) {
-  }
+  constructor(public api: ApiService, public challengesService: ChallengesApiService) {}
 
   getUserChallengesRating(username: string) {
     return this.api.get(`challenges-rating/${ username }`);
@@ -17,12 +18,8 @@ export class ChallengesStatisticsService {
     return this.api.get(`challenges-rating/${ username }/rating-changes`);
   }
 
-  getUserLastChallenges(username: string, page: number, pageSize: number) {
-    return this.api.get('challenges', {
-      username: username,
-      page: page,
-      page_size: pageSize,
-    });
+  getUserLastChallenges(params: Partial<Pageable> & { username: string }) {
+    return this.challengesService.getChallenges(params);
   }
 
 }

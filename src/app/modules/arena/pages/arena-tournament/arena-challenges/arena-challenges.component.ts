@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { PageResult } from '@shared/components/classes/page-result';
 import { ArenaService } from '@arena/arena.service';
 import { Challenge } from '@challenges/models/challenges.models';
-import { ChallengesService } from '@challenges/services';
+import { ChallengesApiService } from '@challenges/services';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 
 @Component({
@@ -25,7 +25,7 @@ export class ArenaChallengesComponent extends BaseTablePageComponent<Challenge> 
 
   public arena: Arena;
 
-  constructor(public service: ChallengesService) {
+  constructor(public service: ChallengesApiService) {
     super();
   }
 
@@ -43,9 +43,9 @@ export class ArenaChallengesComponent extends BaseTablePageComponent<Challenge> 
   }
 
   getPage(): Observable<PageResult<Challenge>> {
-    return this.service.getChallenges(this.pageNumber, null, this.pageSize, {
-      arena_id: this.arena.id
+    return this.service.getChallenges({
+      ...this.pageable,
+      arenaId: this.arena.id,
     });
   }
-
 }

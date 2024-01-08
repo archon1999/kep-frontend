@@ -5,7 +5,7 @@ import { ContestsService } from '@contests/contests.service';
 import { UserChallengesRating, UserContestsRating, UserProblemsRating } from '@users/users.models';
 import { UsersApiService } from '@users/users-api.service';
 import { colors } from '@app/colors';
-import { ChallengesService } from '@challenges/services';
+import { ChallengesApiService } from '@challenges/services';
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbButtonsModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -52,7 +52,7 @@ export class UserRatingsComponent implements OnInit {
     public router: Router,
     public translateService: TranslateService,
     public contestsService: ContestsService,
-    public challengesService: ChallengesService,
+    public challengesService: ChallengesApiService,
     public coreConfigService: CoreConfigService,
   ) {
   }

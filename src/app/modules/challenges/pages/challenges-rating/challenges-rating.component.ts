@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChallengesRating } from '@challenges/models/challenges.models';
-import { ChallengesService } from '@challenges/services';
+import { ChallengesApiService } from '@challenges/services';
 import { PageResult } from '@shared/components/classes/page-result';
 import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
 import { Observable } from 'rxjs';
@@ -33,7 +33,7 @@ export class ChallengesRatingComponent extends BaseTablePageComponent<Challenges
 
   override defaultOrdering = '-rating';
 
-  constructor(public service: ChallengesService) {
+  constructor(public service: ChallengesApiService) {
     super();
   }
 
@@ -47,7 +47,7 @@ export class ChallengesRatingComponent extends BaseTablePageComponent<Challenges
   }
 
   getPage(): Observable<PageResult<ChallengesRating>> {
-    return this.service.getChallengesRating(this.pageNumber, this.pageSize, this.ordering);
+    return this.service.getChallengesRating(this.pageable);
   }
 
   protected getContentHeader() {
