@@ -5,12 +5,12 @@ import { PageResult } from '@shared/components/classes/page-result';
 import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
 import { Observable } from 'rxjs';
 import { CoreCommonModule } from '@core/common.module';
-import { ChallengesUserViewModule } from '@challenges/components/challenges-user-view/challenges-user-view.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
+import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
 
 @Component({
   selector: 'app-challenges-rating',
@@ -19,7 +19,7 @@ import { TableOrderingModule } from '@shared/components/table-ordering/table-ord
   standalone: true,
   imports: [
     CoreCommonModule,
-    ChallengesUserViewModule,
+    ChallengesUserViewComponent,
     KepPaginationComponent,
     ContentHeaderModule,
     SpinnerComponent,

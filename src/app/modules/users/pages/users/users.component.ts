@@ -10,7 +10,6 @@ import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.m
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
-import { ChallengesUserViewModule } from '@challenges/components/challenges-user-view/challenges-user-view.module';
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
@@ -22,6 +21,7 @@ import { PageResult } from '@shared/components/classes/page-result';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { KepStreakComponent } from '@shared/components/kep-streak/kep-streak.component';
+import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
 
 @Component({
   selector: 'app-users',
@@ -35,7 +35,7 @@ import { KepStreakComponent } from '@shared/components/kep-streak/kep-streak.com
     SpinnerComponent,
     EmptyResultComponent,
     TableOrderingModule,
-    ChallengesUserViewModule,
+    ChallengesUserViewComponent,
     KepcoinViewModule,
     NgbTooltipModule,
     KepPaginationComponent,
@@ -60,15 +60,15 @@ export class UsersComponent extends BaseTablePageComponent<User> {
 
   public countries = [];
 
-  get users() {
-    return this.pageResult?.data;
-  }
-
   constructor(
     public service: UsersApiService,
     public countriesService: NgxCountriesService,
   ) {
     super();
+  }
+
+  get users() {
+    return this.pageResult?.data;
   }
 
   ngOnInit(): void {
