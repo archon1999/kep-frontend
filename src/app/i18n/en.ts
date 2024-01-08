@@ -553,7 +553,7 @@ export const locale = {
         Attempts: 'Attempts | Problems',
         Attempt: 'Attempt {{ attemptId }} | Problems',
         Profile: 'Profile | Problems',
-        Statistics: 'Statistics | Problems',
+        Statistics: 'User statistics | Problems',
         Rating: 'Rating | Problems',
         RatingHistory: 'Rating | History | Problems',
         RatingOverall: 'Rating | Overall | Problems',
@@ -587,7 +587,7 @@ export const locale = {
         Challenges: 'Challenges',
         Challenge: '{{ playerFirstUsername }} vs {{ playerSecondUsername }} | Challenge',
         ChallengesRating: 'Challenges Rating',
-        UserStatistics: 'User Statistics',
+        UserStatistics: 'User Statistics | Challenges',
       },
       Lugavar: 'Lugavar',
       Users: {
