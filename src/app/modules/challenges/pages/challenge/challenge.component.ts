@@ -1,24 +1,41 @@
 import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Challenge } from '../../models/challenges.models';
-import { ChallengesApiService } from '../../services/challenges-api.service';
+import { ChallengesApiService } from '@challenges/services';
 import Swal from 'sweetalert2';
 import { SwalComponent, SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2';
-import { CoreConfigService } from '../../../../../core/services/config.service';
+import { CoreConfigService } from '@core/services/config.service';
 import { takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { CoreConfig } from '../../../../../core/types';
-import { DragulaService } from 'ng2-dragula';
+import { CoreConfig } from '@core/types';
+import { DragulaModule, DragulaService } from 'ng2-dragula';
 import { TitleService } from '@shared/services/title.service';
 import { TranslateService } from '@ngx-translate/core';
 import { randomShuffle } from '@shared/utils';
 import { randomChoice } from '@shared/utils/random';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
+import { CoreCommonModule } from '@core/common.module';
+import { SweetAlertModule } from '@shared/third-part-modules/sweet-alert/sweet-alert.module';
+import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
+import { ChallengeResultsCardComponent } from '@challenges/components/challenge-results-card/challenge-results-card.component';
 
 @Component({
   selector: 'app-challenge',
   templateUrl: './challenge.component.html',
-  styleUrls: ['./challenge.component.scss', '../../challenges.styles.scss']
+  styleUrls: ['./challenge.component.scss', '../../challenges.styles.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    SweetAlertModule,
+    ChallengesUserViewComponent,
+    NgbTooltipModule,
+    CountdownComponent,
+    MathjaxModule,
+    DragulaModule,
+    ChallengeResultsCardComponent,
+  ]
 })
 export class ChallengeComponent implements OnInit, OnDestroy {
 

@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ChallengesApiService } from './services/challenges-api.service';
+import { ChallengesApiService } from '@challenges/services';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ChallengeResolver {
   constructor(private service: ChallengesApiService, public router: Router) {}
 

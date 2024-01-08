@@ -6,12 +6,19 @@ import { User } from 'app/auth/models';
 import { BaseLoadComponent } from '@shared/components/classes/base-load.component';
 import { Observable } from 'rxjs';
 import { fadeInOnEnterAnimation } from 'angular-animations';
+import { CoreCommonModule } from '@core/common.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'section-profile',
   templateUrl: './section-profile.component.html',
   styleUrls: ['./section-profile.component.scss'],
-  animations: [fadeInOnEnterAnimation()]
+  animations: [fadeInOnEnterAnimation()],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    NgbTooltipModule,
+  ]
 })
 export class SectionProfileComponent extends BaseLoadComponent<ChallengesRating> {
 

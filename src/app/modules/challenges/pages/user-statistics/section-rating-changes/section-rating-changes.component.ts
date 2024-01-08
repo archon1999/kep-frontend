@@ -6,12 +6,19 @@ import { BaseLoadComponent } from '@shared/components/classes/base-load.componen
 import { Observable } from 'rxjs';
 import { User } from '@auth/models';
 import { fadeInOnEnterAnimation } from 'angular-animations';
+import { CoreCommonModule } from '@core/common.module';
+import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 
 @Component({
   selector: 'section-rating-changes',
   templateUrl: './section-rating-changes.component.html',
   styleUrls: ['./section-rating-changes.component.scss'],
-  animations: [fadeInOnEnterAnimation()]
+  animations: [fadeInOnEnterAnimation()],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ApexChartModule,
+  ]
 })
 export class SectionRatingChangesComponent extends BaseLoadComponent<Array<ChallengesRatingChange>> {
   override loadOnInit = false;
