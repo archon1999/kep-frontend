@@ -586,7 +586,7 @@ export const locale = {
         Challenges: 'Bellashuvlar',
         Challenge: '{{ playerFirstUsername }} vs {{ playerSecondUsername }} | Bellashuv',
         ChallengesRating: 'Bellashuvlar reytingi',
-        ChallengesProfile: 'Bellashuvlar statistikasi',
+        UserStatistics: 'Foydalanuvchi statistikasi',
       },
       Lugavar: 'Lugavar',
       Users: {

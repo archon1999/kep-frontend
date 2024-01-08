@@ -587,7 +587,7 @@ export const locale = {
         Challenges: 'Challenges',
         Challenge: '{{ playerFirstUsername }} vs {{ playerSecondUsername }} | Challenge',
         ChallengesRating: 'Challenges Rating',
-        ChallengesProfile: 'Challenges Profile',
+        UserStatistics: 'User Statistics',
       },
       Lugavar: 'Lugavar',
       Users: {
