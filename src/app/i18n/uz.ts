@@ -552,7 +552,7 @@ export const locale = {
         Attempts: 'Urinishlar | Masalalar',
         Attempt: 'Urinish {{ attemptId }} | Masalalar',
         Profile: 'Profil | Masalalar',
-        Statistics: 'Statistika | Masalalar',
+        Statistics: 'Foydalanuvchi statistikasi | Masalalar',
         Rating: 'Reyting | Masalalar',
         RatingHistory: 'Reyting | Tarix | Masalalar',
         RatingOverall: 'Rating | Umumiy | Masalalar',
@@ -586,7 +586,7 @@ export const locale = {
         Challenges: 'Bellashuvlar',
         Challenge: '{{ playerFirstUsername }} vs {{ playerSecondUsername }} | Bellashuv',
         ChallengesRating: 'Bellashuvlar reytingi',
-        UserStatistics: 'Foydalanuvchi statistikasi',
+        UserStatistics: 'Foydalanuvchi statistikasi | Bellashuvlar',
       },
       Lugavar: 'Lugavar',
       Users: {
