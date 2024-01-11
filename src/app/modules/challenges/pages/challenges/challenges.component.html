@@ -1,185 +1,107 @@
-<section class="challenges">
-  <div class="row">
-    <div class="col-12">
-      <div class="challenges-page-top">
-      </div>
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <section-header></section-header>
 
-      <div class="mb-lg-3 mb-2 mt-2">
-        <div class="text-center">
-          <div [@fadeInUpOnEnter] class="avatar mr-2 avatar-lg">
-            <div class="avatar-content" ngbTooltip="{{ 'Challenges' | translate }}">
-              <kep-icon name="challenge" class="font-medium-3"></kep-icon>
-            </div>
-          </div>
-
-          <a routerLink="profile">
-            <div [@fadeInUpOnEnter] class="avatar mr-2 avatar-lg">
-              <div class="avatar-content" ngbTooltip="{{ 'Profile' | translate }}">
-                <kep-icon name="profile" class="font-medium-3"></kep-icon>
-              </div>
-            </div>
-          </a>
-
-          <a routerLink="rating">
-            <div [@fadeInUpOnEnter] class="avatar avatar-lg">
-              <div class="avatar-content" ngbTooltip="{{ 'Rating' | translate }}">
-                <kep-icon name="ranking" class="font-medium-3"></kep-icon>
-              </div>
-            </div>
-          </a>
-
-          <h2 [@fadeInUpOnEnter] class="mt-4">
-            <span class="text-white">{{ 'Challenges' | translate }}</span>
-          </h2>
-    
-          <div class="mt-3 col-lg-8 col-12 offset-lg-2 offset-0">
-            <div class="row">
-              <div class="col-12 col-md-6">
-                <a [@fadeInLeftOnEnter] class="card card-info" routerLink="/learn/blog/post/69">
-                  <div class="card-header">
-                    <div class="card-title">
-                      {{ 'AboutChallenges' | translate }}
-                    </div>
-                  </div>
-                  <div class="info-img">
-                    <img src="assets/images/pages/graphic-1.webp" alt="info-img">
-                  </div>
-                </a>
-              </div>
-    
-              <div class="col-12 col-md-6">
-                <a [@fadeInRightOnEnter] class="card card-info" routerLink="/learn/blog/post/70">
-                  <div class="card-header">
-                    <div class="card-title">
-                      {{ 'AboutQuestionTypes' | translate }}
-                    </div>
-                  </div>
-                  <div class="info-img">
-                    <img src="assets/images/pages/graphic-4.webp" alt="info-img">
-                  </div>
-                </a>
-              </div>
-            </div>
-          </div>
-      
-        </div>
-      </div>
-    
-      <div class="row">
-        <div class="col-12 mb-4">              
-          <div [@fadeInUpOnEnter] class="row">
+    <ul ngbNav #navFilled="ngbNav" class="nav-tabs nav-fill">
+      <li ngbNavItem>
+        <a ngbNavLink>{{ 'Quickstart' | translate }}</a>
+        <ng-template ngbNavContent>
+          <div [@fadeInOnEnter] class="row">
             <div class="col-lg-3 col-md-6 col-sm-6">
               <new-challenge-button (click)="quickStart(60, 6)" [timeSeconds]="60" [questionsCount]="6"></new-challenge-button>
             </div>
-    
+
             <div class="col-lg-3 col-md-6 col-sm-6">
               <new-challenge-button (click)="quickStart(50, 5)" [timeSeconds]="50" [questionsCount]="5"></new-challenge-button>
             </div>
-            
+
             <div class="col-lg-3 col-md-6 col-sm-6">
               <new-challenge-button (click)="quickStart(40, 5)" [timeSeconds]="40" [questionsCount]="5"></new-challenge-button>
             </div>
-    
+
             <div class="col-lg-3 col-md-6 col-sm-6">
               <new-challenge-button (click)="quickStart(30, 6)" [timeSeconds]="30" [questionsCount]="6"></new-challenge-button>
             </div>
           </div>
-        </div>
-    
-        <div class="col-lg-8 col-12 offset-lg-2 mb-1">
-          <div class="card in-queue">
-            <div class="card-header">
-              <div class="text-white card-title">
-                {{ 'InQueue' | translate }}
-              </div>
-            </div>
-    
+
+          <div class="offset-lg-3 col-6">
             <div class="card-body">
-              <div class="row" *ngIf="challengeCallsSkeletonVisible">
-                <div class="col-xl-4 col-md-6 col-12" *ngFor="let item of [].constructor(3)">
-                  <ngx-skeleton-loader
-                    count="2"
-                    animation="pulse"
-                    appearance="line"
-                    [theme]="{height: '185px', background: 'var(--bg-gradient)'}"
-                  ></ngx-skeleton-loader>
-                </div>
-              </div>
+              <h5 class="mb-2 text-dark">{{ 'Questions' | translate }}</h5>
+              <nouislider
+                [min]="4"
+                [connect]="'lower'"
+                [behaviour]="'tap'"
+                [tooltips]="true"
+                [max]="10"
+                [step]="1"
+                [(ngModel)]="newChallengeCall.questionsCount"
+                [ngClass]="'circle-filled slider-custom'"
+              ></nouislider>
 
-              <div class="row">
-                <div
-                  *ngFor="let challengeCall of challengeCalls"
-                  class="col-xl-4 col-md-6 col-12"
-                  [@fadeInOnEnter]
-                  [@fadeOutOnLeave]>
-                  <challenge-call-card
-                    [challengeCall]="challengeCall"
-                    (delete)="onChallengeCallDelete(challengeCall.id)"
-                  ></challenge-call-card>
-                </div>
+              <h5 class="mb-2 text-dark">{{ 'Time' | translate }}</h5>
+              <nouislider
+                [min]="10"
+                [connect]="'lower'"
+                [behaviour]="'tap'"
+                [tooltips]="true"
+                [max]="90"
+                [step]="10"
+                [(ngModel)]="newChallengeCall.timeSeconds"
+                [ngClass]="'circle-filled slider-custom'"
+              ></nouislider>
+
+              <h5 class="mb-1 text-white">{{ 'Chapters' | translate }}</h5>
+              <ng-select [multiple]="true" [(ngModel)]="selectedChapters">
+                <ng-option *ngFor="let chapter of chapters" [value]="chapter.id">
+                  <span class="badge text-white bg-gradient-chapter-{{ chapter.id }}">
+                    {{ chapter.title }}
+                  </span>
+                </ng-option>
+              </ng-select>
+              <div class="text-center">
+                <button (click)="newChallenge()" class="btn btn-primary btn-sm mt-2">
+                  {{ 'NewChallenge' | translate }}
+                </button>
               </div>
             </div>
-    
-            <div class="card-footer">
-              <div class="col-lg-6 col-md-8 col-sm-12 offset-lg-3 offset-md-2">
-                <h5 class="mb-2 text-white">{{ 'Questions' | translate }}</h5>
-                <nouislider
-                  [min]="4"
-                  [connect]="'lower'"
-                  [behaviour]="'tap'"
-                  [tooltips]="true"
-                  [max]="10"
-                  [step]="1"
-                  [(ngModel)]="newChallengeCall.questionsCount"
-                  [ngClass]="'circle-filled slider-custom'"
-                ></nouislider>
-                  
-                <h5 class="mb-2 text-white">{{ 'Time' | translate }}</h5>
-                <nouislider
-                  [min]="10"
-                  [connect]="'lower'"
-                  [behaviour]="'tap'"
-                  [tooltips]="true"
-                  [max]="90"
-                  [step]="10"
-                  [(ngModel)]="newChallengeCall.timeSeconds"
-                  [ngClass]="'circle-filled slider-custom'"
-                ></nouislider>
-
-                <h5 class="mb-1 text-white">{{ 'Chapters' | translate }}</h5>
-                <ng-select
-                  [multiple]="true"
-                  [(ngModel)]="selectedChapters"
-                >
-                  <ng-option *ngFor="let chapter of chapters" [value]="chapter.id">
-                    <span class="badge text-white bg-gradient-chapter-{{ chapter.id }}">
-                      {{ chapter.title }}
-                    </span>
-                  </ng-option>
-                </ng-select>
-                <div class="text-center">
-                  <button (click)="newChallenge()" class="btn btn-primary btn-sm mt-2">
-                    {{ 'NewChallenge' | translate }}
-                  </button>
-                </div>
-              </div>
-            </div>
-    
           </div>
-           
-        </div>
-    
-        <div class="col-lg-8 col-md-12 col-sm-12"> 
-    
-<!--          <div *ngIf="currentUser" class="mb-50">-->
-<!--            <button *ngIf="!myChallenges" class="btn btn-new-challenge btn-sm" (click)="myChallenges=true;updateChallenges()">-->
-<!--              {{ 'MyChallenges' | translate }}-->
-<!--            </button>-->
-<!--            <button *ngIf="myChallenges" class="btn btn-new-challenge btn-sm" (click)="myChallenges=false;updateChallenges()">-->
-<!--              {{ 'All' | translate }}-->
-<!--            </button>-->
-<!--          </div>-->
 
+        </ng-template>
+      </li>
+
+      <li ngbNavItem>
+        <a ngbNavLink>{{ 'InQueue' | translate }}</a>
+        <ng-template ngbNavContent>
+          <div class="row" *ngIf="challengeCallsSkeletonVisible">
+            <div class="col-xl-4 col-md-6 col-12" *ngFor="let item of [].constructor(3)">
+              <ngx-skeleton-loader
+                count="2"
+                animation="pulse"
+                appearance="line"
+                [theme]="{height: '185px', background: 'var(--bg-gradient)'}"
+              ></ngx-skeleton-loader>
+            </div>
+          </div>
+
+          <div class="row">
+            <div
+              *ngFor="let challengeCall of challengeCalls"
+              class="col-xl-3 col-md-6 col-12"
+              [@fadeInOnEnter]
+              [@fadeOutOnLeave]>
+              <challenge-call-card
+                [challengeCall]="challengeCall"
+                (delete)="onChallengeCallDelete(challengeCall.id)"
+              ></challenge-call-card>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+
+      <li ngbNavItem>
+        <a ngbNavLink>{{ 'Challenges' | translate }}</a>
+        <ng-template ngbNavContent>
           <div class="item" *ngIf="challengesSkeletonVisible">
             <ngx-skeleton-loader
               count="8"
@@ -189,14 +111,9 @@
             ></ngx-skeleton-loader>
           </div>
 
-          <div class="row mb-2">
-            <div *ngFor="let challenge of challenges" class="col-12">
-              <a *ngIf="myChallenges;else elseBlock" routerLink="challenge/{{ challenge.id }}">
-                <challenge-card [challenge]="challenge"></challenge-card>
-              </a>
-              <ng-template #elseBlock>
-                <challenge-card [challenge]="challenge"></challenge-card>
-              </ng-template>
+          <div class="mb-2">
+            <div *ngFor="let challenge of challenges">
+              <challenge-card [challenge]="challenge"></challenge-card>
             </div>
           </div>
 
@@ -207,68 +124,61 @@
             [maxSize]="5"
             (pageChange)="updateChallenges()">
           </kep-pagination>
-        </div>
-    
-        <div class="col-lg-4 col-md-12 col-sm-12 mt-md-0 mt-2">
-          <div class="card top-rating">
-            <div class="card-header d-flex justify-content-start">
-              <div class="avatar badge-glow p-50 m-0">
-                <div class="avatar-content">
-                  <i data-feather="award" class="font-medium-5"></i>
-                </div>
-              </div>
-              <h4 class="text-white mt-1 pl-1">{{ 'RATING' | translate }}</h4>
-            </div>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="navFilled" class="mt-2"></div>
 
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr class="text-white bg-gradient-primary">
-                    <th>#</th>
-                    <th>{{ 'User' | translate }}</th>
-                    <th><i data-feather="bar-chart"></i></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    *ngFor="let challengesRating of challengesRating; index as i">
-                    <td class="text-white">
-                      {{ i+1 }}
-                    </td>
-                    <td>
-                      <challenges-user-view [user]="challengesRating"></challenges-user-view>
-                    </td>
-                    <td>
+    <div class="row">
+      <div class="col-12 col-lg-6">
+        <div class="card">
+          <div class="table-responsive beautiful-table">
+            <table class="table table-striped">
+              <thead>
+              <tr class="text-white bg-gradient-primary">
+                <th>#</th>
+                <th>{{ 'User' | translate }}</th>
+                <th><i data-feather="bar-chart"></i></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr
+                *ngFor="let challengesRating of challengesRating; index as i">
+                <td class="text-dark">
+                  {{ i+1 }}
+                </td>
+                <td>
+                  <challenges-user-view [user]="challengesRating"></challenges-user-view>
+                </td>
+                <td>
                       <span class="badge badge-light-{{ challengesRating.rankTitle | challengesRankColor }}">
                         {{ challengesRating.rating }}
                       </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+                </td>
+              </tr>
+              </tbody>
+            </table>
 
-              <div class="item" *ngIf="challengesRatingSkeletonVisible">
-                <ngx-skeleton-loader
-                  count="10"
-                  animation="pulse"
-                  appearance="line"
-                  [theme]="{height: '40px', background: 'var(--bg-primary)'}"
-                ></ngx-skeleton-loader>
-              </div>
+            <div class="item" *ngIf="challengesRatingSkeletonVisible">
+              <ngx-skeleton-loader
+                count="10"
+                animation="pulse"
+                appearance="line"
+                [theme]="{height: '40px', background: 'var(--bg-primary)'}"
+              ></ngx-skeleton-loader>
             </div>
-    
-            <div class="card-footer text-center">
-              <a routerLink="rating" class="btn btn-sm btn-primary round">
-                {{ 'OverallRating' | translate }}
-              </a>
-            </div>
+          </div>
+
+          <div class="card-footer text-center">
+            <a routerLink="rating" class="btn btn-sm btn-primary round">
+              {{ 'OverallRating' | translate }}
+            </a>
           </div>
         </div>
       </div>
-
     </div>
   </div>
-</section>
+</div>
 
 <nouslider-css></nouslider-css>
 <ng-select-css></ng-select-css>

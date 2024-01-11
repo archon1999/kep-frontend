@@ -1,0 +1,67 @@
+<div class="card challenges-section-header">
+  @if (isLoading){
+    <div [style.height.px]="150">
+      <spinner></spinner>
+    </div>
+  } @else {
+    <div class="card-header">
+      <div class="card-title text-white">
+        @if (currentUser) {
+          <challenges-user-view [light]="false" [withRating]="true" [user]="challengesRating"></challenges-user-view>
+        } @else {
+          {{ 'Links' | translate }}
+        }
+      </div>
+
+      <div class="links" [ngClass.lt-md]="'mt-1 d-flex'">
+        <a routerLink="rating" class="btn btn-primary mr-25 mr-mt-1" [ngClass.lt-md]="'btn-sm'">
+          <kep-icon name="ranking" class="font-medium-1"></kep-icon>
+          {{ 'Rating' | translate }}
+        </a>
+        <a routerLink="user-statistics" class="btn btn-primary mr-25 mr-mt-1" [ngClass.lt-md]="'btn-sm'">
+          <kep-icon name="statistics" class="font-medium-1"></kep-icon>
+          {{ 'Statistics' | translate }}
+        </a>
+      </div>
+    </div>
+
+    <div class="card-footer text-center" *ngIf="challengesRating">
+      <div class="font-medium-4 d-flex justify-content-between">
+        <div class="text-white">
+          <span class="text-success font-medium-2" ngbTooltip="{{ 'Wins' | translate }}">W</span>
+          {{ challengesRating.wins }}
+          <br>
+          <span class="text-success font-medium-2">{{ Math.trunc(100 * challengesRating.wins / challengesRating.all ) }} %</span>
+        </div>
+
+        <div class="text-white">
+          <span class="ml-50 text-secondary font-medium-2" ngbTooltip="{{ 'Draws' | translate }}">D</span>
+          {{ challengesRating.draws }}
+          <br>
+          <span class="text-secondary font-medium-2">{{ Math.trunc(100 * challengesRating.draws / challengesRating.all ) }} %</span>
+        </div>
+
+        <div class="text-white">
+          <span class="ml-50 text-danger font-medium-2" ngbTooltip="{{ 'Losses' | translate }}">L</span>
+          {{ challengesRating.losses }}
+          <br>
+          <span class="text-danger font-medium-2">{{ Math.trunc(100 * challengesRating.losses / challengesRating.all ) }} %</span>
+        </div>
+      </div>
+    </div>
+  }
+</div>
+
+<div class="useful-links row">
+  <div class="col-6">
+    <a class="btn btn-primary" routerLink="/learn/blog/post/69">
+      {{ 'AboutChallenges' | translate }}
+    </a>
+  </div>
+
+  <div class="col-6">
+    <a class="btn btn-primary" routerLink="/learn/blog/post/70">
+      {{ 'AboutQuestionTypes' | translate }}
+    </a>
+  </div>
+</div>

@@ -6,16 +6,18 @@
 
   <div class="card-body">
     <span ngbTooltip="{{ 'Time' | translate }}" class="mr-25 badge badge-primary bg-primary-darken badge-glow">
-      <kep-icon class="font-medium-1" name="challenge-time"></kep-icon>
+      <kep-icon size="small-3" name="challenge-time"></kep-icon>
       {{ challengeCall.timeSeconds }}
     </span>
 
-    <span ngbTooltip="{{ 'Questions' | translate }}"  class="badge badge-primary bg-primary-darken badge-glow">
-      <kep-icon class="font-medium-1" name="challenge-task"></kep-icon>
+    <span ngbTooltip="{{ 'Questions' | translate }}"  class="mb-50 badge badge-primary bg-primary-darken badge-glow">
+      <kep-icon size="small-3" name="challenge-task"></kep-icon>
       {{ challengeCall.questionsCount }}
     </span>
 
-    <span *ngFor="let chapter of challengeCall.chapters" class="badge ml-25 mb-25 bg-chapter-{{ chapter.id }}">
+    <br>
+
+    <span *ngFor="let chapter of challengeCall.chapters" class="badge mr-25 mb-25 bg-chapter-{{ chapter.id }}">
       {{ chapter.title }}
     </span>
   </div>

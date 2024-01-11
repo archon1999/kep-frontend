@@ -11,10 +11,9 @@ import { AuthService } from 'app/auth/service';
 import { Challenge, ChallengeCall, ChallengesRating } from '../../models/challenges.models';
 import { ChallengesApiService } from '@challenges/services';
 import { Chapter } from 'app/modules/testing/testing.models';
-import { BaseComponent } from '@shared/components/classes/base.component';
 import { PageResult } from '@shared/components/classes/page-result';
 import { CoreCommonModule } from '@core/common.module';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NewChallengeButtonComponent } from '@challenges/components/new-challenge-button/new-challenge-button.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { ChallengeCallCardComponent } from '@challenges/components/challenge-call-card/challenge-call-card.component';
@@ -23,6 +22,10 @@ import { ChallengeCardComponent } from '@challenges/components/challenge-card/ch
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { NouisliderModule } from '@shared/third-part-modules/nouislider/nouislider.module';
 import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { BasePageComponent } from '@shared/components/classes/base-page.component';
+import { SectionHeaderComponent } from '@challenges/pages/challenges/sections/section-header/section-header.component';
+import { ContentHeader } from '@layout/components/content-header/content-header.component';
 
 interface NewChallengeCall {
   timeSeconds: number;
@@ -36,9 +39,9 @@ interface NewChallengeCall {
   animations: [
     fadeOutOnLeaveAnimation(),
     fadeInOnEnterAnimation(),
-    fadeInLeftOnEnterAnimation({ duration: 1000 }),
-    fadeInRightOnEnterAnimation({ duration: 1000 }),
-    fadeInUpOnEnterAnimation({ duration: 1000 }),
+    fadeInLeftOnEnterAnimation(),
+    fadeInRightOnEnterAnimation(),
+    fadeInUpOnEnterAnimation(),
   ],
   standalone: true,
   imports: [
@@ -52,9 +55,12 @@ interface NewChallengeCall {
     KepPaginationComponent,
     NouisliderModule,
     ChallengesUserViewComponent,
+    ContentHeaderModule,
+    SectionHeaderComponent,
+    NgbNavModule,
   ]
 })
-export class ChallengesComponent extends BaseComponent implements OnInit, OnDestroy {
+export class ChallengesComponent extends BasePageComponent implements OnInit, OnDestroy {
   public challengeCalls: Array<ChallengeCall> = [];
   public challengeCallsSkeletonVisible = true;
 
@@ -86,6 +92,8 @@ export class ChallengesComponent extends BaseComponent implements OnInit, OnDest
   }
 
   ngOnInit(): void {
+    this.loadContentHeader();
+
     this.service.getChapters().subscribe(
       (chapters: Array<Chapter>) => {
         this.chapters = chapters;
@@ -194,5 +202,20 @@ export class ChallengesComponent extends BaseComponent implements OnInit, OnDest
     }
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
+  }
+
+  protected getContentHeader(): ContentHeader {
+    return {
+      headerTitle: 'Challenges',
+      breadcrumb: {
+        links: [
+          {
+            name: this.coreConfig.app.appTitle,
+            isLink: true,
+            link: '/',
+          }
+        ]
+      }
+    };
   }
 }

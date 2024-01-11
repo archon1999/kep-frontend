@@ -15,4 +15,5 @@ import { UserPopoverModule } from '@shared/components/user-popover/user-popover.
 export class ChallengesUserViewComponent {
   @Input() user: any;
   @Input() withRating = false;
+  @Input() light = true;
 }
