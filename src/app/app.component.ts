@@ -213,33 +213,6 @@ export class AppComponent implements OnInit, OnDestroy {
     registerLocaleData(localeUz, 'uz');
     registerLocaleData(localeRu, 'ru');
     registerLocaleData(localeEn, 'en');
-
-    this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (user: any) => {
-        if (user) {
-          this.api.get('my-kepcoin').subscribe(
-            (kepcoin: any) => {
-              this.authService.updateKepcoin(kepcoin);
-            }
-          );
-        }
-      }
-    );
-
-    this.wsService.status.pipe(takeUntil(this._unsubscribeAll)).subscribe((status: any) => {
-      if (status) {
-        this.authService.currentUser
-          .pipe(takeUntil(this._unsubscribeAll))
-          .subscribe((user: any) => {
-            if (user) {
-              this.wsService.send('kepcoin-add', user.username);
-              this.wsService.on<number>(`kepcoin-${ user.username }`).subscribe((kepcoin: number) => {
-                this.authService.updateKepcoin(kepcoin);
-              });
-            }
-          });
-      }
-    });
   }
 
   @HostListener('touchstart', ['$event'])

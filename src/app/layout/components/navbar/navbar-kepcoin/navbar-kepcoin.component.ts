@@ -1,11 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { User } from 'app/auth/models';
-import { AuthService } from 'app/auth/service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { NavbarService } from '../navbar.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { BaseComponent } from '@shared/components/classes/base.component';
 
 @Component({
   selector: 'app-navbar-kepcoin',
@@ -17,29 +15,37 @@ import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
     NgbPopoverModule,
   ]
 })
-export class NavbarKepcoinComponent implements OnInit, OnDestroy {
+export class NavbarKepcoinComponent extends BaseComponent {
 
-  public currentUser: User;
   public earn = 0;
   public spend = 0;
-  private _unsubscribeAll = new Subject();
 
   constructor(
-    public authService: AuthService,
     public service: NavbarService,
-  ) { }
-
-  loadData() {
-    this.service.getTodayKepcoin().subscribe((result: any) => {
-      this.earn = result.earn;
-      this.spend = result.spend;
-    });
+  ) {
+    super();
   }
 
-  ngOnInit(): void {
-    this.authService.currentUser
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((user: User) => this.currentUser = user);
+  loadData() {
+    this.service.getTodayKepcoin().subscribe(
+      (result: { earn: number, spend: number }) => {
+        this.earn = result.earn;
+        this.spend = result.spend;
+      }
+    );
+  }
+
+  beforeChangeCurrentUser(currentUser: User) {
+    if (currentUser) {
+      this.wsService.send('kepcoin-add', currentUser.username);
+      this.wsService.on<number>(`kepcoin-${currentUser.username}`).subscribe(
+        (kepcoin: number) => {
+          this.authService.updateKepcoin(kepcoin);
+        }
+      );
+    } else {
+      this.wsService.send('kepcoin-delete', this.currentUser?.username);
+    }
   }
 
   ngOnDestroy(): void {
