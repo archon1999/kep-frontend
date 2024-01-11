@@ -17,6 +17,7 @@ import { KepTableComponent } from '@shared/components/kep-table/kep-table.compon
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
+import { deepCopy } from '@shared/utils';
 
 @Component({
   selector: 'section-problems-table',
@@ -74,7 +75,12 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
         });
       }
     );
-    this.filterService.updateFilter(this.route.snapshot.queryParams);
+    const queryParams = deepCopy(this.route.snapshot.queryParams);
+    if (queryParams.tags && !(queryParams instanceof Array)) {
+      queryParams.tags = [queryParams.tags];
+    }
+
+    this.filterService.updateFilter(queryParams);
     setTimeout(() => this.reloadPage());
   }
 
