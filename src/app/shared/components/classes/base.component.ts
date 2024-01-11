@@ -16,6 +16,7 @@ import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.s
 import { ApiService } from '@shared/services/api.service';
 import { Resources } from '@app/resources';
 import { TranslateService } from '@ngx-translate/core';
+import { WebsocketService } from '@shared/services/websocket';
 
 @Component({
   template: '',
@@ -36,6 +37,7 @@ export class BaseComponent {
   public toastr = inject(ToastrService);
   public coreSidebarService = inject(CoreSidebarService);
   public translateService = inject(TranslateService);
+  public wsService = inject(WebsocketService);
 
   public currentUser: User | null;
   public coreConfig: CoreConfig;
