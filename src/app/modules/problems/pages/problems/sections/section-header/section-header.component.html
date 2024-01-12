@@ -7,18 +7,24 @@
     <div class="card-header">
       <div class="card-title text-white">{{ currentUser?.username || 'Links' | translate }}</div>
 
-      <div class="links" [ngClass.lt-md]="'mt-1 d-flex'">
+      <div class="links" [ngClass.lt-md]="'d-flex'">
         <a routerLink="rating" class="btn btn-primary mr-25 mr-mt-1" [ngClass.lt-md]="'btn-sm'">
           <kep-icon name="ranking" class="font-medium-1"></kep-icon>
-          {{ 'Rating' | translate }}
+          <span [ngClass.lt-md]="'d-none'">
+            {{ 'Rating' | translate }}
+          </span>
         </a>
         <a routerLink="statistics" class="btn btn-primary mr-25 mr-mt-1" [ngClass.lt-md]="'btn-sm'">
           <kep-icon name="statistics" class="font-medium-1"></kep-icon>
-          {{ 'Statistics' | translate }}
+          <span [ngClass.lt-md]="'d-none'">
+            {{ 'Statistics' | translate }}
+          </span>
         </a>
         <a routerLink="attempts" class="btn btn-primary" [ngClass.lt-md]="'btn-sm'">
           <kep-icon name="attempt" class="font-medium-1"></kep-icon>
-          {{ 'Attempts' | translate }}
+          <span [ngClass.lt-md]="'d-none'">
+            {{ 'Attempts' | translate }}
+          </span>
         </a>
       </div>
     </div>
