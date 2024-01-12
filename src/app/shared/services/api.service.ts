@@ -46,7 +46,7 @@ export class ApiService {
       }),
       this.handleRetryError(2000, 5),
       catchError(err => {
-        console.log(err);
+        // console.log(err);
         if (!err.status) {
           this.handleConnectionError();
         }
