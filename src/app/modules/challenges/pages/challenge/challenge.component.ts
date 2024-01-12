@@ -20,6 +20,7 @@ import { ChallengesUserViewComponent } from '@challenges/components/challenges-u
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
 import { ChallengeResultsCardComponent } from '@challenges/components/challenge-results-card/challenge-results-card.component';
+import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 
 @Component({
   selector: 'app-challenge',
@@ -35,6 +36,7 @@ import { ChallengeResultsCardComponent } from '@challenges/components/challenge-
     MathjaxModule,
     DragulaModule,
     ChallengeResultsCardComponent,
+    MonacoEditorComponent,
   ]
 })
 export class ChallengeComponent implements OnInit, OnDestroy {
