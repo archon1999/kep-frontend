@@ -5,6 +5,7 @@ import { BasePageComponent } from '@shared/components/classes/base-page.componen
 import { NavigationStart } from '@angular/router';
 import { BASE_URL } from '@shared/services/api.service';
 import { Pageable } from '@shared/components/classes/pageable';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   template: '',
@@ -32,7 +33,7 @@ export class BaseTablePageComponent<T> extends BasePageComponent implements OnIn
   constructor() {
     super();
     setTimeout(() => this.updatePageParams());
-    this.router.events.subscribe(
+    this.router.events.pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (event) => {
         if (event instanceof NavigationStart && event.navigationTrigger === 'popstate') {
           setTimeout(() => this.updatePageParams());
