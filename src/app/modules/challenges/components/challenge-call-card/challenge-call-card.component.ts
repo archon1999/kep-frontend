@@ -42,6 +42,11 @@ export class ChallengeCallCardComponent extends BaseUserComponent {
   }
 
   acceptChallengeCall() {
+    if (!this.currentUser) {
+      this.router.navigateByUrl(Resources.Login);
+      return;
+    }
+
     this.service.acceptChallengeCall(this.challengeCall.id).subscribe(
       (result: any) => {
         if (result.success) {
