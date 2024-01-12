@@ -176,6 +176,8 @@ export const locale = {
     Points: 'Очки',
     Registration: 'Зарегистрироваться',
     Registrated: 'Зарегистрировано',
+    ArenaWinners: 'Победители Арена',
+    GoToArena: 'Перейти к Арена',
     Pefomance: 'Перфоманс',
     UnofficialParticipation: 'Неофициальное участие',
     Wins: 'Выигрыши',

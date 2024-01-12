@@ -129,6 +129,8 @@ export const locale = {
     OverallRating: 'Umumiy reyting',
     LastAttempts: 'Ohirgi urinishlar',
     Verdict: 'Natija',
+    ArenaWinners: 'Arena g`oliblari',
+    GoToArena: 'Arenaga o`tish',
     AllAttempts: 'Barcha urinishlar',
     NumberOfAttemptsForSolve: 'Ishlash uchun urinishlar soni',
     Time: 'Vaqt',

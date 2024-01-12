@@ -1,19 +1,19 @@
 @import 'styles/kep-imports';
 
 .challenge-card {
-  background: var(--bg-darken);
+  background-image: linear-gradient(to left, mix(black, $primary, 10), mix(white, $primary, 10));
   box-shadow: 0 0 5px var(--bg-lighten) !important;
   border-radius: 5px;
+
+  @include dark-layout {
+    background-image: linear-gradient(mix(black, $primary, 40), mix(black, $primary, 60));
+  }
 
   ::ng-deep {
     .text-blue, .text-primary {
       color: #ffffff !important;
     }
   }
-}
-
-::ng-deep .dark-layout .challenge-card {
-  background-image: linear-gradient(mix(black, $primary, 40), mix(black, $primary, 60));
 }
 
 td:nth-child(1) {

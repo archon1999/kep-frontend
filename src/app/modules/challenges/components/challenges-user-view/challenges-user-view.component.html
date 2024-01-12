@@ -6,7 +6,7 @@
     {{ user.username }}
 
     <span *ngIf="withRating" [class]="{
-      'badge-light-{{ user.rankTitle | challengesRankColor }}': light,
+      'badge-light-{{ user.rankTitle | challengesRankColor }}': light
     }" class="badge badge-{{ user.rankTitle | challengesRankColor }}">
       {{ user.rating }}
     </span>

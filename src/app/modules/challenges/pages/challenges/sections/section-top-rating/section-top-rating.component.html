@@ -1,0 +1,42 @@
+<div class="card">
+  @if (isLoading) {
+    <div [style.height.px]="400">
+      <spinner></spinner>
+    </div>
+  } @else {
+    <div class="table-responsive beautiful-table">
+      <table class="table table-striped">
+        <thead>
+        <tr class="text-white bg-gradient-primary">
+          <th>#</th>
+          <th>{{ 'User' | translate }}</th>
+          <th><i data-feather="bar-chart"></i></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+          *ngFor="let challengesRating of challengesRatingList; index as i">
+          <td class="text-dark">
+            {{ i+1 }}
+          </td>
+          <td>
+            <challenges-user-view [user]="challengesRating"></challenges-user-view>
+          </td>
+          <td>
+          <span class="badge badge-light-{{ challengesRating.rankTitle | challengesRankColor }}">
+            {{ challengesRating.rating }}
+          </span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-footer text-center">
+      <a routerLink="rating" class="btn btn-block btn-primary">
+        <kep-icon name="ranking"></kep-icon>
+        {{ 'OverallRating' | translate }}
+      </a>
+    </div>
+  }
+</div>

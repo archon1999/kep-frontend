@@ -24,7 +24,7 @@ import { ChallengeResultsCardComponent } from '@challenges/components/challenge-
 @Component({
   selector: 'app-challenge',
   templateUrl: './challenge.component.html',
-  styleUrls: ['./challenge.component.scss', '../../challenges.styles.scss'],
+  styleUrls: ['./challenge.component.scss'],
   standalone: true,
   imports: [
     CoreCommonModule,

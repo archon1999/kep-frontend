@@ -1,4 +1,4 @@
-<div class="table-responsive">
+<div [@fadeInOnEnter] class="table-responsive">
   <table class="table challenge-card">
     <tbody>
       <tr>
@@ -20,14 +20,7 @@
         </td>
 
         <td>
-          <span class="badge badge-glow" [ngClass]="{
-            'badge-success': challenge.playerFirst.delta > 0,
-            'badge-danger': challenge.playerFirst.delta < 0,
-            'badge-secondary': challenge.playerFirst.delta == 0
-          }">
-            <kep-icon class="font-medium-1" name="rating-changes"></kep-icon>
-            {{ challenge.playerFirst.delta }}
-          </span>
+          <kep-delta [value]="challenge.playerFirst.delta"></kep-delta>
         </td>
 
         <td class="text-right">
@@ -61,14 +54,7 @@
         </td>
 
         <td>
-          <span class="badge badge-glow" [ngClass]="{
-            'badge-success': challenge.playerSecond.delta > 0,
-            'badge-danger': challenge.playerSecond.delta < 0,
-            'badge-secondary': challenge.playerSecond.delta == 0
-          }">
-            <kep-icon class="font-medium-1" name="rating-changes"></kep-icon>
-            {{ challenge.playerSecond.delta }}
-          </span>
+          <kep-delta [value]="challenge.playerSecond.delta"></kep-delta>
         </td>
 
         <td class="text-right">

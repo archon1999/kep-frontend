@@ -1,0 +1,24 @@
+<div class="row" *ngIf="challengeCallsSkeletonVisible">
+  <div class="col-xl-3 col-md-6 col-12" *ngFor="let item of [].constructor(4)">
+    <ngx-skeleton-loader
+      class="custom-skeleton"
+      count="2"
+      animation="pulse"
+      appearance="line"
+      [theme]="{height: '185px', background: 'var(--primary)'}"
+    ></ngx-skeleton-loader>
+  </div>
+</div>
+
+<div class="row">
+  <div
+    *ngFor="let challengeCall of challengeCalls"
+    class="col-xl-3 col-md-6 col-12"
+    [@fadeInOnEnter]=""
+    [@fadeOutOnLeave]="">
+    <challenge-call-card
+      [challengeCall]="challengeCall"
+      (delete)="onChallengeCallDelete(challengeCall.id)"
+    ></challenge-call-card>
+  </div>
+</div>

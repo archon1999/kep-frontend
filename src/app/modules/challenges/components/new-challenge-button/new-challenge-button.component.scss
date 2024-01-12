@@ -1,3 +1,5 @@
+@import 'styles/kep-imports';
+
 .btn-new-challenge {
   border: none;
   cursor: pointer;
@@ -6,18 +8,21 @@
   padding-bottom: 0.5rem;
   margin-bottom: 0.5rem;
   text-align: center;
-  text-transform: uppercase;
-  color: #fff;
-  box-shadow: var(--box-shadow);
   transition: .5s;
   display: block;
   border-radius: 10px;
   background-size: 200% auto;
-  background-image: var(--bg-gradient);
+
+  background-image: linear-gradient(to left, mix(black, $primary, 10), mix(white, $primary, 10));
+  // box-shadow: 0 0 5px $primary !important;
+
+  @include dark-layout {
+    background-image: linear-gradient(mix(black, $primary, 40), mix(black, $primary, 60));
+  }
+
+  &:hover {
+    background-position: right center;
+    text-decoration: none;
+  }
 }
 
-.btn-new-challenge:hover {
-  background-position: right center;
-  color: #fff;
-  text-decoration: none;
-}

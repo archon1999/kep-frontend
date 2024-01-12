@@ -270,6 +270,8 @@ export const locale = {
     Tasks: 'Tasks',
     InThePipeline: 'In the pipeline',
     Purchase: 'Purchase',
+    ArenaWinners: 'Arena winners',
+    GoToArena: 'Go to Arena',
     Technology: 'Technology',
     Submit: 'Submit',
     Submitted: 'Submitted',

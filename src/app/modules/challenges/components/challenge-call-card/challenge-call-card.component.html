@@ -15,7 +15,7 @@
       {{ challengeCall.questionsCount }}
     </span>
 
-    <br>
+    <div [ngClass.gt-sm]="'d-block'" [ngClass.lt-md]="'ml-25 d-inline-block'"></div>
 
     <span *ngFor="let chapter of challengeCall.chapters" class="badge mr-25 mb-25 bg-chapter-{{ chapter.id }}">
       {{ chapter.title }}

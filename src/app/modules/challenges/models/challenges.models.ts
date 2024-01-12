@@ -26,6 +26,12 @@ export interface ChallengeCall {
   created: string;
 }
 
+export interface NewChallengeCall {
+  timeSeconds: number;
+  questionsCount: number;
+  selectedChapters?: Array<number>;
+}
+
 export interface ChallengePlayer {
   username: string;
   result: number;

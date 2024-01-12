@@ -12,7 +12,7 @@ import { SectionLastChallengesComponent } from '@challenges/pages/user-statistic
 @Component({
   selector: 'app-challenges-profile',
   templateUrl: './user-statistics.component.html',
-  styleUrls: ['./user-statistics.component.scss', '../../challenges.styles.scss'],
+  styleUrls: ['./user-statistics.component.scss'],
   standalone: true,
   imports: [
     CoreCommonModule,
