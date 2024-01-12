@@ -23,9 +23,9 @@
             <challenges-user-view [user]="challengesRating"></challenges-user-view>
           </td>
           <td>
-          <span class="badge badge-light-{{ challengesRating.rankTitle | challengesRankColor }}">
-            {{ challengesRating.rating }}
-          </span>
+            <span class="badge badge-{{ challengesRating.rankTitle | challengesRankColor }}">
+              {{ challengesRating.rating }}
+            </span>
           </td>
         </tr>
         </tbody>
@@ -33,7 +33,7 @@
     </div>
 
     <div class="card-footer text-center">
-      <a routerLink="rating" class="btn btn-block btn-primary">
+      <a routerLink="rating" class="btn btn-block btn-primary" [ngClass.lt-md]="'btn-sm'">
         <kep-icon name="ranking"></kep-icon>
         {{ 'OverallRating' | translate }}
       </a>
