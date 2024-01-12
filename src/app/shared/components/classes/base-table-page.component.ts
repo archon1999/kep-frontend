@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageResult } from '@shared/components/classes/page-result';
 import { BasePageComponent } from '@shared/components/classes/base-page.component';
@@ -10,7 +10,7 @@ import { Pageable } from '@shared/components/classes/pageable';
   template: '',
   standalone: true
 })
-export class BaseTablePageComponent<T> extends BasePageComponent {
+export class BaseTablePageComponent<T> extends BasePageComponent implements OnInit {
   public pageNumber: number;
   public pageSize: number;
   public total: number;
@@ -42,6 +42,10 @@ export class BaseTablePageComponent<T> extends BasePageComponent {
         }
       }
     );
+  }
+
+  ngOnInit() {
+    setTimeout(() => this.reloadPage());
   }
 
   get pageable(): Partial<Pageable> {

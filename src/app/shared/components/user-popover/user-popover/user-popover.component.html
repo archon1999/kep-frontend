@@ -1,5 +1,5 @@
 <ng-template #popContent>
-  <div [@fadeInOnEnter] class="card card-profile" *ngIf="userRatings">
+  <div [@fadeInOnEnter] class="card card-profile" *ngIf="user && userRatings">
     <img [src]="user.coverPhoto" class="img-fluid card-img-top"
       alt="Profile Cover Photo" />
     <div class="card-body">

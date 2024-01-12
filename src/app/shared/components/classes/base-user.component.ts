@@ -11,7 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 export class BaseUserComponent implements OnDestroy {
   public currentUser: User;
   protected authService = inject(AuthService);
-  private _unsubscribeAll = new Subject();
+  protected _unsubscribeAll = new Subject();
 
   constructor() {
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
