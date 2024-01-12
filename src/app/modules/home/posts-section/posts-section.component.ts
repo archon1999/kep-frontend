@@ -8,7 +8,7 @@ import { BlogPostCardModule } from '../../blog/components/blog-post-card/blog-po
 import { PageResult } from '@shared/components/classes/page-result';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 6;
 
 @Component({
   selector: 'posts-section',
@@ -20,10 +20,10 @@ const PAGE_SIZE = 3;
 export class PostsSectionComponent implements AfterViewInit {
 
   public lastPosts: Array<Blog> = [];
-  public lastPostsPage = 1;
 
   public postsSwiperConfig: SwiperOptions = {
     autoHeight: false,
+    pagination: true,
     breakpoints: {
       1024: {
         slidesPerView: 2,
@@ -48,24 +48,6 @@ export class PostsSectionComponent implements AfterViewInit {
     this.service.getLastPosts(1, PAGE_SIZE).subscribe(
       (result: PageResult<Blog>) => {
         this.lastPosts = result.data;
-        setTimeout(() => this.postsSwiperOn());
-      }
-    );
-  }
-
-  postsSwiperOn() {
-    this.postsSwiper.swiper.on('slideChange', () => {
-        const index = this.postsSwiper.swiper.realIndex;
-        if (index + 2 >= this.lastPosts.length && index < 50) {
-          this.lastPostsPage++;
-          this.service.getLastPosts(this.lastPostsPage, PAGE_SIZE).subscribe(
-            (result: PageResult<Blog>) => {
-              for (const post of result.data) {
-                this.lastPosts.push(post);
-              }
-            }
-          );
-        }
       }
     );
   }
