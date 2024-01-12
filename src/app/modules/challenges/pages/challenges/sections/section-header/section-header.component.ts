@@ -22,6 +22,7 @@ import { ChallengesUserViewComponent } from '@challenges/components/challenges-u
 })
 export class SectionHeaderComponent extends BaseLoadComponent<ChallengesRating> {
   protected readonly Math = Math;
+  override loadOnInit = false;
 
   constructor(public statisticsService: ChallengesStatisticsService) {
     super();
