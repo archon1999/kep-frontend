@@ -22,6 +22,9 @@ import { KepTableComponent } from '@shared/components/kep-table/kep-table.compon
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { KepStreakComponent } from '@shared/components/kep-streak/kep-streak.component';
 import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import {
+  ChallengesRankBadgeComponent
+} from '@challenges/components/challenges-user-view/challenges-rank-badge/challenges-rank-badge.component';
 
 @Component({
   selector: 'app-users',
@@ -43,6 +46,7 @@ import { ChallengesUserViewComponent } from '@challenges/components/challenges-u
     KepTableComponent,
     KepIconComponent,
     KepStreakComponent,
+    ChallengesRankBadgeComponent,
   ]
 })
 export class UsersComponent extends BaseTablePageComponent<User> {
