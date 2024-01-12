@@ -9,6 +9,11 @@ export enum Resources {
 
   Challenges = '/practice/challenges',
   Challenge = '/practice/challenges/challenge/:id',
+
+  Arena = '/competitions/arena',
+  ArenaTournament = '/competitions/arena/tournament/:id',
+
+  Login = '/login',
 }
 
 export function getResourceById(resource: Resources, id: number | string) {
