@@ -24,6 +24,7 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
 import { NavbarDailyTasksComponent } from '@layout/components/navbar/navbar-daily-tasks/navbar-daily-tasks.component';
 import { NavbarKepcoinComponent } from '@layout/components/navbar/navbar-kepcoin/navbar-kepcoin.component';
 import { NavbarNotificationComponent } from '@layout/components/navbar/navbar-notification/navbar-notification.component';
+import { coreConfig } from '@app/app.config';
 
 @Component({
   selector: 'app-navbar',
@@ -48,7 +49,7 @@ export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy 
   public currentSkin: string;
   public prevSkin: string;
 
-  public currentUser: User;
+  public defaultCoreConfig = coreConfig;
 
   public languageOptions: any;
   public navigation: any;

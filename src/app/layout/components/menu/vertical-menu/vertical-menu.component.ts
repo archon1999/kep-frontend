@@ -10,6 +10,7 @@ import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.se
 import { CoreCommonModule } from '@core/common.module';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { CoreMenuComponent } from '@core/components/core-menu/core-menu.component';
+import { coreConfig } from '@app/app.config';
 
 @Component({
   selector: 'vertical-menu',
@@ -29,6 +30,7 @@ export class VerticalMenuComponent implements OnInit, OnDestroy {
   isCollapsed: boolean;
   isScrolled = false;
   // @ViewChild(PerfectScrollbarDirective, { static: false }) directiveRef?: PerfectScrollbarDirective;
+  defaultCoreConfig = coreConfig;
   private _unsubscribeAll: Subject<any>;
 
   constructor(

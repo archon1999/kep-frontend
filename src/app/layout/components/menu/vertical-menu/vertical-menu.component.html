@@ -5,9 +5,9 @@
       <!-- App Branding -->
       <a class="navbar-brand" [routerLink]="['/']">
         <span class="brand-logo">
-          <img src="assets/images/logo/logo.webp" alt="brand-logo" width="36" height="24" />
+          <img [src]="defaultCoreConfig.app.appLogoImage" alt="brand-logo" width="36" height="24" />
         </span>
-        <h2 class="brand-text mb-0">{{ coreConfig.app.appTitle }}</h2>
+        <h2 class="brand-text mb-0">{{ defaultCoreConfig.app.appTitle }}</h2>
       </a>
     </li>
 

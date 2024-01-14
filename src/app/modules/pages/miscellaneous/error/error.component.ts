@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 
 import { CoreConfigService } from 'core/services/config.service';
 import { CoreCommonModule } from '@core/common.module';
+import { coreConfig } from '@app/app.config';
 
 @Component({
   selector: 'app-error',
@@ -17,6 +18,7 @@ import { CoreCommonModule } from '@core/common.module';
 })
 export class ErrorComponent implements OnInit {
   public coreConfig: any;
+  public defaultCoreConfig = coreConfig;
 
   private _unsubscribeAll: Subject<any>;
 
