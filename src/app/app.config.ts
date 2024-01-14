@@ -4,7 +4,7 @@ export const coreConfig: CoreConfig = {
   app: {
     appName: 'KEP',
     appTitle: 'KEP.uz',
-    appLogoImage: 'assets/images/logo/logo.png',
+    appLogoImage: 'assets/images/logo/logo.svg',
     appLogoImageWithTitle: 'assets/images/logo/logo-with-title.svg',
     appLanguage: 'en',
   },
