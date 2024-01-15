@@ -51,7 +51,7 @@ const appRoutes: Routes = [
   { path: 'practice/projects', loadChildren: () => import('./modules/projects/projects.module').then(m => m.ProjectsModule) },
   { path: 'practice/duels', loadChildren: () => import('./modules/duels/duels.module').then(m => m.DuelsModule) },
   { path: 'competitions/code-rush', loadChildren: () => import('./modules/code-rush/code-rush.module').then(m => m.CodeRushModule) },
-  { path: 'competitions/contests', loadChildren: () => import('./modules/contests/contests.module').then(m => m.ContestsModule) },
+  { path: 'competitions/contests', loadChildren: () => import('./modules/contests/contests.routing') },
   { path: 'competitions/arena', loadChildren: () => import('./modules/arena/arena.routing') },
   {
     path: 'competitions/tournaments',

@@ -4,6 +4,11 @@ import { ContentHeader } from '@layout/components/content-header/content-header.
 import { Contest, ContestRegistrant } from '@contests/contests.models';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ContestsService } from '@contests/contests.service';
+import { CoreCommonModule } from '@core/common.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
+import { ContestCardModule } from '@contests/components/contest-card/contest-card.module';
 
 @Component({
   selector: 'app-contest-registrants',
@@ -12,6 +17,14 @@ import { ContestsService } from '@contests/contests.service';
   animations: [
     fadeInLeftOnEnterAnimation(),
     fadeInRightOnEnterAnimation(),
+  ],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ContentHeaderModule,
+    ContestTabComponent,
+    ContestantViewModule,
+    ContestCardModule,
   ]
 })
 export class ContestRegistrantsComponent extends BasePageComponent implements OnInit {

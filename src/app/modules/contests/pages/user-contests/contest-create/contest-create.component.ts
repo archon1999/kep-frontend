@@ -5,12 +5,24 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Contest } from '@contests/pages/user-contests/user-contests.models';
 import { ContestsService } from '@contests/contests.service';
+import { CoreCommonModule } from '@core/common.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-contest-create',
   templateUrl: './contest-create.component.html',
   styleUrls: ['./contest-create.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ContentHeaderModule,
+    NgSelectModule,
+    NgbDatepickerModule,
+    NgbTimepickerModule,
+  ]
 })
 export class ContestCreateComponent implements OnInit {
   public contentHeader: ContentHeader = {

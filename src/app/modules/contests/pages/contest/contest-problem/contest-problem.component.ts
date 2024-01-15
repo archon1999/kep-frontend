@@ -18,6 +18,17 @@ import { sortContestProblems } from '@contests/utils/sort-contest-problems';
 import { paramsMapper } from '@shared/utils';
 import { PageResult } from '@shared/components/classes/page-result';
 import { interval } from 'rxjs';
+import { CoreCommonModule } from '@core/common.module';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
+import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { ContestCardModule } from '@contests/components/contest-card/contest-card.module';
+import { ProblemInfoCardComponent } from '@problems/components/problem-info-card/problem-info-card.component';
+import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';
+import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
 
 const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
 
@@ -28,6 +39,20 @@ const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
   animations: [
     fadeInLeftOnEnterAnimation({ duration: 1500 }),
     fadeInRightOnEnterAnimation({ duration: 1000 })
+  ],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ContestantViewModule,
+    CodeEditorModule,
+    NgbTooltipModule,
+    ContestCardModule,
+    ProblemInfoCardComponent,
+    ProblemBodyComponent,
+    AttemptsTableModule,
+    KepPaginationComponent,
+    ContentHeaderModule,
+    ContestTabComponent,
   ]
 })
 export class ContestProblemComponent extends BaseComponent implements OnInit, OnDestroy {

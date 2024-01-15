@@ -10,12 +10,29 @@ import { Contest, Contestant, ContestProblem, ContestProblemInfo, ContestStatus 
 import { ContestsService } from '../../../contests.service';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { sortContestProblems } from '../../../utils/sort-contest-problems';
+import { CoreCommonModule } from '@core/common.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
+import {
+  ContestStandingsCountdownComponent
+} from '@contests/pages/contest/contest-standings/contest-standings-countdown/contest-standings-countdown.component';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 
 @Component({
   selector: 'app-contest-standings',
   templateUrl: './contest-standings.component.html',
   styleUrls: ['./contest-standings.component.scss'],
-  animations: [fadeInOnEnterAnimation()]
+  animations: [fadeInOnEnterAnimation()],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ContentHeaderModule,
+    ContestTabComponent,
+    ContestStandingsCountdownComponent,
+    NgbTooltipModule,
+    ContestantViewModule,
+  ]
 })
 export class ContestStandingsComponent implements OnInit, OnDestroy {
 

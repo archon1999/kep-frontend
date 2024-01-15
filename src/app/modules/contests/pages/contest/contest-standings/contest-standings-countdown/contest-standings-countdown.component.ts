@@ -1,11 +1,15 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Contest, ContestStatus } from '../../../../contests.models';
+import { Contest, ContestStatus } from '@contests/contests.models';
+import { CoreCommonModule } from '@core/common.module';
+import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 
 @Component({
   selector: 'contest-standings-countdown',
   templateUrl: './contest-standings-countdown.component.html',
-  styleUrls: ['./contest-standings-countdown.component.scss']
+  styleUrls: ['./contest-standings-countdown.component.scss'],
+  standalone: true,
+  imports: [CoreCommonModule, CountdownComponent]
 })
 export class ContestStandingsCountdownComponent implements OnInit {
 

@@ -8,16 +8,29 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Contest, Contestant } from '../../../contests.models';
 import { ContestsService } from '../../../contests.service';
+import { CoreCommonModule } from '@core/common.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-contest-rating-changes',
   templateUrl: './contest-rating-changes.component.html',
-  styleUrls: ['./contest-rating-changes.component.scss']
+  styleUrls: ['./contest-rating-changes.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ContentHeaderModule,
+    ContestTabComponent,
+    ContestantViewModule,
+    NgbTooltipModule,
+  ]
 })
 export class ContestRatingChangesComponent implements OnInit, OnDestroy {
 
   public contentHeader: ContentHeader;
-  
+
   public contest: Contest;
   public contestants: Array<Contestant> = [];
 
@@ -36,17 +49,17 @@ export class ContestRatingChangesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.data.subscribe(({ contest }) => {
       this.contest = Contest.fromJSON(contest);
-      this.titleService.updateTitle(this.route, { contestTitle: contest.title } );
+      this.titleService.updateTitle(this.route, { contestTitle: contest.title });
       this.loadContentHeader();
       this.loadContestants();
-    })
+    });
 
     this.authService.currentUser
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((user: User) => this.currentUser = user);
   }
 
-  loadContentHeader(){
+  loadContentHeader() {
     this.contentHeader = {
       headerTitle: 'CONTESTS.RATING_CHANGES',
       breadcrumb: {
@@ -58,7 +71,7 @@ export class ContestRatingChangesComponent implements OnInit, OnDestroy {
             link: '../../..'
           },
           {
-            name: this.contest.id+'',
+            name: this.contest.id + '',
             isLink: true,
             link: '..'
           },
@@ -72,22 +85,22 @@ export class ContestRatingChangesComponent implements OnInit, OnDestroy {
     };
   }
 
-  loadContestants(){
+  loadContestants() {
     this.service.getContestants(this.contest.id).subscribe((result: any) => {
       this.contestants = result.map((data: any) => Contestant.fromJSON(data));
       this.reassignRanks();
     });
   }
 
-  reassignRanks(){
-    for(var index = 0; index < this.contestants.length; index++){
-      if(index == 0){
+  reassignRanks() {
+    for (var index = 0; index < this.contestants.length; index++) {
+      if (index == 0) {
         this.contestants[index].rank = 1;
       } else {
         this.contestants[index].rank = this.contestants[index - 1].rank;
-        if(this.contestants[index].points != this.contestants[index - 1].points ||
-           this.contestants[index].penalties != this.contestants[index - 1].penalties){
-             this.contestants[index].rank = index+1;
+        if (this.contestants[index].points != this.contestants[index - 1].points ||
+          this.contestants[index].penalties != this.contestants[index - 1].penalties) {
+          this.contestants[index].rank = index + 1;
         }
       }
     }

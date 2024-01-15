@@ -6,11 +6,26 @@ import { Contest } from '@contests/contests.models';
 import { PageResult } from '@shared/components/classes/page-result';
 import { ContestsService } from '@contests/contests.service';
 import { User } from '@auth/models';
+import { CoreCommonModule } from '@core/common.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { KepcoinSpendSwalModule } from '@app/modules/kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { ContestsTableModule } from '@contests/components/contests-table/contests-table.module';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 
 @Component({
   selector: 'app-user-contests',
   templateUrl: './user-contests.component.html',
-  styleUrls: ['./user-contests.component.scss']
+  styleUrls: ['./user-contests.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ContentHeaderModule,
+    KepcoinSpendSwalModule,
+    EmptyResultComponent,
+    ContestsTableModule,
+    KepPaginationComponent,
+  ]
 })
 export class UserContestsComponent extends BaseTablePageComponent<Contest> implements OnInit {
   override maxSize = 5;
