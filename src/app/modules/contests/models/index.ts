@@ -9,3 +9,4 @@ export { ContestAttemptsFilter } from './contest-attempts-filter';
 export { ContestProblemInfo } from './contest-problem-info';
 export { Contest } from './contest';
 export { Contestant } from './contestant';
+export { ContestCategory } from './contest-category';

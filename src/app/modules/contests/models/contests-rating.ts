@@ -3,5 +3,8 @@ export interface ContestsRating {
   username: string;
   rating: number;
   ratingTitle: string;
+  maxRating: number;
+  maxRatingTitle: string;
   contestantsCount: number;
+  ratingPlace: number;
 }

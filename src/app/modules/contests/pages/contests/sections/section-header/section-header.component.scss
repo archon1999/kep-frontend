@@ -1,0 +1,22 @@
+@import 'styles/kep-imports';
+
+.contests-section-header .card {
+  background: linear-gradient(to right, $primary, lighten($primary, 10%));
+
+  @include dark-layout {
+    background: linear-gradient(to right, mix(black, $primary, 55), mix(black, $primary, 30)) !important;
+  }
+
+  .card-footer {
+    border-color: rgba($primary, 0.1);
+  }
+}
+
+.useful-links {
+  display: flex;
+  margin-bottom: 2rem;
+
+  .btn {
+    width: 100%;
+  }
+}
