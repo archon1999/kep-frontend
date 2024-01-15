@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Contest } from '@contests/contests.models';
+
+import { Contest } from '@contests/models/contest';
 
 @Pipe({
   name: 'contestClasses',

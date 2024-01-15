@@ -1,18 +1,22 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation, fadeInUpOnEnterAnimation } from 'angular-animations';
 import { Observable } from 'rxjs';
-import { Contest } from '@contests/contests.models';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContestCardComponent } from '@contests/components/contest-card/contest-card/contest-card.component';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
-import { ContestsSectionCategoriesComponent } from './sections/contests-section-categories/contests-section-categories.component';
 import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
 import { PageResult } from '@shared/components/classes/page-result';
 import { ContestsService } from '@contests/contests.service';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { contestTypes } from '@contests/constants/contest-types';
+import { Contest } from '@contests/models/contest';
+import { SectionCategoriesComponent } from '@contests/pages/contests/sections/section-categories/section-categories.component';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeader } from '@layout/components/content-header/content-header.component';
+import { coreConfig } from '@app/app.config';
+import { SectionHeaderComponent } from '@contests/pages/contests/sections/section-header/section-header.component';
 
 enum ContestStatus {
   ALL = 2,
@@ -37,8 +41,10 @@ enum ContestStatus {
     ContestCardComponent,
     KepPaginationComponent,
     NgSelectModule,
-    ContestsSectionCategoriesComponent,
+    SectionCategoriesComponent,
     KepIconComponent,
+    ContentHeaderModule,
+    SectionHeaderComponent,
   ]
 })
 export class ContestsComponent extends BaseTablePageComponent<Contest> implements OnInit, OnDestroy {
@@ -63,6 +69,7 @@ export class ContestsComponent extends BaseTablePageComponent<Contest> implement
   }
 
   ngOnInit(): void {
+    this.loadContentHeader();
     setTimeout(() => this.reloadPage());
   }
 
@@ -92,5 +99,20 @@ export class ContestsComponent extends BaseTablePageComponent<Contest> implement
     this.pageNumber = 1;
     this.contestStatus = status;
     this.reloadPage();
+  }
+
+  protected getContentHeader(): ContentHeader {
+    return {
+      headerTitle: 'Contests',
+      breadcrumb: {
+        links: [
+          {
+            name: coreConfig.app.appTitle,
+            isLink: true,
+            link: '/',
+          }
+        ]
+      }
+    };
   }
 }

@@ -19,7 +19,6 @@ import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 @NgModule({
   declarations: [
     ContestCardSmallComponent,
-    ContestStandingsCountdownComponent,
     ContestCountdownCardComponent,
   ],
   imports: [
@@ -37,7 +36,6 @@ import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
   ],
   exports: [
     ContestCardSmallComponent,
-    ContestStandingsCountdownComponent,
     ContestCountdownCardComponent,
   ]
 })

@@ -3,12 +3,17 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'app/shared/services/api.service';
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs/operators';
-import { Contest } from '../../../contests.models';
+import { CoreCommonModule } from '@core/common.module';
+import { Contest } from '@contests/models/contest';
 
 @Component({
   selector: 'app-contest-og-image',
   templateUrl: './contest-og-image.component.html',
-  styleUrls: ['./contest-og-image.component.scss']
+  styleUrls: ['./contest-og-image.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+  ]
 })
 export class ContestOgImageComponent implements OnInit {
 
@@ -27,7 +32,7 @@ export class ContestOgImageComponent implements OnInit {
   ngOnInit(): void {
     this.route.data.subscribe(({ contest }) => {
       this.contest = Contest.fromJSON(contest);
-    })
+    });
 
     setTimeout(() => {
       this.captureService.getImage(this.screen.nativeElement, true)
@@ -35,7 +40,7 @@ export class ContestOgImageComponent implements OnInit {
           tap(img => {
             this.api.post(`contests/${this.contest.id}/og-image/`, { og_image: img }).subscribe(() => {
 
-            })
+            });
             this.img = img;
           })
         ).subscribe();

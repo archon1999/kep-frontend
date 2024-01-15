@@ -1,0 +1,28 @@
+@import 'styles/kep-imports';
+
+.contest-category-card {
+  box-shadow: none;
+  margin-bottom: 1rem;
+
+  &:hover {
+    transition: 0.2s ease-in;
+    transform: scale(1.05);
+    box-shadow: initial;
+  }
+
+  .card-header {
+    flex-wrap: nowrap;
+
+    .card-title {
+      word-break: break-all;
+    }
+  }
+
+  &.active {
+    background-color: rgba($primary, 0.05) !important;
+
+    @include dark-layout {
+      background-color: rgba($primary, 0.4) !important;
+    }
+  }
+}

@@ -1,161 +1,106 @@
-<section class="contests-page-top">
-  <div class="text-center mt-1">
-    <div [@fadeInUpOnEnter] class="avatar ml-1 avatar-lg badge-glow bg-primary p-50 m-0 mb-1"
-         ngbTooltip="{{ 'Rating' | translate }}">
-      <a class="text-white" routerLink="rating">
-        <div class="avatar-content">
-          <kep-icon class="font-medium-5" name="rating"></kep-icon>
-        </div>
-      </a>
-    </div>
-    <div [@fadeInUpOnEnter] class="avatar ml-1 avatar-lg badge-glow bg-primary p-50 m-0 mb-1"
-         ngbTooltip="{{ 'Profile' | translate }}">
-      <a class="text-white" routerLink="profile">
-        <div class="avatar-content">
-          <kep-icon class="font-medium-5" name="profile"></kep-icon>
-        </div>
-      </a>
-    </div>
-    <div [@fadeInUpOnEnter] class="avatar ml-1 avatar-lg badge-glow bg-primary p-50 m-0 mb-1"
-         ngbTooltip="{{ 'MyContests' | translate }}">
-      <a class="text-white" routerLink="user-contests">
-        <div class="avatar-content">
-          <kep-icon class="font-medium-5" name="contest"></kep-icon>
-        </div>
-      </a>
-    </div>
-  </div>
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <section-header></section-header>
+    <contests-section-categories (change)="contestCategoryClick($event)"></contests-section-categories>
 
-  <div class="mt-4 col-lg-8 col-12 offset-lg-2 offset-0">
     <div class="row">
-      <div class="col-12 col-md-6">
-        <a [@fadeInLeftOnEnter] class="card card-info" routerLink="/learn/blog/post/54">
+      <div class="col-lg-10 offset-lg-1">
+        <h1 [@fadeInUpOnEnter] class="mt-1 mb-2">
+          <div class="text-dark">{{ 'Contests' | translate }}</div>
+        </h1>
+
+        <contest-card *ngFor="let contest of contests" [contest]="contest"></contest-card>
+
+        <kep-pagination
+          (pageChange)="pageChange($event)"
+          (pageSizeChange)="pageSizeChange($event)"
+          *ngIf="total > 0"
+          [(page)]="pageNumber"
+          [collectionSize]="total"
+          [maxSize]="maxSize"
+          [pageOptions]="pageOptions"
+          [pageSize]="pageSize"
+          [rotate]="true">
+        </kep-pagination>
+      </div>
+
+
+      <div class="col-lg-2 mt-4 pt-2 d-none d-xl-block">
+        <div *ngIf="currentUser" class="card filter">
           <div class="card-header">
             <div class="card-title">
-              {{ 'AboutContestTypes' | translate }}
+              {{ 'Status' | translate }}
             </div>
           </div>
-          <div class="info-img">
-            <img alt="info-img" src="assets/images/pages/graphic-3.webp">
-          </div>
-        </a>
-      </div>
 
-      <div class="col-12 col-md-6">
-        <a [@fadeInRightOnEnter] class="card card-info" routerLink="/learn/blog/post/55">
+          <div class="card-body">
+            <div class="form-group">
+              <div
+                class="ml-1 mt-1 custom-control custom-radio">
+                <input
+                  (click)="contestStatusClick(2)"
+                  [(ngModel)]="contestStatus"
+                  [value]="2"
+                  class="custom-control-input"
+                  id="radio-2"
+                  name="status"
+                  type="radio"/>
+                <label class="custom-control-label" for="radio-2">{{ 'All' | translate }}</label>
+              </div>
+              <div
+                class="ml-1 mt-1 custom-control custom-radio">
+                <input
+                  (click)="contestStatusClick(ContestStatus.PARTICIPATED)"
+                  [(ngModel)]="contestStatus"
+                  [value]="1"
+                  class="custom-control-input"
+                  id="radio-1"
+                  name="status"
+                  type="radio"/>
+                <label class="custom-control-label" for="radio-1">{{ 'CONTESTS.PARTICIPATED' | translate }}</label>
+              </div>
+              <div
+                class="ml-1 mt-1 custom-control custom-radio">
+                <input
+                  (click)="contestStatusClick(ContestStatus.NOT_PARTICIPATED)"
+                  [(ngModel)]="contestStatus"
+                  [value]="0"
+                  class="custom-control-input"
+                  id="radio-0"
+                  name="status"
+                  type="radio"/>
+                <label class="custom-control-label" for="radio-0">{{ 'CONTESTS.NOT_PARTICIPATED' | translate }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card filter">
           <div class="card-header">
             <div class="card-title">
-              {{ 'RecommendationsForParticipateContests' | translate }}
+              {{ 'CONTESTS.TYPE' | translate }}
             </div>
           </div>
-          <div class="info-img">
-            <img alt="info-img" src="assets/images/pages/graphic-2.webp">
-          </div>
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-lg-8 offset-lg-2 mb-3 mt-md-0 mt-4">
-      <contests-section-categories (change)="contestCategoryClick($event)"></contests-section-categories>
-    </div>
-
-    <div class="col-lg-8 offset-lg-2">
-      <h1 [@fadeInUpOnEnter] class="mb-3">
-        <div class="text-dark">{{ 'Contests' | translate }}</div>
-      </h1>
-
-      <contest-card *ngFor="let contest of contests" [contest]="contest"></contest-card>
-
-      <kep-pagination
-        (pageChange)="pageChange($event)"
-        (pageSizeChange)="pageSizeChange($event)"
-        *ngIf="total > 0"
-        [(page)]="pageNumber"
-        [collectionSize]="total"
-        [maxSize]="maxSize"
-        [pageOptions]="pageOptions"
-        [pageSize]="pageSize"
-        [rotate]="true">
-      </kep-pagination>
-    </div>
-
-
-    <div class="col-lg-2 mt-4 pt-2 d-none d-xl-block">
-      <div *ngIf="currentUser" class="card filter">
-        <div class="card-header">
-          <div class="card-title">
-            {{ 'Status' | translate }}
-          </div>
-        </div>
-
-        <div class="card-body">
-          <div class="form-group">
-            <div
-              class="ml-1 mt-1 custom-control custom-radio">
-              <input
-                (click)="contestStatusClick(2)"
-                [(ngModel)]="contestStatus"
-                [value]="2"
-                class="custom-control-input"
-                id="radio-2"
-                name="status"
-                type="radio"/>
-              <label class="custom-control-label" for="radio-2">{{ 'All' | translate }}</label>
-            </div>
-            <div
-              class="ml-1 mt-1 custom-control custom-radio">
-              <input
-                (click)="contestStatusClick(ContestStatus.PARTICIPATED)"
-                [(ngModel)]="contestStatus"
-                [value]="1"
-                class="custom-control-input"
-                id="radio-1"
-                name="status"
-                type="radio"/>
-              <label class="custom-control-label" for="radio-1">{{ 'CONTESTS.PARTICIPATED' | translate }}</label>
-            </div>
-            <div
-              class="ml-1 mt-1 custom-control custom-radio">
-              <input
-                (click)="contestStatusClick(ContestStatus.NOT_PARTICIPATED)"
-                [(ngModel)]="contestStatus"
-                [value]="0"
-                class="custom-control-input"
-                id="radio-0"
-                name="status"
-                type="radio"/>
-              <label class="custom-control-label" for="radio-0">{{ 'CONTESTS.NOT_PARTICIPATED' | translate }}</label>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card filter">
-        <div class="card-header">
-          <div class="card-title">
-            {{ 'CONTESTS.TYPE' | translate }}
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="form-group">
-            <div
-              *ngFor="let type of contestTypes; index as i"
-              class="ml-1 mt-1 custom-control custom-radio">
-              <input
-                (click)="contestTypeClick(i)"
-                [(ngModel)]="contestType"
-                [value]="i"
-                class="custom-control-input"
-                id="type-{{ i }}"
-                name="type"
-                type="radio"/>
-              <label class="custom-control-label" for="type-{{ i }}">{{ type | translate }}</label>
+          <div class="card-body">
+            <div class="form-group">
+              <div
+                *ngFor="let type of contestTypes; index as i"
+                class="ml-1 mt-1 custom-control custom-radio">
+                <input
+                  (click)="contestTypeClick(i)"
+                  [(ngModel)]="contestType"
+                  [value]="i"
+                  class="custom-control-input"
+                  id="type-{{ i }}"
+                  name="type"
+                  type="radio"/>
+                <label class="custom-control-label" for="type-{{ i }}">{{ type | translate }}</label>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>

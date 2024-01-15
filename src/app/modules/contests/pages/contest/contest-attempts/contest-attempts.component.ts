@@ -9,8 +9,18 @@ import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Contest, ContestAttemptsFilter, ContestProblem, ContestStatus } from '../../../contests.models';
 import { ContestsService } from '../../../contests.service';
+import { CoreCommonModule } from '@core/common.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
+import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { ContestCardModule } from '@contests/components/contest-card/contest-card.module';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { ContestStatus } from '@contests/constants/contest-status';
+import { ContestProblem } from '@contests/models/contest-problem';
+import { ContestAttemptsFilter } from '@contests/models/contest-attempts-filter';
+import { Contest } from '@contests/models/contest';
 
 const REFRESH_TIME = 30000;
 
@@ -21,6 +31,16 @@ const REFRESH_TIME = 30000;
   animations: [
     fadeInLeftAnimation({ duration: 1500 }),
     fadeInRightAnimation({ duration: 1000 })
+  ],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ContentHeaderModule,
+    ContestTabComponent,
+    AttemptsTableModule,
+    KepPaginationComponent,
+    ContestCardModule,
+    NgSelectModule,
   ]
 })
 export class ContestAttemptsComponent implements OnInit, OnDestroy {
@@ -116,7 +136,7 @@ export class ContestAttemptsComponent implements OnInit, OnDestroy {
 
   reloadProblems() {
     this.service.getContestProblems(this.contest.id).subscribe((result: any) => {
-      this.contestProblems = result.map((data: any) => ContestProblem.fromJSON(data));
+      this.contestProblems = result;
     });
   }
 

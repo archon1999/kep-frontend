@@ -9,10 +9,10 @@ import { ToastrService } from 'ngx-toastr';
 import { Attempt, WSAttempt } from '../../models/attempts.models';
 import { AttemptLangs, Verdicts } from '../../constants';
 import { ProblemsApiService } from '../../services/problems-api.service';
-import { Contest } from 'app/modules/contests/contests.models';
 import { SoundsService } from 'app/shared/services/sounds/sounds.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { BaseComponent } from '@shared/components/classes/base.component';
+import { Contest } from '@contests/models/contest';
 
 const LANG_CHANGE_EVENT = 'lang-change';
 const ATTEMPT_ADD_EVENT = 'attempt-add';

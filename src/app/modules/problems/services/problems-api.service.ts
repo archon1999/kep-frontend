@@ -6,7 +6,8 @@ import { Attempt } from '@problems/models/attempts.models';
 import { Pageable } from '@shared/components/classes/pageable';
 import { getCategoryIcon } from '@problems/utils/category';
 import { Observable } from 'rxjs';
-import { ContestProblem } from '@contests/contests.models';
+
+import { ContestProblem } from '@contests/models/contest-problem';
 
 @Injectable({
   providedIn: 'root'

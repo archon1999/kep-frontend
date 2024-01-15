@@ -1,15 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
-import { ContestsRating } from '../../contests.models';
 import { ContestsService } from '../../contests.service';
 import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
 import { Observable } from 'rxjs';
 import { PageResult } from '@shared/components/classes/page-result';
+import { CoreCommonModule } from '@core/common.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { ContestsRating } from '@contests/models/contests-rating';
 
 @Component({
   selector: 'app-rating',
   templateUrl: './rating.component.html',
-  styleUrls: ['./rating.component.scss']
+  styleUrls: ['./rating.component.scss'],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ContentHeaderModule,
+    KepTableComponent,
+    ContestantViewModule,
+    KepPaginationComponent,
+  ]
 })
 export class RatingComponent extends BaseTablePageComponent<ContestsRating> implements OnInit {
   override maxSize = 5;

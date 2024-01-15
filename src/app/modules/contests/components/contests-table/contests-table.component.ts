@@ -3,7 +3,8 @@ import { User } from '@auth/models';
 import { AuthService } from '@auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Contest, ContestStatus } from '@contests/contests.models';
+import { ContestStatus } from '@contests/constants/contest-status';
+import { Contest } from '@contests/models/contest';
 
 @Component({
   selector: 'contests-table',

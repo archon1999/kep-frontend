@@ -2,9 +2,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { bounceAnimation, fadeInOnEnterAnimation, shakeAnimation } from 'angular-animations';
 import { User } from 'app/auth/models';
 import { AuthService } from 'app/auth/service';
-import { Contest } from 'app/modules/contests/contests.models';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { Attempt } from '../../../models/attempts.models';
+import { Contest } from '@contests/models/contest';
 
 @Component({
   selector: 'base-table',

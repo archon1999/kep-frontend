@@ -1,13 +1,19 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { Contest, ContestProblem } from '@contests/contests.models';
 import { ContestsService } from '@contests/contests.service';
 import { Problem } from '@problems/models/problems.models';
 import { BaseComponent } from '@shared/components/classes/base.component';
+import { CoreCommonModule } from '@core/common.module';
+import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
+import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
+import { ContestProblem } from '@contests/models/contest-problem';
+import { Contest } from '@contests/models/contest';
 
 @Component({
   selector: 'contest-problem-card',
   templateUrl: './contest-problem-card.component.html',
-  styleUrls: ['./contest-problem-card.component.scss']
+  styleUrls: ['./contest-problem-card.component.scss'],
+  standalone: true,
+  imports: [CoreCommonModule, ContestClassesPipe, MathjaxModule]
 })
 export class ContestProblemCardComponent extends BaseComponent {
   @Input() contest: Contest;
@@ -25,7 +31,7 @@ export class ContestProblemCardComponent extends BaseComponent {
     super();
   }
 
-  onProblemFocus(symbol: string) {
+  onProblemFocus() {
     this.service.getContestProblem(this.contest.id, this.contestProblem.symbol).subscribe(
       (result: any) => {
         this.problem = result.problem;

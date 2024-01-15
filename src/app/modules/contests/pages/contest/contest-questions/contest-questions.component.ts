@@ -8,8 +8,16 @@ import { ContentHeader } from 'app/layout/components/content-header/content-head
 import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Contest, ContestProblem, ContestQuestion } from '../../../contests.models';
 import { ContestsService } from '../../../contests.service';
+import { CoreCommonModule } from '@core/common.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
+import { ContestQuestionCardComponent } from '@contests/pages/contest/contest-questions/contest-question-card/contest-question-card.component';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { ContestCardModule } from '@contests/components/contest-card/contest-card.module';
+import { ContestQuestion } from '@contests/models/contest-question';
+import { ContestProblem } from '@contests/models/contest-problem';
+import { Contest } from '@contests/models/contest';
 
 @Component({
   selector: 'app-contest-questions',
@@ -18,6 +26,15 @@ import { ContestsService } from '../../../contests.service';
   animations: [
     fadeInLeftOnEnterAnimation({ duration: 1500 }),
     fadeInRightOnEnterAnimation({ duration: 1500 }),
+  ],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ContentHeaderModule,
+    ContestTabComponent,
+    ContestQuestionCardComponent,
+    NgSelectModule,
+    ContestCardModule,
   ]
 })
 export class ContestQuestionsComponent implements OnInit {
