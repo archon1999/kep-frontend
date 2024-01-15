@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { ApiService } from 'app/shared/services/api.service';
 import { AuthService } from 'app/auth/service';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ContestStatus } from './contests.models';
+import { getResourceById, Resources } from '@app/resources';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ContestGuard {
   constructor(
     public api: ApiService,
@@ -19,13 +22,13 @@ export class ContestGuard {
     state: RouterStateSnapshot,
   ): Observable<boolean> | boolean {
     const contestId = route.params['id'];
-    return this.api.get(`contests/${ contestId }/guard`).pipe(
+    return this.api.get(`contests/${contestId}/guard`).pipe(
       map((contest: any) => {
         if (this.authService.currentUserValue?.isSuperuser) {
           return true;
         }
         if (contest.status === ContestStatus.NOT_STARTED) {
-          this.router.navigate(['/competitions', 'contests', 'contest', contestId]);
+          this.router.navigateByUrl(getResourceById(Resources.Contest, contestId));
           return false;
         }
         return true;
@@ -41,7 +44,7 @@ export class ContestGuard {
 @Injectable({
   providedIn: 'root'
 })
-export class ContestCreateGuard implements CanActivate {
+export class ContestCreateGuard {
   constructor(
     public api: ApiService,
     public router: Router,
