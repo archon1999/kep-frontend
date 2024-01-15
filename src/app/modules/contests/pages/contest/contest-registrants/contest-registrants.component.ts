@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BasePageComponent } from '@shared/components/classes/base-page.component';
 import { ContentHeader } from '@layout/components/content-header/content-header.component';
-import { Contest, ContestRegistrant } from '@contests/contests.models';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ContestsService } from '@contests/contests.service';
 import { CoreCommonModule } from '@core/common.module';
@@ -9,6 +8,8 @@ import { ContentHeaderModule } from '@layout/components/content-header/content-h
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { ContestCardModule } from '@contests/components/contest-card/contest-card.module';
+import { ContestRegistrant } from '@contests/models/contest-registrant';
+import { Contest } from '@contests/models/contest';
 
 @Component({
   selector: 'app-contest-registrants',

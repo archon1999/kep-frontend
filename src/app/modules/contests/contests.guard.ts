@@ -4,8 +4,8 @@ import { ApiService } from 'app/shared/services/api.service';
 import { AuthService } from 'app/auth/service';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { ContestStatus } from './contests.models';
 import { getResourceById, Resources } from '@app/resources';
+import { ContestStatus } from '@contests/constants/contest-status';
 
 @Injectable({
   providedIn: 'root'

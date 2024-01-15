@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { Contest, ContestStatus } from '@contests/contests.models';
+import { ContestStatus } from '@contests/constants/contest-status';
+import { Contest } from '@contests/models/contest';
 
 @Component({
   selector: 'contest-card-countdown',

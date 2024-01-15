@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 import { Observable } from 'rxjs';
 import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
-import { Contest } from '@contests/contests.models';
 import { PageResult } from '@shared/components/classes/page-result';
 import { ContestsService } from '@contests/contests.service';
 import { User } from '@auth/models';
@@ -12,6 +11,7 @@ import { KepcoinSpendSwalModule } from '@app/modules/kepcoin/kepcoin-spend-swal/
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { ContestsTableModule } from '@contests/components/contests-table/contests-table.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { Contest } from '@contests/models/contest';
 
 @Component({
   selector: 'app-user-contests',

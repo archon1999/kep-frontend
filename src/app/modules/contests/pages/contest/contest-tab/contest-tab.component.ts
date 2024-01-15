@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { Contest } from '@contests/contests.models';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { Contest } from '@contests/models/contest';
 
 @Component({
   selector: 'contest-tab',

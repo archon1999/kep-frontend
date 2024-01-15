@@ -7,7 +7,6 @@ import { Attempt } from '@problems/models/attempts.models';
 import { AvailableLanguage, Problem } from '@problems/models/problems.models';
 import { TitleService } from 'app/shared/services/title.service';
 import { takeUntil } from 'rxjs/operators';
-import { Contest, Contestant, ContestProblem, ContestProblemInfo, ContestStatus } from '@contests/contests.models';
 import { ContestsService } from '@contests/contests.service';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { findAvailableLang } from 'app/modules/problems/utils';
@@ -29,6 +28,11 @@ import { AttemptsTableModule } from '@problems/components/attempts-table/attempt
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
+import { ContestStatus } from '@contests/constants/contest-status';
+import { ContestProblem } from '@contests/models/contest-problem';
+import { ContestProblemInfo } from '@contests/models/contest-problem-info';
+import { Contest } from '@contests/models/contest';
+import { Contestant } from '@contests/models/contestant';
 
 const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
 
@@ -177,9 +181,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
 
   reloadProblems() {
     this.api.get(`contests/${this.contest?.id}/problems`).subscribe((result: any) => {
-      this.contestProblems = result.map((data: any) => {
-        return ContestProblem.fromJSON(data);
-      });
+      this.contestProblems = result;
       this.sortProblems();
       this.reloadAttempts();
     });

@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'app/shared/services/api.service';
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs/operators';
-import { Contest } from '../../../contests.models';
 import { CoreCommonModule } from '@core/common.module';
+import { Contest } from '@contests/models/contest';
 
 @Component({
   selector: 'app-contest-og-image',

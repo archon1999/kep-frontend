@@ -6,13 +6,14 @@ import { ContentHeader } from 'app/layout/components/content-header/content-head
 import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Contest, Contestant } from '../../../contests.models';
 import { ContestsService } from '../../../contests.service';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { Contest } from '@contests/models/contest';
+import { Contestant } from '@contests/models/contestant';
 
 @Component({
   selector: 'app-contest-rating-changes',

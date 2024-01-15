@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
-import { ContestTypes } from '@contests/contests.models';
+import { ContestTypes } from '@contests/constants';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Contest } from '@contests/pages/user-contests/user-contests.models';

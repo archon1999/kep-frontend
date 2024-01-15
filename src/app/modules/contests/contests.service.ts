@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
 import { AuthService } from 'app/auth/service';
-import { Contest, ContestAttemptsFilter, ContestStatus } from './contests.models';
 import { map } from 'rxjs/operators';
 import { Pageable } from '@shared/components/classes/pageable';
+import { ContestStatus } from '@contests/constants/contest-status';
+import { ContestAttemptsFilter } from '@contests/models/contest-attempts-filter';
+import { Contest } from '@contests/models/contest';
 
 @Injectable({
   providedIn: 'root'

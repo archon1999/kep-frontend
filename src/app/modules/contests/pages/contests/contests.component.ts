@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation, fadeInUpOnEnterAnimation } from 'angular-animations';
 import { Observable } from 'rxjs';
-import { Contest } from '@contests/contests.models';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContestCardComponent } from '@contests/components/contest-card/contest-card/contest-card.component';
@@ -13,6 +12,7 @@ import { PageResult } from '@shared/components/classes/page-result';
 import { ContestsService } from '@contests/contests.service';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { contestTypes } from '@contests/constants/contest-types';
+import { Contest } from '@contests/models/contest';
 
 enum ContestStatus {
   ALL = 2,

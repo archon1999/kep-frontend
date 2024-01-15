@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../shared/services/api.service';
-import { Contest } from '../../../contests.models';
+
+import { Contest } from '@contests/models/contest';
 
 @Component({
   selector: 'contest-standings-popover',

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Contest } from '@contests/contests.models';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { CoreCommonModule } from '@core/common.module';
+import { Contest } from '@contests/models/contest';
 
 @Component({
   selector: 'section-contests',
