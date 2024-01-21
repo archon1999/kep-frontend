@@ -3,6 +3,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { BaseComponent } from '@shared/components/classes/base.component';
+import { coreConfig } from '@app/app.config';
 
 @Component({
   selector: 'app-auth-login-v2',
@@ -17,6 +18,7 @@ export class AuthLoginV2Component extends BaseComponent implements OnInit {
   public returnUrl: string;
   public error = '';
   public passwordTextType: boolean;
+  public defaultCoreConfig = coreConfig;
 
   constructor(
     private _formBuilder: UntypedFormBuilder,
