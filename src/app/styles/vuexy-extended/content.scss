@@ -40,6 +40,12 @@ pre {
   }
 }
 
+@media (min-width: 540px) {
+  .container-sm {
+    max-width: 540px;
+  }
+}
+
 #main-menu-navigation > li[core-menu-horizontal-item],
 li[core-menu-horizontal-collapsible],
 .main-menu.expanded li[core-menu-vertical-item],
