@@ -17,6 +17,7 @@ import { ApiService } from '@shared/services/api.service';
 import { Resources } from '@app/resources';
 import { TranslateService } from '@ngx-translate/core';
 import { WebsocketService } from '@shared/services/websocket';
+import { coreConfig } from '@app/app.config';
 
 @Component({
   template: '',
@@ -45,6 +46,7 @@ export class BaseComponent {
   public isDarkMode: boolean;
   public isAuthenticated: boolean;
 
+  public defaultCoreConfig = coreConfig;
   public readonly Resources = Resources;
 
   protected _unsubscribeAll = new Subject();
@@ -105,6 +107,23 @@ export class BaseComponent {
   }
 
   getLastUrl = () => this.globalService.getLastUrl();
+
+  get langs() {
+    return this.translateService.langs;
+  }
+
+  get languageOptions() {
+    return this.defaultCoreConfig.app.appLanguages;
+  }
+
+  setLanguage(language: string): void {
+    this.api.post('set-language/', { language: language }).subscribe(() => {
+      // this.translateService.use(language);
+      this.coreConfigService.setConfig({ app: { appLanguage: language } }, { emitEvent: false });
+      location.reload();
+      // this.refreshPage();
+    });
+  }
 
   refreshPage() {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
