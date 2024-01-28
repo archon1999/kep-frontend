@@ -170,6 +170,9 @@ const routes: Routes = [
       }
     },
   ],
+  exports: [
+    ReviewCardComponent
+  ]
 })
 export class CoursesModule {
 }

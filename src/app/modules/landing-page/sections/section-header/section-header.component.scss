@@ -1,0 +1,67 @@
+@import 'styles/kep-imports';
+
+$header-height: 800px;
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.page-top {
+  margin-bottom: $header-height / 4;
+}
+
+.page-top .bg-img {
+  position: absolute;
+  height: $header-height / 2;
+  width: 80%;
+  filter: blur(60px);
+  opacity: .3;
+}
+
+.page-top:before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  margin-left: -2rem;
+  width: 100%;
+  z-index: -1;
+  height: $header-height;
+  border-radius: 0 0 3.5rem 3.5rem;
+  background-color: $gray-100;
+
+  @include media-breakpoint-down(md){
+    width: calc(100% + 0.8rem);
+  }
+
+  @include dark-layout {
+    background-color: $theme-dark-card-bg;
+  }
+}
+
+.section-title {
+  font-weight: 700;
+  margin-bottom: 2rem;
+  margin-top: 4rem;
+  font-size: 2.625rem;
+  background: linear-gradient(to right, $green 0%, $primary 40%, $primary 60%, $red 100%);
+
+  background-clip: text;
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: rgba(0,0,0,0);
+  animation: gradient 3s ease infinite;
+}
+
+.section-sub-title {
+  line-height: 28px;
+}

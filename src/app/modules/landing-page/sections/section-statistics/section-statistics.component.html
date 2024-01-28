@@ -1,0 +1,73 @@
+<div class="statistics-container">
+  <div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="card text-center">
+            <div class="card-body">
+              <kep-icon class="" color="primary" name="users" size="large-2" type="duotone"></kep-icon>
+              <div
+                [countUp]="statistics.usersCount"
+                [options]="{ enableScrollSpy: true, duration: 5 }"
+                class="count font-weight-bolder font-large-1">
+              </div>
+              <div class="text text-dark">
+                {{ 'Users' | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="card text-center">
+            <div class="card-body">
+              <kep-icon class="" color="primary" name="problem" size="large-2" type="duotone"></kep-icon>
+              <div
+                [countUp]="statistics.problemsCount"
+                [options]="{ enableScrollSpy: true, duration: 5 }"
+                class="count font-weight-bolder font-large-1">
+              </div>
+              <div class="text text-dark">
+                {{ 'Problems' | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="card text-center">
+            <div class="card-body">
+              <kep-icon class="" color="primary" name="competitions" size="large-2" type="duotone"></kep-icon>
+              <div
+                [countUp]="statistics.contestsCount"
+                [options]="{ enableScrollSpy: true, duration: 5 }"
+                class="count font-weight-bolder font-large-1">
+              </div>
+              <div class="text text-dark">
+                {{ 'Competitions' | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="card text-center">
+            <div class="card-body">
+              <kep-icon class="" color="primary" name="attempt" size="large-2" type="duotone"></kep-icon>
+              <div
+                [countUp]="statistics.attemptsCount"
+                [options]="{ enableScrollSpy: true, duration: 5 }"
+                class="count font-weight-bolder font-large-1">
+              </div>
+              <div class="text text-dark">
+                {{ 'Attempts' | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

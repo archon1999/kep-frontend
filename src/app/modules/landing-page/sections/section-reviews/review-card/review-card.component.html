@@ -1,0 +1,15 @@
+<div class="card">
+  <div class="card-header">
+    <span class="text-primary">{{ review.firstName }} {{ review.lastName }}</span>
+    <span class="text-success"> {{ review.datetime }}</span>
+  </div>
+  <div class="card-body">
+    <p class="review-text text-dark">
+      “{{ review.text }}”
+    </p>
+  </div>
+  <div class="card-footer text-dark">
+    <img [src]="review.avatar" class="round mr-50" height="36" width="36">
+    {{ review.username }}
+  </div>
+</div>

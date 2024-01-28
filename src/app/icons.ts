@@ -36,6 +36,8 @@ export const keenIcons = {
 
   tags: 'data',
   difficulty: 'graph-2',
+
+  login: 'exit-left'
 };
 
 export const featherIcons = {

@@ -413,6 +413,9 @@ export const locale = {
     MyContests: 'My contests',
     LastSeen: 'Last seen',
     Registrants: 'Registrants',
+    GetStarted: 'Get started',
+    Features: 'Features',
+    ContactUs: 'Contact us',
     ProblemTourSteps: [
       {
         title: 'Available languages',
@@ -437,6 +440,8 @@ export const locale = {
       SectionCompetitionsText: 'Participate in programming competitions to challenge yourself',
       SectionUsefulResourcesTitle: 'Useful Resources',
       SectionUsefulResourcesText: 'Useful Resources',
+      SectionGetStartedTitle: 'Ready to Get started?',
+      SectionGetStartedText: 'Register and continue your journey!',
     },
     CONTESTS: {
       CONTESTS: 'Contests',

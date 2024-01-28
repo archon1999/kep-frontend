@@ -51,66 +51,24 @@ export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy 
 
   public defaultCoreConfig = coreConfig;
 
-  public languageOptions: any;
-  public navigation: any;
-  public selectedLanguage: any;
-
   @HostBinding('class.fixed-top')
   public isFixed = false;
 
   constructor(
-    private _router: Router,
-    private _authenticationService: AuthService,
-    private _coreConfigService: CoreConfigService,
     private _coreMediaService: CoreMediaService,
-    private _coreSidebarService: CoreSidebarService,
     private _mediaObserver: MediaObserver,
-    public _translateService: TranslateService,
     public modalService: NgbModal,
-    public api: ApiService,
   ) {
     super();
-
-    this._authenticationService.currentUser.subscribe(x => (this.currentUser = x));
-
-    this.languageOptions = {
-      en: {
-        title: 'English',
-        flag: 'us'
-      },
-      ru: {
-        title: 'Русский язык',
-        flag: 'ru'
-      },
-      uz: {
-        title: 'O`zbek tili',
-        flag: 'uz'
-      }
-    };
   }
 
   toggleSidebar(key): void {
-    this._coreSidebarService.getSidebarRegistry(key).toggleOpen();
-  }
-
-  refreshPage() {
-    this._router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this._router.navigate([this._router.url], { skipLocationChange: true });
-  }
-
-  setLanguage(language: string): void {
-    this.api.post('set-language/', { language: language }).subscribe(() => {
-      this.selectedLanguage = language;
-      this._translateService.use(language);
-      this._coreConfigService.setConfig({ app: { appLanguage: language } }, { emitEvent: true });
-      location.reload();
-      // this.refreshPage();
-    });
+    this.coreSidebarService.getSidebarRegistry(key).toggleOpen();
   }
 
   toggleDarkSkin() {
     // Get the current skin
-    this._coreConfigService
+    this.coreConfigService
       .getConfig()
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(config => {
@@ -121,13 +79,13 @@ export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy 
     this.prevSkin = localStorage.getItem('prevSkin');
 
     if (this.currentSkin === 'dark') {
-      this._coreConfigService.setConfig(
+      this.coreConfigService.setConfig(
         { layout: { skin: this.prevSkin ? this.prevSkin : 'default' } },
         { emitEvent: true }
       );
     } else {
       localStorage.setItem('prevSkin', this.currentSkin);
-      this._coreConfigService.setConfig({ layout: { skin: 'dark' } }, { emitEvent: true });
+      this.coreConfigService.setConfig({ layout: { skin: 'dark' } }, { emitEvent: true });
     }
   }
 
@@ -136,19 +94,13 @@ export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy 
   }
 
   logout() {
-    this._authenticationService.logout();
-    this._router.navigateByUrl(this._router.url);
+    this.authService.logout();
+    this.router.navigateByUrl(this.router.url);
   }
 
-  // Lifecycle Hooks
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * On init
-   */
   ngOnInit(): void {
     // Subscribe to the config changes
-    this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
+    this.coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       this.coreConfig = config;
       this.horizontalMenu = config.layout.type === 'horizontal';
       this.hiddenMenu = config.layout.menu.hidden === true;
@@ -172,19 +124,5 @@ export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy 
         this.isFixed = !isFixedTop;
       });
     }
-
-    // Set the selected language from default languageOptions
-    // this.selectedLanguage = _.find(this.languageOptions, {
-    //   id: this._translateService.currentLang
-    // });
-  }
-
-  /**
-   * On destroy
-   */
-  ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
   }
 }

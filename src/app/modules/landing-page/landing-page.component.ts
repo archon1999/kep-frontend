@@ -1,17 +1,17 @@
-import { DOCUMENT } from '@angular/common';
-import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreConfig } from '@core/types';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { SwiperOptions } from 'swiper/types/swiper-options';
-import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
-import { SlideMainComponent } from '@app/modules/landing-page/slides/slide-main/slide-main.component';
-import { SlideLearnComponent } from '@app/modules/landing-page/slides/slide-learn/slide-learn.component';
-import { SlidePracticeComponent } from '@app/modules/landing-page/slides/slide-practice/slide-practice.component';
-import { SlideCompetitionsComponent } from '@app/modules/landing-page/slides/slide-competitions/slide-competitions.component';
-import { SlideStatisticsComponent } from '@app/modules/landing-page/slides/slide-statistics/slide-statistics.component';
+import { BaseComponent } from '@shared/components/classes/base.component';
+import { SectionFeaturesComponent } from '@app/modules/landing-page/sections/section-features/section-features.component';
+import { SectionHeaderComponent } from '@app/modules/landing-page/sections/section-header/section-header.component';
+import { NavbarComponent } from '@app/modules/landing-page/navbar/navbar.component';
+import { SectionStatisticsComponent } from '@app/modules/landing-page/sections/section-statistics/section-statistics.component';
+import { SectionReviewsComponent } from '@app/modules/landing-page/sections/section-reviews/section-reviews.component';
+import { SectionFooterComponent } from '@app/modules/landing-page/sections/section-footer/section-footer.component';
+import { SectionPracticeComponent } from '@app/modules/landing-page/sections/section-practice/section-practice.component';
+import { SectionGetStartedComponent } from '@app/modules/landing-page/sections/section-get-started/section-get-started.component';
+import { SectionContactUsComponent } from '@app/modules/landing-page/sections/section-contact-us/section-contact-us.component';
+import { SectionFaqComponent } from '@app/modules/landing-page/sections/section-faq/section-faq.component';
+import { doScrolling } from '@shared/utils';
 
 @Component({
   selector: 'app-landing-page',
@@ -20,123 +20,36 @@ import { SlideStatisticsComponent } from '@app/modules/landing-page/slides/slide
   standalone: true,
   imports: [
     CoreCommonModule,
-    SlideMainComponent,
-    SlideLearnComponent,
-    SlidePracticeComponent,
-    SlideCompetitionsComponent,
-    SlideStatisticsComponent,
-    SwiperComponent,
-  ]
+    SectionFeaturesComponent,
+    SectionHeaderComponent,
+    NavbarComponent,
+    SectionStatisticsComponent,
+    SectionReviewsComponent,
+    SectionFooterComponent,
+    SectionPracticeComponent,
+    SectionGetStartedComponent,
+    SectionContactUsComponent,
+    SectionFaqComponent,
+  ],
+  encapsulation: ViewEncapsulation.None,
 })
-export class LandingPageComponent implements OnInit {
-
-  public startAnimationState = false;
-  public slideMainAnimationState = false;
-  public slideLearnAnimationState = false;
-  public slidePracticeAnimationState = false;
-  public slideCompetitionsAnimationState = false;
-  public slideStatisticsAnimationState = false;
-
-  public activeSlide = 0;
-
-  public isDarkSkin = false;
-  public appName: string;
-  public swiperConfig: SwiperOptions = {
-    autoHeight: false,
-    slidesPerView: 1,
-    spaceBetween: 30,
-    navigation: {},
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false,
-    },
-    effect: 'fade',
-    fadeEffect: {
-      crossFade: true,
-    },
-    a11y: {
-      enabled: false,
-    },
-  };
-  @ViewChild('swiper') swiper: SwiperComponent;
-  public windowHeight: number;
-  private _unsubscribeAll = new Subject();
-
-  constructor(
-    @Inject(DOCUMENT) private document: Document,
-    public coreConfigService: CoreConfigService,
-  ) {
-    this.updateWindowHeight();
+export class LandingPageComponent extends BaseComponent implements OnInit {
+  ngOnInit() {
     this.coreConfigService.config = {
       layout: {
-        skin: 'light',
-        navbar: {
-          hidden: true
-        },
-        footer: {
-          hidden: true
-        },
         menu: {
           hidden: true
         },
-        customizer: false,
+        navbar: {
+          hidden: true,
+        },
+        animation: 'none',
         enableLocalStorage: false
       }
     };
-  }
-
-  ngOnInit(): void {
-    setTimeout(() => {
-      this.startAnimationState = true;
-      this.slideMainAnimationState = true;
-    }, 0);
-
-    this.coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (config: CoreConfig) => {
-        this.isDarkSkin = config.layout.skin === 'dark';
-        this.appName = config.app.appName;
-      }
-    );
 
     setTimeout(() => {
-      this.swiper.swiper.on('slideChange', () => {
-        const index = this.swiper.swiper.realIndex;
-        this.activeSlide = index;
-        if (index === 0) {
-          this.slideMainAnimationState = false;
-          setTimeout(() => this.slideMainAnimationState = true, 0);
-        } else if (index === 1) {
-          this.slideLearnAnimationState = false;
-          setTimeout(() => this.slideLearnAnimationState = true, 0);
-        } else if (index === 2) {
-          this.slidePracticeAnimationState = false;
-          setTimeout(() => this.slidePracticeAnimationState = true, 0);
-        } else if (index === 3) {
-          this.slideCompetitionsAnimationState = false;
-          setTimeout(() => this.slideCompetitionsAnimationState = true, 0);
-        } else if (index === 4) {
-          this.slideStatisticsAnimationState = false;
-          setTimeout(() => this.slideStatisticsAnimationState = true, 0);
-        }
-      });
-    }, 100);
-  }
-
-  slideTo(index: number) {
-    this.swiper.swiper.slideTo(index);
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    this.updateWindowHeight();
-  }
-
-  updateWindowHeight() {
-    this.windowHeight = Math.max(600, window.innerHeight - 1);
-  }
-
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
+      // doScrolling(5000, 25000);
+    }, 2000);
   }
 }

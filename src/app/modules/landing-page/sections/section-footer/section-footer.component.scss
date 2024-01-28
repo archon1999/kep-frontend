@@ -1,0 +1,19 @@
+@import 'styles/kep-imports';
+
+.footer-container {
+  margin-left: -2rem;
+  width: calc(100% + 4rem);
+  padding: 2rem 2rem;
+  border-radius: 3.5rem 3.5rem 0 0;
+  background-color: mix($primary, mix(white, $theme-dark-card-bg, 10), 5);
+  background-image: url('assets/landing-page/beautiful-bg-dark.png') !important;
+
+  @include dark-layout {
+    background-color: rgba(mix($primary, $theme-dark-card-bg, 5), 0.9);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+  }
+}

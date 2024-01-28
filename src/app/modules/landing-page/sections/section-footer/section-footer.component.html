@@ -1,0 +1,50 @@
+<div class="footer-container">
+  <div class="content-wrapper container-xxl">
+    <div class="content-body mt-2 mb-2">
+      <div class="row">
+        <div class="col-12 col-lg-5 mb-1 mb-lg-0">
+          <div class="brand">
+            <span class="brand-logo">
+              <img alt="brand-logo" height="36" [src]="defaultCoreConfig.app.appLogoImage" width="48"/>
+            </span>
+            <h2 class="brand-text text-white ml-1 font-weight-bolder mb-0">{{ defaultCoreConfig.app.appTitle }}</h2>
+          </div>
+          <p class="text-white font-medium-2 pr-0 pr-md-4 mr-0 mr-md-4 mt-2">{{ 'LandingPage.SectionTopText' | translate }}</p>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <div class="text-white font-weight-bolder mb-50">
+            <kep-icon size="small-4" [name]="menu[1].icon"></kep-icon>
+            {{ menu[1].translate | translate }}
+          </div>
+          @for (menuItem of menu[1].children; track menuItem.id) {
+            <div class="mt-1">
+              <a class="text-white" [routerLink]="menuItem.url">{{ menuItem.translate | translate }}</a>
+            </div>
+          }
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <div class="text-white font-weight-bolder mb-50">
+            <kep-icon size="small-4" [name]="menu[2].icon"></kep-icon>
+            {{ menu[2].translate | translate }}
+          </div>
+          @for (menuItem of menu[2].children; track menuItem.id) {
+            <div class="mt-1">
+              <a class="text-white" [routerLink]="menuItem.url">{{ menuItem.translate | translate }}</a>
+            </div>
+          }
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <div class="text-white font-weight-bolder mb-50">
+            <kep-icon size="small-4" [name]="menu[3].icon"></kep-icon>
+            {{ menu[3].translate | translate }}
+          </div>
+          @for (menuItem of menu[3].children; track menuItem.id) {
+            <div class="mt-1">
+              <a class="text-white" [routerLink]="menuItem.url">{{ menuItem.translate | translate }}</a>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

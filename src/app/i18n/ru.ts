@@ -409,6 +409,9 @@ export const locale = {
     Dislikes: 'Дизлайки',
     Hacks: 'Взломы',
     Registrants: 'Участники',
+    GetStarted: 'Начать',
+    Features: 'Возможности',
+    ContactUs: 'Связяаться с нами',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',
@@ -433,6 +436,8 @@ export const locale = {
       SectionCompetitionsText: 'Участвуйте в соревнованиях по программированию, чтобы испытать себя',
       SectionUsefulResourcesTitle: 'Полезные ресурсы',
       SectionUsefulResourcesText: 'Если у вас есть другие вопросы, можете посмотреть страницу <a routerLink="" class="text-primary">Часто задаваемые вопросы</a> или найти ответы в <a routerLink="" class="text-primary">Базе знаний</a> или вы можете задать свой вопрос на странице <a routerLink="" class="text-primary">Свяжитесь с нами</a>',
+      SectionGetStartedTitle: 'Готовы начать?',
+      SectionGetStartedText: 'Зарегистрируйтесь и продолжайте путешествие!',
     },
     CONTESTS: {
       CONTESTS: 'Контесты',

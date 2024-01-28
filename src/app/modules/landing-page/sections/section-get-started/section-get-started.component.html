@@ -1,0 +1,25 @@
+<div class="get-started-container">
+  <div class="content-wrapper container-xxl">
+    <div class="content-body pt-2">
+      <div class="row">
+        <div class="col-md-6 col-12" [ngClass.lt-md]="'text-center'">
+          <h2 class="font-weight-bolder text-primary">
+            {{ 'LandingPage.SectionGetStartedTitle' | translate }}
+          </h2>
+          <p>
+            {{ 'LandingPage.SectionGetStartedText' | translate }}
+          </p>
+          <a class="btn mt-1 btn-relief-primary" [routerLink]="Resources.Login">
+            {{ 'GetStarted' | translate }}
+          </a>
+        </div>
+        <div class="col-md-6 col-12" [ngClass.lt-md]="'text-center'" [ngClass.gt-sm]="'text-right'">
+          <img height="220" width="220" class="img-fluid" alt="landing-img"
+               [src]="isDarkMode ? 'assets/images/pages/login-v2-dark.svg'
+                              : 'assets/images/pages/login-v2.svg'" />
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

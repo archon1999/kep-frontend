@@ -1,0 +1,41 @@
+@import 'styles/kep-imports';
+
+.statistics-container {
+  content: "";
+  margin-left: -2rem;
+  width: calc(100% + 4rem);
+  background-color: white;
+  padding: 2rem 4rem;
+
+  .content-body {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+
+  @include media-breakpoint-down(md){
+    width: calc(100% + 3.8rem);
+  }
+
+  @include dark-layout {
+    background-color: mix($gray-50, $theme-dark-card-bg, 5);
+  }
+}
+
+.card {
+  box-shadow: none !important;
+  background-color: inherit !important;
+  border: 1px solid rgba($primary, 0.5);
+
+  .card-body {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .count {
+    margin-top: 1rem;
+  }
+
+  .text {
+    margin-top: 0.5rem;
+  }
+}

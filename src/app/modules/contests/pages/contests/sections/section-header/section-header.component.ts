@@ -17,6 +17,8 @@ import { ContestsRatingBadgeComponent } from '@contests/components/contests-rati
   styleUrl: './section-header.component.scss'
 })
 export class SectionHeaderComponent extends BaseLoadComponent<ContestsRating> {
+  override loadOnInit = false;
+
   constructor(public service: ContestsService) {
     super();
   }

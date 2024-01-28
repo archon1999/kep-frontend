@@ -1,0 +1,78 @@
+<div class="layout-navbar">
+  <div class="content-wrapper container-xxl p-2 p-xl-0">
+    <div class="content-body">
+      <div class="navbar" [class]="{
+        'navbar-active': window.scrollY > 10
+      }">
+        <div class="left">
+          <div class="brand">
+            <span class="brand-logo">
+              <img alt="brand-logo" height="36" [src]="defaultCoreConfig.app.appLogoImage" width="48"/>
+            </span>
+            <h2 class="brand-text text-dark ml-1 font-weight-bolder mb-0">{{ defaultCoreConfig.app.appTitle }}</h2>
+          </div>
+
+          <div class="navbar-menu d-lg-flex d-none">
+            <div class="nav-item">
+              <a (click)="scrollTo('section-header')" class="nav-link text-dark">
+                {{ 'MENU.HOME' | translate }}
+              </a>
+            </div>
+            <a class="nav-item">
+              <a (click)="scrollTo('section-features')" class="nav-link text-dark">
+                {{ 'Features' | translate }}
+              </a>
+            </a>
+            <div class="nav-item">
+              <a (click)="scrollTo('section-reviews')" class="nav-link text-dark">
+                {{ 'Reviews' | translate }}
+              </a>
+            </div>
+            <div class="nav-item">
+              <a (click)="scrollTo('section-faq')" class="nav-link text-dark">
+                {{ 'FAQ' | translate }}
+              </a>
+            </div>
+            <div class="nav-item">
+              <a (click)="scrollTo('section-contact-us')" class="nav-link text-dark">
+                {{ 'ContactUs' | translate }}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="right">
+          <div ngbDropdown class="nav-item mr-lg-0 mr-50">
+            <div class="nav-link cursor-pointer" id="dropdown-flag" ngbDropdownToggle>
+              <i class="fi fi-{{ languageOptions[translateService.currentLang].flag }}"></i>
+            </div>
+            <div ngbDropdownMenu>
+              <div class="cursor-pointer" *ngFor="let lang of langs" ngbDropdownItem (click)="setLanguage(lang)">
+                <i class="mr-50 fi fi-{{ languageOptions[lang].flag }}"></i> {{ languageOptions[lang].title }}
+              </div>
+            </div>
+          </div>
+
+          <div class="switch">
+            <button class="btn btn-sm" (click)="switchMode()">
+              @if (isDarkMode) {
+                <kep-icon size="large-1" type="duotone" name="moon"></kep-icon>
+              } @else {
+                <kep-icon size="large-1" type="duotone" name="sun"></kep-icon>
+              }
+            </button>
+          </div>
+
+          <div class="login-btn">
+            <a [routerLink]="Resources.Login" class="btn btn-primary d-flex justify-content-between align-items-center" [ngClass.lt-md]="'btn-sm'">
+              <kep-icon name="login"></kep-icon>
+              <span class="d-md-block d-none">
+                {{ 'Login' | translate }}
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

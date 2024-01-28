@@ -1,0 +1,15 @@
+<div class="page-top">
+  <div class="bg-img" style="background-image: url('/assets/images/logo/logo.svg');"></div>
+  <div class="content-wrapper container-sm p-0">
+    <div class="content-body text-center">
+      <h1 class="section-title">{{ 'LandingPage.SectionTopTitle' | translate }}</h1>
+      <h4 class="ml-4 mr-4 section-sub-title text-dark">{{ 'LandingPage.SectionTopText' | translate }}</h4>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <img height="640" class="img-fluid" alt="landing-img"
+         [src]="isDarkMode ? 'assets/images/pages/coming-soon-dark.svg'
+                              : 'assets/images/pages/coming-soon.svg'" />
+  </div>
+</div>

@@ -21,7 +21,7 @@
             {{ 'Statistics' | translate }}
           </span>
           </a>
-          <a routerLink="user-contests" class="btn btn-primary" [ngClass.lt-md]="'btn-sm'">
+          <a *ngIf="isAuthenticated" routerLink="user-contests" class="btn btn-primary" [ngClass.lt-md]="'btn-sm'">
             <kep-icon name="attempt" class="font-medium-1"></kep-icon>
             <span [ngClass.lt-md]="'d-none'">
             {{ 'MyContests' | translate }}
