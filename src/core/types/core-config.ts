@@ -1,11 +1,15 @@
 export interface CoreConfig {
-
   app: {
     appName: string;
     appTitle: string;
     appLogoImage: string;
-    appLogoImageWithTitle: string;
     appLanguage: 'en' | 'ru' | 'uz';
+    appLanguages: {
+      [key: string]: {
+        flag: string,
+        title: string,
+      }
+    }
   };
   layout: {
     skin: 'default' | 'bordered' | 'dark' | 'semi-dark';
