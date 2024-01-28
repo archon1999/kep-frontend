@@ -18,12 +18,12 @@
   }
 
   .bg-chapter-#{$id} {
-    background: $color;
+    background: $color !important;
     box-shadow: 0 0 10px $color !important;
   }
 
   .dark-layout .bg-chapter-#{$id} {
-    background: $dark-color;
+    background: $dark-color !important;
     box-shadow: 0 0 5px $dark-color !important;
   }
 
@@ -80,7 +80,7 @@
   $gradient-color: linear-gradient(141deg, #6a81ff, #6a80ffae),
   $gradient-dark-color: linear-gradient(141deg, #313c76, #5264c5),
   $color: #6a81ff,
-  $dark-color: #5264c5,
+  $dark-color: #374492,
 );
 
 // SQL
