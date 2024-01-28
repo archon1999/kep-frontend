@@ -1,0 +1,17 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <div class="row">
+      <div class="col-4"></div>
+      <div class="col-8">
+        <div class="row">
+          <div *ngFor="let test of tests" class="col-4">
+            <test-card [test]="test"></test-card>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

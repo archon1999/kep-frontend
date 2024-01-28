@@ -17,7 +17,7 @@ import { ChapterCardComponent } from '@app/modules/testing/components/chapter-ca
 import { TestCardComponent } from '@app/modules/testing/components/test-card/test-card.component';
 import { TestPassComponent } from '@app/modules/testing/pages/test-pass/test-pass.component';
 import { TestComponent } from '@app/modules/testing/pages/test/test.component';
-import { TestingComponent } from './pages/testing/testing.component';
+import { TestsComponent } from '@app/modules/testing/pages/tests/tests.component';
 import { ChaptersResolver, LastTestsResolver, TestPassResolver, TestResolver } from './testing.resolver';
 import { TestListCardComponent } from '@app/modules/testing/components/test-list-card/test-list-card.component';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
@@ -27,7 +27,7 @@ import { CountdownComponent } from '@shared/third-part-modules/countdown/countdo
 const routes: Routes = [
   {
     path: '',
-    component: TestingComponent,
+    component: TestsComponent,
     title: 'Tests.Tests',
     resolve: {
       chapters: ChaptersResolver,
@@ -59,7 +59,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    TestingComponent,
+    TestsComponent,
     TestComponent,
     TestPassComponent,
     TestCardComponent,
