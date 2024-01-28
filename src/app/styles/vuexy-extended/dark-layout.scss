@@ -17,6 +17,12 @@ $colors: (
   @each $color_name, $color in $colors {
     $dark-color: mix(black, $color, 30);
 
+    @if ($color_name != 'white' and $color_name != 'dark' and $color_name != 'light' and $color_name != 'black') {
+      .text-#{$color_name} {
+        color: mix(white, $color, 20) !important;
+      }
+    }
+
     .btn-#{$color_name} {
       background-color: $dark-color !important;
       border-color: $dark-color !important;
