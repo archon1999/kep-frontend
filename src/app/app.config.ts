@@ -5,7 +5,20 @@ export const coreConfig: CoreConfig = {
     appName: 'KEP',
     appTitle: 'KEP.uz',
     appLogoImage: 'assets/images/logo/logo.svg',
-    appLogoImageWithTitle: 'assets/images/logo/logo-with-title.svg',
+    appLanguages: {
+      en: {
+        title: 'English',
+        flag: 'us'
+      },
+      ru: {
+        title: 'Русский язык',
+        flag: 'ru'
+      },
+      uz: {
+        title: 'O`zbek tili',
+        flag: 'uz'
+      }
+    },
     appLanguage: 'en',
   },
   layout: {
