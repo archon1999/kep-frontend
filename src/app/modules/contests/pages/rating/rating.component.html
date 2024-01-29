@@ -33,17 +33,19 @@
           }
         </ng-container>
         <ng-container pagination>
-          <kep-pagination
-            (pageChange)="pageChange($event)"
-            (pageSizeChange)="pageSizeChange($event)"
-            *ngIf="total"
-            [(page)]="pageNumber"
-            [collectionSize]="total"
-            [maxSize]="maxSize"
-            [pageOptions]="pageOptions"
-            [pageSize]="pageSize"
-            [rotate]="true">
-          </kep-pagination>
+          <div class="mb-1">
+            <kep-pagination
+              (pageChange)="pageChange($event)"
+              (pageSizeChange)="pageSizeChange($event)"
+              *ngIf="total"
+              [(page)]="pageNumber"
+              [collectionSize]="total"
+              [maxSize]="maxSize"
+              [pageOptions]="pageOptions"
+              [pageSize]="pageSize"
+              [rotate]="true">
+            </kep-pagination>
+          </div>
         </ng-container>
       </kep-table>
     </section>
