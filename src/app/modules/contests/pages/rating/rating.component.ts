@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
+import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { ContestsService } from '../../contests.service';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { Observable } from 'rxjs';

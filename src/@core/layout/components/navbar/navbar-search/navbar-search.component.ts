@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 
-import { SearchService } from 'app/layout/components/navbar/navbar-search/search.service';
+import { SearchService } from '@layout/components/navbar/navbar-search/search.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgScrollbar } from 'ngx-scrollbar';
 

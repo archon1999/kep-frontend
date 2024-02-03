@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
+import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { Observable } from 'rxjs';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { PageResult } from '@app/common/classes/page-result';

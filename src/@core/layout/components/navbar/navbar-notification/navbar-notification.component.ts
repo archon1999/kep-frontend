@@ -3,7 +3,7 @@ import { bounceAnimation, fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from
 import { User } from '@auth';
 import { AuthService } from '@auth';
 
-import { NotificationsService } from 'app/layout/components/navbar/navbar-notification/notifications.service';
+import { NotificationsService } from '@layout/components/navbar/navbar-notification/notifications.service';
 import { WebsocketService } from 'app/shared/services/websocket';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

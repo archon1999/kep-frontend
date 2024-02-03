@@ -1,7 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, ElementRef, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
 
-import { SearchService } from 'app/layout/components/navbar/navbar-search/search.service';
+import { SearchService } from '@layout/components/navbar/navbar-search/search.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgScrollbar } from 'ngx-scrollbar';

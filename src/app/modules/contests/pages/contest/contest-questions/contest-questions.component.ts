@@ -4,7 +4,7 @@ import { CoreConfigService } from '@core/services/config.service';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { User } from '@auth';
 import { AuthService } from '@auth';
-import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
+import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

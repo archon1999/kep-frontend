@@ -28,7 +28,7 @@
         "@core/*"
       ],
       "@layout/*": [
-        "app/layout/*"
+        "@core/layout/*"
       ],
       "@shared/*": [
         "app/shared/*"

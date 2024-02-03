@@ -8,7 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { CodeRush, CodeRushProblem } from '../../code-rush.models';
 import { CodeRushApiService } from '../../services/code-rush-api.service';
 import { TitleService } from '../../../../shared/services/title.service';
-import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
+import { ContentHeader } from '@layout/components/content-header/content-header.component';
 
 @Component({
   templateUrl: './code-rush.component.html',

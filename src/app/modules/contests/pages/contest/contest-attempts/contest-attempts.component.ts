@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { fadeInLeftAnimation, fadeInRightAnimation } from 'angular-animations';
 import { User } from '@auth';
 import { AuthService } from '@auth';
-import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
+import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { Attempt } from '../../../../problems/models/attempts.models';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { TitleService } from 'app/shared/services/title.service';

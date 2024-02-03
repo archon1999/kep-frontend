@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
+import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { ContestTypes } from '@contests/constants';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';

@@ -4,8 +4,8 @@ import { RouterModule } from '@angular/router';
 
 import { CoreCommonModule } from '@core/common.module';
 
-import { BreadcrumbModule } from 'app/layout/components/content-header/breadcrumb/breadcrumb.module';
-import { ContentHeaderComponent } from 'app/layout/components/content-header/content-header.component';
+import { BreadcrumbModule } from '@layout/components/content-header/breadcrumb/breadcrumb.module';
+import { ContentHeaderComponent } from '@layout/components/content-header/content-header.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 

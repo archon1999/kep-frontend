@@ -11,7 +11,7 @@ import { ContestantViewModule } from '@contests/components/contestant-view/conte
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
-import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { CodeRushResultsTableComponent } from './components/code-rush-results-table/code-rush-results-table.component';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';

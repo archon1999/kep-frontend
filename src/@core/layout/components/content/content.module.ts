@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { CoreCommonModule } from '@core/common.module';
 
-import { ContentComponent } from 'app/layout/components/content/content.component';
+import { ContentComponent } from '@layout/components/content/content.component';
 
 @NgModule({
   declarations: [ContentComponent],

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CurrentProblemsRating, ProblemsRating } from '@problems/models/rating.models';
 import { PageResult } from '@app/common/classes/page-result';
-import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
+import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';

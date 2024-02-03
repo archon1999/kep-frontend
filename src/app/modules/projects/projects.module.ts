@@ -6,7 +6,7 @@ import { ProjectsService } from './projects.service';
 import { ProjectCardComponent } from './project-card/project-card.component';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
-import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { KepcoinSpendSwalModule } from '../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { ProjectComponent } from './project/project.component';

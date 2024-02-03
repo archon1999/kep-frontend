@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 
 import { AuthenticationModule } from './authentication/authentication.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';

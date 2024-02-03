@@ -6,7 +6,7 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthGuard } from  '@auth';
-import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { KepcoinSpendSwalModule } from '../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
