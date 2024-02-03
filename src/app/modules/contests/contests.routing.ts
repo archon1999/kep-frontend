@@ -94,6 +94,17 @@ export default [
     }
   },
   {
+    path: 'contest/:id/registrants',
+    loadComponent: () => import('./pages/contest/contest-registrants/contest-registrants.component').then(c => c.ContestRegistrantsComponent),
+    data: {
+      animation: 'contest-registrants',
+      title: 'Contests.ContestRegistrants',
+    },
+    resolve: {
+      contest: ContestResolver,
+    }
+  },
+  {
     path: 'contest/:id/rating-changes',
     loadComponent: () => import('./pages/contest/contest-rating-changes/contest-rating-changes.component').then(
       c => c.ContestRatingChangesComponent
