@@ -412,6 +412,10 @@ export const locale = {
     GetStarted: 'Начать',
     Features: 'Возможности',
     ContactUs: 'Связяаться с нами',
+    Message: 'Сообщение',
+    Phone: 'Телефон',
+    Email: 'Электронная почта',
+    SendMessage: 'Отправить сообщение',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',
@@ -425,17 +429,45 @@ export const locale = {
     LandingPage: {
       SectionTopTitle: 'Учитесь программированию с KEP.uz',
       SectionTopText: 'KEP.uz - эта платформа для развития навыков и улучшения конкурентоспособности',
-      SectionLearnTitle: 'Обучение программированию',
-      SectionLearnText: 'Новый подход к изучению',
+      SectionFeaturesTitle: 'Все возможности начать изучение программирования',
+      SectionFeaturesText: 'На этой платформы вы можете совершенствовать свои знания и соревноваться с другими',
+      Features: [
+        {
+          title: 'Новый подход к изучению',
+          description: 'Платформа разработана на основе опыта лучших в мире платформ',
+        },
+        {
+          title: 'Интересные задании',
+          description: 'Платформа содержит более 1000 задач из разных областей компьютерных наук',
+        },
+        {
+          title: 'Проведите время интересно и полезно',
+          description: 'Решайте ежедневные задачи, практикуйтесь и становитесь лучше',
+        },
+        {
+          title: 'Соревновательных дух',
+          description: 'Соревнуйтесь с лучшими, участвуйте в соревнованиях по программированию',
+        },
+        {
+          title: 'Подготовка к интервью',
+          description: 'На платформе вы можете найти реальные задании из реальных собеседовании',
+        },
+        {
+          title: 'Современный дизайн',
+          description: 'Платформа разработана по новейшим технологиям и предлагает удобный интерфейс',
+        },
+      ],
       SectionPracticeTitle: 'Практиковать',
       SectionPracticeText: 'Платформа содержит задачи и вопросов из всех областей компьютерных наук',
-      SectionPracticeProblemsCardText: 'Более 1000 задач для вас',
-      SectionPracticeChallengesCardText: 'Сразитесь с другими пользователями',
-      SectionPracticeTestsCardText: 'Проверьте свои знания',
       SectionCompetitionsTitle: 'Соревнования',
       SectionCompetitionsText: 'Участвуйте в соревнованиях по программированию, чтобы испытать себя',
-      SectionUsefulResourcesTitle: 'Полезные ресурсы',
-      SectionUsefulResourcesText: 'Если у вас есть другие вопросы, можете посмотреть страницу <a routerLink="" class="text-primary">Часто задаваемые вопросы</a> или найти ответы в <a routerLink="" class="text-primary">Базе знаний</a> или вы можете задать свой вопрос на странице <a routerLink="" class="text-primary">Свяжитесь с нами</a>',
+      SectionReviewsTitle: 'Отзывы реальных людей',
+      SectionReviewsText: 'Посмотрите, что наши пользователи говорят о своем опыте',
+      SectionFAQTitle: 'Часто задаваемые вопросы',
+      SectionFAQText: 'Ответы на вопросы связанные с платформой',
+      SectionContactUsTitle: 'Работаем вместе',
+      SectionContactUsText: 'Есть вопросы? Просто отправьте сообщение',
+      SectionContactUsSendMessageText: 'Если есть вопросы или хотите сотрудничать, отправьте нам сообщение',
       SectionGetStartedTitle: 'Готовы начать?',
       SectionGetStartedText: 'Зарегистрируйтесь и продолжайте путешествие!',
     },

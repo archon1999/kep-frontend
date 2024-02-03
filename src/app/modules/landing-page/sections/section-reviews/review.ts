@@ -3,6 +3,6 @@ export interface Review {
   avatar: string;
   firstName: string;
   lastName: string;
-  datetime: string;
+  date: string;
   text: string;
 }

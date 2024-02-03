@@ -10,4 +10,16 @@ export class LandingPageService {
   getStatistics() {
     return this.api.get('landing-page-statistics');
   }
+
+  getReviews() {
+    return this.api.get('reviews');
+  }
+
+  getFAQ() {
+    return this.api.get('faq');
+  }
+
+  contactUsSubmit(data: Partial<{ fullName: string, email: string, text: string }>){
+    return this.api.post('contact-us', data);
+  }
 }

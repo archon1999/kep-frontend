@@ -4,8 +4,8 @@
       <div class="text-center mb-1 pb-1">
         <span class="badge badge-light-primary">FAQ</span>
       </div>
-      <h3 class="text-center mb-1 font-weight-bolder">Eng ko'p so'raladigan savollar</h3>
-      <p class="text-center mb-2 pb-lg-3 pb-1">Tizim bilan bog'liq savollarga javoblar</p>
+      <h3 class="text-center mb-1 font-weight-bolder">{{ 'LandingPage.SectionFAQTitle' | translate }}</h3>
+      <p class="text-center mb-2 pb-lg-3 pb-1">{{ 'LandingPage.SectionFAQText' | translate }}</p>
       <div class="row gy-5">
         <div class="col-lg-5">
           <div class="text-center">
@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="col-lg-7">
-          @for (faq of faqs; track faq){
+          @for (faq of data; track faq.id){
             <ngb-accordion [closeOthers]="false" [destroyOnHide]="false">
               <ngb-panel [cardClass]="'mt-1 collapse-margin'" [id]="'faq' + $index">
                 <ng-template ngbPanelTitle>
@@ -28,7 +28,7 @@
                   </div>
                 </ng-template>
                 <ng-template ngbPanelContent>
-                  {{ faq.answer }}
+                  <div [innerHTML]="faq.answer"></div>
                 </ng-template>
               </ngb-panel>
             </ngb-accordion>

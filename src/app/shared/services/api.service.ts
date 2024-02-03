@@ -55,7 +55,7 @@ export class ApiService {
     );
   }
 
-  post(prefix: string, body: any = {}, options: any = {}): any {
+  post(prefix: string, body: any = {}, options: any = {}): Observable<any> {
     const url = BASE_API_URL + prefix;
     this.initOptions(options);
     return this.http.post(url, body, options);
@@ -85,7 +85,7 @@ export class ApiService {
       // username = 'KEP.uz';
       // password = 'cpython';
       const token = btoa(`${ username }:${ password }`);
-      options.headers = options.headers.set('Authorization', `Basic ${ token }`);
+      // options.headers = options.headers.set('Authorization', `Basic ${ token }`);
     }
     options.headers = options.headers.set('Content-Type', 'application/json; charset=utf-8');
     options.withCredentials = true;

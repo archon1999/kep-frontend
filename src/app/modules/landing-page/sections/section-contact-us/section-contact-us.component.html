@@ -3,15 +3,15 @@
     <div class="text-center mb-1 pb-1">
       <span class="badge badge-light-primary">{{ 'ContactUs' | translate }}</span>
     </div>
-    <h3 class="text-center font-weight-bolder mb-1">Birgalikda ishlaymiz</h3>
-    <p class="text-center mb-4">Qandaydir savolingiz bormi? Shunchaki xabar jo'nating</p>
+    <h3 class="text-center font-weight-bolder mb-1">{{ 'LandingPage.SectionContactUsTitle' | translate }}</h3>
+    <p class="text-center mb-4">{{ 'LandingPage.SectionContactUsText' | translate }}</p>
     <div class="row gy-4">
       <div class="col-lg-5">
         <div class="contact-img-box position-relative border p-2 h-100">
           <img
             alt="contact-us"
             class="contact-img w-100 scaleX-n1-rtl" src="https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/front-pages/landing-page/contact-customer-service.png">
-          <div class="pt-3 px-4 pb-1">
+          <div class="pt-3 px-2 pb-1">
             <div class="row gy-3 gx-md-4">
               <div class="col-md-6 col-lg-12 col-xl-6">
                 <div class="d-flex justify-content-center align-items-center">
@@ -19,7 +19,7 @@
                     <kep-icon class="" size="medium-3" name="sms"></kep-icon>
                   </div>
                   <div>
-                    <p class="mb-0">Email</p>
+                    <p class="mb-0">{{ 'Email' | translate }}</p>
                     <h5 class="mb-0">
                       <a class="text-heading" href="mailto:admin@kep.uz">admin&#64;kep.uz</a>
                     </h5>
@@ -32,7 +32,7 @@
                     <kep-icon class="" size="medium-3" name="phone"></kep-icon>
                   </div>
                   <div>
-                    <p class="mb-0">Phone</p>
+                    <p class="mb-0">{{ 'Phone' | translate }}</p>
                     <h5 class="mb-0"><a class="text-heading" href="tel:+99890-558-1775">+998 90 558 1775</a></h5>
                   </div>
                 </div>
@@ -44,27 +44,27 @@
       <div class="col-lg-7">
         <div class="card">
           <div class="card-body">
-            <h4 class="mb-1">Xabar jo'natish</h4>
+            <h4 class="mb-1">{{ 'SendMessage' | translate }}</h4>
             <p class="mb-4">
-              Tizim bo'yicha savollaringiz yoki hamkorlik qilish niyatingiz bo'lsa formani to'ldirib, xabarni jo'nating
+              {{ 'LandingPage.SectionContactUsSendMessageText' | translate }}
             </p>
-            <form>
+            <form [formGroup]="form">
               <div class="row g-3">
                 <div class="col-md-6">
-                  <label class="form-label" for="contact-form-fullname">Ism sharifingiz</label>
-                  <input class="form-control" id="contact-form-fullname" placeholder="name" type="text">
+                  <label class="form-label" for="contact-form-fullname">{{ 'FullName' | translate }}</label>
+                  <input formControlName="fullName" class="form-control" id="contact-form-fullname" placeholder="" type="text">
                 </div>
                 <div class="col-md-6">
-                  <label class="form-label" for="contact-form-email">Elektron manzil</label>
-                  <input class="form-control" id="contact-form-email" placeholder="name@gmail.com" type="text">
+                  <label class="form-label" for="contact-form-email">{{ 'Email' | translate }}</label>
+                  <input formControlName="email" class="form-control" id="contact-form-email" placeholder="" type="text">
                 </div>
                 <div class="col-12">
-                  <label class="form-label" for="contact-form-message">Xabar</label>
-                  <textarea class="form-control" id="contact-form-message" placeholder="Xabar yozish"
+                  <label class="form-label" for="contact-form-message">{{ 'Message' | translate }}</label>
+                  <textarea formControlName="text" class="form-control" id="contact-form-message" placeholder=""
                             rows="8"></textarea>
                 </div>
                 <div class="col-12">
-                  <button class="btn mt-1 btn-primary waves-effect waves-light" type="submit">Jo'natish</button>
+                  <button (click)="submit()" class="btn mt-1 btn-primary waves-effect waves-light" type="submit">{{ 'Submit' | translate }}</button>
                 </div>
               </div>
             </form>

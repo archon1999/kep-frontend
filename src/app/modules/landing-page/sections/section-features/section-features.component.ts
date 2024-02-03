@@ -11,33 +11,33 @@ import { CoreCommonModule } from '@core/common.module';
 export class SectionFeaturesComponent {
   public features = [
     {
-      title: 'LandingPage.SectionLearnTitle',
-      description: 'LandingPage.SectionLearnText',
+      title: 'LandingPage.Features.0.title',
+      description: 'LandingPage.Features.0.description',
       icon: 'learn',
     },
     {
-      title: 'Problems',
-      description: 'LandingPage.SectionPracticeProblemsCardText',
+      title: 'LandingPage.Features.1.title',
+      description: 'LandingPage.Features.1.description',
       icon: 'problems',
     },
     {
-      title: 'LandingPage.SectionLearnTitle',
-      description: 'LandingPage.SectionLearnText',
-      icon: 'learn',
+      title: 'LandingPage.Features.2.title',
+      description: 'LandingPage.Features.2.description',
+      icon: 'practice',
     },
     {
-      title: 'Zamonaviy dizayn',
-      description: 'Platforma eng so`ngi texnologiyalar bilan yaratilgan bo`lib, unda barcha imkoniyatlar yaratilgan',
-      icon: 'design',
+      title: 'LandingPage.Features.3.title',
+      description: 'LandingPage.Features.3.description',
+      icon: 'competition',
     },
     {
-      title: 'Problems',
-      description: 'LandingPage.SectionPracticeProblemsCardText',
-      icon: 'problems',
+      title: 'LandingPage.Features.4.title',
+      description: 'LandingPage.Features.4.description',
+      icon: 'technology-2',
     },
     {
-      title: 'Zamonaviy dizayn',
-      description: 'Platforma eng so`ngi texnologiyalar bilan yaratilgan bo`lib, unda barcha imkoniyatlar yaratilgan',
+      title: 'LandingPage.Features.5.title',
+      description: 'LandingPage.Features.5.description',
       icon: 'design',
     },
   ];

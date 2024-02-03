@@ -416,6 +416,10 @@ export const locale = {
     GetStarted: 'Get started',
     Features: 'Features',
     ContactUs: 'Contact us',
+    Message: 'Message',
+    Phone: 'Phone',
+    Email: 'Email',
+    SendMessage: 'Send message',
     ProblemTourSteps: [
       {
         title: 'Available languages',
@@ -429,17 +433,45 @@ export const locale = {
     LandingPage: {
       SectionTopTitle: 'Learn Programming with KEP.uz',
       SectionTopText: 'KEP.uz is platform for developing skills and improving competitiveness',
-      SectionLearnTitle: 'Learn Programming',
-      SectionLearnText: 'A new way to learn',
+      SectionFeaturesTitle: 'All the ways to start learning programming',
+      SectionFeaturesText: 'On this platform you can improve your knowledge and compete with others',
+      Features: [
+        {
+          title: 'A new way to learning',
+          description: 'The platform is developed based on the experience of the world\'s best platforms',
+        },
+        {
+          title: 'Interesting tasks',
+          description: 'The platform contains more than 1000 tasks from different areas of computer science',
+        },
+        {
+          title: 'Spend your time interesting and useful',
+          description: 'Solve daily problems, practice and become better',
+        },
+        {
+          title: 'Competitive spirit',
+          description: 'Compete with the best, take part in programming competitions',
+        },
+        {
+          title: 'Preparing for an interviews',
+          description: 'On the platform you can find real tasks from real interviews',
+        },
+        {
+          title: 'Modern design',
+          description: 'The platform is developed using the latest technologies and offers a user-friendly interface',
+        },
+      ],
       SectionPracticeTitle: 'Practice',
       SectionPracticeText: 'The platform contains tasks and questions from all areas of computer science',
-      SectionPracticeProblemsCardText: 'Over 1000 problems for you',
-      SectionPracticeChallengesCardText: 'Compete with other users',
-      SectionPracticeTestsCardText: 'Test your knowledge',
       SectionCompetitionsTitle: 'Competitions',
       SectionCompetitionsText: 'Participate in programming competitions to challenge yourself',
-      SectionUsefulResourcesTitle: 'Useful Resources',
-      SectionUsefulResourcesText: 'Useful Resources',
+      SectionReviewsTitle: 'Real Users Reviews',
+      SectionReviewsText: 'See what our users have to say about their experiences',
+      SectionFAQTitle: 'Frequently asked questions',
+      SectionFAQText: 'Answers to questions related to the platform',
+      SectionContactUsTitle: 'Let\'s work together',
+      SectionContactUsText: 'Any questions? Just send a message',
+      SectionContactUsSendMessageText: 'If you have questions or want to collaborate, send us a message',
       SectionGetStartedTitle: 'Ready to Get started?',
       SectionGetStartedText: 'Register and continue your journey!',
     },

@@ -4,15 +4,15 @@
       <span class="mb-2 badge badge-light-primary">{{ 'Features' | translate }}</span>
 
       <h3 class="font-weight-bolder mb-1">
-        Dasturlashni boshlash uchun barcha imkoniyatlar
+        {{ 'LandingPage.SectionFeaturesTitle' | translate }}
       </h3>
 
       <h5>
-        Ushbu platforma orqali bilimlaringizni oshirishingiz va boshqalar bilan bellashishingiz mumkin
+        {{ 'LandingPage.SectionFeaturesText' | translate }}
       </h5>
 
       <div class="row features">
-        @for (feature of features;track feature.title) {
+        @for (feature of features; track feature.title) {
           <div class="feature col-12 col-md-6 col-lg-4">
             <div class="icon">
               <kep-icon size="large-3" type="duotone" class="" name="{{ feature.icon }}" color="primary"></kep-icon>
