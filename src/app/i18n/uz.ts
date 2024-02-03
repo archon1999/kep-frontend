@@ -284,7 +284,7 @@ export const locale = {
     Spends: 'Sarflandi',
     Earns: 'Topildi',
     DailyTasks: 'Kundalik topshiriqlar',
-    Reviews: 'Shahrlar',
+    Reviews: 'Sharhlar',
     More: 'Yana',
     AboutProblemsSection: 'Masalalar bo`limi haqida',
     AboutAttemptVerdicts: 'Urinish natijalari',
@@ -452,8 +452,8 @@ export const locale = {
           description: 'Eng kuchliliar bilan bellashing, o`zingizni musobaqalarda sinab ko`ring',
         },
         {
-          title: 'Suxbatga tayyorgarlik',
-          description: 'Platformada siz real suxbatlardan olingan amaliy topshiriqlarni topishingiz mumkin',
+          title: 'Suhbatga tayyorgarlik',
+          description: 'Platformada siz real suhbatlardan olingan amaliy topshiriqlarni topishingiz mumkin',
         },
         {
           title: 'Zamonaviy dizayn',
@@ -463,7 +463,7 @@ export const locale = {
       SectionPracticeTitle: 'Ishlash',
       SectionPracticeText: 'Tizimda kompyuter fanlarining barcha yo`nalishlaridan masalalar, topshiriqlar va testlar mavjud',
       SectionCompetitionsTitle: 'Musobaqalar',
-      SectionCompetitionsText: 'O`zingizni sinab ko`rish uchun dasturlash bo`yicha musobaqalarida qatnashing',
+      SectionCompetitionsText: 'O`zingizni sinab ko`rish uchun dasturlash bo`yicha musobaqalarda qatnashing',
       SectionReviewsTitle: 'Haqiqiy foydalanuvchilar fikri',
       SectionReviewsText: 'Bizning foydalanuvchilarimiz o\'z tajribalari haqida nima deyishlarini ko\'ring',
       SectionFAQTitle: 'Eng ko\'p so\'raladigan savollar',
