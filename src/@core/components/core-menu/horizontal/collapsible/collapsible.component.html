@@ -12,7 +12,7 @@
   <ng-template #itemContent>
     <kep-icon class="font-medium-4 mr-50 text-primary" type="duotone" [name]="item.icon"></kep-icon>
     <span>{{ item.translate | translate }}</span>
-    @if (item.id == 'competitions' && 0) {
+    @if (item.id == 'competitions') {
       <span class="badge ml-25 badge-yellow badge-pill badge-glow">New</span>
     }
   </ng-template>

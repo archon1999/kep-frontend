@@ -24,7 +24,7 @@
   <ng-template #itemContent>
     <kep-icon class="font-medium-4 text-primary mr-50" type="duotone" [name]="item.icon"></kep-icon>
     <span>{{ item.translate | translate }}</span>
-    @if (item.id == 'contests' && 0) {
+    @if (item.id == 'contests') {
       <span class="badge ml-25 new-events-count badge-pill badge-primary">
         {{ 1 }}
       </span>
