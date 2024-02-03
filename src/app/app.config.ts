@@ -1,4 +1,4 @@
-import { CoreConfig } from 'core/types';
+import { CoreConfig } from '@core/types';
 
 export const coreConfig: CoreConfig = {
   app: {
@@ -30,7 +30,6 @@ export const coreConfig: CoreConfig = {
       hidden: false,
       collapsed: true,
     },
-
     navbar: {
       hidden: false,
       type: 'fixed-top',

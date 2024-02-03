@@ -7,10 +7,10 @@ import * as Waves from 'node-waves';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { CoreMenuService } from 'core/components/core-menu/core-menu.service';
-import { CoreConfigService } from 'core/services/config.service';
-import { CoreLoadingScreenService } from 'core/services/loading-screen.service';
-import { CoreTranslationService } from 'core/services/translation.service';
+import { CoreMenuService } from '@core/components/core-menu/core-menu.service';
+import { CoreConfigService } from '@core/services/config.service';
+import { CoreLoadingScreenService } from '@core/services/loading-screen.service';
+import { CoreTranslationService } from '@core/services/translation.service';
 
 import { locale as menuEnglish } from 'app/i18n/en';
 import { locale as menuRussian } from 'app/i18n/ru';

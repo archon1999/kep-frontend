@@ -7,9 +7,9 @@ import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
 import { AuthService } from '@auth';
-import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.service';
-import { CoreConfigService } from 'core/services/config.service';
-import { CoreMediaService } from 'core/services/media.service';
+import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { CoreConfigService } from '@core/services/config.service';
+import { CoreMediaService } from '@core/services/media.service';
 
 import { User } from '@auth';
 

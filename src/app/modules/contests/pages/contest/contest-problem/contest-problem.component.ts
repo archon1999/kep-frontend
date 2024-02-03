@@ -11,7 +11,7 @@ import { ContestsService } from '@contests/contests.service';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { findAvailableLang } from 'app/modules/problems/utils';
 import { AttemptLangs } from 'app/modules/problems/constants';
-import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.service';
+import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 import { BaseComponent } from '@app/common/classes/base.component';
 import { sortContestProblems } from '@contests/utils/sort-contest-problems';
 import { paramsMapper } from '@shared/utils';

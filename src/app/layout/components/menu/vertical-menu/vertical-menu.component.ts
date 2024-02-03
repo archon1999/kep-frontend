@@ -4,9 +4,9 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { CoreConfigService } from 'core/services/config.service';
-import { CoreMenuService } from 'core/components/core-menu/core-menu.service';
-import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.service';
+import { CoreConfigService } from '@core/services/config.service';
+import { CoreMenuService } from '@core/components/core-menu/core-menu.service';
+import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { CoreMenuComponent } from '@core/components/core-menu/core-menu.component';

@@ -55,7 +55,7 @@
               "src/styles.scss"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["node_modules", "src/assets/", "src/core", "src/app"]
+              "includePaths": ["node_modules", "src/assets/", "src/@core", "src/app"]
             },
             "scripts": [],
             "vendorChunk": true,

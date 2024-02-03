@@ -3,7 +3,7 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewEncapsulation } from '@an
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { CoreConfigService } from 'core/services/config.service';
+import { CoreConfigService } from '@core/services/config.service';
 import { RouterModule } from '@angular/router';
 import { CoreCommonModule } from '@core/common.module';
 import { CoreSidebarModule } from '@core/components';

@@ -1,6 +1,6 @@
 import { Component, HostListener, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { CoreConfigService } from 'core/services/config.service';
-import { CoreConfig } from 'core/types';
+import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfig } from '@core/types';
 import { Problem } from '../../../models/problems.models';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

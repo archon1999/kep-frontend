@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CoreConfigService } from '../../../../core/services/config.service';
+import { CoreConfigService } from '@core/services/config.service';
 import { Subject } from 'rxjs';
 import { GlobalService } from '@app/common/global.service';
 

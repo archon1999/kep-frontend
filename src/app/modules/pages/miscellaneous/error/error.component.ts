@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
-import { CoreConfigService } from 'core/services/config.service';
+import { CoreConfigService } from '@core/services/config.service';
 import { CoreCommonModule } from '@core/common.module';
 import { coreConfig } from '@app/app.config';
 

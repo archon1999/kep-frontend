@@ -9,9 +9,9 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import 'hammerjs';
 import { ToastrModule } from '@shared/third-part-modules/toastr/toastr.module';
 
-import { CoreCommonModule } from 'core/common.module';
-import { CoreSidebarModule } from 'core/components';
-import { CoreModule } from 'core/core.module';
+import { CoreCommonModule } from '@core/common.module';
+import { CoreSidebarModule } from '@core/components';
+import { CoreModule } from '@core/core.module';
 
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { coreConfig } from './app.config';
