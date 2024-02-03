@@ -4,7 +4,7 @@ import { BaseUserComponent } from '@app/common/classes/base-user.component';
 import { ContestsService } from '@contests/contests.service';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { ContestsRating } from '@contests/models';
-import { User } from '@auth/models';
+import { User } from '@auth';
 import { Observable } from 'rxjs';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { ContestsRatingBadgeComponent } from '@contests/components/contests-rating-badge/contests-rating-badge.component';

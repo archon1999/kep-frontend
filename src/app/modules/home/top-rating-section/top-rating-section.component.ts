@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
-import { User } from '../../../auth/models';
+import { User } from '@auth';
 import { HomeService } from '../home.service';
 
 @Component({

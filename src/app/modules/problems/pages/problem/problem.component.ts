@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Params } from '@angular/router';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
-import { User } from 'app/auth/models';
+import { User } from '@auth';
 import { Subject } from 'rxjs';
 import { Problem } from '@problems/models/problems.models';
 import { ProblemsApiService } from '../../services/problems-api.service';

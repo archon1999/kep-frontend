@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { fadeInLeftAnimation, fadeInRightAnimation } from 'angular-animations';
-import { User } from 'app/auth/models';
-import { AuthService } from 'app/auth/service';
+import { User } from '@auth';
+import { AuthService } from '@auth';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 import { Attempt } from '../../../../problems/models/attempts.models';
 import { ProblemsApiService } from '@problems/services/problems-api.service';

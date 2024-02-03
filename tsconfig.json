@@ -48,8 +48,11 @@
       "@users/*": [
         "app/modules/users/*"
       ],
+      "@auth": [
+        "app/modules/auth"
+      ],
       "@auth/*": [
-        "app/auth/*"
+        "app/modules/auth/*"
       ],
       "environments": [
         "environments/"

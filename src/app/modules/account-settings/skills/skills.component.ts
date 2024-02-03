@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { User } from 'app/auth/models';
-import { AuthService } from 'app/auth/service';
+import { User } from '@auth';
+import { AuthService } from '@auth';
 import { UserSkills, UserTechnology } from '@users/users.models';
 import { ToastrService } from 'ngx-toastr';
 import { AccountSettingsService } from '../account-settings.service';

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { User } from 'app/auth/models';
+import { User } from '@auth';
 import { NavbarService } from '../navbar.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';

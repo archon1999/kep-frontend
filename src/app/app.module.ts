@@ -27,7 +27,7 @@ import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { monacoConfig } from './monaco.config';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
 import { map } from 'rxjs/operators';
-import { AuthService } from '@auth/service';
+import { AuthService } from '@auth';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BS_BREAKPOINTS, CustomBreakPointsProvider } from '@layout/custom-breakpoints';
 

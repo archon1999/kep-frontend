@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
-import { User } from 'app/auth/models';
-import { AuthService } from 'app/auth/service';
+import { User } from '@auth';
+import { AuthService } from '@auth';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ɵEmptyOutletComponent } from '@angular/router';

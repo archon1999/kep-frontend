@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
-import { AuthService } from 'app/auth/service';
+import { AuthService } from '@auth';
 import { UserEducation, UserGeneralInfo, UserInfo, UserSkills, UserSocial, UserTechnology, UserWorkExperience } from '../users/users.models';
 
 @Injectable({

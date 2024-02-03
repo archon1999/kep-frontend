@@ -22,7 +22,7 @@ import localeUz from '@angular/common/locales/uz';
 import { menu } from '@layout/components/menu/menu';
 
 import { ApiService } from '@shared/services/api.service';
-import { AuthService } from '@auth/service';
+import { AuthService } from '@auth';
 import { WebsocketService } from '@shared/services/websocket';
 import { environment } from 'environments/environment';
 import { Router } from '@angular/router';

@@ -3,7 +3,7 @@ import { CoreConfigService } from 'core/services/config.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'app/shared/services/api.service';
-import { AuthService } from 'app/auth/service';
+import { AuthService } from '@auth';
 import { WebsocketService } from 'app/shared/services/websocket';
 import { ToastrService } from 'ngx-toastr';
 import { Attempt, WSAttempt } from '../../models/attempts.models';

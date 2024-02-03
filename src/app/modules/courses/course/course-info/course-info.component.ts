@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { User } from 'app/auth/models';
-import { AuthService } from 'app/auth/service';
+import { User } from '@auth';
+import { AuthService } from '@auth';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Course } from '../../courses.models';

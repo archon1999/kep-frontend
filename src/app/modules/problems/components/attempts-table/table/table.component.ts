@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { bounceAnimation, fadeInOnEnterAnimation, shakeAnimation } from 'angular-animations';
-import { User } from 'app/auth/models';
-import { AuthService } from 'app/auth/service';
+import { User } from '@auth';
+import { AuthService } from '@auth';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { Attempt } from '../../../models/attempts.models';
 import { Contest } from '@contests/models/contest';

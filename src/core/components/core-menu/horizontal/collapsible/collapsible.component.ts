@@ -7,7 +7,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { CoreConfigService } from 'core/services/config.service';
 import { CoreMenuService } from 'core/components/core-menu/core-menu.service';
 
-import { User } from 'app/auth/models';
+import { User } from '@auth';
 import { CoreCommonModule } from '@core/common.module';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { CoreMenuHorizontalItemComponent } from '@core/components/core-menu/horizontal/item/item.component';

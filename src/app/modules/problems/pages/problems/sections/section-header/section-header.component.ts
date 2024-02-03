@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { User } from '@auth/models';
+import { User } from '@auth';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { GeneralInfo } from '@problems/models/statistics.models';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';

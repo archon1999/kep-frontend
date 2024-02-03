@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { IsAuthenticatedGuard } from '@auth/helpers';
+import { IsAuthenticatedGuard } from  '@auth';
 
 export default [
   {

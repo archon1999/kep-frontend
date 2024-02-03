@@ -7,7 +7,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { CoreMenuItem } from 'core/types';
 import { CoreMenuService } from 'core/components/core-menu/core-menu.service';
 
-import { User } from 'app/auth/models';
+import { User } from '@auth';
 import { CoreCommonModule } from '@core/common.module';
 import { CoreMenuVerticalItemComponent } from '@core/components/core-menu/vertical/item/item.component';
 

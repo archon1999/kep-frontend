@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { KepcoinComponent } from './kepcoin.component';
-import { AuthGuard } from 'app/auth/helpers';
+import { AuthGuard } from  '@auth';
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { KepcoinSpendSwalModule } from './kepcoin-spend-swal/kepcoin-spend-swal.module';

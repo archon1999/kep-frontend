@@ -13,7 +13,7 @@ import { CValidators } from '@shared/c-validators/c-validators';
 import { AttemptLangs, Verdicts } from '@problems/constants';
 import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.service';
 import { SwipeService } from '@shared/services/swipe.service';
-import { AuthService } from '@auth/service';
+import { AuthService } from '@auth';
 import { paramsMapper } from '@shared/utils';
 import { NgxSpinnerService } from 'ngx-spinner';
 

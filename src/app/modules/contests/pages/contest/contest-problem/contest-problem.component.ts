@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ApiService } from 'app/shared/services/api.service';
-import { User } from 'app/auth/models';
+import { User } from '@auth';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 import { Attempt } from '@problems/models/attempts.models';
 import { AvailableLanguage, Problem } from '@problems/models/problems.models';

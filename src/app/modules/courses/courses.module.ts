@@ -6,7 +6,7 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { NgbModule, NgbProgressbarModule, NgbRatingModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthGuard } from 'app/auth/helpers';
+import { AuthGuard } from  '@auth';
 import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
 import { BlockUIModule } from 'ng-block-ui';
 import { DragulaModule } from 'ng2-dragula';

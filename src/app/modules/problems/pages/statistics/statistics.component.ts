@@ -8,7 +8,7 @@ import { SectionFactsComponent } from '@problems/pages/statistics/section-facts/
 import { SectionTimeComponent } from '@problems/pages/statistics/section-time/section-time.component';
 import { SectionAttemptsForSolveComponent } from '@problems/pages/statistics/section-attempts-for-solve/section-attempts-for-solve.component';
 import { BaseComponent } from '@app/common/classes/base.component';
-import { User } from '@auth/models';
+import { User } from '@auth';
 
 @Component({
   selector: 'app-statistics',

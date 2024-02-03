@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
-import { User } from 'app/auth/models';
-import { AuthService } from 'app/auth/service';
+import { User } from '@auth';
+import { AuthService } from '@auth';
 import { CoursesService } from '../../../../../courses/courses.service';
 import { Attempt } from '../../../../../problems/models/attempts.models';
 import { Problem } from '../../../../../problems/models/problems.models';

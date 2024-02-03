@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'app/shared/services/api.service';
-import { AuthService } from 'app/auth/service';
+import { AuthService } from '@auth';
 import Swal from 'sweetalert2';
 
 @Component({

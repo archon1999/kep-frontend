@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from '@auth/service';
-import { User } from '@auth/models';
+import { AuthService } from '@auth';
+import { User } from '@auth';
 import { CoreConfig } from '@core/types';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

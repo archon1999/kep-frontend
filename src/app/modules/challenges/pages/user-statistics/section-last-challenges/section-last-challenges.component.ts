@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ChallengesStatisticsService } from '@challenges/services';
 import { Challenge } from '@challenges/models/challenges.models';
-import { User } from '@auth/models';
+import { User } from '@auth';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { Observable } from 'rxjs';
 import { PageResult } from '@app/common/classes/page-result';

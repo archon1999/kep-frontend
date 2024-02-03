@@ -6,17 +6,17 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 
-import { AuthService } from 'app/auth/service';
+import { AuthService } from '@auth';
 import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.service';
 import { CoreConfigService } from 'core/services/config.service';
 import { CoreMediaService } from 'core/services/media.service';
 
-import { User } from 'app/auth/models';
+import { User } from '@auth';
 
 import { Router } from '@angular/router';
 
 import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AuthModalComponent } from 'app/auth/auth-modal/auth-modal.component';
+import { AuthModalComponent } from '@app/modules/auth/auth-modal/auth-modal.component';
 import { ApiService } from 'app/shared/services/api.service';
 import { BaseComponent } from '@app/common/classes/base.component';
 import { CoreCommonModule } from '@core/common.module';

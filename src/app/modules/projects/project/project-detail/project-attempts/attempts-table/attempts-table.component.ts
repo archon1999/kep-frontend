@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { User } from 'app/auth/models';
-import { AuthService } from 'app/auth/service';
+import { User } from '@auth';
+import { AuthService } from '@auth';
 import { Project, ProjectAttempt, ProjectAttemptTaskLog } from '../../../../../projects/projects.models';
 import { ProjectsService } from '../../../../../projects/projects.service';
 import { Subject } from 'rxjs';

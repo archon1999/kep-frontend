@@ -3,10 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
-import { environment } from 'environments/environment';
-import { User } from 'app/auth/models';
-import { ApiService } from 'app/shared/services/api.service';
-import { WebsocketService } from 'app/shared/services/websocket';
+import { environment } from '../../../environments/environment';
+import { User } from '@auth';
+import { ApiService } from '@shared/services/api.service';
+import { WebsocketService } from '@shared/services/websocket';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

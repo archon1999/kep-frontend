@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { User } from '@auth/models';
-import { AuthService } from '@auth/service';
+import { User } from '@auth';
+import { AuthService } from '@auth';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ContestStatus } from '@contests/constants/contest-status';

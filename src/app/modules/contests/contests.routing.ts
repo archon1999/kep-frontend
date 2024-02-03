@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { AuthGuard } from '@auth/helpers';
+import { AuthGuard } from  '@auth';
 import { ContestProblemResolver, ContestProblemsResolver, ContestResolver } from '@contests/contests.resolver';
 import { ContestCreateGuard, ContestGuard } from '@contests/contests.guard';
 

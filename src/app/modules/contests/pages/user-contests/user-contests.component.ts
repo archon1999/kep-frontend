@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { PageResult } from '@app/common/classes/page-result';
 import { ContestsService } from '@contests/contests.service';
-import { User } from '@auth/models';
+import { User } from '@auth';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { KepcoinSpendSwalModule } from '@app/modules/kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';

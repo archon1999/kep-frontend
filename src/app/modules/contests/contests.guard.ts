@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { ApiService } from 'app/shared/services/api.service';
-import { AuthService } from 'app/auth/service';
+import { AuthService } from '@auth';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { getResourceById, Resources } from '@app/resources';

@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { Observable } from 'rxjs';
-import { User } from '@auth/models';
+import { User } from '@auth';
 import { ChallengesRating } from '@challenges/models/challenges.models';
 import { ChallengesStatisticsService } from '@challenges/services';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';

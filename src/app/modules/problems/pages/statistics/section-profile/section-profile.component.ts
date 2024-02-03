@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
-import { AuthService } from 'app/auth/service';
+import { AuthService } from '@auth';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';

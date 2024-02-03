@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { User } from 'app/auth/models';
-import { AuthService } from 'app/auth/service';
+import { User } from '@auth';
+import { AuthService } from '@auth';
 import { CourseParticipantReview } from '../../courses.models';
 import { CoursesService } from '../../courses.service';
 import { SwiperOptions } from 'swiper/types/swiper-options';
