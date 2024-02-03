@@ -19,7 +19,7 @@ export class KepIconComponent implements OnInit {
   @Input() size:
     'small-1' | 'small-2' | 'small-3' | 'small-4' |
     'medium-1' | 'medium-2' | 'medium-3' | 'medium-4' | 'medium-5' |
-    'large-1' | 'large-2' | 'large-3' | 'large-4';
+    'large-1' | 'large-2' | 'large-3' | 'large-4' | 'large-5';
 
   pathsNumber = 0;
 

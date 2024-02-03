@@ -50,11 +50,10 @@
     <li ngbDropdown class="nav-item dropdown dropdown-language mr-lg-0 mr-50">
       <div class="nav-link dropdown-toggle cursor-pointer" id="dropdown-flag" ngbDropdownToggle>
         <i class="fi fi-{{ languageOptions[translateService.currentLang].flag }}"></i>
-<!--        <span class="ml-50 selected-language">{{ languageOptions[_translateService.currentLang].title }}</span>-->
       </div>
       <div ngbDropdownMenu>
         <div class="cursor-pointer" *ngFor="let lang of translateService.getLangs()" ngbDropdownItem (click)="setLanguage(lang)">
-          <i class="fi fi-{{ languageOptions[lang].flag }}"></i> {{ languageOptions[lang].title }}
+          <i class="mr-50 fi fi-{{ languageOptions[lang].flag }}"></i> {{ languageOptions[lang].title }}
         </div>
       </div>
     </li>
