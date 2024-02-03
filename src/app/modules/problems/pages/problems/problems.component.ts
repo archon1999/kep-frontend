@@ -24,7 +24,6 @@ import {
 } from '@problems/pages/problems/sections/section-last-contest-problems/section-last-contest-problems.component';
 import { SectionLastAttemptsComponent } from '@problems/pages/problems/sections/section-last-attempts/section-last-attempts.component';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { doScrolling } from '@shared/utils';
 
 @Component({
   selector: 'app-problems',
@@ -55,9 +54,6 @@ import { doScrolling } from '@shared/utils';
 })
 export class ProblemsComponent extends BasePageComponent implements OnInit {
   ngOnInit() {
-    setTimeout(() => {
-      doScrolling(2000, 10000);
-    }, 2000)
     this.loadContentHeader();
   }
 
