@@ -6,8 +6,9 @@
 
     <div class="row">
       <div class="col-lg-10 offset-lg-1">
-        <h1 [@fadeInUpOnEnter] class="mt-1 mb-2">
-          <div class="text-dark">{{ 'Contests' | translate }}</div>
+        <h1 [@fadeInUpOnEnter] class="mt-1 mb-2 text-center">
+          <kep-icon name="contest" size="large-3" type="duotone" color="primary"></kep-icon>
+          <div class="text-dark mt-2 mb-2">{{ 'Contests' | translate }}</div>
         </h1>
 
         @for (contest of contests; track contest) {
@@ -27,7 +28,6 @@
           </kep-pagination>
         }
       </div>
-
 
       <div class="col-lg-2 mt-4 pt-2 d-none d-xl-block">
       </div>
