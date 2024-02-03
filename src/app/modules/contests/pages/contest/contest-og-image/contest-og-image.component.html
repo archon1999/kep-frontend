@@ -2,7 +2,7 @@
   <div class="card text-center bg-contest" #screen>
     <a class="card-header">
       <div class="logo text-left d-flex">
-        <img src="assets/images/logo/logo.webp" height="32" alt="">
+        <img src="assets/images/logo/logo.svg" height="32" alt="">
         <h5 class="ml-75 text-white mt-50 mb-2">KEP.uz</h5>
       </div>
 
@@ -10,7 +10,7 @@
       <br>
         <div class="avatar mt-2 bg-primary p-50 m-0 mb-1">
           <div class="avatar-content">
-            <i data-feather="flag" class="font-medium-5"></i>
+            <kep-icon name="contest" type="duotone" size="medium-5" class=""></kep-icon>
           </div>
         </div>
         <h3 class="text-white">
@@ -34,7 +34,7 @@
         <div class="card-footer justify-content-between d-flex">
           <div>
             <span class="badge badge-glow badge-primary">
-              <i [data-feather]="'problem' | iconName"></i>
+              <kep-icon name="problem" type="duotone" class=""></kep-icon>
               {{ contest.problemsCount }}
             </span>
             <span class="ml-25 badge badge-glow badge-primary">
