@@ -5,16 +5,19 @@
     </span>
     {{ user.username }}
 
-    <span *ngIf="withRating" [class]="{
+    @if (withRating) {
+<span [class]="{
       'badge-light-{{ user.rankTitle | challengesRankColor }}': light
     }" class="badge badge-{{ user.rankTitle | challengesRankColor }}">
-      {{ user.rating }}
-    </span>
+        {{ user.rating }}
+      </span>
+    }
 
-    <span
-      *ngIf="user?.isBot"
-      class="ml-50 mb-50 badge badge-pill badge-light-{{ user.rankTitle | challengesRankColor }}">
-      bot
-    </span>
+    @if (user?.isBot) {
+      <span
+        class="ml-50 mb-50 badge badge-pill badge-light-{{ user.rankTitle | challengesRankColor }}">
+        bot
+      </span>
+    }
   </div>
 </user-popover>

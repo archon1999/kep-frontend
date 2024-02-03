@@ -11,18 +11,22 @@
     </div>
   </div>
 
-  <div *ngIf="usersChart.series[0].data.length > 0">
-    <apex-chart [options]="usersChart"></apex-chart>
-  </div>
+  @if (usersChart.series[0].data.length > 0) {
+    <div>
+      <apex-chart [options]="usersChart"></apex-chart>
+    </div>
+  }
 
   <div class="card-body">
     <div class="avatar-group">
-      <div *ngFor="let user of onlineUsers" class="avatar pull-up">
-        <user-popover [customContent]="true" [username]="user.username">
-          <img [src]="user.avatar" alt="Avatar" height="32" width="32">
-          <span class="avatar-status-online"></span>
-        </user-popover>
-      </div>
+      @for (user of onlineUsers; track user) {
+        <div class="avatar pull-up">
+          <user-popover [customContent]="true" [username]="user.username">
+            <img [src]="user.avatar" alt="Avatar" height="32" width="32">
+            <span class="avatar-status-online"></span>
+          </user-popover>
+        </div>
+      }
     </div>
   </div>
 </div>

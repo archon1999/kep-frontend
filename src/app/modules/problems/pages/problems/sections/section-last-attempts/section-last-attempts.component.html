@@ -13,11 +13,12 @@
   } @else if(data) {
     <div class="card-body">
       <ul class="list-group">
-        <a
-          *ngFor="let attempt of attempts"
-          [routerLink]="Resources.Problem | resourceById : attempt.problemId" class="list-group-item">
-          {{ attempt.problemId }}. {{ attempt.problemTitle }}
-        </a>
+        @for (attempt of attempts; track attempt) {
+          <a
+            [routerLink]="Resources.Problem | resourceById : attempt.problemId" class="list-group-item">
+            {{ attempt.problemId }}. {{ attempt.problemTitle }}
+          </a>
+        }
       </ul>
     </div>
 

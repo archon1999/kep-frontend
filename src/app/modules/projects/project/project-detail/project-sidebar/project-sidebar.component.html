@@ -1,36 +1,37 @@
 <div class="col-12">
-  <div *ngIf="project.purchased" class="card project-{{ project.id }}">
-    <div class="card-header">
-      <div class="card-title">
-        {{ 'Submit' | translate }}
-      </div>
-    </div>
-
-    <div class="card-body">
-      <div class="form-group">
-        <label for=""><strong>{{ 'Technology' | translate }}:</strong></label>
-        <select [(ngModel)]="selectedTechnology" class="form-control">
-          <option [value]="technology.technology" *ngFor="let technology of project.availableTechnologies">
-            {{ technology.technology }}
-          <option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="basicInputFile"><strong>{{ 'File' | translate }}:</strong></label>
-        <div class="custom-file">
-          <input (change)="handleFileInput($event.target.files)" accept=".zip" type="file" class="custom-file-input" id="customFile" />
-          <label class="custom-file-label" for="customFile">
-            {{ this.fileToUpload?.name || 'Max size 1mb' }}
-          </label>
+  @if (project.purchased) {
+    <div class="card project-{{ project.id }}">
+      <div class="card-header">
+        <div class="card-title">
+          {{ 'Submit' | translate }}
         </div>
       </div>
+      <div class="card-body">
+        <div class="form-group">
+          <label><strong>{{ 'Technology' | translate }}:</strong></label>
+          <select [(ngModel)]="selectedTechnology" class="form-control">
+            @for (technology of project.availableTechnologies; track technology) {
+              <option [value]="technology.technology">
+                {{ technology.technology }}
+              <option>
+            }
+            </select>
+            </div>
+            <div class="form-group">
+              <label><strong>{{ 'File' | translate }}:</strong></label>
+              <div class="custom-file">
+                <input (change)="handleFileInput($event.target.files)" accept=".zip" type="file" class="custom-file-input" id="customFile" />
+                <label class="custom-file-label" for="customFile">
+                  {{ this.fileToUpload?.name || 'Max size 1mb' }}
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer text-center">
+            <button (click)="submit()" class="btn btn-sm text-white shadow bg">
+              {{ 'Submit' | translate }}
+            </button>
+          </div>
+        </div>
+      }
     </div>
-
-    <div class="card-footer text-center">
-      <button (click)="submit()" class="btn btn-sm text-white shadow bg">
-        {{ 'Submit' | translate }}
-      </button>
-    </div>
-  </div>
-</div>

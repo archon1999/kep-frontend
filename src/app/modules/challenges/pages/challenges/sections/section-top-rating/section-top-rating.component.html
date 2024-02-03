@@ -7,27 +7,29 @@
     <div class="table-responsive beautiful-table">
       <table class="table table-striped">
         <thead>
-        <tr class="text-white bg-gradient-primary">
-          <th>#</th>
-          <th>{{ 'User' | translate }}</th>
-          <th><i data-feather="bar-chart"></i></th>
-        </tr>
+          <tr class="text-white bg-gradient-primary">
+            <th>#</th>
+            <th>{{ 'User' | translate }}</th>
+            <th><i data-feather="bar-chart"></i></th>
+          </tr>
         </thead>
         <tbody>
-        <tr
-          *ngFor="let challengesRating of challengesRatingList; index as i">
-          <td class="text-dark">
-            {{ i+1 }}
-          </td>
-          <td>
-            <challenges-user-view [user]="challengesRating"></challenges-user-view>
-          </td>
-          <td>
-            <span class="badge badge-{{ challengesRating.rankTitle | challengesRankColor }}">
-              {{ challengesRating.rating }}
-            </span>
-          </td>
-        </tr>
+          @for (challengesRating of challengesRatingList; track challengesRating; let i = $index) {
+            <tr
+              >
+              <td class="text-dark">
+                {{ i+1 }}
+              </td>
+              <td>
+                <challenges-user-view [user]="challengesRating"></challenges-user-view>
+              </td>
+              <td>
+                <span class="badge badge-{{ challengesRating.rankTitle | challengesRankColor }}">
+                  {{ challengesRating.rating }}
+                </span>
+              </td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>

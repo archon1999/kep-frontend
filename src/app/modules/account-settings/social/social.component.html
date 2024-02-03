@@ -13,25 +13,29 @@
           <label for="account-facebook">Telegram</label>
           <input type="text" [(ngModel)]="userSocial.telegram" id="account-facebook"
             name="account-facebook" class="form-control" placeholder="Add link" />
-          <p class="text-danger" *ngIf="errors?.telegram">{{ errors.telegram[0] }}</p>
+            @if (errors?.telegram) {
+              <p class="text-danger">{{ errors.telegram[0] }}</p>
+            }
+          </div>
         </div>
-      </div>
 
-      <div class="col-12 col-sm-6">
-        <div class="form-group">
-          <label for="account-twitter">Codeforces Handle</label>
-          <input type="text" [(ngModel)]="userSocial.codeforcesHandle" id="account-twitter"
-            name="account-twitter" class="form-control" placeholder="Add link" />
-          <p class="text-danger" *ngIf="errors?.codeforcesHandle">{{ errors.codeforcesHandle[0] }}</p>
+        <div class="col-12 col-sm-6">
+          <div class="form-group">
+            <label for="account-twitter">Codeforces Handle</label>
+            <input type="text" [(ngModel)]="userSocial.codeforcesHandle" id="account-twitter"
+              name="account-twitter" class="form-control" placeholder="Add link" />
+              @if (errors?.codeforcesHandle) {
+                <p class="text-danger">{{ errors.codeforcesHandle[0] }}</p>
+              }
+            </div>
+          </div>
+
+          <div class="col-12">
+            <!-- submit and cancel button -->
+            <button (click)="save()" type="submit" class="btn btn-primary mr-1 mt-1" rippleEffect>Save</button>
+            <button (click)="reset()" type="reset" class="btn btn-outline-secondary mt-1" rippleEffect>Reset</button>
+          </div>
         </div>
-      </div>
-      
-      <div class="col-12">
-        <!-- submit and cancel button -->
-        <button (click)="save()" type="submit" class="btn btn-primary mr-1 mt-1" rippleEffect>Save</button>
-        <button (click)="reset()" type="reset" class="btn btn-outline-secondary mt-1" rippleEffect>Reset</button>
+
       </div>
     </div>
-
-  </div>
-</div>

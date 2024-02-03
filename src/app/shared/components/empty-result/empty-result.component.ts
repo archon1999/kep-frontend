@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { GlobalService } from '@app/common/global.service';
 
 @Component({
   selector: 'empty-result',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './empty-result.component.html',
   styleUrl: './empty-result.component.scss'
 })

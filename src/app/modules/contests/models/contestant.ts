@@ -4,7 +4,10 @@ import { ContestProblemInfo } from '@contests/models/contest-problem-info';
 export class Contestant {
   constructor(
     public username: string,
-    public team: Array<ContestantTeamMember>,
+    public team: {
+      name: string;
+      members: Array<ContestantTeamMember>;
+    },
     public type: number,
     public problemsInfo: Array<ContestProblemInfo>,
     public points: number,

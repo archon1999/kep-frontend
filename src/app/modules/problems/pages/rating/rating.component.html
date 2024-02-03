@@ -8,16 +8,18 @@
           <tr class="bg-gradient-primary">
             <th>#</th>
             <th>{{ 'USER' | translate }}</th>
-            <th *ngFor="let difficulty of difficultyLabels" class="text-center">
-              <table-ordering
-                (change)="orderingChange($event)"
-                [justifyContent]="'between'"
-                [ordering]="difficulty"
-                [reverse]="true"
-                [value]="ordering">
-                {{ difficulty | uppercase | translate }}
-              </table-ordering>
-            </th>
+            @for (difficulty of difficultyLabels; track difficulty) {
+              <th class="text-center">
+                <table-ordering
+                  (change)="orderingChange($event)"
+                  [justifyContent]="'between'"
+                  [ordering]="difficulty"
+                  [reverse]="true"
+                  [value]="ordering">
+                  {{ difficulty | uppercase | translate }}
+                </table-ordering>
+              </th>
+            }
 
             <th class="text-center">
               <table-ordering
@@ -43,43 +45,45 @@
           </tr>
         </ng-container>
         <ng-container body>
-          <tr
-            *ngFor="let problemsRating of problemsRatingList; index as i"
-            [ngClass]="{'bg-light-primary': currentUser?.username == problemsRating.user.username }">
-            <td>{{ problemsRating.rowIndex }}</td>
-            <td>
-              <contestant-view [user]="problemsRating.user"></contestant-view>
-            </td>
-            <td class="text-center text-success">{{ problemsRating.beginner }}</td>
-            <td class="text-center text-info">{{ problemsRating.basic }}</td>
-            <td class="text-center text-blue">{{ problemsRating.normal }}</td>
-            <td class="text-center text-primary">{{ problemsRating.medium }}</td>
-            <td class="text-center text-warning">{{ problemsRating.advanced }}</td>
-            <td class="text-center text-danger">{{ problemsRating.hard }}</td>
-            <td class="text-center text-dark">{{ problemsRating.extremal }}</td>
-            <td class="text-center">
-              <span class="badge badge-primary badge-glow">
-                {{ problemsRating.solved }}
-              </span>
-            </td>
-            <td class="text-center">
-              <span class="badge badge-light-success badge-glow">
-                {{ problemsRating.rating }}
-              </span>
-            </td>
-          </tr>
+          @for (problemsRating of problemsRatingList; track problemsRating; let i = $index) {
+            <tr
+              [ngClass]="{'bg-light-primary': currentUser?.username == problemsRating.user.username }">
+              <td>{{ problemsRating.rowIndex }}</td>
+              <td>
+                <contestant-view [user]="problemsRating.user"></contestant-view>
+              </td>
+              <td class="text-center text-success">{{ problemsRating.beginner }}</td>
+              <td class="text-center text-info">{{ problemsRating.basic }}</td>
+              <td class="text-center text-blue">{{ problemsRating.normal }}</td>
+              <td class="text-center text-primary">{{ problemsRating.medium }}</td>
+              <td class="text-center text-warning">{{ problemsRating.advanced }}</td>
+              <td class="text-center text-danger">{{ problemsRating.hard }}</td>
+              <td class="text-center text-dark">{{ problemsRating.extremal }}</td>
+              <td class="text-center">
+                <span class="badge badge-primary badge-glow">
+                  {{ problemsRating.solved }}
+                </span>
+              </td>
+              <td class="text-center">
+                <span class="badge badge-light-success badge-glow">
+                  {{ problemsRating.rating }}
+                </span>
+              </td>
+            </tr>
+          }
         </ng-container>
         <ng-container pagination>
-          <kep-pagination
-            (pageChange)="pageChange($event)"
-            (pageSizeChange)="pageSizeChange($event)"
-            *ngIf="total"
-            [collectionSize]="total"
-            [maxSize]="maxSize"
-            [pageOptions]="pageOptions"
-            [pageSize]="pageSize"
-            [page]="pageNumber">
-          </kep-pagination>
+          @if (total) {
+            <kep-pagination
+              (pageChange)="pageChange($event)"
+              (pageSizeChange)="pageSizeChange($event)"
+              [collectionSize]="total"
+              [maxSize]="maxSize"
+              [pageOptions]="pageOptions"
+              [pageSize]="pageSize"
+              [page]="pageNumber">
+            </kep-pagination>
+          }
         </ng-container>
       </kep-table>
 
@@ -107,17 +111,18 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      *ngFor="let userRating of rating.data; index as i"
-                      [class]="currentUser?.username == userRating.username ? 'bg-light'+rating.color : ''">
-                      <td class="text-center">{{ i + 1 }}</td>
-                      <td><contestant-view [user]="userRating"></contestant-view></td>
-                      <td class="text-center">
-                        <span class="badge badge-glow badge-{{ rating.color }}">
-                          {{ userRating.solved }}
-                        </span>
-                      </td>
-                    </tr>
+                    @for (userRating of rating.data; track userRating; let i = $index) {
+                      <tr
+                        [class]="currentUser?.username == userRating.username ? 'bg-light'+rating.color : ''">
+                        <td class="text-center">{{ i + 1 }}</td>
+                        <td><contestant-view [user]="userRating"></contestant-view></td>
+                        <td class="text-center">
+                          <span class="badge badge-glow badge-{{ rating.color }}">
+                            {{ userRating.solved }}
+                          </span>
+                        </td>
+                      </tr>
+                    }
                   </tbody>
                 </table>
               </div>

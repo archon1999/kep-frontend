@@ -1,30 +1,29 @@
-<div *ngIf="!contest.isFinished()">
-  <ngx-countdown [time]="leftTime" [render]="render">
-    <ng-template #render let-data>
-      <div class="d-flex justify-content-between" [ngbTooltip]="contest.startTime | localizedDate:'medium'">
-        <div class="countdown text-center">
-          <h5 class="clock-val" [ngStyle]="{'color': clockColor}">{{ data.fragments[0] }}</h5>
-          <h5 class="clock-text" [ngStyle]="{'color': textColor}">{{ 'DAY' | translate }}</h5>
+@if (!contest.isFinished()) {
+  <div>
+    <ngx-countdown [time]="leftTime" [render]="render">
+      <ng-template #render let-data>
+        <div class="d-flex justify-content-between" [ngbTooltip]="contest.startTime | localizedDate:'medium'">
+          <div class="countdown text-center">
+            <h5 class="clock-val" [ngStyle]="{'color': clockColor}">{{ data.fragments[0] }}</h5>
+            <h5 class="clock-text" [ngStyle]="{'color': textColor}">{{ 'DAY' | translate }}</h5>
+          </div>
+          <div class="countdown text-center">
+            <h5 class="clock-val" [ngStyle]="{'color': clockColor}">{{ data.fragments[1] }}</h5>
+            <h5 class="clock-text" [ngStyle]="{'color': textColor}">{{ 'HOUR' | translate }}</h5>
+          </div>
+          <div class="countdown text-center">
+            <h5 class="clock-val" [ngStyle]="{'color': clockColor}">{{ data.fragments[2] }}</h5>
+            <h5 class="clock-text" [ngStyle]="{'color': textColor}">{{ 'MINUTE' | translate }}</h5>
+          </div>
+          <div class="countdown text-center">
+            <h5 class="clock-val" [ngStyle]="{'color': clockColor}">{{ data.fragments[3] }}</h5>
+            <h5 class="clock-text" [ngStyle]="{'color': textColor}">{{ 'SECOND' | translate }}</h5>
+          </div>
         </div>
-
-        <div class="countdown text-center">
-          <h5 class="clock-val" [ngStyle]="{'color': clockColor}">{{ data.fragments[1] }}</h5>
-          <h5 class="clock-text" [ngStyle]="{'color': textColor}">{{ 'HOUR' | translate }}</h5>
-        </div>
-
-        <div class="countdown text-center">
-          <h5 class="clock-val" [ngStyle]="{'color': clockColor}">{{ data.fragments[2] }}</h5>
-          <h5 class="clock-text" [ngStyle]="{'color': textColor}">{{ 'MINUTE' | translate }}</h5>
-        </div>
-
-        <div class="countdown text-center">
-          <h5 class="clock-val" [ngStyle]="{'color': clockColor}">{{ data.fragments[3] }}</h5>
-          <h5 class="clock-text" [ngStyle]="{'color': textColor}">{{ 'SECOND' | translate }}</h5>
-        </div>
-      </div>
-    </ng-template>
-  </ngx-countdown>
-</div>
+      </ng-template>
+    </ngx-countdown>
+  </div>
+}
 
 <ng-template #finishModal let-modal>
   <div class="modal-header">
@@ -38,7 +37,7 @@
   </div>
   <div class="modal-footer">
     <a [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'standings']"
-       class="btn btn-primary btn-relief" rippleEffect (click)="modal.dismiss('Cross click')">
+      class="btn btn-primary btn-relief" rippleEffect (click)="modal.dismiss('Cross click')">
       {{ 'CONTESTS.STANDINGS' | translate }}
     </a>
   </div>
@@ -56,7 +55,7 @@
   </div>
   <div class="modal-footer">
     <a [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problems']"
-       class="btn btn-primary btn-relief" rippleEffect (click)="modal.dismiss('Cross click')">
+      class="btn btn-primary btn-relief" rippleEffect (click)="modal.dismiss('Cross click')">
       {{ 'CONTESTS.PROBLEMS' | translate }}
     </a>
   </div>

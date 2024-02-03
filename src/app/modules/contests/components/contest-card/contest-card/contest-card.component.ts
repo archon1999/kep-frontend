@@ -59,20 +59,16 @@ export class ContestCardComponent implements OnInit {
     );
   }
 
-  openRegistrationModal(content) {
-    if (this.contest.participationType == 1) {
-      this.service.contestRegistration(this.contest.id).subscribe((result: any) => {
-        if (result.success) {
-          this.contest.userInfo.isRegistered = true;
-        }
-      });
-    } else {
-      this.modalService.open(content, { centered: true });
-    }
+  openRegistrationModal() {
+    this.service.contestRegistration(this.contest.id).subscribe((result: any) => {
+      if (result.success) {
+        this.contest.userInfo.isRegistered = true;
+      }
+    });
   }
 
   cancelRegistration() {
-    if (this.contest.participationType == 1) {
+    if (this.contest.participationType === 1) {
       this.api.get(`contests/${ this.contest.id }/cancel-registration/`).subscribe((result: any) => {
         if (result.success) {
           this.contest.userInfo.isRegistered = false;

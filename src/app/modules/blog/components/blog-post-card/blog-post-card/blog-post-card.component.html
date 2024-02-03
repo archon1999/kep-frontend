@@ -2,46 +2,48 @@
   <a [routerLink]="['/learn', 'blog', 'post', blog.id]" loading="lazy" class="card-img">
     <img [ngStyle]="{'max-height.px': cardImgHeight}" class="swiper-lazy card-img-top img-fluid" [src]="blog.image"
       alt="Blog Post pic" />
-  </a>
-  <div class="card-body">
-    <h4 class="card-title">
-      <a [routerLink]="['/learn', 'blog', 'post', blog.id]" class="blog-title-truncate text-body-heading">
-        {{ blog.title }}
-      </a>
-    </h4>
-    <div class="media">
-      <div class="avatar mr-50">
-        <img [src]="blog.author.avatar" alt="Avatar" width="32" height="32" />
-      </div>
-      <div class="media-body">
-        <small><a href="javascript:void(0);" class="text-body text-primary">
+    </a>
+    <div class="card-body">
+      <h4 class="card-title">
+        <a [routerLink]="['/learn', 'blog', 'post', blog.id]" class="blog-title-truncate text-body-heading">
+          {{ blog.title }}
+        </a>
+      </h4>
+      <div class="media">
+        <div class="avatar mr-50">
+          <img [src]="blog.author.avatar" alt="Avatar" width="32" height="32" />
+        </div>
+        <div class="media-body">
+          <small><a href="javascript:void(0);" class="text-body text-primary">
             <strong>
               <user-popover [username]="blog.author.username">
               </user-popover>
             </strong>
           </a></small>
-        <span class="text-muted ml-50 mr-25">| </span>
-        <small class="text-muted">
-          <span class="text-success">{{ blog.created }}</span>
-        </small>
+          <span class="text-muted ml-50 mr-25">| </span>
+          <small class="text-muted">
+            <span class="text-success">{{ blog.created }}</span>
+          </small>
+        </div>
       </div>
-    </div>
-    <div class="my-1 py-25">
-      <div *ngFor="let tag of blog.tags" class="badge mr-50 bg-light-info">
-        {{ tag }}
+      <div class="my-1 py-25">
+        @for (tag of blog.tags; track tag) {
+          <div class="badge mr-50 bg-light-info">
+            {{ tag }}
+          </div>
+        }
       </div>
-    </div>
-    <p class="card-text blog-content-truncate"></p>
-    <hr />
-    <div class="d-flex justify-content-between align-items-center">
-      <div class="d-flex align-items-center text-primary">
-        <i data-feather="message-square" class="font-medium-1 mr-50"></i>
-        <span class="font-weight-bold pr-2">{{ blog.commentsCount }}</span>
-        <i data-feather="heart" class="font-medium-1 mr-50"></i>
-        <span class="font-weight-bold pr-2">{{ blog.likesCount }}</span>
-        <i data-feather="eye" class="font-medium-1 mr-50"></i>
-        <span class="font-weight-bold pr-2">{{ blog.views }}</span>
+      <p class="card-text blog-content-truncate"></p>
+      <hr />
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center text-primary">
+          <i data-feather="message-square" class="font-medium-1 mr-50"></i>
+          <span class="font-weight-bold pr-2">{{ blog.commentsCount }}</span>
+          <i data-feather="heart" class="font-medium-1 mr-50"></i>
+          <span class="font-weight-bold pr-2">{{ blog.likesCount }}</span>
+          <i data-feather="eye" class="font-medium-1 mr-50"></i>
+          <span class="font-weight-bold pr-2">{{ blog.views }}</span>
+        </div>
       </div>
     </div>
   </div>
-</div>

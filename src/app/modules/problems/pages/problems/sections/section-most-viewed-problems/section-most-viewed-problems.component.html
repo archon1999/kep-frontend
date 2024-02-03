@@ -13,11 +13,13 @@
   } @else if(data) {
     <div class="card-body">
       <ul class="list-group">
-        <a
-          *ngFor="let problem of problems" class="list-group-item"
-          [routerLink]="Resources.Problem | resourceById : problem.id">
-          {{ problem.id }}. {{ problem.title }}
-        </a>
+        @for (problem of problems; track problem) {
+          <a
+            class="list-group-item"
+            [routerLink]="Resources.Problem | resourceById : problem.id">
+            {{ problem.id }}. {{ problem.title }}
+          </a>
+        }
       </ul>
     </div>
     <div class="card-footer">

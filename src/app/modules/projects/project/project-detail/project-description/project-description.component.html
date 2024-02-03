@@ -27,58 +27,66 @@
       </span>
     </div>
     <div class="project-tags">
-      <span
-        class="badge-pill gradient project-tag"
-        *ngFor="let tag of project.tags">
-        {{ tag.name }}
-      </span>
+      @for (tag of project.tags; track tag) {
+        <span
+          class="badge-pill gradient project-tag"
+          >
+          {{ tag.name }}
+        </span>
+      }
     </div>
     <div class="project-technologies">
-      <span
-        class="badge-pill project-technology technology-{{ technology.technology }}"
-        *ngFor="let technology of project.availableTechnologies">
-        {{ technology.technology }}
-      </span>
+      @for (technology of project.availableTechnologies; track technology) {
+        <span
+          class="badge-pill project-technology technology-{{ technology.technology }}"
+          >
+          {{ technology.technology }}
+        </span>
+      }
     </div>
   </div>
   <hr>
-</div>
-
-<div class="project-body">
-  <div class="project-description" [innerHTML]="project.description">
   </div>
 
-  <hr>
-
-  <div class="project-tasks">
-    <div class="title">{{ 'Tasks' | translate }}</div>
-    <div class="accordion collapse-margin">
-      <ngb-accordion [destroyOnHide]="false" [closeOthers]="true">
-        <ngb-panel *ngFor="let task of project.tasks" id="panelMargin{{ task.number }}" [cardClass]="'collapse-margin'">
-          <ng-template ngbPanelTitle>
-            <span>{{ task.number }}. {{ task.title }}</span>
-          </ng-template>
-          <ng-template ngbPanelContent>
-            <div [innerHTML]="task.description"></div>
-          </ng-template>
-        </ngb-panel>
-      </ngb-accordion>
+  <div class="project-body">
+    <div class="project-description" [innerHTML]="project.description">
     </div>
-  </div>
 
-  <div class="project-technologies">
-    <div class="title">{{ 'Technologies' | translate }}</div>
-    <div class="accordion collapse-margin">
-      <ngb-accordion [destroyOnHide]="false" [closeOthers]="true">
-        <ngb-panel *ngFor="let technology of project.availableTechnologies; index as i" id="panelMargin{{ i }}" [cardClass]="'collapse-margin'">
-          <ng-template ngbPanelTitle>
-            <span>{{ technology.technology }}</span>
-          </ng-template>
-          <ng-template ngbPanelContent>
-            <div [innerHTML]="technology.info"></div>
-          </ng-template>
-        </ngb-panel>
-      </ngb-accordion>
+    <hr>
+
+      <div class="project-tasks">
+        <div class="title">{{ 'Tasks' | translate }}</div>
+        <div class="accordion collapse-margin">
+          <ngb-accordion [destroyOnHide]="false" [closeOthers]="true">
+            @for (task of project.tasks; track task) {
+              <ngb-panel id="panelMargin{{ task.number }}" [cardClass]="'collapse-margin'">
+                <ng-template ngbPanelTitle>
+                  <span>{{ task.number }}. {{ task.title }}</span>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <div [innerHTML]="task.description"></div>
+                </ng-template>
+              </ngb-panel>
+            }
+          </ngb-accordion>
+        </div>
+      </div>
+
+      <div class="project-technologies">
+        <div class="title">{{ 'Technologies' | translate }}</div>
+        <div class="accordion collapse-margin">
+          <ngb-accordion [destroyOnHide]="false" [closeOthers]="true">
+            @for (technology of project.availableTechnologies; track technology; let i = $index) {
+              <ngb-panel id="panelMargin{{ i }}" [cardClass]="'collapse-margin'">
+                <ng-template ngbPanelTitle>
+                  <span>{{ technology.technology }}</span>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <div [innerHTML]="technology.info"></div>
+                </ng-template>
+              </ngb-panel>
+            }
+          </ngb-accordion>
+        </div>
+      </div>
     </div>
-  </div>
-</div>

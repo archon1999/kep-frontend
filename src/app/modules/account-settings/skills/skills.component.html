@@ -85,92 +85,89 @@
       </div>
       <div class="col-12">
         <div action="#" class="invoice-repeater">
-          <div *ngFor="let userTechnology of userTechnologies; let i = index" @heightIn>
-            <div class="row d-flex align-items-end">
-              <div class="col-md-4 col-12">
-                <div class="form-group">
-                  <label for="itemName{{ i }}">Text</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="userTechnology.text"
-                    name="text{{ i }}"
-                    id="text{{ i }}"
-                    placeholder=""
-                  />
+          @for (userTechnology of userTechnologies; track userTechnology; let i = $index) {
+            <div @heightIn>
+              <div class="row d-flex align-items-end">
+                <div class="col-md-4 col-12">
+                  <div class="form-group">
+                    <label for="itemName{{ i }}">Text</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="userTechnology.text"
+                      name="text{{ i }}"
+                      id="text{{ i }}"
+                      placeholder=""
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-12">
+                    <div class="form-group">
+                      <label for="iconClass{{ i }}">Dev Icon Class</label>
+                      <ng-select
+                        [items]="devIcons"
+                        [(ngModel)]="userTechnology.devIconClass"
+                        [ngModelOptions]="{standalone: true}">
+                        <ng-template ng-option-tmp ng-label-tmp let-item="item">
+                          <i [class]="item"></i>
+                          {{ item }}
+                        </ng-template>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="col-md-2 col-12">
+                    <div class="form-group">
+                      <label for="color{{ i }}">Badge Color</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="color{{ i }}"
+                        name="color{{ i }}"
+                        [(colorPicker)]="userTechnology.badgeColor"
+                        [(ngModel)]="userTechnology.badgeColor"
+                        placeholder=""
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-2 col-12">
+                      <div class="form-group">
+                        <span class="badge"
+                          [style.background]="userTechnology.badgeColor"
+                          [style.box-shadow]="'0px 0px 10px' + userTechnology.badgeColor">
+                          <i class="{{ userTechnology.devIconClass }} "></i>
+                          {{ userTechnology.text }}
+                        </span>
+                      </div>
+                    </div>
+                    <div class="col-md-2 col-12 mb-50">
+                      <div class="form-group">
+                        <button class="btn btn-outline-danger text-nowrap px-1" (click)="deleteTechnology(i)" rippleEffect>
+                          <i data-feather="x" class="mr-25"></i>
+                          <span>Delete</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <hr />
                 </div>
-              </div>
-        
-              <div class="col-md-4 col-12">
-                <div class="form-group">
-                  <label for="iconClass{{ i }}">Dev Icon Class</label>
-                  <ng-select
-                    [items]="devIcons"
-                    [(ngModel)]="userTechnology.devIconClass"
-                    [ngModelOptions]="{standalone: true}">
-                    <ng-template ng-option-tmp ng-label-tmp let-item="item">
-                      <i [class]="item"></i>
-                      {{ item }}
-                    </ng-template>
-                  </ng-select>
-
-                </div>
-              </div>
-        
-              <div class="col-md-2 col-12">
-                <div class="form-group">
-                  <label for="color{{ i }}">Badge Color</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="color{{ i }}"
-                    name="color{{ i }}"
-                    [(colorPicker)]="userTechnology.badgeColor"
-                    [(ngModel)]="userTechnology.badgeColor"
-                    placeholder=""
-                  />
-                </div>
-              </div>
-        
-              <div class="col-md-2 col-12">
-                <div class="form-group">
-                  <span class="badge"
-                    [style.background]="userTechnology.badgeColor"
-                    [style.box-shadow]="'0px 0px 10px' + userTechnology.badgeColor">
-                    <i class="{{ userTechnology.devIconClass }} "></i>
-                    {{ userTechnology.text }}
-                  </span>
-                </div>
-              </div>
-        
-              <div class="col-md-2 col-12 mb-50">
-                <div class="form-group">
-                  <button class="btn btn-outline-danger text-nowrap px-1" (click)="deleteTechnology(i)" rippleEffect>
-                    <i data-feather="x" class="mr-25"></i>
-                    <span>Delete</span>
-                  </button>
-                </div>
+              }
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <button class="btn btn-icon btn-primary" type="button" (click)="addTechnology()" rippleEffect>
+                  <i data-feather="plus" class="mr-25"></i>
+                  <span>Add New</span>
+                </button>
               </div>
             </div>
-            <hr />
           </div>
-        </div>
-        <div class="row">
           <div class="col-12">
-            <button class="btn btn-icon btn-primary" type="button" (click)="addTechnology()" rippleEffect>
-              <i data-feather="plus" class="mr-25"></i>
-              <span>Add New</span>
-            </button>
+            <button (click)="save()" type="submit" class="btn btn-primary mt-1 mr-1" rippleEffect>Save</button>
+            <button (click)="reset()" type="reset" class="btn btn-outline-secondary mt-1" rippleEffect>Reset</button>
           </div>
         </div>
-      </div>
-      <div class="col-12">
-        <button (click)="save()" type="submit" class="btn btn-primary mt-1 mr-1" rippleEffect>Save</button>
-        <button (click)="reset()" type="reset" class="btn btn-outline-secondary mt-1" rippleEffect>Reset</button>
       </div>
     </div>
-  </div>
-</div>
 
-<nouslider-css></nouslider-css>
-<ng-select-css></ng-select-css>
+    <nouslider-css></nouslider-css>
+    <ng-select-css></ng-select-css>

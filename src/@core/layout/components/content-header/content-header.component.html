@@ -16,10 +16,12 @@
       </div>
     </div>
 
-    <div *ngIf="contentHeader.refreshVisible" class="text-right" [@fadeInUp]="animationState">
-      <button ngbTooltip="{{ 'Reload' | translate }}" (click)="refresh.next(null)" rippleEffect class="btn btn-sm btn-primary">
-        <i data-feather="refresh-cw"></i>
-      </button>
-    </div>
+    @if (contentHeader.refreshVisible) {
+      <div class="text-right" [@fadeInUp]="animationState">
+        <button ngbTooltip="{{ 'Reload' | translate }}" (click)="refresh.next(null)" rippleEffect class="btn btn-sm btn-primary">
+          <i data-feather="refresh-cw"></i>
+        </button>
+      </div>
+    }
   </div>
 }

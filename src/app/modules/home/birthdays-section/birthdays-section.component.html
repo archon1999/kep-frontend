@@ -3,34 +3,38 @@
     <h4><strong>{{ 'BirthDays' | translate }}</strong></h4>
   </div>
 
-  <div class="item" *ngIf="skeletonVisible">
-    <ngx-skeleton-loader
-      count="5"
-      animation="pulse"
-      appearance="line"
-      [theme]="{height: '70px', background: 'var(--skeleton-color)'}"
-    ></ngx-skeleton-loader>
-  </div>
+  @if (skeletonVisible) {
+    <div class="item">
+      <ngx-skeleton-loader
+        count="5"
+        animation="pulse"
+        appearance="line"
+        [theme]="{height: '70px', background: 'var(--skeleton-color)'}"
+      ></ngx-skeleton-loader>
+    </div>
+  }
 
   <div class="media-list">
-    <div class="media" *ngFor="let birthDay of birthDays">
-      <a class="media-left" href="javascript:void(0)">
-        <img
-          class="media-object rounded-circle"
-          src="{{ birthDay.avatar }}"
-          alt="Avatar"
-          height="48"
-          width="48"
-        />
-      </a>
-      <div class="media-body">
-        <h5 class="media-heading">
-          <user-popover [username]="birthDay.username"></user-popover>
-        </h5>
-        <span class="badge badge-light-primary">
-          {{ birthDay.date }}
-        </span>
-      </div>
+    @for (birthDay of birthDays; track birthDay) {
+      <div class="media">
+        <a class="media-left" href="javascript:void(0)">
+          <img
+            class="media-object rounded-circle"
+            src="{{ birthDay.avatar }}"
+            alt="Avatar"
+            height="48"
+            width="48"
+            />
+          </a>
+          <div class="media-body">
+            <h5 class="media-heading">
+              <user-popover [username]="birthDay.username"></user-popover>
+            </h5>
+            <span class="badge badge-light-primary">
+              {{ birthDay.date }}
+            </span>
+          </div>
+        </div>
+      }
     </div>
   </div>
-</div>

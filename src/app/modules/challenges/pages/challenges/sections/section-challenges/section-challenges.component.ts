@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ChallengeCardComponent } from '@challenges/components/challenge-card/challenge-card.component';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -13,7 +13,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 @Component({
   selector: 'section-challenges',
   standalone: true,
-  imports: [CommonModule, ChallengeCardComponent, KepPaginationComponent, NgxSkeletonLoaderModule, SpinnerComponent],
+  imports: [ChallengeCardComponent, KepPaginationComponent, NgxSkeletonLoaderModule, SpinnerComponent],
   templateUrl: './section-challenges.component.html',
   styleUrl: './section-challenges.component.scss'
 })

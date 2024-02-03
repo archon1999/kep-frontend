@@ -1,21 +1,14 @@
 <div class="form-group">
-  <div class="custom-control custom-control-info custom-checkbox" *ngIf="currentUser">
-    <input type="checkbox" class="custom-control-input" [(ngModel)]="myAttempts" (change)="reloadAttempts()"
-      [ngModelOptions]="{standalone: true}" id="myAttempts" />
-    <label class="custom-control-label" for="myAttempts">{{ 'MY_ATTEMPTS' | translate }}</label>
+  @if (currentUser) {
+    <div class="custom-control custom-control-info custom-checkbox">
+      <input type="checkbox" class="custom-control-input" [(ngModel)]="myAttempts" (change)="reloadAttempts()"
+        [ngModelOptions]="{standalone: true}" id="myAttempts" />
+        <label class="custom-control-label" for="myAttempts">{{ 'MY_ATTEMPTS' | translate }}</label>
+      </div>
+    }
   </div>
-</div>
 
-<attempts-table [project]="project" [attempts]="attempts"></attempts-table>
-<ngb-pagination *ngIf="attempts.length > 0" [collectionSize]="totalAttemptsCount" [(page)]="currentPage" [pageSize]="10"
-  [maxSize]="5" (pageChange)="reloadAttempts()" aria-label="Default pagination"
-  class="d-flex justify-content-center mt-2">
-  <ng-template ngbPaginationPrevious>
-    <span [data-feather]="'chevron-left'" [size]="18" [class]="'font-weight-bolder'">
-    </span>
-  </ng-template>
-  <ng-template ngbPaginationNext>
-    <span [data-feather]="'chevron-right'" [size]="18" [class]="'font-weight-bolder'">
-    </span>
-  </ng-template>
-</ngb-pagination>
+  <attempts-table [project]="project" [attempts]="attempts"></attempts-table>
+  @if (attempts.length > 0) {
+
+  }

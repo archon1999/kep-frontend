@@ -28,11 +28,21 @@
   </span>
 </div>
 
-<div *ngIf="withOpponents">
-  <div class="mb-2 d-sm-none d-md-none d-lg-flex justify-content-center text-dark" *ngFor="let opponent of statistics.opponents">
-    <challenges-user-view [user]="opponent"></challenges-user-view>
-    <span class="ml-1 font-medium-2 text-success" *ngIf="opponent.status == 1">W</span>
-    <span class="ml-1 font-medium-2 text-secondary" *ngIf="opponent.status == 0">D</span>
-    <span class="ml-1 font-medium-2 text-danger" *ngIf="opponent.status == -1">L</span>
+@if (withOpponents) {
+  <div>
+    @for (opponent of statistics.opponents; track opponent) {
+      <div class="mb-2 d-sm-none d-md-none d-lg-flex justify-content-center text-dark">
+        <challenges-user-view [user]="opponent"></challenges-user-view>
+        @if (opponent.status == 1) {
+          <span class="ml-1 font-medium-2 text-success">W</span>
+        }
+        @if (opponent.status == 0) {
+          <span class="ml-1 font-medium-2 text-secondary">D</span>
+        }
+        @if (opponent.status == -1) {
+          <span class="ml-1 font-medium-2 text-danger">L</span>
+        }
+      </div>
+    }
   </div>
-</div>
+}

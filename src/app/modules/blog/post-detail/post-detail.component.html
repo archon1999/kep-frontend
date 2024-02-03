@@ -34,21 +34,23 @@
 
     <div class="post-info">
       <hr>
-      <div class="post-tags mt-1">
-        <span class="badge badge-primary mb-1" *ngFor="let tag of blogPost.tags">{{ tag }}</span>
-      </div>
+        <div class="post-tags mt-1">
+          @for (tag of blogPost.tags; track tag) {
+            <span class="badge badge-primary mb-1">{{ tag }}</span>
+          }
+        </div>
 
-      <div class="post-dynamic-meta mt-1 mb-2">
-        <button class="btn btn-danger round btn-sm" (click)="like()">
-          <kep-icon class="" name="heart"></kep-icon>
-          <span class="btn-text-inner pl-1">{{ blogPost.likesCount }}</span>
-        </button>
-      </div>
-      <hr>
+        <div class="post-dynamic-meta mt-1 mb-2">
+          <button class="btn btn-danger round btn-sm" (click)="like()">
+            <kep-icon class="" name="heart"></kep-icon>
+            <span class="btn-text-inner pl-1">{{ blogPost.likesCount }}</span>
+          </button>
+        </div>
+        <hr>
 
-      <comments [blogPost]="blogPost"></comments>
+          <comments [blogPost]="blogPost"></comments>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<quill-css></quill-css>
+    <quill-css></quill-css>

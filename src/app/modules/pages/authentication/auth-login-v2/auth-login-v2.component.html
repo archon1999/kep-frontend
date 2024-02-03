@@ -24,62 +24,71 @@
               aria-describedby="login-username"
               autofocus=""
               tabindex="1"
-            />
-            <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-              <div *ngIf="f.username.errors.required">required</div>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="d-flex justify-content-between">
-              <label for="login-password">{{ 'Password' | translate }}</label
-              >
-              <!--
-                <a routerLink="/pages/authentication/forgot-password-v2"><small>Forgot Password?</small></a>
-              -->
-            </div>
-            <div class="input-group input-group-merge form-password-toggle">
-              <input
-                [type]="passwordTextType ? 'text' : 'password'"
-                formControlName="password"
-                class="form-control form-control-merge"
-                [ngClass]="{ 'is-invalid error': submitted && f.password.errors }"
-                placeholder="············"
-                aria-describedby="login-password"
-                tabindex="2"
               />
-              <div class="input-group-append">
-                <span class="input-group-text cursor-pointer" (click)="togglePasswordTextType()">
-                  @if (passwordTextType){
-                    <kep-icon type="duotone" name="toggle-on"></kep-icon>
-                  } @else {
-                    <kep-icon type="duotone" name="toggle-off"></kep-icon>
+              @if (submitted && f.username.errors) {
+                <div class="invalid-feedback">
+                  @if (f.username.errors.required) {
+                    <div>required</div>
                   }
-                </span>
+                </div>
+              }
+            </div>
+            <div class="form-group">
+              <div class="d-flex justify-content-between">
+                <label for="login-password">{{ 'Password' | translate }}</label
+                  >
+                  <!--
+                  <a routerLink="/pages/authentication/forgot-password-v2"><small>Forgot Password?</small></a>
+                  -->
+                </div>
+                <div class="input-group input-group-merge form-password-toggle">
+                  <input
+                    [type]="passwordTextType ? 'text' : 'password'"
+                    formControlName="password"
+                    class="form-control form-control-merge"
+                    [ngClass]="{ 'is-invalid error': submitted && f.password.errors }"
+                    placeholder="············"
+                    aria-describedby="login-password"
+                    tabindex="2"
+                    />
+                    <div class="input-group-append">
+                      <span class="input-group-text cursor-pointer" (click)="togglePasswordTextType()">
+                        @if (passwordTextType){
+                          <kep-icon type="duotone" name="toggle-on"></kep-icon>
+                        } @else {
+                          <kep-icon type="duotone" name="toggle-off"></kep-icon>
+                        }
+                      </span>
+                    </div>
+                  </div>
+                  @if (submitted && f.password.errors) {
+                    <div
+                      class="invalid-feedback"
+                      [ngClass]="{ 'd-block': submitted && f.password.errors }"
+                      >
+                      @if (f.password.errors.required) {
+                        <div>required</div>
+                      }
+                    </div>
+                  }
+                </div>
+                <button [disabled]="loading" class="btn btn-primary btn-block" tabindex="4" rippleEffect>
+                  @if (loading) {
+                    <span class="spinner-border spinner-border-sm mr-1"></span>
+                    }{{ 'Login' | translate }}
+                  </button>
+                </form>
+
+                <div class="divider my-2">
+                  <div class="divider-text">{{ 'or' | translate }}</div>
+                </div>
+
+                <div class="auth-footer-btn d-flex justify-content-center">
+                  <a class="btn btn-google" style="margin-right: 1rem;" href="/login/google-oauth2/?next=/home"><i data-feather="mail"></i></a>
+                  <a class="btn btn-github" href="/login/github/?next=/home"><i data-feather="github"></i></a>
+                </div>
               </div>
             </div>
-            <div
-              *ngIf="submitted && f.password.errors"
-              class="invalid-feedback"
-              [ngClass]="{ 'd-block': submitted && f.password.errors }"
-            >
-              <div *ngIf="f.password.errors.required">required</div>
-            </div>
+            <!-- /Login v1 -->
           </div>
-          <button [disabled]="loading" class="btn btn-primary btn-block" tabindex="4" rippleEffect>
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>{{ 'Login' | translate }}
-          </button>
-        </form>
-
-        <div class="divider my-2">
-          <div class="divider-text">{{ 'or' | translate }}</div>
         </div>
-
-        <div class="auth-footer-btn d-flex justify-content-center">
-          <a class="btn btn-google" style="margin-right: 1rem;" href="/login/google-oauth2/?next=/home"><i data-feather="mail"></i></a>
-          <a class="btn btn-github" href="/login/github/?next=/home"><i data-feather="github"></i></a>
-        </div>
-      </div>
-    </div>
-    <!-- /Login v1 -->
-  </div>
-</div>

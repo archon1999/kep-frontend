@@ -29,29 +29,28 @@
       </div>
     </div>
 
-    <div *ngIf="currentUser" class="card-footer d-flex justify-content-between">
-      <div class="solved text-center d-flex justify-content-between">
-        <div class="text-white" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
-          <kep-icon type="duotone" class="text-white mr-25" name="check-square"></kep-icon>
-          {{ 'Solved' | translate }}: {{ data.solved }}
+    @if (currentUser) {
+      <div class="card-footer d-flex justify-content-between">
+        <div class="solved text-center d-flex justify-content-between">
+          <div class="text-white" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+            <kep-icon type="duotone" class="text-white mr-25" name="check-square"></kep-icon>
+            {{ 'Solved' | translate }}: {{ data.solved }}
+          </div>
+        </div>
+        <div class="solved text-center d-flex justify-content-between">
+          <div class="text-white" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+            <kep-icon type="duotone"  class="text-white mr-25" name="rating"></kep-icon>
+            {{ 'Rating' | translate }}: {{ data.rating }}
+          </div>
+        </div>
+        <div class="solved text-center d-flex justify-content-between">
+          <div class="text-white" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+            <kep-icon type="duotone" class="text-white mr-25" name="ranking"></kep-icon>
+            {{ 'Rank' | translate }}: {{ data.rank }}/{{ data.usersCount }}
+          </div>
         </div>
       </div>
-
-      <div class="solved text-center d-flex justify-content-between">
-        <div class="text-white" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
-          <kep-icon type="duotone"  class="text-white mr-25" name="rating"></kep-icon>
-          {{ 'Rating' | translate }}: {{ data.rating }}
-        </div>
-      </div>
-
-      <div class="solved text-center d-flex justify-content-between">
-        <div class="text-white" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
-          <kep-icon type="duotone" class="text-white mr-25" name="ranking"></kep-icon>
-          {{ 'Rank' | translate }}: {{ data.rank }}/{{ data.usersCount }}
-        </div>
-      </div>
-
-    </div>
+    }
   }
 </div>
 

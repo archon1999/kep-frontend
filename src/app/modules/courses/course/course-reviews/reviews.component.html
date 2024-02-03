@@ -5,72 +5,73 @@
   </div>
 
   <swiper [config]="reviewsSwiperConfig" class="swiper-review swiper-lazy-loading">
-    <div class="swiper-slide" *ngFor="let review of reviews">
-      <review-card [review]="review"></review-card>
-    </div>
+    @for (review of reviews; track review) {
+      <div class="swiper-slide">
+        <review-card [review]="review"></review-card>
+      </div>
+    }
   </swiper>
 </div>
 
-<div class="card" *ngIf="currentUser">
-  <div class="card-header">
-    <h3 class="card-title">
-      <span *ngIf="!hasReview">Sharh yozish</span>
-      <span *ngIf="hasReview">Sharhni tahrirlash</span>
-    </h3>
-  </div>
-
-  <div class="card-body">
-    <div class="mb-2">
-      <strong>
-        Baho:
-      </strong>
-
-      <span class="rating">
-        <ngb-rating [(rate)]="rating" [max]="5" [readonly]="false" class="outline-none">
-        </ngb-rating>
-      </span>
+@if (currentUser) {
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        @if (!hasReview) {
+          <span>Sharh yozish</span>
+        }
+        @if (hasReview) {
+          <span>Sharhni tahrirlash</span>
+        }
+      </h3>
     </div>
-
-    <quill-editor class="full-width" [(ngModel)]="review">
-      <div quill-editor-toolbar>
-        <span class="ql-formats">
-          <button class="ql-bold" [title]="'Bold'"></button>
-          <button class="ql-italic" [title]="'italic'"></button>
-          <button class="ql-underline" [title]="'underline'"></button>
-        </span>
-        <span class="ql-formats">
-          <select class="ql-align" [title]="'Alignment'">
-            <option selected></option>
-            <option value="center"></option>
-            <option value="right"></option>
-            <option value="justify"></option>
-          </select>
-        </span>
-        <span class="ql-formats">
-          <button class="ql-list" value="ordered" type="button"></button>
-        </span>
-        <span class="ql-formats">
-          <button class="ql-link" value="ordered" type="button"></button>
-          <button class="ql-image" value="ordered" type="button"></button>
-          <button class="ql-video" value="ordered" type="button"></button>
-        </span>
-        <span class="ql-formats">
-          <button class="ql-formula" value="ordered" type="button"></button>
-          <button class="ql-code-block" value="ordered" type="button"></button>
-        </span>
-        <span class="ql-formats">
-          <button class="ql-clean" value="ordered" type="button"></button>
+    <div class="card-body">
+      <div class="mb-2">
+        <strong>
+          Baho:
+        </strong>
+        <span class="rating">
+          <ngb-rating [(rate)]="rating" [max]="5" [readonly]="false" class="outline-none">
+          </ngb-rating>
         </span>
       </div>
-
-    </quill-editor>
-
-
-    <button (click)="submit()" class="mt-2 mb-2 btn btn-relief-primary">
-      {{ 'SUBMIT' | translate }}
-    </button>
-
+      <quill-editor class="full-width" [(ngModel)]="review">
+        <div quill-editor-toolbar>
+          <span class="ql-formats">
+            <button class="ql-bold" [title]="'Bold'"></button>
+            <button class="ql-italic" [title]="'italic'"></button>
+            <button class="ql-underline" [title]="'underline'"></button>
+          </span>
+          <span class="ql-formats">
+            <select class="ql-align" [title]="'Alignment'">
+              <option selected></option>
+              <option value="center"></option>
+              <option value="right"></option>
+              <option value="justify"></option>
+            </select>
+          </span>
+          <span class="ql-formats">
+            <button class="ql-list" value="ordered" type="button"></button>
+          </span>
+          <span class="ql-formats">
+            <button class="ql-link" value="ordered" type="button"></button>
+            <button class="ql-image" value="ordered" type="button"></button>
+            <button class="ql-video" value="ordered" type="button"></button>
+          </span>
+          <span class="ql-formats">
+            <button class="ql-formula" value="ordered" type="button"></button>
+            <button class="ql-code-block" value="ordered" type="button"></button>
+          </span>
+          <span class="ql-formats">
+            <button class="ql-clean" value="ordered" type="button"></button>
+          </span>
+        </div>
+      </quill-editor>
+      <button (click)="submit()" class="mt-2 mb-2 btn btn-relief-primary">
+        {{ 'SUBMIT' | translate }}
+      </button>
+    </div>
   </div>
-</div>
+}
 
 <quill-css></quill-css>

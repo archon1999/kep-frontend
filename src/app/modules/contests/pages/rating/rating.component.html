@@ -20,31 +20,32 @@
                 <contestant-view [user]="contestsRating"></contestant-view>
               </td>
               <td class="text-dark text-center">
-              <span class="badge badge-light-info">
-                {{ contestsRating.contestantsCount }}
-              </span>
+                <span class="badge badge-light-info">
+                  {{ contestsRating.contestantsCount }}
+                </span>
               </td>
               <td class="text-center">
-              <span class="badge badge-{{ contestsRating.rating | contestsRatingColor }} badge-glow">
-                {{ contestsRating.rating }}
-              </span>
+                <span class="badge badge-{{ contestsRating.rating | contestsRatingColor }} badge-glow">
+                  {{ contestsRating.rating }}
+                </span>
               </td>
             </tr>
           }
         </ng-container>
         <ng-container pagination>
           <div class="mb-1">
-            <kep-pagination
-              (pageChange)="pageChange($event)"
-              (pageSizeChange)="pageSizeChange($event)"
-              *ngIf="total"
-              [(page)]="pageNumber"
-              [collectionSize]="total"
-              [maxSize]="maxSize"
-              [pageOptions]="pageOptions"
-              [pageSize]="pageSize"
-              [rotate]="true">
-            </kep-pagination>
+            @if (total) {
+              <kep-pagination
+                (pageChange)="pageChange($event)"
+                (pageSizeChange)="pageSizeChange($event)"
+                [(page)]="pageNumber"
+                [collectionSize]="total"
+                [maxSize]="maxSize"
+                [pageOptions]="pageOptions"
+                [pageSize]="pageSize"
+                [rotate]="true">
+              </kep-pagination>
+            }
           </div>
         </ng-container>
       </kep-table>

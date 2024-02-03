@@ -1,22 +1,28 @@
 <div class="news-section">
   <h3 class="ml-1 mb-2 font-weight-bolder">{{ 'LatestNews' | translate }}</h3>
-  <div class="item" *ngIf="skeletonVisible">
-    <ngx-skeleton-loader
-      count="3"
-      animation="pulse"
-      appearance="line"
-      [theme]="{height: '150px', 'margin-top': '15px', 'margin-bottom': '30px', background: 'var(--skeleton-color)'}"
-    ></ngx-skeleton-loader>
-  </div>
-
-  <swiper *ngIf="!skeletonVisible" [config]="newsSwiperConfig" [height]="600" #newsSwiper>
-    <div
-      class="swiper-slide"
-      [@fadeInRightOnEnter]
-      *ngFor="let news of lastNews">
-      <news-card [blog]="news.blog"></news-card>
-      <hr>
+  @if (skeletonVisible) {
+    <div class="item">
+      <ngx-skeleton-loader
+        count="3"
+        animation="pulse"
+        appearance="line"
+        [theme]="{height: '150px', 'margin-top': '15px', 'margin-bottom': '30px', background: 'var(--skeleton-color)'}"
+      ></ngx-skeleton-loader>
     </div>
-    <div class="swiper-pagination"></div>
-  </swiper>
-</div>
+  }
+
+  @if (!skeletonVisible) {
+    <swiper [config]="newsSwiperConfig" [height]="600" #newsSwiper>
+      @for (news of lastNews; track news) {
+        <div
+          class="swiper-slide"
+          [@fadeInRightOnEnter]
+          >
+          <news-card [blog]="news.blog"></news-card>
+          <hr>
+          </div>
+        }
+        <div class="swiper-pagination"></div>
+      </swiper>
+    }
+  </div>

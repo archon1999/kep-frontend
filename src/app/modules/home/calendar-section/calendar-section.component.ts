@@ -12,7 +12,7 @@ import enLocale from '@fullcalendar/core/locales/es-us';
 import { TranslateService } from '@ngx-translate/core';
 import { HomeService } from '../home.service';
 import { LocalStorageService } from '@shared/services/storages/local-storage.service';
-import { CommonModule } from '@angular/common';
+
 
 enum CalendarEventType {
   CONTEST = 1,
@@ -27,7 +27,7 @@ enum CalendarEventType {
   styleUrls: ['./calendar-section.component.scss'],
   encapsulation: ViewEncapsulation.None,
   standalone: true,
-  imports: [CommonModule, FullCalendarModule],
+  imports: [FullCalendarModule],
 })
 export class CalendarSectionComponent implements OnInit {
 

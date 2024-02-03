@@ -34,9 +34,11 @@
         <p [innerHTML]="course.descriptionShort"></p>
       </div>
       <div class="course-tags">
-        <span class="course-tag" *ngFor="let tag of course.tags">
-          {{ tag.name }}
-        </span>
+        @for (tag of course.tags; track tag) {
+          <span class="course-tag">
+            {{ tag.name }}
+          </span>
+        }
       </div>
       <div class="course-meta d-md-flex">
         <div class="course-updated">

@@ -1,5 +1,5 @@
 import { Component, Renderer2, ViewEncapsulation } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ScriptService } from '@shared/services/script.service';
 
 const JQUERY_SCRIPT_PATH = 'https://code.jquery.com/jquery-3.7.1.min.js';
@@ -10,7 +10,7 @@ const SCRIPT_PATH = 'assets/js/problem-1905.js';
 @Component({
   selector: 'problem1905',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './problem1905.component.html',
   styleUrl: './problem1905.component.scss',
   encapsulation: ViewEncapsulation.None,

@@ -18,17 +18,18 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              *ngFor="let player of tournament.players; index as i"
-              [ngClass]="{ 'bg-light-dark': player.username == currentUser?.username }"
-            >
-              <td>
-                {{ i+1 }}
-              </td>
-              <td>
-                <contestant-view [user]="player"></contestant-view>
-              </td>
-            </tr>
+            @for (player of tournament.players; track player; let i = $index) {
+              <tr
+                [ngClass]="{ 'bg-light-dark': player.username == currentUser?.username }"
+                >
+                <td>
+                  {{ i+1 }}
+                </td>
+                <td>
+                  <contestant-view [user]="player"></contestant-view>
+                </td>
+              </tr>
+            }
           </tbody>
         </table>
       </div>

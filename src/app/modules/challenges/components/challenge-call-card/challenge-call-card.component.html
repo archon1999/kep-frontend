@@ -17,19 +17,25 @@
 
     <div [ngClass.gt-sm]="'d-block'" [ngClass.lt-md]="'ml-25 d-inline-block'"></div>
 
-    <span *ngFor="let chapter of challengeCall.chapters" class="badge mr-25 mb-25 bg-chapter-{{ chapter.id }}">
-      {{ chapter.title }}
-    </span>
+    @for (chapter of challengeCall.chapters; track chapter) {
+      <span class="badge mr-25 mb-25 bg-chapter-{{ chapter.id }}">
+        {{ chapter.title }}
+      </span>
+    }
   </div>
 
   <div class="card-footer d-flex justify-content-between">
-    <button (click)="acceptChallengeCall()" class="btn btn-sm btn-success btn-glow" *ngIf="currentUser?.username != challengeCall.username">
-      {{ 'ToChallenge' | translate }}
-    </button>
+    @if (currentUser?.username != challengeCall.username) {
+      <button (click)="acceptChallengeCall()" class="btn btn-sm btn-success btn-glow">
+        {{ 'ToChallenge' | translate }}
+      </button>
+    }
 
-    <button (click)="deleteChallengeCall()" class="btn btn-sm btn-danger btn-glow" *ngIf="currentUser?.username == challengeCall.username">
-      <i data-feather="x"></i>
-    </button>
+    @if (currentUser?.username == challengeCall.username) {
+      <button (click)="deleteChallengeCall()" class="btn btn-sm btn-danger btn-glow">
+        <i data-feather="x"></i>
+      </button>
+    }
 
     <span class="font-small-2 text-white badge bg-primary-darken">
       {{ challengeCall.created }}

@@ -8,30 +8,32 @@
       ngbRadioGroup
       name="radioBasic"
       [(ngModel)]="heatmapYear"
-    >
-    <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
-      <input type="radio" (click)="heatmapUpdate(0)" name="radio_options" id="radio_option1" [value]="0" ngbButton />
-      <span>365</span>
-    </label>
-    <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
-      <input type="radio" (click)="heatmapUpdate(2021)" name="radio_options" id="radio_option2" ngbButton [value]="2021" />
-      <span>2021</span>
-    </label>
-    <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
-      <input type="radio" (click)="heatmapUpdate(2022)" name="radio_options" id="radio_option3" ngbButton [value]="2022" />
-      <span>2022</span>
-    </label>
-    <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
-      <input type="radio" (click)="heatmapUpdate(2023)"name="radio_options" id="radio_option4" ngbButton [value]="2023" />
-      <span>2023</span>
-    </label>
-  </div>
+      >
+      <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
+        <input type="radio" (click)="heatmapUpdate(0)" name="radio_options" id="radio_option1" [value]="0" ngbButton />
+        <span>365</span>
+      </label>
+      <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
+        <input type="radio" (click)="heatmapUpdate(2021)" name="radio_options" id="radio_option2" ngbButton [value]="2021" />
+        <span>2021</span>
+      </label>
+      <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
+        <input type="radio" (click)="heatmapUpdate(2022)" name="radio_options" id="radio_option3" ngbButton [value]="2022" />
+        <span>2022</span>
+      </label>
+      <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
+        <input type="radio" (click)="heatmapUpdate(2023)"name="radio_options" id="radio_option4" ngbButton [value]="2023" />
+        <span>2023</span>
+      </label>
+    </div>
 
   </div>
   <div class="card-body">
-    <div *ngIf="heatmap" #heatmapChartRef>
-      <apex-chart [options]="heatmapChart">
-      </apex-chart>
-    </div>
+    @if (heatmap) {
+      <div #heatmapChartRef>
+        <apex-chart [options]="heatmapChart">
+        </apex-chart>
+      </div>
+    }
   </div>
 </div>

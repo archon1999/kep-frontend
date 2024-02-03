@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'todo-comments',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './todo-comments.component.html',
   styleUrl: './todo-comments.component.scss'
 })

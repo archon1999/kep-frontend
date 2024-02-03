@@ -9,9 +9,13 @@
       'btn-success': color == 'success',
       'btn-danger': color == 'danger'
     }"
-  >
-    <span *ngIf="!iconChevron" data-feather="minus"></span>
-    <span *ngIf="iconChevron" data-feather="chevron-down"></span>
+    >
+    @if (!iconChevron) {
+      <span data-feather="minus"></span>
+    }
+    @if (iconChevron) {
+      <span data-feather="chevron-down"></span>
+    }
   </button>
   <input
     type="number"
@@ -25,19 +29,23 @@
     (input)="inputChange($event.target.value)"
     pattern="\d*"
     maxlength="4"
-  />
-  <button
-    class="btn btn-sm btn-primary btn-touchspin btn-touchspin-up"
-    (click)="increment()"
-    [disabled]="disabledValueIncrement"
+    />
+    <button
+      class="btn btn-sm btn-primary btn-touchspin btn-touchspin-up"
+      (click)="increment()"
+      [disabled]="disabledValueIncrement"
     [ngClass]="{
       'btn-info': color == 'info',
       'btn-warning': color == 'warning',
       'btn-success': color == 'success',
       'btn-danger': color == 'danger'
     }"
-  >
-    <span *ngIf="!iconChevron" data-feather="plus"></span>
-    <span *ngIf="iconChevron" data-feather="chevron-up"></span>
-  </button>
-</div>
+      >
+      @if (!iconChevron) {
+        <span data-feather="plus"></span>
+      }
+      @if (iconChevron) {
+        <span data-feather="chevron-up"></span>
+      }
+    </button>
+  </div>

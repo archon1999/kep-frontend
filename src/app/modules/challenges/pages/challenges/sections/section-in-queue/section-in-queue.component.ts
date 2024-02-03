@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ChallengeCallCardComponent } from '@challenges/components/challenge-call-card/challenge-call-card.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { ChallengeCall } from '@challenges/models';
@@ -12,7 +12,7 @@ import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animati
 @Component({
   selector: 'section-in-queue',
   standalone: true,
-  imports: [CommonModule, ChallengeCallCardComponent, NgxSkeletonLoaderModule],
+  imports: [ChallengeCallCardComponent, NgxSkeletonLoaderModule],
   templateUrl: './section-in-queue.component.html',
   styleUrl: './section-in-queue.component.scss',
   animations: [

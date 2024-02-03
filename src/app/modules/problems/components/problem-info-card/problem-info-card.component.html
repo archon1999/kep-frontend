@@ -22,83 +22,85 @@
   </div>
 </div>
 
-<div *ngIf="!hideAuthorAndDifficulty" class="info mt-2">
-  <div class="d-flex justify-content-between">
-    <h5>
-      <i data-feather="bar-chart" class="text-{{ problem.difficulty | problemDifficultyColor }}"></i>
-      {{ 'Difficulty' | translate }}
-    </h5>
-
-    <h5>
-      <i data-feather="edit-3" class="text-primary"></i>
-      {{ 'Author' | translate }}
-    </h5>
+@if (!hideAuthorAndDifficulty) {
+  <div class="info mt-2">
+    <div class="d-flex justify-content-between">
+      <h5>
+        <i data-feather="bar-chart" class="text-{{ problem.difficulty | problemDifficultyColor }}"></i>
+        {{ 'Difficulty' | translate }}
+      </h5>
+      <h5>
+        <i data-feather="edit-3" class="text-primary"></i>
+        {{ 'Author' | translate }}
+      </h5>
+    </div>
+    <div class="mt-50 d-flex justify-content-between">
+      <span class="badge badge-{{ problem.difficulty | problemDifficultyColor }} badge-glow">
+        {{ problem.difficultyTitle }}
+      </span>
+      <span class="badge badge-primary badge-glow">
+        <user-popover
+          [textColor]="'white'"
+          [placement]="'left'"
+          [username]="problem.authorUsername">
+        </user-popover>
+      </span>
+    </div>
   </div>
+}
 
-  <div class="mt-50 d-flex justify-content-between">
-    <span class="badge badge-{{ problem.difficulty | problemDifficultyColor }} badge-glow">
-      {{ problem.difficultyTitle }}
-    </span>
-
-    <span class="badge badge-primary badge-glow">
-      <user-popover
-        [textColor]="'white'"
-        [placement]="'left'"
-        [username]="problem.authorUsername">
-      </user-popover>
-    </span>
-  </div>
-</div>
-
-<div *ngIf="!hideLikes" class="votes mt-2">
-  <div class="d-flex justify-content-between">
-    <h5>
-      <i data-feather="thumbs-up" class="text-success"></i>
-      {{ 'Likes' | translate }}
-    </h5>
-
-    <h5>
-      <i data-feather="thumbs-down" class="text-danger"></i>
-      {{ 'Dislikes' | translate }}
-    </h5>
-  </div>
-
-  <div class="mt-50 d-flex justify-content-between">
-    <button
-      *ngIf="currentUser"
-      (click)="like()"
-      class="btn btn-sm btn-success bg-success badge-glow"
+@if (!hideLikes) {
+  <div class="votes mt-2">
+    <div class="d-flex justify-content-between">
+      <h5>
+        <i data-feather="thumbs-up" class="text-success"></i>
+        {{ 'Likes' | translate }}
+      </h5>
+      <h5>
+        <i data-feather="thumbs-down" class="text-danger"></i>
+        {{ 'Dislikes' | translate }}
+      </h5>
+    </div>
+    <div class="mt-50 d-flex justify-content-between">
+      @if (currentUser) {
+        <button
+          (click)="like()"
+          class="btn btn-sm btn-success bg-success badge-glow"
       [ngClass]="{
         'btn-relief-success': problem.userInfo.voteType === 1
       }"
-    >
-      <i data-feather="thumbs-up"></i>
-      {{ problem.likesCount }}
-    </button>
-
-    <button
-      *ngIf="currentUser"
-      (click)="dislike()"
-      class="btn btn-sm btn-danger bg-danger badge-glow"
+          >
+          <i data-feather="thumbs-up"></i>
+          {{ problem.likesCount }}
+        </button>
+      }
+      @if (currentUser) {
+        <button
+          (click)="dislike()"
+          class="btn btn-sm btn-danger bg-danger badge-glow"
       [ngClass]="{
         'btn-relief-danger': problem.userInfo.voteType === 0
       }"
-    >
-      <i data-feather="thumbs-down"></i>
-      {{ problem.dislikesCount }}
-    </button>
-
-    <span *ngIf="!currentUser" class="badge badge-success badge-glow">
-      <i data-feather="thumbs-up"></i>
-      {{ problem.likesCount }}
-    </span>
-
-    <span *ngIf="!currentUser" class="badge badge-danger badge-glow">
-      <i data-feather="thumbs-down"></i>
-      {{ problem.dislikesCount }}
-    </span>
+          >
+          <i data-feather="thumbs-down"></i>
+          {{ problem.dislikesCount }}
+        </button>
+      }
+      @if (!currentUser) {
+        <span class="badge badge-success badge-glow">
+          <i data-feather="thumbs-up"></i>
+          {{ problem.likesCount }}
+        </span>
+      }
+      @if (!currentUser) {
+        <span class="badge badge-danger badge-glow">
+          <i data-feather="thumbs-down"></i>
+          {{ problem.dislikesCount }}
+        </span>
+      }
+    </div>
   </div>
-</div>
+}
 
 <div class="languages mt-2">
   <div class="d-flex mb-1">
@@ -108,12 +110,13 @@
     </h5>
   </div>
 
-  <button
-    *ngFor="let availableLanguage of problem.availableLanguages"
-    (click)="langService.setLanguage(availableLanguage.lang)"
-    class="mr-50 mb-50 btn btn-primary badge badge-{{ availableLanguage.lang }} badge-glow">
-    {{ availableLanguage.langFull }}
-  </button>
+  @for (availableLanguage of problem.availableLanguages; track availableLanguage) {
+    <button
+      (click)="langService.setLanguage(availableLanguage.lang)"
+      class="mr-50 mb-50 btn btn-primary badge badge-{{ availableLanguage.lang }} badge-glow">
+      {{ availableLanguage.langFull }}
+    </button>
+  }
 
 </div>
 
@@ -131,16 +134,17 @@
   </span>
 </div>
 
-<div *ngIf="!hideCodeGolf" class="code-golf mt-2">
-  <div class="d-flex mb-1">
-    <h5>
-      <kep-icon name="code" class="text-dark" type="duotone"></kep-icon>
-      {{ 'CodeGolf' | translate }}
-    </h5>
+@if (!hideCodeGolf) {
+  <div class="code-golf mt-2">
+    <div class="d-flex mb-1">
+      <h5>
+        <kep-icon name="code" class="text-dark" type="duotone"></kep-icon>
+        {{ 'CodeGolf' | translate }}
+      </h5>
+    </div>
+    <span
+      class="badge badge-dark">
+      {{ selectedAvailableLang.codeGolf }}
+    </span>
   </div>
-
-  <span
-    class="badge badge-dark">
-    {{ selectedAvailableLang.codeGolf }}
-  </span>
-</div>
+}

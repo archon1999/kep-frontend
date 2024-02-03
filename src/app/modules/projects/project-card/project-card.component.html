@@ -8,34 +8,37 @@
         <img [src]="project.logo" alt="project-img">
       </div>
     </div>
-  
+
     <div class="card-body">
       <span class="text-white" [innerHTML]="project.descriptionShort"></span>
-  
+
       <div class="text-right">
         <span class="project-level bg">
           {{ project.levelTitle }}
         </span>
 
-        <span
-          class="project-technology technology-{{ technology.technology }}"
-          *ngFor="let technology of project.availableTechnologies">
-          {{ technology.technology }}
-        </span>
+        @for (technology of project.availableTechnologies; track technology) {
+          <span
+            class="project-technology technology-{{ technology.technology }}"
+            >
+            {{ technology.technology }}
+          </span>
+        }
       </div>
 
     </div>
-  
+
     <div class="card-footer border-top">
-      <span *ngIf="project.inThePipeline; else elseBlock" class="badge bg">
-        {{ 'InThePipeline' | translate }}
-      </span>
-  
-      <ng-template #elseBlock>
+      @if (project.inThePipeline) {
+        <span class="badge bg">
+          {{ 'InThePipeline' | translate }}
+        </span>
+      } @else {
         <span class="bg badge">
           {{ 'View' | translate }}
-        </span>  
-      </ng-template>
+        </span>
+      }
+
     </div>
   </div>
 </a>

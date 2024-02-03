@@ -44,6 +44,7 @@ import { ReviewCardComponent } from './course/course-reviews/review-card/review-
 import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 const routes: Routes = [
   {
@@ -151,6 +152,7 @@ const routes: Routes = [
     CountUpModule,
     ProblemsPipesModule,
     SwiperComponent,
+    MonacoEditorModule,
   ],
   providers: [
     CourseGuard,

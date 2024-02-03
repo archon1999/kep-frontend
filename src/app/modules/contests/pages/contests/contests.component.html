@@ -10,19 +10,22 @@
           <div class="text-dark">{{ 'Contests' | translate }}</div>
         </h1>
 
-        <contest-card *ngFor="let contest of contests" [contest]="contest"></contest-card>
+        @for (contest of contests; track contest) {
+          <contest-card [contest]="contest"></contest-card>
+        }
 
-        <kep-pagination
-          (pageChange)="pageChange($event)"
-          (pageSizeChange)="pageSizeChange($event)"
-          *ngIf="total > 0"
-          [(page)]="pageNumber"
-          [collectionSize]="total"
-          [maxSize]="maxSize"
-          [pageOptions]="pageOptions"
-          [pageSize]="pageSize"
-          [rotate]="true">
-        </kep-pagination>
+        @if (total > 0) {
+          <kep-pagination
+            (pageChange)="pageChange($event)"
+            (pageSizeChange)="pageSizeChange($event)"
+            [(page)]="pageNumber"
+            [collectionSize]="total"
+            [maxSize]="maxSize"
+            [pageOptions]="pageOptions"
+            [pageSize]="pageSize"
+            [rotate]="true">
+          </kep-pagination>
+        }
       </div>
 
 

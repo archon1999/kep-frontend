@@ -11,10 +11,11 @@
         </div>
       </div>
       <div class="card-body">
-        <apex-chart
-          *ngIf="challengesRatingChangesChart"
-          [options]="challengesRatingChangesChart"
-        ></apex-chart>
+        @if (challengesRatingChangesChart) {
+          <apex-chart
+            [options]="challengesRatingChangesChart"
+          ></apex-chart>
+        }
       </div>
     </div>
   }

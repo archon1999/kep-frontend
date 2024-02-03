@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { TodoCommentsComponent } from './todo-comments/todo-comments.component';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { ToDo } from './todo';
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-todo',
   standalone: true,
-  imports: [CommonModule, TodoCommentsComponent],
+  imports: [TodoCommentsComponent],
   templateUrl: './todo.component.html',
   styleUrl: './todo.component.scss'
 })

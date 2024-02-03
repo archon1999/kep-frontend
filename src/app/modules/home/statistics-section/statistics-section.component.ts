@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../home.service';
-import { CommonModule } from '@angular/common';
+
 import { CountUpModule } from 'ngx-countup';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -16,7 +16,7 @@ interface IStatistics {
   templateUrl: './statistics-section.component.html',
   styleUrls: ['./statistics-section.component.scss'],
   standalone: true,
-  imports: [CommonModule, CountUpModule, TranslateModule]
+  imports: [CountUpModule, TranslateModule]
 })
 export class StatisticsSectionComponent implements OnInit {
 

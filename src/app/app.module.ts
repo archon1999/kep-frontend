@@ -4,6 +4,7 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, RouterStateSnapshot, Routes, TitleStrategy } from '@angular/router';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import 'hammerjs';
@@ -28,7 +29,6 @@ import { monacoConfig } from './monaco.config';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
 import { map } from 'rxjs/operators';
 import { AuthService } from '@auth';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { BS_BREAKPOINTS, CustomBreakPointsProvider } from '@layout/custom-breakpoints';
 
 import { register } from 'swiper/element/bundle';

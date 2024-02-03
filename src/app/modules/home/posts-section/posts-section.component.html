@@ -4,15 +4,17 @@
   </div>
 } @else {
   <swiper [config]="postsSwiperConfig" #postsSwiper [height]="500">
-    <div class="swiper-slide" *ngFor="let post of lastPosts">
-      @defer (on viewport) {
+    @for (post of lastPosts; track post) {
+      <div class="swiper-slide">
+        @defer (on viewport) {
         <blog-post-card [blog]="post"></blog-post-card>
-      } @placeholder {
+        } @placeholder {
         <div [style.height.px]="400">
           <spinner></spinner>
         </div>
       }
     </div>
-    <div class="swiper-pagination"></div>
-  </swiper>
+  }
+  <div class="swiper-pagination"></div>
+</swiper>
 }

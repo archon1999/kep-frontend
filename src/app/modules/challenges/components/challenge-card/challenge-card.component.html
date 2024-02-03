@@ -58,12 +58,16 @@
         </td>
 
         <td class="text-right">
-          <span *ngIf="!challenge.finished" class="badge badge-glow badge-success">
-            {{ 'Now' | translate }}
-          </span>
-          <span *ngIf="challenge.finished" class="badge bg-primary">
-            {{ challenge.finished }}
-          </span>
+          @if (!challenge.finished) {
+            <span class="badge badge-glow badge-success">
+              {{ 'Now' | translate }}
+            </span>
+          }
+          @if (challenge.finished) {
+            <span class="badge bg-primary">
+              {{ challenge.finished }}
+            </span>
+          }
         </td>
       </tr>
     </tbody>

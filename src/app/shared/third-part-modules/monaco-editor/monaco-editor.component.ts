@@ -16,7 +16,7 @@ import { CoreConfig } from '@core/types';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { AttemptLangs } from 'app/modules/problems/constants';
 import { getEditorLang } from 'app/modules/problems/utils';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'monaco-editor',
@@ -31,7 +31,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './monaco-editor.component.scss',
   encapsulation: ViewEncapsulation.None,
   standalone: true,
-  imports: [MonacoEditorModule, FormsModule, CommonModule],
+  imports: [MonacoEditorModule, FormsModule],
 })
 export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnChanges, AfterViewChecked {
 

@@ -6,9 +6,11 @@
       <div class="col-4"></div>
       <div class="col-8">
         <div class="row">
-          <div *ngFor="let test of tests" class="col-4">
-            <test-card [test]="test"></test-card>
-          </div>
+          @for (test of tests; track test) {
+            <div class="col-4">
+              <test-card [test]="test"></test-card>
+            </div>
+          }
         </div>
       </div>
     </div>

@@ -5,117 +5,126 @@
 
     <section class="mt-2">
       <div class="row">
-        <div class="col-12" *ngIf="contest">
-          <div class="card">
-            <div class="card-header">
-              <contest-tab [contest]="contest"></contest-tab>
-              <hr>
-            </div>
-            <div class="card-body">
-              <h3 class="text-center mb-3 mt-2">{{ contest.title }}</h3>
-              <div class="table-responsive">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th class="text-center">#</th>
-                      <th>{{ 'CONTESTS.CONTESTANT' | translate }}</th>
-                      <th class="text-center"><i [data-feather]="'rating' | iconName"></i></th>
-                      <th class="text-center"><i [data-feather]="'delta' | iconName"></i></th>
-                      <th>{{ 'CONTESTS.NEW_RATING' | translate }}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let contestant of contestants">
-                      <td class="text-center">
-                        <strong>{{ contestant.rank }}</strong>
-                      </td>
-
-                      <td>
-                        <contestant-view [user]="contestant" [team]="contestant.team"></contestant-view>
-                      </td>
-
-                      <td class="text-center">
-                        <span class="badge badge-glow badge-primary">
-                          {{ contestant.points }}
-                        </span>
-                      </td>
-
-                      <td class="text-center">
+        @if (contest) {
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <contest-tab [contest]="contest"></contest-tab>
+                <hr>
+                </div>
+                <div class="card-body">
+                  <h3 class="text-center mb-3 mt-2">{{ contest.title }}</h3>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th class="text-center">#</th>
+                          <th>{{ 'CONTESTS.CONTESTANT' | translate }}</th>
+                          <th class="text-center"><i [data-feather]="'rating' | iconName"></i></th>
+                          <th class="text-center"><i [data-feather]="'delta' | iconName"></i></th>
+                          <th>{{ 'CONTESTS.NEW_RATING' | translate }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @for (contestant of contestants; track contestant) {
+                          <tr>
+                            <td class="text-center">
+                              <strong>{{ contestant.rank }}</strong>
+                            </td>
+                            <td>
+                              <contestant-view [user]="contestant" [team]="contestant.team"></contestant-view>
+                            </td>
+                            <td class="text-center">
+                              <span class="badge badge-glow badge-primary">
+                                {{ contestant.points }}
+                              </span>
+                            </td>
+                            <td class="text-center">
                         <span class="badge badge-glow" [ngClass]="{
                           'badge-light-success': contestant.delta > 0,
                           'badge-light-dark': contestant.delta == 0,
                           'badge-light-danger': contestant.delta < 0
                         }">
-                          <span *ngIf="contestant.delta > 0">+</span>{{ contestant.delta }}
-                        </span>
-                      </td>
-
-                      <td>
-                        <div *ngIf="contestant.type == 1">
-                          <span class="badge badge-light-{{ contestant.rating | contestsRatingColor }}">
-                            {{ contestant.rating }}
-                          </span>
-                          <i data-feather="arrow-right"></i>
-  
-                          <span class="badge badge-light-{{ contestant.newRating | contestsRatingColor }}">
-                            {{ contestant.newRating }}
-                          </span>
-  
-                          <contests-rating-image
-                            class="ml-50"
-                            *ngIf="contestant.newRatingTitle != contestant.ratingTitle"
-                            [title]="contestant.newRatingTitle">
-                          </contests-rating-image>
-
-                          <img
-                            *ngIf="contestant.doubleRatingPurchased"
-                            height="25"
-                            class="ml-50"
-                            ngbTooltip="{{ 'DoubleRating' | translate }}"
-                            src="assets/images/icons/x2-delta.png"
-                          >
-                          <img
-                            *ngIf="contestant.saveRatingPurchased"
-                            height="25"
-                            class="ml-75"
-                            ngbTooltip="{{ 'SaveRating' | translate }}"
-                            src="assets/images/icons/save-rating.png"
-                          >
-                        </div>
-                        <div *ngIf="contestant.type == 2">
-                          <div class="mb-1" *ngFor="let member of contestant.team.members">
-                            <span class="badge badge-light-{{ member.rating | contestsRatingColor }}">
-                              {{ member.rating }}
-                            </span>
-                            <i data-feather="arrow-right"></i>
-                            <span class="badge badge-light-{{ member.newRating | contestsRatingColor }}">
-                              {{ member.newRating }}
-                            </span>
-                            <contests-rating-image
-                              *ngIf="member.newRatingTitle != member.ratingTitle"
-                              [title]="member.newRatingTitle"
-                              [size]="28">
-                            </contests-rating-image>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <th class="text-center">#</th>
-                      <th>{{ 'CONTESTS.CONTESTANT' | translate }}</th>
-                      <th class="text-center"><i [data-feather]="'rating' | iconName"></i></th>
-                      <th class="text-center"><i [data-feather]="'delta' | iconName"></i></th>
-                      <th>{{ 'CONTESTS.NEW_RATING' | translate }}</th>
-                    </tr>
-                  </tfoot>
-                </table>
+                                @if (contestant.delta > 0) {
+                                  <span>+</span>
+                                  }{{ contestant.delta }}
+                                </span>
+                              </td>
+                              <td>
+                                @if (contestant.type == 1) {
+                                  <div>
+                                    <span class="badge badge-light-{{ contestant.rating | contestsRatingColor }}">
+                                      {{ contestant.rating }}
+                                    </span>
+                                    <i data-feather="arrow-right"></i>
+                                    <span class="badge badge-light-{{ contestant.newRating | contestsRatingColor }}">
+                                      {{ contestant.newRating }}
+                                    </span>
+                                    @if (contestant.newRatingTitle != contestant.ratingTitle) {
+                                      <contests-rating-image
+                                        class="ml-50"
+                                        [title]="contestant.newRatingTitle">
+                                      </contests-rating-image>
+                                    }
+                                    @if (contestant.doubleRatingPurchased) {
+                                      <img
+                                        height="25"
+                                        class="ml-50"
+                                        ngbTooltip="{{ 'DoubleRating' | translate }}"
+                                        src="assets/images/icons/x2-delta.png"
+                                        >
+                                    }
+                                    @if (contestant.saveRatingPurchased) {
+                                      <img
+                                        height="25"
+                                        class="ml-75"
+                                        ngbTooltip="{{ 'SaveRating' | translate }}"
+                                        src="assets/images/icons/save-rating.png"
+                                        >
+                                    }
+                                  </div>
+                                }
+                                @if (contestant.type == 2) {
+                                  <div>
+                                    @for (member of contestant.team.members; track member) {
+                                      <div class="mb-1">
+                                        <span class="badge badge-light-{{ member.rating | contestsRatingColor }}">
+                                          {{ member.rating }}
+                                        </span>
+                                        <i data-feather="arrow-right"></i>
+                                        <span class="badge badge-light-{{ member.newRating | contestsRatingColor }}">
+                                          {{ member.newRating }}
+                                        </span>
+                                        @if (member.newRatingTitle != member.ratingTitle) {
+                                          <contests-rating-image
+                                            [title]="member.newRatingTitle"
+                                            [size]="28">
+                                          </contests-rating-image>
+                                        }
+                                      </div>
+                                    }
+                                  </div>
+                                }
+                              </td>
+                            </tr>
+                          }
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th class="text-center">#</th>
+                            <th>{{ 'CONTESTS.CONTESTANT' | translate }}</th>
+                            <th class="text-center"><i [data-feather]="'rating' | iconName"></i></th>
+                            <th class="text-center"><i [data-feather]="'delta' | iconName"></i></th>
+                            <th>{{ 'CONTESTS.NEW_RATING' | translate }}</th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+            }
           </div>
-        </div>
+        </section>
       </div>
-    </section>
-  </div>
-</div>
+    </div>

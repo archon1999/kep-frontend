@@ -9,91 +9,96 @@
       <div class="font-medium-5 mt-1">
         {{ 'Problems' | translate }}
         <br>
-        <div class="font-medium-4 mt-2">
-          <span ngbTooltip="{{ 'Solved' | translate }}">
-            <i data-feather="check-circle"></i>
-            {{ general.solved }}
-          </span>
+          <div class="font-medium-4 mt-2">
+            <span ngbTooltip="{{ 'Solved' | translate }}">
+              <i data-feather="check-circle"></i>
+              {{ general.solved }}
+            </span>
 
-          <span ngbTooltip="{{ 'Rating' | translate }}">
-            <i [data-feather]="'rating' | iconName" class="ml-50"></i>
-            {{ general.rating }}
-          </span>
-        </div>
-      </div>
-
-      <div class="font-medium-4 mt-1">
-        <span ngbTooltip="{{ 'Rank' | translate }}">
-          <i [data-feather]="'users'" class="ml-50"></i>
-          <span class="font-medium-3">
-            {{ general.rank }}({{ general.usersCount }})
-          </span>
-        </span>
-      </div>
-    </div>
-
-    <hr>
-
-    <div class="section-languages">
-      <div class="title">
-        {{ 'Languages' | translate }}
-      </div>
-
-      <div class="languages">
-        <div *ngFor="let data of langs" class="d-flex language justify-content-between">
-          <div class="lang">
-            <span class="badge badge-glow badge-{{ data.lang }}">
-              {{ data.langFull }}
+            <span ngbTooltip="{{ 'Rating' | translate }}">
+              <i [data-feather]="'rating' | iconName" class="ml-50"></i>
+              {{ general.rating }}
             </span>
           </div>
-
-          <div class="result">
-            <strong>x{{ data.solved }}</strong>
-          </div>
         </div>
-      </div>
-    </div>
 
-    <hr>
-
-    <div class="section-tags">
-      <div class="title">
-        {{ 'Tags' | translate }}
-      </div>
-
-      <div class="tags">
-        <div *ngFor="let tag of tags" class="tag">
-          <span class="badge badge-pill badge-primary">
-            {{ tag.name }}
+        <div class="font-medium-4 mt-1">
+          <span ngbTooltip="{{ 'Rank' | translate }}">
+            <i [data-feather]="'users'" class="ml-50"></i>
+            <span class="font-medium-3">
+              {{ general.rank }}({{ general.usersCount }})
+            </span>
           </span>
-          x{{ tag.value }}
         </div>
       </div>
-    </div>
 
-    <hr>
+      <hr>
 
-    <div class="section-topics">
-      <div class="title">
-        {{ 'Topics' | translate }}
-      </div>
-
-      <div class="topics">
-        <div *ngFor="let topic of topics" class="topic d-flex justify-content-between">
-          <div class="d-flex topic-info justify-content-start">
-            <div class="topic-icon">
-              <kep-icon [name]="topic.icon"></kep-icon>
-            </div>
-            <div class="topic-title">
-              {{ topic.topic }}
-            </div>
+        <div class="section-languages">
+          <div class="title">
+            {{ 'Languages' | translate }}
           </div>
-          <div class="solved">
-            x{{ topic.solved }}
+
+          <div class="languages">
+            @for (data of langs; track data) {
+              <div class="d-flex language justify-content-between">
+                <div class="lang">
+                  <span class="badge badge-glow badge-{{ data.lang }}">
+                    {{ data.langFull }}
+                  </span>
+                </div>
+                <div class="result">
+                  <strong>x{{ data.solved }}</strong>
+                </div>
+              </div>
+            }
           </div>
         </div>
-      </div>
-    </div>
 
-  </div>
-</div>
+        <hr>
+
+          <div class="section-tags">
+            <div class="title">
+              {{ 'Tags' | translate }}
+            </div>
+
+            <div class="tags">
+              @for (tag of tags; track tag) {
+                <div class="tag">
+                  <span class="badge badge-pill badge-primary">
+                    {{ tag.name }}
+                  </span>
+                  x{{ tag.value }}
+                </div>
+              }
+            </div>
+          </div>
+
+          <hr>
+
+            <div class="section-topics">
+              <div class="title">
+                {{ 'Topics' | translate }}
+              </div>
+
+              <div class="topics">
+                @for (topic of topics; track topic) {
+                  <div class="topic d-flex justify-content-between">
+                    <div class="d-flex topic-info justify-content-start">
+                      <div class="topic-icon">
+                        <kep-icon [name]="topic.icon"></kep-icon>
+                      </div>
+                      <div class="topic-title">
+                        {{ topic.topic }}
+                      </div>
+                    </div>
+                    <div class="solved">
+                      x{{ topic.solved }}
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+
+          </div>
+        </div>

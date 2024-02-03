@@ -11,41 +11,39 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let attempt of attempts"
-        [ngClass]="{'bg-light-primary': attempt.user.username == currentUser?.username}">
-        {{ attempt.user.id }}
-        <td class="attempt-id">
-          <a (click)="onClick(attempt.id)"
-            *ngIf="attempt.user.username == currentUser?.username || currentUser?.isSuperuser; else other;">
-            <u>
+      @for (attempt of attempts; track attempt) {
+        <tr
+          [ngClass]="{'bg-light-primary': attempt.user.username == currentUser?.username}">
+          <td class="attempt-id">
+            @if (attempt.user.username == currentUser?.username || currentUser?.isSuperuser) {
+              <a (click)="onClick(attempt.id)"
+                >
+                <u>
+                  {{ attempt.id }}
+                </u>
+              </a>
+            } @else {
               {{ attempt.id }}
-            </u>
-          </a>
-          <ng-template #other>{{ attempt.id }}</ng-template>
-        </td>
-
-        <td>
-          <span class="badge badge-light-success text-center" style="width: 130px;">
-            {{ attempt.created | date:"yyyy/MM/dd HH:mm:ss" }}
-          </span>
-        </td>
-
-        <td class="td-content" [innerHTML]="attempt | attemptVerdictHTML">
-        </td>
-
-        <td class="td-content">
-          <span class="badge badge-info">{{ attempt.time }} {{ 'MS' | translate }}</span>
-        </td>
-
-        <td class="td-content">
-          <span class="badge badge-primary">{{ attempt.memory }} {{ 'KB' | translate }}</span>
-        </td>
-
-        <td class="td-content">
-          <span class="badge badge-dark">{{ attempt.sourceCodeSize }}</span>
-        </td>
-
-      </tr>
+            }
+          </td>
+          <td>
+            <span class="badge badge-light-success text-center" style="width: 130px;">
+              {{ attempt.created | date:"yyyy/MM/dd HH:mm:ss" }}
+            </span>
+          </td>
+          <td class="td-content" [innerHTML]="attempt | attemptVerdictHTML">
+          </td>
+          <td class="td-content">
+            <span class="badge badge-info">{{ attempt.time }} {{ 'MS' | translate }}</span>
+          </td>
+          <td class="td-content">
+            <span class="badge badge-primary">{{ attempt.memory }} {{ 'KB' | translate }}</span>
+          </td>
+          <td class="td-content">
+            <span class="badge badge-dark">{{ attempt.sourceCodeSize }}</span>
+          </td>
+        </tr>
+      }
     </tbody>
     <tfoot>
       <tr>
@@ -72,7 +70,7 @@
   <div class="modal-body" tabindex="0" ngbAutofocus style="height: 500px;">
     <ngx-monaco-editor [ngModelOptions]="{standalone: true}" [options]="editorOptions"
       [(ngModel)]="selectedAttempt.sourceCode" style="height: 100%;" name="code" class="mt-1"
-      ngDefaultControl></ngx-monaco-editor>
+    ngDefaultControl></ngx-monaco-editor>
   </div>
 </ng-template>
 <!-- / Modal -->

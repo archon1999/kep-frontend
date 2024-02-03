@@ -7,43 +7,44 @@
             <span class="align-middle">Filter</span>
           </h5>
           <div class="calendar-events-filter">
-            <div
-              class="custom-control text-left custom-checkbox mb-1 custom-control-{{ calendar.color }}"
-              *ngFor="let calendar of calendarRef"
-            >
-              <input
-                type="checkbox"
-                class="custom-control-input input-filter"
-                id="calendar-{{ calendar.id }}"
-                [checked]="calendar.checked"
-              />
-              <label class="custom-control-label" for="calendar-{{ calendar.id }}">{{ calendar.filter }}</label>
+            @for (calendar of calendarRef; track calendar) {
+              <div
+                class="custom-control text-left custom-checkbox mb-1 custom-control-{{ calendar.color }}"
+                >
+                <input
+                  type="checkbox"
+                  class="custom-control-input input-filter"
+                  id="calendar-{{ calendar.id }}"
+                  [checked]="calendar.checked"
+                  />
+                  <label class="custom-control-label" for="calendar-{{ calendar.id }}">{{ calendar.filter }}</label>
+                </div>
+              }
             </div>
           </div>
         </div>
-      </div>
-      <div class="mt-auto">
-        <img src="assets/images/pages/calendar-illustration.png" alt="Calendar illustration" class="img-fluid" />
-      </div>
-    </div>
-
-    <div class="col position-relative">
-      <div class="card border-0 mb-0 rounded-0">
-        <div class="card-body">
-          <full-calendar #calendar [options]="calendarOptions">
-<!--            <ng-template #eventContent let-arg>-->
-<!--              <div class="fc-daygrid-event-dot"></div>-->
-<!--              <div class="fc-event-time">-->
-<!--                {{ arg.event.start | date : 'HH:mm' }}-->
-<!--              </div>-->
-<!--              <div container="body" ngbTooltip="{{ arg.event.title }}" class="fc-event-title">-->
-<!--                {{ arg.event.title }}-->
-<!--              </div>-->
-<!--            </ng-template>-->
-          </full-calendar>
+        <div class="mt-auto">
+          <img src="assets/images/pages/calendar-illustration.png" alt="Calendar illustration" class="img-fluid" />
         </div>
       </div>
+
+      <div class="col position-relative">
+        <div class="card border-0 mb-0 rounded-0">
+          <div class="card-body">
+            <full-calendar #calendar [options]="calendarOptions">
+              <!--            <ng-template #eventContent let-arg>-->
+              <!--              <div class="fc-daygrid-event-dot"></div>-->
+              <!--              <div class="fc-event-time">-->
+              <!--                {{ arg.event.start | date : 'HH:mm' }}-->
+            <!--              </div>-->
+            <!--              <div container="body" ngbTooltip="{{ arg.event.title }}" class="fc-event-title">-->
+            <!--                {{ arg.event.title }}-->
+          <!--              </div>-->
+        <!--            </ng-template>-->
+      </full-calendar>
     </div>
   </div>
+</div>
+</div>
 </div>
 

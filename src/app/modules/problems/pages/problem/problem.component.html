@@ -25,40 +25,48 @@
                       [submitEvent]="submitEvent?.asObservable()"
                       [problem]="problem"
                       (hackSubmitted)="activeId = 3;"
-                    >
+                      >
                     </problem-attempts>
                   </ng-template>
                 </li>
 
-                <li *ngIf="problem.hasCheckInput" [ngbNavItem]="3" destroyOnHide="true">
-                  <a ngbNavLink>
-                    <span [data-feather]="'hack' | iconName"></span> {{ 'Hacks' | translate }}
-                  </a>
-                  <ng-template ngbNavContent>
-                    <problem-hacks [problem]="problem"></problem-hacks>
-                  </ng-template>
-                </li>
+                @if (problem.hasCheckInput) {
+                  <li [ngbNavItem]="3" destroyOnHide="true">
+                    <a ngbNavLink>
+                      <span [data-feather]="'hack' | iconName"></span> {{ 'Hacks' | translate }}
+                    </a>
+                    <ng-template ngbNavContent>
+                      <problem-hacks [problem]="problem"></problem-hacks>
+                    </ng-template>
+                  </li>
+                }
 
-                <li [ngbNavItem]="4" *ngIf="studyPlanId">
-                  <a ngbNavLink routerLink="/practice/problems/study-plan/{{ studyPlanId }}">
-                    <span [data-feather]="'activity'"></span> {{ 'StudyPlan' | translate }}
-                  </a>
-                  <ng-template ngbNavContent>
-                    <problem-description [problem]="problem"></problem-description>
-                  </ng-template>
-                </li>
+                @if (studyPlanId) {
+                  <li [ngbNavItem]="4">
+                    <a ngbNavLink routerLink="/practice/problems/study-plan/{{ studyPlanId }}">
+                      <span [data-feather]="'activity'"></span> {{ 'StudyPlan' | translate }}
+                    </a>
+                    <ng-template ngbNavContent>
+                      <problem-description [problem]="problem"></problem-description>
+                    </ng-template>
+                  </li>
+                }
 
-                <li [ngbNavItem]="4" *ngIf="contestId">
-                  <a ngbNavLink routerLink="/competitions/contests/contest/{{ contestId }}/problems">
-                    <span [data-feather]="'flag'"></span> {{ 'Contest' | translate }}
-                  </a>
-                  <ng-template ngbNavContent>
-                    <problem-description [problem]="problem"></problem-description>
-                  </ng-template>
-                </li>
+                @if (contestId) {
+                  <li [ngbNavItem]="4">
+                    <a ngbNavLink routerLink="/competitions/contests/contest/{{ contestId }}/problems">
+                      <span [data-feather]="'flag'"></span> {{ 'Contest' | translate }}
+                    </a>
+                    <ng-template ngbNavContent>
+                      <problem-description [problem]="problem"></problem-description>
+                    </ng-template>
+                  </li>
+                }
               </ul>
 
-              <button *ngIf="isAuthenticated" (click)="codeEditorSidebarToggle()" class="btn btn-sm btn-primary">{{ 'Submit' | translate }}</button>
+              @if (isAuthenticated) {
+                <button (click)="codeEditorSidebarToggle()" class="btn btn-sm btn-primary">{{ 'Submit' | translate }}</button>
+              }
             </div>
 
             <div class="card-body">
@@ -68,42 +76,43 @@
           </div>
 
 
-          <div *ngIf="currentUser?.permissions.canCreateProblems" class="card">
-            <div class="card-header">
-              <div class="card-title">
-                Check input
+          @if (currentUser?.permissions.canCreateProblems) {
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  Check input
+                </div>
+              </div>
+              <div class="card-body">
+                <monaco-editor
+                  [lang]="'py'"
+                  class="mt-1"
+                  [ngModelOptions]="{standalone: true}"
+                  [(ngModel)]="checkInput"
+                ></monaco-editor>
+                <div class="btn mt-2 btn-primary btn-sm" (click)="saveCheckInput()">Save</div>
               </div>
             </div>
-
-            <div class="card-body">
-              <monaco-editor
-                [lang]="'py'"
-                class="mt-1"
-                [ngModelOptions]="{standalone: true}"
-                [(ngModel)]="checkInput"
-              ></monaco-editor>
-              <div class="btn mt-2 btn-primary btn-sm" (click)="saveCheckInput()">Save</div>
-            </div>
-
-          </div>
+          }
         </div>
 
-        <div class="col-lg-3 col-md-12 col-sm-12" [@fadeInRightOnEnter]>  
+        <div class="col-lg-3 col-md-12 col-sm-12" [@fadeInRightOnEnter]>
           <problem-sidebar [problem]="problem"></problem-sidebar>
         </div>
 
       </div>
 
-      <code-editor-modal
-        *ngIf="problem && currentUser"
-        [customClass]="'tour-step-2'"
-        [uniqueName]="'problem-' + problem.id"
-        [sampleTests]="problem.sampleTests"
-        [submitUrl]="'problems/' + problem.id + '/submit/'"
-        [problem]="problem"
-        [answerForInputEnabled]="problem.hasSolution && problem.hasCheckInput"
-        [availableLanguages]="problem.availableLanguages"
+      @if (problem && currentUser) {
+        <code-editor-modal
+          [customClass]="'tour-step-2'"
+          [uniqueName]="'problem-' + problem.id"
+          [sampleTests]="problem.sampleTests"
+          [submitUrl]="'problems/' + problem.id + '/submit/'"
+          [problem]="problem"
+          [answerForInputEnabled]="problem.hasSolution && problem.hasCheckInput"
+          [availableLanguages]="problem.availableLanguages"
         (submittedEvent)="submitEvent.next(null);activeId=2;"></code-editor-modal>
+      }
     </section>
   </div>
 </div>

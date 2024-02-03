@@ -14,8 +14,12 @@
         </tr>
         <tr>
           <td>
-            <contestant-view [textColor]="'white'" *ngIf="duel.playerSecond" [user]="duel.playerSecond"></contestant-view>
-            <span *ngIf="!duel.playerSecond">BYE</span>
+            @if (duel.playerSecond) {
+              <contestant-view [textColor]="'white'" [user]="duel.playerSecond"></contestant-view>
+            }
+            @if (!duel.playerSecond) {
+              <span>BYE</span>
+            }
           </td>
           <td class="text-right">
             <span class="badge">

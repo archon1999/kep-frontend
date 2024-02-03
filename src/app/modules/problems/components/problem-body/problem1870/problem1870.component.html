@@ -27,17 +27,20 @@
     <div>17:00</div>
     <div></div>
   </div>
-  <div class="wrapper" *ngFor="let dayBlocks of blocks">
-    <div class="day">
-      <div
-        [style.height.px]="event.height"
-        [style.width.px]="event.width"
-        [style.top.px]="event.top"
-        [style.left.px]="event.left"
-        *ngFor="let event of dayBlocks"
-        class="event">
+  @for (dayBlocks of blocks; track dayBlocks) {
+    <div class="wrapper">
+      <div class="day">
+        @for (event of dayBlocks; track event) {
+          <div
+            [style.height.px]="event.height"
+            [style.width.px]="event.width"
+            [style.top.px]="event.top"
+            [style.left.px]="event.left"
+            class="event">
+          </div>
+        }
       </div>
     </div>
-  </div>
+  }
 </div>
 <br/>

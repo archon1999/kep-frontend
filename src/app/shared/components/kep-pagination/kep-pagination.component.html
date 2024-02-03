@@ -10,48 +10,50 @@
     (pageChange)="change($event)"
     class="d-flex justify-content-center pagination-{{ color }} {{ customClass }}">
     <ng-template ngbPaginationFirst>
-    <span
-      [data-feather]="'chevrons-left'"
-      [size]="'18px'"
-      [class]="'font-weight-bolder'">
-    </span>
+      <span
+        [data-feather]="'chevrons-left'"
+        [size]="'18px'"
+        [class]="'font-weight-bolder'">
+      </span>
     </ng-template>
     <ng-template ngbPaginationPrevious>
-    <span
-      [data-feather]="'chevron-left'"
-      [size]="'18px'"
-      [class]="'font-weight-bolder'">
-    </span>
+      <span
+        [data-feather]="'chevron-left'"
+        [size]="'18px'"
+        [class]="'font-weight-bolder'">
+      </span>
     </ng-template>
     <ng-template ngbPaginationNext>
-    <span
-      [data-feather]="'chevron-right'"
-      [size]="'18px'"
-      [class]="'font-weight-bolder'">
-    </span>
+      <span
+        [data-feather]="'chevron-right'"
+        [size]="'18px'"
+        [class]="'font-weight-bolder'">
+      </span>
     </ng-template>
     <ng-template ngbPaginationLast>
-    <span
-      [data-feather]="'chevrons-right'"
-      [size]="'18px'"
-      [class]="'font-weight-bolder'">
-    </span>
+      <span
+        [data-feather]="'chevrons-right'"
+        [size]="'18px'"
+        [class]="'font-weight-bolder'">
+      </span>
     </ng-template>
   </ngb-pagination>
 
-  <div *ngIf="pageOptions?.length > 0" class="position-absolute position-right-0 position-top-0 d-none d-md-block">
-    <ng-select
-      [clearable]="false"
-      [searchable]="false"
-      [(ngModel)]="pageSize"
-      (change)="sizeChange($event)">
-      @for (pageOption of pageOptions; track pageOption){
-        <ng-option [value]="pageOption">
-          {{ pageOption }} / {{ 'Page' | translate }}
-        </ng-option>
-      }
-    </ng-select>
-  </div>
+  @if (pageOptions?.length > 0) {
+    <div class="position-absolute position-right-0 position-top-0 d-none d-md-block">
+      <ng-select
+        [clearable]="false"
+        [searchable]="false"
+        [(ngModel)]="pageSize"
+        (change)="sizeChange($event)">
+        @for (pageOption of pageOptions; track pageOption){
+          <ng-option [value]="pageOption">
+            {{ pageOption }} / {{ 'Page' | translate }}
+          </ng-option>
+        }
+      </ng-select>
+    </div>
+  }
 
   <ng-select-css></ng-select-css>
 </div>

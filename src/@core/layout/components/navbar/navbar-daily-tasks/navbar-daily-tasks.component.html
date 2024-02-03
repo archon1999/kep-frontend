@@ -8,54 +8,65 @@
       <div class="dropdown-header d-flex">
         <h4 class="notification-title text-white mb-50 mr-auto">{{ 'DailyTasks' | translate }}</h4>
         <div class="badge badge-pill badge-primary d-flex align-items-center">
-          {{ dailyTasks.length }} {{ 'Tasks' | translate }} 
+          {{ dailyTasks.length }} {{ 'Tasks' | translate }}
         </div>
       </div>
     </li>
 
     <ng-scrollbar autoHeightDisabled="false">
       <li class="scrollable-container media-list">
-        <div class="d-flex" *ngFor="let dailyTask of dailyTasks">
-          <div class="media d-flex align-items-start">
-            <div class="media-left text-dark" [ngSwitch]="dailyTask.type">
-              <div *ngSwitchCase="DailyTaskType.Problem" class="avatar bg-primary mt-50">
-                <div class="avatar-content">
-                  <kep-icon class="font-medium-1" name="problem"></kep-icon>
-                </div>
+        @for (dailyTask of dailyTasks; track dailyTask) {
+          <div class="d-flex">
+            <div class="media d-flex align-items-start">
+              <div class="media-left text-dark">
+                @switch (dailyTask.type) {
+                  @case (DailyTaskType.Problem) {
+                    <div class="avatar bg-primary mt-50">
+                      <div class="avatar-content">
+                        <kep-icon class="font-medium-1" name="problem"></kep-icon>
+                      </div>
+                    </div>
+                  }
+                  @case (DailyTaskType.Test) {
+                    <div class="avatar bg-success mt-50">
+                      <div class="avatar-content">
+                        <kep-icon class="font-medium-1" name="test"></kep-icon>
+                      </div>
+                    </div>
+                  }
+                  @case (DailyTaskType.Challenge) {
+                    <div class="avatar bg-primary mt-50">
+                      <div class="avatar-content">
+                        <kep-icon class="font-medium-1" name="challenge"></kep-icon>
+                      </div>
+                    </div>
+                  }
+                }
               </div>
-
-              <div *ngSwitchCase="DailyTaskType.Test" class="avatar bg-success mt-50">
-                <div class="avatar-content">
-                  <kep-icon class="font-medium-1" name="test"></kep-icon>
-                </div>
-              </div>
-
-              <div *ngSwitchCase="DailyTaskType.Challenge" class="avatar bg-primary mt-50">
-                <div class="avatar-content">
-                  <kep-icon class="font-medium-1" name="challenge"></kep-icon>
-                </div>
-              </div>
-            </div>
-            <div class="media-body">
-              <p class="media-heading text-white">
-                {{ dailyTask.description }}
-                <img ngbTooltip="Kepcoin" height="19" src="assets/images/icons/kepcoin.webp"> {{ dailyTask.kepcoin }}
-              </p>
-              <small class="notification-text">
-              <span class="text-success" *ngIf="dailyTask.completed">
-                <i data-feather="check-circle"></i>
-              </span>
-                <span *ngIf="!dailyTask.completed" class="badge badge-glow" [ngClass]="{
+              <div class="media-body">
+                <p class="media-heading text-white">
+                  {{ dailyTask.description }}
+                  <img ngbTooltip="Kepcoin" height="19" src="assets/images/icons/kepcoin.webp"> {{ dailyTask.kepcoin }}
+                </p>
+                <small class="notification-text">
+                  @if (dailyTask.completed) {
+                    <span class="text-success">
+                      <i data-feather="check-circle"></i>
+                    </span>
+                  }
+                  @if (!dailyTask.completed) {
+<span class="badge badge-glow" [ngClass]="{
                 'badge-primary': dailyTask.type == DailyTaskType.Problem || dailyTask.type == DailyTaskType.Challenge,
                 'badge-success': dailyTask.type == DailyTaskType.Test
               }">
-                {{ dailyTask.progress }}/{{ dailyTask.total }}
-              </span>
-              </small>
+                      {{ dailyTask.progress }}/{{ dailyTask.total }}
+                    </span>
+                  }
+                </small>
+              </div>
             </div>
           </div>
-
-        </div>
+        }
       </li>
     </ng-scrollbar>
 

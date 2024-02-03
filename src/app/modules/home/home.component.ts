@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { SoundsService } from '@shared/services/sounds/sounds.service';
-import { CommonModule } from '@angular/common';
+
 import { PostsSectionComponent } from './posts-section/posts-section.component';
 import { BirthdaysSectionComponent } from './birthdays-section/birthdays-section.component';
 import { CalendarSectionComponent } from './calendar-section/calendar-section.component';
@@ -20,7 +20,6 @@ import { UsersChartCardComponent } from '@users/components/users-chart-card/user
   styleUrls: ['./home.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     PostsSectionComponent,
     BirthdaysSectionComponent,
     CalendarSectionComponent,
@@ -32,8 +31,8 @@ import { UsersChartCardComponent } from '@users/components/users-chart-card/user
     HeaderSectionComponent,
     ActivitySectionComponent,
     SpinnerComponent,
-    UsersChartCardComponent,
-  ]
+    UsersChartCardComponent
+]
 })
 export class HomeComponent implements OnInit {
   @ViewChild('audio') audio: ElementRef<HTMLAudioElement>;

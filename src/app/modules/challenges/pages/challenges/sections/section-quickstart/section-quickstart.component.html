@@ -1,11 +1,13 @@
 <div [@fadeInOnEnter] class="row">
-  <div class="col-lg-3 col-6 p-25" *ngFor="let quickStart of quickStarts">
-    <new-challenge-button
-      (click)="quickStartClick(quickStart)"
-      [timeSeconds]="quickStart.timeSeconds"
-      [questionsCount]="quickStart.questionsCount">
-    </new-challenge-button>
-  </div>
+  @for (quickStart of quickStarts; track quickStart) {
+    <div class="col-lg-3 col-6 p-25">
+      <new-challenge-button
+        (click)="quickStartClick(quickStart)"
+        [timeSeconds]="quickStart.timeSeconds"
+        [questionsCount]="quickStart.questionsCount">
+      </new-challenge-button>
+    </div>
+  }
 </div>
 
 <div class="offset-lg-3 col-12 col-lg-6">
@@ -34,11 +36,13 @@
 
     <h5 class="mb-1 text-white">{{ 'Chapters' | translate }}</h5>
     <ng-select [multiple]="true" [(ngModel)]="newChallengeCall.selectedChapters">
-      <ng-option *ngFor="let chapter of chapters" [value]="chapter.id">
-        <span class="badge text-white bg-gradient-chapter-{{ chapter.id }}">
-          {{ chapter.title }}
-        </span>
-      </ng-option>
+      @for (chapter of chapters; track chapter) {
+        <ng-option [value]="chapter.id">
+          <span class="badge text-white bg-gradient-chapter-{{ chapter.id }}">
+            {{ chapter.title }}
+          </span>
+        </ng-option>
+      }
     </ng-select>
     <div class="text-center">
       <button (click)="newChallenge(newChallengeCall)" class="btn btn-primary btn-sm mt-2">

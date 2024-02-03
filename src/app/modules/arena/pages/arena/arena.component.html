@@ -45,9 +45,11 @@
     </div>
     <div class="col-lg-8 col-12 offset-lg-2">
       <div class="row">
-        <div class="col-12 bg-arena-list" *ngFor="let arena of arenaList">
-          <arena-list-card [@fadeInOnEnter] [arena]="arena"></arena-list-card>
-        </div>
+        @for (arena of arenaList; track arena) {
+          <div class="col-12 bg-arena-list">
+            <arena-list-card [@fadeInOnEnter] [arena]="arena"></arena-list-card>
+          </div>
+        }
       </div>
     </div>
   </div>

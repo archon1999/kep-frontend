@@ -12,45 +12,43 @@
           </div>
         </div>
         <br>
-        <div class="font-medium-5 mt-1">
-          {{ 'Challenges' | translate }}
-        </div>
-      </div>
-
-      <div class="text-center mt-1" *ngIf="challengesRating">
-        <div class="text-{{ challengesRating.rankTitle | challengesRankColor }}">
-        <span class="badge badge-pill badge-glow badge-{{ challengesRating.rankTitle | challengesRankColor }}">
-          {{ challengesRating.rankTitle }}
-        </span>
-
-        <span class="badge badge-light-{{ challengesRating.rankTitle | challengesRankColor }}">
-          {{ challengesRating.rating }}
-        </span>
-        </div>
-
-        <div class="font-medium-4 d-flex justify-content-between mt-1">
-          <div>
-            <span class="text-success font-medium-2" ngbTooltip="{{ 'Wins' | translate }}">W</span>
-            {{ challengesRating.wins }}
-            <br>
-            <span class="text-success font-medium-2">{{ Math.trunc(100 * challengesRating.wins / challengesRating.all ) }} %</span>
-          </div>
-
-          <div>
-            <span class="ml-50 text-secondary font-medium-2" ngbTooltip="{{ 'Draws' | translate }}">D</span>
-            {{ challengesRating.draws }}
-            <br>
-            <span class="text-secondary font-medium-2">{{ Math.trunc(100 * challengesRating.draws / challengesRating.all ) }} %</span>
-          </div>
-
-          <div>
-            <span class="ml-50 text-danger font-medium-2" ngbTooltip="{{ 'Losses' | translate }}">L</span>
-            {{ challengesRating.losses }}
-            <br>
-            <span class="text-danger font-medium-2">{{ Math.trunc(100 * challengesRating.losses / challengesRating.all ) }} %</span>
+          <div class="font-medium-5 mt-1">
+            {{ 'Challenges' | translate }}
           </div>
         </div>
-      </div>
-    </div>
-  }
-</div>
+
+        @if (challengesRating) {
+          <div class="text-center mt-1">
+            <div class="text-{{ challengesRating.rankTitle | challengesRankColor }}">
+              <span class="badge badge-pill badge-glow badge-{{ challengesRating.rankTitle | challengesRankColor }}">
+                {{ challengesRating.rankTitle }}
+              </span>
+              <span class="badge badge-light-{{ challengesRating.rankTitle | challengesRankColor }}">
+                {{ challengesRating.rating }}
+              </span>
+            </div>
+            <div class="font-medium-4 d-flex justify-content-between mt-1">
+              <div>
+                <span class="text-success font-medium-2" ngbTooltip="{{ 'Wins' | translate }}">W</span>
+                {{ challengesRating.wins }}
+                <br>
+                  <span class="text-success font-medium-2">{{ Math.trunc(100 * challengesRating.wins / challengesRating.all ) }} %</span>
+                </div>
+                <div>
+                  <span class="ml-50 text-secondary font-medium-2" ngbTooltip="{{ 'Draws' | translate }}">D</span>
+                  {{ challengesRating.draws }}
+                  <br>
+                    <span class="text-secondary font-medium-2">{{ Math.trunc(100 * challengesRating.draws / challengesRating.all ) }} %</span>
+                  </div>
+                  <div>
+                    <span class="ml-50 text-danger font-medium-2" ngbTooltip="{{ 'Losses' | translate }}">L</span>
+                    {{ challengesRating.losses }}
+                    <br>
+                      <span class="text-danger font-medium-2">{{ Math.trunc(100 * challengesRating.losses / challengesRating.all ) }} %</span>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>

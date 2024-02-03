@@ -11,7 +11,7 @@ import { KepcoinSpendSwalModule } from '../kepcoin/kepcoin-spend-swal/kepcoin-sp
 import { TranslateModule } from '@ngx-translate/core';
 import { ProjectComponent } from './project/project.component';
 import { ProjectResolver } from './projects.resolver';
-import { NgbAccordionModule, NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAccordionModule, NgbNavModule, NgbPaginationModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProjectDetailComponent } from './project/project-detail/project-detail.component';
 import { ProjectSidebarComponent } from './project/project-detail/project-sidebar/project-sidebar.component';
 import { ProjectDescriptionComponent } from './project/project-detail/project-description/project-description.component';
@@ -70,6 +70,7 @@ const routes: Routes = [
     NgbNavModule,
     UserPopoverModule,
     NgbAccordionModule,
+    NgbPaginationModule,
   ],
   providers: [
     ProjectsService,

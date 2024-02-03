@@ -1,93 +1,105 @@
 <ng-template #popContent>
-  <div [@fadeInOnEnter] class="card card-profile" *ngIf="user && userRatings">
-    <img [src]="user.coverPhoto" class="img-fluid card-img-top"
-      alt="Profile Cover Photo" />
-    <div class="card-body">
-      <div class="profile-image-wrapper">
-        <div class="profile-image">
-          <div class="avatar">
-            <img [src]="user.avatar" alt="Profile Picture" />
-            <span *ngIf="user.isOnline" class="avatar-status-online"></span>
-            <span *ngIf="!user.isOnline" class="avatar-status-offline"></span>
+  @if (user && userRatings) {
+    <div [@fadeInOnEnter] class="card card-profile">
+      <img [src]="user.coverPhoto" class="img-fluid card-img-top"
+        alt="Profile Cover Photo" />
+        <div class="card-body">
+          <div class="profile-image-wrapper">
+            <div class="profile-image">
+              <div class="avatar">
+                <img [src]="user.avatar" alt="Profile Picture" />
+                @if (user.isOnline) {
+                  <span class="avatar-status-online"></span>
+                }
+                @if (!user.isOnline) {
+                  <span class="avatar-status-offline"></span>
+                }
+              </div>
+            </div>
           </div>
+          <div>
+            {{ user.firstName }} {{ user.lastName }}
+            @if (user.streak >= 7) {
+              <span style="vertical-align: bottom;">
+                <ng-template #tipContent>
+                  <img src="assets/images/icons/fire_red.png" height="19" alt=""> {{ user.streak }}
+                </ng-template>
+                <span class="badge badge-pill badge-kep" [ngbTooltip]="tipContent">KEP</span>
+              </span>
+            }
+          </div>
+          <h6 class="text-muted">{{ user.username }}</h6>
+          <hr class="mb-2" />
+          @if (userRatings) {
+            <div class="d-flex justify-content-between">
+              <div class="d-block">
+                <div class="">
+                  <kep-icon name="contest"></kep-icon>
+                  {{ 'MENU.CONTESTS' | translate }}
+                </div>
+                <div class="mb-0 mt-1 text-center">
+                  <ng-component [innerHTML]="userRatings.contestsRatingTitle | contestsRatingImg"></ng-component>
+                  <span class="badge badge-light-{{ userRatings.contestsRating | contestsRatingColor }}">
+                    {{ userRatings.contestsRating }}
+                  </span>
+                </div>
+              </div>
+              <div class="d-block">
+                <h6 class="">
+                  <kep-icon name="problem"></kep-icon>
+                  {{ 'MENU.PROBLEMS' | translate }}
+                </h6>
+                <div class="mb-0 mt-1 text-center">
+                  <span class="badge badge-primary">
+                    {{ userRatings.problemsSolved }}
+                  </span>
+                  <span class="badge badge-light-success">
+                    {{ userRatings.problemsRating }}
+                  </span>
+                </div>
+              </div>
+              <div class="d-block">
+                <div class="">
+                  <kep-icon name="challenge"></kep-icon>
+                  {{ 'MENU.CHALLENGES' | translate }}
+                </div>
+                <div class="d-block mb-0 mt-1 text-center text-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+                  <span class="badge badge-pill badge-glow badge-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+                    {{ userRatings.challengesRankTitle }}
+                  </span>
+                  <span class="badge badge-light-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+                    {{ userRatings.challengesRating }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          }
         </div>
       </div>
-      <div>
-        {{ user.firstName }} {{ user.lastName }}
-        <span style="vertical-align: bottom;" *ngIf="user.streak >= 7">
-          <ng-template #tipContent>
-            <img src="assets/images/icons/fire_red.png" height="19" alt=""> {{ user.streak }}
-          </ng-template>
-          <span class="badge badge-pill badge-kep" [ngbTooltip]="tipContent">KEP</span>
-        </span>
-      </div>
-      <h6 class="text-muted">{{ user.username }}</h6>
-      <hr class="mb-2" />
-      <div *ngIf="userRatings" class="d-flex justify-content-between">
-        <div class="d-block">
-          <div class="">
-            <kep-icon name="contest"></kep-icon>
-            {{ 'MENU.CONTESTS' | translate }}
-          </div>
-          <div class="mb-0 mt-1 text-center">
-            <ng-component [innerHTML]="userRatings.contestsRatingTitle | contestsRatingImg"></ng-component>
-            <span class="badge badge-light-{{ userRatings.contestsRating | contestsRatingColor }}">
-              {{ userRatings.contestsRating }}
-            </span>
-          </div>
-        </div>
-      
-        <div class="d-block">
-          <h6 class="">
-            <kep-icon name="problem"></kep-icon>
-            {{ 'MENU.PROBLEMS' | translate }}
-          </h6>
-          <div class="mb-0 mt-1 text-center">
-            <span class="badge badge-primary">
-              {{ userRatings.problemsSolved }}
-            </span>
-            <span class="badge badge-light-success">
-              {{ userRatings.problemsRating }}
-            </span>
-          </div>
-        </div>
-      
-        <div class="d-block">
-          <div class="">
-            <kep-icon name="challenge"></kep-icon>
-            {{ 'MENU.CHALLENGES' | translate }}
-          </div>
-          <div class="d-block mb-0 mt-1 text-center text-{{ userRatings.challengesRankTitle | challengesRankColor }}">
-            <span class="badge badge-pill badge-glow badge-{{ userRatings.challengesRankTitle | challengesRankColor }}">
-              {{ userRatings.challengesRankTitle }}
-            </span>
-      
-            <span class="badge badge-light-{{ userRatings.challengesRankTitle | challengesRankColor }}">
-              {{ userRatings.challengesRating }}
-            </span>
-          </div>
-        </div>
-      
-      </div>
-    </div>
-  </div>
-</ng-template>
-<a
-  [routerLink]="['/users', 'user', username]"
-  [ngbPopover]="popContent"
-  triggers="mouseenter:mouseleave"
-  [closeDelay]="1000"
-  [openDelay]="1000"
-  (shown)="loadUser()"
-  popoverClass="user-popover"
-  class="text-{{ textColor }} {{ customClass }}"
-  [placement]="placement"
-  container="body"
->
-  <span *ngIf="!customContent">
-    {{ username }}
-  </span>
-  <ng-content *ngIf="customContent"></ng-content>
-</a>
+    }
+  </ng-template>
+  <a
+    [routerLink]="['/users', 'user', username]"
+    [ngbPopover]="popContent"
+    triggers="mouseenter:mouseleave"
+    [closeDelay]="1000"
+    [openDelay]="1000"
+    (shown)="loadUser()"
+    popoverClass="user-popover"
+    class="text-{{ textColor }} {{ customClass }}"
+    [placement]="placement"
+    container="body"
+    >
+    @if (!customContent) {
+      <span>
+        {{ username }}
+      </span>
+    }
+    @if (customContent) {
+      <ng-content></ng-content>
+    }
+  </a>
 
-<kep-badge *ngIf="!customContent && streak >= 7" [streak]="streak"></kep-badge>
+  @if (!customContent && streak >= 7) {
+    <kep-badge [streak]="streak"></kep-badge>
+  }

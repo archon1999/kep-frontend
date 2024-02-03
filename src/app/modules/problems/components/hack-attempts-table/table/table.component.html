@@ -1,72 +1,71 @@
 <div class="table-responsive">
   <table class="table attempts-table">
     <thead>
-    <tr class="bg-gradient-primary">
-      <th>ID</th>
-      <th>{{ 'When' | translate }}</th>
-      <th>{{ 'Hacker' | translate }}</th>
-      <th>{{ 'Defender' | translate }}</th>
-      <th>{{ 'Attempt' | translate }}</th>
-      <th>{{ 'Problem' | translate }}</th>
-      <th>{{ 'Verdict' | translate }}</th>
-      <th *ngIf="currentUser?.isSuperuser"></th>
-    </tr>
+      <tr class="bg-gradient-primary">
+        <th>ID</th>
+        <th>{{ 'When' | translate }}</th>
+        <th>{{ 'Hacker' | translate }}</th>
+        <th>{{ 'Defender' | translate }}</th>
+        <th>{{ 'Attempt' | translate }}</th>
+        <th>{{ 'Problem' | translate }}</th>
+        <th>{{ 'Verdict' | translate }}</th>
+        @if (currentUser?.isSuperuser) {
+          <th></th>
+        }
+      </tr>
     </thead>
     <tbody>
-    <tr
-      *ngFor="let hackAttempt of hackAttempts; index as i; trackBy:identify"
-      [@fadeInOnEnter]
-      [ngClass]="{'bg-light-primary': hackAttempt.hackerUsername == currentUser?.username}">
-      <td>
-        {{ hackAttempt.id }}
-      </td>
-
-      <td>
+      @for (hackAttempt of hackAttempts; track identify(i, hackAttempt); let i = $index) {
+        <tr
+          [@fadeInOnEnter]
+          [ngClass]="{'bg-light-primary': hackAttempt.hackerUsername == currentUser?.username}">
+          <td>
+            {{ hackAttempt.id }}
+          </td>
+          <td>
             <span class="badge badge-light-success text-center">
               {{ hackAttempt.created | date:"yyyy/MM/dd HH:mm:ss" }}
             </span>
-      </td>
-
-      <td>
+          </td>
+          <td>
         <contestant-view [user]="{
           username: hackAttempt.hackerUsername,
           ratingTitle: hackAttempt.hackerRatingTitle
         }"></contestant-view>
-      </td>
-
-      <td>
+          </td>
+          <td>
         <contestant-view [user]="{
           username: hackAttempt.defenderUsername,
           ratingTitle: hackAttempt.defenderRatingTitle
          }"></contestant-view>
-      </td>
-
-      <td>
-        {{ hackAttempt.attemptId }}
-      </td>
-
-      <td>
-        <a [routerLink]="['/practice', 'problems', 'problem', hackAttempt.problemId]" class="text-primary">
-          {{ hackAttempt.problemId }}. {{ hackAttempt.problemTitle }}
-        </a>
-      </td>
-
-      <td>
-          <span class="badge badge-glow badge-{{ hackAttempt | hackAttemptVerdictColor }}">
-            {{ hackAttempt.verdictTitle }} <span *ngIf="hackAttempt.hackType"> | {{ hackAttempt.hackType }}</span>
+          </td>
+          <td>
+            {{ hackAttempt.attemptId }}
+          </td>
+          <td>
+            <a [routerLink]="['/practice', 'problems', 'problem', hackAttempt.problemId]" class="text-primary">
+              {{ hackAttempt.problemId }}. {{ hackAttempt.problemTitle }}
+            </a>
+          </td>
+          <td>
+            <span class="badge badge-glow badge-{{ hackAttempt | hackAttemptVerdictColor }}">
+              {{ hackAttempt.verdictTitle }} @if (hackAttempt.hackType) {
+              <span> | {{ hackAttempt.hackType }}</span>
+            }
           </span>
-      </td>
+        </td>
+        @if (currentUser?.isSuperuser) {
+          <td>
+            <button (click)="rerun(hackAttempt.id)" class="btn btn-sm round btn-primary">
+              <i data-feather="refresh-cw"></i>
+            </button>
+          </td>
+        }
+      </tr>
+    }
+  </tbody>
 
-      <td *ngIf="currentUser?.isSuperuser">
-        <button (click)="rerun(hackAttempt.id)" class="btn btn-sm round btn-primary">
-          <i data-feather="refresh-cw"></i>
-        </button>
-      </td>
-
-    </tr>
-    </tbody>
-
-    <tfoot>
+  <tfoot>
     <tr>
       <th>ID</th>
       <th>{{ 'When' | translate }}</th>
@@ -75,8 +74,10 @@
       <th>{{ 'Attempt' | translate }}</th>
       <th>{{ 'Problem' | translate }}</th>
       <th>{{ 'Verdict' | translate }}</th>
-      <th *ngIf="currentUser?.isSuperuser"></th>
+      @if (currentUser?.isSuperuser) {
+        <th></th>
+      }
     </tr>
-    </tfoot>
-  </table>
+  </tfoot>
+</table>
 </div>

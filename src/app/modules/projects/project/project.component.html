@@ -35,16 +35,20 @@
             <p [innerHTML]="project.description"></p>
           </div>
           <div class="project-tags">
-            <span class="project-tag bg" *ngFor="let tag of project.tags">
-              {{ tag.name }}
-            </span>
+            @for (tag of project.tags; track tag) {
+              <span class="project-tag bg">
+                {{ tag.name }}
+              </span>
+            }
           </div>
           <div class="project-technologies">
-            <span
-              class="project-technology technology-{{ technology.technology }}"
-              *ngFor="let technology of project.availableTechnologies">
-              {{ technology.technology }}
-            </span>
+            @for (technology of project.availableTechnologies; track technology) {
+              <span
+                class="project-technology technology-{{ technology.technology }}"
+                >
+                {{ technology.technology }}
+              </span>
+            }
           </div>
         </div>
         <div [@fadeInUpOnEnter] class="project-image order-sm-2 order-1">
@@ -60,14 +64,16 @@
         <div [@fadeInRightOnEnter] class="col-lg-8 col-md-8 col-12">
           <div class="">
             <h2 class="title">{{ 'Tasks' | translate }}</h2>
-            <div class="project-task project-{{ project.id }} gradient" *ngFor="let task of project.tasks">
-              <div class="project-task-title">
-                {{ task.number }}. {{ task.title }}
+            @for (task of project.tasks; track task) {
+              <div class="project-task project-{{ project.id }} gradient">
+                <div class="project-task-title">
+                  {{ task.number }}. {{ task.title }}
+                </div>
               </div>
-            </div>
+            }
           </div>
         </div>
-  
+
         <div [@fadeInOnEnter] class="col-lg-4 col-md-4 col-12">
           <div class="project-button text-center">
             <kepcoin-spend-swal
@@ -75,16 +81,20 @@
               [customContent]="true"
               [purchaseUrl]="'projects/' + project.id + '/purchase'"
               (success)="project.purchased=true;"
-            >
-              <button *ngIf="!project.purchased" class="btn shadow project-{{ project.id }} bg">
-                {{ 'Purchase' | translate }}
-                <img height="20" src="assets/images/icons/kepcoin.webp">
-                {{ project.purchaseKepcoinValue }}
-              </button>
+              >
+              @if (!project.purchased) {
+                <button class="btn shadow project-{{ project.id }} bg">
+                  {{ 'Purchase' | translate }}
+                  <img height="20" src="assets/images/icons/kepcoin.webp">
+                  {{ project.purchaseKepcoinValue }}
+                </button>
+              }
             </kepcoin-spend-swal>
-            <a routerLink="detail" *ngIf="project.purchased" class="btn shadow project-{{ project.id }} bg">
-              {{ 'Practice' | translate }}
-            </a>
+            @if (project.purchased) {
+              <a routerLink="detail" class="btn shadow project-{{ project.id }} bg">
+                {{ 'Practice' | translate }}
+              </a>
+            }
           </div>
         </div>
       </div>

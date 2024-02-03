@@ -13,18 +13,22 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let stage of tournament.stages">
-            <td class="text-center">
-              <strong class="text-dark">
-                {{ stage.title }}
-              </strong>
-            </td>
-            <td class="text-center">
-              <span *ngIf="stage.startTime" class="badge badge-schedule">
-                {{ stage.startTime | date:'dd-MM-y HH:mm' }}
-              </span>
-            </td>
-          </tr>
+          @for (stage of tournament.stages; track stage) {
+            <tr>
+              <td class="text-center">
+                <strong class="text-dark">
+                  {{ stage.title }}
+                </strong>
+              </td>
+              <td class="text-center">
+                @if (stage.startTime) {
+                  <span class="badge badge-schedule">
+                    {{ stage.startTime | date:'dd-MM-y HH:mm' }}
+                  </span>
+                }
+              </td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>

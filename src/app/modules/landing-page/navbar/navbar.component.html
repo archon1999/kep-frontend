@@ -47,9 +47,11 @@
               <i class="fi fi-{{ languageOptions[translateService.currentLang].flag }}"></i>
             </div>
             <div ngbDropdownMenu>
-              <div class="cursor-pointer" *ngFor="let lang of langs" ngbDropdownItem (click)="setLanguage(lang)">
-                <i class="mr-50 fi fi-{{ languageOptions[lang].flag }}"></i> {{ languageOptions[lang].title }}
-              </div>
+              @for (lang of langs; track lang) {
+                <div class="cursor-pointer" ngbDropdownItem (click)="setLanguage(lang)">
+                  <i class="mr-50 fi fi-{{ languageOptions[lang].flag }}"></i> {{ languageOptions[lang].title }}
+                </div>
+              }
             </div>
           </div>
 

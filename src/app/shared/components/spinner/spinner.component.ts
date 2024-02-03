@@ -1,12 +1,12 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { randomInt } from '@shared/utils';
 
 @Component({
   selector: 'spinner',
   standalone: true,
-  imports: [CommonModule, NgxSpinnerModule],
+  imports: [NgxSpinnerModule],
   templateUrl: './spinner.component.html',
   styleUrl: './spinner.component.scss'
 })

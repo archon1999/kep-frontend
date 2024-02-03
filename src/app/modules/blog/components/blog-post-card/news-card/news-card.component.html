@@ -12,9 +12,11 @@
       {{ blog.title }}
     </div>
     <div class="tags">
-      <span class="badge badge-light-primary mr-25" *ngFor="let tag of blog.tags">
-        {{ tag }}
-      </span>
+      @for (tag of blog.tags; track tag) {
+        <span class="badge badge-light-primary mr-25">
+          {{ tag }}
+        </span>
+      }
     </div>
     <div class="d-flex justify-content-between align-items-center">
       <div class="d-flex align-items-center text-primary">

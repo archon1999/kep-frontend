@@ -1,19 +1,20 @@
-<apx-chart
-  #chart
-  *ngIf="options"
-  [chart]="options.chart"
-  [colors]="options.colors"
-  [fill]="options.fill"
-  [series]="options.series"
-  [xaxis]="options.xaxis"
-  [yaxis]="options.yaxis"
-  [tooltip]="options.tooltip"
-  [dataLabels]="options.dataLabels"
-  [grid]="options.grid"
-  [stroke]="options.stroke"
-  [title]="options.title"
-  [plotOptions]="options.plotOptions"
-  [labels]="options.labels"
-  [legend]="options.legend"
-  [theme]="chartTheme"
-></apx-chart>
+@if (options) {
+  <apx-chart
+    #chart
+    [chart]="options.chart"
+    [colors]="options.colors"
+    [fill]="options.fill"
+    [series]="options.series"
+    [xaxis]="options.xaxis"
+    [yaxis]="options.yaxis"
+    [tooltip]="options.tooltip"
+    [dataLabels]="options.dataLabels"
+    [grid]="options.grid"
+    [stroke]="options.stroke"
+    [title]="options.title"
+    [plotOptions]="options.plotOptions"
+    [labels]="options.labels"
+    [legend]="options.legend"
+    [theme]="chartTheme"
+  ></apx-chart>
+}

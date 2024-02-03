@@ -3,9 +3,11 @@
     <spinner></spinner>
   </div>
 } @else {
-  <div *ngFor="let challenge of challenges">
-    <challenge-card [challenge]="challenge"></challenge-card>
-  </div>
+  @for (challenge of challenges; track challenge) {
+    <div>
+      <challenge-card [challenge]="challenge"></challenge-card>
+    </div>
+  }
 }
 
 <div class="mt-2 mb-1">

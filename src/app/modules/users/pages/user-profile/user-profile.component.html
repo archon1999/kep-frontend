@@ -11,7 +11,9 @@
           <div class="profile-title ml-3">
             <h2 class="text-white">
               {{ user.firstName }} {{ user.lastName }}
-              <kep-badge *ngIf="user.streak >= 7" [streak]="user.streak"></kep-badge>
+              @if (user.streak >= 7) {
+                <kep-badge [streak]="user.streak"></kep-badge>
+              }
               <user-online-status [online]="user.isOnline" [lastSeen]="user.lastSeen"></user-online-status>
             </h2>
             <p class="text-white">{{ user.username }}</p>
@@ -57,11 +59,13 @@
                 </li>
               </ul>
 
-              <a routerLink="/settings" class="btn btn-primary" *ngIf="currentUser?.username == user.username"
-                 rippleEffect>
-                <i data-feather="edit" class="d-block d-md-none"></i>
-                <span class="font-weight-bold d-none d-md-block">{{ 'Edit' | translate }}</span>
-              </a>
+              @if (currentUser?.username == user.username) {
+                <a routerLink="/settings" class="btn btn-primary"
+                  rippleEffect>
+                  <i data-feather="edit" class="d-block d-md-none"></i>
+                  <span class="font-weight-bold d-none d-md-block">{{ 'Edit' | translate }}</span>
+                </a>
+              }
             </div>
           </div>
         </nav>
@@ -75,45 +79,51 @@
         </div>
 
         <div class="col-lg-6 col-12 order-1 order-lg-2">
-          <div *ngIf="activeTab == Tab.Ratings">
-            @defer (on viewport) {
+          @if (activeTab == Tab.Ratings) {
+            <div>
+              @defer (on viewport) {
               <user-ratings></user-ratings>
-            } @placeholder {
+              } @placeholder {
               <div class="card" [style.height.px]="400">
                 <spinner></spinner>
               </div>
             }
           </div>
-          <div *ngIf="activeTab == Tab.Blog">
+        }
+        @if (activeTab == Tab.Blog) {
+          <div>
             @defer (on viewport) {
-              <user-blog></user-blog>
+            <user-blog></user-blog>
             } @placeholder {
-              <div class="card" [style.height.px]="400">
-                <spinner></spinner>
-              </div>
-            }
-          </div>
-          <div *ngIf="activeTab == Tab.Achievements">
-            @defer (on viewport) {
-              <user-achievements></user-achievements>
-            } @placeholder {
-              <div class="card" [style.height.px]="400">
-                <spinner></spinner>
-              </div>
-            }
-          </div>
-        </div>
-
-        <div class="order-lg-3 order-2 col-lg-3 col-12">
-          @defer (on viewport) {
-            <user-skills></user-skills>
-          } @placeholder {
             <div class="card" [style.height.px]="400">
               <spinner></spinner>
             </div>
           }
         </div>
+      }
+      @if (activeTab == Tab.Achievements) {
+        <div>
+          @defer (on viewport) {
+          <user-achievements></user-achievements>
+          } @placeholder {
+          <div class="card" [style.height.px]="400">
+            <spinner></spinner>
+          </div>
+        }
       </div>
-    </section>
+    }
   </div>
+
+  <div class="order-lg-3 order-2 col-lg-3 col-12">
+    @defer (on viewport) {
+    <user-skills></user-skills>
+    } @placeholder {
+    <div class="card" [style.height.px]="400">
+      <spinner></spinner>
+    </div>
+  }
+</div>
+</div>
+</section>
+</div>
 </div>

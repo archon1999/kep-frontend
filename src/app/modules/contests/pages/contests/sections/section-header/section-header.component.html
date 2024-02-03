@@ -12,48 +12,50 @@
           <a routerLink="rating" class="btn btn-primary mr-25 mr-mt-1" [ngClass.lt-md]="'btn-sm'">
             <kep-icon name="ranking" class="font-medium-1"></kep-icon>
             <span [ngClass.lt-md]="'d-none'">
-            {{ 'Rating' | translate }}
-          </span>
+              {{ 'Rating' | translate }}
+            </span>
           </a>
           <a routerLink="statistics" class="btn btn-primary mr-25 mr-mt-1" [ngClass.lt-md]="'btn-sm'">
             <kep-icon name="statistics" class="font-medium-1"></kep-icon>
             <span [ngClass.lt-md]="'d-none'">
-            {{ 'Statistics' | translate }}
-          </span>
+              {{ 'Statistics' | translate }}
+            </span>
           </a>
-          <a *ngIf="isAuthenticated" routerLink="user-contests" class="btn btn-primary" [ngClass.lt-md]="'btn-sm'">
-            <kep-icon name="attempt" class="font-medium-1"></kep-icon>
-            <span [ngClass.lt-md]="'d-none'">
-            {{ 'MyContests' | translate }}
-          </span>
-          </a>
+          @if (isAuthenticated) {
+            <a routerLink="user-contests" class="btn btn-primary" [ngClass.lt-md]="'btn-sm'">
+              <kep-icon name="attempt" class="font-medium-1"></kep-icon>
+              <span [ngClass.lt-md]="'d-none'">
+                {{ 'MyContests' | translate }}
+              </span>
+            </a>
+          }
         </div>
       </div>
 
-      <div *ngIf="currentUser" class="card-footer d-flex justify-content-between">
-        <div class="text-center d-flex justify-content-between">
-          <div class="text-white d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
-            <kep-icon type="duotone" class="text-white mr-25" name="rating"></kep-icon>
-            <span class="mr-50">{{ 'Rating' | translate }}:</span>
-            <contests-rating-badge [rating]="data.rating" [badgeLight]="false"></contests-rating-badge>
-            <contests-rating-image [title]="data.ratingTitle"></contests-rating-image>
+      @if (currentUser) {
+        <div class="card-footer d-flex justify-content-between">
+          <div class="text-center d-flex justify-content-between">
+            <div class="text-white d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+              <kep-icon type="duotone" class="text-white mr-25" name="rating"></kep-icon>
+              <span class="mr-50">{{ 'Rating' | translate }}:</span>
+              <contests-rating-badge [rating]="data.rating" [badgeLight]="false"></contests-rating-badge>
+              <contests-rating-image [title]="data.ratingTitle"></contests-rating-image>
+            </div>
+          </div>
+          <div class="text-center d-flex justify-content-between">
+            <div class="text-white d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+              <kep-icon type="duotone" class="text-white mr-25" name="contest"></kep-icon>
+              {{ 'Rank' | translate }}: {{ data.ratingPlace }}
+            </div>
+          </div>
+          <div class="text-center d-flex justify-content-between">
+            <div class="text-white d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+              <kep-icon type="duotone" class="text-white mr-25" name="contest"></kep-icon>
+              {{ 'Contests' | translate }}: {{ data.contestantsCount }}
+            </div>
           </div>
         </div>
-
-        <div class="text-center d-flex justify-content-between">
-          <div class="text-white d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
-            <kep-icon type="duotone" class="text-white mr-25" name="contest"></kep-icon>
-            {{ 'Rank' | translate }}: {{ data.ratingPlace }}
-          </div>
-        </div>
-
-        <div class="text-center d-flex justify-content-between">
-          <div class="text-white d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
-            <kep-icon type="duotone" class="text-white mr-25" name="contest"></kep-icon>
-            {{ 'Contests' | translate }}: {{ data.contestantsCount }}
-          </div>
-        </div>
-      </div>
+      }
     }
   </div>
 </div>

@@ -18,54 +18,62 @@
         (load)="onLoad($event)"
         [src]="contest.logo"
         alt="contest-logo">
+      </div>
+
+      @if (problem) {
+        <div class="card-header full-width">
+          <div class="card-title text-white mb-2">
+            {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
+          </div>
+          <div class="text-white">
+            <mathjax [content]="problem.body"></mathjax>
+          </div>
+        </div>
+      }
+
+      @if (!problem) {
+        <div class="full-width">
+          <div class="card-header justify-content-start">
+            @if (contestProblem.isSolved) {
+              <span class="text-success">
+                <i data-feather="check-circle"></i>
+              </span>
+            }
+            @if (!contestProblem.isSolved && contestProblem.isAttempted) {
+              <span class="text-danger">
+                <i data-feather="x-circle"></i>
+              </span>
+            }
+            <span (mouseenter)="onProblemFocus()" class="text-white ml-50">
+              {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
+              @if (contest.hasBalls()) {
+                <span>
+                  ({{ contestProblem.ball }})
+                </span>
+              }
+            </span>
+          </div>
+          <div class="card-body">
+            @for (availableLanguage of contestProblem.problem.availableLanguages; track availableLanguage) {
+              <span
+                class="badge badge-{{ availableLanguage.lang }} badge-pill mr-25 mb-25">
+                {{ availableLanguage.langFull }}
+              </span>
+            }
+          </div>
+          <div class="card-footer">
+            <span class="text-white">
+              {{ contestProblem.solved }}
+              <i data-feather="user-check"></i>
+            </span>
+            <span class="text-white pl-1">
+              {{ contestProblem.attemptUsersCount - contestProblem.solved }}
+              <i data-feather="user-x"></i>
+            </span>
+          </div>
+        </div>
+      }
+
     </div>
 
-    <div *ngIf="problem" class="card-header full-width">
-      <div class="card-title text-white mb-2">
-        {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
-      </div>
-      <div class="text-white">
-        <mathjax [content]="problem.body"></mathjax>
-      </div>
-    </div>
-
-    <div *ngIf="!problem" class="full-width">
-      <div class="card-header justify-content-start">
-        <span *ngIf="contestProblem.isSolved" class="text-success">
-          <i data-feather="check-circle"></i>
-        </span>
-        <span *ngIf="!contestProblem.isSolved && contestProblem.isAttempted" class="text-danger">
-          <i data-feather="x-circle"></i>
-        </span>
-
-        <span (mouseenter)="onProblemFocus()" class="text-white ml-50">
-          {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
-          <span *ngIf="contest.hasBalls()">
-            ({{ contestProblem.ball }})
-          </span>
-        </span>
-      </div>
-
-      <div class="card-body">
-        <span *ngFor="let availableLanguage of contestProblem.problem.availableLanguages"
-              class="badge badge-{{ availableLanguage.lang }} badge-pill mr-25 mb-25">
-          {{ availableLanguage.langFull }}
-        </span>
-      </div>
-
-      <div class="card-footer">
-        <span class="text-white">
-          {{ contestProblem.solved }}
-          <i data-feather="user-check"></i>
-        </span>
-
-        <span class="text-white pl-1">
-          {{ contestProblem.attemptUsersCount - contestProblem.solved }}
-          <i data-feather="user-x"></i>
-        </span>
-      </div>
-    </div>
-
-  </div>
-
-</a>
+  </a>

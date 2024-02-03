@@ -10,32 +10,38 @@
     </div>
     <div class="col-12">
       <div class="row">
-        <div class="col-12 text-center" *ngFor="let team of teams; index as i">
-          <h3 class="mb-2">
-            {{ team.name }}
-          </h3>
-          <div class="row">
-            <div class="col">
-              <div class="avatar">
-                <img [src]="team.createrAvatar" width="60" height="60" alt="member-avatar">
-              </div>
-              <br>
-              <user-popover [username]="team.createrUsername">
-              </user-popover>
-            </div>
-            <div *ngFor="let member of team.members" [ngClass]="{'col': member.username != team.createrUsername}">
-              <div *ngIf="member.username != team.createrUsername">
+        @for (team of teams; track team; let i = $index) {
+          <div class="col-12 text-center">
+            <h3 class="mb-2">
+              {{ team.name }}
+            </h3>
+            <div class="row">
+              <div class="col">
                 <div class="avatar">
-                  <img [src]="member.avatar" width="60" height="60" alt="member-avatar">
+                  <img [src]="team.createrAvatar" width="60" height="60" alt="member-avatar">
                 </div>
                 <br>
-                <user-popover [username]="member.username">
-                </user-popover>
+                  <user-popover [username]="team.createrUsername">
+                  </user-popover>
+                </div>
+                @for (member of team.members; track member) {
+                  <div [ngClass]="{'col': member.username != team.createrUsername}">
+                    @if (member.username != team.createrUsername) {
+                      <div>
+                        <div class="avatar">
+                          <img [src]="member.avatar" width="60" height="60" alt="member-avatar">
+                        </div>
+                        <br>
+                          <user-popover [username]="member.username">
+                          </user-popover>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
               </div>
-            </div>
+            }
           </div>
-        </div>          
+        </div>
       </div>
     </div>
-  </div>
-</div>

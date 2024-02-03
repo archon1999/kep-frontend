@@ -1,10 +1,11 @@
-<ngx-skeleton-loader
-  *ngIf="skeletonVisible"
-  [count]="1"
-  appearance="line"
-  [theme]="{height: '150px', 'margin-top': '15px', 'margin-bottom': '30px', background: 'var(--skeleton-color)'}"
-  animation="pulse"
-  class="custom-skeleton">
-</ngx-skeleton-loader>
+@if (skeletonVisible) {
+  <ngx-skeleton-loader
+    [count]="1"
+    appearance="line"
+    [theme]="{height: '150px', 'margin-top': '15px', 'margin-bottom': '30px', background: 'var(--skeleton-color)'}"
+    animation="pulse"
+    class="custom-skeleton">
+  </ngx-skeleton-loader>
+}
 
 <img (load)="skeletonVisible=false;" [alt]="alt" [height]="height" [src]="src" [width]="width">

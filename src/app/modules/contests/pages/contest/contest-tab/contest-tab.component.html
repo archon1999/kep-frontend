@@ -4,58 +4,70 @@
       <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id]"
         [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">
         <kep-icon name="contest"></kep-icon>
-        {{ 'CONTESTS.CONTEST' | translate }}</a>
+      {{ 'CONTESTS.CONTEST' | translate }}</a>
       <ng-template ngbNavContent>
       </ng-template>
     </li>
-    <li ngbNavItem *ngIf="contest?.status == -1">
-      <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'registrants']"
-        [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">
-        <kep-icon name="users"></kep-icon>
+    @if (contest?.status == -1) {
+      <li ngbNavItem>
+        <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'registrants']"
+          [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">
+          <kep-icon name="users"></kep-icon>
         {{ 'Registrants' | translate }}</a>
-      <ng-template ngbNavContent>
-      </ng-template>
-    </li>
-    <li ngbNavItem *ngIf="contest?.status != -1">
-      <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problems']"
-        routerLinkActive="active">
-        <kep-icon name="problem"></kep-icon>
+        <ng-template ngbNavContent>
+        </ng-template>
+      </li>
+    }
+    @if (contest?.status != -1) {
+      <li ngbNavItem>
+        <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problems']"
+          routerLinkActive="active">
+          <kep-icon name="problem"></kep-icon>
         {{ 'Problems' | translate }}</a>
-      <ng-template ngbNavContent>
-      </ng-template>
-    </li>
-    <li ngbNavItem *ngIf="contest?.status != -1">
-      <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'attempts']"
-        routerLinkActive="active">
-        <kep-icon name="attempt"></kep-icon>
+        <ng-template ngbNavContent>
+        </ng-template>
+      </li>
+    }
+    @if (contest?.status != -1) {
+      <li ngbNavItem>
+        <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'attempts']"
+          routerLinkActive="active">
+          <kep-icon name="attempt"></kep-icon>
         {{ 'Attempts' | translate }}</a>
-      <ng-template ngbNavContent>
-      </ng-template>
-    </li>
-    <li ngbNavItem *ngIf="contest?.status != -1">
-      <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'standings']"
-        routerLinkActive="active">
-        <kep-icon name="ranking"></kep-icon>
+        <ng-template ngbNavContent>
+        </ng-template>
+      </li>
+    }
+    @if (contest?.status != -1) {
+      <li ngbNavItem>
+        <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'standings']"
+          routerLinkActive="active">
+          <kep-icon name="ranking"></kep-icon>
         {{ 'CONTESTS.STANDINGS' | translate }}</a>
-      <ng-template ngbNavContent>
-      </ng-template>
-    </li>
-    <li ngbNavItem *ngIf="contest?.status == 1 && contest?.isRated">
-      <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'rating-changes']"
-        routerLinkActive="active">
-        <kep-icon name="rating-changes"></kep-icon>
+        <ng-template ngbNavContent>
+        </ng-template>
+      </li>
+    }
+    @if (contest?.status == 1 && contest?.isRated) {
+      <li ngbNavItem>
+        <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'rating-changes']"
+          routerLinkActive="active">
+          <kep-icon name="rating-changes"></kep-icon>
         {{ 'CONTESTS.RATING_CHANGES' | translate }}</a>
-      <ng-template ngbNavContent>
-      </ng-template>
-    </li>
-    <li ngbNavItem *ngIf="contest?.status != -1">
-      <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'questions']"
-        routerLinkActive="active">
-        <kep-icon name="question"></kep-icon>
+        <ng-template ngbNavContent>
+        </ng-template>
+      </li>
+    }
+    @if (contest?.status != -1) {
+      <li ngbNavItem>
+        <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'questions']"
+          routerLinkActive="active">
+          <kep-icon name="question"></kep-icon>
         {{ 'Questions' | translate }}</a>
-      <ng-template ngbNavContent>
-      </ng-template>
-    </li>
+        <ng-template ngbNavContent>
+        </ng-template>
+      </li>
+    }
   </ul>
 </div>
 

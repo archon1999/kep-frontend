@@ -30,14 +30,20 @@
 
             </div>
 
-            <div class="card-footer text-center" *ngIf="currentUser && arena.status != 1">
-              <span *ngIf="arena.isRegistrated" class="badge badge-warning">
-                {{ 'Registrated' | translate }}
-              </span>
-              <button *ngIf="!arena.isRegistrated" class="btn btn-sm btn-relief-warning" (click)="register()">
-                {{ 'Registration' | translate }}
-              </button>
-            </div>
+            @if (currentUser && arena.status != 1) {
+              <div class="card-footer text-center">
+                @if (arena.isRegistrated) {
+                  <span class="badge badge-warning">
+                    {{ 'Registrated' | translate }}
+                  </span>
+                }
+                @if (!arena.isRegistrated) {
+                  <button class="btn btn-sm btn-relief-warning" (click)="register()">
+                    {{ 'Registration' | translate }}
+                  </button>
+                }
+              </div>
+            }
 
           </div>
 
@@ -50,68 +56,78 @@
             </div>
 
             <div class="card-body text-center">
-              <img
-                *ngFor="let chapter of arena.chapters"
-                [src]="chapter.icon"
-                height="48"
-                alt="chapter-icon"
-                class="mr-50"
-                [ngbTooltip]="chapter.title"
-              >
+              @for (chapter of arena.chapters; track chapter) {
+                <img
+                  [src]="chapter.icon"
+                  height="48"
+                  alt="chapter-icon"
+                  class="mr-50"
+                  [ngbTooltip]="chapter.title"
+                  >
+              }
             </div>
           </div>
         </div>
 
         <div class="col-lg-6 col-12 order-lg-2 order-3" [@fadeInOnEnter]>
-          <div class="card bg-arena" *ngIf="arena.status == 1 && top3.length > 0">
-            <div class="card-body">
-              <div class="row text-center">
-                <div class="col-4 mt-2" [@bounce2]>
-                  <img width="90" height="90" class="mb-2" src="assets/images/icons/arena-second-place.png" alt="second-place">
-                  <arena-player-statistics [statistics]="top3[1]" [withOpponents]="false"></arena-player-statistics>
-                </div>
-                <div class="col-4" [@bounce1]>
-                  <img width="90" height="90" class="mb-2" src="assets/images/icons/arena-first-place.png" alt="first-place">
-                  <arena-player-statistics [statistics]="top3[0]" [withOpponents]="false"></arena-player-statistics>
-                </div>
-                <div class="col-4 mt-4" [@bounce3]>
-                  <img width="90" height="90" class="mb-2" src="assets/images/icons/arena-third-place.png" alt="third-place">
-                  <arena-player-statistics [statistics]="top3[2]" [withOpponents]="false"></arena-player-statistics>
+          @if (arena.status == 1 && top3.length > 0) {
+            <div class="card bg-arena">
+              <div class="card-body">
+                <div class="row text-center">
+                  <div class="col-4 mt-2" [@bounce2]>
+                    <img width="90" height="90" class="mb-2" src="assets/images/icons/arena-second-place.png" alt="second-place">
+                    <arena-player-statistics [statistics]="top3[1]" [withOpponents]="false"></arena-player-statistics>
+                  </div>
+                  <div class="col-4" [@bounce1]>
+                    <img width="90" height="90" class="mb-2" src="assets/images/icons/arena-first-place.png" alt="first-place">
+                    <arena-player-statistics [statistics]="top3[0]" [withOpponents]="false"></arena-player-statistics>
+                  </div>
+                  <div class="col-4 mt-4" [@bounce3]>
+                    <img width="90" height="90" class="mb-2" src="assets/images/icons/arena-third-place.png" alt="third-place">
+                    <arena-player-statistics [statistics]="top3[2]" [withOpponents]="false"></arena-player-statistics>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          }
 
 
-          <div *ngIf="arena.isRegistrated && arena.status == 0" class="text-center">
-            <div *ngIf="remainingTime && remainingTime <= 1000*60*2; else elseBlock">
-              <ngb-alert [type]="'info'" [dismissible]="false">
-                <h4 class="alert-heading">
-                  <ngx-skeleton-loader [count]="1" animation="progress" class="custom-skeleton"></ngx-skeleton-loader>
-                  {{ 'ArenaDrawOver' | translate }}
-                </h4>
-              </ngb-alert>
+          @if (arena.isRegistrated && arena.status == 0) {
+            <div class="text-center">
+              @if (remainingTime && remainingTime <= 1000*60*2) {
+                <div>
+                  <ngb-alert [type]="'info'" [dismissible]="false">
+                    <h4 class="alert-heading">
+                      <ngx-skeleton-loader [count]="1" animation="progress" class="custom-skeleton"></ngx-skeleton-loader>
+                      {{ 'ArenaDrawOver' | translate }}
+                    </h4>
+                  </ngb-alert>
+                </div>
+              } @else {
+                @if (arena.pause) {
+                  <div>
+                    <ngb-alert [type]="'warning'" [dismissible]="false">
+                      <h4 class="alert-heading animate">
+                        <ngx-skeleton-loader [count]="1" animation="progress" class="custom-skeleton"></ngx-skeleton-loader>
+                        {{ 'ArenaPauseText' | translate }}
+                        <button (click)="arenaStart()" class="ml-50 btn btn-sm btn-relief-warning">{{ 'Start' | translate }}</button>
+                      </h4>
+                    </ngb-alert>
+                  </div>
+                }
+                @if (!arena.pause) {
+                  <div>
+                    <ngb-alert [type]="'success'" [dismissible]="false">
+                      <h4 class="alert-heading animate">
+                        {{ 'ArenaStartText' | translate }}
+                        <button (click)="arenaPause()" class="ml-50 btn btn-sm btn-relief-success">{{ 'Pause' | translate }}</button>
+                      </h4>
+                    </ngb-alert>
+                  </div>
+                }
+              }
             </div>
-            <ng-template #elseBlock>
-              <div *ngIf="arena.pause">
-                <ngb-alert [type]="'warning'" [dismissible]="false">
-                  <h4 class="alert-heading animate">
-                    <ngx-skeleton-loader [count]="1" animation="progress" class="custom-skeleton"></ngx-skeleton-loader>
-                    {{ 'ArenaPauseText' | translate }}
-                    <button (click)="arenaStart()" class="ml-50 btn btn-sm btn-relief-warning">{{ 'Start' | translate }}</button>
-                  </h4>
-                </ngb-alert>
-              </div>
-              <div *ngIf="!arena.pause">
-                <ngb-alert [type]="'success'" [dismissible]="false">
-                  <h4 class="alert-heading animate">
-                    {{ 'ArenaStartText' | translate }}
-                    <button (click)="arenaPause()" class="ml-50 btn btn-sm btn-relief-success">{{ 'Pause' | translate }}</button>
-                  </h4>
-                </ngb-alert>
-              </div>
-            </ng-template>
-          </div>
+          }
 
           <kep-table [loading]="isLoading && !arenaPlayers" [tableCardClass]="'arena-table'">
             <ng-container header>
@@ -136,91 +152,100 @@
                     <challenges-user-view [user]="player" [withRating]="true"></challenges-user-view>
                   </td>
                   <td class="text-right player-results">
-                  <span *ngFor="let result of player.results" [ngClass]="{
+                    @for (result of player.results; track result) {
+<span [ngClass]="{
                     'text-warning': result == 3,
                     'text-success': result == 2,
                     'text-secondary': result == 1,
                     'text-danger': result == 0
                   }">{{ result }}</span>
+                    }
                   </td>
                   <td class="text-center">
-                  <span class="badge-glow badge-warning badge">
-                    <img *ngIf="player.streak && arena.status == 0" src="assets/images/icons/fire_red.png" alt="streak" width="17" height="17">
-                    {{ player.points }}
-                  </span>
+                    <span class="badge-glow badge-warning badge">
+                      @if (player.streak && arena.status == 0) {
+                        <img src="assets/images/icons/fire_red.png" alt="streak" width="17" height="17">
+                      }
+                      {{ player.points }}
+                    </span>
                   </td>
                 </tr>
               }
             </ng-container>
             <ng-container pagination>
-              <kep-pagination
-                *ngIf="total"
-                [collectionSize]="total"
-                [(page)]="pageNumber"
-                [pageSize]="pageSize"
-                [maxSize]="maxSize"
-                [rotate]="true"
-                [color]="'warning'"
-                [pageOptions]="pageOptions"
-                (pageSizeChange)="pageSizeChange($event)"
-                (pageChange)="pageChange($event)">
-              </kep-pagination>
+              @if (total) {
+                <kep-pagination
+                  [collectionSize]="total"
+                  [(page)]="pageNumber"
+                  [pageSize]="pageSize"
+                  [maxSize]="maxSize"
+                  [rotate]="true"
+                  [color]="'warning'"
+                  [pageOptions]="pageOptions"
+                  (pageSizeChange)="pageSizeChange($event)"
+                  (pageChange)="pageChange($event)">
+                </kep-pagination>
+              }
             </ng-container>
           </kep-table>
 
           <div class="mt-2">
-            <arena-challenges *ngIf="arena.status != -1"></arena-challenges>
+            @if (arena.status != -1) {
+              <arena-challenges></arena-challenges>
+            }
           </div>
         </div>
 
         <div class="col-lg-3 col-md-12 col-sm-12 order-lg-3 order-2" [@fadeInRightOnEnter]>
           <div class="card bg-arena">
             <div class="card-body">
-              <div class="text-center" *ngIf="arena.status == 1">
-                <h4 class="mb-2">
-                  {{ 'TournamentFinish' | translate }}
-                </h4>
-
-                <div ngbTooltip="{{ 'AverageRating' | translate }}">
-                  <i data-feather="bar-chart-2" class="font-medium-3"></i>
-                  <span class="font-large-1">
-                    {{ arenaStatistics.averageRating }}
-                  </span>
-                </div>
-
-                <div ngbTooltip="{{ 'Challenges' | translate }}">
-                  <i data-feather="zap" class="font-medium-3"></i>
-                  <span class="font-large-1">
-                    {{ arenaStatistics.challenges }}
-                  </span>
-                </div>
-              </div>
-              <ngx-countdown *ngIf="arena.status != 1" [time]="leftTime" [render]="render" format="HH:mm:ss" (finish)="refreshPage()">
-                <ng-template #render let-data>
-                  <div class="d-flex justify-content-between">
-                    <div class="countdown text-center">
-                      <h5 class="clock-val">{{ data.fragments[0] }}</h5>
-                      <h5 class="clock-text">{{ 'HOUR' | translate }}</h5>
-                    </div>
-
-                    <div class="countdown text-center">
-                      <h5 class="clock-val">{{ data.fragments[1] }}</h5>
-                      <h5 class="clock-text">{{ 'MINUTE' | translate }}</h5>
-                    </div>
-
-                    <div class="countdown text-center">
-                      <h5 class="clock-val">{{ data.fragments[2] }}</h5>
-                      <h5 class="clock-text">{{ 'SECOND' | translate }}</h5>
-                    </div>
+              @if (arena.status == 1) {
+                <div class="text-center">
+                  <h4 class="mb-2">
+                    {{ 'TournamentFinish' | translate }}
+                  </h4>
+                  <div ngbTooltip="{{ 'AverageRating' | translate }}">
+                    <i data-feather="bar-chart-2" class="font-medium-3"></i>
+                    <span class="font-large-1">
+                      {{ arenaStatistics.averageRating }}
+                    </span>
                   </div>
-                </ng-template>
-              </ngx-countdown>
+                  <div ngbTooltip="{{ 'Challenges' | translate }}">
+                    <i data-feather="zap" class="font-medium-3"></i>
+                    <span class="font-large-1">
+                      {{ arenaStatistics.challenges }}
+                    </span>
+                  </div>
+                </div>
+              }
+              @if (arena.status != 1) {
+                <ngx-countdown [time]="leftTime" [render]="render" format="HH:mm:ss" (finish)="refreshPage()">
+                  <ng-template #render let-data>
+                    <div class="d-flex justify-content-between">
+                      <div class="countdown text-center">
+                        <h5 class="clock-val">{{ data.fragments[0] }}</h5>
+                        <h5 class="clock-text">{{ 'HOUR' | translate }}</h5>
+                      </div>
+                      <div class="countdown text-center">
+                        <h5 class="clock-val">{{ data.fragments[1] }}</h5>
+                        <h5 class="clock-text">{{ 'MINUTE' | translate }}</h5>
+                      </div>
+                      <div class="countdown text-center">
+                        <h5 class="clock-val">{{ data.fragments[2] }}</h5>
+                        <h5 class="clock-text">{{ 'SECOND' | translate }}</h5>
+                      </div>
+                    </div>
+                  </ng-template>
+                </ngx-countdown>
+              }
             </div>
           </div>
 
-          <div *ngIf="arenaPlayerStatistics" class="text-center">
-            <arena-player-statistics [statistics]="arenaPlayerStatistics"></arena-player-statistics>
-          </div>
+          @if (arenaPlayerStatistics) {
+            <div class="text-center">
+              <arena-player-statistics [statistics]="arenaPlayerStatistics"></arena-player-statistics>
+            </div>
+          }
 
         </div>
 

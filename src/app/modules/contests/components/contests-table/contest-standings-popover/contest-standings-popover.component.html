@@ -17,17 +17,19 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="dropdown-standings text-dark" *ngFor="let contestant of contestants">
-            <td class="text-center">{{ contestant.rank }}</td>
-            <td>
-              <contestant-view [user]="contestant.user" [team]="contestant.team"></contestant-view>
-            </td>
-            <td class="text-center">
-              <span class="badge badge-glow badge-primary">
-                {{ contestant.points }}
-              </span>
-            </td>
-          </tr>
+          @for (contestant of contestants; track contestant) {
+            <tr class="dropdown-standings text-dark">
+              <td class="text-center">{{ contestant.rank }}</td>
+              <td>
+                <contestant-view [user]="contestant.user" [team]="contestant.team"></contestant-view>
+              </td>
+              <td class="text-center">
+                <span class="badge badge-glow badge-primary">
+                  {{ contestant.points }}
+                </span>
+              </td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>
@@ -45,6 +47,6 @@
   rippleEffect class="btn btn-primary btn-sm round"
   [placement]="'bottom'"
   container="body"
->
+  >
   {{ 'CONTESTS.STANDINGS' | translate }}
 </a>

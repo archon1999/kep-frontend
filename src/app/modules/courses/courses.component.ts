@@ -16,7 +16,7 @@ const SCRIPT_PATH2 = 'https://cdn.jsdelivr.net/npm/highlightjs-line-numbers.js/d
 export class CoursesComponent implements OnInit {
   public startAnimationState = false;
 
-  courses: Array<Course> = [];
+  courses: Array<any> = [];
 
   contentHeader = {
     headerTitle: 'COURSES.COURSES',

@@ -45,8 +45,10 @@
   </div>
 
   <div class="mt-2 col-lg-8 col-12 offset-lg-2">
-    <div class="bg-tournaments-list" *ngFor="let tournament of tournaments">
-      <tournament-list-card [@fadeInOnEnter] [tournament]="tournament"></tournament-list-card>
-    </div>
+    @for (tournament of tournaments; track tournament) {
+      <div class="bg-tournaments-list">
+        <tournament-list-card [@fadeInOnEnter] [tournament]="tournament"></tournament-list-card>
+      </div>
+    }
   </div>
 </div>

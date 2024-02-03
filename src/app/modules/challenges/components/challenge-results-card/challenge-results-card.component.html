@@ -17,11 +17,21 @@
         </td>
 
         <td>
-          <span *ngFor="let result of challenge.playerFirst.results" [ngSwitch]="result">
-            <i *ngSwitchCase="-1" class="text-warning" data-feather="minus"></i>
-            <i *ngSwitchCase="0" class="text-danger" data-feather="x"></i>
-            <i *ngSwitchCase="1" class="text-success" data-feather="check"></i>
-          </span>
+          @for (result of challenge.playerFirst.results; track result) {
+            <span>
+              @switch (result) {
+                @case (-1) {
+                  <i class="text-warning" data-feather="minus"></i>
+                }
+                @case (0) {
+                  <i class="text-danger" data-feather="x"></i>
+                }
+                @case (1) {
+                  <i class="text-success" data-feather="check"></i>
+                }
+              }
+            </span>
+          }
         </td>
 
       </tr>
@@ -42,11 +52,21 @@
         </td>
 
         <td>
-          <span *ngFor="let result of challenge.playerSecond.results" [ngSwitch]="result">
-            <i *ngSwitchCase="-1" class="text-warning" data-feather="minus"></i>
-            <i *ngSwitchCase="0" class="text-danger" data-feather="x"></i>
-            <i *ngSwitchCase="1" class="text-success" data-feather="check"></i>
-          </span>
+          @for (result of challenge.playerSecond.results; track result) {
+            <span>
+              @switch (result) {
+                @case (-1) {
+                  <i class="text-warning" data-feather="minus"></i>
+                }
+                @case (0) {
+                  <i class="text-danger" data-feather="x"></i>
+                }
+                @case (1) {
+                  <i class="text-success" data-feather="check"></i>
+                }
+              }
+            </span>
+          }
         </td>
       </tr>
     </tbody>

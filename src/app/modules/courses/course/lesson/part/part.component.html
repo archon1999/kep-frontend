@@ -1,21 +1,24 @@
-<part-lecture
-  *ngIf="lessonPart.contentType == 'lecture'"
-  [lecture]="lessonPart.content"
-  [lessonPartId]="lessonPart.id"
-  [lessonPartStatus]="lessonPart.status"
-  (checkCompletionEvent)="checkCompletionEvent($event)"
-></part-lecture>
+@if (lessonPart.contentType == 'lecture') {
+  <part-lecture
+    [lecture]="lessonPart.content"
+    [lessonPartId]="lessonPart.id"
+    [lessonPartStatus]="lessonPart.status"
+    (checkCompletionEvent)="checkCompletionEvent($event)"
+  ></part-lecture>
+}
 
-<part-question
-  *ngIf="lessonPart.contentType == 'question'"
-  [question]="lessonPart.content"
-  [lessonPartId]="lessonPart.id"
-  (checkCompletionEvent)="checkCompletionEvent($event)"
-></part-question>
-  
-<part-problem
-  *ngIf="lessonPart.contentType == 'problem'"
-  [problem]="lessonPart.content"
-  [lessonPartId]="lessonPart.id"
-  (checkCompletionEvent)="checkCompletionEvent($event)"
-></part-problem>
+@if (lessonPart.contentType == 'question') {
+  <part-question
+    [question]="lessonPart.content"
+    [lessonPartId]="lessonPart.id"
+    (checkCompletionEvent)="checkCompletionEvent($event)"
+  ></part-question>
+}
+
+@if (lessonPart.contentType == 'problem') {
+  <part-problem
+    [problem]="lessonPart.content"
+    [lessonPartId]="lessonPart.id"
+    (checkCompletionEvent)="checkCompletionEvent($event)"
+  ></part-problem>
+}

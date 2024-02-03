@@ -1,42 +1,46 @@
 @if (top3Contestants.length > 0){
   <div [@fadeInOnEnter] class="mt-2 row">
-    <div *ngIf="top3Contestants.length > 1" class="col contestant mt-1">
-      <img width="32" height="32" src="assets/images/icons/contest-medal-2.png">
-      <br>
-      <contestant-view
-        [teamNameColor]="'white'"
-        [textColor]="'white'"
-        [user]="top3Contestants[1].user"
-        [team]="top3Contestants[1].team">
-      </contestant-view>
-    </div>
+    @if (top3Contestants.length > 1) {
+      <div class="col contestant mt-1">
+        <img width="32" height="32" src="assets/images/icons/contest-medal-2.png">
+        <br>
+          <contestant-view
+            [teamNameColor]="'white'"
+            [textColor]="'white'"
+            [user]="top3Contestants[1].user"
+            [team]="top3Contestants[1].team">
+          </contestant-view>
+        </div>
+      }
 
-    <div class="col contestant">
-      <img width="32" height="32" src="assets/images/icons/contest-medal-1.png">
-      <br>
-      <contestant-view
-        [teamNameColor]="'white'"
-        [textColor]="'white'"
-        [user]="top3Contestants[0].user"
-        [team]="top3Contestants[0].team">
-      </contestant-view>
-    </div>
+      <div class="col contestant">
+        <img width="32" height="32" src="assets/images/icons/contest-medal-1.png">
+        <br>
+          <contestant-view
+            [teamNameColor]="'white'"
+            [textColor]="'white'"
+            [user]="top3Contestants[0].user"
+            [team]="top3Contestants[0].team">
+          </contestant-view>
+        </div>
 
-    <div *ngIf="top3Contestants.length > 2" class="col contestant mt-2">
-      <img width="32" height="32" src="assets/images/icons/contest-medal-3.png">
-      <br>
-      <contestant-view
-        [teamNameColor]="'white'"
-        [textColor]="'white'"
-        [user]="top3Contestants[2].user"
-        [team]="top3Contestants[2].team">
-      </contestant-view>
-    </div>
-  </div>
-} @else {
-  <div [style.height.px]="100">
-    <div class="mt-2">
-      <spinner color="#fff"></spinner>
-    </div>
-  </div>
-}
+        @if (top3Contestants.length > 2) {
+          <div class="col contestant mt-2">
+            <img width="32" height="32" src="assets/images/icons/contest-medal-3.png">
+            <br>
+              <contestant-view
+                [teamNameColor]="'white'"
+                [textColor]="'white'"
+                [user]="top3Contestants[2].user"
+                [team]="top3Contestants[2].team">
+              </contestant-view>
+            </div>
+          }
+        </div>
+      } @else {
+        <div [style.height.px]="100">
+          <div class="mt-2">
+            <spinner color="#fff"></spinner>
+          </div>
+        </div>
+      }

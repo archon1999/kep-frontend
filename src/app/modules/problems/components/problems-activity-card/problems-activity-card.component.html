@@ -49,10 +49,11 @@
           </div>
 
           <div class="col-6">
-            <apex-chart
-              *ngIf="activityChart && activitySolved > 0"
-              [options]="activityChart"
-            ></apex-chart>
+            @if (activityChart && activitySolved > 0) {
+              <apex-chart
+                [options]="activityChart"
+              ></apex-chart>
+            }
           </div>
         </div>
       </div>

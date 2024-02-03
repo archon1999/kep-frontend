@@ -27,22 +27,25 @@
   </div>
 </div>
 
-<div *ngIf="userTechnologies.length > 0" class="card">
-  <div class="card-body">
-    <h4 class="mb-0">
-      <i data-feather="slack"></i>
-      {{ 'USER_INFO.TECHNOLOGIES' | translate }}
-    </h4>
-    <div class="user-technologies mt-2">
-      <span
-        *ngFor="let technology of userTechnologies"
-        [style.background]="technology.badgeColor"
-        [style.box-shadow]="'0px 0px 10px' + technology.badgeColor"
-        class="badge"
-      >
-        <i class="{{ technology.devIconClass }} "></i>
-        {{ technology.text }}
-      </span>
+@if (userTechnologies.length > 0) {
+  <div class="card">
+    <div class="card-body">
+      <h4 class="mb-0">
+        <i data-feather="slack"></i>
+        {{ 'USER_INFO.TECHNOLOGIES' | translate }}
+      </h4>
+      <div class="user-technologies mt-2">
+        @for (technology of userTechnologies; track technology) {
+          <span
+            [style.background]="technology.badgeColor"
+            [style.box-shadow]="'0px 0px 10px' + technology.badgeColor"
+            class="badge"
+            >
+            <i class="{{ technology.devIconClass }} "></i>
+            {{ technology.text }}
+          </span>
+        }
+      </div>
     </div>
   </div>
-</div>
+}

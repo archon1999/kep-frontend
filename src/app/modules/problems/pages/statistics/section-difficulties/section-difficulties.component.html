@@ -8,10 +8,11 @@
   <div class="card-body">
     <div class="total">
       <div class="chart">
-        <apex-chart
-          *ngIf="chartOptions"
-          [options]="chartOptions"
-        ></apex-chart>
+        @if (chartOptions) {
+          <apex-chart
+            [options]="chartOptions"
+          ></apex-chart>
+        }
       </div>
     </div>
     <div class="difficulties">

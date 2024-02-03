@@ -4,8 +4,10 @@
   </div>
 
   <swiper [config]="lessonsSwiperConfig" class="swiper-lessons swiper-lazy-loading">
-    <div class="swiper-slide" *ngFor="let lesson of lessons">
-      <lesson-card [lesson]="lesson"></lesson-card>
-    </div>
+    @for (lesson of lessons; track lesson) {
+      <div class="swiper-slide">
+        <lesson-card [lesson]="lesson"></lesson-card>
+      </div>
+    }
   </swiper>
 </div>

@@ -6,28 +6,31 @@
       <div class="row">
         <div class="col-lg-9 col-md-6 col-sm-12 order-md-1 order-2">
           <div class="row">
-            <div [@fadeInLeftOnEnter] class="col-lg-6 col-12" *ngFor="let blogPost of blogPosts">
-              <blog-post-card [blog]="blogPost"></blog-post-card>
-            </div>
+            @for (blogPost of blogPosts; track blogPost) {
+              <div [@fadeInLeftOnEnter] class="col-lg-6 col-12">
+                <blog-post-card [blog]="blogPost"></blog-post-card>
+              </div>
+            }
           </div>
 
-          <ngb-pagination
-            *ngIf="blogPosts.length > 0"
-            [collectionSize]="total"
-            [(page)]="filter.page"
-            [pageSize]="4"
-            [maxSize]="5"
-            [rotate]="true"
-            (pageChange)="loadBlogPosts()"
-            aria-label="Default pagination"
-            class="d-flex justify-content-center mt-1 mb-1">
-            <ng-template ngbPaginationPrevious
-              ><span [data-feather]="'chevron-left'" [size]="18" [class]="'font-weight-bolder'"></span>
-            </ng-template>
-            <ng-template ngbPaginationNext
-              ><span [data-feather]="'chevron-right'" [size]="18" [class]="'font-weight-bolder'"></span
-            ></ng-template>
-          </ngb-pagination>
+          @if (blogPosts.length > 0) {
+            <ngb-pagination
+              [collectionSize]="total"
+              [(page)]="filter.page"
+              [pageSize]="4"
+              [maxSize]="5"
+              [rotate]="true"
+              (pageChange)="loadBlogPosts()"
+              aria-label="Default pagination"
+              class="d-flex justify-content-center mt-1 mb-1">
+              <ng-template ngbPaginationPrevious
+                ><span [data-feather]="'chevron-left'" [size]="18" [class]="'font-weight-bolder'"></span>
+              </ng-template>
+              <ng-template ngbPaginationNext
+                ><span [data-feather]="'chevron-right'" [size]="18" [class]="'font-weight-bolder'"></span
+              ></ng-template>
+            </ngb-pagination>
+          }
         </div>
 
         <div [@fadeInRightOnEnter] class="col-lg-3 col-md-6 col-sm-12 order-md-2 order-1">
@@ -42,9 +45,11 @@
             </div>
 
             <ng-select class="mt-1" (change)="loadBlogPosts()" [(ngModel)]="filter.author" [placeholder]="'Author' | translate">
-              <ng-option [value]="author" *ngFor="let author of allAuthors">
-                {{ author }}
-              </ng-option>
+              @for (author of allAuthors; track author) {
+                <ng-option [value]="author">
+                  {{ author }}
+                </ng-option>
+              }
             </ng-select>
 
             <ng-select class="mt-1"(change)="loadBlogPosts()" [(ngModel)]="filter.orderBy" [placeholder]="'OrderBy' | translate">

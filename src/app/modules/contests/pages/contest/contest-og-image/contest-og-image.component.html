@@ -8,39 +8,41 @@
 
       <img src="assets/images/pages/500.png" height="150" alt="">
       <br>
-      <div class="avatar mt-2 bg-primary p-50 m-0 mb-1">
-        <div class="avatar-content">
-          <i data-feather="flag" class="font-medium-5"></i>
+        <div class="avatar mt-2 bg-primary p-50 m-0 mb-1">
+          <div class="avatar-content">
+            <i data-feather="flag" class="font-medium-5"></i>
+          </div>
+        </div>
+        <h3 class="text-white">
+          {{ contest.title }}
+        </h3>
+        @if (contest.isRated) {
+          <strong class="font-small-3 mt-25 text-success">
+            {{ 'Rated' | translate }}
+          </strong>
+        }
+      </a>
+
+      <a class="card-body mt-2">
+        <div class="start-time">
+          {{ contest.startTime | date:'dd-MM-yyyy' }}
+          <br>
+            {{ contest.startTime | date:'HH:mm' }}
+          </div>
+        </a>
+
+        <div class="card-footer justify-content-between d-flex">
+          <div>
+            <span class="badge badge-glow badge-primary">
+              <i [data-feather]="'problem' | iconName"></i>
+              {{ contest.problemsCount }}
+            </span>
+            <span class="ml-25 badge badge-glow badge-primary">
+              {{ contest.type }}
+            </span>
+          </div>
         </div>
       </div>
-      <h3 class="text-white">
-        {{ contest.title }}
-      </h3>
-      <strong class="font-small-3 mt-25 text-success" *ngIf="contest.isRated">
-        {{ 'Rated' | translate }}
-      </strong>
-    </a>
-  
-    <a class="card-body mt-2">  
-      <div class="start-time">
-        {{ contest.startTime | date:'dd-MM-yyyy' }}
-        <br>
-        {{ contest.startTime | date:'HH:mm' }}
-      </div>
-    </a>
-  
-    <div class="card-footer justify-content-between d-flex">
-      <div>
-        <span class="badge badge-glow badge-primary">
-          <i [data-feather]="'problem' | iconName"></i>
-          {{ contest.problemsCount }}
-        </span>
-        <span class="ml-25 badge badge-glow badge-primary">
-          {{ contest.type }}
-        </span>
-      </div>
     </div>
-  </div>
-</div>  
 
-<img [src]="img" alt="">
+    <img [src]="img" alt="">

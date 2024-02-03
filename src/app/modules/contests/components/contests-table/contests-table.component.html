@@ -2,115 +2,135 @@
   <div class="table-responsive contests-colors contest-{{ contests[0].id }} {{ contests[0].title }} contest-type-{{ contests[0].type }}">
     <table class="table beautiful-table">
       <thead>
-      <tr class="bg-gradient-primary">
-        <th class="text-center">{{ 'CONTESTS.TITLE' | translate }}</th>
-        <th class="text-center">{{ 'CONTESTS.AUTHORS' | translate }}</th>
-        <th class="text-center">{{ 'CONTESTS.START_TIME' | translate }}</th>
-        <th class="text-center">{{ 'CONTESTS.FINISH_TIME' | translate }}</th>
-        <th class="text-center">{{ 'CONTESTS.TYPE' | translate }}</th>
-        <th class="text-center">
-          <div *ngIf="contests.length > 0 && contests[0].status == -1">
-            {{ 'CONTESTS.PROBLEMS_COUNT' | translate }}
-          </div>
-        </th>
-        <th class="text-center">
-          <span *ngIf="contests.length > 0 && contests[0].status == -1">
-            {{ 'CONTESTS.REGISTRANTS_COUNT' | translate }}
-          </span>
-          <span *ngIf="contests.length > 0 && contests[0].status != -1">
-            {{ 'CONTESTS.CONTESTANTS_COUNT' | translate }}
-          </span>
-        </th>
-      </tr>
+        <tr class="bg-gradient-primary">
+          <th class="text-center">{{ 'CONTESTS.TITLE' | translate }}</th>
+          <th class="text-center">{{ 'CONTESTS.AUTHORS' | translate }}</th>
+          <th class="text-center">{{ 'CONTESTS.START_TIME' | translate }}</th>
+          <th class="text-center">{{ 'CONTESTS.FINISH_TIME' | translate }}</th>
+          <th class="text-center">{{ 'CONTESTS.TYPE' | translate }}</th>
+          <th class="text-center">
+            @if (contests.length > 0 && contests[0].status == -1) {
+              <div>
+                {{ 'CONTESTS.PROBLEMS_COUNT' | translate }}
+              </div>
+            }
+          </th>
+          <th class="text-center">
+            @if (contests.length > 0 && contests[0].status == -1) {
+              <span>
+                {{ 'CONTESTS.REGISTRANTS_COUNT' | translate }}
+              </span>
+            }
+            @if (contests.length > 0 && contests[0].status != -1) {
+              <span>
+                {{ 'CONTESTS.CONTESTANTS_COUNT' | translate }}
+              </span>
+            }
+          </th>
+        </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let contest of contests">
-        <td class="text-center text-dark">
-          <i [data-feather]="'contest' | iconName" [size]="20"></i>
-          <a [routerLink]="['/competitions', 'contests', 'contest', contest.id]">
-            {{ contest.title }}
-          </a>
-          <br>
-          <div *ngIf="contest.isRated" class="text-success contest-rated">{{ 'CONTESTS.RATED' | translate }}</div>
-          <div *ngIf="!contest.isRated" class="text-danger contest-rated">{{ 'CONTESTS.UNRATED' | translate }}</div>
-        </td>
-
-        <td class="text-center">
-          <div class="contest-author text-dark" *ngFor="let contestAuthor of contest.authors">
-            <contestant-view [user]="contestAuthor"></contestant-view>
+        @for (contest of contests; track contest) {
+          <tr>
+            <td class="text-center text-dark">
+              <i [data-feather]="'contest' | iconName" [size]="20"></i>
+              <a [routerLink]="['/competitions', 'contests', 'contest', contest.id]">
+                {{ contest.title }}
+              </a>
+              <br>
+                @if (contest.isRated) {
+                  <div class="text-success contest-rated">{{ 'CONTESTS.RATED' | translate }}</div>
+                }
+                @if (!contest.isRated) {
+                  <div class="text-danger contest-rated">{{ 'CONTESTS.UNRATED' | translate }}</div>
+                }
+              </td>
+              <td class="text-center">
+                @for (contestAuthor of contest.authors; track contestAuthor) {
+                  <div class="contest-author text-dark">
+                    <contestant-view [user]="contestAuthor"></contestant-view>
+                  </div>
+                }
+              </td>
+              <td class="text-center text-dark">
+                <u>{{ contest.startTime | date:'y/MM/dd'}}</u>
+                <br>
+                  <u>{{ contest.startTime | date:'H:mm'}}</u>
+                </td>
+                <td class="text-center text-dark">
+                  <u>{{ contest.finishTime | date:'y/MM/dd'}}</u>
+                  <br>
+                    <u>{{ contest.finishTime | date:'H:mm'}}</u>
+                  </td>
+                  <td class="text-center">
+                    <span class="badge contest-badge">
+                      {{ contest.type }}
+                    </span>
+                  </td>
+                  <td class="text-center">
+                    @if (contest.status == -1) {
+                      <div>
+                        <span class="badge contest-badge">
+                          {{ contest.problemsCount }}
+                        </span>
+                      </div>
+                    }
+                    @if (contest.status != -1) {
+                      <div>
+                        <!-- <contest-standings-popover [contest]="contest"></contest-standings-popover> -->
+                        <a class="btn btn-sm round" [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'standings']">
+                          {{ 'CONTESTS.STANDINGS' | translate }}
+                        </a>
+                        <br>
+                          @if (currentUser) {
+                            <span class="badge mt-1 contest-badge-light">
+                              {{ 0 }} / {{ contest.problemsCount }}
+                            </span>
+                          }
+                        </div>
+                      }
+                    </td>
+                    <td class="text-center text-primary">
+                      <div class="avatar p-50 m-0 mb-1">
+                        <div class="avatar-content">
+                          <i data-feather="users" class="font-medium-3"></i>
+                        </div>
+                      </div>
+                      <h5 class="font-weight-bolder">
+                        <span
+                          class="badge contest-badge"
+                          [countUp]="contest.contestantsCount || contest.registrantsCount"
+                          [options]="{ duration: 5, reanimateOnClick: false }">
+                        </span>
+                      </h5>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+              @if (contests.length > 1) {
+                <tfoot>
+                  <tr>
+                    <th class="text-center">{{ 'CONTESTS.TITLE' | translate }}</th>
+                    <th class="text-center">{{ 'CONTESTS.AUTHORS' | translate }}</th>
+                    <th class="text-center">{{ 'CONTESTS.START_TIME' | translate }}</th>
+                    <th class="text-center">{{ 'CONTESTS.FINISH_TIME' | translate }}</th>
+                    <th class="text-center">{{ 'CONTESTS.TYPE' | translate }}</th>
+                    <th class="text-center"></th>
+                    <th class="text-center">
+                      @if (contests.length > 0 && contests[0].status == -1) {
+                        <span>
+                          {{ 'CONTESTS.REGISTRANTS_COUNT' | translate }}
+                        </span>
+                      }
+                      @if (contests.length > 0 && contests[0].status != -1) {
+                        <span>
+                          {{ 'CONTESTS.CONTESTANTS_COUNT' | translate }}
+                        </span>
+                      }
+                    </th>
+                  </tr>
+                </tfoot>
+              }
+            </table>
           </div>
-        </td>
-
-        <td class="text-center text-dark">
-          <u>{{ contest.startTime | date:'y/MM/dd'}}</u>
-          <br>
-          <u>{{ contest.startTime | date:'H:mm'}}</u>
-        </td>
-
-        <td class="text-center text-dark">
-          <u>{{ contest.finishTime | date:'y/MM/dd'}}</u>
-          <br>
-          <u>{{ contest.finishTime | date:'H:mm'}}</u>
-        </td>
-
-        <td class="text-center">
-          <span class="badge contest-badge">
-            {{ contest.type }}
-          </span>
-        </td>
-
-        <td class="text-center">
-          <div *ngIf="contest.status == -1">
-            <span class="badge contest-badge">
-              {{ contest.problemsCount }}
-            </span>
-          </div>
-          <div *ngIf="contest.status != -1">
-            <!-- <contest-standings-popover [contest]="contest"></contest-standings-popover> -->
-            <a class="btn btn-sm round" [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'standings']">
-              {{ 'CONTESTS.STANDINGS' | translate }}
-            </a>
-            <br>
-            <span *ngIf="currentUser" class="badge mt-1 contest-badge-light">
-              {{ 0 }} / {{ contest.problemsCount }}
-            </span>
-          </div>
-        </td>
-
-        <td class="text-center text-primary">
-          <div class="avatar p-50 m-0 mb-1">
-            <div class="avatar-content">
-              <i data-feather="users" class="font-medium-3"></i>
-            </div>
-          </div>
-          <h5 class="font-weight-bolder">
-            <span
-              class="badge contest-badge"
-              [countUp]="contest.contestantsCount || contest.registrantsCount"
-              [options]="{ duration: 5, reanimateOnClick: false }">
-            </span>
-          </h5>
-        </td>
-      </tr>
-      </tbody>
-      <tfoot *ngIf="contests.length > 1">
-      <tr>
-        <th class="text-center">{{ 'CONTESTS.TITLE' | translate }}</th>
-        <th class="text-center">{{ 'CONTESTS.AUTHORS' | translate }}</th>
-        <th class="text-center">{{ 'CONTESTS.START_TIME' | translate }}</th>
-        <th class="text-center">{{ 'CONTESTS.FINISH_TIME' | translate }}</th>
-        <th class="text-center">{{ 'CONTESTS.TYPE' | translate }}</th>
-        <th class="text-center"></th>
-        <th class="text-center">
-          <span *ngIf="contests.length > 0 && contests[0].status == -1">
-            {{ 'CONTESTS.REGISTRANTS_COUNT' | translate }}
-          </span>
-          <span *ngIf="contests.length > 0 && contests[0].status != -1">
-            {{ 'CONTESTS.CONTESTANTS_COUNT' | translate }}
-          </span>
-        </th>
-      </tr>
-      </tfoot>
-    </table>
-  </div>
-</div>
+        </div>

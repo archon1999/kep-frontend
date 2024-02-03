@@ -7,11 +7,13 @@ import { FlatpickrOptions } from './flatpickr-options.interface';
   selector: 'ng2-flatpickr',
   template: `
       <div class="ng2-flatpickr-input-container" #flatpickr>
-          <input *ngIf="!hideButton" class="ng2-flatpickr-input {{ addClass }}" [placeholder]="placeholder" [tabindex]="tabindex" type="text"
-                 (focus)="onFocus($event)" data-input>
-          <ng-content></ng-content>
+        @if (!hideButton) {
+          <input class="ng2-flatpickr-input {{ addClass }}" [placeholder]="placeholder" [tabindex]="tabindex" type="text"
+            (focus)="onFocus($event)" data-input>
+        }
+        <ng-content></ng-content>
       </div>
-  `,
+      `,
   styleUrl: './ng2-flatpickr.component.scss',
   providers: [
     {

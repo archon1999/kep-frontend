@@ -1,136 +1,138 @@
-<ng-container *ngIf="contest.type == ContestTypes.ACM20M || contest.type == ContestTypes.ACM2H || contest.type == ContestTypes.ONE_ATTEMPT || contest.type == ContestTypes.IQ">
-  <ng-container *ngIf="problemInfo.solved; else elseBlock">
+@if (contest.type == ContestTypes.ACM20M || contest.type == ContestTypes.ACM2H || contest.type == ContestTypes.ONE_ATTEMPT || contest.type == ContestTypes.IQ) {
+  @if (problemInfo.solved) {
     <span [ngClass]="{
         'bg-success bg-darken-1 badge badge-glow': problemInfo.isFirstAdopted,
         'badge-light-success badge': !problemInfo.isFirstAdopted
     }">
-        +<span *ngIf="problemInfo.attemptsCount > 0">{{ problemInfo.attemptsCount }}</span>
-        <br>
-        {{ problemInfo.getContestTimeStr(problemInfo.firstAdoptedAttemptDatetime, contest.startTime) }}
+      +@if (problemInfo.attemptsCount > 0) {
+      <span>{{ problemInfo.attemptsCount }}</span>
+    }
+    <br>
+      {{ problemInfo.getContestTimeStr(problemInfo.firstAdoptedAttemptDatetime, contest.startTime) }}
     </span>
-  </ng-container>
-  <ng-template #elseBlock>
+  } @else {
     <span [ngClass]="{
       'badge badge-light-danger': problemInfo.attemptsCount > 0,
       'badge badge-light-warning': problemInfo.attemptsCount == 0
     }">
-        -<span *ngIf="problemInfo.attemptsCount > 0">{{ problemInfo.attemptsCount }}</span>
-    </span>
-
-  </ng-template>
-</ng-container>
+      -@if (problemInfo.attemptsCount > 0) {
+      <span>{{ problemInfo.attemptsCount }}</span>
+    }
+  </span>
+}
+}
 
 <!--
-  if(contest.type == ContestTypes.ACM20M ||
-  contest.type == ContestTypes.ACM2H ||
-  contest.type == ContestTypes.ONE_ATTEMPT ||
-  contest.type == ContestTypes.IQ){            
-   if(this.solved()){
-       let badgeClass: string;
-       if(this.isFirstAdopted){
-           badgeClass = 'badge bg-success bg-darken-1 badge-glow';
-       } else {
-           badgeClass = 'badge badge-light-success';
-       }
-       html = `<span class="${badgeClass}">`;
-       html += '+';
-       if(this.attemptsCount > 0){
-           html += this.attemptsCount;
-       }
-       html += '<br>';
-       html += this.getContestTimeStr(this.firstAdoptedAttemptDatetime, contest.startTime);
-       html += '</span>';
-   } else if(this.attemptsCount > 0) {
-       let badgeClass: string;
-       if(this.attemptsCount > 0){
-           badgeClass = 'badge badge-light-danger';
-       } else {
-           badgeClass = 'badge badge-light-warning';
-       }
-       html += `<span class="${badgeClass}">`;
-       html += '-';
-       if(this.attemptsCount > 0) {
-           html += this.attemptsCount;
-       }
-       html += '</span>';
-   }
-  } else if(contest.type == ContestTypes.BALL525 ||
-         contest.type == ContestTypes.BALL550 ||
-         contest.type == ContestTypes.EXAM){
-   if(this.solved()){
-       let badgeClass: string;
-       if(this.isFirstAdopted){
-           badgeClass = 'badge bg-success bg-darken-1 badge-glow';
-       } else {
-           badgeClass = 'badge badge-light-success';
-       }
-       html += `<span class="${badgeClass}">`;
-       html += '<b class="text-dark">';
-       html += this.points;
-       html += '</b>';
-       html += '<br>';
-       html += '<span class="contest-time-sm">';
-       html += this.getContestTimeStr(this.firstAdoptedAttemptDatetime, contest.startTime);
-       html += '</span>';
-       html += '</span>';
-   } else {
-       if(this.points > 0){
-           let badgeClass = 'badge badge-light-dark';
-           html += `<span class="${badgeClass}">`;
-           html += this.points;
-           html += '</span>';
-       } else {
-           let badgeClass: string;
-           if(this.attemptsCount > 0){
-               badgeClass = 'badge badge-light-danger';
-           } else {
-               badgeClass = 'badge badge-light-warning';
-           }
-           html += `<span class="${badgeClass}">`;
-           html += '-';
-           if(this.attemptsCount > 0) {
-               html += this.attemptsCount;
-           }
-           html += '</span>';
-       }
-   }
-  } else if(contest.type == ContestTypes.LESS_CODE){
-   if(this.solved()){
-       let badgeClass: string;
-       if(this.isFirstAdopted){
-           badgeClass = 'badge badge-dark badge-glow';
-       } else {
-           badgeClass = 'badge badge-light-dark';
-       }
-       html += `<span class="${badgeClass}">`;
-       html += '<span class="less-code">'
-       html += this.points;
-       html += '</span>';
-       html += '</span>';
-   } else {
-       html += `<span class="badge badge-light-danger">`;
-       html += '-';
-       html += '</span>';
-   }
-  } else if(contest.type == ContestTypes.LESS_LINE){
-   if(this.solved()){
-       let badgeClass: string;
-       if(this.isFirstAdopted){
-           badgeClass = 'badge badge-dark badge-glow';
-       } else {
-           badgeClass = 'badge badge-light-dark';
-       }
-       html += `<span class="${badgeClass}">`;
-       html += '<span class="less-code">'
-       html += this.points + '/' + 10;
-       html += '</span>';
-       html += '</span>';
-   } else {
-       html += `<span class="badge badge-light-danger">`;
-       html += '-';
-       html += '</span>';
-   }
-  }
-  return html;
-  }
+if(contest.type == ContestTypes.ACM20M ||
+contest.type == ContestTypes.ACM2H ||
+contest.type == ContestTypes.ONE_ATTEMPT ||
+contest.type == ContestTypes.IQ){
+if(this.solved()){
+let badgeClass: string;
+if(this.isFirstAdopted){
+badgeClass = 'badge bg-success bg-darken-1 badge-glow';
+} else {
+badgeClass = 'badge badge-light-success';
+}
+html = `<span class="${badgeClass}">`;
+html += '+';
+if(this.attemptsCount > 0){
+html += this.attemptsCount;
+}
+html += '<br>';
+html += this.getContestTimeStr(this.firstAdoptedAttemptDatetime, contest.startTime);
+html += '</span>';
+} else if(this.attemptsCount > 0) {
+let badgeClass: string;
+if(this.attemptsCount > 0){
+badgeClass = 'badge badge-light-danger';
+} else {
+badgeClass = 'badge badge-light-warning';
+}
+html += `<span class="${badgeClass}">`;
+html += '-';
+if(this.attemptsCount > 0) {
+html += this.attemptsCount;
+}
+html += '</span>';
+}
+} else if(contest.type == ContestTypes.BALL525 ||
+contest.type == ContestTypes.BALL550 ||
+contest.type == ContestTypes.EXAM){
+if(this.solved()){
+let badgeClass: string;
+if(this.isFirstAdopted){
+badgeClass = 'badge bg-success bg-darken-1 badge-glow';
+} else {
+badgeClass = 'badge badge-light-success';
+}
+html += `<span class="${badgeClass}">`;
+html += '<b class="text-dark">';
+html += this.points;
+html += '</b>';
+html += '<br>';
+html += '<span class="contest-time-sm">';
+html += this.getContestTimeStr(this.firstAdoptedAttemptDatetime, contest.startTime);
+html += '</span>';
+html += '</span>';
+} else {
+if(this.points > 0){
+let badgeClass = 'badge badge-light-dark';
+html += `<span class="${badgeClass}">`;
+html += this.points;
+html += '</span>';
+} else {
+let badgeClass: string;
+if(this.attemptsCount > 0){
+badgeClass = 'badge badge-light-danger';
+} else {
+badgeClass = 'badge badge-light-warning';
+}
+html += `<span class="${badgeClass}">`;
+html += '-';
+if(this.attemptsCount > 0) {
+html += this.attemptsCount;
+}
+html += '</span>';
+}
+}
+} else if(contest.type == ContestTypes.LESS_CODE){
+if(this.solved()){
+let badgeClass: string;
+if(this.isFirstAdopted){
+badgeClass = 'badge badge-dark badge-glow';
+} else {
+badgeClass = 'badge badge-light-dark';
+}
+html += `<span class="${badgeClass}">`;
+html += '<span class="less-code">'
+html += this.points;
+html += '</span>';
+html += '</span>';
+} else {
+html += `<span class="badge badge-light-danger">`;
+html += '-';
+html += '</span>';
+}
+} else if(contest.type == ContestTypes.LESS_LINE){
+if(this.solved()){
+let badgeClass: string;
+if(this.isFirstAdopted){
+badgeClass = 'badge badge-dark badge-glow';
+} else {
+badgeClass = 'badge badge-light-dark';
+}
+html += `<span class="${badgeClass}">`;
+html += '<span class="less-code">'
+html += this.points + '/' + 10;
+html += '</span>';
+html += '</span>';
+} else {
+html += `<span class="badge badge-light-danger">`;
+html += '-';
+html += '</span>';
+}
+}
+return html;
+}
 -->

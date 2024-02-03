@@ -1,14 +1,15 @@
 <sweet-alert-css></sweet-alert-css>
 
 <a (click)="ConfirmTextOpen()">
-  <kepcoin-view
-    *ngIf="!customContent"
-    [value]="value"
-    [imgSize]="16"
-    [fontSize]="10"
-    [customClass]="customClass">
-  </kepcoin-view>
-  <ng-container *ngIf="customContent">
+  @if (!customContent) {
+    <kepcoin-view
+      [value]="value"
+      [imgSize]="16"
+      [fontSize]="10"
+      [customClass]="customClass">
+    </kepcoin-view>
+  }
+  @if (customContent) {
     <ng-content></ng-content>
-  </ng-container>
+  }
 </a>

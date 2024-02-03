@@ -1,54 +1,55 @@
 <h3 class="mb-2 mt-2 font-weight-bolder">{{ 'Ratings' | translate }} </h3>
-<div class="item" *ngIf="skeletonVisible">
-  <ngx-skeleton-loader
-    count="1"
-    animation="pulse"
-    appearance="line"
-    [theme]="{height: '80px', background: 'var(--skeleton-color)'}"
-  ></ngx-skeleton-loader>
-</div>
+@if (skeletonVisible) {
+  <div class="item">
+    <ngx-skeleton-loader
+      count="1"
+      animation="pulse"
+      appearance="line"
+      [theme]="{height: '80px', background: 'var(--skeleton-color)'}"
+    ></ngx-skeleton-loader>
+  </div>
+}
 
-<div [@fadeInOnEnter] *ngIf="userRatings" class="card">
-  <div class="card-body d-flex justify-content-between">
-    <div class="d-block">
-      <h6 class="font-weight-bolder">
-        <kep-icon class="font-small-4" name="contest"></kep-icon> {{ 'MENU.CONTESTS' | translate }}
-      </h6>
-      <div class="mb-0 mt-1 text-center">
-        <contests-rating-image [size]="24" [title]="userRatings.contestsRatingTitle"></contests-rating-image>
-        <span class="badge badge-light-{{ userRatings.contestsRating | contestsRatingColor }}">
-          {{ userRatings.contestsRating }}
-        </span>
+@if (userRatings) {
+  <div [@fadeInOnEnter] class="card">
+    <div class="card-body d-flex justify-content-between">
+      <div class="d-block">
+        <h6 class="font-weight-bolder">
+          <kep-icon class="font-small-4" name="contest"></kep-icon> {{ 'MENU.CONTESTS' | translate }}
+        </h6>
+        <div class="mb-0 mt-1 text-center">
+          <contests-rating-image [size]="24" [title]="userRatings.contestsRatingTitle"></contests-rating-image>
+          <span class="badge badge-light-{{ userRatings.contestsRating | contestsRatingColor }}">
+            {{ userRatings.contestsRating }}
+          </span>
+        </div>
       </div>
-    </div>
-
-    <div class="d-block">
-      <h6 class="font-weight-bolder">
-        <kep-icon class="font-small-4" name="problem"></kep-icon> {{ 'MENU.PROBLEMS' | translate }}
-      </h6>
-      <div class="mb-0 mt-1 text-center">
-        <span class="badge badge-primary">
-          {{ userRatings.problemsSolved }}
-        </span>
-        <span class="badge ml-25 badge-light-success">
-          {{ userRatings.problemsRating }}
-        </span>
+      <div class="d-block">
+        <h6 class="font-weight-bolder">
+          <kep-icon class="font-small-4" name="problem"></kep-icon> {{ 'MENU.PROBLEMS' | translate }}
+        </h6>
+        <div class="mb-0 mt-1 text-center">
+          <span class="badge badge-primary">
+            {{ userRatings.problemsSolved }}
+          </span>
+          <span class="badge ml-25 badge-light-success">
+            {{ userRatings.problemsRating }}
+          </span>
+        </div>
       </div>
-    </div>
-
-    <div class="d-block">
-      <h6 class="font-weight-bolder">
-        <kep-icon class="font-small-4" name="challenge"></kep-icon> {{ 'MENU.CHALLENGES' | translate }}
-      </h6>
-      <div class="d-block mb-0 mt-1 text-center text-{{ userRatings.challengesRankTitle | challengesRankColor }}">
-      <span class="badge badge-pill badge-glow badge-{{ userRatings.challengesRankTitle | challengesRankColor }}">
-        {{ userRatings.challengesRankTitle }}
-      </span>
-
-        <span class="badge badge-light-{{ userRatings.challengesRankTitle | challengesRankColor }}">
-        {{ userRatings.challengesRating }}
-      </span>
+      <div class="d-block">
+        <h6 class="font-weight-bolder">
+          <kep-icon class="font-small-4" name="challenge"></kep-icon> {{ 'MENU.CHALLENGES' | translate }}
+        </h6>
+        <div class="d-block mb-0 mt-1 text-center text-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+          <span class="badge badge-pill badge-glow badge-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+            {{ userRatings.challengesRankTitle }}
+          </span>
+          <span class="badge badge-light-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+            {{ userRatings.challengesRating }}
+          </span>
+        </div>
       </div>
     </div>
   </div>
-</div>
+}

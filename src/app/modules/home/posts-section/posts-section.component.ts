@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Blog } from '../../blog/blog.models';
 import { HomeService } from '../home.service';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
@@ -13,7 +13,7 @@ const PAGE_SIZE = 6;
 @Component({
   selector: 'posts-section',
   standalone: true,
-  imports: [CommonModule, SwiperComponent, BlogPostCardModule, SpinnerComponent],
+  imports: [SwiperComponent, BlogPostCardModule, SpinnerComponent],
   templateUrl: './posts-section.component.html',
   styleUrl: './posts-section.component.scss'
 })

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { HorizontalLayoutComponent } from '@layout/horizontal/horizontal-layout.component';
 import { VerticalLayoutComponent } from '@layout/vertical/vertical-layout.component';
 import { CoreConfigService } from '@core/services/config.service';
@@ -9,7 +9,7 @@ import { CoreConfig } from '@core/types';
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, HorizontalLayoutComponent, VerticalLayoutComponent],
+  imports: [HorizontalLayoutComponent, VerticalLayoutComponent],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
   encapsulation: ViewEncapsulation.None

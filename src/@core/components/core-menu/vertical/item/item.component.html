@@ -1,32 +1,36 @@
-<ng-container *ngIf="!item.hidden">
+@if (!item.hidden) {
   <!-- item with router url -->
-  <a
-    class="d-flex align-items-center"
-    [ngClass]="item.classes"
-    *ngIf="item.url && !item.externalUrl"
-    [routerLink]="[item.url]"
-    [target]="item.openInNewTab ? '_blank' : '_self'"
-  >
-    <ng-container *ngTemplateOutlet="itemContent"></ng-container>
-  </a>
-
+  @if (item.url && !item.externalUrl) {
+    <a
+      class="d-flex align-items-center"
+      [ngClass]="item.classes"
+      [routerLink]="[item.url]"
+      [target]="item.openInNewTab ? '_blank' : '_self'"
+      >
+      <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+    </a>
+  }
   <!-- item with external url -->
-  <a
-    class="d-flex align-items-center"
-    [ngClass]="item.classes"
-    *ngIf="item.url && item.externalUrl"
-    [href]="item.url"
-    [target]="item.openInNewTab ? '_blank' : '_self'"
-  >
-    <ng-container *ngTemplateOutlet="itemContent"></ng-container>
-  </a>
-
+  @if (item.url && item.externalUrl) {
+    <a
+      class="d-flex align-items-center"
+      [ngClass]="item.classes"
+      [href]="item.url"
+      [target]="item.openInNewTab ? '_blank' : '_self'"
+      >
+      <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+    </a>
+  }
   <ng-template #itemContent>
-    <span [data-feather]="item.icon" *ngIf="item.icon && 0"></span>
+    @if (item.icon && 0) {
+      <span [data-feather]="item.icon"></span>
+    }
     <kep-icon class="font-large-1 text-primary" type="duotone" [name]="item.icon"></kep-icon>
     <span class="menu-title text-truncate">{{ item.translate | translate }}</span>
-    <span *ngIf="item.id == 'contests' && 0" style="transition: 0.5s ease;" class="badge ml-1 new-events badge-pill badge-primary">
-      {{ 1 }}
-    </span>
+    @if (item.id == 'contests' && 0) {
+      <span style="transition: 0.5s ease;" class="badge ml-1 new-events badge-pill badge-primary">
+        {{ 1 }}
+      </span>
+    }
   </ng-template>
-</ng-container>
+}
