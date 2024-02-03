@@ -2,18 +2,18 @@
   <div class="content-body">
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
-    <div class="row">
-      <div class="col-4"></div>
-      <div class="col-8">
-        <div class="row">
-          @for (test of tests; track test) {
-            <div class="col-4">
-              <test-card [test]="test"></test-card>
-            </div>
-          }
-        </div>
+    @if (isLoading){
+      <div class="card" [style.height.px]="400">
+        <spinner></spinner>
       </div>
-    </div>
-
+    } @else {
+      <div class="row">
+        @for (chapter of chapters; track chapter.id) {
+          <div class="col-12 col-md-6 col-xl-4">
+            <chapter-with-tests-card [chapter]="chapter"></chapter-with-tests-card>
+          </div>
+        }
+      </div>
+    }
   </div>
 </div>

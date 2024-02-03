@@ -1,0 +1,35 @@
+<div [@fadeInOnEnter]="" class="card">
+  <div class="card-header justify-content-start">
+    <div class="card-logo">
+      <img alt="chapter-logo" [src]="chapter.icon" [height]="32" [width]="32">
+    </div>
+    <div class="ml-1 card-title">
+      {{ chapter.title }}
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <ul class="list-group">
+      @for (test of chapter.tests; track test.id) {
+        <a [routerLink]="Resources.Test | resourceById:test.id" class="list-group-item d-flex justify-content-between">
+          <div class="test-title">
+            <kep-icon name="test" color="success" type="duotone"></kep-icon>
+            {{ test.title }}
+          </div>
+          <div ngbTooltip="{{ 'BestResult' | translate }}" class="best-result" *ngIf="currentUser">
+            <span [class]="{
+              'text-success': test.userBestResult == test.questionsCount,
+              'text-warning': test.userBestResult != test.questionsCount && test.userBestResult
+            }">
+              {{ test.userBestResult }}
+            </span>
+             /
+            <span class="text-dark">
+              {{ test.questionsCount }}
+            </span>
+          </div>
+        </a>
+      }
+    </ul>
+  </div>
+</div>

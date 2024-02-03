@@ -46,6 +46,7 @@ export class BaseTablePageComponent<T> extends BasePageComponent implements OnIn
   }
 
   ngOnInit() {
+    this.loadContentHeader();
     setTimeout(() => this.reloadPage());
   }
 
@@ -102,6 +103,7 @@ export class BaseTablePageComponent<T> extends BasePageComponent implements OnIn
         this.total = pageResult.total;
         this.reCalcIndexes();
         this.isLoading = false;
+        this.afterLoadPage(pageResult);
       },
       error: () => {
         this.isError = true;
@@ -109,6 +111,8 @@ export class BaseTablePageComponent<T> extends BasePageComponent implements OnIn
       }
     });
   }
+
+  afterLoadPage(pageResult: PageResult<T>) {}
 
   reCalcIndexes() {
     this.pageResult.data.map(

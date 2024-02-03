@@ -13,6 +13,7 @@ import { PageResult } from '@app/common/classes/page-result';
   animations: [],
 })
 export class TestsComponent extends BaseTablePageComponent<Test> implements OnInit {
+  override defaultPageSize = 50;
 
   public chapters: Array<Chapter> = [];
 
@@ -26,17 +27,25 @@ export class TestsComponent extends BaseTablePageComponent<Test> implements OnIn
     return this.pageResult?.data;
   }
 
-  ngOnInit(): void {
-    this.loadContentHeader();
-    this.route.data.subscribe(({ chapters }) => {
-      this.chapters = chapters;
-    });
-
-    setTimeout(() => this.reloadPage());
-  }
-
   getPage(): Observable<PageResult<Test>> {
     return this.service.getTests(this.pageable);
+  }
+
+  afterLoadPage(pageResult: PageResult<Test>) {
+    const chapters: { [key: number | string]: Array<Test> } = {};
+    for (const test of pageResult.data) {
+      if (!chapters[test.chapter.id]) {
+        chapters[test.chapter.id] = [];
+      }
+      chapters[test.chapter.id].push(test);
+    }
+    for (const chapterId of Object.keys(chapters)) {
+      const chapter = chapters[chapterId][0].chapter;
+      chapter.tests = chapters[chapterId];
+      this.chapters.push(chapter);
+    }
+    this.chapters = this.chapters.sort((a, b) => a.id - b.id);
+    console.log(this.chapters);
   }
 
   protected getContentHeader(): ContentHeader {
@@ -53,5 +62,4 @@ export class TestsComponent extends BaseTablePageComponent<Test> implements OnIn
       }
     };
   }
-
 }

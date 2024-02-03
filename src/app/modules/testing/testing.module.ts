@@ -23,6 +23,8 @@ import { TestListCardComponent } from '@app/modules/testing/components/test-list
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
+import { ChapterWithTestsCardComponent } from '@app/modules/testing/components/chapter-with-tests-card/chapter-with-tests-card.component';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 const routes: Routes = [
   {
@@ -84,6 +86,8 @@ const routes: Routes = [
     DragulaModule.forRoot(),
     SwiperComponent,
     CountdownComponent,
+    ChapterWithTestsCardComponent,
+    SpinnerComponent,
   ],
   providers: [
     TestResolver,

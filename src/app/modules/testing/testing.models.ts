@@ -1,10 +1,11 @@
-import { Tag } from '../problems/models/problems.models';
+import { Tag } from '@problems/models/problems.models';
 
 export interface Chapter {
   id: number;
   title: string;
   icon: string;
   testsCount?: number;
+  tests?: Array<Test>;
 }
 
 export interface Test {
