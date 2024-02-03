@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
-import { BasePageComponent } from '@shared/components/classes/base-page.component';
+import { BasePageComponent } from '@app/common/classes/base-page.component';
 import { SectionHeaderComponent } from '@challenges/pages/challenges/sections/section-header/section-header.component';
 import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { SectionQuickstartComponent } from '@challenges/pages/challenges/sections/section-quickstart/section-quickstart.component';

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChallengesStatisticsService } from '@challenges/services';
 import { ChallengesRating } from '../../models/challenges.models';
-import { BasePageComponent } from '@shared/components/classes/base-page.component';
+import { BasePageComponent } from '@app/common/classes/base-page.component';
 import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';

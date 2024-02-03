@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
-import { BaseComponent } from '@shared/components/classes/base.component';
+import { BaseComponent } from '@app/common/classes/base.component';
 import { SectionFeaturesComponent } from '@app/modules/landing-page/sections/section-features/section-features.component';
 import { SectionHeaderComponent } from '@app/modules/landing-page/sections/section-header/section-header.component';
 import { NavbarComponent } from '@app/modules/landing-page/navbar/navbar.component';

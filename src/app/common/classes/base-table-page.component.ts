@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PageResult } from '@shared/components/classes/page-result';
-import { BasePageComponent } from '@shared/components/classes/base-page.component';
+import { PageResult } from '@app/common/classes/page-result';
+import { BasePageComponent } from '@app/common/classes/base-page.component';
 import { NavigationStart } from '@angular/router';
 import { BASE_URL } from '@shared/services/api.service';
-import { Pageable } from '@shared/components/classes/pageable';
+import { Pageable } from '@app/common/classes/pageable';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({

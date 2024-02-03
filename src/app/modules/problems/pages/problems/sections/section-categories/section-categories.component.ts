@@ -4,7 +4,7 @@ import { Category } from '@problems/models/problems.models';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { fadeInOnEnterAnimation } from 'angular-animations';
-import { BaseLoadComponent } from '@shared/components/classes/base-load.component';
+import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { Observable } from 'rxjs';
 
 @Component({

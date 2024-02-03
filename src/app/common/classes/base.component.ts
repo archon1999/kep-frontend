@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { User } from 'app/auth/models';
-import { AuthService } from 'app/auth/service';
+import { User } from '@auth/models';
+import { AuthService } from '@auth/service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { CoreConfig } from 'core/types';
-import { CoreConfigService } from 'core/services/config.service';
+import { CoreConfig } from '@core/types';
+import { CoreConfigService } from '@core/services/config.service';
 import { ActivatedRoute, NavigationExtras, NavigationStart, Params, Router } from '@angular/router';
-import { GlobalService } from '@shared/services/global.service';
+import { GlobalService } from '@app/common/global.service';
 import { LocalStorageService } from '@shared/services/storages/local-storage.service';
 import { SessionStorageService } from '@shared/services/storages/session-storage.service';
 import { TitleService } from '@shared/services/title.service';

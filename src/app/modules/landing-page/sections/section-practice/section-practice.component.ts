@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoreCommonModule } from '@core/common.module';
-import { BaseComponent } from '@shared/components/classes/base.component';
+import { BaseComponent } from '@app/common/classes/base.component';
 import { menu } from '@layout/components/menu/menu';
 
 @Component({

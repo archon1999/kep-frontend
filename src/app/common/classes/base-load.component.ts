@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BaseComponent } from '@shared/components/classes/base.component';
+import { BaseComponent } from '@app/common/classes/base.component';
 import { Observable } from 'rxjs';
 
 @Component({

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 import { ContestsService } from '../../contests.service';
-import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
+import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { Observable } from 'rxjs';
-import { PageResult } from '@shared/components/classes/page-result';
+import { PageResult } from '@app/common/classes/page-result';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';

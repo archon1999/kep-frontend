@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from '@auth/service';
 import { User } from '@auth/models';
-import { CoreConfig } from 'core/types';
+import { CoreConfig } from '@core/types';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { CoreConfigService } from 'core/services/config.service';
+import { CoreConfigService } from '@core/services/config.service';
 import { ActivatedRoute, NavigationEnd, NavigationExtras, Params, Router } from '@angular/router';
 
 @Injectable({

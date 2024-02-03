@@ -5,7 +5,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { BlogPostCardModule } from '@app/modules/blog/components/blog-post-card/blog-post-card.module';
 import { UsersApiService } from '@users/users-api.service';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { PageResult } from '@shared/components/classes/page-result';
+import { PageResult } from '@app/common/classes/page-result';
 
 @Component({
   selector: 'user-blog',

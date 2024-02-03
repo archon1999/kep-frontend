@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoreConfigService } from '../../../../core/services/config.service';
 import { Subject } from 'rxjs';
-import { GlobalService } from '@shared/services/global.service';
+import { GlobalService } from '@app/common/global.service';
 
 @Component({
   selector: 'empty-result',

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Resources } from '@app/resources';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { CoreCommonModule } from '@core/common.module';
-import { BaseLoadComponent } from '@shared/components/classes/base-load.component';
+import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 
 interface LastContest {

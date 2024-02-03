@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { BaseComponent } from '@shared/components/classes/base.component';
+import { BaseComponent } from '@app/common/classes/base.component';
 import { coreConfig } from '@app/app.config';
 
 @Component({

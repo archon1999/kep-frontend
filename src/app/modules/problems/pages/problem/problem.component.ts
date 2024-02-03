@@ -18,7 +18,7 @@ import { ProblemSidebarComponent } from '@problems/pages/problem/problem-sidebar
 import { TourModule } from '@shared/third-part-modules/tour/tour.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
-import { BasePageComponent } from '@shared/components/classes/base-page.component';
+import { BasePageComponent } from '@app/common/classes/base-page.component';
 
 @Component({
   selector: 'app-problem',

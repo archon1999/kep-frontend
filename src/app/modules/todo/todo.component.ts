@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TodoCommentsComponent } from './todo-comments/todo-comments.component';
-import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
+import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { ToDo } from './todo';
-import { PageResult } from '@shared/components/classes/page-result';
+import { PageResult } from '@app/common/classes/page-result';
 import { Observable } from 'rxjs';
 
 @Component({

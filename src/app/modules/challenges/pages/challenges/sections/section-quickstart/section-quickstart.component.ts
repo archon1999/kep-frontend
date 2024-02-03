@@ -8,7 +8,7 @@ import { NouisliderModule } from '@shared/third-part-modules/nouislider/nouislid
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { ChallengeCall, NewChallengeCall } from '@challenges/models';
 import { getResourceById, Resources } from '@app/resources';
-import { BaseUserComponent } from '@shared/components/classes/base-user.component';
+import { BaseUserComponent } from '@app/common/classes/base-user.component';
 import { Router } from '@angular/router';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 

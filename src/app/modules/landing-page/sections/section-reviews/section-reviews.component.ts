@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { SwiperOptions } from 'swiper/types/swiper-options';
-import { BaseLoadComponent } from '@shared/components/classes/base-load.component';
+import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { Review } from '@app/modules/landing-page/sections/section-reviews/review';
 import { Observable, of } from 'rxjs';
 import { ReviewCardComponent } from '@app/modules/landing-page/sections/section-reviews/review-card/review-card.component';

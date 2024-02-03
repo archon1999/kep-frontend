@@ -7,7 +7,7 @@ import { NotificationsService } from 'app/layout/components/navbar/navbar-notifi
 import { WebsocketService } from 'app/shared/services/websocket';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { PageResult } from '@shared/components/classes/page-result';
+import { PageResult } from '@app/common/classes/page-result';
 import Swal from 'sweetalert2';
 import { CoreCommonModule } from '@core/common.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';

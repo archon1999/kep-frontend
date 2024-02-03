@@ -5,7 +5,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { ChallengeCall, NewChallengeCall } from '@challenges/models';
 import { ChallengesApiService } from '@challenges/services';
 import { interval } from 'rxjs';
-import { BaseUserComponent } from '@shared/components/classes/base-user.component';
+import { BaseUserComponent } from '@app/common/classes/base-user.component';
 import { takeUntil } from 'rxjs/operators';
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 

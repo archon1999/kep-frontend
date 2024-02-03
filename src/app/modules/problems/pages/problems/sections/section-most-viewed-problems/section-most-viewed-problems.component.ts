@@ -6,7 +6,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { getResourceById, Resources } from '@app/resources';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { randomChoice } from '@shared/utils/random';
-import { BaseLoadComponent } from '@shared/components/classes/base-load.component';
+import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

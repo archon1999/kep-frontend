@@ -3,7 +3,7 @@ import { ChallengesRating } from '@challenges/models/challenges.models';
 import { ChallengesStatisticsService } from '@challenges/services';
 import { AuthService } from 'app/auth/service';
 import { User } from 'app/auth/models';
-import { BaseLoadComponent } from '@shared/components/classes/base-load.component';
+import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { Observable } from 'rxjs';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { CoreCommonModule } from '@core/common.module';

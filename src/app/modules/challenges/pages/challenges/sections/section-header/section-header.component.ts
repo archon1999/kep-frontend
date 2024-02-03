@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
-import { BaseLoadComponent } from '@shared/components/classes/base-load.component';
+import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { Observable } from 'rxjs';
 import { User } from '@auth/models';
 import { ChallengesRating } from '@challenges/models/challenges.models';

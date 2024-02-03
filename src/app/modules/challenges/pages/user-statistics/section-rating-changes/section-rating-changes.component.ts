@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ChallengesStatisticsService } from '@challenges/services';
 import { ChallengesRatingChange } from '@challenges/models/challenges.models';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
-import { BaseLoadComponent } from '@shared/components/classes/base-load.component';
+import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { Observable } from 'rxjs';
 import { User } from '@auth/models';
 import { fadeInOnEnterAnimation } from 'angular-animations';

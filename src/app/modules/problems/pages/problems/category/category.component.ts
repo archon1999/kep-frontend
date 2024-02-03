@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
+import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { Categories, Category, Problem, StudyPlan } from '@problems/models/problems.models';
 import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';

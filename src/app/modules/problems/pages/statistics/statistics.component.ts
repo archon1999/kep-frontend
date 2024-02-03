@@ -7,7 +7,7 @@ import { SectionHeatmapComponent } from '@problems/pages/statistics/section-heat
 import { SectionFactsComponent } from '@problems/pages/statistics/section-facts/section-facts.component';
 import { SectionTimeComponent } from '@problems/pages/statistics/section-time/section-time.component';
 import { SectionAttemptsForSolveComponent } from '@problems/pages/statistics/section-attempts-for-solve/section-attempts-for-solve.component';
-import { BaseComponent } from '@shared/components/classes/base.component';
+import { BaseComponent } from '@app/common/classes/base.component';
 import { User } from '@auth/models';
 
 @Component({

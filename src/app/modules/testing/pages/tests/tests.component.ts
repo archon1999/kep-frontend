@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Chapter, Test } from '../../testing.models';
 import { TestingApiService } from '../../testing-api.service';
-import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
+import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { ContentHeader } from '@layout/components/content-header/content-header.component';
-import { PageResult } from '@shared/components/classes/page-result';
+import { PageResult } from '@app/common/classes/page-result';
 
 @Component({
   selector: 'app-testing',

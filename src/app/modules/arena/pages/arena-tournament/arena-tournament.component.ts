@@ -8,11 +8,11 @@ import { ArenaPlayerStatisticsComponent } from '../../components/arena-player-st
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
-import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
+import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { ArenaChallengesComponent } from '@arena/pages/arena-tournament/arena-challenges/arena-challenges.component';
 import { Observable } from 'rxjs';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
-import { PageResult } from '@shared/components/classes/page-result';
+import { PageResult } from '@app/common/classes/page-result';
 import { switchMap } from 'rxjs/operators';
 import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
 

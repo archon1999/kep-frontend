@@ -3,7 +3,7 @@ import { User } from 'app/auth/models';
 import { NavbarService } from '../navbar.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { BaseComponent } from '@shared/components/classes/base.component';
+import { BaseComponent } from '@app/common/classes/base.component';
 
 @Component({
   selector: 'app-navbar-kepcoin',

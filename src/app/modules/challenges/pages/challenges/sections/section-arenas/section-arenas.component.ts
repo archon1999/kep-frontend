@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseLoadComponent } from '@shared/components/classes/base-load.component';
+import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { Arena } from '@arena/arena.models';
 import { Observable } from 'rxjs';
 import { ArenaService } from '@arena/arena.service';

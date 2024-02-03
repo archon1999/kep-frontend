@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ChallengesRating } from '@challenges/models/challenges.models';
 import { ChallengesApiService } from '@challenges/services';
-import { PageResult } from '@shared/components/classes/page-result';
-import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
+import { PageResult } from '@app/common/classes/page-result';
+import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { Observable } from 'rxjs';
 import { CoreCommonModule } from '@core/common.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';

@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthModalComponent } from 'app/auth/auth-modal/auth-modal.component';
 import { ApiService } from 'app/shared/services/api.service';
-import { BaseComponent } from '@shared/components/classes/base.component';
+import { BaseComponent } from '@app/common/classes/base.component';
 import { CoreCommonModule } from '@core/common.module';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { NavbarDailyTasksComponent } from '@layout/components/navbar/navbar-daily-tasks/navbar-daily-tasks.component';

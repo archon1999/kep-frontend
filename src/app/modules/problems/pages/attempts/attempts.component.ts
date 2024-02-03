@@ -6,9 +6,9 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
-import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
+import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { ContentHeader } from '@layout/components/content-header/content-header.component';
-import { PageResult } from '@shared/components/classes/page-result';
+import { PageResult } from '@app/common/classes/page-result';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 
 @Component({

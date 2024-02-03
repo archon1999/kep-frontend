@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../users.models';
-import { BaseComponent } from '@shared/components/classes/base.component';
+import { BaseComponent } from '@app/common/classes/base.component';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbCollapseModule, NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';

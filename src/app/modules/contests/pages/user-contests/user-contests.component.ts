@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
 import { Observable } from 'rxjs';
-import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
-import { PageResult } from '@shared/components/classes/page-result';
+import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
+import { PageResult } from '@app/common/classes/page-result';
 import { ContestsService } from '@contests/contests.service';
 import { User } from '@auth/models';
 import { CoreCommonModule } from '@core/common.module';

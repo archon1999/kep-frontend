@@ -4,7 +4,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContestsService } from '@contests/contests.service';
-import { BaseLoadComponent } from '@shared/components/classes/base-load.component';
+import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { ContestCategory } from '@contests/models';
 import { Observable } from 'rxjs';
 

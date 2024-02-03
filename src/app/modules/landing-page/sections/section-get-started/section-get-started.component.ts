@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { Resources } from '@app/resources';
-import { BaseComponent } from '@shared/components/classes/base.component';
+import { BaseComponent } from '@app/common/classes/base.component';
 
 @Component({
   selector: 'section-get-started',
