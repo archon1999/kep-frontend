@@ -1,5 +1,5 @@
-import { FormControl, ValidatorFn } from "@angular/forms";
-import { MinNumberConfig } from "./min-number.config";
+import { FormControl, ValidatorFn } from '@angular/forms';
+import { MinNumberConfig } from './min-number.config';
 
 export function minNumberValidator(config: MinNumberConfig): ValidatorFn {
   return (control: FormControl) => {

@@ -1,5 +1,5 @@
-import { FormControl, ValidatorFn } from "@angular/forms";
-import { MinDateConfig } from "./min-date.config";
+import { FormControl, ValidatorFn } from '@angular/forms';
+import { MinDateConfig } from './min-date.config';
 
 export function minDateValidator(config: MinDateConfig): ValidatorFn {
   return (control: FormControl) => {

@@ -1,4 +1,4 @@
-import { Problem } from "../problems/models/problems.models";
+import { Problem } from '../problems/models/problems.models';
 
 export enum CodeRushStatus {
   NOT_STARTED = -1,

@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { NgSelectModule } from '@ng-select/ng-select';
 
 @Component({
   selector: 'ng-select-css',

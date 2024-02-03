@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 

@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { AuthGuard } from  '@auth';
+import { AuthGuard } from '@auth';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';

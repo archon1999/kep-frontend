@@ -7,8 +7,6 @@ import { Pageable } from '@app/common/classes/pageable';
 import { getCategoryIcon } from '@problems/utils/category';
 import { Observable } from 'rxjs';
 
-import { ContestProblem } from '@contests/models/contest-problem';
-
 @Injectable({
   providedIn: 'root'
 })

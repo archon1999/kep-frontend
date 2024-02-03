@@ -3,11 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Course, CourseLesson, CourseLessonPart, CourseLessonPartComment, CourseLessonPartStatus } from '../../courses.models';
 import { CoursesService } from '../../courses.service';
-import { AuthService } from '@auth';
-import { User } from '@auth';
+import { AuthService, User } from '@auth';
 import { ApiService } from 'app/shared/services/api.service';
 import { ShepherdService } from 'angular-shepherd';
-import { lessonTourSteps } from './lesson.tour';
 import { BlockUI, NgBlockUI } from 'ng-block-ui';
 import { TitleService } from 'app/shared/services/title.service';
 

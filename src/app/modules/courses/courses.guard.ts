@@ -1,9 +1,11 @@
-import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from "@angular/router";
-import { AuthService } from  '@auth';;
-import { Observable, of } from "rxjs";
-import { catchError, map } from "rxjs/operators";
-import { CoursesService } from "./courses.service";
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { AuthService } from '@auth';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { CoursesService } from './courses.service';
+
+;
 
 @Injectable()
 export class CourseGuard implements CanActivate {

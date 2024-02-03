@@ -11,7 +11,6 @@ import { SectionPracticeComponent } from '@app/modules/landing-page/sections/sec
 import { SectionGetStartedComponent } from '@app/modules/landing-page/sections/section-get-started/section-get-started.component';
 import { SectionContactUsComponent } from '@app/modules/landing-page/sections/section-contact-us/section-contact-us.component';
 import { SectionFaqComponent } from '@app/modules/landing-page/sections/section-faq/section-faq.component';
-import { doScrolling } from '@shared/utils';
 
 @Component({
   selector: 'app-landing-page',

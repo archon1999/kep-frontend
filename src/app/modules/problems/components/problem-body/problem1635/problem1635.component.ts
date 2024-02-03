@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { User } from '@auth';
-import { AuthService } from '@auth';
+import { Component } from '@angular/core';
+import { AuthService, User } from '@auth';
 import { CoreCommonModule } from '@core/common.module';
 
 @Component({

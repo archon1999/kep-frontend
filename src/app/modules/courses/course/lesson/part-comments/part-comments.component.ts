@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { User } from '@auth';
-import { AuthService } from '@auth';
+import { AuthService, User } from '@auth';
 import { CourseLessonPartComment } from '../../../../courses/courses.models';
 import { CoursesService } from '../../../../courses/courses.service';
 

@@ -1,5 +1,5 @@
-import { FormControl, ValidatorFn } from "@angular/forms";
-import { RequiredConfig } from "./required.config";
+import { FormControl, ValidatorFn } from '@angular/forms';
+import { RequiredConfig } from './required.config';
 
 export function requiredValidator(config?: RequiredConfig): ValidatorFn {
   return (control: FormControl) => {

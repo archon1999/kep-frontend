@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { ChallengesRating } from '@challenges/models/challenges.models';
 import { Observable } from 'rxjs';

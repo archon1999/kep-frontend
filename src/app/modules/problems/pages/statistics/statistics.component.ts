@@ -6,7 +6,9 @@ import { SectionActivityComponent } from '@problems/pages/statistics/section-act
 import { SectionHeatmapComponent } from '@problems/pages/statistics/section-heatmap/section-heatmap.component';
 import { SectionFactsComponent } from '@problems/pages/statistics/section-facts/section-facts.component';
 import { SectionTimeComponent } from '@problems/pages/statistics/section-time/section-time.component';
-import { SectionAttemptsForSolveComponent } from '@problems/pages/statistics/section-attempts-for-solve/section-attempts-for-solve.component';
+import {
+  SectionAttemptsForSolveComponent
+} from '@problems/pages/statistics/section-attempts-for-solve/section-attempts-for-solve.component';
 import { BaseComponent } from '@app/common/classes/base.component';
 import { User } from '@auth';
 

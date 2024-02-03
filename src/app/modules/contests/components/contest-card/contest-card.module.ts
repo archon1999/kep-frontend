@@ -7,9 +7,6 @@ import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { KepcoinSpendSwalModule } from '../../../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import {
-  ContestStandingsCountdownComponent
-} from '@contests/pages/contest/contest-standings/contest-standings-countdown/contest-standings-countdown.component';
 import { ContestCountdownCardComponent } from '@contests/components/contest-countdown-card/contest-countdown-card.component';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';

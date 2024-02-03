@@ -1,5 +1,5 @@
-import { FormControl, ValidatorFn } from "@angular/forms";
-import { MaxNumberConfig } from "./max-number.config";
+import { FormControl, ValidatorFn } from '@angular/forms';
+import { MaxNumberConfig } from './max-number.config';
 
 export function maxNumberValidator(config: MaxNumberConfig): ValidatorFn {
   return (control: FormControl) => {

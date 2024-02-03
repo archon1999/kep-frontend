@@ -1,10 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { User } from '@auth';
-import { AuthService } from '@auth';
+import { AuthService, User } from '@auth';
 import { Attempt } from '../../../problems/models/attempts.models';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { CodeRush, CodeRushProblem } from '../../code-rush.models';
 import { CodeRushApiService } from '../../services/code-rush-api.service';
 import { TitleService } from '../../../../shared/services/title.service';

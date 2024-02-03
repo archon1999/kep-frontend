@@ -4,13 +4,13 @@ import {
   ApexDataLabels,
   ApexFill,
   ApexGrid,
+  ApexLegend,
   ApexPlotOptions,
   ApexStroke,
   ApexTitleSubtitle,
   ApexTooltip,
   ApexXAxis,
   ApexYAxis,
-  ApexLegend,
 } from 'ng-apexcharts';
 
 export interface ChartOptions {

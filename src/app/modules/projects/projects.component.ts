@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation, fadeInUpOnEnterAnimation } from 'angular-animations';
+import {
+  fadeInLeftOnEnterAnimation,
+  fadeInOnEnterAnimation,
+  fadeInRightOnEnterAnimation,
+  fadeInUpOnEnterAnimation
+} from 'angular-animations';
 import { Project } from './projects.models';
 import { ProjectsService } from './projects.service';
 

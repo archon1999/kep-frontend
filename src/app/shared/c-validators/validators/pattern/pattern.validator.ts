@@ -1,5 +1,5 @@
-import { FormControl, ValidatorFn } from "@angular/forms";
-import { PatternConfig } from "./pattern.config";
+import { FormControl, ValidatorFn } from '@angular/forms';
+import { PatternConfig } from './pattern.config';
 
 export function patternValidator(config: PatternConfig): ValidatorFn {
   return (control: FormControl) => {

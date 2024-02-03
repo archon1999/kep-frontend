@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/router";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
 import { Course } from './courses.models';
-import { CoursesService } from "./courses.service";
+import { CoursesService } from './courses.service';
 
 @Injectable()
 export class CoursesResolver implements Resolve<Course> {

@@ -1,5 +1,5 @@
-import { FormControl, ValidatorFn } from "@angular/forms";
-import { MaxDateConfig } from "./max-date.config";
+import { FormControl, ValidatorFn } from '@angular/forms';
+import { MaxDateConfig } from './max-date.config';
 
 export function maxDateValidator(config: MaxDateConfig): ValidatorFn {
   return (control: FormControl) => {

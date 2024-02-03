@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChallengeCallCardComponent } from '@challenges/components/challenge-call-card/challenge-call-card.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { ChallengeCall, NewChallengeCall } from '@challenges/models';
+import { ChallengeCall } from '@challenges/models';
 import { ChallengesApiService } from '@challenges/services';
 import { interval } from 'rxjs';
 import { BaseUserComponent } from '@app/common/classes/base-user.component';

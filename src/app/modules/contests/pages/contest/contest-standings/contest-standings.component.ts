@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { User } from '@auth';
-import { AuthService } from '@auth';
+import { AuthService, User } from '@auth';
 import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';

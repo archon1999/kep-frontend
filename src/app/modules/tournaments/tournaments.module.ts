@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { TournamentsComponent } from './tournaments.component';
 import { TournamentComponent } from './tournament/tournament.component';
 import { TournamentBracketComponent } from './tournament/tournament-bracket/tournament-bracket.component';

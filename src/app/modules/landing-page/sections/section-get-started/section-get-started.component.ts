@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
-import { Resources } from '@app/resources';
 import { BaseComponent } from '@app/common/classes/base.component';
 
 @Component({

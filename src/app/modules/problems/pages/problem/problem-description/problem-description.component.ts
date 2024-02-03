@@ -1,7 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbAccordionModule, NgbModal, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { User } from '@auth';
-import { AuthService } from '@auth';
+import { AuthService, User } from '@auth';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

@@ -16,7 +16,6 @@ import { BaseComponent } from '@app/common/classes/base.component';
 import { sortContestProblems } from '@contests/utils/sort-contest-problems';
 import { paramsMapper } from '@shared/utils';
 import { PageResult } from '@app/common/classes/page-result';
-import { interval } from 'rxjs';
 import { CoreCommonModule } from '@core/common.module';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';

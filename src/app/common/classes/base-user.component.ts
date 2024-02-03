@@ -1,7 +1,6 @@
 import { Component, inject, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
-import { User } from '@auth';
-import { AuthService } from '@auth';
+import { AuthService, User } from '@auth';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({

@@ -1,5 +1,5 @@
 import { HomeComponent } from './home.component';
-import { AuthGuard } from  '@auth';
+import { AuthGuard } from '@auth';
 import { Route } from '@angular/router';
 
 export default [

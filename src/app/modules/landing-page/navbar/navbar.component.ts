@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { BaseComponent } from '@app/common/classes/base.component';
 import { CoreCommonModule } from '@core/common.module';
-import { coreConfig } from '@app/app.config';
 import { scrollTo } from '@shared/utils';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 

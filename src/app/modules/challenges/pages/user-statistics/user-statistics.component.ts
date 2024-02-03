@@ -7,7 +7,9 @@ import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { SectionProfileComponent } from '@challenges/pages/user-statistics/section-profile/section-profile.component';
 import { SectionRatingChangesComponent } from '@challenges/pages/user-statistics/section-rating-changes/section-rating-changes.component';
-import { SectionLastChallengesComponent } from '@challenges/pages/user-statistics/section-last-challenges/section-last-challenges.component';
+import {
+  SectionLastChallengesComponent
+} from '@challenges/pages/user-statistics/section-last-challenges/section-last-challenges.component';
 
 @Component({
   selector: 'app-challenges-profile',

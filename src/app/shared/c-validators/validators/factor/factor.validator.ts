@@ -1,5 +1,5 @@
-import { FormControl, ValidatorFn } from "@angular/forms";
-import { FactorConfig } from "./factor.config";
+import { FormControl, ValidatorFn } from '@angular/forms';
+import { FactorConfig } from './factor.config';
 
 
 export function factorValidator(config?: FactorConfig): ValidatorFn {

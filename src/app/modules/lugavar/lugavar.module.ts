@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { LugavarComponent } from './lugavar.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { CorePipesModule } from '@shared/pipes/pipes.module';

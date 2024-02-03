@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { CoreCommonModule } from '@core/common.module';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';

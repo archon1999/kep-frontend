@@ -1,9 +1,7 @@
-import { Injectable, OnDestroy, Inject } from '@angular/core';
-import { Observable, SubscriptionLike, Subject, Observer, interval } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Inject, Injectable, OnDestroy } from '@angular/core';
+import { interval, Observable, Observer, Subject, SubscriptionLike } from 'rxjs';
+import { distinctUntilChanged, filter, map, share, takeWhile } from 'rxjs/operators';
 import { WebSocketSubject, WebSocketSubjectConfig } from 'rxjs/webSocket';
-
-import { share, distinctUntilChanged, takeWhile } from 'rxjs/operators';
 import { IWebsocketService, IWsMessage, WebSocketConfig } from './websocket.interfaces';
 import { config } from './websocket.config';
 

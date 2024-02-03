@@ -2,8 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ApiService } from '@shared/services/api.service';
-import { User } from '@auth';
-import { AuthService } from '@auth';
+import { AuthService, User } from '@auth';
 import { ContestsService } from 'app/modules/contests/contests.service';
 import { Router } from '@angular/router';
 import { CoreCommonModule } from '@core/common.module';
@@ -12,7 +11,6 @@ import { ContestCountdownComponent } from '@contests/components/contest-card/con
 import { Top3ContestantsComponent } from '@contests/components/contest-card/contest-card/top3-contestants/top3-contestants.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
-import { ContestStatus } from '@contests/constants/contest-status';
 import { Contest } from '@contests/models/contest';
 
 @Component({

@@ -1,8 +1,9 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { fadeInLeftAnimation, fadeInRightAnimation } from 'angular-animations';
+import { fadeInRightAnimation } from 'angular-animations';
 import { Course } from './courses.models';
 import { ScriptService } from '@shared/services/script.service';
+
 const SCRIPT_PATH = '//cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min.js';
 const SCRIPT_PATH2 = 'https://cdn.jsdelivr.net/npm/highlightjs-line-numbers.js/dist/highlightjs-line-numbers.min.js';
 

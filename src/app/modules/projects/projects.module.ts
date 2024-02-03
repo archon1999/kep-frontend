@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { ProjectsComponent } from './projects.component';
 import { ProjectsService } from './projects.service';
 import { ProjectCardComponent } from './project-card/project-card.component';

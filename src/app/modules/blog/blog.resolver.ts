@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  Resolve,
-  RouterStateSnapshot,
-  ActivatedRouteSnapshot,
-  Router
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { BlogService } from './blog.service';

@@ -1,4 +1,4 @@
-import { BaseConfig } from "../../basic/base-config";
+import { BaseConfig } from '../../basic/base-config';
 
 export interface MinLengthConfig extends BaseConfig {
   value: number;

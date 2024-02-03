@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
-import { BaseUserComponent } from '@app/common/classes/base-user.component';
 import { ContestsService } from '@contests/contests.service';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { ContestsRating } from '@contests/models';

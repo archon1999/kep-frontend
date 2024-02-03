@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { CoreCommonModule } from '@core/common.module';
-import { IsAuthenticatedGuard } from  '@auth';
+import { IsAuthenticatedGuard } from '@auth';
 import { AuthLoginV2Component } from '../../pages/authentication/auth-login-v2/auth-login-v2.component';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 

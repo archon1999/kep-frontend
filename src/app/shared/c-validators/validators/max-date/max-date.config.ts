@@ -1,4 +1,4 @@
-import { BaseConfig } from "../../basic/base-config";
+import { BaseConfig } from '../../basic/base-config';
 
 export interface MaxDateConfig extends BaseConfig {
   value: string | Date;

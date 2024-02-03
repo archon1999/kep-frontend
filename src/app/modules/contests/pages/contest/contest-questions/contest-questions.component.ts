@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoreConfigService } from '@core/services/config.service';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
-import { User } from '@auth';
-import { AuthService } from '@auth';
+import { AuthService, User } from '@auth';
 import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';
@@ -12,7 +11,9 @@ import { ContestsService } from '../../../contests.service';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
-import { ContestQuestionCardComponent } from '@contests/pages/contest/contest-questions/contest-question-card/contest-question-card.component';
+import {
+  ContestQuestionCardComponent
+} from '@contests/pages/contest/contest-questions/contest-question-card/contest-question-card.component';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { ContestCardModule } from '@contests/components/contest-card/contest-card.module';
 import { ContestQuestion } from '@contests/models/contest-question';

@@ -1,5 +1,4 @@
 import {
-  UserBlogResolver,
   UserChallengesRatingResolver,
   UserContestsRatingResolver,
   UserEducationsResolver,

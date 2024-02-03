@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'app/shared/services/api.service';
-import { User } from '@auth';
-import { AuthService } from '@auth';
+import { AuthService, User } from '@auth';
 import { asyncScheduler, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 import { HackAttempt } from '@problems/models/hack-attempt.models';
