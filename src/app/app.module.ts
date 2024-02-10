@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER, Injectable, NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -33,6 +33,7 @@ import { BS_BREAKPOINTS, CustomBreakPointsProvider } from '@layout/custom-breakp
 
 import { register } from 'swiper/element/bundle';
 import { LayoutComponent } from '@layout/layout.component';
+import { AuthInterceptor } from '@auth/auth.interceptor';
 
 register();
 
@@ -133,6 +134,12 @@ export function authFactory(authService: AuthService) {
       useFactory: authFactory,
       deps: [AuthService],
       multi: true
+    },
+    provideHttpClient(withInterceptorsFromDi()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
     },
     CustomBreakPointsProvider
   ],

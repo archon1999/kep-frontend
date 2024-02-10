@@ -37,7 +37,7 @@
                   <h3 class="card-title text-center mt-2 mb-1">{{ 'ATTEMPTS' | translate }}</h3>
                 </div>
                 <div class="card-body">
-                  <attempts-table [hideSourceCodeSize]="true" [attempts]="attempts" [contest]="contest"></attempts-table>
+                  <attempts-table [hideSourceCodeSize]="contest.type != 'CodeGolf'" [attempts]="attempts" [contest]="contest"></attempts-table>
                   @if (attempts.length > 0) {
                     <kep-pagination
                       [collectionSize]="totalAttemptsCount"

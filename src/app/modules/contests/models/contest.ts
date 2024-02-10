@@ -14,7 +14,7 @@ export class Contest {
     public contestantsCount: number,
     public startTime: Date,
     public finishTime: Date,
-    public type: string,
+    public type: ContestTypes,
     public logo: string,
     public category: number,
     public categoryTitle: string,

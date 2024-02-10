@@ -78,8 +78,8 @@ export class ApiService {
   initOptions(options: any) {
     options.headers = new HttpHeaders();
     if (!environment.production) {
-      const username = 'admin';
-      const password = 'htUgctJ4rYUWxt5';
+      const username = environment.superAdmin.username;
+      const password = environment.superAdmin.password;
       // username = 'NaZaR.IO';
       // password = 'cpython2428';
       // username = 'KEP.uz';

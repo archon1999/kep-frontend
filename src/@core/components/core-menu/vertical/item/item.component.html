@@ -27,7 +27,7 @@
     }
     <kep-icon class="font-large-1 text-primary" type="duotone" [name]="item.icon"></kep-icon>
     <span class="menu-title text-truncate">{{ item.translate | translate }}</span>
-    @if (item.id == 'contests') {
+    @if (item.id == 'contests' || item.id == 'arena') {
       <span style="transition: 0.5s ease;" class="badge ml-1 new-events badge-pill badge-primary">
         {{ 1 }}
       </span>
