@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { AvailableLanguage, Problem } from '@problems/models/problems.models';
 import { CoreCommonModule } from '@core/common.module';
 import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
@@ -24,7 +24,7 @@ interface IVoteResult {
   templateUrl: './problem-info-card.component.html',
   styleUrl: './problem-info-card.component.scss'
 })
-export class ProblemInfoCardComponent implements OnInit, OnDestroy {
+export class ProblemInfoCardComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() problem: Problem;
   @Input() hideLikes = false;
@@ -61,6 +61,12 @@ export class ProblemInfoCardComponent implements OnInit, OnDestroy {
         this.currentUser = user;
       }
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if ('problem' in changes) {
+      this.langService.setLanguage(this.langService.getLanguageValue());
+    }
   }
 
   like() {

@@ -22,6 +22,10 @@ export class LanguageService {
     return this._currentLang;
   }
 
+  getLanguageValue() {
+    return this._currentLang.getValue();
+  }
+
   setLanguage(lang: AttemptLangs, eventEmit = true) {
     this.localStorageService.set(LANG_KEY, lang);
     if (eventEmit) {
