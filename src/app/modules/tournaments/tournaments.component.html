@@ -1,54 +1,72 @@
-<div class="row">
-  <div class="col-12 mb-4 tournaments-page-top">
-    <div class="text-center">
-      <div [@fadeInUpOnEnter] class="avatar avatar-lg p-50 m-0 mt-1 mb-1 tournaments-icon">
-        <div class="avatar-content" ngbTooltip="{{ 'Challenges' | translate }}">
-          <i class="font-large-1" data-feather="award"></i>
-        </div>
-      </div>
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
-      <h2 [@fadeInUpOnEnter] class="mt-2">
-        <span class="text-white">{{ 'Tournaments' | translate }}</span>
-      </h2>
+    <div class="tournaments-section-header">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title text-white">{{ 'Links' | translate }}</div>
 
-      <div class="mt-4 col-lg-8 col-12 offset-lg-2 offset-0">
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <a [@fadeInLeftOnEnter] class="card card-info" routerLink="/learn/blog/post/74">
-              <div class="card-header">
-                <div class="card-title">
-                  {{ 'AboutTournaments' | translate }}
-                </div>
-              </div>
-              <div class="info-img">
-                <img src="assets/images/pages/forgot-password.png" alt="info-img">
-              </div>
+          <div [ngClass.lt-md]="'d-flex'" class="links">
+            <a [ngClass.lt-md]="'btn-sm'" [routerLink]="Resources.Challenges" class="btn btn-primary mr-25 mr-mt-1">
+              <kep-icon class="font-medium-1" name="challenge"></kep-icon>
+              <span [ngClass.lt-md]="'d-none'">
+                {{ 'Challenges' | translate }}
+              </span>
             </a>
-          </div>
 
-          <div class="col-12 col-md-6">
-            <a [@fadeInRightOnEnter] class="card card-info" routerLink="/learn/blog/post/73">
-              <div class="card-header">
-                <div class="card-title">
-                  {{ 'AboutDuels' | translate }}
-                </div>
-              </div>
-              <div class="info-img">
-                <img src="assets/images/pages/maintenance.png" alt="info-img">
-              </div>
+            <a [ngClass.lt-md]="'btn-sm'" [routerLink]="Resources.ChallengesRating" class="btn btn-primary mr-25 mr-mt-1">
+              <kep-icon class="font-medium-1" name="ranking"></kep-icon>
+              <span [ngClass.lt-md]="'d-none'">
+                {{ 'Rating' | translate }}
+              </span>
             </a>
           </div>
         </div>
       </div>
 
+
+      <div class="useful-links row">
+        <div class="col-6 pr-md-1 pr-25">
+          <a [ngClass.lt-md]="'font-small-3'" class="btn btn-primary" routerLink="/learn/blog/post/74">
+            {{ 'AboutTournaments' | translate }}
+          </a>
+        </div>
+
+        <div class="col-6 pl-md-1 pl-25">
+          <a [ngClass.lt-md]="'font-small-3'" class="btn btn-primary" routerLink="/learn/blog/post/73">
+            {{ 'AboutDuels' | translate }}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-2 col-lg-8 col-12 offset-lg-2">
+      <h1 [@fadeInUpOnEnter] class="mt-1 mb-2 text-center">
+        <kep-icon name="tournament" size="large-3" type="duotone" color="primary"></kep-icon>
+        <div class="text-dark mt-2 mb-2">{{ 'Tournaments' | translate }}</div>
+      </h1>
+
+      @for (tournament of tournaments; track tournament) {
+        <div class="bg-tournaments-list">
+          <tournament-list-card [@fadeInOnEnter] [tournament]="tournament"></tournament-list-card>
+        </div>
+      }
+
+      @if (total) {
+        <div class="mb-2 mt-1">
+          <kep-pagination
+            [collectionSize]="total"
+            [(page)]="pageNumber"
+            [pageSize]="pageSize"
+            [maxSize]="maxSize"
+            [rotate]="true"
+            [color]="'primary'"
+            (pageChange)="reloadPage()">
+          </kep-pagination>
+        </div>
+      }
     </div>
   </div>
-
-  <div class="mt-2 col-lg-8 col-12 offset-lg-2">
-    @for (tournament of tournaments; track tournament) {
-      <div class="bg-tournaments-list">
-        <tournament-list-card [@fadeInOnEnter] [tournament]="tournament"></tournament-list-card>
-      </div>
-    }
-  </div>
 </div>
+

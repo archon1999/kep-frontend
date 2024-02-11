@@ -2,7 +2,7 @@
 
 .tournament-list-card {
   background: $tournaments-bg;
-  box-shadow: 0 0 10px $tournaments-color !important;
+  box-shadow: 0 0 5px $tournaments-color !important;
   border: none;
   margin-bottom: 1rem;
   
@@ -26,6 +26,7 @@
 
 ::ng-deep .dark-layout .tournament-list-card {
   background: $tournaments-bg-dark;
+  box-shadow: none !important;
 }
 
 .badge {

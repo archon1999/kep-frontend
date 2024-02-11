@@ -63,4 +63,5 @@ export class ArenaComponent extends BaseTablePageComponent<Arena> implements OnI
         ]
       }
     };
-  }}
+  }
+}
