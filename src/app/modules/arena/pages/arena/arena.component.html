@@ -1,56 +1,75 @@
-<section class="arena">
-  <div class="arena-page-top mb-2">
-    <div class="col-12">
-      <div class="text-center">
-        <div [@fadeInUpOnEnter] class="avatar avatar-lg p-50 m-0 mt-1 mb-1 arena-avatar">
-          <div class="avatar-content">
-            <i class="font-large-1" data-feather="shield"></i>
-          </div>
-        </div>
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
-        <h2 [@fadeInUpOnEnter] class="mt-2">
-          <span class="text-white">{{ 'Arena' | translate }}</span>
-        </h2>
+    <div class="arena-section-header">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title text-white">{{ 'Links' | translate }}</div>
 
-        <div class="mt-3 col-lg-8 col-12 offset-lg-2 offset-0">
-          <div class="row">
-            <div class="col-12 col-md-6">
-              <a [@fadeInLeftOnEnter] class="card card-info" routerLink="/learn/blog/post/72">
-                <div class="card-header">
-                  <div class="card-title">
-                    {{ 'AboutArena' | translate }}
-                  </div>
-                </div>
-                <div class="info-img">
-                  <img src="assets/images/pages/graphic-5.webp" alt="info-img">
-                </div>
-              </a>
-            </div>
+          <div [ngClass.lt-md]="'d-flex'" class="links">
+            <a [ngClass.lt-md]="'btn-sm'" [routerLink]="Resources.Challenges" class="btn btn-brown mr-25 mr-mt-1">
+              <kep-icon class="font-medium-1" name="challenge"></kep-icon>
+              <span [ngClass.lt-md]="'d-none'">
+                {{ 'Challenges' | translate }}
+              </span>
+            </a>
 
-            <div class="col-12 col-md-6">
-              <a [@fadeInRightOnEnter] class="card card-info" routerLink="/learn/blog/post/69">
-                <div class="card-header">
-                  <div class="card-title">
-                    {{ 'AboutChallenges' | translate }}
-                  </div>
-                </div>
-                <div class="info-img">
-                  <img src="assets/images/pages/graphic-1.webp" alt="info-img">
-                </div>
-              </a>
-            </div>
+            <a [ngClass.lt-md]="'btn-sm'" [routerLink]="Resources.ChallengesRating" class="btn btn-brown mr-25 mr-mt-1">
+              <kep-icon class="font-medium-1" name="ranking"></kep-icon>
+              <span [ngClass.lt-md]="'d-none'">
+                {{ 'Rating' | translate }}
+              </span>
+            </a>
           </div>
         </div>
       </div>
+
+
+      <div class="useful-links row">
+        <div class="col-6 pr-md-1 pr-25">
+          <a [ngClass.lt-md]="'font-small-3'" class="btn btn-warning" routerLink="/learn/blog/post/72">
+            {{ 'AboutArena' | translate }}
+          </a>
+        </div>
+
+        <div class="col-6 pl-md-1 pl-25">
+          <a [ngClass.lt-md]="'font-small-3'" class="btn btn-warning" routerLink="/learn/blog/post/69">
+            {{ 'AboutChallenges' | translate }}
+          </a>
+        </div>
+      </div>
     </div>
+
     <div class="col-lg-8 col-12 offset-lg-2">
+      <h1 [@fadeInUpOnEnter] class="mt-1 mb-2 text-center">
+        <kep-icon name="contest" size="large-3" type="duotone" color="warning"></kep-icon>
+        <div class="text-dark mt-2 mb-2">{{ 'Arena' | translate }}</div>
+      </h1>
+
       <div class="row">
-        @for (arena of arenaList; track arena) {
+        @for (arena of arenaList;track arena) {
           <div class="col-12 bg-arena-list">
             <arena-list-card [@fadeInOnEnter] [arena]="arena"></arena-list-card>
           </div>
         }
       </div>
+
+      @if (total) {
+        <div class="mb-2">
+          <kep-pagination
+            [collectionSize]="total"
+            [(page)]="pageNumber"
+            [pageSize]="pageSize"
+            [maxSize]="maxSize"
+            [rotate]="true"
+            [color]="'brown'"
+            (pageChange)="reloadPage()">
+          </kep-pagination>
+        </div>
+      }
+
     </div>
+
   </div>
-</section>
+</div>

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
+import { ArenaStatus } from '@arena/arena.models';
+import { Pageable } from '@app/common/classes/pageable';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +12,8 @@ export class ArenaService {
     public api: ApiService,
   ) { }
 
-  getArenaAll() {
-    return this.api.get('arena');
+  getArenaAll(params?: { status?: ArenaStatus } & Partial<Pageable>) {
+    return this.api.get('arena', params);
   }
 
   getArena(id: number | string) {

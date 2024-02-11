@@ -11,12 +11,6 @@
     transition: .5s;
   }
 
-  .card-title {
-    @include dark-layout {
-      color: #f1e5d9 !important;
-    }
-  }
-
   .card-header>div:nth-child(1) {
     width: 40%;
   }
