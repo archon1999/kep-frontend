@@ -30,15 +30,14 @@
 
             </div>
 
-            @if (currentUser && arena.status != 1) {
+            @if (arena.status != 1) {
               <div class="card-footer text-center">
                 @if (arena.isRegistrated) {
                   <span class="badge badge-warning">
                     {{ 'Registrated' | translate }}
                   </span>
-                }
-                @if (!arena.isRegistrated) {
-                  <button class="btn btn-sm btn-relief-warning" (click)="register()">
+                } @else {
+                  <button class="btn btn-sm btn-gradient-brown" (click)="register()">
                     {{ 'Registration' | translate }}
                   </button>
                 }

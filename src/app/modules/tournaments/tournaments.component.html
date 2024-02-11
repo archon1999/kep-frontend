@@ -8,23 +8,22 @@
           <div class="card-title text-white">{{ 'Links' | translate }}</div>
 
           <div [ngClass.lt-md]="'d-flex'" class="links">
-            <a [ngClass.lt-md]="'btn-sm'" [routerLink]="Resources.Challenges" class="btn btn-primary mr-25 mr-mt-1">
-              <kep-icon class="font-medium-1" name="challenge"></kep-icon>
+            <a [ngClass.lt-md]="'btn-sm'" [routerLink]="Resources.Problems" class="btn btn-primary mr-25 mr-mt-1">
+              <kep-icon class="font-medium-1" name="problems"></kep-icon>
               <span [ngClass.lt-md]="'d-none'">
-                {{ 'Challenges' | translate }}
+                {{ 'Problems' | translate }}
               </span>
             </a>
 
-            <a [ngClass.lt-md]="'btn-sm'" [routerLink]="Resources.ChallengesRating" class="btn btn-primary mr-25 mr-mt-1">
-              <kep-icon class="font-medium-1" name="ranking"></kep-icon>
+            <a [ngClass.lt-md]="'btn-sm'" [routerLink]="Resources.Contests" class="btn btn-primary mr-25 mr-mt-1">
+              <kep-icon class="font-medium-1" name="contests"></kep-icon>
               <span [ngClass.lt-md]="'d-none'">
-                {{ 'Rating' | translate }}
+                {{ 'Contests' | translate }}
               </span>
             </a>
           </div>
         </div>
       </div>
-
 
       <div class="useful-links row">
         <div class="col-6 pr-md-1 pr-25">
