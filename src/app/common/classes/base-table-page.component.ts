@@ -11,7 +11,7 @@ import { takeUntil } from 'rxjs/operators';
   template: '',
   standalone: true
 })
-export class BaseTablePageComponent<T> extends BasePageComponent implements OnInit {
+export abstract class BaseTablePageComponent<T> extends BasePageComponent implements OnInit {
   public pageNumber: number;
   public pageSize: number;
   public total: number;
@@ -65,7 +65,7 @@ export class BaseTablePageComponent<T> extends BasePageComponent implements OnIn
     this.ordering = params.ordering || this.defaultOrdering;
   }
 
-  getPage(): Observable<PageResult<T>> | null {
+  getPage(): Observable<PageResult<T>> {
     return null;
   }
 

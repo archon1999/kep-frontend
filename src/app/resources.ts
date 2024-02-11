@@ -8,6 +8,7 @@ export enum Resources {
   Contest = '/competitions/contests/contest/:id',
 
   Challenges = '/practice/challenges',
+  ChallengesRating = '/practice/challenges/rating',
   Challenge = '/practice/challenges/challenge/:id',
 
   Arena = '/competitions/arena',

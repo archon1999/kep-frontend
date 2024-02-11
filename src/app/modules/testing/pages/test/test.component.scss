@@ -1,5 +1,11 @@
 @import 'styles/kep-imports';
 
+::ng-deep body:has(.test-page-top) {
+  footer {
+    display: none !important;
+  }
+}
+
 .test-page-top {
   margin-left: -2rem;
   position: absolute;
