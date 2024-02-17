@@ -1,0 +1,75 @@
+.project {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.project-header {
+  .project-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    border-radius: 10px;
+  }
+
+  .project-image {
+    position: absolute;
+    top: 100px;
+    right: 2rem;
+  }
+
+  .project-users {
+    font-size: 1rem;
+    font-weight: 500;
+
+    ::ng-deep svg {
+      color: #8fddc3;
+    }
+  }
+
+  .project-level {
+    font-size: 1rem;
+    color: #fff;
+    border-radius: 5px;
+  }
+
+  .project-tags {
+    .project-tag {
+      color: #fff;
+    }
+  }
+
+  .project-technologies {
+    .project-technology {
+      color: #fff;
+    }
+  }
+}
+
+.project-body {
+  margin-top: 2rem;
+
+  ::ng-deep .project-description {
+    font-weight: 500;
+  }
+
+  .project-tasks {
+    margin-top: 2rem;
+
+    .title {
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+  }
+
+  .project-technologies {
+    margin-top: 2rem;
+
+    .title {
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+  }
+}
+
+::ng-deep .gtx-trans-icon {
+  display: none;
+}

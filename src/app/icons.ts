@@ -9,6 +9,8 @@ export const keenIcons = {
   challenges: 'abstract-22',
   problem: 'message-programming',
   problems: 'message-programming',
+  project: 'technology-2',
+  projects: 'technology-2',
   practice: 'abstract-45',
   competition: 'cup',
   competitions: 'cup',

@@ -4,10 +4,11 @@ import { AuthService } from '@auth';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { ProjectsService } from './projects.service';
+import { Project } from '@app/modules/projects/interfaces';
 
-;
-
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ProjectResolver implements Resolve<any> {
   constructor(
     private service: ProjectsService,
@@ -18,10 +19,10 @@ export class ProjectResolver implements Resolve<any> {
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<any>|Promise<any>|any {
-    return this.service.getProject(route.paramMap.get('id')).pipe(
-      tap((project: any) => {
-        if(!this.authService.currentUserValue?.isSuperuser && project.inThePipeline){          
+  ): Observable<any> | Promise<any> | any {
+    return this.service.getProject(route.paramMap.get('slug')).pipe(
+      tap((project: Project) => {
+        if (!this.authService.currentUserValue?.isSuperuser && project.inThePipeline) {
           this.router.navigate(['/404'], { skipLocationChange: true });
         }
       }),

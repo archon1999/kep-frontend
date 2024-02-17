@@ -49,7 +49,7 @@ const appRoutes: Routes = [
   { path: 'practice/problems', loadChildren: () => import('@problems/problems.routing') },
   { path: 'practice/challenges', loadChildren: () => import('./modules/challenges/challenges.routing') },
   { path: 'practice/tests', loadChildren: () => import('./modules/testing/testing.module').then(m => m.TestingModule) },
-  { path: 'practice/projects', loadChildren: () => import('./modules/projects/projects.module').then(m => m.ProjectsModule) },
+  { path: 'practice/projects', loadChildren: () => import('./modules/projects/projects.routing') },
   { path: 'practice/duels', loadChildren: () => import('./modules/duels/duels.module').then(m => m.DuelsModule) },
   { path: 'competitions/code-rush', loadChildren: () => import('./modules/code-rush/code-rush.module').then(m => m.CodeRushModule) },
   { path: 'competitions/contests', loadChildren: () => import('./modules/contests/contests.routing') },

@@ -1,0 +1,12 @@
+<div class="form-group">
+  @if (currentUser) {
+    <div class="custom-control custom-control-info custom-checkbox">
+      <input type="checkbox" class="custom-control-input" [(ngModel)]="myAttempts" (change)="reloadAttempts()"
+             [ngModelOptions]="{standalone: true}" id="myAttempts"/>
+      <label class="custom-control-label" for="myAttempts">{{ 'MY_ATTEMPTS' | translate }}</label>
+    </div>
+  }
+</div>
+
+<attempts-table [attempts]="attempts" [project]="project"></attempts-table>
+

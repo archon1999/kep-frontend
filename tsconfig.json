@@ -36,6 +36,9 @@
       "@problems/*": [
         "app/modules/problems/*"
       ],
+      "@projects/*": [
+        "app/modules/projects/*"
+      ],
       "@contests/*": [
         "app/modules/contests/*"
       ],

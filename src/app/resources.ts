@@ -17,6 +17,9 @@ export enum Resources {
   Tests = '/practice/tests',
   Test = '/practice/tests/test/:id',
 
+  Projects = '/projects',
+  Project = '/projects/project/:id',
+
   Login = '/login',
 }
 
