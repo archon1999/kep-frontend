@@ -10,6 +10,7 @@ import { BasePageComponent } from '@app/common';
 import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { Project } from '@projects/interfaces';
 import { CoreCommonModule } from '@core/common.module';
+import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 
 @Component({
   selector: 'app-project',
@@ -25,7 +26,8 @@ import { CoreCommonModule } from '@core/common.module';
     CoreCommonModule
   ],
   templateUrl: './project.component.html',
-  styleUrl: './project.component.scss'
+  styleUrl: './project.component.scss',
+  animations: [fadeInLeftOnEnterAnimation(), fadeInRightOnEnterAnimation()]
 })
 export class ProjectComponent extends BasePageComponent implements OnInit {
   public project: Project;

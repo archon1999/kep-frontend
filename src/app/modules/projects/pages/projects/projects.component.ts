@@ -19,10 +19,7 @@ import { ContentHeaderModule } from '@layout/components/content-header/content-h
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss'],
   animations: [
-    fadeInLeftOnEnterAnimation({ duration: 3000 }),
-    fadeInRightOnEnterAnimation({ duration: 3000 }),
-    fadeInUpOnEnterAnimation({ duration: 3000 }),
-    fadeInOnEnterAnimation({ duration: 3000 }),
+    fadeInOnEnterAnimation(),
   ],
   standalone: true,
   imports: [
