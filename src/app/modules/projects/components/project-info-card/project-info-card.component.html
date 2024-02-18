@@ -28,9 +28,13 @@
         <kep-icon name="technology"></kep-icon>
         {{ 'Technologies' | translate }}
       </div>
-      @for (technology of project.availableTechnologies;track technology) {
-        <project-technology [name]="technology.technology"></project-technology>
-      }
+      <div class="text-right">
+        @for (technology of project.availableTechnologies;track technology) {
+          <div class="mb-50">
+            <project-technology [name]="technology.technology"></project-technology>
+          </div>
+        }
+      </div>
     </div>
   </div>
 </div>

@@ -3,7 +3,7 @@
     <div class="card-title">
       {{ project.title }}
     </div>
-    <div class="card-img">
+    <div width="60" class="card-img">
       <img [src]="project.logo" alt="project-img">
     </div>
   </div>
@@ -11,15 +11,19 @@
   <div class="card-body">
     <span [innerHTML]="project.descriptionShort"></span>
 
-    <div class="text-right">
-      <span class="project-level badge badge-success bagde-pill">
+    <div class="d-flex justify-content-between">
+      <div class="text-left">
+        <kepcoin [value]="project.kepcoins"/>
+      </div>
+      <div class="text-right">
+      <span class="project-level badge badge-success ml-50 bagde-pill">
         {{ project.levelTitle }}
       </span>
-      @for (technology of project.availableTechnologies;track technology) {
-        <project-technology [name]="technology.technology"/>
-      }
+        @for (technology of project.availableTechnologies;track technology) {
+          <project-technology [name]="technology.technology"/>
+        }
+      </div>
     </div>
-
   </div>
 
   <div class="card-footer border-top">
@@ -31,6 +35,7 @@
         (success)="project.purchased=true;">
         <button class="btn btn-block btn-primary btn-sm">
           {{ 'Purchase' | translate }}
+          <kepcoin [value]="project.purchaseKepcoinValue"/>
         </button>
       </kepcoin-spend-swal>
     } @else {

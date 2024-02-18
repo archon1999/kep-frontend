@@ -14,8 +14,9 @@
       </tr>
     </thead>
     <tbody>
-      @for (attempt of attempts; track attempt; let i = $index) {
+      @for (attempt of attempts; track attempt.id; let i = $index) {
         <tr
+          [@fadeInOnEnter]
           [ngClass]="{'bg-light-info': attempt?.username == currentUser?.username}">
           <td class="attempt-id">
             {{ attempt.id }}
@@ -29,7 +30,7 @@
             <project-technology [name]="attempt.technology"/>
           </td>
           <td>
-            <user-popover [customContent]="true">
+            <user-popover [username]="attempt.username" [customContent]="true">
               <img alt="user-avatar" height="32" width="32" class="rounded-circle mr-50" [src]="attempt.userAvatar">
               {{ attempt.username }}
             </user-popover>
@@ -63,7 +64,7 @@
             <span class="badge badge-primary">{{ attempt.memory }} {{ 'KB' | translate }}</span>
           </td>
           <td>
-            @if (currentUser.username == attempt.username) {
+            @if (currentUser?.username == attempt.username || currentUser?.isSuperuser) {
               <button (click)="modalOpen(attempt.id)" class="btn btn-sm round btn-warning">
                 Log
               </button>

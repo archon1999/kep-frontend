@@ -6,6 +6,7 @@ import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { KepcoinSpendSwalModule } from '@app/modules/kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { ProjectTechnologyComponent } from '@projects/components/project-technology/project-technology.component';
+import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
 
 @Component({
   selector: 'project-card',
@@ -17,7 +18,8 @@ import { ProjectTechnologyComponent } from '@projects/components/project-technol
     RouterLink,
     TranslateModule,
     KepcoinSpendSwalModule,
-    ProjectTechnologyComponent
+    ProjectTechnologyComponent,
+    KepcoinViewModule
   ]
 })
 export class ProjectCardComponent {

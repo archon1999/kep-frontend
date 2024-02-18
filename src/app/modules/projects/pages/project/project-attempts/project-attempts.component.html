@@ -1,7 +1,7 @@
 <div class="form-group">
   @if (currentUser) {
     <div class="custom-control custom-control-info custom-checkbox">
-      <input type="checkbox" class="custom-control-input" [(ngModel)]="myAttempts" (change)="reloadAttempts()"
+      <input type="checkbox" class="custom-control-input" [(ngModel)]="myAttempts" (change)="reloadPage()"
              [ngModelOptions]="{standalone: true}" id="myAttempts"/>
       <label class="custom-control-label" for="myAttempts">{{ 'MY_ATTEMPTS' | translate }}</label>
     </div>
@@ -10,3 +10,16 @@
 
 <attempts-table [attempts]="attempts" [project]="project"></attempts-table>
 
+@if (total) {
+  <kep-pagination
+    [collectionSize]="total"
+    [(page)]="pageNumber"
+    [pageSize]="pageSize"
+    [maxSize]="maxSize"
+    [rotate]="true"
+    [color]="'info'"
+    [pageOptions]="pageOptions"
+    (pageSizeChange)="pageSizeChange($event)"
+    (pageChange)="pageChange($event)">
+  </kep-pagination>
+}

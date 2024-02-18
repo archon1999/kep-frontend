@@ -10,6 +10,7 @@ import { ProjectAttemptTaskLog } from '@app/modules/projects/interfaces/project-
 import { CoreCommonModule } from '@core/common.module';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { ProjectTechnologyComponent } from '@projects/components/project-technology/project-technology.component';
+import { fadeInOnEnterAnimation } from 'angular-animations';
 
 @Component({
   selector: 'attempts-table',
@@ -21,7 +22,8 @@ import { ProjectTechnologyComponent } from '@projects/components/project-technol
     UserPopoverModule,
     NgbAccordionModule,
     ProjectTechnologyComponent
-  ]
+  ],
+  animations: [fadeInOnEnterAnimation()]
 })
 export class AttemptsTableComponent implements OnInit {
 

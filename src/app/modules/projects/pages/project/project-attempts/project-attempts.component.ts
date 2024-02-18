@@ -1,12 +1,14 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AuthService, User } from '@auth';
+import { Component, Input } from '@angular/core';
 import { ProjectsService } from '@projects/projects.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { Project } from '@app/modules/projects/interfaces/project';
 import { ProjectAttempt } from '@app/modules/projects/interfaces/project-attempt';
 import { AttemptsTableComponent } from '@projects/pages/project/project-attempts/attempts-table/attempts-table.component';
 import { CoreCommonModule } from '@core/common.module';
+import { BaseTablePageComponent } from '@app/common';
+import { Observable } from 'rxjs';
+import { PageResult } from '@app/common/classes/page-result';
+import { User } from '@auth';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 
 @Component({
   selector: 'project-attempts',
@@ -15,57 +17,34 @@ import { CoreCommonModule } from '@core/common.module';
   standalone: true,
   imports: [
     AttemptsTableComponent,
-    CoreCommonModule
+    CoreCommonModule,
+    KepPaginationComponent
   ]
 })
-export class ProjectAttemptsComponent implements OnInit, OnDestroy {
+export class ProjectAttemptsComponent extends BaseTablePageComponent<ProjectAttempt> {
+  override maxSize = 5;
 
   @Input() project: Project;
-
-  public attempts: Array<ProjectAttempt> = [];
-
-  public totalAttemptsCount = 0;
-  public currentPage = 1;
   public myAttempts = true;
 
-  public currentUser: User;
-
-  private _unsubscribeAll = new Subject();
-
-  constructor(
-    public service: ProjectsService,
-    public authService: AuthService,
-  ) { }
-
-  ngOnInit(): void {
-    this.authService.currentUser
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((user: any) => {
-        this.currentUser = user;
-      });
-
-    this.reloadAttempts();
+  constructor(public service: ProjectsService) {
+    super();
   }
 
-  reloadAttempts() {
+  get attempts() {
+    return this.pageResult?.data;
+  }
+
+  afterChangeCurrentUser(currentUser: User) {
+    this.myAttempts = this.isAuthenticated;
+  }
+
+  getPage(): Observable<PageResult<ProjectAttempt>> {
     if (this.myAttempts && this.currentUser) {
-      this.service.getProjectUserAttempts(this.project.id, this.currentUser.username, this.currentPage)
-        .subscribe((result: any) => {
-          this.attempts = result.data;
-          this.totalAttemptsCount = result.total;
-        });
+      return this.service.getProjectUserAttempts(this.project.id, this.currentUser.username, this.pageNumber);
     } else {
-      this.service.getProjectAttempts(this.project.id, this.currentPage)
-        .subscribe((result: any) => {
-          this.attempts = result.data;
-          this.totalAttemptsCount = result.total;
-        });
+      return this.service.getProjectAttempts(this.project.id, this.pageNumber);
     }
-  }
-
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
   }
 
 }
