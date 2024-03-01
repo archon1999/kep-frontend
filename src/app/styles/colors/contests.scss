@@ -166,6 +166,15 @@ $sql-color: #dc7433;
       max-width: 59% !important;
     }
   }
+
+  // DT contest
+  @include define-contest-colors(
+    $selector: '&.contest-365',
+    $color: #b28c4b,
+    $color-dark: #685128,
+    $background-light: linear-gradient(to right, #b28c4b, #dbb666),
+    $background-dark: linear-gradient(to right, #564122, #685128),
+  );
 }
 
 .dark-layout .contests-colors {
@@ -225,7 +234,6 @@ $sql-color: #dc7433;
     --bg-light: rgba(96, 94, 227, 0.1);
     --box-shadow: 0 0 10px #1c25c1;
   }
-
 }
 
 .contests-colors {
