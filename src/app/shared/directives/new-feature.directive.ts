@@ -1,11 +1,19 @@
-import { Directive, ElementRef } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 
 @Directive({
   selector: '[new-feature]',
   standalone: true
 })
-export class NewFeatureDirective {
-  constructor(private el: ElementRef<HTMLElement>) {
-    el.nativeElement.innerHTML += '<span class="badge badge-glow badge-warning new-feature">New</span>'
+export class NewFeatureDirective implements OnInit {
+  @Input() show = true;
+
+  constructor(public el: ElementRef<HTMLElement>) {}
+
+  ngOnInit() {
+    if (this.show) {
+      setTimeout(() => {
+        this.el.nativeElement.innerHTML += '<span class="badge badge-glow badge-warning new-feature">New</span>';
+      });
+    }
   }
 }
