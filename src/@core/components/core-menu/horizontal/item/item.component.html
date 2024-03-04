@@ -24,10 +24,10 @@
   <ng-template #itemContent>
     <kep-icon class="font-medium-4 text-primary mr-50" type="duotone" [name]="item.icon"></kep-icon>
     <span>{{ item.translate | translate }}</span>
-    @if (item.id == 'contests' || item.id == 'arena' || item.id == 'projects') {
-<!--      <span class="badge ml-25 new-events-count badge-pill badge-primary">-->
-<!--        {{ 1 }}-->
-<!--      </span>-->
+    @if (item.id == 'arena') {
+      <span class="badge ml-25 new-events-count badge-pill badge-primary">
+        {{ 1 }}
+      </span>
     }
   </ng-template>
 }
