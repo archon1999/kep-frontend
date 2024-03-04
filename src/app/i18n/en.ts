@@ -182,6 +182,7 @@ export const locale = {
     Draws: 'Draws',
     Losses: 'Losses',
     TournamentFinish: 'Tournament is over',
+    TournamentStarts: 'Tournament starts',
     Rated: 'Rated',
     Now: 'Now',
     Settings: 'Settings',

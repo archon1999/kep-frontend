@@ -218,6 +218,9 @@
                 </div>
               }
               @if (arena.status != 1) {
+                <h4 class="mb-2 text-center">
+                  {{ 'TournamentStarts' | translate }}
+                </h4>
                 <ngx-countdown [time]="leftTime" [render]="render" format="HH:mm:ss" (finish)="refreshPage()">
                   <ng-template #render let-data>
                     <div class="d-flex justify-content-between">

@@ -184,6 +184,7 @@ export const locale = {
     Draws: 'Durranglar',
     Losses: 'Mag`lubiyatlar',
     TournamentFinish: 'Turnir yakunlandi',
+    TournamentStarts: 'Turnir boshlanadi',
     Rated: 'Reytingli',
     Settings: 'Sozlamalar',
     MaxRating: 'Eng yuqori reyting',

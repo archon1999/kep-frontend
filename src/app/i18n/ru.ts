@@ -184,6 +184,7 @@ export const locale = {
     Draws: 'Ничьи',
     Losses: 'Проигрыши',
     TournamentFinish: 'Турнир завершен',
+    TournamentStarts: 'Турнир начнется',
     Rated: 'Рейтинговый',
     Now: 'Сейчас',
     AverageRating: 'Средний рейтинг',
