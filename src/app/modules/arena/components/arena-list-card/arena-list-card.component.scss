@@ -38,7 +38,8 @@
   }
   
   .card-header>div:nth-child(3) {
-    width: 20% !important;
+    width: 0 !important;
+    display: none !important;
   }
   
   .card-header>div:nth-child(4) {

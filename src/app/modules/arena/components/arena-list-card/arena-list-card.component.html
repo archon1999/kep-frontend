@@ -1,4 +1,4 @@
-<div class="card" routerLink="tournament/{{ arena.id }}">
+<div new-feature [show]="arena.status === -1" class="card" routerLink="tournament/{{ arena.id }}">
   <div class="card-header">
     <div class="card-title text-dark">
       <kep-icon class="font-large-1" name="arena" type="duotone"></kep-icon>
@@ -6,17 +6,17 @@
         {{ arena.title }}
       </span>
       <br>
-        <span class="ml-3 font-small-3 text-dark">
+      <span class="ml-3 font-small-3 text-dark">
           {{ 'Rated' | translate }},
         </span>
-        <span class="ml-25 font-small-3 text-dark">
+      <span class="ml-25 font-small-3 text-dark">
           {{ durationMinute }}m
         </span>
-      </div>
+    </div>
 
-      <div class="card-countdown">
-        @if (arena.status == ArenaStatus.NotStarted) {
-          <span>
+    <div class="card-countdown">
+      @if (arena.status == ArenaStatus.NotStarted) {
+        <span>
             <ngx-countdown (finish)="finish()" [render]="render" [time]="leftTime" format="HH:mm:ss">
               <ng-template #render let-data>
                 <div [ngbTooltip]="arena.startTime | date:'dd-MM-y HH:mm'" class="d-flex justify-content-between">
@@ -25,36 +25,36 @@
               </ng-template>
             </ngx-countdown>
           </span>
-        }
-        @if (arena.status == ArenaStatus.Already) {
-          <span class="badge badge-glow badge-warning">
+      }
+      @if (arena.status == ArenaStatus.Already) {
+        <span class="badge badge-glow badge-warning">
             {{ 'Now' | translate }}
           </span>
-        }
-        @if (arena.status == ArenaStatus.Finished) {
-          <span class="text-dark font-small-3">
+      }
+      @if (arena.status == ArenaStatus.Finished) {
+        <span class="text-dark font-small-3">
             {{ arena.finishTime | localizedDate }}
           </span>
-        }
-      </div>
+      }
+    </div>
 
-      <div class="card-info">
-        <span class="mr-25 badge badge-brown badge-glow" ngbTooltip="{{ 'Time' | translate }}">
-          <kep-icon class="font-small-4" name="challenge-time"></kep-icon>
-          {{ arena.timeSeconds }}
-        </span>
+    <div class="card-info">
+      <span class="mr-25 badge badge-brown badge-glow" ngbTooltip="{{ 'Time' | translate }}">
+        <kep-icon class="font-small-4" name="challenge-time"></kep-icon>
+        {{ arena.timeSeconds }}
+      </span>
 
-        <span class="badge badge-brown badge-glow" ngbTooltip="{{ 'Questions' | translate }}">
-          <kep-icon class="font-small-4" name="challenge-task"></kep-icon>
-          {{ arena.questionsCount }}
-        </span>
-      </div>
+      <span class="badge badge-brown badge-glow" ngbTooltip="{{ 'Questions' | translate }}">
+        <kep-icon class="font-small-4" name="challenge-task"></kep-icon>
+        {{ arena.questionsCount }}
+      </span>
+    </div>
 
+    <div class="d-flex justify-content-between">
       @if (arena.status == ArenaStatus.Finished) {
-        <div class="d-flex justify-content-between">
-          <challenges-user-view [user]="arena.winner"></challenges-user-view>
-          <img alt="winner" class="ml-1" height="20" src="assets/images/icons/cup.png" width="20">
-        </div>
+        <challenges-user-view [user]="arena.winner"></challenges-user-view>
+        <img alt="winner" class="ml-1" height="20" src="assets/images/icons/cup.png" width="20">
       }
     </div>
   </div>
+</div>
