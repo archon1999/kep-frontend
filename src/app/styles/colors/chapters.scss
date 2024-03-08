@@ -172,3 +172,12 @@
   $color: #cebb3a,
   $dark-color: #9e8f27,
 );
+
+// English
+@include define-chapter-colors(
+  $id: 17,
+  $gradient-color: linear-gradient(to right, #39478b, #6788f5),
+  $gradient-dark-color: linear-gradient(45deg, #2a3671, #39478b),
+  $color: #6788f5,
+  $dark-color: #39478b,
+);
