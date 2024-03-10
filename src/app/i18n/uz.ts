@@ -417,6 +417,8 @@ export const locale = {
     Phone: 'Telefon',
     Email: 'Elektron manzil',
     SendMessage: 'Xabar jo`natish',
+    NoResultFound: 'Hech Nima Topilmadi',
+    NoResultFoundText: 'Siz qidirgan narsa afsuski topilmadi yoki mavjud emas',
     ContestRules: {
       ACM20H: ``,
     },

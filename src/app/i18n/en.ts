@@ -421,6 +421,8 @@ export const locale = {
     Phone: 'Phone',
     Email: 'Email',
     SendMessage: 'Send message',
+    NoResultFound: 'No Result Found',
+    NoResultFoundText: 'What you searched was unfortunately not found or does not exists',
     ProblemTourSteps: [
       {
         title: 'Available languages',

@@ -417,6 +417,8 @@ export const locale = {
     Phone: 'Телефон',
     Email: 'Электронная почта',
     SendMessage: 'Отправить сообщение',
+    NoResultFound: 'Ничего не найдено',
+    NoResultFoundText: 'То, что вы искали, к сожалению, не найдено или не существует',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',
