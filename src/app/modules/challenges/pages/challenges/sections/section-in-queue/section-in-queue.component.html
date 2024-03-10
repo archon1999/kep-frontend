@@ -25,5 +25,11 @@
         (delete)="onChallengeCallDelete(challengeCall.id)"
       ></challenge-call-card>
     </div>
+  } @empty {
+    @if (!challengeCallsSkeletonVisible) {
+      <div class="col-12">
+        <empty-result/>
+      </div>
+    }
   }
 </div>

@@ -8,11 +8,12 @@ import { interval } from 'rxjs';
 import { BaseUserComponent } from '@app/common/classes/base-user.component';
 import { takeUntil } from 'rxjs/operators';
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 
 @Component({
   selector: 'section-in-queue',
   standalone: true,
-  imports: [ChallengeCallCardComponent, NgxSkeletonLoaderModule],
+  imports: [ChallengeCallCardComponent, NgxSkeletonLoaderModule, EmptyResultComponent],
   templateUrl: './section-in-queue.component.html',
   styleUrl: './section-in-queue.component.scss',
   animations: [
