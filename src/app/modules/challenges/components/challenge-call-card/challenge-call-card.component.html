@@ -29,9 +29,7 @@
       <button (click)="acceptChallengeCall()" class="btn btn-sm btn-success btn-glow">
         {{ 'ToChallenge' | translate }}
       </button>
-    }
-
-    @if (currentUser?.username == challengeCall.username) {
+    } @else {
       <button (click)="deleteChallengeCall()" class="btn btn-sm btn-danger btn-glow">
         <i data-feather="x"></i>
       </button>
