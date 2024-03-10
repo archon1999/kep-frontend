@@ -33,7 +33,7 @@ import { BS_BREAKPOINTS, CustomBreakPointsProvider } from '@layout/custom-breakp
 
 import { register } from 'swiper/element/bundle';
 import { LayoutComponent } from '@layout/layout.component';
-import { AuthInterceptor } from '@auth/auth.interceptor';
+import { ErrorInterceptor } from '@app/modules/pages/miscellaneous/error/error.interceptor';
 
 register();
 
@@ -138,7 +138,7 @@ export function authFactory(authService: AuthService) {
     provideHttpClient(withInterceptorsFromDi()),
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
+      useClass: ErrorInterceptor,
       multi: true,
     },
     CustomBreakPointsProvider
