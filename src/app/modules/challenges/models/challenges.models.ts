@@ -56,6 +56,7 @@ export class Challenge {
     public finished: string | null,
     public questionsCount: number,
     public timeSeconds: number,
+    public rated: boolean,
     public nextQuestion?: ChallengeQuestion,
     public status?: number,
   ) {}

@@ -5,6 +5,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { KepDeltaComponent } from '@shared/components/kep-delta/kep-delta.component';
+import { KepBadgeComponent } from '@shared/components/kep-badge/kep-badge.component';
 
 @Component({
   selector: 'challenge-card',
@@ -16,6 +17,7 @@ import { KepDeltaComponent } from '@shared/components/kep-delta/kep-delta.compon
     NgbTooltipModule,
     ChallengesUserViewComponent,
     KepDeltaComponent,
+    KepBadgeComponent,
   ],
   animations: [
     fadeInOnEnterAnimation()

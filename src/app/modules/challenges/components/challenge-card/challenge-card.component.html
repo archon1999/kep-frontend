@@ -20,7 +20,11 @@
         </td>
 
         <td>
-          <kep-delta [value]="challenge.playerFirst.delta"></kep-delta>
+          @if (challenge.rated) {
+            <kep-delta [value]="challenge.playerFirst.delta"></kep-delta>
+          } @else {
+            <span class="badge badge-pill badge-secondary">{{ 'Unrated' | translate }}</span>
+          }
         </td>
 
         <td class="text-right">
@@ -54,7 +58,11 @@
         </td>
 
         <td>
-          <kep-delta [value]="challenge.playerSecond.delta"></kep-delta>
+          @if (challenge.rated) {
+            <kep-delta [value]="challenge.playerSecond.delta"></kep-delta>
+          } @else {
+            <span class="badge badge-pill badge-secondary">{{ 'Unrated' | translate }}</span>
+          }
         </td>
 
         <td class="text-right">
