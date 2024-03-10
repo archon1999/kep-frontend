@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <div class="col-lg-8 col-12 offset-lg-2">
+    <div class="col-xl-8 col-lg-10 col-12 offset-lg-1 offset-xl-2">
       <h1 [@fadeInOnEnter] class="mt-1 mb-2 text-center">
         <kep-icon name="arena" size="large-3" type="duotone" color="warning"></kep-icon>
         <div class="text-dark mt-2 mb-2">{{ 'Arena' | translate }}</div>
@@ -58,7 +58,7 @@
       } @else {
         <div class="row">
           @for (arena of arenaList;track arena) {
-            <div class="col-12 bg-arena-list">
+            <div class="col-12 p-0 bg-arena-list">
               <arena-list-card [@fadeInOnEnter] [arena]="arena"></arena-list-card>
             </div>
           }
