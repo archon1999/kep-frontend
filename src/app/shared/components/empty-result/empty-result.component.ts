@@ -15,24 +15,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styleUrl: './empty-result.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class EmptyResultComponent implements OnInit {
-  @Input() imgHeight: string;
-  @Input() imgWidth: string;
-
-  public imgSrc: string;
-
-  constructor(public globalService: GlobalService) {}
-
-  ngOnInit() {
-    this.globalService.coreConfig$.subscribe(
-      (config) => {
-        if (config.layout.skin === 'dark') {
-          this.imgSrc = 'assets/images/elements/search-not-found-dark.png';
-        } else {
-          this.imgSrc = 'assets/images/elements/search-not-found-light.png';
-        }
-      }
-    );
-  }
-
+export class EmptyResultComponent {
+  @Input() title = 'NoResultFound';
+  @Input() text = 'NoResultFoundText';
 }
