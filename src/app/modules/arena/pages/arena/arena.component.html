@@ -42,18 +42,28 @@
     </div>
 
     <div class="col-lg-8 col-12 offset-lg-2">
-      <h1 [@fadeInUpOnEnter] class="mt-1 mb-2 text-center">
+      <h1 [@fadeInOnEnter] class="mt-1 mb-2 text-center">
         <kep-icon name="arena" size="large-3" type="duotone" color="warning"></kep-icon>
         <div class="text-dark mt-2 mb-2">{{ 'Arena' | translate }}</div>
       </h1>
 
-      <div class="row">
-        @for (arena of arenaList;track arena) {
-          <div class="col-12 bg-arena-list">
-            <arena-list-card [@fadeInOnEnter] [arena]="arena"></arena-list-card>
-          </div>
-        }
-      </div>
+      @if (isLoading){
+        <ngx-skeleton-loader
+          class="custom-skeleton"
+          count="5"
+          animation="pulse"
+          appearance="line"
+          [theme]="{height: '100px', background: 'var(--warning)'}"
+        ></ngx-skeleton-loader>
+      } @else {
+        <div class="row">
+          @for (arena of arenaList;track arena) {
+            <div class="col-12 bg-arena-list">
+              <arena-list-card [@fadeInOnEnter] [arena]="arena"></arena-list-card>
+            </div>
+          }
+        </div>
+      }
 
       @if (total) {
         <div class="mb-2">

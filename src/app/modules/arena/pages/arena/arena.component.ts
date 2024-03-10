@@ -16,6 +16,7 @@ import { ContentHeader } from '@layout/components/content-header/content-header.
 import { coreConfig } from '@app/app.config';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'app-arena',
@@ -33,6 +34,7 @@ import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pa
     ArenaListCardComponent,
     ContentHeaderModule,
     KepPaginationComponent,
+    NgxSkeletonLoaderModule,
   ],
   encapsulation: ViewEncapsulation.None
 })
