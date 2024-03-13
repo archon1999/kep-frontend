@@ -125,6 +125,7 @@ export class Team {
     public createrAvatar: string,
     public name: string,
     public members: Array<TeamMember>,
+    public code: string,
   ) { }
 }
 

@@ -7,7 +7,7 @@ import { BasePageComponent } from '@app/common';
   template: '',
   standalone: true
 })
-export class BaseLoadComponent<T> extends BasePageComponent implements OnInit {
+export abstract class BaseLoadComponent<T> extends BasePageComponent implements OnInit {
   public data: T;
   public isLoading = false;
   public loadOnInit = true;
@@ -18,9 +18,7 @@ export class BaseLoadComponent<T> extends BasePageComponent implements OnInit {
     }
   }
 
-  getData(): Observable<T> | null {
-    return null;
-  }
+  abstract getData(): Observable<T>;
 
   loadData() {
     this.isLoading = true;

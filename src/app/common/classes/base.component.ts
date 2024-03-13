@@ -129,6 +129,10 @@ export class BaseComponent {
     this.router.navigate([this.router.url], { skipLocationChange: true });
   }
 
+  redirect404() {
+    this.router.navigateByUrl('/404', { skipLocationChange: false });
+  }
+
   ngOnDestroy(): void {
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
