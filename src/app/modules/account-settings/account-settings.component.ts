@@ -9,7 +9,7 @@ enum Tab {
   ChangePassword = 'change-password',
   Information = 'information',
   Social = 'social',
-  Skill = 'skills',
+  Skills = 'skills',
   Career = 'career',
   Teams = 'teams',
   System = 'system',

@@ -1,42 +1,29 @@
-<div class="card">
+<div [@fadeInOnEnter]="" class="card">
   <div class="card-header">
-    <div class="card-title">
+    <div class="card-title font-weight-bolder">
       {{ team.name }}
     </div>
   </div>
-
-  <div class="card-footer">
-    <a class="btn btn-sm btn-primary" [routerLink]="Resources.TeamJoin | resourceById:team.code">
-      Link to join
-    </a>
-  </div>
-</div>
-<div class="col-12 text-center">
-  <h3 class="mb-2">
-    {{ team.name }}
-  </h3>
-  <div class="row">
-    <div class="col">
-      <div class="avatar">
-        <img [src]="team.createrAvatar" alt="member-avatar" height="60" width="60">
-      </div>
-      <br>
-      <user-popover [username]="team.createrUsername">
-      </user-popover>
-    </div>
+  <div class="card-body">
     @for (member of team.members;track member) {
-      <div [ngClass]="{'col': member.username != team.createrUsername}">
-        @if (member.username != team.createrUsername) {
-          <div>
-            <div class="avatar">
-              <img [src]="member.avatar" width="60" height="60" alt="member-avatar">
-            </div>
-            <br>
-            <user-popover [username]="member.username">
-            </user-popover>
-          </div>
-        }
+      <div class="avatar">
+        <img [src]="member.avatar" width="32" height="32" alt="member-avatar">
       </div>
+      <user-popover [username]="member.username"/>
+      <span *ngIf="member.username == team.createrUsername">
+        (creator)
+      </span>
+      <span class="mr-1"></span>
     }
   </div>
+  @if (currentUser.username == team.createrUsername) {
+    <div class="card-footer">
+      <clipboard-button [buttonClass]="'btn btn-sm btn-primary'" [text]="'https://kep.uz' + (Resources.TeamJoin | resourceById:team.code)">
+        Link to join
+      </clipboard-button>
+      <button ngbTooltip="Generate new link" class="ml-50 btn btn-sm btn-primary" (click)="refreshCode()">
+        Refresh link
+      </button>
+    </div>
+  }
 </div>

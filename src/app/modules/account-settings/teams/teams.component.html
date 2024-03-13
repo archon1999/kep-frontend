@@ -1,27 +1,28 @@
 <div class="card">
   <div class="card-body">
-    <div class="row">
-      <div class="col-12">
-        <div class="d-flex align-items-center mb-2">
-          <i class="font-medium-3" data-feather="users"></i>
-          <h4 class="mb-0 ml-75">Teams</h4>
+    <div class="d-flex align-items-center mb-2">
+      <i class="font-medium-3" data-feather="users"></i>
+      <h4 class="mb-0 ml-75">Teams</h4>
+    </div>
+
+    @if (isLoading) {
+      <div class="card" [style.height.px]="400">
+        <spinner/>
+      </div>
+    } @else {
+      <div class="row">
+        <div class="col-8">
+          @for (team of teams;track team.id) {
+            <team-card [team]="team"></team-card>
+          }
+        </div>
+        <div class="col-4">
+          <div class="font-medium-4 font-weight-bolder mb-1">New team</div>
+          <label>Name</label>
+          <input [(ngModel)]="teamName" class="form-control">
+          <button (click)="createTeam()" class="btn btn-sm btn-primary mt-2">Create</button>
         </div>
       </div>
-    </div>
-    <div class="col-12">
-      <div class="row">
-        @for (team of teams; track team.id) {
-          <team-card [team]="team"></team-card>
-        }
-      </div>
-    </div>
-
-    <div class="col-6">
-      <div class="font-medium-4 font-weight-bolder">New team</div>
-      <label>Name</label>
-      <input class="form-control" [(ngModel)]="teamName">
-
-      <button (click)="createTeam()" class="btn btn-sm btn-primary mt-2">Create</button>
-    </div>
+    }
   </div>
 </div>
