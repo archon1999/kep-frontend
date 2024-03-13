@@ -16,7 +16,6 @@ import { Contest } from '@contests/models/contest';
   ]
 })
 export class TableComponent implements OnInit {
-
   @Input() contest: Contest;
   @Input() hideSourceCodeSize = false;
   @Input() attempts: Array<Attempt> = [];
@@ -37,20 +36,15 @@ export class TableComponent implements OnInit {
     );
   }
 
-  rerun(attemptId: number){
-    this.service.attemptRerun(attemptId).subscribe(() => {})
+  rerun(attemptId: number) {
+    this.service.attemptRerun(attemptId).subscribe(() => {});
   }
 
-  onPurchaseSuccess(attempt: Attempt){
+  onPurchaseSuccess(attempt: Attempt) {
     attempt.canView = true;
   }
 
-  onPurchaseTestSuccess(attempt: Attempt){
+  onPurchaseTestSuccess(attempt: Attempt) {
     attempt.canTestView = true;
   }
-
-  identify(index, attempt){
-    return attempt.id;
-  }
-
 }
