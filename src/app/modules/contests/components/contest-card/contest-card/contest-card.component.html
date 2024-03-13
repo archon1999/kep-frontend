@@ -149,10 +149,11 @@
             </button>
           }
           @if (!currentUser || !contest.userInfo.isRegistered) {
-            <button rippleEffect class="btn btn-sm round btn-gradient-primary" (click)="openRegistrationModal()"
-              >
-              <i data-feather="user" [size]="16"></i> {{ 'CONTESTS.REGISTER' | translate }}
-            </button>
+            @if (contest.participationType == 1) {
+              <button rippleEffect class="btn btn-sm round btn-gradient-primary" (click)="openRegistrationModal()">
+                <i data-feather="user" [size]="16"></i> {{ 'CONTESTS.REGISTER' | translate }}
+              </button>
+            }
           }
         </span>
       }
