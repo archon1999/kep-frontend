@@ -16,12 +16,11 @@ import { QuillModule } from '@shared/third-part-modules/quill/quill.module';
 import { ToastrModule } from '@shared/third-part-modules/toastr/toastr.module';
 import { AccountSettingsComponent } from './account-settings.component';
 import {
-  GeneralInfoResolver,
+  GeneralInfoResolver, TeamJoinResolver,
   UserEducationsResolver,
   UserInfoResolver,
   UserSkillsResolver,
   UserSocialResolver,
-  UserTeamsResolver,
   UserTechnologiesResolver,
   UserWorkExperiencesResolver
 } from './account-settings.resolver';
@@ -35,6 +34,8 @@ import { TeamsComponent } from './teams/teams.component';
 import { SystemComponent } from './system/system.component';
 import { Ng2FlatpickrModule } from '@shared/third-part-modules/ng2-flatpickr/ng2-flatpickr.module';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
+import { TeamComponent } from '@app/modules/account-settings/teams/team-card/team.component';
+import { TeamJoinComponent } from '@app/modules/account-settings/teams/team-join/team-join.component';
 
 const routes: Routes = [
   {
@@ -52,10 +53,27 @@ const routes: Routes = [
       userTechnologies: UserTechnologiesResolver,
       userEducations: UserEducationsResolver,
       userWorkExperiences: UserWorkExperiencesResolver,
-      userTeams: UserTeamsResolver,
     },
     title: 'Users.AccountSettings',
-  }
+  },
+  {
+    path: ':id',
+    component: AccountSettingsComponent,
+    canActivate: [AuthGuard],
+    data: {
+      animation: 'account-settings'
+    },
+    resolve: {
+      generalInfo: GeneralInfoResolver,
+      userInfo: UserInfoResolver,
+      userSocial: UserSocialResolver,
+      userSkills: UserSkillsResolver,
+      userTechnologies: UserTechnologiesResolver,
+      userEducations: UserEducationsResolver,
+      userWorkExperiences: UserWorkExperiencesResolver,
+    },
+    title: 'Users.AccountSettings',
+  },
 ];
 
 @NgModule({
@@ -89,6 +107,7 @@ const routes: Routes = [
     NgxCountriesModule.forRoot({
       defaultLocale: 'en',
     }),
+    TeamComponent,
   ],
   providers: [
     GeneralInfoResolver,
@@ -96,7 +115,6 @@ const routes: Routes = [
     UserInfoResolver,
     UserSkillsResolver,
     UserSocialResolver,
-    UserTeamsResolver,
     UserTechnologiesResolver,
     UserWorkExperiencesResolver
   ]

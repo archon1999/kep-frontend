@@ -28,12 +28,14 @@ import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { monacoConfig } from './monaco.config';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
 import { map } from 'rxjs/operators';
-import { AuthService } from '@auth';
+import { AuthGuard, AuthService } from '@auth';
 import { BS_BREAKPOINTS, CustomBreakPointsProvider } from '@layout/custom-breakpoints';
 
 import { register } from 'swiper/element/bundle';
 import { LayoutComponent } from '@layout/layout.component';
 import { ErrorInterceptor } from '@app/modules/pages/miscellaneous/error/error.interceptor';
+import { TeamJoinResolver } from '@app/modules/account-settings/account-settings.resolver';
+import { TeamJoinComponent } from '@app/modules/account-settings/teams/team-join/team-join.component';
 
 register();
 
@@ -61,6 +63,14 @@ const appRoutes: Routes = [
   { path: 'users', loadChildren: () => import('./modules/users/users.routing') },
   { path: 'help', loadChildren: () => import('./modules/help/help.module').then(m => m.HelpModule) },
   { path: 'todo', loadComponent: () => import('./modules/todo/todo.component').then(c => c.TodoComponent) },
+  {
+    path: 'teams/:id/join',
+    component: TeamJoinComponent,
+    canActivate: [AuthGuard],
+    resolve: {
+      teamJoin: TeamJoinResolver,
+    },
+  },
   { path: '**', loadComponent: () => import('./modules/pages/miscellaneous/error/error.component').then(c => c.ErrorComponent) },
 ];
 

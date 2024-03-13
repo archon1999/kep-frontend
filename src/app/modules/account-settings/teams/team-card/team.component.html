@@ -1,0 +1,42 @@
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">
+      {{ team.name }}
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <a class="btn btn-sm btn-primary" [routerLink]="Resources.TeamJoin | resourceById:team.code">
+      Link to join
+    </a>
+  </div>
+</div>
+<div class="col-12 text-center">
+  <h3 class="mb-2">
+    {{ team.name }}
+  </h3>
+  <div class="row">
+    <div class="col">
+      <div class="avatar">
+        <img [src]="team.createrAvatar" alt="member-avatar" height="60" width="60">
+      </div>
+      <br>
+      <user-popover [username]="team.createrUsername">
+      </user-popover>
+    </div>
+    @for (member of team.members;track member) {
+      <div [ngClass]="{'col': member.username != team.createrUsername}">
+        @if (member.username != team.createrUsername) {
+          <div>
+            <div class="avatar">
+              <img [src]="member.avatar" width="60" height="60" alt="member-avatar">
+            </div>
+            <br>
+            <user-popover [username]="member.username">
+            </user-popover>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

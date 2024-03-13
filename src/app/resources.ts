@@ -21,6 +21,9 @@ export enum Resources {
   Project = '/practice/projects/project/:id',
 
   Login = '/login',
+  Settings = '/settings',
+  SettingsTab = '/settings/:id',
+  TeamJoin = '/teams/:id/join',
 }
 
 export function getResourceById(resource: Resources, id: number | string) {
