@@ -26,6 +26,7 @@ export class Contestant {
     public saveRatingPurchased: boolean,
     public isVirtual: boolean,
     public isUnrated: boolean,
+    public isOfficial: boolean,
     public virtualTime: string,
   ) {}
 
@@ -51,6 +52,7 @@ export class Contestant {
       data.saveRatingPurchased,
       data.isVirtual,
       data.isUnrated,
+      data.isOfficial,
       data.virtualTime,
     );
   }

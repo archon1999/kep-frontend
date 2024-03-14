@@ -12,6 +12,7 @@ export class ContestantViewComponent implements OnInit {
   @Input() textColor = '';
   @Input() teamNameColor = 'primary';
   @Input() imgSize = 32;
+  @Input() isOfficial: boolean;
 
   constructor() { }
 

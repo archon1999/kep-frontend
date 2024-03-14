@@ -1,100 +1,97 @@
-<div class="content-wrapper container-xxl p-0 contests-colors contests-color contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
-  <div class="content-body">
-    <!-- content-header component -->
-    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+<!--<app-content-header [contentHeader]="contentHeader"></app-content-header>-->
 
-    <section class="mt-2">
-      <div class="row">
-        <div class="col-12">
-          <div class="layout-spacing">
-            <div class="card">
-              <div class="card-header">
-                <contest-tab [contest]="contest"></contest-tab>
-                <hr>
-                </div>
-                @if (contest) {
-                  <div class="card-body">
-                    <h2 class="mt-2 mb-4 text-center">{{ contest.title }}</h2>
-                    <contest-standings-countdown [contest]="contest"></contest-standings-countdown>
-                    <div class="table-responsive">
-                      <table class="table" #table>
-                        <thead>
-                          <tr>
-                            <th class="text-center">#</th>
-                            <th>{{ 'CONTESTS.CONTESTANT' | translate }}</th>
-                            <th class="text-center">
-                              <a ngbTooltip="{{ 'CONTESTS.POINTS' | translate }}" container="body">
-                                <i [data-feather]="'rating' | iconName"></i>
-                              </a>
-                            </th>
-                            @if (contest.status == 0 && contest.isRated) {
-                              <th ngbTooltip="{{ 'RatingChange' | translate }}" container="body" class="text-center">
-                                <i [data-feather]="'delta' | iconName"></i>
-                              </th>
-                            }
-                            @if (contest?.hasPenalties()) {
-                              <th class="text-center">{{ 'CONTESTS.PENALTIES' | translate }}</th>
-                            }
-                            <th class="text-center">
-                              <a ngbTooltip="{{ 'CONTESTS.PERFOMANCE' | translate }}" container="body">
-                                <i data-feather="activity"></i>
-                              </a>
-                            </th>
-                            @for (contestProblem of contestProblems; track contestProblem) {
-                              <th class="text-center" style="white-space: nowrap;">
-                                <a
-                                  [routerLink]="['..', 'problem', contestProblem.symbol]"
-                                  [ngbTooltip]="contestProblem.problem.title"
-                                  tooltipClass="tooltip-primary"
-                                  container="body"
-                                  class="text-white">
-                                  {{ contestProblem.symbol }}
-                                  @if (contest?.hasBalls()) {
-                                    <span>
+<section class="mt-2 contests-colors contests-color contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
+  <div class="row">
+    <div class="col-12">
+      <div class="layout-spacing">
+        <div class="card">
+          <div class="card-header">
+            <contest-tab [contest]="contest"></contest-tab>
+            <hr>
+          </div>
+          @if (contest) {
+            <div class="card-body">
+              <h2 class="mt-2 mb-4 text-center">{{ contest.title }}</h2>
+              <contest-standings-countdown [contest]="contest"></contest-standings-countdown>
+              <div class="table-responsive">
+                <table class="table" #table>
+                  <thead>
+                  <tr>
+                    <th class="text-center">#</th>
+                    <th>{{ 'CONTESTS.CONTESTANT' | translate }}</th>
+                    <th class="text-center">
+                      <a ngbTooltip="{{ 'CONTESTS.POINTS' | translate }}" container="body">
+                        <i [data-feather]="'rating' | iconName"></i>
+                      </a>
+                    </th>
+                    @if (contest.status == 0 && contest.isRated) {
+                      <th ngbTooltip="{{ 'RatingChange' | translate }}" container="body" class="text-center">
+                        <i [data-feather]="'delta' | iconName"></i>
+                      </th>
+                    }
+                    @if (contest?.hasPenalties()) {
+                      <th class="text-center">{{ 'CONTESTS.PENALTIES' | translate }}</th>
+                    }
+                    <th class="text-center">
+                      <a ngbTooltip="{{ 'CONTESTS.PERFOMANCE' | translate }}" container="body">
+                        <i data-feather="activity"></i>
+                      </a>
+                    </th>
+                    @for (contestProblem of contestProblems; track contestProblem) {
+                      <th class="text-center" style="white-space: nowrap;">
+                        <a
+                          [routerLink]="['..', 'problem', contestProblem.symbol]"
+                          [ngbTooltip]="contestProblem.problem.title"
+                          tooltipClass="tooltip-primary"
+                          container="body"
+                          class="text-white">
+                          {{ contestProblem.symbol }}
+                          @if (contest?.hasBalls()) {
+                            <span>
                                       ({{ contestProblem.ball }})
                                     </span>
-                                  }
-                                </a>
-                              </th>
-                            }
-                          </tr>
-                        </thead>
-                        @if (contestants) {
-                          <tbody>
-                            @for (contestant of contestants; track contestant) {
-                              <tr
-                                [@fadeInOnEnter]
-                                [ngClass]="{'bg-light-primary': currentUser?.username == contestant.username }">
-                                <td class="text-center text-dark">
-                                  {{ contestant.rank }}
-                                </td>
-                                <td style="position: relative;">
-                                  <contestant-view [user]="contestant" [team]="contestant.team"></contestant-view>
-                                  <div class="absolute d-flex justify-content-start">
-                                    @if (contestant.isUnrated && !contestant.isVirtual) {
-                                      <span class="badge badge-info badge-pill">
-                                        {{ 'Unrated' | translate }}
-                                      </span>
-                                    }
-                                    @if (contestant.isVirtual) {
-                                      <span class="badge badge-warning badge-pill">
-                                        {{ 'Virtual' | translate }}
-                                      </span>
-                                    }
-                                    @if (contestant.virtualTime) {
-                                      <span class="badge badge-success badge-pill">
-                                        {{ contestant.virtualTime }}
-                                      </span>
-                                    }
-                                  </div>
-                                </td>
-                                <td class="text-center">
+                          }
+                        </a>
+                      </th>
+                    }
+                  </tr>
+                  </thead>
+                  @if (contestants) {
+                    <tbody>
+                      @for (contestant of contestants; track contestant) {
+                        <tr
+                          [@fadeInOnEnter]
+                          [ngClass]="{'bg-light-primary': currentUser?.username == contestant.username }">
+                          <td class="text-center text-dark">
+                            {{ contestant.rank }}
+                          </td>
+                          <td style="position: relative;">
+                            <contestant-view [isOfficial]="contestant.isOfficial" [user]="contestant" [team]="contestant.team"></contestant-view>
+                            <div class="absolute d-flex justify-content-start">
+                              @if (contestant.isUnrated && !contestant.isVirtual) {
+                                <span class="badge badge-info badge-pill">
+                                  {{ 'Unrated' | translate }}
+                                </span>
+                              }
+                              @if (contestant.isVirtual) {
+                                <span class="badge badge-warning badge-pill">
+                                  {{ 'Virtual' | translate }}
+                                </span>
+                              }
+                              @if (contestant.virtualTime) {
+                                <span class="badge badge-success badge-pill">
+                                  {{ contestant.virtualTime }}
+                                </span>
+                              }
+                            </div>
+                          </td>
+                          <td class="text-center">
                                   <span class="badge points">
                                     {{ contestant.points }}
                                   </span>
-                                </td>
-                                @if (contest.status == 0 && contest.isRated) {
-                                  <td class="text-center">
+                          </td>
+                          @if (contest.status == 0 && contest.isRated) {
+                            <td class="text-center">
                           <span class="badge badge-glow" [ngClass]="{
                             'badge-light-success': contestant.delta > 0,
                             'badge-light-dark': contestant.delta == 0,
@@ -102,82 +99,86 @@
                           }">
                                       @if (contestant.delta > 0) {
                                         <span>+</span>
-                                        }{{ contestant.delta }}
+                                      }{{ contestant.delta }}
                                       </span>
-                                    </td>
-                                  }
-                                  @if (contest?.hasPenalties()) {
-                                    <td class="text-center">
+                            </td>
+                          }
+                          @if (contest?.hasPenalties()) {
+                            <td class="text-center">
                                       <span class="badge badge-light-danger">
                                         {{ contestant.penalties }}
                                       </span>
-                                    </td>
-                                  }
-                                  <td class="text-center" style="white-space: nowrap;">
-                                    <contests-rating-image [title]="contestant.perfomanceTitle" [class]="'mr-50'"></contests-rating-image>
-                                    <span class="text-dark">
+                            </td>
+                          }
+                          <td class="text-center" style="white-space: nowrap;">
+                            <contests-rating-image [title]="contestant.perfomanceTitle" [class]="'mr-50'"></contests-rating-image>
+                            <span class="text-dark">
                                       @if (contestant.perfomance >= 3400) {
                                         <span>∞</span>
                                       }
-                                      @if (contestant.perfomance < 3400) {
-                                        <span>{{ contestant.perfomance }}</span>
-                                      }
+                              @if (contestant.perfomance < 3400) {
+                                <span>{{ contestant.perfomance }}</span>
+                              }
                                     </span>
-                                  </td>
-                                  @for (contestProblem of contestProblems; track contestProblem) {
-                                    <td class="text-center">
-                                      <ng-template #selfie [ngTemplateOutlet]="selfie" let-problemInfo="aVariable"
-                                        [ngTemplateOutletContext]="{ aVariable: getProblemInfoBySymbol(contestant.problemsInfo, contestProblem.symbol) }">
-                                        <div>
-                                          @if (problemInfo) {
-                                            <div>
-                                              <div [innerHTML]="problemInfo.getHTML(contest)"></div>
-                                              <!--
-                                              <contest-problem-info [contest]="contest" [problemInfo]="problemInfo"></contest-problem-info>
-                                              -->
-                                            </div>
-                                          }
-                                        </div>
-                                      </ng-template>
-                                    </td>
+                          </td>
+                          @for (contestProblem of contestProblems; track contestProblem) {
+                            <td class="text-center">
+                              <ng-template #selfie [ngTemplateOutlet]="selfie" let-problemInfo="aVariable"
+                                           [ngTemplateOutletContext]="{ aVariable: getProblemInfoBySymbol(contestant.problemsInfo, contestProblem.symbol) }">
+                                <div>
+                                  @if (problemInfo) {
+                                    <div>
+                                      <div [innerHTML]="problemInfo.getHTML(contest)"></div>
+                                      <!--
+                                      <contest-problem-info [contest]="contest" [problemInfo]="problemInfo"></contest-problem-info>
+                                      -->
+                                    </div>
                                   }
-                                </tr>
-                              }
-                            </tbody>
+                                </div>
+                              </ng-template>
+                            </td>
                           }
-                          <tfoot>
-                            <tr>
-                              <th class="text-center text-dark">#</th>
-                              <th class="text-dark">{{ 'CONTESTS.CONTESTANT' | translate }}</th>
-                              <th class="text-center text-dark"><i [data-feather]="'rating' | iconName"></i></th>
-                              @if (contest.isAlready() && contest.isRated) {
-                                <th class="text-center">
-                                  <i [data-feather]="'delta' | iconName"></i>
-                                </th>
-                              }
-                              @if (contest?.hasPenalties()) {
-                                <th class="text-center">{{ 'CONTESTS.PENALTIES' | translate }}</th>
-                              }
-                              <th class="text-center"><i data-feather="activity"></i></th>
-                              @for (contestProblem of contestProblems; track contestProblem) {
-                                <th class="text-dark text-center">
-                                  {{ contestProblem.symbol }}
-                                  <br>
-                                    <small>
-                                      (<span class="text-success">{{ contestProblem.solved }}</span>/<span class="text-danger">{{ contestProblem.attemptUsersCount }}</span>/<span class="text-dark">{{ contestProblem.attemptsCount }}</span>)
-                                    </small>
-                                  </th>
-                                }
-                              </tr>
-                            </tfoot>
-                          </table>
-                        </div>
-                      </div>
+                        </tr>
+                      }
+                    </tbody>
+                  }
+                  <tfoot>
+                  <tr>
+                    <th class="text-center text-dark">#</th>
+                    <th class="text-dark">{{ 'CONTESTS.CONTESTANT' | translate }}</th>
+                    <th class="text-center text-dark"><i [data-feather]="'rating' | iconName"></i></th>
+                    @if (contest.isAlready() && contest.isRated) {
+                      <th class="text-center">
+                        <i [data-feather]="'delta' | iconName"></i>
+                      </th>
                     }
-                  </div>
-                </div>
+                    @if (contest?.hasPenalties()) {
+                      <th class="text-center">{{ 'CONTESTS.PENALTIES' | translate }}</th>
+                    }
+                    <th class="text-center"><i data-feather="activity"></i></th>
+                    @for (contestProblem of contestProblems; track contestProblem) {
+                      <th class="text-dark text-center">
+                        {{ contestProblem.symbol }}
+                        <br>
+                        <small>
+                          (<span class="text-success">{{ contestProblem.solved }}</span>/<span class="text-danger">{{ contestProblem.attemptUsersCount }}</span>/<span class="text-dark">{{ contestProblem.attemptsCount }}</span>)
+                        </small>
+                      </th>
+                    }
+                  </tr>
+                  </tfoot>
+                </table>
               </div>
             </div>
-          </section>
+          }
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!--<div class="content-wrapper container-xxl p-0 contests-colors contests-color contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">-->
+<!--  <div class="content-body">-->
+<!--    &lt;!&ndash; content-header component &ndash;&gt;-->
+<!--        </div>-->
+<!--      </div>-->
