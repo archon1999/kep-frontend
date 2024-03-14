@@ -65,6 +65,7 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
       takeUntil(this._unsubscribeAll)
     ).subscribe(
       (filter: ProblemsFilter) => {
+        console.log(filter);
         this.pageNumber = 1;
         this.reloadPage();
         this.updateQueryParams({
@@ -80,7 +81,7 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
       queryParams.tags = [queryParams.tags];
     }
 
-    this.filterService.updateFilter(queryParams);
+    this.filterService.updateFilter(queryParams, false);
     setTimeout(() => this.reloadPage());
   }
 

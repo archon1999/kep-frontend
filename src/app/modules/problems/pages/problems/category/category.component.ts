@@ -50,7 +50,7 @@ export class CategoryComponent extends BaseTablePageComponent<Problem> implement
           this.defaultOrdering = '-id';
         }
 
-        this.filterService.setFilter({ category: categoryId });
+        this.filterService.setFilter({ category: categoryId }, false);
         this.apiService.getCategory(categoryId).subscribe(
           (category: Category) => {
             this.category = category;

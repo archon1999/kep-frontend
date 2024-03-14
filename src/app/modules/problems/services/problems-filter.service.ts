@@ -46,12 +46,14 @@ export class ProblemsFilterService {
     }
   }
 
-  setFilter(filter: Partial<ProblemsFilter>) {
+  setFilter(filter: Partial<ProblemsFilter>, emitEvent= true) {
     this._currentFilter = {
       ...DEFAULT_FILTER,
       ...filter,
     };
-    this._filter.next(this._currentFilter);
+    if (emitEvent) {
+      this._filter.next(this._currentFilter);
+    }
   }
 
   setProblemsCount(count: number) {

@@ -8,8 +8,8 @@ export const environment = {
   apiUrl: 'http://193.164.16.215:8008',
   wsUrl: 'ws://193.164.16.215:8443/ws',
   superAdmin: {
-   username: 'archon1999',
-   password: 'archon',
+   username: 'admin',
+   password: 'CPython.uz',
   },
 };
 
