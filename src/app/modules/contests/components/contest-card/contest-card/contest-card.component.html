@@ -177,7 +177,7 @@
     </ng-select>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-primary btn-sm" rippleEffect (click)="registrationTeam()">
+    <button [disabled]="!teamId" class="btn btn-primary btn-sm" rippleEffect (click)="registrationTeam()">
       {{ 'CONTESTS.REGISTER' | translate }}
     </button>
   </div>

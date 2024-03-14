@@ -16,6 +16,7 @@ import { ContestStatus } from '@contests/constants';
 import { Team } from '@users/users.models';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { TeamViewCardComponent } from '@app/modules/account-settings/teams/team-view-card/team-view-card.component';
+import { getResourceById, Resources } from '@app/resources';
 
 @Component({
   selector: 'contest-card',
@@ -79,10 +80,14 @@ export class ContestCardComponent implements OnInit {
     } else {
       this.service.getUserTeams().subscribe(
         (teams: Array<Team>) => {
-          this.userTeams = teams;
-          this.modalService.open(this.registrationModalRef, {
-            size: 'lg',
-          });
+          if (teams.length === 0) {
+            this.router.navigateByUrl(getResourceById(Resources.SettingsTab, 'teams'));
+          } else {
+            this.userTeams = teams;
+            this.modalService.open(this.registrationModalRef, {
+              size: 'lg',
+            });
+          }
         }
       );
     }

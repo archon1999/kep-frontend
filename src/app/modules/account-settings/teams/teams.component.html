@@ -11,16 +11,18 @@
       </div>
     } @else {
       <div class="row">
-        <div class="col-8">
+        <div class="col-12 col-md-8">
           @for (team of teams;track team.id) {
             <team-card [team]="team"></team-card>
+          } @empty {
+            <empty-result [title]="'Sizda jamoa yo`q'" [text]="'Yangi jamoa yarating yoki mavjud jamoga qo`shiling'"/>
           }
         </div>
-        <div class="col-4">
-          <div class="font-medium-4 font-weight-bolder mb-1">New team</div>
-          <label>Name</label>
+        <div class="col-12 col-md-4">
+          <div class="font-medium-4 font-weight-bolder mb-1">Yangi jamoa</div>
+          <label>Nomi</label>
           <input [(ngModel)]="teamName" class="form-control">
-          <button (click)="createTeam()" class="btn btn-sm btn-primary mt-2">Create</button>
+          <button (click)="createTeam()" class="btn btn-sm btn-primary mt-2">Yaratish</button>
         </div>
       </div>
     }

@@ -37,6 +37,7 @@ import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx
 import { TeamComponent } from '@app/modules/account-settings/teams/team-card/team.component';
 import { TeamJoinComponent } from '@app/modules/account-settings/teams/team-join/team-join.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 
 const routes: Routes = [
   {
@@ -110,6 +111,7 @@ const routes: Routes = [
     }),
     TeamComponent,
     SpinnerComponent,
+    EmptyResultComponent,
   ],
   providers: [
     GeneralInfoResolver,
