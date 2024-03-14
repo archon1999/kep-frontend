@@ -8,12 +8,12 @@ import { ContentHeader } from '@layout/components/content-header/content-header.
 import { TitleService } from 'app/shared/services/title.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Problem } from '../../../../problems/models/problems.models';
-import { ContestsService } from '../../../contests.service';
+import { Problem } from '@problems/models/problems.models';
+import { ContestsService } from '@contests/contests.service';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
-import { ContestProblemCardComponent } from '@contests/pages/contest/contest-problems/contest-problem-card/contest-problem-card.component';
+import { ContestProblemCardComponent } from '@contests/components/contest-problem-card/contest-problem-card.component';
 import { ContestCardModule } from '@contests/components/contest-card/contest-card.module';
 import { ContestProblem } from '@contests/models/contest-problem';
 import { Contest } from '@contests/models/contest';

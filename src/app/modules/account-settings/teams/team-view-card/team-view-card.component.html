@@ -1,0 +1,8 @@
+<u class="text-primary font-weight-bolder mr-50">{{ team.name }}: </u>
+@for (member of team.members;track member) {
+  <div class="avatar">
+    <img [src]="member.avatar" width="24" height="24" alt="member-avatar">
+  </div>
+  <span class="ml-50">{{ member.username }}</span>
+  <span class="mr-1"></span>
+}

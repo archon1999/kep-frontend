@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ApiService } from '@shared/services/api.service';
@@ -12,6 +12,10 @@ import { Top3ContestantsComponent } from '@contests/components/contest-card/cont
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
 import { Contest } from '@contests/models/contest';
+import { ContestStatus } from '@contests/constants';
+import { Team } from '@users/users.models';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { TeamViewCardComponent } from '@app/modules/account-settings/teams/team-view-card/team-view-card.component';
 
 @Component({
   selector: 'contest-card',
@@ -27,11 +31,17 @@ import { Contest } from '@contests/models/contest';
     Top3ContestantsComponent,
     SpinnerComponent,
     MathjaxModule,
+    NgSelectModule,
+    TeamViewCardComponent,
   ]
 })
 export class ContestCardComponent implements OnInit {
 
   @Input() contest: Contest;
+  @ViewChild('registrationModal') public registrationModalRef: TemplateRef<any>;
+
+  public userTeams: Array<Team> = [];
+  public teamId: number;
   public routerLink: string | Array<string | number>;
 
   public top3Contestants: Array<any> = [];
@@ -60,15 +70,35 @@ export class ContestCardComponent implements OnInit {
   }
 
   openRegistrationModal() {
-    this.service.contestRegistration(this.contest.id).subscribe((result: any) => {
+    if (this.contest.participationType === 1) {
+      this.service.contestRegistration(this.contest.id).subscribe((result: any) => {
+        if (result.success) {
+          this.contest.userInfo.isRegistered = true;
+        }
+      });
+    } else {
+      this.service.getUserTeams().subscribe(
+        (teams: Array<Team>) => {
+          this.userTeams = teams;
+          this.modalService.open(this.registrationModalRef, {
+            size: 'lg',
+          });
+        }
+      );
+    }
+  }
+
+  registrationTeam() {
+    this.service.contestRegistration(this.contest.id, this.teamId).subscribe((result: any) => {
       if (result.success) {
+        this.modalService.dismissAll();
         this.contest.userInfo.isRegistered = true;
       }
     });
   }
 
   cancelRegistration() {
-    if (this.contest.participationType === 1) {
+    if (this.contest.status !== ContestStatus.ALREADY) {
       this.api.get(`contests/${ this.contest.id }/cancel-registration/`).subscribe((result: any) => {
         if (result.success) {
           this.contest.userInfo.isRegistered = false;

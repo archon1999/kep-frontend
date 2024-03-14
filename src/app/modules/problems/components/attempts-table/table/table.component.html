@@ -18,7 +18,7 @@
       @for (attempt of attempts; track attempt.id) {
         <tr
           [@fadeInOnEnter]
-          [ngClass]="{'bg-light-primary': attempt?.user?.username == currentUser?.username}">
+          [ngClass]="{'bg-light-primary': isOwner(attempt)}">
           <td>
             <a href="javascript:;" (click)="clicked.emit(attempt.id)" *ngIf="attempt.canView; else other;">
               <u>

@@ -47,4 +47,13 @@ export class TableComponent implements OnInit {
   onPurchaseTestSuccess(attempt: Attempt) {
     attempt.canTestView = true;
   }
+  isOwner(attempt: Attempt) {
+    if (attempt?.user?.username === this.currentUser?.username) {
+      return true;
+    }
+    if (attempt.team && attempt.team.members.filter(member => member.username === this.currentUser?.username).length) {
+      return true;
+    }
+    return false;
+  }
 }

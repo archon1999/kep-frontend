@@ -149,15 +149,38 @@
             </button>
           }
           @if (!currentUser || !contest.userInfo.isRegistered) {
-            @if (contest.participationType == 1) {
-              <button rippleEffect class="btn btn-sm round btn-gradient-primary" (click)="openRegistrationModal()">
-                <i data-feather="user" [size]="16"></i> {{ 'CONTESTS.REGISTER' | translate }}
-              </button>
-            }
+            <button rippleEffect class="btn btn-sm round btn-gradient-primary" (click)="openRegistrationModal()">
+              <i data-feather="user" [size]="16"></i> {{ 'CONTESTS.REGISTER' | translate }}
+            </button>
           }
         </span>
       }
     </div>
   </div>
-
 </div>
+
+<ng-template #registrationModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ contest.title }}</h5>
+    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0">
+    <label>{{ 'Team' | translate }}</label>
+    <ng-select [(ngModel)]="teamId" [clearable]="false">
+      @for (team of userTeams; track team.id) {
+        <ng-option [value]="team.id">
+          <team-view-card [team]="team"/>
+        </ng-option>
+      }
+    </ng-select>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary btn-sm" rippleEffect (click)="registrationTeam()">
+      {{ 'CONTESTS.REGISTER' | translate }}
+    </button>
+  </div>
+</ng-template>
+
+<ng-select-css></ng-select-css>

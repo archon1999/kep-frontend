@@ -32,10 +32,10 @@
                         <tr>
                           <td class="text-dark">{{ $index + 1 }}</td>
                           <td>
-                            <contestant-view [user]="registrant"></contestant-view>
+                            <contestant-view [team]="registrant.team" [user]="registrant"></contestant-view>
                           </td>
                           <td>
-                            <span class="badge badge-light-{{ registrant.rating | contestsRatingColor }}">
+                            <span *ngIf="registrant.rating" class="badge badge-light-{{ registrant.rating | contestsRatingColor }}">
                               {{ registrant.rating }}
                             </span>
                           </td>
