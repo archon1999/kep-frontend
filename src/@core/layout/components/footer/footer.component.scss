@@ -4,5 +4,10 @@
   box-shadow: none;
   margin-bottom: 1rem;
   border-radius: 0;
+
+  .card-body {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
   // background-color: mix(white, $primary, 95) !important;
 }
