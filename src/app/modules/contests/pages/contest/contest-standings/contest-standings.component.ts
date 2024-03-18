@@ -21,6 +21,8 @@ import { ContestProblem } from '@contests/models/contest-problem';
 import { ContestProblemInfo } from '@contests/models/contest-problem-info';
 import { Contest } from '@contests/models/contest';
 import { Contestant } from '@contests/models/contestant';
+import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
+import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 
 @Component({
   selector: 'app-contest-standings',
@@ -35,6 +37,8 @@ import { Contestant } from '@contests/models/contestant';
     ContestStandingsCountdownComponent,
     NgbTooltipModule,
     ContestantViewModule,
+    KepTableComponent,
+    ContestClassesPipe,
   ]
 })
 export class ContestStandingsComponent implements OnInit, OnDestroy {

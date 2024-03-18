@@ -1,15 +1,15 @@
 @if (contest.status == 0) {
-  <h4 class="text-center mb-2">
+  <h4 class="text-center ml-2 mb-2">
     {{ 'CONTESTS.CONTEST_ENDS' | translate }}
   </h4>
 }
 @if (contest.status == -1) {
-  <h4 class="text-center mb-2">
+  <h4 class="text-center ml-2 mb-2">
     {{ 'CONTESTS.CONTEST_STARTS' | translate }}
   </h4>
 }
 @if (contest.status == 1) {
-  <h4 class="text-center mb-2">
+  <h4 class="text-center ml-2 mb-2">
     {{ 'CONTESTS.CONTEST_FINISHED' | translate }}
   </h4>
 }
