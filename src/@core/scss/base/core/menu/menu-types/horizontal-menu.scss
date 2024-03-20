@@ -225,6 +225,11 @@
           display: flex;
           margin-right: 0.715rem;
           font-weight: 500;
+          color: #6e6b7b;
+
+          @include dark-layout {
+            color: white;
+          }
         }
         &:hover {
           > div {
