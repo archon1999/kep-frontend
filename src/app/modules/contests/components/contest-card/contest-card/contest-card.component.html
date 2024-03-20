@@ -1,4 +1,6 @@
 <div
+  new-feature
+  [show]="contest.status == -1"
   [@fadeInOnEnter]
   class="card contests-colors contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
   <a [routerLink]="routerLink">

@@ -17,6 +17,7 @@ import { Team } from '@users/users.models';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { TeamViewCardComponent } from '@app/modules/account-settings/teams/team-view-card/team-view-card.component';
 import { getResourceById, Resources } from '@app/resources';
+import { NewFeatureDirective } from '@shared/directives/new-feature.directive';
 
 @Component({
   selector: 'contest-card',
@@ -34,6 +35,7 @@ import { getResourceById, Resources } from '@app/resources';
     MathjaxModule,
     NgSelectModule,
     TeamViewCardComponent,
+    NewFeatureDirective,
   ]
 })
 export class ContestCardComponent implements OnInit {
