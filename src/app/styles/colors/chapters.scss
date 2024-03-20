@@ -19,7 +19,7 @@
 
   .bg-chapter-#{$id} {
     background: $color !important;
-    box-shadow: 0 0 10px $color !important;
+    box-shadow: 0 0 5px $color !important;
   }
 
   .dark-layout .bg-chapter-#{$id} {

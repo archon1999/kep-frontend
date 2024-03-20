@@ -4,7 +4,7 @@
   transition: all 0.2s ease;
   background: $tournaments-bg !important;
   border: none;
-  box-shadow: 0 0 10px #29323c !important;
+  box-shadow: 0 0 5px #29323c !important;
   border-radius: 10px;
   
   &:hover {
@@ -22,7 +22,7 @@
 
 .badge {
   background-color: $tournaments-color;
-  box-shadow: 0 0 10px $tournaments-color;
+  box-shadow: 0 0 5px $tournaments-color;
 }
 
 ::ng-deep .dark-layout .duel-card {

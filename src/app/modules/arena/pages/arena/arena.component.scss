@@ -39,7 +39,7 @@
 .arena {
   .arena-avatar {
     background: $warning;
-    box-shadow: 0 0 10px lighten($warning, 5);
+    box-shadow: 0 0 5px lighten($warning, 5);
 
     @include dark-layout {
       background: mix(black, mix(red, $warning, 20), 60) !important;

@@ -2,7 +2,7 @@
   background: linear-gradient(to right, #f8b600e3, #fde29c);
   border-radius: 10px;
   border: none;
-  box-shadow: 0 0 10px #BA8B02;
+  box-shadow: 0 0 5px #BA8B02;
 
   .card-title,
   .card-body,
@@ -13,7 +13,7 @@
 
 ::ng-deep .dark-layout .bg-arena {
   background: linear-gradient(to right, #835d12f9, #BA8B02) !important;
-  box-shadow: 0 0 10px #fde29c !important;
+  box-shadow: 0 0 5px #fde29c !important;
 
   .card-title,
   .clock-val,
@@ -27,7 +27,7 @@
 ::ng-deep .arena-table {
   border-radius: 10px;
   border: none;
-  box-shadow: 0 0 10px #BA8B02;
+  box-shadow: 0 0 5px #BA8B02;
 
   .table td:nth-child(2) {
     min-width: 250px;
