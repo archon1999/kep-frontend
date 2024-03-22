@@ -22,7 +22,7 @@
             <i [data-feather]="'rating' | iconName"></i>
           </a>
         </th>
-        @if (contest.status == 0 && contest.isRated) {
+        @if (contest.isRated) {
           <th ngbTooltip="{{ 'RatingChange' | translate }}" container="body" class="text-center">
             <i [data-feather]="'delta' | iconName"></i>
           </th>
@@ -91,7 +91,7 @@
               {{ contestant.points }}
             </span>
           </td>
-          @if (contest.status == 0 && contest.isRated) {
+          @if (contest.isRated) {
             <td class="text-center">
               <span class="badge badge-glow" [ngClass]="{
                 'badge-light-success': contestant.delta > 0,
