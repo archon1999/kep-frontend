@@ -7,29 +7,34 @@
     <div class="row">
       <div class="col-lg-10 offset-lg-1">
         <h1 [@fadeInUpOnEnter] class="mt-1 mb-2 text-center">
-          <kep-icon name="contest" size="large-3" type="duotone" color="primary"></kep-icon>
+          <kep-icon color="primary" name="contest" size="large-3" type="duotone"></kep-icon>
           <div class="text-dark mt-2 mb-2">{{ 'Contests' | translate }}</div>
         </h1>
 
-        @for (contest of contests; track contest) {
-          <contest-card [contest]="contest"></contest-card>
-        }
+        @if (isLoading && !total) {
+          <div class="card" [style.height.px]="400">
+            <spinner/>
+          </div>
+        } @else {
+          @for (contest of contests;track contest) {
+            <contest-card [contest]="contest"></contest-card>
+          } @empty {
+            <empty-result/>
+          }
 
-        @if (total > 0) {
-          <kep-pagination
-            (pageChange)="pageChange($event)"
-            (pageSizeChange)="pageSizeChange($event)"
-            [(page)]="pageNumber"
-            [collectionSize]="total"
-            [maxSize]="maxSize"
-            [pageOptions]="pageOptions"
-            [pageSize]="pageSize"
-            [rotate]="true">
-          </kep-pagination>
+          @if (total > 0) {
+            <kep-pagination
+              (pageChange)="pageChange($event)"
+              (pageSizeChange)="pageSizeChange($event)"
+              [(page)]="pageNumber"
+              [collectionSize]="total"
+              [maxSize]="maxSize"
+              [pageOptions]="pageOptions"
+              [pageSize]="pageSize"
+              [rotate]="true">
+            </kep-pagination>
+          }
         }
-      </div>
-
-      <div class="col-lg-2 mt-4 pt-2 d-none d-xl-block">
       </div>
     </div>
   </div>

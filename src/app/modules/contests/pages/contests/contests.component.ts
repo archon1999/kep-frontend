@@ -17,6 +17,7 @@ import { ContentHeaderModule } from '@layout/components/content-header/content-h
 import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { coreConfig } from '@app/app.config';
 import { SectionHeaderComponent } from '@contests/pages/contests/sections/section-header/section-header.component';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 
 enum ContestStatus {
   ALL = 2,
@@ -29,10 +30,7 @@ enum ContestStatus {
   templateUrl: './contests.component.html',
   styleUrls: ['./contests.component.scss'],
   animations: [
-    fadeInLeftOnEnterAnimation({ duration: 1000 }),
-    fadeInRightOnEnterAnimation({ duration: 1000 }),
-    fadeInRightOnEnterAnimation({ anchor: 'contests', duration: 1000 }),
-    fadeInUpOnEnterAnimation({ delay: 0, duration: 1000 }),
+    fadeInUpOnEnterAnimation(),
   ],
   standalone: true,
   imports: [
@@ -45,6 +43,7 @@ enum ContestStatus {
     KepIconComponent,
     ContentHeaderModule,
     SectionHeaderComponent,
+    EmptyResultComponent,
   ]
 })
 export class ContestsComponent extends BaseTablePageComponent<Contest> implements OnInit, OnDestroy {
