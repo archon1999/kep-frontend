@@ -28,10 +28,14 @@
   <attempts-table [hackEnabled]="true" [attempts]="attempts"></attempts-table>
 }
 
-<kep-pagination
-  (pageChange)="reloadPage()"
-  [(page)]="pageNumber"
-  [collectionSize]="total"
-  [maxSize]="maxSize"
-  [pageSize]="20">
-</kep-pagination>
+<div class="mb-1">
+  <kep-pagination
+    (pageChange)="pageChange($event)"
+    (pageSizeChange)="pageSizeChange($event)"
+    [collectionSize]="total"
+    [maxSize]="maxSize"
+    [pageOptions]="pageOptions"
+    [pageSize]="pageSize"
+    [page]="pageNumber">
+  </kep-pagination>
+</div>

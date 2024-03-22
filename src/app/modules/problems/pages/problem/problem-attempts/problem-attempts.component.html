@@ -1,25 +1,38 @@
 <div class="form-group">
   @if (currentUser) {
     <div class="custom-control custom-checkbox">
-      <input type="checkbox" class="custom-control-input" [(ngModel)]="myAttempts"
-        (change)="reloadAttempts()" [ngModelOptions]="{standalone: true}" id="myAttempts"/>
-        <label class="custom-control-label" for="myAttempts">{{ 'MY_ATTEMPTS' | translate }}</label>
-      </div>
-    }
-  </div>
+      <input
+        type="checkbox"
+        class="custom-control-input"
+        [(ngModel)]="myAttempts"
+        (change)="reloadPage()"
+        [ngModelOptions]="{standalone: true}"
+        id="myAttempts"/>
+      <label class="custom-control-label" for="myAttempts">{{ 'MY_ATTEMPTS' | translate }}</label>
+    </div>
+  }
+</div>
 
+@if (isLoading && !total) {
+  <div [style.height.px]="400">
+    <spinner/>
+  </div>
+} @else if (attempts.length == 0) {
+  <empty-result/>
+} @else {
   <attempts-table
     (hackSubmitted)="hackSubmitted.next(null)"
-    [hackEnabled]="true"
-    [attempts]="attempts">
+    [attempts]="attempts"
+    [hackEnabled]="true">
   </attempts-table>
 
-  @if (attempts.length > 0) {
-    <kep-pagination
-      [collectionSize]="totalAttemptsCount"
-      [(page)]="currentPage"
-      [pageSize]="10"
-      [maxSize]="5"
-      (pageChange)="reloadAttempts()">
-    </kep-pagination>
-  }
+  <kep-pagination
+    (pageChange)="pageChange($event)"
+    (pageSizeChange)="pageSizeChange($event)"
+    [collectionSize]="total"
+    [maxSize]="maxSize"
+    [pageOptions]="pageOptions"
+    [pageSize]="pageSize"
+    [page]="pageNumber">
+  </kep-pagination>
+}
