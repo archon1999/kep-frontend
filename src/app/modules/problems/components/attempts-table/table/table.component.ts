@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { bounceAnimation, fadeInOnEnterAnimation, shakeAnimation } from 'angular-animations';
 import { AuthService, User } from '@auth';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
@@ -13,7 +13,8 @@ import { Contest } from '@contests/models/contest';
     bounceAnimation({ duration: 2000 }),
     shakeAnimation({ duration: 2000 }),
     fadeInOnEnterAnimation(),
-  ]
+  ],
+  encapsulation: ViewEncapsulation.None
 })
 export class TableComponent implements OnInit {
   @Input() contest: Contest;

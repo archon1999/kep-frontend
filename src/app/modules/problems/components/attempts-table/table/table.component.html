@@ -2,14 +2,48 @@
   <ng-container header>
     <tr class="bg-gradient-primary">
       <th>ID</th>
-      <th>{{ 'SUBMITTED' | translate }}</th>
-      <th>{{ 'LANG' | translate }}</th>
-      <th>{{ 'USER' | translate }}</th>
-      <th>{{ 'PROBLEM' | translate }}</th>
-      <th>{{ 'VERDICT' | translate }}</th>
-      <th>{{ 'TIME' | translate }}</th>
-      <th>{{ 'MEMORY' | translate }}</th>
-      <th *ngIf="!hideSourceCodeSize">{{ 'SIZE' | translate }}</th>
+      <th>
+        <div class="d-flex align-items-center">
+          <kep-icon type="duotone" size="small-4" name="time"/>
+          {{ 'SUBMITTED' | translate }}
+        </div>
+      </th>
+      <th class="ml-50">
+        <div class="d-flex align-items-center">
+          <kep-icon type="duotone" size="small-4" name="lang"/>
+          {{ 'LANG' | translate }}
+        </div>
+      </th>
+      <th>
+        <div class="d-flex align-items-center">
+          <kep-icon type="duotone" size="small-4" name="username"/>
+          {{ 'USER' | translate }}
+        </div>
+      </th>
+      <th>
+        <div class="d-flex align-items-center">
+          <kep-icon type="duotone" size="small-4" name="problem"/>
+          {{ 'PROBLEM' | translate }}
+        </div>
+      </th>
+      <th>
+        <div class="d-flex align-items-center">
+          <kep-icon type="duotone" size="small-4" name="verdict"/>
+          {{ 'VERDICT' | translate }}
+        </div>
+      </th>
+      <th>
+        <div class="d-flex align-items-center">
+          <kep-icon type="duotone" size="small-4" name="information-2"/>
+          {{ 'Run' | translate }}
+        </div>
+      </th>
+      <th *ngIf="!hideSourceCodeSize">
+        <div class="d-flex align-items-center">
+          <kep-icon type="duotone" size="small-4" name="scroll"/>
+          {{ 'SIZE' | translate }}
+        </div>
+      </th>
       <th *ngIf="currentUser?.isSuperuser"></th>
     </tr>
   </ng-container>
@@ -20,27 +54,28 @@
         [@fadeInOnEnter]
         [ngClass]="{'bg-light-primary': isOwner(attempt)}">
         <td>
-          <a href="javascript:;" (click)="clicked.emit(attempt.id)" *ngIf="attempt.canView; else other;">
-            <u>
-              {{ attempt.id }}
-            </u>
-          </a>
-          <ng-template #other>
-            <span *ngIf="!currentUser || contest; else elseBlock">{{ attempt.id }}</span>
-            <ng-template #elseBlock>
-              <kepcoin-spend-swal
-                [purchaseUrl]="'attempts/' + attempt.id + '/purchase/'"
-                [value]="attempt.kepcoinValue"
-                (success)="onPurchaseSuccess(attempt)">
-              </kepcoin-spend-swal>
-            </ng-template>
-          </ng-template>
+          @if (attempt.canView) {
+            <button type="button" class="btn p-0" (click)="clicked.emit(attempt.id)">
+              <u>
+                {{ attempt.id }}
+              </u>
+            </button>
+          } @else if(!currentUser || contest) {
+            <span>{{ attempt.id }}</span>
+          } @else {
+            <kepcoin-spend-swal
+              [customClass]="''"
+              [purchaseUrl]="'attempts/' + attempt.id + '/purchase/'"
+              [value]="attempt.kepcoinValue"
+              (success)="onPurchaseSuccess(attempt)">
+            </kepcoin-spend-swal>
+          }
         </td>
 
         <td>
           @if (contest) {
             <span
-              class="badge badge-light-success text-center"
+              class="badge badge-light-success"
               ngbTooltip="{{ attempt.created | date:'yyyy/MM/dd HH:mm:ss' }}">
               {{ attempt.contestTime }}
             </span>
@@ -51,14 +86,14 @@
           }
         </td>
 
-        <td>
+        <td class="ml-50">
           <span class="badge badge-glow badge-{{ attempt.lang }}">
             {{ attempt.langFull }}
           </span>
         </td>
 
         <td>
-          <contestant-view [user]="attempt.user" [team]="attempt.team"></contestant-view>
+          <contestant-view [imgSize]="28" [user]="attempt.user" [team]="attempt.team"></contestant-view>
         </td>
 
         <td>
@@ -112,21 +147,21 @@
         </td>
 
         <td>
-          <span class="badge badge-info badge-pill">
+          <div class="d-flex align-items-center text-dark text-nowrap" ngbTooltip="{{ 'TIME' | translate }}">
+            <kep-icon color="info" type="duotone" name="watch"/>
             {{ attempt.time }} {{ 'MS' | translate }}
-          </span>
-        </td>
-
-        <td>
-          <span class="badge badge-primary badge-pill">
+          </div>
+          <div class="d-flex align-items-center text-dark text-nowrap" ngbTooltip="{{ 'MEMORY' | translate }}">
+            <kep-icon color="primary" type="duotone" name="external-drive"/>
             {{ attempt.memory }} {{ 'KB' | translate }}
-          </span>
+          </div>
         </td>
 
         <td *ngIf="!hideSourceCodeSize">
-          <span class="badge badge-dark badge-pill">
+          <div class="d-flex align-items-center text-nowrap text-dark">
+            <kep-icon name="code" type="duotone"/>
             {{ attempt.sourceCodeSize }}
-          </span>
+          </div>
         </td>
 
         <td *ngIf="currentUser?.isSuperuser">
