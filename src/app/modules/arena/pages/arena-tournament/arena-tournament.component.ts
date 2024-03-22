@@ -1,11 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  bounceOnEnterAnimation,
-  fadeInLeftOnEnterAnimation,
-  fadeInOnEnterAnimation,
-  fadeInRightOnEnterAnimation
-} from 'angular-animations';
-import { Arena, ArenaPlayer, ArenaPlayerStatistics, ArenaStatus } from '../../arena.models';
+import { Component, OnInit } from '@angular/core';
+import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
+import { Arena, ArenaPlayer, ArenaPlayerStatistics, ArenaStatistics, ArenaStatus } from '../../arena.models';
 import { ArenaService } from '../../arena.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbAlertModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -13,22 +8,26 @@ import { ArenaPlayerStatisticsComponent } from '../../components/arena-player-st
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
-import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { ArenaChallengesComponent } from '@arena/pages/arena-tournament/arena-challenges/arena-challenges.component';
-import { Observable } from 'rxjs';
+import { interval } from 'rxjs';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
-import { PageResult } from '@app/common/classes/page-result';
-import { switchMap } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import { ArenaCardComponent } from '@arena/components/arena-card/arena-card.component';
+import { ArenaChaptersComponent } from '@arena/pages/arena-tournament/arena-chapters/arena-chapters.component';
+import { ArenaCountdownComponent } from '@arena/pages/arena-tournament/arena-countdown/arena-countdown.component';
+import { ArenaStatisticsComponent } from '@arena/pages/arena-tournament/arena-statistics/arena-statistics.component';
+import { ArenaWinnersComponent } from '@arena/pages/arena-tournament/arena-winners/arena-winners.component';
+import { ArenaPlayersComponent } from '@arena/pages/arena-tournament/arena-players/arena-players.component';
+import { BaseComponent } from '@app/common';
+import { getResourceById, Resources } from '@app/resources';
+import { ArenaInfoComponent } from '@arena/pages/arena-tournament/arena-info/arena-info.component';
 
 @Component({
   selector: 'app-arena-tournament',
   templateUrl: './arena-tournament.component.html',
   styleUrls: ['./arena-tournament.component.scss'],
   animations: [
-    bounceOnEnterAnimation({ anchor: 'bounce3', delay: 1000, duration: 1000 }),
-    bounceOnEnterAnimation({ anchor: 'bounce2', delay: 2000, duration: 1000 }),
-    bounceOnEnterAnimation({ anchor: 'bounce1', delay: 3000, duration: 1000 }),
     fadeInOnEnterAnimation(),
     fadeInLeftOnEnterAnimation(),
     fadeInRightOnEnterAnimation(),
@@ -45,106 +44,67 @@ import { ChallengesUserViewComponent } from '@challenges/components/challenges-u
     ChallengesUserViewComponent,
     ArenaChallengesComponent,
     KepTableComponent,
+    ArenaCardComponent,
+    ArenaChaptersComponent,
+    ArenaCountdownComponent,
+    ArenaStatisticsComponent,
+    ArenaWinnersComponent,
+    ArenaPlayersComponent,
+    ArenaInfoComponent,
   ]
 })
-export class ArenaTournamentComponent extends BaseTablePageComponent<ArenaPlayer> implements OnInit, OnDestroy {
-  override defaultPageNumber = 1;
-  override defaultPageSize = 10;
-  override maxSize = 5;
-  override pageOptions = [10, 20, 50];
+export class ArenaTournamentComponent extends BaseComponent implements OnInit {
 
   public arena: Arena;
-  public me = false;
 
-  public arenaStatistics = {
-    averageRating: 0,
-    challenges: 0,
-  };
+  public arenaStatistics: ArenaStatistics;
   public arenaPlayerStatistics: ArenaPlayerStatistics;
-  public top3: Array<ArenaPlayerStatistics> = [];
 
-  public leftTime = 0;
   public remainingTime: number;
 
-  public _intervalId1: any;
-  public _intervalId2: any;
+  protected readonly ArenaStatus = ArenaStatus;
 
   constructor(public service: ArenaService) {
     super();
   }
 
-  get arenaPlayers(): ArenaPlayer[] {
-    return this.pageResult?.data;
-  }
-
   ngOnInit(): void {
+    interval(5000).pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      () => {
+        this.updateRemainingTime();
+      }
+    );
+
     this.route.data.subscribe(({ arena }) => {
       this.arena = arena;
       this.titleService.updateTitle(this.route, { arenaTitle: arena.title });
-      setTimeout(() => this.reloadPage());
-      if (this.arena.status === ArenaStatus.NotStarted) {
-        this.leftTime = new Date(arena.startTime).valueOf() - Date.now();
-      } else if (this.arena.status === ArenaStatus.Already) {
-        this.leftTime = new Date(arena.finishTime).valueOf() - Date.now();
-        this._intervalId1 = setInterval(() => {
-          if (this.arena.isRegistrated) {
-            this.nextChallenge();
+      if (this.arena.status === ArenaStatus.Already) {
+        interval(5000).pipe(takeUntil(this._unsubscribeAll)).subscribe(
+          () => {
+            if (this.arena.isRegistrated) {
+              this.nextChallenge();
+            }
           }
-          setTimeout(() => this.reloadPage());
-        }, 5000);
+        );
         this.loadArenaPlayerStatistics(this.currentUser.username);
-      } else {
-        this.service.getTop3(this.arena.id).subscribe(
-          (result: any) => {
-            this.top3 = result;
-          }
-        );
-        this.service.getArenaStatistics(this.arena.id).subscribe(
-          (result: any) => {
-            this.arenaStatistics = result;
-          }
-        );
+      } else if (this.arena.status === ArenaStatus.Finished) {
         if (this.currentUser) {
           this.loadArenaPlayerStatistics(this.currentUser.username);
         }
       }
     });
-
-    if (this.arena.status === ArenaStatus.Already) {
-      this._intervalId2 = setInterval(() => {
-        this.updateRemainingTime();
-      }, 5000);
-    }
   }
 
   updateRemainingTime() {
     this.remainingTime = new Date(this.arena.finishTime).valueOf() - Date.now();
   }
 
-  loadArenaPlayerStatistics(username: string) {
-    this.service.getArenaPlayerStatistics(this.arena.id, username).subscribe(
+  loadArenaPlayerStatistics(arenaPlayerUsername: string) {
+    this.service.getArenaPlayerStatistics(this.arena.id, arenaPlayerUsername).subscribe(
       (result: any) => {
         this.arenaPlayerStatistics = result;
       }
     );
-  }
-
-  getPage(): Observable<PageResult<ArenaPlayer>> {
-    if (!this.me) {
-      this.me = true;
-      if (this.arena.isRegistrated) {
-        return this.service.getStandingsPage(this.arena.id).pipe(
-          switchMap((result: any) => {
-            this.pageNumber = result.page;
-            return this.getPage();
-          })
-        );
-      }
-    }
-    return this.service.getArenaPlayers(this.arena.id, {
-      page: this.pageNumber,
-      page_size: this.pageSize,
-    });
   }
 
   nextChallenge() {
@@ -152,19 +112,12 @@ export class ArenaTournamentComponent extends BaseTablePageComponent<ArenaPlayer
       (result: any) => {
         if (result.success) {
           this.router.navigate(
-            ['/practice', 'challenges', 'challenge', result.challengeId],
+            [getResourceById(Resources.Challenge, result.challengeId)],
             { queryParams: { 'arena': this.arena.id } }
           );
         }
       }
     );
-  }
-
-  register() {
-    this.service.arenaRegistration(this.arena.id).subscribe(() => {
-      this.arena.isRegistrated = true;
-      this.arena.pause = true;
-    });
   }
 
   arenaPause() {
@@ -178,19 +131,4 @@ export class ArenaTournamentComponent extends BaseTablePageComponent<ArenaPlayer
       this.arena.pause = false;
     });
   }
-
-  refreshPage() {
-    setTimeout(() => window.location.reload(), 1000);
-  }
-
-  ngOnDestroy() {
-    super.ngOnDestroy();
-    if (this._intervalId1) {
-      clearInterval(this._intervalId1);
-    }
-    if (this._intervalId2) {
-      clearInterval(this._intervalId2);
-    }
-  }
-
 }

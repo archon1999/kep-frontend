@@ -48,24 +48,8 @@
   display: block;
 }
 
-.player-results span {
-  font-family: Inconsolata, serif !important;
-  margin-right: 0.25rem;
-  display: inline-block;
-}
-
-
 .card-footer {
   border-top: 1px solid #fde29c;
-}
-
-.clock-val {
-  font-size: 28px;
-  color: #000;
-}
-
-.clock-text {
-  color: #000;
 }
 
 ::ng-deep .custom-skeleton {

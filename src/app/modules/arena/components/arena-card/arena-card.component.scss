@@ -1,0 +1,25 @@
+@import 'styles/kep-imports';
+
+arena-card {
+  .card {
+    background: linear-gradient(to right, #f8b600e3, #fde29c);
+    box-shadow: none;
+
+    h5 {
+      font-weight: 600;
+    }
+
+    @include dark-layout {
+      background: linear-gradient(to right, #835d12f9, #BA8B02) !important;
+
+      h5 {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .card-footer {
+    border-color: #f8b600e3 !important;
+  }
+}
+

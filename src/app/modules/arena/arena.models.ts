@@ -49,3 +49,8 @@ export interface ArenaPlayerStatistics {
   lossRate: number;
   opponents: Array<any>;
 }
+
+export interface ArenaStatistics {
+  averageRating: number;
+  challenges: number;
+}

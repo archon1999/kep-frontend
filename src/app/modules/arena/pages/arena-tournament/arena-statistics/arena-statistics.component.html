@@ -1,0 +1,27 @@
+<div class="card bg-arena">
+  @if (isLoading) {
+    <div [style.height.px]="165">
+      <spinner color="var(--warning)"/>
+    </div>
+  } @else {
+    <div class="card-body">
+      <div class="text-center">
+        <h4 class="mb-2">
+          {{ 'TournamentFinish' | translate }}
+        </h4>
+        <div ngbTooltip="{{ 'AverageRating' | translate }}">
+          <kep-icon name="rating"/>
+          <span class="font-large-1">
+          {{ data.averageRating }}
+        </span>
+        </div>
+        <div ngbTooltip="{{ 'Challenges' | translate }}">
+          <kep-icon name="challenge"/>
+          <span class="font-large-1">
+          {{ data.challenges }}
+        </span>
+        </div>
+      </div>
+    </div>
+  }
+</div>
