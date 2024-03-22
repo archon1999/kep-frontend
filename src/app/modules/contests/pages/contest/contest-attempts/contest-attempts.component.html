@@ -6,123 +6,114 @@
 
     <section class="mt-2">
       <div class="row">
-        <div [@fadeInLeft]="startAnimationState" class="col-lg-9 col-md-12 col-sm-12 order-2 order-lg-1">
+        <div [@fadeInLeftOnEnter] class="col-lg-9 col-md-12 col-sm-12 order-2 order-lg-1">
           <div class="card">
             <div class="card-header">
               <contest-tab [contest]="contest"></contest-tab>
               <hr>
-              </div>
-              <div class="card-body">
-                <h3 class="text-center mb-1">
-                  {{ 'ATTEMPTS' | translate }}
-                </h3>
-
-                @if (currentUser) {
-                  <div class="mb-1 custom-control custom-checkbox">
-                    <input
-                      (change)="reloadAttempts()"
-                      [(ngModel)]="filter.userOnly"
-                      [ngModelOptions]="{standalone: true}"
-                      class="custom-control-input"
-                      id="filterOnlyUser"
-                      type="checkbox"
-                      />
-                      <label class="custom-control-label" for="filterOnlyUser">{{ 'MY_ATTEMPTS' | translate }}</label>
-                    </div>
-                  }
-
-                  <attempts-table [attempts]="attempts" [contest]="contest" [hideSourceCodeSize]="true"></attempts-table>
-
-                  @if (attempts.length > 0) {
-                    <kep-pagination
-                      (pageChange)="reloadAttempts()"
-                      [(page)]="currentPage"
-                      [boundaryLinks]="false"
-                      [collectionSize]="totalAttemptsCount"
-                      [ellipses]="true"
-                      [maxSize]="5"
-                      [pageSize]="20"
-                      >
-                    </kep-pagination>
-                  }
-                </div>
-              </div>
             </div>
-
-            <div [@fadeInRight]="startAnimationState" class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">
-              @if (contest) {
-                <div class="layout-spacing">
-                  <contest-card-countdown [contest]="contest"></contest-card-countdown>
+            <div class="card-body">
+              @if (currentUser) {
+                <div class="mb-1 custom-control custom-checkbox">
+                  <input
+                    (change)="reloadProblems()"
+                    [(ngModel)]="filter.userOnly"
+                    [ngModelOptions]="{standalone: true}"
+                    class="custom-control-input"
+                    id="filterOnlyUser"
+                    type="checkbox"
+                  />
+                  <label class="custom-control-label" for="filterOnlyUser">{{ 'MY_ATTEMPTS' | translate }}</label>
                 </div>
               }
+              @if (isLoading && !total) {
+                <div [style.height.px]="400">
+                  <spinner></spinner>
+                </div>
+              } @else {
+                <attempts-table [attempts]="attempts" [contest]="contest" [hideSourceCodeSize]="true"></attempts-table>
+              }
 
-              <div class="layout-spacing">
-                <div class="card">
-                  <div class="card-header">
-                    <h5 class="card-title text-center mt-1">
-                      {{ 'CONTESTS.FILTER_ATTEMPTS' | translate }}
-                      <hr>
-                      </h5>
-                    </div>
+              <kep-pagination
+                (pageChange)="pageChange($event)"
+                (pageSizeChange)="pageSizeChange($event)"
+                [collectionSize]="total"
+                [maxSize]="maxSize"
+                [pageOptions]="pageOptions"
+                [pageSize]="pageSize"
+                [page]="pageNumber">
+              </kep-pagination>
+            </div>
+          </div>
+        </div>
 
-                    <div class="card-body">
-                      <form class="form form-vertical">
-                        <div class="row">
-                          <div class="col-12">
-                            <label class="text-primary">
-                              <strong>
-                                {{ 'PROBLEM' | translate }}:
-                              </strong>
-                            </label>
-                            <div class="form-group">
-                              <ng-select
-                                [(ngModel)]="filter.contestProblem"
-                                [ngModelOptions]="{standalone: true}"
-                                >
-                                @for (contestProblem of contestProblems; track contestProblem) {
-                                  <ng-option [value]="contestProblem.symbol">
-                                    {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
-                                  </ng-option>
-                                }
-                              </ng-select>
-                            </div>
-                          </div>
+        <div [@fadeInRightOnEnter] class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">
+          @if (contest) {
+            <div class="layout-spacing">
+              <contest-card-countdown [contest]="contest"></contest-card-countdown>
+            </div>
+          }
 
-                          <div class="col-12">
-                            <label class="text-primary">
-                              <strong>
-                                {{ 'VERDICT' | translate }}:
-                              </strong>
-                            </label>
-                            <div class="form-group">
-                              <ng-select
-                                [(ngModel)]="filter.verdict"
-                                [ngModelOptions]="{standalone: true}"
-                                >
-                                @for (verdict of verdicts; track verdict) {
-                                  <ng-option [value]="verdict.value">{{ verdict.label }}
-                                  </ng-option>
-                                }
-                              </ng-select>
-                            </div>
-                          </div>
+          <div class="layout-spacing">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title text-center">
+                  <kep-icon name="filter" type="duotone" color="primary"/>
+                  {{ 'CONTESTS.FILTER_ATTEMPTS' | translate }}
+                </h5>
+              </div>
 
-                          <div class="col-12 text-center mt-2">
-                            <button (click)="reloadAttempts()" class="btn btn-primary round btn-sm mr-1">
-                              <small>
-                                {{ 'APPLY' | translate }}
-                              </small>
-                            </button>
-                          </div>
-                        </div>
-                      </form>
+              <div class="card-body">
+                <form class="form">
+                  <div class="form-group">
+                    <label class="text-primary">
+                      <strong>
+                        {{ 'PROBLEM' | translate }}:
+                      </strong>
+                    </label>
+                    <div class="form-group">
+                      <ng-select
+                        [(ngModel)]="filter.contestProblem"
+                        [ngModelOptions]="{standalone: true}"
+                      >
+                        @for (contestProblem of contestProblems;track contestProblem) {
+                          <ng-option [value]="contestProblem.symbol">
+                            {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
+                          </ng-option>
+                        }
+                      </ng-select>
                     </div>
                   </div>
-                </div>
+
+                  <div class="form-group">
+                    <label class="text-primary">
+                      <strong>
+                        {{ 'VERDICT' | translate }}:
+                      </strong>
+                    </label>
+                    <ng-select
+                      [(ngModel)]="filter.verdict"
+                      [ngModelOptions]="{standalone: true}">
+                      @for (verdict of verdicts;track verdict) {
+                        <ng-option [value]="verdict.value">{{ verdict.label }}
+                        </ng-option>
+                      }
+                    </ng-select>
+                  </div>
+
+                  <div class="text-center mt-2">
+                    <button (click)="reloadPage()" class="btn btn-primary btn-block btn-sm">
+                      {{ 'APPLY' | translate }}
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
-          </section>
+          </div>
         </div>
       </div>
+    </section>
+  </div>
+</div>
 
-      <ng-select-css></ng-select-css>
+<ng-select-css></ng-select-css>

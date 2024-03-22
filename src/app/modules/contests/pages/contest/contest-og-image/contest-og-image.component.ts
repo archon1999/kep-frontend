@@ -33,6 +33,7 @@ export class ContestOgImageComponent implements OnInit {
     this.route.data.subscribe(({ contest }) => {
       this.contest = Contest.fromJSON(contest);
     });
+    return;
 
     setTimeout(() => {
       this.captureService.getImage(this.screen.nativeElement, true)

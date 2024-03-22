@@ -8,6 +8,8 @@ import { ContestAttemptsFilter } from '@contests/models/contest-attempts-filter'
 import { Contest } from '@contests/models/contest';
 import { ContestCategory } from '@contests/models';
 import { getCategoryIcon } from '@contests/utils/category-icon';
+import { PageResult } from '@app/common/classes/page-result';
+import { Attempt } from '@problems/models/attempts.models';
 
 @Injectable({
   providedIn: 'root'
@@ -75,26 +77,26 @@ export class ContestsService {
     return this.api.get('contests-rating', params);
   }
 
-  getContestAttempts(contestId: number | string, page: number, pageSize: number, filter: ContestAttemptsFilter) {
-    const params: any = {
-      contest_id: contestId,
-      page: page,
-      page_size: pageSize,
-    };
-
-    if (filter?.userOnly) {
+  getContestAttempts(params: Partial<Pageable> & { contestId: number, filter: ContestAttemptsFilter } & any) {
+    if (params.filter?.userOnly) {
       params.username = this.authService.currentUserValue?.username;
     }
 
-    if (filter?.verdict) {
-      params.verdict = filter.verdict;
+    if (params.filter?.verdict) {
+      params.verdict = params.filter.verdict;
     }
 
-    if (filter?.contestProblem) {
-      params.contest_problem = filter.contestProblem;
+    if (params.filter?.contestProblem) {
+      params.contest_problem = params.filter.contestProblem;
     }
 
-    return this.api.get('attempts', params);
+    delete params.filter;
+    return this.api.get('attempts', params).pipe(
+      map((result: PageResult<Attempt>) => {
+        result.data = result.data.map((attempt: Attempt) => Attempt.fromJSON(attempt));
+        return result;
+      })
+    );
   }
 
   getContestsRatingChanges(username: string) {
