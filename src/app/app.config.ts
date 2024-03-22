@@ -15,7 +15,7 @@ export const coreConfig: CoreConfig = {
         flag: 'ru'
       },
       uz: {
-        title: 'O`zbek tili',
+        title: 'Oʻzbek tili',
         flag: 'uz'
       }
     },

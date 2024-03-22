@@ -24,7 +24,7 @@ export let lessonTourSteps = [
     useModalOverlay: true
   },
   {
-    title: 'O`quv rejasi',
+    title: 'Oʻquv rejasi',
     text: 'Darslar va ularning qancha qismi tugatilganligi haqida ma`lumot.',
     attachTo: {
       element: '.tour-step-2',
