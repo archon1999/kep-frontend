@@ -423,6 +423,7 @@ export const locale = {
     SendMessage: 'Send message',
     NoResultFound: 'No Result Found',
     NoResultFoundText: 'What you searched was unfortunately not found or does not exists',
+    CompetitionPrizes: 'Competition prizes',
     ProblemTourSteps: [
       {
         title: 'Available languages',

@@ -419,6 +419,7 @@ export const locale = {
     SendMessage: 'Xabar joʻnatish',
     NoResultFound: 'Hech Nima Topilmadi',
     NoResultFoundText: 'Siz qidirgan narsa afsuski topilmadi yoki mavjud emas',
+    CompetitionPrizes: 'Musobaqa yutuqlari',
     ContestRules: {
       ACM20H: ``,
     },

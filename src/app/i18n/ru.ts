@@ -419,6 +419,7 @@ export const locale = {
     SendMessage: 'Отправить сообщение',
     NoResultFound: 'Ничего не найдено',
     NoResultFoundText: 'То, что вы искали, к сожалению, не найдено или не существует',
+    CompetitionPrizes: 'Призы в соревнованиях',
     ProblemTourSteps: [
       {
         title: 'Доступные языки',

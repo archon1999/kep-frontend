@@ -84,4 +84,8 @@ export class UsersApiService {
     return this.api.get('users/countries');
   }
 
+  getUserCompetitionPrizes(username: string) {
+    return this.api.get(`users/${ username }/competition-prizes`);
+  }
+
 }

@@ -12,6 +12,7 @@ import { UserSkillsComponent } from '@users/pages/user-profile/user-skills/user-
 import { KepBadgeComponent } from '@shared/components/kep-badge/kep-badge.component';
 import { UserOnlineStatusComponent } from '@shared/components/user-online-status/user-online-status.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { UserCompetitionPrizesComponent } from '@users/pages/user-profile/user-competition-prizes/user-competition-prizes.component';
 
 enum Tab {
   Ratings = 1,
@@ -38,6 +39,7 @@ enum Tab {
     KepBadgeComponent,
     UserOnlineStatusComponent,
     SpinnerComponent,
+    UserCompetitionPrizesComponent,
   ]
 })
 export class UserProfileComponent extends BaseComponent implements OnInit {
