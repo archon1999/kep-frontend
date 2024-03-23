@@ -35,7 +35,7 @@
       <th>
         <div class="d-flex align-items-center">
           <kep-icon type="duotone" size="small-4" name="information-2"/>
-          {{ 'Run' | translate }}
+          {{ 'TIME' | translate }}/{{ 'MEMORY' | translate }}
         </div>
       </th>
       <th *ngIf="!hideSourceCodeSize">
@@ -158,7 +158,7 @@
         </td>
 
         <td *ngIf="!hideSourceCodeSize">
-          <div class="d-flex ml-1 align-items-center text-nowrap text-dark">
+          <div class="d-flex align-items-center text-nowrap text-dark">
             <kep-icon name="code" type="duotone"/>
             {{ attempt.sourceCodeSize }}
           </div>
