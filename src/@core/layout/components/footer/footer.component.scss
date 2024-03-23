@@ -18,10 +18,10 @@ footer.footer {
   }
 
   @include media-breakpoint-down(md) {
-    bottom: -427px !important;
+    bottom: calc(-427px - 20px) !important;
   }
 
   @include media-breakpoint-down(sm) {
-    bottom: -571px !important;
+    bottom: calc(-571px  - 20px) !important;
   }
 }
