@@ -31,7 +31,6 @@ export class ArenaPlayersComponent extends BaseTablePageComponent<ArenaPlayer> i
   @Input() arena: Arena;
   @Output() arenaPlayerClick = new EventEmitter<ArenaPlayer>();
 
-  override defaultPageNumber = 1;
   override defaultPageSize = 10;
   override maxSize = 5;
   override pageOptions = [10, 20, 50];
@@ -39,7 +38,7 @@ export class ArenaPlayersComponent extends BaseTablePageComponent<ArenaPlayer> i
   private service = inject(ArenaService);
 
   get arenaPlayers(): ArenaPlayer[] {
-    return this.pageResult?.data;
+    return this.pageResult?.data || [];
   }
 
   ngOnInit() {
