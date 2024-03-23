@@ -42,7 +42,7 @@ export class AttemptsComponent extends BaseTablePageComponent<Attempt> implement
   }
 
   getPage(): Observable<PageResult<Attempt>> {
-    const params: any = { page: this.pageNumber };
+    const params: any = this.pageable;
     if (this.myAttempts && this.currentUser) {
       params.username = this.currentUser.username;
     }

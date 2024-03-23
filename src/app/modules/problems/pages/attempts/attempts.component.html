@@ -1,41 +1,41 @@
-<div class="content-wrapper">
+<div class="content-wrapper container-xxl">
   <div class="content-body">
     <app-content-header (refresh)="reloadPage()" [contentHeader]="contentHeader"></app-content-header>
-  </div>
-</div>
 
-<div class="mt-2 form-group">
-  @if (currentUser) {
-    <div class="custom-control custom-checkbox">
-      <input
-        [disabled]="isLoading"
-        type="checkbox"
-        class="custom-control-input"
-        [(ngModel)]="myAttempts"
-        (change)="reloadPage()"
-        [ngModelOptions]="{standalone: true}"
-        id="myAttempts"/>
-      <label class="custom-control-label" for="myAttempts">{{ 'MY_ATTEMPTS' | translate }}</label>
+    <div class="mt-2 form-group">
+      @if (currentUser) {
+        <div class="custom-control custom-checkbox">
+          <input
+            [disabled]="isLoading"
+            type="checkbox"
+            class="custom-control-input"
+            [(ngModel)]="myAttempts"
+            (change)="reloadPage()"
+            [ngModelOptions]="{standalone: true}"
+            id="myAttempts"/>
+          <label class="custom-control-label" for="myAttempts">{{ 'MY_ATTEMPTS' | translate }}</label>
+        </div>
+      }
     </div>
-  }
-</div>
 
-@if (!attempts && isLoading) {
-  <div class="card" [style.height.px]='300'>
-    <spinner></spinner>
+    @if (!attempts && isLoading) {
+      <div class="card" [style.height.px]='300'>
+        <spinner></spinner>
+      </div>
+    } @else {
+      <attempts-table [hackEnabled]="true" [attempts]="attempts"></attempts-table>
+    }
+
+    <div class="mb-1">
+      <kep-pagination
+        (pageChange)="pageChange($event)"
+        (pageSizeChange)="pageSizeChange($event)"
+        [collectionSize]="total"
+        [maxSize]="maxSize"
+        [pageOptions]="pageOptions"
+        [pageSize]="pageSize"
+        [page]="pageNumber">
+      </kep-pagination>
+    </div>
   </div>
-} @else {
-  <attempts-table [hackEnabled]="true" [attempts]="attempts"></attempts-table>
-}
-
-<div class="mb-1">
-  <kep-pagination
-    (pageChange)="pageChange($event)"
-    (pageSizeChange)="pageSizeChange($event)"
-    [collectionSize]="total"
-    [maxSize]="maxSize"
-    [pageOptions]="pageOptions"
-    [pageSize]="pageSize"
-    [page]="pageNumber">
-  </kep-pagination>
 </div>

@@ -9,7 +9,7 @@
               <ul ngbNav #navWithIcons="ngbNav" class="nav-tabs" [destroyOnHide]="false" (activeIdChange)="activeIdChange($event)" [(activeId)]="activeId">
                 <li [ngbNavItem]="1">
                   <a ngbNavLink>
-                    <span [data-feather]="'problem' | iconName"></span> {{ 'Problem' | translate }}
+                    <kep-icon name="problem" color="primary" type="duotone"/> {{ 'Problem' | translate }}
                   </a>
                   <ng-template ngbNavContent>
                     <problem-description [problem]="problem"></problem-description>
@@ -18,7 +18,7 @@
 
                 <li [ngbNavItem]="2">
                   <a ngbNavLink>
-                    <span [data-feather]="'attempt' | iconName"></span> {{ 'Attempts' | translate }}
+                    <kep-icon name="attempt" color="warning" type="duotone"/> {{ 'Attempts' | translate }}
                   </a>
                   <ng-template ngbNavContent>
                     <problem-attempts
