@@ -10,6 +10,11 @@
       </div>
     }
   </div>
+  @if (problems?.length == 0) {
+    <div class="pb-2">
+      <empty-result/>
+    </div>
+  }
 }
 
 <div class="mb-2">

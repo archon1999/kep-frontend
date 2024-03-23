@@ -8,6 +8,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import {
   UserCompetitionPrizeCardComponent
 } from '@users/pages/user-profile/user-competition-prizes/user-competition-prize-card/user-competition-prize-card.component';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 
 @Component({
   selector: 'user-competition-prizes',
@@ -15,7 +16,8 @@ import {
   imports: [
     SpinnerComponent,
     TranslateModule,
-    UserCompetitionPrizeCardComponent
+    UserCompetitionPrizeCardComponent,
+    EmptyResultComponent
   ],
   templateUrl: './user-competition-prizes.component.html',
   styleUrl: './user-competition-prizes.component.scss'

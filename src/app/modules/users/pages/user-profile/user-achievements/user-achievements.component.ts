@@ -6,6 +6,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { AchievementComponent } from '@users/pages/user-profile/user-achievements/achievement/achievement.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 
 enum Tab {
   CompletedAchievements = 1,
@@ -22,7 +23,8 @@ enum Tab {
     CoreCommonModule,
     NgbButtonsModule,
     AchievementComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    EmptyResultComponent
   ]
 })
 export class UserAchievementsComponent implements OnInit {

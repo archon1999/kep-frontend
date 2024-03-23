@@ -16,6 +16,7 @@ import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-option
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { ProblemsActivityCardComponent } from '@problems/components/problems-activity-card/problems-activity-card.component';
 import { difficultyLabels } from '@problems/constants/difficulties.enum';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 
 @Component({
   selector: 'user-ratings',
@@ -31,6 +32,7 @@ import { difficultyLabels } from '@problems/constants/difficulties.enum';
     KepIconComponent,
     NgbButtonsModule,
     ProblemsActivityCardComponent,
+    EmptyResultComponent,
   ]
 })
 export class UserRatingsComponent implements OnInit {

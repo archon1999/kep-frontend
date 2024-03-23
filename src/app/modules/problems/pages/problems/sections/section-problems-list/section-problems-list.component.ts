@@ -3,6 +3,7 @@ import { SectionProblemsTableComponent } from '../section-problems-table/section
 import { CoreCommonModule } from '@core/common.module';
 import { ProblemCardComponent } from '@problems/pages/problems/sections/section-problems-list/problem-card/problem-card.component';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 
 @Component({
   selector: 'section-problems-list',
@@ -11,6 +12,7 @@ import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pa
     CoreCommonModule,
     ProblemCardComponent,
     KepPaginationComponent,
+    EmptyResultComponent,
   ],
   templateUrl: './section-problems-list.component.html',
   styleUrl: './section-problems-list.component.scss'

@@ -17,6 +17,11 @@
           </div>
         }
       </div>
+      @if (data.length == 0) {
+        <div class="text-center">
+          <empty-result [title]="''" [text]="'NoResultFound'"/>
+        </div>
+      }
     </div>
   }
 </div>
