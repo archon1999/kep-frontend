@@ -1,13 +1,27 @@
 @import 'styles/kep-imports';
 
-.card {
-  box-shadow: none;
-  margin-bottom: 1rem;
-  border-radius: 0;
+app-layout {
+  position: relative !important;
+}
 
-  .card-body {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
+footer.footer {
+  position: absolute !important;
+  bottom: calc(-321px - 20px) !important;
+  width: 100% !important;
+
+  .card {
+    box-shadow: none;
+    margin-bottom: 0;
+    border-radius: 0;
+
+    // background-color: mix(white, $primary, 95) !important;
   }
-  // background-color: mix(white, $primary, 95) !important;
+
+  @include media-breakpoint-down(md) {
+    bottom: -427px !important;
+  }
+
+  @include media-breakpoint-down(sm) {
+    bottom: -571px !important;
+  }
 }

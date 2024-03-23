@@ -1,4 +1,4 @@
-import { OnInit, OnDestroy, Component } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { CoreConfigService } from '@core/services/config.service';
   selector: 'footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class FooterComponent implements OnInit, OnDestroy {
   public coreConfig: any;
