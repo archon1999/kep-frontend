@@ -18,10 +18,6 @@
 </div>
 <!--/ APP-CONTENT -->
 
-<!-- FOOTER -->
-<ng-container *ngTemplateOutlet="footer"></ng-container>
-<!--/ FOOTER -->
-
 <!-- PARTIALS ---------------------------------------------------------------------------------------- -->
 
 <!-- NAVBAR -->
@@ -59,14 +55,3 @@
   }
 </ng-template>
 <!--/ MENU -->
-
-<!-- FOOTER -->
-<ng-template #footer>
-  @if (!coreConfig.layout.footer.hidden) {
-    <footer
-      class="footer"
-      [class]="[coreConfig.layout.footer.background, coreConfig.layout.footer.type]"
-    ></footer>
-  }
-</ng-template>
-<!-- / FOOTER -->

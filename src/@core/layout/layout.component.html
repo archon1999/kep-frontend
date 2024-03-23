@@ -9,3 +9,18 @@
     <horizontal-layout></horizontal-layout>
   }
 }
+
+<!-- FOOTER -->
+<ng-container *ngTemplateOutlet="footer"></ng-container>
+<!--/ FOOTER -->
+
+<!-- FOOTER -->
+<ng-template #footer>
+  @if (!coreConfig.layout.footer.hidden) {
+    <footer
+      class="footer"
+      [class]="[coreConfig.layout.footer.background, coreConfig.layout.footer.type]"
+    ></footer>
+  }
+</ng-template>
+<!-- / FOOTER -->

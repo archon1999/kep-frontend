@@ -4,12 +4,14 @@ import { HorizontalLayoutComponent } from '@layout/horizontal/horizontal-layout.
 import { VerticalLayoutComponent } from '@layout/vertical/vertical-layout.component';
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreConfig } from '@core/types';
+import { FooterModule } from '@layout/components/footer/footer.module';
+import { NgTemplateOutlet } from '@angular/common';
 
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [HorizontalLayoutComponent, VerticalLayoutComponent],
+  imports: [HorizontalLayoutComponent, VerticalLayoutComponent, FooterModule, NgTemplateOutlet],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
   encapsulation: ViewEncapsulation.None
