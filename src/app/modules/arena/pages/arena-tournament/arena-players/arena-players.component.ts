@@ -35,6 +35,7 @@ export class ArenaPlayersComponent extends BaseTablePageComponent<ArenaPlayer> i
   override maxSize = 5;
   override pageOptions = [10, 20, 50];
 
+  public firstLoad = true;
   private service = inject(ArenaService);
 
   get arenaPlayers(): ArenaPlayer[] {
@@ -53,6 +54,14 @@ export class ArenaPlayersComponent extends BaseTablePageComponent<ArenaPlayer> i
   }
 
   getPage(): Observable<PageResult<ArenaPlayer>> {
+    if (this.isAuthenticated &&
+      this.pageNumber === this.defaultPageNumber &&
+      this.pageSize === this.defaultPageSize &&
+      this.firstLoad) {
+      this.firstLoad = false;
+      return this.service.getArenaPlayers(this.arena.id, {});
+    }
+    this.firstLoad = false;
     return this.service.getArenaPlayers(this.arena.id, this.pageable);
   }
 }
