@@ -14,6 +14,9 @@ export enum Resources {
   Arena = '/competitions/arena',
   ArenaTournament = '/competitions/arena/tournament/:id',
 
+  Tournaments = '/competitions/tournaments',
+  Tournament = '/competitions/tournaments/tournament/:id',
+
   Tests = '/practice/tests',
   Test = '/practice/tests/test/:id',
 
