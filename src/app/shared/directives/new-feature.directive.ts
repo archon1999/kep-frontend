@@ -12,7 +12,9 @@ export class NewFeatureDirective implements OnInit {
   ngOnInit() {
     if (this.show) {
       setTimeout(() => {
-        this.el.nativeElement.innerHTML += '<span class="badge badge-glow badge-warning new-feature">New</span>';
+        const element = document.createElement('div');
+        element.innerHTML = '<span class="badge badge-glow badge-warning new-feature">New</span>';
+        this.el.nativeElement.appendChild(element);
       });
     }
   }
