@@ -1,8 +1,9 @@
 <div
-  new-feature
-  [show]="contest.status == -1"
   [@fadeInOnEnter]
-  class="card contests-colors contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
+  [show]="contest.status == -1"
+  class="card"
+  [class]="contest | contestClasses"
+  new-feature>
   <a [routerLink]="routerLink">
     @if (contest.logo) {
       <div class="card-bg" style="background-image: url('{{ contest.logo }}');">
@@ -63,22 +64,22 @@
               {{ 'CONTESTS.CONTEST_FINISHED' | translate }}
             </h3>
             @defer (on viewport) {
-            <top3-contestants [contest]="contest"></top3-contestants>
-            } @placeholder (minimum 500ms){
-            <div [style.height.px]="100">
-              <div class="mt-2">
-                <spinner color="#fff"></spinner>
+              <top3-contestants [contest]="contest"></top3-contestants>
+            } @placeholder (minimum 500ms) {
+              <div [style.height.px]="100">
+                <div class="mt-2">
+                  <spinner color="#fff"></spinner>
+                </div>
               </div>
-            </div>
-          }
-        </div>
-      }
+            }
+          </div>
+        }
+      </div>
     </div>
-  </div>
-</a>
+  </a>
 
-<div class="card-footer justify-content-between d-flex">
-  <div class="meta-info text-center">
+  <div class="card-footer justify-content-between d-flex">
+    <div class="meta-info text-center">
     <span class="badge badge-glow mr-25 badge-primary">
       <i data-feather="user"></i>
       @if (contest.status == -1) {
@@ -92,42 +93,41 @@
         </span>
       }
     </span>
-    <span class="badge badge-glow mr-25 badge-primary" ngbTooltip="{{ 'Problems' | translate }}">
+      <span class="badge badge-glow mr-25 badge-primary" ngbTooltip="{{ 'Problems' | translate }}">
       <i [data-feather]="'problem' | iconName"></i>
-      {{ contest.problemsCount }}
+        {{ contest.problemsCount }}
     </span>
-    <span class="badge badge-glow badge-primary">
+      <span class="badge badge-glow badge-primary">
       {{ contest.type }}
     </span>
-  </div>
+    </div>
 
-  <div class="registration text-center">
-    <!--Virtual contest-->
-    @if (contest.isFinished()) {
-      @if (!contest.userInfo.virtualContestPurchased) {
-        <kepcoin-spend-swal
-          [customContent]="true"
-          [purchaseUrl]="'contests/' + contest.id + '/purchase-virtual-contest/'"
-          [value]="5"
-          (success)="virtualContestPurchaseSuccess()">
-          <button class="btn btn-primary btn-sm round">
+    <div class="registration text-center">
+      <!--Virtual contest-->
+      @if (contest.isFinished()) {
+        @if (!contest.userInfo.virtualContestPurchased) {
+          <kepcoin-spend-swal
+            [customContent]="true"
+            [purchaseUrl]="'contests/' + contest.id + '/purchase-virtual-contest/'"
+            [value]="5"
+            (success)="virtualContestPurchaseSuccess()">
+            <button class="btn btn-primary btn-sm round">
+              <i [data-feather]="'contest' | iconName" [size]="16"></i>
+              {{ 'Virtual' | translate }}
+            </button>
+          </kepcoin-spend-swal>
+        }
+        @if (contest.userInfo.virtualContestPurchased) {
+          <button
+            (click)="virtualContestStart()"
+            class="btn btn-primary btn-sm round">
             <i [data-feather]="'contest' | iconName" [size]="16"></i>
-            {{ 'Virtual' | translate }}
+            {{ 'StartVirtual' | translate }}
           </button>
-        </kepcoin-spend-swal>
+        }
       }
-      @if (contest.userInfo.virtualContestPurchased) {
-        <button
-          (click)="virtualContestStart()"
-          class="btn btn-primary btn-sm round">
-          <i [data-feather]="'contest' | iconName" [size]="16"></i>
-          {{ 'StartVirtual' | translate }}
-        </button>
-      }
-    }
 
-    @if (contest.status != 1 && !contest.userInfo.virtualContestPurchased) {
-      <span>
+      @if (contest.status != 1 && !contest.userInfo.virtualContestPurchased) {
         @if (contest.status != 0 && contest.isRated && contest.userInfo.isRegistered && !contest.userInfo.unratedContestPurchased) {
           <kepcoin-spend-swal
             [customContent]="true"
@@ -142,20 +142,27 @@
           <img
             ngbTooltip="{{ 'Purchased' | translate }}"
             height="25" src="assets/images/icons/unrated.png" class="mr-1">
-          }
-          @if (contest.userInfo.isRegistered) {
-            <button ngbTooltip="{{ 'Cancel' | translate }}" rippleEffect class="btn btn-sm round btn-gradient-success"
-              (click)="cancelRegistration()">
-              <i data-feather="user" [size]="16"></i> {{ 'Registered' | translate }}
-              <i data-feather="x" class="text-danger"></i>
-            </button>
-          }
-          @if (!currentUser || !contest.userInfo.isRegistered) {
-            <button rippleEffect class="btn btn-sm round btn-gradient-primary" (click)="openRegistrationModal()">
-              <i data-feather="user" [size]="16"></i> {{ 'CONTESTS.REGISTER' | translate }}
-            </button>
-          }
-        </span>
+        }
+        @if (contest.userInfo.isRegistered) {
+          <button
+            ngbTooltip="{{ 'Cancel' | translate }}"
+            rippleEffect
+            class="btn btn-sm round btn-gradient-success"
+            (click)="cancelRegistration()">
+            <kep-icon name="check" color="success" size="small-4"/>
+            {{ 'Registered' | translate }}
+            <i data-feather="x" class="text-danger"></i>
+          </button>
+        }
+        @if (!currentUser || !contest.userInfo.isRegistered) {
+          <button
+            rippleEffect
+            class="btn btn-sm round btn-gradient-primary"
+            (click)="openRegistrationModal()">
+            <kep-icon size="small-4" name="username"/>
+            {{ 'CONTESTS.REGISTER' | translate }}
+          </button>
+        }
       }
     </div>
   </div>
@@ -164,14 +171,14 @@
 <ng-template #registrationModal let-modal>
   <div class="modal-header">
     <h5 class="modal-title">{{ contest.title }}</h5>
-    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+    <button (click)="modal.dismiss('Cross click')" aria-label="Close" class="close" type="button">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body" tabindex="0">
     <label>{{ 'Team' | translate }}</label>
     <ng-select [(ngModel)]="teamId" [clearable]="false">
-      @for (team of userTeams; track team.id) {
+      @for (team of userTeams;track team.id) {
         <ng-option [value]="team.id">
           <team-view-card [team]="team"/>
         </ng-option>
@@ -179,7 +186,7 @@
     </ng-select>
   </div>
   <div class="modal-footer">
-    <button [disabled]="!teamId" class="btn btn-primary btn-sm" rippleEffect (click)="registrationTeam()">
+    <button (click)="registrationTeam()" [disabled]="!teamId" class="btn btn-primary btn-sm" rippleEffect>
       {{ 'CONTESTS.REGISTER' | translate }}
     </button>
   </div>

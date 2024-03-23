@@ -118,6 +118,10 @@ export class ContestsService {
     return this.api.post(`contests/${ contestId }/registration/`, { team_id: teamId });
   }
 
+  cancelRegistration(contestId: number | string) {
+    return this.api.get(`contests/${ contestId }/cancel-registration/`);
+  }
+
   virtualContestStart(contestId: number | string) {
     return this.api.post(`contests/${ contestId }/virtual-contest-start/`);
   }

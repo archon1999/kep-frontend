@@ -18,6 +18,7 @@ import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.m
 import { TeamViewCardComponent } from '@app/modules/account-settings/teams/team-view-card/team-view-card.component';
 import { getResourceById, Resources } from '@app/resources';
 import { NewFeatureDirective } from '@shared/directives/new-feature.directive';
+import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 
 @Component({
   selector: 'contest-card',
@@ -36,6 +37,7 @@ import { NewFeatureDirective } from '@shared/directives/new-feature.directive';
     NgSelectModule,
     TeamViewCardComponent,
     NewFeatureDirective,
+    ContestClassesPipe,
   ]
 })
 export class ContestCardComponent implements OnInit {
@@ -46,8 +48,6 @@ export class ContestCardComponent implements OnInit {
   public userTeams: Array<Team> = [];
   public teamId: number;
   public routerLink: string | Array<string | number>;
-
-  public top3Contestants: Array<any> = [];
 
   public currentUser: User | null;
 
@@ -72,7 +72,8 @@ export class ContestCardComponent implements OnInit {
     );
   }
 
-  openRegistrationModal() {
+    openRegistrationModal() {
+    console.log(2412421412);
     if (this.contest.participationType === 1) {
       this.service.contestRegistration(this.contest.id).subscribe((result: any) => {
         if (result.success) {
@@ -106,11 +107,13 @@ export class ContestCardComponent implements OnInit {
 
   cancelRegistration() {
     if (this.contest.status !== ContestStatus.ALREADY) {
-      this.api.get(`contests/${ this.contest.id }/cancel-registration/`).subscribe((result: any) => {
-        if (result.success) {
-          this.contest.userInfo.isRegistered = false;
+      this.service.cancelRegistration(this.contest.id).subscribe(
+        (result) => {
+          if (result.success) {
+            this.contest.userInfo.isRegistered = false;
+          }
         }
-      });
+      );
     }
   }
 
@@ -121,9 +124,9 @@ export class ContestCardComponent implements OnInit {
   virtualContestStart() {
     this.service.virtualContestStart(this.contest.id).subscribe(
       () => {
-        this.router.navigate(['/competitions', 'contests', 'contest', this.contest.id]);
+        this.router.navigate([getResourceById(Resources.Contests, this.contest.id)]);
         this.service.getContest(this.contest.id).subscribe(
-          (contest: any) => {
+          (contest: Contest) => {
             this.contest = contest;
           }
         );
