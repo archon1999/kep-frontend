@@ -14,9 +14,13 @@ import { BaseComponent } from '@app/common';
   templateUrl: './arena-countdown.component.html',
   styleUrl: './arena-countdown.component.scss'
 })
-export class ArenaCountdownComponent extends BaseComponent implements OnInit {
+export class ArenaCountdownComponent implements OnInit {
   @Input() arena: Arena;
+
   public leftTime = 0;
+
+  protected readonly ArenaStatus = ArenaStatus;
+  protected readonly location = location;
 
   ngOnInit() {
     if (this.arena.status === ArenaStatus.NotStarted) {
@@ -25,6 +29,4 @@ export class ArenaCountdownComponent extends BaseComponent implements OnInit {
       this.leftTime = new Date(this.arena.finishTime).valueOf() - Date.now();
     }
   }
-
-  protected readonly ArenaStatus = ArenaStatus;
 }
