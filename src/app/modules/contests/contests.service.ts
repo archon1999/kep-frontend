@@ -6,7 +6,7 @@ import { Pageable } from '@app/common/classes/pageable';
 import { ContestStatus } from '@contests/constants/contest-status';
 import { ContestAttemptsFilter } from '@contests/models/contest-attempts-filter';
 import { Contest } from '@contests/models/contest';
-import { ContestCategory } from '@contests/models';
+import { Contestant, ContestCategory } from '@contests/models';
 import { getCategoryIcon } from '@contests/utils/category-icon';
 import { PageResult } from '@app/common/classes/page-result';
 import { Attempt } from '@problems/models/attempts.models';
@@ -46,7 +46,11 @@ export class ContestsService {
   }
 
   getContestants(contestId: number | string) {
-    return this.api.get(`contests/${ contestId }/contestants`);
+    return this.api.get(`contests/${ contestId }/contestants`).pipe(
+      map((contestants: Array<Contestant>) => {
+        return contestants.map((c) => Contestant.fromJSON(c));
+      })
+    );
   }
 
   getMe(contestId: number | string) {

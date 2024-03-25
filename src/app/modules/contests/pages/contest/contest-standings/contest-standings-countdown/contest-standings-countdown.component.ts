@@ -39,4 +39,5 @@ export class ContestStandingsCountdownComponent implements OnInit {
     }
   }
 
+  protected readonly ContestStatus = ContestStatus;
 }

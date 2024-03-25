@@ -1,9 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AuthService, User } from '@auth';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
-import { TitleService } from 'app/shared/services/title.service';
-import { Subject } from 'rxjs';
+import { Component } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ContestsService } from '../../../contests.service';
 import { fadeInOnEnterAnimation } from 'angular-animations';
@@ -23,6 +18,10 @@ import { Contest } from '@contests/models/contest';
 import { Contestant } from '@contests/models/contestant';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { BaseLoadComponent } from '@app/common';
+import { empty, interval, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-contest-standings',
@@ -39,27 +38,23 @@ import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
     ContestantViewModule,
     KepTableComponent,
     ContestClassesPipe,
+    ResourceByIdPipe,
+    EmptyResultComponent,
   ]
 })
-export class ContestStandingsComponent implements OnInit, OnDestroy {
-
-  public contentHeader: ContentHeader;
+export class ContestStandingsComponent extends BaseLoadComponent<Contestant[]> {
 
   public contest: Contest;
   public contestProblems: Array<ContestProblem> = [];
-  public contestants: Array<Contestant> = [];
-
-  public currentUser: User;
-
-  private _intervalId: any;
-  private _unsubscribeAll = new Subject();
 
   constructor(
-    public route: ActivatedRoute,
     public service: ContestsService,
-    public authService: AuthService,
-    public titleService: TitleService,
   ) {
+    super();
+  }
+
+  get contestants(): Contestant[] {
+    return this.data || [];
   }
 
   ngOnInit(): void {
@@ -68,22 +63,29 @@ export class ContestStandingsComponent implements OnInit, OnDestroy {
       this.contestProblems = sortContestProblems(contestProblems);
       this.loadContentHeader();
       this.titleService.updateTitle(this.route, { contestTitle: contest.title });
-      this.reloadContestants();
+      setTimeout(() => this.loadData());
     });
 
-    this.authService.currentUser
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((user: any) => this.currentUser = user);
-
     if (this.contest.status === ContestStatus.ALREADY) {
-      this._intervalId = setInterval(() => {
-        this.reloadPage();
-      }, 60000);
+      interval(30000).pipe(takeUntil(this._unsubscribeAll)).subscribe(
+        () => this.loadData()
+      );
     }
   }
 
-  loadContentHeader() {
-    this.contentHeader = {
+  getData(): Observable<Contestant[]> {
+    return this.service.getContestants(this.contest.id);
+  }
+
+  getProblemInfoBySymbol(
+    problemsInfo: Array<ContestProblemInfo>,
+    problemSymbol: string
+  ): ContestProblemInfo | undefined {
+    return problemsInfo.find(problemInfo => problemInfo.problemSymbol === problemSymbol);
+  }
+
+  protected getContentHeader() {
+    return {
       headerTitle: 'CONTESTS.STANDINGS',
       breadcrumb: {
         type: '',
@@ -108,50 +110,5 @@ export class ContestStandingsComponent implements OnInit, OnDestroy {
     };
   }
 
-  reloadContestants() {
-    this.service.getContestants(this.contest.id).subscribe((result: any) => {
-      this.contestants = result.map((data: any) => {
-        return Contestant.fromJSON(data);
-      });
-      this.reassignRanks();
-    });
-  }
-
-  reassignRanks() {
-    for (let index = 0; index < this.contestants.length; index++) {
-      if (index === 0) {
-        this.contestants[index].rank = 1;
-      } else {
-        this.contestants[index].rank = this.contestants[index - 1].rank;
-        if (this.contestants[index].points !== this.contestants[index - 1].points ||
-          this.contestants[index].penalties !== this.contestants[index - 1].penalties) {
-          this.contestants[index].rank = index + 1;
-        }
-      }
-    }
-  }
-
-  reloadPage() {
-    this.service.getContestProblems(this.contest.id).subscribe(
-      (problems: any) => {
-        this.contestProblems = sortContestProblems(problems);
-      }
-    );
-    this.reloadContestants();
-  }
-
-  getProblemInfoBySymbol(
-    problemsInfo: Array<ContestProblemInfo>,
-    problemSymbol: string
-  ): ContestProblemInfo | undefined {
-    return problemsInfo.find(problemInfo => problemInfo.problemSymbol === problemSymbol);
-  }
-
-  ngOnDestroy() {
-    if (this._intervalId) {
-      clearInterval(this._intervalId);
-    }
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
-  }
+  protected readonly empty = empty;
 }

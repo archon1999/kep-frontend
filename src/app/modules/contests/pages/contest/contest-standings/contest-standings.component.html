@@ -1,18 +1,19 @@
 <!--<app-content-header [contentHeader]="contentHeader"></app-content-header>-->
 
 <section [class]="contest | contestClasses">
-  <div class="d-flex justify-content-between align-items-center">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M21.9527 13.002H4.38626L7.67727 16.2931C8.62258 17.2384 7.20462 18.6563 6.2593 17.711L3.26207 14.7091L1.26126 12.7051C0.87348 12.3151 0.87348 11.6851 1.26126 11.295L6.2593 6.29109C6.44946 6.09569 6.7112 5.98605 6.98391 5.98832C7.88411 5.98843 8.32589 7.08488 7.67727 7.7091L4.37844 11.0002H22.0044C23.3908 11.0689 23.2873 13.071 21.9527 13.002Z" fill="#808095"/>
-    </svg>
-
-    <h2 class="mt-2 mb-2 text-dark text-center">{{ contest.title }}</h2>
-
-    <div></div>
+  <div class="d-flex justify-content-center align-items-center">
+    <div class="d-flex align-items-center">
+      <kep-icon class="mr-50" name="contest" size="large-1" type="duotone"/>
+      <a [routerLink]="Resources.Contest | resourceById:contest.id">
+        <h2 class="mt-2 mb-2 text-dark text-center">
+          {{ contest.title }}
+        </h2>
+      </a>
+    </div>
   </div>
   <contest-standings-countdown [contest]="contest"></contest-standings-countdown>
 
-  <kep-table>
+  <kep-table [loading]="isLoading" [empty]="contestants.length == 0">
     <ng-container header>
       <tr>
         <th class="text-center">#</th>
@@ -149,7 +150,7 @@
         <th class="text-center text-dark">#</th>
         <th class="text-dark">{{ 'CONTESTS.CONTESTANT' | translate }}</th>
         <th class="text-center text-dark"><i [data-feather]="'rating' | iconName"></i></th>
-        @if (contest.isAlready() && contest.isRated) {
+        @if (contest.isRated) {
           <th class="text-center">
             <i [data-feather]="'delta' | iconName"></i>
           </th>

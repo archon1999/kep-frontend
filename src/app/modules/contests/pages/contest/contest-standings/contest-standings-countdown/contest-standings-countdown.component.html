@@ -1,16 +1,14 @@
-@if (contest.status == 0) {
-  <h4 class="text-center ml-2 mb-2">
+@if (contest.status == ContestStatus.ALREADY) {
+  <h4 class="text-center ml-1 mb-2">
     {{ 'CONTESTS.CONTEST_ENDS' | translate }}
   </h4>
-}
-@if (contest.status == -1) {
-  <h4 class="text-center ml-2 mb-2">
+} @else if (contest.status == ContestStatus.NOT_STARTED) {
+  <h4 class="text-center ml-1 mb-2">
     {{ 'CONTESTS.CONTEST_STARTS' | translate }}
   </h4>
-}
-@if (contest.status == 1) {
-  <h4 class="text-center ml-2 mb-2">
-    {{ 'CONTESTS.CONTEST_FINISHED' | translate }}
+} @else if (contest.status == ContestStatus.FINISHED) {
+  <h4 class="text-center ml-1 mb-2">
+    {{ 'CONTESTS.STANDINGS' | translate }}
   </h4>
 }
 
@@ -44,16 +42,16 @@
 <ng-template #finishModal let-modal>
   <div class="modal-header">
     <h5 class="modal-title">{{ contest.title }}</h5>
-    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+    <button (click)="modal.dismiss('Cross click')" aria-label="Close" class="close" type="button">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body" tabindex="0" ngbAutofocus>
+  <div class="modal-body" ngbAutofocus tabindex="0">
     {{ 'CONTESTS.CONTEST_FINISHED' | translate }}
   </div>
   <div class="modal-footer">
-    <a [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'standings']"
-      class="btn btn-primary btn-relief" rippleEffect (click)="modal.dismiss('Cross click')">
+    <a (click)="modal.dismiss('Cross click')"
+       [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'standings']" class="btn btn-primary btn-relief" rippleEffect>
       {{ 'CONTESTS.STANDINGS' | translate }}
     </a>
   </div>
@@ -62,16 +60,16 @@
 <ng-template #startModal let-modal>
   <div class="modal-header">
     <h5 class="modal-title">{{ contest.title }}</h5>
-    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+    <button (click)="modal.dismiss('Cross click')" aria-label="Close" class="close" type="button">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body" tabindex="0" ngbAutofocus>
+  <div class="modal-body" ngbAutofocus tabindex="0">
     {{ 'CONTESTS.CONTEST_STARTED' | translate }}
   </div>
   <div class="modal-footer">
-    <a [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problems']"
-      class="btn btn-primary btn-relief" rippleEffect (click)="modal.dismiss('Cross click')">
+    <a (click)="modal.dismiss('Cross click')"
+       [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problems']" class="btn btn-primary btn-relief" rippleEffect>
       {{ 'CONTESTS.PROBLEMS' | translate }}
     </a>
   </div>
