@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ContestsService } from '../../../contests.service';
 import { fadeInOnEnterAnimation } from 'angular-animations';
@@ -21,7 +21,7 @@ import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { BaseLoadComponent } from '@app/common';
-import { empty, interval, Observable } from 'rxjs';
+import { interval, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-contest-standings',
@@ -40,7 +40,8 @@ import { empty, interval, Observable } from 'rxjs';
     ContestClassesPipe,
     ResourceByIdPipe,
     EmptyResultComponent,
-  ]
+  ],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ContestStandingsComponent extends BaseLoadComponent<Contestant[]> {
 
@@ -109,6 +110,4 @@ export class ContestStandingsComponent extends BaseLoadComponent<Contestant[]> {
       }
     };
   }
-
-  protected readonly empty = empty;
 }
