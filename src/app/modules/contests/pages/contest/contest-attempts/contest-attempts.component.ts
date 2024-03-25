@@ -106,6 +106,11 @@ export class ContestAttemptsComponent extends BaseTablePageComponent<Attempt> im
     );
   }
 
+  filterApply() {
+    this.pageNumber = this.defaultPageNumber;
+    this.reloadPage();
+  }
+
   protected getContentHeader() {
     return {
       headerTitle: this.contest.title,
