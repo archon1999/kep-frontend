@@ -55,7 +55,7 @@
         [ngClass]="{'bg-light-primary': isOwner(attempt)}">
         <td>
           @if (attempt.canView) {
-            <button type="button" class="btn p-0" (click)="clicked.emit(attempt.id)">
+            <button type="button" class="btn attempt-id p-0" (click)="clicked.emit(attempt.id)">
               <u>
                 {{ attempt.id }}
               </u>
