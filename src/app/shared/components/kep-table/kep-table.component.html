@@ -3,15 +3,16 @@
     <div style="background: none;" [style.height]="spinnerHeight">
       <spinner></spinner>
     </div>
-  } @else if(empty) {
-    <empty-result></empty-result>
   } @else {
     <div class="table-responsive" [class]="tableCardClass">
       <table class="table" [class]="tableClass">
         <thead>
-         <ng-content select="[header]"></ng-content>
+          <ng-content select="[header]"></ng-content>
         </thead>
-        <tbody>
+        <tbody [class]="{ 'empty': empty }">
+          @if (empty) {
+            <empty-result [text]="''"/>
+          }
           <ng-content select="[body]"></ng-content>
         </tbody>
         <tfoot>
@@ -22,6 +23,6 @@
   }
 </div>
 
-@if(!empty){
+@if (!empty) {
   <ng-content select="[pagination]"></ng-content>
 }

@@ -1,0 +1,11 @@
+kep-table {
+  .empty {
+    position: relative;
+    height: 280px;
+
+    empty-result {
+      position: absolute;
+      left: calc(50% - 120px);
+    }
+  }
+}
