@@ -1,3 +1,5 @@
+@import 'styles/kep-imports';
+
 kep-table {
   .empty {
     position: relative;
@@ -7,5 +9,9 @@ kep-table {
       position: absolute;
       left: calc(50% - 120px);
     }
+  }
+
+  tr:hover {
+    background-color: rgba($primary, 0.1) !important;
   }
 }
