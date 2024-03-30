@@ -12,7 +12,7 @@
             <p class="text-dark font-medium-1 px-4">{{ 'LandingPage.SectionPracticeText' | translate }}</p>
             <div class="d-flex justify-content-center">
               @for (menuItem of menu[2].children; track menuItem.id){
-                <a class="btn mt-50 mb-1 mr-50 btn-primary btn-sm">
+                <a [routerLink]="menuItem.url" class="btn mt-50 mb-1 mr-50 btn-primary btn-sm">
                   <kep-icon [name]="menuItem.icon" size="small-4"></kep-icon>
                   {{ menuItem.translate | translate }}
                 </a>
@@ -52,7 +52,7 @@
             <p class="text-dark font-medium-1 px-4">{{ 'LandingPage.SectionCompetitionsText' | translate }}</p>
             <div class="d-flex justify-content-center">
               @for (menuItem of menu[3].children; track menuItem.id){
-                <a class="btn mt-50 mb-1 mr-50 btn-primary btn-sm">
+                <a [routerLink]="menuItem.url" class="btn mt-50 mb-1 mr-50 btn-primary btn-sm">
                   <kep-icon [name]="menuItem.icon" size="small-4"></kep-icon>
                   {{ menuItem.translate | translate }}
                 </a>
