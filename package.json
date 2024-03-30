@@ -4,9 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "set NODE_OPTIONS=--max_old_space_size=8192 & ng serve --open",
-    "build": "node --max_old_space_size=2048 ./node_modules/@angular/cli/bin/ng build",
-    "build:prod": "node --max_old_space_size=2048 ./node_modules/@angular/cli/bin/ng build --configuration production",
-    "build-prod": "node --max_old_space_size=2048 ./node_modules/@angular/cli/bin/ng build --configuration production --base-href /static/frontend/ && npm run compress && npm run move-index",
+    "build": "node --max_old_space_size=3072 ./node_modules/@angular/cli/bin/ng build",
+    "build:prod": "node --max_old_space_size=3072 ./node_modules/@angular/cli/bin/ng build --configuration production",
+    "build-prod": "node --max_old_space_size=3072 ./node_modules/@angular/cli/bin/ng build --configuration production --base-href /static/frontend/ && npm run compress && npm run move-index",
     "compress": "gzipper compress /home/cpython/server/static/frontend",
     "compress-brotli": "gzipper compress /home/cpython/server/static/frontend --brotli",
     "move-index": "mv /home/cpython/server/static/frontend/index.html /home/cpython/server/apps/angular/templates/",
