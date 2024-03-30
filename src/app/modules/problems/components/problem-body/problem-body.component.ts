@@ -36,6 +36,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { Problem1869Component } from '@problems/components/problem-body/problem1869/problem1869.component';
 import Swal from 'sweetalert2';
 import { Problem1905Component } from '@problems/components/problem-body/problem1905/problem1905.component';
+import { Problem1954Component } from '@problems/components/problem-body/problem1954/problem1954.component';
 
 @Component({
   selector: 'problem-body',
@@ -78,6 +79,7 @@ import { Problem1905Component } from '@problems/components/problem-body/problem1
     ClipboardModule,
     CoreCommonModule,
     Problem1869Component,
+    Problem1954Component,
   ]
 })
 export class ProblemBodyComponent implements OnInit, OnDestroy {
