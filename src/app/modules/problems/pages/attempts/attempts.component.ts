@@ -36,11 +36,6 @@ export class AttemptsComponent extends BaseTablePageComponent<Attempt> implement
     return this.pageResult?.data;
   }
 
-  ngOnInit(): void {
-    this.loadContentHeader();
-    this.reloadPage();
-  }
-
   getPage(): Observable<PageResult<Attempt>> {
     const params: any = this.pageable;
     if (this.myAttempts && this.currentUser) {
