@@ -37,6 +37,7 @@ import { ErrorInterceptor } from '@app/modules/pages/miscellaneous/error/error.i
 import { TeamJoinResolver } from '@app/modules/account-settings/account-settings.resolver';
 import { TeamJoinComponent } from '@app/modules/account-settings/teams/team-join/team-join.component';
 import { BlockUIModule } from 'ng-block-ui';
+import { HIGHLIGHT_OPTIONS, HighlightOptions } from 'ngx-highlightjs';
 
 register();
 
@@ -155,7 +156,17 @@ export function authFactory(authService: AuthService) {
       useClass: ErrorInterceptor,
       multi: true,
     },
-    CustomBreakPointsProvider
+    CustomBreakPointsProvider,
+    {
+      provide: HIGHLIGHT_OPTIONS,
+      useValue: <HighlightOptions>{
+        lineNumbersLoader: () => import('ngx-highlightjs/line-numbers'),
+        coreLibraryLoader: () => import('highlight.js/lib/core'),
+        languages: {
+          python: () => import('highlight.js/lib/languages/python'),
+        },
+      }
+    },
   ],
   bootstrap: [AppComponent]
 })
