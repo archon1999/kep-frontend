@@ -1,0 +1,15 @@
+<h3 class="text-dark">{{ problem.title }}</h3>
+<problem-body [problem]="problem"/>
+
+<code-editor-modal
+  (submittedEvent)="onSubmitted()"
+  [availableLanguages]="availableLanguages"
+  [sampleTests]="problem.sampleTests"
+  [submitUrl]="'problems/' + problem.id + '/submit/'"
+  [uniqueName]="'problem-' + problem.id">
+</code-editor-modal>
+
+@if (attempts.length > 0) {
+  <h3 class="card-title my-1">{{ 'ATTEMPTS' | translate }}</h3>
+  <attempts-table [attempts]="attempts"/>
+}

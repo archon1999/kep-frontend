@@ -1,0 +1,86 @@
+<div class="card">
+  @if (!course.inThePipeline) {
+    <a class="card-img" routerLink="/learn/courses/course/{{ course.id }}">
+      <img class="card-img-top img-fluid" src="{{ course.logo }}" alt="Course logo" />
+    </a>
+  } @else {
+    <span class="card-img">
+      <img class="card-img-top img-fluid" src="{{ course.logo }}" alt="Course logo" />
+    </span>
+  }
+  <div class="card-body">
+    <div class="row justify-content-end">
+      <div class="col">
+        <div class="reviews">
+          <span placement="top" ngbTooltip="{{ course.rating }}" container="body" class="rating">
+            <ngb-rating [(rate)]="course.rating" [max]="5" [readonly]="true" class="outline-none"/>
+          </span>
+          ({{ course.rating }})
+        </div>
+      </div>
+      <div class="col text-right">
+        <span class="badge badge-{{ course.levelColor }}">
+          {{ course.levelDisplay }}
+        </span>
+      </div>
+    </div>
+    <h5 class="card-title mt-2">
+      @if (!course.inThePipeline) {
+        <a routerLink="/learn/courses/course/{{ course.id }}">
+          {{ course.title }}
+        </a>
+      } @else {
+        <span>
+          {{ course.title }}
+        </span>
+      }
+    </h5>
+    <div class="media pt-1">
+      <div class="media-body">
+        <div [innerHTML]="course.descriptionShort"></div>
+        <div class="tags mt-2">
+          @for (tag of course.tags; track tag) {
+            <span class="badge badge-primary badge-pill">
+              {{ tag.name }}
+            </span>
+          }
+        </div>
+        <div class="meta-info d-flex justify-content-between">
+          <hr />
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center text-primary">
+              <i [data-feather]="'comment' | iconName" class="font-medium-1 mr-50"></i>
+              <span ngbTooltip="{{ 'COURSES.REVIEWS' | translate }}" class="font-weight-bold pr-1">{{ course.reviewsCount }}</span>
+              <i [data-feather]="'user' | iconName" class="font-medium-1 mr-50"></i>
+              <span ngbTooltip="{{ 'COURSES.PARTICIPANTS' | translate }}" class="font-weight-bold pr-1">{{ course.participantsCount }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+    @if (course.inThePipeline) {
+      <span class="badge badge-info badge-glow">
+        <i data-feather="tool"></i> {{ 'COURSES.IN_THE_PIPELINE' | translate }}
+      </span>
+    }
+    @else {
+      <div>
+        <a [routerLink]="Resources.CourseFirstLesson | resourceById:course.id" class="btn btn-sm btn-block btn-primary">
+          @if (!course.isStarted) {
+            <span>{{ 'COURSES.START' | translate }}</span>
+          }
+          @if (course.isStarted) {
+            <span> {{ 'COURSES.CONTINUE' | translate }}</span>
+          }
+        </a>
+        @if (course.isStarted) {
+          <div class="mt-2 progress-wrapper">
+            <div class="mb-25">{{ 'COURSES.PROGRESS' | translate }}: {{ course.participantProgress }}%</div>
+            <ngb-progressbar type="primary" [value]="course.participantProgress"></ngb-progressbar>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

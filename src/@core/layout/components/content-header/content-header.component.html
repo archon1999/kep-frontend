@@ -1,11 +1,11 @@
 @if (contentHeader){
   <div class="mb-3" [ngClass]="{
-    'd-flex justify-content-between align-items-center': contentHeader.refreshVisible
+    'd-flex justify-content-between align-items-center': contentHeader.refreshVisible || hasActions
   }">
-    <div class="content-header row" [@fadeInLeft]="animationState">
-      <div class="content-header-left col-md-9 col-12 mb-0">
-        <div class="row breadcrumbs-top">
-          <div class="col-12 d-flex mt-1">
+    <div class="content-header" [@fadeInLeft]="animationState">
+      <div class="content-header-left mb-0">
+        <div class="breadcrumbs-top">
+          <div class="d-flex mt-1">
             <h2 class="content-header-title float-left mb-0">
               {{ contentHeader.headerTitle | translate }}
             </h2>
@@ -16,12 +16,13 @@
       </div>
     </div>
 
-    @if (contentHeader.refreshVisible) {
-      <div class="text-right" [@fadeInUp]="animationState">
+    <div class="text-right" [@fadeInUp]="animationState">
+      <ng-content select="[actions]"></ng-content>
+      @if (contentHeader.refreshVisible) {
         <button ngbTooltip="{{ 'Reload' | translate }}" (click)="refresh.next(null)" rippleEffect class="btn btn-sm btn-primary">
           <i data-feather="refresh-cw"></i>
         </button>
-      </div>
-    }
+      }
+    </div>
   </div>
 }

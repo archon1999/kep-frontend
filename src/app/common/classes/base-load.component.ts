@@ -16,6 +16,7 @@ export abstract class BaseLoadComponent<T> extends BasePageComponent implements 
     if (this.loadOnInit) {
       setTimeout(() => this.loadData());
     }
+    this.loadContentHeader();
   }
 
   abstract getData(): Observable<T>;

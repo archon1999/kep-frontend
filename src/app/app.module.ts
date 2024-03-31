@@ -36,6 +36,7 @@ import { LayoutComponent } from '@layout/layout.component';
 import { ErrorInterceptor } from '@app/modules/pages/miscellaneous/error/error.interceptor';
 import { TeamJoinResolver } from '@app/modules/account-settings/account-settings.resolver';
 import { TeamJoinComponent } from '@app/modules/account-settings/teams/team-join/team-join.component';
+import { BlockUIModule } from 'ng-block-ui';
 
 register();
 
@@ -45,7 +46,7 @@ const appRoutes: Routes = [
   { path: 'home', loadChildren: () => import('./modules/home/home.routing') },
   { path: 'settings', loadChildren: () => import('./modules/account-settings/account-settings.module').then(m => m.AccountSettingsModule) },
   { path: 'kepcoin', loadChildren: () => import('./modules/kepcoin/kepcoin.module').then(m => m.KepcoinModule) },
-  { path: 'learn/courses', loadChildren: () => import('./modules/courses/courses.module').then(m => m.CoursesModule) },
+  { path: 'learn/courses', loadChildren: () => import('./modules/courses/courses.routing') },
   { path: 'learn/lugavar', loadChildren: () => import('./modules/lugavar/lugavar.module').then(m => m.LugavarModule) },
   { path: 'learn/blog', loadChildren: () => import('./modules/blog/blog.module').then(m => m.BlogModule) },
   { path: 'practice/problems', loadChildren: () => import('@problems/problems.routing') },
@@ -119,6 +120,7 @@ export function authFactory(authService: AuthService) {
     }),
     TranslateModule.forRoot(),
     ToastrModule,
+    BlockUIModule.forRoot(),
 
     WebsocketModule.config({
       url: environment.wsUrl,

@@ -40,6 +40,12 @@ pre {
   }
 }
 
+@media (min-width: 1200px) {
+  .container-xl {
+    max-width: 1200px;
+  }
+}
+
 @media (min-width: 540px) {
   .container-sm {
     max-width: 540px;

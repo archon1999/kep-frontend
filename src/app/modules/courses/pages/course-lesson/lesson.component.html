@@ -1,0 +1,95 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader" [hasActions]="true">
+      <ng-container actions>
+        <button (click)="startTour()" class="btn btn-sm btn-primary">
+          <i [data-feather]="'question' | iconName"></i>
+        </button>
+      </ng-container>
+    </app-content-header>
+
+    <section class="mt-2">
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <lesson-sidebar
+            [course]="course"
+            [courseLessons]="courseLessons"
+            [currentCourseLesson]="courseLesson"
+          ></lesson-sidebar>
+        </div>
+
+        <div class="col-lg-9 col-md-8 col-sm-6">
+          <div class="layout-spacing tour-step-4"
+            (keydown.ArrowLeft)="changeLessonPart(lessonPartIndex-1)"
+            (keydown.ArrowRight)="changeLessonPart(lessonPartIndex+1)"
+            >
+            @for (part of courseLesson.parts; track part; let index = $index) {
+              <button
+                class="btn lesson-part-icon btn-sm"
+                [ngbTooltip]="part.points"
+                [ngClass]="part.getClassOf(currentLessonPart==part)"
+                (click)="changeLessonPart(index)">
+                <i [data-feather]="part.contentTypeIcon | iconName" [size]="12"></i>
+              </button>
+            }
+          </div>
+
+          <div class="layout-spacing"
+            (keydown.ArrowLeft)="changeLessonPart(lessonPartIndex-1)"
+            (keydown.ArrowRight)="changeLessonPart(lessonPartIndex+1)"
+            *blockUI="'lesson-part-section'"
+            >
+            <div class="card mt-2 tour-step-5">
+              <div class="card-header justify-content-center bg-gradient-primary">
+                <h3 class="card-title text-white">
+                  <div [innerHTML]="courseLesson.title"></div>
+                </h3>
+              </div>
+              <div class="card-body mt-2">
+                <lesson-part
+                  [lessonPart]="currentLessonPart"
+                  (checkPartCompletionEvent)="checkPartCompletionEvent($event)"
+                ></lesson-part>
+
+                  <div class="row mt-2 justify-content-between">
+                    <div class="pl-1">
+                      @if (lessonPartIndex > 0) {
+                        <button (click)="changeLessonPart(lessonPartIndex-1)" class="btn btn-primary">
+                          <i data-feather="arrow-left"></i>
+                        </button>
+                      }
+                    </div>
+                    <div class="tour-step-6">
+                      <button ngbTooltip="{{ 'COURSES.DISCUSSION' | translate }}" (click)="toogleCommentsButton()" class="btn report-button round  btn-relief-primary">
+                        <i data-feather="message-circle" [size]="16"></i>
+                      </button>
+                    </div>
+                    <div class="pr-1">
+                      @if (lessonPartIndex + 1 < courseLesson.parts.length) {
+                        <button (click)="changeLessonPart(lessonPartIndex+1)"
+                          class="btn btn-primary">
+                          <i data-feather="arrow-right"></i>
+                        </button>
+                      }
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+            @if (isCommentsShow) {
+              <div class="layout-spacing">
+                <lesson-part-comments
+                  [comments]="lessonPartComments"
+                  [lessonPartId]="currentLessonPart.id">
+                </lesson-part-comments>
+              </div>
+            }
+
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>

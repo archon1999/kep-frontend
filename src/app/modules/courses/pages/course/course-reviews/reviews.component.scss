@@ -1,0 +1,22 @@
+@import 'styles/kep-imports';
+
+.rating {
+  font-size: 22px !important;
+  color: #ff9f43 !important;
+}
+
+.ql-align-center {
+  text-align: center;
+}
+
+textarea {
+  resize: none;
+}
+
+.reviews-count {
+  font-size: 12px;
+  font-weight: 100;
+  vertical-align: super;
+  color: #888ea8;
+  letter-spacing: 2px;
+}

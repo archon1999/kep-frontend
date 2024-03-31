@@ -1,0 +1,51 @@
+<div class="mt-4 content-wrapper container-xl p-0">
+  <div class="content-body">
+    <h1 class="text-dark my-4">{{ 'AboutCourse' | translate }}</h1>
+    <div class="card">
+      <div class="card-body">
+        <p [innerHTML]="course.description" class="text-dark"></p>
+
+        <div class="text-dark font-medium-2 mt-2 mb-1">
+          <i [data-feather]="'activity'" [size]="18" class="mr-25"></i>
+          Kurs {{ tasksRatio }}% amaliyotdan iborat
+        </div>
+
+        <div class="text-dark font-medium-2 mb-1">
+          <i [size]="'18'" class="mr-25" [data-feather]="'info'"></i>
+          Ushbu kurs <b>9 ta</b> mavzudan iborat, har bir mavzu kichik ma'ruzalar, misollar, topshiriq va masalalardan iborat.
+        </div>
+
+        <div class="text-dark font-medium-2">
+          <i [size]="'18'" class="mr-25" [data-feather]="'check-circle'"></i>
+          Kurs davomida bajariladigan topshiriqlar soni <b>100 dan</b> ortiq.
+        </div>
+      </div>
+
+      <div class="card-footer d-flex justify-content-center">
+        <div class="half-width">
+          <div class="text-center">
+            <a
+              [routerLink]="Resources.CourseFirstLesson | resourceById:course.id"
+              class="btn btn-primary btn-sm btn-block" rippleEffect>
+                <span>
+                  @if (!course.isStarted) {
+                    {{ 'COURSES.START' | translate }}
+                  } @else {
+                    {{ 'COURSES.CONTINUE' | translate }}
+                  }
+                </span>
+            </a>
+            @if (course.isStarted) {
+              <div class="mt-2 progress-wrapper">
+                <div class="mb-25 text-dark">
+                  {{ 'COURSES.PROGRESS' | translate }}: {{ course.participantProgress }}%
+                </div>
+                <ngb-progressbar type="success" [value]="course.participantProgress"/>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

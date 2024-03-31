@@ -1,0 +1,17 @@
+@import 'styles/kep-imports';
+
+course-header {
+  display: block;
+
+  @include media-breakpoint-up(lg) {
+    height: 500px;
+  }
+
+  @include media-breakpoint-down(md) {
+    height: 600px;
+  }
+
+  @include media-breakpoint-down(sm) {
+    height: 650px;
+  }
+}

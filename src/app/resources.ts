@@ -23,6 +23,10 @@ export enum Resources {
   Projects = '/practice/projects',
   Project = '/practice/projects/project/:id',
 
+  Courses = '/learn/courses',
+  Course = '/learn/courses/course/:id',
+  CourseFirstLesson = '/learn/courses/course/:id/lesson/1',
+
   Login = '/login',
   Settings = '/settings',
   SettingsTab = '/settings/:id',

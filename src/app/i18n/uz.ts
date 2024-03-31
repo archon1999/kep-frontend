@@ -420,6 +420,7 @@ export const locale = {
     NoResultFound: 'Hech Nima Topilmadi',
     NoResultFoundText: 'Siz qidirgan narsa afsuski topilmadi yoki mavjud emas',
     CompetitionPrizes: 'Musobaqa yutuqlari',
+    Lessons: 'Darsliklar',
     ContestRules: {
       ACM20H: ``,
     },

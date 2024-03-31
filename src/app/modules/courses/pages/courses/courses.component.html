@@ -1,0 +1,19 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    @if (isLoading) {
+      <div class="card" [style.height.px]="400">
+        <spinner/>
+      </div>
+    } @else {
+      <div class="row">
+        @for (course of data;track course.id) {
+          <div class="col-lg-6 col-md-6 col-sm-12 layout-spacing">
+            <course-card [course]="course"/>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

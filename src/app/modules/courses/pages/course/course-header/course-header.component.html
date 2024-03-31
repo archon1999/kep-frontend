@@ -1,0 +1,58 @@
+<div class="course-page-top">
+  <div class="course course-{{ course.id }}">
+    <div [@fadeInLeftOnEnter] class="course-header order-md-1 order-2">
+      <div class="course-info d-flex">
+        <div class="course-level mr-25">
+          <span class="badge badge-success">
+            {{ course.levelTitle }}
+          </span>
+        </div>
+
+        <div class="course-participants mr-1">
+          <span class="badge badge-primary">
+            <kep-icon size="small-2" name="users"/>
+            <span class="ml-25 count">{{ course.participantsCount }}</span>
+          </span>
+        </div>
+
+        <div class="course-rating mr-1">
+          <span
+            class="rating"
+            container="body"
+            ngbTooltip="{{ course.rating }}"
+            placement="top">
+            <ngb-rating [(rate)]="course.rating" [max]="5" [readonly]="true" class="outline-none"/>
+          </span>
+          ({{ course.rating }})
+        </div>
+      </div>
+      <h1 class="course-title">
+        {{ course.title }}
+      </h1>
+      <div class="course-description">
+        <p [innerHTML]="course.descriptionShort"></p>
+      </div>
+      <div class="course-tags">
+        @for (tag of course.tags;track tag) {
+          <span class="badge badge-pill badge-primary">
+            {{ tag.name }}
+          </span>
+        }
+      </div>
+      <div class="course-meta d-md-flex">
+        <div class="course-updated">
+          <kep-icon size="small-4" name="pin"/>
+          {{ 'LastUpdate' | translate }}: {{ course.updated }}
+        </div>
+
+        <div class="course-lang ml-md-2 mt-md-0 mt-1">
+          <kep-icon size="small-4" name="flag"/>
+          {{ 'Language' | translate }}: {{ 'Uzbek' | translate }}
+        </div>
+      </div>
+    </div>
+    <div [@fadeInUpOnEnter] class="course-image order-md-2 order-1">
+      <img alt="" src="{{ course.logo }}">
+    </div>
+  </div>
+</div>

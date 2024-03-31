@@ -1,0 +1,142 @@
+@import 'scss/angular/libs/toastr.component.scss';
+@import 'scss/angular/libs/drag-drop.component.scss';
+@import 'scss/angular/libs/quill-editor.component.scss';
+@import 'scss/angular/libs/tour.component.scss';
+@import 'scss/angular/libs/blockui.component.scss';
+
+app-lesson {
+  .reviews svg {
+    fill: #e2a03f;
+    color: #e2a03f;
+    stroke-width: 0;
+    width: 15px;
+    height: 15px;
+    vertical-align: sub;
+  }
+
+  .card-img {
+    text-align: center;
+  }
+
+  .rating {
+    font-size: 22px !important;
+    color: #ff9f43 !important;
+  }
+
+  .lesson-part-icon {
+    margin-right: 3px;
+  }
+
+  .col.problem-header {
+    padding-right: 0rem !important;
+    padding-left: 0rem !important;
+  }
+
+  .rating {
+    font-size: 22px !important;
+    color: #ff9f43 !important;
+  }
+
+  .sample-test th {
+    border-bottom: none !important;
+    border-top: none !important;
+    border-right: none !important;
+    border-left: none !important;
+    border-top-left-radius: 10px !important;
+    border-top-right-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+  }
+
+  textarea {
+    resize: none;
+  }
+
+  table.sample-test {
+    border-collapse: separate !important;
+    border-spacing: 10px 0px !important;
+  }
+
+  .sample-test td {
+    vertical-align: top !important;
+    padding: 20px !important;
+  }
+
+  tr:first-child td, th {
+    border-bottom: none !important;
+    border-top: none !important;
+  }
+
+  .dark-layout pre code {
+    color: white !important;
+  }
+
+  .problem-body {
+    padding-left: 30px;
+  }
+
+  .problem-header-sep::before {
+    content: "|";
+  }
+
+  .problem-header-sep {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  /*
+  td:first-child {
+      padding-left: 10px;
+  }
+  */
+
+  tr:first-child td, th {
+    border-bottom: none !important;
+    border-top: none !important;
+  }
+
+  th {
+    border-bottom: none !important;
+    border-top: none !important;
+  }
+
+  thead tr th, tfoot tr th {
+    font-size: 1rem;
+    font-weight: 600 !important;
+    text-transform: initial !important;
+  }
+
+  table > thead > tr > th:first-child {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+  }
+
+  table > thead > tr > th:last-child {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  .ql-align-center {
+    text-align: center;
+  }
+
+  .report-button {
+    // position: fixed;
+    // bottom: 5%;
+    height: 40px;
+    width: 50px;
+    // left: 40px;
+    // z-index: 99;
+    // opacity: 1;
+    // display: block;
+    // transition: all 0.2s ease-in-out;
+  }
+
+  .report-button svg {
+    margin-left: -4px;
+  }
+}

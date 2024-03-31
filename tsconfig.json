@@ -48,6 +48,9 @@
       "@arena/*": [
         "app/modules/arena/*"
       ],
+      "@courses/*": [
+        "app/modules/courses/*"
+      ],
       "@users/*": [
         "app/modules/users/*"
       ],

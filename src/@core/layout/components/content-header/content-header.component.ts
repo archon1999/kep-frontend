@@ -23,6 +23,7 @@ export interface ContentHeader {
 export class ContentHeaderComponent implements OnInit {
   @Input() contentHeader: ContentHeader;
   @Input() refreshVisible = false;
+  @Input() hasActions = false;
   @Output() refresh = new EventEmitter<null>();
 
   public animationState = false;

@@ -424,6 +424,7 @@ export const locale = {
     NoResultFound: 'No Result Found',
     NoResultFoundText: 'What you searched was unfortunately not found or does not exists',
     CompetitionPrizes: 'Competition prizes',
+    Lessons: 'Lessons',
     ProblemTourSteps: [
       {
         title: 'Available languages',
