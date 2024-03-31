@@ -35,7 +35,7 @@
   }
 
   .course-header {
-    margin-top: calc(10rem - 30px);
+    margin-top: calc(10rem - 50px);
     margin-left: 15rem;
 
     @include media-breakpoint-down(md) {
@@ -115,7 +115,7 @@
       height: 150px;
       margin-left: 1.4rem;
       margin-right: 2rem;
-      margin-top: 6rem;
+      margin-top: 4rem;
     }
     
     img {

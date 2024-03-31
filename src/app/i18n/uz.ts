@@ -570,7 +570,7 @@ export const locale = {
       START: 'Boshlash',
       CONTINUE: 'Davom ettirish',
       TOP_ACTIVE_PARTICIPANTS: 'Eng faol ishtirokchilar',
-      TOP_PARTICIPANTS: 'Top ishtirokchilar',
+      TOP_PARTICIPANTS: 'Eng yaxshi ishtirokchilar',
       TOP_BEST_PARTICIPANTS: 'Eng yaxshi ishtirokchilar',
       REVIEWS: 'Shahrlar',
       PARTICIPANT: 'Ishtirokchi',

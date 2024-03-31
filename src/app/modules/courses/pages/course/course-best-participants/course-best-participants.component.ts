@@ -22,12 +22,8 @@ export class CourseBestParticipantsComponent implements OnInit {
 
   @Input() course: Course;
 
-  public type = 1;
-
   public topActiveParticipants: Array<CourseParticipant> = [];
   public topBestParticipants: Array<CourseParticipant> = [];
-
-  public topParticipants: Array<CourseParticipant> = [];
 
   constructor(
     public service: CoursesService,
@@ -37,7 +33,6 @@ export class CourseBestParticipantsComponent implements OnInit {
     this.service.getCourseTopActiveParticipants(this.course.id).subscribe(
       (result: any) => {
         this.topActiveParticipants = result;
-        this.update();
       }
     );
 
@@ -46,14 +41,6 @@ export class CourseBestParticipantsComponent implements OnInit {
         this.topBestParticipants = result;
       }
     );
-  }
-
-  update() {
-    if (this.type === 1) {
-      this.topParticipants = this.topActiveParticipants;
-    } else {
-      this.topParticipants = this.topBestParticipants;
-    }
   }
 
 }
