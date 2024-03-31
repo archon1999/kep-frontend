@@ -51,7 +51,7 @@ export class LessonComponent implements OnInit {
   @BlockUI('lesson-part-section') lessonPartBlockUI: NgBlockUI;
 
   contentHeader = {
-    headerTitle: '',
+    headerTitle: 'COURSES.LESSON',
     breadcrumb: {
       type: '',
       links: [
@@ -64,11 +64,6 @@ export class LessonComponent implements OnInit {
           name: '',
           isLink: true,
           link: '../..'
-        },
-        {
-          name: 'COURSES.LESSON',
-          isLink: false,
-          link: '.'
         },
       ]
     }
@@ -104,7 +99,7 @@ export class LessonComponent implements OnInit {
         courseTitle: this.course.title,
       });
       this.currentLessonPart = this.courseLesson.parts[0];
-      this.contentHeader.headerTitle = this.courseLesson.title;
+      // this.contentHeader.headerTitle = this.courseLesson.title;
       this.contentHeader.breadcrumb.links[1].name = this.course.title;
 
       this.route.queryParams.subscribe(
