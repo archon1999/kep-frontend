@@ -12,32 +12,114 @@
   </h4>
 }
 
-@if (!contest.isFinished()) {
-  <div class="mb-2 col-lg-10 col-12 offset-lg-1 offset-0">
-    <ngx-countdown [time]="leftTime" [render]="render" format="DD:HH:mm:ss" (finish)="finish()">
-      <ng-template #render let-data>
-        <div class="d-flex justify-content-between">
-          <div class="countdown text-center">
-            <h5 class="clock-val">{{ data.fragments[0] }}</h5>
-            <h5 class="clock-text">{{ 'DAY' | translate }}</h5>
-          </div>
-          <div class="countdown text-center">
-            <h5 class="clock-val">{{ data.fragments[1] }}</h5>
-            <h5 class="clock-text">{{ 'HOUR' | translate }}</h5>
-          </div>
-          <div class="countdown text-center">
-            <h5 class="clock-val">{{ data.fragments[2] }}</h5>
-            <h5 class="clock-text">{{ 'MINUTE' | translate }}</h5>
-          </div>
-          <div class="countdown text-center">
-            <h5 class="clock-val">{{ data.fragments[3] }}</h5>
-            <h5 class="clock-text">{{ 'SECOND' | translate }}</h5>
-          </div>
-        </div>
-      </ng-template>
-    </ngx-countdown>
+<div class="wrap">
+  <div class="countdown">
+    <div attr.data-init-value="{{ hours }}" class="bloc-time hours">
+      <span class="count-title text-dark">{{ 'HOUR' | translate }}</span>
+
+      <div class="figure text-contest hours hours-1">
+        <span class="top">0</span>
+        <span class="top-back">
+          <span>0</span>
+        </span>
+        <span class="bottom">0</span>
+        <span class="bottom-back">
+          <span>0</span>
+        </span>
+      </div>
+
+      <div class="figure text-contest hours hours-2">
+        <span class="top">0</span>
+        <span class="top-back">
+          <span>0</span>
+        </span>
+        <span class="bottom">0</span>
+        <span class="bottom-back">
+          <span>0</span>
+        </span>
+      </div>
+    </div>
+
+    <div attr.data-init-value="{{ minutes }}" class="bloc-time min">
+      <span class="count-title text-dark">{{ 'MINUTE' | translate }}</span>
+
+      <div class="figure text-contest min min-1">
+        <span class="top">0</span>
+        <span class="top-back">
+          <span>0</span>
+        </span>
+        <span class="bottom">0</span>
+        <span class="bottom-back">
+          <span>0</span>
+        </span>
+      </div>
+
+      <div class="figure text-contest min min-2">
+        <span class="top">0</span>
+        <span class="top-back">
+          <span>0</span>
+        </span>
+        <span class="bottom">0</span>
+        <span class="bottom-back">
+          <span>0</span>
+        </span>
+      </div>
+    </div>
+
+    <div attr.data-init-value="{{ seconds }}" class="bloc-time sec">
+      <span class="count-title text-dark">{{ 'SECOND' | translate }}</span>
+
+      <div class="figure text-contest sec sec-1">
+        <span class="top">0</span>
+        <span class="top-back">
+          <span>0</span>
+        </span>
+        <span class="bottom">0</span>
+        <span class="bottom-back">
+          <span>0</span>
+        </span>
+      </div>
+
+      <div class="figure text-contest sec sec-2">
+        <span class="top">0</span>
+        <span class="top-back">
+          <span>0</span>
+        </span>
+        <span class="bottom">0</span>
+        <span class="bottom-back">
+          <span>0</span>
+        </span>
+      </div>
+    </div>
   </div>
-}
+</div>
+
+<!--@if (!contest.isFinished()) {-->
+<!--  <div class="mb-2 col-lg-10 col-12 offset-lg-1 offset-0">-->
+<!--    <ngx-countdown [time]="leftTime" [render]="render" format="DD:HH:mm:ss" (finish)="finish()">-->
+<!--      <ng-template #render let-data>-->
+<!--        <div class="d-flex justify-content-between">-->
+<!--          <div class="countdown text-center">-->
+<!--            <h5 class="clock-val">{{ data.fragments[0] }}</h5>-->
+<!--            <h5 class="clock-text">{{ 'DAY' | translate }}</h5>-->
+<!--          </div>-->
+<!--          <div class="countdown text-center">-->
+<!--            <h5 class="clock-val">{{ data.fragments[1] }}</h5>-->
+<!--            <h5 class="clock-text">{{ 'HOUR' | translate }}</h5>-->
+<!--          </div>-->
+<!--          <div class="countdown text-center">-->
+<!--            <h5 class="clock-val">{{ data.fragments[2] }}</h5>-->
+<!--            <h5 class="clock-text">{{ 'MINUTE' | translate }}</h5>-->
+<!--          </div>-->
+<!--          <div class="countdown text-center">-->
+<!--            <h5 class="clock-val">{{ data.fragments[3] }}</h5>-->
+<!--            <h5 class="clock-text">{{ 'SECOND' | translate }}</h5>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </ng-template>-->
+<!--    </ngx-countdown>-->
+<!--  </div>-->
+<!--}-->
 
 <ng-template #finishModal let-modal>
   <div class="modal-header">
@@ -51,7 +133,8 @@
   </div>
   <div class="modal-footer">
     <a (click)="modal.dismiss('Cross click')"
-       [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'standings']" class="btn btn-primary btn-relief" rippleEffect>
+       [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'standings']"
+       class="btn btn-primary btn-relief" rippleEffect>
       {{ 'CONTESTS.STANDINGS' | translate }}
     </a>
   </div>
@@ -69,7 +152,8 @@
   </div>
   <div class="modal-footer">
     <a (click)="modal.dismiss('Cross click')"
-       [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problems']" class="btn btn-primary btn-relief" rippleEffect>
+       [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problems']"
+       class="btn btn-primary btn-relief" rippleEffect>
       {{ 'CONTESTS.PROBLEMS' | translate }}
     </a>
   </div>
