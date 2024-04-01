@@ -20,7 +20,7 @@ export class Problem1953Component extends BaseComponent implements OnInit {
   public left = 0;
 
   ngOnInit(): void {
-    interval(50).pipe(takeUntil(this._unsubscribeAll)).subscribe(
+    interval(250).pipe(takeUntil(this._unsubscribeAll)).subscribe(
       () => {
         this.changePosition();
       }
