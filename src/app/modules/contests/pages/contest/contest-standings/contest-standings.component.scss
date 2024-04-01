@@ -1,8 +1,6 @@
 app-contest-standings {
-  th:nth-child(2) {
-    contestant-view {
-      white-space: nowrap;
-    }
+  contestant-view, contestant-view div {
+    white-space: nowrap;
   }
 
   .rating-title-img {
