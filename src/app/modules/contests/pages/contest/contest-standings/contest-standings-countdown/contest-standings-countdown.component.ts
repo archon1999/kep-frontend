@@ -51,8 +51,8 @@ export class ContestStandingsCountdownComponent implements OnInit {
       this.leftTime = new Date(this.contest.startTime).valueOf() - Date.now();
     }
     const leftTime = Math.trunc(this.leftTime / 1000);
-    this.hours = Math.trunc(leftTime / 60 / 24);
-    this.minutes = Math.trunc(leftTime / 60) % 24;
+    this.hours = Math.trunc((leftTime / 60) / 60);
+    this.minutes = Math.trunc(leftTime / 60) % 60;
     this.seconds = leftTime % 60;
   }
 
