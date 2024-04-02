@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from 'rxjs';
 import { isPresent } from '@shared/c-validators/utils';
 import { paramsMapper } from '@shared/utils';
+import { HttpCachingService } from '@shared/services/http-caching.service';
 
 export const BASE_URL = environment.apiUrl;
 export const BASE_API_URL = BASE_URL + '/api/';
@@ -21,9 +22,14 @@ export class ApiService {
     public http: HttpClient,
     public translate: TranslateService,
     public toastr: ToastrService,
+    public httpCachingService: HttpCachingService,
   ) {}
 
   get(prefix: string, params: any = {}, otherOptions: any = {}): Observable<any> {
+    if (this.httpCachingService.has(prefix, params)) {
+      return of(this.httpCachingService.get(prefix, params));
+    }
+
     const url = BASE_API_URL + prefix;
     const options = otherOptions;
     const filteredParams: any = {};
@@ -42,6 +48,7 @@ export class ApiService {
     return this.http.get(url, options).pipe(
       map((response: any) => {
         // console.log(new Date(response.headers.get('Date')));
+        this.httpCachingService.add(prefix, params, response.body);
         return response.body;
       }),
       this.handleRetryError(2000, 5),
