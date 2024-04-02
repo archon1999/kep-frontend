@@ -56,16 +56,11 @@ export class AppComponent implements OnInit, OnDestroy {
     private _translateService: TranslateService,
     private api: ApiService,
     public router: Router,
-    private authService: AuthService,
-    public wsService: WebsocketService,
     public swipeService: SwipeService,
   ) {
     this.menu = menu;
-
     this._coreMenuService.register('main', this.menu);
-
     this._coreMenuService.setCurrentMenu('main');
-
     this._translateService.addLangs(['en', 'ru', 'uz']);
 
     let browserLang = this._translateService.getBrowserLang();
@@ -73,9 +68,7 @@ export class AppComponent implements OnInit, OnDestroy {
       browserLang = 'en';
     }
     this._translateService.setDefaultLang(browserLang);
-
     this._coreTranslationService.translate(menuEnglish, menuRussian, menuUzbek);
-
     this._unsubscribeAll = new Subject();
   }
 
@@ -213,6 +206,22 @@ export class AppComponent implements OnInit, OnDestroy {
     registerLocaleData(localeUz, 'uz');
     registerLocaleData(localeRu, 'ru');
     registerLocaleData(localeEn, 'en');
+
+    this.api.get('menu-items-count').subscribe(
+      (items) => {
+        for (const sectionMenu of menu.filter(item => item.type === 'section')) {
+          sectionMenu.newCount = 0;
+          for (const key of Object.keys(items)) {
+            for (const menuItem of sectionMenu.children) {
+              if (menuItem.id === key) {
+                menuItem.newCount = items[key];
+                sectionMenu.newCount += items[key];
+              }
+            }
+          }
+        }
+      }
+    );
   }
 
   @HostListener('touchstart', ['$event'])

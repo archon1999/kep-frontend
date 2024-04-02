@@ -100,7 +100,7 @@ export const menu: CoreMenu[] = [
         url: '/competitions/contests',
       },
       {
-        id: 'arena',
+        id: 'arenas',
         translate: 'MENU.ARENA',
         type: 'item',
         icon: 'arena',

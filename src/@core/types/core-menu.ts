@@ -19,6 +19,7 @@ export interface CoreMenuItem {
     classes?: string;
   };
   children?: CoreMenuItem[];
+  newCount?: number;
 }
 
 export interface CoreMenu extends CoreMenuItem {

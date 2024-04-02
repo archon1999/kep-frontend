@@ -17,7 +17,7 @@ export class CoreMenuService {
   // Private
   private _onMenuRegistered: BehaviorSubject<any>;
   private _onMenuUnregistered: BehaviorSubject<any>;
-  private _onMenuChanged: BehaviorSubject<any>;
+  public _onMenuChanged: BehaviorSubject<any>;
   private _currentMenuKey: string;
   private _registry: { [key: string]: any } = {};
 

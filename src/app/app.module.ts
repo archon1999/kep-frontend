@@ -73,8 +73,6 @@ const appRoutes: Routes = [
       teamJoin: TeamJoinResolver,
     },
   },
-  { path: 'give-away', loadComponent: () => import('./modules/pages/rick-roll/rick-roll.component').then(c => c.RickRollComponent), canActivate: [AuthGuard] },
-  { path: 'you-get-rickrolled', loadComponent: () => import('./modules/pages/rick-roll/rick-roll.component').then(c => c.RickRollComponent), canActivate: [AuthGuard] },
   { path: '**', loadComponent: () => import('./modules/pages/miscellaneous/error/error.component').then(c => c.ErrorComponent) },
 ];
 
