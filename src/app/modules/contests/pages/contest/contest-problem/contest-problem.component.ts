@@ -131,6 +131,8 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
           }
         }
       );
+
+      setTimeout(() => this.reloadAttempts());
     });
 
   }
@@ -182,7 +184,6 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
     this.api.get(`contests/${this.contest?.id}/problems`).subscribe((result: any) => {
       this.contestProblems = result;
       this.sortProblems();
-      this.reloadAttempts();
     });
   }
 

@@ -9,7 +9,7 @@
         <div [@fadeInLeftOnEnter] class="col-lg-9 col-md-12 col-sm-12 order-2 order-lg-1">
           <div class="layout-spacing">
             <div class="card">
-              <div class="card-header">
+              <div class="card-header pb-0">
                 <contest-tab [contest]="contest"></contest-tab>
                 @if (contest?.userInfo?.isRegistered && contest?.status == 0) {
                   <button
@@ -19,9 +19,8 @@
                     {{ 'Submit' | translate }}
                   </button>
                 }
-                <hr>
                 </div>
-                <div class="card-body">
+                <div class="card-footer">
                   <h2 class="text-center mb-4">
                     {{ contestProblem.symbol }}. {{ problem.title }}
                   </h2>
@@ -32,24 +31,15 @@
             </div>
 
             @if (attempts?.length > 0) {
-              <div class="card">
-                <div class="card-header">
-                  <h3 class="card-title text-center mt-2 mb-1">{{ 'ATTEMPTS' | translate }}</h3>
-                </div>
-                <div class="card-body">
-                  <attempts-table [hideSourceCodeSize]="contest.type != 'CodeGolf'" [attempts]="attempts" [contest]="contest"></attempts-table>
-                  @if (attempts.length > 0) {
-                    <kep-pagination
-                      [collectionSize]="totalAttemptsCount"
-                      [(page)]="currentPage"
-                      [pageSize]="50"
-                      [maxSize]="5"
-                      (pageChange)="reloadAttempts()"
-                      >
-                    </kep-pagination>
-                  }
-                </div>
-              </div>
+              <attempts-table [hideSourceCodeSize]="contest.type != 'CodeGolf'" [attempts]="attempts" [contest]="contest"></attempts-table>
+              <kep-pagination
+                [collectionSize]="totalAttemptsCount"
+                [page]="currentPage"
+                [pageSize]="50"
+                [maxSize]="5"
+                (pageChange)="reloadAttempts()"
+              >
+              </kep-pagination>
             }
           </div>
 

@@ -22,6 +22,7 @@ import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { BaseLoadComponent } from '@app/common';
 import { interval, Observable } from 'rxjs';
+import { KepDeltaComponent } from '@shared/components/kep-delta/kep-delta.component';
 
 @Component({
   selector: 'app-contest-standings',
@@ -40,6 +41,7 @@ import { interval, Observable } from 'rxjs';
     ContestClassesPipe,
     ResourceByIdPipe,
     EmptyResultComponent,
+    KepDeltaComponent,
   ],
   encapsulation: ViewEncapsulation.None,
 })

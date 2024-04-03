@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { Attempt } from '@problems/models/attempts.models';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
@@ -17,6 +17,10 @@ import { ContestProblem } from '@contests/models/contest-problem';
 import { ContestAttemptsFilter } from '@contests/models/contest-attempts-filter';
 import { Contest } from '@contests/models/contest';
 import { BaseTablePageComponent } from '@app/common';
+import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
+import { ContestAttemptsFilterComponent } from '@contests/pages/contest/contest-attempts/filter/contest-attempts-filter.component';
+import { User } from '@auth';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 
 const REFRESH_TIME = 30000;
 
@@ -37,16 +41,17 @@ const REFRESH_TIME = 30000;
     KepPaginationComponent,
     ContestCardModule,
     NgSelectModule,
-  ]
+    ContestClassesPipe,
+    ContestAttemptsFilterComponent,
+    EmptyResultComponent,
+  ],
+  encapsulation: ViewEncapsulation.None,
 })
 export class ContestAttemptsComponent extends BaseTablePageComponent<Attempt> implements OnInit {
   override maxSize = 5;
   override defaultPageSize = 10;
 
   public contest: Contest;
-  public contestProblems: Array<ContestProblem> = [];
-
-  public verdicts: Array<any> = [];
 
   public filter: ContestAttemptsFilter = {
     userOnly: false,
@@ -56,7 +61,6 @@ export class ContestAttemptsComponent extends BaseTablePageComponent<Attempt> im
 
   constructor(
     public service: ContestsService,
-    public problemsService: ProblemsApiService,
   ) {
     super();
   }
@@ -70,12 +74,7 @@ export class ContestAttemptsComponent extends BaseTablePageComponent<Attempt> im
       this.contest = Contest.fromJSON(contest);
       this.loadContentHeader();
       this.titleService.updateTitle(this.route, { contestTitle: contest.title });
-      this.reloadProblems();
       setTimeout(() => this.reloadPage());
-    });
-
-    this.problemsService.getVerdicts().subscribe((data: any) => {
-      this.verdicts = data;
     });
 
     if (this.contest.status === ContestStatus.ALREADY) {
@@ -89,12 +88,6 @@ export class ContestAttemptsComponent extends BaseTablePageComponent<Attempt> im
     }
   }
 
-  reloadProblems() {
-    this.service.getContestProblems(this.contest.id).subscribe((result: any) => {
-      this.contestProblems = result;
-    });
-  }
-
   getPage() {
     return this.service.getContestAttempts(
       {
@@ -102,11 +95,13 @@ export class ContestAttemptsComponent extends BaseTablePageComponent<Attempt> im
         filter: this.filter,
         pageSize: this.pageSize,
         page: this.pageNumber,
+        username: this.filter.userOnly ? this.currentUser?.username : null,
       }
     );
   }
 
-  filterApply() {
+  filterApply(filter: ContestAttemptsFilter) {
+    this.filter = filter;
     this.pageNumber = this.defaultPageNumber;
     this.reloadPage();
   }
@@ -136,5 +131,4 @@ export class ContestAttemptsComponent extends BaseTablePageComponent<Attempt> im
       }
     };
   }
-
 }

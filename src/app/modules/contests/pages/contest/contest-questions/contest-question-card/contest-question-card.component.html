@@ -20,11 +20,9 @@
     {{ question.question }}
   </div>
 
-  <div class="card-footer">
-    @if (question.answer) {
-      <span class="text-dark">
-        <mathjax [content]="question.answer"></mathjax>
-      </span>
-    }
+  <div class="card-footer" *ngIf="question.answer">
+    <span class="text-dark">
+      <mathjax [content]="question.answer"></mathjax>
+    </span>
   </div>
 </div>

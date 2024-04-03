@@ -64,28 +64,13 @@
           <td class="text-center text-dark">
             {{ contestant.rank }}
           </td>
-          <td style="position: relative;">
+          <td>
             <contestant-view
+              [isVirtual]="contestant.isVirtual"
+              [isUnrated]="contestant.isUnrated"
               [isOfficial]="contestant.isOfficial"
               [user]="contestant"
               [team]="contestant.team"/>
-            <div class="absolute d-flex justify-content-start">
-              @if (contestant.isUnrated && !contestant.isVirtual) {
-                <span class="badge badge-info badge-pill">
-                  {{ 'Unrated' | translate }}
-                </span>
-              }
-              @if (contestant.isVirtual) {
-                <span class="badge badge-warning badge-pill">
-                  {{ 'Virtual' | translate }}
-                </span>
-              }
-              @if (contestant.virtualTime) {
-                <span class="badge badge-success badge-pill">
-                  {{ contestant.virtualTime }}
-                </span>
-              }
-            </div>
           </td>
           <td class="text-center">
             <span class="badge points">
@@ -94,15 +79,7 @@
           </td>
           @if (contest.isRated) {
             <td class="text-center">
-              <span class="badge badge-glow" [ngClass]="{
-                'badge-light-success': contestant.delta > 0,
-                'badge-light-dark': contestant.delta == 0,
-                'badge-light-danger': contestant.delta < 0
-              }">
-                @if (contestant.delta > 0) {
-                  <span>+</span>
-                }{{ contestant.delta }}
-                </span>
+              <kep-delta [value]="contestant.delta"/>
             </td>
           }
           @if (contest?.hasPenalties()) {

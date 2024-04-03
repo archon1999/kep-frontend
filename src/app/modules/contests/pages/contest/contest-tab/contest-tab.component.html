@@ -1,4 +1,4 @@
-<div class="contests-colors contest-{{ contest?.id }} {{ contest?.title }} contest-type-{{ contest?.type }}">
+<div class="contests-colors {{ contest | contestClasses }}">
   <ul ngbNav #navWithIcons="ngbNav" class="nav-tabs" [(activeId)]="activeId">
     <li ngbNavItem>
       <a ngbNavLink [routerLink]="['/competitions', 'contests', 'contest', contest?.id]"
@@ -71,4 +71,4 @@
   </ul>
 </div>
 
-<div [ngbNavOutlet]="navWithIcons" class="mt-2"></div>
+<div [ngbNavOutlet]="navWithIcons"></div>

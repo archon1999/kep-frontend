@@ -1,7 +1,7 @@
 @if (team) {
   <div class="team">
     @if (isOfficial) {
-      <span [ngbTooltip]="'Official'">
+      <span [ngbTooltip]="'Official' | translate">
         <kep-icon name="check" color="success"></kep-icon>
       </span>
     }
@@ -31,5 +31,15 @@
       [size]="imgSize">
     </contests-rating-image>
     <user-popover [textColor]="textColor" [username]="user.username"></user-popover>
+    @if (isUnrated && !isVirtual) {
+      <span [ngbTooltip]="'Unrated' | translate">
+        <kep-icon name="shield-cross" type="duotone" size="small-4" color="danger"></kep-icon>
+      </span>
+    }
+    @if (isVirtual) {
+      <span [ngbTooltip]="'Virtual' | translate">
+        <kep-icon name="fasten" color="success"></kep-icon>
+      </span>
+    }
   </div>
 }

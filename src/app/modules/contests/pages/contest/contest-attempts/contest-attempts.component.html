@@ -1,39 +1,22 @@
-<div
-  class="content-wrapper container-xxl p-0 contests-colors contests-color contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
+<div class="content-wrapper container-xxl p-0 {{ contest | contestClasses }}">
   <div class="content-body">
-    <!-- content-header component -->
-    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <app-content-header [contentHeader]="contentHeader"/>
 
-    <section class="mt-2">
-      <div class="row">
-        <div [@fadeInLeftOnEnter] class="col-lg-9 col-md-12 col-sm-12 order-2 order-lg-1">
-          <div class="card">
-            <div class="card-header">
-              <contest-tab [contest]="contest"></contest-tab>
-              <hr>
-            </div>
-            <div class="card-body">
-              @if (currentUser) {
-                <div class="mb-1 custom-control custom-checkbox">
-                  <input
-                    (change)="reloadProblems()"
-                    [(ngModel)]="filter.userOnly"
-                    [ngModelOptions]="{standalone: true}"
-                    class="custom-control-input"
-                    id="filterOnlyUser"
-                    type="checkbox"
-                  />
-                  <label class="custom-control-label" for="filterOnlyUser">{{ 'MY_ATTEMPTS' | translate }}</label>
-                </div>
-              }
-              @if (isLoading && !total) {
-                <div [style.height.px]="400">
-                  <spinner></spinner>
-                </div>
-              } @else {
-                <attempts-table [attempts]="attempts" [contest]="contest" [hideSourceCodeSize]="true"></attempts-table>
-              }
-
+    <div class="row">
+      <div [@fadeInLeftOnEnter] class="col-lg-9 col-md-12 col-sm-12 order-2 order-lg-1">
+        <div class="card">
+          <div class="card-header pb-0">
+            <contest-tab [contest]="contest"/>
+          </div>
+          <div class="card-footer">
+            @if (isLoading && !total) {
+              <div [style.height.px]="400">
+                <spinner></spinner>
+              </div>
+            } @else if(attempts.length == 0) {
+              <empty-result text=""/>
+            } @else {
+              <attempts-table [attempts]="attempts" [contest]="contest" [hideSourceCodeSize]="true"></attempts-table>
               <kep-pagination
                 (pageChange)="pageChange($event)"
                 (pageSizeChange)="pageSizeChange($event)"
@@ -43,76 +26,16 @@
                 [pageSize]="pageSize"
                 [page]="pageNumber">
               </kep-pagination>
-            </div>
-          </div>
-        </div>
-
-        <div [@fadeInRightOnEnter] class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">
-          @if (contest) {
-            <div class="layout-spacing">
-              <contest-card-countdown [contest]="contest"></contest-card-countdown>
-            </div>
-          }
-
-          <div class="layout-spacing">
-            <div class="card">
-              <div class="card-header">
-                <h5 class="card-title text-center">
-                  <kep-icon name="filter" type="duotone" color="primary"/>
-                  {{ 'CONTESTS.FILTER_ATTEMPTS' | translate }}
-                </h5>
-              </div>
-
-              <div class="card-body">
-                <form class="form">
-                  <div class="form-group">
-                    <label class="text-primary">
-                      <strong>
-                        {{ 'PROBLEM' | translate }}:
-                      </strong>
-                    </label>
-                    <div class="form-group">
-                      <ng-select
-                        [(ngModel)]="filter.contestProblem"
-                        [ngModelOptions]="{standalone: true}"
-                      >
-                        @for (contestProblem of contestProblems;track contestProblem) {
-                          <ng-option [value]="contestProblem.symbol">
-                            {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
-                          </ng-option>
-                        }
-                      </ng-select>
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label class="text-primary">
-                      <strong>
-                        {{ 'VERDICT' | translate }}:
-                      </strong>
-                    </label>
-                    <ng-select
-                      [(ngModel)]="filter.verdict"
-                      [ngModelOptions]="{standalone: true}">
-                      @for (verdict of verdicts;track verdict) {
-                        <ng-option [value]="verdict.value">{{ verdict.label }}
-                        </ng-option>
-                      }
-                    </ng-select>
-                  </div>
-
-                  <div class="text-center mt-2">
-                    <button (click)="filterApply()" class="btn btn-primary btn-block btn-sm">
-                      {{ 'APPLY' | translate }}
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
+            }
           </div>
         </div>
       </div>
-    </section>
+
+      <div [@fadeInRightOnEnter] class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">
+        <contest-card-countdown *ngIf="contest" [contest]="contest"/>
+        <contest-attempts-filter [contest]="contest" (filterChange)="filterApply($event)"/>
+      </div>
+    </div>
   </div>
 </div>
 

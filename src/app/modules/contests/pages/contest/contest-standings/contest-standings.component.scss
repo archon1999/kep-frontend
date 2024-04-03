@@ -43,17 +43,6 @@ app-contest-standings {
     color: var(--text-color);
   }
 
-  .tooltip-contest-problem {
-    .arrow:before {
-      border-top-color: #f3effc;
-    }
-
-    .tooltip-inner {
-      color: var(--bg) !important;
-      background-color: var(--bg-light) !important;
-    }
-  }
-
   th, td {
     padding: 15px !important;
   }

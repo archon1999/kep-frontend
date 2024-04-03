@@ -1,130 +1,98 @@
-<div class="content-wrapper container-xxl p-0 contests-colors contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
+<div class="content-wrapper container-xxl p-0">
   <div class="content-body">
-    <!-- content-header component -->
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
-    <section class="mt-2">
-      <div class="row">
-        @if (contest) {
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <contest-tab [contest]="contest"></contest-tab>
-                <hr>
-                </div>
-                <div class="card-body">
-                  <h3 class="text-center mb-3 mt-2">{{ contest.title }}</h3>
-                  <div class="table-responsive">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th class="text-center">#</th>
-                          <th>{{ 'CONTESTS.CONTESTANT' | translate }}</th>
-                          <th class="text-center"><i [data-feather]="'rating' | iconName"></i></th>
-                          <th class="text-center"><i [data-feather]="'delta' | iconName"></i></th>
-                          <th>{{ 'CONTESTS.NEW_RATING' | translate }}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        @for (contestant of contestants; track contestant) {
-                          <tr>
-                            <td class="text-center">
-                              <strong>{{ contestant.rank }}</strong>
-                            </td>
-                            <td>
-                              <contestant-view [user]="contestant" [team]="contestant.team"></contestant-view>
-                            </td>
-                            <td class="text-center">
-                              <span class="badge badge-glow badge-primary">
-                                {{ contestant.points }}
-                              </span>
-                            </td>
-                            <td class="text-center">
-                        <span class="badge badge-glow" [ngClass]="{
-                          'badge-light-success': contestant.delta > 0,
-                          'badge-light-dark': contestant.delta == 0,
-                          'badge-light-danger': contestant.delta < 0
-                        }">
-                                @if (contestant.delta > 0) {
-                                  <span>+</span>
-                                  }{{ contestant.delta }}
-                                </span>
-                              </td>
-                              <td>
-                                @if (contestant.type == 1) {
-                                  <div>
-                                    <span class="badge badge-light-{{ contestant.rating | contestsRatingColor }}">
-                                      {{ contestant.rating }}
-                                    </span>
-                                    <i data-feather="arrow-right"></i>
-                                    <span class="badge badge-light-{{ contestant.newRating | contestsRatingColor }}">
-                                      {{ contestant.newRating }}
-                                    </span>
-                                    @if (contestant.newRatingTitle != contestant.ratingTitle) {
-                                      <contests-rating-image
-                                        class="ml-50"
-                                        [title]="contestant.newRatingTitle">
-                                      </contests-rating-image>
-                                    }
-                                    @if (contestant.doubleRatingPurchased) {
-                                      <img
-                                        height="25"
-                                        class="ml-50"
-                                        ngbTooltip="{{ 'DoubleRating' | translate }}"
-                                        src="assets/images/icons/x2-delta.png"
-                                        >
-                                    }
-                                    @if (contestant.saveRatingPurchased) {
-                                      <img
-                                        height="25"
-                                        class="ml-75"
-                                        ngbTooltip="{{ 'SaveRating' | translate }}"
-                                        src="assets/images/icons/save-rating.png"
-                                        >
-                                    }
-                                  </div>
-                                }
-                                @if (contestant.type == 2) {
-                                  <div>
-                                    @for (member of contestant.team.members; track member) {
-                                      <div class="mb-1">
-                                        <span class="badge badge-light-{{ member.rating | contestsRatingColor }}">
-                                          {{ member.rating }}
-                                        </span>
-                                        <i data-feather="arrow-right"></i>
-                                        <span class="badge badge-light-{{ member.newRating | contestsRatingColor }}">
-                                          {{ member.newRating }}
-                                        </span>
-                                        @if (member.newRatingTitle != member.ratingTitle) {
-                                          <contests-rating-image
-                                            [title]="member.newRatingTitle"
-                                            [size]="28">
-                                          </contests-rating-image>
-                                        }
-                                      </div>
-                                    }
-                                  </div>
-                                }
-                              </td>
-                            </tr>
-                          }
-                        </tbody>
-                        <tfoot>
-                          <tr>
-                            <th class="text-center">#</th>
-                            <th>{{ 'CONTESTS.CONTESTANT' | translate }}</th>
-                            <th class="text-center"><i [data-feather]="'rating' | iconName"></i></th>
-                            <th class="text-center"><i [data-feather]="'delta' | iconName"></i></th>
-                            <th>{{ 'CONTESTS.NEW_RATING' | translate }}</th>
-                          </tr>
-                        </tfoot>
-                      </table>
+    <div class="card {{ contest | contestClasses }}">
+      <div class="card-header pb-0">
+        <contest-tab [contest]="contest"></contest-tab>
+      </div>
+      <div class="card-footer">
+        <kep-table [empty]="contestants.length == 0" [loading]="isLoading">
+          <ng-container header>
+            <tr class="bg-gradient-primary">
+              <th class="text-center">#</th>
+              <th>{{ 'CONTESTS.CONTESTANT' | translate }}</th>
+              <th class="text-center"><i [data-feather]="'rating' | iconName"></i></th>
+              <th class="text-center"><i [data-feather]="'delta' | iconName"></i></th>
+              <th>{{ 'CONTESTS.NEW_RATING' | translate }}</th>
+            </tr>
+          </ng-container>
+          <ng-container body>
+            @for (contestant of contestants;track contestant) {
+              <tr>
+                <td class="text-center">{{ contestant.rank }}</td>
+                <td>
+                  <contestant-view [user]="contestant" [team]="contestant.team"/>
+                </td>
+                <td class="text-center">
+                  <span class="badge badge-glow badge-primary">
+                    {{ contestant.points }}
+                  </span>
+                </td>
+                <td class="text-center">
+                  <kep-delta [value]="contestant.delta"/>
+                </td>
+                <td>
+                  @if (contestant.type == 1) {
+                    <div>
+                      <span class="badge badge-light-{{ contestant.rating | contestsRatingColor }}">
+                        {{ contestant.rating }}
+                      </span>
+                      <i data-feather="arrow-right"></i>
+                      <span class="badge badge-light-{{ contestant.newRating | contestsRatingColor }}">
+                        {{ contestant.newRating }}
+                      </span>
+                      @if (contestant.newRatingTitle != contestant.ratingTitle) {
+                        <contests-rating-image
+                          class="ml-50"
+                          [title]="contestant.newRatingTitle">
+                        </contests-rating-image>
+                      }
+                      @if (contestant.doubleRatingPurchased) {
+                        <img
+                          height="25"
+                          class="ml-50"
+                          ngbTooltip="{{ 'DoubleRating' | translate }}"
+                          src="assets/images/icons/x2-delta.png"
+                        >
+                      }
+                      @if (contestant.saveRatingPurchased) {
+                        <img
+                          height="25"
+                          class="ml-75"
+                          ngbTooltip="{{ 'SaveRating' | translate }}"
+                          src="assets/images/icons/save-rating.png"
+                        >
+                      }
                     </div>
-                  </div>
-                </div>
-              </div>
+                  }
+                  @if (contestant.type == 2) {
+                    <div>
+                      @for (member of contestant.team.members;track member) {
+                        <div class="mb-1">
+                          <span class="badge badge-light-{{ member.rating | contestsRatingColor }}">
+                            {{ member.rating }}
+                          </span>
+                          <i data-feather="arrow-right"></i>
+                          <span class="badge badge-light-{{ member.newRating | contestsRatingColor }}">
+                            {{ member.newRating }}
+                          </span>
+                          @if (member.newRatingTitle != member.ratingTitle) {
+                            <contests-rating-image
+                              [title]="member.newRatingTitle"
+                              [size]="28">
+                            </contests-rating-image>
+                          }
+                        </div>
+                      }
+                    </div>
+                  }
+                </td>
+              </tr>
             }
-          </div>
-        </section>
+          </ng-container>
+        </kep-table>
       </div>
     </div>
+  </div>
+</div>

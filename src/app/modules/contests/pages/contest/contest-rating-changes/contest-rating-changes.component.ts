@@ -1,9 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService, User } from '@auth';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
-import { TitleService } from 'app/shared/services/title.service';
-import { Subject } from 'rxjs';
+import { User } from '@auth';
 import { takeUntil } from 'rxjs/operators';
 import { ContestsService } from '../../../contests.service';
 import { CoreCommonModule } from '@core/common.module';
@@ -13,6 +9,10 @@ import { ContestantViewModule } from '@contests/components/contestant-view/conte
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { Contest } from '@contests/models/contest';
 import { Contestant } from '@contests/models/contestant';
+import { BaseLoadComponent } from '@app/common';
+import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
+import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
+import { KepDeltaComponent } from '@shared/components/kep-delta/kep-delta.component';
 
 @Component({
   selector: 'app-contest-rating-changes',
@@ -25,42 +25,33 @@ import { Contestant } from '@contests/models/contestant';
     ContestTabComponent,
     ContestantViewModule,
     NgbTooltipModule,
+    KepTableComponent,
+    ContestClassesPipe,
+    KepDeltaComponent,
   ]
 })
-export class ContestRatingChangesComponent implements OnInit, OnDestroy {
-
-  public contentHeader: ContentHeader;
-
+export class ContestRatingChangesComponent extends BaseLoadComponent<Contestant[]> implements OnInit, OnDestroy {
   public contest: Contest;
-  public contestants: Array<Contestant> = [];
 
-  public currentUser: User;
+  constructor(public service: ContestsService) {
+    super();
+  }
 
-  private _unsubscribeAll = new Subject();
-
-  constructor(
-    public service: ContestsService,
-    public route: ActivatedRoute,
-    public router: Router,
-    public titleService: TitleService,
-    public authService: AuthService,
-  ) { }
+  get contestants(): Contestant[] {
+    return this.data || [];
+  }
 
   ngOnInit(): void {
     this.route.data.subscribe(({ contest }) => {
       this.contest = Contest.fromJSON(contest);
       this.titleService.updateTitle(this.route, { contestTitle: contest.title });
       this.loadContentHeader();
-      this.loadContestants();
+      this.loadData();
     });
-
-    this.authService.currentUser
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((user: User) => this.currentUser = user);
   }
 
-  loadContentHeader() {
-    this.contentHeader = {
+  protected getContentHeader() {
+    return {
       headerTitle: 'CONTESTS.RATING_CHANGES',
       breadcrumb: {
         type: '',
@@ -85,29 +76,7 @@ export class ContestRatingChangesComponent implements OnInit, OnDestroy {
     };
   }
 
-  loadContestants() {
-    this.service.getContestants(this.contest.id).subscribe((result: any) => {
-      this.contestants = result.map((data: any) => Contestant.fromJSON(data));
-      this.reassignRanks();
-    });
-  }
-
-  reassignRanks() {
-    for (var index = 0; index < this.contestants.length; index++) {
-      if (index == 0) {
-        this.contestants[index].rank = 1;
-      } else {
-        this.contestants[index].rank = this.contestants[index - 1].rank;
-        if (this.contestants[index].points != this.contestants[index - 1].points ||
-          this.contestants[index].penalties != this.contestants[index - 1].penalties) {
-          this.contestants[index].rank = index + 1;
-        }
-      }
-    }
-  }
-
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
+  getData() {
+    return this.service.getContestants(this.contest.id);
   }
 }

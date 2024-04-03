@@ -1,47 +1,30 @@
-<div class="content-wrapper container-xxl p-0 contests-colors contests-color contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
+<div class="content-wrapper container-xxl p-0 {{ contest | contestClasses }}">
   <div class="content-body">
-    <!-- content-header component -->
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
-    <section class="mt-2">
-      <div class="row">
-        <div [@fadeInLeft]="startAnimationState" class="col-lg-9 col-md-12 col-sm-12 order-2 order-lg-1">
-          <div class="layout-spacing">
-            <div class="card">
-              <div class="card-header">
-                <contest-tab [contest]="contest"></contest-tab>
-                <hr>
+    <div class="row">
+      <div [@fadeInLeftOnEnter]="" class="col-lg-9 col-md-12 col-sm-12 order-2 order-lg-1">
+        <div class="card">
+          <div class="card-header pb-0">
+            <contest-tab [contest]="contest"></contest-tab>
+          </div>
+          <div class="card-footer">
+            <div class="row">
+              @for (contestProblem of contestProblems; track contestProblem) {
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                  <contest-problem-card
+                    [contest]="contest"
+                    [contestProblem]="contestProblem"/>
                 </div>
-                <div class="card-body">
-
-                  <h3 class="text-center mb-3">{{ contest?.title }}</h3>
-                  <div class="row">
-                    @for (contestProblem of contestProblems; track contestProblem) {
-                      <div
-                        class="col-lg-4 col-md-6 col-sm-12"
-                        >
-                        <contest-problem-card
-                          [contest]="contest"
-                          [contestProblem]="contestProblem">
-                        </contest-problem-card>
-                      </div>
-                    }
-                  </div>
-                </div>
-              </div>
+              }
             </div>
-
           </div>
-
-          <div [@fadeInRight]="startAnimationState" class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">
-            @if (contest) {
-              <div class="layout-spacing">
-                <contest-card-countdown [contest]="contest"></contest-card-countdown>
-              </div>
-            }
-          </div>
-
         </div>
-      </section>
+      </div>
+
+        <div [@fadeInRightOnEnter]="" class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">
+          <contest-card-countdown *ngIf="contest" [contest]="contest"></contest-card-countdown>
+        </div>
+     </div>
     </div>
   </div>
