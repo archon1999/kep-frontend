@@ -1,23 +1,56 @@
+@use 'sass:string';
 @import 'styles/kep-imports';
 
 @mixin define-contest-colors($selector, $color, $background-light, $background-dark, $color-dark: false) {
-  #{$selector} {
-    --bg: #{$color};
-    --bg-gradient: #{$background-light};
-    --box-shadow: 0 0 5px #{$color};
-    --text-color: white;
-    --bg-light: #{mix(white, $color, 90)};
-    @content;
+  @if ($selector == '&') {
+    body {
+      --contest-color: #{$color};
+      --contest-color-light: #{rgba($color, 0.1)};
+    }
+  } @else {
+    body:has(#{unquote(string.slice($selector, 2))}) {
+      --contest-color: #{$color};
+      --contest-color-light: #{rgba($color, 0.1)};
+
+      .tooltip {
+        .arrow:before {
+          border-top-color: #f3effc;
+        }
+
+        .tooltip-inner {
+          background-color: mix(black, $color, 30) !important;
+        }
+      }
+    }
   }
 
-  @include dark-layout(){
+  .contests-colors {
     #{$selector} {
-      --bg-gradient: #{$background-dark};
+      --bg: #{$color};
+      --bg-gradient: #{$background-light};
       --box-shadow: 0 0 5px #{$color};
-      --bg-light: #{mix(black, $color, 60)};
+      --text-color: white;
+      --bg-light: #{mix(white, $color, 90)};
 
-      @if $background-dark != false {
-        --bg: #{$color-dark};
+      .contest-color {
+        color: $color !important;
+      }
+
+      .contest-bg-color {
+        background-color: $color !important;
+      }
+      @content;
+    }
+
+    @include dark-layout() {
+      #{$selector} {
+        --bg-gradient: #{$background-dark};
+        --box-shadow: 0 0 5px #{$color};
+        --bg-light: #{mix(black, $color, 60)};
+
+        @if $background-dark != false {
+          --bg: #{$color-dark};
+        }
       }
     }
   }
@@ -40,78 +73,87 @@ $april-fools-color1: #f5479e;
 $april-fools-color2: #fec501;
 $april-fools-color3: #37a9cd;
 
+// Primary color
+@include define-contest-colors(
+  $selector: '&',
+  $color: $primary,
+  $color-dark: mix(black, $primary, 20),
+  $background-light: linear-gradient(to right, mix(white, $primary, 20), mix(white, $primary, 30)),
+  $background-dark: linear-gradient(to right, mix(black, $primary, 50), mix(black, $primary, 30)),
+);
+
+// Code Golf
+@include define-contest-colors(
+  $selector: $code-golf-selector,
+  $color: $code-golf-color,
+  $color-dark: mix(black, $code-golf-color, 20),
+  $background-light: linear-gradient(to right, mix(white, $code-golf-color, 20), mix(white, $code-golf-color, 30)),
+  $background-dark: linear-gradient(to right, mix(black, $code-golf-color, 50), mix(black, $code-golf-color, 30)),
+) {
+  .card-bg {
+    zoom: 50% !important;
+  }
+}
+
+// One Line
+@include define-contest-colors(
+  $selector: $one-line-selector,
+  $color: $one-line-color,
+  $color-dark: mix(black, $one-line-color, 30),
+  $background-light: linear-gradient(to right, mix(white, $one-line-color, 20), mix(white, $one-line-color, 30)),
+  $background-dark: linear-gradient(to right, mix(black, $one-line-color, 50), mix(black, $one-line-color, 30)),
+) {
+  .card-bg {
+    zoom: 137% !important;
+  }
+}
+
+// Hack it
+@include define-contest-colors(
+  $selector: $hack-it-selector,
+  $color: $hack-it-color,
+  $color-dark: mix(black, $hack-it-color, 30),
+  $background-light: linear-gradient(to right, mix(white, $hack-it-color, 5), mix(white, $hack-it-color, 10)),
+  $background-dark: linear-gradient(to right, mix(black, $hack-it-color, 50), mix(black, $hack-it-color, 40)),
+);
+
+// SQL
+@include define-contest-colors(
+  $selector: $sql-selector,
+  $color: $sql-color,
+  $color-dark: mix(black, $sql-color, 30),
+  $background-light: linear-gradient(to right, mix(white, $sql-color, 20), mix(white, $sql-color, 30)),
+  $background-dark: linear-gradient(to right, mix(black, $sql-color, 50), mix(black, $sql-color, 40)),
+);
+
+// April Fools
+@include define-contest-colors(
+  $selector: $april-fools-selector,
+  $color: mix(white, $april-fools-color1, 25),
+  $color-dark: mix(black, $april-fools-color1, 50),
+  $background-light: linear-gradient(256deg, mix(white, $april-fools-color2, 0), mix(white, $april-fools-color3, 0)),
+  $background-dark: linear-gradient(256deg, mix(black, $april-fools-color2, 50), mix(black, $april-fools-color3, 50)),
+) {
+  .card {
+    border: none !important;
+  }
+
+  .contest-description
+  a {
+    color: white !important;
+  }
+}
+
+// DT contest
+@include define-contest-colors(
+  $selector: '&.contest-365',
+  $color: #b28c4b,
+  $color-dark: #685128,
+  $background-light: linear-gradient(to right, #b28c4b, #dbb666),
+  $background-dark: linear-gradient(to right, #564122, #685128),
+);
+
 .contests-colors {
-  // Primary color
-  @include define-contest-colors(
-    $selector: '&',
-    $color: $primary,
-    $color-dark: mix(black, $primary, 20),
-    $background-light: linear-gradient(to right, mix(white, $primary, 20), mix(white, $primary, 30)),
-    $background-dark: linear-gradient(to right, mix(black, $primary, 50), mix(black, $primary, 30)),
-  );
-
-  // Code Golf
-  @include define-contest-colors(
-    $selector: $code-golf-selector,
-    $color: $code-golf-color,
-    $color-dark: mix(black, $code-golf-color, 20),
-    $background-light: linear-gradient(to right, mix(white, $code-golf-color, 20), mix(white, $code-golf-color, 30)),
-    $background-dark: linear-gradient(to right, mix(black, $code-golf-color, 50), mix(black, $code-golf-color, 30)),
-  ) {
-    .card-bg {
-      zoom: 50% !important;
-    }
-  }
-
-  // One Line
-  @include define-contest-colors(
-    $selector: $one-line-selector,
-    $color: $one-line-color,
-    $color-dark: mix(black, $one-line-color, 30),
-    $background-light: linear-gradient(to right, mix(white, $one-line-color, 20), mix(white, $one-line-color, 30)),
-    $background-dark: linear-gradient(to right, mix(black, $one-line-color, 50), mix(black, $one-line-color, 30)),
-  ) {
-    .card-bg {
-      zoom: 137% !important;
-    }
-  }
-
-  // Hack it
-  @include define-contest-colors(
-    $selector: $hack-it-selector,
-    $color: $hack-it-color,
-    $color-dark: mix(black, $hack-it-color, 30),
-    $background-light: linear-gradient(to right, mix(white, $hack-it-color, 5), mix(white, $hack-it-color, 10)),
-    $background-dark: linear-gradient(to right, mix(black, $hack-it-color, 50), mix(black, $hack-it-color, 40)),
-  );
-
-  // SQL
-  @include define-contest-colors(
-    $selector: $sql-selector,
-    $color: $sql-color,
-    $color-dark: mix(black, $sql-color, 30),
-    $background-light: linear-gradient(to right, mix(white, $sql-color, 20), mix(white, $sql-color, 30)),
-    $background-dark: linear-gradient(to right, mix(black, $sql-color, 50), mix(black, $sql-color, 40)),
-  );
-
-  // April Fools
-  @include define-contest-colors(
-    $selector: $april-fools-selector,
-    $color: mix(white, $april-fools-color1, 25),
-    $color-dark: mix(black, $april-fools-color1, 50),
-    $background-light: linear-gradient(256deg, mix(white, $april-fools-color2, 0), mix(white, $april-fools-color3, 0)),
-    $background-dark: linear-gradient(256deg, mix(black, $april-fools-color2, 50), mix(black, $april-fools-color3, 50)),
-  ) {
-    .card {
-      border: none !important;
-    }
-
-    .contest-description
-    a {
-      color: white !important;
-    }
-  }
-
   &.contest-254 {
     --bg-gradient: linear-gradient(to right, #38CCBC, #07e4cf);
     --bg: #2db3a5;
@@ -189,15 +231,6 @@ $april-fools-color3: #37a9cd;
       max-width: 59% !important;
     }
   }
-
-  // DT contest
-  @include define-contest-colors(
-    $selector: '&.contest-365',
-    $color: #b28c4b,
-    $color-dark: #685128,
-    $background-light: linear-gradient(to right, #b28c4b, #dbb666),
-    $background-dark: linear-gradient(to right, #564122, #685128),
-  );
 }
 
 .dark-layout .contests-colors {
@@ -260,48 +293,32 @@ $april-fools-color3: #37a9cd;
 }
 
 .contests-colors {
-  thead tr {
-    background: var(--bg-gradient) !important;
-    // box-shadow: var(--box-shadow) !important;
-    color: var(--text-color);
-  }
-
-  .text-primary, .text-contest {
-    color: var(--bg) !important;
-  }
-
-  .badge-primary.badge-glow {
-    background-color: var(--bg);
-    box-shadow: var(--box-shadow) !important;
-    color: var(--text-color);
-  }
-
-  .badge-light-primary {
-    background-color: var(--bg-light) !important;
-    color: var(--bg);
-  }
-
-  .bg-light-primary {
-    background-color: var(--bg-light) !important;
-  }
-
-  .pagination-primary .page-item.active .page-link {
-    background: var(--bg) !important;
-  }
-
-  .btn:not(:is(.attempt-id)) {
-    background-color: var(--bg) !important;
-    border: 1px var(--bg-gradient) !important;
-    box-shadow: var(--box-shadow) !important;
-
-    &:hover {
-      background: var(--bg-gradient) !important;
+  &:not(:has(kep-delta)) {
+    kep-icon > span {
+      color: var(--bg) !important;
     }
   }
 
-  .custom-control-input:checked ~ .custom-control-label::before {
-    border-color: var(--bg);
-    background-color: var(--bg);
+  .pagination-primary .page-item.active .page-link {
+    background-color: var(--bg) !important;
   }
 
+  .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: var(--bg) !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .btn-primary {
+    background-color: var(--bg) !important;
+    border: none !important;
+
+    &:hover {
+      box-shadow: 0 0 5px var(--bg) !important;
+    }
+
+    @include dark-layout {
+      background-color: var(--bg) !important;
+    }
+  }
 }
