@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12" [@fadeInLeftOnEnter]="">
           <div class="card">
-            <div class="card-header">
+            <div class="card-header pb-0">
               <ul ngbNav #navWithIcons="ngbNav" class="nav-tabs" [destroyOnHide]="false" (activeIdChange)="activeIdChange($event)" [(activeId)]="activeId">
                 <li [ngbNavItem]="1">
                   <a ngbNavLink>
@@ -33,7 +33,8 @@
                 @if (problem.hasCheckInput) {
                   <li [ngbNavItem]="3" destroyOnHide="true">
                     <a ngbNavLink>
-                      <span [data-feather]="'hack' | iconName"></span> {{ 'Hacks' | translate }}
+                      <kep-icon name="lock-2" color="dark" type="duotone"/>
+                      {{ 'Hacks' | translate }}
                     </a>
                     <ng-template ngbNavContent>
                       <problem-hacks [problem]="problem"></problem-hacks>
@@ -55,7 +56,8 @@
                 @if (contestId) {
                   <li [ngbNavItem]="4">
                     <a ngbNavLink routerLink="/competitions/contests/contest/{{ contestId }}/problems">
-                      <span [data-feather]="'flag'"></span> {{ 'Contest' | translate }}
+                      <kep-icon name="contest" color="primary" type="duotone"/>
+                      {{ 'Contest' | translate }}
                     </a>
                     <ng-template ngbNavContent>
                       <problem-description [problem]="problem"></problem-description>
@@ -69,8 +71,8 @@
               }
             </div>
 
-            <div class="card-body">
-              <div [ngbNavOutlet]="navWithIcons" class="mt-2"></div>
+            <div class="card-footer">
+              <div [ngbNavOutlet]="navWithIcons"></div>
             </div>
 
           </div>
