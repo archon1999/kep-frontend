@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { deepEquals } from '@shared/utils/deep-equals';
 
-const TIMEOUT = 10000;
+const TIMEOUT = 1000;
 
 interface CacheData {
   url: string;
