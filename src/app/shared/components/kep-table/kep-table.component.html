@@ -1,27 +1,27 @@
-<div [class]="cardClass">
-  @if (loading) {
-    <div style="background: none;" [style.height]="spinnerHeight">
-      <spinner></spinner>
-    </div>
-  } @else {
+@if (loading) {
+  <div class="card bg-transparent" [style.height]="spinnerHeight">
+    <spinner [color]="spinnerColor"></spinner>
+  </div>
+} @else {
+  <div [class]="cardClass">
     <div class="table-responsive" [class]="tableCardClass">
       <table class="table" [class]="tableClass">
         <thead>
-          <ng-content select="[header]"></ng-content>
+        <ng-content select="[header]"></ng-content>
         </thead>
         <tbody [class]="{ 'empty': empty }">
           @if (empty) {
             <empty-result [text]="''"/>
           }
-          <ng-content select="[body]"></ng-content>
+        <ng-content select="[body]"></ng-content>
         </tbody>
         <tfoot>
-          <ng-content select="[footer]"></ng-content>
+        <ng-content select="[footer]"></ng-content>
         </tfoot>
       </table>
     </div>
-  }
-</div>
+  </div>
+}
 
 @if (!empty) {
   <ng-content select="[pagination]"></ng-content>
