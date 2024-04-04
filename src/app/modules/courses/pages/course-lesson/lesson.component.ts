@@ -16,6 +16,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { PartComponent } from '@courses/pages/course-lesson/part/part.component';
 import { PartCommentsComponent } from '@courses/pages/course-lesson/part-comments/part-comments.component';
 import { ScriptService } from '@shared/services/script.service';
+import { lessonTourSteps } from '@courses/pages/course-lesson/lesson.tour';
 
 const SCRIPT_PATH = '//cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min.js';
 const SCRIPT_PATH2 = 'https://cdn.jsdelivr.net/npm/highlightjs-line-numbers.js/dist/highlightjs-line-numbers.min.js';
@@ -175,7 +176,7 @@ export class LessonComponent implements OnInit {
       }
     };
     this.shepherdService.modal = true;
-    // this.shepherdService.addSteps(lessonTourSteps);
+    this.shepherdService.addSteps(lessonTourSteps as any);
     if (this.course.participantProgress === 0) {
       this.startTour();
     }
