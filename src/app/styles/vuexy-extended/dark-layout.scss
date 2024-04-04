@@ -21,6 +21,10 @@ $colors: (
       .text-#{$color_name} {
         color: mix(white, $color, 20) !important;
       }
+
+      .bg-gradient-#{$color_name} {
+        background: linear-gradient(to right, mix(black, $color, 30), $color) !important;
+      }
     }
 
     .btn-#{$color_name} {
