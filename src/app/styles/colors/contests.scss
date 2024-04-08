@@ -299,6 +299,24 @@ $april-fools-color3: #37a9cd;
     }
   }
 
+  .bg-light-primary {
+    background-color: var(--contest-color-light) !important;
+
+    @include dark-layout {
+      background-color: var(--contest-color-light) !important;
+    }
+  }
+
+  kep-table {
+    thead tr {
+      background: var(--bg-gradient) !important;
+    }
+
+    tbody tr:hover {
+      background-color: var(--contest-color-light) !important;
+    }
+  }
+
   .pagination-primary .page-item.active .page-link {
     background-color: var(--bg) !important;
   }

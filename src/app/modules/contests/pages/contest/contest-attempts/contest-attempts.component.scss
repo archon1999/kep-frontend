@@ -2,16 +2,8 @@
 
 app-contest-attempts {
   kep-table {
-    thead tr {
-      background: var(--bg-gradient) !important;
-    }
-
     thead th:nth-child(2) {
       padding-right: 0 !important;
-    }
-
-    tbody tr:hover {
-      background-color: var(--contest-color-light) !important;
     }
   }
 }
