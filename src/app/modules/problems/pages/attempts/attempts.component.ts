@@ -10,6 +10,9 @@ import { BaseTablePageComponent } from '@app/common/classes/base-table-page.comp
 import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { PageResult } from '@app/common/classes/page-result';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
+import { VerdictsSelectComponent } from '@problems/components/verdicts-select/verdicts-select.component';
+import { AttemptsFilterComponent } from '@problems/components/attempts-filter/attempts-filter.component';
+import { AttemptsFilter } from '@problems/interfaces';
 
 @Component({
   selector: 'app-attempts',
@@ -23,6 +26,8 @@ import { KepTableComponent } from '@shared/components/kep-table/kep-table.compon
     KepPaginationComponent,
     ContentHeaderModule,
     KepTableComponent,
+    VerdictsSelectComponent,
+    AttemptsFilterComponent,
   ]
 })
 export class AttemptsComponent extends BaseTablePageComponent<Attempt> implements OnInit, OnDestroy {
@@ -30,18 +35,22 @@ export class AttemptsComponent extends BaseTablePageComponent<Attempt> implement
   override defaultPageSize = 20;
   override pageOptions = [10, 20, 50];
 
-  public myAttempts = false;
+  public filter: AttemptsFilter;
 
   get attempts() {
     return this.pageResult?.data;
   }
 
   getPage(): Observable<PageResult<Attempt>> {
-    const params: any = this.pageable;
-    if (this.myAttempts && this.currentUser) {
-      params.username = this.currentUser.username;
-    }
-    return this.api.get('attempts', params);
+    return this.api.get('attempts', {
+      ...this.pageable,
+      ...this.filter,
+    });
+  }
+
+  filterChange(filter: AttemptsFilter) {
+    this.filter = filter;
+    this.reloadPage();
   }
 
   protected getContentHeader(): ContentHeader {

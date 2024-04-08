@@ -6,6 +6,7 @@ import { Attempt } from '@problems/models/attempts.models';
 import { Pageable } from '@app/common/classes/pageable';
 import { getCategoryIcon } from '@problems/utils/category';
 import { Observable } from 'rxjs';
+import { Verdicts } from '@problems/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -109,7 +110,10 @@ export class ProblemsApiService {
     return this.api.post(`problems/${ problemId }/remove-tag/`, params);
   }
 
-  getVerdicts() {
+  getVerdicts(): Observable<Array<{
+    label: string,
+    value: Verdicts,
+  }>> {
     return this.api.get('attempts/verdicts');
   }
 
