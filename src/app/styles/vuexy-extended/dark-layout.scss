@@ -25,6 +25,10 @@ $colors: (
       .bg-gradient-#{$color_name} {
         background: linear-gradient(to right, mix(black, $color, 30), $color) !important;
       }
+
+      .bg-light-#{$color_name} {
+        background: rgba($color, 0.12) !important;
+      }
     }
 
     .btn-#{$color_name} {

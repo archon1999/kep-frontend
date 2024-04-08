@@ -63,7 +63,7 @@
       // bg color lighten for rgba - opacity set
       @if ($color_name != 'light' and $color_name != 'black' and $color_name != 'white' and $color_name != 'dark') {
         .bg-light-#{$color_name} {
-          background: rgba($color_value, 0.12) !important;
+          background: rgba($color_value, 0.05) !important;
           color: $color_value !important;
 
           // Calendar background, color and border color
