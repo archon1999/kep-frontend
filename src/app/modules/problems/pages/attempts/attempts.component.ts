@@ -50,6 +50,7 @@ export class AttemptsComponent extends BaseTablePageComponent<Attempt> implement
 
   filterChange(filter: AttemptsFilter) {
     this.filter = filter;
+    this.pageNumber = this.defaultPageNumber;
     this.reloadPage();
   }
 
