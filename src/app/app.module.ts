@@ -63,6 +63,7 @@ const appRoutes: Routes = [
     loadChildren: () => import('./modules/tournaments/tournaments.module').then(m => m.TournamentsModule)
   },
   { path: 'users', loadChildren: () => import('./modules/users/users.routing') },
+  { path: 'calendar', loadChildren: () => import('./modules/calendar/calendar.routing') },
   { path: 'help', loadChildren: () => import('./modules/help/help.module').then(m => m.HelpModule) },
   { path: 'todo', loadComponent: () => import('./modules/todo/todo.component').then(c => c.TodoComponent) },
   {

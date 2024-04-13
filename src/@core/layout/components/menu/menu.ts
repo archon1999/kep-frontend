@@ -130,6 +130,13 @@ export const menu: CoreMenu[] = [
     icon: 'users',
     url: '/users',
   },
+  {
+    id: 'calendar',
+    translate: 'MENU.CALENDAR',
+    type: 'item',
+    icon: 'calendar',
+    url: '/calendar',
+  },
   // {
   //   id: 'todo',
   //   title: 'Todo',

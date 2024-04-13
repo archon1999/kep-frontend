@@ -22,6 +22,7 @@ export const locale = {
       BLOG: 'Blog',
       CODE_RUSH: 'Code Rush',
       TODO: 'Todo',
+      CALENDAR: 'Calendar',
     },
     LOGIN: 'Login',
     LOGOUT: 'Logout',
@@ -425,6 +426,8 @@ export const locale = {
     NoResultFoundText: 'What you searched was unfortunately not found or does not exists',
     CompetitionPrizes: 'Competition prizes',
     Lessons: 'Lessons',
+    NewProblems: 'New problems',
+    Participate: 'Participate',
     ProblemTourSteps: [
       {
         title: 'Available languages',
@@ -590,6 +593,9 @@ export const locale = {
     PageTitle: {
       Home: 'Home',
       Landing: 'KEP.uz - A platform for learning programming',
+      Calendar: {
+        Calendar: 'Calendar',
+      },
       Problems: {
         Problems: 'Problems',
         Problem: '{{ problemId }}. {{ problemTitle }} | Problem',

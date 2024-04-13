@@ -21,6 +21,7 @@ export const locale = {
       BLOG: 'Блог',
       CODE_RUSH: 'Код Раш',
       TODO: 'Todo',
+      CALENDAR: 'Календарь',
     },
     RESET: 'Сброс',
     LOGIN: 'Войти',
@@ -420,6 +421,8 @@ export const locale = {
     NoResultFound: 'Ничего не найдено',
     NoResultFoundText: 'То, что вы искали, к сожалению, не найдено или не существует',
     CompetitionPrizes: 'Призы в соревнованиях',
+    NewProblems: 'Новые задачи',
+    Participate: 'Участвовать',
     Lessons: 'Уроки',
     ProblemTourSteps: [
       {
@@ -598,6 +601,9 @@ export const locale = {
         RatingHistory: 'Рейтинг | История | Задачи',
         RatingOverall: 'Рейтинг | Общий | Задачи',
         StudyPlan: '{{ studyPlanTitle }} | Учебный план | Задачи',
+      },
+      Calendar: {
+        Calendar: 'Календарь',
       },
       Contests: {
         Contests: 'Контесты',
