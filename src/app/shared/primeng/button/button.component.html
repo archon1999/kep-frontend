@@ -1,0 +1,58 @@
+<button
+  (blur)="onBlur.emit($event)"
+  (click)="onClick.emit($event)"
+  (focus)="onFocus.emit($event)"
+  [attr.aria-label]="ariaLabel"
+  [attr.data-pc-name]="'button'"
+  [attr.data-pc-section]="'root'"
+  [attr.tabindex]="tabindex"
+  [attr.type]="type"
+  [disabled]="disabled || loading"
+  [ngClass]="buttonClass"
+  [ngStyle]="style"
+  pRipple>
+  <ng-content></ng-content>
+  <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+  <ng-container *ngIf="loading">
+    <ng-container *ngIf="!loadingIconTemplate">
+      <span
+        *ngIf="loadingIcon"
+        [attr.aria-hidden]="true"
+        [attr.data-pc-section]="'loadingicon'"
+        [class]="'p-button-loading-icon pi-spin ' + loadingIcon"
+        [ngClass]="iconClass()">
+      </span>
+      <SpinnerIcon
+        *ngIf="!loadingIcon"
+        [attr.aria-hidden]="true"
+        [attr.data-pc-section]="'loadingicon'" [spin]="true"
+        [styleClass]="spinnerIconClass()"/>
+    </ng-container>
+    <span
+      *ngIf="loadingIconTemplate"
+      [attr.aria-hidden]="true"
+      [attr.data-pc-section]="'loadingicon'"
+      [ngClass]="iconClass()"
+      class="p-button-loading-icon">
+        <ng-template *ngTemplateOutlet="loadingIconTemplate"></ng-template>
+    </span>
+  </ng-container>
+  <ng-container *ngIf="!loading">
+    <span *ngIf="icon && !iconTemplate" [attr.data-pc-section]="'icon'" [class]="icon" [ngClass]="iconClass()"></span>
+    <span *ngIf="!icon && iconTemplate" [attr.data-pc-section]="'icon'" [ngClass]="iconClass()">
+      <ng-template *ngTemplateOutlet="iconTemplate" [ngIf]="!icon"></ng-template>
+    </span>
+  </ng-container>
+  <span
+    *ngIf="!contentTemplate && label"
+    [attr.aria-hidden]="icon && !label"
+    [attr.data-pc-section]="'label'"
+    class="p-button-label">{{ label }}</span>
+  <span
+    *ngIf="!contentTemplate && badge"
+    [attr.data-pc-section]="'badge'"
+    [class]="badgeClass"
+    [ngClass]="badgeStyleClass()">
+    {{ badge }}
+  </span>
+</button>
