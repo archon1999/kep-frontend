@@ -6,6 +6,7 @@ export enum Resources {
 
   Contests = '/competitions/contests',
   Contest = '/competitions/contests/contest/:id',
+  ContestStandings = '/competitions/contests/contest/:id/standings',
 
   Challenges = '/practice/challenges',
   ChallengesRating = '/practice/challenges/rating',

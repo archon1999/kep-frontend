@@ -5,7 +5,7 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "module": "es2020",
+    "module": "es2022",
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
@@ -17,52 +17,25 @@
       "node_modules/@types"
     ],
     "lib": [
-      "es2018",
+      "es2022",
       "dom"
     ],
     "paths": {
-      "@app/*": [
-        "app/*"
-      ],
-      "@core/*": [
-        "@core/*"
-      ],
-      "@layout/*": [
-        "@core/layout/*"
-      ],
-      "@shared/*": [
-        "app/shared/*"
-      ],
-      "@problems/*": [
-        "app/modules/problems/*"
-      ],
-      "@projects/*": [
-        "app/modules/projects/*"
-      ],
-      "@contests/*": [
-        "app/modules/contests/*"
-      ],
-      "@challenges/*": [
-        "app/modules/challenges/*"
-      ],
-      "@arena/*": [
-        "app/modules/arena/*"
-      ],
-      "@courses/*": [
-        "app/modules/courses/*"
-      ],
-      "@users/*": [
-        "app/modules/users/*"
-      ],
-      "@auth": [
-        "app/modules/auth"
-      ],
-      "@auth/*": [
-        "app/modules/auth/*"
-      ],
-      "environments": [
-        "environments/"
-      ]
+      "@app/*": ["app/*"],
+      "@core/*": ["@core/*"],
+      "@layout/*": ["@core/layout/*"],
+      "@shared/*": ["app/shared/*"],
+      "@problems/*": ["app/modules/problems/*"],
+      "@projects/*": ["app/modules/projects/*"],
+      "@contests/*": ["app/modules/contests/*"],
+      "@challenges/*": ["app/modules/challenges/*"],
+      "@arena/*": ["app/modules/arena/*"],
+      "@courses/*": ["app/modules/courses/*"],
+      "@users/*": ["app/modules/users/*"],
+      "@auth": ["app/modules/auth"],
+      "@auth/*": ["app/modules/auth/*"],
+      "environments": ["environments/"],
+      "@primeng/*": ["app/shared/primeng/*"]
     },
     "useDefineForClassFields": false
   },
