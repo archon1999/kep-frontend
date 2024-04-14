@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 
 import { ChallengeCallCardComponent } from '@challenges/components/challenge-call-card/challenge-call-card.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { ChallengeCall } from '@challenges/models';
 import { ChallengesApiService } from '@challenges/services';
 import { interval } from 'rxjs';
 import { BaseUserComponent } from '@app/common/classes/base-user.component';
 import { takeUntil } from 'rxjs/operators';
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { ChallengeCall } from '@challenges/interfaces';
 
 @Component({
   selector: 'section-in-queue',

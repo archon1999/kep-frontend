@@ -1,0 +1,26 @@
+<div class="card countdown bg-hapter-{{ challenge?.nextQuestion.question.chapter.id }}">
+  <div class="card-header justify-content-center">
+    <div class="chapter text-center">
+      <div class="chapter-icon"><img src="{{ challenge?.nextQuestion.question.chapter.icon }}" alt=""></div>
+      <div class="chapter-title font-medium-2 text-dark">{{ challenge?.nextQuestion.question.chapter.title }}</div>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <ngx-countdown
+      #counter
+      (finish)="finish.emit()"
+      [render]="render"
+      [time]="challenge.timeSeconds*1000"
+      format="ss">
+      <ng-template #render let-data>
+        <div class="d-flex justify-content-center">
+          <div class="text-center">
+            <h5 class="clock-val mb-50 text-dark">{{ data.fragments[0] }}</h5>
+            <h5 class="text-dark clock-text">{{ 'SECOND' | translate }}</h5>
+          </div>
+        </div>
+      </ng-template>
+    </ngx-countdown>
+  </div>
+</div>

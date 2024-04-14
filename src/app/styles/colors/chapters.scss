@@ -34,7 +34,7 @@
   $id: 1,
   $gradient-color: linear-gradient(141deg, #3b7aa9, #ffe974),
   $gradient-dark-color: linear-gradient(141deg, #1b3446, #978d45),
-  $color: #3b7aa9,
+  $color: #4881a5,
   $dark-color: #285b80,
 );
 
@@ -180,4 +180,22 @@
   $gradient-dark-color: linear-gradient(45deg, #2a3671, #39478b),
   $color: #6788f5,
   $dark-color: #39478b,
+);
+
+// IQ
+@include define-chapter-colors(
+  $id: 18,
+  $gradient-color: linear-gradient(to right, #39478b, #6788f5),
+  $gradient-dark-color: linear-gradient(45deg, #2a3671, #39478b),
+  $color: #020263,
+  $dark-color: #020263,
+);
+
+// Mental Ariphmetic
+@include define-chapter-colors(
+  $id: 19,
+  $gradient-color: linear-gradient(45deg, mix(black, #4d7e3e, 0), mix(white, #4d7e3e, 10)),
+  $gradient-dark-color: linear-gradient(45deg, mix(black, #4d7e3e, 30), #4d7e3e),
+  $color: #4d7e3e,
+  $dark-color: mix(black, #4d7e3e, 30),
 );

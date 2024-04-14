@@ -4,7 +4,7 @@ import { Arena } from '@arena/arena.models';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { Observable } from 'rxjs';
 import { PageResult } from '@app/common/classes/page-result';
-import { Challenge } from '@challenges/models/challenges.models';
+import { Challenge } from '@challenges/models/challenges';
 import { ChallengesApiService } from '@challenges/services';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';

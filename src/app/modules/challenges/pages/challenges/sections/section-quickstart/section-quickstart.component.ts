@@ -6,11 +6,11 @@ import { ChallengesApiService } from '@challenges/services';
 import { CoreCommonModule } from '@core/common.module';
 import { NouisliderModule } from '@shared/third-part-modules/nouislider/nouislider.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
-import { ChallengeCall, NewChallengeCall } from '@challenges/models';
 import { getResourceById, Resources } from '@app/resources';
 import { BaseUserComponent } from '@app/common/classes/base-user.component';
 import { Router } from '@angular/router';
 import { fadeInOnEnterAnimation } from 'angular-animations';
+import { ChallengeCall, NewChallengeCall } from '@challenges/interfaces';
 
 
 @Component({
