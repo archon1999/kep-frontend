@@ -14,7 +14,8 @@ import { BaseLoadComponent } from '@app/common';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { AttemptLangs } from '@problems/constants';
 import { PageResult } from '@app/common/classes/page-result';
-import { timer } from 'rxjs';
+import { count, interval, timer } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'part-problem',
@@ -62,7 +63,7 @@ export class ProblemComponent extends BaseLoadComponent<PageResult<Attempt>> imp
 
   onSubmitted() {
     this.loadData();
-    timer(10000).subscribe(
+    interval(3000).pipe(take(3)).subscribe(
       () => {
         this.onCheckFinished();
       }
@@ -91,7 +92,7 @@ export class ProblemComponent extends BaseLoadComponent<PageResult<Attempt>> imp
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ('problem' in changes) {
+    if ('problem' in changes && this.currentUser) {
       this.loadData();
     }
   }
