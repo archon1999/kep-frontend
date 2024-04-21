@@ -38,6 +38,7 @@ import { TeamJoinResolver } from '@app/modules/account-settings/account-settings
 import { TeamJoinComponent } from '@app/modules/account-settings/teams/team-join/team-join.component';
 import { BlockUIModule } from 'ng-block-ui';
 import { HIGHLIGHT_OPTIONS, HighlightOptions } from 'ngx-highlightjs';
+import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 
 register();
 
@@ -138,7 +139,8 @@ export function authFactory(authService: AuthService) {
     NgxCountriesModule.forRoot({
       defaultLocale: 'en',
     }),
-    LayoutComponent
+    LayoutComponent,
+    ApexChartModule
   ],
   providers: [
     { provide: TitleStrategy, useClass: CustomTitleStrategy },
