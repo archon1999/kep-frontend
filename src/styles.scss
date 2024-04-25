@@ -1,4 +1,4 @@
-@use "sass:meta";
+@use 'sass:meta';
 
 @import 'scss/core.scss';
 
@@ -8,8 +8,13 @@
 @import 'styles/colors/contests.scss';
 @import 'styles/vuexy-extended';
 
-@import "highlight.js/styles/vs.css";
+@import 'highlight.js/styles/vs.css';
+@import 'styles/primeng-sass/themes/aura/aura-light/primary/theme';
+@import 'styles/primeng-sass/icons/primeicons';
 
 .dark-layout {
-  @include meta.load-css("highlight.js/styles/vs2015.css");
+  @include meta.load-css('highlight.js/styles/vs2015.css');
+  @include meta.load-css('styles/primeng-sass/themes/aura/aura-dark/primary/theme');
 }
+
+@import 'styles/primeng-sass/icons/primeicons';

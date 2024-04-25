@@ -1,0 +1,17 @@
+//@import 'styles/kep-imports';
+$gray-100: #babfc7 !default; // $gray-lightest
+$primary: #4d4ae8 !default;
+
+$primaryColor: mix(black, $primary, 30) !default;
+$primaryLightColor: mix(black, $primary, 20) !default;
+$primaryLighterColor: mix(black, $primary, 10);
+$primaryLightestColor: $primary !default;
+$primaryTextColor: $gray-100 !default;
+
+$highlightBg:rgba(129, 140, 248, .16) !default;
+$highlightTextColor: rgba(255,255,255,.87) !default;
+$highlightFocusBg: rgba($primaryColor, .24) !default;
+
+@import '../_variables';
+@import './_fonts';
+@import '../../../../theme-base/_components';

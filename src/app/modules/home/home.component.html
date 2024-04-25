@@ -1,3 +1,20 @@
+<!--<div class="content-wrapper container-xxl p-0">-->
+<!--  <div class="content-body">-->
+<!--    <div class="row">-->
+<!--      <div class="col-9">-->
+<!--        <div class="row">-->
+<!--          <div class="col-9">-->
+<!--            <news-section/>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <last-problems-section/>-->
+<!--      </div>-->
+<!--      <div class="col-3 border-left-2 border-left">-->
+<!--        <contests-section/>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 <div class="row">
   <div class="col-12 header-section">
     <header-section></header-section>
@@ -7,7 +24,7 @@
   <div class="content-body">
     <div class="row">
       <div class="offset-lg-1 offset-0 col-lg-6 col-md-8 col-12">
-        <news-section></news-section>
+        <news-section/>
       </div>
 
       <div class="col-lg-4 col-md-4 col-sm-12">
@@ -47,15 +64,15 @@
         </div>
       </div>
 
-      <div class="col-lg-8 offset-lg-2 col-12 text-center">
-        @defer (on viewport){
-          <calendar-section></calendar-section>
-        } @placeholder (minimum 500ms) {
-          <div class="card" [style.height.px]="600">
-            <spinner></spinner>
-          </div>
-        }
-      </div>
+<!--      <div class="col-lg-8 offset-lg-2 col-12 text-center">-->
+<!--          @defer (on viewport){-->
+<!--            <calendar-section></calendar-section>-->
+<!--          } @placeholder (minimum 500ms) {-->
+<!--            <div class="card" [style.height.px]="600">-->
+<!--              <spinner></spinner>-->
+<!--            </div>-->
+<!--          }-->
+<!--      </div>-->
 
       <div class="col-12 mt-1">
         <div class="row">

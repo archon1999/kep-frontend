@@ -1,0 +1,17 @@
+<h3 class="my-2 text-dark">{{ 'NewProblems' | translate }}</h3>
+
+@if (isLoading) {
+  <div class="row">
+    <div class="col-4" *ngFor="let _ of [].constructor(3)">
+      <ngx-skeleton-loader [theme]="{'height': '178px', background: 'var(--skeleton-color)'}" count="1"/>
+    </div>
+  </div>
+} @else {
+  <swiper [config]="swiperConfig">
+    @for (problem of problems; track problem.id) {
+      <div class="swiper-slide">
+        <problem-card [problem]="problem"/>
+      </div>
+    }
+  </swiper>
+}

@@ -21,6 +21,7 @@ export const locale = {
       BLOG: 'Blog',
       CODE_RUSH: 'Code Rush',
       TODO: 'Todo',
+      CALENDAR: 'Kalendar',
     },
     RESET: 'Reset',
     LOGIN: 'Kirish',
@@ -421,6 +422,8 @@ export const locale = {
     NoResultFoundText: 'Siz qidirgan narsa afsuski topilmadi yoki mavjud emas',
     CompetitionPrizes: 'Musobaqa yutuqlari',
     Lessons: 'Darsliklar',
+    NewProblems: 'Yangi masalalar',
+    Participate: 'Qatnashish',
     ContestRules: {
       ACM20H: ``,
     },
@@ -615,6 +618,9 @@ export const locale = {
         ContestsProfile: 'Profil | Kontestlar',
         MyContests: 'Mening kontestlarim',
         CreateContest: 'Kontest yaratish',
+      },
+      Calendar: {
+        Calendar: 'Kalendar',
       },
       Blog: {
         Blog: 'Blog',

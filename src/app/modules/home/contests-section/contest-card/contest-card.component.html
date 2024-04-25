@@ -1,0 +1,39 @@
+<a class="card {{ contest | contestClasses }} text-white" [routerLink]="Resources.ContestStandings | resourceById:contest.id">
+  <div
+    class="contest-logo"
+    [ngClass]="{
+      'full-height': logoHeight >= logoWidth,
+      'full-width': logoHeight < logoWidth
+    }">
+    <img
+      #contestLogo
+      (load)="onLoad($event)"
+      [src]="contest.logo"
+      alt="contest-logo">
+  </div>
+
+  <div class="card-header full-width">
+    <div class="card-title font-medium-1 align-items-center d-flex">
+      <kep-icon color="white" name="contest" type="duotone"/>
+      {{ contest.title }}
+    </div>
+  </div>
+
+  <div class="card-body full-width">
+    @if (contest.status == ContestStatus.FINISHED) {
+      {{ contest.finishTime | localizedDate:'medium' }}
+    } @else {
+      {{ contest.startTime | localizedDate:'medium' }}
+    }
+  </div>
+
+  <div class="card-footer full-width text-right">
+    <button class="btn btn-primary btn-sm">
+      @if (contest.status == ContestStatus.FINISHED) {
+        {{ 'Standings' | translate }}
+      } @else {
+        {{ 'Participate' | translate }}
+      }
+    </button>
+  </div>
+</a>

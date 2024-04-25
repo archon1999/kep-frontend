@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ChallengesRating } from '@challenges/models/challenges.models';
 import { ChallengesApiService } from '@challenges/services';
 import { PageResult } from '@app/common/classes/page-result';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
@@ -11,6 +10,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
 import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import { ChallengesRating } from '@challenges/interfaces/challenges-rating';
 
 @Component({
   selector: 'app-challenges-rating',

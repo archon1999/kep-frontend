@@ -3,10 +3,10 @@ import { CoreCommonModule } from '@core/common.module';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { Observable } from 'rxjs';
 import { User } from '@auth';
-import { ChallengesRating } from '@challenges/models/challenges.models';
 import { ChallengesStatisticsService } from '@challenges/services';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import { ChallengesRating } from '@challenges/interfaces/challenges-rating';
 
 @Component({
   selector: 'section-header',

@@ -294,7 +294,7 @@ $april-fools-color3: #37a9cd;
 
 .contests-colors {
   &:not(:has(kep-delta)) {
-    kep-icon > span {
+    kep-icon > span.text-primary {
       color: var(--bg) !important;
     }
   }

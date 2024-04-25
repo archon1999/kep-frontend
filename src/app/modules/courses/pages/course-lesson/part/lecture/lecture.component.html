@@ -4,18 +4,19 @@
       <mathjax [content]="part.text"></mathjax>
     }
     @if (part.type == 2) {
-      <pre class="mt-2"><code [lineNumbers]="true" [languages]="['python']" [highlight]="part.sourceCode"></code></pre>
+      <div class="position-relative">
+        <pre class="mt-1"><code [lineNumbers]="true" [languages]="['python']" [highlight]="part.sourceCode"></code></pre>
+
+        <div class="position-absolute position-right-0 position-top-0">
+          <clipboard-button [text]="part.sourceCode"></clipboard-button>
+        </div>
+      </div>
     }
-    <div class="mb-2 text-right">
-      @if (part.type == 2) {
-        <clipboard-button [text]="part.sourceCode"></clipboard-button>
-      }
-    </div>
   </div>
 }
 
 @if (lecture.sourceCode.length > 0) {
   <code-editor-modal
-    [availableLanguages]="[{'lang': 'py', 'codeTemplate': lecture.sourceCode}]">
-  </code-editor-modal>
+    [uniqueName]="lecture.title"
+    [availableLanguages]="availableLanguages"/>
 }

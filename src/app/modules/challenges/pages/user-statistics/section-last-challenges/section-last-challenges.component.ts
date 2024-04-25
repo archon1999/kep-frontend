@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ChallengesStatisticsService } from '@challenges/services';
-import { Challenge } from '@challenges/models/challenges.models';
+import { Challenge } from '@challenges/models/challenges';
 import { User } from '@auth';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { Observable } from 'rxjs';

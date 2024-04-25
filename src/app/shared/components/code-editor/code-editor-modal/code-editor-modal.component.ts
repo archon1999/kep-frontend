@@ -125,7 +125,9 @@ export class CodeEditorModalComponent implements OnInit {
 
     this.editorForm.get('code').valueChanges.subscribe(
       (code: string) => {
-        this.templateCodeService.save(this.uniqueName, this.editorForm.get('lang').value, code);
+        if (this.sidebarIsOpened) {
+          this.templateCodeService.save(this.uniqueName, this.editorForm.get('lang').value, code);
+        }
       }
     );
 

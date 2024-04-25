@@ -1,23 +1,31 @@
-<a [@fadeInOnEnter] class="card" [routerLink]="getResourceById(Resources.Problem, problem.id)" [ngClass]="{
-  'bg-solved': problem.userInfo.hasSolved,
-  'bg-not-solved': !problem.userInfo.hasSolved && problem.userInfo.hasAttempted
-}">
+<a
+  [@fadeInOnEnter]=""
+  class="card"
+  [routerLink]="Resources.Problem | resourceById:problem.id">
   <div class="card-header">
-    <div class="card-title">{{ problem.id }}. {{ problem.title }}</div>
-    <div class="problem-difficulty">
-      <span class="badge badge-glow badge-{{ problem.difficulty | problemDifficultyColor }}">
-        {{ problem.difficultyTitle }}
-      </span>
-    </div>
+    <div class="card-title font-medium-1">{{ problem.id }}. {{ problem.title }}</div>
+
+    @if (problem.userInfo.hasSolved) {
+      <div ngbTooltip="{{ 'Solved' | translate }}">
+        <kep-icon name="check" color="success" type="duotone"/>
+      </div>
+    } @else if(problem.userInfo.hasAttempted) {
+      <div ngbTooltip="{{ 'Unsolved' | translate }}">
+        <kep-icon name="cross" color="danger" type="duotone"/>
+      </div>
+    }
   </div>
 
   <div class="card-body">
+    <span
+      ngbTooltip="{{ 'Difficulty' | translate }}"
+      class="badge badge-glow badge-{{ problem.difficulty | problemDifficultyColor }}">
+      {{ problem.difficultyTitle }}
+    </span>
     @for (tag of problem.tags; track tag) {
-      <button
-        class="btn mr-25 mb-25 btn-primary btn-sm font-small-2"
-        >
+      <span class="ml-25 badge badge-primary">
         {{ tag.name }}
-      </button>
+      </span>
     }
   </div>
 
@@ -36,14 +44,14 @@
 
     <div class="meta">
       @if (problem.hasSolution) {
-        <span class="badge mt-50 badge-pill badge-light-success">
+        <span class="badge badge-pill badge-light-success">
           <i [data-feather]="'exists' | iconName" class="text-success" [size]="'16px'"></i>
           {{ 'Solution' | translate }}
         </span>
       }
 
       @if (!problem.hasChecker) {
-        <span class="badge mt-50 badge-pill badge-light-danger">
+        <span class="badge badge-pill badge-light-danger">
           <i [data-feather]="'not_exists' | iconName" class="text-danger" [size]="'16px'"></i>
           {{ 'Checker' | translate }}
         </span>

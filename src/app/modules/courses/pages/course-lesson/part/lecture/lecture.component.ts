@@ -10,6 +10,8 @@ import { CourseLessonPartStatus } from '@courses/constants';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
 import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
+import { AvailableLanguage } from '@problems/models/problems.models';
+import { AttemptLangs } from '@problems/constants';
 
 @Component({
   selector: 'part-lecture',
@@ -31,6 +33,7 @@ export class LectureComponent implements OnInit, OnChanges {
   @Input() lessonPartStatus: number;
   @Output() checkCompletionEvent = new EventEmitter<any>();
 
+  public availableLanguages: AvailableLanguage[] = [];
   private _unsubscribeAll = new Subject();
 
   constructor(
@@ -40,7 +43,17 @@ export class LectureComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    if (this.lessonPartStatus != CourseLessonPartStatus.COMPLETED) {
+    this.availableLanguages = [
+      {
+        lang: AttemptLangs.PYTHON,
+        codeTemplate: this.lecture.sourceCode,
+        langFull: 'Python',
+        timeLimit: 0,
+        memoryLimit: 0,
+      }
+    ];
+
+    if (this.lessonPartStatus !== CourseLessonPartStatus.COMPLETED) {
       this.service.checkLessonPartCompletion(this.lessonPartId).subscribe((result: any) => {
         this.checkCompletionEvent.emit(result);
       });
@@ -48,18 +61,28 @@ export class LectureComponent implements OnInit, OnChanges {
 
     this.coreConfigService.getConfig().pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (config: CoreConfig) => {
-        this.hljsLoader.ready.subscribe((result: any) => {
-          console.log(result);
-        });
+        this.hljsLoader.ready.subscribe((result: any) => {});
       }
     );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.lessonPartStatus != CourseLessonPartStatus.COMPLETED) {
+    if (this.lessonPartStatus !== CourseLessonPartStatus.COMPLETED) {
       this.service.checkLessonPartCompletion(this.lessonPartId).subscribe((result: any) => {
         this.checkCompletionEvent.emit(result);
       });
+    }
+
+    if ('lecture' in changes) {
+      this.availableLanguages = [
+        {
+          lang: AttemptLangs.PYTHON,
+          codeTemplate: this.lecture.sourceCode,
+          langFull: 'Python',
+          timeLimit: 0,
+          memoryLimit: 0,
+        }
+      ];
     }
   }
 }

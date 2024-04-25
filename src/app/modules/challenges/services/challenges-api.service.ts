@@ -50,8 +50,10 @@ export class ChallengesApiService {
     return this.api.post('challenge-calls/new/', data);
   }
 
-  checkAnswer(challengeId: number, data: any) {
-    return this.api.post(`challenges/${ challengeId }/check-answer/`, data);
+  checkAnswer(challengeId: number, answer: any, isFinish?: boolean) {
+    const body: any = { answer };
+    if (isFinish) { body.finish = true; }
+    return this.api.post(`challenges/${ challengeId }/check-answer/`, body);
   }
 
   getRatingChanges(username: string) {

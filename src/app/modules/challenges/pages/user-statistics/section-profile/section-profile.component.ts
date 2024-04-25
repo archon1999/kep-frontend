@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ChallengesRating } from '@challenges/models/challenges.models';
 import { ChallengesStatisticsService } from '@challenges/services';
 import { AuthService } from '@auth';
 import { User } from '@auth';
@@ -8,6 +7,7 @@ import { Observable } from 'rxjs';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { ChallengesRating } from '@challenges/interfaces/challenges-rating';
 
 @Component({
   selector: 'section-profile',

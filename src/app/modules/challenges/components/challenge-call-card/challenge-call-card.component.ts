@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { ChallengeCall } from '@challenges/models/challenges.models';
 import { ChallengesApiService } from '@challenges/services';
 import { CoreCommonModule } from '@core/common.module';
 import { getResourceById, Resources } from '@app/resources';
 import { BaseUserComponent } from '@app/common/classes/base-user.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import { ChallengeCall } from '@challenges/interfaces/challenge-call';
 
 @Component({
   selector: 'challenge-call-card',

@@ -1,74 +1,64 @@
-<div class="table-responsive">
-  <table class="table bg-challenge-results">
-    <tbody>
-      <tr>
-        <td>
-          <challenges-user-view [user]="challenge.playerFirst" [withRating]="true"></challenges-user-view>
-        </td>
-
-        <td>
-          <span class="badge badge-glow" [ngClass]="{
-              'badge-success': challenge.playerFirst.result > challenge.playerSecond.result,
-              'badge-danger': challenge.playerFirst.result < challenge.playerSecond.result,
-              'badge-secondary': challenge.playerFirst.result == challenge.playerSecond.result
-            }">
+<div class="card">
+  <div class="card-header">
+    <div class="row full-width">
+      <div class="col p-0 d-flex align-items-center justify-content-center">
+        <div class="d-flex justify-content-center align-items-center">
+          <challenges-user-view [user]="challenge.playerFirst" [withRating]="false"/>
+          <span class="badge badge-glow ml-50" [ngClass]="{
+            'badge-success': challenge.playerFirst.result > challenge.playerSecond.result,
+            'badge-danger': challenge.playerFirst.result < challenge.playerSecond.result,
+            'badge-secondary': challenge.playerFirst.result == challenge.playerSecond.result
+          }">
             {{ challenge.playerFirst.result }}
           </span>
-        </td>
+        </div>
+      </div>
 
-        <td>
-          @for (result of challenge.playerFirst.results; track result) {
-            <span>
-              @switch (result) {
-                @case (-1) {
-                  <i class="text-warning" data-feather="minus"></i>
-                }
-                @case (0) {
-                  <i class="text-danger" data-feather="x"></i>
-                }
-                @case (1) {
-                  <i class="text-success" data-feather="check"></i>
-                }
-              }
-            </span>
-          }
-        </td>
-
-      </tr>
-
-      <tr>
-        <td>
-          <challenges-user-view [user]="challenge.playerSecond" [withRating]="true"></challenges-user-view>
-        </td>
-
-        <td>
-          <span class="badge badge-glow" [ngClass]="{
-              'badge-danger': challenge.playerFirst.result > challenge.playerSecond.result,
-              'badge-success': challenge.playerFirst.result < challenge.playerSecond.result,
-              'badge-secondary': challenge.playerFirst.result == challenge.playerSecond.result
-            }">
+      <div class="col p-0 d-flex align-items-center justify-content-center">
+        <div class="d-flex justify-content-center align-items-center">
+          <span class="badge badge-glow mr-50" [ngClass]="{
+            'badge-danger': challenge.playerFirst.result > challenge.playerSecond.result,
+            'badge-success': challenge.playerFirst.result < challenge.playerSecond.result,
+            'badge-secondary': challenge.playerFirst.result == challenge.playerSecond.result
+          }">
             {{ challenge.playerSecond.result }}
           </span>
-        </td>
+          <challenges-user-view [user]="challenge.playerSecond" [withRating]="false"/>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        <td>
-          @for (result of challenge.playerSecond.results; track result) {
-            <span>
-              @switch (result) {
-                @case (-1) {
-                  <i class="text-warning" data-feather="minus"></i>
-                }
-                @case (0) {
-                  <i class="text-danger" data-feather="x"></i>
-                }
-                @case (1) {
-                  <i class="text-success" data-feather="check"></i>
-                }
-              }
-            </span>
+  <div class="card-footer">
+    <div class="row">
+      @for (_ of challenge.playerFirst.results; track _) {
+        <div class="col-6 p-25 d-flex align-items-center justify-content-center">
+          @switch (challenge.playerFirst.results[$index]) {
+            @case (-1) {
+              <i class="text-warning" data-feather="minus"></i>
+            }
+            @case (0) {
+              <i class="text-danger" data-feather="x"></i>
+            }
+            @case (1) {
+              <i class="text-success" data-feather="check"></i>
+            }
           }
-        </td>
-      </tr>
-    </tbody>
-  </table>
+        </div>
+        <div class="col-6 p-25 d-flex align-items-center justify-content-center">
+          @switch (challenge.playerSecond.results[$index]) {
+            @case (-1) {
+              <i class="text-warning" data-feather="minus"></i>
+            }
+            @case (0) {
+              <i class="text-danger" data-feather="x"></i>
+            }
+            @case (1) {
+              <i class="text-success" data-feather="check"></i>
+            }
+          }
+        </div>
+      }
+    </div>
+  </div>
 </div>

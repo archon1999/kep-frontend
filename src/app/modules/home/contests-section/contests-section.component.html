@@ -1,0 +1,16 @@
+<h3 class="mb-1 text-dark">
+  <kep-icon name="competitions" type="duotone"/>
+  {{ 'Contests' | translate }}
+</h3>
+
+@if (isLoading) {
+  <ngx-skeleton-loader [theme]="{'height': '178px', background: 'var(--skeleton-color)'}" count="1"/>
+} @else {
+  <swiper [config]="swiperConfig">
+    @for (contest of contests; track contest.id) {
+      <div class="swiper-slide">
+        <contest-card [contest]="contest"/>
+      </div>
+    }
+  </swiper>
+}
