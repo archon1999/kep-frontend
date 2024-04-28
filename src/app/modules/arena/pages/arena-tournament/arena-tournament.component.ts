@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
-import { Arena, ArenaPlayer, ArenaPlayerStatistics, ArenaStatistics, ArenaStatus } from '../../arena.models';
+import { Arena, ArenaPlayerStatistics, ArenaStatistics, ArenaStatus } from '../../arena.models';
 import { ArenaService } from '../../arena.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbAlertModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -63,6 +63,7 @@ export class ArenaTournamentComponent extends BaseComponent implements OnInit {
   public remainingTime: number;
 
   protected readonly ArenaStatus = ArenaStatus;
+  private _intervalId: any;
 
   constructor(public service: ArenaService) {
     super();
@@ -79,14 +80,17 @@ export class ArenaTournamentComponent extends BaseComponent implements OnInit {
       this.arena = arena;
       this.titleService.updateTitle(this.route, { arenaTitle: arena.title });
       if (this.arena.status === ArenaStatus.Already) {
-        interval(5000).pipe(takeUntil(this._unsubscribeAll)).subscribe(
+        this._intervalId = setInterval(
           () => {
             if (this.arena.isRegistrated) {
               this.nextChallenge();
             }
-          }
+          },
+          5000
         );
-        this.loadArenaPlayerStatistics(this.currentUser.username);
+        if (this.currentUser) {
+          this.loadArenaPlayerStatistics(this.currentUser.username);
+        }
       } else if (this.arena.status === ArenaStatus.Finished) {
         if (this.currentUser) {
           this.loadArenaPlayerStatistics(this.currentUser.username);
@@ -130,5 +134,12 @@ export class ArenaTournamentComponent extends BaseComponent implements OnInit {
     this.service.arenaStart(this.arena.id).subscribe(() => {
       this.arena.pause = false;
     });
+  }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    if (this._intervalId) {
+      clearInterval(this._intervalId);
+    }
   }
 }
