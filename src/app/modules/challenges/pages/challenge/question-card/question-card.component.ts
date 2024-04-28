@@ -39,8 +39,8 @@ export class QuestionCardComponent implements OnInit, OnChanges, OnDestroy {
 
   public singleRadio = 0;
   public input = '';
-  public conformityGroupOne: Array<string>;
-  public conformityGroupTwo: Array<string>;
+  public conformityGroupFirst: Array<string>;
+  public conformityGroupSecond: Array<string>;
   public orderingList: Array<string>;
   public classificationGroups: any;
 
@@ -73,8 +73,8 @@ export class QuestionCardComponent implements OnInit, OnChanges, OnDestroy {
         a.push(option.optionMain);
         b.push(option.optionSecondary);
       }
-      this.conformityGroupOne = randomShuffle(a);
-      this.conformityGroupTwo = randomShuffle(b);
+      this.conformityGroupFirst = randomShuffle(a);
+      this.conformityGroupSecond = randomShuffle(b);
     } else if (this.question.type === QuestionType.ORDERING) {
       this.orderingList = [];
       for (const option of this.question.options) {
@@ -121,8 +121,8 @@ export class QuestionCardComponent implements OnInit, OnChanges, OnDestroy {
       answer = { input: this.input };
     } else if (this.question.type === QuestionType.CONFORMITY) {
       answer = {
-        group_one: this.conformityGroupOne,
-        group_two: this.conformityGroupTwo
+        group_one: this.conformityGroupFirst,
+        group_two: this.conformityGroupSecond
       };
     } else if (this.question.type === QuestionType.ORDERING) {
       answer = { ordering_list: this.orderingList };
@@ -132,6 +132,20 @@ export class QuestionCardComponent implements OnInit, OnChanges, OnDestroy {
       answer = { code: this.input };
     }
     this.check.emit(answer);
+  }
+
+  conformityGroupSecondDown(index: number) {
+    if (index + 1 !== this.conformityGroupSecond.length) {
+      [this.conformityGroupSecond[index], this.conformityGroupSecond[index + 1]] =
+        [this.conformityGroupSecond[index + 1], this.conformityGroupSecond[index]];
+    }
+  }
+
+  conformityGroupSecondUp(index: number) {
+    if (index !== 0) {
+      [this.conformityGroupSecond[index], this.conformityGroupSecond[index - 1]] =
+        [this.conformityGroupSecond[index - 1], this.conformityGroupSecond[index]];
+    }
   }
 
   ngOnDestroy() {
