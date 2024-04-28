@@ -45,7 +45,7 @@ export class ArenaPlayersComponent extends BaseTablePageComponent<ArenaPlayer> i
   ngOnInit() {
     super.ngOnInit();
     if (this.arena.status === ArenaStatus.Already) {
-      interval(5000).pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      interval(10000).pipe(takeUntil(this._unsubscribeAll)).subscribe(
         () => {
           this.reloadPage();
         }

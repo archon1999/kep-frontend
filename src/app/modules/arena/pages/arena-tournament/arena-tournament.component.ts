@@ -86,7 +86,7 @@ export class ArenaTournamentComponent extends BaseComponent implements OnInit {
               this.nextChallenge();
             }
           },
-          5000
+          3000
         );
         if (this.currentUser) {
           this.loadArenaPlayerStatistics(this.currentUser.username);
@@ -114,7 +114,7 @@ export class ArenaTournamentComponent extends BaseComponent implements OnInit {
   nextChallenge() {
     this.service.nextChallenge(this.arena.id).subscribe(
       (result: any) => {
-        if (result.success) {
+        if (result.challengeId) {
           this.router.navigate(
             [getResourceById(Resources.Challenge, result.challengeId)],
             { queryParams: { 'arena': this.arena.id } }

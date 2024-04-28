@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Challenge } from '@challenges/models';
 import { ChallengesApiService } from '@challenges/services';
 import Swal from 'sweetalert2';
@@ -60,14 +60,20 @@ export class ChallengeComponent extends BaseComponent implements OnInit, OnDestr
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ challenge }) => {
-      this.challenge = Challenge.fromJSON(challenge);
-      this.titleService.updateTitle(this.route, {
-        playerFirstUsername: challenge.playerFirst.username,
-        playerSecondUsername: challenge.playerSecond.username,
-      });
-      this.updateStatus(true);
-    });
+    this.route.params.subscribe(
+      (params) => {
+        this.service.getChallenge(params.id).subscribe(
+          (challenge) => {
+            this.challenge = Challenge.fromJSON(challenge);
+            this.titleService.updateTitle(this.route, {
+              playerFirstUsername: challenge.playerFirst.username,
+              playerSecondUsername: challenge.playerSecond.username,
+            });
+            this.updateStatus(true);
+          }
+        );
+      }
+    )
   }
 
   updateStatus(firstLoad = false) {
