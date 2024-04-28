@@ -10,9 +10,10 @@ import { BaseTablePageComponent } from '@app/common/classes/base-table-page.comp
 import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { PageResult } from '@app/common/classes/page-result';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
-import { VerdictsSelectComponent } from '@problems/components/verdicts-select/verdicts-select.component';
+import { VerdictsSelectComponent } from '@problems/components/attempts-filter/verdicts-select/verdicts-select.component';
 import { AttemptsFilterComponent } from '@problems/components/attempts-filter/attempts-filter.component';
 import { AttemptsFilter } from '@problems/interfaces';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 
 @Component({
   selector: 'app-attempts',
@@ -28,6 +29,7 @@ import { AttemptsFilter } from '@problems/interfaces';
     KepTableComponent,
     VerdictsSelectComponent,
     AttemptsFilterComponent,
+    EmptyResultComponent,
   ]
 })
 export class AttemptsComponent extends BaseTablePageComponent<Attempt> implements OnInit, OnDestroy {

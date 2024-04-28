@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { VerdictsSelectComponent } from '@problems/components/verdicts-select/verdicts-select.component';
+import { VerdictsSelectComponent } from '@problems/components/attempts-filter/verdicts-select/verdicts-select.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BaseUserComponent } from '@app/common';
 import { debounceTime, takeUntil } from 'rxjs/operators';
