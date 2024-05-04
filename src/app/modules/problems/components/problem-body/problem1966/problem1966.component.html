@@ -1,0 +1,17 @@
+@if (simbirgiBoolean) {
+  @if (translateService.currentLang == 'uz') {
+    <b>getNextMonth</b> nomli funksiya yarating. Funksiya argument sifatida bitta sanani qabul qiladi. Natija sifatida keyingi sanani birinchi kuni bo'lgan sana obyektini qaytaring.
+    <br>
+    Misol:
+  } @else if (translateService.currentLang == 'ru') {
+    Создайте функцию getNextMonth. Функция принимает в качестве аргумента одну дату. Возвращает объект даты с первым днем ​​следующей даты в качестве результата.
+    <b>getNextMonth</b> nomli funksiya yarating. Funksiya argument sifatida bitta sanani qabul qiladi. Natija sifatida keyingi sanani birinchi kuni bo'lgan sana obyektini qaytaring.
+    <br>
+    Примеры:
+  } @else if (translateService.currentLang == 'en') {
+    Create a getNextMonth function. The function takes one date as an argument. Returns a date object with the first day of the next date as the result.
+    <br>
+  }
+  <pre>let date = new Date("2023-02-10");
+getNextMonth(date) # 2023-03-01</pre>
+}

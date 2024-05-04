@@ -38,6 +38,7 @@ import Swal from 'sweetalert2';
 import { Problem1905Component } from '@problems/components/problem-body/problem1905/problem1905.component';
 import { Problem1954Component } from '@problems/components/problem-body/problem1954/problem1954.component';
 import { Problem1953Component } from '@problems/components/problem-body/problem1953/problem1953.component';
+import { Problem1966Component } from '@problems/components/problem-body/problem1966/problem1966.component';
 
 @Component({
   selector: 'problem-body',
@@ -82,6 +83,7 @@ import { Problem1953Component } from '@problems/components/problem-body/problem1
     Problem1869Component,
     Problem1954Component,
     Problem1953Component,
+    Problem1966Component,
   ]
 })
 export class ProblemBodyComponent implements OnInit, OnDestroy {
