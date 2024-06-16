@@ -11,7 +11,7 @@
             <div class="card">
               <div class="card-header p-1">
                 <contest-tab [contest]="contest"></contest-tab>
-                @if (contest?.userInfo?.isRegistered && contest?.status == 0) {
+                @if (contest?.status == 0) {
                   <button
                     (click)="codeEditorSidebarToggle()"
                     class="btn btn-sm btn-primary position-absolute"
@@ -31,15 +31,19 @@
             </div>
 
             @if (attempts?.length > 0) {
-              <attempts-table [hideSourceCodeSize]="contest.type != 'CodeGolf'" [attempts]="attempts" [contest]="contest"></attempts-table>
-              <kep-pagination
-                [collectionSize]="totalAttemptsCount"
-                [page]="currentPage"
-                [pageSize]="50"
-                [maxSize]="5"
-                (pageChange)="reloadAttempts()"
-              >
-              </kep-pagination>
+              <attempts-table
+                [hideSourceCodeSize]="contest.type != 'CodeGolf'"
+                [attempts]="attempts"
+                [contest]="contest"
+                (checkFinished)="reloadProblems()"/>
+              <div class="mb-1">
+                <kep-pagination
+                  [collectionSize]="totalAttemptsCount"
+                  [page]="currentPage"
+                  [pageSize]="50"
+                  [maxSize]="5"
+                  (pageChange)="reloadAttempts()"/>
+              </div>
             }
           </div>
 
