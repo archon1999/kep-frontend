@@ -20,6 +20,10 @@
       margin-right: 45px;
       text-align: center;
 
+      @include media-breakpoint-down(sm) {
+        margin-right: 20px;
+      }
+
       &:last-child {
         margin-right: 0;
       }
@@ -65,7 +69,7 @@
         margin: auto;
         font: normal 5.94em/107px $lato;
         font-weight: 700;
-        //color: $primary;
+        color: var(--contest-color);
 
         @include media-breakpoint-down(md) {
           font: normal 4em/107px $lato;

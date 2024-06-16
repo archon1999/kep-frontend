@@ -1,17 +1,20 @@
 <!--<app-content-header [contentHeader]="contentHeader"></app-content-header>-->
 
 <section [class]="contest | contestClasses">
+  <div class="contest-standings-top" style="background-image: url({{ contest.logo }});"></div>
+
   <div class="d-flex justify-content-center align-items-center">
     <div class="d-flex align-items-center">
       <kep-icon class="mr-50" name="contest" size="large-1" type="duotone"/>
       <a [routerLink]="Resources.Contest | resourceById:contest.id">
-        <h2 class="my-1 text-dark text-center">
+        <h2 class="my-2 text-dark text-center">
           {{ contest.title }}
         </h2>
       </a>
     </div>
   </div>
-  <contest-standings-countdown [contest]="contest"></contest-standings-countdown>
+
+  <contest-standings-countdown [contest]="contest"/>
 
   <kep-table [loading]="isLoading && contestants.length == 0" [empty]="contestants.length == 0">
     <ng-container header>

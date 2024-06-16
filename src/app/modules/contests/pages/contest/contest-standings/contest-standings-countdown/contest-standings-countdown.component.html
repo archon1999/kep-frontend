@@ -3,14 +3,15 @@
 <!--    {{ 'CONTESTS.CONTEST_ENDS' | translate }}-->
 <!--  </h4>-->
 } @else if (contest.status == ContestStatus.NOT_STARTED) {
-  <h4 class="text-center ml-1 mb-2">
-    {{ 'CONTESTS.CONTEST_STARTS' | translate }}
-  </h4>
+<!--  <h4 class="text-center ml-1 mb-2">-->
+<!--    {{ 'CONTESTS.CONTEST_STARTS' | translate }}-->
+<!--  </h4>-->
 } @else if (contest.status == ContestStatus.FINISHED) {
-  <h4 class="text-center ml-1 mb-2">
+  <h4 class="text-center text-dark ml-1 mb-2">
     {{ 'CONTESTS.STANDINGS' | translate }}
   </h4>
 }
+
 @if (!contest.isFinished()) {
   <div class="wrap">
     <div class="countdown">

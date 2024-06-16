@@ -1,4 +1,18 @@
 app-contest-standings {
+  .contest-standings-top {
+    position: absolute;
+    top: -66px;
+    width: 95%;
+    z-index: -1;
+    height: 520px;
+
+    filter: blur(60px);
+    opacity: .3;
+    background-repeat: no-repeat;
+    background-position: 100%;
+    background-size: cover;
+  }
+
   contestant-view, contestant-view div {
     white-space: nowrap;
   }

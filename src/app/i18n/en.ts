@@ -332,7 +332,7 @@ export const locale = {
     DoubleRating: '2x Rating',
     SaveRating: 'Save Rating',
     Registered: 'Registered',
-    UnofficialParticipation: 'Unofficial participation',
+    UnofficialParticipation: 'For unofficial participation',
     Purchased: 'Purchased',
     Finish: 'Finish',
     Next: 'Next',

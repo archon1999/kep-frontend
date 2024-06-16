@@ -36,6 +36,11 @@
         <kep-icon name="shield-cross" type="duotone" size="small-4" color="danger"></kep-icon>
       </span>
     }
+    @if (isOfficial) {
+      <span [ngbTooltip]="'Official' | translate">
+        <kep-icon name="check" color="success"></kep-icon>
+      </span>
+    }
     @if (isVirtual) {
       <span [ngbTooltip]="'Virtual' | translate">
         <kep-icon name="fasten" color="success"></kep-icon>
