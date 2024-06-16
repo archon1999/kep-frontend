@@ -28,6 +28,7 @@ export class Contestant {
     public isUnrated: boolean,
     public isOfficial: boolean,
     public virtualTime: string,
+    public country: string,
   ) {}
 
   static fromJSON(data: any) {
@@ -54,6 +55,7 @@ export class Contestant {
       data.isUnrated,
       data.isOfficial,
       data.virtualTime,
+      data.country,
     );
   }
 }

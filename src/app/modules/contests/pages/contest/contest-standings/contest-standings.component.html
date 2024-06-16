@@ -4,10 +4,10 @@
   <div class="contest-standings-top" style="background-image: url({{ contest.logo }});"></div>
 
   <div class="d-flex justify-content-center align-items-center">
-    <div class="d-flex align-items-center">
+    <div class="d-flex align-items-center mt-1 mb-2">
       <kep-icon class="mr-50" name="contest" size="large-1" type="duotone"/>
       <a [routerLink]="Resources.Contest | resourceById:contest.id">
-        <h2 class="my-2 text-dark text-center">
+        <h2 class="text-dark text-center">
           {{ contest.title }}
         </h2>
       </a>
@@ -68,12 +68,16 @@
             {{ contestant.rank }}
           </td>
           <td>
-            <contestant-view
-              [isVirtual]="contestant.isVirtual"
-              [isUnrated]="contestant.isUnrated"
-              [isOfficial]="contestant.isOfficial"
-              [user]="contestant"
-              [team]="contestant.team"/>
+            <div class="d-flex justify-content-start">
+              <contestant-view
+                [isVirtual]="contestant.isVirtual"
+                [isUnrated]="contestant.isUnrated"
+                [isOfficial]="contestant.isOfficial"
+                [user]="contestant"
+                [team]="contestant.team"/>
+
+              <i *ngIf="contestant.country" class="fi fi-{{ contestant.country }} ml-1"></i>
+            </div>
           </td>
           <td class="text-center">
             <span class="badge points">
