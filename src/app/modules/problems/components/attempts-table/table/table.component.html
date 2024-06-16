@@ -117,7 +117,7 @@
           </div>
 
           <ng-template #elseBlock>
-            <div *ngIf="attempt.verdict != 1 && attempt.testCaseNumber > 1 && attempt.user.username == currentUser?.username || currentUser?.isSuperuser; else elseBlock">
+            <div *ngIf="attempt.verdict != 1 && attempt.testCaseNumber > 1 && attempt?.user?.username == currentUser?.username || currentUser?.isSuperuser; else elseBlock">
               <div *ngIf="!attempt.canTestView">
                 <ng-template #tipContent>
                   {{ 'ViewTest' | translate }} <kepcoin [value]="attempt.testCaseKepcoinValue"></kepcoin>
