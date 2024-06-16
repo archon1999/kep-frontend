@@ -28,6 +28,7 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
   @Input() contest: Contest;
   @Input() hackEnabled = false;
   @Output() hackSubmitted = new EventEmitter<null>;
+  @Output() checkFinished = new EventEmitter<Attempt>;
   public currentUser: any;
   public selectedAttempt: Attempt | null;
   public editorOptions = {
@@ -96,11 +97,13 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
                 setTimeout(() => attempt.animationAcceptedState = true, 0);
                 this.successAudio?.nativeElement?.play();
               }
+              this.checkFinished.next(attempt);
             } else if (wsAttempt.verdict !== Verdicts.Running && wsAttempt.verdict !== Verdicts.InQueue) {
               if (this.attempts[i].canView) {
                 setTimeout(() => attempt.animationWrongState = true, 0);
                 this.wrongAudio.nativeElement.play();
               }
+              this.checkFinished.next(attempt);
             }
           }
         }
