@@ -67,7 +67,6 @@ li[core-menu-horizontal-collapsible],
 
 .main-menu:not(.expanded) kep-icon > span {
   margin-right: 1rem;
-  transition: 1s ease-in;
 }
 
 @include media-breakpoint-down(sm) {
