@@ -30,7 +30,7 @@ export class KepcoinSpendSwalComponent {
       Swal.fire({
         icon: 'error',
         title: translations['NotEnoughKepcoin'],
-        html: `<img height="25" src="assets/images/icons/kepcoin.webp"> ${ this.value }`,
+        html: `<img height="25" src="assets/images/icons/kepcoin.png"> ${ this.value }`,
         customClass: {
           confirmButton: 'btn btn-success'
         }
@@ -38,7 +38,7 @@ export class KepcoinSpendSwalComponent {
     } else {
       Swal.fire({
         title: translations['WantToBuy'],
-        html: `<img height="25" src="assets/images/icons/kepcoin.webp"> ${ this.value }`,
+        html: `<img height="25" src="assets/images/icons/kepcoin.png"> ${ this.value }`,
         text: 'You won\'t be able to revert this!',
         icon: 'warning',
         showCancelButton: true,
