@@ -199,3 +199,12 @@
   $color: #4d7e3e,
   $dark-color: mix(black, #4d7e3e, 30),
 );
+
+// Competitive programming
+@include define-chapter-colors(
+  $id: 20,
+  $gradient-color: linear-gradient(45deg, mix(black, #000066, 0), mix(white, #000066, 10)),
+  $gradient-dark-color: linear-gradient(45deg, mix(black, #000066, 30), #000066),
+  $color: #000066,
+  $dark-color: mix(black, #000066, 30),
+);
