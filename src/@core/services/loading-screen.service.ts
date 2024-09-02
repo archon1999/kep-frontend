@@ -49,7 +49,7 @@ export class CoreLoadingScreenService {
 
     setTimeout(() => {
       this.animationPlayer.play();
-    }, 2000);
+    }, 0);
   }
 
   hide(): void {

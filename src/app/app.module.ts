@@ -39,6 +39,7 @@ import { TeamJoinComponent } from '@app/modules/account-settings/teams/team-join
 import { BlockUIModule } from 'ng-block-ui';
 import { HIGHLIGHT_OPTIONS, HighlightOptions } from 'ngx-highlightjs';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
+import { of } from 'rxjs';
 
 register();
 
@@ -98,7 +99,11 @@ export class CustomTitleStrategy extends TitleStrategy {
   }
 }
 
-export function authFactory(authService: AuthService) {
+function delayFactory() {
+  return () => new Promise(resolve => setTimeout(resolve, 2000));
+}
+
+function authFactory(authService: AuthService) {
   return () => authService.getMe().pipe(
     map(user => {
       return true;
@@ -150,6 +155,11 @@ export function authFactory(authService: AuthService) {
       useFactory: authFactory,
       deps: [AuthService],
       multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: delayFactory,
+      multi: true,
     },
     provideHttpClient(withInterceptorsFromDi()),
     {
