@@ -79,15 +79,9 @@ export class ProblemComponent extends BaseLoadComponent<PageResult<Attempt>> imp
   }
 
   ngOnInit(): void {
-    this.availableLanguages = [
-      {
-        lang: AttemptLangs.PYTHON,
-        codeTemplate: this.problem.availableLanguages[0].codeTemplate,
-        langFull: 'Python',
-        timeLimit: this.problem.availableLanguages[0].timeLimit,
-        memoryLimit: this.problem.availableLanguages[0].memoryLimit,
-      }
-    ];
+    if (this.problem) {
+      this.availableLanguages = this.problem.availableLanguages;
+    }
     setTimeout(() => this.loadData());
   }
 

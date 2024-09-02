@@ -62,17 +62,13 @@ app-lesson {
     padding: 20px !important;
   }
 
-  tr:first-child td, th {
-    border-bottom: none !important;
-    border-top: none !important;
-  }
+  //tr:first-child td, th {
+  //  border-bottom: none !important;
+  //  border-top: none !important;
+  //}
 
   .dark-layout pre code {
     color: white !important;
-  }
-
-  .problem-body {
-    padding-left: 30px;
   }
 
   .problem-header-sep::before {
@@ -89,16 +85,16 @@ app-lesson {
       padding-left: 10px;
   }
   */
+  //
+  //tr:first-child td, th {
+  //  border-bottom: none !important;
+  //  border-top: none !important;
+  //}
 
-  tr:first-child td, th {
-    border-bottom: none !important;
-    border-top: none !important;
-  }
-
-  th {
-    border-bottom: none !important;
-    border-top: none !important;
-  }
+  //th {
+  //  border-bottom: none !important;
+  //  border-top: none !important;
+  //}
 
   thead tr th, tfoot tr th {
     font-size: 1rem;

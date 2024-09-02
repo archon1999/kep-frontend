@@ -30,8 +30,9 @@ pre {
 }
 
 .dark-layout pre {
-  background-color: inherit !important;
+  background-color: #1b1d23 !important;
   color: white;
+  border: none !important;
 }
 
 @media (min-width: 1440px) {

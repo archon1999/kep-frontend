@@ -1,24 +1,19 @@
 <div class="layout-spacing">
   <div class="card tour-step-1">
     <div class="card-body">
-      <div class="text-center">
-        <a [routerLink]="Resources.Course | resourceById:course.id" class="card-img">
-          <img alt="Course logo" class="course-img-top img-fluid" src="{{ course.logo }}"/>
-        </a>
-      </div>
-      <h5 class="text-center mt-2">
-        <div class="font-weight-bolder">
-          <kep-icon color="primary" name="course" type="duotone"/>
-          {{ course.title }}
+      <a [routerLink]="Resources.Course | resourceById:course.id">
+        <div class="d-flex align-items-center justify-content-center">
+          <img alt="Course logo" class="mr-1 img-fluid" src="{{ course.logo }}" width="48"/>
+          <div class="font-medium-4 text-dark">
+            {{ course.title }}
+          </div>
         </div>
-      </h5>
+      </a>
     </div>
 
     <div class="card-footer">
-      <div class="mb-25">
-        <strong>
-          {{ 'COURSES.PROGRESS' | translate }}: {{ course.participantPoints }}/{{ course.points }}
-        </strong>
+      <div class="mb-25 text-dark font-weight-bold">
+        {{ 'COURSES.PROGRESS' | translate }}: {{ course.participantPoints }}/{{ course.points }}
       </div>
       <ngb-progressbar [value]="course.participantProgress" showValue="true" type="primary"></ngb-progressbar>
     </div>

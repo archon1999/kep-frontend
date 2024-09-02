@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  AfterContentChecked,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreConfig } from '@core/types';
 import { CoursesService } from '@courses/courses.service';
@@ -24,9 +34,10 @@ import { AttemptLangs } from '@problems/constants';
     Highlight,
     ClipboardModule,
     CodeEditorModule
-  ]
+  ],
+  encapsulation: ViewEncapsulation.None,
 })
-export class LectureComponent implements OnInit, OnChanges {
+export class LectureComponent implements OnInit, OnChanges, AfterContentChecked {
 
   @Input() lecture: any;
   @Input() lessonPartId: number;
@@ -83,6 +94,18 @@ export class LectureComponent implements OnInit, OnChanges {
           memoryLimit: 0,
         }
       ];
+    }
+  }
+
+  ngAfterContentChecked() {
+    const tables = document.getElementsByTagName('table');
+    for (let index = 0; index < tables.length; index++) {
+      tables[index].classList.add('table', 'table-bordered');
+      tables[index].parentElement.classList.add('table-responsive', 'beautiful-table');
+      const theads = tables[index].getElementsByTagName('thead');
+      for (let index = 0; index < theads.length; index++) {
+        theads[index].getElementsByTagName('tr')[0]?.classList.add('bg-light-primary');
+      }
     }
   }
 }
