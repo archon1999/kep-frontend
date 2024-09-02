@@ -165,6 +165,7 @@ export function authFactory(authService: AuthService) {
         coreLibraryLoader: () => import('highlight.js/lib/core'),
         languages: {
           python: () => import('highlight.js/lib/languages/python'),
+          cpp: () => import('highlight.js/lib/languages/cpp'),
         },
       }
     },
