@@ -39,7 +39,7 @@
               "sweetalert2",
               "bs-stepper"
             ],
-            "outputPath": "../server/static/frontend",
+            "outputPath": "./dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
