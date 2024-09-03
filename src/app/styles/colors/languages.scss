@@ -145,3 +145,12 @@
   $background-dark: linear-gradient(45deg, #565656, #666666),
   $box-shadow-dark: 0px 0px 5px #767676,
 );
+
+@include define-badge-lang(
+  $name: 'go',
+  $color: #fff,
+  $background: linear-gradient(45deg, #74cedd, #74cedd),
+  $box-shadow: 0 0 5px #74cedd,
+  $background-dark: linear-gradient(45deg, #30565d, #306972),
+  $box-shadow-dark: 0px 0px 5px #30565d,
+);
