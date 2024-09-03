@@ -21,7 +21,6 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
-            cd /home/cpython/client && git pull && npm run build-prod
-            rm -r /home/cpython/server/static/frontend
-            mv /home/cpython/client/dist /home/cpython/server/static/frontend
+            cd /home/cpython/client && git pull && npm run build-prod && \
+            rm -r /home/cpython/server/static/frontend && mv /home/cpython/client/dist /home/cpython/server/static/frontend && \
             systemctl restart kep@gunicorn
