@@ -104,6 +104,8 @@ export abstract class BaseTablePageComponent<T> extends BasePageComponent implem
         this.reCalcIndexes();
         this.isLoading = false;
         this.afterLoadPage(pageResult);
+        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       },
       error: () => {
         this.isError = true;

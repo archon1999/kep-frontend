@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { AuthService, User } from '@auth';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -17,27 +17,13 @@ import { Resources } from '@app/resources';
 import { TranslateService } from '@ngx-translate/core';
 import { WebsocketService } from '@shared/services/websocket';
 import { coreConfig } from '@app/app.config';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   template: '',
   standalone: true
 })
 export class BaseComponent {
-
-  public api = inject(ApiService);
-  public authService = inject(AuthService);
-  public coreConfigService = inject(CoreConfigService);
-  public router = inject(Router);
-  public route = inject(ActivatedRoute);
-  public globalService = inject(GlobalService);
-  public localStorageService = inject(LocalStorageService);
-  public sessionStorageService = inject(SessionStorageService);
-  public titleService = inject(TitleService);
-  public spinner = inject(NgxSpinnerService);
-  public toastr = inject(ToastrService);
-  public coreSidebarService = inject(CoreSidebarService);
-  public translateService = inject(TranslateService);
-  public wsService = inject(WebsocketService);
 
   public currentUser: User | null;
   public coreConfig: CoreConfig;
@@ -47,6 +33,23 @@ export class BaseComponent {
 
   public defaultCoreConfig = coreConfig;
   public readonly Resources = Resources;
+
+  protected api = inject(ApiService);
+  protected authService = inject(AuthService);
+  protected coreConfigService = inject(CoreConfigService);
+  protected router = inject(Router);
+  protected route = inject(ActivatedRoute);
+  protected globalService = inject(GlobalService);
+  protected localStorageService = inject(LocalStorageService);
+  protected sessionStorageService = inject(SessionStorageService);
+  protected titleService = inject(TitleService);
+  protected spinner = inject(NgxSpinnerService);
+  protected toastr = inject(ToastrService);
+  protected coreSidebarService = inject(CoreSidebarService);
+  protected translateService = inject(TranslateService);
+  protected wsService = inject(WebsocketService);
+  protected cdr = inject(ChangeDetectorRef);
+  protected modalService = inject(NgbModal);
 
   protected _unsubscribeAll = new Subject();
   protected _queryParams: any;
@@ -76,6 +79,7 @@ export class BaseComponent {
             this.currentUser = currentUser;
             this.isAuthenticated = (this.currentUser !== null);
             this.afterChangeCurrentUser(currentUser);
+            this.cdr.markForCheck();
           });
         }
       );
@@ -87,6 +91,7 @@ export class BaseComponent {
           this.coreConfig = coreConfig;
           this.isDarkMode = (coreConfig.layout.skin === 'dark');
           this.afterChangeCoreConfig(coreConfig);
+          this.cdr.markForCheck();
         }
       );
   }

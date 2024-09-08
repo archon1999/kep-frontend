@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Attempt } from '@problems/models/attempts.models';
 import { CoreCommonModule } from '@core/common.module';
@@ -14,6 +14,7 @@ import { VerdictsSelectComponent } from '@problems/components/attempts-filter/ve
 import { AttemptsFilterComponent } from '@problems/components/attempts-filter/attempts-filter.component';
 import { AttemptsFilter } from '@problems/interfaces';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { Resources } from '@app/resources';
 
 @Component({
   selector: 'app-attempts',
@@ -30,7 +31,8 @@ import { EmptyResultComponent } from '@shared/components/empty-result/empty-resu
     VerdictsSelectComponent,
     AttemptsFilterComponent,
     EmptyResultComponent,
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AttemptsComponent extends BaseTablePageComponent<Attempt> implements OnInit, OnDestroy {
   override maxSize = 7;
@@ -65,7 +67,7 @@ export class AttemptsComponent extends BaseTablePageComponent<Attempt> implement
           {
             name: 'Problems',
             isLink: true,
-            link: '/practice/problems'
+            link: Resources.Problems
           }
         ]
       },
