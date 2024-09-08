@@ -2,7 +2,6 @@
   <div class="content-body">
     <app-content-header (refresh)="reloadPage()" [contentHeader]="contentHeader"></app-content-header>
 
-
     @if (currentUser) {
       <attempts-filter (filterChange)="filterChange($event)"/>
     }

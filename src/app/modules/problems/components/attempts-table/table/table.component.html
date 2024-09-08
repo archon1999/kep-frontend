@@ -52,7 +52,7 @@
     @for (attempt of attempts; track attempt.id) {
       <tr
         [@fadeInOnEnter]
-        [ngClass]="{'bg-light-primary': isOwner(attempt)}">
+        [ngClass]="{'bg-light-primary': attempt.isOwner}">
         <td>
           @if (attempt.canView) {
             <button type="button" class="btn attempt-id p-0" (click)="clicked.emit(attempt.id)">
@@ -97,28 +97,32 @@
         </td>
 
         <td>
-          <div *ngIf="contest">
-            <a *ngIf="attempt?.contestProblem?.contest; else elseBlock" [routerLink]="['/competitions', 'contests', 'contest', attempt.contestProblem.contest, 'problem', attempt.contestProblem.symbol]">
+          @if (contest) {
+            @if (attempt?.contestProblem?.contest) {
+              <a [routerLink]="['/competitions', 'contests', 'contest', attempt?.contestProblem?.contest, 'problem', attempt.contestProblem.symbol]">
+                <u class="text-primary">{{ attempt.contestProblem.symbol }}. {{ attempt.problemTitle }}</u>
+              </a>
+            } @else {
               <u class="text-primary">{{ attempt.contestProblem.symbol }}. {{ attempt.problemTitle }}</u>
+            }
+          } @else {
+            <a [routerLink]="Resources.Problem | resourceById:attempt.problemId">
+              <u class="text-primary">{{ attempt.problemId }}. {{ attempt.problemTitle }}</u>
             </a>
-
-            <ng-template #elseBlock>
-              <u class="text-primary">{{ attempt.contestProblem.symbol }}. {{ attempt.problemTitle }}</u>
-            </ng-template>
-          </div>
-
-          <a *ngIf="!contest" [routerLink]="['/practice', 'problems', 'problem', attempt.problemId]">
-            <u class="text-primary">{{ attempt.problemId }}. {{ attempt.problemTitle }}</u>
-          </a>
+          }
         </td>
 
         <td [@bounce]="attempt.animationAcceptedState" [@shake]="attempt.animationWrongState">
-          <div *ngIf="contest && !currentUser?.isSuperuser; else elseBlock" [innerHTML]="attempt | attemptVerdictHTML">
-          </div>
-
-          <ng-template #elseBlock>
-            <div *ngIf="attempt.verdict != 1 && attempt.testCaseNumber > 1 && attempt?.user?.username == currentUser?.username || currentUser?.isSuperuser; else elseBlock">
-              <div *ngIf="!attempt.canTestView">
+          @if (contest && !currentUser?.isSuperuser) {
+            <div [innerHTML]="attempt | attemptVerdictHTML"></div>
+          } @else {
+            @if (attempt.verdict != 1 && attempt.testCaseNumber > 1 && attempt?.user?.username == currentUser?.username || currentUser?.isSuperuser) {
+              @if (attempt.canTestView) {
+                <a ngbTooltip="{{ 'ViewTest' | translate }}"
+                   href="/api/attempts/{{ attempt.id }}/failed-test?number={{ attempt.testCaseNumber }}">
+                  <div [innerHTML]="attempt | attemptVerdictHTML"></div>
+                </a>
+              } @else {
                 <ng-template #tipContent>
                   {{ 'ViewTest' | translate }} <kepcoin [value]="attempt.testCaseKepcoinValue"></kepcoin>
                 </ng-template>
@@ -130,20 +134,11 @@
                   (success)="onPurchaseTestSuccess(attempt)">
                   <div [innerHTML]="attempt | attemptVerdictHTML"></div>
                 </kepcoin-spend-swal>
-              </div>
-
-              <div *ngIf="attempt.canTestView">
-                <a ngbTooltip="{{ 'ViewTest' | translate }}"
-                   href="/api/attempts/{{ attempt.id }}/failed-test?number={{ attempt.testCaseNumber }}">
-                  <div [innerHTML]="attempt | attemptVerdictHTML"></div>
-                </a>
-              </div>
-            </div>
-
-            <ng-template #elseBlock>
+              }
+            } @else {
               <div [innerHTML]="attempt | attemptVerdictHTML"></div>
-            </ng-template>
-          </ng-template>
+            }
+          }
         </td>
 
         <td>

@@ -1,11 +1,15 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { CoreConfigService } from '@core/services/config.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateService } from '@ngx-translate/core';
-import { ApiService } from 'app/shared/services/api.service';
-import { AuthService } from '@auth';
-import { WebsocketService } from 'app/shared/services/websocket';
-import { ToastrService } from 'ngx-toastr';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { Attempt, WSAttempt } from '../../models/attempts.models';
 import { AttemptLangs, Verdicts } from '../../constants';
 import { ProblemsApiService } from '../../services/problems-api.service';
@@ -22,29 +26,33 @@ const ATTEMPT_DELETE_EVENT = 'attempt-delete';
   selector: 'attempts-table',
   templateUrl: './attempts-table.component.html',
   styleUrls: ['./attempts-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AttemptsTableComponent extends BaseComponent implements OnInit, OnDestroy {
   @Input() hideSourceCodeSize = false;
   @Input() contest: Contest;
   @Input() hackEnabled = false;
+
   @Output() hackSubmitted = new EventEmitter<null>;
   @Output() checkFinished = new EventEmitter<Attempt>;
-  public currentUser: any;
+
   public selectedAttempt: Attempt | null;
   public editorOptions = {
     language: 'python',
     theme: 'vs-light',
     readOnly: true,
   };
+
+  @ViewChild('modal') public modalRef: TemplateRef<any>;
+  @ViewChild('successAudio') successAudio: ElementRef;
+  @ViewChild('wrongAudio') wrongAudio: ElementRef;
+
   public hackForm = new FormGroup({
     input: new FormControl(''),
     generatorSource: new FormControl(''),
     generatorLang: new FormControl('py'),
   });
   public successSoundName = this.soundsService.getSuccessSound();
-  @ViewChild('modal') public modalRef: TemplateRef<any>;
-  @ViewChild('successAudio') successAudio: ElementRef;
-  @ViewChild('wrongAudio') wrongAudio: ElementRef;
   public hackAvailableLanguages = [
     AttemptLangs.PYTHON,
     AttemptLangs.CPP,
@@ -57,14 +65,9 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
     AttemptLangs.R,
   ];
 
+  public trigger = true;
+
   constructor(
-    public authService: AuthService,
-    public wsService: WebsocketService,
-    public api: ApiService,
-    public modalService: NgbModal,
-    public toastr: ToastrService,
-    public coreConfigService: CoreConfigService,
-    public translationService: TranslateService,
     public service: ProblemsApiService,
     public soundsService: SoundsService,
   ) {
@@ -78,15 +81,20 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
   }
 
   set attempts(attempts: Array<Attempt>) {
-    this.wsService.send(LANG_CHANGE_EVENT, this.translationService.currentLang);
+    console.log('set-attempts');
+    this.wsService.send(LANG_CHANGE_EVENT, this.translateService.currentLang);
     this.removeAttemptsFromWS();
     this._attempts = attempts.map(attempt => Attempt.fromJSON(attempt));
     this.addAttemptsToWS();
+    this.cdr.detectChanges();
   }
 
   ngOnInit(): void {
     this.wsService.on<WSAttempt>('attempt-update').subscribe(
       (wsAttempt: WSAttempt) => {
+        // if (wsAttempt.verdict === Verdicts.Running && randomInt(1, 3) >= 2) {
+        //   return;
+        // }
         for (let i = 0; i < this.attempts.length; i++) {
           if (this.attempts[i].id === wsAttempt.id) {
             let attempt = this.attempts[i];
@@ -105,6 +113,11 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
               }
               this.checkFinished.next(attempt);
             }
+            setTimeout(() => {
+              this.trigger = !this.trigger;
+              this.cdr.markForCheck();
+              this.cdr.detectChanges();
+            });
           }
         }
       }
@@ -134,6 +147,7 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
   }
 
   addAttemptsToWS() {
+    console.log('add attempts to ws');
     this._attempts.forEach(attempt => this.wsService.send(ATTEMPT_ADD_EVENT, attempt.id));
   }
 
@@ -144,5 +158,4 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
   ngOnDestroy() {
     this.removeAttemptsFromWS();
   }
-
 }

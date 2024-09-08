@@ -31,6 +31,7 @@ export class Attempt {
     public contestTime: string,
     public animationWrongState = false,
     public animationAcceptedState = false,
+    public isOwner = false,
   ) { }
 
   getEditorLang() {

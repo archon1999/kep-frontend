@@ -16,6 +16,7 @@ import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
     KepcoinViewModule,
     KepTableComponent,
     KepIconComponent,
+    ResourceByIdPipe,
   ],
   exports: [
     AttemptsTableComponent

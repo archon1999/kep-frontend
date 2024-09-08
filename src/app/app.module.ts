@@ -100,7 +100,7 @@ export class CustomTitleStrategy extends TitleStrategy {
 }
 
 function delayFactory() {
-  return () => new Promise(resolve => setTimeout(resolve, 2000));
+  return () => new Promise(resolve => setTimeout(resolve, environment.production ? 2000 : 0));
 }
 
 function authFactory(authService: AuthService) {
