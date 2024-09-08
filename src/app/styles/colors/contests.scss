@@ -73,6 +73,9 @@ $april-fools-color1: #f5479e;
 $april-fools-color2: #fec501;
 $april-fools-color3: #37a9cd;
 
+$math-selector: '&[class*="Math"]';
+$math-color: #00a79d;
+
 // Primary color
 @include define-contest-colors(
   $selector: '&',
@@ -152,6 +155,16 @@ $april-fools-color3: #37a9cd;
   $background-light: linear-gradient(to right, #b28c4b, #dbb666),
   $background-dark: linear-gradient(to right, #564122, #685128),
 );
+
+// Math Contest
+@include define-contest-colors(
+  $selector: $math-selector,
+  $color: $math-color,
+  $color-dark: mix(black, $math-color, 30),
+  $background-light: linear-gradient(to right, mix(white, $math-color, 20), mix(white, $math-color, 30)),
+  $background-dark: linear-gradient(to right, mix(black, $math-color, 50), mix(black, $math-color, 40)),
+) {
+}
 
 .contests-colors {
   &.contest-254 {
