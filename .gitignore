@@ -6,6 +6,7 @@ dist
 .vscode
 out-tsc
 **/*.zip
+/src/environments/environment.ts
 
 package-lock.json
 
