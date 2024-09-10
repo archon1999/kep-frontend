@@ -23,6 +23,7 @@ export const locale = {
       CODE_RUSH: 'Code Rush',
       TODO: 'Todo',
       CALENDAR: 'Calendar',
+      SHOP: 'Shop',
     },
     LOGIN: 'Login',
     LOGOUT: 'Logout',
@@ -590,6 +591,7 @@ export const locale = {
     HOME: {
       NEWS: 'News',
     },
+    Color: 'Color',
     PageTitle: {
       Home: 'Home',
       Landing: 'KEP.uz - A platform for learning programming',
@@ -664,7 +666,10 @@ export const locale = {
         Courses: 'Courses',
         Course: '{{ courseTitle }} | Course',
         CourseLesson: '{{ lessonTitle }} | {{ courseTitle }} | Course',
-      }
+      },
+      Shop: {
+        Shop: 'Shop',
+      },
     },
     Errors: {
       MAX_LENGTH_ERROR: 'Max length: {{ value }} | Currently: {{ controlValueLength }}'

@@ -1,4 +1,5 @@
 import { CoreMenu } from '@core/types';
+import { Resources } from '@app/resources';
 
 export const menu: CoreMenu[] = [
   {
@@ -145,4 +146,11 @@ export const menu: CoreMenu[] = [
   //   icon: 'todo',
   //   url: '/todo',
   // },
+  {
+    id: 'shop',
+    translate: 'MENU.SHOP',
+    type: 'item',
+    icon: 'shop',
+    url: Resources.Shop,
+  },
 ];
