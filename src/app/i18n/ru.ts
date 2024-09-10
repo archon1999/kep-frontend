@@ -22,6 +22,7 @@ export const locale = {
       CODE_RUSH: 'Код Раш',
       TODO: 'Todo',
       CALENDAR: 'Календарь',
+      SHOP: 'Магазин',
     },
     RESET: 'Сброс',
     LOGIN: 'Войти',
@@ -586,6 +587,7 @@ export const locale = {
     HOME: {
       NEWS: 'Новости',
     },
+    Color: 'Цвет',
     PageTitle: {
       Home: 'Главная',
       Landing: 'KEP.uz - Платформа для обучения программированию',
@@ -660,7 +662,10 @@ export const locale = {
         Courses: 'Курсы',
         Course: '{{ courseTitle }} | Курс',
         CourseLesson: '{{ lessonTitle }} | {{ courseTitle }} | Курс',
-      }
+      },
+      Shop: {
+        Shop: 'Магазин',
+      },
     },
     Errors: {
       MAX_LENGTH_ERROR: 'Максимальная длина: {{ value }} | У вас: {{ controlValueLength }}'

@@ -32,6 +32,8 @@ export enum Resources {
   Settings = '/settings',
   SettingsTab = '/settings/:id',
   TeamJoin = '/teams/:id/join',
+
+  Shop = '/shop',
 }
 
 export function getResourceById(resource: Resources, id: number | string) {

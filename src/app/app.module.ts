@@ -49,6 +49,7 @@ const appRoutes: Routes = [
   { path: 'home', loadChildren: () => import('./modules/home/home.routing') },
   { path: 'settings', loadChildren: () => import('./modules/account-settings/account-settings.module').then(m => m.AccountSettingsModule) },
   { path: 'kepcoin', loadChildren: () => import('./modules/kepcoin/kepcoin.module').then(m => m.KepcoinModule) },
+  { path: 'shop', loadChildren: () => import('./modules/shop/shop.routing') },
   { path: 'learn/courses', loadChildren: () => import('./modules/courses/courses.routing') },
   { path: 'learn/lugavar', loadChildren: () => import('./modules/lugavar/lugavar.module').then(m => m.LugavarModule) },
   { path: 'learn/blog', loadChildren: () => import('./modules/blog/blog.module').then(m => m.BlogModule) },
