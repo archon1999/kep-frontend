@@ -45,9 +45,9 @@
           </tr>
         </ng-container>
         <ng-container body>
-          @for (problemsRating of problemsRatingList; track problemsRating; let i = $index) {
+          @for (problemsRating of problemsRatingList; track problemsRating) {
             <tr
-              [ngClass]="{'bg-light-primary': currentUser?.username == problemsRating.user.username }">
+              [ngClass]="{'bg-light-primary': currentUser?.username == problemsRating?.user?.username }">
               <td>{{ problemsRating.rowIndex }}</td>
               <td>
                 <contestant-view [user]="problemsRating.user"></contestant-view>
@@ -73,7 +73,7 @@
           }
         </ng-container>
         <ng-container pagination>
-          @if (total) {
+          <div class="mb-1">
             <kep-pagination
               (pageChange)="pageChange($event)"
               (pageSizeChange)="pageSizeChange($event)"
@@ -83,53 +83,11 @@
               [pageSize]="pageSize"
               [page]="pageNumber">
             </kep-pagination>
-          }
+          </div>
         </ng-container>
       </kep-table>
 
-      <div class="row mt-1">
-        @for (rating of currentRatings;track rating.period) {
-          <div class="col-lg-4 col-12">
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">
-                  {{ rating.period | uppercase | translate }}
-                </div>
-                <a class="btn-sm btn btn-{{ rating.color }}" routerLink="history">
-                  {{ 'History' | translate }}
-                  <i data-feather="arrow-right"></i>
-                </a>
-              </div>
-
-              <div class="table-responsive">
-                <table class="table">
-                  <thead>
-                    <tr class="bg-gradient-{{ rating.color }}">
-                      <th class="text-white text-center">#</th>
-                      <th class="text-white">{{ 'USER' | translate }}</th>
-                      <th class="text-white text-center"><i [data-feather]="'problem' | iconName"></i></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @for (userRating of rating.data; track userRating; let i = $index) {
-                      <tr
-                        [class]="currentUser?.username == userRating.username ? 'bg-light'+rating.color : ''">
-                        <td class="text-center">{{ i + 1 }}</td>
-                        <td><contestant-view [user]="userRating"></contestant-view></td>
-                        <td class="text-center">
-                          <span class="badge badge-glow badge-{{ rating.color }}">
-                            {{ userRating.solved }}
-                          </span>
-                        </td>
-                      </tr>
-                    }
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        }
-      </div>
+      <period-ratings/>
     </section>
   </div>
 </div>
