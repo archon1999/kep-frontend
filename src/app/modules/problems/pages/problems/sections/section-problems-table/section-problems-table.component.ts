@@ -65,7 +65,6 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
       takeUntil(this._unsubscribeAll)
     ).subscribe(
       (filter: ProblemsFilter) => {
-        console.log(filter);
         this.pageNumber = 1;
         this.reloadPage();
         this.updateQueryParams({
@@ -86,6 +85,7 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
   }
 
   getPage(): Observable<PageResult<Problem>> {
+    console.log(this.filter);
     return this.service.getProblems({
       ...this.filter,
       page: this.pageNumber,
