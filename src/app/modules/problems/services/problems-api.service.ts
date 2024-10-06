@@ -15,12 +15,12 @@ export class ProblemsApiService {
   constructor(public api: ApiService) {}
 
   getProblems(params: Partial<ProblemsFilter & Pageable & { hasSolved: number, hasAttempted: number }>) {
-    if (params.status === 1) {
+    if (params.status == 1) {
       params.hasSolved = 1;
-    } else if (params.status === 2) {
+    } else if (params.status == 2) {
       params.hasSolved = 0;
       params.hasAttempted = 1;
-    } else if (params.status === 3) {
+    } else if (params.status == 3) {
       params.hasSolved = 0;
       params.hasAttempted = 0;
     }

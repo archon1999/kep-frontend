@@ -73,7 +73,7 @@ export class ChallengeComponent extends BaseComponent implements OnInit, OnDestr
           }
         );
       }
-    )
+    );
   }
 
   updateStatus(firstLoad = false) {
@@ -146,8 +146,10 @@ export class ChallengeComponent extends BaseComponent implements OnInit, OnDestr
   }
 
   checkAnswer(answer: any) {
+    this.counter.pause();
     this.service.checkAnswer(this.challenge.id, answer, this.isFinish).subscribe(
       (result: any) => {
+        this.counter.start();
         let title: string, icon;
         if (result.success) {
           title = this.translateService.instant('ChallengeQuestionRight');

@@ -217,3 +217,12 @@
   $color: #000066,
   $dark-color: mix(black, #000066, 30),
 );
+
+// Coding
+@include define-chapter-colors(
+  $id: 22,
+  $gradient-color: linear-gradient(45deg, mix(black, #0ef394, 0), mix(black, #09a8e6, 10)),
+  $gradient-dark-color: linear-gradient(45deg, mix(black, #78e6af, 50), mix(black, #0daad6, 50)),
+  $color: #0ef394,
+  $dark-color: mix(black, #0ef394, 50),
+);
