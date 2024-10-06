@@ -32,7 +32,7 @@
       </div>
     }
 
-    @if (question.type == QuestionType.MULTI_ANSWER_CHOICE) {
+    @else if (question.type == QuestionType.MULTI_ANSWER_CHOICE) {
       <div (keyup.enter)="checkAnswer()">
         <div class="font-medium-2 d-flex mb-2 text-dark">
           <div class="question-body">
@@ -53,7 +53,7 @@
       </div>
     }
 
-    @if (question.type == QuestionType.ANSWER_INPUT) {
+    @else if (question.type == QuestionType.ANSWER_INPUT) {
       <div (keyup.enter)="checkAnswer()">
         <div class="font-medium-2 d-flex mb-2 text-dark">
           <div class="question-body">
@@ -65,7 +65,7 @@
       </div>
     }
 
-    @if (question.type == QuestionType.CONFORMITY) {
+    @else if (question.type == QuestionType.CONFORMITY) {
       <div (keyup.enter)="checkAnswer()">
         <div class="font-medium-2 d-flex mb-2 text-dark">
           <div class="question-body">
@@ -110,7 +110,7 @@
       </div>
     }
 
-    @if (question.type == QuestionType.ORDERING) {
+    @else if (question.type == QuestionType.ORDERING) {
       <div (keyup.enter)="checkAnswer()">
         <div class="font-medium-2 d-flex mb-2 text-dark">
           <div class="question-body">
@@ -137,7 +137,7 @@
       </div>
     }
 
-    @if (question.type == QuestionType.CLASSIFICATION) {
+    @else if (question.type == QuestionType.CLASSIFICATION) {
       <div (keyup.enter)="checkAnswer()">
         <div class="font-medium-2 d-flex mb-2 text-dark">
           <div class="question-body">
@@ -172,7 +172,7 @@
       </div>
     }
 
-    @if (question.type == QuestionType.CUSTOM_CHECK) {
+    @else if (question.type == QuestionType.CUSTOM_CHECK) {
       <div class="font-medium-2 d-flex mb-2 text-dark">
         <div class="question-body">
           <mathjax [content]="question.body"/>
@@ -185,6 +185,24 @@
           [(ngModel)]="input"
           [ngModelOptions]="{standalone: true}"
           class="mt-1">
+        </monaco-editor>
+      </div>
+    }
+
+    @else if (question.type == QuestionType.PROBLEM) {
+      <problem-body [problem]="question.problem"/>
+
+      <ng-select [formControl]="langControl">
+        @for (availableLanguage of question.problem.availableLanguages; track availableLanguage) {
+          <ng-option [value]="availableLanguage.lang">{{ availableLanguage.langFull }}</ng-option>
+        }
+      </ng-select>
+
+      <div class="mt-2" style="height: 400px;">
+        <monaco-editor
+          [lang]="langControl.value"
+          [(ngModel)]="input"
+          [ngModelOptions]="{standalone: true}">
         </monaco-editor>
       </div>
     }
@@ -201,3 +219,5 @@
     </button>
   </div>
 </div>
+
+<ng-select-css/>

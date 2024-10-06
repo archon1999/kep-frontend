@@ -8,6 +8,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { randomShuffle } from '@shared/utils';
 import { randomChoice } from '@shared/utils/random';
 import { AttemptLangs } from '@problems/constants';
+import { LanguageService } from '@problems/services/language.service';
+import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';
+import { takeUntil } from 'rxjs/operators';
+import { findAvailableLang } from '@problems/utils';
+import { BaseComponent } from '@app/common';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { FormControl } from '@angular/forms';
 
 export enum QuestionType {
   SINGLE_ANSWER_CHOICE = 1,
@@ -17,7 +24,16 @@ export enum QuestionType {
   ORDERING = 5,
   CLASSIFICATION = 6,
   CUSTOM_CHECK = 7,
+  PROBLEM = 8,
 }
+
+const cppTemplate = `#include <iostream>
+
+using namespace std;
+
+int main() {
+
+}`;
 
 @Component({
   selector: 'question-card',
@@ -28,17 +44,20 @@ export enum QuestionType {
     DragulaModule,
     MathjaxModule,
     MonacoEditorComponent,
-    TranslateModule
+    TranslateModule,
+    ProblemBodyComponent,
+    NgSelectModule
   ],
   templateUrl: './question-card.component.html',
   styleUrl: './question-card.component.scss'
 })
-export class QuestionCardComponent implements OnInit, OnChanges, OnDestroy {
+export class QuestionCardComponent extends BaseComponent implements OnInit, OnChanges, OnDestroy {
   @Input() question: any;
   @Output() check = new EventEmitter<any>;
 
   public singleRadio = 0;
   public input = '';
+  public langControl = new FormControl();
   public conformityGroupFirst: Array<string>;
   public conformityGroupSecond: Array<string>;
   public orderingList: Array<string>;
@@ -47,9 +66,30 @@ export class QuestionCardComponent implements OnInit, OnChanges, OnDestroy {
   protected readonly QuestionType = QuestionType;
   protected readonly AttemptLangs = AttemptLangs;
 
-  constructor(private dragulaService: DragulaService) {}
+  constructor(
+    protected dragulaService: DragulaService,
+    protected langService: LanguageService,
+  ) {
+    super();
+  }
 
   ngOnInit() {
+    this.langService.getLanguage().pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      (lang: AttemptLangs) => {
+        this.langControl.setValue(lang, { emitEvent: false });
+        if (!findAvailableLang(this.question.problem.availableLanguages, lang)) {
+          this.langService.setLanguage(this.question.problem.availableLanguages[0].lang);
+        }
+      }
+    );
+    this.langControl.valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      (lang) => {
+        this.langService.setLanguage(lang);
+        if (lang === 'cpp' && this.input.trim() === '') {
+          this.input = cppTemplate;
+        }
+      }
+    );
     this.dragulaService.createGroup('handle-list', {
       moves: function (el, container, handle) {
         return handle.classList.contains('handle');
@@ -104,6 +144,10 @@ export class QuestionCardComponent implements OnInit, OnChanges, OnDestroy {
         });
       }
     }
+
+    if (this.langControl.value === 'cpp') {
+      this.input = cppTemplate;
+    }
   }
 
   checkAnswer() {
@@ -130,6 +174,8 @@ export class QuestionCardComponent implements OnInit, OnChanges, OnDestroy {
       answer = { classification_groups: this.classificationGroups };
     } else if (this.question.type === QuestionType.CUSTOM_CHECK) {
       answer = { code: this.input };
+    } else if (this.question.type === QuestionType.PROBLEM) {
+      answer = { code: this.input, lang: this.langControl.value };
     }
     this.check.emit(answer);
   }
