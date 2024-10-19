@@ -225,7 +225,7 @@
           display: flex;
           margin-right: 0.715rem;
           font-weight: 500;
-          color: #6e6b7b;
+          color: $body-color;
 
           @include dark-layout {
             color: white;

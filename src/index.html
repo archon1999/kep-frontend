@@ -2,12 +2,12 @@
 <html lang="en">
 
 <head>
-  {% if problem and problem.og_image %}
-  <meta name="description" content="{{ problem.title_uz }}">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="{{ problem.og_image.url }}">
-  <meta property="og:image" content="{{ problem.og_image.url }}">
-  {% endif %}
+<!--  {% if problem and problem.og_image %}-->
+<!--  <meta name="description" content="{{ problem.title_uz }}">-->
+<!--  <meta name="twitter:card" content="summary_large_image">-->
+<!--  <meta name="twitter:image" content="{{ problem.og_image.url }}">-->
+<!--  <meta property="og:image" content="{{ problem.og_image.url }}">-->
+<!--  {% endif %}-->
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-MBQPKFTEWV"></script>
   <script>
@@ -33,9 +33,33 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&family=Montserrat:wght@300;400;600;700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&family=Gilroy:wght@300;400;600;700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
 
   <style>
+    @font-face {
+      font-family: 'Gilroy';
+      src: url('assets/fonts/gilroy/Gilroy-Light.ttf') format('opentype');
+      font-weight: 300;
+    }
+
+    @font-face {
+      font-family: 'Gilroy';
+      src: url('assets/fonts/gilroy/Gilroy-Regular.ttf') format('opentype');
+      font-weight: 400;
+    }
+
+    /*@font-face {*/
+    /*  font-family: 'Gilroy';*/
+    /*  src: url('assets/fonts/gilroy/Gilroy-Medium.ttf') format('opentype');*/
+    /*  font-weight: 500;*/
+    /*}*/
+
+    @font-face {
+      font-family: 'Gilroy';
+      src: url('assets/fonts/gilroy/Gilroy-Bold.ttf') format('opentype');
+      font-weight: 600;
+    }
+
     #loading-bg {
       width: 100%;
       height: 100%;
