@@ -35,7 +35,7 @@ import { Resources } from '@app/resources';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AttemptsComponent extends BaseTablePageComponent<Attempt> implements OnInit, OnDestroy {
-  override maxSize = 7;
+  override maxSize = 5;
   override defaultPageSize = 20;
   override pageOptions = [10, 20, 50];
 

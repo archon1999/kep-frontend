@@ -1,26 +1,4 @@
-@import 'bootstrap/scss/mixins';
-@import 'bootstrap/scss/functions';
-@import 'scss/base/bootstrap-extended/variables';
-
-.card-activity {
-  box-shadow: 0 0 5px $primary !important;
-  border: none !important;
-}
-
-::ng-deep .dark-layout .card-activity {
-  background: linear-gradient(92.32deg, mix(black, $primary, 55), mix(black, $primary, 40)) !important;
-  box-shadow: none !important;
-}
-
-h2 {
-  background: #7367f0;
-  border-radius: 15px;
-  color: #fff;
-  padding: 0.7rem;
-  width: 150px;
-  text-align: center;
-  box-shadow: 0 0 5px #7367f0 !important;
-}
+@import 'styles/kep-imports';
 
 .statistics-info {
   display: flex;
@@ -28,7 +6,6 @@ h2 {
   align-items: center;
 
   .title {
-    color: #fff;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
   }

@@ -4,8 +4,10 @@
 
 .card {
   background: var(--bg-gradient);
-  box-shadow: var(--box-shadow) !important;
+  // box-shadow: var(--box-shadow) !important;
+  // border: 1px solid var(--bg);
   border: none;
+
   opacity: 1;
 
   &:hover {

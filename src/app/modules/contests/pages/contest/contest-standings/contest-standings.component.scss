@@ -57,11 +57,11 @@ app-contest-standings {
     position: absolute;
   }
 
-  thead tr {
-    background: var(--bg-gradient) !important;
-    box-shadow: var(--box-shadow) !important;
-    color: var(--text-color);
-  }
+  //thead tr {
+  //  background: var(--bg-gradient) !important;
+  //  box-shadow: var(--box-shadow) !important;
+  //  color: var(--text-color);
+  //}
 
   span.points {
     background: var(--bg) !important;

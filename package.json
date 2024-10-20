@@ -3,7 +3,7 @@
   "version": "8.2.1",
   "scripts": {
     "ng": "ng",
-    "start": "set NODE_OPTIONS=--max_old_space_size=8192 & ng serve --open",
+    "start": "set NODE_OPTIONS=--max_old_space_size=8192 & ng serve --host 0.0.0.0 --open",
     "build": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build",
     "build:prod": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --configuration production",
     "build-prod": "node --max_old_space_size=4096 ./node_modules/@angular/cli/bin/ng build --configuration production --base-href /static/frontend/",

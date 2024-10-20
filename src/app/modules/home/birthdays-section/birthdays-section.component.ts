@@ -5,13 +5,14 @@ import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.compon
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { LocalizedDatePipe } from '@shared/pipes/localized-date.pipe';
 
 @Component({
   selector: 'birthdays-section',
   templateUrl: './birthdays-section.component.html',
   styleUrls: ['./birthdays-section.component.scss'],
   standalone: true,
-  imports: [SwiperComponent, NgxSkeletonLoaderModule, UserPopoverModule, TranslateModule]
+  imports: [SwiperComponent, NgxSkeletonLoaderModule, UserPopoverModule, TranslateModule, LocalizedDatePipe]
 })
 export class BirthdaysSectionComponent implements OnInit {
 

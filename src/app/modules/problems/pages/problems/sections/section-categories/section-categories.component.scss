@@ -3,6 +3,7 @@
 .card {
   box-shadow: none;
   margin-bottom: 1rem;
+  height: calc(100% - 1rem);
 
   &:hover {
     transition: 0.2s ease-in;
@@ -11,10 +12,7 @@
   }
 
   .card-header {
+    height: 100%;
     flex-wrap: nowrap;
-
-    .card-title {
-      word-break: break-all;
-    }
   }
 }

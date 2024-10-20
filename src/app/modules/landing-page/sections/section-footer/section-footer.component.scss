@@ -5,16 +5,19 @@
   width: calc(100%);
   padding: 2rem 2rem;
   border-radius: 3.5rem 3.5rem 0 0;
-  background-color: mix($primary, mix(white, $theme-dark-card-bg, 10), 5);
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.75);
   // background-image: url('assets/landing-page/beautiful-bg-2.png') !important;
 
   @include dark-layout {
-    background-color: rgba(mix($primary, $theme-dark-card-bg, 5), 0.9);
+    background-color: rgba(0, 0, 0, 0.8);
   }
 
   .brand {
     display: flex;
     align-items: center;
+  }
+
+  @include media-breakpoint-down(sm) {
+    margin-top: 1rem;
   }
 }

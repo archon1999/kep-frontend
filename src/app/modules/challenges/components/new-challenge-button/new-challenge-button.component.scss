@@ -17,7 +17,7 @@
   // box-shadow: 0 0 5px $primary !important;
 
   @include dark-layout {
-    background-image: linear-gradient(mix(black, $primary, 40), mix(black, $primary, 60));
+    background: rgba($primary, 0.5);
   }
 
   &:hover {

@@ -34,7 +34,7 @@
       [ngClass]="'circle-filled slider-custom'"
     ></nouislider>
 
-    <h5 class="mb-1 text-white">{{ 'Chapters' | translate }}</h5>
+    <h5 class="mb-1">{{ 'Chapters' | translate }}</h5>
     <ng-select [multiple]="true" [(ngModel)]="newChallengeCall.selectedChapters">
       @for (chapter of chapters; track chapter) {
         <ng-option [value]="chapter.id">

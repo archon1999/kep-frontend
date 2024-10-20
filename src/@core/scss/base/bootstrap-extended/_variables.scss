@@ -28,7 +28,7 @@ $warning: $orange !default;
 $light: $gray-50 !default;
 $dark: #071437 !default;
 
-$yellow: #b8c00c;
+$yellow: #ffdf00;
 $blue: #4360ec;
 $brown: #ba782b;
 
@@ -97,7 +97,7 @@ $spacers: map-merge(
 //
 // Settings for the `<body>` element.
 $body-bg: #f5f8fa !default;
-$body-color: #6e6b7b !default;
+$body-color: #403e48 !default;
 
 // Links
 //
@@ -134,8 +134,8 @@ $box-shadow: 0 4px 24px 0 rgba($black, 0.1) !default;
 // Font, line-height, and color for body text, headings, and more.
 
 // stylelint-disable value-keyword-case
-$font-family-sans-serif: 'Montserrat', Helvetica, Arial, sans-serif !default;
-$font-family-monospace: 'Montserrat', Helvetica, Arial, sans-serif !default;
+$font-family-sans-serif: 'Gilroy', Helvetica, Arial, sans-serif !default;
+$font-family-monospace: 'Gilroy', Helvetica, Arial, sans-serif !default;
 
 // stylelint-enable value-keyword-case
 $font-size-base: 1rem !default;
@@ -181,7 +181,7 @@ $table-hover-bg: #f6f6f9 !default;
 
 $table-border-color: $border-color !default;
 
-$table-head-bg: #f3f2f7 !default;
+$table-head-bg: rgba(255, 255, 255, 0.75) !default;
 $table-head-color: $headings-color !default;
 
 $table-dark-bg: $dark !default;
@@ -211,7 +211,7 @@ $btn-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, bo
   box-shadow 0.15s ease-in-out, background 0s, border 0s !default;
 
 // Forms
-$custom-control-border-color: #d8d6de;
+$custom-control-border-color: white;
 $label-margin-bottom: 0.2857rem !default;
 
 $input-padding-y: 0.438rem !default;
@@ -328,15 +328,15 @@ $pagination-padding-x-sm: 0.745rem !default;
 $pagination-disabled-color: $text-muted !default;
 
 $pagination-color: $body-color !default;
-$pagination-bg: #f3f2f7 !default;
+$pagination-bg: rgba(255, 255, 255, 0.75) !default;
 
 $pagination-hover-color: $primary !default;
-$pagination-hover-bg: #f3f2f7 !default;
+$pagination-hover-bg: rgba(255, 255, 255, 0.75) !default;
 
 $pagination-active-color: $primary !default;
 
 $pagination-disabled-color: $text-muted !default;
-$pagination-disabled-bg: #f3f2f7 !default;
+$pagination-disabled-bg: rgba(255, 255, 255, 0.75) !default;
 
 $pagination-font-size-lg: 1.14rem !default; // custom
 $pagination-font-size-sm: 0.857rem !default; // custom

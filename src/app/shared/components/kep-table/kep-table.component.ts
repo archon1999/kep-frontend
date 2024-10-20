@@ -25,7 +25,7 @@ export class KepTableComponent {
   @Input() empty: boolean;
   @Input() cardClass = 'card';
   @Input() tableCardClass = 'beautiful-table';
-  @Input() tableClass = 'table-striped';
+  @Input() tableClass = '';
   @Input() spinnerHeight = '200px';
   @Input() spinnerColor = 'var(--contest-color)';
 }

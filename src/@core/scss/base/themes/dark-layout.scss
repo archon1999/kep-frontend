@@ -131,6 +131,7 @@
   }
   .header-navbar {
     background-color: $theme-dark-card-bg;
+    backdrop-filter: blur(5px);
 
     .navbar-container {
       .nav {
@@ -579,6 +580,7 @@
   // dropdown
   .dropdown-menu {
     background-color: $theme-dark-card-bg;
+    backdrop-filter: blur(5px) !important;
     box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.24);
 
     .dropdown-header {
@@ -957,7 +959,8 @@
 
   // card
   .card {
-    background-color: $theme-dark-card-bg !important;
+    border: 1px solid $theme-dark-body-bg;
+    background-color: $theme-dark-card-bg;
     box-shadow: $theme-dark-box-shadow !important;
     .card-footer {
       border-color: $theme-dark-border-color;
@@ -1478,6 +1481,7 @@
       ) !important;
       .header-navbar {
         background: $theme-dark-card-bg !important;
+        backdrop-filter: blur(5px);
         &.navbar-shadow {
           box-shadow: 0 4px 24px 0 rgba($black, 0.75);
         }

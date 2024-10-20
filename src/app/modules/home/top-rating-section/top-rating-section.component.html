@@ -1,7 +1,11 @@
-<div class="card card-congratulation-medal" style="min-height: 235px;">
-  <div class="card-body">
-    <h4><strong>{{ 'TopRating' | translate }}</strong></h4>
+<div class="card card-congratulation-medal">
+  <div class="card-header pb-0">
+    <div class="card-title">
+      {{ 'TopRating' | translate }}
+    </div>
+  </div>
 
+  <div class="card-body">
     @if (topRatingSkeletonVisible) {
       <div class="item mt-3">
         <ngx-skeleton-loader

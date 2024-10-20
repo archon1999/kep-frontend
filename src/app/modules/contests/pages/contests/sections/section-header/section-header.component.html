@@ -35,20 +35,20 @@
       @if (currentUser) {
         <div class="card-footer d-flex justify-content-between">
           <div class="text-center d-flex justify-content-between">
-            <div class="text-white d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+            <div class="text-white text-nowrap d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
               <kep-icon type="duotone" class="text-white mr-25" name="rating"></kep-icon>
               <span class="mr-50">{{ 'Rating' | translate }}:</span>
               <contests-rating-badge [rating]="data.rating" [badgeLight]="false"></contests-rating-badge>
               <contests-rating-image [title]="data.ratingTitle"></contests-rating-image>
             </div>
           </div>
-          <div class="text-center d-flex justify-content-between">
+          <div class="text-center text-nowrap d-flex justify-content-between">
             <div class="text-white d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
               <kep-icon type="duotone" class="text-white mr-25" name="contest"></kep-icon>
               {{ 'Rank' | translate }}: {{ data.ratingPlace }}
             </div>
           </div>
-          <div class="text-center d-flex justify-content-between">
+          <div class="text-center text-nowrap d-flex justify-content-between">
             <div class="text-white d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
               <kep-icon type="duotone" class="text-white mr-25" name="contest"></kep-icon>
               {{ 'Contests' | translate }}: {{ data.contestantsCount }}

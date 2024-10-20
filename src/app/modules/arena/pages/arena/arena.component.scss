@@ -1,69 +1,58 @@
-@import 'bootstrap/scss/mixins';
-@import 'bootstrap/scss/mixins/dark-layout';
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
-@import 'scss/base/bootstrap-extended/variables';
+@import 'styles/kep-imports';
 
-.arena-section-header {
-  .card {
-    background:linear-gradient(to right, $warning, lighten($warning, 10));
+app-arena {
+  .arena-section-header {
+    .card {
+      border: none;
+      background: rgba($yellow, 0.75);
 
-    @include dark-layout {
-      background: linear-gradient(to right, #120e00, #221b00) !important;
+      @include dark-layout {
+        background: rgba($yellow, 0.5);
+      }
+
+      .card-footer {
+        border-color: rgba($yellow, 0.1);
+      }
     }
 
-    .card-footer {
-      border-color: rgba($yellow, 0.1);
+    .useful-links {
+      display: flex;
+      margin-bottom: 2rem;
+
+      .btn {
+        width: 100%;
+      }
     }
-  }
 
-  .btn {
-    border: none;
-    background: mix(black, $warning, 10) !important;
+    .btn-yellow {
+      background-color: $yellow !important;
+      border: none;
 
-    @include dark-layout {
-      background: #221b00 !important;
-    }
-  }
-
-  .useful-links {
-    display: flex;
-    margin-bottom: 2rem;
-
-    .btn {
-      width: 100%;
-    }
-  }
-}
-
-.arena {
-  .arena-avatar {
-    background: $warning;
-    box-shadow: 0 0 5px lighten($warning, 5);
-
-    @include dark-layout {
-      background: mix(black, mix(red, $warning, 20), 60) !important;
-      box-shadow: 0 0 2px mix(black, $warning, 40) !important;
-    }
-  }
-}
-
-.bg-arena-list {
-  &:nth-child(odd) .card {
-    background: linear-gradient(to right, $warning, mix(white, $warning, 20));
-
-    @include dark-layout {
-      box-shadow: none !important;
-      background: linear-gradient(to right, #120e00, #221b00) !important;
+      @include dark-layout {
+        background: rgba($yellow, 0.5) !important;
+      }
     }
   }
 
-  &:nth-child(even) .card {
-    background: linear-gradient(to left, $warning, mix(white, $warning, 20));
+  kep-icon span {
+    color: $yellow !important;
 
     @include dark-layout {
-      box-shadow: none !important;
-      background: linear-gradient(to left, #120e00, #221b00) !important;
+      color: rgba($yellow, 0.5) !important;
+    }
+  }
+
+  .bg-arena-list {
+    &:nth-child(odd) .card {
+      @include dark-layout {
+        background: rgba($yellow, 0.5);
+      }
+    }
+
+    &:nth-child(even) .card {
+      @include dark-layout {
+        background: rgba($yellow, 0.4);
+      }
     }
   }
 }

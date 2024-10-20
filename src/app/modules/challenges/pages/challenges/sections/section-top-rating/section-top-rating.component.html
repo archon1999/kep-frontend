@@ -5,9 +5,9 @@
     </div>
   } @else {
     <div class="table-responsive beautiful-table">
-      <table class="table table-striped">
+      <table class="table">
         <thead>
-          <tr class="text-white bg-gradient-primary">
+          <tr>
             <th>#</th>
             <th>{{ 'User' | translate }}</th>
             <th><i data-feather="bar-chart"></i></th>
@@ -15,8 +15,7 @@
         </thead>
         <tbody>
           @for (challengesRating of challengesRatingList; track challengesRating; let i = $index) {
-            <tr
-              >
+            <tr>
               <td class="text-dark">
                 {{ i+1 }}
               </td>

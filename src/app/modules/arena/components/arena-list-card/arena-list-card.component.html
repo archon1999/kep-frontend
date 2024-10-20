@@ -27,7 +27,7 @@
           </span>
       }
       @if (arena.status == ArenaStatus.Already) {
-        <span class="badge badge-glow badge-warning">
+        <span class="badge badge-glow badge-yellow">
             {{ 'Now' | translate }}
           </span>
       }
@@ -39,12 +39,12 @@
     </div>
 
     <div class="card-info">
-      <span class="mr-25 badge badge-brown badge-glow" ngbTooltip="{{ 'Time' | translate }}">
+      <span class="mr-25 badge badge-yellow badge-glow" ngbTooltip="{{ 'Time' | translate }}">
         <kep-icon class="font-small-4" name="challenge-time"></kep-icon>
         {{ arena.timeSeconds }}
       </span>
 
-      <span class="badge badge-brown badge-glow" ngbTooltip="{{ 'Questions' | translate }}">
+      <span class="badge badge-yellow badge-glow" ngbTooltip="{{ 'Questions' | translate }}">
         <kep-icon class="font-small-4" name="challenge-task"></kep-icon>
         {{ arena.questionsCount }}
       </span>

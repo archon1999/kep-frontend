@@ -1,18 +1,7 @@
 @import 'styles/kep-imports';
 
 .bg-challenge-call {
-  border: none;
-  background: linear-gradient(to left, mix(white, $primary, 10), mix(black, $primary, 10));
-  box-shadow: 0 0 5px mix(black, $primary, 10) !important;
-
   @include dark-layout {
-    box-shadow: 0 0 5px mix(black, $primary, 50) !important;
-    background-image: linear-gradient(mix(black, $primary, 40), mix(black, $primary, 60));
-  }
-
-  ::ng-deep {
-    .text-blue, .text-primary {
-      color: #ffffff !important;
-    }
+    background: rgba($primary, 0.5);
   }
 }

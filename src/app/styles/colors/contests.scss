@@ -81,8 +81,8 @@ $math-color: #00a79d;
   $selector: '&',
   $color: $primary,
   $color-dark: mix(black, $primary, 20),
-  $background-light: linear-gradient(to right, mix(white, $primary, 20), mix(white, $primary, 30)),
-  $background-dark: linear-gradient(to right, mix(black, $primary, 50), mix(black, $primary, 30)),
+  $background-light: rgba($primary, 0.7),
+  $background-dark: rgba($primary, 0.25),
 );
 
 // Code Golf
@@ -90,8 +90,8 @@ $math-color: #00a79d;
   $selector: $code-golf-selector,
   $color: $code-golf-color,
   $color-dark: mix(black, $code-golf-color, 20),
-  $background-light: linear-gradient(to right, mix(white, $code-golf-color, 20), mix(white, $code-golf-color, 30)),
-  $background-dark: linear-gradient(to right, mix(black, $code-golf-color, 50), mix(black, $code-golf-color, 30)),
+  $background-light: rgba($code-golf-color, 0.7),
+  $background-dark: rgba($code-golf-color, 0.25),
 ) {
   .card-bg {
     zoom: 50% !important;
@@ -103,8 +103,8 @@ $math-color: #00a79d;
   $selector: $one-line-selector,
   $color: $one-line-color,
   $color-dark: mix(black, $one-line-color, 30),
-  $background-light: linear-gradient(to right, mix(white, $one-line-color, 20), mix(white, $one-line-color, 30)),
-  $background-dark: linear-gradient(to right, mix(black, $one-line-color, 50), mix(black, $one-line-color, 30)),
+  $background-light: rgba($one-line-color, 0.7),
+  $background-dark: rgba($one-line-color, 0.25),
 ) {
   .card-bg {
     zoom: 137% !important;
@@ -116,8 +116,8 @@ $math-color: #00a79d;
   $selector: $hack-it-selector,
   $color: $hack-it-color,
   $color-dark: mix(black, $hack-it-color, 30),
-  $background-light: linear-gradient(to right, mix(white, $hack-it-color, 5), mix(white, $hack-it-color, 10)),
-  $background-dark: linear-gradient(to right, mix(black, $hack-it-color, 50), mix(black, $hack-it-color, 40)),
+  $background-light: rgba($hack-it-color, 0.7),
+  $background-dark: rgba($hack-it-color, 0.25),
 );
 
 // SQL
@@ -125,8 +125,8 @@ $math-color: #00a79d;
   $selector: $sql-selector,
   $color: $sql-color,
   $color-dark: mix(black, $sql-color, 30),
-  $background-light: linear-gradient(to right, mix(white, $sql-color, 20), mix(white, $sql-color, 30)),
-  $background-dark: linear-gradient(to right, mix(black, $sql-color, 50), mix(black, $sql-color, 40)),
+  $background-light: rgba($sql-color, 0.7),
+  $background-dark: rgba($sql-color, 0.25),
 );
 
 // April Fools
@@ -161,9 +161,12 @@ $math-color: #00a79d;
   $selector: $math-selector,
   $color: $math-color,
   $color-dark: mix(black, $math-color, 30),
-  $background-light: linear-gradient(to right, mix(white, $math-color, 20), mix(white, $math-color, 30)),
-  $background-dark: linear-gradient(to right, mix(black, $math-color, 50), mix(black, $math-color, 40)),
+  $background-light: rgba($math-color, 0.7),
+  $background-dark: rgba($math-color, 0.25),
 ) {
+  .contest-logo {
+    height: 100%;
+  }
 }
 
 .contests-colors {
@@ -321,9 +324,9 @@ $math-color: #00a79d;
   }
 
   kep-table {
-    thead tr {
-      background: var(--bg-gradient) !important;
-    }
+    //thead tr {
+    //  background: var(--bg-gradient) !important;
+    //}
 
     tbody tr:hover {
       background-color: var(--contest-color-light) !important;

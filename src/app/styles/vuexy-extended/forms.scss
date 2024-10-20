@@ -5,9 +5,4 @@
   // border: none !important;
   transition: 0s;
   // box-shadow: 0 0 5px #eaedef;
-
-  @include dark-layout() {
-    box-shadow: none;
-    border: 1px solid #1f222c !important;
-  }
 }

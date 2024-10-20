@@ -1,28 +1,33 @@
-<div class="news-section">
-  <h3 class="ml-1 mb-2 font-weight-bolder">{{ 'LatestNews' | translate }}</h3>
-  @if (skeletonVisible) {
-    <div class="item">
-      <ngx-skeleton-loader
-        count="3"
-        animation="pulse"
-        appearance="line"
-        [theme]="{height: '150px', 'margin-top': '15px', 'margin-bottom': '30px', background: 'var(--skeleton-color)'}"
-      ></ngx-skeleton-loader>
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">
+      {{ 'LatestNews' | translate }}
     </div>
-  }
+  </div>
 
-  @if (!skeletonVisible) {
-    <swiper [config]="newsSwiperConfig" [height]="600" #newsSwiper>
-      @for (news of lastNews; track news) {
-        <div
-          class="swiper-slide"
-          [@fadeInRightOnEnter]
+  <div class="card-body">
+    @if (skeletonVisible) {
+      <div class="item">
+        <ngx-skeleton-loader
+          count="3"
+          animation="pulse"
+          appearance="line"
+          [theme]="{height: '120px', 'margin-top': '15px', 'margin-bottom': '30px', background: 'var(--skeleton-color)'}"
+        ></ngx-skeleton-loader>
+      </div>
+    } @else {
+      <swiper [config]="newsSwiperConfig" [height]="475" #newsSwiper>
+        @for (news of lastNews; track news) {
+          <div
+            class="swiper-slide"
+            [@fadeInRightOnEnter]
           >
-          <news-card [blog]="news.blog"></news-card>
-          <hr>
+            <news-card [blog]="news.blog"></news-card>
+            <hr>
           </div>
         }
         <div class="swiper-pagination"></div>
       </swiper>
     }
   </div>
+</div>

@@ -5,17 +5,17 @@
     <div class="arena-section-header">
       <div class="card">
         <div class="card-header">
-          <div class="card-title text-white">{{ 'Links' | translate }}</div>
+          <div class="card-title text-dark">{{ 'Links' | translate }}</div>
 
           <div [ngClass.lt-md]="'d-flex'" class="links">
-            <a [ngClass.lt-md]="'btn-sm'" [routerLink]="Resources.Challenges" class="btn btn-brown mr-25 mr-mt-1">
+            <a [ngClass.lt-md]="'btn-sm'" [routerLink]="Resources.Challenges" class="btn btn-yellow text-dark mr-25 mr-mt-1">
               <kep-icon class="font-medium-1" name="challenge"></kep-icon>
               <span [ngClass.lt-md]="'d-none'">
                 {{ 'Challenges' | translate }}
               </span>
             </a>
 
-            <a [ngClass.lt-md]="'btn-sm'" [routerLink]="Resources.ChallengesRating" class="btn btn-brown mr-25 mr-mt-1">
+            <a [ngClass.lt-md]="'btn-sm'" [routerLink]="Resources.ChallengesRating" class="btn btn-yellow text-dark mr-25 mr-mt-1">
               <kep-icon class="font-medium-1" name="ranking"></kep-icon>
               <span [ngClass.lt-md]="'d-none'">
                 {{ 'Rating' | translate }}
@@ -28,13 +28,13 @@
 
       <div class="useful-links row">
         <div class="col-6 pr-md-1 pr-25">
-          <a [ngClass.lt-md]="'font-small-3'" class="btn btn-warning" routerLink="/learn/blog/post/72">
+          <a [ngClass.lt-md]="'font-small-3'" class="btn text-dark btn-yellow" routerLink="/learn/blog/post/72">
             {{ 'AboutArena' | translate }}
           </a>
         </div>
 
         <div class="col-6 pl-md-1 pl-25">
-          <a [ngClass.lt-md]="'font-small-3'" class="btn btn-warning" routerLink="/learn/blog/post/69">
+          <a [ngClass.lt-md]="'font-small-3'" class="btn text-dark btn-yellow" routerLink="/learn/blog/post/69">
             {{ 'AboutChallenges' | translate }}
           </a>
         </div>
@@ -43,7 +43,7 @@
 
     <div class="col-xl-8 col-lg-10 col-12 offset-lg-1 offset-xl-2">
       <h1 [@fadeInOnEnter] class="mt-1 mb-2 text-center">
-        <kep-icon name="arena" size="large-3" type="duotone" color="warning"></kep-icon>
+        <kep-icon name="arena" size="large-3" type="duotone" color="yellow"></kep-icon>
         <div class="text-dark mt-2 mb-2">{{ 'Arena' | translate }}</div>
       </h1>
 
@@ -53,7 +53,7 @@
           count="5"
           animation="pulse"
           appearance="line"
-          [theme]="{height: '100px', background: 'var(--warning)'}"
+          [theme]="{height: '100px', background: 'var(--yellow)'}"
         ></ngx-skeleton-loader>
       } @else {
         <div class="row">

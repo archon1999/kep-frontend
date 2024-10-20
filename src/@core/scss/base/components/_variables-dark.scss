@@ -1,8 +1,8 @@
 
 //Body
 $theme-dark-body-bg: #0f1014 !default;
-$theme-dark-body-color: #b4b7bd !default;
-$theme-dark-border-color: #202125 !default;
+$theme-dark-body-color: #ececec !default;
+$theme-dark-border-color: rgba(0, 0, 0, 0.5) !default;
 $theme-dark-custom-control-border-color: #44405e !default;
 
 //Typography
@@ -11,13 +11,13 @@ $theme-dark-label-color: #d0d2d6 !default;
 $theme-dark-text-muted-color: #676d7d !default;
 
 //Card
-$theme-dark-card-bg: #15171c !default;
+$theme-dark-card-bg: rgba(0, 0, 0, 0.25) !default;
 $theme-dark-box-shadow: 0 4px 24px 0 rgba($black, 0.24);
 
 //Input
-$theme-dark-input-bg: #1d2028 !default;
+$theme-dark-input-bg: rgba(0, 0, 0, 0.25) !default;
 $theme-dark-input-placeholder-color: #676d7d !default;
-$theme-dark-input-border-color: #1f222c !default;
+$theme-dark-input-border-color: $theme-dark-body-bg !default;
 $theme-dark-input-disabled-bg: #24233a !default;
 $theme-dark-input-disabled-border-color: #444b60 !default;
 
@@ -27,10 +27,10 @@ $theme-dark-switch-bg-disabled: #1b2337;
 
 //Table
 $theme-dark-table-bg: #15171c !default;
-$theme-dark-table-header-bg: #1e2027 !default;
+$theme-dark-table-header-bg: rgba(0, 0, 0, 0.5) !default;
 $theme-dark-table-row-bg: #15171c !default;
 $theme-dark-table-hover-bg: #242b3d !default;
-$theme-dark-table-striped-bg: #1c1f25 !default;
+$theme-dark-table-striped-bg: rgba(0, 0, 0, 0.75) !default;
 
 $theme-dark-modal-header-bg: #161d31 !default;
 $theme-dark-pagination-bg: #151923 !default;

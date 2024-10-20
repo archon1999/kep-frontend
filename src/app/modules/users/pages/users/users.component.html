@@ -1,7 +1,7 @@
 <div class="content-wrapper container-xxl p-0">
   <div class="content-body">
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
-    <div class="card users-filter">
+    <div class="card">
       <div class="card-body">
         <div [formGroup]="filterForm" class="row">
           <div class="col-6 col-md-3">
@@ -71,7 +71,7 @@
 
             <kep-table [loading]="isLoading" [empty]="users?.length === 0">
               <ng-container header>
-                <tr class="bg-gradient-primary">
+                <tr>
                   <th>
                     <table-ordering
                       (change)="orderingChange($event)"
@@ -192,7 +192,7 @@
                     <td>
                       <a class="d-flex align-items-center" href="/users/user/{{ user.username }}">
                         <div class="avatar mr-50">
-                          <img alt="Avatar" height="48" src="{{ user.avatar }}" width="48">
+                          <img style="max-width: initial" alt="Avatar" height="48" src="{{ user.avatar }}" width="48">
                         </div>
                         <span class="font-weight-bold font-medium-1 ml-50 text-dark">
                           {{ user.username }}
