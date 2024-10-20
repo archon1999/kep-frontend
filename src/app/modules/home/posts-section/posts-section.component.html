@@ -7,7 +7,7 @@
     @for (post of lastPosts; track post) {
       <div class="swiper-slide">
         @defer (on viewport) {
-        <blog-post-card [blog]="post"></blog-post-card>
+          <blog-post-card [blog]="post"></blog-post-card>
         } @placeholder {
         <div [style.height.px]="400">
           <spinner></spinner>
@@ -15,6 +15,5 @@
       }
     </div>
   }
-  <div class="swiper-pagination"></div>
 </swiper>
 }

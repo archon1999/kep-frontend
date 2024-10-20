@@ -1,10 +1,10 @@
 @import 'styles/kep-imports';
 
 .challenges-section-header.card {
-  background: linear-gradient(to left, mix(white, $primary, 10), mix(black, $primary, 10));
+  background: rgba($primary, 0.8);
 
   @include dark-layout {
-    background: linear-gradient(to right, mix(black, $primary, 40), mix(black, $primary, 60));
+    background: rgba($primary, 0.5);
   }
 
   .card-footer {

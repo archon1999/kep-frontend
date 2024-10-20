@@ -39,7 +39,7 @@ $purple:  #6f42c1 !default;
 $pink:    #e83e8c !default;
 $red:     #dc3545 !default;
 $orange:  #fd7e14 !default;
-$yellow:  #ffc107 !default;
+$yellow:  #ffdf00 !default;
 $green:   #28a745 !default;
 $teal:    #20c997 !default;
 $cyan:    #17a2b8 !default;
@@ -473,7 +473,7 @@ $input-padding-x-lg:                    $input-btn-padding-x-lg !default;
 $input-font-size-lg:                    $input-btn-font-size-lg !default;
 $input-line-height-lg:                  $input-btn-line-height-lg !default;
 
-$input-bg:                              $white !default;
+$input-bg:                              rgba(255, 255, 255, 0.7)  !default;
 $input-disabled-bg:                     $gray-200 !default;
 
 $input-color:                           $gray-700 !default;
@@ -1018,8 +1018,8 @@ $progress-bar-transition:           width .6s ease !default;
 // List group
 
 $list-group-color:                  null !default;
-$list-group-bg:                     $white !default;
-$list-group-border-color:           rgba($black, .125) !default;
+$list-group-bg:                     rgba(255, 255, 255, 0.6) !default;
+$list-group-border-color:           $white !default;
 $list-group-border-width:           $border-width !default;
 $list-group-border-radius:          $border-radius !default;
 

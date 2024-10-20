@@ -153,4 +153,11 @@ export const menu: CoreMenu[] = [
     icon: 'shop',
     url: Resources.Shop,
   },
+  // {
+  //   id: 'kepcoin',
+  //   translate: 'Kepcoin',
+  //   type: 'item',
+  //   icon: 'dollar',
+  //   url: Resources.Kepcoin,
+  // },
 ];

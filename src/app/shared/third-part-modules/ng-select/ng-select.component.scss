@@ -11,3 +11,13 @@
 //ng-select[formcontrolname="testCaseNumber"] {
 //  z-index: initial !important;
 //}
+
+.ng-select .ng-select-container {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+  border: 1px solid white !important;
+
+  @include dark-layout {
+    background-color: rgba(0, 0, 0, 0.25) !important;
+    border: 1px solid $theme-dark-body-bg !important;
+  }
+}

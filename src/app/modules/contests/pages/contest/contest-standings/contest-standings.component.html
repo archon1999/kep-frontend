@@ -44,8 +44,7 @@
               [routerLink]="['..', 'problem', contestProblem.symbol]"
               [ngbTooltip]="contestProblem.problem.title"
               tooltipClass="tooltip-primary"
-              container="body"
-              class="text-white">
+              container="body">
               {{ contestProblem.symbol }}
               @if (contest?.hasBalls()) {
                 <span>
@@ -99,7 +98,7 @@
             <contests-rating-image
               [title]="contestant.perfomanceTitle"
               [class]="'mr-50'"/>
-            <span class="text-dark">
+            <span class="text-dark mr-1">
               @if (contestant.perfomance >= 3400) {
                 <span>∞</span>
               }

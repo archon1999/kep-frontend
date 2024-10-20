@@ -1,50 +1,14 @@
 <header>
-  <svg id="svg" xmlns="http://www.w3.org/2000/svg" viewBox="-300 0 950 270">
-    <path d="M-314,267 C105,364 400,100 812,279" fill="none" stroke-width="120"
-      stroke-linecap="round" />
-  </svg>
+  <div class="card">
+    <div class="card-body">
+      <h1 [@fadeInOnEnter] class="text-center text-dark">
+        {{ 'Welcome' | translate }}, {{ currentUser?.firstName || currentUser?.username }}
+      </h1>
 
-  <h1 [@fadeInOnEnter] class="text-center">
-    {{ 'Welcome' | translate }}, {{ currentUser?.firstName || currentUser?.username }}
-  </h1>
-  
 
-  <h3 [@fadeInOnEnter] class="text-center">
-    {{ 'HomePageTitle' | translate }}
-  </h3>
-
-  <div [@fadeInUpOnEnter] class="sections justify-content-center">
-    <div class="section">
-      <div class="avatar p-md-2 p-1 bg-primary badge-glow">
-        <div class="avatar-content">
-          <kep-icon name="learn" class="font-medium-4"></kep-icon>
-        </div>
-      </div>
-      <div class="title">
-        {{ 'Learn' | translate }}
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="avatar p-md-2 p-1 bg-primary badge-glow">
-        <div class="avatar-content">
-          <kep-icon name="practice" class="font-medium-4"></kep-icon>
-        </div>
-      </div>
-      <div class="title">
-        {{ 'Practice' | translate }}
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="avatar p-md-2 p-1 bg-primary badge-glow">
-        <div class="avatar-content">
-          <kep-icon name="competition" class="font-medium-4"></kep-icon>
-        </div>
-      </div>
-      <div class="title">
-        {{ 'Competitions' | translate }}
-      </div>
+      <h3 [@fadeInOnEnter] class="text-center text-dark">
+        {{ 'HomePageTitle' | translate }}
+      </h3>
     </div>
   </div>
 </header>

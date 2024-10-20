@@ -146,10 +146,8 @@ export class ChallengeComponent extends BaseComponent implements OnInit, OnDestr
   }
 
   checkAnswer(answer: any) {
-    this.counter.pause();
     this.service.checkAnswer(this.challenge.id, answer, this.isFinish).subscribe(
       (result: any) => {
-        this.counter.start();
         let title: string, icon;
         if (result.success) {
           title = this.translateService.instant('ChallengeQuestionRight');
@@ -186,7 +184,6 @@ export class ChallengeComponent extends BaseComponent implements OnInit, OnDestr
     this.questionCard.checkAnswer();
   }
 
-  @HostListener('window:blur', ['$event'])
   onBlur(): void {
     if (this.challenge.nextQuestion?.question && this.challenge.status !== ChallengeStatus.Finished) {
       Swal.fire({

@@ -34,6 +34,7 @@ export enum Resources {
   TeamJoin = '/teams/:id/join',
 
   Shop = '/shop',
+  Kepcoin = '/kepcoin',
 }
 
 export function getResourceById(resource: Resources, id: number | string) {

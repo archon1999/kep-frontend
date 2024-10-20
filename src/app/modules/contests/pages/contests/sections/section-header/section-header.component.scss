@@ -1,10 +1,11 @@
 @import 'styles/kep-imports';
 
 .contests-section-header .card {
-  background: linear-gradient(to right, $primary, lighten($primary, 10%));
+  background: rgba($primary, 0.75);
+  border: none;
 
   @include dark-layout {
-    background: linear-gradient(to right, mix(black, $primary, 55), mix(black, $primary, 30)) !important;
+    background: rgba($primary, 0.25) !important;
   }
 
   .card-footer {
@@ -18,5 +19,9 @@
 
   .btn {
     width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

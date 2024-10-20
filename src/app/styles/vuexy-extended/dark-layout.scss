@@ -19,7 +19,7 @@ $colors: (
 
     @if ($color_name != 'white' and $color_name != 'dark' and $color_name != 'light' and $color_name != 'black') {
       .text-#{$color_name} {
-        color: mix(white, $color, 20) !important;
+        color: mix(black, $color, 30) !important;
       }
 
       .bg-gradient-#{$color_name} {
@@ -32,7 +32,7 @@ $colors: (
     }
 
     .btn-#{$color_name} {
-      background-color: $dark-color !important;
+      background-color: rgba($dark-color, 0.75) !important;
       border-color: $dark-color !important;
     }
 

@@ -22,17 +22,17 @@ pre {
   margin: 1em 0;
   padding: 1rem;
   border-radius: .375em;
-  border: 1px solid #ededed !important;
-  background-color: #fafafa !important;
+  border: 1px solid white !important;
+  background-color: rgba(255, 255, 255, 0.75) !important;
   font-size: 87.5%;
   font-family: 'Inconsolata', serif;
   overflow: auto;
 }
 
 .dark-layout pre {
-  background-color: #1b1d23 !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid $theme-dark-body-bg !important;
   color: white;
-  border: none !important;
 }
 
 @media (min-width: 1440px) {
@@ -44,6 +44,18 @@ pre {
 @media (min-width: 1200px) {
   .container-xl {
     max-width: 1200px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container-lg {
+    max-width: 992px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container-md {
+    max-width: 768px;
   }
 }
 
@@ -104,4 +116,48 @@ a.nav-link:hover {
 
 img {
   max-width: 100%;
+}
+
+.dark-layout app-menu {
+  backdrop-filter: blur(5px);
+}
+
+.nav-tabs.card-nav {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid white;
+
+  @include dark-layout {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid $theme-dark-body-bg;
+  }
+}
+
+.horizontal-layout.navbar-sticky .header-navbar {
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(20px);
+}
+
+.dark-layout {
+  app-menu, .horizontal-layout.navbar-sticky .header-navbar {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(20px) !important;
+  }
+}
+
+li[core-menu-horizontal-item] {
+  margin-right: 0.5rem;
+
+  .dropdown-item {
+    &:active kep-icon span {
+      color: white !important;
+    }
+
+    &:hover, &:focus, &:active {
+      border-radius: 5px;
+    }
+  }
+}
+
+.dark-layout .dropdown-menu {
+  backdrop-filter: blur(10px) !important;
 }

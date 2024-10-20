@@ -23,7 +23,7 @@ export class PostsSectionComponent implements AfterViewInit {
 
   public postsSwiperConfig: SwiperOptions = {
     autoHeight: false,
-    pagination: true,
+    pagination: false,
     breakpoints: {
       1024: {
         slidesPerView: 2,
