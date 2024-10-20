@@ -1,18 +1,25 @@
 @import 'styles/kep-imports';
 
 .practice-container {
-  margin-left: -2rem;
-  width: calc(100% + 4rem);
   padding: 2rem 4rem;
-  border-radius: 3.5rem 3.5rem 0 0;
-  background: linear-gradient($gray-50, mix($primary, $gray-50, 3));
-  background-repeat: round !important;
-  background-size: 200% 200%;
+  position: relative;
 
-  @include dark-layout {
-    background-color: rgba(mix($primary, $theme-dark-card-bg, 5), 0.9);
-    background-image: url('assets/landing-page/beautiful-bg-dark.png');
+  .bg-img {
+    // margin-left: -4rem;
+    width: 100%;
     background-repeat: round !important;
+    background-size: 200% 200%;
+    position: absolute;
+    height: 100%;
+    border-radius: 3.5rem 3.5rem 0 0;
+    opacity: 0.5;
+    backdrop-filter: blur(10px);
+
+    @include dark-layout {
+      background-color: rgba(mix($primary, $theme-dark-card-bg, 5), 0.9);
+      background-image: url('assets/landing-page/beautiful-bg-dark.png');
+      background-repeat: round !important;
+    }
   }
 
   h2 {
