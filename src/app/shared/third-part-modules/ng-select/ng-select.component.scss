@@ -16,7 +16,7 @@ ng-dropdown-panel {
   background: inherit !important;
 }
 
-ng-dropdown-panel .ng-dropdown-panel-items {
+.ng-select-container, ng-dropdown-panel .ng-dropdown-panel-items {
   background: rgba(255, 255, 255, 0.7) !important;
   border: 1px solid white !important;
   backdrop-filter: blur(10px);
