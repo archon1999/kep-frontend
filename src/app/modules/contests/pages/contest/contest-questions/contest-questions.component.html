@@ -34,7 +34,7 @@
                     </strong>
                   </label>
                   <div class="form-group">
-                    <ng-select [(ngModel)]="selectedProblem" [ngModelOptions]="{standalone: true}">
+                    <ng-select appendTo="body" [(ngModel)]="selectedProblem" [ngModelOptions]="{standalone: true}">
                       @for (contestProblem of contestProblems;track contestProblem) {
                         <ng-option [value]="contestProblem.symbol">
                           {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}

@@ -583,6 +583,10 @@
     backdrop-filter: blur(5px) !important;
     box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.24);
 
+    &.notifications {
+      background: rgba(0, 0, 0, 0.75) !important;
+    }
+
     .dropdown-header {
       color: $theme-dark-headings-color;
     }
@@ -631,6 +635,7 @@
     .modal-footer {
       background-color: $theme-dark-card-bg;
       border-color: $theme-dark-border-color;
+      backdrop-filter: blur(20px);
     }
   }
 
@@ -1562,6 +1567,7 @@
             li.active > a {
               background: $theme-dark-body-bg !important;
               color: $theme-dark-body-color;
+
               &:hover {
                 color: $primary !important;
               }

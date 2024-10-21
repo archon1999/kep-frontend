@@ -10,51 +10,52 @@
           <div class="card">
             <div class="card-header">
               <contest-tab [contest]="contest"></contest-tab>
-              <hr>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive beautiful-table">
-                  <table class="table table-striped">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>
-                          <kep-icon name="user"></kep-icon>
-                          {{ 'Users' | translate }}
-                        </th>
-                        <th>
-                          <kep-icon name="rating"></kep-icon>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @for (registrant of registrants; track registrant.username){
-                        <tr>
-                          <td class="text-dark">{{ $index + 1 }}</td>
-                          <td>
-                            <contestant-view [team]="registrant.team" [user]="registrant"></contestant-view>
-                          </td>
-                          <td>
-                            <span *ngIf="registrant.rating" class="badge badge-light-{{ registrant.rating | contestsRatingColor }}">
-                              {{ registrant.rating }}
-                            </span>
-                          </td>
-                        </tr>
-                      }
-                    </tbody>
-                  </table>
-                </div>
-              </div>
             </div>
           </div>
 
-          <div [@fadeInRightOnEnter] class="col-lg-3 col-12 order-1 order-lg-2">
-            @if (contest) {
-              <contest-card-countdown [contest]="contest"></contest-card-countdown>
-            }
+          <div class="card">
+            <div class="table-responsive beautiful-table">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>#</th>
+                  <th>
+                    <kep-icon name="user"></kep-icon>
+                    {{ 'Users' | translate }}
+                  </th>
+                  <th>
+                    <kep-icon name="rating"></kep-icon>
+                  </th>
+                </tr>
+                </thead>
+                <tbody>
+                  @for (registrant of registrants;track registrant.username) {
+                    <tr>
+                      <td class="text-dark">{{ $index + 1 }}</td>
+                      <td>
+                        <contestant-view [team]="registrant.team" [user]="registrant"></contestant-view>
+                      </td>
+                      <td>
+                            <span *ngIf="registrant.rating"
+                                  class="badge badge-light-{{ registrant.rating | contestsRatingColor }}">
+                              {{ registrant.rating }}
+                            </span>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
-      </section>
-    </div>
+        <div [@fadeInRightOnEnter] class="col-lg-3 col-12 order-1 order-lg-2">
+          @if (contest) {
+            <contest-card-countdown [contest]="contest"></contest-card-countdown>
+          }
+        </div>
+      </div>
+
+    </section>
   </div>
+</div>

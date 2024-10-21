@@ -9,7 +9,7 @@
       </span>
     </div>
 
-    <ng-select [clearable]="false" (change)="topAttemptsLoad($event)" [(ngModel)]="topAttemptsOrdering">
+    <ng-select appendTo="body" [clearable]="false" (change)="topAttemptsLoad($event)" [(ngModel)]="topAttemptsOrdering">
       <ng-option [value]="'time'">{{ 'Time' | translate }}</ng-option>
       <ng-option [value]="'memory'">{{ 'Memory' | translate }}</ng-option>
       <ng-option [value]="'source_code_size'">{{ 'Size' | translate }}</ng-option>

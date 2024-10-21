@@ -7,7 +7,7 @@
     </span>
   </a>
   <ul ngbDropdownMenu aria-labelledby="navbarNotificationDropdown"
-    class="dropdown-menu dropdown-menu-media dropdown-menu-right">
+    class="notifications dropdown-menu dropdown-menu-media dropdown-menu-right">
     <!-- Notifications header -->
     <li class="dropdown-menu-header">
       <div class="dropdown-header d-flex">
@@ -142,7 +142,7 @@
 
           <a
             (click)="dropdown.close()"
-            routerLink="/competitions/arena/tournament/{{ notification.content.arena.id }}"
+            routerLink="/competitions/arena/tournament/{{ notification.content?.arena?.id }}"
             class="media d-flex align-items-start" *ngSwitchCase="6">
             <div class="media-left">
               <div class="avatar bg-light-primary mt-50">
@@ -153,7 +153,7 @@
             </div>
             <div class="media-body">
               <p class="media-heading">
-                <strong>{{ notification.content.arena.title }}</strong> | {{ 'ArenaFinishedNotification' | translate }}
+                <strong>{{ notification.content?.arena?.title }}</strong> | {{ 'ArenaFinishedNotification' | translate }}
               </p>
               <small class="notification-text">{{ notification.createdNaturaltime }}</small>
             </div>

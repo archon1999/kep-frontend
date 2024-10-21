@@ -35,7 +35,7 @@
     ></nouislider>
 
     <h5 class="mb-1">{{ 'Chapters' | translate }}</h5>
-    <ng-select [multiple]="true" [(ngModel)]="newChallengeCall.selectedChapters">
+    <ng-select appendTo="body" [multiple]="true" [(ngModel)]="newChallengeCall.selectedChapters">
       @for (chapter of chapters; track chapter) {
         <ng-option [value]="chapter.id">
           <span class="badge text-white bg-gradient-chapter-{{ chapter.id }}">

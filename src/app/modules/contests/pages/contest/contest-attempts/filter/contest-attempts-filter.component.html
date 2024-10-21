@@ -16,7 +16,7 @@
           {{ 'PROBLEM' | translate }}
         </label>
         <div class="form-group">
-          <ng-select formControlName="contestProblem">
+          <ng-select appendTo="body" formControlName="contestProblem">
             @for (contestProblem of contestProblems; track contestProblem) {
               <ng-option [value]="contestProblem.symbol">
                 {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
@@ -31,7 +31,7 @@
           <kep-icon name="verdict" size="small-2"/>
           {{ 'VERDICT' | translate }}
         </label>
-        <ng-select formControlName="verdict">
+        <ng-select appendTo="body" formControlName="verdict">
           @for (verdict of verdicts;track verdict) {
             <ng-option [value]="verdict.value">{{ verdict.label }}</ng-option>
           }

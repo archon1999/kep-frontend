@@ -105,6 +105,7 @@
                     <div class="form-group">
                       <label for="iconClass{{ i }}">Dev Icon Class</label>
                       <ng-select
+                        appendTo="body"
                         [items]="devIcons"
                         [(ngModel)]="userTechnology.devIconClass"
                         [ngModelOptions]="{standalone: true}">

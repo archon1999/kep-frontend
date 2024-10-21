@@ -9,7 +9,7 @@
   <div class="card-body">
     <div class="form-group">
       <label><strong>{{ 'Technology' | translate }}:</strong></label>
-      <ng-select [clearable]="false" [(ngModel)]="selectedTechnology">
+      <ng-select appendTo="body" [clearable]="false" [(ngModel)]="selectedTechnology">
         @for (technology of project.availableTechnologies;track technology) {
           <ng-option [value]="technology.technology">
             {{ technology.technology }}
