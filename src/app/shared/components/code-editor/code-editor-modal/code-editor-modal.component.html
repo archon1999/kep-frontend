@@ -47,6 +47,7 @@
             <div class="form-group">
               <label class="font-weight-bold">{{ 'Language' | translate }}: </label>
               <ng-select
+                appendTo="body"
                 [clearable]="false"
                 [formControl]="editorForm.controls.lang"
                 (change)="langChange($event)">
@@ -63,6 +64,7 @@
               <div class="form-group">
                 <label class="font-weight-bold">{{ 'CODE_EDITOR.SAMPLE_TEST' | translate }}: </label>
                 <ng-select
+                  appendTo="body"
                   (change)="onSampleTestChange()"
                   [clearable]="false"
                   formControlName="testCaseNumber"

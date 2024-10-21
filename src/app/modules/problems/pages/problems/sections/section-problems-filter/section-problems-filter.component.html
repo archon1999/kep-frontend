@@ -37,7 +37,7 @@
               </strong>
             </label>
             <div class="form-group">
-              <div ngbDropdown [placement]="'bottom'" class="select-tags btn-group full-width d-lg-block d-none">
+              <div ngbDropdown container="body" [placement]="'bottom'" class="select-tags btn-group full-width d-lg-block d-none">
                 <button type="button" class="btn btn-outline-primary" [style.width.%]="80" rippleEffect>
                   {{ selectedTagsName || ('SELECT' | translate) }}
                 </button>
@@ -72,6 +72,7 @@
               </div>
 
               <ng-select
+                appendTo="body"
                 class="d-lg-none tags-select"
                 formControlName="tags"
                 [dropdownPosition]="'top'"
@@ -119,7 +120,7 @@
               </strong>
             </label>
             <div class="form-group">
-              <ng-select formControlName="status" [compareWith]="compareEqual">
+              <ng-select appendTo="body" formControlName="status" [compareWith]="compareEqual">
                 <ng-option [value]="3">
                   <kep-icon name="minus" class="text-warning"></kep-icon>
                   {{ 'Unknown' | translate }}
@@ -148,7 +149,7 @@
                 </strong>
               </label>
               <div class="form-group">
-                <ng-select formControlName="hasChecker" [compareWith]="compareEqual">
+                <ng-select appendTo="body" formControlName="hasChecker" [compareWith]="compareEqual">
                   <ng-option [value]="true">
                     <i [data-feather]="'exists' | iconName" class="text-success"></i>
                     {{ 'Yes' | translate }}
@@ -168,7 +169,7 @@
                 </strong>
               </label>
               <div class="form-group">
-                <ng-select formControlName="hasCheckInput" [compareWith]="compareEqual">
+                <ng-select appendTo="body" formControlName="hasCheckInput" [compareWith]="compareEqual">
                   <ng-option [value]="true">
                     <i [data-feather]="'exists' | iconName" class="text-success"></i>
                     {{ 'Yes' | translate }}
@@ -188,7 +189,7 @@
                 </strong>
               </label>
               <div class="form-group">
-                <ng-select formControlName="hasSolution" [compareWith]="compareEqual">
+                <ng-select appendTo="body" formControlName="hasSolution" [compareWith]="compareEqual">
                   <ng-option [value]="true">
                     <i [data-feather]="'exists' | iconName" class="text-success"></i>
                     {{ 'Yes' | translate }}
@@ -208,7 +209,7 @@
                 </strong>
               </label>
               <div class="form-group">
-                <ng-select formControlName="partialSolvable" [compareWith]="compareEqual">
+                <ng-select appendTo="body" formControlName="partialSolvable" [compareWith]="compareEqual">
                   <ng-option [value]="true">
                     <i [data-feather]="'exists' | iconName" class="text-success"></i>
                     {{ 'Yes' | translate }}

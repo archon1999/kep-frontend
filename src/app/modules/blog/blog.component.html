@@ -44,7 +44,7 @@
               </div>
             </div>
 
-            <ng-select class="mt-1" (change)="loadBlogPosts()" [(ngModel)]="filter.author" [placeholder]="'Author' | translate">
+            <ng-select appendTo="body" class="mt-1" (change)="loadBlogPosts()" [(ngModel)]="filter.author" [placeholder]="'Author' | translate">
               @for (author of allAuthors; track author) {
                 <ng-option [value]="author">
                   {{ author }}
@@ -52,7 +52,7 @@
               }
             </ng-select>
 
-            <ng-select class="mt-1"(change)="loadBlogPosts()" [(ngModel)]="filter.orderBy" [placeholder]="'OrderBy' | translate">
+            <ng-select appendTo="body" class="mt-1"(change)="loadBlogPosts()" [(ngModel)]="filter.orderBy" [placeholder]="'OrderBy' | translate">
               <ng-option [value]="1">
                 {{ 'Likes' | translate }}
               </ng-option>

@@ -42,6 +42,7 @@
   @if (pageOptions?.length > 0) {
     <div class="position-absolute position-right-0 position-top-0 d-none d-md-block">
       <ng-select
+        appendTo="body"
         [clearable]="false"
         [searchable]="false"
         [(ngModel)]="pageSize"

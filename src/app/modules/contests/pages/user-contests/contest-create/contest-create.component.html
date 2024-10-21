@@ -13,7 +13,7 @@
               }
               <div class="row">
                 <div class="col-6">
-                  <ng-select [(ngModel)]="contestProblem.id" placeholder="{{ 'Problem' | translate }}">
+                  <ng-select appendTo="body" [(ngModel)]="contestProblem.id" placeholder="{{ 'Problem' | translate }}">
                     @for (problem of problemsList; track problem) {
                       <ng-option [value]="problem.id">
                         {{ problem.id }}. {{ problem.title }}
@@ -131,7 +131,7 @@
                             </strong>
                           </label>
 
-                          <ng-select (change)="onTypeChange()" [(ngModel)]="contest.type">
+                          <ng-select appendTo="body" (change)="onTypeChange()" [(ngModel)]="contest.type">
                             <ng-option [value]="ContestTypes.ACM20M">{{ ContestTypes.ACM20M }}</ng-option>
                             <ng-option [value]="ContestTypes.ACM2H">{{ ContestTypes.ACM2H }}</ng-option>
                             <ng-option [value]="ContestTypes.BALL525">{{ ContestTypes.BALL525 }}</ng-option>

@@ -177,7 +177,7 @@
   </div>
   <div class="modal-body" tabindex="0">
     <label>{{ 'Team' | translate }}</label>
-    <ng-select [(ngModel)]="teamId" [clearable]="false">
+    <ng-select appendTo="body" [(ngModel)]="teamId" [clearable]="false">
       @for (team of userTeams;track team.id) {
         <ng-option [value]="team.id">
           <team-view-card [team]="team"/>
