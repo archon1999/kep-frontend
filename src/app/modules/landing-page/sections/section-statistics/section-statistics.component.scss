@@ -1,23 +1,20 @@
 @import 'styles/kep-imports';
 
 .statistics-container {
-  content: "";
-  margin-left: -2rem;
-  width: calc(100% + 4rem);
-  background-color: white;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
   padding: 2rem 4rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
 
   .content-body {
     margin-top: 4rem;
     margin-bottom: 4rem;
   }
 
-  @include media-breakpoint-down(md){
-    width: calc(100% + 3.8rem);
-  }
-
   @include dark-layout {
-    background-color: mix($gray-50, $theme-dark-card-bg, 5);
+    background-color: rgba(0, 0, 0, 0.5);
   }
 }
 

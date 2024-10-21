@@ -12,12 +12,17 @@
 //  z-index: initial !important;
 //}
 
-.ng-select .ng-select-container {
-  background-color: rgba(255, 255, 255, 0.7) !important;
+ng-dropdown-panel {
+  background: inherit !important;
+}
+
+.ng-select-container, ng-dropdown-panel .ng-dropdown-panel-items {
+  background: rgba(255, 255, 255, 0.7) !important;
   border: 1px solid white !important;
+  backdrop-filter: blur(10px);
 
   @include dark-layout {
-    background-color: rgba(0, 0, 0, 0.25) !important;
+    background: rgba(0, 0, 0, 0.25) !important;
     border: 1px solid $theme-dark-body-bg !important;
   }
 }

@@ -1,5 +1,6 @@
 <div class="practice-container">
-  <div class="mt-4 mb-2 content-wrapper container-xxl p-0">
+  <div class="bg-img"></div>
+  <div class="content-wrapper container-xxl p-2">
     <div class="content-body text-center">
       <div class="row">
         <div class="col-12 col-lg-6 d-flex align-items-center">
@@ -10,12 +11,14 @@
             </h2>
             <br>
             <p class="text-dark font-medium-1 px-4">{{ 'LandingPage.SectionPracticeText' | translate }}</p>
-            <div class="d-flex justify-content-center">
+            <div class="row">
               @for (menuItem of menu[2].children; track menuItem.id){
-                <a [routerLink]="menuItem.url" class="btn mt-50 mb-1 mr-50 btn-primary btn-sm">
-                  <kep-icon [name]="menuItem.icon" size="small-4"></kep-icon>
-                  {{ menuItem.translate | translate }}
-                </a>
+                <div class="col-lg-3 col-6">
+                  <a [routerLink]="menuItem.url" class="btn btn-primary mb-1 btn-sm text-nowrap">
+                    <kep-icon [name]="menuItem.icon" size="small-4"></kep-icon>
+                    {{ menuItem.translate | translate }}
+                  </a>
+                </div>
               }
             </div>
           </div>

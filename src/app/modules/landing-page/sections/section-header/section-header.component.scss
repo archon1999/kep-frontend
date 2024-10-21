@@ -29,10 +29,8 @@ $header-height: 800px;
 }
 
 .page-top:before {
-  content: "";
   position: absolute;
   top: -20px;
-  margin-left: -2rem;
   width: 100%;
   z-index: -1;
   height: $header-height;

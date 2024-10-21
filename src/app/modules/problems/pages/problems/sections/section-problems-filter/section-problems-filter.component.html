@@ -99,7 +99,7 @@
               </strong>
             </label>
             <div class="form-group">
-              <ng-select formControlName="difficulty" [compareWith]="compareEqual">
+              <ng-select appendTo="app-layout" formControlName="difficulty" [compareWith]="compareEqual">
                 @for (item of difficulties; track item) {
                   <ng-option [value]="item.value">
                     <span class="text-{{ item.value | problemDifficultyColor }}">
