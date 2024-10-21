@@ -162,7 +162,7 @@ li[core-menu-horizontal-item] {
   backdrop-filter: blur(10px) !important;
 }
 
-a:hover {
+a:not(.btn, .dropdown-item):hover {
   color: $primary !important;
 
   @include dark-layout {

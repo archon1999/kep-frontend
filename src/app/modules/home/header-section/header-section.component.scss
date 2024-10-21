@@ -35,12 +35,6 @@ header {
   }
 }
 
-@include media-breakpoint-down(lg) {
-  header {
-    width: calc(100% + 1.2rem);
-  }
-}
-
 
 @include media-breakpoint-down(sm) {
   header {
