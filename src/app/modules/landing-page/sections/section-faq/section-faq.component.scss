@@ -1,15 +1,11 @@
 @import 'styles/kep-imports';
 
 .faq-container {
-  margin-left: -2rem;
-  width: calc(100% + 4rem);
+  width: 100%;
   padding: 4rem 4rem;
   border-radius: 3.5rem 3.5rem 0 0;
-  background: $gray-50;
-
-  @include media-breakpoint-down(md){
-    width: calc(100% + 3.8rem);
-  }
+  background: rgba($gray-50, 0.5);
+  backdrop-filter: blur(10px);
 
   @include dark-layout {
     background: $theme-dark-card-bg !important;

@@ -1,22 +1,23 @@
 @import 'styles/kep-imports';
 
 .get-started-container {
-  margin-left: -2rem;
-  width: calc(100% + 4rem);
-  padding: 2rem 8rem;
-  // background-image: url('assets/landing-page/beautiful-bg-2.png') !important;
-  background: linear-gradient(to right, rgba($primary, 0.1), mix($primary, $gray-50, 3));
+  position: relative;
+  margin-top: 4rem;
 
-  @include media-breakpoint-down(md){
-    width: calc(100% + 3.8rem);
-  }
+  .bg-img {
+    width: 100%;
+    padding: 2rem 8rem;
+    height: 100%;
+    position: absolute;
+    // background-image: url('assets/landing-page/beautiful-bg-2.png') !important;
+    background: linear-gradient(to right, rgba($primary, 0.1), mix($primary, $gray-50, 3));
+    opacity: 0.8;
+    backdrop-filter: blur(10px);
 
-  @include dark-layout {
-    background-image: url('assets/landing-page/beautiful-bg-dark-2.png') !important;
-    background-size: cover;
-  }
-
-  @include media-breakpoint-down(sm) {
-    padding: 1rem;
+    @include dark-layout {
+      opacity: 0.8;
+      background-image: url('assets/landing-page/beautiful-bg-dark-2.png') !important;
+      background-size: cover;
+    }
   }
 }
