@@ -844,6 +844,8 @@
     background-color: $theme-dark-card-bg !important;
     box-shadow: $theme-dark-box-shadow;
     color: $theme-dark-body-color;
+    backdrop-filter: blur(10px);
+    border: 1px solid black;
 
     .toast-header {
       background-color: $theme-dark-card-bg !important;

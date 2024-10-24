@@ -10,6 +10,7 @@ export interface ProblemUserInfo {
 export interface Problem {
   id: number;
   authorUsername: string;
+  authorAvatar: string;
   userInfo: ProblemUserInfo;
   title: string;
   difficulty: number;

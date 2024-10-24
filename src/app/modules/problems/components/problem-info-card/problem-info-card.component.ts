@@ -11,6 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AttemptLangs } from '@problems/constants';
 import { findAvailableLang } from '@problems/utils';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { AttemptLanguageComponent } from '@shared/components/attempt-language/attempt-language.component';
 
 interface IVoteResult {
   likesCount: number;
@@ -20,7 +21,14 @@ interface IVoteResult {
 @Component({
   selector: 'problem-info-card',
   standalone: true,
-  imports: [CoreCommonModule, ProblemsPipesModule, UserPopoverModule, KepIconComponent],
+  imports: [
+    CoreCommonModule,
+    ProblemsPipesModule,
+    UserPopoverModule,
+    KepIconComponent,
+    AttemptLanguageComponent,
+    AttemptLanguageComponent,
+  ],
   templateUrl: './problem-info-card.component.html',
   styleUrl: './problem-info-card.component.scss'
 })
