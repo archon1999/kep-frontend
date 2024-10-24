@@ -17,7 +17,7 @@
   }
 
   @if $box-shadow-dark != false {
-    .dark-layout .badge-#{$name} {
+    .dark-layout .badge-#{$name}.badge-glow {
       box-shadow: $box-shadow-dark;
     }
   }

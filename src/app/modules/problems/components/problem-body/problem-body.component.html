@@ -109,71 +109,71 @@
 
 <hr>
 
-  @if (problem.inputData?.length > 0) {
-    <h4 class="mt-2 mb-2 text-dark font-medium-5">
-      {{ 'INPUT_DATA' | translate }}:
-    </h4>
-    <mathjax class="mt-2 text-dark" [content]="problem.inputData"></mathjax>
+@if (problem.inputData?.length > 0) {
+  <h4 class="mt-2 mb-2 text-dark font-medium-5">
+    {{ 'INPUT_DATA' | translate }}:
+  </h4>
+  <mathjax class="mt-2 text-dark" [content]="problem.inputData"></mathjax>
+}
+
+@if (problem.outputData?.length > 0) {
+  <h4 class="mt-2 mb-2 text-dark font-medium-5">
+    {{ 'OUTPUT_DATA' | translate }}:
+  </h4>
+  <mathjax class="mt-2 text-dark" [content]="problem.outputData"></mathjax>
+  <hr>
+}
+
+@if (problem.sampleTests.length > 0) {
+  <h4 class="mt-2 mb-1 font-medium-5 text-dark">
+    {{ 'SAMPLE_TESTS' | translate }}
+  </h4>
+  @for (sampleTest of problem.sampleTests;track sampleTest) {
+    <div class="mt-2 mb-2 table-responsive">
+      <table class="table sample-test">
+        <thead>
+        <tr class="bg-gradient-primary">
+          <th>
+            <div class="row justify-content-between align-items-center">
+              <div class="pl-1 font-small-4">
+                {{ 'INPUT' | translate }}
+              </div>
+              <clipboard-button [text]="sampleTest.input"></clipboard-button>
+            </div>
+          </th>
+          <th>
+            <div class="row justify-content-between align-items-center">
+              <div class="pl-1 font-small-4">
+                {{ 'OUTPUT' | translate }}
+              </div>
+              <clipboard-button [text]="sampleTest.output"></clipboard-button>
+            </div>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td class="pl-2">
+            <pre [innerText]="sampleTest.input"></pre>
+          </td>
+          <td class="pl-2">
+            <pre [innerText]="sampleTest.output"></pre>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   }
+}
 
-  @if (problem.outputData?.length > 0) {
-    <h4 class="mt-2 mb-2 text-dark font-medium-5">
-      {{ 'OUTPUT_DATA' | translate }}:
-    </h4>
-    <mathjax class="mt-2 text-dark" [content]="problem.outputData"></mathjax>
-    <hr>
-    }
+@if (problem.comment?.length > 0) {
+  <h4 class="mt-3 font-medium-4 text-dark">
+    {{ 'COMMENT' | translate }}:
+  </h4>
+  <mathjax class="mt-2 text-dark" [content]="problem.comment"></mathjax>
+  <hr>
+}
 
-    @if (problem.sampleTests.length > 0) {
-      <h4 class="mt-2 mb-1 font-medium-5 text-dark">
-        {{ 'SAMPLE_TESTS' | translate }}
-      </h4>
-      @for (sampleTest of problem.sampleTests; track sampleTest) {
-        <div class="mt-2 mb-2 table-responsive">
-          <table class="table sample-test">
-            <thead>
-              <tr class="bg-gradient-primary">
-                <th>
-                  <div class="row justify-content-between align-items-center">
-                    <div class="pl-1 font-small-4">
-                      {{ 'INPUT' | translate }}
-                    </div>
-                    <clipboard-button [text]="sampleTest.input"></clipboard-button>
-                  </div>
-                </th>
-                <th>
-                  <div class="row justify-content-between align-items-center">
-                    <div class="pl-1 font-small-4">
-                      {{ 'OUTPUT' | translate }}
-                    </div>
-                    <clipboard-button [text]="sampleTest.output"></clipboard-button>
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="pl-2">
-                  <pre [innerText]="sampleTest.input"></pre>
-                </td>
-                <td class="pl-2">
-                  <pre [innerText]="sampleTest.output"></pre>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      }
-    }
-
-    @if (problem.comment?.length > 0) {
-      <h4 class="mt-3 font-medium-4 text-dark">
-        {{ 'COMMENT' | translate }}:
-      </h4>
-      <mathjax class="mt-2 text-dark" [content]="problem.comment"></mathjax>
-      <hr>
-      }
-
-      @if (problem.id == 1870) {
-        <problem1870></problem1870>
-      }
+@if (problem.id == 1870) {
+  <problem1870></problem1870>
+}

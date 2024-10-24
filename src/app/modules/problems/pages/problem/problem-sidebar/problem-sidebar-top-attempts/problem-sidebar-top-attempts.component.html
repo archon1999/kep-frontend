@@ -4,9 +4,6 @@
       <div class="card-title">
         {{ 'Rating' | translate }}
       </div>
-      <span class="ml-50 badge badge-{{ selectedLang }}">
-        {{ selectedLang }}
-      </span>
     </div>
 
     <ng-select appendTo="body" [clearable]="false" (change)="topAttemptsLoad($event)" [(ngModel)]="topAttemptsOrdering">
@@ -19,8 +16,7 @@
   <div class="table-responsive">
     <table class="table">
       <thead>
-        <tr class="bg-gradient-primary">
-          <th>#</th>
+        <tr>
           <th>{{ 'User' | translate }}</th>
           <th>{{ 'RESULT' | translate }}</th>
         </tr>
@@ -28,25 +24,24 @@
       <tbody>
         @for (attempt of topAttempts;track attempt.id) {
           <tr>
-            <td>{{ $index + 1 }}</td>
-            <td>
+            <td class="text-nowrap">
               <contestant-view [imgSize]="28" [user]="attempt"></contestant-view>
             </td>
             <td class="text-center">
               <span>
                 @switch (topAttemptsOrdering) {
                   @case ('time') {
-                    <span class="badge badge-info badge-glow">
-                      {{ attempt.time }} ms
+                    <span class="badge badge-info">
+                      {{ attempt.time }}
                     </span>
                   }
                   @case ('memory') {
-                    <span class="badge badge-primary badge-glow">
-                      {{ attempt.memory }} kb
+                    <span class="badge badge-primary">
+                      {{ attempt.memory }}
                     </span>
                   }
                   @case ('source_code_size') {
-                    <span class="badge badge-dark badge-glow">
+                    <span class="badge badge-dark">
                       {{ attempt.sourceCodeSize }}
                     </span>
                   }

@@ -1,13 +1,13 @@
 <div class="limits">
   <div class="d-flex justify-content-between">
     <h5>
-      <i data-feather="clock" class="text-info"></i>
+      <i class="text-info" data-feather="clock"></i>
       {{ 'TIME_LIMIT' | translate }}
     </h5>
 
     <h5 class="text-right">
       {{ 'MEMORY_LIMIT' | translate }}
-      <i data-feather="hard-drive" class="text-primary"></i>
+      <i class="text-primary" data-feather="hard-drive"></i>
     </h5>
   </div>
 
@@ -38,13 +38,10 @@
       <span class="badge badge-{{ problem.difficulty | problemDifficultyColor }} badge-glow">
         {{ problem.difficultyTitle }}
       </span>
-      <span class="badge badge-primary badge-glow">
-        <user-popover
-          [textColor]="'white'"
-          [placement]="'left'"
-          [username]="problem.authorUsername">
-        </user-popover>
-      </span>
+      <user-popover [customContent]="true" [username]="problem.authorUsername">
+        <img width="24" height="24" class="round mr-50" alt="user-avater" [src]="problem.authorAvatar">
+        {{ problem.authorUsername }}
+      </user-popover>
     </div>
   </div>
 }
@@ -66,10 +63,10 @@
         <button
           (click)="like()"
           class="btn btn-sm btn-success bg-success badge-glow"
-      [ngClass]="{
+          [ngClass]="{
         'btn-relief-success': problem.userInfo.voteType === 1
       }"
-          >
+        >
           <i data-feather="thumbs-up"></i>
           {{ problem.likesCount }}
         </button>
@@ -78,10 +75,10 @@
         <button
           (click)="dislike()"
           class="btn btn-sm btn-danger bg-danger badge-glow"
-      [ngClass]="{
+          [ngClass]="{
         'btn-relief-danger': problem.userInfo.voteType === 0
       }"
-          >
+        >
           <i data-feather="thumbs-down"></i>
           {{ problem.dislikesCount }}
         </button>
@@ -110,13 +107,19 @@
     </h5>
   </div>
 
-  @for (availableLanguage of problem.availableLanguages; track availableLanguage) {
-    <button
-      (click)="langService.setLanguage(availableLanguage.lang)"
-      class="mr-50 mb-50 btn btn-primary badge badge-{{ availableLanguage.lang }} badge-glow">
-      {{ availableLanguage.langFull }}
-    </button>
-  }
+  <div class="row">
+
+    @for (availableLanguage of problem.availableLanguages;track availableLanguage) {
+      <div class="col-4 col-md-3 col-lg-6 col-xl-4 px-25">
+        <attempt-language
+          [clickable]="true"
+          [lang]="availableLanguage.lang"
+          [langFull]="availableLanguage.langFull"
+          (click)="langService.setLanguage(availableLanguage.lang)"
+        />
+      </div>
+    }
+  </div>
 
 </div>
 
@@ -128,10 +131,10 @@
     </h5>
   </div>
 
-  <span
-    class="badge badge-{{ selectedLang }} badge-glow">
-    {{ selectedAvailableLang.langFull }}
-  </span>
+  <attempt-language
+    [lang]="selectedAvailableLang.lang"
+    [langFull]="selectedAvailableLang.langFull"
+  />
 </div>
 
 @if (!hideCodeGolf) {

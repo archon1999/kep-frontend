@@ -39,7 +39,7 @@ export class ClipboardButtonComponent implements OnInit {
     document.body.removeChild(selectBox);
     this.toastr.success('', this.copiedText, {
         toastClass: 'toast ngx-toastr',
-        closeButton: true
+        closeButton: true,
     });
   }
 
