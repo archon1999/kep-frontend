@@ -162,10 +162,11 @@ li[core-menu-horizontal-item] {
   backdrop-filter: blur(10px) !important;
 }
 
-a:not(.btn, .dropdown-item):hover {
-  color: $primary !important;
+.dark-layout .swal2-container .swal2-modal {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+}
 
-  @include dark-layout {
-    color: $primary !important;
-  }
+.horizontal-menu-wrapper {
+  z-index: 1000000 !important;
 }
