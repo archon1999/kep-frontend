@@ -1,0 +1,13 @@
+@if (clickable) {
+  <button class="btn badge text-dark">
+    <attempt-language [size]="20" [lang]="lang"/>
+    {{ langFull }}
+  </button>
+} @else {
+  <img
+    [height]="size"
+    [ngbTooltip]="langFull"
+    [width]="size"
+    alt="{{ langFull }}"
+    src="assets/images/languages/{{ lang }}.svg">
+}
