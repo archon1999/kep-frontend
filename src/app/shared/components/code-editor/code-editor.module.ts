@@ -24,7 +24,6 @@ import { ToastrModule } from '@shared/third-part-modules/toastr/toastr.module';
   ],
   imports: [
     CommonModule,
-    NgSelectModule,
     FormsModule,
     CoreDirectivesModule,
     CorePipesModule,

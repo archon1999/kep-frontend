@@ -58,7 +58,7 @@
   }
   .header-navbar {
     background: $white;
-    z-index: 999 !important;
+    z-index: 10000000 !important;
     line-height: 1;
     min-height: auto;
     &.navbar-light {

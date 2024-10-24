@@ -37,7 +37,7 @@ $colors: (
     }
 
     .badge.badge-#{$color_name} {
-      background-color: $dark-color;
+      background-color: rgba($color, 0.5);
 
       &.badge-glow {
         box-shadow: 0 0 5px $dark-color;

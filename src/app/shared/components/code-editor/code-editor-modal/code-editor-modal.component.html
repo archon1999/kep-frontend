@@ -47,7 +47,7 @@
             <div class="form-group">
               <label class="font-weight-bold">{{ 'Language' | translate }}: </label>
               <ng-select
-                appendTo="body"
+                [appendTo]="'body'"
                 [clearable]="false"
                 [formControl]="editorForm.controls.lang"
                 (change)="langChange($event)">

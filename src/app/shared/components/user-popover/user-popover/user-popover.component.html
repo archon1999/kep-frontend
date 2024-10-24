@@ -1,6 +1,6 @@
 <ng-template #popContent>
   @if (user && userRatings) {
-    <div [@fadeInOnEnter] class="card card-profile">
+    <div [@fadeInOnEnter] class="card card-profile text-dark">
       <img [src]="user.coverPhoto" class="img-fluid card-img-top"
         alt="Profile Cover Photo" />
         <div class="card-body">
@@ -45,10 +45,10 @@
                 </div>
               </div>
               <div class="d-block">
-                <h6 class="">
+                <div class="">
                   <kep-icon name="problem"></kep-icon>
                   {{ 'MENU.PROBLEMS' | translate }}
-                </h6>
+                </div>
                 <div class="mb-0 mt-1 text-center">
                   <span class="badge badge-primary">
                     {{ userRatings.problemsSolved }}
@@ -82,7 +82,7 @@
     [routerLink]="['/users', 'user', username]"
     [ngbPopover]="popContent"
     triggers="mouseenter:mouseleave"
-    [closeDelay]="1000"
+    [closeDelay]="100000"
     [openDelay]="1000"
     (shown)="loadUser()"
     popoverClass="user-popover"
