@@ -26,6 +26,7 @@ export class ProblemAttemptsComponent extends BaseTablePageComponent<Attempt> im
 
   override defaultPageSize = 10;
   override maxSize = 5;
+  override pageQueryParam = null;
 
   public myAttempts = true;
 
