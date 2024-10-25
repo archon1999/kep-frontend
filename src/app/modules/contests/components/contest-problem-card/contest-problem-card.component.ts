@@ -7,13 +7,14 @@ import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
 import { ContestProblem } from '@contests/models/contest-problem';
 import { Contest } from '@contests/models/contest';
+import { AttemptLanguageComponent } from '@shared/components/attempt-language/attempt-language.component';
 
 @Component({
   selector: 'contest-problem-card',
   templateUrl: './contest-problem-card.component.html',
   styleUrls: ['./contest-problem-card.component.scss'],
   standalone: true,
-  imports: [CoreCommonModule, ContestClassesPipe, MathjaxModule]
+  imports: [CoreCommonModule, ContestClassesPipe, MathjaxModule, AttemptLanguageComponent]
 })
 export class ContestProblemCardComponent extends BaseComponent {
   @Input() contest: Contest;

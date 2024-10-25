@@ -22,16 +22,14 @@
 
       @if (problem) {
         <div class="card-header full-width">
-          <div class="card-title text-white mb-2">
+          <div class="card-title text-dark mb-2">
             {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
           </div>
-          <div class="text-white">
+          <div class="text-dark">
             <mathjax [content]="problem.body"></mathjax>
           </div>
         </div>
-      }
-
-      @if (!problem) {
+      } @else {
         <div class="full-width">
           <div class="card-header justify-content-start">
             @if (contestProblem.isSolved) {
@@ -44,7 +42,7 @@
                 <i data-feather="x-circle"></i>
               </span>
             }
-            <span (mouseenter)="onProblemFocus()" class="text-white ml-50">
+            <span (mouseenter)="onProblemFocus()" class="text-dark ml-50">
               {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
               @if (contest.hasBalls()) {
                 <span>
@@ -55,18 +53,15 @@
           </div>
           <div class="card-body">
             @for (availableLanguage of contestProblem.problem.availableLanguages; track availableLanguage) {
-              <span
-                class="badge badge-{{ availableLanguage.lang }} badge-pill mr-25 mb-25">
-                {{ availableLanguage.langFull }}
-              </span>
+              <attempt-language [lang]="availableLanguage.lang" [langFull]="availableLanguage.langFull"/>
             }
           </div>
           <div class="card-body">
-            <span class="text-white">
+            <span class="text-dark">
               {{ contestProblem.solved }}
               <i data-feather="user-check"></i>
             </span>
-            <span class="text-white pl-1">
+            <span class="text-dark pl-1">
               {{ contestProblem.attemptUsersCount - contestProblem.solved }}
               <i data-feather="user-x"></i>
             </span>
