@@ -2,27 +2,27 @@
 @import 'styles/kep-imports';
 
 @mixin define-contest-colors($selector, $color, $background-light, $background-dark, $color-dark: false) {
-  @if ($selector == '&') {
-    body {
-      --contest-color: #{$color};
-      --contest-color-light: #{rgba($color, 0.1)};
-    }
-  } @else {
-    body:has(#{unquote(string.slice($selector, 2))}) {
-      --contest-color: #{$color};
-      --contest-color-light: #{rgba($color, 0.1)};
-
-      .tooltip {
-        .arrow:before {
-          border-top-color: #f3effc;
-        }
-
-        .tooltip-inner {
-          background-color: mix(black, $color, 30) !important;
-        }
-      }
-    }
-  }
+  //@if ($selector == '&') {
+  //  body {
+  //    --contest-color: #{$color};
+  //    --contest-color-light: #{rgba($color, 0.1)};
+  //  }
+  //} @else {
+  //  body:has(#{unquote(string.slice($selector, 2))}) {
+  //    --contest-color: #{$color};
+  //    --contest-color-light: #{rgba($color, 0.1)};
+  //
+  //    .tooltip {
+  //      .arrow:before {
+  //        border-top-color: #f3effc;
+  //      }
+  //
+  //      .tooltip-inner {
+  //        background-color: mix(black, $color, 30) !important;
+  //      }
+  //    }
+  //  }
+  //}
 
   .contests-colors {
     #{$selector} {
