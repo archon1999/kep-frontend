@@ -1,4 +1,43 @@
+@import 'styles/kep-imports';
+
 .monaco-editor {
   --vscode-editorGutter-background: inherit !important;
   --vscode-editor-background: inherit !important;
+
+  background: rgba(255, 255, 255, 0.5) !important;
+  border-radius: 7px;
+  border: 1px solid white;
+  margin: 0 0.5rem;
+  padding: 0.5rem 0;
+
+  @include dark-layout {
+    background: rgba(0, 0, 0, 0.5) !important;
+    border: 1px solid black;
+  }
+
+  .current-line {
+    border: none !important;
+  }
+
+  .margin-view-overlays {
+    background: rgba(250, 250, 250, 0.75) !important;
+    width: 45px !important;
+
+    @include dark-layout {
+      background: rgba(0, 0, 0, 0.8) !important;
+    }
+
+    > div {
+      width: 32px !important;
+
+      .line-numbers {
+        padding-left: 10px;
+        text-align: left !important;
+      }
+    }
+  }
+
+  .monaco-scrollable-element {
+    left: 50px !important;
+  }
 }
