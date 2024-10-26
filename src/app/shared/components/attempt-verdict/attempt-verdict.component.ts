@@ -34,6 +34,7 @@ function getShortTitle(verdict: Verdicts) {
     [Verdicts.Accepted]: 'AC',
     [Verdicts.WrongAnswer]: 'WA',
     [Verdicts.RuntimeError]: 'RE',
+    [Verdicts.TimeLimitExceeded]: 'TL',
     [Verdicts.OutputFormatError]: 'PE',
     [Verdicts.MemoryLimitExceeded]: 'ML',
     [Verdicts.Rejected]: 'RJ',
