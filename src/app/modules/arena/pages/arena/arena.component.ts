@@ -35,8 +35,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     ContentHeaderModule,
     KepPaginationComponent,
     NgxSkeletonLoaderModule,
-  ],
-  encapsulation: ViewEncapsulation.None
+  ]
 })
 export class ArenaComponent extends BaseTablePageComponent<Arena> implements OnInit {
 
