@@ -1,91 +1,87 @@
 @import 'styles/kep-imports';
 
-app-contest-standings {
-  .contest-standings-top {
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 9px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border: 1px white solid;
+.contest-standings-top {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 9px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px white solid;
 
-    @include dark-layout {
-      background: rgba(0, 0, 0, 0.25);
-      border: 1px $dark solid;
-    }
-
-    .header {
-      display: flex;
-      justify-content: start;
-      align-items: center;
-      margin-left: 1.2rem;
-      margin-bottom: 2rem;
-    }
+  @include dark-layout {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px black solid !important;
   }
 
-  .bg-img {
-    position: absolute;
-    top: -66px;
-    width: 95%;
-    z-index: -1;
-    height: 520px;
-
-    filter: blur(60px);
-    opacity: .3;
-    background-repeat: no-repeat;
-    background-position: 100%;
-    background-size: cover;
+  .header {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin-left: 1.2rem;
+    margin-bottom: 2rem;
   }
+}
 
-  contestant-view, contestant-view div {
-    white-space: nowrap;
-  }
+.bg-img {
+  position: absolute;
+  top: -66px;
+  width: 95%;
+  z-index: -1;
+  height: 520px;
 
-  .rating-title-img {
-    margin-right: 5px !important;
-  }
+  filter: blur(60px);
+  opacity: .3;
+  background-repeat: no-repeat;
+  background-position: 100%;
+  background-size: cover;
+}
 
-  .contest-time-sm {
-    font-size: 10px;
-  }
+contestant-view, contestant-view div {
+  white-space: nowrap;
+}
 
-  .less-code {
-    margin-left: 0.6rem;
-    margin-right: 0.6rem;
-  }
+.rating-title-img {
+  margin-right: 5px !important;
+}
 
-  .absolute {
-    position: absolute;
-  }
+.contest-time-sm {
+  font-size: 10px;
+}
 
-  //thead tr {
-  //  background: var(--bg-gradient) !important;
-  //  box-shadow: var(--box-shadow) !important;
-  //  color: var(--text-color);
-  //}
+.less-code {
+  margin-left: 0.6rem;
+  margin-right: 0.6rem;
+}
 
-  span.points {
-    background: var(--bg) !important;
-    box-shadow: var(--box-shadow) !important;
-    color: var(--text-color);
-  }
+.absolute {
+  position: absolute;
+}
 
-  span.problem-points {
-    background: var(--bg-light) !important;
-    color: var(--bg);
-  }
+span.points {
+  background: var(--bg) !important;
+  box-shadow: var(--box-shadow) !important;
+  color: var(--text-color);
+}
 
-  span.problem-points.the-best {
-    background: var(--bg) !important;
-    box-shadow: var(--box-shadow) !important;
-    color: var(--text-color);
-  }
+span.problem-points {
+  background: var(--bg-light) !important;
+  color: var(--bg);
+}
 
-  th:nth-child(1) {
-    min-width: 80px;
-  }
+span.problem-points.the-best {
+  background: var(--bg) !important;
+  box-shadow: var(--box-shadow) !important;
+  color: var(--text-color);
+}
 
-  th {
-    border-bottom: none !important;
-    border-top: none !important;
-  }
+th:nth-child(1) {
+  min-width: 80px;
+}
+
+th {
+  border-bottom: none !important;
+  border-top: none !important;
+}
+
+th, td {
+  padding: 15px;
 }

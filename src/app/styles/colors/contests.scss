@@ -2,28 +2,6 @@
 @import 'styles/kep-imports';
 
 @mixin define-contest-colors($selector, $color, $background-light, $background-dark, $color-dark: false) {
-  //@if ($selector == '&') {
-  //  body {
-  //    --contest-color: #{$color};
-  //    --contest-color-light: #{rgba($color, 0.1)};
-  //  }
-  //} @else {
-  //  body:has(#{unquote(string.slice($selector, 2))}) {
-  //    --contest-color: #{$color};
-  //    --contest-color-light: #{rgba($color, 0.1)};
-  //
-  //    .tooltip {
-  //      .arrow:before {
-  //        border-top-color: #f3effc;
-  //      }
-  //
-  //      .tooltip-inner {
-  //        background-color: mix(black, $color, 30) !important;
-  //      }
-  //    }
-  //  }
-  //}
-
   .contests-colors {
     #{$selector} {
       --bg: #{$color};
@@ -40,6 +18,65 @@
         background-color: $color !important;
       }
       @content;
+
+      // Start
+      &:not(:has(kep-delta)) {
+        kep-icon > span.text-primary {
+          color: $color !important;
+        }
+      }
+
+      .bg-light-primary {
+        background-color: rgba($color, 0.1) !important;
+
+        @include dark-layout {
+          background-color: rgba($color, 0.1) !important;
+        }
+      }
+
+      kep-table {
+        tbody tr:hover {
+          background-color: rgba($color, 0.1) !important;
+        }
+      }
+
+      .pagination-primary .page-item.active .page-link {
+        background-color: $color !important;
+      }
+
+      .custom-control-input:checked ~ .custom-control-label::before {
+        background-color: $color !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+
+      .btn-primary {
+        background-color: $color !important;
+        border: none !important;
+
+        &:hover {
+          box-shadow: 0 0 5px $color !important;
+        }
+
+        @include dark-layout {
+          background-color: $color !important;
+        }
+      }
+
+      .nav-tabs .nav-link:hover {
+        background-color: rgba($color, 0.1) !important;
+      }
+
+      .tooltip {
+        .arrow:before {
+          border-top-color: #f3effc;
+        }
+
+        .tooltip-inner {
+          background-color: mix(black, $color, 30) !important;
+        }
+      }
+      // End
     }
 
     @include dark-layout() {
@@ -305,54 +342,5 @@ $math-color: #00a79d;
     --bg: #1c25c1;
     --bg-light: rgba(96, 94, 227, 0.1);
     --box-shadow: 0 0 5px #1c25c1;
-  }
-}
-
-.contests-colors {
-  &:not(:has(kep-delta)) {
-    kep-icon > span.text-primary {
-      color: var(--bg) !important;
-    }
-  }
-
-  .bg-light-primary {
-    background-color: var(--contest-color-light) !important;
-
-    @include dark-layout {
-      background-color: var(--contest-color-light) !important;
-    }
-  }
-
-  kep-table {
-    //thead tr {
-    //  background: var(--bg-gradient) !important;
-    //}
-
-    tbody tr:hover {
-      background-color: var(--contest-color-light) !important;
-    }
-  }
-
-  .pagination-primary .page-item.active .page-link {
-    background-color: var(--bg) !important;
-  }
-
-  .custom-control-input:checked ~ .custom-control-label::before {
-    background-color: var(--bg) !important;
-    border: none !important;
-    box-shadow: none !important;
-  }
-
-  .btn-primary {
-    background-color: var(--bg) !important;
-    border: none !important;
-
-    &:hover {
-      box-shadow: 0 0 5px var(--bg) !important;
-    }
-
-    @include dark-layout {
-      background-color: var(--bg) !important;
-    }
   }
 }
