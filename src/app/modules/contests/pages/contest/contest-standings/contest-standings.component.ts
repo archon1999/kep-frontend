@@ -43,7 +43,6 @@ import { KepDeltaComponent } from '@shared/components/kep-delta/kep-delta.compon
     EmptyResultComponent,
     KepDeltaComponent,
   ],
-  encapsulation: ViewEncapsulation.None,
 })
 export class ContestStandingsComponent extends BaseLoadComponent<Contestant[]> {
 

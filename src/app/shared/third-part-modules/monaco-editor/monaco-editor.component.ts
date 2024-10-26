@@ -47,10 +47,6 @@ export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnCh
     minimap: {
       enabled: false,
     },
-    fontFamily: 'Inconsolata',
-    fontSize: 15,
-    roundedSelection: true,
-    tabSize: 4,
   };
   public value: string;
   public disabled: boolean;
@@ -65,8 +61,6 @@ export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnCh
   }
 
   ngOnInit() {
-    this.options.tabSize = this.tabSize;
-
     this.coreConfigService.getConfig().subscribe(
       (config: CoreConfig) => {
         this.options = {
