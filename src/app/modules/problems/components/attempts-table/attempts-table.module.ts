@@ -18,6 +18,7 @@ import { KepTableComponent } from '@shared/components/kep-table/kep-table.compon
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { AttemptLanguageComponent } from '@shared/components/attempt-language/attempt-language.component';
+import { AttemptVerdictComponent } from '@shared/components/attempt-verdict/attempt-verdict.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { AttemptLanguageComponent } from '@shared/components/attempt-language/at
     ResourceByIdPipe,
     AttemptLanguageComponent,
     AttemptLanguageComponent,
+    AttemptVerdictComponent,
   ],
   exports: [
     AttemptsTableComponent

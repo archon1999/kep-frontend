@@ -11,7 +11,7 @@
         </div>
 
         @if (isLoading && !total) {
-          <div [style.height.px]="400">
+          <div class="card" [style.height.px]="400">
             <spinner></spinner>
           </div>
         } @else if(attempts.length == 0) {
