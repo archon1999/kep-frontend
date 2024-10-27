@@ -69,7 +69,7 @@
         margin: auto;
         font: normal 5.94em/107px $lato;
         font-weight: 700;
-        color: var(--contest-color);
+        color: var(--bg);
 
         @include media-breakpoint-down(md) {
           font: normal 4em/107px $lato;
