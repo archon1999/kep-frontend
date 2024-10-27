@@ -53,6 +53,15 @@ export class ContestsService {
     );
   }
 
+  getNewContestants(contestId: number | string, params: any) {
+    return this.api.get(`contests/${ contestId }/new-contestants`, params).pipe(
+      map((pageResult: PageResult<Contestant>) => {
+        pageResult.data = pageResult.data.map((c) => Contestant.fromJSON(c));
+        return pageResult;
+      })
+    );
+  }
+
   getMe(contestId: number | string) {
     return this.api.get(`contests/${ contestId }/me`);
   }

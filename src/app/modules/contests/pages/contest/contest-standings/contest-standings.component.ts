@@ -20,9 +20,10 @@ import { KepTableComponent } from '@shared/components/kep-table/kep-table.compon
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent, BaseTablePageComponent } from '@app/common';
 import { interval, Observable } from 'rxjs';
 import { KepDeltaComponent } from '@shared/components/kep-delta/kep-delta.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 
 @Component({
   selector: 'app-contest-standings',
@@ -42,12 +43,18 @@ import { KepDeltaComponent } from '@shared/components/kep-delta/kep-delta.compon
     ResourceByIdPipe,
     EmptyResultComponent,
     KepDeltaComponent,
+    KepPaginationComponent,
   ],
 })
-export class ContestStandingsComponent extends BaseLoadComponent<Contestant[]> {
+export class ContestStandingsComponent extends BaseTablePageComponent<Contestant> {
+  override maxSize = 3;
+  override pageOptions = [10, 20, 50, 100];
+  override defaultPageSize = 20;
 
   public contest: Contest;
   public contestProblems: Array<ContestProblem> = [];
+
+  public firstLoad = true;
 
   constructor(
     public service: ContestsService,
@@ -56,7 +63,7 @@ export class ContestStandingsComponent extends BaseLoadComponent<Contestant[]> {
   }
 
   get contestants(): Contestant[] {
-    return this.data || [];
+    return this.pageResult?.data || [];
   }
 
   ngOnInit(): void {
@@ -65,18 +72,26 @@ export class ContestStandingsComponent extends BaseLoadComponent<Contestant[]> {
       this.contestProblems = sortContestProblems(contestProblems);
       this.loadContentHeader();
       this.titleService.updateTitle(this.route, { contestTitle: contest.title });
-      setTimeout(() => this.loadData());
+      setTimeout(() => this.reloadPage());
     });
 
     if (this.contest.status === ContestStatus.ALREADY) {
       interval(30000).pipe(takeUntil(this._unsubscribeAll)).subscribe(
-        () => this.loadData()
+        () => this.reloadPage()
       );
     }
   }
 
-  getData(): Observable<Contestant[]> {
-    return this.service.getContestants(this.contest.id);
+  getPage() {
+    if (this.isAuthenticated &&
+      this.pageNumber === this.defaultPageNumber &&
+      this.pageSize === this.defaultPageSize &&
+      this.firstLoad) {
+      this.firstLoad = false;
+      return this.service.getNewContestants(this.contest.id, {});
+    }
+    this.firstLoad = false;
+    return this.service.getNewContestants(this.contest.id, this.pageable);
   }
 
   getProblemInfoBySymbol(
