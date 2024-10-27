@@ -77,7 +77,10 @@ export class ContestStandingsComponent extends BaseTablePageComponent<Contestant
 
     if (this.contest.status === ContestStatus.ALREADY) {
       interval(30000).pipe(takeUntil(this._unsubscribeAll)).subscribe(
-        () => this.reloadPage()
+        () => {
+          this.reloadPage();
+          this.updateContestProblems();
+        }
       );
     }
   }
@@ -99,6 +102,14 @@ export class ContestStandingsComponent extends BaseTablePageComponent<Contestant
     problemSymbol: string
   ): ContestProblemInfo | undefined {
     return problemsInfo.find(problemInfo => problemInfo.problemSymbol === problemSymbol);
+  }
+
+  updateContestProblems() {
+    this.service.getContestProblems(this.contest.id).subscribe(
+      (contestProblems) => {
+        this.contestProblems = sortContestProblems(contestProblems);
+      }
+    );
   }
 
   protected getContentHeader() {
