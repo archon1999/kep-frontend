@@ -10,9 +10,11 @@
         {{ contest.title }}
       </div>
     </div>
-
-    <contest-standings-countdown [contest]="contest"/>
     <contest-tab [contest]="contest"/>
+  </div>
+
+  <div class="contest-standings-top" *ngIf="contest.status == 0">
+    <contest-standings-countdown [contest]="contest"/>
   </div>
 
   <kep-table
