@@ -160,4 +160,16 @@
       </tr>
     </ng-container>
   </kep-table>
+
+  <kep-pagination
+    [collectionSize]="total"
+    [(page)]="pageNumber"
+    [ellipses]="true"
+    [pageSize]="pageSize"
+    [maxSize]="maxSize"
+    [rotate]="true"
+    [pageOptions]="pageOptions"
+    (pageSizeChange)="pageSizeChange($event)"
+    (pageChange)="pageChange($event)">
+  </kep-pagination>
 </section>
