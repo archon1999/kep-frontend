@@ -73,8 +73,8 @@ span.problem-points.the-best {
   color: var(--text-color);
 }
 
-th:nth-child(1) {
-  min-width: 80px;
+th:nth-child(1), td:nth-child(1) {
+  min-width: 100px;
 }
 
 th {
