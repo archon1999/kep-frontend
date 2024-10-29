@@ -93,7 +93,7 @@ export abstract class BaseTablePageComponent<T> extends BasePageComponent implem
     this.getPage().subscribe({
       next: (pageResult: PageResult<T>) => {
         this.updateQueryParams({
-          [this.pageQueryParam]: pageResult.page !== this.defaultPageNumber ? pageResult.page : null,
+          [this.pageQueryParam]: pageResult.page !== this.defaultPageNumber && this.pageQueryParam ? pageResult.page : null,
           [this.pageSizeQueryParam]: pageResult.pageSize !== this.defaultPageSize ? pageResult.pageSize : null,
         });
         this.pageResult = pageResult;

@@ -181,7 +181,7 @@ export const locale = {
     ArenaWinners: 'Победители Арена',
     GoToArena: 'Перейти к Арена',
     Pefomance: 'Перфоманс',
-    UnofficialParticipation: 'Для неофициального участия',
+    UnofficialParticipation: 'Для неофициального участия, нажмите эту кнопку',
     Wins: 'Выигрыши',
     Draws: 'Ничьи',
     Losses: 'Проигрыши',

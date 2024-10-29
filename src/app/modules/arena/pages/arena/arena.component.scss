@@ -1,58 +1,21 @@
 @import 'styles/kep-imports';
 
-app-arena {
-  .arena-section-header {
-    .card {
-      border: none;
-      background: rgba($yellow, 0.75);
-
-      @include dark-layout {
-        background: rgba($yellow, 0.5);
-      }
-
-      .card-footer {
-        border-color: rgba($yellow, 0.1);
-      }
-    }
-
-    .useful-links {
-      display: flex;
-      margin-bottom: 2rem;
-
-      .btn {
-        width: 100%;
-      }
-    }
-
-    .btn-yellow {
-      background-color: $yellow !important;
-      border: none;
-
-      @include dark-layout {
-        background: rgba($yellow, 0.5) !important;
-      }
-    }
-  }
-
-  kep-icon span {
-    color: $yellow !important;
+.arena-section-header {
+  .card {
+    border: none;
+    background: rgba($yellow, 0.75);
 
     @include dark-layout {
-      color: rgba($yellow, 0.5) !important;
+      background: rgba($yellow, 0.5) !important;
     }
   }
 
-  .bg-arena-list {
-    &:nth-child(odd) .card {
-      @include dark-layout {
-        background: rgba($yellow, 0.5);
-      }
-    }
+  .useful-links {
+    display: flex;
+    margin-bottom: 2rem;
 
-    &:nth-child(even) .card {
-      @include dark-layout {
-        background: rgba($yellow, 0.4);
-      }
+    .btn {
+      width: 100%;
     }
   }
 }

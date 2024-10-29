@@ -2,28 +2,6 @@
 @import 'styles/kep-imports';
 
 @mixin define-contest-colors($selector, $color, $background-light, $background-dark, $color-dark: false) {
-  @if ($selector == '&') {
-    body {
-      --contest-color: #{$color};
-      --contest-color-light: #{rgba($color, 0.1)};
-    }
-  } @else {
-    body:has(#{unquote(string.slice($selector, 2))}) {
-      --contest-color: #{$color};
-      --contest-color-light: #{rgba($color, 0.1)};
-
-      .tooltip {
-        .arrow:before {
-          border-top-color: #f3effc;
-        }
-
-        .tooltip-inner {
-          background-color: mix(black, $color, 30) !important;
-        }
-      }
-    }
-  }
-
   .contests-colors {
     #{$selector} {
       --bg: #{$color};
@@ -40,6 +18,73 @@
         background-color: $color !important;
       }
       @content;
+
+      // Start
+      &:not(:has(kep-delta)) {
+        kep-icon > span.text-primary {
+          color: $color !important;
+        }
+      }
+
+      .bg-light-primary {
+        background-color: rgba($color, 0.1) !important;
+
+        @include dark-layout {
+          background-color: rgba($color, 0.1) !important;
+        }
+      }
+
+      .bg-gradient-primary {
+        background: rgba($color, 0.8) !important;
+
+        @include dark-layout {
+          background: rgba($color, 0.5) !important;
+        }
+      }
+
+      kep-table {
+        tr:hover {
+          background-color: rgba($color, 0.1) !important;
+        }
+      }
+
+      .pagination-primary .page-item.active .page-link {
+        background-color: $color !important;
+      }
+
+      .custom-control-input:checked ~ .custom-control-label::before {
+        background-color: $color !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+
+      .btn-primary {
+        background-color: $color !important;
+        border: none !important;
+
+        &:hover {
+          box-shadow: 0 0 5px $color !important;
+        }
+
+        @include dark-layout {
+          background-color: $color !important;
+        }
+      }
+
+      .nav-tabs .nav-link:hover {
+        background-color: rgba($color, 0.1) !important;
+      }
+
+      .tooltip {
+        .arrow:before {
+          border-top-color: #f3effc;
+        }
+
+        .tooltip-inner {
+          background-color: mix(black, $color, 30) !important;
+        }
+      }
+      // End
     }
 
     @include dark-layout() {
@@ -169,6 +214,16 @@ $math-color: #00a79d;
   }
 }
 
+// Uzinfocom
+@include define-contest-colors(
+  $selector: '&[class*="Uzinfocom"]',
+  $color: #186fb6d0,
+  $color-dark: #1870b6,
+  $background-light: linear-gradient(45deg, #005ea2bb, rgba(24, 111, 182, 0.623)),
+  $background-dark: linear-gradient(45deg, #042c4bde, #005ea2c9),
+);
+
+
 .contests-colors {
   &.contest-254 {
     --bg-gradient: linear-gradient(to right, #38CCBC, #07e4cf);
@@ -209,13 +264,6 @@ $math-color: #00a79d;
 
   &.contest-297 {
     --text-color: #fff;
-  }
-
-  &[class*="Uzinfocom"] {
-    --bg-gradient: linear-gradient(45deg, #005ea2bb, rgba(24, 111, 182, 0.623));
-    --bg: #186fb6d0;
-    --bg-light: rgba(24, 111, 182, 0.1);
-    --box-shadow: 0px 0px 5px #186fb6d3;
   }
 
   &[class*="UBTUIT"] {
@@ -278,12 +326,6 @@ $math-color: #00a79d;
     --text-color: #fff;
   }
 
-  &[class*="Uzinfocom"] {
-    --bg-gradient: linear-gradient(45deg, #042c4bde, #005ea2c9);
-    --bg: #1870b6;
-    --box-shadow: 0px 0px 5px #1870b6;
-  }
-
   &[class*="UBTUIT"] {
     --bg-gradient: linear-gradient(42.32deg, #797104, #aca106);
     --bg: #626605;
@@ -305,54 +347,5 @@ $math-color: #00a79d;
     --bg: #1c25c1;
     --bg-light: rgba(96, 94, 227, 0.1);
     --box-shadow: 0 0 5px #1c25c1;
-  }
-}
-
-.contests-colors {
-  &:not(:has(kep-delta)) {
-    kep-icon > span.text-primary {
-      color: var(--bg) !important;
-    }
-  }
-
-  .bg-light-primary {
-    background-color: var(--contest-color-light) !important;
-
-    @include dark-layout {
-      background-color: var(--contest-color-light) !important;
-    }
-  }
-
-  kep-table {
-    //thead tr {
-    //  background: var(--bg-gradient) !important;
-    //}
-
-    tbody tr:hover {
-      background-color: var(--contest-color-light) !important;
-    }
-  }
-
-  .pagination-primary .page-item.active .page-link {
-    background-color: var(--bg) !important;
-  }
-
-  .custom-control-input:checked ~ .custom-control-label::before {
-    background-color: var(--bg) !important;
-    border: none !important;
-    box-shadow: none !important;
-  }
-
-  .btn-primary {
-    background-color: var(--bg) !important;
-    border: none !important;
-
-    &:hover {
-      box-shadow: 0 0 5px var(--bg) !important;
-    }
-
-    @include dark-layout {
-      background-color: var(--bg) !important;
-    }
   }
 }

@@ -8,17 +8,16 @@
           <div class="card-header p-1">
             <contest-tab [contest]="contest"></contest-tab>
           </div>
-          <div class="card-footer">
-            <div class="row">
-              @for (contestProblem of contestProblems; track contestProblem) {
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                  <contest-problem-card
-                    [contest]="contest"
-                    [contestProblem]="contestProblem"/>
-                </div>
-              }
+        </div>
+
+        <div class="row">
+          @for (contestProblem of contestProblems; track contestProblem) {
+            <div class="col-lg-4 col-md-6 col-sm-12">
+              <contest-problem-card
+                [contest]="contest"
+                [contestProblem]="contestProblem"/>
             </div>
-          </div>
+          }
         </div>
       </div>
 
