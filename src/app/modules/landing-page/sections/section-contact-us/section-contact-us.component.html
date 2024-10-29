@@ -9,6 +9,8 @@
       <div class="col-lg-5">
         <div class="contact-img-box position-relative border p-2 h-100">
           <img
+            height="400"
+            width="200"
             loading="lazy"
             alt="contact-us"
             class="contact-img w-100 scaleX-n1-rtl"
@@ -22,9 +24,9 @@
                   </div>
                   <div>
                     <p class="mb-0">{{ 'Email' | translate }}</p>
-                    <h5 class="mb-0">
+                    <div class="mb-0 font-medium-1">
                       <a class="text-heading" href="mailto:admin@kep.uz">admin&#64;kep.uz</a>
-                    </h5>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -35,7 +37,7 @@
                   </div>
                   <div>
                     <p class="mb-0">{{ 'Phone' | translate }}</p>
-                    <h5 class="mb-0"><a class="text-heading" href="tel:+99890-558-1775">+998 90 558 1775</a></h5>
+                    <div class="mb-0 font-medium-1"><a class="text-heading" href="tel:+99890-558-1775">+998 90 558 1775</a></div>
                   </div>
                 </div>
               </div>
@@ -46,7 +48,7 @@
       <div class="col-lg-7">
         <div class="card">
           <div class="card-body">
-            <h4 class="mb-1">{{ 'SendMessage' | translate }}</h4>
+            <div class="mb-1 font-medium-2">{{ 'SendMessage' | translate }}</div>
             <p class="mb-4">
               {{ 'LandingPage.SectionContactUsSendMessageText' | translate }}
             </p>
@@ -62,7 +64,7 @@
                 </div>
                 <div class="col-12">
                   <label class="form-label" for="contact-form-message">{{ 'Message' | translate }}</label>
-                  <textarea formControlName="text" class="form-control" id="contact-form-message" placeholder=""
+                  <textarea formControlName="message" class="form-control" id="contact-form-message" placeholder=""
                             rows="8"></textarea>
                 </div>
                 <div class="col-12">

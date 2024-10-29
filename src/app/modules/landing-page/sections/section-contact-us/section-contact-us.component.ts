@@ -14,9 +14,9 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class SectionContactUsComponent {
   public form = new FormGroup({
-    fullName: new FormControl(''),
-    email: new FormControl(''),
-    message: new FormControl(''),
+    fullName: new FormControl(null, []),
+    email: new FormControl(null, []),
+    message: new FormControl(null, []),
   });
 
   private service = inject(LandingPageService);
