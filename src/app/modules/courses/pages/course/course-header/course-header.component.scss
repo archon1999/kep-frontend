@@ -11,7 +11,7 @@
   height: 500px;
   width: calc(100% + 4rem);
   // background: linear-gradient(115deg, mix(black, $primary, 90), mix(black, $primary, 75), mix(black, $primary, 30), mix(white, $primary, 10));
-  background-image: url('assets/landing-page/beautiful-bg-dark.png');
+  background-image: url('assets/landing-page/beautiful-bg-dark.webp');
 
   @include media-breakpoint-down(lg) {
     width: calc(100% + 3.2rem);

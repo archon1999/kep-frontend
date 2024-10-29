@@ -2,13 +2,41 @@
 <div class="content-wrapper container-xxl p-0">
   <div class="content-body">
     <section-header></section-header>
-    <section-features></section-features>
-    <section-practice></section-practice>
-    <section-reviews></section-reviews>
-    <section-statistics></section-statistics>
-    <section-faq></section-faq>
-    <section-get-started></section-get-started>
-    <section-contact-us></section-contact-us>
+    @defer (on viewport) {
+      <section-features></section-features>
+    } @placeholder {
+      <spinner height="400"></spinner>
+    }
+    @defer (on viewport) {
+      <section-practice></section-practice>
+    } @placeholder {
+      <spinner height="400"></spinner>
+    }
+    @defer (on viewport) {
+      <section-reviews></section-reviews>
+    } @placeholder {
+      <spinner height="400"></spinner>
+    }
+    @defer (on viewport) {
+      <section-statistics></section-statistics>
+    } @placeholder {
+      <spinner height="400"></spinner>
+    }
+    @defer (on viewport) {
+      <section-faq></section-faq>
+    } @placeholder {
+      <spinner height="400"></spinner>
+    }
+    @defer (on viewport) {
+      <section-get-started></section-get-started>
+    } @placeholder {
+      <spinner height="400"></spinner>
+    }
+    @defer (on viewport) {
+      <section-contact-us></section-contact-us>
+    } @placeholder {
+      <spinner height="400"></spinner>
+    }
   </div>
 </div>
 
