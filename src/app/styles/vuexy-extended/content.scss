@@ -166,3 +166,9 @@ li[core-menu-horizontal-item] {
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(10px);
 }
+
+.dark-layout {
+  a.text-dark:focus, a.text-dark:hover {
+    color: $primary !important;
+  }
+}
