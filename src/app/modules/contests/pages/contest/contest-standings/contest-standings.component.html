@@ -10,12 +10,17 @@
         {{ contest.title }}
       </div>
     </div>
-
-    <contest-standings-countdown [contest]="contest"/>
     <contest-tab [contest]="contest"/>
   </div>
 
-  <kep-table [loading]="isLoading && contestants.length == 0" [empty]="contestants.length == 0">
+  <div class="contest-standings-top" *ngIf="contest.status == 0">
+    <contest-standings-countdown [contest]="contest"/>
+  </div>
+
+  <kep-table
+    spinnerColor="var(--bg)"
+    [loading]="isLoading && contestants.length == 0"
+    [empty]="contestants.length == 0">
     <ng-container header>
       <tr>
         <th class="text-center">#</th>
@@ -38,13 +43,13 @@
             <i data-feather="activity"></i>
           </a>
         </th>
-        @for (contestProblem of contestProblems;track contestProblem) {
+        @for (contestProblem of contestProblems; track contestProblem) {
           <th class="text-center" style="white-space: nowrap;">
             <a
               [routerLink]="['..', 'problem', contestProblem.symbol]"
               [ngbTooltip]="contestProblem.problem.title"
               tooltipClass="tooltip-primary"
-              container="body">
+              container=".contests-colors">
               {{ contestProblem.symbol }}
               @if (contest?.hasBalls()) {
                 <span>
@@ -58,7 +63,7 @@
     </ng-container>
 
     <ng-container body>
-      @for (contestant of contestants;track contestant) {
+      @for (contestant of contestants; track contestant) {
         <tr
           [@fadeInOnEnter]
           [ngClass]="{'bg-light-primary': currentUser?.username == contestant.username }">
@@ -107,12 +112,12 @@
               }
             </span>
           </td>
-          @for (contestProblem of contestProblems;track contestProblem) {
+          @for (contestProblem of contestProblems; track contestProblem) {
             <td class="text-center">
               <ng-template
-                  #selfie [ngTemplateOutlet]="selfie"
-                  let-problemInfo="aVariable"
-                  [ngTemplateOutletContext]="{
+                #selfie [ngTemplateOutlet]="selfie"
+                let-problemInfo="aVariable"
+                [ngTemplateOutletContext]="{
                     aVariable: getProblemInfoBySymbol(contestant.problemsInfo, contestProblem.symbol)
                   }">
                 <div>
@@ -141,7 +146,7 @@
           <th class="text-center">{{ 'CONTESTS.PENALTIES' | translate }}</th>
         }
         <th class="text-center"><i data-feather="activity"></i></th>
-        @for (contestProblem of contestProblems;track contestProblem) {
+        @for (contestProblem of contestProblems; track contestProblem) {
           <th class="text-dark text-center">
             {{ contestProblem.symbol }}
             <br>
@@ -155,4 +160,16 @@
       </tr>
     </ng-container>
   </kep-table>
+
+  <kep-pagination
+    [collectionSize]="total"
+    [(page)]="pageNumber"
+    [ellipses]="true"
+    [pageSize]="pageSize"
+    [maxSize]="maxSize"
+    [rotate]="true"
+    [pageOptions]="pageOptions"
+    (pageSizeChange)="pageSizeChange($event)"
+    (pageChange)="pageChange($event)">
+  </kep-pagination>
 </section>

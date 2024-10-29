@@ -28,7 +28,7 @@
 }
 
 .bg-light {
-  background-color: var(--bg-light);
+  background-color: var(--bg-light) !important;
 }
 
 ::ng-deep .dark-layout .contests-colors .bg-light {

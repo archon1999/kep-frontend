@@ -112,29 +112,50 @@
 
         <td [@bounce]="attempt.animationAcceptedState" [@shake]="attempt.animationWrongState">
           @if (contest && !currentUser?.isSuperuser) {
-            <div [innerHTML]="attempt | attemptVerdictHTML"></div>
+            <attempt-verdict
+              [verdict]="attempt.verdict"
+              [title]="attempt.verdictTitle"
+              [balls]="attempt.balls"
+              [testCaseNumber]="attempt.testCaseNumber"
+            />
           } @else {
             @if (attempt.verdict != 1 && attempt.testCaseNumber > 1 && attempt?.user?.username == currentUser?.username || currentUser?.isSuperuser) {
               @if (attempt.canTestView) {
-                <a ngbTooltip="{{ 'ViewTest' | translate }}"
+                <a placement="bottom" ngbTooltip="{{ 'ViewTest' | translate }}"
                    href="/api/attempts/{{ attempt.id }}/failed-test?number={{ attempt.testCaseNumber }}">
-                  <div [innerHTML]="attempt | attemptVerdictHTML"></div>
+                  <attempt-verdict
+                    [verdict]="attempt.verdict"
+                    [title]="attempt.verdictTitle"
+                    [balls]="attempt.balls"
+                    [testCaseNumber]="attempt.testCaseNumber"
+                  />
                 </a>
               } @else {
                 <ng-template #tipContent>
                   {{ 'ViewTest' | translate }} <kepcoin [value]="attempt.testCaseKepcoinValue"></kepcoin>
                 </ng-template>
                 <kepcoin-spend-swal
+                  [placement]="'bottom'"
                   [ngbTooltip]="tipContent"
                   [purchaseUrl]="'attempts/' + attempt.id + '/purchase-test/'"
                   [value]="attempt.testCaseKepcoinValue"
                   [customContent]="true"
                   (success)="onPurchaseTestSuccess(attempt)">
-                  <div [innerHTML]="attempt | attemptVerdictHTML"></div>
+                  <attempt-verdict
+                    [verdict]="attempt.verdict"
+                    [title]="attempt.verdictTitle"
+                    [balls]="attempt.balls"
+                    [testCaseNumber]="attempt.testCaseNumber"
+                  />
                 </kepcoin-spend-swal>
               }
             } @else {
-              <div [innerHTML]="attempt | attemptVerdictHTML"></div>
+              <attempt-verdict
+                [verdict]="attempt.verdict"
+                [title]="attempt.verdictTitle"
+                [balls]="attempt.balls"
+                [testCaseNumber]="attempt.testCaseNumber"
+              />
             }
           }
         </td>

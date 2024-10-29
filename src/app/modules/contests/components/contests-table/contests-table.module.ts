@@ -10,6 +10,8 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { CountUpModule } from 'ngx-countup';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
+import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pa
     ContestantViewModule,
     CountUpModule,
     KepPaginationComponent,
+    ContestClassesPipe,
+    KepTableComponent,
   ],
   exports: [    
     ContestsTableComponent,

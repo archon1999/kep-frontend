@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentChecked, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Problem } from '../../models/problems.models';
 import { Problem1615Component } from '@problems/components/problem-body/problem1615/problem1615.component';
 import { Problem1623Component } from '@problems/components/problem-body/problem1623/problem1623.component';
@@ -86,7 +86,7 @@ import { Problem1966Component } from '@problems/components/problem-body/problem1
     Problem1966Component,
   ]
 })
-export class ProblemBodyComponent implements OnInit, OnDestroy {
+export class ProblemBodyComponent implements OnInit, OnDestroy, AfterContentChecked {
   @Input() problem: Problem;
 
   private _intervalId: any;
@@ -151,6 +151,18 @@ export class ProblemBodyComponent implements OnInit, OnDestroy {
           });
         }
       }, 5000);
+    }
+  }
+
+  ngAfterContentChecked() {
+    const tables = document.querySelectorAll('.problem-description table');
+    for (let i = 0; i < tables.length; i++) {
+      tables[i].classList.add('table', 'table-bordered');
+      tables[i].parentElement.classList.add('table-responsive', 'beautiful-table');
+      const theads = tables[i].getElementsByTagName('thead');
+      for (let j = 0; j < theads.length; j++) {
+        theads[j].getElementsByTagName('tr')[0]?.classList.add('bg-light-primary');
+      }
     }
   }
 

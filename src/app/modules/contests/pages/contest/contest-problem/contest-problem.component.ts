@@ -33,6 +33,7 @@ import { ContestProblemInfo } from '@contests/models/contest-problem-info';
 import { Contest } from '@contests/models/contest';
 import { Contestant } from '@contests/models/contestant';
 import { getResourceById, Resources } from '@app/resources';
+import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 
 const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
 
@@ -57,6 +58,7 @@ const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
     KepPaginationComponent,
     ContentHeaderModule,
     ContestTabComponent,
+    ContestClassesPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
