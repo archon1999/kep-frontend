@@ -39,7 +39,6 @@ import { TeamJoinComponent } from '@app/modules/account-settings/teams/team-join
 import { BlockUIModule } from 'ng-block-ui';
 import { HIGHLIGHT_OPTIONS, HighlightOptions } from 'ngx-highlightjs';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
-import { of } from 'rxjs';
 
 register();
 
@@ -92,9 +91,9 @@ export class CustomTitleStrategy extends TitleStrategy {
   override updateTitle(routerState: RouterStateSnapshot) {
     const title = this.buildTitle(routerState);
     if (title !== undefined) {
-      const key = `PageTitle.${ title }`;
+      const key = `PageTitle.${title}`;
       this.translateService.get(key).subscribe((value: any) => {
-        this.title.setTitle(`${ value } - ${ coreConfig.app.appTitle }`);
+        this.title.setTitle(`${value} - ${coreConfig.app.appTitle}`);
       });
     }
   }
@@ -133,7 +132,7 @@ function authFactory(authService: AuthService) {
       url: environment.wsUrl,
     }),
 
-    FlexLayoutModule.withConfig({ disableDefaultBps: true }, BS_BREAKPOINTS ),
+    FlexLayoutModule.withConfig({ disableDefaultBps: true }, BS_BREAKPOINTS),
 
     CoreModule.forRoot(coreConfig),
     CoreCommonModule,
