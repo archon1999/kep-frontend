@@ -37,7 +37,7 @@ export const coreConfig: CoreConfig = {
     },
     footer: {
       hidden: false,
-      type: 'footer-static',
+      type: 'footer-sticky',
       background: 'footer-light',
     },
     enableLocalStorage: true,

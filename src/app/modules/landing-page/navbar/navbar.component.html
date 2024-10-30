@@ -1,9 +1,7 @@
 <div class="layout-navbar">
   <div class="content-wrapper container-xl p-2 p-xl-0">
     <div class="content-body">
-      <div class="navbar" [class]="{
-        'navbar-active': window.scrollY > 10
-      }">
+      <div id="navbar" class="navbar">
         <div class="left">
           <div class="brand">
             <span class="brand-logo">
@@ -18,11 +16,11 @@
                 {{ 'MENU.HOME' | translate }}
               </a>
             </div>
-            <a href="#section-features" class="nav-item">
-              <a (click)="scrollTo('section-features')" class="nav-link text-dark">
+            <div class="nav-item">
+              <a href="#section-features" (click)="scrollTo('section-features')" class="nav-link text-dark">
                 {{ 'Features' | translate }}
               </a>
-            </a>
+            </div>
             <div class="nav-item">
               <a href="#section-reviews" (click)="scrollTo('section-reviews')" class="nav-link text-dark">
                 {{ 'Reviews' | translate }}
@@ -42,7 +40,7 @@
         </div>
 
         <div class="right">
-          <div ngbDropdown container="body" class="nav-item mr-lg-0 mr-50">
+          <div ngbDropdown class="nav-item mr-lg-0 mr-50">
             <div class="nav-link cursor-pointer" id="dropdown-flag" ngbDropdownToggle>
               <i class="fi fi-{{ languageOptions[translateService.currentLang].flag }}"></i>
             </div>
