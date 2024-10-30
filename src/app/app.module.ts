@@ -142,7 +142,6 @@ function authFactory(authService: AuthService) {
       defaultLocale: 'en',
     }),
     LayoutComponent,
-    ApexChartModule
   ],
   providers: [
     provideExperimentalZonelessChangeDetection(),
