@@ -87,8 +87,7 @@
     "sweetalert2": "11.9.0",
     "swiper": "11.0.4",
     "tslib": "2.6.2",
-    "unocss": "^0.57.2",
-    "zone.js": "0.14.10"
+    "unocss": "^0.57.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "18.2.10",
