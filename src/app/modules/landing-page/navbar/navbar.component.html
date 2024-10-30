@@ -41,7 +41,7 @@
 
         <div class="right">
           <div ngbDropdown class="nav-item mr-lg-0 mr-50">
-            <button class="nav-link btn" id="dropdown-flag" ngbDropdownToggle>
+            <button aria-label="dropdown-toggle" class="nav-link btn" id="dropdown-flag" ngbDropdownToggle>
               <i class="fi fi-{{ languageOptions[translateService.currentLang].flag }}"></i>
             </button>
             <div ngbDropdownMenu>
@@ -64,7 +64,7 @@
           </div>
 
           <div class="login-btn">
-            <a [routerLink]="Resources.Login" class="btn btn-primary d-flex justify-content-between align-items-center" [ngClass.lt-md]="'btn-sm'">
+            <a aria-label="Logout" [routerLink]="Resources.Login" class="btn btn-primary d-flex justify-content-between align-items-center" [ngClass.lt-md]="'btn-sm'">
               <kep-icon name="login"></kep-icon>
               <span class="d-md-block d-none">
                 {{ 'Login' | translate }}

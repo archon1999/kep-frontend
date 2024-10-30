@@ -3,11 +3,17 @@
   <div class="content-wrapper container-sm p-0">
     <div class="content-body text-center">
       <h1 class="section-title">{{ 'LandingPage.SectionTopTitle' | translate }}</h1>
-      <div class="ml-4 mr-4 font-medium-1 section-sub-title text-dark">{{ 'LandingPage.SectionTopText' | translate }}</div>
+      <div class="ml-4 mr-4 font-medium-1 section-sub-title text-dark">
+        {{ 'LandingPage.SectionTopText' | translate }}
+      </div>
 
-      <img height="310" width="450" class="img-fluid" alt="landing-img"
-           [src]="isDarkMode ? 'assets/landing-page/coming-soon-dark.webp'
-                              : 'assets/landing-page/coming-soon.webp'" />
+      <img
+        rel="preload"
+        height="310"
+        width="450"
+        class="img-fluid"
+        alt="landing-img"
+        src="assets/landing-page/coming-soon.webp"/>
     </div>
   </div>
 </div>
