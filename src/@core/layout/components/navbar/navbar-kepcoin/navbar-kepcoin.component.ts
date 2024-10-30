@@ -4,6 +4,7 @@ import { NavbarService } from '../navbar.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { BaseComponent } from '@app/common/classes/base.component';
+import { WebsocketService } from '@shared/services/websocket';
 
 @Component({
   selector: 'app-navbar-kepcoin',
@@ -22,6 +23,7 @@ export class NavbarKepcoinComponent extends BaseComponent {
 
   constructor(
     public service: NavbarService,
+    public wsService: WebsocketService,
   ) {
     super();
   }

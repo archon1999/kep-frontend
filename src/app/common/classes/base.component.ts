@@ -15,7 +15,6 @@ import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.s
 import { ApiService } from '@shared/services/api.service';
 import { Resources } from '@app/resources';
 import { TranslateService } from '@ngx-translate/core';
-import { WebsocketService } from '@shared/services/websocket';
 import { coreConfig } from '@app/app.config';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -47,7 +46,6 @@ export class BaseComponent {
   protected toastr = inject(ToastrService);
   protected coreSidebarService = inject(CoreSidebarService);
   protected translateService = inject(TranslateService);
-  protected wsService = inject(WebsocketService);
   protected cdr = inject(ChangeDetectorRef);
   protected modalService = inject(NgbModal);
 

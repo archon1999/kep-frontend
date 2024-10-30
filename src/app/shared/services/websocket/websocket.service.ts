@@ -11,31 +11,28 @@ import { config } from './websocket.config';
 })
 export class WebsocketService implements IWebsocketService, OnDestroy {
 
+  public status: Observable<boolean>;
   private config: WebSocketSubjectConfig<IWsMessage<any>>;
-
   private websocketSub: SubscriptionLike;
   private statusSub: SubscriptionLike;
-
   private reconnection?: Observable<number>;
   private websocket?: WebSocketSubject<IWsMessage<any>>;
   private connection?: Observer<boolean>;
   private wsMessages!: Subject<IWsMessage<any>>;
-
   private reconnectInterval: number;
   private reconnectAttempts: number;
-  private isConnected: boolean = false;
+  private isConnected = false;
 
+  constructor(@Inject(config) private wsConfig: WebSocketConfig) {}
 
-  public status: Observable<boolean>;
-
-  constructor(@Inject(config) private wsConfig: WebSocketConfig) {
+  go() {
     this.wsMessages = new Subject<IWsMessage<any>>();
 
-    this.reconnectInterval = wsConfig.reconnectInterval || 5000; // pause between connections
-    this.reconnectAttempts = wsConfig.reconnectAttempts || 10; // number of connection attempts
+    this.reconnectInterval = this.wsConfig.reconnectInterval || 5000; // pause between connections
+    this.reconnectAttempts = this.wsConfig.reconnectAttempts || 10; // number of connection attempts
 
     this.config = {
-      url: wsConfig.url,
+      url: this.wsConfig.url,
       closeObserver: {
         next: (event: CloseEvent) => {
           this.websocket = undefined;
@@ -77,6 +74,27 @@ export class WebsocketService implements IWebsocketService, OnDestroy {
     this.statusSub.unsubscribe();
   }
 
+  public on<T>(event: string): Observable<T> {
+    if (!this.wsMessages) { this.go(); }
+
+    if (event) {
+      return this.wsMessages.pipe(
+        filter((message: IWsMessage<T>) => message.event === event),
+        map((message: IWsMessage<T>) => message.data)
+      );
+    }
+    return new Observable<T>();
+  }
+
+  public send(event: string, data: any = {}): void {
+    if (!this.wsMessages) { this.go(); }
+
+    if (event && this.isConnected) {
+      this.websocket?.next(<any>JSON.stringify({ event, data }));
+    } else {
+      console.error('Send error!');
+    }
+  }
 
   /*
   * connect to WebSocket
@@ -86,7 +104,7 @@ export class WebsocketService implements IWebsocketService, OnDestroy {
 
     this.websocket?.subscribe(
       (message) => {
-        this.wsMessages.next(message)
+        this.wsMessages.next(message);
       },
       (error: Event) => {
         if (!this.websocket) {
@@ -95,7 +113,6 @@ export class WebsocketService implements IWebsocketService, OnDestroy {
         }
       });
   }
-
 
   /*
   * reconnect if not connecting or errors
@@ -116,32 +133,6 @@ export class WebsocketService implements IWebsocketService, OnDestroy {
           this.connection?.complete();
         }
       });
-  }
-
-
-  /*
-  * on message event
-  * */
-  public on<T>(event: string): Observable<T> {
-    if (event) {
-      return this.wsMessages.pipe(
-        filter((message: IWsMessage<T>) => message.event === event),
-        map((message: IWsMessage<T>) => message.data)
-      );
-    }
-    return new Observable<T>();
-  }
-
-
-  /*
-  * on message to server
-  * */
-  public send(event: string, data: any = {}): void {
-    if (event && this.isConnected) {
-      this.websocket?.next(<any>JSON.stringify({ event, data }));
-    } else {
-      console.error('Send error!');
-    }
   }
 
 }

@@ -41,9 +41,9 @@
 
         <div class="right">
           <div ngbDropdown class="nav-item mr-lg-0 mr-50">
-            <div class="nav-link cursor-pointer" id="dropdown-flag" ngbDropdownToggle>
+            <button class="nav-link btn" id="dropdown-flag" ngbDropdownToggle>
               <i class="fi fi-{{ languageOptions[translateService.currentLang].flag }}"></i>
-            </div>
+            </button>
             <div ngbDropdownMenu>
               @for (lang of langs; track lang) {
                 <div class="cursor-pointer" ngbDropdownItem (click)="setLanguage(lang)">

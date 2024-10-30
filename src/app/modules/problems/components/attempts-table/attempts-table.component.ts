@@ -17,6 +17,7 @@ import { SoundsService } from 'app/shared/services/sounds/sounds.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { BaseComponent } from '@app/common/classes/base.component';
 import { Contest } from '@contests/models/contest';
+import { WebsocketService } from '@shared/services/websocket';
 
 const LANG_CHANGE_EVENT = 'lang-change';
 const ATTEMPT_ADD_EVENT = 'attempt-add';
@@ -70,6 +71,7 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
   constructor(
     public service: ProblemsApiService,
     public soundsService: SoundsService,
+    public wsService: WebsocketService,
   ) {
     super();
   }
