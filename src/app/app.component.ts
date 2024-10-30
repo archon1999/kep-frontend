@@ -150,7 +150,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this._elementRef.nativeElement.classList.remove('footer-fixed', 'footer-static', 'footer-hidden');
 
       if (this.coreConfig.layout.footer.type === 'footer-sticky') {
-        this._elementRef.nativeElement.classList.add('footer-fixed');
+        // this._elementRef.nativeElement.classList.add('footer-fixed');
       } else if (this.coreConfig.layout.footer.type === 'footer-static') {
         this._elementRef.nativeElement.classList.add('footer-static');
       } else {
