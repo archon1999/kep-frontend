@@ -1,5 +1,5 @@
 import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
-import { HttpClient, HttpClientModule, HttpEvent, HttpEventType, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {
     AfterContentInit,
     AfterViewInit,
@@ -931,9 +931,6 @@ export class FileUpload implements AfterViewInit, AfterContentInit, OnInit, OnDe
     }
 }
 
-@NgModule({
-    imports: [CommonModule, HttpClientModule, SharedModule, ButtonModule, ProgressBarModule, MessagesModule, RippleModule, PlusIcon, UploadIcon, TimesIcon],
-    exports: [FileUpload, SharedModule, ButtonModule, ProgressBarModule, MessagesModule],
-    declarations: [FileUpload]
-})
+@NgModule({ exports: [FileUpload, SharedModule, ButtonModule, ProgressBarModule, MessagesModule],
+    declarations: [FileUpload], imports: [CommonModule, SharedModule, ButtonModule, ProgressBarModule, MessagesModule, RippleModule, PlusIcon, UploadIcon, TimesIcon], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class FileUploadModule {}

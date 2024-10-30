@@ -8,7 +8,6 @@
     "module": "es2022",
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
