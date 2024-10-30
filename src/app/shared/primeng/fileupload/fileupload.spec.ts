@@ -6,7 +6,7 @@ import { ProgressBarModule } from '@primeng/progressbar';
 import { ButtonModule } from '@primeng/button';
 import { PrimeTemplate } from '@primeng/api';
 import { MessagesModule } from '@primeng/messages';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { PlusIcon } from '@primeng/icons/plus';
 import { TimesIcon } from '@primeng/icons/times';
 import { UploadIcon } from '@primeng/icons/upload';
@@ -17,9 +17,10 @@ describe('FileUpload', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [NoopAnimationsModule, ProgressBarModule, MessagesModule, ButtonModule, HttpClientModule, PlusIcon, TimesIcon, UploadIcon],
-            declarations: [FileUpload, PrimeTemplate]
-        });
+    declarations: [FileUpload, PrimeTemplate],
+    imports: [NoopAnimationsModule, ProgressBarModule, MessagesModule, ButtonModule, PlusIcon, TimesIcon, UploadIcon],
+    providers: [provideHttpClient(withInterceptorsFromDi())]
+});
 
         fixture = TestBed.createComponent(FileUpload);
         fileupload = fixture.componentInstance;

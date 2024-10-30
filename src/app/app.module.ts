@@ -1,5 +1,5 @@
-import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { APP_INITIALIZER, Injectable, NgModule } from '@angular/core';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { APP_INITIALIZER, Injectable, NgModule, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, RouterStateSnapshot, Routes, TitleStrategy } from '@angular/router';
@@ -115,10 +115,10 @@ function authFactory(authService: AuthService) {
   declarations: [
     AppComponent,
   ],
+  bootstrap: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    HttpClientModule,
     RouterModule.forRoot(appRoutes, {
       scrollPositionRestoration: 'enabled',
       onSameUrlNavigation: 'reload',
@@ -127,13 +127,10 @@ function authFactory(authService: AuthService) {
     TranslateModule.forRoot(),
     ToastrModule,
     BlockUIModule.forRoot(),
-
     WebsocketModule.config({
       url: environment.wsUrl,
     }),
-
     FlexLayoutModule.withConfig({ disableDefaultBps: true }, BS_BREAKPOINTS),
-
     CoreModule.forRoot(coreConfig),
     CoreCommonModule,
     CoreSidebarModule,
@@ -148,6 +145,7 @@ function authFactory(authService: AuthService) {
     ApexChartModule
   ],
   providers: [
+    provideExperimentalZonelessChangeDetection(),
     { provide: TitleStrategy, useClass: CustomTitleStrategy },
     { provide: APP_BASE_HREF, useValue: '/' },
     {
@@ -179,8 +177,8 @@ function authFactory(authService: AuthService) {
         },
       }
     },
+    provideHttpClient(withInterceptorsFromDi()),
   ],
-  bootstrap: [AppComponent]
 })
 export class AppModule {
 }
