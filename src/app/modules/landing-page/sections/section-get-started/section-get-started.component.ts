@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { BaseComponent } from '@app/common/classes/base.component';
+import { Resources } from '@app/resources';
 
 @Component({
   selector: 'section-get-started',
@@ -9,5 +10,4 @@ import { BaseComponent } from '@app/common/classes/base.component';
   templateUrl: './section-get-started.component.html',
   styleUrl: './section-get-started.component.scss'
 })
-export class SectionGetStartedComponent extends BaseComponent {
-}
+export class SectionGetStartedComponent {protected readonly Resources = Resources;}

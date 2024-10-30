@@ -1,6 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { CoreCommonModule } from '@core/common.module';
-import { BaseComponent } from '@app/common/classes/base.component';
+import { Component } from '@angular/core';
 import { SectionFeaturesComponent } from '@app/modules/landing-page/sections/section-features/section-features.component';
 import { SectionHeaderComponent } from '@app/modules/landing-page/sections/section-header/section-header.component';
 import { NavbarComponent } from '@app/modules/landing-page/navbar/navbar.component';
@@ -11,6 +9,7 @@ import { SectionPracticeComponent } from '@app/modules/landing-page/sections/sec
 import { SectionGetStartedComponent } from '@app/modules/landing-page/sections/section-get-started/section-get-started.component';
 import { SectionContactUsComponent } from '@app/modules/landing-page/sections/section-contact-us/section-contact-us.component';
 import { SectionFaqComponent } from '@app/modules/landing-page/sections/section-faq/section-faq.component';
+import { CoreConfigService } from '@core/services/config.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -18,7 +17,6 @@ import { SectionFaqComponent } from '@app/modules/landing-page/sections/section-
   styleUrls: ['./landing-page.component.scss'],
   standalone: true,
   imports: [
-    CoreCommonModule,
     SectionFeaturesComponent,
     SectionHeaderComponent,
     NavbarComponent,
@@ -30,10 +28,9 @@ import { SectionFaqComponent } from '@app/modules/landing-page/sections/section-
     SectionContactUsComponent,
     SectionFaqComponent,
   ],
-  encapsulation: ViewEncapsulation.None,
 })
-export class LandingPageComponent extends BaseComponent implements OnInit {
-  ngOnInit() {
+export class LandingPageComponent {
+  constructor(public coreConfigService: CoreConfigService) {
     this.coreConfigService.config = {
       layout: {
         menu: {
@@ -46,9 +43,5 @@ export class LandingPageComponent extends BaseComponent implements OnInit {
         enableLocalStorage: false
       }
     };
-
-    setTimeout(() => {
-      // doScrolling(5000, 25000);
-    }, 2000);
   }
 }

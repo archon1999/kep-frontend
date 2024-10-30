@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
-import { BaseComponent } from '@app/common/classes/base.component';
 import { menu } from '@layout/components/menu/menu';
 
 @Component({
@@ -10,7 +9,6 @@ import { menu } from '@layout/components/menu/menu';
   templateUrl: './section-practice.component.html',
   styleUrl: './section-practice.component.scss'
 })
-export class SectionPracticeComponent extends BaseComponent {
-
+export class SectionPracticeComponent {
   protected readonly menu = menu;
 }
