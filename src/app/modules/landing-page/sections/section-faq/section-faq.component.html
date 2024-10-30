@@ -15,7 +15,7 @@
         </div>
         <div class="col-lg-7">
           @for (faq of data; track faq.id){
-            <ngb-accordion [closeOthers]="false" [destroyOnHide]="false">
+            <ngb-accordion>
               <ngb-panel [cardClass]="'mt-1 collapse-margin'" [id]="'faq' + $index">
                 <ng-template ngbPanelTitle>
                   <div class="d-flex justify-content-between">
