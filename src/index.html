@@ -9,19 +9,6 @@
   <!--  <meta property="og:image" content="{{ problem.og_image.url }}">-->
   <!--  {% endif %}-->
 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MBQPKFTEWV"></script>
-  <script>
-      window.dataLayer = window.dataLayer || [];
-
-      function gtag() {
-          dataLayer.push(arguments);
-      }
-
-      gtag('js', new Date());
-
-      gtag('config', 'G-MBQPKFTEWV');
-  </script>
-
   <meta charset="utf-8"/>
   <title>KEP.uz</title>
   <base href="/"/>
@@ -297,5 +284,14 @@
             document.body.classList.add('dark-layout');
         }
     } catch (e) {}
+</script>
+
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-MBQPKFTEWV');
 </script>
 </html>

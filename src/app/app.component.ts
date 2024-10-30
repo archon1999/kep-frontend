@@ -22,12 +22,11 @@ import localeUz from '@angular/common/locales/uz';
 import { menu } from '@layout/components/menu/menu';
 
 import { ApiService } from '@shared/services/api.service';
-import { AuthService } from '@auth';
-import { WebsocketService } from '@shared/services/websocket';
 import { environment } from 'environments/environment';
 import { Router } from '@angular/router';
 import { isPresent } from '@shared/c-validators/utils';
 import { SwipeService } from '@shared/services/swipe.service';
+import { ScriptService } from '@shared/services/script.service';
 
 @Component({
   selector: 'app-root',
@@ -57,6 +56,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private api: ApiService,
     public router: Router,
     public swipeService: SwipeService,
+    public scriptService: ScriptService,
+    private renderer: Renderer2,
   ) {
     this.menu = menu;
     this._coreMenuService.register('main', this.menu);
@@ -222,6 +223,10 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       }
     );
+
+    setTimeout(() => {
+      this.scriptService.loadJsScript(this.renderer, 'https://www.googletagmanager.com/gtag/js?id=G-MBQPKFTEWV');
+    }, 10000);
   }
 
   @HostListener('touchstart', ['$event'])
