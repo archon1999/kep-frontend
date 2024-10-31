@@ -90,7 +90,10 @@ export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy 
   }
 
   loginModalOpenForm() {
-    this.modalService.open(AuthModalComponent);
+    this.modalService.open(AuthModalComponent, {
+      animation: false,
+      centered: true,
+    });
   }
 
   logout() {
