@@ -1,6 +1,4 @@
-@import 'styles/colors/study-plans';
-@import 'bootstrap/scss/mixins/dark-layout';
-@import 'bootstrap/scss/mixins';
+@import 'styles/kep-imports';
 
 .study-plan-1 .card {
   background: linear-gradient(to right, lighten($study-plan-1, 5), lighten($study-plan-1, 25));

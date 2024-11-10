@@ -1,8 +1,8 @@
 @import 'styles/kep-imports.scss';
 
-@include define-page-top(
-  $name: 'contests',
-  $light-background: linear-gradient(to right, $primary, lighten($primary, 10%)),
-  $dark-background: linear-gradient(to right, mix(black, $primary, 55), mix(black, $primary, 30)),
-  $height: 660px,
-);
+//@include define-page-top(
+//  $name: 'contests',
+//  $light-background: linear-gradient(to right, $primary, lighten($primary, 10%)),
+//  $dark-background: linear-gradient(to right, mix(black, $primary, 55), mix(black, $primary, 30)),
+//  $height: 660px,
+//);
