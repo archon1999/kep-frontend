@@ -4,7 +4,7 @@
       <tbody>
         <tr>
           <td>
-            <contestant-view [textColor]="'white'" [user]="duel.playerFirst"></contestant-view>
+            <contestant-view [textColor]="'dark'" [user]="duel.playerFirst"></contestant-view>
           </td>
           <td class="text-end">
             <span class="badge">
@@ -15,7 +15,7 @@
         <tr>
           <td>
             @if (duel.playerSecond) {
-              <contestant-view [textColor]="'white'" [user]="duel.playerSecond"></contestant-view>
+              <contestant-view [textColor]="'dark'" [user]="duel.playerSecond"></contestant-view>
             }
             @if (!duel.playerSecond) {
               <span>BYE</span>

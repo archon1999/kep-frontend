@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-body">
     <div class="d-flex align-items-center mb-2">
-      <i data-feather="settings" class="font-medium-3"></i>
+      <i class="font-medium-3" data-feather="settings"></i>
       <h4 class="mb-0 ms-75">System</h4>
     </div>
 
@@ -10,110 +10,110 @@
       <div class="d-flex">
         <div class="ms-1 mb-1 form-check">
           <input
-            type="radio"
+            (change)="changeMenuLayout()"
+            [(ngModel)]="menuLayout"
+            [value]="'vertical'"
+            class="form-check-input"
             id="radio-1"
             name="menu-layout"
-            [(ngModel)]="menuLayout"
+            type="radio"/>
+          <label class="form-check-label" for="radio-1">
+            Vertical
+          </label>
+        </div>
+
+        <div class="ms-1 mb-1 form-check">
+          <input
             (change)="changeMenuLayout()"
-            [value]="'vertical'"
-            class="form-check-input" />
-            <label class="form-check-label" for="radio-1">
-              Vertical
-            </label>
-          </div>
+            [(ngModel)]="menuLayout"
+            [value]="'horizontal'"
+            class="form-check-input"
+            id="radio-2"
+            name="menu-layout"
+            type="radio"/>
+          <label class="form-check-label" for="radio-2">
+            Horizontal
+          </label>
+        </div>
+      </div>
+    </div>
 
-          <div class="ms-1 mb-1 form-check">
-            <input
-              type="radio"
-              id="radio-2"
-              name="menu-layout"
-              [(ngModel)]="menuLayout"
-              (change)="changeMenuLayout()"
-              [value]="'horizontal'"
-              class="form-check-input" />
-              <label class="form-check-label" for="radio-2">
-                Horizontal
-              </label>
-            </div>
-          </div>
+    <div class="sounds">
+      <p class="fw-bold font-medium-3 mb-1 mt-1">Sounds</p>
+
+      <div class="rows">
+        <div class="col-6">
+          <label>Success</label>
+          <ng-select
+            (change)="successSoundChange()"
+            [(ngModel)]="successSound"
+            [dropdownPosition]="'bottom'"
+            [items]="successSoundList"
+            appendTo="body">
+          </ng-select>
         </div>
 
-        <div class="sounds">
-          <p class="fw-bold font-medium-3 mb-1 mt-1">Sounds</p>
+        <div class="mt-1 col-6">
+          <label>Home</label>
+          <ng-select
+            (change)="homeSoundChange()"
+            [(ngModel)]="homeSound"
+            [dropdownPosition]="'bottom'"
+            [items]="homeSoundList"
+            appendTo="body">
+          </ng-select>
+        </div>
+      </div>
+    </div>
 
-          <div class="rows">
-            <div class="col-6">
-              <label>Success</label>
-              <ng-select
-                appendTo="body"
-                [items]="successSoundList"
-                (change)="successSoundChange()"
-                [dropdownPosition]="'bottom'"
-                [(ngModel)]="successSound">
-              </ng-select>
-            </div>
-
-            <div class="mt-1 col-6">
-              <label>Home</label>
-              <ng-select
-                appendTo="body"
-                [items]="homeSoundList"
-                (change)="homeSoundChange()"
-                [dropdownPosition]="'bottom'"
-                [(ngModel)]="homeSound">
-              </ng-select>
-            </div>
-          </div>
+    <div class="animations mt-2">
+      <p class="fw-bold font-medium-3 mb-1 mt-1">Enable animations</p>
+      <div class="d-flex">
+        <div class="ms-1 mb-1 form-check">
+          <input
+            (change)="changeEnableAnimation()"
+            [(ngModel)]="enableAnimation"
+            [value]="'enable'"
+            class="form-check-input"
+            id="radio-3"
+            name="animation"
+            type="radio"/>
+          <label class="form-check-label" for="radio-3">
+            Enable
+          </label>
         </div>
 
-        <div class="animations mt-2">
-          <p class="fw-bold font-medium-3 mb-1 mt-1">Enable animations</p>
-          <div class="d-flex">
-            <div class="ms-1 mb-1 form-check">
-              <input
-                type="radio"
-                id="radio-3"
-                name="animation"
-                [(ngModel)]="enableAnimation"
-                (change)="changeEnableAnimation()"
-                [value]="'enable'"
-                class="form-check-input" />
-                <label class="form-check-label" for="radio-3">
-                  Enable
-                </label>
-              </div>
-
-              <div class="ms-1 mb-1 form-check">
-                <input
-                  type="radio"
-                  id="radio-4"
-                  name="animation"
-                  [(ngModel)]="enableAnimation"
-                  (change)="changeEnableAnimation()"
-                  [value]="'disable'"
-                  class="form-check-input" />
-                  <label class="form-check-label" for="radio-4">
-                    Disable
-                  </label>
-                </div>
-              </div>
-
-            </div>
-          </div>
+        <div class="ms-1 mb-1 form-check">
+          <input
+            (change)="changeEnableAnimation()"
+            [(ngModel)]="enableAnimation"
+            [value]="'disable'"
+            class="form-check-input"
+            id="radio-4"
+            name="animation"
+            type="radio"/>
+          <label class="form-check-label" for="radio-4">
+            Disable
+          </label>
         </div>
+      </div>
 
-        <ng-select-css></ng-select-css>
+    </div>
+  </div>
+</div>
 
-        @if (successSound != SuccessSoundEnum.NoSound) {
-          <audio
-            #successAudio
-            [src]="soundsService.getSuccessSoundSrc()">
-          </audio>
-        }
+<ng-select-css></ng-select-css>
 
-        @if (homeSound != HomeSoundEnum.NoSound) {
-          <audio
-            #homeAudio
-            [src]="soundsService.getHomeSoundSrc()">
-          </audio>
-        }
+@if (successSound != SuccessSoundEnum.NoSound) {
+  <audio
+    #successAudio
+    [src]="soundsService.getSuccessSoundSrc()">
+  </audio>
+}
+
+@if (homeSound != HomeSoundEnum.NoSound) {
+  <audio
+    #homeAudio
+    [src]="soundsService.getHomeSoundSrc()">
+  </audio>
+}

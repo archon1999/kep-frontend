@@ -1,9 +1,9 @@
 <div class="content-wrapper container-xxl p-0">
   <div class="content-body">
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
-    <section class="mt-2">
+    <section [@fadeInOnEnter] class="mt-2">
       <div class="row">
-        <div class="col-lg-9 col-md-12 col-sm-12" [@fadeInLeftOnEnter]="">
+        <div class="col-lg-9 col-md-12 col-sm-12">
           <div class="card">
             <div class="card-header pb-0">
               <ul ngbNav #navWithIcons="ngbNav" class="nav-tabs" [destroyOnHide]="false" (activeIdChange)="activeIdChange($event)" [(activeId)]="activeId">
@@ -98,13 +98,13 @@
           }
         </div>
 
-        <div class="col-lg-3 col-md-12 col-sm-12" [@fadeInRightOnEnter]>
+        <div class="col-lg-3 col-md-12 col-sm-12">
           <problem-sidebar [problem]="problem"></problem-sidebar>
         </div>
 
       </div>
 
-      @if (problem && currentUser) {
+      @if (problem && isAuthenticated) {
         <code-editor-modal
           [customClass]="'tour-step-2'"
           [uniqueName]="'problem-' + problem.id"

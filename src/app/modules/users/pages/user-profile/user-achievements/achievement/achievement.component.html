@@ -13,7 +13,7 @@
         <div class="avatar-content">
           <i [data-feather]="'problem' | iconName" [size]="20"></i>
         </div>
-        <div class="achievement-pill badge rounded-pill bg-primary">
+        <div class="achievement-pill badge badge-pill bg-primary">
           {{ achievement.totalProgress }}
         </div>
       </div>
@@ -22,7 +22,7 @@
     @if (achievement.type == 2) {
       <div style="position:relative;">
         <img height="36" src="assets/images/icons/fire_red.png" alt="streak">
-        <div class="achievement-pill badge rounded-pill bg-danger">
+        <div class="achievement-pill badge badge-pill bg-danger">
           {{ achievement.totalProgress }}
         </div>
       </div>
@@ -31,7 +31,7 @@
     @if (achievement.type == 4) {
       <div class="avatar p-50 bg-warning badge-glow">
         <img height="36" src="assets/images/icons/versus.png" alt="vs">
-        <div class="achievement-pill badge rounded-pill bg-warning">
+        <div class="achievement-pill badge badge-pill bg-warning">
           {{ achievement.totalProgress }}
         </div>
       </div>
@@ -42,7 +42,7 @@
         <div class="avatar-content">
           <i [data-feather]="'flag'" [size]="20"></i>
         </div>
-        <div class="achievement-pill badge rounded-pill bg-dark">
+        <div class="achievement-pill badge badge-pill bg-dark">
           {{ achievement.totalProgress }}
         </div>
       </div>

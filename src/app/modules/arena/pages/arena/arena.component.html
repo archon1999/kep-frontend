@@ -2,86 +2,49 @@
   <div class="content-body">
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
-    <div class="arena-section-header">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title text-dark">{{ 'Links' | translate }}</div>
-
-          <div [ngClass.lt-md]="'d-flex'" class="links">
-            <a [ngClass.lt-md]="'btn-sm'" [routerLink]="Resources.Challenges" class="btn btn-yellow me-25 me-mt-1">
-              <kep-icon color="dark" class="font-medium-1" name="challenge"></kep-icon>
-              <span class="text-dark" [ngClass.lt-md]="'d-none'">
-                {{ 'Challenges' | translate }}
-              </span>
-            </a>
-
-            <a [ngClass.lt-md]="'btn-sm'" [routerLink]="Resources.ChallengesRating" class="btn btn-yellow text-dark me-25 me-mt-1">
-              <kep-icon color="dark" class="font-medium-1" name="ranking"></kep-icon>
-              <span class="text-dark" [ngClass.lt-md]="'d-none'">
-                {{ 'Rating' | translate }}
-              </span>
-            </a>
+    <div class="row">
+      <div class="col-12 col-lg-8 mx-auto">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title font-medium-5 align-items-center">
+              <kep-icon name="arena" size="medium-5" type="duotone" color="yellow"></kep-icon>
+              <span class="text-dark">{{ 'Arena' | translate }}</span>
+              <span class="total-count" *ngIf="!isLoading">({{ pageResult?.total }})</span>
+            </div>
+            <div>
+              <input placeholder="{{ 'Search' | translate }}" class="form-control">
+            </div>
           </div>
         </div>
-      </div>
 
-
-      <div class="useful-links row">
-        <div class="col-6 pe-md-1 pe-25">
-          <a [ngClass.lt-md]="'font-small-3'" class="btn btn-yellow" routerLink="/learn/blog/post/72">
-            <span class="text-dark">
-              {{ 'AboutArena' | translate }}
-            </span>
-          </a>
-        </div>
-
-        <div class="col-6 pl-md-1 ps-25">
-          <a [ngClass.lt-md]="'font-small-3'" class="btn text-dark btn-yellow" routerLink="/learn/blog/post/69">
-            <span class="text-dark">
-              {{ 'AboutChallenges' | translate }}
-            </span>
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-xl-8 col-lg-10 col-12 offset-lg-1 offset-xl-2">
-      <h1 [@fadeInOnEnter] class="mt-1 mb-2 text-center">
-        <kep-icon name="arena" size="large-3" type="duotone" color="yellow"></kep-icon>
-        <div class="text-dark mt-2 mb-2">{{ 'Arena' | translate }}</div>
-      </h1>
-
-      @if (isLoading){
-        <ngx-skeleton-loader
-          class="custom-skeleton"
-          count="5"
-          animation="pulse"
-          appearance="line"
-          [theme]="{height: '100px', background: 'var(--skeleton-color)'}"
-        ></ngx-skeleton-loader>
-      } @else {
-        <div class="row">
+        @if (isLoading){
+          <ngx-skeleton-loader
+            class="custom-skeleton"
+            count="5"
+            animation="pulse"
+            appearance="line"
+            [theme]="{height: '100px', background: 'var(--skeleton-color)'}"
+          ></ngx-skeleton-loader>
+        } @else {
           @for (arena of arenaList;track arena) {
-            <div class="col-12 p-0 bg-arena-list">
-              <arena-list-card [@fadeInOnEnter] [arena]="arena"></arena-list-card>
-            </div>
+            <arena-list-card [@fadeInOnEnter] [arena]="arena"></arena-list-card>
           }
-        </div>
-      }
+        }
 
-      @if (total) {
-        <div class="mb-2">
-          <kep-pagination
-            [collectionSize]="total"
-            [(page)]="pageNumber"
-            [pageSize]="pageSize"
-            [maxSize]="maxSize"
-            [rotate]="true"
-            [color]="'yellow'"
-            (pageChange)="reloadPage()">
-          </kep-pagination>
-        </div>
-      }
+        @if (total) {
+          <div class="mb-2">
+            <kep-pagination
+              [collectionSize]="total"
+              [(page)]="pageNumber"
+              [pageSize]="pageSize"
+              [maxSize]="maxSize"
+              [rotate]="true"
+              [color]="'yellow'"
+              (pageChange)="reloadPage()">
+            </kep-pagination>
+          </div>
+        }
+      </div>
     </div>
   </div>
 </div>

@@ -32,12 +32,11 @@ import { SkillsComponent } from './skills/skills.component';
 import { SocialComponent } from './social/social.component';
 import { TeamsComponent } from './teams/teams.component';
 import { SystemComponent } from './system/system.component';
-import { Ng2FlatpickrModule } from '@shared/third-part-modules/ng2-flatpickr/ng2-flatpickr.module';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
 import { TeamComponent } from '@app/modules/account-settings/teams/team-card/team.component';
-import { TeamJoinComponent } from '@app/modules/account-settings/teams/team-join/team-join.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { CalendarModule } from 'primeng/calendar';
 
 const routes: Routes = [
   {
@@ -105,13 +104,13 @@ const routes: Routes = [
     NgSelectModule,
     UserPopoverModule,
     KepcoinSpendSwalModule,
-    Ng2FlatpickrModule,
     NgxCountriesModule.forRoot({
       defaultLocale: 'en',
     }),
     TeamComponent,
     SpinnerComponent,
     EmptyResultComponent,
+    CalendarModule,
   ],
   providers: [
     GeneralInfoResolver,

@@ -134,19 +134,19 @@
         <thead>
         <tr class="bg-gradient-primary">
           <th>
-            <div class="row justify-content-between align-items-center">
-              <div class="ps-1 font-small-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="font-small-4">
                 {{ 'INPUT' | translate }}
               </div>
-              <clipboard-button [text]="sampleTest.input"></clipboard-button>
+              <clipboard-button [text]="sampleTest.input" buttonClass="btn btn-primary btn-sm"/>
             </div>
           </th>
           <th>
-            <div class="row justify-content-between align-items-center">
-              <div class="ps-1 font-small-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="font-small-4">
                 {{ 'OUTPUT' | translate }}
               </div>
-              <clipboard-button [text]="sampleTest.output"></clipboard-button>
+              <clipboard-button [text]="sampleTest.output" buttonClass="btn btn-primary btn-sm"/>
             </div>
           </th>
         </tr>

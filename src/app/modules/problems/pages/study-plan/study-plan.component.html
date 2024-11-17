@@ -235,14 +235,14 @@
                             {{ problem.id }}. {{ problem.title }}
                             <div class="problem-tags">
                               @for (tag of problem.tags; track tag) {
-                                <span class="badge problem-tag rounded-pill">
+                                <span class="badge problem-tag badge-pill">
                                   {{ tag.name }}
                                 </span>
                               }
                             </div>
                           </div>
                           <div class="problem-difficulty">
-                            <span class="badge badge-glow rounded-pill badge-{{ problem.difficulty | problemDifficultyColor }}">
+                            <span class="badge badge-glow badge-pill badge-{{ problem.difficulty | problemDifficultyColor }}">
                               {{ problem.difficultyTitle | translate }}
                             </span>
                           </div>

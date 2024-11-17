@@ -3,7 +3,7 @@
     <app-content-header [contentHeader]="contentHeader"/>
 
     @if (isLoading) {
-      <div [style.height.px]="400">
+      <div class="card" [style.height.px]="400">
         <spinner/>
       </div>
     } @else {

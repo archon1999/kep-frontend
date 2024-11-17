@@ -1,20 +1,20 @@
 @import 'styles/kep-imports';
 
-.challenges-section-header.card {
-  background: rgba($primary, 0.8);
-
-  @include dark-layout {
-    background: rgba($primary, 0.5);
-  }
-
-  .card-footer {
-    border-color: rgba($primary, 0.1);
-  }
-
-  .text-blue, .text-primary {
-    color: $light !important;
-  }
-}
+//.challenges-section-header.card {
+//  background: rgba($primary, 0.8);
+//
+//  @include dark-layout {
+//    background: rgba($primary, 0.5);
+//  }
+//
+//  .card-footer {
+//    border-color: rgba($primary, 0.1);
+//  }
+//
+//  .text-blue, .text-primary {
+//    color: $light !important;
+//  }
+//}
 
 .useful-links {
   display: flex;

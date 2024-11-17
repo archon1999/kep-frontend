@@ -145,8 +145,6 @@ img {
 }
 
 li[core-menu-horizontal-item] {
-  margin-right: 0.5rem;
-
   .dropdown-item {
     &:active kep-icon span {
       color: white !important;
@@ -171,4 +169,13 @@ li[core-menu-horizontal-item] {
   a.text-dark:focus, a.text-dark:hover {
     color: $primary !important;
   }
+}
+
+.total-count {
+  font-size: 17px;
+  font-weight: 100;
+  vertical-align: super;
+  color: #888ea8;
+  letter-spacing: 2px;
+  margin-left: 0.5rem;
 }

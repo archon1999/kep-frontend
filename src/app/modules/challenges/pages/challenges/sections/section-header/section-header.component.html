@@ -1,11 +1,11 @@
 <div class="card challenges-section-header">
-  @if (isLoading){
+  @if (isLoading) {
     <div [style.height.px]="150">
       <spinner></spinner>
     </div>
   } @else {
     <div class="card-header">
-      <div class="card-title text-white" [ngClass.lt-md]="'font-small-4'">
+      <div class="card-title text-dark" [ngClass.lt-md]="'font-small-4'">
         @if (currentUser) {
           <challenges-user-view [light]="false" [withRating]="true" [user]="challengesRating"></challenges-user-view>
         } @else {
@@ -13,14 +13,14 @@
         }
       </div>
 
-      <div class="links" [ngClass.lt-md]="'d-flex'">
-        <a routerLink="rating" class="btn btn-primary me-25 me-mt-1" [ngClass.lt-md]="'btn-sm'">
+      <div class="d-flex gap-50" [ngClass.lt-md]="'d-flex'">
+        <a routerLink="rating" class="btn btn-outline-primary" [ngClass.lt-md]="'btn-sm'">
           <kep-icon name="ranking" class="font-medium-1"></kep-icon>
           <span [ngClass.lt-md]="'d-none'">
             {{ 'Rating' | translate }}
           </span>
         </a>
-        <a routerLink="user-statistics" class="btn btn-primary me-25 me-mt-1" [ngClass.lt-md]="'btn-sm'">
+        <a routerLink="user-statistics" class="btn btn-outline-primary" [ngClass.lt-md]="'btn-sm'">
           <kep-icon name="statistics" class="font-medium-1"></kep-icon>
           <span [ngClass.lt-md]="'d-none'">
             {{ 'Statistics' | translate }}
@@ -32,40 +32,26 @@
     @if (challengesRating) {
       <div class="card-footer text-center">
         <div class="font-medium-4 d-flex justify-content-between">
-          <div class="text-white" [ngClass.lt-md]="'font-small-4'" [ngClass.gt-sm]="'font-medium-2'">
+          <div class="text-dark" [ngClass.lt-md]="'font-small-4'" [ngClass.gt-sm]="'font-medium-2'">
             <span class="text-success" ngbTooltip="{{ 'Wins' | translate }}">W</span>
             {{ challengesRating.wins }}
             <br>
-              <span class="text-success">{{ Math.trunc(100 * challengesRating.wins / challengesRating.all ) }} %</span>
-            </div>
-            <div class="text-white" [ngClass.lt-md]="'font-small-4'" [ngClass.gt-sm]="'font-medium-2'">
-              <span class="ms-50 text-secondary" ngbTooltip="{{ 'Draws' | translate }}">D</span>
-              {{ challengesRating.draws }}
-              <br>
-                <span class="text-secondary">{{ Math.trunc(100 * challengesRating.draws / challengesRating.all ) }} %</span>
-              </div>
-              <div class="text-white" [ngClass.lt-md]="'font-small-4'" [ngClass.gt-sm]="'font-medium-2'">
-                <span class="ms-50 text-danger" ngbTooltip="{{ 'Losses' | translate }}">L</span>
-                {{ challengesRating.losses }}
-                <br>
-                  <span class="text-danger">{{ Math.trunc(100 * challengesRating.losses / challengesRating.all ) }} %</span>
-                </div>
-              </div>
-            </div>
-          }
-        }
-      </div>
-
-      <div class="useful-links row">
-        <div class="col-6 pe-md-1 pe-25">
-          <a class="btn btn-primary" routerLink="/learn/blog/post/69" [ngClass.lt-md]="'font-small-3'">
-            {{ 'AboutChallenges' | translate }}
-          </a>
-        </div>
-
-        <div class="col-6 pl-md-1 ps-25">
-          <a class="btn btn-primary" routerLink="/learn/blog/post/70" [ngClass.lt-md]="'font-small-3'">
-            {{ 'AboutQuestionTypes' | translate }}
-          </a>
+            <span class="text-success">{{ Math.trunc(100 * challengesRating.wins / challengesRating.all) }} %</span>
+          </div>
+          <div class="text-dark" [ngClass.lt-md]="'font-small-4'" [ngClass.gt-sm]="'font-medium-2'">
+            <span class="ms-50 text-secondary" ngbTooltip="{{ 'Draws' | translate }}">D</span>
+            {{ challengesRating.draws }}
+            <br>
+            <span class="text-secondary">{{ Math.trunc(100 * challengesRating.draws / challengesRating.all) }} %</span>
+          </div>
+          <div class="text-dark" [ngClass.lt-md]="'font-small-4'" [ngClass.gt-sm]="'font-medium-2'">
+            <span class="ms-50 text-danger" ngbTooltip="{{ 'Losses' | translate }}">L</span>
+            {{ challengesRating.losses }}
+            <br>
+            <span class="text-danger">{{ Math.trunc(100 * challengesRating.losses / challengesRating.all) }} %</span>
+          </div>
         </div>
       </div>
+    }
+  }
+</div>

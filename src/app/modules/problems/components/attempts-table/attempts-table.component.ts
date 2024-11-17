@@ -132,6 +132,7 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
         this.editorOptions.language = this.selectedAttempt.getEditorLang();
         this.modalService.open(this.modalRef, {
           centered: true,
+          animation: null,
           size: 'xl',
         });
       }

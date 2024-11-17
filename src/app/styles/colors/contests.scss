@@ -126,7 +126,7 @@ $math-color: #00a79d;
   $selector: '&',
   $color: $primary,
   $color-dark: mix(black, $primary, 20),
-  $background-light: rgba(mix(black, $primary, 10), 0.5),
+  $background-light: linear-gradient(to right, rgba($primary, 0.9), rgba($primary, 0.7)),
   $background-dark: rgba($primary, 0.25),
 );
 
@@ -135,7 +135,7 @@ $math-color: #00a79d;
   $selector: $code-golf-selector,
   $color: $code-golf-color,
   $color-dark: mix(black, $code-golf-color, 20),
-  $background-light: rgba($code-golf-color, 0.5),
+  $background-light: linear-gradient(to right, rgba($code-golf-color, 0.9), rgba($code-golf-color, 0.7)),
   $background-dark: rgba($code-golf-color, 0.25),
 ) {
   .card-bg {
@@ -148,7 +148,7 @@ $math-color: #00a79d;
   $selector: $one-line-selector,
   $color: $one-line-color,
   $color-dark: mix(black, $one-line-color, 30),
-  $background-light: rgba($one-line-color, 0.5),
+  $background-light: linear-gradient(to right, rgba($one-line-color, 0.9), rgba($one-line-color, 0.7)),
   $background-dark: rgba($one-line-color, 0.25),
 ) {
   .card-bg {
@@ -161,7 +161,7 @@ $math-color: #00a79d;
   $selector: $hack-it-selector,
   $color: $hack-it-color,
   $color-dark: mix(black, $hack-it-color, 30),
-  $background-light: rgba($hack-it-color, 0.5),
+  $background-light: linear-gradient(to right, rgba($hack-it-color, 0.9), rgba($hack-it-color, 0.7)),
   $background-dark: rgba($hack-it-color, 0.25),
 );
 
@@ -170,7 +170,7 @@ $math-color: #00a79d;
   $selector: $sql-selector,
   $color: $sql-color,
   $color-dark: mix(black, $sql-color, 30),
-  $background-light: rgba($sql-color, 0.7),
+  $background-light: rgba($sql-color, 0.8),
   $background-dark: rgba($sql-color, 0.25),
 );
 

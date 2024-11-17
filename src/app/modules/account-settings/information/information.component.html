@@ -44,14 +44,9 @@
       <div class="col-12 col-sm-6">
         <div class="mb-1">
           <label for="account-birth-date">Birth date</label>
-          <ng2-flatpickr
-            [config]="birthDateOptions"
-            [(ngModel)]="birthDate"
-            [setDate]="birthDate"
-            (change)="onDateChange()"
-            id="account-birth-date"
-            name="account-birth-date">
-          </ng2-flatpickr>
+          <div class="full-width">
+            <p-calendar [styleClass]="'full-width'" appendTo="body" [(ngModel)]="birthDate"></p-calendar>
+          </div>
           @if (errors?.dateOfBirth) {
             <p class="text-danger">{{ errors.dateOfBirth[0] }}</p>
           }

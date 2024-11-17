@@ -367,7 +367,7 @@ export const locale = {
     Unknown: 'Noaniq',
     ContestQuestionsText: 'Kontest boʻyicha savollaringizni shu yerda berishingiz mumkin.',
     Status: 'Holati',
-    Categories: 'Toifasi',
+    Categories: 'Toifalar',
     Math: 'Matematika',
     NonStandart: 'Nostandart',
     LastSeen: 'Ohirgi koʻrish',

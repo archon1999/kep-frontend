@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { SectionProblemsListComponent } from '@problems/pages/problems/sections/section-problems-list/section-problems-list.component';
 import { CoreCommonModule } from '@core/common.module';
-import { CarouselModule } from '@primeng/carousel';
 import { ProblemCardComponent } from '@problems/pages/problems/sections/section-problems-list/problem-card/problem-card.component';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
@@ -12,7 +11,6 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
   standalone: true,
   imports: [
     CoreCommonModule,
-    CarouselModule,
     ProblemCardComponent,
     SwiperComponent,
     NgxSkeletonLoaderModule

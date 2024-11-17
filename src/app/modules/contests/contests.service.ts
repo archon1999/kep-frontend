@@ -21,7 +21,7 @@ export class ContestsService {
     public authService: AuthService,
   ) { }
 
-  getContests(params: Partial<Pageable> & { category?: number, type?: string, isParticipated?: number, creator?: string }) {
+  getContests(params: Partial<Pageable> & { category?: number, type?: string, isParticipated?: number, creator?: string, title?: string }) {
     return this.api.get('contests', params).pipe(
       map((result: any) => {
         result.data = result.data.map((contest: Contest) => Contest.fromJSON(contest));

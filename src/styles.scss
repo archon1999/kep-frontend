@@ -23,8 +23,10 @@
 
 @import 'styles/primeng-sass/theme-base/components/multimedia/galleria';
 
+@import "primeng/resources/primeng.css";
+
 .kep-bg {
-  background-image: url(assets/images/kep-bg-light.jpg);
+  background-image: url(assets/images/kep-bg-light.webp);
   filter: blur(0px);
   position: fixed;
   width: 100%;
@@ -35,7 +37,7 @@
 }
 
 .dark-layout .kep-bg {
-  background-image: url(assets/images/kep-bg-dark.jpg);
+  background-image: url(assets/images/kep-bg-dark.webp);
   opacity: 1;
 }
 

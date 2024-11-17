@@ -1,9 +1,5 @@
-@import 'bootstrap/scss/mixins'; 
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
-
+@import 'styles/kep-imports';
 @import '../scss/variables.scss';
-
 
 .bg-tournament {
   background: $tournaments-bg;
@@ -17,7 +13,6 @@
 }
 
 .card {
-  box-shadow: 0 0 5px $tournaments-color !important;
   border: none;
 
   .card-title {

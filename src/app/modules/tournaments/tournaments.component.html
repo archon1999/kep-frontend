@@ -2,69 +2,50 @@
   <div class="content-body">
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
-    <div class="tournaments-section-header">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title text-white">{{ 'Links' | translate }}</div>
-
-          <div [ngClass.lt-md]="'d-flex'" class="links">
-            <a [ngClass.lt-md]="'btn-sm'" [routerLink]="Resources.Problems" class="btn btn-primary me-25 me-mt-1">
-              <kep-icon class="font-medium-1" name="problems"></kep-icon>
-              <span [ngClass.lt-md]="'d-none'">
-                {{ 'Problems' | translate }}
-              </span>
-            </a>
-
-            <a [ngClass.lt-md]="'btn-sm'" [routerLink]="Resources.Contests" class="btn btn-primary me-25 me-mt-1">
-              <kep-icon class="font-medium-1" name="contests"></kep-icon>
-              <span [ngClass.lt-md]="'d-none'">
-                {{ 'Contests' | translate }}
-              </span>
-            </a>
+    <div class="row">
+      <div class="col-12 col-lg-8 mx-auto">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title font-medium-5 align-items-center">
+              <kep-icon name="tournament" size="medium-5" type="duotone" color="primary"></kep-icon>
+              <span class="text-dark">{{ 'Tournaments' | translate }}</span>
+              <span class="total-count" *ngIf="!isLoading">({{ pageResult?.total }})</span>
+            </div>
+            <div>
+              <input placeholder="{{ 'Search' | translate }}" class="form-control">
+            </div>
           </div>
         </div>
+
+        @if (isLoading){
+          <ngx-skeleton-loader
+            class="custom-skeleton"
+            count="5"
+            animation="pulse"
+            appearance="line"
+            [theme]="{height: '100px', background: 'var(--skeleton-color)'}"
+          ></ngx-skeleton-loader>
+        } @else {
+          @for (tournament of tournaments; track tournament) {
+            <div class="bg-tournaments-list">
+              <tournament-list-card [@fadeInOnEnter] [tournament]="tournament"></tournament-list-card>
+            </div>
+          }
+        }
+        @if (total) {
+          <div class="mb-2 mt-1">
+            <kep-pagination
+              [collectionSize]="total"
+              [(page)]="pageNumber"
+              [pageSize]="pageSize"
+              [maxSize]="maxSize"
+              [rotate]="true"
+              [color]="'primary'"
+              (pageChange)="reloadPage()">
+            </kep-pagination>
+          </div>
+        }
       </div>
-
-      <div class="useful-links row">
-        <div class="col-6 pe-md-1 pe-25">
-          <a [ngClass.lt-md]="'font-small-3'" class="btn btn-primary" routerLink="/learn/blog/post/74">
-            {{ 'AboutTournaments' | translate }}
-          </a>
-        </div>
-
-        <div class="col-6 pl-md-1 ps-25">
-          <a [ngClass.lt-md]="'font-small-3'" class="btn btn-primary" routerLink="/learn/blog/post/73">
-            {{ 'AboutDuels' | translate }}
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="mt-2 col-lg-8 col-12 offset-lg-2">
-      <h1 [@fadeInUpOnEnter] class="mt-1 mb-2 text-center">
-        <kep-icon name="tournament" size="large-3" type="duotone" color="primary"></kep-icon>
-        <div class="text-dark mt-2 mb-2">{{ 'Tournaments' | translate }}</div>
-      </h1>
-
-      @for (tournament of tournaments; track tournament) {
-        <div class="bg-tournaments-list">
-          <tournament-list-card [@fadeInOnEnter] [tournament]="tournament"></tournament-list-card>
-        </div>
-      }
-
-      @if (total) {
-        <div class="mb-2 mt-1">
-          <kep-pagination
-            [collectionSize]="total"
-            [(page)]="pageNumber"
-            [pageSize]="pageSize"
-            [maxSize]="maxSize"
-            [rotate]="true"
-            [color]="'primary'"
-            (pageChange)="reloadPage()">
-          </kep-pagination>
-        </div>
-      }
     </div>
   </div>
 </div>

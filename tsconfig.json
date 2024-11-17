@@ -34,7 +34,6 @@
       "@auth": ["app/modules/auth"],
       "@auth/*": ["app/modules/auth/*"],
       "environments": ["environments/"],
-      "@primeng/*": ["app/shared/primeng/*"]
     },
     "useDefineForClassFields": false
   },

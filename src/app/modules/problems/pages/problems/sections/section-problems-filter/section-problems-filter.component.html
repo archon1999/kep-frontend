@@ -3,7 +3,7 @@
     <div class="card-title text-dark">
       <kep-icon name="filter"></kep-icon>
       {{ 'Filter' | translate }}
-      <span class="ms-25 problems-count">({{ problemsCount }})</span>
+      <span class="ms-25 total-count">({{ problemsCount }})</span>
     </div>
     <button aria-label="filter-collapsed" class="btn btn-sm btn-primary" (click)="filterCollapsed=!filterCollapsed;">
       <kep-icon [name]="filterCollapsed ? 'double-up' : 'double-down'"></kep-icon>

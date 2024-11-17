@@ -1,17 +1,17 @@
 <div [show]="arena.status === -1" class="card" new-feature routerLink="tournament/{{ arena.id }}">
   <div class="card-header">
     <div class="card-title text-dark">
-      <kep-icon class="font-large-1" name="arena" color="yellow" type="duotone"></kep-icon>
+      <kep-icon class="font-large-1" color="yellow" name="arena" type="duotone"></kep-icon>
       <span class="ms-50 fw-bolder">
         {{ arena.title }}
       </span>
       <br>
       <span class="ms-3 font-small-3 text-dark">
-          {{ 'Rated' | translate }},
-        </span>
+        {{ 'Rated' | translate }},
+      </span>
       <span class="ms-25 font-small-3 text-dark">
-          {{ durationMinute }}m
-        </span>
+        {{ durationMinute }}m
+      </span>
     </div>
 
     <div class="card-countdown">

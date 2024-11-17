@@ -3,7 +3,7 @@ import { Product } from '@app/modules/shop/shop.interfaces';
 import { CoreCommonModule } from '@core/common.module';
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { GalleriaModule } from '@primeng/galleria';
+import { GalleriaModule } from 'primeng/galleria';
 
 @Component({
   selector: 'product-item',

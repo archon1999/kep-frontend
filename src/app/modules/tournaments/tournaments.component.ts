@@ -16,6 +16,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { TournamentListCardComponent } from '@app/modules/tournaments/tournament-list-card/tournament-list-card.component';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'app-tournaments',
@@ -29,7 +30,7 @@ import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pa
   ],
   standalone: true,
   encapsulation: ViewEncapsulation.None,
-  imports: [CoreCommonModule, TournamentListCardComponent, ContentHeaderModule, KepPaginationComponent]
+  imports: [CoreCommonModule, TournamentListCardComponent, ContentHeaderModule, KepPaginationComponent, NgxSkeletonLoaderModule]
 })
 export class TournamentsComponent extends BaseTablePageComponent<Tournament> implements OnInit {
 

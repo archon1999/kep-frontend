@@ -1,83 +1,85 @@
-<div class="row">
-  <div class="col-12">
-    <div class="test-page-top bg-gradient-chapter-{{ test.chapter.id }}">
-      <div class="test-header" [@fadeInOnEnter]>
-        <div class="chapter">
-          <div class="chapter-icon"><img src="{{ test.chapter.icon }}" alt=""></div>
-          <div class="chapter-title">{{ test.chapter.title }}</div>
-        </div>
-
-        <div class="test-title">
-          {{ test.title }}
-        </div>
-
-        <div class="test-description">
-          {{ test.description }}
-        </div>
-
-        <div class="test-pass-button">
-          @if (canStart) {
-            <div>
-              <button (click)="testStart()" class="btn text-white bg-chapter-{{ test.chapter.id }}" rippleEffect>
-                {{ 'Start' | translate }}
-              </button>
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <div class="test-page-top">
+      <div class="card">
+        <div class="card-body">
+          <div class="test-header" [@fadeInOnEnter]>
+            <div class="chapter">
+              <div class="chapter-icon"><img src="{{ test.chapter.icon }}" alt=""></div>
+              <div class="chapter-title">{{ test.chapter.title }}</div>
             </div>
-          }
-          @if (!canStart) {
-            <kepcoin-spend-swal [value]="1" [purchaseUrl]="'tests/' + test.id + '/purchase/'"
-              [customContent]="true" (success)="canStart=true;">
-              <button class="btn text-white bg-chapter-{{ test.chapter.id }}" rippleEffect>
-                {{ 'PassTest' | translate }}
-              </button>
-            </kepcoin-spend-swal>
-          }
-        </div>
 
-        <div class="test-pass-info justify-content-center">
-          <div class="mb-1">
-            {{ 'BestResult' | translate }}
-            <span class="rounded-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
+            <div class="test-title">
+              {{ test.title }}
+            </div>
+
+            <div class="test-description">
+              {{ test.description }}
+            </div>
+
+            <div class="test-pass-button">
+              @if (canStart) {
+                <div>
+                  <button (click)="testStart()" class="btn text-white bg-chapter-{{ test.chapter.id }}" rippleEffect>
+                    {{ 'Start' | translate }}
+                  </button>
+                </div>
+              }
+              @if (!canStart) {
+                <kepcoin-spend-swal [value]="1" [purchaseUrl]="'tests/' + test.id + '/purchase/'"
+                                    [customContent]="true" (success)="canStart=true;">
+                  <button class="btn text-white bg-chapter-{{ test.chapter.id }}" rippleEffect>
+                    {{ 'PassTest' | translate }}
+                  </button>
+                </kepcoin-spend-swal>
+              }
+            </div>
+
+            <div class="test-pass-info justify-content-center">
+              <div class="mb-1">
+                {{ 'BestResult' | translate }}
+                <span class="badge-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
               {{ test.userBestResult }}
-              /
-              {{ test.questionsCount }}
+                  /
+                  {{ test.questionsCount }}
 
             </span>
-          </div>
+              </div>
 
-          <div class="mb-1">
-            {{ 'LastPass' | translate }}
-            <span class="rounded-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
+              <div class="mb-1">
+                {{ 'LastPass' | translate }}
+                <span class="badge-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
               {{ test.lastPassed }}
-              @if (!test.lastPassed) {
-                <span>
+                  @if (!test.lastPassed) {
+                    <span>
                   {{ 'NotPassed' | translate }}
                 </span>
-              }
+                  }
             </span>
-          </div>
-        </div>
-
-        <div class="test-info">
-          <div class="row mt-3 mb-1">
-            <div class="col-lg-3 col-6 text-center mb-2">
-              <div class="avatar avatar-lg p-50 m-0 mb-1 bg-chapter-{{ test.chapter.id }}">
-                <div class="avatar-content font-medium-3">
-                  {{ test.questionsCount }}
-                </div>
               </div>
-              <br>
-                <div ngbTooltip="{{ 'Questions' | translate }}">
-                  <i data-feather="help-circle" [size]="20"></i>
-                </div>
-              </div>
+            </div>
 
-              <div class="col-lg-3 col-6 text-center mb-2">
-                <div class="avatar avatar-lg p-50 m-0 mb-1 bg-chapter-{{ test.chapter.id }}">
-                  <div class="avatar-content font-medium-1">
-                    {{ test.duration }}
+            <div class="test-info">
+              <div class="row mt-3 mb-1">
+                <div class="col-lg-3 col-6 text-center mb-2">
+                  <div class="avatar avatar-lg p-50 m-0 mb-1 bg-chapter-{{ test.chapter.id }}">
+                    <div class="avatar-content font-medium-3">
+                      {{ test.questionsCount }}
+                    </div>
+                  </div>
+                  <br>
+                  <div ngbTooltip="{{ 'Questions' | translate }}">
+                    <i data-feather="help-circle" [size]="20"></i>
                   </div>
                 </div>
-                <br>
+
+                <div class="col-lg-3 col-6 text-center mb-2">
+                  <div class="avatar avatar-lg p-50 m-0 mb-1 bg-chapter-{{ test.chapter.id }}">
+                    <div class="avatar-content font-medium-1">
+                      {{ test.duration }}
+                    </div>
+                  </div>
+                  <br>
                   <div ngbTooltip="{{ 'Duration' | translate }}">
                     <i data-feather="clock" [size]="20"></i>
                   </div>
@@ -90,102 +92,104 @@
                     </div>
                   </div>
                   <br>
-                    <div ngbTooltip="{{ 'Difficulty' | translate }}">
-                      <i data-feather="link" [size]="20"></i>
-                    </div>
-                  </div>
-
-                  <div class="col-lg-3 col-6 text-center mb-2">
-                    <div class="avatar avatar-lg p-50 m-0 mb-1 bg-chapter-{{ test.chapter.id }}">
-                      <div class="avatar-content font-medium-3">
-                        {{ test.passesCount }}
-                      </div>
-                    </div>
-                    <br>
-                      <div ngbTooltip="{{ 'TestPassed' | translate }}">
-                        <i data-feather="users" [size]="20"></i>
-                      </div>
-                    </div>
+                  <div ngbTooltip="{{ 'Difficulty' | translate }}">
+                    <i data-feather="link" [size]="20"></i>
                   </div>
                 </div>
 
-              </div>
-
-              <div class="col-lg-10 offset-lg-1 offset-0 col-12">
-                <div class="row ml-md-0 ms-25">
-                  <div class="col-lg-6 col-md-12 col-sm-12">
-                    <div class="card" [@fadeInOnEnter]>
-                      <div class="card-header">
-                        <h4 class="mb-1 mt-1 card-title text-center">{{ 'LastPassed' | translate }}</h4>
-                        <hr class="mb-1">
-                      </div>
-                      <div class="card-body">
-                        @for (result of lastResults; track result) {
-                          <div class="mb-2 d-flex">
-                            <i class="me-1" data-feather="edit-3" [size]="18"></i>
-                            <div>
-                              <user-popover [username]="result.username" [customContent]="true">
-                                <strong class="pe-25">
-                                  {{ result.username }}
-                                </strong>
-                              </user-popover>
-                              <span class="rounded-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
-                                {{ result.result }}/{{ test.questionsCount }}
-                              </span>
-                              <br>
-                                <span class="text-success font-small-2">
-                                  {{ result.finished }}
-                                </span>
-                              </div>
-                            </div>
-                          }
-                        </div>
-                      </div>
+                <div class="col-lg-3 col-6 text-center mb-2">
+                  <div class="avatar avatar-lg p-50 m-0 mb-1 bg-chapter-{{ test.chapter.id }}">
+                    <div class="avatar-content font-medium-3">
+                      {{ test.passesCount }}
                     </div>
-
-                    <div class="col-lg-6 col-md-12 col-sm-12">
-                      <div class="card" [@fadeInOnEnter]>
-                        <div class="card-header">
-                          <h4 class="mb-1 mt-1 card-title text-center">{{ 'Rating' | translate }}</h4>
-                        </div>
-
-                        <div class="table-responsive">
-                          <table class="table">
-                            <thead>
-                              <tr class="bg-gradient-chapter-{{ test.chapter.id }}">
-                                <th>#</th>
-                                <th>{{ 'User' | translate }}</th>
-                                <th>{{ 'Result' | translate }}</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              @for (result of bestResults; track result; let i = $index) {
-                                <tr>
-                                  <td>
-                                    {{ i+1 }}
-                                  </td>
-                                  <td>
-                                    <user-popover [customContent]="true" [username]="result.username">
-                                      <span class="text-dark">
-                                        <i data-feather="user"></i>
-                                        {{ result.username }}
-                                      </span>
-                                    </user-popover>
-                                  </td>
-                                  <td>
-                                    <span class="rounded-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
-                                      {{ result.result }}/{{ test.questionsCount }}
-                                    </span>
-                                  </td>
-                                </tr>
-                              }
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
+                  </div>
+                  <br>
+                  <div ngbTooltip="{{ 'TestPassed' | translate }}">
+                    <i data-feather="users" [size]="20"></i>
                   </div>
                 </div>
               </div>
             </div>
+
           </div>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="row">
+          <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="card" [@fadeInOnEnter]>
+              <div class="card-header">
+                <h4 class="mb-1 mt-1 card-title text-center">{{ 'LastPassed' | translate }}</h4>
+                <hr class="mb-1">
+              </div>
+              <div class="card-body">
+                @for (result of lastResults; track result) {
+                  <div class="mb-2 d-flex">
+                    <i class="me-1" data-feather="edit-3" [size]="18"></i>
+                    <div>
+                      <user-popover [username]="result.username" [customContent]="true">
+                        <strong class="pe-25">
+                          {{ result.username }}
+                        </strong>
+                      </user-popover>
+                      <span class="badge-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
+                                {{ result.result }}/{{ test.questionsCount }}
+                              </span>
+                      <br>
+                      <span class="text-success font-small-2">
+                                  {{ result.finished }}
+                                </span>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="card" [@fadeInOnEnter]>
+              <div class="card-header">
+                <h4 class="mb-1 mt-1 card-title text-center">{{ 'Rating' | translate }}</h4>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                  <tr class="bg-gradient-chapter-{{ test.chapter.id }}">
+                    <th>#</th>
+                    <th>{{ 'User' | translate }}</th>
+                    <th>{{ 'Result' | translate }}</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    @for (result of bestResults; track result; let i = $index) {
+                      <tr>
+                        <td>
+                          {{ i+1 }}
+                        </td>
+                        <td>
+                          <user-popover [customContent]="true" [username]="result.username">
+                                      <span class="text-dark">
+                                        <i data-feather="user"></i>
+                                        {{ result.username }}
+                                      </span>
+                          </user-popover>
+                        </td>
+                        <td>
+                                    <span class="badge-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
+                                      {{ result.result }}/{{ test.questionsCount }}
+                                    </span>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

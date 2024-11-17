@@ -18,6 +18,8 @@ import { ContentHeader } from '@layout/components/content-header/content-header.
 import { coreConfig } from '@app/app.config';
 import { SectionHeaderComponent } from '@contests/pages/contests/sections/section-header/section-header.component';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { FormControl } from '@angular/forms';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 enum ContestStatus {
   ALL = 2,
@@ -57,6 +59,8 @@ export class ContestsComponent extends BaseTablePageComponent<Contest> implement
   public contestStatus = ContestStatus.ALL;
   public contestCategory: number;
 
+  public searchControl = new FormControl();
+
   protected readonly ContestStatus = ContestStatus;
 
   constructor(public service: ContestsService) {
@@ -70,6 +74,10 @@ export class ContestsComponent extends BaseTablePageComponent<Contest> implement
   ngOnInit(): void {
     this.loadContentHeader();
     setTimeout(() => this.reloadPage());
+    this.searchControl.valueChanges.pipe(
+      takeUntil(this._unsubscribeAll),
+      debounceTime(1000),
+    ).subscribe(() => this.reloadPage());
   }
 
   getPage(): Observable<PageResult<Contest>> | null {
@@ -79,6 +87,7 @@ export class ContestsComponent extends BaseTablePageComponent<Contest> implement
       category: this.contestCategory || null,
       isParticipated: this.contestStatus !== ContestStatus.ALL ? +!!this.contestStatus : null,
       type: this.contestType ? this.contestTypes[this.contestType] : null,
+      title: this.searchControl.value,
     });
   }
 

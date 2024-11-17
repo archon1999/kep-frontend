@@ -1,4 +1,4 @@
-<core-sidebar cdkDrag [hideOnEsc]="true" [name]="sidebarName" class="code-editor-sidebar">
+<core-sidebar [hideOnEsc]="true" [name]="sidebarName" class="code-editor-sidebar">
   <a
     (click)="toggleSidebar()"
     class="btn-toggle d-flex align-items-center justify-content-center">
@@ -13,16 +13,7 @@
         </div>
 
         <div class="d-flex justify-content-between">
-          <div class="me-2 cursor-pointer" cdkDragHandle>
-            <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
-              <path d="M0 0h24v24H0z" fill="none"></path>
-            </svg>
-          </div>
-
-          <button (click)="toggleSidebar()" aria-label="Close" class="btn-close" type="button">
-            
-          </button>
+          <button (click)="toggleSidebar()" aria-label="Close" class="btn-close" type="button"></button>
         </div>
       </div>
       <hr class="mt-0 mb-50">

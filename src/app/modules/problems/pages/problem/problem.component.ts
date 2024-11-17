@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Params } from '@angular/router';
-import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
+import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { User } from '@auth';
 import { Subject } from 'rxjs';
 import { Problem } from '@problems/models/problems.models';
@@ -25,8 +25,7 @@ import { BasePageComponent } from '@app/common/classes/base-page.component';
   templateUrl: './problem.component.html',
   styleUrls: ['./problem.component.scss'],
   animations: [
-    fadeInLeftOnEnterAnimation({ duration: 1500 }),
-    fadeInRightOnEnterAnimation({ duration: 1000 }),
+    fadeInOnEnterAnimation({ duration: 1000 }),
   ],
   standalone: true,
   imports: [
@@ -59,6 +58,14 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
     public api: ApiService,
   ) {
     super();
+    this.coreConfigService.config = {
+      layout: {
+        footer: {
+          hidden: true,
+        },
+        enableLocalStorage: false
+      }
+    };
   }
 
   ngOnInit(): void {
@@ -88,15 +95,7 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
     }
   }
 
-  beforeChangeCurrentUser(currentUser: User) {
-    if (currentUser !== this.currentUser) {
-      this.service.getProblem(this.problem.id).subscribe(
-        (problem: Problem) => {
-          this.problem = problem;
-        }
-      );
-    }
-  }
+  beforeChangeCurrentUser(currentUser: User) {}
 
   getContentHeader() {
     return this.contentHeader = {

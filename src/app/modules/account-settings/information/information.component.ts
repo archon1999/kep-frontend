@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService, User } from '@auth';
 import { UserInfo } from '@users/users.models';
@@ -9,7 +9,8 @@ import { NgxCountriesService } from '@shared/third-part-modules/ngx-countries/ng
 @Component({
   selector: 'information',
   templateUrl: './information.component.html',
-  styleUrls: ['./information.component.scss']
+  styleUrls: ['./information.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class InformationComponent implements OnInit {
   public userInfo: UserInfo;

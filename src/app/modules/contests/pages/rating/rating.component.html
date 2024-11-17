@@ -8,8 +8,8 @@
           <tr>
             <th class="text-center">#</th>
             <th class="">{{ 'USER' | translate }}</th>
-            <th class="text-center"><kep-icon name="contest"></kep-icon></th>
-            <th class="text-center"><kep-icon name="rating"></kep-icon></th>
+            <th container="body" ngbTooltip="{{ 'Contests' | translate }}" class="text-center"><kep-icon name="contest"></kep-icon></th>
+            <th container="body" ngbTooltip="{{ 'Rating' | translate }}" class="text-center"><kep-icon name="rating"></kep-icon></th>
           </tr>
         </ng-container>
         <ng-container body>
@@ -20,7 +20,7 @@
                 <contestant-view [user]="contestsRating"></contestant-view>
               </td>
               <td class="text-dark text-center">
-                <span class="badge badge-light-info">
+                <span class="badge badge-primary">
                   {{ contestsRating.contestantsCount }}
                 </span>
               </td>

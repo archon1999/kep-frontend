@@ -10,6 +10,7 @@ import { KepTableComponent } from '@shared/components/kep-table/kep-table.compon
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { ContestsRating } from '@contests/models/contests-rating';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-rating',
@@ -22,6 +23,7 @@ import { ContestsRating } from '@contests/models/contests-rating';
     KepTableComponent,
     ContestantViewModule,
     KepPaginationComponent,
+    NgbTooltip,
   ]
 })
 export class RatingComponent extends BaseTablePageComponent<ContestsRating> implements OnInit {

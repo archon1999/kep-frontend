@@ -1,6 +1,6 @@
 <user-popover [customContent]="true" [username]="user.username">
-  <div class="text-{{ user.rankTitle | challengesRankColor }}">
-    <span class="badge rounded-pill badge-glow badge-{{ user.rankTitle | challengesRankColor }}">
+  <div>
+    <span class="badge badge-pill badge-glow badge-{{ user.rankTitle | challengesRankColor }}">
       {{ user.rankTitle }}
     </span>
     {{ user.username }}
@@ -15,7 +15,7 @@
 
     @if (user?.isBot) {
       <span
-        class="ms-50 mb-50 badge rounded-pill badge-light-{{ user.rankTitle | challengesRankColor }}">
+        class="ms-50 mb-50 badge badge-pill badge-light-{{ user.rankTitle | challengesRankColor }}">
         bot
       </span>
     }
