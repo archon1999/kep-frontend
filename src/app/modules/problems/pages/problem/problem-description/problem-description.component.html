@@ -7,117 +7,87 @@
 
   <problem-body [problem]="problem"></problem-body>
 
-<!--  <div ngbAccordion [closeOthers]="false" [destroyOnHide]="false">-->
-<!--    <div ngbAccordionItem id="panelMargin1">-->
-<!--      <ng-template ngbAccordionHeader>-->
-<!--        <span>{{ 'Tags' | translate }}</span>-->
-<!--      </ng-template>-->
-<!--      <ng-template ngbAccordionBody>-->
-<!--        <div-->
-<!--          *ngIf="currentUser?.isSuperuser || currentUser?.permissions.canChangeProblemTags && problem.userInfo.hasSolved else elseBlock">-->
-<!--          <button-->
-<!--            (click)="removeTag(tag)"-->
-<!--            *ngFor="let tag of problem.tags"-->
-<!--            class="btn mb-2 me-50 btn-relief-primary btn-sm">-->
-<!--            {{ tag.name }} <i data-feather="x"></i>-->
-<!--          </button>-->
+  <div ngbAccordion>
+    <div ngbAccordionItem>
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton>
+          {{ 'Tags' | translate }}
+        </button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div class="p-1">
+          @if (currentUser?.isSuperuser || currentUser?.permissions.canChangeProblemTags && problem.userInfo.hasSolved) {
+            <div class="d-flex gap-50">
+              @for (tag of problem.tags; track tag.id) {
+                <button
+                  (click)="removeTag(tag)"
+                  class="btn btn-primary mb-1 btn-sm">
+                  {{ tag.name }} <i data-feather="x"></i>
+                </button>
+              }
+            </div>
 
-<!--          <ng-select-->
-<!--            [(ngModel)]="selectedTag"-->
-<!--            [dropdownPosition]="'bottom'"-->
-<!--            [items]="tags"-->
-<!--            appendTo="body"-->
-<!--            bindLabel="name"-->
-<!--            bindValue="id">-->
-<!--          </ng-select>-->
+            <ng-select
+              [(ngModel)]="selectedTag"
+              [dropdownPosition]="'bottom'"
+              [items]="tags"
+              appendTo="body"
+              bindLabel="name"
+              bindValue="id">
+            </ng-select>
 
-<!--          <button (click)="addTag()" class="mt-2 btn btn-relief-primary btn-sm">{{ 'Add' | translate }}</button>-->
-<!--        </div>-->
-
-<!--        <ng-template #elseBlock>-->
-<!--          <span *ngFor="let tag of problem.tags" class="badge badge-pill bg-primary">-->
-<!--            {{ tag.name }}-->
-<!--          </span>-->
-<!--        </ng-template>-->
-<!--      </ng-template>-->
-<!--    </div>-->
-
-<!--    <ngb-panel [cardClass]="'collapse-margin'" id="panelMargin2">-->
-<!--      <ng-template ngbPanelTitle>-->
-<!--        <span>{{ 'Topics' | translate }}</span>-->
-<!--      </ng-template>-->
-<!--      <ng-template ngbPanelContent>-->
-<!--        <div *ngIf="currentUser?.isSuperuser else elseBlock">-->
-<!--          <button-->
-<!--            (click)="removeTopic(topic)"-->
-<!--            *ngFor="let topic of problem.topics"-->
-<!--            class="btn mb-2 me-50 btn-relief-primary btn-sm">-->
-<!--            {{ topic.name }} <i data-feather="x"></i>-->
-<!--          </button>-->
-
-<!--          <ng-select-->
-<!--            [(ngModel)]="selectedTopic"-->
-<!--            [dropdownPosition]="'bottom'"-->
-<!--            [items]="topics"-->
-<!--            appendTo="body"-->
-<!--            bindLabel="name"-->
-<!--            bindValue="id">-->
-<!--          </ng-select>-->
-
-<!--          <button (click)="addTopic()" class="mt-2 btn btn-relief-primary btn-sm">-->
-<!--            {{ 'Add' | translate }}-->
-<!--          </button>-->
-<!--        </div>-->
-
-<!--        <ng-template #elseBlock>-->
-<!--          <span-->
-<!--            *ngFor="let topic of problem.topics"-->
-<!--            class="badge badge-pill bg-primary">-->
-<!--            {{ topic.name }}-->
-<!--          </span>-->
-<!--        </ng-template>-->
-<!--      </ng-template>-->
-<!--    </ngb-panel>-->
-
-<!--    <ngb-panel *ngIf="currentUser && problem.hasSolution" [cardClass]="'collapse-margin'" id="panelMargin3">-->
-<!--      <ng-template ngbPanelTitle>-->
-<!--        <span>{{ 'Solution' | translate }}</span>-->
-<!--      </ng-template>-->
-<!--      <ng-template ngbPanelContent>-->
-<!--        <div *ngIf="problem.userInfo.canViewSolution else elseBlock;">-->
-<!--          <button (click)="openSolutionModal(solution)" class="btn btn-sm btn-relief-primary">-->
-<!--            {{ 'View' | translate }}-->
-<!--          </button>-->
-<!--        </div>-->
-<!--        <ng-template #elseBlock>-->
-<!--          <kepcoin-spend-swal-->
-<!--            (success)="onPurchaseSolution()"-->
-<!--            [purchaseUrl]="'problems/' + problem.id + '/purchase-solution/'"-->
-<!--            [value]="problem.solutionKepcoinValue">-->
-<!--          </kepcoin-spend-swal>-->
-<!--        </ng-template>-->
-<!--      </ng-template>-->
-<!--    </ngb-panel>-->
-<!--  </div>-->
-
-</div>
-
-<ng-template #solution let-modal>
-  <div *ngIf="problem.hasSolution" class="modal-header">
-    <h4 class="modal-title">{{ 'Solution' | translate }}</h4>
+            <button (click)="addTag()" class="mt-2 btn btn-primary btn-sm">{{ 'Add' | translate }}</button>
+          } @else {
+            <span *ngFor="let tag of problem.tags" class="badge badge-pill bg-primary">
+              {{ tag.name }}
+            </span>
+          }
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="modal-body">
-    <div [innerHTML]="problemSolution.solution"></div>
-    <ul #nav="ngbNav" class="nav-tabs" ngbNav>
-      <li *ngFor="let code of problemSolution.codes; let i = index" [ngbNavItem]="i+1">
-        <a ngbNavLink>{{ code.lang }}</a>
-        <ng-template ngbNavContent>
-          <clipboard-button [text]="code.code"></clipboard-button>
-          <div class="mb-1"></div>
-          <monaco-editor [(ngModel)]="code.code" [lang]="code.lang"></monaco-editor>
-        </ng-template>
-      </li>
-    </ul>
-    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+
+  <div *ngIf="problem.hasSolution" ngbAccordion>
+    <div ngbAccordionItem>
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton>
+          {{ 'Solution' | translate }}
+        </button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div class="p-1">
+          @if (currentUser?.isSuperuser || problem.userInfo.canViewSolution) {
+            <button (click)="openSolutionModal(solution)" class="btn btn-sm btn-relief-primary">
+              {{ 'View' | translate }}
+            </button>
+          } @else {
+            <kepcoin-spend-swal
+              (success)="onPurchaseSolution()"
+              [purchaseUrl]="'problems/' + problem.id + '/purchase-solution/'"
+              [value]="problem.solutionKepcoinValue">
+            </kepcoin-spend-swal>
+          }
+        </div>
+      </div>
+    </div>
   </div>
-</ng-template>
+
+  <ng-template #solution let-modal>
+    <div *ngIf="problem.hasSolution" class="modal-header">
+      <h4 class="modal-title">{{ 'Solution' | translate }}</h4>
+    </div>
+    <div class="modal-body">
+      <div [innerHTML]="problemSolution.solution"></div>
+      <ul #nav="ngbNav" class="nav-tabs" ngbNav>
+        <li *ngFor="let code of problemSolution.codes; let i = index" [ngbNavItem]="i+1">
+          <a ngbNavLink>{{ code.lang }}</a>
+          <ng-template ngbNavContent>
+            <clipboard-button [text]="code.code"></clipboard-button>
+            <div class="mb-1"></div>
+            <monaco-editor [(ngModel)]="code.code" [lang]="code.lang"></monaco-editor>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="nav" class="mt-2"></div>
+    </div>
+  </ng-template>

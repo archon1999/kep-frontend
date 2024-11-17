@@ -76,6 +76,8 @@ export class ProblemDescriptionComponent implements OnInit, OnDestroy {
         this.modalService.open(content, {
             size: 'lg',
             scrollable: true,
+            centered: true,
+            animation: false,
           }
         );
       });
