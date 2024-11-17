@@ -83,7 +83,6 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
   }
 
   set attempts(attempts: Array<Attempt>) {
-    console.log('set-attempts');
     this.wsService.send(LANG_CHANGE_EVENT, this.translateService.currentLang);
     this.removeAttemptsFromWS();
     this._attempts = attempts.map(attempt => Attempt.fromJSON(attempt));
@@ -134,7 +133,6 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
         this.modalService.open(this.modalRef, {
           centered: true,
           size: 'xl',
-          animation: false,
         });
       }
     );
@@ -150,7 +148,6 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
   }
 
   addAttemptsToWS() {
-    console.log('add attempts to ws');
     this._attempts.forEach(attempt => this.wsService.send(ATTEMPT_ADD_EVENT, attempt.id));
   }
 

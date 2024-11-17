@@ -20,7 +20,7 @@
   <div *swalPortal>
     <div class="mb-2 d-flex justify-content-center">
       <div class="text-center">
-        <div class="avatar avatar-lg bg-light-primary badge-glow">
+        <div class="avatar avatar-lg badge-light-primary badge-glow">
           <div class="avatar-content" ngbTooltip="{{ 'Challenges' | translate }}">
             <i class="font-medium-3" data-feather="zap"></i>
           </div>
@@ -36,11 +36,11 @@
 
     <div class="mt-1 mb-2 d-flex justify-content-center">
       <div class="text-center">
-                          <span class="badge mr-25 badge-glow badge-primary" ngbTooltip="{{ 'Time' | translate }}">
+                          <span class="badge me-25 badge-glow bg-primary" ngbTooltip="{{ 'Time' | translate }}">
                             <i data-feather="clock"></i>
                             {{ challenge.timeSeconds }}
                           </span>
-        <span class="badge badge-glow badge-primary" ngbTooltip="{{ 'Questions' | translate }}">
+        <span class="badge badge-glow bg-primary" ngbTooltip="{{ 'Questions' | translate }}">
                             <i data-feather="activity"></i>
           {{ challenge.questionsCount }}
                           </span>
@@ -50,13 +50,13 @@
     <div class="mt-2 mb-2 d-flex justify-content-between">
       <div class="text-center">
         <challenges-user-view [user]="challenge.playerFirst"></challenges-user-view>
-        <span class="ml-1 mt-25 badge badge-light-{{ challenge.playerFirst.rankTitle | challengesRankColor }}">
+        <span class="ms-1 mt-25 badge badge-light-{{ challenge.playerFirst.rankTitle | challengesRankColor }}">
                             {{ challenge.playerFirst.rating }}
                           </span>
       </div>
       <div class="text-center">
         <challenges-user-view [user]="challenge.playerSecond"></challenges-user-view>
-        <span class="ml-2 mt-25 badge badge-light-{{ challenge.playerSecond.rankTitle | challengesRankColor }}">
+        <span class="ms-2 mt-25 badge badge-light-{{ challenge.playerSecond.rankTitle | challengesRankColor }}">
                             {{ challenge.playerSecond.rating }}
                           </span>
       </div>
@@ -93,11 +93,11 @@
 
     <div class="mt-1 mb-2 d-flex justify-content-center">
       <div class="text-center">
-                          <span class="badge mr-25 badge-glow badge-primary" ngbTooltip="{{ 'Time' | translate }}">
+                          <span class="badge me-25 badge-glow bg-primary" ngbTooltip="{{ 'Time' | translate }}">
                             <i data-feather="clock"></i>
                             {{ challenge.timeSeconds }}
                           </span>
-        <span class="badge badge-glow badge-primary" ngbTooltip="{{ 'Questions' | translate }}">
+        <span class="badge badge-glow bg-primary" ngbTooltip="{{ 'Questions' | translate }}">
                             <i data-feather="activity"></i>
           {{ challenge.questionsCount }}
                           </span>
@@ -109,7 +109,7 @@
         <div class="text-center">
           <challenges-user-view [user]="challenge.playerFirst"></challenges-user-view>
           <span
-            class="ml-1 mr-25 mt-2 badge badge-glow badge-{{ challenge.playerFirst.newRankTitle | challengesRankColor }}">
+            class="ms-1 me-25 mt-2 badge badge-glow badge-{{ challenge.playerFirst.newRankTitle | challengesRankColor }}">
                               {{ challenge.playerFirst.newRating }}
                             </span>
           <span [ngClass]="{
@@ -152,7 +152,7 @@
         <div class="text-center">
           <challenges-user-view [user]="challenge.playerSecond"></challenges-user-view>
           <span
-            class="ml-2 mr-25 mt-2 badge badge-glow badge-{{ challenge.playerSecond.newRankTitle | challengesRankColor }}">
+            class="ms-2 me-25 mt-2 badge badge-glow badge-{{ challenge.playerSecond.newRankTitle | challengesRankColor }}">
                               {{ challenge.playerSecond.newRating }}
                             </span>
           <span [ngClass]="{

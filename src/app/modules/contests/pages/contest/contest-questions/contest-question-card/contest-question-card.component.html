@@ -2,11 +2,11 @@
   <div class="card-header">
     @if (question.problemSymbol) {
       <div class="problem-title">
-        <a routerLink="../problem/{{ question.problemSymbol }}" class="ml-25 text-primary"> {{ question.problemSymbol }}. {{ question.problemTitle }}</a>
+        <a routerLink="../problem/{{ question.problemSymbol }}" class="ms-25 text-primary"> {{ question.problemSymbol }}. {{ question.problemTitle }}</a>
       </div>
     }
     <div class="time">
-      <span class="badge mr-50" [class]="{
+      <span class="badge me-50" [class]="{
         'badge-primary': question.status == 0,
         'badge-warning': question.status == 1,
         'badge-success': question.status == 2,

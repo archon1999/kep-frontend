@@ -3,10 +3,10 @@
   </h5>
   <br>
     @for (option of questionOptions; track option; let i = $index) {
-      <div class="ml-1 mb-1 custom-control-info custom-control custom-radio">
+      <div class="ms-1 mb-1 custom-control-info form-check">
         <input type="radio" id="radio-{{ i }}" name="singleRadio" [(ngModel)]="singleRadio" value="{{ i }}"
-          class="custom-control-input" />
-          <label class="custom-control-label" for="radio-{{ i }}">{{ option }}</label>
+          class="form-check-input" />
+          <label class="form-check-label" for="radio-{{ i }}">{{ option }}</label>
         </div>
       }
 

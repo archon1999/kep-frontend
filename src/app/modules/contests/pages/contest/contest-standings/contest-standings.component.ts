@@ -24,6 +24,9 @@ import { BaseLoadComponent, BaseTablePageComponent } from '@app/common';
 import { interval, Observable } from 'rxjs';
 import { KepDeltaComponent } from '@shared/components/kep-delta/kep-delta.component';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import {
+  ContestStandingsTableComponent
+} from '@contests/pages/contest/contest-standings/contest-standings-table/contest-standings-table.component';
 
 @Component({
   selector: 'app-contest-standings',
@@ -44,6 +47,7 @@ import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pa
     EmptyResultComponent,
     KepDeltaComponent,
     KepPaginationComponent,
+    ContestStandingsTableComponent,
   ],
 })
 export class ContestStandingsComponent extends BaseTablePageComponent<Contestant> {
@@ -70,7 +74,6 @@ export class ContestStandingsComponent extends BaseTablePageComponent<Contestant
     this.route.data.subscribe(({ contest, contestProblems }) => {
       this.contest = Contest.fromJSON(contest);
       this.contestProblems = sortContestProblems(contestProblems);
-      this.loadContentHeader();
       this.titleService.updateTitle(this.route, { contestTitle: contest.title });
       setTimeout(() => this.reloadPage());
     });
@@ -97,44 +100,11 @@ export class ContestStandingsComponent extends BaseTablePageComponent<Contestant
     return this.service.getNewContestants(this.contest.id, this.pageable);
   }
 
-  getProblemInfoBySymbol(
-    problemsInfo: Array<ContestProblemInfo>,
-    problemSymbol: string
-  ): ContestProblemInfo | undefined {
-    return problemsInfo.find(problemInfo => problemInfo.problemSymbol === problemSymbol);
-  }
-
   updateContestProblems() {
     this.service.getContestProblems(this.contest.id).subscribe(
       (contestProblems) => {
         this.contestProblems = sortContestProblems(contestProblems);
       }
     );
-  }
-
-  protected getContentHeader() {
-    return {
-      headerTitle: 'CONTESTS.STANDINGS',
-      breadcrumb: {
-        type: '',
-        links: [
-          {
-            name: 'CONTESTS.CONTESTS',
-            isLink: true,
-            link: '../../..'
-          },
-          {
-            name: this.contest.id + '',
-            isLink: true,
-            link: '..'
-          },
-          {
-            name: 'CONTESTS.STANDINGS',
-            isLink: true,
-            link: '.'
-          }
-        ]
-      }
-    };
   }
 }

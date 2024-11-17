@@ -1,21 +1,28 @@
+<div class="d-flex mb-2 mt-2 justify-content-between">
+  <div class="font-medium-5 text-dark">{{ 'Topics' | translate }}</div>
+</div>
+
 @if (isLoading) {
-  <div class="card" [style.height.px]="200">
-    <spinner></spinner>
+  <div class="row">
+    @for (_ of [].constructor(12); track $index) {
+      <div class="col-lg-3 col-md-6 col-12">
+        <ngx-skeleton-loader
+          class="custom-skeleton"
+          count="1"
+          animation="pulse"
+          appearance="line"
+          [theme]="{height: '165px', background: 'var(--skeleton-color)'}"
+        ></ngx-skeleton-loader>
+      </div>
+    }
   </div>
 } @else {
-  <div class="d-flex mb-2 mt-2 justify-content-between">
-    <h2>{{ 'Topics' | translate }}</h2>
-<!--    <button [ngbTooltip]="'All' | translate" class="btn btn-sm btn-primary" (click)="showAll=!showAll">-->
-<!--      <kep-icon [name]="showAll ? 'double-up' : 'double-down'"></kep-icon>-->
-<!--    </button>-->
-  </div>
-
   <div class="row">
     @for (category of showAll ? categories : categories.slice(0, 4); track category.id){
       <div [@fadeInOnEnter] class="col-lg-3 col-md-6 col-12">
         <a [routerLink]="category.code" class="card">
           <div class="card-header justify-content-start">
-            <div class="category-icon mr-1">
+            <div class="category-icon me-1">
               <kep-icon type="duotone" size="large-1" color="primary" [name]="category.icon"></kep-icon>
             </div>
 
@@ -31,7 +38,7 @@
           <div class="card-footer">
             <a [routerLink]="category.code" class="text-primary d-flex justify-content-end align-items-center">
               {{ 'Practice' | translate }}
-              <kep-icon class="ml-25" name="arrow-right"></kep-icon>
+              <kep-icon class="ms-25" name="arrow-right"></kep-icon>
             </a>
           </div>
         </a>

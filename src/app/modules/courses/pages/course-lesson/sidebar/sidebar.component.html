@@ -3,7 +3,7 @@
     <div class="card-body">
       <a [routerLink]="Resources.Course | resourceById:course.id">
         <div class="d-flex align-items-center justify-content-center">
-          <img alt="Course logo" class="mr-1 img-fluid" src="{{ course.logo }}" width="48"/>
+          <img alt="Course logo" class="me-1 img-fluid" src="{{ course.logo }}" width="48"/>
           <div class="font-medium-4 text-dark">
             {{ course.title }}
           </div>
@@ -12,7 +12,7 @@
     </div>
 
     <div class="card-footer">
-      <div class="mb-25 text-dark font-weight-bold">
+      <div class="mb-25 text-dark fw-bold">
         {{ 'COURSES.PROGRESS' | translate }}: {{ course.participantPoints }}/{{ course.points }}
       </div>
       <ngb-progressbar [value]="course.participantProgress" showValue="true" type="primary"></ngb-progressbar>

@@ -1,10 +1,9 @@
 base-table {
-  td, th {
+  .table > :not(caption) > * > * {
     padding: 0.72rem 0.5rem !important;
   }
 
   th {
-    padding: 0.72rem 1.5rem !important;
     padding-left: 0.5rem !important;
     text-wrap: nowrap !important;
   }

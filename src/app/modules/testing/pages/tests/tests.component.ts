@@ -45,7 +45,6 @@ export class TestsComponent extends BaseTablePageComponent<Test> implements OnIn
       this.chapters.push(chapter);
     }
     this.chapters = this.chapters.sort((a, b) => a.id - b.id);
-    console.log(this.chapters);
   }
 
   protected getContentHeader(): ContentHeader {

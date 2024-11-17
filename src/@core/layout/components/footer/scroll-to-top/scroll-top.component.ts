@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, HostListener } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 @Component({
@@ -8,11 +8,10 @@ import { DOCUMENT } from '@angular/common';
 })
 export class ScrollTopComponent implements OnInit {
   windowScrolled: boolean;
-  topOffset: number = 150; // Top offset to display scroll to top button
+  topOffset = 150; // Top offset to display scroll to top button
 
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
-  /*  
   @HostListener('window:scroll', [])
   onWindowScroll() {
     if (
@@ -30,10 +29,9 @@ export class ScrollTopComponent implements OnInit {
     }
   }
 
-   */
   scrollToTop() {
     (function smoothscroll() {
-      var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
 
       if (currentScroll > 0) {
         window.requestAnimationFrame(smoothscroll);

@@ -2,13 +2,13 @@
   <div class="card-body">
     <div class="d-flex align-items-center mb-2">
       <i data-feather="settings" class="font-medium-3"></i>
-      <h4 class="mb-0 ml-75">System</h4>
+      <h4 class="mb-0 ms-75">System</h4>
     </div>
 
     <div id="customizer-menu-type mt-2">
-      <p class="font-weight-bold font-medium-3 mb-2">Menu Layout</p>
+      <p class="fw-bold font-medium-3 mb-2">Menu Layout</p>
       <div class="d-flex">
-        <div class="ml-1 mb-1 custom-control custom-radio">
+        <div class="ms-1 mb-1 form-check">
           <input
             type="radio"
             id="radio-1"
@@ -16,13 +16,13 @@
             [(ngModel)]="menuLayout"
             (change)="changeMenuLayout()"
             [value]="'vertical'"
-            class="custom-control-input" />
-            <label class="custom-control-label" for="radio-1">
+            class="form-check-input" />
+            <label class="form-check-label" for="radio-1">
               Vertical
             </label>
           </div>
 
-          <div class="ml-1 mb-1 custom-control custom-radio">
+          <div class="ms-1 mb-1 form-check">
             <input
               type="radio"
               id="radio-2"
@@ -30,8 +30,8 @@
               [(ngModel)]="menuLayout"
               (change)="changeMenuLayout()"
               [value]="'horizontal'"
-              class="custom-control-input" />
-              <label class="custom-control-label" for="radio-2">
+              class="form-check-input" />
+              <label class="form-check-label" for="radio-2">
                 Horizontal
               </label>
             </div>
@@ -39,7 +39,7 @@
         </div>
 
         <div class="sounds">
-          <p class="font-weight-bold font-medium-3 mb-1 mt-1">Sounds</p>
+          <p class="fw-bold font-medium-3 mb-1 mt-1">Sounds</p>
 
           <div class="rows">
             <div class="col-6">
@@ -67,9 +67,9 @@
         </div>
 
         <div class="animations mt-2">
-          <p class="font-weight-bold font-medium-3 mb-1 mt-1">Enable animations</p>
+          <p class="fw-bold font-medium-3 mb-1 mt-1">Enable animations</p>
           <div class="d-flex">
-            <div class="ml-1 mb-1 custom-control custom-radio">
+            <div class="ms-1 mb-1 form-check">
               <input
                 type="radio"
                 id="radio-3"
@@ -77,13 +77,13 @@
                 [(ngModel)]="enableAnimation"
                 (change)="changeEnableAnimation()"
                 [value]="'enable'"
-                class="custom-control-input" />
-                <label class="custom-control-label" for="radio-3">
+                class="form-check-input" />
+                <label class="form-check-label" for="radio-3">
                   Enable
                 </label>
               </div>
 
-              <div class="ml-1 mb-1 custom-control custom-radio">
+              <div class="ms-1 mb-1 form-check">
                 <input
                   type="radio"
                   id="radio-4"
@@ -91,8 +91,8 @@
                   [(ngModel)]="enableAnimation"
                   (change)="changeEnableAnimation()"
                   [value]="'disable'"
-                  class="custom-control-input" />
-                  <label class="custom-control-label" for="radio-4">
+                  class="form-check-input" />
+                  <label class="form-check-label" for="radio-4">
                     Disable
                   </label>
                 </div>

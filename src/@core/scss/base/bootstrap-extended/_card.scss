@@ -5,20 +5,29 @@
   margin-bottom: $content-padding;
   box-shadow: $box-shadow;
   transition: all 0.3s ease-in-out, background 0s, color 0s, border-color 0s;
+  --bs-card-cap-padding-y: 1.5rem;
+  --bs-card-title-color: $dark;
+  --bs-card-color: $dark;
+
+  @include dark-layout {
+    --bs-card-title-color: white;
+    --bs-card-color: white;
+  }
+
   .card {
     box-shadow: none !important;
   }
+
   .card-title {
     font-weight: 500;
     font-size: 1.285rem;
     margin-bottom: 1.53rem; // Considering sub-title minus margin
   }
-  .card-bordered {
-    border: $card-border-width solid $card-border-color;
-  }
+
   .card-img {
     object-fit: cover;
   }
+
   .card-img-overlay {
     border-radius: $card-border-radius;
   }
@@ -36,9 +45,11 @@
     bottom: 0;
     overflow: auto;
   }
+
   .card-body[class*='border-bottom-'] {
     border-bottom-width: 2px !important;
   }
+
   .card-img-overlay {
     &.bg-overlay {
       background: rgba($black, 0.45);

@@ -1,30 +1,36 @@
 @import 'styles/kep-imports';
 
-app-layout {
-  position: relative !important;
+.footer-container {
+  margin-left: 0;
+  width: calc(100%);
+  padding: 2rem 2rem;
+  border-radius: 3.5rem 3.5rem 0 0;
+  background-color: rgba(255, 255, 255, 0.5);
+
+  @include dark-layout {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+  }
+
+  @include media-breakpoint-down(sm) {
+    margin-top: 1rem;
+  }
 }
 
 footer.footer {
   position: relative !important;
-  //position: absolute !important;
-  //bottom: calc(-321px - 20px) !important;
-  //width: 100% !important;
 
   .card {
-    box-shadow: none;
     margin-bottom: 0;
     border-radius: 0;
+    background-color: rgba(255, 255, 255, 0.75);
 
-    // background-color: mix(white, $primary, 95) !important;
+    @include dark-layout {
+      background-color: rgba(0, 0, 0, 0.75);
+    }
   }
-
-  /*
-  @include media-breakpoint-down(md) {
-    bottom: calc(-427px - 20px) !important;
-  }
-
-  @include media-breakpoint-down(sm) {
-    bottom: calc(-571px  - 20px) !important;
-  }
-  */
 }

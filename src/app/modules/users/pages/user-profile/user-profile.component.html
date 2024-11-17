@@ -8,7 +8,7 @@
           <div class="profile-img">
             <img [src]="user.avatar" alt="Card image" class="rounded img-fluid" loading="lazy"/>
           </div>
-          <div class="profile-title ml-3">
+          <div class="profile-title ms-3">
             <h2 class="text-white">
               {{ user.firstName }} {{ user.lastName }}
               @if (user.streak >= 7) {
@@ -29,7 +29,7 @@
             aria-expanded="false"
             aria-label="Toggle navigation"
             class="btn btn-icon navbar-toggler"
-            data-target="#navbarSupportedContent"
+            data-bs-target="#navbarSupportedContent"
             rippleEffect
             type="button">
             <i class="font-medium-5" data-feather="align-justify"></i>
@@ -41,21 +41,21 @@
               <ul class="nav nav-pills mb-0">
                 <li class="nav-item">
                   <a (click)="changeTab(Tab.Ratings)" [ngClass]="{'active': activeTab == 1}"
-                     class="nav-link font-weight-bold">
+                     class="nav-link fw-bold">
                     <span class="d-none d-md-block">{{ 'Ratings' | translate }}</span>
                     <i [data-feather]="'rating' | iconName" class="d-block d-md-none"></i>
                   </a>
                 </li>
                 <li class="nav-item">
                   <a (click)="changeTab(Tab.Blog)" [ngClass]="{'active': activeTab == 2}"
-                     class="nav-link font-weight-bold">
+                     class="nav-link fw-bold">
                     <span class="d-none d-md-block">{{ 'Blog' | translate }}</span>
                     <i [data-feather]="'edit-3'" class="d-block d-md-none"></i>
                   </a>
                 </li>
                 <li class="nav-item">
                   <a (click)="changeTab(Tab.Achievements)" [ngClass]="{'active': activeTab == 3}"
-                     class="nav-link font-weight-bold">
+                     class="nav-link fw-bold">
                     <span class="d-none d-md-block">{{ 'Achievements' | translate }}</span>
                     <i [data-feather]="'achievement' | iconName" class="d-block d-md-none"></i>
                   </a>
@@ -66,7 +66,7 @@
                 <a routerLink="/settings" class="btn btn-primary"
                    rippleEffect>
                   <i data-feather="edit" class="d-block d-md-none"></i>
-                  <span class="font-weight-bold d-none d-md-block">{{ 'Edit' | translate }}</span>
+                  <span class="fw-bold d-none d-md-block">{{ 'Edit' | translate }}</span>
                 </a>
               }
             </div>

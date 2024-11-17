@@ -1,24 +1,24 @@
-<li ngbDropdown class="nav-item mr-lg-25 mr-50">
+<li ngbDropdown class="nav-item mr-lg-25 me-50">
   <div class="nav-link text-dark d-flex align-items-center cursor-pointer" ngbDropdownToggle id="navbarDailyTasksDropdown" (click)="loadData()">
     <streak [streak]="streak" [maxStreak]="maxStreak"></streak>
   </div>
   <ul ngbDropdownMenu aria-labelledby="navbarDailyTasksDropdown"
-    class="dropdown-menu bg-daily-tasks dropdown-menu-media dropdown-menu-right">
+    class="dropdown-menu bg-daily-tasks dropdown-menu-d-flex dropdown-menu-end">
     <li class="dropdown-menu-header">
       <div class="dropdown-header d-flex">
-        <h4 class="notification-title text-white mb-50 mr-auto">{{ 'DailyTasks' | translate }}</h4>
-        <div class="badge badge-pill badge-primary d-flex align-items-center">
+        <h4 class="notification-title text-white mb-50 me-auto">{{ 'DailyTasks' | translate }}</h4>
+        <div class="badge rounded-pill bg-primary d-flex align-items-center">
           {{ dailyTasks.length }} {{ 'Tasks' | translate }}
         </div>
       </div>
     </li>
 
     <ng-scrollbar autoHeightDisabled="false">
-      <li class="scrollable-container media-list">
+      <li class="scrollable-container d-flex-list">
         @for (dailyTask of dailyTasks; track dailyTask) {
           <div class="d-flex">
-            <div class="media d-flex align-items-start">
-              <div class="media-left text-dark">
+            <div class="d-flex d-flex align-items-start">
+              <div class="d-flex-left text-dark">
                 @switch (dailyTask.type) {
                   @case (DailyTaskType.Problem) {
                     <div class="avatar bg-primary mt-50">
@@ -43,8 +43,8 @@
                   }
                 }
               </div>
-              <div class="media-body">
-                <p class="media-heading text-white">
+              <div class="flex-grow-1">
+                <p class="d-flex-heading text-white">
                   {{ dailyTask.description }}
                   <img ngbTooltip="Kepcoin" height="19" src="assets/images/icons/kepcoin.png"> {{ dailyTask.kepcoin }}
                 </p>

@@ -19,22 +19,22 @@
   <div class="media-list">
     @for (birthDay of birthDays; track birthDay) {
       <div class="media">
-        <a class="media-left" href="javascript:void(0)">
+        <div class="media-left">
           <img
             class="media-object rounded-circle"
             src="{{ birthDay.avatar }}"
             alt="Avatar"
             height="48"
             width="48"
-            />
-          </a>
-          <div class="media-body">
-            <h5 class="media-heading">
-              <user-popover [username]="birthDay.username"></user-popover>
-            </h5>
-            ({{ birthDay.date | localizedDate:'mediumDate' }})
-          </div>
+          />
         </div>
-      }
-    </div>
+        <div class="media-body">
+          <h5 class="media-heading">
+            <user-popover [username]="birthDay.username"/>
+          </h5>
+          ({{ birthDay.date | localizedDate:'mediumDate' }})
+        </div>
+      </div>
+    }
   </div>
+</div>

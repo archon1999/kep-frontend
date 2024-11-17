@@ -354,7 +354,7 @@
   // navbar sticky
   &.navbar-sticky {
     .app-content {
-      padding: calc(#{$content-padding} + #{$navbar-height}* 2) #{$content-padding} 0 #{$content-padding};
+      padding: calc(#{$content-padding} + #{$navbar-height}* 2) #{$content-padding} 0 #{$content-padding} !important;
     }
     .header-navbar {
       background-color: $body-bg;
@@ -363,7 +363,7 @@
     .horizontal-menu-wrapper {
       .navbar-horizontal.header-navbar.fixed-top {
         left: 0;
-        top: 60px;
+        top: 59px;
         background-color: rgba(255, 255, 255, 0.8);
         backdrop-filter: blur(20px);
         box-shadow: 0 4px 24px 0 rgba($black, 0.1);
@@ -579,7 +579,7 @@
     .header-navbar {
       background: $white;
     }
-    .app-content {
+    .content.app-content {
       padding: calc(#{$navbar-height} + calc(#{$content-padding} - 0.8rem)) calc(#{$content-padding} - 0.8rem) 0
         calc(#{$content-padding} - 0.8rem) !important;
     }

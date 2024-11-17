@@ -22,7 +22,7 @@
           {{ 'USER_INFO.LIVES' | translate }}:
         </h5>
         <p class="card-text">
-          <span class="mr-25 fi fi-{{ userInfo.country }}"></span>
+          <span class="me-25 fi fi-{{ userInfo.country }}"></span>
           {{ userInfo.country | countryName }}
           @if (userInfo.region) {
             <span>, {{ userInfo.region }}</span>
@@ -73,10 +73,10 @@
               {{ 'USER_INFO.CODEFORCES' | translate }}:
             </h5>
             <p class="card-text mb-0">
-              <span class="badge badge-glow badge-warning">
+              <span class="badge badge-glow bg-warning">
                 {{ userSocial.codeforcesHandle }}
               </span>
-              <img class="ml-1" [src]="userSocial.codeforcesBadge">
+              <img class="ms-1" [src]="userSocial.codeforcesBadge">
             </p>
           </a>
         </div>

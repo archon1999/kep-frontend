@@ -3,7 +3,6 @@ import { CoreConfigService } from '@core/services/config.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { CoreCommonModule } from '@core/common.module';
-import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 
@@ -14,7 +13,6 @@ import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-option
   standalone: true,
   imports: [
     CoreCommonModule,
-    NgbButtonsModule,
     ApexChartModule,
   ]
 })

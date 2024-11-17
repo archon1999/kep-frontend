@@ -33,7 +33,7 @@
                       {{ 'PROBLEM' | translate }}:
                     </strong>
                   </label>
-                  <div class="form-group">
+                  <div class="mb-1">
                     <ng-select appendTo="body" [(ngModel)]="selectedProblem" [ngModelOptions]="{standalone: true}">
                       @for (contestProblem of contestProblems;track contestProblem) {
                         <ng-option [value]="contestProblem.symbol">
@@ -51,7 +51,7 @@
                       {{ 'Question' | translate }}:
                     </strong>
                   </label>
-                  <div class="form-group">
+                  <div class="mb-1">
                     <textarea class="form-control" [(ngModel)]="question" cols="30" rows="5"></textarea>
                   </div>
                 </div>

@@ -7,7 +7,7 @@
     </div>
   </div>
   <div class="card-body">
-    <div class="form-group">
+    <div class="mb-1">
       <label><strong>{{ 'Technology' | translate }}:</strong></label>
       <ng-select appendTo="body" [clearable]="false" [(ngModel)]="selectedTechnology">
         @for (technology of project.availableTechnologies;track technology) {
@@ -17,12 +17,12 @@
         }
       </ng-select>
     </div>
-    <div class="form-group">
+    <div class="mb-1">
       <label><strong>{{ 'File' | translate }}:</strong></label>
       <div class="custom-file">
-        <input (change)="handleFileInput($event.target.files)" accept=".zip" class="custom-file-input" id="customFile"
+        <input (change)="handleFileInput($event.target.files)" accept=".zip" class="form-control" id="customFile"
                type="file"/>
-        <label class="custom-file-label" for="customFile">
+        <label class="form-label" for="customFile">
           {{ this.fileToUpload?.name || 'Max size 1mb' }}
         </label>
       </div>

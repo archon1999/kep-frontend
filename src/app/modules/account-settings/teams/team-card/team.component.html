@@ -1,6 +1,6 @@
 <div [@fadeInOnEnter]="" class="card">
   <div class="card-header">
-    <div class="card-title font-weight-bolder">
+    <div class="card-title fw-bolder">
       {{ team.name }}
     </div>
   </div>
@@ -13,7 +13,7 @@
       <span *ngIf="member.username == team.createrUsername">
         (creator)
       </span>
-      <span class="mr-1"></span>
+      <span class="me-1"></span>
     }
   </div>
   @if (currentUser.username == team.createrUsername) {
@@ -21,7 +21,7 @@
       <clipboard-button [buttonClass]="'btn btn-sm btn-primary'" [text]="'https://kep.uz' + (Resources.TeamJoin | resourceById:team.code)">
         Link to join
       </clipboard-button>
-      <button ngbTooltip="Generate new link" class="ml-50 btn btn-sm btn-primary" (click)="refreshCode()">
+      <button ngbTooltip="Generate new link" class="ms-50 btn btn-sm btn-primary" (click)="refreshCode()">
         Refresh link
       </button>
     </div>

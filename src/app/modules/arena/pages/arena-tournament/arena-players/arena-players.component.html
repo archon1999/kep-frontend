@@ -3,7 +3,7 @@
     <tr class="bg-arena">
       <th class="text-dark">#</th>
       <th class="text-dark">{{ 'User' | translate }}</th>
-      <th class="text-dark text-right">{{ 'Results' | translate }}</th>
+      <th class="text-dark text-end">{{ 'Results' | translate }}</th>
       <th class="text-dark text-center">{{ 'Points' | translate }}</th>
     </tr>
   </ng-container>
@@ -20,7 +20,7 @@
         <td>
           <challenges-user-view [user]="player" [withRating]="true"></challenges-user-view>
         </td>
-        <td class="text-right player-results">
+        <td class="text-end player-results">
           @for (result of player.results;track result) {
             <span [ngClass]="{
               'text-warning': result == 3,
@@ -31,7 +31,7 @@
           }
         </td>
         <td class="text-center">
-          <span class="badge-glow badge-warning badge">
+          <span class="badge-glow bg-warning badge">
             @if (player.streak && arena.status == 0) {
               <img src="assets/images/icons/fire_red.png" alt="streak" width="17" height="17">
             }

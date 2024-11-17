@@ -113,20 +113,21 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
 
       this.updateContentHeader();
 
-      this.service.getMe(this.contest?.id).subscribe(
-        (contestant: Contestant | null) => {
-          if (contestant) {
-            this.contestant = Contestant.fromJSON(contestant);
-            if (this.contest.status === ContestStatus.ALREADY) {
-              this._intervalId = setInterval(() => {
-                this.updateContestant();
-                console.log(contestant);
-                this.cdr.markForCheck();
-              }, 30000);
+      if (this.currentUser) {
+        this.service.getMe(this.contest?.id).subscribe(
+          (contestant: Contestant | null) => {
+            if (contestant) {
+              this.contestant = Contestant.fromJSON(contestant);
+              if (this.contest.status === ContestStatus.ALREADY) {
+                this._intervalId = setInterval(() => {
+                  this.updateContestant();
+                  this.cdr.markForCheck();
+                }, 30000);
+              }
             }
           }
-        }
-      );
+        );
+      }
 
       this.langService.getLanguage().pipe(takeUntil(this._unsubscribeAll)).subscribe(
         (lang: AttemptLangs) => {

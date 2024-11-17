@@ -2,6 +2,10 @@
 
 // default look for page item, first and last item
 
+.page-item:not(:first-child) .page-link {
+  margin-left: 0 !important;
+}
+
 .page-item {
   border-radius: 5rem;
 

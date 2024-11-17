@@ -126,7 +126,7 @@ $math-color: #00a79d;
   $selector: '&',
   $color: $primary,
   $color-dark: mix(black, $primary, 20),
-  $background-light: rgba($primary, 0.7),
+  $background-light: rgba(mix(black, $primary, 10), 0.5),
   $background-dark: rgba($primary, 0.25),
 );
 
@@ -135,7 +135,7 @@ $math-color: #00a79d;
   $selector: $code-golf-selector,
   $color: $code-golf-color,
   $color-dark: mix(black, $code-golf-color, 20),
-  $background-light: rgba($code-golf-color, 0.7),
+  $background-light: rgba($code-golf-color, 0.5),
   $background-dark: rgba($code-golf-color, 0.25),
 ) {
   .card-bg {
@@ -148,7 +148,7 @@ $math-color: #00a79d;
   $selector: $one-line-selector,
   $color: $one-line-color,
   $color-dark: mix(black, $one-line-color, 30),
-  $background-light: rgba($one-line-color, 0.7),
+  $background-light: rgba($one-line-color, 0.5),
   $background-dark: rgba($one-line-color, 0.25),
 ) {
   .card-bg {
@@ -161,7 +161,7 @@ $math-color: #00a79d;
   $selector: $hack-it-selector,
   $color: $hack-it-color,
   $color-dark: mix(black, $hack-it-color, 30),
-  $background-light: rgba($hack-it-color, 0.7),
+  $background-light: rgba($hack-it-color, 0.5),
   $background-dark: rgba($hack-it-color, 0.25),
 );
 

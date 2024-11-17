@@ -26,7 +26,7 @@
               <contestant-view [user]="contestant" [team]="contestant.team"/>
             </td>
             <td class="text-center">
-                  <span class="badge badge-glow badge-primary">
+                  <span class="badge badge-glow bg-primary">
                     {{ contestant.points }}
                   </span>
             </td>
@@ -45,14 +45,14 @@
                       </span>
                   @if (contestant.newRatingTitle != contestant.ratingTitle) {
                     <contests-rating-image
-                      class="ml-50"
+                      class="ms-50"
                       [title]="contestant.newRatingTitle">
                     </contests-rating-image>
                   }
                   @if (contestant.doubleRatingPurchased) {
                     <img
                       height="25"
-                      class="ml-50"
+                      class="ms-50"
                       ngbTooltip="{{ 'DoubleRating' | translate }}"
                       src="assets/images/icons/x2-delta.png"
                     >
@@ -60,7 +60,7 @@
                   @if (contestant.saveRatingPurchased) {
                     <img
                       height="25"
-                      class="ml-75"
+                      class="ms-75"
                       ngbTooltip="{{ 'SaveRating' | translate }}"
                       src="assets/images/icons/save-rating.png"
                     >

@@ -42,7 +42,7 @@
                 <i data-feather="x-circle"></i>
               </span>
             }
-            <span (mouseenter)="onProblemFocus()" class="text-dark ml-50">
+            <span (mouseenter)="onProblemFocus()" class="text-dark ms-50">
               {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
               @if (contest.hasBalls()) {
                 <span>
@@ -61,7 +61,7 @@
               {{ contestProblem.solved }}
               <i data-feather="user-check"></i>
             </span>
-            <span class="text-dark pl-1">
+            <span class="text-dark ps-1">
               {{ contestProblem.attemptUsersCount - contestProblem.solved }}
               <i data-feather="user-x"></i>
             </span>

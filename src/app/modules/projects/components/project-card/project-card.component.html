@@ -12,11 +12,11 @@
     <span [innerHTML]="project.descriptionShort"></span>
 
     <div class="d-flex justify-content-between">
-      <div class="text-left">
+      <div class="text-start">
         <kepcoin [value]="project.kepcoins"/>
       </div>
-      <div class="text-right">
-      <span class="project-level badge badge-success ml-50 bagde-pill">
+      <div class="text-end">
+      <span class="project-level badge bg-success ms-50 bagde-pill">
         {{ project.levelTitle }}
       </span>
         @for (technology of project.availableTechnologies;track technology) {

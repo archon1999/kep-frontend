@@ -5,18 +5,18 @@
       {{ 'TIME_LIMIT' | translate }}
     </h5>
 
-    <h5 class="text-right">
+    <h5 class="text-end">
       {{ 'MEMORY_LIMIT' | translate }}
       <i class="text-primary" data-feather="hard-drive"></i>
     </h5>
   </div>
 
   <div class="mt-50 d-flex justify-content-between">
-    <span class="badge badge-info badge-glow">
+    <span class="badge bg-info badge-glow">
       {{ selectedAvailableLang.timeLimit || problem.timeLimit }} {{ 'MS' | translate }}
     </span>
 
-    <span class="badge badge-primary badge-glow">
+    <span class="badge bg-primary badge-glow">
       {{ selectedAvailableLang.memoryLimit || problem.memoryLimit }} {{ 'MB' | translate }}
     </span>
   </div>
@@ -39,7 +39,7 @@
         {{ problem.difficultyTitle }}
       </span>
       <user-popover [customContent]="true" [username]="problem.authorUsername">
-        <img width="24" height="24" class="round mr-50" alt="user-avater" [src]="problem.authorAvatar">
+        <img width="24" height="24" class="round me-50" alt="user-avater" [src]="problem.authorAvatar">
         {{ problem.authorUsername }}
       </user-popover>
     </div>
@@ -84,13 +84,13 @@
         </button>
       }
       @if (!currentUser) {
-        <span class="badge badge-success badge-glow">
+        <span class="badge bg-success badge-glow">
           <i data-feather="thumbs-up"></i>
           {{ problem.likesCount }}
         </span>
       }
       @if (!currentUser) {
-        <span class="badge badge-danger badge-glow">
+        <span class="badge bg-danger badge-glow">
           <i data-feather="thumbs-down"></i>
           {{ problem.dislikesCount }}
         </span>
@@ -146,7 +146,7 @@
       </h5>
     </div>
     <span
-      class="badge badge-dark">
+      class="badge bg-dark">
       {{ selectedAvailableLang.codeGolf }}
     </span>
   </div>

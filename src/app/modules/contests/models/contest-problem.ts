@@ -6,6 +6,7 @@ export interface ContestProblem {
   ball: number;
   attemptsCount: number;
   solved: number;
+  unsolved: number;
   attemptUsersCount: number;
   isSolved: boolean;
   isAttempted: boolean;

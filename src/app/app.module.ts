@@ -7,7 +7,6 @@ import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import 'hammerjs';
 import { ToastrModule } from '@shared/third-part-modules/toastr/toastr.module';
 
 import { CoreCommonModule } from '@core/common.module';

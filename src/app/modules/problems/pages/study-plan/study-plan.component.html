@@ -194,7 +194,7 @@
                     <i data-feather="activity" [size]="24"></i>
                     {{ studyPlan.daysCount }}
                   </div>
-                  <div class="info font-large-1 ml-2" ngbTooltip="{{ 'Problems' | translate }}">
+                  <div class="info font-large-1 ms-2" ngbTooltip="{{ 'Problems' | translate }}">
                     <i [data-feather]="'problem' | iconName" [size]="24"></i>
                     {{ studyPlan.problemsCount }}
                   </div>
@@ -205,7 +205,7 @@
                     [purchaseUrl]="'study-plans/' + studyPlan.id + '/purchase/'"
                     (success)="purchaseSuccess()"
                     [value]="studyPlan.kepcoinValue">
-                    <button class="ml-1 mt-50 text-white btn btn-relief-success btn-sm">
+                    <button class="ms-1 mt-50 text-white btn btn-relief-success btn-sm">
                       {{ 'Purchase' | translate }}
                     </button>
                   </kepcoin-spend-swal>
@@ -235,14 +235,14 @@
                             {{ problem.id }}. {{ problem.title }}
                             <div class="problem-tags">
                               @for (tag of problem.tags; track tag) {
-                                <span class="badge problem-tag badge-pill">
+                                <span class="badge problem-tag rounded-pill">
                                   {{ tag.name }}
                                 </span>
                               }
                             </div>
                           </div>
                           <div class="problem-difficulty">
-                            <span class="badge badge-glow badge-pill badge-{{ problem.difficulty | problemDifficultyColor }}">
+                            <span class="badge badge-glow rounded-pill badge-{{ problem.difficulty | problemDifficultyColor }}">
                               {{ problem.difficultyTitle | translate }}
                             </span>
                           </div>

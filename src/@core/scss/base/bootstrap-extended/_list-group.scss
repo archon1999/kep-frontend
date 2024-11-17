@@ -1,6 +1,10 @@
 
 // Inline list style with pipeline separator
 
+.list-group {
+  --bs-list-group-item-padding-y: 0.75rem;
+}
+
 ul.list-inline {
   li {
     display: inline-block;

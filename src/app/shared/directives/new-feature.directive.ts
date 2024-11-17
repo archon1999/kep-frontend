@@ -13,7 +13,7 @@ export class NewFeatureDirective implements OnInit {
     if (this.show) {
       setTimeout(() => {
         const element = document.createElement('div');
-        element.innerHTML = '<span class="badge badge-glow badge-warning new-feature">New</span>';
+        element.innerHTML = '<span class="badge badge-glow bg-warning new-feature">New</span>';
         this.el.nativeElement.appendChild(element);
       });
     }

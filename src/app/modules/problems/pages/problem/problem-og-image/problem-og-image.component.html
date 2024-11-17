@@ -6,13 +6,13 @@
 
     <span
       ngbTooltip="{{ 'DIFFICULTY' | translate }}"
-      class="badge-pill badge-glow badge badge-{{ problem.difficulty | problemDifficultyColor }}">
+      class="rounded-pill badge-glow badge badge-{{ problem.difficulty | problemDifficultyColor }}">
       {{ problem.difficultyTitle | translate }}
     </span>
 
     <span class="problem-header-sep"></span>
 
-    <span class="badge badge-primary badge-pill">
+    <span class="badge bg-primary rounded-pill">
       <i [data-feather]="'user' | iconName"></i>
       <user-popover [textColor]="'white'" [placement]="'bottom'" [username]="problem.authorUsername">
       </user-popover>
@@ -23,17 +23,17 @@
 
     <span class="problem-header-sep"></span>
 
-    <span class="badge badge-info badge-pill">
+    <span class="badge bg-info rounded-pill">
       {{ problem.timeLimit }} {{ 'MS' | translate }}
     </span>
-    <span class="badge badge-pill badge-primary">
+    <span class="badge rounded-pill bg-primary">
       {{ problem.memoryLimit }} {{ 'MB' | translate }}
     </span>
 
     <div class="mt-2">
       @for (availableLanguage of problem.availableLanguages; track availableLanguage) {
         <span>
-          <a class="badge-pill text-white badge badge-{{ availableLanguage.lang }}">
+          <a class="rounded-pill text-white badge badge-{{ availableLanguage.lang }}">
             {{ availableLanguage.langFull }}
           </a>
         </span>

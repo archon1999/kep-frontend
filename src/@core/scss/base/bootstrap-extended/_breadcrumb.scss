@@ -1,4 +1,6 @@
 .breadcrumb {
+  --bs-breadcrumb-padding-x: 1rem;
+
   &:not([class*='breadcrumb-']) {
     .breadcrumb-item + .breadcrumb-item {
       &:before {

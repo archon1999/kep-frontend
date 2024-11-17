@@ -30,8 +30,12 @@
   @each $color_type, $color_value in $color {
     @if $color_type== 'base' {
       // background color
+      .badge-#{$color_name} {
+        background-color: $color_value;
+      }
+
       .bg-#{$color_name} {
-        background-color: $color_value !important;
+        background-color: $color_value;
 
         .card-header,
         .card-footer {

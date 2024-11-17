@@ -1,0 +1,69 @@
+@import 'styles/kep-imports';
+
+contestant-view, contestant-view div {
+  white-space: nowrap;
+}
+
+.rating-title-img {
+  margin-right: 5px !important;
+}
+
+.contest-time-sm {
+  font-size: 10px;
+}
+
+.less-code {
+  margin-left: 0.6rem;
+  margin-right: 0.6rem;
+}
+
+.absolute {
+  position: absolute;
+}
+
+span.points {
+  background: var(--bg) !important;
+  box-shadow: var(--box-shadow) !important;
+  color: var(--text-color);
+}
+
+::ng-deep span.problem-points {
+  background: var(--bg-light) !important;
+  color: var(--bg);
+}
+
+::ng-deep span.problem-points.the-best {
+  background: var(--bg) !important;
+  box-shadow: var(--box-shadow) !important;
+  color: var(--text-color);
+}
+
+th:nth-child(1), td:nth-child(1) {
+  min-width: 100px;
+}
+
+th {
+  border-bottom: none !important;
+  border-top: none !important;
+}
+
+th, td {
+  padding: 16px !important;
+}
+
+th:nth-child(n+7), td:nth-child(n+7) {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+.border-top-1 {
+  border-top: 1px solid var(--bg) !important;
+}
+
+.row-odd {
+  background-color: rgb(231 231 231 / 33%);
+
+  @include dark-layout {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}

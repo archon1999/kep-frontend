@@ -579,7 +579,7 @@
 
   // dropdown
   .dropdown-menu {
-    background-color: $theme-dark-card-bg;
+    background-color: $theme-dark-border-color;
     backdrop-filter: blur(5px) !important;
     box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.24);
 
@@ -966,9 +966,10 @@
 
   // card
   .card {
-    border: 1px solid $theme-dark-body-bg;
+    border: 1px solid black;
     background-color: $theme-dark-card-bg;
     box-shadow: $theme-dark-box-shadow !important;
+
     .card-footer {
       border-color: $theme-dark-border-color;
     }

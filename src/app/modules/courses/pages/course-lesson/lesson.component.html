@@ -59,7 +59,7 @@
                 ></lesson-part>
 
                 <div class="row mt-2 justify-content-between">
-                  <div class="pl-1">
+                  <div class="ps-1">
                     @if (lessonPartIndex > 0) {
                       <button (click)="changeLessonPart(lessonPartIndex-1)" class="btn btn-primary">
                         <i data-feather="arrow-left"></i>
@@ -71,7 +71,7 @@
                       <i data-feather="message-circle" [size]="16"></i>
                     </button>
                   </div>
-                  <div class="pr-1">
+                  <div class="pe-1">
                     @if (lessonPartIndex + 1 < courseLesson.parts.length) {
                       <button (click)="changeLessonPart(lessonPartIndex+1)"
                               class="btn btn-primary">

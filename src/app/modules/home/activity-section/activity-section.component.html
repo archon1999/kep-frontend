@@ -10,11 +10,11 @@
     <div class="card-body">
       <div class="statistics-info">
         @if (statistics.dailyActivity) {
-          <span class="badge badge-success badge-glow">
+          <span class="badge bg-success badge-glow">
             <kep-icon class="font-small-2" name="check-circle"></kep-icon>
           </span>
         } @else {
-          <span class="badge badge-danger badge-glow">
+          <span class="badge bg-danger badge-glow">
             <kep-icon class="font-small-2" name="minus-circle"></kep-icon>
           </span>
         }
@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="statistics-info">
-        <span class="badge badge-primary badge-glow">
+        <span class="badge bg-primary badge-glow">
           <kep-icon class="font-small-2" name="attempt"></kep-icon>
         </span>
         <div class="title">
@@ -32,7 +32,7 @@
         <span class="font-medium-1">{{ statistics.attempts }}</span>
       </div>
       <div class="statistics-info">
-        <span class="badge badge-primary badge-glow">
+        <span class="badge bg-primary badge-glow">
           <kep-icon class="font-small-2" name="problem"></kep-icon>
         </span>
         <div class="title">
@@ -41,7 +41,7 @@
         <span class="font-medium-1">{{ statistics.problems }}</span>
       </div>
       <div class="statistics-info">
-        <span class="badge badge-primary badge-glow">
+        <span class="badge bg-primary badge-glow">
           <kep-icon class="font-small-2" name="challenge"></kep-icon>
         </span>
         <div class="title">
@@ -50,14 +50,14 @@
         <div class="font-medium-1">
           <span class="text-success font-medium-2" ngbTooltip="{{ 'Wins' | translate }}">W</span>
           {{ statistics.challenges.wins }}
-          <span class="ml-50 text-warning font-medium-2" ngbTooltip="{{ 'Draws' | translate }}">D</span>
+          <span class="ms-50 text-warning font-medium-2" ngbTooltip="{{ 'Draws' | translate }}">D</span>
           {{ statistics.challenges.draws }}
-          <span class="ml-50 text-danger font-medium-2" ngbTooltip="{{ 'Losses' | translate }}">L</span>
+          <span class="ms-50 text-danger font-medium-2" ngbTooltip="{{ 'Losses' | translate }}">L</span>
           {{ statistics.challenges.losses }}
         </div>
       </div>
       <div class="statistics-info">
-        <span class="badge badge-success badge-glow">
+        <span class="badge bg-success badge-glow">
           <kep-icon class="font-small-2" name="test"></kep-icon>
         </span>
         <div class="title">

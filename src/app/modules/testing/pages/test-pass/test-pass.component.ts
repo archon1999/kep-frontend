@@ -98,7 +98,6 @@ export class TestPassComponent implements OnInit, OnDestroy {
         a.push(option.optionMain);
         b.push(option.optionSecondary);
       }
-      console.log(this.question.options);
       this.conformityGroupOne = randomShuffle(a);
       this.conformityGroupTwo = randomShuffle(b);
     } else if (this.question.type == 5) {

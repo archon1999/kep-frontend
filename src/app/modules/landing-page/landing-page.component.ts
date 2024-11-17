@@ -4,7 +4,6 @@ import { SectionHeaderComponent } from '@app/modules/landing-page/sections/secti
 import { NavbarComponent } from '@app/modules/landing-page/navbar/navbar.component';
 import { SectionStatisticsComponent } from '@app/modules/landing-page/sections/section-statistics/section-statistics.component';
 import { SectionReviewsComponent } from '@app/modules/landing-page/sections/section-reviews/section-reviews.component';
-import { SectionFooterComponent } from '@app/modules/landing-page/sections/section-footer/section-footer.component';
 import { SectionPracticeComponent } from '@app/modules/landing-page/sections/section-practice/section-practice.component';
 import { SectionGetStartedComponent } from '@app/modules/landing-page/sections/section-get-started/section-get-started.component';
 import { SectionContactUsComponent } from '@app/modules/landing-page/sections/section-contact-us/section-contact-us.component';
@@ -22,7 +21,6 @@ import { CoreConfigService } from '@core/services/config.service';
     NavbarComponent,
     SectionStatisticsComponent,
     SectionReviewsComponent,
-    SectionFooterComponent,
     SectionPracticeComponent,
     SectionGetStartedComponent,
     SectionContactUsComponent,

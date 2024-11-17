@@ -1,21 +1,73 @@
-<!--<section-footer/>-->
-<!--<div class="card">-->
-<!--  <div class="content-wrapper container-xxl p-0 full-width">-->
-<!--    <div class="content-body">-->
-<!--      <div class="card-body align-items-center d-flex justify-content-between">-->
-<!--        <div class="text-dark">{{ coreConfig.app.appTitle }} ©</div>-->
-<!--        <div>-->
-<!--          Powered by-->
-<!--          <a aria-label="Django" href="https://www.djangoproject.com/" ngbTooltip="Django">-->
-<!--            <kep-icon name="dj" type="duotone"></kep-icon>-->
-<!--          </a>-->
-<!--          <a aria-label="Angular" href="https://angular.io/" ngbTooltip="Angular">-->
-<!--            <kep-icon name="angular" type="duotone"></kep-icon>-->
-<!--          </a>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
+<div class="footer-container">
+  <div class="content-wrapper container-xxl">
+    <div class="content-body mt-2 mb-2">
+      <div class="row">
+        <div class="col-12 col-lg-5 mb-1 mb-lg-0">
+          <div class="brand">
+            <span class="brand-logo">
+              <img alt="brand-logo" height="36" [src]="coreConfig.app.appLogoImage" width="48"/>
+            </span>
+            <h2 class="brand-text text-dark ms-1 fw-bolder mb-0">{{ coreConfig.app.appTitle }}</h2>
+          </div>
+          <p class="text-dark font-medium-2 pr-0 pe-md-4 mr-0 me-md-4 mt-2">{{ 'LandingPage.SectionTopText' | translate }}</p>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <div class="text-dark fw-bolder mb-50">
+            <kep-icon size="small-4" [name]="menu[1].icon"></kep-icon>
+            {{ menu[1].translate | translate }}
+          </div>
+          @for (menuItem of menu[1].children; track menuItem.id) {
+            <div class="mt-1">
+              <a class="text-dark" [routerLink]="menuItem.url">{{ menuItem.translate | translate }}</a>
+            </div>
+          }
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <div class="text-dark fw-bolder mb-50">
+            <kep-icon size="small-4" [name]="menu[2].icon"></kep-icon>
+            {{ menu[2].translate | translate }}
+          </div>
+          @for (menuItem of menu[2].children; track menuItem.id) {
+            <div class="mt-1">
+              <a class="text-dark" [routerLink]="menuItem.url">{{ menuItem.translate | translate }}</a>
+            </div>
+          }
+        </div>
+        <div class="col-6 col-md-3 col-lg-2">
+          <div class="text-dark fw-bolder mb-50">
+            <kep-icon size="small-4" [name]="menu[3].icon"></kep-icon>
+            {{ menu[3].translate | translate }}
+          </div>
+          @for (menuItem of menu[3].children; track menuItem.id) {
+            <div class="mt-1">
+              <a class="text-dark" [routerLink]="menuItem.url">{{ menuItem.translate | translate }}</a>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<!--<app-scroll-top *ngIf="coreConfig.layout.scrollTop"></app-scroll-top>-->
+<hr class="m-0 p-0">
+
+<div class="card">
+  <div class="content-wrapper container-xxl p-0 full-width">
+    <div class="content-body">
+      <div class="card-body align-items-center d-flex justify-content-between">
+        <div class="text-dark">{{ coreConfig.app.appTitle }} ©</div>
+        <div class="text-dark">
+          Powered by
+          <a aria-label="Django" href="https://www.djangoproject.com/" ngbTooltip="Django">
+            <kep-icon name="dj" type="duotone"></kep-icon>
+          </a>
+          <a aria-label="Angular" href="https://angular.io/" ngbTooltip="Angular">
+            <kep-icon name="angular" type="duotone"></kep-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-scroll-top *ngIf="coreConfig.layout.scrollTop"></app-scroll-top>

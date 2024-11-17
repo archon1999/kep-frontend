@@ -8,15 +8,9 @@
       <li ngbNavItem>
         <a ngbNavLink>{{ 'AllProblems' | translate }}</a>
         <ng-template ngbNavContent>
-          @defer (on viewport) {
-            <div class="mb-2">
-              <section-categories></section-categories>
-            </div>
-          } @placeholder  {
-            <div class="card" [style.height.px]="200">
-              <spinner></spinner>
-            </div>
-          }
+          <div class="mb-2">
+            <section-categories></section-categories>
+          </div>
           @defer (on viewport) {
             <section-problems-filter></section-problems-filter>
           } @placeholder  {

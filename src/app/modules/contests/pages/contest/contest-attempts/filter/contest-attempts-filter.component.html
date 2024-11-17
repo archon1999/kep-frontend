@@ -10,12 +10,12 @@
 
   <div class="card-footer">
     <form [formGroup]="form" class="form">
-      <div class="form-group">
+      <div class="mb-1">
         <label class="contest-color">
           <kep-icon name="problem" size="small-2"/>
           {{ 'PROBLEM' | translate }}
         </label>
-        <div class="form-group">
+        <div class="mb-1">
           <ng-select appendTo="body" formControlName="contestProblem">
             @for (contestProblem of contestProblems; track contestProblem) {
               <ng-option [value]="contestProblem.symbol">
@@ -26,7 +26,7 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="mb-1">
         <label class="contest-color">
           <kep-icon name="verdict" size="small-2"/>
           {{ 'VERDICT' | translate }}
@@ -39,14 +39,14 @@
       </div>
 
       @if (currentUser) {
-        <div class="mt-1 custom-control custom-checkbox">
+        <div class="mt-1 form-check">
           <input
             formControlName="userOnly"
-            class="custom-control-input contest-bg-color"
+            class="form-check-input contest-bg-color"
             id="filterOnlyUser"
             type="checkbox"
           />
-          <label class="custom-control-label" for="filterOnlyUser">{{ 'MY_ATTEMPTS' | translate }}</label>
+          <label class="form-check-label" for="filterOnlyUser">{{ 'MY_ATTEMPTS' | translate }}</label>
         </div>
       }
     </form>

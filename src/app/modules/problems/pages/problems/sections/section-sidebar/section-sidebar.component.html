@@ -33,7 +33,7 @@
                         <i data-feather="check-circle" class="font-medium-5"></i>
                       </div>
                     </div>
-                    <h2 class="font-weight-bolder">{{ activitySolved }}</h2>
+                    <h2 class="fw-bolder">{{ activitySolved }}</h2>
                     <p class="mb-0 line-ellipsis">{{ 'Problem' | translate }}</p>
                   </div>
                   @if (activityChart) {
@@ -76,7 +76,7 @@
                   <tr class="bg-gradient-primary">
                     <th class="text-center text-white">#</th>
                     <th class="text-white">
-                      <i class="mr-50" data-feather="user"></i>
+                      <i class="me-50" data-feather="user"></i>
                       {{ 'USER' | translate }}
                     </th>
                     <th class="text-center text-white"><i [data-feather]="'rating' | iconName"></i></th>
@@ -92,7 +92,7 @@
                         <contestant-view [imgSize]="28" [user]="rating"></contestant-view>
                       </td>
                       <td class="text-center">
-                        <span class="badge badge-primary badge-glow">
+                        <span class="badge bg-primary badge-glow">
                           {{ rating.solved }}
                         </span>
                       </td>
@@ -119,12 +119,12 @@
               <table class="table attempts">
                 <thead class="bg-gradient-primary">
                   <tr>
-                    <th class="ml-50 text-white">
-                      <i class="mr-50" [data-feather]="'problem' | iconName"></i>
+                    <th class="ms-50 text-white">
+                      <i class="me-50" [data-feather]="'problem' | iconName"></i>
                       {{ 'Problem' | translate }}
                     </th>
-                    <th class="mr-50 text-right text-white">
-                      <i class="mr-50" [data-feather]="'activity'"></i>
+                    <th class="me-50 text-end text-white">
+                      <i class="me-50" [data-feather]="'activity'"></i>
                       {{ 'Verdict' | translate }}
                     </th>
                   </tr>
@@ -132,16 +132,16 @@
                 <tbody>
                   @for (attempt of lastAttempts; track attempt) {
                     <tr>
-                      <td class="ml-50">
+                      <td class="ms-50">
                         <a [routerLink]="['/practice', 'problems', 'problem', attempt.problemId]">
                           <span class="text-primary">{{ attempt.problemId }}. {{ attempt.problemTitle }}</span>
                         </a>
                       </td>
-          <td class="text-right" [ngClass]="{
+          <td class="text-end" [ngClass]="{
             'text-success': attempt.verdict == 1,
             'text-danger': attempt.verdict != 1
           }">
-                        <div class="mr-1">
+                        <div class="me-1">
                           <span class="font-small-3">
                             {{ attempt.verdictTitle }}
                           </span>

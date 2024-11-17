@@ -24,16 +24,16 @@
           @if (challenge.rated) {
             <kep-delta [value]="challenge.playerFirst.delta"></kep-delta>
           } @else {
-            <span class="badge badge-pill badge-secondary">{{ 'Unrated' | translate }}</span>
+            <span class="badge rounded-pill bg-secondary">{{ 'Unrated' | translate }}</span>
           }
         </td>
 
-        <td class="text-right">
-          <span ngbTooltip="{{ 'Time' | translate }}" class="badge mr-25 badge-glow badge-primary bg-primary">
+        <td class="text-end">
+          <span ngbTooltip="{{ 'Time' | translate }}" class="badge me-25 badge-glow bg-primary bg-primary">
             <kep-icon class="font-small-3" name="challenge-time"></kep-icon>
             {{ challenge.timeSeconds }}
           </span>
-          <span ngbTooltip="{{ 'Questions' | translate }}" class="badge badge-glow badge-primary bg-primary">
+          <span ngbTooltip="{{ 'Questions' | translate }}" class="badge badge-glow bg-primary bg-primary">
             <kep-icon class="font-small-3" name="challenge-task"></kep-icon>
             {{ challenge.questionsCount }}
           </span>
@@ -62,13 +62,13 @@
           @if (challenge.rated) {
             <kep-delta [value]="challenge.playerSecond.delta"></kep-delta>
           } @else {
-            <span class="badge badge-pill badge-secondary">{{ 'Unrated' | translate }}</span>
+            <span class="badge rounded-pill bg-secondary">{{ 'Unrated' | translate }}</span>
           }
         </td>
 
-        <td class="text-right">
+        <td class="text-end">
           @if (!challenge.finished) {
-            <span class="badge badge-glow badge-success">
+            <span class="badge badge-glow bg-success">
               {{ 'Now' | translate }}
             </span>
           }

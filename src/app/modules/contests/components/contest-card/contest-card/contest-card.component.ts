@@ -72,8 +72,7 @@ export class ContestCardComponent implements OnInit {
     );
   }
 
-    openRegistrationModal() {
-    console.log(2412421412);
+  openRegistrationModal() {
     if (this.contest.participationType === 1) {
       this.service.contestRegistration(this.contest.id).subscribe((result: any) => {
         if (result.success) {

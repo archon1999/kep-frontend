@@ -1,4 +1,5 @@
 @import 'styles/kep-imports';
+@import 'styles/colors/study-plans';
 
 .study-plan-1 .card {
   background: linear-gradient(to right, lighten($study-plan-1, 5), lighten($study-plan-1, 25));

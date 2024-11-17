@@ -29,6 +29,7 @@ export class Contestant {
     public isOfficial: boolean,
     public virtualTime: string,
     public country: string,
+    public rowClass?: string,
   ) {}
 
   static fromJSON(data: any) {

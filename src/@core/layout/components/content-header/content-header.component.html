@@ -6,7 +6,7 @@
       <div class="content-header-left mb-0">
         <div class="breadcrumbs-top">
           <div class="d-flex mt-1">
-            <h2 class="content-header-title text-dark float-left mb-0">
+            <h2 class="content-header-title text-dark float-start mb-0">
               {{ contentHeader.headerTitle | translate }}
             </h2>
             <!-- app-breadcrumb component -->
@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <div class="text-right" [@fadeInUp]="animationState">
+    <div class="text-end" [@fadeInUp]="animationState">
       <ng-content select="[actions]"></ng-content>
       @if (contentHeader.refreshVisible) {
         <button ngbTooltip="{{ 'Reload' | translate }}" (click)="refresh.next(null)" rippleEffect class="btn btn-sm btn-primary">

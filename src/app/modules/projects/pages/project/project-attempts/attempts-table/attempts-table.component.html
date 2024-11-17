@@ -31,7 +31,7 @@
           </td>
           <td>
             <user-popover [username]="attempt.username" [customContent]="true">
-              <img alt="user-avatar" height="32" width="32" class="rounded-circle mr-50" [src]="attempt.userAvatar">
+              <img alt="user-avatar" height="32" width="32" class="rounded-circle me-50" [src]="attempt.userAvatar">
               {{ attempt.username }}
             </user-popover>
           </td>
@@ -58,10 +58,10 @@
             </span>
           </td>
           <td class="td-content">
-            <span class="badge badge-info">{{ attempt.time }} {{ 'MS' | translate }}</span>
+            <span class="badge bg-info">{{ attempt.time }} {{ 'MS' | translate }}</span>
           </td>
           <td class="td-content">
-            <span class="badge badge-primary">{{ attempt.memory }} {{ 'KB' | translate }}</span>
+            <span class="badge bg-primary">{{ attempt.memory }} {{ 'KB' | translate }}</span>
           </td>
           <td>
             @if (currentUser?.username == attempt.username || currentUser?.isSuperuser) {
@@ -98,11 +98,11 @@
 
 <ng-template #modal let-modal>
   <div class="modal-header">
-    <h5 class="modal-title mr-1">
+    <h5 class="modal-title me-1">
       <kep-icon name="file-sheet" type="duotone"/> Log
     </h5>
-    <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
+    <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+      
     </button>
   </div>
   <div class="modal-body" tabindex="0">
@@ -110,27 +110,27 @@
       <pre *ngIf="logs.log" [innerHTML]="logs.log"></pre>
     }
     <div class="accordion collapse-margin">
-      <ngb-accordion [destroyOnHide]="false" [closeOthers]="true">
-        @for (log of logs.tasks; track log; let i = $index) {
-          <ngb-panel id="panelMargin{{ i }}" [cardClass]="'collapse-margin'">
-            <ng-template ngbPanelTitle>
-              <span>
-                {{ log.taskNumber }}. {{ log.taskTitle }}
-                @if (log.done === true) {
-                  <kep-icon name="check-square" color="success" type="duotone"/>
-                }
-                @if (log.done === false) {
-                  <kep-icon name="cross-square" color="danger" type="duotone"/>
-                }
-              </span>
-            </ng-template>
-            <ng-template ngbPanelContent>
-              <div><kep-icon name="file-sheet" type="duotone"/>Log</div>
-              <pre *ngIf="log.log" [innerHTML]="log.log"></pre>
-            </ng-template>
-          </ngb-panel>
-        }
-      </ngb-accordion>
+<!--      <ngb-accordion [destroyOnHide]="false" [closeOthers]="true">-->
+<!--        @for (log of logs.tasks; track log; let i = $index) {-->
+<!--          <ngb-panel id="panelMargin{{ i }}" [cardClass]="'collapse-margin'">-->
+<!--            <ng-template ngbPanelTitle>-->
+<!--              <span>-->
+<!--                {{ log.taskNumber }}. {{ log.taskTitle }}-->
+<!--                @if (log.done === true) {-->
+<!--                  <kep-icon name="check-square" color="success" type="duotone"/>-->
+<!--                }-->
+<!--                @if (log.done === false) {-->
+<!--                  <kep-icon name="cross-square" color="danger" type="duotone"/>-->
+<!--                }-->
+<!--              </span>-->
+<!--            </ng-template>-->
+<!--            <ng-template ngbPanelContent>-->
+<!--              <div><kep-icon name="file-sheet" type="duotone"/>Log</div>-->
+<!--              <pre *ngIf="log.log" [innerHTML]="log.log"></pre>-->
+<!--            </ng-template>-->
+<!--          </ngb-panel>-->
+<!--        }-->
+<!--      </ngb-accordion>-->
     </div>
   </div>
 </ng-template>

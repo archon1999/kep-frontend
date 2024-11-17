@@ -5,7 +5,7 @@
 
   <div class="contest-standings-top">
     <div class="header">
-      <kep-icon class="mr-50" name="contest" size="large-1" type="duotone"/>
+      <kep-icon class="me-50" name="contest" size="large-1" type="duotone"/>
       <div class="font-large-1 text-dark">
         {{ contest.title }}
       </div>
@@ -13,163 +13,25 @@
     <contest-tab [contest]="contest"/>
   </div>
 
-  <div class="contest-standings-top" *ngIf="contest.status == 0">
+  <div *ngIf="contest.status == 0" class="contest-standings-top">
     <contest-standings-countdown [contest]="contest"/>
   </div>
 
-  <kep-table
-    spinnerColor="var(--bg)"
-    [loading]="isLoading && contestants.length == 0"
-    [empty]="contestants.length == 0">
-    <ng-container header>
-      <tr>
-        <th class="text-center">#</th>
-        <th>{{ 'CONTESTS.CONTESTANT' | translate }}</th>
-        <th class="text-center">
-          <a container="body" ngbTooltip="{{ 'CONTESTS.POINTS' | translate }}">
-            <i [data-feather]="'rating' | iconName"></i>
-          </a>
-        </th>
-        @if (contest.isRated) {
-          <th ngbTooltip="{{ 'RatingChange' | translate }}" container="body" class="text-center">
-            <i [data-feather]="'delta' | iconName"></i>
-          </th>
-        }
-        @if (contest?.hasPenalties()) {
-          <th class="text-center">{{ 'CONTESTS.PENALTIES' | translate }}</th>
-        }
-        <th class="text-center">
-          <a container="body" ngbTooltip="{{ 'CONTESTS.PERFOMANCE' | translate }}">
-            <i data-feather="activity"></i>
-          </a>
-        </th>
-        @for (contestProblem of contestProblems; track contestProblem) {
-          <th class="text-center" style="white-space: nowrap;">
-            <a
-              [routerLink]="['..', 'problem', contestProblem.symbol]"
-              [ngbTooltip]="contestProblem.problem.title"
-              tooltipClass="tooltip-primary"
-              container=".contests-colors">
-              {{ contestProblem.symbol }}
-              @if (contest?.hasBalls()) {
-                <span>
-                ({{ contestProblem.ball }})
-              </span>
-              }
-            </a>
-          </th>
-        }
-      </tr>
-    </ng-container>
-
-    <ng-container body>
-      @for (contestant of contestants; track contestant) {
-        <tr
-          [@fadeInOnEnter]
-          [ngClass]="{'bg-light-primary': currentUser?.username == contestant.username }">
-          <td class="text-center text-dark">
-            {{ contestant.rank }}
-          </td>
-          <td>
-            <div class="d-flex justify-content-start">
-              <contestant-view
-                [isVirtual]="contestant.isVirtual"
-                [isUnrated]="contestant.isUnrated"
-                [isOfficial]="contestant.isOfficial"
-                [user]="contestant"
-                [team]="contestant.team"/>
-
-              <i *ngIf="contestant.country" class="fi fi-{{ contestant.country }} ml-1"></i>
-            </div>
-          </td>
-          <td class="text-center">
-            <span class="badge points">
-              {{ contestant.points }}
-            </span>
-          </td>
-          @if (contest.isRated) {
-            <td class="text-center">
-              <kep-delta [value]="contestant.delta"/>
-            </td>
-          }
-          @if (contest?.hasPenalties()) {
-            <td class="text-center">
-              <span class="badge badge-light-danger">
-                {{ contestant.penalties }}
-              </span>
-            </td>
-          }
-          <td class="text-center" style="white-space: nowrap;">
-            <contests-rating-image
-              [title]="contestant.perfomanceTitle"
-              [class]="'mr-50'"/>
-            <span class="text-dark mr-1">
-              @if (contestant.perfomance >= 3400) {
-                <span>∞</span>
-              }
-              @if (contestant.perfomance < 3400) {
-                <span>{{ contestant.perfomance }}</span>
-              }
-            </span>
-          </td>
-          @for (contestProblem of contestProblems; track contestProblem) {
-            <td class="text-center">
-              <ng-template
-                #selfie [ngTemplateOutlet]="selfie"
-                let-problemInfo="aVariable"
-                [ngTemplateOutletContext]="{
-                    aVariable: getProblemInfoBySymbol(contestant.problemsInfo, contestProblem.symbol)
-                  }">
-                <div>
-                  @if (problemInfo) {
-                    <div [innerHTML]="problemInfo.getHTML(contest)"></div>
-                  }
-                </div>
-              </ng-template>
-            </td>
-          }
-        </tr>
-      }
-    </ng-container>
-
-    <ng-container footer>
-      <tr>
-        <th class="text-center text-dark">#</th>
-        <th class="text-dark">{{ 'CONTESTS.CONTESTANT' | translate }}</th>
-        <th class="text-center text-dark"><i [data-feather]="'rating' | iconName"></i></th>
-        @if (contest.isRated) {
-          <th class="text-center">
-            <i [data-feather]="'delta' | iconName"></i>
-          </th>
-        }
-        @if (contest?.hasPenalties()) {
-          <th class="text-center">{{ 'CONTESTS.PENALTIES' | translate }}</th>
-        }
-        <th class="text-center"><i data-feather="activity"></i></th>
-        @for (contestProblem of contestProblems; track contestProblem) {
-          <th class="text-dark text-center">
-            {{ contestProblem.symbol }}
-            <br>
-            <small>
-              (<span class="text-success">{{ contestProblem.solved }}</span>/<span
-              class="text-danger">{{ contestProblem.attemptUsersCount }}</span>/<span
-              class="text-dark">{{ contestProblem.attemptsCount }}</span>)
-            </small>
-          </th>
-        }
-      </tr>
-    </ng-container>
-  </kep-table>
+  <contest-standings-table
+    [contestProblems]="contestProblems"
+    [contest]="contest"
+    [contestants]="contestants"
+    [isLoading]="isLoading"/>
 
   <kep-pagination
-    [collectionSize]="total"
-    [(page)]="pageNumber"
-    [ellipses]="true"
-    [pageSize]="pageSize"
-    [maxSize]="maxSize"
-    [rotate]="true"
-    [pageOptions]="pageOptions"
+    (pageChange)="pageChange($event)"
     (pageSizeChange)="pageSizeChange($event)"
-    (pageChange)="pageChange($event)">
+    [(page)]="pageNumber"
+    [collectionSize]="total"
+    [ellipses]="true"
+    [maxSize]="maxSize"
+    [pageOptions]="pageOptions"
+    [pageSize]="pageSize"
+    [rotate]="true">
   </kep-pagination>
 </section>

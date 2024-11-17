@@ -13,7 +13,7 @@ import { randomInt } from '@shared/utils';
 export class SpinnerComponent implements OnInit, OnDestroy {
   @Input() name: string;
   @Input() type = 'ball-clip-rotate-multiple';
-  @Input() color = 'var(--primary)';
+  @Input() color = 'var(--bs-primary)';
   @Input() bdColor = 'inherit';
   @Input() size: 'small' | 'default' | 'medium' | 'large' = 'large';
   @Input() height: string;

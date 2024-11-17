@@ -254,7 +254,7 @@ export const locale = {
     Final: 'Final',
     LatestNews: 'Latest news',
     DailyActivity: 'Daily activity',
-    BirthDays: 'Birth days',
+    BirthDays: 'Birthdays',
     HomePageTitle: 'Stay with KEP',
     Comments: 'Comments',
     WriteComment: 'Write a comment',

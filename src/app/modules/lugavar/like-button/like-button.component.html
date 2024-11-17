@@ -1,16 +1,16 @@
 @if (currentUser) {
   <button class="btn btn-gradient-info btn-sm" (click)="click()">
     @if (likes > 0) {
-      <span class="mr-50">{{ likes }}</span>
+      <span class="me-50">{{ likes }}</span>
     }
     <i data-feather="thumbs-up"></i>
   </button>
 }
 
 @if (!currentUser) {
-  <span class="badge badge-info badge-glow">
+  <span class="badge bg-info badge-glow">
     @if (likes > 0) {
-      <span class="mr-50">{{ likes }}</span>
+      <span class="me-50">{{ likes }}</span>
     }
     <i data-feather="thumbs-up"></i>
   </span>

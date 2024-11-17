@@ -7,98 +7,98 @@
 
   <problem-body [problem]="problem"></problem-body>
 
-  <ngb-accordion [closeOthers]="false" [destroyOnHide]="false">
-    <ngb-panel [cardClass]="'collapse-margin'" id="panelMargin1">
-      <ng-template ngbPanelTitle>
-        <span>{{ 'Tags' | translate }}</span>
-      </ng-template>
-      <ng-template ngbPanelContent>
-        <div
-          *ngIf="currentUser?.isSuperuser || currentUser?.permissions.canChangeProblemTags && problem.userInfo.hasSolved else elseBlock">
-          <button
-            (click)="removeTag(tag)"
-            *ngFor="let tag of problem.tags"
-            class="btn mb-2 mr-50 btn-relief-primary btn-sm">
-            {{ tag.name }} <i data-feather="x"></i>
-          </button>
+<!--  <div ngbAccordion [closeOthers]="false" [destroyOnHide]="false">-->
+<!--    <div ngbAccordionItem id="panelMargin1">-->
+<!--      <ng-template ngbAccordionHeader>-->
+<!--        <span>{{ 'Tags' | translate }}</span>-->
+<!--      </ng-template>-->
+<!--      <ng-template ngbAccordionBody>-->
+<!--        <div-->
+<!--          *ngIf="currentUser?.isSuperuser || currentUser?.permissions.canChangeProblemTags && problem.userInfo.hasSolved else elseBlock">-->
+<!--          <button-->
+<!--            (click)="removeTag(tag)"-->
+<!--            *ngFor="let tag of problem.tags"-->
+<!--            class="btn mb-2 me-50 btn-relief-primary btn-sm">-->
+<!--            {{ tag.name }} <i data-feather="x"></i>-->
+<!--          </button>-->
 
-          <ng-select
-            [(ngModel)]="selectedTag"
-            [dropdownPosition]="'bottom'"
-            [items]="tags"
-            appendTo="body"
-            bindLabel="name"
-            bindValue="id">
-          </ng-select>
+<!--          <ng-select-->
+<!--            [(ngModel)]="selectedTag"-->
+<!--            [dropdownPosition]="'bottom'"-->
+<!--            [items]="tags"-->
+<!--            appendTo="body"-->
+<!--            bindLabel="name"-->
+<!--            bindValue="id">-->
+<!--          </ng-select>-->
 
-          <button (click)="addTag()" class="mt-2 btn btn-relief-primary btn-sm">{{ 'Add' | translate }}</button>
-        </div>
+<!--          <button (click)="addTag()" class="mt-2 btn btn-relief-primary btn-sm">{{ 'Add' | translate }}</button>-->
+<!--        </div>-->
 
-        <ng-template #elseBlock>
-          <span *ngFor="let tag of problem.tags" class="badge badge-pill badge-primary">
-            {{ tag.name }}
-          </span>
-        </ng-template>
-      </ng-template>
-    </ngb-panel>
+<!--        <ng-template #elseBlock>-->
+<!--          <span *ngFor="let tag of problem.tags" class="badge rounded-pill bg-primary">-->
+<!--            {{ tag.name }}-->
+<!--          </span>-->
+<!--        </ng-template>-->
+<!--      </ng-template>-->
+<!--    </div>-->
 
-    <ngb-panel [cardClass]="'collapse-margin'" id="panelMargin2">
-      <ng-template ngbPanelTitle>
-        <span>{{ 'Topics' | translate }}</span>
-      </ng-template>
-      <ng-template ngbPanelContent>
-        <div *ngIf="currentUser?.isSuperuser else elseBlock">
-          <button
-            (click)="removeTopic(topic)"
-            *ngFor="let topic of problem.topics"
-            class="btn mb-2 mr-50 btn-relief-primary btn-sm">
-            {{ topic.name }} <i data-feather="x"></i>
-          </button>
+<!--    <ngb-panel [cardClass]="'collapse-margin'" id="panelMargin2">-->
+<!--      <ng-template ngbPanelTitle>-->
+<!--        <span>{{ 'Topics' | translate }}</span>-->
+<!--      </ng-template>-->
+<!--      <ng-template ngbPanelContent>-->
+<!--        <div *ngIf="currentUser?.isSuperuser else elseBlock">-->
+<!--          <button-->
+<!--            (click)="removeTopic(topic)"-->
+<!--            *ngFor="let topic of problem.topics"-->
+<!--            class="btn mb-2 me-50 btn-relief-primary btn-sm">-->
+<!--            {{ topic.name }} <i data-feather="x"></i>-->
+<!--          </button>-->
 
-          <ng-select
-            [(ngModel)]="selectedTopic"
-            [dropdownPosition]="'bottom'"
-            [items]="topics"
-            appendTo="body"
-            bindLabel="name"
-            bindValue="id">
-          </ng-select>
+<!--          <ng-select-->
+<!--            [(ngModel)]="selectedTopic"-->
+<!--            [dropdownPosition]="'bottom'"-->
+<!--            [items]="topics"-->
+<!--            appendTo="body"-->
+<!--            bindLabel="name"-->
+<!--            bindValue="id">-->
+<!--          </ng-select>-->
 
-          <button (click)="addTopic()" class="mt-2 btn btn-relief-primary btn-sm">
-            {{ 'Add' | translate }}
-          </button>
-        </div>
+<!--          <button (click)="addTopic()" class="mt-2 btn btn-relief-primary btn-sm">-->
+<!--            {{ 'Add' | translate }}-->
+<!--          </button>-->
+<!--        </div>-->
 
-        <ng-template #elseBlock>
-          <span
-            *ngFor="let topic of problem.topics"
-            class="badge badge-pill badge-primary">
-            {{ topic.name }}
-          </span>
-        </ng-template>
-      </ng-template>
-    </ngb-panel>
+<!--        <ng-template #elseBlock>-->
+<!--          <span-->
+<!--            *ngFor="let topic of problem.topics"-->
+<!--            class="badge rounded-pill bg-primary">-->
+<!--            {{ topic.name }}-->
+<!--          </span>-->
+<!--        </ng-template>-->
+<!--      </ng-template>-->
+<!--    </ngb-panel>-->
 
-    <ngb-panel *ngIf="currentUser && problem.hasSolution" [cardClass]="'collapse-margin'" id="panelMargin3">
-      <ng-template ngbPanelTitle>
-        <span>{{ 'Solution' | translate }}</span>
-      </ng-template>
-      <ng-template ngbPanelContent>
-        <div *ngIf="problem.userInfo.canViewSolution else elseBlock;">
-          <button (click)="openSolutionModal(solution)" class="btn btn-sm btn-relief-primary">
-            {{ 'View' | translate }}
-          </button>
-        </div>
-        <ng-template #elseBlock>
-          <kepcoin-spend-swal
-            (success)="onPurchaseSolution()"
-            [purchaseUrl]="'problems/' + problem.id + '/purchase-solution/'"
-            [value]="problem.solutionKepcoinValue">
-          </kepcoin-spend-swal>
-        </ng-template>
-      </ng-template>
-    </ngb-panel>
-  </ngb-accordion>
+<!--    <ngb-panel *ngIf="currentUser && problem.hasSolution" [cardClass]="'collapse-margin'" id="panelMargin3">-->
+<!--      <ng-template ngbPanelTitle>-->
+<!--        <span>{{ 'Solution' | translate }}</span>-->
+<!--      </ng-template>-->
+<!--      <ng-template ngbPanelContent>-->
+<!--        <div *ngIf="problem.userInfo.canViewSolution else elseBlock;">-->
+<!--          <button (click)="openSolutionModal(solution)" class="btn btn-sm btn-relief-primary">-->
+<!--            {{ 'View' | translate }}-->
+<!--          </button>-->
+<!--        </div>-->
+<!--        <ng-template #elseBlock>-->
+<!--          <kepcoin-spend-swal-->
+<!--            (success)="onPurchaseSolution()"-->
+<!--            [purchaseUrl]="'problems/' + problem.id + '/purchase-solution/'"-->
+<!--            [value]="problem.solutionKepcoinValue">-->
+<!--          </kepcoin-spend-swal>-->
+<!--        </ng-template>-->
+<!--      </ng-template>-->
+<!--    </ngb-panel>-->
+<!--  </div>-->
 
 </div>
 

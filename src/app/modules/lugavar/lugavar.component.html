@@ -44,14 +44,14 @@
         </div>
 
         <div class="card-body">
-          <h5 class="pl-1 d-flex">
-            <span class="pl-50" [innerHTML]="dailyQuestion.body"></span>
+          <h5 class="ps-1 d-flex">
+            <span class="ps-50" [innerHTML]="dailyQuestion.body"></span>
           </h5>
           <br>
             @for (option of dailyQuestion.options; track option; let i = $index) {
               <div>
                 @if (dailyQuestion.isAnswered) {
-                  <div class="ml-1 mb-1 question-option" [ngClass]="{'true': option.isAnswer}"
+                  <div class="ms-1 mb-1 question-option" [ngClass]="{'true': option.isAnswer}"
                     >
                     @if (option.isAnswer) {
                       <i class="text-success" data-feather="check-circle"></i>
@@ -64,10 +64,10 @@
                   </div>
                 }
                 @if (!dailyQuestion.isAnswered) {
-                  <div class="ml-1 mb-1 custom-control custom-control-info custom-radio">
+                  <div class="ms-1 mb-1 custom-control custom-control-info custom-radio">
                     <input type="radio" id="radio-{{ i }}" name="selectedOption" (click)="optionClick(i)" [value]="i"
-                      class="custom-control-input" />
-                      <label class="custom-control-label" for="radio-{{ i }}">{{ option.option }}</label>
+                      class="form-check-input" />
+                      <label class="form-check-label" for="radio-{{ i }}">{{ option.option }}</label>
                     </div>
                   }
                 </div>
@@ -144,7 +144,7 @@
                     @for (word of selectedWords; track word) {
                       <tr>
                         <td>
-                          <span class="badge badge-info badge-glow">
+                          <span class="badge bg-info badge-glow">
                             {{ word.word }}
                           </span>
                         </td>

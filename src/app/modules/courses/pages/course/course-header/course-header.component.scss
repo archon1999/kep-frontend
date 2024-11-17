@@ -10,12 +10,15 @@
   margin-top: -2rem;
   height: 500px;
   width: calc(100% + 4rem);
-  // background: linear-gradient(115deg, mix(black, $primary, 90), mix(black, $primary, 75), mix(black, $primary, 30), mix(white, $primary, 10));
-  background-image: url('assets/landing-page/beautiful-bg-dark.webp');
+  background-color: rgba(255, 255, 255, 0.5);
+
+  @include dark-layout {
+    background-color: rgba(0, 0, 0, 0.25);
+  }
 
   @include media-breakpoint-down(lg) {
     width: calc(100% + 3.2rem);
-  }  
+  }
 
   @include media-breakpoint-down(md) {
     height: 600px;
@@ -50,10 +53,9 @@
 
     .course-title {
       margin-top: 2rem;
-      color: #fff;
       font-weight: 600;
       font-size: 3rem;
-      
+
       @include media-breakpoint-down(md) {
         font-size: 2.5rem;
       }  
@@ -67,7 +69,6 @@
       font-size: 1.275rem;
       margin-top: 3rem;
       font-weight: 400;
-      color: #fff;
 
       @include media-breakpoint-down(md) {
         font-size: 1.2rem;

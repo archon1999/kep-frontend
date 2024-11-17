@@ -8,28 +8,28 @@
     <hr>
 
       @for (comment of comments; track comment) {
-        <div class="media" [ngClass]="{'bg-light-primary': comment.username == currentUser.username}">
+        <div class="d-flex" [ngClass]="{'bg-light-primary': comment.username == currentUser.username}">
           <img class="rounded" [src]="comment.userAvatar" alt="pic1">
-          <div class="media-body">
-            <div class="row pl-1">
-              <h4 class="media-heading text-dark"><user-popover [username]="comment.username"></user-popover>,</h4>
-              <p class="meta-time-date pl-1">{{ comment.created }}</p>
+          <div class="flex-grow-1">
+            <div class="row ps-1">
+              <h4 class="d-flex-heading text-dark"><user-popover [username]="comment.username"></user-popover>,</h4>
+              <p class="meta-time-date ps-1">{{ comment.created }}</p>
             </div>
             <h6 class="" [innerHTML]="comment.comment"></h6>
-            <div class="media-notation pb-2">
+            <div class="d-flex-notation pb-2">
               @if (comment.username != currentUser.username) {
-                <button (click)="emojiClick(comment.id, 2)" class="mr-1 btn btn-sm round btn-relief-success">
+                <button (click)="emojiClick(comment.id, 2)" class="me-1 btn btn-sm round btn-relief-success">
                   <i data-feather="thumbs-up"></i>
                   @if (comment.likes > 0) {
-                    <span class="ml-1">{{ comment.likes }}</span>
+                    <span class="ms-1">{{ comment.likes }}</span>
                   }
                 </button>
               }
               @if (comment.username != currentUser.username) {
-                <button (click)="emojiClick(comment.id, 1)" class="mr-1 btn btn-sm round btn-relief-danger">
+                <button (click)="emojiClick(comment.id, 1)" class="me-1 btn btn-sm round btn-relief-danger">
                   <i data-feather="thumbs-down"></i>
                   @if (comment.dislikes > 0) {
-                    <span class="pl-1">{{ comment.dislikes }}</span>
+                    <span class="ps-1">{{ comment.dislikes }}</span>
                   }
                 </button>
               }

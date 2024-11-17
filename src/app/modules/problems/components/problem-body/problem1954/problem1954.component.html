@@ -1,6 +1,6 @@
 <ngx-countdown #countdown [time]="1000*60*60" [render]="render" format="HH:mm:ss" (finish)="finish()">
   <ng-template #render let-data>
-    <div class="pl-lg-4 pr-lg-4 container d-flex justify-content-between">
+    <div class="ps-lg-4 pe-lg-4 container d-flex justify-content-between">
       <div class="countdown text-center">
         <h5 class="clock-val">{{ data.fragments[0] }}</h5>
         <h5 class="clock-text">{{ 'HOUR' | translate }}</h5>

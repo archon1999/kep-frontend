@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { CoreCommonModule } from '@core/common.module';
-import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
@@ -17,7 +16,6 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
   standalone: true,
   imports: [
     CoreCommonModule,
-    NgbButtonsModule,
     ApexChartModule,
     KepIconComponent,
     SpinnerComponent,
@@ -48,7 +46,6 @@ export class ProblemsActivityCardComponent implements OnInit {
     this.activityDays = days;
     this.statisticsService.getLastDays(username, days).subscribe((result: any) => {
       this.isLoading = false;
-      console.log(this.isLoading);
       this.activitySolved = result.solved;
       const data = [];
       let days = 0;

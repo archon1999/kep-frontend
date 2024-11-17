@@ -6,11 +6,11 @@
       </h5>
       <br>
       @for (option of question.options;track option) {
-        <div class="ml-1 mb-1 custom-control custom-radio">
+        <div class="ms-1 mb-1 form-check">
           <input type="radio" id="radio-{{ option.id }}" name="singleRadio" [(ngModel)]="singleRadio"
                  value="{{ option.id }}"
-                 class="custom-control-input"/>
-          <label class="custom-control-label" for="radio-{{ option.id }}">{{ option.optionMain }}</label>
+                 class="form-check-input"/>
+          <label class="form-check-label" for="radio-{{ option.id }}">{{ option.optionMain }}</label>
         </div>
       }
     </div>
@@ -23,9 +23,9 @@
       </h5>
       <br>
       @for (option of question.options;track option) {
-        <div class="ml-1 mb-1 custom-control custom-control-primary custom-checkbox">
-          <input type="checkbox" id="check-{{ option.id }}" [(ngModel)]="option.checked" class="custom-control-input"/>
-          <label class="custom-control-label" for="check-{{ option.id }}">{{ option.optionMain }}</label>
+        <div class="ms-1 mb-1 custom-control custom-control-primary custom-checkbox">
+          <input type="checkbox" id="check-{{ option.id }}" [(ngModel)]="option.checked" class="form-check-input"/>
+          <label class="form-check-label" for="check-{{ option.id }}">{{ option.optionMain }}</label>
         </div>
       }
     </div>
@@ -55,10 +55,10 @@
             @for (option of conformityGroupOne;track option) {
               <li class="bg-gradient-primary list-group-item draggable">
                 <div class="row justify-content-between">
-                  <div class="pl-1">
+                  <div class="ps-1">
                     {{ option }}
                   </div>
-                  <div class="pr-1">
+                  <div class="pe-1">
                     <i class="text-primary" data-feather="arrow-right"></i>
                   </div>
                 </div>
@@ -92,10 +92,10 @@
           @for (option of orderingList;track option) {
             <li class="bg-gradient-primary list-group-item draggable">
               <div class="row justify-content-between">
-                <div class="pl-1">
+                <div class="ps-1">
                   {{ option }}
                 </div>
-                <div class="pr-1">
+                <div class="pe-1">
                   <i class="text-primary" data-feather="arrow-right"></i>
                 </div>
               </div>
@@ -123,10 +123,10 @@
               @for (option of group.values;track option) {
                 <li class="bg-gradient-primary list-group-item draggable">
                   <div class="row justify-content-between">
-                    <div class="pl-1">
+                    <div class="ps-1">
                       {{ option }}
                     </div>
-                    <div class="pr-1">
+                    <div class="pe-1">
                       <i class="text-primary" data-feather="arrow-right"></i>
                     </div>
                   </div>

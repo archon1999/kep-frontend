@@ -16,7 +16,7 @@
             </span>
 
             <span ngbTooltip="{{ 'Rating' | translate }}">
-              <i [data-feather]="'rating' | iconName" class="ml-50"></i>
+              <i [data-feather]="'rating' | iconName" class="ms-50"></i>
               {{ general.rating }}
             </span>
           </div>
@@ -24,7 +24,7 @@
 
         <div class="font-medium-4 mt-1">
           <span ngbTooltip="{{ 'Rank' | translate }}">
-            <i [data-feather]="'users'" class="ml-50"></i>
+            <i [data-feather]="'users'" class="ms-50"></i>
             <span class="font-medium-3">
               {{ general.rank }}({{ general.usersCount }})
             </span>
@@ -65,7 +65,7 @@
             <div class="tags">
               @for (tag of tags; track tag) {
                 <div class="tag">
-                  <span class="badge badge-pill badge-primary">
+                  <span class="badge rounded-pill bg-primary">
                     {{ tag.name }}
                   </span>
                   x{{ tag.value }}

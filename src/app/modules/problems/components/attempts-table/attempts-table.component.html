@@ -8,9 +8,9 @@
 
 <ng-template #modal let-modal>
   <div class="modal-header">
-    <h5 class="modal-title mr-1">{{ 'Attempt' | translate }}</h5>
-    <button type="button" class="close" (click)="modal.dismiss()">
-      <span aria-hidden="true">&times;</span>
+    <h5 class="modal-title me-1">{{ 'Attempt' | translate }}</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()">
+      
     </button>
   </div>
   <div class="modal-body">
@@ -58,7 +58,7 @@
                     <span [data-feather]="'edit'"></span> {{ 'Text' | translate }}
                   </a>
                   <ng-template ngbNavContent>
-                    <div class="half-width">
+                    <div class="half-collapse-horizontal">
                       <textarea class="form-control" rows="8" formControlName="input"></textarea>
                     </div>
                     <button (click)="hackSubmit(selectedAttempt.id)" class="mt-1 mb-50 btn btn-primary">
@@ -81,7 +81,7 @@
                       @for (lang of hackAvailableLanguages; track lang) {
                         <button
                           (click)="hackForm.controls.generatorLang.setValue(lang)"
-                          class="mr-50 mb-50 btn btn-primary badge badge-{{ lang }} badge-glow">
+                          class="me-50 mb-50 btn btn-primary badge badge-{{ lang }} badge-glow">
                           {{ lang }}
                         </button>
                       }

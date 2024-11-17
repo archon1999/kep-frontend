@@ -1,9 +1,6 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
-import { CoreConfigService } from '@core/services/config.service';
+import { Component, ViewEncapsulation } from '@angular/core';
+import { coreConfig } from '@app/app.config';
+import { menu } from '../menu/menu';
 
 @Component({
   selector: 'footer',
@@ -11,42 +8,7 @@ import { CoreConfigService } from '@core/services/config.service';
   styleUrls: ['./footer.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class FooterComponent implements OnInit, OnDestroy {
-  public coreConfig: any;
-  public year: number = new Date().getFullYear();
-
-  // Private
-  private _unsubscribeAll: Subject<any>;
-
-  /**
-   * Constructor
-   *
-   * @param {CoreConfigService} _coreConfigService
-   */
-  constructor(public _coreConfigService: CoreConfigService) {
-    // Set the private defaults
-    this._unsubscribeAll = new Subject();
-  }
-
-  // Lifecycle hooks
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * On init
-   */
-  ngOnInit(): void {
-    // Subscribe to config changes
-    this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
-      this.coreConfig = config;
-    });
-  }
-
-  /**
-   * On destroy
-   */
-  ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
-  }
+export class FooterComponent {
+  protected readonly coreConfig = coreConfig;
+  protected readonly menu = menu;
 }

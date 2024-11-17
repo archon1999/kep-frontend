@@ -5,7 +5,7 @@
       <div class="card-body">
         <div [formGroup]="filterForm" class="row">
           <div class="col-6 col-md-3">
-            <div class="form-group">
+            <div class="">
               <label>{{ 'Username' | translate }}</label>
               <input
                 class="form-control"
@@ -16,7 +16,7 @@
             </div>
 
             <div class="col-6 col-md-3">
-              <div class="form-group">
+              <div class="">
                 <label>{{ 'Name' | translate }}</label>
                 <input
                   class="form-control"
@@ -27,7 +27,7 @@
               </div>
 
               <div class="col-6 col-md-3">
-                <div class="form-group">
+                <div class="">
                   <label>{{ 'Country' | translate }}</label>
                   <ng-select
                     [clearable]="false"
@@ -46,7 +46,7 @@
               </div>
 
               <div class="col-6 col-md-3">
-                <div class="form-group">
+                <div class="">
                   <label>{{ 'Age' | translate }}</label>
                   <div class="d-flex" style="align-items: center;">
                     <input
@@ -54,7 +54,7 @@
                       formControlName="ageFrom"
                       type="number"
                       >
-                      <span class="ml-25 mr-25">
+                      <span class="ms-25 me-25">
                         —
                       </span>
                       <input
@@ -191,33 +191,33 @@
                     [class]="{'bg-light-primary': user.username == currentUser?.username}">
                     <td>
                       <a class="d-flex align-items-center" href="/users/user/{{ user.username }}">
-                        <div class="avatar mr-50">
+                        <div class="avatar me-50">
                           <img style="max-width: initial" alt="Avatar" height="48" src="{{ user.avatar }}" width="48">
                         </div>
-                        <span class="font-weight-bold font-medium-1 ml-50 text-dark">
+                        <span class="fw-bold font-medium-1 ms-50 text-dark">
                           {{ user.username }}
-                          <span class="ml-25 fi fi-{{ user.country }}"></span>
+                          <span class="ms-25 fi fi-{{ user.country }}"></span>
                         </span>
                       </a>
                     </td>
                     <td>
-                      <span class="font-weight-bold">
+                      <span class="fw-bold">
                         {{ user.firstName }} {{ user.lastName }}
                       </span>
                     </td>
                     <td class="text-center">
-                      <span class="badge badge-primary badge-pill badge-glow">
+                      <span class="badge bg-primary rounded-pill badge-glow">
                         {{ user.skillsRating }}
                       </span>
                     </td>
                     <td class="text-center">
-                      <span class="badge badge-info badge-pill badge-glow">
+                      <span class="badge bg-info rounded-pill badge-glow">
                         {{ user.activityRating }}
                       </span>
                     </td>
                     <td class="text-center">
                       <contests-rating-image [title]="user.contestsRatingTitle"></contests-rating-image>
-                      <span class="ml-25 font-weight-bold">
+                      <span class="ms-25 fw-bold">
                         {{ user.contestsRating }}
                       </span>
                     </td>
@@ -228,7 +228,7 @@
                       </challenges-rank-badge>
                     </td>
                     <td class="text-center">
-                      <span class="badge badge-primary badge-glow">
+                      <span class="badge bg-primary badge-glow">
                         {{ user.problemsSolved }}
                       </span>
                     </td>

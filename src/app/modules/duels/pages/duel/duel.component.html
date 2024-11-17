@@ -5,7 +5,7 @@
         <table class="table">
           <thead>
             <tr>
-              <th><i class="text-white ml-1" data-feather="user"></i></th>
+              <th><i class="text-white ms-1" data-feather="user"></i></th>
               <th class="text-center"><i ngbTooltip="{{ 'Points' | translate }}" class="text-white" [data-feather]="'rating' | iconName"></i></th>
               @for (duelProblem of duel.problems; track duelProblem) {
                 <th class="text-center text-white">
@@ -20,14 +20,14 @@
                 <contestant-view [textColor]="'white'" [user]="duel.playerFirst"></contestant-view>
               </td>
               <td class="text-center">
-                <span class="badge badge-glow badge-primary bg-primary bg-darken-1">
+                <span class="badge badge-glow bg-primary bg-primary bg-darken-1">
                   {{ duel.playerFirst.balls }}
                 </span>
               </td>
               @for (duelProblem of duel.problems; track duelProblem) {
                 <td class="text-center">
                   @if (duelProblem.playerFirstBall > 0) {
-                    <span class="badge badge-success badge-glow">
+                    <span class="badge bg-success badge-glow">
                       {{ duelProblem.playerFirstBall }}
                     </span>
                   }
@@ -40,20 +40,20 @@
                   <contestant-view [textColor]="'white'" [user]="duel.playerSecond"></contestant-view>
                 }
                 @if (!duel.playerSecond) {
-                  <span class="text-white ml-1 mb-1">
+                  <span class="text-white ms-1 mb-1">
                     BYE
                   </span>
                 }
               </td>
               <td class="text-center">
-                <span class="badge badge-glow badge-primary bg-primary bg-darken-1">
+                <span class="badge badge-glow bg-primary bg-primary bg-darken-1">
                   {{ duel.playerSecond?.balls || 0 }}
                 </span>
               </td>
               @for (duelProblem of duel.problems; track duelProblem) {
                 <td class="text-center">
                   @if (duelProblem.playerSecondBall > 0) {
-                    <span class="badge badge-success badge-glow">
+                    <span class="badge bg-success badge-glow">
                       {{ duelProblem.playerSecondBall }}
                     </span>
                   }
@@ -72,8 +72,8 @@
             {{ duelProblem.symbol }}. {{ duelProblem.problem.title }}
           </h2>
           <div class="row justify-content-center mt-1">
-            <div class="col text-right problem-header">
-              <small class="text-center pr-1">
+            <div class="col text-end problem-header">
+              <small class="text-center pe-1">
                 {{ 'Languages' | translate }}:
               </small>
             </div>
@@ -83,7 +83,7 @@
                   <span>
                     <a
                       (click)="changeLang(availableLanguage.lang)"
-                      class="badge-pill text-white badge badge-{{ availableLanguage.lang }}">
+                      class="rounded-pill text-white badge badge-{{ availableLanguage.lang }}">
                       {{ availableLanguage.lang }}
                     </a>
                   </span>
@@ -93,14 +93,14 @@
           </div>
           @if (duel.isPlayer) {
             <div class="row justify-content-center mt-1">
-              <div class="col text-right problem-header">
-                <small class="text-center pr-1">
+              <div class="col text-end problem-header">
+                <small class="text-center pe-1">
                   {{ 'SelectedLanguage' | translate }}:
                 </small>
               </div>
               <div class="col problem-header">
                 <small class="text-center">
-                  <span class="badge badge-pill badge-{{ selectedLang }}">
+                  <span class="badge rounded-pill badge-{{ selectedLang }}">
                     {{ selectedLang }}
                   </span>
                 </small>
@@ -108,8 +108,8 @@
             </div>
           }
           <div class="row justify-content-center mt-1">
-            <div class="col text-right problem-header">
-              <small class="text-center pr-1">
+            <div class="col text-end problem-header">
+              <small class="text-center pe-1">
                 {{ 'TIME_LIMIT' | translate }}:
               </small>
             </div>
@@ -122,8 +122,8 @@
             </div>
           </div>
           <div class="row justify-content-center mt-1">
-            <div class="col text-right problem-header">
-              <small class="text-center pr-1">
+            <div class="col text-end problem-header">
+              <small class="text-center pe-1">
                 {{ 'MEMORY_LIMIT' | translate }}:
               </small>
             </div>

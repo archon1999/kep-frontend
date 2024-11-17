@@ -24,7 +24,7 @@
                 <ng-template #tipContent>
                   <img src="assets/images/icons/fire_red.png" height="19" alt=""> {{ user.streak }}
                 </ng-template>
-                <span class="badge badge-pill badge-kep" [ngbTooltip]="tipContent">KEP</span>
+                <span class="badge rounded-pill badge-kep" [ngbTooltip]="tipContent">KEP</span>
               </span>
             }
           </div>
@@ -50,7 +50,7 @@
                   {{ 'MENU.PROBLEMS' | translate }}
                 </div>
                 <div class="mb-0 mt-1 text-center">
-                  <span class="badge badge-primary">
+                  <span class="badge bg-primary">
                     {{ userRatings.problemsSolved }}
                   </span>
                   <span class="badge badge-light-success">
@@ -64,7 +64,7 @@
                   {{ 'MENU.CHALLENGES' | translate }}
                 </div>
                 <div class="d-block mb-0 mt-1 text-center text-{{ userRatings.challengesRankTitle | challengesRankColor }}">
-                  <span class="badge badge-pill badge-glow badge-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+                  <span class="badge rounded-pill badge-glow badge-{{ userRatings.challengesRankTitle | challengesRankColor }}">
                     {{ userRatings.challengesRankTitle }}
                   </span>
                   <span class="badge badge-light-{{ userRatings.challengesRankTitle | challengesRankColor }}">

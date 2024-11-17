@@ -13,7 +13,7 @@ import { colors } from '@app/colors';
 })
 export class KepIconComponent implements OnInit {
   @Input() name: keyof typeof keenIcons | string;
-  @Input() class = 'mr-25 font-medium-3';
+  @Input() class = 'me-25 font-medium-3';
   @Input() type: 'outline' | 'solid' | 'duotone' = 'outline';
   @Input() color: keyof typeof colors.solid;
   @Input() size:

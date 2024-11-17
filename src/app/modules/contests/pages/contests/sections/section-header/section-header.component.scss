@@ -1,18 +1,5 @@
 @import 'styles/kep-imports';
 
-.contests-section-header .card {
-  background: rgba($primary, 0.75);
-  border: none;
-
-  @include dark-layout {
-    background: rgba($primary, 0.25) !important;
-  }
-
-  .card-footer {
-    border-color: rgba($primary, 0.1);
-  }
-}
-
 .useful-links {
   display: flex;
   margin-bottom: 2rem;

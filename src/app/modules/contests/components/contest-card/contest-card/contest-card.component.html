@@ -20,10 +20,10 @@
 
         <div>
           @if (contest.isRated) {
-            <span class="badge badge-success badge-glow">{{ 'Rated' | translate }}</span>
+            <span class="badge bg-success badge-glow">{{ 'Rated' | translate }}</span>
           }
           @if (!contest.isRated) {
-            <span class="badge badge-danger badge-glow">{{ 'Unrated' | translate }}</span>
+            <span class="badge bg-danger badge-glow">{{ 'Unrated' | translate }}</span>
           }
         </div>
       </div>
@@ -39,10 +39,10 @@
       <div class="contest-time">
         @if (contest.status == 0) {
           <div>
-            <h3 class="text-center mt-1 mb-3">
+            <h3 class="text-center mt-1 mb-1">
               {{ 'CONTESTS.CONTEST_ENDS' | translate }}
             </h3>
-            <span class="badge already badge-warning badge-glow">
+            <span class="badge already bg-warning badge-glow">
               {{ 'Now' | translate }}
             </span>
             <contest-countdown [clockColor]="'#fff'" [contest]="contest"></contest-countdown>
@@ -51,7 +51,7 @@
 
         @if (contest.status == -1) {
           <div>
-            <h3 class="text-center mt-1 mb-3">
+            <h3 class="text-center mt-1 mb-1">
               {{ 'CONTESTS.CONTEST_STARTS' | translate }}
             </h3>
             <contest-countdown [clockColor]="'#fff'" [contest]="contest"></contest-countdown>
@@ -60,7 +60,7 @@
 
         @if (contest.status == 1) {
           <div class="text-center">
-            <h3 class="mb-3 mt-1" ngbTooltip="{{ contest.finishTime | localizedDate:'medium' }}">
+            <h3 class="mb-1 mt-1" ngbTooltip="{{ contest.finishTime | localizedDate:'medium' }}">
               {{ 'CONTESTS.CONTEST_FINISHED' | translate }}
             </h3>
             @defer (on viewport) {
@@ -80,7 +80,7 @@
 
   <div class="card-footer justify-content-between d-flex">
     <div class="meta-info text-center">
-    <span class="badge badge-glow mr-25 badge-primary">
+    <span class="badge badge-glow me-25 badge-primary">
       <i data-feather="user"></i>
       @if (contest.status == -1) {
         <span ngbTooltip="{{ 'Registrants' | translate }}">
@@ -93,7 +93,7 @@
         </span>
       }
     </span>
-      <span class="badge badge-glow mr-25 badge-primary" ngbTooltip="{{ 'Problems' | translate }}">
+      <span class="badge badge-glow me-25 badge-primary" ngbTooltip="{{ 'Problems' | translate }}">
       <i [data-feather]="'problem' | iconName"></i>
         {{ contest.problemsCount }}
     </span>
@@ -133,7 +133,7 @@
             [customContent]="true"
             [purchaseUrl]="'contests/' + contest.id + '/purchase-unrated-contest/'"
             [value]="10"
-            class="mr-1" ngbTooltip="{{ 'UnofficialParticipation' | translate }}"
+            class="me-1" ngbTooltip="{{ 'UnofficialParticipation' | translate }}"
             (success)="contest.userInfo.unratedContestPurchased=true;">
             <img height="25" src="assets/images/icons/unrated.png">
           </kepcoin-spend-swal>
@@ -141,7 +141,7 @@
         @if (contest.userInfo.isRegistered && contest.isRated && contest.userInfo.unratedContestPurchased) {
           <img
             ngbTooltip="{{ 'Purchased' | translate }}"
-            height="25" src="assets/images/icons/unrated.png" class="mr-1">
+            height="25" src="assets/images/icons/unrated.png" class="me-1">
         }
         @if (contest.userInfo.isRegistered) {
           <button
@@ -171,8 +171,8 @@
 <ng-template #registrationModal let-modal>
   <div class="modal-header">
     <h5 class="modal-title">{{ contest.title }}</h5>
-    <button (click)="modal.dismiss('Cross click')" aria-label="Close" class="close" type="button">
-      <span aria-hidden="true">&times;</span>
+    <button (click)="modal.dismiss('Cross click')" aria-label="Close" class="btn-close" type="button">
+      
     </button>
   </div>
   <div class="modal-body" tabindex="0">

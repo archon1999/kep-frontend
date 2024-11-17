@@ -1,19 +1,28 @@
+<div class="my-2">
+  <div class="font-medium-5 text-dark">{{ 'Categories' | translate }}</div>
+</div>
+
 @if (isLoading) {
-  <div class="card" [style.height.px]="200">
-    <spinner></spinner>
+  <div class="row">
+    @for (_ of [].constructor(8); track $index) {
+      <div class="col-12 col-md-6 col-lg-3">
+        <ngx-skeleton-loader
+          class="custom-skeleton"
+          count="1"
+          animation="pulse"
+          appearance="line"
+          [theme]="{height: '107px', background: 'var(--skeleton-color)'}"
+        ></ngx-skeleton-loader>
+      </div>
+    }
   </div>
 } @else {
-  <div class="d-flex mb-2 mt-2 justify-content-start">
-    <kep-icon name="category" size="large-1" color="primary" type="duotone"></kep-icon>
-    <h2 class="ml-50">{{ 'Categories' | translate }}</h2>
-  </div>
-
   <div class="row">
     @for (category of categories; track category.id){
       <div class="col-lg-3 col-md-6 col-12">
         <div class="card contest-category-card cursor-pointer" [ngClass]="{'active': category.id == activeCategory}" (click)="click(category.id)">
           <div class="card-header justify-content-start">
-            <div class="category-icon mr-1">
+            <div class="category-icon me-1">
               <kep-icon type="duotone" size="large-1" color="primary" [name]="category.icon"></kep-icon>
             </div>
 

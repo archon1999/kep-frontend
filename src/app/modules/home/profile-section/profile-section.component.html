@@ -44,10 +44,10 @@
             </div>
 
             <div class="card-body p-50">
-              <span class="badge badge-primary">
+              <span class="badge bg-primary">
                 {{ userRatings.problemsSolved }}
               </span>
-              <span class="badge ml-25 badge-light-success">
+              <span class="badge ms-25 bg-light-success">
                 {{ userRatings.problemsRating }}
               </span>
             </div>
@@ -64,7 +64,7 @@
 
             <div class="card-body p-50">
               <div class="text-{{ userRatings.challengesRankTitle | challengesRankColor }}">
-                <span class="badge badge-pill badge-glow badge-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+                <span class="badge rounded-pill badge-glow badge-{{ userRatings.challengesRankTitle | challengesRankColor }}">
                   {{ userRatings.challengesRankTitle }}
                 </span>
                 <span class="badge badge-light-{{ userRatings.challengesRankTitle | challengesRankColor }}">

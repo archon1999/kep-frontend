@@ -42,13 +42,13 @@ export class KepcoinSpendSwalComponent {
         text: 'You won\'t be able to revert this!',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: 'var(--primary)',
-        cancelButtonColor: 'var(--danger)',
+        confirmButtonColor: 'var(--bs-primary)',
+        cancelButtonColor: 'var(--bs-danger)',
         cancelButtonText: translations['Cancel'],
         confirmButtonText: translations['Purchase'],
         customClass: {
           confirmButton: 'btn btn-relief-primary',
-          cancelButton: 'btn btn-relief-danger ml-1'
+          cancelButton: 'btn btn-relief-danger ms-1'
         }
       }).then((result) => {
         if (result.value) {

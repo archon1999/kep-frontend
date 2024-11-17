@@ -1,13 +1,24 @@
+@import 'variables';
+
 //
 // Labels
 //
 label {
   color: $headings-color;
   font-size: $small-font-size;
+  margin-bottom: .2857rem;
 }
 
 // placeholder specific scss
 .form-control {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+
+  @include dark-layout {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+  }
+
+  height: 2.714rem;
+
   &::placeholder {
     transition: all 0.2s ease;
   }
@@ -32,7 +43,7 @@ label {
 
 .custom-file-label {
   line-height: 1.75;
-  height: $custom-file-height !important;
+  height: $custom-file-height-inner !important;
   &:after {
     height: 2.56rem;
     line-height: 1.75;
@@ -321,7 +332,7 @@ select.form-control {
     }
   }
   .custom-control-input:checked ~ .custom-control-label::before {
-    box-shadow: 0 2px 4px 0 rgba($custom-control-indicator-checked-bg, 0.4) !important;
+    //box-shadow: 0 2px 4px 0 rgba($custom-control-indicator-checked-bg, 0.4) !important;
   }
 
   .custom-control-input:disabled ~ .custom-control-label::before {
@@ -331,7 +342,7 @@ select.form-control {
 
   .custom-control-input:focus ~ .custom-control-label::before {
     border-color: none;
-    box-shadow: 0 2px 4px 0 rgba($custom-control-indicator-checked-bg, 0.4) !important;
+    //box-shadow: 0 2px 4px 0 rgba($custom-control-indicator-checked-bg, 0.4) !important;
   }
 }
 
@@ -348,7 +359,7 @@ select.form-control {
 /* Floating label Group */
 .form-label-group {
   position: relative;
-  margin-bottom: $form-group-margin-bottom;
+  //margin-bottom: $form-group-margin-bottom;
 
   // Form-Control-Large in Floating Label Group
   .form-control-lg {

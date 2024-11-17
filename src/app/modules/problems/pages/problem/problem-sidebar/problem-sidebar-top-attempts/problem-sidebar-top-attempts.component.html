@@ -31,17 +31,17 @@
               <span>
                 @switch (topAttemptsOrdering) {
                   @case ('time') {
-                    <span class="badge badge-info">
+                    <span class="badge bg-info">
                       {{ attempt.time }}
                     </span>
                   }
                   @case ('memory') {
-                    <span class="badge badge-primary">
+                    <span class="badge bg-primary">
                       {{ attempt.memory }}
                     </span>
                   }
                   @case ('source_code_size') {
-                    <span class="badge badge-dark">
+                    <span class="badge bg-dark">
                       {{ attempt.sourceCodeSize }}
                     </span>
                   }

@@ -7,7 +7,7 @@
             <span class="brand-logo">
               <img alt="brand-logo" height="36" [src]="defaultCoreConfig.app.appLogoImage" width="48"/>
             </span>
-            <h2 class="brand-text text-dark ml-1 font-weight-bolder mb-0">{{ defaultCoreConfig.app.appTitle }}</h2>
+            <h2 class="brand-text text-dark ms-1 fw-bolder mb-0">{{ defaultCoreConfig.app.appTitle }}</h2>
           </div>
 
           <div class="navbar-menu d-lg-flex d-none">
@@ -40,14 +40,14 @@
         </div>
 
         <div class="right">
-          <div ngbDropdown class="nav-item mr-lg-0 mr-50">
+          <div ngbDropdown class="nav-item mr-lg-0 me-50">
             <button aria-label="dropdown-toggle" class="nav-link btn" id="dropdown-flag" ngbDropdownToggle>
               <i class="fi fi-{{ languageOptions[translateService.currentLang].flag }}"></i>
             </button>
             <div ngbDropdownMenu>
               @for (lang of langs; track lang) {
                 <div class="cursor-pointer" ngbDropdownItem (click)="setLanguage(lang)">
-                  <i class="mr-50 fi fi-{{ languageOptions[lang].flag }}"></i> {{ languageOptions[lang].title }}
+                  <i class="me-50 fi fi-{{ languageOptions[lang].flag }}"></i> {{ languageOptions[lang].title }}
                 </div>
               }
             </div>

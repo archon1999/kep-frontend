@@ -60,17 +60,17 @@
                     <tr>
                       <td class="text-nowrap">
                         <user-popover [customContent]="true" [username]="user.username">
-                          <img width="32" height="32" class="round mr-50" alt="user-avater" [src]="user.avatar">
+                          <img width="32" height="32" class="round me-50" alt="user-avater" [src]="user.avatar">
                           {{ user.username }}
                         </user-popover>
                       </td>
                       <td class="text-center">
-                        <span class="badge badge-primary badge-pill">
+                        <span class="badge bg-primary rounded-pill">
                           {{ user.solved }}
                         </span>
                       </td>
                       <td class="text-center">
-                        <span class="badge badge-success">
+                        <span class="badge bg-success">
                           {{ user.rating }}
                         </span>
                       </td>

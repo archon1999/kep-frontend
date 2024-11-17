@@ -9,13 +9,13 @@
     <br>
     (
     @for (member of team.members; track member; let i = $index) {
-      <span class="ml-25">
+      <span class="ms-25">
 <!--        <contests-rating-image-->
 <!--          [size]="24"-->
 <!--          [title]="member.ratingTitle"-->
 <!--          [class]="'mr-50 mb-50'">-->
 <!--        </contests-rating-image>-->
-        <span class="font-small-2 font-weight-bolder">
+        <span class="font-small-2 fw-bolder">
           <user-popover [customContent]="true" [textColor]="textColor" [username]="member.username">
             {{member.username}}<span *ngIf="!$last">, </span>
           </user-popover>
@@ -27,7 +27,7 @@
   <div claas="d-flex justify-content-between align-items-center">
     <contests-rating-image
       [title]="user.ratingTitle"
-      [class]="'mr-50 mb-50'"
+      [class]="'me-50 mb-50'"
       [size]="imgSize">
     </contests-rating-image>
     <user-popover [textColor]="textColor" [username]="user.username"></user-popover>

@@ -2,14 +2,14 @@
   <div class="card-header">
     <div class="card-title text-dark">
       <kep-icon class="font-large-1" name="arena" color="yellow" type="duotone"></kep-icon>
-      <span class="ml-50 font-weight-bolder">
+      <span class="ms-50 fw-bolder">
         {{ arena.title }}
       </span>
       <br>
-      <span class="ml-3 font-small-3 text-dark">
+      <span class="ms-3 font-small-3 text-dark">
           {{ 'Rated' | translate }},
         </span>
-      <span class="ml-25 font-small-3 text-dark">
+      <span class="ms-25 font-small-3 text-dark">
           {{ durationMinute }}m
         </span>
     </div>
@@ -39,7 +39,7 @@
     </div>
 
     <div class="card-info">
-      <span class="mr-25 badge badge-yellow text-dark badge-glow" ngbTooltip="{{ 'Time' | translate }}">
+      <span class="me-25 badge badge-yellow text-dark badge-glow" ngbTooltip="{{ 'Time' | translate }}">
         <kep-icon class="font-small-4" name="challenge-time"></kep-icon>
         {{ arena.timeSeconds }}
       </span>
@@ -53,7 +53,7 @@
     <div class="d-flex justify-content-between">
       @if (arena.status == ArenaStatus.Finished) {
         <challenges-user-view [user]="arena.winner"></challenges-user-view>
-        <img alt="winner" class="ml-1" height="20" src="assets/images/icons/cup.png" width="20">
+        <img alt="winner" class="ms-1" height="20" src="assets/images/icons/cup.png" width="20">
       }
     </div>
   </div>

@@ -12,9 +12,12 @@
   padding-top: 10px;
 }
 
+.table {
+  --bs-table-color: var(--text-color);
+}
+
 thead tr {
   background: var(--bg-gradient);
-  color: var(--text-color);
 
   @include dark-layout {
     background: var(--bg-gradient) !important;

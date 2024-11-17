@@ -119,7 +119,7 @@
 }
 
 // profile img and title
-@include media-breakpoint-down(xs) {
+@include media-breakpoint-down(sm) {
   #user-profile {
     .profile-header {
       .profile-img-container {

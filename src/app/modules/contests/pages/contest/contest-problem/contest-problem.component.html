@@ -116,7 +116,7 @@
                                       {{ _contestProblem.solved }}
                                       <i data-feather="user-check"></i>
                                     </span>
-                                    <span class="pl-1 text-danger">
+                                    <span class="ps-1 text-danger">
                                       {{ _contestProblem.attemptUsersCount - _contestProblem.solved }}
                                       <i data-feather="user-x"></i>
                                     </span>
@@ -125,7 +125,7 @@
                               </td>
                               @if (contest.hasBalls()) {
                                 <td>
-                                  <span class="badge badge-success badge-glow">
+                                  <span class="badge bg-success badge-glow">
                                     {{ _contestProblem.ball }}
                                   </span>
                                 </td>
@@ -170,7 +170,7 @@
               <thead>
                 <tr>
                   <th class="text-white">#</th>
-                  <th><i class="text-white ml-1" data-feather="user"></i></th>
+                  <th><i class="text-white ms-1" data-feather="user"></i></th>
                   <th class="text-center"><i class="text-white" [data-feather]="'rating' | iconName"></i></th>
                   @for (contestProblem of contestProblems; track contestProblem) {
                     <th class="text-center text-white" container="body" [ngbTooltip]="contestProblem.problem.title"
@@ -191,7 +191,7 @@
                     <contestant-view [user]="contestant"></contestant-view>
                   </td>
                   <td class="text-center">
-                    <span class="badge badge-glow badge-primary">
+                    <span class="badge badge-glow bg-primary">
                       {{ contestant.points }}
                     </span>
                   </td>

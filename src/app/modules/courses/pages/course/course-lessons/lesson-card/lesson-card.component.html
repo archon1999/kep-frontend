@@ -1,7 +1,7 @@
 <div class="card" style="--bg-img: url('{{ lesson.image }}'); background-position: {{ backgroundPosition }};">
 
-  <div class="card-meta text-right">
-    <span placement="bottom" ngbTooltip="{{ 'Lectures' | translate }}" class="mr-50">
+  <div class="card-meta text-end">
+    <span placement="bottom" ngbTooltip="{{ 'Lectures' | translate }}" class="me-50">
       <i [data-feather]="'book'" [size]="18"></i>
       {{ lesson.lecturesCount }}
     </span>

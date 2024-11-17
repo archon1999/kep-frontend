@@ -6,7 +6,6 @@ import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-option
 import { BaseComponent } from '@app/common/classes/base.component';
 import { CoreCommonModule } from '@core/common.module';
 import { NgScrollbar } from 'ngx-scrollbar';
-import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { PageResult } from '@app/common/classes/page-result';
@@ -26,7 +25,6 @@ export interface TopRating {
   imports: [
     CoreCommonModule,
     NgScrollbar,
-    NgbButtonsModule,
     ApexChartModule,
     ContestantViewModule,
   ]

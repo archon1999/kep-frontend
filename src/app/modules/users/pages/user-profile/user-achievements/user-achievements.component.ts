@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Achievement } from '@users/users.models';
 import { UsersApiService } from '@users/users-api.service';
 import { CoreCommonModule } from '@core/common.module';
-import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { AchievementComponent } from '@users/pages/user-profile/user-achievements/achievement/achievement.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
@@ -21,7 +20,6 @@ enum Tab {
   standalone: true,
   imports: [
     CoreCommonModule,
-    NgbButtonsModule,
     AchievementComponent,
     SpinnerComponent,
     EmptyResultComponent

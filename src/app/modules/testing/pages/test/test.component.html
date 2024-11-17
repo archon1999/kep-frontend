@@ -36,7 +36,7 @@
         <div class="test-pass-info justify-content-center">
           <div class="mb-1">
             {{ 'BestResult' | translate }}
-            <span class="badge-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
+            <span class="rounded-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
               {{ test.userBestResult }}
               /
               {{ test.questionsCount }}
@@ -46,7 +46,7 @@
 
           <div class="mb-1">
             {{ 'LastPass' | translate }}
-            <span class="badge-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
+            <span class="rounded-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
               {{ test.lastPassed }}
               @if (!test.lastPassed) {
                 <span>
@@ -112,7 +112,7 @@
               </div>
 
               <div class="col-lg-10 offset-lg-1 offset-0 col-12">
-                <div class="row ml-md-0 ml-25">
+                <div class="row ml-md-0 ms-25">
                   <div class="col-lg-6 col-md-12 col-sm-12">
                     <div class="card" [@fadeInOnEnter]>
                       <div class="card-header">
@@ -122,14 +122,14 @@
                       <div class="card-body">
                         @for (result of lastResults; track result) {
                           <div class="mb-2 d-flex">
-                            <i class="mr-1" data-feather="edit-3" [size]="18"></i>
+                            <i class="me-1" data-feather="edit-3" [size]="18"></i>
                             <div>
                               <user-popover [username]="result.username" [customContent]="true">
-                                <strong class="pr-25">
+                                <strong class="pe-25">
                                   {{ result.username }}
                                 </strong>
                               </user-popover>
-                              <span class="badge-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
+                              <span class="rounded-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
                                 {{ result.result }}/{{ test.questionsCount }}
                               </span>
                               <br>
@@ -173,7 +173,7 @@
                                     </user-popover>
                                   </td>
                                   <td>
-                                    <span class="badge-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
+                                    <span class="rounded-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
                                       {{ result.result }}/{{ test.questionsCount }}
                                     </span>
                                   </td>

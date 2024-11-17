@@ -1,3 +1,9 @@
+@import 'styles/kep-imports';
+
+.table > :not(caption) > * > * {
+  border-bottom: none !important;
+  padding: 1rem 2rem !important;
+}
 
 // table-white-space
 .table-white-space {
@@ -9,6 +15,9 @@
 
 // table th, td padding
 .table {
+  --bs-table-bg: none;
+  --bs-table-accent-bg: none;
+
   thead,
   tfoot {
     th {
@@ -20,13 +29,13 @@
   }
   th,
   td {
-    padding: $table-cell-padding 2rem;
+    //padding: $table-cell-padding 2rem;
     vertical-align: middle;
   }
   &.table-sm {
     th,
     td {
-      padding: $table-cell-padding-sm 0.5rem;
+      //padding: $table-cell-padding-sm 0.5rem;
       &:first-child {
         padding-left: 0.75rem;
       }

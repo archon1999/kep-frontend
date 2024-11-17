@@ -1,21 +1,17 @@
-/*
-.card {
-    flex-direction: column;
-    overflow: hidden;
-    box-shadow: 0 .1rem 1rem rgba(0, 0, 0, 0.1);
-    border-radius: 1em;
-    background: #ECE9E6;
-    background: linear-gradient(to right, #FFFFFF, #ECE9E6);
-}
-*/
+@import 'styles/kep-imports';
 
 .card-img-top {
-    object-fit: contain;
-    border-radius: 15px;
-    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+  object-fit: contain;
+  border-radius: 15px;
+  box-shadow: 0 0 5px rgba(34, 41, 47, 0.1);
+
+  @include dark-layout {
+    box-shadow: none;
+    border: 1px solid black;
+  }
 }
 
 .card-img {
-    text-align: center;
-    padding: 15px 18px;
+  text-align: center;
+  padding: 15px 18px;
 }

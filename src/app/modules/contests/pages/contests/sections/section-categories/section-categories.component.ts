@@ -7,6 +7,7 @@ import { ContestsService } from '@contests/contests.service';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { ContestCategory } from '@contests/models';
 import { Observable } from 'rxjs';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'contests-section-categories',
@@ -18,6 +19,7 @@ import { Observable } from 'rxjs';
     CoreCommonModule,
     SwiperComponent,
     NgbTooltipModule,
+    NgxSkeletonLoaderModule,
   ]
 })
 export class SectionCategoriesComponent extends BaseLoadComponent<Array<ContestCategory>> implements OnInit {

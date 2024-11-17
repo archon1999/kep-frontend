@@ -67,26 +67,26 @@
         <td class="text-dark">{{ problem.id }}</td>
         <td>
           <a [routerLink]="Resources.Problem | resourceById : problem.id">
-            <div class="font-weight-bold">
+            <div class="fw-bold">
               {{ problem.title }}
             </div>
 
             @if (problem.hasSolution) {
-              <span class="badge mt-50 badge-pill badge-light-success">
+              <span class="badge mt-50 rounded-pill bg-light-success">
                 <i [data-feather]="'exists' | iconName" class="text-success" [size]="'16px'"></i>
                 {{ 'Solution' | translate }}
               </span>
             }
 
             @if (!problem.hasChecker) {
-              <span class="badge mt-50 badge-pill badge-light-danger">
+              <span class="badge mt-50 rounded-pill bg-light-danger">
                 <i [data-feather]="'not_exists' | iconName" class="text-danger" [size]="'16px'"></i>
                 {{ 'Checker' | translate }}
               </span>
             }
 
             @if (problem.hidden) {
-              <span class="badge mt-50 badge-pill badge-light-warning">
+              <span class="badge mt-50 rounded-pill bg-light-warning">
                 <i [data-feather]="'eye-off'" class="text-warning" [size]="'16px'"></i>
                 {{ 'Hidden' | translate }}
               </span>

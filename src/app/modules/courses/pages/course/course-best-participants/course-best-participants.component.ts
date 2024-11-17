@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CoursesService } from '@courses/courses.service';
 import { Course, CourseParticipant } from '@courses/interfaces';
 import { CoreCommonModule } from '@core/common.module';
-import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 
@@ -13,7 +12,6 @@ import { KepTableComponent } from '@shared/components/kep-table/kep-table.compon
   standalone: true,
   imports: [
     CoreCommonModule,
-    NgbButtonsModule,
     UserPopoverModule,
     KepTableComponent,
   ]

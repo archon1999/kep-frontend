@@ -6,23 +6,23 @@
         <p [innerHTML]="course.description" class="text-dark"></p>
 
         <div class="text-dark font-medium-2 mt-2 mb-1">
-          <i [data-feather]="'activity'" [size]="18" class="mr-25"></i>
+          <i [data-feather]="'activity'" [size]="18" class="me-25"></i>
           Kurs {{ tasksRatio }}% amaliyotdan iborat
         </div>
 
         <div class="text-dark font-medium-2 mb-1">
-          <i [size]="'18'" class="mr-25" [data-feather]="'info'"></i>
+          <i [size]="'18'" class="me-25" [data-feather]="'info'"></i>
           Ushbu kurs <b>{{ course.lessonsCount - 1 }} ta</b> mavzudan iborat, har bir mavzu kichik ma'ruzalar, misollar, topshiriq va masalalardan iborat.
         </div>
 
         <div class="text-dark font-medium-2">
-          <i [size]="'18'" class="mr-25" [data-feather]="'check-circle'"></i>
+          <i [size]="'18'" class="me-25" [data-feather]="'check-circle'"></i>
           Kurs davomida bajariladigan topshiriqlar soni <b>{{ course.tasksCount }}</b>.
         </div>
       </div>
 
       <div class="card-footer d-flex justify-content-center">
-        <div class="half-width">
+        <div class="half-collapse-horizontal">
           <div class="text-center">
             <a
               [routerLink]="Resources.CourseFirstLesson | resourceById:course.id"

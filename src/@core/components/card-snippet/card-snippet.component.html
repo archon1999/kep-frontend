@@ -31,7 +31,7 @@
                     <i class="feather icon-copy font-medium-2 cursor-pointer text-white p-1" (click)= "copyCode(snippetCode.html)"></i>
                   }
                   @if (copyCodeStatus) {
-                    <span class="text-white text-copied mr-1 badge badge-secondary">copied !</span>
+                    <span class="text-white text-copied me-1 badge bg-secondary">copied !</span>
                   }
                   <code [highlight]="snippetCode.html" [languages]="['html']">
                   </code>
@@ -47,10 +47,10 @@
               <div class="code-toggle">
                 <pre>
                   @if (!copyCodeStatus) {
-                    <i class="feather icon-copy font-medium-2 cursor-pointer text-white float-right p-1" (click)= "copyCode(snippetCode.ts)"></i>
+                    <i class="feather icon-copy font-medium-2 cursor-pointer text-white float-end p-1" (click)= "copyCode(snippetCode.ts)"></i>
                   }
                   @if (copyCodeStatus) {
-                    <span class="text-white float-right mr-1 badge badge-secondary">copied !</span>
+                    <span class="text-white float-end me-1 badge bg-secondary">copied !</span>
                   }
                   <code [highlight]="snippetCode.ts"  [languages]="['typescript']">
                   </code>
@@ -66,10 +66,10 @@
               <div class="code-toggle">
                 <pre>
                   @if (!copyCodeStatus) {
-                    <i class="feather icon-copy font-medium-2 cursor-pointer text-white float-right p-1" (click)= "copyCode(snippetCode.scss)"></i>
+                    <i class="feather icon-copy font-medium-2 cursor-pointer text-white float-end p-1" (click)= "copyCode(snippetCode.scss)"></i>
                   }
                   @if (copyCodeStatus) {
-                    <span class="text-white float-right mr-1 badge badge-secondary">copied !</span>
+                    <span class="text-white float-end me-1 badge bg-secondary">copied !</span>
                   }
                   <code [highlight]="snippetCode.scss"  [languages]="['scss']">
                   </code>
@@ -83,13 +83,13 @@
             <a ngbNavLink>JSON</a>
             <ng-template ngbNavContent>
               <div class="code-toggle">
-                <div class="mb-1 ml-50"></div>
+                <div class="mb-1 ms-50"></div>
                 <pre>
                   @if (!copyCodeStatus) {
-                    <i class="feather icon-copy font-medium-2 cursor-pointer text-white float-right p-1" (click)= "copyCode(snippetCode.json)"></i>
+                    <i class="feather icon-copy font-medium-2 cursor-pointer text-white float-end p-1" (click)= "copyCode(snippetCode.json)"></i>
                   }
                   @if (copyCodeStatus) {
-                    <span class="text-white float-right mr-1 badge badge-secondary">copied !</span>
+                    <span class="text-white float-end me-1 badge bg-secondary">copied !</span>
                   }
                   <code [highlight]="snippetCode.json"  [languages]="['json']">
                   </code>

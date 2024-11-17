@@ -11,7 +11,7 @@
         <kep-icon name="technology-2"/>
         {{ 'Level' | translate }}
       </div>
-      <span class="badge badge-pill badge-success badge-glow">
+      <span class="badge rounded-pill bg-success badge-glow">
         {{ project.levelTitle }}
       </span>
     </div>
@@ -28,7 +28,7 @@
         <kep-icon name="technology"></kep-icon>
         {{ 'Technologies' | translate }}
       </div>
-      <div class="text-right">
+      <div class="text-end">
         @for (technology of project.availableTechnologies;track technology) {
           <div class="mb-50">
             <project-technology [name]="technology.technology"></project-technology>

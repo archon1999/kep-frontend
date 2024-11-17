@@ -2,7 +2,7 @@
   <div class="card-body">
     <div class="row">
       <div class="col-12">
-        <div class="form-group">
+        <div class="mb-1">
           <label for="accountTextarea">Bio</label>
           <quill-editor class="full-width" [(ngModel)]="userInfo.bio">
             <div quill-editor-toolbar>
@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="col-12 col-sm-6">
-        <div class="form-group">
+        <div class="mb-1">
           <label for="account-birth-date">Birth date</label>
           <ng2-flatpickr
             [config]="birthDateOptions"
@@ -58,7 +58,7 @@
         </div>
       </div>
       <div class="col-12 col-sm-6">
-        <div class="form-group">
+        <div class="mb-1">
           <label for="account-website">Website</label>
           <input
             type="text"
@@ -73,7 +73,7 @@
           </div>
         </div>
         <div class="col-12 col-sm-6">
-          <div class="form-group">
+          <div class="mb-1">
             <label for="user-country">Country</label>
             <ng-select
               [ngModelOptions]="{standalone: true}"
@@ -93,7 +93,7 @@
           </div>
         </div>
         <div class="col-12 col-sm-6">
-          <div class="form-group">
+          <div class="mb-1">
             <label for="user-region">Region</label>
             <input
               type="text"
@@ -109,7 +109,7 @@
           </div>
 
           <div class="col-12">
-            <button (click)="save()" type="submit" class="btn btn-primary mt-1 mr-1" rippleEffect>Save</button>
+            <button (click)="save()" type="submit" class="btn btn-primary mt-1 me-1" rippleEffect>Save</button>
             <button (click)="reset()" type="reset" class="btn btn-outline-secondary mt-1" rippleEffect>Reset</button>
           </div>
         </div>

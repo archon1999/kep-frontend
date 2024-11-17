@@ -13,15 +13,15 @@
         </div>
 
         <div class="d-flex justify-content-between">
-          <div class="mr-2 cursor-pointer" cdkDragHandle>
+          <div class="me-2 cursor-pointer" cdkDragHandle>
             <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
               <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
               <path d="M0 0h24v24H0z" fill="none"></path>
             </svg>
           </div>
 
-          <button (click)="toggleSidebar()" aria-label="Close" class="close" type="button">
-            <span aria-hidden="true">&times;</span>
+          <button (click)="toggleSidebar()" aria-label="Close" class="btn-close" type="button">
+            
           </button>
         </div>
       </div>
@@ -44,8 +44,8 @@
           </div>
 
           <div class="col-lg-4 col-md-5 d-none d-md-block">
-            <div class="form-group">
-              <label class="font-weight-bold">{{ 'Language' | translate }}: </label>
+            <div class="mb-1">
+              <label class="fw-bold">{{ 'Language' | translate }}: </label>
               <ng-select
                 [appendTo]="'body'"
                 [clearable]="false"
@@ -61,8 +61,8 @@
             </div>
 
             @if (sampleTests.length > 0) {
-              <div class="form-group">
-                <label class="font-weight-bold">{{ 'CODE_EDITOR.SAMPLE_TEST' | translate }}: </label>
+              <div class="mb-1">
+                <label class="fw-bold">{{ 'CODE_EDITOR.SAMPLE_TEST' | translate }}: </label>
                 <ng-select
                   appendTo="body"
                   (change)="onSampleTestChange()"
@@ -80,8 +80,8 @@
             }
 
             @if (!isSelectedLangText()) {
-              <div class="form-group">
-                <label class="font-weight-bold">{{ 'CODE_EDITOR.INPUT' | translate }}:</label>
+              <div class="mb-1">
+                <label class="fw-bold">{{ 'CODE_EDITOR.INPUT' | translate }}:</label>
                 <textarea
                   [ngbTooltip]="editorForm.controls.input.errors | errorMessage"
                   class="form-control"
@@ -94,8 +94,8 @@
             }
 
             @if (!isSelectedLangText()) {
-              <div class="form-group">
-                <label class="font-weight-bold">{{ 'CODE_EDITOR.OUTPUT' | translate }}:</label>
+              <div class="mb-1">
+                <label class="fw-bold">{{ 'CODE_EDITOR.OUTPUT' | translate }}:</label>
                 <textarea
                   class="form-control"
                   formControlName="output"
@@ -105,8 +105,8 @@
             }
 
             @if (!isSelectedLangText()) {
-              <div class="form-group">
-                <label class="font-weight-bold">{{ 'CODE_EDITOR.ANSWER' | translate }}:</label>
+              <div class="mb-1">
+                <label class="fw-bold">{{ 'CODE_EDITOR.ANSWER' | translate }}:</label>
                 <textarea
                   class="form-control"
                   formControlName="answer"
@@ -137,7 +137,7 @@
           <button
             (click)="checkSamples()"
             ngbTooltip="Alt+Z"
-            class="btn btn-glow btn-dark bg-dark mr-50"
+            class="btn btn-glow btn-dark bg-dark me-50"
             type="button">
             @if (isCheckSamples) {
               <span aria-hidden="true" class="spinner-border spinner-border-sm" role="status"></span>
@@ -153,7 +153,7 @@
             <button
               ngbTooltip="Alt+X"
               (click)="run()"
-              class="btn btn-glow btn-dark bg-dark mr-50"
+              class="btn btn-glow btn-dark bg-dark me-50"
               type="button">
               @if (isRunning) {
                 <span aria-hidden="true" class="spinner-border spinner-border-sm" role="status"></span>
@@ -173,7 +173,7 @@
               [requestBody]="{input_data: editorForm.get('input').value}"
               [value]="1"
               >
-              <button class="btn btn-glow btn-dark bg-dark mr-50" type="button">
+              <button class="btn btn-glow btn-dark bg-dark me-50" type="button">
                 @if (isAnswerForInput) {
                   <span
                     class="spinner-border spinner-border-sm"
@@ -204,7 +204,7 @@
         </div>
       </div>
 
-      <div class="card-footer d-md-none d-block text-right">
+      <div class="card-footer d-md-none d-block text-end">
         @if (submitUrl) {
           <button
             ngbTooltip="Alt+Enter"
@@ -236,50 +236,50 @@
         </div>
         <hr class="mt-0 mb-0">
         <div class="card-body">
-          <ngb-accordion [closeOthers]="false" [destroyOnHide]="false">
-            @for (result of checkSamplesResult; track result.input){
-              <ngb-panel [cardClass]="'collapse-margin'" [id]="'result' + $index">
-                <ng-template ngbPanelTitle>
-                  <div class="font-weight-bolder d-flex justify-content-between">
-                    <span>TC #{{ $index + 1 }}</span>
-                    <span [class]="{
-                      'text-success': result.verdict == Verdicts.Accepted,
-                      'text-danger': result.verdict != Verdicts.Accepted,
-                    }">{{ result.verdict | verdictShortTitle }}</span>
-                  </div>
-                </ng-template>
-                <ng-template ngbPanelContent>
-                  @if (result.input) {
-                    <div class="meta">
-                      <div class="font-weight-bold">Input:</div>
-                      <div>{{ result.input }}</div>
-                    </div>
-                  }
+<!--          <ngb-accordion [closeOthers]="false" [destroyOnHide]="false">-->
+<!--            @for (result of checkSamplesResult; track result.input){-->
+<!--              <ngb-panel [cardClass]="'collapse-margin'" [id]="'result' + $index">-->
+<!--                <ng-template ngbPanelTitle>-->
+<!--                  <div class="fw-bolder d-flex justify-content-between">-->
+<!--                    <span>TC #{{ $index + 1 }}</span>-->
+<!--                    <span [class]="{-->
+<!--                      'text-success': result.verdict == Verdicts.Accepted,-->
+<!--                      'text-danger': result.verdict != Verdicts.Accepted,-->
+<!--                    }">{{ result.verdict | verdictShortTitle }}</span>-->
+<!--                  </div>-->
+<!--                </ng-template>-->
+<!--                <ng-template ngbPanelContent>-->
+<!--                  @if (result.input) {-->
+<!--                    <div class="meta">-->
+<!--                      <div class="fw-bold">Input:</div>-->
+<!--                      <div>{{ result.input }}</div>-->
+<!--                    </div>-->
+<!--                  }-->
 
-                  @if (result.answer) {
-                    <div>
-                      <div class="font-weight-bold">Answer:</div>
-                      <div>{{ result.answer }}</div>
-                    </div>
-                  }
+<!--                  @if (result.answer) {-->
+<!--                    <div>-->
+<!--                      <div class="fw-bold">Answer:</div>-->
+<!--                      <div>{{ result.answer }}</div>-->
+<!--                    </div>-->
+<!--                  }-->
 
-                  @if (result.output) {
-                    <div>
-                      <div class="font-weight-bold">Output:</div>
-                      <div>{{ result.output }}</div>
-                    </div>
-                  }
+<!--                  @if (result.output) {-->
+<!--                    <div>-->
+<!--                      <div class="fw-bold">Output:</div>-->
+<!--                      <div>{{ result.output }}</div>-->
+<!--                    </div>-->
+<!--                  }-->
 
-                  @if (result.error) {
-                    <div>
-                      <div class="font-weight-bold">Error:</div>
-                      <div><pre>{{ result.error }}</pre></div>
-                    </div>
-                  }
-                </ng-template>
-              </ngb-panel>
-            }
-          </ngb-accordion>
+<!--                  @if (result.error) {-->
+<!--                    <div>-->
+<!--                      <div class="fw-bold">Error:</div>-->
+<!--                      <div><pre>{{ result.error }}</pre></div>-->
+<!--                    </div>-->
+<!--                  }-->
+<!--                </ng-template>-->
+<!--              </ngb-panel>-->
+<!--            }-->
+<!--          </ngb-accordion>-->
         </div>
       }
     </div>

@@ -1,16 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
-import { IconNamePipe } from '@shared/pipes/feather-icons.pipe';
-import { RouterLink } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-import { UpperCasePipe } from '@angular/common';
 import { BaseLoadComponent } from '@app/common';
 import { CurrentProblemsRating } from '@problems/models/rating.models';
 import { PeriodRating } from '@problems/interfaces';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { map } from 'rxjs/operators';
-import { data } from 'autoprefixer';
 import { CoreCommonModule } from '@core/common.module';
 
 @Component({

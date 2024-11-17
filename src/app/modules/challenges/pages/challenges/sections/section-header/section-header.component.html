@@ -14,13 +14,13 @@
       </div>
 
       <div class="links" [ngClass.lt-md]="'d-flex'">
-        <a routerLink="rating" class="btn btn-primary mr-25 mr-mt-1" [ngClass.lt-md]="'btn-sm'">
+        <a routerLink="rating" class="btn btn-primary me-25 me-mt-1" [ngClass.lt-md]="'btn-sm'">
           <kep-icon name="ranking" class="font-medium-1"></kep-icon>
           <span [ngClass.lt-md]="'d-none'">
             {{ 'Rating' | translate }}
           </span>
         </a>
-        <a routerLink="user-statistics" class="btn btn-primary mr-25 mr-mt-1" [ngClass.lt-md]="'btn-sm'">
+        <a routerLink="user-statistics" class="btn btn-primary me-25 me-mt-1" [ngClass.lt-md]="'btn-sm'">
           <kep-icon name="statistics" class="font-medium-1"></kep-icon>
           <span [ngClass.lt-md]="'d-none'">
             {{ 'Statistics' | translate }}
@@ -39,13 +39,13 @@
               <span class="text-success">{{ Math.trunc(100 * challengesRating.wins / challengesRating.all ) }} %</span>
             </div>
             <div class="text-white" [ngClass.lt-md]="'font-small-4'" [ngClass.gt-sm]="'font-medium-2'">
-              <span class="ml-50 text-secondary" ngbTooltip="{{ 'Draws' | translate }}">D</span>
+              <span class="ms-50 text-secondary" ngbTooltip="{{ 'Draws' | translate }}">D</span>
               {{ challengesRating.draws }}
               <br>
                 <span class="text-secondary">{{ Math.trunc(100 * challengesRating.draws / challengesRating.all ) }} %</span>
               </div>
               <div class="text-white" [ngClass.lt-md]="'font-small-4'" [ngClass.gt-sm]="'font-medium-2'">
-                <span class="ml-50 text-danger" ngbTooltip="{{ 'Losses' | translate }}">L</span>
+                <span class="ms-50 text-danger" ngbTooltip="{{ 'Losses' | translate }}">L</span>
                 {{ challengesRating.losses }}
                 <br>
                   <span class="text-danger">{{ Math.trunc(100 * challengesRating.losses / challengesRating.all ) }} %</span>
@@ -57,13 +57,13 @@
       </div>
 
       <div class="useful-links row">
-        <div class="col-6 pr-md-1 pr-25">
+        <div class="col-6 pe-md-1 pe-25">
           <a class="btn btn-primary" routerLink="/learn/blog/post/69" [ngClass.lt-md]="'font-small-3'">
             {{ 'AboutChallenges' | translate }}
           </a>
         </div>
 
-        <div class="col-6 pl-md-1 pl-25">
+        <div class="col-6 pl-md-1 ps-25">
           <a class="btn btn-primary" routerLink="/learn/blog/post/70" [ngClass.lt-md]="'font-small-3'">
             {{ 'AboutQuestionTypes' | translate }}
           </a>

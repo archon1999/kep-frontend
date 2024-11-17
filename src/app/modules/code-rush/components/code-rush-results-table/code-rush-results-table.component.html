@@ -23,18 +23,18 @@
               <contestant-view [textColor]="'white'" [user]="player"></contestant-view>
             </td>
             <td>
-              <span class="badge badge-danger badge-glow">{{ player.score }}</span>
+              <span class="badge bg-danger badge-glow">{{ player.score }}</span>
             </td>
             @for (problemInfo of player.problemsInfo; track problemInfo) {
               <td
                 class="text-white text-center">
                 @if (problemInfo.isSolved === true) {
-                  <span class="badge badge-success badge-glow">
+                  <span class="badge bg-success badge-glow">
                     {{ problemInfo.acceptedTime }}
                   </span>
                 }
                 @if (problemInfo.isSolved === false) {
-                  <span class="badge badge-warning badge-glow">
+                  <span class="badge bg-warning badge-glow">
                     -
                   </span>
                 }

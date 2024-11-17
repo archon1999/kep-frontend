@@ -4,7 +4,7 @@
       <div class="col-12">
         <div class="d-flex align-items-center mb-2">
           <i data-feather="activity" class="font-medium-3"></i>
-          <h4 class="mb-0 ml-75">Education</h4>
+          <h4 class="mb-0 ms-75">Education</h4>
         </div>
       </div>
       <div class="col-12">
@@ -13,7 +13,7 @@
             <div @heightIn>
               <div class="row d-flex align-items-end">
                 <div class="col-md-4 col-12">
-                  <div class="form-group">
+                  <div class="mb-1">
                     <label for="organization{{ i }}">Organization</label>
                     <input
                       type="text"
@@ -26,7 +26,7 @@
                     </div>
                   </div>
                   <div class="col-md-2 col-12">
-                    <div class="form-group">
+                    <div class="mb-1">
                       <label for="degree{{ i }}">Degree</label>
                       <input
                         type="text"
@@ -39,7 +39,7 @@
                       </div>
                     </div>
                     <div class="col-md-2 col-12">
-                      <div class="form-group">
+                      <div class="mb-1">
                         <label for="fromyear{{ i }}">From year</label>
                         <input
                           type="number"
@@ -52,7 +52,7 @@
                         </div>
                       </div>
                       <div class="col-md-2 col-12">
-                        <div class="form-group">
+                        <div class="mb-1">
                           <label for="toyear{{ i }}">To year</label>
                           <input
                             type="number"
@@ -66,9 +66,9 @@
                           </div>
                         </div>
                         <div class="col-md-2 col-12 mb-50">
-                          <div class="form-group">
+                          <div class="mb-1">
                             <button class="btn btn-outline-danger text-nowrap px-1" (click)="deleteEducation(i)" rippleEffect>
-                              <i data-feather="x" class="mr-25"></i>
+                              <i data-feather="x" class="me-25"></i>
                               <span>Delete</span>
                             </button>
                           </div>
@@ -81,7 +81,7 @@
                 <div class="row">
                   <div class="col-12">
                     <button class="btn btn-icon btn-primary" type="button" (click)="addEducation()" rippleEffect>
-                      <i data-feather="plus" class="mr-25"></i>
+                      <i data-feather="plus" class="me-25"></i>
                       <span>Add New</span>
                     </button>
                   </div>
@@ -90,7 +90,7 @@
               <div class="col-12 mt-4">
                 <div class="d-flex align-items-center mb-2">
                   <i data-feather="activity" class="font-medium-3"></i>
-                  <h4 class="mb-0 ml-75">Work Experience</h4>
+                  <h4 class="mb-0 ms-75">Work Experience</h4>
                 </div>
               </div>
               <div class="col-12">
@@ -99,7 +99,7 @@
                     <div @heightIn>
                       <div class="row d-flex align-items-end">
                         <div class="col-md-4 col-12">
-                          <div class="form-group">
+                          <div class="mb-1">
                             <label for="company{{ i }}">Company</label>
                             <input
                               type="text"
@@ -112,7 +112,7 @@
                             </div>
                           </div>
                           <div class="col-md-2 col-12">
-                            <div class="form-group">
+                            <div class="mb-1">
                               <label for="job{{ i }}">Job title</label>
                               <input
                                 type="text"
@@ -125,7 +125,7 @@
                               </div>
                             </div>
                             <div class="col-md-2 col-12">
-                              <div class="form-group">
+                              <div class="mb-1">
                                 <label for="fromyear{{ i }}">From year</label>
                                 <input
                                   type="number"
@@ -138,7 +138,7 @@
                                 </div>
                               </div>
                               <div class="col-md-2 col-12">
-                                <div class="form-group">
+                                <div class="mb-1">
                                   <label for="toyear{{ i }}">To year</label>
                                   <input
                                     type="number"
@@ -152,9 +152,9 @@
                                   </div>
                                 </div>
                                 <div class="col-md-2 col-12 mb-50">
-                                  <div class="form-group">
+                                  <div class="mb-1">
                                     <button class="btn btn-outline-danger text-nowrap px-1" (click)="deleteWorkExperience(i)" rippleEffect>
-                                      <i data-feather="x" class="mr-25"></i>
+                                      <i data-feather="x" class="me-25"></i>
                                       <span>Delete</span>
                                     </button>
                                   </div>
@@ -167,14 +167,14 @@
                         <div class="row">
                           <div class="col-12">
                             <button class="btn btn-icon btn-primary" type="button" (click)="addWorkExperience()" rippleEffect>
-                              <i data-feather="plus" class="mr-25"></i>
+                              <i data-feather="plus" class="me-25"></i>
                               <span>Add New</span>
                             </button>
                           </div>
                         </div>
                       </div>
                       <div class="col-12">
-                        <button (click)="save()" type="submit" class="btn btn-primary mt-1 mr-1" rippleEffect>Save</button>
+                        <button (click)="save()" type="submit" class="btn btn-primary mt-1 me-1" rippleEffect>Save</button>
                         <button (click)="reset()" type="reset" class="btn btn-outline-secondary mt-1" rippleEffect>Reset</button>
                       </div>
                     </div>

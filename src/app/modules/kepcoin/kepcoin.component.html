@@ -1,5 +1,5 @@
 <div class="row kepcoin-page-top">
-  <div class="mb-3 mt-2 col-lg-10 col-12 offset-xl-2 offset-lg-1 offset-0">
+  <div class="mb-1 mt-2 col-lg-10 col-12 offset-xl-2 offset-lg-1 offset-0">
     <h1>
       {{ 'YouHave' | translate }} <kepcoin [marginRight]="0.3" [imgSize]="30" [value]="currentUser?.kepcoin"></kepcoin>
     </h1>
@@ -16,7 +16,7 @@
           <strong>
             {{ streak }}
           </strong>
-          <span class="badge mr-50 ml-50 badge-warning badge-glow">{{ 'YouHave' | translate }} <strong>{{ streakFreeze }}</strong></span>
+          <span class="badge me-50 ms-50 bg-warning badge-glow">{{ 'YouHave' | translate }} <strong>{{ streakFreeze }}</strong></span>
           <kepcoin-spend-swal
             [value]="10"
             [purchaseUrl]="'purchase-streak-freeze'"
@@ -124,7 +124,7 @@
                     }
                   </span>
                 </p>
-                <div class="media align-items-center">
+                <div class="d-flex align-items-center">
                 </div>
               </div>
             </li>
@@ -194,7 +194,7 @@
             }
           </span>
         </p>
-        <div class="media align-items-center">
+        <div class="d-flex align-items-center">
         </div>
       </div>
     </li>

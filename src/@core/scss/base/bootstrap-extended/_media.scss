@@ -1,5 +1,14 @@
 .media-list {
   .media {
+    display: flex;
+    align-items: flex-start
+  }
+
+  .media-body {
+    flex: 1
+  }
+
+  .media {
     padding: 1.25rem;
     width: 100%;
     margin-top: 0;

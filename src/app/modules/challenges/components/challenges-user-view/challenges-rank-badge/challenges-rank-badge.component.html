@@ -1,9 +1,9 @@
-<span class="badge badge-pill badge-glow badge-{{ title | challengesRankColor }}">
+<span class="badge rounded-pill badge-glow badge-{{ title | challengesRankColor }}">
   {{ title }}
 </span>
 
 @if (rating) {
-  <span class="ml-50 badge badge-light-{{ title | challengesRankColor }}">
+  <span class="ms-50 badge bg-badge-{{ title | challengesRankColor }}">
     {{ rating }}
   </span>
 }

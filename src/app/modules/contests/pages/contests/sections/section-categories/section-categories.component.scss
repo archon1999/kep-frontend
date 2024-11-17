@@ -1,13 +1,11 @@
 @import 'styles/kep-imports';
 
 .contest-category-card {
-  box-shadow: none;
   margin-bottom: 1rem;
 
   &:hover {
     transition: 0.2s ease-in;
     transform: scale(1.05);
-    box-shadow: initial;
   }
 
   .card-header {

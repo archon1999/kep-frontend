@@ -1,11 +1,4 @@
-@import 'scss/base/bootstrap-extended/variables';
-
-.card {
-  // border: none;
-  box-shadow: none;
-  // box-shadow: var(--inherit-bg-box-shadow) !important;
-  // background: inherit !important;
-}
+@import 'styles/kep-imports';
 
 .problems-count {
   font-size: 17px;
@@ -15,39 +8,21 @@
   letter-spacing: 2px;
 }
 
+.tags-dropdown {
+  --bs-dropdown-padding-x: 0;
+  --bs-dropdown-padding-y: 0;
+
+  --bs-dropdown-bg: white;
+
+  @include dark-layout {
+    --bs-dropdown-bg: #{$theme-dark-card-bg};
+  }
+}
+
 .select-tags {
   background: white;
-}
 
-::ng-deep .dark-layout .select-tags {
-  background: inherit;
-}
-
-::ng-deep .card-category {
-  border-bottom: 1px solid #ebe9f1 !important;
-
-  .btn {
-    // border: none !important;
+  @include dark-layout {
+    background: inherit;
   }
-
-  .card-header:hover {
-    background-color: rgba($primary, 0.1) !important;
-    color: $primary !important;
-  }
-}
-
-::ng-deep .dropdown-menu:has(.card-category) {
-  padding: 0 !important;
-}
-
-::ng-deep .dark-layout .card-category {
-  border-bottom-color: #161d31 !important;
-
-  .card-header {
-    color: $light;
-  }
-}
-
-::ng-deep .tags-select .ng-value {
-  color: white !important;
 }

@@ -1,5 +1,11 @@
 // var for box shadow of gradient buttons
 // Buttons
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
 .btn {
   box-shadow: none;
   font-weight: 500;
