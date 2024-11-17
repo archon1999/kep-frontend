@@ -3,7 +3,13 @@
 </span>
 
 @if (rating) {
-  <span class="ms-50 badge bg-badge-{{ title | challengesRankColor }}">
-    {{ rating }}
-  </span>
+  @if (title) {
+    <span class="ms-50 text-dark">
+      {{ rating }}
+    </span>
+  } @else {
+    <span class="ms-25 badge badge-{{ title | challengesRankColor }}">
+      {{ rating }}
+    </span>
+  }
 }
