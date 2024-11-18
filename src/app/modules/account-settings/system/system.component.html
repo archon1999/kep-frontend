@@ -99,6 +99,22 @@
       </div>
 
     </div>
+
+    <div class="toggle-theme-effects mt-2">
+      <p class="fw-bold font-medium-3 mb-1 mt-1">Toggle Effect Theme</p>
+
+      <div class="rows">
+        <div class="col-6">
+          <ng-select
+            (change)="toggleEffectThemeChange()"
+            [(ngModel)]="toggleEffectTheme"
+            [dropdownPosition]="'bottom'"
+            [items]="toggleEffectThemeItems"
+            appendTo="body">
+          </ng-select>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

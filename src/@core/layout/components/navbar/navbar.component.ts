@@ -14,6 +14,7 @@ import { NavbarDailyTasksComponent } from '@layout/components/navbar/navbar-dail
 import { NavbarKepcoinComponent } from '@layout/components/navbar/navbar-kepcoin/navbar-kepcoin.component';
 import { NavbarNotificationComponent } from '@layout/components/navbar/navbar-notification/navbar-notification.component';
 import { coreConfig } from '@app/app.config';
+import toggleEffectThemes from '@layout/components/navbar/toggle-effect-themes';
 
 @Component({
   selector: 'app-navbar',
@@ -66,25 +67,29 @@ export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy 
   }
 
   switch() {
-    this.coreConfigService
-      .getConfig()
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(config => {
-        this.currentSkin = config.layout.skin;
-      });
+    const toggleEffectTheme = this.localStorageService.get('toggle-effect-theme') || 'polygon';
+    console.log(toggleEffectThemes[toggleEffectTheme]);
+    document.getElementById('toggle-effect-style').textContent = toggleEffectThemes[toggleEffectTheme];
+    setTimeout(() => {
+      this.coreConfigService
+        .getConfig()
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe(config => {
+          this.currentSkin = config.layout.skin;
+        });
 
-    // Toggle Dark skin with prevSkin skin
-    this.prevSkin = localStorage.getItem('prevSkin');
+      this.prevSkin = localStorage.getItem('prevSkin');
 
-    if (this.currentSkin === 'dark') {
-      this.coreConfigService.setConfig(
-        { layout: { skin: this.prevSkin ? this.prevSkin : 'default' } },
-        { emitEvent: true }
-      );
-    } else {
-      localStorage.setItem('prevSkin', this.currentSkin);
-      this.coreConfigService.setConfig({ layout: { skin: 'dark' } }, { emitEvent: true });
-    }
+      if (this.currentSkin === 'dark') {
+        this.coreConfigService.setConfig(
+          { layout: { skin: this.prevSkin ? this.prevSkin : 'default' } },
+          { emitEvent: true }
+        );
+      } else {
+        localStorage.setItem('prevSkin', this.currentSkin);
+        this.coreConfigService.setConfig({ layout: { skin: 'dark' } }, { emitEvent: true });
+      }
+    }, 100)
   }
 
   loginModalOpenForm() {

@@ -4,6 +4,7 @@ import { CoreConfig } from '@core/types';
 import { SoundsService } from '@shared/services/sounds/sounds.service';
 import { SuccessSoundEnum, SuccessSoundList } from '@shared/services/sounds/enums/success-sound.enum';
 import { HomeSoundEnum, HomeSoundList } from '@shared/services/sounds/enums/home-sound.enum';
+import { LocalStorageService } from '@shared/services/storages/local-storage.service';
 
 @Component({
   selector: 'system',
@@ -24,12 +25,25 @@ export class SystemComponent implements OnInit {
 
   public enableAnimation: string;
 
+  public toggleEffectTheme = this.localStorageService.get('toggle-effect-theme') || 'polygon';
+  public toggleEffectThemeItems = [
+    'polygon',
+    'polygon-gradient',
+    'circle',
+    'circle-with-blur',
+    'circle-blur-top-left',
+    'anime-girl',
+    'love-man',
+    'none',
+  ];
+
   @ViewChild('successAudio') successAudio: ElementRef<HTMLAudioElement>;
   @ViewChild('homeAudio') homeAudio: ElementRef<HTMLAudioElement>;
 
   constructor(
     public coreConfigService: CoreConfigService,
     public soundsService: SoundsService,
+    public localStorageService: LocalStorageService,
   ) {
   }
 
@@ -76,4 +90,9 @@ export class SystemComponent implements OnInit {
     }, 100);
   }
 
+  toggleEffectThemeChange() {
+    setTimeout(() => {
+      this.localStorageService.set('toggle-effect-theme', this.toggleEffectTheme);
+    }, 100)
+  }
 }
