@@ -1,23 +1,12 @@
-import { Component, OnDestroy, OnInit, HostBinding, HostListener, ViewEncapsulation } from '@angular/core';
+import { Component, HostBinding, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { MediaObserver } from '@angular/flex-layout';
 
 // import * as _ from 'lodash';
-import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
-
-import { AuthService } from '@auth';
-import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
-import { CoreConfigService } from '@core/services/config.service';
 import { CoreMediaService } from '@core/services/media.service';
-
-import { User } from '@auth';
-
-import { Router } from '@angular/router';
 
 import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthModalComponent } from '@app/modules/auth/auth-modal/auth-modal.component';
-import { ApiService } from 'app/shared/services/api.service';
 import { BaseComponent } from '@app/common/classes/base.component';
 import { CoreCommonModule } from '@core/common.module';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
@@ -68,6 +57,15 @@ export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy 
 
   toggleDarkSkin() {
     // Get the current skin
+    if (!(document as any).startViewTransition) {
+      this.switch();
+    }
+    (document as any).startViewTransition(() => {
+      this.switch();
+    });
+  }
+
+  switch() {
     this.coreConfigService
       .getConfig()
       .pipe(takeUntil(this._unsubscribeAll))
