@@ -14,7 +14,7 @@ import { NavbarDailyTasksComponent } from '@layout/components/navbar/navbar-dail
 import { NavbarKepcoinComponent } from '@layout/components/navbar/navbar-kepcoin/navbar-kepcoin.component';
 import { NavbarNotificationComponent } from '@layout/components/navbar/navbar-notification/navbar-notification.component';
 import { coreConfig } from '@app/app.config';
-import toggleEffectThemes from '@layout/components/navbar/toggle-effect-themes';
+import themeToggleEffects from '@layout/components/navbar/theme-toggle-effects';
 
 @Component({
   selector: 'app-navbar',
@@ -67,9 +67,8 @@ export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy 
   }
 
   switch() {
-    const toggleEffectTheme = this.localStorageService.get('toggle-effect-theme') || 'polygon';
-    console.log(toggleEffectThemes[toggleEffectTheme]);
-    document.getElementById('toggle-effect-style').textContent = toggleEffectThemes[toggleEffectTheme];
+    const themeToggleEffect = this.localStorageService.get('theme-toggle-effect') || 'polygon';
+    document.getElementById('toggle-effect-style').textContent = themeToggleEffects[themeToggleEffect];
     setTimeout(() => {
       this.coreConfigService
         .getConfig()
@@ -89,7 +88,7 @@ export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy 
         localStorage.setItem('prevSkin', this.currentSkin);
         this.coreConfigService.setConfig({ layout: { skin: 'dark' } }, { emitEvent: true });
       }
-    }, 100)
+    }, 100);
   }
 
   loginModalOpenForm() {

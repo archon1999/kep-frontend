@@ -101,15 +101,15 @@
     </div>
 
     <div class="toggle-theme-effects mt-2">
-      <p class="fw-bold font-medium-3 mb-1 mt-1">Toggle Effect Theme</p>
+      <p class="fw-bold font-medium-3 mb-1 mt-1">Theme Toggle Effect</p>
 
       <div class="rows">
         <div class="col-6">
           <ng-select
-            (change)="toggleEffectThemeChange()"
-            [(ngModel)]="toggleEffectTheme"
+            (change)="themeToggleEffectChange()"
+            [(ngModel)]="themeToggleEffect"
             [dropdownPosition]="'bottom'"
-            [items]="toggleEffectThemeItems"
+            [items]="themeToggleEffectList"
             appendTo="body">
           </ng-select>
         </div>

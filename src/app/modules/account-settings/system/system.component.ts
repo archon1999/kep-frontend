@@ -25,13 +25,10 @@ export class SystemComponent implements OnInit {
 
   public enableAnimation: string;
 
-  public toggleEffectTheme = this.localStorageService.get('toggle-effect-theme') || 'polygon';
-  public toggleEffectThemeItems = [
+  public themeToggleEffect = this.localStorageService.get('theme-toggle-effect') || 'polygon';
+  public themeToggleEffectList = [
     'polygon',
-    'polygon-gradient',
     'circle',
-    'circle-with-blur',
-    'circle-blur-top-left',
     'anime-girl',
     'love-man',
     'none',
@@ -90,9 +87,9 @@ export class SystemComponent implements OnInit {
     }, 100);
   }
 
-  toggleEffectThemeChange() {
+  themeToggleEffectChange() {
     setTimeout(() => {
-      this.localStorageService.set('toggle-effect-theme', this.toggleEffectTheme);
-    }, 100)
+      this.localStorageService.set('theme-toggle-effect', this.themeToggleEffect);
+    }, 100);
   }
 }
