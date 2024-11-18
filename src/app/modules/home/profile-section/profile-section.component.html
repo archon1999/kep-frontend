@@ -18,64 +18,61 @@
     <div class="card-body">
       <div class="row">
         <div class="col-4">
-          <div class="card mb-0">
-            <div class="card-header p-50">
-              <div class="">
-                <kep-icon class="font-small-4" name="contest"></kep-icon> {{ 'MENU.CONTESTS' | translate }}
-              </div>
+          <div class="card-header p-50">
+            <div class="">
+              <kep-icon class="font-small-4" name="contest"></kep-icon>
+              {{ 'MENU.CONTESTS' | translate }}
             </div>
+          </div>
 
-            <div class="card-body p-50">
-              <contests-rating-image [size]="24" [title]="userRatings.contestsRatingTitle"></contests-rating-image>
-              <span class="badge badge-light-{{ userRatings.contestsRating | contestsRatingColor }}">
+          <div class="card-body p-50">
+            <contests-rating-image [size]="24" [title]="userRatings.contestsRatingTitle"></contests-rating-image>
+            <span class="badge badge-light-{{ userRatings.contestsRating | contestsRatingColor }}">
                 {{ userRatings.contestsRating }}
               </span>
-            </div>
           </div>
         </div>
 
 
         <div class="col-4">
-          <div class="card mb-0">
-            <div class="card-header p-50">
-              <div class="">
-                <kep-icon class="font-small-4" name="problem"></kep-icon> {{ 'MENU.PROBLEMS' | translate }}
-              </div>
+          <div class="card-header p-50">
+            <div class="">
+              <kep-icon class="font-small-4" name="problem"></kep-icon>
+              {{ 'MENU.PROBLEMS' | translate }}
             </div>
+          </div>
 
-            <div class="card-body p-50">
+          <div class="card-body p-50">
               <span class="badge bg-primary">
                 {{ userRatings.problemsSolved }}
               </span>
-              <span class="badge ms-25 bg-light-success">
+            <span class="badge ms-25 bg-light-success">
                 {{ userRatings.problemsRating }}
               </span>
-            </div>
           </div>
         </div>
 
         <div class="col-4">
-          <div class="card mb-0">
-            <div class="card-header p-50">
-              <div class="">
-                <kep-icon class="font-small-4" name="challenge"></kep-icon> {{ 'MENU.CHALLENGES' | translate }}
-              </div>
+          <div class="card-header p-50">
+            <div class="">
+              <kep-icon class="font-small-4" name="challenge"></kep-icon>
+              {{ 'MENU.CHALLENGES' | translate }}
             </div>
+          </div>
 
-            <div class="card-body p-50">
-              <div class="text-{{ userRatings.challengesRankTitle | challengesRankColor }}">
-                <span class="badge badge-pill badge-glow badge-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+          <div class="card-body p-50">
+            <div class="text-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+                <span
+                  class="badge badge-pill badge-glow badge-{{ userRatings.challengesRankTitle | challengesRankColor }}">
                   {{ userRatings.challengesRankTitle }}
                 </span>
-                <span class="badge badge-light-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+              <span class="badge badge-light-{{ userRatings.challengesRankTitle | challengesRankColor }}">
                   {{ userRatings.challengesRating }}
                 </span>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
 }
