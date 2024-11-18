@@ -33,31 +33,38 @@
 
   <style>
     ::view-transition-group(root) {
-      animation-timing-function: var(--expo-in);
+      animation-duration: 0.7s;
+      animation-timing-function: var(--expo-out);
     }
 
     ::view-transition-new(root) {
-      mask: url('https://media.tenor.com/cyORI7kwShQAAAAi/shigure-ui-dance.gif') center / 0 no-repeat;
-      animation: scale 3s;
+      animation-name: reveal-light;
     }
 
     ::view-transition-old(root),
     .dark-layout::view-transition-old(root) {
-      animation: scale 3s;
+      animation: none;
+      z-index: -1;
+    }
+    .dark-layout::view-transition-new(root) {
+      animation-name: reveal-dark;
     }
 
-    @keyframes scale {
-      0% {
-        mask-size: 0;
+    @keyframes reveal-dark {
+      from {
+        clip-path: polygon(50% -71%, -50% 71%, -50% 71%, 50% -71%);
       }
-      10% {
-        mask-size: 50vmax;
+      to {
+        clip-path: polygon(50% -71%, -50% 71%, 50% 171%, 171% 50%);
       }
-      90% {
-        mask-size: 50vmax;
+    }
+
+    @keyframes reveal-light {
+      from {
+        clip-path: polygon(171% 50%, 50% 171%, 50% 171%, 171% 50%);
       }
-      100% {
-        mask-size: 2000vmax;
+      to {
+        clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%);
       }
     }
 
