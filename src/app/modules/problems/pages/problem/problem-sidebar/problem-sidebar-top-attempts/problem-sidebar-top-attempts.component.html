@@ -22,7 +22,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (attempt of topAttempts;track attempt.id) {
+        @for (attempt of topAttempts;track $index) {
           <tr>
             <td class="text-nowrap">
               <contestant-view [imgSize]="28" [user]="attempt"></contestant-view>

@@ -14,7 +14,7 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
   styleUrls: ['./activity-section.component.scss'],
   standalone: true,
   imports: [CoreCommonModule, NgbTooltipModule, KepIconComponent],
-  animations: [fadeInOnEnterAnimation({ duration: 3000 })]
+  animations: [fadeInOnEnterAnimation()]
 })
 export class ActivitySectionComponent implements OnInit, OnDestroy {
 
