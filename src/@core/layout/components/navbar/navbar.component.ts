@@ -37,7 +37,6 @@ export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy 
 
   public coreConfig: any;
   public currentSkin: string;
-  public prevSkin: string;
 
   public defaultCoreConfig = coreConfig;
 
@@ -50,6 +49,13 @@ export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy 
     public modalService: NgbModal,
   ) {
     super();
+
+    this.coreConfigService
+      .getConfig()
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(config => {
+        this.currentSkin = config.layout.skin;
+      });
   }
 
   toggleSidebar(key): void {
@@ -70,22 +76,9 @@ export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy 
     const themeToggleEffect = this.localStorageService.get('theme-toggle-effect') || 'polygon';
     document.getElementById('toggle-effect-style').textContent = themeToggleEffects[themeToggleEffect];
     setTimeout(() => {
-      this.coreConfigService
-        .getConfig()
-        .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe(config => {
-          this.currentSkin = config.layout.skin;
-        });
-
-      this.prevSkin = localStorage.getItem('prevSkin');
-
       if (this.currentSkin === 'dark') {
-        this.coreConfigService.setConfig(
-          { layout: { skin: this.prevSkin ? this.prevSkin : 'default' } },
-          { emitEvent: true }
-        );
+        this.coreConfigService.setConfig({ layout: { skin: 'default' } }, { emitEvent: true });
       } else {
-        localStorage.setItem('prevSkin', this.currentSkin);
         this.coreConfigService.setConfig({ layout: { skin: 'dark' } }, { emitEvent: true });
       }
     }, 100);

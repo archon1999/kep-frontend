@@ -5,6 +5,7 @@ import { SoundsService } from '@shared/services/sounds/sounds.service';
 import { SuccessSoundEnum, SuccessSoundList } from '@shared/services/sounds/enums/success-sound.enum';
 import { HomeSoundEnum, HomeSoundList } from '@shared/services/sounds/enums/home-sound.enum';
 import { LocalStorageService } from '@shared/services/storages/local-storage.service';
+import themeToggleEffects from '@layout/components/navbar/theme-toggle-effects';
 
 @Component({
   selector: 'system',
@@ -26,13 +27,7 @@ export class SystemComponent implements OnInit {
   public enableAnimation: string;
 
   public themeToggleEffect = this.localStorageService.get('theme-toggle-effect') || 'polygon';
-  public themeToggleEffectList = [
-    'polygon',
-    'circle',
-    'anime-girl',
-    'love-man',
-    'none',
-  ];
+  public themeToggleEffectList = Object.keys(themeToggleEffects);
 
   @ViewChild('successAudio') successAudio: ElementRef<HTMLAudioElement>;
   @ViewChild('homeAudio') homeAudio: ElementRef<HTMLAudioElement>;
