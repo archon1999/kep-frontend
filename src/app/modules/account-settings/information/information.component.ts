@@ -62,8 +62,8 @@ export class InformationComponent implements OnInit {
     });
   }
 
-  onDateChange() {
-    const date = this.birthDate[0];
+  onDateChange(event) {
+    const date = event;
     this.userInfo.dateOfBirth = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
   }
 

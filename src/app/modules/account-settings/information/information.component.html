@@ -45,7 +45,7 @@
         <div class="mb-1">
           <label for="account-birth-date">Birth date</label>
           <div class="full-width">
-            <p-calendar [styleClass]="'full-width'" appendTo="body" [(ngModel)]="birthDate"></p-calendar>
+            <p-calendar (onSelect)="onDateChange($event)" [styleClass]="'full-width'" appendTo="body" [(ngModel)]="birthDate"></p-calendar>
           </div>
           @if (errors?.dateOfBirth) {
             <p class="text-danger">{{ errors.dateOfBirth[0] }}</p>
