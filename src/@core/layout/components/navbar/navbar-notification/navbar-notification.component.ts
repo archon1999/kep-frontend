@@ -1,20 +1,19 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { bounceAnimation, fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
-import { User } from '@auth';
-import { AuthService } from '@auth';
+import { AuthService, User } from '@auth';
 
 import { NotificationsService } from '@layout/components/navbar/navbar-notification/notifications.service';
 import { WebsocketService } from 'app/shared/services/websocket';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { interval, Subject } from 'rxjs';
 import { PageResult } from '@app/common/classes/page-result';
-import Swal from 'sweetalert2';
 import { CoreCommonModule } from '@core/common.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgScrollbar } from 'ngx-scrollbar';
+import { takeUntil } from 'rxjs/operators';
+import Swal from 'sweetalert2';
 
 interface Notification {
   id: number;
@@ -71,6 +70,16 @@ export class NavbarNotificationComponent implements OnInit, OnDestroy {
       this.animationState = !this.animationState;
     }, 10000);
     this.updateNotifications();
+    interval(1000).subscribe(
+      () => {
+        if (this.wsService.status) {
+          this.init();
+        }
+      }
+    );
+  }
+
+  init() {
     this.wsService.status.pipe(takeUntil(this._unsubscribeAll)).subscribe(
       () => {
         this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
