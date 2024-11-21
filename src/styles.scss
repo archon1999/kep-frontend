@@ -11,19 +11,14 @@
 @import 'highlight.js/styles/vs.css';
 @import 'styles/primeng-sass/themes/aura/aura-light/primary/theme';
 @import 'styles/primeng-sass/icons/primeicons';
+@import 'primeng/resources/primeng.css';
 
 .dark-layout {
   @include meta.load-css('highlight.js/styles/vs2015.css');
   @include meta.load-css('styles/primeng-sass/themes/aura/aura-dark/primary/theme');
 }
 
-@import 'styles/primeng-sass/icons/primeicons';
-
 @import 'dragula/dist/dragula.css';
-
-@import 'styles/primeng-sass/theme-base/components/multimedia/galleria';
-
-@import "primeng/resources/primeng.css";
 
 .kep-bg {
   background-image: url(assets/images/kep-bg-light.webp);
