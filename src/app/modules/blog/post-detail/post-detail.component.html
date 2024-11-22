@@ -8,9 +8,9 @@
             <img src="{{ blogPost.image }}" alt="post-image">
           </div>
           <div class="post-meta-info d-flex justify-content-between">
-            <div class="d-flex">
+            <div class="media d-flex">
               <img src="{{ blogPost.author.avatar }}" alt="profile">
-              <div class="flex-grow-1">
+              <div class="media-body">
                 <h5>
                   <user-popover [textColor]="'dark'" [username]="blogPost.author.username"></user-popover>
                 </h5>
@@ -34,7 +34,7 @@
 
     <div class="post-tags mt-1">
       @for (tag of blogPost.tags; track tag) {
-        <span class="badge bg-primary mb-1">{{ tag }}</span>
+        <span class="badge badge-primary mb-1">{{ tag }}</span>
       }
     </div>
 

@@ -51,7 +51,7 @@
 @include media-breakpoint-down(md) {
   .post-header {
     grid-template-columns: 1fr 1fr;
-    padding: 0 4rem;
+    padding: 0;
 
     .post-title {
       font-size: 2rem;
