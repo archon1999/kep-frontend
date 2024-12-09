@@ -36,6 +36,7 @@ import { PeriodRatingsComponent } from '@problems/pages/rating/period-ratings/pe
 })
 export class RatingComponent extends BaseTablePageComponent<ProblemsRating> implements OnInit {
   override defaultPageSize = 10;
+  override pageOptions = [10, 20, 50];
   override defaultOrdering = '-rating';
   override maxSize = 5;
 

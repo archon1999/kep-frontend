@@ -1,5 +1,5 @@
-<ul *ngIf="lightsEnabled" class="lightrope">
-  @for (_ of [].constructor(lightsCount); track _){
+<ul *ngIf="newYearEffects" class="lightrope">
+  @for (_ of [].constructor(lightsCount); track $index){
     <li></li>
   }
 </ul>
@@ -23,10 +23,10 @@
 <!-- FOOTER -->
 <ng-template #footer>
   @if (!coreConfig.layout.footer.hidden) {
-    <footer
+    <app-footer
       class="footer"
       [class]="[coreConfig.layout.footer.background, coreConfig.layout.footer.type]"
-    ></footer>
+    ></app-footer>
   }
 </ng-template>
 <!-- / FOOTER -->

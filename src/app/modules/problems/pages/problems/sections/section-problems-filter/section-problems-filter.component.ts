@@ -52,15 +52,15 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
   public filterCollapsed = false;
   public problemsCount = 0;
 
-  get filter() {
-    return this.filterService.currentFilterValue;
-  }
-
   constructor(
     public service: ProblemsApiService,
     public filterService: ProblemsFilterService,
   ) {
     super();
+  }
+
+  get filter() {
+    return this.filterService.currentFilterValue;
   }
 
   ngOnInit(): void {
@@ -74,6 +74,7 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
     if (queryParams.tags && !(queryParams instanceof Array)) {
       queryParams.tags = [queryParams.tags];
     }
+
     this.filterForm.patchValue(queryParams, { emitEvent: false });
 
     this.filterForm.valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe(
@@ -100,6 +101,10 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
           });
         });
         this.tags = tags;
+
+        if (queryParams.tags) {
+          this.selectedTagsName = Array.from(new Set(this.tags.filter(tag => queryParams.tags.indexOf(tag.id) !== -1).map(tag => tag.name))).join(', ');
+        }
       }
     );
 

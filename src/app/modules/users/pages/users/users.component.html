@@ -69,7 +69,7 @@
               </div>
             </div>
 
-            <kep-table [loading]="isLoading" [empty]="users?.length === 0">
+            <kep-table [loading]="isLoading" [spinnerHeight]="'807px'" [empty]="!isLoading && users?.length === 0">
               <ng-container header>
                 <tr>
                   <th>
