@@ -4,6 +4,7 @@ import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 import { BaseLoadComponent } from '@app/common';
 import { Observable } from 'rxjs';
 import { LandingPageService } from '@app/modules/landing-page/landing-page.service';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 interface FAQ {
   id: number;
@@ -14,7 +15,7 @@ interface FAQ {
 @Component({
   selector: 'section-faq',
   standalone: true,
-  imports: [CoreCommonModule, NgbAccordionModule],
+  imports: [CoreCommonModule, NgbAccordionModule, NgSelectModule],
   templateUrl: './section-faq.component.html',
   styleUrl: './section-faq.component.scss'
 })

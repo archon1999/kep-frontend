@@ -3,21 +3,16 @@
 .get-started-container {
   position: relative;
   margin-top: 4rem;
+  width: 100%;
+  padding: 2rem 2rem;
+  height: 100%;
+  background: linear-gradient(to right, rgba($primary, 0.1), mix($primary, $gray-50, 3));
+  opacity: 0.8;
+  backdrop-filter: blur(10px);
 
-  .bg-img {
-    width: 100%;
-    padding: 2rem 8rem;
-    height: 100%;
-    position: absolute;
-    // background-image: url('assets/landing-page/beautiful-bg-2.png') !important;
-    background: linear-gradient(to right, rgba($primary, 0.1), mix($primary, $gray-50, 3));
+  @include dark-layout {
     opacity: 0.8;
-    backdrop-filter: blur(10px);
-
-    @include dark-layout {
-      opacity: 0.8;
-      background-image: url('assets/landing-page/beautiful-bg-dark-2.webp') !important;
-      background-size: cover;
-    }
+    background-image: url('assets/landing-page/beautiful-bg-dark-2.webp') !important;
+    background-size: cover;
   }
 }

@@ -36,3 +36,10 @@ img {
   margin-top: 4rem;
   margin-bottom: 4rem;
 }
+
+@include media-breakpoint-down(md) {
+  img {
+    height: 200px;
+    width: 200px;
+  }
+}

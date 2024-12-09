@@ -9,31 +9,28 @@
       <div class="row gy-5">
         <div class="col-lg-5">
           <div class="text-center">
-            <img width="400" loading="lazy" alt="faq boy with logos" class="faq-image mb-lg-0 mb-2"
-                 src="assets/landing-page/faq-boy-with-logos.webp">
+            <img alt="faq boy with logos" class="faq-image mb-lg-0 mb-2" loading="lazy"
+                 src="assets/landing-page/faq-boy-with-logos.webp"
+                 width="400">
           </div>
         </div>
         <div class="col-lg-7">
-          @for (faq of data; track faq.id){
-<!--            <ngb-accordion>-->
-<!--              <ngb-panel [cardClass]="'mt-1 collapse-margin'" [id]="'faq' + $index">-->
-<!--                <ng-template ngbPanelTitle>-->
-<!--                  <div class="d-flex justify-content-between">-->
-<!--                    <div class="fw-bold">-->
-<!--                      {{ faq.question }}-->
-<!--                    </div>-->
-<!--                    <div class="text-dark">-->
-<!--                      <kep-icon name="arrow-right"></kep-icon>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </ng-template>-->
-<!--                <ng-template ngbPanelContent>-->
-<!--                  <div [innerHTML]="faq.answer"></div>-->
-<!--                </ng-template>-->
-<!--              </ngb-panel>-->
-<!--            </ngb-accordion>-->
-          }
-
+          <div ngbAccordion>
+            @for (faq of data; track faq.id) {
+              <div ngbAccordionItem>
+                <h2 ngbAccordionHeader>
+                  <button ngbAccordionButton>
+                    {{ faq.question }}
+                  </button>
+                </h2>
+                <div ngbAccordionCollapse>
+                  <div ngbAccordionBody>
+                    <div [innerHTML]="faq.answer"></div>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
         </div>
       </div>
     </div>
