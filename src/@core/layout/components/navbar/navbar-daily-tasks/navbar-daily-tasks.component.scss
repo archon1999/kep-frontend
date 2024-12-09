@@ -9,6 +9,11 @@
 app-navbar-daily-tasks {
   .dropdown-menu {
     --bs-dropdown-padding-y: 0;
+    --bs-dropdown-bg: rgba(255, 255, 255, 0.8);
+
+    @include dark-layout {
+      --bs-dropdown-bg: rgba(0, 0, 0, 0.5);
+    }
   }
 
   .media {
