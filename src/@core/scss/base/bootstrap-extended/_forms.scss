@@ -35,6 +35,10 @@ label {
   }
 }
 
+textarea.form-control {
+  height: auto !important;
+}
+
 .form-control-plaintext {
   &:focus {
     outline: none;
