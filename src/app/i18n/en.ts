@@ -165,7 +165,7 @@ export const locale = {
     ToChallenge: 'Challenge',
     Questions: 'Questions',
     NewChallenge: 'NewChallenge',
-    InQueue: 'InQueue',
+    InQueue: 'In queue',
     QuickStart: 'Quick Start',
     AllNotifications: 'All notifications',
     ReadAll: 'Read all',

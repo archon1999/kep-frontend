@@ -20,7 +20,7 @@
 
 // dropdown menu
 .dropdown-menu {
-  --bs-dropdown-bg: white;
+  --bs-dropdown-bg: rgba(255, 255, 255, 0.8);
 
   // border: 1px solid rgba($black, 0.05); // border opacity has been reduced to make it look same as vue's dropdown border [component page, list view page]
   border-radius: $dropdown-border-radius;

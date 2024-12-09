@@ -1,50 +1,23 @@
 @import 'styles/kep-imports';
 
 
-::ng-deep .daily-tasks-popover .popover-body {
+.daily-tasks-popover .popover-body {
   padding: 0px !important;
   width: 277px !important;
 }
 
-::ng-deep .daily-tasks-popover .card {
-  margin-bottom: 0px !important;
-  box-shadow: 0 4px 6px 0 rgb(85 85 85 / 9%), 0 1px 20px 0 rgb(0 0 0 / 8%), 0px 1px 11px 0px rgb(0 0 0 / 6%) !important;
-}
-
-a {
-  font-weight: 500;
-}
-
-.bg-daily-tasks {
-  border: none !important;
-  margin-bottom: 0px !important;
-  box-shadow: 0 4px 6px 0 rgb(85 85 85 / 9%), 0 1px 20px 0 rgb(0 0 0 / 8%), 0px 1px 11px 0px rgb(0 0 0 / 6%) !important;
-  transition: all 0.2s ease;
-  background-image: linear-gradient(to right, rgba($primary, 0.95), mix(white, $primary, 10)) !important;
-  opacity: 0.9;
-  background-repeat: repeat;
-
-  @include dark-layout {
-    background-image: linear-gradient(to right, mix(black, $primary, 50), mix(black, $primary, 50)) !important;
+app-navbar-daily-tasks {
+  .dropdown-menu {
+    --bs-dropdown-padding-y: 0;
   }
-}
 
-.list-group-item {
-  background-color: inherit !important;
-}
+  .media {
+    &:hover {
+      background-color: rgba($primary, 0.1) !important;
+    }
 
-.media:hover {
-  background-color: mix(white, $primary, 20) !important;
-}
-
-.color-daily-tasks {
-  color: #141e30;
-}
-
-.media {
-  border-bottom: 1px solid #ebe9f1 !important;
-}
-
-::ng-deep .dark-layout .media {
-  border-bottom: 1px solid #202125 !important;
+    @include dark-layout {
+      border-bottom-color: $theme-dark-border-color !important;
+    }
+  }
 }
