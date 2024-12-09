@@ -7,7 +7,9 @@
           <span class="brand-logo">
             <img [src]="defaultCoreConfig.app.appLogoImage" alt="brand-logo" height="36" width="48" />
           </span>
-          <h2 class="brand-text text-dark mb-0">{{ defaultCoreConfig.app.appTitle }}</h2>
+          <h2 class="brand-text text-dark mb-0 me-50">{{ defaultCoreConfig.app.appTitle }}</h2>
+
+          <christmas-tree/>
         </a>
       </li>
     </ul>
@@ -39,12 +41,21 @@
     <!--/ Menu Toggler -->
 
     <!-- Toggle skin -->
-    <div class="nav-item d-none d-lg-block">
-      <div class="nav-link nav-link-style btn cursor-pointer" (click)="toggleDarkSkin()">
+    <div class="nav-item d-none d-lg-flex">
+      <div class="nav-link nav-link-style btn cursor-pointer me-1" (click)="toggleDarkSkin()">
         @if (currentSkin == 'dark'){
           <kep-icon name="sun" type="duotone" class="font-large-1"></kep-icon>
         } @else {
           <kep-icon name="moon" type="duotone" class="font-large-1"></kep-icon>
+        }
+      </div>
+
+      <div ngbTooltip="Christmas tree" class="nav-link nav-link-style btn cursor-pointer d-flex" (click)="updateLightsEnabled()">
+        <kep-icon name="tree" type="duotone" size="large-1"/>
+        @if (localStorageService.get('lightsEnabled', true)){
+          <kep-icon name="toggle-on-circle" type="duotone" class="font-large-1"></kep-icon>
+        } @else {
+          <kep-icon name="toggle-off-circle" type="duotone" class="font-large-1"></kep-icon>
         }
       </div>
     </div>

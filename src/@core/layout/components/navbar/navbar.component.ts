@@ -5,7 +5,7 @@ import { MediaObserver } from '@angular/flex-layout';
 import { takeUntil } from 'rxjs/operators';
 import { CoreMediaService } from '@core/services/media.service';
 
-import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { AuthModalComponent } from '@app/modules/auth/auth-modal/auth-modal.component';
 import { BaseComponent } from '@app/common/classes/base.component';
 import { CoreCommonModule } from '@core/common.module';
@@ -15,6 +15,7 @@ import { NavbarKepcoinComponent } from '@layout/components/navbar/navbar-kepcoin
 import { NavbarNotificationComponent } from '@layout/components/navbar/navbar-notification/navbar-notification.component';
 import { coreConfig } from '@app/app.config';
 import themeToggleEffects from '@layout/components/navbar/theme-toggle-effects';
+import { ChristmasTreeComponent } from '@shared/components/christmas-tree/christmas-tree.component';
 
 @Component({
   selector: 'app-navbar',
@@ -29,6 +30,8 @@ import themeToggleEffects from '@layout/components/navbar/theme-toggle-effects';
     NavbarKepcoinComponent,
     NavbarNotificationComponent,
     NgbDropdownModule,
+    ChristmasTreeComponent,
+    NgbTooltip,
   ]
 })
 export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy {
@@ -122,5 +125,11 @@ export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy 
         this.isFixed = !isFixedTop;
       });
     }
+  }
+
+  updateLightsEnabled() {
+    console.log(!this.localStorageService.get('lightsEnabled', true));
+    this.localStorageService.set('lightsEnabled', !this.localStorageService.get('lightsEnabled', true));
+    location.reload();
   }
 }

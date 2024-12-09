@@ -22,7 +22,7 @@ let snowf: any;
 export class LayoutComponent {
   public coreConfig: CoreConfig;
   public lightsCount = 0;
-  public lightsEnabled: boolean = !!this.localStorageService.get('lightsEnabled') || true;
+  public lightsEnabled: boolean = !!this.localStorageService.get('lightsEnabled', true);
 
   constructor(
     public coreConfigService: CoreConfigService,
@@ -69,11 +69,6 @@ export class LayoutComponent {
         snowf.wind(randomInt(1, 4), randomInt(1000, 5000));
       }, 100 * 1000);
     };
-  }
-
-  updateLightsEnabled() {
-    this.lightsEnabled = !this.lightsEnabled;
-    this.localStorageService.set('lightsEnabled', this.lightsEnabled);
   }
 
   @HostListener('window:resize')

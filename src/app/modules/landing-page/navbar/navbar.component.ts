@@ -5,11 +5,12 @@ import { scrollTo } from '@shared/utils';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ChristmasTreeComponent } from '@shared/components/christmas-tree/christmas-tree.component';
 
 @Component({
   selector: 'navbar',
   standalone: true,
-  imports: [CoreCommonModule, NgbDropdownModule],
+  imports: [CoreCommonModule, NgbDropdownModule, ChristmasTreeComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
