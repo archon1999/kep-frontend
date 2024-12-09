@@ -7,19 +7,19 @@ export class LocalStorageService {
 
   constructor() { }
 
-  public get(key: string){
-    return JSON.parse(localStorage.getItem(key));
+  public get(key: string, defaultReturn = null) {
+    return JSON.parse(localStorage.getItem(key)) ?? defaultReturn;
   }
 
-  public set(key: string, value: any){
+  public set(key: string, value: any) {
     localStorage.setItem(key, JSON.stringify(value));
   }
 
-  public remove(key: string){
+  public remove(key: string) {
     localStorage.removeItem(key);
   }
 
-  public clear(){
+  public clear() {
     localStorage.clear();
   }
 
