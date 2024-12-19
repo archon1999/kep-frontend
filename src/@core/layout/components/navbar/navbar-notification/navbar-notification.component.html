@@ -106,7 +106,7 @@
 
           <a (click)="dropdown.close()"
              class="media d-flex align-items-start"*ngSwitchCase="4"
-             routerLink="/practice/challenges/challenge/{{ notification.content.challengeId }}">
+             routerLink="/practice/challenges/challenge/{{ notification.content?.challengeId }}">
             <div class="media-left">
               <div class="avatar bg-light-primary mt-50">
                 <div class="avatar-content">
@@ -124,7 +124,7 @@
 
           <a (click)="dropdown.close()"
              class="media d-flex align-items-start"*ngSwitchCase="5"
-             routerLink="/practice/challenges/challenge/{{ notification.content.challengeId }}">
+             routerLink="/practice/challenges/challenge/{{ notification.content?.challengeId }}">
             <div class="media-left">
               <div class="avatar bg-light-primary mt-50">
                 <div class="avatar-content">
