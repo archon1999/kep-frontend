@@ -4,6 +4,8 @@ $_dropdown_spacing: 0.5rem;
 
 // Ngb-Dropdown ::before position
 .dropdown-menu {
+  --bs-dropdown-padding-y: 0;
+
   transform: none; // ngDropdown fix for the (https://ng-bootstrap.github.io/#/components/dropdown/examples#container)
   // Dropdown margin according to dropdown position
 
