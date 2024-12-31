@@ -1,133 +1,110 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { User } from 'app/auth/models';
-import { AuthService } from 'app/auth/service';
-import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
-import { TitleService } from 'app/shared/services/title.service';
-import { Subject } from 'rxjs';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
-import { Contest, Contestant, ContestProblem, ContestProblemInfo, ContestStatus } from '../../../contests.models';
 import { ContestsService } from '../../../contests.service';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { sortContestProblems } from '../../../utils/sort-contest-problems';
+import { CoreCommonModule } from '@core/common.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
+import {
+  ContestStandingsCountdownComponent
+} from '@contests/pages/contest/contest-standings/contest-standings-countdown/contest-standings-countdown.component';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
+import { ContestStatus } from '@contests/constants/contest-status';
+import { ContestProblem } from '@contests/models/contest-problem';
+import { ContestProblemInfo } from '@contests/models/contest-problem-info';
+import { Contest } from '@contests/models/contest';
+import { Contestant } from '@contests/models/contestant';
+import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
+import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { BaseLoadComponent, BaseTablePageComponent } from '@app/common';
+import { interval, Observable } from 'rxjs';
+import { KepDeltaComponent } from '@shared/components/kep-delta/kep-delta.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import {
+  ContestStandingsTableComponent
+} from '@contests/pages/contest/contest-standings/contest-standings-table/contest-standings-table.component';
 
 @Component({
   selector: 'app-contest-standings',
   templateUrl: './contest-standings.component.html',
   styleUrls: ['./contest-standings.component.scss'],
-  animations: [fadeInOnEnterAnimation()]
+  animations: [fadeInOnEnterAnimation()],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ContentHeaderModule,
+    ContestTabComponent,
+    ContestStandingsCountdownComponent,
+    NgbTooltipModule,
+    ContestantViewModule,
+    KepTableComponent,
+    ContestClassesPipe,
+    ResourceByIdPipe,
+    EmptyResultComponent,
+    KepDeltaComponent,
+    KepPaginationComponent,
+    ContestStandingsTableComponent,
+  ],
 })
-export class ContestStandingsComponent implements OnInit, OnDestroy {
-
-  public contentHeader: ContentHeader;
+export class ContestStandingsComponent extends BaseTablePageComponent<Contestant> {
+  override maxSize = 3;
+  override pageOptions = [10, 20, 50, 100];
+  override defaultPageSize = 20;
 
   public contest: Contest;
   public contestProblems: Array<ContestProblem> = [];
-  public contestants: Array<Contestant> = [];
 
-  public currentUser: User;
-
-  private _intervalId: any;
-  private _unsubscribeAll = new Subject();
+  public firstLoad = true;
 
   constructor(
-    public route: ActivatedRoute,
     public service: ContestsService,
-    public authService: AuthService,
-    public titleService: TitleService,
   ) {
+    super();
+  }
+
+  get contestants(): Contestant[] {
+    return this.pageResult?.data || [];
   }
 
   ngOnInit(): void {
     this.route.data.subscribe(({ contest, contestProblems }) => {
       this.contest = Contest.fromJSON(contest);
       this.contestProblems = sortContestProblems(contestProblems);
-      this.loadContentHeader();
       this.titleService.updateTitle(this.route, { contestTitle: contest.title });
-      this.reloadContestants();
+      setTimeout(() => this.reloadPage());
     });
-
-    this.authService.currentUser
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((user: any) => this.currentUser = user);
 
     if (this.contest.status === ContestStatus.ALREADY) {
-      this._intervalId = setInterval(() => {
-        this.reloadPage();
-      }, 60000);
-    }
-  }
-
-  loadContentHeader() {
-    this.contentHeader = {
-      headerTitle: 'CONTESTS.STANDINGS',
-      breadcrumb: {
-        type: '',
-        links: [
-          {
-            name: 'CONTESTS.CONTESTS',
-            isLink: true,
-            link: '../../..'
-          },
-          {
-            name: this.contest.id + '',
-            isLink: true,
-            link: '..'
-          },
-          {
-            name: 'CONTESTS.STANDINGS',
-            isLink: true,
-            link: '.'
-          }
-        ]
-      }
-    };
-  }
-
-  reloadContestants() {
-    this.service.getContestants(this.contest.id).subscribe((result: any) => {
-      this.contestants = result.map((data: any) => {
-        return Contestant.fromJSON(data);
-      });
-      this.reassignRanks();
-    });
-  }
-
-  reassignRanks() {
-    for (let index = 0; index < this.contestants.length; index++) {
-      if (index === 0) {
-        this.contestants[index].rank = 1;
-      } else {
-        this.contestants[index].rank = this.contestants[index - 1].rank;
-        if (this.contestants[index].points !== this.contestants[index - 1].points ||
-          this.contestants[index].penalties !== this.contestants[index - 1].penalties) {
-          this.contestants[index].rank = index + 1;
+      interval(30000).pipe(takeUntil(this._unsubscribeAll)).subscribe(
+        () => {
+          this.reloadPage();
+          this.updateContestProblems();
         }
-      }
+      );
     }
   }
 
-  reloadPage() {
+  getPage() {
+    if (this.isAuthenticated &&
+      this.pageNumber === this.defaultPageNumber &&
+      this.pageSize === this.defaultPageSize &&
+      this.firstLoad) {
+      this.firstLoad = false;
+      return this.service.getNewContestants(this.contest.id, {});
+    }
+    this.firstLoad = false;
+    return this.service.getNewContestants(this.contest.id, this.pageable);
+  }
+
+  updateContestProblems() {
     this.service.getContestProblems(this.contest.id).subscribe(
-      (problems: any) => {
-        this.contestProblems = sortContestProblems(problems);
+      (contestProblems) => {
+        this.contestProblems = sortContestProblems(contestProblems);
       }
     );
-    this.reloadContestants();
-  }
-
-  getProblemInfoBySymbol(
-    problemsInfo: Array<ContestProblemInfo>,
-    problemSymbol: string
-  ): ContestProblemInfo | undefined {
-    return problemsInfo.find(problemInfo => problemInfo.problemSymbol === problemSymbol);
-  }
-
-  ngOnDestroy() {
-    if (this._intervalId) {
-      clearInterval(this._intervalId);
-    }
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
   }
 }

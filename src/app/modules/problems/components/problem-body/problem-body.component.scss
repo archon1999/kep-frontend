@@ -3,10 +3,7 @@
   border-top: none !important;
   border-right: none !important;
   border-left: none !important;
-  border-top-left-radius: 10px !important;
-  border-top-right-radius: 10px !important;
-  border-bottom-left-radius: 10px !important;
-  border-bottom-right-radius: 10px !important;
+  border-radius: 10px;
 }
 
 textarea {
@@ -51,6 +48,11 @@ code {
   color: white !important;
 }
 
-::ng-deep problem-body img {
-  width: 50% !important;
+.problem-body {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
 }

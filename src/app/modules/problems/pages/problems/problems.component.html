@@ -4,19 +4,13 @@
 
     <section-header></section-header>
 
-    <ul ngbNav #navFilled="ngbNav" class="nav-tabs nav-fill">
+    <ul ngbNav #navFilled="ngbNav" class="nav-tabs card-nav nav-fill">
       <li ngbNavItem>
         <a ngbNavLink>{{ 'AllProblems' | translate }}</a>
         <ng-template ngbNavContent>
-          @defer (on viewport) {
-            <div class="mb-2">
-              <section-categories></section-categories>
-            </div>
-          } @placeholder  {
-            <div class="card" [style.height.px]="200">
-              <spinner></spinner>
-            </div>
-          }
+          <div class="mb-2">
+            <section-categories></section-categories>
+          </div>
           @defer (on viewport) {
             <section-problems-filter></section-problems-filter>
           } @placeholder  {
@@ -60,56 +54,17 @@
   </div>
 </div>
 
-<core-sidebar [hideOnEsc]="true" class="problems-sidebar" [name]="'problemsSidebar'">
-  <div
-    (click)="toggleSidebar('problemsSidebar')"
-    class="btn-toggle d-flex align-items-center justify-content-center cursor-pointer">
-    <span [data-feather]="'chevrons-left'"></span>
-  </div>
-  @defer (on viewport) {
-    <ng-scrollbar autoHeightDisabled="false">
-      <section-sidebar></section-sidebar>
-    </ng-scrollbar>
-  } @placeholder {
-    <spinner></spinner>
-  }
-</core-sidebar>
-
-<!--<div class="row">-->
-<!--  <div class="col-12">-->
-<!--    <section-info></section-info>-->
+<!--<core-sidebar [hideOnEsc]="true" class="problems-sidebar" [name]="'problemsSidebar'">-->
+<!--  <div-->
+<!--    (click)="toggleSidebar('problemsSidebar')"-->
+<!--    class="btn-toggle d-flex align-items-center justify-content-center cursor-pointer">-->
+<!--    <span [data-feather]="'chevrons-left'"></span>-->
 <!--  </div>-->
-<!--  <div class="col-lg-10 col-12 offset-0 offset-lg-1">-->
-<!--    @defer (on viewport){-->
-<!--      <section-study-plans></section-study-plans>-->
-<!--    } @placeholder {-->
-<!--      <div class="card" [style.height.px]="400">-->
-<!--        <spinner></spinner>-->
-<!--      </div>-->
-<!--    }-->
-
-<!--    @defer (on viewport){-->
-<!--      <section-topics></section-topics>-->
-<!--    } @placeholder {-->
-<!--      <div class="card" [style.height.px]="200">-->
-<!--        <spinner></spinner>-->
-<!--      </div>-->
-<!--    }-->
-
-<!--    @defer (on viewport){-->
-<!--      <section-problems-filter></section-problems-filter>-->
-<!--    } @placeholder {-->
-<!--      <div class="card" [style.height.px]="200">-->
-<!--        <spinner></spinner>-->
-<!--      </div>-->
-<!--    }-->
-
-<!--    @defer (on viewport){-->
-<!--      <section-problems-table></section-problems-table>-->
-<!--    } @placeholder {-->
-<!--      <div class="card" [style.height.px]="500">-->
-<!--        <spinner></spinner>-->
-<!--      </div>-->
-<!--    }-->
-<!--  </div>-->
-<!--</div>-->
+<!--  @defer (on viewport) {-->
+<!--    <ng-scrollbar autoHeightDisabled="false">-->
+<!--      <section-sidebar></section-sidebar>-->
+<!--    </ng-scrollbar>-->
+<!--  } @placeholder {-->
+<!--    <spinner></spinner>-->
+<!--  }-->
+<!--</core-sidebar>-->

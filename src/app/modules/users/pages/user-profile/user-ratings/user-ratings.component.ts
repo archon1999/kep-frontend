@@ -8,7 +8,7 @@ import { colors } from '@app/colors';
 import { ChallengesApiService } from '@challenges/services';
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreCommonModule } from '@core/common.module';
-import { NgbButtonsModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProblemDifficultyColorPipe } from '@problems/pipes/problem-difficulty-color.pipe';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
@@ -16,6 +16,7 @@ import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-option
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { ProblemsActivityCardComponent } from '@problems/components/problems-activity-card/problems-activity-card.component';
 import { difficultyLabels } from '@problems/constants/difficulties.enum';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 
 @Component({
   selector: 'user-ratings',
@@ -29,8 +30,8 @@ import { difficultyLabels } from '@problems/constants/difficulties.enum';
     ApexChartModule,
     ContestantViewModule,
     KepIconComponent,
-    NgbButtonsModule,
     ProblemsActivityCardComponent,
+    EmptyResultComponent,
   ]
 })
 export class UserRatingsComponent implements OnInit {
@@ -121,12 +122,12 @@ export class UserRatingsComponent implements OnInit {
                   </h4>
                   <div class="d-flex">
                     <div class="text-dark">#${ data.rank }</div>
-                    <div class="text-dark ml-1">
+                    <div class="text-dark ms-1">
                       ${ username }
                       <img src="assets/images/contests/ratings/${ data.newRatingTitle.toLowerCase() }.png" height=20>
                       ${ data.newRating }
                     </div>
-                    <span class="ml-1 badge badge-light-${ deltaColor }">${ data.delta }</span>
+                    <span class="ms-1 badge badge-light-${ deltaColor }">${ data.delta }</span>
                   </div>
                 </div>
               </div>

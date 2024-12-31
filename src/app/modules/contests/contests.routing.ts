@@ -1,43 +1,30 @@
 import { Route } from '@angular/router';
-import { ContestsComponent } from '@contests/pages/contests/contests.component';
-import { RatingComponent } from '@contests/pages/rating/rating.component';
-import { ProfileComponent } from '@contests/pages/profile/profile.component';
-import { AuthGuard } from '@auth/helpers';
-import { ContestComponent } from '@contests/pages/contest/contest.component';
+import { AuthGuard } from '@auth';
 import { ContestProblemResolver, ContestProblemsResolver, ContestResolver } from '@contests/contests.resolver';
-import { ContestProblemsComponent } from '@contests/pages/contest/contest-problems/contest-problems.component';
 import { ContestCreateGuard, ContestGuard } from '@contests/contests.guard';
-import { ContestQuestionsComponent } from '@contests/pages/contest/contest-questions/contest-questions.component';
-import { ContestProblemComponent } from '@contests/pages/contest/contest-problem/contest-problem.component';
-import { ContestAttemptsComponent } from '@contests/pages/contest/contest-attempts/contest-attempts.component';
-import { ContestStandingsComponent } from '@contests/pages/contest/contest-standings/contest-standings.component';
-import { ContestRatingChangesComponent } from '@contests/pages/contest/contest-rating-changes/contest-rating-changes.component';
-import { ContestOgImageComponent } from '@contests/pages/contest/contest-og-image/contest-og-image.component';
-import { UserContestsComponent } from '@contests/pages/user-contests/user-contests.component';
-import { ContestCreateComponent } from '@contests/pages/user-contests/contest-create/contest-create.component';
 
 export default [
   {
     path: '',
-    component: ContestsComponent,
+    loadComponent: () => import('./pages/contests/contests.component').then(c => c.ContestsComponent),
     title: 'Contests.Contests'
   },
   {
     path: 'rating',
-    component: RatingComponent,
+    loadComponent: () => import('./pages/rating/rating.component').then(c => c.RatingComponent),
     data: { animation: 'contests-rating' },
     title: 'Contests.ContestsRating',
   },
   {
     path: 'profile',
-    component: ProfileComponent,
+    loadComponent: () => import('./pages/profile/profile.component').then(c => c.ProfileComponent),
     data: { animation: 'contests-profile' },
     canActivate: [AuthGuard],
     title: 'Contests.ContestsProfile',
   },
   {
     path: 'contest/:id',
-    component: ContestComponent,
+    loadComponent: () => import('./pages/contest/contest.component').then(c => c.ContestComponent),
     data: {
       title: 'Contests.Contest',
     },
@@ -48,7 +35,7 @@ export default [
   },
   {
     path: 'contest/:id/problems',
-    component: ContestProblemsComponent,
+    loadComponent: () => import('./pages/contest/contest-problems/contest-problems.component').then(c => c.ContestProblemsComponent),
     data: {
       title: 'Contests.ContestProblems',
     },
@@ -60,7 +47,7 @@ export default [
   },
   {
     path: 'contest/:id/questions',
-    component: ContestQuestionsComponent,
+    loadComponent: () => import('./pages/contest/contest-questions/contest-questions.component').then(c => c.ContestQuestionsComponent),
     data: {
       title: 'Contests.ContestQuestions',
     },
@@ -72,7 +59,7 @@ export default [
   },
   {
     path: 'contest/:id/problem/:symbol',
-    component: ContestProblemComponent,
+    loadComponent: () => import('./pages/contest/contest-problem/contest-problem.component').then(c => c.ContestProblemComponent),
     data: {
       title: 'Contests.ContestProblem',
     },
@@ -84,7 +71,7 @@ export default [
   },
   {
     path: 'contest/:id/attempts',
-    component: ContestAttemptsComponent,
+    loadComponent: () => import('./pages/contest/contest-attempts/contest-attempts.component').then(c => c.ContestAttemptsComponent),
     data: {
       title: 'Contests.ContestAttempts',
     },
@@ -95,7 +82,7 @@ export default [
   },
   {
     path: 'contest/:id/standings',
-    component: ContestStandingsComponent,
+    loadComponent: () => import('./pages/contest/contest-standings/contest-standings.component').then(c => c.ContestStandingsComponent),
     data: {
       animation: 'contest-standings',
       title: 'Contests.ContestStandings',
@@ -107,8 +94,21 @@ export default [
     }
   },
   {
+    path: 'contest/:id/registrants',
+    loadComponent: () => import('./pages/contest/contest-registrants/contest-registrants.component').then(c => c.ContestRegistrantsComponent),
+    data: {
+      animation: 'contest-registrants',
+      title: 'Contests.ContestRegistrants',
+    },
+    resolve: {
+      contest: ContestResolver,
+    }
+  },
+  {
     path: 'contest/:id/rating-changes',
-    component: ContestRatingChangesComponent,
+    loadComponent: () => import('./pages/contest/contest-rating-changes/contest-rating-changes.component').then(
+      c => c.ContestRatingChangesComponent
+    ),
     data: {
       animation: 'contest-rating-changes',
       title: 'Contests.ContestRatingChanges',
@@ -119,20 +119,20 @@ export default [
   },
   {
     path: 'contest/:id/og-image',
-    component: ContestOgImageComponent,
+    loadComponent: () => import('./pages/contest/contest-og-image/contest-og-image.component').then(c => c.ContestOgImageComponent),
     resolve: {
       contest: ContestResolver,
     },
   },
   {
     path: 'user-contests',
-    component: UserContestsComponent,
+    loadComponent: () => import('./pages/user-contests/user-contests.component').then(c => c.UserContestsComponent),
     data: { animation: 'user-contests' },
     title: 'Contests.MyContests',
   },
   {
     path: 'user-contests/create',
-    component: ContestCreateComponent,
+    loadComponent: () => import('./pages/user-contests/contest-create/contest-create.component').then(c => c.ContestCreateComponent),
     data: {
       animation: 'user-contest-create',
     },

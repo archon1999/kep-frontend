@@ -1,0 +1,19 @@
+.card {
+  background: var(--bg-gradient);
+  box-shadow: none;
+  border: none;
+  display: flex;
+  align-items: center;
+
+  .contest-logo {
+    display: flex;
+    justify-content: center;
+    opacity: 0.1;
+    position: absolute;
+
+    img {
+      height: 100%;
+      width: 100%;
+    }
+  }
+}

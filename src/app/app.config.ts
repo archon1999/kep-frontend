@@ -1,11 +1,24 @@
-import { CoreConfig } from 'core/types';
+import { CoreConfig } from '@core/types';
 
 export const coreConfig: CoreConfig = {
   app: {
     appName: 'KEP',
     appTitle: 'KEP.uz',
-    appLogoImage: 'assets/images/logo/logo.png',
-    appLogoImageWithTitle: 'assets/images/logo/logo-with-title.svg',
+    appLogoImage: 'assets/images/logo/logo.svg',
+    appLanguages: {
+      en: {
+        title: 'English',
+        flag: 'us'
+      },
+      ru: {
+        title: 'Русский язык',
+        flag: 'ru'
+      },
+      uz: {
+        title: 'Oʻzbek tili',
+        flag: 'uz'
+      }
+    },
     appLanguage: 'en',
   },
   layout: {
@@ -17,7 +30,6 @@ export const coreConfig: CoreConfig = {
       hidden: false,
       collapsed: true,
     },
-
     navbar: {
       hidden: false,
       type: 'fixed-top',
@@ -25,7 +37,7 @@ export const coreConfig: CoreConfig = {
     },
     footer: {
       hidden: false,
-      type: 'footer-static',
+      type: 'footer-sticky',
       background: 'footer-light',
     },
     enableLocalStorage: true,

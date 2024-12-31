@@ -1,64 +1,66 @@
-<div class="card card-profile" *ngIf="user && userRatings">
-  <img [src]="user.coverPhoto" class="img-fluid card-img-top" alt="Profile Cover Photo" />
-  <div class="card-body">
-    <div class="profile-image-wrapper">
-      <div class="profile-image">
-        <div class="avatar">
-          <img routerLink="user/{{ user.username }}" [src]="user.avatar" alt="Profile Picture" />
-          <span *ngIf="user.isOnline" class="avatar-status-online"></span>
-          <span *ngIf="!user.isOnline" class="avatar-status-offline" ngbTooltip="{{ user.lastSeen }}"></span>
+@if (user && userRatings) {
+  <div class="card card-profile">
+    <img [src]="user.coverPhoto" class="img-fluid card-img-top" alt="Profile Cover Photo" />
+    <div class="card-body">
+      <div class="profile-image-wrapper">
+        <div class="profile-image">
+          <div class="avatar">
+            <img routerLink="user/{{ user.username }}" [src]="user.avatar" alt="Profile Picture" />
+            @if (user.isOnline) {
+              <span class="avatar-status-online"></span>
+            }
+            @if (!user.isOnline) {
+              <span class="avatar-status-offline" ngbTooltip="{{ user.lastSeen }}"></span>
+            }
+          </div>
+        </div>
+      </div>
+      <a routerLink="user/{{ user.username }}">
+        <h3>{{ user.firstName }} {{ user.lastName }}</h3>
+        <h6 class="text-muted">{{ user.username }}</h6>
+      </a>
+      <hr class="mb-2" />
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <div>
+          <h6 class="fw-bolder">
+            <i [data-feather]="'contest' | iconName"></i> {{ 'MENU.CONTESTS' | translate }}
+          </h6>
+          <h4 class="mb-0 mt-1">
+            <contests-rating-image [size]="24" [title]="userRatings.contestsRatingTitle"></contests-rating-image>
+            <span class="badge badge-light-{{ userRatings.contestsRating | contestsRatingColor }}">
+              {{ userRatings.contestsRating }}
+            </span>
+          </h4>
+        </div>
+        <div>
+          <h6 class="fw-bolder">
+            <i [data-feather]="'problem' | iconName"></i> {{ 'MENU.PROBLEMS' | translate }}
+          </h6>
+          <h4 class="mb-0 mt-1">
+            <span class="badge bg-primary">
+              {{ userRatings.problemsSolved }}
+            </span>
+            <span class="badge badge-light-success">
+              {{ userRatings.problemsRating }}
+            </span>
+          </h4>
+        </div>
+        <div>
+          <h6 class="fw-bolder">
+            <i [data-feather]="'zap'"></i> {{ 'MENU.CHALLENGES' | translate }}
+          </h6>
+          <span class="mb-0 mt-1">
+            <div class="text-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+              <span class="badge badge-pill badge-glow badge-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+                {{ userRatings.challengesRankTitle }}
+              </span>
+              <span class="badge badge-light-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+                {{ userRatings.challengesRating }}
+              </span>
+            </div>
+          </span>
         </div>
       </div>
     </div>
-    <a routerLink="user/{{ user.username }}">
-      <h3>{{ user.firstName }} {{ user.lastName }}</h3>
-      <h6 class="text-muted">{{ user.username }}</h6>
-    </a>
-    <hr class="mb-2" />
-    <div class="d-flex justify-content-between align-items-center mb-1">
-      <div>
-        <h6 class="font-weight-bolder">
-          <i [data-feather]="'contest' | iconName"></i> {{ 'MENU.CONTESTS' | translate }}
-        </h6>
-        <h4 class="mb-0 mt-1">
-          <contests-rating-image [size]="24" [title]="userRatings.contestsRatingTitle"></contests-rating-image>
-          <span class="badge badge-light-{{ userRatings.contestsRating | contestsRatingColor }}">
-            {{ userRatings.contestsRating }}
-          </span>
-        </h4>
-      </div>
-
-      <div>
-        <h6 class="font-weight-bolder">
-          <i [data-feather]="'problem' | iconName"></i> {{ 'MENU.PROBLEMS' | translate }}
-        </h6>
-        <h4 class="mb-0 mt-1">
-          <span class="badge badge-primary">
-            {{ userRatings.problemsSolved }}
-          </span>
-          <span class="badge badge-light-success">
-            {{ userRatings.problemsRating }}
-          </span>
-        </h4>
-      </div>
-
-      <div>
-        <h6 class="font-weight-bolder">
-          <i [data-feather]="'zap'"></i> {{ 'MENU.CHALLENGES' | translate }}
-        </h6>
-        <span class="mb-0 mt-1">
-          <div class="text-{{ userRatings.challengesRankTitle | challengesRankColor }}">
-            <span class="badge badge-pill badge-glow badge-{{ userRatings.challengesRankTitle | challengesRankColor }}">
-              {{ userRatings.challengesRankTitle }}
-            </span>
-
-            <span class="badge badge-light-{{ userRatings.challengesRankTitle | challengesRankColor }}">
-              {{ userRatings.challengesRating }}
-            </span>
-          </div>
-        </span>
-      </div>
-
-    </div>
   </div>
-</div>
+}

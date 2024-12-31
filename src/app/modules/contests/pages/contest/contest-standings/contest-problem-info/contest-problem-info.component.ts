@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Contest, ContestProblemInfo, ContestTypes } from '../../../../../contests/contests.models';
+import { ContestTypes } from '../../../../../contests/contests.models';
+import { ContestProblemInfo } from '@contests/models/contest-problem-info';
+import { Contest } from '@contests/models/contest';
 
 @Component({
   selector: 'contest-problem-info',

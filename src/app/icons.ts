@@ -9,6 +9,8 @@ export const keenIcons = {
   challenges: 'abstract-22',
   problem: 'message-programming',
   problems: 'message-programming',
+  project: 'technology-2',
+  projects: 'technology-2',
   practice: 'abstract-45',
   competition: 'cup',
   competitions: 'cup',
@@ -27,6 +29,8 @@ export const keenIcons = {
   attempts: 'filter-tick',
   'rating-changes': 'chart-line-up',
   question: 'question-2',
+  verdict: 'double-check',
+  lang: 'message-programming',
 
   'challenge-time': 'watch',
   'challenge-task': 'abstract-45',
@@ -36,6 +40,8 @@ export const keenIcons = {
 
   tags: 'data',
   difficulty: 'graph-2',
+
+  login: 'exit-left'
 };
 
 export const featherIcons = {

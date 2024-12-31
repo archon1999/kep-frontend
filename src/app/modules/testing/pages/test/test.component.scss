@@ -1,31 +1,5 @@
 @import 'styles/kep-imports';
 
-.test-page-top {
-  margin-left: -2rem;
-  position: absolute;
-  top: -66px;
-  width: calc(100% + 2rem);
-  height: 790px;
-}
-
-::ng-deep {
-  body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
-    overflow: initial;
-  }
-}
-
-@include media-breakpoint-down(lg) {
-  .test-page-top {
-    width: calc(100% + 1.2rem);
-  }
-}
-
-@include media-breakpoint-down(md) {
-  .test-page-top {
-    height: 900px;
-  }
-}
-
 .test-header {
   margin-top: 8rem;
   text-align: center;
@@ -34,7 +8,6 @@
     .chapter-title {
       margin-top: 1rem;
       font-size: 1.5rem;
-      color: #fff;
     }
 
     .chapter-icon {
@@ -49,7 +22,6 @@
 
   .test-title {
     margin-top: 2rem;
-    color: #fff;
     font-size: 2.5rem;
   }
   
@@ -62,16 +34,6 @@
 
   .test-pass-button {
     margin-top: 2rem;
-
-    button {
-      transition: .5s;
-      border-radius: 10px;
-
-      &:hover {
-        transform: scale(1.05);
-        color: #fff;
-      }
-    }
   }
 
   .test-pass-info {

@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
-import { User } from '../../../auth/models';
+import { User } from '@auth';
 import { HomeService } from '../home.service';
 
 @Component({
   selector: 'top-rating-section',
   standalone: true,
-  imports: [CommonModule, NgxSkeletonLoaderModule, TranslateModule, UserPopoverModule],
+  imports: [NgxSkeletonLoaderModule, TranslateModule, UserPopoverModule],
   templateUrl: './top-rating-section.component.html',
   styleUrl: './top-rating-section.component.scss'
 })

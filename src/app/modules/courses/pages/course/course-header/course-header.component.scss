@@ -1,0 +1,133 @@
+@import 'styles/kep-imports';
+
+.rating {
+  font-size: 22px;
+  color: #ff9f43;
+}
+
+.course-page-top {
+  margin-left: -2rem;
+  margin-top: -2rem;
+  height: 500px;
+  width: calc(100% + 4rem);
+  background-color: rgba(255, 255, 255, 0.5);
+
+  @include dark-layout {
+    background-color: rgba(0, 0, 0, 0.25);
+  }
+
+  @include media-breakpoint-down(lg) {
+    width: calc(100% + 3.2rem);
+  }
+
+  @include media-breakpoint-down(md) {
+    height: 600px;
+  }
+
+  @include media-breakpoint-down(sm) {
+    height: 650px;
+  }
+}
+
+.course {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  
+  @include media-breakpoint-down(sm) {
+    grid-template-columns: 1fr;
+  }
+
+  .course-header {
+    margin-top: calc(10rem - 50px);
+    margin-left: 15rem;
+
+    @include media-breakpoint-down(md) {
+      margin-left: 10rem;
+    }
+
+    @include media-breakpoint-down(sm) {
+      margin-left: 4rem;
+      margin-right: 4rem;
+      margin-top: 2rem;
+    }
+
+    .course-title {
+      margin-top: 2rem;
+      font-weight: 600;
+      font-size: 3rem;
+
+      @include media-breakpoint-down(md) {
+        font-size: 2.5rem;
+      }  
+
+      @include media-breakpoint-down(sm) {
+        font-size: 2.25rem;
+      }  
+    }
+
+    .course-description {
+      font-size: 1.275rem;
+      margin-top: 3rem;
+      font-weight: 400;
+
+      @include media-breakpoint-down(md) {
+        font-size: 1.2rem;
+      }  
+
+      @include media-breakpoint-down(sm) {
+        font-size: 1rem;
+      }  
+
+      p {
+        line-height: 2rem !important;
+      }
+    }
+
+    .course-tags {
+      margin-top: 3rem;
+
+      .course-tag {
+      }
+    }
+
+    .course-meta {
+      margin-top: 3rem;
+
+      .course-updated {
+        color: #fff;
+      }
+      
+      .course-lang {
+        color: #fff;
+      }
+    }
+  }
+
+  .course-image {
+    margin-top: 10rem;
+    height: 200px;
+    margin-right: 15rem;
+    
+    @include media-breakpoint-down(md) {
+      margin-right: 10rem;
+    }
+    
+    @include media-breakpoint-down(sm) {
+      height: 150px;
+      margin-left: 1.4rem;
+      margin-right: 2rem;
+      margin-top: 4rem;
+    }
+    
+    img {
+      text-align: left;
+      object-fit: contain;
+      height: 100%;
+      width: 100%;
+
+      @include media-breakpoint-down(sm) {
+        width: inherit;
+      }  
+    }
+  }
+}

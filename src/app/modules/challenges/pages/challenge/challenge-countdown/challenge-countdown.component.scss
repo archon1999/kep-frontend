@@ -1,0 +1,24 @@
+.countdown {
+  .clock-val {
+    font-size: 35px;
+  }
+
+  .clock-text {
+    font-size: 15px;
+  }
+}
+
+.chapter {
+  .chapter-title {
+    margin-top: 0.5rem;
+  }
+
+  .chapter-icon {
+    height: 36px;
+
+    img {
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+}

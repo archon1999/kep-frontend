@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
 import { MathjaxModule } from '../../shared/third-part-modules/mathjax/mathjax.module';
 import { QuillModule } from '../../shared/third-part-modules/quill/quill.module';

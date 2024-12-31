@@ -1,23 +1,39 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ApiService } from 'app/shared/services/api.service';
-import { User } from 'app/auth/models';
-import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
+import { User } from '@auth';
+import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { Attempt } from '@problems/models/attempts.models';
 import { AvailableLanguage, Problem } from '@problems/models/problems.models';
 import { TitleService } from 'app/shared/services/title.service';
 import { takeUntil } from 'rxjs/operators';
-import { Contest, Contestant, ContestProblem, ContestProblemInfo, ContestStatus } from '@contests/contests.models';
 import { ContestsService } from '@contests/contests.service';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { findAvailableLang } from 'app/modules/problems/utils';
 import { AttemptLangs } from 'app/modules/problems/constants';
-import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.service';
-import { BaseComponent } from '@shared/components/classes/base.component';
+import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { BaseComponent } from '@app/common/classes/base.component';
 import { sortContestProblems } from '@contests/utils/sort-contest-problems';
 import { paramsMapper } from '@shared/utils';
-import { PageResult } from '@shared/components/classes/page-result';
-import { interval } from 'rxjs';
+import { PageResult } from '@app/common/classes/page-result';
+import { CoreCommonModule } from '@core/common.module';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
+import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { ContestCardModule } from '@contests/components/contest-card/contest-card.module';
+import { ProblemInfoCardComponent } from '@problems/components/problem-info-card/problem-info-card.component';
+import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';
+import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
+import { ContestStatus } from '@contests/constants/contest-status';
+import { ContestProblem } from '@contests/models/contest-problem';
+import { ContestProblemInfo } from '@contests/models/contest-problem-info';
+import { Contest } from '@contests/models/contest';
+import { Contestant } from '@contests/models/contestant';
+import { getResourceById, Resources } from '@app/resources';
+import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 
 const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
 
@@ -28,7 +44,23 @@ const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
   animations: [
     fadeInLeftOnEnterAnimation({ duration: 1500 }),
     fadeInRightOnEnterAnimation({ duration: 1000 })
-  ]
+  ],
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    ContestantViewModule,
+    CodeEditorModule,
+    NgbTooltipModule,
+    ContestCardModule,
+    ProblemInfoCardComponent,
+    ProblemBodyComponent,
+    AttemptsTableModule,
+    KepPaginationComponent,
+    ContentHeaderModule,
+    ContestTabComponent,
+    ContestClassesPipe,
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContestProblemComponent extends BaseComponent implements OnInit, OnDestroy {
 
@@ -61,6 +93,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
     public service: ContestsService,
     public coreSidebarService: CoreSidebarService,
     public langService: LanguageService,
+    public cdr: ChangeDetectorRef
   ) {
     super();
   }
@@ -70,6 +103,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
       this.contest = Contest.fromJSON(contest);
       this.contestProblem = contestProblem;
       this.problem = contestProblem.problem;
+      this.cdr.markForCheck();
       // setTimeout(() => this.langService.setLanguage(this.selectedLang as any));
       this.titleService.updateTitle(this.route, {
         contestTitle: contest.title,
@@ -79,18 +113,21 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
 
       this.updateContentHeader();
 
-      this.service.getMe(this.contest?.id).subscribe(
-        (contestant: Contestant | null) => {
-          if (contestant) {
-            this.contestant = Contestant.fromJSON(contestant);
-            if (this.contest.status === ContestStatus.ALREADY) {
-              this._intervalId = setInterval(() => {
-                this.updateContestant();
-              }, 30000);
+      if (this.currentUser) {
+        this.service.getMe(this.contest?.id).subscribe(
+          (contestant: Contestant | null) => {
+            if (contestant) {
+              this.contestant = Contestant.fromJSON(contestant);
+              if (this.contest.status === ContestStatus.ALREADY) {
+                this._intervalId = setInterval(() => {
+                  this.updateContestant();
+                  this.cdr.markForCheck();
+                }, 30000);
+              }
             }
           }
-        }
-      );
+        );
+      }
 
       this.langService.getLanguage().pipe(takeUntil(this._unsubscribeAll)).subscribe(
         (lang: AttemptLangs) => {
@@ -99,10 +136,13 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
           if (!this.selectedAvailableLang) {
             setTimeout(() => {
               this.langService.setLanguage(this.problem.availableLanguages[0].lang);
+              this.cdr.markForCheck();
             }, 1000);
           }
         }
       );
+
+      setTimeout(() => this.reloadAttempts());
     });
 
   }
@@ -115,6 +155,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
     this.service.getMe(this.contest?.id).subscribe(
       (contestant: Contestant | null) => {
         this.contestant = contestant;
+        this.cdr.markForCheck();
       }
     );
   }
@@ -151,25 +192,15 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
   }
 
   reloadProblems() {
-    this.api.get(`contests/${this.contest?.id}/problems`).subscribe((result: any) => {
-      this.contestProblems = result.map((data: any) => {
-        return ContestProblem.fromJSON(data);
-      });
+    this.api.get(`contests/${ this.contest?.id }/problems`).subscribe((result: any) => {
+      this.contestProblems = result;
       this.sortProblems();
-      this.reloadAttempts();
+      this.cdr.markForCheck();
     });
   }
 
   sortProblems() {
     this.contestProblems = sortContestProblems(this.contestProblems);
-  }
-
-  getProblemBySymbol(symbol: string): ContestProblem | undefined {
-    for (const contestProblem of this.contestProblems) {
-      if (contestProblem.symbol === symbol) {
-        return contestProblem;
-      }
-    }
   }
 
   getProblemInfoBySymbol(
@@ -189,11 +220,16 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
       (result: PageResult<Attempt>) => {
         this.attempts = result.data;
         this.totalAttemptsCount = result.total;
+        this.cdr.markForCheck();
       }
     );
   }
 
   codeEditorSidebarToggle() {
+    if (this.contest?.userInfo?.isRegistered === false) {
+      this.router.navigateByUrl(getResourceById(Resources.Contest, this.contest.id));
+      return;
+    }
     this.coreSidebarService.getSidebarRegistry('codeEditorSidebar').toggleOpen();
   }
 

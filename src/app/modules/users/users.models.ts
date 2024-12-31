@@ -125,6 +125,7 @@ export class Team {
     public createrAvatar: string,
     public name: string,
     public members: Array<TeamMember>,
+    public code: string,
   ) { }
 }
 
@@ -157,4 +158,20 @@ export interface UserChallengesRating {
   wins: number;
   draws: number;
   losses: number;
+}
+
+export type UserCompetitionPrizeCurrency = 'SUM' | 'DOLLAR' | 'TON';
+export type UserCompetitionPrizeCompetitionType = 'CONTEST' | 'ARENA' | 'TOURNAMENT' | 'CUP';
+export type UserCompetitionPrizeType = 'MONEY' | 'TELEGRAM_PREMIUM' | 'KEPCOIN';
+
+export interface UserCompetitionPrize {
+  prizeTitle: string;
+  prizeType: UserCompetitionPrizeType;
+  moneyValue: number | null;
+  kepcoinValue: number | null;
+  currency: UserCompetitionPrizeCurrency;
+  competitionType: UserCompetitionPrizeCompetitionType;
+  competitionId: number;
+  competitionTitle: string;
+  telegramPremiumPeriod: number | null;
 }

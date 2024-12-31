@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from "@angular/router";
-import { Observable, of } from "rxjs";
-import { catchError, map } from "rxjs/operators";
-import { BlogService } from "./blog.service";
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { BlogService } from './blog.service';
 
 @Injectable()
 export class BlogPostExistsGuard implements CanActivate{

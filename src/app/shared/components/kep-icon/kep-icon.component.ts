@@ -2,6 +2,7 @@ import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import icons from './icons.json';
 import { CommonModule } from '@angular/common';
 import { keenIcons } from '@app/icons';
+import { colors } from '@app/colors';
 
 @Component({
   standalone: true,
@@ -12,10 +13,13 @@ import { keenIcons } from '@app/icons';
 })
 export class KepIconComponent implements OnInit {
   @Input() name: keyof typeof keenIcons | string;
-  @Input() class = 'mr-25 font-medium-3';
+  @Input() class = 'me-25 font-medium-3';
   @Input() type: 'outline' | 'solid' | 'duotone' = 'outline';
-  @Input() color: 'primary' | 'success' | 'info' | 'danger' | 'dark' | 'secondary';
-  @Input() size: 'small-3' | 'small-4' | 'medium-1' | 'medium-2' | 'medium-3' | 'medium-4' | 'medium-5' | 'large-1';
+  @Input() color: keyof typeof colors.solid;
+  @Input() size:
+    'small-1' | 'small-2' | 'small-3' | 'small-4' |
+    'medium-1' | 'medium-2' | 'medium-3' | 'medium-4' | 'medium-5' |
+    'large-1' | 'large-2' | 'large-3' | 'large-4' | 'large-5';
 
   pathsNumber = 0;
 

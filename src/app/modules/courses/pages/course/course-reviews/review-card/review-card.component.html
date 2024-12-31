@@ -1,0 +1,20 @@
+<div class="card course-review-card">
+  <div class="card-header d-flex">
+    <div class="card-title">
+      <img [src]="review.userAvatar" alt="pic1" class="me-50 rounded" height="48">
+      <user-popover [username]="review.username"></user-popover>
+    </div>
+
+    <div class="rating" ngbTooltip="{{ review.rating }}" placement="left">
+      <ngb-rating [(rate)]="review.rating" [max]="5" [readonly]="true" class="outline-none"/>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <h6 class="review-body">
+      <mathjax [content]="review.review"></mathjax>
+    </h6>
+
+    <p class="meta-time-date">{{ review.created }}</p>
+  </div>
+</div>

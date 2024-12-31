@@ -1,4 +1,4 @@
-<core-sidebar cdkDrag [hideOnEsc]="true" [name]="sidebarName" class="code-editor-sidebar">
+<core-sidebar [hideOnEsc]="true" [name]="sidebarName" class="code-editor-sidebar">
   <a
     (click)="toggleSidebar()"
     class="btn-toggle d-flex align-items-center justify-content-center">
@@ -13,19 +13,10 @@
         </div>
 
         <div class="d-flex justify-content-between">
-          <div class="mr-2 cursor-pointer" cdkDragHandle>
-            <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
-              <path d="M0 0h24v24H0z" fill="none"></path>
-            </svg>
-          </div>
-
-          <button (click)="toggleSidebar()" aria-label="Close" class="close" type="button">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <button (click)="toggleSidebar()" aria-label="Close" class="btn-close" type="button"></button>
         </div>
       </div>
-      <hr class="mt-0">
+      <hr class="mt-0 mb-50">
       <div class="card-body" [formGroup]="editorForm">
         <div class="row">
           <div class="col-lg-8 col-md-7 col-12">
@@ -34,7 +25,7 @@
               [style.height.%]="100"
               container="body"
               tooltipClass="tooltip-danger"
-            >
+              >
               <monaco-editor
                 [lang]="editorForm.controls.lang.value"
                 [formControl]="editorForm.controls.code"
@@ -44,64 +35,76 @@
           </div>
 
           <div class="col-lg-4 col-md-5 d-none d-md-block">
-            <div class="form-group">
-              <label class="font-weight-bold">{{ 'Language' | translate }}: </label>
+            <div class="mb-1">
+              <label class="fw-bold">{{ 'Language' | translate }}: </label>
               <ng-select
+                [appendTo]="'body'"
                 [clearable]="false"
                 [formControl]="editorForm.controls.lang"
                 (change)="langChange($event)">
-                <ng-option
-                  *ngFor="let availableLanguage of availableLanguages"
-                  [value]="availableLanguage.lang">
-                  {{ availableLanguage.langFull || availableLanguage.lang }}
-                </ng-option>
+                @for (availableLanguage of availableLanguages; track availableLanguage) {
+                  <ng-option
+                    [value]="availableLanguage.lang">
+                    {{ availableLanguage.langFull || availableLanguage.lang }}
+                  </ng-option>
+                }
               </ng-select>
             </div>
 
-            <div *ngIf="sampleTests.length > 0" class="form-group">
-              <label class="font-weight-bold">{{ 'CODE_EDITOR.SAMPLE_TEST' | translate }}: </label>
-              <ng-select
-                (change)="onSampleTestChange()"
-                [clearable]="false"
-                formControlName="testCaseNumber"
-              >
-                <ng-option
-                  *ngFor="let sampleTest of sampleTests;index as i"
-                  value="{{ i + 1 }}">
-                  {{ i + 1 }}
-                </ng-option>
-              </ng-select>
-            </div>
+            @if (sampleTests.length > 0) {
+              <div class="mb-1">
+                <label class="fw-bold">{{ 'CODE_EDITOR.SAMPLE_TEST' | translate }}: </label>
+                <ng-select
+                  appendTo="body"
+                  (change)="onSampleTestChange()"
+                  [clearable]="false"
+                  formControlName="testCaseNumber"
+                  >
+                  @for (sampleTest of sampleTests; track sampleTest; let i = $index) {
+                    <ng-option
+                      value="{{ i + 1 }}">
+                      {{ i + 1 }}
+                    </ng-option>
+                  }
+                </ng-select>
+              </div>
+            }
 
-            <div *ngIf="!isSelectedLangText()" class="form-group">
-              <label class="font-weight-bold">{{ 'CODE_EDITOR.INPUT' | translate }}:</label>
-              <textarea
-                [ngbTooltip]="editorForm.controls.input.errors | errorMessage"
-                class="form-control"
-                formControlName="input"
-                placeholder=""
-                rows="3"
-                tooltipClass="tooltip-danger"
-              ></textarea>
-            </div>
+            @if (!isSelectedLangText()) {
+              <div class="mb-1">
+                <label class="fw-bold">{{ 'CODE_EDITOR.INPUT' | translate }}:</label>
+                <textarea
+                  [ngbTooltip]="editorForm.controls.input.errors | errorMessage"
+                  class="form-control"
+                  formControlName="input"
+                  placeholder=""
+                  rows="3"
+                  tooltipClass="tooltip-danger"
+                ></textarea>
+              </div>
+            }
 
-            <div *ngIf="!isSelectedLangText()" class="form-group">
-              <label class="font-weight-bold">{{ 'CODE_EDITOR.OUTPUT' | translate }}:</label>
-              <textarea
-                class="form-control"
-                formControlName="output"
-                rows="2"
-              ></textarea>
-            </div>
+            @if (!isSelectedLangText()) {
+              <div class="mb-1">
+                <label class="fw-bold">{{ 'CODE_EDITOR.OUTPUT' | translate }}:</label>
+                <textarea
+                  class="form-control"
+                  formControlName="output"
+                  rows="2"
+                ></textarea>
+              </div>
+            }
 
-            <div *ngIf="!isSelectedLangText()" class="form-group">
-              <label class="font-weight-bold">{{ 'CODE_EDITOR.ANSWER' | translate }}:</label>
-              <textarea
-                class="form-control"
-                formControlName="answer"
-                rows="2"
-              ></textarea>
-            </div>
+            @if (!isSelectedLangText()) {
+              <div class="mb-1">
+                <label class="fw-bold">{{ 'CODE_EDITOR.ANSWER' | translate }}:</label>
+                <textarea
+                  class="form-control"
+                  formControlName="answer"
+                  rows="2"
+                ></textarea>
+              </div>
+            }
           </div>
         </div>
       </div>
@@ -113,7 +116,7 @@
             [customContent]="true"
             [purchaseUrl]="'problems/' + problem?.id + '/purchase-check-samples/'"
             [value]="100"
-          >
+            >
             <div new-feature class="position-relative">
               <button class="btn btn-glow btn-dark bg-dark">
                 {{ 'CODE_EDITOR.CHECK_SAMPLES' | translate }}
@@ -125,70 +128,85 @@
           <button
             (click)="checkSamples()"
             ngbTooltip="Alt+Z"
-            class="btn btn-glow btn-dark bg-dark mr-50"
+            class="btn btn-glow btn-dark bg-dark me-50"
             type="button">
-            <span *ngIf="isCheckSamples" aria-hidden="true" class="spinner-border spinner-border-sm" role="status"></span>
-            <span *ngIf="!isCheckSamples"><i data-feather="terminal"></i></span>
+            @if (isCheckSamples) {
+              <span aria-hidden="true" class="spinner-border spinner-border-sm" role="status"></span>
+            }
+            @if (!isCheckSamples) {
+              <span><i data-feather="terminal"></i></span>
+            }
             {{ 'CODE_EDITOR.CHECK_SAMPLES' | translate }}
           </button>
         }
         <div class="d-flex">
-          <button
-            ngbTooltip="Alt+X"
-            (click)="run()"
-            *ngIf="!isSelectedLangText()"
-            class="btn btn-glow btn-dark bg-dark mr-50"
-            type="button">
-            <span *ngIf="isRunning" aria-hidden="true" class="spinner-border spinner-border-sm" role="status"></span>
-            <span *ngIf="!isRunning"><i data-feather="terminal"></i></span>
-            {{ 'CODE_EDITOR.RUN' | translate }}
-          </button>
-
-          <kepcoin-spend-swal
-            (success)="answerForInput($event)"
-            *ngIf="answerForInputEnabled"
-            [customContent]="true"
-            [purchaseUrl]="'problems/' + problem?.id + '/answer-for-input/'"
-            [requestBody]="{input_data: editorForm.get('input').value}"
-            [value]="1"
-          >
-            <button class="btn btn-glow btn-dark bg-dark mr-50" type="button">
-            <span
-              *ngIf="isAnswerForInput"
-              class="spinner-border spinner-border-sm"
-              role="status">
-            </span>
-              <span *ngIf="!isAnswerForInput">
-              <i data-feather="check-square"></i>
-            </span>
-              {{ 'CODE_EDITOR.ANSWER_FOR_INPUT' | translate }}
+          @if (!isSelectedLangText()) {
+            <button
+              ngbTooltip="Alt+X"
+              (click)="run()"
+              class="btn btn-glow btn-dark bg-dark me-50"
+              type="button">
+              @if (isRunning) {
+                <span aria-hidden="true" class="spinner-border spinner-border-sm" role="status"></span>
+              }
+              @if (!isRunning) {
+                <span><i data-feather="terminal"></i></span>
+              }
+              {{ 'CODE_EDITOR.RUN' | translate }}
             </button>
-          </kepcoin-spend-swal>
+          }
 
+          @if (answerForInputEnabled) {
+            <kepcoin-spend-swal
+              (success)="answerForInput($event)"
+              [customContent]="true"
+              [purchaseUrl]="'problems/' + problem?.id + '/answer-for-input/'"
+              [requestBody]="{input_data: editorForm.get('input').value}"
+              [value]="1"
+              >
+              <button class="btn btn-glow btn-dark bg-dark me-50" type="button">
+                @if (isAnswerForInput) {
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    role="status">
+                  </span>
+                }
+                @if (!isAnswerForInput) {
+                  <span>
+                    <i data-feather="check-square"></i>
+                  </span>
+                }
+                {{ 'CODE_EDITOR.ANSWER_FOR_INPUT' | translate }}
+              </button>
+            </kepcoin-spend-swal>
+          }
+
+          @if (submitUrl) {
+            <button
+              ngbTooltip="Alt+Enter"
+              (click)="submit()"
+              [disabled]="!editorForm.valid"
+              class="btn btn-glow btn-dark bg-dark"
+              type="submit">
+              <i data-feather="send"></i>
+              {{ 'CODE_EDITOR.SUBMIT' | translate }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="card-footer d-md-none d-block text-end">
+        @if (submitUrl) {
           <button
             ngbTooltip="Alt+Enter"
             (click)="submit()"
-            *ngIf="submitUrl"
             [disabled]="!editorForm.valid"
             class="btn btn-glow btn-dark bg-dark"
             type="submit">
             <i data-feather="send"></i>
             {{ 'CODE_EDITOR.SUBMIT' | translate }}
           </button>
-        </div>
-      </div>
-
-      <div class="card-footer d-md-none d-block text-right">
-        <button
-          ngbTooltip="Alt+Enter"
-          (click)="submit()"
-          *ngIf="submitUrl"
-          [disabled]="!editorForm.valid"
-          class="btn btn-glow btn-dark bg-dark"
-          type="submit">
-          <i data-feather="send"></i>
-          {{ 'CODE_EDITOR.SUBMIT' | translate }}
-        </button>
+        }
       </div>
     </div>
   </ng-scrollbar>
@@ -209,42 +227,50 @@
         </div>
         <hr class="mt-0 mb-0">
         <div class="card-body">
-          <ngb-accordion [closeOthers]="false" [destroyOnHide]="false">
-            @for (result of checkSamplesResult; track result.input){
-              <ngb-panel [cardClass]="'collapse-margin'" [id]="'result' + $index">
-                <ng-template ngbPanelTitle>
-                  <div class="font-weight-bolder d-flex justify-content-between">
-                    <span>TC #{{ $index + 1 }}</span>
-                    <span [class]="{
-                      'text-success': result.verdict == Verdicts.Accepted,
-                      'text-danger': result.verdict != Verdicts.Accepted,
-                    }">{{ result.verdict | verdictShortTitle }}</span>
-                  </div>
-                </ng-template>
-                <ng-template ngbPanelContent>
-                  <div class="meta" *ngIf="result.input">
-                    <div class="font-weight-bold">Input:</div>
-                    <div>{{ result.input }}</div>
-                  </div>
+<!--          <ngb-accordion [closeOthers]="false" [destroyOnHide]="false">-->
+<!--            @for (result of checkSamplesResult; track result.input){-->
+<!--              <ngb-panel [cardClass]="'collapse-margin'" [id]="'result' + $index">-->
+<!--                <ng-template ngbPanelTitle>-->
+<!--                  <div class="fw-bolder d-flex justify-content-between">-->
+<!--                    <span>TC #{{ $index + 1 }}</span>-->
+<!--                    <span [class]="{-->
+<!--                      'text-success': result.verdict == Verdicts.Accepted,-->
+<!--                      'text-danger': result.verdict != Verdicts.Accepted,-->
+<!--                    }">{{ result.verdict | verdictShortTitle }}</span>-->
+<!--                  </div>-->
+<!--                </ng-template>-->
+<!--                <ng-template ngbPanelContent>-->
+<!--                  @if (result.input) {-->
+<!--                    <div class="meta">-->
+<!--                      <div class="fw-bold">Input:</div>-->
+<!--                      <div>{{ result.input }}</div>-->
+<!--                    </div>-->
+<!--                  }-->
 
-                  <div *ngIf="result.answer">
-                    <div class="font-weight-bold">Answer:</div>
-                    <div>{{ result.answer }}</div>
-                  </div>
+<!--                  @if (result.answer) {-->
+<!--                    <div>-->
+<!--                      <div class="fw-bold">Answer:</div>-->
+<!--                      <div>{{ result.answer }}</div>-->
+<!--                    </div>-->
+<!--                  }-->
 
-                  <div *ngIf="result.output">
-                    <div class="font-weight-bold">Output:</div>
-                    <div>{{ result.output }}</div>
-                  </div>
+<!--                  @if (result.output) {-->
+<!--                    <div>-->
+<!--                      <div class="fw-bold">Output:</div>-->
+<!--                      <div>{{ result.output }}</div>-->
+<!--                    </div>-->
+<!--                  }-->
 
-                  <div *ngIf="result.error">
-                    <div class="font-weight-bold">Error:</div>
-                    <div><pre>{{ result.error }}</pre></div>
-                  </div>
-                </ng-template>
-              </ngb-panel>
-            }
-          </ngb-accordion>
+<!--                  @if (result.error) {-->
+<!--                    <div>-->
+<!--                      <div class="fw-bold">Error:</div>-->
+<!--                      <div><pre>{{ result.error }}</pre></div>-->
+<!--                    </div>-->
+<!--                  }-->
+<!--                </ng-template>-->
+<!--              </ngb-panel>-->
+<!--            }-->
+<!--          </ngb-accordion>-->
         </div>
       }
     </div>

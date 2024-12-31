@@ -1,97 +1,36 @@
-.card .card-header {
-  display: block;
+@import 'styles/kep-imports';
+
+.contest-standings-top {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 9px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px white solid;
+
+  @include dark-layout {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px black solid !important;
+  }
+
+  .header {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin-left: 1.2rem;
+    margin-bottom: 2rem;
+  }
 }
 
-th {
-  border-bottom: none !important;
-  border-top: none !important;
-}
-
-thead tr th,
-tfoot tr th {
-  font-size: 1rem;
-  font-weight: 600 !important;
-  text-transform: initial !important;
-}
-
-table>thead>tr>th:first-child {
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
-}
-
-table>thead>tr>th:last-child {
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
-}
-
-th,
-td {
-  padding: 15px !important;
-}
-
-th:nth-child(1) {
-  min-width: 80px;
-}
-
-tr:first-child td,
-th {
-  border-bottom: none !important;
-  border-top: none !important;
-}
-
-th:nth-child(2) {
-  min-width: 300px;
-  white-space: nowrap;
-}
-
-::ng-deep .rating-title-img {
-  margin-right: 5px !important;
-}
-
-::ng-deep .contest-time-sm {
-  font-size: 10px;
-}
-
-::ng-deep .less-code {
-  margin-left: 0.6rem;
-  margin-right: 0.6rem;
-}
-
-.absolute {
+.bg-img {
   position: absolute;
+  top: -66px;
+  width: 95%;
+  z-index: -1;
+  height: 520px;
+
+  filter: blur(60px);
+  opacity: .3;
+  background-repeat: no-repeat;
+  background-position: 100%;
+  background-size: cover;
 }
-
-thead tr {
-  background: var(--bg-gradient) !important;
-  box-shadow: var(--box-shadow) !important;
-  color: var(--text-color);
-}
-
-span.points {
-  background: var(--bg) !important;
-  box-shadow: var(--box-shadow) !important;
-  color: var(--text-color);
-}
-
-::ng-deep span.problem-points {
-  background: var(--bg-light) !important;
-  color: var(--bg);
-}
-
-::ng-deep span.problem-points.the-best {
-  background: var(--bg) !important;
-  box-shadow: var(--box-shadow) !important;
-  color: var(--text-color);
-}
-
-::ng-deep .tooltip-contest-problem {
-  .arrow:before {
-    border-top-color: #f3effc;
-  }
-
-  .tooltip-inner {
-    color: var(--bg) !important;
-    background-color: var(--bg-light) !important;  
-  }
-}
-

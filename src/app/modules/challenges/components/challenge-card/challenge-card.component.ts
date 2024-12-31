@@ -1,8 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { Challenge } from '@challenges/models/challenges.models';
+import { Challenge } from '@challenges/models/challenges';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import { fadeInOnEnterAnimation } from 'angular-animations';
+import { KepDeltaComponent } from '@shared/components/kep-delta/kep-delta.component';
+import { KepBadgeComponent } from '@shared/components/kep-badge/kep-badge.component';
 
 @Component({
   selector: 'challenge-card',
@@ -13,6 +16,11 @@ import { ChallengesUserViewComponent } from '@challenges/components/challenges-u
     CoreCommonModule,
     NgbTooltipModule,
     ChallengesUserViewComponent,
+    KepDeltaComponent,
+    KepBadgeComponent,
+  ],
+  animations: [
+    fadeInOnEnterAnimation()
   ]
 })
 export class ChallengeCardComponent {

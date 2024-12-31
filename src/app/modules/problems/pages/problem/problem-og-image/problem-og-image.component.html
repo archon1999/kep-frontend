@@ -12,7 +12,7 @@
 
     <span class="problem-header-sep"></span>
 
-    <span class="badge badge-primary badge-pill">
+    <span class="badge bg-primary badge-pill">
       <i [data-feather]="'user' | iconName"></i>
       <user-popover [textColor]="'white'" [placement]="'bottom'" [username]="problem.authorUsername">
       </user-popover>
@@ -23,47 +23,47 @@
 
     <span class="problem-header-sep"></span>
 
-    <span class="badge badge-info badge-pill">
+    <span class="badge bg-info badge-pill">
       {{ problem.timeLimit }} {{ 'MS' | translate }}
     </span>
-    <span class="badge badge-pill badge-primary">
+    <span class="badge badge-pill bg-primary">
       {{ problem.memoryLimit }} {{ 'MB' | translate }}
     </span>
 
     <div class="mt-2">
-      <span *ngFor="let availableLanguage of problem.availableLanguages">
-        <a class="badge-pill text-white badge badge-{{ availableLanguage.lang }}">
-          {{ availableLanguage.langFull }}
-        </a>
-      </span>
+      @for (availableLanguage of problem.availableLanguages; track availableLanguage) {
+        <span>
+          <a class="badge-pill text-white badge badge-{{ availableLanguage.lang }}">
+            {{ availableLanguage.langFull }}
+          </a>
+        </span>
+      }
     </div>
 
     <hr>
 
-    <mathjax [content]="problem.body"></mathjax>
-    <hr>
-
-    <ng-container *ngIf="problem.inputData?.length > 0">
-      <h4 class="mt-2">
-        <strong>
-          {{ 'INPUT_DATA' | translate }}:
-        </strong>
-      </h4>
-
-      <mathjax class="mt-2" [content]="problem.inputData"></mathjax>
-    </ng-container>
-
-    <ng-container *ngIf="problem.outputData?.length > 0">
-      <h4 class="mt-3">
-        <strong>
-          {{ 'OUTPUT_DATA' | translate }}:
-        </strong>
-      </h4>
-
-      <mathjax class="mt-2" [content]="problem.outputData"></mathjax>
+      <mathjax [content]="problem.body"></mathjax>
       <hr>
-    </ng-container>
-  </div>
-</div>
 
-<img [src]="img" alt="">
+        @if (problem.inputData?.length > 0) {
+          <h4 class="mt-2">
+            <strong>
+              {{ 'INPUT_DATA' | translate }}:
+            </strong>
+          </h4>
+          <mathjax class="mt-2" [content]="problem.inputData"></mathjax>
+        }
+
+        @if (problem.outputData?.length > 0) {
+          <h4 class="mt-3">
+            <strong>
+              {{ 'OUTPUT_DATA' | translate }}:
+            </strong>
+          </h4>
+          <mathjax class="mt-2" [content]="problem.outputData"></mathjax>
+          <hr>
+          }
+        </div>
+      </div>
+
+      <img [src]="img" alt="">

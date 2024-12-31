@@ -1,109 +1,179 @@
-<div class="mt-2 text-dark">
-  <mathjax [content]="problem.body" *ngIf="problem.id != 1637"></mathjax>
+<div class="mt-2 text-dark problem-body">
+  @if (problem.id != 1637) {
+    <mathjax [content]="problem.body"></mathjax>
+  }
 </div>
 
-<problem1615 *ngIf="problem.id == 1615"></problem1615>
-<problem1623 *ngIf="problem.id == 1623"></problem1623>
-<problem1624 *ngIf="problem.id == 1624"></problem1624>
-<problem1628 *ngIf="problem.id == 1628"></problem1628>
-<problem1630 *ngIf="problem.id == 1630"></problem1630>
-<problem1631 *ngIf="problem.id == 1631"></problem1631>
-<problem1633 *ngIf="problem.id == 1633"></problem1633>
-<problem1634 *ngIf="problem.id == 1634"></problem1634>
-<problem1635 *ngIf="problem.id == 1635"></problem1635>
-<problem1637 *ngIf="problem.id == 1637"></problem1637>
-<problem1638 *ngIf="problem.id == 1638"></problem1638>
-<problem1639 *ngIf="problem.id == 1639"></problem1639>
-<problem1703 [problem]="problem" *ngIf="problem.id == 1703"></problem1703>
-<problem1733 [problem]="problem" *ngIf="problem.id == 1733"></problem1733>
-<problem1734 [problem]="problem" *ngIf="problem.id == 1734"></problem1734>
-<problem1735 [problem]="problem" *ngIf="problem.id == 1735"></problem1735>
-<problem1736 [problem]="problem" *ngIf="problem.id == 1736"></problem1736>
-<problem1737 *ngIf="problem.id == 1737"></problem1737>
-<problem1739 [problem]="problem" *ngIf="problem.id == 1739"></problem1739>
-<problem1740 [problem]="problem" *ngIf="problem.id == 1740"></problem1740>
-<problem1741 [problem]="problem" *ngIf="problem.id == 1741"></problem1741>
-<problem1742 [problem]="problem" *ngIf="problem.id == 1742"></problem1742>
-<problem1743 [problem]="problem" *ngIf="problem.id == 1743"></problem1743>
-<problem1744 [problem]="problem" *ngIf="problem.id == 1744"></problem1744>
-<problem1840 [problem]="problem" *ngIf="problem.id == 1840"></problem1840>
-<problem1841 [problem]="problem" *ngIf="problem.id == 1841"></problem1841>
-<problem1842 *ngIf="problem.id == 1842"></problem1842>
-<problem1843 *ngIf="problem.id == 1843"></problem1843>
-<problem1869 *ngIf="problem.id == 1869"></problem1869>
-<problem1903 *ngIf="problem.id == 1903"></problem1903>
-<problem1905 *ngIf="problem.id == 1905"></problem1905>
+@if (problem.id == 1615) {
+  <problem1615></problem1615>
+}
+@if (problem.id == 1623) {
+  <problem1623></problem1623>
+}
+@if (problem.id == 1624) {
+  <problem1624></problem1624>
+}
+@if (problem.id == 1628) {
+  <problem1628></problem1628>
+}
+@if (problem.id == 1630) {
+  <problem1630></problem1630>
+}
+@if (problem.id == 1631) {
+  <problem1631></problem1631>
+}
+@if (problem.id == 1633) {
+  <problem1633></problem1633>
+}
+@if (problem.id == 1634) {
+  <problem1634></problem1634>
+}
+@if (problem.id == 1635) {
+  <problem1635></problem1635>
+}
+@if (problem.id == 1637) {
+  <problem1637></problem1637>
+}
+@if (problem.id == 1638) {
+  <problem1638></problem1638>
+}
+@if (problem.id == 1639) {
+  <problem1639></problem1639>
+}
+@if (problem.id == 1703) {
+  <problem1703 [problem]="problem"></problem1703>
+}
+@if (problem.id == 1733) {
+  <problem1733 [problem]="problem"></problem1733>
+}
+@if (problem.id == 1734) {
+  <problem1734 [problem]="problem"></problem1734>
+}
+@if (problem.id == 1735) {
+  <problem1735 [problem]="problem"></problem1735>
+}
+@if (problem.id == 1736) {
+  <problem1736 [problem]="problem"></problem1736>
+}
+@if (problem.id == 1737) {
+  <problem1737></problem1737>
+}
+@if (problem.id == 1739) {
+  <problem1739 [problem]="problem"></problem1739>
+}
+@if (problem.id == 1740) {
+  <problem1740 [problem]="problem"></problem1740>
+}
+@if (problem.id == 1741) {
+  <problem1741 [problem]="problem"></problem1741>
+}
+@if (problem.id == 1742) {
+  <problem1742 [problem]="problem"></problem1742>
+}
+@if (problem.id == 1743) {
+  <problem1743 [problem]="problem"></problem1743>
+}
+@if (problem.id == 1744) {
+  <problem1744 [problem]="problem"></problem1744>
+}
+@if (problem.id == 1840) {
+  <problem1840 [problem]="problem"></problem1840>
+}
+@if (problem.id == 1841) {
+  <problem1841 [problem]="problem"></problem1841>
+}
+@if (problem.id == 1842) {
+  <problem1842></problem1842>
+}
+@if (problem.id == 1843) {
+  <problem1843></problem1843>
+}
+@if (problem.id == 1869) {
+  <problem1869></problem1869>
+}
+@if (problem.id == 1903) {
+  <problem1903></problem1903>
+}
+@if (problem.id == 1905) {
+  <problem1905></problem1905>
+}
+@if (problem.id == 1953) {
+  <problem1953></problem1953>
+}
+@if (problem.id == 1954) {
+  <problem1954></problem1954>
+}
+@if (problem.id == 1966) {
+  <problem1966></problem1966>
+}
 
 <hr>
 
-<ng-container *ngIf="problem.inputData?.length > 0">
+@if (problem.inputData?.length > 0) {
   <h4 class="mt-2 mb-2 text-dark font-medium-5">
     {{ 'INPUT_DATA' | translate }}:
   </h4>
-
   <mathjax class="mt-2 text-dark" [content]="problem.inputData"></mathjax>
-</ng-container>
+}
 
-<ng-container *ngIf="problem.outputData?.length > 0">
+@if (problem.outputData?.length > 0) {
   <h4 class="mt-2 mb-2 text-dark font-medium-5">
     {{ 'OUTPUT_DATA' | translate }}:
   </h4>
-
   <mathjax class="mt-2 text-dark" [content]="problem.outputData"></mathjax>
   <hr>
-</ng-container>
+}
 
-<ng-container *ngIf="problem.sampleTests.length > 0">
+@if (problem.sampleTests.length > 0) {
   <h4 class="mt-2 mb-1 font-medium-5 text-dark">
     {{ 'SAMPLE_TESTS' | translate }}
   </h4>
-
-  <ng-container *ngFor="let sampleTest of problem.sampleTests">
+  @for (sampleTest of problem.sampleTests;track sampleTest) {
     <div class="mt-2 mb-2 table-responsive">
       <table class="table sample-test">
         <thead>
-          <tr class="bg-gradient-primary">
-            <th>
-              <div class="row justify-content-between align-items-center">
-                <div class="pl-1 font-small-4">
-                  {{ 'INPUT' | translate }}
-                </div>
-                <clipboard-button [text]="sampleTest.input"></clipboard-button>
+        <tr class="bg-gradient-primary">
+          <th>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="font-small-4">
+                {{ 'INPUT' | translate }}
               </div>
-            </th>
-            <th>
-              <div class="row justify-content-between align-items-center">
-                <div class="pl-1 font-small-4">
-                  {{ 'OUTPUT' | translate }}
-                </div>
-                <clipboard-button [text]="sampleTest.output"></clipboard-button>
+              <clipboard-button [text]="sampleTest.input" buttonClass="btn btn-primary btn-sm"/>
+            </div>
+          </th>
+          <th>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="font-small-4">
+                {{ 'OUTPUT' | translate }}
               </div>
-            </th>
-          </tr>
+              <clipboard-button [text]="sampleTest.output" buttonClass="btn btn-primary btn-sm"/>
+            </div>
+          </th>
+        </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="pl-2">
-              <pre [innerText]="sampleTest.input"></pre>
-            </td>
-            <td class="pl-2">
-              <pre [innerText]="sampleTest.output"></pre>
-            </td>
-          </tr>
+        <tr>
+          <td class="ps-2">
+            <pre [innerText]="sampleTest.input"></pre>
+          </td>
+          <td class="ps-2">
+            <pre [innerText]="sampleTest.output"></pre>
+          </td>
+        </tr>
         </tbody>
       </table>
     </div>
-  </ng-container>
+  }
+}
 
-</ng-container>
-
-<ng-container *ngIf="problem.comment?.length > 0">
+@if (problem.comment?.length > 0) {
   <h4 class="mt-3 font-medium-4 text-dark">
     {{ 'COMMENT' | translate }}:
   </h4>
-
   <mathjax class="mt-2 text-dark" [content]="problem.comment"></mathjax>
   <hr>
-</ng-container>
+}
 
-<problem1870 *ngIf="problem.id == 1870"></problem1870>
+@if (problem.id == 1870) {
+  <problem1870></problem1870>
+}

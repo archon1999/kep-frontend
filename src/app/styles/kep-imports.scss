@@ -2,6 +2,14 @@
 @import 'bootstrap/scss/mixins';
 @import 'scss/base/bootstrap-extended/variables';
 @import 'scss/base/components/variables-dark';
-@import 'bootstrap/scss/mixins/dark-layout';
-@import 'bootstrap/scss/mixins/define-page-top';
 @import 'bootstrap/scss/mixins/breakpoints';
+
+@mixin dark-layout() {
+  ::ng-deep .dark-layout & {
+    @content;
+  }
+
+  .dark-layout & {
+    @content;
+  }
+}

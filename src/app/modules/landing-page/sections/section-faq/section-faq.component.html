@@ -1,0 +1,38 @@
+<div class="faq-container">
+  <div class="content-wrapper container-xxl">
+    <div class="content-body pt-lg-2 pt-0">
+      <div class="text-center mb-1 pb-1">
+        <span class="badge bg-primary">FAQ</span>
+      </div>
+      <h3 class="text-center mb-1 fw-bolder">{{ 'LandingPage.SectionFAQTitle' | translate }}</h3>
+      <p class="text-center mb-2 pb-lg-3 pb-1">{{ 'LandingPage.SectionFAQText' | translate }}</p>
+      <div class="row gy-5">
+        <div class="col-lg-5">
+          <div class="text-center">
+            <img alt="faq boy with logos" class="faq-image mb-lg-0 mb-2" loading="lazy"
+                 src="assets/landing-page/faq-boy-with-logos.webp"
+                 width="400">
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div ngbAccordion>
+            @for (faq of data; track faq.id) {
+              <div ngbAccordionItem>
+                <h2 ngbAccordionHeader>
+                  <button ngbAccordionButton>
+                    {{ faq.question }}
+                  </button>
+                </h2>
+                <div ngbAccordionCollapse>
+                  <div ngbAccordionBody>
+                    <div [innerHTML]="faq.answer"></div>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

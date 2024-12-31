@@ -6,7 +6,7 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { DragulaModule } from 'ng2-dragula';
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
@@ -17,17 +17,19 @@ import { ChapterCardComponent } from '@app/modules/testing/components/chapter-ca
 import { TestCardComponent } from '@app/modules/testing/components/test-card/test-card.component';
 import { TestPassComponent } from '@app/modules/testing/pages/test-pass/test-pass.component';
 import { TestComponent } from '@app/modules/testing/pages/test/test.component';
-import { TestingComponent } from './pages/testing/testing.component';
+import { TestsComponent } from '@app/modules/testing/pages/tests/tests.component';
 import { ChaptersResolver, LastTestsResolver, TestPassResolver, TestResolver } from './testing.resolver';
 import { TestListCardComponent } from '@app/modules/testing/components/test-list-card/test-list-card.component';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
+import { ChapterWithTestsCardComponent } from '@app/modules/testing/components/chapter-with-tests-card/chapter-with-tests-card.component';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: TestingComponent,
+    component: TestsComponent,
     title: 'Tests.Tests',
     resolve: {
       chapters: ChaptersResolver,
@@ -59,7 +61,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    TestingComponent,
+    TestsComponent,
     TestComponent,
     TestPassComponent,
     TestCardComponent,
@@ -84,6 +86,8 @@ const routes: Routes = [
     DragulaModule.forRoot(),
     SwiperComponent,
     CountdownComponent,
+    ChapterWithTestsCardComponent,
+    SpinnerComponent,
   ],
   providers: [
     TestResolver,

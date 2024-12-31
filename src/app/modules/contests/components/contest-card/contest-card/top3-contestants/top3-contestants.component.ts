@@ -1,15 +1,15 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ContestsService } from '@contests/contests.service';
-import { Contest } from '@contests/contests.models';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { Contest } from '@contests/models/contest';
 
 @Component({
   selector: 'top3-contestants',
   standalone: true,
-  imports: [CommonModule, ContestantViewModule, SpinnerComponent],
+  imports: [ContestantViewModule, SpinnerComponent],
   templateUrl: './top3-contestants.component.html',
   styleUrl: './top3-contestants.component.scss',
   animations: [fadeInOnEnterAnimation({ duration: 1000 })],

@@ -1,0 +1,56 @@
+<div [@fadeInOnEnter] class="row">
+  @for (quickStart of quickStarts; track quickStart) {
+    <div class="col-lg-3 col-6 p-25">
+      <new-challenge-button
+        (click)="quickStartClick(quickStart)"
+        [timeSeconds]="quickStart.timeSeconds"
+        [questionsCount]="quickStart.questionsCount">
+      </new-challenge-button>
+    </div>
+  }
+</div>
+
+<div class="offset-lg-3 col-12 col-lg-6">
+  <div class="card-body">
+    <h5 class="mb-2 text-dark">{{ 'Questions' | translate }}</h5>
+    <nouislider
+      [min]="4"
+      [behaviour]="'tap'"
+      [max]="10"
+      [step]="1"
+      [tooltips]="true"
+      [(ngModel)]="newChallengeCall.questionsCount"
+      [ngClass]="'circle-filled slider-custom'"
+    ></nouislider>
+
+    <h5 class="mb-2 text-dark">{{ 'Time' | translate }}</h5>
+    <nouislider
+      [min]="10"
+      [behaviour]="'tap'"
+      [max]="90"
+      [step]="10"
+      [tooltips]="true"
+      [(ngModel)]="newChallengeCall.timeSeconds"
+      [ngClass]="'circle-filled slider-custom'"
+    ></nouislider>
+
+    <h5 class="mb-1">{{ 'Chapters' | translate }}</h5>
+    <ng-select appendTo="body" [multiple]="true" [(ngModel)]="newChallengeCall.selectedChapters">
+      @for (chapter of chapters; track chapter) {
+        <ng-option [value]="chapter.id">
+          <span class="badge text-white bg-gradient-chapter-{{ chapter.id }}">
+            {{ chapter.title }}
+          </span>
+        </ng-option>
+      }
+    </ng-select>
+    <div class="text-center">
+      <button (click)="newChallenge(newChallengeCall)" class="btn btn-primary btn-sm mt-2">
+        {{ 'NewChallenge' | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<nouslider-css></nouslider-css>
+<ng-select-css></ng-select-css>

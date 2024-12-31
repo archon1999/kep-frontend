@@ -6,15 +6,21 @@
   </div>
 
   <div class="card-body">
-    <h4 *ngIf="codeRush.status == 0" class="text-center text-white mb-1">
-      {{ 'Rush ends in' | translate }}
-    </h4>
-    <h4 *ngIf="codeRush.status == -1" class="text-center text-white mb-1">
-      {{ 'Starts' | translate }}
-    </h4>
-    <h4 *ngIf="codeRush.status == 1" class="text-center text-white mb-1">
-      {{ 'Finished' | translate }}
-    </h4>
+    @if (codeRush.status == 0) {
+      <h4 class="text-center text-white mb-1">
+        {{ 'Rush ends in' | translate }}
+      </h4>
+    }
+    @if (codeRush.status == -1) {
+      <h4 class="text-center text-white mb-1">
+        {{ 'Starts' | translate }}
+      </h4>
+    }
+    @if (codeRush.status == 1) {
+      <h4 class="text-center text-white mb-1">
+        {{ 'Finished' | translate }}
+      </h4>
+    }
   </div>
   <div class="card-footer">
     <ngx-countdown [time]="leftTime" [render]="render" format="HH:mm:ss" (finish)="finish()">
@@ -24,17 +30,17 @@
             <h5 class="clock-val">{{ data.fragments[0] }}</h5>
             <h5 class="text-white clock-text">{{ 'HOUR' | translate }}</h5>
           </div>
-      
+
           <div class="countdown text-center">
             <h5 class="clock-val">{{ data.fragments[1] }}</h5>
             <h5 class="text-white clock-text">{{ 'MINUTE' | translate }}</h5>
           </div>
-      
+
           <div class="countdown text-center">
             <h5 class="clock-val">{{ data.fragments[2] }}</h5>
             <h5 class="text-white clock-text">{{ 'SECOND' | translate }}</h5>
           </div>
-        </div>    
+        </div>
       </ng-template>
     </ngx-countdown>
   </div>

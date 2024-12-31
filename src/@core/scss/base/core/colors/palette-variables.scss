@@ -1,0 +1,66 @@
+@import '../../bootstrap-extended/include';
+
+$white-color: (
+  'base': #ffffff
+);
+$black-color: (
+  'base': #000000
+);
+$dark-color: (
+  'base': $dark,
+);
+$light-color: (
+  'base': $light
+);
+
+$primary-color: (
+  'base': $primary,
+);
+
+$secondary-color: (
+  'base': $secondary,
+);
+
+$success-color: (
+  'base': $success,
+);
+
+$info-color: (
+  'base': $info,
+);
+
+$warning-color: (
+  'base': $warning,
+);
+
+$danger-color: (
+  'base': $danger,
+);
+
+$yellow-color: (
+  'base': $yellow,
+);
+
+$blue-color: (
+  'base': $blue,
+);
+
+$brown-color: (
+  'base': $brown,
+);
+
+$colors: (
+  'white': $white-color,
+  'black': $black-color,
+  'dark': $dark-color,
+  'light': $light-color,
+  'primary': $primary-color,
+  'secondary': $secondary-color,
+  'success': $success-color,
+  'info': $info-color,
+  'warning': $warning-color,
+  'danger': $danger-color,
+  'yellow': $yellow-color,
+  'blue': $blue-color,
+  'brown': $brown-color,
+);

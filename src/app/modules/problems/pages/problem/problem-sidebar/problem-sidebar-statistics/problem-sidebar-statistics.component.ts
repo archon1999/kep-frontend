@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Problem } from 'app/modules/problems/models/problems.models';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { colors as Colors } from '@app/colors';
-import { CoreConfigService } from 'core/services/config.service';
+import { CoreConfigService } from '@core/services/config.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';

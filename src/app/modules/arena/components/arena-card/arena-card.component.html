@@ -1,0 +1,56 @@
+<div class="card">
+  <div class="card-header">
+    <div class="d-flex justify-content-between">
+      <img alt="" height="32" src="assets/images/logo/logo.svg">
+      <h5 class="ms-75 text-white mt-50 mb-2 text-dark font-medium-1">KEP.uz</h5>
+    </div>
+    <div>
+      <span class="badge bg-warning">
+        {{ arena.chapters[0].title | translate }}
+      </span>
+    </div>
+  </div>
+
+  <div class="card-body text-center">
+    <kep-icon name="competition" color="dark" type="duotone" size="large-5" class="mt-2 mb-4"/>
+
+    <br>
+    <h3 class="text-dark d-flex align-items-center justify-content-center">
+      <kep-icon name="arena" type="duotone" size="large-1" class="me-50"/>
+      {{ arena.title }}
+    </h3>
+
+    <div class="start-time text-dark mt-2">
+      {{ arena.startTime | date:'dd-MM-yyyy' }}
+      <br>
+      {{ arena.startTime | date:'HH:mm' }} (UTC +5)
+    </div>
+  </div>
+
+  <div class="card-footer d-flex justify-content-between">
+    <div>
+      <span class="me-25 badge badge-brown badge-glow" ngbTooltip="{{ 'Time' | translate }}">
+        <kep-icon class="font-small-4" name="challenge-time"></kep-icon>
+        {{ arena.timeSeconds }}
+      </span>
+
+        <span class="badge badge-brown badge-glow" ngbTooltip="{{ 'Questions' | translate }}">
+        <kep-icon class="font-small-4" name="challenge-task"></kep-icon>
+          {{ arena.questionsCount }}
+      </span>
+    </div>
+
+    <div>
+      @if (arena.isRegistrated) {
+        <span class="badge bg-warning">
+          <kep-icon name="check" size="small-4" color="success"/>
+          {{ 'Registrated' | translate }}
+        </span>
+      } @else {
+        <button class="btn btn-sm btn-gradient-brown" (click)="register()">
+          {{ 'Registration' | translate }}
+        </button>
+      }
+    </div>
+  </div>
+</div>

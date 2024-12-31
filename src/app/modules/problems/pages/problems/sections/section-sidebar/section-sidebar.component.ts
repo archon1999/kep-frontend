@@ -3,13 +3,12 @@ import { Attempt } from '@problems/models/attempts.models';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
-import { BaseComponent } from '@shared/components/classes/base.component';
+import { BaseComponent } from '@app/common/classes/base.component';
 import { CoreCommonModule } from '@core/common.module';
 import { NgScrollbar } from 'ngx-scrollbar';
-import { NgbButtonsModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
-import { PageResult } from '@shared/components/classes/page-result';
+import { PageResult } from '@app/common/classes/page-result';
 import { Observable } from 'rxjs';
 
 export interface TopRating {
@@ -26,7 +25,6 @@ export interface TopRating {
   imports: [
     CoreCommonModule,
     NgScrollbar,
-    NgbButtonsModule,
     ApexChartModule,
     ContestantViewModule,
   ]

@@ -2,6 +2,14 @@
   {{ title }}
 </span>
 
-<span *ngIf="rating" class="ml-50 badge badge-light-{{ title | challengesRankColor }}">
-  {{ rating }}
-</span>
+@if (rating) {
+  @if (title) {
+    <span class="ms-50 text-dark">
+      {{ rating }}
+    </span>
+  } @else {
+    <span class="ms-25 badge badge-{{ title | challengesRankColor }}">
+      {{ rating }}
+    </span>
+  }
+}

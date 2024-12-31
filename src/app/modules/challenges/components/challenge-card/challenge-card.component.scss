@@ -1,18 +1,4 @@
-.challenge-card {
-  background: var(--bg-darken);
-  box-shadow: 0 0 5px var(--bg-lighten) !important;
-  border-radius: 5px;
-
-  ::ng-deep {
-    .text-blue, .text-primary {
-      color: #ffffff !important;
-    }
-  }
-}
-
-::ng-deep .dark-layout .challenge-card {
-  background: var(--bg-gradient);
-}
+@import 'styles/kep-imports';
 
 td:nth-child(1) {
   width: 320px;

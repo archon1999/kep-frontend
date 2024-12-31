@@ -1,0 +1,44 @@
+@if (!item.hidden) {
+  <!-- collapsible title -->
+  @if (!item.url) {
+    <a class="d-flex align-items-center" [ngClass]="item.classes" (click)="toggleOpen($event)">
+      <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+    </a>
+  }
+  <!-- itemContent template -->
+  <ng-template #itemContent>
+    @if (item.icon) {
+      <span [data-feather]="item.icon"></span>
+    }
+    <span class="menu-title text-truncate">{{ item.translate | translate }}</span>
+    @if (item.badge) {
+      <span
+        class="badge ms-auto me-1"
+        [ngClass]="item.badge.classes"
+        >
+        {{ item.badge.translate | translate }}
+      </span>
+    }
+  </ng-template>
+  <!-- sub-menu item/collapsible -->
+  <ul class="menu-content">
+    @for (item of item.children; track item) {
+      <!-- item -->
+      @if (item.type == 'item') {
+        <li
+          core-menu-vertical-item
+          [item]="item"
+          [ngClass]="{ disabled: item.disabled === true }"
+          [routerLinkActive]="!item.openInNewTab ? 'active' : ''"
+          [routerLinkActiveOptions]="{ exact: item.exactMatch || false }"
+          >
+          <span [routerLink]="item.openInNewTab ? [] : [item.url]" class="d-none"></span>
+        </li>
+      }
+      <!-- collapsible -->
+      @if (item.type == 'collapsible') {
+        <li core-menu-vertical-collapsible [item]="item" class="nav-item has-sub"></li>
+      }
+    }
+  </ul>
+}

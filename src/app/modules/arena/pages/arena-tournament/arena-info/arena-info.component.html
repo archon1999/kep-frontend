@@ -1,0 +1,39 @@
+<div class="card bg-arena">
+  <div class="card-header d-flex justify-content-center align-items-center">
+    <div class="card-title d-flex align-items-center">
+      <kep-icon name="arena" type="duotone" size="large-1"/>
+      {{ arena.title }}
+    </div>
+  </div>
+
+  <div class="card-body text-center">
+    <div ngbTooltip="{{ 'Time' | translate }}">
+      <kep-icon name="challenge-time" size="medium-3"/>
+      <span class="font-large-1">
+        {{ arena.timeSeconds }}
+      </span>
+    </div>
+
+    <div ngbTooltip="{{ 'Questions' | translate }}">
+      <kep-icon name="challenge-task" size="medium-3"/>
+      <span class="font-large-1">
+        {{ arena.questionsCount }}
+      </span>
+    </div>
+
+  </div>
+
+  @if (arena.status != ArenaStatus.Finished) {
+    <div class="card-footer text-center">
+      @if (arena.isRegistrated) {
+        <span class="badge bg-warning">
+          {{ 'Registrated' | translate }}
+        </span>
+      } @else {
+        <button class="btn btn-sm btn-gradient-brown" (click)="register()">
+          {{ 'Registration' | translate }}
+        </button>
+      }
+    </div>
+  }
+</div>

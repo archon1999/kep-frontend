@@ -1,8 +1,7 @@
-export enum ArenaStatus {
-  NotStarted= -1,
-  Already,
-  Finished,
-}
+import { BaseStatus } from '@app/common';
+
+export type ArenaStatus = BaseStatus;
+export const ArenaStatus = { ...BaseStatus };
 
 export interface ArenaChapter {
   id: number;
@@ -49,4 +48,9 @@ export interface ArenaPlayerStatistics {
   drawRate: number;
   lossRate: number;
   opponents: Array<any>;
+}
+
+export interface ArenaStatistics {
+  averageRating: number;
+  challenges: number;
 }

@@ -1,6 +1,7 @@
-<div class="table-responsive">
-  <table class="table challenge-card">
-    <tbody>
+<div class="card mb-50">
+  <div [@fadeInOnEnter] class="table-responsive">
+    <table class="table challenge-card">
+      <tbody>
       <tr>
         <td>
           <challenges-user-view
@@ -20,22 +21,19 @@
         </td>
 
         <td>
-          <span class="badge badge-glow" [ngClass]="{
-            'badge-success': challenge.playerFirst.delta > 0,
-            'badge-danger': challenge.playerFirst.delta < 0,
-            'badge-secondary': challenge.playerFirst.delta == 0
-          }">
-            <kep-icon class="font-medium-1" name="rating-changes"></kep-icon>
-            {{ challenge.playerFirst.delta }}
-          </span>
+          @if (challenge.rated) {
+            <kep-delta [value]="challenge.playerFirst.delta"></kep-delta>
+          } @else {
+            <span class="badge badge-pill bg-secondary">{{ 'Unrated' | translate }}</span>
+          }
         </td>
 
-        <td class="text-right">
-          <span ngbTooltip="{{ 'Time' | translate }}" class="badge mr-25 badge-glow badge-primary bg-primary">
+        <td class="text-end">
+          <span ngbTooltip="{{ 'Time' | translate }}" class="badge me-25 badge-glow bg-primary bg-primary">
             <kep-icon class="font-small-3" name="challenge-time"></kep-icon>
             {{ challenge.timeSeconds }}
           </span>
-          <span ngbTooltip="{{ 'Questions' | translate }}" class="badge badge-glow badge-primary bg-primary">
+          <span ngbTooltip="{{ 'Questions' | translate }}" class="badge badge-glow bg-primary bg-primary">
             <kep-icon class="font-small-3" name="challenge-task"></kep-icon>
             {{ challenge.questionsCount }}
           </span>
@@ -61,25 +59,27 @@
         </td>
 
         <td>
-          <span class="badge badge-glow" [ngClass]="{
-            'badge-success': challenge.playerSecond.delta > 0,
-            'badge-danger': challenge.playerSecond.delta < 0,
-            'badge-secondary': challenge.playerSecond.delta == 0
-          }">
-            <kep-icon class="font-medium-1" name="rating-changes"></kep-icon>
-            {{ challenge.playerSecond.delta }}
-          </span>
+          @if (challenge.rated) {
+            <kep-delta [value]="challenge.playerSecond.delta"></kep-delta>
+          } @else {
+            <span class="badge badge-pill bg-secondary">{{ 'Unrated' | translate }}</span>
+          }
         </td>
 
-        <td class="text-right">
-          <span *ngIf="!challenge.finished" class="badge badge-glow badge-success">
-            {{ 'Now' | translate }}
-          </span>
-          <span *ngIf="challenge.finished" class="badge bg-primary">
-            {{ challenge.finished }}
-          </span>
+        <td class="text-end">
+          @if (!challenge.finished) {
+            <span class="badge badge-glow bg-success">
+              {{ 'Now' | translate }}
+            </span>
+          }
+          @if (challenge.finished) {
+            <span class="badge bg-primary">
+              {{ challenge.finished }}
+            </span>
+          }
         </td>
       </tr>
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  </div>
 </div>

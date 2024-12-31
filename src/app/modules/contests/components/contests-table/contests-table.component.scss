@@ -1,53 +1,4 @@
-th {
-  border-bottom: none !important;
-  border-top: none !important;
-}
-
-thead tr th,
-tfoot tr th {
-  font-size: 1rem;
-  font-weight: 600 !important;
-  text-transform: initial !important;
-}
-
-table>thead>tr>th:first-child {
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
-}
-
-table>tbody>tr>td:first-child {
-  min-width: 200px;
-  max-width: 300px;
-  // white-space: nowrap;
-}
-
-table>thead>tr>th:last-child {
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
-}
-
-td:nth-child(1) {
-  font-weight: 500;
-}
-
-td:nth-child(2) {
-  padding: 10px !important;
-}
-
-td:nth-child(3),
-th:nth-child(3) {
-  padding: 10px !important;
-}
-
-td:nth-child(4),
-th:nth-child(4) {
-  padding: 10px !important;
-}
-
-td:nth-child(6),
-th:nth-child(6) {
-  padding: 10px !important;
-}
+@import 'styles/kep-imports';
 
 .contest-author {
   font-size: 11px;
@@ -56,19 +7,21 @@ th:nth-child(6) {
   font-weight: 600;
 }
 
-::ng-deep .contest-author .rating-title-img {
-  width: 28px !important;
-  height: 28px !important;
-}
-
 .contest-rated {
   font-size: 10.5px;
   padding-top: 10px;
 }
 
+.table {
+  --bs-table-color: var(--text-color);
+}
+
 thead tr {
   background: var(--bg-gradient);
-  color: var(--text-color);
+
+  @include dark-layout {
+    background: var(--bg-gradient) !important;
+  }
 }
 
 .badge.contest-badge {
@@ -86,11 +39,11 @@ thead tr {
 }
 
 .badge.contest-badge-light {
-  background-color: var(--bg-light);
+  background-color: var(--contest-color-light);
   color: var(--bg);
 }
 
 .avatar {
-  background-color: var(--bg-light);
+  background-color: var(--contest-color-light);
   color: var(--bg);
 }

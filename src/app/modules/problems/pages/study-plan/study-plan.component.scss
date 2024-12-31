@@ -1,9 +1,5 @@
+@import 'styles/kep-imports';
 @import 'styles/colors/study-plans';
-@import 'bootstrap/scss/mixins';
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
-@import 'bootstrap/scss/mixins/dark-layout';
-
 
 .study-plan-page-top {
   position: absolute;
@@ -258,7 +254,7 @@
     font-weight: 500;
 
     &:hover {
-      box-shadow: 0 0 10px $study-plan-1 !important;
+      box-shadow: 0 0 5px $study-plan-1 !important;
     }
   }
 }
@@ -270,7 +266,7 @@
     font-weight: 500;
 
     &:hover {
-      box-shadow: 0 0 10px $study-plan-2 !important;
+      box-shadow: 0 0 5px $study-plan-2 !important;
     }
   }
 }
@@ -282,7 +278,7 @@
     font-weight: 500;
 
     &:hover {
-      box-shadow: 0 0 10px $study-plan-3 !important;
+      box-shadow: 0 0 5px $study-plan-3 !important;
     }
   }
 }

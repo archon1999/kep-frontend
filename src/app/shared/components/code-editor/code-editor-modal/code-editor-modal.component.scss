@@ -1,8 +1,4 @@
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/mixins';
-@import 'bootstrap/scss/variables';
-@import 'scss/base/bootstrap-extended/variables';
-@import 'bootstrap/scss/mixins/dark-layout';
+@import 'styles/kep-imports';
 
 .editor-button {
   position: fixed;
@@ -48,7 +44,7 @@
 
   &.show {
     // box-shadow: 0 15px 30px 0 rgba($black, 0.11), 0 5px 15px 0 rgba($black, 0.08);
-    box-shadow: 0 0 10px rgba(34, 41, 47, 0.1);
+    box-shadow: 0 0 5px rgba(34, 41, 47, 0.1);
     right: 0;
     border-left: 0;
   }
@@ -92,7 +88,6 @@
       padding-bottom: 0.5rem;
     }
   }
-
 }
 
 .check-samples-result {
@@ -108,7 +103,7 @@
   backface-visibility: hidden;
 
   &.show {
-    box-shadow: 0 0 10px rgba(34, 41, 47, 0.1);
+    box-shadow: 0 0 5px rgba(34, 41, 47, 0.1);
     right: calc(60% + 1px);
   }
 

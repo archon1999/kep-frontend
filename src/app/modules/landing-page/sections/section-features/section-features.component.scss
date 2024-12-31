@@ -1,0 +1,22 @@
+@import 'styles/kep-imports';
+
+.features {
+  margin-bottom: 8rem;
+
+  .feature {
+    margin-top: 4rem;
+
+    .title {
+      font-size: large;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      // font-weight: 600;
+    }
+
+    .description {
+      padding-left: 4rem;
+      padding-right: 4rem;
+      line-height: 1.75rem;
+    }
+  }
+}

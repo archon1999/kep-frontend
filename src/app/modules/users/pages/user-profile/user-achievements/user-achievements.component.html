@@ -31,10 +31,18 @@
 
     <div class="card-body">
       <div class="row">
-        <div class="col-xl-3 col-lg-4 col-md-3 col-sm-4 col-6 text-center" *ngFor="let achievement of achievements">
-          <achievement [achievement]="achievement"></achievement>
-        </div>
+        @for (achievement of achievements; track achievement) {
+          <div class="col-xl-3 col-lg-4 col-md-3 col-sm-4 col-6 text-center">
+            <achievement [achievement]="achievement"></achievement>
+          </div>
+        }
       </div>
+
+      @if (achievements.length == 0) {
+        <div class="text-center">
+          <empty-result [title]="''" [text]="'NoResultFound'"/>
+        </div>
+      }
     </div>
   }
 </div>

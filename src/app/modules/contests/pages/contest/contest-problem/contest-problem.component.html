@@ -1,5 +1,5 @@
 <div
-  class="content-wrapper container-xxl p-0 contests-colors contests-color contest-{{ contest?.id }} {{ contest?.title }} contest-type-{{ contest?.type }}">
+  class="content-wrapper container-xxl p-0 {{ contest | contestClasses }}">
   <div class="content-body">
     <!-- content-header component -->
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
@@ -9,198 +9,210 @@
         <div [@fadeInLeftOnEnter] class="col-lg-9 col-md-12 col-sm-12 order-2 order-lg-1">
           <div class="layout-spacing">
             <div class="card">
-              <div class="card-header">
+              <div class="card-header p-1">
                 <contest-tab [contest]="contest"></contest-tab>
-                <button
-                  *ngIf="contest?.userInfo?.isRegistered && contest?.status == 0"
-                  (click)="codeEditorSidebarToggle()"
-                  class="btn btn-sm btn-primary position-absolute"
-                  style="top: 2rem; right: 2rem;">
-                  {{ 'Submit' | translate }}
-                </button>
-                <hr>
-              </div>
-              <div class="card-body">
-                <h2 class="text-center mb-4">
-                  {{ contestProblem.symbol }}. {{ problem.title }}
-                </h2>
+                @if (contest?.status == 0) {
+                  <button
+                    (click)="codeEditorSidebarToggle()"
+                    class="btn btn-sm btn-primary position-absolute"
+                    style="top: 2rem; right: 2rem;">
+                    {{ 'Submit' | translate }}
+                  </button>
+                }
+                </div>
+                <div class="card-footer">
+                  <h2 class="text-center text-dark mb-2">
+                    {{ contestProblem.symbol }}. {{ problem.title }}
+                  </h2>
 
-                <problem-body [problem]="problem"></problem-body>
-              </div>
-            </div>
-          </div>
-
-          <div class="card" *ngIf="attempts?.length > 0">
-            <div class="card-header">
-              <h3 class="card-title text-center mt-2 mb-1">{{ 'ATTEMPTS' | translate }}</h3>
-            </div>
-            <div class="card-body">
-              <attempts-table [hideSourceCodeSize]="true" [attempts]="attempts" [contest]="contest"></attempts-table>
-
-              <kep-pagination
-                *ngIf="attempts.length > 0"
-                [collectionSize]="totalAttemptsCount"
-                [(page)]="currentPage"
-                [pageSize]="50"
-                [maxSize]="5"
-                (pageChange)="reloadAttempts()"
-              >
-              </kep-pagination>
-
-            </div>
-          </div>
-        </div>
-
-        <div [@fadeInRightOnEnter] class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">
-          <div class="layout-spacing" *ngIf="contest">
-            <contest-card-countdown [contest]="contest"></contest-card-countdown>
-          </div>
-
-          <a
-            rippleEffect
-            *ngIf="contest?.status == 1 || currentUser?.isSuperuser"
-            routerLink="/practice/problems/problem/{{ contestProblem?.problem?.id }}"
-            [queryParams]="{'contest': contest?.id}"
-            class="mb-2 btn-block btn btn-primary bg-primary badge-glow">
-            {{ 'Upsolve' | translate }}
-          </a>
-
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title">
-                <i data-feather="info"></i>
-                Info
+                  <problem-body [problem]="problem"></problem-body>
+                </div>
               </div>
             </div>
 
-            <div class="card-body">
-              <problem-info-card
-                [hideCodeGolf]="contest?.type !== 'CodeGolf'"
-                [hideAuthorAndDifficulty]="true"
-                [hideLikes]="true"
-                [problem]="contestProblem?.problem">
-              </problem-info-card>
-            </div>
+            @if (attempts?.length > 0) {
+              <attempts-table
+                [hideSourceCodeSize]="contest.type != 'CodeGolf'"
+                [attempts]="attempts"
+                [contest]="contest"
+                (checkFinished)="reloadProblems()"/>
+              <div class="mb-1">
+                <kep-pagination
+                  [collectionSize]="totalAttemptsCount"
+                  [page]="currentPage"
+                  [pageSize]="50"
+                  [maxSize]="5"
+                  (pageChange)="reloadAttempts()"/>
+              </div>
+            }
           </div>
 
-          <div class="layout-spacing">
+          <div [@fadeInRightOnEnter] class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">
+            @if (contest) {
+              <div class="layout-spacing">
+                <contest-card-countdown [contest]="contest"></contest-card-countdown>
+              </div>
+            }
+
+            @if (contest?.status == 1 || currentUser?.isSuperuser) {
+              <a
+                rippleEffect
+                routerLink="/practice/problems/problem/{{ contestProblem?.problem?.id }}"
+                [queryParams]="{'contest': contest?.id}"
+                class="mb-2 btn-block btn btn-primary bg-primary badge-glow">
+                {{ 'Upsolve' | translate }}
+              </a>
+            }
+
             <div class="card">
+              <div class="card-header">
+                <div class="card-title">
+                  <i data-feather="info"></i>
+                  Info
+                </div>
+              </div>
 
-              <div class="">
-                <div class="table-responsive beautiful-table contest-problems">
-                  <table class="table">
-                    <tbody>
-                    <tr [ngClass]="{
+              <div class="card-body">
+                <problem-info-card
+                  [hideCodeGolf]="contest?.type !== 'CodeGolf'"
+                  [hideAuthorAndDifficulty]="true"
+                  [hideLikes]="true"
+                  [problem]="contestProblem?.problem">
+                </problem-info-card>
+              </div>
+            </div>
+
+            <div class="layout-spacing">
+              <div class="card">
+
+                <div class="">
+                  <div class="table-responsive beautiful-table contest-problems">
+                    <table class="table">
+                      <tbody>
+                        @for (_contestProblem of contestProblems; track _contestProblem) {
+<tr [ngClass]="{
                         'bg-light': _contestProblem.symbol == contestProblem.symbol
-                      }" *ngFor="let _contestProblem of contestProblems">
+                      }">
                       <td [ngClass]="{
                           'bg-success': _contestProblem.isSolved,
                           'bg-danger': !_contestProblem.isSolved && _contestProblem.isAttempted,
                           'bg-darken-1': coreConfig.layout.skin == 'dark',
                           'bg-lighten-4': coreConfig.layout.skin != 'dark'
                         }">
-                        <a
-                          [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problem', _contestProblem.symbol]">
-                          {{ _contestProblem.symbol }}
-                        </a>
-                      </td>
-                      <td>
-                        <a
-                          [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problem', _contestProblem.symbol]">
-                            <span class="text-primary">
-                            </span>
-                          {{ _contestProblem.problem.title }}
-
-                          <br>
-                          <small>
-                              <span class="text-success">
-                                {{ _contestProblem.solved }}
-                                <i data-feather="user-check"></i>
-                              </span>
-
-                            <span class="pl-1 text-danger">
-                                {{ _contestProblem.attemptUsersCount - _contestProblem.solved }}
-                              <i data-feather="user-x"></i>
-                              </span>
-                          </small>
-                        </a>
-                      </td>
-                      <td *ngIf="contest.hasBalls()">
-                          <span class="badge badge-success badge-glow">
-                            {{ _contestProblem.ball }}
-                          </span>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
+                              <a
+                                [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problem', _contestProblem.symbol]">
+                                {{ _contestProblem.symbol }}
+                              </a>
+                            </td>
+                            <td>
+                              <a
+                                [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problem', _contestProblem.symbol]">
+                                <span class="text-primary">
+                                </span>
+                                {{ _contestProblem.problem.title }}
+                                <br>
+                                  <small>
+                                    <span class="text-success">
+                                      {{ _contestProblem.solved }}
+                                      <i data-feather="user-check"></i>
+                                    </span>
+                                    <span class="ps-1 text-danger">
+                                      {{ _contestProblem.attemptUsersCount - _contestProblem.solved }}
+                                      <i data-feather="user-x"></i>
+                                    </span>
+                                  </small>
+                                </a>
+                              </td>
+                              @if (contest.hasBalls()) {
+                                <td>
+                                  <span class="badge bg-success badge-glow">
+                                    {{ _contestProblem.ball }}
+                                  </span>
+                                </td>
+                              }
+                            </tr>
+                          }
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
+
               </div>
             </div>
-
           </div>
-        </div>
+
+          @if (contest?.isAlready() && contest?.userInfo.isRegistered && currentUser) {
+            <code-editor-modal
+              [uniqueName]="'contest-problem-' + problem?.id"
+              [sampleTests]="problem.sampleTests"
+              [availableLanguages]="problem.availableLanguages"
+              [submitUrl]="'contests/' + contest?.id + '/submit/'"
+              [submitParams]="{ contestProblem: contestProblem.symbol }"
+              (submittedEvent)="reloadAttempts()"
+            ></code-editor-modal>
+          }
+        </section>
       </div>
 
-      <code-editor-modal
-        *ngIf="contest?.isAlready() && contest?.userInfo.isRegistered && currentUser"
-        [uniqueName]="'contest-problem-' + problem?.id"
-        [sampleTests]="problem.sampleTests"
-        [availableLanguages]="problem.availableLanguages"
-        [submitUrl]="'contests/' + contest?.id + '/submit/'"
-        [submitParams]="{ contestProblem: contestProblem.symbol }"
-        (submittedEvent)="reloadAttempts()"
-      ></code-editor-modal>
-    </section>
-  </div>
+      @if (contestant) {
+        <div (click)="resultsButtonClick()" class="results-button">
+          <button class="btn btn-sm btn-primary">
+            <i [data-feather]="'rating' | iconName"></i>
+          </button>
+        </div>
+      }
 
-  <div *ngIf="contestant" (click)="resultsButtonClick()" class="results-button">
-    <button class="btn btn-sm btn-primary">
-      <i [data-feather]="'rating' | iconName"></i>
-    </button>
-  </div>
-
-  <div [@fadeInLeftOnEnter] class="card results" *ngIf="resultsVisible && contestant">
-    <div class="table-responsive beautiful-table">
-      <table class="table">
-        <thead>
-        <tr>
-          <th class="text-white">#</th>
-          <th><i class="text-white ml-1" data-feather="user"></i></th>
-          <th class="text-center"><i class="text-white" [data-feather]="'rating' | iconName"></i></th>
-          <th class="text-center text-white" container="body" [ngbTooltip]="contestProblem.problem.title"
-              *ngFor="let contestProblem of contestProblems">
-            <a [routerLink]="['..', contestProblem.symbol]" class="btn btn-primary btn-sm">
-              {{ contestProblem.symbol }}
-            </a>
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>
-            {{ contestant.rank }}
-          </td>
-          <td>
-            <contestant-view [user]="contestant"></contestant-view>
-          </td>
-          <td class="text-center">
-            <span class="badge badge-glow badge-primary">
-              {{ contestant.points }}
-            </span>
-          </td>
-          <td *ngFor="let contestProblem of contestProblems" class="text-center">
-            <ng-template #selfie [ngTemplateOutlet]="selfie" let-problemInfo="aVariable"
-                         [ngTemplateOutletContext]="{ aVariable: getProblemInfoBySymbol(contestant.problemsInfo, contestProblem.symbol) }">
-              <div>
-                <div *ngIf="problemInfo">
-                  <div [innerHTML]="problemInfo.getHTML(contest)"></div>
-                </div>
-              </div>
-            </ng-template>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      @if (resultsVisible && contestant) {
+        <div [@fadeInLeftOnEnter] class="card results">
+          <div class="table-responsive beautiful-table">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th class="text-white">#</th>
+                  <th><i class="text-white ms-1" data-feather="user"></i></th>
+                  <th class="text-center"><i class="text-white" [data-feather]="'rating' | iconName"></i></th>
+                  @for (contestProblem of contestProblems; track contestProblem) {
+                    <th class="text-center text-white" container="body" [ngbTooltip]="contestProblem.problem.title"
+                      >
+                      <a [routerLink]="['..', contestProblem.symbol]" class="btn btn-primary btn-sm">
+                        {{ contestProblem.symbol }}
+                      </a>
+                    </th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    {{ contestant.rank }}
+                  </td>
+                  <td>
+                    <contestant-view [user]="contestant"></contestant-view>
+                  </td>
+                  <td class="text-center">
+                    <span class="badge badge-glow bg-primary">
+                      {{ contestant.points }}
+                    </span>
+                  </td>
+                  @for (contestProblem of contestProblems; track contestProblem) {
+                    <td class="text-center">
+                      <ng-template #selfie [ngTemplateOutlet]="selfie" let-problemInfo="aVariable"
+                        [ngTemplateOutletContext]="{ aVariable: getProblemInfoBySymbol(contestant.problemsInfo, contestProblem.symbol) }">
+                        <div>
+                          @if (problemInfo) {
+                            <div>
+                              <div [innerHTML]="problemInfo.getHTML(contest)"></div>
+                            </div>
+                          }
+                        </div>
+                      </ng-template>
+                    </td>
+                  }
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
     </div>
-  </div>
-</div>

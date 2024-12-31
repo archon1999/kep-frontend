@@ -1,0 +1,22 @@
+@for (part of lecture.parts; track part) {
+  <div>
+    @if (part.type == 1) {
+      <mathjax class="text-dark" [content]="part.text"></mathjax>
+    }
+    @if (part.type == 2) {
+      <div class="position-relative">
+        <pre class="mt-1"><code [lineNumbers]="true" [languages]="['python', 'cpp']" [highlight]="part.sourceCode"></code></pre>
+
+        <div class="position-absolute position-right-0 position-top-0">
+          <clipboard-button [text]="part.sourceCode"></clipboard-button>
+        </div>
+      </div>
+    }
+  </div>
+}
+
+@if (lecture.sourceCode.length > 0) {
+  <code-editor-modal
+    [uniqueName]="lecture.title"
+    [availableLanguages]="availableLanguages"/>
+}

@@ -1,0 +1,89 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <!-- content-header component -->
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <section class="mt-2">
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-6">
+          <lesson-sidebar [courseLessons]="courseLessons" [course]="course"></lesson-sidebar>
+        </div>
+        <div class="col-lg-9 col-md-8 col-sm-6">
+          <div class="layout-spacing">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title">
+                  <kep-icon color="primary" name="challenge" type="duotone"/>
+                  {{ 'COURSES.TRAINING' | translate }}
+                </h5>
+              </div>
+              <div class="card-footer">
+                @if (questionType == 1) {
+                  <div>
+                    <h5 [innerHTML]="questionBody">
+                    </h5>
+                    <br>
+                    @for (option of questionOptions;track option;let i = $index) {
+                      <div class="ms-1 mb-1 form-check">
+                        <input type="radio" id="radio-{{ i }}" name="singleRadio" [(ngModel)]="singleRadio"
+                               value="{{ i }}"
+                               class="form-check-input"/>
+                        <label class="form-check-label" for="radio-{{ i }}">{{ option }}</label>
+                      </div>
+                    }
+                  </div>
+                }
+
+                @if (questionType == 4) {
+                  <div>
+                    <div class="row">
+                      <div class="col">
+                        <ul class="list-group" dragula="basic-list-group-1" [(dragulaModel)]="conformityGroupOne"
+                            id="basic-list-group-1">
+                          @for (option of conformityGroupOne;track option) {
+                            <li class="bg-gradient-primary list-group-item draggable"
+                            >
+                              <div class="row justify-content-between">
+                                <div class="ps-1">
+                                  {{ option }}
+                                </div>
+                                <div class="pe-1">
+                                  <i class="text-primary" data-feather="arrow-right"></i>
+                                </div>
+                              </div>
+                            </li>
+                          }
+                        </ul>
+                      </div>
+                      <div class="col">
+                        <ul class="list-group" dragula="basic-list-group-2" [(dragulaModel)]="conformityGroupTwo"
+                            id="basic-list-group-2">
+                          @for (option of conformityGroupTwo;track option) {
+                            <li class="bg-gradient-primary list-group-item draggable"
+                            >
+                              <i class="text-white" data-feather="arrow-left"></i>
+                              <span [innerHTML]="option"></span>
+                            </li>
+                          }
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                }
+
+                <button (click)="answerCheck()" class="mb-2 mt-2 btn btn-gradient-primary">
+                  <i data-feather="check"></i> {{ 'COURSES.CHECK' | translate }}
+                </button>
+
+                <br>
+                <span class=""><strong>{{ 'COURSES.SCORE' | translate }}</strong>: {{ score }}/{{ all }}</span>
+                <ngb-progressbar [value]="100*score/all" showValue="true" type="primary"></ngb-progressbar>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

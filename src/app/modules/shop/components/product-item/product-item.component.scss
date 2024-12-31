@@ -1,0 +1,19 @@
+@import 'styles/kep-imports';
+
+product-item {
+  .card, .card-img img {
+    border-radius: 12px;
+  }
+
+  .card-img img {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .badge-color {
+    display: inline-block !important;
+    padding: 1rem;
+    border: 1px solid $secondary;
+    cursor: pointer;
+  }
+}

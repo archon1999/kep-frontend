@@ -7,7 +7,7 @@
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
-      "prefix": "app",
+      "prefix": "",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
@@ -15,10 +15,9 @@
       },
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser-esbuild",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "allowedCommonJsDependencies": [
-              "hammerjs",
               "node-waves",
               "app/main/ui/icons/feather/feather.component",
               "@angularclass/hmr",
@@ -27,7 +26,6 @@
               "uuid",
               "nouislider",
               "dragula",
-              "apexcharts",
               "chart.js",
               "contra/emitter",
               "crossvent",
@@ -39,10 +37,13 @@
               "sweetalert2",
               "bs-stepper"
             ],
-            "outputPath": "../server/static/frontend",
+            "outputPath": {
+              "base": "./dist"
+            },
             "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
+            "polyfills": [
+              "src/polyfills.ts"
+            ],
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
@@ -55,15 +56,14 @@
               "src/styles.scss"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["node_modules", "src/assets/", "src/core", "src/app"]
+              "includePaths": ["node_modules", "src/assets/", "src/@core", "src/app"]
             },
             "scripts": [],
-            "vendorChunk": true,
             "extractLicenses": false,
-            "buildOptimizer": true,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "browser": "src/main.ts"
           },
           "configurations": {
             "production": {
@@ -80,11 +80,9 @@
                 "fonts": true
               },
               "outputHashing": "all",
-              "sourceMap": true,
-              "namedChunks": true,
+              "sourceMap": false,
+              "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -98,13 +96,11 @@
               ]
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": {
                 "scripts": false,
                 "styles": false,
                 "fonts": false
               },
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
@@ -155,7 +151,6 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": ["src/styles.scss"],
-            "scripts": ["node_modules/apexcharts/dist/apexcharts.min.js"],
             "assets": ["src/favicon.ico", "src/assets"],
             "stylePreprocessorOptions": {
               "includePaths": ["node_modules", "src/assets/"]

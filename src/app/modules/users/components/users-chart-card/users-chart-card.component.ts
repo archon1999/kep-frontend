@@ -81,6 +81,14 @@ export class UsersChartCardComponent implements OnInit {
           show: false
         }
       },
+      yaxis: {
+        labels: {
+          show: false,
+          formatter(val: number): string {
+            return val.toFixed(0);
+          }
+        }
+      },
       series: [
         {
           name: '',

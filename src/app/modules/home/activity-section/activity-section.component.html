@@ -1,81 +1,80 @@
-<h3 class="mb-2 font-weight-bolder">{{ 'Activity' | translate }} </h3>
+@if (statistics) {
+  <div [@fadeInOnEnter] class="card">
+    <div class="card-header">
+      <div class="card-title">
+        {{ 'Activity' | translate }}
+        ({{ statistics.date | localizedDate:'mediumDate' }})
+      </div>
+    </div>
 
-<div [@fadeInOnEnter] class="card card-activity bg-gradient-primary" *ngIf="statistics">
-  <div class="card-header">
-    <div class="card-title">
-      {{ statistics.date | localizedDate:'mediumDate' }}
+    <div class="card-body">
+      <div class="statistics-info">
+        @if (statistics.dailyActivity) {
+          <span class="badge bg-success badge-glow">
+            <kep-icon class="font-small-2" name="check-circle"></kep-icon>
+          </span>
+        } @else {
+          <span class="badge bg-danger badge-glow">
+            <kep-icon class="font-small-2" name="minus-circle"></kep-icon>
+          </span>
+        }
+        <div class="title">
+          {{ 'DailyActivity' | translate }}
+        </div>
+      </div>
+      <div class="statistics-info">
+        <span class="badge bg-primary badge-glow">
+          <kep-icon class="font-small-2" name="attempt"></kep-icon>
+        </span>
+        <div class="title">
+          {{ 'Attempts' | translate }}:
+        </div>
+        <span class="font-medium-1">{{ statistics.attempts }}</span>
+      </div>
+      <div class="statistics-info">
+        <span class="badge bg-primary badge-glow">
+          <kep-icon class="font-small-2" name="problem"></kep-icon>
+        </span>
+        <div class="title">
+          {{ 'Problems' | translate }}:
+        </div>
+        <span class="font-medium-1">{{ statistics.problems }}</span>
+      </div>
+      <div class="statistics-info">
+        <span class="badge bg-primary badge-glow">
+          <kep-icon class="font-small-2" name="challenge"></kep-icon>
+        </span>
+        <div class="title">
+          {{ 'Challenges' | translate }}:
+        </div>
+        <div class="font-medium-1">
+          <span class="text-success font-medium-2" ngbTooltip="{{ 'Wins' | translate }}">W</span>
+          {{ statistics.challenges.wins }}
+          <span class="ms-50 text-warning font-medium-2" ngbTooltip="{{ 'Draws' | translate }}">D</span>
+          {{ statistics.challenges.draws }}
+          <span class="ms-50 text-danger font-medium-2" ngbTooltip="{{ 'Losses' | translate }}">L</span>
+          {{ statistics.challenges.losses }}
+        </div>
+      </div>
+      <div class="statistics-info">
+        <span class="badge bg-success badge-glow">
+          <kep-icon class="font-small-2" name="test"></kep-icon>
+        </span>
+        <div class="title">
+          {{ 'Tests' | translate }}:
+        </div>
+        <span class="font-medium-1">{{ statistics.tests }}</span>
+      </div>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+      <button (click)="loadStatistics(fromNow+1);" class="btn btn-sm btn-relief-primary round">
+        <i data-feather="arrow-left"></i>
+      </button>
+      @if (fromNow > 0) {
+        <button (click)="loadStatistics(fromNow-1);" class="btn btn-sm btn-relief-primary round">
+          <i data-feather="arrow-right"></i>
+        </button>
+      }
     </div>
   </div>
-
-  <div class="card-body">
-    <div class="statistics-info">
-      <span *ngIf="statistics.dailyActivity" class="badge badge-success badge-glow">
-        <kep-icon class="font-small-2" name="check-circle"></kep-icon>
-      </span>
-      <span *ngIf="!statistics.dailyActivity" class="badge badge-danger badge-glow">
-        <kep-icon class="font-small-2" name="minus-circle"></kep-icon>
-      </span>
-      <div class="title">
-        {{ 'DailyActivity' | translate }}
-      </div>
-    </div>
-
-    <div class="statistics-info">
-      <span class="badge badge-primary badge-glow">
-        <kep-icon class="font-small-2" name="attempt"></kep-icon>
-      </span>
-      <div class="title">
-        {{ 'Attempts' | translate }}:
-      </div>
-      <strong class="font-medium-1">{{ statistics.attempts }}</strong>
-    </div>
-
-    <div class="statistics-info">
-      <span class="badge badge-primary badge-glow">
-        <kep-icon class="font-small-2" name="problem"></kep-icon>
-      </span>
-      <div class="title">
-        {{ 'Problems' | translate }}:
-      </div>
-      <strong class="font-medium-1">{{ statistics.problems }}</strong>
-    </div>
-
-    <div class="statistics-info">
-      <span class="badge badge-primary badge-glow">
-        <kep-icon class="font-small-2" name="challenge"></kep-icon>
-      </span>
-      <div class="title">
-        {{ 'Challenges' | translate }}:
-      </div>
-      <div class="font-medium-1">
-        <span class="text-success font-medium-2" ngbTooltip="{{ 'Wins' | translate }}">W</span>
-        {{ statistics.challenges.wins }}
-
-        <span class="ml-50 text-warning font-medium-2" ngbTooltip="{{ 'Draws' | translate }}">D</span>
-        {{ statistics.challenges.draws }}
-        
-        <span class="ml-50 text-danger font-medium-2" ngbTooltip="{{ 'Losses' | translate }}">L</span>
-        {{ statistics.challenges.losses }}
-      </div>
-    </div>
-
-    <div class="statistics-info">
-      <span class="badge badge-success badge-glow">
-        <kep-icon class="font-small-2" name="test"></kep-icon>
-      </span>
-      <div class="title">
-        {{ 'Tests' | translate }}:
-      </div>
-      <strong class="font-medium-1">{{ statistics.tests }}</strong>
-    </div>
-  </div>
-
-  <div class="card-footer d-flex justify-content-between">
-    <button (click)="loadStatistics(fromNow+1);" class="btn btn-sm btn-relief-primary round">
-      <i data-feather="arrow-left"></i>
-    </button>
-    <button *ngIf="fromNow > 0" (click)="loadStatistics(fromNow-1);" class="btn btn-sm btn-relief-primary round">
-      <i data-feather="arrow-right"></i>
-    </button>
-  </div>
-</div>
+}

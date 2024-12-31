@@ -1,38 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component } from '@angular/core';
 import { Team } from '../../users/users.models';
 import { AccountSettingsService } from '../account-settings.service';
+import { BaseLoadComponent } from '@app/common';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'teams',
   templateUrl: './teams.component.html',
   styleUrls: ['./teams.component.scss']
 })
-export class TeamsComponent implements OnInit {
-
-  public teams: Array<Team> = [];
+export class TeamsComponent extends BaseLoadComponent<Array<Team>> {
+  public teamName = '';
 
   constructor(
     public service: AccountSettingsService,
-    public route: ActivatedRoute,
-  ) { }
-
-  ngOnInit(): void {
-    this.route.data.subscribe(({ userTeams }) => {
-      this.teams = userTeams;
-    })
+  ) {
+    super();
   }
 
-  leaveTeam(teamIndex: number){
-
+  get teams() {
+    return this.data;
   }
 
-  kickMember(teamIndex: number, memberUsername: string){
-
+  getData(): Observable<Array<Team>> {
+    return this.service.getUserTeams();
   }
 
-  createTeam(teamName: string){
-
+  createTeam() {
+    this.service.createTeam(this.teamName).subscribe(
+      () => {
+        this.loadData();
+      }
+    );
   }
-
 }

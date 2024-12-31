@@ -8,41 +8,45 @@
   }"
   [ngbTooltip]="achievement.description">
   <div class="achievement-icon">
-    <div *ngIf="achievement.type == 1" class="avatar p-50 bg-primary badge-glow">
-      <div class="avatar-content">
-        <i [data-feather]="'problem' | iconName" [size]="20"></i>
+    @if (achievement.type == 1) {
+      <div class="avatar p-50 bg-primary badge-glow">
+        <div class="avatar-content">
+          <i [data-feather]="'problem' | iconName" [size]="20"></i>
+        </div>
+        <div class="achievement-pill badge badge-pill bg-primary">
+          {{ achievement.totalProgress }}
+        </div>
       </div>
-  
-      <div class="achievement-pill badge badge-pill badge-primary">
-        {{ achievement.totalProgress }}
-      </div>
-    </div>
-    
-    <div style="position:relative;" *ngIf="achievement.type == 2">
-      <img height="36" src="assets/images/icons/fire_red.png" alt="streak">
+    }
 
-      <div class="achievement-pill badge badge-pill badge-danger">
-        {{ achievement.totalProgress }}
+    @if (achievement.type == 2) {
+      <div style="position:relative;">
+        <img height="36" src="assets/images/icons/fire_red.png" alt="streak">
+        <div class="achievement-pill badge badge-pill bg-danger">
+          {{ achievement.totalProgress }}
+        </div>
       </div>
-    </div>
+    }
 
-    <div *ngIf="achievement.type == 4" class="avatar p-50 bg-warning badge-glow">
-      <img height="36" src="assets/images/icons/versus.png" alt="vs">
+    @if (achievement.type == 4) {
+      <div class="avatar p-50 bg-warning badge-glow">
+        <img height="36" src="assets/images/icons/versus.png" alt="vs">
+        <div class="achievement-pill badge badge-pill bg-warning">
+          {{ achievement.totalProgress }}
+        </div>
+      </div>
+    }
 
-      <div class="achievement-pill badge badge-pill badge-warning">
-        {{ achievement.totalProgress }}
+    @if (achievement.type == 5) {
+      <div class="avatar p-50 bg-dark badge-glow">
+        <div class="avatar-content">
+          <i [data-feather]="'flag'" [size]="20"></i>
+        </div>
+        <div class="achievement-pill badge badge-pill bg-dark">
+          {{ achievement.totalProgress }}
+        </div>
       </div>
-    </div>
-
-    <div *ngIf="achievement.type == 5" class="avatar p-50 bg-dark badge-glow">
-      <div class="avatar-content">
-        <i [data-feather]="'flag'" [size]="20"></i>
-      </div>
-  
-      <div class="achievement-pill badge badge-pill badge-dark">
-        {{ achievement.totalProgress }}
-      </div>
-    </div>
+    }
   </div>
 
   <div class="achievement-title text-center">

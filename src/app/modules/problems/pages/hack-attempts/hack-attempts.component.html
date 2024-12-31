@@ -5,29 +5,31 @@
     <section class="mt-2">
       <div class="row">
         <div class="col-12 attempts-table">
-          <div class="form-group">
-            <div class="custom-control custom-checkbox" *ngIf="currentUser">
-              <input
-                type="checkbox"
-                class="custom-control-input"
-                [(ngModel)]="myAttempts"
-                (change)="_reloader.next(null)"
-                [ngModelOptions]="{standalone: true}" id="myAttempts" />
-              <label class="custom-control-label" for="myAttempts">{{ 'MY_ATTEMPTS' | translate }}</label>
+          <div class="mb-1">
+            @if (currentUser) {
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  [(ngModel)]="myAttempts"
+                  (change)="_reloader.next(null)"
+                  [ngModelOptions]="{standalone: true}" id="myAttempts" />
+                  <label class="form-check-label" for="myAttempts">{{ 'MY_ATTEMPTS' | translate }}</label>
+                </div>
+              }
             </div>
+
+            <hack-attempts-table [hackAttempts]="hackAttempts"></hack-attempts-table>
+
+            <kep-pagination
+              [collectionSize]="totalAttemptsCount"
+              [(page)]="currentPage"
+              [pageSize]="20"
+              [maxSize]="7"
+              (pageChange)="_reloader.next(null)"
+            ></kep-pagination>
           </div>
-
-          <hack-attempts-table [hackAttempts]="hackAttempts"></hack-attempts-table>
-
-          <kep-pagination
-            [collectionSize]="totalAttemptsCount"
-            [(page)]="currentPage"
-            [pageSize]="20"
-            [maxSize]="7"
-            (pageChange)="_reloader.next(null)"
-          ></kep-pagination>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   </div>
-</div>

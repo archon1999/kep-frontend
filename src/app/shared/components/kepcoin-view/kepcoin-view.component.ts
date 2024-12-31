@@ -9,7 +9,7 @@ export class KepcoinViewComponent implements OnInit {
 
   @Input() value: number;
   @Input() imgSize = 19;
-  @Input() customClass = 'ml-1 mr-1 text-black';
+  @Input() customClass = 'ms-1 me-1 text-black';
   @Input() fontSize = 14;
 
   constructor() { }

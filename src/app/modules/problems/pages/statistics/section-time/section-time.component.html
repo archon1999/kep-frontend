@@ -6,12 +6,13 @@
           {{ 'ByWeekday' | translate }}
         </div>
       </div>
-    
+
       <div class="card-body">
-        <apex-chart
-          *ngIf="byWeekdayChart"
-          [options]="byWeekdayChart"
-        ></apex-chart>
+        @if (byWeekdayChart) {
+          <apex-chart
+            [options]="byWeekdayChart"
+          ></apex-chart>
+        }
       </div>
     </div>
   </div>
@@ -23,12 +24,13 @@
           {{ 'ByMonth' | translate }}
         </div>
       </div>
-    
+
       <div class="card-body">
-        <apex-chart
-          *ngIf="byMonthChart"
-          [options]="byMonthChart"
-        ></apex-chart>
+        @if (byMonthChart) {
+          <apex-chart
+            [options]="byMonthChart"
+          ></apex-chart>
+        }
       </div>
     </div>
   </div>
@@ -40,12 +42,13 @@
           {{ 'ByPeriod' | translate }}
         </div>
       </div>
-    
+
       <div class="card-body">
-        <apex-chart
-          *ngIf="byPeriodChart"
-          [options]="byPeriodChart"
-        ></apex-chart>
+        @if (byPeriodChart) {
+          <apex-chart
+            [options]="byPeriodChart"
+          ></apex-chart>
+        }
       </div>
     </div>
 

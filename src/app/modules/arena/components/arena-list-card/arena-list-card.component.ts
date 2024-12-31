@@ -6,6 +6,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { CoreCommonModule } from '@core/common.module';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import { NewFeatureDirective } from '@shared/directives/new-feature.directive';
 
 @Component({
   selector: 'arena-list-card',
@@ -18,6 +19,7 @@ import { ChallengesUserViewComponent } from '@challenges/components/challenges-u
     NgbTooltipModule,
     ChallengesUserViewComponent,
     KepIconComponent,
+    NewFeatureDirective,
   ]
 })
 export class ArenaListCardComponent implements OnInit {

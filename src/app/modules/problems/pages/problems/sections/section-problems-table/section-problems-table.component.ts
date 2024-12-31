@@ -8,15 +8,16 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
 import { ProblemDifficultyColorPipe } from '@problems/pipes/problem-difficulty-color.pipe';
-import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
+import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { Observable } from 'rxjs';
-import { PageResult } from '@shared/components/classes/page-result';
+import { PageResult } from '@app/common/classes/page-result';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
+import { deepCopy } from '@shared/utils';
 
 @Component({
   selector: 'section-problems-table',
@@ -74,7 +75,12 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
         });
       }
     );
-    this.filterService.updateFilter(this.route.snapshot.queryParams);
+    const queryParams = deepCopy(this.route.snapshot.queryParams);
+    if (queryParams.tags && !(queryParams instanceof Array)) {
+      queryParams.tags = [queryParams.tags];
+    }
+
+    this.filterService.updateFilter(queryParams, false);
     setTimeout(() => this.reloadPage());
   }
 

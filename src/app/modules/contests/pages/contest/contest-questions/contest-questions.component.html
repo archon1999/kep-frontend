@@ -1,79 +1,73 @@
 <div class="content-wrapper container-xxl p-0">
   <div class="content-body">
-    <!-- content-header component -->
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
-    <section class="mt-2">
-      <div class="row">
-        <div [@fadeInLeftOnEnter] class="col-lg-9 col-md-12 col-sm-12 order-2 order-lg-1">
-          <div class="layout-spacing">
-            <div class="card">
-              <div class="card-header">
-                <contest-tab [contest]="contest"></contest-tab>
-                <hr>
+    <div class="row">
+      <div [@fadeInLeftOnEnter]="" class="col-lg-9 col-md-12 col-sm-12 order-2 order-lg-1">
+        <div class="card {{ contest | contestClasses }}">
+          <div class="card-header p-1">
+            <contest-tab [contest]="contest"></contest-tab>
+          </div>
+
+          <div class="card-footer">
+            <h4 *ngIf="contest.status != ContestStatus.FINISHED" class="mb-2">{{ 'ContestQuestionsText' | translate }}</h4>
+            @if (isLoading){
+              <spinner [height]="'200px'"/>
+            } @else if (questions.length == 0){
+              <empty-result text=""/>
+            } @else {
+              <div class="questions">
+                @for (question of questions;track question) {
+                  <contest-question-card [contest]="contest" [question]="question"></contest-question-card>
+                }
               </div>
-              <div class="card-body">
-                <h3 class="text-center mb-2">{{ contest?.title }}</h3>
-
-                <h5 class="mb-2">{{ 'ContestQuestionsText' | translate }}</h5>
-
-                <h4 *ngIf="questions.length > 0" class="mt-2 mb-2">{{ 'Questions' | translate }}</h4>
-
-                <div class="questions">
-                  @for (question of questions; track question){
-                    <contest-question-card [contest]="contest" [question]="question"></contest-question-card>
-                  }
-                </div>
-              </div>
-              <div class="card-footer" *ngIf="contest.userInfo.isRegistered && contest.status == 0">
-                <h4 class="mb-2">{{ 'AskQuestion' | translate }}</h4>
-                <div class="row">
-                  <div class="col-lg-6 col-md-8 col-sm-12">
-                    <label class="text-primary">
-                      <strong>
-                        {{ 'PROBLEM' | translate }}:
-                      </strong>
-                    </label>
-                    <div class="form-group">
-                      <ng-select [(ngModel)]="selectedProblem" [ngModelOptions]="{standalone: true}">
-                        <ng-option [value]="contestProblem.symbol" *ngFor="let contestProblem of contestProblems">
+            }
+          </div>
+          @if (contest.userInfo.isRegistered && contest.status == 0) {
+            <div class="card-footer">
+              <h4 class="mb-2">{{ 'AskQuestion' | translate }}</h4>
+              <div class="row">
+                <div class="col-lg-6 col-md-8 col-sm-12">
+                  <label class="text-primary">
+                    <strong>
+                      {{ 'PROBLEM' | translate }}:
+                    </strong>
+                  </label>
+                  <div class="mb-1">
+                    <ng-select appendTo="body" [(ngModel)]="selectedProblem" [ngModelOptions]="{standalone: true}">
+                      @for (contestProblem of contestProblems;track contestProblem) {
+                        <ng-option [value]="contestProblem.symbol">
                           {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
                         </ng-option>
-                      </ng-select>
-                    </div>
+                      }
+                    </ng-select>
                   </div>
                 </div>
-
-                <div class="row">
-                  <div class="col-lg-6 col-md-8 col-sm-12">
-                    <label class="text-primary">
-                      <strong>
-                        {{ 'Question' | translate }}:
-                      </strong>
-                    </label>
-                    <div class="form-group">
-                      <textarea class="form-control" [(ngModel)]="question" cols="30" rows="5"></textarea>
-                    </div>
-                  </div>
-                </div>
-
-                <button (click)="submit()" class="btn btn-relief-primary btn-sm">
-                  {{ 'Submit' | translate }}
-                </button>
               </div>
+              <div class="row">
+                <div class="col-lg-6 col-md-8 col-sm-12">
+                  <label class="text-primary">
+                    <strong>
+                      {{ 'Question' | translate }}:
+                    </strong>
+                  </label>
+                  <div class="mb-1">
+                    <textarea class="form-control" [(ngModel)]="question" cols="30" rows="5"></textarea>
+                  </div>
+                </div>
+              </div>
+              <button (click)="submit()" class="btn btn-relief-primary btn-sm">
+                {{ 'Submit' | translate }}
+              </button>
             </div>
-          </div>
-
+          }
         </div>
-
-        <div [@fadeInRightOnEnter] class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">
-          <div class="layout-spacing" *ngIf="contest">
-            <contest-card-countdown [contest]="contest"></contest-card-countdown>
-          </div>
-        </div>
-
       </div>
-    </section>
+
+      <div [@fadeInRightOnEnter]="" class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">
+        <contest-card-countdown *ngIf="contest" [contest]="contest"></contest-card-countdown>
+      </div>
+    </div>
   </div>
 </div>
 

@@ -67,34 +67,41 @@
         <td class="text-dark">{{ problem.id }}</td>
         <td>
           <a [routerLink]="Resources.Problem | resourceById : problem.id">
-            <div class="font-weight-bold">
+            <div class="fw-bold">
               {{ problem.title }}
             </div>
 
-            <span *ngIf="problem.hasSolution" class="badge mt-50 badge-pill badge-light-success">
-              <i [data-feather]="'exists' | iconName" class="text-success" [size]="'16px'"></i>
-              {{ 'Solution' | translate }}
-            </span>
+            @if (problem.hasSolution) {
+              <span class="badge mt-50 badge-pill bg-light-success">
+                <i [data-feather]="'exists' | iconName" class="text-success" [size]="'16px'"></i>
+                {{ 'Solution' | translate }}
+              </span>
+            }
 
-            <span *ngIf="!problem.hasChecker" class="badge mt-50 badge-pill badge-light-danger">
-              <i [data-feather]="'not_exists' | iconName" class="text-danger" [size]="'16px'"></i>
-              {{ 'Checker' | translate }}
-            </span>
+            @if (!problem.hasChecker) {
+              <span class="badge mt-50 badge-pill bg-light-danger">
+                <i [data-feather]="'not_exists' | iconName" class="text-danger" [size]="'16px'"></i>
+                {{ 'Checker' | translate }}
+              </span>
+            }
 
-            <span *ngIf="problem.hidden" class="badge mt-50 badge-pill badge-light-warning">
-              <i [data-feather]="'eye-off'" class="text-warning" [size]="'16px'"></i>
-              {{ 'Hidden' | translate }}
-            </span>
+            @if (problem.hidden) {
+              <span class="badge mt-50 badge-pill bg-light-warning">
+                <i [data-feather]="'eye-off'" class="text-warning" [size]="'16px'"></i>
+                {{ 'Hidden' | translate }}
+              </span>
+            }
           </a>
         </td>
 
         <td>
-          <button
-            class="btn btn-primary round btn-sm font-small-2"
-            *ngFor="let tag of problem.tags"
-            (click)="tagOnClick(tag.id)">
-            {{ tag.name }}
-          </button>
+          @for (tag of problem.tags; track tag) {
+            <button
+              class="btn btn-primary round btn-sm font-small-2"
+              (click)="tagOnClick(tag.id)">
+              {{ tag.name }}
+            </button>
+          }
         </td>
 
         <td class="text-center">
@@ -125,19 +132,20 @@
 
   <ng-container pagination>
     <div class="mb-2">
-      <kep-pagination
-        *ngIf="total"
-        [collectionSize]="total"
-        [pageOptions]="pageOptions"
-        [(page)]="pageNumber"
-        [pageSize]="pageSize"
-        [maxSize]="maxSize"
-        [rotate]="true"
-        [boundaryLinks]="false"
-        [ellipses]="true"
-        (pageSizeChange)="pageSizeChange($event)"
-        (pageChange)="pageChange($event)">
-      </kep-pagination>
+      @if (total) {
+        <kep-pagination
+          [collectionSize]="total"
+          [pageOptions]="pageOptions"
+          [(page)]="pageNumber"
+          [pageSize]="pageSize"
+          [maxSize]="maxSize"
+          [rotate]="true"
+          [boundaryLinks]="false"
+          [ellipses]="true"
+          (pageSizeChange)="pageSizeChange($event)"
+          (pageChange)="pageChange($event)">
+        </kep-pagination>
+      }
     </div>
   </ng-container>
 </kep-table>

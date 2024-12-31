@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentChecked, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Problem } from '../../models/problems.models';
 import { Problem1615Component } from '@problems/components/problem-body/problem1615/problem1615.component';
 import { Problem1623Component } from '@problems/components/problem-body/problem1623/problem1623.component';
@@ -36,6 +36,9 @@ import { CoreCommonModule } from '@core/common.module';
 import { Problem1869Component } from '@problems/components/problem-body/problem1869/problem1869.component';
 import Swal from 'sweetalert2';
 import { Problem1905Component } from '@problems/components/problem-body/problem1905/problem1905.component';
+import { Problem1954Component } from '@problems/components/problem-body/problem1954/problem1954.component';
+import { Problem1953Component } from '@problems/components/problem-body/problem1953/problem1953.component';
+import { Problem1966Component } from '@problems/components/problem-body/problem1966/problem1966.component';
 
 @Component({
   selector: 'problem-body',
@@ -78,9 +81,12 @@ import { Problem1905Component } from '@problems/components/problem-body/problem1
     ClipboardModule,
     CoreCommonModule,
     Problem1869Component,
+    Problem1954Component,
+    Problem1953Component,
+    Problem1966Component,
   ]
 })
-export class ProblemBodyComponent implements OnInit, OnDestroy {
+export class ProblemBodyComponent implements OnInit, OnDestroy, AfterContentChecked {
   @Input() problem: Problem;
 
   private _intervalId: any;
@@ -145,6 +151,20 @@ export class ProblemBodyComponent implements OnInit, OnDestroy {
           });
         }
       }, 5000);
+    }
+  }
+
+  ngAfterContentChecked() {
+    const tables = document.querySelectorAll('.problem-description table');
+    for (let i = 0; i < tables.length; i++) {
+      tables[i].classList.add('table', 'table-bordered');
+      tables[i].parentElement.classList.add('table-responsive', 'beautiful-table');
+      const theads = tables[i].getElementsByTagName('thead');
+      for (let j = 0; j < theads.length; j++) {
+        if (!theads[j].getElementsByTagName('tr')[0]?.classList.contains('bg-gradient-primary')) {
+          theads[j].getElementsByTagName('tr')[0]?.classList.add('bg-light-primary');
+        }
+      }
     }
   }
 

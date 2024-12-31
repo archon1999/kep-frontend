@@ -3,22 +3,28 @@
     {{ problem.solved }}
     <i data-feather="user-check"></i>
   </span>
-  
+
   <span ngbTooltip="{{ 'UsersUnsolved' | translate }}" class="text-danger">
     {{ problem.notSolved }}
     <i data-feather="user-x"></i>
   </span>
 </div>
 
-<apex-chart *ngIf="attemptStatisticsChart" [options]="attemptStatisticsChart"></apex-chart>
+@if (attemptStatisticsChart) {
+  <apex-chart [options]="attemptStatisticsChart"></apex-chart>
+}
 
-<div class="mt-2" *ngIf="langStatisticsChart">
-  <apex-chart [options]="langStatisticsChart"></apex-chart>
-</div>
+@if (langStatisticsChart) {
+  <div class="mt-2">
+    <apex-chart [options]="langStatisticsChart"></apex-chart>
+  </div>
+}
 
-<div class="mt-2" *ngIf="attemptsForSolveChart">
-  <h4 class="text-center">
-    {{ 'NumberOfAttemptsForSolve' | translate }}
-  </h4>
-  <apex-chart [options]="attemptsForSolveChart"></apex-chart>
-</div>
+@if (attemptsForSolveChart) {
+  <div class="mt-2">
+    <h4 class="text-center">
+      {{ 'NumberOfAttemptsForSolve' | translate }}
+    </h4>
+    <apex-chart [options]="attemptsForSolveChart"></apex-chart>
+  </div>
+}

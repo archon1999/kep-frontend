@@ -1,0 +1,38 @@
+<project-info-card [project]="project"/>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-title">
+      {{ 'Submit' | translate }}
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="mb-1">
+      <label><strong>{{ 'Technology' | translate }}:</strong></label>
+      <ng-select appendTo="body" [clearable]="false" [(ngModel)]="selectedTechnology">
+        @for (technology of project.availableTechnologies;track technology) {
+          <ng-option [value]="technology.technology">
+            {{ technology.technology }}
+          </ng-option>
+        }
+      </ng-select>
+    </div>
+    <div class="mb-1">
+      <label><strong>{{ 'File' | translate }}:</strong></label>
+      <div class="custom-file">
+        <input (change)="handleFileInput($event.target.files)" accept=".zip" class="form-control" id="customFile"
+               type="file"/>
+        <label class="form-label" for="customFile">
+          {{ this.fileToUpload?.name || 'Max size 1mb' }}
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-center">
+    <button (click)="submit()" class="btn btn-block btn-sm btn-primary">
+      {{ 'Submit' | translate }}
+    </button>
+  </div>
+</div>
+
+<ng-select-css/>

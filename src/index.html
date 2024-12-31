@@ -2,6 +2,13 @@
 <html lang="en">
 
 <head>
+  <!--  {% if problem and problem.og_image %}-->
+  <!--  <meta name="description" content="{{ problem.title_uz }}">-->
+  <!--  <meta name="twitter:card" content="summary_large_image">-->
+  <!--  <meta name="twitter:image" content="{{ problem.og_image.url }}">-->
+  <!--  <meta property="og:image" content="{{ problem.og_image.url }}">-->
+  <!--  {% endif %}-->
+
   <meta charset="utf-8"/>
   <title>KEP.uz</title>
   <base href="/"/>
@@ -16,17 +23,30 @@
 
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
-<!--  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">-->
-<!--  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">-->
-  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@500" rel="stylesheet">
 
-  <style type="text/css">
+  <link as="style" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.14.0/css/flag-icons.min.css" onload="this.onload=null;this.rel='stylesheet'"
+        rel="preload">
+  <noscript>
+    <link href="styles.css" rel="stylesheet">
+  </noscript>
+
+  <style id="toggle-effect-style"></style>
+
+  <style>
+    @font-face {
+      font-family: 'Comfortaa';
+      src: url('assets/fonts/Comfortaa/Comfortaa.ttf') format('opentype');
+      font-display: swap;
+    }
+
     #loading-bg {
       width: 100%;
       height: 100%;
       background: #fff;
-      display: block;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       position: absolute;
       z-index: 99999;
       pointer-events: none;
@@ -37,59 +57,249 @@
       background: #0f1014;
     }
 
-    .loading-logo {
-      position: absolute;
-      left: calc(50% - 45px);
-      top: 40%;
-    }
-
-    .loader {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      display: inline-block;
-      border-top: 4px solid #FFF;
-      border-right: 4px solid transparent;
-      box-sizing: border-box;
-      animation: rotation 1s linear infinite;
-      position: absolute;
-      top: calc(50% - 24px);
-      left: calc(50% - 24px);
-    }
-    .loader::after {
-      content: '';
-      box-sizing: border-box;
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      border-left: 4px solid var(--primary);
-      border-bottom: 4px solid transparent;
-      animation: rotation 0.5s linear infinite reverse;
-    }
-    @keyframes rotation {
+    @-webkit-keyframes animate-svg-fill-1 {
       0% {
-        transform: rotate(0deg);
+        fill: transparent;
       }
+
       100% {
-        transform: rotate(360deg);
+        fill: rgb(73, 73, 222);
       }
     }
 
+    @keyframes animate-svg-fill-1 {
+      0% {
+        fill: transparent;
+      }
+
+      100% {
+        fill: rgb(73, 73, 222);
+      }
+    }
+
+    .svg-elem-1 {
+      -webkit-animation: animate-svg-fill-1 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 0.2s both;
+      animation: animate-svg-fill-1 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 0.2s both;
+    }
+
+    @-webkit-keyframes animate-svg-fill-2 {
+      0% {
+        fill: transparent;
+      }
+
+      100% {
+        fill: rgb(73, 73, 222);
+      }
+    }
+
+    @keyframes animate-svg-fill-2 {
+      0% {
+        fill: transparent;
+      }
+
+      100% {
+        fill: rgb(73, 73, 222);
+      }
+    }
+
+    .svg-elem-2 {
+      -webkit-animation: animate-svg-fill-2 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 0.4s both;
+      animation: animate-svg-fill-2 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 0.4s both;
+    }
+
+    @-webkit-keyframes animate-svg-fill-3 {
+      0% {
+        fill: transparent;
+      }
+
+      100% {
+        fill: rgb(73, 73, 222);
+      }
+    }
+
+    @keyframes animate-svg-fill-3 {
+      0% {
+        fill: transparent;
+      }
+
+      100% {
+        fill: rgb(73, 73, 222);
+      }
+    }
+
+    .svg-elem-3 {
+      -webkit-animation: animate-svg-fill-3 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 0.6s both;
+      animation: animate-svg-fill-3 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 0.6s both;
+    }
+
+    @-webkit-keyframes animate-svg-fill-4 {
+      0% {
+        fill: transparent;
+      }
+
+      100% {
+        fill: rgb(73, 73, 222);
+      }
+    }
+
+    @keyframes animate-svg-fill-4 {
+      0% {
+        fill: transparent;
+      }
+
+      100% {
+        fill: rgb(73, 73, 222);
+      }
+    }
+
+    .svg-elem-4 {
+      -webkit-animation: animate-svg-fill-4 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 0.8s both;
+      animation: animate-svg-fill-4 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 0.8s both;
+    }
+
+    @-webkit-keyframes animate-svg-fill-5 {
+      0% {
+        fill: transparent;
+      }
+
+      100% {
+        fill: rgb(73, 73, 222);
+      }
+    }
+
+    @keyframes animate-svg-fill-5 {
+      0% {
+        fill: transparent;
+      }
+
+      100% {
+        fill: rgb(73, 73, 222);
+      }
+    }
+
+    .svg-elem-5 {
+      -webkit-animation: animate-svg-fill-5 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 1s both;
+      animation: animate-svg-fill-5 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 1s both;
+    }
+
+    @-webkit-keyframes animate-svg-fill-6 {
+      0% {
+        fill: transparent;
+      }
+
+      100% {
+        fill: rgb(73, 73, 222);
+      }
+    }
+
+    @keyframes animate-svg-fill-6 {
+      0% {
+        fill: transparent;
+      }
+
+      100% {
+        fill: rgb(73, 73, 222);
+      }
+    }
+
+    .svg-elem-6 {
+      -webkit-animation: animate-svg-fill-6 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 1.2s both;
+      animation: animate-svg-fill-6 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 1.2s both;
+    }
+
+    @-webkit-keyframes animate-svg-fill-7 {
+      0% {
+        fill: transparent;
+      }
+
+      100% {
+        fill: rgb(77, 21, 21);
+      }
+    }
+
+    @keyframes animate-svg-fill-7 {
+      0% {
+        fill: transparent;
+      }
+
+      100% {
+        fill: rgb(171, 42, 42);
+      }
+    }
+
+    .svg-elem-7 {
+      -webkit-animation: animate-svg-fill-7 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 1.4s both;
+      animation: animate-svg-fill-7 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 1.4s both;
+    }
   </style>
 </head>
 
 <body>
-  <core-loading-screen id="loading-bg">
-    <span class="loader"></span>
-  </core-loading-screen>
+<core-loading-screen id="loading-bg">
+  <svg fill="none" height="128" viewBox="0 0 356 356" width="128" xmlns="http://www.w3.org/2000/svg">
+    <g filter="url(#filter0_b_718_8504)">
+      <g clip-path="url(#clip0_718_8504)">
+        <path
+          class="svg-elem-1"
+          d="M240.67 98.1566L143.085 195.741L107.6 195.741L107.6 160.256L205.184 62.6715L240.67 62.6715L240.67 98.1566Z"
+          fill="#4949DE"></path>
+        <path
+          class="svg-elem-2"
+          d="M196.242 53.8725L36.5584 213.556L18.8159 195.813L18.8159 160.328L160.757 18.3873L196.242 18.3873L196.242 36.1299L196.242 53.8725Z"
+          fill="#4949DE"></path>
+        <path
+          class="svg-elem-3"
+          d="M240.672 62.6713L338.028 160.381L338.028 195.512L302.543 195.512L205.187 99.6505L205.187 62.6713L240.672 62.6713Z"
+          fill="#4949DE"></path>
+        <path
+          class="svg-elem-4"
+          d="M338.257 195.743L276.158 257.842L240.673 257.842L240.673 222.356L302.772 160.257L338.257 160.257L338.257 195.743Z"
+          fill="#4949DE"></path>
+        <path class="svg-elem-5"
+              d="M196.314 142.513L276.156 222.355L276.156 257.84L239.923 257.84L160.829 177.998L196.314 142.513Z"
+              fill="#4949DE"></path>
+        <path
+          class="svg-elem-6"
+          d="M160.828 337.675L18.887 195.735L18.8871 160.25L54.3722 160.25L196.313 302.19L196.313 337.675L160.828 337.675Z"
+          fill="#4949DE"></path>
+      </g>
+    </g>
+    <defs>
+      <filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="597" id="filter0_b_718_8504"
+              width="597" x="-120.5"
+              y="-120.5">
+        <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+        <feGaussianBlur in="BackgroundImageFix" stdDeviation="60.25"></feGaussianBlur>
+        <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_718_8504"></feComposite>
+        <feBlend in="SourceGraphic" in2="effect1_backgroundBlur_718_8504" mode="normal" result="shape"></feBlend>
+      </filter>
+      <clipPath id="clip0_718_8504">
+        <rect class="svg-elem-7" height="356" rx="160" transform="rotate(90 356 0)" width="356" x="356"></rect>
+      </clipPath>
+    </defs>
+  </svg>
+</core-loading-screen>
 
-  <app-root></app-root>
+<app-root></app-root>
 </body>
-  <link
-    href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.14.0/css/flag-icons.min.css"
-    rel="stylesheet"
-  />
+
+<script>
+  try {
+    if (JSON.parse(localStorage.getItem('config') || {})?.layout?.skin === 'dark') {
+      document.body.classList.add('dark-layout');
+    }
+  } catch (e) {
+  }
+</script>
+
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'G-MBQPKFTEWV');
+</script>
 </html>

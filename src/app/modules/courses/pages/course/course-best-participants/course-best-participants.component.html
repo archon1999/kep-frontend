@@ -1,0 +1,71 @@
+<div class="mt-2 content-wrapper container-xl p-0">
+  <div class="content-body">
+    <h1 class="text-dark my-4">{{ 'COURSES.TOP_PARTICIPANTS' | translate }}</h1>
+
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <kep-table>
+          <ng-container header>
+            <tr class="bg-gradient-primary">
+              <th class="text-center text-white">#</th>
+              <th class="text-center text-white">{{ 'COURSES.PARTICIPANT' | translate }}</th>
+              <th class="text-center text-white"><i [data-feather]="'rating' | iconName"></i></th>
+            </tr>
+          </ng-container>
+
+          <ng-container body>
+            @for (participant of topActiveParticipants;track participant;let i = $index) {
+              <tr>
+                <td class="text-dark text-center">{{ i + 1 }}</td>
+                <td class="text-center">
+                  <user-popover
+                    [username]="participant.username"
+                    [placement]="'top-right'"/>
+                </td>
+                <td class="text-center text-primary">
+                  <span class="badge bg-primary">
+                    <span>
+                      {{ participant.progress }}%
+                    </span>
+                  </span>
+                </td>
+              </tr>
+            }
+          </ng-container>
+        </kep-table>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <kep-table>
+          <ng-container header>
+            <tr class="bg-gradient-primary">
+              <th class="text-center text-white">#</th>
+              <th class="text-center text-white">{{ 'COURSES.PARTICIPANT' | translate }}</th>
+              <th class="text-center text-white"><i [data-feather]="'rating' | iconName"></i></th>
+            </tr>
+          </ng-container>
+
+          <ng-container body>
+            @for (participant of topBestParticipants;track participant;let i = $index) {
+              <tr>
+                <td class="text-dark text-center">{{ i + 1 }}</td>
+                <td class="text-center">
+                  <user-popover
+                    [username]="participant.username"
+                    [placement]="'top-right'"/>
+                </td>
+                <td class="text-center text-primary">
+                  <span class="badge bg-primary">
+                    <span>
+                      {{ participant.points }}
+                    </span>
+                  </span>
+                </td>
+              </tr>
+            }
+          </ng-container>
+        </kep-table>
+      </div>
+    </div>
+  </div>
+</div>

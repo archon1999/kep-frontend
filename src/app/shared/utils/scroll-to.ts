@@ -1,3 +1,3 @@
-export function scrollTo(element: HTMLElement) {
-  element.scrollIntoView({ behavior: 'smooth' })
+export function scrollTo(element: Element) {
+  element.scrollIntoView({ behavior: 'smooth' });
 }

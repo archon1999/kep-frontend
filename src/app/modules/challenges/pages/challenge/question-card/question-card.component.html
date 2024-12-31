@@ -1,0 +1,223 @@
+<div class="card">
+  <div class="card-header font-medium-2 justify-content-center text-white p-25 bg-chapter-{{ question.chapter.id }}" style="box-shadow: none !important;">
+    #{{ question.number }}
+  </div>
+
+  <div class="card-body mt-1 pb-0">
+    @if (question.type == QuestionType.SINGLE_ANSWER_CHOICE) {
+      <div (keyup.enter)="checkAnswer()">
+        <div class="font-medium-2 d-flex mb-2 text-dark">
+          <div class="question-body">
+            <mathjax [content]="question.body"/>
+          </div>
+        </div>
+
+        <div class="row">
+          @for (option of question.options;track option;let i = $index) {
+            <div [ngClass]="{
+              'col-4': question.options.length == 3,
+              'col-6': question.options.length != 3
+            }">
+              <div
+                class="card cursor-pointer"
+                (click)="singleRadio=option.id"
+                [class]="singleRadio == option.id ? ('text-white bg-chapter-' + question.chapter.id) : 'text-dark'">
+                <div class="card-body font-medium-4 mb-0 d-flex align-items-center justify-content-center text-center">
+                  {{ option.option }}
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @else if (question.type == QuestionType.MULTI_ANSWER_CHOICE) {
+      <div (keyup.enter)="checkAnswer()">
+        <div class="font-medium-2 d-flex mb-2 text-dark">
+          <div class="question-body">
+            <mathjax [content]="question.body"/>
+          </div>
+        </div>
+
+        @for (option of question.options;track option;let i = $index) {
+          <div class="ms-1 mb-1 custom-control custom-control-primary custom-checkbox">
+            <input
+              type="checkbox"
+              id="check-{{ i }}"
+              [(ngModel)]="option.selected"
+              class="form-check-input"/>
+            <label class="form-check-label" for="check-{{ i }}">{{ option.option }}</label>
+          </div>
+        }
+      </div>
+    }
+
+    @else if (question.type == QuestionType.ANSWER_INPUT) {
+      <div (keyup.enter)="checkAnswer()">
+        <div class="font-medium-2 d-flex mb-2 text-dark">
+          <div class="question-body">
+            <mathjax [content]="question.body"/>
+          </div>
+        </div>
+
+        <input type="text" [(ngModel)]="input" id="input" class="form-control"/>
+      </div>
+    }
+
+    @else if (question.type == QuestionType.CONFORMITY) {
+      <div (keyup.enter)="checkAnswer()">
+        <div class="font-medium-2 d-flex mb-2 text-dark">
+          <div class="question-body">
+            <mathjax [content]="question.body"/>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            <ul
+              class="list-group"
+              id="conformity-group-first"
+              dragula="conformity-group-first"
+              [(dragulaModel)]="conformityGroupFirst">
+              @for (option of conformityGroupFirst; track option) {
+                <li class="list-group-item card draggable mb-50 text-dark" style="cursor: grab;">
+                  <div class="card-body p-1 font-medium-2 mb-0 d-flex align-items-center justify-content-center text-center">
+                    {{ option }}
+                  </div>
+                </li>
+              }
+            </ul>
+          </div>
+
+
+          <div class="col-6">
+            <ul
+              class="list-group"
+              id="conformity-group-second"
+              dragula="conformity-group-second"
+              [(dragulaModel)]="conformityGroupSecond">
+              @for (option of conformityGroupSecond; track option) {
+                <li class="list-group-item card draggable mb-50 text-dark" style="cursor: grab;">
+                  <div class="card-body p-1 font-medium-2 mb-0 d-flex align-items-center justify-content-center text-center">
+                    {{ option }}
+                  </div>
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    }
+
+    @else if (question.type == QuestionType.ORDERING) {
+      <div (keyup.enter)="checkAnswer()">
+        <div class="font-medium-2 d-flex mb-2 text-dark">
+          <div class="question-body">
+            <mathjax [content]="question.body"/>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-12 mx-auto">
+          <ul class="list-group" dragula="basic-list-group-3" [(dragulaModel)]="orderingList" id="basic-list-group-3">
+            @for (option of orderingList;track option) {
+              <li class="bg-gradient-primary list-group-item draggable">
+                <div class="row justify-content-between">
+                  <div class="ps-1">
+                    {{ option }}
+                  </div>
+                  <div class="pe-1">
+                    <i class="text-primary" data-feather="arrow-right"></i>
+                  </div>
+                </div>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    }
+
+    @else if (question.type == QuestionType.CLASSIFICATION) {
+      <div (keyup.enter)="checkAnswer()">
+        <div class="font-medium-2 d-flex mb-2 text-dark">
+          <div class="question-body">
+            <mathjax [content]="question.body"/>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-12 mx-auto">
+          @for (group of classificationGroups;track group;let i = $index) {
+            <div>
+              <li class="list-group-item">
+                {{ group.key }}
+              </li>
+              <ul class="list-group" dragula="basic-list-group-3" [(dragulaModel)]="group.values"
+                  id="basic-list-group-{{i}}">
+                @for (option of group.values;track option) {
+                  <li class="bg-gradient-primary list-group-item draggable">
+                    <div class="row justify-content-between">
+                      <div class="ps-1">
+                        {{ option }}
+                      </div>
+                      <div class="pe-1">
+                        <i class="text-primary" data-feather="arrow-right"></i>
+                      </div>
+                    </div>
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @else if (question.type == QuestionType.CUSTOM_CHECK) {
+      <div class="font-medium-2 d-flex mb-2 text-dark">
+        <div class="question-body">
+          <mathjax [content]="question.body"/>
+        </div>
+      </div>
+
+      <div style="height: 250px;">
+        <monaco-editor
+          [lang]="AttemptLangs.PYTHON"
+          [(ngModel)]="input"
+          [ngModelOptions]="{standalone: true}"
+          class="mt-1">
+        </monaco-editor>
+      </div>
+    }
+
+    @else if (question.type == QuestionType.PROBLEM) {
+      <problem-body [problem]="question.problem"/>
+
+      <ng-select appendTo="body" [formControl]="langControl">
+        @for (availableLanguage of question.problem.availableLanguages; track availableLanguage) {
+          <ng-option [value]="availableLanguage.lang">{{ availableLanguage.langFull }}</ng-option>
+        }
+      </ng-select>
+
+      <div class="mt-2" style="height: 400px;">
+        <monaco-editor
+          [lang]="langControl.value"
+          [(ngModel)]="input"
+          [ngModelOptions]="{standalone: true}">
+        </monaco-editor>
+      </div>
+    }
+  </div>
+
+  <div class="card-footer">
+    <button
+      (click)="checkAnswer()"
+      class="btn btn-block bg-chapter-{{ question.chapter.id }} text-white"
+      rippleEffect
+      type="submit">
+      <kep-icon name="check-circle" size="small-4" type="duotone"/>
+      {{ 'Check' | translate }}
+    </button>
+  </div>
+</div>
+
+<ng-select-css/>

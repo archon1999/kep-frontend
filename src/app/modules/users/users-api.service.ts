@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
-import { Pageable } from '@shared/components/classes/pageable';
+import { Pageable } from '@app/common/classes/pageable';
 
 @Injectable({
   providedIn: 'root'
@@ -82,6 +82,10 @@ export class UsersApiService {
 
   getCountries() {
     return this.api.get('users/countries');
+  }
+
+  getUserCompetitionPrizes(username: string) {
+    return this.api.get(`users/${ username }/competition-prizes`);
   }
 
 }

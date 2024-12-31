@@ -1,5 +1,5 @@
 import { ChallengeResolver } from '@challenges/challenges.resolver';
-import { AuthGuard } from '@auth/helpers';
+import { AuthGuard } from '@auth';
 import { Routes } from '@angular/router';
 
 export default [
@@ -12,9 +12,6 @@ export default [
     path: 'challenge/:id',
     loadComponent: () => import('./pages/challenge/challenge.component').then(c => c.ChallengeComponent),
     data: { title: 'Challenges.Challenge' },
-    resolve: {
-      challenge: ChallengeResolver,
-    }
   },
   {
     path: 'rating',

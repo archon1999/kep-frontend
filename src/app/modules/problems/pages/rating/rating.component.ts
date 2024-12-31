@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CurrentProblemsRating, ProblemsRating } from '@problems/models/rating.models';
-import { PageResult } from '@shared/components/classes/page-result';
-import { ContentHeader } from 'app/layout/components/content-header/content-header.component';
+import { PageResult } from '@app/common/classes/page-result';
+import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
-import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
+import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { Resources } from '@app/resources';
 import { Observable } from 'rxjs';
 import { difficultyLabels } from '@problems/constants/difficulties.enum';
@@ -14,15 +14,12 @@ import { KepTableComponent } from '@shared/components/kep-table/kep-table.compon
 import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
+import { PeriodRatingsComponent } from '@problems/pages/rating/period-ratings/period-ratings.component';
 
-export interface CurrentRating {
-  period: 'today' | 'week' | 'month';
-  color: string;
-  data: Array<CurrentProblemsRating>;
-}
+
 
 @Component({
-  selector: 'app-rating',
+  selector: 'page-rating',
   templateUrl: './rating.component.html',
   styleUrls: ['./rating.component.scss'],
   standalone: true,
@@ -34,30 +31,14 @@ export interface CurrentRating {
     KepTableComponent,
     TableOrderingModule,
     KepIconComponent,
+    PeriodRatingsComponent,
   ],
 })
 export class RatingComponent extends BaseTablePageComponent<ProblemsRating> implements OnInit {
   override defaultPageSize = 10;
-  override defaultOrdering = '-solved';
+  override pageOptions = [10, 20, 50];
+  override defaultOrdering = '-rating';
   override maxSize = 5;
-
-  public currentRatings: CurrentRating[] = [
-    {
-      period: 'today',
-      color: 'success',
-      data: [],
-    },
-    {
-      period: 'week',
-      color: 'info',
-      data: [],
-    },
-    {
-      period: 'month',
-      color: 'primary',
-      data: [],
-    },
-  ];
 
   protected readonly difficultyLabels = difficultyLabels;
 
@@ -67,20 +48,6 @@ export class RatingComponent extends BaseTablePageComponent<ProblemsRating> impl
 
   get problemsRatingList() {
     return this.pageResult?.data;
-  }
-
-  ngOnInit(): void {
-    this.loadContentHeader();
-    setTimeout(() => this.reloadPage());
-    this.currentRatings.forEach(
-      (rating) => {
-        this.service.getCurrentProblemsRating(rating.period).subscribe(
-          (result: Array<CurrentProblemsRating>) => {
-            rating.data = result;
-          }
-        );
-      }
-    );
   }
 
   getPage(): Observable<PageResult<ProblemsRating>> {

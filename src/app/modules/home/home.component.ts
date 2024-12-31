@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { SoundsService } from '@shared/services/sounds/sounds.service';
-import { CommonModule } from '@angular/common';
+
 import { PostsSectionComponent } from './posts-section/posts-section.component';
 import { BirthdaysSectionComponent } from './birthdays-section/birthdays-section.component';
 import { CalendarSectionComponent } from './calendar-section/calendar-section.component';
@@ -13,6 +13,8 @@ import { HeaderSectionComponent } from './header-section/header-section.componen
 import { ActivitySectionComponent } from './activity-section/activity-section.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { UsersChartCardComponent } from '@users/components/users-chart-card/users-chart-card.component';
+import { LastProblemsSectionComponent } from '@app/modules/home/last-problems-section/last-problems-section.component';
+import { ContestsSectionComponent } from '@app/modules/home/contests-section/contests-section.component';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +22,6 @@ import { UsersChartCardComponent } from '@users/components/users-chart-card/user
   styleUrls: ['./home.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     PostsSectionComponent,
     BirthdaysSectionComponent,
     CalendarSectionComponent,
@@ -33,6 +34,8 @@ import { UsersChartCardComponent } from '@users/components/users-chart-card/user
     ActivitySectionComponent,
     SpinnerComponent,
     UsersChartCardComponent,
+    LastProblemsSectionComponent,
+    ContestsSectionComponent
   ]
 })
 export class HomeComponent implements OnInit {

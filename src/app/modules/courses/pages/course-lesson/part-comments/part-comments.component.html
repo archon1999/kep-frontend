@@ -1,0 +1,84 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">
+      {{ 'COURSES.DISCUSSION' | translate }}
+      <span class="comment-count">({{ comments.length }})</span>
+    </h5>
+
+    <hr>
+
+      @for (comment of comments; track comment) {
+        <div class="d-flex" [ngClass]="{'bg-light-primary': comment.username == currentUser.username}">
+          <img class="rounded" [src]="comment.userAvatar" alt="pic1">
+          <div class="flex-grow-1">
+            <div class="row ps-1">
+              <h4 class="d-flex-heading text-dark"><user-popover [username]="comment.username"></user-popover>,</h4>
+              <p class="meta-time-date ps-1">{{ comment.created }}</p>
+            </div>
+            <h6 class="" [innerHTML]="comment.comment"></h6>
+            <div class="d-flex-notation pb-2">
+              @if (comment.username != currentUser.username) {
+                <button (click)="emojiClick(comment.id, 2)" class="me-1 btn btn-sm round btn-relief-success">
+                  <i data-feather="thumbs-up"></i>
+                  @if (comment.likes > 0) {
+                    <span class="ms-1">{{ comment.likes }}</span>
+                  }
+                </button>
+              }
+              @if (comment.username != currentUser.username) {
+                <button (click)="emojiClick(comment.id, 1)" class="me-1 btn btn-sm round btn-relief-danger">
+                  <i data-feather="thumbs-down"></i>
+                  @if (comment.dislikes > 0) {
+                    <span class="ps-1">{{ comment.dislikes }}</span>
+                  }
+                </button>
+              }
+              @if (currentUser.isSuperuser || comment.username == currentUser.username) {
+                <button (click)="commentDelete(comment.id)" class="btn btn-sm round btn-relief-dark">
+                  <i data-feather="x"></i>
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+      }
+
+      <quill-editor class="full-width" [(ngModel)]="comment">
+        <div quill-editor-toolbar>
+          <span class="ql-formats">
+            <button class="ql-bold" [title]="'Bold'"></button>
+            <button class="ql-italic" [title]="'italic'"></button>
+            <button class="ql-underline" [title]="'underline'"></button>
+          </span>
+          <span class="ql-formats">
+            <select class="ql-align" [title]="'Alignment'">
+              <option selected></option>
+              <option value="center"></option>
+              <option value="right"></option>
+              <option value="justify"></option>
+            </select>
+          </span>
+          <span class="ql-formats">
+            <button class="ql-list" value="ordered" type="button"></button>
+          </span>
+          <span class="ql-formats">
+            <button class="ql-link" value="ordered" type="button"></button>
+            <button class="ql-image" value="ordered" type="button"></button>
+            <button class="ql-video" value="ordered" type="button"></button>
+          </span>
+          <span class="ql-formats">
+            <button class="ql-formula" value="ordered" type="button"></button>
+            <button class="ql-code-block" value="ordered" type="button"></button>
+          </span>
+          <span class="ql-formats">
+            <button class="ql-clean" value="ordered" type="button"></button>
+          </span>
+        </div>
+
+      </quill-editor>
+
+      <button (click)="commentSubmit()" class="mt-2 mb-2 btn btn-relief-primary">
+        {{ 'SUBMIT' | translate }}
+      </button>
+    </div>
+  </div>

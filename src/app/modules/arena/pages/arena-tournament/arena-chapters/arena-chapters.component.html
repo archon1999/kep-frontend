@@ -1,0 +1,20 @@
+<div class="card bg-arena">
+  <div class="card-header d-block text-center">
+    <div class="card-title">
+      <kep-icon name="chapters"/>
+      {{ 'Chapters' | translate }}
+    </div>
+  </div>
+
+  <div class="card-body text-center">
+    @for (chapter of arena.chapters;track chapter) {
+      <img
+        [src]="chapter.icon"
+        height="48"
+        alt="chapter-icon"
+        class="me-50"
+        [ngbTooltip]="chapter.title"
+      >
+    }
+  </div>
+</div>

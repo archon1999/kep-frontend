@@ -1,10 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ApiService } from '@shared/services/api.service';
-import { User } from '@auth/models';
-import { AuthService } from '@auth/service';
-import { Contest, ContestStatus } from '@contests/contests.models';
+import { AuthService, User } from '@auth';
 import { ContestsService } from 'app/modules/contests/contests.service';
 import { Router } from '@angular/router';
 import { CoreCommonModule } from '@core/common.module';
@@ -13,6 +11,14 @@ import { ContestCountdownComponent } from '@contests/components/contest-card/con
 import { Top3ContestantsComponent } from '@contests/components/contest-card/contest-card/top3-contestants/top3-contestants.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
+import { Contest } from '@contests/models/contest';
+import { ContestStatus } from '@contests/constants';
+import { Team } from '@users/users.models';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { TeamViewCardComponent } from '@app/modules/account-settings/teams/team-view-card/team-view-card.component';
+import { getResourceById, Resources } from '@app/resources';
+import { NewFeatureDirective } from '@shared/directives/new-feature.directive';
+import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 
 @Component({
   selector: 'contest-card',
@@ -28,14 +34,20 @@ import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module
     Top3ContestantsComponent,
     SpinnerComponent,
     MathjaxModule,
+    NgSelectModule,
+    TeamViewCardComponent,
+    NewFeatureDirective,
+    ContestClassesPipe,
   ]
 })
 export class ContestCardComponent implements OnInit {
 
   @Input() contest: Contest;
-  public routerLink: string | Array<string | number>;
+  @ViewChild('registrationModal') public registrationModalRef: TemplateRef<any>;
 
-  public top3Contestants: Array<any> = [];
+  public userTeams: Array<Team> = [];
+  public teamId: number;
+  public routerLink: string | Array<string | number>;
 
   public currentUser: User | null;
 
@@ -60,25 +72,47 @@ export class ContestCardComponent implements OnInit {
     );
   }
 
-  openRegistrationModal(content) {
-    if (this.contest.participationType == 1) {
+  openRegistrationModal() {
+    if (this.contest.participationType === 1) {
       this.service.contestRegistration(this.contest.id).subscribe((result: any) => {
         if (result.success) {
           this.contest.userInfo.isRegistered = true;
         }
       });
     } else {
-      this.modalService.open(content, { centered: true });
+      this.service.getUserTeams().subscribe(
+        (teams: Array<Team>) => {
+          if (teams.length === 0) {
+            this.router.navigateByUrl(getResourceById(Resources.SettingsTab, 'teams'));
+          } else {
+            this.userTeams = teams;
+            this.modalService.open(this.registrationModalRef, {
+              size: 'lg',
+            });
+          }
+        }
+      );
     }
   }
 
+  registrationTeam() {
+    this.service.contestRegistration(this.contest.id, this.teamId).subscribe((result: any) => {
+      if (result.success) {
+        this.modalService.dismissAll();
+        this.contest.userInfo.isRegistered = true;
+      }
+    });
+  }
+
   cancelRegistration() {
-    if (this.contest.participationType == 1) {
-      this.api.get(`contests/${ this.contest.id }/cancel-registration/`).subscribe((result: any) => {
-        if (result.success) {
-          this.contest.userInfo.isRegistered = false;
+    if (this.contest.status !== ContestStatus.ALREADY) {
+      this.service.cancelRegistration(this.contest.id).subscribe(
+        (result) => {
+          if (result.success) {
+            this.contest.userInfo.isRegistered = false;
+          }
         }
-      });
+      );
     }
   }
 
@@ -89,9 +123,9 @@ export class ContestCardComponent implements OnInit {
   virtualContestStart() {
     this.service.virtualContestStart(this.contest.id).subscribe(
       () => {
-        this.router.navigate(['/competitions', 'contests', 'contest', this.contest.id]);
+        this.router.navigate([getResourceById(Resources.Contests, this.contest.id)]);
         this.service.getContest(this.contest.id).subscribe(
-          (contest: any) => {
+          (contest: Contest) => {
             this.contest = contest;
           }
         );

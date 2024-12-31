@@ -1,51 +1,52 @@
 <div class="row">
-  <div class="col-lg-6 col-md-6 col-12" *ngFor="let challenge of arenaChallenges">
-    <div class="table-responsive challenge-results mb-1">
-      <table class="table">
-        <tbody>
-        <tr>
-          <td>
-            <challenges-user-view [user]="challenge.playerFirst"></challenges-user-view>
-          </td>
-          <td class="text-right">
+  @for (challenge of arenaChallenges; track challenge) {
+    <div class="col-lg-6 col-md-6 col-12">
+      <div class="table-responsive challenge-results mb-1">
+        <table class="table">
+          <tbody>
+            <tr>
+              <td>
+                <challenges-user-view [user]="challenge.playerFirst"></challenges-user-view>
+              </td>
+              <td class="text-end">
             <span class="badge badge-glow" [ngClass]="{
               'badge-success': challenge.playerFirst.result > challenge.playerSecond.result,
               'badge-danger': challenge.playerFirst.result < challenge.playerSecond.result,
               'badge-secondary': challenge.playerFirst.result == challenge.playerSecond.result
             }">
-              {{ challenge.playerFirst.result }}
-            </span>
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <challenges-user-view [user]="challenge.playerSecond"></challenges-user-view>
-          </td>
-
-          <td class="text-right">
+                  {{ challenge.playerFirst.result }}
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <challenges-user-view [user]="challenge.playerSecond"></challenges-user-view>
+              </td>
+              <td class="text-end">
             <span class="badge badge-glow" [ngClass]="{
               'badge-danger': challenge.playerFirst.result > challenge.playerSecond.result,
               'badge-success': challenge.playerFirst.result < challenge.playerSecond.result,
               'badge-secondary': challenge.playerFirst.result == challenge.playerSecond.result
             }">
-              {{ challenge.playerSecond.result }}
-            </span>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+                  {{ challenge.playerSecond.result }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
+  }
 </div>
 
-<kep-pagination
-  *ngIf="total"
-  [collectionSize]="total"
-  [(page)]="pageNumber"
-  [pageSize]="pageSize"
-  [maxSize]="maxSize"
-  [rotate]="true"
-  [color]="'warning'"
-  (pageChange)="reloadPage()">
-</kep-pagination>
+@if (total) {
+  <kep-pagination
+    [collectionSize]="total"
+    [(page)]="pageNumber"
+    [pageSize]="pageSize"
+    [maxSize]="maxSize"
+    [rotate]="true"
+    [color]="'warning'"
+    (pageChange)="reloadPage()">
+  </kep-pagination>
+}

@@ -1,12 +1,9 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { CoreConfigService } from 'core/services/config.service';
-import { AuthService } from 'app/auth/service';
-import { TranslateService } from '@ngx-translate/core';
-import { ToastrService } from 'ngx-toastr';
+import { BaseComponent } from '@app/common/classes/base.component';
+import { coreConfig } from '@app/app.config';
 
 @Component({
   selector: 'app-auth-login-v2',
@@ -14,31 +11,24 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./auth-login-v2.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class AuthLoginV2Component implements OnInit {
-  //  Public
-  public coreConfig: any;
+export class AuthLoginV2Component extends BaseComponent implements OnInit {
   public loginForm: UntypedFormGroup;
   public loading = false;
   public submitted = false;
   public returnUrl: string;
   public error = '';
   public passwordTextType: boolean;
-
-  private _unsubscribeAll: Subject<any>;
+  public defaultCoreConfig = coreConfig;
 
   constructor(
-    private _coreConfigService: CoreConfigService,
     private _formBuilder: UntypedFormBuilder,
-    private _route: ActivatedRoute,
-    private _router: Router,
-    private authService: AuthService,
-    public translateService: TranslateService,
-    public toastr: ToastrService,
   ) {
+    super();
+    this.returnUrl = this.getLastUrl();
     this._unsubscribeAll = new Subject();
 
     // Configure the layout
-    this._coreConfigService.config = {
+    this.coreConfigService.config = {
       layout: {
         navbar: {
           hidden: true
@@ -59,6 +49,20 @@ export class AuthLoginV2Component implements OnInit {
     return this.loginForm.controls;
   }
 
+  ngOnInit(): void {
+    this.loginForm = this._formBuilder.group({
+      username: ['', [Validators.required]],
+      password: ['', Validators.required]
+    });
+
+    this.returnUrl ||= this.route.snapshot.queryParams['returnUrl'];
+
+    // Subscribe to config changes
+    this.coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
+      this.coreConfig = config;
+    });
+  }
+
   togglePasswordTextType() {
     this.passwordTextType = !this.passwordTextType;
   }
@@ -73,8 +77,8 @@ export class AuthLoginV2Component implements OnInit {
     this.authService.login(this.f.username.value, this.f.password.value).subscribe(
       (user: any) => {
         this.loading = false;
-        this._router.navigate(['/home']);
-        const message = `👋 ${ this.translateService.instant('Welcome') }, ` + user.firstName || user.username + '!';
+        this.router.navigate([this.returnUrl || '/home']);
+        const message = `👋 ${this.translateService.instant('Welcome')}, ` + user.firstName || user.username + '!';
         this.toastr.success(this.translateService.instant('LoginSuccessText'), message, {
           toastClass: 'toast ngx-toastr',
           closeButton: true
@@ -90,23 +94,4 @@ export class AuthLoginV2Component implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    this.loginForm = this._formBuilder.group({
-      username: ['', [Validators.required]],
-      password: ['', Validators.required]
-    });
-
-    this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/';
-
-    // Subscribe to config changes
-    this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
-      this.coreConfig = config;
-    });
-  }
-
-  ngOnDestroy(): void {
-    // Unsubscribe from all subscriptions
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
-  }
 }

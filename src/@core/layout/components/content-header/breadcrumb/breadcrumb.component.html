@@ -1,0 +1,32 @@
+<!-- app-breadcrumb start -->
+<div
+  class="breadcrumb-wrapper d-flex"
+  [ngClass]="{
+    'justify-content-center': breadcrumb.alignment == 'center',
+    'justify-content-end': breadcrumb.alignment == 'right'
+  }"
+  >
+  <ol
+    class="breadcrumb"
+    [ngClass]="{
+      'breadcrumb-slash': breadcrumb.type == 'slash',
+      'breadcrumb-dots': breadcrumb.type == 'dots',
+      'breadcrumb-dashes': breadcrumb.type == 'dashes',
+      'breadcrumb-pipes': breadcrumb.type == 'pipes',
+      'breadcrumb-chevron': breadcrumb.type == 'chevron',
+      'me-1': breadcrumb.alignment == 'right'
+    }"
+    >
+    @for (link of breadcrumb.links; track link) {
+      <li class="breadcrumb-item">
+        @if (link.isLink) {
+          <a routerLink="{{ link.link }}">{{ link.name | translate }}</a>
+        }
+        @if (!link.isLink) {
+          <span>{{ link.name | translate }}</span>
+        }
+      </li>
+    }
+  </ol>
+</div>
+<!-- app-breadcrumb end -->

@@ -1,0 +1,32 @@
+<ul *ngIf="newYearEffects" class="lightrope">
+  @for (_ of [].constructor(lightsCount); track $index){
+    <li></li>
+  }
+</ul>
+
+@defer (when coreConfig.layout.type === 'vertical') {
+  @if (coreConfig.layout.type === 'vertical'){
+    <vertical-layout></vertical-layout>
+  }
+}
+
+@defer (when coreConfig.layout.type === 'horizontal') {
+  @if (coreConfig.layout.type === 'horizontal'){
+    <horizontal-layout></horizontal-layout>
+  }
+}
+
+<!-- FOOTER -->
+<ng-container *ngTemplateOutlet="footer"></ng-container>
+<!--/ FOOTER -->
+
+<!-- FOOTER -->
+<ng-template #footer>
+  @if (!coreConfig.layout.footer.hidden) {
+    <app-footer
+      class="footer"
+      [class]="[coreConfig.layout.footer.background, coreConfig.layout.footer.type]"
+    ></app-footer>
+  }
+</ng-template>
+<!-- / FOOTER -->

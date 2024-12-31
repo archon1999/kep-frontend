@@ -1,152 +1,190 @@
-<div class="table-responsive">
-  <table class="table attempts-table">
-    <thead>
-      <tr class="bg-gradient-primary">
-        <th>ID</th>
-        <th>{{ 'SUBMITTED' | translate }}</th>
-        <th>{{ 'LANG' | translate }}</th>
-        <th>{{ 'USER' | translate }}</th>
-        <th>{{ 'PROBLEM' | translate }}</th>
-        <th>{{ 'VERDICT' | translate }}</th>
-        <th>{{ 'TIME' | translate }}</th>
-        <th>{{ 'MEMORY' | translate }}</th>
-        <th *ngIf="!hideSourceCodeSize">{{ 'SIZE' | translate }}</th>
-        <th *ngIf="currentUser?.isSuperuser"></th>
-      </tr>
-    </thead>
-    <tbody>
+<kep-table tableClass="">
+  <ng-container header>
+    <tr>
+      <th>ID</th>
+      <th>
+        <div class="d-flex align-items-center">
+          <kep-icon type="duotone" size="small-4" name="time"/>
+          {{ 'SUBMITTED' | translate }}
+        </div>
+      </th>
+      <th class="ms-50">
+        <div class="d-flex align-items-center">
+          <kep-icon type="duotone" size="small-4" name="lang"/>
+          {{ 'LANG' | translate }}
+        </div>
+      </th>
+      <th>
+        <div class="d-flex align-items-center">
+          <kep-icon type="duotone" size="small-4" name="username"/>
+          {{ 'USER' | translate }}
+        </div>
+      </th>
+      <th>
+        <div class="d-flex align-items-center">
+          <kep-icon type="duotone" size="small-4" name="problem"/>
+          {{ 'PROBLEM' | translate }}
+        </div>
+      </th>
+      <th>
+        <div class="d-flex align-items-center">
+          <kep-icon type="duotone" size="small-4" name="verdict"/>
+          {{ 'VERDICT' | translate }}
+        </div>
+      </th>
+      <th>
+        <div class="d-flex align-items-center">
+          <kep-icon type="duotone" size="small-4" name="information-2"/>
+          {{ 'TIME' | translate }}/{{ 'MEMORY' | translate }}
+        </div>
+      </th>
+      <th *ngIf="!hideSourceCodeSize">
+        <div class="d-flex align-items-center">
+          <kep-icon type="duotone" size="small-4" name="scroll"/>
+          {{ 'SIZE' | translate }}
+        </div>
+      </th>
+      <th *ngIf="currentUser?.isSuperuser"></th>
+    </tr>
+  </ng-container>
+
+  <ng-container body>
+    @for (attempt of attempts; track attempt.id) {
       <tr
-        *ngFor="let attempt of attempts; index as i; trackBy:identify"
-        [@fadeInOnEnter]  
-        [ngClass]="{'bg-light-primary': attempt?.user?.username == currentUser?.username}">
+        [@fadeInOnEnter]
+        [ngClass]="{'bg-light-primary': attempt.isOwner}">
         <td>
-          <a href="javascript:;" (click)="clicked.emit(attempt.id)" *ngIf="attempt.canView; else other;">
-            <u>
-              {{ attempt.id }}
-            </u>
-          </a>
-          <ng-template #other>
-            <span *ngIf="!currentUser || contest; else elseBlock">{{ attempt.id }}</span>
-            <ng-template #elseBlock>
-              <kepcoin-spend-swal
-                [purchaseUrl]="'attempts/' + attempt.id + '/purchase/'"
-                [value]="attempt.kepcoinValue"
-                (success)="onPurchaseSuccess(attempt)">
-              </kepcoin-spend-swal>
-            </ng-template>
-          </ng-template>
+          @if (attempt.canView) {
+            <button type="button" class="btn attempt-id p-0" (click)="clicked.emit(attempt.id)">
+              <u>
+                {{ attempt.id }}
+              </u>
+            </button>
+          } @else if(!currentUser || contest) {
+            <span>{{ attempt.id }}</span>
+          } @else {
+            <kepcoin-spend-swal
+              [customClass]="''"
+              [purchaseUrl]="'attempts/' + attempt.id + '/purchase/'"
+              [value]="attempt.kepcoinValue"
+              (success)="onPurchaseSuccess(attempt)">
+            </kepcoin-spend-swal>
+          }
         </td>
 
         <td>
-          <span *ngIf="contest" class="badge badge-light-success text-center" ngbTooltip="{{ attempt.created | date:'yyyy/MM/dd HH:mm:ss' }}">
-            {{ attempt.contestTime }}
-          </span>
+          @if (contest) {
+            <span
+              class="badge badge-light-success"
+              ngbTooltip="{{ attempt.created | date:'yyyy/MM/dd HH:mm:ss' }}">
+              {{ attempt.contestTime }}
+            </span>
+          } @else {
+            <span class="badge badge-light-success text-center" style="width: 130px;">
+              {{ attempt.created | date:"yyyy/MM/dd HH:mm:ss" }}
+            </span>
+          }
+        </td>
 
-          <span *ngIf="!contest" class="badge badge-light-success text-center" style="width: 130px;">
-            {{ attempt.created | date:"yyyy/MM/dd HH:mm:ss" }}
-          </span>
+        <td class="ms-50">
+          <attempt-language [lang]="attempt.lang" [langFull]="attempt.langFull"/>
         </td>
 
         <td>
-          <span class="badge badge-glow badge-{{ attempt.lang }}">
-            {{ attempt.langFull }}
-          </span>
+          <contestant-view [imgSize]="28" [user]="attempt.user" [team]="attempt.team"></contestant-view>
         </td>
 
         <td>
-          <contestant-view [user]="attempt.user" [team]="attempt.team"></contestant-view>
-        </td>
-
-        <td>
-          <div *ngIf="contest">
-            <a *ngIf="attempt?.contestProblem?.contest; else elseBlock" [routerLink]="['/competitions', 'contests', 'contest', attempt.contestProblem.contest, 'problem', attempt.contestProblem.symbol]">
+          @if (contest) {
+            @if (attempt?.contestProblem?.contest) {
+              <a [routerLink]="['/competitions', 'contests', 'contest', attempt?.contestProblem?.contest, 'problem', attempt.contestProblem.symbol]">
+                <u class="text-primary">{{ attempt.contestProblem.symbol }}. {{ attempt.problemTitle }}</u>
+              </a>
+            } @else {
               <u class="text-primary">{{ attempt.contestProblem.symbol }}. {{ attempt.problemTitle }}</u>
+            }
+          } @else {
+            <a [routerLink]="Resources.Problem | resourceById:attempt.problemId">
+              <u class="text-primary">{{ attempt.problemId }}. {{ attempt.problemTitle }}</u>
             </a>
-            
-            <ng-template #elseBlock>
-              <u class="text-primary">{{ attempt.contestProblem.symbol }}. {{ attempt.problemTitle }}</u>
-            </ng-template>
-          </div>
-
-          <a *ngIf="!contest" [routerLink]="['/practice', 'problems', 'problem', attempt.problemId]">
-            <u class="text-primary">{{ attempt.problemId }}. {{ attempt.problemTitle }}</u>
-          </a>
+          }
         </td>
 
         <td [@bounce]="attempt.animationAcceptedState" [@shake]="attempt.animationWrongState">
-          <div *ngIf="contest && !currentUser?.isSuperuser; else elseBlock" [innerHTML]="attempt | attemptVerdictHTML">
-          </div>
-
-          <ng-template #elseBlock>
-            <div *ngIf="attempt.verdict != 1 && attempt.testCaseNumber > 1 && attempt.user.username == currentUser?.username; else elseBlock">
-              <div *ngIf="!attempt.canTestView">
+          @if (contest && !currentUser?.isSuperuser) {
+            <attempt-verdict
+              [verdict]="attempt.verdict"
+              [title]="attempt.verdictTitle"
+              [balls]="attempt.balls"
+              [testCaseNumber]="attempt.testCaseNumber"
+            />
+          } @else {
+            @if (attempt.verdict != 1 && attempt.testCaseNumber > 1 && attempt?.user?.username == currentUser?.username || currentUser?.isSuperuser) {
+              @if (attempt.canTestView) {
+                <a placement="bottom" ngbTooltip="{{ 'ViewTest' | translate }}"
+                   href="/api/attempts/{{ attempt.id }}/failed-test?number={{ attempt.testCaseNumber }}">
+                  <attempt-verdict
+                    [verdict]="attempt.verdict"
+                    [title]="attempt.verdictTitle"
+                    [balls]="attempt.balls"
+                    [testCaseNumber]="attempt.testCaseNumber"
+                  />
+                </a>
+              } @else {
                 <ng-template #tipContent>
                   {{ 'ViewTest' | translate }} <kepcoin [value]="attempt.testCaseKepcoinValue"></kepcoin>
                 </ng-template>
                 <kepcoin-spend-swal
+                  [placement]="'bottom'"
                   [ngbTooltip]="tipContent"
                   [purchaseUrl]="'attempts/' + attempt.id + '/purchase-test/'"
                   [value]="attempt.testCaseKepcoinValue"
                   [customContent]="true"
                   (success)="onPurchaseTestSuccess(attempt)">
-                  <div [innerHTML]="attempt | attemptVerdictHTML"></div>
+                  <attempt-verdict
+                    [verdict]="attempt.verdict"
+                    [title]="attempt.verdictTitle"
+                    [balls]="attempt.balls"
+                    [testCaseNumber]="attempt.testCaseNumber"
+                  />
                 </kepcoin-spend-swal>
-              </div>
-  
-              <div *ngIf="attempt.canTestView">
-                <a ngbTooltip="{{ 'ViewTest' | translate }}"
-                  href="/api/attempts/{{ attempt.id }}/failed-test?number={{ attempt.testCaseNumber }}">
-                  <div [innerHTML]="attempt | attemptVerdictHTML"></div>
-                </a>
-              </div>
-            </div>
-  
-            <ng-template #elseBlock>
-              <div [innerHTML]="attempt | attemptVerdictHTML"></div>
-            </ng-template>  
-          </ng-template>
+              }
+            } @else {
+              <attempt-verdict
+                [verdict]="attempt.verdict"
+                [title]="attempt.verdictTitle"
+                [balls]="attempt.balls"
+                [testCaseNumber]="attempt.testCaseNumber"
+              />
+            }
+          }
         </td>
 
         <td>
-          <span class="badge badge-info badge-pill">
+          <div class="d-flex align-items-center text-dark text-nowrap">
+            <kep-icon color="info" type="duotone" name="watch"/>
             {{ attempt.time }} {{ 'MS' | translate }}
-          </span>
-        </td>
-
-        <td>
-          <span class="badge badge-primary badge-pill">
+          </div>
+          <div class="d-flex align-items-center text-dark text-nowrap">
+            <kep-icon color="primary" type="duotone" name="external-drive"/>
             {{ attempt.memory }} {{ 'KB' | translate }}
-          </span>
+          </div>
         </td>
 
         <td *ngIf="!hideSourceCodeSize">
-          <span class="badge badge-dark badge-pill">
+          <div class="d-flex align-items-center text-nowrap text-dark">
+            <kep-icon name="code" type="duotone"/>
             {{ attempt.sourceCodeSize }}
-          </span>
+          </div>
         </td>
 
         <td *ngIf="currentUser?.isSuperuser">
-          <button class="btn btn-sm round btn-primary" (click)="rerun(attempt.id)">
+          <button ngbTooltip="Recheck" class="btn btn-sm btn-primary" (click)="rerun(attempt.id)">
             <i data-feather="refresh-cw"></i>
           </button>
         </td>
 
       </tr>
-    </tbody>
-
-    <tfoot *ngIf="attempts?.length > 1">
-      <tr>
-        <th>ID</th>
-        <th>{{ 'SUBMITTED' | translate }}</th>
-        <th>{{ 'LANG' | translate }}</th>
-        <th>{{ 'USER' | translate }}</th>
-        <th>{{ 'PROBLEM' | translate }}</th>
-        <th>{{ 'VERDICT' | translate }}</th>
-        <th>{{ 'TIME' | translate }}</th>
-        <th>{{ 'MEMORY' | translate }}</th>
-        <th *ngIf="!hideSourceCodeSize">{{ 'SIZE' | translate }}</th>
-        <th *ngIf="currentUser?.isSuperuser"></th>
-      </tr>
-    </tfoot>
-  </table>
-</div>
+    }
+  </ng-container>
+</kep-table>

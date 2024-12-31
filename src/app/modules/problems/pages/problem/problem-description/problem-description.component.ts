@@ -1,7 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbAccordionModule, NgbModal, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { User } from 'app/auth/models';
-import { AuthService } from 'app/auth/service';
+import { AuthService, User } from '@auth';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -77,6 +76,8 @@ export class ProblemDescriptionComponent implements OnInit, OnDestroy {
         this.modalService.open(content, {
             size: 'lg',
             scrollable: true,
+            centered: true,
+            animation: false,
           }
         );
       });

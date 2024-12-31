@@ -4,13 +4,14 @@ import { Category } from '@problems/models/problems.models';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { fadeInOnEnterAnimation } from 'angular-animations';
-import { BaseLoadComponent } from '@shared/components/classes/base-load.component';
+import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { Observable } from 'rxjs';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'section-categories',
   standalone: true,
-  imports: [CoreCommonModule, NgbTooltipModule],
+  imports: [CoreCommonModule, NgbTooltipModule, NgxSkeletonLoaderModule],
   templateUrl: './section-categories.component.html',
   styleUrl: './section-categories.component.scss',
   animations: [fadeInOnEnterAnimation()]

@@ -4,13 +4,10 @@
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
     <contest-card [contest]="contest"></contest-card>
     <div class="card" [@fadeInUpOnEnter]>
-      <div class="card-header">
+      <div class="card-header p-1">
         <contest-tab [contest]="contest"></contest-tab>
-        <hr>
-      </div>
-      <div class="card-body">
-        <contests-table [contests]="[contest]"></contests-table>
       </div>
     </div>
+    <contests-table [contests]="[contest]"></contests-table>
   </div>
 </div>

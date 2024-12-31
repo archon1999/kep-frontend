@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
-import { User } from 'app/auth/models';
-import { AuthService } from 'app/auth/service';
+import { AuthService, User } from '@auth';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { HomeService } from '../home.service';
@@ -15,7 +14,7 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
   styleUrls: ['./activity-section.component.scss'],
   standalone: true,
   imports: [CoreCommonModule, NgbTooltipModule, KepIconComponent],
-  animations: [fadeInOnEnterAnimation({ duration: 3000 })]
+  animations: [fadeInOnEnterAnimation()]
 })
 export class ActivitySectionComponent implements OnInit, OnDestroy {
 

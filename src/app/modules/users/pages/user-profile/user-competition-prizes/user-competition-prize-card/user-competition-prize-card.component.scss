@@ -1,0 +1,7 @@
+@import 'styles/kep-imports';
+
+.card {
+  &:hover {
+    background-color: rgba($primary, 0.05);
+  }
+}

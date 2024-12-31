@@ -1,0 +1,21 @@
+@import 'styles/kep-imports';
+
+kep-table {
+  .empty {
+    position: relative;
+    height: 280px;
+
+    empty-result {
+      position: absolute;
+      left: calc(50% - 120px);
+    }
+  }
+
+  tr:hover {
+    background-color: rgba($primary, 0.1) !important;
+
+    @include dark-layout {
+      background-color: rgba($primary, 0.2) !important;
+    }
+  }
+}

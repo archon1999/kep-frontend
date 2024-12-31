@@ -1,0 +1,30 @@
+<div class="card bg-arena">
+  <div class="card-body">
+    <h4 class="mb-2 text-center">
+      @if (arena.status == ArenaStatus.NotStarted) {
+        {{ 'TournamentStarts' | translate }}
+      } @else {
+        {{ 'TournamentEnds' | translate }}
+      }
+    </h4>
+
+    <ngx-countdown [time]="leftTime" [render]="render" format="HH:mm:ss" (finish)="onFinish()">
+      <ng-template #render let-data>
+        <div class="d-flex justify-content-between">
+          <div class="countdown text-center">
+            <h5 class="clock-val">{{ data.fragments[0] }}</h5>
+            <h5 class="clock-text">{{ 'HOUR' | translate }}</h5>
+          </div>
+          <div class="countdown text-center">
+            <h5 class="clock-val">{{ data.fragments[1] }}</h5>
+            <h5 class="clock-text">{{ 'MINUTE' | translate }}</h5>
+          </div>
+          <div class="countdown text-center">
+            <h5 class="clock-val">{{ data.fragments[2] }}</h5>
+            <h5 class="clock-text">{{ 'SECOND' | translate }}</h5>
+          </div>
+        </div>
+      </ng-template>
+    </ngx-countdown>
+  </div>
+</div>

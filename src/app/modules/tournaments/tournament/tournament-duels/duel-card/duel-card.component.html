@@ -4,9 +4,9 @@
       <tbody>
         <tr>
           <td>
-            <contestant-view [textColor]="'white'" [user]="duel.playerFirst"></contestant-view>
+            <contestant-view [textColor]="'dark'" [user]="duel.playerFirst"></contestant-view>
           </td>
-          <td class="text-right">
+          <td class="text-end">
             <span class="badge">
               {{ duel.playerFirst.balls }}
             </span>
@@ -14,10 +14,14 @@
         </tr>
         <tr>
           <td>
-            <contestant-view [textColor]="'white'" *ngIf="duel.playerSecond" [user]="duel.playerSecond"></contestant-view>
-            <span *ngIf="!duel.playerSecond">BYE</span>
+            @if (duel.playerSecond) {
+              <contestant-view [textColor]="'dark'" [user]="duel.playerSecond"></contestant-view>
+            }
+            @if (!duel.playerSecond) {
+              <span>BYE</span>
+            }
           </td>
-          <td class="text-right">
+          <td class="text-end">
             <span class="badge">
               {{ duel.playerSecond?.balls || 0 }}
             </span>

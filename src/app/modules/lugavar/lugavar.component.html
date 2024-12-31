@@ -44,128 +44,145 @@
         </div>
 
         <div class="card-body">
-          <h5 class="pl-1 d-flex">
-            <span class="pl-50" [innerHTML]="dailyQuestion.body"></span>
+          <h5 class="ps-1 d-flex">
+            <span class="ps-50" [innerHTML]="dailyQuestion.body"></span>
           </h5>
           <br>
-          <div *ngFor="let option of dailyQuestion.options; index as i">
-            <div class="ml-1 mb-1 question-option" [ngClass]="{'true': option.isAnswer}"
-              *ngIf="dailyQuestion.isAnswered">
-
-              <i class="text-success" *ngIf="option.isAnswer" data-feather="check-circle"></i>
-              {{ option.option }}
-
-              <div class="mt-50 progress-wrapper">
-                <ngb-progressbar showValue="true" [type]="option.isAnswer ? 'success' : 'secondary'"
-                  [value]="100*option.selected / dailyQuestion.totalAnswered"></ngb-progressbar>
-              </div>
-
+            @for (option of dailyQuestion.options; track option; let i = $index) {
+              <div>
+                @if (dailyQuestion.isAnswered) {
+                  <div class="ms-1 mb-1 question-option" [ngClass]="{'true': option.isAnswer}"
+                    >
+                    @if (option.isAnswer) {
+                      <i class="text-success" data-feather="check-circle"></i>
+                    }
+                    {{ option.option }}
+                    <div class="mt-50 progress-wrapper">
+                      <ngb-progressbar showValue="true" [type]="option.isAnswer ? 'success' : 'secondary'"
+                      [value]="100*option.selected / dailyQuestion.totalAnswered"></ngb-progressbar>
+                    </div>
+                  </div>
+                }
+                @if (!dailyQuestion.isAnswered) {
+                  <div class="ms-1 mb-1 custom-control custom-control-info custom-radio">
+                    <input type="radio" id="radio-{{ i }}" name="selectedOption" (click)="optionClick(i)" [value]="i"
+                      class="form-check-input" />
+                      <label class="form-check-label" for="radio-{{ i }}">{{ option.option }}</label>
+                    </div>
+                  }
+                </div>
+              }
             </div>
 
-            <div class="ml-1 mb-1 custom-control custom-control-info custom-radio" *ngIf="!dailyQuestion.isAnswered">
-              <input type="radio" id="radio-{{ i }}" name="selectedOption" (click)="optionClick(i)" [value]="i"
-                class="custom-control-input" />
-              <label class="custom-control-label" for="radio-{{ i }}">{{ option.option }}</label>
+            @if (dailyQuestion.isAnswered) {
+              <div class="card-footer">
+                <like-button [likes]="dailyQuestion.likes" [submitUrl]="'daily-question-like'"></like-button>
+              </div>
+            }
+
+          </div>
+        </div>
+
+        <div class="mt-2 col-lg-8 col-12 offset-0 offset-lg-2">
+          <div class="card gradient-border lugavar-shadow">
+            <div class="card-header">
+              <h2 class="text-dark">
+                {{ 'DailyInterestingFact' | translate }}
+              </h2>
+            </div>
+
+            <div class="card-body">
+              <div [innerHTML]="dailyInterestingFact.body"></div>
+            </div>
+
+            <div class="card-footer d-flex justify-content-between">
+              <like-button [likes]="dailyInterestingFact.likes" [submitUrl]="'daily-interesting-fact-like'"></like-button>
             </div>
           </div>
         </div>
 
-        <div class="card-footer" *ngIf="dailyQuestion.isAnswered">
-          <like-button [likes]="dailyQuestion.likes" [submitUrl]="'daily-question-like'"></like-button>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="mt-2 col-lg-8 col-12 offset-0 offset-lg-2">
-      <div class="card gradient-border lugavar-shadow">
-        <div class="card-header">
-          <h2 class="text-dark">
-            {{ 'DailyInterestingFact' | translate }}
-          </h2>
-        </div>
-
-        <div class="card-body">
-          <div [innerHTML]="dailyInterestingFact.body"></div>
-        </div>
-
-        <div class="card-footer d-flex justify-content-between">
-          <like-button [likes]="dailyInterestingFact.likes" [submitUrl]="'daily-interesting-fact-like'"></like-button>
-        </div>
-      </div>
-    </div>
-
-    <div class="mt-2 col-lg-10 col-12 offset-0 offset-lg-1">
-      <div class="card gradient-border lugavar-shadow">
-        <div class="card-header">
-          <h2 class="text-dark">
-            <span *ngIf="!training">
-              {{ 'Dictionary' | translate }}
-              <button class="btn btn-sm round btn-gradient-info" (click)="training=true;" ngbTooltip="{{ 'Training' | translate }}">
-                <i data-feather="activity"></i>
-              </button>
-            </span>
-            <span *ngIf="training">
-              {{ 'Training' | translate }}
-              <button class="btn btn-sm btn-gradient-info" (click)="training=false;" ngbTooltip="{{ 'Dictionary' | translate }}">
-                <i data-feather="book"></i>
-              </button>
-            </span>
-          </h2>
-          <input *ngIf="!training" [(ngModel)]="searchText" (ngModelChange)="updateWords()" style="width: 40%;" class="form-control"  type="text" placeholder="{{ 'Search' | translate }}">
-        </div>
-
-        <dictionary-training *ngIf="training" [dictionary]="dictionary"></dictionary-training>
-
-        <div class="table-responsive" *ngIf="!training">
-          <table class="table">
-            <thead>
-              <tr class="bg-gradient-info">
-                <th>{{ 'Word' | translate }}</th>
-                <th>{{ 'Meaning' | translate }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let word of selectedWords">
-                <td>
-                  <span class="badge badge-info badge-glow">
-                    {{ word.word }}
+        <div class="mt-2 col-lg-10 col-12 offset-0 offset-lg-1">
+          <div class="card gradient-border lugavar-shadow">
+            <div class="card-header">
+              <h2 class="text-dark">
+                @if (!training) {
+                  <span>
+                    {{ 'Dictionary' | translate }}
+                    <button class="btn btn-sm round btn-gradient-info" (click)="training=true;" ngbTooltip="{{ 'Training' | translate }}">
+                      <i data-feather="activity"></i>
+                    </button>
                   </span>
-                </td>
-                <td>
-                  <div [innerHTML]="word.meaning"></div>
-                  <like-button [likes]="word.likes" [submitUrl]="'dictionary/' + word.id + '/like/'"></like-button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                }
+                @if (training) {
+                  <span>
+                    {{ 'Training' | translate }}
+                    <button class="btn btn-sm btn-gradient-info" (click)="training=false;" ngbTooltip="{{ 'Dictionary' | translate }}">
+                      <i data-feather="book"></i>
+                    </button>
+                  </span>
+                }
+              </h2>
+              @if (!training) {
+                <input [(ngModel)]="searchText" (ngModelChange)="updateWords()" style="width: 40%;" class="form-control"  type="text" placeholder="{{ 'Search' | translate }}">
+              }
+            </div>
 
-          <ngb-pagination
-            *ngIf="!training && totalWords > 0 && searchText.length <= 1"
-            [collectionSize]="totalWords"
-            [(page)]="pageNumber"
-            [pageSize]="10"
-            [maxSize]="5"
-            [rotate]="true"
-            (pageChange)="updateWords()"
-            aria-label="Default pagination"
-            class="d-flex justify-content-center pagination-info mt-2">
-            <ng-template ngbPaginationPrevious
-              ><span [data-feather]="'chevron-left'" [size]="18" [class]="'font-weight-bolder'"></span>
-            </ng-template>
-            <ng-template ngbPaginationNext
-              ><span [data-feather]="'chevron-right'" [size]="18" [class]="'font-weight-bolder'"></span
-            ></ng-template>
-          </ngb-pagination>
+            @if (training) {
+              <dictionary-training [dictionary]="dictionary"></dictionary-training>
+            }
 
+            @if (!training) {
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr class="bg-gradient-info">
+                      <th>{{ 'Word' | translate }}</th>
+                      <th>{{ 'Meaning' | translate }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (word of selectedWords; track word) {
+                      <tr>
+                        <td>
+                          <span class="badge bg-info badge-glow">
+                            {{ word.word }}
+                          </span>
+                        </td>
+                        <td>
+                          <div [innerHTML]="word.meaning"></div>
+                          <like-button [likes]="word.likes" [submitUrl]="'dictionary/' + word.id + '/like/'"></like-button>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+                @if (!training && totalWords > 0 && searchText.length <= 1) {
+                  <ngb-pagination
+                    [collectionSize]="totalWords"
+                    [(page)]="pageNumber"
+                    [pageSize]="10"
+                    [maxSize]="5"
+                    [rotate]="true"
+                    (pageChange)="updateWords()"
+                    aria-label="Default pagination"
+                    class="d-flex justify-content-center pagination-info mt-2">
+                    <ng-template ngbPaginationPrevious
+                      ><span [data-feather]="'chevron-left'" [size]="18" [class]="'font-weight-bolder'"></span>
+                    </ng-template>
+                    <ng-template ngbPaginationNext
+                      ><span [data-feather]="'chevron-right'" [size]="18" [class]="'font-weight-bolder'"></span
+                    ></ng-template>
+                  </ngb-pagination>
+                }
+              </div>
+            }
+
+          </div>
         </div>
 
       </div>
     </div>
 
-  </div>
-</div>
-
-<!--
-  <a class="font-large-1 underlined">The Best Features Coming to iOS and Web design</a>
--->
+    <!--
+    <a class="font-large-1 underlined">The Best Features Coming to iOS and Web design</a>
+    -->

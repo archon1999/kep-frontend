@@ -4,12 +4,9 @@
       <div class="card-title">
         {{ 'Rating' | translate }}
       </div>
-      <span class="ml-50 badge badge-{{ selectedLang }}">
-        {{ selectedLang }}
-      </span>
     </div>
 
-    <ng-select [clearable]="false" (change)="topAttemptsLoad($event)" [(ngModel)]="topAttemptsOrdering">
+    <ng-select appendTo="body" [clearable]="false" (change)="topAttemptsLoad($event)" [(ngModel)]="topAttemptsOrdering">
       <ng-option [value]="'time'">{{ 'Time' | translate }}</ng-option>
       <ng-option [value]="'memory'">{{ 'Memory' | translate }}</ng-option>
       <ng-option [value]="'source_code_size'">{{ 'Size' | translate }}</ng-option>
@@ -19,34 +16,40 @@
   <div class="table-responsive">
     <table class="table">
       <thead>
-      <tr class="bg-gradient-primary">
-        <th>#</th>
-        <th>{{ 'User' | translate }}</th>
-        <th>{{ 'RESULT' | translate }}</th>
-      </tr>
+        <tr>
+          <th>{{ 'User' | translate }}</th>
+          <th>{{ 'RESULT' | translate }}</th>
+        </tr>
       </thead>
       <tbody>
-        @for (attempt of topAttempts;track attempt.id) {
+        @for (attempt of topAttempts;track $index) {
           <tr>
-            <td>{{ $index + 1 }}</td>
-            <td>
+            <td class="text-nowrap">
               <contestant-view [imgSize]="28" [user]="attempt"></contestant-view>
             </td>
             <td class="text-center">
-            <span [ngSwitch]="topAttemptsOrdering">
-              <span *ngSwitchCase="'time'" class="badge badge-info badge-glow">
-                {{ attempt.time }} ms
+              <span>
+                @switch (topAttemptsOrdering) {
+                  @case ('time') {
+                    <span class="badge bg-info">
+                      {{ attempt.time }}
+                    </span>
+                  }
+                  @case ('memory') {
+                    <span class="badge bg-primary">
+                      {{ attempt.memory }}
+                    </span>
+                  }
+                  @case ('source_code_size') {
+                    <span class="badge bg-dark">
+                      {{ attempt.sourceCodeSize }}
+                    </span>
+                  }
+                }
               </span>
-              <span *ngSwitchCase="'memory'" class="badge badge-primary badge-glow">
-                {{ attempt.memory }} kb
-              </span>
-              <span *ngSwitchCase="'source_code_size'" class="badge badge-dark badge-glow">
-                {{ attempt.sourceCodeSize }}
-              </span>
-            </span>
             </td>
           </tr>
-        } @empty {
+          } @empty {
         }
       </tbody>
     </table>

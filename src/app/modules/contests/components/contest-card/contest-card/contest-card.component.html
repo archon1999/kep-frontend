@@ -1,9 +1,14 @@
 <div
   [@fadeInOnEnter]
-  class="card contests-colors contest-{{ contest.id }} {{ contest.title }} contest-type-{{ contest.type }}">
+  [show]="contest.status == -1"
+  class="card"
+  [class]="contest | contestClasses"
+  new-feature>
   <a [routerLink]="routerLink">
-    <div *ngIf="contest.logo" class="card-bg" style="background-image: url('{{ contest.logo }}');">
-    </div>
+    @if (contest.logo) {
+      <div class="card-bg" style="background-image: url('{{ contest.logo }}');">
+      </div>
+    }
 
     <div class="card-header d-block">
       <div class="d-flex justify-content-between">
@@ -14,8 +19,12 @@
         </div>
 
         <div>
-          <span class="badge badge-success badge-glow" *ngIf="contest.isRated">{{ 'Rated' | translate }}</span>
-          <span class="badge badge-danger badge-glow" *ngIf="!contest.isRated">{{ 'Unrated' | translate }}</span>
+          @if (contest.isRated) {
+            <span class="badge bg-success badge-glow">{{ 'Rated' | translate }}</span>
+          }
+          @if (!contest.isRated) {
+            <span class="badge bg-danger badge-glow">{{ 'Unrated' | translate }}</span>
+          }
         </div>
       </div>
       <div class="card-title">
@@ -28,111 +37,159 @@
         <mathjax [content]="contest.description"></mathjax>
       </div>
       <div class="contest-time">
-        <div *ngIf="contest.status == 0">
-          <h3 class="text-center mt-1 mb-3">
-            {{ 'CONTESTS.CONTEST_ENDS' | translate }}
-          </h3>
-          <span class="badge already badge-warning badge-glow">
-            {{ 'Now' | translate }}
-          </span>
-          <contest-countdown [clockColor]="'#fff'" [contest]="contest"></contest-countdown>
-        </div>
+        @if (contest.status == 0) {
+          <div>
+            <h3 class="text-center mt-1 mb-1">
+              {{ 'CONTESTS.CONTEST_ENDS' | translate }}
+            </h3>
+            <span class="badge already bg-warning badge-glow">
+              {{ 'Now' | translate }}
+            </span>
+            <contest-countdown [clockColor]="'#fff'" [contest]="contest"></contest-countdown>
+          </div>
+        }
 
-        <div *ngIf="contest.status == -1">
-          <h3 class="text-center mt-1 mb-3">
-            {{ 'CONTESTS.CONTEST_STARTS' | translate }}
-          </h3>
-          <contest-countdown [clockColor]="'#fff'" [contest]="contest"></contest-countdown>
-        </div>
+        @if (contest.status == -1) {
+          <div>
+            <h3 class="text-center mt-1 mb-1">
+              {{ 'CONTESTS.CONTEST_STARTS' | translate }}
+            </h3>
+            <contest-countdown [clockColor]="'#fff'" [contest]="contest"></contest-countdown>
+          </div>
+        }
 
-        <div class="text-center" *ngIf="contest.status == 1">
-          <h3 class="mb-3 mt-1" ngbTooltip="{{ contest.finishTime | localizedDate:'medium' }}">
-            {{ 'CONTESTS.CONTEST_FINISHED' | translate }}
-          </h3>
-          @defer (on viewport) {
-            <top3-contestants [contest]="contest"></top3-contestants>
-          } @placeholder (minimum 500ms){
-            <div [style.height.px]="100">
-              <div class="mt-2">
-                <spinner color="#fff"></spinner>
+        @if (contest.status == 1) {
+          <div class="text-center">
+            <h3 class="mb-1 mt-1" ngbTooltip="{{ contest.finishTime | localizedDate:'medium' }}">
+              {{ 'CONTESTS.CONTEST_FINISHED' | translate }}
+            </h3>
+            @defer (on viewport) {
+              <top3-contestants [contest]="contest"></top3-contestants>
+            } @placeholder (minimum 500ms) {
+              <div [style.height.px]="100">
+                <div class="mt-2">
+                  <spinner color="#fff"></spinner>
+                </div>
               </div>
-            </div>
-          }
-        </div>
+            }
+          </div>
+        }
       </div>
     </div>
   </a>
 
   <div class="card-footer justify-content-between d-flex">
     <div class="meta-info text-center">
-      <span class="badge badge-glow mr-25 badge-primary">
-        <i data-feather="user"></i>
-        <span *ngIf="contest.status == -1" ngbTooltip="{{ 'Registrants' | translate }}">
+    <span class="badge badge-glow me-25 badge-primary">
+      <i data-feather="user"></i>
+      @if (contest.status == -1) {
+        <span ngbTooltip="{{ 'Registrants' | translate }}">
           {{ contest.registrantsCount }}
         </span>
-        <span *ngIf="contest.status != -1" ngbTooltip="{{ 'Contestants' | translate }}">
+      }
+      @if (contest.status != -1) {
+        <span ngbTooltip="{{ 'Contestants' | translate }}">
           {{ contest.contestantsCount }}
         </span>
-      </span>
-      <span class="badge badge-glow mr-25 badge-primary" ngbTooltip="{{ 'Problems' | translate }}">
-        <i [data-feather]="'problem' | iconName"></i>
+      }
+    </span>
+      <span class="badge badge-glow me-25 badge-primary" ngbTooltip="{{ 'Problems' | translate }}">
+      <i [data-feather]="'problem' | iconName"></i>
         {{ contest.problemsCount }}
-      </span>
+    </span>
       <span class="badge badge-glow badge-primary">
-        {{ contest.type }}
-      </span>
+      {{ contest.type }}
+    </span>
     </div>
 
     <div class="registration text-center">
       <!--Virtual contest-->
-      <ng-container *ngIf="contest.isFinished()">
-        <kepcoin-spend-swal
-          *ngIf="!contest.userInfo.virtualContestPurchased"
-          [customContent]="true"
-          [purchaseUrl]="'contests/' + contest.id + '/purchase-virtual-contest/'"
-          [value]="5"
-          (success)="virtualContestPurchaseSuccess()">
-          <button class="btn btn-primary btn-sm round">
+      @if (contest.isFinished()) {
+        @if (!contest.userInfo.virtualContestPurchased) {
+          <kepcoin-spend-swal
+            [customContent]="true"
+            [purchaseUrl]="'contests/' + contest.id + '/purchase-virtual-contest/'"
+            [value]="5"
+            (success)="virtualContestPurchaseSuccess()">
+            <button class="btn btn-primary btn-sm round">
+              <i [data-feather]="'contest' | iconName" [size]="16"></i>
+              {{ 'Virtual' | translate }}
+            </button>
+          </kepcoin-spend-swal>
+        }
+        @if (contest.userInfo.virtualContestPurchased) {
+          <button
+            (click)="virtualContestStart()"
+            class="btn btn-primary btn-sm round">
             <i [data-feather]="'contest' | iconName" [size]="16"></i>
-            {{ 'Virtual' | translate }}
+            {{ 'StartVirtual' | translate }}
           </button>
-        </kepcoin-spend-swal>
+        }
+      }
 
-        <button
-          *ngIf="contest.userInfo.virtualContestPurchased"
-          (click)="virtualContestStart()"
-          class="btn btn-primary btn-sm round">
-          <i [data-feather]="'contest' | iconName" [size]="16"></i>
-          {{ 'StartVirtual' | translate }}
-        </button>
-      </ng-container>
-
-      <span *ngIf="contest.status != 1 && !contest.userInfo.virtualContestPurchased">
-        <kepcoin-spend-swal
-          *ngIf="contest.status != 0 && contest.isRated && contest.userInfo.isRegistered && !contest.userInfo.unratedContestPurchased"
-          [customContent]="true"
-          [purchaseUrl]="'contests/' + contest.id + '/purchase-unrated-contest/'"
-          [value]="10"
-          class="mr-1" ngbTooltip="{{ 'UnofficialParticipation' | translate }}"
-          (success)="contest.userInfo.unratedContestPurchased=true;">
-          <img height="25" src="assets/images/icons/unrated.png">
-        </kepcoin-spend-swal>
-        <img
-          *ngIf="contest.userInfo.isRegistered && contest.isRated && contest.userInfo.unratedContestPurchased"
-          ngbTooltip="{{ 'Purchased' | translate }}"
-          height="25" src="assets/images/icons/unrated.png" class="mr-1">
-
-          <button ngbTooltip="{{ 'Cancel' | translate }}" rippleEffect class="btn btn-sm round btn-gradient-success"
-                  (click)="cancelRegistration()" *ngIf="contest.userInfo.isRegistered">
-          <i data-feather="user" [size]="16"></i> {{ 'Registered' | translate }}
+      @if (contest.status != 1 && !contest.userInfo.virtualContestPurchased) {
+        @if (contest.status != 0 && contest.isRated && contest.userInfo.isRegistered && !contest.userInfo.unratedContestPurchased) {
+          <kepcoin-spend-swal
+            [customContent]="true"
+            [purchaseUrl]="'contests/' + contest.id + '/purchase-unrated-contest/'"
+            [value]="10"
+            class="me-1" ngbTooltip="{{ 'UnofficialParticipation' | translate }}"
+            (success)="contest.userInfo.unratedContestPurchased=true;">
+            <img height="25" src="assets/images/icons/unrated.png">
+          </kepcoin-spend-swal>
+        }
+        @if (contest.userInfo.isRegistered && contest.isRated && contest.userInfo.unratedContestPurchased) {
+          <img
+            ngbTooltip="{{ 'Purchased' | translate }}"
+            height="25" src="assets/images/icons/unrated.png" class="me-1">
+        }
+        @if (contest.userInfo.isRegistered) {
+          <button
+            ngbTooltip="{{ 'Cancel' | translate }}"
+            rippleEffect
+            class="btn btn-sm round btn-gradient-success"
+            (click)="cancelRegistration()">
+            <kep-icon name="check" color="success" size="small-4"/>
+            {{ 'Registered' | translate }}
             <i data-feather="x" class="text-danger"></i>
-        </button>
-        <button rippleEffect class="btn btn-sm round btn-gradient-primary" (click)="openRegistrationModal(registration)"
-                *ngIf="currentUser && !contest.userInfo.isRegistered">
-          <i data-feather="user" [size]="16"></i> {{ 'CONTESTS.REGISTER' | translate }}
-        </button>
-      </span>
+          </button>
+        }
+        @if (!currentUser || !contest.userInfo.isRegistered) {
+          <button
+            rippleEffect
+            class="btn btn-sm round btn-gradient-primary"
+            (click)="openRegistrationModal()">
+            <kep-icon size="small-4" name="username"/>
+            {{ 'CONTESTS.REGISTER' | translate }}
+          </button>
+        }
+      }
     </div>
   </div>
-
 </div>
+
+<ng-template #registrationModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ contest.title }}</h5>
+    <button (click)="modal.dismiss('Cross click')" aria-label="Close" class="btn-close" type="button">
+      
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0">
+    <label>{{ 'Team' | translate }}</label>
+    <ng-select appendTo="body" [(ngModel)]="teamId" [clearable]="false">
+      @for (team of userTeams;track team.id) {
+        <ng-option [value]="team.id">
+          <team-view-card [team]="team"/>
+        </ng-option>
+      }
+    </ng-select>
+  </div>
+  <div class="modal-footer">
+    <button (click)="registrationTeam()" [disabled]="!teamId" class="btn btn-primary btn-sm" rippleEffect>
+      {{ 'CONTESTS.REGISTER' | translate }}
+    </button>
+  </div>
+</ng-template>
+
+<ng-select-css></ng-select-css>

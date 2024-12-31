@@ -1,4 +1,4 @@
-import { ContestProblem } from '../contests.models';
+import { ContestProblem } from '@contests/models/contest-problem';
 
 export function sortContestProblems(problems: Array<ContestProblem>) {
   return problems.sort(function (a, b) {

@@ -1,3 +1,9 @@
-.card .card-header {
-  display: block;
+@import 'styles/kep-imports';
+
+app-contest-attempts {
+  kep-table {
+    thead th:nth-child(2) {
+      padding-right: 0 !important;
+    }
+  }
 }

@@ -1,0 +1,35 @@
+<ng-template #popContent>
+  <div class="card bg-kepcoin">
+    <div class="card-body text-kepcoin">
+      <h5 class="text-center text-kepcoin">
+        Bugun
+      </h5>
+
+      <div class="justify-content-between d-flex">
+        <span>
+          <i data-feather="plus"></i>
+          <img height="19" src="assets/images/icons/kepcoin.png"> {{ earn }}
+        </span>
+        <span>
+          <i data-feather="minus"></i>
+          <img height="19" src="assets/images/icons/kepcoin.png"> {{ spend }}
+        </span>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<a
+  class="me-25 text-black"
+  routerLink="/kepcoin"
+  [ngbPopover]="popContent"
+  triggers="mouseenter:mouseleave"
+  [closeDelay]="1000"
+  [openDelay]="1000"
+  (shown)="loadData()"
+  popoverClass="kepcoin-popover"
+  [placement]="'bottom'"
+  container="body"
+>
+  <img height="18" src="assets/images/icons/kepcoin.png"> {{ currentUser?.kepcoin }}
+</a>

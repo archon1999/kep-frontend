@@ -3,10 +3,10 @@ import { ApiService } from 'app/shared/services/api.service';
 import { Category, Problem, ProblemsFilter } from '@problems/models/problems.models';
 import { map } from 'rxjs/operators';
 import { Attempt } from '@problems/models/attempts.models';
-import { Pageable } from '@shared/components/classes/pageable';
+import { Pageable } from '@app/common/classes/pageable';
 import { getCategoryIcon } from '@problems/utils/category';
 import { Observable } from 'rxjs';
-import { ContestProblem } from '@contests/contests.models';
+import { Verdicts } from '@problems/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +15,12 @@ export class ProblemsApiService {
   constructor(public api: ApiService) {}
 
   getProblems(params: Partial<ProblemsFilter & Pageable & { hasSolved: number, hasAttempted: number }>) {
-    if (params.status === 1) {
+    if (params.status == 1) {
       params.hasSolved = 1;
-    } else if (params.status === 2) {
+    } else if (params.status == 2) {
       params.hasSolved = 0;
       params.hasAttempted = 1;
-    } else if (params.status === 3) {
+    } else if (params.status == 3) {
       params.hasSolved = 0;
       params.hasAttempted = 0;
     }
@@ -110,7 +110,10 @@ export class ProblemsApiService {
     return this.api.post(`problems/${ problemId }/remove-tag/`, params);
   }
 
-  getVerdicts() {
+  getVerdicts(): Observable<Array<{
+    label: string,
+    value: Verdicts,
+  }>> {
     return this.api.get('attempts/verdicts');
   }
 

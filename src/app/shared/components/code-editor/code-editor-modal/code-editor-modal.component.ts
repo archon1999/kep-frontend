@@ -4,16 +4,16 @@ import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { TemplateCodeService } from 'app/shared/services/template-code.service';
 import { ToastrService } from 'ngx-toastr';
-import { CoreConfigService } from 'core/services/config.service';
+import { CoreConfigService } from '@core/services/config.service';
 import { AvailableLanguage, Problem, SampleTest } from '@problems/models/problems.models';
 import { ApiService } from '@shared/services/api.service';
 import { WebsocketService } from '@shared/services/websocket';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CValidators } from '@shared/c-validators/c-validators';
 import { AttemptLangs, Verdicts } from '@problems/constants';
-import { CoreSidebarService } from 'core/components/core-sidebar/core-sidebar.service';
+import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 import { SwipeService } from '@shared/services/swipe.service';
-import { AuthService } from '@auth/service';
+import { AuthService } from '@auth';
 import { paramsMapper } from '@shared/utils';
 import { NgxSpinnerService } from 'ngx-spinner';
 
@@ -125,7 +125,9 @@ export class CodeEditorModalComponent implements OnInit {
 
     this.editorForm.get('code').valueChanges.subscribe(
       (code: string) => {
-        this.templateCodeService.save(this.uniqueName, this.editorForm.get('lang').value, code);
+        if (this.sidebarIsOpened) {
+          this.templateCodeService.save(this.uniqueName, this.editorForm.get('lang').value, code);
+        }
       }
     );
 

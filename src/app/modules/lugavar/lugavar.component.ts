@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation, fadeInUpOnEnterAnimation } from 'angular-animations';
+import {
+  fadeInLeftOnEnterAnimation,
+  fadeInOnEnterAnimation,
+  fadeInRightOnEnterAnimation,
+  fadeInUpOnEnterAnimation
+} from 'angular-animations';
 import { DictionaryWord, InterestingFact, Question, Trick } from './lugavar.models';
 import { LugavarService } from './lugavar.service';
 import { ActivatedRoute } from '@angular/router';

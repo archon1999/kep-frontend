@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { User } from '@auth/models';
-import { BaseLoadComponent } from '@shared/components/classes/base-load.component';
+import { User } from '@auth';
+import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { GeneralInfo } from '@problems/models/statistics.models';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { CoreCommonModule } from '@core/common.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 
 @Component({
   selector: 'section-header',

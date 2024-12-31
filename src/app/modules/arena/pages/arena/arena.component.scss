@@ -1,42 +1,21 @@
-@import 'bootstrap/scss/mixins';
-@import 'bootstrap/scss/mixins/define-page-top';
-@import 'bootstrap/scss/mixins/dark-layout';
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
-@import 'scss/base/bootstrap-extended/variables';
+@import 'styles/kep-imports';
 
-@include define-page-top(
-  $name: 'arena',
-  $light-background: linear-gradient(to right, $warning, lighten($warning, 10)),
-  $dark-background: linear-gradient(to right, #120e00, #221b00),
-);
-
-.arena {
-  .arena-avatar {
-    background: $warning;
-    box-shadow: 0 0 10px lighten($warning, 5);
+.arena-section-header {
+  .card {
+    border: none;
+    background: rgba($yellow, 0.75);
 
     @include dark-layout {
-      background: mix(black, mix(red, $warning, 20), 60) !important;
-      box-shadow: 0 0 2px mix(black, $warning, 40) !important;
-    }
-  }
-}
-
-.bg-arena-list {
-  &:nth-child(odd) .card {
-    background: linear-gradient(to right, $warning, mix(white, $warning, 20));
-
-    @include dark-layout {
-      background: linear-gradient(to right, #56440d, #542e0c);
+      background: rgba($yellow, 0.5) !important;
     }
   }
 
-  &:nth-child(even) .card {
-    background: linear-gradient(to left, $warning, mix(white, $warning, 20));
+  .useful-links {
+    display: flex;
+    margin-bottom: 2rem;
 
-    @include dark-layout {
-      background: linear-gradient(to left, #56440d, #542e0c);
+    .btn {
+      width: 100%;
     }
   }
 }

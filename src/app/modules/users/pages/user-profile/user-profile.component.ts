@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../users.models';
-import { BaseComponent } from '@shared/components/classes/base.component';
+import { BaseComponent } from '@app/common/classes/base.component';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbCollapseModule, NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
@@ -12,6 +12,7 @@ import { UserSkillsComponent } from '@users/pages/user-profile/user-skills/user-
 import { KepBadgeComponent } from '@shared/components/kep-badge/kep-badge.component';
 import { UserOnlineStatusComponent } from '@shared/components/user-online-status/user-online-status.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { UserCompetitionPrizesComponent } from '@users/pages/user-profile/user-competition-prizes/user-competition-prizes.component';
 
 enum Tab {
   Ratings = 1,
@@ -38,6 +39,7 @@ enum Tab {
     KepBadgeComponent,
     UserOnlineStatusComponent,
     SpinnerComponent,
+    UserCompetitionPrizesComponent,
   ]
 })
 export class UserProfileComponent extends BaseComponent implements OnInit {

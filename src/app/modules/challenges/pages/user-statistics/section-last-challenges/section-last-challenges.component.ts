@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { ChallengesStatisticsService } from '@challenges/services';
-import { Challenge } from '@challenges/models/challenges.models';
-import { User } from '@auth/models';
-import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
+import { Challenge } from '@challenges/models/challenges';
+import { User } from '@auth';
+import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { Observable } from 'rxjs';
-import { PageResult } from '@shared/components/classes/page-result';
+import { PageResult } from '@app/common/classes/page-result';
 import { CoreCommonModule } from '@core/common.module';
 import { ChallengeCardComponent } from '@challenges/components/challenge-card/challenge-card.component';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';

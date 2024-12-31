@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
-import { User } from '../../../../auth/models';
+import { User } from '@auth';
 
 @Component({
   selector: 'user-avatar-popover',

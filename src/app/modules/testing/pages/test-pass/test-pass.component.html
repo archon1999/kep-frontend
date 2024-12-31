@@ -8,151 +8,208 @@
       </div>
       <hr>
       <div class="card-body">
-        <div *ngIf="question.type == 1">
-          <h5 class="pl-1 d-flex">
-            {{ question.number }}.
-            <span class="pl-50">
-              <mathjax [content]="question.body"></mathjax>
-            </span>
-          </h5>
-          <br>
-          <div
-            class="ml-1 mb-1 custom-control custom-radio"
-            *ngFor="let option of question.options; index as i">
-            <input
-              type="radio"
-              id="radio-{{ i }}"
-              name="selectedOption"
-              [(ngModel)]="selectedOption"
-              [value]="i"
-              class="custom-control-input" />
-            <label class="custom-control-label" for="radio-{{ i }}">{{ option.option }}</label>
+        @if (question.type == 1) {
+          <div>
+            <h5 class="ps-1 d-flex">
+              {{ question.number }}.
+              <span class="ps-50">
+                  <mathjax [content]="question.body"></mathjax>
+                </span>
+            </h5>
+            <br>
+            @for (option of question.options;track option;let i = $index) {
+              <div
+                class="ms-1 mb-1 form-check"
+              >
+                <input
+                  type="radio"
+                  id="radio-{{ i }}"
+                  name="selectedOption"
+                  [(ngModel)]="selectedOption"
+                  [value]="i"
+                  class="form-check-input"/>
+                <label class="form-check-label" for="radio-{{ i }}">{{ option.option }}</label>
+              </div>
+            }
           </div>
-        </div>
+        }
 
-        <div *ngIf="question.type == 2">
-          <h5 class="pl-1 d-flex">
-            {{ question.number }}.
-            <span class="pl-50">
-              <mathjax [content]="question.body"></mathjax>
-            </span>
-          </h5>
-          <br>
-          <div
-            class="ml-1 mb-1 custom-control custom-control-primary custom-checkbox"
-            *ngFor="let option of question.options; index as i">
-            <input
-              type="checkbox"
-              id="check-{{ i }}"
-              [(ngModel)]="option.selected"
-              class="custom-control-input" />
-            <label class="custom-control-label" for="check-{{ i }}">{{ option.option }}</label>
+        @if (question.type == 2) {
+          <div>
+            <h5 class="ps-1 d-flex">
+              {{ question.number }}.
+              <span class="ps-50">
+                      <mathjax [content]="question.body"></mathjax>
+                    </span>
+            </h5>
+            <br>
+            @for (option of question.options;track option;let i = $index) {
+              <div
+                class="ms-1 mb-1 custom-control custom-control-primary custom-checkbox"
+              >
+                <input
+                  type="checkbox"
+                  id="check-{{ i }}"
+                  [(ngModel)]="option.selected"
+                  class="form-check-input"/>
+                <label class="form-check-label" for="check-{{ i }}">{{ option.option }}</label>
+              </div>
+            }
           </div>
-        </div>
+        }
 
-        <div *ngIf="question.type == 3">
-          <h5 class="pl-1 d-flex">
-            {{ question.number }}.
-            <span class="pl-50">
-              <mathjax [content]="question.body"></mathjax>
-            </span>
-          </h5>
-          <br>
-          <div class="col-lg-6 col-12 mx-auto">
-            <input type="text" [(ngModel)]="question.input" id="input" class="form-control" />
+        @if (question.type == 3) {
+          <div>
+            <h5 class="ps-1 d-flex">
+              {{ question.number }}.
+              <span class="ps-50">
+                          <mathjax [content]="question.body"></mathjax>
+                        </span>
+            </h5>
+            <br>
+            <div class="col-lg-6 col-12 mx-auto">
+              <input type="text" [(ngModel)]="question.input" id="input" class="form-control"/>
+            </div>
           </div>
-        </div>
+        }
 
-        <div *ngIf="question.type == 4">
-          <h5 class="pl-1 d-flex">
-            {{ question.number }}.
-            <span class="pl-50 question-body">
-              <mathjax [content]="question.body"></mathjax>
-            </span>
-          </h5>
-        
-          <div class="row">
-            <div class="col">
-              <ul class="list-group" dragula="basic-list-group-1" [(dragulaModel)]="conformityGroupOne" id="basic-list-group-1">
-                <li class="bg-gradient-primary list-group-item draggable" *ngFor="let option of conformityGroupOne">
-                  <div class="row justify-content-between">
-                    <div class="pl-1">
+        @if (question.type == 4) {
+          <div>
+            <h5 class="ps-1 d-flex">
+              {{ question.number }}.
+              <span class="ps-50 question-body">
+                <mathjax [content]="question.body"></mathjax>
+              </span>
+            </h5>
+            <div class="row">
+              <div class="col">
+                <ul class="list-group" dragula="basic-list-group-1" [(dragulaModel)]="conformityGroupOne"
+                    id="basic-list-group-1">
+                  @for (option of conformityGroupOne;track option) {
+                    <li class="bg-gradient-primary list-group-item draggable">
+                      <div class="row justify-content-between">
+                        <div class="ps-1">
+                          {{ option }}
+                        </div>
+                        <div class="pe-1">
+                          <i class="text-primary" data-feather="arrow-right"></i>
+                        </div>
+                      </div>
+                    </li>
+                  }
+                </ul>
+              </div>
+              <div class="col">
+                <ul class="list-group" dragula="basic-list-group-2" [(dragulaModel)]="conformityGroupTwo"
+                    id="basic-list-group-2">
+                  @for (option of conformityGroupTwo;track option) {
+                    <li class="bg-gradient-primary list-group-item draggable">
+                      <i class="text-white" data-feather="arrow-left"></i>
                       {{ option }}
-                    </div>
-                    <div class="pr-1">
-                      <i class="text-primary" data-feather="arrow-right"></i>
-                    </div>
-                  </div>
-        
-                </li>
-              </ul>
+                    </li>
+                  }
+                </ul>
+              </div>
             </div>
-            <div class="col">
-              <ul class="list-group" dragula="basic-list-group-2" [(dragulaModel)]="conformityGroupTwo" id="basic-list-group-2">
-                <li class="bg-gradient-primary list-group-item draggable" *ngFor="let option of conformityGroupTwo">
-                  <i class="text-white" data-feather="arrow-left"></i>
-                  {{ option }}
-                </li>
+          </div>
+        }
+
+        @if (question.type == 5) {
+          <div>
+            <h5 class="ps-1 d-flex">
+              {{ question.number }}.
+              <span class="ps-50 question-body">
+                <mathjax [content]="question.body"></mathjax>
+              </span>
+            </h5>
+            <br>
+            <div class="col-lg-6 col-12 mx-auto">
+              <ul class="list-group" dragula="basic-list-group-3" [(dragulaModel)]="orderingList"
+                  id="basic-list-group-3">
+                @for (option of orderingList;track option) {
+                  <li class="bg-gradient-primary list-group-item draggable">
+                    <div class="row justify-content-between">
+                      <div class="ps-1">
+                        {{ option }}
+                      </div>
+                      <div class="pe-1">
+                        <i class="text-primary" data-feather="arrow-right"></i>
+                      </div>
+                    </div>
+                  </li>
+                }
               </ul>
             </div>
           </div>
-        </div>
+        }
 
-        <div *ngIf="question.type == 5">
-          <h5 class="pl-1 d-flex">
-            {{ question.number }}.
-            <span class="pl-50 question-body">
-              <mathjax [content]="question.body"></mathjax>
-            </span>
-          </h5>
-          <br>
-          <div class="col-lg-6 col-12 mx-auto">
-            <ul class="list-group" dragula="basic-list-group-3" [(dragulaModel)]="orderingList" id="basic-list-group-3">
-              <li class="bg-gradient-primary list-group-item draggable" *ngFor="let option of orderingList">
-                <div class="row justify-content-between">
-                  <div class="pl-1">
-                    {{ option }}
-                  </div>
-                  <div class="pr-1">
-                    <i class="text-primary" data-feather="arrow-right"></i>
-                  </div>
+        @if (question.type == 6) {
+          <div>
+            <h5 class="ps-1 d-flex">
+              {{ question.number }}.
+              <span class="ps-50" mathjax [innerHTML]="question.body"></span>
+            </h5>
+            <br>
+            {{ classificationGroups | json }}
+            <div class="col-lg-6 col-12 mx-auto">
+              @for (group of classificationGroups; track group; let i = $index) {
+                <div>
+                  <li class="list-group-item">
+                    {{ group.key }}
+                  </li>
+                  <ul class="list-group" dragula="basic-list-group-3" [(dragulaModel)]="group.values" id="basic-list-group-{{i}}">
+                    @for (option of group.values; track option) {
+                      <li class="bg-gradient-primary list-group-item draggable">
+                        <div class="row justify-content-between">
+                          <div class="ps-1">
+                            {{ option }}
+                          </div>
+                          <div class="pe-1">
+                            <i class="text-primary" data-feather="arrow-right"></i>
+                          </div>
+                        </div>
+                      </li>
+                    }
+                  </ul>
                 </div>
-      
-              </li>
-            </ul>
+              }
+            </div>
           </div>
-        </div>
+        }
 
-        <div *ngIf="question.type == 7">
-          <h5 class="pl-1 d-flex">
-            {{ question.number }}.
-            <span class="pl-50" mathjax [innerHTML]="question.body"></span>
-          </h5>
-          <br>
-          <div style="height: 250px;">
-            <monaco-editor
-              class="mt-1"
-              [(ngModel)]="question.input"
-              [ngModelOptions]="{standalone: true}"
-              [lang]="'py'">
-            </monaco-editor>
+        @if (question.type == 7) {
+          <div>
+            <h5 class="ps-1 d-flex">
+              {{ question.number }}.
+              <span class="ps-50" mathjax [innerHTML]="question.body"></span>
+            </h5>
+            <br>
+            <div style="height: 250px;">
+              <monaco-editor
+                class="mt-1"
+                [(ngModel)]="question.input"
+                [ngModelOptions]="{standalone: true}"
+                [lang]="'py'">
+              </monaco-editor>
+            </div>
           </div>
-        </div>
+        }
       </div>
 
-      <div class="card-footer text-right">
-        <button type="submit" (click)="answerSubmit()" class="mb-2 mt-2 btn text-white bg-chapter-{{ test.chapterId }}" rippleEffect>
+      <div class="card-footer text-end">
+        <button (click)="answerSubmit()" class="mb-2 mt-2 btn text-white bg-chapter-{{ test.chapterId }}" rippleEffect
+                type="submit">
           <i data-feather="check"></i> {{ 'TestQuestionAnswer' | translate }}
         </button>
       </div>
     </div>
   </div>
 
-    
+
   <div class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">
-    <div [@fadeInRight]="startAnimationState" class="card bg-gradient-chapter-{{ test.chapterId }}">
+    <div [@fadeInRight]="startAnimationState" class="card bg-chapter-{{ test.chapterId }}">
       <div class="card-body mt-1">
-        <ngx-countdown [time]="leftTime" [render]="render" format="HH:mm:ss" (finish)="testPassFinish()">
+        <ngx-countdown (finish)="testPassFinish()" [render]="render" [time]="leftTime" format="HH:mm:ss">
           <ng-template #render let-data>
             <div class="d-flex justify-content-between">
               <div class="countdown text-center">
@@ -161,7 +218,7 @@
               </div>
 
               <div class="countdown text-center">
-                <h5 class="clock-val text-white" >{{ data.fragments[1] }}</h5>
+                <h5 class="clock-val text-white">{{ data.fragments[1] }}</h5>
                 <h5 class="text-white clock-text">{{ 'MINUTE' | translate }}</h5>
               </div>
 
@@ -181,24 +238,25 @@
           {{ 'Questions' | translate }}
         </h4>
         <hr class="mb-2">
-        <button
-          (click)="answerSubmit();changeQuestion(_question.number-1)"
-          rippleEffect
-          class="btn btn-sm btn-question"
-          *ngFor="let _question of questions"
-          [ngClass]="{
-            'btn-relief-success': _question.number == question.number,
-            'btn-outline-success': _question.number != question.number && _question.answered,
-            'btn-outline-dark': _question.number != question.number && !_question.answered
-          }">
-          <span >
-            {{ _question.number }}
-          </span>
-        </button>
+        @for (_question of questions;track _question) {
+          <button
+            (click)="answerSubmit();changeQuestion(_question.number-1)"
+            rippleEffect
+            class="btn btn-sm btn-question"
+            [ngClass]="{
+              'btn-success': _question.number == question.number,
+              'btn-outline-success': _question.number != question.number && _question.answered,
+              'btn-outline-secondary': _question.number != question.number && !_question.answered
+            }">
+              <span>
+                {{ _question.number }}
+              </span>
+          </button>
+        }
       </div>
 
       <div class="card-footer text-center">
-        <button class="btn round btn-sm btn-relief-dark" (click)="testPassFinish()">
+        <button (click)="testPassFinish()" class="btn btn-block btn-sm btn-primary">
           {{ 'FinishTest' | translate }}
         </button>
       </div>

@@ -1,35 +1,42 @@
-@import 'scss/base/bootstrap-extended/variables';
-@import 'bootstrap/scss/mixins/dark-layout';
-@import 'bootstrap/scss/mixins/breakpoints';
+@import 'styles/kep-imports';
+@import 'scss/variables';
 
-@import 'scss/variables.scss';
+app-tournaments .ki-duotone {
+  color: $tournaments-color !important;
 
-.tournaments-page-top:before {
-  content: "";
-  position: absolute;
-  top: -150px;
-  margin-left: -2rem;
-  width: calc(100% + 2rem);
-  z-index: -1;
-  height: 650px;
-  background: $tournaments-bg;  
-}
-
-.tournaments-icon {
-  background: $tournaments-color;
-  box-shadow: 0 0 10px $tournaments-color;
-}
-
-::ng-deep .dark-layout .tournaments-page-top:before {
-  background: $tournaments-bg-dark;
-}
-
-@include media-breakpoint-down(lg) {
-  .tournaments-page-top:before {
-    width: calc(100% + 1.2rem);
+  @include dark-layout {
+    color: $tournaments-color !important;
   }
 }
 
-::ng-deep .dark-layout .card.card-info {
-  box-shadow: 0px 4px 24px 0 rgba(255, 255, 255, 0.1) !important;
+.tournaments-section-header {
+  .card {
+    background: $tournaments-bg;
+
+    @include dark-layout {
+      background: $tournaments-bg-dark !important;
+    }
+  }
+
+  .btn {
+    border: none;
+    background: $tournaments-color !important;
+
+    @include dark-layout {
+      background-color: #08073a !important;
+    }
+  }
+
+  .useful-links {
+    display: flex;
+    margin-bottom: 2rem;
+
+    .btn {
+      width: 100%;
+
+      @include dark-layout {
+        background: $tournaments-bg-dark !important;
+      }
+    }
+  }
 }

@@ -1,0 +1,38 @@
+<!-- Modal -->
+<div class="modal-header">
+  <h4 class="modal-title" id="myModalLabel1">{{ 'Login' | translate }}</h4>
+  <button type="button" (click)="close()" class="btn-close" aria-label="Close">
+    
+  </button>
+</div>
+<div class="modal-body" tabindex="0" ngbAutofocus>
+  <form [formGroup]="loginForm" novalidate (ngSubmit)="login()">
+    <label>{{ 'Username' | translate }}: </label>
+    <div class="mb-1">
+      <input name="username" type="text" placeholder="{{ 'Username' | translate }}" class="form-control" formControlName="username" />
+    </div>
+    <label>{{ 'Password' | translate }}: </label>
+    <div class="mb-1">
+      <input name="password" type="password" placeholder="{{ 'Password' | translate }}" class="form-control" formControlName="password" />
+    </div>
+    <div class="modal-footer">
+      <button type="submit" [disabled]="loginForm.invalid" class="btn btn-block btn-primary" rippleEffect>
+        {{ 'Login' | translate }}
+      </button>
+    </div>
+
+    <div class="divider my-2">
+      <div class="divider-text">{{ 'or' | translate }}</div>
+    </div>
+    <div class="auth-footer-btn d-flex justify-content-center">
+      <a class="btn btn-google btn-sm" style="margin-right: 1rem;" href="/login/google-oauth2/">
+        <i data-feather="mail"></i>
+      </a>
+      <a class="btn btn-github btn-sm" href="/login/github/">
+        <i data-feather="github"></i>
+      </a>
+    </div>
+
+  </form>
+</div>
+<!-- / Modal -->

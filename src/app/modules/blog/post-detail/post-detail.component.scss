@@ -1,76 +1,14 @@
-@import 'bootstrap/scss/mixins';
-@import 'bootstrap/scss/mixins/dark-layout';
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
-
-
-::ng-deep {
-  .post-detail-page {
-    @include dark-layout {
-      .post-header {
-        .post-title {
-          color: #fff !important;
-        }
-      }
-
-      .post-content {
-        p {
-          color: #fff !important;
-        }
-      }
-    }
-
-    .post-detail-page-top {
-      @include dark-layout {
-        background: linear-gradient(to right, #15171c, #15171c);
-      }
-
-      path {
-        fill: #f5f8fa;
-
-        @include dark-layout {
-          fill: #0f1014 !important;
-        }
-      }
-    }
-  }
-}
-
-
-.post-detail-page-top {
-  position: absolute;
-  height: 650px;
-  margin-left: -2rem;
-  width: calc(100% + 2rem);
-  top: -80px;
-  background: linear-gradient(to right, #eef2f3, #8e9eab);
-
-  & > svg {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: auto;
-  }
-}
-
-@include media-breakpoint-down(lg) {
-  .post-detail-page-top {
-    width: calc(100% + 1.2rem);
-  }
-}
+@import 'styles/kep-imports';
 
 .post-header {
   display: grid;
   grid-template-columns: 2fr 1fr;
   max-width: 1280px;
   margin: auto;
-  align-items: center;
-  padding: 0 10rem;
-  padding-top: 5rem;
 
   .post-title {
+    margin-top: 2rem;
     z-index: 1;
-    color: #2a2a2a;
     display: flex;
     flex-direction: column;
     font-size: 3rem;
@@ -113,7 +51,7 @@
 @include media-breakpoint-down(md) {
   .post-header {
     grid-template-columns: 1fr 1fr;
-    padding: 0 4rem;
+    padding: 0;
 
     .post-title {
       font-size: 2rem;
@@ -162,7 +100,7 @@
 
 ::ng-deep .post-content {
   z-index: 1;
-  padding: 14rem 20rem 0rem 20rem;
+  padding: 0rem 20rem 0rem 20rem;
 
   p {
     color: #404041;

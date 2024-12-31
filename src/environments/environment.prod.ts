@@ -3,4 +3,8 @@ export const environment = {
   hmr: false,
   apiUrl: 'https://kep.uz',
   wsUrl: 'wss://kep.uz/ws/',
+  superAdmin: {
+    username: '',
+    password: '',
+  },
 };

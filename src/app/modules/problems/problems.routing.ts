@@ -1,7 +1,7 @@
 import { Route } from '@angular/router';
 import { ProblemResolver, StudyPlanResolver } from '@problems/problems.resolver';
 import { AttemptGuard, ProblemGuard } from '@problems/problems.guard';
-import { AuthGuard } from '@auth/helpers';
+import { AuthGuard } from '@auth';
 
 export default [
   {

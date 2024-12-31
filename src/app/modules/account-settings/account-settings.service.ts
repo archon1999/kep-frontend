@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
-import { AuthService } from 'app/auth/service';
-import { UserEducation, UserGeneralInfo, UserInfo, UserSkills, UserSocial, UserTechnology, UserWorkExperience } from '../users/users.models';
+import { AuthService } from '@auth';
+import { UserEducation, UserGeneralInfo, UserInfo, UserSkills, UserSocial, UserTechnology, UserWorkExperience } from '@users/users.models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountSettingsService {
-
   currentUser = this.authService.currentUserValue;
 
   constructor(
@@ -15,70 +14,80 @@ export class AccountSettingsService {
     public authService: AuthService,
   ) { }
 
-  getUserGeneralInfo(){
-    return this.api.get(`users/${this.currentUser.username}/general-info/`);
-  }
-  
-  updateUserGeneralInfo(generalInfo: UserGeneralInfo){
-    return this.api.post(`users/${this.currentUser.username}/general-info/`, generalInfo);
+  getUserGeneralInfo() {
+    return this.api.get(`users/${ this.currentUser.username }/general-info/`);
   }
 
-  getUserInfo(){
-    return this.api.get(`users/${this.currentUser.username}/info`);
+  updateUserGeneralInfo(generalInfo: UserGeneralInfo) {
+    return this.api.post(`users/${ this.currentUser.username }/general-info/`, generalInfo);
   }
 
-  updateUserInfo(info: UserInfo){
-    return this.api.post(`users/${this.currentUser.username}/info/`, info);
+  getUserInfo() {
+    return this.api.get(`users/${ this.currentUser.username }/info`);
   }
 
-  getUserSkills(){
-    return this.api.get(`users/${this.currentUser.username}/skills`);
+  updateUserInfo(info: UserInfo) {
+    return this.api.post(`users/${ this.currentUser.username }/info/`, info);
   }
 
-  updateUserSkills(userSkills: UserSkills){
-    return this.api.post(`users/${this.currentUser.username}/skills`, userSkills);
+  getUserSkills() {
+    return this.api.get(`users/${ this.currentUser.username }/skills`);
   }
 
-  getUserSocial(){
-    return this.api.get(`users/${this.currentUser.username}/social`);
+  updateUserSkills(userSkills: UserSkills) {
+    return this.api.post(`users/${ this.currentUser.username }/skills`, userSkills);
   }
 
-  updateUserSocial(userSocial: UserSocial){
-    return this.api.post(`users/${this.currentUser.username}/social`, userSocial);
+  getUserSocial() {
+    return this.api.get(`users/${ this.currentUser.username }/social`);
   }
 
-  getUserTechnologies(){
-    return this.api.get(`users/${this.currentUser.username}/technologies`);
+  updateUserSocial(userSocial: UserSocial) {
+    return this.api.post(`users/${ this.currentUser.username }/social`, userSocial);
   }
 
-  updateUserTechnologies(userTechnologies: Array<UserTechnology>){
-    return this.api.post(`users/${this.currentUser.username}/technologies`, userTechnologies);
+  getUserTechnologies() {
+    return this.api.get(`users/${ this.currentUser.username }/technologies`);
   }
 
-  getUserEducations(){
-    return this.api.get(`users/${this.currentUser.username}/educations`);
+  updateUserTechnologies(userTechnologies: Array<UserTechnology>) {
+    return this.api.post(`users/${ this.currentUser.username }/technologies`, userTechnologies);
   }
 
-  updateUserEducations(userEducations: Array<UserEducation>){
-    return this.api.post(`users/${this.currentUser.username}/educations`, userEducations);
+  getUserEducations() {
+    return this.api.get(`users/${ this.currentUser.username }/educations`);
   }
 
-  getUserWorkExperiences(){
-    return this.api.get(`users/${this.currentUser.username}/work-experiences/`);
-  }
-  
-  updateUserWorkExperiences(userWorkExperiences: Array<UserWorkExperience>){
-    return this.api.post(`users/${this.currentUser.username}/work-experiences`, userWorkExperiences);
-  }
-  
-  changePassword(oldPassowrd: string, newPassword: string){
-    let data = {'oldPassword': oldPassowrd, 'newPassword': newPassword}
-    return this.api.post(`users/${this.currentUser.username}/change-password/`, data);
-  }
-  
-  getUserTeams(){
-    return this.api.get(`users/${this.currentUser.username}/teams/`);
-    return this.api.get(`users/MDSPro/teams/`);
+  updateUserEducations(userEducations: Array<UserEducation>) {
+    return this.api.post(`users/${ this.currentUser.username }/educations`, userEducations);
   }
 
+  getUserWorkExperiences() {
+    return this.api.get(`users/${ this.currentUser.username }/work-experiences/`);
+  }
+
+  updateUserWorkExperiences(userWorkExperiences: Array<UserWorkExperience>) {
+    return this.api.post(`users/${ this.currentUser.username }/work-experiences`, userWorkExperiences);
+  }
+
+  changePassword(oldPassowrd: string, newPassword: string) {
+    const data = { 'oldPassword': oldPassowrd, 'newPassword': newPassword };
+    return this.api.post(`users/${ this.currentUser.username }/change-password/`, data);
+  }
+
+  getUserTeams() {
+    return this.api.get(`user-teams/`);
+  }
+
+  createTeam(name: string) {
+    return this.api.post('user-teams', { name });
+  }
+
+  joinTeam(teamCode: string) {
+    return this.api.post(`user-teams/${ teamCode }/join/`);
+  }
+
+  refreshTeamCode(teamCode: string) {
+    return this.api.post(`user-teams/${ teamCode }/refresh-code/`);
+  }
 }

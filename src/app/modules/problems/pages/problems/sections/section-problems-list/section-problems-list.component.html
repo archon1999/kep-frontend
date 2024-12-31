@@ -10,20 +10,26 @@
       </div>
     }
   </div>
+  @if (problems?.length == 0) {
+    <div class="pb-2">
+      <empty-result/>
+    </div>
+  }
 }
 
 <div class="mb-2">
-  <kep-pagination
-    *ngIf="total"
-    [collectionSize]="total"
-    [pageOptions]="pageOptions"
-    [(page)]="pageNumber"
-    [pageSize]="pageSize"
-    [maxSize]="maxSize"
-    [rotate]="true"
-    [boundaryLinks]="false"
-    [ellipses]="true"
-    (pageSizeChange)="pageSizeChange($event)"
-    (pageChange)="pageChange($event)">
-  </kep-pagination>
+  @if (total) {
+    <kep-pagination
+      [collectionSize]="total"
+      [pageOptions]="pageOptions"
+      [(page)]="pageNumber"
+      [pageSize]="pageSize"
+      [maxSize]="maxSize"
+      [rotate]="true"
+      [boundaryLinks]="false"
+      [ellipses]="true"
+      (pageSizeChange)="pageSizeChange($event)"
+      (pageChange)="pageChange($event)">
+    </kep-pagination>
+  }
 </div>

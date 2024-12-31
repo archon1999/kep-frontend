@@ -1,5 +1,5 @@
-import { BaseConfig } from "../../basic/base-config";
-import { AbstractControl } from "@angular/forms";
+import { BaseConfig } from '../../basic/base-config';
+import { AbstractControl } from '@angular/forms';
 
 export interface CustomConfig extends BaseConfig {
   fn: (control: AbstractControl) => boolean;

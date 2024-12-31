@@ -3,7 +3,17 @@
 ::ng-deep .user-popover .popover-body {
   padding: 0px !important;
   width: 400px !important;
+  @include dark-layout {
+    box-shadow: none !important;
+    border: none !important;
+    background-color: $theme-dark-body-bg;
 
+    .card {
+      background-color: $theme-dark-body-bg;
+      box-shadow: none !important;
+      border: none !important;
+    }
+  }
   @include media-breakpoint-down(sm){
     width: 320px !important;
     // zoom: 80% !important;

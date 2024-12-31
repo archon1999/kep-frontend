@@ -4,9 +4,11 @@
     <h4 class="card-title mb-sm-0 mb-1">{{ 'NumberAttemptsSolve' | translate }}</h4>
   </div>
   <div class="card-body">
-    <div *ngIf="numberOfAttemptsForSolve">
-      <apex-chart [options]="numberOfAttemptsForSolveChart">
-      </apex-chart>
-    </div>
+    @if (numberOfAttemptsForSolve) {
+      <div>
+        <apex-chart [options]="numberOfAttemptsForSolveChart">
+        </apex-chart>
+      </div>
+    }
   </div>
 </div>

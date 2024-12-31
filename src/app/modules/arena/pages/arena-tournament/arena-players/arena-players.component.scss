@@ -1,0 +1,11 @@
+.player-results span {
+  font-family: Inconsolata, serif !important;
+  margin-right: 0.25rem;
+  display: inline-block;
+}
+
+arena-players {
+  th:not(:first-child):not(:last-child), td:not(:first-child):not(:last-child) {
+    padding: 0.72rem 0 !important;
+  }
+}

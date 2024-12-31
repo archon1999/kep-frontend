@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'app/shared/services/api.service';
-import { AuthService } from 'app/auth/service';
+import { AuthService } from '@auth';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -30,7 +30,7 @@ export class KepcoinSpendSwalComponent {
       Swal.fire({
         icon: 'error',
         title: translations['NotEnoughKepcoin'],
-        html: `<img height="25" src="assets/images/icons/kepcoin.webp"> ${ this.value }`,
+        html: `<img height="25" src="assets/images/icons/kepcoin.png"> ${ this.value }`,
         customClass: {
           confirmButton: 'btn btn-success'
         }
@@ -38,17 +38,17 @@ export class KepcoinSpendSwalComponent {
     } else {
       Swal.fire({
         title: translations['WantToBuy'],
-        html: `<img height="25" src="assets/images/icons/kepcoin.webp"> ${ this.value }`,
+        html: `<img height="25" src="assets/images/icons/kepcoin.png"> ${ this.value }`,
         text: 'You won\'t be able to revert this!',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: 'var(--primary)',
-        cancelButtonColor: 'var(--danger)',
+        confirmButtonColor: 'var(--bs-primary)',
+        cancelButtonColor: 'var(--bs-danger)',
         cancelButtonText: translations['Cancel'],
         confirmButtonText: translations['Purchase'],
         customClass: {
           confirmButton: 'btn btn-relief-primary',
-          cancelButton: 'btn btn-relief-danger ml-1'
+          cancelButton: 'btn btn-relief-danger ms-1'
         }
       }).then((result) => {
         if (result.value) {

@@ -1,5 +1,5 @@
-import { FormControl, ValidatorFn } from "@angular/forms";
-import { LengthConfig } from "./length.config";
+import { FormControl, ValidatorFn } from '@angular/forms';
+import { LengthConfig } from './length.config';
 
 export function lengthValidator(config: LengthConfig): ValidatorFn {
   return (control: FormControl) => {

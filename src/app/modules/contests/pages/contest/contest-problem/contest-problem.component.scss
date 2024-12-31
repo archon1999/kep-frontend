@@ -24,10 +24,11 @@
   position: fixed;
   right: 2rem;
   bottom: 5%;
+  z-index: 1000;
 }
 
 .bg-light {
-  background-color: var(--bg-light);
+  background-color: var(--bg-light) !important;
 }
 
 ::ng-deep .dark-layout .contests-colors .bg-light {
@@ -39,7 +40,7 @@
   border: none;
   border-radius: 10px;
   margin-bottom: 1rem;
-  width: calc(100% - 7rem);
+  width: calc(100% - 8rem);
 
   position: fixed;
   left: 2rem;

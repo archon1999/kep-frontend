@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { UserSkills, UserTechnology } from '@users/users.models';
 import { ActivatedRoute } from '@angular/router';
 import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
@@ -9,10 +9,9 @@ import { TranslateModule } from '@ngx-translate/core';
   selector: 'user-skills',
   standalone: true,
   imports: [
-    CommonModule,
     NgbProgressbarModule,
-    TranslateModule,
-  ],
+    TranslateModule
+],
   templateUrl: './user-skills.component.html',
   styleUrl: './user-skills.component.scss'
 })

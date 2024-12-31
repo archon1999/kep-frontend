@@ -1,5 +1,5 @@
-import { FormControl, ValidatorFn } from "@angular/forms";
-import { MinLengthConfig } from "./min-length.config";
+import { FormControl, ValidatorFn } from '@angular/forms';
+import { MinLengthConfig } from './min-length.config';
 
 export function minLengthValidator(config: MinLengthConfig): ValidatorFn {
   return (control: FormControl) => {

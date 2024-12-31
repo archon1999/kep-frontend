@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { User } from 'app/auth/models';
-import { AuthService } from 'app/auth/service';
+import { AuthService, User } from '@auth';
 import { UserInfo } from '@users/users.models';
 import { ToastrService } from 'ngx-toastr';
 import { AccountSettingsService } from '../account-settings.service';
@@ -10,7 +9,8 @@ import { NgxCountriesService } from '@shared/third-part-modules/ngx-countries/ng
 @Component({
   selector: 'information',
   templateUrl: './information.component.html',
-  styleUrls: ['./information.component.scss']
+  styleUrls: ['./information.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class InformationComponent implements OnInit {
   public userInfo: UserInfo;
@@ -62,8 +62,8 @@ export class InformationComponent implements OnInit {
     });
   }
 
-  onDateChange() {
-    const date = this.birthDate[0];
+  onDateChange(event) {
+    const date = event;
     this.userInfo.dateOfBirth = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
   }
 

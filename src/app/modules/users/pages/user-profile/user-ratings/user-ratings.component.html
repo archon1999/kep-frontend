@@ -10,15 +10,15 @@
         {{ 'Problems' | translate }}
         <br>
         <div class="font-medium-4 mt-2">
-          <span class="mr-50" ngbTooltip="{{ 'Solved' | translate }}">
-            <kep-icon name="check-circle"></kep-icon>
-            {{ userProblemsRating.solved }}
-          </span>
+            <span class="me-50" ngbTooltip="{{ 'Solved' | translate }}">
+              <kep-icon name="check-circle"></kep-icon>
+              {{ userProblemsRating.solved }}
+            </span>
 
           <span ngbTooltip="{{ 'Rating' | translate }}">
-            <kep-icon name="rating"></kep-icon>
+              <kep-icon name="rating"></kep-icon>
             {{ userProblemsRating.rating }}
-          </span>
+            </span>
         </div>
 
         <div class="font-small-4 d-md-flex d-block justify-content-between">
@@ -54,36 +54,36 @@
     <div class="text-center font-medium-1 mt-1">
       <i [data-feather]="'rating' | iconName"></i>
       {{ 'Rating' | translate }}:
-      <span class="ml-50 badge badge-light-{{ userContestsRating.rating | contestsRatingColor }}">
-        {{ userContestsRating.rating }}
-      </span>
+      <span class="ms-50 badge badge-light-{{ userContestsRating.rating | contestsRatingColor }}">
+                {{ userContestsRating.rating }}
+              </span>
       <contests-rating-image [size]="24" [title]="userContestsRating.ratingTitle"></contests-rating-image>
     </div>
 
     <div class="text-center font-medium-1 mt-50">
       <i [data-feather]="'rating' | iconName"></i>
       {{ 'MaxRating' | translate }}:
-      <span class="ml-50 badge badge-light-{{ userContestsRating.maxRating | contestsRatingColor }}">
-        {{ userContestsRating.maxRating }}
-      </span>
+      <span class="ms-50 badge badge-light-{{ userContestsRating.maxRating | contestsRatingColor }}">
+                {{ userContestsRating.maxRating }}
+              </span>
       <contests-rating-image [size]="24" [title]="userContestsRating.maxRatingTitle"></contests-rating-image>
     </div>
 
     <div class="text-center font-medium-1 mt-50">
       <i [data-feather]="'flag'"></i>
       {{ 'Contests' | translate }}:
-      <span class="ml-50 badge badge-light-primary">
+      <span class="ms-50 badge badge-light-primary">
         {{ userContestsRating.contestantsCount }}
       </span>
     </div>
 
     <div>
-      <apex-chart
-        *ngIf="contestRatingChangesChart && contestRatingChangesChart.series[0].data.length > 0"
-        [options]="contestRatingChangesChart">
-      </apex-chart>
+      @if (contestRatingChangesChart && contestRatingChangesChart.series[0].data.length > 0) {
+        <apex-chart
+          [options]="contestRatingChangesChart">
+        </apex-chart>
+      }
     </div>
-
   </div>
 </div>
 
@@ -103,7 +103,8 @@
 
     <div class="text-center mt-1">
       <div class="text-{{ userChallengesRating.rankTitle | challengesRankColor }}">
-        <span class="badge badge-pill badge-glow badge-{{ userChallengesRating.rankTitle | challengesRankColor }}">
+        <span
+          class="badge badge-pill badge-glow badge-{{ userChallengesRating.rankTitle | challengesRankColor }}">
           {{ userChallengesRating.rankTitle }}
         </span>
 
@@ -115,18 +116,19 @@
       <div class="font-medium-4 mt-1">
         <span class="text-success font-medium-2" ngbTooltip="{{ 'Wins' | translate }}">W</span>
         {{ userChallengesRating.wins }}
-        <span class="ml-50 text-secondary font-medium-2" ngbTooltip="{{ 'Draws' | translate }}">D</span>
+        <span class="ms-50 text-secondary font-medium-2" ngbTooltip="{{ 'Draws' | translate }}">D</span>
         {{ userChallengesRating.draws }}
-        <span class="ml-50 text-danger font-medium-2" ngbTooltip="{{ 'Losses' | translate }}">L</span>
+        <span class="ms-50 text-danger font-medium-2" ngbTooltip="{{ 'Losses' | translate }}">L</span>
         {{ userChallengesRating.losses }}
       </div>
     </div>
 
     <div class="mt-1">
-      <apex-chart
-        *ngIf="challengesRatingChangesChart && challengesRatingChangesChart.series[0].data.length > 0"
-        [options]="challengesRatingChangesChart">
-      </apex-chart>
+      @if (challengesRatingChangesChart && challengesRatingChangesChart.series[0].data.length > 0) {
+        <apex-chart
+          [options]="challengesRatingChangesChart">
+        </apex-chart>
+      }
     </div>
   </div>
 </div>

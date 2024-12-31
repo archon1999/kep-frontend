@@ -1,36 +1,40 @@
 <div class="card">
   <div class="card-header">
-    <h4><strong>{{ 'BirthDays' | translate }}</strong></h4>
+    <div class="card-title">
+      {{ 'BirthDays' | translate }}
+    </div>
   </div>
 
-  <div class="item" *ngIf="skeletonVisible">
-    <ngx-skeleton-loader
-      count="5"
-      animation="pulse"
-      appearance="line"
-      [theme]="{height: '70px', background: 'var(--skeleton-color)'}"
-    ></ngx-skeleton-loader>
-  </div>
+  @if (skeletonVisible) {
+    <div class="item">
+      <ngx-skeleton-loader
+        count="5"
+        animation="pulse"
+        appearance="line"
+        [theme]="{height: '70px', background: 'var(--skeleton-color)'}"
+      ></ngx-skeleton-loader>
+    </div>
+  }
 
   <div class="media-list">
-    <div class="media" *ngFor="let birthDay of birthDays">
-      <a class="media-left" href="javascript:void(0)">
-        <img
-          class="media-object rounded-circle"
-          src="{{ birthDay.avatar }}"
-          alt="Avatar"
-          height="48"
-          width="48"
-        />
-      </a>
-      <div class="media-body">
-        <h5 class="media-heading">
-          <user-popover [username]="birthDay.username"></user-popover>
-        </h5>
-        <span class="badge badge-light-primary">
-          {{ birthDay.date }}
-        </span>
+    @for (birthDay of birthDays; track birthDay) {
+      <div class="media">
+        <div class="media-left">
+          <img
+            class="media-object rounded-circle"
+            src="{{ birthDay.avatar }}"
+            alt="Avatar"
+            height="48"
+            width="48"
+          />
+        </div>
+        <div class="media-body text-dark">
+          <h5 class="media-heading">
+            <user-popover [username]="birthDay.username"/>
+          </h5>
+          ({{ birthDay.date | localizedDate:'mediumDate' }})
+        </div>
       </div>
-    </div>
+    }
   </div>
 </div>

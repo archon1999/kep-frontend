@@ -1,40 +1,19 @@
-<div class="auth-wrapper auth-v2">
-  <div class="auth-inner row m-0">
-    <!-- Brand logo--><a class="brand-logo" href="javascript:void(0);">
-      <img src="{{ coreConfig.app.appLogoImage }}" alt="brand-logo" height="28" />
-      <h2 class="brand-text text-primary ml-1"> {{ coreConfig.app.appTitle }}</h2></a
-    >
-    <!-- /Brand logo-->
-    <!-- Left Text-->
-    <div class="d-none d-lg-flex col-lg-8 align-items-center p-5">
-      <div class="w-100 d-lg-flex align-items-center justify-content-center px-5">
-        <img
-          class="img-fluid"
-          [src]="
-            coreConfig.layout.skin === 'dark'
-              ? 'assets/images/pages/login-v2-dark.svg'
-              : 'assets/images/pages/login-v2.svg'
-          "
-          alt="Login V2"
-        />
-      </div>
-    </div>
-    <!-- /Left Text-->
-    <!-- Login-->
-    <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
-      <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
-        <h2 class="card-title font-weight-bold mb-1">{{ 'WelcomeToKEP' | translate }}! 👋</h2>
+<div class="auth-wrapper auth-v1 px-2">
+  <div class="auth-inner py-2">
+    <!-- Login v1 -->
+    <div class="card mb-0">
+      <div class="card-body">
+        <a href="/" class="brand-logo">
+          <img [src]="defaultCoreConfig.app.appLogoImage" alt="brand-logo" height="28"/>
+          <h2 class="brand-text text-primary ms-1">{{ defaultCoreConfig.app.appTitle }}</h2>
+        </a>
+
+        <h4 class="card-title mb-1">{{ 'WelcomeToKEP' | translate }}! 👋</h4>
         <p class="card-text mb-2">{{ 'LoginText' | translate }}</p>
 
-        <ngb-alert [type]="'danger'" [dismissible]="false" *ngIf="error">
-          <div class="alert-body">
-            <p>{{ error }}</p>
-          </div>
-        </ngb-alert>
-
         <form class="auth-login-form mt-2" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-          <div class="form-group">
-            <label class="form-label" for="login-username">{{ 'Username' | translate }}</label>
+          <div class="mb-1">
+            <label class="form-label">{{ 'Username' | translate }}</label>
             <input
               type="text"
               formControlName="username"
@@ -45,16 +24,20 @@
               autofocus=""
               tabindex="1"
             />
-            <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-              <div *ngIf="f.username.errors.required">required</div>
-            </div>
+            @if (submitted && f.username.errors) {
+              <div class="invalid-feedback">
+                @if (f.username.errors.required) {
+                  <div>required</div>
+                }
+              </div>
+            }
           </div>
-          <div class="form-group">
+          <div class="mb-1">
             <div class="d-flex justify-content-between">
-              <label for="login-password">{{ 'Password' | translate }}</label
+              <label>{{ 'Password' | translate }}</label
               >
               <!--
-                <a routerLink="/pages/authentication/forgot-password-v2"><small>Forgot Password?</small></a>
+              <a routerLink="/pages/authentication/forgot-password-v2"><small>Forgot Password?</small></a>
               -->
             </div>
             <div class="input-group input-group-merge form-password-toggle">
@@ -68,39 +51,43 @@
                 tabindex="2"
               />
               <div class="input-group-append">
-                <span class="input-group-text cursor-pointer"
-                  ><i
-                    class="feather font-small-4"
-                    [ngClass]="{
-                      'icon-eye-off': passwordTextType,
-                      'icon-eye': !passwordTextType
-                    }"
-                    (click)="togglePasswordTextType()"
-                  ></i
-                ></span>
+                      <span class="input-group-text cursor-pointer" (click)="togglePasswordTextType()">
+                        @if (passwordTextType) {
+                          <kep-icon type="duotone" name="toggle-on"></kep-icon>
+                        } @else {
+                          <kep-icon type="duotone" name="toggle-off"></kep-icon>
+                        }
+                      </span>
               </div>
             </div>
-            <div
-              *ngIf="submitted && f.password.errors"
-              class="invalid-feedback"
-              [ngClass]="{ 'd-block': submitted && f.password.errors }"
-            >
-              <div *ngIf="f.password.errors.required">required</div>
-            </div>
+            @if (submitted && f.password.errors) {
+              <div
+                class="invalid-feedback"
+                [ngClass]="{ 'd-block': submitted && f.password.errors }"
+              >
+                @if (f.password.errors.required) {
+                  <div>required</div>
+                }
+              </div>
+            }
           </div>
           <button [disabled]="loading" class="btn btn-primary btn-block" tabindex="4" rippleEffect>
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>{{ 'Login' | translate }}
+            @if (loading) {
+              <span class="spinner-border spinner-border-sm me-1"></span>
+            }{{ 'Login' | translate }}
           </button>
         </form>
+
         <div class="divider my-2">
           <div class="divider-text">{{ 'or' | translate }}</div>
         </div>
+
         <div class="auth-footer-btn d-flex justify-content-center">
-          <a class="btn btn-google" style="margin-right: 1rem;" href="/login/google-oauth2/?next=/home"><i data-feather="mail"></i></a>
-          <a class="btn btn-github" href="/login/github/?next=/home"><i data-feather="github"></i></a>
+          <a class="btn btn-google" style="margin-right: 1rem;" href="/login/google-oauth2/"><i data-feather="mail"></i></a>
+          <a class="btn btn-github" href="/login/github/"><i data-feather="github"></i></a>
         </div>
       </div>
     </div>
-    <!-- /Login-->
+    <!-- /Login v1 -->
   </div>
 </div>

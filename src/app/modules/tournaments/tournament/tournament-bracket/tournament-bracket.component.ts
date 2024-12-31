@@ -3,6 +3,7 @@ import { BracketsManager } from 'brackets-manager';
 import { Tournament } from '../../tournaments.models';
 import { InMemoryDatabase } from './memory';
 import { ScriptService } from '@shared/services/script.service';
+
 const SCRIPT_PATH = 'https://cdn.jsdelivr.net/npm/brackets-viewer/dist/brackets-viewer.min.js';
 
 function getNearestPowTwo(x: number) {

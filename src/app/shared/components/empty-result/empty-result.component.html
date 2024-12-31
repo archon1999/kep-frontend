@@ -1,4 +1,5 @@
-<div class="d-flex full-height full-width justify-content-center align-items-center">
-  <img [style.height]="imgHeight" alt="Not found" [src]="imgSrc">
-  <p class="text-center font-weight-bold font-medium-3">Hech nima topilmadi</p>
+<div class="full-height text-center my-4">
+  <kep-icon name="search-list" color="primary" class="mb-2" type="duotone"/>
+  <p class="text-center font-medium-4 text-dark">{{ title | translate }}</p>
+  <p>{{ text | translate }}</p>
 </div>

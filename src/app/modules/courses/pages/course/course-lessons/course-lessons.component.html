@@ -1,0 +1,19 @@
+<div class="mt-2 content-wrapper container-xl p-0">
+  <div class="content-body">
+    <h1 class="text-dark my-4 text-center">{{ 'Lessons' | translate }}</h1>
+
+    @if (isLoading) {
+      <div class="card" [style.height.px]="400">
+        <spinner/>
+      </div>
+    } @else {
+      <div class="row">
+        @for (lesson of data; track lesson) {
+          <div class="col-12 col-md-6 col-lg-4">
+            <lesson-card [lesson]="lesson"/>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

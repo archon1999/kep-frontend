@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
-import { CommonModule } from '@angular/common';
+
 
 const DEFAULT_OUTPUT = `1 240 75 30 0
 1 240 75 280 0
@@ -42,7 +42,7 @@ const DEFAULT_OUTPUT = `1 240 75 30 0
   styleUrls: ['./problem1870.component.scss'],
   encapsulation: ViewEncapsulation.None,
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [ReactiveFormsModule]
 })
 export class Problem1870Component implements OnInit {
 

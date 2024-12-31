@@ -11,12 +11,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { EditorComponent, MonacoEditorModule } from 'ngx-monaco-editor-v2';
-import { CoreConfigService } from 'core/services/config.service';
-import { CoreConfig } from 'core/types';
+import { CoreConfigService } from '@core/services/config.service';
+import { CoreConfig } from '@core/types';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { AttemptLangs } from 'app/modules/problems/constants';
 import { getEditorLang } from 'app/modules/problems/utils';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'monaco-editor',
@@ -31,7 +31,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './monaco-editor.component.scss',
   encapsulation: ViewEncapsulation.None,
   standalone: true,
-  imports: [MonacoEditorModule, FormsModule, CommonModule],
+  imports: [MonacoEditorModule, FormsModule],
 })
 export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnChanges, AfterViewChecked {
 
@@ -47,10 +47,6 @@ export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnCh
     minimap: {
       enabled: false,
     },
-    fontFamily: 'Inconsolata',
-    fontSize: 15,
-    roundedSelection: true,
-    tabSize: 4,
   };
   public value: string;
   public disabled: boolean;
@@ -65,8 +61,6 @@ export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnCh
   }
 
   ngOnInit() {
-    this.options.tabSize = this.tabSize;
-
     this.coreConfigService.getConfig().subscribe(
       (config: CoreConfig) => {
         this.options = {

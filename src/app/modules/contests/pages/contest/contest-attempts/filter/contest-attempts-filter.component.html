@@ -1,0 +1,54 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="card-title text-center">
+      <span class="contest-color">
+        <kep-icon name="filter" type="duotone"/>
+      </span>
+      {{ 'CONTESTS.FILTER_ATTEMPTS' | translate }}
+    </h5>
+  </div>
+
+  <div class="card-footer">
+    <form [formGroup]="form" class="form">
+      <div class="mb-1">
+        <label class="contest-color">
+          <kep-icon name="problem" size="small-2"/>
+          {{ 'PROBLEM' | translate }}
+        </label>
+        <div class="mb-1">
+          <ng-select appendTo="body" formControlName="contestProblem">
+            @for (contestProblem of contestProblems; track contestProblem) {
+              <ng-option [value]="contestProblem.symbol">
+                {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
+              </ng-option>
+            }
+          </ng-select>
+        </div>
+      </div>
+
+      <div class="mb-1">
+        <label class="contest-color">
+          <kep-icon name="verdict" size="small-2"/>
+          {{ 'VERDICT' | translate }}
+        </label>
+        <ng-select appendTo="body" formControlName="verdict">
+          @for (verdict of verdicts;track verdict) {
+            <ng-option [value]="verdict.value">{{ verdict.label }}</ng-option>
+          }
+        </ng-select>
+      </div>
+
+      @if (currentUser) {
+        <div class="mt-1 form-check">
+          <input
+            formControlName="userOnly"
+            class="form-check-input contest-bg-color"
+            id="filterOnlyUser"
+            type="checkbox"
+          />
+          <label class="form-check-label" for="filterOnlyUser">{{ 'MY_ATTEMPTS' | translate }}</label>
+        </div>
+      }
+    </form>
+  </div>
+</div>

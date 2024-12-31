@@ -1,54 +1,52 @@
-<div class="row post-detail-page">
-  <div class="col-12">
-    <div class="post-detail-page-top">
-      <svg viewBox="0 0 1440 319">
-        <path fill-opacity="1"
-          d="M0,32L48,80C96,128,192,224,288,224C384,224,480,128,576,90.7C672,53,768,75,864,96C960,117,1056,139,1152,149.3C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
-        </path>
-      </svg>
-    </div>
-
-    <div class="post-header">
-      <h1 class="post-title">{{ blogPost.title }}</h1>
-      <div class="post-image">
-        <img src="{{ blogPost.image }}" alt="post-image">
-      </div>
-      <div class="post-meta-info d-flex justify-content-between">
-        <div class="media">
-          <img src="{{ blogPost.author.avatar }}" alt="profile">
-          <div class="media-body">
-            <h5><user-popover [textColor]="'dark'" [username]="blogPost.author.username"></user-popover></h5>
-            <p>{{ blogPost.created }}</p>
-            <div class="meta-icon text-dark">
-              <i [data-feather]="'view' | iconName"></i>
-              {{ blogPost.views }}
+<div class="content-wrapper container-lg p-0">
+  <div class="content-body">
+    <div class="card">
+      <div class="card-body">
+        <div class="post-header">
+          <h1 class="post-title text-dark">{{ blogPost.title }}</h1>
+          <div class="post-image">
+            <img src="{{ blogPost.image }}" alt="post-image">
+          </div>
+          <div class="post-meta-info d-flex justify-content-between">
+            <div class="media d-flex">
+              <img src="{{ blogPost.author.avatar }}" alt="profile">
+              <div class="media-body">
+                <h5>
+                  <user-popover [textColor]="'dark'" [username]="blogPost.author.username"></user-popover>
+                </h5>
+                <p>{{ blogPost.created }}</p>
+                <div class="meta-icon text-dark">
+                  <i [data-feather]="'view' | iconName"></i>
+                  {{ blogPost.views }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="post-content">
-      <mathjax [content]="blogPost.body"></mathjax>
+    <div class="card">
+      <div class="card-body">
+        <mathjax [content]="blogPost.body"></mathjax>
+      </div>
     </div>
 
-    <div class="post-info">
-      <hr>
-      <div class="post-tags mt-1">
-        <span class="badge badge-primary mb-1" *ngFor="let tag of blogPost.tags">{{ tag }}</span>
-      </div>
-
-      <div class="post-dynamic-meta mt-1 mb-2">
-        <button class="btn btn-danger round btn-sm" (click)="like()">
-          <kep-icon class="" name="heart"></kep-icon>
-          <span class="btn-text-inner pl-1">{{ blogPost.likesCount }}</span>
-        </button>
-      </div>
-      <hr>
-
-      <comments [blogPost]="blogPost"></comments>
+    <div class="post-tags mt-1">
+      @for (tag of blogPost.tags; track tag) {
+        <span class="badge badge-primary mb-1">{{ tag }}</span>
+      }
     </div>
+
+    <div class="post-dynamic-meta mt-1 mb-2">
+      <button class="btn btn-danger round btn-sm" (click)="like()">
+        <kep-icon class="" name="heart"></kep-icon>
+        <span class="btn-text-inner ps-1">{{ blogPost.likesCount }}</span>
+      </button>
+    </div>
+
+    <comments [blogPost]="blogPost"></comments>
+
+    <quill-css></quill-css>
   </div>
 </div>
-
-<quill-css></quill-css>

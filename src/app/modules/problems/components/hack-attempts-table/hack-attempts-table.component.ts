@@ -1,15 +1,14 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { CoreConfigService } from 'core/services/config.service';
+import { CoreConfigService } from '@core/services/config.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'app/shared/services/api.service';
-import { AuthService } from 'app/auth/service';
+import { AuthService, User } from '@auth';
 import { WebsocketService } from 'app/shared/services/websocket';
 import { ToastrService } from 'ngx-toastr';
 import { ProblemsApiService } from '../../services/problems-api.service';
 import { SoundsService } from '@shared/services/sounds/sounds.service';
 import { HackAttempt, WSHackAttempt } from '@problems/models/hack-attempt.models';
-import { User } from '@auth/models';
 
 const LANG_CHANGE_EVENT = 'lang-change';
 const HACK_ATTEMPT_ADD_EVENT = 'hack-attempt-add';

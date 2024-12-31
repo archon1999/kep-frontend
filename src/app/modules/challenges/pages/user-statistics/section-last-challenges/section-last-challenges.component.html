@@ -2,11 +2,13 @@
   {{ 'LastChallenges' | translate }}
 </h3>
 
-<div *ngFor="let challenge of challenges">
-  <a [routerLink]="Resources.Challenge | resourceById:challenge.id">
-    <challenge-card [challenge]="challenge"></challenge-card>
-  </a>
-</div>
+@for (challenge of challenges; track challenge) {
+  <div>
+    <a [routerLink]="Resources.Challenge | resourceById:challenge.id">
+      <challenge-card [challenge]="challenge"></challenge-card>
+    </a>
+  </div>
+}
 
 <kep-pagination
   [(page)]="pageNumber"

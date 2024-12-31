@@ -5,8 +5,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { AuthGuard } from 'app/auth/helpers';
-import { ContentHeaderModule } from 'app/layout/components/content-header/content-header.module';
+import { AuthGuard } from '@auth';
+import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { KepcoinSpendSwalModule } from '../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
@@ -16,12 +16,11 @@ import { QuillModule } from '@shared/third-part-modules/quill/quill.module';
 import { ToastrModule } from '@shared/third-part-modules/toastr/toastr.module';
 import { AccountSettingsComponent } from './account-settings.component';
 import {
-  GeneralInfoResolver,
+  GeneralInfoResolver, TeamJoinResolver,
   UserEducationsResolver,
   UserInfoResolver,
   UserSkillsResolver,
   UserSocialResolver,
-  UserTeamsResolver,
   UserTechnologiesResolver,
   UserWorkExperiencesResolver
 } from './account-settings.resolver';
@@ -33,8 +32,11 @@ import { SkillsComponent } from './skills/skills.component';
 import { SocialComponent } from './social/social.component';
 import { TeamsComponent } from './teams/teams.component';
 import { SystemComponent } from './system/system.component';
-import { Ng2FlatpickrModule } from '@shared/third-part-modules/ng2-flatpickr/ng2-flatpickr.module';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
+import { TeamComponent } from '@app/modules/account-settings/teams/team-card/team.component';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { CalendarModule } from 'primeng/calendar';
 
 const routes: Routes = [
   {
@@ -52,10 +54,27 @@ const routes: Routes = [
       userTechnologies: UserTechnologiesResolver,
       userEducations: UserEducationsResolver,
       userWorkExperiences: UserWorkExperiencesResolver,
-      userTeams: UserTeamsResolver,
     },
     title: 'Users.AccountSettings',
-  }
+  },
+  {
+    path: ':id',
+    component: AccountSettingsComponent,
+    canActivate: [AuthGuard],
+    data: {
+      animation: 'account-settings'
+    },
+    resolve: {
+      generalInfo: GeneralInfoResolver,
+      userInfo: UserInfoResolver,
+      userSocial: UserSocialResolver,
+      userSkills: UserSkillsResolver,
+      userTechnologies: UserTechnologiesResolver,
+      userEducations: UserEducationsResolver,
+      userWorkExperiences: UserWorkExperiencesResolver,
+    },
+    title: 'Users.AccountSettings',
+  },
 ];
 
 @NgModule({
@@ -85,10 +104,13 @@ const routes: Routes = [
     NgSelectModule,
     UserPopoverModule,
     KepcoinSpendSwalModule,
-    Ng2FlatpickrModule,
     NgxCountriesModule.forRoot({
       defaultLocale: 'en',
     }),
+    TeamComponent,
+    SpinnerComponent,
+    EmptyResultComponent,
+    CalendarModule,
   ],
   providers: [
     GeneralInfoResolver,
@@ -96,7 +118,6 @@ const routes: Routes = [
     UserInfoResolver,
     UserSkillsResolver,
     UserSocialResolver,
-    UserTeamsResolver,
     UserTechnologiesResolver,
     UserWorkExperiencesResolver
   ]

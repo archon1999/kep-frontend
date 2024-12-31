@@ -1,6 +1,8 @@
 .card {
   background: var(--bg-gradient) !important;
-  box-shadow: var(--box-shadow) !important;
+  // box-shadow: var(--box-shadow) !important;
+  // border: 1px solid var(--bg);
+  border: none;
   display: flex;
   // justify-content: space-around;
   align-items: center;

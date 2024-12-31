@@ -2,7 +2,7 @@
   <div class="card-body">
     <div class="row">
       <div class="col-12">
-        <div class="form-group">
+        <div class="mb-1">
           <label for="accountTextarea">Bio</label>
           <quill-editor class="full-width" [(ngModel)]="userInfo.bio">
             <div quill-editor-toolbar>
@@ -33,28 +33,27 @@
                 <button class="ql-clean" value="ordered" type="button"></button>
               </span>
             </div>
-      
+
           </quill-editor>
 
-          <p class="text-danger" *ngIf="errors?.bio">{{ errors.bio[0] }}</p>
+          @if (errors?.bio) {
+            <p class="text-danger">{{ errors.bio[0] }}</p>
+          }
         </div>
       </div>
       <div class="col-12 col-sm-6">
-        <div class="form-group">
+        <div class="mb-1">
           <label for="account-birth-date">Birth date</label>
-          <ng2-flatpickr
-            [config]="birthDateOptions"
-            [(ngModel)]="birthDate"
-            [setDate]="birthDate"
-            (change)="onDateChange()"
-            id="account-birth-date"
-            name="account-birth-date">
-          </ng2-flatpickr>
-          <p class="text-danger" *ngIf="errors?.dateOfBirth">{{ errors.dateOfBirth[0] }}</p>
+          <div class="full-width">
+            <p-calendar (onSelect)="onDateChange($event)" [styleClass]="'full-width'" appendTo="body" [(ngModel)]="birthDate"></p-calendar>
+          </div>
+          @if (errors?.dateOfBirth) {
+            <p class="text-danger">{{ errors.dateOfBirth[0] }}</p>
+          }
         </div>
       </div>
       <div class="col-12 col-sm-6">
-        <div class="form-group">
+        <div class="mb-1">
           <label for="account-website">Website</label>
           <input
             type="text"
@@ -63,46 +62,54 @@
             class="form-control"
             name="website"
             id="account-website"/>
-            <p class="text-danger" *ngIf="errors?.website">{{ errors.website[0] }}</p>
+            @if (errors?.website) {
+              <p class="text-danger">{{ errors.website[0] }}</p>
+            }
           </div>
-      </div>
-      <div class="col-12 col-sm-6">
-        <div class="form-group">
-          <label for="user-country">Country</label>
-          <ng-select
-            [ngModelOptions]="{standalone: true}"
-            [(ngModel)]="userInfo.country"
-            appendTo="body">
-            <ng-option *ngFor="let country of countries" [value]="country.id.toLowerCase()">
-              <span class="fi fi-{{ country.id.toLowerCase() }}"></span>
-              {{ country.name }}
-            </ng-option>
-          </ng-select>
-
-          <p class="text-danger" *ngIf="errors?.country">{{ errors.country[0] }}</p>
         </div>
-      </div>
-      <div class="col-12 col-sm-6">
-        <div class="form-group">
-          <label for="user-region">Region</label>
-          <input
-            type="text"
-            [ngModelOptions]="{standalone: true}"
-            [(ngModel)]="userInfo.region"
-            class="form-control"
-            name="user-region"
-            id="user-region"/>
-          <p class="text-danger" *ngIf="errors?.region">{{ errors.region[0] }}</p>
-        </div>
-      </div>
+        <div class="col-12 col-sm-6">
+          <div class="mb-1">
+            <label for="user-country">Country</label>
+            <ng-select
+              [ngModelOptions]="{standalone: true}"
+              [(ngModel)]="userInfo.country"
+              appendTo="body">
+              @for (country of countries; track country) {
+                <ng-option [value]="country.id.toLowerCase()">
+                  <span class="fi fi-{{ country.id.toLowerCase() }}"></span>
+                  {{ country.name }}
+                </ng-option>
+              }
+            </ng-select>
 
-      <div class="col-12">
-        <button (click)="save()" type="submit" class="btn btn-primary mt-1 mr-1" rippleEffect>Save</button>
-        <button (click)="reset()" type="reset" class="btn btn-outline-secondary mt-1" rippleEffect>Reset</button>
+            @if (errors?.country) {
+              <p class="text-danger">{{ errors.country[0] }}</p>
+            }
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="mb-1">
+            <label for="user-region">Region</label>
+            <input
+              type="text"
+              [ngModelOptions]="{standalone: true}"
+              [(ngModel)]="userInfo.region"
+              class="form-control"
+              name="user-region"
+              id="user-region"/>
+              @if (errors?.region) {
+                <p class="text-danger">{{ errors.region[0] }}</p>
+              }
+            </div>
+          </div>
+
+          <div class="col-12">
+            <button (click)="save()" type="submit" class="btn btn-primary mt-1 me-1" rippleEffect>Save</button>
+            <button (click)="reset()" type="reset" class="btn btn-outline-secondary mt-1" rippleEffect>Reset</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-<quill-css></quill-css>
-<ng-select-css></ng-select-css>
+    <quill-css></quill-css>
+    <ng-select-css></ng-select-css>

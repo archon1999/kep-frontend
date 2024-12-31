@@ -1,0 +1,65 @@
+<div class="project">
+  <div class="project-header">
+    <div class="project-title">
+      {{ project.title }}
+    </div>
+
+    <div class="project-image">
+      <img alt="" height="90" src="{{ project.logo }}">
+    </div>
+  </div>
+
+  <div class="project-body">
+    <div [innerHTML]="project.description" class="project-description">
+    </div>
+
+    <hr>
+
+    <div class="project-tasks">
+      <div class="title mb-1">{{ 'Tasks' | translate }}</div>
+      <div ngbAccordion [closeOthers]="true" [destroyOnHide]="false">
+        @for (task of project.tasks; track task) {
+          <div ngbAccordionItem>
+            <div ngbAccordionHeader>
+              <button ngbAccordionButton>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="me-50">{{ task.number }}. {{ task.title }}</span>
+                  <kepcoin [value]="task.kepcoinValue"></kepcoin>
+                </div>
+              </button>
+            </div>
+
+            <div ngbAccordionCollapse>
+              <div ngbAccordionBody>
+                <div [innerHTML]="task.description"></div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="project-technologies">
+      <div class="title mb-1">{{ 'Technologies' | translate }}</div>
+      <div ngbAccordion [closeOthers]="true" [destroyOnHide]="false">
+        @for (technology of project.availableTechnologies; track technology) {
+          <div ngbAccordionItem>
+            <div ngbAccordionHeader>
+              <button ngbAccordionButton>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>{{ technology.technology }}</span>
+                </div>
+              </button>
+            </div>
+
+            <div ngbAccordionCollapse>
+              <div ngbAccordionBody>
+                <div [innerHTML]="technology.info"></div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

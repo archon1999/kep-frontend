@@ -1,7 +1,7 @@
-@import 'scss/base/bootstrap-extended/variables';
+@import 'styles/kep-imports';
 
-$tournaments-color: mix(black, $primary, 50);
-$tournaments-bg: linear-gradient(47deg, $tournaments-color, mix(black, $primary, 30));
-$tournaments-bg-dark: linear-gradient(to right, darken($primary, 55),  darken($primary, 40));
+$tournaments-color: $primary;
+$tournaments-bg: linear-gradient(to right, rgba($primary, 0.9), rgba($primary, 0.7));
+$tournaments-bg-dark: rgba($primary, 0.5);
 
 // $tournaments-bg: linear-gradient(to right, #29323c, #485563);

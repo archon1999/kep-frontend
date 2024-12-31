@@ -1,11 +1,14 @@
-<div *ngIf="studyPlans.length > 0" [@fadeInLeftOnEnter]>
-  <h3 class="text-white d-md-block d-none">
-    {{ 'StudyPlans' | translate }}
-  </h3>
-
-  <swiper [config]="swiperConfig" class="mt-2">
-    <div class="swiper-slide" *ngFor="let studyPlan of studyPlans">
-      <study-plan-card [studyPlan]="studyPlan"></study-plan-card>
-    </div>
-  </swiper>
-</div>
+@if (studyPlans.length > 0) {
+  <div [@fadeInLeftOnEnter]>
+    <h3 class="text-white d-md-block d-none">
+      {{ 'StudyPlans' | translate }}
+    </h3>
+    <swiper [config]="swiperConfig" class="mt-2">
+      @for (studyPlan of studyPlans; track studyPlan) {
+        <div class="swiper-slide">
+          <study-plan-card [studyPlan]="studyPlan"></study-plan-card>
+        </div>
+      }
+    </swiper>
+  </div>
+}

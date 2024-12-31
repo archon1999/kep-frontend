@@ -6,95 +6,111 @@
       <div class="row">
         <div class="col-lg-9 col-md-6 col-sm-12 order-md-1 order-2">
           <div class="row">
-            <div [@fadeInLeftOnEnter] class="col-lg-6 col-12" *ngFor="let blogPost of blogPosts">
-              <blog-post-card [blog]="blogPost"></blog-post-card>
-            </div>
+            @for (blogPost of blogPosts; track blogPost) {
+              <div [@fadeInLeftOnEnter] class="col-lg-6 col-12">
+                <blog-post-card [blog]="blogPost"></blog-post-card>
+              </div>
+            }
           </div>
 
-          <ngb-pagination
-            *ngIf="blogPosts.length > 0"
-            [collectionSize]="total"
-            [(page)]="filter.page"
-            [pageSize]="4"
-            [maxSize]="5"
-            [rotate]="true"
-            (pageChange)="loadBlogPosts()"
-            aria-label="Default pagination"
-            class="d-flex justify-content-center mt-1 mb-1">
-            <ng-template ngbPaginationPrevious
+          @if (blogPosts.length > 0) {
+            <ngb-pagination
+              [collectionSize]="total"
+              [(page)]="filter.page"
+              [pageSize]="4"
+              [maxSize]="5"
+              [rotate]="true"
+              (pageChange)="loadBlogPosts()"
+              aria-label="Default pagination"
+              class="d-flex justify-content-center mt-1 mb-1">
+              <ng-template ngbPaginationPrevious
               ><span [data-feather]="'chevron-left'" [size]="18" [class]="'font-weight-bolder'"></span>
-            </ng-template>
-            <ng-template ngbPaginationNext
+              </ng-template>
+              <ng-template ngbPaginationNext
               ><span [data-feather]="'chevron-right'" [size]="18" [class]="'font-weight-bolder'"></span
-            ></ng-template>
-          </ngb-pagination>
+              ></ng-template>
+            </ngb-pagination>
+          }
         </div>
 
         <div [@fadeInRightOnEnter] class="col-lg-3 col-md-6 col-sm-12 order-md-2 order-1">
-          <div class="blog-search">
-            <div class="input-group input-group-merge">
-              <input [(ngModel)]="filter.title" (ngModelChange)="loadBlogPosts()" [ngModelOptions]="{standalone: true}" type="text" placeholder="{{ 'Search' | translate }}" class="form-control">
-              <div class="input-group-append">
+          <div class="card">
+            <div class="card-body">
+              <div class="blog-search">
+                <div class="input-group input-group-merge">
+                  <input (ngModelChange)="loadBlogPosts()" [(ngModel)]="filter.title"
+                         [ngModelOptions]="{standalone: true}" class="form-control" placeholder="{{ 'Search' | translate }}"
+                         type="text">
+                  <div class="input-group-append">
                 <span class="input-group-text cursor-pointer">
                   <i data-feather="search"></i>
                 </span>
-              </div>
-            </div>
-
-            <ng-select class="mt-1" (change)="loadBlogPosts()" [(ngModel)]="filter.author" [placeholder]="'Author' | translate">
-              <ng-option [value]="author" *ngFor="let author of allAuthors">
-                {{ author }}
-              </ng-option>
-            </ng-select>
-
-            <ng-select class="mt-1"(change)="loadBlogPosts()" [(ngModel)]="filter.orderBy" [placeholder]="'OrderBy' | translate">
-              <ng-option [value]="1">
-                {{ 'Likes' | translate }}
-              </ng-option>
-              <ng-option [value]="2">
-                {{ 'Views' | translate }}
-              </ng-option>
-              <ng-option [value]="3">
-                {{ 'Comments' | translate }}
-              </ng-option>
-            </ng-select>
-          </div>
-
-          <div class="blog-topics mt-3">
-            <h6 class="section-label">{{ 'Topics' | translate }}</h6>
-            <div [ngClass]="{'active': filter.topic == 1}" (click)="filter.topic=1; loadBlogPosts()" class="blog-topic mt-1">
-              <div class="d-flex justify-content-start align-items-center mb-75">
-                <div class="avatar rounded bg-light-primary">
-                  <div class="avatar-content">
-                    <i data-feather="slack"></i>
                   </div>
                 </div>
-                <div class="blog-topic-title text-body">{{ 'Technologies' | translate }}</div>
-              </div>
-            </div>
 
-            <div [ngClass]="{'active': filter.topic == 2}" (click)="filter.topic=2; loadBlogPosts()" class="blog-topic mt-1">
-              <div class="d-flex justify-content-start align-items-center mb-75">
-                <div class="avatar rounded bg-light-danger">
-                  <div class="avatar-content">
-                    <i data-feather="code"></i>
+                <ng-select (change)="loadBlogPosts()" [(ngModel)]="filter.author" [placeholder]="'Author' | translate" appendTo="body"
+                           class="mt-1">
+                  @for (author of allAuthors; track author) {
+                    <ng-option [value]="author">
+                      {{ author }}
+                    </ng-option>
+                  }
+                </ng-select>
+
+                <ng-select (change)="loadBlogPosts()" [(ngModel)]="filter.orderBy" [placeholder]="'OrderBy' | translate" appendTo="body"
+                           class="mt-1">
+                  <ng-option [value]="1">
+                    {{ 'Likes' | translate }}
+                  </ng-option>
+                  <ng-option [value]="2">
+                    {{ 'Views' | translate }}
+                  </ng-option>
+                  <ng-option [value]="3">
+                    {{ 'Comments' | translate }}
+                  </ng-option>
+                </ng-select>
+              </div>
+
+              <div class="blog-topics mt-3">
+                <h6 class="section-label">{{ 'Topics' | translate }}</h6>
+                <div (click)="filter.topic=1; loadBlogPosts()" [ngClass]="{'active': filter.topic == 1}"
+                     class="blog-topic mt-1">
+                  <div class="d-flex justify-content-start align-items-center mb-75">
+                    <div class="avatar rounded bg-light-primary">
+                      <div class="avatar-content">
+                        <i data-feather="slack"></i>
+                      </div>
+                    </div>
+                    <div class="blog-topic-title text-body">{{ 'Technologies' | translate }}</div>
                   </div>
                 </div>
-                <div class="blog-topic-title text-body">{{ 'CompetitiveProgramming' | translate }}</div>
-              </div>
-            </div>
 
-            <div [ngClass]="{'active': filter.topic == 3}" (click)="filter.topic=3; loadBlogPosts()" class="blog-topic mt-1">
-              <div class="d-flex justify-content-start align-items-center mb-75">
-                <div class="avatar rounded bg-light-info">
-                  <div class="avatar-content">
-                    <i data-feather="help-circle"></i>
+                <div (click)="filter.topic=2; loadBlogPosts()" [ngClass]="{'active': filter.topic == 2}"
+                     class="blog-topic mt-1">
+                  <div class="d-flex justify-content-start align-items-center mb-75">
+                    <div class="avatar rounded bg-light-danger">
+                      <div class="avatar-content">
+                        <i data-feather="code"></i>
+                      </div>
+                    </div>
+                    <div class="blog-topic-title text-body">{{ 'CompetitiveProgramming' | translate }}</div>
                   </div>
                 </div>
-                <div class="blog-topic-title text-body">{{ 'Info' | translate }}</div>
+
+                <div (click)="filter.topic=3; loadBlogPosts()" [ngClass]="{'active': filter.topic == 3}"
+                     class="blog-topic mt-1">
+                  <div class="d-flex justify-content-start align-items-center mb-75">
+                    <div class="avatar rounded bg-light-info">
+                      <div class="avatar-content">
+                        <i data-feather="help-circle"></i>
+                      </div>
+                    </div>
+                    <div class="blog-topic-title text-body">{{ 'Info' | translate }}</div>
+                  </div>
+                </div>
+
               </div>
             </div>
-
           </div>
         </div>
       </div>

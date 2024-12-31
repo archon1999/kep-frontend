@@ -1,0 +1,75 @@
+@if (currentUser) {
+  <div class="card filter">
+    <div class="card-header">
+      <div class="card-title">
+        {{ 'Status' | translate }}
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="mb-1">
+        <div
+          class="ms-1 mt-1 form-check">
+          <input
+            (click)="contestStatusClick(2)"
+            [(ngModel)]="contestStatus"
+            [value]="2"
+            class="form-check-input"
+            id="radio-2"
+            name="status"
+            type="radio"/>
+            <label class="form-check-label" for="radio-2">{{ 'All' | translate }}</label>
+          </div>
+          <div
+            class="ms-1 mt-1 form-check">
+            <input
+              (click)="contestStatusClick(ContestStatus.PARTICIPATED)"
+              [(ngModel)]="contestStatus"
+              [value]="1"
+              class="form-check-input"
+              id="radio-1"
+              name="status"
+              type="radio"/>
+              <label class="form-check-label" for="radio-1">{{ 'CONTESTS.PARTICIPATED' | translate }}</label>
+            </div>
+            <div
+              class="ms-1 mt-1 form-check">
+              <input
+                (click)="contestStatusClick(ContestStatus.NOT_PARTICIPATED)"
+                [(ngModel)]="contestStatus"
+                [value]="0"
+                class="form-check-input"
+                id="radio-0"
+                name="status"
+                type="radio"/>
+                <label class="form-check-label" for="radio-0">{{ 'CONTESTS.NOT_PARTICIPATED' | translate }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+
+      <div class="card filter">
+        <div class="card-header">
+          <div class="card-title">
+            {{ 'CONTESTS.TYPE' | translate }}
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mb-1">
+            @for (type of contestTypes; track type; let i = $index) {
+              <div
+                class="ms-1 mt-1 form-check">
+                <input
+                  (click)="contestTypeClick(i)"
+                  [(ngModel)]="contestType"
+                  [value]="i"
+                  class="form-check-input"
+                  id="type-{{ i }}"
+                  name="type"
+                  type="radio"/>
+                  <label class="form-check-label" for="type-{{ i }}">{{ type | translate }}</label>
+                </div>
+              }
+            </div>
+          </div>
+        </div>

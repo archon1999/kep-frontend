@@ -1,6 +1,6 @@
 @if (type === 'duotone') {
   <span [ngClass]="['ki-'+type, 'ki-'+name, class, color ? 'text-' + color : '', size ? 'font-' + size : '']">
-  @for (i of [].constructor(pathsNumber);track i;let idx = $index) {
+  @for (i of [].constructor(pathsNumber);track $index;let idx = $index) {
     <span class="path{{ idx + 1 }}"></span>
   }
   </span>

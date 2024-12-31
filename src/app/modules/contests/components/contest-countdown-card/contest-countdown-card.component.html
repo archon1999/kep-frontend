@@ -10,33 +10,34 @@
       (load)="onLoad($event)"
       [src]="contest.logo"
       alt="contest-logo">
-  </div>
+    </div>
 
-  <div class="card-body mt-1">
-    <h4 class="text-center mb-1">
-      @switch (contest.status) {
-        @case (ContestStatus.ALREADY) {
-          {{ 'CONTESTS.CONTEST_ENDS' | translate }}
+    <div class="card-header my-1 justify-content-center">
+      <h4 class="text-uppercase">
+        @switch (contest.status) {
+          @case (ContestStatus.ALREADY) {
+            {{ 'CONTESTS.CONTEST_ENDS' | translate }}
+          }
+          @case (ContestStatus.FINISHED) {
+            {{ 'CONTESTS.CONTEST_FINISHED' | translate }}
+          }
+          @case (ContestStatus.NOT_STARTED) {
+            {{ 'CONTESTS.CONTEST_STARTS' | translate }}
+          }
         }
-        @case (ContestStatus.FINISHED) {
-          {{ 'CONTESTS.CONTEST_FINISHED' | translate }}
-        }
-        @case (ContestStatus.NOT_STARTED) {
-          {{ 'CONTESTS.CONTEST_STARTS' | translate }}
-        }
+      </h4>
+    </div>
+    <div class="card-footer full-width">
+      <contest-countdown
+        [clockColor]="'#fff'"
+        [contest]="contest"
+        [textColor]="'#fff'">
+      </contest-countdown>
+      @if (contest.status == ContestStatus.FINISHED) {
+        <h3
+          class="text-center mb-1 mt-1">
+          {{ contest.finishTime | localizedDate:'medium' }}
+        </h3>
       }
-    </h4>
+    </div>
   </div>
-  <div class="card-footer full-width">
-    <contest-countdown
-      [clockColor]="'#fff'"
-      [contest]="contest"
-      [textColor]="'#fff'">
-    </contest-countdown>
-    <h3
-      *ngIf="contest.status == ContestStatus.FINISHED"
-      class="text-center mb-1 mt-1">
-      {{ contest.finishTime | localizedDate:'medium' }}
-    </h3>
-  </div>
-</div>

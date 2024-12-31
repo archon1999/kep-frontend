@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Arena } from '@arena/arena.models';
-import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
+import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { Observable } from 'rxjs';
-import { PageResult } from '@shared/components/classes/page-result';
-import { Challenge } from '@challenges/models/challenges.models';
+import { PageResult } from '@app/common/classes/page-result';
+import { Challenge } from '@challenges/models/challenges';
 import { ChallengesApiService } from '@challenges/services';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';

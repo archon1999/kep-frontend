@@ -1,0 +1,7 @@
+.dark-layout .accordion {
+  --bs-accordion-bg: rgba(0, 0, 0, 0.25);
+  --bs-accordion-border-color: black;
+  --bs-accordion-active-bg: mix(black, $primary, 30);
+  --bs-accordion-active-color: mix(black, $primary, 30);
+  --bs-accordion-btn-color: white;
+}

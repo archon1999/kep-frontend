@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
@@ -16,15 +16,16 @@ import { ChallengesUserViewComponent } from '@challenges/components/challenges-u
     EmptyResultComponent,
   ],
   templateUrl: './kep-table.component.html',
-  styleUrl: './kep-table.component.scss'
+  styleUrl: './kep-table.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class KepTableComponent {
   @Input() loading: boolean;
   @Input() error: boolean;
   @Input() empty: boolean;
-  @Input() color = 'primary';
   @Input() cardClass = 'card';
   @Input() tableCardClass = 'beautiful-table';
-  @Input() tableClass = 'table-striped';
+  @Input() tableClass = '';
   @Input() spinnerHeight = '200px';
+  @Input() spinnerColor = '';
 }

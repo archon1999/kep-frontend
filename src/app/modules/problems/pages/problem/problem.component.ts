@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Params } from '@angular/router';
-import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
-import { User } from 'app/auth/models';
+import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
+import { User } from '@auth';
 import { Subject } from 'rxjs';
 import { Problem } from '@problems/models/problems.models';
 import { ProblemsApiService } from '../../services/problems-api.service';
@@ -18,15 +18,14 @@ import { ProblemSidebarComponent } from '@problems/pages/problem/problem-sidebar
 import { TourModule } from '@shared/third-part-modules/tour/tour.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
-import { BasePageComponent } from '@shared/components/classes/base-page.component';
+import { BasePageComponent } from '@app/common/classes/base-page.component';
 
 @Component({
   selector: 'app-problem',
   templateUrl: './problem.component.html',
   styleUrls: ['./problem.component.scss'],
   animations: [
-    fadeInLeftOnEnterAnimation({ duration: 1500 }),
-    fadeInRightOnEnterAnimation({ duration: 1000 }),
+    fadeInOnEnterAnimation({ duration: 1000 }),
   ],
   standalone: true,
   imports: [
@@ -59,6 +58,14 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
     public api: ApiService,
   ) {
     super();
+    this.coreConfigService.config = {
+      layout: {
+        footer: {
+          hidden: true,
+        },
+        enableLocalStorage: false
+      }
+    };
   }
 
   ngOnInit(): void {
@@ -88,15 +95,7 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
     }
   }
 
-  beforeChangeCurrentUser(currentUser: User) {
-    if (currentUser !== this.currentUser) {
-      this.service.getProblem(this.problem.id).subscribe(
-        (problem: Problem) => {
-          this.problem = problem;
-        }
-      );
-    }
-  }
+  beforeChangeCurrentUser(currentUser: User) {}
 
   getContentHeader() {
     return this.contentHeader = {

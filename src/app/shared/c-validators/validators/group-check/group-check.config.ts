@@ -1,4 +1,4 @@
-import { BaseConfig } from "../../basic/base-config";
+import { BaseConfig } from '../../basic/base-config';
 
 export interface GroupCheckConfig extends BaseConfig {
   fn: (...args: any[]) => boolean;

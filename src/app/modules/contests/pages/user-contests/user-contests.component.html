@@ -5,7 +5,7 @@
     <section class="mt-2">
       <div class="row">
         <div class="col-12">
-          <div class="text-right">
+          <div class="text-end">
             <kepcoin-spend-swal
               (success)="success()"
               [customContent]="true"
@@ -14,16 +14,21 @@
               <button class="mb-2 btn btn-relief-primary">{{ 'Create' | translate }}</button>
             </kepcoin-spend-swal>
           </div>
-          <empty-result *ngIf="contests.length == 0 && !isLoading"></empty-result>
-          <contests-table *ngIf="contests?.length > 0" [contests]="contests"></contests-table>
-          <kep-pagination
-            (pageChange)="pageChange($event)"
-            *ngIf="total"
-            [(page)]="pageNumber"
-            [collectionSize]="total"
-            [maxSize]="maxSize"
-            [pageSize]="pageSize">
-          </kep-pagination>
+          @if (contests.length == 0 && !isLoading) {
+            <empty-result></empty-result>
+          }
+          @if (contests?.length > 0) {
+            <contests-table [contests]="contests"></contests-table>
+          }
+          @if (total) {
+            <kep-pagination
+              (pageChange)="pageChange($event)"
+              [(page)]="pageNumber"
+              [collectionSize]="total"
+              [maxSize]="maxSize"
+              [pageSize]="pageSize">
+            </kep-pagination>
+          }
         </div>
       </div>
     </section>

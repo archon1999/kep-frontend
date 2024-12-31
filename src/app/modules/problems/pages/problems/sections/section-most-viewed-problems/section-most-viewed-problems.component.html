@@ -7,17 +7,19 @@
   </div>
 
   @if (isLoading){
-    <div class="card-body" [style.height.px]="200">
+    <div class="card-body" [style.height.px]="515">
       <spinner></spinner>
     </div>
   } @else if(data) {
     <div class="card-body">
       <ul class="list-group">
-        <a
-          *ngFor="let problem of problems" class="list-group-item"
-          [routerLink]="Resources.Problem | resourceById : problem.id">
-          {{ problem.id }}. {{ problem.title }}
-        </a>
+        @for (problem of problems; track problem) {
+          <a
+            class="list-group-item"
+            [routerLink]="Resources.Problem | resourceById : problem.id">
+            {{ problem.id }}. {{ problem.title }}
+          </a>
+        }
       </ul>
     </div>
     <div class="card-footer">

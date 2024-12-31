@@ -1,0 +1,11 @@
+<span [ngbTooltip]="title" class="border-1 badge badge-light-{{ verdictColor }}">
+  {{ shortTitle || title }}
+
+  @if (showTestCaseNumber) {
+    #{{ testCaseNumber }}
+  }
+
+  @if (showBall) {
+    {{ balls }}
+  }
+</span>

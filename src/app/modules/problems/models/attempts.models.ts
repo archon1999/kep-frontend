@@ -1,7 +1,7 @@
-import { ContestProblem } from '@contests/contests.models';
 import { User } from '@users/users.models';
 import { getEditorLang } from '../utils';
 import { AttemptLangs } from '../constants';
+import { ContestProblem } from '@contests/models/contest-problem';
 
 
 export class Attempt {
@@ -31,6 +31,7 @@ export class Attempt {
     public contestTime: string,
     public animationWrongState = false,
     public animationAcceptedState = false,
+    public isOwner = false,
   ) { }
 
   getEditorLang() {

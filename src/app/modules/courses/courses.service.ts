@@ -14,68 +14,68 @@ export class CoursesService {
     return this.api.get('courses');
   }
 
-  getCourse(id: number | string){
-    return this.api.get(`courses/${id}`);
+  getCourse(id: number | string) {
+    return this.api.get(`courses/${ id }`);
   }
 
-  getCourseDictionary(id: number | string){
-    return this.api.get(`courses/${id}/dictionary`);
+  getCourseDictionary(id: number | string) {
+    return this.api.get(`courses/${ id }/dictionary`);
   }
 
-  getCourseLessons(id: number | string){
-    return this.api.get(`courses/${id}/lessons`);
-  }
-  
-  getCourseParticipants(id: number | string){
-    return this.api.get(`courses/${id}/participants`);
+  getCourseLessons(id: number | string) {
+    return this.api.get(`courses/${ id }/lessons`);
   }
 
-  getCourseTopActiveParticipants(id: number | string){
-    return this.api.get(`courses/${id}/top-active-participants`);
+  getCourseParticipants(id: number | string) {
+    return this.api.get(`courses/${ id }/participants`);
   }
 
-  getCourseTopBestParticipants(id: number | string){
-    return this.api.get(`courses/${id}/top-best-participants`);
+  getCourseTopActiveParticipants(id: number | string) {
+    return this.api.get(`courses/${ id }/top-active-participants`);
   }
 
-  getCourseReviews(id: number | string){
-    return this.api.get(`courses/${id}/reviews`);
+  getCourseTopBestParticipants(id: number | string) {
+    return this.api.get(`courses/${ id }/top-best-participants`);
   }
 
-  createReview(courseId: number, review: string, rating: number){
-    var data = {review: review, rating: rating};
-    return this.api.post(`courses/${courseId}/review-create/`, data);
+  getCourseReviews(id: number | string) {
+    return this.api.get(`courses/${ id }/reviews`);
   }
 
-  updateReview(courseId: number, review: string, rating: number){
-    var data = {review: review, rating: rating};
-    return this.api.put(`courses/${courseId}/review-update/`, data);
+  createReview(courseId: number, review: string, rating: number) {
+    var data = { review: review, rating: rating };
+    return this.api.post(`courses/${ courseId }/review-create/`, data);
   }
 
-  getCourseLesson(id: number | string, lessonNumber: number | string){
-    return this.api.get(`courses/${id}/lesson/?number=${lessonNumber}`);
+  updateReview(courseId: number, review: string, rating: number) {
+    var data = { review: review, rating: rating };
+    return this.api.put(`courses/${ courseId }/review-update/`, data);
   }
 
-  checkLessonPartCompletion(lessonPartId: number, data={}){
-    return this.api.post(`course-lesson-parts/${lessonPartId}/check-completion/`, data);
+  getCourseLesson(id: number | string, lessonNumber: number | string) {
+    return this.api.get(`courses/${ id }/lesson/?number=${ lessonNumber }`);
   }
-  
-  getCourseLessonPartComments(lessonPartId: number){
-    return this.api.get(`course-lesson-parts/${lessonPartId}/comments/`);
+
+  checkLessonPartCompletion(lessonPartId: number, data = {}) {
+    return this.api.post(`course-lesson-parts/${ lessonPartId }/check-completion/`, data);
   }
-  
-  emojiCourseLessonPartComment(lessonPartCommentId: number, emoji: number){
-    var data = {'emoji': emoji};
-    return this.api.post(`course-lesson-part-comments/${lessonPartCommentId}/emoji/`, data);
+
+  getCourseLessonPartComments(lessonPartId: number) {
+    return this.api.get(`course-lesson-parts/${ lessonPartId }/comments/`);
   }
-  
-  deleteCourseLessonPartComment(lessonPartCommentId: number){
-    return this.api.delete(`course-lesson-part-comments/${lessonPartCommentId}/delete/`);
+
+  emojiCourseLessonPartComment(lessonPartCommentId: number, emoji: number) {
+    var data = { 'emoji': emoji };
+    return this.api.post(`course-lesson-part-comments/${ lessonPartCommentId }/emoji/`, data);
   }
-  
-  submitComment(lessonPartId: number, comment: string){
-    var data = {comment: comment};
-    return this.api.post(`course-lesson-parts/${lessonPartId}/comment-create/`, data);
+
+  deleteCourseLessonPartComment(lessonPartCommentId: number) {
+    return this.api.delete(`course-lesson-part-comments/${ lessonPartCommentId }/delete/`);
   }
-  
+
+  submitComment(lessonPartId: number, comment: string) {
+    var data = { comment: comment };
+    return this.api.post(`course-lesson-parts/${ lessonPartId }/comment-create/`, data);
+  }
+
 }

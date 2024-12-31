@@ -1,11 +1,11 @@
 <div class="content-wrapper container-xxl p-0">
   <div class="content-body">
-    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <app-content-header [contentHeader]="contentHeader"/>
 
     <section class="mt-2">
       <kep-table [loading]="isLoading" [empty]="pageResult?.total === 0">
         <ng-container header>
-          <tr class="text-white bg-gradient-primary">
+          <tr>
             <th>#</th>
             <th>{{ 'User' | translate }}</th>
             <th>
@@ -53,7 +53,7 @@
         <ng-container body>
           @for (challengesRating of challengesRatingList; track challengesRating.username) {
             <tr>
-              <td class="font-weight-bold">{{ challengesRating.rowIndex }}</td>
+              <td class="fw-bold">{{ challengesRating.rowIndex }}</td>
               <td><challenges-user-view [user]="challengesRating"></challenges-user-view></td>
               <td><span class="badge badge-light-success badge-pill">{{ challengesRating.wins }}</span></td>
               <td><span class="badge badge-light-secondary badge-pill">{{ challengesRating.draws }}</span></td>

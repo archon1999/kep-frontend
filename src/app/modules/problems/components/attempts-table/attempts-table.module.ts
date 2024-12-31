@@ -14,6 +14,11 @@ import { ClipboardModule } from 'app/shared/components/clipboard/clipboard.modul
 import { ProblemsPipesModule } from '../../pipes/problems-pipes.module';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
+import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
+import { AttemptLanguageComponent } from '@shared/components/attempt-language/attempt-language.component';
+import { AttemptVerdictComponent } from '@shared/components/attempt-verdict/attempt-verdict.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +42,12 @@ import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.
     MonacoEditorComponent,
     NgbTooltipModule,
     KepcoinViewModule,
+    KepTableComponent,
+    KepIconComponent,
+    ResourceByIdPipe,
+    AttemptLanguageComponent,
+    AttemptLanguageComponent,
+    AttemptVerdictComponent,
   ],
   exports: [
     AttemptsTableComponent

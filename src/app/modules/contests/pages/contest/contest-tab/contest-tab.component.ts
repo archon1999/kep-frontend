@@ -1,20 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Contest } from '../../../contests.models';
+import { Component, Input } from '@angular/core';
+import { CoreCommonModule } from '@core/common.module';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { Contest } from '@contests/models/contest';
+import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 
 @Component({
   selector: 'contest-tab',
   templateUrl: './contest-tab.component.html',
-  styleUrls: ['./contest-tab.component.scss']
+  styleUrls: ['./contest-tab.component.scss'],
+  standalone: true,
+  imports: [CoreCommonModule, NgbNavModule, ContestClassesPipe]
 })
-export class ContestTabComponent implements OnInit {
-
-  public activeId = 1;
-
+export class ContestTabComponent {
   @Input() contest: Contest;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  public activeId = 1;
 }

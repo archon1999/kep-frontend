@@ -14,14 +14,17 @@ import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
-import { BaseTablePageComponent } from '@shared/components/classes/base-table-page.component';
+import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { User } from '@users/users.models';
 import { ContentHeader } from '@layout/components/content-header/content-header.component';
-import { PageResult } from '@shared/components/classes/page-result';
+import { PageResult } from '@app/common/classes/page-result';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { KepStreakComponent } from '@shared/components/kep-streak/kep-streak.component';
 import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import {
+  ChallengesRankBadgeComponent
+} from '@challenges/components/challenges-user-view/challenges-rank-badge/challenges-rank-badge.component';
 
 @Component({
   selector: 'app-users',
@@ -43,6 +46,7 @@ import { ChallengesUserViewComponent } from '@challenges/components/challenges-u
     KepTableComponent,
     KepIconComponent,
     KepStreakComponent,
+    ChallengesRankBadgeComponent,
   ]
 })
 export class UsersComponent extends BaseTablePageComponent<User> {

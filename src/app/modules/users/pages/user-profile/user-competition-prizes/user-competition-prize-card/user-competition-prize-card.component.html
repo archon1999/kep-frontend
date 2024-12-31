@@ -1,0 +1,27 @@
+<a [ngbTooltip]="competitionPrize.competitionTitle" [routerLink]="competitionLink" class="card">
+  <div class="card-header d-block text-center">
+    @if (competitionPrize.prizeType == 'MONEY') {
+      <kep-icon name="credit-cart" type="duotone" color="warning" size="large-3"/>
+      <div class="text-dark d-flex align-items-center justify-content-center">
+        {{ competitionPrize.moneyValue }}
+        @if (competitionPrize.currency == 'DOLLAR') {
+          <kep-icon type="duotone" color="success" class="ms-25" name="dollar"/>
+        } @else if (competitionPrize.currency == 'TON') {
+          TON <img class="ms-25" width="20" heigth="20" src="https://ton.org/download/ton_symbol.png" alt="TON">
+        } @else if (competitionPrize.currency == 'SUM') {
+          soʻm
+        }
+      </div>
+    } @else if (competitionPrize.prizeType == 'TELEGRAM_PREMIUM') {
+      <img class="mt-1" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Telegram_Premium.png" width="48" height="48">
+      <span class="badge bg-primary badge-glow">
+        {{ competitionPrize.telegramPremiumPeriod }} month
+      </span>
+    } @else if (competitionPrize.prizeType == 'KEPCOIN') {
+      <img class="mt-1" height="48" src="assets/images/icons/kepcoin.png">
+      <div class="text-dark">{{ competitionPrize.kepcoinValue }}</div>
+    }
+
+    <div class="mt-1 text-primary fw-bolder">{{ competitionPrize.prizeTitle }}</div>
+  </div>
+</a>

@@ -1,0 +1,38 @@
+@import 'styles/kep-imports';
+
+.statistics-container {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 2rem 4rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+
+  .content-body {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+
+  @include dark-layout {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+.card {
+  box-shadow: none !important;
+  background-color: inherit !important;
+  border: 1px solid rgba($primary, 0.5);
+
+  .card-body {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .count {
+    margin-top: 1rem;
+  }
+
+  .text {
+    margin-top: 0.5rem;
+  }
+}

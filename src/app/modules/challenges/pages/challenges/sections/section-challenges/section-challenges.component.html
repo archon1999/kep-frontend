@@ -1,0 +1,21 @@
+@if (isLoading && !total) {
+  <div class="card" [style.height.px]="830">
+    <spinner></spinner>
+  </div>
+} @else {
+  @for (challenge of challenges; track challenge) {
+    <div>
+      <challenge-card [challenge]="challenge"></challenge-card>
+    </div>
+  }
+}
+
+<div class="mt-2 mb-1">
+  <kep-pagination
+    [(page)]="pageNumber"
+    [pageSize]="pageSize"
+    [collectionSize]="total"
+    [maxSize]="maxSize"
+    (pageChange)="reloadPage()">
+  </kep-pagination>
+</div>

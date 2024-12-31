@@ -1,8 +1,9 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { Contest, ContestStatus } from '../../../../contests.models';
 import { CoreCommonModule } from '@core/common.module';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
+import { ContestStatus } from '@contests/constants/contest-status';
+import { Contest } from '@contests/models/contest';
 
 @Component({
   selector: 'contest-countdown',

@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
-import { LandingPageComponent } from '@app/modules/landing-page/landing-page.component';
-import { IsAuthenticatedGuard } from '@auth/helpers';
+import { IsAuthenticatedGuard } from '@auth';
 
 export default [
   {

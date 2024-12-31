@@ -25,7 +25,7 @@ export class ClipboardButtonComponent implements OnInit {
       (text: string) => {
         this.copiedText = text;
       }
-    )
+    );
   }
 
   copyText(inputTextValue: string) {
@@ -38,8 +38,8 @@ export class ClipboardButtonComponent implements OnInit {
     document.execCommand('copy');
     document.body.removeChild(selectBox);
     this.toastr.success('', this.copiedText, {
-        toastClass: 'toast ngx-toastr',
-        closeButton: true
+      toastClass: 'toast ngx-toastr',
+      closeButton: true,
     });
   }
 

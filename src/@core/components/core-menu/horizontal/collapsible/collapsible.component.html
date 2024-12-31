@@ -1,0 +1,44 @@
+@if (!item.hidden) {
+  <!-- collapsible title -->
+  @if (!item.url) {
+    <div
+      class="d-flex align-items-center cursor-pointer"
+      [ngClass]="[item.type == 'section' ? 'dropdown-toggle nav-link' : 'dropdown-item dropdown-toggle']"
+      >
+      <ng-container *ngTemplateOutlet="itemContent"></ng-container>
+    </div>
+  }
+  <!-- itemContent template -->
+  <ng-template #itemContent>
+    <kep-icon class="font-medium-4 me-50 text-primary" type="duotone" [name]="item.icon"></kep-icon>
+    <span>{{ item.translate | translate }}</span>
+    @if (item.newCount) {
+      <span class="badge ms-50 badge-yellow badge-pill text-dark">New</span>
+    }
+  </ng-template>
+  <!-- sub-menu item/collapsible -->
+  <ul class="dropdown-menu" [ngClass]="{ show: isShow }">
+    @for (item of item.children; track item) {
+      <!-- item -->
+      @if (item.type == 'item') {
+        <li
+          core-menu-horizontal-item
+          [item]="item"
+          [ngClass]="{ disabled: item.disabled === true }"
+          [routerLinkActive]="!item.openInNewTab ? 'active' : ''"
+          [routerLinkActiveOptions]="{ exact: item.exactMatch || false }"
+          >
+          <span [routerLink]="item.openInNewTab ? [] : [item.url]" class="d-none"></span>
+        </li>
+      }
+      <!-- collapsible -->
+      @if (item.type == 'collapsible') {
+        <li
+          core-menu-horizontal-collapsible
+          [item]="item"
+          class="dropdown dropdown-submenu"
+        ></li>
+      }
+    }
+  </ul>
+}

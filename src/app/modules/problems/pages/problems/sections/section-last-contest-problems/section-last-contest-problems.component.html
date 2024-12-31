@@ -1,6 +1,6 @@
 <div class="card">
   @if (isLoading){
-    <div class="card-body" [style.height.px]="200">
+    <div class="card-body" [style.height.px]="550">
       <spinner></spinner>
     </div>
   } @else if(data) {
@@ -12,11 +12,13 @@
 
     <div class="card-body">
       <ul class="list-group">
-        <a
-          *ngFor="let problem of contest?.problems" class="list-group-item"
-          [routerLink]="Resources.Problem | resourceById : problem.id">
-          {{ problem.symbol }}. {{ problem.title }}
-        </a>
+        @for (problem of contest?.problems; track problem) {
+          <a
+            class="list-group-item"
+            [routerLink]="Resources.Problem | resourceById : problem.id">
+            {{ problem.symbol }}. {{ problem.title }}
+          </a>
+        }
       </ul>
     </div>
 

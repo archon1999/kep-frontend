@@ -1,0 +1,88 @@
+<div class="nav-item me-lg-25 me-50" ngbDropdown>
+  <div (click)="loadData()" class="nav-link text-dark d-flex align-items-center cursor-pointer"
+       id="navbarDailyTasksDropdown" ngbDropdownToggle>
+    <streak [maxStreak]="maxStreak" [streak]="streak"></streak>
+  </div>
+  <div
+    aria-labelledby="navbarDailyTasksDropdown"
+    class="dropdown-menu bg-daily-tasks dropdown-menu-media dropdown-menu-right"
+    ngbDropdownMenu>
+
+    <div class="card mb-0">
+      <div class="card-header">
+        <h4 class="card-title text-dark">{{ 'DailyTasks' | translate }}</h4>
+        <div class="badge badge-pill badge-primary">
+          {{ dailyTasks.length }} {{ 'Tasks' | translate }}
+        </div>
+      </div>
+
+      <div class="card-footer p-0">
+        <ng-scrollbar autoHeightDisabled="false">
+          <div class="scrollable-container media-list">
+            @for (dailyTask of dailyTasks; track dailyTask) {
+              <div class="d-flex">
+                <div class="media d-flex align-items-start">
+                  <div class="media-left text-dark">
+                    @switch (dailyTask.type) {
+                      @case (DailyTaskType.Problem) {
+                        <div class="avatar bg-primary mt-50">
+                          <div class="avatar-content">
+                            <kep-icon class="font-medium-1" name="problem"></kep-icon>
+                          </div>
+                        </div>
+                      }
+                      @case (DailyTaskType.Test) {
+                        <div class="avatar bg-primary mt-50">
+                          <div class="avatar-content">
+                            <kep-icon class="font-medium-1" name="test"></kep-icon>
+                          </div>
+                        </div>
+                      }
+                      @case (DailyTaskType.Challenge) {
+                        <div class="avatar bg-primary mt-50">
+                          <div class="avatar-content">
+                            <kep-icon class="font-medium-1" name="challenge"></kep-icon>
+                          </div>
+                        </div>
+                      }
+                    }
+                  </div>
+                  <div class="media-body">
+                    <p class="media-heading text-dark">
+                      {{ dailyTask.description }}
+                      <img ngbTooltip="Kepcoin" height="19" src="assets/images/icons/kepcoin.png"> {{ dailyTask.kepcoin }}
+                    </p>
+                    <small class="notification-text">
+                      @if (dailyTask.completed) {
+                        <span class="text-success">
+                          <i data-feather="check-circle"></i>
+                        </span>
+                      }
+                      @if (!dailyTask.completed) {
+                        <span class="badge badge-glow badge-primary">
+                      {{ dailyTask.progress }}/{{ dailyTask.total }}
+                    </span>
+                      }
+                    </small>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </ng-scrollbar>
+      </div>
+
+      <div class="card-footer">
+        <div class="progress-wrapper">
+          <ngb-progressbar
+            [animated]="true"
+            [value]="progress"
+            showValue="true"
+            style="height: 1.3rem;"
+            type="success"
+          ></ngb-progressbar>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

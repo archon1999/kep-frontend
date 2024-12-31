@@ -1,0 +1,31 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <div class="text-center">
+      <span class="mb-2 badge bg-primary">{{ 'Features' | translate }}</span>
+
+      <div class="font-medium-1 fw-bolder mb-1">
+        {{ 'LandingPage.SectionFeaturesTitle' | translate }}
+      </div>
+
+      <div class="font-small-4">
+        {{ 'LandingPage.SectionFeaturesText' | translate }}
+      </div>
+
+      <div class="row features">
+        @for (feature of features; track feature.title) {
+          <div class="feature col-12 col-md-6 col-lg-4">
+            <div class="icon">
+              <kep-icon size="large-3" type="duotone" class="" name="{{ feature.icon }}" color="primary"></kep-icon>
+            </div>
+            <div class="title text-dark">
+              {{ feature.title | translate }}
+            </div>
+            <div class="description text-dark">
+              {{ feature.description | translate }}
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

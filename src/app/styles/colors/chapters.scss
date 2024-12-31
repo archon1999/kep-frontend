@@ -18,12 +18,12 @@
   }
 
   .bg-chapter-#{$id} {
-    background: $color;
-    box-shadow: 0 0 10px $color !important;
+    background: $color !important;
+    box-shadow: 0 0 5px $color !important;
   }
 
   .dark-layout .bg-chapter-#{$id} {
-    background: $dark-color;
+    background: $dark-color !important;
     box-shadow: 0 0 5px $dark-color !important;
   }
 
@@ -34,7 +34,7 @@
   $id: 1,
   $gradient-color: linear-gradient(141deg, #3b7aa9, #ffe974),
   $gradient-dark-color: linear-gradient(141deg, #1b3446, #978d45),
-  $color: #3b7aa9,
+  $color: #4881a5,
   $dark-color: #285b80,
 );
 
@@ -80,7 +80,7 @@
   $gradient-color: linear-gradient(141deg, #6a81ff, #6a80ffae),
   $gradient-dark-color: linear-gradient(141deg, #313c76, #5264c5),
   $color: #6a81ff,
-  $dark-color: #5264c5,
+  $dark-color: #374492,
 );
 
 // SQL
@@ -171,4 +171,58 @@
   $gradient-dark-color: linear-gradient(45deg, #7f6b18, #9e8f27),
   $color: #cebb3a,
   $dark-color: #9e8f27,
+);
+
+// English
+@include define-chapter-colors(
+  $id: 17,
+  $gradient-color: linear-gradient(to right, #39478b, #6788f5),
+  $gradient-dark-color: linear-gradient(45deg, #2a3671, #39478b),
+  $color: #6788f5,
+  $dark-color: #39478b,
+);
+
+// IQ
+@include define-chapter-colors(
+  $id: 18,
+  $gradient-color: linear-gradient(to right, #39478b, #6788f5),
+  $gradient-dark-color: linear-gradient(45deg, #2a3671, #39478b),
+  $color: #020263,
+  $dark-color: #020263,
+);
+
+// Mental Ariphmetic
+@include define-chapter-colors(
+  $id: 19,
+  $gradient-color: linear-gradient(45deg, mix(black, #4d7e3e, 0), mix(white, #4d7e3e, 10)),
+  $gradient-dark-color: linear-gradient(45deg, mix(black, #4d7e3e, 30), #4d7e3e),
+  $color: #4d7e3e,
+  $dark-color: mix(black, #4d7e3e, 30),
+);
+
+// Competitive programming
+@include define-chapter-colors(
+  $id: 20,
+  $gradient-color: linear-gradient(45deg, mix(black, #000066, 0), mix(white, #000066, 10)),
+  $gradient-dark-color: linear-gradient(45deg, mix(black, #000066, 30), #000066),
+  $color: #000066,
+  $dark-color: mix(black, #000066, 30),
+);
+
+// Basics of programming
+@include define-chapter-colors(
+  $id: 21,
+  $gradient-color: linear-gradient(45deg, mix(black, #000066, 0), mix(white, #000066, 10)),
+  $gradient-dark-color: linear-gradient(45deg, mix(black, #000066, 30), #000066),
+  $color: #000066,
+  $dark-color: mix(black, #000066, 30),
+);
+
+// Coding
+@include define-chapter-colors(
+  $id: 22,
+  $gradient-color: linear-gradient(45deg, mix(black, #0ef394, 0), mix(black, #09a8e6, 10)),
+  $gradient-dark-color: linear-gradient(45deg, mix(black, #78e6af, 50), mix(black, #0daad6, 50)),
+  $color: #0ef394,
+  $dark-color: mix(black, #0ef394, 50),
 );

@@ -22,6 +22,9 @@ export class MathjaxComponent implements OnInit, OnChanges {
   ngOnInit() {
     if (!window['MathJax']) {
       window['MathJax'] = {
+        options: {
+          enableMenu: false,
+        },
         tex: {
           inlineMath: [
             ['$', '$'],

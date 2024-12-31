@@ -1,17 +1,17 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { AvailableLanguage, Problem } from '@problems/models/problems.models';
 import { CoreCommonModule } from '@core/common.module';
 import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
-import { User } from '@auth/models';
+import { AuthService, User } from '@auth';
 import { Subject } from 'rxjs';
-import { AuthService } from '@auth/service';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { LanguageService } from '@problems/services/language.service';
 import { takeUntil } from 'rxjs/operators';
 import { AttemptLangs } from '@problems/constants';
 import { findAvailableLang } from '@problems/utils';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { AttemptLanguageComponent } from '@shared/components/attempt-language/attempt-language.component';
 
 interface IVoteResult {
   likesCount: number;
@@ -21,11 +21,18 @@ interface IVoteResult {
 @Component({
   selector: 'problem-info-card',
   standalone: true,
-  imports: [CoreCommonModule, ProblemsPipesModule, UserPopoverModule, KepIconComponent],
+  imports: [
+    CoreCommonModule,
+    ProblemsPipesModule,
+    UserPopoverModule,
+    KepIconComponent,
+    AttemptLanguageComponent,
+    AttemptLanguageComponent,
+  ],
   templateUrl: './problem-info-card.component.html',
   styleUrl: './problem-info-card.component.scss'
 })
-export class ProblemInfoCardComponent implements OnInit, OnDestroy {
+export class ProblemInfoCardComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() problem: Problem;
   @Input() hideLikes = false;
@@ -62,6 +69,12 @@ export class ProblemInfoCardComponent implements OnInit, OnDestroy {
         this.currentUser = user;
       }
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if ('problem' in changes) {
+      this.langService.setLanguage(this.langService.getLanguageValue());
+    }
   }
 
   like() {

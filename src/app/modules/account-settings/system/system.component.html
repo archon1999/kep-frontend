@@ -1,37 +1,37 @@
 <div class="card">
   <div class="card-body">
     <div class="d-flex align-items-center mb-2">
-      <i data-feather="settings" class="font-medium-3"></i>
-      <h4 class="mb-0 ml-75">System</h4>
+      <i class="font-medium-3" data-feather="settings"></i>
+      <h4 class="mb-0 ms-75">System</h4>
     </div>
 
     <div id="customizer-menu-type mt-2">
-      <p class="font-weight-bold font-medium-3 mb-2">Menu Layout</p>
+      <p class="fw-bold font-medium-3 mb-2">Menu Layout</p>
       <div class="d-flex">
-        <div class="ml-1 mb-1 custom-control custom-radio">
+        <div class="ms-1 mb-1 form-check">
           <input
-            type="radio"
+            (change)="changeMenuLayout()"
+            [(ngModel)]="menuLayout"
+            [value]="'vertical'"
+            class="form-check-input"
             id="radio-1"
             name="menu-layout"
-            [(ngModel)]="menuLayout"
-            (change)="changeMenuLayout()"
-            [value]="'vertical'"
-            class="custom-control-input" />
-          <label class="custom-control-label" for="radio-1">
+            type="radio"/>
+          <label class="form-check-label" for="radio-1">
             Vertical
           </label>
         </div>
 
-        <div class="ml-1 mb-1 custom-control custom-radio">
+        <div class="ms-1 mb-1 form-check">
           <input
-            type="radio"
+            (change)="changeMenuLayout()"
+            [(ngModel)]="menuLayout"
+            [value]="'horizontal'"
+            class="form-check-input"
             id="radio-2"
             name="menu-layout"
-            [(ngModel)]="menuLayout"
-            (change)="changeMenuLayout()"
-            [value]="'horizontal'"
-            class="custom-control-input" />
-          <label class="custom-control-label" for="radio-2">
+            type="radio"/>
+          <label class="form-check-label" for="radio-2">
             Horizontal
           </label>
         </div>
@@ -39,79 +39,97 @@
     </div>
 
     <div class="sounds">
-      <p class="font-weight-bold font-medium-3 mb-1 mt-1">Sounds</p>
+      <p class="fw-bold font-medium-3 mb-1 mt-1">Sounds</p>
 
       <div class="rows">
         <div class="col-6">
           <label>Success</label>
           <ng-select
-            appendTo="body"  
-            [items]="successSoundList"
             (change)="successSoundChange()"
+            [(ngModel)]="successSound"
             [dropdownPosition]="'bottom'"
-            [(ngModel)]="successSound">
+            [items]="successSoundList"
+            appendTo="body">
           </ng-select>
         </div>
 
         <div class="mt-1 col-6">
           <label>Home</label>
           <ng-select
-            appendTo="body"
-            [items]="homeSoundList"
             (change)="homeSoundChange()"
+            [(ngModel)]="homeSound"
             [dropdownPosition]="'bottom'"
-            [(ngModel)]="homeSound">
+            [items]="homeSoundList"
+            appendTo="body">
           </ng-select>
         </div>
       </div>
     </div>
 
     <div class="animations mt-2">
-      <p class="font-weight-bold font-medium-3 mb-1 mt-1">Enable animations</p>
+      <p class="fw-bold font-medium-3 mb-1 mt-1">Enable animations</p>
       <div class="d-flex">
-        <div class="ml-1 mb-1 custom-control custom-radio">
+        <div class="ms-1 mb-1 form-check">
           <input
-            type="radio"
+            (change)="changeEnableAnimation()"
+            [(ngModel)]="enableAnimation"
+            [value]="'enable'"
+            class="form-check-input"
             id="radio-3"
             name="animation"
-            [(ngModel)]="enableAnimation"
-            (change)="changeEnableAnimation()"
-            [value]="'enable'"
-            class="custom-control-input" />
-          <label class="custom-control-label" for="radio-3">
+            type="radio"/>
+          <label class="form-check-label" for="radio-3">
             Enable
           </label>
         </div>
 
-        <div class="ml-1 mb-1 custom-control custom-radio">
+        <div class="ms-1 mb-1 form-check">
           <input
-            type="radio"
+            (change)="changeEnableAnimation()"
+            [(ngModel)]="enableAnimation"
+            [value]="'disable'"
+            class="form-check-input"
             id="radio-4"
             name="animation"
-            [(ngModel)]="enableAnimation"
-            (change)="changeEnableAnimation()"
-            [value]="'disable'"
-            class="custom-control-input" />
-          <label class="custom-control-label" for="radio-4">
+            type="radio"/>
+          <label class="form-check-label" for="radio-4">
             Disable
           </label>
         </div>
       </div>
 
     </div>
+
+    <div class="toggle-theme-effects mt-2">
+      <p class="fw-bold font-medium-3 mb-1 mt-1">Theme Toggle Effect</p>
+
+      <div class="rows">
+        <div class="col-6">
+          <ng-select
+            (change)="themeToggleEffectChange()"
+            [(ngModel)]="themeToggleEffect"
+            [dropdownPosition]="'bottom'"
+            [items]="themeToggleEffectList"
+            appendTo="body">
+          </ng-select>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
 <ng-select-css></ng-select-css>
 
-<audio
-  *ngIf="successSound != SuccessSoundEnum.NoSound"
-  #successAudio
-  [src]="soundsService.getSuccessSoundSrc()">
-</audio>
+@if (successSound != SuccessSoundEnum.NoSound) {
+  <audio
+    #successAudio
+    [src]="soundsService.getSuccessSoundSrc()">
+  </audio>
+}
 
-<audio
-  *ngIf="homeSound != HomeSoundEnum.NoSound"
-  #homeAudio
-  [src]="soundsService.getHomeSoundSrc()">
-</audio>
+@if (homeSound != HomeSoundEnum.NoSound) {
+  <audio
+    #homeAudio
+    [src]="soundsService.getHomeSoundSrc()">
+  </audio>
+}

@@ -22,21 +22,46 @@ pre {
   margin: 1em 0;
   padding: 1rem;
   border-radius: .375em;
-  border: 1px solid #ededed !important;
-  background-color: #fafafa !important;
+  border: 1px solid white !important;
+  background-color: rgba(255, 255, 255, 0.75) !important;
   font-size: 87.5%;
   font-family: 'Inconsolata', serif;
   overflow: auto;
 }
 
 .dark-layout pre {
-  background-color: inherit !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid $theme-dark-body-bg !important;
   color: white;
 }
 
 @media (min-width: 1440px) {
   .container-xxl {
     max-width: 1440px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container-xl {
+    max-width: 1200px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container-lg {
+    max-width: 992px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container-md {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 540px) {
+  .container-sm {
+    max-width: 540px;
   }
 }
 
@@ -55,7 +80,6 @@ li[core-menu-horizontal-collapsible],
 
 .main-menu:not(.expanded) kep-icon > span {
   margin-right: 1rem;
-  transition: 1s ease-in;
 }
 
 @include media-breakpoint-down(sm) {
@@ -84,4 +108,74 @@ a.nav-link:hover {
 
 .fc-list-empty {
   background-color: inherit !important;
+}
+
+.nav-tabs {
+  margin-bottom: 0 !important;
+}
+
+img {
+  max-width: 100%;
+}
+
+.dark-layout app-menu {
+  backdrop-filter: blur(5px);
+}
+
+.nav-tabs.card-nav {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid white;
+
+  @include dark-layout {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid $theme-dark-body-bg;
+  }
+}
+
+.horizontal-layout.navbar-sticky .header-navbar {
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(20px);
+}
+
+.dark-layout {
+  app-menu, .horizontal-layout.navbar-sticky .header-navbar {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(20px) !important;
+  }
+}
+
+li[core-menu-horizontal-item] {
+  .dropdown-item {
+    &:active kep-icon span {
+      color: white !important;
+    }
+
+    &:hover, &:focus, &:active {
+      border-radius: 5px;
+    }
+  }
+}
+
+.dark-layout .dropdown-menu {
+  backdrop-filter: blur(10px) !important;
+}
+
+.dark-layout .swal2-container .swal2-modal {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.dark-layout {
+  a.text-dark:focus, a.text-dark:hover {
+    color: $primary !important;
+  }
+}
+
+.total-count {
+  font-size: 17px;
+  font-weight: 100;
+  vertical-align: super;
+  color: #888ea8;
+  letter-spacing: 2px;
+  margin-left: 0.5rem;
 }

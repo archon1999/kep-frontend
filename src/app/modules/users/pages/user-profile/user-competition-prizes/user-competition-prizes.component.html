@@ -1,0 +1,27 @@
+<div class="card">
+  @if (isLoading) {
+    <div class="card-body" [style.height.px]="400">
+      <spinner></spinner>
+    </div>
+  } @else {
+    <div class="card-header">
+      <div class="card-title">
+        {{ 'CompetitionPrizes' | translate }}
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        @for (competitionPrize of data; track competitionPrize) {
+          <div class="col-6 col-md-4 col-lg-3">
+            <user-competition-prize-card [competitionPrize]="competitionPrize"/>
+          </div>
+        }
+      </div>
+      @if (data.length == 0) {
+        <div class="text-center">
+          <empty-result [title]="''" [text]="'NoResultFound'"/>
+        </div>
+      }
+    </div>
+  }
+</div>

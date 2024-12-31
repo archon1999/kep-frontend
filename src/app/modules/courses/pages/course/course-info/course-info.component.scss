@@ -1,0 +1,25 @@
+course-info {
+  p {
+    max-width: 74ch;
+    line-height: 2.25rem !important;
+    font-size: 16px !important;
+  }
+
+  .font-medium-2 {
+    max-width: 74ch;
+  }
+
+  .start-btn {
+    color: #fff;
+    background: #09666e;
+    box-shadow: 0 0 5px #243b5d !important;
+
+    &:hover {
+      background: #0b8793;
+    }
+  }
+
+  .card {
+    box-shadow: 0 0.125rem 0.5rem #8080800d !important;
+  }
+}

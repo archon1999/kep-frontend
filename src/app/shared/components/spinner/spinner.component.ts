@@ -1,19 +1,19 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { randomInt } from '@shared/utils';
 
 @Component({
   selector: 'spinner',
   standalone: true,
-  imports: [CommonModule, NgxSpinnerModule],
+  imports: [NgxSpinnerModule],
   templateUrl: './spinner.component.html',
   styleUrl: './spinner.component.scss'
 })
 export class SpinnerComponent implements OnInit, OnDestroy {
   @Input() name: string;
   @Input() type = 'ball-clip-rotate-multiple';
-  @Input() color = 'var(--primary)';
+  @Input() color = 'var(--bs-primary)';
   @Input() bdColor = 'inherit';
   @Input() size: 'small' | 'default' | 'medium' | 'large' = 'large';
   @Input() height: string;

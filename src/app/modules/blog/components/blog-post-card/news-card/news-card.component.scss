@@ -12,7 +12,7 @@
   }
 
   .post-image {
-    padding: 15px 18px;
+    padding: 15px 18px 15px 0;
     text-align: center; 
     object-fit: cover;
     border-bottom-right-radius: calc(0.428rem - 1px);
@@ -21,7 +21,7 @@
 
     img {
       background: #fff;
-      box-shadow: 0 0 10px rgba(34, 41, 47, 0.1);
+      box-shadow: 0 0 5px rgba(34, 41, 47, 0.1);
       height: 100%;
       width: 100%;
       object-fit: contain;
@@ -38,7 +38,6 @@
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     font-size: 1.3rem;
-    font-weight: 600;
   }
 
   .tags {

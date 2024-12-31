@@ -7,10 +7,10 @@ import * as Waves from 'node-waves';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { CoreMenuService } from 'core/components/core-menu/core-menu.service';
-import { CoreConfigService } from 'core/services/config.service';
-import { CoreLoadingScreenService } from 'core/services/loading-screen.service';
-import { CoreTranslationService } from 'core/services/translation.service';
+import { CoreMenuService } from '@core/components/core-menu/core-menu.service';
+import { CoreConfigService } from '@core/services/config.service';
+import { CoreLoadingScreenService } from '@core/services/loading-screen.service';
+import { CoreTranslationService } from '@core/services/translation.service';
 
 import { locale as menuEnglish } from 'app/i18n/en';
 import { locale as menuRussian } from 'app/i18n/ru';
@@ -22,12 +22,11 @@ import localeUz from '@angular/common/locales/uz';
 import { menu } from '@layout/components/menu/menu';
 
 import { ApiService } from '@shared/services/api.service';
-import { AuthService } from '@auth/service';
-import { WebsocketService } from '@shared/services/websocket';
 import { environment } from 'environments/environment';
 import { Router } from '@angular/router';
 import { isPresent } from '@shared/c-validators/utils';
 import { SwipeService } from '@shared/services/swipe.service';
+import { ScriptService } from '@shared/services/script.service';
 
 @Component({
   selector: 'app-root',
@@ -56,16 +55,13 @@ export class AppComponent implements OnInit, OnDestroy {
     private _translateService: TranslateService,
     private api: ApiService,
     public router: Router,
-    private authService: AuthService,
-    public wsService: WebsocketService,
     public swipeService: SwipeService,
+    public scriptService: ScriptService,
+    private renderer: Renderer2,
   ) {
     this.menu = menu;
-
     this._coreMenuService.register('main', this.menu);
-
     this._coreMenuService.setCurrentMenu('main');
-
     this._translateService.addLangs(['en', 'ru', 'uz']);
 
     let browserLang = this._translateService.getBrowserLang();
@@ -73,9 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
       browserLang = 'en';
     }
     this._translateService.setDefaultLang(browserLang);
-
     this._coreTranslationService.translate(menuEnglish, menuRussian, menuUzbek);
-
     this._unsubscribeAll = new Subject();
   }
 
@@ -97,7 +91,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // Subscribe to config changes
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       if (!isPresent(config.layout.enableAnimation)) {
-        const enableAnimation = window.innerWidth > 1000;
+        const enableAnimation = window.innerWidth > 1400;
         this._coreConfigService.setConfig({ layout: { enableAnimation: enableAnimation } });
       }
       this.animationsDisabled = !config.layout.enableAnimation;
@@ -156,7 +150,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this._elementRef.nativeElement.classList.remove('footer-fixed', 'footer-static', 'footer-hidden');
 
       if (this.coreConfig.layout.footer.type === 'footer-sticky') {
-        this._elementRef.nativeElement.classList.add('footer-fixed');
+        // this._elementRef.nativeElement.classList.add('footer-fixed');
       } else if (this.coreConfig.layout.footer.type === 'footer-static') {
         this._elementRef.nativeElement.classList.add('footer-static');
       } else {
@@ -203,8 +197,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
       // Skin Class (Adding to body as it requires highest priority)
       if (this.coreConfig.layout.skin !== '' && this.coreConfig.layout.skin !== undefined) {
-        this.document.body.classList.remove('default-layout', 'bordered-layout', 'dark-layout', 'semi-dark-layout');
-        this.document.body.classList.add(this.coreConfig.layout.skin + '-layout');
+        document.body.classList.remove('default-layout', 'bordered-layout', 'dark-layout', 'semi-dark-layout');
+        document.body.classList.add(this.coreConfig.layout.skin + '-layout');
       }
     });
 
@@ -214,32 +208,25 @@ export class AppComponent implements OnInit, OnDestroy {
     registerLocaleData(localeRu, 'ru');
     registerLocaleData(localeEn, 'en');
 
-    this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (user: any) => {
-        if (user) {
-          this.api.get('my-kepcoin').subscribe(
-            (kepcoin: any) => {
-              this.authService.updateKepcoin(kepcoin);
+    this.api.get('menu-items-count').subscribe(
+      (items) => {
+        for (const sectionMenu of menu.filter(item => item.type === 'section')) {
+          sectionMenu.newCount = 0;
+          for (const key of Object.keys(items)) {
+            for (const menuItem of sectionMenu.children) {
+              if (menuItem.id === key) {
+                menuItem.newCount = items[key];
+                sectionMenu.newCount += items[key];
+              }
             }
-          );
+          }
         }
       }
     );
 
-    this.wsService.status.pipe(takeUntil(this._unsubscribeAll)).subscribe((status: any) => {
-      if (status) {
-        this.authService.currentUser
-          .pipe(takeUntil(this._unsubscribeAll))
-          .subscribe((user: any) => {
-            if (user) {
-              this.wsService.send('kepcoin-add', user.username);
-              this.wsService.on<number>(`kepcoin-${ user.username }`).subscribe((kepcoin: number) => {
-                this.authService.updateKepcoin(kepcoin);
-              });
-            }
-          });
-      }
-    });
+    setTimeout(() => {
+      this.scriptService.loadJsScript(this.renderer, 'https://www.googletagmanager.com/gtag/js?id=G-MBQPKFTEWV');
+    }, 10000);
   }
 
   @HostListener('touchstart', ['$event'])

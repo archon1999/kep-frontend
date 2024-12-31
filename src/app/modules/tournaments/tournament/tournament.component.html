@@ -8,13 +8,17 @@
         {{ tournament.title }}
       </h3>
       <p class="text-white">{{ tournament.startTime | localizedDate:'MMM dd, yyyy'}}</p>
-      <button *ngIf="!tournament.isRegistered && canRegistration" (click)="registration()" class="btn btn-sm btn-registration">
-        <i data-feather="user"></i> {{ 'Registration' | translate }}
-      </button>
-      <span *ngIf="tournament.isRegistered" class="badge badge-glow badge-dark">
-        <i class="text-success" data-feather="check-circle"></i>
-        {{ 'Registrated' | translate }}
-      </span>
+      @if (!tournament.isRegistered && canRegistration) {
+        <button (click)="registration()" class="btn btn-sm btn-registration">
+          <i data-feather="user"></i> {{ 'Registration' | translate }}
+        </button>
+      }
+      @if (tournament.isRegistered) {
+        <span class="badge badge-primary">
+          <i class="text-success" data-feather="check-circle"></i>
+          {{ 'Registrated' | translate }}
+        </span>
+      }
     </div>
   </div>
 </div>

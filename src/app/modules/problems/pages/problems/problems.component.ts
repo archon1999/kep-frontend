@@ -10,7 +10,7 @@ import { SectionSidebarComponent } from '@problems/pages/problems/sections/secti
 import { SectionInfoComponent } from '@problems/pages/problems/sections/section-info/section-info.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
-import { BasePageComponent } from '@shared/components/classes/base-page.component';
+import { BasePageComponent } from '@app/common/classes/base-page.component';
 import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { SectionHeaderComponent } from '@problems/pages/problems/sections/section-header/section-header.component';

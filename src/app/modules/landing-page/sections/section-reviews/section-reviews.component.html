@@ -1,0 +1,36 @@
+<div class="reviews-container">
+  <div class="content-wrapper container-xxl">
+    <div class="content-body">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="mb-2">
+            <span class="badge bg-primary">{{ 'Reviews' | translate }}</span>
+          </div>
+
+          <h3 class="fw-bolder mb-1">{{ 'LandingPage.SectionReviewsTitle' | translate }}</h3>
+          <p>{{ 'LandingPage.SectionReviewsText' | translate }}</p>
+
+          <div class="mt-3 mb-1 d-flex justify-content-start">
+            <button aria-label="prev" rippleEffect class="btn btn-sm bg-light-primary">
+              <kep-icon name="arrow-left" color="primary" class=""></kep-icon>
+            </button>
+            <button aria-label="next" rippleEffect class="ms-50 btn btn-sm bg-light-primary">
+              <kep-icon name="arrow-right" color="primary" class=""></kep-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-9">
+          <swiper [config]="swiperConfig">
+            @for (review of data; track review) {
+              <div class="swiper-slide">
+                <review-card [review]="review"></review-card>
+              </div>
+            }
+          </swiper>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

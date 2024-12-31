@@ -1,0 +1,79 @@
+<div class="layout-px-spacing">
+  <div class="content-header">
+    <h4 class="text-center mt-2 mb-1">
+      {{ 'COURSES.FILTER_COURSES' | translate }}
+    </h4>
+  </div>
+  <div class="middle-content p-0">
+    <div class="widget-content">
+      <div class="layout-spacing">
+        <div class="container">
+          <div class="layout-spacing">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">
+                  {{ 'COURSES.TITLE' | translate }}
+                </h4>
+                <div class="mb-1">
+                  <input type="text" class="form-control" name="title">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="layout-spacing">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">
+                  {{ 'COURSES.SORT_BY' | translate }}
+                </h4>
+                <div class="mb-1 mb-2">
+                  <select class="form-select" style="height: 35px; padding: 0px; padding-left: 15px;">
+                    <option value="1">
+                      {{ 'COURSES.MOST_REVIEWED' | translate }}
+                    </option>
+                    <option value="2">
+                      {{ 'COURSES.MOST_LIKED' | translate }}
+                    </option>
+                    <option value="3">
+                      {{ 'COURSES.RATING' | translate }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="layout-spacing">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">
+                  {{ 'COURSES.LEVEL' | translate }}
+                </h4>
+                <div class="mb-1">
+                  <div class="ms-1 mb-1 custom-control custom-control-primary custom-checkbox">
+                    <input type="checkbox" class="form-check-input" />
+                    <label class="form-check-label text-success">Junior</label>
+                  </div>
+
+                  <div class="ms-1 mb-1 custom-control custom-control-primary custom-checkbox">
+                    <input type="checkbox" class="form-check-input" />
+                    <label class="form-check-label text-primary">Junior+</label>
+                  </div>
+
+                  <div class="ms-1 mb-1 custom-control custom-control-primary custom-checkbox">
+                    <input type="checkbox" class="form-check-input" />
+                    <label class="form-check-label text-dark">Middle</label>
+                  </div>
+
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
