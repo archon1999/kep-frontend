@@ -35,6 +35,7 @@ export enum Resources {
 
   Shop = '/shop',
   Kepcoin = '/kepcoin',
+  KepCover = '/kep-cover',
 }
 
 export function getResourceById(resource: Resources, id: number | string) {

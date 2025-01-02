@@ -153,6 +153,13 @@ export const menu: CoreMenu[] = [
     icon: 'shop',
     url: Resources.Shop,
   },
+  {
+    id: 'kep-cover',
+    translate: 'KEP Cover',
+    type: 'item',
+    icon: 'design',
+    url: Resources.KepCover,
+  },
   // {
   //   id: 'kepcoin',
   //   translate: 'Kepcoin',
