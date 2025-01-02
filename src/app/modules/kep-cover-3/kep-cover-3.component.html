@@ -1,0 +1,52 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body" id="user-profile">
+    <app-content-header [contentHeader]="contentHeader"/>
+
+    @if (isLoading) {
+      <div [style.height.px]="400">
+        <spinner/>
+      </div>
+    } @else {
+      <div class="font-large-1 mb-2 text-center text-dark font-weight-bolder">
+        <kep-icon name="users" color="primary" type="duotone" size="large-1"/>
+        {{ 'COURSES.PARTICIPANTS' | translate }}
+      </div>
+
+      @for (user of data; track user.username) {
+        <div class="card profile-header mb-4">
+          <img [src]="user.coverPhoto" alt="User Profile Image" class="card-img-top" loading="lazy"/>
+          <div class="position-relative">
+            <div class="profile-img-container d-flex align-items-center">
+              <div class="profile-img">
+                <img [src]="user.avatar" alt="Card image" class="rounded img-fluid" loading="lazy"/>
+              </div>
+              <div class="profile-title ms-3">
+                <h2 class="text-white">
+                  {{ user.firstName }} {{ user.lastName }}
+                </h2>
+                <p class="text-white">{{ user.username }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-header-nav">
+            <nav class="navbar navbar-expand-md navbar-light justify-content-end justify-content-md-between w-100">
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="profile-tabs d-flex justify-content-between flex-wrap mt-1 mt-md-0">
+                  <ul class="nav nav-pills mb-0">
+                    <li class="nav-item">
+                      <button (click)="like(user)" class="btn btn-success">
+                        <kep-icon name="like"/>
+                        ({{ user.likesCount }})
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
+      }
+    }
+  </div>
+</div>

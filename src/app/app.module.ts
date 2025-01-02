@@ -75,6 +75,7 @@ const appRoutes: Routes = [
       teamJoin: TeamJoinResolver,
     },
   },
+  { path: 'kep-cover', loadComponent: () => import('./modules/kep-cover-3/kep-cover-3.component').then(c => c.KepCover3Component) },
   { path: '**', loadComponent: () => import('./modules/pages/miscellaneous/error/error.component').then(c => c.ErrorComponent) },
 ];
 
