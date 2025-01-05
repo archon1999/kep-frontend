@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Challenge } from '@challenges/models';
 import { ChallengesApiService } from '@challenges/services';
 import Swal from 'sweetalert2';
@@ -188,6 +188,7 @@ export class ChallengeComponent extends BaseComponent implements OnInit, OnDestr
     this.questionCard.checkAnswer();
   }
 
+  @HostListener('window:blur', ['$event'])
   onBlur(): void {
     if (this.challenge.nextQuestion?.question && this.challenge.status !== ChallengeStatus.Finished) {
       Swal.fire({

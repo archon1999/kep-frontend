@@ -5,7 +5,7 @@ import { DragulaModule, DragulaService } from 'ng2-dragula';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { randomShuffle } from '@shared/utils';
+import { randomInt, randomShuffle } from '@shared/utils';
 import { randomChoice } from '@shared/utils/random';
 import { AttemptLangs } from '@problems/constants';
 import { LanguageService } from '@problems/services/language.service';
@@ -27,13 +27,7 @@ export enum QuestionType {
   PROBLEM = 8,
 }
 
-const cppTemplate = `#include <iostream>
-
-using namespace std;
-
-int main() {
-
-}`;
+const cppTemplate = ``;
 
 @Component({
   selector: 'question-card',
@@ -62,6 +56,7 @@ export class QuestionCardComponent extends BaseComponent implements OnInit, OnCh
   public conformityGroupSecond: Array<string>;
   public orderingList: Array<string>;
   public classificationGroups: any;
+  public rnd = randomInt(1, 100000);
 
   protected readonly QuestionType = QuestionType;
   protected readonly AttemptLangs = AttemptLangs;

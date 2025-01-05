@@ -61,7 +61,7 @@
           </div>
         </div>
 
-        <input type="text" [(ngModel)]="input" id="input" class="form-control"/>
+        <input type="text" [name]="'field-' + rnd" autocomplete="off" [(ngModel)]="input" class="form-control"/>
       </div>
     }
 
