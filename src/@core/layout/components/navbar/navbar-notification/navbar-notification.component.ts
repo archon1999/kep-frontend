@@ -88,6 +88,10 @@ export class NavbarNotificationComponent implements OnInit, OnDestroy {
               this.wsService.send('notification-add', user.username);
               this.wsService.on(`notification-${ user.username }`).subscribe(
                 (notification: Notification) => {
+                  if (this.notifications.find(n => n.id === notification.id)) {
+                    return;
+                  }
+
                   if (notification.type === 1) {
                     Swal.fire({
                       title: 'Information',

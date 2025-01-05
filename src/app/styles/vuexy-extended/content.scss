@@ -1,9 +1,5 @@
 @import 'styles/kep-imports';
 
-html {
-  overflow-y: scroll
-}
-
 th {
   font-weight: 400 !important;
   text-transform: initial !important;
@@ -182,4 +178,10 @@ li[core-menu-horizontal-item] {
 
 .round {
   border-radius: 100rem !important;
+}
+
+html:has(.swal2-container) {
+  app-footer {
+    display: none !important;
+  }
 }

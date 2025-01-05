@@ -226,3 +226,12 @@
   $color: #0ef394,
   $dark-color: mix(black, #0ef394, 50),
 );
+
+// Russian
+@include define-chapter-colors(
+  $id: 23,
+  $gradient-color: linear-gradient(45deg, mix(black, #cb1f1b, 0), mix(black, #002aa0, 10)),
+  $gradient-dark-color: linear-gradient(45deg, mix(black, #cb1f1b, 50), mix(black, #002aa0, 50)),
+  $color: #002aa0,
+  $dark-color: mix(black, #002aa0, 20),
+);

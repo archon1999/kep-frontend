@@ -221,7 +221,7 @@
       } @placeholder {
         <spinner height="100"></spinner>
       }
-      <button *ngIf="!isAll && notifications.length > 0" class="btn btn-outline-primary btn-block" (click)="readAll()">{{ 'ReadAll' | translate }}</button>
+      <button *ngIf="!isAll && notifications.length > 0" class="btn btn-outline-primary btn-block mb-50" (click)="readAll()">{{ 'ReadAll' | translate }}</button>
       <button *ngIf="!isAll" class="btn btn-primary btn-block" (click)="click()">{{ 'AllNotifications' | translate }}</button>
       <button *ngIf="isAll" class="btn btn-primary btn-block" (click)="click()">{{ 'Unread' | translate }}</button>
     </li>

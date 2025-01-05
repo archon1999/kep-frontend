@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Challenge } from '@challenges/models';
 import { ChallengesApiService } from '@challenges/services';
 import Swal from 'sweetalert2';
@@ -146,6 +146,10 @@ export class ChallengeComponent extends BaseComponent implements OnInit, OnDestr
   }
 
   checkAnswer(answer: any) {
+    if (this.challenge.questionTimeType === ChallengeQuestionTimeType.TimeToAll) {
+      this.counter.pause();
+    }
+
     this.service.checkAnswer(this.challenge.id, answer, this.isFinish).subscribe(
       (result: any) => {
         let title: string, icon;
