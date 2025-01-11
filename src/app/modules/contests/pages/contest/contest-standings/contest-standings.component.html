@@ -5,10 +5,22 @@
 
   <div class="contest-standings-top">
     <div class="header">
-      <kep-icon class="me-50" name="contest" size="large-1" type="duotone"/>
       <div class="font-large-1 text-dark">
+        <kep-icon class="me-50" name="contest" size="large-1" type="duotone"/>
         {{ contest.title }}
       </div>
+
+      <ng-select
+        style="width: 200px;"
+        placeholder="{{ 'ALL' | translate }}"
+        [items]="contestFilters"
+        bindLabel="name"
+        [(ngModel)]="selectedFilter"
+        (change)="filterChange()"
+        clearable="true"
+        searchable="true"
+        bindValue="id"
+      />
     </div>
     <contest-tab [contest]="contest"/>
   </div>
@@ -35,3 +47,5 @@
     [rotate]="true">
   </kep-pagination>
 </section>
+
+<ng-select-css/>

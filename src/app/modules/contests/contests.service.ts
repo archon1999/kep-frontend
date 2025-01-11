@@ -173,4 +173,8 @@ export class ContestsService {
   getUserTeams() {
     return this.api.get('user-teams');
   }
+
+  getContestFilters(contestId: number | string) {
+    return this.api.get(`contests/${ contestId }/filters`);
+  }
 }

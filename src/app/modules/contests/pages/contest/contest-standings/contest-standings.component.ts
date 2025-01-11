@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ContestsService } from '../../../contests.service';
 import { fadeInOnEnterAnimation } from 'angular-animations';
@@ -13,20 +13,20 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { ContestStatus } from '@contests/constants/contest-status';
 import { ContestProblem } from '@contests/models/contest-problem';
-import { ContestProblemInfo } from '@contests/models/contest-problem-info';
 import { Contest } from '@contests/models/contest';
 import { Contestant } from '@contests/models/contestant';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
-import { BaseLoadComponent, BaseTablePageComponent } from '@app/common';
-import { interval, Observable } from 'rxjs';
+import { BaseTablePageComponent } from '@app/common';
+import { interval } from 'rxjs';
 import { KepDeltaComponent } from '@shared/components/kep-delta/kep-delta.component';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import {
   ContestStandingsTableComponent
 } from '@contests/pages/contest/contest-standings/contest-standings-table/contest-standings-table.component';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 
 @Component({
   selector: 'app-contest-standings',
@@ -48,6 +48,7 @@ import {
     KepDeltaComponent,
     KepPaginationComponent,
     ContestStandingsTableComponent,
+    NgSelectModule,
   ],
 })
 export class ContestStandingsComponent extends BaseTablePageComponent<Contestant> {
@@ -59,6 +60,8 @@ export class ContestStandingsComponent extends BaseTablePageComponent<Contestant
   public contestProblems: Array<ContestProblem> = [];
 
   public firstLoad = true;
+  public contestFilters = [];
+  public selectedFilter: number;
 
   constructor(
     public service: ContestsService,
@@ -76,6 +79,12 @@ export class ContestStandingsComponent extends BaseTablePageComponent<Contestant
       this.contestProblems = sortContestProblems(contestProblems);
       this.titleService.updateTitle(this.route, { contestTitle: contest.title });
       setTimeout(() => this.reloadPage());
+
+      this.service.getContestFilters(this.contest.id).subscribe(
+        (filters) => {
+          this.contestFilters = filters;
+        }
+      );
     });
 
     if (this.contest.status === ContestStatus.ALREADY) {
@@ -94,10 +103,13 @@ export class ContestStandingsComponent extends BaseTablePageComponent<Contestant
       this.pageSize === this.defaultPageSize &&
       this.firstLoad) {
       this.firstLoad = false;
-      return this.service.getNewContestants(this.contest.id, {});
+      return this.service.getNewContestants(this.contest.id, {filter: this.selectedFilter});
     }
     this.firstLoad = false;
-    return this.service.getNewContestants(this.contest.id, this.pageable);
+    return this.service.getNewContestants(this.contest.id, {
+      ...this.pageable,
+      filter: this.selectedFilter,
+    });
   }
 
   updateContestProblems() {
@@ -106,5 +118,10 @@ export class ContestStandingsComponent extends BaseTablePageComponent<Contestant
         this.contestProblems = sortContestProblems(contestProblems);
       }
     );
+  }
+
+  filterChange() {
+    this.pageNumber = 1;
+    this.reloadPage();
   }
 }
