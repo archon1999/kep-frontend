@@ -126,10 +126,4 @@ export class NavbarComponent extends BaseComponent implements OnInit, OnDestroy 
       });
     }
   }
-
-  updateLightsEnabled() {
-    console.log(!this.localStorageService.get('newYearEffects', true));
-    this.localStorageService.set('newYearEffects', !this.localStorageService.get('newYearEffects', true));
-    location.reload();
-  }
 }

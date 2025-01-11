@@ -50,14 +50,6 @@
         }
       </div>
 
-      <div ngbTooltip="New year effects on/off" class="nav-link nav-link-style btn cursor-pointer d-flex" (click)="updateLightsEnabled()">
-        <kep-icon name="tree" type="duotone" size="large-1"/>
-        @if (localStorageService.get('newYearEffects', true)){
-          <kep-icon name="toggle-on-circle" type="duotone" class="font-large-1"></kep-icon>
-        } @else {
-          <kep-icon name="toggle-off-circle" type="duotone" class="font-large-1"></kep-icon>
-        }
-      </div>
     </div>
     <!--/ Toggle skin -->
   </div>

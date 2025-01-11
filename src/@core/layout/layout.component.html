@@ -1,9 +1,3 @@
-<ul *ngIf="newYearEffects" class="lightrope">
-  @for (_ of [].constructor(lightsCount); track $index){
-    <li></li>
-  }
-</ul>
-
 @defer (when coreConfig.layout.type === 'vertical') {
   @if (coreConfig.layout.type === 'vertical'){
     <vertical-layout></vertical-layout>

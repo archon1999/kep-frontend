@@ -23,7 +23,6 @@ let snowf: any;
 export class LayoutComponent {
   public coreConfig: CoreConfig;
   public lightsCount = 0;
-  public newYearEffects: boolean = !!this.localStorageService.get('newYearEffects', true);
 
   constructor(
     public coreConfigService: CoreConfigService,
@@ -40,38 +39,6 @@ export class LayoutComponent {
         this.changeDetection.markForCheck();
       }
     );
-
-    if (this.newYearEffects) {
-      const scriptElement = this.scriptService.loadJsScript(this.renderer, SCRIPT_PATH);
-      scriptElement.onload = (e) => {
-        snowf = window['snowf'].init({
-          size: 2,
-          amount: 20,
-          speed: 1
-        });
-        window.onresize = function () {
-          snowf.resize();
-        };
-        setTimeout(() => {
-          snowf.setOptions({
-            size: 5,
-            amount: 50,
-            speed: 1.5
-          });
-          setTimeout(() => {
-            snowf.setOptions({
-              size: 7,
-              amount: 75,
-              speed: 2,
-              wind: 1,
-            });
-          }, 10 * 60 * 1000);
-        }, 30000);
-        setInterval(() => {
-          snowf.wind(randomInt(1, 4), randomInt(1000, 5000));
-        }, 100 * 1000);
-      };
-    }
   }
 
   @HostListener('window:resize')

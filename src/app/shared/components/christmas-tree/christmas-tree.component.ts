@@ -13,6 +13,6 @@ export class ChristmasTreeComponent implements OnInit {
   protected localStorageService = inject(LocalStorageService);
 
   ngOnInit() {
-    this.newYearEffects = this.localStorageService.get('newYearEffects', true);
+    // this.newYearEffects = this.localStorageService.get('newYearEffects', true);
   }
 }
