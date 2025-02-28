@@ -54,7 +54,7 @@
               "@yaireo/tagify",
               "moment"
             ],
-            "outputPath": "preview",
+            "outputPath": "./dist",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
