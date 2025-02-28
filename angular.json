@@ -94,24 +94,43 @@
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "baseHref": "/",
+              "optimization": {
+                "scripts": true,
+                "styles": true,
+                "fonts": true
+              },
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "5mb",
+                  "maximumWarning": "4mb",
                   "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "5mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "1000kb"
                 }
-              ],
-              "outputHashing": "all"
+              ]
             },
             "development": {
-              "optimization": false,
+              "optimization": {
+                "scripts": false,
+                "styles": false,
+                "fonts": false
+              },
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "namedChunks": true
             }
           },
           "defaultConfiguration": "production"
