@@ -590,6 +590,15 @@ export const localeUz = {
   HOME: {
     NEWS: 'Yangiliklar',
   },
+  Home: {
+    RankInformation: {
+      SkillsRating: "Bu reyting platformadagi ko'nikmalaringiz kuchini ko'rsatadi. Reyting yechilgan masalalar soni, musobaqalar va chaqiriqlar reytingiga bog‘liq.",
+      ActivityRating: "Bu reyting so‘nggi 30 kun ichidagi faolligingizni ko‘rsatadi. U to‘plangan kepcoinlar, har kuni tizimga kirish va bajarilgan kundalik vazifalarga bog‘liq.",
+      Contests: "Bu reyting musobaqalardagi kuchingizni ko‘rsatadi.",
+      Challenges: "Bu reyting chaqiriqlardagi kuchingizni ko‘rsatadi."
+    },
+    PercentileInformation: "Siz foydalanuvchilarning {{ percentile }}% dan yaxshiroqsiz"
+  },
   Color: 'Rang',
   PageTitle: {
     Home: 'Bosh sahifa',
