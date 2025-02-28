@@ -7,6 +7,8 @@ import { environment } from '../../../environments/environment';
 import { User } from '@auth';
 import { ApiService } from '@shared/services/api.service';
 import { WebsocketService } from '@shared/services/websocket';
+import { GlobalService } from '@app/common';
+import { Router } from '@angular/router';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -17,6 +19,7 @@ export class AuthService {
     private api: ApiService,
     private _http: HttpClient,
     public wsService: WebsocketService,
+    protected router: Router,
   ) {}
 
   public get currentUserValue(): User {
@@ -54,6 +57,8 @@ export class AuthService {
     this.wsService.send('kepcoin-delete', this.currentUserValue?.username);
     this.api.post('logout').subscribe(() => {
       this.currentUserSubject.next(null);
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.navigate([this.router.url], {skipLocationChange: true});
     });
   }
 }
