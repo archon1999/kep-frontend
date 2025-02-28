@@ -231,7 +231,7 @@
                     <div class="problems">
                       @for (problem of day.problems; track problem) {
                         <div class="problem" [ngClass]="{
-                    'bg-light-success': problem?.hasSolved,
+                    'bg-success-transparent': problem?.hasSolved,
                     'bg-light-danger': !problem?.hasSolved && problem?.hasAttempted
                   }">
                           <div class="problem-title text-dark">

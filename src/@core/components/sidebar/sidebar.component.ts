@@ -1,18 +1,13 @@
-import {
-  Component,
-  ViewChild,
-  ElementRef,
-  Renderer2,
-  HostListener,
-} from '@angular/core';
+import { Component, HostListener, Renderer2, } from '@angular/core';
 import { Menu, NavService } from '../../services/nav.service';
-import { Subscription, fromEvent } from 'rxjs';
+import { fromEvent, Subscription } from 'rxjs';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { checkHoriMenu } from './sidebar';
-import { CoreCommonModule } from "@core/common.module";
-import { SimplebarAngularModule } from "simplebar-angular";
-import { DropdownPositionDirective } from "@core/directives/dropdown-position.directive";
+import { CoreCommonModule } from '@core/common.module';
+import { SimplebarAngularModule } from 'simplebar-angular';
+import { DropdownPositionDirective } from '@core/directives/dropdown-position.directive';
+import { ApiService } from '@shared/services/api.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -28,15 +23,20 @@ import { DropdownPositionDirective } from "@core/directives/dropdown-position.di
 export class SidebarComponent {
   public localdata = localStorage;
   public windowSubscribe$!: Subscription;
-  options = {autoHide: false, scrollbarMinSize: 100};
+  options = { autoHide: false, scrollbarMinSize: 100 };
   public menuItems!: Menu[];
   public menuitemsSubscribe$!: Subscription;
+  hasParent = false;
+  hasParentLevel = 0;
+  // Addding sticky-pin
+  scrolled = false;
 
   constructor(
     private navServices: NavService,
     public router: Router,
     public renderer: Renderer2,
     private sanitizer: DomSanitizer,
+    public api: ApiService
   ) {
     // if (document.querySelector('html')?.getAttribute('data-nav-style') == 'icon-hover') {
     //   document.querySelector('.slide-menu')?.setAttribute('style','display:none;')
@@ -60,29 +60,31 @@ export class SidebarComponent {
   }
 
   ngOnInit() {
-
     let bodyElement: any = document.querySelector('.main-content');
 
     bodyElement.onclick = () => {
-      // if (
-      //   localStorage.getItem('menuStyles') == 'icon-click' ||
-      //   localStorage.getItem('menuStyles') == 'menu-click' ||
-      //   localStorage.getItem('menuStyles') == 'icon-hover' ||
-      //   localStorage.getItem('scifiverticalstyles') == 'horizontal'
-      // ) {
-      //   document.querySelectorAll('.slide-menu')
-      //     .forEach((ele: any) => {
-      //       ele.style.display = 'none';
-      //     });
-      // }
-
       if (localStorage.getItem('scifiverticalstyles') == 'icontext') {
-        document.querySelector('html')?.removeAttribute('data-icon-text')
+        document.querySelector('html')?.removeAttribute('data-icon-text');
       }
     };
 
     this.menuitemsSubscribe$ = this.navServices.items.subscribe((items) => {
       this.menuItems = items;
+      this.api.get('menu-items-count').subscribe(
+        (data) => {
+          this.menuItems.forEach((menuItem: any) => {
+            if (menuItem.children) {
+              menuItem.newCount = 0;
+              menuItem.children?.forEach((child: any) => {
+                child.newCount = data[child.id];
+                menuItem.newCount += child.newCount;
+              })
+            } else {
+              menuItem.newCount = data[menuItem.id];
+            }
+          })
+        }
+      )
     });
 
     this.setNavActive(null, this.router.url);
@@ -114,7 +116,7 @@ export class SidebarComponent {
       }
     }
     let html = document.documentElement;
-    if (html.getAttribute('data-nav-style') != "icon-hover" && html.getAttribute('data-nav-style') != "menu-hover") {
+    if (html.getAttribute('data-nav-style') != 'icon-hover' && html.getAttribute('data-nav-style') != 'menu-hover') {
       // if (!event?.ctrlKey) {
       for (const item of menuData) {
         if (currentPath.startsWith(item.path)) {
@@ -151,9 +153,6 @@ export class SidebarComponent {
     }
     return null; // Object not found
   }
-
-  hasParent = false;
-  hasParentLevel = 0;
 
   setMenuAncestorsActive(targetObject: Menu) {
     const parent = this.getParentObject(this.menuItems, targetObject);
@@ -197,10 +196,10 @@ export class SidebarComponent {
 
     let html = document.documentElement;
     let element = event.target;
-    if (html.getAttribute('data-nav-style') != "icon-hover" && html.getAttribute('data-nav-style') != "menu-hover") {
+    if (html.getAttribute('data-nav-style') != 'icon-hover' && html.getAttribute('data-nav-style') != 'menu-hover') {
       for (const item of menuData) {
         if (item === targetObject) {
-          if (html.getAttribute('data-vertical-style') == 'doublemenu' && item.active) { return }
+          if (html.getAttribute('data-vertical-style') == 'doublemenu' && item.active) { return; }
           item.active = !item.active;
           if (item.active) {
             this.closeOtherMenus(menuData, item);
@@ -225,11 +224,11 @@ export class SidebarComponent {
         }
       }
 
-      if (element && html.getAttribute("data-nav-layout") == 'horizontal' && (html.getAttribute("data-nav-style") == 'menu-click' || html.getAttribute("data-nav-style") == 'icon-click')) {
-        const listItem = element.closest("li");
+      if (element && html.getAttribute('data-nav-layout') == 'horizontal' && (html.getAttribute('data-nav-style') == 'menu-click' || html.getAttribute('data-nav-style') == 'icon-click')) {
+        const listItem = element.closest('li');
         if (listItem) {
           // Find the first sibling <ul> element
-          const siblingUL = listItem.querySelector("ul");
+          const siblingUL = listItem.querySelector('ul');
           let outterUlWidth = 0;
           let listItemUL = listItem.closest('ul:not(.main-menu)');
           while (listItemUL) {
@@ -268,9 +267,9 @@ export class SidebarComponent {
     }
 
     if (html.getAttribute('data-vertical-style') == 'icontext') {
-      document.querySelector('html')?.setAttribute('data-icon-text', 'open')
+      document.querySelector('html')?.setAttribute('data-icon-text', 'open');
     } else {
-      document.querySelector('html')?.removeAttribute('data-icon-text')
+      document.querySelector('html')?.removeAttribute('data-icon-text');
     }
   }
 
@@ -320,11 +319,11 @@ export class SidebarComponent {
   HoverToggleInnerMenuFn(event: Event, item: Menu) {
     let html = document.documentElement;
     let element = event.target as HTMLElement;
-    if (element && html.getAttribute("data-nav-layout") == 'horizontal' && (html.getAttribute("data-nav-style") == 'menu-hover' || html.getAttribute("data-nav-style") == 'icon-hover')) {
-      const listItem = element.closest("li");
+    if (element && html.getAttribute('data-nav-layout') == 'horizontal' && (html.getAttribute('data-nav-style') == 'menu-hover' || html.getAttribute('data-nav-style') == 'icon-hover')) {
+      const listItem = element.closest('li');
       if (listItem) {
         // Find the first sibling <ul> element
-        const siblingUL = listItem.querySelector("ul");
+        const siblingUL = listItem.querySelector('ul');
         let outterUlWidth = 0;
         let listItemUL: any = listItem.closest('ul:not(.main-menu)');
         while (listItemUL) {
@@ -368,7 +367,6 @@ export class SidebarComponent {
     document.querySelector('html')?.setAttribute('data-nav-layout', 'vertical');
   }
 
-
   leftArrowFn() {
     // Used to move the slide of the menu in Horizontal and also remove the arrows after click  if there was no space
     // Used to Slide the menu to Left side
@@ -392,17 +390,17 @@ export class SidebarComponent {
         slideRight.classList.remove('d-none');
       }
     } else {
-      menuNav.style.marginInlineStart = "0px";
+      menuNav.style.marginInlineStart = '0px';
       slideLeft.classList.add('d-none');
     }
 
-    let element = document.querySelector(".main-menu > .slide.open") as HTMLElement;
-    let element1 = document.querySelector(".main-menu > .slide.open >ul") as HTMLElement;
+    let element = document.querySelector('.main-menu > .slide.open') as HTMLElement;
+    let element1 = document.querySelector('.main-menu > .slide.open >ul') as HTMLElement;
     if (element) {
-      element.classList.remove("open")
+      element.classList.remove('open');
     }
     if (element1) {
-      element1.style.display = "none"
+      element1.style.display = 'none';
     }
   }
 
@@ -427,18 +425,15 @@ export class SidebarComponent {
       }
     }
 
-    let element = document.querySelector(".main-menu > .slide.open") as HTMLElement
-    let element1 = document.querySelector(".main-menu > .slide.open >ul") as HTMLElement
+    let element = document.querySelector('.main-menu > .slide.open') as HTMLElement;
+    let element1 = document.querySelector('.main-menu > .slide.open >ul') as HTMLElement;
     if (element) {
-      element.classList.remove("open")
+      element.classList.remove('open');
     }
     if (element1) {
-      element1.style.display = "none"
+      element1.style.display = 'none';
     }
   }
-
-  // Addding sticky-pin
-  scrolled = false;
 
   @HostListener('window:scroll', [])
   onWindowScroll() {

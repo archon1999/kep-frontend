@@ -23,7 +23,10 @@
       </div>
       <ul [ngStyle]="{ display: 'block' }" class="main-menu">
         @for (menuItem of menuItems; track menuItem) {
-          <li class="slide" #activeMenuItems [ngClass]="{'slide__category':menuItem.headTitle,
+          <li
+            class="slide"
+            #activeMenuItems
+            [ngClass]="{'slide__category':menuItem.headTitle,
                             'slide has-sub':menuItem.title,
                             'open': menuItem.active,
                             'active': menuItem.selected}">
@@ -54,10 +57,15 @@
                 @if (menuItem.icon) {
                   <kep-icon type="duotone" [name]="menuItem.icon" size="medium-2"/>
                 }
-                <span class="side-menu__label">{{ menuItem.title | translate }}
-                  <span class="badge bg-{{ menuItem.badgeClass }} ms-2">{{
-                      menuItem.badgeValue
-                    }}</span></span>
+                <span class="side-menu__label">
+                  {{ menuItem.title | translate }}
+                </span>
+
+                @if (menuItem.newCount) {
+                  <span class="badge bg-yellow-transparent p-1 px-2 rounded-pill ms-1">
+                    {{ menuItem.newCount }}
+                  </span>
+                }
                 <i class="fe fe-chevron-right side-menu__angle"></i>
               </a>
             }
@@ -79,6 +87,11 @@
                          (click)="setNavActive($event, childrenItem.path ?? '')">
                         <kep-icon type="duotone" [name]="childrenItem.icon" size="medium-2"/>
                         {{ childrenItem.title | translate }}
+                        @if (childrenItem.newCount) {
+                          <span class="badge bg-yellow-transparent p-1 px-2 rounded-pill ms-1">
+                            {{ childrenItem.newCount }}
+                          </span>
+                        }
                       </a>
                     }
                   </li>

@@ -46,7 +46,7 @@
                       <tbody>
                         @for (ratingHistory of dailyRatingHistory; track ratingHistory) {
                           <tr
-                            [ngClass]="{'bg-light-success': currentUser?.username == ratingHistory.username }">
+                            [ngClass]="{'bg-success-transparent': currentUser?.username == ratingHistory.username }">
                             <td class="text-center">
                               <span class="badge bg-success-transparent">
                                 {{ ratingHistory.date | date:'dd/MM/y' }}

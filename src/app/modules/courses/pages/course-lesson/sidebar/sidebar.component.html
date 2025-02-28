@@ -39,7 +39,7 @@
             class="list-group-item"
             [ngClass]="{
              'active bg-gradient-success': courseLesson.progress == 100 && courseLesson.title == currentCourseLesson?.title,
-             'active bg-light-success': courseLesson.progress == 100 && courseLesson.title != currentCourseLesson?.title,
+             'active bg-success-transparent': courseLesson.progress == 100 && courseLesson.title != currentCourseLesson?.title,
              'active bg-gradient-primary': courseLesson.title == currentCourseLesson?.title && courseLesson.progress != 100}"
           >
             {{ courseLesson.title }}

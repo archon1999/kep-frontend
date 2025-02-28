@@ -109,7 +109,7 @@ export class CalendarSectionComponent implements OnInit {
               event.className = 'bg-light-dark';
               break;
             case CalendarEventType.HOLIDAY:
-              event.className = 'bg-light-success';
+              event.className = 'bg-success-transparent';
               break;
           }
           return event;

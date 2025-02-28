@@ -25,6 +25,7 @@ export interface Menu {
   menutype?: string;
   dirchange?: boolean;
   nochild?: any;
+  newCount?: any;
 }
 
 @Injectable({

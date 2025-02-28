@@ -61,7 +61,7 @@
   <ng-container body>
     @for (problem of problems; track problem.id) {
       <tr [@fadeInOnEnter] [ngClass]="{
-          'bg-light-success': problem.userInfo.hasSolved,
+          'bg-success-transparent': problem.userInfo.hasSolved,
           'bg-light-danger': !problem.userInfo.hasSolved && problem.userInfo.hasAttempted
         }">
         <td class="text-dark">{{ problem.id }}</td>
@@ -72,7 +72,7 @@
             </div>
 
             @if (problem.hasSolution) {
-              <span class="badge mt-2 badge-pill bg-light-success">
+              <span class="badge mt-2 badge-pill bg-success-transparent">
                 {{ 'Solution' | translate }}
               </span>
             }
