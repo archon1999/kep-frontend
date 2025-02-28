@@ -8,6 +8,7 @@ import { fadeInOnEnterAnimation } from 'angular-animations';
 import { CoreCommonModule } from '@core/common.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { ChallengesRatingChange } from '@challenges/interfaces/challenges-rating-change';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
   selector: 'section-rating-changes',
@@ -18,6 +19,7 @@ import { ChallengesRatingChange } from '@challenges/interfaces/challenges-rating
   imports: [
     CoreCommonModule,
     ApexChartModule,
+    KepCardComponent,
   ]
 })
 export class SectionRatingChangesComponent extends BaseLoadComponent<Array<ChallengesRatingChange>> {

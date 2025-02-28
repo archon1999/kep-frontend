@@ -15,6 +15,7 @@ import { findAvailableLang } from '@problems/utils';
 import { BaseComponent } from '@app/common';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { FormControl } from '@angular/forms';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 export enum QuestionType {
   SINGLE_ANSWER_CHOICE = 1,
@@ -40,7 +41,8 @@ const cppTemplate = ``;
     MonacoEditorComponent,
     TranslateModule,
     ProblemBodyComponent,
-    NgSelectModule
+    NgSelectModule,
+    KepCardComponent
   ],
   templateUrl: './question-card.component.html',
   styleUrl: './question-card.component.scss'

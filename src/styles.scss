@@ -59,3 +59,9 @@
 @import 'styles/primeng-sass/icons/primeicons';
 @import 'primeng/resources/primeng.css';
 @import 'styles/primeng-sass/themes/aura/aura-dark/primary/theme';
+
+html:has(.swal2-container) {
+  app-footer {
+    display: none !important;
+  }
+}

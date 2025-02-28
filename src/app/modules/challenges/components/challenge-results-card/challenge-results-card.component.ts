@@ -4,6 +4,7 @@ import { CoreCommonModule } from '@core/common.module';
 import {
   ChallengesUserViewComponent
 } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
   selector: 'challenge-results-card',
@@ -13,6 +14,7 @@ import {
   imports: [
     CoreCommonModule,
     ChallengesUserViewComponent,
+    KepCardComponent,
   ]
 })
 export class ChallengeResultsCardComponent {

@@ -8,6 +8,7 @@ import { fadeInOnEnterAnimation } from 'angular-animations';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChallengesRating } from '@challenges/interfaces/challenges-rating';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
   selector: 'section-profile',
@@ -18,6 +19,7 @@ import { ChallengesRating } from '@challenges/interfaces/challenges-rating';
   imports: [
     CoreCommonModule,
     NgbTooltipModule,
+    KepCardComponent,
   ]
 })
 export class SectionProfileComponent extends BaseLoadComponent<ChallengesRating> {
