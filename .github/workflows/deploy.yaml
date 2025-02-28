@@ -22,5 +22,5 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd /home/cpython/client && git pull && npm run build-prod && gzipper compress ./dist && npm run move-index && \
-            rm -r /home/cpython/server/static/frontend && mv /home/cpython/client/dist/browser /home/cpython/server/static/frontend && \
+            rm -r /home/cpython/server/static/frontend && mv /home/cpython/client/dist /home/cpython/server/static/frontend && \
             systemctl restart kep@gunicorn
