@@ -60,7 +60,7 @@
               {{ 'Settings' | translate }}
             </a>
             <div class="dropdown-divider"></div>
-            <a ngbDropdownItem>
+            <a (click)="authService.logout()" ngbDropdownItem>
               <span [data-feather]="'power'" [class]="'me-1'"></span>
               {{ 'LOGOUT' | translate }}
             </a>

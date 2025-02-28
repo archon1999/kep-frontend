@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Params } from '@angular/router';
-import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
+import { fadeInOnEnterAnimation } from 'angular-animations';
 import { User } from '@auth';
 import { Subject } from 'rxjs';
 import { Problem } from '@problems/models/problems.models';
@@ -18,16 +18,16 @@ import { TourModule } from '@shared/third-part-modules/tour/tour.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { BasePageComponent } from '@app/common/classes/base-page.component';
-import { CoreSidebarService } from "@core/components/core-sidebar/core-sidebar.service";
-import { ContentHeaderModule } from "@core/components/content-header/content-header.module";
-import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
   selector: 'app-problem',
   templateUrl: './problem.component.html',
   styleUrls: ['./problem.component.scss'],
   animations: [
-    fadeInOnEnterAnimation({duration: 1000}),
+    fadeInOnEnterAnimation({ duration: 1000 }),
   ],
   standalone: true,
   imports: [
@@ -71,7 +71,7 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
       this.activeId = 2;
     }
 
-    this.route.data.subscribe(({problem}) => {
+    this.route.data.subscribe(({ problem }) => {
       this.problem = problem;
       this.titleService.updateTitle(this.route, {
         problemTitle: this.problem.title,
@@ -115,24 +115,20 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
 
   activeIdChange(index: number) {
     if (index === 1) {
-      this.updateQueryParams({tab: null});
+      this.updateQueryParams({ tab: null });
     } else if (index === 2) {
-      this.updateQueryParams({tab: 'attempts'});
+      this.updateQueryParams({ tab: 'attempts' });
     } else if (index === 3) {
-      this.updateQueryParams({tab: 'hacks'});
+      this.updateQueryParams({ tab: 'hacks' });
     }
   }
 
   saveCheckInput() {
-    this.api.post(`problems/${this.problem.id}/save-check-input`, {source: this.checkInput}).subscribe(
+    this.api.post(`problems/${ this.problem.id }/save-check-input`, { source: this.checkInput }).subscribe(
       () => {
-        this.toastr.success('Success', '', {
-
-        });
+        this.toastr.success('Success', '', {});
       }, () => {
-        this.toastr.error('Error', '', {
-
-        });
+        this.toastr.error('Error', '', {});
       }
     );
   }
@@ -141,4 +137,9 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
     this.coreSidebarService.getSidebarRegistry('codeEditorSidebar').toggleOpen();
   }
 
+  onSubmit() {
+    console.log(4142);
+    this.activeId = 2;
+    this.submitEvent.next(null);
+  }
 }

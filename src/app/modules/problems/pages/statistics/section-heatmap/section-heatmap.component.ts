@@ -36,28 +36,27 @@ export class SectionHeatmapComponent implements OnInit {
   heatmapUpdate(year: number) {
     this.heatmapYear = year;
     const username = this.username;
-    const translations = this.translateService.translations[this.translateService.currentLang];
     this.statisticsService.getHeatmap(username, this.heatmapYear).subscribe((result: any) => {
       const series = [{
-        name: translations['Monday'],
+        name: this.translateService.instant('Monday'),
         data: [],
       }, {
-        name: translations['Tuesday'],
+        name: this.translateService.instant('Tuesday'),
         data: [],
       }, {
-        name: translations['Wednesday'],
+        name: this.translateService.instant('Wednesday'),
         data: [],
       }, {
-        name: translations['Thursday'],
+        name: this.translateService.instant('Thursday'),
         data: [],
       }, {
-        name: translations['Friday'],
+        name: this.translateService.instant('Friday'),
         data: [],
       }, {
-        name: translations['Saturday'],
+        name: this.translateService.instant('Saturday'),
         data: [],
       }, {
-        name: translations['Sunday'],
+        name: this.translateService.instant('Sunday'),
         data: [],
       }];
       for (const data of result) {

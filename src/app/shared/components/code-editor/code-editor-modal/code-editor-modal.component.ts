@@ -220,12 +220,8 @@ export class CodeEditorModalComponent implements OnInit {
 
     this.api.post(this.submitUrl, data).subscribe(
       () => {
-        const translations = this.translateService.translations[this.translateService.currentLang];
-        const text = translations['SubmittedSuccess'];
-        this.toastr.success('', text, {
-
-          closeButton: true
-        });
+        const text = this.translateService.instant('SubmittedSuccess');
+        this.toastr.success('', text);
         this.submittedEvent.emit();
         this.canSubmit = true;
       }

@@ -81,8 +81,6 @@ export class SectionDifficultiesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const translations = this.translateService.translations[this.translateService.currentLang];
-
     this.statisticsService.getByDifficulty(this.username).subscribe(
       (difficulties: Difficulties) => {
         this.difficulties = difficulties;
@@ -159,7 +157,7 @@ export class SectionDifficultiesComponent implements OnInit {
           stroke: {
             lineCap: 'round'
           },
-          labels: [translations['Percent']]
+          labels: [this.translateService.instant('Percent')]
         };
       }
     );
