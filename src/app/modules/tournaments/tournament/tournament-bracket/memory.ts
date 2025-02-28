@@ -71,7 +71,7 @@ export class InMemoryDatabase implements CrudInterface {
       try {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        this.data[table].push({ id, ...values });
+        this.data[table].push({id, ...values});
       } catch (error) {
         return new Promise<number>((resolve) => {
           resolve(-1);
@@ -86,7 +86,7 @@ export class InMemoryDatabase implements CrudInterface {
       values.map((object) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        this.data[table].push({ id: id++, ...object });
+        this.data[table].push({id: id++, ...object});
       });
     } catch (error) {
       return new Promise<boolean>((resolve) => {

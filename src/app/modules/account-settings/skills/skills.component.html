@@ -1,4 +1,4 @@
-<div class="card">
+<kep-card>
   <div class="card-body">
     <div class="row">
       <div class="col-12">
@@ -98,77 +98,77 @@
                       name="text{{ i }}"
                       id="text{{ i }}"
                       placeholder=""
-                      />
-                    </div>
+                    />
                   </div>
-                  <div class="col-md-4 col-12">
-                    <div class="mb-1">
-                      <label for="iconClass{{ i }}">Dev Icon Class</label>
-                      <ng-select
-                        appendTo="body"
-                        [items]="devIcons"
-                        [(ngModel)]="userTechnology.devIconClass"
-                        [ngModelOptions]="{standalone: true}">
-                        <ng-template ng-option-tmp ng-label-tmp let-item="item">
-                          <i [class]="item"></i>
-                          {{ item }}
-                        </ng-template>
-                      </ng-select>
-                    </div>
+                </div>
+                <div class="col-md-4 col-12">
+                  <div class="mb-1">
+                    <label for="iconClass{{ i }}">Dev Icon Class</label>
+                    <ng-select
+                      appendTo="body"
+                      [items]="devIcons"
+                      [(ngModel)]="userTechnology.devIconClass"
+                      [ngModelOptions]="{standalone: true}">
+                      <ng-template ng-option-tmp ng-label-tmp let-item="item">
+                        <i [class]="item"></i>
+                        {{ item }}
+                      </ng-template>
+                    </ng-select>
                   </div>
-                  <div class="col-md-2 col-12">
-                    <div class="mb-1">
-                      <label for="color{{ i }}">Badge Color</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="color{{ i }}"
-                        name="color{{ i }}"
-                        [(colorPicker)]="userTechnology.badgeColor"
-                        [(ngModel)]="userTechnology.badgeColor"
-                        placeholder=""
-                        />
-                      </div>
-                    </div>
-                    <div class="col-md-2 col-12">
-                      <div class="mb-1">
-                        <span class="badge"
+                </div>
+                <div class="col-md-2 col-12">
+                  <div class="mb-1">
+                    <label for="color{{ i }}">Badge Color</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="color{{ i }}"
+                      name="color{{ i }}"
+                      [(colorPicker)]="userTechnology.badgeColor"
+                      [(ngModel)]="userTechnology.badgeColor"
+                      placeholder=""
+                    />
+                  </div>
+                </div>
+                <div class="col-md-2 col-12">
+                  <div class="mb-1">
+                    <span class="badge"
                           [style.background]="userTechnology.badgeColor"
                           [style.box-shadow]="'0px 0px 10px' + userTechnology.badgeColor">
-                          <i class="{{ userTechnology.devIconClass }} "></i>
-                          {{ userTechnology.text }}
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-md-2 col-12 mb-50">
-                      <div class="mb-1">
-                        <button class="btn btn-outline-danger text-nowrap px-1" (click)="deleteTechnology(i)" rippleEffect>
-                          <i data-feather="x" class="me-25"></i>
-                          <span>Delete</span>
-                        </button>
-                      </div>
-                    </div>
+                      <i class="{{ userTechnology.devIconClass }} "></i>
+                      {{ userTechnology.text }}
+                    </span>
                   </div>
-                  <hr />
                 </div>
-              }
-            </div>
-            <div class="row">
-              <div class="col-12">
-                <button class="btn btn-icon btn-primary" type="button" (click)="addTechnology()" rippleEffect>
-                  <i data-feather="plus" class="me-25"></i>
-                  <span>Add New</span>
-                </button>
+                <div class="col-md-2 col-12 mb-50">
+                  <div class="mb-1">
+                    <button class="btn btn-outline-danger text-nowrap px-1" (click)="deleteTechnology(i)" rippleEffect>
+                      <i data-feather="x" class="me-25"></i>
+                      <span>Delete</span>
+                    </button>
+                  </div>
+                </div>
               </div>
+              <hr/>
             </div>
-          </div>
+          }
+        </div>
+        <div class="row">
           <div class="col-12">
-            <button (click)="save()" type="submit" class="btn btn-primary mt-1 me-1" rippleEffect>Save</button>
-            <button (click)="reset()" type="reset" class="btn btn-outline-secondary mt-1" rippleEffect>Reset</button>
+            <button class="btn btn-icon btn-primary" type="button" (click)="addTechnology()" rippleEffect>
+              <i data-feather="plus" class="me-25"></i>
+              <span>Add New</span>
+            </button>
           </div>
         </div>
       </div>
+      <div class="col-12">
+        <button (click)="save()" type="submit" class="btn btn-primary mt-1 me-1" rippleEffect>Save</button>
+        <button (click)="reset()" type="reset" class="btn btn-outline-secondary mt-1" rippleEffect>Reset</button>
+      </div>
     </div>
+  </div>
+</kep-card>
 
-    <nouslider-css></nouslider-css>
-    <ng-select-css></ng-select-css>
+<nouslider-css></nouslider-css>
+<ng-select-css></ng-select-css>

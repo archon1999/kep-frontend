@@ -1,50 +1,21 @@
 @import 'styles/kep-imports';
 
-.card {
-  margin-bottom: 0.5rem !important;
-  cursor: pointer;
-  border: none;
+arena-list-card {
+  .card {
+    margin-bottom: 0.5rem !important;
+    cursor: pointer;
+    border: none;
 
-  &:hover {
-    padding-left: 10px !important;
-    color: #604f99;
-    transition: .5s;
-  }
+    &:hover {
+      padding-left: 10px !important;
+      color: #604f99;
+      transition: .5s;
+    }
 
-  .card-header>div:nth-child(1) {
-    width: 40%;
+    .row > div {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+    }
   }
-
-  .card-header>div:nth-child(2) {
-    width: 20%;
-  }
-
-  .card-header>div:nth-child(3) {
-    width: 20%;
-  }
-
-  .card-header>div:nth-child(4) {
-    width: 20%;
-    text-wrap: nowrap !important;
-  }
-}
-
-@include media-breakpoint-down(md) {
-  .card-header>div:nth-child(1) {
-    width: 60% !important;
-  }
-  
-  .card-header>div:nth-child(2) {
-    width: 20% !important;
-  }
-  
-  .card-header>div:nth-child(3) {
-    width: 0 !important;
-    display: none !important;
-  }
-  
-  .card-header>div:nth-child(4) {
-    width: 0 !important;
-    display: none !important;
-  }  
 }

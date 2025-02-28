@@ -69,7 +69,7 @@ export class SectionAttemptsForSolveComponent implements OnInit {
           zoom: {
             enabled: false
           },
-          toolbar: { show: false }
+          toolbar: {show: false}
         },
         labels: labels,
         dataLabels: {

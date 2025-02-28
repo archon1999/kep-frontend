@@ -1,13 +1,12 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { fadeInRightOnEnterAnimation } from 'angular-animations';
 import { HomeService } from '../home.service';
 import { PageResult } from '@app/common/classes/page-result';
-import { SwiperOptions } from 'swiper/types/swiper-options';
-import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
-
+import { BaseTablePageComponent } from '@app/common';
+import { Observable } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { BlogPostCardModule } from '../../blog/components/blog-post-card/blog-post-card.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { BlogPostCardModule } from '@app/modules/blog/components/blog-post-card/blog-post-card.module';
 
 const NEWS_MAX_LIMIT = 50;
 
@@ -15,53 +14,24 @@ const NEWS_MAX_LIMIT = 50;
   selector: 'news-section',
   templateUrl: './news-section.component.html',
   styleUrls: ['./news-section.component.scss'],
-  animations: [fadeInRightOnEnterAnimation({ duration: 3000 })],
+  animations: [fadeInRightOnEnterAnimation({duration: 1000, translate: '40px'})],
   standalone: true,
-  imports: [NgxSkeletonLoaderModule, SwiperComponent, BlogPostCardModule, TranslateModule]
+  imports: [
+    NgxSkeletonLoaderModule,
+    TranslateModule,
+    BlogPostCardModule
+  ]
 })
-export class NewsSectionComponent implements OnInit, AfterViewInit {
+export class NewsSectionComponent extends BaseTablePageComponent<any> {
+  override defaultPageSize = 3;
+  override pageQueryParam = 'newsPage';
+  override pageSizeQueryParam = 'newsPageSize';
 
-  public lastNews: Array<any> = [];
-  public newsCurrentPage = 1;
-  public skeletonVisible = true;
+  protected homeService = inject(HomeService);
 
-  public newsSwiperConfig: SwiperOptions = {
-    direction: 'vertical',
-    slidesPerView: 3,
-    autoHeight: false,
-    spaceBetween: 10,
-  };
-
-  @ViewChild('newsSwiper') newsSwiper: SwiperComponent;
-
-  constructor(
-    public service: HomeService,
-  ) {}
-
-  ngOnInit(): void {}
-
-  ngAfterViewInit() {
-    this.service.getNews(1, 4).subscribe(
-      (result: PageResult) => {
-        this.lastNews = result.data;
-        this.skeletonVisible = false;
-        setTimeout(() => this.newsSwiperOn(), 1000);
-      }
-    );
-  }
-
-  newsSwiperOn() {
-    this.newsSwiper.swiper.on('slideChange', () => {
-        const index = this.newsSwiper.swiper.realIndex;
-        if (index + 3 === this.lastNews.length && index < NEWS_MAX_LIMIT) {
-          this.newsCurrentPage++;
-          this.service.getNews(this.newsCurrentPage + 1, 2).subscribe(
-            (result: PageResult) => {
-              this.lastNews = this.lastNews.concat(result.data);
-            }
-          );
-        }
-      }
-    );
+  getPage(): Observable<PageResult<any>> {
+    return this.homeService.getNews({
+      pageSize: this.pageSize
+    });
   }
 }

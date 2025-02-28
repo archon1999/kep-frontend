@@ -9,6 +9,7 @@ export class RippleEffectDirective {
   // Private
   private _nativeElement: any;
   @Input() wave: string;
+
   /**
    * Constructor
    *

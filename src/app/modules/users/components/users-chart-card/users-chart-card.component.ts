@@ -8,6 +8,7 @@ import { UserPopoverModule } from '@shared/components/user-popover/user-popover.
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'users-chart-card',
@@ -21,7 +22,8 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
     TranslateModule,
     UserPopoverModule,
     ApexChartModule,
-    KepIconComponent
+    KepIconComponent,
+    KepCardComponent
   ]
 })
 export class UsersChartCardComponent implements OnInit {

@@ -15,14 +15,14 @@ export class CodeRushCountdownComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    if(this.codeRush.status == CodeRushStatus.NOT_STARTED){
+    if (this.codeRush.status == CodeRushStatus.NOT_STARTED) {
       this.leftTime = new Date(this.codeRush.startTime).valueOf() - Date.now();
-    } else if(this.codeRush.status == CodeRushStatus.ALREADY){
+    } else if (this.codeRush.status == CodeRushStatus.ALREADY) {
       this.leftTime = new Date(this.codeRush.finishTime).valueOf() - Date.now();
     }
   }
 
-  finish(){
+  finish() {
   }
 
 }

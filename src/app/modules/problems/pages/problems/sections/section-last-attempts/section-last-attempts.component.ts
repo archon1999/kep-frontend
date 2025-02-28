@@ -9,6 +9,7 @@ import { PageResult } from '@app/common/classes/page-result';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { AttemptVerdictHTMLPipe } from '@problems/pipes/attempt-verdict-html.pipe';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'section-last-attempts',
@@ -18,6 +19,7 @@ import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
     ResourceByIdPipe,
     AttemptVerdictHTMLPipe,
     NgbAccordionModule,
+    KepCardComponent,
   ],
   templateUrl: './section-last-attempts.component.html',
   styleUrl: './section-last-attempts.component.scss',

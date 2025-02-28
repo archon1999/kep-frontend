@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CurrentProblemsRating, ProblemsRating } from '@problems/models/rating.models';
 import { PageResult } from '@app/common/classes/page-result';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
@@ -15,7 +15,6 @@ import { TableOrderingModule } from '@shared/components/table-ordering/table-ord
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { PeriodRatingsComponent } from '@problems/pages/rating/period-ratings/period-ratings.component';
-
 
 
 @Component({
@@ -63,6 +62,10 @@ export class RatingComponent extends BaseTablePageComponent<ProblemsRating> impl
       headerTitle: 'RATING',
       breadcrumb: {
         links: [
+          {
+            name: 'Practice',
+            isLink: false,
+          },
           {
             name: 'Problems',
             isLink: true,

@@ -1,15 +1,38 @@
 <div class="content-wrapper container-xxl p-0">
   <div class="content-body">
-    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <app-content-header [contentHeader]="contentHeader">
+      <div class="btn-group" role="group">
+        <button class="btn btn-secondary-light btn-wave" type="button">
+          <span><i data-feather="terminal"></i></span>
+          {{ 'CODE_EDITOR.RUN' | translate }}
+        </button>
+        <button class="btn btn-primary-light btn-wave" type="button">
+          <i data-feather="send"></i>
+          {{ 'CODE_EDITOR.SUBMIT' | translate }}
+        </button>
+      </div>
+      <div class="btn-group" role="group">
+        <button class="btn btn-primary-light btn-wave" type="button">
+          <kep-icon name="left"/>
+        </button>
+        <button class="btn btn-primary-light btn-wave" type="button">
+          <kep-icon name="right"/>
+        </button>
+      </div>
+    </app-content-header>
     <section [@fadeInOnEnter] class="mt-2">
       <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12">
-          <div class="card">
-            <div class="card-header pb-0">
-              <ul ngbNav #navWithIcons="ngbNav" class="nav-tabs" [destroyOnHide]="false" (activeIdChange)="activeIdChange($event)" [(activeId)]="activeId">
+          <kep-card>
+            <div class="card-header p-0">
+              <ul
+                #navWithIcons="ngbNav"
+                (activeIdChange)="activeIdChange($event)" [(activeId)]="activeId" [destroyOnHide]="false"
+                class="nav-tabs" ngbNav>
                 <li [ngbNavItem]="1">
-                  <a ngbNavLink>
-                    <kep-icon name="problem" color="primary" type="duotone"/> {{ 'Problem' | translate }}
+                  <a class="p-2 py-1" ngbNavLink>
+                    <kep-icon size="small-4" color="primary" name="problem" type="duotone"/>
+                    {{ 'Problem' | translate }}
                   </a>
                   <ng-template ngbNavContent>
                     <problem-description [problem]="problem"></problem-description>
@@ -17,23 +40,24 @@
                 </li>
 
                 <li [ngbNavItem]="2">
-                  <a ngbNavLink>
-                    <kep-icon name="attempt" color="warning" type="duotone"/> {{ 'Attempts' | translate }}
+                  <a class="p-2 py-1" ngbNavLink>
+                    <kep-icon size="small-4" color="warning" name="attempt" type="duotone"/>
+                    {{ 'Attempts' | translate }}
                   </a>
                   <ng-template ngbNavContent>
                     <problem-attempts
-                      [submitEvent]="submitEvent?.asObservable()"
-                      [problem]="problem"
                       (hackSubmitted)="activeId = 3;"
-                      >
+                      [problem]="problem"
+                      [submitEvent]="submitEvent?.asObservable()"
+                    >
                     </problem-attempts>
                   </ng-template>
                 </li>
 
                 @if (problem.hasCheckInput) {
                   <li [ngbNavItem]="3" destroyOnHide="true">
-                    <a ngbNavLink>
-                      <kep-icon name="lock-2" color="dark" type="duotone"/>
+                    <a class="p-2 py-1" ngbNavLink>
+                      <kep-icon size="small-4" name="lock-2" color="dark" type="duotone"/>
                       {{ 'Hacks' | translate }}
                     </a>
                     <ng-template ngbNavContent>
@@ -67,16 +91,15 @@
               </ul>
 
               @if (isAuthenticated) {
-                <button (click)="codeEditorSidebarToggle()" class="btn btn-sm btn-primary">{{ 'Submit' | translate }}</button>
+                <button (click)="codeEditorSidebarToggle()" class="btn btn-sm btn-primary">{{ 'Submit' | translate }}
+                </button>
               }
             </div>
 
             <div class="card-footer">
               <div [ngbNavOutlet]="navWithIcons"></div>
             </div>
-
-          </div>
-
+          </kep-card>
 
           @if (currentUser?.permissions.canCreateProblems) {
             <div class="card">
@@ -121,3 +144,26 @@
 
 <tour-css></tour-css>
 <ng-select-css></ng-select-css>
+
+<!--<div class="col-lg-6 col-md-12 col-sm-12">-->
+<!--  <kep-card>-->
+<!--    <div class="card-header p-2">-->
+<!--      <div class="card-title">-->
+<!--        <kep-icon name="square-brackets" color="primary" type="duotone"/>-->
+<!--        {{ 'Code' | translate }}-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    <ng-select-->
+<!--      [appendTo]="'body'"-->
+<!--      [clearable]="false">-->
+<!--      @for (availableLanguage of problem.availableLanguages; track availableLanguage) {-->
+<!--        <ng-option-->
+<!--          [value]="availableLanguage.lang">-->
+<!--          {{ availableLanguage.langFull || availableLanguage.lang }}-->
+<!--        </ng-option>-->
+<!--      }-->
+<!--    </ng-select>-->
+<!--    <monaco-editor lang="py"/>-->
+<!--  </kep-card>-->
+<!--</div>-->

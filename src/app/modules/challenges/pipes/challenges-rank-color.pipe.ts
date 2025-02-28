@@ -5,7 +5,7 @@ const ranks = {
   'GM': 'danger',
   'IM': 'warning',
   'M': 'yellow',
-  'CM': 'primary',
+  'CM': 'indigo',
   'R1': 'blue',
   'R2': 'info',
   'R3': 'success',

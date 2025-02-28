@@ -21,7 +21,7 @@ export class ContestStandingsPopoverComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  loadContestants(){
+  loadContestants() {
     this.api.get(`contests/${this.contest.id}/top10-contestants`).subscribe((result: any) => {
       this.contestants = result;
     })

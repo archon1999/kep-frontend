@@ -1,4 +1,4 @@
-<div class="card">
+<kep-card>
   <div class="card-header">
     <div class="card-title">
       <kep-icon name="information"/>
@@ -18,7 +18,8 @@
 
     <div class="card-row">
       <div class="font-medium-1 card-row">
-        <kep-icon name="dollar"/> {{ 'Kepcoin' | translate }}
+        <kep-icon name="dollar"/>
+        {{ 'Kepcoin' | translate }}
       </div>
       <kepcoin [value]="project.kepcoins"/>
     </div>
@@ -29,7 +30,7 @@
         {{ 'Technologies' | translate }}
       </div>
       <div class="text-end">
-        @for (technology of project.availableTechnologies;track technology) {
+        @for (technology of project.availableTechnologies; track technology) {
           <div class="mb-50">
             <project-technology [name]="technology.technology"></project-technology>
           </div>
@@ -37,4 +38,4 @@
       </div>
     </div>
   </div>
-</div>
+</kep-card>

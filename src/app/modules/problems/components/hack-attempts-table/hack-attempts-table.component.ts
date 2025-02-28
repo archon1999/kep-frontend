@@ -1,5 +1,4 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { CoreConfigService } from '@core/services/config.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from 'app/shared/services/api.service';
@@ -31,7 +30,6 @@ export class HackAttemptsTableComponent implements OnInit, OnDestroy {
     public api: ApiService,
     public modalService: NgbModal,
     public toastr: ToastrService,
-    public coreConfigService: CoreConfigService,
     public translationService: TranslateService,
     public service: ProblemsApiService,
     public soundsService: SoundsService,

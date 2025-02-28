@@ -26,7 +26,7 @@ export class SocialComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ userSocial }) => {
+    this.route.data.subscribe(({userSocial}) => {
       this.userSocial = userSocial;
     });
   }
@@ -35,12 +35,12 @@ export class SocialComponent implements OnInit {
     this.service.updateUserSocial(this.userSocial).subscribe(
       () => {
         this.toastr.success('Saved', '', {
-          toastClass: 'toast ngx-toastr',
+
         });
       }, (err: any) => {
         this.errors = err.error;
         this.toastr.error('Error', '', {
-          toastClass: 'toast ngx-toastr',
+
         });
       }
     );

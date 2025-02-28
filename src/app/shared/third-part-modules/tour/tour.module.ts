@@ -12,4 +12,4 @@ import { TourComponent } from './tour.component';
   ],
   exports: [TourComponent]
 })
-export class TourModule { }
+export class TourModule {}

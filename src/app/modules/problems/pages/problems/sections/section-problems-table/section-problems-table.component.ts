@@ -3,7 +3,6 @@ import { debounceTime, takeUntil, tap } from 'rxjs/operators';
 import { Problem, ProblemsFilter } from '@problems/models/problems.models';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ProblemsFilterService } from '@problems/services/problems-filter.service';
-import { CoreCommonModule } from '@core/common.module';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
@@ -18,15 +17,17 @@ import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.m
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { deepCopy } from '@shared/utils';
+import { NgClass } from "@angular/common";
+import { RouterLink } from "@angular/router";
+import { TranslatePipe } from "@ngx-translate/core";
 
 @Component({
   selector: 'section-problems-table',
   templateUrl: './section-problems-table.component.html',
   styleUrls: ['./section-problems-table.component.scss'],
-  animations: [fadeInOnEnterAnimation({ duration: 1000 })],
+  animations: [fadeInOnEnterAnimation({duration: 1000})],
   standalone: true,
   imports: [
-    CoreCommonModule,
     SpinnerComponent,
     EmptyResultComponent,
     TableOrderingModule,
@@ -36,10 +37,13 @@ import { deepCopy } from '@shared/utils';
     NgSelectModule,
     KepIconComponent,
     ResourceByIdPipe,
+    NgClass,
+    RouterLink,
+    TranslatePipe,
   ]
 })
 export class SectionProblemsTableComponent extends BaseTablePageComponent<Problem> implements OnInit, OnDestroy {
-  @Input() defaultOrdering = 'id';
+  @Input() override defaultOrdering = 'id';
   override defaultPageSize = 20;
   override maxSize = 5;
   override pageOptions = [10, 20, 50];
@@ -59,7 +63,7 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
     return this.pageResult?.data;
   }
 
-  ngOnInit(): void {
+  override ngOnInit(): void {
     this.filterService.getFilter().pipe(
       debounceTime(500),
       takeUntil(this._unsubscribeAll)
@@ -84,7 +88,7 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
     setTimeout(() => this.reloadPage());
   }
 
-  getPage(): Observable<PageResult<Problem>> {
+  override getPage(): Observable<PageResult<Problem>> {
     return this.service.getProblems({
       ...this.filter,
       page: this.pageNumber,
@@ -105,7 +109,7 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
     } else {
       tags.splice(index, 1);
     }
-    this.filterService.updateFilter({ tags: tags });
+    this.filterService.updateFilter({tags: tags});
   }
 
 }

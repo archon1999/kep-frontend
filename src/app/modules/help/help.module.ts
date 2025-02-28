@@ -16,4 +16,4 @@ import { KnowledgeBaseComponent } from './knowledge-base/knowledge-base.componen
     HelpRoutingModule
   ]
 })
-export class HelpModule { }
+export class HelpModule {}

@@ -6,7 +6,7 @@ import { fadeInLeftOnEnterAnimation } from 'angular-animations';
   templateUrl: './test-card.component.html',
   styleUrls: ['./test-card.component.scss'],
   animations: [
-    fadeInLeftOnEnterAnimation({ duration: 3000 }),
+    fadeInLeftOnEnterAnimation({duration: 3000}),
   ]
 })
 export class TestCardComponent implements OnInit {

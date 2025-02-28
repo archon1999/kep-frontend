@@ -22,16 +22,16 @@ const STAGE_NUMBER = 2;
   templateUrl: './tournament-versus.component.html',
   styleUrls: ['./tournament-versus.component.scss'],
   animations: [
-    fadeInOnEnterAnimation({ duration: 3000 }),
-    fadeOutOnLeaveAnimation({ duration: 3000 }),
-    fadeInLeftOnEnterAnimation({ duration: 3000 }),
-    fadeInRightOnEnterAnimation({ duration: 3000 }),
-    fadeInUpOnEnterAnimation({ duration: 3000 }),
-    fadeInDownOnEnterAnimation({ duration: 3000 }),
-    fadeOutLeftOnLeaveAnimation({ duration: 3000 }),
-    fadeOutRightOnLeaveAnimation({ duration: 3000 }),
-    fadeOutDownOnLeaveAnimation({ duration: 3000 }),
-    fadeOutUpOnLeaveAnimation({ duration: 3000 }),
+    fadeInOnEnterAnimation({duration: 3000}),
+    fadeOutOnLeaveAnimation({duration: 3000}),
+    fadeInLeftOnEnterAnimation({duration: 3000}),
+    fadeInRightOnEnterAnimation({duration: 3000}),
+    fadeInUpOnEnterAnimation({duration: 3000}),
+    fadeInDownOnEnterAnimation({duration: 3000}),
+    fadeOutLeftOnLeaveAnimation({duration: 3000}),
+    fadeOutRightOnLeaveAnimation({duration: 3000}),
+    fadeOutDownOnLeaveAnimation({duration: 3000}),
+    fadeOutUpOnLeaveAnimation({duration: 3000}),
   ]
 })
 export class TournamentVersusComponent implements OnInit {
@@ -77,7 +77,7 @@ export class TournamentVersusComponent implements OnInit {
       setTimeout(() => this.state = true, this.duels.length * 10000 - 2000);
     }, 5000);
 
-    this.route.data.subscribe(({ tournament }) => {
+    this.route.data.subscribe(({tournament}) => {
       this.tournament = tournament;
       this.stage = tournament.stages[STAGE_NUMBER];
       this.duels = this.stage.duels;

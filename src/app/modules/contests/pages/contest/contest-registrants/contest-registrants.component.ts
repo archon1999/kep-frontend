@@ -1,23 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { BasePageComponent } from '@app/common/classes/base-page.component';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ContestsService } from '@contests/contests.service';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { ContestCardModule } from '@contests/components/contest-card/contest-card.module';
 import { ContestRegistrant } from '@contests/models/contest-registrant';
 import { Contest } from '@contests/models/contest';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'app-contest-registrants',
   templateUrl: './contest-registrants.component.html',
   styleUrl: './contest-registrants.component.scss',
   animations: [
-    fadeInLeftOnEnterAnimation(),
-    fadeInRightOnEnterAnimation(),
+    fadeInLeftOnEnterAnimation({ translate: '40px' }),
+    fadeInRightOnEnterAnimation({ translate: '40px' }),
   ],
   standalone: true,
   imports: [
@@ -26,6 +27,7 @@ import { Contest } from '@contests/models/contest';
     ContestTabComponent,
     ContestantViewModule,
     ContestCardModule,
+    KepCardComponent,
   ]
 })
 export class ContestRegistrantsComponent extends BasePageComponent implements OnInit {
@@ -38,7 +40,7 @@ export class ContestRegistrantsComponent extends BasePageComponent implements On
 
   ngOnInit() {
     this.route.data.subscribe(
-      ({ contest }) => {
+      ({contest}) => {
         this.contest = contest;
         this.service.getContestRegistrants(this.contest.id).subscribe(
           registrants => this.registrants = registrants

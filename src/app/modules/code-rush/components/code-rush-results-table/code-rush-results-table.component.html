@@ -2,17 +2,17 @@
   <div class="table-responsive bg-results-table bg-danger bg-darken-4 badge-glow">
     <table class="table">
       <thead>
-        <tr>
-          <td class="text-white"><i data-feather="bar-chart"></i></td>
-          <td class="text-white">{{ 'Participant' | translate }}</td>
-          <td class="text-white"><i data-feather="activity" ngbTooltip="{{ 'Score' | translate }}"></i></td>
-          @for (problem of codeRush.problems; track problem) {
-            <td
-              class="text-white text-center">
-              {{ problem.symbol }}
-            </td>
-          }
-        </tr>
+      <tr>
+        <td class="text-white"><i data-feather="bar-chart"></i></td>
+        <td class="text-white">{{ 'Participant' | translate }}</td>
+        <td class="text-white"><i data-feather="activity" ngbTooltip="{{ 'Score' | translate }}"></i></td>
+        @for (problem of codeRush.problems; track problem) {
+          <td
+            class="text-white text-center">
+            {{ problem.symbol }}
+          </td>
+        }
+      </tr>
       </thead>
 
       <tbody>

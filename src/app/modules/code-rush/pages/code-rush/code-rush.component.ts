@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { CodeRush, CodeRushProblem } from '../../code-rush.models';
 import { CodeRushApiService } from '../../services/code-rush-api.service';
 import { TitleService } from '../../../../shared/services/title.service';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
 
 @Component({
   templateUrl: './code-rush.component.html',
@@ -35,7 +35,7 @@ export class CodeRushComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ codeRush }) => {
+    this.route.data.subscribe(({codeRush}) => {
       this.codeRush = codeRush;
       this.codeRush.players[0].score = 4;
       this.codeRush.players[1].score = 2;

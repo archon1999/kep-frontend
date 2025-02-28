@@ -1,0 +1,83 @@
+<!-- app-header -->
+<header class="app-header sticky">
+
+  <!-- Start::main-header-container -->
+  <div class="main-header-container container-fluid">
+
+    <div class="header-content-left">
+      <div (click)="togglesidebar()" class="header-element mx-lg-0 mx-2" href="javascript:void(0);">
+        <a class="sidemenu-toggle header-link animated-arrow hor-toggle horizontal-navtoggle"><span></span></a>
+      </div>
+
+      <div class="header-element">
+        <div class="horizontal-logo ms-lg-4">
+          <a [routerLink]="''" class="header-logo">
+            <img alt="logo" height="48" src="assets/images/logo/logo.svg">
+            <span class="d-none d-lg-block">
+              KEP.uz
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <ul class="header-content-right gap-lg-2">
+      <languages/>
+
+      <li class="header-element header-fullscreen">
+        <a (click)="toggleFullscreen()" class="header-link p-0" href="javascript:void(0);">
+          <i [ngClass]="{ 'd-none': isFullscreen }" class="bi bi-fullscreen full-screen-open header-link-icon"></i>
+          <i [ngClass]="{ 'd-none': !isFullscreen }"
+             class="bi bi-fullscreen-exit full-screen-close header-link-icon d-none"></i>
+        </a>
+      </li>
+
+      @if (isAuthenticated) {
+        <header-notifications/>
+        <header-kepcoin/>
+        <header-daily-tasks/>
+
+        <li class="header-element dropdown" ngbDropdown>
+          <a
+            href="javascript:void(0);"
+            aria-expanded="false"
+            class="header-link p-0 dropdown-toggle"
+            data-bs-auto-close="outside"
+            data-bs-toggle="dropdown"
+            ngbDropdownToggle>
+            <div class="header-link-icon d-flex align-items-center gap-2" style="width: inherit">
+              <span>{{ currentUser.username }}</span>
+              <img alt="img" class="avatar avatar-sm rounded-0" [src]="currentUser.avatar">
+            </div>
+          </a>
+          <ul ngbDropdownMenu aria-labelledby="navbarUserDropdown" class="dropdown-menu dropdown-menu-end">
+            <a ngbDropdownItem [routerLink]="['/users', 'user', currentUser?.username]">
+              <kep-icon size="small-4" name="user" type="duotone"/>
+              {{ 'PROFILE' | translate }}
+            </a>
+            <a ngbDropdownItem [routerLink]="['/settings']">
+              <span [data-feather]="'settings'" [class]="'me-1'"></span>
+              {{ 'Settings' | translate }}
+            </a>
+            <div class="dropdown-divider"></div>
+            <a ngbDropdownItem>
+              <span [data-feather]="'power'" [class]="'me-1'"></span>
+              {{ 'LOGOUT' | translate }}
+            </a>
+          </ul>
+        </li>
+      }
+
+      <li class="header-element">
+        <a
+          (click)="toggleSwitcher()"
+          class="header-link switcher-icon p-0"
+          data-bs-target="#switcher-canvas"
+          data-bs-toggle="offcanvas"
+          href="javascript:void(0);">
+          <i class="bi bi-gear header-link-icon border-0"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+</header>

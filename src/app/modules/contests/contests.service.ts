@@ -21,7 +21,13 @@ export class ContestsService {
     public authService: AuthService,
   ) { }
 
-  getContests(params: Partial<Pageable> & { category?: number, type?: string, isParticipated?: number, creator?: string, title?: string }) {
+  getContests(params: Partial<Pageable> & {
+    category?: number,
+    type?: string,
+    isParticipated?: number,
+    creator?: string,
+    title?: string
+  }) {
     return this.api.get('contests', params).pipe(
       map((result: any) => {
         result.data = result.data.map((contest: Contest) => Contest.fromJSON(contest));
@@ -30,7 +36,12 @@ export class ContestsService {
     );
   }
 
-  getUserContests(params: Partial<Pageable> & { category?: number, type?: string, isParticipated?: boolean, creator?: string }) {
+  getUserContests(params: Partial<Pageable> & {
+    category?: number,
+    type?: string,
+    isParticipated?: boolean,
+    creator?: string
+  }) {
     return this.api.get('user-contests', params).pipe(
       map((result: any) => {
         result.data = result.data.map((contest: Contest) => Contest.fromJSON(contest));
@@ -40,13 +51,13 @@ export class ContestsService {
   }
 
   getContest(contestId: number | string) {
-    return this.api.get(`contests/${ contestId }`).pipe(
+    return this.api.get(`contests/${contestId}`).pipe(
       map(contest => Contest.fromJSON(contest))
     );
   }
 
   getContestants(contestId: number | string) {
-    return this.api.get(`contests/${ contestId }/contestants`).pipe(
+    return this.api.get(`contests/${contestId}/contestants`).pipe(
       map((contestants: Array<Contestant>) => {
         return contestants.map((c) => Contestant.fromJSON(c));
       })
@@ -54,7 +65,7 @@ export class ContestsService {
   }
 
   getNewContestants(contestId: number | string, params: any) {
-    return this.api.get(`contests/${ contestId }/new-contestants`, params).pipe(
+    return this.api.get(`contests/${contestId}/new-contestants`, params).pipe(
       map((pageResult: PageResult<Contestant>) => {
         pageResult.data = pageResult.data.map((c) => Contestant.fromJSON(c));
         return pageResult;
@@ -63,27 +74,27 @@ export class ContestsService {
   }
 
   getMe(contestId: number | string) {
-    return this.api.get(`contests/${ contestId }/me`);
+    return this.api.get(`contests/${contestId}/me`);
   }
 
   getContestProblems(contestId: number | string) {
-    return this.api.get(`contests/${ contestId }/problems`);
+    return this.api.get(`contests/${contestId}/problems`);
   }
 
   getContestProblem(contestId: number | string, symbol: string) {
-    return this.api.get(`contests/${ contestId }/problem`, { symbol: symbol });
+    return this.api.get(`contests/${contestId}/problem`, {symbol: symbol});
   }
 
   getUpcomingContests() {
-    return this.api.get('contests', { status: ContestStatus.NOT_STARTED });
+    return this.api.get('contests', {status: ContestStatus.NOT_STARTED});
   }
 
   getAlreadyContests() {
-    return this.api.get('contests', { status: ContestStatus.ALREADY });
+    return this.api.get('contests', {status: ContestStatus.ALREADY});
   }
 
   getPastContests(page: number) {
-    return this.api.get('contests', { status: ContestStatus.FINISHED, page: page });
+    return this.api.get('contests', {status: ContestStatus.FINISHED, page: page});
   }
 
   getContestsRating(params: Partial<Pageable>) {
@@ -113,34 +124,34 @@ export class ContestsService {
   }
 
   getContestsRatingChanges(username: string) {
-    return this.api.get(`contests-rating/${ username }/rating-changes`);
+    return this.api.get(`contests-rating/${username}/rating-changes`);
   }
 
   getContestQuestions(id: number | string) {
-    return this.api.get(`contests/${ id }/questions`);
+    return this.api.get(`contests/${id}/questions`);
   }
 
   newQuestion(id: number | string, problem: string | null, question: string) {
-    return this.api.post(`contests/${ id }/new-question/`, {
+    return this.api.post(`contests/${id}/new-question/`, {
       problem: problem,
       question: question,
     });
   }
 
   contestRegistration(contestId: number | string, teamId?: number) {
-    return this.api.post(`contests/${ contestId }/registration/`, { team_id: teamId });
+    return this.api.post(`contests/${contestId}/registration/`, {team_id: teamId});
   }
 
   cancelRegistration(contestId: number | string) {
-    return this.api.get(`contests/${ contestId }/cancel-registration/`);
+    return this.api.get(`contests/${contestId}/cancel-registration/`);
   }
 
   virtualContestStart(contestId: number | string) {
-    return this.api.post(`contests/${ contestId }/virtual-contest-start/`);
+    return this.api.post(`contests/${contestId}/virtual-contest-start/`);
   }
 
   getTop3Contestants(contestId: number | string) {
-    return this.api.get(`contests/${ contestId }/top3-contestants`);
+    return this.api.get(`contests/${contestId}/top3-contestants`);
   }
 
   createContest(contest: any) {
@@ -152,11 +163,11 @@ export class ContestsService {
   }
 
   getContestRegistrants(contestId: number | string) {
-    return this.api.get(`contests/${ contestId }/registrants`);
+    return this.api.get(`contests/${contestId}/registrants`);
   }
 
   getUserContestsRating(username: string) {
-    return this.api.get(`contests-rating/${ username }`);
+    return this.api.get(`contests-rating/${username}`);
   }
 
   getContestsCategories() {
@@ -175,6 +186,6 @@ export class ContestsService {
   }
 
   getContestFilters(contestId: number | string) {
-    return this.api.get(`contests/${ contestId }/filters`);
+    return this.api.get(`contests/${contestId}/filters`);
   }
 }

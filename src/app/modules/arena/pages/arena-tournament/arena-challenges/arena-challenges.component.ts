@@ -7,7 +7,9 @@ import { PageResult } from '@app/common/classes/page-result';
 import { Challenge } from '@challenges/models/challenges';
 import { ChallengesApiService } from '@challenges/services';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
-import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import {
+  ChallengesUserViewComponent
+} from '@challenges/components/challenges-user-view/challenges-user-view.component';
 
 @Component({
   selector: 'arena-challenges',
@@ -34,7 +36,7 @@ export class ArenaChallengesComponent extends BaseTablePageComponent<Challenge> 
 
   ngOnInit() {
     this.route.data.subscribe(
-      ({ arena }) => {
+      ({arena}) => {
         this.arena = arena;
         setTimeout(() => this.reloadPage());
       }

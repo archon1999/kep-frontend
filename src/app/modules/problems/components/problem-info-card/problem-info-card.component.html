@@ -11,7 +11,7 @@
     </h5>
   </div>
 
-  <div class="mt-50 d-flex justify-content-between">
+  <div class="mt-2 d-flex justify-content-between">
     <span class="badge bg-info badge-glow">
       {{ selectedAvailableLang.timeLimit || problem.timeLimit }} {{ 'MS' | translate }}
     </span>
@@ -34,8 +34,8 @@
         {{ 'Author' | translate }}
       </h5>
     </div>
-    <div class="mt-50 d-flex justify-content-between">
-      <span class="badge badge-{{ problem.difficulty | problemDifficultyColor }} badge-glow">
+    <div class="mt-2 d-flex justify-content-between">
+      <span class="badge bg-{{ problem.difficulty | problemDifficultyColor }} badge-glow">
         {{ problem.difficultyTitle }}
       </span>
       <user-popover [customContent]="true" [username]="problem.authorUsername">
@@ -58,7 +58,7 @@
         {{ 'Dislikes' | translate }}
       </h5>
     </div>
-    <div class="mt-50 d-flex justify-content-between">
+    <div class="mt-2 d-flex justify-content-between">
       @if (currentUser) {
         <button
           (click)="like()"
@@ -109,8 +109,8 @@
 
   <div class="row">
 
-    @for (availableLanguage of problem.availableLanguages;track availableLanguage) {
-      <div class="col-4 col-md-3 col-lg-6 col-xl-4 px-25">
+    @for (availableLanguage of problem.availableLanguages; track availableLanguage) {
+      <div class="col-4 col-md-3 col-lg-6 col-xl-4 px-1">
         <attempt-language
           [clickable]="true"
           [lang]="availableLanguage.lang"

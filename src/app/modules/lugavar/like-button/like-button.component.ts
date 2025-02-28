@@ -30,7 +30,7 @@ export class LikeButtonComponent implements OnInit, OnDestroy {
     )
   }
 
-  click(){
+  click() {
     this.api.post(this.submitUrl).subscribe(
       (likes: any) => {
         this.likes = likes;

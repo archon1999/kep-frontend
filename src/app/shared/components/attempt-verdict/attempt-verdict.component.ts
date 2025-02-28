@@ -63,7 +63,7 @@ function getShortTitle(verdict: Verdicts) {
   styleUrl: './attempt-verdict.component.scss'
 })
 export class AttemptVerdictComponent implements OnChanges {
-  @Input({ required: true }) verdict: Verdicts;
+  @Input({required: true}) verdict: Verdicts;
   @Input() title: string;
   @Input() testCaseNumber: number;
   @Input() balls: number;

@@ -8,6 +8,6 @@ import { Contest } from '@contests/models/contest';
 })
 export class ContestClassesPipe implements PipeTransform {
   transform(contest: Contest): string {
-    return ` contests-colors contest-${ contest.id } ${ contest.title } contest-type-${ contest.type }`;
+    return ` contests-colors contest-${contest.id} ${contest.title} contest-type-${contest.type}`;
   }
 }

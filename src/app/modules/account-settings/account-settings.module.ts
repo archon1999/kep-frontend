@@ -6,17 +6,16 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthGuard } from '@auth';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { KepcoinSpendSwalModule } from '../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { NouisliderModule } from '@shared/third-part-modules/nouislider/nouislider.module';
 import { QuillModule } from '@shared/third-part-modules/quill/quill.module';
-import { ToastrModule } from '@shared/third-part-modules/toastr/toastr.module';
 import { AccountSettingsComponent } from './account-settings.component';
 import {
-  GeneralInfoResolver, TeamJoinResolver,
+  GeneralInfoResolver,
   UserEducationsResolver,
   UserInfoResolver,
   UserSkillsResolver,
@@ -37,6 +36,7 @@ import { TeamComponent } from '@app/modules/account-settings/teams/team-card/tea
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { CalendarModule } from 'primeng/calendar';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 const routes: Routes = [
   {
@@ -97,7 +97,6 @@ const routes: Routes = [
     CorePipesModule,
     NgbNavModule,
     FormsModule,
-    ToastrModule,
     QuillModule,
     NouisliderModule,
     ColorPickerModule,
@@ -111,6 +110,7 @@ const routes: Routes = [
     SpinnerComponent,
     EmptyResultComponent,
     CalendarModule,
+    KepCardComponent,
   ],
   providers: [
     GeneralInfoResolver,

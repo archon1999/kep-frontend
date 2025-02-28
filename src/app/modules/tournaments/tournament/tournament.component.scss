@@ -7,7 +7,7 @@
 }
 
 ::ng-deep .dark-layout {
- .bg-tournament {
+  .bg-tournament {
     background: $tournaments-bg-dark !important;
   }
 }
@@ -32,14 +32,14 @@
 .btn-registration {
   color: #fff;
   background: $tournaments-bg;
-  
+
   &:hover {
     background: $tournaments-bg-dark;
   }
 }
 
 ::ng-deep .nav-tabs.nav-tournament {
-  
+
   .nav-link.active {
     color: $tournaments-color !important;
   }
@@ -49,7 +49,7 @@
     background: #4855636b !important;
     height: 1px;
   }
-  
+
   .nav-link.active:after {
     background: $tournaments-bg !important;
     height: 2px;
@@ -61,11 +61,5 @@
   .nav-link.active {
     color: #fff !important;
     background-color: #15171c3e !important;
-  }  
-}
-
-@include media-breakpoint-up(sm) {
-  section {
-    margin: 0.6rem 2rem 0.8rem 2rem;
   }
 }

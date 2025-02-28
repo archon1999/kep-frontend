@@ -1,0 +1,56 @@
+<div class="row">
+  @for (rank of ranks; track $index) {
+    <div class="card-rank col-md-6 col-lg-3">
+      @if (isLoading) {
+        <kep-card [cardHeight]="'144px'">
+          <spinner></spinner>
+        </kep-card>
+      } @else {
+        <kep-card>
+          <div class="bg-img">
+            <img height="200" src="assets/images/abstract/abstract-1.png">
+          </div>
+
+          <div class="card-header">
+            <div class="left">
+              <div class="card-icon">
+                <kep-icon
+                  [color]="$index <= 1 ? 'info' : 'primary'"
+                  [name]="rank.icon"
+                  class=""
+                  type="duotone"/>
+              </div>
+              <div class="card-title text-fixed-white">
+                {{ rank.name | translate }}
+              </div>
+            </div>
+
+            <div class="right" container="body" [ngbTooltip]="informationTooltip">
+              <kep-icon
+                [color]="$index <= 1 ? 'info' : 'primary'"
+                class=""
+                name="question"
+                type="duotone"/>
+            </div>
+          </div>
+          <div class="card-body text-fixed-white">
+            <div class="rating">
+              {{ rank.value }}
+            </div>
+            <div class="rank" container="body" [ngbTooltip]="rankInformationTooltip">
+              #{{ rank.rank }}
+            </div>
+          </div>
+        </kep-card>
+      }
+    </div>
+
+    <ng-template #informationTooltip>
+      {{ ('Home.RankInformation.' + rank.title) | translate }}
+    </ng-template>
+
+    <ng-template #rankInformationTooltip>
+      {{ 'Home.PercentileInformation' | translate:{percentile: rank.percentile} }}
+    </ng-template>
+  }
+</div>

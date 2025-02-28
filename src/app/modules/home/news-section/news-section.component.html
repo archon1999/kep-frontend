@@ -1,33 +1,22 @@
-<div class="card">
-  <div class="card-header">
-    <div class="card-title">
-      {{ 'LatestNews' | translate }}
-    </div>
-  </div>
+<h4>
+  {{ 'LatestNews' | translate }}
+</h4>
 
-  <div class="card-body">
-    @if (skeletonVisible) {
-      <div class="item">
-        <ngx-skeleton-loader
-          count="3"
-          animation="pulse"
-          appearance="line"
-          [theme]="{height: '108px', 'margin-top': '15px', 'margin-bottom': '30px', background: 'var(--skeleton-color)'}"
-        ></ngx-skeleton-loader>
+@if (isLoading) {
+  <div class="item">
+    <ngx-skeleton-loader
+      count="1"
+      animation="pulse"
+      appearance="line"
+      [theme]="{height: '186px', 'margin-top': '0px', 'margin-bottom': '30px', background: 'var(--skeleton-color)'}"
+    ></ngx-skeleton-loader>
+  </div>
+} @else {
+  <div class="row">
+    @for (news of pageResult?.data; track news) {
+      <div class="col-lg-4">
+        <news-card [@fadeInRightOnEnter] [blog]="news.blog"/>
       </div>
-    } @else {
-      <swiper [config]="newsSwiperConfig" [height]="475" #newsSwiper>
-        @for (news of lastNews; track news) {
-          <div
-            class="swiper-slide"
-            [@fadeInRightOnEnter]
-          >
-            <news-card [blog]="news.blog"></news-card>
-            <hr>
-          </div>
-        }
-        <div class="swiper-pagination"></div>
-      </swiper>
     }
   </div>
-</div>
+}

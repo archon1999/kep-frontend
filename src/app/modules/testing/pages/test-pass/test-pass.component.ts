@@ -4,9 +4,7 @@ import { TitleService } from '@shared/services/title.service';
 import { TestingApiService } from '../../testing-api.service';
 import Swal from 'sweetalert2';
 import { fadeInLeftAnimation, fadeInRightAnimation, fadeInUpAnimation } from 'angular-animations';
-import { CoreConfig } from '@core/types';
 import { takeUntil } from 'rxjs/operators';
-import { CoreConfigService } from '@core/services/config.service';
 import { Subject } from 'rxjs';
 import { randomShuffle } from '@shared/utils';
 import { DragulaService } from 'ng2-dragula';
@@ -17,9 +15,9 @@ import { randomChoice } from '@shared/utils/random';
   templateUrl: './test-pass.component.html',
   styleUrls: ['./test-pass.component.scss'],
   animations: [
-    fadeInLeftAnimation({ duration: 1500 }),
-    fadeInRightAnimation({ duration: 1000 }),
-    fadeInUpAnimation({ duration: 1000 }),
+    fadeInLeftAnimation({duration: 1500}),
+    fadeInRightAnimation({duration: 1000}),
+    fadeInUpAnimation({duration: 1000}),
   ]
 })
 export class TestPassComponent implements OnInit, OnDestroy {
@@ -38,7 +36,10 @@ export class TestPassComponent implements OnInit, OnDestroy {
   public orderingList: Array<string>;
   public classificationGroups: Array<any>;
 
-  public editorOptions: any;
+  public editorOptions: any = {
+    theme: 'vs-dark',
+    language: 'python',
+  };
 
   private _unsubscribeAll = new Subject();
 
@@ -48,7 +49,6 @@ export class TestPassComponent implements OnInit, OnDestroy {
     public dragulaService: DragulaService,
     public titleService: TitleService,
     public router: Router,
-    public coreConfigService: CoreConfigService,
   ) { }
 
   ngOnInit(): void {
@@ -59,9 +59,9 @@ export class TestPassComponent implements OnInit, OnDestroy {
     });
 
     setTimeout(() => this.startAnimationState = true, 0);
-    this.route.data.subscribe(({ testPass }) => {
+    this.route.data.subscribe(({testPass}) => {
       this.testPass = testPass;
-      this.titleService.updateTitle(this.route, { testTitle: testPass.test.title });
+      this.titleService.updateTitle(this.route, {testTitle: testPass.test.title});
       this.test = testPass.test;
       const duration = this.test.duration.split(':');
       const time = +duration[0] * 60 * 60 + +duration[1] * 60 + +duration[2];
@@ -69,22 +69,6 @@ export class TestPassComponent implements OnInit, OnDestroy {
       this.questions = this.test.questions;
       this.changeQuestion(0);
     });
-
-    this.coreConfigService.getConfig()
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((config: CoreConfig) => {
-        if (config.layout.skin === 'dark') {
-          this.editorOptions = {
-            theme: 'vs-dark',
-            language: 'python',
-          };
-        } else {
-          this.editorOptions = {
-            theme: 'vs-light',
-            language: 'python',
-          };
-        }
-      });
   }
 
   changeQuestion(index: number) {
@@ -156,7 +140,7 @@ export class TestPassComponent implements OnInit, OnDestroy {
         isEmpty = true;
       }
     } else if (this.question.type === 6) {
-      answer = { classification_groups: this.classificationGroups };
+      answer = {classification_groups: this.classificationGroups};
     }
 
     if (!isEmpty) {
@@ -179,7 +163,7 @@ export class TestPassComponent implements OnInit, OnDestroy {
           let questionCount = this.questions.length;
           Swal.fire({
             title: 'Test yakunlandi',
-            html: `<b>Natija</b>: <span class="text-success">${ result }</span>/${ questionCount }`,
+            html: `<b>Natija</b>: <span class="text-success">${result}</span>/${questionCount}`,
             icon: 'info',
             confirmButtonText: 'OK',
             customClass: {

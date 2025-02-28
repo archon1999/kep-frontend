@@ -1,0 +1,12 @@
+<div class="page">
+  <app-header></app-header>
+  <app-sidebar appHoverEffectSidebar></app-sidebar>
+  <div class="main-content app-content" (click)="clickOnBody()">
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>
+
+<div id="responsive-overlay" (click)="clearToggle()"></div>

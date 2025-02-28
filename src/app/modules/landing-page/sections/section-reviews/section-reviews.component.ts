@@ -1,42 +1,45 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
-import { SwiperOptions } from 'swiper/types/swiper-options';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { Review } from '@app/modules/landing-page/sections/section-reviews/review';
-import { Observable, of } from 'rxjs';
-import { ReviewCardComponent } from '@app/modules/landing-page/sections/section-reviews/review-card/review-card.component';
+import { Observable } from 'rxjs';
+import {
+  ReviewCardComponent
+} from '@app/modules/landing-page/sections/section-reviews/review-card/review-card.component';
 import { LandingPageService } from '@app/modules/landing-page/landing-page.service';
+import { CarouselModule, OwlOptions } from "ngx-owl-carousel-o";
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'section-reviews',
   standalone: true,
-  imports: [CoreCommonModule, SwiperComponent, ReviewCardComponent],
+  imports: [CoreCommonModule, SwiperComponent, ReviewCardComponent, CarouselModule, KepCardComponent],
   templateUrl: './section-reviews.component.html',
-  styleUrl: './section-reviews.component.scss'
+  styleUrl: './section-reviews.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class SectionReviewsComponent extends BaseLoadComponent<Array<Review>> {
   public service = inject(LandingPageService);
 
-  public swiperConfig: SwiperOptions = {
-    slidesPerView: 3,
-    spaceBetween: 30,
-    autoHeight: false,
-    autoplay: {
-      delay: 2500,
-      disableOnInteraction: true,
-    },
+  customOptions: OwlOptions = {
     loop: true,
-    breakpoints: {
-      1024: {
-        slidesPerView: 3,
-        spaceBetween: 30
-      },
+    mouseDrag: true,
+    touchDrag: true,
+    pullDrag: false,
+    dots: true,
+    navSpeed: 100,
+    autoplay: false,
+    navText: ['<', '>'],
+    responsive: {
       0: {
-        slidesPerView: 1,
-        spaceBetween: 30
+        items: 1,
       },
-    }
+      768: {
+        items: 2,
+      },
+    },
+    nav: false,
   };
 
   getData(): Observable<Array<Review>> {

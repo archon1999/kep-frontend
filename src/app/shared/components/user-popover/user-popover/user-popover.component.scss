@@ -14,15 +14,15 @@
       border: none !important;
     }
   }
-  @include media-breakpoint-down(sm){
-    width: 320px !important;
-    // zoom: 80% !important;
-    .card-body {
-      padding-right: 1rem !important;
-      padding-left: 1rem !important;
-      padding-bottom: 1rem !important;
-    }
-  }
+  //@include media-breakpoint-down(sm){
+  //  width: 320px !important;
+  //  // zoom: 80% !important;
+  //  .card-body {
+  //    padding-right: 1rem !important;
+  //    padding-left: 1rem !important;
+  //    padding-bottom: 1rem !important;
+  //  }
+  //}
 }
 
 ::ng-deep .user-popover .card {

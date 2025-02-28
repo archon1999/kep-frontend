@@ -37,13 +37,13 @@ export class KepcoinComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((user: any) => {
         this.currentUser = user;
-        if(user){
+        if (user) {
           this.loadData();
         }
       })
   }
 
-  loadData(){
+  loadData() {
     this.updatePage();
 
     this.service.getStreakFreeze().subscribe(
@@ -54,8 +54,8 @@ export class KepcoinComponent implements OnInit, OnDestroy {
     )
   }
 
-  updatePage(){
-    if(this.type == 1){
+  updatePage() {
+    if (this.type == 1) {
       this.service.getUserKepcoinEarns(this.currentPage).subscribe(
         (result: any) => {
           this.earns = result.data;
@@ -72,7 +72,7 @@ export class KepcoinComponent implements OnInit, OnDestroy {
     }
   }
 
-  success(){
+  success() {
     this.streakFreeze++;
   }
 

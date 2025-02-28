@@ -13,7 +13,8 @@
         }
       </div>
     } @else if (competitionPrize.prizeType == 'TELEGRAM_PREMIUM') {
-      <img class="mt-1" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Telegram_Premium.png" width="48" height="48">
+      <img class="mt-1" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Telegram_Premium.png" width="48"
+           height="48">
       <span class="badge bg-primary badge-glow">
         {{ competitionPrize.telegramPremiumPeriod }} month
       </span>
@@ -22,6 +23,6 @@
       <div class="text-dark">{{ competitionPrize.kepcoinValue }}</div>
     }
 
-    <div class="mt-1 text-primary fw-bolder">{{ competitionPrize.prizeTitle }}</div>
+    <div class="mt-1 text-primary fw-semibold">{{ competitionPrize.prizeTitle }}</div>
   </div>
 </a>

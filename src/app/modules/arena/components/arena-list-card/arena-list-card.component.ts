@@ -1,18 +1,22 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Arena, ArenaStatus } from '../../arena.models';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { CoreCommonModule } from '@core/common.module';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
-import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import {
+  ChallengesUserViewComponent
+} from '@challenges/components/challenges-user-view/challenges-user-view.component';
 import { NewFeatureDirective } from '@shared/directives/new-feature.directive';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'arena-list-card',
   templateUrl: './arena-list-card.component.html',
   styleUrls: ['./arena-list-card.component.scss'],
   standalone: true,
+  encapsulation: ViewEncapsulation.None,
   imports: [
     CoreCommonModule,
     CountdownComponent,
@@ -20,6 +24,7 @@ import { NewFeatureDirective } from '@shared/directives/new-feature.directive';
     ChallengesUserViewComponent,
     KepIconComponent,
     NewFeatureDirective,
+    KepCardComponent,
   ]
 })
 export class ArenaListCardComponent implements OnInit {

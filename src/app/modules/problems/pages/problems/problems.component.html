@@ -1,26 +1,22 @@
 <div class="content-wrapper container-xxl p-0">
   <div class="content-body">
-    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <section-header [contentHeader]="contentHeader"/>
 
-    <section-header></section-header>
-
-    <ul ngbNav #navFilled="ngbNav" class="nav-tabs card-nav nav-fill">
+    <ul ngbNav #navFilled="ngbNav" class="nav-tabs nav-style-1 nav-fill">
       <li ngbNavItem>
         <a ngbNavLink>{{ 'AllProblems' | translate }}</a>
         <ng-template ngbNavContent>
-          <div class="mb-2">
-            <section-categories></section-categories>
-          </div>
+          <section-categories></section-categories>
           @defer (on viewport) {
             <section-problems-filter></section-problems-filter>
-          } @placeholder  {
+          } @placeholder {
             <div class="card" [style.height.px]="200">
               <spinner></spinner>
             </div>
           }
           @defer (on viewport) {
             <section-problems-list></section-problems-list>
-          } @placeholder  {
+          } @placeholder {
             <div class="card" [style.height.px]="200">
               <spinner></spinner>
             </div>
@@ -53,18 +49,3 @@
 
   </div>
 </div>
-
-<!--<core-sidebar [hideOnEsc]="true" class="problems-sidebar" [name]="'problemsSidebar'">-->
-<!--  <div-->
-<!--    (click)="toggleSidebar('problemsSidebar')"-->
-<!--    class="btn-toggle d-flex align-items-center justify-content-center cursor-pointer">-->
-<!--    <span [data-feather]="'chevrons-left'"></span>-->
-<!--  </div>-->
-<!--  @defer (on viewport) {-->
-<!--    <ng-scrollbar autoHeightDisabled="false">-->
-<!--      <section-sidebar></section-sidebar>-->
-<!--    </ng-scrollbar>-->
-<!--  } @placeholder {-->
-<!--    <spinner></spinner>-->
-<!--  }-->
-<!--</core-sidebar>-->

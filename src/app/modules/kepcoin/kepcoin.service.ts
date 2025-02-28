@@ -10,15 +10,15 @@ export class KepcoinService {
     public api: ApiService,
   ) {}
 
-  getUserKepcoinEarns(page=1){
-    return this.api.get('kepcoin-earns', { page: page });
+  getUserKepcoinEarns(page = 1) {
+    return this.api.get('kepcoin-earns', {page: page});
   }
 
-  getUserKepcoinSpends(page=1){
-    return this.api.get('kepcoin-spends', { page: page });
+  getUserKepcoinSpends(page = 1) {
+    return this.api.get('kepcoin-spends', {page: page});
   }
-  
-  getStreakFreeze(){
+
+  getStreakFreeze() {
     return this.api.get('streak');
   }
 

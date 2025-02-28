@@ -1,0 +1,33 @@
+/* Start:: Breadcrumb Styles */
+
+.page-header-breadcrumb {
+  .breadcrumb-item + .breadcrumb-item::before {
+    content: var(--bs-secondary-color, "/");
+    font-family: "tabler-icons" !important;
+  }
+
+  padding: 1rem;
+  background: transparent;
+}
+
+.breadcrumb {
+  .breadcrumb-item {
+    a {
+      color: $primary;
+    }
+
+    &.active {
+      color: $default-text-color;
+      font-weight: 400;
+    }
+  }
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  color: $text-muted;
+}
+
+.embedded-breadcrumb:before {
+  opacity: 0.7;
+  filter: invert(1);
+}

@@ -10,13 +10,15 @@ import { TournamentsService } from './tournaments.service';
 import { BaseTablePageComponent } from '@app/common';
 import { Observable } from 'rxjs';
 import { PageResult } from '@app/common/classes/page-result';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
-import { coreConfig } from '@app/app.config';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
 import { CoreCommonModule } from '@core/common.module';
-import { TournamentListCardComponent } from '@app/modules/tournaments/tournament-list-card/tournament-list-card.component';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import {
+  TournamentListCardComponent
+} from '@app/modules/tournaments/tournament-list-card/tournament-list-card.component';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'app-tournaments',
@@ -30,7 +32,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
   ],
   standalone: true,
   encapsulation: ViewEncapsulation.None,
-  imports: [CoreCommonModule, TournamentListCardComponent, ContentHeaderModule, KepPaginationComponent, NgxSkeletonLoaderModule]
+  imports: [CoreCommonModule, TournamentListCardComponent, ContentHeaderModule, KepPaginationComponent, NgxSkeletonLoaderModule, KepCardComponent]
 })
 export class TournamentsComponent extends BaseTablePageComponent<Tournament> implements OnInit {
 
@@ -52,10 +54,13 @@ export class TournamentsComponent extends BaseTablePageComponent<Tournament> imp
       breadcrumb: {
         links: [
           {
-            name: coreConfig.app.appTitle,
-            isLink: true,
-            link: '/',
-          }
+            name: 'Competitions',
+            isLink: false,
+          },
+          {
+            name: 'Tournaments',
+            isLink: false,
+          },
         ]
       }
     };

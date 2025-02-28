@@ -43,21 +43,21 @@ export class DictionaryTrainingComponent implements OnInit {
     )
   }
 
-  makeRandomQuestion(){
-    let randomIndex = randomInt(0, this.dictionary.length-1);
+  makeRandomQuestion() {
+    let randomIndex = randomInt(0, this.dictionary.length - 1);
     let randomKeyword = this.dictionary[randomIndex];
     this.questionBody = randomKeyword.meaning;
     this.questionOptions = [];
-    while(this.questionOptions.length != 4){
-      let randomIndex = randomInt(0, this.dictionary.length-1);
-      if(this.dictionary[randomIndex].word == randomKeyword.word) continue;
-      if(this.questionOptions.indexOf(this.dictionary[randomIndex].word) != -1) continue;
+    while (this.questionOptions.length != 4) {
+      let randomIndex = randomInt(0, this.dictionary.length - 1);
+      if (this.dictionary[randomIndex].word == randomKeyword.word) continue;
+      if (this.questionOptions.indexOf(this.dictionary[randomIndex].word) != -1) continue;
       this.questionOptions.push(this.dictionary[randomIndex].word);
     }
-    if(Math.random() < 0.8){
+    if (Math.random() < 0.8) {
       this.questionOptions.push(randomKeyword.word);
     } else {
-      this.questionOptions.push("To`g`ri javob keltirilmagan")        
+      this.questionOptions.push("To`g`ri javob keltirilmagan")
     }
     randomIndex = randomInt(0, 4);
     this.correctAnswerIndex = randomIndex;
@@ -65,18 +65,12 @@ export class DictionaryTrainingComponent implements OnInit {
       this.questionOptions[4], this.questionOptions[randomIndex]];
   }
 
-  answerCheck(){
+  answerCheck() {
     if (this.singleRadio == this.correctAnswerIndex) {
       this.score++;
-      this.toastr.success('', this.correctText, {
-        toastClass: 'toast ngx-toastr',
-        closeButton: true
-      });
+      this.toastr.success('', this.correctText, );
     } else {
-      this.toastr.error('', this.inCorrectText, {
-        toastClass: 'toast ngx-toastr',
-        closeButton: true
-      });
+      this.toastr.error('', this.inCorrectText, );
     }
     this.all++;
     this.singleRadio = null;

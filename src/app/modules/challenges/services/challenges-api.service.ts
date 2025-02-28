@@ -26,19 +26,19 @@ export class ChallengesApiService {
   }
 
   getChallenge(challengeId: number | string) {
-    return this.api.get(`challenges/${ challengeId }`);
+    return this.api.get(`challenges/${challengeId}`);
   }
 
   challengeStart(challengeId: number) {
-    return this.api.post(`challenges/${ challengeId }/start/`);
+    return this.api.post(`challenges/${challengeId}/start/`);
   }
 
   acceptChallengeCall(challengeCallId: number) {
-    return this.api.post(`challenge-calls/${ challengeCallId }/accept/`);
+    return this.api.post(`challenge-calls/${challengeCallId}/accept/`);
   }
 
   deleteChallengeCall(challengeCallId: number) {
-    return this.api.delete(`challenge-calls/${ challengeCallId }/delete`);
+    return this.api.delete(`challenge-calls/${challengeCallId}/delete`);
   }
 
   newChallengeCall(timeSeconds: number, questionsCount: number, chapters: Number[]) {
@@ -51,13 +51,13 @@ export class ChallengesApiService {
   }
 
   checkAnswer(challengeId: number, answer: any, isFinish?: boolean) {
-    const body: any = { answer };
+    const body: any = {answer};
     if (isFinish) { body.finish = true; }
-    return this.api.post(`challenges/${ challengeId }/check-answer/`, body);
+    return this.api.post(`challenges/${challengeId}/check-answer/`, body);
   }
 
   getRatingChanges(username: string) {
-    return this.api.get(`challenges-rating/${ username }/rating-changes`);
+    return this.api.get(`challenges-rating/${username}/rating-changes`);
   }
 
   getChapters() {

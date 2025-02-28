@@ -1,5 +1,11 @@
 import { Component, forwardRef, inject, Injector, Input, OnInit } from '@angular/core';
-import { AbstractControl, ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, ReactiveFormsModule } from '@angular/forms';
+import {
+  AbstractControl,
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  NgControl,
+  ReactiveFormsModule
+} from '@angular/forms';
 import { Verdicts } from '@problems/constants';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';

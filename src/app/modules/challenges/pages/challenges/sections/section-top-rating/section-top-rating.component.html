@@ -1,4 +1,4 @@
-<div class="card">
+<kep-card>
   @if (isLoading) {
     <div [style.height.px]="400">
       <spinner></spinner>
@@ -7,23 +7,23 @@
     <div class="table-responsive beautiful-table">
       <table class="table">
         <thead>
-          <tr>
-            <th>#</th>
-            <th>{{ 'User' | translate }}</th>
-            <th><i data-feather="bar-chart"></i></th>
-          </tr>
+        <tr>
+          <th>#</th>
+          <th>{{ 'User' | translate }}</th>
+          <th><i data-feather="bar-chart"></i></th>
+        </tr>
         </thead>
         <tbody>
           @for (challengesRating of challengesRatingList; track challengesRating; let i = $index) {
             <tr>
               <td class="text-dark">
-                {{ i+1 }}
+                {{ i + 1 }}
               </td>
               <td>
                 <challenges-user-view [user]="challengesRating"></challenges-user-view>
               </td>
               <td>
-                <span class="badge badge-{{ challengesRating.rankTitle | challengesRankColor }}">
+                <span class="badge bg-{{ challengesRating.rankTitle | challengesRankColor }}">
                   {{ challengesRating.rating }}
                 </span>
               </td>
@@ -40,4 +40,4 @@
       </a>
     </div>
   }
-</div>
+</kep-card>

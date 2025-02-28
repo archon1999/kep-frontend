@@ -20,11 +20,11 @@ export class CourseResolver implements Resolve<Course> {
     return this.service.getCourse(courseId).pipe(
       tap((course: Course) => {
         if (course.inThePipeline && !this.authService.currentUserValue.isSuperuser) {
-          this.router.navigate(['/404'], { skipLocationChange: true });
+          this.router.navigate(['/404'], {skipLocationChange: true});
         }
       }),
       catchError((e) => {
-        this.router.navigate(['/404'], { skipLocationChange: true });
+        this.router.navigate(['/404'], {skipLocationChange: true});
         return of(null);
       })
     );

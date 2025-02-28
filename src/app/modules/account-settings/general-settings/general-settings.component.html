@@ -1,10 +1,10 @@
-<div class="card">
+<kep-card>
   <div class="card-body">
     <div class="row">
       <div class="col-12">
         <div class="d-flex align-items-center mb-2">
-          <i data-feather="user" class="font-medium-3"></i>
-          <h4 class="mb-0 ms-75">General Settings</h4>
+          <i class="font-medium-3" data-feather="user"></i>
+          <h4 class="mb-0 ms-3">General Settings</h4>
         </div>
       </div>
     </div>
@@ -12,15 +12,15 @@
 
       <!-- header media -->
       <div class="d-flex">
-        <a href="javascript:void(0);" class="me-25">
-          <img [src]="generalInfo.avatar" class="rounded me-50" alt="profile image" height="90" width="90" />
+        <a class="me-1" href="javascript:void(0);">
+          <img [src]="generalInfo.avatar" alt="profile image" class="rounded me-2" height="90" width="90"/>
         </a>
         <!-- upload and reset button -->
-        <div class="flex-grow-1 mt-75 ms-1">
-          <button (click)="file.click()" class="btn btn-sm btn-primary mb-75 me-75" rippleEffect>
+        <div class="flex-grow-1 mt-3 ms-1">
+          <button (click)="file.click()" class="btn btn-sm btn-primary mb-3 me-3" rippleEffect>
             Upload
           </button>
-          <input type="file" #file hidden accept="image/*" (change)="uploadImage($event)" />
+          <input #file (change)="uploadImage($event)" accept="image/*" hidden type="file"/>
           @if (errors?.avatar) {
             <p class="text-danger">{{ errors.avatar[0] }}</p>
           }
@@ -34,96 +34,96 @@
           <div class="mb-1">
             <label>Username</label>
             <input
-              type="text"
               [(ngModel)]="generalSettings.username"
+              [ngModelOptions]="{standalone: true}"
               class="form-control"
               placeholder="Username"
-              [ngModelOptions]="{standalone: true}" />
-              @if (errors?.username) {
-                <p class="text-danger">{{ errors.username[0] }}</p>
-              }
-            </div>
-          </div>
-          <div class="col-12 col-sm-6">
-            <div class="mb-1">
-              <label>E-mail</label>
-              <input
-                type="text"
-                [(ngModel)]="generalSettings.email"
-                class="form-control"
-                placeholder="Email"
-                [ngModelOptions]="{standalone: true}" />
-                @if (errors?.email) {
-                  <p class="text-danger">{{ errors.email[0] }}</p>
-                }
-              </div>
-            </div>
-            <div class="col-12 col-sm-6">
-              <div class="mb-1">
-                <label>First name</label>
-                <input
-                  type="text"
-                  [(ngModel)]="generalSettings.firstName"
-                  class="form-control"
-                  placeholder="First name"
-                  [ngModelOptions]="{standalone: true}" />
-                  @if (errors?.firstName) {
-                    <p class="text-danger">{{ errors.firstName[0] }}</p>
-                  }
-                </div>
-              </div>
-              <div class="col-12 col-sm-6">
-                <div class="mb-1">
-                  <label>Last name</label>
-                  <input
-                    type="text"
-                    [(ngModel)]="generalSettings.lastName"
-                    class="form-control"
-                    placeholder="Last name"
-                    [ngModelOptions]="{standalone: true}" />
-                    @if (errors?.lastName) {
-                      <p class="text-danger">{{ errors.lastName[0] }}</p>
-                    }
-                  </div>
-                </div>
-
-                <div class="d-flex">
-                  <img class="ms-1 mt-2" [src]="generalInfo.coverPhoto" alt="cover image" height="100%" width="50%" />
-                  <!-- upload and reset button -->
-                  <div class="flex-grow-1 mt-2 ms-1">
-                    @if (!canChangeCoverPhoto) {
-                      <kepcoin-spend-swal
-                        [customContent]="true"
-                        [value]="5"
-                        [purchaseUrl]="'users/purchase-cover-photo-change/'"
-                        (success)="canChangeCoverPhoto=true;"
-                        >
-                        <button class="btn btn-sm btn-primary mb-75 me-75" rippleEffect>
-                          Edit
-                        </button>
-                      </kepcoin-spend-swal>
-                    }
-                    @if (canChangeCoverPhoto) {
-                      <div>
-                        <button (click)="cover.click()" for="account-upload" class="btn btn-sm btn-primary mb-75 me-75"
-                          rippleEffect>
-                          Upload
-                        </button>
-                        <input type="file" #cover hidden accept="image/*" (change)="uploadCover($event)" />
-                        @if (errors?.coverPhoto) {
-                          <p class="text-danger">{{ errors.coverPhoto[0] }}</p>
-                        }
-                      </div>
-                    }
-                  </div>
-                  <!--/ upload and reset button -->
-                </div>
-
-                <div class="col-12 mt-2">
-                  <button type="submit" class="btn btn-primary mt-2 me-1" (click)="save()" rippleEffect>Save</button>
-                  <button type="reset" class="btn btn-outline-primary mt-2" (click)="reset()" rippleEffect>Reset</button>
-                </div>
-              </div>
-            </div>
+              type="text"/>
+            @if (errors?.username) {
+              <p class="text-danger">{{ errors.username[0] }}</p>
+            }
           </div>
         </div>
+        <div class="col-12 col-sm-6">
+          <div class="mb-1">
+            <label>E-mail</label>
+            <input
+              [(ngModel)]="generalSettings.email"
+              [ngModelOptions]="{standalone: true}"
+              class="form-control"
+              placeholder="Email"
+              type="text"/>
+            @if (errors?.email) {
+              <p class="text-danger">{{ errors.email[0] }}</p>
+            }
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="mb-1">
+            <label>First name</label>
+            <input
+              [(ngModel)]="generalSettings.firstName"
+              [ngModelOptions]="{standalone: true}"
+              class="form-control"
+              placeholder="First name"
+              type="text"/>
+            @if (errors?.firstName) {
+              <p class="text-danger">{{ errors.firstName[0] }}</p>
+            }
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="mb-1">
+            <label>Last name</label>
+            <input
+              [(ngModel)]="generalSettings.lastName"
+              [ngModelOptions]="{standalone: true}"
+              class="form-control"
+              placeholder="Last name"
+              type="text"/>
+            @if (errors?.lastName) {
+              <p class="text-danger">{{ errors.lastName[0] }}</p>
+            }
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <img [src]="generalInfo.coverPhoto" alt="cover image" class="ms-1 mt-2" height="100%" width="50%"/>
+          <!-- upload and reset button -->
+          <div class="flex-grow-1 mt-2 ms-1">
+            @if (!canChangeCoverPhoto) {
+              <kepcoin-spend-swal
+                [customContent]="true"
+                [value]="5"
+                [purchaseUrl]="'users/purchase-cover-photo-change/'"
+                (success)="canChangeCoverPhoto=true;"
+              >
+                <button class="btn btn-sm btn-primary mb-3 me-3" rippleEffect>
+                  Edit
+                </button>
+              </kepcoin-spend-swal>
+            }
+            @if (canChangeCoverPhoto) {
+              <div>
+                <button (click)="cover.click()" for="account-upload" class="btn btn-sm btn-primary mb-3 me-3"
+                        rippleEffect>
+                  Upload
+                </button>
+                <input type="file" #cover hidden accept="image/*" (change)="uploadCover($event)"/>
+                @if (errors?.coverPhoto) {
+                  <p class="text-danger">{{ errors.coverPhoto[0] }}</p>
+                }
+              </div>
+            }
+          </div>
+          <!--/ upload and reset button -->
+        </div>
+
+        <div class="col-12 mt-2">
+          <button (click)="save()" class="btn btn-primary mt-2 me-1" rippleEffect type="submit">Save</button>
+          <button (click)="reset()" class="btn btn-outline-primary mt-2" rippleEffect type="reset">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</kep-card>

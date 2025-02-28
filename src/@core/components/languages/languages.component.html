@@ -1,0 +1,22 @@
+<li class="header-element country-selector dropdown" ngbDropdown>
+  <a
+    class="header-link dropdown-toggle p-0"
+    data-bs-auto-close="outside"
+    data-bs-toggle="dropdown"
+    href="javascript:void(0);"
+    ngbDropdownToggle>
+    <div class="header-link-icon" style="width: inherit;">
+      <i class="fi fi-{{ languages[currentLang]?.flag }}"></i>
+    </div>
+  </a>
+  <ul class="main-header-dropdown dropdown-menu dropdown-menu-end" data-popper-placement="none" ngbDropdownMenu>
+    @for (language of Object.keys(languages); track language) {
+      <li>
+        <a class="dropdown-item d-flex align-items-center" href="javascript:void(0);" (click)="setLanguage(language)">
+          <i class="fi fi-{{ languages[language]?.flag }} me-2"></i>
+          {{ languages[language].title }}
+        </a>
+      </li>
+    }
+  </ul>
+</li>

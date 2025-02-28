@@ -5,7 +5,7 @@ import { debounceTime } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgxCountriesService } from '@shared/third-part-modules/ngx-countries/ngx-countries.service';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
@@ -16,15 +16,18 @@ import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pa
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { User } from '@users/users.models';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
 import { PageResult } from '@app/common/classes/page-result';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { KepStreakComponent } from '@shared/components/kep-streak/kep-streak.component';
-import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import {
+  ChallengesUserViewComponent
+} from '@challenges/components/challenges-user-view/challenges-user-view.component';
 import {
   ChallengesRankBadgeComponent
 } from '@challenges/components/challenges-user-view/challenges-rank-badge/challenges-rank-badge.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'app-users',
@@ -47,6 +50,7 @@ import {
     KepIconComponent,
     KepStreakComponent,
     ChallengesRankBadgeComponent,
+    KepCardComponent,
   ]
 })
 export class UsersComponent extends BaseTablePageComponent<User> {
@@ -114,9 +118,8 @@ export class UsersComponent extends BaseTablePageComponent<User> {
         type: '',
         links: [
           {
-            name: this.coreConfig.app.appTitle,
-            isLink: true,
-            link: '/'
+            name: 'KEP.uz',
+            isLink: false,
           },
         ]
       }

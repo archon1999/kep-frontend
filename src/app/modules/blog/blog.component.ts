@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
 import { Blog } from './blog.models';
 import { BlogService } from './blog.service';
 
@@ -55,7 +55,7 @@ export class BlogComponent implements OnInit {
     )
   }
 
-  loadBlogPosts(){
+  loadBlogPosts() {
     this.service.getBlogPosts(this.filter).subscribe(
       (result: any) => {
         this.blogPosts = result.data;

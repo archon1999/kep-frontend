@@ -7,13 +7,13 @@
     <section class="mt-2">
       <div class="row">
         <div [@fadeInLeftOnEnter] class="col-lg-9 col-12 order-2 order-lg-1">
-          <div class="card">
-            <div class="card-header">
+          <kep-card>
+            <div class="card-header p-2">
               <contest-tab [contest]="contest"></contest-tab>
             </div>
-          </div>
+          </kep-card>
 
-          <div class="card">
+          <kep-card>
             <div class="table-responsive beautiful-table">
               <table class="table">
                 <thead>
@@ -29,24 +29,24 @@
                 </tr>
                 </thead>
                 <tbody>
-                  @for (registrant of registrants;track registrant.username) {
+                  @for (registrant of registrants; track registrant.username) {
                     <tr>
                       <td class="text-dark">{{ $index + 1 }}</td>
                       <td>
                         <contestant-view [team]="registrant.team" [user]="registrant"></contestant-view>
                       </td>
                       <td>
-                            <span *ngIf="registrant.rating"
-                                  class="badge badge-light-{{ registrant.rating | contestsRatingColor }}">
-                              {{ registrant.rating }}
-                            </span>
+                        <span *ngIf="registrant.rating"
+                              class="badge bg-{{ registrant.rating | contestsRatingColor }}-transparent">
+                          {{ registrant.rating }}
+                        </span>
                       </td>
                     </tr>
                   }
                 </tbody>
               </table>
             </div>
-          </div>
+          </kep-card>
         </div>
 
         <div [@fadeInRightOnEnter] class="col-lg-3 col-12 order-1 order-lg-2">

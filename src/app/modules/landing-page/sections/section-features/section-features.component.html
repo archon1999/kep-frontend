@@ -1,28 +1,36 @@
 <div class="content-wrapper container-xxl p-0">
   <div class="content-body">
     <div class="text-center">
-      <span class="mb-2 badge bg-primary">{{ 'Features' | translate }}</span>
-
-      <div class="font-medium-1 fw-bolder mb-1">
-        {{ 'LandingPage.SectionFeaturesTitle' | translate }}
+      <p class="fs-12 fw-medium text-success mb-1">
+        <span class="landing-section-heading">-{{ 'Features' | translate }}-</span>
+      </p>
+      <h3 class="fw-medium mb-2">{{ 'Features' | translate }}</h3>
+      <div class="row justify-content-center">
+        <div class="col-xl-7">
+          <p class="text-muted fs-15 mb-5 fw-normal">
+            {{ 'LandingPage.SectionFeaturesTitle' | translate }}
+          </p>
+        </div>
       </div>
 
-      <div class="font-small-4">
-        {{ 'LandingPage.SectionFeaturesText' | translate }}
-      </div>
-
-      <div class="row features">
+      <div class="row">
         @for (feature of features; track feature.title) {
-          <div class="feature col-12 col-md-6 col-lg-4">
-            <div class="icon">
-              <kep-icon size="large-3" type="duotone" class="" name="{{ feature.icon }}" color="primary"></kep-icon>
-            </div>
-            <div class="title text-dark">
-              {{ feature.title | translate }}
-            </div>
-            <div class="description text-dark">
-              {{ feature.description | translate }}
-            </div>
+          <div class="col-12 col-md-6 col-lg-4 px-4">
+            <kep-card [cardHeight]="'220px'" customClass="landing-card border shadow-none text-center">
+              <div class="card-body">
+                <div class="mb-4">
+                  <span class="avatar avatar-xl rounded-2 icon-shadow-primary bg-primary-transparent">
+                    <kep-icon size="large-3" type="duotone" class="" name="{{ feature.icon }}" color="primary"/>
+                  </span>
+                </div>
+                <h4 class="fw-medium">
+                  {{ feature.title | translate }}
+                </h4>
+                <p class="fs-14 text-muted">
+                  {{ feature.description | translate }}
+                </p>
+              </div>
+            </kep-card>
           </div>
         }
       </div>

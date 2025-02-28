@@ -12,13 +12,13 @@ export default [
   {
     path: 'rating',
     loadComponent: () => import('./pages/rating/rating.component').then(c => c.RatingComponent),
-    data: { animation: 'contests-rating' },
+    data: {animation: 'contests-rating'},
     title: 'Contests.ContestsRating',
   },
   {
     path: 'profile',
     loadComponent: () => import('./pages/profile/profile.component').then(c => c.ProfileComponent),
-    data: { animation: 'contests-profile' },
+    data: {animation: 'contests-profile'},
     canActivate: [AuthGuard],
     title: 'Contests.ContestsProfile',
   },
@@ -127,7 +127,7 @@ export default [
   {
     path: 'user-contests',
     loadComponent: () => import('./pages/user-contests/user-contests.component').then(c => c.UserContestsComponent),
-    data: { animation: 'user-contests' },
+    data: {animation: 'user-contests'},
     title: 'Contests.MyContests',
   },
   {

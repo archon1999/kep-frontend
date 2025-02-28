@@ -9,17 +9,14 @@ export class HomeService {
 
   constructor(
     public api: ApiService,
-    public contestsService: ContestsService,
-  ) {
-  }
+  ) {}
 
-  getNews(page: number, pageSize: number) {
-    const params = { page: page, page_size: pageSize };
+  getNews(params: any) {
     return this.api.get('news', params);
   }
 
   getLastPosts(page: number, pageSize: number) {
-    const params = { page: page, page_size: pageSize, 'not_news': 1 };
+    const params = {page: page, page_size: pageSize, 'not_news': 1};
     return this.api.get('blog', params);
   }
 
@@ -32,7 +29,7 @@ export class HomeService {
   }
 
   getUserDailyStatistics(username: string, fromNow: number = 0) {
-    return this.api.get(`users/${username}/daily-statistics`, { fromNow });
+    return this.api.get(`users/${username}/daily-statistics`, {fromNow});
   }
 
   getNextBirthdays() {

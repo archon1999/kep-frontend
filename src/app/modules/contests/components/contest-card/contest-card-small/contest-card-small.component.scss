@@ -23,7 +23,7 @@
 }
 
 ::ng-deep .dark-layout {
- .bg-contest {
+  .bg-contest {
     background: linear-gradient(to right, #182848, #4b6cb7);
     box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
   }
@@ -31,7 +31,7 @@
   .btn-contest {
     background-color: #4b6cb7 !important;
   }
-}  
+}
 
 .btn-contest {
   position: absolute;

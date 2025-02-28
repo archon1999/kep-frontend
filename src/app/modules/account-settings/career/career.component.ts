@@ -29,7 +29,7 @@ export class CareerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ userEducations, userWorkExperiences }) => {
+    this.route.data.subscribe(({userEducations, userWorkExperiences}) => {
       this.userEducations = userEducations;
       this.userWorkExperiences = userWorkExperiences;
     });
@@ -64,26 +64,18 @@ export class CareerComponent implements OnInit {
   save() {
     this.service.updateUserEducations(this.userEducations).subscribe(
       () => {
-        this.toastr.success('Saved', '', {
-          toastClass: 'toast ngx-toastr',
-        });
+        this.toastr.success('Saved', '');
       }, (err: any) => {
-        this.toastr.error('Error', '', {
-          toastClass: 'toast ngx-toastr',
-        });
+        this.toastr.error('Error', '');
         this.errors = err.error;
       }
     );
 
     this.service.updateUserWorkExperiences(this.userWorkExperiences).subscribe(
       () => {
-        this.toastr.success('Saved', '', {
-          toastClass: 'toast ngx-toastr',
-        });
+        this.toastr.success('Saved', '');
       }, (err: any) => {
-        this.toastr.error('Error', '', {
-          toastClass: 'toast ngx-toastr',
-        });
+        this.toastr.error('Error', '');
         this.errors = err.error;
       }
     );
@@ -102,5 +94,4 @@ export class CareerComponent implements OnInit {
       }
     );
   }
-
 }

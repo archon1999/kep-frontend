@@ -1,4 +1,4 @@
-<div class="card">
+<kep-card>
   @if (isLoading) {
     <div [style.height.px]="400">
       <spinner></spinner>
@@ -12,7 +12,7 @@
 
     <div class="card-body">
       <ul class="list-group">
-        @for (arena of arenaList; track arena.id){
+        @for (arena of arenaList; track arena.id) {
           <a [routerLink]="Resources.ArenaTournament | resourceById:arena.id" class="list-group-item">
             <div class="mb-50 text-dark font-medium-2">
               <kep-icon name="arena" type="duotone" color="yellow"></kep-icon>
@@ -24,11 +24,11 @@
       </ul>
     </div>
 
-    <div class="card-footer">
-      <a class="btn btn-block btn-yellow" [routerLink]="Resources.Arena" [ngClass.lt-md]="'btn-sm'">
+    <div class="card-footer justify-content-center">
+      <a class="btn btn-primary" [routerLink]="Resources.Arena" [ngClass.lt-md]="'btn-sm'">
         <kep-icon name="arena"></kep-icon>
         {{ 'GoToArena' | translate }}
       </a>
     </div>
   }
-</div>
+</kep-card>

@@ -2,11 +2,11 @@
   <div class="content-body">
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
-    <div class="card {{ contest | contestClasses }}">
+    <kep-card [customClass]="contest | contestClasses">
       <div class="card-header p-1">
         <contest-tab [contest]="contest"></contest-tab>
       </div>
-    </div>
+    </kep-card>
 
     <kep-table [empty]="contestants.length == 0" [loading]="isLoading">
       <ng-container header>
@@ -19,16 +19,16 @@
         </tr>
       </ng-container>
       <ng-container body>
-        @for (contestant of contestants;track contestant) {
+        @for (contestant of contestants; track contestant) {
           <tr>
             <td class="text-center">{{ contestant.rank }}</td>
             <td>
               <contestant-view [user]="contestant" [team]="contestant.team"/>
             </td>
             <td class="text-center">
-                  <span class="badge badge-glow bg-primary">
-                    {{ contestant.points }}
-                  </span>
+              <span class="badge badge-glow bg-primary">
+                {{ contestant.points }}
+              </span>
             </td>
             <td class="text-center">
               <kep-delta [value]="contestant.delta"/>
@@ -36,13 +36,13 @@
             <td>
               @if (contestant.type == 1) {
                 <div>
-                      <span class="badge badge-light-{{ contestant.rating | contestsRatingColor }}">
-                        {{ contestant.rating }}
-                      </span>
+                  <span class="badge bg-{{ contestant.rating | contestsRatingColor }}-transparent">
+                    {{ contestant.rating }}
+                  </span>
                   <i data-feather="arrow-right"></i>
-                  <span class="badge badge-light-{{ contestant.newRating | contestsRatingColor }}">
-                        {{ contestant.newRating }}
-                      </span>
+                  <span class="badge bg-{{ contestant.newRating | contestsRatingColor }}-transparent">
+                    {{ contestant.newRating }}
+                  </span>
                   @if (contestant.newRatingTitle != contestant.ratingTitle) {
                     <contests-rating-image
                       class="ms-50"
@@ -69,15 +69,15 @@
               }
               @if (contestant.type == 2) {
                 <div>
-                  @for (member of contestant.team.members;track member) {
+                  @for (member of contestant.team.members; track member) {
                     <div class="mb-1">
-                          <span class="badge badge-light-{{ member.rating | contestsRatingColor }}">
-                            {{ member.rating }}
-                          </span>
+                      <span class="badge badge-light-{{ member.rating | contestsRatingColor }}">
+                        {{ member.rating }}
+                      </span>
                       <i data-feather="arrow-right"></i>
                       <span class="badge badge-light-{{ member.newRating | contestsRatingColor }}">
-                            {{ member.newRating }}
-                          </span>
+                        {{ member.newRating }}
+                      </span>
                       @if (member.newRatingTitle != member.ratingTitle) {
                         <contests-rating-image
                           [title]="member.newRatingTitle"

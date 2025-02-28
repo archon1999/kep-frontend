@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { BaseComponent } from '@app/common/classes/base.component';
 import { Observable } from 'rxjs';
 import { BasePageComponent } from '@app/common';
 
@@ -12,7 +11,7 @@ export abstract class BaseLoadComponent<T> extends BasePageComponent implements 
   public isLoading = false;
   public loadOnInit = true;
 
-  ngOnInit() {
+  override ngOnInit() {
     if (this.loadOnInit) {
       setTimeout(() => this.loadData());
     }

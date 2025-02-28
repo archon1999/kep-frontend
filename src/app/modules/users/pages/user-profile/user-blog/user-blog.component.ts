@@ -31,7 +31,7 @@ export class UserBlogComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(
       (params) => {
-        this.service.getUserBlog(params.get('username'), { pageSize: 3 }).subscribe(
+        this.service.getUserBlog(params.get('username'), {pageSize: 3}).subscribe(
           (result: PageResult<Blog>) => {
             this.isLoading = false;
             this.userBlog = result.data;

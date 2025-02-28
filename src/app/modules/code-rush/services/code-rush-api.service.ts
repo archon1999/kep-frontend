@@ -12,7 +12,7 @@ export class CodeRushApiService {
   }
 
   getCodeRush(codeRushId: number | string) {
-    return this.api.get(`code-rush/${ codeRushId }`);
+    return this.api.get(`code-rush/${codeRushId}`);
   }
 
   getProblemAttempts(duelId: number, duelProblem: string, username: string) {
@@ -25,7 +25,7 @@ export class CodeRushApiService {
   }
 
   getCodeRushResults(duelId: number | string) {
-    return this.api.get(`duels/${ duelId }/results`);
+    return this.api.get(`duels/${duelId}/results`);
   }
 
 }

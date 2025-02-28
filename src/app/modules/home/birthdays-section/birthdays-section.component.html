@@ -1,4 +1,4 @@
-<div class="card">
+<kep-card>
   <div class="card-header">
     <div class="card-title">
       {{ 'BirthDays' | translate }}
@@ -16,9 +16,9 @@
     </div>
   }
 
-  <div class="media-list">
+  <div class="card-body">
     @for (birthDay of birthDays; track birthDay) {
-      <div class="media">
+      <div class="d-flex mb-4 justify-content-start gap-2 align-items-center">
         <div class="media-left">
           <img
             class="media-object rounded-circle"
@@ -37,4 +37,4 @@
       </div>
     }
   </div>
-</div>
+</kep-card>

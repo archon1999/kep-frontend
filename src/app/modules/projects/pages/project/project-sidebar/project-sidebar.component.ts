@@ -5,6 +5,7 @@ import { Project } from '@app/modules/projects/interfaces/project';
 import { CoreCommonModule } from '@core/common.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { ProjectInfoCardComponent } from '@projects/components/project-info-card/project-info-card.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'project-sidebar',
@@ -14,7 +15,8 @@ import { ProjectInfoCardComponent } from '@projects/components/project-info-card
   imports: [
     CoreCommonModule,
     NgSelectModule,
-    ProjectInfoCardComponent
+    ProjectInfoCardComponent,
+    KepCardComponent
   ]
 })
 export class ProjectSidebarComponent implements OnInit {
@@ -37,7 +39,7 @@ export class ProjectSidebarComponent implements OnInit {
   handleFileInput(files: FileList) {
     if (files.item(0).size > 1024 * 1024) {
       this.toastr.error('Max file size 1mb', '', {
-        toastClass: 'toast ngx-toastr',
+
       });
     } else {
       this.fileToUpload = files.item(0);
@@ -52,7 +54,7 @@ export class ProjectSidebarComponent implements OnInit {
       () => {
         this.submitEvent.emit();
         this.toastr.success('Submitted', '', {
-          toastClass: 'toast ngx-toastr',
+
         });
       }
     );

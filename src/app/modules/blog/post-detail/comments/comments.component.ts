@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Blog, BlogPostComment } from '../../blog.models';
 import { BlogService } from '../../blog.service';
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
+import { AngularEditorConfig } from "@kolkov/angular-editor";
 
 @Component({
   selector: 'comments',
@@ -24,6 +25,35 @@ export class CommentsComponent implements OnInit, OnDestroy {
 
   public currentUser: User;
 
+  public config: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: '15rem',
+    minHeight: '5rem',
+    placeholder: 'Enter text here...',
+    translate: 'no',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    toolbarHiddenButtons: [
+      ['bold']
+    ],
+    customClasses: [
+      {
+        name: "quote",
+        class: "quote",
+      },
+      {
+        name: 'redText',
+        class: 'redText'
+      },
+      {
+        name: "titleText",
+        class: "titleText",
+        tag: "h1",
+      },
+    ]
+  };
+
   private _unsubscribeAll = new Subject();
 
   constructor(
@@ -39,7 +69,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
     this.updateComments();
   }
 
-  updateComments(){
+  updateComments() {
     this.service.getBlogPostComments(this.blogPost.id).subscribe(
       (comments: any) => {
         this.comments = comments;
@@ -47,8 +77,8 @@ export class CommentsComponent implements OnInit, OnDestroy {
     )
   }
 
-  submit(){
-    if(this.comment){
+  submit() {
+    if (this.comment) {
       this.service.commentPost(this.blogPost.id, this.comment).subscribe(
         () => {
           this.updateComments();
@@ -65,7 +95,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
     )
   }
 
-  deleteComment(index: number){
+  deleteComment(index: number) {
     let comment = this.comments[index];
     this.service.commentDelete(comment.id).subscribe(
       () => {

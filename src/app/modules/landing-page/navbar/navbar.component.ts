@@ -6,11 +6,12 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ChristmasTreeComponent } from '@shared/components/christmas-tree/christmas-tree.component';
+import { LanguagesComponent } from "@core/components/languages/languages.component";
 
 @Component({
   selector: 'navbar',
   standalone: true,
-  imports: [CoreCommonModule, NgbDropdownModule, ChristmasTreeComponent],
+  imports: [CoreCommonModule, NgbDropdownModule, ChristmasTreeComponent, LanguagesComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
@@ -29,15 +30,6 @@ export class NavbarComponent extends BaseComponent implements OnInit {
         }
       }
     );
-  }
-
-  switchMode() {
-    this.coreConfigService.setConfig({
-      layout: {
-        skin: this.isDarkMode ? 'default' : 'dark'
-      }
-    }, { emitEvent: false });
-    location.reload();
   }
 
   scrollTo(tagName: string) {

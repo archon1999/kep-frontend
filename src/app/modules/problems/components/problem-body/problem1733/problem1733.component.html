@@ -13,12 +13,12 @@
     <div (mouseenter)="mouseEnter=true;" (mouseleave)="mouseEnter=false;"
          style="width: 300px; height: 300px; position: relative; cursor: col-resize;">
       <div
-          #output
-          [ngStyle]="{
+        #output
+        [ngStyle]="{
             'width': outputWidth + '%',
             'box-shadow': mouseEnter ? 'red 1px 0px 0px' : 'none'
         }"
-          style="background: #fff; overflow: hidden; position: relative; z-index: 1; mix-blend-mode: normal; pointer-events: none;">
+        style="background: #fff; overflow: hidden; position: relative; z-index: 1; mix-blend-mode: normal; pointer-events: none;">
         <iframe [srcdoc]="outputHtml | safe" sandbox="allow-same-origin"
                 style="width: 300px; height: 300px; border: 0px; outline: 0px;"
                 title="Preview">

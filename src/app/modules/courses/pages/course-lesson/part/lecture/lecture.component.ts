@@ -9,12 +9,9 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreConfig } from '@core/types';
 import { CoursesService } from '@courses/courses.service';
 import { Highlight, HighlightLoader } from 'ngx-highlightjs';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { CoreCommonModule } from '@core/common.module';
 import { CourseLessonPartStatus } from '@courses/constants';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
@@ -50,7 +47,6 @@ export class LectureComponent implements OnInit, OnChanges, AfterContentChecked 
   constructor(
     public service: CoursesService,
     private hljsLoader: HighlightLoader,
-    public coreConfigService: CoreConfigService,
   ) { }
 
   ngOnInit(): void {
@@ -70,11 +66,7 @@ export class LectureComponent implements OnInit, OnChanges, AfterContentChecked 
       });
     }
 
-    this.coreConfigService.getConfig().pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (config: CoreConfig) => {
-        this.hljsLoader.ready.subscribe((result: any) => {});
-      }
-    );
+    this.hljsLoader.ready.subscribe((result: any) => {});
   }
 
   ngOnChanges(changes: SimpleChanges): void {

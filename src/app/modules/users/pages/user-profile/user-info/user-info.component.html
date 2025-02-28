@@ -1,11 +1,11 @@
 <!-- about -->
-<div class="card">
+<kep-card>
   <div class="card-body">
     <h4 class="mb-75">
       <i data-feather="info"></i>
       {{ 'USER_INFO.ABOUT' | translate }}
     </h4>
-    <p class="card-text" [innerHTML]="userInfo.bio"></p>
+    <p [innerHTML]="userInfo.bio" class="card-text"></p>
     @if (userInfo.dateOfBirth) {
       <div class="mt-2">
         <h5 class="mb-75">
@@ -27,114 +27,114 @@
           @if (userInfo.region) {
             <span>, {{ userInfo.region }}</span>
           }</p>
-        </div>
-      }
-      @if (userInfo.email) {
-        <div class="mt-2">
-          <h5 class="mb-75">
-            <i data-feather="mail"></i>
-            {{ 'USER_INFO.EMAIL' | translate }}:
-          </h5>
-          <p class="card-text">{{ userInfo.email }}</p>
-        </div>
-      }
-      @if (userInfo.website) {
-        <div class="mt-2">
-          <h5 class="mb-50">
-            <i data-feather="globe"></i>
-            {{ 'USER_INFO.WEBSITE' | translate }}:
-          </h5>
-          <a href="{{ userInfo.website }}">{{ userInfo.website }}</a>
-        </div>
-      }
-      <div class="mt-2">
-        <h5 class="mb-75">
-          <i data-feather="calendar"></i>
-          {{ 'USER_INFO.JOINED' | translate }}:
-        </h5>
-        <p class="card-text">{{ userInfo.dateJoined | date:'MMM d, y, H:mm' }}</p>
-      </div>
-      @if (userSocial.telegram) {
-        <div class="mt-2">
-          <h5 class="mb-50">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/2048px-Telegram_logo.svg.png"
-              height="16" width="16">
-            {{ 'USER_INFO.TELEGRAM' | translate }}:
-          </h5>
-          <a href="https://t.me/{{ userSocial.telegram }}" class="card-text mb-0">{{ userSocial.telegram }}</a>
-        </div>
-      }
-      @if (userSocial.codeforcesHandle) {
-        <div class="mt-2">
-          <a href="https://codeforces.com/profile/{{ userSocial.codeforcesHandle }}">
-            <h5 class="mb-50">
-              <img width="16" height="16" src="https://cdn-1.webcatalog.io/catalog/codeforces/codeforces-icon-filled.png">
-              {{ 'USER_INFO.CODEFORCES' | translate }}:
-            </h5>
-            <p class="card-text mb-0">
-              <span class="badge badge-glow bg-warning">
-                {{ userSocial.codeforcesHandle }}
-              </span>
-              <img class="ms-1" [src]="userSocial.codeforcesBadge">
-            </p>
-          </a>
-        </div>
-      }
-    </div>
-  </div>
-  <!--/ about -->
-
-  <!-- education -->
-  @if (userEducations.length > 0) {
-    <div class="card">
-      <div class="card-body">
-        <h4 class="mb-4">
-          <i data-feather="info"></i>
-          {{ 'USER_INFO.EDUCATION' | translate }}
-        </h4>
-        <ul class="timeline">
-          @for (education of userEducations; track education) {
-            <li class="timeline-item">
-              <span class="timeline-point timeline-point-primary timeline-point-indicator"></span>
-              <div class="timeline-event">
-                <h6>
-                  {{ education.organization }}
-                  <br>
-                    {{ education.degree }}
-                  </h6>
-                  <span class="timeline-event-time">{{ education.fromYear }} - {{ education.toYear }}</span>
-                </div>
-              </li>
-            }
-          </ul>
-        </div>
       </div>
     }
+    @if (userInfo.email) {
+      <div class="mt-2">
+        <h5 class="mb-75">
+          <i data-feather="mail"></i>
+          {{ 'USER_INFO.EMAIL' | translate }}:
+        </h5>
+        <p class="card-text">{{ userInfo.email }}</p>
+      </div>
+    }
+    @if (userInfo.website) {
+      <div class="mt-2">
+        <h5 class="mb-50">
+          <i data-feather="globe"></i>
+          {{ 'USER_INFO.WEBSITE' | translate }}:
+        </h5>
+        <a href="{{ userInfo.website }}">{{ userInfo.website }}</a>
+      </div>
+    }
+    <div class="mt-2">
+      <h5 class="mb-75">
+        <i data-feather="calendar"></i>
+        {{ 'USER_INFO.JOINED' | translate }}:
+      </h5>
+      <p class="card-text">{{ userInfo.dateJoined | date:'MMM d, y, H:mm' }}</p>
+    </div>
+    @if (userSocial.telegram) {
+      <div class="mt-2">
+        <h5 class="mb-50">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/2048px-Telegram_logo.svg.png"
+            height="16" width="16">
+          {{ 'USER_INFO.TELEGRAM' | translate }}:
+        </h5>
+        <a href="https://t.me/{{ userSocial.telegram }}" class="card-text mb-0">{{ userSocial.telegram }}</a>
+      </div>
+    }
+    @if (userSocial.codeforcesHandle) {
+      <div class="mt-2">
+        <a href="https://codeforces.com/profile/{{ userSocial.codeforcesHandle }}">
+          <h5 class="mb-50">
+            <img width="16" height="16" src="https://cdn-1.webcatalog.io/catalog/codeforces/codeforces-icon-filled.png">
+            {{ 'USER_INFO.CODEFORCES' | translate }}:
+          </h5>
+          <p class="card-text mb-0">
+            <span class="badge badge-glow bg-warning">
+              {{ userSocial.codeforcesHandle }}
+            </span>
+            <img class="ms-1" [src]="userSocial.codeforcesBadge">
+          </p>
+        </a>
+      </div>
+    }
+  </div>
+</kep-card>
+<!--/ about -->
 
-    <!-- job -->
-    @if (userWorkExperiences.length > 0) {
-      <div class="card">
-        <div class="card-body">
-          <h4 class="mb-4">
-            <i data-feather="info"></i>
-            {{ 'USER_INFO.WORK_EXPERIENCE' | translate }}
-          </h4>
-          <ul class="timeline">
-            @for (workExperience of userWorkExperiences; track workExperience) {
-              <li class="timeline-item">
-                <span class="timeline-point timeline-point-primary timeline-point-indicator"></span>
-                <div class="timeline-event">
-                  <h6>
-                    {{ workExperience.company }}
-                    <br>
-                      {{ workExperience.jobTitle }}
-                    </h6>
-                    <span class="timeline-event-time">{{ workExperience.fromYear }} - {{ workExperience.toYear }}</span>
-                  </div>
-                </li>
-              }
-            </ul>
-          </div>
-        </div>
-      }
+<!-- education -->
+@if (userEducations.length > 0) {
+  <kep-card>
+    <div class="card-body">
+      <h4 class="mb-4">
+        <i data-feather="info"></i>
+        {{ 'USER_INFO.EDUCATION' | translate }}
+      </h4>
+      <ul class="timeline">
+        @for (education of userEducations; track education) {
+          <li class="timeline-item">
+            <span class="timeline-point timeline-point-primary timeline-point-indicator"></span>
+            <div class="timeline-event">
+              <h6>
+                {{ education.organization }}
+                <br>
+                {{ education.degree }}
+              </h6>
+              <span class="timeline-event-time">{{ education.fromYear }} - {{ education.toYear }}</span>
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+  </kep-card>
+}
+
+<!-- job -->
+@if (userWorkExperiences.length > 0) {
+  <kep-card>
+    <div class="card-body">
+      <h4 class="mb-4">
+        <i data-feather="info"></i>
+        {{ 'USER_INFO.WORK_EXPERIENCE' | translate }}
+      </h4>
+      <ul class="timeline">
+        @for (workExperience of userWorkExperiences; track workExperience) {
+          <li class="timeline-item">
+            <span class="timeline-point timeline-point-primary timeline-point-indicator"></span>
+            <div class="timeline-event">
+              <h6>
+                {{ workExperience.company }}
+                <br>
+                {{ workExperience.jobTitle }}
+              </h6>
+              <span class="timeline-event-time">{{ workExperience.fromYear }} - {{ workExperience.toYear }}</span>
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+  </kep-card>
+}

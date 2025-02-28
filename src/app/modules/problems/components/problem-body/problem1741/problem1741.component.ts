@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Problem } from '@problems/models/problems.models';
-import { HtmlProblemBodyComponent } from '@problems/components/problem-body/html-problem-body/html-problem-body.component';
+import {
+  HtmlProblemBodyComponent
+} from '@problems/components/problem-body/html-problem-body/html-problem-body.component';
 
 @Component({
   selector: 'problem1741',

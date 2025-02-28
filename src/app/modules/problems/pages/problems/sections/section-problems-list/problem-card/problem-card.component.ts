@@ -6,11 +6,12 @@ import { ProblemDifficultyColorPipe } from '@problems/pipes/problem-difficulty-c
 import { getResourceById, Resources } from '@app/resources';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'problem-card',
   standalone: true,
-  imports: [CoreCommonModule, NgbTooltipModule, ProblemDifficultyColorPipe, ResourceByIdPipe],
+  imports: [CoreCommonModule, NgbTooltipModule, ProblemDifficultyColorPipe, ResourceByIdPipe, KepCardComponent],
   templateUrl: './problem-card.component.html',
   styleUrl: './problem-card.component.scss',
   animations: [fadeInOnEnterAnimation()]

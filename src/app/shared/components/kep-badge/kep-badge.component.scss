@@ -14,7 +14,7 @@
   }
 
   @include dark-layout {
-    background: radial-gradient(circle at 10% 20%, rgb(165, 99, 6) 0%, rgb(159, 159, 20)90%);
+    background: radial-gradient(circle at 10% 20%, rgb(165, 99, 6) 0%, rgb(159, 159, 20) 90%);
     color: rgb(252, 251, 121);
   }
 }

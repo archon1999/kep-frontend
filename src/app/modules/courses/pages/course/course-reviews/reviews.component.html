@@ -12,7 +12,7 @@
         </div>
       } @else {
         <swiper [config]="reviewsSwiperConfig" class="swiper-review swiper-lazy-loading">
-          @for (review of reviews;track review) {
+          @for (review of reviews; track review) {
             <div class="swiper-slide">
               <review-card [review]="review"></review-card>
             </div>
@@ -39,39 +39,39 @@
               Baho:
             </strong>
             <span class="rating">
-          <ngb-rating [(rate)]="rating" [max]="5" [readonly]="false" class="outline-none"/>
-        </span>
+              <ngb-rating [(rate)]="rating" [max]="5" [readonly]="false" class="outline-none"/>
+            </span>
           </div>
           <quill-editor class="full-width" [(ngModel)]="review">
             <div quill-editor-toolbar>
-          <span class="ql-formats">
-            <button class="ql-bold" [title]="'Bold'"></button>
-            <button class="ql-italic" [title]="'italic'"></button>
-            <button class="ql-underline" [title]="'underline'"></button>
-          </span>
               <span class="ql-formats">
-            <select class="ql-align" [title]="'Alignment'">
-              <option selected></option>
-              <option value="center"></option>
-              <option value="right"></option>
-              <option value="justify"></option>
-            </select>
-          </span>
+                <button class="ql-bold" [title]="'Bold'"></button>
+                <button class="ql-italic" [title]="'italic'"></button>
+                <button class="ql-underline" [title]="'underline'"></button>
+              </span>
               <span class="ql-formats">
-            <button class="ql-list" value="ordered" type="button"></button>
-          </span>
+                <select class="ql-align" [title]="'Alignment'">
+                  <option selected></option>
+                  <option value="center"></option>
+                  <option value="right"></option>
+                  <option value="justify"></option>
+                </select>
+              </span>
               <span class="ql-formats">
-            <button class="ql-link" value="ordered" type="button"></button>
-            <button class="ql-image" value="ordered" type="button"></button>
-            <button class="ql-video" value="ordered" type="button"></button>
-          </span>
+                <button class="ql-list" value="ordered" type="button"></button>
+              </span>
               <span class="ql-formats">
-            <button class="ql-formula" value="ordered" type="button"></button>
-            <button class="ql-code-block" value="ordered" type="button"></button>
-          </span>
+                <button class="ql-link" value="ordered" type="button"></button>
+                <button class="ql-image" value="ordered" type="button"></button>
+                <button class="ql-video" value="ordered" type="button"></button>
+              </span>
               <span class="ql-formats">
-            <button class="ql-clean" value="ordered" type="button"></button>
-          </span>
+                <button class="ql-formula" value="ordered" type="button"></button>
+                <button class="ql-code-block" value="ordered" type="button"></button>
+              </span>
+              <span class="ql-formats">
+                <button class="ql-clean" value="ordered" type="button"></button>
+              </span>
             </div>
           </quill-editor>
           <button (click)="submit()" class="mt-2 mb-2 btn btn-relief-primary">

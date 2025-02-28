@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Team } from '../../users/users.models';
+import { Team } from '@users/users.models';
 import { AccountSettingsService } from '../account-settings.service';
 import { BaseLoadComponent } from '@app/common';
 import { Observable } from 'rxjs';

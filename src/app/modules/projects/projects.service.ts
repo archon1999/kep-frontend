@@ -13,26 +13,26 @@ export class ProjectsService {
   }
 
   getProject(id: number | string) {
-    return this.api.get(`projects/${ id }`);
+    return this.api.get(`projects/${id}`);
   }
 
   getProjectAttempts(projectId: number | string, page = 1) {
-    return this.api.get('project-attempts', { project_id: projectId, page: page });
+    return this.api.get('project-attempts', {project_id: projectId, page: page});
   }
 
   getProjectUserAttempts(projectId: number | string, username: string, page = 1) {
-    return this.api.get('project-attempts', { project_id: projectId, page: page, username: username });
+    return this.api.get('project-attempts', {project_id: projectId, page: page, username: username});
   }
 
   getAttemptLog(attemptId: number | string) {
-    return this.api.get(`project-attempts/${ attemptId }/log`);
+    return this.api.get(`project-attempts/${attemptId}/log`);
   }
 
   submitAttempt(projectSlug: string, technology: string, file: File) {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
     formData.append('technology', technology);
-    return this.api.post(`projects/${ projectSlug }/submit`, formData);
+    return this.api.post(`projects/${projectSlug}/submit`, formData);
   }
 
 }

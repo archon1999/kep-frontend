@@ -1,15 +1,15 @@
 @if (value > 0) {
-  <span class="badge badge-light-success">
+  <span class="badge bg-success-transparent">
     <kep-icon color="success" name="chart-line-up-2" size="small-2"></kep-icon>
     {{ value }}
   </span>
-} @else if(value == 0) {
+} @else if (value == 0) {
   <span class="badge badge-light-secondary">
     <kep-icon name="arrow-up-down" size="small-2"></kep-icon>
     0
   </span>
 } @else {
-  <span class="badge badge-light-danger">
+  <span class="badge bg-danger-transparent">
     <kep-icon name="chart-line-down-2" size="small-2"></kep-icon>
     {{ -value }}
   </span>

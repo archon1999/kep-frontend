@@ -12,11 +12,11 @@ import { ArenaListCardComponent } from '@arena/components/arena-list-card/arena-
 import { BaseTablePageComponent } from '@app/common';
 import { Observable } from 'rxjs';
 import { PageResult } from '@app/common/classes/page-result';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
-import { coreConfig } from '@app/app.config';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'app-arena',
@@ -35,6 +35,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     ContentHeaderModule,
     KepPaginationComponent,
     NgxSkeletonLoaderModule,
+    KepCardComponent,
   ]
 })
 export class ArenaComponent extends BaseTablePageComponent<Arena> implements OnInit {
@@ -57,10 +58,13 @@ export class ArenaComponent extends BaseTablePageComponent<Arena> implements OnI
       breadcrumb: {
         links: [
           {
-            name: coreConfig.app.appTitle,
-            isLink: true,
-            link: '/',
-          }
+            name: 'Competitions',
+            isLink: false,
+          },
+          {
+            name: 'Arena',
+            isLink: false,
+          },
         ]
       }
     };

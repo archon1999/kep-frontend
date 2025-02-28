@@ -7,7 +7,7 @@ import { DuelsService } from './duels.service';
 export class DuelResolver implements Resolve<boolean> {
   constructor(
     public service: DuelsService
-  ){}
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     return this.service.getDuel(route.params['id']);

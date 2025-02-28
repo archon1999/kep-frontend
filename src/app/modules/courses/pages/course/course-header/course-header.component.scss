@@ -10,11 +10,7 @@
   margin-top: -2rem;
   height: 500px;
   width: calc(100% + 4rem);
-  background-color: rgba(255, 255, 255, 0.5);
-
-  @include dark-layout {
-    background-color: rgba(0, 0, 0, 0.25);
-  }
+  background-color: rgba(0, 0, 0, 0.25);
 
   @include media-breakpoint-down(lg) {
     width: calc(100% + 3.2rem);
@@ -32,7 +28,7 @@
 .course {
   display: grid;
   grid-template-columns: 3fr 2fr;
-  
+
   @include media-breakpoint-down(sm) {
     grid-template-columns: 1fr;
   }
@@ -58,11 +54,11 @@
 
       @include media-breakpoint-down(md) {
         font-size: 2.5rem;
-      }  
+      }
 
       @include media-breakpoint-down(sm) {
         font-size: 2.25rem;
-      }  
+      }
     }
 
     .course-description {
@@ -72,11 +68,11 @@
 
       @include media-breakpoint-down(md) {
         font-size: 1.2rem;
-      }  
+      }
 
       @include media-breakpoint-down(sm) {
         font-size: 1rem;
-      }  
+      }
 
       p {
         line-height: 2rem !important;
@@ -96,7 +92,7 @@
       .course-updated {
         color: #fff;
       }
-      
+
       .course-lang {
         color: #fff;
       }
@@ -107,18 +103,18 @@
     margin-top: 10rem;
     height: 200px;
     margin-right: 15rem;
-    
+
     @include media-breakpoint-down(md) {
       margin-right: 10rem;
     }
-    
+
     @include media-breakpoint-down(sm) {
       height: 150px;
       margin-left: 1.4rem;
       margin-right: 2rem;
       margin-top: 4rem;
     }
-    
+
     img {
       text-align: left;
       object-fit: contain;
@@ -127,7 +123,7 @@
 
       @include media-breakpoint-down(sm) {
         width: inherit;
-      }  
+      }
     }
   }
 }

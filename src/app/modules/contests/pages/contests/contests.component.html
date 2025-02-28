@@ -1,11 +1,10 @@
 <div class="content-wrapper container-xxl p-0">
   <div class="content-body">
-    <app-content-header [contentHeader]="contentHeader"></app-content-header>
-    <section-header></section-header>
-    <contests-section-categories (change)="contestCategoryClick($event)"></contests-section-categories>
+    <section-header [contentHeader]="getContentHeader()"/>
+    <contests-section-categories (change)="contestCategoryClick($event)"/>
 
-    <div class="card">
-      <div class="card-header">
+    <kep-card>
+      <div class="card-header p-4">
         <div class="card-title font-medium-5 align-items-center">
           <kep-icon color="primary" name="contest" size="medium-5" class="me-50" type="duotone"></kep-icon>
           <span class="text-dark">{{ 'Contests' | translate }}</span>
@@ -13,17 +12,18 @@
         </div>
 
         <div>
-          <input placeholder="{{ 'Search' | translate }}" class="form-control mt-md-0 mt-1" [formControl]="searchControl">
+          <input placeholder="{{ 'Search' | translate }}" class="form-control mt-md-0 mt-1"
+                 [formControl]="searchControl">
         </div>
       </div>
-    </div>
+    </kep-card>
 
     @if (isLoading && !total) {
       <div class="card" [style.height.px]="400">
         <spinner/>
       </div>
     } @else {
-      @for (contest of contests;track contest) {
+      @for (contest of contests; track contest) {
         <contest-card [contest]="contest"></contest-card>
       } @empty {
         <empty-result/>

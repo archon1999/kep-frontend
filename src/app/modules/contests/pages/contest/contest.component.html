@@ -1,13 +1,12 @@
-
 <div class="content-wrapper container-xxl container-xxl p-0">
   <div class="content-body">
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
     <contest-card [contest]="contest"></contest-card>
-    <div class="card" [@fadeInUpOnEnter]>
+    <kep-card [@fadeInUpOnEnter]>
       <div class="card-header p-1">
         <contest-tab [contest]="contest"></contest-tab>
       </div>
-    </div>
+    </kep-card>
     <contests-table [contests]="[contest]"></contests-table>
   </div>
 </div>

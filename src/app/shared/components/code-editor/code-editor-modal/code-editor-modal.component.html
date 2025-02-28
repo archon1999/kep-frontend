@@ -2,11 +2,10 @@
   <a
     (click)="toggleSidebar()"
     class="btn-toggle d-flex align-items-center justify-content-center">
-    <span [data-feather]="'terminal'"></span>
   </a>
 
   <ng-scrollbar>
-    <div class="card full-height position-relative" (keydown)="onKeyDown($event)">
+    <kep-card (keydown)="onKeyDown($event)" customClass="full-height position-relative">
       <div class="card-header">
         <div class="card-title">
           {{ 'CODE_EDITOR.EDITOR' | translate }}
@@ -17,7 +16,7 @@
         </div>
       </div>
       <hr class="mt-0 mb-50">
-      <div class="card-body" [formGroup]="editorForm">
+      <div [formGroup]="editorForm" class="card-body">
         <div class="row">
           <div class="col-lg-8 col-md-7 col-12">
             <div
@@ -25,23 +24,22 @@
               [style.height.%]="100"
               container="body"
               tooltipClass="tooltip-danger"
-              >
+            >
               <monaco-editor
-                [lang]="editorForm.controls.lang.value"
                 [formControl]="editorForm.controls.code"
-                [height]="480">
+                [height]="480"
+                [lang]="editorForm.controls.lang.value">
               </monaco-editor>
             </div>
           </div>
 
           <div class="col-lg-4 col-md-5 d-none d-md-block">
             <div class="mb-1">
-              <label class="fw-bold">{{ 'Language' | translate }}: </label>
+              <label class="fw-medium">{{ 'Language' | translate }}: </label>
               <ng-select
-                [appendTo]="'body'"
+                (change)="langChange($event)"
                 [clearable]="false"
-                [formControl]="editorForm.controls.lang"
-                (change)="langChange($event)">
+                [formControl]="editorForm.controls.lang">
                 @for (availableLanguage of availableLanguages; track availableLanguage) {
                   <ng-option
                     [value]="availableLanguage.lang">
@@ -53,13 +51,13 @@
 
             @if (sampleTests.length > 0) {
               <div class="mb-1">
-                <label class="fw-bold">{{ 'CODE_EDITOR.SAMPLE_TEST' | translate }}: </label>
+                <label class="fw-medium">{{ 'CODE_EDITOR.SAMPLE_TEST' | translate }}: </label>
                 <ng-select
                   appendTo="body"
                   (change)="onSampleTestChange()"
                   [clearable]="false"
                   formControlName="testCaseNumber"
-                  >
+                >
                   @for (sampleTest of sampleTests; track sampleTest; let i = $index) {
                     <ng-option
                       value="{{ i + 1 }}">
@@ -72,7 +70,7 @@
 
             @if (!isSelectedLangText()) {
               <div class="mb-1">
-                <label class="fw-bold">{{ 'CODE_EDITOR.INPUT' | translate }}:</label>
+                <label class="fw-medium">{{ 'CODE_EDITOR.INPUT' | translate }}:</label>
                 <textarea
                   [ngbTooltip]="editorForm.controls.input.errors | errorMessage"
                   class="form-control"
@@ -86,7 +84,7 @@
 
             @if (!isSelectedLangText()) {
               <div class="mb-1">
-                <label class="fw-bold">{{ 'CODE_EDITOR.OUTPUT' | translate }}:</label>
+                <label class="fw-medium">{{ 'CODE_EDITOR.OUTPUT' | translate }}:</label>
                 <textarea
                   class="form-control"
                   formControlName="output"
@@ -97,7 +95,7 @@
 
             @if (!isSelectedLangText()) {
               <div class="mb-1">
-                <label class="fw-bold">{{ 'CODE_EDITOR.ANSWER' | translate }}:</label>
+                <label class="fw-medium">{{ 'CODE_EDITOR.ANSWER' | translate }}:</label>
                 <textarea
                   class="form-control"
                   formControlName="answer"
@@ -110,13 +108,13 @@
       </div>
 
       <div class="card-footer d-none d-md-flex justify-content-between">
-        @if (authService.currentUserValue?.permissions?.canUseCheckSamples === false){
+        @if (authService.currentUserValue?.permissions?.canUseCheckSamples === false) {
           <kepcoin-spend-swal
             (success)="checkSamplesPurchaseSuccess()"
             [customContent]="true"
             [purchaseUrl]="'problems/' + problem?.id + '/purchase-check-samples/'"
             [value]="100"
-            >
+          >
             <div new-feature class="position-relative">
               <button class="btn btn-glow btn-dark bg-dark">
                 {{ 'CODE_EDITOR.CHECK_SAMPLES' | translate }}
@@ -163,7 +161,7 @@
               [purchaseUrl]="'problems/' + problem?.id + '/answer-for-input/'"
               [requestBody]="{input_data: editorForm.get('input').value}"
               [value]="1"
-              >
+            >
               <button class="btn btn-glow btn-dark bg-dark me-50" type="button">
                 @if (isAnswerForInput) {
                   <span
@@ -208,13 +206,13 @@
           </button>
         }
       </div>
-    </div>
+    </kep-card>
   </ng-scrollbar>
 </core-sidebar>
 
 <core-sidebar [hideOnEsc]="true" [name]="checkSamplesResultSidebarName" class="check-samples-result">
   <ng-scrollbar autoWidthDisabled="false">
-    <div class="card results-card full-height position-relative" (keydown)="onKeyDown($event)">
+    <div (keydown)="onKeyDown($event)" class="card results-card full-height position-relative">
       @if (isCheckSamples) {
         <div class="card-body" [style.height.px]="200">
           <spinner [name]="checkSamplesResultSidebarName"></spinner>
@@ -227,50 +225,50 @@
         </div>
         <hr class="mt-0 mb-0">
         <div class="card-body">
-<!--          <ngb-accordion [closeOthers]="false" [destroyOnHide]="false">-->
-<!--            @for (result of checkSamplesResult; track result.input){-->
-<!--              <ngb-panel [cardClass]="'collapse-margin'" [id]="'result' + $index">-->
-<!--                <ng-template ngbPanelTitle>-->
-<!--                  <div class="fw-bolder d-flex justify-content-between">-->
-<!--                    <span>TC #{{ $index + 1 }}</span>-->
-<!--                    <span [class]="{-->
-<!--                      'text-success': result.verdict == Verdicts.Accepted,-->
-<!--                      'text-danger': result.verdict != Verdicts.Accepted,-->
-<!--                    }">{{ result.verdict | verdictShortTitle }}</span>-->
-<!--                  </div>-->
-<!--                </ng-template>-->
-<!--                <ng-template ngbPanelContent>-->
-<!--                  @if (result.input) {-->
-<!--                    <div class="meta">-->
-<!--                      <div class="fw-bold">Input:</div>-->
-<!--                      <div>{{ result.input }}</div>-->
-<!--                    </div>-->
-<!--                  }-->
+          <!--          <ngb-accordion [closeOthers]="false" [destroyOnHide]="false">-->
+          <!--            @for (result of checkSamplesResult; track result.input){-->
+          <!--              <ngb-panel [cardClass]="'collapse-margin'" [id]="'result' + $index">-->
+          <!--                <ng-template ngbPanelTitle>-->
+          <!--                  <div class="fw-semibold d-flex justify-content-between">-->
+          <!--                    <span>TC #{{ $index + 1 }}</span>-->
+          <!--                    <span [class]="{-->
+          <!--                      'text-success': result.verdict == Verdicts.Accepted,-->
+          <!--                      'text-danger': result.verdict != Verdicts.Accepted,-->
+          <!--                    }">{{ result.verdict | verdictShortTitle }}</span>-->
+          <!--                  </div>-->
+          <!--                </ng-template>-->
+          <!--                <ng-template ngbPanelContent>-->
+          <!--                  @if (result.input) {-->
+          <!--                    <div class="meta">-->
+          <!--                      <div class="fw-medium">Input:</div>-->
+          <!--                      <div>{{ result.input }}</div>-->
+          <!--                    </div>-->
+          <!--                  }-->
 
-<!--                  @if (result.answer) {-->
-<!--                    <div>-->
-<!--                      <div class="fw-bold">Answer:</div>-->
-<!--                      <div>{{ result.answer }}</div>-->
-<!--                    </div>-->
-<!--                  }-->
+          <!--                  @if (result.answer) {-->
+          <!--                    <div>-->
+          <!--                      <div class="fw-medium">Answer:</div>-->
+          <!--                      <div>{{ result.answer }}</div>-->
+          <!--                    </div>-->
+          <!--                  }-->
 
-<!--                  @if (result.output) {-->
-<!--                    <div>-->
-<!--                      <div class="fw-bold">Output:</div>-->
-<!--                      <div>{{ result.output }}</div>-->
-<!--                    </div>-->
-<!--                  }-->
+          <!--                  @if (result.output) {-->
+          <!--                    <div>-->
+          <!--                      <div class="fw-medium">Output:</div>-->
+          <!--                      <div>{{ result.output }}</div>-->
+          <!--                    </div>-->
+          <!--                  }-->
 
-<!--                  @if (result.error) {-->
-<!--                    <div>-->
-<!--                      <div class="fw-bold">Error:</div>-->
-<!--                      <div><pre>{{ result.error }}</pre></div>-->
-<!--                    </div>-->
-<!--                  }-->
-<!--                </ng-template>-->
-<!--              </ngb-panel>-->
-<!--            }-->
-<!--          </ngb-accordion>-->
+          <!--                  @if (result.error) {-->
+          <!--                    <div>-->
+          <!--                      <div class="fw-medium">Error:</div>-->
+          <!--                      <div><pre>{{ result.error }}</pre></div>-->
+          <!--                    </div>-->
+          <!--                  }-->
+          <!--                </ng-template>-->
+          <!--              </ngb-panel>-->
+          <!--            }-->
+          <!--          </ngb-accordion>-->
         </div>
       }
     </div>
@@ -278,4 +276,3 @@
 </core-sidebar>
 
 <ng-select-css></ng-select-css>
-<toastr-css></toastr-css>

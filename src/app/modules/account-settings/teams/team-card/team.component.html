@@ -1,11 +1,11 @@
 <div [@fadeInOnEnter]="" class="card">
   <div class="card-header">
-    <div class="card-title fw-bolder">
+    <div class="card-title fw-semibold">
       {{ team.name }}
     </div>
   </div>
   <div class="card-body">
-    @for (member of team.members;track member) {
+    @for (member of team.members; track member) {
       <div class="avatar">
         <img [src]="member.avatar" width="32" height="32" alt="member-avatar">
       </div>
@@ -18,7 +18,8 @@
   </div>
   @if (currentUser.username == team.createrUsername) {
     <div class="card-footer">
-      <clipboard-button [buttonClass]="'btn btn-sm btn-primary'" [text]="'https://kep.uz' + (Resources.TeamJoin | resourceById:team.code)">
+      <clipboard-button [buttonClass]="'btn btn-sm btn-primary'"
+                        [text]="'https://kep.uz' + (Resources.TeamJoin | resourceById:team.code)">
         Link to join
       </clipboard-button>
       <button ngbTooltip="Generate new link" class="ms-50 btn btn-sm btn-primary" (click)="refreshCode()">

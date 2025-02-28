@@ -2,31 +2,21 @@
 
 .tournament-list-card {
   margin-bottom: 1rem;
-  
+
   .card-title {
     margin-left: 1rem;
-    
+
     h3 {
       font-size: 20px;
     }
-    
+
     p {
       font-size: 14px;
     }
   }
-  
+
   &:hover {
     padding-left: 10px !important;
     transition: .5s;
   }
-}
-
-::ng-deep .dark-layout .tournament-list-card {
-  background: $tournaments-bg-dark;
-  box-shadow: none !important;
-}
-
-.badge {
-  background: $tournaments-color;
-  box-shadow: 0 0 5px $tournaments-color;
 }

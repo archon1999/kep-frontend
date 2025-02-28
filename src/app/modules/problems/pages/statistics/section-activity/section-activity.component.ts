@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
-import { ProblemsActivityCardComponent } from '@problems/components/problems-activity-card/problems-activity-card.component';
+import {
+  ProblemsActivityCardComponent
+} from '@problems/components/problems-activity-card/problems-activity-card.component';
 
 @Component({
   selector: 'section-activity',

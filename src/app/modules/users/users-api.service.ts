@@ -14,35 +14,35 @@ export class UsersApiService {
   }
 
   getUser(username: string) {
-    return this.api.get(`users/${ username }`);
+    return this.api.get(`users/${username}`);
   }
 
   getUserInfo(username: string) {
-    return this.api.get(`users/${ username }/info`);
+    return this.api.get(`users/${username}/info`);
   }
 
   getUserSkills(username: string) {
-    return this.api.get(`users/${ username }/skills`);
+    return this.api.get(`users/${username}/skills`);
   }
 
   getUserSocial(username: string) {
-    return this.api.get(`users/${ username }/social`);
+    return this.api.get(`users/${username}/social`);
   }
 
   getUserTechnologies(username: string) {
-    return this.api.get(`users/${ username }/technologies`);
+    return this.api.get(`users/${username}/technologies`);
   }
 
   getUserAchievements(username: string) {
-    return this.api.get(`users/${ username }/achievements`);
+    return this.api.get(`users/${username}/achievements`);
   }
 
   getUserEducations(username: string) {
-    return this.api.get(`users/${ username }/educations`);
+    return this.api.get(`users/${username}/educations`);
   }
 
   getUserWorkExperiences(username: string) {
-    return this.api.get(`users/${ username }/work-experiences`);
+    return this.api.get(`users/${username}/work-experiences`);
   }
 
   getUserBlog(username: string, params?: Partial<Pageable>) {
@@ -53,19 +53,19 @@ export class UsersApiService {
   }
 
   getUserContestsRating(username: string) {
-    return this.api.get(`contests-rating/${ username }`);
+    return this.api.get(`contests-rating/${username}`);
   }
 
   getUserProblemsRating(username: string) {
-    return this.api.get(`problems-rating/${ username }`);
+    return this.api.get(`problems-rating/${username}`);
   }
 
   getUserChallengesRating(username: string) {
-    return this.api.get(`challenges-rating/${ username }`);
+    return this.api.get(`challenges-rating/${username}`);
   }
 
   getUserRatings(username: string) {
-    return this.api.get(`users/${ username }/ratings`);
+    return this.api.get(`users/${username}/ratings`);
   }
 
   getMostActiveUsers() {
@@ -85,7 +85,7 @@ export class UsersApiService {
   }
 
   getUserCompetitionPrizes(username: string) {
-    return this.api.get(`users/${ username }/competition-prizes`);
+    return this.api.get(`users/${username}/competition-prizes`);
   }
 
 }

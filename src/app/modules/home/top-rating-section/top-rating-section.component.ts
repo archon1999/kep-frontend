@@ -5,11 +5,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { User } from '@auth';
 import { HomeService } from '../home.service';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'top-rating-section',
   standalone: true,
-  imports: [NgxSkeletonLoaderModule, TranslateModule, UserPopoverModule],
+  imports: [NgxSkeletonLoaderModule, TranslateModule, UserPopoverModule, KepCardComponent],
   templateUrl: './top-rating-section.component.html',
   styleUrl: './top-rating-section.component.scss'
 })

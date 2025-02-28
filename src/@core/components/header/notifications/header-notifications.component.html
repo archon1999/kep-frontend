@@ -1,0 +1,130 @@
+<li [autoClose]="'outside'" class="header-element notifications-dropdown dropdown" ngbDropdown>
+  <!-- Start::header-link|dropdown-toggle -->
+  <a
+    class="p-0 header-link dropdown-toggle"
+    data-bs-auto-close="outside"
+    data-bs-toggle="dropdown"
+    href="javascript:void(0);"
+    ngbDropdownToggle>
+    <i class="bi bi-bell header-link-icon"></i>
+    <span class="header-icon-pulse bg-warning rounded pulse"></span>
+  </a>
+  <div class="main-header-dropdown dropdown-menu dropdown-menu-end" data-popper-placement="none" ngbDropdownMenu>
+    <div class="p-3">
+      <div class="d-flex align-items-center justify-content-between">
+        <p class="mb-0 fs-16">Notifications</p>
+        <span class="badge bg-secondary-transparent" id="notifiation-data">{{ notifications.length }} Unread</span>
+      </div>
+    </div>
+    <div class="dropdown-divider"></div>
+    <ngx-simplebar>
+      <ul class="list-unstyled mb-0" id="header-notification-scroll">
+        @for (notification of notifications; track notification) {
+          <li class="dropdown-item">
+            <div class="d-flex align-items-center">
+              <div class="pe-2 lh-1">
+                <span class="avatar bg-primary-transparent avatar-rounded">
+                  <kep-icon class="" name="information-2" size="medium-5"/>
+                </span>
+              </div>
+              <div class="flex-grow-1 d-flex align-items-center justify-content-between">
+                <div>
+                  <p class="mb-0 fw-medium">
+                    @switch (notification.type) {
+                      @case (1) {
+                        {{ notification.message }}
+                      }
+                      @case (2) {
+                        <a routerLink="/competitions/contests/contest/{{ notification.content.contestId }}/standings">
+                          <strong>{{ notification.content.contestTitle }}</strong>
+                          | {{ 'ContestFinishedNotification' | translate }}
+                          <span
+                            class="ms-25 badge"
+                            [ngClass]="{
+                            'badge-light-success': notification.content.delta > 0,
+                            'badge-light-dark': notification.content.delta == 0,
+                            'bg-danger-transparent': notification.content.delta < 0
+                          }">
+                            <span *ngIf="notification.content.delta > 0">+</span>{{ notification.content.delta }}
+                          </span>
+                        </a>
+                      }
+                      @case (3) {
+                        <span [ngSwitch]="notification.content.earnType" class="me-25 text-dark">
+                          <span *ngSwitchCase="4">
+                            {{ 'BonusFromAdmin' | translate }}
+                          </span>
+                          <span *ngSwitchCase="7">
+                            {{ 'DailyProblemsRatingWinner' | translate }}
+                          </span>
+                          <span *ngSwitchCase="8">
+                            {{ 'WeeklyProblemsRatingWinner' | translate }}
+                          </span>
+                          <span *ngSwitchCase="9">
+                            {{ 'MonthlyProblemsRatingWinner' | translate }}
+                          </span>
+                        </span>
+                        <img height="18" src="assets/images/icons/kepcoin.png"> {{ notification.content.kepcoin }}
+                      }
+                      @case (4) {
+                        <a routerLink="/practice/challenges/challenge/{{ notification.content?.challengeId }}">
+                          {{ 'ChallengeCallAcceptedNotification' | translate }}
+                        </a>
+                      }
+                      @case (5) {
+                        <a routerLink="/practice/challenges/challenge/{{ notification.content?.challengeId }}">
+                          {{ 'ChallengeFinishedNotification' | translate }}
+                        </a>
+                      }
+                      @case (6) {
+                        <a routerLink="/competitions/arena/tournament/{{ notification.content?.arena?.id }}">
+                          <strong>{{ notification.content?.arena?.title }}</strong>
+                          | {{ 'ArenaFinishedNotification' | translate }}
+                        </a>
+                      }
+                      @default {
+                        {{ notification.type }}
+                      }
+                    }
+                  </p>
+                  <span class="text-muted fw-normal fs-12 header-notification-text">
+                    {{ notification.createdNaturaltime }}
+                  </span>
+                </div>
+                <div>
+                  <a
+                    (click)="notificationClick(notification)"
+                    class="min-w-fit-content text-muted me-1 dropdown-item-close1"
+                    href="javascript:void(0);"><i class="bi bi-x"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+        }
+      </ul>
+    </ngx-simplebar>
+    @if (!notifications.length) {
+      <div class="p-5 empty-item1">
+        <div class="text-center">
+          <span class="avatar avatar-xl avatar-rounded bg-secondary-transparent">
+            <i class="bi bi-bell-slash fs-2"></i>
+          </span>
+          <h6 class="fw-medium mt-3">No New Notifications</h6>
+        </div>
+      </div>
+    } @else {
+      <kep-pagination
+        [@fadeInOnEnter]
+        [@fadeOutOnLeave]
+        [(page)]="pageNumber"
+        (pageChange)="updateNotifications()"
+        [maxSize]="3"
+        [boundaryLinks]="false"
+        [pageSize]="10"
+        [collectionSize]="total"
+        [customClass]="'mb-2'">
+      </kep-pagination>
+    }
+  </div>
+</li>

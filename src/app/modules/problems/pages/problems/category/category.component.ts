@@ -1,9 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { Categories, Category, Problem, StudyPlan } from '@problems/models/problems.models';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
-import { SectionProblemsTableComponent } from '@problems/pages/problems/sections/section-problems-table/section-problems-table.component';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import {
+  SectionProblemsTableComponent
+} from '@problems/pages/problems/sections/section-problems-table/section-problems-table.component';
 import { ProblemsFilterService } from '@problems/services/problems-filter.service';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import {
@@ -14,11 +16,12 @@ import { CoreCommonModule } from '@core/common.module';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { StudyPlanCardModule } from '@problems/components/study-plan-card/study-plan-card.module';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'category',
   standalone: true,
-  imports: [CoreCommonModule, ContentHeaderModule, SectionProblemsFilterComponent, SectionProblemsTableComponent, UserPopoverModule, NgbTooltipModule, StudyPlanCardModule],
+  imports: [CoreCommonModule, ContentHeaderModule, SectionProblemsFilterComponent, SectionProblemsTableComponent, UserPopoverModule, NgbTooltipModule, StudyPlanCardModule, KepCardComponent],
   templateUrl: './category.component.html',
   styleUrl: './category.component.scss'
 })
@@ -39,7 +42,7 @@ export class CategoryComponent extends BaseTablePageComponent<Problem> implement
 
   constructor(public filterService: ProblemsFilterService, public apiService: ProblemsApiService) {
     super();
-    this.route.params.subscribe(({ category }) => {
+    this.route.params.subscribe(({category}) => {
       const categoryId = getCategoryIdByCode(category);
       if (categoryId) {
         if (categoryId === Categories.BasicProgramming) {
@@ -50,7 +53,7 @@ export class CategoryComponent extends BaseTablePageComponent<Problem> implement
           this.defaultOrdering = '-id';
         }
 
-        this.filterService.setFilter({ category: categoryId }, false);
+        this.filterService.setFilter({category: categoryId}, false);
         this.apiService.getCategory(categoryId).subscribe(
           (category: Category) => {
             this.category = category;

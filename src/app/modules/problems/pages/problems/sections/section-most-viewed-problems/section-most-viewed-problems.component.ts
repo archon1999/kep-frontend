@@ -8,11 +8,12 @@ import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { randomChoice } from '@shared/utils/random';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'section-most-viewed',
   standalone: true,
-  imports: [CoreCommonModule, KepIconComponent, ResourceByIdPipe, NgbAccordionModule],
+  imports: [CoreCommonModule, KepIconComponent, ResourceByIdPipe, NgbAccordionModule, KepCardComponent],
   templateUrl: './section-most-viewed-problems.component.html',
   styleUrl: './section-most-viewed-problems.component.scss',
 })

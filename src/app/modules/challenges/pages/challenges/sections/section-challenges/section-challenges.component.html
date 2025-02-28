@@ -1,12 +1,10 @@
 @if (isLoading && !total) {
-  <div class="card" [style.height.px]="830">
+  <div [style.height.px]="830">
     <spinner></spinner>
   </div>
 } @else {
   @for (challenge of challenges; track challenge) {
-    <div>
-      <challenge-card [challenge]="challenge"></challenge-card>
-    </div>
+    <challenge-card [challenge]="challenge"></challenge-card>
   }
 }
 

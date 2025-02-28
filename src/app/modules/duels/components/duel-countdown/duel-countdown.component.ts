@@ -18,16 +18,16 @@ export class DuelCountdownComponent implements OnInit {
     this.updateLeftTime();
   }
 
-  updateLeftTime(){
-    if(this.duel.status == -1){
+  updateLeftTime() {
+    if (this.duel.status == -1) {
       this.leftTime = new Date(this.duel.startTime).valueOf() - Date.now();
-    } else if(this.duel.status == 0){
+    } else if (this.duel.status == 0) {
       this.leftTime = new Date(this.duel.finishTime).valueOf() - Date.now();
     }
   }
 
-  finish(){
-    if(this.duel.status != 1){
+  finish() {
+    if (this.duel.status != 1) {
       window.location.reload();
     }
   }

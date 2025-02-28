@@ -56,7 +56,7 @@ export class InformationComponent implements OnInit {
       }
     });
 
-    this.route.data.subscribe(({ userInfo }) => {
+    this.route.data.subscribe(({userInfo}) => {
       this.userInfo = userInfo;
       this.birthDate = new Date(userInfo.dateOfBirth);
     });
@@ -70,13 +70,9 @@ export class InformationComponent implements OnInit {
   save() {
     this.service.updateUserInfo(this.userInfo).subscribe(
       () => {
-        this.toastr.success('Saved', '', {
-          toastClass: 'toast ngx-toastr',
-        });
+        this.toastr.success('Saved', '');
       }, (err: any) => {
-        this.toastr.error('Error', '', {
-          toastClass: 'toast ngx-toastr',
-        });
+        this.toastr.error('Error', '');
         this.errors = err.error;
       }
     );

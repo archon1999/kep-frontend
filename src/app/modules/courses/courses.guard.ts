@@ -24,13 +24,13 @@ export class CourseGuard implements CanActivate {
     return this.service.getCourse(courseId).pipe(
       map((course: any) => {
         if (course.inThePipeline && !this.authService.currentUserValue.isSuperuser) {
-          this.router.navigate(['/404'], { skipLocationChange: true });
+          this.router.navigate(['/404'], {skipLocationChange: true});
           return false;
         }
         return true;
       }),
       catchError((err) => {
-        this.router.navigate(['/404'], { skipLocationChange: true });
+        this.router.navigate(['/404'], {skipLocationChange: true});
         return of(true);
       })
     );

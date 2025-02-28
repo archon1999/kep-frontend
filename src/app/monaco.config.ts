@@ -6,7 +6,7 @@ export function myMonacoLoad() {
   const keywords = ['ButunSon', 'KasrSon', 'Satr', 'Belgi', 'Agar', 'Yemasa', 'Sikl', 'uchun', 'dan', 'gacha', 'Toki', 'inkor', 'yoz'];
   const langName = 'kep';
 
-  monaco.languages.register({ id: langName });
+  monaco.languages.register({id: langName});
 
   monaco.languages.setMonarchTokensProvider(langName, {
     keywords,
@@ -33,12 +33,12 @@ export function myMonacoLoad() {
     base: 'vs',
     inherit: true,
     rules: [
-      { token: 'keyword', fontStyle: 'bold' },
-      { token: 'char', foreground: '#FF1493' },
-      { token: 'variable', foreground: '#4b4acc' },
-      { token: 'operators', foreground: '#7b30d0' },
-      { token: 'digit', foreground: '#174781' },
-      { token: 'brackets', foreground: '#0431fa' },
+      {token: 'keyword', fontStyle: 'bold'},
+      {token: 'char', foreground: '#FF1493'},
+      {token: 'variable', foreground: '#4b4acc'},
+      {token: 'operators', foreground: '#7b30d0'},
+      {token: 'digit', foreground: '#174781'},
+      {token: 'brackets', foreground: '#0431fa'},
     ],
     colors: {
       'editor.foreground': '#000000'
@@ -77,7 +77,7 @@ export function myMonacoLoad() {
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
         });
       }
-      return { suggestions: suggestions };
+      return {suggestions: suggestions};
     }
   });
 
@@ -102,9 +102,9 @@ export function myMonacoLoad() {
       return {
         suggestions: [
           {
-            label: `</${ tag }>`,
+            label: `</${tag}>`,
             kind: monaco.languages.CompletionItemKind.EnumMember,
-            insertText: `$1</${ tag }>`,
+            insertText: `$1</${tag}>`,
             insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
             range: {
               startLineNumber: position.lineNumber,

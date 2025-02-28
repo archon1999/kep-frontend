@@ -12,7 +12,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
   styleUrl: './attempt-language.component.scss'
 })
 export class AttemptLanguageComponent {
-  @Input({ required: true }) lang: AttemptLangs;
+  @Input({required: true}) lang: AttemptLangs;
   @Input() langFull: string;
   @Input() size = 36;
   @Input() clickable = false;

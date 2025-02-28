@@ -31,13 +31,13 @@
 .timeline {
 }
 
-.timeline>div {
+.timeline > div {
   height: 30px;
   width: 50px;
   margin-right: 4rem;
 }
 
-.timeline>div:nth-child(2n+1) {
+.timeline > div:nth-child(2n+1) {
   color: #ccc
 }
 

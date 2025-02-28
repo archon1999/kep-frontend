@@ -15,27 +15,17 @@
   display: flex;
   padding: 1rem 1.5rem;
   border-radius: 0.5rem;
-  background: rgba(255, 255, 255, .5);
-  border: 1px solid rgba(255, 255, 255, .7);
+  background-color: rgba(255, 255, 255, .04);
+  border: 1px solid rgba(255, 255, 255, .08);
   transition: 0.2s ease-in;
 
   @include media-breakpoint-down(sm) {
     padding: 1rem;
   }
 
-  @include dark-layout {
-    background-color: rgba(255, 255, 255, .04);
-    border: 1px solid rgba(255, 255, 255, .08);
-  }
-
   &.navbar-active {
-    background: white;
-    border: 1px solid rgba(255, 255, 255, .9);
-
-    @include dark-layout {
-      background-color: rgba(0, 0, 0, .8);
-      border: 1px solid rgba(0, 0, 0, .8);
-    }
+    background-color: rgba(0, 0, 0, .8);
+    border: 1px solid rgba(0, 0, 0, .8);
   }
 
   .left {

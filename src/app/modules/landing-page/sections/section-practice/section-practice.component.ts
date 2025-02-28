@@ -1,15 +1,18 @@
 import { Component } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
-import { menu } from '@layout/components/menu/menu';
 import { BaseComponent } from '@app/common';
+import { MENU } from "@app/menu";
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'section-practice',
   standalone: true,
-  imports: [CoreCommonModule],
+  imports: [CoreCommonModule, KepCardComponent],
   templateUrl: './section-practice.component.html',
   styleUrl: './section-practice.component.scss'
 })
 export class SectionPracticeComponent extends BaseComponent {
-  protected readonly menu = menu;
+  protected readonly menu = MENU;
+
+  colors = ['primary', 'info', 'warning', 'primary']
 }

@@ -11,6 +11,7 @@ import { NgbAccordionModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstra
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { takeUntil } from 'rxjs/operators';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 interface Difficulty {
   name: string;
@@ -29,6 +30,7 @@ interface Difficulty {
     NgbAccordionModule,
     KepIconComponent,
     NgSelectModule,
+    KepCardComponent,
   ]
 })
 export class SectionProblemsFilterComponent extends BaseComponent implements OnInit {
@@ -75,7 +77,7 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
       queryParams.tags = [queryParams.tags];
     }
 
-    this.filterForm.patchValue(queryParams, { emitEvent: false });
+    this.filterForm.patchValue(queryParams, {emitEvent: false});
 
     this.filterForm.valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (filterValue: ProblemsFilter) => {
@@ -133,6 +135,6 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
     } else {
       tags.splice(index, 1);
     }
-    this.filterForm.patchValue({ tags: tags });
+    this.filterForm.patchValue({tags: tags});
   }
 }

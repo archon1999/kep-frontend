@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ContestsService } from '../../../contests.service';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
-import { ContestQuestionCardComponent } from '@contests/pages/contest/contest-questions/contest-question-card/contest-question-card.component';
+import {
+  ContestQuestionCardComponent
+} from '@contests/pages/contest/contest-questions/contest-question-card/contest-question-card.component';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { ContestCardModule } from '@contests/components/contest-card/contest-card.module';
 import { ContestQuestion } from '@contests/models/contest-question';
@@ -14,14 +16,15 @@ import { BaseLoadComponent } from '@app/common';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { ContestStatus } from '@contests/constants';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'app-contest-questions',
   templateUrl: './contest-questions.component.html',
   styleUrls: ['./contest-questions.component.scss'],
   animations: [
-    fadeInLeftOnEnterAnimation({ duration: 1500 }),
-    fadeInRightOnEnterAnimation({ duration: 1500 }),
+    fadeInLeftOnEnterAnimation({duration: 1500}),
+    fadeInRightOnEnterAnimation({duration: 1500}),
   ],
   standalone: true,
   imports: [
@@ -33,6 +36,7 @@ import { ContestStatus } from '@contests/constants';
     ContestCardModule,
     EmptyResultComponent,
     ContestClassesPipe,
+    KepCardComponent,
   ]
 })
 export class ContestQuestionsComponent extends BaseLoadComponent<ContestQuestion[]> implements OnInit {
@@ -52,11 +56,11 @@ export class ContestQuestionsComponent extends BaseLoadComponent<ContestQuestion
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ contest, contestProblems }) => {
+    this.route.data.subscribe(({contest, contestProblems}) => {
       this.contest = Contest.fromJSON(contest);
       this.contestProblems = contestProblems;
       this.loadContentHeader();
-      this.titleService.updateTitle(this.route, { contestTitle: contest.title });
+      this.titleService.updateTitle(this.route, {contestTitle: contest.title});
       setTimeout(() => this.loadData());
     });
   }

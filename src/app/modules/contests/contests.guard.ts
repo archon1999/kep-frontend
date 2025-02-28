@@ -34,7 +34,7 @@ export class ContestGuard {
         return true;
       }),
       catchError((err) => {
-        this.router.navigate(['/404'], { skipLocationChange: true });
+        this.router.navigate(['/404'], {skipLocationChange: true});
         return of(false);
       })
     );
@@ -59,7 +59,7 @@ export class ContestCreateGuard {
         return result.success;
       }),
       catchError((err) => {
-        this.router.navigate(['/404'], { skipLocationChange: true });
+        this.router.navigate(['/404'], {skipLocationChange: true});
         return of(false);
       })
     );

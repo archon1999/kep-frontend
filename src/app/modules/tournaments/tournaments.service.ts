@@ -10,16 +10,16 @@ export class TournamentsService {
     public api: ApiService
   ) { }
 
-  getTournaments(){
+  getTournaments() {
     return this.api.get('tournaments');
   }
 
-  getTournament(tournamentId: number | string){
+  getTournament(tournamentId: number | string) {
     return this.api.get(`tournaments/${tournamentId}`);
   }
 
-  tournamentRegister(tournamentId: number | string){
-    return this.api.post(`tournaments/${tournamentId}/registration/`); 
+  tournamentRegister(tournamentId: number | string) {
+    return this.api.post(`tournaments/${tournamentId}/registration/`);
   }
 
 }

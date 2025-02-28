@@ -1,4 +1,4 @@
-@if (challenge?.status == ChallengeStatus.Already){
+@if (challenge?.status == ChallengeStatus.Already) {
   <div class="row">
     <div class="col-12 col-md-6 col-lg-3 order-lg-1 order-3">
       <challenge-results-card [challenge]="challenge"/>
@@ -14,9 +14,9 @@
 }
 
 <swal
-    #startSwal
-    [showClass]="{ popup: 'animate__animated animate__fadeIn' }"
-    [showConfirmButton]="false">
+  #startSwal
+  [showClass]="{ popup: 'animate__animated animate__fadeIn' }"
+  [showConfirmButton]="false">
   <div *swalPortal>
     <div class="mb-2 d-flex justify-content-center">
       <div class="text-center">
@@ -36,29 +36,29 @@
 
     <div class="mt-1 mb-2 d-flex justify-content-center">
       <div class="text-center">
-                          <span class="badge me-25 badge-glow bg-primary" ngbTooltip="{{ 'Time' | translate }}">
-                            <i data-feather="clock"></i>
-                            {{ challenge.timeSeconds }}
-                          </span>
+        <span class="badge me-25 badge-glow bg-primary" ngbTooltip="{{ 'Time' | translate }}">
+          <i data-feather="clock"></i>
+          {{ challenge.timeSeconds }}
+        </span>
         <span class="badge badge-glow bg-primary" ngbTooltip="{{ 'Questions' | translate }}">
-                            <i data-feather="activity"></i>
+          <i data-feather="activity"></i>
           {{ challenge.questionsCount }}
-                          </span>
+        </span>
       </div>
     </div>
 
     <div class="mt-2 mb-2 d-flex justify-content-between">
       <div class="text-center">
         <challenges-user-view [user]="challenge.playerFirst"></challenges-user-view>
-        <span class="ms-1 mt-25 badge badge-light-{{ challenge.playerFirst.rankTitle | challengesRankColor }}">
-                            {{ challenge.playerFirst.rating }}
-                          </span>
+        <span class="ms-1 mt-1 badge badge-light-{{ challenge.playerFirst.rankTitle | challengesRankColor }}">
+          {{ challenge.playerFirst.rating }}
+        </span>
       </div>
       <div class="text-center">
         <challenges-user-view [user]="challenge.playerSecond"></challenges-user-view>
-        <span class="ms-2 mt-25 badge badge-light-{{ challenge.playerSecond.rankTitle | challengesRankColor }}">
-                            {{ challenge.playerSecond.rating }}
-                          </span>
+        <span class="ms-2 mt-1 badge badge-light-{{ challenge.playerSecond.rankTitle | challengesRankColor }}">
+          {{ challenge.playerSecond.rating }}
+        </span>
       </div>
     </div>
 
@@ -72,8 +72,8 @@
 
 
 <swal
-    #finishSwal
-    [showConfirmButton]="false">
+  #finishSwal
+  [showConfirmButton]="false">
   <div *swalPortal>
     <div class="mb-2 d-flex justify-content-center">
       <div class="text-center">
@@ -93,14 +93,14 @@
 
     <div class="mt-1 mb-2 d-flex justify-content-center">
       <div class="text-center">
-                          <span class="badge me-25 badge-glow bg-primary" ngbTooltip="{{ 'Time' | translate }}">
-                            <i data-feather="clock"></i>
-                            {{ challenge.timeSeconds }}
-                          </span>
+        <span class="badge me-25 badge-glow bg-primary" ngbTooltip="{{ 'Time' | translate }}">
+          <i data-feather="clock"></i>
+          {{ challenge.timeSeconds }}
+        </span>
         <span class="badge badge-glow bg-primary" ngbTooltip="{{ 'Questions' | translate }}">
-                            <i data-feather="activity"></i>
+          <i data-feather="activity"></i>
           {{ challenge.questionsCount }}
-                          </span>
+        </span>
       </div>
     </div>
 
@@ -110,19 +110,19 @@
           <challenges-user-view [user]="challenge.playerFirst"></challenges-user-view>
           <span
             class="ms-1 me-25 mt-2 badge badge-glow badge-{{ challenge.playerFirst.newRankTitle | challengesRankColor }}">
-                              {{ challenge.playerFirst.newRating }}
-                            </span>
+            {{ challenge.playerFirst.newRating }}
+          </span>
           <span [ngClass]="{
-            'badge-success': challenge.playerFirst.delta > 0,
-            'badge-danger': challenge.playerFirst.delta < 0,
+            'bg-success': challenge.playerFirst.delta > 0,
+            'bg-danger': challenge.playerFirst.delta < 0,
             'badge-secondary': challenge.playerFirst.delta == 0
           }" class="badge badge-glow mb-1">
-                              <i [data-feather]="'trending-up'"></i>
+            <i [data-feather]="'trending-up'"></i>
             {{ challenge.playerFirst.delta }}
-                            </span>
+          </span>
         </div>
 
-        @for (result of challenge.playerFirst.results;track result) {
+        @for (result of challenge.playerFirst.results; track result) {
           <div>
             @switch (result) {
               @case (-1) {
@@ -140,12 +140,12 @@
 
         <div class="text-center mt-1">
           <span [ngClass]="{
-            'badge-danger': challenge.playerFirst.result < challenge.playerSecond.result,
-            'badge-success': challenge.playerFirst.result > challenge.playerSecond.result,
+            'bg-danger': challenge.playerFirst.result < challenge.playerSecond.result,
+            'bg-success': challenge.playerFirst.result > challenge.playerSecond.result,
             'badge-secondary': challenge.playerFirst.result == challenge.playerSecond.result
           }" class="badge badge-result badge-glow">
-                              {{ challenge.playerFirst.result }}
-                            </span>
+            {{ challenge.playerFirst.result }}
+          </span>
         </div>
       </div>
       <div class="text-center">
@@ -153,19 +153,19 @@
           <challenges-user-view [user]="challenge.playerSecond"></challenges-user-view>
           <span
             class="ms-2 me-25 mt-2 badge badge-glow badge-{{ challenge.playerSecond.newRankTitle | challengesRankColor }}">
-                              {{ challenge.playerSecond.newRating }}
-                            </span>
+            {{ challenge.playerSecond.newRating }}
+          </span>
           <span [ngClass]="{
-            'badge-success': challenge.playerSecond.delta > 0,
-            'badge-danger': challenge.playerSecond.delta < 0,
+            'bg-success': challenge.playerSecond.delta > 0,
+            'bg-danger': challenge.playerSecond.delta < 0,
             'badge-secondary': challenge.playerSecond.delta == 0
           }" class="badge badge-glow mb-1">
-                              <i [data-feather]="'trending-up'"></i>
+            <i [data-feather]="'trending-up'"></i>
             {{ challenge.playerSecond.delta }}
-                            </span>
+          </span>
         </div>
 
-        @for (result of challenge.playerSecond.results;track result) {
+        @for (result of challenge.playerSecond.results; track result) {
           <div>
             @switch (result) {
               @case (-1) {
@@ -183,12 +183,12 @@
 
         <div class="text-center mt-1">
           <span [ngClass]="{
-            'badge-danger': challenge.playerFirst.result > challenge.playerSecond.result,
-            'badge-success': challenge.playerFirst.result < challenge.playerSecond.result,
+            'bg-danger': challenge.playerFirst.result > challenge.playerSecond.result,
+            'bg-success': challenge.playerFirst.result < challenge.playerSecond.result,
             'badge-secondary': challenge.playerFirst.result == challenge.playerSecond.result
           }" class="badge badge-result badge-glow">
-                              {{ challenge.playerSecond.result }}
-                            </span>
+            {{ challenge.playerSecond.result }}
+          </span>
         </div>
       </div>
     </div>
@@ -204,11 +204,11 @@
 <sweet-alert-css></sweet-alert-css>
 
 <audio
-    #successAudio
-    src="assets/audio/success/Default.mp3">
+  #successAudio
+  src="assets/audio/success/Default.mp3">
 </audio>
 
 <audio
-    #wrongAudio
-    src="assets/audio/wrong.mp3">
+  #wrongAudio
+  src="assets/audio/wrong.mp3">
 </audio>

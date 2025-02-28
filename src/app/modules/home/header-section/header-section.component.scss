@@ -1,9 +1,17 @@
-@import 'bootstrap/scss/mixins';
-@import 'bootstrap/scss/functions';
-@import 'scss/base/bootstrap-extended/variables';
-@import 'scss/base/components/variables-dark';
+@import 'styles/kep-imports';
 
 header {
+  .card {
+    height: 220px;
+
+    .card-body {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+    }
+  }
+
   h1 {
     font-weight: 600;
     font-size: 3rem;
@@ -15,41 +23,22 @@ header {
     font-size: 1.75rem;
   }
 
-  .sections {
-    margin-top: 80px;
-    text-align: center;
-    grid-template-columns: 1fr 1fr 1fr;
-    display: grid !important;
-
-    .section {
-      .icon {
-        height: 2rem !important;
-      }
-
-      .title {
-        font-size: 1.5rem;
-        font-weight: 500;
-        margin-top: 1rem;
-      }
-    }
+  .img {
+    position: absolute;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
   }
 }
 
-
 @include media-breakpoint-down(sm) {
   header {
-    h1 {
-      font-size: 1.75rem;
+    .card {
+      height: 150px;
     }
 
-    .sections {
-      margin-top: 60px;
-
-      .section {
-        .title {
-          font-size: 1.1rem;
-        }
-      }
+    h1 {
+      font-size: 1.75rem;
     }
 
     h3 {

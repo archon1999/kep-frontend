@@ -1,6 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-
-import { GlobalService } from '@app/common/global.service';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { TranslateModule } from '@ngx-translate/core';
 

@@ -7,3 +7,13 @@
 .problem-container {
   height: 100%;
 }
+
+/* Стили для блока с кодом */
+pre {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 0.3rem;
+  overflow-x: auto;
+}
+
+/* Дополнительные стили можно добавить по необходимости */

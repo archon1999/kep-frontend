@@ -26,7 +26,7 @@
 
   @include media-breakpoint-down(lg) {
     width: calc(100% + 1.2rem);
-  }  
+  }
 
   @include media-breakpoint-down(sm) {
     height: 160px;
@@ -75,7 +75,7 @@
       strong {
         font-size: 1.5rem;
       }
-    
+
       span {
         font-size: 0.75rem;
       }

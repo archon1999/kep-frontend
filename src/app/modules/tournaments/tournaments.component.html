@@ -3,9 +3,9 @@
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
     <div class="row">
-      <div class="col-12 col-lg-8 mx-auto">
-        <div class="card">
-          <div class="card-header">
+      <div class="col-12">
+        <kep-card>
+          <div class="card-header p-4">
             <div class="card-title font-medium-5 align-items-center">
               <kep-icon name="tournament" size="medium-5" type="duotone" color="primary"></kep-icon>
               <span class="text-dark">{{ 'Tournaments' | translate }}</span>
@@ -15,9 +15,9 @@
               <input placeholder="{{ 'Search' | translate }}" class="form-control mt-md-0 mt-1">
             </div>
           </div>
-        </div>
+        </kep-card>
 
-        @if (isLoading){
+        @if (isLoading) {
           <ngx-skeleton-loader
             class="custom-skeleton"
             count="2"

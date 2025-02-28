@@ -31,9 +31,9 @@ export class MathjaxComponent implements OnInit, OnChanges {
             ['\\(', '\\)']
           ]
         },
-        CommonHTML: { linebreaks: { automatic: true } },
-        'HTML-CSS': { linebreaks: { automatic: true } },
-        SVG: { linebreaks: { automatic: true } },
+        CommonHTML: {linebreaks: {automatic: true}},
+        'HTML-CSS': {linebreaks: {automatic: true}},
+        SVG: {linebreaks: {automatic: true}},
         startup: {
           ready: () => {
             window['MathJax'].startup.defaultReady();

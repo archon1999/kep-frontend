@@ -4,16 +4,16 @@
       <h3 class="mb-2 mt-2 text-dark text-center">
         {{ stage.title }}
         <hr>
-        </h3>
-        <div class="row">
-          @for (stageDuel of stage.duels; track stageDuel) {
-            <div class="col-lg-6 col-md-6 col-12">
-              @if (stageDuel.duel) {
-                <duel-card [duel]="stageDuel.duel"></duel-card>
-              }
-            </div>
-          }
-        </div>
+      </h3>
+      <div class="row">
+        @for (stageDuel of stage.duels; track stageDuel) {
+          <div class="col-lg-6 col-md-6 col-12">
+            @if (stageDuel.duel) {
+              <duel-card [duel]="stageDuel.duel"></duel-card>
+            }
+          </div>
+        }
       </div>
-    }
-  </div>
+    </div>
+  }
+</div>

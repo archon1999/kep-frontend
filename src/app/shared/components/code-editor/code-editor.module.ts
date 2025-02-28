@@ -8,7 +8,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { KepcoinSpendSwalModule } from '@app/modules/kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { CodeEditorModalComponent } from './code-editor-modal/code-editor-modal.component';
 import { NgSelectModule } from '../../third-part-modules/ng-select/ng-select.module';
-import { CoreSidebarModule } from '@core/components';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
@@ -16,7 +15,8 @@ import { NewFeatureDirective } from '@shared/directives/new-feature.directive';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { VerdictShortTitlePipe } from '@problems/pipes/verdict-short-title.pipe';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
-import { ToastrModule } from '@shared/third-part-modules/toastr/toastr.module';
+import { CoreSidebarModule } from "@core/components/core-sidebar/core-sidebar.module";
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @NgModule({
   declarations: [
@@ -41,7 +41,7 @@ import { ToastrModule } from '@shared/third-part-modules/toastr/toastr.module';
     NgbAccordionModule,
     SpinnerComponent,
     VerdictShortTitlePipe,
-    ToastrModule
+    KepCardComponent
   ],
   exports: [
     CodeEditorModalComponent,

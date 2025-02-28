@@ -10,23 +10,23 @@ export class LugavarService {
     public api: ApiService,
   ) { }
 
-  getDailyTrick(){
+  getDailyTrick() {
     return this.api.get('daily-trick');
   }
 
-  getDailyQuestion(){
+  getDailyQuestion() {
     return this.api.get('daily-question');
   }
-  
-  dailyQuestionAnswer(optionId: number){
-    return this.api.post('daily-question-answer/', { optionId: optionId });
+
+  dailyQuestionAnswer(optionId: number) {
+    return this.api.post('daily-question-answer/', {optionId: optionId});
   }
-  
-  getDailyInterestingFact(){
+
+  getDailyInterestingFact() {
     return this.api.get('daily-interesting-fact');
   }
 
-  getDictionary(){
+  getDictionary() {
     return this.api.get('dictionary');
   }
 

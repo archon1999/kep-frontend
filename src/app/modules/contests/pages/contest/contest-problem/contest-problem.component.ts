@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
+import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ApiService } from 'app/shared/services/api.service';
 import { User } from '@auth';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
 import { Attempt } from '@problems/models/attempts.models';
 import { AvailableLanguage, Problem } from '@problems/models/problems.models';
 import { TitleService } from 'app/shared/services/title.service';
@@ -25,7 +25,7 @@ import { ProblemInfoCardComponent } from '@problems/components/problem-info-card
 import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
 import { ContestStatus } from '@contests/constants/contest-status';
 import { ContestProblem } from '@contests/models/contest-problem';
@@ -34,6 +34,7 @@ import { Contest } from '@contests/models/contest';
 import { Contestant } from '@contests/models/contestant';
 import { getResourceById, Resources } from '@app/resources';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
 
@@ -42,8 +43,8 @@ const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
   templateUrl: './contest-problem.component.html',
   styleUrls: ['./contest-problem.component.scss'],
   animations: [
-    fadeInLeftOnEnterAnimation({ duration: 1500 }),
-    fadeInRightOnEnterAnimation({ duration: 1000 })
+    fadeInOnEnterAnimation({duration: 1000}),
+    fadeInRightOnEnterAnimation({duration: 1000, translate: '40px'})
   ],
   standalone: true,
   imports: [
@@ -59,6 +60,7 @@ const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
     ContentHeaderModule,
     ContestTabComponent,
     ContestClassesPipe,
+    KepCardComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -99,7 +101,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ contest, contestProblem }) => {
+    this.route.data.subscribe(({contest, contestProblem}) => {
       this.contest = Contest.fromJSON(contest);
       this.contestProblem = contestProblem;
       this.problem = contestProblem.problem;
@@ -192,7 +194,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
   }
 
   reloadProblems() {
-    this.api.get(`contests/${ this.contest?.id }/problems`).subscribe((result: any) => {
+    this.api.get(`contests/${this.contest?.id}/problems`).subscribe((result: any) => {
       this.contestProblems = result;
       this.sortProblems();
       this.cdr.markForCheck();

@@ -119,7 +119,7 @@ export class TournamentBracketComponent implements OnInit {
           participantImages.push(
             {
               participantId: player.id,
-              imageUrl: `assets/images/contests/ratings/${ player.ratingTitle.toLowerCase() }.png`
+              imageUrl: `assets/images/contests/ratings/${player.ratingTitle.toLowerCase()}.png`
             }
           );
         }
@@ -134,7 +134,7 @@ export class TournamentBracketComponent implements OnInit {
               if (n === 1) {
                 h3[0].innerHTML = 'Final';
               } else {
-                h3[0].innerHTML = `1/${ n } Final`;
+                h3[0].innerHTML = `1/${n} Final`;
               }
             }
           }

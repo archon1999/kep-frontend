@@ -24,7 +24,6 @@
   width: 60%;
   right: -60%;
   padding: 0;
-  background-color: inherit;
   z-index: 1051;
   position: fixed;
   top: 5%;
@@ -74,6 +73,7 @@
 
   .card {
     margin-bottom: 0;
+    background: mix(black, $primary, 80) !important;
 
     .card-header {
       padding: 1rem !important;

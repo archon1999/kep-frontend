@@ -16,12 +16,12 @@
       [style.width.px]="frameWidth"
       style="position: relative; cursor: col-resize;">
       <div
-          #output
-          [ngStyle]="{
+        #output
+        [ngStyle]="{
           'width': outputWidth + '%',
           'box-shadow': mouseEnter ? 'red 1px 0px 0px' : 'none'
         }"
-          style="background: inherit; overflow: hidden; position: relative; z-index: 1; mix-blend-mode: normal; pointer-events: none;">
+        style="background: inherit; overflow: hidden; position: relative; z-index: 1; mix-blend-mode: normal; pointer-events: none;">
         <iframe
           [srcdoc]="outputHtml | safe"
           [style.height.px]="frameHeight"

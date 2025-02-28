@@ -31,4 +31,4 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
     UserAvatarPopoverComponent,
   ]
 })
-export class UserPopoverModule { }
+export class UserPopoverModule {}

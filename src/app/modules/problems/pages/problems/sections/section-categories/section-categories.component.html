@@ -1,4 +1,4 @@
-<div class="d-flex mb-2 mt-2 justify-content-between">
+<div class="d-flex mb-4 mt-4 justify-content-between">
   <div class="font-medium-5 text-dark">{{ 'Topics' | translate }}</div>
 </div>
 
@@ -18,9 +18,14 @@
   </div>
 } @else {
   <div class="row">
-    @for (category of showAll ? categories : categories.slice(0, 4); track category.id){
+    @for (category of showAll ? categories : categories.slice(0, 4); track category.id) {
       <div [@fadeInOnEnter] class="col-lg-3 col-md-6 col-12">
-        <a [routerLink]="category.code" class="card">
+        <a [routerLink]="category.code" class="card custom-card">
+          <div class="top-left"></div>
+          <div class="top-right"></div>
+          <div class="bottom-left"></div>
+          <div class="bottom-right"></div>
+
           <div class="card-header justify-content-start">
             <div class="category-icon me-1">
               <kep-icon type="duotone" size="large-1" color="primary" [name]="category.icon"></kep-icon>
@@ -28,7 +33,7 @@
 
             <div class="card-title">
               {{ category.title }}
-              <div class="mt-50">
+              <div class="mt-1">
                 <kep-icon size="medium-1" name="problem"></kep-icon>
                 <span [ngbTooltip]="'Problems' | translate">{{ category.problemsCount }}</span>
               </div>

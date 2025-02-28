@@ -5,7 +5,7 @@
   100% {
     transform: scale(0.98);
   }
-} 
+}
 
 a {
   transform: scale(0.98);
@@ -19,8 +19,8 @@ a {
 
   &:hover {
     animation: cardAnimation 0.5s;
-    box-shadow: 12px 15px 20px 0px rgba(46,61,73,0.15);    
-    
+    box-shadow: 12px 15px 20px 0px rgba(46, 61, 73, 0.15);
+
     .on-hover {
       display: inherit;
     }
@@ -29,17 +29,17 @@ a {
   .card {
     height: 100%;
     border: none;
-  
+
     .card-header {
       padding: 44px 33px 0 33px;
-  
+
       .chapter-title {
         color: #fff;
         opacity: 0.6;
         font-size: 11px;
         letter-spacing: 0.7px;
       }
-  
+
       .test-title {
         color: #fff;
         font-weight: normal;
@@ -49,7 +49,7 @@ a {
         margin-top: 14px;
       }
     }
-  
+
     .chapter-image {
       img {
         max-width: 90%;

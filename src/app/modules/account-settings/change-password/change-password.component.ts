@@ -32,18 +32,12 @@ export class ChangePasswordComponent implements OnInit {
 
   change() {
     if (this.passwordNew != this.passwordConfirm) {
-      this.toastr.error('Yangi parolni tasdiqlash noto`g`ri', '', {
-        toastClass: 'toast ngx-toastr',
-      });
+      this.toastr.error('Yangi parolni tasdiqlash noto`g`ri', '');
     } else {
       this.service.changePassword(this.passwordOld, this.passwordNew).subscribe((result: any) => {
-        this.toastr.success('Saqlandi', '', {
-          toastClass: 'toast ngx-toastr',
-        });
+        this.toastr.success('Saqlandi', '');
       }, (err: any) => {
-        this.toastr.error('Parol noto`g`ri', '', {
-          toastClass: 'toast ngx-toastr',
-        });
+        this.toastr.error('Parol noto`g`ri', '');
       });
     }
   }

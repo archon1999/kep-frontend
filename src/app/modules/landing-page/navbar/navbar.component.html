@@ -7,9 +7,9 @@
             <christmas-tree/>
 
             <span class="brand-logo">
-              <img alt="brand-logo" height="36" [src]="defaultCoreConfig.app.appLogoImage" width="48"/>
+              <img alt="brand-logo" height="36" src="assets/images/logo/logo.svg" width="48"/>
             </span>
-            <h2 class="brand-text text-dark ms-1 fw-bolder mb-0">{{ defaultCoreConfig.app.appTitle }}</h2>
+            <h2 class="brand-text text-dark ms-1 fw-medium mb-0">KEP.uz</h2>
           </div>
 
           <div class="navbar-menu d-lg-flex d-none">
@@ -42,31 +42,9 @@
         </div>
 
         <div class="right">
-          <div ngbDropdown class="nav-item mr-lg-0 me-50">
-            <button aria-label="dropdown-toggle" class="nav-link btn" id="dropdown-flag" ngbDropdownToggle>
-              <i class="fi fi-{{ languageOptions[translateService.currentLang].flag }}"></i>
-            </button>
-            <div ngbDropdownMenu>
-              @for (lang of langs; track lang) {
-                <div class="cursor-pointer" ngbDropdownItem (click)="setLanguage(lang)">
-                  <i class="me-50 fi fi-{{ languageOptions[lang].flag }}"></i> {{ languageOptions[lang].title }}
-                </div>
-              }
-            </div>
-          </div>
-
-          <div class="switch">
-            <button aria-label="switch" class="btn btn-sm" (click)="switchMode()">
-              @if (isDarkMode) {
-                <kep-icon size="large-1" type="duotone" name="moon"></kep-icon>
-              } @else {
-                <kep-icon size="large-1" type="duotone" name="sun"></kep-icon>
-              }
-            </button>
-          </div>
-
           <div class="login-btn">
-            <a aria-label="Logout" [routerLink]="Resources.Login" class="btn btn-primary d-flex justify-content-between align-items-center" [ngClass.lt-md]="'btn-sm'">
+            <a aria-label="Logout" [routerLink]="Resources.Login"
+               class="btn btn-primary d-flex justify-content-between align-items-center" [ngClass.lt-md]="'btn-sm'">
               <kep-icon name="login"></kep-icon>
               <span class="d-md-block d-none">
                 {{ 'Login' | translate }}

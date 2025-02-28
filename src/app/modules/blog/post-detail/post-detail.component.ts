@@ -20,9 +20,9 @@ export class PostDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ blogPost }) => {
+    this.route.data.subscribe(({blogPost}) => {
       this.blogPost = blogPost;
-      this.titleService.updateTitle(this.route, { postTitle: blogPost.title });
+      this.titleService.updateTitle(this.route, {postTitle: blogPost.title});
     });
   }
 

@@ -3,9 +3,9 @@
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
     <div class="row">
-      <div class="col-12 col-lg-8 mx-auto">
-        <div class="card">
-          <div class="card-header">
+      <div class="col-12 mx-auto">
+        <kep-card>
+          <div class="card-header p-4">
             <div class="card-title font-medium-5 align-items-center">
               <kep-icon name="arena" size="medium-5" type="duotone" color="yellow"></kep-icon>
               <span class="text-dark">{{ 'Arena' | translate }}</span>
@@ -15,18 +15,19 @@
               <input placeholder="{{ 'Search' | translate }}" class="form-control mt-md-0 mt-1ca">
             </div>
           </div>
-        </div>
+        </kep-card>
 
-        @if (isLoading){
+        @if (isLoading) {
           <ngx-skeleton-loader
+            count="1"
             class="custom-skeleton"
             [count]="pageSize"
             animation="pulse"
             appearance="line"
             [theme]="{height: '100px', 'margin-bottom': '0.25rem', background: 'var(--skeleton-color)'}"
-          ></ngx-skeleton-loader>
+          />
         } @else {
-          @for (arena of arenaList;track arena) {
+          @for (arena of arenaList; track arena) {
             <arena-list-card [@fadeInOnEnter] [arena]="arena"></arena-list-card>
           }
         }

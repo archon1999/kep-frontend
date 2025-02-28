@@ -34,20 +34,20 @@ export class DuelComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ duel }) => {
+    this.route.data.subscribe(({duel}) => {
       this.duel = duel;
       this.titleService.updateTitle(this.route, {
         playerFirstUsername: duel.playerFirst.username,
         playerSecondUsername: duel.playerSecond.username,
       })
 
-      if(this.duel.problems){
+      if (this.duel.problems) {
         this.changeProblem(this.duel.problems[0]);
       }
 
-      this.changeLang(localStorage.getItem('problems-selected-lang')||'py');
+      this.changeLang(localStorage.getItem('problems-selected-lang') || 'py');
 
-      if(this.duel.status == 0){
+      if (this.duel.status == 0) {
         this._intervalId = setInterval(
           () => {
             this.reloadResults();
@@ -59,35 +59,35 @@ export class DuelComponent implements OnInit, OnDestroy {
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (user: any) => {
         this.currentUser = user;
-        if(this.duel.isPlayer){
+        if (this.duel.isPlayer) {
           this.reloadAttempts();
         }
       }
     )
   }
 
-  changeProblem(duelProblem: DuelProblem){
+  changeProblem(duelProblem: DuelProblem) {
     this.duelProblem = duelProblem;
-    if(this.currentUser && this.duel.isPlayer){
+    if (this.currentUser && this.duel.isPlayer) {
       this.reloadAttempts();
     }
   }
 
-  changeLang(lang: string){
+  changeLang(lang: string) {
     this.selectedLang = lang;
-    for(let availableLang of this.duelProblem.problem.availableLanguages){
-      if(availableLang.lang == this.selectedLang){
+    for (let availableLang of this.duelProblem.problem.availableLanguages) {
+      if (availableLang.lang == this.selectedLang) {
         this.availableLang = availableLang;
       }
     }
-    if(!this.availableLang){
+    if (!this.availableLang) {
       this.availableLang = this.duelProblem.problem.availableLanguages[0];
       this.selectedLang = this.availableLang.lang;
     }
     localStorage.setItem('problems-selected-lang', this.selectedLang);
   }
 
-  reloadAttempts(){
+  reloadAttempts() {
     this.service.getProblemAttempts(this.duel.id, this.duelProblem.symbol, this.currentUser.username).subscribe(
       (result: any) => {
         this.attempts = result.data;
@@ -95,12 +95,12 @@ export class DuelComponent implements OnInit, OnDestroy {
     )
   }
 
-  reloadResults(){
+  reloadResults() {
     this.service.getDuelResults(this.duel.id).subscribe(
       (results: any) => {
         let playerFirstBalls = 0;
         let playerSecondBalls = 0;
-        for(let i = 0; i < this.duel.problems.length; i++){
+        for (let i = 0; i < this.duel.problems.length; i++) {
           this.duel.problems[i].playerFirstBall = results.playerFirst[i];
           this.duel.problems[i].playerSecondBall = results.playerSecond[i];
           playerFirstBalls += results.playerFirst[i];
@@ -113,7 +113,7 @@ export class DuelComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if(this._intervalId){
+    if (this._intervalId) {
       clearInterval(this._intervalId);
     }
 

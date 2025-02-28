@@ -4,14 +4,17 @@ import { Arena, ArenaStatus } from '@arena/arena.models';
 import { Observable } from 'rxjs';
 import { ArenaService } from '@arena/arena.service';
 import { CoreCommonModule } from '@core/common.module';
-import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import {
+  ChallengesUserViewComponent
+} from '@challenges/components/challenges-user-view/challenges-user-view.component';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { PageResult } from '@app/common/classes/page-result';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'section-arenas',
   standalone: true,
-  imports: [CoreCommonModule, ChallengesUserViewComponent, ResourceByIdPipe],
+  imports: [CoreCommonModule, ChallengesUserViewComponent, ResourceByIdPipe, KepCardComponent],
   templateUrl: './section-arenas.component.html',
   styleUrl: './section-arenas.component.scss'
 })

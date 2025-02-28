@@ -12,14 +12,16 @@ import { ContestsService } from '@contests/contests.service';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { contestTypes } from '@contests/constants/contest-types';
 import { Contest } from '@contests/models/contest';
-import { SectionCategoriesComponent } from '@contests/pages/contests/sections/section-categories/section-categories.component';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
-import { coreConfig } from '@app/app.config';
+import {
+  SectionCategoriesComponent
+} from '@contests/pages/contests/sections/section-categories/section-categories.component';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
 import { SectionHeaderComponent } from '@contests/pages/contests/sections/section-header/section-header.component';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { FormControl } from '@angular/forms';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 enum ContestStatus {
   ALL = 2,
@@ -46,6 +48,7 @@ enum ContestStatus {
     ContentHeaderModule,
     SectionHeaderComponent,
     EmptyResultComponent,
+    KepCardComponent,
   ]
 })
 export class ContestsComponent extends BaseTablePageComponent<Contest> implements OnInit, OnDestroy {
@@ -115,9 +118,12 @@ export class ContestsComponent extends BaseTablePageComponent<Contest> implement
       breadcrumb: {
         links: [
           {
-            name: coreConfig.app.appTitle,
-            isLink: true,
-            link: '/',
+            name: 'Competitions',
+            isLink: false,
+          },
+          {
+            name: 'Contests',
+            isLink: false,
           }
         ]
       }

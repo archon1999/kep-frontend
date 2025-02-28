@@ -1,6 +1,6 @@
 svg {
   max-height: 60vh;
-  overflow:visible;
+  overflow: visible;
   height: 36px;
   width: 100%;
 }
@@ -12,14 +12,14 @@ path {
   transform: scale(0);
   transform-origin: 50% 50%;
   animation: star 8s ease-in-out infinite;
-  animation-delay: calc( var(--no) * .025s );
+  animation-delay: calc(var(--no) * .025s);
   transform-box: fill-box;
 }
 
 @keyframes star {
   0% {
     transform: scale(0);
-    animation-timing-function: cubic-bezier(.74,1.72,.57,1.01)
+    animation-timing-function: cubic-bezier(.74, 1.72, .57, 1.01)
   }
   10% {
     transform: scale(1);
@@ -31,6 +31,6 @@ path {
     transform: translateY(50px) scale(0);
   }
   100% {
-    transform: translateY( 0px ) scale(0);
+    transform: translateY(0px) scale(0);
   }
 }

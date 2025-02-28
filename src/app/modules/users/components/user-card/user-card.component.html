@@ -1,11 +1,11 @@
 @if (user && userRatings) {
   <div class="card card-profile">
-    <img [src]="user.coverPhoto" class="img-fluid card-img-top" alt="Profile Cover Photo" />
+    <img [src]="user.coverPhoto" class="img-fluid card-img-top" alt="Profile Cover Photo"/>
     <div class="card-body">
       <div class="profile-image-wrapper">
         <div class="profile-image">
           <div class="avatar">
-            <img routerLink="user/{{ user.username }}" [src]="user.avatar" alt="Profile Picture" />
+            <img routerLink="user/{{ user.username }}" [src]="user.avatar" alt="Profile Picture"/>
             @if (user.isOnline) {
               <span class="avatar-status-online"></span>
             }
@@ -19,10 +19,10 @@
         <h3>{{ user.firstName }} {{ user.lastName }}</h3>
         <h6 class="text-muted">{{ user.username }}</h6>
       </a>
-      <hr class="mb-2" />
+      <hr class="mb-2"/>
       <div class="d-flex justify-content-between align-items-center mb-1">
         <div>
-          <h6 class="fw-bolder">
+          <h6 class="fw-semibold">
             <i [data-feather]="'contest' | iconName"></i> {{ 'MENU.CONTESTS' | translate }}
           </h6>
           <h4 class="mb-0 mt-1">
@@ -33,25 +33,26 @@
           </h4>
         </div>
         <div>
-          <h6 class="fw-bolder">
+          <h6 class="fw-semibold">
             <i [data-feather]="'problem' | iconName"></i> {{ 'MENU.PROBLEMS' | translate }}
           </h6>
           <h4 class="mb-0 mt-1">
             <span class="badge bg-primary">
               {{ userRatings.problemsSolved }}
             </span>
-            <span class="badge badge-light-success">
+            <span class="badge bg-success-transparent">
               {{ userRatings.problemsRating }}
             </span>
           </h4>
         </div>
         <div>
-          <h6 class="fw-bolder">
+          <h6 class="fw-semibold">
             <i [data-feather]="'zap'"></i> {{ 'MENU.CHALLENGES' | translate }}
           </h6>
           <span class="mb-0 mt-1">
             <div class="text-{{ userRatings.challengesRankTitle | challengesRankColor }}">
-              <span class="badge badge-pill badge-glow badge-{{ userRatings.challengesRankTitle | challengesRankColor }}">
+              <span
+                class="badge badge-pill badge-glow badge-{{ userRatings.challengesRankTitle | challengesRankColor }}">
                 {{ userRatings.challengesRankTitle }}
               </span>
               <span class="badge badge-light-{{ userRatings.challengesRankTitle | challengesRankColor }}">

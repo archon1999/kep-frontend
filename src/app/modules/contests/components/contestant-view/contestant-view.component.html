@@ -10,14 +10,14 @@
     (
     @for (member of team.members; track member; let i = $index) {
       <span class="ms-25">
-<!--        <contests-rating-image-->
-<!--          [size]="24"-->
-<!--          [title]="member.ratingTitle"-->
-<!--          [class]="'mr-50 mb-50'">-->
-<!--        </contests-rating-image>-->
-        <span class="font-small-2 fw-bolder">
+        <!--        <contests-rating-image-->
+        <!--          [size]="24"-->
+        <!--          [title]="member.ratingTitle"-->
+        <!--          [class]="'mr-50 mb-50'">-->
+        <!--        </contests-rating-image>-->
+        <span class="font-small-2 fw-semibold">
           <user-popover [customContent]="true" [textColor]="textColor" [username]="member.username">
-            {{member.username}}<span *ngIf="!$last">, </span>
+            {{ member.username }}<span *ngIf="!$last">, </span>
           </user-popover>
         </span>
       </span>

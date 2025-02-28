@@ -1,4 +1,4 @@
-<div class="card mb-50">
+<kep-card customClass="mb-2">
   <div [@fadeInOnEnter] class="table-responsive">
     <table class="table challenge-card">
       <tbody>
@@ -12,8 +12,8 @@
 
         <td>
           <span class="badge badge-glow" [ngClass]="{
-            'badge-success': challenge.playerFirst.result > challenge.playerSecond.result,
-            'badge-danger': challenge.playerFirst.result < challenge.playerSecond.result,
+            'bg-success': challenge.playerFirst.result > challenge.playerSecond.result,
+            'bg-danger': challenge.playerFirst.result < challenge.playerSecond.result,
             'badge-secondary': challenge.playerFirst.result == challenge.playerSecond.result
           }">
             {{ challenge.playerFirst.result }}
@@ -50,8 +50,8 @@
 
         <td>
           <span class="badge badge-glow" [ngClass]="{
-            'badge-danger': challenge.playerFirst.result > challenge.playerSecond.result,
-            'badge-success': challenge.playerFirst.result < challenge.playerSecond.result,
+            'bg-danger': challenge.playerFirst.result > challenge.playerSecond.result,
+            'bg-success': challenge.playerFirst.result < challenge.playerSecond.result,
             'badge-secondary': challenge.playerFirst.result == challenge.playerSecond.result
           }">
             {{ challenge.playerSecond.result }}
@@ -82,4 +82,4 @@
       </tbody>
     </table>
   </div>
-</div>
+</kep-card>

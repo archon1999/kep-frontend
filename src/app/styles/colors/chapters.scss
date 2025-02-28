@@ -1,11 +1,6 @@
 @mixin define-chapter-colors($id, $gradient-color, $gradient-dark-color, $color, $dark-color) {
   .bg-gradient-chapter-#{$id} {
     color: #fff;
-    background: $gradient-color;
-  }
-
-  .dark-layout .bg-gradient-chapter-#{$id} {
-    color: #fff;
     background: $gradient-dark-color;
   }
 
@@ -13,20 +8,10 @@
     color: $color;
   }
 
-  .dark-layout .text-chapter-#{$id} {
-    color: $color;
-  }
-
   .bg-chapter-#{$id} {
-    background: $color !important;
-    box-shadow: 0 0 5px $color !important;
-  }
-
-  .dark-layout .bg-chapter-#{$id} {
     background: $dark-color !important;
-    box-shadow: 0 0 5px $dark-color !important;
+    // box-shadow: 0 0 5px $dark-color !important;
   }
-
 }
 
 // Python

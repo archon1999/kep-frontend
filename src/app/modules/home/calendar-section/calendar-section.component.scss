@@ -1,136 +1,136 @@
-@import 'scss/base/pages/app-calendar.scss';
-@import 'scss/base/bootstrap-extended/include.scss'; // Bootstrap includes
-
-//  Main Sidebar
-app-calendar-main-sidebar {
-  height: 100%;
-  flex-direction: column;
-  display: flex;
-}
-
-// Sidebar Toggle Button
-.fc-sidebarToggle-button {
-  background-image: url(str-replace(str-replace($menu, 'currentColor', $body-color), '#', '%23'));
-  width: 24px;
-  height: 24px;
-  margin-right: 0.7rem !important;
-  display: block;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-// Hide sidebar toggle in lg screen
-@include media-breakpoint-up(lg) {
-  .fc-sidebarToggle-button {
-    display: none !important;
-  }
-}
-
-.fc {
-  .fc-button-primary {
-    &:not(:disabled) {
-      &:active:focus {
-        box-shadow: none !important;
-      }
-    }
-  }
-  .fc-button-active {
-    &:focus {
-      box-shadow: none !important;
-      &:active {
-        box-shadow: none !important;
-      }
-    }
-  }
-}
-
-// ! Fix: fixed chrome bug
-.fc-scrollgrid-section-liquid {
-  height: 1px !important;
-}
-
-.dark-layout {
-  // calendar
-  .app-calendar {
-    .app-calendar-sidebar {
-      background-color: $theme-dark-card-bg;
-      border-color: $theme-dark-border-color;
-
-      .sidebar-content-title {
-        color: $theme-dark-label-color;
-      }
-      .select-all,
-      .input-filter {
-        ~ label {
-          color: $theme-dark-label-color;
-        }
-      }
-    }
-    .fc {
-      .fc-day-today {
-        background: $theme-dark-body-bg !important;
-        background-color: $theme-dark-body-bg !important;
-      }
-
-      .fc-timegrid {
-        .fc-scrollgrid-section {
-          .fc-col-header-cell,
-          .fc-timegrid-axis,
-          .fc-daygrid-day {
-            background-color: $theme-dark-card-bg;
-            border-color: $theme-dark-border-color;
-          }
-          .fc-day-today {
-            background-color: rgba($color: $gray-100, $alpha: 0.12) !important;
-
-            &.fc-col-header-cell {
-              background-color: $theme-dark-card-bg !important;
-            }
-          }
-        }
-      }
-      .fc-popover {
-        background: $theme-dark-card-bg;
-        border-color: $theme-dark-border-color;
-      }
-      .fc-popover-header {
-        .fc-popover-title,
-        .fc-popover-close {
-          color: $theme-dark-body-color;
-        }
-      }
-      tbody td,
-      thead th {
-        border-color: $theme-dark-border-color;
-      }
-
-      .fc-scrollgrid {
-        border-color: $theme-dark-border-color;
-      }
-
-      .fc-list,
-      th {
-        border-color: $theme-dark-border-color;
-        .fc-list-day-cushion {
-          background: $theme-dark-body-bg;
-        }
-        .fc-list-event:hover td {
-          background-color: $theme-dark-body-bg;
-        }
-        .fc-list-event-time {
-          color: $theme-dark-body-color;
-        }
-        .fc-list-event {
-          td {
-            border-color: $theme-dark-border-color;
-          }
-        }
-      }
-    }
-
-    .fc-timegrid-event-harness-inset .fc-timegrid-event,
-    .fc-timegrid-event.fc-event-mirror,
-    .fc-timegrid-more-link {
-      box-shadow: 0 0 0 1px $theme-dark-border-color;
-    }
-  }
-}
+////@import 'scss/base/pages/app-calendar.scss';
+////@import 'scss/base/bootstrap-extended/include.scss'; // Bootstrap includes
+//
+////  Main Sidebar
+//app-calendar-main-sidebar {
+//  height: 100%;
+//  flex-direction: column;
+//  display: flex;
+//}
+//
+//// Sidebar Toggle Button
+//.fc-sidebarToggle-button {
+//  background-image: url(str-replace(str-replace($menu, 'currentColor', $body-color), '#', '%23'));
+//  width: 24px;
+//  height: 24px;
+//  margin-right: 0.7rem !important;
+//  display: block;
+//  background-position: center;
+//  background-repeat: no-repeat;
+//}
+//// Hide sidebar toggle in lg screen
+//@include media-breakpoint-up(lg) {
+//  .fc-sidebarToggle-button {
+//    display: none !important;
+//  }
+//}
+//
+//.fc {
+//  .fc-button-primary {
+//    &:not(:disabled) {
+//      &:active:focus {
+//        box-shadow: none !important;
+//      }
+//    }
+//  }
+//  .fc-button-active {
+//    &:focus {
+//      box-shadow: none !important;
+//      &:active {
+//        box-shadow: none !important;
+//      }
+//    }
+//  }
+//}
+//
+//// ! Fix: fixed chrome bug
+//.fc-scrollgrid-section-liquid {
+//  height: 1px !important;
+//}
+//
+//.dark-layout {
+//  // calendar
+//  .app-calendar {
+//    .app-calendar-sidebar {
+//      background-color: $theme-dark-card-bg;
+//      border-color: $theme-dark-border-color;
+//
+//      .sidebar-content-title {
+//        color: $theme-dark-label-color;
+//      }
+//      .select-all,
+//      .input-filter {
+//        ~ label {
+//          color: $theme-dark-label-color;
+//        }
+//      }
+//    }
+//    .fc {
+//      .fc-day-today {
+//        background: $theme-dark-body-bg !important;
+//        background-color: $theme-dark-body-bg !important;
+//      }
+//
+//      .fc-timegrid {
+//        .fc-scrollgrid-section {
+//          .fc-col-header-cell,
+//          .fc-timegrid-axis,
+//          .fc-daygrid-day {
+//            background-color: $theme-dark-card-bg;
+//            border-color: $theme-dark-border-color;
+//          }
+//          .fc-day-today {
+//            background-color: rgba($color: $gray-100, $alpha: 0.12) !important;
+//
+//            &.fc-col-header-cell {
+//              background-color: $theme-dark-card-bg !important;
+//            }
+//          }
+//        }
+//      }
+//      .fc-popover {
+//        background: $theme-dark-card-bg;
+//        border-color: $theme-dark-border-color;
+//      }
+//      .fc-popover-header {
+//        .fc-popover-title,
+//        .fc-popover-close {
+//          color: $theme-dark-body-color;
+//        }
+//      }
+//      tbody td,
+//      thead th {
+//        border-color: $theme-dark-border-color;
+//      }
+//
+//      .fc-scrollgrid {
+//        border-color: $theme-dark-border-color;
+//      }
+//
+//      .fc-list,
+//      th {
+//        border-color: $theme-dark-border-color;
+//        .fc-list-day-cushion {
+//          background: $theme-dark-body-bg;
+//        }
+//        .fc-list-event:hover td {
+//          background-color: $theme-dark-body-bg;
+//        }
+//        .fc-list-event-time {
+//          color: $theme-dark-body-color;
+//        }
+//        .fc-list-event {
+//          td {
+//            border-color: $theme-dark-border-color;
+//          }
+//        }
+//      }
+//    }
+//
+//    .fc-timegrid-event-harness-inset .fc-timegrid-event,
+//    .fc-timegrid-event.fc-event-mirror,
+//    .fc-timegrid-more-link {
+//      box-shadow: 0 0 0 1px $theme-dark-border-color;
+//    }
+//  }
+//}

@@ -1,3 +1,3 @@
 export function scrollTo(element: Element) {
-  element.scrollIntoView({ behavior: 'smooth' });
+  element.scrollIntoView({behavior: 'smooth'});
 }

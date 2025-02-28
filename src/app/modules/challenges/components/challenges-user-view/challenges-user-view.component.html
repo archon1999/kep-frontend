@@ -1,21 +1,21 @@
 <user-popover [customContent]="true" [username]="user.username">
   <div>
-    <span class="badge badge-pill badge-glow badge-{{ user.rankTitle | challengesRankColor }}">
+    <span class="badge badge-pill badge-glow bg-{{ user.rankTitle | challengesRankColor }}">
       {{ user.rankTitle }}
     </span>
     {{ user.username }}
 
     @if (withRating) {
       <span [class]="{
-      'badge-light-{{ user.rankTitle | challengesRankColor }}': light
-    }" class="badge badge-{{ user.rankTitle | challengesRankColor }}">
+        'bg-{{ user.rankTitle | challengesRankColor }}-transparent': light
+      }" class="badge bg-{{ user.rankTitle | challengesRankColor }}">
         {{ user.rating }}
       </span>
     }
 
     @if (user?.isBot) {
       <span
-        class="ms-50 mb-50 badge badge-pill badge-light-{{ user.rankTitle | challengesRankColor }}">
+        class="ms-50 mb-50 badge badge-pill bg-{{ user.rankTitle | challengesRankColor }}-transparent">
         bot
       </span>
     }

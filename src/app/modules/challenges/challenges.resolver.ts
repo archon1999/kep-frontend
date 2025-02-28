@@ -16,7 +16,7 @@ export class ChallengeResolver {
   ): Observable<any> | Promise<any> | any {
     return this.service.getChallenge(route.paramMap.get('id')).pipe(
       catchError(err => {
-        this.router.navigate(['/404'], { skipLocationChange: true });
+        this.router.navigate(['/404'], {skipLocationChange: true});
         return of(true);
       })
     );

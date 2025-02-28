@@ -9,6 +9,7 @@ import {
   UserCompetitionPrizeCardComponent
 } from '@users/pages/user-profile/user-competition-prizes/user-competition-prize-card/user-competition-prize-card.component';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'user-competition-prizes',
@@ -17,7 +18,8 @@ import { EmptyResultComponent } from '@shared/components/empty-result/empty-resu
     SpinnerComponent,
     TranslateModule,
     UserCompetitionPrizeCardComponent,
-    EmptyResultComponent
+    EmptyResultComponent,
+    KepCardComponent
   ],
   templateUrl: './user-competition-prizes.component.html',
   styleUrl: './user-competition-prizes.component.scss'

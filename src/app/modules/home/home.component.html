@@ -1,78 +1,72 @@
-<div class="content-wrapper container-xl p-0">
+<div class="content-wrapper container-xxl p-0">
   <div class="content-body">
-    <header-section></header-section>
+    <app-content-header [contentHeader]="contentHeader">
+      <h5>{{ 'Welcome' | translate }}, {{ currentUser?.firstName || currentUser?.username }}</h5>
+      <h6>{{ 'HomePageTitle' | translate }}</h6>
+    </app-content-header>
 
     <div class="row">
-      <div class="col-lg-6 col-md-8 col-12">
+      <ranks-section/>
+
+      <div class="col-12">
         <news-section/>
       </div>
 
-      <div class="col-lg-6 col-md-4 col-sm-12">
-        <activity-section></activity-section>
-        <profile-section></profile-section>
-      </div>
+<!--      <div class="col-lg-6 col-md-4 col-sm-12">-->
+<!--        <activity-section></activity-section>-->
+<!--      </div>-->
 
       <div class="col-12 mt-1">
         <div class="row">
           <div class="col-lg-4 col-12">
-            @defer (on viewport){
+            @defer (on viewport) {
               <top-rating-section></top-rating-section>
             } @placeholder (minimum 500ms) {
-              <div class="card" [style.height.px]="250">
+              <kep-card [cardHeight]="'250px'">
                 <spinner></spinner>
-              </div>
+              </kep-card>
             }
           </div>
           <div class="col-lg-4 col-12">
-            @defer (on viewport){
+            @defer (on viewport) {
               <system-section></system-section>
             } @placeholder (minimum 500ms) {
-              <div class="card" [style.height.px]="275">
+              <kep-card [cardHeight]="'250px'">
                 <spinner></spinner>
-              </div>
+              </kep-card>
             }
           </div>
           <div class="col-lg-4 col-12">
-            @defer (on viewport){
+            @defer (on viewport) {
               <users-chart-card></users-chart-card>
             } @placeholder (minimum 500ms) {
-              <div class="card" [style.height.px]="250">
+              <kep-card [cardHeight]="'250px'">
                 <spinner></spinner>
-              </div>
+              </kep-card>
             }
           </div>
         </div>
       </div>
 
-<!--      <div class="col-lg-8 offset-lg-2 col-12 text-center">-->
-<!--          @defer (on viewport){-->
-<!--            <calendar-section></calendar-section>-->
-<!--          } @placeholder (minimum 500ms) {-->
-<!--            <div class="card" [style.height.px]="600">-->
-<!--              <spinner></spinner>-->
-<!--            </div>-->
-<!--          }-->
-<!--      </div>-->
-
       <div class="col-12 mt-1">
         <div class="row">
           <div class="col-lg-3 col-md-6 col-sm-12">
-            @defer (on viewport){
+            @defer (on viewport) {
               <birthdays-section></birthdays-section>
             } @placeholder (minimum 500ms) {
-              <div class="card" [style.height.px]="485">
+              <kep-card [cardHeight]="'485px'">
                 <spinner></spinner>
-              </div>
+              </kep-card>
             }
           </div>
           <div class="col-lg-9 col-md-6 col-sm-12">
             <div class="mb-4">
-              @defer (on viewport){
+              @defer (on viewport) {
                 <posts-section></posts-section>
               } @placeholder (minimum 500ms) {
-                <div class="card" [style.height.px]="500">
+                <kep-card [cardHeight]="'500px'">
                   <spinner></spinner>
-                </div>
+                </kep-card>
               }
             </div>
           </div>
@@ -96,7 +90,7 @@
 <!--  </div>-->
 
 <audio
-    #audio
-    muted="muted"
-    [src]="homeSoundSrc">
+  #audio
+  muted="muted"
+  [src]="homeSoundSrc">
 </audio>

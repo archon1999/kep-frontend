@@ -19,7 +19,7 @@ export class NgxCountriesService {
     return i18nIsoCountries.getName(alpha2orAlpha3orNumeric, lang);
   }
 
-  getNames(lang?: string): i18nIsoCountries.LocalizedCountryNames<{select: 'official'}> {
+  getNames(lang?: string): i18nIsoCountries.LocalizedCountryNames<{ select: 'official' }> {
     if (!lang) {
       lang = this.defaultLocale;
     }

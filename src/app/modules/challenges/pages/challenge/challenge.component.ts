@@ -8,15 +8,21 @@ import { DragulaModule } from 'ng2-dragula';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 import { CoreCommonModule } from '@core/common.module';
 import { SweetAlertModule } from '@shared/third-part-modules/sweet-alert/sweet-alert.module';
-import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import {
+  ChallengesUserViewComponent
+} from '@challenges/components/challenges-user-view/challenges-user-view.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
-import { ChallengeResultsCardComponent } from '@challenges/components/challenge-results-card/challenge-results-card.component';
+import {
+  ChallengeResultsCardComponent
+} from '@challenges/components/challenge-results-card/challenge-results-card.component';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { getResourceById, Resources } from '@app/resources';
 import { ChallengeQuestionTimeType, ChallengeStatus } from '@challenges/constants';
 import { QuestionCardComponent } from '@challenges/pages/challenge/question-card/question-card.component';
-import { ChallengeCountdownComponent } from '@challenges/pages/challenge/challenge-countdown/challenge-countdown.component';
+import {
+  ChallengeCountdownComponent
+} from '@challenges/pages/challenge/challenge-countdown/challenge-countdown.component';
 import { BaseComponent } from '@app/common';
 
 @Component({

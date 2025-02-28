@@ -4,7 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { TemplateCodeService } from 'app/shared/services/template-code.service';
 import { ToastrService } from 'ngx-toastr';
-import { CoreConfigService } from '@core/services/config.service';
 import { AvailableLanguage, Problem, SampleTest } from '@problems/models/problems.models';
 import { ApiService } from '@shared/services/api.service';
 import { WebsocketService } from '@shared/services/websocket';
@@ -46,8 +45,8 @@ export class CodeEditorModalComponent implements OnInit {
   public canSubmit = true;
 
   public editorForm = new FormGroup({
-    code: new FormControl('', [CValidators.maxLength({ value: 65536 })]),
-    input: new FormControl('', [CValidators.maxLength({ value: 2048 })]),
+    code: new FormControl('', [CValidators.maxLength({value: 65536})]),
+    input: new FormControl('', [CValidators.maxLength({value: 2048})]),
     lang: new FormControl('', []),
     output: new FormControl('', []),
     answer: new FormControl('', []),
@@ -69,7 +68,6 @@ export class CodeEditorModalComponent implements OnInit {
   constructor(
     public api: ApiService,
     public modalService: NgbModal,
-    public coreConfigService: CoreConfigService,
     public toastr: ToastrService,
     public translateService: TranslateService,
     public wsService: WebsocketService,
@@ -225,7 +223,7 @@ export class CodeEditorModalComponent implements OnInit {
         const translations = this.translateService.translations[this.translateService.currentLang];
         const text = translations['SubmittedSuccess'];
         this.toastr.success('', text, {
-          toastClass: 'toast ngx-toastr',
+
           closeButton: true
         });
         this.submittedEvent.emit();

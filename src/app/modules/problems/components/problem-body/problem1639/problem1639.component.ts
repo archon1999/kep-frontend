@@ -20,7 +20,7 @@ export class Problem1639Component {
 
   finish() {
     this.toastr.success('Oltinni tagi sabr!', '', {
-      toastClass: 'toast ngx-toastr',
+
     });
   }
 }

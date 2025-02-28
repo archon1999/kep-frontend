@@ -31,9 +31,9 @@ interface TopicInfo {
   templateUrl: './section-profile.component.html',
   styleUrls: ['./section-profile.component.scss'],
   animations: [
-    fadeInLeftOnEnterAnimation({ duration: 3000 }),
-    fadeInRightOnEnterAnimation({ duration: 3000 }),
-    fadeInOnEnterAnimation({ duration: 3000 }),
+    fadeInLeftOnEnterAnimation({duration: 3000}),
+    fadeInRightOnEnterAnimation({duration: 3000}),
+    fadeInOnEnterAnimation({duration: 3000}),
   ],
   standalone: true,
   imports: [

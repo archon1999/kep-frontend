@@ -12,6 +12,7 @@ import { CodeEditorModule } from '../../shared/components/code-editor/code-edito
 import { DailyInterestingFactResolver, DailyQuestionResolver, DailyTrickResolver } from './lugavar.resolver';
 import { FormsModule } from '@angular/forms';
 import { DictionaryTrainingComponent } from './dictionary-training/dictionary-training.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 
 const routes: Routes = [
@@ -45,6 +46,7 @@ const routes: Routes = [
     NgbPaginationModule,
     NgbTooltipModule,
     FormsModule,
+    KepCardComponent,
   ],
   providers: [
     DailyQuestionResolver,
@@ -52,4 +54,4 @@ const routes: Routes = [
     DailyInterestingFactResolver,
   ]
 })
-export class LugavarModule { }
+export class LugavarModule {}

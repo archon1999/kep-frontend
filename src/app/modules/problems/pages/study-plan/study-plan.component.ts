@@ -18,7 +18,7 @@ import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-char
   selector: 'app-study-plan',
   templateUrl: './study-plan.component.html',
   styleUrls: ['./study-plan.component.scss'],
-  animations: [fadeInOnEnterAnimation({ duration: 3000 })],
+  animations: [fadeInOnEnterAnimation({duration: 3000})],
   standalone: true,
   imports: [
     CoreCommonModule,
@@ -52,10 +52,10 @@ export class StudyPlanComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ studyPlan }) => {
+    this.route.data.subscribe(({studyPlan}) => {
       this.studyPlan = studyPlan;
       this.difficulties = studyPlan.statistics;
-      this.titleService.updateTitle(this.route, { studyPlanTitle: studyPlan.title });
+      this.titleService.updateTitle(this.route, {studyPlanTitle: studyPlan.title});
 
       this.chartOptions = {
         series: [100 * this.difficulties.totalSolved / this.studyPlan.problemsCount],

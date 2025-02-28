@@ -1,15 +1,18 @@
 @import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
 @import 'bootstrap/scss/mixins';
-@import 'scss/base/bootstrap-extended/variables';
-@import 'scss/base/components/variables-dark';
 @import 'bootstrap/scss/mixins/breakpoints';
+@import 'scss/variables';
+
+$theme-dark-body-bg: '#fff';
+$primary: rgb(0, 255, 190);
 
 @mixin dark-layout() {
-  ::ng-deep .dark-layout & {
+  ::ng-deep & {
     @content;
   }
 
-  .dark-layout & {
+  & {
     @content;
   }
 }

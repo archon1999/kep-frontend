@@ -8,6 +8,7 @@ import { BaseConfig } from '../c-validators/basic/base-config';
 })
 export class ErrorMessagePipe implements PipeTransform {
   constructor(public translateService: TranslateService) {}
+
   transform(errors: { [index: string]: BaseConfig }): unknown {
     const translations = this.translateService.translations;
     let errorMessage = '';

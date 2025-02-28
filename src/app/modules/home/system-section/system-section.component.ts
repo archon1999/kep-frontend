@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { CoreCommonModule } from '@core/common.module';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'system-section',
   standalone: true,
-  imports: [CoreCommonModule, TranslateModule, KepIconComponent],
+  imports: [CoreCommonModule, TranslateModule, KepIconComponent, KepCardComponent],
   templateUrl: './system-section.component.html',
   styleUrl: './system-section.component.scss'
 })

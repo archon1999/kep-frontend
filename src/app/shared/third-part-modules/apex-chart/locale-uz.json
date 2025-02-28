@@ -38,7 +38,15 @@
       "Juma",
       "Shanba"
     ],
-    "shortDays": ["Ya", "Du", "Se", "Ch", "Pa", "Ju", "Sh"],
+    "shortDays": [
+      "Ya",
+      "Du",
+      "Se",
+      "Ch",
+      "Pa",
+      "Ju",
+      "Sh"
+    ],
     "toolbar": {
       "exportToSVG": "Сохранить SVG",
       "exportToPNG": "Сохранить PNG",

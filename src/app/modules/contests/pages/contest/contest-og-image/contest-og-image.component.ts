@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'app/shared/services/api.service';
 import { NgxCaptureService } from 'ngx-capture';
 import { tap } from 'rxjs/operators';
 import { CoreCommonModule } from '@core/common.module';
 import { Contest } from '@contests/models/contest';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'app-contest-og-image',
@@ -13,7 +14,9 @@ import { Contest } from '@contests/models/contest';
   standalone: true,
   imports: [
     CoreCommonModule,
-  ]
+    KepCardComponent,
+  ],
+  encapsulation: ViewEncapsulation.None
 })
 export class ContestOgImageComponent implements OnInit {
 
@@ -30,7 +33,7 @@ export class ContestOgImageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ contest }) => {
+    this.route.data.subscribe(({contest}) => {
       this.contest = Contest.fromJSON(contest);
     });
     return;
@@ -39,7 +42,7 @@ export class ContestOgImageComponent implements OnInit {
       this.captureService.getImage(this.screen.nativeElement, true)
         .pipe(
           tap(img => {
-            this.api.post(`contests/${this.contest.id}/og-image/`, { og_image: img }).subscribe(() => {
+            this.api.post(`contests/${this.contest.id}/og-image/`, {og_image: img}).subscribe(() => {
 
             });
             this.img = img;

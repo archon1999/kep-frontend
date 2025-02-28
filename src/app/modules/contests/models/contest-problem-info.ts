@@ -39,9 +39,9 @@ export class ContestProblemInfo {
       if (this.solved()) {
         let badgeClass: string;
         if (this.theBest) {
-          badgeClass = 'badge badge-glow badge-success the-best';
+          badgeClass = 'badge badge-glow bg-success the-best';
         } else {
-          badgeClass = 'badge badge-light-success';
+          badgeClass = 'badge bg-success-transparent';
         }
         html = `<span class="${badgeClass}">`;
         html += `<div class="mb-25">+${this.attemptsCount > 0 ? this.attemptsCount : ''}</div>`;
@@ -50,9 +50,9 @@ export class ContestProblemInfo {
       } else if (this.attemptsCount > 0) {
         let badgeClass: string;
         if (this.attemptsCount > 0) {
-          badgeClass = 'badge badge-light-danger';
+          badgeClass = 'badge bg-danger-transparent';
         } else {
-          badgeClass = 'badge badge-light-warning';
+          badgeClass = 'badge bg-warning-transparent';
         }
         html += `<span class="${badgeClass}">`;
         html += '-';
@@ -91,9 +91,9 @@ export class ContestProblemInfo {
         } else {
           let badgeClass: string;
           if (this.attemptsCount > 0) {
-            badgeClass = 'badge badge-light-danger';
+            badgeClass = 'badge bg-danger-transparent';
           } else {
-            badgeClass = 'badge badge-light-warning';
+            badgeClass = 'badge bg-warning-transparent';
           }
           html += `<span class="${badgeClass}">`;
           html += '-';
@@ -117,7 +117,7 @@ export class ContestProblemInfo {
         html += '</span>';
         html += '</span>';
       } else {
-        html += `<span class="badge badge-light-danger">`;
+        html += `<span class="badge bg-danger-transparent">`;
         html += '-';
         html += '</span>';
       }
@@ -135,7 +135,7 @@ export class ContestProblemInfo {
         html += '</span>';
         html += '</span>';
       } else {
-        html += `<span class="badge badge-light-danger">`;
+        html += `<span class="badge bg-danger-transparent">`;
         html += '-';
         html += '</span>';
       }
@@ -153,7 +153,7 @@ export class ContestProblemInfo {
         html += '</span>';
         html += '</span>';
       } else {
-        html += `<span class="badge badge-light-danger">`;
+        html += `<span class="badge bg-danger-transparent">`;
         html += '-';
         html += '</span>';
       }
@@ -171,7 +171,7 @@ export class ContestProblemInfo {
         html += '</span>';
         html += '</span>';
       } else {
-        html += `<span class="badge badge-light-danger">`;
+        html += `<span class="badge bg-danger-transparent">`;
         html += '-';
         html += '</span>';
       }

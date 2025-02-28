@@ -1,20 +1,20 @@
 @import 'styles/kep-imports';
-
-.tags-dropdown {
-  --bs-dropdown-padding-x: 0;
-  --bs-dropdown-padding-y: 0;
-
-  --bs-dropdown-bg: white;
-
-  @include dark-layout {
-    --bs-dropdown-bg: #{$theme-dark-card-bg};
-  }
-}
-
-.select-tags {
-  background: white;
-
-  @include dark-layout {
-    background: inherit;
-  }
-}
+//
+//.tags-dropdown {
+//  --bs-dropdown-padding-x: 0;
+//  --bs-dropdown-padding-y: 0;
+//
+//  --bs-dropdown-bg: white;
+//
+//  @include dark-layout {
+//    --bs-dropdown-bg: #{$theme-dark-card-bg};
+//  }
+//}
+//
+//.select-tags {
+//  background: white;
+//
+//  @include dark-layout {
+//    background: inherit;
+//  }
+//}

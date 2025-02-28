@@ -1,19 +1,21 @@
-<a class="card tournament-list-card" routerLink="tournament/{{ tournament.id }}">
-  <div class="card-header justify-content-start">
-    <div class="icon d-sm-block d-none">
-      <img src="assets/images/icons/tournament.png" alt="tournament-icon" width="90" height="90">
-    </div>
-    <div class="card-title">
-      <h3 class="text-dark">
-        {{ tournament.title }}
-      </h3>
-      <p class="text-dark">{{ tournament.startTime | localizedDate:'MMM dd, yyyy'}}</p>
-      <span class="badge">
-        <i data-feather="user"></i>
-        <span class="ms-25 mb-25">
-          {{ tournament.playersCount }}
+<a routerLink="tournament/{{ tournament.id }}">
+  <kep-card>
+    <div class="card-header justify-content-start p-4">
+      <div class="icon d-sm-block d-none">
+        <img src="assets/images/icons/tournament.png" alt="tournament-icon" width="90" height="90">
+      </div>
+      <div class="card-title">
+        <h3 class="text-dark">
+          {{ tournament.title }}
+        </h3>
+        <p class="text-dark">{{ tournament.startTime | localizedDate:'MMM dd, yyyy' }}</p>
+        <span class="badge bg-primary">
+          <i data-feather="user"></i>
+          <span class="ms-25 mb-25">
+            {{ tournament.playersCount }}
+          </span>
         </span>
-      </span>
+      </div>
     </div>
-  </div>
+  </kep-card>
 </a>

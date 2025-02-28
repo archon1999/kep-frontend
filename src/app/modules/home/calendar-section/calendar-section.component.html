@@ -1,3 +1,111 @@
+<!--<kep-card>-->
+<!--  <div class="card-header">-->
+<!--    <div class="card-title">Full Calendar</div>-->
+<!--  </div>-->
+<!--  <div class="card-body">-->
+<!--    <div id="calendar2">-->
+<!--      <div class="d-flex align-items-center justify-content-between flex-wrap gap-1">-->
+<!--        <div class="text-start mb-2">-->
+<!--          <div class="btn-group">-->
+<!--            <div-->
+<!--              (viewDateChange)="closeOpenMonthViewDay()"-->
+<!--              [(viewDate)]="viewDate"-->
+<!--              [view]="view"-->
+<!--              class="btn btn-primary"-->
+<!--              mwlCalendarPreviousView-->
+<!--            >-->
+<!--              <i aria-hidden="true" class="fa fa-chevron-left"></i>-->
+<!--            </div>-->
+<!--            <div-->
+<!--              (viewDateChange)="closeOpenMonthViewDay()"-->
+<!--              [(viewDate)]="viewDate"-->
+<!--              [view]="view"-->
+<!--              class="btn btn-primary"-->
+<!--              mwlCalendarNextView-->
+<!--            >-->
+<!--              <i aria-hidden="true" class="fa fa-chevron-right"></i>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div-->
+<!--            [(viewDate)]="viewDate"-->
+<!--            class="btn btn-primary ms-2"-->
+<!--            mwlCalendarToday-->
+<!--          >-->
+<!--            Today-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="mb-2">-->
+<!--          <h3>{{ viewDate | calendarDate : view + "ViewTitle" : "en" }}</h3>-->
+<!--        </div>-->
+<!--        <div class="text-end mb-2">-->
+<!--          <div class="btn-group">-->
+<!--            <div-->
+<!--              (click)="setView(CalendarView.Month)"-->
+<!--              [class.active]="view === CalendarView.Month"-->
+<!--              class="btn btn-primary mb-1"-->
+<!--            >-->
+<!--              Month-->
+<!--            </div>-->
+<!--            <div-->
+<!--              (click)="setView(CalendarView.Week)"-->
+<!--              [class.active]="view === CalendarView.Week"-->
+<!--              class="btn btn-primary mb-1"-->
+<!--            >-->
+<!--              Week-->
+<!--            </div>-->
+<!--            <div-->
+<!--              (click)="setView(CalendarView.Day)"-->
+<!--              [class.active]="view === CalendarView.Day"-->
+<!--              class="btn btn-primary mb-1"-->
+<!--            >-->
+<!--              Day-->
+<!--            </div>-->
+<!--            <button-->
+<!--              (click)="addEvent()"-->
+<!--              class="btn btn-raised btn-primary float-end mb-1"-->
+<!--            >-->
+<!--              List-->
+<!--            </button>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    @switch (view) {-->
+<!--      @case ('month') {-->
+<!--        <mwl-calendar-month-view-->
+<!--          [viewDate]="viewDate"-->
+<!--          [events]="events"-->
+<!--          [activeDayIsOpen]="activeDayIsOpen"-->
+<!--          [refresh]="refresh"-->
+<!--          (dayClicked)="dayClicked($event.day)"-->
+<!--          (eventClicked)="handleEvent('Clicked', $event.event)"-->
+<!--          (eventTimesChanged)="eventTimesChanged($event)">-->
+<!--        </mwl-calendar-month-view>-->
+<!--      }-->
+<!--      @case ("week") {-->
+<!--        <mwl-calendar-week-view-->
+<!--          [viewDate]="viewDate"-->
+<!--          [events]="events"-->
+<!--          [refresh]="refresh"-->
+<!--          [snapDraggedEvents]="false"-->
+<!--          (eventClicked)="handleEvent('Clicked', $event.event)"-->
+<!--          (eventTimesChanged)="eventDropped($event)">-->
+<!--        </mwl-calendar-week-view>-->
+<!--      }-->
+<!--      @case ("day") {-->
+<!--        <mwl-calendar-day-view-->
+<!--          [viewDate]="viewDate"-->
+<!--          [events]="events"-->
+<!--          [refresh]="refresh"-->
+<!--          [snapDraggedEvents]="false"-->
+<!--          (eventClicked)="handleEvent('Clicked', $event.event)"-->
+<!--          (eventTimesChanged)="eventDropped($event)">-->
+<!--        </mwl-calendar-day-view>-->
+<!--      }-->
+<!--    }-->
+<!--  </div>-->
+<!--</kep-card>-->
+
 <div class="app-calendar overflow-hidden">
   <div class="row g-0">
     <div class="col app-calendar-sidebar flex-grow-0 overflow-hidden d-flex flex-column">
@@ -9,7 +117,7 @@
     </div>
 
     <div class="col position-relative">
-      <div class="card border-0 mb-0 rounded-0">
+      <kep-card>
         <div class="card-body">
           <full-calendar #calendar [options]="calendarOptions">
             <!--            <ng-template #eventContent let-arg>-->
@@ -23,7 +131,7 @@
             <!--            </ng-template>-->
           </full-calendar>
         </div>
-      </div>
+      </kep-card>
     </div>
   </div>
 </div>

@@ -23,11 +23,11 @@ export class ProjectResolver implements Resolve<any> {
     return this.service.getProject(route.paramMap.get('slug')).pipe(
       tap((project: Project) => {
         if (!this.authService.currentUserValue?.isSuperuser && project.inThePipeline) {
-          this.router.navigate(['/404'], { skipLocationChange: true });
+          this.router.navigate(['/404'], {skipLocationChange: true});
         }
       }),
       catchError(err => {
-        this.router.navigate(['/404'], { skipLocationChange: true });
+        this.router.navigate(['/404'], {skipLocationChange: true});
         return of(true);
       })
     );

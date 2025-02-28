@@ -1,12 +1,15 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { VerdictsSelectComponent } from '@problems/components/attempts-filter/verdicts-select/verdicts-select.component';
+import {
+  VerdictsSelectComponent
+} from '@problems/components/attempts-filter/verdicts-select/verdicts-select.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BaseUserComponent } from '@app/common';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AttemptsFilter } from '@problems/interfaces';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'attempts-filter',
@@ -16,7 +19,8 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     TranslateModule,
     VerdictsSelectComponent,
     ReactiveFormsModule,
-    NgbTooltipModule
+    NgbTooltipModule,
+    KepCardComponent
   ],
   templateUrl: './attempts-filter.component.html',
   styleUrl: './attempts-filter.component.scss'

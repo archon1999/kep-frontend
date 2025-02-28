@@ -16,7 +16,7 @@ export class ContestResolver {
   ): Observable<any> | Promise<any> | any {
     return this.service.getContest(route.paramMap.get('id')).pipe(
       catchError((err) => {
-        this.router.navigate(['/404'], { skipLocationChange: true });
+        this.router.navigate(['/404'], {skipLocationChange: true});
         return of(true);
       })
     );
@@ -80,7 +80,7 @@ export class ContestProblemResolver {
     const symbol = route.paramMap.get('symbol');
     return this.service.getContestProblem(contestId, symbol).pipe(
       catchError(err => {
-        this.router.navigate(['/404'], { skipLocationChange: true });
+        this.router.navigate(['/404'], {skipLocationChange: true});
         return of(true);
       })
     );

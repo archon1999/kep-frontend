@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
+import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ContestsService } from '@contests/contests.service';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
 import { ContestProblemCardComponent } from '@contests/components/contest-problem-card/contest-problem-card.component';
 import { ContestCardModule } from '@contests/components/contest-card/contest-card.module';
@@ -10,14 +10,15 @@ import { ContestProblem } from '@contests/models/contest-problem';
 import { Contest } from '@contests/models/contest';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { BasePageComponent } from '@app/common';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'app-contest-problems',
   templateUrl: './contest-problems.component.html',
   styleUrls: ['./contest-problems.component.scss'],
   animations: [
-    fadeInLeftOnEnterAnimation({ duration: 1000 }),
-    fadeInRightOnEnterAnimation({ duration: 1000 })
+    fadeInOnEnterAnimation({duration: 1000}),
+    fadeInRightOnEnterAnimation({duration: 1000, translate: '40px'})
   ],
   standalone: true,
   imports: [
@@ -27,6 +28,7 @@ import { BasePageComponent } from '@app/common';
     ContestProblemCardComponent,
     ContestCardModule,
     ContestClassesPipe,
+    KepCardComponent,
   ]
 })
 export class ContestProblemsComponent extends BasePageComponent implements OnInit {
@@ -39,11 +41,11 @@ export class ContestProblemsComponent extends BasePageComponent implements OnIni
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ contest, contestProblems }) => {
+    this.route.data.subscribe(({contest, contestProblems}) => {
       this.contest = Contest.fromJSON(contest);
       this.contestProblems = contestProblems;
       this.loadContentHeader();
-      this.titleService.updateTitle(this.route, { contestTitle: contest.title });
+      this.titleService.updateTitle(this.route, {contestTitle: contest.title});
     });
   }
 

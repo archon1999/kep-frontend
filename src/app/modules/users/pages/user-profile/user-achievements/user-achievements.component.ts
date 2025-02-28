@@ -6,6 +6,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { AchievementComponent } from '@users/pages/user-profile/user-achievements/achievement/achievement.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 enum Tab {
   CompletedAchievements = 1,
@@ -22,7 +23,8 @@ enum Tab {
     CoreCommonModule,
     AchievementComponent,
     SpinnerComponent,
-    EmptyResultComponent
+    EmptyResultComponent,
+    KepCardComponent
   ]
 })
 export class UserAchievementsComponent implements OnInit {
@@ -43,7 +45,7 @@ export class UserAchievementsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ user }) => {
+    this.route.data.subscribe(({user}) => {
       this.service.getUserAchievements(user.username).subscribe(
         (achievements: Array<Achievement>) => {
           this.isLoading = false;

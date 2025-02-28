@@ -30,7 +30,7 @@ export class Problem1615Component implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if(this._intervalId){
+    if (this._intervalId) {
       clearInterval(this._intervalId);
     }
   }

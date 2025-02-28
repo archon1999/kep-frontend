@@ -6,7 +6,7 @@ import { asyncScheduler, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 import { HackAttempt } from '@problems/models/hack-attempt.models';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { HackAttemptsTableModule } from '@problems/components/hack-attempts-table/hack-attempts-table.module';
 
@@ -70,7 +70,7 @@ export class HackAttemptsComponent implements OnInit, OnDestroy {
     );
 
     this._reloader.pipe(
-      throttleTime(500, asyncScheduler, { leading: true, trailing: true }),
+      throttleTime(500, asyncScheduler, {leading: true, trailing: true}),
       takeUntil(this._unsubscribeAll),
     ).subscribe(
       () => {
@@ -90,7 +90,7 @@ export class HackAttemptsComponent implements OnInit, OnDestroy {
   }
 
   private _loadPage() {
-    const params: any = { page: this.currentPage };
+    const params: any = {page: this.currentPage};
     if (this.myAttempts && this.currentUser) {
       params.username = this.currentUser.username;
     }

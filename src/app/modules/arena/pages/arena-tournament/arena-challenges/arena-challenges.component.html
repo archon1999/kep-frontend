@@ -4,34 +4,34 @@
       <div class="table-responsive challenge-results mb-1">
         <table class="table">
           <tbody>
-            <tr>
-              <td>
-                <challenges-user-view [user]="challenge.playerFirst"></challenges-user-view>
-              </td>
-              <td class="text-end">
-            <span class="badge badge-glow" [ngClass]="{
-              'badge-success': challenge.playerFirst.result > challenge.playerSecond.result,
-              'badge-danger': challenge.playerFirst.result < challenge.playerSecond.result,
+          <tr>
+            <td>
+              <challenges-user-view [user]="challenge.playerFirst"></challenges-user-view>
+            </td>
+            <td class="text-end">
+              <span class="badge badge-glow" [ngClass]="{
+              'bg-success': challenge.playerFirst.result > challenge.playerSecond.result,
+              'bg-danger': challenge.playerFirst.result < challenge.playerSecond.result,
               'badge-secondary': challenge.playerFirst.result == challenge.playerSecond.result
             }">
-                  {{ challenge.playerFirst.result }}
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <challenges-user-view [user]="challenge.playerSecond"></challenges-user-view>
-              </td>
-              <td class="text-end">
-            <span class="badge badge-glow" [ngClass]="{
-              'badge-danger': challenge.playerFirst.result > challenge.playerSecond.result,
-              'badge-success': challenge.playerFirst.result < challenge.playerSecond.result,
+                {{ challenge.playerFirst.result }}
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <challenges-user-view [user]="challenge.playerSecond"></challenges-user-view>
+            </td>
+            <td class="text-end">
+              <span class="badge badge-glow" [ngClass]="{
+              'bg-danger': challenge.playerFirst.result > challenge.playerSecond.result,
+              'bg-success': challenge.playerFirst.result < challenge.playerSecond.result,
               'badge-secondary': challenge.playerFirst.result == challenge.playerSecond.result
             }">
-                  {{ challenge.playerSecond.result }}
-                </span>
-              </td>
-            </tr>
+                {{ challenge.playerSecond.result }}
+              </span>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>

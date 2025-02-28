@@ -29,7 +29,7 @@
   <div class="modal-header">
     <h5 class="modal-title">{{ contest.title }}</h5>
     <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close">
-      
+
     </button>
   </div>
   <div class="modal-body" tabindex="0">
@@ -37,7 +37,7 @@
   </div>
   <div class="modal-footer">
     <a [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'standings']"
-      class="btn btn-primary btn-relief" rippleEffect (click)="modal.dismiss('Cross click')">
+       class="btn btn-primary btn-relief" rippleEffect (click)="modal.dismiss('Cross click')">
       {{ 'CONTESTS.STANDINGS' | translate }}
     </a>
   </div>
@@ -47,7 +47,7 @@
   <div class="modal-header">
     <h5 class="modal-title">{{ contest.title }}</h5>
     <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')" aria-label="Close">
-      
+
     </button>
   </div>
   <div class="modal-body" tabindex="0">
@@ -55,7 +55,7 @@
   </div>
   <div class="modal-footer">
     <a [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problems']"
-      class="btn btn-primary btn-relief" rippleEffect (click)="modal.dismiss('Cross click')">
+       class="btn btn-primary btn-relief" rippleEffect (click)="modal.dismiss('Cross click')">
       {{ 'CONTESTS.PROBLEMS' | translate }}
     </a>
   </div>

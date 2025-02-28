@@ -1,8 +1,8 @@
-<a class="d-flex justify-content-{{ justifyContent }} align-items-center" (click)="click()">
+<div style="cursor: pointer;" class="d-flex justify-content-{{ justifyContent }} align-items-center" (click)="click()">
   <ng-content></ng-content>
-  @if(value == ordering){
+  @if (value == ordering) {
     <kep-icon class="font-medium-3 ms-50 text-center" name="up"></kep-icon>
-  } @else if(value == '-' + ordering) {
+  } @else if (value == '-' + ordering) {
     <kep-icon class="font-medium-3 ms-50 text-center" name="down"></kep-icon>
   }
-</a>
+</div>

@@ -10,51 +10,51 @@ export class BlogService {
     public api: ApiService,
   ) { }
 
-  getBlogPost(id: number | string){
+  getBlogPost(id: number | string) {
     return this.api.get(`blog/${id}`);
   }
-  
-  getBlogPosts(filterParams: any = {}){
+
+  getBlogPosts(filterParams: any = {}) {
     let params: any = {
       page_size: 4,
       page: filterParams.page,
     };
-    if(filterParams.topic){
+    if (filterParams.topic) {
       params.topic = filterParams.topic;
     }
-    if(filterParams.author){
+    if (filterParams.author) {
       params.author = filterParams.author;
     }
-    if(filterParams.title){
+    if (filterParams.title) {
       params.title = filterParams.title;
     }
-    if(filterParams.orderBy){
+    if (filterParams.orderBy) {
       params.order_by = filterParams.orderBy;
     }
     return this.api.get('blog', params);
   }
-  
-  getAllAuthors(){
+
+  getAllAuthors() {
     return this.api.get('blog/all-authors');
   }
 
-  getBlogPostComments(id: number | string){
+  getBlogPostComments(id: number | string) {
     return this.api.get(`blog/${id}/comments`);
   }
-  
-  commentPost(blogId: number | string, body: string){
-    return this.api.post(`blog/${blogId}/create-comment/`, { body: body });
+
+  commentPost(blogId: number | string, body: string) {
+    return this.api.post(`blog/${blogId}/create-comment/`, {body: body});
   }
-  
-  blogLike(blogId: number | string){
+
+  blogLike(blogId: number | string) {
     return this.api.post(`blog/${blogId}/like/`);
   }
 
-  commentLike(commentId: number | string){
+  commentLike(commentId: number | string) {
     return this.api.post(`blog-comments/${commentId}/like/`);
   }
 
-  commentDelete(commentId: number | string){
+  commentDelete(commentId: number | string) {
     return this.api.delete(`blog-comments/${commentId}/delete/`);
   }
 

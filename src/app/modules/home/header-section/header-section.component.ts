@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { fadeInOnEnterAnimation, fadeInUpOnEnterAnimation } from 'angular-animations';
 import { AuthService, User } from '@auth';
 import { Subject } from 'rxjs';
@@ -6,16 +6,18 @@ import { takeUntil } from 'rxjs/operators';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { CoreCommonModule } from '@core/common.module';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'header-section',
   templateUrl: './header-section.component.html',
   styleUrls: ['./header-section.component.scss'],
   standalone: true,
-  imports: [CoreCommonModule, KepIconComponent],
+  imports: [CoreCommonModule, KepIconComponent, KepCardComponent],
+  encapsulation: ViewEncapsulation.None,
   animations: [
-    fadeInOnEnterAnimation({ duration: 3000 }),
-    fadeInUpOnEnterAnimation({ duration: 3000 }),
+    fadeInOnEnterAnimation({duration: 3000}),
+    fadeInUpOnEnterAnimation({duration: 3000}),
   ],
 })
 export class HeaderSectionComponent implements OnInit, OnDestroy {

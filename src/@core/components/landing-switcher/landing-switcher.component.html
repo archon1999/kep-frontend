@@ -1,0 +1,149 @@
+<!-- Start Switcher -->
+<div class="offcanvas-end" tabindex="-1" id="switcher-canvas" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header border-bottom">
+    <h5 class="offcanvas-title" id="offcanvasRightLabel">Switcher</h5>
+    <button (click)="activeOffcanvas.close('Close click')" type="button" class="btn-close" data-bs-dismiss="offcanvas"
+            aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="">
+      <p class="switcher-style-head">Directions:</p>
+      <div class="row switcher-style">
+        <div class="col-4">
+          <div class="form-check switch-select">
+            <label class="form-check-label" for="switcher-ltr">
+              LTR
+            </label>
+            <input class="form-check-input" type="radio" name="direction" id="switcher-ltr"
+                   (click)="updateDirection('ltr')" [checked]="localdata['direction'] != 'rtl'">
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-check switch-select">
+            <label class="form-check-label" for="switcher-rtl">
+              RTL
+            </label>
+            <input class="form-check-input" type="radio" name="direction" id="switcher-rtl"
+                   (click)="updateDirection('rtl')" [checked]="localdata['direction'] == 'rtl'">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="theme-colors">
+      <p class="switcher-style-head">Theme Primary:</p>
+      <div class="d-flex flex-wrap align-items-center switcher-style">
+        <div class="form-check switch-select me-3">
+          <input
+            class="form-check-input color-input color-primary-1"
+            type="radio"
+            (click)="
+                  updateprimary({
+                    main: '0, 255, 0',
+                    secondary: '#011a01',
+                    accent: '1, 26, 1'
+                  })
+                "
+            [checked]="localdata['themePrimary']?.['main'] == '0, 255, 0'"
+            name="theme-primary"
+            id="switcher-primary"
+          />
+        </div>
+        <div class="form-check switch-select me-3">
+          <input
+            class="form-check-input color-input color-primary-2"
+            type="radio"
+            (click)="
+                  updateprimary({
+                    main: '255, 235, 59',
+                    secondary: '#181601',
+                    accent: '24, 22, 1'
+                  })
+                "
+            [checked]="localdata['themePrimary']?.['main'] == '255, 235, 59'"
+            name="theme-primary"
+            id="switcher-primary1"
+          />
+        </div>
+        <div class="form-check switch-select me-3">
+          <input
+            class="form-check-input color-input color-primary-3"
+            type="radio"
+            name="theme-primary"
+            id="switcher-primary2"
+            (click)="
+                  updateprimary({
+                    main: '0, 254, 252',
+                    secondary: '#011813',
+                    accent: ' 1, 24, 19'
+                  })
+                "
+            [checked]="localdata['themePrimary']?.['main'] == '0, 254, 252'"
+          />
+        </div>
+        <div class="form-check switch-select me-3">
+          <input
+            class="form-check-input color-input color-primary-4"
+            type="radio"
+            name="theme-primary"
+            id="switcher-primary3"
+            (click)="
+                  updateprimary({
+                    main: '0, 175, 255',
+                    secondary: '#011118',
+                    accent: '1, 17, 24'
+                  })
+                "
+            [checked]="localdata['themePrimary']?.['main'] == '0, 175, 255'"
+          />
+        </div>
+        <div class="form-check switch-select me-3">
+          <input
+            class="form-check-input color-input color-primary-5"
+            type="radio"
+            name="theme-primary"
+            id="switcher-primary4"
+            (click)="
+                  updateprimary({
+                    main: '209, 115, 255',
+                    secondary: '#110118',
+                    accent: ' 17, 1, 24'
+                  })
+                "
+            [checked]="localdata['themePrimary']?.['main'] == '209, 115, 255'"
+          />
+        </div>
+        <div
+          class="form-check switch-select ps-0 mt-1 color-primary-light"
+        >
+          <div class="theme-container-primary"></div>
+          <div
+            class="pickr-container-primary"
+            onchange="updateChartColor(this.value)"
+          >
+            <div class="pickr">
+              <button
+                type="button"
+                role="button"
+                aria-label="toggle color picker dialog"
+                class="color-bg-transparent pcr-button bg-secondary"
+                style="--pcr-color: rgba(132, 90, 223, 1)"
+                [style.background]="defaultPrimary"
+                [cpAlphaChannel]="'disabled'"
+                [cpOutputFormat]="'rgba'"
+                [(colorPicker)]="defaultPrimary"
+                (cpSliderDragEnd)="dynamicLightPrimary($event)"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p class="switcher-style-head">reset:</p>
+      <div class="text-center">
+        <button (click)="reset()" id="reset-all" class="btn btn-danger mt-3">Reset</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Switcher -->

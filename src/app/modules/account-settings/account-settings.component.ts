@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from '@auth';
 import { BasePageComponent } from '@app/common';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
 import { getResourceById } from '@app/resources';
 
 enum Tab {
@@ -14,6 +14,7 @@ enum Tab {
   Teams = 'teams',
   System = 'system',
 }
+
 @Component({
   selector: 'app-account-settings',
   templateUrl: './account-settings.component.html',
@@ -42,7 +43,7 @@ export class AccountSettingsComponent extends BasePageComponent implements OnIni
   }
 
   activeIdChange(id: string) {
-    this.router.navigateByUrl(getResourceById(this.Resources.SettingsTab, id), { replaceUrl: true });
+    this.router.navigateByUrl(getResourceById(this.Resources.SettingsTab, id), {replaceUrl: true});
   }
 
   protected getContentHeader(): ContentHeader {

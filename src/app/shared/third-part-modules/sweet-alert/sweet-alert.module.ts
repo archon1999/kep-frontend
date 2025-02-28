@@ -16,4 +16,4 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     SweetAlert2Module,
   ]
 })
-export class SweetAlertModule { }
+export class SweetAlertModule {}

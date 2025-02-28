@@ -8,6 +8,7 @@ import { UserBlogComponent } from '@users/pages/user-profile/user-blog/user-blog
 import { UserRatingsComponent } from '@users/pages/user-profile/user-ratings/user-ratings.component';
 import { UserEducation, UserInfo, UserSocial, UserWorkExperience } from '@users/users.models';
 import { ActivatedRoute } from '@angular/router';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'user-info',
@@ -20,6 +21,7 @@ import { ActivatedRoute } from '@angular/router';
     UserAchievementsComponent,
     UserBlogComponent,
     UserRatingsComponent,
+    KepCardComponent,
   ],
   templateUrl: './user-info.component.html',
   styleUrl: './user-info.component.scss'
@@ -33,7 +35,7 @@ export class UserInfoComponent implements OnInit {
   constructor(public route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.route.data.subscribe(({ userInfo, userSocial, userEducations, userWorkExperiences }) => {
+    this.route.data.subscribe(({userInfo, userSocial, userEducations, userWorkExperiences}) => {
       this.userSocial = userSocial;
       this.userInfo = userInfo;
       this.userEducations = userEducations;

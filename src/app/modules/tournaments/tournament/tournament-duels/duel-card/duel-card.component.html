@@ -2,31 +2,31 @@
   <div class="table-responsive">
     <table class="table">
       <tbody>
-        <tr>
-          <td>
-            <contestant-view [textColor]="'dark'" [user]="duel.playerFirst"></contestant-view>
-          </td>
-          <td class="text-end">
-            <span class="badge">
-              {{ duel.playerFirst.balls }}
-            </span>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            @if (duel.playerSecond) {
-              <contestant-view [textColor]="'dark'" [user]="duel.playerSecond"></contestant-view>
-            }
-            @if (!duel.playerSecond) {
-              <span>BYE</span>
-            }
-          </td>
-          <td class="text-end">
-            <span class="badge">
-              {{ duel.playerSecond?.balls || 0 }}
-            </span>
-          </td>
-        </tr>
+      <tr>
+        <td>
+          <contestant-view [textColor]="'dark'" [user]="duel.playerFirst"></contestant-view>
+        </td>
+        <td class="text-end">
+          <span class="badge">
+            {{ duel.playerFirst.balls }}
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          @if (duel.playerSecond) {
+            <contestant-view [textColor]="'dark'" [user]="duel.playerSecond"></contestant-view>
+          }
+          @if (!duel.playerSecond) {
+            <span>BYE</span>
+          }
+        </td>
+        <td class="text-end">
+          <span class="badge">
+            {{ duel.playerSecond?.balls || 0 }}
+          </span>
+        </td>
+      </tr>
       </tbody>
     </table>
   </div>

@@ -19,10 +19,10 @@ export class ProblemGuard implements CanActivate {
     state: RouterStateSnapshot,
   ): Observable<boolean> | boolean {
     const problemId = route.params['id'];
-    return this.api.get(`problems/${ problemId }/guard`).pipe(
+    return this.api.get(`problems/${problemId}/guard`).pipe(
       map((result: any) => result.success),
       catchError((err) => {
-        this.router.navigate(['/404'], { skipLocationChange: true });
+        this.router.navigate(['/404'], {skipLocationChange: true});
         return of(true);
       })
     );
@@ -45,12 +45,12 @@ export class AttemptGuard implements CanActivate {
     state: RouterStateSnapshot,
   ): Observable<boolean> | boolean {
     const attemptId = route.params['id'];
-    return this.api.get(`attempts/${ attemptId }`).pipe(
+    return this.api.get(`attempts/${attemptId}`).pipe(
       map((problem: any) => {
         return true;
       }),
       catchError((err) => {
-        this.router.navigate(['/404'], { skipLocationChange: true });
+        this.router.navigate(['/404'], {skipLocationChange: true});
         return of(true);
       })
     );

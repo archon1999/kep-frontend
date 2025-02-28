@@ -1,4 +1,4 @@
-<div class="card">
+<kep-card>
   <div class="card-body">
     <div class="text-center">
       <div class="avatar p-50 bg-primary badge-glow">
@@ -10,19 +10,19 @@
         {{ 'Problems' | translate }}
         <br>
         <div class="font-medium-4 mt-2">
-            <span class="me-50" ngbTooltip="{{ 'Solved' | translate }}">
-              <kep-icon name="check-circle"></kep-icon>
-              {{ userProblemsRating.solved }}
-            </span>
+          <span class="me-50" ngbTooltip="{{ 'Solved' | translate }}">
+            <kep-icon name="check-circle"></kep-icon>
+            {{ userProblemsRating.solved }}
+          </span>
 
           <span ngbTooltip="{{ 'Rating' | translate }}">
-              <kep-icon name="rating"></kep-icon>
+            <kep-icon name="rating"></kep-icon>
             {{ userProblemsRating.rating }}
-            </span>
+          </span>
         </div>
 
         <div class="font-small-4 d-md-flex d-block justify-content-between">
-          @for (difficulty of difficultyLabels;track difficulty) {
+          @for (difficulty of difficultyLabels; track difficulty) {
             <div class="mt-2">
               {{ difficulty | titlecase | translate }}
               <br>
@@ -35,9 +35,9 @@
       </div>
     </div>
   </div>
-</div>
+</kep-card>
 
-<div class="card">
+<kep-card>
   <div class="card-body">
     <div class="text-center">
       <div class="avatar p-50 bg-primary badge-glow">
@@ -54,22 +54,22 @@
     <div class="text-center font-medium-1 mt-1">
       <i [data-feather]="'rating' | iconName"></i>
       {{ 'Rating' | translate }}:
-      <span class="ms-50 badge badge-light-{{ userContestsRating.rating | contestsRatingColor }}">
-                {{ userContestsRating.rating }}
-              </span>
+      <span class="ms-50 badge bg-{{ userContestsRating.rating | contestsRatingColor }}-transparent">
+        {{ userContestsRating.rating }}
+      </span>
       <contests-rating-image [size]="24" [title]="userContestsRating.ratingTitle"></contests-rating-image>
     </div>
 
-    <div class="text-center font-medium-1 mt-50">
+    <div class="text-center font-medium-1 mt-2">
       <i [data-feather]="'rating' | iconName"></i>
       {{ 'MaxRating' | translate }}:
-      <span class="ms-50 badge badge-light-{{ userContestsRating.maxRating | contestsRatingColor }}">
-                {{ userContestsRating.maxRating }}
-              </span>
+      <span class="ms-50 badge bg-{{ userContestsRating.maxRating | contestsRatingColor }}-transparent">
+        {{ userContestsRating.maxRating }}
+      </span>
       <contests-rating-image [size]="24" [title]="userContestsRating.maxRatingTitle"></contests-rating-image>
     </div>
 
-    <div class="text-center font-medium-1 mt-50">
+    <div class="text-center font-medium-1 mt-2">
       <i [data-feather]="'flag'"></i>
       {{ 'Contests' | translate }}:
       <span class="ms-50 badge badge-light-primary">
@@ -85,9 +85,9 @@
       }
     </div>
   </div>
-</div>
+</kep-card>
 
-<div class="card">
+<kep-card>
   <div class="card-body">
     <div class="text-center">
       <div class="avatar p-50 bg-primary badge-glow">
@@ -104,11 +104,11 @@
     <div class="text-center mt-1">
       <div class="text-{{ userChallengesRating.rankTitle | challengesRankColor }}">
         <span
-          class="badge badge-pill badge-glow badge-{{ userChallengesRating.rankTitle | challengesRankColor }}">
+          class="badge badge-pill bg-{{ userChallengesRating.rankTitle | challengesRankColor }}">
           {{ userChallengesRating.rankTitle }}
         </span>
 
-        <span class="badge badge-light-{{ userChallengesRating.rankTitle | challengesRankColor }}">
+        <span class="badge bg-{{ userChallengesRating.rankTitle | challengesRankColor }}-transparent">
           {{ userChallengesRating.rating }}
         </span>
       </div>
@@ -131,4 +131,4 @@
       }
     </div>
   </div>
-</div>
+</kep-card>

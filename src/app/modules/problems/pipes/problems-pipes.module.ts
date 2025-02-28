@@ -20,4 +20,4 @@ import { VerdictShortTitlePipe } from '@problems/pipes/verdict-short-title.pipe'
     VerdictShortTitlePipe,
   ]
 })
-export class ProblemsPipesModule { }
+export class ProblemsPipesModule {}

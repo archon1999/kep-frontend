@@ -9,8 +9,8 @@ import { HackAttempt } from '../../../models/hack-attempt.models';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
   animations: [
-    bounceAnimation({ duration: 2000 }),
-    shakeAnimation({ duration: 2000 }),
+    bounceAnimation({duration: 2000}),
+    shakeAnimation({duration: 2000}),
     fadeInOnEnterAnimation(),
   ]
 })

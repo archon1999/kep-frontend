@@ -12,7 +12,8 @@
 
         <div class="text-dark font-medium-2 mb-1">
           <i [size]="'18'" class="me-25" [data-feather]="'info'"></i>
-          Ushbu kurs <b>{{ course.lessonsCount - 1 }} ta</b> mavzudan iborat, har bir mavzu kichik ma'ruzalar, misollar, topshiriq va masalalardan iborat.
+          Ushbu kurs <b>{{ course.lessonsCount - 1 }} ta</b> mavzudan iborat, har bir mavzu kichik ma'ruzalar, misollar,
+          topshiriq va masalalardan iborat.
         </div>
 
         <div class="text-dark font-medium-2">
@@ -27,13 +28,13 @@
             <a
               [routerLink]="Resources.CourseFirstLesson | resourceById:course.id"
               class="btn btn-primary btn-sm btn-block" rippleEffect>
-                <span>
-                  @if (!course.isStarted) {
-                    {{ 'COURSES.START' | translate }}
-                  } @else {
-                    {{ 'COURSES.CONTINUE' | translate }}
-                  }
-                </span>
+              <span>
+                @if (!course.isStarted) {
+                  {{ 'COURSES.START' | translate }}
+                } @else {
+                  {{ 'COURSES.CONTINUE' | translate }}
+                }
+              </span>
             </a>
             @if (course.isStarted) {
               <div class="mt-2 progress-wrapper">

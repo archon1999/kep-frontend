@@ -67,7 +67,7 @@ export class Problem1870Component implements OnInit {
     const blocks = [];
     for (const line of output.split('\n')) {
       const [day, height, width, top, left] = line.split(' ');
-      blocks.push({ day: +day, height, width, top, left });
+      blocks.push({day: +day, height, width, top, left});
     }
     for (let day = 1; day <= 7; day++) {
       this.blocks.push(blocks.filter(event => event.day === day));

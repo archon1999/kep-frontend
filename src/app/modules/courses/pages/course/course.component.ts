@@ -6,7 +6,9 @@ import { CourseHeaderComponent } from '@courses/pages/course/course-header/cours
 import { CourseInfoComponent } from '@courses/pages/course/course-info/course-info.component';
 import { CourseLessonsComponent } from '@courses/pages/course/course-lessons/course-lessons.component';
 import { ReviewsComponent } from '@courses/pages/course/course-reviews/reviews.component';
-import { CourseBestParticipantsComponent } from '@courses/pages/course/course-best-participants/course-best-participants.component';
+import {
+  CourseBestParticipantsComponent
+} from '@courses/pages/course/course-best-participants/course-best-participants.component';
 
 @Component({
   selector: 'app-course',
@@ -26,9 +28,9 @@ export class CourseComponent extends BaseComponent implements OnInit {
   public course: Course;
 
   ngOnInit() {
-    this.route.data.subscribe(({ course }) => {
+    this.route.data.subscribe(({course}) => {
       this.course = course;
-      this.titleService.updateTitle(this.route, { courseTitle: course.title });
+      this.titleService.updateTitle(this.route, {courseTitle: course.title});
     });
   }
 }

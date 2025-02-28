@@ -1,4 +1,4 @@
-<div class="card">
+<kep-card>
   <div class="card-header">
     <div class="card-title">
       {{ 'Comments' | translate }}
@@ -7,7 +7,7 @@
   </div>
 
   <div class="card-body" *ngIf="comments?.length > 0">
-    @for (comment of comments; track comment.id){
+    @for (comment of comments; track comment.id) {
       <div
         [@fadeInOnEnter]
         [@fadeOutOnLeave]
@@ -15,11 +15,12 @@
         [ngClass]="{'bg-light-secondary': comment.username == currentUser?.username }"
       >
         <div class="d-flex pt-1 mb-4 ps-1">
-          <img class="rounded" [src]="comment.userAvatar" alt="pic1">
+          <img class="avatar avatar-rounded" [src]="comment.userAvatar" alt="pic1">
           <div class="flex-grow-1">
             <div class="row ps-1">
               <h4 class="d-flex-heading text-dark">
-                <user-popover [username]="comment.username"></user-popover>,
+                <user-popover [username]="comment.username"></user-popover>
+                ,
               </h4>
               <p class="meta-time-date ps-1">{{ comment.created }}</p>
             </div>
@@ -59,39 +60,8 @@
 
   <div class="card-footer">
     <h4 class="mb-1">{{ 'WriteComment' | translate }}</h4>
-    <quill-editor class="full-width" [(ngModel)]="comment">
-      <div quill-editor-toolbar>
-    <span class="ql-formats">
-      <button class="ql-bold" [title]="'Bold'"></button>
-      <button class="ql-italic" [title]="'italic'"></button>
-      <button class="ql-underline" [title]="'underline'"></button>
-    </span>
-        <span class="ql-formats">
-      <select class="ql-align" [title]="'Alignment'">
-        <option selected></option>
-        <option value="center"></option>
-        <option value="right"></option>
-        <option value="justify"></option>
-      </select>
-    </span>
-        <span class="ql-formats">
-      <button class="ql-list" value="ordered" type="button"></button>
-    </span>
-        <span class="ql-formats">
-      <button class="ql-link" value="ordered" type="button"></button>
-      <button class="ql-image" value="ordered" type="button"></button>
-      <button class="ql-video" value="ordered" type="button"></button>
-    </span>
-        <span class="ql-formats">
-      <button class="ql-formula" value="ordered" type="button"></button>
-      <button class="ql-code-block" value="ordered" type="button"></button>
-    </span>
-        <span class="ql-formats">
-      <button class="ql-clean" value="ordered" type="button"></button>
-    </span>
-      </div>
-    </quill-editor>
+    <angular-editor [(ngModel)]="comment" [config]="config"/>
 
     <button (click)="submit()" class="btn btn-primary mb-1 mt-1">{{ 'Send' | translate }}</button>
   </div>
-</div>
+</kep-card>

@@ -42,7 +42,7 @@ export class SectionContestsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ contests }) => {
+    this.route.data.subscribe(({contests}) => {
       this.contests = contests.map((contest: any) => Contest.fromJSON(contest));
     });
   }

@@ -12,6 +12,8 @@ import enLocale from '@fullcalendar/core/locales/es-us';
 import { TranslateService } from '@ngx-translate/core';
 import { HomeService } from '../home.service';
 import { LocalStorageService } from '@shared/services/storages/local-storage.service';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { CalendarModule } from "angular-calendar";
 
 
 enum CalendarEventType {
@@ -27,7 +29,7 @@ enum CalendarEventType {
   styleUrls: ['./calendar-section.component.scss'],
   encapsulation: ViewEncapsulation.None,
   standalone: true,
-  imports: [FullCalendarModule],
+  imports: [FullCalendarModule, KepCardComponent, CalendarModule],
 })
 export class CalendarSectionComponent implements OnInit {
 
@@ -93,17 +95,17 @@ export class CalendarSectionComponent implements OnInit {
         this.calendarOptions.events = events.map((event) => {
           event.start = new Date(event.startTime);
           event.end = new Date(event.finishTime);
-          switch(event.type) {
+          switch (event.type) {
             case CalendarEventType.CONTEST:
-              event.url = `/competitions/contests/contest/${ event.uid }`;
+              event.url = `/competitions/contests/contest/${event.uid}`;
               event.className = 'bg-light-primary';
               break;
             case CalendarEventType.ARENA:
-              event.url = `/competitions/arena/tournament/${ event.uid }`;
+              event.url = `/competitions/arena/tournament/${event.uid}`;
               event.className = 'bg-light-warning';
               break;
             case CalendarEventType.TOURNAMENT:
-              event.url = `/competitions/tournaments/tournament/${ event.uid }`;
+              event.url = `/competitions/tournaments/tournament/${event.uid}`;
               event.className = 'bg-light-dark';
               break;
             case CalendarEventType.HOLIDAY:

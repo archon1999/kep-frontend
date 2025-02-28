@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { SectionProblemsTableComponent } from '../section-problems-table/section-problems-table.component';
 import { CoreCommonModule } from '@core/common.module';
-import { ProblemCardComponent } from '@problems/pages/problems/sections/section-problems-list/problem-card/problem-card.component';
+import {
+  ProblemCardComponent
+} from '@problems/pages/problems/sections/section-problems-list/problem-card/problem-card.component';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 

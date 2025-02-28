@@ -1,4 +1,6 @@
 export enum Resources {
+  Home = '/home',
+
   Problems = '/practice/problems',
   Problem = '/practice/problems/problem/:id',
 
@@ -28,14 +30,20 @@ export enum Resources {
   Course = '/learn/courses/course/:id',
   CourseFirstLesson = '/learn/courses/course/:id/lesson/1',
 
+  Blog = '/learn/blog',
+  Lugavar = '/learn/lugavar',
+
+  Users = '/users',
+
+  Calendar = '/calendar',
+  Shop = '/shop',
+  Kepcoin = '/kepcoin',
+  KepCover = '/kep-cover',
+
   Login = '/login',
   Settings = '/settings',
   SettingsTab = '/settings/:id',
   TeamJoin = '/teams/:id/join',
-
-  Shop = '/shop',
-  Kepcoin = '/kepcoin',
-  KepCover = '/kep-cover',
 }
 
 export function getResourceById(resource: Resources, id: number | string) {

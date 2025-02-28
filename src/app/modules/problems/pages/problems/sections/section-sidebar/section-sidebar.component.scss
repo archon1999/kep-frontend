@@ -9,22 +9,22 @@ table {
     border-top: none !important;
   }
 
-  tr>td {
+  tr > td {
     padding-bottom: 0.5rem;
     padding-top: 0.5rem;
   }
 
-  tr>th:nth-child(1) {
+  tr > th:nth-child(1) {
     padding-left: 2rem;
     padding-right: 0.5rem;
   }
 
-  tr>td:nth-child(1) {
+  tr > td:nth-child(1) {
     padding-left: 2rem;
     padding-right: 0.5rem;
   }
 
-  tr>td:nth-child(2) {
+  tr > td:nth-child(2) {
     padding-right: 0.5rem;
   }
 }

@@ -2,7 +2,9 @@ import { Component, Input } from '@angular/core';
 import { ProjectsService } from '@projects/projects.service';
 import { Project } from '@app/modules/projects/interfaces/project';
 import { ProjectAttempt } from '@app/modules/projects/interfaces/project-attempt';
-import { AttemptsTableComponent } from '@projects/pages/project/project-attempts/attempts-table/attempts-table.component';
+import {
+  AttemptsTableComponent
+} from '@projects/pages/project/project-attempts/attempts-table/attempts-table.component';
 import { CoreCommonModule } from '@core/common.module';
 import { BaseTablePageComponent } from '@app/common';
 import { Observable } from 'rxjs';

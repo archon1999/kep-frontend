@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { ContestsService } from '@contests/contests.service';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
@@ -6,21 +6,31 @@ import { ContestsRating } from '@contests/models';
 import { User } from '@auth';
 import { Observable } from 'rxjs';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
-import { ContestsRatingBadgeComponent } from '@contests/components/contests-rating-badge/contests-rating-badge.component';
+import {
+  ContestsRatingBadgeComponent
+} from '@contests/components/contests-rating-badge/contests-rating-badge.component';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
+import { ContentHeaderModule } from "@core/components/content-header/content-header.module";
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { NgxSkeletonLoaderModule } from "ngx-skeleton-loader";
 
 @Component({
   selector: 'section-header',
   standalone: true,
-  imports: [CoreCommonModule, ContestantViewModule, ContestsRatingBadgeComponent],
+  imports: [CoreCommonModule, ContestantViewModule, ContestsRatingBadgeComponent, ContentHeaderModule, KepCardComponent, NgxSkeletonLoaderModule],
   templateUrl: './section-header.component.html',
   styleUrl: './section-header.component.scss'
 })
 export class SectionHeaderComponent extends BaseLoadComponent<ContestsRating> {
+  @Input() override contentHeader: ContentHeader;
+
   override loadOnInit = false;
 
   constructor(public service: ContestsService) {
     super();
   }
+
+  override ngOnInit() {}
 
   getData(): Observable<ContestsRating> {
     return this.service.getUserContestsRating(this.currentUser?.username);

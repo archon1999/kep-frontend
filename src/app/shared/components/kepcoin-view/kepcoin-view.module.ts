@@ -19,4 +19,4 @@ import { KepcoinComponent } from './kepcoin/kepcoin.component';
     KepcoinComponent
   ]
 })
-export class KepcoinViewModule { }
+export class KepcoinViewModule {}

@@ -12,6 +12,7 @@ import { CountUpModule } from 'ngx-countup';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @NgModule({
   declarations: [
@@ -30,8 +31,9 @@ import { KepTableComponent } from '@shared/components/kep-table/kep-table.compon
     KepPaginationComponent,
     ContestClassesPipe,
     KepTableComponent,
+    KepCardComponent,
   ],
-  exports: [    
+  exports: [
     ContestsTableComponent,
     ContestStandingsPopoverComponent,
   ]

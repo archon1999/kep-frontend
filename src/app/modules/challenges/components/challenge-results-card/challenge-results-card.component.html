@@ -5,8 +5,8 @@
         <div class="d-flex justify-content-center align-items-center">
           <challenges-user-view [user]="challenge.playerFirst" [withRating]="false"/>
           <span class="badge badge-glow ms-50" [ngClass]="{
-            'badge-success': challenge.playerFirst.result > challenge.playerSecond.result,
-            'badge-danger': challenge.playerFirst.result < challenge.playerSecond.result,
+            'bg-success': challenge.playerFirst.result > challenge.playerSecond.result,
+            'bg-danger': challenge.playerFirst.result < challenge.playerSecond.result,
             'badge-secondary': challenge.playerFirst.result == challenge.playerSecond.result
           }">
             {{ challenge.playerFirst.result }}
@@ -17,8 +17,8 @@
       <div class="col p-0 d-flex align-items-center justify-content-center">
         <div class="d-flex justify-content-center align-items-center">
           <span class="badge badge-glow me-50" [ngClass]="{
-            'badge-danger': challenge.playerFirst.result > challenge.playerSecond.result,
-            'badge-success': challenge.playerFirst.result < challenge.playerSecond.result,
+            'bg-danger': challenge.playerFirst.result > challenge.playerSecond.result,
+            'bg-success': challenge.playerFirst.result < challenge.playerSecond.result,
             'badge-secondary': challenge.playerFirst.result == challenge.playerSecond.result
           }">
             {{ challenge.playerSecond.result }}

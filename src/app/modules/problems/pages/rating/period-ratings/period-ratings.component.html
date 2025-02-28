@@ -4,9 +4,9 @@
   </div>
 } @else {
   <div class="row">
-    @for (rating of periodRatings;track rating.period) {
+    @for (rating of periodRatings; track rating.period) {
       <div class="col-lg-4 col-12">
-        <div class="card">
+        <kep-card>
           <div class="card-header">
             <div class="card-title">
               {{ rating.period | uppercase | translate }}
@@ -17,32 +17,36 @@
             </a>
           </div>
 
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-              <tr class="bg-gradient-{{ rating.color }}">
-                <th class="text-white text-center">#</th>
-                <th class="text-white">{{ 'USER' | translate }}</th>
-                <th class="text-white text-center"><i [data-feather]="'problem' | iconName"></i></th>
-              </tr>
-              </thead>
-              <tbody>
-                @for (userRating of rating.data; track userRating; let i = $index) {
-                  <tr
-                    [class]="currentUser?.username == userRating.username ? 'bg-light'+rating.color : ''">
-                    <td class="text-center">{{ i + 1 }}</td>
-                    <td><contestant-view [user]="userRating"></contestant-view></td>
-                    <td class="text-center">
-                          <span class="badge badge-glow badge-{{ rating.color }}">
-                            {{ userRating.solved }}
-                          </span>
-                    </td>
-                  </tr>
-                }
-              </tbody>
-            </table>
+          <div class="mt-2">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                <tr class="bg-{{ rating.color }}">
+                  <th class="text-white text-center">#</th>
+                  <th class="text-white">{{ 'USER' | translate }}</th>
+                  <th class="text-white text-center"><i [data-feather]="'problem' | iconName"></i></th>
+                </tr>
+                </thead>
+                <tbody>
+                  @for (userRating of rating.data; track userRating; let i = $index) {
+                    <tr
+                      [class]="currentUser?.username == userRating.username ? 'bg-light'+rating.color : ''">
+                      <td class="text-center">{{ i + 1 }}</td>
+                      <td>
+                        <contestant-view [user]="userRating"></contestant-view>
+                      </td>
+                      <td class="text-center">
+                        <span class="badge badge-glow badge-{{ rating.color }}">
+                          {{ userRating.solved }}
+                        </span>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        </kep-card>
       </div>
     }
   </div>

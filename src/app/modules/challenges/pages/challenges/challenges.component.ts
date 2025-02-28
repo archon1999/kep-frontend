@@ -1,14 +1,22 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { BasePageComponent } from '@app/common/classes/base-page.component';
 import { SectionHeaderComponent } from '@challenges/pages/challenges/sections/section-header/section-header.component';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
-import { SectionQuickstartComponent } from '@challenges/pages/challenges/sections/section-quickstart/section-quickstart.component';
-import { SectionInQueueComponent } from '@challenges/pages/challenges/sections/section-in-queue/section-in-queue.component';
-import { SectionChallengesComponent } from '@challenges/pages/challenges/sections/section-challenges/section-challenges.component';
-import { SectionTopRatingComponent } from '@challenges/pages/challenges/sections/section-top-rating/section-top-rating.component';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
+import {
+  SectionQuickstartComponent
+} from '@challenges/pages/challenges/sections/section-quickstart/section-quickstart.component';
+import {
+  SectionInQueueComponent
+} from '@challenges/pages/challenges/sections/section-in-queue/section-in-queue.component';
+import {
+  SectionChallengesComponent
+} from '@challenges/pages/challenges/sections/section-challenges/section-challenges.component';
+import {
+  SectionTopRatingComponent
+} from '@challenges/pages/challenges/sections/section-top-rating/section-top-rating.component';
 import { SectionArenasComponent } from '@challenges/pages/challenges/sections/section-arenas/section-arenas.component';
 
 enum Tab {
@@ -44,9 +52,12 @@ export class ChallengesComponent extends BasePageComponent implements OnInit, On
       breadcrumb: {
         links: [
           {
-            name: this.coreConfig.app.appTitle,
-            isLink: true,
-            link: '/',
+            name: 'Practice',
+            isLink: false,
+          },
+          {
+            name: 'Challenges',
+            isLink: false,
           }
         ]
       }

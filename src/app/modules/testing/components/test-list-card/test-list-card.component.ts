@@ -7,7 +7,7 @@ import { Test } from '../../testing.models';
   templateUrl: './test-list-card.component.html',
   styleUrls: ['./test-list-card.component.scss'],
   animations: [
-    fadeInOnEnterAnimation({ duration: 3000 }),
+    fadeInOnEnterAnimation({duration: 3000}),
   ]
 })
 export class TestListCardComponent implements OnInit {

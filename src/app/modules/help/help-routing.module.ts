@@ -7,12 +7,12 @@ const routes: Routes = [
   {
     path: 'faq',
     component: FaqComponent,
-    data: { animation: 'faq' }
+    data: {animation: 'faq'}
   },
   {
     path: 'knowledge-base',
     component: KnowledgeBaseComponent,
-    data: { animation: 'knowledge-base' }
+    data: {animation: 'knowledge-base'}
   }
 ];
 
@@ -20,4 +20,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class HelpRoutingModule { }
+export class HelpRoutingModule {}

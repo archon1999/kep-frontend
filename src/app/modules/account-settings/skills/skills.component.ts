@@ -29,7 +29,7 @@ export class SkillsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ userSkills, userTechnologies }) => {
+    this.route.data.subscribe(({userSkills, userTechnologies}) => {
       this.userSkills = userSkills;
       this.userTechnologies = userTechnologies;
     });
@@ -51,12 +51,10 @@ export class SkillsComponent implements OnInit {
   save() {
     this.service.updateUserSkills(this.userSkills).subscribe(
       () => {
-        this.toastr.success('Saved', '', {
-          toastClass: 'toast ngx-toastr',
-        });
+        this.toastr.success('Saved', '');
       }, (err: any) => {
         this.toastr.error('Error', '', {
-          toastClass: 'toast ngx-toastr',
+
         });
       }
     );
@@ -64,11 +62,11 @@ export class SkillsComponent implements OnInit {
     this.service.updateUserTechnologies(this.userTechnologies).subscribe(
       () => {
         this.toastr.success('Saved', '', {
-          toastClass: 'toast ngx-toastr',
+
         });
       }, (err: any) => {
         this.toastr.error('Error', '', {
-          toastClass: 'toast ngx-toastr',
+
         });
       }
     );

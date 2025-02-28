@@ -14,8 +14,8 @@ import { SessionStorageService } from '@shared/services/storages/session-storage
   templateUrl: './tournament.component.html',
   styleUrls: ['./tournament.component.scss'],
   animations: [
-    fadeInLeftOnEnterAnimation({ duration: 1500 }),
-    fadeInUpOnEnterAnimation({ duration: 1500 }),
+    fadeInLeftOnEnterAnimation({duration: 1500}),
+    fadeInUpOnEnterAnimation({duration: 1500}),
   ]
 })
 export class TournamentComponent implements OnInit, OnDestroy {
@@ -39,11 +39,11 @@ export class TournamentComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ tournament }) => {
+    this.route.data.subscribe(({tournament}) => {
       this.tournament = tournament;
-      this.tournamentTabKeyName = `tournament-${ this.tournament.id }-tab`;
+      this.tournamentTabKeyName = `tournament-${this.tournament.id}-tab`;
       this.activeId = this.sessionStorageService.get(this.tournamentTabKeyName) || 1;
-      this.titleService.updateTitle(this.route, { tournamentTitle: this.tournament.title });
+      this.titleService.updateTitle(this.route, {tournamentTitle: this.tournament.title});
       if ((new Date(this.tournament.startTime).valueOf() - Date.now()) >= 1000 * 60 * 10) {
         this.canRegistration = true;
       }

@@ -18,4 +18,4 @@ import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.
     KepcoinSpendSwalComponent
   ]
 })
-export class KepcoinSpendSwalModule { }
+export class KepcoinSpendSwalModule {}

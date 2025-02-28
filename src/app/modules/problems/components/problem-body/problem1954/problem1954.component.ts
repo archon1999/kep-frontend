@@ -24,7 +24,7 @@ export class Problem1954Component {
 
   finish() {
     this.toastr.success(message, '', {
-      toastClass: 'toast ngx-toastr',
+
     });
   }
 

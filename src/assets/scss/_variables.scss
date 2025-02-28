@@ -1,0 +1,328 @@
+// ================================
+// Фоновые и базовые цвета
+// ================================
+
+// Цвета фона
+// Light: --body-bg-rgb: 20,20,20, Dark: --body-bg-rgb2: 20,20,20 (используем dark)
+$body-bg-rgb: 20, 20, 20;
+$default-body-color: #141414; // rgb(20,20,20)
+
+// Цвета текста
+// Light: --default-text-color-rgb: 51,51,51, Dark: 255,255,255 → берем dark
+$default-text-color: rgb(255, 255, 255);
+
+// Фоновый градиент (используются dark default-body-bg-color и light --theme-bg-gradient)
+$theme-bg-gradient: #021e18; // определено только в light
+$default-background: linear-gradient(to bottom right, $default-body-color 0%,var(--theme-bg-gradient) 25%,$default-body-color 100%);
+
+// Границы
+// Light: #e8e8e8, Dark: rgba(255,255,255,0.1)
+$default-border: rgba(255, 255, 255, 0.1);
+$default-radius: 0.25rem;
+
+// Тень блока (dark значение)
+$box-shadow: 0px 0.125rem 0.25rem rgba(255, 255, 25, 0.05);
+
+// ================================
+// Шрифты
+// ================================
+
+$default-font-family: 'Rajdhani', 'Roboto', sans-serif;
+$default-font-size: 0.95rem;
+$default-font-weight: 400;
+
+// ================================
+// Заголовок и меню
+// ================================
+
+// Header: light: #fff, dark: rgb(32,32,37) → dark
+$header-bg: rgb(32, 32, 37);
+// Заглавный цвет шрифта header (совпадает)
+$header-prime-color: rgba(255, 255, 255, 1);
+// Граница header: light: #e8e8e8, dark: rgba(255,255,255,0.1)
+$header-border-color: rgba(255, 255, 255, 0.1);
+
+// Меню: light: #fff, dark: rgb(32,32,37)
+$menu-bg: rgb(32, 32, 37);
+// Меню – основной цвет (одинаково в обеих темах)
+$menu-prime-color: rgba(255, 255, 255, 1);
+// Граница меню: light: #e8e8e8, dark: rgba(255,255,255,0.1)
+$menu-border-color: rgba(255, 255, 255, 0.1);
+
+// ================================
+// Основные цвета (из light)
+// ================================
+
+$primary: #00ffbe;
+$primary-rgb: $primary;
+$primary-border: $primary;
+$primary-01: rgba($primary, 0.1);
+$primary-02: rgba($primary, 0.2);
+$primary-03: rgba($primary, 0.3);
+$primary-04: rgba($primary, 0.4);
+$primary-05: rgba($primary, 0.5);
+$primary-06: rgba($primary, 0.6);
+$primary-07: rgba($primary, 0.7);
+$primary-08: rgba($primary, 0.8);
+$primary-09: rgba($primary, 0.9);
+$primary-005: rgba($primary, 0.05);
+
+// Если где-то требовался primary-transparent – его значение не было задано, можно установить по необходимости:
+$primary-transparent: transparent;
+
+// Другие цвета (определены только для light)
+$secondary: rgb(0, 227, 210);
+$warning: rgb(235, 247, 72);
+$info: rgb(72, 247, 238);
+$success: rgb(72, 247, 104);
+$danger: rgb(255, 74, 74);
+
+// Цвета light и dark: light: (245,247,250), dark: (40,60,56) → dark
+$light: rgb(40, 60, 56);
+// Темный: light: (44,62,80), dark: (240,245,248) → dark
+$dark: rgb(240, 245, 248);
+
+$orange: rgb(255, 116, 23);
+$pink: rgb(252, 108, 133);
+$purple: rgb(143, 0, 255);
+$teal: rgb(0, 177, 163);
+$green: rgb(69, 214, 91);
+
+// Дополнительные цвета, заданные в SCSS (переопределяют предыдущие, если совпадают имена)
+$red: #d03d46;
+$blue: #438fff;
+$green: #1dd871; // переопределено
+$cyan: #00D1D1;
+$indigo: #6663ff;
+$white: #fff;
+$gray: #8699A3;
+$black: #000;
+$yellow: #fff621;
+
+// Цвета custom: light: custom-white: #fff, custom-black: #000; dark: custom-white: #010a07, custom-black: #fff
+$custom-white: #010a07;
+$custom-black: #fff;
+
+// ================================
+// Прочие элементы формы
+// ================================
+
+// Цвет текста muted: light: #6c757e, dark: rgba(255,255,255,0.9)
+$text-muted: rgba(255, 255, 255, 0.9);
+// Граница инпутов: light: #e8e8e8, dark: rgba(255,255,255,0.1)
+$input-border: rgba(255, 255, 255, 0.1);
+// Фон для form-control: одинаковое в обеих темах
+$form-control-bg: rgba($primary-rgb, 0.05);
+
+// Цвет границы для карточек: light: #e8e8e8, dark: rgba(255,255,255,0.1)
+$bootstrap-card-border: rgba(255, 255, 255, 0.1);
+// Цвет фона при наведении в списках: light: #f5f6f7, dark: rgba(255,255,255,0.1)
+$list-hover-focus-bg: rgba(255, 255, 255, 0.1);
+
+
+// ================================
+// Градиенты
+// ================================
+
+$primary-gradient: linear-gradient(to bottom, $primary-08 0%, rgba(0, 0, 0, 0.6) 100%);
+$secondary-gradient: linear-gradient(to bottom right, $secondary 0%, #046866 100%);
+$success-gradient: linear-gradient(to bottom right, $success 0%, #055a43 100%);
+$warning-gradient: linear-gradient(to bottom right, $warning 0%, #a18709 100%);
+$pink-gradient: linear-gradient(to bottom right, $pink 0%, #99555E 100%);
+$teal-gradient: linear-gradient(to bottom right, $teal 0%, #007B6F 100%);
+$danger-gradient: linear-gradient(to bottom right, $danger 0%, #8d0a13 100%);
+$info-gradient: linear-gradient(to bottom right, $info 0%, #09737a 100%);
+$orange-gradient: linear-gradient(to bottom right, $orange 0%, #893804 100%);
+$purple-gradient: linear-gradient(to bottom right, $purple 0%, #bf7df3 100%);
+$light-gradient: linear-gradient(to bottom right, $light 0%, #D7FCFF 100%);
+$dark-gradient: linear-gradient(to bottom right, $dark 0%, #16657A 100%);
+
+// ================================
+// Наборы серых, белых и черных оттенков
+// ================================
+
+// Серый (берем значения из dark)
+$gray-1: #110f0f;
+$gray-2: #17171c;
+$gray-3: #393946;
+$gray-4: #505062;
+$gray-5: #73738c;
+$gray-6: #8f8fa3;
+$gray-7: #ababba;
+$gray-8: #c7c7d1;
+$gray-9: #e3e3e8;
+
+// Белый (берем значения из dark)
+$white-1: rgba(0, 0, 0, 0.1);
+$white-2: rgba(0, 0, 0, 0.2);
+$white-3: rgba(0, 0, 0, 0.3);
+$white-4: rgba(0, 0, 0, 0.4);
+$white-5: rgba(0, 0, 0, 0.5);
+$white-6: rgba(0, 0, 0, 0.6);
+$white-7: rgba(0, 0, 0, 0.7);
+$white-8: rgba(0, 0, 0, 0.8);
+$white-9: rgba(0, 0, 0, 0.9);
+
+// Черный (берем значения из dark)
+$black-1: rgba(255, 255, 255, 0.1);
+$black-2: rgba(255, 255, 255, 0.2);
+$black-3: rgba(255, 255, 255, 0.3);
+$black-4: rgba(255, 255, 255, 0.4);
+$black-5: rgba(255, 255, 255, 0.5);
+$black-6: rgba(255, 255, 255, 0.6);
+$black-7: rgba(255, 255, 255, 0.7);
+$black-8: rgba(255, 255, 255, 0.8);
+$black-9: rgba(255, 255, 255, 0.9);
+
+$facebook: #3b5998;
+$twitter: #00acee;
+$github: #333;
+$google: #CF4E43;
+$youtube: #FF0000;
+
+
+
+:root {
+  color-scheme: dark;
+  --body-bg-rgb: 20, 20, 20;
+  --primary-rgb: 0, 255, 190;
+  --secondary-rgb: 0, 227, 210;
+  --warning-rgb: 235, 247, 72;
+  --info-rgb: 72, 247, 238;
+  --success-rgb: 72, 247, 104;
+  --danger-rgb: 255,74,74;
+  --light-rgb: 245, 247, 250;
+  --dark-rgb: 44, 62, 80;
+  --orange-rgb: 255, 116, 23;
+  --pink-rgb: 252, 108, 133;
+  --teal-rgb: 0, 177, 163;
+  --purple-rgb: 143, 0, 255;
+  --green-rgb: 69, 214, 91;
+  --default-body-bg-color: rgb(var(--body-bg-rgb));
+  --primary-color: rgb(var(--primary-rgb));
+  --primary-border: rgb(var(--primary-rgb));
+  --primary01: rgba(var(--primary-rgb), 0.1);
+  --primary02: rgba(var(--primary-rgb), 0.2);
+  --primary03: rgba(var(--primary-rgb), 0.3);
+  --primary04: rgba(var(--primary-rgb), 0.4);
+  --primary05: rgba(var(--primary-rgb), 0.5);
+  --primary06: rgba(var(--primary-rgb), 0.6);
+  --primary07: rgba(var(--primary-rgb), 0.7);
+  --primary08: rgba(var(--primary-rgb), 0.8);
+  --primary09: rgba(var(--primary-rgb), 0.9);
+  --primary005: rgba(var(--primary-rgb), 0.05);
+  --default-font-family: 'Rajdhani', 'Roboto', sans-serif;
+  --default-font-weight: 400;
+  --default-text-color-rgb: 51, 51, 51;
+  --default-border: #e8e8e8;
+  --default-background: #f7f8f9;
+  --menu-bg: #fff;
+  --menu-prime-color: rgba(255,255,255,1);
+  --menu-border-color: #e8e8e8;
+  --header-bg: #fff;
+  --header-prime-color: rgba(255,255,255,1);
+  --header-border-color: #e8e8e8;
+  --custom-white: #fff;
+  --custom-black: #000;
+  --bootstrap-card-border: #e8e8e8;
+  --list-hover-focus-bg: #f5f6f7;
+  --text-muted: #6c757e;
+  --input-border: #e8e8e8;
+  --form-control-bg: rgba(var(--primary-rgb),0.05);
+  --theme-bg-gradient: #021e18;
+
+  /* Gray set */
+  --gray-1: #f9fafb;
+  --gray-2: #f2f4f5;
+  --gray-3: #e6eaeb;
+  --gray-4: #dbdfe1;
+  --gray-5: #949eb7;
+  --gray-6: #7987a1;
+  --gray-7: #4d5875;
+  --gray-8: #383853;
+  --gray-9: #323251;
+
+  /* White set */
+  --white-1: rgba(255, 255, 255, 0.1);
+  --white-2: rgba(255, 255, 255, 0.2);
+  --white-3: rgba(255, 255, 255, 0.3);
+  --white-4: rgba(255, 255, 255, 0.4);
+  --white-5: rgba(255, 255, 255, 0.5);
+  --white-6: rgba(255, 255, 255, 0.6);
+  --white-7: rgba(255, 255, 255, 0.7);
+  --white-8: rgba(255, 255, 255, 0.8);
+  --white-9: rgba(255, 255, 255, 0.9);
+
+  /* Black set */
+  --black-1: rgba(0, 0, 0, 0.1);
+  --black-2: rgba(0, 0, 0, 0.2);
+  --black-3: rgba(0, 0, 0, 0.3);
+  --black-4: rgba(0, 0, 0, 0.4);
+  --black-5: rgba(0, 0, 0, 0.5);
+  --black-6: rgba(0, 0, 0, 0.6);
+  --black-7: rgba(0, 0, 0, 0.7);
+  --black-8: rgba(0, 0, 0, 0.8);
+  --black-9: rgba(0, 0, 0, 0.9);
+}
+
+[data-theme-mode="dark"] {
+  --body-bg-rgb: 20, 20, 20;
+  --menu-bg: rgb(var(--body-bg-rgb));
+  --menu-border-color: rgba(255, 255, 255, 0.1);
+  --menu-prime-color: rgba(255, 255, 255, 1);
+  --header-bg: rgb(var(--body-bg-rgb));
+  --header-prime-color: rgba(255, 255, 255, 1);
+  --header-border-color: rgba(255, 255, 255, 0.1);
+  --custom-white: #010a07;
+  --custom-black: #fff;
+  --default-border: rgba(255, 255, 255, 0.1);
+  --default-text-color-rgb: 255, 255, 255;
+  --light-rgb: 40, 60, 56;
+  // --light-rgb: 63, 75, 71;
+  // --light-rgb: 43, 46, 49;
+  --dark-rgb: 240, 245, 248;
+  --bootstrap-card-border: rgba(255, 255, 255, 0.1);
+  --list-hover-focus-bg: rgba(255, 255, 255, 0.1);
+  --default-background: rgba(15, 30, 26, 0.5);
+  --default-body-bg-color: rgb(var(--body-bg-rgb2));
+  --text-muted: rgba(255, 255, 255, 0.9);
+  --input-border: rgba(255, 255, 255, 0.1);
+  --form-control-bg: rgba(var(--primary-rgb), 0.05);
+  --card-bg: 29, 68, 67;
+  $box-shadow: 0px .125rem .25rem rgba(255, 255, 25, 0.05);
+
+  /* Gray Set */
+  --gray-1: #110f0f;
+  --gray-2: #17171c;
+  --gray-3: #393946;
+  --gray-4: #505062;
+  --gray-5: #73738c;
+  --gray-6: #8f8fa3;
+  --gray-7: #ababba;
+  --gray-8: #c7c7d1;
+  --gray-9: #e3e3e8;
+
+  /* white set */
+  --white-1: rgba(0, 0, 0, 0.1);
+  --white-2: rgba(0, 0, 0, 0.2);
+  --white-3: rgba(0, 0, 0, 0.3);
+  --white-4: rgba(0, 0, 0, 0.4);
+  --white-5: rgba(0, 0, 0, 0.5);
+  --white-6: rgba(0, 0, 0, 0.6);
+  --white-7: rgba(0, 0, 0, 0.7);
+  --white-8: rgba(0, 0, 0, 0.8);
+  --white-9: rgba(0, 0, 0, 0.9);
+
+  /* black set */
+  --black-1: rgba(255, 255, 255, 0.1);
+  --black-2: rgba(255, 255, 255, 0.2);
+  --black-3: rgba(255, 255, 255, 0.3);
+  --black-4: rgba(255, 255, 255, 0.4);
+  --black-5: rgba(255, 255, 255, 0.5);
+  --black-6: rgba(255, 255, 255, 0.6);
+  --black-7: rgba(255, 255, 255, 0.7);
+  --black-8: rgba(255, 255, 255, 0.8);
+  --black-9: rgba(255, 255, 255, 0.9);
+
+  --default-body-bg-color: #141414;
+}

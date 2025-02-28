@@ -39,7 +39,7 @@ export class ProblemHacksComponent extends BaseComponent implements OnInit {
   }
 
   loadHackAttempts() {
-    this.service.getHackAttempts({ problemId: this.problem.id }).subscribe(
+    this.service.getHackAttempts({problemId: this.problem.id}).subscribe(
       (result: PageResult) => {
         this.hackAttempts = result.data;
         this.totalAttemptsCount = result.total;

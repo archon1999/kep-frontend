@@ -5,16 +5,19 @@ import { CoreCommonModule } from '@core/common.module';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
 import { PageResult } from '@app/common/classes/page-result';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
-import { VerdictsSelectComponent } from '@problems/components/attempts-filter/verdicts-select/verdicts-select.component';
+import {
+  VerdictsSelectComponent
+} from '@problems/components/attempts-filter/verdicts-select/verdicts-select.component';
 import { AttemptsFilterComponent } from '@problems/components/attempts-filter/attempts-filter.component';
 import { AttemptsFilter } from '@problems/interfaces';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { Resources } from '@app/resources';
+import { ContentHeaderModule } from "@core/components/content-header/content-header.module";
+import { ContentHeader } from "@core/components/content-header/content-header.component";
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'app-attempts',
@@ -31,6 +34,7 @@ import { Resources } from '@app/resources';
     VerdictsSelectComponent,
     AttemptsFilterComponent,
     EmptyResultComponent,
+    KepCardComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -64,6 +68,10 @@ export class AttemptsComponent extends BaseTablePageComponent<Attempt> implement
       breadcrumb: {
         type: '',
         links: [
+          {
+            name: 'Practice',
+            isLink: false,
+          },
           {
             name: 'Problems',
             isLink: true,

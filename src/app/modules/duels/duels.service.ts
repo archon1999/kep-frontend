@@ -10,11 +10,11 @@ export class DuelsService {
     public api: ApiService,
   ) { }
 
-  getDuel(duelId: number | string){
+  getDuel(duelId: number | string) {
     return this.api.get(`duels/${duelId}`);
   }
 
-  getProblemAttempts(duelId: number, duelProblem: string, username: string){
+  getProblemAttempts(duelId: number, duelProblem: string, username: string) {
     return this.api.get('attempts', {
       username: username,
       duel_problem: duelProblem,
@@ -23,7 +23,7 @@ export class DuelsService {
     })
   }
 
-  getDuelResults(duelId: number | string){
+  getDuelResults(duelId: number | string) {
     return this.api.get(`duels/${duelId}/results`);
   }
 

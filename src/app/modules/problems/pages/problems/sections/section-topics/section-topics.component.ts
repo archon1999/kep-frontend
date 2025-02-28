@@ -11,7 +11,7 @@ import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.compon
   selector: 'section-topics',
   templateUrl: './section-topics.component.html',
   styleUrls: ['./section-topics.component.scss'],
-  animations: [fadeInRightOnEnterAnimation({ duration: 3000 })],
+  animations: [fadeInRightOnEnterAnimation({duration: 3000})],
   standalone: true,
   imports: [
     NgbTooltipModule,
@@ -25,7 +25,7 @@ export class SectionTopicsComponent implements OnInit {
   public activeTopic = 0;
 
   public swiperConfig: SwiperOptions = {
-    pagination: { clickable: true, enabled: false },
+    pagination: {clickable: true, enabled: false},
     autoHeight: true,
     slidesPerView: 3,
     breakpoints: {
@@ -59,7 +59,7 @@ export class SectionTopicsComponent implements OnInit {
       topicId = null;
     }
     this.activeTopic = topicId;
-    this.filterService.updateFilter({ topic: topicId });
+    this.filterService.updateFilter({topic: topicId});
   }
 
 }

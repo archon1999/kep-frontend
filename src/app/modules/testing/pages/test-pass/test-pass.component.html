@@ -13,11 +13,11 @@
             <h5 class="ps-1 d-flex">
               {{ question.number }}.
               <span class="ps-50">
-                  <mathjax [content]="question.body"></mathjax>
-                </span>
+                <mathjax [content]="question.body"></mathjax>
+              </span>
             </h5>
             <br>
-            @for (option of question.options;track option;let i = $index) {
+            @for (option of question.options; track option; let i = $index) {
               <div
                 class="ms-1 mb-1 form-check"
               >
@@ -39,11 +39,11 @@
             <h5 class="ps-1 d-flex">
               {{ question.number }}.
               <span class="ps-50">
-                      <mathjax [content]="question.body"></mathjax>
-                    </span>
+                <mathjax [content]="question.body"></mathjax>
+              </span>
             </h5>
             <br>
-            @for (option of question.options;track option;let i = $index) {
+            @for (option of question.options; track option; let i = $index) {
               <div
                 class="ms-1 mb-1 custom-control custom-control-primary custom-checkbox"
               >
@@ -63,8 +63,8 @@
             <h5 class="ps-1 d-flex">
               {{ question.number }}.
               <span class="ps-50">
-                          <mathjax [content]="question.body"></mathjax>
-                        </span>
+                <mathjax [content]="question.body"></mathjax>
+              </span>
             </h5>
             <br>
             <div class="col-lg-6 col-12 mx-auto">
@@ -85,7 +85,7 @@
               <div class="col">
                 <ul class="list-group" dragula="basic-list-group-1" [(dragulaModel)]="conformityGroupOne"
                     id="basic-list-group-1">
-                  @for (option of conformityGroupOne;track option) {
+                  @for (option of conformityGroupOne; track option) {
                     <li class="bg-gradient-primary list-group-item draggable">
                       <div class="row justify-content-between">
                         <div class="ps-1">
@@ -102,7 +102,7 @@
               <div class="col">
                 <ul class="list-group" dragula="basic-list-group-2" [(dragulaModel)]="conformityGroupTwo"
                     id="basic-list-group-2">
-                  @for (option of conformityGroupTwo;track option) {
+                  @for (option of conformityGroupTwo; track option) {
                     <li class="bg-gradient-primary list-group-item draggable">
                       <i class="text-white" data-feather="arrow-left"></i>
                       {{ option }}
@@ -126,7 +126,7 @@
             <div class="col-lg-6 col-12 mx-auto">
               <ul class="list-group" dragula="basic-list-group-3" [(dragulaModel)]="orderingList"
                   id="basic-list-group-3">
-                @for (option of orderingList;track option) {
+                @for (option of orderingList; track option) {
                   <li class="bg-gradient-primary list-group-item draggable">
                     <div class="row justify-content-between">
                       <div class="ps-1">
@@ -157,7 +157,8 @@
                   <li class="list-group-item">
                     {{ group.key }}
                   </li>
-                  <ul class="list-group" dragula="basic-list-group-3" [(dragulaModel)]="group.values" id="basic-list-group-{{i}}">
+                  <ul class="list-group" dragula="basic-list-group-3" [(dragulaModel)]="group.values"
+                      id="basic-list-group-{{i}}">
                     @for (option of group.values; track option) {
                       <li class="bg-gradient-primary list-group-item draggable">
                         <div class="row justify-content-between">
@@ -238,7 +239,7 @@
           {{ 'Questions' | translate }}
         </h4>
         <hr class="mb-2">
-        @for (_question of questions;track _question) {
+        @for (_question of questions; track _question) {
           <button
             (click)="answerSubmit();changeQuestion(_question.number-1)"
             rippleEffect
@@ -248,9 +249,9 @@
               'btn-outline-success': _question.number != question.number && _question.answered,
               'btn-outline-secondary': _question.number != question.number && !_question.answered
             }">
-              <span>
-                {{ _question.number }}
-              </span>
+            <span>
+              {{ _question.number }}
+            </span>
           </button>
         }
       </div>

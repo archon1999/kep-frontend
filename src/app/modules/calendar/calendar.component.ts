@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CalendarSectionComponent } from '@app/modules/home/calendar-section/calendar-section.component';
 import { BasePageComponent } from '@app/common';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 
 @Component({
   selector: 'app-calendar',
@@ -21,7 +21,7 @@ export class CalendarComponent extends BasePageComponent {
       breadcrumb: {
         links: [
           {
-            name: this.coreConfig.app.appTitle,
+            name: 'KEP.uz',
             isLink: true,
             link: '/',
           }

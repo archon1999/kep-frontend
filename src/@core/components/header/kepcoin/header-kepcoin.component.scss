@@ -1,0 +1,24 @@
+@import 'styles/kep-imports';
+
+::ng-deep .kepcoin-popover .popover-body {
+  padding: 0px !important;
+  width: 200px !important;
+  border: none !important;
+}
+
+.text-kepcoin {
+  color: #b18c51;
+  @include dark-layout {
+    color: $light;
+  }
+}
+
+a {
+  font-weight: 500;
+}
+
+::ng-deep .kepcoin-popover .card {
+  border: none !important;
+  margin-bottom: 0px !important;
+  box-shadow: 0 4px 6px 0 rgb(85 85 85 / 9%), 0 1px 20px 0 rgb(0 0 0 / 8%), 0px 1px 11px 0px rgb(0 0 0 / 6%) !important;
+}

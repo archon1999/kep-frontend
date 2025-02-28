@@ -2,10 +2,10 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { fadeInRightAnimation } from 'angular-animations';
 import { CoreCommonModule } from '@core/common.module';
 import { BaseLoadComponent } from '@app/common';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
 import { CoursesService } from '@app/modules/courses/courses.service';
 import { Observable } from 'rxjs';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { Course } from '@app/modules/courses/interfaces';
 import { CourseCardComponent } from '@app/modules/courses/components/course-card/course-card.component';
 
@@ -40,7 +40,11 @@ export class CoursesComponent extends BaseLoadComponent<Course[]> implements OnI
         type: '',
         links: [
           {
-            name: this.defaultCoreConfig.app.appTitle,
+            name: 'Learn',
+            isLink: false,
+          },
+          {
+            name: 'COURSES.COURSES',
             isLink: false,
           },
         ]

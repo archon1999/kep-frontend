@@ -14,11 +14,11 @@ export class TemplateCodeService {
     this.localStorageService.set(this._getKey(uniqueName, lang), templateCode);
   }
 
-  get(uniqueName: string, lang: string,){
+  get(uniqueName: string, lang: string,) {
     return this.localStorageService.get(this._getKey(uniqueName, lang)) || '';
   }
 
-  private _getKey(uniqueName: string, lang: string){
+  private _getKey(uniqueName: string, lang: string) {
     return PREFIX + '-' + uniqueName + '-' + lang;
   }
 

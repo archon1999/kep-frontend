@@ -1,4 +1,12 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { A11y, Mousewheel, Navigation, Pagination } from 'swiper/modules';

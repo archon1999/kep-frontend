@@ -7,6 +7,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { Course } from '@app/modules/courses/interfaces/course';
 import { Resources } from '@app/resources';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'course-card',
@@ -19,7 +20,8 @@ import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
     NgbTooltipModule,
     CoreCommonModule,
     NgbProgressbarModule,
-    ResourceByIdPipe
+    ResourceByIdPipe,
+    KepCardComponent
   ],
   templateUrl: './course-card.component.html',
   styleUrl: './course-card.component.scss'

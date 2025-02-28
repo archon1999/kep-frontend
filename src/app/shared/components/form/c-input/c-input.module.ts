@@ -19,4 +19,4 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CInputComponent
   ]
 })
-export class CInputModule { }
+export class CInputModule {}

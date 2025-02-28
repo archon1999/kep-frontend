@@ -13,12 +13,10 @@ export interface User {
   streak: number;
   maxStreak: number;
   country: string;
-  skillsRating: number;
-  activityRating: number;
-  contestsRating: number;
-  contestsRatingTitle: string;
-  challengesRating: number;
-  challengesRankTitle: string;
+  skillsRating: any;
+  activityRating: any;
+  contestsRating: any;
+  challengesRating: any;
   problemsSolved: number;
 }
 

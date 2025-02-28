@@ -1,38 +1,4 @@
-.card {
-  background: var(--bg-gradient) !important;
-  // box-shadow: var(--box-shadow) !important;
-  // border: 1px solid var(--bg);
-  border: none;
-  display: flex;
-  // justify-content: space-around;
-  align-items: center;
-
-  h4, h3 {
-    color: var(--text-color);
-  }
-
-  .card-footer {
-    z-index: 1;
-    border-top: 1px solid var(--bg);
-    // border-top: 0;
-  }
-
-  .contest-logo {
-    display: flex;
-    justify-content: center;
-    opacity: 0.1;
-    position: absolute;
-
-    img {
-      height: 100%;
-      width: 100%;
-    }
-  }
-}
-
-
-::ng-deep .contest-347 .contest-logo img {
-  zoom: 40% !important;
-  width: initial !important;
-  height: initial !important;
+img {
+  object-fit: contain;
+  opacity: 0.1;
 }

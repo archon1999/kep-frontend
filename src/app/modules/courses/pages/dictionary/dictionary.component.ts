@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Course, CourseKeyword, CourseLesson } from '@courses/interfaces';
 import { CoreCommonModule } from '@core/common.module';
 import { BasePageComponent } from '@app/common';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SidebarComponent } from '@courses/pages/course-lesson/sidebar/sidebar.component';
 
@@ -26,7 +26,7 @@ export class DictionaryComponent extends BasePageComponent implements OnInit {
   public courseDictionary: Array<CourseKeyword> = [];
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ course, courseLessons, courseDictionary }) => {
+    this.route.data.subscribe(({course, courseLessons, courseDictionary}) => {
       this.course = course;
       this.courseLessons = courseLessons.map((data: any) => {
         return CourseLesson.fromJSON(data);

@@ -1,7 +1,8 @@
 <div class="row kepcoin-page-top">
   <div class="mb-1 mt-2 col-lg-10 col-12 offset-xl-2 offset-lg-1 offset-0">
     <h1>
-      {{ 'YouHave' | translate }} <kepcoin [marginRight]="0.3" [imgSize]="30" [value]="currentUser?.kepcoin"></kepcoin>
+      {{ 'YouHave' | translate }}
+      <kepcoin [marginRight]="0.3" [imgSize]="30" [value]="currentUser?.kepcoin"></kepcoin>
     </h1>
   </div>
   <div class="col-xl-4 offset-xl-2 col-lg-5 offset-lg-1 col-md-6 col-12 offset-0">
@@ -12,16 +13,18 @@
           {{ 'StreakFreeze' | translate }}
         </div>
         <div>
-          <img [src]="streak > 0 ? 'assets/images/icons/fire_red.png' : 'assets/images/icons/fire_blue.png'" height="19">
+          <img [src]="streak > 0 ? 'assets/images/icons/fire_red.png' : 'assets/images/icons/fire_blue.png'"
+               height="19">
           <strong>
             {{ streak }}
           </strong>
-          <span class="badge me-50 ms-50 bg-warning badge-glow">{{ 'YouHave' | translate }} <strong>{{ streakFreeze }}</strong></span>
+          <span class="badge me-50 ms-50 bg-warning badge-glow">{{ 'YouHave' | translate }}
+            <strong>{{ streakFreeze }}</strong></span>
           <kepcoin-spend-swal
             [value]="10"
             [purchaseUrl]="'purchase-streak-freeze'"
             (success)="success()"
-            >
+          >
           </kepcoin-spend-swal>
         </div>
       </div>
@@ -31,7 +34,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <kep-card>
       <div class="card-header">
         <div class="card-title">
           @if (type == 1) {
@@ -111,198 +114,214 @@
                               [routerLink]="['/competitions', 'contests', 'contest', earn.detail.contest.id]">
                               <u class="text-primary">{{ earn.detail.contest.title }}</u>
                             </a>
-                          </span>
+                            </span>
+                          }
+                          @case (11) {
+                            <span>
+                              Arena ishtirokchisi: <a
+                              [routerLink]="['/competitions', 'arena', 'tournament', earn.detail.arena.id]">
+                              <u class="text-primary">{{ earn.detail.arena.title }}</u>
+                            </a>
+                            </span>
+                          }
                         }
-                        @case (11) {
-                          <span>
-                            Arena ishtirokchisi: <a
-                            [routerLink]="['/competitions', 'arena', 'tournament', earn.detail.arena.id]">
-                            <u class="text-primary">{{ earn.detail.arena.title }}</u>
-                          </a>
-                        </span>
-                      }
-                    }
-                  </span>
-                </p>
-                <div class="d-flex align-items-center">
-                </div>
-              </div>
-            </li>
-          }
-        </ul>
-      </div>
-    }
-
-    @if (type == 2) {
-      <div>
-        <ul class="timeline">
-          @for (spend of spends; track spend) {
-            <li class="timeline-item">
-              <span class="timeline-point timeline-point-warning timeline-point-indicator"></span>
-              <div class="timeline-event">
-                <div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">
-                  <h6>
-                    <img height="19" src="assets/images/icons/kepcoin.png"> {{ spend.kepcoin }}
-                  </h6>
-                  <span class="timeline-event-time">{{ spend.datetime }}</span>
-                </div>
-                <p>
-                  <span class="text-dark">
-                    @switch (spend.type) {
-                      @case (1) {
-                        <span>
-                          Urinishni ko'rish <a class="text-primary"
-                          routerLink="/practice/problems/attempts/{{ spend.detail.attemptId }}">
-                          <u>{{ spend.detail.attemptId }}</u>
-                        </a>
                       </span>
-                    }
-                    @case (2) {
-                      <span>
-                        Urinish testini ko'rish <a class="text-primary"
-                        routerLink="/practice/problems/attempts/{{ spend.detail.attemptId }}">
-                        <u>{{ spend.detail.attemptId }}</u>
-                      </a>
-                    </span>
-                  }
-                  @case (3) {
-                    <span>
-                      Masala yechimini ko'rish <a class="text-primary"
-                      routerLink="/practice/problems/problem/{{ spend.detail.problemId }}">
-                      <u>{{ spend.detail.problemId }}. {{ spend.detail.problemTitle }}</u>
-                    </a>
-                  </span>
-                }
-                @case (5) {
-                  <span>
-                    Rasmni o'zgartirish
-                    <img src="{{ spend.detail.coverPhoto }}" style="width: 100%;">
-                  </span>
-                }
-                @case (10) {
-                  <span>
-                    Testdan o'tish <a class="text-primary" routerLink="/practice/tests/test/{{ spend.detail.test.id }}">
-                    <u>{{ spend.detail.test.title }}</u>
-                  </a>
-                </span>
+                    </p>
+                    <div class="d-flex align-items-center">
+                    </div>
+                  </div>
+                </li>
               }
-              @case (11) {
-                <span>
-                  Kontest yaratish
-                </span>
+            </ul>
+          </div>
+        }
+
+        @if (type == 2) {
+          <div>
+            <ul class="timeline">
+              @for (spend of spends; track spend) {
+                <li class="timeline-item">
+                  <span class="timeline-point timeline-point-warning timeline-point-indicator"></span>
+                  <div class="timeline-event">
+                    <div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">
+                      <h6>
+                        <img height="19" src="assets/images/icons/kepcoin.png"> {{ spend.kepcoin }}
+                      </h6>
+                      <span class="timeline-event-time">{{ spend.datetime }}</span>
+                    </div>
+                    <p>
+                      <span class="text-dark">
+                        @switch (spend.type) {
+                          @case (1) {
+                            <span>
+                              Urinishni ko'rish <a class="text-primary"
+                                                   routerLink="/practice/problems/attempts/{{ spend.detail.attemptId }}">
+                              <u>{{ spend.detail.attemptId }}</u>
+                            </a>
+                            </span>
+                          }
+                          @case (2) {
+                            <span>
+                              Urinish testini ko'rish <a class="text-primary"
+                                                         routerLink="/practice/problems/attempts/{{ spend.detail.attemptId }}">
+                              <u>{{ spend.detail.attemptId }}</u>
+                            </a>
+                            </span>
+                          }
+                          @case (3) {
+                            <span>
+                              Masala yechimini ko'rish <a class="text-primary"
+                                                          routerLink="/practice/problems/problem/{{ spend.detail.problemId }}">
+                              <u>{{ spend.detail.problemId }}. {{ spend.detail.problemTitle }}</u>
+                            </a>
+                            </span>
+                          }
+                          @case (5) {
+                            <span>
+                              Rasmni o'zgartirish
+                              <img src="{{ spend.detail.coverPhoto }}" style="width: 100%;">
+                            </span>
+                          }
+                          @case (10) {
+                            <span>
+                              Testdan o'tish <a class="text-primary"
+                                                routerLink="/practice/tests/test/{{ spend.detail.test.id }}">
+                              <u>{{ spend.detail.test.title }}</u>
+                            </a>
+                            </span>
+                          }
+                          @case (11) {
+                            <span>
+                              Kontest yaratish
+                            </span>
+                          }
+                        }
+                      </span>
+                    </p>
+                    <div class="d-flex align-items-center">
+                    </div>
+                  </div>
+                </li>
               }
-            }
-          </span>
-        </p>
-        <div class="d-flex align-items-center">
+            </ul>
+          </div>
+        }
+
+        @if (total > 0) {
+          <kep-pagination
+            [collectionSize]="total"
+            [(page)]="currentPage"
+            [pageSize]="10"
+            [maxSize]="5"
+            [color]="'warning'"
+            [rotate]="true"
+            (pageChange)="updatePage()">
+          </kep-pagination>
+        }
+      </div>
+    </kep-card>
+  </div>
+  <div class="col-lg-5 col-xl-4 col-md-6 col-12">
+    <kep-card>
+      <div class="card-header">
+        <div class="card-title">
+          <i data-feather="dollar-sign"></i>
+          Kepcoin qanday topsa bo'ladi?
         </div>
       </div>
-    </li>
-  }
-</ul>
-</div>
-}
 
-@if (total > 0) {
-  <kep-pagination
-    [collectionSize]="total"
-    [(page)]="currentPage"
-    [pageSize]="10"
-    [maxSize]="5"
-    [color]="'warning'"
-    [rotate]="true"
-    (pageChange)="updatePage()">
-  </kep-pagination>
-}
-</div>
-</div>
-</div>
-<div class="col-lg-5 col-xl-4 col-md-6 col-12">
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">
-        <i data-feather="dollar-sign"></i>
-        Kepcoin qanday topsa bo'ladi?
+      <div class="card-body text-dark">
+        Ushbu valyutaga ega bo'lish uchun tizim rivojlanishiga o'z xissangizni qo'shingingiz lozim. Jumladan kepcoin:
+
+        <div class="earn">
+          <kepcoin [value]="1"></kepcoin>
+          : Kunlik faollik uchun
+        </div>
+
+        <div class="earn">
+          <kepcoin [value]="'1-10'"></kepcoin>
+          : Kunlik topshiriqlarni bajarganligi uchun
+        </div>
+
+        <div class="earn">
+          <kepcoin [value]="'3, 10, 50'"></kepcoin>
+          : Mos ravishda kunlik, haftalik va oylik masalalar reytingi g'olibi
+          uchun
+        </div>
+
+        <div class="earn">
+          <kepcoin [value]="'5+'"></kepcoin>
+          : Musobaqada qatnashganligi uchun
+        </div>
+
+        <div class="earn">
+          <kepcoin [value]="'10-100'"></kepcoin>
+          : Blog yozish
+        </div>
+
+        <div class="earn">
+          <kepcoin [value]="'1-50'"></kepcoin>
+          : Masalalarni tahrirlashda yordamlashish(yechim yozish, tarjima, teglar qo'shish, o'xhash masalalar topish)
+        </div>
+
       </div>
-    </div>
+    </kep-card>
 
-    <div class="card-body text-dark">
-      Ushbu valyutaga ega bo'lish uchun tizim rivojlanishiga o'z xissangizni qo'shingingiz lozim. Jumladan kepcoin:
-
-      <div class="earn">
-        <kepcoin [value]="1"></kepcoin>: Kunlik faollik uchun
-      </div>
-
-      <div class="earn">
-        <kepcoin [value]="'1-10'"></kepcoin>: Kunlik topshiriqlarni bajarganligi uchun
-      </div>
-
-      <div class="earn">
-        <kepcoin [value]="'3, 10, 50'"></kepcoin>: Mos ravishda kunlik, haftalik va oylik masalalar reytingi g'olibi
-        uchun
-      </div>
-
-      <div class="earn">
-        <kepcoin [value]="'5+'"></kepcoin>: Musobaqada qatnashganligi uchun
+    <kep-card>
+      <div class="card-header">
+        <div class="card-title">
+          <i data-feather="coffee"></i>
+          Kepcoin qanday sarflasa bo'ladi?
+        </div>
       </div>
 
-      <div class="earn">
-        <kepcoin [value]="'10-100'"></kepcoin>: Blog yozish
-      </div>
+      <div class="card-body text-dark">
+        <div class="spend">
+          <kepcoin [value]="'0-14'"></kepcoin>
+          : Boshqa foydalanuvchi urinishini ko'rish
+        </div>
 
-      <div class="earn">
-        <kepcoin [value]="'1-50'"></kepcoin>: Masalalarni tahrirlashda yordamlashish(yechim yozish, tarjima, teglar qo'shish, o'xhash masalalar topish)
-      </div>
+        <div class="spend">
+          <kepcoin [value]="1"></kepcoin>
+          : Yechim yiqilgan testni ko'rish
+        </div>
 
-    </div>
+        <div class="spend">
+          <kepcoin [value]="'2-50'"></kepcoin>
+          : Masala yechimini xarid qilish
+        </div>
+
+        <div class="spend">
+          <kepcoin [value]="5"></kepcoin>
+          : Profil orqa rasmini o'zgartirish
+        </div>
+
+        <div class="spend">
+          <kepcoin [value]="1"></kepcoin>
+          : Testdan o'tish
+        </div>
+
+        <div class="spend">
+          <kepcoin [value]="'1-1000'"></kepcoin>
+          : Kurs sotib olish
+        </div>
+
+        <div class="spend">
+          <kepcoin [value]="'50'"></kepcoin>
+          : Kodni tahrirlashda testlash funksiyasi(butunlayga)
+        </div>
+
+        <div class="spend">
+          <kepcoin [value]="25"></kepcoin>
+          : Kontestda ikki barobar reyting o'zgarishi(manfiy bo'lsa ham ikki barobar bo'lib o'zgaradi)
+        </div>
+
+        <div class="spend">
+          <kepcoin [value]="25"></kepcoin>
+          : Kontestda reytingni saqlab qolish(agar manfiy bo'lsa berilmaydi)
+        </div>
+      </div>
+    </kep-card>
+
   </div>
-
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title">
-        <i data-feather="coffee"></i>
-        Kepcoin qanday sarflasa bo'ladi?
-      </div>
-    </div>
-
-    <div class="card-body text-dark">
-      <div class="spend">
-        <kepcoin [value]="'0-14'"></kepcoin>: Boshqa foydalanuvchi urinishini ko'rish
-      </div>
-
-      <div class="spend">
-        <kepcoin [value]="1"></kepcoin>: Yechim yiqilgan testni ko'rish
-      </div>
-
-      <div class="spend">
-        <kepcoin [value]="'2-50'"></kepcoin>: Masala yechimini xarid qilish
-      </div>
-
-      <div class="spend">
-        <kepcoin [value]="5"></kepcoin>: Profil orqa rasmini o'zgartirish
-      </div>
-
-      <div class="spend">
-        <kepcoin [value]="1"></kepcoin>: Testdan o'tish
-      </div>
-
-      <div class="spend">
-        <kepcoin [value]="'1-1000'"></kepcoin>: Kurs sotib olish
-      </div>
-
-      <div class="spend">
-        <kepcoin [value]="'50'"></kepcoin>: Kodni tahrirlashda testlash funksiyasi(butunlayga)
-      </div>
-
-      <div class="spend">
-        <kepcoin [value]="25"></kepcoin>: Kontestda ikki barobar reyting o'zgarishi(manfiy bo'lsa ham ikki barobar bo'lib o'zgaradi)
-      </div>
-
-      <div class="spend">
-        <kepcoin [value]="25"></kepcoin>: Kontestda reytingni saqlab qolish(agar manfiy bo'lsa berilmaydi)
-      </div>
-    </div>
-  </div>
-
-</div>
 </div>

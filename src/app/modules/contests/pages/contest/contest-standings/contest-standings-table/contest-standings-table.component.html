@@ -67,9 +67,9 @@
           </div>
         </td>
         <td class="text-center">
-            <span class="badge points">
-              {{ contestant.points }}
-            </span>
+          <span class="badge points">
+            {{ contestant.points }}
+          </span>
         </td>
         @if (contest.isRated) {
           <td class="text-center">
@@ -78,9 +78,9 @@
         }
         @if (contest?.hasPenalties()) {
           <td class="text-center">
-              <span class="badge badge-light-danger">
-                {{ contestant.penalties }}
-              </span>
+            <span class="badge bg-danger-transparent">
+              {{ contestant.penalties }}
+            </span>
           </td>
         }
         <td class="text-center" style="white-space: nowrap;">
@@ -88,13 +88,13 @@
             [title]="contestant.perfomanceTitle"
             [class]="'me-50'"/>
           <span class="text-dark me-1">
-              @if (contestant.perfomance >= 3400) {
-                <span>∞</span>
-              }
+            @if (contestant.perfomance >= 3400) {
+              <span>∞</span>
+            }
             @if (contestant.perfomance < 3400) {
               <span>{{ contestant.perfomance }}</span>
             }
-            </span>
+          </span>
         </td>
         @for (contestProblem of contestProblems; track contestProblem) {
           <td class="text-center">

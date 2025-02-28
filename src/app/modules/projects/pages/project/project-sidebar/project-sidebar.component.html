@@ -1,6 +1,6 @@
 <project-info-card [project]="project"/>
 
-<div class="card">
+<kep-card>
   <div class="card-header">
     <div class="card-title">
       {{ 'Submit' | translate }}
@@ -10,7 +10,7 @@
     <div class="mb-1">
       <label><strong>{{ 'Technology' | translate }}:</strong></label>
       <ng-select appendTo="body" [clearable]="false" [(ngModel)]="selectedTechnology">
-        @for (technology of project.availableTechnologies;track technology) {
+        @for (technology of project.availableTechnologies; track technology) {
           <ng-option [value]="technology.technology">
             {{ technology.technology }}
           </ng-option>
@@ -33,6 +33,6 @@
       {{ 'Submit' | translate }}
     </button>
   </div>
-</div>
+</kep-card>
 
 <ng-select-css/>

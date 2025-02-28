@@ -1,4 +1,4 @@
-<div class="card">
+<kep-card>
   <div class="card-header">
     <div class="card-title">
       {{ project.title }}
@@ -16,10 +16,10 @@
         <kepcoin [value]="project.kepcoins"/>
       </div>
       <div class="text-end">
-      <span class="project-level badge bg-success ms-50 bagde-pill">
-        {{ project.levelTitle }}
-      </span>
-        @for (technology of project.availableTechnologies;track technology) {
+        <span class="project-level badge bg-success ms-50 bagde-pill">
+          {{ project.levelTitle }}
+        </span>
+        @for (technology of project.availableTechnologies; track technology) {
           <project-technology [name]="technology.technology"/>
         }
       </div>
@@ -44,4 +44,4 @@
       </a>
     }
   </div>
-</div>
+</kep-card>

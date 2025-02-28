@@ -16,7 +16,7 @@ export function synchronizeArrayControl(control: AbstractControl) {
           }
           setTimeout(
             () => {
-              otherControl.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+              otherControl.updateValueAndValidity({onlySelf: true, emitEvent: false});
             },
             100
           );

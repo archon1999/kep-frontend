@@ -90,7 +90,7 @@ export class WebsocketService implements IWebsocketService, OnDestroy {
     if (!this.wsMessages) { this.go(); }
 
     if (event && this.isConnected) {
-      this.websocket?.next(<any>JSON.stringify({ event, data }));
+      this.websocket?.next(<any>JSON.stringify({event, data}));
     } else {
       console.error('Send error!');
     }

@@ -3,18 +3,18 @@
     <app-content-header [contentHeader]="contentHeader"/>
 
     <div class="row">
-      <div [@fadeInLeftOnEnter] class="col-lg-9 col-md-12 col-sm-12 order-2 order-lg-1">
-        <div class="card">
+      <div [@fadeInOnEnter] class="col-lg-9 col-md-12 col-sm-12 order-2 order-lg-1">
+        <kep-card>
           <div class="card-header p-1">
             <contest-tab [contest]="contest"/>
           </div>
-        </div>
+        </kep-card>
 
         @if (isLoading && !total) {
           <div class="card" [style.height.px]="400">
             <spinner></spinner>
           </div>
-        } @else if(attempts.length == 0) {
+        } @else if (attempts.length == 0) {
           <empty-result text=""/>
         } @else {
           <attempts-table [attempts]="attempts" [contest]="contest" [hideSourceCodeSize]="true"></attempts-table>

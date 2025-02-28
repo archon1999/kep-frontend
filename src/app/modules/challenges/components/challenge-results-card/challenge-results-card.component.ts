@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { Challenge } from '@challenges/models';
 import { CoreCommonModule } from '@core/common.module';
-import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import {
+  ChallengesUserViewComponent
+} from '@challenges/components/challenges-user-view/challenges-user-view.component';
 
 @Component({
   selector: 'challenge-results-card',

@@ -1,41 +1,43 @@
+<app-content-header [contentHeader]="contentHeader">
+  <div class="d-flex gap-2">
+    <a routerLink="rating" class="btn btn-primary-light" [ngClass.lt-md]="'btn-sm'">
+      <kep-icon color="primary" name="ranking" class="font-medium-1"></kep-icon>
+      <span [ngClass.lt-md]="'d-none'">
+        {{ 'Rating' | translate }}
+      </span>
+    </a>
+    <a routerLink="statistics" class="btn btn-primary-light" [ngClass.lt-md]="'btn-sm'">
+      <kep-icon color="primary" name="statistics" class="font-medium-1"></kep-icon>
+      <span [ngClass.lt-md]="'d-none'">
+        {{ 'Statistics' | translate }}
+      </span>
+    </a>
+    @if (isAuthenticated) {
+      <a routerLink="user-contests" class="btn btn-primary-light" [ngClass.lt-md]="'btn-sm'">
+        <kep-icon color="primary" name="attempt" class="font-medium-1"></kep-icon>
+        <span [ngClass.lt-md]="'d-none'">
+          {{ 'MyContests' | translate }}
+        </span>
+      </a>
+    }
+  </div>
+</app-content-header>
+
 <div class="contests-section-header">
-  <div class="card">
-    @if (isLoading){
-      <div [style.height.px]="157">
-        <spinner></spinner>
-      </div>
+  <kep-card [cardHeight]="'65px'">
+    @if (isLoading) {
+      <ngx-skeleton-loader
+        count="1"
+        animation="pulse"
+        appearance="line"
+        [theme]="{height: '40px', 'margin-top': '0.75rem', background: 'var(--skeleton-color)'}"
+      ></ngx-skeleton-loader>
     } @else {
-      <div class="card-header">
-        <div class="card-title text-dark">{{ currentUser?.username || 'Links' | translate }}</div>
-
-        <div class="d-flex gap-50">
-          <a routerLink="rating" class="btn btn-outline-primary" [ngClass.lt-md]="'btn-sm'">
-            <kep-icon color="primary" name="ranking" class="font-medium-1"></kep-icon>
-            <span [ngClass.lt-md]="'d-none'">
-              {{ 'Rating' | translate }}
-            </span>
-          </a>
-          <a routerLink="statistics" class="btn btn-outline-primary" [ngClass.lt-md]="'btn-sm'">
-            <kep-icon color="primary" name="statistics" class="font-medium-1"></kep-icon>
-            <span [ngClass.lt-md]="'d-none'">
-              {{ 'Statistics' | translate }}
-            </span>
-          </a>
-          @if (isAuthenticated) {
-            <a routerLink="user-contests" class="btn btn-outline-primary" [ngClass.lt-md]="'btn-sm'">
-              <kep-icon color="primary" name="attempt" class="font-medium-1"></kep-icon>
-              <span [ngClass.lt-md]="'d-none'">
-                {{ 'MyContests' | translate }}
-              </span>
-            </a>
-          }
-        </div>
-      </div>
-
       @if (currentUser) {
         <div class="card-footer d-flex justify-content-between">
           <div class="text-center d-flex justify-content-between">
-            <div class="text-dark text-nowrap d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+            <div class="text-dark text-nowrap d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'"
+                 [ngClass.lt-md]="'font-small-3'">
               <kep-icon type="duotone" class="text-dark me-25" name="rating"></kep-icon>
               <span class="me-50">{{ 'Rating' | translate }}:</span>
               <contests-rating-image [title]="data.ratingTitle"></contests-rating-image>
@@ -43,13 +45,15 @@
             </div>
           </div>
           <div class="text-center text-nowrap d-flex justify-content-between">
-            <div class="text-dark d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+            <div class="text-dark d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'"
+                 [ngClass.lt-md]="'font-small-3'">
               <kep-icon type="duotone" class="text-dark me-25" name="contest"></kep-icon>
               {{ 'Rank' | translate }}: {{ data.ratingPlace }}
             </div>
           </div>
           <div class="text-center text-nowrap d-flex justify-content-between">
-            <div class="text-dark d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+            <div class="text-dark d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'"
+                 [ngClass.lt-md]="'font-small-3'">
               <kep-icon type="duotone" class="text-dark me-25" name="contest"></kep-icon>
               {{ 'Contests' | translate }}: {{ data.contestantsCount }}
             </div>
@@ -57,19 +61,5 @@
         </div>
       }
     }
-  </div>
+  </kep-card>
 </div>
-
-<!--<div class="useful-links row">-->
-<!--  <div class="col-6 pe-md-1 pe-25">-->
-<!--    <a class="btn btn-primary" routerLink="/learn/blog/post/54" [ngClass.lt-md]="'font-small-3'">-->
-<!--      {{ 'AboutContestTypes' | translate }}-->
-<!--    </a>-->
-<!--  </div>-->
-
-<!--  <div class="col-6 pl-md-1 ps-25">-->
-<!--    <a class="btn btn-primary" routerLink="/learn/blog/post/5" [ngClass.lt-md]="'font-small-3'">-->
-<!--      {{ 'RecommendationsForParticipateContests' | translate }}-->
-<!--    </a>-->
-<!--  </div>-->
-<!--</div>-->

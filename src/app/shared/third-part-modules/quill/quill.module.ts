@@ -14,4 +14,4 @@ import { QuillModule as Module } from 'ngx-quill';
     QuillComponent,
   ]
 })
-export class QuillModule { }
+export class QuillModule {}

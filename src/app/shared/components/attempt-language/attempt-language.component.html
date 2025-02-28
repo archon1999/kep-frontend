@@ -1,7 +1,11 @@
 @if (clickable) {
-  <button class="btn badge text-dark">
-    <attempt-language [size]="20" [lang]="lang"/>
-    {{ langFull }}
+  <button class="btn btn-primary-light custom-button rounded-pill">
+    <span class="custom-btn-icons">
+      <attempt-language [size]="20" [lang]="lang"/>
+    </span>
+    <span class="ps-2">
+      {{ langFull }}
+    </span>
   </button>
 } @else {
   <img

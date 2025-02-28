@@ -1,14 +1,22 @@
 <header>
-  <div class="card">
-    <div class="card-body">
-      <h1 [@fadeInOnEnter] class="text-center text-dark">
-        {{ 'Welcome' | translate }}, {{ currentUser?.firstName || currentUser?.username }}
-      </h1>
+  <kep-card customClass="overlay-card">
+    <img
+      [src]="'https://cpython.s3.amazonaws.com/media/images/cover_photo/admin_GpDMmvB.webp'"
+      class="card-img"
+      height="100%"
+      alt="Cover Photo">
 
-
-      <h3 [@fadeInOnEnter] class="text-center text-dark">
-        {{ 'HomePageTitle' | translate }}
-      </h3>
+    <div class="card-img-overlay d-flex flex-column p-0">
+      <div class="card-header justify-content-center">
+        <h1 [@fadeInOnEnter] class="card-title text-fixed-white">
+          {{ 'Welcome' | translate }}, {{ currentUser?.firstName || currentUser?.username }}
+        </h1>
+      </div>
+      <div class="card-body">
+        <h3 [@fadeInOnEnter] class="text-center text-fixed-white">
+          {{ 'HomePageTitle' | translate }}
+        </h3>
+      </div>
     </div>
-  </div>
+  </kep-card>
 </header>

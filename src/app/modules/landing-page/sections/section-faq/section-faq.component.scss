@@ -1,23 +1,10 @@
 @import 'styles/kep-imports';
 
 .faq-container {
-  width: 100%;
-  padding: 4rem 4rem;
-  border-radius: 3.5rem 3.5rem 0 0;
-  background: rgba($gray-50, 0.5);
-  backdrop-filter: blur(10px);
-
-  @include dark-layout {
-    background: $theme-dark-card-bg !important;
-  }
-
-  @include media-breakpoint-down(sm) {
-    padding: 1rem;
-    margin-bottom: 2rem;
-  }
+  padding: 3.375rem 2rem;
+  position: relative;
 }
 
-.faq-image {
-  max-width: 20rem;
-  width: 80%;
+.faq-icon {
+  font-size: 14rem;
 }

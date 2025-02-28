@@ -48,6 +48,7 @@
   }
 }
 
+
 @include media-breakpoint-down(md) {
   .post-header {
     grid-template-columns: 1fr 1fr;

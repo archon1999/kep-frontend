@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CoreCommonModule } from '@core/common.module';
 import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { FormsModule } from "@angular/forms";
+import { TranslatePipe } from "@ngx-translate/core";
+import { KepIconComponent } from "@shared/components/kep-icon/kep-icon.component";
 
 @Component({
   selector: 'kep-pagination',
@@ -9,9 +11,11 @@ import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.m
   styleUrls: ['./kep-pagination.component.scss'],
   standalone: true,
   imports: [
-    CoreCommonModule,
     NgbPaginationModule,
     NgSelectModule,
+    FormsModule,
+    TranslatePipe,
+    KepIconComponent,
   ]
 })
 export class KepPaginationComponent {

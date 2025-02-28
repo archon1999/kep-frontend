@@ -1,0 +1,106 @@
+import { Routes } from '@angular/router';
+import { ContentLayoutComponent } from '@core/layouts/content-layout/content-layout.component';
+import { AuthenticationLayoutComponent } from '@core/layouts/authentication-layout/authentication-layout.component';
+import { LandingLayoutComponent } from "@core/layouts/landing-layout/landing-layout.component";
+
+export const routes: Routes = [
+  {
+    path: '',
+    component: LandingLayoutComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./modules/landing-page/landing-page.routing'),
+      },
+    ]
+  },
+  {
+    path: '',
+    component: ContentLayoutComponent,
+    children: [
+      {
+        path: 'home',
+        loadChildren: () => import('./modules/home/home.routing')
+      },
+      {
+        path: 'learn/courses',
+        loadChildren: () => import('./modules/courses/courses.routing')
+      },
+      {
+        path: 'learn/blog',
+        loadChildren: () => import('./modules/blog/blog.module').then(m => m.BlogModule)
+      },
+      {
+        path: 'learn/lugavar',
+        loadChildren: () => import('./modules/lugavar/lugavar.module').then(m => m.LugavarModule)
+      },
+      {
+        path: 'practice/problems',
+        loadChildren: () => import('./modules/problems/problems.routing')
+      },
+      {
+        path: 'practice/challenges',
+        loadChildren: () => import('./modules/challenges/challenges.routing')
+      },
+      {
+        path: 'practice/tests',
+        loadChildren: () => import('./modules/testing/testing.module').then(m => m.TestingModule)
+      },
+      {
+        path: 'practice/projects',
+        loadChildren: () => import('./modules/projects/projects.routing')
+      },
+      {
+        path: 'competitions/contests',
+        loadChildren: () => import('./modules/contests/contests.routing')
+      },
+      {
+        path: 'competitions/arena',
+        loadChildren: () => import('./modules/arena/arena.routing')
+      },
+      {
+        path: 'competitions/tournaments',
+        loadChildren: () => import('./modules/tournaments/tournaments.module').then(m => m.TournamentsModule),
+      },
+      {
+        path: 'users',
+        loadChildren: () => import('./modules/users/users.routing'),
+      },
+      {
+        path: 'calendar',
+        loadChildren: () => import('./modules/calendar/calendar.routing'),
+      },
+      {
+        path: 'shop',
+        loadChildren: () => import('./modules/shop/shop.routing'),
+      },
+      {
+        path: 'kep-cover',
+        loadComponent: () => import('./modules/kep-cover-3/kep-cover-3.component').then(c => c.KepCover3Component),
+      },
+      {
+        path: 'kepcoin',
+        loadChildren: () => import('./modules/kepcoin/kepcoin.module').then(m => m.KepcoinModule),
+      },
+      {
+        path: 'settings',
+        loadChildren: () => import('./modules/account-settings/account-settings.module').then(m => m.AccountSettingsModule),
+      },
+    ]
+  },
+  {
+    path: '',
+    component: AuthenticationLayoutComponent,
+    children: [
+      {
+        path: 'login',
+        loadComponent: () => import('@auth/login/login.component').then(c => c.LoginComponent)
+      }
+    ]
+  },
+  {
+    path: '**',
+    loadComponent: () => import('./modules/error/error404/error404.component').then(c => c.Error404Component)
+  }
+];
+

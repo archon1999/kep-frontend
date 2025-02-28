@@ -12,18 +12,18 @@
       <div class="table-responsive">
         <table class="table">
           <thead>
-            <tr class="bg-tournament">
-              <th class="text-white">#</th>
-              <th class="text-white">{{ 'User' | translate }}</th>
-            </tr>
+          <tr class="bg-tournament">
+            <th class="text-white">#</th>
+            <th class="text-white">{{ 'User' | translate }}</th>
+          </tr>
           </thead>
           <tbody>
             @for (player of tournament.players; track player; let i = $index) {
               <tr
                 [ngClass]="{ 'bg-light-dark': player.username == currentUser?.username }"
-                >
+              >
                 <td>
-                  {{ i+1 }}
+                  {{ i + 1 }}
                 </td>
                 <td>
                   <contestant-view [user]="player"></contestant-view>

@@ -1,7 +1,7 @@
-<div class="card">
+<kep-card>
   <div class="card-header d-flex align-items-start">
     <div class="top">
-      <h2 class="fw-bolder text-dark">{{ usersTotal }}</h2>
+      <h2 class="fw-semibold text-dark">{{ usersTotal }}</h2>
       <div class="font-small-4 text-dark">{{ 'Users' | translate }}</div>
     </div>
     <div class="avatar bg-light-primary p-50">
@@ -17,16 +17,15 @@
     </div>
   }
 
-  <div class="card-body">
-    <div class="avatar-group">
+  <div class="card-body p-2" style="border:none !important;">
+    <div class="avatar-list-stacked">
       @for (user of onlineUsers; track user) {
-        <div class="avatar pull-up">
+        <div class="avatar avatar-rounded online">
           <user-popover [customContent]="true" [username]="user.username">
-            <img [src]="user.avatar" alt="Avatar" height="32" width="32">
-            <span class="avatar-status-online"></span>
+            <img [src]="user.avatar" alt="Avatar">
           </user-popover>
         </div>
       }
     </div>
   </div>
-</div>
+</kep-card>

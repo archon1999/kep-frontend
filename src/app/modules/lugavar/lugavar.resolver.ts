@@ -5,7 +5,7 @@ import { LugavarService } from './lugavar.service';
 
 @Injectable()
 export class DailyTrickResolver implements Resolve<boolean> {
-  constructor(public service: LugavarService){}
+  constructor(public service: LugavarService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     return this.service.getDailyTrick();
@@ -14,7 +14,7 @@ export class DailyTrickResolver implements Resolve<boolean> {
 
 @Injectable()
 export class DailyQuestionResolver implements Resolve<boolean> {
-  constructor(public service: LugavarService){}
+  constructor(public service: LugavarService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     return this.service.getDailyQuestion();
@@ -23,7 +23,7 @@ export class DailyQuestionResolver implements Resolve<boolean> {
 
 @Injectable()
 export class DailyInterestingFactResolver implements Resolve<boolean> {
-  constructor(public service: LugavarService){}
+  constructor(public service: LugavarService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     return this.service.getDailyInterestingFact();

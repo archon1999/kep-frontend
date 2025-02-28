@@ -1,68 +1,69 @@
 <a
   [@fadeInOnEnter]=""
-  class="card"
   [routerLink]="Resources.Problem | resourceById:problem.id">
-  <div class="card-header">
-    <div class="card-title font-medium-1">{{ problem.id }}. {{ problem.title }}</div>
+  <kep-card>
+    <div class="card-header">
+      <div class="card-title font-medium-1">{{ problem.id }}. {{ problem.title }}</div>
 
-    @if (problem.userInfo.hasSolved) {
-      <div ngbTooltip="{{ 'Solved' | translate }}">
-        <kep-icon name="check" color="success" type="duotone"/>
-      </div>
-    } @else if(problem.userInfo.hasAttempted) {
-      <div ngbTooltip="{{ 'Unsolved' | translate }}">
-        <kep-icon name="cross" color="danger" type="duotone"/>
-      </div>
-    }
-  </div>
-
-  <div class="card-body">
-    <span
-      ngbTooltip="{{ 'Difficulty' | translate }}"
-      class="badge badge-glow badge-{{ problem.difficulty | problemDifficultyColor }}">
-      {{ problem.difficultyTitle }}
-    </span>
-    @for (tag of problem.tags; track tag) {
-      <span class="ms-25 badge bg-primary">
-        {{ tag.name }}
-      </span>
-    }
-  </div>
-
-  <div class="card-footer d-flex justify-content-between">
-    <div class="user-statistics">
-      <span class="text-success" ngbTooltip="{{ 'UsersSolved' | translate }}">
-        {{ problem.solved }}
-        <i data-feather="user-check"></i>
-      </span>
-
-      <span class="text-danger" ngbTooltip="{{ 'UsersUnsolved' | translate }}">
-        {{ problem.notSolved }}
-        <i data-feather="user-x"></i>
-      </span>
+      @if (problem.userInfo.hasSolved) {
+        <div ngbTooltip="{{ 'Solved' | translate }}">
+          <kep-icon name="check" color="success" type="duotone"/>
+        </div>
+      } @else if (problem.userInfo.hasAttempted) {
+        <div ngbTooltip="{{ 'Unsolved' | translate }}">
+          <kep-icon name="cross" color="danger" type="duotone"/>
+        </div>
+      }
     </div>
 
-    <div class="meta">
-      @if (problem.hasSolution) {
-        <span class="badge badge-pill bg-light-success">
-          <i [data-feather]="'exists' | iconName" class="text-success" [size]="'16px'"></i>
-          {{ 'Solution' | translate }}
-        </span>
-      }
-
-      @if (!problem.hasChecker) {
-        <span class="badge badge-pill bg-light-danger">
-          <i [data-feather]="'not_exists' | iconName" class="text-danger" [size]="'16px'"></i>
-          {{ 'Checker' | translate }}
-        </span>
-      }
-
-      @if (problem.hidden) {
-        <span class="badge mt-50 badge-pill bg-light-warning">
-          <i [data-feather]="'eye-off'" class="text-warning" [size]="'16px'"></i>
-          {{ 'Hidden' | translate }}
+    <div class="card-body d-flex gap-1">
+      <span
+        ngbTooltip="{{ 'Difficulty' | translate }}"
+        class="badge badge-glow bg-{{ problem.difficulty | problemDifficultyColor }}">
+        {{ problem.difficultyTitle }}
+      </span>
+      @for (tag of problem.tags; track tag) {
+        <span class="ms-25 badge bg-primary">
+          {{ tag.name }}
         </span>
       }
     </div>
-  </div>
+
+    <div class="card-footer d-flex justify-content-between">
+      <div class="user-statistics">
+        <span class="text-success" ngbTooltip="{{ 'UsersSolved' | translate }}">
+          {{ problem.solved }}
+          <i data-feather="user-check"></i>
+        </span>
+
+        <span class="text-danger" ngbTooltip="{{ 'UsersUnsolved' | translate }}">
+          {{ problem.notSolved }}
+          <i data-feather="user-x"></i>
+        </span>
+      </div>
+
+      <div class="meta">
+        @if (problem.hasSolution) {
+          <span class="badge badge-pill bg-light-success">
+            <i [data-feather]="'exists' | iconName" class="text-success" [size]="'16px'"></i>
+            {{ 'Solution' | translate }}
+          </span>
+        }
+
+        @if (!problem.hasChecker) {
+          <span class="badge badge-pill bg-light-danger">
+            <i [data-feather]="'not_exists' | iconName" class="text-danger" [size]="'16px'"></i>
+            {{ 'Checker' | translate }}
+          </span>
+        }
+
+        @if (problem.hidden) {
+          <span class="badge mt-2 badge-pill bg-light-warning">
+            <i [data-feather]="'eye-off'" class="text-warning" [size]="'16px'"></i>
+            {{ 'Hidden' | translate }}
+          </span>
+        }
+      </div>
+    </div>
+  </kep-card>
 </a>

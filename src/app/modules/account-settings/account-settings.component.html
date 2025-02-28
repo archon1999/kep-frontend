@@ -6,42 +6,42 @@
       <div class="row nav-vertical d-flex">
         <div class="col-md-3 mb-2 mb-md-0">
           <ul
-              #navVertical="ngbNav"
-              (activeIdChange)="activeIdChange($event)"
-              [activeId]="activeId"
-              class="nav nav-pills flex-column nav-left"
-              ngbNav>
+            #navVertical="ngbNav"
+            (activeIdChange)="activeIdChange($event)"
+            [activeId]="activeId"
+            class="nav nav-pills tab-style-7 flex-column nav-left"
+            ngbNav>
             <li [ngbNavItem]="Tab.General" class="nav-item">
-              <a class="nav-link d-flex py-75" ngbNavLink>
-                <i class="font-medium-3 me-1" data-feather="user"></i>
-                <span class="fw-bold">General</span>
+              <a class="nav-link" ngbNavLink>
+                <i class="font-medium-4 me-1" data-feather="user"></i>
+                <span>General</span>
               </a>
               <ng-template ngbNavContent>
                 <general-settings></general-settings>
               </ng-template>
             </li>
             <li [ngbNavItem]="Tab.ChangePassword" class="nav-item">
-              <a class="nav-link d-flex py-75" ngbNavLink>
-                <i class="font-medium-3 me-1" data-feather="lock"></i>
-                <span class="fw-bold">Change Password</span>
+              <a class="nav-link" ngbNavLink>
+                <i class="font-medium-4 me-1" data-feather="lock"></i>
+                <span>Change Password</span>
               </a>
               <ng-template ngbNavContent>
                 <change-password></change-password>
               </ng-template>
             </li>
             <li [ngbNavItem]="Tab.Information" class="nav-item">
-              <a class="nav-link d-flex py-75" ngbNavLink>
-                <i class="font-medium-3 me-1" data-feather="info"></i>
-                <span class="fw-bold">Information</span>
+              <a class="nav-link" ngbNavLink>
+                <i class="font-medium-4 me-1" data-feather="info"></i>
+                <span>Information</span>
               </a>
               <ng-template ngbNavContent>
                 <information></information>
               </ng-template>
             </li>
             <li [ngbNavItem]="Tab.Social" class="nav-item">
-              <a class="nav-link d-flex py-75" ngbNavLink>
-                <i class="font-medium-3 me-1" data-feather="link"></i>
-                <span class="fw-bold">Social</span>
+              <a class="nav-link" ngbNavLink>
+                <i class="font-medium-4 me-1" data-feather="link"></i>
+                <span>Social</span>
               </a>
               <ng-template ngbNavContent>
                 <social></social>
@@ -49,9 +49,9 @@
             </li>
 
             <li class="nav-item" [ngbNavItem]="Tab.Skills">
-              <a class="nav-link d-flex py-75" ngbNavLink>
-                <i class="font-medium-3 me-1" data-feather="activity"></i>
-                <span class="fw-bold">Skills</span>
+              <a class="nav-link" ngbNavLink>
+                <i class="font-medium-4 me-1" data-feather="activity"></i>
+                <span>Skills</span>
               </a>
               <ng-template ngbNavContent>
                 <skills></skills>
@@ -59,9 +59,9 @@
             </li>
 
             <li [ngbNavItem]="Tab.Career" class="nav-item">
-              <a class="nav-link d-flex py-75" ngbNavLink>
-                <i class="font-medium-3 me-1" data-feather="trending-up"></i>
-                <span class="fw-bold">Сareer</span>
+              <a class="nav-link" ngbNavLink>
+                <i class="font-medium-4 me-1" data-feather="trending-up"></i>
+                <span>Сareer</span>
               </a>
               <ng-template ngbNavContent>
                 <career></career>
@@ -69,9 +69,9 @@
             </li>
 
             <li [ngbNavItem]="Tab.Teams" class="nav-item">
-              <a class="nav-link d-flex py-75" ngbNavLink>
-                <i class="font-medium-3 me-1" data-feather="users"></i>
-                <span class="fw-bold">Teams</span>
+              <a class="nav-link" ngbNavLink>
+                <i class="font-medium-4 me-1" data-feather="users"></i>
+                <span>Teams</span>
               </a>
               <ng-template ngbNavContent>
                 <teams></teams>
@@ -79,9 +79,9 @@
             </li>
 
             <li [ngbNavItem]="Tab.System" class="nav-item">
-              <a class="nav-link d-flex py-75" ngbNavLink>
-                <i class="font-medium-3 me-1" data-feather="settings"></i>
-                <span class="fw-bold">System</span>
+              <a class="nav-link" ngbNavLink>
+                <i class="font-medium-4 me-1" data-feather="settings"></i>
+                <span>System</span>
               </a>
               <ng-template ngbNavContent>
                 <system></system>

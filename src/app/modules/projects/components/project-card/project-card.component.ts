@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { KepcoinSpendSwalModule } from '@app/modules/kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { ProjectTechnologyComponent } from '@projects/components/project-technology/project-technology.component';
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'project-card',
@@ -19,7 +20,8 @@ import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.
     TranslateModule,
     KepcoinSpendSwalModule,
     ProjectTechnologyComponent,
-    KepcoinViewModule
+    KepcoinViewModule,
+    KepCardComponent
   ]
 })
 export class ProjectCardComponent {

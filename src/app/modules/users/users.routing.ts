@@ -36,7 +36,7 @@ export default [
   {
     path: '',
     loadComponent: () => import('./pages/users/users.component').then(c => c.UsersComponent),
-    data: { animation: 'users' },
+    data: {animation: 'users'},
     title: 'Users.Users',
   }
 ] satisfies Route[];

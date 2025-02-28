@@ -1,15 +1,16 @@
-<div class="card">
+<kep-card>
   <div class="card-header">
     <div class="card-title">
-      <kep-icon name="attempt"></kep-icon> {{ 'LastAttempts' | translate }}
+      <kep-icon name="attempt"></kep-icon>
+      {{ 'LastAttempts' | translate }}
     </div>
   </div>
 
-  @if (isLoading){
+  @if (isLoading) {
     <div class="card-body" [style.height.px]="515">
       <spinner></spinner>
     </div>
-  } @else if(data) {
+  } @else if (data) {
     <div class="card-body">
       <ul class="list-group">
         @for (attempt of attempts; track attempt) {
@@ -28,4 +29,4 @@
       </a>
     </div>
   }
-</div>
+</kep-card>

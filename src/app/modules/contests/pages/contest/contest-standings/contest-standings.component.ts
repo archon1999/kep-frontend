@@ -4,7 +4,7 @@ import { ContestsService } from '../../../contests.service';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { sortContestProblems } from '../../../utils/sort-contest-problems';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
 import {
   ContestStandingsCountdownComponent
@@ -74,10 +74,10 @@ export class ContestStandingsComponent extends BaseTablePageComponent<Contestant
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ contest, contestProblems }) => {
+    this.route.data.subscribe(({contest, contestProblems}) => {
       this.contest = Contest.fromJSON(contest);
       this.contestProblems = sortContestProblems(contestProblems);
-      this.titleService.updateTitle(this.route, { contestTitle: contest.title });
+      this.titleService.updateTitle(this.route, {contestTitle: contest.title});
       setTimeout(() => this.reloadPage());
 
       this.service.getContestFilters(this.contest.id).subscribe(

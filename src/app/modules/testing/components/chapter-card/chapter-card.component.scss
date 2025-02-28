@@ -5,7 +5,7 @@
   100% {
     transform: scale(0.98);
   }
-} 
+}
 
 .bg-gradient-chapter-6, .bg-gradient-chapter-8 {
   .card-title {
@@ -20,8 +20,8 @@
 
   &:hover {
     animation: cardAnimation 0.5s;
-    box-shadow: 12px 15px 20px 0px rgba(46,61,73,0.15);    
-    
+    box-shadow: 12px 15px 20px 0px rgba(46, 61, 73, 0.15);
+
     .on-hover {
       display: inherit;
     }

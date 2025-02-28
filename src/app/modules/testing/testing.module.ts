@@ -6,7 +6,7 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { DragulaModule } from 'ng2-dragula';
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
@@ -23,8 +23,11 @@ import { TestListCardComponent } from '@app/modules/testing/components/test-list
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
-import { ChapterWithTestsCardComponent } from '@app/modules/testing/components/chapter-with-tests-card/chapter-with-tests-card.component';
+import {
+  ChapterWithTestsCardComponent
+} from '@app/modules/testing/components/chapter-with-tests-card/chapter-with-tests-card.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 const routes: Routes = [
   {
@@ -88,6 +91,7 @@ const routes: Routes = [
     CountdownComponent,
     ChapterWithTestsCardComponent,
     SpinnerComponent,
+    KepCardComponent,
   ],
   providers: [
     TestResolver,

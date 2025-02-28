@@ -7,10 +7,10 @@
     }
 
     @if (!attempts && isLoading) {
-      <div class="card" [style.height.px]="1252">
+      <kep-card [cardHeight]="'400px'">
         <spinner></spinner>
-      </div>
-    } @else if(attempts.length == 0) {
+      </kep-card>
+    } @else if (attempts.length == 0) {
       <empty-result/>
     } @else {
       <attempts-table [hackEnabled]="true" [attempts]="attempts"/>

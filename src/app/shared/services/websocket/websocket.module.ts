@@ -7,19 +7,19 @@ import { WebSocketConfig } from './websocket.interfaces';
 
 
 @NgModule({
-    imports: [
-        CommonModule
-    ],
-    declarations: [],
-    providers: [
-        WebsocketService
-    ]
+  imports: [
+    CommonModule
+  ],
+  declarations: [],
+  providers: [
+    WebsocketService
+  ]
 })
 export class WebsocketModule {
-    public static config(wsConfig: WebSocketConfig): ModuleWithProviders<WebsocketModule> {
-        return {
-            ngModule: WebsocketModule,
-            providers: [{ provide: config, useValue: wsConfig }]
-        };
-    }
+  public static config(wsConfig: WebSocketConfig): ModuleWithProviders<WebsocketModule> {
+    return {
+      ngModule: WebsocketModule,
+      providers: [{provide: config, useValue: wsConfig}]
+    };
+  }
 }

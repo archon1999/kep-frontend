@@ -9,6 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
 import { Resources } from '@app/resources';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'chapter-with-tests-card',
@@ -19,7 +20,8 @@ import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
     NgbTooltipModule,
     TranslateModule,
     RouterLink,
-    ResourceByIdPipe
+    ResourceByIdPipe,
+    KepCardComponent
   ],
   templateUrl: './chapter-with-tests-card.component.html',
   styleUrl: './chapter-with-tests-card.component.scss',

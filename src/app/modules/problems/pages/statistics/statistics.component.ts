@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { SectionProfileComponent } from '@problems/pages/statistics/section-profile/section-profile.component';
-import { SectionDifficultiesComponent } from '@problems/pages/statistics/section-difficulties/section-difficulties.component';
+import {
+  SectionDifficultiesComponent
+} from '@problems/pages/statistics/section-difficulties/section-difficulties.component';
 import { SectionActivityComponent } from '@problems/pages/statistics/section-activity/section-activity.component';
 import { SectionHeatmapComponent } from '@problems/pages/statistics/section-heatmap/section-heatmap.component';
 import { SectionFactsComponent } from '@problems/pages/statistics/section-facts/section-facts.component';

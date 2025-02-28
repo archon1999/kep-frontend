@@ -14,7 +14,7 @@
               <i [data-feather]="'attempt' | iconName"></i>
             </div>
           </div>
-          
+
           <div class="title">
             {{ 'FirstAttempt' | translate }}
           </div>
@@ -35,7 +35,7 @@
             <div class="attempt-verdict" [innerHTML]="facts.firstAttempt | attemptVerdictHTML"></div>
           </ng-template>
         </div>
-      </div>      
+      </div>
 
       <div class="fact d-flex justify-content-between">
         <div class="info d-flex">
@@ -44,7 +44,7 @@
               <i [data-feather]="'problem' | iconName"></i>
             </div>
           </div>
-          
+
           <div class="title">
             {{ 'FirstSolvedProblem' | translate }}
           </div>
@@ -64,7 +64,7 @@
             </div>
           </ng-template>
         </div>
-      </div>      
+      </div>
 
       <div class="fact d-flex justify-content-between">
         <div class="info d-flex">
@@ -73,7 +73,7 @@
               <i [data-feather]="'attempt' | iconName"></i>
             </div>
           </div>
-          
+
           <div class="title">
             {{ 'LastAttempt' | translate }}
           </div>
@@ -94,7 +94,7 @@
             <div class="attempt-verdict" [innerHTML]="facts.lastAttempt | attemptVerdictHTML"></div>
           </ng-template>
         </div>
-      </div>      
+      </div>
 
       <div class="fact d-flex justify-content-between">
         <div class="info d-flex">
@@ -103,7 +103,7 @@
               <i [data-feather]="'problem' | iconName"></i>
             </div>
           </div>
-          
+
           <div class="title">
             {{ 'LastSolvedProblem' | translate }}
           </div>
@@ -123,7 +123,7 @@
             </div>
           </ng-template>
         </div>
-      </div>      
+      </div>
 
       <div class="fact d-flex justify-content-between">
         <div class="info d-flex">
@@ -132,7 +132,7 @@
               <i [data-feather]="'attempt' | iconName"></i>
             </div>
           </div>
-          
+
           <div class="title">
             {{ 'MostAttemptedProblem' | translate }}
           </div>
@@ -148,7 +148,7 @@
             {{ facts.mostAttemptedProblem.attemptsCount }}
           </ng-template>
         </div>
-      </div>      
+      </div>
 
       <div class="fact d-flex justify-content-between">
         <div class="info d-flex">
@@ -157,14 +157,15 @@
               <i [data-feather]="'problem' | iconName"></i>
             </div>
           </div>
-          
+
           <div class="title">
             {{ 'MostAttemptedForSolveProblem' | translate }}
           </div>
         </div>
         <div class="attempt-info" *ngIf="facts?.mostAttemptedForSolveProblem">
           <div [ngbTooltip]="tipContent" class="problem-title">
-            <a routerLink="/practice/problems/problem/{{ facts.mostAttemptedForSolveProblem.problemId }}" class="text-primary">
+            <a routerLink="/practice/problems/problem/{{ facts.mostAttemptedForSolveProblem.problemId }}"
+               class="text-primary">
               {{ facts.mostAttemptedForSolveProblem.problemId }}. {{ facts.mostAttemptedForSolveProblem.problemTitle }}
             </a>
           </div>
@@ -173,7 +174,7 @@
             {{ facts.mostAttemptedForSolveProblem.attemptsCount }}
           </ng-template>
         </div>
-      </div>      
+      </div>
 
       <div class="fact d-flex justify-content-between">
         <div class="info d-flex">
@@ -182,7 +183,7 @@
               <i [data-feather]="'attempt' | iconName"></i>
             </div>
           </div>
-          
+
           <div class="title">
             {{ 'SolvedWithSingleAttempt' | translate }}
           </div>
@@ -195,7 +196,7 @@
         <ng-template #tipContent>
           {{ facts.solvedWithSingleAttemptPercentage }}%
         </ng-template>
-      </div>      
+      </div>
     </div>
   </div>
 </div>

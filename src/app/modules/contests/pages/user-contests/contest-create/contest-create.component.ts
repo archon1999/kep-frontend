@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
 import { ContestTypes } from '@contests/constants';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Contest } from '@contests/pages/user-contests/user-contests.models';
 import { ContestsService } from '@contests/contests.service';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { NgbDatepickerModule, NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -90,8 +90,8 @@ export class ContestCreateComponent implements OnInit {
           const contestId = result.contestId;
           this.router.navigate(['/competitions', 'contests', 'user-contests']);
         } else {
-          this.toastr.error( 'Error', '', {
-            toastClass: 'toast ngx-toastr',
+          this.toastr.error('Error', '', {
+
           });
         }
       }

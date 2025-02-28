@@ -1,7 +1,9 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Arena, ArenaPlayer, ArenaStatus } from '@arena/arena.models';
 import { ArenaService } from '@arena/arena.service';
-import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import {
+  ChallengesUserViewComponent
+} from '@challenges/components/challenges-user-view/challenges-user-view.component';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { CoreCommonModule } from '@core/common.module';

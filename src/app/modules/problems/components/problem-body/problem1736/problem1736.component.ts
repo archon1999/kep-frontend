@@ -1,9 +1,6 @@
 import { Component, HostListener, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreConfig } from '@core/types';
 import { Problem } from '../../../models/problems.models';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { CoreCommonModule } from '@core/common.module';
 
@@ -26,7 +23,11 @@ export class Problem1736Component implements OnInit, OnDestroy {
 
   public outputHtml = '';
 
-  public editorOptions: any;
+  public editorOptions: any = {
+    language: 'html',
+    theme: 'vs-dark',
+    tabSize: 2,
+  };
 
   public outputX = 0;
   public outputWidth = 100;
@@ -36,27 +37,9 @@ export class Problem1736Component implements OnInit, OnDestroy {
 
   private _unsubscribeAll = new Subject();
 
-  constructor(public coreConfigService: CoreConfigService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.coreConfigService.getConfig().pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (coreConfig: CoreConfig) => {
-        if (coreConfig.layout.skin == 'dark') {
-          this.editorOptions = {
-            language: 'html',
-            theme: 'vs-dark',
-            tabSize: 2,
-          };
-        } else {
-          this.editorOptions = {
-            language: 'html',
-            theme: 'vs-light',
-            tabSize: 2,
-          };
-        }
-      }
-    );
-
     let html = localStorage.getItem(this.saveCodeName) || '';
     this.html = html;
     this.setOutputHtml();

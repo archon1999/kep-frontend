@@ -1,6 +1,5 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { Problem } from '@problems/models/problems.models';
-import { CoreConfigService } from '@core/services/config.service';
 import { TemplateCodeService } from '@shared/services/template-code.service';
 import { AttemptLangs } from '@problems/constants';
 import { CoreCommonModule } from '@core/common.module';
@@ -27,7 +26,6 @@ export class HtmlProblemBodyComponent implements OnInit {
   protected readonly AttemptLangs = AttemptLangs;
 
   constructor(
-    public coreConfigService: CoreConfigService,
     public templateCodeService: TemplateCodeService,
   ) {}
 

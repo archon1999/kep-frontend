@@ -64,14 +64,11 @@ export class AuthModalComponent implements OnInit {
 
   login() {
     this.authService.login(this.username.value, this.password.value).subscribe((user: any) => {
-      this.toastr.success(this.loginSuccessText, `👋 ${ this.welcomeText }, ` + user.firstName || user.username + '!', {
-        toastClass: 'toast ngx-toastr',
-        closeButton: true
-      });
+      this.toastr.success(this.loginSuccessText, `👋 ${this.welcomeText}, ` + user.firstName || user.username + '!', );
       this.modalService.dismissAll(1);
     }, (err: any) => {
       this.toastr.error(this.loginErrorText, '', {
-        toastClass: 'toast ngx-toastr',
+
       });
     });
   }

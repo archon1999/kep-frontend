@@ -1,25 +1,9 @@
 <a (mouseleave)="removeProblem()" [routerLink]="['..', 'problem', contestProblem.symbol]">
-  <div
-    [class]="contest | contestClasses"
-    [ngClass]="{
-      'border-success': contestProblem.isSolved,
-      'border-danger': !contestProblem.isSolved && contestProblem.isAttempted
-    }"
-    class="card">
+  <kep-card
+    [customClass]="'overlay-card ' + (contest | contestClasses) + ' ' + contestProblem.isSolved ? 'border-success' : contestProblem.isAttempted ? 'border-danger' : ''">
+    <img [src]="contest.logo" class="card-img" height="200">
 
-    <div
-      class="contest-logo"
-      [ngClass]="{
-        'full-height': logoHeight >= logoWidth,
-        'full-width': logoHeight < logoWidth
-      }">
-      <img
-        #contestLogo
-        (load)="onLoad($event)"
-        [src]="contest.logo"
-        alt="contest-logo">
-      </div>
-
+    <div class="card-img-overlay d-flex flex-column p-0" style="justify-content: space-evenly;">
       @if (problem) {
         <div class="card-header full-width">
           <div class="card-title text-dark mb-2">
@@ -68,7 +52,6 @@
           </div>
         </div>
       }
-
     </div>
-
-  </a>
+  </kep-card>
+</a>

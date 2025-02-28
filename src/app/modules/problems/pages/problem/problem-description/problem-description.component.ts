@@ -4,13 +4,18 @@ import { AuthService, User } from '@auth';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Problem, Tag, Topic } from '../../../models/problems.models';
+import { AvailableLanguage, Problem, Tag, Topic } from '../../../models/problems.models';
 import { CoreCommonModule } from '@core/common.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
 import { KepcoinSpendSwalModule } from '../../../../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';
+import { AttemptLangs } from "@problems/constants";
+import { findAvailableLang } from "@problems/utils";
+import { LanguageService } from "@problems/services/language.service";
+import { ProblemDifficultyColorPipe } from "@problems/pipes/problem-difficulty-color.pipe";
+import { UserPopoverModule } from "@shared/components/user-popover/user-popover.module";
 
 @Component({
   selector: 'problem-description',
@@ -26,6 +31,8 @@ import { ProblemBodyComponent } from '@problems/components/problem-body/problem-
     ClipboardModule,
     MonacoEditorComponent,
     KepcoinSpendSwalModule,
+    ProblemDifficultyColorPipe,
+    UserPopoverModule,
   ]
 })
 export class ProblemDescriptionComponent implements OnInit, OnDestroy {
@@ -43,14 +50,28 @@ export class ProblemDescriptionComponent implements OnInit, OnDestroy {
   public currentUser: User;
   private _unsubscribeAll = new Subject();
 
+  public selectedLang: string;
+  public selectedAvailableLang: AvailableLanguage;
+
   constructor(
     public authService: AuthService,
     public service: ProblemsApiService,
     public modalService: NgbModal,
+    protected langService: LanguageService,
   ) {
   }
 
   ngOnInit(): void {
+    this.langService.getLanguage().pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      (lang: AttemptLangs) => {
+        this.selectedAvailableLang = findAvailableLang(this.problem.availableLanguages, lang);
+        this.selectedLang = lang;
+        if (!this.selectedAvailableLang) {
+          this.langService.setLanguage(this.problem.availableLanguages[0].lang);
+        }
+      }
+    );
+
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (user: User | null) => {
         this.currentUser = user;

@@ -17,47 +17,47 @@ export class ArenaService {
   }
 
   getArena(id: number | string) {
-    return this.api.get(`arena/${ id }`);
+    return this.api.get(`arena/${id}`);
   }
 
   arenaRegistration(id: number | string) {
-    return this.api.post(`arena/${ id }/registration/`);
+    return this.api.post(`arena/${id}/registration/`);
   }
 
   getArenaPlayers(id: number | string, params: any) {
-    return this.api.get('arena-players', { ...params, arena_id: id });
+    return this.api.get('arena-players', {...params, arena_id: id});
   }
 
   getStandingsPage(id: number | string) {
-    return this.api.get(`arena/${ id }/standings-page`);
+    return this.api.get(`arena/${id}/standings-page`);
   }
 
   getArenaChallenges(id: number | string) {
-    return this.api.get(`arena/${ id }/last-challenges`);
+    return this.api.get(`arena/${id}/last-challenges`);
   }
 
   arenaPause(id: number | string) {
-    return this.api.post(`arena/${ id }/pause/`);
+    return this.api.post(`arena/${id}/pause/`);
   }
 
   arenaStart(id: number | string) {
-    return this.api.post(`arena/${ id }/start/`);
+    return this.api.post(`arena/${id}/start/`);
   }
 
   nextChallenge(id: number | string) {
-    return this.api.get(`arena/${ id }/next-challenge/`);
+    return this.api.get(`arena/${id}/next-challenge/`);
   }
 
   getArenaPlayerStatistics(arenaId: number | string, username) {
-    return this.api.get(`arena/${ arenaId }/arena-player-statistics/`, { username: username });
+    return this.api.get(`arena/${arenaId}/arena-player-statistics/`, {username: username});
   }
 
   getTop3(arenaId: number | string) {
-    return this.api.get(`arena/${ arenaId }/top-3/`);
+    return this.api.get(`arena/${arenaId}/top-3/`);
   }
 
   getArenaStatistics(arenaId: number | string) {
-    return this.api.get(`arena/${ arenaId }/statistics/`);
+    return this.api.get(`arena/${arenaId}/statistics/`);
   }
 
 }

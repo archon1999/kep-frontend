@@ -8,7 +8,7 @@
     </tr>
   </ng-container>
   <ng-container body>
-    @for (player of arenaPlayers;track player.username) {
+    @for (player of arenaPlayers; track player.username) {
       <tr
         [@fadeInOnEnter]=""
         class="cursor-pointer"
@@ -21,7 +21,7 @@
           <challenges-user-view [user]="player" [withRating]="true"></challenges-user-view>
         </td>
         <td class="text-end player-results">
-          @for (result of player.results;track result) {
+          @for (result of player.results; track result) {
             <span [ngClass]="{
               'text-warning': result == 3,
               'text-success': result == 2,

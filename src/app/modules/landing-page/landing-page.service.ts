@@ -19,7 +19,7 @@ export class LandingPageService {
     return this.api.get('faq');
   }
 
-  contactUsSubmit(data: Partial<{ fullName: string, email: string, text: string }>){
+  contactUsSubmit(data: Partial<{ fullName: string, email: string, text: string }>) {
     return this.api.post('contact-us', data);
   }
 }

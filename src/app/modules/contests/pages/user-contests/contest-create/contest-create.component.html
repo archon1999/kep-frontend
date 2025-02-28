@@ -29,133 +29,133 @@
                     name="symbol"
                     placeholder="{{ 'Symbol' | translate }}"
                     type="text"
-                    />
-                  </div>
-                  @if (hasBall) {
-                    <div class="col-2">
-                      <input
-                        [(ngModel)]="contestProblem.ball"
-                        [ngModelOptions]="{standalone: true}"
-                        class="form-control"
-                        name="ball"
-                        placeholder="{{ 'Ball' | translate }}"
-                        type="number"
-                        />
-                      </div>
-                    }
-                    <div class="col-1">
-                      <button (click)="removeProblem(i)" class="btn btn-danger btn-sm">
-                        <i data-feather="x"></i>
-                      </button>
-                    </div>
-                  </div>
+                  />
                 </div>
-              }
-
-              @if (contest.problems.length < 12) {
-                <div>
-                  <button (click)="addProblem()" class="btn btn-primary">
-                    {{ 'Add' | translate }}
-                  </button>
-                </div>
-              }
-            </div>
-
-            <div class="col-lg-3 col-md-12 col-sm-12 order-lg-2 order-md-1 order-sm-1">
-              <div class="card">
-                <div class="card-body">
-
-                  <div class="mb-1">
-                    <label class="text-primary">
-                      <strong>
-                        {{ 'TITLE' | translate }}:
-                      </strong>
-                    </label>
+                @if (hasBall) {
+                  <div class="col-2">
                     <input
-                      [(ngModel)]="contest.title"
+                      [(ngModel)]="contestProblem.ball"
                       [ngModelOptions]="{standalone: true}"
                       class="form-control"
-                      name="title"
-                      type="text"
-                      />
-                    </div>
-
-                    <div class="mb-1">
-                      <label class="text-primary">
-                        <strong>
-                          {{ 'CONTESTS.START_TIME' | translate }}:
-                        </strong>
-                      </label>
-                      <div class="input-group">
-                        <input
-                          #startDate="ngbDatepicker"
-                          [(ngModel)]="contest.startDate"
-                          class="form-control"
-                          ngbDatepicker placeholder="yyyy-mm-dd">
-                          <div class="input-group-append">
-                            <button (click)="startDate.toggle()" class="btn btn-outline-secondary feather icon-calendar"
-                              rippleEffect type="button">
-                            </button>
-                          </div>
-
-                          <ngb-timepicker [(ngModel)]="contest.startTime" [spinners]="false"></ngb-timepicker>
-                        </div>
-                      </div>
-
-                      <div class="mb-1">
-                        <label class="text-primary">
-                          <strong>
-                            {{ 'CONTESTS.FINISH_TIME' | translate }}:
-                          </strong>
-                        </label>
-                        <div class="input-group">
-                          <input
-                            #endDate="ngbDatepicker"
-                            [(ngModel)]="contest.finishDate"
-                            class="form-control"
-                            ngbDatepicker placeholder="yyyy-mm-dd">
-                            <div class="input-group-append">
-                              <button (click)="endDate.toggle()" class="btn btn-outline-secondary feather icon-calendar"
-                                rippleEffect type="button">
-                              </button>
-                            </div>
-
-                            <ngb-timepicker [(ngModel)]="contest.finishTime" [spinners]="false"></ngb-timepicker>
-                          </div>
-                        </div>
-
-                        <div class="mb-1">
-                          <label class="text-primary">
-                            <strong>
-                              {{ 'CONTESTS.TYPE' | translate }}:
-                            </strong>
-                          </label>
-
-                          <ng-select appendTo="body" (change)="onTypeChange()" [(ngModel)]="contest.type">
-                            <ng-option [value]="ContestTypes.ACM20M">{{ ContestTypes.ACM20M }}</ng-option>
-                            <ng-option [value]="ContestTypes.ACM2H">{{ ContestTypes.ACM2H }}</ng-option>
-                            <ng-option [value]="ContestTypes.BALL525">{{ ContestTypes.BALL525 }}</ng-option>
-                            <ng-option [value]="ContestTypes.BALL550">{{ ContestTypes.BALL550 }}</ng-option>
-                            <ng-option [value]="ContestTypes.LESS_CODE">{{ ContestTypes.LESS_CODE }}</ng-option>
-                            <ng-option [value]="ContestTypes.LESS_LINE">{{ ContestTypes.LESS_LINE }}</ng-option>
-                            <ng-option [value]="ContestTypes.ONE_ATTEMPT">{{ ContestTypes.ONE_ATTEMPT }}</ng-option>
-                            <ng-option [value]="ContestTypes.EXAM">{{ ContestTypes.EXAM }}</ng-option>
-                          </ng-select>
-                        </div>
-
-                      </div>
-
-                      <div class="card-footer text-center">
-                        <button (click)="createContest()" class="btn btn-relief-primary round">
-                          {{ 'Create' | translate }}
-                        </button>
-                      </div>
-
-                    </div>
+                      name="ball"
+                      placeholder="{{ 'Ball' | translate }}"
+                      type="number"
+                    />
                   </div>
+                }
+                <div class="col-1">
+                  <button (click)="removeProblem(i)" class="btn btn-danger btn-sm">
+                    <i data-feather="x"></i>
+                  </button>
                 </div>
-              </section>
+              </div>
             </div>
-          </div>
+          }
 
-          <ng-select-css></ng-select-css>
+          @if (contest.problems.length < 12) {
+            <div>
+              <button (click)="addProblem()" class="btn btn-primary">
+                {{ 'Add' | translate }}
+              </button>
+            </div>
+          }
+        </div>
+
+        <div class="col-lg-3 col-md-12 col-sm-12 order-lg-2 order-md-1 order-sm-1">
+          <div class="card">
+            <div class="card-body">
+
+              <div class="mb-1">
+                <label class="text-primary">
+                  <strong>
+                    {{ 'TITLE' | translate }}:
+                  </strong>
+                </label>
+                <input
+                  [(ngModel)]="contest.title"
+                  [ngModelOptions]="{standalone: true}"
+                  class="form-control"
+                  name="title"
+                  type="text"
+                />
+              </div>
+
+              <div class="mb-1">
+                <label class="text-primary">
+                  <strong>
+                    {{ 'CONTESTS.START_TIME' | translate }}:
+                  </strong>
+                </label>
+                <div class="input-group">
+                  <input
+                    #startDate="ngbDatepicker"
+                    [(ngModel)]="contest.startDate"
+                    class="form-control"
+                    ngbDatepicker placeholder="yyyy-mm-dd">
+                  <div class="input-group-append">
+                    <button (click)="startDate.toggle()" class="btn btn-outline-secondary feather icon-calendar"
+                            rippleEffect type="button">
+                    </button>
+                  </div>
+
+                  <ngb-timepicker [(ngModel)]="contest.startTime" [spinners]="false"></ngb-timepicker>
+                </div>
+              </div>
+
+              <div class="mb-1">
+                <label class="text-primary">
+                  <strong>
+                    {{ 'CONTESTS.FINISH_TIME' | translate }}:
+                  </strong>
+                </label>
+                <div class="input-group">
+                  <input
+                    #endDate="ngbDatepicker"
+                    [(ngModel)]="contest.finishDate"
+                    class="form-control"
+                    ngbDatepicker placeholder="yyyy-mm-dd">
+                  <div class="input-group-append">
+                    <button (click)="endDate.toggle()" class="btn btn-outline-secondary feather icon-calendar"
+                            rippleEffect type="button">
+                    </button>
+                  </div>
+
+                  <ngb-timepicker [(ngModel)]="contest.finishTime" [spinners]="false"></ngb-timepicker>
+                </div>
+              </div>
+
+              <div class="mb-1">
+                <label class="text-primary">
+                  <strong>
+                    {{ 'CONTESTS.TYPE' | translate }}:
+                  </strong>
+                </label>
+
+                <ng-select appendTo="body" (change)="onTypeChange()" [(ngModel)]="contest.type">
+                  <ng-option [value]="ContestTypes.ACM20M">{{ ContestTypes.ACM20M }}</ng-option>
+                  <ng-option [value]="ContestTypes.ACM2H">{{ ContestTypes.ACM2H }}</ng-option>
+                  <ng-option [value]="ContestTypes.BALL525">{{ ContestTypes.BALL525 }}</ng-option>
+                  <ng-option [value]="ContestTypes.BALL550">{{ ContestTypes.BALL550 }}</ng-option>
+                  <ng-option [value]="ContestTypes.LESS_CODE">{{ ContestTypes.LESS_CODE }}</ng-option>
+                  <ng-option [value]="ContestTypes.LESS_LINE">{{ ContestTypes.LESS_LINE }}</ng-option>
+                  <ng-option [value]="ContestTypes.ONE_ATTEMPT">{{ ContestTypes.ONE_ATTEMPT }}</ng-option>
+                  <ng-option [value]="ContestTypes.EXAM">{{ ContestTypes.EXAM }}</ng-option>
+                </ng-select>
+              </div>
+
+            </div>
+
+            <div class="card-footer text-center">
+              <button (click)="createContest()" class="btn btn-relief-primary round">
+                {{ 'Create' | translate }}
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<ng-select-css></ng-select-css>

@@ -1,5 +1,5 @@
 export enum BaseStatus {
-  NotStarted= -1,
+  NotStarted = -1,
   Already,
   Finished,
 }

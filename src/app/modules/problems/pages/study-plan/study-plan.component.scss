@@ -22,7 +22,7 @@
 .study-plan {
   margin-left: 20rem;
   margin-right: 20rem;
-  
+
   @include media-breakpoint-down(xl) {
     margin-left: 12rem;
     margin-right: 12rem;
@@ -51,7 +51,7 @@
       font-weight: 600;
       font-size: 1.25rem;
     }
-    
+
     .study-plan-description {
       margin-top: 1rem;
     }
@@ -81,7 +81,7 @@
           .problem {
             display: grid;
             grid-template-columns: 6fr 2fr 2fr 2fr;
-            
+
             @include media-breakpoint-down(sm) {
               grid-template-columns: 6fr 2fr 2fr;
 
@@ -94,7 +94,7 @@
             padding: 10px;
             border-bottom: 1px solid #ebe9f1;
             margin-bottom: 0.5rem;
-            
+
             &:last-child {
               border-bottom: 0;
               margin-bottom: 0;
@@ -104,7 +104,7 @@
               font-weight: 600;
               margin-bottom: 0.5rem;
 
-              .problem-tags {   
+              .problem-tags {
                 margin-top: 0.5rem;
 
                 .problem-tag {
@@ -113,7 +113,7 @@
               }
             }
 
-            .problem-rating, .problem-difficulty, .problem-button { 
+            .problem-rating, .problem-difficulty, .problem-button {
               display: flex;
               margin-left: 1rem;
               text-align: center;
@@ -156,7 +156,7 @@
 
 .problem-tag {
   color: #02bab4;
-  background-color: #dbf0f0; 
+  background-color: #dbf0f0;
 }
 
 ::ng-deep .dark-layout {
@@ -182,7 +182,7 @@
     .card-header {
       padding-bottom: 0.5rem;
     }
-  
+
     .card-body {
       display: grid;
       grid-template-columns: 2fr 3fr;
@@ -200,37 +200,37 @@
   }
 
   .swiper-slide {
-    &:nth-child(1){
+    &:nth-child(1) {
       ::ng-deep .progress {
         background-color: rgba(40, 199, 111, 0.12);
       }
     }
 
-    &:nth-child(2){
+    &:nth-child(2) {
       ::ng-deep .progress {
         background-color: rgba(0, 207, 232, 0.12);
       }
     }
 
-    &:nth-child(3){
+    &:nth-child(3) {
       ::ng-deep .progress {
         background-color: rgba(67, 97, 238, 0.12);
       }
     }
 
-    &:nth-child(5){
+    &:nth-child(5) {
       ::ng-deep .progress {
         background-color: rgba(255, 159, 67, 0.12);
       }
     }
 
-    &:nth-child(6){
+    &:nth-child(6) {
       ::ng-deep .progress {
         background-color: rgba(234, 84, 85, 0.12);
       }
     }
 
-    &:nth-child(7){
+    &:nth-child(7) {
       ::ng-deep .progress {
         background-color: rgba(75, 75, 75, 0.12);
       }

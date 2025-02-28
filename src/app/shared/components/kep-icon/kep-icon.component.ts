@@ -1,8 +1,7 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import icons from './icons.json';
 import { CommonModule } from '@angular/common';
-import { keenIcons } from '@app/icons';
-import { colors } from '@app/colors';
+import { keenIcons } from "../../../icons";
 
 @Component({
   standalone: true,
@@ -13,9 +12,9 @@ import { colors } from '@app/colors';
 })
 export class KepIconComponent implements OnInit {
   @Input() name: keyof typeof keenIcons | string;
-  @Input() class = 'me-25 font-medium-3';
+  @Input() class = 'me-1 font-medium-3';
   @Input() type: 'outline' | 'solid' | 'duotone' = 'outline';
-  @Input() color: keyof typeof colors.solid;
+  @Input() color: string;
   @Input() size:
     'small-1' | 'small-2' | 'small-3' | 'small-4' |
     'medium-1' | 'medium-2' | 'medium-3' | 'medium-4' | 'medium-5' |

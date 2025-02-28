@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { StudyPlan } from '@problems/models/problems.models';
 import { SwiperOptions } from 'swiper/types/swiper-options';
-import { CoreCommonModule } from '@core/common.module';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { StudyPlanCardModule } from '@problems/components/study-plan-card/study-plan-card.module';
 import { fadeInLeftOnEnterAnimation } from 'angular-animations';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
+import { TranslatePipe } from "@ngx-translate/core";
 
 @Component({
   selector: 'section-study-plans',
@@ -15,9 +15,9 @@ import { ProblemsApiService } from '@problems/services/problems-api.service';
   standalone: true,
   animations: [fadeInLeftOnEnterAnimation()],
   imports: [
-    CoreCommonModule,
     SwiperComponent,
     StudyPlanCardModule,
+    TranslatePipe,
   ]
 })
 export class SectionStudyPlansComponent implements OnInit {

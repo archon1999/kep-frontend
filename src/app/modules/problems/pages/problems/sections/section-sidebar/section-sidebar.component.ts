@@ -4,12 +4,13 @@ import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 import { BaseComponent } from '@app/common/classes/base.component';
-import { CoreCommonModule } from '@core/common.module';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { PageResult } from '@app/common/classes/page-result';
 import { Observable } from 'rxjs';
+import { FormsModule } from "@angular/forms";
+import { TranslatePipe } from "@ngx-translate/core";
 
 export interface TopRating {
   username: string;
@@ -23,10 +24,11 @@ export interface TopRating {
   styleUrls: ['./section-sidebar.component.scss'],
   standalone: true,
   imports: [
-    CoreCommonModule,
     NgScrollbar,
     ApexChartModule,
     ContestantViewModule,
+    FormsModule,
+    TranslatePipe,
   ]
 })
 export class SectionSidebarComponent extends BaseComponent implements OnInit {

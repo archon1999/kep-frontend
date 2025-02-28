@@ -8,157 +8,155 @@
               {{ 'Activity' | translate }}
             </div>
             <div class="btn-group btn-group-toggle mt-md-0 mt-1" ngbRadioGroup name="radioBasic"
-              [(ngModel)]="activityDays">
+                 [(ngModel)]="activityDays">
               <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
                 <input (click)="activityDataUpdate(7)" type="radio" name="last_days_option" id="last_days_option_1"
-                  [value]="7" ngbButton/>
-                  <span>7</span>
-                </label>
-                <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
-                  <input (click)="activityDataUpdate(14)" type="radio" name="last_days_option" id="last_days_option_2"
-                    [value]="14" ngbButton/>
-                    <span>14</span>
-                  </label>
-                  <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
-                    <input (click)="activityDataUpdate(30)" type="radio" name="last_days_option" id="last_days_option_3"
-                      [value]="30" ngbButton/>
-                      <span>30</span>
-                    </label>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div class="text-center mt-2 mb-2">
-                    <div class="avatar bg-primary p-50 m-0 mb-1">
-                      <div class="avatar-content">
-                        <i data-feather="check-circle" class="font-medium-5"></i>
-                      </div>
-                    </div>
-                    <h2 class="fw-bolder">{{ activitySolved }}</h2>
-                    <p class="mb-0 line-ellipsis">{{ 'Problem' | translate }}</p>
-                  </div>
-                  @if (activityChart) {
-                    <apex-chart [options]="activityChart"></apex-chart>
-                  }
-                </div>
-                <div class="card-footer text-center">
-                  <a class="btn btn-primary bg-primary badge-glow btn-sm round" routerLink="statistics">
-                    {{ 'DetailedStatistics' | translate }}
-                    <i data-feather="arrow-right"></i>
-                  </a>
-                </div>
-              </div>
+                       [value]="7" ngbButton/>
+                <span>7</span>
+              </label>
+              <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
+                <input (click)="activityDataUpdate(14)" type="radio" name="last_days_option" id="last_days_option_2"
+                       [value]="14" ngbButton/>
+                <span>14</span>
+              </label>
+              <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
+                <input (click)="activityDataUpdate(30)" type="radio" name="last_days_option" id="last_days_option_3"
+                       [value]="30" ngbButton/>
+                <span>30</span>
+              </label>
             </div>
-          }
-
-          <div class="card">
-            <div class="card-header">
-              <h5 class="card-title">{{ 'Rating' | translate }}</h5>
-              <div class="btn-group btn-group-toggle mt-md-0 mt-1" ngbRadioGroup name="radioBasic"
-                [(ngModel)]="topRatingOption">
-                <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
-                  <input (click)="loadTopRating(1)" type="radio" name="top-rating" id="top-rating-1" [value]="1" ngbButton/>
-                  <span>{{ 'Today' | translate }}</span>
-                </label>
-                <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
-                  <input (click)="loadTopRating(2)" type="radio" name="top-rating" id="top-rating-1" [value]="2" ngbButton/>
-                  <span>{{ 'Week' | translate }}</span>
-                </label>
-                <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
-                  <input (click)="loadTopRating(3)" type="radio" name="top-rating" id="top-rating-1" [value]="3" ngbButton/>
-                  <span>{{ 'Month' | translate }}</span>
-                </label>
-              </div>
-            </div>
-
-            <div class="table-responsive">
-              <table class="table top-rating-table">
-                <thead>
-                  <tr class="bg-gradient-primary">
-                    <th class="text-center text-white">#</th>
-                    <th class="text-white">
-                      <i class="me-50" data-feather="user"></i>
-                      {{ 'USER' | translate }}
-                    </th>
-                    <th class="text-center text-white"><i [data-feather]="'rating' | iconName"></i></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @for (rating of topRating; track rating; let i = $index) {
-                    <tr>
-                      <td class="text-center text-dark">
-                        {{ i + 1 }}
-                      </td>
-                      <td class="">
-                        <contestant-view [imgSize]="28" [user]="rating"></contestant-view>
-                      </td>
-                      <td class="text-center">
-                        <span class="badge bg-primary badge-glow">
-                          {{ rating.solved }}
-                        </span>
-                      </td>
-                    </tr>
-                  }
-                </tbody>
-              </table>
-            </div>
-
-            <div class="card-footer text-center">
-              <a class="btn btn-primary bg-primary badge-glow btn-sm round" routerLink="rating">
-                {{ 'OverallRating' | translate }}
-                <i data-feather="arrow-right"></i>
-              </a>
-            </div>
-
           </div>
-
-          @if (currentUser) {
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">{{ 'LastAttempts' | translate }}</div>
+          <div class="card-body">
+            <div class="text-center mt-2 mb-2">
+              <div class="avatar bg-primary p-50 m-0 mb-1">
+                <div class="avatar-content">
+                  <i data-feather="check-circle" class="font-medium-5"></i>
+                </div>
               </div>
-              <table class="table attempts">
-                <thead class="bg-gradient-primary">
-                  <tr>
-                    <th class="ms-50 text-white">
-                      <i class="me-50" [data-feather]="'problem' | iconName"></i>
-                      {{ 'Problem' | translate }}
-                    </th>
-                    <th class="me-50 text-end text-white">
-                      <i class="me-50" [data-feather]="'activity'"></i>
-                      {{ 'Verdict' | translate }}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @for (attempt of lastAttempts; track attempt) {
-                    <tr>
-                      <td class="ms-50">
-                        <a [routerLink]="['/practice', 'problems', 'problem', attempt.problemId]">
-                          <span class="text-primary">{{ attempt.problemId }}. {{ attempt.problemTitle }}</span>
-                        </a>
-                      </td>
-          <td class="text-end" [ngClass]="{
+              <h2 class="fw-semibold">{{ activitySolved }}</h2>
+              <p class="mb-0 line-ellipsis">{{ 'Problem' | translate }}</p>
+            </div>
+            @if (activityChart) {
+              <apex-chart [options]="activityChart"></apex-chart>
+            }
+          </div>
+          <div class="card-footer text-center">
+            <a class="btn btn-primary bg-primary badge-glow btn-sm round" routerLink="statistics">
+              {{ 'DetailedStatistics' | translate }}
+              <i data-feather="arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    }
+
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title">{{ 'Rating' | translate }}</h5>
+        <div class="btn-group btn-group-toggle mt-md-0 mt-1" ngbRadioGroup name="radioBasic"
+             [(ngModel)]="topRatingOption">
+          <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
+            <input (click)="loadTopRating(1)" type="radio" name="top-rating" id="top-rating-1" [value]="1" ngbButton/>
+            <span>{{ 'Today' | translate }}</span>
+          </label>
+          <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
+            <input (click)="loadTopRating(2)" type="radio" name="top-rating" id="top-rating-1" [value]="2" ngbButton/>
+            <span>{{ 'Week' | translate }}</span>
+          </label>
+          <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
+            <input (click)="loadTopRating(3)" type="radio" name="top-rating" id="top-rating-1" [value]="3" ngbButton/>
+            <span>{{ 'Month' | translate }}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table top-rating-table">
+          <thead>
+          <tr class="bg-gradient-primary">
+            <th class="text-center text-white">#</th>
+            <th class="text-white">
+              <i class="me-50" data-feather="user"></i>
+              {{ 'USER' | translate }}
+            </th>
+            <th class="text-center text-white"><i [data-feather]="'rating' | iconName"></i></th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (rating of topRating; track rating; let i = $index) {
+              <tr>
+                <td class="text-center text-dark">
+                  {{ i + 1 }}
+                </td>
+                <td class="">
+                  <contestant-view [imgSize]="28" [user]="rating"></contestant-view>
+                </td>
+                <td class="text-center">
+                  <span class="badge bg-primary badge-glow">
+                    {{ rating.solved }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card-footer text-center">
+        <a class="btn btn-primary bg-primary badge-glow btn-sm round" routerLink="rating">
+          {{ 'OverallRating' | translate }}
+          <i data-feather="arrow-right"></i>
+        </a>
+      </div>
+
+    </div>
+
+    @if (currentUser) {
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">{{ 'LastAttempts' | translate }}</div>
+        </div>
+        <table class="table attempts">
+          <thead class="bg-gradient-primary">
+          <tr>
+            <th class="ms-50 text-white">
+              {{ 'Problem' | translate }}
+            </th>
+            <th class="me-50 text-end text-white">
+              {{ 'Verdict' | translate }}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (attempt of lastAttempts; track attempt) {
+              <tr>
+                <td class="ms-50">
+                  <a [routerLink]="['/practice', 'problems', 'problem', attempt.problemId]">
+                    <span class="text-primary">{{ attempt.problemId }}. {{ attempt.problemTitle }}</span>
+                  </a>
+                </td>
+                <td class="text-end" [ngClass]="{
             'text-success': attempt.verdict == 1,
             'text-danger': attempt.verdict != 1
           }">
-                        <div class="me-1">
-                          <span class="font-small-3">
-                            {{ attempt.verdictTitle }}
-                          </span>
-                        </div>
-                      </td>
-                    </tr>
-                  }
-                </tbody>
-              </table>
-              <div class="card-footer text-center">
-                <button class="btn btn-primary bg-primary badge-glow btn-sm round" routerLink="attempts">
-                  {{ 'AllAttempts' | translate }}
-                  <i data-feather="arrow-right"></i>
-                </button>
-              </div>
-            </div>
-          }
-
+                  <div class="me-1">
+                    <span class="font-small-3">
+                      {{ attempt.verdictTitle }}
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        <div class="card-footer text-center">
+          <button class="btn btn-primary bg-primary badge-glow btn-sm round" routerLink="attempts">
+            {{ 'AllAttempts' | translate }}
+            <i data-feather="arrow-right"></i>
+          </button>
         </div>
-      </ng-scrollbar>
+      </div>
+    }
+
+  </div>
+</ng-scrollbar>

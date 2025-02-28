@@ -4,7 +4,9 @@ import { Arena, ArenaPlayerStatistics, ArenaStatistics, ArenaStatus } from '../.
 import { ArenaService } from '../../arena.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbAlertModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { ArenaPlayerStatisticsComponent } from '../../components/arena-player-statistics/arena-player-statistics.component';
+import {
+  ArenaPlayerStatisticsComponent
+} from '../../components/arena-player-statistics/arena-player-statistics.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
@@ -12,7 +14,9 @@ import { ArenaChallengesComponent } from '@arena/pages/arena-tournament/arena-ch
 import { interval } from 'rxjs';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { takeUntil } from 'rxjs/operators';
-import { ChallengesUserViewComponent } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import {
+  ChallengesUserViewComponent
+} from '@challenges/components/challenges-user-view/challenges-user-view.component';
 import { ArenaCardComponent } from '@arena/components/arena-card/arena-card.component';
 import { ArenaChaptersComponent } from '@arena/pages/arena-tournament/arena-chapters/arena-chapters.component';
 import { ArenaCountdownComponent } from '@arena/pages/arena-tournament/arena-countdown/arena-countdown.component';
@@ -76,9 +80,9 @@ export class ArenaTournamentComponent extends BaseComponent implements OnInit {
       }
     );
 
-    this.route.data.subscribe(({ arena }) => {
+    this.route.data.subscribe(({arena}) => {
       this.arena = arena;
-      this.titleService.updateTitle(this.route, { arenaTitle: arena.title });
+      this.titleService.updateTitle(this.route, {arenaTitle: arena.title});
       if (this.arena.status === ArenaStatus.Already) {
         this._intervalId = setInterval(
           () => {
@@ -117,7 +121,7 @@ export class ArenaTournamentComponent extends BaseComponent implements OnInit {
         if (result.challengeId) {
           this.router.navigate(
             [getResourceById(Resources.Challenge, result.challengeId)],
-            { queryParams: { 'arena': this.arena.id } }
+            {queryParams: {'arena': this.arena.id}}
           );
         }
       }

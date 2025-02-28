@@ -14,12 +14,12 @@ tfoot tr th {
   text-transform: initial !important;
 }
 
-table>thead>tr>th:first-child {
+table > thead > tr > th:first-child {
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
 }
 
-table>thead>tr>th:last-child {
+table > thead > tr > th:last-child {
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
 }

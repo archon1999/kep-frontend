@@ -3,7 +3,7 @@ import { User } from '@auth';
 import { takeUntil } from 'rxjs/operators';
 import { ContestsService } from '../../../contests.service';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -13,6 +13,7 @@ import { BaseLoadComponent } from '@app/common';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { KepDeltaComponent } from '@shared/components/kep-delta/kep-delta.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'app-contest-rating-changes',
@@ -28,6 +29,7 @@ import { KepDeltaComponent } from '@shared/components/kep-delta/kep-delta.compon
     KepTableComponent,
     ContestClassesPipe,
     KepDeltaComponent,
+    KepCardComponent,
   ]
 })
 export class ContestRatingChangesComponent extends BaseLoadComponent<Contestant[]> implements OnInit, OnDestroy {
@@ -42,9 +44,9 @@ export class ContestRatingChangesComponent extends BaseLoadComponent<Contestant[
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ contest }) => {
+    this.route.data.subscribe(({contest}) => {
       this.contest = Contest.fromJSON(contest);
-      this.titleService.updateTitle(this.route, { contestTitle: contest.title });
+      this.titleService.updateTitle(this.route, {contestTitle: contest.title});
       this.loadContentHeader();
       this.loadData();
     });

@@ -11,8 +11,6 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { EditorComponent, MonacoEditorModule } from 'ngx-monaco-editor-v2';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreConfig } from '@core/types';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { AttemptLangs } from 'app/modules/problems/constants';
 import { getEditorLang } from 'app/modules/problems/utils';
@@ -20,7 +18,8 @@ import { getEditorLang } from 'app/modules/problems/utils';
 
 @Component({
   selector: 'monaco-editor',
-  template: `<ngx-monaco-editor [style.height.px]="height" [options]="options" [(ngModel)]="value"></ngx-monaco-editor>`,
+  template: `
+    <ngx-monaco-editor [style.height.px]="height" [options]="options" [(ngModel)]="value"></ngx-monaco-editor>`,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -42,7 +41,7 @@ export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnCh
   @Input() tabSize = 4;
 
   public options = {
-    theme: 'vs-light',
+    theme: 'vs-dark',
     language: 'python',
     minimap: {
       enabled: false,
@@ -55,21 +54,11 @@ export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnCh
   onTouched: () => {};
 
   constructor(
-    public coreConfigService: CoreConfigService,
     public languageService: LanguageService,
   ) {
   }
 
   ngOnInit() {
-    this.coreConfigService.getConfig().subscribe(
-      (config: CoreConfig) => {
-        this.options = {
-          ...this.options,
-          theme: (config.layout.skin === 'dark' ? 'vs-dark' : 'vs-light'),
-        };
-      }
-    );
-
     this.languageService.getLanguage().subscribe(
       (lang: AttemptLangs) => {
         this.lang = this.lang || lang;

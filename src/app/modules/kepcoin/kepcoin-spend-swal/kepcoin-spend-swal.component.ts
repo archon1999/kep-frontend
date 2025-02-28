@@ -25,27 +25,26 @@ export class KepcoinSpendSwalComponent {
   ) {}
 
   ConfirmTextOpen() {
-    const translations = this.translateService.translations[this.translateService.currentLang];
     if (this.authService.currentUserValue.kepcoin < this.value) {
       Swal.fire({
         icon: 'error',
-        title: translations['NotEnoughKepcoin'],
-        html: `<img height="25" src="assets/images/icons/kepcoin.png"> ${ this.value }`,
+        title: this.translateService.instant('NotEnoughKepcoin'),
+        html: `<img height="25" src="assets/images/icons/kepcoin.png"> ${this.value}`,
         customClass: {
           confirmButton: 'btn btn-success'
         }
       });
     } else {
       Swal.fire({
-        title: translations['WantToBuy'],
-        html: `<img height="25" src="assets/images/icons/kepcoin.png"> ${ this.value }`,
+        title: this.translateService.instant('WantToBuy'),
+        html: `<img height="25" src="assets/images/icons/kepcoin.png"> ${this.value}`,
         text: 'You won\'t be able to revert this!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: 'var(--bs-primary)',
         cancelButtonColor: 'var(--bs-danger)',
-        cancelButtonText: translations['Cancel'],
-        confirmButtonText: translations['Purchase'],
+        cancelButtonText: this.translateService.instant('Cancel'),
+        confirmButtonText: this.translateService.instant('Purchase'),
         customClass: {
           confirmButton: 'btn btn-relief-primary',
           cancelButton: 'btn btn-relief-danger ms-1'
@@ -56,7 +55,7 @@ export class KepcoinSpendSwalComponent {
             if (result?.success) {
               Swal.fire({
                 icon: 'success',
-                title: translations['Successfully'] + '!',
+                title: this.translateService.instant('Successfully') + '!',
                 customClass: {
                   confirmButton: 'btn btn-success'
                 }
@@ -66,7 +65,7 @@ export class KepcoinSpendSwalComponent {
             } else {
               Swal.fire({
                 icon: 'error',
-                title: translations['Error'] + '!',
+                title: this.translateService.instant('Error') + '!',
                 customClass: {
                   confirmButton: 'btn btn-success'
                 }
@@ -75,7 +74,7 @@ export class KepcoinSpendSwalComponent {
           }, () => {
             Swal.fire({
               icon: 'error',
-              title: translations['ServerError'] + '!',
+              title: this.translateService.instant('ServerError') + '!',
               customClass: {
                 confirmButton: 'btn btn-success'
               }

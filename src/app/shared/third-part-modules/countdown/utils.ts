@@ -1,6 +1,6 @@
 function padZero(num, n = 2) {
   const str = num + ''
-  if(str.length >= n) {
+  if (str.length >= n) {
     return str
   }
   return (Array(n).join('0') + str).slice(-n)
@@ -36,7 +36,7 @@ export function parseTimeData(time: number): TimeData {
 }
 
 export function parseFormat(format: string, timeData: TimeData): string {
-  let { days, hours, minutes, seconds, milliseconds } = timeData
+  let {days, hours, minutes, seconds, milliseconds} = timeData
 
   if (format.indexOf('DD') === -1) {
     hours += days * 24

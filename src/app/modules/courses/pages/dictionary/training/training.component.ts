@@ -4,7 +4,7 @@ import { DragulaModule, DragulaService } from 'ng2-dragula';
 import { ToastrService } from 'ngx-toastr';
 import { Course, CourseKeyword, CourseLesson } from '@courses/interfaces';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SidebarComponent } from '@courses/pages/course-lesson/sidebar/sidebar.component';
 
@@ -66,7 +66,7 @@ export class TrainingComponent implements OnInit {
     private dragulaService: DragulaService,
     public toastr: ToastrService,
   ) {
-    this.route.data.subscribe(({ course, courseLessons, courseDictionary }) => {
+    this.route.data.subscribe(({course, courseLessons, courseDictionary}) => {
       this.course = course;
       this.courseLessons = courseLessons.map((data: any) => {
         return CourseLesson.fromJSON(data);
@@ -106,7 +106,7 @@ export class TrainingComponent implements OnInit {
       } else {
         this.questionOptions.push('To`g`ri javob keltirilmagan');
       }
-     randomIndex = Math.floor(Math.random() * 5);
+      randomIndex = Math.floor(Math.random() * 5);
       this.correctAnswerIndex = randomIndex;
       [this.questionOptions[randomIndex], this.questionOptions[4]] = [
         this.questionOptions[4], this.questionOptions[randomIndex]];
@@ -127,15 +127,9 @@ export class TrainingComponent implements OnInit {
   answerCheck() {
     if (this.singleRadio === this.correctAnswerIndex) {
       this.score++;
-      this.toastr.success('', 'Success', {
-        toastClass: 'toast ngx-toastr',
-        closeButton: true
-      });
+      this.toastr.success('', 'Success', );
     } else {
-      this.toastr.error('', 'Error', {
-        toastClass: 'toast ngx-toastr',
-        closeButton: true
-      });
+      this.toastr.error('', 'Error', );
     }
     this.all++;
     this.singleRadio = null;

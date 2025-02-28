@@ -1,19 +1,21 @@
-@if (lastPosts.length == 0){
-  <div class="card" [style.height.px]="500">
+@if (lastPosts.length == 0) {
+  <kep-card [cardHeight]="'500px'">
     <spinner></spinner>
-  </div>
+  </kep-card>
 } @else {
-  <swiper [config]="postsSwiperConfig" #postsSwiper [height]="500">
+  <owl-carousel-o [options]="customOptions">
     @for (post of lastPosts; track post) {
-      <div class="swiper-slide">
-        @defer (on viewport) {
-          <blog-post-card [blog]="post"></blog-post-card>
-        } @placeholder {
-        <div [style.height.px]="400">
-          <spinner></spinner>
+      <ng-template carouselSlide>
+        <div class="swiper pagination-dynamic testimonialSwiperService">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <blog-post-card [blog]="post"></blog-post-card>
+            </div>
+          </div>
+          <div
+            class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal"></div>
         </div>
-      }
-    </div>
-  }
-</swiper>
+      </ng-template>
+    }
+  </owl-carousel-o>
 }

@@ -14,4 +14,4 @@ import { NouisliderModule as Module } from 'ng2-nouislider';
     NouisliderComponent,
   ]
 })
-export class NouisliderModule { }
+export class NouisliderModule {}

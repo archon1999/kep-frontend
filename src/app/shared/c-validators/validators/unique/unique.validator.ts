@@ -7,10 +7,10 @@ export function uniqueValidator(config: UniqueConfig = uniqueDefaultConfig): Val
   return (control: FormControl) => {
     const formGroup = control.parent;
     if (!formGroup) {
-      return;
+      return null;
     }
     if (!config.allowNull && control.value === null) {
-      return;
+      return null;
     }
 
     const formArray = formGroup.parent as FormArray;
@@ -24,5 +24,7 @@ export function uniqueValidator(config: UniqueConfig = uniqueDefaultConfig): Val
         return {};
       }
     }
+
+    return null;
   };
 }

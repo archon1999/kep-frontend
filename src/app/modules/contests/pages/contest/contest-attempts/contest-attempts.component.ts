@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
+import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { Attempt } from '@problems/models/attempts.models';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ContestsService } from '@contests/contests.service';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
@@ -18,9 +18,12 @@ import { ContestAttemptsFilter } from '@contests/models/contest-attempts-filter'
 import { Contest } from '@contests/models/contest';
 import { BaseTablePageComponent } from '@app/common';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
-import { ContestAttemptsFilterComponent } from '@contests/pages/contest/contest-attempts/filter/contest-attempts-filter.component';
+import {
+  ContestAttemptsFilterComponent
+} from '@contests/pages/contest/contest-attempts/filter/contest-attempts-filter.component';
 import { User } from '@auth';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 const REFRESH_TIME = 30000;
 
@@ -29,8 +32,8 @@ const REFRESH_TIME = 30000;
   templateUrl: './contest-attempts.component.html',
   styleUrls: ['./contest-attempts.component.scss'],
   animations: [
-    fadeInLeftOnEnterAnimation(),
-    fadeInRightOnEnterAnimation()
+    fadeInOnEnterAnimation(),
+    fadeInRightOnEnterAnimation({translate: '40px'})
   ],
   standalone: true,
   imports: [
@@ -44,6 +47,7 @@ const REFRESH_TIME = 30000;
     ContestClassesPipe,
     ContestAttemptsFilterComponent,
     EmptyResultComponent,
+    KepCardComponent,
   ],
   encapsulation: ViewEncapsulation.None,
 })
@@ -70,10 +74,10 @@ export class ContestAttemptsComponent extends BaseTablePageComponent<Attempt> im
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ contest }) => {
+    this.route.data.subscribe(({contest}) => {
       this.contest = Contest.fromJSON(contest);
       this.loadContentHeader();
-      this.titleService.updateTitle(this.route, { contestTitle: contest.title });
+      this.titleService.updateTitle(this.route, {contestTitle: contest.title});
       setTimeout(() => this.reloadPage());
     });
 

@@ -1,21 +1,11 @@
 @import 'styles/kep-imports';
 
 button {
-  padding: 0.5rem;
-  border: 1px solid white;
+  padding: 0.5rem 0.65rem;
   width: 100%;
-  background: rgba(255, 255, 255, 0);
-  backdrop-filter: blur(10px);
   margin-bottom: 0.5rem;
-  transition: 0.2s ease-in;
 
-  @include dark-layout {
-    background: rgba(0, 0, 0, 0);
-    border: 1px solid black;
-    backdrop-filter: blur(10px);
-  }
-
-  &:hover {
-    transform: scale(1.1);
+  .custom-btn-icons {
+    inset-inline-start: -0.9rem !important;
   }
 }

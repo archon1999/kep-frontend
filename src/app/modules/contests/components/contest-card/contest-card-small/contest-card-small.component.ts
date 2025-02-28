@@ -1,8 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { CoreConfigService } from '@core/services/config.service';
-import { CoreConfig } from '@core/types';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { Contest } from '@contests/models/contest';
 
 @Component({
@@ -14,24 +11,12 @@ export class ContestCardSmallComponent implements OnInit, OnDestroy {
 
   @Input() contest: Contest;
 
-  coreConfig: CoreConfig;
-
   routerLink = "";
 
   _unsubscribeAll = new Subject();
 
-  constructor(
-    public coreConfigService: CoreConfigService,
-  ) { }
-
   ngOnInit(): void {
-    this.coreConfigService.getConfig()
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((config: any) => {
-        this.coreConfig = config;
-      })
-
-    if(this.contest.status == 1){
+    if (this.contest.status == 1) {
       this.routerLink = `/competitions/contests/contest/${this.contest.id}/standings`
     } else {
       this.routerLink = `/competitions/contests/contest/${this.contest.id}`
@@ -42,5 +27,4 @@ export class ContestCardSmallComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
-
 }

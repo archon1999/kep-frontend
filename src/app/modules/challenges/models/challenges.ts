@@ -17,7 +17,7 @@ export class Challenge {
 
   static fromJSON(challenge: Challenge) {
     if (challenge.nextQuestion.number > 0) {
-      for (let i = challenge.nextQuestion.number - 1; i < challenge.questionsCount; i++){
+      for (let i = challenge.nextQuestion.number - 1; i < challenge.questionsCount; i++) {
         if (challenge.playerFirst.results[i] === 1) {
           challenge.playerFirst.result--;
         }

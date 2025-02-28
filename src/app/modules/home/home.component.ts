@@ -3,7 +3,6 @@ import { SoundsService } from '@shared/services/sounds/sounds.service';
 
 import { PostsSectionComponent } from './posts-section/posts-section.component';
 import { BirthdaysSectionComponent } from './birthdays-section/birthdays-section.component';
-import { CalendarSectionComponent } from './calendar-section/calendar-section.component';
 import { TopRatingSectionComponent } from './top-rating-section/top-rating-section.component';
 import { SystemSectionComponent } from './system-section/system-section.component';
 import { StatisticsSectionComponent } from './statistics-section/statistics-section.component';
@@ -15,6 +14,12 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { UsersChartCardComponent } from '@users/components/users-chart-card/users-chart-card.component';
 import { LastProblemsSectionComponent } from '@app/modules/home/last-problems-section/last-problems-section.component';
 import { ContestsSectionComponent } from '@app/modules/home/contests-section/contests-section.component';
+import { RanksSectionComponent } from '@app/modules/home/ranks-section/ranks-section.component';
+import { BasePageComponent } from "@app/common";
+import { ContentHeader } from "@core/components/content-header/content-header.component";
+import { ContentHeaderModule } from "@core/components/content-header/content-header.module";
+import { TranslatePipe } from "@ngx-translate/core";
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'app-home',
@@ -24,7 +29,6 @@ import { ContestsSectionComponent } from '@app/modules/home/contests-section/con
   imports: [
     PostsSectionComponent,
     BirthdaysSectionComponent,
-    CalendarSectionComponent,
     TopRatingSectionComponent,
     SystemSectionComponent,
     StatisticsSectionComponent,
@@ -35,18 +39,43 @@ import { ContestsSectionComponent } from '@app/modules/home/contests-section/con
     SpinnerComponent,
     UsersChartCardComponent,
     LastProblemsSectionComponent,
-    ContestsSectionComponent
+    ContestsSectionComponent,
+    RanksSectionComponent,
+    ContentHeaderModule,
+    TranslatePipe,
+    KepCardComponent
   ]
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent extends BasePageComponent implements OnInit {
   @ViewChild('audio') audio: ElementRef<HTMLAudioElement>;
 
   public homeSoundSrc: string;
 
-  constructor(public soundService: SoundsService) {}
+  constructor(public soundService: SoundsService) {
+    super();
+  }
 
   ngOnInit(): void {
     this.homeSoundSrc = this.soundService.getHomeSoundSrc();
     setTimeout(() => this.audio.nativeElement.play());
+    super.ngOnInit();
+  }
+
+  protected getContentHeader(): ContentHeader {
+    return {
+      headerTitle: 'MENU.HOME',
+      breadcrumb: {
+        links: [
+          {
+            name: 'KEP.uz',
+            isLink: false,
+          },
+          {
+            name: 'MENU.HOME',
+            isLink: false,
+          },
+        ]
+      }
+    };
   }
 }

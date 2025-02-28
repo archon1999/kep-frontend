@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Chapter, Test } from '../../testing.models';
 import { TestingApiService } from '../../testing-api.service';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
 import { PageResult } from '@app/common/classes/page-result';
 
 @Component({
@@ -53,10 +53,13 @@ export class TestsComponent extends BaseTablePageComponent<Test> implements OnIn
       breadcrumb: {
         links: [
           {
-            name: this.coreConfig.app.appTitle,
-            isLink: true,
-            link: '/',
-          }
+            name: 'Practice',
+            isLink: false,
+          },
+          {
+            name: 'Tests',
+            isLink: false,
+          },
         ]
       }
     };

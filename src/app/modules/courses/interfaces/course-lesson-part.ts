@@ -50,9 +50,9 @@ export class CourseLessonPart {
 
   getClassOf(isCurrent: boolean) {
     if (isCurrent) {
-      return `btn-outline-${ this.statusColor }`;
+      return `btn-outline-${this.statusColor}`;
     } else {
-      return `btn-relief-${ this.statusColor }`;
+      return `btn-relief-${this.statusColor}`;
     }
   }
 }

@@ -17,37 +17,37 @@
   }
 
   .swiper-slide {
-    &:nth-child(1){
+    &:nth-child(1) {
       ::ng-deep .progress {
         background-color: rgba(40, 199, 111, 0.12);
       }
     }
 
-    &:nth-child(2){
+    &:nth-child(2) {
       ::ng-deep .progress {
         background-color: rgba(0, 207, 232, 0.12);
       }
     }
 
-    &:nth-child(3){
+    &:nth-child(3) {
       ::ng-deep .progress {
         background-color: rgba(67, 97, 238, 0.12);
       }
     }
 
-    &:nth-child(5){
+    &:nth-child(5) {
       ::ng-deep .progress {
         background-color: rgba(255, 159, 67, 0.12);
       }
     }
 
-    &:nth-child(6){
+    &:nth-child(6) {
       ::ng-deep .progress {
         background-color: rgba(234, 84, 85, 0.12);
       }
     }
 
-    &:nth-child(7){
+    &:nth-child(7) {
       ::ng-deep .progress {
         background-color: rgba(75, 75, 75, 0.12);
       }

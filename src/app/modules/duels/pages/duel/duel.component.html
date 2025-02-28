@@ -4,62 +4,63 @@
       <div class="table-responsive bg-results-table bg-primary">
         <table class="table">
           <thead>
-            <tr>
-              <th><i class="text-white ms-1" data-feather="user"></i></th>
-              <th class="text-center"><i ngbTooltip="{{ 'Points' | translate }}" class="text-white" [data-feather]="'rating' | iconName"></i></th>
-              @for (duelProblem of duel.problems; track duelProblem) {
-                <th class="text-center text-white">
-                  {{ duelProblem.symbol }}
-                </th>
-              }
-            </tr>
+          <tr>
+            <th><i class="text-white ms-1" data-feather="user"></i></th>
+            <th class="text-center"><i ngbTooltip="{{ 'Points' | translate }}" class="text-white"
+                                       [data-feather]="'rating' | iconName"></i></th>
+            @for (duelProblem of duel.problems; track duelProblem) {
+              <th class="text-center text-white">
+                {{ duelProblem.symbol }}
+              </th>
+            }
+          </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <contestant-view [textColor]="'white'" [user]="duel.playerFirst"></contestant-view>
-              </td>
+          <tr>
+            <td>
+              <contestant-view [textColor]="'white'" [user]="duel.playerFirst"></contestant-view>
+            </td>
+            <td class="text-center">
+              <span class="badge badge-glow bg-primary bg-primary bg-darken-1">
+                {{ duel.playerFirst.balls }}
+              </span>
+            </td>
+            @for (duelProblem of duel.problems; track duelProblem) {
               <td class="text-center">
-                <span class="badge badge-glow bg-primary bg-primary bg-darken-1">
-                  {{ duel.playerFirst.balls }}
-                </span>
-              </td>
-              @for (duelProblem of duel.problems; track duelProblem) {
-                <td class="text-center">
-                  @if (duelProblem.playerFirstBall > 0) {
-                    <span class="badge bg-success badge-glow">
-                      {{ duelProblem.playerFirstBall }}
-                    </span>
-                  }
-                </td>
-              }
-            </tr>
-            <tr>
-              <td>
-                @if (duel.playerSecond) {
-                  <contestant-view [textColor]="'white'" [user]="duel.playerSecond"></contestant-view>
-                }
-                @if (!duel.playerSecond) {
-                  <span class="text-white ms-1 mb-1">
-                    BYE
+                @if (duelProblem.playerFirstBall > 0) {
+                  <span class="badge bg-success badge-glow">
+                    {{ duelProblem.playerFirstBall }}
                   </span>
                 }
               </td>
-              <td class="text-center">
-                <span class="badge badge-glow bg-primary bg-primary bg-darken-1">
-                  {{ duel.playerSecond?.balls || 0 }}
-                </span>
-              </td>
-              @for (duelProblem of duel.problems; track duelProblem) {
-                <td class="text-center">
-                  @if (duelProblem.playerSecondBall > 0) {
-                    <span class="badge bg-success badge-glow">
-                      {{ duelProblem.playerSecondBall }}
-                    </span>
-                  }
-                </td>
+            }
+          </tr>
+          <tr>
+            <td>
+              @if (duel.playerSecond) {
+                <contestant-view [textColor]="'white'" [user]="duel.playerSecond"></contestant-view>
               }
-            </tr>
+              @if (!duel.playerSecond) {
+                <span class="text-white ms-1 mb-1">
+                  BYE
+                </span>
+              }
+            </td>
+            <td class="text-center">
+              <span class="badge badge-glow bg-primary bg-primary bg-darken-1">
+                {{ duel.playerSecond?.balls || 0 }}
+              </span>
+            </td>
+            @for (duelProblem of duel.problems; track duelProblem) {
+              <td class="text-center">
+                @if (duelProblem.playerSecondBall > 0) {
+                  <span class="badge bg-success badge-glow">
+                    {{ duelProblem.playerSecondBall }}
+                  </span>
+                }
+              </td>
+            }
+          </tr>
           </tbody>
         </table>
       </div>
@@ -172,7 +173,7 @@
         <problem-list-card
           (click)="changeProblem(duelProblem)"
           [duelProblem]="duelProblem"
-          >
+        >
         </problem-list-card>
       }
     }

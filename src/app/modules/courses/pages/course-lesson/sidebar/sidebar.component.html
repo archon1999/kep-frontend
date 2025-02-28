@@ -12,7 +12,7 @@
     </div>
 
     <div class="card-footer">
-      <div class="mb-25 text-dark fw-bold">
+      <div class="mb-25 text-dark fw-medium">
         {{ 'COURSES.PROGRESS' | translate }}: {{ course.participantPoints }}/{{ course.points }}
       </div>
       <ngb-progressbar [value]="course.participantProgress" showValue="true" type="primary"></ngb-progressbar>
@@ -33,7 +33,7 @@
     </div>
     <div class="card-footer">
       <div class="list-group">
-        @for (courseLesson of courseLessons;track courseLesson;let i = $index) {
+        @for (courseLesson of courseLessons; track courseLesson; let i = $index) {
           <a
             [routerLink]="[Resources.Courses, 'course', course.id, 'lesson', i+1]"
             class="list-group-item"

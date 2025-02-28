@@ -1,0 +1,97 @@
+<div class="container">
+  <div class="row justify-content-center align-items-center authentication authentication-basic h-100">
+    <div class="col-xxl-5 col-xl-5 col-lg-5 col-md-6 col-sm-8 col-12">
+      <kep-card>
+        <div class="card-body p-5">
+          <div class="mb-3 d-flex justify-content-center">
+            <div class="d-flex justify-content-between gap-2">
+              <img alt="" height="32" src="assets/images/logo/logo.svg">
+              <h3 class="fw-bold text-fixed-white">KEP.uz</h3>
+            </div>
+          </div>
+          <p class="h5 mb-2 text-center">{{ 'WelcomeToKEP' | translate }}! 👋</p>
+          <p class="mb-4 text-muted op-7 fw-normal text-center">{{ 'LoginText' | translate }}</p>
+          <div class="d-flex mb-3 justify-content-between gap-2 flex-wrap flex-lg-nowrap">
+            <a
+              href="/login/google-oauth2/"
+              class="btn btn-lg btn-light-ghost border d-flex align-items-center justify-content-center flex-fill">
+              <span class="avatar avatar-xs">
+                <img alt="" src="assets/images/media/apps/google.png">
+              </span>
+              <span class="lh-1 ms-2 fs-13 text-default">{{ 'SignUpWith' | translate:{title: 'Google'} }}</span>
+            </a>
+            <a
+              href="/login/github/"
+              class="btn btn-lg btn-light-ghost border d-flex align-items-center justify-content-center flex-fill">
+              <span class="avatar avatar-xs invert-1">
+                <img alt="" src="assets/images/media/apps/github.png">
+              </span>
+              <span class="lh-1 ms-2 fs-13 text-default">
+                {{ 'SignUpWith' | translate:{title: 'Github'} }}</span>
+            </a>
+          </div>
+          <div class="text-center my-3 authentication-barrier">
+            <span>OR</span>
+          </div>
+          <form (ngSubmit)="onSubmit()" [formGroup]="loginForm" class="row gy-3">
+            <div class="col-xl-12">
+              <label class="form-label text-default">
+                {{ 'Username' | translate }}
+              </label>
+              <input
+                [ngClass]="{ 'is-invalid': submitted && loginForm.controls.username.errors }"
+                class="form-control"
+                formControlName="username" placeholder="{{ 'Username' | translate }}"
+                type="text"
+              >
+              @if (submitted && loginForm.controls.username.errors) {
+                <div class="invalid-feedback">
+                  @if (loginForm.controls.username.errors.required) {
+                    <div>required</div>
+                  }
+                </div>
+              }
+            </div>
+            <div class="col-xl-12 mb-2">
+              <label class="form-label text-default d-block">
+                {{ 'Password' | translate }}
+                <a class="float-end text-danger">
+                  Forget password ?
+                </a>
+              </label>
+              <div class="position-relative">
+                <input
+                  [type]="passwordTextType ? 'text' : 'password'"
+                  class="form-control create-password-input"
+                  formControlName="password"
+                  placeholder="{{ 'Password' | translate }}"
+                >
+                <a (click)="togglePasswordTextType()" class="show-password-button text-muted" href="javascript:void(0);"
+                   id="button-addon2">
+                  @if (passwordTextType) {
+                    <kep-icon type="duotone" name="toggle-on"/>
+                  } @else {
+                    <kep-icon type="duotone" name="toggle-off"/>
+                  }
+                </a>
+              </div>
+
+              <div class="btn-list">
+                <div class="d-grid my-4">
+                  <button type="submit" [disabled]="loading" class="btn btn-primary m-0">
+                    @if (loading) {
+                      <span class="loading">
+                        <i class="ri-loader-2-fill fs-16"></i>
+                      </span>
+                    }
+                    {{ 'Login' | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </kep-card>
+    </div>
+  </div>
+</div>

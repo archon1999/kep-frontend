@@ -1,15 +1,15 @@
 @if (contest.status == ContestStatus.ALREADY) {
-<!--  <h4 class="text-center ms-1 mb-2">-->
-<!--    {{ 'CONTESTS.CONTEST_ENDS' | translate }}-->
-<!--  </h4>-->
+  <!--  <h4 class="text-center ms-1 mb-2">-->
+  <!--    {{ 'CONTESTS.CONTEST_ENDS' | translate }}-->
+  <!--  </h4>-->
 } @else if (contest.status == ContestStatus.NOT_STARTED) {
-<!--  <h4 class="text-center ms-1 mb-2">-->
-<!--    {{ 'CONTESTS.CONTEST_STARTS' | translate }}-->
-<!--  </h4>-->
+  <!--  <h4 class="text-center ms-1 mb-2">-->
+  <!--    {{ 'CONTESTS.CONTEST_STARTS' | translate }}-->
+  <!--  </h4>-->
 } @else if (contest.status == ContestStatus.FINISHED) {
-<!--  <h4 class="text-center text-dark ms-1 mb-2">-->
-<!--    {{ 'CONTESTS.STANDINGS' | translate }}-->
-<!--  </h4>-->
+  <!--  <h4 class="text-center text-dark ms-1 mb-2">-->
+  <!--    {{ 'CONTESTS.STANDINGS' | translate }}-->
+  <!--  </h4>-->
 }
 
 @if (!contest.isFinished()) {
@@ -127,7 +127,7 @@
   <div class="modal-header">
     <h5 class="modal-title">{{ contest.title }}</h5>
     <button (click)="modal.dismiss('Cross click')" aria-label="Close" class="btn-close" type="button">
-      
+
     </button>
   </div>
   <div class="modal-body" ngbAutofocus tabindex="0">
@@ -146,7 +146,7 @@
   <div class="modal-header">
     <h5 class="modal-title">{{ contest.title }}</h5>
     <button (click)="modal.dismiss('Cross click')" aria-label="Close" class="btn-close" type="button">
-      
+
     </button>
   </div>
   <div class="modal-body" ngbAutofocus tabindex="0">

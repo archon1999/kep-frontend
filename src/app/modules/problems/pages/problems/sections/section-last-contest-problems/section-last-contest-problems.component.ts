@@ -6,6 +6,7 @@ import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { CoreCommonModule } from '@core/common.module';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 interface LastContest {
   id: number;
@@ -20,13 +21,13 @@ interface LastContest {
 @Component({
   selector: 'section-last-contest-problems',
   standalone: true,
-  imports: [CoreCommonModule, ResourceByIdPipe, NgbAccordionModule],
+  imports: [CoreCommonModule, ResourceByIdPipe, NgbAccordionModule, KepCardComponent],
   templateUrl: './section-last-contest-problems.component.html',
   styleUrl: './section-last-contest-problems.component.scss',
 })
 export class SectionLastContestProblemsComponent extends BaseLoadComponent<LastContest> {
 
-  constructor(public apiService: ProblemsApiService, public router: Router) {
+  constructor(public apiService: ProblemsApiService) {
     super();
   }
 

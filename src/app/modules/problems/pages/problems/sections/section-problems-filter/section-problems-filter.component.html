@@ -1,4 +1,4 @@
-<div class="card">
+<kep-card>
   <div class="card-header">
     <div class="card-title text-dark">
       <kep-icon name="filter"></kep-icon>
@@ -107,12 +107,12 @@
             </strong>
           </label>
           <div class="mb-1">
-            <ng-select appendTo="app-layout" formControlName="difficulty" [compareWith]="compareEqual">
+            <ng-select appendTo="body" formControlName="difficulty" [compareWith]="compareEqual">
               @for (item of difficulties; track item) {
                 <ng-option [value]="item.value">
-                    <span class="text-{{ item.value | problemDifficultyColor }}">
-                      {{ item.name }}
-                    </span>
+                  <span class="text-{{ item.value | problemDifficultyColor }}">
+                    {{ item.name }}
+                  </span>
                 </ng-option>
               }
             </ng-select>
@@ -232,6 +232,6 @@
       }
     </form>
   </div>
-</div>
+</kep-card>
 
 <ng-select-css></ng-select-css>

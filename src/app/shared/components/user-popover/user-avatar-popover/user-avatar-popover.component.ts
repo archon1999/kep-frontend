@@ -22,14 +22,14 @@ export class UserAvatarPopoverComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  loadUser(){
-    if(!this.user){
+  loadUser() {
+    if (!this.user) {
       this.api.get(`users/${this.username}`).subscribe((user: any) => {
         this.user = user;
       })
       this.api.get(`users/${this.username}/ratings`).subscribe((userRatings: any) => {
         this.userRatings = userRatings;
-      })  
+      })
     }
   }
 

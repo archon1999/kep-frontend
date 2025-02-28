@@ -55,12 +55,12 @@
         [ngClass]="{'bg-light-primary': attempt.isOwner}">
         <td>
           @if (attempt.canView) {
-            <button type="button" class="btn attempt-id p-0" (click)="clicked.emit(attempt.id)">
+            <div style="cursor: pointer;" class="p-0" (click)="clicked.emit(attempt.id)">
               <u>
                 {{ attempt.id }}
               </u>
-            </button>
-          } @else if(!currentUser || contest) {
+            </div>
+          } @else if (!currentUser || contest) {
             <span>{{ attempt.id }}</span>
           } @else {
             <kepcoin-spend-swal
@@ -75,12 +75,12 @@
         <td>
           @if (contest) {
             <span
-              class="badge badge-light-success"
+              class="badge bg-success-transparent"
               ngbTooltip="{{ attempt.created | date:'yyyy/MM/dd HH:mm:ss' }}">
               {{ attempt.contestTime }}
             </span>
           } @else {
-            <span class="badge badge-light-success text-center" style="width: 130px;">
+            <span class="badge bg-success-transparent text-center" style="width: 130px;">
               {{ attempt.created | date:"yyyy/MM/dd HH:mm:ss" }}
             </span>
           }
@@ -97,7 +97,8 @@
         <td>
           @if (contest) {
             @if (attempt?.contestProblem?.contest) {
-              <a [routerLink]="['/competitions', 'contests', 'contest', attempt?.contestProblem?.contest, 'problem', attempt.contestProblem.symbol]">
+              <a
+                [routerLink]="['/competitions', 'contests', 'contest', attempt?.contestProblem?.contest, 'problem', attempt.contestProblem.symbol]">
                 <u class="text-primary">{{ attempt.contestProblem.symbol }}. {{ attempt.problemTitle }}</u>
               </a>
             } @else {
@@ -132,7 +133,8 @@
                 </a>
               } @else {
                 <ng-template #tipContent>
-                  {{ 'ViewTest' | translate }} <kepcoin [value]="attempt.testCaseKepcoinValue"></kepcoin>
+                  {{ 'ViewTest' | translate }}
+                  <kepcoin [value]="attempt.testCaseKepcoinValue"></kepcoin>
                 </ng-template>
                 <kepcoin-spend-swal
                   [placement]="'bottom'"

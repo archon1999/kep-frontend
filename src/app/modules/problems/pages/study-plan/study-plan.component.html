@@ -47,14 +47,15 @@
                                 {{ 'Beginner' | translate }}
                               </div>
                               <div class="solved">
-                                <strong class="text-{{ 1 | problemDifficultyColor }}">{{ difficulties.beginner }}</strong>
+                                <strong
+                                  class="text-{{ 1 | problemDifficultyColor }}">{{ difficulties.beginner }}</strong>
                                 /
                                 {{ difficulties.allBeginner }}
                               </div>
                             </div>
-                            <div class="mt-50 progress-wrapper">
+                            <div class="mt-2 progress-wrapper">
                               <ngb-progressbar type="{{ 1 | problemDifficultyColor }}"
-                              [value]="100 * difficulties.beginner / difficulties.allBeginner"></ngb-progressbar>
+                                               [value]="100 * difficulties.beginner / difficulties.allBeginner"></ngb-progressbar>
                             </div>
                           </div>
                         </div>
@@ -72,9 +73,9 @@
                                 {{ difficulties.allBasic }}
                               </div>
                             </div>
-                            <div class="mt-50 progress-wrapper">
+                            <div class="mt-2 progress-wrapper">
                               <ngb-progressbar type="{{ 2 | problemDifficultyColor }}"
-                              [value]="100 * difficulties.basic / difficulties.allBasic"></ngb-progressbar>
+                                               [value]="100 * difficulties.basic / difficulties.allBasic"></ngb-progressbar>
                             </div>
                           </div>
                         </div>
@@ -92,9 +93,9 @@
                                 {{ difficulties.allNormal }}
                               </div>
                             </div>
-                            <div class="mt-50 progress-wrapper">
+                            <div class="mt-2 progress-wrapper">
                               <ngb-progressbar type="{{ 3 | problemDifficultyColor }}"
-                              [value]="100 * difficulties.normal / difficulties.allNormal"></ngb-progressbar>
+                                               [value]="100 * difficulties.normal / difficulties.allNormal"></ngb-progressbar>
                             </div>
                           </div>
                         </div>
@@ -112,9 +113,9 @@
                                 {{ difficulties.allMedium }}
                               </div>
                             </div>
-                            <div class="mt-50 progress-wrapper">
+                            <div class="mt-2 progress-wrapper">
                               <ngb-progressbar type="{{ 4 | problemDifficultyColor }}"
-                              [value]="100 * difficulties.medium / difficulties.allMedium"></ngb-progressbar>
+                                               [value]="100 * difficulties.medium / difficulties.allMedium"></ngb-progressbar>
                             </div>
                           </div>
                         </div>
@@ -127,14 +128,15 @@
                                 {{ 'Advanced' | translate }}
                               </div>
                               <div class="solved">
-                                <strong class="text-{{ 5 | problemDifficultyColor }}">{{ difficulties.advanced }}</strong>
+                                <strong
+                                  class="text-{{ 5 | problemDifficultyColor }}">{{ difficulties.advanced }}</strong>
                                 /
                                 {{ difficulties.allAdvanced }}
                               </div>
                             </div>
-                            <div class="mt-50 progress-wrapper">
+                            <div class="mt-2 progress-wrapper">
                               <ngb-progressbar type="{{ 5 | problemDifficultyColor }}"
-                              [value]="100 * difficulties.advanced / difficulties.allAdvanced"></ngb-progressbar>
+                                               [value]="100 * difficulties.advanced / difficulties.allAdvanced"></ngb-progressbar>
                             </div>
                           </div>
                         </div>
@@ -152,9 +154,9 @@
                                 {{ difficulties.allHard }}
                               </div>
                             </div>
-                            <div class="mt-50 progress-wrapper">
+                            <div class="mt-2 progress-wrapper">
                               <ngb-progressbar type="{{ 6 | problemDifficultyColor }}"
-                              [value]="100 * difficulties.hard / difficulties.allHard"></ngb-progressbar>
+                                               [value]="100 * difficulties.hard / difficulties.allHard"></ngb-progressbar>
                             </div>
                           </div>
                         </div>
@@ -167,14 +169,15 @@
                                 {{ 'Extremal' | translate }}
                               </div>
                               <div class="solved">
-                                <strong class="text-{{ 7 | problemDifficultyColor }}">{{ difficulties.extremal }}</strong>
+                                <strong
+                                  class="text-{{ 7 | problemDifficultyColor }}">{{ difficulties.extremal }}</strong>
                                 /
                                 {{ difficulties.allExtremal }}
                               </div>
                             </div>
-                            <div class="mt-50 progress-wrapper">
+                            <div class="mt-2 progress-wrapper">
                               <ngb-progressbar type="{{ 7 | problemDifficultyColor }}"
-                              [value]="100 * difficulties.extremal / difficulties.allExtremal"></ngb-progressbar>
+                                               [value]="100 * difficulties.extremal / difficulties.allExtremal"></ngb-progressbar>
                             </div>
                           </div>
                         </div>
@@ -205,7 +208,7 @@
                     [purchaseUrl]="'study-plans/' + studyPlan.id + '/purchase/'"
                     (success)="purchaseSuccess()"
                     [value]="studyPlan.kepcoinValue">
-                    <button class="ms-1 mt-50 text-white btn btn-relief-success btn-sm">
+                    <button class="ms-1 mt-2 text-white btn btn-relief-success btn-sm">
                       {{ 'Purchase' | translate }}
                     </button>
                   </kepcoin-spend-swal>
@@ -227,7 +230,7 @@
                   <div class="card">
                     <div class="problems">
                       @for (problem of day.problems; track problem) {
-<div class="problem" [ngClass]="{
+                        <div class="problem" [ngClass]="{
                     'bg-light-success': problem?.hasSolved,
                     'bg-light-danger': !problem?.hasSolved && problem?.hasAttempted
                   }">
@@ -242,7 +245,8 @@
                             </div>
                           </div>
                           <div class="problem-difficulty">
-                            <span class="badge badge-glow badge-pill badge-{{ problem.difficulty | problemDifficultyColor }}">
+                            <span
+                              class="badge badge-glow badge-pill badge-{{ problem.difficulty | problemDifficultyColor }}">
                               {{ problem.difficultyTitle | translate }}
                             </span>
                           </div>
@@ -258,8 +262,8 @@
                           </div>
                           <div class="problem-button">
                             <a [routerLink]="['/practice', 'problems', 'problem', problem.id]"
-                              [queryParams]="{'study-plan': studyPlan.id}"
-                              rippleEffect class="text-white btn btn-primary btn-sm">
+                               [queryParams]="{'study-plan': studyPlan.id}"
+                               rippleEffect class="text-white btn btn-primary btn-sm">
                               {{ 'Solve' | translate }}
                             </a>
                           </div>

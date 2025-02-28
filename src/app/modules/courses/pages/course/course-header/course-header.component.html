@@ -33,7 +33,7 @@
         <p [innerHTML]="course.descriptionShort"></p>
       </div>
       <div class="course-tags">
-        @for (tag of course.tags;track tag) {
+        @for (tag of course.tags; track tag) {
           <span class="badge badge-pill bg-primary">
             {{ tag.name }}
           </span>

@@ -11,11 +11,11 @@ export class ChallengesStatisticsService {
   constructor(public api: ApiService, public challengesService: ChallengesApiService) {}
 
   getUserChallengesRating(username: string) {
-    return this.api.get(`challenges-rating/${ username }`);
+    return this.api.get(`challenges-rating/${username}`);
   }
 
   getUserChallengesRatingChanges(username: string) {
-    return this.api.get(`challenges-rating/${ username }/rating-changes`);
+    return this.api.get(`challenges-rating/${username}/rating-changes`);
   }
 
   getUserLastChallenges(params: Partial<Pageable> & { username: string }) {

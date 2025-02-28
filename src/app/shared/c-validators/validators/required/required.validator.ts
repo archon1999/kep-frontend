@@ -3,6 +3,6 @@ import { RequiredConfig } from './required.config';
 
 export function requiredValidator(config?: RequiredConfig): ValidatorFn {
   return (control: FormControl) => {
-    if(control.value === null) return {}
+    if (control.value === null) return {}
   }
 }

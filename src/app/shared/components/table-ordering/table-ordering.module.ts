@@ -23,4 +23,4 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
     TableOrderingComponent,
   ]
 })
-export class TableOrderingModule { }
+export class TableOrderingModule {}

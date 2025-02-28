@@ -1,10 +1,10 @@
 <div class="col-6">
-  <div class="card text-center bg-contest" #screen>
+  <kep-card customClass="bg-contest text-center" #screen>
     <a class="card-header">
       <div class="d-flex justify-content-between">
         <div class="d-flex justify-content-between">
           <img src="assets/images/logo/logo.svg" height="32" alt="">
-          <h5 class="ms-75 text-white mt-50 mb-2">KEP.uz</h5>
+          <h5 class="ms-2 mt-1 mb-2 fw-bold text-fixed-white">KEP.uz</h5>
         </div>
         <div>
           <span class="badge bg-primary">
@@ -14,41 +14,41 @@
       </div>
 
 
-<!--      <img src="assets/images/pages/500.png" height="150" alt="">-->
+      <!--      <img src="assets/images/pages/500.png" height="150" alt="">-->
       <kep-icon name="competition" type="duotone" size="large-5" class="mt-2 mb-4"/>
 
       <br>
-        <h3 class="text-white d-flex align-items-center justify-content-center">
-          <kep-icon name="contest" type="duotone" size="large-1" class="me-50"/>
-          {{ contest.title }}
-        </h3>
-        @if (contest.isRated) {
-          <div class="font-small-3 mt-25 text-success">
-            {{ 'Rated' | translate }}
-          </div>
-        }
-      </a>
-
-      <a class="card-body mt-2">
-        <div class="start-time">
-          {{ contest.startTime | date:'dd-MM-yyyy' }}
-          <br>
-            {{ contest.startTime | date:'HH:mm' }} (UTC +5)
-          </div>
-        </a>
-
-        <div class="card-footer justify-content-between d-flex">
-          <div>
-            <span class="badge badge-glow bg-primary">
-              <kep-icon name="problem" type="duotone" class=""></kep-icon>
-              {{ contest.problemsCount }}
-            </span>
-            <span class="ms-25 badge badge-glow bg-primary">
-              {{ contest.type }}
-            </span>
-          </div>
+      <h3 class="text-fixed-white d-flex align-items-center justify-content-center">
+        <kep-icon name="contest" type="duotone" size="large-1" class="me-50"/>
+        {{ contest.title }}
+      </h3>
+      @if (contest.isRated) {
+        <div class="font-small-3 mt-1 text-success">
+          {{ 'Rated' | translate }}
         </div>
+      }
+    </a>
+
+    <a class="card-body mt-2">
+      <div class="start-time">
+        {{ contest.startTime | date:'dd-MM-yyyy' }}
+        <br>
+        {{ contest.startTime | date:'HH:mm' }} (UTC +5)
+      </div>
+    </a>
+
+    <div class="card-footer justify-content-between d-flex">
+      <div>
+        <span class="badge badge-glow bg-primary">
+          <kep-icon size="small-1" name="problem" type="duotone" class=""></kep-icon>
+          {{ contest.problemsCount }}
+        </span>
+        <span class="ms-1 badge badge-glow bg-primary">
+          {{ contest.type }}
+        </span>
       </div>
     </div>
+  </kep-card>
+</div>
 
-    <img [src]="img" alt="">
+<img [src]="img" alt="">

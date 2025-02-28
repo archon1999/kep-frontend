@@ -9,12 +9,12 @@ export class CodeRushResolver implements Resolve<boolean> {
   constructor(
     public service: CodeRushApiService,
     public router: Router,
-  ){}
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     return this.service.getCodeRush(route.params['id']).pipe(
       catchError((err) => {
-        this.router.navigate(['/404'], { skipLocationChange: true });
+        this.router.navigate(['/404'], {skipLocationChange: true});
         return of(true);
       })
     );

@@ -10,44 +10,28 @@
     (pageChange)="change($event)"
     class="d-flex justify-content-center pagination-{{ color }} {{ customClass }}">
     <ng-template ngbPaginationFirst>
-      <span
-        [data-feather]="'chevrons-left'"
-        [size]="'18px'"
-        [class]="'font-weight-bolder'">
-      </span>
+      <kep-icon name="double-left" class="" type="duotone"/>
     </ng-template>
     <ng-template ngbPaginationPrevious>
-      <span
-        [data-feather]="'chevron-left'"
-        [size]="'18px'"
-        [class]="'font-weight-bolder'">
-      </span>
+      <kep-icon name="left" class="" type="duotone"/>
     </ng-template>
     <ng-template ngbPaginationNext>
-      <span
-        [data-feather]="'chevron-right'"
-        [size]="'18px'"
-        [class]="'font-weight-bolder'">
-      </span>
+      <kep-icon name="right" class="" type="duotone"/>
     </ng-template>
     <ng-template ngbPaginationLast>
-      <span
-        [data-feather]="'chevrons-right'"
-        [size]="'18px'"
-        [class]="'font-weight-bolder'">
-      </span>
+      <kep-icon name="double-right" class="" type="duotone"/>
     </ng-template>
   </ngb-pagination>
 
   @if (pageOptions?.length > 0) {
-    <div class="position-absolute position-right-0 position-top-0 d-none d-md-block">
+    <div style="position: absolute; right: 0; top: 0;" class="d-none d-md-block">
       <ng-select
         appendTo="body"
         [clearable]="false"
         [searchable]="false"
         [(ngModel)]="pageSize"
         (change)="sizeChange($event)">
-        @for (pageOption of pageOptions; track pageOption){
+        @for (pageOption of pageOptions; track pageOption) {
           <ng-option [value]="pageOption">
             {{ pageOption }} / {{ 'Page' | translate }}
           </ng-option>

@@ -3,12 +3,12 @@
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
     <div class="row">
-      <div [@fadeInLeftOnEnter]="" class="col-lg-9 col-md-12 col-sm-12 order-2 order-lg-1">
-        <div class="card">
+      <div [@fadeInOnEnter]="" class="col-lg-9 col-md-12 col-sm-12 order-2 order-lg-1">
+        <kep-card>
           <div class="card-header p-1">
             <contest-tab [contest]="contest"></contest-tab>
           </div>
-        </div>
+        </kep-card>
 
         <div class="row">
           @for (contestProblem of contestProblems; track contestProblem) {
@@ -21,9 +21,9 @@
         </div>
       </div>
 
-        <div [@fadeInRightOnEnter]="" class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">
-          <contest-card-countdown *ngIf="contest" [contest]="contest"></contest-card-countdown>
-        </div>
-     </div>
+      <div [@fadeInRightOnEnter]="" class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">
+        <contest-card-countdown *ngIf="contest" [contest]="contest"></contest-card-countdown>
+      </div>
     </div>
   </div>
+</div>

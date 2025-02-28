@@ -1,9 +1,9 @@
 @if (loading) {
-  <div class="card" [style.height]="spinnerHeight">
-    <spinner [color]="spinnerColor"></spinner>
-  </div>
+  <kep-card [cardHeight]="spinnerHeight">
+    <spinner [color]="spinnerColor"/>
+  </kep-card>
 } @else {
-  <div [class]="cardClass">
+  <kep-card [customClass]="cardClass">
     <div class="table-responsive" [class]="tableCardClass">
       <table class="table" [class]="tableClass">
         <thead>
@@ -20,7 +20,7 @@
         </tfoot>
       </table>
     </div>
-  </div>
+  </kep-card>
 }
 
 @if (!empty) {

@@ -6,7 +6,7 @@
 
     <span
       ngbTooltip="{{ 'DIFFICULTY' | translate }}"
-      class="badge-pill badge-glow badge badge-{{ problem.difficulty | problemDifficultyColor }}">
+      class="badge-pill badge-glow badge bg-{{ problem.difficulty | problemDifficultyColor }}">
       {{ problem.difficultyTitle | translate }}
     </span>
 
@@ -42,28 +42,28 @@
 
     <hr>
 
-      <mathjax [content]="problem.body"></mathjax>
+    <mathjax [content]="problem.body"></mathjax>
+    <hr>
+
+    @if (problem.inputData?.length > 0) {
+      <h4 class="mt-2">
+        <strong>
+          {{ 'INPUT_DATA' | translate }}:
+        </strong>
+      </h4>
+      <mathjax class="mt-2" [content]="problem.inputData"></mathjax>
+    }
+
+    @if (problem.outputData?.length > 0) {
+      <h4 class="mt-3">
+        <strong>
+          {{ 'OUTPUT_DATA' | translate }}:
+        </strong>
+      </h4>
+      <mathjax class="mt-2" [content]="problem.outputData"></mathjax>
       <hr>
+    }
+  </div>
+</div>
 
-        @if (problem.inputData?.length > 0) {
-          <h4 class="mt-2">
-            <strong>
-              {{ 'INPUT_DATA' | translate }}:
-            </strong>
-          </h4>
-          <mathjax class="mt-2" [content]="problem.inputData"></mathjax>
-        }
-
-        @if (problem.outputData?.length > 0) {
-          <h4 class="mt-3">
-            <strong>
-              {{ 'OUTPUT_DATA' | translate }}:
-            </strong>
-          </h4>
-          <mathjax class="mt-2" [content]="problem.outputData"></mathjax>
-          <hr>
-          }
-        </div>
-      </div>
-
-      <img [src]="img" alt="">
+<img [src]="img" alt="">

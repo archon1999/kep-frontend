@@ -1,4 +1,4 @@
-<div class="card">
+<kep-card>
   <div class="card-body">
     <div class="d-flex align-items-center mb-2">
       <i class="font-medium-3" data-feather="users"></i>
@@ -12,14 +12,14 @@
     } @else {
       <div class="row">
         <div class="col-12 col-md-8">
-          @for (team of teams;track team.id) {
+          @for (team of teams; track team.id) {
             <team-card [team]="team"></team-card>
           } @empty {
             <empty-result [title]="'Sizda jamoa yo`q'" [text]="'Yangi jamoa yarating yoki mavjud jamoga qo`shiling'"/>
           }
         </div>
         <div class="col-12 col-md-4">
-          <div class="font-medium-4 fw-bolder mb-1">Yangi jamoa</div>
+          <div class="font-medium-4 fw-semibold mb-1">Yangi jamoa</div>
           <label>Nomi</label>
           <input [(ngModel)]="teamName" class="form-control">
           <button (click)="createTeam()" class="btn btn-sm btn-primary mt-2">Yaratish</button>
@@ -27,4 +27,4 @@
       </div>
     }
   </div>
-</div>
+</kep-card>

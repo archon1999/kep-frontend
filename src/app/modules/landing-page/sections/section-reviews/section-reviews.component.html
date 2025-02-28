@@ -1,36 +1,106 @@
-<div class="reviews-container">
-  <div class="content-wrapper container-xxl">
-    <div class="content-body">
-      <div class="row">
-        <div class="col-12 col-md-6 col-lg-3">
-          <div class="mb-2">
-            <span class="badge bg-primary">{{ 'Reviews' | translate }}</span>
-          </div>
-
-          <h3 class="fw-bolder mb-1">{{ 'LandingPage.SectionReviewsTitle' | translate }}</h3>
-          <p>{{ 'LandingPage.SectionReviewsText' | translate }}</p>
-
-          <div class="mt-3 mb-1 d-flex justify-content-start">
-            <button aria-label="prev" rippleEffect class="btn btn-sm bg-light-primary">
-              <kep-icon name="arrow-left" color="primary" class=""></kep-icon>
-            </button>
-            <button aria-label="next" rippleEffect class="ms-50 btn btn-sm bg-light-primary">
-              <kep-icon name="arrow-right" color="primary" class=""></kep-icon>
-            </button>
-          </div>
-        </div>
-
-        <div class="col-12 col-md-6 col-lg-9">
-          <swiper [config]="swiperConfig">
-            @for (review of data; track review) {
-              <div class="swiper-slide">
-                <review-card [review]="review"></review-card>
-              </div>
-            }
-          </swiper>
-        </div>
-
+<div class="container reviews-container">
+  <div class="text-center">
+    <p class="fs-12 fw-medium text-success mb-1">
+      <span class="landing-section-heading">
+        -{{ 'Reviews' | translate }}-
+      </span>
+    </p>
+    <h3 class="fw-medium mb-2">
+      {{ 'LandingPage.SectionReviewsTitle' | translate }}
+    </h3>
+    <div class="row justify-content-center">
+      <div class="col-xl-7">
+        <p class="text-muted fs-15 mb-5 fw-normal">H
+          {{ 'LandingPage.SectionReviewsText' | translate }}
+        </p>
       </div>
     </div>
   </div>
+  <owl-carousel-o [options]="customOptions">
+    @for (review of data; track review) {
+      <ng-template carouselSlide>
+        <div class="swiper pagination-dynamic testimonialSwiperService">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <kep-card customClass="text-fixed-white" [cardHeight]="'230px'">
+                <div class="card-body">
+                  <div>
+                    <i class="ri-double-quotes-l text-primary fs-2"></i>
+                    <div class="op-9 fs-14 mb-3">
+                      {{ review.text }}
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div>
+                      <div class="d-flex align-items-center">
+                        <span class="text-warning d-block me-1">
+                          <i class="ri-star-fill fs-14 align-middle lh-1"></i>
+                          <i class="ri-star-fill fs-14 align-middle lh-1"></i>
+                          <i class="ri-star-fill fs-14 align-middle lh-1"></i>
+                          <i class="ri-star-fill fs-14 align-middle lh-1"></i>
+                          <i class="ri-star-fill fs-14 align-middle lh-1"></i>
+                        </span>
+                        <span class="op-8">5.0</span>
+                      </div>
+                      <span class="fs-11 op-7">{{ review.date }}</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                      <div class="text-end me-2">
+                        <p class="mb-0 fw-medium fs-14">
+                          {{ review.firstName }} {{ review.lastName }}
+                        </p>
+                      </div>
+                      <span class="avatar avatar-rounded">
+                        <img [src]="review.avatar" alt="" class="img-fluid">
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </kep-card>
+            </div>
+
+          </div>
+          <div
+            class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal"></div>
+        </div>
+      </ng-template>
+    }
+  </owl-carousel-o>
 </div>
+
+<!--<div class="reviews-container">-->
+<!--  <div class="content-wrapper container-xxl">-->
+<!--    <div class="content-body">-->
+<!--      <div class="row">-->
+<!--        <div class="col-12 col-md-6 col-lg-3">-->
+<!--          <div class="mb-2">-->
+<!--            <span class="badge bg-primary">{{ 'Reviews' | translate }}</span>-->
+<!--          </div>-->
+
+<!--          <h3 class="fw-semibold mb-1">{{ 'LandingPage.SectionReviewsTitle' | translate }}</h3>-->
+<!--          <p>{{ 'LandingPage.SectionReviewsText' | translate }}</p>-->
+
+<!--          <div class="mt-3 mb-1 d-flex justify-content-start">-->
+<!--            <button aria-label="prev" rippleEffect class="btn btn-sm bg-light-primary">-->
+<!--              <kep-icon name="arrow-left" color="primary" class=""></kep-icon>-->
+<!--            </button>-->
+<!--            <button aria-label="next" rippleEffect class="ms-50 btn btn-sm bg-light-primary">-->
+<!--              <kep-icon name="arrow-right" color="primary" class=""></kep-icon>-->
+<!--            </button>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        <div class="col-12 col-md-6 col-lg-9">-->
+<!--          <swiper [config]="swiperConfig">-->
+<!--            @for (review of data; track review) {-->
+<!--              <div class="swiper-slide">-->
+<!--                <review-card [review]="review"></review-card>-->
+<!--              </div>-->
+<!--            }-->
+<!--          </swiper>-->
+<!--        </div>-->
+
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->

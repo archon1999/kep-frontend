@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/ro
 import { AuthService } from '@auth';
 import { Observable, of } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class AuthGuard {
   constructor(
     public router: Router,
@@ -17,13 +17,13 @@ export class AuthGuard {
     if (this.authService.currentUserValue) {
       return of(true);
     } else {
-      this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+      this.router.navigate(['/login'], {queryParams: {returnUrl: state.url}});
       return of(false);
     }
   }
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class IsAuthenticatedGuard {
   constructor(
     public router: Router,

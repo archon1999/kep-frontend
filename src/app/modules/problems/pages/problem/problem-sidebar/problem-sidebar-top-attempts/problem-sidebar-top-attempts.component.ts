@@ -8,13 +8,14 @@ import { takeUntil } from 'rxjs/operators';
 import { CoreCommonModule } from '@core/common.module';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'problem-sidebar-top-attempts',
   templateUrl: './problem-sidebar-top-attempts.component.html',
   styleUrls: ['./problem-sidebar-top-attempts.component.scss'],
   standalone: true,
-  imports: [CoreCommonModule, ContestantViewModule, NgSelectModule],
+  imports: [CoreCommonModule, ContestantViewModule, NgSelectModule, KepCardComponent],
 })
 export class ProblemSidebarTopAttemptsComponent implements OnInit, OnDestroy {
 

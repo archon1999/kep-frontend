@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { fadeInUpOnEnterAnimation } from 'angular-animations';
-import { ContentHeader } from '@layout/components/content-header/content-header.component';
+import { ContentHeader } from "@core/components/content-header/content-header.component";
 import { BasePageComponent } from '@app/common/classes/base-page.component';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { ContestCardComponent } from '@contests/components/contest-card/contest-card/contest-card.component';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
 import { ContestsTableModule } from '@contests/components/contests-table/contests-table.module';
 import { Contest } from '@contests/models/contest';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'app-contest',
@@ -21,6 +22,7 @@ import { Contest } from '@contests/models/contest';
     ContestCardComponent,
     ContestTabComponent,
     ContestsTableModule,
+    KepCardComponent,
   ]
 })
 export class ContestComponent extends BasePageComponent implements OnInit {
@@ -28,10 +30,10 @@ export class ContestComponent extends BasePageComponent implements OnInit {
   public contest: Contest;
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ contest }) => {
+    this.route.data.subscribe(({contest}) => {
       this.contest = Contest.fromJSON(contest);
       this.loadContentHeader();
-      this.titleService.updateTitle(this.route, { contestTitle: contest.title });
+      this.titleService.updateTitle(this.route, {contestTitle: contest.title});
     });
   }
 

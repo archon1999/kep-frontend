@@ -1,4 +1,4 @@
-<div class="card bg-tournament" [@fadeInLeftOnEnter]>
+<kep-card [@fadeInLeftOnEnter]>
   <div class="card-header justify-content-start">
     <div class="icon d-sm-block d-none">
       <img src="assets/images/icons/tournament.png" alt="tournament-icon" width="90" height="90">
@@ -7,21 +7,21 @@
       <h3 class="text-white">
         {{ tournament.title }}
       </h3>
-      <p class="text-white">{{ tournament.startTime | localizedDate:'MMM dd, yyyy'}}</p>
+      <p class="text-white">{{ tournament.startTime | localizedDate:'MMM dd, yyyy' }}</p>
       @if (!tournament.isRegistered && canRegistration) {
         <button (click)="registration()" class="btn btn-sm btn-registration">
           <i data-feather="user"></i> {{ 'Registration' | translate }}
         </button>
       }
       @if (tournament.isRegistered) {
-        <span class="badge badge-primary">
+        <span class="badge bg-primary">
           <i class="text-success" data-feather="check-circle"></i>
           {{ 'Registrated' | translate }}
         </span>
       }
     </div>
   </div>
-</div>
+</kep-card>
 
 <ul
   [(activeId)]="activeId"

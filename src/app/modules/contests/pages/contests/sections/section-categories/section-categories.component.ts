@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { fadeInRightOnEnterAnimation } from 'angular-animations';
 import { CoreCommonModule } from '@core/common.module';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
@@ -8,18 +8,21 @@ import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { ContestCategory } from '@contests/models';
 import { Observable } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'contests-section-categories',
   templateUrl: './section-categories.component.html',
   styleUrls: ['./section-categories.component.scss'],
-  animations: [fadeInRightOnEnterAnimation({ duration: 1000 })],
+  animations: [fadeInRightOnEnterAnimation({duration: 1000})],
   standalone: true,
+  encapsulation: ViewEncapsulation.None,
   imports: [
     CoreCommonModule,
     SwiperComponent,
     NgbTooltipModule,
     NgxSkeletonLoaderModule,
+    KepCardComponent,
   ]
 })
 export class SectionCategoriesComponent extends BaseLoadComponent<Array<ContestCategory>> implements OnInit {

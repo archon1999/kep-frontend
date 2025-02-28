@@ -1,68 +1,78 @@
-<div class="practice-container">
-  <div class="bg-img"></div>
-  <div class="content-wrapper container-xxl p-2">
-    <div class="content-body text-center">
-      <div class="row">
-        <div style="height: 375px;" class="col-12 col-lg-6 d-flex align-items-center">
-          <div>
-            <h2 class="text-primary">
-              <kep-icon name="practice"></kep-icon>
-              {{ 'LandingPage.SectionPracticeTitle' | translate }}
-            </h2>
-            <br>
-            <p class="text-dark font-medium-1 px-4">{{ 'LandingPage.SectionPracticeText' | translate }}</p>
-            <div class="row">
-              @for (menuItem of menu[2].children; track menuItem.id){
-                <div class="col-lg-3 col-6">
-                  <a [routerLink]="menuItem.url" class="btn btn-primary mb-1 btn-sm text-nowrap">
-                    <kep-icon [name]="menuItem.icon" size="small-4"></kep-icon>
-                    {{ menuItem.translate | translate }}
-                  </a>
-                </div>
-              }
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-lg-6">
-          <video
-            [src]="isDarkMode ? 'assets/landing-page/practice-dark.mp4' : 'assets/landing-page/practice-light.mp4'"
-            autoplay
-            loop
-            width="90%">
-          </video>
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <div class="text-center mt-4 mb-4">
+      <p class="fs-12 fw-medium text-success mb-1">
+        <span class="landing-section-heading">-{{ 'Features' | translate }}-</span>
+      </p>
+      <h3 class="fw-medium mb-2">
+        {{ 'LandingPage.SectionPracticeTitle' | translate }}
+      </h3>
+      <div class="row justify-content-center">
+        <div class="col-xl-7">
+          <p class="text-muted fs-15 mb-5 fw-normal">
+            {{ 'LandingPage.SectionPracticeText' | translate }}
+          </p>
         </div>
       </div>
 
-      <hr>
+      <div class="row">
+        @for (menuItem of menu[2].children; track menuItem.id) {
+          <div class="col-md-6 col-xl-3">
+            <kep-card customClass="landing-card border shadow-none text-center">
+              <div class="card-body">
+                <div class="mb-4">
+                  <span class="avatar avatar-xl rounded-2 icon-shadow-{{ colors[$index] }} bg-{{ colors[$index] }}-transparent">
+                    <kep-icon [name]="menuItem.icon" size="large-1"/>
+                  </span>
+                </div>
+                <h4 class="fw-medium">{{ menuItem.title | translate }}</h4>
+                <p class="fs-14 text-muted"></p>
+                <a [routerLink]="menuItem.path" class="fw-medium text-{{ colors[$index] }} d-flex align-items-center justify-content-center">
+                  {{ 'Go To' | translate }}
+                  <kep-icon name="right" class="ms-1" type="duotone"/>
+                </a>
+              </div>
+            </kep-card>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="text-center mb-4">
+      <p class="fs-12 fw-medium text-success mb-1">
+        <span class="landing-section-heading">-{{ 'Features' | translate }}-</span>
+      </p>
+      <h3 class="fw-medium mb-2">
+        {{ 'LandingPage.SectionCompetitionsTitle' | translate }}
+      </h3>
+      <div class="row justify-content-center">
+        <div class="col-xl-7">
+          <p class="text-muted fs-15 mb-5 fw-normal">
+            {{ 'LandingPage.SectionCompetitionsText' | translate }}
+          </p>
+        </div>
+      </div>
 
       <div class="row">
-        <div class="col-12 col-lg-6 order-2 order-lg-1">
-          <video
-            [src]="isDarkMode ? 'assets/landing-page/competitions-dark.mp4' : 'assets/landing-page/competitions-light.mp4'"
-            autoplay
-            loop
-            width="90%">
-          </video>
-        </div>
-
-        <div style="height: 375px;" class="col-12 col-lg-6 order-1 order-lg-2 d-flex justify-content-center align-items-center">
-          <div class="text-center">
-            <h2 class="text-primary">
-              <kep-icon name="competition"></kep-icon>
-              {{ 'LandingPage.SectionCompetitionsTitle' | translate }}
-            </h2>
-            <br>
-            <p class="text-dark font-medium-1 px-4">{{ 'LandingPage.SectionCompetitionsText' | translate }}</p>
-            <div class="d-flex justify-content-center">
-              @for (menuItem of menu[3].children; track menuItem.id){
-                <a [routerLink]="menuItem.url" class="btn mt-50 mb-1 me-50 btn-primary btn-sm">
-                  <kep-icon [name]="menuItem.icon" size="small-4"></kep-icon>
-                  {{ menuItem.translate | translate }}
+        @for (menuItem of menu[3].children; track menuItem.id) {
+          <div class="col-lg-4">
+            <kep-card customClass="landing-card border shadow-none text-center">
+              <div class="card-body">
+                <div class="mb-4">
+                  <span class="avatar avatar-xl rounded-2 icon-shadow-{{ colors[$index] }} bg-{{ colors[$index] }}-transparent">
+                    <kep-icon [name]="menuItem.icon" size="large-1"/>
+                  </span>
+                </div>
+                <h4 class="fw-medium">{{ menuItem.title | translate }}</h4>
+                <p class="fs-14 text-muted"></p>
+                <a [routerLink]="menuItem.path" class="fw-medium text-{{ colors[$index] }} d-flex align-items-center justify-content-center">
+                  {{ 'Go To' | translate }}
+                  <kep-icon name="right" class="ms-1" type="duotone"/>
                 </a>
-              }
-            </div>
+              </div>
+            </kep-card>
           </div>
-        </div>
+        }
       </div>
     </div>
   </div>

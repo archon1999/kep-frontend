@@ -1,4 +1,4 @@
-<div class="card card-congratulation-medal">
+<kep-card [cardHeight]="'244px'">
   <div class="card-header pb-0">
     <div class="card-title">
       {{ 'TopRating' | translate }}
@@ -35,8 +35,5 @@
         <user-popover [username]="topUsers[2].username" [streak]="topUsers[2].streak"></user-popover>
       </div>
     }
-
-    <img src="assets/images/illustration/badge.svg" class="congratulation-medal" alt="Medal Pic" height="132"
-      width="77"/>
-    </div>
   </div>
+</kep-card>

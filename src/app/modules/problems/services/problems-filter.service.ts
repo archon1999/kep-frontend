@@ -46,7 +46,7 @@ export class ProblemsFilterService {
     }
   }
 
-  setFilter(filter: Partial<ProblemsFilter>, emitEvent= true) {
+  setFilter(filter: Partial<ProblemsFilter>, emitEvent = true) {
     this._currentFilter = {
       ...DEFAULT_FILTER,
       ...filter,

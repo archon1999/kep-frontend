@@ -15,4 +15,4 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     ApexChartComponent,
   ]
 })
-export class ApexChartModule { }
+export class ApexChartModule {}

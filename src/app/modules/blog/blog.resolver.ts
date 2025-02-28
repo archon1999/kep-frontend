@@ -11,13 +11,15 @@ export class BlogPostResolver implements Resolve<any> {
   constructor(
     public service: BlogService,
     public router: Router,
-  ){}
+  ) {}
+
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.service.getBlogPost(route.paramMap.get('id')).pipe(
       catchError(err => {
-        this.router.navigate(['/404'], { skipLocationChange: true });
+        this.router.navigate(['/404'], {skipLocationChange: true});
         return of(true);
       })
-    );;
+    );
+
   }
 }

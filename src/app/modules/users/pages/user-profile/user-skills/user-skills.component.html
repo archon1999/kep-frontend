@@ -1,4 +1,4 @@
-<div class="card">
+<kep-card>
   <div class="card-body">
     <h4 class="mb-0">
       <i data-feather="activity"></i>
@@ -25,10 +25,10 @@
       <ngb-progressbar [showValue]="true" [value]="userSkills.dataScience" type="primary"></ngb-progressbar>
     </div>
   </div>
-</div>
+</kep-card>
 
 @if (userTechnologies.length > 0) {
-  <div class="card">
+  <kep-card>
     <div class="card-body">
       <h4 class="mb-0">
         <i data-feather="slack"></i>
@@ -40,12 +40,12 @@
             [style.background]="technology.badgeColor"
             [style.box-shadow]="'0px 0px 10px' + technology.badgeColor"
             class="badge"
-            >
+          >
             <i class="{{ technology.devIconClass }} "></i>
             {{ technology.text }}
           </span>
         }
       </div>
     </div>
-  </div>
+  </kep-card>
 }

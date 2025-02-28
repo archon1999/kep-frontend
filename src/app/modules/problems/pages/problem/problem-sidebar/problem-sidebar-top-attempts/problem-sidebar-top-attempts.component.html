@@ -1,4 +1,4 @@
-<div class="card">
+<kep-card>
   <div class="card-header">
     <div class="d-flex">
       <div class="card-title">
@@ -16,13 +16,13 @@
   <div class="table-responsive">
     <table class="table">
       <thead>
-        <tr>
-          <th>{{ 'User' | translate }}</th>
-          <th>{{ 'RESULT' | translate }}</th>
-        </tr>
+      <tr>
+        <th>{{ 'User' | translate }}</th>
+        <th>{{ 'RESULT' | translate }}</th>
+      </tr>
       </thead>
       <tbody>
-        @for (attempt of topAttempts;track $index) {
+        @for (attempt of topAttempts; track $index) {
           <tr>
             <td class="text-nowrap">
               <contestant-view [imgSize]="28" [user]="attempt"></contestant-view>
@@ -49,9 +49,9 @@
               </span>
             </td>
           </tr>
-          } @empty {
+        } @empty {
         }
       </tbody>
     </table>
   </div>
-</div>
+</kep-card>

@@ -16,7 +16,7 @@ export class ArenaResolver {
   ): Observable<Arena> {
     return this.service.getArena(route.paramMap.get('id')).pipe(
       catchError(err => {
-        this.router.navigate(['/404'], { skipLocationChange: true });
+        this.router.navigate(['/404'], {skipLocationChange: true});
         return of(true);
       })
     );

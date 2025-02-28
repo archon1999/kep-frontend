@@ -12,7 +12,7 @@ export class LastTestsResolver {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<any> | Promise<any> | any {
-    return this.service.getTests({ page_size: 6, ordering: '-id' });
+    return this.service.getTests({page_size: 6, ordering: '-id'});
   }
 }
 
@@ -26,7 +26,7 @@ export class TestResolver {
   ): Observable<any> | Promise<any> | any {
     return this.service.getTest(route.paramMap.get('testId')).pipe(
       catchError(err => {
-        this.router.navigate(['/404'], { skipLocationChange: true });
+        this.router.navigate(['/404'], {skipLocationChange: true});
         return of(true);
       })
     );
@@ -43,7 +43,7 @@ export class TestPassResolver {
   ): Observable<any> | Promise<any> | any {
     return this.service.getTestPass(route.paramMap.get('testPassId')).pipe(
       catchError(err => {
-        this.router.navigate(['/404'], { skipLocationChange: true });
+        this.router.navigate(['/404'], {skipLocationChange: true});
         return of(true);
       })
     );
@@ -61,7 +61,7 @@ export class ChaptersResolver {
   ): Observable<any> | Promise<any> | any {
     return this.service.getChapters().pipe(
       catchError(err => {
-        this.router.navigate(['/404'], { skipLocationChange: true });
+        this.router.navigate(['/404'], {skipLocationChange: true});
         return of(true);
       })
     );

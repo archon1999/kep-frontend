@@ -24,7 +24,7 @@ export class SoundsService {
   }
 
   getSuccessSoundSrc() {
-    return `assets/audio/success/${ this.getSuccessSound() }.mp3`;
+    return `assets/audio/success/${this.getSuccessSound()}.mp3`;
   }
 
   setHomeSound(sound: HomeSoundEnum) {

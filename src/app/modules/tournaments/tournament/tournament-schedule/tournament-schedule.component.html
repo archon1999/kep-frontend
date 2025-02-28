@@ -3,14 +3,14 @@
     <div class="table-responsive">
       <table class="table">
         <thead class="bg-tournament">
-          <tr>
-            <th class="text-center text-white">
-              {{ 'Round' | translate }}
-            </th>
-            <th class="text-center text-white">
-              <i data-feather="calendar"></i>
-            </th>
-          </tr>
+        <tr>
+          <th class="text-center text-white">
+            {{ 'Round' | translate }}
+          </th>
+          <th class="text-center text-white">
+            <i data-feather="calendar"></i>
+          </th>
+        </tr>
         </thead>
         <tbody>
           @for (stage of tournament.stages; track stage) {

@@ -31,9 +31,9 @@ export class TestComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.data
-      .subscribe(({ test }) => {
+      .subscribe(({test}) => {
         this.test = test;
-        this.titleService.updateTitle(this.route, { testTitle: test.title });
+        this.titleService.updateTitle(this.route, {testTitle: test.title});
       });
 
     this.service.getTestBestResults(this.test.id)

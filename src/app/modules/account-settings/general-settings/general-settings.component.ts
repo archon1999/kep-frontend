@@ -29,7 +29,7 @@ export class GeneralSettingsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ generalInfo }) => {
+    this.route.data.subscribe(({generalInfo}) => {
       this.generalInfo = generalInfo;
       this.generalSettings = {
         username: generalInfo.username,
@@ -68,16 +68,12 @@ export class GeneralSettingsComponent implements OnInit {
 
   save() {
     this.service.updateUserGeneralInfo(this.generalSettings).subscribe(() => {
-      this.toastr.success('Saved', '', {
-        toastClass: 'toast ngx-toastr',
-      });
+      this.toastr.success('Saved', '');
       this.errors = null;
       this.authService.getMe().subscribe();
     }, (err: any) => {
       this.errors = err.error;
-      this.toastr.error('Error', '', {
-        toastClass: 'toast ngx-toastr',
-      });
+      this.toastr.error('Error', '');
     });
   }
 

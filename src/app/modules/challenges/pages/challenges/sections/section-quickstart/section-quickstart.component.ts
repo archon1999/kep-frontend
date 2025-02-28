@@ -1,5 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { NewChallengeButtonComponent } from '@challenges/components/new-challenge-button/new-challenge-button.component';
+import {
+  NewChallengeButtonComponent
+} from '@challenges/components/new-challenge-button/new-challenge-button.component';
 import { NouisliderComponent } from 'ng2-nouislider';
 import { Chapter } from '@app/modules/testing/testing.models';
 import { ChallengesApiService } from '@challenges/services';

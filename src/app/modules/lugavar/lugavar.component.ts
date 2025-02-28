@@ -14,10 +14,10 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './lugavar.component.html',
   styleUrls: ['./lugavar.component.scss'],
   animations: [
-    fadeInUpOnEnterAnimation({ duration: 3000 }),
-    fadeInLeftOnEnterAnimation({ duration: 3000 }),
-    fadeInRightOnEnterAnimation({ duration: 3000 }),
-    fadeInOnEnterAnimation({ duration: 3000 }),
+    fadeInUpOnEnterAnimation({duration: 1000}),
+    fadeInLeftOnEnterAnimation({duration: 1000}),
+    fadeInRightOnEnterAnimation({duration: 1000}),
+    fadeInOnEnterAnimation({duration: 1000}),
   ]
 })
 export class LugavarComponent implements OnInit {
@@ -40,7 +40,7 @@ export class LugavarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ dailyTrick, dailyQuestion, dailyInterestingFact }) => {
+    this.route.data.subscribe(({dailyTrick, dailyQuestion, dailyInterestingFact}) => {
       this.dailyTrick = dailyTrick;
       this.dailyQuestion = dailyQuestion;
       this.dailyQuestion.totalAnswered = 0;
@@ -71,17 +71,17 @@ export class LugavarComponent implements OnInit {
 
   updateWords() {
     this.selectedWords.splice(0, this.selectedWords.length);
-    if(this.searchText.length > 1) {
+    if (this.searchText.length > 1) {
       this.dictionary.forEach(word => {
-        if(word.word.toLowerCase().indexOf(this.searchText.toLowerCase()) != -1 ||
-           word.meaning.toLowerCase().indexOf(this.searchText.toLowerCase()) != -1){
+        if (word.word.toLowerCase().indexOf(this.searchText.toLowerCase()) != -1 ||
+          word.meaning.toLowerCase().indexOf(this.searchText.toLowerCase()) != -1) {
           this.selectedWords.push(word);
         }
       });
     } else {
-      let start = this.pageSize*(this.pageNumber-1);
-      let end = Math.min(start + this.pageSize, this.dictionary.length-1);
-      for(let i = start; i <= end; i++){
+      let start = this.pageSize * (this.pageNumber - 1);
+      let end = Math.min(start + this.pageSize, this.dictionary.length - 1);
+      for (let i = start; i <= end; i++) {
         this.selectedWords.push(this.dictionary[i]);
       }
     }

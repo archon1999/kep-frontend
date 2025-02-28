@@ -10,7 +10,7 @@ import { BlockUI, BlockUIModule, NgBlockUI } from 'ng-block-ui';
 import { TitleService } from 'app/shared/services/title.service';
 import { CoreCommonModule } from '@core/common.module';
 import { CourseLessonPartStatus } from '@courses/constants';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { SidebarComponent } from '@courses/pages/course-lesson/sidebar/sidebar.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { PartComponent } from '@courses/pages/course-lesson/part/part.component';
@@ -89,7 +89,7 @@ export class LessonComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ course, courseLessons, courseLesson }) => {
+    this.route.data.subscribe(({course, courseLessons, courseLesson}) => {
       this.course = course;
       this.courseLessons = courseLessons.map((data: any) => {
         return CourseLesson.fromJSON(data);
@@ -114,7 +114,7 @@ export class LessonComponent implements OnInit {
 
     this.authService.currentUser.subscribe((user: any) => {
       if (!user) {
-        this.router.navigate(['/404'], { skipLocationChange: true });
+        this.router.navigate(['/404'], {skipLocationChange: true});
       }
       this.currentUser = user;
     });
@@ -126,9 +126,9 @@ export class LessonComponent implements OnInit {
     this.router.navigate([],
       {
         relativeTo: this.route,
-        queryParams: { page: lessonPartIndex + 1 },
+        queryParams: {page: lessonPartIndex + 1},
       }
-    ).then(() => window.scrollTo({ top: currentScrollHeight }));
+    ).then(() => window.scrollTo({top: currentScrollHeight}));
 
     const parts = this.courseLesson.parts.length;
     this.lessonPartIndex = (lessonPartIndex + parts) % parts;

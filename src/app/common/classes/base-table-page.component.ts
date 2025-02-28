@@ -45,7 +45,7 @@ export abstract class BaseTablePageComponent<T> extends BasePageComponent implem
     );
   }
 
-  ngOnInit() {
+  override ngOnInit() {
     this.loadContentHeader();
     setTimeout(() => this.reloadPage());
   }
@@ -82,7 +82,7 @@ export abstract class BaseTablePageComponent<T> extends BasePageComponent implem
 
   orderingChange(ordering: string) {
     this.ordering = ordering;
-    this.updateQueryParams({ ordering: ordering });
+    this.updateQueryParams({ordering: ordering});
     this.pageNumber = this.defaultPageNumber;
     this.reloadPage();
   }

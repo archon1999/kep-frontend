@@ -14,4 +14,4 @@ import { NgSelectModule as Module } from '@ng-select/ng-select';
     NgSelectComponent,
   ]
 })
-export class NgSelectModule { }
+export class NgSelectModule {}

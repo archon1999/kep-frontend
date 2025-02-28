@@ -67,27 +67,24 @@
         <td class="text-dark">{{ problem.id }}</td>
         <td>
           <a [routerLink]="Resources.Problem | resourceById : problem.id">
-            <div class="fw-bold">
+            <div class="fw-medium">
               {{ problem.title }}
             </div>
 
             @if (problem.hasSolution) {
-              <span class="badge mt-50 badge-pill bg-light-success">
-                <i [data-feather]="'exists' | iconName" class="text-success" [size]="'16px'"></i>
+              <span class="badge mt-2 badge-pill bg-light-success">
                 {{ 'Solution' | translate }}
               </span>
             }
 
             @if (!problem.hasChecker) {
-              <span class="badge mt-50 badge-pill bg-light-danger">
-                <i [data-feather]="'not_exists' | iconName" class="text-danger" [size]="'16px'"></i>
+              <span class="badge mt-2 badge-pill bg-light-danger">
                 {{ 'Checker' | translate }}
               </span>
             }
 
             @if (problem.hidden) {
-              <span class="badge mt-50 badge-pill bg-light-warning">
-                <i [data-feather]="'eye-off'" class="text-warning" [size]="'16px'"></i>
+              <span class="badge mt-2 badge-pill bg-light-warning">
                 {{ 'Hidden' | translate }}
               </span>
             }
@@ -105,7 +102,7 @@
         </td>
 
         <td class="text-center">
-          <span class="badge badge-glow badge-{{ problem.difficulty | problemDifficultyColor }}">
+          <span class="badge badge-glow bg-{{ problem.difficulty | problemDifficultyColor }}">
             {{ problem.difficultyTitle | translate }}
           </span>
         </td>
@@ -123,7 +120,8 @@
 
         <td class="text-center">
           <span class="badge badge-light-info text-center">
-            <small class="text-success">{{ problem.solved }}</small><small class="text-dark">/</small><small class="text-info">{{ problem.attemptsCount }}</small>
+            <small class="text-success">{{ problem.solved }}</small><small class="text-dark">/</small><small
+            class="text-info">{{ problem.attemptsCount }}</small>
           </span>
         </td>
       </tr>

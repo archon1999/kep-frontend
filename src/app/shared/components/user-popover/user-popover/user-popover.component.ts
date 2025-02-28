@@ -7,7 +7,7 @@ import { User } from '@users/users.models';
   selector: 'user-popover',
   templateUrl: './user-popover.component.html',
   styleUrls: ['./user-popover.component.scss'],
-  animations: [fadeInOnEnterAnimation({ duration: 1000 })]
+  animations: [fadeInOnEnterAnimation({duration: 1000})]
 })
 export class UserPopoverComponent implements OnInit {
 
@@ -30,10 +30,10 @@ export class UserPopoverComponent implements OnInit {
 
   loadUser() {
     if (!this.user) {
-      this.api.get(`users/${ this.username }`).subscribe((user: any) => {
+      this.api.get(`users/${this.username}`).subscribe((user: any) => {
         this.user = user;
       });
-      this.api.get(`users/${ this.username }/ratings`).subscribe((userRatings: any) => {
+      this.api.get(`users/${this.username}/ratings`).subscribe((userRatings: any) => {
         this.userRatings = userRatings;
       });
     }

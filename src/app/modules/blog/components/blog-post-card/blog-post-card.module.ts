@@ -6,6 +6,9 @@ import { RouterModule } from '@angular/router';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { NewsCardComponent } from './news-card/news-card.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { KepIconComponent } from "@shared/components/kep-icon/kep-icon.component";
+import { TranslatePipe } from "@ngx-translate/core";
 
 
 @NgModule({
@@ -18,11 +21,14 @@ import { NewsCardComponent } from './news-card/news-card.component';
     UserPopoverModule,
     RouterModule,
     CorePipesModule,
-    CoreDirectivesModule
+    CoreDirectivesModule,
+    KepCardComponent,
+    KepIconComponent,
+    TranslatePipe
   ],
   exports: [
     BlogPostCardComponent,
     NewsCardComponent,
   ]
 })
-export class BlogPostCardModule { }
+export class BlogPostCardModule {}

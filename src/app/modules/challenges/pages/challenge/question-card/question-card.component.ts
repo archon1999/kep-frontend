@@ -71,7 +71,7 @@ export class QuestionCardComponent extends BaseComponent implements OnInit, OnCh
   ngOnInit() {
     this.langService.getLanguage().pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (lang: AttemptLangs) => {
-        this.langControl.setValue(lang, { emitEvent: false });
+        this.langControl.setValue(lang, {emitEvent: false});
         if (!findAvailableLang(this.question.problem.availableLanguages, lang)) {
           this.langService.setLanguage(this.question.problem.availableLanguages[0].lang);
         }
@@ -157,20 +157,20 @@ export class QuestionCardComponent extends BaseComponent implements OnInit, OnCh
         }
       }
     } else if (this.question.type === QuestionType.ANSWER_INPUT) {
-      answer = { input: this.input };
+      answer = {input: this.input};
     } else if (this.question.type === QuestionType.CONFORMITY) {
       answer = {
         group_one: this.conformityGroupFirst,
         group_two: this.conformityGroupSecond
       };
     } else if (this.question.type === QuestionType.ORDERING) {
-      answer = { ordering_list: this.orderingList };
+      answer = {ordering_list: this.orderingList};
     } else if (this.question.type === QuestionType.CLASSIFICATION) {
-      answer = { classification_groups: this.classificationGroups };
+      answer = {classification_groups: this.classificationGroups};
     } else if (this.question.type === QuestionType.CUSTOM_CHECK) {
-      answer = { code: this.input };
+      answer = {code: this.input};
     } else if (this.question.type === QuestionType.PROBLEM) {
-      answer = { code: this.input, lang: this.langControl.value };
+      answer = {code: this.input, lang: this.langControl.value};
     }
     this.check.emit(answer);
   }

@@ -30,7 +30,7 @@ export class ProblemsApiService {
   }
 
   getProblem(id: number | string) {
-    return this.api.get(`problems/${ id }`);
+    return this.api.get(`problems/${id}`);
   }
 
   getStudyPlans() {
@@ -38,11 +38,11 @@ export class ProblemsApiService {
   }
 
   getStudyPlan(id: number | string) {
-    return this.api.get(`study-plans/${ id }`);
+    return this.api.get(`study-plans/${id}`);
   }
 
   getAttempt(id: number | string) {
-    return this.api.get(`attempts/${ id }`).pipe(
+    return this.api.get(`attempts/${id}`).pipe(
       map(attempt => Attempt.fromJSON(attempt))
     );
   }
@@ -52,7 +52,7 @@ export class ProblemsApiService {
   }
 
   getProblemAttempts(problemId: number, page: number, pageSize: number) {
-    const params = { problem_id: problemId, page: page, page_size: pageSize };
+    const params = {problem_id: problemId, page: page, page_size: pageSize};
     return this.api.get('attempts', params);
   }
 
@@ -75,39 +75,39 @@ export class ProblemsApiService {
   }
 
   getProblemsRating(page: number, pageSize = 10, ordering = '-solved') {
-    const params = { page, ordering, pageSize };
+    const params = {page, ordering, pageSize};
     return this.api.get('problems-rating', params);
   }
 
   getProblemVerdictStatistics(problemId: number) {
-    return this.api.get(`problems/${ problemId }/attempt-statistics/`);
+    return this.api.get(`problems/${problemId}/attempt-statistics/`);
   }
 
   getProblemLangStatistics(problemId: number) {
-    return this.api.get(`problems/${ problemId }/lang-statistics/`);
+    return this.api.get(`problems/${problemId}/lang-statistics/`);
   }
 
   getProblemTopAttempts(problemId: number, ordering: string, lang = null, page: number = 1, pageSize: number = 10) {
-    const params = { ordering, lang };
-    return this.api.get(`problems/${ problemId }/top-attempts/`, params);
+    const params = {ordering, lang};
+    return this.api.get(`problems/${problemId}/top-attempts/`, params);
   }
 
   getAttemptsForSolveStatistics(problemId: number) {
-    return this.api.get(`problems/${ problemId }/attempts-for-solve-statistics/`);
+    return this.api.get(`problems/${problemId}/attempts-for-solve-statistics/`);
   }
 
   getProblemSolution(problemId: number) {
-    return this.api.get(`problems/${ problemId }/solution/`);
+    return this.api.get(`problems/${problemId}/solution/`);
   }
 
   addTag(problemId: number, tagId: number) {
-    const params = { tagId };
-    return this.api.post(`problems/${ problemId }/add-tag/`, params);
+    const params = {tagId};
+    return this.api.post(`problems/${problemId}/add-tag/`, params);
   }
 
   removeTag(problemId: number, tagId: number) {
-    const params = { tagId };
-    return this.api.post(`problems/${ problemId }/remove-tag/`, params);
+    const params = {tagId};
+    return this.api.post(`problems/${problemId}/remove-tag/`, params);
   }
 
   getVerdicts(): Observable<Array<{
@@ -118,15 +118,15 @@ export class ProblemsApiService {
   }
 
   attemptRerun(attemptId: number) {
-    return this.api.post(`attempts/${ attemptId }/rerun/`);
+    return this.api.post(`attempts/${attemptId}/rerun/`);
   }
 
   problemLike(problemId: number) {
-    return this.api.post(`problems/${ problemId }/like/`);
+    return this.api.post(`problems/${problemId}/like/`);
   }
 
   problemDislike(problemId: number) {
-    return this.api.post(`problems/${ problemId }/dislike/`);
+    return this.api.post(`problems/${problemId}/dislike/`);
   }
 
   getTopics() {
@@ -134,21 +134,21 @@ export class ProblemsApiService {
   }
 
   addTopic(problemId: number | string, topicId: number) {
-    const params = { topic_id: topicId };
-    return this.api.post(`problems/${ problemId }/add-topic/`, params);
+    const params = {topic_id: topicId};
+    return this.api.post(`problems/${problemId}/add-topic/`, params);
   }
 
   removeTopic(problemId: number | string, topicId: number) {
-    const params = { topic_id: topicId };
-    return this.api.post(`problems/${ problemId }/remove-topic/`, params);
+    const params = {topic_id: topicId};
+    return this.api.post(`problems/${problemId}/remove-topic/`, params);
   }
 
   hackSubmit(attemptId: number | string, body: { input?: string, generatorSource?: string, generatorLang?: string }) {
-    return this.api.post(`attempts/${ attemptId }/hack-submit`, body);
+    return this.api.post(`attempts/${attemptId}/hack-submit`, body);
   }
 
   hackAttemptRerun(hackAttemptId: number) {
-    return this.api.post(`hack-attempts/${ hackAttemptId }/rerun/`);
+    return this.api.post(`hack-attempts/${hackAttemptId}/rerun/`);
   }
 
   getHackAttempts(params: any) {
@@ -169,19 +169,19 @@ export class ProblemsApiService {
   }
 
   getCategory(categoryId: number) {
-    return this.api.get(`categories/${ categoryId }`);
+    return this.api.get(`categories/${categoryId}`);
   }
 
   getCategoryTopUsers(categoryId: number) {
-    return this.api.get(`categories/${ categoryId }/top-users`);
+    return this.api.get(`categories/${categoryId}/top-users`);
   }
 
   getCategoryStudyPlans(categoryId: number) {
-    return this.api.get(`categories/${ categoryId }/study-plans`);
+    return this.api.get(`categories/${categoryId}/study-plans`);
   }
 
   getCurrentProblemsRating(period: 'today' | 'week' | 'month') {
-    return this.api.get(`problems-rating/${ period }`);
+    return this.api.get(`problems-rating/${period}`);
   }
 
   getMostViewedProblems(): Observable<Array<Partial<Problem>>> {

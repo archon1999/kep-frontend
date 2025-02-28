@@ -57,7 +57,8 @@
 
   <div class="achievement-progress" [ngbTooltip]="achievement.userResult.progress">
     <div class="progress-wrapper">
-      <ngb-progressbar type="{{ getColor() }}" [value]="100 * achievement.userResult.progress / achievement.totalProgress"></ngb-progressbar>
+      <ngb-progressbar type="{{ getColor() }}"
+                       [value]="100 * achievement.userResult.progress / achievement.totalProgress"></ngb-progressbar>
     </div>
   </div>
 </div>

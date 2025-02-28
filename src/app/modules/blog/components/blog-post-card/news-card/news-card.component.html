@@ -1,32 +1,32 @@
-<a [routerLink]="['/learn', 'blog', 'post', blog.id]" class="news-card">
-  <div class="post-image">
-    <img [src]="blog.image" alt="">
-  </div>
-  <div class="news-details">
-    <div class="date">
-      <small class="text-muted">
-        <span class="">{{ blog.created }}</span>
-      </small>
-    </div>
-    <div class="title text-dark">
-      {{ blog.title }}
-    </div>
-    <div class="tags">
-      @for (tag of blog.tags; track tag) {
-        <span class="badge badge-light-primary me-25">
-          {{ tag }}
-        </span>
-      }
-    </div>
-    <div class="d-flex justify-content-between align-items-center">
-      <div class="d-flex align-items-center text-primary">
-        <i data-feather="message-square" class="font-medium-1 me-50"></i>
-        <span class="fw-bold pe-2">{{ blog.commentsCount }}</span>
-        <i data-feather="heart" class="font-medium-1 me-50"></i>
-        <span class="fw-bold pe-2">{{ blog.likesCount }}</span>
-        <i data-feather="eye" class="font-medium-1 me-50"></i>
-        <span class="fw-bold pe-2">{{ blog.views }}</span>
+<a [routerLink]="['/learn', 'blog', 'post', blog.id]">
+  <kep-card customClass="overlay-card">
+    <img [src]="blog.image" height="200" class="card-img"/>
+
+    <div class="card-img-overlay d-flex flex-column p-0">
+      <div class="card-header">
+        <div class="card-title">
+          {{ blog.title }}
+        </div>
+      </div>
+
+      <div class="card-body">
+        @for (tag of blog.tags; track tag) {
+          <span class="me-2">
+            {{ tag }}
+          </span>
+        }
+      </div>
+
+      <div class="card-footer">
+        <div class="d-flex align-items-center text-fixed-white">
+          <i data-feather="message-square" class="font-medium-1 me-2"></i>
+          <span class="fw-medium pe-2">{{ blog.commentsCount }}</span>
+          <i data-feather="heart" class="font-medium-1 me-2"></i>
+          <span class="fw-medium pe-2">{{ blog.likesCount }}</span>
+          <i data-feather="eye" class="font-medium-1 me-2"></i>
+          <span class="fw-medium pe-2">{{ blog.views }}</span>
+        </div>
       </div>
     </div>
-  </div>
+  </kep-card>
 </a>

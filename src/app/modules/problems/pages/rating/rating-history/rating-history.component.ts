@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'app/shared/services/api.service';
 import { AuthService, User } from '@auth';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { ɵEmptyOutletComponent } from '@angular/router';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 
 enum RatingType {
@@ -35,6 +36,7 @@ class RatingHistory {
     ɵEmptyOutletComponent,
     UserPopoverModule,
     KepPaginationComponent,
+    KepCardComponent,
   ]
 })
 export class RatingHistoryComponent implements OnInit {
@@ -44,6 +46,10 @@ export class RatingHistoryComponent implements OnInit {
     breadcrumb: {
       type: '',
       links: [
+        {
+          name: 'Practice',
+          isLink: false,
+        },
         {
           name: 'Problems',
           isLink: true,
@@ -119,7 +125,7 @@ export class RatingHistoryComponent implements OnInit {
   }
 
   reloadDailyHistoryPage() {
-    const params = { 'type': RatingType.DAILY, 'page': this.dailyRatingHistoryPage, page_size: 10 };
+    const params = {'type': RatingType.DAILY, 'page': this.dailyRatingHistoryPage, page_size: 10};
     this.api.get('problems-rating-history', params).subscribe((result: any) => {
       this.dailyRatingHistory = result.data;
       this.dailyRatingHistoryTotal = result.total;
@@ -127,7 +133,7 @@ export class RatingHistoryComponent implements OnInit {
   }
 
   reloadWeeklyHistoryPage() {
-    const params = { 'type': RatingType.WEEKLY, 'page': this.weeklyRatingHistoryPage, page_size: 10 };
+    const params = {'type': RatingType.WEEKLY, 'page': this.weeklyRatingHistoryPage, page_size: 10};
     this.api.get('problems-rating-history', params).subscribe((result: any) => {
       this.weeklyRatingHistory = result.data;
       this.weeklyRatingHistoryTotal = result.total;
@@ -135,7 +141,7 @@ export class RatingHistoryComponent implements OnInit {
   }
 
   reloadMonthlyHistoryPage() {
-    const params = { 'type': RatingType.MONTHLY, 'page': this.monthlyRatingHistoryPage, page_size: 10 };
+    const params = {'type': RatingType.MONTHLY, 'page': this.monthlyRatingHistoryPage, page_size: 10};
     this.api.get('problems-rating-history', params).subscribe((result: any) => {
       this.monthlyRatingHistory = result.data;
       this.monthlyRatingHistoryTotal = result.total;

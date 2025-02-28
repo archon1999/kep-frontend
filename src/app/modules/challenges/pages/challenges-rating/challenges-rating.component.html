@@ -53,12 +53,16 @@
         <ng-container body>
           @for (challengesRating of challengesRatingList; track challengesRating.username) {
             <tr>
-              <td class="fw-bold">{{ challengesRating.rowIndex }}</td>
-              <td><challenges-user-view [user]="challengesRating"></challenges-user-view></td>
-              <td><span class="badge badge-light-success badge-pill">{{ challengesRating.wins }}</span></td>
-              <td><span class="badge badge-light-secondary badge-pill">{{ challengesRating.draws }}</span></td>
-              <td><span class="badge badge-light-danger badge-pill">{{ challengesRating.losses }}</span></td>
-              <td><span class="badge badge-glow badge-{{ challengesRating.rankTitle | challengesRankColor }}">{{ challengesRating.rating }}</span></td>
+              <td class="fw-medium">{{ challengesRating.rowIndex }}</td>
+              <td>
+                <challenges-user-view [user]="challengesRating"></challenges-user-view>
+              </td>
+              <td><span class="badge bg-success-transparent">{{ challengesRating.wins }}</span></td>
+              <td><span class="badge bg-secondary-transparent">{{ challengesRating.draws }}</span></td>
+              <td><span class="badge bg-danger-transparent">{{ challengesRating.losses }}</span></td>
+              <td>
+                <span class="badge bg-{{ challengesRating.rankTitle | challengesRankColor }}">{{ challengesRating.rating }}</span>
+              </td>
             </tr>
           }
         </ng-container>

@@ -13,7 +13,7 @@ export class TestingApiService {
   }
 
   getTest(testId: number | string) {
-    return this.api.get(`tests/${ testId }`);
+    return this.api.get(`tests/${testId}`);
   }
 
   getTests(params: any = {}) {
@@ -21,19 +21,19 @@ export class TestingApiService {
   }
 
   getTestBestResults(testId: number | string) {
-    return this.api.get(`tests/${ testId }/best-results`);
+    return this.api.get(`tests/${testId}/best-results`);
   }
 
   getTestLastResults(testId: number | string) {
-    return this.api.get(`tests/${ testId }/last-results`);
+    return this.api.get(`tests/${testId}/last-results`);
   }
 
   testStart(testId: number) {
-    return this.api.get(`tests/${ testId }/start`);
+    return this.api.get(`tests/${testId}/start`);
   }
 
   getTestPass(testPassId: number | string) {
-    return this.api.get(`test-pass/${ testPassId }`);
+    return this.api.get(`test-pass/${testPassId}`);
   }
 
   answerSubmit(testPassId: number, questionNumber: number, answer: any) {
@@ -41,11 +41,11 @@ export class TestingApiService {
       questionNumber: questionNumber,
       answer: answer,
     };
-    return this.api.post(`test-pass/${ testPassId }/submit-answer/`, data);
+    return this.api.post(`test-pass/${testPassId}/submit-answer/`, data);
   }
 
   testPassFinish(testPassId: number) {
-    return this.api.get(`test-pass/${ testPassId }/finish`);
+    return this.api.get(`test-pass/${testPassId}/finish`);
   }
 
 }

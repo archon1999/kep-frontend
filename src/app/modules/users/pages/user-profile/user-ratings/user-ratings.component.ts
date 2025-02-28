@@ -6,7 +6,6 @@ import { UserChallengesRating, UserContestsRating, UserProblemsRating } from '@u
 import { UsersApiService } from '@users/users-api.service';
 import { colors } from '@app/colors';
 import { ChallengesApiService } from '@challenges/services';
-import { CoreConfigService } from '@core/services/config.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProblemDifficultyColorPipe } from '@problems/pipes/problem-difficulty-color.pipe';
@@ -14,9 +13,12 @@ import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-char
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
-import { ProblemsActivityCardComponent } from '@problems/components/problems-activity-card/problems-activity-card.component';
+import {
+  ProblemsActivityCardComponent
+} from '@problems/components/problems-activity-card/problems-activity-card.component';
 import { difficultyLabels } from '@problems/constants/difficulties.enum';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'user-ratings',
@@ -32,6 +34,7 @@ import { EmptyResultComponent } from '@shared/components/empty-result/empty-resu
     KepIconComponent,
     ProblemsActivityCardComponent,
     EmptyResultComponent,
+    KepCardComponent,
   ]
 })
 export class UserRatingsComponent implements OnInit {
@@ -54,12 +57,11 @@ export class UserRatingsComponent implements OnInit {
     public translateService: TranslateService,
     public contestsService: ContestsService,
     public challengesService: ChallengesApiService,
-    public coreConfigService: CoreConfigService,
   ) {
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ userProblemsRating, userContestsRating, userChallengesRating }) => {
+    this.route.data.subscribe(({userProblemsRating, userContestsRating, userChallengesRating}) => {
       this.userProblemsRating = userProblemsRating;
       this.userContestsRating = userContestsRating;
       this.userChallengesRating = userChallengesRating;
@@ -104,7 +106,7 @@ export class UserRatingsComponent implements OnInit {
             type: 'datetime'
           },
           tooltip: {
-            custom: function ({ series, seriesIndex, dataPointIndex, w }): any {
+            custom: function ({series, seriesIndex, dataPointIndex, w}): any {
               const data = ratingChanges[dataPointIndex];
               let deltaColor: string;
               if (data.delta > 0) {
@@ -118,16 +120,16 @@ export class UserRatingsComponent implements OnInit {
               <div class="card">
                 <div class="card-body">
                   <h4 class="text-center">
-                    ${ data.contestTitle }
+                    ${data.contestTitle}
                   </h4>
                   <div class="d-flex">
-                    <div class="text-dark">#${ data.rank }</div>
+                    <div class="text-dark">#${data.rank}</div>
                     <div class="text-dark ms-1">
-                      ${ username }
-                      <img src="assets/images/contests/ratings/${ data.newRatingTitle.toLowerCase() }.png" height=20>
-                      ${ data.newRating }
+                      ${username}
+                      <img src="assets/images/contests/ratings/${data.newRatingTitle.toLowerCase()}.png" height=20>
+                      ${data.newRating}
                     </div>
-                    <span class="ms-1 badge badge-light-${ deltaColor }">${ data.delta }</span>
+                    <span class="ms-1 badge badge-light-${deltaColor}">${data.delta}</span>
                   </div>
                 </div>
               </div>

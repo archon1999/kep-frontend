@@ -4,20 +4,19 @@
     <div class="content-body p-2">
       <div class="row">
         <div class="col-md-6 col-12" [ngClass.lt-md]="'text-center'">
-          <h2 class="fw-bolder text-primary">
+          <h2 class="fw-semibold text-primary">
             {{ 'LandingPage.SectionGetStartedTitle' | translate }}
           </h2>
           <p>
             {{ 'LandingPage.SectionGetStartedText' | translate }}
           </p>
-          <a class="btn mt-1 btn-relief-primary" [routerLink]="Resources.Login">
+          <a class="btn mt-1 btn-primary-gradient" [routerLink]="Resources.Login">
             {{ 'GetStarted' | translate }}
           </a>
         </div>
         <div class="col-md-6 col-12">
-          <div class="d-flex align-items-center" [ngClass.gt-md]="'justify-content-end'" [ngClass.lt-lg]="'justify-content-center'">
-            <img loading="lazy" height="220" width="220" class="img-fluid" alt="landing-img"
-                 src="assets/images/pages/login-v2-dark.svg"/>
+          <div class="d-flex align-items-center" [ngClass.gt-md]="'justify-content-end'"
+               [ngClass.lt-lg]="'justify-content-center'">
           </div>
 
         </div>

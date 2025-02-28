@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LandingPageService } from '@app/modules/landing-page/landing-page.service';
 import { CoreCommonModule } from '@core/common.module';
 import { CountUpModule } from 'ngx-countup';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 interface Statistics {
   usersCount: number;
@@ -13,7 +14,7 @@ interface Statistics {
 @Component({
   selector: 'section-statistics',
   standalone: true,
-  imports: [CoreCommonModule, CountUpModule],
+  imports: [CoreCommonModule, CountUpModule, KepCardComponent],
   templateUrl: './section-statistics.component.html',
   styleUrl: './section-statistics.component.scss'
 })

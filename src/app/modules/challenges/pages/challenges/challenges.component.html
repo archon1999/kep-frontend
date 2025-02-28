@@ -1,9 +1,8 @@
 <div class="content-wrapper container-xxl p-0">
   <div class="content-body">
-    <app-content-header [contentHeader]="contentHeader"></app-content-header>
-    <section-header></section-header>
+    <section-header [contentHeader]="contentHeader"/>
 
-    <ul [(activeId)]="activeTab" ngbNav #navFilled="ngbNav" class="nav-tabs nav-fill">
+    <ul [(activeId)]="activeTab" ngbNav #navFilled="ngbNav" class="nav-tabs nav-style-1 nav-fill">
       <li [ngbNavItem]="Tab.QuickStart">
         <a ngbNavLink>{{ 'QuickStart' | translate }}</a>
         <ng-template ngbNavContent>
@@ -26,7 +25,7 @@
         </ng-template>
       </li>
     </ul>
-    <div [ngbNavOutlet]="navFilled" class="mt-2"></div>
+    <div [ngbNavOutlet]="navFilled" class="mt-4"></div>
 
     <div class="row">
       <div class="col-12 col-lg-6">

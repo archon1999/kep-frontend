@@ -4,20 +4,21 @@
 
     <div class="row">
       <div [@fadeInLeftOnEnter]="" class="col-lg-9 col-md-12 col-sm-12 order-2 order-lg-1">
-        <div class="card {{ contest | contestClasses }}">
+        <kep-card [customClass]="contest | contestClasses">
           <div class="card-header p-1">
             <contest-tab [contest]="contest"></contest-tab>
           </div>
 
           <div class="card-footer">
-            <h4 *ngIf="contest.status != ContestStatus.FINISHED" class="mb-2">{{ 'ContestQuestionsText' | translate }}</h4>
-            @if (isLoading){
+            <h4 *ngIf="contest.status != ContestStatus.FINISHED"
+                class="mb-2">{{ 'ContestQuestionsText' | translate }}</h4>
+            @if (isLoading) {
               <spinner [height]="'200px'"/>
-            } @else if (questions.length == 0){
+            } @else if (questions.length == 0) {
               <empty-result text=""/>
             } @else {
               <div class="questions">
-                @for (question of questions;track question) {
+                @for (question of questions; track question) {
                   <contest-question-card [contest]="contest" [question]="question"></contest-question-card>
                 }
               </div>
@@ -35,7 +36,7 @@
                   </label>
                   <div class="mb-1">
                     <ng-select appendTo="body" [(ngModel)]="selectedProblem" [ngModelOptions]="{standalone: true}">
-                      @for (contestProblem of contestProblems;track contestProblem) {
+                      @for (contestProblem of contestProblems; track contestProblem) {
                         <ng-option [value]="contestProblem.symbol">
                           {{ contestProblem.symbol }}. {{ contestProblem.problem.title }}
                         </ng-option>
@@ -61,7 +62,7 @@
               </button>
             </div>
           }
-        </div>
+        </kep-card>
       </div>
 
       <div [@fadeInRightOnEnter]="" class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">

@@ -11,7 +11,7 @@ export default [
   {
     path: 'challenge/:id',
     loadComponent: () => import('./pages/challenge/challenge.component').then(c => c.ChallengeComponent),
-    data: { title: 'Challenges.Challenge' },
+    data: {title: 'Challenges.Challenge'},
   },
   {
     path: 'rating',

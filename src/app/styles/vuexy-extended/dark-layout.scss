@@ -1,19 +1,14 @@
 @import 'styles/kep-imports';
 
 $colors: (
-  'secondary': $secondary,
   'primary': $primary,
   'success': $green,
-  'info': $info,
-  'warning': $warning,
   'danger': $red,
   'yellow': $yellow,
   'blue': $blue,
-  'brown': $brown,
-  'dark': $dark,
 );
 
-.dark-layout {
+:root {
   @each $color_name, $color in $colors {
     $dark-color: mix(black, $color, 30);
 

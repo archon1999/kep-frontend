@@ -16,8 +16,9 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { TournamentListCardComponent } from './tournament-list-card/tournament-list-card.component';
 import { TournamentVersusComponent } from './tournament/tournament-versus/tournament-versus.component';
-import { ContentHeaderModule } from '@layout/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 
 const routes: Routes = [
@@ -71,9 +72,10 @@ const routes: Routes = [
     ContentHeaderModule,
     KepIconComponent,
     TournamentsComponent,
+    KepCardComponent,
   ],
   providers: [
     TournamentResolver,
   ]
 })
-export class TournamentsModule { }
+export class TournamentsModule {}

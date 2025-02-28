@@ -1,4 +1,4 @@
-<div class="card">
+<kep-card>
   <a class="card-img">
     <p-galleria
       [(value)]="product.images"
@@ -10,15 +10,15 @@
       [numVisible]="5"
     >
       <ng-template pTemplate="item" let-item>
-        <img [src]="item.url" style="width: 100%;" />
+        <img [src]="item.url" style="width: 100%;"/>
       </ng-template>
       <ng-template pTemplate="thumbnail" let-item>
         <div class="grid grid-nogutter justify-content-center">
-          <img [height]="64" [src]="item.url" />
+          <img [height]="64" [src]="item.url"/>
         </div>
       </ng-template>
     </p-galleria>
-<!--    <img [src]="product.images[1]?.url" alt="{{ product.title }}" />-->
+    <!--    <img [src]="product.images[1]?.url" alt="{{ product.title }}" />-->
   </a>
 
   <div class="card-header">
@@ -47,4 +47,4 @@
   <div class="card-footer">
     <kepcoin [value]="product.kepcoin"/>
   </div>
-</div>
+</kep-card>

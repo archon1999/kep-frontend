@@ -7,6 +7,8 @@ import { forkJoin } from 'rxjs';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { map } from 'rxjs/operators';
 import { CoreCommonModule } from '@core/common.module';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { KepTableComponent } from "@shared/components/kep-table/kep-table.component";
 
 @Component({
   selector: 'period-ratings',
@@ -14,6 +16,8 @@ import { CoreCommonModule } from '@core/common.module';
   imports: [
     CoreCommonModule,
     ContestantViewModule,
+    KepCardComponent,
+    KepTableComponent,
   ],
   templateUrl: './period-ratings.component.html',
   styleUrl: './period-ratings.component.scss'
@@ -43,14 +47,14 @@ export class PeriodRatingsComponent extends BaseLoadComponent<any> {
     return forkJoin(
       this.periodRatings.map((rating) =>
         this.service.getCurrentProblemsRating(rating.period).pipe(
-          map((result: Array<CurrentProblemsRating>) => ({ rating, result }))
+          map((result: Array<CurrentProblemsRating>) => ({rating, result}))
         )
       )
     );
   }
 
   afterLoadData(data: any) {
-    data.forEach(({ rating, result }) => {
+    data.forEach(({rating, result}) => {
       rating.data = result;
     });
   }

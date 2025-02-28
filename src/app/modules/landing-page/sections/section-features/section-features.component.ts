@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'section-features',
   standalone: true,
-  imports: [CoreCommonModule],
+  imports: [CoreCommonModule, KepCardComponent],
   templateUrl: './section-features.component.html',
   styleUrl: './section-features.component.scss'
 })

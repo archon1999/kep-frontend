@@ -8,12 +8,13 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { KepcoinSpendSwalModule } from './kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { KepPaginationComponent, } from '@shared/components/kep-pagination/kep-pagination.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 const routes: Routes = [
   {
     path: '',
     component: KepcoinComponent,
-    data: { animation: 'kepcoin' },
+    data: {animation: 'kepcoin'},
     title: 'Kepcoin',
     canActivate: [AuthGuard]
   }
@@ -31,6 +32,7 @@ const routes: Routes = [
     KepcoinSpendSwalModule,
     TranslateModule,
     KepPaginationComponent,
+    KepCardComponent,
   ]
 })
-export class KepcoinModule { }
+export class KepcoinModule {}

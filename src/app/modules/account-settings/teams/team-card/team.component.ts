@@ -35,10 +35,10 @@ export class TeamComponent extends BaseUserComponent {
 
   refreshCode() {
     this.service.refreshTeamCode(this.team.code).subscribe(
-      ({ code }) => {
+      ({code}) => {
         this.team.code = code;
         this.toastr.success('Success', '', {
-          toastClass: 'toast ngx-toastr',
+
         });
       }
     );

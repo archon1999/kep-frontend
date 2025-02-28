@@ -23,7 +23,7 @@
                     <h5 [innerHTML]="questionBody">
                     </h5>
                     <br>
-                    @for (option of questionOptions;track option;let i = $index) {
+                    @for (option of questionOptions; track option; let i = $index) {
                       <div class="ms-1 mb-1 form-check">
                         <input type="radio" id="radio-{{ i }}" name="singleRadio" [(ngModel)]="singleRadio"
                                value="{{ i }}"
@@ -40,7 +40,7 @@
                       <div class="col">
                         <ul class="list-group" dragula="basic-list-group-1" [(dragulaModel)]="conformityGroupOne"
                             id="basic-list-group-1">
-                          @for (option of conformityGroupOne;track option) {
+                          @for (option of conformityGroupOne; track option) {
                             <li class="bg-gradient-primary list-group-item draggable"
                             >
                               <div class="row justify-content-between">
@@ -58,7 +58,7 @@
                       <div class="col">
                         <ul class="list-group" dragula="basic-list-group-2" [(dragulaModel)]="conformityGroupTwo"
                             id="basic-list-group-2">
-                          @for (option of conformityGroupTwo;track option) {
+                          @for (option of conformityGroupTwo; track option) {
                             <li class="bg-gradient-primary list-group-item draggable"
                             >
                               <i class="text-white" data-feather="arrow-left"></i>
