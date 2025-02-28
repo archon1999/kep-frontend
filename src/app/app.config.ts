@@ -26,6 +26,7 @@ import { MonacoEditorModule } from "ngx-monaco-editor-v2";
 import { HIGHLIGHT_OPTIONS, HighlightOptions } from "ngx-highlightjs";
 import { Title } from "@angular/platform-browser";
 import { NgxCountriesModule } from "@shared/third-part-modules/ngx-countries/ngx-countries.module";
+import { APP_BASE_HREF } from '@angular/common';
 
 function authFactory() {
   const authService = inject(AuthService);
@@ -63,9 +64,10 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideAnimations(),
     provideToastr({
-      timeOut: 0,
+      timeOut: 5000,
       closeButton: true,
     }),
+    { provide: APP_BASE_HREF, useValue: '/' },
     {
       provide: APP_INITIALIZER,
       useFactory: authFactory,
