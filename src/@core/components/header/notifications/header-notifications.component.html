@@ -39,7 +39,7 @@
                           <strong>{{ notification.content.contestTitle }}</strong>
                           | {{ 'ContestFinishedNotification' | translate }}
                           <span
-                            class="ms-25 badge"
+                            class="ms-1 badge"
                             [ngClass]="{
                             'badge-light-success': notification.content.delta > 0,
                             'badge-light-dark': notification.content.delta == 0,
@@ -50,7 +50,7 @@
                         </a>
                       }
                       @case (3) {
-                        <span [ngSwitch]="notification.content.earnType" class="me-25 text-dark">
+                        <span [ngSwitch]="notification.content.earnType" class="me-1 text-dark">
                           <span *ngSwitchCase="4">
                             {{ 'BonusFromAdmin' | translate }}
                           </span>

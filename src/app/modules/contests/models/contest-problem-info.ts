@@ -44,7 +44,7 @@ export class ContestProblemInfo {
           badgeClass = 'badge bg-success-transparent';
         }
         html = `<span class="${badgeClass}">`;
-        html += `<div class="mb-25">+${this.attemptsCount > 0 ? this.attemptsCount : ''}</div>`;
+        html += `<div class="mb-1">+${this.attemptsCount > 0 ? this.attemptsCount : ''}</div>`;
         html += this.contestTime;
         html += '</span>';
       } else if (this.attemptsCount > 0) {

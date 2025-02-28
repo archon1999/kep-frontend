@@ -1,58 +1,64 @@
 <li [autoClose]="'outside'" class="header-element notifications-dropdown dropdown" ngbDropdown>
-  <div (click)="loadData()" style="width: inherit;"
-       class="nav-link header-link-icon text-dark d-flex align-items-center cursor-pointer"
-       id="navbarDailyTasksDropdown" ngbDropdownToggle>
-    <streak [maxStreak]="maxStreak" [streak]="streak"></streak>
-  </div>
-  <div
-    aria-labelledby="navbarDailyTasksDropdown"
-    class="dropdown-menu bg-daily-tasks dropdown-menu-media dropdown-menu-right"
-    ngbDropdownMenu>
-    <div class="card mb-0">
-      <div class="card-header">
-        <h4 class="card-title text-dark">{{ 'DailyTasks' | translate }}</h4>
-        <div class="badge badge-pill bg-primary">
+  <a
+    (click)="loadData()"
+    class="p-0 header-link dropdown-toggle"
+    data-bs-auto-close="outside"
+    data-bs-toggle="dropdown"
+    href="javascript:void(0);"
+    ngbDropdownToggle>
+    <div style="width: initial;" class="header-link-icon d-flex align-items-center">
+      <streak [maxStreak]="maxStreak" [streak]="streak"></streak>
+    </div>
+  </a>
+  <div class="main-header-dropdown dropdown-menu dropdown-menu-end" data-popper-placement="none" ngbDropdownMenu>
+    <div class="p-3">
+      <div class="d-flex align-items-center justify-content-between">
+        <p class="mb-0 fs-16">
+          {{ 'DailyTasks' | translate }}
+        </p>
+        <span class="badge bg-secondary-transparent">
           {{ dailyTasks.length }} {{ 'Tasks' | translate }}
-        </div>
+        </span>
       </div>
-
-      <div class="card-footer p-0">
-        <ng-scrollbar autoHeightDisabled="false">
-          <div class="scrollable-container media-list">
-            @for (dailyTask of dailyTasks; track dailyTask) {
-              <div class="d-flex">
-                <div class="media d-flex align-items-start">
-                  <div class="media-left text-dark">
-                    @switch (dailyTask.type) {
-                      @case (DailyTaskType.Problem) {
-                        <div class="avatar bg-primary mt-50">
-                          <div class="avatar-content">
-                            <kep-icon class="font-medium-1" name="problem"></kep-icon>
-                          </div>
-                        </div>
-                      }
-                      @case (DailyTaskType.Test) {
-                        <div class="avatar bg-primary mt-50">
-                          <div class="avatar-content">
-                            <kep-icon class="font-medium-1" name="test"></kep-icon>
-                          </div>
-                        </div>
-                      }
-                      @case (DailyTaskType.Challenge) {
-                        <div class="avatar bg-primary mt-50">
-                          <div class="avatar-content">
-                            <kep-icon class="font-medium-1" name="challenge"></kep-icon>
-                          </div>
-                        </div>
-                      }
-                    }
-                  </div>
-                  <div class="media-body">
-                    <p class="media-heading text-dark">
-                      {{ dailyTask.description }}
-                      <img ngbTooltip="Kepcoin" height="19"
-                           src="assets/images/icons/kepcoin.png"> {{ dailyTask.kepcoin }}
-                    </p>
+    </div>
+    <div class="dropdown-divider"></div>
+    <ngx-simplebar>
+      <ul class="list-unstyled mb-0" id="header-notification-scroll">
+        @for (dailyTask of dailyTasks; track dailyTask) {
+          <li class="dropdown-item">
+            <div class="d-flex align-items-center">
+              <div class="pe-2 lh-1">
+                @switch (dailyTask.type) {
+                  @case (DailyTaskType.Problem) {
+                    <div class="avatar avatar-rounded bg-primary-transparent mt-1">
+                      <div class="avatar-content">
+                        <kep-icon class="font-medium-1" name="problem"></kep-icon>
+                      </div>
+                    </div>
+                  }
+                  @case (DailyTaskType.Test) {
+                    <div class="avatar avatar-rounded bg-primary-transparent mt-1">
+                      <div class="avatar-content">
+                        <kep-icon class="font-medium-1" name="test"></kep-icon>
+                      </div>
+                    </div>
+                  }
+                  @case (DailyTaskType.Challenge) {
+                    <div class="avatar avatar-rounded bg-primary-transparent mt-1">
+                      <div class="avatar-content">
+                        <kep-icon class="font-medium-1" name="challenge"></kep-icon>
+                      </div>
+                    </div>
+                  }
+                }
+              </div>
+              <div class="flex-grow-1 d-flex align-items-center justify-content-between">
+                <div>
+                  <p class="mb-0 fw-medium">
+                    {{ dailyTask.description }}
+                    <img ngbTooltip="Kepcoin" height="19" src="assets/images/icons/kepcoin.png"> {{ dailyTask.kepcoin }}
+                  </p>
+                  <span class="text-muted fw-normal fs-12 header-notification-text">
                     <small class="notification-text">
                       @if (dailyTask.completed) {
                         <span class="text-success">
@@ -65,25 +71,29 @@
                         </span>
                       }
                     </small>
-                  </div>
+
+                  </span>
+                </div>
+                <div>
                 </div>
               </div>
-            }
-          </div>
-        </ng-scrollbar>
-      </div>
+            </div>
+          </li>
+        }
+      </ul>
+    </ngx-simplebar>
 
-      <div class="card-footer">
-        <div class="progress-wrapper">
-          <ngb-progressbar
-            [animated]="true"
-            [value]="progress"
-            showValue="true"
-            style="height: 1.3rem;"
-            type="success"
-          ></ngb-progressbar>
-        </div>
-      </div>
+    <div class="dropdown-divider"></div>
+
+    <div class="progress-wrapper p-2">
+      <ngb-progressbar
+        [animated]="true"
+        [value]="progress"
+        showValue="true"
+        style="height: 1.3rem;"
+        type="success"
+      ></ngb-progressbar>
     </div>
   </div>
 </li>
+

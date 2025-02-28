@@ -77,7 +77,7 @@
         </a>
         @if (course.isStarted) {
           <div class="mt-2 progress-wrapper">
-            <div class="mb-25">{{ 'COURSES.PROGRESS' | translate }}: {{ course.participantProgress }}%</div>
+            <div class="mb-1">{{ 'COURSES.PROGRESS' | translate }}: {{ course.participantProgress }}%</div>
             <ngb-progressbar type="primary" [value]="course.participantProgress"></ngb-progressbar>
           </div>
         }

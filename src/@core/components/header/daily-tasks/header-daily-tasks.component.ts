@@ -8,6 +8,8 @@ import { NgbDropdownModule, NgbProgressbarModule, NgbTooltipModule } from '@ng-b
 import { KepStreakComponent } from '@shared/components/kep-streak/kep-streak.component';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { ApiService } from "@shared/services/api.service";
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { SimplebarAngularModule } from 'simplebar-angular';
 
 enum DailyTaskType {
   Problem = 1,
@@ -37,6 +39,8 @@ interface DailyTask {
     KepStreakComponent,
     KepIconComponent,
     NgbTooltipModule,
+    KepPaginationComponent,
+    SimplebarAngularModule,
   ],
   encapsulation: ViewEncapsulation.None
 })

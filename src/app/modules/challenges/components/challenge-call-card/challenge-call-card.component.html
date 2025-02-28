@@ -5,7 +5,7 @@
   </div>
 
   <div class="card-body">
-    <span ngbTooltip="{{ 'Time' | translate }}" class="me-25 badge bg-primary bg-primary-darken badge-glow">
+    <span ngbTooltip="{{ 'Time' | translate }}" class="me-1 badge bg-primary bg-primary-darken badge-glow">
       <kep-icon size="small-3" name="challenge-time"></kep-icon>
       {{ challengeCall.timeSeconds }}
     </span>
@@ -15,10 +15,10 @@
       {{ challengeCall.questionsCount }}
     </span>
 
-    <div [ngClass.gt-sm]="'d-block'" [ngClass.lt-md]="'ms-25 d-inline-block'"></div>
+    <div [ngClass.gt-sm]="'d-block'" [ngClass.lt-md]="'ms-1 d-inline-block'"></div>
 
     @for (chapter of challengeCall.chapters; track chapter) {
-      <span class="badge me-25 mb-25 bg-chapter-{{ chapter.id }}">
+      <span class="badge me-1 mb-1 bg-chapter-{{ chapter.id }}">
         {{ chapter.title }}
       </span>
     }

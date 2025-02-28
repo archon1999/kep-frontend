@@ -5,9 +5,9 @@
       <div class="text-dark d-flex align-items-center justify-content-center">
         {{ competitionPrize.moneyValue }}
         @if (competitionPrize.currency == 'DOLLAR') {
-          <kep-icon type="duotone" color="success" class="ms-25" name="dollar"/>
+          <kep-icon type="duotone" color="success" class="ms-1" name="dollar"/>
         } @else if (competitionPrize.currency == 'TON') {
-          TON <img class="ms-25" width="20" heigth="20" src="https://ton.org/download/ton_symbol.png" alt="TON">
+          TON <img class="ms-1" width="20" heigth="20" src="https://ton.org/download/ton_symbol.png" alt="TON">
         } @else if (competitionPrize.currency == 'SUM') {
           soʻm
         }
