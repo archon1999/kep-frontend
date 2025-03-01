@@ -7,7 +7,7 @@
     href="javascript:void(0);"
     ngbDropdownToggle>
     <i class="bi bi-bell header-link-icon"></i>
-    <span class="header-icon-pulse bg-warning rounded pulse"></span>
+    <span *ngIf="!isAll && notifications.length" class="header-icon-pulse bg-warning rounded pulse"></span>
   </a>
   <div class="main-header-dropdown dropdown-menu dropdown-menu-end" data-popper-placement="none" ngbDropdownMenu>
     <div class="p-3">
@@ -104,19 +104,24 @@
         }
       </ul>
     </ngx-simplebar>
+
     @if (!notifications.length) {
-      <div class="p-5 empty-item1">
-        <div class="text-center">
-          <span class="avatar avatar-xl avatar-rounded bg-secondary-transparent">
-            <i class="bi bi-bell-slash fs-2"></i>
-          </span>
-          <h6 class="fw-medium mt-3">No New Notifications</h6>
+      @if (isLoading) {
+        <div [style.height.px]="300">
+          <spinner/>
         </div>
-      </div>
+      } @else {
+        <div class="p-5 empty-item1">
+          <div class="text-center">
+            <span class="avatar avatar-xl avatar-rounded bg-secondary-transparent">
+              <i class="bi bi-bell-slash fs-2"></i>
+            </span>
+            <h6 class="fw-medium mt-3">No New Notifications</h6>
+          </div>
+        </div>
+      }
     } @else {
       <kep-pagination
-        [@fadeInOnEnter]
-        [@fadeOutOnLeave]
         [(page)]="pageNumber"
         (pageChange)="updateNotifications()"
         [maxSize]="3"
@@ -126,5 +131,15 @@
         [customClass]="'mb-2'">
       </kep-pagination>
     }
+
+    <div class="py-2">
+      <button (click)="click()" class="btn btn-primary full-width btn-sm">
+        @if (isAll) {
+          {{ 'Unread' | translate }}
+        } @else {
+          {{ 'AllNotifications' | translate }}
+        }
+      </button>
+    </div>
   </div>
 </li>

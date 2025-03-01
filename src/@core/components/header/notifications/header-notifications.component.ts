@@ -45,16 +45,14 @@ interface Notification {
   ]
 })
 export class HeaderNotificationsComponent implements OnInit, OnDestroy {
-
-  public animationState = false;
-
   public notifications: Array<Notification> = [];
   public pageNumber = 1;
   public total: number;
   public pagesCount = 0;
 
   public currentUser: User;
-  public isAll = true;
+  public isAll = false;
+  public isLoading = true;
 
   @ViewChild('notificationAudio') notificationAudio: any;
 
@@ -68,9 +66,6 @@ export class HeaderNotificationsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this._intervalId = setInterval(() => {
-      this.animationState = !this.animationState;
-    }, 10000);
     this.updateNotifications();
     interval(1000).subscribe(
       () => {
@@ -118,13 +113,14 @@ export class HeaderNotificationsComponent implements OnInit, OnDestroy {
   }
 
   updateNotifications() {
+    this.isLoading = true;
     this.notificationsService.getNotifications(this.pageNumber, this.isAll).subscribe(
       (result: PageResult<Notification>) => {
         this.notifications = result.data;
         this.pageNumber = result.page;
         this.total = result.total;
         this.pagesCount = result.pagesCount;
-        setTimeout(() => this.animationState = true, 500);
+        this.isLoading = false;
       }
     );
   }

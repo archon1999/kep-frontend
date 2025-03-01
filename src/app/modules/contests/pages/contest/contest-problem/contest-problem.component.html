@@ -88,7 +88,7 @@
               [hideSourceCodeSize]="contest.type != 'CodeGolf'"
               [attempts]="attempts"
               [contest]="contest"
-              (checkFinished)="reloadProblems()"/>
+              (checkFinished)="onAttemptChecked()"/>
             <div class="mb-1">
               <kep-pagination
                 [collectionSize]="totalAttemptsCount"
@@ -144,8 +144,8 @@
                       'bg-light': _contestProblem.symbol == contestProblem.symbol
                     }">
                       <td [ngClass]="{
-                        'bg-success': _contestProblem.isSolved,
-                        'bg-danger': !_contestProblem.isSolved && _contestProblem.isAttempted
+                        'bg-success-transparent': _contestProblem.isSolved,
+                        'bg-danger-transparent': !_contestProblem.isSolved && _contestProblem.isAttempted
                       }">
                         <a
                           [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problem', _contestProblem.symbol]">

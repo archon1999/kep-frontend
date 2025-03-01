@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
+import { fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ApiService } from 'app/shared/services/api.service';
 import { User } from '@auth';
-import { ContentHeader } from "@core/components/content-header/content-header.component";
+import { ContentHeader } from '@core/components/content-header/content-header.component';
 import { Attempt } from '@problems/models/attempts.models';
 import { AvailableLanguage, Problem } from '@problems/models/problems.models';
 import { TitleService } from 'app/shared/services/title.service';
@@ -34,7 +34,7 @@ import { Contest } from '@contests/models/contest';
 import { Contestant } from '@contests/models/contestant';
 import { getResourceById, Resources } from '@app/resources';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
-import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { ProblemInfoHtmlPipe } from '@contests/pages/contest/contest-problem/problem-info-html.pipe';
 
 const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
@@ -44,8 +44,8 @@ const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
   templateUrl: './contest-problem.component.html',
   styleUrls: ['./contest-problem.component.scss'],
   animations: [
-    fadeInOnEnterAnimation({duration: 1000}),
-    fadeInRightOnEnterAnimation({duration: 1000, translate: '40px'})
+    fadeInOnEnterAnimation({ duration: 1000 }),
+    fadeInRightOnEnterAnimation({ duration: 1000, translate: '40px' })
   ],
   standalone: true,
   imports: [
@@ -87,8 +87,6 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
 
   public contestant: Contestant | null;
 
-  public resultsVisible = this.sessionStorageService.get(CONTESTANT_RESULTS_VISIBLE_KEY) || false;
-
   private _intervalId: any;
 
   constructor(
@@ -103,7 +101,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({contest, contestProblem}) => {
+    this.route.data.subscribe(({ contest, contestProblem }) => {
       if (this.contestProblems.length) {
         this.reloadProblems();
       }
@@ -147,7 +145,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
               this._intervalId = setInterval(() => {
                 this.updateContestant();
                 this.cdr.markForCheck();
-              }, 10000);
+              }, 60000);
             }
           }
         }
@@ -197,7 +195,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
   }
 
   reloadProblems() {
-    this.api.get(`contests/${this.contest?.id}/problems`).subscribe((result: any) => {
+    this.api.get(`contests/${ this.contest?.id }/problems`).subscribe((result: any) => {
       this.contestProblems = result;
       this.sortProblems();
       this.cdr.markForCheck();
@@ -238,9 +236,10 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
     this.coreSidebarService.getSidebarRegistry('codeEditorSidebar').toggleOpen();
   }
 
-  resultsButtonClick() {
-    this.resultsVisible = !this.resultsVisible;
-    this.sessionStorageService.set(CONTESTANT_RESULTS_VISIBLE_KEY, this.resultsVisible);
+
+  onAttemptChecked() {
+    this.reloadProblems();
+    this.updateContestant();
   }
 
   ngOnDestroy(): void {
