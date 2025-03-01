@@ -29,16 +29,14 @@
     <div class="card-footer">
       <div class="d-flex align-items-center justify-content-between">
         <div class="float-end fs-12 fw-semibold text-muted text-end">
-          @if (comment.username != currentUser?.username) {
-            <button
-              (click)="like($index)"
-              class="btn btn-primary-light me-2">
-              <i class="ri-thumb-up-line align-bottom me-1 d-inline-flex"></i>
-              @if (comment.likes > 0) {
-                <span class="ms-1">{{ comment.likes }}</span>
-              }
-            </button>
-          }
+          <button
+            (click)="like($index)"
+            class="btn btn-primary-light me-2">
+            <i class="ri-thumb-up-line align-bottom me-1 d-inline-flex"></i>
+            @if (comment.likes > 0) {
+              <span class="ms-1">{{ comment.likes }}</span>
+            }
+          </button>
           @if (currentUser?.isSuperuser) {
             <button (click)="deleteComment($index)" class="btn btn-danger-light">
               <i data-feather="x"></i>
