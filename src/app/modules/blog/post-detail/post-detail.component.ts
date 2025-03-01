@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TitleService } from 'app/shared/services/title.service';
 import { Blog } from '../blog.models';
@@ -7,7 +7,8 @@ import { BlogService } from '../blog.service';
 @Component({
   selector: 'app-post-detail',
   templateUrl: './post-detail.component.html',
-  styleUrls: ['./post-detail.component.scss']
+  styleUrls: ['./post-detail.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class PostDetailComponent implements OnInit {
 
