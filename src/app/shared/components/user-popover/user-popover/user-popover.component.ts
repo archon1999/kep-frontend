@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ApiService } from '@shared/services/api.service';
 import { User } from '@users/users.models';
@@ -7,7 +7,8 @@ import { User } from '@users/users.models';
   selector: 'user-popover',
   templateUrl: './user-popover.component.html',
   styleUrls: ['./user-popover.component.scss'],
-  animations: [fadeInOnEnterAnimation({duration: 1000})]
+  animations: [fadeInOnEnterAnimation({duration: 1000})],
+  encapsulation: ViewEncapsulation.None
 })
 export class UserPopoverComponent implements OnInit {
 
