@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { NgbDropdown, NgbDropdownMenu, NgbDropdownToggle } from "@ng-bootstrap/ng-bootstrap";
 import { AppStateService, Language } from "@core/services/app-state.service";
+import { ApiService } from '@shared/services/api.service';
 
 @Component({
   selector: 'languages',
@@ -31,6 +32,7 @@ export class LanguagesComponent {
   public currentLang: Language;
 
   protected appStateService = inject(AppStateService);
+  protected api = inject(ApiService);
 
   constructor() {
     this.appStateService.state$.subscribe(
@@ -41,8 +43,10 @@ export class LanguagesComponent {
   }
 
   setLanguage(lang: Language) {
-    this.appStateService.updateState({language: lang});
-    location.reload();
+    this.api.post('set-language/', { language: lang }).subscribe(() => {
+      this.appStateService.updateState({language: lang});
+      location.reload();
+    })
   }
 
   protected readonly Object = Object;
