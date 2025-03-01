@@ -85,39 +85,39 @@
                           }
                           @case (5) {
                             <span>
-                              {{ 'DailyActivity' | translate }} <u class="text-primary">{{ earn.detail.date }}</u>
+                              {{ 'DailyActivity' | translate }}: <u class="text-primary">{{ earn.detail.date }}</u>
                             </span>
                           }
                           @case (6) {
                             <span>
-                              {{ 'DailyTaskCompleted' | translate }} <u class="text-primary">{{ earn.detail.description }}</u>
+                              {{ 'DailyTaskCompleted' | translate }}: <u class="text-primary">{{ earn.detail.description }}</u>
                             </span>
                           }
                           @case (7) {
                             <span>
-                              {{ 'DailyRatingWinner' | translate }} <u class="text-primary">{{ earn.detail.date }}</u>
+                              {{ 'DailyRatingWinner' | translate }}: <u class="text-primary">{{ earn.detail.date }}</u>
                             </span>
                           }
                           @case (8) {
                             <span>
-                              {{ 'WeeklyRatingWinner' | translate }} <u class="text-primary">{{ earn.detail.date }}</u>
+                              {{ 'WeeklyRatingWinner' | translate }}: <u class="text-primary">{{ earn.detail.date }}</u>
                             </span>
                           }
                           @case (9) {
                             <span>
-                              {{ 'MonthlyRatingWinner' | translate }} <u class="text-primary">{{ earn.detail.date }}</u>
+                              {{ 'MonthlyRatingWinner' | translate }}: <u class="text-primary">{{ earn.detail.date }}</u>
                             </span>
                           }
                           @case (10) {
                             <span>
-                              {{ 'ContestParticipant' | translate }} <a [routerLink]="['/competitions', 'contests', 'contest', earn.detail.contest.id]">
+                              {{ 'ContestParticipant' | translate }}: <a [routerLink]="['/competitions', 'contests', 'contest', earn.detail.contest.id]">
                               <u class="text-primary">{{ earn.detail.contest.title }}</u>
                             </a>
                             </span>
                           }
                           @case (11) {
                             <span>
-                              {{ 'ArenaParticipant' | translate }} <a [routerLink]="['/competitions', 'arena', 'tournament', earn.detail.arena.id]">
+                              {{ 'ArenaParticipant' | translate }}: <a [routerLink]="['/competitions', 'arena', 'tournament', earn.detail.arena.id]">
                               <u class="text-primary">{{ earn.detail.arena.title }}</u>
                             </a>
                             </span>
