@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class KepcoinComponent implements OnInit {
 
-  @Input() value: number;
+  @Input() value: number | string;
   @Input() imgSize = 19;
   @Input() marginRight = 0.2;
 
