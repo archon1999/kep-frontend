@@ -53,7 +53,7 @@ export class ContestStandingsTableComponent extends BaseUserComponent implements
   }
 
   preprocessContestants() {
-    if (this.contest.type === ContestTypes.ACM20M) {
+    if (this.contest.type === ContestTypes.ACM20M || this.contest.type == ContestTypes.ACM10M) {
       let rowClass: 'row-even' | 'row-odd' = 'row-even';
       this.contestants.forEach(
         (contestant, index) => {

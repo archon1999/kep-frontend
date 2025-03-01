@@ -18,8 +18,8 @@ function getVerdictColor(verdict: Verdicts) {
     [Verdicts.FakeAccepted]: 'success',
     [Verdicts.JudgementFailed]: 'dark',
     [Verdicts.CheckerNotFound]: 'dark',
-    [Verdicts.InQueue]: 'primary',
-    [Verdicts.Running]: 'blue',
+    [Verdicts.InQueue]: 'warning',
+    [Verdicts.Running]: 'secondary',
     [Verdicts.PartialSolution]: 'warning',
   };
   return verdictColors[verdict] || 'danger';

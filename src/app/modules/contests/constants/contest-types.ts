@@ -1,5 +1,6 @@
 export enum ContestTypes {
   ACM20M = 'ACM20M',
+  ACM10M = 'ACM10M',
   ACM2H = 'ACM2H',
   BALL525 = 'Ball525',
   BALL550 = 'Ball550',
@@ -16,6 +17,7 @@ export enum ContestTypes {
 
 export const contestTypes = [
   ContestTypes.ACM20M,
+  ContestTypes.ACM10M,
   ContestTypes.ACM2H,
   ContestTypes.BALL525,
   ContestTypes.BALL550,

@@ -2,7 +2,60 @@
   class="content-wrapper container-xxl p-0 {{ contest | contestClasses }}">
   <div class="content-body">
     <!-- content-header component -->
-    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    @if (contestant) {
+      <kep-card customClass="results">
+        <div class="table-responsive beautiful-table">
+          <table class="table">
+            <thead>
+            <tr>
+              <th class="text-white">#</th>
+              <th><i class="text-white ms-1" data-feather="user"></i></th>
+              <th class="text-center"><i class="text-white" [data-feather]="'rating' | iconName"></i></th>
+              @for (contestProblem of contestProblems; track contestProblem) {
+                <th class="text-center text-white" container="body" [ngbTooltip]="contestProblem.problem.title"
+                >
+                  <a [routerLink]="['..', contestProblem.symbol]" class="btn btn-primary btn-sm">
+                    {{ contestProblem.symbol }}
+                  </a>
+                </th>
+              }
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>
+                {{ contestant.rank }}
+              </td>
+              <td>
+                <contestant-view [user]="contestant"></contestant-view>
+              </td>
+              <td class="text-center">
+                <span class="badge badge-glow bg-primary">
+                  {{ contestant.points }}
+                </span>
+              </td>
+              @for (contestProblem of contestProblems; track contestProblem) {
+                <td class="text-center">
+                  <ng-template #selfie [ngTemplateOutlet]="selfie" let-problemInfo="aVariable"
+                               [ngTemplateOutletContext]="{ aVariable: getProblemInfoBySymbol(contestant.problemsInfo, contestProblem.symbol) }">
+                    <div>
+                      @if (problemInfo) {
+                        <div>
+                          <div [innerHTML]="problemInfo|problemInfoHTML:contest"></div>
+                        </div>
+                      }
+                    </div>
+                  </ng-template>
+                </td>
+              }
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </kep-card>
+    } @else {
+      <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    }
 
     <section class="mt-2">
       <div class="row">
@@ -14,7 +67,7 @@
                 @if (contest?.status == 0) {
                   <button
                     (click)="codeEditorSidebarToggle()"
-                    class="btn btn-sm btn-primary position-absolute"
+                    class="btn btn-sm btn-primary"
                     style="top: 2rem; right: 2rem;">
                     {{ 'Submit' | translate }}
                   </button>
@@ -59,12 +112,12 @@
               rippleEffect
               routerLink="/practice/problems/problem/{{ contestProblem?.problem?.id }}"
               [queryParams]="{'contest': contest?.id}"
-              class="mb-2 btn-block btn btn-primary bg-primary badge-glow">
+              class="mb-4 full-width btn btn-primary">
               {{ 'Upsolve' | translate }}
             </a>
           }
 
-          <div class="card">
+          <kep-card>
             <div class="card-header">
               <div class="card-title">
                 <i data-feather="info"></i>
@@ -74,69 +127,63 @@
 
             <div class="card-body">
               <problem-info-card
-                [hideCodeGolf]="contest?.type !== 'CodeGolf'"
                 [hideAuthorAndDifficulty]="true"
+                [hideCodeGolf]="contest?.type !== 'CodeGolf'"
                 [hideLikes]="true"
                 [problem]="contestProblem?.problem">
               </problem-info-card>
             </div>
-          </div>
+          </kep-card>
 
-          <div class="layout-spacing">
-            <div class="card">
-
-              <div class="">
-                <div class="table-responsive beautiful-table contest-problems">
-                  <table class="table">
-                    <tbody>
-                      @for (_contestProblem of contestProblems; track _contestProblem) {
-                        <tr [ngClass]="{
-                        'bg-light': _contestProblem.symbol == contestProblem.symbol
+          <kep-card>
+            <div class="table-responsive beautiful-table contest-problems">
+              <table class="table">
+                <tbody>
+                  @for (_contestProblem of contestProblems; track _contestProblem) {
+                    <tr [ngClass]="{
+                      'bg-light': _contestProblem.symbol == contestProblem.symbol
+                    }">
+                      <td [ngClass]="{
+                        'bg-success': _contestProblem.isSolved,
+                        'bg-danger': !_contestProblem.isSolved && _contestProblem.isAttempted
                       }">
-                          <td [ngClass]="{
-                          'bg-success': _contestProblem.isSolved,
-                          'bg-danger': !_contestProblem.isSolved && _contestProblem.isAttempted
-                        }">
-                            <a
-                              [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problem', _contestProblem.symbol]">
-                              {{ _contestProblem.symbol }}
-                            </a>
-                          </td>
-                          <td>
-                            <a
-                              [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problem', _contestProblem.symbol]">
-                              <span class="text-primary">
-                              </span>
-                              {{ _contestProblem.problem.title }}
-                              <br>
-                              <small>
-                                <span class="text-success">
-                                  {{ _contestProblem.solved }}
-                                  <i data-feather="user-check"></i>
-                                </span>
-                                <span class="ps-1 text-danger">
-                                  {{ _contestProblem.attemptUsersCount - _contestProblem.solved }}
-                                  <i data-feather="user-x"></i>
-                                </span>
-                              </small>
-                            </a>
-                          </td>
-                          @if (contest.hasBalls()) {
-                            <td>
-                              <span class="badge bg-success badge-glow">
-                                {{ _contestProblem.ball }}
-                              </span>
-                            </td>
-                          }
-                        </tr>
+                        <a
+                          [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problem', _contestProblem.symbol]">
+                          {{ _contestProblem.symbol }}
+                        </a>
+                      </td>
+                      <td>
+                        <a
+                          [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problem', _contestProblem.symbol]">
+                          <span class="text-primary">
+                          </span>
+                          {{ _contestProblem.problem.title }}
+                          <br>
+                          <small>
+                            <span class="text-success">
+                              {{ _contestProblem.solved }}
+                              <i data-feather="user-check"></i>
+                            </span>
+                            <span class="ps-1 text-danger">
+                              {{ _contestProblem.attemptUsersCount - _contestProblem.solved }}
+                              <i data-feather="user-x"></i>
+                            </span>
+                          </small>
+                        </a>
+                      </td>
+                      @if (contest.hasBalls()) {
+                        <td>
+                          <span class="badge bg-success badge-glow">
+                            {{ _contestProblem.ball }}
+                          </span>
+                        </td>
                       }
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+                    </tr>
+                  }
+                </tbody>
+              </table>
             </div>
-
-          </div>
+          </kep-card>
         </div>
       </div>
 
@@ -152,65 +199,4 @@
       }
     </section>
   </div>
-
-  @if (contestant) {
-    <div (click)="resultsButtonClick()" class="results-button">
-      <button class="btn btn-sm btn-primary">
-        <i [data-feather]="'rating' | iconName"></i>
-      </button>
-    </div>
-  }
-
-  @if (resultsVisible && contestant) {
-    <div [@fadeInLeftOnEnter] class="card results">
-      <div class="table-responsive beautiful-table">
-        <table class="table">
-          <thead>
-          <tr>
-            <th class="text-white">#</th>
-            <th><i class="text-white ms-1" data-feather="user"></i></th>
-            <th class="text-center"><i class="text-white" [data-feather]="'rating' | iconName"></i></th>
-            @for (contestProblem of contestProblems; track contestProblem) {
-              <th class="text-center text-white" container="body" [ngbTooltip]="contestProblem.problem.title"
-              >
-                <a [routerLink]="['..', contestProblem.symbol]" class="btn btn-primary btn-sm">
-                  {{ contestProblem.symbol }}
-                </a>
-              </th>
-            }
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>
-              {{ contestant.rank }}
-            </td>
-            <td>
-              <contestant-view [user]="contestant"></contestant-view>
-            </td>
-            <td class="text-center">
-              <span class="badge badge-glow bg-primary">
-                {{ contestant.points }}
-              </span>
-            </td>
-            @for (contestProblem of contestProblems; track contestProblem) {
-              <td class="text-center">
-                <ng-template #selfie [ngTemplateOutlet]="selfie" let-problemInfo="aVariable"
-                             [ngTemplateOutletContext]="{ aVariable: getProblemInfoBySymbol(contestant.problemsInfo, contestProblem.symbol) }">
-                  <div>
-                    @if (problemInfo) {
-                      <div>
-                        <div [innerHTML]="problemInfo.getHTML(contest)"></div>
-                      </div>
-                    }
-                  </div>
-                </ng-template>
-              </td>
-            }
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  }
 </div>

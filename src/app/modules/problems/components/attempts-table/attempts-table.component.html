@@ -9,17 +9,14 @@
 <ng-template #modal let-modal>
   <div class="modal-header">
     <h5 class="modal-title me-1">{{ 'Attempt' | translate }}</h5>
-    <button type="button" class="btn-close" (click)="modal.dismiss()">
-
-    </button>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body">
     @if (selectedAttempt) {
       <base-table
         [attempts]="[selectedAttempt]"
         [contest]="contest"
-        [hideSourceCodeSize]="hideSourceCodeSize"
-      >
+        [hideSourceCodeSize]="hideSourceCodeSize">
       </base-table>
     }
 
@@ -130,3 +127,13 @@
   #wrongAudio
   src="assets/audio/wrong.mp3">
 </audio>
+
+@if (lastUpdatedAttempt) {
+  <div class="last-updated-attempt">
+    <attempt-verdict
+      [testCaseNumber]="lastUpdatedAttempt.testCaseNumber"
+      [verdict]="lastUpdatedAttempt.verdict"
+      [balls]="lastUpdatedAttempt.balls"
+    />
+  </div>
+}

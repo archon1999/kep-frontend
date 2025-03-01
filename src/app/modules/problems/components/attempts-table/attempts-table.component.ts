@@ -67,6 +67,7 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
   ];
 
   public trigger = true;
+  public lastUpdatedAttempt: Attempt;
 
   constructor(
     public service: ProblemsApiService,
@@ -119,6 +120,9 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
               this.cdr.markForCheck();
               this.cdr.detectChanges();
             });
+            if (this.isOwner(attempt)) {
+              this.lastUpdatedAttempt = attempt;
+            }
           }
         }
       }
@@ -158,5 +162,15 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
 
   ngOnDestroy() {
     this.removeAttemptsFromWS();
+  }
+
+  isOwner(attempt: Attempt) {
+    if (attempt?.user?.username === this.currentUser?.username) {
+      return true;
+    }
+    if (attempt.team && attempt.team.members.filter(member => member.username === this.currentUser?.username).length) {
+      return true;
+    }
+    return false;
   }
 }

@@ -2,58 +2,9 @@
 @import 'bootstrap/scss/functions';
 @import 'bootstrap/scss/variables';
 
-.card .card-header {
-  display: block;
-}
-
-.contest-problems td:first-child {
-  max-width: 70px;
-  min-width: 70px;
-}
-
 .col.problem-header {
   padding-right: 0rem !important;
   padding-left: 0rem !important;
-}
-
-.contest-problems td:first-child {
-  white-space: nowrap;
-}
-
-.results-button {
-  position: fixed;
-  right: 2rem;
-  bottom: 5%;
-  z-index: 1000;
-}
-
-.bg-light {
-  background-color: var(--bg-light) !important;
-}
-
-::ng-deep .dark-layout .contests-colors .bg-light {
-  background-color: var(--bg) !important;
-}
-
-.results {
-  z-index: 1000;
-  border: none;
-  border-radius: 10px;
-  margin-bottom: 1rem;
-  width: calc(100% - 8rem);
-
-  position: fixed;
-  left: 2rem;
-  bottom: 0;
-
-  .result {
-    padding: 5px;
-  }
-
-  @include media-breakpoint-down(md) {
-    width: calc(100% - 6.4rem);
-    left: 1.2rem;
-  }
 }
 
 ::ng-deep .contests-color {
@@ -75,21 +26,15 @@
 .btn {
   background-color: var(--bg) !important;
   border: 1px var(--bg-gradient) !important;
-  box-shadow: var(--box-shadow) !important;
 
   &:hover {
     background: var(--bg-gradient) !important;
   }
 }
 
-.badge-glow:hover {
-  box-shadow: none;
-}
-
 ::ng-deep .contests-colors .sample-test .btn {
   background-color: var(--bg) !important;
   border: 1px var(--bg-gradient) !important;
-  box-shadow: var(--box-shadow) !important;
 
   &:hover {
     background: var(--bg-gradient) !important;
@@ -98,7 +43,6 @@
 
 span.points {
   background: var(--bg) !important;
-  box-shadow: var(--box-shadow) !important;
   color: var(--text-color);
 }
 
@@ -109,6 +53,5 @@ span.points {
 
 ::ng-deep span.problem-points.the-best {
   background: var(--bg) !important;
-  box-shadow: var(--box-shadow) !important;
   color: var(--text-color);
 }

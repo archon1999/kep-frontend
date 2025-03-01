@@ -33,6 +33,7 @@ export class ContestProblemInfo {
   getHTML(contest: Contest): string {
     let html = '';
     if (contest.type === ContestTypes.ACM20M ||
+      contest.type === ContestTypes.ACM10M ||
       contest.type === ContestTypes.ACM2H ||
       contest.type === ContestTypes.ONE_ATTEMPT ||
       contest.type === ContestTypes.IQ) {

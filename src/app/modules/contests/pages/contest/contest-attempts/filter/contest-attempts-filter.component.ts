@@ -8,6 +8,7 @@ import { BaseUserComponent } from '@app/common';
 import { Contest, ContestAttemptsFilter, ContestProblem } from '@contests/models';
 import { ContestsService } from '@contests/contests.service';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
   selector: 'contest-attempts-filter',
@@ -17,7 +18,8 @@ import { ProblemsApiService } from '@problems/services/problems-api.service';
     FormsModule,
     KepIconComponent,
     NgSelectModule,
-    TranslateModule
+    TranslateModule,
+    KepCardComponent
   ],
   templateUrl: './contest-attempts-filter.component.html',
   styleUrl: './contest-attempts-filter.component.scss'

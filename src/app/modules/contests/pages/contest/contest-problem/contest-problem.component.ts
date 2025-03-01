@@ -35,6 +35,7 @@ import { Contestant } from '@contests/models/contestant';
 import { getResourceById, Resources } from '@app/resources';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { ProblemInfoHtmlPipe } from '@contests/pages/contest/contest-problem/problem-info-html.pipe';
 
 const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
 
@@ -61,6 +62,7 @@ const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
     ContestTabComponent,
     ContestClassesPipe,
     KepCardComponent,
+    ProblemInfoHtmlPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -102,6 +104,9 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
 
   ngOnInit(): void {
     this.route.data.subscribe(({contest, contestProblem}) => {
+      if (this.contestProblems.length) {
+        this.reloadProblems();
+      }
       this.contest = Contest.fromJSON(contest);
       this.contestProblem = contestProblem;
       this.problem = contestProblem.problem;
@@ -114,22 +119,6 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
       });
 
       this.updateContentHeader();
-
-      if (this.currentUser) {
-        this.service.getMe(this.contest?.id).subscribe(
-          (contestant: Contestant | null) => {
-            if (contestant) {
-              this.contestant = Contestant.fromJSON(contestant);
-              if (this.contest.status === ContestStatus.ALREADY) {
-                this._intervalId = setInterval(() => {
-                  this.updateContestant();
-                  this.cdr.markForCheck();
-                }, 30000);
-              }
-            }
-          }
-        );
-      }
 
       this.langService.getLanguage().pipe(takeUntil(this._unsubscribeAll)).subscribe(
         (lang: AttemptLangs) => {
@@ -146,17 +135,31 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
 
       setTimeout(() => this.reloadAttempts());
     });
-
   }
 
   afterChangeCurrentUser(currentUser: User) {
+    if (this.currentUser) {
+      this.service.getMe(this.contest?.id).subscribe(
+        (contestant: Contestant | null) => {
+          if (contestant) {
+            this.contestant = Contestant.fromJSON(contestant);
+            if (this.contest.status === ContestStatus.ALREADY) {
+              this._intervalId = setInterval(() => {
+                this.updateContestant();
+                this.cdr.markForCheck();
+              }, 10000);
+            }
+          }
+        }
+      );
+    }
     this.reloadProblems();
   }
 
   updateContestant() {
     this.service.getMe(this.contest?.id).subscribe(
       (contestant: Contestant | null) => {
-        this.contestant = contestant;
+        this.contestant = Contestant.fromJSON(contestant);
         this.cdr.markForCheck();
       }
     );

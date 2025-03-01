@@ -46,7 +46,7 @@ export class Contest {
   }
 
   hasPenalties(): boolean {
-    return this.type === ContestTypes.ACM20M || this.type === ContestTypes.ACM2H;
+    return this.type === ContestTypes.ACM20M || this.type === ContestTypes.ACM2H || this.type === ContestTypes.ACM10M;
   }
 
   hasBalls(): boolean {
