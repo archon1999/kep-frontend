@@ -139,11 +139,11 @@ export const MENU: Menu[] = [
     type: 'link',
     path: Resources.Shop,
   },
-  {
-    id: 'kep-cover',
-    title: 'KEP Cover',
-    icon: 'design',
-    type: 'link',
-    path: Resources.KepCover,
-  },
+  // {
+  //   id: 'kep-cover',
+  //   title: 'KEP Cover',
+  //   icon: 'design',
+  //   type: 'link',
+  //   path: Resources.KepCover,
+  // },
 ];
