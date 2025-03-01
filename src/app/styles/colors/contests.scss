@@ -104,6 +104,9 @@ $april-fools-color3: #37a9cd;
 $math-selector: '&[class*="Math"]';
 $math-color: #00a79d;
 
+$revo-selector: '&[class*="Revo"]';
+$revo-color: #0048dd;
+
 // Primary color
 @include define-contest-colors(
   $selector: '&',
@@ -204,6 +207,16 @@ $math-color: #00a79d;
   $color-dark: #1870b6,
   $background-light: linear-gradient(45deg, #005ea2bb, rgba(24, 111, 182, 0.623)),
   $background-dark: linear-gradient(45deg, #042c4bde, #005ea2c9),
+);
+
+
+// Revo
+@include define-contest-colors(
+  $selector: $revo-selector,
+  $color: $revo-color,
+  $color-dark: mix(white, $revo-color, 30),
+  $background-light: linear-gradient(45deg, mix(black, $revo-color, 70), $revo-color),
+  $background-dark: linear-gradient(45deg, mix(black, $revo-color, 20), $revo-color),
 );
 
 
