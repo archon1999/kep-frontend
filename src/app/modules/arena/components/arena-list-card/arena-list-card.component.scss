@@ -1,6 +1,10 @@
 @import 'styles/kep-imports';
 
 arena-list-card {
+  a {
+    position: relative;
+  }
+
   .card {
     margin-bottom: 0.5rem !important;
     cursor: pointer;

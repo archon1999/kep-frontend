@@ -10,8 +10,6 @@ arena-card {
     }
 
     @include dark-layout {
-      background: linear-gradient(to right, #835d12f9, #BA8B02) !important;
-
       h5 {
         font-weight: 500;
       }
