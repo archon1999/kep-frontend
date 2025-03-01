@@ -39,7 +39,7 @@ export class ContestProblemInfo {
       if (this.solved()) {
         let badgeClass: string;
         if (this.theBest) {
-          badgeClass = 'badge badge-glow bg-success the-best';
+          badgeClass = 'badge bg-success the-best';
         } else {
           badgeClass = 'badge bg-success-transparent';
         }
@@ -84,7 +84,7 @@ export class ContestProblemInfo {
         html += '</span>';
       } else {
         if (this.points > 0) {
-          const badgeClass = 'badge badge-light-dark';
+          const badgeClass = 'badge bg-dark-transparent';
           html += `<span class="${badgeClass}">`;
           html += this.points;
           html += '</span>';
@@ -107,9 +107,9 @@ export class ContestProblemInfo {
       if (this.solved()) {
         let badgeClass: string;
         if (this.theBest) {
-          badgeClass = 'badge badge-dark badge-glow';
+          badgeClass = 'badge bg-dark';
         } else {
-          badgeClass = 'badge badge-light-dark';
+          badgeClass = 'badge bg-dark-transparent';
         }
         html += `<span class="${badgeClass}">`;
         html += '<span class="less-code">';

@@ -214,9 +214,9 @@ $revo-color: #0048dd;
 @include define-contest-colors(
   $selector: $revo-selector,
   $color: $revo-color,
-  $color-dark: mix(white, $revo-color, 30),
-  $background-light: linear-gradient(45deg, mix(black, $revo-color, 70), $revo-color),
-  $background-dark: linear-gradient(45deg, mix(black, $revo-color, 20), $revo-color),
+  $color-dark: mix(white, $revo-color, 50),
+  $background-light: linear-gradient(45deg, rgba($revo-color, 0.1), $revo-color),
+  $background-dark: linear-gradient(45deg, rgba($revo-color, 0.1), rgba($revo-color, 0.9)),
 );
 
 
