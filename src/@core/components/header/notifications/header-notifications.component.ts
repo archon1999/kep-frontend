@@ -67,47 +67,37 @@ export class HeaderNotificationsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.updateNotifications();
-    interval(1000).subscribe(
-      () => {
-        if (this.wsService.status) {
-          this.init();
-        }
-      }
-    );
+    setTimeout(() => this.init(), 2000);
   }
 
   init() {
-    this.wsService.status.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      () => {
-        this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-          (user: User) => {
-            if (user) {
-              this.wsService.send('notification-add', user.username);
-              this.wsService.on(`notification-${user.username}`).subscribe(
-                (notification: Notification) => {
-                  if (this.notifications.find(n => n.id === notification.id)) {
-                    return;
-                  }
+    this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      (user: User) => {
+        if (user) {
+          this.wsService.send('notification-add', user.username);
+          this.wsService.on(`notification-${user.username}`).subscribe(
+            (notification: Notification) => {
+              if (this.notifications.find(n => n.id === notification.id)) {
+                return;
+              }
 
-                  if (notification.type === 1) {
-                    Swal.fire({
-                      title: 'Information',
-                      html: notification.message,
-                      icon: 'info',
-                    });
-                  }
-                  const notifications = this.notifications.reverse();
-                  notifications.push(notification);
-                  this.notifications = notifications.reverse();
-                  this.notificationAudio.nativeElement.play();
-                }
-              );
-            } else {
-              this.wsService.send('notification-delete', this.currentUser.username);
+              if (notification.type === 1) {
+                Swal.fire({
+                  title: 'Information',
+                  html: notification.message,
+                  icon: 'info',
+                });
+              }
+              const notifications = this.notifications.reverse();
+              notifications.push(notification);
+              this.notifications = notifications.reverse();
+              this.notificationAudio.nativeElement.play();
             }
-            this.currentUser = user;
-          }
-        );
+          );
+        } else {
+          this.wsService.send('notification-delete', this.currentUser.username);
+        }
+        this.currentUser = user;
       }
     );
   }
