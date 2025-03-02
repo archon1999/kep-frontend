@@ -16,14 +16,14 @@
       }
     </div>
 
-    <div class="card-body d-flex gap-1">
+    <div class="card-body d-flex gap-1" style="flex-wrap: wrap;">
       <span
         ngbTooltip="{{ 'Difficulty' | translate }}"
         class="badge badge-glow bg-{{ problem.difficulty | problemDifficultyColor }}">
         {{ problem.difficultyTitle }}
       </span>
       @for (tag of problem.tags; track tag) {
-        <span class="ms-1 badge bg-primary">
+        <span class="badge bg-primary me-1">
           {{ tag.name }}
         </span>
       }
