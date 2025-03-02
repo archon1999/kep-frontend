@@ -31,7 +31,7 @@
           <kep-icon name="verdict" size="small-2"/>
           {{ 'VERDICT' | translate }}
         </label>
-        <ng-select appendTo="body" formControlName="verdict">
+        <ng-select [clearable]="true" appendTo="body" formControlName="verdict">
           @for (verdict of verdicts; track verdict) {
             <ng-option [value]="verdict.value">{{ verdict.label }}</ng-option>
           }

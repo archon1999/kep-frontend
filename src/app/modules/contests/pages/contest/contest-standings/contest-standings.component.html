@@ -11,16 +11,16 @@
       </div>
 
       <ng-select
-        [ngClass.lt-md]="'d-none'"
-        style="width: 300px;"
-        placeholder="{{ 'ALL' | translate }}"
-        [items]="contestFilters"
-        bindLabel="name"
-        [(ngModel)]="selectedFilter"
         (change)="filterChange()"
-        clearable="true"
-        searchable="true"
+        [(ngModel)]="selectedFilter"
+        [clearable]="true"
+        [items]="contestFilters"
+        [ngClass.lt-md]="'d-none'"
+        [searchable]="true"
+        bindLabel="name"
         bindValue="id"
+        placeholder="{{ 'ALL' | translate }}"
+        style="width: 300px;"
       />
     </div>
     <contest-tab [contest]="contest"/>
