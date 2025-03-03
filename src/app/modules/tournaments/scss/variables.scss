@@ -1,7 +1,7 @@
 @import 'styles/kep-imports';
 
-$tournaments-color: $primary;
-$tournaments-bg: linear-gradient(to right, rgba($primary, 0.9), rgba($primary, 0.7));
-$tournaments-bg-dark: rgba($primary, 0.5);
+$tournaments-color: mix(black, $primary, 60);
+$tournaments-bg: $tournaments-color;
+$tournaments-bg-dark: rgba($tournaments-color, 1);
 
 // $tournaments-bg: linear-gradient(to right, #29323c, #485563);

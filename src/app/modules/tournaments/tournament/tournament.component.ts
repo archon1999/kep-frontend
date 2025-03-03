@@ -14,8 +14,8 @@ import { SessionStorageService } from '@shared/services/storages/session-storage
   templateUrl: './tournament.component.html',
   styleUrls: ['./tournament.component.scss'],
   animations: [
-    fadeInLeftOnEnterAnimation({duration: 1500}),
-    fadeInUpOnEnterAnimation({duration: 1500}),
+    fadeInLeftOnEnterAnimation({translate: '40px'}),
+    fadeInUpOnEnterAnimation({translate: '40px'}),
   ]
 })
 export class TournamentComponent implements OnInit, OnDestroy {

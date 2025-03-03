@@ -1,36 +1,34 @@
-<div class="mt-4 col-lg-10 col-12 offset-lg-1 offset-0">
-  <div class="card">
-    <div class="table-responsive">
-      <table class="table">
-        <thead class="bg-tournament">
-        <tr>
-          <th class="text-center text-white">
-            {{ 'Round' | translate }}
-          </th>
-          <th class="text-center text-white">
-            <i data-feather="calendar"></i>
-          </th>
-        </tr>
-        </thead>
-        <tbody>
-          @for (stage of tournament.stages; track stage) {
-            <tr>
-              <td class="text-center">
-                <strong class="text-dark">
-                  {{ stage.title }}
-                </strong>
-              </td>
-              <td class="text-center">
-                @if (stage.startTime) {
-                  <span class="badge badge-schedule">
-                    {{ stage.startTime | date:'dd-MM-y HH:mm' }}
-                  </span>
-                }
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
+<kep-card>
+  <div class="table-responsive">
+    <table class="table">
+      <thead class="bg-tournament">
+      <tr>
+        <th class="text-center text-white">
+          {{ 'Round' | translate }}
+        </th>
+        <th class="text-center text-white">
+          <i data-feather="calendar"></i>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (stage of tournament.stages; track stage) {
+          <tr>
+            <td class="text-center">
+              <strong class="text-dark">
+                {{ stage.title }}
+              </strong>
+            </td>
+            <td class="text-center">
+              @if (stage.startTime) {
+                <span class="badge bg-primary">
+                  {{ stage.startTime | date:'dd-MM-y HH:mm' }}
+                </span>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
   </div>
-</div>
+</kep-card>

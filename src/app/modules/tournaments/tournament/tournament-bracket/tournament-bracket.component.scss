@@ -21,7 +21,6 @@
 .brackets-viewer h3 {
   text-align: center;
   background: $tournaments-bg !important;
-  box-shadow: 0 0 5px $tournaments-color !important;
   color: #fff;
   font-size: 1.1em;
   padding: 10px 0px;
@@ -42,17 +41,8 @@
   background: $tournaments-color !important;
 }
 
-.brackets-viewer .opponents {
-  width: 100%;
-  position: relative;
-  box-shadow: 0 0 5px $tournaments-color !important;
-  border: none !important;
-  border-radius: var(--match-border-radius);
-}
-
-.dark-layout .brackets-viewer .participant {
+.brackets-viewer .participant {
   background: $tournaments-bg-dark !important;
   border: none !important;
-  box-shadow: 0 0 5px $tournaments-color !important;
   color: #fff !important;
 }
