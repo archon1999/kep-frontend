@@ -1,5 +1,5 @@
 <div class="mt-4 col-lg-8 col-md-10 col-sm-12 offset-lg-2 offset-md-1 offset-sm-0">
-  @for (stage of tournament.stages.reverse(); track stage) {
+  @for (stage of tournament.stages; track stage) {
     <div>
       <h3 class="mb-2 mt-2 text-dark text-center">
         {{ stage.title }}

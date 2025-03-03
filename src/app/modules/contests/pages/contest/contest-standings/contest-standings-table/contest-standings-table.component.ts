@@ -41,7 +41,7 @@ export class ContestStandingsTableComponent extends BaseUserComponent implements
 
   ngOnChanges(changes: SimpleChanges) {
     if ('contestants' in changes) {
-      this.preprocessContestants();
+      // this.preprocessContestants();
     }
   }
 
