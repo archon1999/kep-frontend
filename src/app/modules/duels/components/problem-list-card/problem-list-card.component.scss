@@ -1,19 +1,5 @@
-.duel-problem {
-  cursor: pointer;
-  margin-bottom: 0.5rem;
-  // background-image: linear-gradient(47deg, #1c1368, #9e95f5);
-  border: none;
-  color: #fff;
-  opacity: 0.9;
-  box-shadow: 0 0 5px #9e95f5;
-
-  &:hover {
-    transform: scale(1.02);
-    transition: 0.5s ease;
+problem-list-card {
+  .card {
+    cursor: pointer;
   }
-}
-
-::ng-deep .dark-layout .duel-problem {
-  background-image: linear-gradient(47deg, #140d53, #2a1f90);
-  box-shadow: 0 0 5px #3226a1 !important;
 }

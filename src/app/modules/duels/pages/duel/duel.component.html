@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-lg-9 col-12">
-    <div class="card">
-      <div class="table-responsive bg-results-table bg-primary">
+    <kep-card>
+      <div class="table-responsive">
         <table class="table">
           <thead>
           <tr>
@@ -21,7 +21,7 @@
               <contestant-view [textColor]="'white'" [user]="duel.playerFirst"></contestant-view>
             </td>
             <td class="text-center">
-              <span class="badge badge-glow bg-primary bg-primary bg-darken-1">
+              <span class="badge badge-glow bg-primary">
                 {{ duel.playerFirst.balls }}
               </span>
             </td>
@@ -64,34 +64,14 @@
           </tbody>
         </table>
       </div>
-    </div>
+    </kep-card>
 
     @if (duelProblem) {
-      <div class="card">
+      <kep-card>
         <div class="card-body">
           <h2 class="text-center mb-2">
             {{ duelProblem.symbol }}. {{ duelProblem.problem.title }}
           </h2>
-          <div class="row justify-content-center mt-1">
-            <div class="col text-end problem-header">
-              <small class="text-center pe-1">
-                {{ 'Languages' | translate }}:
-              </small>
-            </div>
-            <div class="col problem-header">
-              <small class="text-center">
-                @for (availableLanguage of duelProblem.problem.availableLanguages; track availableLanguage) {
-                  <span>
-                    <a
-                      (click)="changeLang(availableLanguage.lang)"
-                      class="badge-pill text-white badge badge-{{ availableLanguage.lang }}">
-                      {{ availableLanguage.lang }}
-                    </a>
-                  </span>
-                }
-              </small>
-            </div>
-          </div>
           @if (duel.isPlayer) {
             <div class="row justify-content-center mt-1">
               <div class="col text-end problem-header">
@@ -148,11 +128,11 @@
             ></code-editor-modal>
           }
         </div>
-      </div>
+      </kep-card>
     }
 
     @if (attempts.length > 0) {
-      <div class="card">
+      <kep-card>
         <div class="card-header">
           <div class="card-title">
             {{ 'Attempts' | translate }}
@@ -161,7 +141,7 @@
         <div class="card-body">
           <attempts-table [hideSourceCodeSize]="true" [attempts]="attempts" [contest]="duel"></attempts-table>
         </div>
-      </div>
+      </kep-card>
     }
   </div>
 

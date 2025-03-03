@@ -15,6 +15,7 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 
 const routes: Routes = [
@@ -50,6 +51,7 @@ const routes: Routes = [
     AttemptsTableModule,
     NgbTooltipModule,
     CountdownComponent,
+    KepCardComponent,
   ],
   providers: [
     DuelResolver,

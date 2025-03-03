@@ -51,6 +51,10 @@ export const routes: Routes = [
         loadChildren: () => import('./modules/projects/projects.routing')
       },
       {
+        path: 'practice/duels',
+        loadChildren: () => import('./modules/duels/duels.module').then(m => m.DuelsModule),
+      },
+      {
         path: 'competitions/contests',
         loadChildren: () => import('./modules/contests/contests.routing')
       },
