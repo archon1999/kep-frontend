@@ -1,6 +1,5 @@
 <kep-card>
-  <div class="card-header font-medium-2 justify-content-center text-white p-25 bg-chapter-{{ question.chapter.id }}"
-       style="box-shadow: none !important;">
+  <div class="card-header font-medium-2 justify-content-center text-white p-1 bg-chapter-{{ question.chapter.id }}">
     #{{ question.number }}
   </div>
 
@@ -116,21 +115,22 @@
           </div>
         </div>
 
-        <div class="col-lg-6 col-12 mx-auto">
-          <ul class="list-group" dragula="basic-list-group-3" [(dragulaModel)]="orderingList" id="basic-list-group-3">
-            @for (option of orderingList; track option) {
-              <li class="bg-gradient-primary list-group-item draggable">
-                <div class="row justify-content-between">
-                  <div class="ps-1">
-                    {{ option }}
-                  </div>
-                  <div class="pe-1">
-                    <i class="text-primary" data-feather="arrow-right"></i>
-                  </div>
-                </div>
-              </li>
-            }
-          </ul>
+        @for (option of orderingList; track $index) {
+          <span class="cursor-pointer" (click)="moveToOrderingOptionList($index)">
+            {{ option }}
+          </span>
+        } @empty {
+          -
+        }
+        <hr>
+        <div class="d-flex gap-2">
+          @for (option of orderingOptionList; track $index) {
+            <span (click)="moveToOrderingList($index)" class="badge cursor-pointer bg-chapter-{{ question.chapter.id }}">
+              {{ option }}
+            </span>
+          } @empty {
+            -
+          }
         </div>
       </div>
     } @else if (question.type == QuestionType.CLASSIFICATION) {
@@ -198,12 +198,17 @@
         </monaco-editor>
       </div>
     }
+    @if (question.audio) {
+      <audio class="full-width mt-4" controls>
+        <source [src]="question.audio" type="audio/mpeg">
+      </audio>
+    }
   </div>
 
   <div class="card-footer">
     <button
       (click)="checkAnswer()"
-      class="btn btn-block bg-chapter-{{ question.chapter.id }} text-white"
+      class="btn full-width bg-chapter-{{ question.chapter.id }} text-white"
       rippleEffect
       type="submit">
       <kep-icon name="check-circle" size="small-4" type="duotone"/>

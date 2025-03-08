@@ -196,6 +196,7 @@ export class ChallengeComponent extends BaseComponent implements OnInit, OnDestr
 
   @HostListener('window:blur', ['$event'])
   onBlur(): void {
+    return;
     if (this.challenge.nextQuestion?.question && this.challenge.status !== ChallengeStatus.Finished) {
       Swal.fire({
         title: this.translateService.instant('ChallengeBlurError'),

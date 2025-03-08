@@ -7,7 +7,7 @@
           <span class="badge badge-glow ms-50" [ngClass]="{
             'bg-success': challenge.playerFirst.result > challenge.playerSecond.result,
             'bg-danger': challenge.playerFirst.result < challenge.playerSecond.result,
-            'badge-secondary': challenge.playerFirst.result == challenge.playerSecond.result
+            'bg-secondary': challenge.playerFirst.result == challenge.playerSecond.result
           }">
             {{ challenge.playerFirst.result }}
           </span>
@@ -19,7 +19,7 @@
           <span class="badge badge-glow me-50" [ngClass]="{
             'bg-danger': challenge.playerFirst.result > challenge.playerSecond.result,
             'bg-success': challenge.playerFirst.result < challenge.playerSecond.result,
-            'badge-secondary': challenge.playerFirst.result == challenge.playerSecond.result
+            'bg-secondary': challenge.playerFirst.result == challenge.playerSecond.result
           }">
             {{ challenge.playerSecond.result }}
           </span>

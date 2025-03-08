@@ -57,6 +57,7 @@ export class QuestionCardComponent extends BaseComponent implements OnInit, OnCh
   public conformityGroupFirst: Array<string>;
   public conformityGroupSecond: Array<string>;
   public orderingList: Array<string>;
+  public orderingOptionList: Array<string>;
   public classificationGroups: any;
   public rnd = randomInt(1, 100000);
 
@@ -74,7 +75,7 @@ export class QuestionCardComponent extends BaseComponent implements OnInit, OnCh
     this.langService.getLanguage().pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (lang: AttemptLangs) => {
         this.langControl.setValue(lang, {emitEvent: false});
-        if (!findAvailableLang(this.question.problem.availableLanguages, lang)) {
+        if (this.question.problem && !findAvailableLang(this.question.problem.availableLanguages, lang)) {
           this.langService.setLanguage(this.question.problem.availableLanguages[0].lang);
         }
       }
@@ -114,10 +115,11 @@ export class QuestionCardComponent extends BaseComponent implements OnInit, OnCh
       this.conformityGroupSecond = randomShuffle(b);
     } else if (this.question.type === QuestionType.ORDERING) {
       this.orderingList = [];
+      this.orderingOptionList = [];
       for (const option of this.question.options) {
-        this.orderingList.push(option.option);
+        this.orderingOptionList.push(option.option);
       }
-      this.orderingList = randomShuffle(this.orderingList);
+      this.orderingOptionList = randomShuffle(this.orderingOptionList);
     } else if (this.question.type === QuestionType.CLASSIFICATION) {
       const classificationGroups = new Map<string, Array<string>>();
       const keys = [];
@@ -145,6 +147,12 @@ export class QuestionCardComponent extends BaseComponent implements OnInit, OnCh
     if (this.langControl.value === 'cpp') {
       this.input = cppTemplate;
     }
+
+    if (this.question.audio) {
+      const audio = this.question.audio;
+      this.question.audio = null;
+      setTimeout(() => this.question.audio = audio);
+    }
   }
 
   checkAnswer() {
@@ -166,7 +174,7 @@ export class QuestionCardComponent extends BaseComponent implements OnInit, OnCh
         group_two: this.conformityGroupSecond
       };
     } else if (this.question.type === QuestionType.ORDERING) {
-      answer = {ordering_list: this.orderingList};
+      answer = {ordering_list: this.orderingOptionList.length ? [] : this.orderingList};
     } else if (this.question.type === QuestionType.CLASSIFICATION) {
       answer = {classification_groups: this.classificationGroups};
     } else if (this.question.type === QuestionType.CUSTOM_CHECK) {
@@ -189,6 +197,16 @@ export class QuestionCardComponent extends BaseComponent implements OnInit, OnCh
       [this.conformityGroupSecond[index], this.conformityGroupSecond[index - 1]] =
         [this.conformityGroupSecond[index - 1], this.conformityGroupSecond[index]];
     }
+  }
+
+  moveToOrderingList(index: number) {
+    this.orderingList.push(this.orderingOptionList[index]);
+    this.orderingOptionList.splice(index, 1);
+  }
+
+  moveToOrderingOptionList(index: number) {
+    this.orderingOptionList.push(this.orderingList[index]);
+    this.orderingList.splice(index, 1);
   }
 
   ngOnDestroy() {

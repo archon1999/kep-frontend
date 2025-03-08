@@ -220,3 +220,12 @@
   $color: #002aa0,
   $dark-color: mix(black, #002aa0, 20),
 );
+
+// English Listening
+@include define-chapter-colors(
+  $id: 24,
+  $gradient-color: linear-gradient(to right, #39478b, #6788f5),
+  $gradient-dark-color: linear-gradient(45deg, #2a3671, #39478b),
+  $color: #6788f5,
+  $dark-color: #39478b,
+);
