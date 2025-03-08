@@ -52,7 +52,7 @@ export class CourseLessonPart {
     if (isCurrent) {
       return `btn-outline-${this.statusColor}`;
     } else {
-      return `btn-relief-${this.statusColor}`;
+      return `btn-${this.statusColor}`;
     }
   }
 }

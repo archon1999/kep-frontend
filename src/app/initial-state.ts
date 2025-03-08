@@ -11,7 +11,7 @@ export const initialState: StateType = {
   themePrimary: {main: '', secondary: '', accent: ''},
   bgPatternImage: 'bgpattern7',
   codingStyles: 'style5',
-  cardBackground: 'background5',
+  cardBackground: 'background3',
   themeBackground: '',
   backgroundImage: '',
   language: 'en',

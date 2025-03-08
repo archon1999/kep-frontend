@@ -46,8 +46,8 @@ export class KepcoinSpendSwalComponent {
         cancelButtonText: this.translateService.instant('Cancel'),
         confirmButtonText: this.translateService.instant('Purchase'),
         customClass: {
-          confirmButton: 'btn btn-relief-primary',
-          cancelButton: 'btn btn-relief-danger ms-1'
+          confirmButton: 'btn btn-primary',
+          cancelButton: 'btn btn-danger ms-1'
         }
       }).then((result) => {
         if (result.value) {

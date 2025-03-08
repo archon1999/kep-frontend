@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ClipboardButtonComponent implements OnInit {
 
-  @Input() buttonClass = 'btn btn-sm btn-relief-primary';
+  @Input() buttonClass = 'btn btn-sm btn-primary';
   @Input() text: string;
 
   public copiedText: string;

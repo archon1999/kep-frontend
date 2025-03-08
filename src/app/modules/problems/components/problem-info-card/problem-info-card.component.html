@@ -64,7 +64,7 @@
           (click)="like()"
           class="btn btn-sm btn-success bg-success badge-glow"
           [ngClass]="{
-        'btn-relief-success': problem.userInfo.voteType === 1
+        'btn-success': problem.userInfo.voteType === 1
       }"
         >
           <i data-feather="thumbs-up"></i>
@@ -76,7 +76,7 @@
           (click)="dislike()"
           class="btn btn-sm btn-danger bg-danger badge-glow"
           [ngClass]="{
-        'btn-relief-danger': problem.userInfo.voteType === 0
+        'btn-danger': problem.userInfo.voteType === 0
       }"
         >
           <i data-feather="thumbs-down"></i>

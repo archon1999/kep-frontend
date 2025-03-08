@@ -76,7 +76,7 @@
       <div ngbAccordionCollapse>
         <div class="p-1">
           @if (currentUser?.isSuperuser || problem.userInfo?.canViewSolution) {
-            <button (click)="openSolutionModal(solution)" class="btn btn-sm btn-relief-primary">
+            <button (click)="openSolutionModal(solution)" class="btn btn-sm btn-primary">
               {{ 'View' | translate }}
             </button>
           } @else {

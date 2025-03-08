@@ -6,13 +6,7 @@ arena-card {
     box-shadow: none;
 
     h5 {
-      font-weight: 600;
-    }
-
-    @include dark-layout {
-      h5 {
-        font-weight: 500;
-      }
+      font-weight: 500;
     }
   }
 

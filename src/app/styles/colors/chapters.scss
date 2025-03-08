@@ -1,3 +1,5 @@
+@import 'styles/kep-imports';
+
 @mixin define-chapter-colors($id, $gradient-color, $gradient-dark-color, $color, $dark-color) {
   .bg-gradient-chapter-#{$id} {
     color: #fff;
@@ -224,8 +226,8 @@
 // English Listening
 @include define-chapter-colors(
   $id: 24,
-  $gradient-color: linear-gradient(to right, #39478b, #6788f5),
-  $gradient-dark-color: linear-gradient(45deg, #2a3671, #39478b),
-  $color: #6788f5,
-  $dark-color: #39478b,
+  $gradient-color: linear-gradient(to right, mix(black, $primary, 50), mix(black, $primary, 30)),
+  $gradient-dark-color: linear-gradient(to right, mix(black, $primary, 50), mix(black, $primary, 30)),
+  $color: mix(black, $primary, 30),
+  $dark-color: mix(black, $primary, 30),
 );

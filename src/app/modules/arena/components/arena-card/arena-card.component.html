@@ -29,12 +29,12 @@
 
   <div class="card-footer d-flex justify-content-between">
     <div>
-      <span class="me-1 badge badge-brown badge-glow" ngbTooltip="{{ 'Time' | translate }}">
+      <span class="me-1 badge badge-glow" ngbTooltip="{{ 'Time' | translate }}">
         <kep-icon class="font-small-4" name="challenge-time"></kep-icon>
         {{ arena.timeSeconds }}
       </span>
 
-      <span class="badge badge-brown badge-glow" ngbTooltip="{{ 'Questions' | translate }}">
+      <span class="badge badge-glow" ngbTooltip="{{ 'Questions' | translate }}">
         <kep-icon class="font-small-4" name="challenge-task"></kep-icon>
         {{ arena.questionsCount }}
       </span>
@@ -43,11 +43,11 @@
     <div>
       @if (arena.isRegistrated) {
         <span class="badge bg-warning">
-          <kep-icon name="check" size="small-4" color="success"/>
+          <kep-icon name="check" size="small-2" color="success"/>
           {{ 'Registrated' | translate }}
         </span>
       } @else {
-        <button class="btn btn-sm btn-gradient-brown" (click)="register()">
+        <button class="btn btn-sm btn-yellow" (click)="register()">
           {{ 'Registration' | translate }}
         </button>
       }

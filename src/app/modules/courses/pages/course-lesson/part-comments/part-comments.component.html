@@ -21,7 +21,7 @@
           <h6 class="" [innerHTML]="comment.comment"></h6>
           <div class="d-flex-notation pb-2">
             @if (comment.username != currentUser.username) {
-              <button (click)="emojiClick(comment.id, 2)" class="me-1 btn btn-sm round btn-relief-success">
+              <button (click)="emojiClick(comment.id, 2)" class="me-1 btn btn-sm round btn-success">
                 <i data-feather="thumbs-up"></i>
                 @if (comment.likes > 0) {
                   <span class="ms-1">{{ comment.likes }}</span>
@@ -29,7 +29,7 @@
               </button>
             }
             @if (comment.username != currentUser.username) {
-              <button (click)="emojiClick(comment.id, 1)" class="me-1 btn btn-sm round btn-relief-danger">
+              <button (click)="emojiClick(comment.id, 1)" class="me-1 btn btn-sm round btn-danger">
                 <i data-feather="thumbs-down"></i>
                 @if (comment.dislikes > 0) {
                   <span class="ps-1">{{ comment.dislikes }}</span>
@@ -37,7 +37,7 @@
               </button>
             }
             @if (currentUser.isSuperuser || comment.username == currentUser.username) {
-              <button (click)="commentDelete(comment.id)" class="btn btn-sm round btn-relief-dark">
+              <button (click)="commentDelete(comment.id)" class="btn btn-sm round btn-dark">
                 <i data-feather="x"></i>
               </button>
             }
@@ -80,7 +80,7 @@
 
     </quill-editor>
 
-    <button (click)="commentSubmit()" class="mt-2 mb-2 btn btn-relief-primary">
+    <button (click)="commentSubmit()" class="mt-2 mb-2 btn btn-primary">
       {{ 'SUBMIT' | translate }}
     </button>
   </div>
