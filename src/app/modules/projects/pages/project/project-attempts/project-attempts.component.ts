@@ -49,4 +49,8 @@ export class ProjectAttemptsComponent extends BaseTablePageComponent<ProjectAtte
     }
   }
 
+  myAttemptsClick() {
+    this.pageNumber = 1;
+    this.reloadPage();
+  }
 }
