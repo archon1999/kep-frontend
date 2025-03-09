@@ -2,11 +2,19 @@
   <div class="content-body">
     <app-content-header [contentHeader]="contentHeader"/>
 
-    <div class="row mt-4">
-      @for (project of projects; track project.id) {
-        <div [@fadeInOnEnter] class="col-lg-4 col-md-6 col-12">
-          <project-card [project]="project"></project-card>
-        </div>
+    <div class="row">
+      @if (isLoading) {
+        @for (_ of [].constructor(3); track $index) {
+          <div class="col-lg-4 col-md-6 col-12">
+            <ngx-skeleton-loader [theme]="{'height': '275px', background: 'var(--skeleton-color)'}" count="1"/>
+          </div>
+        }
+      } @else {
+        @for (project of projects; track project.id) {
+          <div [@fadeInOnEnter] class="col-lg-4 col-md-6 col-12">
+            <project-card [project]="project"></project-card>
+          </div>
+        }
       }
     </div>
   </div>

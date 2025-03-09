@@ -1,31 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  fadeInLeftOnEnterAnimation,
-  fadeInOnEnterAnimation,
-  fadeInRightOnEnterAnimation,
-  fadeInUpOnEnterAnimation
-} from 'angular-animations';
+import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ProjectsService } from '../../projects.service';
 import { Project } from '@app/modules/projects/interfaces/project';
 import { CoreCommonModule } from '@core/common.module';
 import { ProjectCardComponent } from '@app/modules/projects/components/project-card/project-card.component';
 import { BaseLoadComponent } from '@app/common';
-import { ContentHeader } from "@core/components/content-header/content-header.component";
+import { ContentHeader } from '@core/components/content-header/content-header.component';
 import { Observable } from 'rxjs';
 import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss'],
   animations: [
-    fadeInOnEnterAnimation(),
+    fadeInOnEnterAnimation({ duration: 200 }),
   ],
   standalone: true,
   imports: [
     CoreCommonModule,
     ProjectCardComponent,
-    ContentHeaderModule
+    ContentHeaderModule,
+    NgxSkeletonLoaderModule
   ]
 })
 export class ProjectsComponent extends BaseLoadComponent<Project[]> implements OnInit {
