@@ -113,7 +113,9 @@ export class TournamentBracketComponent implements OnInit {
     const scriptElement = this.scriptService.loadJsScript(this.renderer, SCRIPT_PATH);
     scriptElement.onload = (e) => {
       if (this.tournament.stages.length > 0) {
-        process(this.tournament).then((data) => window['bracketsViewer'].render(data));
+        process(this.tournament).then((data) => {
+          window['bracketsViewer'].render(data)
+        });
         const participantImages = [];
         for (const player of this.tournament.players) {
           participantImages.push(

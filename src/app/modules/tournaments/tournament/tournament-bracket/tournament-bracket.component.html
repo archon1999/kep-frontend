@@ -1,1 +1,473 @@
-<div class="brackets-viewer" style="zoom: 110%"></div>
+@if (tournament.id == 2) {
+  <div class="brackets-viewer" style="zoom: 110%"></div>
+} @else {
+  <div class="brackets-viewer d-lg-none" style="zoom: 110%"></div>
+
+  <div class="tournament-bracket d-lg-block d-none">
+    <div id="wrapper">
+      <div id="logo">
+        <img alt="" height="64" src="https://kep.uz/static/frontend/assets/images/logo/new-logo.svg" width="64">
+      </div>
+
+      <div id="bracket">
+        <div id="end-screen">
+          <div id="second-container">
+            <div id="second-box">
+              <input id="second" readonly type="text">
+            </div>
+            <img src="/assets/imgs/themeTaddl/medaille-second.svg">
+          </div>
+          <div id="trophy-container">
+            <img height="64" src="assets/images/icons/trophy.png">
+          </div>
+          <div id="third-container">
+            <div id="third-box">
+              <input id="third" readonly type="text">
+            </div>
+            <img src="/assets/imgs/themeTaddl/medaille-third.svg">
+          </div>
+        </div>
+
+        <div id="rounds-container">
+          <div class="rounds eighth left">
+            @for (stageDuel of tournament.stages[0].duels.slice(0, 4);track $index) {
+              <div class="teams">
+                <div class="textbox">
+                  <div class="player">
+                    <kep-card>
+                      <div class="card-body p-1">
+                        @if (stageDuel.duel) {
+                          <div class="info d-flex">
+                            <contests-rating-image
+                              [title]="stageDuel.duel.playerFirst.ratingTitle"
+                              [class]="'me-1'"
+                              [size]="16">
+                            </contests-rating-image>
+                            <user-popover customClass="font-small-2 {{  stageDuel.duel.playerFirst.status == 1 ? 'winner' : '' }}" [customContent]="true" [username]="stageDuel.duel.playerFirst.username">
+                              {{ stageDuel.duel.playerFirst.username }}
+                            </user-popover>
+                          </div>
+                          @if (stageDuel.duel.playerFirst.status){
+                            <div class="result {{  stageDuel.duel.playerFirst.status == 1 ? 'text-primary winner' : '' }} {{  stageDuel.duel.playerFirst.status == -1 ? 'text-danger' : '' }}">
+                              {{ stageDuel.duel.playerFirst.balls }}
+                            </div>
+                          }
+                        }
+                      </div>
+                    </kep-card>
+                  </div>
+                </div>
+                <div class="textbox">
+                  <div class="player">
+                    <kep-card>
+                      <div class="card-body p-1">
+                        @if (stageDuel.duel) {
+                          <div class="info d-flex">
+                            <contests-rating-image
+                              [title]="stageDuel.duel.playerSecond.ratingTitle"
+                              [class]="'me-1'"
+                              [size]="16">
+                            </contests-rating-image>
+                            <user-popover customClass="font-small-2 {{  stageDuel.duel.playerSecond.status == 1 ? 'winner' : '' }}" [customContent]="true" [username]="stageDuel.duel.playerSecond.username">
+                              {{ stageDuel.duel.playerSecond.username }}
+                            </user-popover>
+                          </div>
+                          @if (stageDuel.duel.playerSecond.status){
+                            <div class="result {{  stageDuel.duel.playerSecond.status == 1 ? 'text-primary winner' : '' }} {{  stageDuel.duel.playerSecond.status == -1 ? 'text-danger' : '' }}">
+                              {{ stageDuel.duel.playerSecond.balls }}
+                            </div>
+                          }
+                        }
+                      </div>
+                    </kep-card>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="rounds eighth right">
+            @for (stageDuel of tournament.stages[0].duels.slice(4);track $index) {
+              <div class="teams">
+                <div class="textbox">
+                  <div class="player">
+                    <kep-card>
+                      <div class="card-body p-1">
+                        @if (stageDuel.duel) {
+                          <div class="info d-flex">
+                            <contests-rating-image
+                              [title]="stageDuel.duel.playerFirst.ratingTitle"
+                              [class]="'me-1'"
+                              [size]="16">
+                            </contests-rating-image>
+                            <user-popover customClass="font-small-2 {{  stageDuel.duel.playerFirst.status == 1 ? 'winner' : '' }}" [customContent]="true" [username]="stageDuel.duel.playerFirst.username">
+                              {{ stageDuel.duel.playerFirst.username }}
+                            </user-popover>
+                          </div>
+                          @if (stageDuel.duel.playerFirst.status){
+                            <div class="result {{  stageDuel.duel.playerFirst.status == 1 ? 'text-primary winner' : '' }} {{  stageDuel.duel.playerFirst.status == -1 ? 'text-danger' : '' }}">
+                              {{ stageDuel.duel.playerFirst.balls }}
+                            </div>
+                          }
+                        }
+                      </div>
+                    </kep-card>
+                  </div>
+                </div>
+                <div class="textbox">
+                  <div class="player">
+                    <kep-card>
+                      <div class="card-body p-1">
+                        @if (stageDuel.duel) {
+                          <div class="info d-flex">
+                            <contests-rating-image
+                              [title]="stageDuel.duel.playerSecond.ratingTitle"
+                              [class]="'me-1'"
+                              [size]="16">
+                            </contests-rating-image>
+                            <user-popover customClass="font-small-2 {{  stageDuel.duel.playerSecond.status == 1 ? 'winner' : '' }}" [customContent]="true" [username]="stageDuel.duel.playerSecond.username">
+                              {{ stageDuel.duel.playerSecond.username }}
+                            </user-popover>
+                          </div>
+                          @if (stageDuel.duel.playerSecond.status){
+                            <div class="result {{  stageDuel.duel.playerSecond.status == 1 ? 'text-primary winner' : '' }} {{  stageDuel.duel.playerSecond.status == -1 ? 'text-danger' : '' }}">
+                              {{ stageDuel.duel.playerSecond.balls }}
+                            </div>
+                          }
+                        }
+                      </div>
+                    </kep-card>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="rounds quarter left">
+            @for (stageDuel of tournament.stages[1].duels.slice(0, 2);track $index) {
+              <div class="teams">
+                <div class="textbox">
+                  <div class="player">
+                    <kep-card>
+                      <div class="card-body p-1">
+                        @if (stageDuel.duel) {
+                          <div class="info d-flex">
+                            <contests-rating-image
+                              [title]="stageDuel.duel.playerFirst.ratingTitle"
+                              [class]="'me-1'"
+                              [size]="16">
+                            </contests-rating-image>
+                            <user-popover customClass="font-small-2 {{  stageDuel.duel.playerFirst.status == 1 ? 'winner' : '' }}" [customContent]="true" [username]="stageDuel.duel.playerFirst.username">
+                              {{ stageDuel.duel.playerFirst.username }}
+                            </user-popover>
+                          </div>
+                          @if (stageDuel.duel.playerFirst.status){
+                            <div class="result {{  stageDuel.duel.playerFirst.status == 1 ? 'text-primary winner' : '' }} {{  stageDuel.duel.playerFirst.status == -1 ? 'text-danger' : '' }}">
+                              {{ stageDuel.duel.playerFirst.balls }}
+                            </div>
+                          }
+                        }
+                      </div>
+                    </kep-card>
+                  </div>
+                </div>
+                <div class="textbox">
+                  <div class="player">
+                    <kep-card>
+                      <div class="card-body p-1">
+                        @if (stageDuel.duel) {
+                          <div class="info d-flex">
+                            <contests-rating-image
+                              [title]="stageDuel.duel.playerSecond.ratingTitle"
+                              [class]="'me-1'"
+                              [size]="16">
+                            </contests-rating-image>
+                            <user-popover customClass="font-small-2 {{  stageDuel.duel.playerSecond.status == 1 ? 'winner' : '' }}" [customContent]="true" [username]="stageDuel.duel.playerSecond.username">
+                              {{ stageDuel.duel.playerSecond.username }}
+                            </user-popover>
+                          </div>
+                          @if (stageDuel.duel.playerSecond.status){
+                            <div class="result {{  stageDuel.duel.playerSecond.status == 1 ? 'text-primary winner' : '' }} {{  stageDuel.duel.playerSecond.status == -1 ? 'text-danger' : '' }}">
+                              {{ stageDuel.duel.playerSecond.balls }}
+                            </div>
+                          }
+                        }
+                      </div>
+                    </kep-card>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+          <div class="rounds quarter right">
+            @for (stageDuel of tournament.stages[1].duels.slice(2);track $index) {
+              <div class="teams">
+                <div class="textbox">
+                  <div class="player">
+                    <kep-card>
+                      <div class="card-body p-1">
+                        @if (stageDuel.duel) {
+                          <div class="info d-flex">
+                            <contests-rating-image
+                              [title]="stageDuel.duel.playerFirst.ratingTitle"
+                              [class]="'me-1'"
+                              [size]="16">
+                            </contests-rating-image>
+                            <user-popover customClass="font-small-2 {{  stageDuel.duel.playerFirst.status == 1 ? 'winner' : '' }}" [customContent]="true" [username]="stageDuel.duel.playerFirst.username">
+                              {{ stageDuel.duel.playerFirst.username }}
+                            </user-popover>
+                          </div>
+                          @if (stageDuel.duel.playerFirst.status){
+                            <div class="result {{  stageDuel.duel.playerFirst.status == 1 ? 'text-primary winner' : '' }} {{  stageDuel.duel.playerFirst.status == -1 ? 'text-danger' : '' }}">
+                              {{ stageDuel.duel.playerFirst.balls }}
+                            </div>
+                          }
+                        }
+                      </div>
+                    </kep-card>
+                  </div>
+                </div>
+                <div class="textbox">
+                  <div class="player">
+                    <kep-card>
+                      <div class="card-body p-1">
+                        @if (stageDuel.duel) {
+                          <div class="info d-flex">
+                            <contests-rating-image
+                              [title]="stageDuel.duel.playerSecond.ratingTitle"
+                              [class]="'me-1'"
+                              [size]="16">
+                            </contests-rating-image>
+                            <user-popover customClass="font-small-2 {{  stageDuel.duel.playerSecond.status == 1 ? 'winner' : '' }}" [customContent]="true" [username]="stageDuel.duel.playerSecond.username">
+                              {{ stageDuel.duel.playerSecond.username }}
+                            </user-popover>
+                          </div>
+                          @if (stageDuel.duel.playerSecond.status){
+                            <div class="result {{  stageDuel.duel.playerSecond.status == 1 ? 'text-primary winner' : '' }} {{  stageDuel.duel.playerSecond.status == -1 ? 'text-danger' : '' }}">
+                              {{ stageDuel.duel.playerSecond.balls }}
+                            </div>
+                          }
+                        }
+                      </div>
+                    </kep-card>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+          <div class="rounds semi left">
+            @for (stageDuel of tournament.stages[2].duels.slice(0, 1);track $index) {
+              <div class="teams">
+                <div class="textbox">
+                  <div class="player">
+                    <kep-card>
+                      <div class="card-body p-1">
+                        @if (stageDuel.duel) {
+                          <div class="info d-flex">
+                            <contests-rating-image
+                              [title]="stageDuel.duel.playerFirst.ratingTitle"
+                              [class]="'me-1'"
+                              [size]="16">
+                            </contests-rating-image>
+                            <user-popover customClass="font-small-2 {{  stageDuel.duel.playerFirst.status == 1 ? 'winner' : '' }}" [customContent]="true" [username]="stageDuel.duel.playerFirst.username">
+                              {{ stageDuel.duel.playerFirst.username }}
+                            </user-popover>
+                          </div>
+                          @if (stageDuel.duel.playerFirst.status){
+                            <div class="result {{  stageDuel.duel.playerFirst.status == 1 ? 'text-primary winner' : '' }} {{  stageDuel.duel.playerFirst.status == -1 ? 'text-danger' : '' }}">
+                              {{ stageDuel.duel.playerFirst.balls }}
+                            </div>
+                          }
+                        }
+                      </div>
+                    </kep-card>
+                  </div>
+                </div>
+                <div class="textbox">
+                  <div class="player">
+                    <kep-card>
+                      <div class="card-body p-1">
+                        @if (stageDuel.duel) {
+                          <div class="info d-flex">
+                            <contests-rating-image
+                              [title]="stageDuel.duel.playerSecond.ratingTitle"
+                              [class]="'me-1'"
+                              [size]="16">
+                            </contests-rating-image>
+                            <user-popover customClass="font-small-2 {{  stageDuel.duel.playerSecond.status == 1 ? 'winner' : '' }}" [customContent]="true" [username]="stageDuel.duel.playerSecond.username">
+                              {{ stageDuel.duel.playerSecond.username }}
+                            </user-popover>
+                          </div>
+                          @if (stageDuel.duel.playerSecond.status){
+                            <div class="result {{  stageDuel.duel.playerSecond.status == 1 ? 'text-primary winner' : '' }} {{  stageDuel.duel.playerSecond.status == -1 ? 'text-danger' : '' }}">
+                              {{ stageDuel.duel.playerSecond.balls }}
+                            </div>
+                          }
+                        }
+                      </div>
+                    </kep-card>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+          <div class="rounds semi right">
+            @for (stageDuel of tournament.stages[2].duels.slice(1);track $index) {
+              <div class="teams">
+                <div class="textbox">
+                  <div class="player">
+                    <kep-card>
+                      <div class="card-body p-1">
+                        @if (stageDuel.duel) {
+                          <div class="info d-flex">
+                            <contests-rating-image
+                              [title]="stageDuel.duel.playerFirst.ratingTitle"
+                              [class]="'me-1'"
+                              [size]="16">
+                            </contests-rating-image>
+                            <user-popover customClass="font-small-2 {{  stageDuel.duel.playerFirst.status == 1 ? 'winner' : '' }}" [customContent]="true" [username]="stageDuel.duel.playerFirst.username">
+                              {{ stageDuel.duel.playerFirst.username }}
+                            </user-popover>
+                          </div>
+                          @if (stageDuel.duel.playerFirst.status){
+                            <div class="result {{  stageDuel.duel.playerFirst.status == 1 ? 'text-primary winner' : '' }} {{  stageDuel.duel.playerFirst.status == -1 ? 'text-danger' : '' }}">
+                              {{ stageDuel.duel.playerFirst.balls }}
+                            </div>
+                          }
+                        }
+                      </div>
+                    </kep-card>
+                  </div>
+                </div>
+                <div class="textbox">
+                  <div class="player">
+                    <kep-card>
+                      <div class="card-body p-1">
+                        @if (stageDuel.duel) {
+                          <div class="info d-flex">
+                            <contests-rating-image
+                              [title]="stageDuel.duel.playerSecond.ratingTitle"
+                              [class]="'me-1'"
+                              [size]="16">
+                            </contests-rating-image>
+                            <user-popover customClass="font-small-2 {{  stageDuel.duel.playerSecond.status == 1 ? 'winner' : '' }}" [customContent]="true" [username]="stageDuel.duel.playerSecond.username">
+                              {{ stageDuel.duel.playerSecond.username }}
+                            </user-popover>
+                          </div>
+                          @if (stageDuel.duel.playerSecond.status){
+                            <div class="result {{  stageDuel.duel.playerSecond.status == 1 ? 'text-primary winner' : '' }} {{  stageDuel.duel.playerSecond.status == -1 ? 'text-danger' : '' }}">
+                              {{ stageDuel.duel.playerSecond.balls }}
+                            </div>
+                          }
+                        }
+                      </div>
+                    </kep-card>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+          <div class="rounds final">
+            @for (stageDuel of tournament.stages[3].duels;track $index) {
+              <div class="teams">
+                <div class="textbox">
+                  <div class="player">
+                    <kep-card>
+                      <div class="card-body p-1">
+                        @if (stageDuel.duel) {
+                          <div class="info d-flex">
+                            <contests-rating-image
+                              [title]="stageDuel.duel.playerFirst.ratingTitle"
+                              [class]="'me-1'"
+                              [size]="16">
+                            </contests-rating-image>
+                            <user-popover customClass="font-small-2 {{  stageDuel.duel.playerFirst.status == 1 ? 'winner' : '' }}" [customContent]="true" [username]="stageDuel.duel.playerFirst.username">
+                              {{ stageDuel.duel.playerFirst.username }}
+                            </user-popover>
+                          </div>
+                          @if (stageDuel.duel.playerFirst.status){
+                            <div class="result {{  stageDuel.duel.playerFirst.status == 1 ? 'text-primary winner' : '' }} {{  stageDuel.duel.playerFirst.status == -1 ? 'text-danger' : '' }}">
+                              {{ stageDuel.duel.playerFirst.balls }}
+                            </div>
+                          }
+                        }
+                      </div>
+                    </kep-card>
+                  </div>
+                </div>
+                <div class="textbox">
+                  <div class="player">
+                    <kep-card>
+                      <div class="card-body p-1">
+                        @if (stageDuel.duel) {
+                          <div class="info d-flex">
+                            <contests-rating-image
+                              [title]="stageDuel.duel.playerSecond.ratingTitle"
+                              [class]="'me-1'"
+                              [size]="16">
+                            </contests-rating-image>
+                            <user-popover customClass="font-small-2 {{  stageDuel.duel.playerSecond.status == 1 ? 'winner' : '' }}" [customContent]="true" [username]="stageDuel.duel.playerSecond.username">
+                              {{ stageDuel.duel.playerSecond.username }}
+                            </user-popover>
+                          </div>
+                          @if (stageDuel.duel.playerSecond.status){
+                            <div class="result {{  stageDuel.duel.playerSecond.status == 1 ? 'text-primary winner' : '' }} {{  stageDuel.duel.playerSecond.status == -1 ? 'text-danger' : '' }}">
+                              {{ stageDuel.duel.playerSecond.balls }}
+                            </div>
+                          }
+                        }
+                      </div>
+                    </kep-card>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+
+          <svg id="connections" preserveAspectRatio="none" version="1.1" viewBox="0 0 1478 762.7"
+               x="0px" y="0px">
+            <!--        <g id="shadow">-->
+            <!--          <polyline id="_8_erlines_15_" class="st0" points="1376.3,66 1275.8,58.5 1275.8,134.5 1376.3,137.9 	"/>-->
+            <!--          <polyline id="_8_erlines_14_" class="st0" points="1376.3,248.9 1275.8,248.9 1275.8,324.9 1376.3,328.3 	"/>-->
+            <!--          <polyline id="_8_erlines_13_" class="st0" points="1376.3,441.8 1271,441.8 1275.8,519.5 1376.3,516.2 	"/>-->
+            <!--          <polyline id="_8_erlines_12_" class="st0" points="1376.3,630.6 1275.8,630.6 1271,716.6 1376.3,706.6 	"/>-->
+            <!--          <polyline id="_8_erlines_11_" class="st0" points="112.5,60.3 206,66.1 207.3,138.2 112.5,138.2 	"/>-->
+            <!--          <polyline id="_8_erlines_10_" class="st0" points="112.5,254.1 206,254.1 207.3,328.1 112.5,328.1 	"/>-->
+            <!--          <polyline id="_8_erlines_9_" class="st0" points="112.5,435.7 210.3,441.5 206,515.8 112.5,515.8 	"/>-->
+            <!--          <polyline id="_8_erlines_8_" class="st0" points="112.5,623.7 204.6,631.7 206,706.4 112.5,706.4 	"/>-->
+            <!--          <polyline id="_4_erlines_7_" class="st0" points="1275.8,98.2 1057.5,98.2 1053.8,284 1275.8,288.6 	"/>-->
+            <!--          <polyline id="_4_erlines_6_" class="st0" points="1273.4,480.7 1053.8,473.6 1057.5,673.6 1273.4,673.6 	"/>-->
+            <!--          <polyline id="_4_erlines_5_" class="st0" points="206,99.3 421.1,101.7 421.1,284.9 206,291.1 	"/>-->
+            <!--          <polyline id="_4_erlines_4_" class="st0" points="206,473.3 421.1,479 425.2,665.1 205.4,672.6 	"/>-->
+            <!--          <polyline id="_2_erlines_3_" class="st0" points="1055.6,193.4 843.5,198 847.3,565.4 1055.6,573.6 	"/>-->
+            <!--          <polyline id="_2_erlines_2_" class="st0" points="421.1,192.1 635.8,195.2 630.7,572.9 421.1,572.9 	"/>-->
+            <!--          <line id="_1_erlines_3_" class="st0" x1="739.2" y1="480.7" x2="846.4" y2="480.7"/>-->
+            <!--          <line id="_1_erlines_2_" class="st0" x1="749.2" y1="288.2" x2="634.5" y2="288.2"/>-->
+            <!--        </g>-->
+            <g id="lines">
+              <polyline id="_8_erlines"    class="st1" points="1381.3, 61    1280.8, 61    1280.8, 129.5 1381.3, 129.5"/>
+              <polyline id="_8_erlines_1_" class="st1" points="1381.3, 243.9 1280.8, 243.9 1280.8, 319.9 1381.3, 319.9"/>
+              <polyline id="_8_erlines_6_" class="st1" points="1381.3, 436.8 1280.8, 436.8 1280.8, 511.2 1381.3, 511.2"/>
+              <polyline id="_8_erlines_7_" class="st1" points="1381.3, 625.6 1280.8, 625.6 1280.8, 701.6 1381.3, 701.6"/>
+
+              <polyline id="_8_erlines_2_" class="st1" points="107.5, 55.3  201, 61.1  201, 129.5 107.5, 129.5"/>
+              <polyline id="_8_erlines_3_" class="st1" points="107.5, 249.1 201, 255.1 201, 319.9 107.5, 319.9"/>
+              <polyline id="_8_erlines_4_" class="st1" points="107.5, 430.7 201, 436.5 201, 511.2 107.5, 511.2"/>
+              <polyline id="_8_erlines_5_" class="st1" points="107.5, 618.7 201, 626.7 201, 701.6 107.5, 701.6"/>
+
+              <polyline id="_4_erlines_2_" class="st1" points="1280.8,93.2 1062.5,93.2 1058.8,279 1280.8,283.6 	"/>
+              <polyline id="_4_erlines_3_" class="st1" points="1278.4,475.7 1058.8,468.6 1062.5,668.6 1278.4,668.6 	"/>
+              <polyline id="_4_erlines" class="st1" points="201,94.3 416.1,96.7 416.1,279.9 201,286.1 	"/>
+              <polyline id="_4_erlines_1_" class="st1" points="201,468.3 416.1,474 420.2,660.1 200.4,667.6 	"/>
+              <polyline id="_2_erlines_1_" class="st1" points="1060.6,188.4 848.5,193 852.3,560.4 1060.6,568.6 	"/>
+              <polyline id="_2_erlines" class="st1" points="416.1,187.1 630.8,190.2 625.7,567.9 416.1,567.9 	"/>
+              <line id="_1_erlines_1_" class="st1" x1="744.2" y1="475.7" x2="851.4" y2="475.7"/>
+              <line id="_1_erlines" class="st1" x1="744.2" y1="283.2" x2="629.5" y2="283.2"/>
+            </g>
+          </svg>
+
+        </div>
+      </div>
+    </div>
+  </div>
+}

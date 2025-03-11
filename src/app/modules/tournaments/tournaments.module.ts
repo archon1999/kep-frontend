@@ -19,6 +19,7 @@ import { TournamentVersusComponent } from './tournament/tournament-versus/tourna
 import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 
 
 const routes: Routes = [
@@ -73,6 +74,7 @@ const routes: Routes = [
     KepIconComponent,
     TournamentsComponent,
     KepCardComponent,
+    UserPopoverModule,
   ],
   providers: [
     TournamentResolver,
