@@ -124,41 +124,62 @@
         }
       }
 
-      @if (contest.status != 1 && !contest.userInfo.virtualContestPurchased) {
-        @if (contest.status != 0 && contest.isRated && contest.userInfo.isRegistered && !contest.userInfo.unratedContestPurchased) {
-          <kepcoin-spend-swal
-            [customContent]="true"
-            [purchaseUrl]="'contests/' + contest.id + '/purchase-unrated-contest/'"
-            [value]="10"
-            class="me-1" ngbTooltip="{{ 'UnofficialParticipation' | translate }}"
-            (success)="contest.userInfo.unratedContestPurchased=true;">
-            <img height="25" src="assets/images/icons/unrated.png">
-          </kepcoin-spend-swal>
-        }
-        @if (contest.userInfo.isRegistered && contest.isRated && contest.userInfo.unratedContestPurchased) {
-          <img
-            ngbTooltip="{{ 'Purchased' | translate }}"
-            height="25" src="assets/images/icons/unrated.png" class="me-1">
-        }
+      @if (contest.id == 424 || contest.id == 425){
         @if (contest.userInfo.isRegistered) {
-          <button
+          <span
             ngbTooltip="{{ 'Cancel' | translate }}"
             rippleEffect
-            class="btn btn-sm round btn-gradient-success"
+            class="badge bg-primary"
             (click)="cancelRegistration()">
-            <kep-icon name="check" color="success" size="small-4"/>
+            <kep-icon name="check" color="success" size="small-2"/>
             {{ 'Registered' | translate }}
-            <i data-feather="x" class="text-danger"></i>
-          </button>
-        }
-        @if (!currentUser || !contest.userInfo.isRegistered) {
-          <button
-            rippleEffect
-            class="btn btn-sm round btn-gradient-primary"
-            (click)="openRegistrationModal()">
-            <kep-icon size="small-4" name="username"/>
+          </span>
+        } @else {
+          <a
+            href="https://revolution.uz/uz/revo-cup-2025"
+            target="_blank"
+            class="btn btn-sm bg-primary">
+            <kep-icon size="small-2" name="username"/>
             {{ 'CONTESTS.REGISTER' | translate }}
-          </button>
+          </a>
+        }
+      } @else {
+        @if (contest.status != 1 && !contest.userInfo.virtualContestPurchased) {
+          @if (contest.status != 0 && contest.isRated && contest.userInfo.isRegistered && !contest.userInfo.unratedContestPurchased) {
+            <kepcoin-spend-swal
+              [customContent]="true"
+              [purchaseUrl]="'contests/' + contest.id + '/purchase-unrated-contest/'"
+              [value]="10"
+              class="me-1" ngbTooltip="{{ 'UnofficialParticipation' | translate }}"
+              (success)="contest.userInfo.unratedContestPurchased=true;">
+              <img height="25" src="assets/images/icons/unrated.png">
+            </kepcoin-spend-swal>
+          }
+          @if (contest.userInfo.isRegistered && contest.isRated && contest.userInfo.unratedContestPurchased) {
+            <img
+              ngbTooltip="{{ 'Purchased' | translate }}"
+              height="25" src="assets/images/icons/unrated.png" class="me-1">
+          }
+          @if (contest.userInfo.isRegistered) {
+            <button
+              ngbTooltip="{{ 'Cancel' | translate }}"
+              rippleEffect
+              class="btn btn-sm round btn-gradient-success"
+              (click)="cancelRegistration()">
+              <kep-icon name="check" color="success" size="small-4"/>
+              {{ 'Registered' | translate }}
+              <i data-feather="x" class="text-danger"></i>
+            </button>
+          }
+          @if (!currentUser || !contest.userInfo.isRegistered) {
+            <button
+              rippleEffect
+              class="btn btn-sm round btn-gradient-primary"
+              (click)="openRegistrationModal()">
+              <kep-icon size="small-4" name="username"/>
+              {{ 'CONTESTS.REGISTER' | translate }}
+            </button>
+          }
         }
       }
     </div>

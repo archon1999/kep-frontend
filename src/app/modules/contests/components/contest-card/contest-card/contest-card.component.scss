@@ -101,19 +101,16 @@ contest-card {
       border-top: 1px solid var(--bg);
 
       .registration {
-        button {
+        button, a {
           background: var(--bg) !important;
           border: var(--bg) !important;
         }
       }
-
-      .meta-info {
-        & > .badge {
-          background-color: var(--bg);
-        }
-      }
     }
 
+    .badge {
+      background-color: var(--bg) !important;
+    }
   }
 }
 

@@ -217,8 +217,11 @@ $revo-color: #0048dd;
   $color-dark: mix(white, $revo-color, 50),
   $background-light: linear-gradient(45deg, rgba($revo-color, 0.1), $revo-color),
   $background-dark: linear-gradient(45deg, rgba($revo-color, 0.1), rgba($revo-color, 0.9)),
-);
-
+) {
+  .card-bg {
+    zoom: 30% !important;
+  }
+}
 
 .contests-colors {
   &.contest-254 {
