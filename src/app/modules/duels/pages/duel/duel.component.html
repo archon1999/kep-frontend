@@ -1,161 +1,124 @@
-<div class="row">
-  <div class="col-lg-9 col-12">
-    <kep-card>
-      <div class="table-responsive">
-        <table class="table">
-          <thead>
-          <tr>
-            <th><i class="text-white ms-1" data-feather="user"></i></th>
-            <th class="text-center"><i ngbTooltip="{{ 'Points' | translate }}" class="text-white"
-                                       [data-feather]="'rating' | iconName"></i></th>
-            @for (duelProblem of duel.problems; track duelProblem) {
-              <th class="text-center text-white">
-                {{ duelProblem.symbol }}
-              </th>
-            }
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td>
-              <contestant-view [textColor]="'white'" [user]="duel.playerFirst"></contestant-view>
-            </td>
-            <td class="text-center">
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <div class="row">
+      <div class="col-lg-9 col-12">
+        <kep-card>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th><i class="text-white ms-1" data-feather="user"></i></th>
+                <th class="text-center">
+                  <i [data-feather]="'rating' | iconName" class="text-white"
+                     ngbTooltip="{{ 'Points' | translate }}"></i>
+                </th>
+                @for (duelProblem of duel.problems;track duelProblem) {
+                  <th class="text-center text-white">
+                    <div class="cursor-pointer" (click)="changeProblem(duelProblem)" [ngbTooltip]="duelProblem.problem.title">
+                      {{ duelProblem.symbol }}
+                    </div>
+                  </th>
+                }
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>
+                  <contestant-view [textColor]="'white'" [user]="duel.playerFirst"></contestant-view>
+                </td>
+                <td class="text-center">
               <span class="badge badge-glow bg-primary">
                 {{ duel.playerFirst.balls }}
               </span>
-            </td>
-            @for (duelProblem of duel.problems; track duelProblem) {
-              <td class="text-center">
-                @if (duelProblem.playerFirstBall > 0) {
-                  <span class="badge bg-success badge-glow">
+                </td>
+                @for (duelProblem of duel.problems;track duelProblem) {
+                  <td class="text-center">
+                    @if (duelProblem.playerFirstBall > 0) {
+                      <span class="badge bg-success badge-glow">
                     {{ duelProblem.playerFirstBall }}
                   </span>
+                    }
+                  </td>
                 }
-              </td>
-            }
-          </tr>
-          <tr>
-            <td>
-              @if (duel.playerSecond) {
-                <contestant-view [textColor]="'white'" [user]="duel.playerSecond"></contestant-view>
-              }
-              @if (!duel.playerSecond) {
-                <span class="text-white ms-1 mb-1">
+              </tr>
+              <tr>
+                <td>
+                  @if (duel.playerSecond) {
+                    <contestant-view [textColor]="'white'" [user]="duel.playerSecond"></contestant-view>
+                  }
+                  @if (!duel.playerSecond) {
+                    <span class="text-white ms-1 mb-1">
                   BYE
                 </span>
-              }
-            </td>
-            <td class="text-center">
+                  }
+                </td>
+                <td class="text-center">
               <span class="badge badge-glow bg-primary bg-primary bg-darken-1">
                 {{ duel.playerSecond?.balls || 0 }}
               </span>
-            </td>
-            @for (duelProblem of duel.problems; track duelProblem) {
-              <td class="text-center">
-                @if (duelProblem.playerSecondBall > 0) {
-                  <span class="badge bg-success badge-glow">
+                </td>
+                @for (duelProblem of duel.problems;track duelProblem) {
+                  <td class="text-center">
+                    @if (duelProblem.playerSecondBall > 0) {
+                      <span class="badge bg-success badge-glow">
                     {{ duelProblem.playerSecondBall }}
                   </span>
+                    }
+                  </td>
                 }
-              </td>
-            }
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </kep-card>
-
-    @if (duelProblem) {
-      <kep-card>
-        <div class="card-body">
-          <h2 class="text-center mb-2">
-            {{ duelProblem.symbol }}. {{ duelProblem.problem.title }}
-          </h2>
-          @if (duel.isPlayer) {
-            <div class="row justify-content-center mt-1">
-              <div class="col text-end problem-header">
-                <small class="text-center pe-1">
-                  {{ 'SelectedLanguage' | translate }}:
-                </small>
-              </div>
-              <div class="col problem-header">
-                <small class="text-center">
-                  <span class="badge badge-pill badge-{{ selectedLang }}">
-                    {{ selectedLang }}
-                  </span>
-                </small>
-              </div>
-            </div>
-          }
-          <div class="row justify-content-center mt-1">
-            <div class="col text-end problem-header">
-              <small class="text-center pe-1">
-                {{ 'TIME_LIMIT' | translate }}:
-              </small>
-            </div>
-            <div class="col problem-header">
-              <small class="text-center">
-                <span class="text-info">
-                  {{ availableLang.timeLimit || duelProblem.problem.timeLimit }} {{ 'MS' | translate }}
-                </span>
-              </small>
-            </div>
+              </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="row justify-content-center mt-1">
-            <div class="col text-end problem-header">
-              <small class="text-center pe-1">
-                {{ 'MEMORY_LIMIT' | translate }}:
-              </small>
-            </div>
-            <div class="col mb-2 problem-header">
-              <small class="text-center">
-                <span class="text-primary">
-                  {{ availableLang.memoryLimit || duelProblem.problem.memoryLimit }} {{ 'MB' | translate }}
-                </span>
-              </small>
-            </div>
-          </div>
-          <problem-body [problem]="duelProblem.problem"></problem-body>
-          @if (duel.status == 0 && duel.isPlayer && currentUser) {
-            <code-editor-modal
-              [uniqueName]="'duel-problem-' + duelProblem.problem.id"
-              [sampleTests]="duelProblem.problem.sampleTests"
-              [availableLanguages]="duelProblem.problem.availableLanguages"
-              [submitUrl]="'duels/' + duel.id + '/submit/'"
-              [submitParams]="{ duelProblem: duelProblem.symbol }"
-              (submittedEvent)="reloadAttempts()"
-            ></code-editor-modal>
-          }
-        </div>
-      </kep-card>
-    }
+        </kep-card>
 
-    @if (attempts.length > 0) {
-      <kep-card>
-        <div class="card-header">
-          <div class="card-title">
+        @if (duelProblem) {
+          <kep-card>
+            <div class="card-body">
+              <h2 class="text-center mb-2">
+                {{ duelProblem.symbol }}. {{ duelProblem.problem.title }}
+              </h2>
+              <problem-body [problem]="duelProblem.problem"></problem-body>
+              @if (duel.status == 0 && duel.isPlayer && currentUser) {
+                <code-editor-modal
+                  [uniqueName]="'duel-problem-' + duelProblem.problem.id"
+                  [sampleTests]="duelProblem.problem.sampleTests"
+                  [availableLanguages]="duelProblem.problem.availableLanguages"
+                  [submitUrl]="'duels/' + duel.id + '/submit/'"
+                  [submitParams]="{ duelProblem: duelProblem.symbol }"
+                  (submittedEvent)="reloadAttempts()"
+                ></code-editor-modal>
+              }
+            </div>
+          </kep-card>
+        }
+
+        @if (attempts.length > 0) {
+          <h5>
             {{ 'Attempts' | translate }}
-          </div>
-        </div>
-        <div class="card-body">
+          </h5>
           <attempts-table [hideSourceCodeSize]="true" [attempts]="attempts" [contest]="duel"></attempts-table>
-        </div>
-      </kep-card>
-    }
-  </div>
+        }
+      </div>
 
-  <div class="col-lg-3 col-12">
-    <duel-countdown [duel]="duel"></duel-countdown>
+      <div class="col-lg-3 col-12">
+        <duel-countdown [duel]="duel"></duel-countdown>
 
-    @if (duel.problems) {
-      @for (duelProblem of duel.problems; track duelProblem) {
-        <problem-list-card
-          (click)="changeProblem(duelProblem)"
-          [duelProblem]="duelProblem"
-        >
-        </problem-list-card>
-      }
-    }
+        <kep-card>
+          <div class="card-body">
+            <problem-info-card [problem]="duelProblem.problem" [hideAuthorAndDifficulty]="true" [hideLikes]="true"/>
+          </div>
+        </kep-card>
+
+        @if (duel.problems) {
+          @for (duelProblem of duel.problems;track duelProblem) {
+            <problem-list-card
+              (click)="changeProblem(duelProblem)"
+              [duelProblem]="duelProblem">
+            </problem-list-card>
+          }
+        }
+      </div>
+    </div>
   </div>
 </div>

@@ -34,12 +34,12 @@ export class DuelComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({duel}) => {
+    this.route.data.subscribe(({ duel }) => {
       this.duel = duel;
       this.titleService.updateTitle(this.route, {
         playerFirstUsername: duel.playerFirst.username,
         playerSecondUsername: duel.playerSecond.username,
-      })
+      });
 
       if (this.duel.problems) {
         this.changeProblem(this.duel.problems[0]);
@@ -51,10 +51,10 @@ export class DuelComponent implements OnInit, OnDestroy {
         this._intervalId = setInterval(
           () => {
             this.reloadResults();
-          }, 10000
-        )
+          }, 5000
+        );
       }
-    })
+    });
 
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (user: any) => {
@@ -63,7 +63,7 @@ export class DuelComponent implements OnInit, OnDestroy {
           this.reloadAttempts();
         }
       }
-    )
+    );
   }
 
   changeProblem(duelProblem: DuelProblem) {
@@ -92,7 +92,7 @@ export class DuelComponent implements OnInit, OnDestroy {
       (result: any) => {
         this.attempts = result.data;
       }
-    )
+    );
   }
 
   reloadResults() {
@@ -109,7 +109,7 @@ export class DuelComponent implements OnInit, OnDestroy {
         this.duel.playerFirst.balls = playerFirstBalls;
         this.duel.playerSecond.balls = playerSecondBalls;
       }
-    )
+    );
   }
 
   ngOnDestroy(): void {
@@ -120,5 +120,4 @@ export class DuelComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
   }
-
 }
