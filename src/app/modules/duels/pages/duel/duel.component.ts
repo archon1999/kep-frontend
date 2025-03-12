@@ -70,7 +70,9 @@ export class DuelComponent extends BaseLoadComponent<Duel> {
     });
 
     if (duel.problems) {
-      this.changeProblem(duel.problems[0]);
+      if (!this.duelProblem) {
+        this.changeProblem(duel.problems[0]);
+      }
     } else if (duel.isPlayer) {
       this.reloadAttempts();
     }
