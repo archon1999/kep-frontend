@@ -16,7 +16,7 @@
         "@schematics/angular:standalone": {
           "skipTests": true
         },
-        "@schematics/angularirective": {
+        "@schematics/angular:directive": {
           "skipTests": true
         },
         "@schematics/angular:guard": {
@@ -25,7 +25,7 @@
         "@schematics/angular:interceptor": {
           "skipTests": true
         },
-        "@schematics/angularipe": {
+        "@schematics/angular:pipe": {
           "skipTests": true
         },
         "@schematics/angular:resolver": {
