@@ -1,19 +1,17 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { DuelProblem } from '../../duels.models';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { DuelProblem } from '../../duels.interfaces';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
   selector: 'problem-list-card',
   templateUrl: './problem-list-card.component.html',
   styleUrls: ['./problem-list-card.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  standalone: true,
+  imports: [
+    KepCardComponent
+  ]
 })
-export class ProblemListCardComponent implements OnInit {
-
+export class ProblemListCardComponent {
   @Input() duelProblem: DuelProblem;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

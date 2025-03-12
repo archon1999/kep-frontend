@@ -1,124 +1,155 @@
 <div class="content-wrapper container-xxl p-0">
   <div class="content-body">
-    <div class="row">
-      <div class="col-lg-9 col-12">
-        <kep-card>
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-              <tr>
-                <th><i class="text-white ms-1" data-feather="user"></i></th>
-                <th class="text-center">
-                  <i [data-feather]="'rating' | iconName" class="text-white"
-                     ngbTooltip="{{ 'Points' | translate }}"></i>
-                </th>
-                @for (duelProblem of duel.problems;track duelProblem) {
-                  <th class="text-center text-white">
-                    <div class="cursor-pointer" (click)="changeProblem(duelProblem)" [ngbTooltip]="duelProblem.problem.title">
-                      {{ duelProblem.symbol }}
-                    </div>
-                  </th>
-                }
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>
-                  <contestant-view [textColor]="'white'" [user]="duel.playerFirst"></contestant-view>
-                </td>
-                <td class="text-center">
-              <span class="badge badge-glow bg-primary">
-                {{ duel.playerFirst.balls }}
-              </span>
-                </td>
-                @for (duelProblem of duel.problems;track duelProblem) {
-                  <td class="text-center">
-                    @if (duelProblem.playerFirstBall > 0) {
-                      <span class="badge bg-success badge-glow">
-                    {{ duelProblem.playerFirstBall }}
-                  </span>
-                    }
-                  </td>
-                }
-              </tr>
-              <tr>
-                <td>
-                  @if (duel.playerSecond) {
-                    <contestant-view [textColor]="'white'" [user]="duel.playerSecond"></contestant-view>
-                  }
-                  @if (!duel.playerSecond) {
-                    <span class="text-white ms-1 mb-1">
-                  BYE
-                </span>
-                  }
-                </td>
-                <td class="text-center">
-              <span class="badge badge-glow bg-primary bg-primary bg-darken-1">
-                {{ duel.playerSecond?.balls || 0 }}
-              </span>
-                </td>
-                @for (duelProblem of duel.problems;track duelProblem) {
-                  <td class="text-center">
-                    @if (duelProblem.playerSecondBall > 0) {
-                      <span class="badge bg-success badge-glow">
-                    {{ duelProblem.playerSecondBall }}
-                  </span>
-                    }
-                  </td>
-                }
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </kep-card>
-
-        @if (duelProblem) {
+    @if (isLoading) {
+      <div class="row">
+        <div class="col-lg-9 col-12">
+          <ngx-skeleton-loader
+            count="1"
+            animation="pulse"
+            appearance="line"
+            [theme]="{height: '158px', background: 'var(--skeleton-color)'}"
+          ></ngx-skeleton-loader>
+        </div>
+        <div class="col-lg-3 col-12">
+          <ngx-skeleton-loader
+            count="1"
+            animation="pulse"
+            appearance="line"
+            [theme]="{height: '158px', background: 'var(--skeleton-color)'}"
+          ></ngx-skeleton-loader>
+        </div>
+      </div>
+    } @else {
+      <div class="row">
+        <div class="col-lg-9 col-12">
           <kep-card>
-            <div class="card-body">
-              <h2 class="text-center mb-2">
-                {{ duelProblem.symbol }}. {{ duelProblem.problem.title }}
-              </h2>
-              <problem-body [problem]="duelProblem.problem"></problem-body>
-              @if (duel.status == 0 && duel.isPlayer && currentUser) {
-                <code-editor-modal
-                  [uniqueName]="'duel-problem-' + duelProblem.problem.id"
-                  [sampleTests]="duelProblem.problem.sampleTests"
-                  [availableLanguages]="duelProblem.problem.availableLanguages"
-                  [submitUrl]="'duels/' + duel.id + '/submit/'"
-                  [submitParams]="{ duelProblem: duelProblem.symbol }"
-                  (submittedEvent)="reloadAttempts()"
-                ></code-editor-modal>
-              }
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th><i class="text-white ms-1" data-feather="user"></i></th>
+                  <th class="text-center">
+                    <i
+                      [data-feather]="'rating' | iconName"
+                      class="text-white"
+                      ngbTooltip="{{ 'Points' | translate }}">
+                    </i>
+                  </th>
+                  @for (duelProblem of duel.problems;track duelProblem) {
+                    <th class="text-center text-white">
+                      <div
+                        class="cursor-pointer"
+                        (click)="changeProblem(duelProblem)"
+                        [ngbTooltip]="duelProblem.problem.title">
+                        {{ duelProblem.symbol }}
+                      </div>
+                    </th>
+                  }
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>
+                    <contestant-view [textColor]="'white'" [user]="duel.playerFirst"/>
+                  </td>
+                  <td class="text-center">
+                    <span class="badge badge-glow bg-primary">
+                      {{ duel.playerFirst.balls }}
+                    </span>
+                  </td>
+                  @for (duelProblem of duel.problems;track duelProblem) {
+                    <td class="text-center">
+                      @if (duelProblem.playerFirstBall > 0) {
+                        <span class="badge bg-success badge-glow">
+                          {{ duelProblem.playerFirstBall }}
+                        </span>
+                      }
+                    </td>
+                  }
+                </tr>
+                <tr>
+                  <td>
+                    @if (duel.playerSecond) {
+                      <contestant-view [textColor]="'white'" [user]="duel.playerSecond"></contestant-view>
+                    }
+                    @if (!duel.playerSecond) {
+                      <span class="text-white ms-1 mb-1">
+                        BYE
+                      </span>
+                    }
+                  </td>
+                  <td class="text-center">
+                    <span class="badge badge-glow bg-primary bg-primary bg-darken-1">
+                      {{ duel.playerSecond?.balls || 0 }}
+                    </span>
+                  </td>
+                  @for (duelProblem of duel.problems;track duelProblem) {
+                    <td class="text-center">
+                      @if (duelProblem.playerSecondBall > 0) {
+                        <span class="badge bg-success badge-glow">
+                          {{ duelProblem.playerSecondBall }}
+                        </span>
+                      }
+                    </td>
+                  }
+                </tr>
+                </tbody>
+              </table>
             </div>
           </kep-card>
-        }
 
-        @if (attempts.length > 0) {
-          <h5>
-            {{ 'Attempts' | translate }}
-          </h5>
-          <attempts-table [hideSourceCodeSize]="true" [attempts]="attempts" [contest]="duel"></attempts-table>
-        }
-      </div>
+          @if (duelProblem) {
+            <kep-card>
+              <div class="card-body">
+                <h2 class="text-center mb-2">
+                  {{ duelProblem.symbol }}. {{ duelProblem.problem.title }}
+                </h2>
+                <problem-body [problem]="duelProblem.problem"></problem-body>
+                @if (duel.status == 0 && duel.isPlayer && currentUser) {
+                  <code-editor-modal
+                    [uniqueName]="'duel-problem-' + duelProblem.problem.id"
+                    [sampleTests]="duelProblem.problem.sampleTests"
+                    [availableLanguages]="duelProblem.problem.availableLanguages"
+                    [submitUrl]="'duels/' + duel.id + '/submit/'"
+                    [submitParams]="{ duelProblem: duelProblem.symbol }"
+                    (submittedEvent)="reloadAttempts()"
+                  />
+                }
+              </div>
+            </kep-card>
+          }
 
-      <div class="col-lg-3 col-12">
-        <duel-countdown [duel]="duel"></duel-countdown>
+          @if (attempts) {
+            <h5>
+              {{ 'Attempts' | translate }}
+            </h5>
+            <attempts-table
+              [hideSourceCodeSize]="true"
+              [attempts]="attempts"
+              [contest]="duel"
+            />
+          }
+        </div>
 
-        <kep-card>
-          <div class="card-body">
-            <problem-info-card [problem]="duelProblem.problem" [hideAuthorAndDifficulty]="true" [hideLikes]="true"/>
-          </div>
-        </kep-card>
+        <div class="col-lg-3 col-12">
+          <duel-countdown [duel]="duel"></duel-countdown>
 
-        @if (duel.problems) {
+          @if (duelProblem) {
+            <kep-card>
+              <div class="card-body">
+                <problem-info-card [hideAuthorAndDifficulty]="true" [hideLikes]="true" [problem]="duelProblem.problem"/>
+              </div>
+            </kep-card>
+          }
+
           @for (duelProblem of duel.problems;track duelProblem) {
             <problem-list-card
               (click)="changeProblem(duelProblem)"
-              [duelProblem]="duelProblem">
-            </problem-list-card>
+              [duelProblem]="duelProblem"
+            />
           }
-        }
+        </div>
       </div>
-    </div>
+    }
   </div>
 </div>

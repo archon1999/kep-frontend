@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Duel } from '../../../../duels/duels.models';
+import { Duel } from '../../../../duels/duels.interfaces';
 
 @Component({
   selector: 'duel-card',

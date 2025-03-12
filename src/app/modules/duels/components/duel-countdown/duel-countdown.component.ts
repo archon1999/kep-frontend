@@ -1,10 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Duel } from '../../duels.models';
+import { Duel } from '../../duels.interfaces';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 
 @Component({
   selector: 'duel-countdown',
   templateUrl: './duel-countdown.component.html',
-  styleUrls: ['./duel-countdown.component.scss']
+  styleUrls: ['./duel-countdown.component.scss'],
+  standalone: true,
+  imports: [
+    KepCardComponent,
+    TranslatePipe,
+    CountdownComponent
+  ]
 })
 export class DuelCountdownComponent implements OnInit {
 

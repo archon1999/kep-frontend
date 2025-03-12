@@ -1,69 +1,74 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AuthService, User } from '@auth';
-import { Attempt } from '../../../problems/models/attempts.models';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { Duel, DuelProblem } from '../../duels.models';
+import { Component, inject, Input } from '@angular/core';
+import { Attempt } from '@problems/models/attempts.models';
+import { interval, Observable } from 'rxjs';
+import { Duel, DuelProblem } from '../../duels.interfaces';
 import { DuelsService } from '../../duels.service';
-import { TitleService } from '../../../../shared/services/title.service';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { CoreCommonModule } from '@core/common.module';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
+import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';
+import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
+import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
+import { DuelCountdownComponent } from '@app/modules/duels/components/duel-countdown/duel-countdown.component';
+import { ProblemInfoCardComponent } from '@problems/components/problem-info-card/problem-info-card.component';
+import { ProblemListCardComponent } from '@app/modules/duels/components/problem-list-card/problem-list-card.component';
+import { BaseLoadComponent } from '@app/common';
+import { takeUntil } from 'rxjs/operators';
+import { PageResult } from '@app/common/classes/page-result';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({
   templateUrl: './duel.component.html',
-  styleUrls: ['./duel.component.scss']
+  styleUrls: ['./duel.component.scss'],
+  standalone: true,
+  imports: [
+    KepCardComponent,
+    CoreCommonModule,
+    NgbTooltip,
+    ContestantViewModule,
+    ProblemBodyComponent,
+    CodeEditorModule,
+    AttemptsTableModule,
+    DuelCountdownComponent,
+    ProblemInfoCardComponent,
+    ProblemListCardComponent,
+    NgxSkeletonLoaderModule
+  ]
 })
-export class DuelComponent implements OnInit, OnDestroy {
-
-  public duel: Duel;
-
+export class DuelComponent extends BaseLoadComponent<Duel> {
   public duelProblem: DuelProblem;
-  public attempts: Array<Attempt> = [];
-  public availableLang: any;
-  public selectedLang: string;
+  public attempts: Array<Attempt>;
 
-  public currentUser: User;
+  protected duelsService = inject(DuelsService);
 
-  private _intervalId: any;
-  private _unsubscribeAll = new Subject();
+  get duel() {
+    return this.data;
+  }
 
-  constructor(
-    public route: ActivatedRoute,
-    public authService: AuthService,
-    public service: DuelsService,
-    public titleService: TitleService,
-  ) { }
+  getData(): Observable<Duel> {
+    return this.duelsService.getDuel(this.route.snapshot.params.id);
+  }
 
-  ngOnInit(): void {
-    this.route.data.subscribe(({ duel }) => {
-      this.duel = duel;
-      this.titleService.updateTitle(this.route, {
-        playerFirstUsername: duel.playerFirst.username,
-        playerSecondUsername: duel.playerSecond.username,
-      });
-
-      if (this.duel.problems) {
-        this.changeProblem(this.duel.problems[0]);
-      }
-
-      this.changeLang(localStorage.getItem('problems-selected-lang') || 'py');
-
-      if (this.duel.status == 0) {
-        this._intervalId = setInterval(
-          () => {
-            this.reloadResults();
-          }, 5000
-        );
-      }
+  afterLoadData(duel: Duel) {
+    this.titleService.updateTitle(this.route, {
+      playerFirstUsername: duel.playerFirst.username,
+      playerSecondUsername: duel.playerSecond.username,
     });
 
-    this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (user: any) => {
-        this.currentUser = user;
-        if (this.duel.isPlayer) {
-          this.reloadAttempts();
-        }
-      }
-    );
+    if (duel.problems) {
+      this.changeProblem(duel.problems[0]);
+    }
+
+    if (duel.isPlayer) {
+      this.reloadAttempts();
+    }
+
+    if (this.duel.status == 0) {
+      interval(5000).pipe(takeUntil(this._unsubscribeAll)).subscribe(
+        () => this.reloadResults()
+      );
+    }
   }
 
   changeProblem(duelProblem: DuelProblem) {
@@ -73,30 +78,16 @@ export class DuelComponent implements OnInit, OnDestroy {
     }
   }
 
-  changeLang(lang: string) {
-    this.selectedLang = lang;
-    for (let availableLang of this.duelProblem.problem.availableLanguages) {
-      if (availableLang.lang == this.selectedLang) {
-        this.availableLang = availableLang;
-      }
-    }
-    if (!this.availableLang) {
-      this.availableLang = this.duelProblem.problem.availableLanguages[0];
-      this.selectedLang = this.availableLang.lang;
-    }
-    localStorage.setItem('problems-selected-lang', this.selectedLang);
-  }
-
   reloadAttempts() {
-    this.service.getProblemAttempts(this.duel.id, this.duelProblem.symbol, this.currentUser.username).subscribe(
-      (result: any) => {
-        this.attempts = result.data;
+    this.duelsService.getProblemAttempts(this.duel.id, this.duelProblem.symbol, this.currentUser.username).subscribe(
+      (pageResult: PageResult<Attempt>) => {
+        this.attempts = pageResult.data;
       }
     );
   }
 
   reloadResults() {
-    this.service.getDuelResults(this.duel.id).subscribe(
+    this.duelsService.getDuelResults(this.duel.id).subscribe(
       (results: any) => {
         let playerFirstBalls = 0;
         let playerSecondBalls = 0;
@@ -110,14 +101,5 @@ export class DuelComponent implements OnInit, OnDestroy {
         this.duel.playerSecond.balls = playerSecondBalls;
       }
     );
-  }
-
-  ngOnDestroy(): void {
-    if (this._intervalId) {
-      clearInterval(this._intervalId);
-    }
-
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
   }
 }
