@@ -23,11 +23,18 @@ export abstract class BaseLoadComponent<T> extends BasePageComponent implements 
   loadData() {
     this.isLoading = true;
     this.getData().subscribe(
-      (data) => {
-        this.data = data;
-        this.afterLoadData(data);
-        this.isLoading = false;
-        this.cdr.markForCheck();
+      {
+        next: (data) => {
+          this.data = data;
+          this.afterLoadData(data);
+          this.isLoading = false;
+          this.cdr.markForCheck();
+        },
+        error: (error) => {
+          if (error.status == 404) {
+            this.router.navigate(['404']);
+          }
+        }
       }
     );
   }
