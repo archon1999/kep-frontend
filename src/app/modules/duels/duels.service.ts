@@ -14,9 +14,8 @@ export class DuelsService {
     return this.api.get(`duels/${duelId}`);
   }
 
-  getProblemAttempts(duelId: number, duelProblem: string, username: string) {
+  getProblemAttempts(duelId: number, duelProblem: string) {
     return this.api.get('attempts', {
-      username: username,
       duel_problem: duelProblem,
       duel_id: duelId,
       page_size: 20,

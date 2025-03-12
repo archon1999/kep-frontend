@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Attempt } from '@problems/models/attempts.models';
 import { interval, Observable } from 'rxjs';
 import { Duel, DuelProblem } from '../../duels.interfaces';
@@ -50,6 +50,19 @@ export class DuelComponent extends BaseLoadComponent<Duel> {
     return this.duelsService.getDuel(this.route.snapshot.params.id);
   }
 
+  override ngOnInit() {
+    super.ngOnInit();
+
+    interval(5000).pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      () => {
+        if (this.duel?.status == 0) {
+          this.loadData();
+          this.reloadResults();
+        }
+      }
+    );
+  }
+
   afterLoadData(duel: Duel) {
     this.titleService.updateTitle(this.route, {
       playerFirstUsername: duel.playerFirst.username,
@@ -58,16 +71,8 @@ export class DuelComponent extends BaseLoadComponent<Duel> {
 
     if (duel.problems) {
       this.changeProblem(duel.problems[0]);
-    }
-
-    if (duel.isPlayer) {
+    } else if (duel.isPlayer) {
       this.reloadAttempts();
-    }
-
-    if (this.duel.status == 0) {
-      interval(5000).pipe(takeUntil(this._unsubscribeAll)).subscribe(
-        () => this.reloadResults()
-      );
     }
   }
 
@@ -79,7 +84,7 @@ export class DuelComponent extends BaseLoadComponent<Duel> {
   }
 
   reloadAttempts() {
-    this.duelsService.getProblemAttempts(this.duel.id, this.duelProblem.symbol, this.currentUser.username).subscribe(
+    this.duelsService.getProblemAttempts(this.duel.id, this.duelProblem.symbol).subscribe(
       (pageResult: PageResult<Attempt>) => {
         this.attempts = pageResult.data;
       }
