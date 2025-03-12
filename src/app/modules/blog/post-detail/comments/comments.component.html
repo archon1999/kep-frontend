@@ -22,7 +22,7 @@
         </div>
       </div>
       <div class="d-flex">
-        <span class="me-4"><i class="ri-double-quotes-l fs-30 op-1"></i></span>
+        <span class="me-4"><i class="bi-quote fs-30 op-1"></i></span>
         <mathjax [content]="comment.body"/>
       </div>
     </div>
@@ -32,7 +32,7 @@
           <button
             (click)="like($index)"
             class="btn btn-primary-light me-2">
-            <i class="ri-thumb-up-line align-bottom me-1 d-inline-flex"></i>
+            <i class="bi-hand-thumbs-up align-bottom me-1 d-inline-flex"></i>
             @if (comment.likes > 0) {
               <span class="ms-1">{{ comment.likes }}</span>
             }

@@ -5,7 +5,8 @@ import { BaseUserComponent } from '@app/common';
 @Component({
   selector: 'tournament-info',
   templateUrl: './tournament-info.component.html',
-  styleUrls: ['./tournament-info.component.scss']
+  styleUrls: ['./tournament-info.component.scss'],
+  standalone: false
 })
 export class TournamentInfoComponent extends BaseUserComponent {
   @Input() tournament: Tournament;

@@ -4,7 +4,8 @@ import { Duel } from '../../../../duels/duels.interfaces';
 @Component({
   selector: 'duel-card',
   templateUrl: './duel-card.component.html',
-  styleUrls: ['./duel-card.component.scss']
+  styleUrls: ['./duel-card.component.scss'],
+  standalone: false,
 })
 export class DuelCardComponent implements OnInit {
 

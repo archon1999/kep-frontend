@@ -4,7 +4,8 @@ import { Blog } from '../../../blog.models';
 @Component({
   selector: 'blog-post-card',
   templateUrl: './blog-post-card.component.html',
-  styleUrls: ['./blog-post-card.component.scss']
+  styleUrls: ['./blog-post-card.component.scss'],
+  standalone: false,
 })
 export class BlogPostCardComponent {
   @Input() blog: Blog;

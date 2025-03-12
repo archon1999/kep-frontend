@@ -5,7 +5,8 @@ import { Contest } from '@contests/models/contest';
 @Component({
   selector: 'contest-card-small',
   templateUrl: './contest-card-small.component.html',
-  styleUrls: ['./contest-card-small.component.scss']
+  styleUrls: ['./contest-card-small.component.scss'],
+  standalone: false,
 })
 export class ContestCardSmallComponent implements OnInit, OnDestroy {
 

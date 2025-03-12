@@ -18,7 +18,8 @@ import { randomChoice } from '@shared/utils/random';
     fadeInLeftAnimation({duration: 1500}),
     fadeInRightAnimation({duration: 1000}),
     fadeInUpAnimation({duration: 1000}),
-  ]
+  ],
+  standalone: false,
 })
 export class TestPassComponent implements OnInit, OnDestroy {
   public startAnimationState = false;

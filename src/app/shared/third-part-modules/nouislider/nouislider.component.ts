@@ -4,7 +4,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
   templateUrl: './nouislider.component.html',
   styleUrls: ['./nouislider.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  selector: 'nouslider-css'
+  selector: 'nouslider-css',
+  standalone: false,
 })
 export class NouisliderComponent implements OnInit {
 

@@ -3,7 +3,8 @@ import { NgxCountriesService } from './ngx-countries.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Pipe({
-  name: 'countryName'
+  name: 'countryName',
+  standalone: false,
 })
 export class CountryNamePipe implements PipeTransform {
   constructor(private countries: NgxCountriesService, public translateService: TranslateService) {}

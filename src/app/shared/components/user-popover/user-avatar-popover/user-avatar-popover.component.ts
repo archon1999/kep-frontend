@@ -5,7 +5,8 @@ import { User } from '@auth';
 @Component({
   selector: 'user-avatar-popover',
   templateUrl: './user-avatar-popover.component.html',
-  styleUrls: ['./user-avatar-popover.component.scss']
+  styleUrls: ['./user-avatar-popover.component.scss'],
+  standalone: false,
 })
 export class UserAvatarPopoverComponent implements OnInit {
 

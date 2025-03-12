@@ -16,7 +16,8 @@ import { SessionStorageService } from '@shared/services/storages/session-storage
   animations: [
     fadeInLeftOnEnterAnimation({translate: '40px'}),
     fadeInUpOnEnterAnimation({translate: '40px'}),
-  ]
+  ],
+  standalone: false,
 })
 export class TournamentComponent implements OnInit, OnDestroy {
 

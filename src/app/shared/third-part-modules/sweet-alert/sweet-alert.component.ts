@@ -5,5 +5,6 @@ import { Component, ViewEncapsulation } from '@angular/core';
   templateUrl: './sweet-alert.component.html',
   styleUrls: ['./sweet-alert.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class SweetAlertComponent {}

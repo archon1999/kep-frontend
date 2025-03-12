@@ -6,7 +6,8 @@ import { Chapter } from '../../testing.models';
   selector: 'chapter-card',
   templateUrl: './chapter-card.component.html',
   styleUrls: ['./chapter-card.component.scss'],
-  animations: [fadeInOnEnterAnimation({duration: 3000})]
+  animations: [fadeInOnEnterAnimation({duration: 3000})],
+  standalone: false,
 })
 export class ChapterCardComponent implements OnInit {
 

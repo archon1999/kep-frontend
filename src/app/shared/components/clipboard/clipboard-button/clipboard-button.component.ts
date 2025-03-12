@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './clipboard-button.component.html',
   styleUrls: ['./clipboard-button.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class ClipboardButtonComponent implements OnInit {
 

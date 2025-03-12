@@ -5,7 +5,8 @@ import { UsersApiService } from '../../users-api.service';
 @Component({
   selector: 'user-card',
   templateUrl: './user-card.component.html',
-  styleUrls: ['./user-card.component.scss']
+  styleUrls: ['./user-card.component.scss'],
+  standalone: false,
 })
 export class UserCardComponent implements OnInit {
 

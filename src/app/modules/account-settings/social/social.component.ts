@@ -8,7 +8,8 @@ import { AccountSettingsService } from '../account-settings.service';
 @Component({
   selector: 'social',
   templateUrl: './social.component.html',
-  styleUrls: ['./social.component.scss']
+  styleUrls: ['./social.component.scss'],
+  standalone: false,
 })
 export class SocialComponent implements OnInit {
 

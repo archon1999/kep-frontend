@@ -9,7 +9,8 @@ import { LocalStorageService } from '@shared/services/storages/local-storage.ser
 @Component({
   selector: 'system',
   templateUrl: './system.component.html',
-  styleUrls: ['./system.component.scss']
+  styleUrls: ['./system.component.scss'],
+  standalone: false,
 })
 export class SystemComponent {
 

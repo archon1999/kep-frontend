@@ -4,7 +4,8 @@ import { Tournament } from '../../tournaments.models';
 @Component({
   selector: 'tournament-schedule',
   templateUrl: './tournament-schedule.component.html',
-  styleUrls: ['./tournament-schedule.component.scss']
+  styleUrls: ['./tournament-schedule.component.scss'],
+  standalone: false,
 })
 export class TournamentScheduleComponent implements OnInit {
 

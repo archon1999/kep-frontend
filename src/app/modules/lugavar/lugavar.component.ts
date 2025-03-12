@@ -18,7 +18,8 @@ import { ActivatedRoute } from '@angular/router';
     fadeInLeftOnEnterAnimation({duration: 1000}),
     fadeInRightOnEnterAnimation({duration: 1000}),
     fadeInOnEnterAnimation({duration: 1000}),
-  ]
+  ],
+  standalone: false,
 })
 export class LugavarComponent implements OnInit {
 

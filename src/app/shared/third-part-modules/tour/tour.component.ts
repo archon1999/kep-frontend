@@ -5,6 +5,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
   templateUrl: './tour.component.html',
   styleUrls: ['./tour.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class TourComponent implements OnInit {
 

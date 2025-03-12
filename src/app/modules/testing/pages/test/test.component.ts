@@ -10,7 +10,8 @@ import { TestingApiService } from '../../testing-api.service';
   styleUrls: ['./test.component.scss'],
   animations: [
     fadeInOnEnterAnimation(),
-  ]
+  ],
+  standalone: false,
 })
 export class TestComponent implements OnInit, OnDestroy {
 

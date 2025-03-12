@@ -5,7 +5,8 @@ import { Contest } from '@contests/models/contest';
 @Component({
   selector: 'contest-card-countdown',
   templateUrl: './contest-countdown-card.component.html',
-  styleUrls: ['./contest-countdown-card.component.scss']
+  styleUrls: ['./contest-countdown-card.component.scss'],
+  standalone: false,
 })
 export class ContestCountdownCardComponent {
   @Input() contest: Contest;

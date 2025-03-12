@@ -9,6 +9,7 @@ import { BlogService } from '../blog.service';
   templateUrl: './post-detail.component.html',
   styleUrls: ['./post-detail.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class PostDetailComponent implements OnInit {
 

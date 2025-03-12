@@ -8,7 +8,8 @@ import { AccountSettingsService } from '../account-settings.service';
 @Component({
   selector: 'general-settings',
   templateUrl: './general-settings.component.html',
-  styleUrls: ['./general-settings.component.scss']
+  styleUrls: ['./general-settings.component.scss'],
+  standalone: false,
 })
 export class GeneralSettingsComponent implements OnInit {
 

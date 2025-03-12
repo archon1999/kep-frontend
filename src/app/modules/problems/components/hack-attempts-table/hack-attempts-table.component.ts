@@ -17,6 +17,7 @@ const HACK_ATTEMPT_DELETE_EVENT = 'hack-attempt-delete';
   selector: 'hack-attempts-table',
   templateUrl: './hack-attempts-table.component.html',
   styleUrls: ['./hack-attempts-table.component.scss'],
+  standalone: false,
 })
 export class HackAttemptsTableComponent implements OnInit, OnDestroy {
   public currentUser: User | null;

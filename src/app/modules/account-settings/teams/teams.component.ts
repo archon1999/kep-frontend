@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'teams',
   templateUrl: './teams.component.html',
-  styleUrls: ['./teams.component.scss']
+  styleUrls: ['./teams.component.scss'],
+  standalone: false,
 })
 export class TeamsComponent extends BaseLoadComponent<Array<Team>> {
   public teamName = '';

@@ -8,6 +8,7 @@ const SCRIPT_PATH = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js';
   inputs: ['content'],
   templateUrl: './mathjax.component.html',
   styleUrls: ['./mathjax.component.scss'],
+  standalone: false,
 })
 export class MathjaxComponent implements OnInit, OnChanges {
 

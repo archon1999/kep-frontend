@@ -11,6 +11,7 @@ import { NgxCountriesService } from '@shared/third-part-modules/ngx-countries/ng
   templateUrl: './information.component.html',
   styleUrls: ['./information.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class InformationComponent implements OnInit {
   public userInfo: UserInfo;

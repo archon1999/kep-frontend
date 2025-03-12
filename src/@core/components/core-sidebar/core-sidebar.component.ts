@@ -24,7 +24,8 @@ import { CoreSidebarService } from '../../components/core-sidebar/core-sidebar.s
 @Component({
   selector: 'core-sidebar',
   templateUrl: './core-sidebar.component.html',
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class CoreSidebarComponent implements OnInit, OnDestroy {
   // Sidebar name (Component input)

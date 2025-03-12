@@ -4,9 +4,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { UserPopoverModule } from '../../shared/components/user-popover/user-popover.module';
-import { MathjaxModule } from '../../shared/third-part-modules/mathjax/mathjax.module';
-import { QuillModule } from '../../shared/third-part-modules/quill/quill.module';
+import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
+import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
+import { QuillModule } from '@shared/third-part-modules/quill/quill.module';
 import { BlogComponent } from './blog.component';
 import { BlogPostResolver } from './blog.resolver';
 import { PostDetailComponent } from './post-detail/post-detail.component';
@@ -17,9 +17,8 @@ import { NgSelectModule } from '../../shared/third-part-modules/ng-select/ng-sel
 import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { KepImgComponent } from '@shared/components/kep-img/kep-img.component';
-import { ContentHeaderModule } from "@core/components/content-header/content-header.module";
-import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
-import { AngularEditorModule } from "@kolkov/angular-editor";
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 const routes: Routes = [
   {
@@ -64,7 +63,6 @@ const routes: Routes = [
     KepIconComponent,
     KepImgComponent,
     KepCardComponent,
-    AngularEditorModule,
   ],
   exports: [
     PostDetailComponent,

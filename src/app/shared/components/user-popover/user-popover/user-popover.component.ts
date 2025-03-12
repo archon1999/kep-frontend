@@ -8,7 +8,8 @@ import { User } from '@users/users.models';
   templateUrl: './user-popover.component.html',
   styleUrls: ['./user-popover.component.scss'],
   animations: [fadeInOnEnterAnimation({duration: 1000})],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class UserPopoverComponent implements OnInit {
 

@@ -3,7 +3,8 @@ import { Component, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'kepcoin-view',
   templateUrl: './kepcoin-view.component.html',
-  styleUrls: ['./kepcoin-view.component.scss']
+  styleUrls: ['./kepcoin-view.component.scss'],
+  standalone: false,
 })
 export class KepcoinViewComponent implements OnInit {
 

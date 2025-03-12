@@ -11,6 +11,7 @@ import { PageResult } from '@app/common/classes/page-result';
   templateUrl: './tests.component.html',
   styleUrls: ['./tests.component.scss'],
   animations: [],
+  standalone: false,
 })
 export class TestsComponent extends BaseTablePageComponent<Test> implements OnInit {
   override defaultPageSize = 50;

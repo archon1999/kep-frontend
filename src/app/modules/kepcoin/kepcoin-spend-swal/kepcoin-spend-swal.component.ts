@@ -7,7 +7,8 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'kepcoin-spend-swal',
   templateUrl: './kepcoin-spend-swal.component.html',
-  styleUrls: ['./kepcoin-spend-swal.component.scss']
+  styleUrls: ['./kepcoin-spend-swal.component.scss'],
+  standalone: false,
 })
 export class KepcoinSpendSwalComponent {
 

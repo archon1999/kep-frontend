@@ -7,7 +7,8 @@ import { DictionaryWord } from '../lugavar.models';
 @Component({
   selector: 'dictionary-training',
   templateUrl: './dictionary-training.component.html',
-  styleUrls: ['./dictionary-training.component.scss']
+  styleUrls: ['./dictionary-training.component.scss'],
+  standalone: false,
 })
 export class DictionaryTrainingComponent implements OnInit {
 

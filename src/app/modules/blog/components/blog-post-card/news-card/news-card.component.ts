@@ -6,6 +6,7 @@ import { Blog } from '../../../blog.models';
   templateUrl: './news-card.component.html',
   styleUrls: ['./news-card.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class NewsCardComponent {
   @Input() blog: Blog;

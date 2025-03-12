@@ -10,7 +10,8 @@ import { repeaterAnimation } from '../skills/repeater-animation';
   selector: 'career',
   templateUrl: './career.component.html',
   styleUrls: ['./career.component.scss'],
-  animations: [repeaterAnimation]
+  animations: [repeaterAnimation],
+  standalone: false,
 })
 export class CareerComponent implements OnInit {
 

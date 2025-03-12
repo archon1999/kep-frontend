@@ -9,6 +9,7 @@ import { Contest } from '@contests/models/contest';
   selector: 'contests-table',
   templateUrl: './contests-table.component.html',
   styleUrls: ['./contests-table.component.scss'],
+  standalone: false,
 })
 export class ContestsTableComponent implements OnInit, OnDestroy {
 

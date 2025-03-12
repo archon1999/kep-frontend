@@ -12,7 +12,8 @@ import { HackAttempt } from '../../../models/hack-attempt.models';
     bounceAnimation({duration: 2000}),
     shakeAnimation({duration: 2000}),
     fadeInOnEnterAnimation(),
-  ]
+  ],
+  standalone: false,
 })
 export class TableComponent implements OnInit {
 

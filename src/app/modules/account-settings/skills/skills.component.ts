@@ -11,7 +11,8 @@ import { devIcons } from './dev-icons';
   selector: 'skills',
   templateUrl: './skills.component.html',
   styleUrls: ['./skills.component.scss'],
-  animations: [repeaterAnimation]
+  animations: [repeaterAnimation],
+  standalone: false,
 })
 export class SkillsComponent implements OnInit {
   public userSkills: UserSkills;

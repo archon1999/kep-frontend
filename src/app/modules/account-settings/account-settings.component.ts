@@ -18,7 +18,8 @@ enum Tab {
 @Component({
   selector: 'app-account-settings',
   templateUrl: './account-settings.component.html',
-  styleUrls: ['./account-settings.component.scss']
+  styleUrls: ['./account-settings.component.scss'],
+  standalone: false,
 })
 export class AccountSettingsComponent extends BasePageComponent implements OnInit {
   public activeId = Tab.General;

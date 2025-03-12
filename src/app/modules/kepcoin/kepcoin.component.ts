@@ -9,6 +9,7 @@ import { KepcoinService } from './kepcoin.service';
   selector: 'app-kepcoin',
   templateUrl: './kepcoin.component.html',
   styleUrls: ['./kepcoin.component.scss'],
+  standalone: false,
 })
 export class KepcoinComponent implements OnInit, OnDestroy {
 

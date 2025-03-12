@@ -6,7 +6,8 @@ import { StudyPlan } from '../../models/problems.models';
   selector: 'study-plan-card',
   templateUrl: './study-plan-card.component.html',
   styleUrls: ['./study-plan-card.component.scss'],
-  animations: [fadeInRightOnEnterAnimation()]
+  animations: [fadeInRightOnEnterAnimation()],
+  standalone: false,
 })
 export class StudyPlanCardComponent implements OnInit {
 

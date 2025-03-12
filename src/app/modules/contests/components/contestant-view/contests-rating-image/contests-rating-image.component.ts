@@ -3,7 +3,8 @@ import { Component, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'contests-rating-image',
   templateUrl: './contests-rating-image.component.html',
-  styleUrls: ['./contests-rating-image.component.scss']
+  styleUrls: ['./contests-rating-image.component.scss'],
+  standalone: false,
 })
 export class ContestsRatingImageComponent implements OnInit {
 

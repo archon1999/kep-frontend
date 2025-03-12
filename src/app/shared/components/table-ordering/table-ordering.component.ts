@@ -3,7 +3,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'table-ordering',
   templateUrl: './table-ordering.component.html',
-  styleUrls: ['./table-ordering.component.scss']
+  styleUrls: ['./table-ordering.component.scss'],
+  standalone: false,
 })
 export class TableOrderingComponent {
 

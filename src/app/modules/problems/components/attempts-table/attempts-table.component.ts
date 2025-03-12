@@ -28,6 +28,7 @@ const ATTEMPT_DELETE_EVENT = 'attempt-delete';
   templateUrl: './attempts-table.component.html',
   styleUrls: ['./attempts-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class AttemptsTableComponent extends BaseComponent implements OnInit, OnDestroy {
   @Input() hideSourceCodeSize = false;

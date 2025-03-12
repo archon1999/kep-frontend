@@ -5,6 +5,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
   templateUrl: './quill.component.html',
   styleUrls: ['./quill.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class QuillComponent implements OnInit {
 

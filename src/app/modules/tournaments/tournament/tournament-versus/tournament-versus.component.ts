@@ -32,7 +32,8 @@ const STAGE_NUMBER = 2;
     fadeOutRightOnLeaveAnimation({duration: 3000}),
     fadeOutDownOnLeaveAnimation({duration: 3000}),
     fadeOutUpOnLeaveAnimation({duration: 3000}),
-  ]
+  ],
+  standalone: false
 })
 export class TournamentVersusComponent implements OnInit {
 

@@ -5,7 +5,6 @@ import { takeUntil } from 'rxjs/operators';
 import { Blog, BlogPostComment } from '../../blog.models';
 import { BlogService } from '../../blog.service';
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
-import { AngularEditorConfig } from "@kolkov/angular-editor";
 
 @Component({
   selector: 'comments',
@@ -14,46 +13,17 @@ import { AngularEditorConfig } from "@kolkov/angular-editor";
   animations: [
     fadeInOnEnterAnimation(),
     fadeOutOnLeaveAnimation(),
-  ]
+  ],
+  standalone: false,
 })
 export class CommentsComponent implements OnInit, OnDestroy {
 
   @Input() blogPost: Blog;
 
   public comments: Array<BlogPostComment> = [];
-  public comment = "";
+  public comment = '';
 
   public currentUser: User;
-
-  public config: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: '15rem',
-    minHeight: '5rem',
-    placeholder: 'Enter text here...',
-    translate: 'no',
-    defaultParagraphSeparator: 'p',
-    defaultFontName: 'Arial',
-    toolbarHiddenButtons: [
-      ['bold']
-    ],
-    customClasses: [
-      {
-        name: "quote",
-        class: "quote",
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: "titleText",
-        class: "titleText",
-        tag: "h1",
-      },
-    ]
-  };
-
   private _unsubscribeAll = new Subject();
 
   constructor(
@@ -64,7 +34,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe((user: any) => {
       this.currentUser = user;
-    })
+    });
 
     this.updateComments();
   }
@@ -74,7 +44,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
       (comments: any) => {
         this.comments = comments;
       }
-    )
+    );
   }
 
   submit() {
@@ -83,7 +53,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
         () => {
           this.updateComments();
         }
-      )
+      );
     }
   }
 
@@ -92,7 +62,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
       (likes: any) => {
         this.comments[index].likes = likes;
       }
-    )
+    );
   }
 
   deleteComment(index: number) {
@@ -101,7 +71,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
       () => {
         this.comments.splice(index, 1);
       }
-    )
+    );
   }
 
   ngOnDestroy(): void {

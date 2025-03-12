@@ -11,7 +11,8 @@ import { BlogService } from './blog.service';
   animations: [
     fadeInRightOnEnterAnimation(),
     fadeInLeftOnEnterAnimation(),
-  ]
+  ],
+  standalone: false,
 })
 export class BlogComponent implements OnInit {
 

@@ -25,6 +25,7 @@ import { BaseComponent } from '@app/common';
   ],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class TableComponent extends BaseComponent implements OnChanges {
   @Input() contest: Contest;

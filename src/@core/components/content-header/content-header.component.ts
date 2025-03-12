@@ -18,7 +18,8 @@ export interface ContentHeader {
 @Component({
   selector: 'app-content-header',
   templateUrl: './content-header.component.html',
-  animations: [fadeInLeftAnimation({duration: 2000}), fadeInUpAnimation()]
+  animations: [fadeInLeftAnimation({duration: 2000}), fadeInUpAnimation()],
+  standalone: false,
 })
 export class ContentHeaderComponent implements OnInit {
   @Input() contentHeader: ContentHeader;

@@ -12,7 +12,8 @@ import uz from './locale-uz.json';
 @Component({
   selector: 'apex-chart',
   templateUrl: './apex-chart.component.html',
-  styleUrls: ['./apex-chart.component.scss']
+  styleUrls: ['./apex-chart.component.scss'],
+  standalone: false,
 })
 export class ApexChartComponent implements OnInit, OnDestroy {
   @ViewChild('chart') chart: ChartComponent;

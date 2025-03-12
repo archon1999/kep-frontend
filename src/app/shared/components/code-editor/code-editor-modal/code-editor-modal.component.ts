@@ -29,6 +29,7 @@ interface CheckSamplesResultOne {
   templateUrl: './code-editor-modal.component.html',
   styleUrls: ['./code-editor-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class CodeEditorModalComponent implements OnInit {
 

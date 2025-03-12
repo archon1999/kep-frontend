@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "sci_fi": {
+    "kep": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -72,8 +72,6 @@
             ],
             "styles": [
               "src/styles.scss",
-              "./node_modules/swiper/swiper-bundle.min.css",
-              "./node_modules/leaflet/dist/leaflet.css",
               "src/assets/plugins/keenicons/duotone/style.css",
               "src/assets/plugins/keenicons/outline/style.css"
             ],
@@ -137,10 +135,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "sci_fi:build:production"
+              "buildTarget": "kep:build:production"
             },
             "development": {
-              "buildTarget": "sci_fi:build:development"
+              "buildTarget": "kep:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -148,7 +146,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "sci_fi:build"
+            "buildTarget": "kep:build"
           }
         },
         "test": {

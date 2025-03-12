@@ -7,7 +7,8 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'like-button',
   templateUrl: './like-button.component.html',
-  styleUrls: ['./like-button.component.scss']
+  styleUrls: ['./like-button.component.scss'],
+  standalone: false,
 })
 export class LikeButtonComponent implements OnInit, OnDestroy {
 

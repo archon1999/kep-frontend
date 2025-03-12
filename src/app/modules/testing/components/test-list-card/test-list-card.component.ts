@@ -8,7 +8,8 @@ import { Test } from '../../testing.models';
   styleUrls: ['./test-list-card.component.scss'],
   animations: [
     fadeInOnEnterAnimation({duration: 3000}),
-  ]
+  ],
+  standalone: false,
 })
 export class TestListCardComponent implements OnInit {
 

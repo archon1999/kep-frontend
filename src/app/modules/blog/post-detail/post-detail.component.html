@@ -37,11 +37,11 @@
         <div class="d-sm-flex d-block align-items-center justify-content-between">
           <div class="d-flex align-items-cener">
             <span class="badge bg-success-transparent me-3">
-              <i class="ri-thumb-up-line me-1 align-middle d-inline-block"></i>
+              <i class="bi-hand-thumbs-up me-1 align-middle d-inline-block"></i>
               {{ blogPost.likesCount }} {{ 'Likes' | translate }}
             </span>
             <span class="badge bg-info-transparent me-3">
-              <i class="ri-chat-4-line me-1 align-middle d-inline-block"></i>
+              <i class="bi-chat me-1 align-middle d-inline-block"></i>
               {{ blogPost.commentsCount }} {{ 'Comments' | translate }}
             </span>
             <span class="badge bg-warning-transparent me-3">
@@ -51,13 +51,13 @@
           </div>
           <div class="btn-list mt-sm-0 mt-2">
             <button (click)="like()" class="btn btn-sm btn-primary-light" data-bs-toggle="tooltip" ngbTooltip="Like" placement="top"><i
-              class="ri-thumb-up-line"></i> Like
+              class="bi-hand-thumbs-up"></i> Like
             </button>
             <button class="btn btn-sm btn-primary-light" data-bs-toggle="tooltip" ngbTooltip="Share" placement="top"><i
-              class="ri-share-line"></i> Share
+              class="bi-share"></i> Share
             </button>
             <button class="btn btn-sm btn-secondary-light"><i
-              class="ri-chat-4-line me-1 align-middle d-inline-block"></i>Comment
+              class="bi-chat me-1 align-middle d-inline-block"></i>Comment
             </button>
           </div>
         </div>

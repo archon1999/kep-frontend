@@ -99,6 +99,7 @@ async function process(tournament: Tournament) {
   templateUrl: './tournament-bracket.component.html',
   styleUrls: ['./tournament-bracket.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  standalone: false,
 })
 export class TournamentBracketComponent implements OnInit {
 

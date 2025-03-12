@@ -3,7 +3,8 @@ import { Component, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'contestant-view',
   templateUrl: './contestant-view.component.html',
-  styleUrls: ['./contestant-view.component.scss']
+  styleUrls: ['./contestant-view.component.scss'],
+  standalone: false,
 })
 export class ContestantViewComponent {
   @Input() user: any;
