@@ -6,6 +6,6 @@ export default [
     path: '',
     loadComponent: () => import('./landing-page.component').then(c => c.LandingPageComponent),
     title: 'Landing',
-    // canActivate: [IsAuthenticatedGuard]
+    canActivate: [IsAuthenticatedGuard]
   },
 ] satisfies Routes;
