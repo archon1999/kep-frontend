@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom, inject, Injectable } from '@angular/core';
+import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom, inject, Injectable, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { provideRouter, RouterOutlet, RouterStateSnapshot, TitleStrategy } from '@angular/router';
 import { routes } from './app.routes';
 import { AngularFireModule } from '@angular/fire/compat';
@@ -59,6 +59,7 @@ export class CustomTitleStrategy extends TitleStrategy {
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideExperimentalZonelessChangeDetection(),
     provideRouter(routes),
     provideCharts(withDefaultRegisterables()),
     provideHttpClient(),

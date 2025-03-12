@@ -27,6 +27,7 @@ export abstract class BaseLoadComponent<T> extends BasePageComponent implements 
         this.data = data;
         this.afterLoadData(data);
         this.isLoading = false;
+        this.cdr.markForCheck();
       }
     );
   }
