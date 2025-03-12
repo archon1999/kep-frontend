@@ -6,20 +6,18 @@ import { BaseTablePageComponent } from '@app/common';
 import { Observable } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { TranslateModule } from '@ngx-translate/core';
-import { BlogPostCardModule } from '@app/modules/blog/components/blog-post-card/blog-post-card.module';
-
-const NEWS_MAX_LIMIT = 50;
+import { NewsCardComponent } from '@app/modules/blog/components/news-card/news-card.component';
 
 @Component({
   selector: 'news-section',
   templateUrl: './news-section.component.html',
   styleUrls: ['./news-section.component.scss'],
-  animations: [fadeInRightOnEnterAnimation({duration: 1000, translate: '40px'})],
+  animations: [fadeInRightOnEnterAnimation({ duration: 1000, translate: '40px' })],
   standalone: true,
   imports: [
     NgxSkeletonLoaderModule,
     TranslateModule,
-    BlogPostCardModule
+    NewsCardComponent
   ]
 })
 export class NewsSectionComponent extends BaseTablePageComponent<any> {

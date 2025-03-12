@@ -1,0 +1,99 @@
+<kep-card>
+  <a>
+    <img [src]="blog.image" [style.height.px]="cardImgHeight" alt="..." class="img-fluid">
+  </a>
+  <div class="card-body">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <div class="d-flex align-items-center">
+        <div class="avatar avatar-sm avatar-rounded me-2">
+          <img [src]="blog.author.avatar" alt="">
+        </div>
+        <div>
+          <p class="mb-0 fw-medium fs-12">
+            {{ blog.author.username }}
+          </p>
+          <p class="text-muted fs-11 mb-0">
+            <i class="fe fe-calendar"></i>
+            {{ blog.created }}
+        </div>
+      </div>
+      <div class="d-flex align-items-center text-primary">
+        <i class="font-medium-1 me-1" data-feather="message-square"></i>
+        <span class="fw-medium pe-2">{{ blog.commentsCount }}</span>
+        <i class="font-medium-1 me-1" data-feather="heart"></i>
+        <span class="fw-medium pe-2">{{ blog.likesCount }}</span>
+        <i class="font-medium-1 me-1" data-feather="eye"></i>
+        <span class="fw-medium pe-2">{{ blog.views }}</span>
+      </div>
+    </div>
+    <a
+      [routerLink]="['/learn', 'blog', 'post', blog.id]"
+      class="fw-medium fs-14 text-dark mb-1">
+      {{ blog.title }}
+    </a>
+    <p class="card-text text-muted mb-3 op-8">
+      {{ blog.bodyShort }}
+    </p>
+    <a
+      [routerLink]="['/learn', 'blog', 'post', blog.id]"
+      class="text-primary fs-14 float-end">
+      {{ 'View' | translate }}
+      <i class="ri-arrow-right-s-line d-inline-block rtl-icon-transform align-middle"></i>
+    </a>
+
+    @for (tag of blog.tags; track tag) {
+      <span class="me-2">
+        {{ tag }}
+      </span>
+    }
+  </div>
+</kep-card>
+
+<!--<kep-card>-->
+<!--  <a [routerLink]="['/learn', 'blog', 'post', blog.id]" class="card-img" loading="lazy">-->
+<!--    <img [ngStyle]="{'max-height.px': cardImgHeight}" [src]="blog.image" alt="Blog Post pic"-->
+<!--         class="swiper-lazy card-img-top img-fluid"/>-->
+<!--  </a>-->
+<!--  <div class="card-body">-->
+<!--    <h4 class="card-title">-->
+<!--      <a [routerLink]="['/learn', 'blog', 'post', blog.id]" class="blog-title-truncate text-body-heading">-->
+<!--        {{ blog.title }}-->
+<!--      </a>-->
+<!--    </h4>-->
+<!--    <div class="d-flex">-->
+<!--      <div class="avatar me-1">-->
+<!--        <img [src]="blog.author.avatar" alt="Avatar" height="32" width="32"/>-->
+<!--      </div>-->
+<!--      <div class="flex-grow-1">-->
+<!--        <small><a class="text-body text-primary" href="javascript:void(0);">-->
+<!--          <strong>-->
+<!--            <user-popover [username]="blog.author.username"/>-->
+<!--          </strong>-->
+<!--        </a></small>-->
+<!--        <span class="text-muted ms-50 me-1">| </span>-->
+<!--        <small class="text-muted">-->
+<!--          <span class="text-success">{{ blog.created }}</span>-->
+<!--        </small>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="my-1 py-25">-->
+<!--      @for (tag of blog.tags;track tag) {-->
+<!--        <div class="badge me-1 badge-light-info">-->
+<!--          {{ tag }}-->
+<!--        </div>-->
+<!--      }-->
+<!--    </div>-->
+<!--    <p class="card-text blog-content-truncate"></p>-->
+<!--    <hr/>-->
+<!--    <div class="d-flex justify-content-between align-items-center">-->
+<!--      <div class="d-flex align-items-center text-primary">-->
+<!--        <i class="font-medium-1 me-1" data-feather="message-square"></i>-->
+<!--        <span class="fw-medium pe-2">{{ blog.commentsCount }}</span>-->
+<!--        <i class="font-medium-1 me-1" data-feather="heart"></i>-->
+<!--        <span class="fw-medium pe-2">{{ blog.likesCount }}</span>-->
+<!--        <i class="font-medium-1 me-1" data-feather="eye"></i>-->
+<!--        <span class="fw-medium pe-2">{{ blog.views }}</span>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</kep-card>-->

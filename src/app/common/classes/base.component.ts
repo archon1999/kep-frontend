@@ -13,6 +13,7 @@ import { ApiService } from '@shared/services/api.service';
 import { Resources } from '@app/resources';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AppStateService } from '@core/services/app-state.service';
 
 @Component({
   template: '',
@@ -31,7 +32,6 @@ export class BaseComponent {
 
   protected api = inject(ApiService);
   protected authService = inject(AuthService);
-  // protected coreConfigService = inject(CoreConfigService);
   protected router = inject(Router);
   protected route = inject(ActivatedRoute);
   protected globalService = inject(GlobalService);
@@ -40,7 +40,7 @@ export class BaseComponent {
   protected titleService = inject(TitleService);
   protected spinner = inject(NgxSpinnerService);
   protected toastr = inject(ToastrService);
-  // protected coreSidebarService = inject(CoreSidebarService);
+  protected appStateService = inject(AppStateService);
   protected translateService = inject(TranslateService);
   protected cdr = inject(ChangeDetectorRef);
   protected modalService = inject(NgbModal);

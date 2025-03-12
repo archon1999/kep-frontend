@@ -1,6 +1,7 @@
 import { StateType } from "@core/services/app-state.service";
 
 export const initialState: StateType = {
+  appTitle: 'KEP.uz',
   direction: 'ltr',
   navigationStyles: 'vertical',
   menuStyles: '',

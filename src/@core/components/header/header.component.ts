@@ -44,7 +44,7 @@ export class HeaderComponent extends BaseComponent {
   //Toggled Shortcuts
   private offcanvasService = inject(NgbOffcanvas);
 
-  constructor(public elementRef: ElementRef, private appStateService: AppStateService,) {
+  constructor(public elementRef: ElementRef) {
     super();
     this.appStateService.state$.subscribe(state => {
       this.localdata = state;

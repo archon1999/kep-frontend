@@ -1,0 +1,107 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"/>
+    <div class="row">
+      <div class="col-lg-9 col-md-6 col-sm-12 order-md-1 order-2">
+        <div class="row">
+          @for (blogPost of pageResult?.data;track blogPost) {
+            <div [@fadeInLeftOnEnter] class="col-lg-6 col-12">
+              <blog-post-card [blog]="blogPost"></blog-post-card>
+            </div>
+          }
+        </div>
+
+        @if (total > 0) {
+          <kep-pagination
+            [collectionSize]="total"
+            [(page)]="pageNumber"
+            [pageSize]="pageSize"
+            [maxSize]="maxSize"
+            [rotate]="true"
+            [color]="'yellow'"
+            (pageChange)="reloadPage()">
+          </kep-pagination>
+        }
+      </div>
+
+      <div [@fadeInRightOnEnter] class="col-lg-3 col-md-6 col-sm-12 order-md-2 order-1">
+        <kep-card>
+          <div class="card-body">
+            <div class="blog-search">
+              <div class="input-group input-group-merge">
+                <input (ngModelChange)="reloadPage()" [(ngModel)]="filter.title"
+                       [ngModelOptions]="{standalone: true}" class="form-control"
+                       placeholder="{{ 'Search' | translate }}"
+                       type="text">
+              </div>
+
+              <ng-select (change)="reloadPage()" [(ngModel)]="filter.author" [placeholder]="'Author' | translate"
+                         appendTo="body"
+                         class="mt-1">
+                @for (author of allAuthors;track author) {
+                  <ng-option [value]="author">
+                    {{ author }}
+                  </ng-option>
+                }
+              </ng-select>
+
+              <ng-select (change)="reloadPage()" [(ngModel)]="filter.orderBy" [placeholder]="'OrderBy' | translate"
+                         appendTo="body"
+                         class="mt-1">
+                <ng-option [value]="1">
+                  {{ 'Likes' | translate }}
+                </ng-option>
+                <ng-option [value]="2">
+                  {{ 'Views' | translate }}
+                </ng-option>
+                <ng-option [value]="3">
+                  {{ 'Comments' | translate }}
+                </ng-option>
+              </ng-select>
+            </div>
+
+            <div class="blog-topics mt-3">
+              <h6 class="section-label">{{ 'Topics' | translate }}</h6>
+              <div (click)="filter.topic=1; reloadPage()" [ngClass]="{'active': filter.topic == 1}"
+                   class="blog-topic mt-1">
+                <div class="d-flex justify-content-start align-items-center mb-75">
+                  <div class="avatar rounded bg-light-primary">
+                    <div class="avatar-content">
+                      <i data-feather="slack"></i>
+                    </div>
+                  </div>
+                  <div class="blog-topic-title text-body">{{ 'Technologies' | translate }}</div>
+                </div>
+              </div>
+
+              <div (click)="filter.topic=2; reloadPage()" [ngClass]="{'active': filter.topic == 2}"
+                   class="blog-topic mt-1">
+                <div class="d-flex justify-content-start align-items-center mb-75">
+                  <div class="avatar rounded bg-light-danger">
+                    <div class="avatar-content">
+                      <i data-feather="code"></i>
+                    </div>
+                  </div>
+                  <div class="blog-topic-title text-body">{{ 'CompetitiveProgramming' | translate }}</div>
+                </div>
+              </div>
+
+              <div (click)="filter.topic=3; reloadPage()" [ngClass]="{'active': filter.topic == 3}"
+                   class="blog-topic mt-1">
+                <div class="d-flex justify-content-start align-items-center mb-75">
+                  <div class="avatar rounded bg-light-info">
+                    <div class="avatar-content">
+                      <i data-feather="help-circle"></i>
+                    </div>
+                  </div>
+                  <div class="blog-topic-title text-body">{{ 'Info' | translate }}</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </kep-card>
+      </div>
+    </div>
+  </div>
+</div>

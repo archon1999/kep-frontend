@@ -18,6 +18,7 @@ interface ThemePrimary {
 }
 
 export interface StateType {
+  appTitle: string;
   direction: Direction;
   navigationStyles: NavigationStyles;
   menuStyles: MenuStyles;

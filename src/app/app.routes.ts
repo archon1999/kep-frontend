@@ -28,7 +28,7 @@ export const routes: Routes = [
       },
       {
         path: 'learn/blog',
-        loadChildren: () => import('./modules/blog/blog.module').then(m => m.BlogModule)
+        loadChildren: () => import('./modules/blog/blog.routing')
       },
       {
         path: 'learn/lugavar',

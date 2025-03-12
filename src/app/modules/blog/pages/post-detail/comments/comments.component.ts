@@ -2,9 +2,13 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AuthService, User } from '@auth';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Blog, BlogPostComment } from '../../blog.models';
-import { BlogService } from '../../blog.service';
+import { Blog, BlogPostComment } from '../../../blog.interfaces';
+import { BlogService } from '../../../blog.service';
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'comments',
@@ -14,7 +18,13 @@ import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animati
     fadeInOnEnterAnimation(),
     fadeOutOnLeaveAnimation(),
   ],
-  standalone: false,
+  standalone: true,
+  imports: [
+    KepCardComponent,
+    TranslatePipe,
+    MathjaxModule,
+    FormsModule
+  ]
 })
 export class CommentsComponent implements OnInit, OnDestroy {
 

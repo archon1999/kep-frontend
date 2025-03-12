@@ -127,7 +127,7 @@
           <button
             (click)="checkSamples()"
             ngbTooltip="Alt+Z"
-            class="btn btn-glow btn-dark bg-dark me-50"
+            class="btn btn-glow btn-dark bg-dark me-1"
             type="button">
             @if (isCheckSamples) {
               <span aria-hidden="true" class="spinner-border spinner-border-sm" role="status"></span>
@@ -143,7 +143,7 @@
             <button
               ngbTooltip="Alt+X"
               (click)="run()"
-              class="btn btn-glow btn-dark bg-dark me-50"
+              class="btn btn-glow btn-dark bg-dark me-1"
               type="button">
               @if (isRunning) {
                 <span aria-hidden="true" class="spinner-border spinner-border-sm" role="status"></span>
@@ -163,7 +163,7 @@
               [requestBody]="{input_data: editorForm.get('input').value}"
               [value]="1"
             >
-              <button class="btn btn-glow btn-dark bg-dark me-50" type="button">
+              <button class="btn btn-glow btn-dark bg-dark me-1" type="button">
                 @if (isAnswerForInput) {
                   <span
                     class="spinner-border spinner-border-sm"

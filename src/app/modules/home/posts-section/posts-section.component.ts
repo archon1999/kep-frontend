@@ -1,20 +1,20 @@
 import { AfterViewInit, Component } from '@angular/core';
 
-import { Blog } from '../../blog/blog.models';
+import { Blog } from '../../blog/blog.interfaces';
 import { HomeService } from '../home.service';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
-import { BlogPostCardModule } from '../../blog/components/blog-post-card/blog-post-card.module';
 import { PageResult } from '@app/common/classes/page-result';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { CarouselModule, OwlOptions } from "ngx-owl-carousel-o";
-import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { BlogPostCardComponent } from '@app/modules/blog/components/blog-post-card/blog-post-card.component';
 
 const PAGE_SIZE = 6;
 
 @Component({
   selector: 'posts-section',
   standalone: true,
-  imports: [SwiperComponent, BlogPostCardModule, SpinnerComponent, CarouselModule, KepCardComponent],
+  imports: [SwiperComponent, SpinnerComponent, CarouselModule, KepCardComponent, BlogPostCardComponent],
   templateUrl: './posts-section.component.html',
   styleUrl: './posts-section.component.scss'
 })

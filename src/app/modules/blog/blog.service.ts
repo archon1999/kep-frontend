@@ -5,10 +5,7 @@ import { ApiService } from 'app/shared/services/api.service';
   providedIn: 'root'
 })
 export class BlogService {
-
-  constructor(
-    public api: ApiService,
-  ) { }
+  constructor(public api: ApiService) { }
 
   getBlogPost(id: number | string) {
     return this.api.get(`blog/${id}`);
@@ -43,7 +40,7 @@ export class BlogService {
   }
 
   commentPost(blogId: number | string, body: string) {
-    return this.api.post(`blog/${blogId}/create-comment/`, {body: body});
+    return this.api.post(`blog/${blogId}/create-comment/`, { body: body });
   }
 
   blogLike(blogId: number | string) {
@@ -57,5 +54,4 @@ export class BlogService {
   commentDelete(commentId: number | string) {
     return this.api.delete(`blog-comments/${commentId}/delete/`);
   }
-
 }

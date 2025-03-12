@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Blog } from '@app/modules/blog/blog.models';
+import { Blog } from '@app/modules/blog/blog.interfaces';
 import { CoreCommonModule } from '@core/common.module';
-import { BlogPostCardModule } from '@app/modules/blog/components/blog-post-card/blog-post-card.module';
 import { UsersApiService } from '@users/users-api.service';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { PageResult } from '@app/common/classes/page-result';
+import { BlogPostCardComponent } from '@app/modules/blog/components/blog-post-card/blog-post-card.component';
 
 @Component({
   selector: 'user-blog',
@@ -14,8 +14,8 @@ import { PageResult } from '@app/common/classes/page-result';
   standalone: true,
   imports: [
     CoreCommonModule,
-    BlogPostCardModule,
     SpinnerComponent,
+    BlogPostCardComponent,
   ]
 })
 export class UserBlogComponent implements OnInit {
@@ -31,7 +31,7 @@ export class UserBlogComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(
       (params) => {
-        this.service.getUserBlog(params.get('username'), {pageSize: 3}).subscribe(
+        this.service.getUserBlog(params.get('username'), { pageSize: 3 }).subscribe(
           (result: PageResult<Blog>) => {
             this.isLoading = false;
             this.userBlog = result.data;

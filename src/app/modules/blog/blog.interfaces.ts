@@ -4,6 +4,7 @@ export class Blog {
     public author: any,
     public title: string,
     public body: string,
+    public bodyShort: string,
     public image: string,
     public views: number,
     public likesCount: number,
