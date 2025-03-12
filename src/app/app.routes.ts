@@ -52,7 +52,7 @@ export const routes: Routes = [
       },
       {
         path: 'practice/duels',
-        loadChildren: () => import('./modules/duels/duels.module').then(m => m.DuelsModule),
+        loadChildren: () => import('./modules/duels/duels.routing'),
       },
       {
         path: 'competitions/contests',
