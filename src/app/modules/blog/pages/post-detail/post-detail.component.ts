@@ -1,6 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { TitleService } from '@shared/services/title.service';
+import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { Blog } from '../../blog.interfaces';
 import { BlogService } from '../../blog.service';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
@@ -11,6 +9,9 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CommentsComponent } from '@app/modules/blog/pages/post-detail/comments/comments.component';
 import { IconNamePipe } from '@shared/pipes/feather-icons.pipe';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { BaseLoadComponent } from '@app/common';
+import { Observable } from 'rxjs';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-post-detail',
@@ -26,32 +27,30 @@ import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
     CoreDirectivesModule,
     CommentsComponent,
     IconNamePipe,
-    NgbTooltip
+    NgbTooltip,
+    SpinnerComponent
   ]
 })
-export class PostDetailComponent implements OnInit {
+export class PostDetailComponent extends BaseLoadComponent<Blog> {
+  protected blogService = inject(BlogService);
 
-  public blogPost: Blog;
+  get blog() {
+    return this.data;
+  }
 
-  constructor(
-    public route: ActivatedRoute,
-    public titleService: TitleService,
-    public service: BlogService,
-  ) { }
+  getData(): Observable<Blog> {
+    return this.blogService.getBlogPost(this.route.snapshot.params.id);
+  }
 
-  ngOnInit(): void {
-    this.route.data.subscribe(({blogPost}) => {
-      this.blogPost = blogPost;
-      this.titleService.updateTitle(this.route, {postTitle: blogPost.title});
-    });
+  afterLoadData(blog: Blog) {
+    this.titleService.updateTitle(this.route, { postTitle: this.blog.title });
   }
 
   like() {
-    this.service.blogLike(this.blogPost.id).subscribe(
+    this.blogService.blogLike(this.blog.id).subscribe(
       (likes: any) => {
-        this.blogPost.likesCount = likes;
+        this.blog.likesCount = likes;
       }
     );
   }
-
 }

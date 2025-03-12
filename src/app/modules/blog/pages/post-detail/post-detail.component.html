@@ -1,69 +1,75 @@
 <div class="content-wrapper container-lg p-0">
   <div class="content-body">
-    <kep-card>
-      <a href="javascript:void(0);">
-        <img [src]="blogPost.image" alt="..." class="card-img rounded-0 blog-details-img p-3">
-      </a>
-      <div class="card-body pb-2">
-        <p class="fs-40 fw-semibold mb-1">
-          {{ blogPost.title }}
-        </p>
-        <div class="d-sm-flex align-items-center justify-content-center">
-          <div class="d-flex align-items-center flex-fill">
-            <span class="avatar avatar-md avatar-rounded me-3">
-              <img [src]="blogPost.author.avatar" alt="">
-            </span>
-            <div>
-              <p class="mb-0 fw-medium">
-                <user-popover [username]="blogPost.author.username"/> -
-                <span class="fs-11 text-muted fw-normal">
-                  <i class="fe fe-calendar"></i>
-                  {{ blogPost.created }}
-                </span>
-              </p>
-              <p class="mb-0 text-muted"></p>
+    @if (isLoading) {
+      <kep-card [cardHeight]="'80vh'">
+        <spinner/>
+      </kep-card>
+    } @else {
+      <kep-card>
+        <a href="javascript:void(0);">
+          <img [src]="blog.image" alt="..." class="card-img rounded-0 blog-details-img p-3">
+        </a>
+        <div class="card-body pb-2">
+          <p class="fs-40 fw-semibold mb-1">
+            {{ blog.title }}
+          </p>
+          <div class="d-sm-flex align-items-center justify-content-center">
+            <div class="d-flex align-items-center flex-fill">
+              <span class="avatar avatar-md avatar-rounded me-3">
+                <img [src]="blog.author.avatar" alt="">
+              </span>
+              <div>
+                <p class="mb-0 fw-medium">
+                  <user-popover [username]="blog.author.username"/> -
+                  <span class="fs-11 text-muted fw-normal">
+                    <i class="fe fe-calendar"></i>
+                    {{ blog.created }}
+                  </span>
+                </p>
+                <p class="mb-0 text-muted"></p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="card-body">
-        <mathjax [content]="blogPost.body"></mathjax>
+        <div class="card-body">
+          <mathjax [content]="blog.body"></mathjax>
 
-        @for (tag of blogPost.tags; track tag) {
-          <span class="badge bg-secondary fs-12 me-1">{{ tag }}</span>
-        }
-      </div>
-      <div class="card-body border-top border-block-start-dashed">
-        <div class="d-sm-flex d-block align-items-center justify-content-between">
-          <div class="d-flex align-items-cener">
-            <span class="badge bg-success-transparent me-3">
-              <i class="bi-hand-thumbs-up me-1 align-middle d-inline-block"></i>
-              {{ blogPost.likesCount }} {{ 'Likes' | translate }}
-            </span>
-            <span class="badge bg-info-transparent me-3">
-              <i class="bi-chat me-1 align-middle d-inline-block"></i>
-              {{ blogPost.commentsCount }} {{ 'Comments' | translate }}
-            </span>
-            <span class="badge bg-warning-transparent me-3">
-              <i class="me-1" [data-feather]="'view' | iconName"></i>
-              {{ blogPost.views }} {{ 'Views' | translate }}
-            </span>
-          </div>
-          <div class="btn-list mt-sm-0 mt-2">
-            <button (click)="like()" class="btn btn-sm btn-primary-light" data-bs-toggle="tooltip" ngbTooltip="Like" placement="top"><i
-              class="bi-hand-thumbs-up"></i> Like
-            </button>
-            <button class="btn btn-sm btn-primary-light" data-bs-toggle="tooltip" ngbTooltip="Share" placement="top"><i
-              class="bi-share"></i> Share
-            </button>
-            <button class="btn btn-sm btn-secondary-light"><i
-              class="bi-chat me-1 align-middle d-inline-block"></i>Comment
-            </button>
+          @for (tag of blog.tags; track tag) {
+            <span class="badge bg-secondary fs-12 me-1">{{ tag }}</span>
+          }
+        </div>
+        <div class="card-body border-top border-block-start-dashed">
+          <div class="d-sm-flex d-block align-items-center justify-content-between">
+            <div class="d-flex align-items-cener">
+              <span class="badge bg-success-transparent me-3">
+                <i class="bi-hand-thumbs-up me-1 align-middle d-inline-block"></i>
+                {{ blog.likesCount }} {{ 'Likes' | translate }}
+              </span>
+              <span class="badge bg-info-transparent me-3">
+                <i class="bi-chat me-1 align-middle d-inline-block"></i>
+                {{ blog.commentsCount }} {{ 'Comments' | translate }}
+              </span>
+              <span class="badge bg-warning-transparent me-3">
+                <i class="me-1" [data-feather]="'view' | iconName"></i>
+                {{ blog.views }} {{ 'Views' | translate }}
+              </span>
+            </div>
+            <div class="btn-list mt-sm-0 mt-2">
+              <button (click)="like()" class="btn btn-sm btn-primary-light" data-bs-toggle="tooltip" ngbTooltip="Like" placement="top"><i
+                class="bi-hand-thumbs-up"></i> Like
+              </button>
+              <button class="btn btn-sm btn-primary-light" data-bs-toggle="tooltip" ngbTooltip="Share" placement="top"><i
+                class="bi-share"></i> Share
+              </button>
+              <button class="btn btn-sm btn-secondary-light"><i
+                class="bi-chat me-1 align-middle d-inline-block"></i>Comment
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </kep-card>
+      </kep-card>
 
-    <comments [blogPost]="blogPost"/>
+      <comments [blogPost]="blog"/>
+    }
   </div>
 </div>
