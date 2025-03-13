@@ -34,6 +34,10 @@ export enum Resources {
   Lugavar = '/learn/lugavar',
 
   Users = '/users',
+  UserProfile = `${Users}/user/:username`,
+  UserProfileRatings = `${UserProfile}/ratings`,
+  UserProfileBlog = `${UserProfile}/blog`,
+  UserProfileAchievements = `${UserProfile}/achievements`,
 
   Calendar = '/calendar',
   Shop = '/shop',
@@ -48,4 +52,8 @@ export enum Resources {
 
 export function getResourceById(resource: Resources, id: number | string) {
   return resource.replace(':id', id.toString());
+}
+
+export function getResourceByUsername(resource: Resources, username: string) {
+  return resource.replace(':username', username);
 }

@@ -7,6 +7,7 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
 import { TranslateService } from '@ngx-translate/core';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
   selector: 'problems-activity-card',
@@ -19,6 +20,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
     ApexChartModule,
     KepIconComponent,
     SpinnerComponent,
+    KepCardComponent,
   ]
 })
 export class ProblemsActivityCardComponent implements OnInit {

@@ -31,7 +31,21 @@ export default [
       userContestsRating: UserContestsRatingResolver,
       userProblemsRating: UserProblemsRatingResolver,
       userChallengesRating: UserChallengesRatingResolver,
-    }
+    },
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./pages/user-profile/user-ratings/user-ratings.component').then(c => c.UserRatingsComponent),
+      },
+      {
+        path: 'blog',
+        loadComponent: () => import('./pages/user-profile/user-blog/user-blog.component').then(c => c.UserBlogComponent),
+      },
+      {
+        path: 'achievements',
+        loadComponent: () => import('./pages/user-profile/user-achievements/user-achievements.component').then(c => c.UserAchievementsComponent),
+      },
+    ]
   },
   {
     path: '',

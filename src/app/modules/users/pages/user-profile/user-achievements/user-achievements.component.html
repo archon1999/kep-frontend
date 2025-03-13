@@ -9,31 +9,24 @@
         {{ 'Achievements' | translate }}
       </div>
 
-      <div
-        class="btn-group btn-group-toggle mt-md-0 mt-1"
-        ngbRadioGroup
-        name="radioBasic"
-        [(ngModel)]="tab">
-        <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
-          <input (click)="update(Tab.CompletedAchievements)" type="radio" name="type_1" id="type_1" [value]="1"
-                 ngbButton/>
-          <span>{{ 'Completed' | translate }} {{ completedAchievements.length }}</span>
-        </label>
-        <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
-          <input (click)="update(Tab.NotCompletedAchievements)" type="radio" name="type_2" id="type_2" [value]="2"
-                 ngbButton/>
-          <span>{{ 'NotCompleted' | translate }} {{ notCompletedAchievements.length }}</span>
-        </label>
-        <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
-          <input (click)="update(Tab.AllAchievements)" type="radio" name="type_3" id="type_3" [value]="3" ngbButton/>
-          <span>{{ 'All' | translate }}</span>
-        </label>
+      <div role="group" aria-label="Basic radio toggle button group" class="btn-group">
+        <input [(ngModel)]="tab" (click)="update(Tab.CompletedAchievements)" [value]="Tab.CompletedAchievements"
+               type="radio" name="btnradio" id="btnradio1" checked="" class="btn-check">
+        <label for="btnradio1"
+               class="btn btn-outline-primary">{{ 'Completed' | translate }} {{ completedAchievements.length }}</label>
+        <input [(ngModel)]="tab" (click)="update(Tab.NotCompletedAchievements)" [value]="Tab.NotCompletedAchievements"
+               type="radio" name="btnradio" id="btnradio2" class="btn-check">
+        <label for="btnradio2"
+               class="btn btn-outline-primary">{{ 'NotCompleted' | translate }} {{ notCompletedAchievements.length }}</label>
+        <input [(ngModel)]="tab" (click)="update(Tab.AllAchievements)" [value]="Tab.AllAchievements" type="radio"
+               name="btnradio" id="btnradio3" class="btn-check">
+        <label for="btnradio3" class="btn btn-outline-primary">{{ 'All' | translate }}</label>
       </div>
     </div>
 
     <div class="card-body">
       <div class="row">
-        @for (achievement of achievements; track achievement) {
+        @for (achievement of achievements;track achievement) {
           <div class="col-xl-3 col-lg-4 col-md-3 col-sm-4 col-6 text-center">
             <achievement [achievement]="achievement"></achievement>
           </div>

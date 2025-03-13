@@ -1,4 +1,4 @@
-<div class="card">
+<kep-card>
   @if (isLoading) {
     <div [style.height.px]="200">
       <spinner></spinner>
@@ -8,28 +8,13 @@
       <div class="card-title">
         {{ 'Activity' | translate }}
       </div>
-      <div class="d-flex flex-sm-row flex-column justify-content-md-between align-items-start justify-content-start">
-        <div
-          class="btn-group btn-group-toggle"
-          ngbRadioGroup
-          name="radioBasic"
-          [(ngModel)]="activityDays">
-          <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
-            <input (click)="activityDataUpdate(7)" type="radio" name="last_days_option" id="last_days_option_2"
-                   [value]="7" ngbButton/>
-            <span>7</span>
-          </label>
-          <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
-            <input (click)="activityDataUpdate(14)" type="radio" name="last_days_option" id="last_days_option_3"
-                   [value]="14" ngbButton/>
-            <span>14</span>
-          </label>
-          <label class="btn btn-sm btn-outline-primary" ngbButtonLabel rippleEffect>
-            <input (click)="activityDataUpdate(30)" type="radio" name="last_days_option" id="last_days_option_4"
-                   [value]="30" ngbButton/>
-            <span>30</span>
-          </label>
-        </div>
+      <div role="group" aria-label="Basic radio toggle button group" class="btn-group">
+        <input [(ngModel)]="activityDays" (click)="activityDataUpdate(7)"  [value]="7" type="radio" name="btnradio" id="btnradio1" checked="" class="btn-check">
+        <label for="btnradio1" class="btn btn-outline-primary">7</label>
+        <input [(ngModel)]="activityDays" (click)="activityDataUpdate(14)"  [value]="14" type="radio" name="btnradio" id="btnradio2" class="btn-check">
+        <label for="btnradio2" class="btn btn-outline-primary">14</label>
+        <input [(ngModel)]="activityDays" (click)="activityDataUpdate(30)"  [value]="30" type="radio" name="btnradio" id="btnradio3" class="btn-check">
+        <label for="btnradio3" class="btn btn-outline-primary">30</label>
       </div>
     </div>
 
@@ -53,13 +38,11 @@
 
           <div class="col-6">
             @if (activityChart && activitySolved > 0) {
-              <apex-chart
-                [options]="activityChart"
-              ></apex-chart>
+              <apex-chart [options]="activityChart"/>
             }
           </div>
         </div>
       </div>
     </div>
   }
-</div>
+</kep-card>

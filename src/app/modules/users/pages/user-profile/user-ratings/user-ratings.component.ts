@@ -129,14 +129,13 @@ export class UserRatingsComponent implements OnInit {
                       <img src="assets/images/contests/ratings/${data.newRatingTitle.toLowerCase()}.png" height=20>
                       ${data.newRating}
                     </div>
-                    <span class="ms-1 badge badge-light-${deltaColor}">${data.delta}</span>
+                    <span class="ms-1 badge bg-${deltaColor}-transparent">${data.delta}</span>
                   </div>
                 </div>
               </div>
               `;
             }
           },
-          colors: [colors.solid.primary],
         };
       }
     );

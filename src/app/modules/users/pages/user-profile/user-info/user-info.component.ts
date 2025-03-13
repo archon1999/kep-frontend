@@ -9,6 +9,7 @@ import { UserRatingsComponent } from '@users/pages/user-profile/user-ratings/use
 import { UserEducation, UserInfo, UserSocial, UserWorkExperience } from '@users/users.models';
 import { ActivatedRoute } from '@angular/router';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { CoreDirectivesModule } from '@shared/directives/directives.module';
 
 @Component({
   selector: 'user-info',
@@ -22,6 +23,7 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
     UserBlogComponent,
     UserRatingsComponent,
     KepCardComponent,
+    CoreDirectivesModule,
   ],
   templateUrl: './user-info.component.html',
   styleUrl: './user-info.component.scss'

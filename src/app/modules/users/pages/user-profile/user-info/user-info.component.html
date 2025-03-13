@@ -25,7 +25,7 @@
           <span class="me-1 fi fi-{{ userInfo.country }}"></span>
           {{ userInfo.country | countryName }}
           @if (userInfo.region) {
-            <span>, {{ userInfo.region }}</span>
+            <span>- {{ userInfo.region }}</span>
           }</p>
       </div>
     }

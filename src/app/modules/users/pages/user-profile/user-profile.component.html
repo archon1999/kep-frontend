@@ -38,23 +38,27 @@
 
           <div [ngbCollapse]="toggleMenu" class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="profile-tabs d-flex justify-content-between flex-wrap mt-1 mt-md-0">
-              <ul class="nav nav-pills mb-0">
+              <ul class="nav nav-tabs">
                 <li class="nav-item">
-                  <a (click)="changeTab(Tab.Ratings)" [ngClass]="{'active': activeTab == 1}"
+                  <a [routerLink]="[Resources.UserProfile | resourceByUsername:user.username]"
+                     [routerLinkActiveOptions]="{exact: true}"
+                     routerLinkActive="active"
                      class="nav-link fw-medium">
                     <span class="d-none d-md-block">{{ 'Ratings' | translate }}</span>
                     <i [data-feather]="'rating' | iconName" class="d-block d-md-none"></i>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a (click)="changeTab(Tab.Blog)" [ngClass]="{'active': activeTab == 2}"
+                  <a [routerLink]="[Resources.UserProfileBlog | resourceByUsername:user.username]"
+                     routerLinkActive="active"
                      class="nav-link fw-medium">
                     <span class="d-none d-md-block">{{ 'Blog' | translate }}</span>
                     <i [data-feather]="'edit-3'" class="d-block d-md-none"></i>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a (click)="changeTab(Tab.Achievements)" [ngClass]="{'active': activeTab == 3}"
+                  <a [routerLink]="[Resources.UserProfileAchievements | resourceByUsername:user.username]"
+                     routerLinkActive="active"
                      class="nav-link fw-medium">
                     <span class="d-none d-md-block">{{ 'Achievements' | translate }}</span>
                     <i [data-feather]="'achievement' | iconName" class="d-block d-md-none"></i>
@@ -82,40 +86,7 @@
         </div>
 
         <div class="col-lg-6 col-12 order-1 order-lg-2">
-          @if (activeTab == Tab.Ratings) {
-            <div>
-              @defer (on viewport) {
-                <user-ratings></user-ratings>
-              } @placeholder {
-                <div class="card" [style.height.px]="400">
-                  <spinner></spinner>
-                </div>
-              }
-            </div>
-          }
-          @if (activeTab == Tab.Blog) {
-            <div>
-              @defer (on viewport) {
-                <user-blog></user-blog>
-              } @placeholder {
-                <div class="card" [style.height.px]="400">
-                  <spinner></spinner>
-                </div>
-              }
-            </div>
-          }
-          @if (activeTab == Tab.Achievements) {
-            <div>
-              @defer (on viewport) {
-                <user-achievements/>
-                <user-competition-prizes [username]="user.username"/>
-              } @placeholder {
-                <div class="card" [style.height.px]="400">
-                  <spinner></spinner>
-                </div>
-              }
-            </div>
-          }
+          <router-outlet/>
         </div>
 
         <div class="order-lg-3 order-2 col-lg-3 col-12">
