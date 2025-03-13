@@ -32,7 +32,7 @@ export abstract class BaseLoadComponent<T> extends BasePageComponent implements 
         },
         error: (error) => {
           if (error.status == 404) {
-            this.router.navigate(['404']);
+            this.router.navigate(['404'], {skipLocationChange: true});
           }
         }
       }
