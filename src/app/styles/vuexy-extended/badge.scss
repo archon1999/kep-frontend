@@ -15,6 +15,10 @@
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: var(--bs-badge-border-radius);
+
+  &.bg-yellow {
+    --bs-badge-color: #000;
+  }
 }
 
 .badge-pill {

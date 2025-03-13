@@ -33,13 +33,13 @@
         [customContent]="true"
         [purchaseUrl]="'projects/' + project.slug + '/purchase'"
         (success)="project.purchased=true;">
-        <button class="btn btn-block btn-primary btn-sm">
+        <button class="btn full-width btn-primary btn-sm">
           {{ 'Purchase' | translate }}
           <kepcoin [value]="project.purchaseKepcoinValue"/>
         </button>
       </kepcoin-spend-swal>
     } @else {
-      <a class="btn btn-block btn-primary btn-sm" routerLink="project/{{ project.slug }}">
+      <a class="btn full-width btn-primary btn-sm" routerLink="project/{{ project.slug }}">
         {{ 'View' | translate }}
       </a>
     }

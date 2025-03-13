@@ -9,6 +9,7 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
 import { TranslatePipe } from '@ngx-translate/core';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
 import { FormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'comments',
@@ -23,7 +24,8 @@ import { FormsModule } from '@angular/forms';
     KepCardComponent,
     TranslatePipe,
     MathjaxModule,
-    FormsModule
+    FormsModule,
+    NgIf
   ]
 })
 export class CommentsComponent implements OnInit, OnDestroy {

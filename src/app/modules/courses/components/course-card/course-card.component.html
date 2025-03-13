@@ -67,7 +67,7 @@
       </span>
     } @else {
       <div>
-        <a [routerLink]="Resources.CourseFirstLesson | resourceById:course.id" class="btn btn-sm btn-block btn-primary">
+        <a [routerLink]="Resources.CourseFirstLesson | resourceById:course.id" class="btn btn-sm full-width btn-primary">
           @if (!course.isStarted) {
             <span>{{ 'COURSES.START' | translate }}</span>
           }
