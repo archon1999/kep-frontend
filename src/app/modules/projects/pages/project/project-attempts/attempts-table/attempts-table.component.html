@@ -41,7 +41,7 @@
             </a>
           </td>
           <td>
-            <span class="badge badge-glow" [ngClass]="{
+            <span class="badge" [ngClass]="{
             'bg-info': attempt.verdict == 1 && attempt.kepcoins > 0 && attempt.kepcoins != attempt.projectKepcoins,
             'bg-success': attempt.verdict == 1 && attempt.kepcoins > 0 && attempt.kepcoins == attempt.projectKepcoins,
             'bg-warning': attempt.verdict == 1 && attempt.kepcoins == 0,

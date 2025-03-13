@@ -38,7 +38,7 @@
             <div class="test-pass-info justify-content-center">
               <div class="mb-1">
                 {{ 'BestResult' | translate }}
-                <span class="badge-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
+                <span class="badge-pill bg-chapter-{{ test.chapter.id }} badge">
                   {{ test.userBestResult }}
                   /
                   {{ test.questionsCount }}
@@ -48,7 +48,7 @@
 
               <div class="mb-1">
                 {{ 'LastPass' | translate }}
-                <span class="badge-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
+                <span class="badge-pill bg-chapter-{{ test.chapter.id }} badge">
                   {{ test.lastPassed }}
                   @if (!test.lastPassed) {
                     <span>
@@ -133,7 +133,7 @@
                           {{ result.username }}
                         </strong>
                       </user-popover>
-                      <span class="badge-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
+                      <span class="badge-pill bg-chapter-{{ test.chapter.id }} badge">
                         {{ result.result }}/{{ test.questionsCount }}
                       </span>
                       <br>
@@ -177,7 +177,7 @@
                           </user-popover>
                         </td>
                         <td>
-                          <span class="badge-pill bg-chapter-{{ test.chapter.id }} badge badge-glow">
+                          <span class="badge-pill bg-chapter-{{ test.chapter.id }} badge">
                             {{ result.result }}/{{ test.questionsCount }}
                           </span>
                         </td>

@@ -126,7 +126,7 @@ export class ContestProblemInfo {
       if (this.solved()) {
         let badgeClass: string;
         if (this.theBest) {
-          badgeClass = 'badge badge-dark badge-glow';
+          badgeClass = 'badge badge-dark';
         } else {
           badgeClass = 'badge badge-light-dark';
         }

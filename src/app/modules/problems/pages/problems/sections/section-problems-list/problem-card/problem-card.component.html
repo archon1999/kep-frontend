@@ -19,7 +19,7 @@
     <div class="card-body d-flex gap-1" style="flex-wrap: wrap;">
       <span
         ngbTooltip="{{ 'Difficulty' | translate }}"
-        class="badge badge-glow bg-{{ problem.difficulty | problemDifficultyColor }}">
+        class="badge bg-{{ problem.difficulty | problemDifficultyColor }}">
         {{ problem.difficultyTitle }}
       </span>
       @for (tag of problem.tags; track tag) {

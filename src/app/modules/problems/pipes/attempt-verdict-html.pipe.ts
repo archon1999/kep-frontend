@@ -37,7 +37,7 @@ export class AttemptVerdictHTMLPipe implements PipeTransform {
     if (attempt.verdict === Verdicts.PartialSolution) {
       verdictInfo += ': ' + attempt.balls + ' ball';
     }
-    const html = `<span class="badge badge-glow badge-${badgeColor}">${verdictInfo}</span>`;
+    const html = `<span class="badge badge-${badgeColor}">${verdictInfo}</span>`;
     return html;
   }
 

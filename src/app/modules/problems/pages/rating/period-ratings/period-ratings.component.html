@@ -21,7 +21,7 @@
             <div class="table-responsive">
               <table class="table">
                 <thead>
-                <tr class="bg-{{ rating.color }}">
+                <tr class="bg-{{ rating.color }}-transparent">
                   <th class="text-white text-center">#</th>
                   <th class="text-white">{{ 'USER' | translate }}</th>
                   <th class="text-white text-center"><i [data-feather]="'problem' | iconName"></i></th>
@@ -36,7 +36,7 @@
                         <contestant-view [user]="userRating"></contestant-view>
                       </td>
                       <td class="text-center">
-                        <span class="badge badge-glow badge-{{ rating.color }}">
+                        <span class="badge bg-{{ rating.color }}-transparent">
                           {{ userRating.solved }}
                         </span>
                       </td>

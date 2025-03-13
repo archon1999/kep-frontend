@@ -53,14 +53,14 @@
                     <contestant-view [textColor]="'white'" [user]="duel.playerFirst"/>
                   </td>
                   <td class="text-center">
-                    <span class="badge badge-glow bg-primary">
+                    <span class="badge bg-primary">
                       {{ duel.playerFirst.balls }}
                     </span>
                   </td>
                   @for (duelProblem of duel.problems;track duelProblem) {
                     <td class="text-center">
                       @if (duelProblem.playerFirstBall > 0) {
-                        <span class="badge bg-success badge-glow">
+                        <span class="badge bg-success">
                           {{ duelProblem.playerFirstBall }}
                         </span>
                       }
@@ -79,14 +79,14 @@
                     }
                   </td>
                   <td class="text-center">
-                    <span class="badge badge-glow bg-primary bg-primary bg-darken-1">
+                    <span class="badge bg-primary bg-primary bg-darken-1">
                       {{ duel.playerSecond?.balls || 0 }}
                     </span>
                   </td>
                   @for (duelProblem of duel.problems;track duelProblem) {
                     <td class="text-center">
                       @if (duelProblem.playerSecondBall > 0) {
-                        <span class="badge bg-success badge-glow">
+                        <span class="badge bg-success">
                           {{ duelProblem.playerSecondBall }}
                         </span>
                       }

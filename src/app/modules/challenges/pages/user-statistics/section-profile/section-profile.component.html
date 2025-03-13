@@ -6,7 +6,7 @@
   } @else {
     <div [@fadeInOnEnter] class="card-body">
       <div class="text-center">
-        <div class="avatar p-50 bg-primary badge-glow">
+        <div class="avatar p-50 bg-primary">
           <div class="avatar-content">
             <kep-icon class="" name="challenge" size="medium-4"></kep-icon>
           </div>
@@ -20,7 +20,7 @@
       @if (challengesRating) {
         <div class="text-center mt-1">
           <div class="text-{{ challengesRating.rankTitle | challengesRankColor }}">
-            <span class="badge badge-pill badge-glow badge-{{ challengesRating.rankTitle | challengesRankColor }}">
+            <span class="badge badge-pill badge-{{ challengesRating.rankTitle | challengesRankColor }}">
               {{ challengesRating.rankTitle }}
             </span>
             <span class="badge badge-light-{{ challengesRating.rankTitle | challengesRankColor }}">

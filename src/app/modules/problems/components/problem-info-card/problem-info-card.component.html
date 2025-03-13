@@ -12,11 +12,11 @@
   </div>
 
   <div class="mt-2 d-flex justify-content-between">
-    <span class="badge bg-info badge-glow">
+    <span class="badge bg-info">
       {{ selectedAvailableLang.timeLimit || problem.timeLimit }} {{ 'MS' | translate }}
     </span>
 
-    <span class="badge bg-primary badge-glow">
+    <span class="badge bg-primary">
       {{ selectedAvailableLang.memoryLimit || problem.memoryLimit }} {{ 'MB' | translate }}
     </span>
   </div>
@@ -35,7 +35,7 @@
       </h5>
     </div>
     <div class="mt-2 d-flex justify-content-between">
-      <span class="badge bg-{{ problem.difficulty | problemDifficultyColor }} badge-glow">
+      <span class="badge bg-{{ problem.difficulty | problemDifficultyColor }}">
         {{ problem.difficultyTitle }}
       </span>
       <user-popover [customContent]="true" [username]="problem.authorUsername">
@@ -62,7 +62,7 @@
       @if (currentUser) {
         <button
           (click)="like()"
-          class="btn btn-sm btn-success bg-success badge-glow"
+          class="btn btn-sm btn-success bg-success"
           [ngClass]="{
         'btn-success': problem.userInfo.voteType === 1
       }"
@@ -74,7 +74,7 @@
       @if (currentUser) {
         <button
           (click)="dislike()"
-          class="btn btn-sm btn-danger bg-danger badge-glow"
+          class="btn btn-sm btn-danger bg-danger"
           [ngClass]="{
         'btn-danger': problem.userInfo.voteType === 0
       }"
@@ -84,13 +84,13 @@
         </button>
       }
       @if (!currentUser) {
-        <span class="badge bg-success badge-glow">
+        <span class="badge bg-success">
           <i data-feather="thumbs-up"></i>
           {{ problem.likesCount }}
         </span>
       }
       @if (!currentUser) {
-        <span class="badge bg-danger badge-glow">
+        <span class="badge bg-danger">
           <i data-feather="thumbs-down"></i>
           {{ problem.dislikesCount }}
         </span>

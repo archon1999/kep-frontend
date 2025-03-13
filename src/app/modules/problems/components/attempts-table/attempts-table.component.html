@@ -78,7 +78,7 @@
                       @for (lang of hackAvailableLanguages; track lang) {
                         <button
                           (click)="hackForm.controls.generatorLang.setValue(lang)"
-                          class="me-1 mb-50 btn btn-primary badge badge-{{ lang }} badge-glow">
+                          class="me-1 mb-50 btn btn-primary badge badge-{{ lang }}">
                           {{ lang }}
                         </button>
                       }
@@ -91,7 +91,7 @@
                         </h5>
                       </div>
                       <span
-                        class="badge badge-{{ hackForm.controls.generatorLang.value }} badge-glow">
+                        class="badge badge-{{ hackForm.controls.generatorLang.value }}">
                         {{ hackForm.controls.generatorLang.value }}
                       </span>
                     </div>

@@ -9,7 +9,7 @@
               <challenges-user-view [user]="challenge.playerFirst"></challenges-user-view>
             </td>
             <td class="text-end">
-              <span class="badge badge-glow" [ngClass]="{
+              <span class="badge" [ngClass]="{
               'bg-success': challenge.playerFirst.result > challenge.playerSecond.result,
               'bg-danger': challenge.playerFirst.result < challenge.playerSecond.result,
               'bg-secondary': challenge.playerFirst.result == challenge.playerSecond.result
@@ -23,7 +23,7 @@
               <challenges-user-view [user]="challenge.playerSecond"></challenges-user-view>
             </td>
             <td class="text-end">
-              <span class="badge badge-glow" [ngClass]="{
+              <span class="badge" [ngClass]="{
               'bg-danger': challenge.playerFirst.result > challenge.playerSecond.result,
               'bg-success': challenge.playerFirst.result < challenge.playerSecond.result,
               'bg-secondary': challenge.playerFirst.result == challenge.playerSecond.result

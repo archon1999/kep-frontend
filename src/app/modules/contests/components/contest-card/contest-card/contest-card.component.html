@@ -17,10 +17,10 @@
 
         <div>
           @if (contest.isRated) {
-            <span class="badge bg-success badge-glow">{{ 'Rated' | translate }}</span>
+            <span class="badge bg-success">{{ 'Rated' | translate }}</span>
           }
           @if (!contest.isRated) {
-            <span class="badge bg-danger badge-glow">{{ 'Unrated' | translate }}</span>
+            <span class="badge bg-danger">{{ 'Unrated' | translate }}</span>
           }
         </div>
       </div>
@@ -39,7 +39,7 @@
             <h3 class="text-center mt-1 mb-1">
               {{ 'CONTESTS.CONTEST_ENDS' | translate }}
             </h3>
-            <span class="badge already bg-warning badge-glow">
+            <span class="badge already bg-warning">
               {{ 'Now' | translate }}
             </span>
             <contest-countdown [clockColor]="'#fff'" [contest]="contest"></contest-countdown>
@@ -77,7 +77,7 @@
 
   <div class="card-footer justify-content-between d-flex">
     <div class="meta-info text-center">
-      <span class="badge badge-glow me-1">
+      <span class="badge me-1">
         <i data-feather="user"></i>
         @if (contest.status == -1) {
           <span ngbTooltip="{{ 'Registrants' | translate }}">
@@ -90,11 +90,11 @@
           </span>
         }
       </span>
-      <span class="badge badge-glow me-1" ngbTooltip="{{ 'Problems' | translate }}">
+      <span class="badge me-1" ngbTooltip="{{ 'Problems' | translate }}">
         <i [data-feather]="'problem' | iconName"></i>
         {{ contest.problemsCount }}
       </span>
-      <span class="badge badge-glow">
+      <span class="badge">
         {{ contest.type }}
       </span>
     </div>

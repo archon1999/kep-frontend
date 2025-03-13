@@ -1,5 +1,5 @@
 <div class="card">
-  <div class="table-responsive bg-results-table bg-danger bg-darken-4 badge-glow">
+  <div class="table-responsive bg-results-table bg-danger bg-darken-4">
     <table class="table">
       <thead>
       <tr>
@@ -23,18 +23,18 @@
               <contestant-view [textColor]="'white'" [user]="player"></contestant-view>
             </td>
             <td>
-              <span class="badge bg-danger badge-glow">{{ player.score }}</span>
+              <span class="badge bg-danger">{{ player.score }}</span>
             </td>
             @for (problemInfo of player.problemsInfo; track problemInfo) {
               <td
                 class="text-white text-center">
                 @if (problemInfo.isSolved === true) {
-                  <span class="badge bg-success badge-glow">
+                  <span class="badge bg-success">
                     {{ problemInfo.acceptedTime }}
                   </span>
                 }
                 @if (problemInfo.isSolved === false) {
-                  <span class="badge bg-warning badge-glow">
+                  <span class="badge bg-warning">
                     -
                   </span>
                 }

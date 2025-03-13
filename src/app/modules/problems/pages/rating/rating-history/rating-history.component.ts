@@ -88,10 +88,7 @@ export class RatingHistoryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.authService.currentUser.subscribe((user: any) => {
-      this.reloadPage();
-      this.currentUser = user;
-    });
+    this.reloadPage();
   }
 
   reloadPage() {

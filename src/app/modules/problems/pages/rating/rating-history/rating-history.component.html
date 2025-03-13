@@ -26,7 +26,7 @@
                       </ng-component>
                       <user-popover [username]="dailyBestResult.username"></user-popover>
                       —
-                      <span class="badge badge-glow bg-success">
+                      <span class="badge bg-success">
                         {{ dailyBestResult.result }}
                       </span>
                       <span class="ms-1 badge bg-success-transparent">
@@ -37,7 +37,7 @@
                   <div class="table-responsive mt-1">
                     <table class="table">
                       <thead>
-                      <tr class="bg-gradient-success">
+                      <tr class="bg-success-transparent">
                         <th class="text-center"><i [data-feather]="'calendar'"></i></th>
                         <th>{{ 'USER' | translate }}</th>
                         <th class="text-center"><i [data-feather]="'problem' | iconName"></i></th>
@@ -58,7 +58,7 @@
                               <user-popover [username]="ratingHistory.username"></user-popover>
                             </td>
                             <td class="text-center">
-                              <span class="badge badge-glow bg-success">
+                              <span class="badge bg-success">
                                 {{ ratingHistory.result }}
                               </span>
                             </td>
@@ -100,10 +100,10 @@
                       </ng-component>
                       <user-popover [username]="weeklyBestResult.username"></user-popover>
                       —
-                      <span class="badge badge-glow bg-info">
+                      <span class="badge bg-info">
                         {{ weeklyBestResult.result }}
                       </span>
-                      <span class="ms-1 badge badge-light-info">
+                      <span class="ms-1 badge bg-info-transparent">
                         {{ weeklyBestResult.date | date:'MMM d, y' }}
                       </span>
                     </div>
@@ -111,7 +111,7 @@
                   <div class="table-responsive mt-1">
                     <table class="table">
                       <thead>
-                      <tr class="bg-gradient-info">
+                      <tr class="bg-info-transparent">
                         <th class="text-center"><i [data-feather]="'calendar'"></i></th>
                         <th>{{ 'USER' | translate }}</th>
                         <th class="text-center"><i [data-feather]="'problem' | iconName"></i></th>
@@ -120,9 +120,9 @@
                       <tbody>
                         @for (ratingHistory of weeklyRatingHistory; track ratingHistory) {
                           <tr
-                            [ngClass]="{'bg-light-info': currentUser?.username == ratingHistory.username }">
+                            [ngClass]="{'bg-info-transparent': currentUser?.username == ratingHistory.username }">
                             <td class="text-center">
-                              <span class="badge badge-light-info">
+                              <span class="badge bg-info-transparent">
                                 {{ ratingHistory.date | date:'dd/MM/y' }}
                               </span>
                             </td>
@@ -132,7 +132,7 @@
                               <user-popover [username]="ratingHistory.username"></user-popover>
                             </td>
                             <td class="text-center">
-                              <span class="badge badge-glow bg-info">
+                              <span class="badge bg-info">
                                 {{ ratingHistory.result }}
                               </span>
                             </td>
@@ -174,10 +174,10 @@
                       </ng-component>
                       <user-popover [username]="monthlyBestResult.username"></user-popover>
                       —
-                      <span class="badge badge-glow bg-primary">
+                      <span class="badge bg-primary">
                         {{ monthlyBestResult.result }}
                       </span>
-                      <span class="ms-1 badge badge-light-primary">
+                      <span class="ms-1 badge bg-primary-transparent">
                         {{ monthlyBestResult.date | date:'MMM d, y' }}
                       </span>
                     </div>
@@ -185,7 +185,7 @@
                   <div class="table-responsive mt-1">
                     <table class="table">
                       <thead>
-                      <tr class="bg-gradient-primary">
+                      <tr class="bg-primary-transparent">
                         <th class="text-center"><i [data-feather]="'calendar'"></i></th>
                         <th>{{ 'USER' | translate }}</th>
                         <th class="text-center"><i [data-feather]="'problem' | iconName"></i></th>
@@ -194,9 +194,9 @@
                       <tbody>
                         @for (ratingHistory of monthlyRatingHistory; track ratingHistory) {
                           <tr
-                            [ngClass]="{'bg-light-primary': currentUser?.username == ratingHistory.username }">
+                            [ngClass]="{'bg-primary-transparent': currentUser?.username == ratingHistory.username }">
                             <td class="text-center">
-                              <span class="badge badge-light-primary">
+                              <span class="badge bg-primary-transparent">
                                 {{ ratingHistory.date | date:'dd/MM/y' }}
                               </span>
                             </td>
@@ -206,7 +206,7 @@
                               <user-popover [username]="ratingHistory.username"></user-popover>
                             </td>
                             <td class="text-center">
-                              <span class="badge badge-glow bg-primary">
+                              <span class="badge bg-primary">
                                 {{ ratingHistory.result }}
                               </span>
                             </td>

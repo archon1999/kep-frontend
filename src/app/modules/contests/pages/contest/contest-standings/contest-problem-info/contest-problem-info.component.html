@@ -1,7 +1,7 @@
 @if (contest.type == ContestTypes.ACM20M || contest.type == ContestTypes.ACM2H || contest.type == ContestTypes.ONE_ATTEMPT || contest.type == ContestTypes.IQ) {
   @if (problemInfo.solved) {
     <span [ngClass]="{
-        'bg-success bg-darken-1 badge badge-glow': problemInfo.isFirstAdopted,
+        'bg-success bg-darken-1 badge': problemInfo.isFirstAdopted,
         'badge-light-success badge': !problemInfo.isFirstAdopted
     }">
       +@if (problemInfo.attemptsCount > 0) {
@@ -30,7 +30,7 @@ contest.type == ContestTypes.IQ){
 if(this.solved()){
 let badgeClass: string;
 if(this.isFirstAdopted){
-badgeClass = 'badge bg-success bg-darken-1 badge-glow';
+badgeClass = 'badge bg-success bg-darken-1';
 } else {
 badgeClass = 'badge bg-success-transparent';
 }
@@ -62,7 +62,7 @@ contest.type == ContestTypes.EXAM){
 if(this.solved()){
 let badgeClass: string;
 if(this.isFirstAdopted){
-badgeClass = 'badge bg-success bg-darken-1 badge-glow';
+badgeClass = 'badge bg-success bg-darken-1';
 } else {
 badgeClass = 'badge bg-success-transparent';
 }
@@ -100,7 +100,7 @@ html += '</span>';
 if(this.solved()){
 let badgeClass: string;
 if(this.isFirstAdopted){
-badgeClass = 'badge badge-dark badge-glow';
+badgeClass = 'badge badge-dark';
 } else {
 badgeClass = 'badge badge-light-dark';
 }
@@ -118,7 +118,7 @@ html += '</span>';
 if(this.solved()){
 let badgeClass: string;
 if(this.isFirstAdopted){
-badgeClass = 'badge badge-dark badge-glow';
+badgeClass = 'badge badge-dark';
 } else {
 badgeClass = 'badge badge-light-dark';
 }

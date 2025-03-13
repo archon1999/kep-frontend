@@ -77,7 +77,7 @@
   <div *swalPortal>
     <div class="mb-2 d-flex justify-content-center">
       <div class="text-center">
-        <div class="avatar avatar-rounded avatar-lg bg-primary-transparent badge-glow">
+        <div class="avatar avatar-rounded avatar-lg bg-primary-transparent">
           <div class="avatar-content" ngbTooltip="{{ 'Challenges' | translate }}">
             <i class="font-medium-3" data-feather="zap"></i>
           </div>
@@ -152,14 +152,14 @@
         <div class="text-center">
           <challenges-user-view [user]="challenge.playerSecond"></challenges-user-view>
           <span
-            class="ms-2 me-1 mt-2 badge badge-glow bg-{{ challenge.playerSecond.newRankTitle | challengesRankColor }}-transparent">
+            class="ms-2 me-1 mt-2 badge bg-{{ challenge.playerSecond.newRankTitle | challengesRankColor }}-transparent">
             {{ challenge.playerSecond.newRating }}
           </span>
           <span [ngClass]="{
             'bg-success': challenge.playerSecond.delta > 0,
             'bg-danger': challenge.playerSecond.delta < 0,
             'bg-secondary': challenge.playerSecond.delta == 0
-          }" class="badge badge-glow mb-1">
+          }" class="badge mb-1">
             <i [data-feather]="'trending-up'"></i>
             {{ challenge.playerSecond.delta }}
           </span>
@@ -186,7 +186,7 @@
             'bg-danger': challenge.playerFirst.result > challenge.playerSecond.result,
             'bg-success': challenge.playerFirst.result < challenge.playerSecond.result,
             'bg-secondary': challenge.playerFirst.result == challenge.playerSecond.result
-          }" class="badge badge-result badge-glow">
+          }" class="badge badge-result">
             {{ challenge.playerSecond.result }}
           </span>
         </div>
