@@ -9,6 +9,8 @@ export default [
   {
     path: 'post/:id',
     loadComponent: () => import('@app/modules/blog/pages/post-detail/post-detail.component').then(c => c.PostDetailComponent),
-    title: 'Blog.PostDetail',
+    data: {
+      title: 'Blog.PostDetail',
+    }
   }
 ] satisfies Route[];

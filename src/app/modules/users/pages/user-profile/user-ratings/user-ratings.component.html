@@ -56,7 +56,7 @@
         <contests-rating-image [size]="16" [title]="userContestsRating.maxRatingTitle"/>
         {{ userContestsRating.maxRating }}
       </span>
-      <span [ngbTooltip]="'Contests' | translate" class="badge bg-primary-transparent">
+      <span [ngbTooltip]="'Contests' | translate" class="badge d-md-inline-block d-none bg-primary-transparent">
         {{ userContestsRating.contestantsCount }}
       </span>
     </div>
@@ -66,8 +66,6 @@
       <apex-chart
         [options]="contestRatingChangesChart">
       </apex-chart>
-    } @else {
-      <empty-result/>
     }
   </div>
 </kep-card>

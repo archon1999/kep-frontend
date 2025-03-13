@@ -34,9 +34,11 @@ export class PostsSectionComponent implements AfterViewInit {
     responsive: {
       0: {
         items: 1,
+        margin: 0,
       },
       768: {
         items: 2,
+        margin: 50,
       },
     },
     nav: false,

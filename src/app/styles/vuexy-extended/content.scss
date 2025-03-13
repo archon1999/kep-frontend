@@ -1,101 +1,19 @@
 @import 'styles/kep-imports';
 
-th {
-  font-weight: 400 !important;
-  text-transform: initial !important;
-}
-
-code {
-  padding: 0;
-}
-
 body {
   padding-right: 0 !important
 }
 
 pre {
-  all: revert;
-  margin: 1em 0;
-  padding: 1rem;
-  border-radius: .375em;
-  border: 1px solid white !important;
-  background-color: rgba(255, 255, 255, 0.75) !important;
-  font-size: 87.5%;
-  font-family: 'Inconsolata', serif;
-  overflow: auto;
-}
-
-.dark-layout pre {
   background-color: rgba(0, 0, 0, 0.5) !important;
   border: 1px solid $theme-dark-body-bg !important;
   color: white;
-}
-
-@media (min-width: 1440px) {
-  .container-xxl {
-    max-width: 1440px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .container-xl {
-    max-width: 1200px;
-  }
-}
-
-@media (min-width: 992px) {
-  .container-lg {
-    max-width: 992px;
-  }
-}
-
-@media (min-width: 768px) {
-  .container-md {
-    max-width: 768px;
-  }
-}
-
-@media (min-width: 540px) {
-  .container-sm {
-    max-width: 540px;
-  }
-}
-
-#main-menu-navigation > li[core-menu-horizontal-item],
-li[core-menu-horizontal-collapsible],
-.main-menu.expanded li[core-menu-vertical-item],
-.menu-expanded li[core-menu-vertical-item] {
-  &.active > a > kep-icon > span, &.active > div > kep-icon > span {
-    color: white !important;
-  }
-}
-
-.main-menu {
-  transition: 1s ease;
-}
-
-.main-menu:not(.expanded) kep-icon > span {
-  margin-right: 1rem;
 }
 
 @include media-breakpoint-down(sm) {
   .nav-tabs .nav-item {
     width: 100%;
   }
-}
-
-:root {
-  --inherit-bg-box-shadow: 0 4px 24px 0 rgba(34, 41, 47, 0.1);
-}
-
-:root .dark-layout {
-  --inherit-bg-box-shadow: 0 2px 12px 0 rgba(255, 255, 255, 0.05);
-}
-
-a.nav-link:hover {
-  background-color: rgba($primary, 0.05);
-  border-radius: 5px;
-  transition: 0.2s ease-in;
 }
 
 .list-group-item:hover {
@@ -114,65 +32,6 @@ img {
   max-width: 100%;
 }
 
-.dark-layout app-menu {
-  backdrop-filter: blur(5px);
-}
-
-.nav-tabs.card-nav {
-  background: rgba(255, 255, 255, 0.5);
-  border: 1px solid white;
-
-  @include dark-layout {
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px solid $theme-dark-body-bg;
-  }
-}
-
-.horizontal-layout.navbar-sticky .header-navbar {
-  background: rgba(255, 255, 255, 0.8) !important;
-  backdrop-filter: blur(20px);
-}
-
-.dark-layout {
-  app-menu, .horizontal-layout.navbar-sticky .header-navbar {
-    background-color: rgba(0, 0, 0, 0.6) !important;
-    backdrop-filter: blur(20px) !important;
-  }
-}
-
-li[core-menu-horizontal-item] {
-  .dropdown-item {
-    &:active kep-icon span {
-      color: white !important;
-    }
-
-    &:hover, &:focus, &:active {
-      border-radius: 5px;
-    }
-  }
-}
-
-.dark-layout .dropdown-menu {
-  backdrop-filter: blur(10px) !important;
-}
-
-.dark-layout .swal2-container .swal2-modal {
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-}
-
-.dark-layout {
-  a.text-dark:focus, a.text-dark:hover {
-    color: $primary !important;
-  }
-}
-
 .round {
   border-radius: 100rem !important;
-}
-
-html:has(.swal2-container) {
-  app-footer {
-    display: none !important;
-  }
 }

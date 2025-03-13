@@ -9,11 +9,6 @@
   background-color: mix(white, $primary, 20);
 }
 
-.dark-layout .tooltip-primary .tooltip-inner {
-  color: white !important;
-  background-color: mix(black, $primary, 20) !important;
-}
-
 .tooltip-success .tooltip-inner {
   color: #8ca49f;
   background-color: #ddf5f0;

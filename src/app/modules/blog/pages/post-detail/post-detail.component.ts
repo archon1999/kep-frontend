@@ -43,7 +43,7 @@ export class PostDetailComponent extends BaseLoadComponent<Blog> {
   }
 
   afterLoadData(blog: Blog) {
-    this.titleService.updateTitle(this.route, { postTitle: this.blog.title });
+    this.titleService.updateTitle(this.route, { postTitle: blog.title });
   }
 
   like() {
