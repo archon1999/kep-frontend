@@ -51,8 +51,11 @@ export class LoginComponent extends BaseComponent implements OnInit {
           this.loading = false;
           const message = `👋 ${this.translateService.instant('Welcome')}, ` + user.firstName || user.username + '!';
           this.toastr.success(this.translateService.instant('LoginSuccessText'), message);
-          this.router.navigate([this.returnUrl || Resources.Home]);
-          this.authService.getMe().subscribe();
+          this.authService.getMe().subscribe(
+            () => {
+              this.router.navigate([Resources.Home]);
+            }
+          );
         },
         error: (err) => {
           this.loading = false;

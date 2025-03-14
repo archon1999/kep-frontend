@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { ContentLayoutComponent } from '@core/layouts/content-layout/content-layout.component';
 import { AuthenticationLayoutComponent } from '@core/layouts/authentication-layout/authentication-layout.component';
 import { LandingLayoutComponent } from "@core/layouts/landing-layout/landing-layout.component";
+import { IsAuthenticatedGuard } from '@auth';
 
 export const routes: Routes = [
   {
@@ -98,7 +99,8 @@ export const routes: Routes = [
     children: [
       {
         path: 'login',
-        loadComponent: () => import('@auth/login/login.component').then(c => c.LoginComponent)
+        loadComponent: () => import('@auth/login/login.component').then(c => c.LoginComponent),
+        canActivate: [IsAuthenticatedGuard],
       }
     ]
   },

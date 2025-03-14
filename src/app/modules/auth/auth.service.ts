@@ -7,10 +7,10 @@ import { environment } from '../../../environments/environment';
 import { User } from '@auth';
 import { ApiService } from '@shared/services/api.service';
 import { WebsocketService } from '@shared/services/websocket';
-import { GlobalService } from '@app/common';
 import { Router } from '@angular/router';
+import { Resources } from '@app/resources';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<User>(null);
   public currentUser = this.currentUserSubject.asObservable();
@@ -40,10 +40,10 @@ export class AuthService {
   }
 
   login(username: string, password: string) {
-    const token = btoa(`${username}:${password}`);
-    const headers = {'Authorization': `Basic ${token}`};
+    const token = btoa(`${ username }:${ password }`);
+    const headers = { 'Authorization': `Basic ${ token }` };
     return this._http
-      .post<any>(`${environment.apiUrl}/api/login/`, {}, {headers: headers})
+      .post<any>(`${ environment.apiUrl }/api/login/`, {}, { headers: headers })
       .pipe(tap(user => this.currentUserSubject.next(user)));
   }
 
@@ -57,8 +57,7 @@ export class AuthService {
     this.wsService.send('kepcoin-delete', this.currentUserValue?.username);
     this.api.post('logout').subscribe(() => {
       this.currentUserSubject.next(null);
-      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-      this.router.navigate([this.router.url], {skipLocationChange: true});
+      this.router.navigate([Resources.Login]);
     });
   }
 }
