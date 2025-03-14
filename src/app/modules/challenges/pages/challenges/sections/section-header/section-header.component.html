@@ -40,13 +40,13 @@
             <span class="text-success">{{ Math.trunc(100 * challengesRating.wins / challengesRating.all) }} %</span>
           </div>
           <div class="text-dark" [ngClass.lt-md]="'font-small-4'" [ngClass.gt-sm]="'font-medium-2'">
-            <span class="ms-50 text-secondary" ngbTooltip="{{ 'Draws' | translate }}">D</span>
+            <span class="ms-1 text-secondary" ngbTooltip="{{ 'Draws' | translate }}">D</span>
             {{ challengesRating.draws }}
             <br>
             <span class="text-secondary">{{ Math.trunc(100 * challengesRating.draws / challengesRating.all) }} %</span>
           </div>
           <div class="text-dark" [ngClass.lt-md]="'font-small-4'" [ngClass.gt-sm]="'font-medium-2'">
-            <span class="ms-50 text-danger" ngbTooltip="{{ 'Losses' | translate }}">L</span>
+            <span class="ms-1 text-danger" ngbTooltip="{{ 'Losses' | translate }}">L</span>
             {{ challengesRating.losses }}
             <br>
             <span class="text-danger">{{ Math.trunc(100 * challengesRating.losses / challengesRating.all) }} %</span>

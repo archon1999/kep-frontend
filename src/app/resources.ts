@@ -46,7 +46,13 @@ export enum Resources {
 
   Login = '/login',
   Settings = '/settings',
-  SettingsTab = '/settings/:id',
+  SettingsChangePassword = `${Settings}/change-password`,
+  SettingsInformation = `${Settings}/information`,
+  SettingsSocial = `${Settings}/social`,
+  SettingsSkills = `${Settings}/skills`,
+  SettingsCareer = `${Settings}/career`,
+  SettingsTeams = `${Settings}/teams`,
+  SettingsSystem = `${Settings}/system`,
   TeamJoin = '/teams/:id/join',
 }
 

@@ -1,45 +1,54 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '@auth';
-import { ToastrService } from 'ngx-toastr';
+import { Component, inject } from '@angular/core';
 import { AccountSettingsService } from '../account-settings.service';
+import { BaseComponent } from '@app/common';
+import { FormsModule } from '@angular/forms';
+import { NgClass } from '@angular/common';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { CoreDirectivesModule } from '@shared/directives/directives.module';
 
 @Component({
   selector: 'change-password',
   templateUrl: './change-password.component.html',
   styleUrls: ['./change-password.component.scss'],
-  standalone: false,
+  standalone: true,
+  imports: [
+    FormsModule,
+    NgClass,
+    KepCardComponent,
+    TranslatePipe,
+    KepIconComponent,
+    CoreDirectivesModule
+  ]
 })
-export class ChangePasswordComponent implements OnInit {
+export class ChangePasswordComponent extends BaseComponent {
 
-  passwordOldType = false;
-  passwordOld = '';
+  public passwordOldType = false;
+  public passwordOld = '';
 
-  passwordNewType = false;
-  passwordNew = '';
+  public passwordNewType = false;
+  public passwordNew = '';
 
-  passwordConfirmType = false;
-  passwordConfirm = '';
+  public passwordConfirmType = false;
+  public passwordConfirm = '';
 
-  constructor(
-    public authService: AuthService,
-    public route: ActivatedRoute,
-    public toastr: ToastrService,
-    public service: AccountSettingsService,
-  ) { }
-
-  ngOnInit(): void {
-  }
+  protected accountSettingsService = inject(AccountSettingsService);
 
   change() {
     if (this.passwordNew != this.passwordConfirm) {
-      this.toastr.error('Yangi parolni tasdiqlash noto`g`ri', '');
+      this.toastr.error(this.translateService.instant('Settings.ConfirmNewPasswordIncorrect'));
     } else {
-      this.service.changePassword(this.passwordOld, this.passwordNew).subscribe((result: any) => {
-        this.toastr.success('Saqlandi', '');
-      }, (err: any) => {
-        this.toastr.error('Parol noto`g`ri', '');
-      });
+      this.accountSettingsService.changePassword(this.passwordOld, this.passwordNew).subscribe(
+        {
+          next: () => {
+            this.toastr.success(this.translateService.instant('Settings.Saved'));
+          },
+          error: () => {
+            this.toastr.error(this.translateService.instant('Settings.WrongPassword'));
+          }
+        }
+      );
     }
   }
 

@@ -1,41 +1,44 @@
 <kep-card>
-  <div class="card-body">
-    <div class="row">
-      <!-- social header -->
-      <div class="col-12">
-        <div class="d-flex align-items-center mb-2">
-          <i data-feather="link" class="font-medium-3"></i>
-          <h4 class="mb-0 ms-2">Social Links</h4>
+  <div class="card-header">
+    <div class="card-title">
+      <i class="font-medium-4 me-1" data-feather="link"></i>
+      {{ 'Settings.SocialLinks' | translate }}
+    </div>
+  </div>
+  @if (isLoading) {
+    <div [style.height]="'144px'">
+      <spinner/>
+    </div>
+  } @else {
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12 col-sm-6">
+          <div class="mb-1">
+            <label>{{ 'Settings.Telegram' | translate }}</label>
+            <input type="text" [(ngModel)]="userSocial.telegram" class="form-control"/>
+            @if (errors?.telegram) {
+              <p class="text-danger">{{ errors.telegram[0] }}</p>
+            }
+          </div>
         </div>
-      </div>
-      <div class="col-12 col-sm-6">
-        <div class="mb-1">
-          <label for="account-facebook">Telegram</label>
-          <input type="text" [(ngModel)]="userSocial.telegram" id="account-facebook"
-                 name="account-facebook" class="form-control" placeholder="Add link"/>
-          @if (errors?.telegram) {
-            <p class="text-danger">{{ errors.telegram[0] }}</p>
-          }
+        <div class="col-12 col-sm-6">
+          <div class="mb-1">
+            <label>{{ 'Settings.CodeforcesHandle' | translate }}</label>
+            <input type="text" [(ngModel)]="userSocial.codeforcesHandle" class="form-control"/>
+            @if (errors?.codeforcesHandle) {
+              <p class="text-danger">{{ errors.codeforcesHandle[0] }}</p>
+            }
+          </div>
         </div>
-      </div>
-
-      <div class="col-12 col-sm-6">
-        <div class="mb-1">
-          <label for="account-twitter">Codeforces Handle</label>
-          <input type="text" [(ngModel)]="userSocial.codeforcesHandle" id="account-twitter"
-                 name="account-twitter" class="form-control" placeholder="Add link"/>
-          @if (errors?.codeforcesHandle) {
-            <p class="text-danger">{{ errors.codeforcesHandle[0] }}</p>
-          }
+        <div class="col-12">
+          <button (click)="save()" class="btn btn-primary mt-2 me-1" type="submit">
+            {{ 'Settings.Save' | translate }}
+          </button>
+          <button (click)="reset()" class="btn btn-outline-primary mt-2" type="reset">
+            {{ 'Settings.Reset' | translate }}
+          </button>
         </div>
-      </div>
-
-      <div class="col-12">
-        <!-- submit and cancel button -->
-        <button (click)="save()" type="submit" class="btn btn-primary me-1 mt-1" rippleEffect>Save</button>
-        <button (click)="reset()" type="reset" class="btn btn-outline-secondary mt-1" rippleEffect>Reset</button>
       </div>
     </div>
-
-  </div>
+  }
 </kep-card>

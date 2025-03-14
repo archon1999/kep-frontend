@@ -1,95 +1,65 @@
-<div class="content-wrapper container-xxl p-0">
+<div class="content-wrapper container-xxl p-0 mb-2">
   <div class="content-body">
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
     <section class="mt-2">
       <div class="row nav-vertical d-flex">
         <div class="col-md-3 mb-2 mb-md-0">
-          <ul
-            #navVertical="ngbNav"
-            (activeIdChange)="activeIdChange($event)"
-            [activeId]="activeId"
-            class="nav nav-pills tab-style-7 flex-column nav-left"
-            ngbNav>
-            <li [ngbNavItem]="Tab.General" class="nav-item">
-              <a class="nav-link" ngbNavLink>
+          <ul class="nav nav-pills tab-style-7 flex-column nav-left" ngbNav>
+            <li class="nav-item">
+              <a [routerLinkActiveOptions]="{exact: true}" [routerLink]="[Resources.Settings]"
+                 class="nav-link fw-medium" routerLinkActive="active">
                 <i class="font-medium-4 me-1" data-feather="user"></i>
-                <span>General</span>
+                <span>{{ 'Settings.General' | translate }}</span>
               </a>
-              <ng-template ngbNavContent>
-                <general-settings></general-settings>
-              </ng-template>
             </li>
-            <li [ngbNavItem]="Tab.ChangePassword" class="nav-item">
-              <a class="nav-link" ngbNavLink>
+            <li class="nav-item">
+              <a [routerLink]="[Resources.SettingsChangePassword]" class="nav-link fw-medium" routerLinkActive="active">
                 <i class="font-medium-4 me-1" data-feather="lock"></i>
-                <span>Change Password</span>
+                <span>{{ 'Settings.ChangePassword' | translate }}</span>
               </a>
-              <ng-template ngbNavContent>
-                <change-password></change-password>
-              </ng-template>
             </li>
-            <li [ngbNavItem]="Tab.Information" class="nav-item">
-              <a class="nav-link" ngbNavLink>
+            <li class="nav-item">
+              <a [routerLink]="[Resources.SettingsInformation]" class="nav-link fw-medium" routerLinkActive="active">
                 <i class="font-medium-4 me-1" data-feather="info"></i>
-                <span>Information</span>
+                <span>{{ 'Settings.Information' | translate }}</span>
               </a>
-              <ng-template ngbNavContent>
-                <information></information>
-              </ng-template>
             </li>
-            <li [ngbNavItem]="Tab.Social" class="nav-item">
-              <a class="nav-link" ngbNavLink>
+            <li class="nav-item">
+              <a [routerLink]="[Resources.SettingsSocial]" class="nav-link fw-medium" routerLinkActive="active">
                 <i class="font-medium-4 me-1" data-feather="link"></i>
-                <span>Social</span>
+                <span>{{ 'Settings.Social' | translate }}</span>
               </a>
-              <ng-template ngbNavContent>
-                <social></social>
-              </ng-template>
             </li>
-
-            <li class="nav-item" [ngbNavItem]="Tab.Skills">
-              <a class="nav-link" ngbNavLink>
+            <li class="nav-item">
+              <a [routerLink]="[Resources.SettingsSkills]" class="nav-link fw-medium" routerLinkActive="active">
                 <i class="font-medium-4 me-1" data-feather="activity"></i>
-                <span>Skills</span>
+                <span>{{ 'Settings.Skills' | translate }}</span>
               </a>
-              <ng-template ngbNavContent>
-                <skills></skills>
-              </ng-template>
             </li>
-
-            <li [ngbNavItem]="Tab.Career" class="nav-item">
-              <a class="nav-link" ngbNavLink>
+            <li class="nav-item">
+              <a [routerLink]="[Resources.SettingsCareer]" class="nav-link fw-medium" routerLinkActive="active">
                 <i class="font-medium-4 me-1" data-feather="trending-up"></i>
-                <span>Сareer</span>
+                <span>{{ 'Settings.Career' | translate }}</span>
               </a>
-              <ng-template ngbNavContent>
-                <career></career>
-              </ng-template>
             </li>
-
-            <li [ngbNavItem]="Tab.Teams" class="nav-item">
-              <a class="nav-link" ngbNavLink>
+            <li class="nav-item">
+              <a [routerLink]="[Resources.SettingsTeams]" class="nav-link fw-medium" routerLinkActive="active">
                 <i class="font-medium-4 me-1" data-feather="users"></i>
-                <span>Teams</span>
+                <span>{{ 'Settings.Teams' | translate }}</span>
               </a>
-              <ng-template ngbNavContent>
-                <teams></teams>
-              </ng-template>
             </li>
-
-            <li [ngbNavItem]="Tab.System" class="nav-item">
-              <a class="nav-link" ngbNavLink>
+            <li class="nav-item">
+              <a [routerLink]="[Resources.SettingsSystem]" class="nav-link me-2 fw-medium" routerLinkActive="active">
                 <i class="font-medium-4 me-1" data-feather="settings"></i>
-                <span>System</span>
+                <span>{{ 'Settings.System' | translate }}</span>
               </a>
-              <ng-template ngbNavContent>
-                <system></system>
-              </ng-template>
             </li>
           </ul>
         </div>
-        <div [ngbNavOutlet]="navVertical" class="col-12 col-md-9"></div>
+        <div class="col-12 col-md-9">
+          <router-outlet></router-outlet>
+        </div>
       </div>
     </section>
   </div>

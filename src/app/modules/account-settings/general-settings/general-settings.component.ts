@@ -1,44 +1,51 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AuthService, User } from '@auth';
+import { Component, inject } from '@angular/core';
 import { UserGeneralInfo } from '@users/users.models';
-import { ToastrService } from 'ngx-toastr';
 import { AccountSettingsService } from '../account-settings.service';
+import { BaseLoadComponent } from '@app/common';
+import { Observable } from 'rxjs';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { FormsModule } from '@angular/forms';
+import { KepcoinSpendSwalModule } from '@app/modules/kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
+import { CoreDirectivesModule } from '@shared/directives/directives.module';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'general-settings',
   templateUrl: './general-settings.component.html',
   styleUrls: ['./general-settings.component.scss'],
-  standalone: false,
+  standalone: true,
+  imports: [
+    KepCardComponent,
+    FormsModule,
+    KepcoinSpendSwalModule,
+    CoreDirectivesModule,
+    SpinnerComponent,
+    TranslatePipe
+  ]
 })
-export class GeneralSettingsComponent implements OnInit {
+export class GeneralSettingsComponent extends BaseLoadComponent<UserGeneralInfo> {
 
   public generalInfo: UserGeneralInfo;
   public generalSettings: UserGeneralInfo;
 
-  public currentUser: User = this.authService.currentUserValue;
-
   public canChangeCoverPhoto = false;
-
   public errors: any;
 
-  constructor(
-    public authService: AuthService,
-    public route: ActivatedRoute,
-    public toastr: ToastrService,
-    public service: AccountSettingsService,
-  ) { }
+  protected accountSettingsService = inject(AccountSettingsService);
 
-  ngOnInit(): void {
-    this.route.data.subscribe(({generalInfo}) => {
-      this.generalInfo = generalInfo;
-      this.generalSettings = {
-        username: generalInfo.username,
-        firstName: generalInfo.firstName,
-        lastName: generalInfo.lastName,
-        email: generalInfo.email,
-      };
-    });
+  getData(): Observable<UserGeneralInfo> {
+    return this.accountSettingsService.getUserGeneralInfo();
+  }
+
+  afterLoadData(generalInfo: UserGeneralInfo) {
+    this.generalInfo = generalInfo;
+    this.generalSettings = {
+      username: generalInfo.username,
+      firstName: generalInfo.firstName,
+      lastName: generalInfo.lastName,
+      email: generalInfo.email,
+    };
   }
 
   uploadImage(event: any) {
@@ -68,20 +75,21 @@ export class GeneralSettingsComponent implements OnInit {
   }
 
   save() {
-    this.service.updateUserGeneralInfo(this.generalSettings).subscribe(() => {
-      this.toastr.success('Saved', '');
-      this.errors = null;
-      this.authService.getMe().subscribe();
-    }, (err: any) => {
-      this.errors = err.error;
-      this.toastr.error('Error', '');
-    });
+    this.accountSettingsService.updateUserGeneralInfo(this.generalSettings).subscribe(
+      {
+        next: () => {
+          this.toastr.success(this.translateService.instant('Settings.Saved'));
+          this.errors = null;
+          this.authService.getMe().subscribe();
+        }, error: (err) => {
+          this.errors = err.error;
+          this.toastr.error(this.translateService.instant('Settings.Error'));
+        }
+      }
+    )
   }
 
   reset() {
-    this.service.getUserGeneralInfo().subscribe((generalInfo: any) => {
-      this.generalInfo = generalInfo;
-    });
+    this.loadData();
   }
-
 }

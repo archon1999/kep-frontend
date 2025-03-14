@@ -1,4 +1,4 @@
-<div [@fadeInOnEnter]="" class="card">
+<kep-card [@fadeInOnEnter]="">
   <div class="card-header">
     <div class="card-title fw-semibold">
       {{ team.name }}
@@ -6,25 +6,29 @@
   </div>
   <div class="card-body">
     @for (member of team.members; track member) {
-      <div class="avatar">
+      <div class="avatar avatar-rounded">
         <img [src]="member.avatar" width="32" height="32" alt="member-avatar">
       </div>
       <user-popover [username]="member.username"/>
       <span *ngIf="member.username == team.createrUsername">
-        (creator)
+        ({{ 'Settings.Creator' | translate }})
       </span>
       <span class="me-1"></span>
     }
   </div>
   @if (currentUser.username == team.createrUsername) {
     <div class="card-footer">
-      <clipboard-button [buttonClass]="'btn btn-sm btn-primary'"
-                        [text]="'https://kep.uz' + (Resources.TeamJoin | resourceById:team.code)">
-        Link to join
+      <clipboard-button
+        [buttonClass]="'btn btn-sm btn-primary'"
+        [text]="'https://kep.uz' + (Resources.TeamJoin | resourceById:team.code)">
+        {{ 'Settings.LinkToJoin' | translate }}
       </clipboard-button>
-      <button ngbTooltip="Generate new link" class="ms-50 btn btn-sm btn-primary" (click)="refreshCode()">
-        Refresh link
+      <button
+        [ngbTooltip]="'Settings.GenerateNewLink' | translate"
+        class="ms-1 btn btn-sm btn-primary"
+        (click)="refreshCode()">
+        {{ 'Settings.RefreshLink' | translate }}
       </button>
     </div>
   }
-</div>
+</kep-card>

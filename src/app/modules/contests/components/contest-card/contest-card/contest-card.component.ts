@@ -90,7 +90,7 @@ export class ContestCardComponent implements OnInit {
       this.service.getUserTeams().subscribe(
         (teams: Array<Team>) => {
           if (teams.length === 0) {
-            this.router.navigateByUrl(getResourceById(Resources.SettingsTab, 'teams'));
+            this.router.navigateByUrl(Resources.SettingsTeams);
           } else {
             this.userTeams = teams;
             this.modalService.open(this.registrationModalRef, {

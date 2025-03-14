@@ -19,8 +19,6 @@ export class Problem1639Component {
   ) { }
 
   finish() {
-    this.toastr.success('Oltinni tagi sabr!', '', {
-
-    });
+    this.toastr.success('Oltinni tagi sabr!');
   }
 }

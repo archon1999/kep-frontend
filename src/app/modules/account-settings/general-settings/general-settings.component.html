@@ -1,43 +1,40 @@
 <kep-card>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-12">
-        <div class="d-flex align-items-center mb-2">
-          <i class="font-medium-3" data-feather="user"></i>
-          <h4 class="mb-0 ms-3">General Settings</h4>
-        </div>
-      </div>
+  <div class="card-header">
+    <div class="card-title">
+      <i class="font-medium-3" data-feather="user"></i>
+      {{ 'Settings.GeneralSettings' | translate }}
     </div>
-    <div class="col-12">
-
-      <!-- header media -->
+  </div>
+  @if (isLoading) {
+    <div [style.height]="'60vh'">
+      <spinner/>
+    </div>
+  } @else {
+    <div class="card-body">
       <div class="d-flex">
         <a class="me-1" href="javascript:void(0);">
-          <img [src]="generalInfo.avatar" alt="profile image" class="rounded me-2" height="90" width="90"/>
+          <img [src]="generalInfo.avatar" alt="{{ 'Settings.ProfileImageAlt' | translate }}" class="rounded me-2" height="90" width="90"/>
         </a>
-        <!-- upload and reset button -->
         <div class="flex-grow-1 mt-3 ms-1">
-          <button (click)="file.click()" class="btn btn-sm btn-primary mb-3 me-3" rippleEffect>
-            Upload
+          <button (click)="file.click()" class="btn btn-sm btn-primary mb-3 me-3">
+            {{ 'Settings.Upload' | translate }}
           </button>
           <input #file (change)="uploadImage($event)" accept="image/*" hidden type="file"/>
           @if (errors?.avatar) {
             <p class="text-danger">{{ errors.avatar[0] }}</p>
           }
         </div>
-        <!--/ upload and reset button -->
       </div>
-      <!--/ header media -->
 
       <div class="row mt-2">
         <div class="col-12 col-sm-6">
           <div class="mb-1">
-            <label>Username</label>
+            <label>{{ 'Settings.Username' | translate }}</label>
             <input
               [(ngModel)]="generalSettings.username"
               [ngModelOptions]="{standalone: true}"
               class="form-control"
-              placeholder="Username"
+              [placeholder]="'Settings.Username' | translate"
               type="text"/>
             @if (errors?.username) {
               <p class="text-danger">{{ errors.username[0] }}</p>
@@ -46,12 +43,12 @@
         </div>
         <div class="col-12 col-sm-6">
           <div class="mb-1">
-            <label>E-mail</label>
+            <label>{{ 'Settings.Email' | translate }}</label>
             <input
               [(ngModel)]="generalSettings.email"
               [ngModelOptions]="{standalone: true}"
               class="form-control"
-              placeholder="Email"
+              [placeholder]="'Settings.Email' | translate"
               type="text"/>
             @if (errors?.email) {
               <p class="text-danger">{{ errors.email[0] }}</p>
@@ -60,12 +57,12 @@
         </div>
         <div class="col-12 col-sm-6">
           <div class="mb-1">
-            <label>First name</label>
+            <label>{{ 'Settings.FirstName' | translate }}</label>
             <input
               [(ngModel)]="generalSettings.firstName"
               [ngModelOptions]="{standalone: true}"
               class="form-control"
-              placeholder="First name"
+              [placeholder]="'Settings.FirstName' | translate"
               type="text"/>
             @if (errors?.firstName) {
               <p class="text-danger">{{ errors.firstName[0] }}</p>
@@ -74,12 +71,12 @@
         </div>
         <div class="col-12 col-sm-6">
           <div class="mb-1">
-            <label>Last name</label>
+            <label>{{ 'Settings.LastName' | translate }}</label>
             <input
               [(ngModel)]="generalSettings.lastName"
               [ngModelOptions]="{standalone: true}"
               class="form-control"
-              placeholder="Last name"
+              [placeholder]="'Settings.LastName' | translate"
               type="text"/>
             @if (errors?.lastName) {
               <p class="text-danger">{{ errors.lastName[0] }}</p>
@@ -88,26 +85,23 @@
         </div>
 
         <div class="d-flex">
-          <img [src]="generalInfo.coverPhoto" alt="cover image" class="ms-1 mt-2" height="100%" width="50%"/>
-          <!-- upload and reset button -->
+          <img [src]="generalInfo.coverPhoto" alt="{{ 'Settings.CoverImageAlt' | translate }}" class="mt-2" height="100%" width="50%"/>
           <div class="flex-grow-1 mt-2 ms-1">
             @if (!canChangeCoverPhoto) {
               <kepcoin-spend-swal
                 [customContent]="true"
                 [value]="5"
                 [purchaseUrl]="'users/purchase-cover-photo-change/'"
-                (success)="canChangeCoverPhoto=true;"
-              >
-                <button class="btn btn-sm btn-primary mb-3 me-3" rippleEffect>
-                  Edit
+                (success)="canChangeCoverPhoto=true;">
+                <button class="btn btn-sm btn-primary ms-2" rippleEffect>
+                  {{ 'Settings.Edit' | translate }}
                 </button>
               </kepcoin-spend-swal>
             }
             @if (canChangeCoverPhoto) {
               <div>
-                <button (click)="cover.click()" for="account-upload" class="btn btn-sm btn-primary mb-3 me-3"
-                        rippleEffect>
-                  Upload
+                <button (click)="cover.click()" for="account-upload" class="btn btn-sm btn-primary mb-3 me-3">
+                  {{ 'Settings.Upload' | translate }}
                 </button>
                 <input type="file" #cover hidden accept="image/*" (change)="uploadCover($event)"/>
                 @if (errors?.coverPhoto) {
@@ -116,14 +110,13 @@
               </div>
             }
           </div>
-          <!--/ upload and reset button -->
         </div>
 
         <div class="col-12 mt-2">
-          <button (click)="save()" class="btn btn-primary mt-2 me-1" rippleEffect type="submit">Save</button>
-          <button (click)="reset()" class="btn btn-outline-primary mt-2" rippleEffect type="reset">Reset</button>
+          <button (click)="save()" class="btn btn-primary mt-2 me-1" type="submit">{{ 'Settings.Save' | translate }}</button>
+          <button (click)="reset()" class="btn btn-outline-primary mt-2" type="reset">{{ 'Settings.Reset' | translate }}</button>
         </div>
       </div>
     </div>
-  </div>
+  }
 </kep-card>

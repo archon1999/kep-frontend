@@ -1,4 +1,11 @@
-import { ApplicationConfig, importProvidersFrom, inject, Injectable, provideAppInitializer, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  inject,
+  Injectable,
+  provideAppInitializer,
+  provideExperimentalZonelessChangeDetection
+} from '@angular/core';
 import { provideRouter, RouterOutlet, RouterStateSnapshot, TitleStrategy } from '@angular/router';
 import { routes } from './app.routes';
 import { ColorPickerModule, ColorPickerService } from 'ngx-color-picker';
@@ -13,7 +20,6 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
 import { WebsocketModule } from '@shared/services/websocket';
 import { AuthService } from '@auth';
-import { map } from 'rxjs/operators';
 import { monacoConfig } from '@app/monaco.config';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { HIGHLIGHT_OPTIONS, HighlightOptions } from 'ngx-highlightjs';
@@ -21,15 +27,7 @@ import { Title } from '@angular/platform-browser';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
 import { APP_BASE_HREF } from '@angular/common';
 import { adapterFactory } from 'angular-calendar/date-adapters/moment';
-
-function authFactory() {
-  const authService = inject(AuthService);
-  return () => authService.getMe().pipe(
-    map(user => {
-      return true;
-    })
-  );
-}
+import { provideFlatpickrDefaults } from 'angularx-flatpickr';
 
 @Injectable({ providedIn: 'root' })
 export class CustomTitleStrategy extends TitleStrategy {
@@ -43,9 +41,9 @@ export class CustomTitleStrategy extends TitleStrategy {
   override updateTitle(routerState: RouterStateSnapshot) {
     const title = this.buildTitle(routerState);
     if (title !== undefined) {
-      const key = `PageTitle.${title}`;
+      const key = `PageTitle.${ title }`;
       this.translateService.get(key).subscribe((value: any) => {
-        this.title.setTitle(`${value} - KEP.uz`);
+        this.title.setTitle(`${ value } - KEP.uz`);
       });
     }
   }
@@ -78,6 +76,7 @@ export const appConfig: ApplicationConfig = {
         },
       }
     },
+    provideFlatpickrDefaults(),
     RouterOutlet,
     ColorPickerModule,
     ColorPickerService,

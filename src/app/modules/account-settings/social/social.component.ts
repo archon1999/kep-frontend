@@ -1,58 +1,58 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AuthService, User } from '@auth';
-import { UserSocial } from '../../users/users.models';
-import { ToastrService } from 'ngx-toastr';
+import { Component, inject } from '@angular/core';
+import { UserSocial } from '@users/users.models';
 import { AccountSettingsService } from '../account-settings.service';
+import { BaseLoadComponent } from '@app/common';
+import { Observable } from 'rxjs';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
+import { CoreDirectivesModule } from '@shared/directives/directives.module';
 
 @Component({
   selector: 'social',
   templateUrl: './social.component.html',
   styleUrls: ['./social.component.scss'],
-  standalone: false,
+  standalone: true,
+  imports: [
+    KepCardComponent,
+    SpinnerComponent,
+    TranslatePipe,
+    FormsModule,
+    CoreDirectivesModule
+  ]
 })
-export class SocialComponent implements OnInit {
-
+export class SocialComponent extends BaseLoadComponent<UserSocial> {
   public userSocial: UserSocial;
 
   public errors: any;
 
-  public currentUser: User = this.authService.currentUserValue;
+  protected accountSettingsService = inject(AccountSettingsService);
 
-  constructor(
-    public authService: AuthService,
-    public route: ActivatedRoute,
-    public toastr: ToastrService,
-    public service: AccountSettingsService,
-  ) { }
+  getData(): Observable<UserSocial> {
+    return this.accountSettingsService.getUserSocial();
+  }
 
-  ngOnInit(): void {
-    this.route.data.subscribe(({userSocial}) => {
-      this.userSocial = userSocial;
-    });
+  afterLoadData(data: UserSocial) {
+    this.userSocial = data;
   }
 
   save() {
-    this.service.updateUserSocial(this.userSocial).subscribe(
-      () => {
-        this.toastr.success('Saved', '', {
-
-        });
-      }, (err: any) => {
-        this.errors = err.error;
-        this.toastr.error('Error', '', {
-
-        });
+    this.accountSettingsService.updateUserSocial(this.userSocial).subscribe(
+      {
+        next: () => {
+          this.toastr.success(this.translateService.instant('Settings.Saved'));
+          this.errors = null;
+          this.authService.getMe().subscribe();
+        }, error: (err) => {
+          this.errors = err.error;
+          this.toastr.error(this.translateService.instant('Settings.Error'));
+        }
       }
     );
   }
 
   reset() {
-    this.service.getUserSocial().subscribe(
-      (userSocial: any) => {
-        this.userSocial = userSocial;
-      }
-    );
+    this.loadData();
   }
-
 }

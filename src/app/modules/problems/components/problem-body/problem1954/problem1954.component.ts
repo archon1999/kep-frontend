@@ -23,9 +23,7 @@ export class Problem1954Component {
   ) { }
 
   finish() {
-    this.toastr.success(message, '', {
-
-    });
+    this.toastr.success(message);
   }
 
   @HostListener('window:blur') onBlur() {

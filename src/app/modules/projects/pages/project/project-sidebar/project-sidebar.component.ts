@@ -38,9 +38,7 @@ export class ProjectSidebarComponent implements OnInit {
 
   handleFileInput(files: FileList) {
     if (files.item(0).size > 1024 * 1024) {
-      this.toastr.error('Max file size 1mb', '', {
-
-      });
+      this.toastr.error('Max file size 1mb');
     } else {
       this.fileToUpload = files.item(0);
     }
@@ -53,9 +51,7 @@ export class ProjectSidebarComponent implements OnInit {
     this.service.submitAttempt(this.project.slug, this.selectedTechnology, this.fileToUpload).subscribe(
       () => {
         this.submitEvent.emit();
-        this.toastr.success('Submitted', '', {
-
-        });
+        this.toastr.success('Submitted');
       }
     );
   }

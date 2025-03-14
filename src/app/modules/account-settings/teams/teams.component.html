@@ -1,12 +1,13 @@
 <kep-card>
-  <div class="card-body">
-    <div class="d-flex align-items-center mb-2">
+  <div class="card-header">
+    <div class="card-title">
       <i class="font-medium-3" data-feather="users"></i>
-      <h4 class="mb-0 ms-2">Teams</h4>
+      {{ 'Settings.Teams' | translate }}
     </div>
-
+  </div>
+  <div class="card-body">
     @if (isLoading) {
-      <div class="card" [style.height.px]="400">
+      <div [style.height.px]="400">
         <spinner/>
       </div>
     } @else {

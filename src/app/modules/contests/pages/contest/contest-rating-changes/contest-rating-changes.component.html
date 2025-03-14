@@ -45,14 +45,14 @@
                   </span>
                   @if (contestant.newRatingTitle != contestant.ratingTitle) {
                     <contests-rating-image
-                      class="ms-50"
+                      class="ms-1"
                       [title]="contestant.newRatingTitle">
                     </contests-rating-image>
                   }
                   @if (contestant.doubleRatingPurchased) {
                     <img
                       height="25"
-                      class="ms-50"
+                      class="ms-1"
                       ngbTooltip="{{ 'DoubleRating' | translate }}"
                       src="assets/images/icons/x2-delta.png"
                     >

@@ -1,0 +1,112 @@
+<kep-card>
+  <div class="card-header">
+    <div class="card-title">
+      <i class="font-medium-4 me-1" data-feather="slack"></i>
+      {{ 'Settings.Technologies' | translate }}
+    </div>
+  </div>
+  @if (isLoading) {
+    <div [style.height]="'528px'">
+      <spinner/>
+    </div>
+  } @else {
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12">
+          <div class="invoice-repeater">
+            @for (userTechnology of userTechnologies; track userTechnology; let i = $index) {
+              <div @heightIn>
+                <div class="row d-flex align-items-end">
+                  <div class="col-md-4 col-12">
+                    <div class="mb-1">
+                      <label for="text{{ i }}">
+                        {{ 'Settings.Text' | translate }}
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="userTechnology.text"
+                        name="text{{ i }}"
+                        id="text{{ i }}"
+                        placeholder=""
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-4 col-12">
+                    <div class="mb-1">
+                      <label for="iconClass{{ i }}">
+                        {{ 'Settings.DevIconClass' | translate }}
+                      </label>
+                      <ng-select
+                        appendTo="body"
+                        [items]="devIcons"
+                        [(ngModel)]="userTechnology.devIconClass"
+                        [ngModelOptions]="{standalone: true}">
+                        <ng-template ng-option-tmp ng-label-tmp let-item="item">
+                          <i [class]="item"></i>
+                          {{ item }}
+                        </ng-template>
+                      </ng-select>
+                    </div>
+                  </div>
+                  <div class="col-md-2 col-12">
+                    <div class="mb-1">
+                      <label for="color{{ i }}">
+                        {{ 'Settings.BadgeColor' | translate }}
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(colorPicker)]="userTechnology.badgeColor"
+                        [(ngModel)]="userTechnology.badgeColor"
+                        placeholder=""
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-2 col-12">
+                    <div class="mb-1">
+                      <span class="badge" [style.background]="userTechnology.badgeColor">
+                        <i class="{{ userTechnology.devIconClass }} "></i>
+                        {{ userTechnology.text }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-md-2 col-12 mb-50">
+                    <div class="mb-1">
+                      <button class="btn btn-outline-danger" (click)="deleteTechnology(i)">
+                        <i data-feather="x" class="me-1"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <hr/>
+              </div>
+            }
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <button class="btn btn-icon btn-primary" type="button" (click)="addTechnology()">
+                <i data-feather="plus" class="me-1"></i>
+                <span>{{ 'Settings.AddNew' | translate }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <button
+            (click)="save()"
+            class="btn btn-primary mt-2 me-1"
+            type="submit">
+            {{ 'Settings.Save' | translate }}
+          </button>
+          <button
+            (click)="reset()"
+            class="btn btn-outline-primary mt-2"
+            type="reset">
+            {{ 'Settings.Reset' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</kep-card>

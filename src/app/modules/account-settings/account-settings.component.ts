@@ -1,52 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { User } from '@auth';
+import { Component } from '@angular/core';
 import { BasePageComponent } from '@app/common';
-import { ContentHeader } from "@core/components/content-header/content-header.component";
-import { getResourceById } from '@app/resources';
+import { ContentHeader } from '@core/components/content-header/content-header.component';
+import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { NgbNav, NgbNavItem, NgbNavLink, NgbNavOutlet } from '@ng-bootstrap/ng-bootstrap';
+import { CoreDirectivesModule } from '@shared/directives/directives.module';
+import { ResourceByUsernamePipe } from '@shared/pipes/resource-by-username.pipe';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
-enum Tab {
-  General = 'general',
-  ChangePassword = 'change-password',
-  Information = 'information',
-  Social = 'social',
-  Skills = 'skills',
-  Career = 'career',
-  Teams = 'teams',
-  System = 'system',
-}
 
 @Component({
   selector: 'app-account-settings',
   templateUrl: './account-settings.component.html',
   styleUrls: ['./account-settings.component.scss'],
-  standalone: false,
+  standalone: true,
+  imports: [
+    ContentHeaderModule,
+    NgbNav,
+    NgbNavItem,
+    NgbNavOutlet,
+    CoreDirectivesModule,
+    NgbNavLink,
+    ResourceByUsernamePipe,
+    RouterLinkActive,
+    RouterLink,
+    RouterOutlet,
+    TranslatePipe
+  ]
 })
-export class AccountSettingsComponent extends BasePageComponent implements OnInit {
-  public activeId = Tab.General;
-  protected readonly Tab = Tab;
-
-  afterChangeCurrentUser(currentUser: User) {
-    if (!currentUser) {
-      this.router.navigateByUrl('/');
-      this.loadContentHeader();
-    }
-  }
-
-  ngOnInit() {
-    super.ngOnInit();
-    const url = this.router.url;
-    const tabName = url.split('/').pop() as Tab;
-    if (Object.values(Tab).includes(tabName)) {
-      this.activeId = tabName;
-    } else if (url !== this.Resources.Settings) {
-      this.redirect404();
-    }
-  }
-
-  activeIdChange(id: string) {
-    this.router.navigateByUrl(getResourceById(this.Resources.SettingsTab, id), {replaceUrl: true});
-  }
-
+export class AccountSettingsComponent extends BasePageComponent {
   protected getContentHeader(): ContentHeader {
     return {
       headerTitle: 'SETTINGS',

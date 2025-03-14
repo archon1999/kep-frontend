@@ -67,9 +67,7 @@ export class AuthModalComponent implements OnInit {
       this.toastr.success(this.loginSuccessText, `👋 ${this.welcomeText}, ` + user.firstName || user.username + '!', );
       this.modalService.dismissAll(1);
     }, (err: any) => {
-      this.toastr.error(this.loginErrorText, '', {
-
-      });
+      this.toastr.error(this.loginErrorText);
     });
   }
 

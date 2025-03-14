@@ -3,6 +3,11 @@ import { SoundsService } from '@shared/services/sounds/sounds.service';
 import { SuccessSoundEnum, SuccessSoundList } from '@shared/services/sounds/enums/success-sound.enum';
 import { HomeSoundEnum, HomeSoundList } from '@shared/services/sounds/enums/home-sound.enum';
 import { LocalStorageService } from '@shared/services/storages/local-storage.service';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
+import { CoreDirectivesModule } from '@shared/directives/directives.module';
 
 // import themeToggleEffects from '@layout/components/navbar/theme-toggle-effects';
 
@@ -10,7 +15,14 @@ import { LocalStorageService } from '@shared/services/storages/local-storage.ser
   selector: 'system',
   templateUrl: './system.component.html',
   styleUrls: ['./system.component.scss'],
-  standalone: false,
+  standalone: true,
+  imports: [
+    NgSelectComponent,
+    KepCardComponent,
+    FormsModule,
+    TranslatePipe,
+    CoreDirectivesModule
+  ]
 })
 export class SystemComponent {
 

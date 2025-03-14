@@ -1,86 +1,110 @@
 <kep-card>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-12">
-        <div class="mb-1">
-          <label for="accountTextarea">Bio</label>
-          <textarea class="form-control" [(ngModel)]="userInfo.bio"></textarea>
-
-          @if (errors?.bio) {
-            <p class="text-danger">{{ errors.bio[0] }}</p>
-          }
-        </div>
-      </div>
-      <div class="col-12 col-sm-6">
-        <div class="mb-1">
-          <label for="account-birth-date">Birth date</label>
-          <div class="full-width">
-            <p-calendar (onSelect)="onDateChange($event)" [styleClass]="'full-width'" appendTo="body"
-                        [(ngModel)]="birthDate"></p-calendar>
-          </div>
-          @if (errors?.dateOfBirth) {
-            <p class="text-danger">{{ errors.dateOfBirth[0] }}</p>
-          }
-        </div>
-      </div>
-      <div class="col-12 col-sm-6">
-        <div class="mb-1">
-          <label for="account-website">Website</label>
-          <input
-            type="text"
-            [ngModelOptions]="{standalone: true}"
-            [(ngModel)]="userInfo.website"
-            class="form-control"
-            name="website"
-            id="account-website"/>
-          @if (errors?.website) {
-            <p class="text-danger">{{ errors.website[0] }}</p>
-          }
-        </div>
-      </div>
-      <div class="col-12 col-sm-6">
-        <div class="mb-1">
-          <label for="user-country">Country</label>
-          <ng-select
-            [ngModelOptions]="{standalone: true}"
-            [(ngModel)]="userInfo.country"
-            appendTo="body">
-            @for (country of countries; track country) {
-              <ng-option [value]="country.id.toLowerCase()">
-                <span class="fi fi-{{ country.id.toLowerCase() }}"></span>
-                {{ country.name }}
-              </ng-option>
-            }
-          </ng-select>
-
-          @if (errors?.country) {
-            <p class="text-danger">{{ errors.country[0] }}</p>
-          }
-        </div>
-      </div>
-      <div class="col-12 col-sm-6">
-        <div class="mb-1">
-          <label for="user-region">Region</label>
-          <input
-            type="text"
-            [ngModelOptions]="{standalone: true}"
-            [(ngModel)]="userInfo.region"
-            class="form-control"
-            name="user-region"
-            id="user-region"/>
-          @if (errors?.region) {
-            <p class="text-danger">{{ errors.region[0] }}</p>
-          }
-        </div>
-      </div>
-
-      <div class="col-12">
-        <button (click)="save()" type="submit" class="btn btn-primary mt-1 me-1" rippleEffect>Save</button>
-        <button (click)="reset()" type="reset" class="btn btn-outline-secondary mt-1" rippleEffect>Reset</button>
-      </div>
+  <div class="card-header">
+    <div class="card-title">
+      <i class="font-medium-4 me-1" data-feather="info"></i>
+      {{ 'Settings.Information' | translate }}
     </div>
   </div>
+  @if (isLoading) {
+    <div [style.height]="'310px'">
+      <spinner/>
+    </div>
+  } @else {
+    <div class="card-body">
+      <div class="row">
+        <div class="col-12">
+          <div class="mb-1">
+            <label>{{ 'Settings.Bio' | translate }}</label>
+            <textarea class="form-control" [(ngModel)]="userInfo.bio"></textarea>
+            @if (errors?.bio) {
+              <p class="text-danger">{{ errors.bio[0] }}</p>
+            }
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="mb-1">
+            <label>{{ 'Settings.BirthDate' | translate }}</label>
+            <div class="full-width input-group">
+              <div class="input-group-text text-muted">
+                <i class="bi-calendar"></i>
+              </div>
+              <input
+                type="text"
+                class="form-control date-input"
+                mwlFlatpickr
+                [(ngModel)]="birthDate"
+                (flatpickrChange)="onDateChange($event)"
+                [altInput]="true"
+                [convertModelValue]="true"
+              />
+            </div>
+            @if (errors?.dateOfBirth) {
+              <p class="text-danger">{{ errors.dateOfBirth[0] }}</p>
+            }
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="mb-1">
+            <label>{{ 'Settings.Website' | translate }}</label>
+            <input
+              type="text"
+              [ngModelOptions]="{standalone: true}"
+              [(ngModel)]="userInfo.website"
+              class="form-control"
+            />
+            @if (errors?.website) {
+              <p class="text-danger">{{ errors.website[0] }}</p>
+            }
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="mb-1">
+            <label>{{ 'Settings.Country' | translate }}</label>
+            <ng-select
+              [ngModelOptions]="{standalone: true}"
+              [(ngModel)]="userInfo.country"
+              appendTo="body">
+              @for (country of countries; track country) {
+                <ng-option [value]="country.id.toLowerCase()">
+                  <span class="fi fi-{{ country.id.toLowerCase() }}"></span>
+                  {{ country.name }}
+                </ng-option>
+              }
+            </ng-select>
+            @if (errors?.country) {
+              <p class="text-danger">{{ errors.country[0] }}</p>
+            }
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="mb-1">
+            <label>{{ 'Settings.Region' | translate }}</label>
+            <input
+              type="text"
+              [ngModelOptions]="{standalone: true}"
+              [(ngModel)]="userInfo.region"
+              class="form-control"
+            />
+            @if (errors?.region) {
+              <p class="text-danger">{{ errors.region[0] }}</p>
+            }
+          </div>
+        </div>
+        <div class="col-12 mt-2">
+          <button
+            (click)="save()"
+            class="btn btn-primary mt-2 me-1"
+            type="submit">
+            {{ 'Settings.Save' | translate }}
+          </button>
+          <button
+            (click)="reset()"
+            class="btn btn-outline-primary mt-2"
+            type="reset">
+            {{ 'Settings.Reset' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
 </kep-card>
-
-<quill-css></quill-css>
-<ng-select-css></ng-select-css>

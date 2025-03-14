@@ -1,16 +1,19 @@
 <kep-card>
-  <div class="card-body">
-    <div class="d-flex align-items-center mb-2">
-      <i class="font-medium-3" data-feather="settings"></i>
-      <h4 class="mb-0 ms-2">System</h4>
+  <div class="card-header">
+    <div class="card-title">
+      <i class="font-medium-4 me-1" data-feather="settings"></i>
+      {{ 'Settings.System' | translate }}
     </div>
-
+  </div>
+  <div class="card-body">
     <div class="sounds">
-      <p class="fw-medium font-medium-3 mb-1 mt-1">Sounds</p>
+      <p class="fw-medium font-medium-3 mb-1 mt-1">
+        {{ 'Settings.Sounds' | translate }}
+      </p>
 
       <div class="rows">
         <div class="col-6">
-          <label>Success</label>
+          <label>{{ 'Settings.SuccessSound' | translate }}</label>
           <ng-select
             (change)="successSoundChange()"
             [(ngModel)]="successSound"
@@ -21,7 +24,7 @@
         </div>
 
         <div class="mt-1 col-6">
-          <label>Home</label>
+          <label>{{ 'Settings.HomeSound' | translate }}</label>
           <ng-select
             (change)="homeSoundChange()"
             [(ngModel)]="homeSound"
@@ -33,36 +36,29 @@
       </div>
     </div>
 
-<!--    <div class="toggle-theme-effects mt-2">-->
-<!--      <p class="fw-medium font-medium-3 mb-1 mt-1">Theme Toggle Effect</p>-->
-
-<!--      <div class="rows">-->
-<!--        <div class="col-6">-->
-<!--          <ng-select-->
-<!--            (change)="themeToggleEffectChange()"-->
-<!--            [(ngModel)]="themeToggleEffect"-->
-<!--            [dropdownPosition]="'bottom'"-->
-<!--            [items]="themeToggleEffectList"-->
-<!--            appendTo="body">-->
-<!--          </ng-select>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+    <!-- <div class="toggle-theme-effects mt-2">
+      <p class="fw-medium font-medium-3 mb-1 mt-1">
+        {{ 'Settings.ThemeToggleEffect' | translate }}
+      </p>
+      <div class="rows">
+        <div class="col-6">
+          <ng-select
+            (change)="themeToggleEffectChange()"
+            [(ngModel)]="themeToggleEffect"
+            [dropdownPosition]="'bottom'"
+            [items]="themeToggleEffectList"
+            appendTo="body">
+          </ng-select>
+        </div>
+      </div>
+    </div> -->
   </div>
 </kep-card>
 
-<ng-select-css></ng-select-css>
-
 @if (successSound != SuccessSoundEnum.NoSound) {
-  <audio
-    #successAudio
-    [src]="soundsService.getSuccessSoundSrc()">
-  </audio>
+  <audio #successAudio [src]="soundsService.getSuccessSoundSrc()"></audio>
 }
 
 @if (homeSound != HomeSoundEnum.NoSound) {
-  <audio
-    #homeAudio
-    [src]="soundsService.getHomeSoundSrc()">
-  </audio>
+  <audio #homeAudio [src]="soundsService.getHomeSoundSrc()"></audio>
 }

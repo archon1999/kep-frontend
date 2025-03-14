@@ -7,7 +7,6 @@ import { ContentHeader } from "@core/components/content-header/content-header.co
 import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
 import { CoreCommonModule } from '@core/common.module';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
-import { ImageModule } from 'primeng/image';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 interface KVUser extends User {
@@ -22,7 +21,6 @@ interface KVUser extends User {
     ContentHeaderModule,
     CoreCommonModule,
     UserPopoverModule,
-    ImageModule,
     KepCardComponent
   ],
   templateUrl: './kep-cover-3.component.html',

@@ -11,6 +11,8 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AccountSettingsService } from '@app/modules/account-settings/account-settings.service';
 import { ToastrService } from 'ngx-toastr';
 import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'team-card',
@@ -22,6 +24,8 @@ import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
     ResourceByIdPipe,
     NgbTooltipModule,
     ClipboardModule,
+    KepCardComponent,
+    TranslatePipe,
   ],
   templateUrl: './team.component.html',
   styleUrl: './team.component.scss',
@@ -29,17 +33,17 @@ import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
 })
 export class TeamComponent extends BaseUserComponent {
   @Input() team: Team;
+
   protected readonly Resources = Resources;
-  private service = inject(AccountSettingsService);
-  private toastr = inject(ToastrService);
+  protected accountSettingsService = inject(AccountSettingsService);
+  protected toastr = inject(ToastrService);
+  protected translateService = inject(TranslateService);
 
   refreshCode() {
-    this.service.refreshTeamCode(this.team.code).subscribe(
-      ({code}) => {
+    this.accountSettingsService.refreshTeamCode(this.team.code).subscribe(
+      ({ code }) => {
         this.team.code = code;
-        this.toastr.success('Success', '', {
-
-        });
+        this.toastr.success(this.translateService.instant('Settings.Saved'));
       }
     );
   }

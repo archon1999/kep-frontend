@@ -89,7 +89,7 @@ export const routes: Routes = [
       },
       {
         path: 'settings',
-        loadChildren: () => import('./modules/account-settings/account-settings.module').then(m => m.AccountSettingsModule),
+        loadChildren: () => import('./modules/account-settings/account-settings.routing'),
       },
     ]
   },

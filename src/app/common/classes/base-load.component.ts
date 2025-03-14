@@ -13,6 +13,7 @@ export abstract class BaseLoadComponent<T> extends BasePageComponent implements 
 
   override ngOnInit() {
     if (this.loadOnInit) {
+      this.isLoading = true;
       setTimeout(() => this.loadData());
     }
     this.loadContentHeader();
