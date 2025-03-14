@@ -14,7 +14,7 @@
         </tr>
         </thead>
         <tbody>
-          @for (challengesRating of challengesRatingList; track challengesRating; let i = $index) {
+          @for (challengesRating of challengesRatingList; track $index; let i = $index) {
             <tr>
               <td class="text-dark">
                 {{ i + 1 }}
@@ -34,8 +34,8 @@
     </div>
 
     <div class="card-footer text-center">
-      <a routerLink="rating" class="btn full-width btn-primary" [ngClass.lt-md]="'btn-sm'">
-        <kep-icon name="ranking"></kep-icon>
+      <a routerLink="rating" class="btn full-width btn-sm btn-primary" [ngClass.lt-md]="'btn-sm'">
+        <kep-icon name="ranking" size="small-2"></kep-icon>
         {{ 'OverallRating' | translate }}
       </a>
     </div>

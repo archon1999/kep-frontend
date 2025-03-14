@@ -13,26 +13,17 @@
 <div class="offset-lg-3 col-12 col-lg-6">
   <div class="card-body">
     <h5 class="mb-2 text-dark">{{ 'Questions' | translate }}</h5>
-    <nouislider
-      [min]="4"
-      [behaviour]="'tap'"
-      [max]="10"
-      [step]="1"
-      [tooltips]="true"
-      [(ngModel)]="newChallengeCall.questionsCount"
-      [ngClass]="'circle-filled slider-custom'"
-    ></nouislider>
+
+    <ngx-slider
+      [(value)]="newChallengeCall.questionsCount"
+      [options]="questionSliderOptions"
+    />
 
     <h5 class="mb-2 text-dark">{{ 'Time' | translate }}</h5>
-    <nouislider
-      [min]="10"
-      [behaviour]="'tap'"
-      [max]="90"
-      [step]="10"
-      [tooltips]="true"
-      [(ngModel)]="newChallengeCall.timeSeconds"
-      [ngClass]="'circle-filled slider-custom'"
-    ></nouislider>
+    <ngx-slider
+      [(value)]="newChallengeCall.timeSeconds"
+      [options]="timeSecondsSliderOptions"
+    />
 
     <h5 class="mb-1">{{ 'Chapters' | translate }}</h5>
     <ng-select appendTo="body" [multiple]="true" [(ngModel)]="newChallengeCall.selectedChapters">
@@ -51,6 +42,3 @@
     </div>
   </div>
 </div>
-
-<nouslider-css></nouslider-css>
-<ng-select-css></ng-select-css>

@@ -31,7 +31,7 @@ export class SectionArenasComponent extends BaseLoadComponent<PageResult<Arena>>
   getData(): Observable<PageResult<Arena>> {
     return this.arenaService.getArenaAll({
       status: ArenaStatus.Finished,
-      pageSize: 7,
+      pageSize: 8,
     });
   }
 

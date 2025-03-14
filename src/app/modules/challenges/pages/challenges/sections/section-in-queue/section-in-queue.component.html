@@ -1,6 +1,6 @@
 @if (challengeCallsSkeletonVisible) {
   <div class="row">
-    @for (item of [].constructor(4); track item) {
+    @for (item of [].constructor(4); track $index) {
       <div class="col-xl-3 col-md-6 col-12">
         <ngx-skeleton-loader
           class="custom-skeleton"

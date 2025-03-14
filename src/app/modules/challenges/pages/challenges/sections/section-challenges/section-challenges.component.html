@@ -3,8 +3,8 @@
     <spinner></spinner>
   </div>
 } @else {
-  @for (challenge of challenges; track challenge) {
-    <challenge-card [challenge]="challenge"></challenge-card>
+  @for (challenge of challenges; track $index) {
+    <challenge-card [challenge]="challenge"/>
   }
 }
 

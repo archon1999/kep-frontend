@@ -24,13 +24,11 @@
       [theme]="{height: '105px', 'margin-top': '0.75rem', background: 'var(--skeleton-color)'}"
     ></ngx-skeleton-loader>
   } @else {
-    <div class="card-header">
-      <div class="card-title text-dark" [ngClass.lt-md]="'font-small-4'">
+    @if (challengesRating) {
+      <div class="card-header">
         <challenges-user-view [light]="false" [withRating]="true" [user]="challengesRating"></challenges-user-view>
       </div>
-    </div>
 
-    @if (challengesRating) {
       <div class="card-footer text-center">
         <div class="font-medium-4 d-flex justify-content-between">
           <div class="text-dark" [ngClass.lt-md]="'font-small-4'" [ngClass.gt-sm]="'font-medium-2'">

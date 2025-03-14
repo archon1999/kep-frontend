@@ -1,18 +1,15 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import {
-  NewChallengeButtonComponent
-} from '@challenges/components/new-challenge-button/new-challenge-button.component';
-import { NouisliderComponent } from 'ng2-nouislider';
+import { NewChallengeButtonComponent } from '@challenges/components/new-challenge-button/new-challenge-button.component';
 import { Chapter } from '@app/modules/testing/testing.models';
 import { ChallengesApiService } from '@challenges/services';
 import { CoreCommonModule } from '@core/common.module';
-import { NouisliderModule } from '@shared/third-part-modules/nouislider/nouislider.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { getResourceById, Resources } from '@app/resources';
 import { BaseUserComponent } from '@app/common/classes/base-user.component';
 import { Router } from '@angular/router';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ChallengeCall, NewChallengeCall } from '@challenges/interfaces';
+import { NgxSliderModule, Options } from '@angular-slider/ngx-slider';
 
 
 @Component({
@@ -22,9 +19,7 @@ import { ChallengeCall, NewChallengeCall } from '@challenges/interfaces';
     CoreCommonModule,
     NewChallengeButtonComponent,
     NgSelectModule,
-    NouisliderComponent,
-    NouisliderModule,
-    NgSelectModule,
+    NgxSliderModule,
   ],
   templateUrl: './section-quickstart.component.html',
   styleUrl: './section-quickstart.component.scss',
@@ -32,6 +27,19 @@ import { ChallengeCall, NewChallengeCall } from '@challenges/interfaces';
 })
 export class SectionQuickstartComponent extends BaseUserComponent implements OnInit {
   @Output() newChallengeClick = new EventEmitter<null>();
+
+  public questionSliderOptions: Options = {
+    showSelectionBar: true,
+    floor: 4,
+    ceil: 10,
+  };
+
+  public timeSecondsSliderOptions: Options = {
+    showSelectionBar: true,
+    floor: 10,
+    ceil: 90,
+    step: 10,
+  };
 
   public quickStarts: Array<NewChallengeCall> = [
     {
