@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, inject } from '@angular/core';
 import { Blog } from '@app/modules/blog/blog.interfaces';
 import { CoreCommonModule } from '@core/common.module';
-import { UsersApiService } from '@users/users-api.service';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { PageResult } from '@app/common/classes/page-result';
 import { BlogPostCardComponent } from '@app/modules/blog/components/blog-post-card/blog-post-card.component';
+import { BaseLoadComponent } from '@app/common';
+import { Observable } from 'rxjs';
+import { UsersApiService } from '@users/users-api.service';
+import { PageResult } from '@app/common/classes/page-result';
+import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
   selector: 'user-blog',
@@ -16,29 +19,14 @@ import { BlogPostCardComponent } from '@app/modules/blog/components/blog-post-ca
     CoreCommonModule,
     SpinnerComponent,
     BlogPostCardComponent,
+    EmptyResultComponent,
+    KepCardComponent,
   ]
 })
-export class UserBlogComponent implements OnInit {
+export class UserBlogComponent extends BaseLoadComponent<PageResult<Blog>> {
+  protected usersService = inject(UsersApiService);
 
-  public userBlog: Array<Blog> = [];
-  public isLoading = true;
-
-  constructor(
-    public service: UsersApiService,
-    public route: ActivatedRoute,
-  ) {}
-
-  ngOnInit(): void {
-    this.route.paramMap.subscribe(
-      (params) => {
-        this.service.getUserBlog(params.get('username'), { pageSize: 3 }).subscribe(
-          (result: PageResult<Blog>) => {
-            this.isLoading = false;
-            this.userBlog = result.data;
-          }
-        );
-      }
-    );
+  getData(): Observable<PageResult<Blog>> {
+    return this.usersService.getUserBlog(this.route.snapshot.parent.params.username, { pageSize: 3 });
   }
-
 }

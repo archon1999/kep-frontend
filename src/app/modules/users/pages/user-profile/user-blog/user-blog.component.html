@@ -3,7 +3,11 @@
     <spinner></spinner>
   </div>
 } @else {
-  @for (blog of userBlog; track blog.id) {
+  @for (blog of data?.data; track blog.id) {
     <blog-post-card [blog]="blog" [cardImgHeight]="350"/>
+  } @empty {
+    <kep-card>
+      <empty-result [text]="''"/>
+    </kep-card>
   }
 }
