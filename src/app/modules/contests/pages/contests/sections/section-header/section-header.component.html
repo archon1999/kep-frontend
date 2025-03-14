@@ -44,17 +44,17 @@
               {{ data.rating }}
             </div>
           </div>
-          <div class="text-center text-nowrap d-flex justify-content-between">
-            <div class="text-dark d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'"
+          <div class="text-center d-flex justify-content-between">
+            <div class="text-dark text-nowrap d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'"
                  [ngClass.lt-md]="'font-small-3'">
-              <kep-icon type="duotone" class="text-dark me-1" name="contest"></kep-icon>
+              <kep-icon type="duotone" class="text-dark me-1 d-md-inline-block d-none" name="contest"></kep-icon>
               {{ 'Rank' | translate }}: {{ data.ratingPlace }}
             </div>
           </div>
-          <div class="text-center text-nowrap d-flex justify-content-between">
-            <div class="text-dark d-flex align-items-center" [ngClass.gt-sm]="'font-medium-2'"
+          <div class="text-center d-flex justify-content-between">
+            <div class="text-dark d-flex text-nowrap align-items-center" [ngClass.gt-sm]="'font-medium-2'"
                  [ngClass.lt-md]="'font-small-3'">
-              <kep-icon type="duotone" class="text-dark me-1" name="contest"></kep-icon>
+              <kep-icon type="duotone" class="text-dark d-md-inline-block d-none me-1" name="contest"></kep-icon>
               {{ 'Contests' | translate }}: {{ data.contestantsCount }}
             </div>
           </div>

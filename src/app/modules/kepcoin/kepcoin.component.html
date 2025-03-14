@@ -51,7 +51,7 @@
           }
         </div>
 
-        <button (click)="type = 3 - type; updatePage();" class="btn btn-warning btn-sm">
+        <button (click)="type = 3 - type; currentPage=1; updatePage();" class="btn btn-warning btn-sm">
           @if (type == 2) {
             <span>{{ 'Earns' | translate }}</span>
           }
