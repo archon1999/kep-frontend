@@ -65,7 +65,8 @@ export class ContestProblemInfo {
     } else if (
       contest.type === ContestTypes.BALL525 ||
       contest.type === ContestTypes.BALL550 ||
-      contest.type === ContestTypes.EXAM
+      contest.type === ContestTypes.EXAM ||
+      contest.type === ContestTypes.BALL
     ) {
       if (this.solved()) {
         let badgeClass: string;
