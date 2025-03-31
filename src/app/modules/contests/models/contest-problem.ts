@@ -10,4 +10,5 @@ export interface ContestProblem {
   attemptUsersCount: number;
   isSolved: boolean;
   isAttempted: boolean;
+  duel?: number;
 }
