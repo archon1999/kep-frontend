@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, Renderer2, SimpleChanges } from '@angular/core';
 import { ScriptService } from '@shared/services/script.service';
 
-const SCRIPT_PATH = 'https:/kep.uz/static/frontend/assets/fonts/tex-chtml.js';
+const SCRIPT_PATH = 'https://kep.uz/static/frontend/assets/fonts/mathjax.js';
 
 @Component({
   selector: 'mathjax',
