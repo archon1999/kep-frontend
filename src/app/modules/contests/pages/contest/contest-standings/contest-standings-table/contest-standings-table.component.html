@@ -46,7 +46,7 @@
   </ng-container>
 
   <ng-container body>
-    @for (contestant of contestants; track contestant) {
+    @for (contestant of contestants; track contestant.username) {
       <tr
         [class]="contestant.rowClass"
         [@fadeInOnEnter]
@@ -102,11 +102,11 @@
               #selfie [ngTemplateOutlet]="selfie"
               let-problemInfo="aVariable"
               [ngTemplateOutletContext]="{
-                    aVariable: getProblemInfoBySymbol(contestant.problemsInfo, contestProblem.symbol)
+                    aVariable: contestant.problemsInfo | problemInfoBySymbol:contestProblem.symbol
                   }">
               <div>
                 @if (problemInfo) {
-                  <div [innerHTML]="problemInfo.getHTML(contest)"></div>
+                  <div [innerHTML]="problemInfo | problemInfoGetHtml:contest"></div>
                 }
               </div>
             </ng-template>

@@ -13,6 +13,8 @@ import { CoreCommonModule } from '@core/common.module';
 import { BaseUserComponent } from '@app/common';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ContestTypes } from '@contests/constants';
+import { ProblemInfoBySymbolPipe } from '@contests/pages/contest/contest-standings/contest-standings-table/problem-info-by-symbol.pipe';
+import { ProblemInfoGetHtmlPipe } from '@contests/pages/contest/contest-standings/contest-standings-table/problem-info-get-html.pipe';
 
 @Component({
   selector: 'contest-standings-table',
@@ -27,7 +29,9 @@ import { ContestTypes } from '@contests/constants';
     TranslateModule,
     KepIconComponent,
     RouterLink,
-    CoreCommonModule
+    CoreCommonModule,
+    ProblemInfoBySymbolPipe,
+    ProblemInfoGetHtmlPipe
   ],
   templateUrl: './contest-standings-table.component.html',
   styleUrl: './contest-standings-table.component.scss',

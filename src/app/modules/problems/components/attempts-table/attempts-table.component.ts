@@ -104,7 +104,7 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
             this.attempts[i] = Attempt.fromWSAttempt(attempt, wsAttempt);
             attempt = this.attempts[i];
             if (wsAttempt.verdict === Verdicts.Accepted) {
-              if (this.attempts[i].canView) {
+              if (this.attempts[i].canView || this.router.url.includes('duel')) {
                 setTimeout(() => attempt.animationAcceptedState = true, 0);
                 this.successAudio?.nativeElement?.play();
               }
