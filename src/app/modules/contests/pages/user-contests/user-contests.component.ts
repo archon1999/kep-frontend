@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ContentHeader } from "@core/components/content-header/content-header.component";
+
+import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { Observable } from 'rxjs';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { PageResult } from '@app/common/classes/page-result';
 import { ContestsService } from '@contests/contests.service';
 import { User } from '@auth';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { KepcoinSpendSwalModule } from '@app/modules/kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { ContestsTableModule } from '@contests/components/contests-table/contests-table.module';

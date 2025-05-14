@@ -7,7 +7,7 @@
   #files-main-nav,
   .file-manager-folders,
   .selected-file-details {
-    border: 1px solid $default-border;
+    border: 1px solid var(--default-border);
     overflow: auto;
   }
 
@@ -75,10 +75,10 @@
       div.filemanager-upgrade-storage {
         height: auto;
         background-color: $primary-01;
-        border: 1px dashed $default-border;
+        border: 1px dashed var(--default-border);
         display: flex;
         align-items: center;
-        color: $default-text-color;
+        color: var(--default-text-color);
         padding: 1rem;
 
         img {
@@ -145,7 +145,7 @@
 }
 
 .file-manager-container ul.files-main-nav li.file-internal-storage {
-  border: 1px dashed $default-border;
+  border: 1px dashed var(--default-border);
   padding: 1rem;
   border-radius: 0;
 }

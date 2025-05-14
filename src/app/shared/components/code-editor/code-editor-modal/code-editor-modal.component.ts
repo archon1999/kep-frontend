@@ -5,12 +5,12 @@ import { LanguageService } from 'app/modules/problems/services/language.service'
 import { TemplateCodeService } from 'app/shared/services/template-code.service';
 import { ToastrService } from 'ngx-toastr';
 import { AvailableLanguage, Problem, SampleTest } from '@problems/models/problems.models';
-import { ApiService } from '@shared/services/api.service';
+import { ApiService } from '@core/data-access/api.service';
 import { WebsocketService } from '@shared/services/websocket';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CValidators } from '@shared/c-validators/c-validators';
 import { AttemptLangs, Verdicts } from '@problems/constants';
-import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { SidebarService } from '@shared/ui/sidebar/sidebar.service';
 import { SwipeService } from '@shared/services/swipe.service';
 import { AuthService } from '@auth';
 import { paramsMapper } from '@shared/utils';
@@ -74,7 +74,7 @@ export class CodeEditorModalComponent implements OnInit {
     public wsService: WebsocketService,
     public langService: LanguageService,
     public templateCodeService: TemplateCodeService,
-    public coreSidebarService: CoreSidebarService,
+    public coreSidebarService: SidebarService,
     public swipeService: SwipeService,
     public authService: AuthService,
     public spinner: NgxSpinnerService,

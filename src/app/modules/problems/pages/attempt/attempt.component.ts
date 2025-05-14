@@ -6,7 +6,7 @@ import { Attempt } from '@problems/models/attempts.models';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { CoreCommonModule } from '@core/common.module';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 
 @Component({
   selector: 'app-attempt',

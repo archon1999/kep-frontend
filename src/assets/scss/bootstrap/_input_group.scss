@@ -4,7 +4,7 @@
   font-size: 0.875rem;
   border-radius: 0rem;
   background-color: rgb(var(--light-rgb));
-  color: $default-text-color;
+  color: var(--default-text-color);
   letter-spacing: 0;
 
   .form-control {

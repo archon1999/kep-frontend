@@ -37,7 +37,7 @@
 .related-app {
   text-align: center;
   border-radius: $default-radius;
-  border: 1px solid $default-border;
+  border: 1px solid var(--default-border);
 
   &:hover {
     background-color: $light;
@@ -56,7 +56,7 @@
   align-items: stretch;
   justify-content: space-between;
   height: 100%;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--default-border);
 
   .header-content-left,
   .header-content-right {
@@ -90,8 +90,8 @@
     &:hover,
     &.show {
       .header-link-icon {
-        fill: $header-prime-color;
-        color: $header-prime-color;
+        fill: var(--header-prime-color);
+        color: var(--header-prime-color);
       }
     }
   }
@@ -101,8 +101,8 @@
     width: 2rem;
     height: 2rem;
     font-size: 0.8rem;
-    color: $header-prime-color;
-    fill: $header-prime-color;
+    color: var(--header-prime-color);
+    fill: var(--header-prime-color);
     transition: all ease 0.05s;
     position: relative;
     padding: .5rem 9px;
@@ -125,7 +125,7 @@
     .dropdown-item {
       font-weight: 400;
       font-size: 0.813rem;
-      color: $default-text-color;
+      color: var(--default-text-color);
       padding: 1.25rem 1rem;
       height: 2.375rem;
       display: flex;
@@ -292,8 +292,8 @@
 
 .search-tags {
   font-size: 0.75rem;
-  color: $default-text-color;
-  border: 1px solid $default-border;
+  color: var(--default-text-color);
+  border: 1px solid var(--default-border);
   border-radius: 0.25rem;
   background-color: $light;
   padding: 0.125rem 0.55rem;
@@ -549,7 +549,7 @@
   border: 0px;
   padding: 0.5rem 0.85rem;
   border-radius: 0.5rem;
-  color: $header-prime-color !important;
+  color: var(--header-prime-color) !important;
   font-weight: 300;
   min-height: 2.3994rem;
   font-size: 13px;
@@ -560,7 +560,7 @@
   inset-block-start: 11px !important;
 
   li {
-    border-bottom: 1px solid $default-border;
+    border-bottom: 1px solid var(--default-border);
 
     &:last-child {
       border-bottom: 0;

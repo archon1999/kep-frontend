@@ -14,7 +14,7 @@
           width: 9rem;
           justify-content: center;
           backdrop-filter: blur(30px);
-          border-block-end: 1px solid $default-border;
+          border-block-end: 1px solid var(--default-border);
         }
 
         .side-menu__icon {
@@ -68,7 +68,7 @@
 
         .main-sidebar-header {
           width: 16rem;
-          border-block-end: 1px solid $default-border;
+          border-block-end: 1px solid var(--default-border);
         }
 
         .side-menu__icon {

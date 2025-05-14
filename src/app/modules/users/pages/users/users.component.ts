@@ -5,7 +5,7 @@ import { debounceTime } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgxCountriesService } from '@shared/third-part-modules/ngx-countries/ngx-countries.service';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
@@ -16,7 +16,7 @@ import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pa
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { User } from '@users/users.models';
-import { ContentHeader } from "@core/components/content-header/content-header.component";
+import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { PageResult } from '@app/common/classes/page-result';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';

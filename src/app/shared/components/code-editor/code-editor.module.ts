@@ -15,7 +15,7 @@ import { NewFeatureDirective } from '@shared/directives/new-feature.directive';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { VerdictShortTitlePipe } from '@problems/pipes/verdict-short-title.pipe';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
-import { CoreSidebarModule } from "@core/components/core-sidebar/core-sidebar.module";
+import { SidebarModule } from "@shared/ui/sidebar/sidebar.module";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @NgModule({
@@ -33,7 +33,7 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
     NgbTooltipModule,
     ReactiveFormsModule,
     NgSelectModule,
-    CoreSidebarModule,
+    SidebarModule,
     DragDropModule,
     NgScrollbar,
     KepcoinViewModule,

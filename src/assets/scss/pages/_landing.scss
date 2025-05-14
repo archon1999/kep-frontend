@@ -311,8 +311,8 @@
       }
 
       &.app-sidebar .slide.has-sub.open .slide-menu.child1::before {
-        border-block-start-color: $default-border !important;
-        border-inline-start-color: $default-border !important;
+        border-block-start-color: var(--default-border) !important;
+        border-inline-start-color: var(--default-border) !important;
       }
     }
 
@@ -837,7 +837,7 @@
 .landing-body.jobs-landing {
   .featured-jobs {
     overflow: hidden;
-    border: 1px solid $default-border;
+    border: 1px solid var(--default-border);
   }
 }
 
@@ -944,7 +944,7 @@ li:not(:first-child)::before {
 
   &::before {
     position: absolute;
-    border: 1px dashed $default-border;
+    border: 1px dashed var(--default-border);
     content: "";
     inset-inline-end: 1rem;
     inset-block-start: 1.5rem;

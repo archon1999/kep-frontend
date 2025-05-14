@@ -1,4 +1,4 @@
-import { featherIcons } from '@app/icons';
+import { featherIcons } from '@core/config/icons';
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({

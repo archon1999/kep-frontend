@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from 'app/shared/services/api.service';
+import { ApiService } from '@core/data-access/api.service';
 import { Category, Problem, ProblemsFilter } from '@problems/models/problems.models';
 import { map } from 'rxjs/operators';
 import { Attempt } from '@problems/models/attempts.models';

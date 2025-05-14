@@ -3,7 +3,7 @@
 @import 'bootstrap/scss/variables';
 
 contest-card {
-  .card {
+  .card.contest-card.custom-card {
     background: var(--bg-gradient) !important;
     // box-shadow: var(--box-shadow) !important;
     // border: 1px solid var(--bg);

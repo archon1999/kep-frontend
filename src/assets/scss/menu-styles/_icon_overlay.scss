@@ -86,7 +86,7 @@
 
         .main-sidebar-header {
           width: 16rem;
-          border-bottom: 1px solid $default-border;
+          border-bottom: 1px solid var(--default-border);
 
           .header-logo {
             .desktop-logo {

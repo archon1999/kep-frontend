@@ -1,20 +1,16 @@
 import { Routes } from '@angular/router';
-import { ProjectResolver } from '@app/modules/projects/projects.resolver';
 
 export default [
   {
     path: '',
-    loadComponent: () => import('./pages/projects/projects.component').then(c => c.ProjectsComponent),
+    loadComponent: () => import('@projects/pages/projects-list/projects-list.page').then(c => c.ProjectsListPage),
     title: 'Projects.Projects',
   },
   {
     path: 'project/:slug',
-    loadComponent: () => import('./pages/project/project.component').then(c => c.ProjectComponent),
+    loadComponent: () => import('@projects/pages/project-detail/project-detail.page').then(c => c.ProjectDetailPage),
     data: {
       title: 'Projects.Project',
     },
-    resolve: {
-      project: ProjectResolver,
-    }
   },
 ] satisfies Routes;

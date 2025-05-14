@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { NgbDropdown, NgbDropdownMenu, NgbDropdownToggle } from "@ng-bootstrap/ng-bootstrap";
 import { AppStateService, Language } from "@core/services/app-state.service";
-import { ApiService } from '@shared/services/api.service';
+import { ApiService } from '@core/data-access/api.service';
 
 @Component({
   selector: 'languages',

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
-import { ApiService } from 'app/shared/services/api.service';
+import { ApiService } from '@core/data-access/api.service';
 import { AuthService } from '@auth';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';

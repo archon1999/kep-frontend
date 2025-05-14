@@ -9,7 +9,7 @@ import { SessionStorageService } from '@shared/services/storages/session-storage
 import { TitleService } from '@shared/services/title.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { ApiService } from '@shared/services/api.service';
+import { ApiService } from '@core/data-access/api.service';
 import { Resources } from '@app/resources';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';

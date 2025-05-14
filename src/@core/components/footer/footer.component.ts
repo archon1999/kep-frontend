@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { MENU } from "@app/menu";
+import { MENU } from "@core/config/menu";
 import { KepIconComponent } from "@shared/components/kep-icon/kep-icon.component";
 import { RouterLink } from "@angular/router";
 import { TranslatePipe } from "@ngx-translate/core";

@@ -6,7 +6,7 @@ import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ContestsService } from '@contests/contests.service';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';

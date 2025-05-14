@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { ApiService } from 'app/shared/services/api.service';
+import { ApiService } from '@core/data-access/api.service';
 import { Observable } from 'rxjs';
 import { ProblemsApiService } from './services/problems-api.service';
 

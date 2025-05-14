@@ -164,7 +164,7 @@
 
 /* Start::text colors */
 .text-default {
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
 }
 
 .text-muted {
@@ -709,8 +709,8 @@ a {
 /* Start::Blockquote */
 .blockquote-container {
   padding: 1.25rem;
-  border: 1px solid $default-border;
-  border-block-start: 4px solid $default-border;
+  border: 1px solid var(--default-border);
+  border-block-start: 4px solid var(--default-border);
   border-radius: $default-radius;
   position: relative;
 
@@ -722,7 +722,7 @@ a {
     height: 1.5rem;
     font-size: 0.813rem;
     font-weight: 400;
-    border: 1px solid $default-border;
+    border: 1px solid var(--default-border);
     background-color: $custom-white;
     top: -0.875rem;
     align-items: center;

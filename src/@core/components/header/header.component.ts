@@ -1,13 +1,13 @@
-import { Component, ElementRef, HostListener, inject, TemplateRef } from '@angular/core';
+import { Component, ElementRef, inject, TemplateRef } from '@angular/core';
 import {
   ModalDismissReasons,
-  NgbDropdown, NgbDropdownItem,
+  NgbDropdown,
+  NgbDropdownItem,
   NgbDropdownMenu,
   NgbDropdownToggle,
   NgbOffcanvas
 } from '@ng-bootstrap/ng-bootstrap';
 import { SwitcherComponent } from '../switcher/switcher.component';
-import { AppStateService } from '../../services/app-state.service';
 import { BaseComponent } from "@app/common";
 import { CoreCommonModule } from "@core/common.module";
 import { HeaderNotificationsComponent } from "@core/components/header/notifications/header-notifications.component";
@@ -35,13 +35,7 @@ import { LanguagesComponent } from "@core/components/languages/languages.compone
 export class HeaderComponent extends BaseComponent {
 
   public localdata: any;
-  closeResult = '';
-// Full Screen event start //
-  isFullscreen: boolean = false;
-  // cartItemCount: number = 5;
-  notificationCount: number = 4;
-  isNotifyEmpty: boolean = false;
-  //Toggled Shortcuts
+  public closeResult = '';
   private offcanvasService = inject(NgbOffcanvas);
 
   constructor(public elementRef: ElementRef) {
@@ -62,7 +56,7 @@ export class HeaderComponent extends BaseComponent {
     );
   }
 
-  togglesidebar() {
+  toggleSidebar() {
     let html = this.elementRef.nativeElement.ownerDocument.documentElement;
     if (html?.getAttribute('data-vertical-style') == 'detached') {
       html?.setAttribute(
@@ -131,41 +125,13 @@ export class HeaderComponent extends BaseComponent {
     }
   }
 
-  toggleFullscreen() {
-    if (this.isFullscreen) {
-      this.exitFullscreen();
+  toggleThemeMode() {
+    if (this.appStateService.getCurrentValue().themeMode == 'light') {
+      this.appStateService.updateState({themeMode: 'dark'});
     } else {
-      this.requestFullscreen();
+      this.appStateService.updateState({themeMode: 'light'});
     }
   }
-
-  @HostListener('document:fullscreenchange', ['$event'])
-  handleFullscreenChange(event: any) {
-    this.isFullscreen = this.isFullScreen();
-    this.cdr.detectChanges(); // Manually trigger change detection
-  }
-
-  openEnd(content: TemplateRef<any>) {
-    this.offcanvasService.open(content, {position: 'end'});
-  }
-
-  //Full Screen event close //
-
-  handleCardClick(event: MouseEvent) {
-    // Prevent the click event from propagating to the container
-    event.stopPropagation();
-  }
-
-  removeNotify(rowId: string) {
-    const rowElement = document.getElementById(rowId);
-    if (rowElement) {
-      rowElement.remove();
-    }
-    this.notificationCount--;
-    this.isNotifyEmpty = this.notificationCount === 0;
-  }
-
-  //Notifications
 
   toggleSwitcher() {
     this.offcanvasService.open(SwitcherComponent, {
@@ -182,23 +148,6 @@ export class HeaderComponent extends BaseComponent {
         return 'by clicking on a backdrop';
       default:
         return `with: ${reason}`;
-    }
-  }
-
-  private isFullScreen(): boolean {
-    return !!document.fullscreenElement;
-  }
-
-  private requestFullscreen() {
-    const elem = document.documentElement as any;
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    }
-  }
-
-  private exitFullscreen() {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
     }
   }
 }

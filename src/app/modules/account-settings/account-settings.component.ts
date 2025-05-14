@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BasePageComponent } from '@app/common';
-import { ContentHeader } from '@core/components/content-header/content-header.component';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { NgbNav, NgbNavItem, NgbNavLink, NgbNavOutlet } from '@ng-bootstrap/ng-bootstrap';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { ResourceByUsernamePipe } from '@shared/pipes/resource-by-username.pipe';

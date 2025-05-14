@@ -17,7 +17,7 @@
     }
 
     &.active {
-      color: $default-text-color;
+      color: var(--default-text-color);
       font-weight: 400;
     }
   }

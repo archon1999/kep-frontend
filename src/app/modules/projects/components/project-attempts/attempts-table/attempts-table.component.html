@@ -1,0 +1,138 @@
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>{{ 'Submitted' | translate }}</th>
+      <th>{{ 'Technology' | translate }}</th>
+      <th>{{ 'User' | translate }}</th>
+      <th>{{ 'Problem' | translate }}</th>
+      <th>{{ 'Verdict' | translate }}</th>
+      <th>{{ 'Time' | translate }}</th>
+      <th>{{ 'Memory' | translate }}</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (attempt of attempts; track attempt.id; let i = $index) {
+        <tr
+          [@fadeInOnEnter]
+          [ngClass]="{'bg-light-info': attempt?.username == currentUser?.username}">
+          <td class="attempt-id">
+            {{ attempt.id }}
+          </td>
+          <td>
+            <span class="badge bg-success-transparent text-center" style="width: 130px;">
+              {{ attempt.created | date:"yyyy/MM/dd HH:mm:ss" }}
+            </span>
+          </td>
+          <td>
+            <project-technology [name]="attempt.technology"/>
+          </td>
+          <td>
+            <user-popover [username]="attempt.username" [customContent]="true">
+              <img alt="user-avatar" height="32" width="32" class="rounded-circle me-1" [src]="attempt.userAvatar">
+              {{ attempt.username }}
+            </user-popover>
+          </td>
+          <td>
+            <a [routerLink]="['/practice', 'projects-list', 'project', attempt.projectSlug]">
+              <u class="text-primary">{{ attempt.projectTitle }}</u>
+            </a>
+          </td>
+          <td>
+            <span class="badge" [ngClass]="{
+            'bg-info': attempt.verdict == 1 && attempt.kepcoins > 0 && attempt.kepcoins != attempt.projectKepcoins,
+            'bg-success': attempt.verdict == 1 && attempt.kepcoins > 0 && attempt.kepcoins == attempt.projectKepcoins,
+            'bg-warning': attempt.verdict == 1 && attempt.kepcoins == 0,
+            'bg-primary': attempt.verdict == -2,
+            'bg-blue': attempt.verdict == -1,
+            'bg-danger': attempt.verdict == 0
+          }">
+              {{ attempt.verdictTitle }}
+              @if (attempt.verdict == 1) {
+                <span>
+                  {{ attempt.kepcoins }}/{{ project.kepcoins }}
+                </span>
+              }
+            </span>
+          </td>
+          <td class="td-content">
+            <span class="badge bg-info">{{ attempt.time }} {{ 'MS' | translate }}</span>
+          </td>
+          <td class="td-content">
+            <span class="badge bg-primary">{{ attempt.memory }} {{ 'KB' | translate }}</span>
+          </td>
+          <td>
+            @if (currentUser?.username == attempt.username || currentUser?.isSuperuser) {
+              <button (click)="modalOpen(attempt.id)" class="btn btn-sm round btn-warning">
+                Log
+              </button>
+            }
+          </td>
+          @if (currentUser?.isSuperuser && 0) {
+            <td>
+              <button class="btn btn-sm round btn-primary">
+                <i data-feather="refresh-cw"></i>
+              </button>
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+    <tfoot>
+    <tr>
+      <th>ID</th>
+      <th>{{ 'Submitted' | translate }}</th>
+      <th>{{ 'Technology' | translate }}</th>
+      <th>{{ 'User' | translate }}</th>
+      <th>{{ 'Problem' | translate }}</th>
+      <th>{{ 'Verdict' | translate }}</th>
+      <th>{{ 'Time' | translate }}</th>
+      <th>{{ 'Memory' | translate }}</th>
+      <th></th>
+    </tr>
+    </tfoot>
+  </table>
+</div>
+
+<ng-template #modal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title me-1">
+      <kep-icon name="file-sheet" type="duotone"/>
+      Log
+    </h5>
+    <button (click)="modal.dismiss('Cross click')" aria-label="Close" class="btn-close" type="button">
+
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0">
+    @if (logs.log) {
+      <pre *ngIf="logs.log" [innerHTML]="logs.log"></pre>
+    }
+    <div ngbAccordion class="accordion">
+      @for (log of logs.tasks; track log; let i = $index) {
+        <div ngbAccordionItem>
+          <h2 ngbAccordionHeader>
+            <button ngbAccordionButton>
+              <span class="me-2">
+                {{ log.taskNumber }}. {{ log.taskTitle }}
+              </span>
+              @if (log.done === true) {
+                <kep-icon name="check-square" color="success"/>
+              }
+              @if (log.done === false) {
+                <kep-icon name="cross-square" color="danger"/>
+              }
+            </button>
+          </h2>
+          <div ngbAccordionCollapse>
+            <div class="p-3">
+              <pre *ngIf="log.log" [innerHTML]="log.log"></pre>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</ng-template>

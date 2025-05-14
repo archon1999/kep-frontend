@@ -5,8 +5,8 @@ import { GeneralInfo } from '@problems/models/statistics.models';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { CoreCommonModule } from '@core/common.module';
 import { FlexLayoutModule } from '@ngbracket/ngx-layout';
-import { ContentHeader } from "@core/components/content-header/content-header.component";
-import { ContentHeaderModule } from "@core/components/content-header/content-header.module";
+import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
+import { ContentHeaderModule } from "@shared/ui/components/content-header/content-header.module";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 import { NgxSkeletonLoaderModule } from "ngx-skeleton-loader";
 

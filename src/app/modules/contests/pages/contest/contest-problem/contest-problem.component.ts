@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
-import { ApiService } from 'app/shared/services/api.service';
+import { ApiService } from '@core/data-access/api.service';
 import { User } from '@auth';
-import { ContentHeader } from '@core/components/content-header/content-header.component';
+import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
 import { Attempt } from '@problems/models/attempts.models';
 import { AvailableLanguage, Problem } from '@problems/models/problems.models';
 import { TitleService } from 'app/shared/services/title.service';
@@ -11,7 +11,7 @@ import { ContestsService } from '@contests/contests.service';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { findAvailableLang } from 'app/modules/problems/utils';
 import { AttemptLangs } from 'app/modules/problems/constants';
-import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import { SidebarService } from '@shared/ui/sidebar/sidebar.service';
 import { BaseComponent } from '@app/common/classes/base.component';
 import { sortContestProblems } from '@contests/utils/sort-contest-problems';
 import { paramsMapper } from '@shared/utils';
@@ -25,7 +25,7 @@ import { ProblemInfoCardComponent } from '@problems/components/problem-info-card
 import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
 import { ContestStatus } from '@contests/constants/contest-status';
 import { ContestProblem } from '@contests/models/contest-problem';
@@ -93,7 +93,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
     public api: ApiService,
     public titleService: TitleService,
     public service: ContestsService,
-    public coreSidebarService: CoreSidebarService,
+    public coreSidebarService: SidebarService,
     public langService: LanguageService,
     public cdr: ChangeDetectorRef
   ) {

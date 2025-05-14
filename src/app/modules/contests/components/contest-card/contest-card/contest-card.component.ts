@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { NgbModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { fadeInOnEnterAnimation } from 'angular-animations';
-import { ApiService } from '@shared/services/api.service';
+import { ApiService } from '@core/data-access/api.service';
 import { AuthService, User } from '@auth';
 import { ContestsService } from 'app/modules/contests/contests.service';
 import { Router } from '@angular/router';

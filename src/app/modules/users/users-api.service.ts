@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from 'app/shared/services/api.service';
+import { ApiService } from '@core/data-access/api.service';
 import { Pageable } from '@app/common/classes/pageable';
 
 @Injectable({

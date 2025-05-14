@@ -59,7 +59,7 @@
     @include tooltip-color($light);
 
     .tooltip-inner {
-      color: $default-text-color;
+      color: var(--default-text-color);
       color: #fff !important;
     }
   }

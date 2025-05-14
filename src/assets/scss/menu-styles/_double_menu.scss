@@ -18,9 +18,9 @@
       .main-sidebar-header {
         width: 4.9rem;
         backdrop-filter: blur(6px);
-        border-block-end: 1px solid $default-border;
+        border-block-end: 1px solid var(--default-border);
         justify-content: center;
-        border-inline-end: 0px solid rgba(255, 255, 255, 0.1) !important;
+        border-inline-end: 0px solid var(--default-border) !important;
 
         .header-logo {
           .toggle-logo {
@@ -79,7 +79,7 @@
     .slide.has-sub .slide-menu {
       position: absolute !important;
       inset-inline-start: 5rem !important;
-      background: $default-background;
+      background: var(--default-background);
       box-shadow: none;
       backdrop-filter: blur(3px);
       transition: none !important;
@@ -222,7 +222,7 @@
 
       &[data-page-style="classic"] {
         .slide.has-sub .slide-menu {
-          border-inline-end: 1px solid $default-border;
+          border-inline-end: 1px solid var(--default-border);
         }
       }
     }
@@ -248,7 +248,7 @@
     &[data-toggled="double-menu-open"] {
       .app-sidebar .main-sidebar {
         .slide.side-menu__label1 {
-          border-inline-end: 1px solid $default-border;
+          border-inline-end: 1px solid var(--default-border);
         }
       }
     }

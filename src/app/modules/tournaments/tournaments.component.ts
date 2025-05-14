@@ -10,12 +10,12 @@ import { TournamentsService } from './tournaments.service';
 import { BaseTablePageComponent } from '@app/common';
 import { Observable } from 'rxjs';
 import { PageResult } from '@app/common/classes/page-result';
-import { ContentHeader } from "@core/components/content-header/content-header.component";
+import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { CoreCommonModule } from '@core/common.module';
 import {
   TournamentListCardComponent
 } from '@app/modules/tournaments/tournament-list-card/tournament-list-card.component';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";

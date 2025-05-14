@@ -19,8 +19,6 @@ export class AppComponent {
   protected coreLoadingService = inject(CoreLoadingScreenService);
 
   constructor(private appStateService: AppStateService) {
-    this.appStateService.updateState();
-
     this.translateService.setTranslation('en', localeEn);
     this.translateService.setTranslation('ru', localeRu);
     this.translateService.setTranslation('uz', localeUz);

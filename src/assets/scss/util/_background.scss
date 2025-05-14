@@ -18,7 +18,7 @@
 
 /* Start::background color */
 .bg-body {
-  background-color: $default-body-color !important;
+  background-color: var(--default-body-color) !important;
 }
 
 /* End::background color */
@@ -485,7 +485,7 @@
 
   &:hover {
     background-color: rgba(var(--light-rgb), 0.1) !important;
-    color: $default-text-color !important;
+    color: var(--default-text-color) !important;
   }
 }
 
@@ -700,7 +700,7 @@
 }
 
 .svg-default svg {
-  fill: $default-text-color;
+  fill: var(--default-text-color);
 }
 
 /* End::svg colors */
@@ -709,27 +709,27 @@
 /* Start::blue set */
 .bd-blue-100 {
   background-color: rgba($blue, 0.1);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-blue-200 {
   background-color: rgba($blue, 0.2);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-blue-300 {
   background-color: rgba($blue, 0.3);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-blue-400 {
   background-color: rgba($blue, 0.4);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-blue-500 {
   background-color: rgba($blue, 0.5);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-blue-600 {
@@ -762,27 +762,27 @@
 /* Start::indigo set */
 .bd-indigo-100 {
   background-color: rgba($indigo, 0.1);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-indigo-200 {
   background-color: rgba($indigo, 0.2);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-indigo-300 {
   background-color: rgba($indigo, 0.3);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-indigo-400 {
   background-color: rgba($indigo, 0.4);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-indigo-500 {
   background-color: rgba($indigo, 0.5);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-indigo-600 {
@@ -815,27 +815,27 @@
 /* Start::purple set */
 .bd-purple-100 {
   background-color: rgba(var(--purple-rgb), 0.1);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-purple-200 {
   background-color: rgba(var(--purple-rgb), 0.2);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-purple-300 {
   background-color: rgba(var(--purple-rgb), 0.3);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-purple-400 {
   background-color: rgba(var(--purple-rgb), 0.4);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-purple-500 {
   background-color: rgba(var(--purple-rgb), 0.5);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-purple-600 {
@@ -868,27 +868,27 @@
 /* Start::pink set */
 .bd-pink-100 {
   background-color: rgba(var(--pink-rgb), 0.1);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-pink-200 {
   background-color: rgba(var(--pink-rgb), 0.2);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-pink-300 {
   background-color: rgba(var(--pink-rgb), 0.3);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-pink-400 {
   background-color: rgba(var(--pink-rgb), 0.4);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-pink-500 {
   background-color: rgba(var(--pink-rgb), 0.5);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-pink-600 {
@@ -921,27 +921,27 @@
 /* Start::red set */
 .bd-red-100 {
   background-color: rgba($red, 0.1);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-red-200 {
   background-color: rgba($red, 0.2);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-red-300 {
   background-color: rgba($red, 0.3);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-red-400 {
   background-color: rgba($red, 0.4);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-red-500 {
   background-color: rgba($red, 0.5);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-red-600 {
@@ -974,27 +974,27 @@
 /* Start::orange set */
 .bd-orange-100 {
   background-color: rgba(var(--orange-rgb), 0.1);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-orange-200 {
   background-color: rgba(var(--orange-rgb), 0.2);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-orange-300 {
   background-color: rgba(var(--orange-rgb), 0.3);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-orange-400 {
   background-color: rgba(var(--orange-rgb), 0.4);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-orange-500 {
   background-color: rgba(var(--orange-rgb), 0.5);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-orange-600 {
@@ -1027,27 +1027,27 @@
 /* Start::yellow set */
 .bd-yellow-100 {
   background-color: rgba($yellow, 0.1);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-yellow-200 {
   background-color: rgba($yellow, 0.2);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-yellow-300 {
   background-color: rgba($yellow, 0.3);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-yellow-400 {
   background-color: rgba($yellow, 0.4);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-yellow-500 {
   background-color: rgba($yellow, 0.5);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-yellow-600 {
@@ -1080,27 +1080,27 @@
 /* Start::green set */
 .bd-green-100 {
   background-color: rgba($green, 0.1);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-green-200 {
   background-color: rgba($green, 0.2);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-green-300 {
   background-color: rgba($green, 0.3);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-green-400 {
   background-color: rgba($green, 0.4);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-green-500 {
   background-color: rgba($green, 0.5);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-green-600 {
@@ -1133,27 +1133,27 @@
 /* Start::teal set */
 .bd-teal-100 {
   background-color: rgba(var(--teal-rgb), 0.1);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-teal-200 {
   background-color: rgba(var(--teal-rgb), 0.2);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-teal-300 {
   background-color: rgba(var(--teal-rgb), 0.3);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-teal-400 {
   background-color: rgba(var(--teal-rgb), 0.4);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-teal-500 {
   background-color: rgba(var(--teal-rgb), 0.5);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-teal-600 {
@@ -1186,27 +1186,27 @@
 /* Start::cyan set */
 .bd-cyan-100 {
   background-color: rgba($cyan, 0.1);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-cyan-200 {
   background-color: rgba($cyan, 0.2);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-cyan-300 {
   background-color: rgba($cyan, 0.3);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-cyan-400 {
   background-color: rgba($cyan, 0.4);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-cyan-500 {
   background-color: rgba($cyan, 0.5);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-cyan-600 {
@@ -1239,27 +1239,27 @@
 /* Start::gray set */
 .bd-gray-100 {
   background-color: rgba($gray, 0.1);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-gray-200 {
   background-color: rgba($gray, 0.2);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-gray-300 {
   background-color: rgba($gray, 0.3);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-gray-400 {
   background-color: rgba($gray, 0.4);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-gray-500 {
   background-color: rgba($gray, 0.5);
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .bd-gray-600 {

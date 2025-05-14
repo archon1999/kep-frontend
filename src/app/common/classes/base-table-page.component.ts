@@ -3,9 +3,9 @@ import { Observable } from 'rxjs';
 import { PageResult } from '@app/common/classes/page-result';
 import { BasePageComponent } from '@app/common/classes/base-page.component';
 import { NavigationStart } from '@angular/router';
-import { BASE_URL } from '@shared/services/api.service';
 import { Pageable } from '@app/common/classes/pageable';
 import { takeUntil } from 'rxjs/operators';
+import { environment } from "../../../environments/environment";
 
 @Component({
   template: '',
@@ -37,17 +37,12 @@ export abstract class BaseTablePageComponent<T> extends BasePageComponent implem
       (event) => {
         if (event instanceof NavigationStart && event.navigationTrigger === 'popstate') {
           setTimeout(() => this.updatePageParams());
-          if (new URL(event.url, BASE_URL).pathname === new URL(this.getLastUrl(), BASE_URL).pathname) {
+          if (new URL(event.url, environment.apiUrl).pathname === new URL(this.getLastUrl(), environment.apiUrl).pathname) {
             setTimeout(() => this.reloadPage());
           }
         }
       }
     );
-  }
-
-  override ngOnInit() {
-    this.loadContentHeader();
-    setTimeout(() => this.reloadPage());
   }
 
   get pageable(): Partial<Pageable> {
@@ -56,6 +51,11 @@ export abstract class BaseTablePageComponent<T> extends BasePageComponent implem
       pageSize: this.pageSize,
       ordering: this.ordering,
     };
+  }
+
+  override ngOnInit() {
+    this.loadContentHeader();
+    setTimeout(() => this.reloadPage());
   }
 
   updatePageParams() {
@@ -114,7 +114,8 @@ export abstract class BaseTablePageComponent<T> extends BasePageComponent implem
     });
   }
 
-  afterLoadPage(pageResult: PageResult<T>) {}
+  afterLoadPage(pageResult: PageResult<T>) {
+  }
 
   reCalcIndexes() {
     this.pageResult.data.map(

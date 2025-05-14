@@ -36,10 +36,10 @@
 }
 
 .dropdown-menu {
-  border-color: $default-border;
+  border-color: var(--default-border);
   box-shadow: $box-shadow;
   font-size: 0.875rem;
-  color: $default-text-color;
+  color: var(--default-text-color);
   background-color: var(--theme-bg-gradient);
   padding: 0;
   border-radius: 0;
@@ -54,19 +54,19 @@
 }
 
 .dropdown-divider {
-  border-color: $default-border;
+  border-color: var(--default-border);
 }
 
 .dropdown-item-text {
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .dropdown-header {
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .dropdown-item {
-  color: $default-text-color;
+  color: var(--default-text-color);
   white-space: unset;
   padding: 0.5rem 0.9375rem;
   font-size: 0.8125rem;
@@ -320,7 +320,7 @@
 
 .dropdown-item.disabled,
 .dropdown-item:disabled {
-  color: $default-text-color;
+  color: var(--default-text-color);
   opacity: 0.5;
 }
 

@@ -7,7 +7,7 @@ export const localeEn = {
     COMPETITIONS: 'Competitions',
     USERS: 'Users',
     HELP: 'Help',
-    HELP_PROJECT: 'Help project',
+    HELP_PROJECT: 'Help project-detail',
     PROBLEMS: 'Problems',
     CHALLENGES: 'Challenges',
     CONTESTS: 'Contests',

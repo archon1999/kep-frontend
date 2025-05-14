@@ -9,7 +9,7 @@
 }
 
 .nav-link {
-  color: $default-text-color;
+  color: var(--default-text-color);
   border-radius: 0;
   font-weight: 400;
 
@@ -20,7 +20,7 @@
 }
 
 .navbar-brand {
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .navbar-nav .nav-link.active,
@@ -29,7 +29,7 @@
 }
 
 .nav-link.disabled {
-  color: $default-text-color;
+  color: var(--default-text-color);
   opacity: 0.3;
 }
 
@@ -38,7 +38,7 @@
 }
 
 .navbar-text {
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .navbar-dark {
@@ -131,7 +131,7 @@
   .nav-link {
     &.active {
       background-color: $light;
-      color: $default-text-color;
+      color: var(--default-text-color);
       border: 0;
     }
 
@@ -263,7 +263,7 @@
 
     .nav-link {
       text-align: center;
-      border: 1px solid $default-border;
+      border: 1px solid var(--default-border);
       margin-bottom: 0.5rem;
       color: $text-muted;
       background-color: $light;
@@ -381,13 +381,13 @@
 }
 
 .nav-tabs {
-  border-color: $default-border;
+  border-color: var(--default-border);
 
   .nav-item.show .nav-link,
   .nav-link.active {
-    color: $default-text-color;
+    color: var(--default-text-color);
     background-color: $light;
-    border-color: $default-border;
+    border-color: var(--default-border);
   }
 
   .nav-link {
@@ -433,9 +433,9 @@
 
 .tab-content .tab-pane {
   padding: 1rem;
-  border: 1px solid $default-border;
+  border: 1px solid var(--default-border);
   border-radius: $default-radius;
-  color: $default-text-color;
+  color: var(--default-text-color);
 
   &:focus-visible {
     outline: none !important;
@@ -464,7 +464,7 @@
         padding: 0.35rem;
         // border-radius: 50px;
         background-color: $primary-01;
-        color: $default-text-color;
+        color: var(--default-text-color);
         display: inline-block;
       }
 
@@ -545,7 +545,7 @@
         justify-content: center;
         background-color: $custom-white;
         border-radius: 50%;
-        border: 2px solid $default-border;
+        border: 2px solid var(--default-border);
       }
 
       &.home:after {

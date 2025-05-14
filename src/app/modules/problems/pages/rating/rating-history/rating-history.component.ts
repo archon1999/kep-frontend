@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from 'app/shared/services/api.service';
+import { ApiService } from '@core/data-access/api.service';
 import { AuthService, User } from '@auth';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { ɵEmptyOutletComponent } from '@angular/router';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';

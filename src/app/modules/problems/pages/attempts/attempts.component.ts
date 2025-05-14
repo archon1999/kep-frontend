@@ -15,8 +15,8 @@ import { AttemptsFilterComponent } from '@problems/components/attempts-filter/at
 import { AttemptsFilter } from '@problems/interfaces';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { Resources } from '@app/resources';
-import { ContentHeaderModule } from "@core/components/content-header/content-header.module";
-import { ContentHeader } from "@core/components/content-header/content-header.component";
+import { ContentHeaderModule } from "@shared/ui/components/content-header/content-header.module";
+import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({

@@ -1,3 +1,5 @@
+@import 'styles/kep-imports';
+
 /* Sidemenu Layout Syles */
 @media (max-width: 991.98px) {
   .sidemenu-layout-styles {
@@ -240,7 +242,7 @@
 [data-width="boxed"] {
   @media (min-width: 1400px) {
     body {
-      background-color: $default-background;
+      background-color: var(--default-background);
     }
 
     .page {
@@ -628,7 +630,7 @@
                 &.child1,
                 &.child2,
                 &.child3 {
-                  background-color: $default-body-color !important;
+                  background-color: var(--default-body-color) !important;
                 }
               }
             }
@@ -668,7 +670,7 @@
                 &.child1,
                 &.child2,
                 &.child3 {
-                  background-color: $default-body-color !important;
+                  background-color: var(--default-body-color) !important;
                 }
               }
             }
@@ -732,14 +734,14 @@
 
     &[data-vertical-style="doublemenu"] {
       // .slide.has-sub .slide-menu {
-      //   background: $default-background;
+      //   background: var(--default-background);
       // }
       .app-sidebar {
         .slide.has-sub {
           .slide-menu {
 
             &.child1 {
-              background: $default-background;
+              background: var(--default-background);
             }
 
             &.child2,
@@ -765,7 +767,7 @@
     &[data-nav-layout="vertical"][data-nav-style="icon-hover"][data-toggled="icon-hover-closed"] {
       .app-sidebar {
         .slide.has-sub .slide-menu {
-          background: $default-background;
+          background: var(--default-background);
         }
       }
     }
@@ -864,7 +866,7 @@
     }
 
     .app-sidebar:before {
-      background-color: $default-body-color;
+      background-color: var(--default-body-color);
       opacity: 0.9;
     }
 
@@ -883,7 +885,7 @@
     &[data-nav-layout="vertical"][data-nav-style="icon-hover"][data-toggled="icon-hover-closed"] {
       .app-sidebar {
         .slide.has-sub .slide-menu {
-          background-color: $default-body-color;
+          background-color: var(--default-body-color);
           background-image: none;
         }
       }
@@ -899,7 +901,7 @@
     .main-sidebar-header {
       background: transparent;
       border-inline-end: 0;
-      border-block-end: 1px solid $default-border;
+      border-block-end: 1px solid var(--default-border);
     }
 
     &:before {
@@ -996,70 +998,116 @@
 
 // bg-pattern1 start
 [data-pattern-img="bgpattern1"] {
-  --bg-pattern: url(../../assets/images/media/Patterns/p1.png);
+  --bg-pattern: url(../images/media/Patterns/light/p1.png);
+}
+
+[data-pattern-img="bgpattern1"][data-theme-mode="dark"] {
+  --bg-pattern: url(../images/media/Patterns/dark/p1-dark.png);
 }
 
 // bg-pattern1 end
 
 // bg-pattern2 start
 [data-pattern-img="bgpattern2"] {
-  --bg-pattern: url(../../assets/images/media/Patterns/p2.png);
+  --bg-pattern: url(../images/media/Patterns/light/p2.png);
+}
+
+[data-pattern-img="bgpattern2"][data-theme-mode="dark"] {
+  --bg-pattern: url(../images/media/Patterns/dark/p2-dark.png);
 }
 
 // bg-pattern2 end
 
 // bg-pattern3 start
 [data-pattern-img="bgpattern3"] {
-  --bg-pattern: url(../../assets/images/media/Patterns/p3.svg);
+  --bg-pattern: url(../images/media/Patterns/light/p3.svg);
 }
+
+[data-pattern-img="bgpattern3"][data-theme-mode="dark"] {
+  --bg-pattern: url(../images/media/Patterns/dark/p3-dark.svg);
+}
+
 
 // bg-pattern3 end
 
 // bg-pattern4 start
 [data-pattern-img="bgpattern4"] {
-  --bg-pattern: url(../../assets/images/media/Patterns/p4.svg);
+  --bg-pattern: url(../images/media/Patterns/light/p4.svg);
+}
+
+[data-pattern-img="bgpattern4"][data-theme-mode="dark"] {
+  --bg-pattern: url(../images/media/Patterns/dark/p4-dark.svg);
 }
 
 // bg-pattern4 end
 
 // bg-pattern5 start
 [data-pattern-img="bgpattern5"] {
-  --bg-pattern: url(../../assets/images/media/Patterns/p5.png);
+  --bg-pattern: url(../images/media/Patterns/light/p5.png);
 }
+
+[data-pattern-img="bgpattern5"][data-theme-mode="dark"] {
+  --bg-pattern: url(../images/media/Patterns/dark/p5-dark.png);
+}
+
 
 // bg-pattern5 end
 
 // bg-pattern6 start
 [data-pattern-img="bgpattern6"] {
-  --bg-pattern: url(../../assets/images/media/Patterns/p6.svg);
+  --bg-pattern: url(../images/media/Patterns/light/p6.svg);
 }
+
+[data-pattern-img="bgpattern6"][data-theme-mode="dark"] {
+  --bg-pattern: url(../images/media/Patterns/dark/p6-dark.svg);
+}
+
 
 // bg-pattern6 end
 
 // bg-pattern7 start
 [data-pattern-img="bgpattern7"] {
-  --bg-pattern: url(../../assets/images/media/Patterns/p7.png);
+  --bg-pattern: url(../images/media/Patterns/light/p7.png);
 }
+
+[data-pattern-img="bgpattern7"][data-theme-mode="dark"] {
+  --bg-pattern: url(../images/media/Patterns/dark/p7-dark.png);
+}
+
 
 // bg-pattern7 end
 
 // bg-pattern8 start
 [data-pattern-img="bgpattern8"] {
-  --bg-pattern: url(../../assets/images/media/Patterns/p8.svg);
+  --bg-pattern: url(../images/media/Patterns/light/p8.svg);
 }
+
+[data-pattern-img="bgpattern8"][data-theme-mode="dark"] {
+  --bg-pattern: url(../images/media/Patterns/dark/p8-dark.svg);
+}
+
 
 // bg-pattern8 end
 
 // bg-pattern9 start
 [data-pattern-img="bgpattern9"] {
-  --bg-pattern: url(../../assets/images/media/Patterns/p9.png);
+  --bg-pattern: url(../images/media/Patterns/light/p9.png);
 }
+
+[data-pattern-img="bgpattern9"][data-theme-mode="dark"] {
+  --bg-pattern: url(../images/media/Patterns/dark/p9-dark.png);
+}
+
 
 // bg-pattern9 end
 
 // bg-pattern10 start
 [data-pattern-img="bgpattern10"] {
-  --bg-pattern: url(../../assets/images/media/Patterns/p10.png);
+  --bg-pattern: url(../images/media/Patterns/light/p10.png);
+}
+
+[data-pattern-img="bgpattern10"][data-theme-mode="dark"] {
+  --bg-pattern: url(../images/media/Patterns/dark/p10-dark.png);
 }
 
 // bg-pattern10 end
@@ -1150,7 +1198,7 @@
     .app-sidebar,
     .card.custom-card,
     .page-header-breadcrumb {
-      border-inline: 1px solid rgba(255, 255, 255, 0.1);
+      border-inline: 1px solid var(--default-border);
     }
   }
 }
@@ -1744,16 +1792,12 @@
 
 // card-style6 start
 [data-card-style="style6"] {
-  body {
-    background: rgb(10, 10, 10);
-  }
-
   .card.custom-card,
   .app-sidebar,
   .page-header-breadcrumb {
     border-inline: 0;
     background: rgba(66, 66, 66, 0.4);
-    border: 1px solid rgb(95, 95, 95);
+    border: 1px solid var(--default-border);
 
     .top-left {
       position: absolute;
@@ -1916,10 +1960,6 @@
 
 //card-style8 start
 [data-card-style="style8"] {
-  body {
-    background: rgb(10, 10, 10);
-  }
-
   .card.custom-card,
   .app-sidebar,
   .page-header-breadcrumb {
@@ -2300,13 +2340,13 @@
 [data-card-background="background1"] {
   .card.custom-card {
     background: radial-gradient(circle, var(--default-background) 0%, var(--default-background) 40%, rgba(255, 255, 255, 0.075) 100%);
-    border-inline: 1px solid rgba(255, 255, 255, 0.1);
+    border-inline: 1px solid var(--default-border);
   }
 
   .app-sidebar,
   .page-header-breadcrumb {
     background: radial-gradient(circle, var(--default-background) 0%, rgba(255, 255, 255, 0.075) 100%);
-    border-inline: 1px solid rgba(255, 255, 255, 0.1);
+    border-inline: 1px solid var(--default-border);
   }
 }
 
@@ -2318,13 +2358,13 @@
 
   .card.custom-card {
     background: radial-gradient(circle, var(--default-background) 0%, var(--default-background) 40%, rgba(255, 255, 255, 0.025) 100%);
-    border-inline: 1px solid rgba(255, 255, 255, 0.1);
+    border-inline: 1px solid var(--default-border);
   }
 
   .app-sidebar,
   .page-header-breadcrumb {
     background: radial-gradient(circle, rgba(255, 255, 255, 0.025), var(--default-background) 0%, rgba(255, 255, 255, 0.025) 100%);
-    border-inline: 1px solid rgba(255, 255, 255, 0.1);
+    border-inline: 1px solid var(--default-border);
   }
 }
 
@@ -2337,12 +2377,12 @@
   .app-sidebar,
   .page-header-breadcrumb {
     background: linear-gradient(to bottom right, var(--default-background) 0%, rgba(0, 0, 0, 0.1) 100%);
-    border-inline: 1px solid rgba(255, 255, 255, 0.1);
+    border-inline: 1px solid var(--default-border);
   }
 
   .card.custom-card {
     background: linear-gradient(to bottom, var(--default-background) 0%, rgba(0, 0, 0, 0.1) 100%);
-    border-inline: 1px solid rgba(255, 255, 255, 0.1);
+    border-inline: 1px solid var(--default-border);
   }
 }
 
@@ -2355,7 +2395,7 @@
   .card.custom-card,
   .page-header-breadcrumb {
     box-shadow: inset 0px 0px 4px 2px rgba(var(--primary-rgb), 0.2);
-    border-inline: 1px solid rgba(255, 255, 255, 0.1);
+    border-inline: 1px solid var(--default-border);
   }
 }
 
@@ -2368,12 +2408,12 @@
   .app-sidebar,
   .page-header-breadcrumb {
     background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.05) 80%, var(--default-background) 100%);
-    border-inline: 1px solid rgba(255, 255, 255, 0.1);
+    border-inline: 1px solid var(--default-border);
   }
 
   .card.custom-card {
     background: linear-gradient(to top, rgba(255, 255, 255, 0.05) 80%, var(--default-background) 100%);
-    border-inline: 1px solid rgba(255, 255, 255, 0.1);
+    border-inline: 1px solid var(--default-border);
   }
 }
 
@@ -2385,12 +2425,12 @@
   .app-sidebar,
   .page-header-breadcrumb {
     background: transparent;
-    border-inline: 1px solid rgba(255, 255, 255, 0.1);
+    border-inline: 1px solid var(--default-border);
   }
 
   .card.custom-card {
     box-shadow: inset 0px -80px 150px -40px rgba(var(--primary-rgb), 0.5);
-    border-inline: 1px solid rgba(255, 255, 255, 0.1);
+    border-inline: 1px solid var(--default-border);
   }
 }
 
@@ -2407,7 +2447,7 @@
   .page-header-breadcrumb {
     background: rgba(255, 255, 255, 0.05);
     box-shadow: inset 0px 0px 2px 5px rgb(10, 10, 8);
-    border-inline: 1px solid rgba(255, 255, 255, 0.1);
+    border-inline: 1px solid var(--default-border);
   }
 }
 
@@ -2423,7 +2463,7 @@
   .card.custom-card,
   .page-header-breadcrumb {
     background: var(--primary005);
-    border-inline: 1px solid rgba(255, 255, 255, 0.1);
+    border-inline: 1px solid var(--default-border);
   }
 }
 
@@ -2439,7 +2479,7 @@
   .card.custom-card,
   .page-header-breadcrumb {
     background: transparent;
-    border-inline: 1px solid rgba(255, 255, 255, 0.1);
+    border-inline: 1px solid var(--default-border);
   }
 }
 

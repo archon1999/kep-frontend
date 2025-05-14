@@ -224,7 +224,7 @@
     content: " ";
     height: 100%;
     width: 1px;
-    background-color: $default-border;
+    background-color: var(--default-border);
     position: absolute;
     inset-inline-start: -38px;
     inset-block-start: 12px;
@@ -264,7 +264,7 @@
     position: absolute;
     content: "";
     width: 1px;
-    background-color: $default-border;
+    background-color: var(--default-border);
     height: 90%;
     inset-inline-start: 9px;
   }
@@ -457,7 +457,7 @@
 
 @media (min-width: 576px) {
   .custom-border-end {
-    border-inline-end: 1px solid $default-border;
+    border-inline-end: 1px solid var(--default-border);
   }
 }
 
@@ -821,12 +821,12 @@
   width: 150px;
   background-color: $custom-white;
   color: #fff;
-  border: 1px solid $default-border;
+  border: 1px solid var(--default-border);
 }
 
 .details-container > h5,
 .details-container > p {
-  border-top: 1px solid $default-border;
+  border-top: 1px solid var(--default-border);
   margin: 0;
   padding: 10px;
   font-size: 0.7rem;

@@ -15,7 +15,7 @@
     font-size: 1rem;
     line-height: 1;
     color: $custom-black;
-    border: 1px solid $default-border;
+    border: 1px solid var(--default-border);
     border-radius: $default-radius;
 
     .navbar-toggler-icon {
@@ -29,7 +29,7 @@
         font-family: bootstrap-icons !important;
         position: absolute;
         font-size: 1rem;
-        color: $default-text-color;
+        color: var(--default-text-color);
         inset-inline-start: 0;
       }
     }
@@ -56,7 +56,7 @@
 /* Start:: navbar transparent color schemes */
 .navbar-primary-transparent {
   background-color: $primary-01;
-  color: $default-text-color;
+  color: var(--default-text-color);
 
   .nav-link {
     &.active {
@@ -65,7 +65,7 @@
     }
 
     &:hover {
-      color: $default-text-color;
+      color: var(--default-text-color);
     }
   }
 
@@ -76,7 +76,7 @@
 
 .navbar-secondary-transparent {
   background-color: rgba(var(--secondary-rgb), 0.1);
-  color: $default-text-color;
+  color: var(--default-text-color);
 
   .nav-link {
     &.active {
@@ -85,7 +85,7 @@
     }
 
     &:hover {
-      color: $default-text-color;
+      color: var(--default-text-color);
     }
   }
 
@@ -96,7 +96,7 @@
 
 .navbar-warning-transparent {
   background-color: rgba(var(--warning-rgb), 0.1);
-  color: $default-text-color;
+  color: var(--default-text-color);
 
   .nav-link {
     &.active {
@@ -105,7 +105,7 @@
     }
 
     &:hover {
-      color: $default-text-color;
+      color: var(--default-text-color);
     }
   }
 
@@ -116,7 +116,7 @@
 
 .navbar-info-transparent {
   background-color: rgba(var(--info-rgb), 0.1);
-  color: $default-text-color;
+  color: var(--default-text-color);
 
   .nav-link {
     &.active {
@@ -125,7 +125,7 @@
     }
 
     &:hover {
-      color: $default-text-color;
+      color: var(--default-text-color);
     }
   }
 
@@ -136,7 +136,7 @@
 
 .navbar-success-transparent {
   background-color: rgba(var(--success-rgb), 0.1);
-  color: $default-text-color;
+  color: var(--default-text-color);
 
   .nav-link {
     &.active {
@@ -145,7 +145,7 @@
     }
 
     &:hover {
-      color: $default-text-color;
+      color: var(--default-text-color);
     }
   }
 
@@ -156,7 +156,7 @@
 
 .navbar-danger-transparent {
   background-color: rgba(var(--danger-rgb), 0.1);
-  color: $default-text-color;
+  color: var(--default-text-color);
 
   .nav-link {
     &.active {
@@ -165,7 +165,7 @@
     }
 
     &:hover {
-      color: $default-text-color;
+      color: var(--default-text-color);
     }
   }
 
@@ -176,7 +176,7 @@
 
 .navbar-dark-transparent {
   background-color: rgba(var(--dark-rgb), 0.1);
-  color: $default-text-color;
+  color: var(--default-text-color);
 
   .nav-link {
     &.active {
@@ -185,7 +185,7 @@
     }
 
     &:hover {
-      color: $default-text-color;
+      color: var(--default-text-color);
     }
   }
 

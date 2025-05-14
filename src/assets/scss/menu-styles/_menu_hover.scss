@@ -165,7 +165,7 @@
       .slide.has-sub .slide-menu {
         position: absolute !important;
         inset-inline-start: 9.5rem !important;
-        background: $default-background;
+        background: var(--default-background);
         inset-block-start: auto !important;
         box-shadow: 0 0 .375rem $black-1;
         transition: none !important;

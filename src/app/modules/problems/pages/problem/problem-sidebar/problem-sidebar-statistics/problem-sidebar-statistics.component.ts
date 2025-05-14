@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Problem } from 'app/modules/problems/models/problems.models';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
-import { colors as Colors } from '@app/colors';
+import { colors as Colors } from '@core/config/colors';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';

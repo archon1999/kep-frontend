@@ -4,8 +4,8 @@ import { Product } from '@app/modules/shop/shop.interfaces';
 import { Observable } from 'rxjs';
 import { ShopApiService } from '@app/modules/shop/shop-api.service';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { ContentHeader } from "@core/components/content-header/content-header.component";
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { ProductItemComponent } from '@app/modules/shop/components/product-item/product-item.component';
 
 @Component({

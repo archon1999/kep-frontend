@@ -20,7 +20,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
 import { WebsocketModule } from '@shared/services/websocket';
 import { AuthService } from '@auth';
-import { monacoConfig } from '@app/monaco.config';
+import { monacoConfig } from '@core/config/monaco.config';
 import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { HIGHLIGHT_OPTIONS, HighlightOptions } from 'ngx-highlightjs';
 import { Title } from '@angular/platform-browser';
@@ -28,6 +28,7 @@ import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx
 import { APP_BASE_HREF } from '@angular/common';
 import { adapterFactory } from 'angular-calendar/date-adapters/moment';
 import { provideFlatpickrDefaults } from 'angularx-flatpickr';
+import { API_BASE_URL } from "@core/tokens";
 
 @Injectable({ providedIn: 'root' })
 export class CustomTitleStrategy extends TitleStrategy {
@@ -76,6 +77,7 @@ export const appConfig: ApplicationConfig = {
         },
       }
     },
+    { provide: API_BASE_URL, useValue: environment.apiUrl  + '/api/' },
     provideFlatpickrDefaults(),
     RouterOutlet,
     ColorPickerModule,

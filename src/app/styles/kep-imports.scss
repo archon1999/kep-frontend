@@ -8,11 +8,11 @@ $theme-dark-body-bg: '#fff';
 $primary: rgb(0, 255, 190);
 
 @mixin dark-layout() {
-  ::ng-deep & {
+  ::ng-deep [data-theme-mode="dark"] & {
     @content;
   }
 
-  & {
+  [data-theme-mode="dark"] & {
     @content;
   }
 }

@@ -9,7 +9,7 @@
 .mail-navigation,
 .total-mails, .mails-information,
 .mail-recepients {
-  background-color: $default-background;
+  background-color: var(--default-background);
   height: calc(100vh - 8rem);
   overflow: hidden;
   border-radius: $default-radius;
@@ -94,7 +94,7 @@
 
     li {
       padding: 1.1rem 1.25rem 0.625rem 1.25rem;
-      border-bottom: 1px solid $default-border;
+      border-bottom: 1px solid var(--default-border);
 
       &.active {
         background-color: $light;
@@ -167,7 +167,7 @@
 
     li {
       padding: 0.5rem;
-      border-radius: $default-border;
+      border-radius: var(--default-border);
       border-radius: $default-radius;
       font-weight: 500;
 
@@ -207,19 +207,19 @@
 
   .mail-info-header {
     padding: 0.75rem;
-    border-block-end: 1px solid $default-border;
+    border-block-end: 1px solid var(--default-border);
   }
 
   .mail-info-footer {
     padding: 0.75rem;
-    border-block-start: 1px solid $default-border;
+    border-block-start: 1px solid var(--default-border);
   }
 
   .mail-attachment {
     padding: 0.25rem;
     width: 12rem;
     height: 2.75rem;
-    border: 1px solid $default-border;
+    border: 1px solid var(--default-border);
     border-radius: $default-radius;
     display: flex;
     align-items: center;

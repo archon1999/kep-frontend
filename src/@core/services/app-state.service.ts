@@ -1,15 +1,22 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { initialState } from "@app/initial-state";
+import { initialState } from "@core/config/initial-state";
 
 export type Direction = 'ltr' | 'rtl';
 export type NavigationStyles = 'vertical' | 'horizontal';
 export type MenuStyles = 'menu-click' | 'menu-hover' | 'icon-click' | 'icon-hover' | '';
-export type LayoutStyles = 'double-menu' | 'detached' | 'icon-overlay' | 'icontext-menu' | 'closed-menu' | 'default-menu';
+export type LayoutStyles =
+  'double-menu'
+  | 'detached'
+  | 'icon-overlay'
+  | 'icontext-menu'
+  | 'closed-menu'
+  | 'default-menu';
 export type WidthStyles = 'fullwidth' | 'boxed' | '';
 export type MenuPosition = 'fixed' | 'scrollable' | '';
 export type HeaderPosition = 'fixed' | 'scrollable' | '';
 export type Language = 'uz' | 'ru' | 'en';
+export type ThemeMode = 'light' | 'dark';
 
 interface ThemePrimary {
   main: string;
@@ -20,6 +27,7 @@ interface ThemePrimary {
 export interface StateType {
   appTitle: string;
   direction: Direction;
+  themeMode: ThemeMode;
   navigationStyles: NavigationStyles;
   menuStyles: MenuStyles;
   layoutStyles: LayoutStyles;
@@ -50,6 +58,79 @@ export class AppStateService {
     this.initializeState(storedState);
   }
 
+  private get html(): HTMLElement {
+    return document.documentElement;
+  }
+
+  public updateState(newState?: Partial<StateType>): void {
+    const currentState = this.stateSubject.getValue();
+    const updatedState: StateType = {...currentState, ...newState};
+    this.updateStateAndEmit(updatedState);
+  }
+
+  public applyReset(): void {
+    this.resetHtmlAttributes([
+      'style',
+      'data-bg-img',
+      'data-pattern-img',
+      'data-menu-position',
+      'data-header-position',
+      'data-width',
+      'data-card-background',
+      'data-vertical-style',
+    ]);
+    this.html.setAttribute('data-toggled', 'close');
+    this.html.setAttribute('data-card-style', 'style1');
+    this.html.setAttribute('dir', 'ltr');
+    this.html.setAttribute('data-vertical-style', 'detached');
+
+    const mainMenu = document.querySelector('.main-menu') as HTMLElement;
+    mainMenu?.removeAttribute('style');
+    const slideMenu = document.querySelector('.slide-menu') as HTMLElement;
+    slideMenu?.removeAttribute('style');
+
+    this.stateSubject.next(this.initialState);
+    this.updateStateAndEmit(this.initialState);
+    localStorage.clear();
+
+    const bgPattern = document.getElementById('switcher-pattern-img3') as HTMLInputElement;
+    if (bgPattern) {
+      bgPattern.checked = true;
+    }
+    const codingStyle = document.getElementById('switcher-card-style') as HTMLInputElement;
+    if (codingStyle) {
+      codingStyle.checked = true;
+    }
+    const cardBg = document.getElementById('switcher-card-background') as HTMLInputElement;
+    if (cardBg) {
+      cardBg.checked = true;
+    }
+  }
+
+  public applyReset1(): void {
+    this.resetHtmlAttributes([
+      'style',
+      'data-bg-img',
+      'data-pattern-img',
+      'data-menu-position',
+      'data-header-position',
+      'data-width',
+    ]);
+    this.html.setAttribute('data-toggled', 'close');
+    this.html.setAttribute('data-card-style', 'style1');
+    this.html.setAttribute('dir', 'ltr');
+    this.html.setAttribute('data-nav-layout', 'horizontal');
+    this.html.setAttribute('data-card-background', 'background1');
+    this.html.setAttribute('data-vertical-style', 'detached');
+
+    this.stateSubject.next(this.initialState);
+    localStorage.clear();
+  }
+
+  public getCurrentValue() {
+    return this.stateSubject.getValue();
+  }
+
   private getInitialStateFromLocalStorage(): StateType {
     try {
       const storedState = localStorage.getItem(this.localStorageKey);
@@ -63,19 +144,11 @@ export class AppStateService {
   }
 
   private initializeState(state: StateType): void {
-    this.applyDirectionSpecificChanges(state.direction);
-    this.stateSubject.next(state);
+    this.updateState(state);
   }
 
-  public updateState(newState?: Partial<StateType>): void {
-    const currentState = this.stateSubject.getValue();
-    const updatedState: StateType = {...currentState, ...newState};
-    this.updateStateAndEmit(updatedState);
-  }
-
-  // Вспомогательный геттер для <html>
-  private get html(): HTMLElement {
-    return document.documentElement;
+  private applyThemeMode(mode: ThemeMode): void {
+    document.documentElement.setAttribute('data-theme-mode', mode);
   }
 
   private applyPrimarySpecificChanges(primary: ThemePrimary): void {
@@ -169,63 +242,6 @@ export class AppStateService {
     this.html.setAttribute('data-bg-img', backgroundImage);
   }
 
-  public applyReset(): void {
-    this.resetHtmlAttributes([
-      'style',
-      'data-bg-img',
-      'data-pattern-img',
-      'data-menu-position',
-      'data-header-position',
-      'data-width',
-      'data-card-background',
-      'data-vertical-style',
-    ]);
-    this.html.setAttribute('data-toggled', 'close');
-    this.html.setAttribute('data-card-style', 'style1');
-    this.html.setAttribute('dir', 'ltr');
-    this.html.setAttribute('data-vertical-style', 'detached');
-
-    const mainMenu = document.querySelector('.main-menu') as HTMLElement;
-    mainMenu?.removeAttribute('style');
-    const slideMenu = document.querySelector('.slide-menu') as HTMLElement;
-    slideMenu?.removeAttribute('style');
-
-    this.stateSubject.next(this.initialState);
-    this.updateStateAndEmit(this.initialState);
-    localStorage.clear();
-
-    const bgPattern = document.getElementById('switcher-pattern-img3') as HTMLInputElement;
-    if (bgPattern) { bgPattern.checked = true; }
-    const codingStyle = document.getElementById('switcher-card-style') as HTMLInputElement;
-    if (codingStyle) { codingStyle.checked = true; }
-    const cardBg = document.getElementById('switcher-card-background') as HTMLInputElement;
-    if (cardBg) { cardBg.checked = true; }
-  }
-
-  public applyReset1(): void {
-    this.resetHtmlAttributes([
-      'style',
-      'data-bg-img',
-      'data-pattern-img',
-      'data-menu-position',
-      'data-header-position',
-      'data-width',
-    ]);
-    this.html.setAttribute('data-toggled', 'close');
-    this.html.setAttribute('data-card-style', 'style1');
-    this.html.setAttribute('dir', 'ltr');
-    this.html.setAttribute('data-nav-layout', 'horizontal');
-    this.html.setAttribute('data-card-background', 'background1');
-    this.html.setAttribute('data-vertical-style', 'detached');
-
-    this.stateSubject.next(this.initialState);
-    localStorage.clear();
-  }
-
-  public getCurrentValue() {
-    return this.stateSubject.getValue();
-  }
-
   private resetHtmlAttributes(attributes: string[]): void {
     attributes.forEach(attr => this.html.removeAttribute(attr));
   }
@@ -266,6 +282,9 @@ export class AppStateService {
     }
     if (state.backgroundImage) {
       this.applyBackgroundImageSpecificChanges(state.backgroundImage);
+    }
+    if (state.themeMode) {
+      this.applyThemeMode(state.themeMode);
     }
     this.stateSubject.next(state);
     this.updateLocalStorage(state);

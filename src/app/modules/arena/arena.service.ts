@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from 'app/shared/services/api.service';
+import { ApiService } from '@core/data-access/api.service';
 import { ArenaStatus } from '@arena/arena.models';
 import { Pageable } from '@app/common/classes/pageable';
 

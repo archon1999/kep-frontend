@@ -16,7 +16,7 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { TournamentListCardComponent } from './tournament-list-card/tournament-list-card.component';
 import { TournamentVersusComponent } from './tournament/tournament-versus/tournament-versus.component';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';

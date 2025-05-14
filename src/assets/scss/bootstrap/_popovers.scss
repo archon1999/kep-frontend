@@ -12,7 +12,7 @@
 
 .popover {
   background-color: $custom-white;
-  border: 1px solid $default-border;
+  border: 1px solid var(--default-border);
   box-shadow: $box-shadow;
   font-size: 0.8rem;
   border-radius: $default-radius;
@@ -20,11 +20,11 @@
 
   .popover-header {
     background-color: $custom-white;
-    border-block-end: 1px solid $default-border;
+    border-block-end: 1px solid var(--default-border);
   }
 
   .popover-body {
-    color: $default-text-color;
+    color: var(--default-text-color);
   }
 
   &.only-body {
@@ -103,7 +103,7 @@
 
     .popover-header {
       background-color: $color;
-      border-block-end: 1px solid rgba(255, 255, 255, 0.1);
+      border-block-end: 1px solid var(--default-border);
       color: $white;
       border-radius: 0.3rem 0.3rem 0 0;
     }

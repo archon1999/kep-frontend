@@ -7,7 +7,7 @@
   .chat-info,
   .main-chat-area,
   .chat-user-details {
-    background-color: $default-background;
+    background-color: var(--default-background);
     height: calc(100vh - 8rem);
     border-radius: $default-radius;
   }
@@ -126,11 +126,11 @@
         }
 
         &.chat-msg-unread {
-          background-color: $default-background;
-          color: $default-text-color;
+          background-color: var(--default-background);
+          color: var(--default-text-color);
 
           .chat-msg {
-            color: $default-text-color;
+            color: var(--default-text-color);
           }
 
           .chat-read-icon {
@@ -174,7 +174,7 @@
       padding: 2.5rem;
 
       .chatting-user-info {
-        color: $default-text-color;
+        color: var(--default-text-color);
         font-weight: 400;
         font-size: 0.813rem;
 
@@ -264,8 +264,8 @@
       align-items: center;
       height: 4.75rem;
       padding: 0 1.5rem;
-      border-top: 1px solid $default-border;
-      // background-color: $default-background;
+      border-top: 1px solid var(--default-border);
+      // background-color: var(--default-background);
       position: absolute;
       inset-inline-start: auto;
       inset-inline-end: auto;
@@ -349,7 +349,7 @@
       height: 1rem;
       line-height: 1rem;
       border-radius: 0.3rem;
-      border: 1px solid $default-border;
+      border: 1px solid var(--default-border);
       display: flex;
       align-items: center;
       padding: 1.125rem;
@@ -378,7 +378,7 @@
       inset-inline-end: 0;
       inset-block-start: 0.5rem;
       box-shadow: $box-shadow;
-      border-inline-start: 1px solid $default-border;
+      border-inline-start: 1px solid var(--default-border);
       background-color: var(--theme-bg-gradient);
       z-index: 1;
     }
@@ -418,7 +418,7 @@
 [data-page-style="modern"] {
   .main-chat-area {
     .rightIcons .btn-outline-light {
-      border-color: $default-border;
+      border-color: var(--default-border);
     }
   }
 }

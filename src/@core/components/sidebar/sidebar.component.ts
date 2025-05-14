@@ -7,7 +7,7 @@ import { checkHoriMenu } from './sidebar';
 import { CoreCommonModule } from '@core/common.module';
 import { SimplebarAngularModule } from 'simplebar-angular';
 import { DropdownPositionDirective } from '@core/directives/dropdown-position.directive';
-import { ApiService } from '@shared/services/api.service';
+import { ApiService } from '@core/data-access/api.service';
 
 @Component({
   selector: 'app-sidebar',

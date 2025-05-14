@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CurrentProblemsRating, ProblemsRating } from '@problems/models/rating.models';
 import { PageResult } from '@app/common/classes/page-result';
-import { ContentHeader } from "@core/components/content-header/content-header.component";
+import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';

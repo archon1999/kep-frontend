@@ -9,8 +9,8 @@ import {
   ChallengesUserViewComponent
 } from '@challenges/components/challenges-user-view/challenges-user-view.component';
 import { ChallengesRating } from '@challenges/interfaces/challenges-rating';
-import { ContentHeader } from "@core/components/content-header/content-header.component";
-import { ContentHeaderModule } from "@core/components/content-header/content-header.module";
+import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
+import { ContentHeaderModule } from "@shared/ui/components/content-header/content-header.module";
 import { NgxSkeletonLoaderModule } from "ngx-skeleton-loader";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 

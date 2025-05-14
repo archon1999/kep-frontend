@@ -5,7 +5,7 @@ import { User } from '@auth';
 import { Subject } from 'rxjs';
 import { Problem } from '@problems/models/problems.models';
 import { ProblemsApiService } from '../../services/problems-api.service';
-import { ApiService } from '@shared/services/api.service';
+import { ApiService } from '@core/data-access/api.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProblemDescriptionComponent } from '@problems/pages/problem/problem-description/problem-description.component';
@@ -18,8 +18,8 @@ import { TourModule } from '@shared/third-part-modules/tour/tour.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { BasePageComponent } from '@app/common/classes/base-page.component';
-import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { SidebarService } from '@shared/ui/sidebar/sidebar.service';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
@@ -59,7 +59,7 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
   constructor(
     public service: ProblemsApiService,
     public api: ApiService,
-    protected coreSidebarService: CoreSidebarService,
+    protected coreSidebarService: SidebarService,
   ) {
     super();
   }

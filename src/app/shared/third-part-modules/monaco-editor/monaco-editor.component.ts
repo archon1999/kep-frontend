@@ -14,6 +14,7 @@ import { EditorComponent, MonacoEditorModule } from 'ngx-monaco-editor-v2';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { AttemptLangs } from 'app/modules/problems/constants';
 import { getEditorLang } from 'app/modules/problems/utils';
+import { AppStateService } from "@core/services/app-state.service";
 
 
 @Component({
@@ -41,7 +42,7 @@ export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnCh
   @Input() tabSize = 4;
 
   public options = {
-    theme: 'vs-dark',
+    theme: 'vs-light',
     language: 'python',
     minimap: {
       enabled: false,
@@ -54,11 +55,23 @@ export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnCh
   onTouched: () => {};
 
   constructor(
-    public languageService: LanguageService,
+    protected languageService: LanguageService,
+    protected appStateService: AppStateService,
   ) {
   }
 
   ngOnInit() {
+    this.appStateService.state$.subscribe(
+      (state) => {
+        if (state.themeMode) {
+          this.options = {
+            ...this.options,
+            theme: (state.themeMode === 'dark' ? 'vs-dark' : 'vs-light'),
+          }
+        }
+      }
+    )
+
     this.languageService.getLanguage().subscribe(
       (lang: AttemptLangs) => {
         this.lang = this.lang || lang;

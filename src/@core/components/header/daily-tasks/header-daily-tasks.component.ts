@@ -7,7 +7,7 @@ import { NgScrollbar } from 'ngx-scrollbar';
 import { NgbDropdownModule, NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { KepStreakComponent } from '@shared/components/kep-streak/kep-streak.component';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
-import { ApiService } from "@shared/services/api.service";
+import { ApiService } from "@core/data-access/api.service";
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { SimplebarAngularModule } from 'simplebar-angular';
 

@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
-import { ContentHeader } from '@core/components/content-header/content-header.component';
+import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
 import { Blog } from '../../blog.interfaces';
 import { BlogService } from '../../blog.service';
 import { BaseTablePageComponent } from '@app/common';
 import { Observable } from 'rxjs';
 import { PageResult } from '@app/common/classes/page-result';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { BlogPostCardComponent } from '@app/modules/blog/components/blog-post-card/blog-post-card.component';
 import { NgbPagination, NgbPaginationNext, NgbPaginationPrevious } from '@ng-bootstrap/ng-bootstrap';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';

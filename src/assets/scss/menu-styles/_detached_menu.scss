@@ -28,7 +28,7 @@
       border-bottom: 0px;
     }
     .app-header {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid var(--default-border);
 
       .sidemenu-toggle.header-link.animated-arrow.hor-toggle.horizontal-navtoggle {
         margin-inline-start: 1.25rem;

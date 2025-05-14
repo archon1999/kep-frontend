@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ContestsService } from '@contests/contests.service';
 import { UserChallengesRating, UserContestsRating, UserProblemsRating } from '@users/users.models';
 import { UsersApiService } from '@users/users-api.service';
-import { colors } from '@app/colors';
+import { colors } from '@core/config/colors';
 import { ChallengesApiService } from '@challenges/services';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';

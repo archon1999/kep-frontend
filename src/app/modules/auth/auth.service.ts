@@ -5,7 +5,7 @@ import { catchError, tap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { User } from '@auth';
-import { ApiService } from '@shared/services/api.service';
+import { ApiService } from '@core/data-access/api.service';
 import { WebsocketService } from '@shared/services/websocket';
 import { Router } from '@angular/router';
 import { Resources } from '@app/resources';

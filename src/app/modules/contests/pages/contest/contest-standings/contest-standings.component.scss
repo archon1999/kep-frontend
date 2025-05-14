@@ -4,8 +4,14 @@
   border-radius: 2px;
   padding: 1rem;
   margin-bottom: 1rem;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px black solid !important;
+
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px #fafafa solid !important;
+
+  @include dark-layout {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px black solid !important;
+  }
 
   .header {
     display: flex;

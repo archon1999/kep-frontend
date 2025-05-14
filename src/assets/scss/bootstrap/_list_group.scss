@@ -1,8 +1,8 @@
 /*------ list_group start ------*/
 .list-group-item {
-  color: $default-text-color;
+  color: var(--default-text-color);
   background-color: transparent;
-  border: 1px solid $default-border;
+  border: 1px solid var(--default-border);
   padding: 0.75rem 1.25rem;
 }
 
@@ -15,7 +15,7 @@
 .list-group-item {
   &.disabled,
   &:disabled {
-    color: $default-text-color;
+    color: var(--default-text-color);
     background-color: $light;
     opacity: 0.5;
   }
@@ -24,7 +24,7 @@
 .list-group-item-action {
   &:focus,
   &:hover {
-    color: $default-text-color;
+    color: var(--default-text-color);
     background-color: $list-hover-focus-bg;
   }
 }
@@ -121,13 +121,13 @@
 }
 
 .list-group-item-light {
-  color: $default-text-color;
+  color: var(--default-text-color);
   background-color: rgba(var(--light-rgb), 0.1);
 
   &.list-group-item-action {
     &:focus,
     &:hover {
-      color: $default-text-color;
+      color: var(--default-text-color);
       background-color: rgba(var(--light-rgb), 0.2);
     }
   }
@@ -171,7 +171,7 @@
 
 .list-item-solid-light {
   background-color: $light;
-  color: $default-text-color;
+  color: var(--default-text-color);
   border-color: $light;
 }
 

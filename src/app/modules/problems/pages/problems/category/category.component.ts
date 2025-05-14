@@ -1,8 +1,8 @@
 import { Component, OnDestroy } from '@angular/core';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { Categories, Category, Problem, StudyPlan } from '@problems/models/problems.models';
-import { ContentHeader } from "@core/components/content-header/content-header.component";
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import {
   SectionProblemsTableComponent
 } from '@problems/pages/problems/sections/section-problems-table/section-problems-table.component';

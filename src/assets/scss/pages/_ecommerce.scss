@@ -145,7 +145,7 @@
 .swiper-view-details {
   .swiper-slide {
     background-color: transparent !important;
-    border: 1px solid $default-border;
+    border: 1px solid var(--default-border);
 
     &.swiper-slide-thumb-active {
       background-color: $light !important;
@@ -206,7 +206,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 0;
-  border: 1px solid $default-border;
+  border: 1px solid var(--default-border);
   margin-inline-end: 0.5rem;
   background-color: $light;
 
@@ -262,7 +262,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 3.125rem;
-  border: 1px solid $default-border;
+  border: 1px solid var(--default-border);
   margin-inline-end: 0.5rem;
   font-size: 0.75rem;
   background-color: $light;
@@ -278,10 +278,10 @@
   position: relative;
   padding: 0.5rem;
   background-color: rgba(var(--warning-rgb), 0.1);
-  border: 1px solid $default-border;
+  border: 1px solid var(--default-border);
 
   .promotion-code {
-    color: $default-text-color;
+    color: var(--default-text-color);
   }
 
   .offer-details {
@@ -346,7 +346,7 @@
   width: 6.25rem;
   height: 6.25rem;
   margin-block-end: 1.25rem;
-  fill: $default-text-color;
+  fill: var(--default-text-color);
 }
 
 /* End:: Cart */

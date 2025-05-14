@@ -58,20 +58,54 @@
   filter: drop-shadow(0 0 5px $primary);
 }
 
-@import 'styles/primeng-sass/icons/primeicons';
-@import 'primeng/resources/primeng.css';
-@import 'styles/primeng-sass/themes/aura/aura-dark/primary/theme';
-
-//html:has(.swal2-container) {
-//  app-footer {
-//    display: none !important;
-//  }
-//}
-
-.text-white {
-  color: white !important;
-}
-
 .cursor-pointer {
   cursor: pointer;
 }
+
+.text-white, .text-fixed-white {
+  color: #000 !important;
+
+  @include dark-layout {
+    color: #fff !important;
+  }
+}
+
+.text-dark, .text-fixed-dark {
+  color: #000 !important;
+
+  @include dark-layout {
+    color: #fff !important;
+  }
+}
+
+.table {
+  --bs-table-bg: rgba(255, 255, 255, 0.8);
+
+  @include dark-layout {
+    --bs-table-bg: rgba(0, 0, 0, 0.1);
+  }
+}
+
+html[data-theme-mode="light"] {
+  .nav-link {
+    color: black;
+  }
+
+  .page-link {
+    background: rgba(255, 255, 255);
+    transition: none;
+  }
+
+  .page-item.active .page-link {
+    background: $primary;
+  }
+
+  .offcanvas, .canvas-footer, .nav-link.active, .modal-content, .custom-btn-icons {
+    background: white !important;
+  }
+
+  .tooltip-inner {
+    background-color: #eaeaea !important;
+  }
+}
+

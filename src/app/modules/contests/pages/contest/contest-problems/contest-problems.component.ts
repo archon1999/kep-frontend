@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ContestsService } from '@contests/contests.service';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
 import { ContestProblemCardComponent } from '@contests/components/contest-problem-card/contest-problem-card.component';
 import { ContestCardModule } from '@contests/components/contest-card/contest-card.module';

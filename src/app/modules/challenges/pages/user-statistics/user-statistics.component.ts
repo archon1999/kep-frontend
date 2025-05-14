@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ChallengesStatisticsService } from '@challenges/services';
 import { BasePageComponent } from '@app/common/classes/base-page.component';
-import { ContentHeader } from "@core/components/content-header/content-header.component";
+import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { SectionProfileComponent } from '@challenges/pages/user-statistics/section-profile/section-profile.component';
 import {
   SectionRatingChangesComponent

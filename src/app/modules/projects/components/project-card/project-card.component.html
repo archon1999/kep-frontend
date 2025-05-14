@@ -31,7 +31,7 @@
       <kepcoin-spend-swal
         [value]="project.purchaseKepcoinValue"
         [customContent]="true"
-        [purchaseUrl]="'projects/' + project.slug + '/purchase'"
+        [purchaseUrl]="'projects-list/' + project.slug + '/purchase'"
         (success)="project.purchased=true;">
         <button class="btn full-width btn-primary btn-sm">
           {{ 'Purchase' | translate }}

@@ -66,8 +66,8 @@ caption {
 
 .table {
   --bs-table-bg: rgba(0, 0, 0, 0.1);
-  color: $default-text-color;
-  border-color: $default-border;
+  color: var(--default-text-color);
+  border-color: var(--default-border);
   margin-block-end: 0;
 
   tbody {
@@ -204,28 +204,28 @@ caption {
 
   &.table-striped > tbody > tr:nth-of-type(odd) > * {
     // --bs-table-accent-bg: rgba(var(--light-rgb), 0.5);
-    color: $default-text-color;
+    color: var(--default-text-color);
     --bs-table-bg-type: rgba(255, 255, 255, 0.04);
   }
 
   &.table-striped-columns > :not(caption) > tr > :nth-child(2n) {
     --bs-table-accent-bg: rgba(var(--dark-rgb), 0.025);
-    color: $default-text-color;
+    color: var(--default-text-color);
   }
 
   tbody.table-group-divider {
-    border-top: 1px solid $default-border;
+    border-top: 1px solid var(--default-border);
   }
 
   &.table-hover > tbody > tr:hover > * {
-    --bs-table-accent-bg: #{$default-background};
-    --bs-table-bg-state: #{$default-background};
-    color: $default-text-color;
+    --bs-table-accent-bg: #{var(--default-background)};
+    --bs-table-bg-state: #{var(--default-background)};
+    color: var(--default-text-color);
   }
 
   .table-active {
     --bs-table-accent-bg: #{$light};
-    color: $default-text-color;
+    color: var(--default-text-color);
     --bs-table-bg-state: #{$light};
   }
 

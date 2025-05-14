@@ -1,6 +1,12 @@
-/*------ card start ------*/
+@import 'styles/kep-imports';
+
 .card {
+  background: rgba(255, 255, 255, 0.5) !important;
   margin-block-end: 1.5rem;
+
+  @include dark-layout {
+    background: inherit !important;
+  }
 
   .card-header {
     display: flex;
@@ -11,7 +17,7 @@
 
 .card.custom-card {
   border-radius: 0;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.5) !important;
   position: relative;
   margin-block-end: 1.5rem;
   width: 100%;
@@ -19,6 +25,10 @@
   border: 0px;
   z-index: inherit;
   letter-spacing: 0.044rem;
+
+  @include dark-layout {
+    background: inherit !important;
+  }
 
   .card-header {
     padding: 1rem 1rem 0 1rem;
@@ -55,7 +65,7 @@
 
   .card-body {
     padding: 1rem;
-    color: $default-text-color;
+    color: var(--default-text-color);
   }
 
   .card-link {
@@ -77,11 +87,11 @@
     color: rgba(255, 255, 255, 0.9);
 
     .card-header {
-      border-block-end: 1px solid rgba(255, 255, 255, 0.1);
+      border-block-end: 1px solid var(--default-border);
     }
 
     .card-footer {
-      border-block-start: 1px solid rgba(255, 255, 255, 0.1);
+      border-block-start: 1px solid var(--default-border);
     }
 
     .over-content-bottom {
@@ -94,9 +104,13 @@
       inset-inline-end: 0;
       inset-block-start: 0;
       inset-block-end: 0;
-      background-color: rgba(0, 0, 0, 0.2);
+      background-color: rgba(0, 0, 0, 0.05);
       position: absolute;
       border-radius: $default-radius;
+
+      @include dark-layout {
+        background-color: rgba(0, 0, 0, 0.2);
+      }
     }
   }
 
@@ -253,22 +267,22 @@
 
   &.card-bg-light {
     background-color: $light;
-    color: $default-text-color;
+    color: var(--default-text-color);
 
     .card-header {
       background-color: rgba(0, 0, 0, 0.05) !important;
-      color: $default-text-color;
-      border-block-end: $default-border;
+      color: var(--default-text-color);
+      border-block-end: var(--default-border);
     }
 
     .card-body {
-      color: $default-text-color;
+      color: var(--default-text-color);
     }
 
     .card-footer {
       background-color: rgba(0, 0, 0, 0.05) !important;
-      color: $default-text-color;
-      border-block-start: $default-border;
+      color: var(--default-text-color);
+      border-block-start: var(--default-border);
     }
   }
 

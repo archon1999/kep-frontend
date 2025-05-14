@@ -1,7 +1,7 @@
 /*------ toast start ------*/
 .toast {
   background-color: $custom-white;
-  border: 1px solid $default-border;
+  border: 1px solid var(--default-border);
   box-shadow: $box-shadow;
   border-radius: $default-radius;
 
@@ -18,7 +18,7 @@
   }
 
   .toast-header {
-    border-bottom: 1px solid $default-border;
+    border-bottom: 1px solid var(--default-border);
 
     .btn-close {
       margin-inline-end: 0.125rem;

@@ -3,7 +3,7 @@ import { User } from '@auth';
 import { takeUntil } from 'rxjs/operators';
 import { ContestsService } from '../../../contests.service';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';

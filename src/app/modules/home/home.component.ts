@@ -16,8 +16,8 @@ import { LastProblemsSectionComponent } from '@app/modules/home/last-problems-se
 import { ContestsSectionComponent } from '@app/modules/home/contests-section/contests-section.component';
 import { RanksSectionComponent } from '@app/modules/home/ranks-section/ranks-section.component';
 import { BasePageComponent } from "@app/common";
-import { ContentHeader } from "@core/components/content-header/content-header.component";
-import { ContentHeaderModule } from "@core/components/content-header/content-header.module";
+import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
+import { ContentHeaderModule } from "@shared/ui/components/content-header/content-header.module";
 import { TranslatePipe } from "@ngx-translate/core";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { fadeInUpOnEnterAnimation } from 'angular-animations';
-import { ContentHeader } from "@core/components/content-header/content-header.component";
+import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { BasePageComponent } from '@app/common/classes/base-page.component';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { ContestCardComponent } from '@contests/components/contest-card/contest-card/contest-card.component';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
 import { ContestsTableModule } from '@contests/components/contests-table/contests-table.module';

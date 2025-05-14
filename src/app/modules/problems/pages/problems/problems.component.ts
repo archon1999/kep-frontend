@@ -21,8 +21,8 @@ import {
 import { SectionLastAttemptsComponent } from './sections/section-last-attempts/section-last-attempts.component';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from "@ngx-translate/core";
-import { ContentHeader } from "@core/components/content-header/content-header.component";
-import { ContentHeaderModule } from "@core/components/content-header/content-header.module";
+import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
+import { ContentHeaderModule } from "@shared/ui/components/content-header/content-header.module";
 
 @Component({
   selector: 'app-problems',

@@ -15,8 +15,8 @@ import { Contest } from '@contests/models/contest';
 import {
   SectionCategoriesComponent
 } from '@contests/pages/contests/sections/section-categories/section-categories.component';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
-import { ContentHeader } from "@core/components/content-header/content-header.component";
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
+import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { SectionHeaderComponent } from '@contests/pages/contests/sections/section-header/section-header.component';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { FormControl } from '@angular/forms';

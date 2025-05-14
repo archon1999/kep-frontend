@@ -5,7 +5,7 @@
   <div class="main-header-container container-fluid">
 
     <div class="header-content-left">
-      <div (click)="togglesidebar()" class="header-element mx-lg-0 mx-2" href="javascript:void(0);">
+      <div (click)="toggleSidebar()" class="header-element mx-lg-0 mx-2" href="javascript:void(0);">
         <a class="sidemenu-toggle header-link animated-arrow hor-toggle horizontal-navtoggle"><span></span></a>
       </div>
 
@@ -25,10 +25,8 @@
       <languages/>
 
       <li class="header-element header-fullscreen">
-        <a (click)="toggleFullscreen()" class="header-link p-0" href="javascript:void(0);">
-          <i [ngClass]="{ 'd-none': isFullscreen }" class="bi bi-fullscreen full-screen-open header-link-icon"></i>
-          <i [ngClass]="{ 'd-none': !isFullscreen }"
-             class="bi bi-fullscreen-exit full-screen-close header-link-icon d-none"></i>
+        <a (click)="toggleThemeMode()" class="header-link p-0" href="javascript:void(0);">
+          <kep-icon class="header-link-icon" size="small-4" [name]="appStateService.getCurrentValue().themeMode == 'light' ? 'moon' : 'sun'"/>
         </a>
       </li>
 

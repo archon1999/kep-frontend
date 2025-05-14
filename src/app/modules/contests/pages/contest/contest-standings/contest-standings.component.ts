@@ -4,7 +4,7 @@ import { ContestsService } from '../../../contests.service';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { sortContestProblems } from '../../../utils/sort-contest-problems';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
 import {
   ContestStandingsCountdownComponent

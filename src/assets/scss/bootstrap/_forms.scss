@@ -1,7 +1,7 @@
 /*------ forms start ------*/
 .form-control {
   border-color: $input-border;
-  color: $default-text-color;
+  color: var(--default-text-color);
   background-color: $form-control-bg;
   font-size: 0.875rem;
   font-weight: $default-font-weight;
@@ -13,7 +13,7 @@
     border-color: $input-border;
     background-color: rgba(var(--primary-rgb), 0.1);
     box-shadow: 1px 0px 0.125rem 0 rgba(0, 0, 0, .05);
-    color: $default-text-color;
+    color: var(--default-text-color);
   }
 
   &.border-dotted {
@@ -28,7 +28,7 @@
 .form-label {
   font-size: 0.8rem;
   font-weight: 400;
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .form-text {
@@ -77,7 +77,7 @@
 .form-select {
   background-color: $form-control-bg;
   border: 1px solid $input-border;
-  color: $default-text-color;
+  color: var(--default-text-color);
   font-size: $default-font-size;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
   background-size: 1.25rem;
@@ -334,21 +334,21 @@ fieldset:disabled .btn {
 .form-select {
   &:disabled {
     background-color: $light;
-    color: $default-text-color;
+    color: var(--default-text-color);
   }
 }
 
 .form-control-plaintext {
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .form-control::-webkit-file-upload-button {
-  color: $default-text-color;
-  background-color: $default-background;
+  color: var(--default-text-color);
+  background-color: var(--default-background);
 }
 
 .form-control:hover:not(:disabled):not([readonly])::-webkit-file-upload-button {
-  background-color: $default-background;
+  background-color: var(--default-background);
 }
 
 /* Start::placeholder */
@@ -358,7 +358,7 @@ fieldset:disabled .btn {
     font-size: 0.8rem;
     font-weight: 500;
     opacity: 0.6;
-    color: $default-text-color;
+    color: var(--default-text-color);
     padding-inline-start: 0px;
     transition: padding-inline-start 0.1s ease-in;
   }
@@ -368,7 +368,7 @@ fieldset:disabled .btn {
     font-size: 0.8rem;
     font-weight: 500;
     opacity: 0.6;
-    color: $default-text-color;
+    color: var(--default-text-color);
   }
 
   &::-moz-placeholder {
@@ -376,14 +376,14 @@ fieldset:disabled .btn {
     font-size: 0.8rem;
     font-weight: 500;
     opacity: 0.6;
-    color: $default-text-color;
+    color: var(--default-text-color);
   }
 
   &:-ms-input-placeholder {
     font-size: 0.8rem;
     font-weight: 500;
     opacity: 0.6;
-    color: $default-text-color;
+    color: var(--default-text-color);
   }
 }
 
@@ -1348,7 +1348,7 @@ fieldset:disabled .btn {
 }
 
 .wizard.wizard-tab .wizard-buttons {
-  border-top: 1px solid $default-border;
+  border-top: 1px solid var(--default-border);
   justify-content: space-between;
   padding: 1rem;
 }
@@ -1370,7 +1370,7 @@ fieldset:disabled .btn {
 
 .wizard-tab .wizard-buttons .wizard-btn.prev {
   background-color: $light;
-  color: $default-text-color;
+  color: var(--default-text-color);
 
   &:hover {
     background-color: $light;
@@ -1730,7 +1730,7 @@ input {
 }
 
 .tagify__input::before {
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
   opacity: 0.5;
 }
 

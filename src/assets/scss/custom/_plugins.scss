@@ -43,15 +43,15 @@
 .choices__list--dropdown,
 .choices__list[aria-expanded] {
   background-color: $custom-white !important;
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
   z-index: 99 !important;
   border-radius: 0 0 $default-radius $default-radius !important;
 }
 
 .choices[data-type*="select-one"] .choices__input {
-  border-block-end: 1px solid $default-border !important;
+  border-block-end: 1px solid var(--default-border) !important;
   background-color: $custom-white !important;
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .choices__list--dropdown .choices__item--selectable.is-highlighted {
@@ -106,7 +106,7 @@
 }
 
 .choices__list--single .choices__item {
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
 }
 
 .choices__input {
@@ -133,7 +133,7 @@
 }
 
 .choices__heading {
-  border-bottom: 1px solid $default-border !important;
+  border-bottom: 1px solid var(--default-border) !important;
   color: $text-muted !important;
 }
 
@@ -188,7 +188,7 @@
 /* Start:Apex Charts */
 #marketCap {
   .apexcharts-canvas line {
-    stroke: $default-border;
+    stroke: var(--default-border);
   }
 }
 
@@ -209,21 +209,21 @@
 }
 
 .apexcharts-tooltip.apexcharts-theme-light {
-  border: 1px solid $default-border !important;
-  background: $default-background !important;
+  border: 1px solid var(--default-border) !important;
+  background: var(--default-background) !important;
   color: #fff !important;
 }
 
 .apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-title {
-  background: $default-background !important;
-  border-block-end: 1px solid $default-border !important;
+  background: var(--default-background) !important;
+  border-block-end: 1px solid var(--default-border) !important;
 }
 
 .apexcharts-grid,
 .apexcharts-xaxis,
 .apexcharts-grid-borders {
   line {
-    stroke: $default-border;
+    stroke: var(--default-border);
   }
 }
 
@@ -239,7 +239,7 @@
 
 .apexcharts-menu {
   background: $custom-white !important;
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
   border-radius: $default-radius !important;
 }
 
@@ -267,7 +267,7 @@
 #chart-year,
 #chart-quarter {
   background: $custom-white !important;
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
 }
 
 .apexcharts-bar-series.apexcharts-plot-series {
@@ -294,7 +294,7 @@
 
 .apexcharts-datalabels-group {
   .apexcharts-text.apexcharts-datalabel-value {
-    fill: $default-text-color;
+    fill: var(--default-text-color);
   }
 }
 
@@ -305,18 +305,18 @@
 .apexcharts-radar-series.apexcharts-plot-series {
   polygon,
   line {
-    stroke: $default-border;
+    stroke: var(--default-border);
   }
 }
 
 .apexcharts-pie {
   line,
   circle {
-    stroke: $default-border;
+    stroke: var(--default-border);
   }
 
   text {
-    fill: $default-text-color !important;
+    fill: var(--default-text-color) !important;
   }
 }
 
@@ -355,14 +355,14 @@
 }
 
 .apexcharts-boxPlot-area {
-  stroke: $default-text-color !important;
+  stroke: var(--default-text-color) !important;
 }
 
 /* End:Apex Charts */
 
 /* Start:Full Calendar */
 .fc-v-event .fc-event-main {
-  color: $default-text-color;
+  color: var(--default-text-color);
 }
 
 .fc-event-selected,
@@ -433,7 +433,7 @@
 
 .fc-theme-standard .fc-scrollgrid.fc-scrollgrid-liquid {
   border: 0px !important;
-  border-top: 1px solid $default-border !important;
+  border-top: 1px solid var(--default-border) !important;
 }
 
 .fc .fc-scrollgrid-section-footer > *,
@@ -472,7 +472,7 @@
 
 .fc-theme-standard td,
 .fc-theme-standard th {
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
   border-top: 0px !important;
 }
 
@@ -489,7 +489,7 @@
 }
 
 .fc-theme-standard .fc-list {
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
 }
 
 .fc .fc-list-event:hover td {
@@ -507,14 +507,14 @@
 }
 
 .fc-theme-standard .fc-scrollgrid {
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
 }
 
 .fc-theme-bootstrap5 .fc-list,
 .fc-theme-bootstrap5 .fc-scrollgrid,
 .fc-theme-bootstrap5 td,
 .fc-theme-bootstrap5 th {
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
 }
 
 @media (max-width: 420px) {
@@ -598,7 +598,7 @@
 .flatpickr-calendar {
   background-color: $custom-white !important;
   box-shadow: $box-shadow !important;
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
   font-size: $default-font-size !important;
 }
 
@@ -665,7 +665,7 @@
 }
 
 .flatpickr-day {
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
   font-weight: 500 !important;
 
   &.nextMonthDay,
@@ -715,8 +715,8 @@
 .flatpickr-day:focus,
 .flatpickr-day.prevMonthDay:focus,
 .flatpickr-day.nextMonthDay:focus {
-  background: $default-background !important;
-  border-color: $default-border !important;
+  background: var(--default-background) !important;
+  border-color: var(--default-border) !important;
 }
 
 .flatpickr-day.today:hover {
@@ -726,24 +726,24 @@
 }
 
 .flatpickr-calendar.hasTime .flatpickr-time {
-  border-top: 1px solid $default-border !important;
+  border-top: 1px solid var(--default-border) !important;
 }
 
 .flatpickr-calendar.arrowTop:after,
 .flatpickr-calendar.arrowTop:before {
-  border-bottom-color: $default-border !important;
+  border-bottom-color: var(--default-border) !important;
 }
 
 .flatpickr-calendar.arrowBottom:after,
 .flatpickr-calendar.arrowBottom:before {
-  border-top-color: $default-border !important;
+  border-top-color: var(--default-border) !important;
 }
 
 .flatpickr-time input:hover,
 .flatpickr-time .flatpickr-am-pm:hover,
 .flatpickr-time input:focus,
 .flatpickr-time .flatpickr-am-pm:focus {
-  background: $default-background !important;
+  background: var(--default-background) !important;
 }
 
 .flatpickr-time .flatpickr-time-separator,
@@ -777,7 +777,7 @@
 }
 
 .flatpickr-weekdays {
-  border-block-end: 1px solid $default-border !important;
+  border-block-end: 1px solid var(--default-border) !important;
 }
 
 .numInputWrapper span.arrowUp {
@@ -888,8 +888,8 @@ span.flatpickr-weekday {
 }
 
 .pcr-app .pcr-interaction .pcr-result {
-  color: $default-text-color !important;
-  background: $default-background !important;
+  color: var(--default-text-color) !important;
+  background: var(--default-background) !important;
 }
 
 .theme-container,
@@ -910,7 +910,7 @@ span.flatpickr-weekday {
 }
 
 .flatpickr-weekwrapper .flatpickr-weeks {
-  box-shadow: 1px 0 0 $default-border !important;
+  box-shadow: 1px 0 0 var(--default-border) !important;
 }
 
 /* End:Pickers */
@@ -949,19 +949,19 @@ span.flatpickr-weekday {
 }
 
 .noUi-target {
-  background: $default-background !important;
-  border: 1px solid $default-border !important;
+  background: var(--default-background) !important;
+  border: 1px solid var(--default-border) !important;
   box-shadow: $box-shadow !important;
 }
 
 .noUi-handle {
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
   background: $custom-white !important;
   box-shadow: $box-shadow !important;
 }
 
 #result {
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
 }
 
 .noUi-handle:after,
@@ -971,14 +971,14 @@ span.flatpickr-weekday {
 
 .noUi-marker {
   position: absolute;
-  background: $default-border !important;
+  background: var(--default-border) !important;
 }
 
 .noUi-tooltip {
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
   border-radius: $default-radius !important;
   background: $custom-white !important;
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
   padding: 0.25rem 0.75rem !important;
   font-size: $default-font-size !important;
   line-height: 1 !important;
@@ -1080,7 +1080,7 @@ span.flatpickr-weekday {
   width: 19.375rem !important;
   margin: 0 auto !important;
   padding: 0.625rem !important;
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
 }
 
 #result {
@@ -1324,10 +1324,10 @@ span.flatpickr-weekday {
 }
 
 .apexcharts-legend-text {
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
   padding-inline-start: 0.9375rem !important;
   margin-inline-start: -0.625rem !important;
-  font-family: $default-font-family !important;
+  font-family: var(--default-font-family) !important;
 }
 
 .apexcharts-text {
@@ -1335,7 +1335,7 @@ span.flatpickr-weekday {
   &.apexcharts-xaxis-label {
     tspan {
       fill: #fff;
-      font-family: $default-font-family;
+      font-family: var(--default-font-family);
     }
   }
 }
@@ -1451,12 +1451,12 @@ canvas {
 
 /* Start::dropzone */
 .dropzone {
-  border: 0.125rem dashed $default-border !important;
+  border: 0.125rem dashed var(--default-border) !important;
   background-color: transparent !important;
 
   .dz-message .dz-button {
     font-size: 1.25rem !important;
-    color: $default-text-color !important;
+    color: var(--default-text-color) !important;
   }
 }
 
@@ -1468,7 +1468,7 @@ canvas {
 
 /* Start::filepond */
 .filepond--drop-label {
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
   border-radius: 0.3rem !important;
 }
 
@@ -1478,7 +1478,7 @@ canvas {
 
 .filepond--panel-root {
   background-color: $custom-white !important;
-  border: 0.125rem dashed $default-border !important;
+  border: 0.125rem dashed var(--default-border) !important;
 }
 
 .filepond--drop-label.filepond--drop-label label {
@@ -1508,25 +1508,25 @@ canvas {
 
 /* Start:: quill editor */
 .ql-bubble .ql-editor blockquote {
-  border-inline-start: 4px solid $default-background !important;
+  border-inline-start: 4px solid var(--default-background) !important;
 }
 
 .ql-toolbar.ql-snow,
 .ql-container.ql-snow {
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
 }
 
 .ql-snow .ql-picker {
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
 }
 
 .ql-snow .ql-stroke,
 .ql-snow .ql-stroke.ql-fill {
-  stroke: $default-text-color !important;
+  stroke: var(--default-text-color) !important;
 }
 
 .ql-snow .ql-fill {
-  fill: $default-text-color !important;
+  fill: var(--default-text-color) !important;
 }
 
 .ql-toolbar.ql-snow + .ql-container.ql-snow {
@@ -1544,13 +1544,13 @@ canvas {
 }
 
 .ql-snow .ql-formats {
-  border: 1px solid $default-border;
+  border: 1px solid var(--default-border);
   border-radius: 0.5rem;
 }
 
 .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label,
 .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
-  border-color: $default-border !important;
+  border-color: var(--default-border) !important;
   border-radius: 0.5rem !important;
 }
 
@@ -1560,15 +1560,15 @@ canvas {
 
 .ql-snow .ql-tooltip {
   background-color: $custom-white !important;
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
   box-shadow: $box-shadow !important;
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
 }
 
 .ql-snow .ql-tooltip input[type="text"] {
-  border: 1px solid $default-border !important;
-  background-color: $default-background !important;
-  color: $default-text-color !important;
+  border: 1px solid var(--default-border) !important;
+  background-color: var(--default-background) !important;
+  color: var(--default-text-color) !important;
   outline: 0;
 }
 
@@ -1596,7 +1596,7 @@ canvas {
 }
 
 .ql-snow .ql-picker.ql-expanded .ql-picker-label {
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
 }
 
 .ql-editor {
@@ -1608,7 +1608,7 @@ canvas {
 }
 
 .ql-container {
-  font-family: $default-font-family !important;
+  font-family: var(--default-font-family) !important;
 }
 
 .ql-snow .ql-editor {
@@ -1616,7 +1616,7 @@ canvas {
 }
 
 .ql-bubble {
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
   border-radius: $default-radius !important;
 }
 
@@ -1662,7 +1662,7 @@ canvas {
 .select2-selection__rendered {
   padding-inline-start: 12px !important;
   padding-inline-end: 20px !important;
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
   line-height: 2.33rem !important;
   border: 1px solid $input-border !important;
   border-radius: $default-radius !important;
@@ -1698,8 +1698,8 @@ canvas {
 
 .select2-container--default
 .select2-results__option--highlighted.select2-results__option--selectable {
-  background-color: $default-background !important;
-  color: $default-text-color !important;
+  background-color: var(--default-background) !important;
+  color: var(--default-text-color) !important;
 }
 
 .select2-results__option--selectable {
@@ -1718,7 +1718,7 @@ canvas {
 
 .select2-search__field {
   background-color: $custom-white !important;
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
 
   &:focus-visible {
     outline: none !important;
@@ -1753,7 +1753,7 @@ canvas {
 .select2-container--default
 .select2-selection--multiple
 .select2-selection__choice__remove {
-  border-inline-end: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-inline-end: 1px solid var(--default-border) !important;
   color: $black !important;
   inset-block-start: -0.15rem !important;
   font-weight: 500 !important;
@@ -1791,7 +1791,7 @@ canvas {
   .select2-selection--single
   .select2-selection__rendered,
   .select2-selection.select2-selection--multiple {
-    background-color: $default-background !important;
+    background-color: var(--default-background) !important;
   }
 }
 
@@ -1871,13 +1871,13 @@ table.gridjs-table {
 }
 
 .gridjs-container {
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
 }
 
 th.gridjs-th {
   background: transparent !important;
-  border: 1px solid $default-border !important;
-  color: $default-text-color !important;
+  border: 1px solid var(--default-border) !important;
+  color: var(--default-text-color) !important;
   padding: 0.75rem !important;
 }
 
@@ -1888,7 +1888,7 @@ th.gridjs-th {
 }
 
 td.gridjs-td {
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
   padding: 0.75rem !important;
 }
 
@@ -1908,7 +1908,7 @@ td.gridjs-td {
 }
 
 .gridjs-pagination {
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
 }
 
 .gridjs-pagination .gridjs-pages button:first-child {
@@ -1951,14 +1951,14 @@ td.gridjs-td {
 .gridjs-pagination .gridjs-pages button:hover:disabled,
 .gridjs-pagination .gridjs-pages button[disabled] {
   background-color: $custom-white !important;
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
 }
 
 .gridjs-pagination .gridjs-pages button {
   background-color: $custom-white !important;
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
   padding: 0.375 0.75rem !important;
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
 
   &:focus {
     box-shadow: none !important;
@@ -1978,12 +1978,12 @@ td.gridjs-td {
 
 input.gridjs-input {
   background-color: $form-control-bg !important;
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
   border-radius: $default-radius !important;
   font-size: $default-font-size !important;
   padding: 0.375rem 0.75rem !important;
   line-height: 1.6 !important;
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
 
   &:focus {
     box-shadow: none !important;
@@ -2013,8 +2013,8 @@ th.gridjs-th-fixed {
 
 #grid-header-fixed {
   .gridjs-wrapper {
-    border-block-start: 1px solid $default-border !important;
-    border-block-end: 1px solid $default-border !important;
+    border-block-start: 1px solid var(--default-border) !important;
+    border-block-end: 1px solid var(--default-border) !important;
   }
 
   .gridjs-container .gridjs-wrapper .gridjs-thead .gridjs-tr th {
@@ -2138,11 +2138,11 @@ div.dataTables_wrapper div.dataTables_length select {
 
 div.dt-button-info {
   background-color: $custom-white !important;
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
 
   h2 {
     background-color: $custom-white !important;
-    border-bottom: 1px solid $default-border !important;
+    border-bottom: 1px solid var(--default-border) !important;
   }
 }
 
@@ -2174,7 +2174,7 @@ div.dt-button-info {
     width: 95% !important;
     height: 95% !important;
     background-color: $custom-white !important;
-    border: 1px solid $default-border !important;
+    border: 1px solid var(--default-border) !important;
     box-shadow: $box-shadow !important;
   }
 
@@ -2224,7 +2224,7 @@ table.dataTable > tbody > tr.child ul.dtr-details > li:first-child {
 }
 
 table.dataTable > tbody > tr.child ul.dtr-details > li {
-  border-block-end: 1px solid $default-border !important;
+  border-block-end: 1px solid var(--default-border) !important;
 }
 
 table.dataTable > tbody > tr.child span.dtr-title {
@@ -2233,7 +2233,7 @@ table.dataTable > tbody > tr.child span.dtr-title {
 
 div.dtr-modal div.dtr-modal-close {
   top: 0px !important;
-  border: 0px solid $default-border !important;
+  border: 0px solid var(--default-border) !important;
   font-size: 1.5rem !important;
   background-color: transparent !important;
 }
@@ -2360,7 +2360,7 @@ div.dataTables_wrapper div.dataTables_filter#scroll-vertical_filter input {
 
 table.dataTable > tbody > tr.selected > * {
   background-color: $primary-01;
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
   box-shadow: none !important;
 }
 
@@ -2399,7 +2399,7 @@ table.dataTable > tbody > tr.selected > * {
 
   .swal2-popup {
     background: $custom-white;
-    color: $default-text-color;
+    color: var(--default-text-color);
     padding: 0 0 2rem;
   }
 
@@ -2433,7 +2433,7 @@ table.dataTable > tbody > tr.selected > * {
   }
 
   .swal2-footer {
-    border-top: 1px solid $default-border;
+    border-top: 1px solid var(--default-border);
   }
 
   .swal2-icon {
@@ -2521,7 +2521,7 @@ table.dataTable > tbody > tr.selected > * {
 
   .swal2-styled.swal2-cancel {
     background-color: $light !important;
-    color: $default-text-color;
+    color: var(--default-text-color);
     padding: 0.375em 0.75rem;
     box-shadow: none;
     font-size: 0.8125rem;
@@ -2543,14 +2543,14 @@ table.dataTable > tbody > tr.selected > * {
   .swal2-file:focus,
   .swal2-input:focus,
   .swal2-textarea:focus {
-    border: 1px solid $default-border;
+    border: 1px solid var(--default-border);
     box-shadow: none;
   }
 }
 
 div:where(.swal2-container) input:where(.swal2-input), div:where(.swal2-container)
 input:where(.swal2-file), div:where(.swal2-container) textarea:where(.swal2-textarea) {
-  border-color: $default-border !important;
+  border-color: var(--default-border) !important;
 }
 
 [dir="rtl"] {
@@ -2681,10 +2681,10 @@ pre[class*="language-"]:before {
 }
 
 pre[class*="language-"] > code {
-  border-inline-start: 1px solid $default-border !important;
+  border-inline-start: 1px solid var(--default-border) !important;
   box-shadow: none !important;
   background-color: $light !important;
-  border: 1px solid $default-border;
+  border: 1px solid var(--default-border);
   border-radius: $default-radius;
   background-image: none !important;
   white-space: pre-wrap;
@@ -2701,7 +2701,7 @@ pre[class*="language-"] {
 
 code[class*="language-"],
 pre[class*="language-"] {
-  color: $default-text-color !important;
+  color: var(--default-text-color) !important;
   font-size: 0.82rem !important;
 }
 
@@ -2747,16 +2747,16 @@ code[class*="language-"] {
 
 /* Start:: Gantt JS */
 .gantt .lower-text {
-  fill: $default-text-color !important;
+  fill: var(--default-text-color) !important;
 }
 
 .gantt .grid-header {
   fill: transparent !important;
-  stroke: $default-border !important;
+  stroke: var(--default-border) !important;
 }
 
 .gantt .bar-label.big {
-  fill: $default-text-color !important;
+  fill: var(--default-text-color) !important;
 }
 
 .gantt .grid-row {
@@ -2764,7 +2764,7 @@ code[class*="language-"] {
 }
 
 .gantt .row-line {
-  stroke: $default-border !important;
+  stroke: var(--default-border) !important;
 }
 
 .gantt .bar {
@@ -2781,7 +2781,7 @@ code[class*="language-"] {
 }
 
 .gantt .arrow {
-  stroke: $default-border !important;
+  stroke: var(--default-border) !important;
 }
 
 .gantt .today-highlight {

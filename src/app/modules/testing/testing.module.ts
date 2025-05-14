@@ -6,7 +6,7 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { DragulaModule } from 'ng2-dragula';
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';

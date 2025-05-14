@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Chapter, Test } from '../../testing.models';
 import { TestingApiService } from '../../testing-api.service';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
-import { ContentHeader } from "@core/components/content-header/content-header.component";
+import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { PageResult } from '@app/common/classes/page-result';
 
 @Component({

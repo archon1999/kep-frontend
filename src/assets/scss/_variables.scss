@@ -1,61 +1,29 @@
-// ================================
-// Фоновые и базовые цвета
-// ================================
+$primary: #00ffcd;
+$secondary: rgb(0, 227, 210);
+$warning: rgb(235, 247, 72);
+$info: rgb(72, 247, 238);
+$success: rgb(72, 247, 104);
+$danger: rgb(255, 74, 74);
 
-// Цвета фона
-// Light: --body-bg-rgb: 20,20,20, Dark: --body-bg-rgb2: 20,20,20 (используем dark)
-$body-bg-rgb: 20, 20, 20;
-$default-body-color: #141414; // rgb(20,20,20)
+$light: rgb(40, 60, 56);
+$dark: rgb(240, 245, 248);
 
-// Цвета текста
-// Light: --default-text-color-rgb: 51,51,51, Dark: 255,255,255 → берем dark
-$default-text-color: rgb(255, 255, 255);
+$orange: rgb(255, 116, 23);
+$pink: rgb(252, 108, 133);
+$purple: rgb(143, 0, 255);
+$teal: rgb(0, 177, 163);
+$green: rgb(69, 214, 91);
 
-// Фоновый градиент (используются dark default-body-bg-color и light --theme-bg-gradient)
-$theme-bg-gradient: #021e18; // определено только в light
-$default-background: linear-gradient(to bottom right, $default-body-color 0%,var(--theme-bg-gradient) 25%,$default-body-color 100%);
+$red: #d03d46;
+$blue: #438fff;
+$green: #1dd871;
+$cyan: #00D1D1;
+$indigo: #6663ff;
+$white: #fff;
+$gray: #8699A3;
+$black: #000;
+$yellow: #fff621;
 
-// Границы
-// Light: #e8e8e8, Dark: rgba(255,255,255,0.1)
-$default-border: rgba(255, 255, 255, 0.1);
-$default-radius: 0.25rem;
-
-// Тень блока (dark значение)
-$box-shadow: 0px 0.125rem 0.25rem rgba(255, 255, 25, 0.05);
-
-// ================================
-// Шрифты
-// ================================
-
-$default-font-family: 'Rajdhani', 'Exo 2', sans-serif;
-$default-font-size: 0.95rem;
-$default-font-weight: 400;
-
-// ================================
-// Заголовок и меню
-// ================================
-
-// Header: light: #fff, dark: rgb(32,32,37) → dark
-$header-bg: rgb(32, 32, 37);
-// Заглавный цвет шрифта header (совпадает)
-$header-prime-color: rgba(255, 255, 255, 1);
-// Граница header: light: #e8e8e8, dark: rgba(255,255,255,0.1)
-$header-border-color: rgba(255, 255, 255, 0.1);
-
-// Меню: light: #fff, dark: rgb(32,32,37)
-$menu-bg: rgb(32, 32, 37);
-// Меню – основной цвет (одинаково в обеих темах)
-$menu-prime-color: rgba(255, 255, 255, 1);
-// Граница меню: light: #e8e8e8, dark: rgba(255,255,255,0.1)
-$menu-border-color: rgba(255, 255, 255, 0.1);
-
-// ================================
-// Основные цвета (из light)
-// ================================
-
-$primary: #00ffbe;
-$primary-rgb: $primary;
-$primary-border: $primary;
 $primary-01: rgba($primary, 0.1);
 $primary-02: rgba($primary, 0.2);
 $primary-03: rgba($primary, 0.3);
@@ -67,62 +35,28 @@ $primary-08: rgba($primary, 0.8);
 $primary-09: rgba($primary, 0.9);
 $primary-005: rgba($primary, 0.05);
 
-// Если где-то требовался primary-transparent – его значение не было задано, можно установить по необходимости:
-$primary-transparent: transparent;
-
-// Другие цвета (определены только для light)
-$secondary: rgb(0, 227, 210);
-$warning: rgb(235, 247, 72);
-$info: rgb(72, 247, 238);
-$success: rgb(72, 247, 104);
-$danger: rgb(255, 74, 74);
-
-// Цвета light и dark: light: (245,247,250), dark: (40,60,56) → dark
-$light: rgb(40, 60, 56);
-// Темный: light: (44,62,80), dark: (240,245,248) → dark
-$dark: rgb(240, 245, 248);
-
-$orange: rgb(255, 116, 23);
-$pink: rgb(252, 108, 133);
-$purple: rgb(143, 0, 255);
-$teal: rgb(0, 177, 163);
-$green: rgb(69, 214, 91);
-
-// Дополнительные цвета, заданные в SCSS (переопределяют предыдущие, если совпадают имена)
-$red: #d03d46;
-$blue: #438fff;
-$green: #1dd871; // переопределено
-$cyan: #00D1D1;
-$indigo: #6663ff;
-$white: #fff;
-$gray: #8699A3;
-$black: #000;
-$yellow: #fff621;
-
-// Цвета custom: light: custom-white: #fff, custom-black: #000; dark: custom-white: #010a07, custom-black: #fff
 $custom-white: #010a07;
 $custom-black: #fff;
 
-// ================================
-// Прочие элементы формы
-// ================================
+$default-radius: 0.25rem;
+$box-shadow: 0px 0.125rem 0.25rem rgba(255, 255, 25, 0.05);
 
-// Цвет текста muted: light: #6c757e, dark: rgba(255,255,255,0.9)
+$default-font-size: 0.95rem;
+$default-font-weight: 400;
+
+$header-bg: rgb(32, 32, 37);
+$header-border-color: rgba(255, 255, 255, 0.1);
+
+$menu-bg: rgb(32, 32, 37);
+$menu-prime-color: rgba(255, 255, 255, 1);
+$menu-border-color: rgba(255, 255, 255, 0.1);
+
 $text-muted: rgba(255, 255, 255, 0.9);
-// Граница инпутов: light: #e8e8e8, dark: rgba(255,255,255,0.1)
 $input-border: rgba(255, 255, 255, 0.1);
-// Фон для form-control: одинаковое в обеих темах
-$form-control-bg: rgba($primary-rgb, 0.05);
+$form-control-bg: rgba($primary, 0.05);
 
-// Цвет границы для карточек: light: #e8e8e8, dark: rgba(255,255,255,0.1)
 $bootstrap-card-border: rgba(255, 255, 255, 0.1);
-// Цвет фона при наведении в списках: light: #f5f6f7, dark: rgba(255,255,255,0.1)
 $list-hover-focus-bg: rgba(255, 255, 255, 0.1);
-
-
-// ================================
-// Градиенты
-// ================================
 
 $primary-gradient: linear-gradient(to bottom, $primary-08 0%, rgba(0, 0, 0, 0.6) 100%);
 $secondary-gradient: linear-gradient(to bottom right, $secondary 0%, #046866 100%);
@@ -180,17 +114,16 @@ $github: #333;
 $google: #CF4E43;
 $youtube: #FF0000;
 
-
-
 :root {
-  color-scheme: dark;
-  --body-bg-rgb: 20, 20, 20;
-  --primary-rgb: 0, 255, 190;
+  color-scheme: light;
+  --primary: #{$primary};
+  --body-bg-rgb: 255, 255, 255;
+  --primary-rgb: 0, 255, 205;
   --secondary-rgb: 0, 227, 210;
   --warning-rgb: 235, 247, 72;
   --info-rgb: 72, 247, 238;
   --success-rgb: 72, 247, 104;
-  --danger-rgb: 255,74,74;
+  --danger-rgb: 255, 74, 74;
   --light-rgb: 245, 247, 250;
   --dark-rgb: 44, 62, 80;
   --orange-rgb: 255, 116, 23;
@@ -213,14 +146,16 @@ $youtube: #FF0000;
   --primary005: rgba(var(--primary-rgb), 0.05);
   --default-font-family: 'Rajdhani', 'Exo 2', sans-serif;
   --default-font-weight: 400;
+  --default-text-color: #000;
   --default-text-color-rgb: 51, 51, 51;
-  --default-border: #e8e8e8;
-  --default-background: #f7f8f9;
+  --default-border: #f3f3f3;
+  --default-body-color: #ffffff;
+  --default-background: linear-gradient(to bottom right, var(--default-body-color) 0%, var(--theme-bg-gradient) 25%, var(--default-body-color) 100%);
   --menu-bg: #fff;
-  --menu-prime-color: rgba(255,255,255,1);
+  --menu-prime-color: rgba(255, 255, 255, 1);
   --menu-border-color: #e8e8e8;
   --header-bg: #fff;
-  --header-prime-color: rgba(255,255,255,1);
+  --header-prime-color: rgba(0, 0, 0, 1);
   --header-border-color: #e8e8e8;
   --custom-white: #fff;
   --custom-black: #000;
@@ -228,8 +163,8 @@ $youtube: #FF0000;
   --list-hover-focus-bg: #f5f6f7;
   --text-muted: #6c757e;
   --input-border: #e8e8e8;
-  --form-control-bg: rgba(var(--primary-rgb),0.05);
-  --theme-bg-gradient: #021e18;
+  --form-control-bg: rgba(var(--primary-rgb), 0.05);
+  --theme-bg-gradient: #fafafa;
 
   /* Gray set */
   --gray-1: #f9fafb;
@@ -276,6 +211,7 @@ $youtube: #FF0000;
   --custom-white: #010a07;
   --custom-black: #fff;
   --default-border: rgba(255, 255, 255, 0.1);
+  --default-text-color: #fff;
   --default-text-color-rgb: 255, 255, 255;
   --light-rgb: 40, 60, 56;
   // --light-rgb: 63, 75, 71;
@@ -283,13 +219,14 @@ $youtube: #FF0000;
   --dark-rgb: 240, 245, 248;
   --bootstrap-card-border: rgba(255, 255, 255, 0.1);
   --list-hover-focus-bg: rgba(255, 255, 255, 0.1);
-  --default-background: rgba(15, 30, 26, 0.5);
-  --default-body-bg-color: rgb(var(--body-bg-rgb2));
+  --default-body-color: #141414;
+  --default-background: linear-gradient(to bottom right, var(--default-body-color) 0%, var(--theme-bg-gradient) 25%, var(--default-body-color) 100%);
   --text-muted: rgba(255, 255, 255, 0.9);
   --input-border: rgba(255, 255, 255, 0.1);
   --form-control-bg: rgba(var(--primary-rgb), 0.05);
   --card-bg: 29, 68, 67;
   $box-shadow: 0px .125rem .25rem rgba(255, 255, 25, 0.05);
+  --theme-bg-gradient: #021e18;
 
   /* Gray Set */
   --gray-1: #110f0f;

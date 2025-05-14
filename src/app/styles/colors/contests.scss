@@ -5,15 +5,10 @@
   .contests-colors {
     #{$selector} {
       --bg: #{$color};
-      --text-color: white;
-
-      --bg-gradient: #{$background-dark};
+      --bg-gradient: #{$background-light};
       --box-shadow: 0 0 5px #{$color};
-      --bg-light: #{mix(black, $color, 60)};
-
-      @if $background-dark != false {
-        --bg: #{$color-dark};
-      }
+      --text-color: var(--default-text-color);
+      --bg-light: #{mix(white, $color, 90)};
 
       .contest-color {
         color: $color !important;
@@ -22,7 +17,6 @@
       .contest-bg-color {
         background-color: $color !important;
       }
-
       @content;
 
       // Start
@@ -34,10 +28,18 @@
 
       .bg-light-primary {
         background-color: rgba($color, 0.1) !important;
+
+        @include dark-layout {
+          background-color: rgba($color, 0.1) !important;
+        }
       }
 
       .bg-gradient-primary {
-        background: rgba($color, 0.5) !important;
+        background: rgba($color, 0.8) !important;
+
+        @include dark-layout {
+          background: rgba($color, 0.5) !important;
+        }
       }
 
       kep-table {
@@ -63,6 +65,10 @@
         &:hover {
           box-shadow: 0 0 5px $color !important;
         }
+
+        @include dark-layout {
+          background-color: $color !important;
+        }
       }
 
       .nav-tabs .nav-link:hover {
@@ -78,8 +84,19 @@
           background-color: mix(black, $color, 30) !important;
         }
       }
-
       // End
+    }
+
+    @include dark-layout() {
+      #{$selector} {
+        --bg-gradient: #{$background-dark};
+        --box-shadow: 0 0 5px #{$color};
+        --bg-light: #{mix(black, $color, 60)};
+
+        @if $background-dark != false {
+          --bg: #{$color-dark};
+        }
+      }
     }
   }
 }
@@ -112,7 +129,7 @@ $revo-color: #0048dd;
   $selector: '&',
   $color: $primary,
   $color-dark: mix(black, $primary, 20),
-  $background-light: linear-gradient(to right, rgba($primary, 0.9), rgba($primary, 0.7)),
+  $background-light: rgba($primary, 0.2),
   $background-dark: rgba($primary, 0.25),
 );
 
@@ -134,7 +151,7 @@ $revo-color: #0048dd;
   $selector: $one-line-selector,
   $color: $one-line-color,
   $color-dark: mix(black, $one-line-color, 30),
-  $background-light: linear-gradient(to right, rgba($one-line-color, 0.9), rgba($one-line-color, 0.7)),
+  $background-light: linear-gradient(to right, rgba($one-line-color, 0.5), rgba($one-line-color, 0.3)),
   $background-dark: rgba($one-line-color, 0.25),
 ) {
   .card-bg {
@@ -147,7 +164,7 @@ $revo-color: #0048dd;
   $selector: $hack-it-selector,
   $color: $hack-it-color,
   $color-dark: mix(black, $hack-it-color, 30),
-  $background-light: linear-gradient(to right, rgba($hack-it-color, 0.9), rgba($hack-it-color, 0.7)),
+  $background-light: linear-gradient(to right, rgba($hack-it-color, 0.5), rgba($hack-it-color, 0.3)),
   $background-dark: rgba($hack-it-color, 0.25),
 );
 
@@ -215,7 +232,7 @@ $revo-color: #0048dd;
   $selector: $revo-selector,
   $color: $revo-color,
   $color-dark: mix(white, $revo-color, 50),
-  $background-light: linear-gradient(45deg, rgba($revo-color, 0.1), $revo-color),
+  $background-light: linear-gradient(45deg, rgba($revo-color, 0.2), rgba($revo-color, 0.3)),
   $background-dark: linear-gradient(45deg, rgba($revo-color, 0.1), rgba($revo-color, 0.9)),
 ) {
   .card-bg {
@@ -296,7 +313,8 @@ $revo-color: #0048dd;
   }
 }
 
-.contests-colors {
+.dark-layout .contests-colors {
+
   &.contest-254 {
     --bg: #037166;
     --bg-gradient: linear-gradient(to right, #024b44, #037166);

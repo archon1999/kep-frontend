@@ -4,7 +4,7 @@ import { DragulaModule, DragulaService } from 'ng2-dragula';
 import { ToastrService } from 'ngx-toastr';
 import { Course, CourseKeyword, CourseLesson } from '@courses/interfaces';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SidebarComponent } from '@courses/pages/course-lesson/sidebar/sidebar.component';
 

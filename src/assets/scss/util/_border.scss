@@ -10,7 +10,7 @@
 
 /*Start::border */
 .border {
-  border: 1px solid $default-border !important;
+  border: 1px solid var(--default-border) !important;
 
   /* Start:: Border Style */
   &.border-dashed {
@@ -432,7 +432,7 @@
 }
 
 .border-top {
-  border-top: 1px solid $default-border !important;
+  border-top: 1px solid var(--default-border) !important;
 
   &.border-block-start-dashed {
     border-top-style: dashed !important;
@@ -476,7 +476,7 @@
 }
 
 .border-end {
-  border-inline-end: 1px solid $default-border !important;
+  border-inline-end: 1px solid var(--default-border) !important;
 
   &.border-inline-end-dashed {
     border-inline-end-style: dashed !important;
@@ -520,7 +520,7 @@
 }
 
 .border-bottom {
-  border-bottom: 1px solid $default-border !important;
+  border-bottom: 1px solid var(--default-border) !important;
 
   &.border-block-end-dashed {
     border-bottom-style: dashed !important;
@@ -564,7 +564,7 @@
 }
 
 .border-start {
-  border-inline-start: 1px solid $default-border !important;
+  border-inline-start: 1px solid var(--default-border) !important;
 
   &.border-inline-start-dashed {
     border-inline-start-style: dashed !important;
@@ -667,7 +667,7 @@
 
 /* Start::vr */
 .vr {
-  background-color: $default-border;
+  background-color: var(--default-border);
   opacity: 1;
 }
 

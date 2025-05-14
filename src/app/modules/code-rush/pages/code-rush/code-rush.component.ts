@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { CodeRush, CodeRushProblem } from '../../code-rush.models';
 import { CodeRushApiService } from '../../services/code-rush-api.service';
 import { TitleService } from '../../../../shared/services/title.service';
-import { ContentHeader } from "@core/components/content-header/content-header.component";
+import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 
 @Component({
   templateUrl: './code-rush.component.html',

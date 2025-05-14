@@ -32,7 +32,12 @@
 </head>
 
 <style>
+  html[data-theme-mode="dark"] #loading-bg {
+    background-color: #021e18 !important;
+  }
+
   #loading-bg {
+    background-color: white !important;
     width: 100%;
     height: 100%;
     display: flex;
@@ -254,6 +259,12 @@
 
   <app-root></app-root>
 </body>
+
+<script>
+  if (JSON.parse(localStorage.getItem('kep-config'))?.themeMode === 'light') {
+    document.documentElement.setAttribute('data-theme-mode', 'light');
+  }
+</script>
 
 <script src="https://www.googletagmanager.com/gtag/js?id=G-MBQPKFTEWV"></script>
 <script>

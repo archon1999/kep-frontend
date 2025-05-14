@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ApiService } from 'app/shared/services/api.service';
+import { ApiService } from '@core/data-access/api.service';
 import { AuthService, User } from '@auth';
 import { asyncScheduler, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 import { HackAttempt } from '@problems/models/hack-attempt.models';
 import { CoreCommonModule } from '@core/common.module';
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { HackAttemptsTableModule } from '@problems/components/hack-attempts-table/hack-attempts-table.module';
 

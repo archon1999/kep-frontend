@@ -1,4 +1,4 @@
-<core-sidebar [hideOnEsc]="true" [name]="sidebarName" class="code-editor-sidebar">
+<sidebar [hideOnEsc]="true" [name]="sidebarName" class="code-editor-sidebar">
   <a
     (click)="toggleSidebar()"
     class="btn-toggle d-flex align-items-center justify-content-center">
@@ -208,9 +208,9 @@
       </div>
     </kep-card>
   </ng-scrollbar>
-</core-sidebar>
+</sidebar>
 
-<core-sidebar [hideOnEsc]="true" [name]="checkSamplesResultSidebarName" class="check-samples-result">
+<sidebar [hideOnEsc]="true" [name]="checkSamplesResultSidebarName" class="check-samples-result">
   <ng-scrollbar autoWidthDisabled="false">
     <div (keydown)="onKeyDown($event)" class="card results-card full-height position-relative">
       @if (isCheckSamples) {
@@ -273,6 +273,6 @@
       }
     </div>
   </ng-scrollbar>
-</core-sidebar>
+</sidebar>
 
 <ng-select-css></ng-select-css>

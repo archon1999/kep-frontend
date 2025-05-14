@@ -9,8 +9,8 @@ import { ContestantViewModule } from '@contests/components/contestant-view/conte
 import {
   ContestsRatingBadgeComponent
 } from '@contests/components/contests-rating-badge/contests-rating-badge.component';
-import { ContentHeader } from "@core/components/content-header/content-header.component";
-import { ContentHeaderModule } from "@core/components/content-header/content-header.module";
+import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
+import { ContentHeaderModule } from "@shared/ui/components/content-header/content-header.module";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 import { NgxSkeletonLoaderModule } from "ngx-skeleton-loader";
 

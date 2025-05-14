@@ -12,8 +12,8 @@ import { ArenaListCardComponent } from '@arena/components/arena-list-card/arena-
 import { BaseTablePageComponent } from '@app/common';
 import { Observable } from 'rxjs';
 import { PageResult } from '@app/common/classes/page-result';
-import { ContentHeader } from "@core/components/content-header/content-header.component";
-import { ContentHeaderModule } from '@core/components/content-header/content-header.module';
+import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
