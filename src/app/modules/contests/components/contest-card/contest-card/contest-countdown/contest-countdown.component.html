@@ -4,20 +4,20 @@
       <ng-template #render let-data>
         <div class="d-flex justify-content-between" [ngbTooltip]="contest.startTime | localizedDate:'medium'">
           <div class="countdown text-center">
-            <h5 class="clock-val" [ngStyle]="{'color': clockColor}">{{ data.fragments[0] }}</h5>
-            <h5 class="clock-text" [ngStyle]="{'color': textColor}">{{ 'DAY' | translate }}</h5>
+            <h5 class="clock-val">{{ data.fragments[0] }}</h5>
+            <h5 class="clock-text">{{ 'DAY' | translate }}</h5>
           </div>
           <div class="countdown text-center">
-            <h5 class="clock-val" [ngStyle]="{'color': clockColor}">{{ data.fragments[1] }}</h5>
-            <h5 class="clock-text" [ngStyle]="{'color': textColor}">{{ 'HOUR' | translate }}</h5>
+            <h5 class="clock-val">{{ data.fragments[1] }}</h5>
+            <h5 class="clock-text">{{ 'HOUR' | translate }}</h5>
           </div>
           <div class="countdown text-center">
-            <h5 class="clock-val" [ngStyle]="{'color': clockColor}">{{ data.fragments[2] }}</h5>
-            <h5 class="clock-text" [ngStyle]="{'color': textColor}">{{ 'MINUTE' | translate }}</h5>
+            <h5 class="clock-val">{{ data.fragments[2] }}</h5>
+            <h5 class="clock-text">{{ 'MINUTE' | translate }}</h5>
           </div>
           <div class="countdown text-center">
-            <h5 class="clock-val" [ngStyle]="{'color': clockColor}">{{ data.fragments[3] }}</h5>
-            <h5 class="clock-text" [ngStyle]="{'color': textColor}">{{ 'SECOND' | translate }}</h5>
+            <h5 class="clock-val">{{ data.fragments[3] }}</h5>
+            <h5 class="clock-text">{{ 'SECOND' | translate }}</h5>
           </div>
         </div>
       </ng-template>

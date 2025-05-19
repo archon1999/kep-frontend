@@ -91,6 +91,12 @@ html[data-theme-mode="light"] {
     color: black;
   }
 
+  .animated-arrow span {
+    &:after, &:before {
+      background-color: black !important;
+    }
+  }
+
   .page-link {
     background: rgba(255, 255, 255);
     transition: none;
@@ -107,5 +113,8 @@ html[data-theme-mode="light"] {
   .tooltip-inner {
     background-color: #eaeaea !important;
   }
-}
 
+  .ng-option-label, .apexcharts-tooltip-text {
+    color: black !important;
+  }
+}

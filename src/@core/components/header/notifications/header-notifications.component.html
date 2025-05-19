@@ -82,6 +82,16 @@
                           | {{ 'ArenaFinishedNotification' | translate }}
                         </a>
                       }
+                      @case (7) {
+                        <a routerLink="/practice/duels/duel/{{ notification.content?.duel?.id }}">
+                          {{ 'DuelStarts' | translate }}
+                        </a>
+                      }
+                      @case (8) {
+                        <a routerLink="/users/user/{{ currentUser?.username }}/achievements">
+                          {{ 'NewAchievement' | translate }}
+                        </a>
+                      }
                       @default {
                         {{ notification.type }}
                       }

@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import ru from 'apexcharts/dist/locales/ru.json';
 import en from 'apexcharts/dist/locales/en.json';
 import uz from './locale-uz.json';
+import { AppStateService } from "@core/services/app-state.service";
 
 @Component({
   selector: 'apex-chart',
@@ -22,7 +23,8 @@ export class ApexChartComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject();
 
   constructor(
-    public translateService: TranslateService,
+    protected readonly translateService: TranslateService,
+    protected readonly appStateService: AppStateService,
   ) {}
 
   private _options: ChartOptions;
@@ -43,13 +45,13 @@ export class ApexChartComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.coreConfigService.getConfig().pipe(takeUntil(this._unsubscribeAll)).subscribe(
-    //   (config) => {
-    //     this.chartTheme = {
-    //       mode: config.layout.skin === 'dark' ? 'dark' : 'light',
-    //     };
-    //   }
-    // );
+    this.appStateService.state$.pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      (state) => {
+        this.chartTheme = {
+          mode: state.themeMode,
+        };
+      }
+    );
   }
 
   ngOnDestroy() {

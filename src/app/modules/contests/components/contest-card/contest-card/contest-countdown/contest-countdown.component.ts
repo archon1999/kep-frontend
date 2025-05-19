@@ -14,8 +14,8 @@ import { Contest } from '@contests/models/contest';
 })
 export class ContestCountdownComponent implements OnInit {
 
-  @Input() clockColor = '#19115e';
-  @Input() textColor = '#fff';
+  @Input() clockColor = 'var(--default-text-color)';
+  @Input() textColor = 'var(--default-text-color)';
   @Input() contest: Contest;
 
   public leftTime = 0;
