@@ -1,1 +1,1 @@
-export { ProjectCardComponent } from "@projects/components/project-card/project-card.component";
+export { ProjectCardComponent } from "@projects/ui/components/project-card/project-card.component";

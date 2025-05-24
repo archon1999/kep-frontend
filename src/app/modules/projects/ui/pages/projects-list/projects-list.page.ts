@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { CoreCommonModule } from '@core/common.module';
-import { ProjectCardComponent } from '@app/modules/projects/components/project-card/project-card.component';
+import { ProjectCardComponent } from '@projects/ui/components/project-card/project-card.component';
 import { BaseLoadComponent } from '@app/common';
 import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
 import { Observable } from 'rxjs';

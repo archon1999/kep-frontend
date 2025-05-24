@@ -73,7 +73,11 @@
 
   .card {
     margin-bottom: 0;
-    background: mix(black, $primary, 80) !important;
+    background: white !important;
+
+    @include dark-layout {
+      background: mix(black, $primary, 80) !important;
+    }
 
     .card-header {
       padding: 1rem !important;

@@ -1,4 +1,4 @@
-import { AfterContentChecked, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentChecked, Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { Problem } from '../../models/problems.models';
 import { Problem1615Component } from '@problems/components/problem-body/problem1615/problem1615.component';
 import { Problem1623Component } from '@problems/components/problem-body/problem1623/problem1623.component';
@@ -165,6 +165,13 @@ export class ProblemBodyComponent implements OnInit, OnDestroy, AfterContentChec
           theads[j].getElementsByTagName('tr')[0]?.classList.add('bg-light-primary');
         }
       }
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    if (this.problem.id == 2179 && (window.innerWidth == 2025 || window.innerHeight == 2025)) {
+      alert('Keppy Birthday!')
     }
   }
 

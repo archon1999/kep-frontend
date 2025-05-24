@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CoreCommonModule } from '@core/common.module';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
-import { ProjectTechnologyComponent } from '@projects/components/project-technology/project-technology.component';
+import { ProjectTechnologyComponent } from '@projects/ui/components/project-technology/project-technology.component';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { Project, ProjectAttempt, ProjectAttemptLogTask } from "@projects/domain/entities";
 import { ProjectAttemptsRepository } from "@projects/data-access/repositories/project-attempts.repository";

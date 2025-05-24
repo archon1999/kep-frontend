@@ -6,7 +6,7 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
 import { Project } from "@projects/domain/entities";
 import { ProjectsRepository } from "@projects/data-access";
 import { ProjectAttemptsRepository } from "@projects/data-access/repositories/project-attempts.repository";
-import { ProjectInfoCardComponent } from "@projects/components/project-info-card/project-info-card.component";
+import { ProjectInfoCardComponent } from "@projects/ui/components/project-info-card/project-info-card.component";
 
 @Component({
   selector: 'project-sidebar',

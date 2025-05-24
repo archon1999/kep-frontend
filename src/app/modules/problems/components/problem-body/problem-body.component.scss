@@ -52,3 +52,7 @@ code {
 //  -ms-user-select: none; /* Internet Explorer/Edge */
 //  user-select: none;
 //}
+
+::ng-deep .problem-2173 .text-dark {
+  color: transparent !important;
+}

@@ -10,9 +10,9 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
 import { Observable } from "rxjs";
 import { Project } from "@projects/domain/entities";
 import { ProjectsRepository } from "@projects/data-access";
-import { ProjectDescriptionComponent } from "@projects/components/project-description/project-description.component";
-import { ProjectAttemptsComponent } from "@projects/components/project-attempts/project-attempts.component";
-import { ProjectSidebarComponent } from "@projects/components/project-sidebar/project-sidebar.component";
+import { ProjectDescriptionComponent } from "@projects/ui/components/project-description/project-description.component";
+import { ProjectAttemptsComponent } from "@projects/ui/components/project-attempts/project-attempts.component";
+import { ProjectSidebarComponent } from "@projects/ui/components/project-sidebar/project-sidebar.component";
 
 @Component({
   selector: 'app-project-detail',

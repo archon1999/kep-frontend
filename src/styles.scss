@@ -87,8 +87,16 @@
 }
 
 html[data-theme-mode="light"] {
-  .nav-link {
+  .nav-link, pre {
     color: black;
+  }
+
+  pre {
+    background-color: white !important;
+  }
+
+  .code-editor-sidebar .btn-toggle {
+    color: black !important;
   }
 
   .animated-arrow span {
