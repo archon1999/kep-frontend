@@ -1,5 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { NewChallengeButtonComponent } from '@challenges/components/new-challenge-button/new-challenge-button.component';
+import {
+  NewChallengeButtonComponent
+} from '@challenges/components/new-challenge-button/new-challenge-button.component';
 import { ChallengesApiService } from '@challenges/services';
 import { CoreCommonModule } from '@core/common.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';

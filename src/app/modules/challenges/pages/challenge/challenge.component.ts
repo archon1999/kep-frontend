@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
 import { SwalComponent, SwalPortalTargets } from '@sweetalert2/ngx-sweetalert2';
 import { tap } from 'rxjs/operators';
 import { DragulaModule } from 'ng2-dragula';
-import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 import { CoreCommonModule } from '@core/common.module';
 import { SweetAlertModule } from '@shared/third-part-modules/sweet-alert/sweet-alert.module';
 import {
@@ -16,7 +15,6 @@ import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module
 import {
   ChallengeResultsCardComponent
 } from '@challenges/components/challenge-results-card/challenge-results-card.component';
-import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { getResourceById, Resources } from '@app/resources';
 import { ChallengeQuestionTimeType, ChallengeStatus } from '@challenges/constants';
 import { QuestionCardComponent } from '@challenges/pages/challenge/question-card/question-card.component';
@@ -35,11 +33,9 @@ import { BaseComponent } from '@app/common';
     SweetAlertModule,
     ChallengesUserViewComponent,
     NgbTooltipModule,
-    CountdownComponent,
     MathjaxModule,
     DragulaModule,
     ChallengeResultsCardComponent,
-    MonacoEditorComponent,
     QuestionCardComponent,
     ChallengeCountdownComponent,
   ]

@@ -6,7 +6,7 @@ import { filter } from 'rxjs';
 import { HeaderComponent } from "@core/components/header/header.component";
 import { FooterComponent } from "@core/components/footer/footer.component";
 import { SidebarComponent } from "@core/components/sidebar/sidebar.component";
-import { HoverEffectSidebarDirective } from "@core/directives/hover-effect-sidebar.directive";
+import { HoverEffectSidebarDirective } from "@core/components/sidebar/directives/hover-effect-sidebar.directive";
 
 @Component({
   selector: 'app-content-layout',

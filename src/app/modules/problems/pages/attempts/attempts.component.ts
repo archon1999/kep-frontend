@@ -7,10 +7,6 @@ import { AttemptsTableModule } from '@problems/components/attempts-table/attempt
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { PageResult } from '@app/common/classes/page-result';
-import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
-import {
-  VerdictsSelectComponent
-} from '@problems/components/attempts-filter/verdicts-select/verdicts-select.component';
 import { AttemptsFilterComponent } from '@problems/components/attempts-filter/attempts-filter.component';
 import { AttemptsFilter } from '@problems/interfaces';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
@@ -30,8 +26,6 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
     AttemptsTableModule,
     KepPaginationComponent,
     ContentHeaderModule,
-    KepTableComponent,
-    VerdictsSelectComponent,
     AttemptsFilterComponent,
     EmptyResultComponent,
     KepCardComponent,

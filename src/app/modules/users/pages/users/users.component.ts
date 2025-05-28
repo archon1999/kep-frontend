@@ -7,8 +7,6 @@ import { NgxCountriesService } from '@shared/third-part-modules/ngx-countries/ng
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
-import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -21,9 +19,6 @@ import { PageResult } from '@app/common/classes/page-result';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { KepStreakComponent } from '@shared/components/kep-streak/kep-streak.component';
-import {
-  ChallengesUserViewComponent
-} from '@challenges/components/challenges-user-view/challenges-user-view.component';
 import {
   ChallengesRankBadgeComponent
 } from '@challenges/components/challenges-user-view/challenges-rank-badge/challenges-rank-badge.component';
@@ -38,10 +33,7 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
     CoreCommonModule,
     ContentHeaderModule,
     NgSelectModule,
-    SpinnerComponent,
-    EmptyResultComponent,
     TableOrderingModule,
-    ChallengesUserViewComponent,
     KepcoinViewModule,
     NgbTooltipModule,
     KepPaginationComponent,

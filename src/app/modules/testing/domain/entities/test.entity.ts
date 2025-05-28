@@ -1,5 +1,4 @@
-import { Chapter } from '@testing/domain';
-import { Question } from '@testing/domain';
+import { Chapter, Question } from '@testing/domain';
 
 export interface Test {
   id: number;

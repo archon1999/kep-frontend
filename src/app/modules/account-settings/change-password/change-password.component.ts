@@ -2,7 +2,6 @@ import { Component, inject } from '@angular/core';
 import { AccountSettingsService } from '../account-settings.service';
 import { BaseComponent } from '@app/common';
 import { FormsModule } from '@angular/forms';
-import { NgClass } from '@angular/common';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
@@ -15,7 +14,6 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
   standalone: true,
   imports: [
     FormsModule,
-    NgClass,
     KepCardComponent,
     TranslatePipe,
     KepIconComponent,

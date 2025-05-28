@@ -7,7 +7,9 @@ import { User } from '@auth';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { Project, ProjectAttempt } from "@projects/domain/entities";
 import { ProjectAttemptsRepository } from "@projects/data-access/repositories/project-attempts.repository";
-import { AttemptsTableComponent } from "@projects/ui/components/project-attempts/attempts-table/attempts-table.component";
+import {
+  AttemptsTableComponent
+} from "@projects/ui/components/project-attempts/attempts-table/attempts-table.component";
 
 @Component({
   selector: 'project-attempts',

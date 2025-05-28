@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
+import { fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { Attempt } from '@problems/models/attempts.models';
-import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ContestsService } from '@contests/contests.service';
@@ -13,7 +12,6 @@ import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pa
 import { ContestCardModule } from '@contests/components/contest-card/contest-card.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { ContestStatus } from '@contests/constants/contest-status';
-import { ContestProblem } from '@contests/models/contest-problem';
 import { ContestAttemptsFilter } from '@contests/models/contest-attempts-filter';
 import { Contest } from '@contests/models/contest';
 import { BaseTablePageComponent } from '@app/common';
@@ -21,7 +19,6 @@ import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import {
   ContestAttemptsFilterComponent
 } from '@contests/pages/contest/contest-attempts/filter/contest-attempts-filter.component';
-import { User } from '@auth';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 

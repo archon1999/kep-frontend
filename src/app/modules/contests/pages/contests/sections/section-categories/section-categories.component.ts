@@ -1,7 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { fadeInRightOnEnterAnimation } from 'angular-animations';
 import { CoreCommonModule } from '@core/common.module';
-import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContestsService } from '@contests/contests.service';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
@@ -19,7 +18,6 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
   encapsulation: ViewEncapsulation.None,
   imports: [
     CoreCommonModule,
-    SwiperComponent,
     NgbTooltipModule,
     NgxSkeletonLoaderModule,
     KepCardComponent,

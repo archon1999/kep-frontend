@@ -4,7 +4,6 @@ import { Attempt } from '@problems/models/attempts.models';
 import { AvailableLanguage, Problem } from '@problems/models/problems.models';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { ProblemDifficultyColorPipe } from '@problems/pipes/problem-difficulty-color.pipe';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
 import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
@@ -12,9 +11,8 @@ import { AttemptsTableModule } from '@problems/components/attempts-table/attempt
 import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';
 import { BaseLoadComponent } from '@app/common';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
-import { AttemptLangs } from '@problems/constants';
 import { PageResult } from '@app/common/classes/page-result';
-import { count, interval, timer } from 'rxjs';
+import { interval } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -25,7 +23,6 @@ import { take } from 'rxjs/operators';
   imports: [
     CoreCommonModule,
     NgbTooltipModule,
-    ProblemDifficultyColorPipe,
     MathjaxModule,
     ClipboardModule,
     CodeEditorModule,

@@ -1,5 +1,4 @@
 import { Component, inject, ViewEncapsulation } from '@angular/core';
-import { NgClass, NgForOf, NgStyle } from '@angular/common';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
@@ -14,9 +13,6 @@ import { NgxSkeletonLoaderModule } from "ngx-skeleton-loader";
   selector: 'ranks-section',
   standalone: true,
   imports: [
-    NgForOf,
-    NgStyle,
-    NgClass,
     KepIconComponent,
     CoreCommonModule,
     NgbTooltip,

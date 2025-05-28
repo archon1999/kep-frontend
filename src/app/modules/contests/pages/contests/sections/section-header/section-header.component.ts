@@ -6,9 +6,6 @@ import { ContestsRating } from '@contests/models';
 import { User } from '@auth';
 import { Observable } from 'rxjs';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
-import {
-  ContestsRatingBadgeComponent
-} from '@contests/components/contests-rating-badge/contests-rating-badge.component';
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { ContentHeaderModule } from "@shared/ui/components/content-header/content-header.module";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
@@ -17,7 +14,7 @@ import { NgxSkeletonLoaderModule } from "ngx-skeleton-loader";
 @Component({
   selector: 'section-header',
   standalone: true,
-  imports: [CoreCommonModule, ContestantViewModule, ContestsRatingBadgeComponent, ContentHeaderModule, KepCardComponent, NgxSkeletonLoaderModule],
+  imports: [CoreCommonModule, ContestantViewModule, ContentHeaderModule, KepCardComponent, NgxSkeletonLoaderModule],
   templateUrl: './section-header.component.html',
   styleUrl: './section-header.component.scss'
 })

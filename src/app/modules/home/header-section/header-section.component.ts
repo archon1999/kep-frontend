@@ -5,7 +5,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { CoreCommonModule } from '@core/common.module';
-import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
@@ -13,7 +12,7 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
   templateUrl: './header-section.component.html',
   styleUrls: ['./header-section.component.scss'],
   standalone: true,
-  imports: [CoreCommonModule, KepIconComponent, KepCardComponent],
+  imports: [CoreCommonModule, KepCardComponent],
   encapsulation: ViewEncapsulation.None,
   animations: [
     fadeInOnEnterAnimation({duration: 3000}),

@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { NgxCountriesService } from './ngx-countries.service';
-import { TranslateService } from '@ngx-translate/core';
 import { AppStateService } from '@core/services/app-state.service';
 
 @Pipe({

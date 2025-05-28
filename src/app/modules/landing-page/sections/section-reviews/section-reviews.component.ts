@@ -1,12 +1,8 @@
 import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
-import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { Review } from '@app/modules/landing-page/sections/section-reviews/review';
 import { Observable } from 'rxjs';
-import {
-  ReviewCardComponent
-} from '@app/modules/landing-page/sections/section-reviews/review-card/review-card.component';
 import { LandingPageService } from '@app/modules/landing-page/landing-page.service';
 import { CarouselModule, OwlOptions } from "ngx-owl-carousel-o";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
@@ -14,7 +10,7 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
 @Component({
   selector: 'section-reviews',
   standalone: true,
-  imports: [CoreCommonModule, SwiperComponent, ReviewCardComponent, CarouselModule, KepCardComponent],
+  imports: [CoreCommonModule, CarouselModule, KepCardComponent],
   templateUrl: './section-reviews.component.html',
   styleUrl: './section-reviews.component.scss',
   encapsulation: ViewEncapsulation.None

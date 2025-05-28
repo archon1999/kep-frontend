@@ -2,7 +2,6 @@ import { Component, inject, Input } from '@angular/core';
 import { Team } from '@users/users.models';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { Resources } from '@app/resources';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { fadeInOnEnterAnimation } from 'angular-animations';
@@ -20,7 +19,6 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   imports: [
     UserPopoverModule,
     CommonModule,
-    RouterLink,
     ResourceByIdPipe,
     NgbTooltipModule,
     ClipboardModule,

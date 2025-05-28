@@ -4,7 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { ContestsService } from '@contests/contests.service';
 import { UserChallengesRating, UserContestsRating, UserProblemsRating } from '@users/users.models';
 import { UsersApiService } from '@users/users-api.service';
-import { colors } from '@core/config/colors';
 import { ChallengesApiService } from '@challenges/services';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -17,7 +16,6 @@ import {
   ProblemsActivityCardComponent
 } from '@problems/components/problems-activity-card/problems-activity-card.component';
 import { difficultyLabels } from '@problems/constants/difficulties.enum';
-import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
@@ -33,7 +31,6 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
     ContestantViewModule,
     KepIconComponent,
     ProblemsActivityCardComponent,
-    EmptyResultComponent,
     KepCardComponent,
   ]
 })

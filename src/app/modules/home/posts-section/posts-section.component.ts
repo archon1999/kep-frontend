@@ -2,7 +2,6 @@ import { AfterViewInit, Component } from '@angular/core';
 
 import { Blog } from '../../blog/blog.interfaces';
 import { HomeService } from '../home.service';
-import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { PageResult } from '@app/common/classes/page-result';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
@@ -14,7 +13,7 @@ const PAGE_SIZE = 6;
 @Component({
   selector: 'posts-section',
   standalone: true,
-  imports: [SwiperComponent, SpinnerComponent, CarouselModule, KepCardComponent, BlogPostCardComponent],
+  imports: [SpinnerComponent, CarouselModule, KepCardComponent, BlogPostCardComponent],
   templateUrl: './posts-section.component.html',
   styleUrl: './posts-section.component.scss'
 })

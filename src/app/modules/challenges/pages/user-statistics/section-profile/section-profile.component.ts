@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ChallengesStatisticsService } from '@challenges/services';
-import { AuthService } from '@auth';
-import { User } from '@auth';
+import { AuthService, User } from '@auth';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { Observable } from 'rxjs';
 import { fadeInOnEnterAnimation } from 'angular-animations';

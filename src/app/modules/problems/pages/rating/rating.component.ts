@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CurrentProblemsRating, ProblemsRating } from '@problems/models/rating.models';
+import { ProblemsRating } from '@problems/models/rating.models';
 import { PageResult } from '@app/common/classes/page-result';
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { CoreCommonModule } from '@core/common.module';

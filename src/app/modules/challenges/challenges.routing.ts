@@ -1,4 +1,3 @@
-import { ChallengeResolver } from '@challenges/challenges.resolver';
 import { AuthGuard } from '@auth';
 import { Routes } from '@angular/router';
 

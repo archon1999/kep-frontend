@@ -15,13 +15,9 @@ import { ContestStatus } from '@contests/constants/contest-status';
 import { ContestProblem } from '@contests/models/contest-problem';
 import { Contest } from '@contests/models/contest';
 import { Contestant } from '@contests/models/contestant';
-import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
-import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
-import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { BaseTablePageComponent } from '@app/common';
 import { interval } from 'rxjs';
-import { KepDeltaComponent } from '@shared/components/kep-delta/kep-delta.component';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import {
   ContestStandingsTableComponent
@@ -41,11 +37,7 @@ import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.m
     ContestStandingsCountdownComponent,
     NgbTooltipModule,
     ContestantViewModule,
-    KepTableComponent,
     ContestClassesPipe,
-    ResourceByIdPipe,
-    EmptyResultComponent,
-    KepDeltaComponent,
     KepPaginationComponent,
     ContestStandingsTableComponent,
     NgSelectModule,

@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { Blog } from '../../blog.interfaces';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { RouterLink } from '@angular/router';
-import { NgStyle } from '@angular/common';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -15,7 +14,6 @@ import { TranslatePipe } from '@ngx-translate/core';
   imports: [
     KepCardComponent,
     RouterLink,
-    NgStyle,
     UserPopoverModule,
     CoreDirectivesModule,
     TranslatePipe

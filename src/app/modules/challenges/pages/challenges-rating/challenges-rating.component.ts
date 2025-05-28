@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { CoreCommonModule } from '@core/common.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
-import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
 import {
@@ -24,7 +23,6 @@ import { ChallengesRating } from '@challenges/interfaces/challenges-rating';
     ChallengesUserViewComponent,
     KepPaginationComponent,
     ContentHeaderModule,
-    SpinnerComponent,
     KepTableComponent,
     TableOrderingModule,
   ]

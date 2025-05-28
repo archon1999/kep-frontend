@@ -8,7 +8,6 @@ import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { map } from 'rxjs/operators';
 import { CoreCommonModule } from '@core/common.module';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
-import { KepTableComponent } from "@shared/components/kep-table/kep-table.component";
 
 @Component({
   selector: 'period-ratings',
@@ -17,7 +16,7 @@ import { KepTableComponent } from "@shared/components/kep-table/kep-table.compon
     CoreCommonModule,
     ContestantViewModule,
     KepCardComponent,
-    KepTableComponent,
+
   ],
   templateUrl: './period-ratings.component.html',
   styleUrl: './period-ratings.component.scss'

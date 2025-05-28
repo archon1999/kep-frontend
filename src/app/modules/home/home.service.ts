@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '@core/data-access/api.service';
-import { ContestsService } from '@contests/contests.service';
 
 @Injectable({
   providedIn: 'root'

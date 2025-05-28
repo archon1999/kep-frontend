@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 import { PageResult } from '@app/common/classes/page-result';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { BlogPostCardComponent } from '@app/modules/blog/components/blog-post-card/blog-post-card.component';
-import { NgbPagination, NgbPaginationNext, NgbPaginationPrevious } from '@ng-bootstrap/ng-bootstrap';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { FormsModule } from '@angular/forms';
 import { NgOptionComponent, NgSelectComponent } from '@ng-select/ng-select';
@@ -29,15 +28,12 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
   imports: [
     ContentHeaderModule,
     BlogPostCardComponent,
-    NgbPagination,
     CoreDirectivesModule,
     FormsModule,
     NgSelectComponent,
     NgOptionComponent,
     TranslatePipe,
     NgClass,
-    NgbPaginationPrevious,
-    NgbPaginationNext,
     KepPaginationComponent,
     KepCardComponent
   ]

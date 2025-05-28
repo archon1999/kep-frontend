@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { WorkExperiencesComponent } from '@app/modules/account-settings/career/work-experiences/work-experiences.component';
+import {
+  WorkExperiencesComponent
+} from '@app/modules/account-settings/career/work-experiences/work-experiences.component';
 import { EducationsComponent } from '@app/modules/account-settings/career/educations/educations.component';
 
 @Component({

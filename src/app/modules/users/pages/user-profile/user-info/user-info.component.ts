@@ -3,9 +3,6 @@ import { CommonModule } from '@angular/common';
 import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { UserAchievementsComponent } from '@users/pages/user-profile/user-achievements/user-achievements.component';
-import { UserBlogComponent } from '@users/pages/user-profile/user-blog/user-blog.component';
-import { UserRatingsComponent } from '@users/pages/user-profile/user-ratings/user-ratings.component';
 import { UserEducation, UserInfo, UserSocial, UserWorkExperience } from '@users/users.models';
 import { ActivatedRoute } from '@angular/router';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
@@ -19,9 +16,6 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
     NgbProgressbarModule,
     NgxCountriesModule,
     TranslateModule,
-    UserAchievementsComponent,
-    UserBlogComponent,
-    UserRatingsComponent,
     KepCardComponent,
     CoreDirectivesModule,
   ],

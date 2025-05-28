@@ -1,7 +1,6 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, Input, OnInit, Renderer2, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CoreCommonModule } from '@core/common.module';
-import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 import { ContestStatus } from '@contests/constants/contest-status';
 import { Contest } from '@contests/models/contest';
 import { ScriptService } from '@shared/services/script.service';
@@ -16,7 +15,7 @@ const SCRIPT_PATH = 'assets/js/contest-countdown.js';
   templateUrl: './contest-standings-countdown.component.html',
   styleUrls: ['./contest-standings-countdown.component.scss'],
   standalone: true,
-  imports: [CoreCommonModule, CountdownComponent],
+  imports: [CoreCommonModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ContestStandingsCountdownComponent implements OnInit {

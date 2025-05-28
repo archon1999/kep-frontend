@@ -8,15 +8,9 @@ import {
   ArenaPlayerStatisticsComponent
 } from '../../components/arena-player-statistics/arena-player-statistics.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
-import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 import { ArenaChallengesComponent } from '@arena/pages/arena-tournament/arena-challenges/arena-challenges.component';
 import { interval } from 'rxjs';
-import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { takeUntil } from 'rxjs/operators';
-import {
-  ChallengesUserViewComponent
-} from '@challenges/components/challenges-user-view/challenges-user-view.component';
 import { ArenaCardComponent } from '@arena/components/arena-card/arena-card.component';
 import { ArenaChaptersComponent } from '@arena/pages/arena-tournament/arena-chapters/arena-chapters.component';
 import { ArenaCountdownComponent } from '@arena/pages/arena-tournament/arena-countdown/arena-countdown.component';
@@ -43,11 +37,7 @@ import { ArenaInfoComponent } from '@arena/pages/arena-tournament/arena-info/are
     ArenaPlayerStatisticsComponent,
     NgxSkeletonLoaderModule,
     NgbAlertModule,
-    KepPaginationComponent,
-    CountdownComponent,
-    ChallengesUserViewComponent,
     ArenaChallengesComponent,
-    KepTableComponent,
     ArenaCardComponent,
     ArenaChaptersComponent,
     ArenaCountdownComponent,

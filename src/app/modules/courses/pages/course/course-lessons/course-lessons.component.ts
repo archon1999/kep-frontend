@@ -5,7 +5,6 @@ import { Course, CourseLesson } from '@courses/interfaces';
 import { BaseLoadComponent } from '@app/common';
 import { Observable } from 'rxjs';
 import { CoursesService } from '@courses/courses.service';
-import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { LessonCardComponent } from '@courses/pages/course/course-lessons/lesson-card/lesson-card.component';
 
 @Component({
@@ -13,7 +12,7 @@ import { LessonCardComponent } from '@courses/pages/course/course-lessons/lesson
   templateUrl: './course-lessons.component.html',
   styleUrls: ['./course-lessons.component.scss'],
   standalone: true,
-  imports: [CoreCommonModule, SwiperComponent, LessonCardComponent]
+  imports: [CoreCommonModule, LessonCardComponent]
 })
 export class CourseLessonsComponent extends BaseLoadComponent<CourseLesson[]> implements OnInit {
   @Input() course: Course;

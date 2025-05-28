@@ -8,7 +8,6 @@ import { PageResult } from '@app/common/classes/page-result';
 import { ContestCardComponent } from '@app/modules/home/contests-section/contest-card/contest-card.component';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
-import { NgForOf } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { TranslateModule } from '@ngx-translate/core';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
@@ -19,7 +18,6 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
   imports: [
     ContestCardComponent,
     SwiperComponent,
-    NgForOf,
     NgxSkeletonLoaderModule,
     TranslateModule,
     KepIconComponent

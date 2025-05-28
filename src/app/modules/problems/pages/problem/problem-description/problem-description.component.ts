@@ -14,7 +14,6 @@ import { ProblemBodyComponent } from '@problems/components/problem-body/problem-
 import { AttemptLangs } from "@problems/constants";
 import { findAvailableLang } from "@problems/utils";
 import { LanguageService } from "@problems/services/language.service";
-import { ProblemDifficultyColorPipe } from "@problems/pipes/problem-difficulty-color.pipe";
 import { UserPopoverModule } from "@shared/components/user-popover/user-popover.module";
 
 @Component({
@@ -31,7 +30,6 @@ import { UserPopoverModule } from "@shared/components/user-popover/user-popover.
     ClipboardModule,
     MonacoEditorComponent,
     KepcoinSpendSwalModule,
-    ProblemDifficultyColorPipe,
     UserPopoverModule,
   ]
 })

@@ -6,12 +6,11 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ChristmasTreeComponent } from '@shared/components/christmas-tree/christmas-tree.component';
-import { LanguagesComponent } from "@core/components/languages/languages.component";
 
 @Component({
   selector: 'navbar',
   standalone: true,
-  imports: [CoreCommonModule, NgbDropdownModule, ChristmasTreeComponent, LanguagesComponent],
+  imports: [CoreCommonModule, NgbDropdownModule, ChristmasTreeComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })

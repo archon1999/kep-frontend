@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Tournament } from '../tournaments.models';
 import { CoreCommonModule } from '@core/common.module';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";

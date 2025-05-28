@@ -1,7 +1,5 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
-import { Router } from '@angular/router';
-import { Resources } from '@app/resources';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { CoreCommonModule } from '@core/common.module';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';

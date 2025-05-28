@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { Problem } from '@problems/models/problems.models';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';

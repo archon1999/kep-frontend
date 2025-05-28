@@ -1,11 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import {
-  SectionStudyPlansComponent
-} from '@problems/pages/problems/sections/section-study-plans/section-study-plans.component';
-import { SectionTopicsComponent } from '@problems/pages/problems/sections/section-topics/section-topics.component';
 import { SectionProblemsFilterComponent } from './sections/section-problems-filter/section-problems-filter.component';
-import { SectionProblemsTableComponent } from './sections/section-problems-table/section-problems-table.component';
-import { SectionInfoComponent } from '@problems/pages/problems/sections/section-info/section-info.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { BasePageComponent } from '@app/common/classes/base-page.component';
@@ -31,11 +25,7 @@ import { ContentHeaderModule } from "@shared/ui/components/content-header/conten
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   imports: [
-    SectionStudyPlansComponent,
-    SectionTopicsComponent,
     SectionProblemsFilterComponent,
-    SectionProblemsTableComponent,
-    SectionInfoComponent,
     SpinnerComponent,
     NgSelectModule,
     SectionHeaderComponent,

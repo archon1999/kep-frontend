@@ -3,8 +3,6 @@ import { debounceTime, takeUntil, tap } from 'rxjs/operators';
 import { Problem, ProblemsFilter } from '@problems/models/problems.models';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ProblemsFilterService } from '@problems/services/problems-filter.service';
-import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
 import { ProblemDifficultyColorPipe } from '@problems/pipes/problem-difficulty-color.pipe';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
@@ -28,8 +26,6 @@ import { TranslatePipe } from "@ngx-translate/core";
   animations: [fadeInOnEnterAnimation({duration: 1000})],
   standalone: true,
   imports: [
-    SpinnerComponent,
-    EmptyResultComponent,
     TableOrderingModule,
     ProblemDifficultyColorPipe,
     KepPaginationComponent,

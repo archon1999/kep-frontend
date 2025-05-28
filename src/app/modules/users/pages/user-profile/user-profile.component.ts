@@ -4,15 +4,11 @@ import { BaseComponent } from '@app/common/classes/base.component';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbCollapseModule, NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
-import { UserBlogComponent } from '@users/pages/user-profile/user-blog/user-blog.component';
-import { UserRatingsComponent } from '@users/pages/user-profile/user-ratings/user-ratings.component';
-import { UserAchievementsComponent } from '@users/pages/user-profile/user-achievements/user-achievements.component';
 import { UserInfoComponent } from '@users/pages/user-profile/user-info/user-info.component';
 import { UserSkillsComponent } from '@users/pages/user-profile/user-skills/user-skills.component';
 import { KepBadgeComponent } from '@shared/components/kep-badge/kep-badge.component';
 import { UserOnlineStatusComponent } from '@shared/components/user-online-status/user-online-status.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { UserCompetitionPrizesComponent } from './user-competition-prizes/user-competition-prizes.component';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { ResourceByUsernamePipe } from '@shared/pipes/resource-by-username.pipe';
 
@@ -26,17 +22,13 @@ import { ResourceByUsernamePipe } from '@shared/pipes/resource-by-username.pipe'
     CoreCommonModule,
     NgbTooltipModule,
     NgxCountriesModule,
-    UserBlogComponent,
-    UserRatingsComponent,
     NgbProgressbarModule,
-    UserAchievementsComponent,
     NgbCollapseModule,
     UserInfoComponent,
     UserSkillsComponent,
     KepBadgeComponent,
     UserOnlineStatusComponent,
     SpinnerComponent,
-    UserCompetitionPrizesComponent,
     KepCardComponent,
     ResourceByUsernamePipe,
   ]

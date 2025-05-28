@@ -6,7 +6,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { checkHoriMenu } from './sidebar';
 import { CoreCommonModule } from '@core/common.module';
 import { SimplebarAngularModule } from 'simplebar-angular';
-import { DropdownPositionDirective } from '@core/directives/dropdown-position.directive';
+import { DropdownPositionDirective } from '@core/components/sidebar/directives/dropdown-position.directive';
 import { ApiService } from '@core/data-access/api.service';
 
 @Component({

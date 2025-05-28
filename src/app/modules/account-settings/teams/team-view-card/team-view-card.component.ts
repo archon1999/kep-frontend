@@ -1,8 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
-import { NgIf } from '@angular/common';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { Team } from '@users/users.models';
 
@@ -11,9 +9,7 @@ import { Team } from '@users/users.models';
   standalone: true,
   imports: [
     ClipboardModule,
-    NgIf,
     NgbTooltipModule,
-    ResourceByIdPipe,
     UserPopoverModule
   ],
   templateUrl: './team-view-card.component.html',
