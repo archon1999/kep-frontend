@@ -1,21 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Chapter } from '@app/modules/testing/domain';
 import { fadeInOnEnterAnimation } from 'angular-animations';
-import { Chapter } from '../../testing.models';
 
 @Component({
   selector: 'chapter-card',
   templateUrl: './chapter-card.component.html',
   styleUrls: ['./chapter-card.component.scss'],
   animations: [fadeInOnEnterAnimation({duration: 3000})],
-  standalone: false,
+  imports: [],
+  standalone: true,
 })
-export class ChapterCardComponent implements OnInit {
-
+export class ChapterCardComponent {
   @Input() chapter: Chapter;
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

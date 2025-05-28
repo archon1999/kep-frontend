@@ -45,7 +45,7 @@ export const routes: Routes = [
       },
       {
         path: 'practice/tests',
-        loadChildren: () => import('./modules/testing/testing.module').then(m => m.TestingModule)
+        loadChildren: () => import('@testing/testing.routes')
       },
       {
         path: 'practice/projects',

@@ -1,0 +1,57 @@
+@import 'styles/kep-imports';
+
+.cta-card {
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-end;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .chapter-logo {
+    max-height: 96px;
+  }
+
+  .interval-block {
+    font-size: .9rem;
+    line-height: 1.2;
+  }
+}
+
+.difficulty i {
+  font-size: 1.25rem;
+  margin-right: .15rem;
+}
+
+.stats-row {
+  .stat-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+  }
+
+  .stat-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: .25rem;
+  }
+}
+
+.last-results-card {
+  .avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: $primary-01;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $primary;
+    font-size: 1.1rem;
+  }
+
+  .last-results-list {
+    max-height: 280px;
+    overflow-y: auto;
+  }
+}

@@ -6,7 +6,7 @@ import { ApiService } from '@core/data-access/api.service';
 })
 export class TestingApiService {
 
-  constructor(public api: ApiService) { }
+  constructor(protected readonly api: ApiService) {}
 
   getChapters() {
     return this.api.get('chapters');

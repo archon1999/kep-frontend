@@ -1,0 +1,131 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    @if (isLoading) {
+      <kep-card [cardHeight]="'400px'">
+        <spinner/>
+      </kep-card>
+    } @else {
+      <div class="row">
+        <aside class="col-lg-3 cta-col order-lg-1 order-2">
+          <kep-card [cardHeight]="'400px'" class="cta-card shadow-sm text-center">
+            <div class="card-body">
+              <img [src]="test.chapter.icon" alt="" class="chapter-logo mb-4">
+
+              <div class="test-pass-button">
+                @if (canStart) {
+                  <div>
+                    <button (click)="startTest()" class="btn btn-primary w-100 rounded">
+                      {{ 'Start' | translate }}
+                    </button>
+                  </div>
+                } @else {
+                  <kepcoin-spend-swal
+                    [value]="1"
+                    [purchaseUrl]="'tests/' + test.id + '/purchase/'"
+                    [customContent]="true"
+                    (success)="canStart=true;"
+                  >
+                    <button class="btn btn-primary btn-wave w-100 rounded">
+                      {{ 'PassTest' | translate }}
+                    </button>
+                  </kepcoin-spend-swal>
+                }
+              </div>
+
+              <div class="test-pass-info mt-4 justify-content-center">
+                <div class="mb-2">
+                  {{ 'BestResult' | translate }}
+                  <span class="badge bg-primary-transparent">
+                    {{ test.userBestResult }}/{{ test.questionsCount }}
+                  </span>
+                </div>
+
+                <div class="mb-1">
+                  {{ 'LastPass' | translate }}
+                  <span class="badge bg-primary-transparent">
+                    {{ test.lastPassed || 'NotPassed' | translate }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </kep-card>
+        </aside>
+
+        <section class="col-lg-6 order-lg-2 order-1">
+          <kep-card>
+            <div class="card-header d-block">
+              <div class="card-title fw-semibold fs-3">
+                {{ test.title }}
+              </div>
+              <h6 class="text-muted mt-2">{{ test.description }}</h6>
+            </div>
+            <div class="card-body">
+              <div class="difficulty mb-4">
+                <i
+                  *ngFor="let star of [1, 2, 3]"
+                  [ngClass]="star <= test.difficulty ? 'bi-star-fill text-warning' : 'bi-star text-muted'"
+                  class="bi"></i>
+              </div>
+
+              <div class="row text-center gy-4 stats-row">
+                @for (metric of metrics; track $index) {
+                  <div class="col-6 col-md-3">
+                    <i class="bi bi-{{ metric.icon }} stat-icon"></i>
+                    <div class="stat-value text-primary">{{ metric.value }}</div>
+                    <small class="text-muted d-block">{{ metric.label | translate }}</small>
+                  </div>
+                }
+              </div>
+
+              <h4 class="mt-5 mb-3">{{ 'Tags' | translate }}</h4>
+              <ul class="list-unstyled topics-list">
+                @for (tag of test.tags; track tag) {
+                  <li class="mb-2">
+                    <i class="bi bi-dot text-primary me-1"></i>{{ tag.name }}
+                  </li>
+                }
+              </ul>
+            </div>
+          </kep-card>
+        </section>
+
+        <aside class="col-lg-3 order-lg-3 order-3">
+
+          <kep-card class="last-results-card shadow-sm">
+            <div class="card-body">
+
+              <h5 class="mb-1">{{ 'TestPassed' | translate }} {{ test.passesCount }}</h5>
+              <p class="small text-muted mb-4">{{ 'LastPassed' | translate }}:</p>
+
+              <ul class="list-unstyled last-results-list">
+                @for (result of lastResults; track result) {
+                  <li class="d-flex align-items-start mb-3">
+                    <div class="avatar-placeholder flex-shrink-0 me-3">
+                      <i class="bi bi-person-fill"></i>
+                    </div>
+
+                    <div class="flex-grow-1">
+                      <user-popover [username]="result.username" [customContent]="true">
+                        <strong class="d-block lh-1">{{ result.username }}</strong>
+                      </user-popover>
+
+                      <div class="small text-muted">{{ result.finished }}</div>
+                    </div>
+
+                    <div class="ms-3 text-success fw-semibold">
+                      {{ result.result }}/{{ test.questionsCount }}
+                    </div>
+                  </li>
+                }
+              </ul>
+
+            </div>
+          </kep-card>
+        </aside>
+
+      </div>
+    }
+  </div>
+</div>

@@ -95,7 +95,7 @@ html[data-theme-mode="light"] {
     background-color: white !important;
   }
 
-  .code-editor-sidebar .btn-toggle {
+  .code-editor-sidebar .btn-toggle, .breadcrumb-item + .breadcrumb-item::before {
     color: black !important;
   }
 
@@ -114,12 +114,20 @@ html[data-theme-mode="light"] {
     background: $primary;
   }
 
-  .offcanvas, .canvas-footer, .nav-link.active, .modal-content, .custom-btn-icons {
+  .offcanvas, .canvas-footer, .nav-link.active, .modal-content, .custom-btn-icons, .swal2-container .swal2-popup {
     background: white !important;
   }
 
   .tooltip-inner {
     background-color: #eaeaea !important;
+  }
+
+  .swal2-container .swal2-styled.swal2-cancel {
+    color: white;
+  }
+
+  .swal2-container .swal2-html-container {
+    color: black;
   }
 
   .ng-option-label, .apexcharts-tooltip-text {

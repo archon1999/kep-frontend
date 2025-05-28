@@ -231,3 +231,12 @@
   $color: mix(black, $primary, 30),
   $dark-color: mix(black, $primary, 30),
 );
+
+// UI/UX
+@include define-chapter-colors(
+  $id: 25,
+  $gradient-color: linear-gradient(to right, mix(black, $primary, 50), mix(black, $primary, 30)),
+  $gradient-dark-color: linear-gradient(to right, mix(black, $primary, 50), mix(black, $primary, 30)),
+  $color: mix(black, $primary, 30),
+  $dark-color: mix(black, $primary, 30),
+);

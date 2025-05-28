@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NewChallengeButtonComponent } from '@challenges/components/new-challenge-button/new-challenge-button.component';
-import { Chapter } from '@app/modules/testing/testing.models';
 import { ChallengesApiService } from '@challenges/services';
 import { CoreCommonModule } from '@core/common.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
@@ -10,6 +9,7 @@ import { Router } from '@angular/router';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ChallengeCall, NewChallengeCall } from '@challenges/interfaces';
 import { NgxSliderModule, Options } from '@angular-slider/ngx-slider';
+import { Chapter } from "@testing/domain";
 
 
 @Component({

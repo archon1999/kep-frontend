@@ -1,56 +1,77 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TitleService } from '@shared/services/title.service';
-import { TestingApiService } from '../../testing-api.service';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { TestingApiService } from '@testing/data-access';
+import { Test } from '@testing/domain';
+import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import Swal from 'sweetalert2';
 import { fadeInLeftAnimation, fadeInRightAnimation, fadeInUpAnimation } from 'angular-animations';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { randomShuffle } from '@shared/utils';
-import { DragulaService } from 'ng2-dragula';
+import { DragulaModule, DragulaService } from 'ng2-dragula';
 import { randomChoice } from '@shared/utils/random';
+import { CommonModule } from '@angular/common';
+import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
+import { CorePipesModule } from '@shared/pipes/pipes.module';
+import { CoreDirectivesModule } from '@shared/directives/directives.module';
+import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule } from '@ngx-translate/core';
+import { FormsModule } from '@angular/forms';
+import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
+import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
+import { SweetAlertModule } from '@shared/third-part-modules/sweet-alert/sweet-alert.module';
+import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
+import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
+import { KepcoinSpendSwalModule } from "@app/modules/kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module";
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { SpinnerComponent } from "@shared/components/spinner/spinner.component";
 
 @Component({
-  selector: 'app-test-pass',
-  templateUrl: './test-pass.component.html',
-  styleUrls: ['./test-pass.component.scss'],
+  selector: 'app-test-detail-pass',
+  templateUrl: './test-pass.page.html',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    ContentHeaderModule,
+    CorePipesModule,
+    CoreDirectivesModule,
+    UserPopoverModule,
+    KepcoinSpendSwalModule,
+    NgbTooltipModule,
+    TranslateModule,
+    FormsModule,
+    CodeEditorModule,
+    MathjaxModule,
+    SweetAlertModule,
+    MonacoEditorComponent,
+    DragulaModule,
+    CountdownComponent,
+    KepCardComponent,
+    SpinnerComponent
+  ],
+  styleUrls: ['./test-pass.page.scss'],
   animations: [
     fadeInLeftAnimation({duration: 1500}),
     fadeInRightAnimation({duration: 1000}),
     fadeInUpAnimation({duration: 1000}),
   ],
-  standalone: false,
 })
-export class TestPassComponent implements OnInit, OnDestroy {
+export class TestPassPage extends BaseLoadComponent<any> implements OnInit, OnDestroy {
   public startAnimationState = false;
-
   public testPass: any;
-  public test: any;
+  public test: Test;
   public question: any;
   public questions = [];
-
   public selectedOption: number;
-
   public leftTime = 0;
   public conformityGroupOne: Array<string>;
   public conformityGroupTwo: Array<string>;
   public orderingList: Array<string>;
   public classificationGroups: Array<any>;
 
-  public editorOptions: any = {
-    theme: 'vs-dark',
-    language: 'python',
-  };
-
-  private _unsubscribeAll = new Subject();
-
-  constructor(
-    public route: ActivatedRoute,
-    public service: TestingApiService,
-    public dragulaService: DragulaService,
-    public titleService: TitleService,
-    public router: Router,
-  ) { }
+  protected testingApiService = inject(TestingApiService);
+  protected dragulaService = inject(DragulaService);
 
   ngOnInit(): void {
     this.dragulaService.createGroup('handle-list', {
@@ -59,17 +80,23 @@ export class TestPassComponent implements OnInit, OnDestroy {
       }
     });
 
-    setTimeout(() => this.startAnimationState = true, 0);
-    this.route.data.subscribe(({testPass}) => {
-      this.testPass = testPass;
-      this.titleService.updateTitle(this.route, {testTitle: testPass.test.title});
-      this.test = testPass.test;
-      const duration = this.test.duration.split(':');
-      const time = +duration[0] * 60 * 60 + +duration[1] * 60 + +duration[2];
-      this.leftTime = time * 1000 - (Date.now() - new Date(testPass.started).valueOf());
-      this.questions = this.test.questions;
-      this.changeQuestion(0);
-    });
+    super.ngOnInit();
+  }
+
+  getData(): Observable<any> {
+    const testPassId = this.route.snapshot.params['testPassId'];
+    return this.testingApiService.getTestPass(testPassId);
+  }
+
+  afterLoadData(testPass: any) {
+    this.testPass = testPass;
+    this.titleService.updateTitle(this.route, {testTitle: testPass.test.title});
+    this.test = testPass.test;
+    const duration = this.test.duration.split(':');
+    const time = +duration[0] * 60 * 60 + +duration[1] * 60 + +duration[2];
+    this.leftTime = time * 1000 - (Date.now() - new Date(testPass.started).valueOf());
+    this.questions = this.test.questions;
+    this.changeQuestion(0);
   }
 
   changeQuestion(index: number) {
@@ -145,7 +172,7 @@ export class TestPassComponent implements OnInit, OnDestroy {
     }
 
     if (!isEmpty) {
-      this.service.answerSubmit(this.testPass.id, this.question.number, answer).subscribe(
+      this.testingApiService.answerSubmit(this.testPass.id, this.question.number, answer).subscribe(
         () => {
           question.answered = true;
         }
@@ -155,7 +182,7 @@ export class TestPassComponent implements OnInit, OnDestroy {
   }
 
   testPassFinish() {
-    this.service.testPassFinish(this.testPass.id).subscribe(
+    this.testingApiService.testPassFinish(this.testPass.id).subscribe(
       (data: any) => {
         if (data.success) {
           let result = data.result;
@@ -180,8 +207,6 @@ export class TestPassComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.dragulaService.destroy('handle-list');
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
+    super.ngOnDestroy();
   }
-
 }

@@ -1,4 +1,4 @@
-import { Chapter } from '@app/modules/testing/testing.models';
+import { Chapter } from "@testing/domain";
 
 export interface ChallengeCall {
   id: number;
