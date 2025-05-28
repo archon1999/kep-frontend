@@ -1,7 +1,7 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TestingApiService } from '@testing/data-access';
-import { Test } from '@testing/domain';
+import { Test, TestPass } from '@testing/domain';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import Swal from 'sweetalert2';
 import { fadeInLeftAnimation, fadeInRightAnimation, fadeInUpAnimation } from 'angular-animations';
@@ -57,9 +57,8 @@ import { SpinnerComponent } from "@shared/components/spinner/spinner.component";
     fadeInUpAnimation({duration: 1000}),
   ],
 })
-export class TestPassPage extends BaseLoadComponent<any> implements OnInit, OnDestroy {
-  public startAnimationState = false;
-  public testPass: any;
+export class TestPassPage extends BaseLoadComponent<TestPass> implements OnInit, OnDestroy {
+  public testPass: TestPass;
   public test: Test;
   public question: any;
   public questions = [];
@@ -83,12 +82,12 @@ export class TestPassPage extends BaseLoadComponent<any> implements OnInit, OnDe
     super.ngOnInit();
   }
 
-  getData(): Observable<any> {
+  getData(): Observable<TestPass> {
     const testPassId = this.route.snapshot.params['testPassId'];
     return this.testingApiService.getTestPass(testPassId);
   }
 
-  afterLoadData(testPass: any) {
+  afterLoadData(testPass: TestPass) {
     this.testPass = testPass;
     this.titleService.updateTitle(this.route, {testTitle: testPass.test.title});
     this.test = testPass.test;
