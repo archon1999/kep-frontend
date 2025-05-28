@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { AuthService, User } from '@auth';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -19,7 +19,7 @@ import { AppStateService } from '@core/services/app-state.service';
   template: '',
   standalone: true
 })
-export class BaseComponent {
+export class BaseComponent implements OnInit {
 
   public currentUser: User | null;
   // public coreConfig: CoreConfig;
@@ -89,6 +89,8 @@ export class BaseComponent {
         }
       );
   }
+
+  ngOnInit() {}
 
   beforeChangeCurrentUser(currentUser: User) {}
 
