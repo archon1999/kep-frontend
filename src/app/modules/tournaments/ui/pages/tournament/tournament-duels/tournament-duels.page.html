@@ -1,0 +1,39 @@
+<app-content-header [title]="tournament?.title"></app-content-header>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <kep-card>
+        <div class="duels-list">
+          <div class="stage" *ngFor="let stage of tournament?.stages">
+            <h4>{{ stage.title }}</h4>
+            <div class="duels">
+              <div class="duel-card" *ngFor="let duel of stage.duels">
+                <div class="duel-header">
+                  <span class="duel-number">#{{ duel.number }}</span>
+                  <span class="duel-status" *ngIf="duel.duel">
+                    {{ duel.duel.status }}
+                  </span>
+                </div>
+                <div class="duel-content" *ngIf="duel.duel">
+                  <div class="player" [class.winner]="duel.duel.winner === duel.duel.player1">
+                    {{ duel.duel.player1 }}
+                  </div>
+                  <div class="vs">VS</div>
+                  <div class="player" [class.winner]="duel.duel.winner === duel.duel.player2">
+                    {{ duel.duel.player2 }}
+                  </div>
+                </div>
+                <div class="duel-content empty" *ngIf="!duel.duel">
+                  <div class="player">TBD</div>
+                  <div class="vs">VS</div>
+                  <div class="player">TBD</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </kep-card>
+    </div>
+  </div>
+</div> 

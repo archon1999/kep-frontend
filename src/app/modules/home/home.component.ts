@@ -7,13 +7,13 @@ import { TopRatingSectionComponent } from './top-rating-section/top-rating-secti
 import { SystemSectionComponent } from './system-section/system-section.component';
 import { NewsSectionComponent } from './news-section/news-section.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { UsersChartCardComponent } from '@users/components/users-chart-card/users-chart-card.component';
 import { RanksSectionComponent } from '@app/modules/home/ranks-section/ranks-section.component';
 import { BasePageComponent } from "@app/common";
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { ContentHeaderModule } from "@shared/ui/components/content-header/content-header.module";
 import { TranslatePipe } from "@ngx-translate/core";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { UsersChartCardComponent } from "@users/ui/components/users-chart-card/users-chart-card.component";
 
 @Component({
   selector: 'app-home',

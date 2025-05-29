@@ -3,7 +3,7 @@ import { ChallengesStatisticsService } from '@challenges/services';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { Observable } from 'rxjs';
-import { User } from '@auth';
+import { AuthUser } from '@auth';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { CoreCommonModule } from '@core/common.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
@@ -32,7 +32,7 @@ export class SectionRatingChangesComponent extends BaseLoadComponent<Array<Chall
     super();
   }
 
-  afterChangeCurrentUser(currentUser: User) {
+  afterChangeCurrentUser(currentUser: AuthUser) {
     if (currentUser) {
       setTimeout(() => this.loadData());
     }

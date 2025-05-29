@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { UsersApiService } from '@users/users-api.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -19,7 +19,7 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
 })
 export class ProfileSectionComponent implements OnInit {
 
-  public user: User;
+  public user: AuthUser;
   public userRatings: any;
   public skeletonVisible = true;
 

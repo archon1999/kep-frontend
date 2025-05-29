@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { UserGeneralInfo } from '@users/users.models';
+import { UserGeneralInfo } from '@users/domain';
 import { AccountSettingsService } from '../account-settings.service';
 import { BaseLoadComponent } from '@app/common';
 import { Observable } from 'rxjs';

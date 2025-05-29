@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ApiService } from '@core/data-access/api.service';
-import { User } from '@auth';
+import { AuthUser } from '@auth';
 
 @Component({
   selector: 'user-avatar-popover',
@@ -13,7 +13,7 @@ export class UserAvatarPopoverComponent implements OnInit {
   @Input() username: string;
   @Input() avatar: string;
 
-  user: User;
+  user: AuthUser;
   userRatings: any;
 
   constructor(

@@ -3,7 +3,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { ContestsService } from '@contests/contests.service';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { ContestsRating } from '@contests/models';
-import { User } from '@auth';
+import { AuthUser } from '@auth';
 import { Observable } from 'rxjs';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
@@ -33,7 +33,7 @@ export class SectionHeaderComponent extends BaseLoadComponent<ContestsRating> {
     return this.service.getUserContestsRating(this.currentUser?.username);
   }
 
-  afterChangeCurrentUser(currentUser: User) {
+  afterChangeCurrentUser(currentUser: AuthUser) {
     if (currentUser) {
       this.loadData();
     }

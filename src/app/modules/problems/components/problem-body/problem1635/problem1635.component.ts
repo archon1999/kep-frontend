@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { CoreCommonModule } from '@core/common.module';
 
 @Component({
@@ -18,7 +18,7 @@ export class Problem1635Component {
     public authService: AuthService
   ) {
     this.authService.currentUser.subscribe(
-      (user: User) => {
+      (user: AuthUser) => {
         if (user?.username) {
           let s = 0;
           for (let i = 0; i < user.username.length; i++) {

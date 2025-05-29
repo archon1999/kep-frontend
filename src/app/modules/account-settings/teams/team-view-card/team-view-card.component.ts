@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
-import { Team } from '@users/users.models';
+import { Team } from "@users/domain";
 
 @Component({
   selector: 'team-view-card',

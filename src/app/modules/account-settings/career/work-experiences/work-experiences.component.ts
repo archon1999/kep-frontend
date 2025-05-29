@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { UserWorkExperience } from '@users/users.models';
+import { UserWorkExperience } from '@users/domain';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { BaseLoadComponent } from '@app/common';

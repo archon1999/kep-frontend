@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -8,20 +8,20 @@ import { takeUntil } from 'rxjs/operators';
   standalone: true
 })
 export class BaseUserComponent implements OnDestroy {
-  public currentUser: User;
+  public currentUser: AuthUser;
   protected authService = inject(AuthService);
   protected _unsubscribeAll = new Subject();
 
   constructor() {
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (user: User | null) => {
+      (user: AuthUser | null) => {
         this.currentUser = user;
         this.afterChangeCurrentUser(user);
       }
     );
   }
 
-  afterChangeCurrentUser(currentUser: User) {}
+  afterChangeCurrentUser(currentUser: AuthUser) {}
 
   ngOnDestroy() {
     this._unsubscribeAll.next(null);

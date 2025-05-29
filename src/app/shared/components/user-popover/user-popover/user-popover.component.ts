@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ApiService } from '@core/data-access/api.service';
-import { User } from '@users/users.models';
+import { User } from "@users/domain";
 
 @Component({
   selector: 'user-popover',

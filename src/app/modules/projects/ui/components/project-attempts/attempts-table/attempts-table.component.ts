@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgbAccordionModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CoreCommonModule } from '@core/common.module';
@@ -31,7 +31,7 @@ export class AttemptsTableComponent implements OnInit {
   @ViewChild('modal') public modalRef: TemplateRef<any>;
 
   public logs: ProjectAttemptLogTask;
-  public currentUser: User;
+  public currentUser: AuthUser;
 
   private _unsubscribeAll = new Subject();
 

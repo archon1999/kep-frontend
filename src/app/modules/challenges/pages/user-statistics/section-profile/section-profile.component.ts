@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ChallengesStatisticsService } from '@challenges/services';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { Observable } from 'rxjs';
 import { fadeInOnEnterAnimation } from 'angular-animations';
@@ -36,7 +36,7 @@ export class SectionProfileComponent extends BaseLoadComponent<ChallengesRating>
     return this.data;
   }
 
-  afterChangeCurrentUser(currentUser: User) {
+  afterChangeCurrentUser(currentUser: AuthUser) {
     if (currentUser) {
       setTimeout(() => this.loadData());
     }

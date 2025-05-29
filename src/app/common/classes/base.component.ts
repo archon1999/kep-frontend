@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, NavigationExtras, Params, Router } from '@angular/router';
@@ -21,7 +21,7 @@ import { AppStateService } from '@core/services/app-state.service';
 })
 export class BaseComponent implements OnInit {
 
-  public currentUser: User | null;
+  public currentUser: AuthUser | null;
   // public coreConfig: CoreConfig;
 
   public isDarkMode: boolean;
@@ -92,9 +92,9 @@ export class BaseComponent implements OnInit {
 
   ngOnInit() {}
 
-  beforeChangeCurrentUser(currentUser: User) {}
+  beforeChangeCurrentUser(currentUser: AuthUser) {}
 
-  afterChangeCurrentUser(currentUser: User) {}
+  afterChangeCurrentUser(currentUser: AuthUser) {}
 
   // afterChangeCoreConfig(coreConfig: CoreConfig) {}
 

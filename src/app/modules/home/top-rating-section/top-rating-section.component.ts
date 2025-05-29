@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
-import { User } from '@auth';
+import { AuthUser } from '@auth';
 import { HomeService } from '../home.service';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
@@ -16,7 +16,7 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
 })
 export class TopRatingSectionComponent implements OnInit {
 
-  public topUsers: Array<User> = [];
+  public topUsers: Array<AuthUser> = [];
   public topRatingSkeletonVisible = true;
 
   constructor(public service: HomeService) {}

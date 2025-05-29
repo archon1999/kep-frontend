@@ -2,7 +2,7 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { Observable } from 'rxjs';
-import { User } from '@auth';
+import { AuthUser } from '@auth';
 import { ChallengesStatisticsService } from '@challenges/services';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import {
@@ -44,7 +44,7 @@ export class SectionHeaderComponent extends BaseLoadComponent<ChallengesRating> 
     return this.data;
   }
 
-  afterChangeCurrentUser(currentUser: User) {
+  afterChangeCurrentUser(currentUser: AuthUser) {
     if (currentUser) {
       setTimeout(() => this.loadData());
     }

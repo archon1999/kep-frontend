@@ -1,16 +1,15 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { bounceAnimation, fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 
 import { WebsocketService } from 'app/shared/services/websocket';
-import { interval, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { PageResult } from '@app/common/classes/page-result';
 import { CoreCommonModule } from '@core/common.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgScrollbar } from 'ngx-scrollbar';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { NotificationsService } from "@core/components/header/notifications/notifications.service";
@@ -40,7 +39,6 @@ interface Notification {
     SpinnerComponent,
     KepIconComponent,
     NgbDropdownModule,
-    NgScrollbar,
     SimplebarAngularModule,
   ]
 })
@@ -50,7 +48,7 @@ export class HeaderNotificationsComponent implements OnInit, OnDestroy {
   public total: number;
   public pagesCount = 0;
 
-  public currentUser: User;
+  public currentUser: AuthUser;
   public isAll = false;
   public isLoading = true;
 
@@ -63,7 +61,8 @@ export class HeaderNotificationsComponent implements OnInit, OnDestroy {
     public notificationsService: NotificationsService,
     public wsService: WebsocketService,
     public authService: AuthService,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.updateNotifications();
@@ -72,7 +71,7 @@ export class HeaderNotificationsComponent implements OnInit, OnDestroy {
 
   init() {
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (user: User) => {
+      (user: AuthUser) => {
         if (user) {
           this.wsService.send('notification-add', user.username);
           this.wsService.on(`notification-${user.username}`).subscribe(

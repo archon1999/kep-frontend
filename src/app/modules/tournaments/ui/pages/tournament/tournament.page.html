@@ -1,0 +1,64 @@
+@if (isLoading) {
+  <kep-card [cardHeight]="'400px'">
+    <spinner/>
+  </kep-card>
+} @else {
+  <kep-card [@fadeInLeftOnEnter]>
+    <div class="card-header p-2 justify-content-start">
+      <div class="icon d-sm-block d-none">
+        <img alt="tournament-icon" height="90" src="assets/images/icons/tournament.png" width="90">
+      </div>
+      <div class="card-title">
+        <h3 class="text-white">
+          {{ tournament.title }}
+        </h3>
+        <p class="text-white">{{ tournament.startTime | localizedDate:'MMM dd, yyyy' }}</p>
+        @if (!tournament.isRegistered && canRegistration) {
+          <button (click)="registration()" class="btn btn-sm btn-primary">
+            <i data-feather="user"></i> {{ 'Registration' | translate }}
+          </button>
+        }
+        @if (tournament.isRegistered) {
+          <span class="badge bg-primary font-small-2">
+            <i class="text-dark-emphasis" data-feather="check-circle"></i>
+            {{ 'Registrated' | translate }}
+          </span>
+        }
+      </div>
+    </div>
+  </kep-card>
+
+  <ul
+    #navFilled="ngbNav"
+    (navChange)="tabChange($event)"
+    [(activeId)]="activeId"
+    [@fadeInLeftOnEnter]
+    class="nav-tabs nav-style-1 nav-fill"
+    ngbNav>
+    <li [ngbNavItem]="1" ngbNavItem>
+      <a ngbNavLink>{{ 'Info' | translate }}</a>
+      <ng-template ngbNavContent>
+        <tournament-info [tournament]="tournament"/>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="2" ngbNavItem>
+      <a ngbNavLink>{{ 'Duels' | translate }}</a>
+      <ng-template ngbNavContent>
+        <tournament-duels [tournament]="tournament"/>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="3" ngbNavItem>
+      <a ngbNavLink>{{ 'Results' | translate }}</a>
+      <ng-template ngbNavContent>
+        <tournament-bracket [tournament]="tournament"/>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="4" ngbNavItem>
+      <a ngbNavLink>{{ 'Schedule' | translate }}</a>
+      <ng-template ngbNavContent>
+        <tournament-schedule [tournament]="tournament"/>
+      </ng-template>
+    </li>
+  </ul>
+  <div [@fadeInUpOnEnter] [ngbNavOutlet]="navFilled" class="mt-2"></div>
+}

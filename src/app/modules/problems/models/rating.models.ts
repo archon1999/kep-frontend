@@ -1,4 +1,4 @@
-import { User } from '@users/users.models';
+import { User } from "@users/domain";
 
 export interface CurrentProblemsRating {
   username: string;

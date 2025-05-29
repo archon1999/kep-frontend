@@ -1,7 +1,7 @@
-import { User } from '@users/users.models';
 import { getEditorLang } from '../utils';
 import { AttemptLangs } from '../constants';
 import { ContestProblem } from '@contests/models/contest-problem';
+import { User } from "@users/domain";
 
 
 export class Attempt {

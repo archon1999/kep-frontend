@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Params } from '@angular/router';
 import { fadeInOnEnterAnimation } from 'angular-animations';
-import { User } from '@auth';
+import { AuthUser } from '@auth';
 import { Subject } from 'rxjs';
 import { Problem } from '@problems/models/problems.models';
 import { ProblemsApiService } from '../../services/problems-api.service';
@@ -91,7 +91,7 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
     }
   }
 
-  beforeChangeCurrentUser(currentUser: User) {}
+  beforeChangeCurrentUser(currentUser: AuthUser) {}
 
   getContentHeader() {
     return this.contentHeader = {

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '@core/data-access/api.service';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { asyncScheduler, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 import { HackAttempt } from '@problems/models/hack-attempt.models';
@@ -45,7 +45,7 @@ export class HackAttemptsComponent implements OnInit, OnDestroy {
   public hackAttempts: Array<HackAttempt> = [];
 
   public myAttempts = false;
-  public currentUser: User;
+  public currentUser: AuthUser;
 
   protected _reloader = new Subject();
   private _unsubscribeAll = new Subject();

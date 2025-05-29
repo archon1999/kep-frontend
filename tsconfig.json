@@ -34,6 +34,7 @@
       "@challenges/*": ["app/modules/challenges/*"],
       "@arena/*": ["app/modules/arena/*"],
       "@testing/*": ["app/modules/testing/*"],
+      "@tournaments/*": ["app/modules/tournaments/*"],
       "@courses/*": ["app/modules/courses/*"],
       "@users/*": ["app/modules/users/*"],
       "@auth": ["app/modules/auth"],

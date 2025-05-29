@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ChallengesStatisticsService } from '@challenges/services';
 import { Challenge } from '@challenges/models/challenges';
-import { User } from '@auth';
+import { AuthUser } from '@auth';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { Observable } from 'rxjs';
 import { PageResult } from '@app/common/classes/page-result';
@@ -36,7 +36,7 @@ export class SectionLastChallengesComponent extends BaseTablePageComponent<Chall
     return this.pageResult?.data;
   }
 
-  afterChangeCurrentUser(currentUser: User) {
+  afterChangeCurrentUser(currentUser: AuthUser) {
     if (currentUser) {
       setTimeout(() => this.reloadPage());
     }

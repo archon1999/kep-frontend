@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Blog, BlogPostComment } from '../../../blog.interfaces';
@@ -35,7 +35,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
   public comments: Array<BlogPostComment> = [];
   public comment = '';
 
-  public currentUser: User;
+  public currentUser: AuthUser;
   private _unsubscribeAll = new Subject();
 
   constructor(

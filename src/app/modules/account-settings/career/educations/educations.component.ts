@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { UserEducation } from '@users/users.models';
+import { UserEducation } from '@users/domain';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';

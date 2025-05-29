@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbAccordionModule, NgbModal, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -45,7 +45,7 @@ export class ProblemDescriptionComponent implements OnInit, OnDestroy {
   public topics: Array<Topic> = [];
   public selectedTopic: number;
 
-  public currentUser: User;
+  public currentUser: AuthUser;
   private _unsubscribeAll = new Subject();
 
   public selectedLang: string;
@@ -71,7 +71,7 @@ export class ProblemDescriptionComponent implements OnInit, OnDestroy {
     );
 
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (user: User | null) => {
+      (user: AuthUser | null) => {
         this.currentUser = user;
         if (this.currentUser?.isSuperuser) {
           this.service.getTopics().subscribe((topics: Array<Topic>) => this.topics = topics);

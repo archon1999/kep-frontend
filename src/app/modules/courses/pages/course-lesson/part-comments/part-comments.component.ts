@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { CoursesService } from '@courses/courses.service';
 import { CoreCommonModule } from '@core/common.module';
 import { CourseLessonPartComment } from '@courses/interfaces';
@@ -24,7 +24,7 @@ export class PartCommentsComponent implements OnInit {
 
   comment = '';
 
-  currentUser: User = this.authService.currentUserValue;
+  currentUser: AuthUser = this.authService.currentUserValue;
 
   constructor(
     public service: CoursesService,

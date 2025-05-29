@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@ang
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
 import { ApiService } from '@core/data-access/api.service';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { WebsocketService } from 'app/shared/services/websocket';
 import { ToastrService } from 'ngx-toastr';
 import { ProblemsApiService } from '../../services/problems-api.service';
@@ -20,7 +20,7 @@ const HACK_ATTEMPT_DELETE_EVENT = 'hack-attempt-delete';
   standalone: false,
 })
 export class HackAttemptsTableComponent implements OnInit, OnDestroy {
-  public currentUser: User | null;
+  public currentUser: AuthUser | null;
   public successSoundName = this.soundsService.getSuccessSound();
   @ViewChild('successAudio') successAudio: ElementRef<any>;
   @ViewChild('wrongAudio') wrongAudio: ElementRef<any>;

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
 import { PageResult } from '@app/common/classes/page-result';
 import { ContestsService } from '@contests/contests.service';
-import { User } from '@auth';
+import { AuthUser } from '@auth';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { KepcoinSpendSwalModule } from '@app/modules/kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
@@ -46,7 +46,7 @@ export class UserContestsComponent extends BaseTablePageComponent<Contest> imple
     this.loadContentHeader();
   }
 
-  afterChangeCurrentUser(currentUser: User) {
+  afterChangeCurrentUser(currentUser: AuthUser) {
     this.reloadPage();
   }
 

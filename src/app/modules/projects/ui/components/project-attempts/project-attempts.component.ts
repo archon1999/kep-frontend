@@ -3,7 +3,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { BaseTablePageComponent } from '@app/common';
 import { Observable } from 'rxjs';
 import { PageResult } from '@app/common/classes/page-result';
-import { User } from '@auth';
+import { AuthUser } from '@auth';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { Project, ProjectAttempt } from "@projects/domain/entities";
 import { ProjectAttemptsRepository } from "@projects/data-access/repositories/project-attempts.repository";
@@ -36,7 +36,7 @@ export class ProjectAttemptsComponent extends BaseTablePageComponent<ProjectAtte
     return this.pageResult?.data;
   }
 
-  afterChangeCurrentUser(currentUser: User) {
+  afterChangeCurrentUser(currentUser: AuthUser) {
     this.myAttempts = this.isAuthenticated;
   }
 

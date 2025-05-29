@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { fadeInOnEnterAnimation } from 'angular-animations';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { HomeService } from '../home.service';
@@ -19,7 +19,7 @@ export class ActivitySectionComponent implements OnInit, OnDestroy {
 
   public fromNow = 0;
 
-  public currentUser: User;
+  public currentUser: AuthUser;
 
   public statistics = {
     attempts: 0,

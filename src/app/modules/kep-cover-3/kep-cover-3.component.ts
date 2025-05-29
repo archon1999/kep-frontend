@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { BaseLoadComponent } from '@app/common';
-import { User } from '@users/users.models';
 import { Observable } from 'rxjs';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
@@ -8,6 +7,7 @@ import { ContentHeaderModule } from '@shared/ui/components/content-header/conten
 import { CoreCommonModule } from '@core/common.module';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { User } from "@users/domain";
 
 interface KVUser extends User {
   likesCount: number;

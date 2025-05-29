@@ -2,7 +2,7 @@ import { Component, Input, OnInit, TemplateRef, ViewChild, ViewEncapsulation } f
 import { NgbModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ApiService } from '@core/data-access/api.service';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { ContestsService } from 'app/modules/contests/contests.service';
 import { Router } from '@angular/router';
 import { CoreCommonModule } from '@core/common.module';
@@ -17,13 +17,13 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';
 import { Contest } from '@contests/models/contest';
 import { ContestStatus } from '@contests/constants';
-import { Team } from '@users/users.models';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { TeamViewCardComponent } from '@app/modules/account-settings/teams/team-view-card/team-view-card.component';
 import { getResourceById, Resources } from '@app/resources';
 import { NewFeatureDirective } from '@shared/directives/new-feature.directive';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { Team } from "@users/domain";
 
 @Component({
   selector: 'contest-card',
@@ -56,7 +56,7 @@ export class ContestCardComponent implements OnInit {
   public teamId: number;
   public routerLink: string | Array<string | number>;
 
-  public currentUser: User | null;
+  public currentUser: AuthUser | null;
 
   constructor(
     public api: ApiService,

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ApiService } from '@core/data-access/api.service';
-import { User } from '@auth';
+import { AuthUser } from '@auth';
 import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
 import { Attempt } from '@problems/models/attempts.models';
 import { AvailableLanguage, Problem } from '@problems/models/problems.models';
@@ -135,7 +135,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
     });
   }
 
-  afterChangeCurrentUser(currentUser: User) {
+  afterChangeCurrentUser(currentUser: AuthUser) {
     if (this.currentUser) {
       this.service.getMe(this.contest?.id).subscribe(
         (contestant: Contestant | null) => {

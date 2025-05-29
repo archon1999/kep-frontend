@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { User } from '@auth';
+import { AuthUser } from '@auth';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { GeneralInfo } from '@problems/models/statistics.models';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
@@ -31,7 +31,7 @@ export class SectionHeaderComponent extends BaseLoadComponent<GeneralInfo> imple
     return this.statisticsService.getGeneral(this.authService.currentUserValue.username);
   }
 
-  override afterChangeCurrentUser(currentUser: User) {
+  override afterChangeCurrentUser(currentUser: AuthUser) {
     if (currentUser) {
       this.loadData();
     }

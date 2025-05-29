@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { fadeInOnEnterAnimation, fadeInUpOnEnterAnimation } from 'angular-animations';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SwiperOptions } from 'swiper/types/swiper-options';
@@ -21,7 +21,7 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
 })
 export class HeaderSectionComponent implements OnInit, OnDestroy {
 
-  public currentUser: User;
+  public currentUser: AuthUser;
 
   public swiperConfig: SwiperOptions = {
     slidesPerView: 1,

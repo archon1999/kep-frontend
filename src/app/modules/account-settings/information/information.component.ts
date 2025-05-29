@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { UserInfo } from '@users/users.models';
+import { UserInfo } from '@users/domain';
 import { AccountSettingsService } from '../account-settings.service';
 import { NgxCountriesService } from '@shared/third-part-modules/ngx-countries/ngx-countries.service';
 import { BaseLoadComponent } from '@app/common';

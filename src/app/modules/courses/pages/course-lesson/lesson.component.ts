@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Course, CourseLesson, CourseLessonPart, CourseLessonPartComment } from '../../interfaces';
 import { CoursesService } from '../../courses.service';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { ApiService } from '@core/data-access/api.service';
 import { ShepherdService } from 'angular-shepherd';
 import { BlockUI, BlockUIModule, NgBlockUI } from 'ng-block-ui';
@@ -70,7 +70,7 @@ export class LessonComponent implements OnInit {
     }
   };
 
-  currentUser: User = this.authService.currentUserValue;
+  currentUser: AuthUser = this.authService.currentUserValue;
 
   constructor(
     public route: ActivatedRoute,

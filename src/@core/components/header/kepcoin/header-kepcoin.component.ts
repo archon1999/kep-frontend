@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { User } from '@auth';
+import { AuthUser } from '@auth';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { BaseComponent } from '@app/common/classes/base.component';
@@ -35,7 +35,7 @@ export class HeaderKepcoinComponent extends BaseComponent {
     );
   }
 
-  override beforeChangeCurrentUser(currentUser: User) {
+  override beforeChangeCurrentUser(currentUser: AuthUser) {
     if (currentUser) {
       this.wsService.send('kepcoin-add', currentUser.username);
       this.wsService.on<number>(`kepcoin-${currentUser.username}`).subscribe(

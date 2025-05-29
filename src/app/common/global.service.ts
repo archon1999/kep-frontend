@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, NavigationEnd, NavigationExtras, Params, Router } from '@angular/router';
@@ -14,7 +14,7 @@ export class GlobalService {
   protected _lastUrl: string;
 
   private _queryParamsSubject = new ReplaySubject<Params>(1);
-  private _currentUserSubject = new ReplaySubject<User | null>(1);
+  private _currentUserSubject = new ReplaySubject<AuthUser | null>(1);
   private _coreConfigSubject = new ReplaySubject<any>(1);
 
   constructor(
@@ -30,7 +30,7 @@ export class GlobalService {
     );
 
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (user: User | null) => {
+      (user: AuthUser | null) => {
         this._currentUserSubject.next(user);
       }
     );

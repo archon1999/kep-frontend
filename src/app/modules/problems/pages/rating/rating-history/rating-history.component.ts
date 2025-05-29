@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '@core/data-access/api.service';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { ɵEmptyOutletComponent } from '@angular/router';
@@ -80,7 +80,7 @@ export class RatingHistoryComponent implements OnInit {
   weeklyRatingHistoryTotal = 0;
   monthlyRatingHistoryTotal = 0;
 
-  currentUser: User;
+  currentUser: AuthUser;
 
   constructor(
     public api: ApiService,

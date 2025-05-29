@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { UserTechnology } from '@users/users.models';
 import { devIcons } from './dev-icons';
 import { repeaterAnimation } from '@app/modules/account-settings/skills/technologies/repeater-animation';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
@@ -12,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
+import { UserTechnology } from "@users/domain";
 
 @Component({
   selector: 'technologies',

@@ -12,7 +12,7 @@ import {
   SectionAttemptsForSolveComponent
 } from '@problems/pages/statistics/section-attempts-for-solve/section-attempts-for-solve.component';
 import { BaseComponent } from '@app/common/classes/base.component';
-import { User } from '@auth';
+import { AuthUser } from '@auth';
 
 @Component({
   selector: 'app-statistics',
@@ -45,7 +45,7 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
     );
   }
 
-  afterChangeCurrentUser(currentUser: User) {
+  afterChangeCurrentUser(currentUser: AuthUser) {
     this.username = currentUser.username;
   }
 }

@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { UserSocial } from '@users/users.models';
 import { AccountSettingsService } from '../account-settings.service';
 import { BaseLoadComponent } from '@app/common';
 import { Observable } from 'rxjs';
@@ -8,6 +7,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
+import { UserSocial } from "@users/domain";
 
 @Component({
   selector: 'social',

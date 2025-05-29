@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ApiService } from '@core/data-access/api.service';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -15,7 +15,7 @@ export class LikeButtonComponent implements OnInit, OnDestroy {
   @Input() likes: number = 0;
   @Input() submitUrl: string;
 
-  public currentUser: User;
+  public currentUser: AuthUser;
   private _unsubscribeAll = new Subject();
 
   constructor(

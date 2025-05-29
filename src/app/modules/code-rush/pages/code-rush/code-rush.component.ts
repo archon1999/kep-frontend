@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { Attempt } from '../../../problems/models/attempts.models';
 import { Subject } from 'rxjs';
 import { CodeRush, CodeRushProblem } from '../../code-rush.models';
@@ -22,7 +22,7 @@ export class CodeRushComponent implements OnInit, OnDestroy {
   public availableLang: any;
   public selectedLang: string;
 
-  public currentUser: User;
+  public currentUser: AuthUser;
 
   private _intervalId: any;
   private _unsubscribeAll = new Subject();

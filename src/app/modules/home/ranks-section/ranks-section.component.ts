@@ -6,8 +6,8 @@ import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 import { BaseLoadComponent } from "@app/common";
 import { Observable } from "rxjs";
-import { UsersApiService } from "@users/users-api.service";
 import { NgxSkeletonLoaderModule } from "ngx-skeleton-loader";
+import { UsersApiService } from "@users/data-access";
 
 @Component({
   selector: 'ranks-section',

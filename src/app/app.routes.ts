@@ -65,7 +65,7 @@ export const routes: Routes = [
       },
       {
         path: 'competitions/tournaments',
-        loadChildren: () => import('./modules/tournaments/tournaments.module').then(m => m.TournamentsModule),
+        loadChildren: () => import('./modules/tournaments/tournaments.routes'),
       },
       {
         path: 'users',

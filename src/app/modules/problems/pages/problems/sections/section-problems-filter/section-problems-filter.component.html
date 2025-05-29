@@ -107,7 +107,7 @@
             </strong>
           </label>
           <div class="mb-1">
-            <ng-select appendTo="body" formControlName="difficulty" [compareWith]="compareEqual">
+            <ng-select [searchable]="false" appendTo="body" formControlName="difficulty" [compareWith]="compareEqual">
               @for (item of difficulties; track item) {
                 <ng-option [value]="item.value">
                   <span class="text-{{ item.value | problemDifficultyColor }}">
@@ -127,7 +127,7 @@
             </strong>
           </label>
           <div class="mb-1">
-            <ng-select appendTo="body" formControlName="status" [compareWith]="compareEqual">
+            <ng-select [searchable]="false" appendTo="body" formControlName="status" [compareWith]="compareEqual">
               <ng-option [value]="3">
                 <kep-icon name="minus" class="text-warning"></kep-icon>
                 {{ 'Unknown' | translate }}

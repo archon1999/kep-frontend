@@ -4,7 +4,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
-import { User } from '@auth';
+import { AuthUser } from '@auth';
 import { ApiService } from '@core/data-access/api.service';
 import { WebsocketService } from '@shared/services/websocket';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { Resources } from '@app/resources';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private currentUserSubject = new BehaviorSubject<User>(null);
+  private currentUserSubject = new BehaviorSubject<AuthUser>(null);
   public currentUser = this.currentUserSubject.asObservable();
 
   constructor(
@@ -22,13 +22,13 @@ export class AuthService {
     protected router: Router,
   ) {}
 
-  public get currentUserValue(): User {
+  public get currentUserValue(): AuthUser {
     return this.currentUserSubject.value;
   }
 
   getMe() {
     return this.api.get('me').pipe(
-      tap((user: User) => {
+      tap((user: AuthUser) => {
         if (user) {
           this.currentUserSubject.next(user);
         } else {

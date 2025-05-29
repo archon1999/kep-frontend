@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { Team } from '@users/users.models';
 import { AccountSettingsService } from '../account-settings.service';
 import { BaseLoadComponent } from '@app/common';
 import { Observable } from 'rxjs';
@@ -10,6 +9,7 @@ import { EmptyResultComponent } from '@shared/components/empty-result/empty-resu
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
+import { Team } from "@users/domain";
 
 @Component({
   selector: 'teams',

@@ -9,7 +9,7 @@ import {
   UserSocial,
   UserTechnology,
   UserWorkExperience
-} from '@users/users.models';
+} from '@users/domain';
 
 @Injectable({
   providedIn: 'root'

@@ -3,7 +3,7 @@ import { AvailableLanguage, Problem } from '@problems/models/problems.models';
 import { CoreCommonModule } from '@core/common.module';
 import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { Subject } from 'rxjs';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { LanguageService } from '@problems/services/language.service';
@@ -42,7 +42,7 @@ export class ProblemInfoCardComponent implements OnInit, OnDestroy, OnChanges {
   public selectedLang: string;
   public selectedAvailableLang: AvailableLanguage;
 
-  public currentUser: User;
+  public currentUser: AuthUser;
 
   private _unsubscribeAll = new Subject();
 
@@ -65,7 +65,7 @@ export class ProblemInfoCardComponent implements OnInit, OnDestroy, OnChanges {
     );
 
     this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (user: User | null) => {
+      (user: AuthUser | null) => {
         this.currentUser = user;
       }
     );

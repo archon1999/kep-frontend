@@ -1,11 +1,11 @@
 import { Component, inject, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { takeUntil } from 'rxjs/operators';
 
 export type WithCurrentUserType = {
-  currentUser: User;
-  afterChangeCurrentUser(currentUser: User): void;
+  currentUser: AuthUser;
+  afterChangeCurrentUser(currentUser: AuthUser): void;
 };
 
 export function WithCurrentUserMixin<T extends Constructor<Component>>(Base: T) {
@@ -14,21 +14,21 @@ export function WithCurrentUserMixin<T extends Constructor<Component>>(Base: T) 
     standalone: true
   })
   class WithCurrentUserClass extends Base implements WithCurrentUserType, OnDestroy {
-    public currentUser: User;
+    public currentUser: AuthUser;
     protected authService = inject(AuthService);
     protected _unsubscribeAll = new Subject();
 
     constructor(...args: any[]) {
       super(...args);
       this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-        (user: User | null) => {
+        (user: AuthUser | null) => {
           this.currentUser = user;
           this.afterChangeCurrentUser(user);
         }
       );
     }
 
-    afterChangeCurrentUser(currentUser: User) {}
+    afterChangeCurrentUser(currentUser: AuthUser) {}
 
     ngOnDestroy() {
       this._unsubscribeAll.next(null);

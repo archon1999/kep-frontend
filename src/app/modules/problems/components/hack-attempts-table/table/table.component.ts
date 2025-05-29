@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { bounceAnimation, fadeInOnEnterAnimation, shakeAnimation } from 'angular-animations';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { HackAttempt } from '../../../models/hack-attempt.models';
 
@@ -20,7 +20,7 @@ export class TableComponent implements OnInit {
   @Input() hackAttempts: Array<HackAttempt> = [];
   @Output() clicked = new EventEmitter<number>();
 
-  public currentUser: User | null;
+  public currentUser: AuthUser | null;
 
   constructor(
     public authService: AuthService,

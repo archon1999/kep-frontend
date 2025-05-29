@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiService } from '@core/data-access/api.service';
-import { AuthService, User } from '@auth';
+import { AuthService, AuthUser } from '@auth';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { KepcoinService } from './kepcoin.service';
@@ -23,7 +23,7 @@ export class KepcoinComponent implements OnInit, OnDestroy {
   public streakFreeze = 0;
   public streak = 0;
 
-  public currentUser: User;
+  public currentUser: AuthUser;
 
   private _unsubscribeAll = new Subject();
 
