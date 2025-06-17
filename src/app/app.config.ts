@@ -6,7 +6,13 @@ import {
   provideAppInitializer,
   provideExperimentalZonelessChangeDetection
 } from '@angular/core';
-import { provideRouter, RouterOutlet, RouterStateSnapshot, TitleStrategy } from '@angular/router';
+import {
+  provideRouter,
+  RouterOutlet,
+  RouterStateSnapshot,
+  TitleStrategy,
+  withInMemoryScrolling
+} from '@angular/router';
 import { routes } from './app.routes';
 import { ColorPickerModule, ColorPickerService } from 'ngx-color-picker';
 import { provideToastr } from 'ngx-toastr';
@@ -53,7 +59,9 @@ export class CustomTitleStrategy extends TitleStrategy {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),
-    provideRouter(routes),
+    provideRouter(routes, withInMemoryScrolling({
+      scrollPositionRestoration: "top",
+    })),
     provideHttpClient(),
     provideAnimations(),
     provideToastr({

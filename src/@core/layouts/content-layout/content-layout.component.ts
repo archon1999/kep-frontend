@@ -35,11 +35,6 @@ export class ContentLayoutComponent {
     this.navServices.items.subscribe((menuItems: any) => {
       this.menuItems = menuItems;
     });
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        window.scrollTo({ top: 0, behavior: 'instant' });
-      });
     let html = this.elementRef.nativeElement.ownerDocument.documentElement;
     if (window.innerWidth <= 992) {
       html?.setAttribute(

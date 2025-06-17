@@ -134,7 +134,11 @@ html[data-theme-mode="light"] {
     color: black !important;
   }
 
-  span.bg-primary, .bg-primary, .text-bg-primary {
+  span.bg-primary, .bg-primary, .text-bg-primary, .btn-primary {
     color: white !important;
   }
+}
+
+html {
+  scroll-behavior: auto !important;
 }
