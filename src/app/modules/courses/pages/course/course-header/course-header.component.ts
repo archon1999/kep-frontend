@@ -8,10 +8,6 @@ import { NgbRatingModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
   selector: 'course-header',
   templateUrl: './course-header.component.html',
   styleUrls: ['./course-header.component.scss'],
-  animations: [
-    fadeInLeftOnEnterAnimation(),
-    fadeInUpOnEnterAnimation(),
-  ],
   imports: [
     CoreCommonModule,
     NgbTooltipModule,

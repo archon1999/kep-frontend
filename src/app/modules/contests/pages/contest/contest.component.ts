@@ -14,7 +14,6 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
   selector: 'app-contest',
   templateUrl: './contest.component.html',
   styleUrls: ['./contest.component.scss'],
-  animations: [fadeInUpOnEnterAnimation()],
   standalone: true,
   imports: [
     CoreCommonModule,

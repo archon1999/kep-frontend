@@ -39,7 +39,6 @@ import {
   ],
   templateUrl: './contest-standings-table.component.html',
   styleUrl: './contest-standings-table.component.scss',
-  animations: [fadeInOnEnterAnimation()],
 })
 export class ContestStandingsTableComponent extends BaseUserComponent implements OnChanges {
   @Input() contest: Contest;

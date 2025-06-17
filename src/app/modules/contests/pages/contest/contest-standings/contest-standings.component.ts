@@ -28,7 +28,6 @@ import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.m
   selector: 'app-contest-standings',
   templateUrl: './contest-standings.component.html',
   styleUrls: ['./contest-standings.component.scss'],
-  animations: [fadeInOnEnterAnimation()],
   standalone: true,
   imports: [
     CoreCommonModule,

@@ -43,10 +43,6 @@ const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
   selector: 'app-contest-problem',
   templateUrl: './contest-problem.component.html',
   styleUrls: ['./contest-problem.component.scss'],
-  animations: [
-    fadeInOnEnterAnimation({ duration: 1000 }),
-    fadeInRightOnEnterAnimation({ duration: 1000, translate: '40px' })
-  ],
   standalone: true,
   imports: [
     CoreCommonModule,

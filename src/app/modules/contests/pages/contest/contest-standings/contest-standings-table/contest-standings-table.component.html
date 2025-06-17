@@ -49,7 +49,7 @@
     @for (contestant of contestants; track contestant.username) {
       <tr
         [class]="contestant.rowClass"
-        [@fadeInOnEnter]
+
         [ngClass]="{'bg-light-primary': currentUser?.username == contestant.username }">
         <td class="text-center text-dark">
           {{ contestant.rank }}

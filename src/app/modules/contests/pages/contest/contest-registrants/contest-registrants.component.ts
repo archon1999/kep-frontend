@@ -16,10 +16,6 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
   selector: 'app-contest-registrants',
   templateUrl: './contest-registrants.component.html',
   styleUrl: './contest-registrants.component.scss',
-  animations: [
-    fadeInLeftOnEnterAnimation({ translate: '40px' }),
-    fadeInRightOnEnterAnimation({ translate: '40px' }),
-  ],
   standalone: true,
   imports: [
     CoreCommonModule,

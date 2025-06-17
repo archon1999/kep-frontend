@@ -28,10 +28,6 @@ const REFRESH_TIME = 30000;
   selector: 'app-contest-attempts',
   templateUrl: './contest-attempts.component.html',
   styleUrls: ['./contest-attempts.component.scss'],
-  animations: [
-    fadeInOnEnterAnimation(),
-    fadeInRightOnEnterAnimation({translate: '40px'})
-  ],
   standalone: true,
   imports: [
     CoreCommonModule,

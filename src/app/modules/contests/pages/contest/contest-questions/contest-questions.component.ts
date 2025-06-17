@@ -22,10 +22,6 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
   selector: 'app-contest-questions',
   templateUrl: './contest-questions.component.html',
   styleUrls: ['./contest-questions.component.scss'],
-  animations: [
-    fadeInLeftOnEnterAnimation({duration: 1500}),
-    fadeInRightOnEnterAnimation({duration: 1500}),
-  ],
   standalone: true,
   imports: [
     CoreCommonModule,

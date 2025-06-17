@@ -29,7 +29,6 @@ import { Team } from "@users/domain";
   selector: 'contest-card',
   templateUrl: './contest-card.component.html',
   styleUrls: ['./contest-card.component.scss'],
-  animations: [fadeInOnEnterAnimation({duration: 1000})],
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   imports: [
