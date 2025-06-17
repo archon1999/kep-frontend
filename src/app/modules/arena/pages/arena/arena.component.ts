@@ -22,12 +22,6 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
   selector: 'app-arena',
   templateUrl: './arena.component.html',
   styleUrls: ['./arena.component.scss'],
-  animations: [
-    fadeInLeftOnEnterAnimation(),
-    fadeInRightOnEnterAnimation(),
-    fadeInUpOnEnterAnimation(),
-    fadeInOnEnterAnimation(),
-  ],
   standalone: true,
   imports: [
     CoreCommonModule,

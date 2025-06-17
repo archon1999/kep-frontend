@@ -2,7 +2,7 @@
   <div class="content-body">
     <div class="row">
       @if (arena.status == ArenaStatus.NotStarted) {
-        <div class="offset-lg-1 col-lg-7 col-12" [@fadeInOnEnter]>
+        <div class="offset-lg-1 col-lg-7 col-12" >
           <arena-card [arena]="arena"/>
           <arena-players [arena]="arena" (arenaPlayerClick)="loadArenaPlayerStatistics($event.username)"/>
         </div>

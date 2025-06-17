@@ -13,7 +13,6 @@ import { Project } from "@projects/domain/entities";
   selector: 'project-card',
   templateUrl: './project-card.component.html',
   styleUrls: ['./project-card.component.scss'],
-  animations: [fadeInOnEnterAnimation()],
   standalone: true,
   imports: [
     RouterLink,

@@ -22,7 +22,6 @@ import { repeaterAnimation } from '@app/modules/account-settings/skills/technolo
   templateUrl: './work-experiences.component.html',
   styleUrl: './work-experiences.component.scss',
   standalone: true,
-  animations: [repeaterAnimation],
 })
 export class WorkExperiencesComponent extends BaseLoadComponent<UserWorkExperience[]> {
   public userWorkExperiences: Array<UserWorkExperience>;

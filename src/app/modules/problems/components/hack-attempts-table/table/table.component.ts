@@ -11,7 +11,6 @@ import { HackAttempt } from '../../../models/hack-attempt.models';
   animations: [
     bounceAnimation({duration: 2000}),
     shakeAnimation({duration: 2000}),
-    fadeInOnEnterAnimation(),
   ],
   standalone: false,
 })

@@ -6,11 +6,12 @@ import { Resources } from "@app/resources";
 import { TranslatePipe } from "@ngx-translate/core";
 import { CoreCommonModule } from "@core/common.module";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { LogoComponent } from "@shared/components/logo/logo.component";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterModule, TranslatePipe, CoreCommonModule, KepCardComponent],
+  imports: [RouterModule, TranslatePipe, CoreCommonModule, KepCardComponent, LogoComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })

@@ -28,7 +28,6 @@ import { UserTechnology } from "@users/domain";
   ],
   templateUrl: './technologies.component.html',
   styleUrl: './technologies.component.scss',
-  animations: [repeaterAnimation],
   standalone: true,
 })
 export class TechnologiesComponent extends BaseLoadComponent<UserTechnology[]> {

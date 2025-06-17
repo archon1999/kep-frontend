@@ -26,9 +26,6 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
   selector: 'app-problem',
   templateUrl: './problem.component.html',
   styleUrls: ['./problem.component.scss'],
-  animations: [
-    fadeInOnEnterAnimation({ duration: 1000 }),
-  ],
   standalone: true,
   imports: [
     CoreCommonModule,

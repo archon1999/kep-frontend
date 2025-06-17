@@ -7,7 +7,6 @@ import { User } from "@users/domain";
   selector: 'user-popover',
   templateUrl: './user-popover.component.html',
   styleUrls: ['./user-popover.component.scss'],
-  animations: [fadeInOnEnterAnimation({duration: 1000})],
   encapsulation: ViewEncapsulation.None,
   standalone: false,
 })

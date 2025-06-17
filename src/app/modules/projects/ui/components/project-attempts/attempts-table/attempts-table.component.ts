@@ -21,7 +21,6 @@ import { ProjectAttemptsRepository } from "@projects/data-access/repositories/pr
     NgbAccordionModule,
     ProjectTechnologyComponent
   ],
-  animations: [fadeInOnEnterAnimation()]
 })
 export class AttemptsTableComponent implements OnInit {
 

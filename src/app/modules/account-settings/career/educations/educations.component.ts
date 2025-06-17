@@ -22,7 +22,6 @@ import { repeaterAnimation } from '@app/modules/account-settings/skills/technolo
   templateUrl: './educations.component.html',
   styleUrl: './educations.component.scss',
   standalone: true,
-  animations: [repeaterAnimation],
 })
 export class EducationsComponent extends BaseLoadComponent<UserEducation[]> {
   public userEducations: Array<UserEducation>;

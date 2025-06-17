@@ -25,9 +25,6 @@ import { fadeInOnEnterAnimation } from 'angular-animations';
   templateUrl: './arena-players.component.html',
   styleUrl: './arena-players.component.scss',
   encapsulation: ViewEncapsulation.None,
-  animations: [
-    fadeInOnEnterAnimation(),
-  ]
 })
 export class ArenaPlayersComponent extends BaseTablePageComponent<ArenaPlayer> implements OnInit {
   @Input() arena: Arena;

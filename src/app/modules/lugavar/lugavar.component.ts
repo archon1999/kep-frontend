@@ -13,12 +13,6 @@ import { ActivatedRoute } from '@angular/router';
   selector: 'app-lugavar',
   templateUrl: './lugavar.component.html',
   styleUrls: ['./lugavar.component.scss'],
-  animations: [
-    fadeInUpOnEnterAnimation({duration: 1000}),
-    fadeInLeftOnEnterAnimation({duration: 1000}),
-    fadeInRightOnEnterAnimation({duration: 1000}),
-    fadeInOnEnterAnimation({duration: 1000}),
-  ],
   standalone: false,
 })
 export class LugavarComponent implements OnInit {

@@ -12,7 +12,6 @@ import { NewsCardComponent } from '@app/modules/blog/components/news-card/news-c
   selector: 'news-section',
   templateUrl: './news-section.component.html',
   styleUrls: ['./news-section.component.scss'],
-  animations: [fadeInRightOnEnterAnimation({ duration: 1000, translate: '40px' })],
   standalone: true,
   imports: [
     NgxSkeletonLoaderModule,

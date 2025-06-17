@@ -14,9 +14,6 @@ import { Project } from "@projects/domain/entities/project";
   selector: 'app-projects-list',
   templateUrl: './projects-list.page.html',
   styleUrls: ['./projects-list.page.scss'],
-  animations: [
-    fadeInOnEnterAnimation({ duration: 200 }),
-  ],
   standalone: true,
   imports: [
     CoreCommonModule,

@@ -14,7 +14,6 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
   imports: [CoreCommonModule, NgbTooltipModule, ProblemDifficultyColorPipe, ResourceByIdPipe, KepCardComponent],
   templateUrl: './problem-card.component.html',
   styleUrl: './problem-card.component.scss',
-  animations: [fadeInOnEnterAnimation()]
 })
 export class ProblemCardComponent {
   @Input() problem: Problem;

@@ -14,10 +14,6 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
   standalone: true,
   imports: [CoreCommonModule, KepCardComponent],
   encapsulation: ViewEncapsulation.None,
-  animations: [
-    fadeInOnEnterAnimation({duration: 3000}),
-    fadeInUpOnEnterAnimation({duration: 3000}),
-  ],
 })
 export class HeaderSectionComponent implements OnInit, OnDestroy {
 

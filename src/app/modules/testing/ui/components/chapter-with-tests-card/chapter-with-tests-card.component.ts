@@ -25,7 +25,6 @@ import { Chapter } from "@testing/domain";
   ],
   templateUrl: './chapter-with-tests-card.component.html',
   styleUrl: './chapter-with-tests-card.component.scss',
-  animations: [fadeInOnEnterAnimation()],
   encapsulation: ViewEncapsulation.None
 })
 export class ChapterWithTestsCardComponent extends BaseUserComponent {

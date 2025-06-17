@@ -32,7 +32,7 @@ export class SoundsService {
   }
 
   getHomeSound() {
-    return this.localStorageService.get(HOME_SOUND_KEY) || HomeSoundEnum.Home7;
+    return this.localStorageService.get(HOME_SOUND_KEY) || HomeSoundEnum.NoSound;
   }
 
   getHomeSoundSrc() {

@@ -1,5 +1,5 @@
 <div class="page-top">
-  <div class="bg-img" style="background-image: url('/src/assets/images/logo/new-logo.svg');"></div>
+  <div class="bg-img" style="background-image: url('/src/assets/images/logo/logo-light.svg');"></div>
   <div class="content-wrapper container-sm p-0">
     <div class="content-body text-center">
       <h1 class="section-title">{{ 'LandingPage.SectionTopTitle' | translate }}</h1>
@@ -7,12 +7,7 @@
         {{ 'LandingPage.SectionTopText' | translate }}
       </div>
 
-      <img
-        rel="preload"
-        height="350"
-        width="350"
-        alt="landing-img"
-        src="assets/images/logo/new-logo.svg"/>
+      <logo [size]="350"/>
     </div>
   </div>
 </div>

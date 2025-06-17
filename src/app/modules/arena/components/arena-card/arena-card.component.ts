@@ -5,6 +5,7 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
 import { DatePipe } from '@angular/common';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ArenaService } from '@arena/arena.service';
+import { LogoComponent } from "@shared/components/logo/logo.component";
 
 @Component({
   selector: 'arena-card',
@@ -13,7 +14,8 @@ import { ArenaService } from '@arena/arena.service';
     TranslateModule,
     KepIconComponent,
     DatePipe,
-    NgbTooltipModule
+    NgbTooltipModule,
+    LogoComponent
   ],
   templateUrl: './arena-card.component.html',
   styleUrl: './arena-card.component.scss',

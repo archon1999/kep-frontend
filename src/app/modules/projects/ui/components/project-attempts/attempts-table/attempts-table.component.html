@@ -16,7 +16,7 @@
     <tbody>
       @for (attempt of attempts; track attempt.id; let i = $index) {
         <tr
-          [@fadeInOnEnter]
+
           [ngClass]="{'bg-light-info': attempt?.username == currentUser?.username}">
           <td class="attempt-id">
             {{ attempt.id }}

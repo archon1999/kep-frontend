@@ -15,7 +15,6 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
   styleUrls: ['./profile-section.component.scss'],
   standalone: true,
   imports: [CoreCommonModule, NgxSkeletonLoaderModule, ContestantViewModule, KepIconComponent],
-  animations: [fadeInOnEnterAnimation({duration: 3000})],
 })
 export class ProfileSectionComponent implements OnInit {
 

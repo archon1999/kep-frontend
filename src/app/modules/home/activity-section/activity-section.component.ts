@@ -13,7 +13,6 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./activity-section.component.scss'],
   standalone: true,
   imports: [CoreCommonModule, NgbTooltipModule],
-  animations: [fadeInOnEnterAnimation()]
 })
 export class ActivitySectionComponent implements OnInit, OnDestroy {
 

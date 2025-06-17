@@ -7,9 +7,6 @@ import { RouterLink } from "@angular/router";
   selector: 'test-detail-list-card',
   templateUrl: './test-list-card.component.html',
   styleUrls: ['./test-list-card.component.scss'],
-  animations: [
-    fadeInOnEnterAnimation(),
-  ],
   standalone: true,
   imports: [
     RouterLink

@@ -8,7 +8,6 @@ import { Contest } from '@contests/models/contest';
   selector: 'section-contests',
   templateUrl: './section-contests.component.html',
   styleUrls: ['./section-contests.component.scss'],
-  animations: [],
   standalone: true,
   imports: [
     CoreCommonModule,

@@ -3,7 +3,7 @@
     <spinner/>
   </kep-card>
 } @else {
-  <kep-card [@fadeInLeftOnEnter]>
+  <kep-card >
     <div class="card-header p-2 justify-content-start">
       <div class="icon d-sm-block d-none">
         <img alt="tournament-icon" height="90" src="assets/images/icons/tournament.png" width="90">
@@ -32,7 +32,7 @@
     #navFilled="ngbNav"
     (navChange)="tabChange($event)"
     [(activeId)]="activeId"
-    [@fadeInLeftOnEnter]
+
     class="nav-tabs nav-style-1 nav-fill"
     ngbNav>
     <li [ngbNavItem]="1" ngbNavItem>
@@ -60,5 +60,5 @@
       </ng-template>
     </li>
   </ul>
-  <div [@fadeInUpOnEnter] [ngbNavOutlet]="navFilled" class="mt-2"></div>
+  <div  [ngbNavOutlet]="navFilled" class="mt-2"></div>
 }

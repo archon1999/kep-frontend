@@ -19,7 +19,7 @@
 } @else {
   <div class="row">
     @for (category of showAll ? categories : categories.slice(0, 4); track category.id) {
-      <div [@fadeInOnEnter] class="col-lg-3 col-md-6 col-12">
+      <div  class="col-lg-3 col-md-6 col-12">
         <a [routerLink]="category.code" class="card custom-card">
           <div class="top-left"></div>
           <div class="top-right"></div>

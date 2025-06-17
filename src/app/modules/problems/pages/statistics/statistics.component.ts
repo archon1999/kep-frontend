@@ -19,7 +19,6 @@ import { AuthUser } from '@auth';
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  animations: [],
   standalone: true,
   imports: [
     CoreCommonModule,

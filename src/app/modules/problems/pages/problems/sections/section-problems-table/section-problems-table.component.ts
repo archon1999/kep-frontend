@@ -23,7 +23,6 @@ import { TranslatePipe } from "@ngx-translate/core";
   selector: 'section-problems-table',
   templateUrl: './section-problems-table.component.html',
   styleUrls: ['./section-problems-table.component.scss'],
-  animations: [fadeInOnEnterAnimation({duration: 1000})],
   standalone: true,
   imports: [
     TableOrderingModule,

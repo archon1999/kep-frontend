@@ -24,12 +24,6 @@ import { Tournament } from "@app/modules/tournaments/domain";
   selector: 'page-tournaments',
   templateUrl: './tournaments-list.page.html',
   styleUrls: ['./tournaments.component.scss'],
-  animations: [
-    fadeInOnEnterAnimation(),
-    fadeInUpOnEnterAnimation(),
-    fadeInLeftOnEnterAnimation(),
-    fadeInRightOnEnterAnimation(),
-  ],
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   imports: [

@@ -60,7 +60,7 @@
 
   <ng-container body>
     @for (problem of problems; track problem.id) {
-      <tr [@fadeInOnEnter] [ngClass]="{
+      <tr  [ngClass]="{
           'bg-success-transparent': problem.userInfo.hasSolved,
           'bg-light-danger': !problem.userInfo.hasSolved && problem.userInfo.hasAttempted
         }">

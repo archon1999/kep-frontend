@@ -8,6 +8,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { SimplebarAngularModule } from 'simplebar-angular';
 import { DropdownPositionDirective } from '@core/components/sidebar/directives/dropdown-position.directive';
 import { ApiService } from '@core/data-access/api.service';
+import { LogoComponent } from "@shared/components/logo/logo.component";
 
 @Component({
   selector: 'app-sidebar',
@@ -17,7 +18,8 @@ import { ApiService } from '@core/data-access/api.service';
   imports: [
     CoreCommonModule,
     SimplebarAngularModule,
-    DropdownPositionDirective
+    DropdownPositionDirective,
+    LogoComponent
   ]
 })
 export class SidebarComponent {

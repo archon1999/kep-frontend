@@ -2,7 +2,7 @@
   <div class="col-12">
     <div class="study-plan-page-top" style="background-image: url({{ studyPlan.icon }});"></div>
 
-    <div [@fadeInOnEnter] class="study-plan study-plan-{{ studyPlan.id }}">
+    <div  class="study-plan study-plan-{{ studyPlan.id }}">
       <div class="study-plan-header">
         <div class="study-plan-icon">
           <img width="90" src="{{ studyPlan.icon }}" alt="">
@@ -217,7 +217,7 @@
             </div>
           }
 
-          <div [@fadeInOnEnter] class="study-plan-days">
+          <div  class="study-plan-days">
             @for (day of studyPlan.days; track day) {
               <div class="study-plan-day">
                 <div class="study-plan-day-title text-secondary">

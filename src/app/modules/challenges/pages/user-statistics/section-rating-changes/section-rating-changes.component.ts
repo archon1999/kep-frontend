@@ -14,7 +14,6 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
   selector: 'section-rating-changes',
   templateUrl: './section-rating-changes.component.html',
   styleUrls: ['./section-rating-changes.component.scss'],
-  animations: [fadeInOnEnterAnimation()],
   standalone: true,
   imports: [
     CoreCommonModule,

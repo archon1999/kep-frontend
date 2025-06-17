@@ -18,7 +18,6 @@ import { CourseCardComponent } from '@app/modules/courses/components/course-card
     ContentHeaderModule,
     CourseCardComponent,
   ],
-  animations: [fadeInRightAnimation()],
   standalone: true,
   encapsulation: ViewEncapsulation.None,
 })

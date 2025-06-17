@@ -51,7 +51,7 @@
   <ng-container body>
     @for (attempt of attempts; track attempt.id) {
       <tr
-        [@fadeInOnEnter]
+
         [ngClass]="{'bg-light-primary': attempt.isOwner}">
         <td>
           @if (attempt.canView) {

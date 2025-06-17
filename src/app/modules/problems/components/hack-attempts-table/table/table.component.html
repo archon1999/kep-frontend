@@ -17,7 +17,7 @@
     <tbody>
       @for (hackAttempt of hackAttempts; track identify(i, hackAttempt); let i = $index) {
         <tr
-          [@fadeInOnEnter]
+
           [ngClass]="{'bg-light-primary': hackAttempt.hackerUsername == currentUser?.username}">
           <td>
             {{ hackAttempt.id }}

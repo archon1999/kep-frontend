@@ -6,9 +6,6 @@ import { Test } from "@testing/domain";
   selector: 'test-detail-card',
   templateUrl: './test-card.component.html',
   styleUrls: ['./test-card.component.scss'],
-  animations: [
-    fadeInLeftOnEnterAnimation({duration: 1000, translate: '40px'}),
-  ],
   standalone: false,
 })
 export class TestCardComponent {

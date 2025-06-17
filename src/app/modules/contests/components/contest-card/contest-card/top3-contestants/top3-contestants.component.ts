@@ -12,7 +12,6 @@ import { Contest } from '@contests/models/contest';
   imports: [ContestantViewModule, SpinnerComponent],
   templateUrl: './top3-contestants.component.html',
   styleUrl: './top3-contestants.component.scss',
-  animations: [fadeInOnEnterAnimation({duration: 1000})],
   encapsulation: ViewEncapsulation.None,
 })
 export class Top3ContestantsComponent implements OnInit {

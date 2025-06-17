@@ -29,10 +29,6 @@ import { ProjectSidebarComponent } from "@projects/ui/components/project-sidebar
   ],
   templateUrl: './project-detail.page.html',
   styleUrl: './project-detail.page.scss',
-  animations: [
-    fadeInLeftOnEnterAnimation({translate: '40px'}),
-    fadeInRightOnEnterAnimation({translate: '40px'})
-  ]
 })
 export class ProjectDetailPage extends BaseLoadComponent<Project> implements OnInit {
   @Input() slug: string;

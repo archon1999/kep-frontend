@@ -13,7 +13,6 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
   selector: 'section-profile',
   templateUrl: './section-profile.component.html',
   styleUrls: ['./section-profile.component.scss'],
-  animations: [fadeInOnEnterAnimation()],
   standalone: true,
   imports: [
     CoreCommonModule,

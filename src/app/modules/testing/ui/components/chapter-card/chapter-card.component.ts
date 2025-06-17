@@ -6,7 +6,6 @@ import { fadeInOnEnterAnimation } from 'angular-animations';
   selector: 'chapter-card',
   templateUrl: './chapter-card.component.html',
   styleUrls: ['./chapter-card.component.scss'],
-  animations: [fadeInOnEnterAnimation({duration: 3000})],
   imports: [],
   standalone: true,
 })

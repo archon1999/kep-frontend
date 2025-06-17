@@ -21,7 +21,6 @@ import { BaseComponent } from '@app/common';
   animations: [
     bounceAnimation({duration: 2000}),
     shakeAnimation({duration: 2000}),
-    fadeInOnEnterAnimation(),
   ],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

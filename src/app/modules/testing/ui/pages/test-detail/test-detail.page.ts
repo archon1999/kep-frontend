@@ -27,9 +27,6 @@ import { Resources } from "@app/resources";
   selector: 'page-test-detail',
   templateUrl: './test-detail.page.html',
   styleUrls: ['./test-detail.page.scss'],
-  animations: [
-    fadeInOnEnterAnimation(),
-  ],
   standalone: true,
   imports: [
     CommonModule,

@@ -29,8 +29,6 @@ interface Notification {
   templateUrl: './header-notifications.component.html',
   animations: [
     bounceAnimation({delay: 100, duration: 1000}),
-    fadeInOnEnterAnimation(),
-    fadeOutOnLeaveAnimation(),
   ],
   standalone: true,
   imports: [

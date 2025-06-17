@@ -20,10 +20,6 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
   selector: 'app-blog',
   templateUrl: './blog-list.component.html',
   styleUrls: ['./blog-list.component.scss'],
-  animations: [
-    fadeInRightOnEnterAnimation({ translate: '40px' }),
-    fadeInLeftOnEnterAnimation({ translate: '40px' }),
-  ],
   standalone: true,
   imports: [
     ContentHeaderModule,

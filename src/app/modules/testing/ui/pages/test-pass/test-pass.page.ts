@@ -51,11 +51,6 @@ import { SpinnerComponent } from "@shared/components/spinner/spinner.component";
     SpinnerComponent
   ],
   styleUrls: ['./test-pass.page.scss'],
-  animations: [
-    fadeInLeftAnimation({duration: 1500}),
-    fadeInRightAnimation({duration: 1000}),
-    fadeInUpAnimation({duration: 1000}),
-  ],
 })
 export class TestPassPage extends BaseLoadComponent<TestPass> implements OnInit, OnDestroy {
   public testPass: TestPass;

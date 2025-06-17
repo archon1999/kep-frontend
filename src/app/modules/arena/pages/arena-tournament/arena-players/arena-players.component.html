@@ -10,7 +10,7 @@
   <ng-container body>
     @for (player of arenaPlayers; track player.username) {
       <tr
-        [@fadeInOnEnter]=""
+
         class="cursor-pointer"
         (click)="arenaPlayerClick.emit(player)"
         [ngClass]="{

@@ -16,10 +16,6 @@ import { ChallengeCall } from '@challenges/interfaces';
   imports: [ChallengeCallCardComponent, NgxSkeletonLoaderModule, EmptyResultComponent],
   templateUrl: './section-in-queue.component.html',
   styleUrl: './section-in-queue.component.scss',
-  animations: [
-    fadeInOnEnterAnimation(),
-    fadeOutOnLeaveAnimation()
-  ]
 })
 export class SectionInQueueComponent extends BaseUserComponent implements OnInit {
 

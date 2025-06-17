@@ -7,7 +7,7 @@
   <!-- Start::main-sidebar-header -->
   <div class="main-sidebar-header">
     <a [routerLink]="''" class="header-logo">
-      <img alt="logo" class="desktop-dark" src="assets/images/logo/new-logo.svg">
+      <logo/>
     </a>
   </div>
   <!-- End::main-sidebar-header -->
@@ -62,7 +62,7 @@
                 </span>
 
                 @if (menuItem.newCount) {
-                  <span class="badge bg-yellow-transparent p-1 px-2 rounded-pill ms-1">
+                  <span class="badge bg-primary-transparent p-1 px-2 rounded-pill ms-1">
                     {{ menuItem.newCount }}
                   </span>
                 }
@@ -88,7 +88,7 @@
                         <kep-icon type="duotone" [name]="childrenItem.icon" size="medium-2"/>
                         {{ childrenItem.title | translate }}
                         @if (childrenItem.newCount) {
-                          <span class="badge bg-yellow-transparent p-1 px-2 rounded-pill ms-1">
+                          <span class="badge bg-primary-transparent p-1 px-2 rounded-pill ms-1">
                             {{ childrenItem.newCount }}
                           </span>
                         }

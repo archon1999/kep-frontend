@@ -13,7 +13,6 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
   selector: 'contests-section-categories',
   templateUrl: './section-categories.component.html',
   styleUrls: ['./section-categories.component.scss'],
-  animations: [fadeInRightOnEnterAnimation({duration: 1000})],
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   imports: [

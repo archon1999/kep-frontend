@@ -14,7 +14,6 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
   imports: [CoreCommonModule, NgbTooltipModule, NgxSkeletonLoaderModule],
   templateUrl: './section-categories.component.html',
   styleUrl: './section-categories.component.scss',
-  animations: [fadeInOnEnterAnimation()]
 })
 export class SectionCategoriesComponent extends BaseLoadComponent<Array<Category>> {
 

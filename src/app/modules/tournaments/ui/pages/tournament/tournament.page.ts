@@ -18,10 +18,6 @@ import { NavigationEnd } from "@angular/router";
 @Component({
   selector: 'app-tournament',
   templateUrl: './tournament.page.html',
-  animations: [
-    fadeInLeftOnEnterAnimation({translate: '40px'}),
-    fadeInUpOnEnterAnimation({translate: '40px'}),
-  ],
   standalone: true,
   imports: [
     KepCardComponent,

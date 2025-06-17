@@ -13,7 +13,6 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
   selector: 'problems-activity-card',
   templateUrl: './problems-activity-card.component.html',
   styleUrls: ['./problems-activity-card.component.scss'],
-  animations: [fadeInOnEnterAnimation()],
   standalone: true,
   imports: [
     CoreCommonModule,

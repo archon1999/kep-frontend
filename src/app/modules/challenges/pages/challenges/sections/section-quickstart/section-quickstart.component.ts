@@ -25,7 +25,6 @@ import { Chapter } from "@testing/domain";
   ],
   templateUrl: './section-quickstart.component.html',
   styleUrl: './section-quickstart.component.scss',
-  animations: [fadeInOnEnterAnimation()]
 })
 export class SectionQuickstartComponent extends BaseUserComponent implements OnInit {
   @Output() newChallengeClick = new EventEmitter<null>();

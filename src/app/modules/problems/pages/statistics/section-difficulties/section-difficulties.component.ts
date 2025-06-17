@@ -33,7 +33,6 @@ export interface Difficulties {
   selector: 'section-difficulties',
   templateUrl: './section-difficulties.component.html',
   styleUrls: ['./section-difficulties.component.scss'],
-  animations: [fadeInUpOnEnterAnimation({duration: 3000})],
   standalone: true,
   imports: [
     CoreCommonModule,

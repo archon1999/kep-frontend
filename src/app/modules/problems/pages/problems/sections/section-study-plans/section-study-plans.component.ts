@@ -13,7 +13,6 @@ import { TranslatePipe } from "@ngx-translate/core";
   templateUrl: './section-study-plans.component.html',
   styleUrls: ['./section-study-plans.component.scss'],
   standalone: true,
-  animations: [fadeInLeftOnEnterAnimation()],
   imports: [
     SwiperComponent,
     StudyPlanCardModule,

@@ -27,7 +27,6 @@ import { Team } from "@users/domain";
   ],
   templateUrl: './team.component.html',
   styleUrl: './team.component.scss',
-  animations: [fadeInOnEnterAnimation()]
 })
 export class TeamComponent extends BaseUserComponent {
   @Input() team: Team;

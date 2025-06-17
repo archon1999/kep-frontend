@@ -18,7 +18,6 @@ import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-char
   selector: 'app-study-plan',
   templateUrl: './study-plan.component.html',
   styleUrls: ['./study-plan.component.scss'],
-  animations: [fadeInOnEnterAnimation({duration: 3000})],
   standalone: true,
   imports: [
     CoreCommonModule,

@@ -25,11 +25,6 @@ import { ArenaInfoComponent } from '@arena/pages/arena-tournament/arena-info/are
   selector: 'app-arena-tournament',
   templateUrl: './arena-tournament.component.html',
   styleUrls: ['./arena-tournament.component.scss'],
-  animations: [
-    fadeInOnEnterAnimation(),
-    fadeInLeftOnEnterAnimation(),
-    fadeInRightOnEnterAnimation(),
-  ],
   standalone: true,
   imports: [
     CoreCommonModule,

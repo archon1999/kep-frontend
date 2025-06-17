@@ -7,11 +7,6 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
   selector: 'section-info',
   templateUrl: './section-info.component.html',
   styleUrls: ['./section-info.component.scss'],
-  animations: [
-    fadeInUpOnEnterAnimation(),
-    fadeInLeftOnEnterAnimation(),
-    fadeInRightOnEnterAnimation(),
-  ],
   standalone: true,
   imports: [
     CoreCommonModule,

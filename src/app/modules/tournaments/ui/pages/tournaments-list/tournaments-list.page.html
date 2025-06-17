@@ -28,7 +28,7 @@
         } @else {
           @for (tournament of tournaments; track tournament) {
             <div class="bg-tournaments-list">
-              <tournament-list-card [@fadeInOnEnter] [tournament]="tournament"></tournament-list-card>
+              <tournament-list-card  [tournament]="tournament"></tournament-list-card>
             </div>
           }
         }
