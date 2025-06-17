@@ -89,7 +89,7 @@ export class ApiService {
     if (!environment.production) {
       const {username, password} = environment.superAdmin;
       const token = btoa(`${username}:${password}`);
-      headers = headers.set('Authorization', `Basic ${token}`);
+      // headers = headers.set('Authorization', `Basic ${token}`);
       paramsObj.django_language = this.translateService.currentLang || 'uz';
     }
 
@@ -122,7 +122,7 @@ export class ApiService {
     const msg =
       err.error?.message ||
       `Server error: ${err.status} ${err.statusText}`;
-    this.toastr.error(msg, 'Ошибка');
+    // this.toastr.error(msg, 'Ошибка');
     return throwError(() => err);
   }
 }
