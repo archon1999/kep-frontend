@@ -2,7 +2,6 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { BaseUserComponent } from '@app/common';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { CommonModule } from '@angular/common';
-import { fadeInOnEnterAnimation } from 'angular-animations';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';

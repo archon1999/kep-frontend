@@ -1,8 +1,7 @@
 import { Component, ElementRef, inject, Renderer2, TemplateRef, } from '@angular/core';
 import { Menu, NavService } from '../../services/nav.service';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { filter } from 'rxjs';
+import { Router, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from "@core/components/header/header.component";
 import { FooterComponent } from "@core/components/footer/footer.component";
 import { SidebarComponent } from "@core/components/sidebar/sidebar.component";

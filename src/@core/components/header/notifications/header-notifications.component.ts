@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { bounceAnimation, fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
+import { bounceAnimation } from 'angular-animations';
 import { AuthService, AuthUser } from '@auth';
 
 import { WebsocketService } from 'app/shared/services/websocket';

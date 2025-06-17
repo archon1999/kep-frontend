@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { fadeInRightOnEnterAnimation } from 'angular-animations';
 import { HomeService } from '../home.service';
 import { PageResult } from '@app/common/classes/page-result';
 import { BaseTablePageComponent } from '@app/common';

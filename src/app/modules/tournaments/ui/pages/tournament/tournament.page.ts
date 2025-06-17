@@ -1,5 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { fadeInLeftOnEnterAnimation, fadeInUpOnEnterAnimation } from 'angular-animations';
 import { filter, map, Observable } from 'rxjs';
 import { BaseLoadComponent } from "@app/common";
 import { TournamentsApiService } from "@app/modules/tournaments/data-access/tournaments-api.service";

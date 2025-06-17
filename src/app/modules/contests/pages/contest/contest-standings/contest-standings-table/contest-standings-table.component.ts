@@ -11,7 +11,6 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
 import { RouterLink } from '@angular/router';
 import { CoreCommonModule } from '@core/common.module';
 import { BaseUserComponent } from '@app/common';
-import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ContestTypes } from '@contests/constants';
 import {
   ProblemInfoBySymbolPipe

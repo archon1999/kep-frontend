@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ContestsService } from '@contests/contests.service';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';

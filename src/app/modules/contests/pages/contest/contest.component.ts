@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { fadeInUpOnEnterAnimation } from 'angular-animations';
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { BasePageComponent } from '@app/common/classes/base-page.component';
 import { CoreCommonModule } from '@core/common.module';

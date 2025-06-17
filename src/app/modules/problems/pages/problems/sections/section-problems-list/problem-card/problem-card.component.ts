@@ -4,7 +4,6 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { CoreCommonModule } from '@core/common.module';
 import { ProblemDifficultyColorPipe } from '@problems/pipes/problem-difficulty-color.pipe';
 import { getResourceById, Resources } from '@app/resources';
-import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 

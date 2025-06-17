@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TournamentsService } from '../../../data-access/tournaments.service';
 import { Tournament } from '../../../domain/entities/tournament.entity';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
@@ -40,4 +40,4 @@ export class TournamentDuelsPage extends BaseLoadComponent<Tournament> implement
     this.tournament = tournament;
     this.titleService.updateTitle(this.route, { tournamentTitle: tournament.title });
   }
-} 
+}

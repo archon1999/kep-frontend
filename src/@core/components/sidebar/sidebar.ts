@@ -1,5 +1,3 @@
-import { fromEvent } from 'rxjs';
-
 export function checkHoriMenu() {
   let menuNav = document.querySelector(".main-menu") as HTMLElement;
   let mainContainer1 = document.querySelector(".main-sidebar") as HTMLElement;

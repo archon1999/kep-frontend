@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { fadeInOnEnterAnimation } from 'angular-animations';
 
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';

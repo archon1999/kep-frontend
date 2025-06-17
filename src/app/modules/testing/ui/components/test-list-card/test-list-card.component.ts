@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { fadeInOnEnterAnimation } from 'angular-animations';
 import { Test } from "@testing/domain";
 import { RouterLink } from "@angular/router";
 

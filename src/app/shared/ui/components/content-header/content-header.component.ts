@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { fadeInLeftAnimation, fadeInUpAnimation } from 'angular-animations';
 
 export interface ContentHeader {
   headerTitle: string;

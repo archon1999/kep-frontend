@@ -3,7 +3,6 @@ import { UserPopoverModule } from '@shared/components/user-popover/user-popover.
 import { CommonModule } from '@angular/common';
 import { Resources } from '@app/resources';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
-import { fadeInOnEnterAnimation } from 'angular-animations';
 import { BaseUserComponent } from '@app/common';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AccountSettingsService } from '@app/modules/account-settings/account-settings.service';

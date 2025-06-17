@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
-import { repeaterAnimation } from '@app/modules/account-settings/skills/technologies/repeater-animation';
 
 @Component({
   selector: 'work-experiences',

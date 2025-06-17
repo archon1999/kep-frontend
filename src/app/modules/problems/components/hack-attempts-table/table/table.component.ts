@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { bounceAnimation, fadeInOnEnterAnimation, shakeAnimation } from 'angular-animations';
+import { bounceAnimation, shakeAnimation } from 'angular-animations';
 import { AuthService, AuthUser } from '@auth';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { HackAttempt } from '../../../models/hack-attempt.models';

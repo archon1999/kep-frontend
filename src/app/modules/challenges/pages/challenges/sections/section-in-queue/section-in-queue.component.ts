@@ -6,7 +6,6 @@ import { ChallengesApiService } from '@challenges/services';
 import { interval } from 'rxjs';
 import { BaseUserComponent } from '@app/common/classes/base-user.component';
 import { takeUntil } from 'rxjs/operators';
-import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { ChallengeCall } from '@challenges/interfaces';
 

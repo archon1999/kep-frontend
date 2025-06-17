@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { fadeInRightAnimation } from 'angular-animations';
 import { CoreCommonModule } from '@core/common.module';
 import { BaseLoadComponent } from '@app/common';
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";

@@ -4,7 +4,6 @@ import { TestingApiService } from '@testing/data-access';
 import { Test, TestPass } from '@testing/domain';
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import Swal from 'sweetalert2';
-import { fadeInLeftAnimation, fadeInRightAnimation, fadeInUpAnimation } from 'angular-animations';
 import { Observable } from 'rxjs';
 import { randomShuffle } from '@shared/utils';
 import { DragulaModule, DragulaService } from 'ng2-dragula';

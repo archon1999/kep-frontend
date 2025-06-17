@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Params } from '@angular/router';
-import { fadeInOnEnterAnimation } from 'angular-animations';
 import { AuthUser } from '@auth';
 import { Subject } from 'rxjs';
 import { Problem } from '@problems/models/problems.models';

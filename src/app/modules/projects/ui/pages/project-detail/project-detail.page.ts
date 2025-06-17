@@ -5,7 +5,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { BaseLoadComponent } from '@app/common';
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { CoreCommonModule } from '@core/common.module';
-import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 import { Observable } from "rxjs";
 import { Project } from "@projects/domain/entities";

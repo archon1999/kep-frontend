@@ -4,7 +4,6 @@ import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-option
 import { BaseLoadComponent } from '@app/common/classes/base-load.component';
 import { Observable } from 'rxjs';
 import { AuthUser } from '@auth';
-import { fadeInOnEnterAnimation } from 'angular-animations';
 import { CoreCommonModule } from '@core/common.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { ChallengesRatingChange } from '@challenges/interfaces/challenges-rating-change';

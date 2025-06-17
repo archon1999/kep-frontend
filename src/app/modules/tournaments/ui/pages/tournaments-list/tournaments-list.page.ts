@@ -1,10 +1,4 @@
 import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
-import {
-  fadeInLeftOnEnterAnimation,
-  fadeInOnEnterAnimation,
-  fadeInRightOnEnterAnimation,
-  fadeInUpOnEnterAnimation
-} from 'angular-animations';
 import { BaseTablePageComponent } from '@app/common';
 import { Observable } from 'rxjs';
 import { PageResult } from '@app/common/classes/page-result';

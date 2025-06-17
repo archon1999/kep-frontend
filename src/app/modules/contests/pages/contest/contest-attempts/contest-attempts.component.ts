@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { Attempt } from '@problems/models/attempts.models';
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

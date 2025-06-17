@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
 import { Blog } from '../../blog.interfaces';
 import { BlogService } from '../../blog.service';

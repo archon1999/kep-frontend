@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
-import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ContestsService } from '@contests/contests.service';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { Contest } from '@contests/models/contest';

@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { fadeInLeftOnEnterAnimation, fadeInUpOnEnterAnimation } from 'angular-animations';
 import { CoreCommonModule } from '@core/common.module';
 import { Course } from '@courses/interfaces';
 import { NgbRatingModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';

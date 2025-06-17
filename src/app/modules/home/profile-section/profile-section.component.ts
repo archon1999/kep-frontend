@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { fadeInOnEnterAnimation } from 'angular-animations';
 import { AuthService, AuthUser } from '@auth';
 import { UsersApiService } from '@users/users-api.service';
 import { Subject } from 'rxjs';

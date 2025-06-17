@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { fadeInOnEnterAnimation } from 'angular-animations';
 import { CoreCommonModule } from '@core/common.module';
 import { ProjectCardComponent } from '@projects/ui/components/project-card/project-card.component';
 import { BaseLoadComponent } from '@app/common';

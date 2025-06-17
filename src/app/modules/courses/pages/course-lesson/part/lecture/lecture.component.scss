@@ -4,10 +4,6 @@ part-lecture {
   a {
     color: var(--primary) !important;
     font-weight: 600 !important;
-
-    @include dark-layout {
-      color: lighten(var(--primary), 20) !important;
-    }
   }
 
   li {
@@ -18,10 +14,6 @@ part-lecture {
       font-weight: 600;
       margin-right: 0.5rem;
       font-size: 16px;
-
-      @include dark-layout {
-        color: lighten(var(--primary), 20) !important;
-      }
     }
   }
 

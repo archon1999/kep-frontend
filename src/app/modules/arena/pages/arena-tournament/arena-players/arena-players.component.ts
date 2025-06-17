@@ -11,7 +11,6 @@ import { BaseTablePageComponent } from '@app/common';
 import { interval, Observable } from 'rxjs';
 import { PageResult } from '@app/common/classes/page-result';
 import { takeUntil } from 'rxjs/operators';
-import { fadeInOnEnterAnimation } from 'angular-animations';
 
 @Component({
   selector: 'arena-players',

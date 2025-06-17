@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ApiService } from '@core/data-access/api.service';
 import { AuthUser } from '@auth';
 import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';

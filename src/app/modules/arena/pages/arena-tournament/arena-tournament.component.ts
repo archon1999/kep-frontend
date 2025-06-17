@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { fadeInLeftOnEnterAnimation, fadeInOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { Arena, ArenaPlayerStatistics, ArenaStatistics, ArenaStatus } from '../../arena.models';
 import { ArenaService } from '../../arena.service';
 import { CoreCommonModule } from '@core/common.module';

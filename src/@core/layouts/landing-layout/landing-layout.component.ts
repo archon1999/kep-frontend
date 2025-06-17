@@ -1,5 +1,4 @@
-import { Component, ElementRef, Renderer2 } from '@angular/core';
-import { ViewportScroller } from '@angular/common';
+import { Component } from '@angular/core';
 import { FooterComponent } from "@core/components/footer/footer.component";
 import { RouterOutlet } from "@angular/router";
 

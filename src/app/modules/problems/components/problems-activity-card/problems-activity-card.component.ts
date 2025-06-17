@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { fadeInOnEnterAnimation } from 'angular-animations';
 import { CoreCommonModule } from '@core/common.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';

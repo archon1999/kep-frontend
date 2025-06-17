@@ -1,7 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { debounceTime, takeUntil, tap } from 'rxjs/operators';
 import { Problem, ProblemsFilter } from '@problems/models/problems.models';
-import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ProblemsFilterService } from '@problems/services/problems-filter.service';
 import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
 import { ProblemDifficultyColorPipe } from '@problems/pipes/problem-difficulty-color.pipe';

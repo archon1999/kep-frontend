@@ -8,7 +8,6 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { AccountSettingsService } from '@app/modules/account-settings/account-settings.service';
 import { BaseLoadComponent } from '@app/common';
 import { Observable } from 'rxjs';
-import { repeaterAnimation } from '@app/modules/account-settings/skills/technologies/repeater-animation';
 
 @Component({
   selector: 'educations',

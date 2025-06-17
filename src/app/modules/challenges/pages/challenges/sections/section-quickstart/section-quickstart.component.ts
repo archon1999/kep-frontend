@@ -8,7 +8,6 @@ import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.m
 import { getResourceById, Resources } from '@app/resources';
 import { BaseUserComponent } from '@app/common/classes/base-user.component';
 import { Router } from '@angular/router';
-import { fadeInOnEnterAnimation } from 'angular-animations';
 import { ChallengeCall, NewChallengeCall } from '@challenges/interfaces';
 import { NgxSliderModule, Options } from '@angular-slider/ngx-slider';
 import { Chapter } from "@testing/domain";

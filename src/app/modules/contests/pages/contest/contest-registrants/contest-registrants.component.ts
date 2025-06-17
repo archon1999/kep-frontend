@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BasePageComponent } from '@app/common/classes/base-page.component';
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
-import { fadeInLeftOnEnterAnimation, fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ContestsService } from '@contests/contests.service';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';

@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { devIcons } from './dev-icons';
-import { repeaterAnimation } from '@app/modules/account-settings/skills/technologies/repeater-animation';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { TranslatePipe } from '@ngx-translate/core';

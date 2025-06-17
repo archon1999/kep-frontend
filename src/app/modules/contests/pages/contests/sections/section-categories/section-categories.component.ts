@@ -1,5 +1,4 @@
 import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
-import { fadeInRightOnEnterAnimation } from 'angular-animations';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContestsService } from '@contests/contests.service';

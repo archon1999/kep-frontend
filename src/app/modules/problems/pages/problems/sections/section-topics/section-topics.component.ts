@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { fadeInRightOnEnterAnimation } from 'angular-animations';
 import { ProblemsFilterService } from 'app/modules/problems/services/problems-filter.service';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { TranslateModule } from '@ngx-translate/core';

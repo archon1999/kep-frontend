@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { fadeInOnEnterAnimation } from 'angular-animations';
 import { Observable } from 'rxjs';
 import { TestingApiService } from '@testing/data-access/api/testing-api.service';
 import { Test } from '@testing/domain/entities/test.entity';

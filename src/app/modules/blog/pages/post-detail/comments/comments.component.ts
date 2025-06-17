@@ -4,7 +4,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Blog, BlogPostComment } from '../../../blog.interfaces';
 import { BlogService } from '../../../blog.service';
-import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';

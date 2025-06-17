@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Duel } from "@app/modules/duels/duels.interfaces";
 import { ContestantViewModule } from "@contests/components/contestant-view/contestant-view.module";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";

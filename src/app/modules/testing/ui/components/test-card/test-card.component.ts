@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { fadeInLeftOnEnterAnimation } from 'angular-animations';
 import { Test } from "@testing/domain";
 
 @Component({

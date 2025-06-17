@@ -8,7 +8,7 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { bounceAnimation, fadeInOnEnterAnimation, shakeAnimation } from 'angular-animations';
+import { bounceAnimation, shakeAnimation } from 'angular-animations';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { Attempt } from '../../../models/attempts.models';
 import { Contest } from '@contests/models/contest';

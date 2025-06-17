@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { fadeInOnEnterAnimation, fadeInUpOnEnterAnimation } from 'angular-animations';
 import { AuthService, AuthUser } from '@auth';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

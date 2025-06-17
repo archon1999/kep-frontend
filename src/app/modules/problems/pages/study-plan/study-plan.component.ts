@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { fadeInOnEnterAnimation } from 'angular-animations';
 import { TitleService } from 'app/shared/services/title.service';
 import { StudyPlan } from '../../models/problems.models';
 import { ProblemsApiService } from '../../services/problems-api.service';
