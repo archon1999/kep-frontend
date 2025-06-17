@@ -21,9 +21,6 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
     KepDeltaComponent,
     KepCardComponent,
   ],
-  animations: [
-    fadeInOnEnterAnimation()
-  ]
 })
 export class ChallengeCardComponent {
   @Input() challenge: Challenge;

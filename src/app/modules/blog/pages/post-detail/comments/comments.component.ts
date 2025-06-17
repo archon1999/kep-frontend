@@ -15,10 +15,6 @@ import { NgIf } from '@angular/common';
   selector: 'comments',
   templateUrl: './comments.component.html',
   styleUrls: ['./comments.component.scss'],
-  animations: [
-    fadeInOnEnterAnimation(),
-    fadeOutOnLeaveAnimation(),
-  ],
   standalone: true,
   imports: [
     KepCardComponent,
