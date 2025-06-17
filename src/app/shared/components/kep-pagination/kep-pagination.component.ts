@@ -30,6 +30,7 @@ export class KepPaginationComponent {
   @Input() ellipses = false;
   @Input() boundaryLinks = true;
   @Input() customClass = 'mt-2';
+  @Input() disabled = false;
 
   @Output() pageChange = new EventEmitter<number>;
   @Output() pageSizeChange = new EventEmitter<number>;

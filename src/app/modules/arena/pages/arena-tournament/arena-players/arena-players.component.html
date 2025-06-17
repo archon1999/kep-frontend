@@ -53,6 +53,7 @@
           [color]="'warning'"
           [pageOptions]="pageOptions"
           (pageSizeChange)="pageSizeChange($event)"
+          [disabled]="isLoading"
           (pageChange)="pageChange($event)">
         </kep-pagination>
       </div>
