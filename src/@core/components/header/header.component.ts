@@ -14,6 +14,7 @@ import { HeaderNotificationsComponent } from "@core/components/header/notificati
 import { HeaderKepcoinComponent } from "@core/components/header/kepcoin/header-kepcoin.component";
 import { HeaderDailyTasksComponent } from "@core/components/header/daily-tasks/header-daily-tasks.component";
 import { LanguagesComponent } from "@core/components/languages/languages.component";
+import { LogoComponent } from "@shared/components/logo/logo.component";
 
 @Component({
   selector: 'app-header',
@@ -29,7 +30,8 @@ import { LanguagesComponent } from "@core/components/languages/languages.compone
     NgbDropdown,
     NgbDropdownToggle,
     NgbDropdownItem,
-    LanguagesComponent
+    LanguagesComponent,
+    LogoComponent
   ]
 })
 export class HeaderComponent extends BaseComponent {

@@ -4,6 +4,7 @@ import { KepIconComponent } from "@shared/components/kep-icon/kep-icon.component
 import { RouterLink } from "@angular/router";
 import { TranslatePipe } from "@ngx-translate/core";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { LogoComponent } from "@shared/components/logo/logo.component";
 
 
 @Component({
@@ -16,7 +17,8 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
     KepIconComponent,
     RouterLink,
     TranslatePipe,
-    KepCardComponent
+    KepCardComponent,
+    LogoComponent
   ]
 })
 export class FooterComponent {

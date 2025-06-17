@@ -6,6 +6,7 @@ import { tap } from 'rxjs/operators';
 import { CoreCommonModule } from '@core/common.module';
 import { Contest } from '@contests/models/contest';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { LogoComponent } from "@shared/components/logo/logo.component";
 
 @Component({
   selector: 'app-contest-og-image',
@@ -15,6 +16,7 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
   imports: [
     CoreCommonModule,
     KepCardComponent,
+    LogoComponent,
   ],
   encapsulation: ViewEncapsulation.None
 })
