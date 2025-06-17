@@ -3,15 +3,15 @@
 .bg-contest {
   background-size: 200% auto;
   transition: all 0.2s ease;
-  box-shadow: 0 0 5px $primary;
-  background: linear-gradient(mix(black, $primary, 70), mix(black, $primary, 50)) !important;
+  box-shadow: 0 0 5px var(--primary);
+  background: linear-gradient(color-mix(in srgb, black 30%, var(--primary) 70%), color-mix(in srgb, black 50%, var(--primary) 50%)) !important;
   background-repeat: repeat;
   border: none;
   border-radius: 0px;
 }
 
 .card-footer {
-  border-color: $primary !important;
+  border-color: var(--primary) !important;
 }
 
 .bg-contest:hover {

@@ -172,19 +172,19 @@
 }
 
 .text-primary {
-  color: $primary !important;
+  color: var(--primary) !important;
   opacity: 1;
 
   &.text-opacity-75 {
-    color: $primary-08 !important;
+    color: var(--primary08) !important;
   }
 
   &.text-opacity-25 {
-    color: $primary-03 !important;
+    color: var(--primary03) !important;
   }
 
   &.text-opacity-50 {
-    color: $primary-05 !important;
+    color: var(--primary05) !important;
   }
 }
 
@@ -596,14 +596,14 @@ a {
 
 /* Start::Colored Links */
 .link-primary {
-  color: $primary !important;
+  color: var(--primary) !important;
   text-decoration-color: rgba(var(--primary-rgb), var(--bs-link-underline-opacity, 1)) !important;
 
   &:hover,
   &:focus,
   &:active {
     text-decoration-color: rgba(var(--primary-rgb), var(--bs-link-underline-opacity, 1)) !important;
-    color: $primary !important;
+    color: var(--primary) !important;
   }
 }
 
@@ -771,16 +771,16 @@ a {
   }
 
   &.primary {
-    background-color: $primary-01;
-    border-inline-start: 2px solid $primary;
-    border-block-start: 2px solid $primary;
+    background-color: var(--primary01);
+    border-inline-start: 2px solid var(--primary);
+    border-block-start: 2px solid var(--primary);
 
     .quote-icon i {
-      color: $primary;
+      color: var(--primary);
     }
 
     &:before {
-      color: $primary-01;
+      color: var(--primary01);
     }
   }
 
@@ -916,7 +916,7 @@ a {
 
 /* Start::Text gradient */
 .text-gradient {
-  background: $primary-gradient;
+  background: var(--primary)-gradient;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: rgba(255, 255, 255, 0.001);

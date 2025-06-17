@@ -1,8 +1,8 @@
 /* Start::Popovers */
 .custom-popover {
   --bs-popover-max-width: 12.5rem;
-  --bs-popover-border-color: #{$primary};
-  --bs-popover-header-bg: #{$primary};
+  --bs-popover-border-color: #{var(--primary)};
+  --bs-popover-header-bg: #{var(--primary)};
   --bs-popover-header-color: #{$white};
   --bs-popover-body-padding-x: 1rem;
   --bs-popover-body-padding-y: 0.5rem;
@@ -74,7 +74,7 @@
 }
 
 .header-primary {
-  @include pop-header-color($primary);
+  @include pop-header-color(var(--primary));
 }
 
 .header-secondary {
@@ -143,7 +143,7 @@
 }
 
 .popover-primary {
-  @include pop-bgcolor($primary);
+  @include pop-bgcolor(var(--primary));
 }
 
 .popover-secondary {
@@ -176,18 +176,18 @@
 
 .popover-primary-light {
   &.popover {
-    border: 1px solid $primary-01;
+    border: 1px solid var(--primary01);
 
     .popover-header {
-      background-color: $primary-01;
-      border-block-end: 1px solid $primary-01;
-      color: $primary;
+      background-color: var(--primary01);
+      border-block-end: 1px solid var(--primary01);
+      color: var(--primary);
       border-radius: 0;
     }
 
     .popover-body {
-      background-color: $primary-01;
-      color: $primary;
+      background-color: var(--primary01);
+      color: var(--primary);
     }
   }
 
@@ -195,21 +195,21 @@
   &.bs-popover-top > .popover-arrow::after,
   &.bs-popover-auto[data-popper-placement^="top"] > .popover-arrow::before,
   &.bs-popover-top > .popover-arrow::before {
-    border-top-color: $primary-01;
+    border-top-color: var(--primary01);
   }
 
   &.bs-popover-auto[data-popper-placement^="right"] > .popover-arrow::after,
   &.bs-popover-end > .popover-arrow::after,
   &.bs-popover-auto[data-popper-placement^="right"] > .popover-arrow::before,
   &.bs-popover-end > .popover-arrow::before {
-    border-right-color: $primary-01;
+    border-right-color: var(--primary01);
   }
 
   &.bs-popover-auto[data-popper-placement^="left"] > .popover-arrow::after,
   &.bs-popover-start > .popover-arrow::after,
   &.bs-popover-auto[data-popper-placement^="left"] > .popover-arrow::before,
   &.bs-popover-start > .popover-arrow::before {
-    border-left-color: $primary-01;
+    border-left-color: var(--primary01);
   }
 
   &.bs-popover-auto[data-popper-placement^="bottom"] > .popover-arrow::after,
@@ -218,7 +218,7 @@
   &.bs-popover-bottom > .popover-arrow::before,
   &.bs-popover-auto[data-popper-placement^="bottom"] .popover-header::before,
   &.bs-popover-bottom .popover-header::before {
-    border-bottom-color: $primary-01;
+    border-bottom-color: var(--primary01);
   }
 }
 

@@ -7,7 +7,7 @@
     margin-bottom: 0;
 
     .card-body {
-      background: mix(black, $primary, 90);
+      background: color-mix(in srgb, black 90%, var(--primary) 10%);
     }
   }
 

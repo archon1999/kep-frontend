@@ -13,11 +13,11 @@
   border-radius: 10px;
   background-size: 200% auto;
 
-  background-image: linear-gradient(to left, mix(black, $primary, 10), mix(white, $primary, 10));
-  // box-shadow: 0 0 5px $primary !important;
+  background-image: var(--primary);
+  // box-shadow: 0 0 5px var(--primary) !important;
 
   @include dark-layout {
-    background: rgba($primary, 0.5);
+    background: rgba(var(--primary-rgb), 0.5);
   }
 
   &:hover {

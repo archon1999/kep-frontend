@@ -57,8 +57,8 @@
   }
 
   #connections .shaddow{opacity:0.5;}
-  #connections .st0{stroke:rgba($primary, 0.1);}
-  #connections .st1{stroke:rgba($primary, 0.1);}
+  #connections .st0{stroke:rgba(var(--primary-rgb), 0.1);}
+  #connections .st1{stroke:rgba(var(--primary-rgb), 0.1);}
 
   #connections .st0, #connections .st1{
     fill:none;
@@ -292,7 +292,7 @@
 
 .brackets-viewer h3 {
   text-align: center;
-  background: $primary !important;
+  background: var(--primary) !important;
   color: #fff;
   font-size: 1.1em;
   padding: 10px 0px;
@@ -303,18 +303,18 @@
 }
 
 .dark.layout .brackets-viewer h3 {
-  background: $primary-01 !important;
+  background: var(--primary01) !important;
 }
 
 .brackets-viewer .participant {
   display: flex;
   justify-content: space-between;
   padding: 2px var(--match-horizontal-padding);
-  background: $primary-01 !important;
+  background: var(--primary01) !important;
 }
 
 .brackets-viewer .participant {
-  background: $primary-01 !important;
+  background: var(--primary01) !important;
   border: none !important;
   color: #fff !important;
 }

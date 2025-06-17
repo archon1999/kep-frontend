@@ -38,14 +38,14 @@
 
                 &:hover,
                 &.active {
-                  color: $primary;
+                  color: var(--primary);
 
                   .side-menu__angle {
-                    color: $primary !important;
+                    color: var(--primary) !important;
                   }
 
                   &:before {
-                    border-color: $primary !important;
+                    border-color: var(--primary) !important;
                   }
                 }
               }
@@ -102,7 +102,7 @@
         }
 
         .side-menu__item:hover .side-menu__angle {
-          color: $primary !important;
+          color: var(--primary) !important;
         }
       }
 
@@ -115,8 +115,8 @@
         .side-menu__item {
           &.active,
           &:hover {
-            background-color: $primary;
-            color: $primary;
+            background-color: var(--primary);
+            color: var(--primary);
 
             .side-menu__label,
             .side-menu__angle {
@@ -189,7 +189,7 @@
 
       &.active,
       &:hover {
-        color: $primary !important;
+        color: var(--primary) !important;
       }
     }
   }
@@ -199,18 +199,18 @@
       font-weight: normal;
 
       .side-menu__label {
-        color: $primary !important;
+        color: var(--primary) !important;
       }
 
       .side-menu__angle {
-        color: $primary !important;
+        color: var(--primary) !important;
       }
     }
   }
 
   .accordion.accordion-primary .accordion-button.collapsed:after {
-    background-color: $primary-01;
-    color: $primary;
+    background-color: var(--primary01);
+    color: var(--primary);
   }
 
   .featur-icon {
@@ -254,7 +254,7 @@
     // height: 0.35rem;
     // border: 0px;
     // border-radius: 1.0625rem;
-    // background-color: $primary;
+    // background-color: var(--primary);
     // inset-block-start: 12px !important;
   }
 
@@ -284,7 +284,7 @@
 
           &:hover {
             .side-menu__angle {
-              color: $primary !important;
+              color: var(--primary) !important;
             }
           }
         }
@@ -305,7 +305,7 @@
 
         &.app-sidebar .side-menu__item:hover {
           .side-menu__label {
-            color: $primary !important;
+            color: var(--primary) !important;
           }
         }
       }
@@ -500,7 +500,7 @@
     width: 37.5rem;
     padding: 0.5rem;
     border-radius: $default-radius;
-    background-color: $primary-01;
+    background-color: var(--primary01);
   }
 
   .brand-img-white {
@@ -573,10 +573,10 @@
   }
 
   .landing-testimonials .swiper-pagination-bullet {
-    background: $primary !important;
+    background: var(--primary) !important;
 
     &:active {
-      background: $primary !important;
+      background: var(--primary) !important;
     }
   }
 
@@ -599,7 +599,7 @@
   }
 
   .section-bg {
-    background-color: $primary-01;
+    background-color: var(--primary01);
   }
 
   .icon-shadow-warning {
@@ -782,7 +782,7 @@
 }
 
 .bg-banner {
-  background-color: $primary-06;
+  background-color: var(--primary06);
   color: #fff;
   position: relative;
   overflow: hidden;
@@ -859,7 +859,7 @@
     height: 4rem;
     inset-inline-end: -1.5rem;
     inset-block-end: -1.5rem;
-    background-color: $primary-01;
+    background-color: var(--primary01);
     border-radius: 50%;
   }
 
@@ -928,7 +928,7 @@ li:not(:first-child)::before {
 }
 
 .job-icon-shadow {
-  text-shadow: 5px 6px $primary-01;
+  text-shadow: 5px 6px var(--primary01);
 }
 
 .job-category-icon {
@@ -967,7 +967,7 @@ li:not(:first-child)::before {
 
 .job-faqs-section {
   .accordion.accordion-primary .accordion-button.collapsed {
-    background-color: $primary-01;
+    background-color: var(--primary01);
   }
 }
 
@@ -1000,7 +1000,7 @@ li:not(:first-child)::before {
 }
 
 .landing-contact-info {
-  background-color: $primary-01;
+  background-color: var(--primary01);
 }
 
 .card.custom-card.job-category-card {

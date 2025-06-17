@@ -55,12 +55,12 @@
 
 /* Start:: navbar transparent color schemes */
 .navbar-primary-transparent {
-  background-color: $primary-01;
+  background-color: var(--primary01);
   color: var(--default-text-color);
 
   .nav-link {
     &.active {
-      background-color: $primary;
+      background-color: var(--primary);
       color: $white !important;
     }
 
@@ -70,7 +70,7 @@
   }
 
   .form-control:focus {
-    border-color: $primary;
+    border-color: var(--primary);
   }
 }
 
@@ -198,7 +198,7 @@
 
 /* Start:: navbar solid color schemes */
 .navbar-primary {
-  background-color: $primary;
+  background-color: var(--primary);
   color: $black;
 
   .nav-link {

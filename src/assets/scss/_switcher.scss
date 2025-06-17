@@ -560,7 +560,7 @@
       &[data-menu-styles="color"][data-nav-style="menu-click"][data-toggled="menu-click-closed"],
       &[data-menu-styles="color"][data-nav-style="menu-hover"][data-toggled="menu-hover-closed"] {
         .app-sidebar .main-sidebar-header {
-          background-color: $primary;
+          background-color: var(--primary);
         }
       }
 
@@ -810,13 +810,13 @@
 
   &[data-menu-styles="color"] {
     .app-sidebar:before {
-      background-color: $primary;
+      background-color: var(--primary);
       opacity: 0.9;
     }
 
     &[data-vertical-style="doublemenu"] {
       .slide.has-sub .slide-menu {
-        background-color: $primary;
+        background-color: var(--primary);
         background-image: none;
       }
     }
@@ -827,7 +827,7 @@
     &[data-nav-layout="vertical"][data-nav-style="icon-hover"][data-toggled="icon-hover-closed"] {
       .app-sidebar {
         .slide.has-sub .slide-menu {
-          background-color: $primary;
+          background-color: var(--primary);
           background-image: none;
         }
       }
@@ -836,13 +836,13 @@
 
   &[data-menu-styles="gradient"] {
     .app-sidebar:before {
-      background: linear-gradient(to right, #{$primary} 0%, #FF3DBB 100%);
+      background: linear-gradient(to right, #{var(--primary)} 0%, #FF3DBB 100%);
       opacity: 0.9;
     }
 
     &[data-vertical-style="doublemenu"] {
       .slide.has-sub .slide-menu {
-        background-color: $primary;
+        background-color: var(--primary);
         background-image: none;
       }
     }
@@ -853,7 +853,7 @@
     &[data-nav-layout="vertical"][data-nav-style="icon-hover"][data-toggled="icon-hover-closed"] {
       .app-sidebar {
         .slide.has-sub .slide-menu {
-          background-color: $primary;
+          background-color: var(--primary);
           background-image: none;
         }
       }
@@ -1133,7 +1133,7 @@
         position: absolute;
         width: 10px;
         height: 100%;
-        background: linear-gradient(to right, transparent, $primary);
+        background: linear-gradient(to right, transparent, var(--primary));
         inset-inline-end: 0;
       }
     }
@@ -1151,7 +1151,7 @@
         position: absolute;
         width: 10px;
         height: 100%;
-        background: linear-gradient(to left, transparent, $primary);
+        background: linear-gradient(to left, transparent, var(--primary));
         inset-inline-start: 0;
       }
     }
@@ -1169,7 +1169,7 @@
         position: absolute;
         width: 10px;
         height: 100%;
-        background: linear-gradient(to right, transparent, $primary);
+        background: linear-gradient(to right, transparent, var(--primary));
         inset-inline-end: 0;
       }
     }
@@ -1187,7 +1187,7 @@
         position: absolute;
         width: 10px;
         height: 100%;
-        background: linear-gradient(to left, transparent, $primary);
+        background: linear-gradient(to left, transparent, var(--primary));
         inset-inline-start: 0;
       }
     }
@@ -1342,7 +1342,7 @@
         position: absolute;
         width: 15px;
         height: 3px;
-        background-color: $primary;
+        background-color: var(--primary);
         inset-inline-start: 0;
         inset-block-end: 0;
       }
@@ -1398,7 +1398,7 @@
       position: absolute;
       width: 50px;
       height: 3px;
-      background-color: $primary-07;
+      background-color: var(--primary07);
       inset-block-start: 0;
       left: 0;
       right: 0;
@@ -1411,7 +1411,7 @@
       position: absolute;
       width: 50px;
       height: 3px;
-      background-color: $primary-07;
+      background-color: var(--primary07);
       inset-block-end: 0;
       left: 0;
       right: 0;
@@ -1554,7 +1554,7 @@
         position: absolute;
         width: 10px;
         height: 1px;
-        background: $primary;
+        background: var(--primary);
         inset-inline-start: 3px;
         inset-block-start: 3px;
       }
@@ -1564,7 +1564,7 @@
         position: absolute;
         width: 1px;
         height: 10px;
-        background: $primary;
+        background: var(--primary);
         inset-inline-start: 3px;
         inset-block-start: 3px;
       }
@@ -1580,7 +1580,7 @@
         position: absolute;
         width: 10px;
         height: 1px;
-        background: $primary;
+        background: var(--primary);
         inset-inline-end: 3px;
         inset-block-start: 3px;
       }
@@ -1590,7 +1590,7 @@
         position: absolute;
         width: 1px;
         height: 10px;
-        background: $primary;
+        background: var(--primary);
         inset-inline-end: 3px;
         inset-block-start: 3px;
       }
@@ -1606,7 +1606,7 @@
         position: absolute;
         width: 10px;
         height: 1px;
-        background: $primary;
+        background: var(--primary);
         inset-inline-start: 3px;
         inset-block-end: 3px;
       }
@@ -1616,7 +1616,7 @@
         position: absolute;
         width: 1px;
         height: 10px;
-        background: $primary;
+        background: var(--primary);
         inset-inline-start: 3px;
         inset-block-end: 3px;
       }
@@ -1632,7 +1632,7 @@
         position: absolute;
         width: 10px;
         height: 1px;
-        background: $primary;
+        background: var(--primary);
         inset-inline-end: 3px;
         inset-block-end: 3px;
       }
@@ -1642,7 +1642,7 @@
         position: absolute;
         width: 1px;
         height: 10px;
-        background: $primary;
+        background: var(--primary);
         inset-inline-end: 3px;
         inset-block-end: 3px;
       }
@@ -1654,7 +1654,7 @@
     .app-sidebar,
     .card.custom-card,
     .page-header-breadcrumb {
-      border: 1px solid $primary-01;
+      border: 1px solid var(--primary01);
     }
   }
 }
@@ -1679,7 +1679,7 @@
         position: absolute;
         width: 30px;
         height: 1px;
-        background: $primary-05;
+        background: var(--primary05);
         inset-inline-start: 0;
         inset-block-start: 0;
       }
@@ -1689,7 +1689,7 @@
         position: absolute;
         width: 5px;
         height: 5px;
-        background: $primary-05;
+        background: var(--primary05);
         inset-inline-start: 30px;
         inset-block-start: -2px;
         border-radius: 50%;
@@ -1706,7 +1706,7 @@
         position: absolute;
         width: 30px;
         height: 1px;
-        background: $primary-05;
+        background: var(--primary05);
         inset-inline-end: 0;
         inset-block-start: 0;
       }
@@ -1716,7 +1716,7 @@
         position: absolute;
         width: 5px;
         height: 5px;
-        background: $primary-05;
+        background: var(--primary05);
         inset-inline-end: 30px;
         inset-block-start: -2px;
         border-radius: 50%;
@@ -1733,7 +1733,7 @@
         position: absolute;
         width: 30px;
         height: 1px;
-        background: $primary-05;
+        background: var(--primary05);
         inset-inline-start: 0;
         inset-block-end: 0;
       }
@@ -1743,7 +1743,7 @@
         position: absolute;
         width: 5px;
         height: 5px;
-        background: $primary-05;
+        background: var(--primary05);
         inset-inline-start: 30px;
         inset-block-end: -2px;
         border-radius: 50%;
@@ -1760,7 +1760,7 @@
         position: absolute;
         width: 30px;
         height: 1px;
-        background: $primary-05;
+        background: var(--primary05);
         inset-inline-end: 0;
         inset-block-end: 0;
       }
@@ -1770,7 +1770,7 @@
         position: absolute;
         width: 5px;
         height: 5px;
-        background: $primary-05;
+        background: var(--primary05);
         inset-inline-end: 30px;
         inset-block-end: -2px;
         border-radius: 50%;
@@ -1783,7 +1783,7 @@
     .app-sidebar,
     .card.custom-card,
     .page-header-breadcrumb {
-      border-inline: 1px solid $primary-05;
+      border-inline: 1px solid var(--primary05);
     }
   }
 }
@@ -1951,7 +1951,7 @@
     .app-sidebar,
     .card.custom-card,
     .page-header-breadcrumb {
-      border-inline: 1px solid $primary-05;
+      border-inline: 1px solid var(--primary05);
     }
   }
 }

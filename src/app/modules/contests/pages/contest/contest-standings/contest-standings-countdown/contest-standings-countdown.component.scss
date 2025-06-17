@@ -77,7 +77,7 @@
         }
 
         @include dark-layout {
-          //color: mix(white, $primary, 30);
+          //color: mix(white, var(--primary), 30);
         }
       }
 

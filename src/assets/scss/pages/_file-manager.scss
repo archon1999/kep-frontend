@@ -60,21 +60,21 @@
 
       &:hover {
         div {
-          color: $primary;
+          color: var(--primary);
         }
       }
 
       &.active {
-        background-color: $primary-01;
+        background-color: var(--primary01);
 
         div {
-          color: $primary;
+          color: var(--primary);
         }
       }
 
       div.filemanager-upgrade-storage {
         height: auto;
-        background-color: $primary-01;
+        background-color: var(--primary01);
         border: 1px dashed var(--default-border);
         display: flex;
         align-items: center;
@@ -91,7 +91,7 @@
   .file-format-icon i {
     font-size: 1.75rem;
     padding: 9px;
-    border: 1px solid $primary-01;
+    border: 1px solid var(--primary01);
     width: auto;
     line-height: 1.1;
     margin-block-end: 16px;
@@ -104,7 +104,7 @@
     }
 
     padding: 13px;
-    background-color: $primary-01;
+    background-color: var(--primary01);
   }
 
   .file-details img {

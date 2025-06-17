@@ -8,7 +8,7 @@
       --bg-gradient: #{$background-light};
       --box-shadow: 0 0 5px #{$color};
       --text-color: var(--default-text-color);
-      --bg-light: #{mix(white, $color, 90)};
+      --bg-light: #{color-mix(in srgb, white 90%, var(--primary) 10%)};
 
       .contest-color {
         color: $color !important;
@@ -81,7 +81,7 @@
         }
 
         .tooltip-inner {
-          background-color: mix(black, $color, 30) !important;
+          background-color:color-mix(in srgb, black 30%, var(--primary) 70%) !important;
         }
       }
       // End
@@ -91,7 +91,7 @@
       #{$selector} {
         --bg-gradient: #{$background-dark};
         --box-shadow: 0 0 5px #{$color};
-        --bg-light: #{mix(black, $color, 60)};
+        --bg-light: #{color-mix(in srgb, black 60%, var(--primary) 40%)};
 
         @if $background-dark != false {
           --bg: #{$color-dark};
@@ -127,10 +127,10 @@ $revo-color: #0048dd;
 // Primary color
 @include define-contest-colors(
   $selector: '&',
-  $color: $primary,
-  $color-dark: mix(black, $primary, 20),
-  $background-light: rgba($primary, 0.2),
-  $background-dark: rgba($primary, 0.25),
+  $color: var(--primary-rgb),
+  $color-dark: color-mix(in srgb, black 20%, var(--primary) 80%),
+  $background-light: rgba(var(--primary-rgb), 0.2),
+  $background-dark: rgba(var(--primary-rgb), 0.25),
 );
 
 // Code Golf

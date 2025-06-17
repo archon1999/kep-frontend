@@ -65,19 +65,19 @@
 }
 
 .alert-primary {
-  background-color: $primary-01;
-  color: $primary;
-  border-color: $primary-01;
+  background-color: var(--primary01);
+  color: var(--primary);
+  border-color: var(--primary01);
 
   .alert-link {
-    color: $primary;
+    color: var(--primary);
   }
 
   .btn-close {
-    color: $primary;
+    color: var(--primary);
 
     &.custom-close {
-      @include custom-close($primary);
+      @include custom-close(var(--primary));
     }
   }
 }
@@ -203,7 +203,7 @@
 }
 
 .alert-solid-primary {
-  @include alert-solid-color($primary);
+  @include alert-solid-color(var(--primary));
 }
 
 .alert-solid-secondary {
@@ -250,7 +250,7 @@
 }
 
 .alert-outline-primary {
-  @include outline-alert($primary);
+  @include outline-alert(var(--primary));
 }
 
 .alert-outline-secondary {
@@ -298,7 +298,7 @@
 }
 
 .alert-primary.custom-alert-icon {
-  @include custom-alert($primary);
+  @include custom-alert(var(--primary));
 }
 
 .alert-secondary.custom-alert-icon {
@@ -357,7 +357,7 @@
   }
 
   &.alert-primary {
-    border-block-start: 0.313rem solid $primary;
+    border-block-start: 0.313rem solid var(--primary);
   }
 
   &.alert-secondary {

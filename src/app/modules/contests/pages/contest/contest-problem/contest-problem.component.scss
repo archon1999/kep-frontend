@@ -43,7 +43,6 @@
 
 span.points {
   background: var(--bg) !important;
-  color: var(--text-color);
 }
 
 ::ng-deep span.problem-points {
@@ -53,5 +52,4 @@ span.points {
 
 ::ng-deep span.problem-points.the-best {
   background: var(--bg) !important;
-  color: var(--text-color);
 }

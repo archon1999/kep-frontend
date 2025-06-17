@@ -76,14 +76,14 @@
     &:hover,
     &:focus,
     &:active {
-      color: $primary;
-      background-color: $primary-005;
+      color: var(--primary);
+      background-color: var(--primary005);
     }
   }
 
   &.active {
-    background-color: $primary-005 !important;
-    color: $primary !important;
+    background-color: var(--primary005) !important;
+    color: var(--primary) !important;
   }
 }
 
@@ -166,7 +166,7 @@
   }
 
   &.dropdown-menu-primary {
-    @include dropdown-menu-color($primary);
+    @include dropdown-menu-color(var(--primary));
   }
 
   &.dropdown-menu-secondary {
@@ -197,8 +197,8 @@
       &:focus,
       &:active,
       &.active {
-        background-color: $primary-01 !important;
-        color: $primary;
+        background-color: var(--primary01) !important;
+        color: var(--primary);
       }
     }
   }
@@ -279,8 +279,8 @@
   }
 
   &.dropmenu-light-primary {
-    background-color: $primary-01;
-    @include dropmenu-light-color($primary);
+    background-color: var(--primary01);
+    @include dropmenu-light-color(var(--primary));
   }
 
   &.dropmenu-light-secondary {

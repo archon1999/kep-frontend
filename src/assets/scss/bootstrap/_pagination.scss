@@ -7,11 +7,11 @@
   &:focus {
     box-shadow: none;
     background-color: $light;
-    color: $primary;
+    color: var(--primary);
   }
 
   &:hover {
-    color: $primary;
+    color: var(--primary);
     background-color: $light;
     border-color: var(--default-border);
   }
@@ -19,7 +19,7 @@
 
 .page-item.active .page-link {
   color: #000;
-  background-color: $primary;
+  background-color: var(--primary);
   border-color: var(--default-border);
 }
 
@@ -71,14 +71,14 @@
     &.active {
       .page-link {
         border-radius: $default-radius;
-        background-color: $primary;
+        background-color: var(--primary);
         color: $black;
       }
 
       &:hover {
         .page-link {
           border-radius: $default-radius;
-          background-color: $primary;
+          background-color: var(--primary);
           color: $black;
         }
       }
@@ -111,7 +111,7 @@
     &.active {
       .page-link {
         // background-color: $custom-white;
-        color: $primary;
+        color: var(--primary);
         position: relative;
         font-weight: bold;
 
@@ -122,7 +122,7 @@
           inset-inline-start: 0;
           width: 100%;
           height: 0.1rem;
-          background-color: $primary;
+          background-color: var(--primary);
         }
       }
     }
@@ -159,14 +159,14 @@
 
     &.active {
       .page-link {
-        background-color: $primary;
+        background-color: var(--primary);
         color: $black;
         line-height: 1.25;
       }
 
       &:hover {
         .page-link {
-          background-color: $primary;
+          background-color: var(--primary);
         }
       }
     }
@@ -199,13 +199,13 @@
       .page-link {
         border: 0;
         border-radius: $default-radius;
-        background-color: $primary;
+        background-color: var(--primary);
         color: $black;
       }
 
       &:hover {
         .page-link {
-          background-color: $primary;
+          background-color: var(--primary);
         }
       }
     }

@@ -17,7 +17,7 @@ pre {
 }
 
 .list-group-item:hover {
-  background-color: rgba($primary, 0.05) !important;
+  background-color: rgba(var(--primary-rgb), 0.05) !important;
 }
 
 .fc-list-empty {

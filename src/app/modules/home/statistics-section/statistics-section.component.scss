@@ -6,10 +6,10 @@
   height: 200px;
   margin-left: -2rem;
   width: calc(100% + 2rem);
-  background: linear-gradient(to right, $primary, mix(white, $primary, 15));
+  background: linear-gradient(to right, var(--primary), mix(white, var(--primary), 15));
 
   @include dark-layout() {
-    background: linear-gradient(to right, mix(black, $primary, 65), mix(black, $primary, 60));
+    background: linear-gradient(to right, mix(black, var(--primary), 65), mix(black, var(--primary), 60));
 
     svg {
       stroke: $theme-dark-body-bg !important;

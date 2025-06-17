@@ -17,7 +17,7 @@
 
 .card.custom-card {
   border-radius: 0;
-  background: rgba(255, 255, 255, 0.5) !important;
+  background: rgba(255, 255, 255, 0.8) !important;
   position: relative;
   margin-block-end: 1.5rem;
   width: 100%;
@@ -40,7 +40,7 @@
     flex-wrap: wrap;
     gap: 0.25rem;
     // z-index: 2;
-    color: $primary;
+    color: var(--primary);
 
     .card-title {
       position: relative;
@@ -58,7 +58,7 @@
 
   .card-footer {
     background-color: transparent !important;
-    border-block-start: 1px solid $primary-01;
+    border-block-start: 1px solid var(--primary01);
     padding: 1rem 1.25rem;
     font-size: $default-font-size;
   }
@@ -116,7 +116,7 @@
 
   /* Start::Card Background Colors */
   &.card-bg-primary {
-    background-color: $primary;
+    background-color: var(--primary);
     color: $white;
 
     .card-header {

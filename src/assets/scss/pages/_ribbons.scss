@@ -69,7 +69,7 @@
     content: "";
     inset-inline-end: -0.75rem;
     border-block-start: 0.75rem solid transparent;
-    border-inline-start: 0.75rem solid $primary;
+    border-inline-start: 0.75rem solid var(--primary);
     border-block-end: 0.75rem solid transparent;
     width: 0;
   }
@@ -182,7 +182,7 @@
     content: "";
     inset-inline-start: -0.75rem;
     border-block-start: 0.75rem solid transparent;
-    border-inline-end: 0.75rem solid $primary;
+    border-inline-end: 0.75rem solid var(--primary);
     border-block-end: 0.75rem solid transparent;
     width: 0;
   }
@@ -511,7 +511,7 @@
     height: 0;
     border-inline-start: 1.25rem solid transparent;
     border-inline-end: 1.25rem solid transparent;
-    border-block-start: 0.8125rem solid $primary;
+    border-block-start: 0.8125rem solid var(--primary);
     z-index: 99;
   }
 
@@ -519,7 +519,7 @@
     position: relative;
     display: block;
     text-align: center;
-    background: $primary;
+    background: var(--primary);
     font-size: 0.8125rem;
     line-height: 1;
     padding: 0.625rem 0.3125rem 0.625rem;
@@ -538,7 +538,7 @@
       width: 0.5rem;
       inset-inline-start: -0.3125rem;
       inset-block-start: 0.125rem;
-      background: $primary;
+      background: var(--primary);
     }
 
     &:after {
@@ -547,7 +547,7 @@
       inset-inline-start: -0.5rem;
       inset-block-start: 0;
       border-radius: 0.5rem 0.5rem 0 0;
-      background: $primary;
+      background: var(--primary);
     }
   }
 
@@ -947,8 +947,8 @@
     z-index: 99;
     inset-block-start: 0;
     inset-inline-start: -0.625rem;
-    border-block-start: 1.0625rem solid $primary;
-    border-block-end: 1.0625rem solid $primary;
+    border-block-start: 1.0625rem solid var(--primary);
+    border-block-end: 1.0625rem solid var(--primary);
     border-inline-start: 0.625rem solid transparent;
   }
 
@@ -956,7 +956,7 @@
     position: relative;
     display: block;
     text-align: center;
-    background: $primary;
+    background: var(--primary);
     font-size: 0.8125rem;
     line-height: 1;
     padding: 0.5rem 1.25rem 0.5625rem;
@@ -1032,7 +1032,7 @@
 .fullwidth-primary-ribbons {
   .bar {
     color: $black;
-    background-color: $primary;
+    background-color: var(--primary);
     padding: 0.3125rem;
     text-align: center;
     position: relative;
@@ -1069,13 +1069,13 @@
       }
 
       &:nth-child(2) {
-        border-color: $primary $primary $primary transparent;
+        border-color: var(--primary) var(--primary) var(--primary) transparent;
         inset-inline-start: -1.875rem;
         box-shadow: 1.25rem 1.25rem 1.875rem -0.625rem grey;
       }
 
       &:nth-child(4) {
-        border-color: $primary transparent $primary $primary;
+        border-color: var(--primary) transparent var(--primary) var(--primary);
         inset-inline-end: -1.875rem;
         box-shadow: -1.25rem 1.1875rem 1.875rem -0.625rem grey;
       }

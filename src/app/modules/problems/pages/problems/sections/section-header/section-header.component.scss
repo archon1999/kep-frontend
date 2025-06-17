@@ -1,10 +1,10 @@
 @import 'styles/kep-imports';
 
-$bg-light-1: mix($green, mix(black, $primary, 5), 10);
-$bg-light-2: mix(white, $primary, 15);
-
-$bg-dark-1: mix($green, mix(black, $primary, 80), 25);
-$bg-dark-2: mix(black, $primary, 60);
+//$bg-light-1: mix($green, mix(black, var(--primary), 5), 10);
+//$bg-light-2: mix(white, var(--primary), 15);
+//
+//$bg-dark-1: mix($green, mix(black, var(--primary), 80), 25);
+//$bg-dark-2: mix(black, var(--primary), 60);
 
 //section-header .card {
 //  border: none;
@@ -15,6 +15,6 @@ $bg-dark-2: mix(black, $primary, 60);
 //  }
 //
 //  .card-footer {
-//    border-color: rgba($primary, 0.1);
+//    border-color: rgba(var(--primary-rgb), 0.1);
 //  }
 //}

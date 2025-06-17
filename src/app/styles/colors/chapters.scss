@@ -226,17 +226,17 @@
 // English Listening
 @include define-chapter-colors(
   $id: 24,
-  $gradient-color: linear-gradient(to right, mix(black, $primary, 50), mix(black, $primary, 30)),
-  $gradient-dark-color: linear-gradient(to right, mix(black, $primary, 50), mix(black, $primary, 30)),
-  $color: mix(black, $primary, 30),
-  $dark-color: mix(black, $primary, 30),
+  $gradient-color: linear-gradient(to right, color-mix(in srgb, black 50%, var(--primary) 50%), color-mix(in srgb, black 30%, var(--primary) 70%)),
+  $gradient-dark-color: linear-gradient(to right, color-mix(in srgb, black 50%, var(--primary) 50%), color-mix(in srgb, black 30%, var(--primary) 70%)),
+  $color: color-mix(in srgb, black 30%, var(--primary) 70%),
+  $dark-color: color-mix(in srgb, black 30%, var(--primary) 70%),
 );
 
 // UI/UX
 @include define-chapter-colors(
   $id: 25,
-  $gradient-color: linear-gradient(to right, mix(black, $primary, 50), mix(black, $primary, 30)),
-  $gradient-dark-color: linear-gradient(to right, mix(black, $primary, 50), mix(black, $primary, 30)),
-  $color: mix(black, $primary, 30),
-  $dark-color: mix(black, $primary, 30),
+  $gradient-color: linear-gradient(to right, color-mix(in srgb, black 50%, var(--primary) 50%), color-mix(in srgb, black 30%, var(--primary) 70%)),
+  $gradient-dark-color: linear-gradient(to right, color-mix(in srgb, black 50%, var(--primary) 50%), color-mix(in srgb, black 30%, var(--primary) 70%)),
+  $color: color-mix(in srgb, black 30%, var(--primary) 70%),
+  $dark-color: color-mix(in srgb, black 30%, var(--primary) 70%),
 );

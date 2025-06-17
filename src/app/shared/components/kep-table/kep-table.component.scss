@@ -12,10 +12,10 @@ kep-table {
   }
 
   tr:hover {
-    background-color: rgba($primary, 0.1) !important;
+    background-color: rgba(var(--primary-rgb), 0.1) !important;
 
     @include dark-layout {
-      background-color: rgba($primary, 0.2) !important;
+      background-color: rgba(var(--primary-rgb), 0.2) !important;
     }
   }
 }

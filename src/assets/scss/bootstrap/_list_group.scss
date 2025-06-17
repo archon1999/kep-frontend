@@ -8,8 +8,8 @@
 
 .list-group-item.active {
   color: $black !important;
-  background-color: $primary !important;
-  border-color: $primary;
+  background-color: var(--primary) !important;
+  border-color: var(--primary);
 }
 
 .list-group-item {
@@ -30,14 +30,14 @@
 }
 
 .list-group-item-primary {
-  color: $primary;
-  background-color: $primary-01;
+  color: var(--primary);
+  background-color: var(--primary01);
 
   &.list-group-item-action {
     &:focus,
     &:hover {
-      color: $primary;
-      background-color: $primary-02;
+      color: var(--primary);
+      background-color: var(--primary02);
     }
   }
 }
@@ -134,9 +134,9 @@
 }
 
 .list-item-solid-primary {
-  background-color: $primary;
+  background-color: var(--primary);
   color: $white;
-  border-color: $primary;
+  border-color: var(--primary);
 }
 
 .list-item-solid-secondary {

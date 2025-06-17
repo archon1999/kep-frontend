@@ -91,7 +91,7 @@
 .btn-primary.active:focus,
 .btn-primary.show:focus,
 .btn-primary:active:focus {
-  box-shadow: 0 .25rem 1rem $primary-05;
+  box-shadow: 0 .25rem 1rem var(--primary05);
 }
 
 .btn-check:active + .btn-primary,
@@ -99,8 +99,8 @@
 .btn-primary.active,
 .btn-primary.show,
 .btn-primary:active {
-  background-color: $primary !important;
-  border-color: $primary !important;
+  background-color: var(--primary) !important;
+  border-color: var(--primary) !important;
 }
 
 /* btn-primary ends */
@@ -564,8 +564,8 @@
 .btn-primary.disabled,
 .btn-primary:disabled {
   color: $white;
-  background-color: $primary;
-  border-color: $primary;
+  background-color: var(--primary);
+  border-color: var(--primary);
 }
 
 /* btn-primary-disabled end */
@@ -618,7 +618,7 @@
 .btn-primary-transparent.active:focus,
 .btn-primary-transparent.show:focus,
 .btn-primary-transparent:active:focus {
-  box-shadow: 0 .25rem 1rem $primary-05;
+  box-shadow: 0 .25rem 1rem var(--primary05);
 }
 
 .btn-check:active + .btn-primary-transparent,
@@ -626,8 +626,8 @@
 .btn-primary-transparent.active,
 .btn-primary-transparent.show,
 .btn-primary-transparent:active {
-  background-color: $primary;
-  border-color: $primary-01;
+  background-color: var(--primary);
+  border-color: var(--primary01);
   color: $black;
 }
 
@@ -912,15 +912,15 @@
 .btn-bd-primary {
   --bs-btn-font-weight: 400;
   --bs-btn-color: #fff;
-  --bs-btn-bg: #{$primary};
-  --bs-btn-border-color: #{$primary};
+  --bs-btn-bg: #{var(--primary)};
+  --bs-btn-border-color: #{var(--primary)};
   --bs-btn-border-radius: .5rem;
-  --bs-btn-hover-color: #{$primary};
-  --bs-btn-hover-bg: rgba(#{$primary}, 0.9);
-  --bs-btn-hover-border-color: rgba(#{$primary}, 0.9);
-  --bs-btn-active-color: #{$primary};
-  --bs-btn-active-bg: rgba(#{$primary}, 0.9);
-  --bs-btn-active-border-color: rgba(#{$primary}, 0.9);
+  --bs-btn-hover-color: #{var(--primary)};
+  --bs-btn-hover-bg: rgba(#{var(--primary)}, 0.9);
+  --bs-btn-hover-border-color: rgba(#{var(--primary)}, 0.9);
+  --bs-btn-active-color: #{var(--primary)};
+  --bs-btn-active-bg: rgba(#{var(--primary)}, 0.9);
+  --bs-btn-active-border-color: rgba(#{var(--primary)}, 0.9);
 }
 
 /* End::button list */
@@ -1018,7 +1018,7 @@
 }
 
 .btn-check:checked + .btn-outline-primary:focus {
-  box-shadow: 0 .25rem 1rem rgba($primary, 0.5);
+  box-shadow: 0 .25rem 1rem rgba(var(--primary-rgb), 0.5);
 }
 
 .btn-check:checked + .btn-outline-secondary:focus {
@@ -1055,8 +1055,8 @@
 
 .btn-check:focus + .btn.btn-outline-primary {
   color: $white;
-  background-color: $primary;
-  border-color: $primary;
+  background-color: var(--primary);
+  border-color: var(--primary);
   box-shadow: none;
 }
 
@@ -1076,15 +1076,15 @@
 /* Start:: Light Buttons */
 .btn {
   &.btn-primary-light {
-    background-color: $primary-01;
-    color: $primary;
+    background-color: var(--primary01);
+    color: var(--primary);
 
     &:hover,
     &:focus,
     &:active {
-      background-color: $primary;
+      background-color: var(--primary);
       color: #000;
-      border-color: $primary;
+      border-color: var(--primary);
     }
   }
 
@@ -1198,7 +1198,7 @@
 /* Start:: Gradient Buttons */
 .btn {
   &.btn-primary-gradient {
-    background: $primary-gradient;
+    background: var(--primary)-gradient;
     color: $white !important;
     border: 0;
 
@@ -1294,12 +1294,12 @@
 .btn {
   &.btn-primary-ghost {
     background-color: transparent;
-    color: $primary;
-    border: 1px solid $primary;
+    color: var(--primary);
+    border: 1px solid var(--primary);
 
     &:active {
-      color: $primary;
-      border: 1px solid $primary;
+      color: var(--primary);
+      border: 1px solid var(--primary);
     }
   }
 
@@ -1628,7 +1628,7 @@
 /* Start:: Button Borders */
 .btn-border-down {
   &.btn-primary-light {
-    border-block-end: .1875rem solid $primary;
+    border-block-end: .1875rem solid var(--primary);
   }
 
   &.btn-secondary-light {
@@ -1652,7 +1652,7 @@
   }
 
   &.btn-dark-light {
-    border-block-end: .1875rem solid $primary;
+    border-block-end: .1875rem solid var(--primary);
   }
 
   &.btn-teal-light {
@@ -1666,7 +1666,7 @@
 
 .btn-border-start {
   &.btn-primary-light {
-    border-inline-start: .1875rem solid $primary;
+    border-inline-start: .1875rem solid var(--primary);
   }
 
   &.btn-secondary-light {
@@ -1690,7 +1690,7 @@
   }
 
   &.btn-dark-light {
-    border-inline-start: .1875rem solid $primary;
+    border-inline-start: .1875rem solid var(--primary);
   }
 
   &.btn-teal-light {
@@ -1704,7 +1704,7 @@
 
 .btn-border-end {
   &.btn-primary-light {
-    border-inline-end: .1875rem solid $primary;
+    border-inline-end: .1875rem solid var(--primary);
   }
 
   &.btn-secondary-light {
@@ -1728,7 +1728,7 @@
   }
 
   &.btn-dark-light {
-    border-inline-end: .1875rem solid $primary;
+    border-inline-end: .1875rem solid var(--primary);
   }
 
   &.btn-teal-light {
@@ -1742,7 +1742,7 @@
 
 .btn-border-top {
   &.btn-primary-light {
-    border-block-start: .1875rem solid $primary;
+    border-block-start: .1875rem solid var(--primary);
   }
 
   &.btn-secondary-light {
@@ -1766,7 +1766,7 @@
   }
 
   &.btn-dark-light {
-    border-block-start: .1875rem solid $primary;
+    border-block-start: .1875rem solid var(--primary);
   }
 
   &.btn-teal-light {

@@ -106,7 +106,7 @@
     transition: all ease 0.05s;
     position: relative;
     padding: .5rem 9px;
-    background-color: $primary-005;
+    background-color: var(--primary005);
   }
 
   .dropdown-toggle {
@@ -132,10 +132,10 @@
       align-items: center;
 
       &:hover {
-        color: $primary;
+        color: var(--primary);
 
         i {
-          color: $primary;
+          color: var(--primary);
           opacity: 1;
         }
       }
@@ -251,7 +251,7 @@
   }
 
   .input-group {
-    border: 2px solid $primary;
+    border: 2px solid var(--primary);
     border-radius: 0.25rem;
 
     i {
@@ -608,7 +608,7 @@
 
 .app-header-nav-tabs {
   .nav-link {
-    border: 1px solid $primary-01;
+    border: 1px solid var(--primary01);
   }
 }
 

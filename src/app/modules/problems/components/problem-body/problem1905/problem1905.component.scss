@@ -1,7 +1,7 @@
 @import 'styles/kep-imports';
 
-$background: mix(black, $primary, 90);
-$tile-color: $primary;
+$background: color-mix(in srgb, black 90%, var(--primary) 10%);
+$tile-color: var(--primary);
 $color: #efefef;
 
 #list {

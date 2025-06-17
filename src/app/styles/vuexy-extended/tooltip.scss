@@ -6,7 +6,7 @@
 
 .tooltip-primary .tooltip-inner {
   color: white;
-  background-color: mix(white, $primary, 20);
+  background-color: rgba(var(--primary-rgb), 0.8);
 }
 
 .tooltip-success .tooltip-inner {

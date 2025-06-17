@@ -5,7 +5,6 @@
 @import 'scss/variables';
 
 $theme-dark-body-bg: '#fff';
-$primary: rgb(0, 255, 190);
 
 @mixin dark-layout() {
   ::ng-deep [data-theme-mode="dark"] & {

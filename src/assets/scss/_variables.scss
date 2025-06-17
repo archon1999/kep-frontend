@@ -1,4 +1,4 @@
-$primary: #00ffcd;
+$primary: #{var(--primary)};
 $secondary: rgb(0, 227, 210);
 $warning: rgb(235, 247, 72);
 $info: rgb(72, 247, 238);
@@ -24,16 +24,16 @@ $gray: #8699A3;
 $black: #000;
 $yellow: #fff621;
 
-$primary-01: rgba($primary, 0.1);
-$primary-02: rgba($primary, 0.2);
-$primary-03: rgba($primary, 0.3);
-$primary-04: rgba($primary, 0.4);
-$primary-05: rgba($primary, 0.5);
-$primary-06: rgba($primary, 0.6);
-$primary-07: rgba($primary, 0.7);
-$primary-08: rgba($primary, 0.8);
-$primary-09: rgba($primary, 0.9);
-$primary-005: rgba($primary, 0.05);
+$primary-01: rgba(var(--primary-rgb), 0.1);
+$primary-02: rgba(var(--primary-rgb), 0.2);
+$primary-03: rgba(var(--primary-rgb), 0.3);
+$primary-04: rgba(var(--primary-rgb), 0.4);
+$primary-05: rgba(var(--primary-rgb), 0.5);
+$primary-06: rgba(var(--primary-rgb), 0.6);
+$primary-07: rgba(var(--primary-rgb), 0.7);
+$primary-08: rgba(var(--primary-rgb), 0.8);
+$primary-09: rgba(var(--primary-rgb), 0.9);
+$primary-005: rgba(var(--primary-rgb), 0.05);
 
 $custom-white: #010a07;
 $custom-black: #fff;
@@ -53,12 +53,12 @@ $menu-border-color: rgba(255, 255, 255, 0.1);
 
 $text-muted: rgba(255, 255, 255, 0.9);
 $input-border: rgba(255, 255, 255, 0.1);
-$form-control-bg: rgba($primary, 0.05);
+$form-control-bg: rgba(var(--primary-rgb), 0.05);
 
 $bootstrap-card-border: rgba(255, 255, 255, 0.1);
 $list-hover-focus-bg: rgba(255, 255, 255, 0.1);
 
-$primary-gradient: linear-gradient(to bottom, $primary-08 0%, rgba(0, 0, 0, 0.6) 100%);
+$primary-gradient: linear-gradient(to bottom, var(--primary08) 0%, rgba(0, 0, 0, 0.6) 100%);
 $secondary-gradient: linear-gradient(to bottom right, $secondary 0%, #046866 100%);
 $success-gradient: linear-gradient(to bottom right, $success 0%, #055a43 100%);
 $warning-gradient: linear-gradient(to bottom right, $warning 0%, #a18709 100%);
@@ -116,9 +116,9 @@ $youtube: #FF0000;
 
 :root {
   color-scheme: light;
-  --primary: #{$primary};
-  --body-bg-rgb: 255, 255, 255;
-  --primary-rgb: 0, 255, 205;
+  --primary: #4d4ae8;
+  --body-bg-rgb: 145, 175, 19;
+  --primary-rgb: 77, 74, 232;
   --secondary-rgb: 0, 227, 210;
   --warning-rgb: 235, 247, 72;
   --info-rgb: 72, 247, 238;
@@ -201,6 +201,8 @@ $youtube: #FF0000;
 }
 
 [data-theme-mode="dark"] {
+  --primary: #00ffcd;
+  --primary-rgb: 0, 255, 205;
   --body-bg-rgb: 20, 20, 20;
   --menu-bg: rgb(var(--body-bg-rgb));
   --menu-border-color: rgba(255, 255, 255, 0.1);

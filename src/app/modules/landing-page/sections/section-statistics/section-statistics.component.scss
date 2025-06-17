@@ -2,7 +2,7 @@
 
 .statistics-container {
   width: 100%;
-  background-color: $primary-01;
+  background-color: var(--primary01);
   padding: 2rem 4rem;
   backdrop-filter: blur(10px);
 
@@ -15,7 +15,7 @@
 .card {
   box-shadow: none !important;
   background-color: inherit !important;
-  border: 1px solid rgba($primary, 0.5);
+  border: 1px solid rgba(var(--primary-rgb), 0.5);
 
   .card-body {
     margin-top: 1rem;

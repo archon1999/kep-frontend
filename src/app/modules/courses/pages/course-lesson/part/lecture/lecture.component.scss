@@ -2,11 +2,11 @@
 
 part-lecture {
   a {
-    color: $primary !important;
+    color: var(--primary) !important;
     font-weight: 600 !important;
 
     @include dark-layout {
-      color: lighten($primary, 20) !important;
+      color: lighten(var(--primary), 20) !important;
     }
   }
 
@@ -14,13 +14,13 @@ part-lecture {
     margin-bottom: 0.5rem !important;
 
     &::marker {
-      color: $primary !important;
+      color: var(--primary) !important;
       font-weight: 600;
       margin-right: 0.5rem;
       font-size: 16px;
 
       @include dark-layout {
-        color: lighten($primary, 20) !important;
+        color: lighten(var(--primary), 20) !important;
       }
     }
   }

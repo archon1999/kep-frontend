@@ -25,27 +25,27 @@
 
 /* Start::background color */
 .bg-primary {
-  background-color: $primary !important;
+  background-color: var(--primary) !important;
   color: $black !important;
 
   &.bg-opacity-10 {
-    background-color: $primary-01 !important;
+    background-color: var(--primary01) !important;
   }
 
   &.bg-opacity-25 {
-    background-color: $primary-03 !important;
+    background-color: var(--primary03) !important;
   }
 
   &.bg-opacity-50 {
-    background-color: $primary-05 !important;
+    background-color: var(--primary05) !important;
   }
 
   &.bg-opacity-75 {
-    background-color: $primary-08 !important;
+    background-color: var(--primary08) !important;
   }
 
   &.bg-opacity-100 {
-    background-color: $primary !important;
+    background-color: var(--primary) !important;
   }
 }
 
@@ -263,7 +263,7 @@
 
 /* Start::gradient colors */
 .bg-primary-gradient {
-  background: $primary-gradient !important;
+  background: var(--primary)-gradient !important;
   color: $white;
 }
 
@@ -323,8 +323,8 @@
 .bg-outline-primary {
   background-color: transparent;
   backdrop-filter: blur(30px);
-  border: 1px solid $primary;
-  color: $primary;
+  border: 1px solid var(--primary);
+  color: var(--primary);
 }
 
 .bg-outline-secondary {
@@ -420,12 +420,12 @@
 
 /* Start::background transparent */
 .bg-primary-transparent {
-  background-color: $primary-01 !important;
-  color: $primary !important;
+  background-color: var(--primary01) !important;
+  color: var(--primary) !important;
 
   &:hover {
-    background-color: $primary-01 !important;
-    color: $primary !important;
+    background-color: var(--primary01) !important;
+    color: var(--primary) !important;
   }
 }
 
@@ -593,7 +593,7 @@
 
 /* Start::backgrounds with colors */
 .text-bg-primary {
-  background-color: $primary !important;
+  background-color: var(--primary) !important;
   color: $black !important;
 }
 
@@ -636,7 +636,7 @@
 
 /* Start::svg colors */
 .svg-primary svg {
-  fill: $primary;
+  fill: var(--primary);
 }
 
 .svg-secondary svg {

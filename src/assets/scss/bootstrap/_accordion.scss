@@ -13,7 +13,7 @@
   }
 
   &:focus {
-    border-color: $primary-03;
+    border-color: var(--primary03);
     box-shadow: none;
   }
 
@@ -73,11 +73,11 @@
 .accordion {
   &.accordion-primary {
     .accordion-button {
-      background-color: $primary-01;
-      color: $primary !important;
+      background-color: var(--primary01);
+      color: var(--primary) !important;
 
       &:after {
-        background-color: $primary;
+        background-color: var(--primary);
         color: $black;
       }
 
@@ -210,7 +210,7 @@
 .accordion {
   &.accordion-solid-primary {
     .accordion-button {
-      background-color: $primary;
+      background-color: var(--primary);
       color: $black;
 
       &:after {
@@ -347,22 +347,22 @@
 .accordion {
   &.accordion-border-primary {
     .accordion-item {
-      border: 1px solid $primary;
+      border: 1px solid var(--primary);
     }
 
     .accordion-button {
       background-color: var(--default-background);
-      color: $primary;
+      color: var(--primary);
       border-block-end: 0px;
 
       &:after {
         background-color: var(--default-background);
-        color: $primary;
-        border: 1px solid $primary;
+        color: var(--primary);
+        border: 1px solid var(--primary);
       }
 
       &:not(.collapsed) {
-        border-block-end: 1px solid $primary;
+        border-block-end: 1px solid var(--primary);
       }
     }
   }
@@ -532,19 +532,19 @@
   .accordion-item {
     &.custom-accordion-primary {
       .accordion-button {
-        background-color: $primary-01;
-        border-inline-start: 0.25rem solid $primary-06;
+        background-color: var(--primary01);
+        border-inline-start: 0.25rem solid var(--primary06);
 
         &:after {
-          background-color: $primary-06;
+          background-color: var(--primary06);
           color: $white;
         }
       }
 
       .accordion-body {
-        background-color: $primary-01;
+        background-color: var(--primary01);
         padding-block-start: 0;
-        border-inline-start: 0.25rem solid $primary-06;
+        border-inline-start: 0.25rem solid var(--primary06);
       }
     }
 

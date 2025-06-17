@@ -5,6 +5,6 @@
 }
 
 ::selection {
-  color: $primary;
-  background: rgba($primary, 0.1);
+  color: var(--primary);
+  background: rgba(var(--primary-rgb), 0.1);
 }

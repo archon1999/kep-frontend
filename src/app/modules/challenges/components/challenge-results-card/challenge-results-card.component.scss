@@ -2,12 +2,12 @@
 
 
 .bg-challenge-results {
-  //background: linear-gradient(to right, mix(black, $primary, 0), mix(white, $primary, 20));
+  //background: linear-gradient(to right, mix(black, var(--primary), 0), mix(white, var(--primary), 20));
   border: none;
   border-radius: 7px;
 
   //@include dark-layout {
-  //  background-image: linear-gradient(mix(black, $primary, 40), mix(black, $primary, 60));
+  //  background-image: linear-gradient(mix(black, var(--primary), 40), mix(black, var(--primary), 60));
   //}
 
   ::ng-deep {

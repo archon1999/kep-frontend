@@ -54,7 +54,7 @@
       border-radius: 0;
 
       &.active {
-        background-color: $primary-01;
+        background-color: var(--primary01);
       }
     }
 
@@ -68,7 +68,7 @@
       }
 
       .group-indivudial {
-        color: $primary;
+        color: var(--primary);
         font-weight: 400;
       }
     }
@@ -211,7 +211,7 @@
       .chat-item-start {
         .main-chat-msg div {
           background-color: rgba(var(--primary-rgb), 0.1);
-          color: $primary;
+          color: var(--primary);
           border-start-start-radius: 0rem;
           border-start-end-radius: 0.85rem;
           border-end-end-radius: 0.85rem;
@@ -228,7 +228,7 @@
         text-align: end;
 
         .main-chat-msg div {
-          background-color: $primary;
+          background-color: var(--primary);
           color: $black;
           border-start-start-radius: 0.85rem;
           border-start-end-radius: 0px;
@@ -282,9 +282,9 @@
       span {
         padding: 0.188rem 0.5rem;
         font-size: 0.7rem;
-        background-color: $primary-02;
+        background-color: var(--primary02);
         border-radius: 0.3rem;
-        color: $primary;
+        color: var(--primary);
       }
     }
   }
@@ -332,7 +332,7 @@
   padding: 1rem;
 
   .avatar {
-    outline: 0.25rem solid $primary-02;
+    outline: 0.25rem solid var(--primary02);
   }
 
   .shared-files {

@@ -115,18 +115,18 @@
 
     &.active,
     &:hover {
-      color: $primary;
+      color: var(--primary);
       background-color: rgba(255, 255, 255, 0.05);
 
       .side-menu__label,
       .side-menu__angle {
-        color: $primary;
+        color: var(--primary);
       }
 
       .side-menu__icon {
-        fill: $primary;
-        color: $primary;
-        filter: drop-shadow(0 0px 5px $primary);
+        fill: var(--primary);
+        color: var(--primary);
+        filter: drop-shadow(0 0px 5px var(--primary));
       }
     }
 
@@ -454,8 +454,8 @@
 
       .slide-menu .side-menu__item:hover {
         .side-menu__angle {
-          color: $primary !important;
-          fill: $primary !important;
+          color: var(--primary) !important;
+          fill: var(--primary) !important;
         }
       }
     }
@@ -607,7 +607,7 @@
     height: auto;
     line-height: 1;
     padding: 0;
-    color: $primary;
+    color: var(--primary);
     font-size: 1.05rem;
     margin-inline-end: 0.25rem;
   }

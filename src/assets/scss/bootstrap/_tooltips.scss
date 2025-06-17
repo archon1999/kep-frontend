@@ -24,7 +24,7 @@
   }
 
   &.tooltip-primary {
-    @include tooltip-color($primary);
+    @include tooltip-color(var(--primary));
   }
 
   &.tooltip-secondary {

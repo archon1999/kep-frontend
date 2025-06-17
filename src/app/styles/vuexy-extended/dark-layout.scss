@@ -1,7 +1,7 @@
 @import 'styles/kep-imports';
 
 $colors: (
-  'primary': $primary,
+  'primary': var(--primary),
   'success': $green,
   'danger': $red,
   'yellow': $yellow,
@@ -10,7 +10,7 @@ $colors: (
 
 :root {
   @each $color_name, $color in $colors {
-    $dark-color: mix(black, $color, 30);
+    $dark-color:color-mix(in srgb, black 30%, var(--primary) 70%);
 
     @if ($color_name != 'white' and $color_name != 'dark' and $color_name != 'light' and $color_name != 'black') {
       .text-#{$color_name} {
@@ -18,7 +18,7 @@ $colors: (
       }
 
       .bg-gradient-#{$color_name} {
-        background: linear-gradient(to right, mix(black, $color, 30), $color) !important;
+        background: linear-gradient(to right,color-mix(in srgb, black 30%, var(--primary) 70%), $color) !important;
       }
 
       .bg-light-#{$color_name} {

@@ -82,8 +82,8 @@
     }
 
     &.active {
-      border: 1px dashed $primary-05;
-      color: $primary;
+      border: 1px dashed var(--primary05);
+      color: var(--primary);
     }
 
     padding: 0.55rem;
@@ -126,7 +126,7 @@
   height: 20rem !important;
 
   #jvm-regions-group path {
-    fill: $primary-005;
+    fill: var(--primary005);
   }
 }
 
@@ -153,7 +153,7 @@
 #top-country {
   .jvm-lines-group {
     .jvm-line {
-      stroke: $primary !important;
+      stroke: var(--primary) !important;
     }
   }
 
@@ -380,7 +380,7 @@
     top: 0px;
     animation: rotate 10s linear infinite;
     inset-inline-end: 9px;
-    background-color: $primary-01;
+    background-color: var(--primary01);
   }
 }
 
@@ -398,7 +398,7 @@
   height: 22.73rem;
 
   #jvm-regions-group path {
-    fill: $primary-02;
+    fill: var(--primary02);
   }
 
   .jvm-line[animation="true"] {
@@ -703,19 +703,19 @@
     }
 
     &:nth-last-child(1):before {
-      background-color: $primary-08;
+      background-color: var(--primary08);
     }
 
     &:nth-last-child(2):before {
-      background-color: $primary-06;
+      background-color: var(--primary06);
     }
 
     &:nth-last-child(3):before {
-      background-color: $primary-04;
+      background-color: var(--primary04);
     }
 
     &:nth-last-child(4):before {
-      background-color: $primary-02;
+      background-color: var(--primary02);
     }
   }
 }
@@ -724,19 +724,19 @@
   .progress-stacked {
     .progress-bar {
       &:nth-last-child(1) {
-        background-color: $primary-08;
+        background-color: var(--primary08);
       }
 
       &:nth-last-child(2) {
-        background-color: $primary-06;
+        background-color: var(--primary06);
       }
 
       &:nth-last-child(3) {
-        background-color: $primary-04;
+        background-color: var(--primary04);
       }
 
       &:nth-last-child(4) {
-        background-color: $primary-02;
+        background-color: var(--primary02);
       }
     }
   }
@@ -755,11 +755,11 @@
 }
 
 .gantt .bar-wrapper.primary .bar {
-  fill: $primary-02;
+  fill: var(--primary02);
 }
 
 .gantt .bar-wrapper.primary .bar-progress {
-  fill: $primary-06;
+  fill: var(--primary06);
 }
 
 .gantt .bar-wrapper.success .bar {
@@ -780,7 +780,7 @@
 
 /* hover state */
 .gantt .bar-wrapper.primary:hover .bar-progress {
-  fill: $primary-06;
+  fill: var(--primary06);
 }
 
 .gantt .bar-wrapper.success:hover .bar-progress {
@@ -793,11 +793,11 @@
 
 /* active state */
 .gantt .bar-wrapper.primary.active .bar {
-  fill: $primary-04;
+  fill: var(--primary04);
 }
 
 .gantt .bar-wrapper.primary.active .bar-progress {
-  fill: $primary-06;
+  fill: var(--primary06);
 }
 
 .gantt .bar-wrapper.success.active .bar {

@@ -177,13 +177,13 @@
 
       &.active {
         div {
-          color: $primary;
+          color: var(--primary);
         }
       }
 
       &:hover {
         div {
-          color: $primary;
+          color: var(--primary);
         }
       }
     }

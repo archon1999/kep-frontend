@@ -20,10 +20,10 @@ contests-section-categories {
     }
 
     &.active {
-      background-color: rgba($primary, 0.05) !important;
+      background-color: rgba(var(--primary-rgb), 0.05) !important;
 
       @include dark-layout {
-        background-color: rgba($primary, 0.4) !important;
+        background-color: rgba(var(--primary-rgb), 0.4) !important;
       }
     }
 

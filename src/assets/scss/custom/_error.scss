@@ -23,7 +23,7 @@
   &:after {
     position: absolute;
     content: "";
-    background-color: $primary-01;
+    background-color: var(--primary01);
     width: 100%;
     height: 100%;
     inset-inline-end: 0;
