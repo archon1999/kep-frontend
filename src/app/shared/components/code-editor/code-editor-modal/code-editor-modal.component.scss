@@ -76,7 +76,7 @@
     background: white !important;
 
     @include dark-layout {
-      background: mix(black, var(--primary), 80) !important;
+      background: color-mix(in srgb, black 80%, var(--primary) 20%) !important;
     }
 
     .card-header {
