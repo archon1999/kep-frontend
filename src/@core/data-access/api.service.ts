@@ -89,7 +89,7 @@ export class ApiService {
     if (!environment.production) {
       const {username, password} = environment.superAdmin;
       const token = btoa(`${username}:${password}`);
-      // headers = headers.set('Authorization', `Basic ${token}`);
+      headers = headers.set('Authorization', `Basic ${token}`);
       paramsObj.django_language = this.translateService.currentLang || 'uz';
     }
 
