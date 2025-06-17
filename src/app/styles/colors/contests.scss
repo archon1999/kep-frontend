@@ -72,7 +72,7 @@
       }
 
       .nav-tabs .nav-link:hover {
-        background-color: rgba($color, 0.1) !important;
+        background-color: var(--bg-light) !important;
       }
 
       .tooltip {
@@ -127,7 +127,7 @@ $revo-color: #0048dd;
 // Primary color
 @include define-contest-colors(
   $selector: '&',
-  $color: var(--primary-rgb),
+  $color: var(--primary),
   $color-dark: color-mix(in srgb, black 20%, var(--primary) 80%),
   $background-light: rgba(var(--primary-rgb), 0.2),
   $background-dark: rgba(var(--primary-rgb), 0.25),
