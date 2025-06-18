@@ -142,3 +142,22 @@ html[data-theme-mode="light"] {
 html {
   scroll-behavior: auto !important;
 }
+
+.fc-toolbar-chunk {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:first-child .fc-button-group:first-child {
+    display: none;
+  }
+}
+
+.fc .fc-list-event:hover td {
+  background-color: var(--primary01) !important;
+}
+
+:root {
+  --fc-event-border-color: var(--primary);
+  --fc-event-bg-color: var(--primary);
+}

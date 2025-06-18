@@ -47,7 +47,7 @@
         <ng-container body>
           @for (problemsRating of problemsRatingList; track problemsRating) {
             <tr
-              [ngClass]="{'bg-light-primary': currentUser?.username == problemsRating?.user?.username }">
+              [ngClass]="{'bg-primary-transparent': currentUser?.username == problemsRating?.user?.username }">
               <td>{{ problemsRating.rowIndex }}</td>
               <td>
                 <contestant-view [user]="problemsRating.user"></contestant-view>

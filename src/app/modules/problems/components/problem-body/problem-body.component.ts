@@ -162,7 +162,7 @@ export class ProblemBodyComponent implements OnInit, OnDestroy, AfterContentChec
       const theads = tables[i].getElementsByTagName('thead');
       for (let j = 0; j < theads.length; j++) {
         if (!theads[j].getElementsByTagName('tr')[0]?.classList.contains('bg-gradient-primary')) {
-          theads[j].getElementsByTagName('tr')[0]?.classList.add('bg-light-primary');
+          theads[j].getElementsByTagName('tr')[0]?.classList.add('bg-primary-transparent');
         }
       }
     }

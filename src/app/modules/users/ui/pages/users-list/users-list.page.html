@@ -177,7 +177,7 @@
       <ng-container body>
         @for (user of users; track user) {
           <tr
-            [class]="{'bg-light-primary': user.username == currentUser?.username}">
+            [class]="{'bg-primary-transparent': user.username == currentUser?.username}">
             <td>
               <a class="d-flex align-items-center" href="/users/user/{{ user.username }}">
                 <div class="avatar avatar-rounded me-2">

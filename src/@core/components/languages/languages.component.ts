@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { NgbDropdown, NgbDropdownMenu, NgbDropdownToggle } from "@ng-bootstrap/ng-bootstrap";
 import { AppStateService, Language } from "@core/services/app-state.service";
 import { ApiService } from '@core/data-access/api.service';
+import { AuthService } from "@auth";
 
 @Component({
   selector: 'languages',
@@ -33,6 +34,7 @@ export class LanguagesComponent {
 
   protected appStateService = inject(AppStateService);
   protected api = inject(ApiService);
+  protected authService = inject(AuthService);
 
   constructor() {
     this.appStateService.state$.subscribe(
@@ -42,10 +44,10 @@ export class LanguagesComponent {
     )
   }
 
-  setLanguage(lang: Language) {
+  setLanguage(lang: Language, reload=true) {
     this.api.post('set-language/', { language: lang }).subscribe(() => {
       this.appStateService.updateState({language: lang});
-      location.reload();
+      if (reload) location.reload();
     })
   }
 

@@ -9,16 +9,54 @@
             <contest-tab [contest]="contest"></contest-tab>
           </div>
         </kep-card>
+        <kep-table tableClass="table-striped">
+          <ng-container header>
+            <tr>
+              <th>#</th>
+              <th>{{ 'TITLE' | translate }}</th>
+              <th></th>
+            </tr>
+          </ng-container>
+          <ng-container body>
+            @for (contestProblem of contestProblems; track contestProblem) {
+              <tr>
+                <td>
+                  <a [routerLink]="['..', 'problem', contestProblem.symbol]">
+                    <u class="fw-semibold text-primary">{{ contestProblem.symbol }}</u>
+                  </a>
+                </td>
+                <td>
+                  <a [routerLink]="['..', 'problem', contestProblem.symbol]">
+                    <u class="fw-semibold text-primary">{{ contestProblem.problem.title }}</u>
+                  </a>
 
-        <div class="row">
-          @for (contestProblem of contestProblems; track contestProblem) {
-            <div class="col-lg-4 col-md-6 col-sm-12">
-              <contest-problem-card
-                [contest]="contest"
-                [contestProblem]="contestProblem"/>
-            </div>
-          }
-        </div>
+                  <div class="d-flex justify-content-start gap-1">
+                    <span class="text-muted">
+                      {{ contestProblem.problem.timeLimit }} {{ 'MS' | translate }}
+                    </span>
+                    /
+                    <span class="text-muted">
+                      {{ contestProblem.problem.memoryLimit }} {{ 'MB' | translate }}
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex justify-content-end">
+                    <span class="text-success">
+                      {{ contestProblem.solved }}
+                      <i data-feather="user-check"></i>
+                    </span>
+                    <span class="text-danger ms-1">
+                      {{ contestProblem.attemptUsersCount - contestProblem.solved }}
+                      <i data-feather="user-x"></i>
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            }
+          </ng-container>
+        </kep-table>
+
       </div>
 
       <div [@fadeInRightOnEnter]="" class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">

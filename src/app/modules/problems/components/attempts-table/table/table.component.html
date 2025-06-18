@@ -52,7 +52,7 @@
     @for (attempt of attempts; track attempt.id) {
       <tr
 
-        [ngClass]="{'bg-light-primary': attempt.isOwner}">
+        [ngClass]="{'bg-primary-transparent': attempt.isOwner}">
         <td>
           @if (attempt.canView) {
             <div style="cursor: pointer;" class="p-0" (click)="clicked.emit(attempt.id)">

@@ -38,7 +38,7 @@
     @for (contestant of contestants; track contestant.username) {
       <tr
         [class]="contestant.rowClass"
-        [ngClass]="{'bg-light-primary': currentUser?.username == contestant.username }">
+        [ngClass]="{'bg-primary-transparent': currentUser?.username == contestant.username }">
         <td class="text-center text-dark">
           {{ contestant.rank }}
         </td>
@@ -54,7 +54,7 @@
             <i *ngIf="contestant.country" class="fi fi-{{ contestant.country }} ms-1"></i>
           </div>
         </td>
-        <td class="text-center">
+        <td class="text-center text-nowrap">
           <span class="text-primary fw-semibold">
             {{ contestant.points }}
           </span>

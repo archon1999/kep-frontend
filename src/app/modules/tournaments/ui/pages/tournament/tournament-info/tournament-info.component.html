@@ -19,7 +19,7 @@
         <tbody>
           @for (player of tournament.players; track player; let i = $index) {
             <tr
-              [ngClass]="{ 'bg-light-dark': player.username == currentUser?.username }"
+              [ngClass]="{ 'bg-dark-transparent': player.username == currentUser?.username }"
             >
               <td>
                 {{ i + 1 }}

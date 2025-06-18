@@ -10,6 +10,7 @@ import { Contest } from '@contests/models/contest';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { BasePageComponent } from '@app/common';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { KepTableComponent } from "@shared/components/kep-table/kep-table.component";
 
 @Component({
   selector: 'app-contest-problems',
@@ -24,6 +25,7 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
     ContestCardModule,
     ContestClassesPipe,
     KepCardComponent,
+    KepTableComponent,
   ]
 })
 export class ContestProblemsComponent extends BasePageComponent implements OnInit {

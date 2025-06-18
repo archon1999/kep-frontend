@@ -8,7 +8,7 @@
     <hr>
 
     @for (comment of comments; track comment) {
-      <div class="d-flex" [ngClass]="{'bg-light-primary': comment.username == currentUser.username}">
+      <div class="d-flex" [ngClass]="{'bg-primary-transparent': comment.username == currentUser.username}">
         <img class="rounded" [src]="comment.userAvatar" alt="pic1">
         <div class="flex-grow-1">
           <div class="row ps-1">

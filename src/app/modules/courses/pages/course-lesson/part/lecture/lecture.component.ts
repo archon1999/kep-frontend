@@ -96,7 +96,7 @@ export class LectureComponent implements OnInit, OnChanges, AfterContentChecked 
       tables[index].parentElement.classList.add('table-responsive', 'beautiful-table');
       const theads = tables[index].getElementsByTagName('thead');
       for (let index = 0; index < theads.length; index++) {
-        theads[index].getElementsByTagName('tr')[0]?.classList.add('bg-light-primary');
+        theads[index].getElementsByTagName('tr')[0]?.classList.add('bg-primary-transparent');
       }
     }
   }

@@ -34,7 +34,7 @@ span.points {
 }
 
 th:nth-child(2), td:nth-child(2 ) {
-  min-width: 200px;
+  min-width: 250px;
 }
 
 th {
@@ -56,7 +56,7 @@ th:nth-child(n+7), td:nth-child(n+7) {
 }
 
 .row-odd {
-  background-color: rgb(231 231 231 / 33%);
+  background-color: $gray-200;
 
   @include dark-layout {
     background-color: rgba(0, 0, 0, 0.5);

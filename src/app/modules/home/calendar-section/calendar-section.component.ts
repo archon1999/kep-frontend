@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -14,6 +14,7 @@ import { HomeService } from '../home.service';
 import { LocalStorageService } from '@shared/services/storages/local-storage.service';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 import { CalendarModule } from "angular-calendar";
+import { AppStateService } from "@core/services/app-state.service";
 
 
 enum CalendarEventType {
@@ -59,6 +60,7 @@ export class CalendarSectionComponent implements OnInit {
       color: 'success',
     },
   ];
+  protected appStateService = inject(AppStateService);
 
   @ViewChild('calendar') calendarComponent: FullCalendarComponent;
 
@@ -90,6 +92,11 @@ export class CalendarSectionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.appStateService.state$.subscribe(
+      (state) => {
+        this.calendarOptions.locale = state.language;
+      }
+    )
     this.service.getCalendarEvents().subscribe(
       (events: Array<any>) => {
         this.calendarOptions.events = events.map((event) => {
@@ -98,18 +105,14 @@ export class CalendarSectionComponent implements OnInit {
           switch (event.type) {
             case CalendarEventType.CONTEST:
               event.url = `/competitions/contests/contest/${event.uid}`;
-              event.className = 'bg-light-primary';
               break;
             case CalendarEventType.ARENA:
               event.url = `/competitions/arena/tournament/${event.uid}`;
-              event.className = 'bg-light-warning';
               break;
             case CalendarEventType.TOURNAMENT:
               event.url = `/competitions/tournaments/tournament/${event.uid}`;
-              event.className = 'bg-light-dark';
               break;
             case CalendarEventType.HOLIDAY:
-              event.className = 'bg-success-transparent';
               break;
           }
           return event;

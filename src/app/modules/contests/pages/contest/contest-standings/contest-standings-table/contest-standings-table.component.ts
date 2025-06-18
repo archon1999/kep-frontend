@@ -47,15 +47,8 @@ export class ContestStandingsTableComponent extends BaseUserComponent implements
 
   ngOnChanges(changes: SimpleChanges) {
     if ('contestants' in changes) {
-      // this.preprocessContestants();
+      this.preprocessContestants();
     }
-  }
-
-  getProblemInfoBySymbol(
-    problemsInfo: Array<ContestProblemInfo>,
-    problemSymbol: string
-  ): ContestProblemInfo | undefined {
-    return problemsInfo.find(problemInfo => problemInfo.problemSymbol === problemSymbol);
   }
 
   preprocessContestants() {

@@ -503,7 +503,7 @@
 }
 
 .fc-theme-standard .fc-list-day-cushion {
-  background-color: $light !important;
+  background-color: var(--default-body-color) !important;
 }
 
 .fc-theme-standard .fc-scrollgrid {

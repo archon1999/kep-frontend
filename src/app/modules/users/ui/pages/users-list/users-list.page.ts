@@ -19,6 +19,9 @@ import { KepTableComponent } from "@shared/components/kep-table/kep-table.compon
 import { KepStreakComponent } from "@shared/components/kep-streak/kep-streak.component";
 import { KepPaginationComponent } from "@shared/components/kep-pagination/kep-pagination.component";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import {
+  ChallengesRankBadgeComponent
+} from "@challenges/components/challenges-user-view/challenges-rank-badge/challenges-rank-badge.component";
 
 @Component({
   selector: 'page-users-list',
@@ -37,6 +40,7 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
     KepStreakComponent,
     KepPaginationComponent,
     KepCardComponent,
+    ChallengesRankBadgeComponent,
 
   ]
 })

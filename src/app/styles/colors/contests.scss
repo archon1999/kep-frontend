@@ -26,7 +26,7 @@
         }
       }
 
-      .bg-light-primary {
+      .bg-primary-transparent {
         background-color: rgba($color, 0.1) !important;
 
         @include dark-layout {
@@ -138,7 +138,7 @@ $revo-color: #0048dd;
   $selector: $code-golf-selector,
   $color: $code-golf-color,
   $color-dark: mix(black, $code-golf-color, 20),
-  $background-light: linear-gradient(to right, rgba($code-golf-color, 0.9), rgba($code-golf-color, 0.7)),
+  $background-light: linear-gradient(to right, rgba($code-golf-color, 0.5), rgba($code-golf-color, 0.25)),
   $background-dark: rgba($code-golf-color, 0.25),
 ) {
   .card-bg {

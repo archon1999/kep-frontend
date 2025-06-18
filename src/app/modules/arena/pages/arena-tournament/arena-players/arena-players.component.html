@@ -14,7 +14,7 @@
         class="cursor-pointer"
         (click)="arenaPlayerClick.emit(player)"
         [ngClass]="{
-          'bg-light-warning': player.username == currentUser?.username
+          'bg-warning-transparent': player.username == currentUser?.username
          }">
         <td class="text-dark">{{ player.rowIndex }}</td>
         <td>
