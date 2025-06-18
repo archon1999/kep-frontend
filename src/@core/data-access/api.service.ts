@@ -90,7 +90,8 @@ export class ApiService {
       const {username, password} = environment.superAdmin;
       const token = btoa(`${username}:${password}`);
       headers = headers.set('Authorization', `Basic ${token}`);
-      paramsObj.django_language = this.translateService.currentLang || 'uz';
+      headers = headers.set('Django-Language', this.translateService.currentLang || 'en');
+      // paramsObj.django_language = this.translateService.currentLang || 'uz';
     }
 
     return {
