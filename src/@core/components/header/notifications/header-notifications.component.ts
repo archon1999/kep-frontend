@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { bounceAnimation } from 'angular-animations';
 import { AuthService, AuthUser } from '@auth';
 
@@ -49,6 +49,8 @@ export class HeaderNotificationsComponent implements OnInit, OnDestroy {
   public currentUser: AuthUser;
   public isAll = false;
   public isLoading = true;
+
+  protected cdr = inject(ChangeDetectorRef);
 
   @ViewChild('notificationAudio') notificationAudio: any;
 
@@ -108,6 +110,7 @@ export class HeaderNotificationsComponent implements OnInit, OnDestroy {
         this.total = result.total;
         this.pagesCount = result.pagesCount;
         this.isLoading = false;
+        this.cdr.markForCheck();
       }
     );
   }

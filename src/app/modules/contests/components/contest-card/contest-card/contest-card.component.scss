@@ -108,7 +108,7 @@ contest-card {
       }
     }
 
-    .badge {
+    .badge:not(.bg-success, .bg-danger) {
       background-color: var(--bg) !important;
     }
   }

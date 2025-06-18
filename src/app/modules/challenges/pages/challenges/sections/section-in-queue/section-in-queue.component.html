@@ -18,8 +18,8 @@
   @for (challengeCall of challengeCalls; track challengeCall) {
     <div
       class="col-xl-3 col-md-6 col-12"
-
-      [@fadeOutOnLeave]="">
+      [@fadeOutOnLeave]=""
+    >
       <challenge-call-card
         [challengeCall]="challengeCall"
         (delete)="onChallengeCallDelete(challengeCall.id)"

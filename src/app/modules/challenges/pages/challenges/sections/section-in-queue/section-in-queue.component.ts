@@ -8,6 +8,7 @@ import { BaseUserComponent } from '@app/common/classes/base-user.component';
 import { takeUntil } from 'rxjs/operators';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { ChallengeCall } from '@challenges/interfaces';
+import { fadeOutOnLeaveAnimation } from "angular-animations";
 
 @Component({
   selector: 'section-in-queue',
@@ -15,6 +16,7 @@ import { ChallengeCall } from '@challenges/interfaces';
   imports: [ChallengeCallCardComponent, NgxSkeletonLoaderModule, EmptyResultComponent],
   templateUrl: './section-in-queue.component.html',
   styleUrl: './section-in-queue.component.scss',
+  animations: [fadeOutOnLeaveAnimation()]
 })
 export class SectionInQueueComponent extends BaseUserComponent implements OnInit {
 

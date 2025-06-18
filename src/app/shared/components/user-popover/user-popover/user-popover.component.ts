@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { ApiService } from '@core/data-access/api.service';
 import { User } from "@users/domain";
 
@@ -20,6 +20,7 @@ export class UserPopoverComponent implements OnInit {
 
   public user: User;
   public userRatings: any;
+  protected cdr = inject(ChangeDetectorRef);
 
   constructor(
     public api: ApiService,
@@ -32,9 +33,11 @@ export class UserPopoverComponent implements OnInit {
     if (!this.user) {
       this.api.get(`users/${this.username}`).subscribe((user: any) => {
         this.user = user;
+        this.cdr.detectChanges();
       });
       this.api.get(`users/${this.username}/ratings`).subscribe((userRatings: any) => {
         this.userRatings = userRatings;
+        this.cdr.detectChanges();
       });
     }
   }

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ApiService } from '@core/data-access/api.service';
 import { AuthService, AuthUser } from '@auth';
 import { Subject } from 'rxjs';
@@ -24,6 +24,8 @@ export class KepcoinComponent implements OnInit, OnDestroy {
   public streak = 0;
 
   public currentUser: AuthUser;
+
+  protected cdr = inject(ChangeDetectorRef);
 
   private _unsubscribeAll = new Subject();
 
@@ -61,6 +63,7 @@ export class KepcoinComponent implements OnInit, OnDestroy {
         (result: any) => {
           this.earns = result.data;
           this.total = result.total;
+          this.cdr.detectChanges();
         }
       )
     } else {
@@ -68,6 +71,7 @@ export class KepcoinComponent implements OnInit, OnDestroy {
         (result: any) => {
           this.spends = result.data;
           this.total = result.total;
+          this.cdr.detectChanges();
         }
       )
     }

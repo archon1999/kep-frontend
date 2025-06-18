@@ -3,7 +3,7 @@
   [routerLink]="Resources.Problem | resourceById:problem.id">
   <kep-card>
     <div class="card-header">
-      <div class="card-title font-medium-1">{{ problem.id }}. {{ problem.title }}</div>
+      <div class="card-title text-dark font-medium-1">{{ problem.id }}. {{ problem.title }}</div>
 
       @if (problem.userInfo.hasSolved) {
         <div ngbTooltip="{{ 'Solved' | translate }}">

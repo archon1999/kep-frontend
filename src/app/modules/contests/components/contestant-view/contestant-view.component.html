@@ -24,27 +24,25 @@
     } )
   </div>
 } @else if (user?.username) {
-  <div class="d-flex justify-content-start gap-1 align-items-center">
-    <contests-rating-image
-      [title]="user.ratingTitle"
-      [class]="'me-1 mb-50'"
-      [size]="imgSize">
-    </contests-rating-image>
-    <user-popover [textColor]="textColor" [username]="user.username"></user-popover>
-    @if (isUnrated && !isVirtual) {
-      <span [ngbTooltip]="'Unrated' | translate">
-        <kep-icon name="shield-cross" type="duotone" size="small-4" color="danger"></kep-icon>
-      </span>
-    }
-    @if (isOfficial) {
-      <span [ngbTooltip]="'Official' | translate">
-        <kep-icon name="check" color="success"></kep-icon>
-      </span>
-    }
-    @if (isVirtual) {
-      <span [ngbTooltip]="'Virtual' | translate">
-        <kep-icon name="fasten" color="success"></kep-icon>
-      </span>
-    }
-  </div>
+  <contests-rating-image
+    [title]="user.ratingTitle"
+    [class]="'me-1 mb-50'"
+    [size]="imgSize">
+  </contests-rating-image>
+  <user-popover [textColor]="textColor" [username]="user.username"></user-popover>
+  @if (isUnrated && !isVirtual) {
+    <span [ngbTooltip]="'Unrated' | translate">
+      <kep-icon name="shield-cross" type="duotone" size="small-4" color="danger"></kep-icon>
+    </span>
+  }
+  @if (isOfficial) {
+    <span [ngbTooltip]="'Official' | translate">
+      <kep-icon name="check" color="success"></kep-icon>
+    </span>
+  }
+  @if (isVirtual) {
+    <span [ngbTooltip]="'Virtual' | translate">
+      <kep-icon name="fasten" color="success"></kep-icon>
+    </span>
+  }
 }
