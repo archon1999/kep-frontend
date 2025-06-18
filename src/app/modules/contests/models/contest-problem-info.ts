@@ -41,19 +41,23 @@ export class ContestProblemInfo {
         let badgeClass: string;
         if (this.theBest) {
           badgeClass = 'badge bg-success the-best';
+          html = `<span class="${badgeClass}">`;
+          html += `<div class="mb-1">+${this.attemptsCount > 0 ? this.attemptsCount : ''}</div>`;
+          html += `${this.contestTime}`;
+          html += '</span>';
         } else {
-          badgeClass = 'badge bg-success-transparent';
+          badgeClass = 'text-success fw-semibold';
+          html = `<span class="${badgeClass}">`;
+          html += `<div>+${this.attemptsCount > 0 ? this.attemptsCount : ''}</div>`;
+          html += '</span>';
+          html += `<div class="text-dark">${this.contestTime}</div>`;
         }
-        html = `<span class="${badgeClass}">`;
-        html += `<div class="mb-1">+${this.attemptsCount > 0 ? this.attemptsCount : ''}</div>`;
-        html += this.contestTime;
-        html += '</span>';
       } else if (this.attemptsCount > 0) {
         let badgeClass: string;
         if (this.attemptsCount > 0) {
-          badgeClass = 'badge bg-danger-transparent';
+          badgeClass = 'text-danger';
         } else {
-          badgeClass = 'badge bg-warning-transparent';
+          badgeClass = 'text-warning';
         }
         html += `<span class="${badgeClass}">`;
         html += '-';

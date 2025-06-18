@@ -6,11 +6,7 @@
     <tr>
       <th class="text-center">#</th>
       <th>{{ 'CONTESTS.CONTESTANT' | translate }}</th>
-      <th class="text-center">
-        <a container="body" ngbTooltip="{{ 'CONTESTS.POINTS' | translate }}">
-          <kep-icon name="rating"/>
-        </a>
-      </th>
+      <th class="text-center">{{ 'CONTESTS.POINTS' | translate }}</th>
 
       @if (contest.isRated) {
         <th ngbTooltip="{{ 'RatingChange' | translate }}" container="body" class="text-center">
@@ -18,14 +14,7 @@
         </th>
       }
 
-      @if (contest?.hasPenalties()) {
-        <th class="text-center">{{ 'CONTESTS.PENALTIES' | translate }}</th>
-      }
-      <th class="text-center">
-        <a container="body" ngbTooltip="{{ 'CONTESTS.PERFOMANCE' | translate }}">
-          <i data-feather="activity"></i>
-        </a>
-      </th>
+      <th class="text-center">{{ 'CONTESTS.PERFOMANCE' | translate }}</th>
       @for (contestProblem of contestProblems; track contestProblem) {
         <th class="text-center" style="white-space: nowrap;">
           <a
@@ -49,7 +38,6 @@
     @for (contestant of contestants; track contestant.username) {
       <tr
         [class]="contestant.rowClass"
-
         [ngClass]="{'bg-light-primary': currentUser?.username == contestant.username }">
         <td class="text-center text-dark">
           {{ contestant.rank }}
@@ -57,30 +45,26 @@
         <td>
           <div class="d-flex justify-content-start">
             <contestant-view
+              [textColor]="'dark'"
               [isVirtual]="contestant.isVirtual"
               [isUnrated]="contestant.isUnrated"
               [isOfficial]="contestant.isOfficial"
               [user]="contestant"
               [team]="contestant.team"/>
-
             <i *ngIf="contestant.country" class="fi fi-{{ contestant.country }} ms-1"></i>
           </div>
         </td>
         <td class="text-center">
-          <span class="badge points">
+          <span class="text-primary fw-semibold">
             {{ contestant.points }}
+          </span>
+          <span *ngIf="contest.hasPenalties()" class="text-danger">
+            ({{ contestant.penalties }})
           </span>
         </td>
         @if (contest.isRated) {
           <td class="text-center">
             <kep-delta [value]="contestant.delta"/>
-          </td>
-        }
-        @if (contest?.hasPenalties()) {
-          <td class="text-center">
-            <span class="badge bg-danger-transparent">
-              {{ contestant.penalties }}
-            </span>
           </td>
         }
         <td class="text-center" style="white-space: nowrap;">
@@ -120,18 +104,13 @@
     <tr>
       <th class="text-center text-dark">#</th>
       <th class="text-dark">{{ 'CONTESTS.CONTESTANT' | translate }}</th>
-      <th class="text-center text-dark">
-        <kep-icon name="rating"/>
-      </th>
+      <th class="text-center">{{ 'CONTESTS.POINTS' | translate }}</th>
       @if (contest.isRated) {
         <th class="text-center">
           <i [data-feather]="'delta' | iconName"></i>
         </th>
       }
-      @if (contest?.hasPenalties()) {
-        <th class="text-center">{{ 'CONTESTS.PENALTIES' | translate }}</th>
-      }
-      <th class="text-center"><i data-feather="activity"></i></th>
+      <th class="text-center">{{ 'CONTESTS.PERFOMANCE' | translate }}</th>
       @for (contestProblem of contestProblems; track contestProblem) {
         <th class="text-dark text-center">
           {{ contestProblem.symbol }}
