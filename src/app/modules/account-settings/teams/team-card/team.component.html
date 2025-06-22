@@ -19,7 +19,6 @@
   @if (currentUser.username == team.createrUsername) {
     <div class="card-footer">
       <clipboard-button
-        [buttonClass]="'btn btn-sm btn-primary'"
         [text]="'https://kep.uz' + (Resources.TeamJoin | resourceById:team.code)">
         {{ 'Settings.LinkToJoin' | translate }}
       </clipboard-button>

@@ -1,20 +1,20 @@
 <app-content-header [contentHeader]="contentHeader">
   <div class="d-flex gap-2">
     <a routerLink="rating" class="btn btn-primary-light" [ngClass.lt-md]="'btn-sm'">
-      <kep-icon color="primary" name="ranking" class="font-medium-1"></kep-icon>
+      <kep-icon name="ranking" class="font-medium-1"></kep-icon>
       <span [ngClass.lt-md]="'d-none'">
         {{ 'Rating' | translate }}
       </span>
     </a>
     <a routerLink="statistics" class="btn btn-primary-light" [ngClass.lt-md]="'btn-sm'">
-      <kep-icon color="primary" name="statistics" class="font-medium-1"></kep-icon>
+      <kep-icon name="statistics" class="font-medium-1"></kep-icon>
       <span [ngClass.lt-md]="'d-none'">
         {{ 'Statistics' | translate }}
       </span>
     </a>
     @if (isAuthenticated) {
       <a routerLink="user-contests" class="btn btn-primary-light" [ngClass.lt-md]="'btn-sm'">
-        <kep-icon color="primary" name="attempt" class="font-medium-1"></kep-icon>
+        <kep-icon name="attempt" class="font-medium-1"></kep-icon>
         <span [ngClass.lt-md]="'d-none'">
           {{ 'MyContests' | translate }}
         </span>

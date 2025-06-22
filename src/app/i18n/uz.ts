@@ -424,6 +424,7 @@ export const localeUz = {
   NewProblems: 'Yangi masalalar',
   Participate: 'Qatnashish',
   SignUpWith: '{{title}} bilan kirish',
+  Copy: 'Nusxalash',
   ContestRules: {
     ACM20H: '',
   },

@@ -118,10 +118,6 @@ html[data-theme-mode="light"] {
     background: white !important;
   }
 
-  .tooltip-inner {
-    background-color: #eaeaea !important;
-  }
-
   .swal2-container .swal2-styled.swal2-cancel {
     color: white;
   }
@@ -130,11 +126,11 @@ html[data-theme-mode="light"] {
     color: black;
   }
 
-  .ng-option-label, .apexcharts-tooltip-text {
+  .ng-option-label, .apexcharts-tooltip-text, .ng-select.ng-select-opened > .ng-select-container {
     color: black !important;
   }
 
-  span.bg-primary, .bg-primary, .text-bg-primary, .btn-primary {
+  span.bg-primary, .bg-primary, .text-bg-primary, .btn-primary, .tooltip-inner {
     color: white !important;
   }
 }

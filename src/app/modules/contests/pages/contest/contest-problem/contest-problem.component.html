@@ -14,7 +14,7 @@
               @for (contestProblem of contestProblems; track contestProblem) {
                 <th class="text-center text-white" container="body" [ngbTooltip]="contestProblem.problem.title"
                 >
-                  <a [routerLink]="['..', contestProblem.symbol]" class="btn btn-primary btn-sm">
+                  <a [routerLink]="['..', contestProblem.symbol]" class="text-primary fs-bolder">
                     {{ contestProblem.symbol }}
                   </a>
                 </th>
@@ -59,25 +59,26 @@
 
     <section class="mt-2">
       <div class="row">
-        <div  class="col-lg-9 col-md-12 col-sm-12 order-2 order-lg-1">
+        <div class="col-lg-9 col-md-12 col-sm-12 order-2 order-lg-1">
           <div class="layout-spacing">
             <kep-card>
               <div class="card-header p-1">
                 <contest-tab [contest]="contest"></contest-tab>
-                @if (contest?.status == 0) {
-                  <button
-                    (click)="codeEditorSidebarToggle()"
-                    class="btn btn-sm btn-primary"
-                    style="top: 2rem; right: 2rem;">
-                    {{ 'Submit' | translate }}
-                  </button>
-                }
               </div>
               <div class="card-footer">
-                <h2 class="text-center text-dark mb-2">
+                <h4 class="text-center text-dark">
                   {{ contestProblem.symbol }}. {{ problem.title }}
-                </h2>
+                </h4>
 
+                <p class="text-center mb-1">
+                  {{ 'TIME_LIMIT' | translate }}:
+                  {{ selectedAvailableLang.timeLimit || problem.timeLimit }} {{ 'MS' | translate }}
+                </p>
+
+                <p class="text-center mb-2">
+                  {{ 'MEMORY_LIMIT' | translate }}
+                  {{ selectedAvailableLang.memoryLimit || problem.memoryLimit }} {{ 'MB' | translate }}
+                </p>
                 <problem-body [problem]="problem"></problem-body>
               </div>
             </kep-card>
@@ -100,7 +101,7 @@
           }
         </div>
 
-        <div [@fadeInRightOnEnter] class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">
+        <div  class="col-lg-3 col-md-12 col-sm-12 order-1 order-lg-2">
           @if (contest) {
             <div class="layout-spacing">
               <contest-card-countdown [contest]="contest"></contest-card-countdown>
@@ -117,21 +118,36 @@
             </a>
           }
 
-          <kep-card *ngIf="contest.id != 424">
+          <kep-card>
             <div class="card-header">
               <div class="card-title">
-                <i data-feather="info"></i>
-                Info
+                {{ 'Submit' | translate }}
               </div>
             </div>
-
             <div class="card-body">
-              <problem-info-card
-                [hideAuthorAndDifficulty]="true"
-                [hideCodeGolf]="contest?.type !== 'CodeGolf'"
-                [hideLikes]="true"
-                [problem]="contestProblem?.problem">
-              </problem-info-card>
+              <div class="mb-2">
+                <label>{{ 'Lang' | translate }}:</label>
+                <ng-select (change)="langChange($event)" appendTo="body" [clearable]="false" [(ngModel)]="selectedLang">
+                  @for (availableLang of problem.availableLanguages; track $index) {
+                    <ng-option [value]="availableLang.lang">
+                      <attempt-language [size]="24" [lang]="availableLang.lang"/>
+                      {{ availableLang.langFull }}
+                    </ng-option>
+                  }
+                </ng-select>
+              </div>
+              <div class="mb-2">
+                <label>{{ 'File' | translate }}:</label>
+                <div class="custom-file">
+                  <input (change)="handleFileInput($event.target.files)" accept=".cpp,.py,.c,.r,.hs,.kt,.cs,.php,.js,.rs,.java" class="form-control" id="customFile"
+                         type="file"/>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer text-center">
+              <button (click)="submit()" [disabled]="!fileToUpload" class="btn full-width btn-sm btn-primary">
+                {{ 'Submit' | translate }}
+              </button>
             </div>
           </kep-card>
 

@@ -1,4 +1,10 @@
-<button (click)="copyText(text)" [class]="buttonClass">
+<div
+  (click)="copyText(text)"
+  class="p-1 text-primary d-flex justify-content-between align-items-center rounded"
+  style="cursor: pointer">
   <ng-content></ng-content>
-  <i data-feather="copy"></i>
-</button>
+  <kep-icon [name]="displayIcon" size="small-4"/>
+  <span style="font-size: 12px">
+    {{ displayText }}
+  </span>
+</div>

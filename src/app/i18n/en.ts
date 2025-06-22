@@ -170,6 +170,7 @@ export const localeEn = {
   NoNotifications: 'No notifications',
   New: 'New',
   Notifications: 'Notifications',
+  Copy: 'Copy',
   ArenaPauseText: 'Get started',
   ArenaStartText: 'You are participating. Wait for the next challenge!',
   Pause: 'Pause',

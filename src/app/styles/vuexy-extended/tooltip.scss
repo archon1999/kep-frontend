@@ -2,6 +2,7 @@
 
 .tooltip-inner {
   --bs-tooltip-color: white;
+  background-color: rgba(var(--primary-rgb), 0.8);
 }
 
 .tooltip-primary .tooltip-inner {

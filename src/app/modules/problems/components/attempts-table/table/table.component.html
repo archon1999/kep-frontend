@@ -80,9 +80,14 @@
               {{ attempt.contestTime }}
             </span>
           } @else {
-            <span class="badge bg-success-transparent text-center" style="width: 130px;">
-              {{ attempt.created | date:"yyyy/MM/dd HH:mm:ss" }}
-            </span>
+            <div class="">
+              <div class="text-center">
+                {{ attempt.created | date:"yyyy/MM/dd" }}
+              </div>
+              <div class="text-center">
+                {{ attempt.created | date:"HH:mm:ss" }}
+              </div>
+            </div>
           }
         </td>
 

@@ -4,22 +4,22 @@ const cache = {};
 
 function getRatingColor(rating: number) {
   if (rating >= 2000) {
-    return 'dark';
+    return 'primary';
   }
 
   if (rating >= 1800) {
-    return 'warning';
+    return 'blue';
   }
 
   if (rating >= 1600) {
-    return 'primary';
+    return 'info';
   }
 
   if (rating >= 1200) {
     return 'success';
   }
 
-  return 'secondary';
+  return 'light';
 }
 
 @Pipe({

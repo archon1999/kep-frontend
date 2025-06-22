@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { BasePageComponent } from '@app/common/classes/base-page.component';
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { ContestsService } from '@contests/contests.service';
@@ -28,6 +28,8 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
 export class ContestRegistrantsComponent extends BasePageComponent implements OnInit {
   public contest: Contest;
   public registrants: ContestRegistrant[] = [];
+  public isLoading = true;
+  protected cdr = inject(ChangeDetectorRef);
 
   constructor(public service: ContestsService) {
     super();
@@ -38,7 +40,11 @@ export class ContestRegistrantsComponent extends BasePageComponent implements On
       ({contest}) => {
         this.contest = contest;
         this.service.getContestRegistrants(this.contest.id).subscribe(
-          registrants => this.registrants = registrants
+          registrants => {
+            this.registrants = registrants;
+            this.isLoading = false;
+            this.cdr.detectChanges();
+          }
         );
       }
     );

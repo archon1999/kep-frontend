@@ -15,7 +15,7 @@
   <div class="row">
     @for (news of pageResult?.data; track news) {
       <div class="col-lg-4">
-        <news-card [@fadeInRightOnEnter] [blog]="news.blog"/>
+        <news-card  [blog]="news.blog"/>
       </div>
     }
   </div>

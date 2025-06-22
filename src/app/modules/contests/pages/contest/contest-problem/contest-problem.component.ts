@@ -35,6 +35,8 @@ import { getResourceById, Resources } from '@app/resources';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { ProblemInfoHtmlPipe } from '@contests/pages/contest/contest-problem/problem-info-html.pipe';
+import { NgOptionComponent, NgSelectComponent } from "@ng-select/ng-select";
+import { AttemptLanguageComponent } from "@shared/components/attempt-language/attempt-language.component";
 
 const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
 
@@ -58,6 +60,9 @@ const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
     ContestClassesPipe,
     KepCardComponent,
     ProblemInfoHtmlPipe,
+    NgOptionComponent,
+    NgSelectComponent,
+    AttemptLanguageComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -81,6 +86,8 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
   public currentPage = 1;
 
   public contestant: Contestant | null;
+
+  public fileToUpload: File | null = null;
 
   private _intervalId: any;
 
@@ -231,10 +238,41 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
     this.coreSidebarService.getSidebarRegistry('codeEditorSidebar').toggleOpen();
   }
 
-
   onAttemptChecked() {
     this.reloadProblems();
     this.updateContestant();
+  }
+
+  handleFileInput(files: FileList) {
+    if (files.item(0).size > 1024 * 128) {
+      this.toastr.error('Max file size 128kb');
+    } else {
+      this.fileToUpload = files.item(0);
+    }
+  }
+
+  submit() {
+    this.fileToUpload.text().then(
+      (sourceCode) => {
+        const data = {
+          sourceCode,
+          lang: this.selectedLang,
+          contestProblem: this.contestProblem.symbol,
+        };
+
+        this.api.post('contests/' + this.contest?.id + '/submit/', data).subscribe(
+          () => {
+            this.fileToUpload = null;
+            this.toastr.success('', this.translateService.instant('SubmittedSuccess'));
+            this.reloadAttempts();
+          }
+        );
+      }
+    )
+  }
+
+  langChange(lang) {
+    this.langService.setLanguage(lang);
   }
 
   ngOnDestroy(): void {

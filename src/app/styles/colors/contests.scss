@@ -74,16 +74,6 @@
       .nav-tabs .nav-link:hover {
         background-color: var(--bg-light) !important;
       }
-
-      .tooltip {
-        .arrow:before {
-          border-top-color: #f3effc;
-        }
-
-        .tooltip-inner {
-          background-color:color-mix(in srgb, black 30%, var(--primary) 70%) !important;
-        }
-      }
       // End
     }
 

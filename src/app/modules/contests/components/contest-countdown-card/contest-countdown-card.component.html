@@ -3,7 +3,7 @@
 
   <div class="card-img-overlay d-flex flex-column p-0" style="justify-content: space-evenly;">
     <div class="card-header my-1 justify-content-center">
-      <h4 class="text-uppercase">
+      <h6 class="text-uppercase">
         @switch (contest.status) {
           @case (ContestStatus.ALREADY) {
             {{ 'CONTESTS.CONTEST_ENDS' | translate }}
@@ -15,7 +15,7 @@
             {{ 'CONTESTS.CONTEST_STARTS' | translate }}
           }
         }
-      </h4>
+      </h6>
     </div>
     <div class="card-footer full-width">
       <contest-countdown

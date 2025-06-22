@@ -111,17 +111,17 @@
   <hr>
 
   @if (problem.inputData?.length > 0) {
-    <h4 class="mt-2 mb-2 text-dark font-medium-5">
+    <h5 class="my-4 text-dark font-medium-5">
       {{ 'INPUT_DATA' | translate }}:
-    </h4>
-    <mathjax class="mt-2 text-dark" [content]="problem.inputData"></mathjax>
+    </h5>
+    <mathjax class="text-dark" [content]="problem.inputData"></mathjax>
   }
 
   @if (problem.outputData?.length > 0) {
-    <h4 class="mt-2 mb-2 text-dark font-medium-5">
+    <h5 class="my-4 text-dark font-medium-5">
       {{ 'OUTPUT_DATA' | translate }}:
-    </h4>
-    <mathjax class="mt-2 text-dark" [content]="problem.outputData"></mathjax>
+    </h5>
+    <mathjax class="text-dark" [content]="problem.outputData"></mathjax>
     <hr>
   }
 
@@ -133,13 +133,13 @@
       <div class="mt-2 mb-2 table-responsive">
         <table class="table sample-test">
           <thead>
-          <tr class="bg-gradient-primary">
+          <tr>
             <th>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="font-small-4">
                   {{ 'INPUT' | translate }}
                 </div>
-                <clipboard-button [text]="sampleTest.input" buttonClass="btn btn-primary btn-sm"/>
+                <clipboard-button [text]="sampleTest.input"/>
               </div>
             </th>
             <th>
@@ -147,7 +147,7 @@
                 <div class="font-small-4">
                   {{ 'OUTPUT' | translate }}
                 </div>
-                <clipboard-button [text]="sampleTest.output" buttonClass="btn btn-primary btn-sm"/>
+                <clipboard-button [text]="sampleTest.output"/>
               </div>
             </th>
           </tr>

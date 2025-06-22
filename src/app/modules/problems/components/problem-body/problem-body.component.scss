@@ -8,7 +8,7 @@ textarea {
 
 table.sample-test {
   border-collapse: separate !important;
-  border-spacing: 10px 0px !important;
+  border-spacing: 10px 0 !important;
 
   tr td:first-child {
     width: 50%;
@@ -44,15 +44,19 @@ code {
   color: white !important;
 }
 
-//.problem-body {
-//  -webkit-touch-callout: none; /* iOS Safari */
-//  -webkit-user-select: none; /* Safari */
-//  -khtml-user-select: none; /* Konqueror HTML */
-//  -moz-user-select: none; /* Old versions of Firefox */
-//  -ms-user-select: none; /* Internet Explorer/Edge */
-//  user-select: none;
-//}
+.problem-body {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+}
 
 ::ng-deep .problem-2173 .text-dark {
   color: transparent !important;
+}
+
+thead th {
+  border-bottom: 1px solid var(--primary01) !important;
 }

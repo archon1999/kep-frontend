@@ -141,6 +141,7 @@ export const localeRu = {
   Memory: 'Память',
   Size: 'Размер',
   Solution: 'Решение',
+  Copy: 'Скопировать',
   SimilarProblems: 'Похожие задачи',
   Tags: 'Теги',
   UsersSolved: 'Решили',

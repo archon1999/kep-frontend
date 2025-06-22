@@ -1,6 +1,5 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'clipboard-button',
@@ -11,22 +10,17 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ClipboardButtonComponent implements OnInit {
 
-  @Input() buttonClass = 'btn btn-sm btn-primary';
   @Input() text: string;
 
-  public copiedText: string;
+  public displayText: string;
+  public displayIcon: string;
 
-  constructor(
-    public toastr: ToastrService,
-    public translateService: TranslateService,
-  ) { }
+  protected translateService = inject(TranslateService);
+  protected cdr = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
-    this.translateService.get('Copied').subscribe(
-      (text: string) => {
-        this.copiedText = text;
-      }
-    );
+    this.displayText = this.translateService.instant('Copy');
+    this.displayIcon = 'copy';
   }
 
   copyText(inputTextValue: string) {
@@ -38,7 +32,13 @@ export class ClipboardButtonComponent implements OnInit {
     selectBox.select();
     document.execCommand('copy');
     document.body.removeChild(selectBox);
-    this.toastr.success('', this.copiedText);
+    this.displayText = this.translateService.instant('Copied');
+    this.displayIcon = 'double-check';
+    setTimeout(() => {
+      this.displayText = this.translateService.instant('Copy');
+      this.displayIcon = 'copy';
+      this.cdr.detectChanges();
+    }, 2000);
   }
 
 }
