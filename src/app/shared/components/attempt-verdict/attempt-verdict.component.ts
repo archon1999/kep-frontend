@@ -28,8 +28,8 @@ function getVerdictColor(verdict: Verdicts) {
 
 function getShortTitle(verdict: Verdicts) {
   return {
-    [Verdicts.InQueue]: '',
-    [Verdicts.Running]: '',
+    [Verdicts.InQueue]: 'InQ',
+    [Verdicts.Running]: 'Run',
     [Verdicts.JudgementFailed]: 'JF',
     [Verdicts.Accepted]: 'AC',
     [Verdicts.WrongAnswer]: 'WA',
