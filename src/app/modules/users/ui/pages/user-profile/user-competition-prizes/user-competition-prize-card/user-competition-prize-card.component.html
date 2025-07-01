@@ -20,7 +20,12 @@
       </span>
     } @else if (competitionPrize.prizeType == 'KEPCOIN') {
       <img class="mt-1" height="48" src="assets/images/icons/kepcoin.png">
-      <div class="text-dark">{{ competitionPrize.kepcoinValue }}</div>
+      <div class="text-dark mt-3">{{ competitionPrize.kepcoinValue }}</div>
+    } @else if (competitionPrize.prizeType == 'MERCH') {
+      <img class="mt-1 rounded" height="48" src="assets/images/kep/merch.png">
+      <div class="text-dark mt-3">
+        {{ competitionPrize.note }}
+      </div>
     }
 
     <div class="mt-1 text-primary fw-semibold">{{ competitionPrize.prizeTitle }}</div>

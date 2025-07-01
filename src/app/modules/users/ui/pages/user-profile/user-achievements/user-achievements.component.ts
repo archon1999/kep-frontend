@@ -8,6 +8,9 @@ import { BaseLoadComponent } from '@app/common';
 import { Observable } from 'rxjs';
 import { AchievementComponent } from "@users/ui/pages/user-profile/user-achievements/achievement/achievement.component";
 import { UsersApiService } from "@app/modules/users";
+import {
+  UserCompetitionPrizesComponent
+} from "@users/ui/pages/user-profile/user-competition-prizes/user-competition-prizes.component";
 
 enum Tab {
   CompletedAchievements = 1,
@@ -25,7 +28,8 @@ enum Tab {
     AchievementComponent,
     SpinnerComponent,
     EmptyResultComponent,
-    KepCardComponent
+    KepCardComponent,
+    UserCompetitionPrizesComponent
   ]
 })
 export class UserAchievementsComponent extends BaseLoadComponent<Achievement[]> {

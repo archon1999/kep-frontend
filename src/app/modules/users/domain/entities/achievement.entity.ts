@@ -12,7 +12,7 @@ export interface Achievement {
 
 export type UserCompetitionPrizeCurrency = 'SUM' | 'DOLLAR' | 'TON';
 export type UserCompetitionPrizeCompetitionType = 'CONTEST' | 'ARENA' | 'TOURNAMENT' | 'CUP';
-export type UserCompetitionPrizeType = 'MONEY' | 'TELEGRAM_PREMIUM' | 'KEPCOIN';
+export type UserCompetitionPrizeType = 'MONEY' | 'TELEGRAM_PREMIUM' | 'KEPCOIN' | 'MERCH';
 
 export interface UserCompetitionPrize {
   prizeTitle: string;
@@ -24,4 +24,5 @@ export interface UserCompetitionPrize {
   competitionId: number;
   competitionTitle: string;
   telegramPremiumPeriod: number | null;
-} 
+  note: string;
+}
