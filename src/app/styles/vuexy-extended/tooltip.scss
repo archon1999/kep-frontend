@@ -2,12 +2,16 @@
 
 .tooltip-inner {
   --bs-tooltip-color: white;
-  background-color: rgba(var(--primary-rgb), 0.8);
+  background-color: var(--primary);
+
+  @include dark-layout {
+    background: color-mix(in srgb, black 80%, var(--primary) 20%);
+  }
 }
 
 .tooltip-primary .tooltip-inner {
   color: white;
-  background-color: rgba(var(--primary-rgb), 0.8);
+  background-color: var(--primary);
 }
 
 .tooltip-success .tooltip-inner {
