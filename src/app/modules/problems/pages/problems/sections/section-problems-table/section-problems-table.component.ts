@@ -17,6 +17,7 @@ import { deepCopy } from '@shared/utils';
 import { NgClass } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import { TranslatePipe } from "@ngx-translate/core";
+import { CoreDirectivesModule } from "@shared/directives/directives.module";
 
 @Component({
   selector: 'section-problems-table',
@@ -34,6 +35,7 @@ import { TranslatePipe } from "@ngx-translate/core";
     NgClass,
     RouterLink,
     TranslatePipe,
+    CoreDirectivesModule,
   ]
 })
 export class SectionProblemsTableComponent extends BaseTablePageComponent<Problem> implements OnInit, OnDestroy {

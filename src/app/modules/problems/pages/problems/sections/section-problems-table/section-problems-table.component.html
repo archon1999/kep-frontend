@@ -1,22 +1,22 @@
-<kep-table [loading]="!total && isLoading" [tableClass]="''" [empty]="problems?.length == 0">
+<kep-table [empty]="problems?.length == 0" [loading]="!total && isLoading" [tableClass]="''">
   <ng-container header>
     <tr class="bg-problems-table">
       <th>
         <table-ordering
-          [value]="ordering"
+          (change)="orderingChange($event)"
           [justifyContent]="'start'"
           [ordering]="'id'"
           [reverse]="true"
-          (change)="orderingChange($event)">
+          [value]="ordering">
           ID
         </table-ordering>
       </th>
       <th>
         <table-ordering
-          [value]="ordering"
+          (change)="orderingChange($event)"
           [justifyContent]="'start'"
           [ordering]="'title'"
-          (change)="orderingChange($event)">
+          [value]="ordering">
           <kep-icon name="text-align-center"></kep-icon>
           {{ 'TITLE' | translate }}
         </table-ordering>
@@ -27,30 +27,20 @@
       </th>
       <th class="text-center">
         <table-ordering
-          [value]="ordering"
+          (change)="orderingChange($event)"
           [justifyContent]="'center'"
           [ordering]="'difficulty'"
-          (change)="orderingChange($event)">
+          [value]="ordering">
           <kep-icon name="difficulty"></kep-icon>
           {{ 'DIFFICULTY' | translate }}
         </table-ordering>
       </th>
       <th class="text-center">
         <table-ordering
-          [value]="ordering"
-          [justifyContent]="'center'"
-          [ordering]="'rating'"
-          (change)="orderingChange($event)">
-          <kep-icon name="medal-star"></kep-icon>
-          {{ 'RATING' | translate }}
-        </table-ordering>
-      </th>
-      <th class="text-center">
-        <table-ordering
-          [value]="ordering"
+          (change)="orderingChange($event)"
           [justifyContent]="'center'"
           [ordering]="'solved'"
-          (change)="orderingChange($event)">
+          [value]="ordering">
           <kep-icon name="attempt"></kep-icon>
           {{ 'ATTEMPTS' | translate }}
         </table-ordering>
@@ -60,7 +50,7 @@
 
   <ng-container body>
     @for (problem of problems; track problem.id) {
-      <tr  [ngClass]="{
+      <tr [ngClass]="{
           'bg-success-transparent': problem.userInfo.hasSolved,
           'bg-light-danger': !problem.userInfo.hasSolved && problem.userInfo.hasAttempted
         }">
@@ -88,13 +78,19 @@
                 {{ 'Hidden' | translate }}
               </span>
             }
+
+            <i data-feather="thumbs-up"></i>
+            {{ problem.likesCount }}
+
+            <i data-feather="thumbs-down"></i>
+            {{ problem.dislikesCount }}
           </a>
         </td>
 
         <td>
           @for (tag of problem.tags; track tag) {
             <button
-              class="btn btn-primary round btn-sm font-small-2"
+              class="btn btn-primary round btn-sm font-small-2 me-1"
               (click)="tagOnClick(tag.id)">
               {{ tag.name }}
             </button>
@@ -108,21 +104,8 @@
         </td>
 
         <td class="text-center">
-          <div class="likes-count">
-            <i data-feather="thumbs-up"></i>
-            {{ problem.likesCount }}
-          </div>
-          <div class="dislikes-count">
-            <i data-feather="thumbs-down"></i>
-            {{ problem.dislikesCount }}
-          </div>
-        </td>
-
-        <td class="text-center">
-          <span class="badge badge-light-info text-center">
-            <small class="text-success">{{ problem.solved }}</small><small class="text-dark">/</small><small
-            class="text-info">{{ problem.attemptsCount }}</small>
-          </span>
+          <span class="text-success">{{ problem.solved }}</span>/<span
+          class="text-dark">{{ problem.attemptsCount }}</span>
         </td>
       </tr>
     }

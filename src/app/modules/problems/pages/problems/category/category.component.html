@@ -5,7 +5,12 @@
     }
 
     <div class="row">
-      <div class="col-12 col-md-6 col-lg-8">
+      <div class="col-lg-9">
+        <section-problems-filter></section-problems-filter>
+        <section-problems-table [defaultOrdering]="defaultOrdering"></section-problems-table>
+      </div>
+
+      <div class="col-lg-3">
         <kep-card class="category-card">
           @if (isCategoryLoading) {
             <div [style.height.px]="200">
@@ -15,21 +20,20 @@
             <div class="card-body" [innerHTML]="category.description"></div>
             @if (studyPlans.length > 0) {
               <div class="card-footer">
-                <div class="row">
-                  @for (studyPlan of studyPlans; track studyPlan) {
-                    <div class="col-12 col-md-8 col-lg-6 col-xl-4">
-                      <study-plan-card [studyPlan]="studyPlan"></study-plan-card>
-                    </div>
-                  }
-                </div>
+                @for (studyPlan of studyPlans; track studyPlan) {
+                  <study-plan-card [studyPlan]="studyPlan"></study-plan-card>
+                }
               </div>
             }
           }
         </kep-card>
-      </div>
 
-      <div class="col-12 col-md-6 col-lg-4 order-md-1 order-2">
-        <div class="card">
+        <kep-card>
+          <div class="card-header">
+            <div class="card-title">
+              {{ 'BEST_RESULT' | translate }}
+            </div>
+          </div>
           @if (isTopUsersLoading) {
             <div [style.height.px]="400">
               <spinner></spinner>
@@ -48,11 +52,6 @@
                       <kep-icon name="check-square"></kep-icon>
                     </div>
                   </th>
-                  <th class="text-center">
-                    <div ngbTooltip="{{ 'Rating' | translate }}">
-                      <kep-icon name="rating"></kep-icon>
-                    </div>
-                  </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -60,18 +59,13 @@
                     <tr>
                       <td class="text-nowrap">
                         <user-popover [customContent]="true" [username]="user.username">
-                          <img width="32" height="32" class="round me-1" alt="user-avater" [src]="user.avatar">
+                          <img width="32" height="32" class="rounded me-1" alt="user-avater" [src]="user.avatar">
                           {{ user.username }}
                         </user-popover>
                       </td>
                       <td class="text-center">
-                        <span class="badge bg-primary badge-pill">
-                          {{ user.solved }}
-                        </span>
-                      </td>
-                      <td class="text-center">
-                        <span class="badge bg-success">
-                          {{ user.rating }}
+                        <span class="text-success fs-bolder">
+                          {{ user.solved }} <span class="text-dark">({{ user.rating }})</span>
                         </span>
                       </td>
                     </tr>
@@ -80,12 +74,7 @@
               </table>
             </div>
           }
-        </div>
-      </div>
-
-      <div class="col-12 order-md-2 order-1">
-        <section-problems-filter></section-problems-filter>
-        <section-problems-table [defaultOrdering]="defaultOrdering"></section-problems-table>
+        </kep-card>
       </div>
     </div>
 
