@@ -7,6 +7,7 @@ import { environment } from 'environments/environment';
 import { isPresent } from '@shared/c-validators/utils';
 import { paramsMapper } from '@shared/utils';
 import { API_BASE_URL } from "@core/tokens";
+import { AppStateService } from "@core/services/app-state.service";
 
 export interface RequestOptions {
   params?: Record<string, any>;
@@ -24,6 +25,7 @@ export class ApiService {
     private http: HttpClient,
     private translateService: TranslateService,
     private toastr: ToastrService,
+    private appStateService: AppStateService,
     @Inject(API_BASE_URL) private baseUrl: string
   ) {
   }
@@ -90,7 +92,7 @@ export class ApiService {
       const {username, password} = environment.superAdmin;
       const token = btoa(`${username}:${password}`);
       headers = headers.set('Authorization', `Basic ${token}`);
-      headers = headers.set('Django-Language', this.translateService.currentLang || 'en');
+      headers = headers.set('Django-Language', this.appStateService.getCurrentValue().language || 'uz');
       // paramsObj.django_language = this.translateService.currentLang || 'uz';
     }
 
