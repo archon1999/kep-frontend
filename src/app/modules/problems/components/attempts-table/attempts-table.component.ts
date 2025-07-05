@@ -18,6 +18,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { BaseComponent } from '@app/common/classes/base.component';
 import { Contest } from '@contests/models/contest';
 import { WebsocketService } from '@shared/services/websocket';
+import confetti from 'canvas-confetti';
 
 const LANG_CHANGE_EVENT = 'lang-change';
 const ATTEMPT_ADD_EVENT = 'attempt-add';
@@ -107,6 +108,11 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
               if (this.attempts[i].canView || this.router.url.includes('duel')) {
                 setTimeout(() => attempt.animationAcceptedState = true, 0);
                 this.successAudio?.nativeElement?.play();
+                confetti({
+                  particleCount: 100,
+                  spread: 70,
+                  origin: { y: 0.6 },
+                });
               }
               this.checkFinished.next(attempt);
             } else if (wsAttempt.verdict !== Verdicts.Running && wsAttempt.verdict !== Verdicts.InQueue) {
