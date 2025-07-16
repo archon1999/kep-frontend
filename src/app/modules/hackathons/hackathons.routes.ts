@@ -22,6 +22,11 @@ export default [
     data: { title: 'Hackathons.HackathonAttempts' }
   },
   {
+    path: 'hackathon/:id/standings',
+    loadComponent: () => import('./ui/pages/hackathon/hackathon-standings/hackathon-standings.component').then(m => m.HackathonStandingsComponent),
+    data: { title: 'Hackathons.HackathonStandings' }
+  },
+  {
     path: 'hackathon/:id/registrants',
     loadComponent: () => import('./ui/pages/hackathon/hackathon-registrants/hackathon-registrants.component').then(m => m.HackathonRegistrantsComponent),
     data: { title: 'Hackathons.HackathonRegistrants' }

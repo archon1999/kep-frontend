@@ -30,8 +30,8 @@ export class HackathonAttemptsComponent extends BaseTablePageComponent<ProjectAt
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(p => {
-      this.hackathonId = p['id'];
+    this.route.params.subscribe(params => {
+      this.hackathonId = params['id'];
       this.loadContentHeader();
       this.reloadPage();
     });

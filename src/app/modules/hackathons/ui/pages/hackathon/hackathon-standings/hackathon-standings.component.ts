@@ -5,6 +5,8 @@ import { ContentHeaderModule } from '@shared/ui/components/content-header/conten
 import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
 import { HackathonsApiService } from '@app/modules/hackathons/data-access/hackathons-api.service';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { HackathonProject } from '@app/modules/hackathons/domain';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'hackathon-standings',
@@ -16,17 +18,29 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
 export class HackathonStandingsComponent extends BasePageComponent implements OnInit {
   public hackathonId: number;
   public standings: any[] = [];
+  public projects: HackathonProject[] = [];
 
   constructor(private api: HackathonsApiService) {
     super();
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(p => {
-      this.hackathonId = p['id'];
-      this.api.getHackathonStandings(this.hackathonId).subscribe(s => this.standings = s as any[]);
+    this.route.params.subscribe(params => {
+      this.hackathonId = params['id'];
+      forkJoin({
+        standings: this.api.getHackathonStandings(this.hackathonId),
+        projects: this.api.getHackathonProjects(this.hackathonId)
+      }).subscribe(({ standings, projects }) => {
+        this.standings = standings as any[];
+        this.projects = projects as HackathonProject[];
+      });
       this.loadContentHeader();
     });
+  }
+
+  getProjectResult(standing: any, symbol: string): string {
+    const result = standing.projectResults?.find((r: any) => r.symbol === symbol);
+    return result ? `${result.points} (${result.hackathonTime})` : '';
   }
 
   protected getContentHeader(): ContentHeader {

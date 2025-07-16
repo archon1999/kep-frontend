@@ -24,8 +24,8 @@ export class HackathonRegistrantsComponent extends BasePageComponent implements 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.hackathonId = params['id'];
-      this.api.getHackathonRegistrants(this.hackathonId).subscribe(r => {
-        this.registrants = r;
+      this.api.getHackathonRegistrants(this.hackathonId).subscribe(registrants => {
+        this.registrants = registrants;
         this.isLoading = false;
         this.cdr.detectChanges();
       });

@@ -26,7 +26,7 @@ export class HackathonProjectsComponent extends BasePageComponent implements OnI
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.hackathonId = params['id'];
-      this.api.getHackathonProjects(this.hackathonId).subscribe(p => this.projects = p);
+      this.api.getHackathonProjects(this.hackathonId).subscribe(projects => this.projects = projects);
       this.loadContentHeader();
     });
   }
