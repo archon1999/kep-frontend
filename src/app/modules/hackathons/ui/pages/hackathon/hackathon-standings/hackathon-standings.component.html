@@ -1,0 +1,19 @@
+<content-header [contentHeader]="contentHeader"></content-header>
+<kep-card>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>User</th>
+      <th>Points</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let s of standings; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ s.username }}</td>
+      <td>{{ s.points }}</td>
+    </tr>
+    </tbody>
+  </table>
+</kep-card>

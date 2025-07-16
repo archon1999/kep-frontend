@@ -1,0 +1,7 @@
+<content-header [contentHeader]="contentHeader"></content-header>
+<kep-card *ngIf="registrants.length">
+  <ul class="list-unstyled mb-0">
+    <li *ngFor="let r of registrants">{{ r.username }}</li>
+  </ul>
+</kep-card>
+<div *ngIf="!registrants.length && !isLoading" class="p-2">No registrants</div>

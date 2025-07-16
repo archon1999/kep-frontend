@@ -16,6 +16,7 @@ export const localeUz = {
     PROJECTS: 'Loyihalar',
     LUGAVAR: 'Lugavar',
     TOURNAMENTS: 'Turnirlar',
+    HACKATHONS: 'Xakatonlar',
     BLOG: 'Blog',
     CODE_RUSH: 'Code Rush',
     TODO: 'Todo',
@@ -740,11 +741,15 @@ export const localeUz = {
       Users: 'Foydalanuvchilar',
       User: '{{ username }} | Foydalanuvchi',
     },
-    Tournaments: {
-      Tournaments: 'Turnirlar',
-      Tournament: '{{ tournamentTitle }} | Turnir'
+   Tournaments: {
+     Tournaments: 'Turnirlar',
+     Tournament: '{{ tournamentTitle }} | Turnir'
+   },
+    Hackathons: {
+      Hackathons: 'Xakatonlar',
+      Hackathon: '{{ hackathonTitle }} | Xakaton'
     },
-    Arena: {
+   Arena: {
       Arena: 'Arena',
       Tournament: '{{ arenaTitle }} | Turnir',
     },

@@ -1,0 +1,8 @@
+<content-header [contentHeader]="contentHeader"></content-header>
+<kep-card>
+  <div class="row match-height">
+    <div class="col-md-6 col-lg-4" *ngFor="let h of hackathons">
+      <hackathon-list-card [hackathon]="h"></hackathon-list-card>
+    </div>
+  </div>
+</kep-card>
