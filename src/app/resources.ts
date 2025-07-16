@@ -20,6 +20,9 @@ export enum Resources {
   Tournaments = '/competitions/tournaments',
   Tournament = '/competitions/tournaments/tournament/:id',
 
+  Hackathons = '/competitions/hackathons',
+  Hackathon = '/competitions/hackathons/hackathon/:id',
+
   Tests = '/practice/tests',
   Test = '/practice/tests/test/:id',
 

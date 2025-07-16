@@ -1,0 +1,10 @@
+<content-header [contentHeader]="contentHeader"></content-header>
+<kep-card>
+  <div class="row match-height">
+    @for (hackathon of hackathons; track hackathon.id) {
+      <div class="col-md-6 col-lg-4">
+        <hackathon-list-card [hackathon]="hackathon"></hackathon-list-card>
+      </div>
+    }
+  </div>
+</kep-card>

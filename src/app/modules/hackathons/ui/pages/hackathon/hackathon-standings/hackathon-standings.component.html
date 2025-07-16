@@ -1,0 +1,27 @@
+<content-header [contentHeader]="contentHeader"></content-header>
+<kep-card>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>User</th>
+      <th>Points</th>
+      @for (project of projects; track project.symbol) {
+        <th>{{ project.symbol }}</th>
+      }
+    </tr>
+    </thead>
+    <tbody>
+    @for (standing of standings; track standing.username; let rowIndex = $index) {
+      <tr>
+        <td>{{ rowIndex + 1 }}</td>
+        <td>{{ standing.username }}</td>
+        <td>{{ standing.points }}</td>
+        @for (project of projects; track project.symbol) {
+          <td>{{ getProjectResult(standing, project.symbol) }}</td>
+        }
+      </tr>
+    }
+    </tbody>
+  </table>
+</kep-card>

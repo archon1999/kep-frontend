@@ -1,0 +1,29 @@
+<div>
+  <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="activeId">
+    <li ngbNavItem>
+      <a class="nav-link" [routerLink]="['/competitions','hackathons','hackathon', hackathon?.id]" routerLinkActive="active">{{ 'Hackathon' | translate }}</a>
+      <ng-template ngbNavContent></ng-template>
+    </li>
+    @if (hackathon?.status != -1) {
+      <li ngbNavItem>
+        <a class="nav-link" [routerLink]="['/competitions','hackathons','hackathon', hackathon?.id, 'projects']" routerLinkActive="active">{{ 'Projects' | translate }}</a>
+        <ng-template ngbNavContent></ng-template>
+      </li>
+      <li ngbNavItem>
+        <a class="nav-link" [routerLink]="['/competitions','hackathons','hackathon', hackathon?.id, 'attempts']" routerLinkActive="active">{{ 'Attempts' | translate }}</a>
+        <ng-template ngbNavContent></ng-template>
+      </li>
+      <li ngbNavItem>
+        <a class="nav-link" [routerLink]="['/competitions','hackathons','hackathon', hackathon?.id, 'standings']" routerLinkActive="active">{{ 'Standings' | translate }}</a>
+        <ng-template ngbNavContent></ng-template>
+      </li>
+    }
+    @if (hackathon?.status == -1) {
+      <li ngbNavItem>
+        <a class="nav-link" [routerLink]="['/competitions','hackathons','hackathon', hackathon?.id, 'registrants']" routerLinkActive="active">{{ 'Registrants' | translate }}</a>
+        <ng-template ngbNavContent></ng-template>
+      </li>
+    }
+  </ul>
+</div>
+<div [ngbNavOutlet]="nav"></div>

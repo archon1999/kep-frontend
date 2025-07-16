@@ -1,0 +1,13 @@
+<content-header [contentHeader]="contentHeader"></content-header>
+@if (registrants.length) {
+  <kep-card>
+    <ul class="list-unstyled mb-0">
+      @for (registrant of registrants; track registrant.id) {
+        <li>{{ registrant.username }}</li>
+      }
+    </ul>
+  </kep-card>
+}
+@if (!registrants.length && !isLoading) {
+  <div class="p-2">No registrants</div>
+}

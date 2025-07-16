@@ -35,6 +35,7 @@
       "@arena/*": ["app/modules/arena/*"],
       "@testing/*": ["app/modules/testing/*"],
       "@tournaments/*": ["app/modules/tournaments/*"],
+      "@hackathons/*": ["app/modules/hackathons/*"],
       "@courses/*": ["app/modules/courses/*"],
       "@users/*": ["app/modules/users/*"],
       "@auth": ["app/modules/auth"],

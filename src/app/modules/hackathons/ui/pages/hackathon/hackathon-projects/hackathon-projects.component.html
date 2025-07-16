@@ -1,0 +1,13 @@
+<content-header [contentHeader]="contentHeader"></content-header>
+<kep-card>
+  <div class="row match-height">
+    @for (hackathonProject of projects; track hackathonProject.id) {
+      <div class="col-md-6 col-lg-4">
+        <div class="mb-2">
+          <span class="badge bg-primary me-1">{{ hackathonProject.symbol }}</span>
+        </div>
+        <project-card [project]="hackathonProject.project"></project-card>
+      </div>
+    }
+  </div>
+</kep-card>

@@ -96,6 +96,13 @@ export const MENU: Menu[] = [
         path: Resources.Contests,
       },
       {
+        id: 'hackathons',
+        title: 'MENU.HACKATHONS',
+        icon: 'project',
+        type: 'link',
+        path: Resources.Hackathons,
+      },
+      {
         id: 'arenas',
         title: 'MENU.ARENA',
         icon: 'arena',

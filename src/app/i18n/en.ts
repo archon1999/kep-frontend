@@ -17,6 +17,7 @@ export const localeEn = {
     PROJECTS: 'Projects',
     LUGAVAR: 'Lugavar',
     TOURNAMENTS: 'Tournaments',
+    HACKATHONS: 'Hackathons',
     BLOG: 'Blog',
     CODE_RUSH: 'Code Rush',
     TODO: 'Todo',
@@ -746,6 +747,10 @@ export const localeEn = {
     Tournaments: {
       Tournaments: 'Tournaments',
       Tournament: '{{ tournamentTitle }} | Tournament'
+    },
+    Hackathons: {
+      Hackathons: 'Hackathons',
+      Hackathon: '{{ hackathonTitle }} | Hackathon'
     },
     Arena: {
       Arena: 'Arena',

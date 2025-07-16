@@ -60,6 +60,10 @@ export const routes: Routes = [
         loadChildren: () => import('./modules/contests/contests.routing')
       },
       {
+        path: 'competitions/hackathons',
+        loadChildren: () => import('./modules/hackathons/hackathons.routes')
+      },
+      {
         path: 'competitions/arena',
         loadChildren: () => import('./modules/arena/arena.routing')
       },

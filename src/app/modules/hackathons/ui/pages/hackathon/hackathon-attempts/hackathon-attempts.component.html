@@ -1,0 +1,3 @@
+<content-header [contentHeader]="contentHeader"></content-header>
+<attempts-table [attempts]="pageResult?.data" [project]="null"></attempts-table>
+<kep-pagination [collectionSize]="pageResult?.total" [(page)]="pageNumber" (pageChange)="reloadPage()"></kep-pagination>
