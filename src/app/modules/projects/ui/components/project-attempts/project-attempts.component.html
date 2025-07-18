@@ -1,4 +1,4 @@
-<div class="mb-1">
+<div class="mb-2">
   @if (currentUser) {
     <div class="custom-control custom-control-info custom-checkbox d-flex align-items-center justify-content-start gap-1">
       <input type="checkbox" class="form-check-input" [(ngModel)]="myAttempts" (change)="myAttemptsClick()"
@@ -10,7 +10,7 @@
 
 <attempts-table [attempts]="attempts" [project]="project"></attempts-table>
 
-@if (total) {
+<div class="mt-4">
   <kep-pagination
     [collectionSize]="total"
     [(page)]="pageNumber"
@@ -23,4 +23,4 @@
     (pageSizeChange)="pageSizeChange($event)"
     (pageChange)="pageChange($event)">
   </kep-pagination>
-}
+</div>

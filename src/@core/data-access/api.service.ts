@@ -87,7 +87,6 @@ export class ApiService {
       : {};
 
     let headers = options.headers ?? new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
     if (!environment.production) {
       const {username, password} = environment.superAdmin;
       const token = btoa(`${username}:${password}`);

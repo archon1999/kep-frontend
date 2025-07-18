@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '@core/data-access/api.service';
 import { ProjectAttemptLogDto, ProjectDto } from '@projects/data-access';
+import { HttpHeaders } from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root',

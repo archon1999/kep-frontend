@@ -1,6 +1,5 @@
 .project {
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding: 1rem;
 }
 
 .project-header {
@@ -8,12 +7,6 @@
     font-size: 1.5rem;
     font-weight: 500;
     border-radius: 10px;
-  }
-
-  .project-image {
-    position: absolute;
-    top: 100px;
-    right: 2rem;
   }
 
   .project-users {

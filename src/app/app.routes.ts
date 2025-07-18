@@ -61,7 +61,7 @@ export const routes: Routes = [
       },
       {
         path: 'competitions/hackathons',
-        loadChildren: () => import('./modules/hackathons/hackathons.routes')
+        loadChildren: () => import('@hackathons/config/routes')
       },
       {
         path: 'competitions/arena',
