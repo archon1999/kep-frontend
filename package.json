@@ -40,9 +40,6 @@
     "@ngbracket/ngx-layout": "^19.0.0",
     "@ngx-translate/core": "^16.0.4",
     "@sweetalert2/ngx-sweetalert2": "^13.0.0",
-    "@tsparticles/angular": "^3.0.0",
-    "@tsparticles/engine": "^3.8.1",
-    "@tsparticles/preset-confetti": "^3.2.0",
     "angular-animations": "^0.11.0",
     "angular-calendar": "^0.31.0",
     "angular-shepherd": "^19.0.2",
@@ -50,7 +47,6 @@
     "apexcharts": "^4.0.0",
     "bootstrap": "5.3.3",
     "brackets-manager": "^1.6.4",
-    "canvas-confetti": "^1.9.3",
     "feather-icons": "4.29.1",
     "flatpickr": "^4.6.13",
     "gzipper": "^7.2.0",
@@ -78,8 +74,7 @@
     "sass": "^1.75.0",
     "simplebar-angular": "^3.0.0-beta.12",
     "sweetalert2": "^11.17.2",
-    "swiper": "11.0.4",
-    "tsparticles": "^3.8.1"
+    "swiper": "11.0.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.2.1",
