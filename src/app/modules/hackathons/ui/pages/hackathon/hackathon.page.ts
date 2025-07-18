@@ -22,7 +22,7 @@ import { CoreCommonModule } from '@core/common.module';
   ]
 })
 export class HackathonPage extends BaseLoadComponent<Hackathon> implements OnInit {
-  protected api = inject(HackathonsApiService);
+  protected hackathonsApiService = inject(HackathonsApiService);
 
   ngOnInit(): void {
     super.ngOnInit();
@@ -30,7 +30,7 @@ export class HackathonPage extends BaseLoadComponent<Hackathon> implements OnIni
 
   getData(): Observable<Hackathon> {
     const id = this.route.snapshot.params['id'];
-    return this.api.getHackathon(id);
+    return this.hackathonsApiService.getHackathon(id);
   }
 
   protected getContentHeader(): ContentHeader {

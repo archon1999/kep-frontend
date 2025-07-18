@@ -10,7 +10,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { HackathonsApiService } from '@app/modules/hackathons/data-access/hackathons-api.service';
 import { Hackathon } from '@app/modules/hackathons/domain';
-import { HackathonListCardComponent } from '../shared/hackathon-list-card/hackathon-list-card.component';
+import { HackathonListCardComponent } from "@app/modules/hackathons";
 
 @Component({
   selector: 'page-hackathons',
@@ -27,14 +27,14 @@ import { HackathonListCardComponent } from '../shared/hackathon-list-card/hackat
   ]
 })
 export class HackathonsListPage extends BaseTablePageComponent<Hackathon> {
-  protected api = inject(HackathonsApiService);
+  protected hackathonsApiService = inject(HackathonsApiService);
 
   get hackathons() {
     return this.pageResult?.data;
   }
 
   getPage(): Observable<PageResult<Hackathon>> {
-    return this.api.getHackathons();
+    return this.hackathonsApiService.getHackathons();
   }
 
   protected getContentHeader(): ContentHeader {

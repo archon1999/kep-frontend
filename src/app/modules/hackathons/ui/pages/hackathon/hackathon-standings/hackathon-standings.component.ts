@@ -20,7 +20,7 @@ export class HackathonStandingsComponent extends BasePageComponent implements On
   public standings: any[] = [];
   public projects: HackathonProject[] = [];
 
-  constructor(private api: HackathonsApiService) {
+  constructor(private hackathonsApiService: HackathonsApiService) {
     super();
   }
 
@@ -28,8 +28,8 @@ export class HackathonStandingsComponent extends BasePageComponent implements On
     this.route.params.subscribe(params => {
       this.hackathonId = params['id'];
       forkJoin({
-        standings: this.api.getHackathonStandings(this.hackathonId),
-        projects: this.api.getHackathonProjects(this.hackathonId)
+        standings: this.hackathonsApiService.getHackathonStandings(this.hackathonId),
+        projects: this.hackathonsApiService.getHackathonProjects(this.hackathonId)
       }).subscribe(({ standings, projects }) => {
         this.standings = standings as any[];
         this.projects = projects as HackathonProject[];

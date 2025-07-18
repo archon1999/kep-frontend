@@ -19,12 +19,12 @@ export class HackathonRegistrantsComponent extends BasePageComponent implements 
   public isLoading = true;
 
   protected cdr = inject(ChangeDetectorRef);
-  protected api = inject(HackathonsApiService);
+  protected hackathonsApiService = inject(HackathonsApiService);
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.hackathonId = params['id'];
-      this.api.getHackathonRegistrants(this.hackathonId).subscribe(registrants => {
+      this.hackathonsApiService.getHackathonRegistrants(this.hackathonId).subscribe(registrants => {
         this.registrants = registrants;
         this.isLoading = false;
         this.cdr.detectChanges();
