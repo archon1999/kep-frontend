@@ -14,14 +14,14 @@
 </kep-card>
 
 <kep-card *ngIf="hackathon.status != 1">
-  <contest-standings-countdown [contest]="hackathon"/>
+  <hackathon-countdown [hackathon]="hackathon"/>
 </kep-card>
 
 <kep-table>
   <ng-container header>
     <th class="text-center">#</th>
-    <th>{{ 'CONTESTS.CONTESTANT' | translate }}</th>
-    <th>{{ 'CONTESTS.POINTS' | translate }}</th>
+    <th>{{ 'HACKATHONS.CONTESTANT' | translate }}</th>
+    <th>{{ 'HACKATHONS.POINTS' | translate }}</th>
     @for (project of projects; track project.symbol) {
       <td class="text-center">
         <a ngbTooltip="{{ project.project.title }}" routerLink="../projects/{{project.symbol}}">

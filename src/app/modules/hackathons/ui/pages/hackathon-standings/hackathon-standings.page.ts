@@ -10,9 +10,6 @@ import { HackathonTabComponent } from "@hackathons/ui/components/hackathon-tab/h
 import {
   HackathonCountdownComponent
 } from "@hackathons/ui/components/hackathon-countdown/hackathon-countdown.component";
-import {
-  ContestStandingsCountdownComponent
-} from "@contests/pages/contest/contest-standings/contest-standings-countdown/contest-standings-countdown.component";
 import { KepTableComponent } from "@shared/components/kep-table/kep-table.component";
 import { KepPaginationComponent } from "@shared/components/kep-pagination/kep-pagination.component";
 import { UserPopoverModule } from "@shared/components/user-popover/user-popover.module";
@@ -23,7 +20,7 @@ import { NgbTooltip } from "@ng-bootstrap/ng-bootstrap";
   templateUrl: './hackathon-standings.page.html',
   styleUrls: ['./hackathon-standings.page.scss'],
   standalone: true,
-  imports: [CoreCommonModule, ContentHeaderModule, KepCardComponent, HackathonTabComponent, HackathonCountdownComponent, ContestStandingsCountdownComponent, KepTableComponent, KepPaginationComponent, UserPopoverModule, NgbTooltip]
+  imports: [CoreCommonModule, ContentHeaderModule, KepCardComponent, HackathonTabComponent, HackathonCountdownComponent, KepTableComponent, KepPaginationComponent, UserPopoverModule, NgbTooltip]
 })
 export class HackathonStandingsPage extends BaseLoadComponent<any> implements OnInit {
   public hackathon: Hackathon;

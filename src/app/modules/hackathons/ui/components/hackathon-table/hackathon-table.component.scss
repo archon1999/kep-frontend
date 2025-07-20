@@ -1,13 +1,13 @@
 @import 'styles/kep-imports';
 
-.contest-author {
+.hackathon-author {
   font-size: 11px;
   padding-bottom: 10px;
   white-space: nowrap;
   font-weight: 600;
 }
 
-.contest-rated {
+.hackathon-rated {
   font-size: 10.5px;
   padding-top: 10px;
 }
@@ -24,7 +24,7 @@ thead tr {
   }
 }
 
-.badge.contest-badge {
+.badge.hackathon-badge {
   background-color: var(--bg);
   box-shadow: var(--box-shadow) !important;
 }
@@ -38,7 +38,7 @@ thead tr {
   }
 }
 
-.badge.contest-badge-light {
+.badge.hackathon-badge-light {
   background-color: var(--contest-color-light);
   color: var(--bg);
 }

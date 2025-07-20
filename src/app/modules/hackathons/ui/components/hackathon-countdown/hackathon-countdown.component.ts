@@ -2,7 +2,7 @@ import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core'
 import { NgbModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { CoreCommonModule } from '@core/common.module';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
-import { ContestStatus } from '@contests/constants/contest-status';
+import { HackathonStatus } from '@hackathons/constants/hackathon-status';
 import { Hackathon } from "@hackathons/domain";
 import { BaseComponent } from "@app/common";
 import { Resources } from "@app/resources";
@@ -31,7 +31,7 @@ export class HackathonCountdownComponent extends BaseComponent implements OnInit
   }
 
   ngOnInit(): void {
-    const time = this.hackathon.status === ContestStatus.ALREADY ? this.hackathon.finishTime : this.hackathon.startTime;
+    const time = this.hackathon.status === HackathonStatus.ALREADY ? this.hackathon.finishTime : this.hackathon.startTime;
     this.stopTime = new Date(time).valueOf();
     this.leftTime = (new Date(time).valueOf() - Date.now());
   }
