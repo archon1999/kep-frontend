@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { BaseTablePageComponent } from '@app/common';
-import { Observable } from 'rxjs';
+import { interval, Observable } from 'rxjs';
 import { PageResult } from '@app/common/classes/page-result';
 import { AuthUser } from '@auth';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
@@ -10,6 +10,7 @@ import { ProjectAttemptsRepository } from "@projects/data-access/repositories/pr
 import {
   AttemptsTableComponent
 } from "@projects/ui/components/project-attempts/attempts-table/attempts-table.component";
+import { takeUntil } from "rxjs/operators";
 
 @Component({
   selector: 'project-attempts',
@@ -31,6 +32,8 @@ export class ProjectAttemptsComponent extends BaseTablePageComponent<ProjectAtte
 
   constructor(public repository: ProjectAttemptsRepository) {
     super();
+
+    interval(5000).pipe(takeUntil(this._unsubscribeAll)).subscribe(() => this.reloadPage());
   }
 
   get attempts() {

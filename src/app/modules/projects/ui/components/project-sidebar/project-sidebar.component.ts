@@ -49,6 +49,7 @@ export class ProjectSidebarComponent implements OnInit {
     if (!this.selectedTechnology || !this.fileToUpload) {
       return;
     }
+    this.fileToUpload = null;
     const tech = this.selectedTechnology;
     const file = this.fileToUpload;
     let submit$;
