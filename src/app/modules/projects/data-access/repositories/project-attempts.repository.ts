@@ -33,4 +33,13 @@ export class ProjectAttemptsRepository implements BaseRepository<ProjectAttemptD
   ) {
     return this.projectsApiService.submitAttempt(projectSlug, technology, file);
   }
+
+  submitHackathonAttempt(
+    hackathonId: number | string,
+    projectSymbol: string,
+    technology: string,
+    file: File
+  ) {
+    return this.projectsApiService.submitHackathonAttempt(hackathonId, projectSymbol, technology, file);
+  }
 }
