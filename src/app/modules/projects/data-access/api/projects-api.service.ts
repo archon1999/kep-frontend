@@ -48,4 +48,8 @@ export class ProjectsApiService {
     formData.append('technology', technology);
     return this.api.post(`hackathons/${hackathonId}/projects/${projectSymbol}/submit`, formData);
   }
+
+  rerun(attemptId: number | string): Observable<any> {
+    return this.api.post('project-attempts/' + attemptId + '/rerun/');
+  }
 }

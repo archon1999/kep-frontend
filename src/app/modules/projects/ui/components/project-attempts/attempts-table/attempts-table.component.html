@@ -6,7 +6,7 @@
       <th>{{ 'Submitted' | translate }}</th>
       <th>{{ 'Technology' | translate }}</th>
       <th>{{ 'User' | translate }}</th>
-      <th>{{ 'Problem' | translate }}</th>
+      <th>{{ 'Project' | translate }}</th>
       <th>{{ 'Verdict' | translate }}</th>
       <th>{{ 'Time' | translate }}/{{ 'Memory' | translate }}</th>
       <th></th>
@@ -39,9 +39,7 @@
             </user-popover>
           </td>
           <td>
-            <a [routerLink]="['/practice', 'projects-list', 'project', attempt.projectSlug]">
-              <u class="text-primary">{{ attempt.projectTitle }}</u>
-            </a>
+            <u class="text-primary">{{ attempt.projectTitle }}</u>
           </td>
           <td>
             <span class="badge" [ngClass]="{
@@ -53,9 +51,15 @@
             'bg-danger': attempt.verdict == 0
           }">
               {{ attempt.verdictTitle }}
+              @if (attempt.verdict == -1 && attempt.taskNumber) {
+                #{{ attempt.taskNumber }}
+              }
               @if (attempt.verdict == 1) {
                 <span>
-                  {{ attempt.kepcoins }}/{{ project?.kepcoins }}
+                  {{ attempt.kepcoins }}
+                  @if (project?.kepcoins) {
+                  / {{ project?.kepcoins }}
+                  }
                 </span>
               }
             </span>
@@ -76,19 +80,23 @@
                 Log
               </button>
             }
-          </td>
-          @if (currentUser?.isSuperuser && 0) {
-            <td>
-              <button class="btn btn-sm round btn-primary">
+            @if (currentUser?.isSuperuser) {
+              <button class="btn btn-sm round btn-primary" (click)="rerun(attempt.id)">
                 <i data-feather="refresh-cw"></i>
               </button>
-            </td>
-          }
+            }
+          </td>
         </tr>
       } @empty {
         <tr>
           <td colspan="8">
-            <empty-result></empty-result>
+            @if (attempts) {
+              <empty-result text=""></empty-result>
+            } @else {
+              <div [style.height.px]="200">
+                <spinner/>
+              </div>
+            }
           </td>
         </tr>
       }
@@ -99,7 +107,7 @@
       <th>{{ 'Submitted' | translate }}</th>
       <th>{{ 'Technology' | translate }}</th>
       <th>{{ 'User' | translate }}</th>
-      <th>{{ 'Problem' | translate }}</th>
+      <th>{{ 'Project' | translate }}</th>
       <th>{{ 'Verdict' | translate }}</th>
       <th>{{ 'Time' | translate }}/{{ 'Memory' | translate }}</th>
       <th></th>

@@ -1,10 +1,21 @@
 <app-content-header [contentHeader]="contentHeader"></app-content-header>
-<kep-card>
-  <div class="row match-height">
-    @for (hackathon of hackathons; track hackathon.id) {
-      <div class="col-md-6 col-lg-4">
-        <hackathon-card [hackathon]="hackathon"></hackathon-card>
-      </div>
-    }
-  </div>
-</kep-card>
+
+@if (isLoading) {
+  <kep-card cardHeight="400px">
+    <spinner></spinner>
+  </kep-card>
+} @else {
+  @for (hackathon of hackathons; track hackathon.id) {
+    <hackathon-card [hackathon]="hackathon"></hackathon-card>
+  }
+}
+
+<kep-pagination
+  [collectionSize]="1"
+  [disabled]="isLoading"
+  [ellipses]="true"
+  [maxSize]="1"
+  [pageOptions]="[]"
+  [pageSize]="1"
+  [rotate]="true">
+</kep-pagination>

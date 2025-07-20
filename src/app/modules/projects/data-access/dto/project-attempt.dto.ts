@@ -24,5 +24,6 @@ export interface ProjectAttemptDto {
   verdictTitle: string;
   time: number;
   memory: number;
+  taskNumber: number;
   created: string;
 }

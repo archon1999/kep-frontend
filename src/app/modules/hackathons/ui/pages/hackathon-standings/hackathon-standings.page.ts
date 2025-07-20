@@ -5,7 +5,7 @@ import { ContentHeaderModule } from '@shared/ui/components/content-header/conten
 import { HackathonsApiService } from '@hackathons/data-access/hackathons-api.service';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { Hackathon, HackathonProject } from '@hackathons/domain';
-import { forkJoin, Observable } from 'rxjs';
+import { forkJoin, interval, Observable } from 'rxjs';
 import { HackathonTabComponent } from "@hackathons/ui/components/hackathon-tab/hackathon-tab.component";
 import {
   HackathonCountdownComponent
@@ -14,6 +14,7 @@ import { KepTableComponent } from "@shared/components/kep-table/kep-table.compon
 import { KepPaginationComponent } from "@shared/components/kep-pagination/kep-pagination.component";
 import { UserPopoverModule } from "@shared/components/user-popover/user-popover.module";
 import { NgbTooltip } from "@ng-bootstrap/ng-bootstrap";
+import { takeUntil } from "rxjs/operators";
 
 @Component({
   selector: 'hackathon-standings',
@@ -30,6 +31,10 @@ export class HackathonStandingsPage extends BaseLoadComponent<any> implements On
   constructor(private hackathonsApiService: HackathonsApiService) {
     super();
     this.hackathon = this.route.snapshot.data.hackathon;
+
+    interval(30000).pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      () => this.loadData()
+    )
   }
 
   getData(): Observable<any> {

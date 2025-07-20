@@ -6,12 +6,13 @@ import { ContentHeader } from '@shared/ui/components/content-header/content-head
 import { AttemptsTableComponent } from '@projects/ui/components/project-attempts/attempts-table/attempts-table.component';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { BaseTablePageComponent } from '@app/common';
-import { Observable } from 'rxjs';
+import { interval, Observable } from 'rxjs';
 import { PageResult } from '@app/common/classes/page-result';
 import { ProjectAttempt } from '@projects/domain/entities';
 import { Hackathon } from "@hackathons/domain";
 import { HackathonTabComponent } from "@hackathons/ui/components/hackathon-tab/hackathon-tab.component";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { takeUntil } from "rxjs/operators";
 
 @Component({
   selector: 'hackathon-attempts',
@@ -33,6 +34,10 @@ export class HackathonAttemptsPage extends BaseTablePageComponent<ProjectAttempt
   constructor(private repository: ProjectAttemptsRepository) {
     super();
     this.hackathon = this.route.snapshot.data.hackathon;
+
+    interval(5000).pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      () => this.reloadPage()
+    )
   }
 
   getPage(): Observable<PageResult<ProjectAttempt>> {

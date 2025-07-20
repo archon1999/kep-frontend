@@ -39,11 +39,11 @@ export class HackathonsListPage extends BaseTablePageComponent<Hackathon> {
 
   protected getContentHeader(): ContentHeader {
     return {
-      headerTitle: 'Hackathons',
+      headerTitle: 'MENU.HACKATHONS',
       breadcrumb: {
         links: [
           { name: 'Competitions', isLink: false },
-          { name: 'Hackathons', isLink: false },
+          { name: 'MENU.HACKATHONS', isLink: false },
         ]
       }
     };

@@ -9,6 +9,7 @@ import { ProjectTechnologyComponent } from '@projects/ui/components/project-tech
 import { Project, ProjectAttempt, ProjectAttemptLogTask } from "@projects/domain/entities";
 import { ProjectAttemptsRepository } from "@projects/data-access/repositories/project-attempts.repository";
 import { EmptyResultComponent } from "@shared/components/empty-result/empty-result.component";
+import { BaseComponent } from "@app/common";
 
 @Component({
   selector: 'attempts-table',
@@ -23,7 +24,7 @@ import { EmptyResultComponent } from "@shared/components/empty-result/empty-resu
     EmptyResultComponent
   ],
 })
-export class AttemptsTableComponent implements OnInit {
+export class AttemptsTableComponent extends BaseComponent implements OnInit {
 
   @Input() attempts: Array<ProjectAttempt>;
   @Input() project: Project;
@@ -31,27 +32,17 @@ export class AttemptsTableComponent implements OnInit {
   @ViewChild('modal') public modalRef: TemplateRef<any>;
 
   public logs: ProjectAttemptLogTask;
-  public currentUser: AuthUser;
-
-  private _unsubscribeAll = new Subject();
 
   constructor(
     public authService: AuthService,
     public modalService: NgbModal,
-    public repository: ProjectAttemptsRepository,
+    public repo: ProjectAttemptsRepository,
   ) {
-  }
-
-  ngOnInit(): void {
-    this.authService.currentUser
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((user: any) => {
-        this.currentUser = user;
-      });
+    super();
   }
 
   modalOpen(attemptId: number) {
-    this.repository.getAttemptLog(attemptId).subscribe(
+    this.repo.getAttemptLog(attemptId).subscribe(
       (logs: any) => {
         this.logs = logs;
         this.modalService.open(this.modalRef, {
@@ -60,6 +51,10 @@ export class AttemptsTableComponent implements OnInit {
         });
       }
     );
+  }
+
+  rerun(attemptId: number) {
+    this.repo.rerun(attemptId).subscribe();
   }
 
 }

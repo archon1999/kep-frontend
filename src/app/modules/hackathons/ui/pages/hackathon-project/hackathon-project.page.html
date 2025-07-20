@@ -1,27 +1,32 @@
 <div class="content-wrapper container-xxl p-0">
   <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"/>
+
+    <kep-card>
+      <div class="card-header p-2">
+        <hackathon-tab [hackathon]="hackathon"/>
+      </div>
+    </kep-card>
+
     @if (isLoading) {
       <div class="card" [style.height.px]="400">
         <spinner></spinner>
       </div>
     } @else {
-      <app-content-header [contentHeader]="contentHeader" />
+      <div class="row mt-4">
+        <div class="col-lg-9 col-md-12 col-sm-12">
+          <project-description [project]="data.project" />
 
-      <section class="mt-2">
-        <div class="row">
-          <div class="col-lg-9 col-md-12 col-sm-12">
-            <project-description [project]="data.project" />
-
-            <div class="mt-2">
-              <project-attempts [project]="data.project" [hackathonId]="hackathonId" />
-            </div>
-          </div>
-
-          <div class="col-lg-3 col-md-12 col-sm-12">
-            <project-sidebar [project]="data.project" [hackathonId]="hackathonId" [projectSymbol]="data.symbol" (submitEvent)="reloadAttempts()" />
+          <div class="mt-2">
+            <project-attempts [project]="data.project" [hackathonId]="hackathonId" />
           </div>
         </div>
-      </section>
+
+        <div class="col-lg-3 col-md-12 col-sm-12">
+          <hackathon-card-countdown [hackathon]="hackathon"/>
+          <project-sidebar [project]="data.project" [hackathonId]="hackathonId" [projectSymbol]="data.symbol" (submitEvent)="reloadAttempts()" />
+        </div>
+      </div>
     }
   </div>
 </div>

@@ -1,11 +1,15 @@
-<app-content-header [contentHeader]="contentHeader"></app-content-header>
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
-<kep-card>
-  <div class="card-header p-2">
-    <hackathon-tab [hackathon]="hackathon"/>
+    <kep-card>
+      <div class="card-header p-2">
+        <hackathon-tab [hackathon]="hackathon"/>
+      </div>
+    </kep-card>
+
+    <hackathon-card [hackathon]="hackathon"/>
+
+    <hackathon-table [hackathon]="hackathon"/>
   </div>
-</kep-card>
-
-<hackathon-card [hackathon]="hackathon"/>
-
-<hackathon-table [hackathon]="hackathon"/>
+</div>

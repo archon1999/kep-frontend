@@ -17,7 +17,7 @@
   <hackathon-countdown [hackathon]="hackathon"/>
 </kep-card>
 
-<kep-table>
+<kep-table [loading]="isLoading">
   <ng-container header>
     <th class="text-center">#</th>
     <th>{{ 'HACKATHONS.CONTESTANT' | translate }}</th>

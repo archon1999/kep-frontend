@@ -42,4 +42,8 @@ export class ProjectAttemptsRepository implements BaseRepository<ProjectAttemptD
   ) {
     return this.projectsApiService.submitHackathonAttempt(hackathonId, projectSymbol, technology, file);
   }
+
+  rerun(attemptId: number | string) {
+    return this.projectsApiService.rerun(attemptId);
+  }
 }

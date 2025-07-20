@@ -9,7 +9,7 @@
   <div class="card-body">
     <div class="mb-1">
       <label><strong>{{ 'Technology' | translate }}:</strong></label>
-      <ng-select appendTo="body" [clearable]="false" [(ngModel)]="selectedTechnology">
+      <ng-select [(ngModel)]="selectedTechnology" [clearable]="false" appendTo="body">
         @for (technology of project.availableTechnologies; track technology) {
           <ng-option [value]="technology.technology">
             {{ technology.technology }}

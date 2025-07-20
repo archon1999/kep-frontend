@@ -1,0 +1,33 @@
+<kep-card [customClass]="'overlay-card'">
+  <img class="card-img" [src]="hackathon.logo" height="200">
+
+  <div class="card-img-overlay d-flex flex-column p-0" style="justify-content: space-evenly;">
+    <div class="card-header my-1 justify-content-center" style="border-block-end: none !important;">
+      <h6 class="text-uppercase">
+        @switch (hackathon.status) {
+          @case (ContestStatus.ALREADY) {
+            {{ 'CONTESTS.CONTEST_ENDS' | translate }}
+          }
+          @case (ContestStatus.FINISHED) {
+            {{ 'CONTESTS.CONTEST_FINISHED' | translate }}
+          }
+          @case (ContestStatus.NOT_STARTED) {
+            {{ 'CONTESTS.CONTEST_STARTS' | translate }}
+          }
+        }
+      </h6>
+    </div>
+    <div class="card-footer full-width">
+      <hackathon-countdown
+        [clockColor]="'#fff'"
+        [hackathon]="hackathon"
+        [textColor]="'#fff'"/>
+      @if (hackathon.status == ContestStatus.FINISHED) {
+        <h5
+          class="text-center mt-1">
+          {{ hackathon.finishTime | localizedDate:'medium' }}
+        </h5>
+      }
+    </div>
+  </div>
+</kep-card>
