@@ -4,7 +4,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
 import { ProjectCardComponent } from '@projects/ui/components/project-card/project-card.component';
-import { HackathonProject } from '@hackathons/domain';
+import { Hackathon, HackathonProject } from '@hackathons/domain';
 import { BaseLoadComponent } from '@app/common';
 import { Observable } from "rxjs";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
@@ -18,20 +18,17 @@ import { HackathonTabComponent } from "@hackathons/ui/components/hackathon-tab/h
   imports: [CoreCommonModule, ContentHeaderModule, ProjectCardComponent, KepCardComponent, HackathonTabComponent]
 })
 export class HackathonProjectsPage extends BaseLoadComponent<HackathonProject[]> implements OnInit {
-  public hackathonId: number;
+  public hackathon: Hackathon;
   public projects: HackathonProject[] = [];
 
   constructor(private hackathonsApiService: HackathonsApiService) {
     super();
+
+    this.hackathon = this.route.snapshot.data.hackathon;
   }
 
   getData(): Observable<HackathonProject[]> {
-    return this.hackathonsApiService.getHackathonProjects(this.hackathonId);
-  }
-
-  ngOnInit(): void {
-    this.hackathonId = this.route.snapshot.params['id'];
-    super.ngOnInit();
+    return this.hackathonsApiService.getHackathonProjects(this.hackathon.id);
   }
 
   protected getContentHeader(): ContentHeader {
@@ -41,7 +38,7 @@ export class HackathonProjectsPage extends BaseLoadComponent<HackathonProject[]>
         type: '',
         links: [
           {name: 'Hackathons', isLink: true, link: '../../..'},
-          {name: this.hackathonId + '', isLink: true, link: '..'},
+          {name: this.hackathon.id + '', isLink: true, link: '..'},
           {name: 'Projects', isLink: false}
         ]
       }

@@ -1,13 +1,50 @@
-<app-content-header [contentHeader]="contentHeader"></app-content-header>
-@if (registrants.length) {
-  <kep-card>
-    <ul class="list-unstyled mb-0">
-      @for (registrant of registrants; track registrant.id) {
-        <li>{{ registrant.username }}</li>
-      }
-    </ul>
-  </kep-card>
-}
-@if (!registrants.length && !isLoading) {
-  <div class="p-2">No registrants</div>
-}
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <kep-card>
+      <div class="card-header p-2">
+        <hackathon-tab [hackathon]="hackathon"/>
+      </div>
+    </kep-card>
+
+    <div class="row">
+      <div class="col-lg-9">
+        <kep-table [loading]="isLoading" [empty]="data?.length == 0">
+          <ng-container header>
+            <tr>
+              <th>#</th>
+              <th>{{ 'HACKATHONS.CONTESTANT' | translate }}</th>
+            </tr>
+          </ng-container>
+          <ng-container body>
+            @for (registrant of data; track $index) {
+              <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>
+                  <user-popover [username]="registrant.username" [customContent]="true">
+                    <div class="d-flex gap-2 align-items-center">
+                      <img [src]="registrant.userAvatar" class="avatar avatar-rounded" height="32">
+                      <div>
+                        <div class="text-dark">
+                          {{ registrant.username }}
+                        </div>
+                        <div class="text-muted">
+                          {{ registrant.userFullName }}
+                        </div>
+                      </div>
+                    </div>
+                  </user-popover>
+                </td>
+              </tr>
+            }
+          </ng-container>
+        </kep-table>
+      </div>
+
+      <div class="col-lg-3">
+        <hackathon-card-countdown [hackathon]="hackathon"/>
+      </div>
+    </div>
+  </div>
+</div>

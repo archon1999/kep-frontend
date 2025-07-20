@@ -15,13 +15,19 @@ import { KepPaginationComponent } from "@shared/components/kep-pagination/kep-pa
 import { UserPopoverModule } from "@shared/components/user-popover/user-popover.module";
 import { NgbTooltip } from "@ng-bootstrap/ng-bootstrap";
 import { takeUntil } from "rxjs/operators";
+import {
+  ContestCountdownComponent
+} from "@contests/components/contest-card/contest-card/contest-countdown/contest-countdown.component";
+import {
+  ContestStandingsCountdownComponent
+} from "@contests/pages/contest/contest-standings/contest-standings-countdown/contest-standings-countdown.component";
 
 @Component({
   selector: 'hackathon-standings',
   templateUrl: './hackathon-standings.page.html',
   styleUrls: ['./hackathon-standings.page.scss'],
   standalone: true,
-  imports: [CoreCommonModule, ContentHeaderModule, KepCardComponent, HackathonTabComponent, HackathonCountdownComponent, KepTableComponent, KepPaginationComponent, UserPopoverModule, NgbTooltip]
+  imports: [CoreCommonModule, ContentHeaderModule, KepCardComponent, HackathonTabComponent, HackathonCountdownComponent, KepTableComponent, KepPaginationComponent, UserPopoverModule, NgbTooltip, ContestCountdownComponent, ContestStandingsCountdownComponent]
 })
 export class HackathonStandingsPage extends BaseLoadComponent<any> implements OnInit {
   public hackathon: Hackathon;
@@ -45,15 +51,27 @@ export class HackathonStandingsPage extends BaseLoadComponent<any> implements On
   }
 
   afterLoadData({standings, projects}) {
-    this.standings = standings as any[];
+    this.standings = this.assignRanks(standings as any[]);
     this.projects = projects as HackathonProject[];
   }
 
   getProjectResult(standing: any, symbol: string) {
     const result = standing.projectResults?.find((r: any) => r.symbol === symbol);
-    return {
+    return result ? {
       points: result.points,
       time: result.hackathonTime.slice(0, 5),
-    }
+    } : null;
+  }
+
+  assignRanks(participants: any[]) {
+    let rank = 1;
+    for (let i = 0, j = 0; i < participants.length; i++) {
+      if (participants[i].points !== participants[j].points) {
+        rank = j + 2;
+        j = i;
+      }
+      participants[i].rank = rank;
+   }
+    return participants;
   }
 }

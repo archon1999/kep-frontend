@@ -28,7 +28,7 @@ export class HackathonsApiService {
   }
 
   getHackathonRegistrants(id: number | string) {
-    return this.api.get(`hackathons/${id}/registrants`);
+    return this.api.get(`hackathons/${id}/standings`);
   }
 
   getHackathonStandings(id: number | string) {

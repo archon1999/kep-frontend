@@ -24,7 +24,7 @@
 
         <div class="col-lg-3 col-md-12 col-sm-12">
           <hackathon-card-countdown [hackathon]="hackathon"/>
-          <project-sidebar [project]="data.project" [hackathonId]="hackathonId" [projectSymbol]="data.symbol" (submitEvent)="reloadAttempts()" />
+          <project-sidebar *ngIf="hackathon.isRegistered && hackathon.status == 0" [project]="data.project" [hackathonId]="hackathonId" [projectSymbol]="data.symbol" (submitEvent)="reloadAttempts()" />
         </div>
       </div>
     }

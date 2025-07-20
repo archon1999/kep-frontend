@@ -14,7 +14,8 @@
 </kep-card>
 
 <kep-card *ngIf="hackathon.status != 1">
-  <hackathon-countdown [hackathon]="hackathon"/>
+  <contest-standings-countdown [contest]="hackathon"/>
+<!--  <hackathon-countdown [hackathon]="hackathon"/>-->
 </kep-card>
 
 <kep-table [loading]="isLoading">
@@ -33,7 +34,7 @@
   <ng-container body>
     @for (participant of standings; track participant.username; let rowIndex = $index) {
       <tr>
-        <td class="text-center">{{ rowIndex + 1 }}</td>
+        <td class="text-center">{{ participant.rank }}</td>
         <td>
           <user-popover [username]="participant.username" [customContent]="true">
             <div class="d-flex gap-2 align-items-center">
@@ -57,16 +58,18 @@
 
         @for (project of projects; track project.symbol) {
           <td class="text-center">
-            <div>
-              <span class="text-primary">
-                {{ getProjectResult(participant, project.symbol).points }}
-              </span>
-              /
-              <span class="text-dark">{{ project.project.kepcoins }}</span>
-            </div>
-            <div class="text-muted">
-              {{ getProjectResult(participant, project.symbol).time }}
-            </div>
+            @if (getProjectResult(participant, project.symbol)) {
+              <div>
+                <span class="text-primary">
+                  {{ getProjectResult(participant, project.symbol).points }}
+                </span>
+                /
+                <span class="text-dark">{{ project.project.kepcoins }}</span>
+              </div>
+              <div class="text-muted">
+                {{ getProjectResult(participant, project.symbol).time }}
+              </div>
+            }
           </td>
         }
       </tr>

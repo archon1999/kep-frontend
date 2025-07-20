@@ -5,9 +5,11 @@ export interface Hackathon {
   description: string;
   startTime: string | Date;
   finishTime: string | Date;
-  logo?: string;
+  logo: string | null;
   status: number;
   projectsCount: number;
   participantsCount: number;
   registrantsCount: number;
+  isRegistered: boolean;
+  isParticipated: boolean;
 }
