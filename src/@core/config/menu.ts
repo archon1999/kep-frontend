@@ -95,13 +95,6 @@ export const MENU: Menu[] = [
         type: 'link',
         path: Resources.Contests,
       },
-      // {
-      //   id: 'hackathons',
-      //   title: 'MENU.HACKATHONS',
-      //   icon: 'project',
-      //   type: 'link',
-      //   path: Resources.Hackathons,
-      // },
       {
         id: 'arenas',
         title: 'MENU.ARENA',
@@ -115,6 +108,13 @@ export const MENU: Menu[] = [
         icon: 'tournament',
         type: 'link',
         path: Resources.Tournaments,
+      },
+      {
+        id: 'hackathons',
+        title: 'MENU.HACKATHONS',
+        icon: 'hackathons',
+        type: 'link',
+        path: Resources.Hackathons,
       },
     ],
   },
