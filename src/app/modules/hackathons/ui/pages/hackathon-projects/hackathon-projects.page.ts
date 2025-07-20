@@ -1,23 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { HackathonsApiService } from '@app/modules/hackathons/data-access/hackathons-api.service';
+import { HackathonsApiService } from '@hackathons/data-access/hackathons-api.service';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
 import { ProjectCardComponent } from '@projects/ui/components/project-card/project-card.component';
-import { HackathonProject } from '@app/modules/hackathons/domain';
+import { HackathonProject } from '@hackathons/domain';
 import { BaseLoadComponent } from '@app/common';
 import { Observable } from "rxjs";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
-import { HackathonTabComponent } from "@hackathons/ui/pages/hackathon/hackathon-tab/hackathon-tab.component";
+import { HackathonTabComponent } from "@hackathons/ui/components/hackathon-tab/hackathon-tab.component";
 
 @Component({
   selector: 'hackathon-projects',
-  templateUrl: './hackathon-projects.component.html',
-  styleUrls: ['./hackathon-projects.component.scss'],
+  templateUrl: './hackathon-projects.page.html',
+  styleUrls: ['./hackathon-projects.page.scss'],
   standalone: true,
   imports: [CoreCommonModule, ContentHeaderModule, ProjectCardComponent, KepCardComponent, HackathonTabComponent]
 })
-export class HackathonProjectsComponent extends BaseLoadComponent<HackathonProject[]> implements OnInit {
+export class HackathonProjectsPage extends BaseLoadComponent<HackathonProject[]> implements OnInit {
   public hackathonId: number;
   public projects: HackathonProject[] = [];
 

@@ -778,7 +778,7 @@ button {
     }
 
     &.bg-pattern8 {
-      background-image: url(../../images/media/Patterns/light/p8.svg) !important;
+      // background-image: url(../../images/media/Patterns/light/p8.svg) !important;
 
       @include dark-layout {
         background-image: url(../../images/media/Patterns/dark/p8-dark.svg) !important;

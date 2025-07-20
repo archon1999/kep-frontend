@@ -1,0 +1,13 @@
+.bg-img {
+  position: absolute;
+  top: -66px;
+  width: 95%;
+  z-index: -1;
+  height: 520px;
+
+  filter: blur(60px);
+  opacity: .2;
+  background-repeat: no-repeat;
+  background-position: 100%;
+  background-size: cover;
+}

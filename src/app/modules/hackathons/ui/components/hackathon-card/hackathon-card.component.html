@@ -1,0 +1,27 @@
+<a [routerLink]="[Resources.Hackathon | resourceById:hackathon.id]">
+  <kep-card>
+    <div class="card-bg" style="background-image: url('{{ hackathon.logo }}');">
+    </div>
+
+    <div class="card-header p-4 pb-2">
+      <div class="card-title">
+        <h2 class="text-dark">{{ hackathon.title }}</h2>
+      </div>
+
+      <project-technology name="Angular"/>
+    </div>
+
+    <div class="card-body p-4">
+      <mathjax [content]="hackathon.description"></mathjax>
+
+      <hackathon-countdown [hackathon]="hackathon"/>
+    </div>
+
+    <div class="card-footer">
+      <div ngbTooltip="{{ 'Projects' | translate }}" class="d-flex align-items-center gap-1">
+        <kep-icon name="projects"/>
+        {{ hackathon.projectsCount }}
+      </div>
+    </div>
+  </kep-card>
+</a>

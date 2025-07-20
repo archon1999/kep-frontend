@@ -1,5 +1,10 @@
 <app-content-header [contentHeader]="contentHeader"></app-content-header>
-<hackathon-tab [hackathon]="{id: hackathonId}"/>
+
+<kep-card>
+  <div class="card-header p-2">
+    <hackathon-tab [hackathon]="{id: hackathonId}"/>
+  </div>
+</kep-card>
 
 @if (isLoading) {
   <kep-card [cardHeight]="'300px'">
@@ -9,7 +14,10 @@
   <div class="row match-height">
     @for (hackathonProject of data; track hackathonProject.id) {
       <div class="col-md-6 col-lg-4">
-        <project-card [project]="hackathonProject.project"></project-card>
+        <project-card
+          [hackathonProject]="hackathonProject"
+          [project]="hackathonProject.project"
+        />
       </div>
     }
   </div>

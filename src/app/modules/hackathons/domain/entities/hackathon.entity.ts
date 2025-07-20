@@ -1,10 +1,10 @@
 export interface Hackathon {
   id: number;
-  name: string;
+  title: string;
   slug: string;
   description: string;
   startTime: string | Date;
-  endTime: string | Date;
+  finishTime: string | Date;
   logo?: string;
   status: number;
   projectsCount: number;

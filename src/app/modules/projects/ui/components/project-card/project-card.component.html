@@ -3,7 +3,7 @@
     <div class="card-title">
       {{ project.title }}
     </div>
-    <div width="60" class="card-img">
+    <div class="card-img" width="60">
       <img [src]="project.logo" alt="project-img">
     </div>
   </div>
@@ -39,7 +39,8 @@
         </button>
       </kepcoin-spend-swal>
     } @else {
-      <a class="btn full-width btn-primary btn-sm" routerLink="project/{{ project.slug }}">
+      <a class="btn full-width btn-primary btn-sm"
+         routerLink="{{ hackathonProject ? hackathonProject.symbol : ('project/'+project.slug) }}">
         {{ 'View' | translate }}
       </a>
     }

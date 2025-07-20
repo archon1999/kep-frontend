@@ -19,6 +19,8 @@ export const keenIcons = {
   arena: 'shield',
   contest: 'flag',
   contests: 'flag',
+  hackathon: 'abstract-3',
+  hackathons: 'abstract-3',
   users: 'profile-user',
   todo: 'check-square',
 
@@ -41,7 +43,7 @@ export const keenIcons = {
   tags: 'data',
   difficulty: 'graph-2',
 
-  login: 'exit-left'
+  login: 'exit-left',
 };
 
 export const featherIcons = {

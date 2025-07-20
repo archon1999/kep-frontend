@@ -1,0 +1,80 @@
+<kep-card>
+  <div class="table-responsive beautiful-table">
+    <table class="table">
+      <thead>
+      <tr>
+        <th class="text-center">{{ 'CONTESTS.TITLE' | translate }}</th>
+        <th class="text-center">{{ 'CONTESTS.AUTHORS' | translate }}</th>
+        <th class="text-center">{{ 'CONTESTS.START_TIME' | translate }}</th>
+        <th class="text-center">{{ 'CONTESTS.FINISH_TIME' | translate }}</th>
+        <th class="text-center">
+        </th>
+        <th class="text-center">
+          {{ 'CONTESTS.REGISTRANTS_COUNT' | translate }}
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="text-center text-dark">
+          <kep-icon name="hackathon"/>
+          {{ hackathon.title }}
+        </td>
+        <td class="text-center">
+          <user-popover [customContent]="true" [username]="'admin'">
+            <div class="d-flex gap-2 align-items-center">
+              <img [src]="'https://cpython.s3.amazonaws.com/media/images/avatars/admin_OZNLGhG.webp'"
+                   class="avatar avatar-rounded" height="32">
+              <div>
+                <div class="text-dark">
+                  admin
+                </div>
+              </div>
+            </div>
+          </user-popover>
+        </td>
+        <td class="text-center text-dark">
+          <u>{{ hackathon.startTime | date:'y/MM/dd' }}</u>
+          <br>
+          <u>{{ hackathon.startTime | date:'H:mm' }}</u>
+        </td>
+        <td class="text-center text-dark">
+          <u>{{ hackathon.finishTime | date:'y/MM/dd' }}</u>
+          <br>
+          <u>{{ hackathon.finishTime | date:'H:mm' }}</u>
+        </td>
+        <td class="text-center">
+          @if (hackathon.status == -1) {
+            <span class="badge contest-badge">
+              {{ hackathon.projectsCount }}
+            </span>
+          }
+          @if (hackathon.status != -1) {
+            <div>
+              <a
+                class="btn btn-primary btn-sm"
+                [routerLink]="['/competitions', 'hackathons', 'hackathon', hackathon.id, 'standings']">
+                {{ 'CONTESTS.STANDINGS' | translate }}
+              </a>
+              <br>
+            </div>
+          }
+        </td>
+        <td class="text-center text-primary">
+          <div class="avatar p-50 m-0 mb-1">
+            <div class="avatar-content">
+              <kep-icon name="users"/>
+            </div>
+          </div>
+          <br>
+          <span
+            [countUp]="hackathon.registrantsCount"
+            [options]="{ duration: 5 }"
+            class="badge bg-primary">
+          </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</kep-card>

@@ -1,0 +1,22 @@
+<app-content-header [contentHeader]="contentHeader"/>
+
+<kep-card>
+  <div class="card-header p-2">
+    <hackathon-tab [hackathon]="hackathon"/>
+  </div>
+</kep-card>
+
+<attempts-table [attempts]="pageResult?.data" [project]="null"/>
+
+<div class="my-3 mb-0">
+  <kep-pagination
+    (pageChange)="reloadPage()"
+    [(page)]="pageNumber"
+    [collectionSize]="total"
+    [color]="'yellow'"
+    [disabled]="isLoading"
+    [maxSize]="maxSize"
+    [pageSize]="pageSize"
+    [rotate]="true">
+  </kep-pagination>
+</div>

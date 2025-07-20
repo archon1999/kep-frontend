@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ProjectAttemptsRepository } from '@projects/data-access/repositories/project-attempts.repository';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
@@ -9,36 +9,34 @@ import { BaseTablePageComponent } from '@app/common';
 import { Observable } from 'rxjs';
 import { PageResult } from '@app/common/classes/page-result';
 import { ProjectAttempt } from '@projects/domain/entities';
+import { Hackathon } from "@hackathons/domain";
+import { HackathonTabComponent } from "@hackathons/ui/components/hackathon-tab/hackathon-tab.component";
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'hackathon-attempts',
-  templateUrl: './hackathon-attempts.component.html',
-  styleUrls: ['./hackathon-attempts.component.scss'],
+  templateUrl: './hackathon-attempts.page.html',
+  styleUrls: ['./hackathon-attempts.page.scss'],
   standalone: true,
   imports: [
     CoreCommonModule,
     ContentHeaderModule,
     AttemptsTableComponent,
-    KepPaginationComponent
+    KepPaginationComponent,
+    HackathonTabComponent,
+    KepCardComponent
   ]
 })
-export class HackathonAttemptsComponent extends BaseTablePageComponent<ProjectAttempt> implements OnInit {
-  public hackathonId: number;
+export class HackathonAttemptsPage extends BaseTablePageComponent<ProjectAttempt> implements OnInit {
+  @Input() hackathon: Hackathon;
 
   constructor(private repository: ProjectAttemptsRepository) {
     super();
-  }
-
-  ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.hackathonId = params['id'];
-      this.loadContentHeader();
-      this.reloadPage();
-    });
+    this.hackathon = this.route.snapshot.data.hackathon;
   }
 
   getPage(): Observable<PageResult<ProjectAttempt>> {
-    return this.repository.list({ page: this.pageNumber, hackathon_id: this.hackathonId });
+    return this.repository.list({ page: this.pageNumber, hackathonId: this.hackathon.id });
   }
 
   protected getContentHeader(): ContentHeader {
@@ -48,7 +46,7 @@ export class HackathonAttemptsComponent extends BaseTablePageComponent<ProjectAt
         type: '',
         links: [
           { name: 'Hackathons', isLink: true, link: '../../..' },
-          { name: this.hackathonId + '', isLink: true, link: '..' },
+          { name: this.hackathon.id + '', isLink: true, link: '..' },
           { name: 'Attempts', isLink: false }
         ]
       }

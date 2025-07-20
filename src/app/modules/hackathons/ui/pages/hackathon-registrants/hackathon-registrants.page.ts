@@ -3,17 +3,17 @@ import { BasePageComponent } from '@app/common';
 import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
-import { HackathonsApiService } from '@app/modules/hackathons/data-access/hackathons-api.service';
+import { HackathonsApiService } from '@hackathons/data-access/hackathons-api.service';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
   selector: 'hackathon-registrants',
-  templateUrl: './hackathon-registrants.component.html',
-  styleUrls: ['./hackathon-registrants.component.scss'],
+  templateUrl: './hackathon-registrants.page.html',
+  styleUrls: ['./hackathon-registrants.page.scss'],
   standalone: true,
   imports: [CoreCommonModule, ContentHeaderModule, KepCardComponent]
 })
-export class HackathonRegistrantsComponent extends BasePageComponent implements OnInit {
+export class HackathonRegistrantsPage extends BasePageComponent implements OnInit {
   public hackathonId: number;
   public registrants: any[] = [];
   public isLoading = true;

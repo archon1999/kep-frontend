@@ -1,0 +1,25 @@
+@import 'styles/kep-imports';
+
+hackathon-card {
+  .card-bg {
+    background-position: 50% 50%;
+    background-size: 20%;
+    background-repeat: no-repeat;
+    height: 100%;
+    left: 0;
+    opacity: .5;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .card.custom-card {
+    background: linear-gradient(to right, rgba(243, 17, 75, 0.1), rgba(140, 24, 243, 0.1)) !important;
+
+    @include dark-layout {
+      background: linear-gradient(to right, rgba(243, 17, 75, 0.1), rgba(140, 24, 243, 0.1)) !important;
+    }
+  }
+}

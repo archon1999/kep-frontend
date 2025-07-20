@@ -12,7 +12,7 @@
   <!--  </h4>-->
 }
 
-@if (!contest.isFinished()) {
+@if (contest.status != 1) {
   <div class="wrap">
     <div class="countdown">
       <div attr.data-init-value="{{ hours }}" class="bloc-time hours">

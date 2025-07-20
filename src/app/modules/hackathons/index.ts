@@ -1,1 +1,1 @@
-export * from '@hackathons/ui/components/hackathon-list-card/hackathon-list-card.component';
+export * from '@hackathons/ui/components/hackathon-card/hackathon-card.component';

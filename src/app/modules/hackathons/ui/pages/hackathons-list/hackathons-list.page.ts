@@ -10,7 +10,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { HackathonsApiService } from '@app/modules/hackathons/data-access/hackathons-api.service';
 import { Hackathon } from '@app/modules/hackathons/domain';
-import { HackathonListCardComponent } from "@app/modules/hackathons";
+import { HackathonCardComponent } from "@app/modules/hackathons";
 
 @Component({
   selector: 'page-hackathons',
@@ -19,7 +19,7 @@ import { HackathonListCardComponent } from "@app/modules/hackathons";
   standalone: true,
   imports: [
     CoreCommonModule,
-    HackathonListCardComponent,
+    HackathonCardComponent,
     ContentHeaderModule,
     KepPaginationComponent,
     NgxSkeletonLoaderModule,

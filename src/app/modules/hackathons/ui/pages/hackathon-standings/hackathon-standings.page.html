@@ -1,0 +1,85 @@
+<div class="bg-img" style="background-image: url({{ hackathon.logo }});"></div>
+
+<kep-card>
+  <div class="card-header">
+    <h2 class="fs-2">
+      <kep-icon name="hackathon" size="medium-5"></kep-icon>
+      {{ hackathon.title }}
+    </h2>
+  </div>
+
+  <div class="card-body">
+    <hackathon-tab [hackathon]="hackathon"/>
+  </div>
+</kep-card>
+
+<kep-card *ngIf="hackathon.status != 1">
+  <contest-standings-countdown [contest]="hackathon"/>
+</kep-card>
+
+<kep-table>
+  <ng-container header>
+    <th class="text-center">#</th>
+    <th>{{ 'CONTESTS.CONTESTANT' | translate }}</th>
+    <th>{{ 'CONTESTS.POINTS' | translate }}</th>
+    @for (project of projects; track project.symbol) {
+      <td class="text-center">
+        <a ngbTooltip="{{ project.project.title }}" routerLink="../projects/{{project.symbol}}">
+          {{ project.symbol }} ({{ project.project.kepcoins }})
+        </a>
+      </td>
+    }
+  </ng-container>
+  <ng-container body>
+    @for (participant of standings; track participant.username; let rowIndex = $index) {
+      <tr>
+        <td class="text-center">{{ rowIndex + 1 }}</td>
+        <td>
+          <user-popover [username]="participant.username" [customContent]="true">
+            <div class="d-flex gap-2 align-items-center">
+              <img [src]="participant.userAvatar" class="avatar avatar-rounded" height="32">
+              <div>
+                <div class="text-dark">
+                  {{ participant.username }}
+                </div>
+                <div class="text-muted">
+                  {{ participant.userFullName }}
+                </div>
+              </div>
+            </div>
+          </user-popover>
+        </td>
+        <td>
+          <span class="badge bg-primary">
+            {{ participant.points }}
+          </span>
+        </td>
+
+        @for (project of projects; track project.symbol) {
+          <td class="text-center">
+            <div>
+              <span class="text-primary">
+                {{ getProjectResult(participant, project.symbol).points }}
+              </span>
+              /
+              <span class="text-dark">{{ project.project.kepcoins }}</span>
+            </div>
+            <div class="text-muted">
+              {{ getProjectResult(participant, project.symbol).time }}
+            </div>
+          </td>
+        }
+      </tr>
+    }
+  </ng-container>
+</kep-table>
+
+<kep-pagination
+  [collectionSize]="1"
+  [disabled]="isLoading"
+  [ellipses]="true"
+  [maxSize]="1"
+  [pageOptions]="[]"
+  [pageSize]="1"
+  [rotate]="true">
+</kep-pagination>

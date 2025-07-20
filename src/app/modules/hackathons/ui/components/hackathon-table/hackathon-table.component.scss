@@ -1,0 +1,49 @@
+@import 'styles/kep-imports';
+
+.contest-author {
+  font-size: 11px;
+  padding-bottom: 10px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.contest-rated {
+  font-size: 10.5px;
+  padding-top: 10px;
+}
+
+.table {
+  --bs-table-color: var(--text-color);
+}
+
+thead tr {
+  background: var(--bg-gradient);
+
+  @include dark-layout {
+    background: var(--bg-gradient) !important;
+  }
+}
+
+.badge.contest-badge {
+  background-color: var(--bg);
+  box-shadow: var(--box-shadow) !important;
+}
+
+.btn {
+  background-color: var(--bg);
+  color: var(--text-color);
+
+  &:hover {
+    box-shadow: var(--box-shadow) !important;
+  }
+}
+
+.badge.contest-badge-light {
+  background-color: var(--contest-color-light);
+  color: var(--bg);
+}
+
+.avatar {
+  background-color: var(--contest-color-light);
+  color: var(--bg);
+}

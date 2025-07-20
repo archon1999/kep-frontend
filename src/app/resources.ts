@@ -22,6 +22,11 @@ export enum Resources {
 
   Hackathons = '/competitions/hackathons',
   Hackathon = '/competitions/hackathons/hackathon/:id',
+  HackathonProjects = '/competitions/hackathons/hackathon/:id/projects',
+  HackathonProject = '/competitions/hackathons/hackathon/:id/projects/:symbol',
+  HackathonAttempts = '/competitions/hackathons/hackathon/:id/attempts',
+  HackathonRegistrants = '/competitions/hackathons/hackathon/:id/registrants/',
+  HackathonStandings = '/competitions/hackathons/hackathon/:id/standings',
 
   Tests = '/practice/tests',
   Test = '/practice/tests/test/:id',

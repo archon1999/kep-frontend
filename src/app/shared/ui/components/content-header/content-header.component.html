@@ -1,29 +1,26 @@
-<div
-  class="mb-4 page-header-breadcrumb d-flex align-items-center justify-content-between flex-wrap gap-2 position-relative">
-  <div class="top-left"></div>
-  <div class="top-right"></div>
-  <div class="bottom-left"></div>
-  <div class="bottom-right"></div>
-  <div>
-    <h1 class="page-title fw-medium fs-18 mb-0">{{ contentHeader.headerTitle | translate }}</h1>
-    <div class="">
-      <nav>
-        <ol class="breadcrumb mb-0">
-          @for (breadcrumbItem of contentHeader.breadcrumb.links; track $index) {
-            <li class="breadcrumb-item" [class]="{
+<kep-card>
+  <div class="card-header pb-3">
+    <div>
+      <h1 class="page-title fw-medium fs-18 mb-0">{{ contentHeader.headerTitle | translate }}</h1>
+      <div class="">
+        <nav>
+          <ol class="breadcrumb mb-0">
+            @for (breadcrumbItem of contentHeader.breadcrumb.links; track $index) {
+              <li class="breadcrumb-item" [class]="{
               'active': $last
             }">
-              @if (breadcrumbItem.isLink) {
-                <a [routerLink]="breadcrumbItem.link">{{ breadcrumbItem.name | translate }}</a>
-              } @else {
-                {{ breadcrumbItem.name | translate }}
-              }
-            </li>
-          }
-        </ol>
-      </nav>
+                @if (breadcrumbItem.isLink) {
+                  <a [routerLink]="breadcrumbItem.link">{{ breadcrumbItem.name | translate }}</a>
+                } @else {
+                  {{ breadcrumbItem.name | translate }}
+                }
+              </li>
+            }
+          </ol>
+        </nav>
+      </div>
     </div>
-  </div>
 
-  <ng-content/>
-</div>
+    <ng-content/>
+  </div>
+</kep-card>

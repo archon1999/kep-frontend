@@ -8,6 +8,7 @@ import { UserPopoverModule } from '@shared/components/user-popover/user-popover.
 import { ProjectTechnologyComponent } from '@projects/ui/components/project-technology/project-technology.component';
 import { Project, ProjectAttempt, ProjectAttemptLogTask } from "@projects/domain/entities";
 import { ProjectAttemptsRepository } from "@projects/data-access/repositories/project-attempts.repository";
+import { EmptyResultComponent } from "@shared/components/empty-result/empty-result.component";
 
 @Component({
   selector: 'attempts-table',
@@ -18,7 +19,8 @@ import { ProjectAttemptsRepository } from "@projects/data-access/repositories/pr
     CoreCommonModule,
     UserPopoverModule,
     NgbAccordionModule,
-    ProjectTechnologyComponent
+    ProjectTechnologyComponent,
+    EmptyResultComponent
   ],
 })
 export class AttemptsTableComponent implements OnInit {

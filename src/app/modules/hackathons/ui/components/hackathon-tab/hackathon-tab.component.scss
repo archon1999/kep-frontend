@@ -1,0 +1,12 @@
+hackathon-tab {
+  .nav-tabs .nav-link {
+    &.active {
+      background-color: var(--primary) !important;
+      color: white !important;
+    }
+
+    &:hover {
+      background-color: var(--primary01);
+    }
+  }
+}

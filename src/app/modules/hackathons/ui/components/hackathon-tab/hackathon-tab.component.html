@@ -1,0 +1,75 @@
+<div>
+  <ul
+    #nav="ngbNav"
+    [(activeId)]="activeId"
+    class="nav nav-tabs vertical-tabs-3"
+    ngbNav>
+    <li ngbNavItem>
+      <a
+        [routerLinkActiveOptions]="{exact:true}"
+        [routerLink]="['/competitions','hackathons','hackathon', hackathon?.id]"
+        class="nav-link text-center mb-0"
+        routerLinkActive="active"
+      >
+        <div class="mb-2">
+          <kep-icon name="hackathon"/>
+        </div>
+        {{ 'Hackathon' | translate }}
+      </a>
+    </li>
+    @if (hackathon?.status != -1) {
+      <li ngbNavItem>
+        <a
+            class="nav-link text-center mb-0"
+          [routerLink]="['/competitions','hackathons','hackathon', hackathon?.id, 'projects']"
+          routerLinkActive="active"
+        >
+          <div class="mb-2">
+            <kep-icon name="project"/>
+          </div>
+          {{ 'Projects' | translate }}
+        </a>
+      </li>
+      <li ngbNavItem>
+        <a
+          class="nav-link text-center mb-0"
+          [routerLink]="['/competitions','hackathons','hackathon', hackathon?.id, 'attempts']"
+          routerLinkActive="active"
+        >
+          <div class="mb-2">
+            <kep-icon name="attempts"/>
+          </div>
+          {{ 'Attempts' | translate }}
+        </a>
+      </li>
+
+      <li ngbNavItem>
+        <a
+          class="nav-link text-center mb-0"
+          [routerLink]="['/competitions','hackathons','hackathon', hackathon?.id, 'standings']"
+          routerLinkActive="active"
+        >
+          <div class="mb-2">
+            <kep-icon name="ranking"/>
+          </div>
+          {{ 'CONTESTS.STANDINGS' | translate }}</a>
+      </li>
+    }
+    @if (hackathon?.status == -1) {
+      <li ngbNavItem>
+        <a
+          class="nav-link text-center mb-0"
+          [routerLink]="['/competitions','hackathons','hackathon', hackathon?.id, 'registrants']"
+          routerLinkActive="active"
+        >
+          <div class="mb-2">
+            <kep-icon name="users"/>
+          </div>
+          {{ 'Registrants' | translate }}
+        </a>
+      </li>
+    }
+  </ul>
+</div>
+
+<div [ngbNavOutlet]="nav"></div>

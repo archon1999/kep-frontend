@@ -1,2 +1,11 @@
 <app-content-header [contentHeader]="contentHeader"></app-content-header>
-<hackathon-tab [hackathon]="data"></hackathon-tab>
+
+<kep-card>
+  <div class="card-header p-2">
+    <hackathon-tab [hackathon]="hackathon"/>
+  </div>
+</kep-card>
+
+<hackathon-card [hackathon]="hackathon"/>
+
+<hackathon-table [hackathon]="hackathon"/>

@@ -7,6 +7,7 @@ import { ProjectTechnologyComponent } from '@projects/ui/components/project-tech
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 import { Project } from "@projects/domain/entities";
+import { Hackathon, HackathonProject } from "@hackathons/domain";
 
 @Component({
   selector: 'project-card',
@@ -24,4 +25,5 @@ import { Project } from "@projects/domain/entities";
 })
 export class ProjectCardComponent {
   @Input() project: Project;
+  @Input() hackathonProject: HackathonProject;
 }
