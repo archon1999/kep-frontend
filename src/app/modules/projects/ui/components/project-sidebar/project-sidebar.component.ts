@@ -22,6 +22,8 @@ import { ProjectInfoCardComponent } from "@projects/ui/components/project-info-c
 })
 export class ProjectSidebarComponent implements OnInit {
   @Input() project: Project;
+  @Input() hackathonId?: number;
+  @Input() projectSymbol?: string;
   @Output() submitEvent = new EventEmitter<any>();
 
   public selectedTechnology: string;
@@ -47,11 +49,17 @@ export class ProjectSidebarComponent implements OnInit {
     if (!this.selectedTechnology || !this.fileToUpload) {
       return;
     }
-    this.projectAttemptsRepository.submitAttempt(this.project.slug, this.selectedTechnology, this.fileToUpload).subscribe(
-      () => {
-        this.submitEvent.emit();
-        this.toastr.success('Submitted');
-      }
-    );
+    const tech = this.selectedTechnology;
+    const file = this.fileToUpload;
+    let submit$;
+    if (this.hackathonId && this.projectSymbol) {
+      submit$ = this.projectAttemptsRepository.submitHackathonAttempt(this.hackathonId, this.projectSymbol, tech, file);
+    } else {
+      submit$ = this.projectAttemptsRepository.submitAttempt(this.project.slug, tech, file);
+    }
+    submit$.subscribe(() => {
+      this.submitEvent.emit();
+      this.toastr.success('Submitted');
+    });
   }
 }

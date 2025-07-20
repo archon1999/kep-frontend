@@ -26,6 +26,7 @@ export class ProjectAttemptsComponent extends BaseTablePageComponent<ProjectAtte
   override maxSize = 5;
 
   @Input() project: Project;
+  @Input() hackathonId?: number;
   public myAttempts = true;
 
   constructor(public repository: ProjectAttemptsRepository) {
@@ -41,16 +42,17 @@ export class ProjectAttemptsComponent extends BaseTablePageComponent<ProjectAtte
   }
 
   getPage(): Observable<PageResult<ProjectAttempt>> {
+    const params: any = {
+      page: this.pageNumber,
+      project_id: this.project.id,
+    };
+    if (this.hackathonId) {
+      params.hackathonId = this.hackathonId;
+    }
     if (this.myAttempts && this.currentUser) {
-      return this.repository.listByUsername(this.currentUser.username, {
-        page: this.pageNumber,
-        project_id: this.project.id
-      });
+      return this.repository.listByUsername(this.currentUser.username, params);
     } else {
-      return this.repository.list({
-        page: this.pageNumber,
-        project_id: this.project.id
-      });
+      return this.repository.list(params);
     }
   }
 

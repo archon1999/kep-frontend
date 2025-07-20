@@ -24,6 +24,14 @@ export default [
     }
   },
   {
+    path: 'hackathon/:id/projects/:symbol',
+    loadComponent: () => import('@hackathons/ui/pages/hackathon-project/hackathon-project.page').then(m => m.HackathonProjectPage),
+    data: { title: 'Projects.Project' },
+    resolve: {
+      hackathon: hackathonResolver,
+    }
+  },
+  {
     path: 'hackathon/:id/attempts',
     loadComponent: () => import('@hackathons/ui/pages/hackathon-attempts/hackathon-attempts.page').then(m => m.HackathonAttemptsPage),
     data: { title: 'Hackathons.HackathonAttempts' },

@@ -36,4 +36,16 @@ export class ProjectsApiService {
     formData.append('technology', technology);
     return this.api.post(`projects/${projectSlug}/submit`, formData);
   }
+
+  submitHackathonAttempt(
+    hackathonId: number | string,
+    projectSymbol: string,
+    technology: string,
+    file: File
+  ): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    formData.append('technology', technology);
+    return this.api.post(`hackathons/${hackathonId}/projects/${projectSymbol}/submit`, formData);
+  }
 }
