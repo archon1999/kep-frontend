@@ -3,14 +3,14 @@
     <table class="table">
       <thead>
       <tr>
-        <th class="text-center">{{ 'CONTESTS.TITLE' | translate }}</th>
-        <th class="text-center">{{ 'CONTESTS.AUTHORS' | translate }}</th>
-        <th class="text-center">{{ 'CONTESTS.START_TIME' | translate }}</th>
-        <th class="text-center">{{ 'CONTESTS.FINISH_TIME' | translate }}</th>
+        <th class="text-center">{{ 'HACKATHONS.TITLE' | translate }}</th>
+        <th class="text-center">{{ 'HACKATHONS.AUTHORS' | translate }}</th>
+        <th class="text-center">{{ 'HACKATHONS.START_TIME' | translate }}</th>
+        <th class="text-center">{{ 'HACKATHONS.FINISH_TIME' | translate }}</th>
         <th class="text-center">
         </th>
         <th class="text-center">
-          {{ 'CONTESTS.REGISTRANTS_COUNT' | translate }}
+          {{ 'HACKATHONS.REGISTRANTS_COUNT' | translate }}
         </th>
       </tr>
       </thead>
@@ -45,7 +45,7 @@
         </td>
         <td class="text-center">
           @if (hackathon.status == -1) {
-            <span class="badge contest-badge">
+            <span class="badge hackathon-badge">
               {{ hackathon.projectsCount }}
             </span>
           }
@@ -54,7 +54,7 @@
               <a
                 class="btn btn-primary btn-sm"
                 [routerLink]="['/competitions', 'hackathons', 'hackathon', hackathon.id, 'standings']">
-                {{ 'CONTESTS.STANDINGS' | translate }}
+                {{ 'HACKATHONS.STANDINGS' | translate }}
               </a>
               <br>
             </div>
