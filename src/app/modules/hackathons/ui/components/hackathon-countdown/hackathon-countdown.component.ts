@@ -2,7 +2,7 @@ import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core'
 import { NgbModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { CoreCommonModule } from '@core/common.module';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
-import { HackathonStatus } from '@hackathons/constants/hackathon-status';
+import { HackathonStatus } from '@hackathons/domain/constants/hackathon-status';
 import { Hackathon } from "@hackathons/domain";
 import { BaseComponent } from "@app/common";
 import { Resources } from "@app/resources";
