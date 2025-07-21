@@ -1,18 +1,18 @@
 <kep-card [customClass]="'overlay-card'">
-  <img class="card-img" [src]="hackathon.logo" height="200">
+  <img class="card-img" [src]="hackathon.logo" height="200" #hackathonLogo>
 
   <div class="card-img-overlay d-flex flex-column p-0" style="justify-content: space-evenly;">
     <div class="card-header my-1 justify-content-center" style="border-block-end: none !important;">
       <h6 class="text-uppercase">
         @switch (hackathon.status) {
-          @case (ContestStatus.ALREADY) {
-            {{ 'CONTESTS.CONTEST_ENDS' | translate }}
+          @case (HackathonStatus.ALREADY) {
+            {{ 'HACKATHONS.HACKATHON_ENDS' | translate }}
           }
-          @case (ContestStatus.FINISHED) {
-            {{ 'CONTESTS.CONTEST_FINISHED' | translate }}
+          @case (HackathonStatus.FINISHED) {
+            {{ 'HACKATHONS.HACKATHON_FINISHED' | translate }}
           }
-          @case (ContestStatus.NOT_STARTED) {
-            {{ 'CONTESTS.CONTEST_STARTS' | translate }}
+          @case (HackathonStatus.NOT_STARTED) {
+            {{ 'HACKATHONS.HACKATHON_STARTS' | translate }}
           }
         }
       </h6>
@@ -22,7 +22,7 @@
         [clockColor]="'#fff'"
         [hackathon]="hackathon"
         [textColor]="'#fff'"/>
-      @if (hackathon.status == ContestStatus.FINISHED) {
+      @if (hackathon.status == HackathonStatus.FINISHED) {
         <h5
           class="text-center mt-1">
           {{ hackathon.finishTime | localizedDate:'medium' }}

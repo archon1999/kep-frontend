@@ -533,6 +533,10 @@ export const localeEn = {
     REGISTRANTS_COUNT: 'Number of registrants',
     CONTESTANT: 'Participant',
     POINTS: 'Points',
+    HACKATHON_ENDS: 'Hackathon ends in',
+    HACKATHON_STARTS: 'Hackathon starts in',
+    HACKATHON_FINISHED: 'Hackathon finished',
+    HACKATHON_STARTED: 'Hackathon started',
   },
   USER_INFO: {
     ABOUT: 'About',

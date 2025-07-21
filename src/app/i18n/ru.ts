@@ -529,6 +529,10 @@ export const localeRu = {
     REGISTRANTS_COUNT: 'Количество зарегистрировавшихся',
     CONTESTANT: 'Участник',
     POINTS: 'Очки',
+    HACKATHON_ENDS: 'Хакатон завершится',
+    HACKATHON_STARTS: 'Хакатон начнется',
+    HACKATHON_FINISHED: 'Хакатон завершен',
+    HACKATHON_STARTED: 'Хакатон начался',
   },
   USER_INFO: {
     ABOUT: 'О себе',
