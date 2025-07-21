@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { ContestStatus } from '@contests/constants/contest-status';
+import { HackathonStatus } from '@hackathons/domain/constants/hackathon-status';
 import { Hackathon } from "@hackathons/domain";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 import { HackathonCountdownComponent } from "../hackathon-countdown/hackathon-countdown.component";
@@ -21,15 +21,15 @@ import { TranslatePipe } from "@ngx-translate/core";
 export class HackathonCountdownCardComponent {
   @Input() hackathon: Hackathon;
 
-  @ViewChild('contestLogo') contestLogoRef: ElementRef<HTMLImageElement>;
+  @ViewChild('hackathonLogo') hackathonLogoRef: ElementRef<HTMLImageElement>;
 
   public logoWidth: number;
   public logoHeight: number;
 
-  protected readonly ContestStatus = ContestStatus;
+  protected readonly HackathonStatus = HackathonStatus;
 
   onLoad(event: any) {
-    this.logoHeight = this.contestLogoRef.nativeElement.naturalHeight;
-    this.logoWidth = this.contestLogoRef.nativeElement.naturalWidth;
+    this.logoHeight = this.hackathonLogoRef.nativeElement.naturalHeight;
+    this.logoWidth = this.hackathonLogoRef.nativeElement.naturalWidth;
   }
 }

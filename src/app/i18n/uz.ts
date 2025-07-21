@@ -532,6 +532,10 @@ export const localeUz = {
     REGISTRANTS_COUNT: 'Ro\'yhatdan o\'tganlar soni',
     CONTESTANT: 'Ishtirokchi',
     POINTS: 'Ballar',
+    HACKATHON_ENDS: 'Xakaton yakunlanishiga',
+    HACKATHON_STARTS: 'Xakaton boshlanishiga',
+    HACKATHON_FINISHED: 'Xakaton yakunlandi',
+    HACKATHON_STARTED: 'Xakaton boshlandi',
   },
   USER_INFO: {
     ABOUT: 'Oʻzi haqida',
