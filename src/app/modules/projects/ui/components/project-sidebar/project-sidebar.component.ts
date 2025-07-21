@@ -49,9 +49,9 @@ export class ProjectSidebarComponent implements OnInit {
     if (!this.selectedTechnology || !this.fileToUpload) {
       return;
     }
-    this.fileToUpload = null;
     const tech = this.selectedTechnology;
     const file = this.fileToUpload;
+    this.fileToUpload = null;
     let submit$;
     if (this.hackathonId && this.projectSymbol) {
       submit$ = this.projectAttemptsRepository.submitHackathonAttempt(this.hackathonId, this.projectSymbol, tech, file);
