@@ -73,7 +73,7 @@ export const routes: Routes = [
       },
       {
         path: 'users',
-        loadChildren: () => import('./modules/users/users.routing'),
+        loadChildren: () => import('@users/config/routes'),
       },
       {
         path: 'calendar',

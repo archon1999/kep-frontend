@@ -1,9 +1,27 @@
 <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
+<kep-card>
+  <div class="card-header p-4">
+    <div class="card-title font-medium-5 align-items-center">
+      <kep-icon name="hackathons" size="medium-5"/>
+      <span class="text-dark">{{ 'Hackathons' | translate }}</span>
+      <span *ngIf="!isLoading" class="total-count">({{ pageResult?.total }})</span>
+    </div>
+    <div>
+      <input class="form-control mt-md-0 mt-1ca" placeholder="{{ 'Search' | translate }}">
+    </div>
+  </div>
+</kep-card>
+
 @if (isLoading) {
-  <kep-card cardHeight="400px">
-    <spinner></spinner>
-  </kep-card>
+  <ngx-skeleton-loader
+    count="1"
+    class="custom-skeleton"
+    [count]="pageSize"
+    animation="pulse"
+    appearance="line"
+    [theme]="{height: '100px', 'margin-bottom': '0.25rem', background: 'var(--skeleton-color)'}"
+  />
 } @else {
   @for (hackathon of hackathons; track hackathon.id) {
     <hackathon-card [hackathon]="hackathon"></hackathon-card>

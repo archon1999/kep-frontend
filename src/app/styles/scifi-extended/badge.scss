@@ -2,11 +2,19 @@
   --bs-badge-padding-x: 0.9em;
   --bs-badge-padding-y: 0.65em;
   --bs-badge-font-size: 0.81em;
+  --bs-badge-color: #fff;
   padding: var(--bs-badge-padding-y) var(--bs-badge-padding-x);
   font-size: var(--bs-badge-font-size);
   font-weight: var(--bs-badge-font-weight);
+  border-radius: var(--bs-badge-border-radius);
 
   &.bg-yellow {
     --bs-badge-color: #000;
   }
+}
+
+.badge-pill {
+  --bs-badge-padding-x: 0.8em;
+  --bs-badge-padding-y: 0.55em;
+  --bs-badge-border-radius: 50rem;
 }

@@ -1,52 +1,44 @@
-<div class="content-wrapper container-xxl p-0">
-  <div class="content-body">
-    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+<app-content-header [contentHeader]="contentHeader"></app-content-header>
 
-    <div class="row">
-      <div class="col-12 mx-auto">
-        <kep-card>
-          <div class="card-header p-4">
-            <div class="card-title font-medium-5 align-items-center">
-              <kep-icon name="arena" size="medium-5" type="duotone" color="yellow"></kep-icon>
-              <span class="text-dark">{{ 'Arena' | translate }}</span>
-              <span class="total-count" *ngIf="!isLoading">({{ pageResult?.total }})</span>
-            </div>
-            <div>
-              <input placeholder="{{ 'Search' | translate }}" class="form-control mt-md-0 mt-1ca">
-            </div>
-          </div>
-        </kep-card>
-
-        @if (isLoading) {
-          <ngx-skeleton-loader
-            count="1"
-            class="custom-skeleton"
-            [count]="pageSize"
-            animation="pulse"
-            appearance="line"
-            [theme]="{height: '100px', 'margin-bottom': '0.25rem', background: 'var(--skeleton-color)'}"
-          />
-        } @else {
-          @for (arena of arenaList; track arena) {
-            <arena-list-card  [arena]="arena"></arena-list-card>
-          }
-        }
-
-        @if (total) {
-          <div class="mb-2">
-            <kep-pagination
-              [collectionSize]="total"
-              [(page)]="pageNumber"
-              [pageSize]="pageSize"
-              [maxSize]="maxSize"
-              [rotate]="true"
-              [color]="'yellow'"
-              [disabled]="isLoading"
-              (pageChange)="reloadPage()">
-            </kep-pagination>
-          </div>
-        }
-      </div>
+<kep-card>
+  <div class="card-header p-4">
+    <div class="card-title font-medium-5 align-items-center">
+      <kep-icon color="yellow" name="arena" size="medium-5" type="duotone"></kep-icon>
+      <span class="text-dark">{{ 'Arena' | translate }}</span>
+      <span *ngIf="!isLoading" class="total-count">({{ pageResult?.total }})</span>
+    </div>
+    <div>
+      <input class="form-control mt-md-0 mt-1ca" placeholder="{{ 'Search' | translate }}">
     </div>
   </div>
-</div>
+</kep-card>
+
+@if (isLoading) {
+  <ngx-skeleton-loader
+    count="1"
+    class="custom-skeleton"
+    [count]="pageSize"
+    animation="pulse"
+    appearance="line"
+    [theme]="{height: '100px', 'margin-bottom': '0.25rem', background: 'var(--skeleton-color)'}"
+  />
+} @else {
+  @for (arena of arenaList; track arena) {
+    <arena-list-card [arena]="arena"></arena-list-card>
+  }
+}
+
+@if (total) {
+  <div class="mb-2">
+    <kep-pagination
+      [collectionSize]="total"
+      [(page)]="pageNumber"
+      [pageSize]="pageSize"
+      [maxSize]="maxSize"
+      [rotate]="true"
+      [color]="'yellow'"
+      [disabled]="isLoading"
+      (pageChange)="reloadPage()">
+    </kep-pagination>
+  </div>
+}

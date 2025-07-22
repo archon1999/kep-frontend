@@ -1,0 +1,12 @@
+.table thead {
+  tr th {
+    background: var(--gray-1) !important;
+    border: none !important;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+}
+
+::ng-deep .pagination {
+  margin: 0 !important;
+}
