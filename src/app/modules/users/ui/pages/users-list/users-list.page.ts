@@ -1,27 +1,20 @@
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, ViewChild } from '@angular/core';
 import { debounceTime } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgxCountriesService } from '@shared/third-part-modules/ngx-countries/ngx-countries.service';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
-import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
-import { BaseTablePageComponent } from '@core/common/classes/base-table-page.component';
+import { BasePageComponent } from '@core/common/classes/base-page.component';
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
-import { PageResult } from '@core/common/classes/page-result';
 import { User, UsersApiService } from "@app/modules/users";
 import { initialState } from "@core/config/initial-state";
-import { KepTableComponent } from "@shared/components/kep-table/kep-table.component";
+import { IxApiTableComponent, ColumnConfig, CellTemplateDirective, PageParams } from '@shared/components/table';
 import { KepStreakComponent } from "@shared/components/kep-streak/kep-streak.component";
-import { KepPaginationComponent } from "@shared/components/kep-pagination/kep-pagination.component";
-import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
-import {
-  ChallengesRankBadgeComponent
-} from "@challenges/components/challenges-user-view/challenges-rank-badge/challenges-rank-badge.component";
+import { ChallengesRankBadgeComponent } from "@challenges/components/challenges-user-view/challenges-rank-badge/challenges-rank-badge.component";
 
 @Component({
   selector: 'page-users-list',
@@ -32,22 +25,32 @@ import {
     CoreCommonModule,
     ContentHeaderModule,
     NgSelectModule,
-    TableOrderingModule,
     KepcoinViewModule,
     NgbTooltipModule,
     ContestantViewModule,
-    KepTableComponent,
+    IxApiTableComponent,
+    CellTemplateDirective,
     KepStreakComponent,
-    KepPaginationComponent,
-    KepCardComponent,
     ChallengesRankBadgeComponent,
 
   ]
 })
-export class UsersListPage extends BaseTablePageComponent<User> {
-  override defaultPageSize = 10;
-  override maxSize = 5;
-  override defaultOrdering = '-skills_rating';
+export class UsersListPage extends BasePageComponent {
+  @ViewChild(IxApiTableComponent) table!: IxApiTableComponent<User>;
+
+  columns: ColumnConfig<User>[] = [
+    { field: (u: User) => u, header: 'User', key: 'user', icon: 'user', sortable: true, orderingKey: 'id' },
+    { field: (u: User) => u, header: 'FullName', key: 'fullName', icon: 'username', sortable: true, orderingKey: 'first_name' },
+    { field: (u: User) => u.skillsRating, header: 'Rating', key: 'skillsRating', icon: 'rating', sortable: true, orderingKey: 'skills_rating' },
+    { field: (u: User) => u.activityRating, header: 'ActivityRating', key: 'activityRating', icon: 'rating', sortable: true, orderingKey: 'activity_rating' },
+    { field: (u: User) => u.contestsRating, header: 'Contests', key: 'contestsRating', icon: 'contest', sortable: true, orderingKey: 'contests_rating__rating' },
+    { field: (u: User) => u.challengesRating, header: 'Challenges', key: 'challengesRating', icon: 'challenge', sortable: true, orderingKey: 'challenges_rating__rating' },
+    { field: (u: User) => u, header: 'Streak', key: 'streak', icon: 'streak', sortable: true, orderingKey: 'streak' },
+    { field: 'kepcoin', header: 'Kepcoin', icon: 'dollar', sortable: true, orderingKey: 'kepcoin' },
+    { field: 'lastSeen', header: 'LastSeen', icon: 'time', sortable: true, orderingKey: 'last_seen' },
+  ];
+
+  pageOptions = [10, 20, 50];
 
   public filterForm = new FormGroup({
     country: new FormControl(''),
@@ -57,7 +60,7 @@ export class UsersListPage extends BaseTablePageComponent<User> {
     firstName: new FormControl(''),
   });
 
-  public countries = [];
+  public countries: Array<{ id: string; name: string }> = [];
 
   constructor(
     public service: UsersApiService,
@@ -66,41 +69,29 @@ export class UsersListPage extends BaseTablePageComponent<User> {
     super();
   }
 
-  get users() {
-    return this.pageResult?.data;
-  }
-
   ngOnInit(): void {
     this.loadContentHeader();
-    setTimeout(() => this.reloadPage());
 
-    this.service.getCountries().subscribe(
-      (countries: Array<string>) => {
-        for (const country of countries) {
-          this.countries.push({
-            id: country,
-            name: this.countriesService.getName(country, this.translateService.currentLang),
-          });
-        }
+    this.service.getCountries().subscribe(countries => {
+      for (const country of countries) {
+        this.countries.push({
+          id: country,
+          name: this.countriesService.getName(country, this.translateService.currentLang),
+        });
       }
-    );
+    });
 
-    this.filterForm.valueChanges.pipe(debounceTime(1000)).subscribe(
-      () => {
-        this.reloadPage();
-      }
-    );
+    this.filterForm.valueChanges.pipe(debounceTime(1000)).subscribe(() => {
+      this.table.load({ page: 1 });
+    });
   }
 
-  getPage(): Observable<PageResult<User>> | null {
-    const params: any = {
+  fetchPage = (params: PageParams) =>
+    this.service.getUsers({
       full: true,
-      ordering: this.ordering,
-      page: this.pageNumber,
+      ...params,
       ...this.filterForm.value,
-    };
-    return this.service.getUsers(params);
-  }
+    });
 
   protected getContentHeader(): ContentHeader {
     return {
