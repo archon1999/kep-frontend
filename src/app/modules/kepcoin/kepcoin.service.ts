@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '@core/data-access/api.service';
+import { Pageable } from '@app/common/classes/pageable';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,12 @@ export class KepcoinService {
     public api: ApiService,
   ) {}
 
-  getUserKepcoinEarns(page = 1) {
-    return this.api.get('kepcoin-earns', {page: page});
+  getUserKepcoinEarns(params: Partial<Pageable> = {}) {
+    return this.api.get('kepcoin-earns', params);
   }
 
-  getUserKepcoinSpends(page = 1) {
-    return this.api.get('kepcoin-spends', {page: page});
+  getUserKepcoinSpends(params: Partial<Pageable> = {}) {
+    return this.api.get('kepcoin-spends', params);
   }
 
   getStreakFreeze() {

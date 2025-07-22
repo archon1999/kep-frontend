@@ -1,0 +1,39 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <kep-table [loading]="isLoading" [empty]="pageResult?.total === 0">
+      <ng-container header>
+        <tr>
+          <th>#</th>
+          <th>{{ 'Date' | translate }}</th>
+          <th>{{ 'Type' | translate }}</th>
+          <th class="text-end">{{ 'Kepcoin' | translate }}</th>
+        </tr>
+      </ng-container>
+      <ng-container body>
+        @for (spend of pageResult?.data; track spend) {
+          <tr>
+            <td>{{ spend.rowIndex }}</td>
+            <td>{{ spend.datetime }}</td>
+            <td>{{ SpendType[spend.type] | translate }}</td>
+            <td class="text-end"><kepcoin [value]="spend.kepcoin"></kepcoin></td>
+          </tr>
+        }
+      </ng-container>
+      <ng-container pagination>
+        <kep-pagination
+          (pageChange)="pageChange($event)"
+          (pageSizeChange)="pageSizeChange($event)"
+          [collectionSize]="total"
+          [(page)]="pageNumber"
+          [pageSize]="pageSize"
+          [maxSize]="maxSize"
+          [pageOptions]="pageOptions"
+          [rotate]="true"
+          [disabled]="isLoading">
+        </kep-pagination>
+      </ng-container>
+    </kep-table>
+  </div>
+</div>

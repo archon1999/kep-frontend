@@ -4,12 +4,28 @@ import { AuthService, AuthUser } from '@auth';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { KepcoinService } from './kepcoin.service';
+import { CoreCommonModule } from '@core/common.module';
+import { RouterModule } from '@angular/router';
+import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
+import { CoreDirectivesModule } from '@shared/directives/directives.module';
+import { KepcoinSpendSwalModule } from '@shared/components/kepcoin-spend-swal/kepcoin-spend-swal.module';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
   selector: 'app-kepcoin',
   templateUrl: './kepcoin.component.html',
   styleUrls: ['./kepcoin.component.scss'],
-  standalone: false,
+  standalone: true,
+  imports: [
+    CoreCommonModule,
+    RouterModule,
+    KepcoinViewModule,
+    CoreDirectivesModule,
+    KepcoinSpendSwalModule,
+    KepPaginationComponent,
+    KepCardComponent,
+  ],
 })
 export class KepcoinComponent implements OnInit, OnDestroy {
 
