@@ -11,6 +11,19 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { KepcoinSpendSwalModule } from '@shared/components/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import {
+  EarnsListComponent
+} from './components/earns-list/earns-list.component';
+import {
+  SpendsListComponent
+} from './components/spends-list/spends-list.component';
+import {
+  HowToEarnKepcoinComponent
+} from './components/how-to-earn-kepcoin/how-to-earn-kepcoin.component';
+import {
+  HowToSpendKepcoinComponent
+} from './components/how-to-spend-kepcoin/how-to-spend-kepcoin.component';
+import { YouHaveCardComponent } from './components/you-have-card/you-have-card.component';
 
 @Component({
   selector: 'app-kepcoin',
@@ -25,6 +38,11 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
     KepcoinSpendSwalModule,
     KepPaginationComponent,
     KepCardComponent,
+    EarnsListComponent,
+    SpendsListComponent,
+    HowToEarnKepcoinComponent,
+    HowToSpendKepcoinComponent,
+    YouHaveCardComponent,
   ],
 })
 export class KepcoinComponent implements OnInit, OnDestroy {
@@ -34,7 +52,7 @@ export class KepcoinComponent implements OnInit, OnDestroy {
 
   public currentPage = 1;
   public total = 0;
-  public type = 1;
+  public view: 'earns' | 'spends' = 'earns';
 
   public streakFreeze = 0;
   public streak = 0;
@@ -74,7 +92,7 @@ export class KepcoinComponent implements OnInit, OnDestroy {
   }
 
   updatePage() {
-    if (this.type == 1) {
+    if (this.view === 'earns') {
       this.service.getUserKepcoinEarns({
         page: this.currentPage
       }).subscribe(

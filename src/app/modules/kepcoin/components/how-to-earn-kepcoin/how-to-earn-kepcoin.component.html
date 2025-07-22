@@ -1,0 +1,42 @@
+<kep-card>
+  <div class="card-header">
+    <div class="card-title">
+      <i data-feather="dollar-sign"></i>
+      {{ 'HowToEarnKepcoin' | translate }}
+    </div>
+  </div>
+
+  <div class="card-body text-dark">
+    {{ 'EarnDescription' | translate }}
+
+    <div class="earn">
+      <kepcoin [value]="1"></kepcoin>
+      : {{ 'EarnItem1' | translate }}
+    </div>
+
+    <div class="earn">
+      <kepcoin [value]="'1-10'"></kepcoin>
+      : {{ 'EarnItem2' | translate }}
+    </div>
+
+    <div class="earn">
+      <kepcoin [value]="'3, 10, 50'"></kepcoin>
+      : {{ 'EarnItem3' | translate }}
+    </div>
+
+    <div class="earn">
+      <kepcoin [value]="'5+'"></kepcoin>
+      : {{ 'EarnItem4' | translate }}
+    </div>
+
+    <div class="earn">
+      <kepcoin [value]="'10-100'"></kepcoin>
+      : {{ 'EarnItem5' | translate }}
+    </div>
+
+    <div class="earn">
+      <kepcoin [value]="'1-50'"></kepcoin>
+      : {{ 'EarnItem6' | translate }}
+    </div>
+  </div>
+</kep-card>

@@ -1,0 +1,81 @@
+<div>
+  <ul class="timeline">
+    @for (earn of earns; track earn) {
+      <li class="timeline-item">
+        <span class="timeline-point timeline-point-warning timeline-point-indicator"></span>
+        <div class="timeline-event">
+          <div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">
+            <h6>
+              <img height="19" src="assets/images/icons/kepcoin.png">{{ earn.kepcoin }}
+            </h6>
+            <span class="timeline-event-time">{{ earn.datetime }}</span>
+          </div>
+          <p>
+            <span class="text-dark">
+              @switch (earn.earnType) {
+                @case (EarnType.WroteBlog) {
+                  <span>{{ 'WroteBlog' | translate }}</span>
+                }
+                @case (EarnType.WroteProblemSolution) {
+                  <span>{{ 'WroteProblemSolution' | translate }}</span>
+                }
+                @case (EarnType.LoyaltyBonus) {
+                  <span>{{ 'LoyaltyBonus' | translate }}</span>
+                }
+                @case (EarnType.BonusFromAdmin) {
+                  <span>{{ 'BonusFromAdmin' | translate }}</span>
+                }
+                @case (EarnType.DailyActivity) {
+                  <span>
+                    {{ 'DailyActivity' | translate }}: <u class="text-primary">{{ earn.detail.date }}</u>
+                  </span>
+                }
+                @case (EarnType.DailyTaskCompletion) {
+                  <span>
+                    {{ 'DailyTaskCompleted' | translate }}: <u class="text-primary">{{ earn.detail.description }}</u>
+                  </span>
+                }
+                @case (EarnType.DailyProblemsRatingWin) {
+                  <span>
+                    {{ 'DailyRatingWinner' | translate }}: <u class="text-primary">{{ earn.detail.date }}</u>
+                  </span>
+                }
+                @case (EarnType.WeeklyProblemsRatingWin) {
+                  <span>
+                    {{ 'WeeklyRatingWinner' | translate }}: <u class="text-primary">{{ earn.detail.date }}</u>
+                  </span>
+                }
+                @case (EarnType.MonthlyProblemsRatingWin) {
+                  <span>
+                    {{ 'MonthlyRatingWinner' | translate }}: <u class="text-primary">{{ earn.detail.date }}</u>
+                  </span>
+                }
+                @case (EarnType.ContestParticipated) {
+                  <span>
+                    {{ 'ContestParticipant' | translate }}: <a [routerLink]="['/competitions', 'contests', 'contest', earn.detail.contest.id]">
+                    <u class="text-primary">{{ earn.detail.contest.title }}</u>
+                  </a>
+                  </span>
+                }
+                @case (EarnType.ArenaParticipated) {
+                  <span>
+                    {{ 'ArenaParticipant' | translate }}: <a [routerLink]="['/competitions', 'arena', 'tournament', earn.detail.arena.id]">
+                    <u class="text-primary">{{ earn.detail.arena.title }}</u>
+                  </a>
+                  </span>
+                }
+                @case (EarnType.TournamentParticipated) {
+                  <span>{{ 'TournamentParticipant' | translate }}</span>
+                }
+                @case (EarnType.ProjectTaskComplete) {
+                  <span>{{ 'ProjectTaskComplete' | translate }}</span>
+                }
+              }
+            </span>
+          </p>
+          <div class="d-flex align-items-center"></div>
+        </div>
+      </li>
+    }
+  </ul>
+</div>
