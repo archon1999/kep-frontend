@@ -5,5 +5,3 @@ export { BaseUserComponent } from '@app/common/classes/base-user.component';
 export { BaseLoadComponent } from '@app/common/classes/base-load.component';
 
 export { GlobalService } from '@app/common/global.service';
-
-export { BaseStatus } from './interfaces/base-status';

@@ -1,7 +1,8 @@
-import { BaseStatus } from '@app/common';
-
-export type ArenaStatus = BaseStatus;
-export const ArenaStatus = {...BaseStatus};
+export enum ArenaStatus {
+  NotStarted = -1,
+  Already = 0,
+  Finished = 1,
+}
 
 export interface ArenaChapter {
   id: number;

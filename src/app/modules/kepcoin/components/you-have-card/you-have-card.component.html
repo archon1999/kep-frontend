@@ -1,20 +1,26 @@
-<div class="card bg-kepcoin">
+<kep-card>
   <div class="card-header">
     <div class="card-title">
       <i data-feather="cloud-snow"></i>
       {{ 'StreakFreeze' | translate }}
     </div>
-    <div>
-      <img [src]="streak > 0 ? 'assets/images/icons/fire_red.png' : 'assets/images/icons/fire_blue.png'" height="19">
-      <strong>{{ streak }}</strong>
-      <span class="badge me-1 ms-1 bg-warning">
+
+    <div class="d-flex gap-2 justify-content-start align-items-center">
+      <streak class="text-dark" [streak]="streak"/>
+
+      <span class="badge bg-primary">
         {{ 'YouHave' | translate }} <strong>{{ streakFreeze }}</strong>
       </span>
-      <kepcoin-spend-swal [value]="10" [purchaseUrl]="'purchase-streak-freeze'" (success)="buy.emit()"></kepcoin-spend-swal>
+
+      <kepcoin-spend-swal
+        (success)="buy.emit()"
+        [purchaseUrl]="'purchase-streak-freeze'"
+        [value]="10"
+      />
     </div>
   </div>
 
   <div class="card-body">
     <p>{{ 'StreakFreezeText' | translate }}</p>
   </div>
-</div>
+</kep-card>

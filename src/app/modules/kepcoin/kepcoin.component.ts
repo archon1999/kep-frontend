@@ -1,8 +1,6 @@
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiService } from '@core/data-access/api.service';
-import { AuthService, AuthUser } from '@auth';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { AuthService } from '@auth';
 import { KepcoinService } from './kepcoin.service';
 import { CoreCommonModule } from '@core/common.module';
 import { RouterModule } from '@angular/router';
@@ -11,19 +9,12 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { KepcoinSpendSwalModule } from '@shared/components/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
-import {
-  EarnsListComponent
-} from './components/earns-list/earns-list.component';
-import {
-  SpendsListComponent
-} from './components/spends-list/spends-list.component';
-import {
-  HowToEarnKepcoinComponent
-} from './components/how-to-earn-kepcoin/how-to-earn-kepcoin.component';
-import {
-  HowToSpendKepcoinComponent
-} from './components/how-to-spend-kepcoin/how-to-spend-kepcoin.component';
+import { EarnsListComponent } from './components/earns-list/earns-list.component';
+import { SpendsListComponent } from './components/spends-list/spends-list.component';
+import { HowToEarnKepcoinComponent } from './components/how-to-earn-kepcoin/how-to-earn-kepcoin.component';
+import { HowToSpendKepcoinComponent } from './components/how-to-spend-kepcoin/how-to-spend-kepcoin.component';
 import { YouHaveCardComponent } from './components/you-have-card/you-have-card.component';
+import { BaseComponent } from "@app/common";
 
 @Component({
   selector: 'app-kepcoin',
@@ -45,7 +36,7 @@ import { YouHaveCardComponent } from './components/you-have-card/you-have-card.c
     YouHaveCardComponent,
   ],
 })
-export class KepcoinComponent implements OnInit, OnDestroy {
+export class KepcoinComponent extends BaseComponent implements OnInit, OnDestroy {
 
   public spends = [];
   public earns = [];
@@ -57,27 +48,13 @@ export class KepcoinComponent implements OnInit, OnDestroy {
   public streakFreeze = 0;
   public streak = 0;
 
-  public currentUser: AuthUser;
-
-  protected cdr = inject(ChangeDetectorRef);
-
-  private _unsubscribeAll = new Subject();
-
   constructor(
     public api: ApiService,
     public authService: AuthService,
     public service: KepcoinService,
-  ) { }
-
-  ngOnInit(): void {
-    this.authService.currentUser
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((user: any) => {
-        this.currentUser = user;
-        if (user) {
-          this.loadData();
-        }
-      })
+  ) {
+    super();
+    this.loadData();
   }
 
   loadData() {
@@ -117,10 +94,5 @@ export class KepcoinComponent implements OnInit, OnDestroy {
 
   success() {
     this.streakFreeze++;
-  }
-
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
   }
 }

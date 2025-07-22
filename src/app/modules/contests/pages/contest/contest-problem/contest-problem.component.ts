@@ -20,7 +20,6 @@ import { ContestantViewModule } from '@contests/components/contestant-view/conte
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContestCardModule } from '@contests/components/contest-card/contest-card.module';
-import { ProblemInfoCardComponent } from '@problems/components/problem-info-card/problem-info-card.component';
 import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
@@ -51,7 +50,6 @@ const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
     CodeEditorModule,
     NgbTooltipModule,
     ContestCardModule,
-    ProblemInfoCardComponent,
     ProblemBodyComponent,
     AttemptsTableModule,
     KepPaginationComponent,
@@ -103,7 +101,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
   }
 
   ngOnInit(): void {
-    this.route.data.subscribe(({ contest, contestProblem }) => {
+    this.route.data.subscribe(({contest, contestProblem}) => {
       if (this.contestProblems.length) {
         this.reloadProblems();
       }
@@ -197,7 +195,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
   }
 
   reloadProblems() {
-    this.api.get(`contests/${ this.contest?.id }/problems`).subscribe((result: any) => {
+    this.api.get(`contests/${this.contest?.id}/problems`).subscribe((result: any) => {
       this.contestProblems = result;
       this.sortProblems();
       this.cdr.markForCheck();

@@ -6,8 +6,7 @@ import { KepTableComponent } from '@shared/components/kep-table/kep-table.compon
 import { NgIf } from '@angular/common';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { Contest, Contestant, ContestProblem, ContestProblemInfo } from '@contests/models';
-import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { Contest, Contestant, ContestProblem } from '@contests/models';
 import { RouterLink } from '@angular/router';
 import { CoreCommonModule } from '@core/common.module';
 import { BaseUserComponent } from '@app/common';
@@ -30,7 +29,6 @@ import {
     NgIf,
     NgbTooltip,
     TranslateModule,
-    KepIconComponent,
     RouterLink,
     CoreCommonModule,
     ProblemInfoBySymbolPipe,

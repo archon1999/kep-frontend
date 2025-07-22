@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
-import { BaseLoadComponent, BasePageComponent } from '@app/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { BaseLoadComponent } from '@app/common';
 import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
@@ -9,11 +9,8 @@ import { Observable } from "rxjs";
 import { Hackathon } from "@hackathons/domain";
 import { KepTableComponent } from "@shared/components/kep-table/kep-table.component";
 import {
-  HackathonCountdownComponent
-} from "@hackathons/ui/components/hackathon-countdown/hackathon-countdown.component";
-import {
   HackathonCountdownCardComponent
-} from "@hackathons/ui/components/hackathon-countdown-card/hackathon-countdown-card.component";
+} from "@app/modules/hackathons/ui/components/hackathon-countdown-card/hackathon-countdown-card.component";
 import { UserPopoverModule } from "@shared/components/user-popover/user-popover.module";
 import { HackathonTabComponent } from "@hackathons/ui/components/hackathon-tab/hackathon-tab.component";
 
@@ -22,7 +19,7 @@ import { HackathonTabComponent } from "@hackathons/ui/components/hackathon-tab/h
   templateUrl: './hackathon-registrants.page.html',
   styleUrls: ['./hackathon-registrants.page.scss'],
   standalone: true,
-  imports: [CoreCommonModule, ContentHeaderModule, KepCardComponent, KepTableComponent, HackathonCountdownComponent, HackathonCountdownCardComponent, UserPopoverModule, HackathonTabComponent]
+  imports: [CoreCommonModule, ContentHeaderModule, KepCardComponent, KepTableComponent, HackathonCountdownCardComponent, UserPopoverModule, HackathonTabComponent]
 })
 export class HackathonRegistrantsPage extends BaseLoadComponent<any> implements OnInit {
   public hackathon: Hackathon;
@@ -46,8 +43,8 @@ export class HackathonRegistrantsPage extends BaseLoadComponent<any> implements 
       breadcrumb: {
         type: '',
         links: [
-          { name: 'Hackathons', isLink: true, link: '../../..' },
-          { name: this.hackathon.id + '', isLink: true, link: '..' }
+          {name: 'Hackathons', isLink: true, link: '../../..'},
+          {name: this.hackathon.id + '', isLink: true, link: '..'}
         ]
       }
     };

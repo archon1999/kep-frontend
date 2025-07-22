@@ -1,6 +1,6 @@
 <sweet-alert-css></sweet-alert-css>
 
-<a (click)="ConfirmTextOpen()">
+<div class="cursor-pointer" (click)="ConfirmTextOpen()">
   @if (!customContent) {
     <kepcoin-view
       [value]="value"
@@ -12,4 +12,4 @@
   @if (customContent) {
     <ng-content></ng-content>
   }
-</a>
+</div>

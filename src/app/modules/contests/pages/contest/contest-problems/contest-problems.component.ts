@@ -3,7 +3,6 @@ import { ContestsService } from '@contests/contests.service';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest-tab.component';
-import { ContestProblemCardComponent } from '@contests/components/contest-problem-card/contest-problem-card.component';
 import { ContestCardModule } from '@contests/components/contest-card/contest-card.module';
 import { ContestProblem } from '@contests/models/contest-problem';
 import { Contest } from '@contests/models/contest';
@@ -21,7 +20,6 @@ import { KepTableComponent } from "@shared/components/kep-table/kep-table.compon
     CoreCommonModule,
     ContentHeaderModule,
     ContestTabComponent,
-    ContestProblemCardComponent,
     ContestCardModule,
     ContestClassesPipe,
     KepCardComponent,

@@ -7,6 +7,7 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
   selector: 'how-to-spend-kepcoin',
   standalone: true,
   imports: [CoreCommonModule, KepcoinViewModule, KepCardComponent],
-  templateUrl: './how-to-spend-kepcoin.component.html'
+  templateUrl: './how-to-spend-kepcoin.component.html',
+  styleUrls: ['./how-to-spend-kepcoin.component.scss']
 })
 export class HowToSpendKepcoinComponent {}

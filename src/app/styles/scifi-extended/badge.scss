@@ -1,0 +1,12 @@
+.badge {
+  --bs-badge-padding-x: 0.9em;
+  --bs-badge-padding-y: 0.65em;
+  --bs-badge-font-size: 0.81em;
+  padding: var(--bs-badge-padding-y) var(--bs-badge-padding-x);
+  font-size: var(--bs-badge-font-size);
+  font-weight: var(--bs-badge-font-weight);
+
+  &.bg-yellow {
+    --bs-badge-color: #000;
+  }
+}

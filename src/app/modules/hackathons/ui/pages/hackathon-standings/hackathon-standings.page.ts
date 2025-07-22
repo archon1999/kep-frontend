@@ -7,17 +7,11 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
 import { Hackathon, HackathonProject } from '@hackathons/domain';
 import { forkJoin, interval, Observable } from 'rxjs';
 import { HackathonTabComponent } from "@hackathons/ui/components/hackathon-tab/hackathon-tab.component";
-import {
-  HackathonCountdownComponent
-} from "@hackathons/ui/components/hackathon-countdown/hackathon-countdown.component";
 import { KepTableComponent } from "@shared/components/kep-table/kep-table.component";
 import { KepPaginationComponent } from "@shared/components/kep-pagination/kep-pagination.component";
 import { UserPopoverModule } from "@shared/components/user-popover/user-popover.module";
 import { NgbTooltip } from "@ng-bootstrap/ng-bootstrap";
 import { takeUntil } from "rxjs/operators";
-import {
-  ContestCountdownComponent
-} from "@contests/components/contest-card/contest-card/contest-countdown/contest-countdown.component";
 import {
   ContestStandingsCountdownComponent
 } from "@contests/pages/contest/contest-standings/contest-standings-countdown/contest-standings-countdown.component";
@@ -27,7 +21,17 @@ import {
   templateUrl: './hackathon-standings.page.html',
   styleUrls: ['./hackathon-standings.page.scss'],
   standalone: true,
-  imports: [CoreCommonModule, ContentHeaderModule, KepCardComponent, HackathonTabComponent, HackathonCountdownComponent, KepTableComponent, KepPaginationComponent, UserPopoverModule, NgbTooltip, ContestCountdownComponent, ContestStandingsCountdownComponent]
+  imports: [
+    CoreCommonModule,
+    ContentHeaderModule,
+    KepCardComponent,
+    HackathonTabComponent,
+    KepTableComponent,
+    KepPaginationComponent,
+    UserPopoverModule,
+    NgbTooltip,
+    ContestStandingsCountdownComponent,
+  ]
 })
 export class HackathonStandingsPage extends BaseLoadComponent<any> implements OnInit {
   public hackathon: Hackathon;
@@ -71,7 +75,7 @@ export class HackathonStandingsPage extends BaseLoadComponent<any> implements On
         j = i;
       }
       participants[i].rank = rank;
-   }
+    }
     return participants;
   }
 }
