@@ -8,7 +8,7 @@ import { AvailableLanguage, Problem, Tag, Topic } from '../../../models/problems
 import { CoreCommonModule } from '@core/common.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
-import { KepcoinSpendSwalModule } from '../../../../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
+import { KepcoinSpendSwalModule } from '@shared/components/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';
 import { AttemptLangs } from "@problems/constants";

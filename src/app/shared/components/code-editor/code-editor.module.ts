@@ -5,7 +5,7 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { NgbAccordionModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
-import { KepcoinSpendSwalModule } from '@app/modules/kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
+import { KepcoinSpendSwalModule } from '@shared/components/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { CodeEditorModalComponent } from './code-editor-modal/code-editor-modal.component';
 import { NgSelectModule } from '../../third-part-modules/ng-select/ng-select.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';

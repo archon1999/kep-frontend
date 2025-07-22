@@ -9,7 +9,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
-import { KepcoinSpendSwalModule } from '../../../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
+import { KepcoinSpendSwalModule } from '@shared/components/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { StudyPlanCardModule } from '@problems/components/study-plan-card/study-plan-card.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 

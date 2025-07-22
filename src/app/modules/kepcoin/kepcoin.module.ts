@@ -5,7 +5,7 @@ import { KepcoinComponent } from './kepcoin.component';
 import { AuthGuard } from '@auth';
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
-import { KepcoinSpendSwalModule } from './kepcoin-spend-swal/kepcoin-spend-swal.module';
+import { KepcoinSpendSwalModule } from '@shared/components/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { KepPaginationComponent, } from '@shared/components/kep-pagination/kep-pagination.component';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";

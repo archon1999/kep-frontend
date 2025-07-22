@@ -21,7 +21,7 @@ import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module
 import { SweetAlertModule } from '@shared/third-part-modules/sweet-alert/sweet-alert.module';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
-import { KepcoinSpendSwalModule } from "@app/modules/kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module";
+import { KepcoinSpendSwalModule } from "@shared/components/kepcoin-spend-swal/kepcoin-spend-swal.module";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 import { SpinnerComponent } from "@shared/components/spinner/spinner.component";
 

@@ -5,7 +5,7 @@ import { BaseLoadComponent } from '@app/common';
 import { Observable } from 'rxjs';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { FormsModule } from '@angular/forms';
-import { KepcoinSpendSwalModule } from '@app/modules/kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
+import { KepcoinSpendSwalModule } from '@shared/components/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { TranslatePipe } from '@ngx-translate/core';

@@ -8,7 +8,7 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { KepcoinSpendSwalModule } from '../../../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
+import { KepcoinSpendSwalModule } from '@shared/components/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { TableComponent } from './table/table.component';
 import { ClipboardModule } from 'app/shared/components/clipboard/clipboard.module';
 import { ProblemsPipesModule } from '../../pipes/problems-pipes.module';

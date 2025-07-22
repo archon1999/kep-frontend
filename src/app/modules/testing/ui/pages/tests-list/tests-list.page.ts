@@ -17,7 +17,7 @@ import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module
 import { SweetAlertModule } from '@shared/third-part-modules/sweet-alert/sweet-alert.module';
 import { DragulaModule } from 'ng2-dragula';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { KepcoinSpendSwalModule } from "@app/modules/kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module";
+import { KepcoinSpendSwalModule } from "@shared/components/kepcoin-spend-swal/kepcoin-spend-swal.module";
 import {
   ChapterWithTestsCardComponent
 } from "@testing/ui/components/chapter-with-tests-card/chapter-with-tests-card.component";

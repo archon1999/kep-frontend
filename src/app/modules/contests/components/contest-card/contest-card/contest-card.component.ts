@@ -5,7 +5,7 @@ import { AuthService, AuthUser } from '@auth';
 import { ContestsService } from 'app/modules/contests/contests.service';
 import { Router } from '@angular/router';
 import { CoreCommonModule } from '@core/common.module';
-import { KepcoinSpendSwalModule } from '../../../../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
+import { KepcoinSpendSwalModule } from '@shared/components/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import {
   ContestCountdownComponent
 } from '@contests/components/contest-card/contest-card/contest-countdown/contest-countdown.component';

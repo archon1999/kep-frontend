@@ -8,7 +8,7 @@ import { ContestsService } from '@contests/contests.service';
 import { AuthUser } from '@auth';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
-import { KepcoinSpendSwalModule } from '@app/modules/kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
+import { KepcoinSpendSwalModule } from '@shared/components/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { ContestsTableModule } from '@contests/components/contests-table/contests-table.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';

@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ContestCardSmallComponent } from './contest-card-small/contest-card-small.component';
 import { CorePipesModule } from '@shared/pipes/pipes.module';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
-import { KepcoinSpendSwalModule } from '../../../kepcoin/kepcoin-spend-swal/kepcoin-spend-swal.module';
+import { KepcoinSpendSwalModule } from '@shared/components/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import {
   ContestCountdownCardComponent
