@@ -8,6 +8,7 @@ import {
   NgbNavOutlet
 } from '@ng-bootstrap/ng-bootstrap';
 import { ColorPickerModule } from "ngx-color-picker";
+import { TranslateModule } from '@ngx-translate/core';
 import { AppStateService, StateType } from "@core/services/app-state.service";
 
 type Direction = StateType['direction'];
@@ -30,7 +31,8 @@ type ThemePrimary = StateType['themePrimary'];
     NgbNavOutlet,
     NgbNav,
     NgbNavContent,
-    NgbNavLinkButton
+    NgbNavLinkButton,
+    TranslateModule
   ]
 })
 export class SwitcherComponent {

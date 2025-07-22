@@ -10,7 +10,7 @@
   <div class="offcanvas-header d-block p-0">
     <div class="d-flex align-items-center justify-content-between p-3">
       <h5 class="offcanvas-title text-default" id="offcanvasRightLabel">
-        Switcher
+        {{ 'SwitcherTitle' | translate }}
       </h5>
       <button
         (click)="activeOffcanvas.close('Close click')"
@@ -40,7 +40,7 @@
             role="tab"
             type="button"
           >
-            Theme Styles
+            {{ 'SwitcherThemeStyles' | translate }}
           </button>
           <ng-template ngbNavContent>
             <div
@@ -51,12 +51,12 @@
               tabindex="0"
             >
               <div class="">
-                <p class="switcher-style-head">Directions:</p>
+                <p class="switcher-style-head">{{ 'SwitcherDirections' | translate }}:</p>
                 <div class="row switcher-style gx-0">
                   <div class="col-4">
                     <div class="form-check switch-select">
                       <label class="form-check-label" for="switcher-ltr">
-                        LTR
+                        {{ 'SwitcherLtr' | translate }}
                       </label>
                       <input
                         (click)="updateDirection('ltr')"
@@ -72,7 +72,7 @@
                   <div class="col-4">
                     <div class="form-check switch-select">
                       <label class="form-check-label" for="switcher-rtl">
-                        RTL
+                        {{ 'SwitcherRtl' | translate }}
                       </label>
                       <input
                         (click)="updateDirection('rtl')"
@@ -87,12 +87,12 @@
                 </div>
               </div>
               <div class="">
-                <p class="switcher-style-head">Navigation Styles:</p>
+                <p class="switcher-style-head">{{ 'SwitcherNavigationStyles' | translate }}:</p>
                 <div class="row switcher-style gx-0">
                   <div class="col-4">
                     <div class="form-check switch-select">
                       <label class="form-check-label" for="switcher-vertical">
-                        Vertical
+                        {{ 'SwitcherVertical' | translate }}
                       </label>
                       <input
                         (click)="updateMenuType('vertical')"
@@ -107,7 +107,7 @@
                   <div class="col-4">
                     <div class="form-check switch-select">
                       <label class="form-check-label" for="switcher-horizontal">
-                        Horizontal
+                        {{ 'SwitcherHorizontal' | translate }}
                       </label>
                       <input
                         (click)="updateMenuType('horizontal')"
@@ -123,13 +123,13 @@
               </div>
               <div class="navigation-menu-styles">
                 <p class="switcher-style-head">
-                  Vertical & Horizontal Menu Styles:
+                  {{ 'SwitcherVerticalHorizontalMenuStyles' | translate }}:
                 </p>
                 <div class="row switcher-style gx-0 pb-2 gy-2">
                   <div class="col-4">
                     <div class="form-check switch-select">
                       <label class="form-check-label" for="switcher-menu-click">
-                        Menu Click
+                        {{ 'SwitcherMenuClick' | translate }}
                       </label>
                       <input
                         (click)="updateMenuStyle('menu-click')"
@@ -144,7 +144,7 @@
                   <div class="col-4">
                     <div class="form-check switch-select">
                       <label class="form-check-label" for="switcher-menu-hover">
-                        Menu Hover
+                        {{ 'SwitcherMenuHover' | translate }}
                       </label>
                       <input
                         (click)="updateMenuStyle('menu-hover')"
@@ -159,7 +159,7 @@
                   <div class="col-4">
                     <div class="form-check switch-select">
                       <label class="form-check-label" for="switcher-icon-click">
-                        Icon Click
+                        {{ 'SwitcherIconClick' | translate }}
                       </label>
                       <input
                         (click)="updateMenuStyle('icon-click')"
@@ -174,7 +174,7 @@
                   <div class="col-4">
                     <div class="form-check switch-select">
                       <label class="form-check-label" for="switcher-icon-hover">
-                        Icon Hover
+                        {{ 'SwitcherIconHover' | translate }}
                       </label>
                       <input
                         (click)="updateMenuStyle('icon-hover')"
@@ -189,12 +189,12 @@
                 </div>
               </div>
               <div class="sidemenu-layout-styles">
-                <p class="switcher-style-head">Sidemenu Layout Styles:</p>
+                <p class="switcher-style-head">{{ 'SwitcherSidemenuLayoutStyles' | translate }}:</p>
                 <div class="row switcher-style gx-0 pb-2 gy-2">
                   <div class="col-sm-6">
                     <div class="form-check switch-select">
                       <label class="form-check-label" for="switcher-default-menu">
-                        Default Menu
+                        {{ 'SwitcherDefaultMenu' | translate }}
                       </label>
                       <input
                         (click)="updateLayoutStyles('default')"
@@ -209,7 +209,7 @@
                   <div class="col-sm-6">
                     <div class="form-check switch-select">
                       <label class="form-check-label" for="switcher-closed-menu">
-                        Closed Menu
+                        {{ 'SwitcherClosedMenu' | translate }}
                       </label>
                       <input
                         (click)="updateLayoutStyles('closed')"
@@ -227,7 +227,7 @@
                         class="form-check-label"
                         for="switcher-icontext-menu"
                       >
-                        Icon Text
+                        {{ 'SwitcherIconText' | translate }}
                       </label>
                       <input
                         (click)="updateLayoutStyles('icontext')"
@@ -242,7 +242,7 @@
                   <div class="col-sm-6">
                     <div class="form-check switch-select">
                       <label class="form-check-label" for="switcher-icon-overlay">
-                        Icon Overlay
+                        {{ 'SwitcherIconOverlay' | translate }}
                       </label>
                       <input
                         (click)="updateLayoutStyles('overlay')"
@@ -257,7 +257,7 @@
                   <div class="col-sm-6">
                     <div class="form-check switch-select">
                       <label class="form-check-label" for="switcher-detached">
-                        Detached
+                        {{ 'SwitcherDetached' | translate }}
                       </label>
                       <input
                         (click)="updateLayoutStyles('detached')"
@@ -272,7 +272,7 @@
                   <div class="col-sm-6">
                     <div class="form-check switch-select">
                       <label class="form-check-label" for="switcher-double-menu">
-                        Double Menu
+                        {{ 'SwitcherDoubleMenu' | translate }}
                       </label>
                       <input
                         (click)="updateLayoutStyles('doublemenu')"
@@ -287,12 +287,12 @@
                 </div>
               </div>
               <div class="">
-                <p class="switcher-style-head">Layout Width Styles:</p>
+                <p class="switcher-style-head">{{ 'SwitcherLayoutWidthStyles' | translate }}:</p>
                 <div class="row switcher-style gx-0">
                   <div class="col-4">
                     <div class="form-check switch-select">
                       <label class="form-check-label" for="switcher-full-width">
-                        Full Width
+                        {{ 'SwitcherFullWidth' | translate }}
                       </label>
                       <input
                         (click)="updateWidthStyles('full-width')"
@@ -307,7 +307,7 @@
                   <div class="col-4">
                     <div class="form-check switch-select">
                       <label class="form-check-label" for="switcher-boxed">
-                        Boxed
+                        {{ 'SwitcherBoxed' | translate }}
                       </label>
                       <input
                         (click)="updateWidthStyles('boxed')"
@@ -322,12 +322,12 @@
                 </div>
               </div>
               <div class="">
-                <p class="switcher-style-head">Menu Positions:</p>
+                <p class="switcher-style-head">{{ 'SwitcherMenuPositions' | translate }}:</p>
                 <div class="row switcher-style gx-0">
                   <div class="col-4">
                     <div class="form-check switch-select">
                       <label class="form-check-label" for="switcher-menu-fixed">
-                        Fixed
+                        {{ 'SwitcherFixed' | translate }}
                       </label>
                       <input
                         (click)="updateMenuPosition('fixed')"
@@ -342,7 +342,7 @@
                   <div class="col-4">
                     <div class="form-check switch-select">
                       <label class="form-check-label" for="switcher-menu-scroll">
-                        Scrollable
+                        {{ 'SwitcherScrollable' | translate }}
                       </label>
                       <input
                         (click)="updateMenuPosition('scrollable')"
@@ -357,12 +357,12 @@
                 </div>
               </div>
               <div class="">
-                <p class="switcher-style-head">Header Positions:</p>
+                <p class="switcher-style-head">{{ 'SwitcherHeaderPositions' | translate }}:</p>
                 <div class="row switcher-style gx-0">
                   <div class="col-4">
                     <div class="form-check switch-select">
                       <label class="form-check-label" for="switcher-header-fixed">
-                        Fixed
+                        {{ 'SwitcherFixed' | translate }}
                       </label>
                       <input
                         (click)="updateHeaderPosition('fixed')"
@@ -380,7 +380,7 @@
                         class="form-check-label"
                         for="switcher-header-scroll"
                       >
-                        Scrollable
+                        {{ 'SwitcherScrollable' | translate }}
                       </label>
                       <input
                         (click)="updateHeaderPosition('scrollable')"
@@ -409,7 +409,7 @@
             role="tab"
             type="button"
           >
-            Theme Colors
+            {{ 'SwitcherThemeColors' | translate }}
           </button>
           <ng-template ngbNavContent>
             <div
@@ -422,7 +422,7 @@
               <div>
                 <div class="theme-colors">
                   <div class="pattern-image mb-3">
-                    <p class="switcher-style-head">Background Patterns:</p>
+                    <p class="switcher-style-head">{{ 'SwitcherBackgroundPatterns' | translate }}:</p>
                     <div
                       class="d-flex flex-wrap align-items-center switcher-style"
                     >
@@ -529,7 +529,7 @@
                     </div>
                   </div>
                   <div class="card-style mb-3">
-                    <p class="switcher-style-head">Card Styling:</p>
+                    <p class="switcher-style-head">{{ 'SwitcherCardStyling' | translate }}:</p>
                     <div
                       class="d-flex flex-wrap align-items-center switcher-style"
                     >
@@ -627,7 +627,7 @@
                     </div>
                   </div>
                   <div class="card-background mb-3">
-                    <p class="switcher-style-head">Card Background:</p>
+                    <p class="switcher-style-head">{{ 'SwitcherCardBackground' | translate }}:</p>
                     <div
                       class="d-flex flex-wrap align-items-center switcher-style"
                     >
@@ -716,7 +716,7 @@
                     </div>
                   </div>
                   <div class="menu-image mb-3">
-                    <p class="switcher-style-head">Menu With Background Image:</p>
+                    <p class="switcher-style-head">{{ 'SwitcherMenuWithBackgroundImage' | translate }}:</p>
                     <div
                       class="d-flex flex-wrap align-items-center switcher-style"
                     >
@@ -786,7 +786,7 @@
         class="btn btn-danger flex-fill"
         href="javascript:void(0);"
         id="reset-all"
-      >Reset</a
+      >{{ 'RESET' | translate }}</a
       >
     </div>
     <!-- </div> -->
