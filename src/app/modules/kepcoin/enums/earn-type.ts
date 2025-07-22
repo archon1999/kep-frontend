@@ -1,0 +1,15 @@
+export enum EarnType {
+  WroteBlog = 1,
+  WroteProblemSolution = 2,
+  LoyaltyBonus = 3,
+  BonusFromAdmin = 4,
+  DailyActivity = 5,
+  DailyTaskCompletion = 6,
+  DailyProblemsRatingWin = 7,
+  WeeklyProblemsRatingWin = 8,
+  MonthlyProblemsRatingWin = 9,
+  ContestParticipated = 10,
+  ArenaParticipated = 11,
+  TournamentParticipated = 12,
+  ProjectTaskComplete = 13,
+}
