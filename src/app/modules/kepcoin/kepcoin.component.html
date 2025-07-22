@@ -6,44 +6,18 @@
     </h1>
   </div>
   <div class="col-xl-4 offset-xl-2 col-lg-5 offset-lg-1 col-md-6 col-12 offset-0">
-    <div class="card bg-kepcoin">
-      <div class="card-header">
-        <div class="card-title">
-          <i data-feather="cloud-snow"></i>
-          {{ 'StreakFreeze' | translate }}
-        </div>
-        <div>
-          <img [src]="streak > 0 ? 'assets/images/icons/fire_red.png' : 'assets/images/icons/fire_blue.png'"
-               height="19">
-          <strong>
-            {{ streak }}
-          </strong>
-          <span class="badge me-1 ms-1 bg-warning">
-            {{ 'YouHave' | translate }} <strong>{{ streakFreeze }}</strong>
-          </span>
-          <kepcoin-spend-swal
-            [value]="10"
-            [purchaseUrl]="'purchase-streak-freeze'"
-            (success)="success()"
-          ></kepcoin-spend-swal>
-        </div>
-      </div>
-
-      <div class="card-body">
-        <p>{{ 'StreakFreezeText' | translate }}</p>
-      </div>
-    </div>
+    <you-have-card [streak]="streak" [streakFreeze]="streakFreeze" (buy)="success()"></you-have-card>
 
     <kep-card>
       <div class="card-header">
         <div class="card-title">
-          @if (type == 1) {
+          @if (view === 'earns') {
             <span>
               <i data-feather="corner-right-up"></i>
               {{ 'Earns' | translate }}
             </span>
           }
-          @if (type == 2) {
+          @if (view === 'spends') {
             <span>
               <i data-feather="corner-left-down"></i>
               {{ 'Spends' | translate }}
@@ -51,152 +25,23 @@
           }
         </div>
 
-        <button (click)="type = 3 - type; currentPage=1; updatePage();" class="btn btn-warning btn-sm">
-          @if (type == 2) {
+        <button (click)="view = view === 'earns' ? 'spends' : 'earns'; currentPage=1; updatePage();" class="btn btn-warning btn-sm">
+          @if (view === 'spends') {
             <span>{{ 'Earns' | translate }}</span>
           }
-          @if (type == 1) {
+          @if (view === 'earns') {
             <span>{{ 'Spends' | translate }}</span>
           }
         </button>
       </div>
 
       <div class="card-body">
-        @if (type == 1) {
-          <div>
-            <ul class="timeline">
-              @for (earn of earns; track earn) {
-                <li class="timeline-item">
-                  <span class="timeline-point timeline-point-warning timeline-point-indicator"></span>
-                  <div class="timeline-event">
-                    <div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">
-                      <h6>
-                        <img height="19" src="assets/images/icons/kepcoin.png"> {{ earn.kepcoin }}
-                      </h6>
-                      <span class="timeline-event-time">{{ earn.datetime }}</span>
-                    </div>
-                    <p>
-                      <span class="text-dark">
-                        @switch (earn.earnType) {
-                          @case (4) {
-                            <span>
-                              {{ 'BonusFromAdmin' | translate }}
-                            </span>
-                          }
-                          @case (5) {
-                            <span>
-                              {{ 'DailyActivity' | translate }}: <u class="text-primary">{{ earn.detail.date }}</u>
-                            </span>
-                          }
-                          @case (6) {
-                            <span>
-                              {{ 'DailyTaskCompleted' | translate }}: <u class="text-primary">{{ earn.detail.description }}</u>
-                            </span>
-                          }
-                          @case (7) {
-                            <span>
-                              {{ 'DailyRatingWinner' | translate }}: <u class="text-primary">{{ earn.detail.date }}</u>
-                            </span>
-                          }
-                          @case (8) {
-                            <span>
-                              {{ 'WeeklyRatingWinner' | translate }}: <u class="text-primary">{{ earn.detail.date }}</u>
-                            </span>
-                          }
-                          @case (9) {
-                            <span>
-                              {{ 'MonthlyRatingWinner' | translate }}: <u class="text-primary">{{ earn.detail.date }}</u>
-                            </span>
-                          }
-                          @case (10) {
-                            <span>
-                              {{ 'ContestParticipant' | translate }}: <a [routerLink]="['/competitions', 'contests', 'contest', earn.detail.contest.id]">
-                              <u class="text-primary">{{ earn.detail.contest.title }}</u>
-                            </a>
-                            </span>
-                          }
-                          @case (11) {
-                            <span>
-                              {{ 'ArenaParticipant' | translate }}: <a [routerLink]="['/competitions', 'arena', 'tournament', earn.detail.arena.id]">
-                              <u class="text-primary">{{ earn.detail.arena.title }}</u>
-                            </a>
-                            </span>
-                          }
-                        }
-                      </span>
-                    </p>
-                    <div class="d-flex align-items-center"></div>
-                  </div>
-                </li>
-              }
-            </ul>
-          </div>
+        @if (view === 'earns') {
+          <kepcoin-earns-list [earns]="earns"></kepcoin-earns-list>
         }
 
-        @if (type == 2) {
-          <div>
-            <ul class="timeline">
-              @for (spend of spends; track spend) {
-                <li class="timeline-item">
-                  <span class="timeline-point timeline-point-warning timeline-point-indicator"></span>
-                  <div class="timeline-event">
-                    <div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">
-                      <h6>
-                        <img height="19" src="assets/images/icons/kepcoin.png"> {{ spend.kepcoin }}
-                      </h6>
-                      <span class="timeline-event-time">{{ spend.datetime }}</span>
-                    </div>
-                    <p>
-                      <span class="text-dark">
-                        @switch (spend.type) {
-                          @case (1) {
-                            <span>
-                              {{ 'ViewAttempt' | translate }} <a class="text-primary" routerLink="/practice/problems/attempts/{{ spend.detail.attemptId }}">
-                              <u>{{ spend.detail.attemptId }}</u>
-                            </a>
-                            </span>
-                          }
-                          @case (2) {
-                            <span>
-                              {{ 'ViewTestAttempt' | translate }} <a class="text-primary" routerLink="/practice/problems/attempts/{{ spend.detail.attemptId }}">
-                              <u>{{ spend.detail.attemptId }}</u>
-                            </a>
-                            </span>
-                          }
-                          @case (3) {
-                            <span>
-                              {{ 'ViewProblemSolution' | translate }} <a class="text-primary" routerLink="/practice/problems/problem/{{ spend.detail.problemId }}">
-                              <u>{{ spend.detail.problemId }}. {{ spend.detail.problemTitle }}</u>
-                            </a>
-                            </span>
-                          }
-                          @case (5) {
-                            <span>
-                              {{ 'ChangeImage' | translate }}
-                              <img src="{{ spend.detail.coverPhoto }}" style="width: 100%;">
-                            </span>
-                          }
-                          @case (10) {
-                            <span>
-                              {{ 'PassTest' | translate }} <a class="text-primary" routerLink="/practice/tests/test/{{ spend.detail.test.id }}">
-                              <u>{{ spend.detail.test.title }}</u>
-                            </a>
-                            </span>
-                          }
-                          @case (11) {
-                            <span>
-                              {{ 'CreateContest' | translate }}
-                            </span>
-                          }
-                        }
-                      </span>
-                    </p>
-                    <div class="d-flex align-items-center"></div>
-                  </div>
-                </li>
-              }
-            </ul>
-          </div>
+        @if (view === 'spends') {
+          <kepcoin-spends-list [spends]="spends"></kepcoin-spends-list>
         }
 
         @if (total > 0) {
@@ -214,103 +59,8 @@
     </kep-card>
   </div>
   <div class="col-lg-5 col-xl-4 col-md-6 col-12">
-    <kep-card>
-      <div class="card-header">
-        <div class="card-title">
-          <i data-feather="dollar-sign"></i>
-          {{ 'HowToEarnKepcoin' | translate }}
-        </div>
-      </div>
+    <how-to-earn-kepcoin></how-to-earn-kepcoin>
 
-      <div class="card-body text-dark">
-        {{ 'EarnDescription' | translate }}
-
-        <div class="earn">
-          <kepcoin [value]="1"></kepcoin>
-          : {{ 'EarnItem1' | translate }}
-        </div>
-
-        <div class="earn">
-          <kepcoin [value]="'1-10'"></kepcoin>
-          : {{ 'EarnItem2' | translate }}
-        </div>
-
-        <div class="earn">
-          <kepcoin [value]="'3, 10, 50'"></kepcoin>
-          : {{ 'EarnItem3' | translate }}
-        </div>
-
-        <div class="earn">
-          <kepcoin [value]="'5+'"></kepcoin>
-          : {{ 'EarnItem4' | translate }}
-        </div>
-
-        <div class="earn">
-          <kepcoin [value]="'10-100'"></kepcoin>
-          : {{ 'EarnItem5' | translate }}
-        </div>
-
-        <div class="earn">
-          <kepcoin [value]="'1-50'"></kepcoin>
-          : {{ 'EarnItem6' | translate }}
-        </div>
-      </div>
-    </kep-card>
-
-    <kep-card>
-      <div class="card-header">
-        <div class="card-title">
-          <i data-feather="coffee"></i>
-          {{ 'HowToSpendKepcoin' | translate }}
-        </div>
-      </div>
-
-      <div class="card-body text-dark">
-        <div class="spend">
-          <kepcoin [value]="'0-14'"></kepcoin>
-          : {{ 'SpendItem1' | translate }}
-        </div>
-
-        <div class="spend">
-          <kepcoin [value]="1"></kepcoin>
-          : {{ 'SpendItem2' | translate }}
-        </div>
-
-        <div class="spend">
-          <kepcoin [value]="'2-50'"></kepcoin>
-          : {{ 'SpendItem3' | translate }}
-        </div>
-
-        <div class="spend">
-          <kepcoin [value]="5"></kepcoin>
-          : {{ 'SpendItem4' | translate }}
-        </div>
-
-        <div class="spend">
-          <kepcoin [value]="1"></kepcoin>
-          : {{ 'SpendItem5' | translate }}
-        </div>
-
-        <div class="spend">
-          <kepcoin [value]="'1-1000'"></kepcoin>
-          : {{ 'SpendItem6' | translate }}
-        </div>
-
-        <div class="spend">
-          <kepcoin [value]="'50'"></kepcoin>
-          : {{ 'SpendItem7' | translate }}
-        </div>
-
-        <div class="spend">
-          <kepcoin [value]="25"></kepcoin>
-          : {{ 'SpendItem8' | translate }}
-        </div>
-
-        <div class="spend">
-          <kepcoin [value]="25"></kepcoin>
-          : {{ 'SpendItem9' | translate }}
-        </div>
-      </div>
-    </kep-card>
+    <how-to-spend-kepcoin></how-to-spend-kepcoin>
   </div>
 </div>

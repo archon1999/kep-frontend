@@ -1,0 +1,97 @@
+<div>
+  <ul class="timeline">
+    @for (spend of spends; track spend) {
+      <li class="timeline-item">
+        <span class="timeline-point timeline-point-warning timeline-point-indicator"></span>
+        <div class="timeline-event">
+          <div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">
+            <h6>
+              <img height="19" src="assets/images/icons/kepcoin.png">{{ spend.kepcoin }}
+            </h6>
+            <span class="timeline-event-time">{{ spend.datetime }}</span>
+          </div>
+          <p>
+            <span class="text-dark">
+              @switch (spend.type) {
+                @case (SpendType.AttemptView) {
+                  <span>
+                    {{ 'ViewAttempt' | translate }} <a class="text-primary" routerLink="/practice/problems/attempts/{{ spend.detail.attemptId }}">
+                    <u>{{ spend.detail.attemptId }}</u>
+                  </a>
+                  </span>
+                }
+                @case (SpendType.AttemptTestView) {
+                  <span>
+                    {{ 'ViewTestAttempt' | translate }} <a class="text-primary" routerLink="/practice/problems/attempts/{{ spend.detail.attemptId }}">
+                    <u>{{ spend.detail.attemptId }}</u>
+                  </a>
+                  </span>
+                }
+                @case (SpendType.ProblemSolution) {
+                  <span>
+                    {{ 'ViewProblemSolution' | translate }} <a class="text-primary" routerLink="/practice/problems/problem/{{ spend.detail.problemId }}">
+                    <u>{{ spend.detail.problemId }}. {{ spend.detail.problemTitle }}</u>
+                  </a>
+                  </span>
+                }
+                @case (SpendType.DoubleRating) {
+                  <span>{{ 'DoubleRating' | translate }}</span>
+                }
+                @case (SpendType.CoverPhotoChange) {
+                  <span>
+                    {{ 'ChangeImage' | translate }}
+                    <img src="{{ spend.detail.coverPhoto }}" style="width: 100%;">
+                  </span>
+                }
+                @case (SpendType.Course) {
+                  <span>{{ 'Course' | translate }}</span>
+                }
+                @case (SpendType.StudyPlan) {
+                  <span>{{ 'StudyPlan' | translate }}</span>
+                }
+                @case (SpendType.CodeEditorTesting) {
+                  <span>{{ 'CodeEditorTesting' | translate }}</span>
+                }
+                @case (SpendType.SaveRating) {
+                  <span>{{ 'SaveRating' | translate }}</span>
+                }
+                @case (SpendType.TestPass) {
+                  <span>
+                    {{ 'PassTest' | translate }} <a class="text-primary" routerLink="/practice/tests/test/{{ spend.detail.test.id }}">
+                    <u>{{ spend.detail.test.title }}</u>
+                  </a>
+                  </span>
+                }
+                @case (SpendType.UserContestCreate) {
+                  <span>{{ 'CreateContest' | translate }}</span>
+                }
+                @case (SpendType.Project) {
+                  <span>{{ 'Project' | translate }}</span>
+                }
+                @case (SpendType.StreakFreeze) {
+                  <span>{{ 'StreakFreeze' | translate }}</span>
+                }
+                @case (SpendType.VirtualContest) {
+                  <span>{{ 'VirtualContest' | translate }}</span>
+                }
+                @case (SpendType.UnratedContest) {
+                  <span>{{ 'UnratedContest' | translate }}</span>
+                }
+                @case (SpendType.AnswerForInput) {
+                  <span>{{ 'AnswerForInput' | translate }}</span>
+                }
+                @case (SpendType.CheckSamples) {
+                  <span>{{ 'CheckSamples' | translate }}</span>
+                }
+                @case (SpendType.Merch) {
+                  <span>{{ 'Merch' | translate }}</span>
+                }
+              }
+            </span>
+          </p>
+          <div class="d-flex align-items-center"></div>
+        </div>
+      </li>
+    }
+  </ul>
+</div>
