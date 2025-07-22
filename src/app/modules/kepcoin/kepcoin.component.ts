@@ -75,7 +75,9 @@ export class KepcoinComponent implements OnInit, OnDestroy {
 
   updatePage() {
     if (this.type == 1) {
-      this.service.getUserKepcoinEarns(this.currentPage).subscribe(
+      this.service.getUserKepcoinEarns({
+        page: this.currentPage
+      }).subscribe(
         (result: any) => {
           this.earns = result.data;
           this.total = result.total;
@@ -83,7 +85,9 @@ export class KepcoinComponent implements OnInit, OnDestroy {
         }
       )
     } else {
-      this.service.getUserKepcoinSpends(this.currentPage).subscribe(
+      this.service.getUserKepcoinSpends({
+        page: this.currentPage,
+      }).subscribe(
         (result: any) => {
           this.spends = result.data;
           this.total = result.total;
