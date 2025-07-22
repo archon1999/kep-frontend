@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { Product } from '@app/modules/shop/shop.interfaces';
 import { Observable } from 'rxjs';
 import { ShopApiService } from '@app/modules/shop/shop-api.service';

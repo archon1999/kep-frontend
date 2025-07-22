@@ -13,9 +13,9 @@ import { AttemptsTableModule } from '@problems/components/attempts-table/attempt
 import { DuelCountdownComponent } from '@app/modules/duels/components/duel-countdown/duel-countdown.component';
 import { ProblemInfoCardComponent } from '@problems/components/problem-info-card/problem-info-card.component';
 import { ProblemListCardComponent } from '@app/modules/duels/components/problem-list-card/problem-list-card.component';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { takeUntil } from 'rxjs/operators';
-import { PageResult } from '@app/common/classes/page-result';
+import { PageResult } from '@core/common/classes/page-result';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @Component({

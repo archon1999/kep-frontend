@@ -5,7 +5,7 @@ import {
   VerdictsSelectComponent
 } from '@problems/components/attempts-filter/verdicts-select/verdicts-select.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { BaseUserComponent } from '@app/common';
+import { BaseUserComponent } from '@core/common';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AttemptsFilter } from '@problems/interfaces';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';

@@ -9,9 +9,9 @@ import { ClipboardModule } from '@shared/components/clipboard/clipboard.module';
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
 import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
-import { PageResult } from '@app/common/classes/page-result';
+import { PageResult } from '@core/common/classes/page-result';
 import { interval } from 'rxjs';
 import { take } from 'rxjs/operators';
 

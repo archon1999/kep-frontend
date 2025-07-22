@@ -1,5 +1,5 @@
 import { Observable } from "rxjs";
-import { PageResult } from "@app/common/classes/page-result";
+import { PageResult } from "@core/common/classes/page-result";
 
 export interface BaseRepository<DTO, T> {
   list?(params?: Record<string, any>): Observable<T[] | PageResult<T>>;

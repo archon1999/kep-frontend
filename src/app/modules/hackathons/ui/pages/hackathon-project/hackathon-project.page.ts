@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { interval, Observable } from 'rxjs';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { CoreCommonModule } from '@core/common.module';

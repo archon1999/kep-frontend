@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { randomInt } from '@shared/utils';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { BaseComponent } from '@app/common';
+import { BaseComponent } from '@core/common';
 import { interval } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

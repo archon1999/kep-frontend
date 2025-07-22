@@ -3,7 +3,7 @@ import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { Category } from '@problems/models/problems.models';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { BaseLoadComponent } from '@app/common/classes/base-load.component';
+import { BaseLoadComponent } from '@core/common/classes/base-load.component';
 import { Observable } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 

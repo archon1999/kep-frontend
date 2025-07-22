@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SectionProblemsFilterComponent } from './sections/section-problems-filter/section-problems-filter.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
-import { BasePageComponent } from '@app/common/classes/base-page.component';
+import { BasePageComponent } from '@core/common/classes/base-page.component';
 import { SectionHeaderComponent } from '@problems/pages/problems/sections/section-header/section-header.component';
 import { SectionCategoriesComponent } from './sections/section-categories/section-categories.component';
 import { SectionProblemsListComponent } from './sections/section-problems-list/section-problems-list.component';

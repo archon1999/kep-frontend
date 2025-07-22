@@ -7,9 +7,9 @@ import {
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { CoreCommonModule } from '@core/common.module';
-import { BaseTablePageComponent } from '@app/common';
+import { BaseTablePageComponent } from '@core/common';
 import { interval, Observable } from 'rxjs';
-import { PageResult } from '@app/common/classes/page-result';
+import { PageResult } from '@core/common/classes/page-result';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({

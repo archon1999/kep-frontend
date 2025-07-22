@@ -7,7 +7,7 @@ import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { CoreCommonModule } from '@core/common.module';
 import { AttemptsTableModule } from '@problems/components/attempts-table/attempts-table.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
-import { BaseTablePageComponent } from '@app/common';
+import { BaseTablePageComponent } from '@core/common';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 
 @Component({

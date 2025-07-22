@@ -3,7 +3,7 @@ import { UserPopoverModule } from '@shared/components/user-popover/user-popover.
 import { CommonModule } from '@angular/common';
 import { Resources } from '@app/resources';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
-import { BaseUserComponent } from '@app/common';
+import { BaseUserComponent } from '@core/common';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AccountSettingsService } from '@app/modules/account-settings/account-settings.service';
 import { ToastrService } from 'ngx-toastr';

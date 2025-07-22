@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
-import { BaseLoadComponent } from '@app/common/classes/base-load.component';
+import { BaseLoadComponent } from '@core/common/classes/base-load.component';
 import { Attempt } from '@problems/models/attempts.models';
 import { Observable } from 'rxjs';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { map } from 'rxjs/operators';
-import { PageResult } from '@app/common/classes/page-result';
+import { PageResult } from '@core/common/classes/page-result';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";

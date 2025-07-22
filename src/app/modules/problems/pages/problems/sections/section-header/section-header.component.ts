@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { AuthUser } from '@auth';
-import { BaseLoadComponent } from '@app/common/classes/base-load.component';
+import { BaseLoadComponent } from '@core/common/classes/base-load.component';
 import { GeneralInfo } from '@problems/models/statistics.models';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { CoreCommonModule } from '@core/common.module';

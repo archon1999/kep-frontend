@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '@core/data-access/api.service';
 import { ChallengesApiService } from '@challenges/services/challenges-api.service';
-import { Pageable } from '@app/common/classes/pageable';
+import { Pageable } from '@core/common/classes/pageable';
 
 @Injectable({
   providedIn: 'root'

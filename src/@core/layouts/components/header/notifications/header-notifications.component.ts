@@ -4,7 +4,7 @@ import { AuthService, AuthUser } from '@auth';
 
 import { WebsocketService } from 'app/shared/services/websocket';
 import { Subject } from 'rxjs';
-import { PageResult } from '@app/common/classes/page-result';
+import { PageResult } from '@core/common/classes/page-result';
 import { CoreCommonModule } from '@core/common.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
@@ -12,7 +12,7 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-import { NotificationsService } from "@core/components/header/notifications/notifications.service";
+import { NotificationsService } from "@core/layouts/components/header/notifications/notifications.service";
 import { SimplebarAngularModule } from "simplebar-angular";
 
 interface Notification {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChallengesApiService } from '@challenges/services';
-import { PageResult } from '@app/common/classes/page-result';
-import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
+import { PageResult } from '@core/common/classes/page-result';
+import { BaseTablePageComponent } from '@core/common/classes/base-table-page.component';
 import { Observable } from 'rxjs';
 import { CoreCommonModule } from '@core/common.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';

@@ -9,7 +9,7 @@ import { ProjectTechnologyComponent } from '@projects/ui/components/project-tech
 import { Project, ProjectAttempt, ProjectAttemptLogTask } from "@projects/domain/entities";
 import { ProjectAttemptsRepository } from "@projects/data-access/repositories/project-attempts.repository";
 import { EmptyResultComponent } from "@shared/components/empty-result/empty-result.component";
-import { BaseComponent } from "@app/common";
+import { BaseComponent } from "@core/common";
 
 @Component({
   selector: 'attempts-table',

@@ -6,7 +6,7 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { AccountSettingsService } from '@app/modules/account-settings/account-settings.service';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { Observable } from 'rxjs';
 
 @Component({

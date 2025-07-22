@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { AccountSettingsService } from '../account-settings.service';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { Observable } from 'rxjs';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';

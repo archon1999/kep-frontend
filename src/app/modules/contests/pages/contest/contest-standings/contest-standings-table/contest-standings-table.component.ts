@@ -9,7 +9,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Contest, Contestant, ContestProblem } from '@contests/models';
 import { RouterLink } from '@angular/router';
 import { CoreCommonModule } from '@core/common.module';
-import { BaseUserComponent } from '@app/common';
+import { BaseUserComponent } from '@core/common';
 import { ContestTypes } from '@contests/constants';
 import {
   ProblemInfoBySymbolPipe

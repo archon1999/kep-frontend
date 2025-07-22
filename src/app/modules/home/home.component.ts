@@ -8,7 +8,7 @@ import { SystemSectionComponent } from './system-section/system-section.componen
 import { NewsSectionComponent } from './news-section/news-section.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { RanksSectionComponent } from '@app/modules/home/ranks-section/ranks-section.component';
-import { BasePageComponent } from "@app/common";
+import { BasePageComponent } from "@core/common";
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { ContentHeaderModule } from "@shared/ui/components/content-header/content-header.module";
 import { TranslatePipe } from "@ngx-translate/core";

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseLoadComponent } from '@app/common/classes/base-load.component';
+import { BaseLoadComponent } from '@core/common/classes/base-load.component';
 import { Observable } from 'rxjs';
 import { ChallengesApiService } from '@challenges/services';
 import {
@@ -7,7 +7,7 @@ import {
 } from '@challenges/components/challenges-user-view/challenges-user-view.component';
 import { ChallengesRankColorPipe } from '@challenges/pipes/challenges-rank-color.pipe';
 import { CoreCommonModule } from '@core/common.module';
-import { PageResult } from '@app/common/classes/page-result';
+import { PageResult } from '@core/common/classes/page-result';
 import { ChallengesRating } from '@challenges/interfaces/challenges-rating';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 

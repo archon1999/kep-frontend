@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ChallengesApiService } from '@challenges/services';
 import { CoreCommonModule } from '@core/common.module';
 import { getResourceById, Resources } from '@app/resources';
-import { BaseUserComponent } from '@app/common/classes/base-user.component';
+import { BaseUserComponent } from '@core/common/classes/base-user.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import {
   ChallengesUserViewComponent

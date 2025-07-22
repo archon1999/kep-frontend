@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { BaseUserComponent } from '@app/common';
+import { BaseUserComponent } from '@core/common';
 import { Tournament } from "@tournaments/domain";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 import { TranslatePipe } from "@ngx-translate/core";

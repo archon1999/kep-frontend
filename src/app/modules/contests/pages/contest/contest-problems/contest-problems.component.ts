@@ -7,7 +7,7 @@ import { ContestCardModule } from '@contests/components/contest-card/contest-car
 import { ContestProblem } from '@contests/models/contest-problem';
 import { Contest } from '@contests/models/contest';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
-import { BasePageComponent } from '@app/common';
+import { BasePageComponent } from '@core/common';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 import { KepTableComponent } from "@shared/components/kep-table/kep-table.component";
 

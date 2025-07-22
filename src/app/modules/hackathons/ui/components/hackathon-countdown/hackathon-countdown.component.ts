@@ -4,7 +4,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 import { HackathonStatus } from '@hackathons/domain/constants/hackathon-status';
 import { Hackathon } from "@hackathons/domain";
-import { BaseComponent } from "@app/common";
+import { BaseComponent } from "@core/common";
 import { Resources } from "@app/resources";
 
 @Component({

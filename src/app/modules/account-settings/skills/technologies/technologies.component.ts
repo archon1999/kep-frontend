@@ -3,7 +3,7 @@ import { devIcons } from './dev-icons';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { AccountSettingsService } from '@app/modules/account-settings/account-settings.service';
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';

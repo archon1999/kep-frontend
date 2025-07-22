@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { ProjectCardComponent } from '@projects/ui/components/project-card/project-card.component';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
 import { Observable } from 'rxjs';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';

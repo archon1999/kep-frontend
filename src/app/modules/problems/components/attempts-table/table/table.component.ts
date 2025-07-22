@@ -12,7 +12,7 @@ import { bounceAnimation, shakeAnimation } from 'angular-animations';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { Attempt } from '../../../models/attempts.models';
 import { Contest } from '@contests/models/contest';
-import { BaseComponent } from '@app/common';
+import { BaseComponent } from '@core/common';
 
 @Component({
   selector: 'base-table',

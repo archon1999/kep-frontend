@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { HomeService } from '../home.service';
-import { PageResult } from '@app/common/classes/page-result';
-import { BaseTablePageComponent } from '@app/common';
+import { PageResult } from '@core/common/classes/page-result';
+import { BaseTablePageComponent } from '@core/common';
 import { Observable } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { TranslateModule } from '@ngx-translate/core';

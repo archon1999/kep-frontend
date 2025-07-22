@@ -4,7 +4,7 @@ import { ChallengeCallCardComponent } from '@challenges/components/challenge-cal
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { ChallengesApiService } from '@challenges/services';
 import { interval } from 'rxjs';
-import { BaseUserComponent } from '@app/common/classes/base-user.component';
+import { BaseUserComponent } from '@core/common/classes/base-user.component';
 import { takeUntil } from 'rxjs/operators';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { ChallengeCall } from '@challenges/interfaces';

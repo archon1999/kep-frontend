@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { CoreCommonModule } from '@core/common.module';
-import { BaseLoadComponent } from '@app/common/classes/base-load.component';
+import { BaseLoadComponent } from '@core/common/classes/base-load.component';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 

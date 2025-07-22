@@ -5,7 +5,7 @@ import { ContentHeaderModule } from '@shared/ui/components/content-header/conten
 import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
 import { ProjectCardComponent } from '@projects/ui/components/project-card/project-card.component';
 import { Hackathon, HackathonProject } from '@hackathons/domain';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { Observable } from "rxjs";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 import { HackathonTabComponent } from "@hackathons/ui/components/hackathon-tab/hackathon-tab.component";

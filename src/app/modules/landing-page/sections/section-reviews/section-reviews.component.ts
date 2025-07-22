@@ -1,6 +1,6 @@
 import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
-import { BaseLoadComponent } from '@app/common/classes/base-load.component';
+import { BaseLoadComponent } from '@core/common/classes/base-load.component';
 import { Review } from '@app/modules/landing-page/sections/section-reviews/review';
 import { Observable } from 'rxjs';
 import { LandingPageService } from '@app/modules/landing-page/landing-page.service';

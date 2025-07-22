@@ -11,7 +11,7 @@ import { ContestCardModule } from '@contests/components/contest-card/contest-car
 import { ContestQuestion } from '@contests/models/contest-question';
 import { ContestProblem } from '@contests/models/contest-problem';
 import { Contest } from '@contests/models/contest';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { ContestStatus } from '@contests/constants';

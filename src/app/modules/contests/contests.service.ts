@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '@core/data-access/api.service';
 import { AuthService } from '@auth';
 import { map } from 'rxjs/operators';
-import { Pageable } from '@app/common/classes/pageable';
+import { Pageable } from '@core/common/classes/pageable';
 import { ContestStatus } from '@contests/constants/contest-status';
 import { ContestAttemptsFilter } from '@contests/models/contest-attempts-filter';
 import { Contest } from '@contests/models/contest';
 import { Contestant, ContestCategory } from '@contests/models';
 import { getCategoryIcon } from '@contests/utils/category-icon';
-import { PageResult } from '@app/common/classes/page-result';
+import { PageResult } from '@core/common/classes/page-result';
 import { Attempt } from '@problems/models/attempts.models';
 
 @Injectable({

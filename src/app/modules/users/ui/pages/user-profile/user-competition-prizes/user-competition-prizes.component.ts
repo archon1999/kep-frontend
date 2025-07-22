@@ -1,5 +1,5 @@
 import { Component, inject, Input } from '@angular/core';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { UserCompetitionPrize } from '@users/domain';
 import { Observable } from 'rxjs';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';

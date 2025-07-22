@@ -9,7 +9,7 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { CommentsComponent } from '@app/modules/blog/pages/post-detail/comments/comments.component';
 import { IconNamePipe } from '@shared/pipes/feather-icons.pipe';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { Observable } from 'rxjs';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 

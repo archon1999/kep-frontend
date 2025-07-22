@@ -15,7 +15,7 @@ import { ContestProblem } from '@contests/models/contest-problem';
 import { Contest } from '@contests/models/contest';
 import { Contestant } from '@contests/models/contestant';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
-import { BaseTablePageComponent } from '@app/common';
+import { BaseTablePageComponent } from '@core/common';
 import { interval } from 'rxjs';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import {

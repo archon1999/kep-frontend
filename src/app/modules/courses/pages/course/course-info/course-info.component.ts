@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Course } from '@courses/interfaces';
-import { BaseUserComponent } from '@app/common';
+import { BaseUserComponent } from '@core/common';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 import { Resources } from '@app/resources';

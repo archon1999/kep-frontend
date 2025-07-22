@@ -4,7 +4,7 @@ import { FormControl, FormGroup, FormsModule } from '@angular/forms';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule } from '@ngx-translate/core';
-import { BaseUserComponent } from '@app/common';
+import { BaseUserComponent } from '@core/common';
 import { Contest, ContestAttemptsFilter, ContestProblem } from '@contests/models';
 import { ContestsService } from '@contests/contests.service';
 import { ProblemsApiService } from '@problems/services/problems-api.service';

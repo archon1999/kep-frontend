@@ -9,7 +9,7 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
-import { BaseLoadComponent } from '@app/common/classes/base-load.component';
+import { BaseLoadComponent } from '@core/common/classes/base-load.component';
 
 @Component({
   selector: 'app-tournament-duels',

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { HackathonsApiService } from '@hackathons/data-access/hackathons-api.service';

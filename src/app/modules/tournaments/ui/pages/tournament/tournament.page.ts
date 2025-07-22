@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { filter, map, Observable } from 'rxjs';
-import { BaseLoadComponent } from "@app/common";
+import { BaseLoadComponent } from '@core/common';
 import { TournamentsApiService } from "@app/modules/tournaments/data-access/tournaments-api.service";
 import { Tournament } from "@tournaments/domain";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";

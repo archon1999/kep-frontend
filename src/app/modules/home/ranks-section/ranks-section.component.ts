@@ -4,7 +4,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
-import { BaseLoadComponent } from "@app/common";
+import { BaseLoadComponent } from "@core/common";
 import { Observable } from "rxjs";
 import { NgxSkeletonLoaderModule } from "ngx-skeleton-loader";
 import { UsersApiService } from "@users/data-access";

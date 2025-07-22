@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { ContestsService } from '@contests/contests.service';
 import { Problem } from '@problems/models/problems.models';
-import { BaseComponent } from '@app/common/classes/base.component';
+import { BaseComponent } from '@core/common/classes/base.component';
 import { CoreCommonModule } from '@core/common.module';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { MathjaxModule } from '@shared/third-part-modules/mathjax/mathjax.module';

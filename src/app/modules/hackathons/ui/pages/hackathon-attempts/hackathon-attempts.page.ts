@@ -5,9 +5,9 @@ import { ContentHeaderModule } from '@shared/ui/components/content-header/conten
 import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
 import { AttemptsTableComponent } from '@projects/ui/components/project-attempts/attempts-table/attempts-table.component';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
-import { BaseTablePageComponent } from '@app/common';
+import { BaseTablePageComponent } from '@core/common';
 import { interval, Observable } from 'rxjs';
-import { PageResult } from '@app/common/classes/page-result';
+import { PageResult } from '@core/common/classes/page-result';
 import { ProjectAttempt } from '@projects/domain/entities';
 import { Hackathon } from "@hackathons/domain";
 import { HackathonTabComponent } from "@hackathons/ui/components/hackathon-tab/hackathon-tab.component";

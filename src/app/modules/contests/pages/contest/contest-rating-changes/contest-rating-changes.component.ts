@@ -7,7 +7,7 @@ import { ContestantViewModule } from '@contests/components/contestant-view/conte
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { Contest } from '@contests/models/contest';
 import { Contestant } from '@contests/models/contestant';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { KepDeltaComponent } from '@shared/components/kep-delta/kep-delta.component';

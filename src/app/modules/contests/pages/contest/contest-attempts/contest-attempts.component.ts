@@ -13,7 +13,7 @@ import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.m
 import { ContestStatus } from '@contests/constants/contest-status';
 import { ContestAttemptsFilter } from '@contests/models/contest-attempts-filter';
 import { Contest } from '@contests/models/contest';
-import { BaseTablePageComponent } from '@app/common';
+import { BaseTablePageComponent } from '@core/common';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import {
   ContestAttemptsFilterComponent

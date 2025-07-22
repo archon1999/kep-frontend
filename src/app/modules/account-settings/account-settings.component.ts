@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BasePageComponent } from '@app/common';
+import { BasePageComponent } from '@core/common';
 import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { NgbNav } from '@ng-bootstrap/ng-bootstrap';

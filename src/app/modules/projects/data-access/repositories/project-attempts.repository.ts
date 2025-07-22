@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProjectAttemptDto, ProjectsApiService } from '@projects/data-access';
 import { BaseRepository } from "@core/data-access";
-import { PageResult } from "@app/common/classes/page-result";
+import { PageResult } from "@core/common/classes/page-result";
 import { ProjectAttempt, ProjectAttemptLog } from "@projects/domain/entities";
 
 @Injectable({

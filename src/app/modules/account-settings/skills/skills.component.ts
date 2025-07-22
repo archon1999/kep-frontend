@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { UserSkills } from '@users/domain';
 import { AccountSettingsService } from '../account-settings.service';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';

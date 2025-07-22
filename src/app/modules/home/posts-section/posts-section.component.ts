@@ -2,7 +2,7 @@ import { AfterViewInit, Component } from '@angular/core';
 
 import { Blog } from '../../blog/blog.interfaces';
 import { HomeService } from '../home.service';
-import { PageResult } from '@app/common/classes/page-result';
+import { PageResult } from '@core/common/classes/page-result';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';

@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { UserWorkExperience } from '@users/domain';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { PaginatorModule } from 'primeng/paginator';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { AccountSettingsService } from '@app/modules/account-settings/account-settings.service';
 import { Observable } from 'rxjs';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';

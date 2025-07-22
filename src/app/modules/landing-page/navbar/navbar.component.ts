@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BaseComponent } from '@app/common/classes/base.component';
+import { BaseComponent } from '@core/common/classes/base.component';
 import { CoreCommonModule } from '@core/common.module';
 import { scrollTo } from '@shared/utils';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';

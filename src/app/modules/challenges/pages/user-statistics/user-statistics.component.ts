@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChallengesStatisticsService } from '@challenges/services';
-import { BasePageComponent } from '@app/common/classes/base-page.component';
+import { BasePageComponent } from '@core/common/classes/base-page.component';
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';

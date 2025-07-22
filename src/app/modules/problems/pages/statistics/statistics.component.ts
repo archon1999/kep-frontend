@@ -11,7 +11,7 @@ import { SectionTimeComponent } from '@problems/pages/statistics/section-time/se
 import {
   SectionAttemptsForSolveComponent
 } from '@problems/pages/statistics/section-attempts-for-solve/section-attempts-for-solve.component';
-import { BaseComponent } from '@app/common/classes/base.component';
+import { BaseComponent } from '@core/common/classes/base.component';
 import { AuthUser } from '@auth';
 
 @Component({

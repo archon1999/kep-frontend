@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { CurrentProblemsRating } from '@problems/models/rating.models';
 import { PeriodRating } from '@problems/interfaces';
 import { forkJoin } from 'rxjs';

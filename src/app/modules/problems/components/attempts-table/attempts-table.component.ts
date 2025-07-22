@@ -15,7 +15,7 @@ import { AttemptLangs, Verdicts } from '../../constants';
 import { ProblemsApiService } from '../../services/problems-api.service';
 import { SoundsService } from 'app/shared/services/sounds/sounds.service';
 import { FormControl, FormGroup } from '@angular/forms';
-import { BaseComponent } from '@app/common/classes/base.component';
+import { BaseComponent } from '@core/common/classes/base.component';
 import { Contest } from '@contests/models/contest';
 import { WebsocketService } from '@shared/services/websocket';
 

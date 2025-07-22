@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PageResult } from '@app/common/classes/page-result';
-import { BasePageComponent } from '@app/common/classes/base-page.component';
+import { PageResult } from '@core/common/classes/page-result';
+import { BasePageComponent } from '@core/common/classes/base-page.component';
 import { NavigationStart } from '@angular/router';
-import { Pageable } from '@app/common/classes/pageable';
+import { Pageable } from '@core/common/classes/pageable';
 import { takeUntil } from 'rxjs/operators';
 import { environment } from "../../../environments/environment";
 

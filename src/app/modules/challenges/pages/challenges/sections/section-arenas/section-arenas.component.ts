@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseLoadComponent } from '@app/common/classes/base-load.component';
+import { BaseLoadComponent } from '@core/common/classes/base-load.component';
 import { Arena, ArenaStatus } from '@arena/arena.models';
 import { Observable } from 'rxjs';
 import { ArenaService } from '@arena/arena.service';
@@ -8,7 +8,7 @@ import {
   ChallengesUserViewComponent
 } from '@challenges/components/challenges-user-view/challenges-user-view.component';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
-import { PageResult } from '@app/common/classes/page-result';
+import { PageResult } from '@core/common/classes/page-result';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({

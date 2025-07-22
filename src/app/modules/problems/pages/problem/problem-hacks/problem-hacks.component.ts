@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Problem } from '@problems/models/problems.models';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
-import { BaseComponent } from '@app/common/classes/base.component';
-import { PageResult } from '@app/common/classes/page-result';
+import { BaseComponent } from '@core/common/classes/base.component';
+import { PageResult } from '@core/common/classes/page-result';
 import { HackAttempt } from '@problems/models/hack-attempt.models';
 import { CoreCommonModule } from '@core/common.module';
 import { KepPaginationComponent, } from '@shared/components/kep-pagination/kep-pagination.component';

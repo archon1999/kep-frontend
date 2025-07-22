@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';

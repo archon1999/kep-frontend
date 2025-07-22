@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { BaseLoadComponent, BasePageComponent } from '@app/common';
+import { BaseLoadComponent, BasePageComponent } from '@core/common';
 import { HackathonsApiService } from '@app/modules/hackathons/data-access/hackathons-api.service';
 import { Hackathon } from '@app/modules/hackathons/domain';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';

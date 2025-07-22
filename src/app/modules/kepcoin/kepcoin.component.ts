@@ -14,7 +14,7 @@ import { SpendsListComponent } from './components/spends-list/spends-list.compon
 import { HowToEarnKepcoinComponent } from './components/how-to-earn-kepcoin/how-to-earn-kepcoin.component';
 import { HowToSpendKepcoinComponent } from './components/how-to-spend-kepcoin/how-to-spend-kepcoin.component';
 import { YouHaveCardComponent } from './components/you-have-card/you-have-card.component';
-import { BaseComponent } from "@app/common";
+import { BaseComponent } from "@core/common";
 
 @Component({
   selector: 'app-kepcoin',

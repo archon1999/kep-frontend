@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { Observable } from 'rxjs';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";

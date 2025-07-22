@@ -10,9 +10,9 @@ import { TableOrderingModule } from '@shared/components/table-ordering/table-ord
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
-import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
+import { BaseTablePageComponent } from '@core/common/classes/base-table-page.component';
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
-import { PageResult } from '@app/common/classes/page-result';
+import { PageResult } from '@core/common/classes/page-result';
 import { User, UsersApiService } from "@app/modules/users";
 import { initialState } from "@core/config/initial-state";
 import { KepTableComponent } from "@shared/components/kep-table/kep-table.component";

@@ -6,7 +6,7 @@ import { ChallengesApiService } from '@challenges/services';
 import { CoreCommonModule } from '@core/common.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { getResourceById, Resources } from '@app/resources';
-import { BaseUserComponent } from '@app/common/classes/base-user.component';
+import { BaseUserComponent } from '@core/common/classes/base-user.component';
 import { Router } from '@angular/router';
 import { ChallengeCall, NewChallengeCall } from '@challenges/interfaces';
 import { NgxSliderModule, Options } from '@angular-slider/ngx-slider';

@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
-import { BaseTablePageComponent } from '@app/common';
+import { BaseTablePageComponent } from '@core/common';
 import { interval, Observable } from 'rxjs';
-import { PageResult } from '@app/common/classes/page-result';
+import { PageResult } from '@core/common/classes/page-result';
 import { AuthUser } from '@auth';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { Project, ProjectAttempt } from "@projects/domain/entities";

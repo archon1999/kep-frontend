@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { TestingApiService } from '@testing/data-access/api/testing-api.service';
 import { Test } from '@testing/domain/entities/test.entity';
-import { BaseLoadComponent } from '@app/common/classes/base-load.component';
+import { BaseLoadComponent } from '@core/common/classes/base-load.component';
 import { CommonModule } from '@angular/common';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { CorePipesModule } from '@shared/pipes/pipes.module';

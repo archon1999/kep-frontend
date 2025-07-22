@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
-import { BaseComponent } from '@app/common';
+import { BaseComponent } from '@core/common';
 import { MENU } from "@core/config/menu";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 

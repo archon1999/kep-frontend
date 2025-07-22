@@ -21,8 +21,8 @@ import { KepcoinSpendSwalModule } from "@shared/components/kepcoin-spend-swal/ke
 import {
   ChapterWithTestsCardComponent
 } from "@testing/ui/components/chapter-with-tests-card/chapter-with-tests-card.component";
-import { BaseTablePageComponent } from "@app/common";
-import { PageResult } from "@app/common/classes/page-result";
+import { BaseTablePageComponent } from "@core/common";
+import { PageResult } from "@core/common/classes/page-result";
 
 @Component({
   selector: 'app-tests-list',

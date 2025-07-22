@@ -21,7 +21,7 @@ import { QuestionCardComponent } from '@challenges/pages/challenge/question-card
 import {
   ChallengeCountdownComponent
 } from '@challenges/pages/challenge/challenge-countdown/challenge-countdown.component';
-import { BaseComponent } from '@app/common';
+import { BaseComponent } from '@core/common';
 
 @Component({
   selector: 'app-challenge',

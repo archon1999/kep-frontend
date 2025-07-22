@@ -8,12 +8,12 @@ import {
   NgbOffcanvas
 } from '@ng-bootstrap/ng-bootstrap';
 import { SwitcherComponent } from '../switcher/switcher.component';
-import { BaseComponent } from "@app/common";
+import { BaseComponent } from "@core/common";
 import { CoreCommonModule } from "@core/common.module";
-import { HeaderNotificationsComponent } from "@core/components/header/notifications/header-notifications.component";
-import { HeaderKepcoinComponent } from "@core/components/header/kepcoin/header-kepcoin.component";
-import { HeaderDailyTasksComponent } from "@core/components/header/daily-tasks/header-daily-tasks.component";
-import { LanguagesComponent } from "@core/components/languages/languages.component";
+import { HeaderNotificationsComponent } from "@core/layouts/components/header/notifications/header-notifications.component";
+import { HeaderKepcoinComponent } from "@core/layouts/components/header/kepcoin/header-kepcoin.component";
+import { HeaderDailyTasksComponent } from "@core/layouts/components/header/daily-tasks/header-daily-tasks.component";
+import { LanguagesComponent } from "@core/layouts/components/languages/languages.component";
 import { LogoComponent } from "@shared/components/logo/logo.component";
 
 @Component({

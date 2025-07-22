@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Category, ProblemsFilter, Tag } from '@problems/models/problems.models';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { ProblemsFilterService } from 'app/modules/problems/services/problems-filter.service';
-import { BaseComponent } from '@app/common/classes/base.component';
+import { BaseComponent } from '@core/common/classes/base.component';
 import { FormControl, FormGroup } from '@angular/forms';
 import { deepCopy, equalsCheck } from '@shared/utils';
 import { CoreCommonModule } from '@core/common.module';

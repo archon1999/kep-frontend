@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ProblemsRating } from '@problems/models/rating.models';
-import { PageResult } from '@app/common/classes/page-result';
+import { PageResult } from '@core/common/classes/page-result';
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
-import { BaseTablePageComponent } from '@app/common/classes/base-table-page.component';
+import { BaseTablePageComponent } from '@core/common/classes/base-table-page.component';
 import { Resources } from '@app/resources';
 import { Observable } from 'rxjs';
 import { difficultyLabels } from '@problems/constants/difficulties.enum';

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ChallengesStatisticsService } from '@challenges/services';
 import { AuthService, AuthUser } from '@auth';
-import { BaseLoadComponent } from '@app/common/classes/base-load.component';
+import { BaseLoadComponent } from '@core/common/classes/base-load.component';
 import { Observable } from 'rxjs';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';

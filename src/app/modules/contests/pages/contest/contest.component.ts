@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
-import { BasePageComponent } from '@app/common/classes/base-page.component';
+import { BasePageComponent } from '@core/common/classes/base-page.component';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { ContestCardComponent } from '@contests/components/contest-card/contest-card/contest-card.component';

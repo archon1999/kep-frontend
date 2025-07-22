@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CalendarSectionComponent } from '@app/modules/home/calendar-section/calendar-section.component';
-import { BasePageComponent } from '@app/common';
+import { BasePageComponent } from '@core/common';
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 

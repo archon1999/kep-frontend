@@ -1,14 +1,14 @@
 import { Component, HostListener, Renderer2, } from '@angular/core';
-import { Menu, NavService } from '../../services/nav.service';
 import { fromEvent, Subscription } from 'rxjs';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { checkHoriMenu } from './sidebar';
 import { CoreCommonModule } from '@core/common.module';
 import { SimplebarAngularModule } from 'simplebar-angular';
-import { DropdownPositionDirective } from '@core/components/sidebar/directives/dropdown-position.directive';
+import { DropdownPositionDirective } from '@core/layouts/components/sidebar/directives/dropdown-position.directive';
 import { ApiService } from '@core/data-access/api.service';
 import { LogoComponent } from "@shared/components/logo/logo.component";
+import { Menu, NavService } from "@core/services/nav.service";
 
 @Component({
   selector: 'app-sidebar',

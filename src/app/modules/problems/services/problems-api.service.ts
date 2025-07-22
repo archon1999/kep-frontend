@@ -3,7 +3,7 @@ import { ApiService } from '@core/data-access/api.service';
 import { Category, Problem, ProblemsFilter } from '@problems/models/problems.models';
 import { map } from 'rxjs/operators';
 import { Attempt } from '@problems/models/attempts.models';
-import { Pageable } from '@app/common/classes/pageable';
+import { Pageable } from '@core/common/classes/pageable';
 import { getCategoryIcon } from '@problems/utils/category';
 import { Observable } from 'rxjs';
 import { Verdicts } from '@problems/constants';

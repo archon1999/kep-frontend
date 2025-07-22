@@ -16,7 +16,7 @@ import { ArenaCountdownComponent } from '@arena/pages/arena-tournament/arena-cou
 import { ArenaStatisticsComponent } from '@arena/pages/arena-tournament/arena-statistics/arena-statistics.component';
 import { ArenaWinnersComponent } from '@arena/pages/arena-tournament/arena-winners/arena-winners.component';
 import { ArenaPlayersComponent } from '@arena/pages/arena-tournament/arena-players/arena-players.component';
-import { BaseComponent } from '@app/common';
+import { BaseComponent } from '@core/common';
 import { getResourceById, Resources } from '@app/resources';
 import { ArenaInfoComponent } from '@arena/pages/arena-tournament/arena-info/arena-info.component';
 

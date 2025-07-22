@@ -2,7 +2,7 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TestingApiService } from '@testing/data-access';
 import { Test, TestPass } from '@testing/domain';
-import { BaseLoadComponent } from '@app/common/classes/base-load.component';
+import { BaseLoadComponent } from '@core/common/classes/base-load.component';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
 import { randomShuffle } from '@shared/utils';

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { AccountSettingsService } from '../account-settings.service';
-import { BaseComponent } from '@app/common';
+import { BaseComponent } from '@core/common';
 import { FormsModule } from '@angular/forms';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { TranslatePipe } from '@ngx-translate/core';

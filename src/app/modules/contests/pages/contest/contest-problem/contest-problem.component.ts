@@ -11,10 +11,10 @@ import { LanguageService } from 'app/modules/problems/services/language.service'
 import { findAvailableLang } from 'app/modules/problems/utils';
 import { AttemptLangs } from 'app/modules/problems/constants';
 import { SidebarService } from '@shared/ui/sidebar/sidebar.service';
-import { BaseComponent } from '@app/common/classes/base.component';
+import { BaseComponent } from '@core/common/classes/base.component';
 import { sortContestProblems } from '@contests/utils/sort-contest-problems';
 import { paramsMapper } from '@shared/utils';
-import { PageResult } from '@app/common/classes/page-result';
+import { PageResult } from '@core/common/classes/page-result';
 import { CoreCommonModule } from '@core/common.module';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';

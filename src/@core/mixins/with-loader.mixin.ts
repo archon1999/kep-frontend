@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BasePageComponent } from '@app/common';
+import { BasePageComponent } from '@core/common';
 
 export type WithLoader = {
   data: any;

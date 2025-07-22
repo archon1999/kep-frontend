@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { Contest } from '@contests/models';
 import { ContestsService } from '@contests/contests.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PageResult } from '@app/common/classes/page-result';
+import { PageResult } from '@core/common/classes/page-result';
 import { ContestCardComponent } from '@app/modules/home/contests-section/contest-card/contest-card.component';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';

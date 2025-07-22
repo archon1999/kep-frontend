@@ -3,7 +3,7 @@ import { AuthService, AuthUser } from '@auth';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ActivatedRoute, NavigationExtras, Params, Router } from '@angular/router';
-import { GlobalService } from '@app/common/global.service';
+import { GlobalService } from '@core/common/global.service';
 import { LocalStorageService } from '@shared/services/storages/local-storage.service';
 import { SessionStorageService } from '@shared/services/storages/session-storage.service';
 import { TitleService } from '@shared/services/title.service';

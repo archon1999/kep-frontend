@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AuthUser } from '@auth';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
-import { BaseComponent } from '@app/common/classes/base.component';
+import { BaseComponent } from '@core/common/classes/base.component';
 import { WebsocketService } from '@shared/services/websocket';
 
 @Component({

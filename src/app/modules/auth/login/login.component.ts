@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { BaseComponent } from "@app/common";
+import { BaseComponent } from "@core/common";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Resources } from "@app/resources";
 import { TranslatePipe } from "@ngx-translate/core";

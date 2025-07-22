@@ -7,8 +7,8 @@ import {
   NgbNavLinkButton,
   NgbNavOutlet
 } from '@ng-bootstrap/ng-bootstrap';
-import { AppStateService, StateType } from '../../services/app-state.service';
 import { ColorPickerModule } from "ngx-color-picker";
+import { AppStateService, StateType } from "@core/services/app-state.service";
 
 type Direction = StateType['direction'];
 type NavigationStyles = StateType['navigationStyles'];

@@ -2,10 +2,10 @@ import { Component, ElementRef, inject, Renderer2, TemplateRef, } from '@angular
 import { Menu, NavService } from '../../services/nav.service';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { Router, RouterOutlet } from '@angular/router';
-import { HeaderComponent } from "@core/components/header/header.component";
-import { FooterComponent } from "@core/components/footer/footer.component";
-import { SidebarComponent } from "@core/components/sidebar/sidebar.component";
-import { HoverEffectSidebarDirective } from "@core/components/sidebar/directives/hover-effect-sidebar.directive";
+import { HeaderComponent } from "@core/layouts/components/header/header.component";
+import { FooterComponent } from "@core/layouts/components/footer/footer.component";
+import { SidebarComponent } from "@core/layouts/components/sidebar/sidebar.component";
+import { HoverEffectSidebarDirective } from "@core/layouts/components/sidebar/directives/hover-effect-sidebar.directive";
 
 @Component({
   selector: 'app-content-layout',

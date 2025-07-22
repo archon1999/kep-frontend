@@ -2,7 +2,7 @@ import { Component, inject, Input, OnInit } from '@angular/core';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { CoreCommonModule } from '@core/common.module';
 import { Course, CourseLesson } from '@courses/interfaces';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { Observable } from 'rxjs';
 import { CoursesService } from '@courses/courses.service';
 import { LessonCardComponent } from '@courses/pages/course/course-lessons/lesson-card/lesson-card.component';

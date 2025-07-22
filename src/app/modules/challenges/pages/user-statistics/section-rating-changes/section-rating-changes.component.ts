@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ChallengesStatisticsService } from '@challenges/services';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
-import { BaseLoadComponent } from '@app/common/classes/base-load.component';
+import { BaseLoadComponent } from '@core/common/classes/base-load.component';
 import { Observable } from 'rxjs';
 import { AuthUser } from '@auth';
 import { CoreCommonModule } from '@core/common.module';

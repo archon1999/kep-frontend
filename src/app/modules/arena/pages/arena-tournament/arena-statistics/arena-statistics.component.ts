@@ -2,7 +2,7 @@ import { Component, inject, Input } from '@angular/core';
 import { Arena, ArenaStatistics } from '@arena/arena.models';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { Observable } from 'rxjs';
 import { ArenaService } from '@arena/arena.service';
 

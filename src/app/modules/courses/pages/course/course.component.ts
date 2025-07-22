@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Course } from '@courses/interfaces';
-import { BaseComponent } from '@app/common';
+import { BaseComponent } from '@core/common';
 import { CoreCommonModule } from '@core/common.module';
 import { CourseHeaderComponent } from '@courses/pages/course/course-header/course-header.component';
 import { CourseInfoComponent } from '@courses/pages/course/course-info/course-info.component';

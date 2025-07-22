@@ -5,7 +5,7 @@ import {
 import { Arena, ArenaPlayerStatistics } from '@arena/arena.models';
 import { bounceOnEnterAnimation } from 'angular-animations';
 import { ArenaService } from '@arena/arena.service';
-import { BaseLoadComponent } from '@app/common';
+import { BaseLoadComponent } from '@core/common';
 import { Observable } from 'rxjs';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 

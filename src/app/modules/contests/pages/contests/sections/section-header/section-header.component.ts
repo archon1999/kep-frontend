@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { ContestsService } from '@contests/contests.service';
-import { BaseLoadComponent } from '@app/common/classes/base-load.component';
+import { BaseLoadComponent } from '@core/common/classes/base-load.component';
 import { ContestsRating } from '@contests/models';
 import { AuthUser } from '@auth';
 import { Observable } from 'rxjs';

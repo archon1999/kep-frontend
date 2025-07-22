@@ -12,7 +12,7 @@ import { LanguageService } from '@problems/services/language.service';
 import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';
 import { takeUntil } from 'rxjs/operators';
 import { findAvailableLang } from '@problems/utils';
-import { BaseComponent } from '@app/common';
+import { BaseComponent } from '@core/common';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { FormControl } from '@angular/forms';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
