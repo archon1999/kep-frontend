@@ -89,7 +89,7 @@ export const routes: Routes = [
       },
       {
         path: 'kepcoin',
-        loadChildren: () => import('./modules/kepcoin/kepcoin.module').then(m => m.KepcoinModule),
+        loadChildren: () => import('./modules/kepcoin/kepcoin.routing'),
       },
       {
         path: 'settings',
