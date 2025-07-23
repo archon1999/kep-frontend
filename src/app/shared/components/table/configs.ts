@@ -7,6 +7,7 @@ export interface ColumnConfig<T, K = ExtractKeys<T>> {
   key?: string;
   sortable?: boolean;
   orderingKey?: string;
+  orderingReverse?: boolean;
   align?: 'left' | 'center' | 'right';
 }
 

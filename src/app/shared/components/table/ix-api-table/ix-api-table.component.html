@@ -2,7 +2,7 @@
   <div class="card-header mb-3 d-flex justify-content-between align-items-center">
     <div class="card-title">
       {{ title | translate }}
-      <span *ngIf="total" class="total-count">({{ total }})</span>
+      <span class="total-count">({{ total }})</span>
     </div>
     <div class="btn-list">
       <ng-content select="[actions]"></ng-content>

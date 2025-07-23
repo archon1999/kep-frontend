@@ -111,7 +111,9 @@ export class IxTableComponent<T = any> implements AfterContentInit {
     if (!col.sortable) return;
     // @ts-ignore
     const key = this.getOrderingKey(col);
-    const next = this.ordering === key ? `-${key}` : this.ordering === `-${key}` ? '' : key;
+    const next = col.orderingReverse ?
+      (this.ordering === key ? '' : this.ordering === `-${key}` ? key : `-${key}`):
+      (this.ordering === key ? `-${key}` : this.ordering === `-${key}` ? '' : key);
     this.orderingChange.emit(next);
   }
 }

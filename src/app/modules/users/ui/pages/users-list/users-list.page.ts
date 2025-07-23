@@ -48,6 +48,7 @@ export class UsersListPage extends BasePageComponent {
       icon: 'user',
       sortable: true,
       orderingKey: 'id',
+      orderingReverse: true,
     },
     {
       field: 'skillsRating',
@@ -55,6 +56,7 @@ export class UsersListPage extends BasePageComponent {
       icon: 'rating',
       sortable: true,
       orderingKey: 'skills_rating',
+      orderingReverse: true,
       align: 'center'
     },
     {
@@ -63,6 +65,7 @@ export class UsersListPage extends BasePageComponent {
       icon: 'rating',
       sortable: true,
       orderingKey: 'activity_rating',
+      orderingReverse: true,
       align: 'center'
     },
     {
@@ -71,6 +74,7 @@ export class UsersListPage extends BasePageComponent {
       icon: 'contest',
       sortable: true,
       orderingKey: 'contests_rating__rating',
+      orderingReverse: true,
       align: 'center'
     },
     {
@@ -79,6 +83,7 @@ export class UsersListPage extends BasePageComponent {
       icon: 'challenge',
       sortable: true,
       orderingKey: 'challenges_rating__rating',
+      orderingReverse: true,
       align: 'center'
     },
     {
@@ -88,6 +93,7 @@ export class UsersListPage extends BasePageComponent {
       icon: 'streak',
       sortable: true,
       orderingKey: 'streak',
+      orderingReverse: true,
       align: 'center'
     },
     {
@@ -96,6 +102,7 @@ export class UsersListPage extends BasePageComponent {
       icon: 'dollar',
       sortable: true,
       orderingKey: 'kepcoin',
+      orderingReverse: true,
       align: 'center',
     },
     {
@@ -104,6 +111,7 @@ export class UsersListPage extends BasePageComponent {
       icon: 'time',
       sortable: true,
       orderingKey: 'last_seen',
+      orderingReverse: true,
       align: 'center',
     },
   ];
