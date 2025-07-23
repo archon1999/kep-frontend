@@ -24,12 +24,21 @@
     } )
   </div>
 } @else if (user?.username) {
-  <contests-rating-image
-    [title]="user.ratingTitle"
-    [class]="'me-1 mb-50'"
-    [size]="imgSize">
-  </contests-rating-image>
-  <user-popover [textColor]="textColor" [username]="user.username"></user-popover>
+  <div class="d-flex justify-content-center align-items-center">
+    <contests-rating-image
+      [title]="user.ratingTitle"
+      [class]="'me-1 mb-50'"
+      [size]="imgSize">
+    </contests-rating-image>
+    <user-popover [customContent]="true" [textColor]="textColor" [username]="user.username">
+      <div>
+        {{ user.username }}
+      </div>
+      <div class="text-muted" *ngIf="user.userFullName">
+        {{ user.userFullName }}
+      </div>
+    </user-popover>
+  </div>
   @if (isUnrated && !isVirtual) {
     <span [ngbTooltip]="'Unrated' | translate">
       <kep-icon name="shield-cross" type="duotone" size="small-4" color="danger"></kep-icon>

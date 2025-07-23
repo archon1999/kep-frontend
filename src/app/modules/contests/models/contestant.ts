@@ -4,6 +4,7 @@ import { ContestProblemInfo } from '@contests/models/contest-problem-info';
 export class Contestant {
   constructor(
     public username: string,
+    public userFullName: string,
     public team: {
       name: string;
       members: Array<ContestantTeamMember>;
@@ -35,6 +36,7 @@ export class Contestant {
   static fromJSON(data: any) {
     return new Contestant(
       data.username,
+      data.userFullName,
       data.team,
       data.type,
       data.problemsInfo.map(problemInfo => ContestProblemInfo.fromJSON(problemInfo)),
