@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { ExtractKeys, getByPath } from '@shared/components/table';
 import { KepIconComponent } from "@shared/components/kep-icon/kep-icon.component";
+import { TranslatePipe } from "@ngx-translate/core";
 
 @Component({
   standalone: true,
@@ -30,6 +31,7 @@ import { KepIconComponent } from "@shared/components/kep-icon/kep-icon.component
     NgbPaginationLast,
     NgxSkeletonLoaderModule,
     KepIconComponent,
+    TranslatePipe,
   ],
   templateUrl: './ix-table.component.html',
   styleUrl: './ix-table.component.scss',
@@ -65,6 +67,7 @@ export class IxTableComponent<T = any> implements AfterContentInit {
   ): unknown {
     const {field} = col;
 
+    // @ts-ignore
     if (typeof field === 'function') {
       // @ts-ignore
       return field(row);
@@ -95,7 +98,9 @@ export class IxTableComponent<T = any> implements AfterContentInit {
     if (typeof col.field === 'string') {
       // @ts-ignore
       const path = col.field;
+      // @ts-ignore
       const dotIndex = path.indexOf('.');
+      // @ts-ignore
       return dotIndex === -1 ? path : path.substring(0, dotIndex);
     }
 

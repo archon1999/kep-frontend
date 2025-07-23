@@ -402,6 +402,7 @@ export const localeEn = {
   ChallengeQuestionWrong: 'Wrong',
   FullName: 'Full name',
   SkillsRating: 'Skills rating',
+  Skills: 'Skills',
   ActivityRating: 'Activity rating',
   Name: 'Name',
   Country: 'Country',

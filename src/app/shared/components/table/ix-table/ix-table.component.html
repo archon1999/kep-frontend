@@ -1,27 +1,26 @@
-<div class="table-responsive">
-  <table class="table text-nowrap table-hover">
+<div class="table-responsive beautiful-table">
+  <table class="table">
     <thead>
     <tr>
-      <th>
-        <div class="form-check form-check-md d-flex align-items-center">
-          <input class="form-check-input cursor-pointer" type="checkbox">
-        </div>
-      </th>
       @for (column of columns; track $index) {
         <th
           (click)="sort(column)"
-          [class.cursor-pointer]="column.sortable">
-          <kep-icon *ngIf="column.icon" [name]="column.icon"/>
-          {{ column.header }}
-          @if (column.sortable) {
-            @if (ordering === getOrderingKey(column)) {
-              <keen-icon name="up"/>
-            } @else if (ordering === '-' + getOrderingKey(column)) {
-              <keen-icon name="down"/>
-            } @else {
-              <keen-icon name="up-down"/>
+          [class.cursor-pointer]="column.sortable"
+          [style.text-align]="column.align"
+        >
+          <div class="d-flex align-items-center">
+            <kep-icon *ngIf="column.icon" [name]="column.icon"/>
+            <div class="header-title">{{ column.header | translate }}</div>
+            @if (column.sortable) {
+              @if (ordering === getOrderingKey(column)) {
+                <kep-icon name="up"/>
+              } @else if (ordering === '-' + getOrderingKey(column)) {
+                <kep-icon name="down"/>
+              } @else {
+                <!--              <kep-icon name="up-down"/>-->
+              }
             }
-          }
+          </div>
         </th>
       }
     </tr>
@@ -31,11 +30,6 @@
       @if (!isLoading) {
         @for (row of data; track $index) {
           <tr>
-            <td>
-              <div class="form-check form-check-md d-flex align-items-center">
-                <input class="form-check-input cursor-pointer" type="checkbox">
-              </div>
-            </td>
             @for (column of columns; track $index) {
               @if (column.field === 'id') {
                 <td
@@ -43,7 +37,9 @@
                   {{ row['id'] }}
                 </td>
               } @else {
-                <td>
+                <td
+                  [style.text-align]="column.align"
+                >
                   @if (tplFor(tplKey(column))) {
                     <ng-container
                       [ngTemplateOutletContext]="{ $implicit: getCellValue(row, column) }"
@@ -59,7 +55,7 @@
         } @empty {
           <tr>
             <td
-              [attr.colspan]="columns.length + 1"
+              [attr.colspan]="columns.length"
               class="py-6 text-center text-sm">
               No data
             </td>
@@ -72,8 +68,8 @@
               <td>
                 <ngx-skeleton-loader
                   [count]="1"
-                  [theme]="{'margin-bottom': '0', 'height': '15px', 'width': '80%', 'background': 'var(--skeleton-color)'}"
-                  animation="true"
+                  [theme]="{'margin-bottom': '10px', 'height': '15px', 'width': '80%', 'background': 'var(--skeleton-color)'}"
+                  animation="pulse"
                   appearance="line">
                 </ngx-skeleton-loader>
               </td>
@@ -111,16 +107,16 @@
     [rotate]="true"
     class="pagination-primary">
     <ng-template ngbPaginationFirst>
-      <keen-icon class="" name="double-left" type="duotone"/>
+      <kep-icon class="" name="double-left" type="duotone"/>
     </ng-template>
     <ng-template ngbPaginationPrevious>
-      <keen-icon class="" name="left" type="duotone"/>
+      <kep-icon class="" name="left" type="duotone"/>
     </ng-template>
     <ng-template ngbPaginationNext>
-      <keen-icon class="" name="right" type="duotone"/>
+      <kep-icon class="" name="right" type="duotone"/>
     </ng-template>
     <ng-template ngbPaginationLast>
-      <keen-icon class="" name="double-right" type="duotone"/>
+      <kep-icon class="" name="double-right" type="duotone"/>
     </ng-template>
   </ngb-pagination>
 

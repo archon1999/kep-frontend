@@ -8,13 +8,15 @@ import { IxTableComponent } from '@shared/components/table/ix-table/ix-table.com
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgIf } from '@angular/common';
 import { BaseComponent } from "@core/common";
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'ix-api-table',
   imports: [
     IxTableComponent,
     TranslatePipe,
-    NgIf
+    NgIf,
+    KepCardComponent
   ],
   templateUrl: './ix-api-table.component.html',
   standalone: true,
@@ -25,6 +27,7 @@ export class IxApiTableComponent<T = any> extends WithDestroyMixin(BaseComponent
   @Input({required: true}) fetchPage!: (p: PageParams) => Observable<PageResult<T>>;
   @Input({required: true}) title: string;
   @Input() params: PageParams = {};
+  @Input() pageOptions: number[] = [10, 20, 50];
 
   protected pageNumber = 1;
   protected pageSize = 10;
@@ -47,7 +50,10 @@ export class IxApiTableComponent<T = any> extends WithDestroyMixin(BaseComponent
   }
 
   ngOnInit() {
-    this.load(this.paginationParams);
+    if (this.params.ordering) this.ordering = this.params.ordering;
+    if (this.params.pageSize) this.pageSize = this.params.pageSize;
+    if (this.params.page) this.pageNumber = this.params.page;
+    this.load({ ...this.params, ...this.paginationParams });
   }
 
   load(params: PageParams) {
