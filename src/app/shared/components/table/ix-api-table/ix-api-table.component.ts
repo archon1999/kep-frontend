@@ -8,13 +8,15 @@ import { IxTableComponent } from '@shared/components/table/ix-table/ix-table.com
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgIf } from '@angular/common';
 import { BaseComponent } from "@core/common";
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'ix-api-table',
   imports: [
     IxTableComponent,
     TranslatePipe,
-    NgIf
+    NgIf,
+    KepCardComponent
   ],
   templateUrl: './ix-api-table.component.html',
   standalone: true,

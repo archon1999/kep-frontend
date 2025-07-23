@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { debounceTime } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgxCountriesService } from '@shared/third-part-modules/ngx-countries/ngx-countries.service';
@@ -12,9 +12,11 @@ import { BasePageComponent } from '@core/common/classes/base-page.component';
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { User, UsersApiService } from "@app/modules/users";
 import { initialState } from "@core/config/initial-state";
-import { IxApiTableComponent, ColumnConfig, CellTemplateDirective, PageParams } from '@shared/components/table';
+import { CellTemplateDirective, ColumnConfig, IxApiTableComponent, PageParams } from '@shared/components/table';
 import { KepStreakComponent } from "@shared/components/kep-streak/kep-streak.component";
-import { ChallengesRankBadgeComponent } from "@challenges/components/challenges-user-view/challenges-rank-badge/challenges-rank-badge.component";
+import {
+  ChallengesRankBadgeComponent
+} from "@challenges/components/challenges-user-view/challenges-rank-badge/challenges-rank-badge.component";
 
 @Component({
   selector: 'page-users-list',
@@ -32,25 +34,79 @@ import { ChallengesRankBadgeComponent } from "@challenges/components/challenges-
     CellTemplateDirective,
     KepStreakComponent,
     ChallengesRankBadgeComponent,
-
-  ]
+  ],
+  encapsulation: ViewEncapsulation.None,
 })
 export class UsersListPage extends BasePageComponent {
   @ViewChild(IxApiTableComponent) table!: IxApiTableComponent<User>;
 
-  columns: ColumnConfig<User>[] = [
-    { field: (u: User) => u, header: 'User', key: 'user', icon: 'user', sortable: true, orderingKey: 'id' },
-    { field: (u: User) => u, header: 'FullName', key: 'fullName', icon: 'username', sortable: true, orderingKey: 'first_name' },
-    { field: (u: User) => u.skillsRating, header: 'Rating', key: 'skillsRating', icon: 'rating', sortable: true, orderingKey: 'skills_rating' },
-    { field: (u: User) => u.activityRating, header: 'ActivityRating', key: 'activityRating', icon: 'rating', sortable: true, orderingKey: 'activity_rating' },
-    { field: (u: User) => u.contestsRating, header: 'Contests', key: 'contestsRating', icon: 'contest', sortable: true, orderingKey: 'contests_rating__rating' },
-    { field: (u: User) => u.challengesRating, header: 'Challenges', key: 'challengesRating', icon: 'challenge', sortable: true, orderingKey: 'challenges_rating__rating' },
-    { field: (u: User) => u, header: 'Streak', key: 'streak', icon: 'streak', sortable: true, orderingKey: 'streak' },
-    { field: 'kepcoin', header: 'Kepcoin', icon: 'dollar', sortable: true, orderingKey: 'kepcoin' },
-    { field: 'lastSeen', header: 'LastSeen', icon: 'time', sortable: true, orderingKey: 'last_seen' },
+  public columns: ColumnConfig<User>[] = [
+    {
+      field: (u: User) => u,
+      header: 'User',
+      key: 'user',
+      icon: 'user',
+      sortable: true,
+      orderingKey: 'id',
+    },
+    {
+      field: 'skillsRating',
+      header: 'Skills',
+      icon: 'rating',
+      sortable: true,
+      orderingKey: 'skills_rating',
+      align: 'center'
+    },
+    {
+      field: 'activityRating',
+      header: 'Activity',
+      icon: 'rating',
+      sortable: true,
+      orderingKey: 'activity_rating',
+      align: 'center'
+    },
+    {
+      field: 'contestsRating',
+      header: 'Contests',
+      icon: 'contest',
+      sortable: true,
+      orderingKey: 'contests_rating__rating',
+      align: 'center'
+    },
+    {
+      field: 'challengesRating',
+      header: 'Challenges',
+      icon: 'challenge',
+      sortable: true,
+      orderingKey: 'challenges_rating__rating',
+      align: 'center'
+    },
+    {
+      field: (u: User) => u,
+      key: 'streak',
+      header: 'Streak',
+      icon: 'streak',
+      sortable: true,
+      orderingKey: 'streak',
+      align: 'center'
+    },
+    {
+      field: 'kepcoin',
+      header: 'Kepcoin',
+      icon: 'dollar',
+      sortable: true,
+      orderingKey: 'kepcoin',
+      align: 'center',
+    },
+    {
+      field: 'lastSeen',
+      header: 'LastSeen',
+      icon: 'time',
+      sortable: true,
+      orderingKey: 'last_seen',
+      align: 'center',
+    },
   ];
-
-  pageOptions = [10, 20, 50];
 
   public filterForm = new FormGroup({
     country: new FormControl(''),
@@ -82,7 +138,7 @@ export class UsersListPage extends BasePageComponent {
     });
 
     this.filterForm.valueChanges.pipe(debounceTime(1000)).subscribe(() => {
-      this.table.load({ page: 1 });
+      this.table.load({page: 1});
     });
   }
 

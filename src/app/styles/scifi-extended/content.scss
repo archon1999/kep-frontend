@@ -129,6 +129,10 @@ html[data-theme-mode="light"] {
   span.bg-primary, .bg-primary, .text-bg-primary, .btn-primary, .tooltip-inner {
     color: white !important;
   }
+
+  .ng-select .ng-arrow-wrapper .ng-arrow {
+    border-color: #000000 transparent transparent !important;
+  }
 }
 
 html {

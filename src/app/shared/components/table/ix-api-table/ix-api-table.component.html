@@ -1,12 +1,11 @@
-<div class="card custom-card">
-  <div class="card-header d-flex justify-content-between align-items-center">
+<kep-card>
+  <div class="card-header mb-3 d-flex justify-content-between align-items-center">
     <div class="card-title">
       {{ title | translate }}
       <span *ngIf="total" class="total-count">({{ total }})</span>
     </div>
     <div class="btn-list">
-      <ng-content select="[addAction]"></ng-content>
-      <ng-content select="[massAction]"></ng-content>
+      <ng-content select="[actions]"></ng-content>
     </div>
   </div>
 
@@ -14,18 +13,18 @@
 
   <div class="card-body">
     <div class="d-flex justify-content-between align-items-center gap-4">
-      <div class="search position-relative" style="width: 300px;">
-        <input
-          class="header-search-bar form-control search-sidebar bg-light-transparent"
-          placeholder="Search for Products..."
-          spellcheck=false
-          type="text"
-        >
+<!--      <div class="search position-relative" style="width: 300px;">-->
+<!--        <input-->
+<!--          class="header-search-bar form-control search-sidebar bg-light-transparent"-->
+<!--          placeholder="Search for Products..."-->
+<!--          spellcheck=false-->
+<!--          type="text"-->
+<!--        >-->
 
-        <a class="header-search-icon border-0 " href="javascript:void(0);">
-          <i class="bi bi-search"></i>
-        </a>
-      </div>
+<!--        <a class="header-search-icon border-0 " href="javascript:void(0);">-->
+<!--          <i class="bi bi-search"></i>-->
+<!--        </a>-->
+<!--      </div>-->
 
       <ng-content select="[filter]"></ng-content>
     </div>
@@ -48,4 +47,4 @@
   >
     <ng-content></ng-content>
   </ix-table>
-</div>
+</kep-card>
