@@ -7,9 +7,6 @@
   justify-content: center;
   align-items: center;
 
-  // Variables
-  $lato: 'Comfortaa';
-
 
   // Countdown
   .countdown {
@@ -33,7 +30,7 @@
     .count-title {
       display: block;
       margin-bottom: 15px;
-      font: normal 0.94em $lato;
+      font: normal 0.94em var(--default-font-family);
       color: #1a1a1a;
       text-transform: uppercase;
     }
@@ -68,12 +65,12 @@
         left: 0;
         right: 0;
         margin: auto;
-        font: normal 5.94em/107px $lato;
+        font: normal 5.94em/107px var(--default-font-family);
         font-weight: 700;
         color: var(--bg);
 
         @include media-breakpoint-down(md) {
-          font: normal 4em/107px $lato;
+          font: normal 4em/107px var(--default-font-family);
         }
 
         @include dark-layout {
