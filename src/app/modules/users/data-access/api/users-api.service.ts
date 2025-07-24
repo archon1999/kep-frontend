@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '@core/data-access/api.service';
 import { Pageable } from '@core/common/classes/pageable';
+import { Observable } from "rxjs";
+import { PageResult } from "@shared/components/table";
+import { User } from "@users/domain";
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +11,7 @@ import { Pageable } from '@core/common/classes/pageable';
 export class UsersApiService {
   constructor(private api: ApiService) {}
 
-  getUsers(params: Partial<Pageable> & any) {
+  getUsers(params: Partial<Pageable> & any): Observable<PageResult<User>> {
     return this.api.get('users', params);
   }
 

@@ -6,7 +6,6 @@ import { CellTemplateDirective } from '../cell-template.directive';
 import { WithDestroyMixin } from '@core/mixins';
 import { IxTableComponent } from '@shared/components/table/ix-table/ix-table.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { NgIf } from '@angular/common';
 import { BaseComponent } from "@core/common";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
@@ -15,7 +14,6 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
   imports: [
     IxTableComponent,
     TranslatePipe,
-    NgIf,
     KepCardComponent
   ],
   templateUrl: './ix-api-table.component.html',
