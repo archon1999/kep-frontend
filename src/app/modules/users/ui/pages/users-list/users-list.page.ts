@@ -1,5 +1,5 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, first, map } from 'rxjs/operators';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgxCountriesService } from '@shared/third-part-modules/ngx-countries/ngx-countries.service';
 import { CoreCommonModule } from '@core/common.module';
@@ -17,6 +17,7 @@ import { KepStreakComponent } from "@shared/components/kep-streak/kep-streak.com
 import {
   ChallengesRankBadgeComponent
 } from "@challenges/components/challenges-user-view/challenges-rank-badge/challenges-rank-badge.component";
+import { ThemeMode } from "@core/services/app-state.service";
 
 @Component({
   selector: 'page-users-list',
@@ -124,6 +125,13 @@ export class UsersListPage extends BasePageComponent {
     firstName: new FormControl(''),
   });
 
+  public theme: ThemeMode;
+  public themeModeChanged = 0;
+  public firstLoad = true;
+  public params = {};
+  public firstName = '';
+  public lastChanged = Date.now();
+
   public countries: Array<{ id: string; name: string }> = [];
 
   constructor(
@@ -131,6 +139,19 @@ export class UsersListPage extends BasePageComponent {
     public countriesService: NgxCountriesService,
   ) {
     super();
+    this.theme = this.appStateService.getCurrentValue().themeMode;
+    this.appStateService.state$.subscribe(
+      (state) => {
+        if (state.themeMode != this.theme) {
+          this.theme = state.themeMode;
+          this.themeModeChanged++;
+        }
+      }
+    )
+    this.firstName = this._queryParams['firstName'] || '';
+    this.params = {
+      ordering: this._queryParams.ordering,
+    };
   }
 
   ngOnInit(): void {
@@ -144,18 +165,63 @@ export class UsersListPage extends BasePageComponent {
         });
       }
     });
-
-    this.filterForm.valueChanges.pipe(debounceTime(1000)).subscribe(() => {
-      this.table.load({page: 1});
+    this.filterForm.patchValue({
+      ...this._queryParams,
+      ageTo: null,
     });
+    for (let key of Object.keys(this.filterForm.controls)) {
+      if (key == 'firstName') {
+        this.filterForm.get(key).valueChanges.subscribe((firstName) => {
+          if (Date.now() - this.lastChanged < 500 && firstName.length < this.firstName.length) {
+
+          } else {
+            this.firstName = firstName;
+          }
+          this.lastChanged = Date.now();
+        });
+      }
+      this.filterForm.get(key).valueChanges.pipe(debounceTime(2000)).subscribe((value) => {
+        this.table.load({
+          page: 1,
+          [key]: value,
+        });
+      });
+    }
   }
 
-  fetchPage = (params: PageParams) =>
-    this.service.getUsers({
+  fetchPage = (params: PageParams) => {
+    if (this.firstLoad) {
+      this.firstLoad = false;
+      params = {
+        ...params,
+        ...this._queryParams,
+      }
+    }
+    if (params.pageSize == 50 && params.page > 1) {
+      params.pageSize = 10;
+    }
+    if (params.ordering === '-id') {
+      params.ordering = 'username';
+    }
+    console.log(this.firstName);
+    this.updateQueryParams(params);
+    return this.service.getUsers({
       full: true,
       ...params,
       ...this.filterForm.value,
-    });
+      firstName: this.firstName,
+    }).pipe(
+      map(pageResult => {
+        pageResult.data = pageResult.data.map(
+          (row) => {
+            row.lastSeen = row.lastSeen.replace('daqiqa', 'minutes');
+            return row;
+          }
+        )
+        return pageResult;
+      })
+    );
+  }
 
   protected getContentHeader(): ContentHeader {
     return {

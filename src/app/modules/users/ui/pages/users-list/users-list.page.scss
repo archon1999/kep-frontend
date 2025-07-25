@@ -1,5 +1,11 @@
-page-users-list ix-table {
-  .header-title {
-    white-space: nowrap;
+page-users-list {
+  ix-table {
+    .header-title {
+      white-space: nowrap;
+    }
+  }
+
+  .country-hide .ng-option-label {
+    color: transparent !important;
   }
 }
