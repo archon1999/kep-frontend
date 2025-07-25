@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, ViewChild, inject, Input, OnInit, Output } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { CoreCommonModule } from '@core/common.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
@@ -28,6 +28,7 @@ export class ProjectSidebarComponent implements OnInit {
 
   public selectedTechnology: string;
   public fileToUpload: File | null = null;
+  @ViewChild('fileInput') fileInputRef: ElementRef<HTMLInputElement>;
 
   protected readonly toastr = inject(ToastrService);
   protected readonly projectsRepository = inject(ProjectsRepository);
@@ -61,6 +62,7 @@ export class ProjectSidebarComponent implements OnInit {
     submit$.subscribe(() => {
       this.submitEvent.emit();
       this.toastr.success('Submitted');
+      this.fileInputRef.nativeElement.value = '';
     });
   }
 }
