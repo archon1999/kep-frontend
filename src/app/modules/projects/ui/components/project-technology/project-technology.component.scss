@@ -1,10 +1,10 @@
-@import '../../../../../styles/kep-imports';
+@import 'styles/kep-imports';
 
 .project-technology {
   margin-left: 0.25rem;
   font-size: 0.8rem;
   color: #fff;
-  border-radius: 10px;
+  border-radius: 2px;
   padding: .3rem .6rem;
 }
 
@@ -69,5 +69,17 @@
 
   &:hover {
     box-shadow: 0px 0px 5px #b124f3;
+  }
+}
+
+.technology-Text {
+  background: linear-gradient(45deg, #d1d5d8, #fafbfc);
+
+  @include dark-layout {
+    background: linear-gradient(45deg, #7a7d7f, #a1a3a5);
+  }
+
+  &:hover {
+    box-shadow: 0px 0px 5px #d1d5d8;
   }
 }
