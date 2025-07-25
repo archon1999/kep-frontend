@@ -20,7 +20,7 @@
     <div class="mb-1">
       <label><strong>{{ 'File' | translate }}:</strong></label>
       <div class="custom-file">
-        <input (change)="handleFileInput($event.target.files)" accept=".txt" class="form-control" id="customFile"
+        <input #fileInput (change)="handleFileInput($event.target.files)" accept=".txt" class="form-control" id="customFile"
                type="file"/>
         <label class="form-label" for="customFile">
           {{ this.fileToUpload?.name || 'Max size 1mb' }}
