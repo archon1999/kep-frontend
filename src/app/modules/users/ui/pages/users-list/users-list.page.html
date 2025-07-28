@@ -4,8 +4,7 @@
     <ix-api-table
       #table
       [columns]="columns"
-      [params]="params"
-      [fetchPage]="fetchPage.bind(this)"
+      [fetchPage]="fetchPage"
       [title]="'MENU.USERS'"
     >
       <div filter [formGroup]="filterForm" class="row m-0 w-100">
@@ -17,9 +16,9 @@
           <label>{{ 'Name' | translate }}</label>
           <input class="form-control" formControlName="firstName" type="text">
         </div>
-        <div class="col-6 col-md-3" [class.country-hide]="themeModeChanged > 1">
+        <div class="col-6 col-md-3">
           <label>{{ 'Country' | translate }}</label>
-          <ng-select [clearable]="false" formControlName="country">
+          <ng-select [clearable]="false" appendTo="body" formControlName="country">
             <ng-option [value]="''">-</ng-option>
             @for (country of countries; track country) {
               <ng-option [value]="country.id.toLowerCase()">

@@ -41,11 +41,7 @@
           </div>
           @for (menuItem of menu[3].children; track menuItem.id) {
             <div class="mt-1">
-              @if (menuItem.id == 'hackathons') {
-                <a class="text-dark" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">{{ menuItem.title | translate }}</a>
-              } @else {
-                <a class="text-dark" [routerLink]="menuItem.path">{{ menuItem.title | translate }}</a>
-              }
+              <a class="text-dark" [routerLink]="menuItem.path">{{ menuItem.title | translate }}</a>
             </div>
           }
         </div>

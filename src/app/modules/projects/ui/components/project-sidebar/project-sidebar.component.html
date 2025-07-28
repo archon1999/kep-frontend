@@ -20,7 +20,7 @@
     <div class="mb-1">
       <label><strong>{{ 'File' | translate }}:</strong></label>
       <div class="custom-file">
-        <input #fileInput (change)="handleFileInput($event.target.files)" accept=".txt" class="form-control" id="customFile"
+        <input (change)="handleFileInput($event.target.files)" accept=".zip" class="form-control" id="customFile"
                type="file"/>
         <label class="form-label" for="customFile">
           {{ this.fileToUpload?.name || 'Max size 1mb' }}
@@ -29,7 +29,7 @@
     </div>
   </div>
   <div class="card-footer text-center">
-    <button [disabled]="!fileToUpload" (click)="submit()" class="btn full-width btn-sm btn-primary">
+    <button (click)="submit()" [disabled]="!fileToUpload" class="btn full-width btn-sm btn-primary">
       {{ 'Submit' | translate }}
     </button>
   </div>
