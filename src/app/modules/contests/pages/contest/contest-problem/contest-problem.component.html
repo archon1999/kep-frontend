@@ -118,7 +118,7 @@
             </a>
           }
 
-          <kep-card>
+          <kep-card *ngIf="contest?.userInfo?.isRegistered">
             <div class="card-header">
               <div class="card-title">
                 {{ 'Submit' | translate }}
