@@ -12,9 +12,9 @@
         <th ngbTooltip="{{ 'RatingChange' | translate }}" container="body" class="text-center">
           <i [data-feather]="'delta' | iconName"></i>
         </th>
+        <th class="text-center">{{ 'CONTESTS.PERFOMANCE' | translate }}</th>
       }
 
-      <th class="text-center">{{ 'CONTESTS.PERFOMANCE' | translate }}</th>
       @for (contestProblem of contestProblems; track contestProblem) {
         <th class="text-center" style="white-space: nowrap;">
           <a
@@ -66,20 +66,20 @@
           <td class="text-center">
             <kep-delta [value]="contestant.delta"/>
           </td>
+          <td class="text-center" style="white-space: nowrap;">
+            <contests-rating-image
+              [title]="contestant.perfomanceTitle"
+              [class]="'me-1'"/>
+            <span class="text-dark me-1">
+              @if (contestant.perfomance >= 3400) {
+                <span>∞</span>
+              }
+              @if (contestant.perfomance < 3400) {
+                <span>{{ contestant.perfomance }}</span>
+              }
+            </span>
+          </td>
         }
-        <td class="text-center" style="white-space: nowrap;">
-          <contests-rating-image
-            [title]="contestant.perfomanceTitle"
-            [class]="'me-1'"/>
-          <span class="text-dark me-1">
-            @if (contestant.perfomance >= 3400) {
-              <span>∞</span>
-            }
-            @if (contestant.perfomance < 3400) {
-              <span>{{ contestant.perfomance }}</span>
-            }
-          </span>
-        </td>
         @for (contestProblem of contestProblems; track contestProblem) {
           <td class="text-center">
             <ng-template
@@ -109,8 +109,8 @@
         <th class="text-center">
           <i [data-feather]="'delta' | iconName"></i>
         </th>
+        <th class="text-center">{{ 'CONTESTS.PERFOMANCE' | translate }}</th>
       }
-      <th class="text-center">{{ 'CONTESTS.PERFOMANCE' | translate }}</th>
       @for (contestProblem of contestProblems; track contestProblem) {
         <th class="text-dark text-center">
           {{ contestProblem.symbol }}

@@ -75,37 +75,29 @@ export class ContestProblemInfo {
       if (this.solved()) {
         let badgeClass: string;
         if (this.theBest) {
-          badgeClass = 'badge problem-points the-best';
+          badgeClass = 'badge bg-primary the-best';
         } else {
-          badgeClass = 'badge problem-points';
+          badgeClass = 'badge bg-primary';
         }
         html += `<span class="${badgeClass}">`;
-        html += '<b class="text-dark">';
+        html += '<b>';
         html += this.points;
         html += '</b>';
         html += '<br>';
-        html += '<span class="contest-time-sm">';
+        html += '<div class="mt-1 contest-time-sm">';
         html += this.contestTime;
-        html += '</span>';
+        html += '</div>';
         html += '</span>';
       } else {
         if (this.points > 0) {
-          const badgeClass = 'badge bg-dark-transparent';
+          const badgeClass = 'badge bg-warning';
           html += `<span class="${badgeClass}">`;
           html += this.points;
           html += '</span>';
         } else {
-          let badgeClass: string;
-          if (this.attemptsCount > 0) {
-            badgeClass = 'badge bg-danger-transparent';
-          } else {
-            badgeClass = 'badge bg-warning-transparent';
-          }
+          const badgeClass = 'badge bg-danger';
           html += `<span class="${badgeClass}">`;
-          html += '-';
-          if (this.attemptsCount > 0) {
-            html += this.attemptsCount;
-          }
+          html += this.points;
           html += '</span>';
         }
       }

@@ -72,12 +72,12 @@
 
                 <p class="text-center mb-1">
                   {{ 'TIME_LIMIT' | translate }}:
-                  {{ selectedAvailableLang.timeLimit || problem.timeLimit }} {{ 'MS' | translate }}
+                  {{ selectedAvailableLang?.timeLimit || problem.timeLimit }} {{ 'MS' | translate }}
                 </p>
 
                 <p class="text-center mb-2">
                   {{ 'MEMORY_LIMIT' | translate }}
-                  {{ selectedAvailableLang.memoryLimit || problem.memoryLimit }} {{ 'MB' | translate }}
+                  {{ selectedAvailableLang?.memoryLimit || problem.memoryLimit }} {{ 'MB' | translate }}
                 </p>
                 <problem-body [problem]="problem"></problem-body>
               </div>

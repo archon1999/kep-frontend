@@ -210,9 +210,9 @@ $revo-color: #0048dd;
 // Uzinfocom
 @include define-contest-colors(
   $selector: '&[class*="Uzinfocom"]',
-  $color: #186fb6d0,
+  $color: rgba(28, 112, 184, 0.82),
   $color-dark: #1870b6,
-  $background-light: linear-gradient(45deg, #005ea2bb, rgba(24, 111, 182, 0.623)),
+  $background-light: linear-gradient(45deg, rgba(0, 94, 162, 0.4), rgba(24, 111, 182, 0.39)),
   $background-dark: linear-gradient(45deg, #042c4bde, #005ea2c9),
 );
 

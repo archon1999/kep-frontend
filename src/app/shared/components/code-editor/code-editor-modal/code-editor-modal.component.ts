@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { TranslateService } from '@ngx-translate/core';
+import { Language, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'app/modules/problems/services/language.service';
 import { TemplateCodeService } from 'app/shared/services/template-code.service';
 import { ToastrService } from 'ngx-toastr';
@@ -15,6 +15,7 @@ import { SwipeService } from '@shared/services/swipe.service';
 import { AuthService } from '@auth';
 import { paramsMapper } from '@shared/utils';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { findAvailableLang } from "@problems/utils";
 
 interface CheckSamplesResultOne {
   verdict: number;
@@ -148,8 +149,11 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   init() {
-    const editorLang = this.editorForm.get('lang').value;
-    const code = this.templateCodeService.get(this.uniqueName, editorLang) || this.availableLanguages[0].codeTemplate;
+    const editorLang = this.editorForm.get('lang').value as AttemptLangs;
+    console.log(editorLang)
+    const code = this.templateCodeService.get(this.uniqueName, editorLang)
+      || findAvailableLang(this.availableLanguages, editorLang)?.codeTemplate
+      || this.availableLanguages[0].codeTemplate;
     this.editorForm.get('code').setValue(code);
     this.onSampleTestChange();
   }

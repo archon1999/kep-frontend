@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, inject, Input, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { NgbModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from '@core/data-access/api.service';
 import { AuthService, AuthUser } from '@auth';
@@ -23,6 +23,7 @@ import { NewFeatureDirective } from '@shared/directives/new-feature.directive';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 import { Team } from "@users/domain";
+import { BaseComponent } from "@core/common";
 
 @Component({
   selector: 'contest-card',
@@ -45,7 +46,7 @@ import { Team } from "@users/domain";
     KepCardComponent,
   ]
 })
-export class ContestCardComponent implements OnInit {
+export class ContestCardComponent extends BaseComponent implements OnInit {
 
   @Input() contest: Contest;
   @ViewChild('registrationModal') public registrationModalRef: TemplateRef<any>;
@@ -54,27 +55,13 @@ export class ContestCardComponent implements OnInit {
   public teamId: number;
   public routerLink: string | Array<string | number>;
 
-  public currentUser: AuthUser | null;
-
-  constructor(
-    public api: ApiService,
-    public modalService: NgbModal,
-    public authService: AuthService,
-    public service: ContestsService,
-    public router: Router,
-  ) { }
+  protected service = inject(ContestsService);
 
   ngOnInit(): void {
     this.routerLink = ['/competitions', 'contests', 'contest', this.contest.id];
     if (this.router.url.endsWith(this.contest.id.toString())) {
       this.routerLink.push('problems');
     }
-
-    this.authService.currentUser.subscribe(
-      (user: any) => {
-        this.currentUser = user;
-      }
-    );
   }
 
   openRegistrationModal() {
@@ -82,6 +69,7 @@ export class ContestCardComponent implements OnInit {
       this.service.contestRegistration(this.contest.id).subscribe((result: any) => {
         if (result.success) {
           this.contest.userInfo.isRegistered = true;
+          this.cdr.detectChanges();
         }
       });
     } else {
@@ -105,6 +93,7 @@ export class ContestCardComponent implements OnInit {
       if (result.success) {
         this.modalService.dismissAll();
         this.contest.userInfo.isRegistered = true;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -115,6 +104,7 @@ export class ContestCardComponent implements OnInit {
         (result) => {
           if (result.success) {
             this.contest.userInfo.isRegistered = false;
+            this.cdr.detectChanges();
           }
         }
       );

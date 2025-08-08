@@ -3,7 +3,7 @@ import { Problem } from '@problems/models/problems.models';
 import { TemplateCodeService } from '@shared/services/template-code.service';
 import { AttemptLangs } from '@problems/constants';
 import { CoreCommonModule } from '@core/common.module';
-import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
+import { MonacoEditorComponent } from "@shared/third-part-modules/monaco-editor/monaco-editor.component";
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -27,7 +27,8 @@ export class HtmlProblemBodyComponent implements OnInit {
 
   constructor(
     public templateCodeService: TemplateCodeService,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.uniqueName = `problem-${this.problem.id}`;

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { initialState } from "@core/config/initial-state";
 
 export type Direction = 'ltr' | 'rtl';
@@ -50,12 +50,21 @@ export class AppStateService {
   private readonly localStorageKey = 'kep-config';
   private initialState: StateType = initialState;
 
-  private stateSubject = new BehaviorSubject<StateType>(this.initialState);
+  private stateSubject = new ReplaySubject<StateType>(1);
   public state$ = this.stateSubject.asObservable();
+
+  private stateCurrentValue = initialState;
 
   constructor() {
     const storedState = this.getInitialStateFromLocalStorage();
+    this.stateSubject.next(this.initialState);
     this.initializeState(storedState);
+
+    this.stateSubject.subscribe(
+      (state) => {
+        this.stateCurrentValue = state;
+      }
+    )
   }
 
   private get html(): HTMLElement {
@@ -63,7 +72,7 @@ export class AppStateService {
   }
 
   public updateState(newState?: Partial<StateType>): void {
-    const currentState = this.stateSubject.getValue();
+    const currentState = this.getCurrentValue();
     const updatedState: StateType = {...currentState, ...newState};
     this.updateStateAndEmit(updatedState);
   }
@@ -128,7 +137,7 @@ export class AppStateService {
   }
 
   public getCurrentValue() {
-    return this.stateSubject.getValue();
+    return this.stateCurrentValue;
   }
 
   private getInitialStateFromLocalStorage(): StateType {
