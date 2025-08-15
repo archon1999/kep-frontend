@@ -16,10 +16,20 @@ hackathon-card {
   }
 
   .card.custom-card {
-    background: linear-gradient(to right, rgba(243, 17, 75, 0.1), rgba(140, 24, 243, 0.1)) !important;
-
-    @include dark-layout {
+    &.hackathon-1, &.hackathon-2 {
       background: linear-gradient(to right, rgba(243, 17, 75, 0.1), rgba(140, 24, 243, 0.1)) !important;
+
+      @include dark-layout {
+        background: linear-gradient(to right, rgba(243, 17, 75, 0.1), rgba(140, 24, 243, 0.1)) !important;
+      }
+    }
+
+    &.hackathon-3 {
+      background: rgba(#67dd9f, 0.2) !important;
+
+      @include dark-layout {
+        background: rgba(#67dd9f, 0.25) !important;
+      }
     }
   }
 }

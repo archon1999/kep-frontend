@@ -1,5 +1,5 @@
 <a [routerLink]="[Resources.Hackathon | resourceById:hackathon.id]">
-  <kep-card>
+  <kep-card [customClass]="'hackathon-' + hackathon.id">
     <div class="card-bg" style="background-image: url('{{ hackathon.logo }}');">
     </div>
 
