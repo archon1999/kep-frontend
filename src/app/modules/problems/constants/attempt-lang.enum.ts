@@ -15,4 +15,5 @@ export enum AttemptLangs {
   CSHARP = 'cs',
   JAVA = 'java',
   RUST = 'rs',
+  TS = 'ts',
 }

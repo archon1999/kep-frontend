@@ -6,6 +6,7 @@ export function getEditorLang(lang: string) {
     [AttemptLangs.KOTLIN]: 'kotlin',
     [AttemptLangs.CSHARP]: 'csharp',
     [AttemptLangs.JS]: 'javascript',
+    [AttemptLangs.TS]: 'typescript',
     [AttemptLangs.RUST]: 'rust',
   }[lang] || lang;
 }
