@@ -22,6 +22,7 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { environment } from '../environments/environment';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppStateService } from '@core/services/app-state.service';
+import { FlatpickrI18nService } from '@core/services/flatpickr-i18n.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { provideHttpClient } from '@angular/common/http';
 import { WebsocketModule } from '@shared/services/websocket';
@@ -69,6 +70,7 @@ export const appConfig: ApplicationConfig = {
       closeButton: true,
     }),
     provideAppInitializer(() => inject(AuthService).getMe()),
+    provideAppInitializer(() => inject(FlatpickrI18nService)),
     { provide: APP_BASE_HREF, useValue: '/' },
     {
       provide: TitleStrategy,
