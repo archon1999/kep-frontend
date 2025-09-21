@@ -43,6 +43,7 @@ export const localeRu = {
   ADVANCED: 'Продвинутый',
   EXTREMAL: 'Сложнейший',
   TITLE: 'Название',
+  PROBLEMS_SEARCH_PLACEHOLDER: 'Поиск по номеру или названию задачи',
   TAGS: 'Теги',
   DIFFICULTY: 'Сложность',
   RATING: 'Рейтинг',

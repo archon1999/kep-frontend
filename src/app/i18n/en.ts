@@ -52,6 +52,7 @@ export const localeEn = {
   ADVANCED: 'Advanced',
   EXTREMAL: 'Extremal',
   TITLE: 'Title',
+  PROBLEMS_SEARCH_PLACEHOLDER: 'Search by problem number or title',
   TAGS: 'Tags',
   VERDICT: 'Verdict',
   DIFFICULTY: 'Difficulty',

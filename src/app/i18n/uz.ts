@@ -43,6 +43,7 @@ export const localeUz = {
   ADVANCED: 'Ilgʻor',
   EXTREMAL: 'Juda qiyin',
   TITLE: 'Nomi',
+  PROBLEMS_SEARCH_PLACEHOLDER: 'Masala raqami yoki nomi bo‘yicha qidirish',
   TAGS: 'Teglar',
   DIFFICULTY: 'Qiyinchligi',
   RATING: 'Reyting',
