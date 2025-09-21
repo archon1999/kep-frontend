@@ -1,34 +1,15 @@
 @import 'styles/kep-imports';
 
 contests-section-categories {
-  .contest-category-card {
-    margin-bottom: 1rem;
-    cursor: pointer;
+  display: block;
+  width: 100%;
 
-    &:hover {
-      transition: 0.2s ease-in;
-      transform: scale(1.05);
-    }
+  .categories-select {
+    width: 100%;
+  }
 
-    .card-header {
-      flex-wrap: nowrap !important;
-
-      .card-title {
-        font-size: 1.1rem !important;
-        word-break: break-all;
-      }
-    }
-
-    &.active {
-      background-color: rgba(var(--primary-rgb), 0.05) !important;
-
-      @include dark-layout {
-        background-color: rgba(var(--primary-rgb), 0.4) !important;
-      }
-    }
-
-    .category-icon {
-      filter: drop-shadow(0 0 5px var(--primary-color));
-    }
+  ngx-skeleton-loader,
+  .ng-select {
+    width: 100%;
   }
 }

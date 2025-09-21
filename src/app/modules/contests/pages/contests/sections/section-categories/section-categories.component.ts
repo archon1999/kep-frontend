@@ -1,12 +1,13 @@
 import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ContestsService } from '@contests/contests.service';
 import { BaseLoadComponent } from '@core/common/classes/base-load.component';
 import { ContestCategory } from '@contests/models';
 import { Observable } from 'rxjs';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 
 @Component({
   selector: 'contests-section-categories',
@@ -16,16 +17,17 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
   encapsulation: ViewEncapsulation.None,
   imports: [
     CoreCommonModule,
-    NgbTooltipModule,
+    FormsModule,
+    NgSelectModule,
     NgxSkeletonLoaderModule,
-    KepCardComponent,
+    KepIconComponent,
   ]
 })
 export class SectionCategoriesComponent extends BaseLoadComponent<Array<ContestCategory>> implements OnInit {
 
   @Output() change = new EventEmitter<number>();
 
-  public activeCategory = 0;
+  public activeCategory: number | null = null;
 
   constructor(public service: ContestsService) {
     super();
@@ -39,13 +41,8 @@ export class SectionCategoriesComponent extends BaseLoadComponent<Array<ContestC
     return this.service.getContestsCategories();
   }
 
-  click(categoryId: number) {
-    if (categoryId === this.activeCategory) {
-      this.activeCategory = 0;
-    } else {
-      this.activeCategory = categoryId;
-    }
-    this.change.emit(this.activeCategory);
+  categoryChange(categoryId: number | null) {
+    this.change.emit(categoryId ?? 0);
   }
 
 }

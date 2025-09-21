@@ -61,14 +61,24 @@
         <div class="col-lg-3 col-md-6">
           <div class="mb-1">
             <ng-select
+              bindLabel="title"
               [compareWith]="compareEqual" [placeholder]="'Topics' | translate"
               [searchable]="false"
               appendTo="body"
               formControlName="category"
             >
+              <ng-template ng-label-tmp let-item="item">
+                <div class="d-flex align-items-center">
+                  <kep-icon *ngIf="item?.icon" class="me-1" type="duotone" size="medium-1" color="primary" [name]="item.icon"></kep-icon>
+                  <span>{{ item?.title }}</span>
+                </div>
+              </ng-template>
               @for (item of categories; track item) {
                 <ng-option [value]="item.id">
-                  {{ item.title }}
+                  <div class="d-flex align-items-center">
+                    <kep-icon *ngIf="item.icon" class="me-1" type="duotone" size="medium-1" color="primary" [name]="item.icon"></kep-icon>
+                    <span>{{ item.title }}</span>
+                  </div>
                 </ng-option>
               }
             </ng-select>
