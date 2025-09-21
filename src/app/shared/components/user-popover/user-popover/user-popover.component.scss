@@ -30,3 +30,45 @@
   cursor: pointer;
   text-align: left;
 }
+
+.user-popover__header {
+  flex-wrap: wrap;
+}
+
+.ratings {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.rating-item {
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(var(--bs-primary-rgb), 0.06);
+  border: 1px solid rgba(var(--bs-body-color-rgb), 0.08);
+
+  @include dark-layout {
+    background: rgba(var(--bs-primary-rgb), 0.2);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.rating-item__value {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.rating-item__title {
+  border-radius: 999px;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: rgba(var(--bs-primary-rgb), 0.16);
+  color: var(--bs-primary);
+
+  @include dark-layout {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+  }
+}

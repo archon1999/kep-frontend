@@ -29,6 +29,9 @@ export const localeRu = {
   Reset: 'Сброс',
   Problemset: 'Набор задач',
   Profile: 'Профиль',
+  UserPopover: {
+    ViewDetails: 'Подробнее о пользователе',
+  },
   CustomTest: 'Тестировать',
   HasChecker: 'Чекер',
   FilterProblems: 'Фильтрация задач',
@@ -294,6 +297,7 @@ export const localeRu = {
   Facts: 'Факты',
   NumberOfAttempts: 'Количество попыток',
   Rank: 'Место',
+  Percentile: 'Процентиль',
   Monday: 'Понедельник',
   Tuesday: 'Вторник',
   Wednesday: 'Среда',
