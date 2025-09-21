@@ -1,0 +1,50 @@
+<kep-card>
+  <div class="card-header">
+    <div class="card-title">
+      {{ 'Submit' | translate }}
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="mb-2" *ngIf="availableLanguages?.length">
+      <label>{{ 'Lang' | translate }}:</label>
+      <ng-select
+        appendTo="body"
+        [clearable]="false"
+        [(ngModel)]="selectedLang"
+        (change)="onLangChange($event)"
+      >
+        <ng-option *ngFor="let availableLang of availableLanguages" [value]="availableLang.lang">
+          <attempt-language [size]="24" [lang]="availableLang.lang" [langFull]="availableLang.langFull"></attempt-language>
+          {{ availableLang.langFull || availableLang.lang }}
+        </ng-option>
+      </ng-select>
+    </div>
+
+    <div class="mb-2">
+      <label>{{ 'File' | translate }}:</label>
+      <div class="custom-file">
+        <input
+          class="form-control"
+          type="file"
+          [accept]="fileAccept"
+          (change)="handleFileInput($event.target.files)"
+        />
+      </div>
+      <small class="text-muted" *ngIf="fileToUpload">
+        {{ fileToUpload.name }}
+      </small>
+    </div>
+  </div>
+
+  <div class="card-footer text-center">
+    <button
+      class="btn full-width btn-sm btn-primary"
+      type="button"
+      (click)="submit()"
+      [disabled]="disabled || !fileToUpload || !availableLanguages?.length || isSubmitting"
+    >
+      <span>{{ 'Submit' | translate }}</span>
+    </button>
+  </div>
+</kep-card>

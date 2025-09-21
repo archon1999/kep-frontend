@@ -34,8 +34,7 @@ import { getResourceById, Resources } from '@app/resources';
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { ProblemInfoHtmlPipe } from '@contests/pages/contest/contest-problem/problem-info-html.pipe';
-import { NgOptionComponent, NgSelectComponent } from "@ng-select/ng-select";
-import { AttemptLanguageComponent } from "@shared/components/attempt-language/attempt-language.component";
+import { ProblemSubmitCardComponent } from '@problems/components/problem-submit-card/problem-submit-card.component';
 
 const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
 
@@ -58,9 +57,7 @@ const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
     ContestClassesPipe,
     KepCardComponent,
     ProblemInfoHtmlPipe,
-    NgOptionComponent,
-    NgSelectComponent,
-    AttemptLanguageComponent,
+    ProblemSubmitCardComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -78,14 +75,11 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
   public attempts: Array<Attempt> = [];
 
   public selectedAvailableLang: AvailableLanguage;
-  public selectedLang: string;
 
   public totalAttemptsCount = 0;
   public currentPage = 1;
 
   public contestant: Contestant | null;
-
-  public fileToUpload: File | null = null;
 
   private _intervalId: any;
 
@@ -109,7 +103,6 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
       this.contestProblem = contestProblem;
       this.problem = contestProblem.problem;
       this.cdr.markForCheck();
-      // setTimeout(() => this.langService.setLanguage(this.selectedLang as any));
       this.titleService.updateTitle(this.route, {
         contestTitle: contest.title,
         problemSymbol: contestProblem.symbol,
@@ -121,7 +114,6 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
       this.langService.getLanguage().pipe(takeUntil(this._unsubscribeAll)).subscribe(
         (lang: AttemptLangs) => {
           this.selectedAvailableLang = findAvailableLang(this.problem.availableLanguages, lang);
-          this.selectedLang = lang;
           if (!this.selectedAvailableLang) {
             setTimeout(() => {
               this.langService.setLanguage(this.problem.availableLanguages[0].lang);
@@ -239,38 +231,6 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
   onAttemptChecked() {
     this.reloadProblems();
     this.updateContestant();
-  }
-
-  handleFileInput(files: FileList) {
-    if (files.item(0).size > 1024 * 128) {
-      this.toastr.error('Max file size 128kb');
-    } else {
-      this.fileToUpload = files.item(0);
-    }
-  }
-
-  submit() {
-    this.fileToUpload.text().then(
-      (sourceCode) => {
-        const data = {
-          sourceCode,
-          lang: this.selectedLang,
-          contestProblem: this.contestProblem.symbol,
-        };
-
-        this.api.post('contests/' + this.contest?.id + '/submit/', data).subscribe(
-          () => {
-            this.fileToUpload = null;
-            this.toastr.success('', this.translateService.instant('SubmittedSuccess'));
-            this.reloadAttempts();
-          }
-        );
-      }
-    )
-  }
-
-  langChange(lang) {
-    this.langService.setLanguage(lang);
   }
 
   ngOnDestroy(): void {

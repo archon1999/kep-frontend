@@ -17,6 +17,7 @@ import { BaseLoadComponent } from '@core/common';
 import { takeUntil } from 'rxjs/operators';
 import { PageResult } from '@core/common/classes/page-result';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { ProblemSubmitCardComponent } from '@problems/components/problem-submit-card/problem-submit-card.component';
 
 @Component({
   templateUrl: './duel.component.html',
@@ -33,7 +34,8 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     DuelCountdownComponent,
     ProblemInfoCardComponent,
     ProblemListCardComponent,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+    ProblemSubmitCardComponent
   ]
 })
 export class DuelComponent extends BaseLoadComponent<Duel> {

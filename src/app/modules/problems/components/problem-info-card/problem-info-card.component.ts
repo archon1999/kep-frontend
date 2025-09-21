@@ -27,7 +27,6 @@ interface IVoteResult {
     UserPopoverModule,
     KepIconComponent,
     AttemptLanguageComponent,
-    AttemptLanguageComponent,
   ],
   templateUrl: './problem-info-card.component.html',
   styleUrl: './problem-info-card.component.scss'

@@ -20,6 +20,7 @@ import { BasePageComponent } from '@core/common/classes/base-page.component';
 import { SidebarService } from '@shared/ui/sidebar/sidebar.service';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { ProblemSubmitCardComponent } from '@problems/components/problem-submit-card/problem-submit-card.component';
 
 @Component({
   selector: 'app-problem',
@@ -40,6 +41,7 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
     NgSelectModule,
     MonacoEditorComponent,
     KepCardComponent,
+    ProblemSubmitCardComponent,
   ]
 })
 export class ProblemComponent extends BasePageComponent implements OnInit {
