@@ -1,0 +1,15 @@
+<div>
+  <h5 class="ps-1 d-flex">
+    {{ question.number }}.
+    <span class="ps-50" mathjax [innerHTML]="question.body || question.text"></span>
+  </h5>
+  <br>
+  <div style="height: 250px;">
+    <monaco-editor
+      class="mt-1"
+      [(ngModel)]="question.input"
+      [ngModelOptions]="{ standalone: true }"
+      [lang]="'py'"
+    ></monaco-editor>
+  </div>
+</div>
