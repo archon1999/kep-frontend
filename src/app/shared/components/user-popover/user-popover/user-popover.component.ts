@@ -51,15 +51,16 @@ export class UserPopoverComponent implements OnInit {
   protected cdr = inject(ChangeDetectorRef);
 
   private readonly ratingConfig: Array<{ key: RatingKey; translationKey: string; icon: string }> = [
-    { key: 'skillsRating', translationKey: 'SkillsRating', icon: 'rating' },
-    { key: 'activityRating', translationKey: 'ActivityRating', icon: 'rating' },
-    { key: 'contestsRating', translationKey: 'Contests.ContestsRating', icon: 'contests' },
-    { key: 'challengesRating', translationKey: 'PageTitle.Challenges.ChallengesRating', icon: 'challenges' },
+    {key: 'skillsRating', translationKey: 'SkillsRating', icon: 'rating'},
+    {key: 'activityRating', translationKey: 'ActivityRating', icon: 'rating'},
+    {key: 'contestsRating', translationKey: 'Contests.ContestsRating', icon: 'contests'},
+    {key: 'challengesRating', translationKey: 'PageTitle.Challenges.ChallengesRating', icon: 'challenges'},
   ];
 
   constructor(
     public api: ApiService,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
   }
@@ -84,7 +85,7 @@ export class UserPopoverComponent implements OnInit {
     }
 
     return this.ratingConfig
-      .map(({ key, translationKey, icon }) => {
+      .map(({key, translationKey, icon}) => {
         const rating = userRatings[key];
         if (!rating || typeof rating.value !== 'number') {
           return null;
