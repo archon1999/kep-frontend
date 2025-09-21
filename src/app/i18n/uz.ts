@@ -94,6 +94,8 @@ export const localeUz = {
   Week: 'Hafta',
   Month: 'Oy',
   Problem: 'Masala',
+  PreviousProblem: 'Avvalgi masala',
+  NextProblem: 'Keyingi masala',
   Rating: 'Reyting',
   OverallRating: 'Umumiy reyting',
   DuelsRating: 'Duellar reytingi',
