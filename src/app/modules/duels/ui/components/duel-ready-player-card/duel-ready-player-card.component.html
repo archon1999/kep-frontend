@@ -1,0 +1,43 @@
+<kep-card class="ready-player-card h-100">
+  <div class="card-body d-flex flex-column gap-3">
+    <div class="d-flex align-items-center gap-2">
+      <img
+        [src]="player.avatar"
+        [alt]="player.username"
+        class="ready-player-card__avatar"
+        width="48"
+        height="48"
+      >
+      <div class="d-flex flex-column">
+        <user-popover [username]="player.username"></user-popover>
+        @if (player.fullName) {
+          <span class="text-muted small">{{ player.fullName }}</span>
+        }
+      </div>
+    </div>
+
+    <div class="ready-player-card__stats">
+      <div class="ready-player-card__stat ready-player-card__stat--wins">
+        <span class="ready-player-card__stat-value">{{ player.wins }}</span>
+        <span class="ready-player-card__stat-label">{{ 'Wins' | translate }}</span>
+      </div>
+      <div class="ready-player-card__stat ready-player-card__stat--draws">
+        <span class="ready-player-card__stat-value">{{ player.draws }}</span>
+        <span class="ready-player-card__stat-label">{{ 'Draws' | translate }}</span>
+      </div>
+      <div class="ready-player-card__stat ready-player-card__stat--losses">
+        <span class="ready-player-card__stat-value">{{ player.losses }}</span>
+        <span class="ready-player-card__stat-label">{{ 'Losses' | translate }}</span>
+      </div>
+    </div>
+
+    <button
+      class="btn btn-sm btn-primary mt-auto"
+      type="button"
+      (click)="onChallenge()"
+      [disabled]="disabled"
+    >
+      {{ 'ChallengeToDuel' | translate }}
+    </button>
+  </div>
+</kep-card>

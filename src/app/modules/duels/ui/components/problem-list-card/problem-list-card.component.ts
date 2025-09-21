@@ -1,5 +1,5 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
-import { DuelProblem } from '../../duels.interfaces';
+import { DuelProblem } from '@duels/domain';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
@@ -13,5 +13,5 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
   ]
 })
 export class ProblemListCardComponent {
-  @Input() duelProblem: DuelProblem;
+  @Input({ required: true }) duelProblem!: DuelProblem;
 }

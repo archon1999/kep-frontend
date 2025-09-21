@@ -7,16 +7,15 @@ import {
   DuelPreset,
   DuelReadyPlayer,
   DuelReadyStatus,
-} from './duels.interfaces';
+  DuelResults,
+} from '@duels/domain';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DuelsService {
+export class DuelsApiService {
 
-  constructor(
-    public api: ApiService,
-  ) { }
+  constructor(private readonly api: ApiService) {}
 
   getDuel(duelId: number | string): Observable<Duel> {
     return this.api.get(`duels/${duelId}`);
@@ -27,10 +26,10 @@ export class DuelsService {
       duel_problem: duelProblem,
       duel_id: duelId,
       page_size: 20,
-    })
+    });
   }
 
-  getDuelResults(duelId: number | string) {
+  getDuelResults(duelId: number | string): Observable<DuelResults> {
     return this.api.get(`duels/${duelId}/results`);
   }
 

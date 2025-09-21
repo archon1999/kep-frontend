@@ -1,4 +1,4 @@
-import { Duel } from "@app/modules/duels/duels.interfaces";
+import { Duel } from '@duels/domain';
 
 export interface TournamentPlayer {
   id: number;

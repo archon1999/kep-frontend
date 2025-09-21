@@ -3,37 +3,30 @@ import { BasePageComponent } from '@core/common/classes/base-page.component';
 import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { CoreCommonModule } from '@core/common.module';
-import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
-import { DuelsService } from '../../duels.service';
-import { Duel, DuelPreset, DuelReadyPlayer } from '../../duels.interfaces';
+import { DuelsApiService } from '@duels/data-access';
+import { Duel, DuelPreset, DuelReadyPlayer } from '@duels/domain';
 import { PageResult } from '@core/common/classes/page-result';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { NgbModalModule, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validators } from '@angular/forms';
-import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
-import { DatePipe } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
-import { EmptyResultComponent } from "@shared/components/empty-result/empty-result.component";
+import { DuelReadyStatusCardComponent } from '@duels/ui/components/duel-ready-status-card/duel-ready-status-card.component';
+import { DuelReadyPlayersSectionComponent } from '@duels/ui/components/duel-ready-players-section/duel-ready-players-section.component';
+import { DuelsListSectionComponent } from '@duels/ui/components/duels-list-section/duels-list-section.component';
 
 @Component({
   selector: 'page-duels',
   standalone: true,
   templateUrl: './duels.page.html',
+  styleUrls: ['./duels.page.scss'],
   imports: [
     CoreCommonModule,
     ContentHeaderModule,
-    KepPaginationComponent,
     NgbModalModule,
-    SpinnerComponent,
     TranslateModule,
-    UserPopoverModule,
-    RouterModule,
-    DatePipe,
-    KepCardComponent,
-    EmptyResultComponent,
+    DuelReadyStatusCardComponent,
+    DuelReadyPlayersSectionComponent,
+    DuelsListSectionComponent,
   ]
 })
 export class DuelsPage extends BasePageComponent implements OnInit {
@@ -52,7 +45,7 @@ export class DuelsPage extends BasePageComponent implements OnInit {
   duelPresetsLoading = false;
   selectedOpponent: DuelReadyPlayer | null = null;
   confirmLoadingId: number | null = null;
-  protected duelsService = inject(DuelsService);
+  protected readonly duelsApi = inject(DuelsApiService);
   private fb = inject(FormBuilder);
   duelForm = this.fb.group({
     presetId: [null as number | null, Validators.required],
@@ -98,7 +91,7 @@ export class DuelsPage extends BasePageComponent implements OnInit {
     const previous = this.isReady;
     this.isReady = ready;
     this.readyStatusLoading = true;
-    this.duelsService.updateReadyStatus(ready)
+    this.duelsApi.updateReadyStatus(ready)
       .pipe(
         takeUntil(this._unsubscribeAll),
         finalize(() => this.readyStatusLoading = false),
@@ -116,7 +109,7 @@ export class DuelsPage extends BasePageComponent implements OnInit {
 
   loadReadyStatus(): void {
     this.readyStatusLoading = true;
-    this.duelsService.getReadyStatus()
+    this.duelsApi.getReadyStatus()
       .pipe(
         takeUntil(this._unsubscribeAll),
         finalize(() => {
@@ -134,7 +127,7 @@ export class DuelsPage extends BasePageComponent implements OnInit {
       this.readyPlayersPage = page;
     }
     this.readyPlayersLoading = true;
-    this.duelsService.getReadyPlayers({
+    this.duelsApi.getReadyPlayers({
       page: this.readyPlayersPage,
       page_size: this.readyPlayersPageSize,
     })
@@ -158,7 +151,7 @@ export class DuelsPage extends BasePageComponent implements OnInit {
     }
 
     this.duelsLoading = true;
-    this.duelsService.getDuels({
+    this.duelsApi.getDuels({
       page: this.duelsPage,
       page_size: this.duelsPageSize,
       username: this.currentUser.username,
@@ -193,7 +186,7 @@ export class DuelsPage extends BasePageComponent implements OnInit {
       this.modalRef = null;
       this.selectedOpponent = null;
     });
-    this.duelsService.getDuelPresets(opponent.username)
+    this.duelsApi.getDuelPresets(opponent.username)
       .pipe(
         takeUntil(this._unsubscribeAll),
         finalize(() => this.duelPresetsLoading = false)
@@ -221,7 +214,7 @@ export class DuelsPage extends BasePageComponent implements OnInit {
     }
 
     const {presetId, startTime} = this.duelForm.value;
-    this.duelsService.createDuel({
+    this.duelsApi.createDuel({
       duel_username: this.selectedOpponent.username,
       duel_preset: presetId!,
       start_time: this.toBackendDate(startTime as string),
@@ -248,7 +241,7 @@ export class DuelsPage extends BasePageComponent implements OnInit {
       return;
     }
     this.confirmLoadingId = duel.id;
-    this.duelsService.confirmDuel(duel.id)
+    this.duelsApi.confirmDuel(duel.id)
       .pipe(
         takeUntil(this._unsubscribeAll),
         finalize(() => this.confirmLoadingId = null)
@@ -262,29 +255,6 @@ export class DuelsPage extends BasePageComponent implements OnInit {
           this.toastr.error(this.translateService.instant('ServerError'), this.translateService.instant('Error'));
         }
       });
-  }
-
-  getStatusKey(status: number): string {
-    switch (status) {
-      case -1:
-        return 'DuelStatusUpcoming';
-      case 0:
-        return 'DuelStatusRunning';
-      default:
-        return 'DuelStatusFinished';
-    }
-  }
-
-  isConfirmAvailable(duel: Duel): boolean {
-    return !!this.currentUser && !duel.isConfirmed && duel.playerSecond?.username === this.currentUser.username;
-  }
-
-  trackPlayer(index: number, player: DuelReadyPlayer): string {
-    return player.username;
-  }
-
-  trackDuel(index: number, duel: Duel): number {
-    return duel.id;
   }
 
   protected override getContentHeader(): ContentHeader {

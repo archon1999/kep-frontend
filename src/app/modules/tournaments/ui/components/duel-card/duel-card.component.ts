@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Duel } from "@app/modules/duels/duels.interfaces";
+import { Duel } from '@duels/domain';
 import { ContestantViewModule } from "@contests/components/contestant-view/contestant-view.module";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 import { RouterLink } from "@angular/router";
