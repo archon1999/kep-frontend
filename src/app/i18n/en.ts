@@ -222,6 +222,7 @@ export const localeEn = {
   ChallengeToDuel: 'Challenge to duel',
   NoReadyPlayers: 'No ready players yet',
   MyDuels: 'My duels',
+  AllDuels: 'All duels',
   AwaitingConfirmation: 'Awaiting confirmation',
   Confirm: 'Confirm',
   NoDuelsYet: 'No duels yet',

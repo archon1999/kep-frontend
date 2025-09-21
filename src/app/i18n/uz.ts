@@ -222,6 +222,7 @@ export const localeUz = {
   ChallengeToDuel: 'Duelga chorlash',
   NoReadyPlayers: 'Hozircha tayyor ishtirokchilar yo\'q',
   MyDuels: 'Mening duellarim',
+  AllDuels: 'Barcha duellar',
   AwaitingConfirmation: 'Tasdiqlash kutilmoqda',
   Confirm: 'Tasdiqlash',
   NoDuelsYet: 'Hozircha duellar yo\'q',

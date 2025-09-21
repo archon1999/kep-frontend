@@ -41,6 +41,10 @@ export class DuelsPage extends BasePageComponent implements OnInit {
   duelsPageSize = 10;
   duelsResult: PageResult<Duel> | null = null;
   duelsLoading = false;
+  allDuelsPage = 1;
+  allDuelsPageSize = 10;
+  allDuelsResult: PageResult<Duel> | null = null;
+  allDuelsLoading = false;
   duelPresets: DuelPreset[] = [];
   duelPresetsLoading = false;
   selectedOpponent: DuelReadyPlayer | null = null;
@@ -65,6 +69,10 @@ export class DuelsPage extends BasePageComponent implements OnInit {
     return this.duelsResult?.total || 0;
   }
 
+  get allDuelsTotal(): number {
+    return this.allDuelsResult?.total || 0;
+  }
+
   get minStartTime(): string {
     return this.formatDateInput(new Date());
   }
@@ -73,6 +81,7 @@ export class DuelsPage extends BasePageComponent implements OnInit {
     super.ngOnInit();
     this.loadReadyStatus();
     this.loadReadyPlayers();
+    this.loadAllDuels();
   }
 
   override afterChangeCurrentUser(): void {
@@ -81,6 +90,7 @@ export class DuelsPage extends BasePageComponent implements OnInit {
     } else {
       this.duelsResult = null;
     }
+    this.loadAllDuels();
   }
 
   onReadyStatusChange(ready: boolean): void {
@@ -158,14 +168,43 @@ export class DuelsPage extends BasePageComponent implements OnInit {
     })
       .pipe(
         takeUntil(this._unsubscribeAll),
+        finalize(() => this.duelsLoading = false),
       )
       .subscribe({
         next: result => {
-          this.duelsLoading = false;
           this.duelsResult = result;
           this.cdr.markForCheck();
         },
-        error: () => this.duelsResult = null,
+        error: () => {
+          this.duelsResult = null;
+          this.cdr.markForCheck();
+        },
+      });
+  }
+
+  loadAllDuels(page?: number): void {
+    if (page) {
+      this.allDuelsPage = page;
+    }
+
+    this.allDuelsLoading = true;
+    this.duelsApi.getDuels({
+      page: this.allDuelsPage,
+      page_size: this.allDuelsPageSize,
+    })
+      .pipe(
+        takeUntil(this._unsubscribeAll),
+        finalize(() => this.allDuelsLoading = false),
+      )
+      .subscribe({
+        next: result => {
+          this.allDuelsResult = result;
+          this.cdr.markForCheck();
+        },
+        error: () => {
+          this.allDuelsResult = null;
+          this.cdr.markForCheck();
+        },
       });
   }
 
@@ -228,6 +267,7 @@ export class DuelsPage extends BasePageComponent implements OnInit {
           this.toastr.success(this.translateService.instant('DuelCreated'), this.translateService.instant('Successfully'));
           this.closeModal();
           this.loadDuels();
+          this.loadAllDuels();
           const duelId = response?.id;
           if (duelId) {
             this.router.navigate(['/practice', 'duels', 'duel', duelId]);
@@ -253,6 +293,7 @@ export class DuelsPage extends BasePageComponent implements OnInit {
         next: () => {
           this.toastr.success(this.translateService.instant('Successfully'));
           this.loadDuels();
+          this.loadAllDuels();
         },
         error: () => {
           this.toastr.error(this.translateService.instant('ServerError'), this.translateService.instant('Error'));

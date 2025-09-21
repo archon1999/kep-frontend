@@ -37,7 +37,7 @@
         />
       </div>
 
-      <div class="col-12">
+      <div class="col-12 col-xl-6">
         <duels-list-section
           [duels]="duelsResult?.data ?? []"
           [total]="duelsTotal"
@@ -47,6 +47,21 @@
           [confirmLoadingId]="confirmLoadingId"
           [currentUsername]="currentUser?.username ?? null"
           (pageChange)="loadDuels($event)"
+          (confirm)="confirmDuel($event)"
+        />
+      </div>
+
+      <div class="col-12 col-xl-6">
+        <duels-list-section
+          titleKey="AllDuels"
+          [duels]="allDuelsResult?.data ?? []"
+          [total]="allDuelsTotal"
+          [page]="allDuelsPage"
+          [pageSize]="allDuelsPageSize"
+          [loading]="allDuelsLoading"
+          [confirmLoadingId]="confirmLoadingId"
+          [currentUsername]="currentUser?.username ?? null"
+          (pageChange)="loadAllDuels($event)"
           (confirm)="confirmDuel($event)"
         />
       </div>

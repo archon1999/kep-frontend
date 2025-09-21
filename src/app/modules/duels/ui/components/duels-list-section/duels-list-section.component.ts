@@ -23,6 +23,7 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DuelsListSectionComponent {
+  @Input() titleKey = 'MyDuels';
   @Input() duels: Duel[] = [];
   @Input() total = 0;
   @Input() page = 1;
