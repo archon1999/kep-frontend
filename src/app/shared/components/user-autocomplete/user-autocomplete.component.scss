@@ -1,0 +1,16 @@
+.user-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-option__avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-option__username {
+  font-weight: 500;
+}

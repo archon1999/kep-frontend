@@ -20,7 +20,10 @@
             {{ 'Problem' | translate }} ID
           </label>
 
-          <input class="form-control" formControlName="problemId">
+          <problem-autocomplete
+            class="w-100"
+            formControlName="problemId"
+          ></problem-autocomplete>
         </div>
       </div>
 
@@ -31,7 +34,11 @@
             {{ 'Username' | translate }}
           </label>
 
-          <input class="form-control" formControlName="username">
+          <user-autocomplete
+            class="w-100"
+            formControlName="username"
+            [showAvatar]="true"
+          ></user-autocomplete>
         </div>
       </div>
 

@@ -1,0 +1,15 @@
+.problem-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.problem-option__id {
+  font-weight: 600;
+  color: var(--bs-primary, #7367f0);
+}
+
+.problem-option__title {
+  flex: 1;
+  min-width: 0;
+}

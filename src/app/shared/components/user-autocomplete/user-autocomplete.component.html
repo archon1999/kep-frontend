@@ -1,0 +1,28 @@
+<ng-select
+  [items]="userOptions"
+  [bindValue]="'username'"
+  [bindLabel]="'label'"
+  [formControl]="control"
+  [loading]="loading"
+  [clearable]="clearable"
+  [placeholder]="placeholder"
+  [appendTo]="appendTo"
+  [searchable]="true"
+  (search)="handleSearch($event)"
+  (blur)="handleBlur()"
+  (open)="onOpen()"
+  [notFoundText]="notFoundText"
+>
+  <ng-template ng-option-tmp let-item="item">
+    <div class="user-option">
+      <img
+        *ngIf="showAvatar && item.avatar"
+        [src]="item.avatar"
+        [alt]="item.username"
+        class="user-option__avatar"
+      />
+      <span class="user-option__username">{{ item.username }}</span>
+    </div>
+  </ng-template>
+</ng-select>
+<ng-select-css></ng-select-css>

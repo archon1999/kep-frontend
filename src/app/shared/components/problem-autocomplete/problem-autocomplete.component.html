@@ -1,0 +1,23 @@
+<ng-select
+  [items]="problemOptions"
+  [bindValue]="'id'"
+  [bindLabel]="'label'"
+  [formControl]="control"
+  [loading]="loading"
+  [clearable]="clearable"
+  [placeholder]="placeholder"
+  [appendTo]="appendTo"
+  [searchable]="true"
+  (search)="handleSearch($event)"
+  (blur)="handleBlur()"
+  (open)="onOpen()"
+  [notFoundText]="notFoundText"
+>
+  <ng-template ng-option-tmp let-item="item">
+    <div class="problem-option">
+      <span class="problem-option__id">{{ item.id }}.</span>
+      <span class="problem-option__title">{{ item.title }}</span>
+    </div>
+  </ng-template>
+</ng-select>
+<ng-select-css></ng-select-css>
