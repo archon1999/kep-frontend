@@ -70,6 +70,10 @@ export const localeEn = {
     NOT_FOUND: 'No options found',
     LOADING: 'Loading...',
   },
+  TABLE: {
+    SHOWING: 'Showing',
+    OF: 'of',
+  },
   NEWS: 'News',
   LAST_COMMENTS: 'Last comments',
   LAST_POSTS: 'Last posts',

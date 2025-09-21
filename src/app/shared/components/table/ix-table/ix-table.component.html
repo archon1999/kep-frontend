@@ -86,13 +86,13 @@
 
 <div class="d-flex justify-content-between align-items-center p-3">
   <div class="d-none d-md-block">
-    Showing
+    {{ 'TABLE.SHOWING' | translate }}
     <span class="fw-bold">
       {{ pageSize * (pageNumber - 1) + 1 }}
       -
       {{ pageSize * pageNumber }}
     </span>
-    of
+    {{ 'TABLE.OF' | translate }}
     <span class="fw-bold">
       {{ total }}
     </span>
