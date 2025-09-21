@@ -1,0 +1,97 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <section class="mt-2">
+      <kep-table [loading]="isLoading" [empty]="pageResult?.total === 0">
+        <ng-container header>
+          <tr>
+            <th>#</th>
+            <th>{{ 'User' | translate }}</th>
+            <th>
+              <table-ordering
+                [value]="ordering"
+                [justifyContent]="'start'"
+                [ordering]="'duels'"
+                [reverse]="true"
+                (change)="orderingChange($event)">
+                {{ 'Duels' | translate }}
+              </table-ordering>
+            </th>
+            <th>
+              <table-ordering
+                [value]="ordering"
+                [justifyContent]="'start'"
+                [ordering]="'wins'"
+                [reverse]="true"
+                (change)="orderingChange($event)">
+                {{ 'Wins' | translate }}
+              </table-ordering>
+            </th>
+            <th>
+              <table-ordering
+                [value]="ordering"
+                [justifyContent]="'start'"
+                [ordering]="'draws'"
+                [reverse]="true"
+                (change)="orderingChange($event)">
+                {{ 'Draws' | translate }}
+              </table-ordering>
+            </th>
+            <th>
+              <table-ordering
+                [value]="ordering"
+                [justifyContent]="'start'"
+                [ordering]="'losses'"
+                [reverse]="true"
+                (change)="orderingChange($event)">
+                {{ 'Losses' | translate }}
+              </table-ordering>
+            </th>
+          </tr>
+        </ng-container>
+        <ng-container body>
+          @for (duelsRating of duelsRatingList; track duelsRating.rowIndex) {
+            <tr>
+              <td class="fw-medium">{{ duelsRating.rowIndex }}</td>
+              <td>
+                <div class="d-flex align-items-center gap-1">
+                  <user-avatar-popover
+                    [username]="duelsRating.user.username"
+                    [avatar]="duelsRating.user.avatar">
+                  </user-avatar-popover>
+                  <a [routerLink]="['/users', 'user', duelsRating.user.username]" class="fw-medium">
+                    {{ duelsRating.user.username }}
+                  </a>
+                </div>
+              </td>
+              <td>
+                <span class="badge bg-primary-transparent">{{ duelsRating.duels }}</span>
+              </td>
+              <td>
+                <span class="badge bg-success-transparent">{{ duelsRating.wins }}</span>
+              </td>
+              <td>
+                <span class="badge bg-secondary-transparent">{{ duelsRating.draws }}</span>
+              </td>
+              <td>
+                <span class="badge bg-danger-transparent">{{ duelsRating.losses }}</span>
+              </td>
+            </tr>
+          }
+        </ng-container>
+        <ng-container pagination>
+          <kep-pagination
+            [collectionSize]="total"
+            [page]="pageNumber"
+            [pageSize]="pageSize"
+            [maxSize]="maxSize"
+            [rotate]="true"
+            [disabled]="isLoading"
+            (pageChange)="pageChange($event)">
+          </kep-pagination>
+        </ng-container>
+      </kep-table>
+    </section>
+  </div>
+</div>

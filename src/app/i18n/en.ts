@@ -105,6 +105,7 @@ export const localeEn = {
   Problem: 'Problem',
   Rating: 'Rating',
   OverallRating: 'Overall rating',
+  DuelsRating: 'Duels Rating',
   LastAttempts: 'Last attempts',
   Verdict: 'Verdict',
   AllAttempts: 'All attempts',
@@ -816,6 +817,7 @@ export const localeEn = {
     Duels: {
       Duels: 'Duels',
       Duel: 'Duel | {{ playerFirstUsername }} vs {{ playerSecondUsername }}',
+      DuelsRating: 'Duels Rating',
     },
     Projects: {
       Projects: 'Projects',

@@ -9,6 +9,13 @@ export default [
     },
   },
   {
+    path: 'duels-rating',
+    loadComponent: () => import('./ui/pages/duels-rating/duels-rating.page').then(c => c.DuelsRatingPage),
+    data: {
+      title: 'Duels.DuelsRating',
+    },
+  },
+  {
     path: 'duel/:id',
     loadComponent: () => import('./ui/pages/duel/duel.component').then(c => c.DuelComponent),
     data: {
