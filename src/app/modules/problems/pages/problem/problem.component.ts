@@ -6,7 +6,7 @@ import { Problem } from '@problems/models/problems.models';
 import { ProblemsApiService } from '../../services/problems-api.service';
 import { ApiService } from '@core/data-access/api.service';
 import { CoreCommonModule } from '@core/common.module';
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProblemDescriptionComponent } from '@problems/pages/problem/problem-description/problem-description.component';
 import { ProblemAttemptsComponent } from '@problems/pages/problem/problem-attempts/problem-attempts.component';
 import { ProblemHacksComponent } from '@problems/pages/problem/problem-hacks/problem-hacks.component';
@@ -20,6 +20,7 @@ import { BasePageComponent } from '@core/common/classes/base-page.component';
 import { SidebarService } from '@shared/ui/sidebar/sidebar.service';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-problem',
@@ -40,6 +41,7 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
     NgSelectModule,
     MonacoEditorComponent,
     KepCardComponent,
+    NgbTooltipModule,
   ]
 })
 export class ProblemComponent extends BasePageComponent implements OnInit {
@@ -51,7 +53,6 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
 
   public submitEvent = new Subject();
   public checkInput = '';
-
   constructor(
     public service: ProblemsApiService,
     public api: ApiService,
@@ -137,5 +138,34 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
     console.log(4142);
     this.activeId = 2;
     this.submitEvent.next(null);
+  }
+
+  goToPreviousProblem() {
+    if (!this.problem) {
+      return;
+    }
+
+    this.service.getProblemPrevious(this.problem.id)
+      .pipe(take(1))
+      .subscribe(({ id }) => this.navigateToProblem(id));
+  }
+
+  goToNextProblem() {
+    if (!this.problem) {
+      return;
+    }
+
+    this.service.getProblemNext(this.problem.id)
+      .pipe(take(1))
+      .subscribe(({ id }) => this.navigateToProblem(id));
+  }
+
+  private navigateToProblem(problemId?: number) {
+    if (!problemId || this.problem?.id === problemId) {
+      return;
+    }
+    this.router.navigate(['/practice/problems/problem', problemId], {
+      queryParams: this.route.snapshot.queryParams,
+    });
   }
 }

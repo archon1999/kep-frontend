@@ -103,6 +103,8 @@ export const localeEn = {
   Week: 'Week',
   Month: 'Month',
   Problem: 'Problem',
+  PreviousProblem: 'Previous problem',
+  NextProblem: 'Next problem',
   Rating: 'Rating',
   OverallRating: 'Overall rating',
   DuelsRating: 'Duels Rating',
