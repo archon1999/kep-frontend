@@ -114,6 +114,12 @@
                     [submitParams]="{ duelProblem: duelProblem.symbol }"
                     (submittedEvent)="reloadAttempts()"
                   />
+                  <problem-submit-card
+                    [availableLanguages]="duelProblem.problem.availableLanguages"
+                    [submitUrl]="'duels/' + duel.id + '/submit/'"
+                    [submitParams]="{ duelProblem: duelProblem.symbol }"
+                    (submitted)="reloadAttempts()"
+                  />
                 }
               </div>
             </kep-card>

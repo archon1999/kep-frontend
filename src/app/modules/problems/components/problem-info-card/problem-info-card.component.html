@@ -99,30 +99,6 @@
   </div>
 }
 
-<div class="languages mt-2">
-  <div class="d-flex mb-1">
-    <h5>
-      <i data-feather="code"></i>
-      {{ 'Languages' | translate }}
-    </h5>
-  </div>
-
-  <div class="row">
-
-    @for (availableLanguage of problem.availableLanguages; track availableLanguage) {
-      <div class="col-4 col-md-3 col-lg-6 col-xl-4 px-1">
-        <attempt-language
-          [clickable]="true"
-          [lang]="availableLanguage.lang"
-          [langFull]="availableLanguage.langFull"
-          (click)="langService.setLanguage(availableLanguage.lang)"
-        />
-      </div>
-    }
-  </div>
-
-</div>
-
 <div class="selected-language mt-2">
   <div class="d-flex mb-1">
     <h5>

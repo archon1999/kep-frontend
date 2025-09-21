@@ -118,38 +118,14 @@
             </a>
           }
 
-          <kep-card *ngIf="contest?.userInfo?.isRegistered">
-            <div class="card-header">
-              <div class="card-title">
-                {{ 'Submit' | translate }}
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="mb-2">
-                <label>{{ 'Lang' | translate }}:</label>
-                <ng-select (change)="langChange($event)" appendTo="body" [clearable]="false" [(ngModel)]="selectedLang">
-                  @for (availableLang of problem.availableLanguages; track $index) {
-                    <ng-option [value]="availableLang.lang">
-                      <attempt-language [size]="24" [lang]="availableLang.lang"/>
-                      {{ availableLang.langFull }}
-                    </ng-option>
-                  }
-                </ng-select>
-              </div>
-              <div class="mb-2">
-                <label>{{ 'File' | translate }}:</label>
-                <div class="custom-file">
-                  <input (change)="handleFileInput($event.target.files)" accept=".cpp,.py,.c,.r,.hs,.kt,.cs,.php,.js,.rs,.java" class="form-control" id="customFile"
-                         type="file"/>
-                </div>
-              </div>
-            </div>
-            <div class="card-footer text-center">
-              <button (click)="submit()" [disabled]="!fileToUpload" class="btn full-width btn-sm btn-primary">
-                {{ 'Submit' | translate }}
-              </button>
-            </div>
-          </kep-card>
+          @if (contest?.userInfo?.isRegistered) {
+            <problem-submit-card
+              [availableLanguages]="problem.availableLanguages"
+              [submitUrl]="'contests/' + contest?.id + '/submit/'"
+              [submitParams]="{ contestProblem: contestProblem.symbol }"
+              (submitted)="reloadAttempts()"
+            />
+          }
 
           <kep-card>
             <div class="table-responsive beautiful-table contest-problems">
