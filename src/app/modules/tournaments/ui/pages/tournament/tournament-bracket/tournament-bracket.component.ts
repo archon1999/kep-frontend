@@ -28,11 +28,13 @@ async function process(tournament: Tournament) {
       id: stageDuel.duel.playerFirst.id,
       name: stageDuel.duel.playerFirst.username,
     });
-    participants.push({
-      tournament_id: 0,
-      id: stageDuel.duel.playerSecond.id,
-      name: stageDuel.duel.playerSecond.username,
-    });
+    if (stageDuel.duel.playerSecond) {
+      participants.push({
+        tournament_id: 0,
+        id: stageDuel.duel.playerSecond.id,
+        name: stageDuel.duel.playerSecond.username,
+      });
+    }
   }
 
   db.setData({

@@ -21,6 +21,8 @@ export const keenIcons = {
   contests: 'flag',
   hackathon: 'abstract-3',
   hackathons: 'abstract-3',
+  duels: 'abstract-21',
+  duel: 'abstract-21',
   users: 'profile-user',
   todo: 'check-square',
 

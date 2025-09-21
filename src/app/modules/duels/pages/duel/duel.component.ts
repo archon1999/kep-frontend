@@ -66,7 +66,7 @@ export class DuelComponent extends BaseLoadComponent<Duel> {
   afterLoadData(duel: Duel) {
     this.titleService.updateTitle(this.route, {
       playerFirstUsername: duel.playerFirst.username,
-      playerSecondUsername: duel.playerSecond.username,
+      playerSecondUsername: duel.playerSecond?.username || '',
     });
 
     if (duel.problems) {
@@ -106,7 +106,9 @@ export class DuelComponent extends BaseLoadComponent<Duel> {
           playerSecondBalls += results.playerSecond[i];
         }
         this.duel.playerFirst.balls = playerFirstBalls;
-        this.duel.playerSecond.balls = playerSecondBalls;
+        if (this.duel.playerSecond) {
+          this.duel.playerSecond.balls = playerSecondBalls;
+        }
       }
     );
   }

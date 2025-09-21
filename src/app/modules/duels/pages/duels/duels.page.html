@@ -1,0 +1,280 @@
+<div class="content-wrapper container-xxl p-0">
+  <div class="content-body">
+    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+
+    <div class="row">
+      <div class="col-12">
+        <kep-card>
+          <div class="card-body d-flex flex-wrap align-items-center justify-content-between gap-2">
+            <div>
+              <h5 class="mb-1">{{ 'DuelReadyStatus' | translate }}</h5>
+              <p class="text-muted mb-0">{{ isReady ? ('DuelReadyDescription' | translate) : ('DuelNotReadyDescription' | translate) }}</p>
+            </div>
+            <div class="form-check form-switch m-0">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="duelReadyToggle"
+                [checked]="isReady"
+                [disabled]="readyStatusLoading"
+                (change)="onReadyStatusChange($event.target.checked)"
+              >
+              <label class="form-check-label" for="duelReadyToggle">
+                {{ isReady ? ('DuelReady' | translate) : ('DuelNotReady' | translate) }}
+              </label>
+            </div>
+          </div>
+        </kep-card>
+      </div>
+
+      <div class="col-12">
+        <kep-card>
+          <div class="card-header">
+            <div class="card-title">
+              {{ 'DuelReadyPlayersTitle' | translate }}
+              @if (readyPlayersTotal) {
+                <span class="text-muted">({{ readyPlayersTotal }})</span>
+              }
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              @if (readyPlayersLoading) {
+                <div class="col-12 d-flex justify-content-center py-3">
+                  <spinner></spinner>
+                </div>
+              } @else if (readyPlayersResult?.data?.length) {
+                @for (player of readyPlayersResult.data; track trackPlayer($index, player)) {
+                  <div class="col-xl-3 col-md-4 col-sm-6">
+                    <kep-card>
+                      <div class="card-body d-flex flex-column gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                          <img
+                            [src]="player.avatar"
+                            [alt]="player.username"
+                            class="rounded-circle"
+                            width="40"
+                            height="40"
+                          >
+                          <div class="d-flex flex-column">
+                            <user-popover [username]="player.username"></user-popover>
+                            @if (player.fullName) {
+                              <span class="text-muted small">{{ player.fullName }}</span>
+                            }
+                          </div>
+                        </div>
+                        <div class="d-flex justify-content-between text-center mt-1">
+                          <div class="flex-fill">
+                            <div class="fw-semibold text-success">{{ player.wins }}</div>
+                            <div class="text-muted small">{{ 'Wins' | translate }}</div>
+                          </div>
+                          <div class="flex-fill">
+                            <div class="fw-semibold text-secondary">{{ player.draws }}</div>
+                            <div class="text-muted small">{{ 'Draws' | translate }}</div>
+                          </div>
+                          <div class="flex-fill">
+                            <div class="fw-semibold text-danger">{{ player.losses }}</div>
+                            <div class="text-muted small">{{ 'Losses' | translate }}</div>
+                          </div>
+                        </div>
+                        <button
+                          class="btn btn-sm btn-primary mt-2"
+                          type="button"
+                          (click)="openDuelModal(player)"
+                          [disabled]="!currentUser || currentUser?.username === player.username"
+                        >
+                          {{ 'ChallengeToDuel' | translate }}
+                        </button>
+                      </div>
+                    </kep-card>
+                  </div>
+                }
+              } @else {
+                <empty-result [title]="'NoReadyPlayers' | translate" [text]="''"/>
+              }
+            </div>
+            @if (readyPlayersTotal > readyPlayersPageSize) {
+              <div class="mt-2">
+                <kep-pagination
+                  [collectionSize]="readyPlayersTotal"
+                  [(page)]="readyPlayersPage"
+                  [pageSize]="readyPlayersPageSize"
+                  [maxSize]="5"
+                  [rotate]="true"
+                  [disabled]="readyPlayersLoading"
+                  [color]="'primary'"
+                  (pageChange)="loadReadyPlayers($event)"
+                ></kep-pagination>
+              </div>
+            }
+          </div>
+        </kep-card>
+      </div>
+
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap gap-2">
+          <h5 class="mb-0">
+            {{ 'MyDuels' | translate }}
+            @if (duelsTotal) {
+              <span class="text-muted">({{ duelsTotal }})</span>
+            }
+          </h5>
+        </div>
+        <div class="row g-3">
+          @if (duelsLoading) {
+            <div class="col-12 d-flex justify-content-center py-3">
+              <spinner></spinner>
+            </div>
+          } @else if (duelsResult?.data?.length) {
+            @for (duel of duelsResult.data; track trackDuel($index, duel)) {
+              <div class="col-12">
+                <div class="card h-100">
+                  <div class="card-body d-flex flex-column gap-2">
+                    <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
+                      <div>
+                        <div class="fw-semibold d-flex flex-wrap align-items-center gap-1">
+                          <user-popover [username]="duel.playerFirst?.username"></user-popover>
+                          <span class="text-muted">vs</span>
+                          @if (duel.playerSecond) {
+                            <user-popover [username]="duel.playerSecond.username"></user-popover>
+                          } @else {
+                            <span class="text-muted">—</span>
+                          }
+                        </div>
+                        <div class="text-muted small mt-1 d-flex flex-wrap gap-1 align-items-center">
+                          <span>{{ duel.startTime | date:'medium' }}</span>
+                          @if (duel.finishTime) {
+                            <span>•</span>
+                            <span>{{ duel.finishTime | date:'medium' }}</span>
+                          }
+                        </div>
+                        <div class="d-flex gap-2 mt-1">
+                          <span class="badge bg-light text-dark border">
+                            {{ getStatusKey(duel.status) | translate }}
+                          </span>
+                          @if (duel.isConfirmed === false) {
+                            <span class="badge bg-warning text-dark">{{ 'AwaitingConfirmation' | translate }}</span>
+                          }
+                        </div>
+                      </div>
+                      <div class="d-flex flex-wrap align-items-center gap-2">
+                        @if (isConfirmAvailable(duel)) {
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-success"
+                            (click)="confirmDuel(duel)"
+                            [disabled]="confirmLoadingId === duel.id"
+                          >
+                            {{ 'Confirm' | translate }}
+                            @if (confirmLoadingId === duel.id) {
+                              <span class="spinner-border spinner-border-sm ms-1" role="status"></span>
+                            }
+                          </button>
+                        }
+                        <a
+                          class="btn btn-sm btn-outline-primary"
+                          [routerLink]="['/practice', 'duels', 'duel', duel.id]"
+                        >
+                          {{ 'View' | translate }}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+          } @else {
+            <div class="col-12 text-center text-muted py-3">
+              {{ 'NoDuelsYet' | translate }}
+            </div>
+          }
+        </div>
+        @if (duelsTotal > duelsPageSize) {
+          <div class="mt-2">
+            <kep-pagination
+              [collectionSize]="duelsTotal"
+              [(page)]="duelsPage"
+              [pageSize]="duelsPageSize"
+              [maxSize]="5"
+              [rotate]="true"
+              [disabled]="duelsLoading"
+              [color]="'primary'"
+              (pageChange)="loadDuels($event)"
+            ></kep-pagination>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #duelPresetModal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ 'SelectDuelPreset' | translate }}</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
+  </div>
+  <form [formGroup]="duelForm" (ngSubmit)="createDuel()">
+    <div class="modal-body">
+      <p class="text-muted mb-3">
+        {{ 'SelectDuelPresetDescription' | translate:{ username: selectedOpponent?.username } }}
+      </p>
+      @if (duelPresetsLoading) {
+        <div class="d-flex justify-content-center py-3">
+          <spinner></spinner>
+        </div>
+      } @else {
+        <div class="mb-3">
+          @if (duelPresets.length) {
+            @for (preset of duelPresets; track preset.id) {
+              <div class="form-check border rounded p-3 mb-2" [class.border-primary]="duelControls.presetId.value === preset.id">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  [value]="preset.id"
+                  formControlName="presetId"
+                  [id]="'preset-' + preset.id"
+                >
+                <label class="form-check-label w-100" [for]="'preset-' + preset.id">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="fw-semibold">{{ preset.title }}</span>
+                    <span class="text-warning">{{ preset.difficultyDisplay }}</span>
+                  </div>
+                  @if (preset.category?.title) {
+                    <div class="text-muted small">{{ preset.category.title }}</div>
+                  }
+                  <div class="text-muted small">
+                    {{ 'Problems' | translate }}: {{ preset.problemsCount }} · {{ 'Duration' | translate }}: {{ preset.duration }}
+                  </div>
+                </label>
+              </div>
+            }
+          } @else {
+            <div class="text-muted">{{ 'NoPresetsAvailable' | translate }}</div>
+          }
+          @if (duelControls.presetId.invalid && duelControls.presetId.touched) {
+            <div class="text-danger small">{{ 'FieldRequired' | translate }}</div>
+          }
+        </div>
+      }
+      <div class="mb-0">
+        <label class="form-label" for="duelStartTime">{{ 'StartTime' | translate }}</label>
+        <input
+          type="datetime-local"
+          id="duelStartTime"
+          class="form-control"
+          formControlName="startTime"
+          [min]="minStartTime"
+        >
+        @if (duelControls.startTime.invalid && duelControls.startTime.touched) {
+          <div class="text-danger small mt-1">{{ 'FieldRequired' | translate }}</div>
+        }
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">{{ 'Cancel' | translate }}</button>
+      <button type="submit" class="btn btn-primary" [disabled]="duelForm.invalid || duelPresetsLoading">
+        {{ 'CreateDuel' | translate }}
+      </button>
+    </div>
+  </form>
+</ng-template>

@@ -67,6 +67,13 @@ export const MENU: Menu[] = [
         path: Resources.Challenges,
       },
       {
+        id: 'duels',
+        title: 'Menu.Duels',
+        icon: 'duel',
+        type: 'link',
+        path: Resources.Duels,
+      },
+      {
         id: 'tests',
         title: 'Menu.Tests',
         icon: 'test',
