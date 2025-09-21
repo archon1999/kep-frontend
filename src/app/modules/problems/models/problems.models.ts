@@ -82,6 +82,7 @@ export interface ProblemsFilter {
   hasSolution: boolean;
   partialSolvable: boolean;
   category: Categories;
+  ordering: string,
 }
 
 export interface StudyPlanDay {

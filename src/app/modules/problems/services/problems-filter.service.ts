@@ -13,6 +13,7 @@ export const DEFAULT_FILTER: ProblemsFilter = {
   hasSolution: null,
   partialSolvable: null,
   category: null,
+  ordering: null,
 };
 
 @Injectable({

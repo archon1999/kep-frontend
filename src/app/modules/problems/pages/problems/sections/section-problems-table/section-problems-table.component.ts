@@ -85,7 +85,10 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
 
   override getPage(): Observable<PageResult<Problem>> {
     return this.service.getProblems({
-      ...this.filter,
+      ...{
+        ...this.filter,
+        ordering: this.filter.ordering || this.ordering,
+      },
       page: this.pageNumber,
       pageSize: this.pageSize,
     }).pipe(
