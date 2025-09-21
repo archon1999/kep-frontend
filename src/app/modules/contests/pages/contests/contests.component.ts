@@ -110,7 +110,7 @@ export class ContestsComponent extends BaseTablePageComponent<Contest> implement
 
   protected getContentHeader(): ContentHeader {
     return {
-      headerTitle: 'Contests',
+      headerTitle: 'Contests.Contests',
       breadcrumb: {
         links: [
           {
@@ -118,7 +118,7 @@ export class ContestsComponent extends BaseTablePageComponent<Contest> implement
             isLink: false,
           },
           {
-            name: 'Contests',
+            name: 'Contests.Contests',
             isLink: false,
           }
         ]

@@ -88,7 +88,6 @@ export const localeEn = {
   Tests: 'Tests',
   Problems: 'Problems',
   Challenges: 'Challenges',
-  Contests: 'Contests',
   Attempts: 'Attempts',
   Users: 'Users',
   Resourses: 'Resources',

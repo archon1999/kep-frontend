@@ -50,7 +50,7 @@
       <div class="avatar avatar-rounded bg-primary-transparent p-2 me-2">
         <kep-icon name="contests" class="" size="medium-2"></kep-icon>
       </div>
-      {{ 'Contests' | translate }}
+      {{ 'Contests.Contests' | translate }}
     </div>
 
     <div class="d-flex gap-1">
@@ -62,7 +62,7 @@
         <contests-rating-image [size]="16" [title]="userContestsRating.maxRatingTitle"/>
         {{ userContestsRating.maxRating }}
       </span>
-      <span [ngbTooltip]="'Contests' | translate" class="badge d-md-inline-block d-none bg-primary-transparent">
+      <span [ngbTooltip]="'Contests.Contests' | translate" class="badge d-md-inline-block d-none bg-primary-transparent">
         {{ userContestsRating.contestantsCount }}
       </span>
     </div>

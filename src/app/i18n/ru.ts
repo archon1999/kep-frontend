@@ -78,7 +78,6 @@ export const localeRu = {
   Tests: 'Тесты',
   Problems: 'Задачи',
   Challenges: 'Вызовы',
-  Contests: 'Контесты',
   Attempts: 'Попытки',
   Users: 'Пользователи',
   Resourses: 'Ресурсы',

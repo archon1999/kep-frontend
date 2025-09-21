@@ -70,7 +70,7 @@ export class UsersListPage extends BasePageComponent {
     },
     {
       field: 'contestsRating',
-      header: 'Contests',
+      header: 'Contests.Contests',
       icon: 'contest',
       sortable: true,
       orderingKey: 'contests_rating__rating',

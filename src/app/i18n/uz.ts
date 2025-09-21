@@ -80,7 +80,6 @@ export const localeUz = {
   Users: 'Foydalanuvchilar',
   Problems: 'Masalalar',
   Challenges: 'Bellashuvlar',
-  Contests: 'Kontestlar',
   Attempts: 'Urinishlar',
   Resourses: 'Manbalar',
   Discussion: 'Muhokama',
