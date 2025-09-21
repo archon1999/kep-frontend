@@ -56,6 +56,10 @@ export const localeRu = {
   SOLVED: 'Решенный',
   NOT_SOLVED: 'Нерешенный',
   SELECT: 'Выбрать',
+  NG_SELECT: {
+    NOT_FOUND: 'Ничего не найдено',
+    LOADING: 'Загрузка...',
+  },
   NEWS: 'Новости',
   LAST_COMMENTS: 'Последние комментарии',
   LAST_POSTS: 'Последние посты',

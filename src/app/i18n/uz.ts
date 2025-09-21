@@ -56,6 +56,10 @@ export const localeUz = {
   SOLVED: 'Ishlangan',
   NOT_SOLVED: 'Ishlanmagan',
   SELECT: 'Tanlash',
+  NG_SELECT: {
+    NOT_FOUND: 'Hech narsa topilmadi',
+    LOADING: 'Yuklanmoqda...',
+  },
   NEWS: 'Yangiliklar',
   LAST_COMMENTS: 'Soʻngi izohlar',
   LAST_POSTS: 'Yangi postlar',

@@ -6,6 +6,8 @@ import { localeEn } from "./i18n/en";
 import { localeRu } from "./i18n/ru";
 import { localeUz } from "./i18n/uz";
 import { CoreLoadingScreenService } from "@core/services/loading-screen.service";
+import { NgSelectConfig } from '@ng-select/ng-select';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-root',
@@ -17,16 +19,27 @@ import { CoreLoadingScreenService } from "@core/services/loading-screen.service"
 export class AppComponent {
   protected translateService = inject(TranslateService);
   protected coreLoadingService = inject(CoreLoadingScreenService);
+  private ngSelectConfig = inject(NgSelectConfig);
 
   constructor(private appStateService: AppStateService) {
     this.translateService.setTranslation('en', localeEn);
     this.translateService.setTranslation('ru', localeRu);
     this.translateService.setTranslation('uz', localeUz);
 
-    this.appStateService.state$.subscribe(
-      (state) => {
+    this.appStateService.state$
+      .pipe(takeUntilDestroyed())
+      .subscribe((state) => {
         this.translateService.setDefaultLang(state.language);
-      }
-    )
+        this.setNgSelectGlobalTexts();
+      });
+
+    this.translateService.onDefaultLangChange
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.setNgSelectGlobalTexts());
+  }
+
+  private setNgSelectGlobalTexts(): void {
+    this.ngSelectConfig.notFoundText = this.translateService.instant('NG_SELECT.NOT_FOUND');
+    this.ngSelectConfig.loadingText = this.translateService.instant('NG_SELECT.LOADING');
   }
 }
