@@ -2,50 +2,41 @@
   <div class="content-body">
     <section-header [contentHeader]="contentHeader"/>
 
-    <ul ngbNav #navFilled="ngbNav" class="nav-tabs nav-style-1 nav-fill">
-      <li ngbNavItem>
-        <a ngbNavLink>{{ 'AllProblems' | translate }}</a>
-        <ng-template ngbNavContent>
-          <section-categories></section-categories>
-          @defer (on viewport) {
-            <section-problems-filter></section-problems-filter>
-          } @placeholder {
-            <div class="card" [style.height.px]="200">
-              <spinner></spinner>
-            </div>
-          }
-          @defer (on viewport) {
-            <section-problems-list></section-problems-list>
-          } @placeholder {
-            <div class="card" [style.height.px]="200">
-              <spinner></spinner>
-            </div>
-          }
-        </ng-template>
-      </li>
+    <div class="row">
+      <div class="col-lg-8">
+        <section-problems-filter/>
+        <section-problems-list/>
+      </div>
+      <div class="col-lg-4">
+        @if (isAuthenticated) {
+          <section-summary/>
+          <section-difficulties [username]="currentUser?.username"/>
+        }
 
-      <li ngbNavItem>
-        <a ngbNavLink>{{ 'MostViewedProblems' | translate }}</a>
-        <ng-template ngbNavContent>
-          <div class="row">
-            <div class="col-12 col-lg-6">
-              <section-most-viewed></section-most-viewed>
-            </div>
-            <div class="col-12 col-lg-6">
+        <ul ngbNav #navFilled="ngbNav" class="nav-tabs nav-style-1 nav-fill d-block">
+          <li ngbNavItem>
+            <a ngbNavLink>{{ 'LastAttempts' | translate }}</a>
+            <ng-template ngbNavContent>
               <section-last-attempts></section-last-attempts>
-            </div>
-          </div>
-        </ng-template>
-      </li>
+            </ng-template>
+          </li>
 
-      <li ngbNavItem>
-        <a ngbNavLink>{{ 'LastContestProblems' | translate }}</a>
-        <ng-template ngbNavContent>
-          <section-last-contest-problems></section-last-contest-problems>
-        </ng-template>
-      </li>
-    </ul>
-    <div [ngbNavOutlet]="navFilled" class="mt-2"></div>
+          <li ngbNavItem>
+            <a ngbNavLink>{{ 'LastContestProblems' | translate }}</a>
+            <ng-template ngbNavContent>
+              <section-last-contest-problems></section-last-contest-problems>
+            </ng-template>
+          </li>
 
+          <li ngbNavItem>
+            <a ngbNavLink>{{ 'MostViewedProblems' | translate }}</a>
+            <ng-template ngbNavContent>
+              <section-most-viewed></section-most-viewed>
+            </ng-template>
+          </li>
+        </ul>
+        <div [ngbNavOutlet]="navFilled" class="mt-2"></div>
+      </div>
+    </div>
   </div>
 </div>

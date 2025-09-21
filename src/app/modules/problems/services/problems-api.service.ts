@@ -70,6 +70,10 @@ export class ProblemsApiService {
     return this.api.get('tags');
   }
 
+  getLangs() {
+    return this.api.get('problems/langs');
+  }
+
   getDifficulties() {
     return this.api.get('problems/difficulties');
   }

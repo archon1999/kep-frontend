@@ -258,7 +258,7 @@ export const localeRu = {
   HomePageTitle: 'Оставайтесь с KEP',
   Comments: 'Комментарии',
   WriteComment: 'Написать комментарий',
-  OrderBy: 'Сортировать по',
+  ё: 'Сортировать по',
   Author: 'Автор',
   CompetitiveProgramming: 'Спортивное программирование',
   Technologies: 'Технологии',

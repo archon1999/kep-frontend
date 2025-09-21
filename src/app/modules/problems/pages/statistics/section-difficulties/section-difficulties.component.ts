@@ -8,6 +8,7 @@ import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.compon
 import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 export interface Difficulties {
   beginner: number;
@@ -39,6 +40,7 @@ export interface Difficulties {
     SwiperComponent,
     NgbProgressbarModule,
     ProblemsPipesModule,
+    KepCardComponent,
   ]
 })
 export class SectionDifficultiesComponent implements OnInit {

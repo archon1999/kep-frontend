@@ -69,7 +69,6 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
         this.reloadPage();
         this.updateQueryParams({
           ...filter,
-          category: null,
         }, {
           replaceUrl: true,
         });

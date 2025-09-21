@@ -1,0 +1,33 @@
+<kep-card *ngIf="isAuthenticated">
+  @if (isLoading) {
+    <ngx-skeleton-loader
+      count="1"
+      animation="pulse"
+      appearance="line"
+      [theme]="{height: '40px', 'margin-top': '0.75rem', background: 'var(--skeleton-color)'}"
+    ></ngx-skeleton-loader>
+  } @else {
+    @if (currentUser) {
+      <div class="card-footer d-flex justify-content-between">
+        <div class="solved text-center d-flex justify-content-between">
+          <div class="text-dark" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+            <kep-icon type="duotone" color="primary" name="check-square"></kep-icon>
+            {{ 'Solved' | translate }} {{ data.solved }}
+          </div>
+        </div>
+        <div class="solved text-center d-flex justify-content-between">
+          <div class="text-dark" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+            <kep-icon type="duotone" color="primary" name="rating"></kep-icon>
+            {{ 'Rating' | translate }} {{ data.rating }}
+          </div>
+        </div>
+        <div class="solved text-center d-flex justify-content-between">
+          <div class="text-dark" [ngClass.gt-sm]="'font-medium-2'" [ngClass.lt-md]="'font-small-3'">
+            <kep-icon type="duotone" color="primary" name="ranking"></kep-icon>
+            {{ 'Rank' | translate }} {{ data.rank }}/{{ data.usersCount }}
+          </div>
+        </div>
+      </div>
+    }
+  }
+</kep-card>

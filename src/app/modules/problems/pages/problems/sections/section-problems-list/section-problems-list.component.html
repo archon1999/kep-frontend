@@ -1,16 +1,58 @@
 @if (isLoading && !total) {
-  <div class="card" [style.height.px]="400">
-    <spinner></spinner>
-  </div>
+  <ngx-skeleton-loader
+    count="12"
+    animation="pulse"
+    appearance="line"
+    [theme]="{height: '66px', 'margin-bottom': '4px', background: 'var(--skeleton-color)'}"
+  ></ngx-skeleton-loader>
 } @else {
-  <div class="row">
-    @for (problem of problems; track problem.id) {
-      <div class="col-lg-4 col-md-6 col-12">
-        <problem-card [problem]="problem"></problem-card>
-      </div>
-    }
-  </div>
-  @if (problems?.length == 0) {
+  @for (problem of problems; track problem.id) {
+    <a [routerLink]="Resources.Problem | resourceById:problem.id">
+      <kep-card customClass="mb-1">
+        <div class="card-header p-3 py-2">
+          <div class="d-flex">
+            <div class="align-items-center d-flex" style="width: 32px">
+              @if (problem.userInfo.hasSolved) {
+                <div ngbTooltip="{{ 'Solved' | translate }}">
+                  <kep-icon name="check-circle" size="small-4" color="success"/>
+                </div>
+              } @else if (problem.userInfo.hasAttempted) {
+                <div ngbTooltip="{{ 'Unsolved' | translate }}">
+                  <kep-icon name="cross-circle" size="small-4" color="danger"/>
+                </div>
+              }
+            </div>
+
+            <div class="d-flex justify-content-end gap-1 flex-column">
+              <div class="text-dark fw-semibold">
+                {{ problem.id }} {{ problem.title }}
+              </div>
+
+              <div class="d-flex gap-2">
+                <span class="text-success" ngbTooltip="{{ 'UsersSolved' | translate }}">
+                  {{ problem.solved }}
+                  <i data-feather="user-check"></i>
+                </span>
+
+                <span class="text-danger" ngbTooltip="{{ 'UsersUnsolved' | translate }}">
+                  {{ problem.notSolved }}
+                  <i data-feather="user-x"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <span
+              ngbTooltip="{{ 'Difficulty' | translate }}"
+              class="badge bg-{{ problem.difficulty | problemDifficultyColor }}">
+              {{ problem.difficultyTitle }}
+            </span>
+          </div>
+        </div>
+      </kep-card>
+
+    </a>
+  } @empty {
     <div class="pb-2">
       <empty-result/>
     </div>

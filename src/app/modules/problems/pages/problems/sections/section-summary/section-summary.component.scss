@@ -1,0 +1,20 @@
+@import 'styles/kep-imports';
+
+//$bg-light-1: mix($green, mix(black, var(--primary), 5), 10);
+//$bg-light-2: mix(white, var(--primary), 15);
+//
+//$bg-dark-1: mix($green, mix(black, var(--primary), 80), 25);
+//$bg-dark-2: mix(black, var(--primary), 60);
+
+//section-header .card {
+//  border: none;
+//  background: linear-gradient(to right, $bg-light-1, $bg-light-2);
+//
+//  @include dark-layout {
+//    background: linear-gradient(to right, rgba($bg-dark-1, 0.5), rgba($bg-dark-2, 0.5));
+//  }
+//
+//  .card-footer {
+//    border-color: rgba(var(--primary-rgb), 0.1);
+//  }
+//}

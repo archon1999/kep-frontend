@@ -17,6 +17,10 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from "@ngx-translate/core";
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { ContentHeaderModule } from "@shared/ui/components/content-header/content-header.module";
+import { SectionSummaryComponent } from "@problems/pages/problems/sections/section-summary/section-summary.component";
+import {
+  SectionDifficultiesComponent
+} from "@problems/pages/statistics/section-difficulties/section-difficulties.component";
 
 @Component({
   selector: 'app-problems',
@@ -36,7 +40,9 @@ import { ContentHeaderModule } from "@shared/ui/components/content-header/conten
     SectionLastAttemptsComponent,
     NgbNavModule,
     TranslatePipe,
-    ContentHeaderModule
+    ContentHeaderModule,
+    SectionSummaryComponent,
+    SectionDifficultiesComponent
   ],
 })
 export class ProblemsComponent extends BasePageComponent implements OnInit {

@@ -1,0 +1,11 @@
+@import 'styles/kep-imports';
+
+section-problems-list {
+  a:hover .card {
+    background: rgba($primary, 0.2) !important;
+
+    @include dark-layout {
+      background: rgba($primary, 0.5) !important;
+    }
+  }
+}

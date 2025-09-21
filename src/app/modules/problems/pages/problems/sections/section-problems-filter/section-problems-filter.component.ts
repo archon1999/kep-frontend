@@ -12,6 +12,8 @@ import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { takeUntil } from 'rxjs/operators';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { langs } from "i18n-iso-countries";
+import { AttemptLanguageComponent } from "@shared/components/attempt-language/attempt-language.component";
 
 interface Difficulty {
   name: string;
@@ -31,27 +33,27 @@ interface Difficulty {
     KepIconComponent,
     NgSelectModule,
     KepCardComponent,
+    AttemptLanguageComponent,
   ]
 })
 export class SectionProblemsFilterComponent extends BaseComponent implements OnInit {
 
   public filterForm = new FormGroup({
-    title: new FormControl(),
+    category: new FormControl(),
+    search: new FormControl(),
     tags: new FormControl([]),
     difficulty: new FormControl(),
     status: new FormControl(),
-    hasChecker: new FormControl(),
-    hasCheckInput: new FormControl(),
-    hasSolution: new FormControl(),
-    partialSolvable: new FormControl(),
+    ordering: new FormControl(),
+    lang: new FormControl(),
   });
 
   public tags: Array<Tag> = [];
   public categories: Array<Category> = [];
   public difficulties: Array<Difficulty> = [];
+  public langOptions: Array<any> = [];
 
   public selectedTagsName: string;
-  public filterCollapsed = false;
   public problemsCount = 0;
 
   constructor(
@@ -72,6 +74,10 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
       }
     );
 
+    this.service.getLangs().subscribe(
+      (langs) => this.langOptions = langs
+    )
+
     const queryParams = deepCopy(this.route.snapshot.queryParams);
     if (queryParams.tags && !(queryParams instanceof Array)) {
       queryParams.tags = [queryParams.tags];
@@ -90,10 +96,6 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
         this.categories = categories;
         const tags = [];
         const categoryId = this.filterService.currentFilterValue.category;
-        if (categoryId) {
-          this.categories = [this.categories.find(c => c.id === categoryId)];
-        }
-
         this.categories.forEach(category => {
           category.tags.forEach(tag => {
             tags.push({
@@ -107,6 +109,7 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
         if (queryParams.tags) {
           this.selectedTagsName = Array.from(new Set(this.tags.filter(tag => queryParams.tags.indexOf(tag.id) !== -1).map(tag => tag.name))).join(', ');
         }
+        this.cdr.detectChanges();
       }
     );
 
