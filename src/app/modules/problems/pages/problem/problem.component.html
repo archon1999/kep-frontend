@@ -1,6 +1,29 @@
 <div class="content-wrapper container-xxl p-0">
   <div class="content-body">
-    <app-content-header [contentHeader]="contentHeader"></app-content-header>
+    <app-content-header [contentHeader]="contentHeader" [hasActions]="true">
+      <div actions class="d-flex gap-50">
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-primary"
+          [disabled]="!previousProblemId"
+          (click)="navigateToProblem(previousProblemId)"
+          ngbTooltip="{{ 'PreviousProblem' | translate }}"
+          container="body"
+        >
+          <i data-feather="chevron-left"></i>
+        </button>
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-primary"
+          [disabled]="!nextProblemId"
+          (click)="navigateToProblem(nextProblemId)"
+          ngbTooltip="{{ 'NextProblem' | translate }}"
+          container="body"
+        >
+          <i data-feather="chevron-right"></i>
+        </button>
+      </div>
+    </app-content-header>
     <section [@fadeInOnEnter] class="mt-2">
       <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12">

@@ -337,6 +337,8 @@ export const locale = {
     Purchased: 'Purchased',
     Finish: 'Finish',
     Next: 'Next',
+    NextProblem: 'Next problem',
+    PreviousProblem: 'Previous problem',
     Back: 'Back',
     NewAchievement: 'New achievement',
     ArenaFinishedNotification: 'Arena finished | Results',
