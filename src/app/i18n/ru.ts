@@ -99,6 +99,8 @@ export const localeRu = {
   PickOne: 'Выбрать один',
   GoToContest: 'Перейти в контест',
   Problem: 'Задача',
+  PreviousProblem: 'Предыдущая задача',
+  NextProblem: 'Следующая задача',
   Rating: 'Рейтинг',
   OverallRating: 'Общий рейтинг',
   DuelsRating: 'Рейтинг дуэлей',
