@@ -1,3 +1,5 @@
+@import 'styles/kep-imports';
+
 .badge {
   --bs-badge-padding-x: 0.9em;
   --bs-badge-padding-y: 0.65em;
@@ -8,10 +10,6 @@
   font-size: var(--bs-badge-font-size);
   font-weight: var(--bs-badge-font-weight);
   border-radius: var(--bs-badge-border-radius);
-
-  &.bg-yellow {
-    --bs-badge-color: #000;
-  }
 }
 
 .badge-pill {
