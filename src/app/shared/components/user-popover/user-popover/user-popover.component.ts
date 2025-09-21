@@ -26,6 +26,7 @@ interface RatingStat {
   percentile?: number;
   title?: string;
   format: string;
+  icon: string;
 }
 
 @Component({
@@ -49,11 +50,11 @@ export class UserPopoverComponent implements OnInit {
   public ratingStats: RatingStat[] = [];
   protected cdr = inject(ChangeDetectorRef);
 
-  private readonly ratingConfig: Array<{ key: RatingKey; translationKey: string }> = [
-    { key: 'skillsRating', translationKey: 'SkillsRating' },
-    { key: 'activityRating', translationKey: 'ActivityRating' },
-    { key: 'contestsRating', translationKey: 'Contests.ContestsRating' },
-    { key: 'challengesRating', translationKey: 'PageTitle.Challenges.ChallengesRating' },
+  private readonly ratingConfig: Array<{ key: RatingKey; translationKey: string; icon: string }> = [
+    { key: 'skillsRating', translationKey: 'SkillsRating', icon: 'rating' },
+    { key: 'activityRating', translationKey: 'ActivityRating', icon: 'rating' },
+    { key: 'contestsRating', translationKey: 'Contests.ContestsRating', icon: 'contests' },
+    { key: 'challengesRating', translationKey: 'PageTitle.Challenges.ChallengesRating', icon: 'challenges' },
   ];
 
   constructor(
@@ -83,7 +84,7 @@ export class UserPopoverComponent implements OnInit {
     }
 
     return this.ratingConfig
-      .map(({ key, translationKey }) => {
+      .map(({ key, translationKey, icon }) => {
         const rating = userRatings[key];
         if (!rating || typeof rating.value !== 'number') {
           return null;
@@ -99,6 +100,7 @@ export class UserPopoverComponent implements OnInit {
           percentile: rating.percentile,
           title: rating.title,
           format,
+          icon,
         } as RatingStat;
       })
       .filter((stat): stat is RatingStat => !!stat);
