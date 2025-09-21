@@ -28,11 +28,9 @@
       <div class="duels-list-card__scores text-end d-flex flex-column align-items-end gap-2">
         <div class="duels-list-card__score">
           <span class="duels-list-card__score-value text-primary">{{ duel.playerFirst?.balls ?? 0 }}</span>
-          <span class="duels-list-card__score-label">{{ 'Points' | translate }}</span>
         </div>
         <div class="duels-list-card__score" *ngIf="duel.playerSecond">
           <span class="duels-list-card__score-value text-primary">{{ duel.playerSecond?.balls ?? 0 }}</span>
-          <span class="duels-list-card__score-label">{{ 'Points' | translate }}</span>
         </div>
       </div>
     </div>
