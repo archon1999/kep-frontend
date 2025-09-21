@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SectionProblemsFilterComponent } from './sections/section-problems-filter/section-problems-filter.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
-import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { BasePageComponent } from '@core/common/classes/base-page.component';
 import { SectionHeaderComponent } from '@problems/pages/problems/sections/section-header/section-header.component';
 import { SectionCategoriesComponent } from './sections/section-categories/section-categories.component';
-import { SectionProblemsListComponent } from './sections/section-problems-list/section-problems-list.component';
 import {
   SectionMostViewedProblemsComponent
 } from './sections/section-most-viewed-problems/section-most-viewed-problems.component';
@@ -13,10 +11,11 @@ import {
   SectionLastContestProblemsComponent
 } from './sections/section-last-contest-problems/section-last-contest-problems.component';
 import { SectionLastAttemptsComponent } from './sections/section-last-attempts/section-last-attempts.component';
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from "@ngx-translate/core";
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { ContentHeaderModule } from "@shared/ui/components/content-header/content-header.module";
+import { SectionProblemsSummaryComponent } from "./sections/section-problems-summary/section-problems-summary.component";
+import { SectionProblemsTableComponent } from "./sections/section-problems-table/section-problems-table.component";
 
 @Component({
   selector: 'app-problems',
@@ -27,16 +26,15 @@ import { ContentHeaderModule } from "@shared/ui/components/content-header/conten
   imports: [
     SectionProblemsFilterComponent,
     SpinnerComponent,
-    NgSelectModule,
     SectionHeaderComponent,
     SectionCategoriesComponent,
-    SectionProblemsListComponent,
+    SectionProblemsTableComponent,
     SectionMostViewedProblemsComponent,
     SectionLastContestProblemsComponent,
     SectionLastAttemptsComponent,
-    NgbNavModule,
     TranslatePipe,
-    ContentHeaderModule
+    ContentHeaderModule,
+    SectionProblemsSummaryComponent
   ],
 })
 export class ProblemsComponent extends BasePageComponent implements OnInit {

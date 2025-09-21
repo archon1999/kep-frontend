@@ -79,6 +79,10 @@ export class ProblemsApiService {
     return this.api.get('problems-rating', params);
   }
 
+  getCurrentUserProblemsSummary() {
+    return this.api.get('problems-rating');
+  }
+
   getProblemVerdictStatistics(problemId: number) {
     return this.api.get(`problems/${problemId}/attempt-statistics/`);
   }

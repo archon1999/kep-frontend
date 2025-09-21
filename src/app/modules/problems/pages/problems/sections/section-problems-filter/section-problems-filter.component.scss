@@ -1,20 +1,90 @@
 @import 'styles/kep-imports';
-//
-//.tags-dropdown {
-//  --bs-dropdown-padding-x: 0;
-//  --bs-dropdown-padding-y: 0;
-//
-//  --bs-dropdown-bg: white;
-//
-//  @include dark-layout {
-//    --bs-dropdown-bg: #{$theme-dark-card-bg};
-//  }
-//}
-//
-//.select-tags {
-//  background: white;
-//
-//  @include dark-layout {
-//    background: inherit;
-//  }
-//}
+
+.problems-filter {
+  .card-body {
+    padding: 1.5rem;
+
+    @include media-breakpoint-down(sm) {
+      padding: 1rem;
+    }
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+  }
+
+  &__count {
+    color: var(--bs-body-color);
+    opacity: 0.6;
+  }
+
+  &__grid {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  &__grid--advanced {
+    margin-top: 0.75rem;
+  }
+
+  &__field {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .ng-select {
+      width: 100%;
+    }
+  }
+
+  &__field--search {
+    background-color: rgba($primary, 0.05);
+    border-radius: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid transparent;
+
+    input {
+      border: none;
+      background: transparent;
+      box-shadow: none;
+
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+    }
+
+    @include dark-layout {
+      background-color: rgba($white, 0.05);
+    }
+  }
+
+  &__advanced {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba($primary, 0.1);
+  }
+}
+
+:host ::ng-deep {
+  .problems-filter {
+    .ng-select-container {
+      border-radius: 0.75rem;
+    }
+
+    .ng-select.ng-select-multiple .ng-select-container {
+      padding-left: 0.5rem;
+    }
+  }
+}

@@ -1,0 +1,46 @@
+<kep-card class="problems-summary" *ngIf="isAuthenticated">
+  <div class="card-header problems-summary__header">
+    <div>
+      <div class="card-title problems-summary__title">
+        <kep-icon name="check-circle"></kep-icon>
+        {{ 'Solved' | translate }}
+      </div>
+      <div class="problems-summary__subtitle" *ngIf="summary?.user?.ratingTitle">
+        {{ summary?.user?.ratingTitle }}
+      </div>
+    </div>
+    <div class="problems-summary__total" *ngIf="!isLoading; else summarySkeleton">
+      {{ summary?.solved || 0 }}
+    </div>
+  </div>
+
+  <div class="card-body" *ngIf="!isLoading; else summarySkeleton">
+    <ul class="problems-summary__list">
+      <li class="problems-summary__item" *ngFor="let item of difficultySummary">
+        <span class="problems-summary__label">{{ item.label | translate }}</span>
+        <span class="badge bg-{{ item.color }} problems-summary__value">{{ summary?.[item.key] || 0 }}</span>
+      </li>
+    </ul>
+
+    <div class="problems-summary__rating" *ngIf="summary">
+      <div class="problems-summary__rating-value">
+        <kep-icon name="rating" type="duotone"></kep-icon>
+        {{ summary.rating | number }}
+      </div>
+      <div class="problems-summary__rating-caption">
+        {{ 'Rating' | translate }}
+      </div>
+    </div>
+  </div>
+</kep-card>
+
+<ng-template #summarySkeleton>
+  <div class="problems-summary__skeleton">
+    <ngx-skeleton-loader
+      count="4"
+      appearance="line"
+      animation="pulse"
+      [theme]="{height: '20px', margin: '8px 0', background: 'var(--skeleton-color)'}"
+    />
+  </div>
+</ng-template>

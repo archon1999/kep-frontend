@@ -2,50 +2,31 @@
   <div class="content-body">
     <section-header [contentHeader]="contentHeader"/>
 
-    <ul ngbNav #navFilled="ngbNav" class="nav-tabs nav-style-1 nav-fill">
-      <li ngbNavItem>
-        <a ngbNavLink>{{ 'AllProblems' | translate }}</a>
-        <ng-template ngbNavContent>
-          <section-categories></section-categories>
-          @defer (on viewport) {
-            <section-problems-filter></section-problems-filter>
-          } @placeholder {
-            <div class="card" [style.height.px]="200">
-              <spinner></spinner>
-            </div>
-          }
-          @defer (on viewport) {
-            <section-problems-list></section-problems-list>
-          } @placeholder {
-            <div class="card" [style.height.px]="200">
-              <spinner></spinner>
-            </div>
-          }
-        </ng-template>
-      </li>
-
-      <li ngbNavItem>
-        <a ngbNavLink>{{ 'MostViewedProblems' | translate }}</a>
-        <ng-template ngbNavContent>
-          <div class="row">
-            <div class="col-12 col-lg-6">
-              <section-most-viewed></section-most-viewed>
-            </div>
-            <div class="col-12 col-lg-6">
-              <section-last-attempts></section-last-attempts>
-            </div>
+    <div class="problems-page">
+      @defer (on viewport) {
+        <div class="problems-page__layout">
+          <div class="problems-page__main">
+            <section-problems-filter/>
+            <section-problems-table class="mt-1"/>
           </div>
-        </ng-template>
-      </li>
+          <aside class="problems-page__sidebar">
+            <section-problems-summary/>
+            <section-last-attempts class="problems-page__card"/>
+          </aside>
+        </div>
+      } @placeholder {
+        <div class="card" [style.height.px]="300">
+          <spinner></spinner>
+        </div>
+      }
 
-      <li ngbNavItem>
-        <a ngbNavLink>{{ 'LastContestProblems' | translate }}</a>
-        <ng-template ngbNavContent>
-          <section-last-contest-problems></section-last-contest-problems>
-        </ng-template>
-      </li>
-    </ul>
-    <div [ngbNavOutlet]="navFilled" class="mt-2"></div>
+      <div class="problems-page__additional">
+        <section-most-viewed class="problems-page__additional-card"/>
+        <section-last-contest-problems class="problems-page__additional-card"/>
+      </div>
+
+      <section-categories class="problems-page__categories"/>
+    </div>
 
   </div>
 </div>

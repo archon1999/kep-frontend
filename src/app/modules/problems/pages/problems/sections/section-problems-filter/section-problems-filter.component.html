@@ -1,235 +1,159 @@
-<kep-card>
-  <div class="card-header">
-    <div class="card-title text-dark">
-      <kep-icon name="filter"></kep-icon>
-      {{ 'Filter' | translate }}
-      <span class="ms-1 total-count">({{ problemsCount }})</span>
-    </div>
-    <button aria-label="filter-collapsed" class="btn btn-sm btn-primary" (click)="filterCollapsed=!filterCollapsed;">
-      <kep-icon [name]="filterCollapsed ? 'double-up' : 'double-down'"></kep-icon>
-    </button>
-  </div>
+<kep-card customClass="problems-filter">
   <div class="card-body">
     <form [formGroup]="filterForm">
-      <div class="row">
-        <div class="col-6 col-lg-3">
-          <div class="mb-1">
-            <label class="text-primary" aria-label="Title">
-              <kep-icon name="pencil"></kep-icon>
-              <strong>
-                {{ 'TITLE' | translate }}:
-              </strong>
-            </label>
-            <input
-              formControlName="title"
-              class="form-control"
-              name="title"
-              type="text"
-            />
-          </div>
+      <div class="problems-filter__header">
+        <div class="problems-filter__title">
+          <kep-icon name="filter"></kep-icon>
+          <span>{{ 'Filter' | translate }}</span>
+          <span class="problems-filter__count">({{ problemsCount }})</span>
         </div>
-
-        <div class="col-6 col-lg-3">
-          <label class="text-primary" aria-label="Tags">
-            <kep-icon name="tags"></kep-icon>
-            <strong>
-              {{ 'TAGS' | translate }}:
-            </strong>
-          </label>
-          <div class="mb-1">
-            <div ngbDropdown container="body" [placement]="'bottom'"
-                 class="select-tags btn-group full-width d-lg-block d-none">
-              <button type="button" class="btn btn-outline-primary" [style.width.%]="80" rippleEffect>
-                {{ selectedTagsName || ('SELECT' | translate) }}
-              </button>
-              <button
-                [style.width.%]="20"
-                ngbDropdownToggle
-                type="button"
-                class="btn btn-outline-primary dropdown-toggle-split"
-                rippleEffect>
-              </button>
-              <div ngbDropdownMenu class="tags-dropdown" [style.width.rem]="32">
-                <div ngbAccordion [closeOthers]="true" [destroyOnHide]="false">
-                  @for (category of categories; track category.id) {
-                    <div ngbAccordionItem [id]="'i' + category.id">
-                      <h2 ngbAccordionHeader>
-                        <button ngbAccordionButton>
-                          {{ category.title }}
-                        </button>
-                      </h2>
-                      <div ngbAccordionCollapse>
-                        <div ngbAccordionBody>
-                          @for (tag of category.tags; track $index) {
-                            @if (tag) {
-                              <button (click)="tagOnClick(tag?.id)" class="mx-25 mb-50 btn btn-sm" [class]="{
-                                'btn-outline-primary': filterForm.value.tags?.indexOf(tag.id) === -1,
-                                'btn-primary': filterForm.value.tags?.indexOf(tag.id) !== -1,
-                              }">
-                                {{ tag.name }}
-                              </button>
-                            }
-                          }
-                        </div>
-                      </div>
-                    </div>
-                  }
-                </div>
-              </div>
-            </div>
-
-            <ng-select
-              appendTo="body"
-              class="d-lg-none tags-select"
-              formControlName="tags"
-              [dropdownPosition]="'top'"
-              [multiple]="true"
-              [items]="tags"
-              [closeOnSelect]="false"
-              [maxSelectedItems]="3"
-              [groupBy]="'category'"
-              [bindLabel]="'name'"
-              [bindValue]="'id'"
-              placeholder="{{ 'SELECT' | translate }}:"
-              [compareWith]="compareEqual">
-              <ng-template ng-optgroup-tmp let-item="item">
-                {{ item.category }}
-              </ng-template>
-            </ng-select>
-          </div>
+        <div class="problems-filter__actions">
+          <button type="button" class="btn btn-icon btn-sm btn-outline-primary" (click)="filterCollapsed = !filterCollapsed">
+            <kep-icon [name]="filterCollapsed ? 'double-up' : 'double-down'"></kep-icon>
+          </button>
         </div>
-
-        <div class="col-6 col-lg-3">
-          <label class="text-primary" aria-label="Difficulty">
-            <kep-icon name="graph-2"></kep-icon>
-            <strong>
-              {{ 'DIFFICULTY' | translate }}:
-            </strong>
-          </label>
-          <div class="mb-1">
-            <ng-select [searchable]="false" appendTo="body" formControlName="difficulty" [compareWith]="compareEqual">
-              @for (item of difficulties; track item) {
-                <ng-option [value]="item.value">
-                  <span class="text-{{ item.value | problemDifficultyColor }}">
-                    {{ item.name }}
-                  </span>
-                </ng-option>
-              }
-            </ng-select>
-          </div>
-        </div>
-
-        <div class="col-lg-3 col-6">
-          <label class="text-primary" aria-label="Status">
-            <kep-icon name="check-square"></kep-icon>
-            <strong>
-              {{ 'STATUS' | translate }}:
-            </strong>
-          </label>
-          <div class="mb-1">
-            <ng-select [searchable]="false" appendTo="body" formControlName="status" [compareWith]="compareEqual">
-              <ng-option [value]="3">
-                <kep-icon name="minus" class="text-warning"></kep-icon>
-                {{ 'Unknown' | translate }}
-              </ng-option>
-              <ng-option [value]="1">
-                <kep-icon name="check" class="text-success"></kep-icon>
-                {{ 'Solved' | translate }}
-              </ng-option>
-              <ng-option [value]="2">
-                <kep-icon name="cross" class="text-danger"></kep-icon>
-                {{ 'Unsolved' | translate }}
-              </ng-option>
-            </ng-select>
-          </div>
-        </div>
-
       </div>
 
-      @if (filterCollapsed) {
-        <div class="row">
-          <div class="col-lg-3 col-6">
-            <label class="text-primary">
-              <kep-icon name="filter-search"></kep-icon>
-              <strong>
-                {{ 'Checker' | translate }}:
-              </strong>
-            </label>
-            <div class="mb-1">
-              <ng-select appendTo="body" formControlName="hasChecker" [compareWith]="compareEqual">
-                <ng-option [value]="true">
-                  <i [data-feather]="'exists' | iconName" class="text-success"></i>
-                  {{ 'Yes' | translate }}
-                </ng-option>
-                <ng-option [value]="false">
-                  <i [data-feather]="'not_exists' | iconName" class="text-danger"></i>
-                  {{ 'No' | translate }}
-                </ng-option>
-              </ng-select>
-            </div>
+      <div class="problems-filter__grid">
+        <div class="problems-filter__field problems-filter__field--search">
+          <kep-icon name="search"></kep-icon>
+          <input
+            type="search"
+            class="form-control"
+            formControlName="title"
+            [placeholder]="'Search' | translate"
+          />
+        </div>
+
+        <div class="problems-filter__field">
+          <ng-select
+            appendTo="body"
+            formControlName="tags"
+            [multiple]="true"
+            [closeOnSelect]="false"
+            [items]="tags"
+            [groupBy]="'category'"
+            [bindLabel]="'name'"
+            [bindValue]="'id'"
+            placeholder="{{ 'TAGS' | translate }}"
+            [compareWith]="compareEqual">
+            <ng-template ng-optgroup-tmp let-item="item">
+              {{ item.category }}
+            </ng-template>
+          </ng-select>
+        </div>
+
+        <div class="problems-filter__field">
+          <ng-select
+            appendTo="body"
+            formControlName="difficulty"
+            [searchable]="false"
+            placeholder="{{ 'DIFFICULTY' | translate }}"
+            [compareWith]="compareEqual">
+            @for (item of difficulties; track item) {
+              <ng-option [value]="item.value">
+                <span class="text-{{ item.value | problemDifficultyColor }}">
+                  {{ item.name }}
+                </span>
+              </ng-option>
+            }
+          </ng-select>
+        </div>
+
+        <div class="problems-filter__field">
+          <ng-select
+            appendTo="body"
+            formControlName="status"
+            [searchable]="false"
+            placeholder="{{ 'STATUS' | translate }}"
+            [compareWith]="compareEqual">
+            <ng-option [value]="3">
+              <kep-icon name="minus" class="text-warning"></kep-icon>
+              {{ 'Unknown' | translate }}
+            </ng-option>
+            <ng-option [value]="1">
+              <kep-icon name="check" class="text-success"></kep-icon>
+              {{ 'Solved' | translate }}
+            </ng-option>
+            <ng-option [value]="2">
+              <kep-icon name="cross" class="text-danger"></kep-icon>
+              {{ 'Unsolved' | translate }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+
+      <div class="problems-filter__advanced" *ngIf="filterCollapsed">
+        <div class="problems-filter__grid problems-filter__grid--advanced">
+          <div class="problems-filter__field">
+            <ng-select
+              appendTo="body"
+              formControlName="hasChecker"
+              [compareWith]="compareEqual"
+              placeholder="{{ 'Checker' | translate }}">
+              <ng-option [value]="true">
+                <i [data-feather]="'exists' | iconName" class="text-success"></i>
+                {{ 'Yes' | translate }}
+              </ng-option>
+              <ng-option [value]="false">
+                <i [data-feather]="'not_exists' | iconName" class="text-danger"></i>
+                {{ 'No' | translate }}
+              </ng-option>
+            </ng-select>
           </div>
-          <div class="col-lg-3 col-6">
-            <label class="text-primary">
-              <kep-icon name="filter-search"></kep-icon>
-              <strong>
-                {{ 'CheckInput' | translate }}:
-              </strong>
-            </label>
-            <div class="mb-1">
-              <ng-select appendTo="body" formControlName="hasCheckInput" [compareWith]="compareEqual">
-                <ng-option [value]="true">
-                  <i [data-feather]="'exists' | iconName" class="text-success"></i>
-                  {{ 'Yes' | translate }}
-                </ng-option>
-                <ng-option [value]="false">
-                  <i [data-feather]="'not_exists' | iconName" class="text-danger"></i>
-                  {{ 'No' | translate }}
-                </ng-option>
-              </ng-select>
-            </div>
+
+          <div class="problems-filter__field">
+            <ng-select
+              appendTo="body"
+              formControlName="hasCheckInput"
+              [compareWith]="compareEqual"
+              placeholder="{{ 'CheckInput' | translate }}">
+              <ng-option [value]="true">
+                <i [data-feather]="'exists' | iconName" class="text-success"></i>
+                {{ 'Yes' | translate }}
+              </ng-option>
+              <ng-option [value]="false">
+                <i [data-feather]="'not_exists' | iconName" class="text-danger"></i>
+                {{ 'No' | translate }}
+              </ng-option>
+            </ng-select>
           </div>
-          <div class="col-lg-3 col-6">
-            <label class="text-primary">
-              <kep-icon name="filter-search"></kep-icon>
-              <strong>
-                {{ 'Solution' | translate }}:
-              </strong>
-            </label>
-            <div class="mb-1">
-              <ng-select appendTo="body" formControlName="hasSolution" [compareWith]="compareEqual">
-                <ng-option [value]="true">
-                  <i [data-feather]="'exists' | iconName" class="text-success"></i>
-                  {{ 'Yes' | translate }}
-                </ng-option>
-                <ng-option [value]="false">
-                  <i [data-feather]="'not_exists' | iconName" class="text-danger"></i>
-                  {{ 'No' | translate }}
-                </ng-option>
-              </ng-select>
-            </div>
+
+          <div class="problems-filter__field">
+            <ng-select
+              appendTo="body"
+              formControlName="hasSolution"
+              [compareWith]="compareEqual"
+              placeholder="{{ 'Solution' | translate }}">
+              <ng-option [value]="true">
+                <i [data-feather]="'exists' | iconName" class="text-success"></i>
+                {{ 'Yes' | translate }}
+              </ng-option>
+              <ng-option [value]="false">
+                <i [data-feather]="'not_exists' | iconName" class="text-danger"></i>
+                {{ 'No' | translate }}
+              </ng-option>
+            </ng-select>
           </div>
-          <div class="col-lg-3 col-6">
-            <label class="text-primary">
-              <kep-icon name="filter-search"></kep-icon>
-              <strong>
-                {{ 'PartialSolvable' | translate }}:
-              </strong>
-            </label>
-            <div class="mb-1">
-              <ng-select appendTo="body" formControlName="partialSolvable" [compareWith]="compareEqual">
-                <ng-option [value]="true">
-                  <i [data-feather]="'exists' | iconName" class="text-success"></i>
-                  {{ 'Yes' | translate }}
-                </ng-option>
-                <ng-option [value]="false">
-                  <i [data-feather]="'not_exists' | iconName" class="text-danger"></i>
-                  {{ 'No' | translate }}
-                </ng-option>
-              </ng-select>
-            </div>
+
+          <div class="problems-filter__field">
+            <ng-select
+              appendTo="body"
+              formControlName="partialSolvable"
+              [compareWith]="compareEqual"
+              placeholder="{{ 'PartialSolvable' | translate }}">
+              <ng-option [value]="true">
+                <i [data-feather]="'exists' | iconName" class="text-success"></i>
+                {{ 'Yes' | translate }}
+              </ng-option>
+              <ng-option [value]="false">
+                <i [data-feather]="'not_exists' | iconName" class="text-danger"></i>
+                {{ 'No' | translate }}
+              </ng-option>
+            </ng-select>
           </div>
         </div>
-      }
+      </div>
     </form>
   </div>
 </kep-card>

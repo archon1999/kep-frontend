@@ -1,10 +1,62 @@
 @import 'styles/kep-imports';
 
 .bg-problems-table {
-  // background: mix(black, var(--primary), 10) !important;
-  color: white !important;
+  background: transparent !important;
+  color: var(--bs-body-color) !important;
 
   th {
     border: none !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+}
+
+:host ::ng-deep {
+  .kep-table {
+    .table {
+      border-collapse: separate;
+      border-spacing: 0 0.5rem;
+
+      thead th {
+        padding-bottom: 0.75rem;
+      }
+
+      tbody tr {
+        background-color: rgba($primary, 0.04);
+        border-radius: 1rem;
+        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+        @include dark-layout {
+          background-color: rgba($white, 0.04);
+        }
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 12px 24px rgba($black, 0.08);
+
+          @include dark-layout {
+            box-shadow: 0 12px 24px rgba($black, 0.4);
+          }
+        }
+
+        td {
+          border: none;
+          padding: 1rem 1.25rem;
+          vertical-align: middle;
+        }
+      }
+
+      tbody tr.bg-success-transparent,
+      tbody tr.bg-light-danger {
+        background-color: inherit;
+
+        td {
+          background-color: transparent;
+        }
+      }
+    }
   }
 }

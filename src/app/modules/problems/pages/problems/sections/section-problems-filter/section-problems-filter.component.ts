@@ -7,7 +7,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { deepCopy, equalsCheck } from '@shared/utils';
 import { CoreCommonModule } from '@core/common.module';
 import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
-import { NgbAccordionModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { takeUntil } from 'rxjs/operators';
@@ -26,8 +25,6 @@ interface Difficulty {
   imports: [
     CoreCommonModule,
     ProblemsPipesModule,
-    NgbDropdownModule,
-    NgbAccordionModule,
     KepIconComponent,
     NgSelectModule,
     KepCardComponent,
@@ -50,7 +47,6 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
   public categories: Array<Category> = [];
   public difficulties: Array<Difficulty> = [];
 
-  public selectedTagsName: string;
   public filterCollapsed = false;
   public problemsCount = 0;
 
@@ -104,15 +100,6 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
         });
         this.tags = tags;
 
-        if (queryParams.tags) {
-          this.selectedTagsName = Array.from(new Set(this.tags.filter(tag => queryParams.tags.indexOf(tag.id) !== -1).map(tag => tag.name))).join(', ');
-        }
-      }
-    );
-
-    this.filterForm.controls.tags.valueChanges.subscribe(
-      (tags) => {
-        this.selectedTagsName = Array.from(new Set(this.tags.filter(tag => tags.indexOf(tag.id) !== -1).map(tag => tag.name))).join(', ');
       }
     );
 
@@ -125,16 +112,5 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
 
   compareEqual(a, b) {
     return equalsCheck(a, b) || a?.toString() === b?.toString();
-  }
-
-  tagOnClick(tagId: number) {
-    const tags = this.filterForm.value.tags || [];
-    const index = tags.indexOf(tagId);
-    if (index === -1) {
-      tags.push(tagId);
-    } else {
-      tags.splice(index, 1);
-    }
-    this.filterForm.patchValue({tags: tags});
   }
 }
