@@ -113,10 +113,10 @@
                 {{ 'TIME_LIMIT' | translate }}:
               </small>
             </div>
-            <div class="col problem-header">
+              <div class="col problem-header">
               <small class="text-center">
                 <span class="text-info">
-                  {{ availableLang.timeLimit || duelProblem.problem.timeLimit }} {{ 'MS' | translate }}
+                  {{ availableLang?.timeLimit || duelProblem.problem.timeLimit }} {{ 'MS' | translate }}
                 </span>
               </small>
             </div>
@@ -130,7 +130,7 @@
             <div class="col mb-2 problem-header">
               <small class="text-center">
                 <span class="text-primary">
-                  {{ availableLang.memoryLimit || duelProblem.problem.memoryLimit }} {{ 'MB' | translate }}
+                  {{ availableLang?.memoryLimit || duelProblem.problem.memoryLimit }} {{ 'MB' | translate }}
                 </span>
               </small>
             </div>

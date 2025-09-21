@@ -334,6 +334,8 @@ export const locale = {
     Purchased: 'Xarid qilingan',
     Finish: 'Tugatish',
     Next: 'Keyingisi',
+    NextProblem: 'Keyingi masala',
+    PreviousProblem: 'Oldingi masala',
     Back: 'Orqaga',
     NewAchievement: 'Yangi yutuq',
     ArenaFinishedNotification: 'Arena yakunlandi | Natijalar',

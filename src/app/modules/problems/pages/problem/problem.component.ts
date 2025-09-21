@@ -19,6 +19,11 @@ import { TourModule } from '@shared/third-part-modules/tour/tour.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { BasePageComponent } from '@app/common/classes/base-page.component';
+import { LanguageService } from '@problems/services/language.service';
+import { AttemptLangs } from '@problems/constants';
+import { takeUntil } from 'rxjs/operators';
+import { findAvailableLang } from '@problems/utils';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-problem',
@@ -41,6 +46,7 @@ import { BasePageComponent } from '@app/common/classes/base-page.component';
     TourModule,
     NgSelectModule,
     MonacoEditorComponent,
+    NgbTooltipModule,
   ]
 })
 export class ProblemComponent extends BasePageComponent implements OnInit {
@@ -53,9 +59,13 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
   public submitEvent = new Subject();
   public checkInput = '';
 
+  public previousProblemId: number | null = null;
+  public nextProblemId: number | null = null;
+
   constructor(
     public service: ProblemsApiService,
     public api: ApiService,
+    public langService: LanguageService,
   ) {
     super();
     this.coreConfigService.config = {
@@ -83,7 +93,15 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
       });
       this.checkInput = this.problem.checkInputSource;
       this.loadContentHeader();
+      this.loadAdjacentProblems();
+      this.ensureLanguageIsAvailable(this.langService.getLanguageValue());
     });
+
+    this.langService.getLanguage().pipe(takeUntil(this._unsubscribeAll)).subscribe(
+      (lang: AttemptLangs) => {
+        this.ensureLanguageIsAvailable(lang);
+      }
+    );
   }
 
   afterFirstChangeQueryParams(params: Params) {
@@ -143,6 +161,56 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
 
   codeEditorSidebarToggle() {
     this.coreSidebarService.getSidebarRegistry('codeEditorSidebar').toggleOpen();
+  }
+
+  loadAdjacentProblems() {
+    if (!this.problem?.id) {
+      this.previousProblemId = null;
+      this.nextProblemId = null;
+      return;
+    }
+
+    this.previousProblemId = null;
+    this.nextProblemId = null;
+
+    this.service.getProblemPrev(this.problem.id).subscribe(
+      (result: { id?: number } | null) => {
+        this.previousProblemId = result?.id ?? null;
+      },
+      () => {
+        this.previousProblemId = null;
+      }
+    );
+
+    this.service.getProblemNext(this.problem.id).subscribe(
+      (result: { id?: number } | null) => {
+        this.nextProblemId = result?.id ?? null;
+      },
+      () => {
+        this.nextProblemId = null;
+      }
+    );
+  }
+
+  navigateToProblem(problemId: number | null) {
+    if (!problemId) {
+      return;
+    }
+    this.router.navigate(['/practice', 'problems', 'problem', problemId]);
+  }
+
+  private ensureLanguageIsAvailable(lang: AttemptLangs) {
+    if (!this.problem?.availableLanguages?.length) {
+      return;
+    }
+
+    const selectedAvailableLang = findAvailableLang(this.problem.availableLanguages, lang);
+    if (!selectedAvailableLang) {
+      const fallbackLang = this.problem.availableLanguages[0]?.lang;
+      if (fallbackLang && fallbackLang !== lang) {
+        this.langService.setLanguage(fallbackLang as AttemptLangs);
+      }
+    }
   }
 
 }
