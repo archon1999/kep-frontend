@@ -29,6 +29,9 @@ export const localeUz = {
   Reset: 'Reset',
   Problemset: 'Masalalar toʻplami',
   Profile: 'Profil',
+  UserPopover: {
+    ViewDetails: 'Profilni koʻrish',
+  },
   CustomTest: 'Ishlatib koʻrish',
   HasChecker: 'Cheker',
   FilterProblems: 'Masalalarni filterlash',
@@ -293,6 +296,7 @@ export const localeUz = {
   Facts: 'Faktlar',
   NumberOfAttempts: 'Urinishlar soni',
   Rank: 'Oʻrin',
+  Percentile: 'Foizlik koʻrsatkich',
   Monday: 'Dushanba',
   Tuesday: 'Seshanba',
   Wednesday: 'Chorshanba',
