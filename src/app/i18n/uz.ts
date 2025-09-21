@@ -22,6 +22,7 @@ export const localeUz = {
     Todo: 'Todo',
     Calendar: 'Kalendar',
     Shop: 'Doʻkon',
+    Duels: 'Duellar',
   },
   Logout: 'Chiqish',
   SettingsMenu: 'Sozlamalar',

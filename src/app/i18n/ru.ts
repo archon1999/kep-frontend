@@ -22,6 +22,7 @@ export const localeRu = {
     Todo: 'Todo',
     Calendar: 'Календарь',
     Shop: 'Магазин',
+    Duels: 'Дуэли',
   },
   Logout: 'Выйти',
   SettingsMenu: 'Настройки',

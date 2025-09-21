@@ -43,7 +43,7 @@ export class DuelsService {
   }
 
   getReadyPlayers(params: Record<string, any>): Observable<PageResult<DuelReadyPlayer>> {
-    return this.api.get('duels/ready-players', params);
+    return this.api.get('duels/ready-users', params);
   }
 
   getDuelPresets(username: string): Observable<DuelPreset[]> {

@@ -23,6 +23,7 @@ export const localeEn = {
     Todo: 'Todo',
     Calendar: 'Calendar',
     Shop: 'Shop',
+    Duels: 'Duels',
   },
   Logout: 'Logout',
   SettingsMenu: 'Settings',

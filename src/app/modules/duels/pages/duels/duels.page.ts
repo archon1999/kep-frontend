@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BasePageComponent } from '@core/common/classes/base-page.component';
 import { ContentHeader } from '@shared/ui/components/content-header/content-header.component';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
@@ -13,8 +13,10 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
-import { DatePipe, NgClass, NgIf } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { EmptyResultComponent } from "@shared/components/empty-result/empty-result.component";
 
 @Component({
   selector: 'page-duels',
@@ -30,43 +32,48 @@ import { RouterModule } from '@angular/router';
     UserPopoverModule,
     RouterModule,
     DatePipe,
-    NgClass,
-    NgIf,
+    KepCardComponent,
+    EmptyResultComponent,
   ]
 })
 export class DuelsPage extends BasePageComponent implements OnInit {
-  protected duelsService = inject(DuelsService);
-  private fb = inject(FormBuilder);
-
   @ViewChild('duelPresetModal') duelPresetModal: TemplateRef<any>;
-
   isReady = false;
   readyStatusLoading = false;
-
   readyPlayersPage = 1;
   readyPlayersPageSize = 12;
   readyPlayersResult: PageResult<DuelReadyPlayer> | null = null;
   readyPlayersLoading = false;
-
   duelsPage = 1;
   duelsPageSize = 10;
   duelsResult: PageResult<Duel> | null = null;
   duelsLoading = false;
-
   duelPresets: DuelPreset[] = [];
   duelPresetsLoading = false;
   selectedOpponent: DuelReadyPlayer | null = null;
-  private modalRef: NgbModalRef | null = null;
-
   confirmLoadingId: number | null = null;
-
+  protected duelsService = inject(DuelsService);
+  private fb = inject(FormBuilder);
   duelForm = this.fb.group({
     presetId: [null as number | null, Validators.required],
     startTime: ['', Validators.required],
   });
+  private modalRef: NgbModalRef | null = null;
 
   get duelControls() {
     return this.duelForm.controls;
+  }
+
+  get readyPlayersTotal(): number {
+    return this.readyPlayersResult?.total || 0;
+  }
+
+  get duelsTotal(): number {
+    return this.duelsResult?.total || 0;
+  }
+
+  get minStartTime(): string {
+    return this.formatDateInput(new Date());
   }
 
   override ngOnInit(): void {
@@ -81,30 +88,6 @@ export class DuelsPage extends BasePageComponent implements OnInit {
     } else {
       this.duelsResult = null;
     }
-  }
-
-  protected override getContentHeader(): ContentHeader {
-    return {
-      headerTitle: 'Duels',
-      breadcrumb: {
-        links: [
-          { name: 'Competitions', isLink: false },
-          { name: 'Duels', isLink: false },
-        ],
-      },
-    };
-  }
-
-  get readyPlayersTotal(): number {
-    return this.readyPlayersResult?.total || 0;
-  }
-
-  get duelsTotal(): number {
-    return this.duelsResult?.total || 0;
-  }
-
-  get minStartTime(): string {
-    return this.formatDateInput(new Date());
   }
 
   onReadyStatusChange(ready: boolean): void {
@@ -182,10 +165,13 @@ export class DuelsPage extends BasePageComponent implements OnInit {
     })
       .pipe(
         takeUntil(this._unsubscribeAll),
-        finalize(() => this.duelsLoading = false)
       )
       .subscribe({
-        next: result => this.duelsResult = result,
+        next: result => {
+          this.duelsLoading = false;
+          this.duelsResult = result;
+          this.cdr.markForCheck();
+        },
         error: () => this.duelsResult = null,
       });
   }
@@ -234,7 +220,7 @@ export class DuelsPage extends BasePageComponent implements OnInit {
       return;
     }
 
-    const { presetId, startTime } = this.duelForm.value;
+    const {presetId, startTime} = this.duelForm.value;
     this.duelsService.createDuel({
       duel_username: this.selectedOpponent.username,
       duel_preset: presetId!,
@@ -299,6 +285,18 @@ export class DuelsPage extends BasePageComponent implements OnInit {
 
   trackDuel(index: number, duel: Duel): number {
     return duel.id;
+  }
+
+  protected override getContentHeader(): ContentHeader {
+    return {
+      headerTitle: 'Duels',
+      breadcrumb: {
+        links: [
+          {name: 'Practice', isLink: false},
+          {name: 'Duels', isLink: false},
+        ],
+      },
+    };
   }
 
   private formatDateInput(date: Date): string {
