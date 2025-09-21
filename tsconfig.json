@@ -30,6 +30,7 @@
       "@shared/*": ["app/shared/*"],
       "@problems/*": ["app/modules/problems/*"],
       "@projects/*": ["app/modules/projects/*"],
+      "@duels/*": ["app/modules/duels/*"],
       "@contests/*": ["app/modules/contests/*"],
       "@challenges/*": ["app/modules/challenges/*"],
       "@arena/*": ["app/modules/arena/*"],

@@ -1,0 +1,49 @@
+<section class="duels-section">
+  <div class="duels-section__header d-flex flex-wrap align-items-center justify-content-between gap-2">
+    <h5 class="mb-0">
+      {{ 'DuelReadyPlayersTitle' | translate }}
+      @if (total) {
+        <span class="text-muted">({{ total }})</span>
+      }
+    </h5>
+  </div>
+
+  <div class="duels-section__body">
+    <div class="row g-3">
+      @if (loading) {
+        <div class="col-12 d-flex justify-content-center py-3">
+          <spinner></spinner>
+        </div>
+      } @else if (hasPlayers) {
+        @for (player of players; track trackPlayer($index, player)) {
+          <div class="col-xl-3 col-md-4 col-sm-6">
+            <duel-ready-player-card
+              [player]="player"
+              [disabled]="isChallengeDisabled(player)"
+              (challenge)="onChallenge(player)"
+            />
+          </div>
+        }
+      } @else {
+        <div class="col-12">
+          <empty-result [title]="'NoReadyPlayers' | translate" [text]="''"></empty-result>
+        </div>
+      }
+    </div>
+
+    @if (showPagination) {
+      <div class="mt-3">
+        <kep-pagination
+          [collectionSize]="total"
+          [page]="page"
+          [pageSize]="pageSize"
+          [maxSize]="5"
+          [rotate]="true"
+          [disabled]="loading"
+          [color]="'primary'"
+          (pageChange)="onPageChange($event)"
+        ></kep-pagination>
+      </div>
+    }
+  </div>
+</section>

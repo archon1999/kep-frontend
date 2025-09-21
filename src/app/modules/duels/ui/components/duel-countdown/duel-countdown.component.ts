@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Duel } from '../../duels.interfaces';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Duel } from '@duels/domain';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
@@ -15,9 +15,9 @@ import { CountdownComponent } from '@shared/third-part-modules/countdown/countdo
     CountdownComponent
   ]
 })
-export class DuelCountdownComponent implements OnInit {
+export class DuelCountdownComponent implements OnInit, OnChanges {
 
-  @Input() duel: Duel;
+  @Input({ required: true }) duel!: Duel;
 
   public leftTime = 0;
 
@@ -27,16 +27,22 @@ export class DuelCountdownComponent implements OnInit {
     this.updateLeftTime();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['duel'] && !changes['duel'].firstChange) {
+      this.updateLeftTime();
+    }
+  }
+
   updateLeftTime() {
-    if (this.duel.status == -1) {
+    if (this.duel.status === -1) {
       this.leftTime = new Date(this.duel.startTime).valueOf() - Date.now();
-    } else if (this.duel.status == 0) {
+    } else if (this.duel.status === 0) {
       this.leftTime = new Date(this.duel.finishTime).valueOf() - Date.now();
     }
   }
 
   finish() {
-    if (this.duel.status != 1) {
+    if (this.duel.status !== 1) {
       window.location.reload();
     }
   }

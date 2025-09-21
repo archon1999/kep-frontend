@@ -5,7 +5,7 @@ export type DuelStatus = -1 | 0 | 1;
 export interface DuelPlayer {
   id: number;
   username: string;
-  status: number,
+  status: number;
   ratingTitle: string;
   balls: number;
 }
@@ -73,4 +73,9 @@ export interface DuelPreset {
 
 export interface DuelReadyStatus {
   ready: boolean;
+}
+
+export interface DuelResults {
+  playerFirst: number[];
+  playerSecond: number[];
 }

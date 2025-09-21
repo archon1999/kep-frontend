@@ -1,0 +1,45 @@
+.duels-list-card {
+  &__info {
+    max-width: 100%;
+  }
+
+  &__pair user-popover {
+    font-size: 1rem;
+  }
+
+  &__meta {
+    font-size: 0.85rem;
+    opacity: 0.85;
+  }
+
+  &__badges .badge {
+    letter-spacing: 0.05em;
+  }
+
+  &__scores {
+    min-width: 120px;
+  }
+
+  &__score {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  &__score-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  &__score-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--bs-secondary-color);
+  }
+
+  &__actions {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 0.75rem;
+  }
+}
