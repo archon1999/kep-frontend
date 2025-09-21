@@ -66,6 +66,10 @@ export const localeEn = {
   SOLVED: 'Solved',
   NOT_SOLVED: 'Not solved',
   SELECT: 'Select',
+  NG_SELECT: {
+    NOT_FOUND: 'No options found',
+    LOADING: 'Loading...',
+  },
   NEWS: 'News',
   LAST_COMMENTS: 'Last comments',
   LAST_POSTS: 'Last posts',
