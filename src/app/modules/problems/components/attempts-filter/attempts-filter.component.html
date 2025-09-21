@@ -5,8 +5,26 @@
       {{ 'Filter' | translate }}
     </div>
 
-    <div class="filter-clear">
-      <button (click)="filterClear()" class="btn btn-primary btn-sm" ngbTooltip="{{ 'Clear' | translate }}">
+    <div class="filter-actions">
+      <button
+        (click)="myAttemptsClick()"
+        class="btn btn-outline-primary btn-sm"
+        type="button">
+        {{ 'MY_ATTEMPTS' | translate }}
+      </button>
+
+      <button
+        (click)="refresh.emit()"
+        class="btn btn-outline-primary btn-sm"
+        type="button">
+        {{ 'Reload' | translate }}
+      </button>
+
+      <button
+        (click)="filterClear()"
+        class="btn btn-primary btn-sm"
+        ngbTooltip="{{ 'Clear' | translate }}"
+        type="button">
         <kep-icon name="cross" size="small-4"/>
       </button>
     </div>
@@ -38,19 +56,34 @@
       <div class="col-6 col-lg-3">
         <div class="mb-1">
           <label class="text-primary">
+            <kep-icon name="lang" size="small-4"/>
+            {{ 'Language' | translate }}
+          </label>
+
+          <ng-select
+            appendTo="body"
+            [placeholder]="'Language' | translate"
+            [searchable]="false"
+            formControlName="lang">
+            <ng-option></ng-option>
+            @for (item of langOptions; track item.lang) {
+              <ng-option [value]="item.lang">
+                <attempt-language [size]="24" [lang]="item.lang"/>
+                {{ item.langFull }}
+              </ng-option>
+            }
+          </ng-select>
+        </div>
+      </div>
+
+      <div class="col-6 col-lg-3">
+        <div class="mb-1">
+          <label class="text-primary">
             <kep-icon name="verdict" size="small-4"/>
             {{ 'Verdict' | translate }}
           </label>
           <verdicts-select formControlName="verdict"/>
         </div>
-      </div>
-
-      <div class="col-6 col-lg-3 d-flex align-items-center">
-        <button
-          (click)="myAttemptsClick()"
-          class="btn full-width mt-2 py-75 btn-sm btn-primary">
-          {{ 'MY_ATTEMPTS' | translate }}
-        </button>
       </div>
     </div>
   </div>

@@ -1,0 +1,17 @@
+:host ::ng-deep kep-card .card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+:host ::ng-deep .filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+:host ::ng-deep .filter-actions .btn {
+  white-space: nowrap;
+}

@@ -14,6 +14,7 @@ import { Resources } from '@app/resources';
 import { ContentHeaderModule } from "@shared/ui/components/content-header/content-header.module";
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { Params } from "@angular/router";
 
 @Component({
   selector: 'app-attempts',
@@ -37,7 +38,13 @@ export class AttemptsComponent extends BaseTablePageComponent<Attempt> implement
   override defaultPageSize = 20;
   override pageOptions = [10, 20, 50];
 
-  public filter: AttemptsFilter;
+  public filter: AttemptsFilter = this.createEmptyFilter();
+  public initialFilter: AttemptsFilter = this.createEmptyFilter();
+
+  override ngOnInit() {
+    this.applyRouteFilters();
+    super.ngOnInit();
+  }
 
   get attempts() {
     return this.pageResult?.data;
@@ -51,7 +58,7 @@ export class AttemptsComponent extends BaseTablePageComponent<Attempt> implement
   }
 
   filterChange(filter: AttemptsFilter) {
-    this.filter = filter;
+    this.filter = this.sanitizeFilter(filter);
     this.pageNumber = this.defaultPageNumber;
     this.reloadPage();
   }
@@ -74,6 +81,40 @@ export class AttemptsComponent extends BaseTablePageComponent<Attempt> implement
         ]
       },
       refreshVisible: true,
+    };
+  }
+
+  private applyRouteFilters() {
+    const params = this.route.snapshot.queryParams as Params;
+    const usernameParam = this.route.snapshot.paramMap.get('username');
+
+    const routeFilter: Partial<AttemptsFilter> = {
+      username: usernameParam ?? params['username'] ?? null,
+      problemId: params['problemId'] ?? null,
+      verdict: (params['verdict'] ?? null) as AttemptsFilter['verdict'],
+      lang: params['lang'] ?? null,
+    };
+
+    this.initialFilter = this.sanitizeFilter(routeFilter);
+    this.filter = {...this.initialFilter};
+  }
+
+  private sanitizeFilter(filter: Partial<AttemptsFilter>): AttemptsFilter {
+    const problemId = filter.problemId !== undefined && filter.problemId !== null ? Number(filter.problemId) : null;
+    return {
+      username: filter.username ?? null,
+      problemId: problemId !== null && !Number.isNaN(problemId) ? problemId : null,
+      verdict: filter.verdict ?? null,
+      lang: filter.lang ?? null,
+    };
+  }
+
+  private createEmptyFilter(): AttemptsFilter {
+    return {
+      username: null,
+      problemId: null,
+      verdict: null,
+      lang: null,
     };
   }
 }
