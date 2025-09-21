@@ -5,6 +5,7 @@ import { EmptyResultComponent } from '@shared/components/empty-result/empty-resu
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { DuelsListCardComponent } from '@duels/ui/components/duels-list-card/duels-list-card.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'duels-list-section',
@@ -15,6 +16,7 @@ import { DuelsListCardComponent } from '@duels/ui/components/duels-list-card/due
     SpinnerComponent,
     KepPaginationComponent,
     DuelsListCardComponent,
+    KepCardComponent,
   ],
   templateUrl: './duels-list-section.component.html',
   styleUrls: ['./duels-list-section.component.scss'],

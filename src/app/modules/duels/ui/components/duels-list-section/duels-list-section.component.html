@@ -1,14 +1,14 @@
-<section class="duels-section">
-  <div class="duels-section__header d-flex justify-content-between align-items-center flex-wrap gap-2">
-    <h5 class="mb-0">
+<kep-card>
+  <div class="card-header">
+    <div class="card-title">
       {{ 'MyDuels' | translate }}
       @if (total) {
-        <span class="text-muted">({{ total }})</span>
+        <span class="total-count">({{ total }})</span>
       }
-    </h5>
+    </div>
   </div>
 
-  <div class="row g-3">
+  <div class="card-body">
     @if (loading) {
       <div class="col-12 d-flex justify-content-center py-3">
         <spinner></spinner>
@@ -47,4 +47,4 @@
       ></kep-pagination>
     </div>
   }
-</section>
+</kep-card>

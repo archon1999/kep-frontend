@@ -4,6 +4,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { EmptyResultComponent } from '@shared/components/empty-result/empty-result.component';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { DuelReadyPlayerCardComponent } from '@duels/ui/components/duel-ready-player-card/duel-ready-player-card.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'duel-ready-players-section',
@@ -13,6 +14,7 @@ import { DuelReadyPlayerCardComponent } from '@duels/ui/components/duel-ready-pl
     EmptyResultComponent,
     KepPaginationComponent,
     DuelReadyPlayerCardComponent,
+    KepCardComponent,
   ],
   templateUrl: './duel-ready-players-section.component.html',
   styleUrls: ['./duel-ready-players-section.component.scss'],

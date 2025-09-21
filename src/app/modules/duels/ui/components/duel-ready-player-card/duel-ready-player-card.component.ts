@@ -3,11 +3,12 @@ import { DuelReadyPlayer } from '@duels/domain';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
+import { NgbTooltip } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'duel-ready-player-card',
   standalone: true,
-  imports: [KepCardComponent, TranslateModule, UserPopoverModule],
+  imports: [KepCardComponent, TranslateModule, UserPopoverModule, NgbTooltip],
   templateUrl: './duel-ready-player-card.component.html',
   styleUrls: ['./duel-ready-player-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

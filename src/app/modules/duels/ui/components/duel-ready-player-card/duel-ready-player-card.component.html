@@ -2,11 +2,11 @@
   <div class="card-body d-flex flex-column gap-3">
     <div class="d-flex align-items-center gap-2">
       <img
-        [src]="player.avatar"
         [alt]="player.username"
+        [src]="player.avatar"
         class="ready-player-card__avatar"
-        width="48"
         height="48"
+        width="48"
       >
       <div class="d-flex flex-column">
         <user-popover [username]="player.username"></user-popover>
@@ -16,26 +16,26 @@
       </div>
     </div>
 
-    <div class="ready-player-card__stats">
-      <div class="ready-player-card__stat ready-player-card__stat--wins">
-        <span class="ready-player-card__stat-value">{{ player.wins }}</span>
-        <span class="ready-player-card__stat-label">{{ 'Wins' | translate }}</span>
+    <div class="d-flex gap-2">
+      <div class="text-success">
+        {{ player.wins }}
+        <span [ngbTooltip]="'Wins' | translate">W</span>
       </div>
-      <div class="ready-player-card__stat ready-player-card__stat--draws">
-        <span class="ready-player-card__stat-value">{{ player.draws }}</span>
-        <span class="ready-player-card__stat-label">{{ 'Draws' | translate }}</span>
+      <div class="text-info">
+        {{ player.draws }}
+        <span [ngbTooltip]="'Draws' | translate">D</span>
       </div>
-      <div class="ready-player-card__stat ready-player-card__stat--losses">
-        <span class="ready-player-card__stat-value">{{ player.losses }}</span>
-        <span class="ready-player-card__stat-label">{{ 'Losses' | translate }}</span>
+      <div class="text-danger">
+        {{ player.losses }}
+        <span [ngbTooltip]="'Losses' | translate">L</span>
       </div>
     </div>
 
     <button
-      class="btn btn-sm btn-primary mt-auto"
-      type="button"
       (click)="onChallenge()"
       [disabled]="disabled"
+      class="btn btn-sm btn-primary mt-auto"
+      type="button"
     >
       {{ 'ChallengeToDuel' | translate }}
     </button>
