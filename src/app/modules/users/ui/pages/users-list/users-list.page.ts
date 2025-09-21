@@ -159,7 +159,7 @@ export class UsersListPage extends BasePageComponent {
 
   protected getContentHeader(): ContentHeader {
     return {
-      headerTitle: 'MENU.USERS',
+      headerTitle: 'Menu.Users',
       breadcrumb: {
         type: '',
         links: [

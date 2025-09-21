@@ -170,7 +170,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
         type: '',
         links: [
           {
-            name: 'CONTESTS.CONTESTS',
+            name: 'Contests.Contests',
             isLink: true,
             link: '../../../../'
           },
@@ -180,7 +180,7 @@ export class ContestProblemComponent extends BaseComponent implements OnInit, On
             link: '../../'
           },
           {
-            name: 'CONTESTS.PROBLEMS',
+            name: 'Contests.Problems',
             isLink: true,
             link: '../../problems'
           },

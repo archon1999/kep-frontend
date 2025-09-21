@@ -17,7 +17,7 @@ import { ContentHeaderModule } from '@shared/ui/components/content-header/conten
 export class CalendarComponent extends BasePageComponent {
   protected getContentHeader(): ContentHeader {
     return {
-      headerTitle: 'MENU.CALENDAR',
+      headerTitle: 'Menu.Calendar',
       breadcrumb: {
         links: [
           {

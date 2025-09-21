@@ -51,7 +51,7 @@ export class ContestProblemsComponent extends BasePageComponent implements OnIni
         type: '',
         links: [
           {
-            name: 'CONTESTS.CONTESTS',
+            name: 'Contests.Contests',
             isLink: true,
             link: '../../..'
           },

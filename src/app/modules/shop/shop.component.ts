@@ -28,7 +28,7 @@ export class ShopComponent extends BaseLoadComponent<Array<Product>> {
 
   protected getContentHeader(): ContentHeader {
     return {
-      headerTitle: 'MENU.SHOP',
+      headerTitle: 'Menu.Shop',
       breadcrumb: {
         links: [
           {

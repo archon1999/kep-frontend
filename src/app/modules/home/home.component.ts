@@ -51,7 +51,7 @@ export class HomeComponent extends BasePageComponent implements OnInit {
 
   protected getContentHeader(): ContentHeader {
     return {
-      headerTitle: 'MENU.HOME',
+      headerTitle: 'Menu.Home',
       breadcrumb: {
         links: [
           {
@@ -59,7 +59,7 @@ export class HomeComponent extends BasePageComponent implements OnInit {
             isLink: false,
           },
           {
-            name: 'MENU.HOME',
+            name: 'Menu.Home',
             isLink: false,
           },
         ]

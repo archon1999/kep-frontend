@@ -5,7 +5,7 @@
     </h3>
 
     <span
-      ngbTooltip="{{ 'DIFFICULTY' | translate }}"
+      ngbTooltip="{{ 'Difficulty' | translate }}"
       class="badge-pill badge bg-{{ problem.difficulty | problemDifficultyColor }}">
       {{ problem.difficultyTitle | translate }}
     </span>
@@ -24,10 +24,10 @@
     <span class="problem-header-sep"></span>
 
     <span class="badge bg-info badge-pill">
-      {{ problem.timeLimit }} {{ 'MS' | translate }}
+      {{ problem.timeLimit }} {{ 'Ms' | translate }}
     </span>
     <span class="badge badge-pill bg-primary">
-      {{ problem.memoryLimit }} {{ 'MB' | translate }}
+      {{ problem.memoryLimit }} {{ 'Mb' | translate }}
     </span>
 
     <div class="mt-2">
@@ -48,7 +48,7 @@
     @if (problem.inputData?.length > 0) {
       <h4 class="mt-2">
         <strong>
-          {{ 'INPUT_DATA' | translate }}:
+          {{ 'InputData' | translate }}:
         </strong>
       </h4>
       <mathjax class="mt-2" [content]="problem.inputData"></mathjax>
@@ -57,7 +57,7 @@
     @if (problem.outputData?.length > 0) {
       <h4 class="mt-3">
         <strong>
-          {{ 'OUTPUT_DATA' | translate }}:
+          {{ 'OutputData' | translate }}:
         </strong>
       </h4>
       <mathjax class="mt-2" [content]="problem.outputData"></mathjax>

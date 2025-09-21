@@ -39,7 +39,7 @@ export class AppComponent {
   }
 
   private setNgSelectGlobalTexts(): void {
-    this.ngSelectConfig.notFoundText = this.translateService.instant('NG_SELECT.NOT_FOUND');
-    this.ngSelectConfig.loadingText = this.translateService.instant('NG_SELECT.LOADING');
+    this.ngSelectConfig.notFoundText = this.translateService.instant('NgSelect.NotFound');
+    this.ngSelectConfig.loadingText = this.translateService.instant('NgSelect.Loading');
   }
 }

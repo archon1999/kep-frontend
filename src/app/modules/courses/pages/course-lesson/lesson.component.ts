@@ -52,12 +52,12 @@ export class LessonComponent implements OnInit {
   @BlockUI('lesson-part-section') lessonPartBlockUI: NgBlockUI;
 
   contentHeader = {
-    headerTitle: 'COURSES.LESSON',
+    headerTitle: 'Courses.Lesson',
     breadcrumb: {
       type: '',
       links: [
         {
-          name: 'COURSES.COURSES',
+          name: 'Courses.Courses',
           isLink: true,
           link: '/learn/courses'
         },

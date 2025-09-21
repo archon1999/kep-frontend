@@ -58,7 +58,7 @@ export class ContestRegistrantsComponent extends BasePageComponent implements On
         type: '',
         links: [
           {
-            name: 'CONTESTS.CONTESTS',
+            name: 'Contests.Contests',
             isLink: true,
             link: '../../..'
           },

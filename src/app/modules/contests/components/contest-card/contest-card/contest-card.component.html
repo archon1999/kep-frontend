@@ -36,7 +36,7 @@
         @if (contest.status == 0) {
           <div>
             <h3 class="text-center mt-1 mb-1">
-              {{ 'CONTESTS.CONTEST_ENDS' | translate }}
+              {{ 'Contests.ContestEnds' | translate }}
             </h3>
             <span class="badge already bg-warning">
               {{ 'Now' | translate }}
@@ -48,7 +48,7 @@
         @if (contest.status == -1) {
           <div>
             <h3 class="text-center mt-1 mb-1">
-              {{ 'CONTESTS.CONTEST_STARTS' | translate }}
+              {{ 'Contests.ContestStarts' | translate }}
             </h3>
             <contest-countdown [clockColor]="'#fff'" [contest]="contest"></contest-countdown>
           </div>
@@ -57,7 +57,7 @@
         @if (contest.status == 1) {
           <div class="text-center">
             <h3 class="mb-1 mt-1" ngbTooltip="{{ contest.finishTime | localizedDate:'medium' }}">
-              {{ 'CONTESTS.CONTEST_FINISHED' | translate }}
+              {{ 'Contests.ContestFinished' | translate }}
             </h3>
             @defer (on viewport) {
               <top3-contestants [contest]="contest"></top3-contestants>
@@ -139,7 +139,7 @@
             target="_blank"
             class="btn btn-sm bg-primary">
             <kep-icon size="small-2" name="username"/>
-            {{ 'CONTESTS.REGISTER' | translate }}
+            {{ 'Contests.Register' | translate }}
           </a>
         }
       } @else {
@@ -178,7 +178,7 @@
               style="color: #fff"
             >
               <kep-icon size="small-4" name="username"/>
-              {{ 'CONTESTS.REGISTER' | translate }}
+              {{ 'Contests.Register' | translate }}
             </button>
           }
         }
@@ -206,7 +206,7 @@
   </div>
   <div class="modal-footer">
     <button (click)="registrationTeam()" [disabled]="!teamId" class="btn btn-primary btn-sm" rippleEffect>
-      {{ 'CONTESTS.REGISTER' | translate }}
+      {{ 'Contests.Register' | translate }}
     </button>
   </div>
 </ng-template>

@@ -109,7 +109,7 @@ export class ContestAttemptsComponent extends BaseTablePageComponent<Attempt> im
         type: '',
         links: [
           {
-            name: 'CONTESTS.CONTESTS',
+            name: 'Contests.Contests',
             isLink: true,
             link: '../../..'
           },
@@ -119,7 +119,7 @@ export class ContestAttemptsComponent extends BaseTablePageComponent<Attempt> im
             link: '..'
           },
           {
-            name: 'ATTEMPTS',
+            name: 'Attempts',
             isLink: true,
             link: '.'
           }

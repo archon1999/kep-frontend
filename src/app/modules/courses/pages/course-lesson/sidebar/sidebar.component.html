@@ -13,7 +13,7 @@
 
     <div class="card-footer">
       <div class="mb-1 text-dark fw-medium">
-        {{ 'COURSES.PROGRESS' | translate }}: {{ course.participantPoints }}/{{ course.points }}
+        {{ 'Courses.Progress' | translate }}: {{ course.participantPoints }}/{{ course.points }}
       </div>
       <ngb-progressbar [value]="course.participantProgress" showValue="true" type="primary"></ngb-progressbar>
     </div>
@@ -24,10 +24,10 @@
   <div class="card tour-step-2">
     <div class="card-header">
       <h5 class="card-title">
-        {{ 'COURSES.SYLLABUS' | translate }}
+        {{ 'Courses.Syllabus' | translate }}
       </h5>
       <a [routerLink]="[Resources.Courses, 'course', course.id, 'dictionary']" class="tour-step-3"
-         ngbTooltip=" {{ 'COURSES.DICTIONARY' | translate }}">
+         ngbTooltip=" {{ 'Courses.Dictionary' | translate }}">
         <kep-icon color="primary" name="teacher" type="duotone"/>
       </a>
     </div>

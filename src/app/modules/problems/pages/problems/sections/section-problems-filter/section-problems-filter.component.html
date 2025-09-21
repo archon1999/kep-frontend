@@ -15,7 +15,7 @@
               class="form-control"
               formControlName="search"
               name="title"
-              placeholder="{{ 'PROBLEMS_SEARCH_PLACEHOLDER' | translate }}"
+              placeholder="{{ 'ProblemsSearchPlaceholder' | translate }}"
               type="text"
             />
           </div>
@@ -94,7 +94,7 @@
                 class="btn btn-outline-primary"
                 type="button"
               >
-                {{ selectedTagsName || ('TAGS' | translate) }}
+                {{ selectedTagsName || ('Tags' | translate) }}
               </button>
               <button
                 [style.height.px]="38"
@@ -146,7 +146,7 @@
               appendTo="body"
               class="d-lg-none tags-select"
               formControlName="tags"
-              placeholder="{{ 'SELECT' | translate }}:">
+              placeholder="{{ 'Select' | translate }}:">
               <ng-template let-item="item" ng-optgroup-tmp>
                 {{ item.category }}
               </ng-template>
@@ -157,7 +157,7 @@
         <div class="col-lg-3 col-md-6">
           <div class="mb-1">
             <ng-select
-              [placeholder]="'DIFFICULTY' | translate" [searchable]="false"
+              [placeholder]="'Difficulty' | translate" [searchable]="false"
               appendTo="body"
               formControlName="difficulty"
             >
@@ -174,7 +174,7 @@
 
         <div class="col-lg-3 col-md-6">
           <div class="mb-1">
-            <ng-select [compareWith]="compareEqual" [placeholder]="'STATUS' | translate" [searchable]="false"
+            <ng-select [compareWith]="compareEqual" [placeholder]="'Status' | translate" [searchable]="false"
                        appendTo="body" formControlName="status">
               <ng-option [value]="3">
                 <kep-icon class="text-warning" name="minus"></kep-icon>

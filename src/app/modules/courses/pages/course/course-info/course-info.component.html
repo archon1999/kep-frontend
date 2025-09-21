@@ -30,16 +30,16 @@
               class="btn btn-primary btn-sm full-width" rippleEffect>
               <span>
                 @if (!course.isStarted) {
-                  {{ 'COURSES.START' | translate }}
+                  {{ 'Courses.Start' | translate }}
                 } @else {
-                  {{ 'COURSES.CONTINUE' | translate }}
+                  {{ 'Courses.Continue' | translate }}
                 }
               </span>
             </a>
             @if (course.isStarted) {
               <div class="mt-2 progress-wrapper">
                 <div class="mb-1 text-dark">
-                  {{ 'COURSES.PROGRESS' | translate }}: {{ course.participantProgress }}%
+                  {{ 'Courses.Progress' | translate }}: {{ course.participantProgress }}%
                 </div>
                 <ngb-progressbar type="success" [value]="course.participantProgress"/>
               </div>

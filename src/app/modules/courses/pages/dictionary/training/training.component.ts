@@ -43,12 +43,12 @@ export class TrainingComponent implements OnInit {
   public conformityGroupTwo = [];
 
   contentHeader = {
-    headerTitle: 'COURSES.DICTIONARY',
+    headerTitle: 'Courses.Dictionary',
     breadcrumb: {
       type: '',
       links: [
         {
-          name: 'COURSES.COURSES',
+          name: 'Courses.Courses',
           isLink: true,
           link: '/learn/courses'
         },

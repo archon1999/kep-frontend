@@ -52,12 +52,12 @@ export class ContestRatingChangesComponent extends BaseLoadComponent<Contestant[
 
   protected getContentHeader() {
     return {
-      headerTitle: 'CONTESTS.RATING_CHANGES',
+      headerTitle: 'Contests.RatingChanges',
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'CONTESTS.CONTESTS',
+            name: 'Contests.Contests',
             isLink: true,
             link: '../../..'
           },
@@ -67,7 +67,7 @@ export class ContestRatingChangesComponent extends BaseLoadComponent<Contestant[
             link: '..'
           },
           {
-            name: 'CONTESTS.RATING_CHANGES',
+            name: 'Contests.RatingChanges',
             isLink: true,
             link: '.'
           }

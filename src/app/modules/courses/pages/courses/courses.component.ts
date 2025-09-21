@@ -33,7 +33,7 @@ export class CoursesComponent extends BaseLoadComponent<Course[]> implements OnI
 
   protected getContentHeader(): ContentHeader {
     return {
-      headerTitle: 'COURSES.COURSES',
+      headerTitle: 'Courses.Courses',
       breadcrumb: {
         type: '',
         links: [
@@ -42,7 +42,7 @@ export class CoursesComponent extends BaseLoadComponent<Course[]> implements OnI
             isLink: false,
           },
           {
-            name: 'COURSES.COURSES',
+            name: 'Courses.Courses',
             isLink: false,
           },
         ]

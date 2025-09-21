@@ -4,7 +4,7 @@
       <a class="nav-link" [routerLink]="['/competitions', 'contests', 'contest', contest?.id]"
          [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">
         <kep-icon name="contest"></kep-icon>
-        {{ 'CONTESTS.CONTEST' | translate }}</a>
+        {{ 'Contests.Contest' | translate }}</a>
       <ng-template ngbNavContent>
       </ng-template>
     </li>
@@ -43,7 +43,7 @@
         <a class="nav-link" [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'standings']"
            routerLinkActive="active">
           <kep-icon name="ranking"></kep-icon>
-          {{ 'CONTESTS.STANDINGS' | translate }}</a>
+          {{ 'Contests.Standings' | translate }}</a>
         <ng-template ngbNavContent>
         </ng-template>
       </li>
@@ -53,7 +53,7 @@
         <a class="nav-link" [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'rating-changes']"
            routerLinkActive="active">
           <kep-icon name="rating-changes"></kep-icon>
-          {{ 'CONTESTS.RATING_CHANGES' | translate }}</a>
+          {{ 'Contests.RatingChanges' | translate }}</a>
         <ng-template ngbNavContent>
         </ng-template>
       </li>
