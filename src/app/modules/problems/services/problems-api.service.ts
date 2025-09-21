@@ -35,14 +35,6 @@ export class ProblemsApiService {
     return this.api.get(`problems/${id}`);
   }
 
-  getNextProblemId(id: number) {
-    return this.api.get(`problems/${id}/next`);
-  }
-
-  getPreviousProblemId(id: number) {
-    return this.api.get(`problems/${id}/prev`);
-  }
-
   getStudyPlans() {
     return this.api.get('study-plans');
   }
