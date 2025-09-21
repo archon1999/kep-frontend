@@ -17,6 +17,7 @@ import {
 import { difficultyLabels } from '@problems/constants/difficulties.enum';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 import { UsersApiService } from "@app/modules/users";
+import { Resources } from "@app/resources";
 
 @Component({
   selector: 'user-ratings',
@@ -171,4 +172,6 @@ export class UserRatingsComponent implements OnInit {
       }
     );
   }
+
+  protected readonly Resources = Resources;
 }

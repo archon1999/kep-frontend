@@ -26,11 +26,10 @@
             <ng-select
               [compareWith]="compareEqual"
               [placeholder]="'OrderBy' | translate"
-              [searchable]="false"
+              [clearable]="true"
               appendTo="body"
               formControlName="ordering"
             >
-              <ng-option></ng-option>
               @for (item of orderingOptions; track item.value) {
                 <ng-option [value]="item.value">
                   {{ item.label | translate }}

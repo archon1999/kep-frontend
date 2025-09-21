@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { TranslateModule } from '@ngx-translate/core';
 import {
@@ -65,7 +65,7 @@ export class AttemptsFilterComponent extends BaseUserComponent implements OnInit
 
   public langOptions: Array<{ lang: string; langFull: string }> = [];
 
-  constructor(private problemsService: ProblemsApiService) {
+  constructor(private problemsService: ProblemsApiService, private cdr: ChangeDetectorRef) {
     super();
   }
 

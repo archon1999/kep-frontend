@@ -15,17 +15,18 @@
 
       <button
         (click)="refresh.emit()"
-        class="btn btn-outline-primary btn-sm"
+        class="btn btn-outline-primary btn-sm d-flex align-items-center"
+        ngbTooltip="{{ 'Reload' | translate }}"
         type="button">
-        {{ 'Reload' | translate }}
+        <kep-icon name="arrows-circle" size="small-4" class=""/>
       </button>
 
       <button
         (click)="filterClear()"
-        class="btn btn-primary btn-sm"
+        class="btn btn-outline-primary btn-sm align-items-center d-flex"
         ngbTooltip="{{ 'Clear' | translate }}"
         type="button">
-        <kep-icon name="cross" size="small-4"/>
+        <kep-icon name="cross" size="small-4" class=""/>
       </button>
     </div>
   </div>
@@ -62,10 +63,9 @@
 
           <ng-select
             appendTo="body"
-            [placeholder]="'Language' | translate"
             [searchable]="false"
+            [clearable]="true"
             formControlName="lang">
-            <ng-option></ng-option>
             @for (item of langOptions; track item.lang) {
               <ng-option [value]="item.lang">
                 <attempt-language [size]="24" [lang]="item.lang"/>

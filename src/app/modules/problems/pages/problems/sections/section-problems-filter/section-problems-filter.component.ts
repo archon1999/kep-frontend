@@ -53,12 +53,12 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
   public difficulties: Array<Difficulty> = [];
   public langOptions: Array<any> = [];
   public orderingOptions = [
-    { label: 'ProblemsOrderOldestFirst', value: 'id' },
     { label: 'ProblemsOrderNewestFirst', value: '-id' },
-    { label: 'ProblemsOrderEasiestFirst', value: 'difficulty' },
-    { label: 'ProblemsOrderHardestFirst', value: '-difficulty' },
-    { label: 'ProblemsOrderLeastSolvedFirst', value: 'solved' },
+    { label: 'ProblemsOrderOldestFirst', value: 'id' },
+    { label: 'ProblemsOrderEasiestFirst', value: 'difficulty,-solved' },
+    { label: 'ProblemsOrderHardestFirst', value: '-difficulty,solved' },
     { label: 'ProblemsOrderMostSolvedFirst', value: '-solved' },
+    { label: 'ProblemsOrderLeastSolvedFirst', value: 'solved' },
   ];
 
   public selectedTagsName: string;

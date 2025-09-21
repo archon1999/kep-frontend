@@ -88,7 +88,6 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
       ...this.filter,
       page: this.pageNumber,
       pageSize: this.pageSize,
-      ordering: this.ordering,
     }).pipe(
       tap((pageResult: PageResult) => {
         this.filterService.setProblemsCount(pageResult.total);

@@ -35,6 +35,12 @@
         <problems-activity-card [username]="username"></problems-activity-card>
       </div>
     </div>
+
+    <a
+      [routerLink]="[Resources.Attempts, username]"
+      class="btn btn-outline-primary btn-sm mt-1 w-100">
+      {{ 'Attempts' | translate }}
+    </a>
   </div>
 </kep-card>
 
