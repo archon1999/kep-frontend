@@ -1,0 +1,101 @@
+<div class="modal-header">
+  <h5 class="modal-title">{{ 'SelectDuelPreset' | translate }}</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="onCancel()"></button>
+</div>
+@if (form) {
+  <form class="duel-preset-modal" [formGroup]="form!" (ngSubmit)="onSubmit()">
+    <div class="modal-body">
+      <p class="text-muted mb-3">
+        {{ 'SelectDuelPresetDescription' | translate:{ username: opponent?.username } }}
+      </p>
+      @if (loading) {
+        <div class="d-flex justify-content-center py-3">
+          <spinner></spinner>
+        </div>
+      } @else {
+        <div class="duel-preset-modal__list mb-3" [class.duel-preset-modal__list--empty]="!presets?.length">
+          @if (presets?.length) {
+            @for (preset of presets; track preset.id) {
+              <div
+                class="duel-preset-modal__card"
+                [class.duel-preset-modal__card--selected]="isSelected(preset.id)"
+                tabindex="0"
+                role="button"
+                (click)="selectPreset(preset.id)"
+                (keydown.enter)="onPresetKeydown($event, preset.id)"
+                (keydown.space)="onPresetKeydown($event, preset.id)"
+              >
+                <div class="duel-preset-modal__card-header">
+                  <div>
+                    <div class="duel-preset-modal__title">{{ preset.title }}</div>
+                    @if (preset.category?.title) {
+                      <div class="text-muted small">{{ preset.category.title }}</div>
+                    }
+                  </div>
+                  <span class="duel-preset-modal__difficulty text-warning">{{ preset.difficultyDisplay }}</span>
+                </div>
+                <div class="duel-preset-modal__meta text-muted small">
+                  <span>{{ 'Problems' | translate }}: {{ preset.problemsCount }}</span>
+                  <span>·</span>
+                  <span>{{ 'Duration' | translate }}: {{ preset.duration }}</span>
+                </div>
+                @if (preset.problems?.length) {
+                  <div class="duel-preset-modal__problems text-muted small mt-2">
+                    @for (problem of preset.problems; track problem.id) {
+                      <span class="duel-preset-modal__problem">
+                        {{ problem.symbol }} ({{ problem.ball }})
+                      </span>
+                    }
+                  </div>
+                }
+                @if (preset.description) {
+                  <div class="duel-preset-modal__description text-muted small mt-2">
+                    {{ preset.description }}
+                  </div>
+                }
+              </div>
+            }
+          } @else {
+            <div class="text-muted">{{ 'NoPresetsAvailable' | translate }}</div>
+          }
+        </div>
+        @if (presetControl?.invalid && presetControl?.touched) {
+          <div class="text-danger small">{{ 'FieldRequired' | translate }}</div>
+        }
+      }
+      <div class="mt-3 mb-0">
+        <label class="form-label" for="duelStartTime">{{ 'StartTime' | translate }}</label>
+        <div class="input-group">
+          <span class="input-group-text text-muted"><i class="bi-calendar"></i></span>
+          <input
+            id="duelStartTime"
+            type="text"
+            class="form-control"
+            formControlName="startTime"
+            mwlFlatpickr
+            [enableTime]="true"
+            [dateFormat]="'Y-m-d\\TH:i'"
+            [altInput]="true"
+            [altFormat]="'F j, Y H:i'"
+            [minuteIncrement]="1"
+            [minDate]="minDate"
+            [defaultDate]="startTimeControl?.value"
+          >
+        </div>
+        @if (startTimeControl?.invalid && startTimeControl?.touched) {
+          <div class="text-danger small mt-1">{{ 'FieldRequired' | translate }}</div>
+        }
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">{{ 'Cancel' | translate }}</button>
+      <button type="submit" class="btn btn-primary" [disabled]="form!.invalid || loading">{{ 'CreateDuel' | translate }}</button>
+    </div>
+  </form>
+} @else {
+  <div class="modal-body">
+    <div class="d-flex justify-content-center py-5">
+      <spinner></spinner>
+    </div>
+  </div>
+}
