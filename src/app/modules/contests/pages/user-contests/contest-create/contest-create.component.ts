@@ -31,7 +31,7 @@ export class ContestCreateComponent implements OnInit {
       type: '',
       links: [
         {
-          name: 'CONTESTS.CONTESTS',
+          name: 'Contests.Contests',
           isLink: true,
           link: '../..'
         },

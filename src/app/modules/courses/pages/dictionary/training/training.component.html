@@ -14,7 +14,7 @@
               <div class="card-header">
                 <h5 class="card-title">
                   <kep-icon color="primary" name="challenge" type="duotone"/>
-                  {{ 'COURSES.TRAINING' | translate }}
+                  {{ 'Courses.Training' | translate }}
                 </h5>
               </div>
               <div class="card-footer">
@@ -72,11 +72,11 @@
                 }
 
                 <button (click)="answerCheck()" class="mb-2 mt-2 btn btn-gradient-primary">
-                  <i data-feather="check"></i> {{ 'COURSES.CHECK' | translate }}
+                  <i data-feather="check"></i> {{ 'Courses.Check' | translate }}
                 </button>
 
                 <br>
-                <span class=""><strong>{{ 'COURSES.SCORE' | translate }}</strong>: {{ score }}/{{ all }}</span>
+                <span class=""><strong>{{ 'Courses.Score' | translate }}</strong>: {{ score }}/{{ all }}</span>
                 <ngb-progressbar [value]="100*score/all" showValue="true" type="primary"></ngb-progressbar>
 
               </div>

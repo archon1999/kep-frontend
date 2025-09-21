@@ -22,7 +22,7 @@ import { ContentHeaderModule } from '@shared/ui/components/content-header/conten
 export class AttemptComponent implements OnInit {
 
   public contentHeader = {
-    headerTitle: 'ATTEMPT',
+    headerTitle: 'Attempt',
     breadcrumb: {
       type: '',
       links: [

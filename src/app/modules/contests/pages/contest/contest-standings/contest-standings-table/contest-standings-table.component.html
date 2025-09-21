@@ -5,14 +5,14 @@
   <ng-container header>
     <tr>
       <th class="text-center">#</th>
-      <th>{{ 'CONTESTS.CONTESTANT' | translate }}</th>
-      <th class="text-center">{{ 'CONTESTS.POINTS' | translate }}</th>
+      <th>{{ 'Contests.ContestANT' | translate }}</th>
+      <th class="text-center">{{ 'Contests.Points' | translate }}</th>
 
       @if (contest.isRated) {
         <th ngbTooltip="{{ 'RatingChange' | translate }}" container="body" class="text-center">
           <i [data-feather]="'delta' | iconName"></i>
         </th>
-        <th class="text-center">{{ 'CONTESTS.PERFOMANCE' | translate }}</th>
+        <th class="text-center">{{ 'Contests.Perfomance' | translate }}</th>
       }
 
       @for (contestProblem of contestProblems; track contestProblem) {
@@ -103,13 +103,13 @@
   <ng-container footer>
     <tr>
       <th class="text-center text-dark">#</th>
-      <th class="text-dark">{{ 'CONTESTS.CONTESTANT' | translate }}</th>
-      <th class="text-center">{{ 'CONTESTS.POINTS' | translate }}</th>
+      <th class="text-dark">{{ 'Contests.ContestANT' | translate }}</th>
+      <th class="text-center">{{ 'Contests.Points' | translate }}</th>
       @if (contest.isRated) {
         <th class="text-center">
           <i [data-feather]="'delta' | iconName"></i>
         </th>
-        <th class="text-center">{{ 'CONTESTS.PERFOMANCE' | translate }}</th>
+        <th class="text-center">{{ 'Contests.Perfomance' | translate }}</th>
       }
       @for (contestProblem of contestProblems; track contestProblem) {
         <th class="text-dark text-center">

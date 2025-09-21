@@ -4,7 +4,7 @@
       <span class="contest-color">
         <kep-icon name="filter" type="duotone"/>
       </span>
-      {{ 'CONTESTS.FILTER_ATTEMPTS' | translate }}
+      {{ 'Contests.FilterAttempts' | translate }}
     </h5>
   </div>
 
@@ -13,7 +13,7 @@
       <div class="mb-1">
         <label class="contest-color">
           <kep-icon name="problem" size="small-2"/>
-          {{ 'PROBLEM' | translate }}
+          {{ 'Problem' | translate }}
         </label>
         <div class="mb-1">
           <ng-select appendTo="body" formControlName="contestProblem">
@@ -29,7 +29,7 @@
       <div class="mb-1">
         <label class="contest-color">
           <kep-icon name="verdict" size="small-2"/>
-          {{ 'VERDICT' | translate }}
+          {{ 'Verdict' | translate }}
         </label>
         <ng-select [clearable]="true" appendTo="body" formControlName="verdict">
           @for (verdict of verdicts; track verdict) {
@@ -46,7 +46,7 @@
             id="filterOnlyUser"
             type="checkbox"
           />
-          <label class="form-check-label" for="filterOnlyUser">{{ 'MY_ATTEMPTS' | translate }}</label>
+          <label class="form-check-label" for="filterOnlyUser">{{ 'MyAttempts' | translate }}</label>
         </div>
       }
     </form>

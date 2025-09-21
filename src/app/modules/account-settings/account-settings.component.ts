@@ -26,7 +26,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class AccountSettingsComponent extends BasePageComponent {
   protected getContentHeader(): ContentHeader {
     return {
-      headerTitle: 'SETTINGS',
+      headerTitle: 'SettingsMenu',
       breadcrumb: {
         type: '',
         links: [

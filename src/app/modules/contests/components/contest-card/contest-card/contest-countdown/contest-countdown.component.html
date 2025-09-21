@@ -5,19 +5,19 @@
         <div class="d-flex justify-content-between" [ngbTooltip]="contest.startTime | localizedDate:'medium'">
           <div class="countdown text-center">
             <h5 class="clock-val">{{ data.fragments[0] }}</h5>
-            <h5 class="clock-text">{{ 'DAY' | translate }}</h5>
+            <h5 class="clock-text">{{ 'Day' | translate }}</h5>
           </div>
           <div class="countdown text-center">
             <h5 class="clock-val">{{ data.fragments[1] }}</h5>
-            <h5 class="clock-text">{{ 'HOUR' | translate }}</h5>
+            <h5 class="clock-text">{{ 'Hour' | translate }}</h5>
           </div>
           <div class="countdown text-center">
             <h5 class="clock-val">{{ data.fragments[2] }}</h5>
-            <h5 class="clock-text">{{ 'MINUTE' | translate }}</h5>
+            <h5 class="clock-text">{{ 'Minute' | translate }}</h5>
           </div>
           <div class="countdown text-center">
             <h5 class="clock-val">{{ data.fragments[3] }}</h5>
-            <h5 class="clock-text">{{ 'SECOND' | translate }}</h5>
+            <h5 class="clock-text">{{ 'Second' | translate }}</h5>
           </div>
         </div>
       </ng-template>
@@ -33,12 +33,12 @@
     </button>
   </div>
   <div class="modal-body" tabindex="0">
-    {{ 'CONTESTS.CONTEST_FINISHED' | translate }}
+    {{ 'Contests.ContestFinished' | translate }}
   </div>
   <div class="modal-footer">
     <a [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'standings']"
        class="btn btn-primary btn-relief" rippleEffect (click)="modal.dismiss('Cross click')">
-      {{ 'CONTESTS.STANDINGS' | translate }}
+      {{ 'Contests.Standings' | translate }}
     </a>
   </div>
 </ng-template>
@@ -51,12 +51,12 @@
     </button>
   </div>
   <div class="modal-body" tabindex="0">
-    {{ 'CONTESTS.CONTEST_STARTED' | translate }}
+    {{ 'Contests.ContestStarted' | translate }}
   </div>
   <div class="modal-footer">
     <a [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problems']"
        class="btn btn-primary btn-relief" rippleEffect (click)="modal.dismiss('Cross click')">
-      {{ 'CONTESTS.PROBLEMS' | translate }}
+      {{ 'Contests.Problems' | translate }}
     </a>
   </div>
 </ng-template>

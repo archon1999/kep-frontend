@@ -42,7 +42,7 @@ export class ContestComponent extends BasePageComponent implements OnInit {
         type: '',
         links: [
           {
-            name: 'CONTESTS.CONTESTS',
+            name: 'Contests.Contests',
             isLink: true,
             link: '../..'
           },

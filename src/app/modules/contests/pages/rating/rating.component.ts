@@ -55,17 +55,17 @@ export class RatingComponent extends BaseTablePageComponent<ContestsRating> impl
 
   protected getContentHeader(): ContentHeader {
     return {
-      headerTitle: 'CONTESTS.CONTESTS_RATING',
+      headerTitle: 'Contests.ContestsRating',
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'CONTESTS.CONTESTS',
+            name: 'Contests.Contests',
             isLink: true,
             link: '..'
           },
           {
-            name: 'RATING',
+            name: 'Rating',
             isLink: false,
           }
         ]

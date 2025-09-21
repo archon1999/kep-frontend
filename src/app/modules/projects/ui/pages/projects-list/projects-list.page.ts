@@ -41,7 +41,7 @@ export class ProjectsListPage extends BaseLoadComponent<Project[]> implements On
 
   protected getContentHeader(): ContentHeader {
     return {
-      headerTitle: 'MENU.PROJECTS',
+      headerTitle: 'Menu.Projects',
       breadcrumb: {
         type: '',
         links: [
@@ -50,7 +50,7 @@ export class ProjectsListPage extends BaseLoadComponent<Project[]> implements On
             isLink: false,
           },
           {
-            name: 'MENU.PROJECTS',
+            name: 'Menu.Projects',
             isLink: false,
           },
         ]

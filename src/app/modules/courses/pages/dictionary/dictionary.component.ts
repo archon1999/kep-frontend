@@ -39,12 +39,12 @@ export class DictionaryComponent extends BasePageComponent implements OnInit {
 
   protected getContentHeader(): ContentHeader {
     return {
-      headerTitle: 'COURSES.DICTIONARY',
+      headerTitle: 'Courses.Dictionary',
       breadcrumb: {
         type: '',
         links: [
           {
-            name: 'COURSES.COURSES',
+            name: 'Courses.Courses',
             isLink: true,
             link: '/learn/courses'
           },

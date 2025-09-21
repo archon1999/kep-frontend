@@ -6,13 +6,13 @@
       <h6 class="text-uppercase">
         @switch (hackathon.status) {
           @case (HackathonStatus.ALREADY) {
-            {{ 'HACKATHONS.HACKATHON_ENDS' | translate }}
+            {{ 'Hackathons.HackathonEnds' | translate }}
           }
           @case (HackathonStatus.FINISHED) {
-            {{ 'HACKATHONS.HACKATHON_FINISHED' | translate }}
+            {{ 'Hackathons.HackathonFinished' | translate }}
           }
           @case (HackathonStatus.NOT_STARTED) {
-            {{ 'HACKATHONS.HACKATHON_STARTS' | translate }}
+            {{ 'Hackathons.HackathonStarts' | translate }}
           }
         }
       </h6>

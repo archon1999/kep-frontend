@@ -5,43 +5,43 @@
       <th>
         <div class="d-flex align-items-center">
           <kep-icon type="duotone" size="small-4" name="time"/>
-          {{ 'SUBMITTED' | translate }}
+          {{ 'Submitted' | translate }}
         </div>
       </th>
       <th class="ms-1">
         <div class="d-flex align-items-center">
           <kep-icon type="duotone" size="small-4" name="lang"/>
-          {{ 'LANG' | translate }}
+          {{ 'Lang' | translate }}
         </div>
       </th>
       <th>
         <div class="d-flex align-items-center">
           <kep-icon type="duotone" size="small-4" name="username"/>
-          {{ 'USER' | translate }}
+          {{ 'User' | translate }}
         </div>
       </th>
       <th>
         <div class="d-flex align-items-center">
           <kep-icon type="duotone" size="small-4" name="problem"/>
-          {{ 'PROBLEM' | translate }}
+          {{ 'Problem' | translate }}
         </div>
       </th>
       <th>
         <div class="d-flex align-items-center">
           <kep-icon type="duotone" size="small-4" name="verdict"/>
-          {{ 'VERDICT' | translate }}
+          {{ 'Verdict' | translate }}
         </div>
       </th>
       <th>
         <div class="d-flex align-items-center">
           <kep-icon type="duotone" size="small-4" name="information-2"/>
-          {{ 'TIME' | translate }}/{{ 'MEMORY' | translate }}
+          {{ 'Time' | translate }}/{{ 'Memory' | translate }}
         </div>
       </th>
       <th *ngIf="!hideSourceCodeSize">
         <div class="d-flex align-items-center">
           <kep-icon type="duotone" size="small-4" name="scroll"/>
-          {{ 'SIZE' | translate }}
+          {{ 'Size' | translate }}
         </div>
       </th>
       <th *ngIf="currentUser?.isSuperuser"></th>
@@ -170,11 +170,11 @@
         <td>
           <div class="d-flex align-items-center text-dark text-nowrap">
             <kep-icon color="info" type="duotone" name="watch"/>
-            {{ attempt.time }} {{ 'MS' | translate }}
+            {{ attempt.time }} {{ 'Ms' | translate }}
           </div>
           <div class="d-flex align-items-center text-dark text-nowrap">
             <kep-icon color="primary" type="duotone" name="external-drive"/>
-            {{ attempt.memory }} {{ 'KB' | translate }}
+            {{ attempt.memory }} {{ 'Kb' | translate }}
           </div>
         </td>
 

@@ -51,16 +51,16 @@
           <ul ngbDropdownMenu aria-labelledby="navbarUserDropdown" class="dropdown-menu dropdown-menu-end">
             <a ngbDropdownItem [routerLink]="['/users', 'user', currentUser?.username]">
               <kep-icon size="small-4" name="user" type="duotone"/>
-              {{ 'PROFILE' | translate }}
+              {{ 'Profile' | translate }}
             </a>
             <a ngbDropdownItem [routerLink]="['/settings']">
               <span [data-feather]="'settings'" [class]="'me-1'"></span>
-              {{ 'SETTINGS' | translate }}
+              {{ 'SettingsMenu' | translate }}
             </a>
             <div class="dropdown-divider"></div>
             <button ngbDropdownItem (click)="authService.logout()">
               <span [data-feather]="'power'" [class]="'me-1'"></span>
-              {{ 'LOGOUT' | translate }}
+              {{ 'Logout' | translate }}
             </button>
           </ul>
         </li>

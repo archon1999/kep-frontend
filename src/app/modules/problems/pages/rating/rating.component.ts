@@ -59,7 +59,7 @@ export class RatingComponent extends BaseTablePageComponent<ProblemsRating> impl
 
   protected getContentHeader(): ContentHeader {
     return {
-      headerTitle: 'RATING',
+      headerTitle: 'Rating',
       breadcrumb: {
         links: [
           {

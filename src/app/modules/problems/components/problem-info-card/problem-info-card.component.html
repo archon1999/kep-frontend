@@ -2,22 +2,22 @@
   <div class="d-flex justify-content-between">
     <h5>
       <i class="text-info" data-feather="clock"></i>
-      {{ 'TIME_LIMIT' | translate }}
+      {{ 'TimeLimit' | translate }}
     </h5>
 
     <h5 class="text-end">
-      {{ 'MEMORY_LIMIT' | translate }}
+      {{ 'MemoryLimit' | translate }}
       <i class="text-primary" data-feather="hard-drive"></i>
     </h5>
   </div>
 
   <div class="mt-2 d-flex justify-content-between">
     <span class="badge bg-info">
-      {{ selectedAvailableLang.timeLimit || problem.timeLimit }} {{ 'MS' | translate }}
+      {{ selectedAvailableLang.timeLimit || problem.timeLimit }} {{ 'Ms' | translate }}
     </span>
 
     <span class="badge bg-primary">
-      {{ selectedAvailableLang.memoryLimit || problem.memoryLimit }} {{ 'MB' | translate }}
+      {{ selectedAvailableLang.memoryLimit || problem.memoryLimit }} {{ 'Mb' | translate }}
     </span>
   </div>
 </div>

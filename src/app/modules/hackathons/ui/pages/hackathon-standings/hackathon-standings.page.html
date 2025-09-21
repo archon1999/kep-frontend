@@ -21,8 +21,8 @@
 <kep-table [loading]="isLoading">
   <ng-container header>
     <th class="text-center">#</th>
-    <th>{{ 'HACKATHONS.CONTESTANT' | translate }}</th>
-    <th>{{ 'HACKATHONS.POINTS' | translate }}</th>
+    <th>{{ 'Hackathons.Contestant' | translate }}</th>
+    <th>{{ 'Hackathons.Points' | translate }}</th>
     @for (project of projects; track project.symbol) {
       <td class="text-center">
         <a ngbTooltip="{{ project.project.title }}" routerLink="../projects/{{project.symbol}}">

@@ -3,22 +3,22 @@
     <table class="table">
       <thead>
       <tr>
-        <th class="text-center">{{ 'CONTESTS.TITLE' | translate }}</th>
-        <th class="text-center">{{ 'CONTESTS.AUTHORS' | translate }}</th>
-        <th class="text-center">{{ 'CONTESTS.START_TIME' | translate }}</th>
-        <th class="text-center">{{ 'CONTESTS.FINISH_TIME' | translate }}</th>
-        <th class="text-center">{{ 'CONTESTS.TYPE' | translate }}</th>
+        <th class="text-center">{{ 'Contests.Title' | translate }}</th>
+        <th class="text-center">{{ 'Contests.Authors' | translate }}</th>
+        <th class="text-center">{{ 'Contests.StartTime' | translate }}</th>
+        <th class="text-center">{{ 'Contests.FinishTime' | translate }}</th>
+        <th class="text-center">{{ 'Contests.Type' | translate }}</th>
         <th class="text-center">
           @if (contests.length > 0 && contests[0].status == -1) {
-            {{ 'CONTESTS.PROBLEMS_COUNT' | translate }}
+            {{ 'Contests.ProblemsCount' | translate }}
           }
         </th>
         <th class="text-center">
           @if (contests.length > 0 && contests[0].status == -1) {
-            {{ 'CONTESTS.REGISTRANTS_COUNT' | translate }}
+            {{ 'Contests.RegistrantsCount' | translate }}
           }
           @if (contests.length > 0 && contests[0].status != -1) {
-            {{ 'CONTESTS.CONTESTANTS_COUNT' | translate }}
+            {{ 'Contests.ContestantsCount' | translate }}
           }
         </th>
       </tr>
@@ -33,10 +33,10 @@
               </a>
               <br>
               @if (contest.isRated) {
-                <div class="text-success contest-rated">{{ 'CONTESTS.RATED' | translate }}</div>
+                <div class="text-success contest-rated">{{ 'Contests.Rated' | translate }}</div>
               }
               @if (!contest.isRated) {
-                <div class="text-danger contest-rated">{{ 'CONTESTS.UNRATED' | translate }}</div>
+                <div class="text-danger contest-rated">{{ 'Contests.Unrated' | translate }}</div>
               }
             </td>
             <td class="text-center">
@@ -72,7 +72,7 @@
                   <!-- <contest-standings-popover [contest]="contest"></contest-standings-popover> -->
                   <a class="btn btn-sm round"
                      [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'standings']">
-                    {{ 'CONTESTS.STANDINGS' | translate }}
+                    {{ 'Contests.Standings' | translate }}
                   </a>
                   <br>
                 </div>
@@ -97,18 +97,18 @@
       @if (contests.length > 1) {
         <tfoot>
         <tr>
-          <th class="text-center">{{ 'CONTESTS.TITLE' | translate }}</th>
-          <th class="text-center">{{ 'CONTESTS.AUTHORS' | translate }}</th>
-          <th class="text-center">{{ 'CONTESTS.START_TIME' | translate }}</th>
-          <th class="text-center">{{ 'CONTESTS.FINISH_TIME' | translate }}</th>
-          <th class="text-center">{{ 'CONTESTS.TYPE' | translate }}</th>
+          <th class="text-center">{{ 'Contests.Title' | translate }}</th>
+          <th class="text-center">{{ 'Contests.Authors' | translate }}</th>
+          <th class="text-center">{{ 'Contests.StartTime' | translate }}</th>
+          <th class="text-center">{{ 'Contests.FinishTime' | translate }}</th>
+          <th class="text-center">{{ 'Contests.Type' | translate }}</th>
           <th class="text-center"></th>
           <th class="text-center">
             @if (contests.length > 0 && contests[0].status == -1) {
-              {{ 'CONTESTS.REGISTRANTS_COUNT' | translate }}
+              {{ 'Contests.RegistrantsCount' | translate }}
             }
             @if (contests.length > 0 && contests[0].status != -1) {
-              {{ 'CONTESTS.CONTESTANTS_COUNT' | translate }}
+              {{ 'Contests.ContestantsCount' | translate }}
             }
           </th>
         </tr>

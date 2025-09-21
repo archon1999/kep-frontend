@@ -1,14 +1,14 @@
 @if (contest.status == ContestStatus.ALREADY) {
   <!--  <h4 class="text-center ms-1 mb-2">-->
-  <!--    {{ 'CONTESTS.CONTEST_ENDS' | translate }}-->
+  <!--    {{ 'Contests.ContestEnds' | translate }}-->
   <!--  </h4>-->
 } @else if (contest.status == ContestStatus.NOT_STARTED) {
   <!--  <h4 class="text-center ms-1 mb-2">-->
-  <!--    {{ 'CONTESTS.CONTEST_STARTS' | translate }}-->
+  <!--    {{ 'Contests.ContestStarts' | translate }}-->
   <!--  </h4>-->
 } @else if (contest.status == ContestStatus.FINISHED) {
   <!--  <h4 class="text-center text-dark ms-1 mb-2">-->
-  <!--    {{ 'CONTESTS.STANDINGS' | translate }}-->
+  <!--    {{ 'Contests.Standings' | translate }}-->
   <!--  </h4>-->
 }
 
@@ -16,7 +16,7 @@
   <div class="wrap">
     <div class="countdown">
       <div attr.data-init-value="{{ hours }}" class="bloc-time hours">
-        <span class="count-title text-dark">{{ 'HOUR' | translate }}</span>
+        <span class="count-title text-dark">{{ 'Hour' | translate }}</span>
 
         <div class="figure text-contest hours hours-1">
           <span class="top">0</span>
@@ -42,7 +42,7 @@
       </div>
 
       <div attr.data-init-value="{{ minutes }}" class="bloc-time min">
-        <span class="count-title text-dark">{{ 'MINUTE' | translate }}</span>
+        <span class="count-title text-dark">{{ 'Minute' | translate }}</span>
 
         <div class="figure text-contest min min-1">
           <span class="top">0</span>
@@ -68,7 +68,7 @@
       </div>
 
       <div attr.data-init-value="{{ seconds }}" class="bloc-time sec">
-        <span class="count-title text-dark">{{ 'SECOND' | translate }}</span>
+        <span class="count-title text-dark">{{ 'Second' | translate }}</span>
 
         <div class="figure text-contest sec sec-1">
           <span class="top">0</span>
@@ -103,19 +103,19 @@
 <!--        <div class="d-flex justify-content-between">-->
 <!--          <div class="countdown text-center">-->
 <!--            <h5 class="clock-val">{{ data.fragments[0] }}</h5>-->
-<!--            <h5 class="clock-text">{{ 'DAY' | translate }}</h5>-->
+<!--            <h5 class="clock-text">{{ 'Day' | translate }}</h5>-->
 <!--          </div>-->
 <!--          <div class="countdown text-center">-->
 <!--            <h5 class="clock-val">{{ data.fragments[1] }}</h5>-->
-<!--            <h5 class="clock-text">{{ 'HOUR' | translate }}</h5>-->
+<!--            <h5 class="clock-text">{{ 'Hour' | translate }}</h5>-->
 <!--          </div>-->
 <!--          <div class="countdown text-center">-->
 <!--            <h5 class="clock-val">{{ data.fragments[2] }}</h5>-->
-<!--            <h5 class="clock-text">{{ 'MINUTE' | translate }}</h5>-->
+<!--            <h5 class="clock-text">{{ 'Minute' | translate }}</h5>-->
 <!--          </div>-->
 <!--          <div class="countdown text-center">-->
 <!--            <h5 class="clock-val">{{ data.fragments[3] }}</h5>-->
-<!--            <h5 class="clock-text">{{ 'SECOND' | translate }}</h5>-->
+<!--            <h5 class="clock-text">{{ 'Second' | translate }}</h5>-->
 <!--          </div>-->
 <!--        </div>-->
 <!--      </ng-template>-->
@@ -131,13 +131,13 @@
     </button>
   </div>
   <div class="modal-body" ngbAutofocus tabindex="0">
-    {{ 'CONTESTS.CONTEST_FINISHED' | translate }}
+    {{ 'Contests.ContestFinished' | translate }}
   </div>
   <div class="modal-footer">
     <a (click)="modal.dismiss('Cross click')"
        [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'standings']"
        class="btn btn-primary btn-relief" rippleEffect>
-      {{ 'CONTESTS.STANDINGS' | translate }}
+      {{ 'Contests.Standings' | translate }}
     </a>
   </div>
 </ng-template>
@@ -150,13 +150,13 @@
     </button>
   </div>
   <div class="modal-body" ngbAutofocus tabindex="0">
-    {{ 'CONTESTS.CONTEST_STARTED' | translate }}
+    {{ 'Contests.ContestStarted' | translate }}
   </div>
   <div class="modal-footer">
     <a (click)="modal.dismiss('Cross click')"
        [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problems']"
        class="btn btn-primary btn-relief" rippleEffect>
-      {{ 'CONTESTS.PROBLEMS' | translate }}
+      {{ 'Contests.Problems' | translate }}
     </a>
   </div>
 </ng-template>

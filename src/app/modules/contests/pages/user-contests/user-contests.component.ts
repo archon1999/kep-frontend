@@ -69,7 +69,7 @@ export class UserContestsComponent extends BaseTablePageComponent<Contest> imple
         type: '',
         links: [
           {
-            name: 'CONTESTS.CONTESTS',
+            name: 'Contests.Contests',
             isLink: true,
             link: '..'
           },

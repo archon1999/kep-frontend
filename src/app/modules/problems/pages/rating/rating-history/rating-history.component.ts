@@ -42,7 +42,7 @@ class RatingHistory {
 export class RatingHistoryComponent implements OnInit {
 
   contentHeader = {
-    headerTitle: 'PROBLEMS_RATING_HISTORY',
+    headerTitle: 'ProblemsRatingHistory',
     breadcrumb: {
       type: '',
       links: [
@@ -56,7 +56,7 @@ export class RatingHistoryComponent implements OnInit {
           link: '../..'
         },
         {
-          name: 'RATING',
+          name: 'Rating',
           isLink: true,
           link: '..'
         }

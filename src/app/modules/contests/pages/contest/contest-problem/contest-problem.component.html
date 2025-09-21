@@ -71,13 +71,13 @@
                 </h4>
 
                 <p class="text-center mb-1">
-                  {{ 'TIME_LIMIT' | translate }}:
-                  {{ selectedAvailableLang?.timeLimit || problem.timeLimit }} {{ 'MS' | translate }}
+                  {{ 'TimeLimit' | translate }}:
+                  {{ selectedAvailableLang?.timeLimit || problem.timeLimit }} {{ 'Ms' | translate }}
                 </p>
 
                 <p class="text-center mb-2">
-                  {{ 'MEMORY_LIMIT' | translate }}
-                  {{ selectedAvailableLang?.memoryLimit || problem.memoryLimit }} {{ 'MB' | translate }}
+                  {{ 'MemoryLimit' | translate }}
+                  {{ selectedAvailableLang?.memoryLimit || problem.memoryLimit }} {{ 'Mb' | translate }}
                 </p>
                 <problem-body [problem]="problem"></problem-body>
               </div>

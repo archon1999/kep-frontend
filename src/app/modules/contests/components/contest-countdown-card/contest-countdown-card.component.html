@@ -6,13 +6,13 @@
       <h6 class="text-uppercase">
         @switch (contest.status) {
           @case (ContestStatus.ALREADY) {
-            {{ 'CONTESTS.CONTEST_ENDS' | translate }}
+            {{ 'Contests.ContestEnds' | translate }}
           }
           @case (ContestStatus.FINISHED) {
-            {{ 'CONTESTS.CONTEST_FINISHED' | translate }}
+            {{ 'Contests.ContestFinished' | translate }}
           }
           @case (ContestStatus.NOT_STARTED) {
-            {{ 'CONTESTS.CONTEST_STARTS' | translate }}
+            {{ 'Contests.ContestStarts' | translate }}
           }
         }
       </h6>

@@ -79,7 +79,7 @@ export class ContestQuestionsComponent extends BaseLoadComponent<ContestQuestion
         type: '',
         links: [
           {
-            name: 'CONTESTS.CONTESTS',
+            name: 'Contests.Contests',
             isLink: true,
             link: '../../..'
           },
