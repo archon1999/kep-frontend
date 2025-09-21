@@ -29,28 +29,20 @@ export default [
       problem: ProblemResolver,
     },
     canActivate: [ProblemGuard],
-  },
-  {
-    path: 'problem/:id/attempts',
-    loadComponent: () => import('./pages/problem/problem.component').then(c => c.ProblemComponent),
-    data: {
-      title: 'Problems.Problem',
-    },
-    resolve: {
-      problem: ProblemResolver,
-    },
-    canActivate: [ProblemGuard],
-  },
-  {
-    path: 'problem/:id/hacks',
-    loadComponent: () => import('./pages/problem/problem.component').then(c => c.ProblemComponent),
-    data: {
-      title: 'Problems.Problem',
-    },
-    resolve: {
-      problem: ProblemResolver,
-    },
-    canActivate: [ProblemGuard],
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./pages/problem/problem-description/problem-description-route.component').then(c => c.ProblemDescriptionRouteComponent),
+      },
+      {
+        path: 'attempts',
+        loadComponent: () => import('./pages/problem/problem-attempts/problem-attempts-route.component').then(c => c.ProblemAttemptsRouteComponent),
+      },
+      {
+        path: 'hacks',
+        loadComponent: () => import('./pages/problem/problem-hacks/problem-hacks-route.component').then(c => c.ProblemHacksRouteComponent),
+      },
+    ],
   },
   // {
   //   path: 'problem/:id/og-image',
