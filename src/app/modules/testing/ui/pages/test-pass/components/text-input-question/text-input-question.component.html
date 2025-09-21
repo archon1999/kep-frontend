@@ -1,0 +1,12 @@
+<div>
+  <h5 class="ps-1 d-flex">
+    {{ question.number }}.
+    <span class="ps-50">
+      <mathjax [content]="question.body || question.text"></mathjax>
+    </span>
+  </h5>
+  <br>
+  <div class="col-lg-6 col-12 mx-auto">
+    <input type="text" [(ngModel)]="question.input" id="input" class="form-control" />
+  </div>
+</div>

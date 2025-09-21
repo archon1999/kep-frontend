@@ -1,0 +1,30 @@
+<div>
+  <h5 class="ps-1 d-flex">
+    {{ question.number }}.
+    <span class="ps-50" mathjax [innerHTML]="question.body || question.text"></span>
+  </h5>
+  <br>
+  <div class="col-lg-6 col-12 mx-auto">
+    @for (group of classificationGroups; track group; let i = $index) {
+      <div>
+        <li class="list-group-item">
+          {{ group.key }}
+        </li>
+        <ul class="list-group" dragula="basic-list-group-3" [(dragulaModel)]="group.values" id="basic-list-group-{{ i }}">
+          @for (option of group.values; track option) {
+            <li class="bg-gradient-primary list-group-item draggable">
+              <div class="row justify-content-between">
+                <div class="ps-1">
+                  {{ option }}
+                </div>
+                <div class="pe-1">
+                  <i class="text-primary" data-feather="arrow-right"></i>
+                </div>
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
+</div>

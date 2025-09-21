@@ -1,0 +1,20 @@
+<div>
+  <h5 class="ps-1 d-flex">
+    {{ question.number }}.
+    <span class="ps-50">
+      <mathjax [content]="question.body || question.text"></mathjax>
+    </span>
+  </h5>
+  <br>
+  @for (option of question.options; track option; let i = $index) {
+    <div class="ms-1 mb-1 custom-control custom-control-primary custom-checkbox">
+      <input
+        type="checkbox"
+        id="check-{{ i }}"
+        [(ngModel)]="option.selected"
+        class="form-check-input me-2"
+      />
+      <label class="form-check-label" for="check-{{ i }}">{{ option.option }}</label>
+    </div>
+  }
+</div>
