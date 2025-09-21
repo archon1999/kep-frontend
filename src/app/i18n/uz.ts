@@ -96,6 +96,7 @@ export const localeUz = {
   Problem: 'Masala',
   Rating: 'Reyting',
   OverallRating: 'Umumiy reyting',
+  DuelsRating: 'Duellar reytingi',
   LastAttempts: 'Ohirgi urinishlar',
   Verdict: 'Natija',
   ArenaWinners: 'Arena gʻoliblari',
@@ -812,6 +813,7 @@ export const localeUz = {
     Duels: {
       Duels: 'Duellar',
       Duel: 'Duel | {{ playerFirstUsername }} vs {{ playerSecondUsername }}',
+      DuelsRating: 'Duellar reytingi',
     },
     Projects: {
       Projects: 'Loyihalar',

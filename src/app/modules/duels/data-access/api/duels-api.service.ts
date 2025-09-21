@@ -8,6 +8,7 @@ import {
   DuelReadyPlayer,
   DuelReadyStatus,
   DuelResults,
+  DuelsRating,
 } from '@duels/domain';
 
 @Injectable({
@@ -59,6 +60,10 @@ export class DuelsApiService {
 
   confirmDuel(duelId: number) {
     return this.api.post(`duels/${duelId}/confirm`);
+  }
+
+  getDuelsRating(params: Record<string, any>): Observable<PageResult<DuelsRating>> {
+    return this.api.get('duels-rating', params);
   }
 
 }

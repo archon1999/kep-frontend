@@ -101,6 +101,7 @@ export const localeRu = {
   Problem: 'Задача',
   Rating: 'Рейтинг',
   OverallRating: 'Общий рейтинг',
+  DuelsRating: 'Рейтинг дуэлей',
   LastAttempts: 'Последние попытки',
   Verdict: 'Вердикт',
   AllAttempts: 'Все попытки',
@@ -810,6 +811,7 @@ export const localeRu = {
     Duels: {
       Duels: 'Дуэли',
       Duel: 'Дуэль | {{ playerFirstUsername }} vs {{ playerSecondUsername }}',
+      DuelsRating: 'Рейтинг дуэлей',
     },
     Projects: {
       Projects: 'Проекты',

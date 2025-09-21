@@ -56,6 +56,11 @@ export const routes: Routes = [
         loadChildren: () => import('./modules/duels/duels.routing'),
       },
       {
+        path: 'duels-rating',
+        loadComponent: () => import('./modules/duels/ui/pages/duels-rating/duels-rating.page').then(c => c.DuelsRatingPage),
+        data: { title: 'Duels.DuelsRating' },
+      },
+      {
         path: 'competitions/contests',
         loadChildren: () => import('./modules/contests/contests.routing')
       },
