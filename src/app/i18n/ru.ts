@@ -221,6 +221,7 @@ export const localeRu = {
   ChallengeToDuel: 'Вызвать на дуэль',
   NoReadyPlayers: 'Пока нет готовых игроков',
   MyDuels: 'Мои дуэли',
+  AllDuels: 'Все дуэли',
   AwaitingConfirmation: 'Ожидает подтверждения',
   Confirm: 'Подтвердить',
   NoDuelsYet: 'Пока нет дуэлей',
