@@ -11,7 +11,6 @@ import { takeUntil } from 'rxjs/operators';
 import { AttemptLangs } from '@problems/constants';
 import { findAvailableLang } from '@problems/utils';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
-import { AttemptLanguageComponent } from '@shared/components/attempt-language/attempt-language.component';
 
 interface IVoteResult {
   likesCount: number;
@@ -26,8 +25,6 @@ interface IVoteResult {
     ProblemsPipesModule,
     UserPopoverModule,
     KepIconComponent,
-    AttemptLanguageComponent,
-    AttemptLanguageComponent,
   ],
   templateUrl: './problem-info-card.component.html',
   styleUrl: './problem-info-card.component.scss'
@@ -39,7 +36,6 @@ export class ProblemInfoCardComponent implements OnInit, OnDestroy, OnChanges {
   @Input() hideAuthorAndDifficulty = false;
   @Input() hideCodeGolf = true;
 
-  public selectedLang: string;
   public selectedAvailableLang: AvailableLanguage;
 
   public currentUser: AuthUser;
@@ -57,7 +53,6 @@ export class ProblemInfoCardComponent implements OnInit, OnDestroy, OnChanges {
     this.langService.getLanguage().pipe(takeUntil(this._unsubscribeAll)).subscribe(
       (lang: AttemptLangs) => {
         this.selectedAvailableLang = findAvailableLang(this.problem.availableLanguages, lang);
-        this.selectedLang = lang;
         if (!this.selectedAvailableLang) {
           this.langService.setLanguage(this.problem.availableLanguages[0].lang);
         }

@@ -22,6 +22,47 @@
     } @else {
       <div class="row">
         <div class="col-lg-9 col-12">
+          @if (duel.status == 0 && duel.isPlayer && isAuthenticated) {
+            <div class="d-flex flex-wrap justify-content-end align-items-center gap-1 mb-1">
+              <div class="btn-group" role="group">
+                <button
+                  (click)="runCode()"
+                  [disabled]="!duelProblem"
+                  class="btn btn-secondary-light btn-wave"
+                  type="button">
+                  <span><i data-feather="terminal"></i></span>
+                  {{ 'CodeEditor.Run' | translate }}
+                </button>
+                <button
+                  (click)="submitCode()"
+                  [disabled]="!duelProblem"
+                  class="btn btn-primary-light btn-wave"
+                  type="button">
+                  <i data-feather="send"></i>
+                  {{ 'CodeEditor.Submit' | translate }}
+                </button>
+              </div>
+              @if (duelProblem?.problem?.availableLanguages?.length) {
+                <div class="mx-1">
+                  <ng-select
+                    [(ngModel)]="selectedLang"
+                    (change)="langChange($event)"
+                    [clearable]="false"
+                    [searchable]="false">
+                    @for (availableLanguage of duelProblem.problem.availableLanguages; track availableLanguage) {
+                      <ng-option [value]="availableLanguage.lang">
+                        <attempt-language
+                          [lang]="availableLanguage.lang"
+                          [langFull]="availableLanguage.langFull"
+                          [size]="24"/>
+                        {{ availableLanguage.langFull || availableLanguage.lang }}
+                      </ng-option>
+                    }
+                  </ng-select>
+                </div>
+              }
+            </div>
+          }
           <kep-card>
             <div class="table-responsive">
               <table class="table">
@@ -107,6 +148,7 @@
                 <problem-body [problem]="duelProblem.problem"></problem-body>
                 @if (duel.status == 0 && duel.isPlayer && currentUser) {
                   <code-editor-modal
+                    #codeEditorModal
                     [uniqueName]="'duel-problem-' + duelProblem.problem.id"
                     [sampleTests]="duelProblem.problem.sampleTests"
                     [availableLanguages]="duelProblem.problem.availableLanguages"

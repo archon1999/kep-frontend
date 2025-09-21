@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { Attempt } from '@problems/models/attempts.models';
 import { interval, Observable } from 'rxjs';
 import { Duel, DuelProblem } from '../../duels.interfaces';
@@ -17,6 +17,13 @@ import { BaseLoadComponent } from '@core/common';
 import { takeUntil } from 'rxjs/operators';
 import { PageResult } from '@core/common/classes/page-result';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { AttemptLangs } from '@problems/constants';
+import { LanguageService } from '@problems/services/language.service';
+import { findAvailableLang } from '@problems/utils';
+import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { AttemptLanguageComponent } from '@shared/components/attempt-language/attempt-language.component';
+import { CodeEditorModalComponent } from '@shared/components/code-editor/code-editor-modal/code-editor-modal.component';
 
 @Component({
   templateUrl: './duel.component.html',
@@ -33,14 +40,22 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     DuelCountdownComponent,
     ProblemInfoCardComponent,
     ProblemListCardComponent,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+    FormsModule,
+    NgSelectModule,
+    AttemptLanguageComponent
   ]
 })
 export class DuelComponent extends BaseLoadComponent<Duel> {
   public duelProblem: DuelProblem;
   public attempts: Array<Attempt>;
+  public selectedLang: AttemptLangs;
 
   protected duelsService = inject(DuelsService);
+  protected langService = inject(LanguageService);
+
+  @ViewChild(CodeEditorModalComponent)
+  private codeEditorModal: CodeEditorModalComponent;
 
   get duel() {
     return this.data;
@@ -52,6 +67,13 @@ export class DuelComponent extends BaseLoadComponent<Duel> {
 
   override ngOnInit() {
     super.ngOnInit();
+
+    this.langService.getLanguage()
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((lang: AttemptLangs) => {
+        this.selectedLang = lang;
+        this.updateSelectedAvailableLang();
+      });
 
     interval(5000).pipe(takeUntil(this._unsubscribeAll)).subscribe(
       () => {
@@ -81,6 +103,7 @@ export class DuelComponent extends BaseLoadComponent<Duel> {
 
   changeProblem(duelProblem: DuelProblem) {
     this.duelProblem = duelProblem;
+    this.updateSelectedAvailableLang(true);
     if (this.currentUser && this.duel.isPlayer) {
       this.reloadAttempts();
     }
@@ -109,5 +132,67 @@ export class DuelComponent extends BaseLoadComponent<Duel> {
         this.duel.playerSecond.balls = playerSecondBalls;
       }
     );
+  }
+
+  langChange(lang: AttemptLangs) {
+    this.langService.setLanguage(lang);
+  }
+
+  runCode() {
+    if (!this.canUseCodeEditor()) {
+      return;
+    }
+    this.openEditorSidebar(() => this.codeEditorModal?.run());
+  }
+
+  submitCode() {
+    if (!this.canUseCodeEditor()) {
+      return;
+    }
+    this.openEditorSidebar(() => this.codeEditorModal?.submit());
+  }
+
+  private canUseCodeEditor() {
+    return this.isAuthenticated && this.duel?.status === 0 && this.duel?.isPlayer && !!this.duelProblem;
+  }
+
+  private openEditorSidebar(callback?: () => void) {
+    if (!this.codeEditorModal) {
+      return;
+    }
+
+    const execute = () => {
+      if (callback) {
+        callback();
+      }
+    };
+
+    if (!this.codeEditorModal.sidebarIsOpened) {
+      this.codeEditorModal.openSidebar();
+      setTimeout(() => execute());
+    } else {
+      execute();
+    }
+  }
+
+  private updateSelectedAvailableLang(resetIfMissing = false) {
+    const availableLanguages = this.duelProblem?.problem?.availableLanguages || [];
+    if (!availableLanguages.length) {
+      return;
+    }
+
+    const selected = findAvailableLang(availableLanguages, this.selectedLang);
+    if (selected) {
+      return;
+    }
+
+    if (!resetIfMissing) {
+      return;
+    }
+
+    const fallback = availableLanguages[0];
+    if (fallback?.lang) {
+      this.langService.setLanguage(fallback.lang as AttemptLangs);
+    }
   }
 }

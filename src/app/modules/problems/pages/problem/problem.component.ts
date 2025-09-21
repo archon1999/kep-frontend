@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Params } from '@angular/router';
 import { AuthUser } from '@auth';
 import { Subject } from 'rxjs';
@@ -20,6 +20,15 @@ import { BasePageComponent } from '@core/common/classes/base-page.component';
 import { SidebarService } from '@shared/ui/sidebar/sidebar.service';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { AttemptLangs } from '@problems/constants';
+import { LanguageService } from '@problems/services/language.service';
+import { findAvailableLang } from '@problems/utils';
+import { takeUntil } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
+import { AttemptLanguageComponent } from '@shared/components/attempt-language/attempt-language.component';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { finalize } from 'rxjs/operators';
+import { CodeEditorModalComponent } from '@shared/components/code-editor/code-editor-modal/code-editor-modal.component';
 
 @Component({
   selector: 'app-problem',
@@ -40,6 +49,9 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
     NgSelectModule,
     MonacoEditorComponent,
     KepCardComponent,
+    FormsModule,
+    AttemptLanguageComponent,
+    NgbTooltipModule,
   ]
 })
 export class ProblemComponent extends BasePageComponent implements OnInit {
@@ -52,10 +64,19 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
   public submitEvent = new Subject();
   public checkInput = '';
 
+  public selectedLang: AttemptLangs;
+
+  public isNextLoading = false;
+  public isPrevLoading = false;
+
+  @ViewChild(CodeEditorModalComponent)
+  private codeEditorModal: CodeEditorModalComponent;
+
   constructor(
     public service: ProblemsApiService,
     public api: ApiService,
     protected coreSidebarService: SidebarService,
+    protected langService: LanguageService,
   ) {
     super();
   }
@@ -67,6 +88,13 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
       this.activeId = 2;
     }
 
+    this.langService.getLanguage()
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((lang: AttemptLangs) => {
+        this.selectedLang = lang;
+        this.updateSelectedAvailableLang();
+      });
+
     this.route.data.subscribe(({ problem }) => {
       this.problem = problem;
       this.titleService.updateTitle(this.route, {
@@ -74,6 +102,7 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
         problemId: this.problem.id
       });
       this.checkInput = this.problem.checkInputSource;
+      this.updateSelectedAvailableLang(true);
       this.loadContentHeader();
     });
   }
@@ -129,13 +158,108 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
     );
   }
 
+  langChange(lang: AttemptLangs) {
+    this.langService.setLanguage(lang);
+  }
+
   codeEditorSidebarToggle() {
     this.coreSidebarService.getSidebarRegistry('codeEditorSidebar').toggleOpen();
   }
 
+  runCode() {
+    if (!this.isAuthenticated) {
+      return;
+    }
+    this.openEditorSidebar(() => this.codeEditorModal?.run());
+  }
+
+  submitCode() {
+    if (!this.isAuthenticated) {
+      return;
+    }
+    this.openEditorSidebar(() => this.codeEditorModal?.submit());
+  }
+
+  goToPrevProblem() {
+    this.navigateToProblem('prev');
+  }
+
+  goToNextProblem() {
+    this.navigateToProblem('next');
+  }
+
   onSubmit() {
-    console.log(4142);
     this.activeId = 2;
     this.submitEvent.next(null);
+  }
+
+  private openEditorSidebar(callback?: () => void) {
+    if (!this.codeEditorModal) {
+      return;
+    }
+
+    const execute = () => {
+      if (callback) {
+        callback();
+      }
+    };
+
+    if (!this.codeEditorModal.sidebarIsOpened) {
+      this.codeEditorModal.openSidebar();
+      setTimeout(() => execute());
+    } else {
+      execute();
+    }
+  }
+
+  private navigateToProblem(direction: 'next' | 'prev') {
+    if (!this.problem) {
+      return;
+    }
+
+    const loadingKey = direction === 'next' ? 'isNextLoading' : 'isPrevLoading';
+    if (this[loadingKey]) {
+      return;
+    }
+
+    this[loadingKey] = true;
+    const request = direction === 'next'
+      ? this.service.getProblemNext(this.problem.id)
+      : this.service.getProblemPrev(this.problem.id);
+
+    request
+      .pipe(finalize(() => this[loadingKey] = false))
+      .subscribe((result) => {
+        if (result?.id) {
+          this.router.navigate([
+            '/practice',
+            'problems',
+            'problem',
+            result.id
+          ], {
+            queryParams: this.route.snapshot.queryParams,
+          });
+        }
+      });
+  }
+
+  private updateSelectedAvailableLang(resetIfMissing = false) {
+    if (!this.problem?.availableLanguages?.length) {
+      return;
+    }
+
+    const selected = findAvailableLang(this.problem.availableLanguages, this.selectedLang);
+    if (selected) {
+      return;
+    }
+
+    if (!resetIfMissing) {
+      return;
+    }
+
+    const fallback = this.problem.availableLanguages[0];
+    if (fallback?.lang) {
+      this.langService.setLanguage(fallback.lang as AttemptLangs);
+    }
   }
 }

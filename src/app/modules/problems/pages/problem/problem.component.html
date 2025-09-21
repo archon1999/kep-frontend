@@ -2,21 +2,72 @@
   <div class="content-body">
     <app-content-header [contentHeader]="contentHeader">
       <div class="btn-group" role="group">
-        <button class="btn btn-secondary-light btn-wave" type="button">
+        <button
+          (click)="runCode()"
+          [disabled]="!isAuthenticated"
+          class="btn btn-secondary-light btn-wave"
+          type="button">
           <span><i data-feather="terminal"></i></span>
           {{ 'CodeEditor.Run' | translate }}
         </button>
-        <button class="btn btn-primary-light btn-wave" type="button">
+        <button
+          (click)="submitCode()"
+          [disabled]="!isAuthenticated"
+          class="btn btn-primary-light btn-wave"
+          type="button">
           <i data-feather="send"></i>
           {{ 'CodeEditor.Submit' | translate }}
         </button>
       </div>
+      @if (problem?.availableLanguages?.length) {
+        <div class="mx-1">
+          <ng-select
+            [(ngModel)]="selectedLang"
+            (change)="langChange($event)"
+            [clearable]="false"
+            [searchable]="false">
+            @for (availableLanguage of problem.availableLanguages; track availableLanguage) {
+              <ng-option [value]="availableLanguage.lang">
+                <attempt-language
+                  [lang]="availableLanguage.lang"
+                  [langFull]="availableLanguage.langFull"
+                  [size]="24"/>
+                {{ availableLanguage.langFull || availableLanguage.lang }}
+              </ng-option>
+            }
+          </ng-select>
+        </div>
+      }
       <div class="btn-group" role="group">
-        <button class="btn btn-primary-light btn-wave" type="button">
-          <kep-icon name="left"/>
+        <button
+          (click)="goToPrevProblem()"
+          [disabled]="isPrevLoading || !problem"
+          class="btn btn-primary-light btn-wave"
+          container="body"
+          ngbTooltip="Previous problem"
+          type="button">
+          @if (isPrevLoading) {
+            <span aria-hidden="true" class="spinner-border spinner-border-sm"></span>
+          } @else {
+            <span>
+              <kep-icon name="left"/>
+            </span>
+          }
         </button>
-        <button class="btn btn-primary-light btn-wave" type="button">
-          <kep-icon name="right"/>
+        <button
+          (click)="goToNextProblem()"
+          [disabled]="isNextLoading || !problem"
+          class="btn btn-primary-light btn-wave"
+          container="body"
+          ngbTooltip="Next problem"
+          type="button">
+          @if (isNextLoading) {
+            <span aria-hidden="true" class="spinner-border spinner-border-sm"></span>
+          } @else {
+            <span>
+              <kep-icon name="right"/>
+            </span>
+          }
         </button>
       </div>
     </app-content-header>
@@ -129,6 +180,7 @@
 
       @if (problem && isAuthenticated) {
         <code-editor-modal
+          #codeEditorModal
           [customClass]="'tour-step-2'"
           [uniqueName]="'problem-' + problem.id"
           [sampleTests]="problem.sampleTests"
