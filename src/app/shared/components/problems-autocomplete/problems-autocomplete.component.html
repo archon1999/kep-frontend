@@ -1,0 +1,23 @@
+<ng-select
+  [items]="items$ | async"
+  [typeahead]="typeahead$"
+  [bindValue]="'id'"
+  [loading]="loading$ | async"
+  [clearable]="true"
+  [searchable]="true"
+  [placeholder]="placeholder"
+  [formControl]="control"
+  (blur)="onBlur()"
+  (scrollToEnd)="onScrollToEnd()"
+>
+  <ng-template ng-label-tmp let-item="item">
+    {{ item.id }}. {{ item.title }}
+  </ng-template>
+
+  <ng-template ng-option-tmp let-item="item">
+    <div class="d-flex text-dark">
+      <span class="id">{{ item.id }}.</span>
+      <span class="title">{{ item.title }}</span>
+    </div>
+  </ng-template>
+</ng-select>

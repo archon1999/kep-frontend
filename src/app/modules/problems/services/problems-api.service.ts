@@ -24,8 +24,10 @@ export class ProblemsApiService {
       params.hasSolved = 0;
       params.hasAttempted = 0;
     }
-    // @ts-ignore
-    params.tags = params.tags.join(',');
+    if (params.tags) {
+      // @ts-ignore
+      params.tags = params.tags.join(',');
+    }
     return this.api.get('problems', params);
   }
 

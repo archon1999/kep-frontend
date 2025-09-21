@@ -1,0 +1,33 @@
+<ng-select
+  [items]="items$ | async"
+  [typeahead]="typeahead$"
+  [bindLabel]="'username'"
+  [bindValue]="'username'"
+  [loading]="loading$ | async"
+  [clearable]="true"
+  [searchable]="true"
+  [placeholder]="placeholder"
+  [formControl]="control"
+  (blur)="onBlur()"
+  (scrollToEnd)="onScrollToEnd()"
+>
+  <ng-template ng-option-tmp let-item="item">
+    <div class="d-flex gap-2">
+      <img
+        *ngIf="showAvatar && item.avatar"
+        [src]="item.avatar"
+        [alt]="item.username"
+        class="avatar avatar-rounded"
+        [height]="32"
+      />
+      <div class="d-flex flex-column">
+        <div class="text-dark">
+          {{ item.username }}
+        </div>
+        <div class="text-muted">
+          {{ item.firstName }} {{ item.lastName }}
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ng-select>

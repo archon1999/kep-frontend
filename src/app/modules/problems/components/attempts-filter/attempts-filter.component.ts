@@ -10,6 +10,10 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AttemptsFilter } from '@problems/interfaces';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { UsersAutocompleteComponent } from "@shared/components/users-autocomplete/users-autocomplete.component";
+import {
+  ProblemsAutocompleteComponent
+} from "@shared/components/problems-autocomplete/problems-autocomplete.component";
 
 @Component({
   selector: 'attempts-filter',
@@ -20,7 +24,9 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
     VerdictsSelectComponent,
     ReactiveFormsModule,
     NgbTooltipModule,
-    KepCardComponent
+    KepCardComponent,
+    UsersAutocompleteComponent,
+    ProblemsAutocompleteComponent
   ],
   templateUrl: './attempts-filter.component.html',
   styleUrl: './attempts-filter.component.scss'
