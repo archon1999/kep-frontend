@@ -5,6 +5,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { GeneralInfo } from '@problems/models/statistics.models';
 import { getCategoryIcon } from '@problems/utils/category';
+import { Resources } from "@app/resources";
 
 interface LangInfo {
   lang: string;
@@ -38,6 +39,8 @@ interface TopicInfo {
 export class SectionProfileComponent implements OnInit {
 
   @Input() username: string;
+
+  public readonly Resources = Resources;
 
   public general: GeneralInfo = {
     solved: 0,

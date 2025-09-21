@@ -66,6 +66,12 @@ export default [
     data: {animation: 'attempts'},
     title: 'Problems.Attempts',
   },
+  {
+    path: 'attempts/:username',
+    loadComponent: () => import('./pages/attempts/attempts.component').then(c => c.AttemptsComponent),
+    data: {animation: 'attempts'},
+    title: 'Problems.Attempts',
+  },
   // {
   //   path: 'attempts/:id',
   //   loadComponent: () => import('./pages/attempts/attempts.component').then(c => c.AttemptsComponent),

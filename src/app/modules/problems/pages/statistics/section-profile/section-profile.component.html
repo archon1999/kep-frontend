@@ -9,6 +9,11 @@
       <div class="font-medium-5 mt-1">
         {{ 'Problems' | translate }}
         <br>
+        <a
+          [routerLink]="[Resources.Attempts, username]"
+          class="btn btn-outline-primary btn-sm mt-1 attempts-link">
+          {{ 'Attempts' | translate }}
+        </a>
         <div class="font-medium-4 mt-2">
           <span ngbTooltip="{{ 'Solved' | translate }}">
             <i data-feather="check-circle"></i>
