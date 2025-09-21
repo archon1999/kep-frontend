@@ -60,6 +60,10 @@ export const localeRu = {
     NOT_FOUND: 'Ничего не найдено',
     LOADING: 'Загрузка...',
   },
+  TABLE: {
+    SHOWING: 'Показано',
+    OF: 'из',
+  },
   NEWS: 'Новости',
   LAST_COMMENTS: 'Последние комментарии',
   LAST_POSTS: 'Последние посты',

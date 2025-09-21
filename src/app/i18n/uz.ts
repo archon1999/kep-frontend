@@ -60,6 +60,10 @@ export const localeUz = {
     NOT_FOUND: 'Hech narsa topilmadi',
     LOADING: 'Yuklanmoqda...',
   },
+  TABLE: {
+    SHOWING: 'Koʻrsatilmoqda',
+    OF: 'dan',
+  },
   NEWS: 'Yangiliklar',
   LAST_COMMENTS: 'Soʻngi izohlar',
   LAST_POSTS: 'Yangi postlar',
