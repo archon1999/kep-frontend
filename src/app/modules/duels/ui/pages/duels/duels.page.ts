@@ -189,10 +189,13 @@ export class DuelsPage extends BasePageComponent implements OnInit {
     this.duelsApi.getDuelPresets(opponent.username)
       .pipe(
         takeUntil(this._unsubscribeAll),
-        finalize(() => this.duelPresetsLoading = false)
       )
       .subscribe({
-        next: presets => this.duelPresets = presets || [],
+        next: presets => {
+          this.duelPresets = presets;
+          this.duelPresetsLoading = false;
+          this.cdr.markForCheck();
+        },
         error: () => this.duelPresets = [],
       });
   }
