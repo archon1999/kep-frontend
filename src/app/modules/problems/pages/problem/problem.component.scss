@@ -17,3 +17,18 @@ pre {
 }
 
 /* Дополнительные стили можно добавить по необходимости */
+
+.problem-header-actions {
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.problem-language-select {
+  display: flex;
+  align-items: center;
+  column-gap: 0.5rem;
+}
+
+.language-dropdown {
+  min-width: 200px;
+}

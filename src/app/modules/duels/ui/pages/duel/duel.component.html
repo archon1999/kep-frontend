@@ -105,7 +105,29 @@
                   {{ duelProblem.symbol }}. {{ duelProblem.problem.title }}
                 </h2>
                 <problem-body [problem]="duelProblem.problem"></problem-body>
+                <p class="text-center mb-1">
+                  {{ 'TimeLimit' | translate }}: {{ selectedAvailableLang?.timeLimit || duelProblem.problem.timeLimit }} {{ 'Ms' | translate }}
+                </p>
+                <p class="text-center mb-2">
+                  {{ 'MemoryLimit' | translate }} {{ selectedAvailableLang?.memoryLimit || duelProblem.problem.memoryLimit }} {{ 'Mb' | translate }}
+                </p>
                 @if (duel.status == 0 && duel.isPlayer && currentUser) {
+                  <div class="mb-2 d-flex align-items-center gap-50 flex-wrap">
+                    <label class="mb-0 fw-medium">{{ 'Lang' | translate }}:</label>
+                    <ng-select
+                      class="language-dropdown"
+                      (change)="langChange($event)"
+                      [appendTo]="'body'"
+                      [clearable]="false"
+                      [(ngModel)]="selectedLang">
+                      @for (availableLanguage of duelProblem.problem.availableLanguages; track availableLanguage.lang) {
+                        <ng-option [value]="availableLanguage.lang">
+                          <attempt-language [size]="24" [lang]="availableLanguage.lang" [langFull]="availableLanguage.langFull"/>
+                          {{ availableLanguage.langFull || availableLanguage.lang }}
+                        </ng-option>
+                      }
+                    </ng-select>
+                  </div>
                   <code-editor-modal
                     [uniqueName]="'duel-problem-' + duelProblem.problem.id"
                     [sampleTests]="duelProblem.problem.sampleTests"

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Params } from '@angular/router';
 import { AuthUser } from '@auth';
 import { Subject } from 'rxjs';
-import { Problem } from '@problems/models/problems.models';
+import { AvailableLanguage, Problem } from '@problems/models/problems.models';
 import { ProblemsApiService } from '../../services/problems-api.service';
 import { ApiService } from '@core/data-access/api.service';
 import { CoreCommonModule } from '@core/common.module';
@@ -20,6 +20,12 @@ import { BasePageComponent } from '@core/common/classes/base-page.component';
 import { SidebarService } from '@shared/ui/sidebar/sidebar.service';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { LanguageService } from '@problems/services/language.service';
+import { AttemptLangs } from '@problems/constants';
+import { finalize, takeUntil } from 'rxjs/operators';
+import { findAvailableLang } from '@problems/utils';
+import { AttemptLanguageComponent } from '@shared/components/attempt-language/attempt-language.component';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-problem',
@@ -40,6 +46,8 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
     NgSelectModule,
     MonacoEditorComponent,
     KepCardComponent,
+    AttemptLanguageComponent,
+    NgbTooltipModule,
   ]
 })
 export class ProblemComponent extends BasePageComponent implements OnInit {
@@ -52,10 +60,17 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
   public submitEvent = new Subject();
   public checkInput = '';
 
+  public selectedLang: AttemptLangs;
+  public selectedAvailableLang: AvailableLanguage;
+  public isNavigating = false;
+
+  private _languageInitialized = false;
+
   constructor(
     public service: ProblemsApiService,
     public api: ApiService,
     protected coreSidebarService: SidebarService,
+    public langService: LanguageService,
   ) {
     super();
   }
@@ -74,6 +89,7 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
         problemId: this.problem.id
       });
       this.checkInput = this.problem.checkInputSource;
+      this.initLanguage();
       this.loadContentHeader();
     });
   }
@@ -137,5 +153,70 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
     console.log(4142);
     this.activeId = 2;
     this.submitEvent.next(null);
+  }
+
+  langChange(lang: AttemptLangs) {
+    this.langService.setLanguage(lang);
+  }
+
+  navigateToProblem(direction: 'next' | 'prev') {
+    if (!this.problem || this.isNavigating) {
+      return;
+    }
+
+    this.isNavigating = true;
+    const request$ = direction === 'next'
+      ? this.service.getNextProblemId(this.problem.id)
+      : this.service.getPreviousProblemId(this.problem.id);
+
+    request$
+      .pipe(
+        takeUntil(this._unsubscribeAll),
+        finalize(() => this.isNavigating = false),
+      )
+      .subscribe(
+        (result: { id?: number }) => {
+          if (result?.id) {
+            this.router.navigate(['../', result.id], {
+              relativeTo: this.route,
+              queryParamsHandling: 'preserve'
+            });
+          }
+        },
+        () => {}
+      );
+  }
+
+  private initLanguage() {
+    if (!this.problem?.availableLanguages?.length) {
+      this.selectedAvailableLang = null;
+      return;
+    }
+
+    if (!this._languageInitialized) {
+      this._languageInitialized = true;
+      this.langService.getLanguage()
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe((lang: AttemptLangs) => {
+          this.selectedLang = lang;
+          this.updateSelectedAvailableLang(lang);
+        });
+    } else {
+      this.updateSelectedAvailableLang(this.langService.getLanguageValue());
+    }
+  }
+
+  private updateSelectedAvailableLang(lang: AttemptLangs) {
+    if (!this.problem?.availableLanguages?.length) {
+      this.selectedAvailableLang = null;
+      return;
+    }
+
+    this.selectedAvailableLang = findAvailableLang(this.problem.availableLanguages, lang);
+
+    if (!this.selectedAvailableLang) {
+      this.selectedAvailableLang = this.problem.availableLanguages[0];
+      this.langService.setLanguage(this.selectedAvailableLang.lang);
+    }
   }
 }

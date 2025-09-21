@@ -17,6 +17,12 @@ import { BaseLoadComponent } from '@core/common';
 import { takeUntil } from 'rxjs/operators';
 import { PageResult } from '@core/common/classes/page-result';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { LanguageService } from '@problems/services/language.service';
+import { AttemptLangs } from '@problems/constants';
+import { AvailableLanguage } from '@problems/models/problems.models';
+import { findAvailableLang } from '@problems/utils';
+import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
+import { AttemptLanguageComponent } from '@shared/components/attempt-language/attempt-language.component';
 
 @Component({
   templateUrl: './duel.component.html',
@@ -33,14 +39,20 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     DuelCountdownComponent,
     ProblemInfoCardComponent,
     ProblemListCardComponent,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+    NgSelectModule,
+    AttemptLanguageComponent
   ]
 })
 export class DuelComponent extends BaseLoadComponent<Duel> {
   public duelProblem: DuelProblem | null = null;
   public attempts: Attempt[] = [];
 
+  public selectedLang: AttemptLangs;
+  public selectedAvailableLang: AvailableLanguage;
+
   protected readonly duelsApi = inject(DuelsApiService);
+  protected readonly langService = inject(LanguageService);
 
   get duel() {
     return this.data;
@@ -52,6 +64,13 @@ export class DuelComponent extends BaseLoadComponent<Duel> {
 
   override ngOnInit() {
     super.ngOnInit();
+
+    this.langService.getLanguage()
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((lang: AttemptLangs) => {
+        this.selectedLang = lang;
+        this.updateSelectedAvailableLang(lang);
+      });
 
     interval(5000).pipe(takeUntil(this._unsubscribeAll)).subscribe(
       () => {
@@ -79,6 +98,7 @@ export class DuelComponent extends BaseLoadComponent<Duel> {
 
   changeProblem(duelProblem: DuelProblem) {
     this.duelProblem = duelProblem;
+    this.updateSelectedAvailableLang(this.langService.getLanguageValue());
     if (this.currentUser && this.duel?.isPlayer) {
       this.reloadAttempts();
     }
@@ -94,6 +114,24 @@ export class DuelComponent extends BaseLoadComponent<Duel> {
         this.attempts = pageResult.data;
       }
     );
+  }
+
+  langChange(lang: AttemptLangs) {
+    this.langService.setLanguage(lang);
+  }
+
+  private updateSelectedAvailableLang(lang: AttemptLangs) {
+    if (!this.duelProblem?.problem?.availableLanguages?.length) {
+      this.selectedAvailableLang = null;
+      return;
+    }
+
+    this.selectedAvailableLang = findAvailableLang(this.duelProblem.problem.availableLanguages, lang);
+
+    if (!this.selectedAvailableLang) {
+      this.selectedAvailableLang = this.duelProblem.problem.availableLanguages[0];
+      this.langService.setLanguage(this.selectedAvailableLang.lang);
+    }
   }
 
   reloadResults() {
