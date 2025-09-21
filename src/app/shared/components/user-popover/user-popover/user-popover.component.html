@@ -1,25 +1,75 @@
 <ng-template #popContent>
   @if (user && userRatings) {
-    <kep-card >
+    <kep-card>
       <img
         [src]="user.coverPhoto"
         class="img-fluid card-img-top"
         alt="Profile Cover Photo"/>
-      <div class="card-body d-flex justify-content-start gap-2">
-        <div class="avatar avatar-rounded" [class]="{
-          'online': user.isOnline,
-          'offline': !user.isOnline
-        }">
-          <img [src]="user.avatar" alt="Profile Picture"/>
+      <div class="card-body">
+        <div class="user-popover__header d-flex gap-2 align-items-center">
+          <div class="avatar avatar-rounded" [class]="{
+            'online': user.isOnline,
+            'offline': !user.isOnline
+          }">
+            <img [src]="user.avatar" alt="Profile Picture"/>
+          </div>
+
+          <div class="name">
+            <div class="full-name">
+              {{ user.firstName }} {{ user.lastName }}
+            </div>
+            <small class="text-muted">@{{ user.username }}</small>
+          </div>
         </div>
 
-        <div class="name">
-          <div class="full-name">
-            {{ user.firstName }} {{ user.lastName }}
+        @if (ratingStats.length) {
+          <div class="rating-cards row g-2 mt-3">
+            @for (stat of ratingStats; track stat.key) {
+              <div class="col-12 col-sm-6">
+                <kep-card [customClass]="'rating-card border-0 shadow-none h-100'">
+                  <div class="card-header">
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="rating-card__icon">
+                        <kep-icon
+                          color="primary"
+                          [name]="stat.icon"
+                          type="duotone"/>
+                      </span>
+                      <span class="rating-card__title">{{ stat.translationKey | translate }}</span>
+                    </div>
+                    @if (stat.title) {
+                      <span class="badge rounded-pill bg-primary-subtle text-primary">
+                        {{ stat.title }}
+                      </span>
+                    }
+                  </div>
+                  <div class="card-body">
+                    <div class="rating-card__value">
+                      {{ stat.value | number: stat.format }}
+                    </div>
+                    <div class="rating-card__meta">
+                      <div>
+                        {{ 'Rank' | translate }}
+                        @if (stat.rank !== undefined && stat.rank !== null) {
+                          <span class="rating-card__meta-value">#{{ stat.rank | number: '1.0-0' }}</span>
+                        } @else {
+                          <span class="rating-card__meta-value">—</span>
+                        }
+                      </div>
+                      <div>
+                        {{ 'Percentile' | translate }}
+                        @if (stat.percentile !== undefined && stat.percentile !== null) {
+                          <span class="rating-card__meta-value">{{ stat.percentile | number: '1.0-1' }}%</span>
+                        } @else {
+                          <span class="rating-card__meta-value">—</span>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                </kep-card>
+              </div>
+            }
           </div>
-          <small>{{ user.username }}</small>
-        </div>
-        @if (userRatings) {
         }
       </div>
       <div class="card-footer border-0 bg-transparent pt-0">
@@ -27,7 +77,7 @@
           [routerLink]="['/users', 'user', username]"
           class="btn btn-outline-primary btn-sm w-100"
         >
-          View user details
+          {{ 'UserPopover.ViewDetails' | translate }}
         </a>
       </div>
     </kep-card>

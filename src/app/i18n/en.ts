@@ -30,6 +30,9 @@ export const localeEn = {
   Reset: 'Reset',
   Problemset: 'Problemset',
   Profile: 'Profile',
+  UserPopover: {
+    ViewDetails: 'View user details',
+  },
   CustomTest: 'Custom test',
   HasChecker: 'Has checker',
   FilterProblems: 'Filtering problems',
@@ -297,6 +300,7 @@ export const localeEn = {
   Facts: 'Facts',
   NumberOfAttempts: 'Number of attempts',
   Rank: 'Rank',
+  Percentile: 'Percentile',
   Monday: 'Monday',
   Tuesday: 'Tuesday',
   Wednesday: 'Wednesday',
