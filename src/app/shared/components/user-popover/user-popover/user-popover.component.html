@@ -22,20 +22,27 @@
         @if (userRatings) {
         }
       </div>
+      <div class="card-footer border-0 bg-transparent pt-0">
+        <a
+          [routerLink]="['/users', 'user', username]"
+          class="btn btn-outline-primary btn-sm w-100"
+        >
+          View user details
+        </a>
+      </div>
     </kep-card>
   }
 </ng-template>
-<a
+<button
+  type="button"
   (shown)="loadUser()"
-  [closeDelay]="2000"
+  [autoClose]="'outside'"
   [ngbPopover]="popContent"
-  [openDelay]="1000"
   [placement]="placement"
-  [routerLink]="['/users', 'user', username]"
-  class="text-{{ textColor }} {{ customClass }}"
+  class="popover-trigger text-{{ textColor }} {{ customClass }}"
   container="body"
   popoverClass="user-popover"
-  triggers="mouseenter:mouseleave"
+  triggers="click"
 >
   @if (!customContent) {
     <span class="fw-medium">
@@ -45,7 +52,7 @@
   @if (customContent) {
     <ng-content></ng-content>
   }
-</a>
+</button>
 
 @if (!customContent && streak >= 7) {
   <kep-badge [streak]="streak"></kep-badge>
