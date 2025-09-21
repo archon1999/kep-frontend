@@ -3,21 +3,21 @@
     <section-header [contentHeader]="getContentHeader()"/>
 
     <kep-card>
-      <div class="card-header p-4 d-flex flex-column flex-md-row gap-1 align-items-md-center">
+      <div class="card-header px-3 py-3">
         <div class="card-title font-medium-5 align-items-center">
-          <kep-icon color="primary" name="contest" size="medium-5" class="me-1" type="duotone"></kep-icon>
+          <kep-icon class="me-1" color="primary" name="contest" size="medium-5" type="duotone"></kep-icon>
           <span class="text-dark">{{ 'Contests' | translate }}</span>
-          <span class="total-count" *ngIf="!isLoading">({{ pageResult?.total }})</span>
+          <span *ngIf="!isLoading" class="total-count">({{ pageResult?.total }})</span>
         </div>
 
         <div
-          class="d-flex flex-column flex-md-row gap-1 align-items-stretch align-items-md-center ms-md-auto w-100 w-md-auto">
-          <contests-section-categories
-            class="w-100 w-md-auto"
-            (change)="contestCategoryClick($event)"/>
-          <input placeholder="{{ 'Search' | translate }}"
-                 class="form-control mt-1 mt-md-0 flex-grow-1"
-                 [formControl]="searchControl">
+          class="d-flex gap-2">
+          <contests-section-categories (change)="contestCategoryClick($event)"/>
+          <input
+            [formControl]="searchControl"
+            class="form-control mt-1 mt-md-0 flex-grow-1"
+            placeholder="{{ 'Search' | translate }}"
+          >
         </div>
       </div>
     </kep-card>

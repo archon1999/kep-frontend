@@ -67,17 +67,12 @@
               appendTo="body"
               formControlName="category"
             >
-              <ng-template ng-label-tmp let-item="item">
-                <div class="d-flex align-items-center">
-                  <kep-icon *ngIf="item?.icon" class="me-1" type="duotone" size="medium-1" color="primary" [name]="item.icon"></kep-icon>
-                  <span>{{ item?.title }}</span>
-                </div>
-              </ng-template>
               @for (item of categories; track item) {
                 <ng-option [value]="item.id">
                   <div class="d-flex align-items-center">
                     <kep-icon *ngIf="item.icon" class="me-1" type="duotone" size="medium-1" color="primary" [name]="item.icon"></kep-icon>
                     <span>{{ item.title }}</span>
+                    <span class="ms-auto text-muted small">{{ item.problemsCount }}</span>
                   </div>
                 </ng-option>
               }
