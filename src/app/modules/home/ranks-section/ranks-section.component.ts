@@ -41,7 +41,7 @@ export class RanksSectionComponent extends BaseLoadComponent<any> {
       percentile: 98.2,
     },
     {
-      name: 'Contests',
+      name: 'Contests.Contests',
       value: 2080,
       rank: 9,
       icon: 'contests',

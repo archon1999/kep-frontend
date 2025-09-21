@@ -38,7 +38,7 @@ export class CalendarSectionComponent implements OnInit {
     {
       id: 1,
       checked: true,
-      filter: this.translateService.instant('Contests'),
+      filter: this.translateService.instant('Contests.Contests'),
       color: 'primary',
     },
     {
