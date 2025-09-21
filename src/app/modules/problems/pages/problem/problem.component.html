@@ -1,23 +1,51 @@
 <div class="content-wrapper container-xxl p-0">
   <div class="content-body">
     <app-content-header [contentHeader]="contentHeader">
-      <div class="btn-group" role="group">
-        <button class="btn btn-secondary-light btn-wave" type="button">
-          <span><i data-feather="terminal"></i></span>
-          {{ 'CodeEditor.Run' | translate }}
-        </button>
-        <button class="btn btn-primary-light btn-wave" type="button">
-          <i data-feather="send"></i>
-          {{ 'CodeEditor.Submit' | translate }}
-        </button>
-      </div>
-      <div class="btn-group" role="group">
-        <button class="btn btn-primary-light btn-wave" type="button">
-          <kep-icon name="left"/>
-        </button>
-        <button class="btn btn-primary-light btn-wave" type="button">
-          <kep-icon name="right"/>
-        </button>
+      <div class="problem-header-actions d-flex align-items-center">
+        <div class="btn-group me-1" role="group">
+          <button class="btn btn-secondary-light btn-wave" type="button">
+            <span><i data-feather="terminal"></i></span>
+            {{ 'CodeEditor.Run' | translate }}
+          </button>
+          <button class="btn btn-primary-light btn-wave" type="button" (click)="codeEditorSidebarToggle()">
+            <i data-feather="send"></i>
+            {{ 'CodeEditor.Submit' | translate }}
+          </button>
+        </div>
+        <div class="me-1 problem-language-select">
+          <label class="form-label mb-0 me-50">{{ 'Lang' | translate }}:</label>
+          <ng-select
+            class="language-dropdown"
+            (change)="langChange($event)"
+            [appendTo]="'body'"
+            [clearable]="false"
+            [(ngModel)]="selectedLang">
+            @for (availableLanguage of problem.availableLanguages; track availableLanguage.lang) {
+              <ng-option [value]="availableLanguage.lang">
+                <attempt-language [size]="24" [lang]="availableLanguage.lang" [langFull]="availableLanguage.langFull"/>
+                {{ availableLanguage.langFull || availableLanguage.lang }}
+              </ng-option>
+            }
+          </ng-select>
+        </div>
+        <div class="btn-group" role="group">
+          <button
+            (click)="navigateToProblem('prev')"
+            [disabled]="isNavigating"
+            class="btn btn-primary-light btn-wave"
+            ngbTooltip="Previous problem"
+            type="button">
+            <kep-icon name="left"/>
+          </button>
+          <button
+            (click)="navigateToProblem('next')"
+            [disabled]="isNavigating"
+            class="btn btn-primary-light btn-wave"
+            ngbTooltip="Next problem"
+            type="button">
+            <kep-icon name="right"/>
+          </button>
+        </div>
       </div>
     </app-content-header>
     <section  class="mt-2">
