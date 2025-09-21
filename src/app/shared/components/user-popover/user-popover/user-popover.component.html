@@ -23,39 +23,48 @@
         </div>
 
         @if (ratingStats.length) {
-          <div class="ratings mt-3">
+          <div class="rating-cards mt-3">
             @for (stat of ratingStats; track stat.key) {
-              <div class="rating-item">
-                <div class="d-flex align-items-center justify-content-between gap-2 mb-1">
-                  <span class="text-uppercase text-muted fw-semibold small">
-                    {{ stat.translationKey | translate }}
-                  </span>
+              <div class="rating-card">
+                <div class="rating-card__header">
+                  <div class="rating-card__header-left">
+                    <div class="rating-card__icon">
+                      <kep-icon color="primary" [name]="stat.icon" type="duotone"></kep-icon>
+                    </div>
+                    <div class="rating-card__title">
+                      {{ stat.translationKey | translate }}
+                    </div>
+                  </div>
                   @if (stat.title) {
-                    <span class="rating-item__title">{{ stat.title }}</span>
+                    <span class="rating-card__badge">{{ stat.title }}</span>
                   }
                 </div>
-                <div class="d-flex align-items-baseline gap-2">
-                  <span class="rating-item__value fw-semibold">
+                <div class="rating-card__body">
+                  <div class="rating-card__value">
                     {{ stat.value | number: stat.format }}
-                  </span>
-                </div>
-                <div class="d-flex flex-wrap gap-2 justify-content-between small text-muted mt-2">
-                  <span>
-                    {{ 'Rank' | translate }}
-                    @if (stat.rank !== undefined && stat.rank !== null) {
-                      <span class="text-body fw-semibold">#{{ stat.rank | number: '1.0-0' }}</span>
-                    } @else {
-                      <span class="text-body fw-semibold">—</span>
-                    }
-                  </span>
-                  <span>
-                    {{ 'Percentile' | translate }}
-                    @if (stat.percentile !== undefined && stat.percentile !== null) {
-                      <span class="text-body fw-semibold">{{ stat.percentile | number: '1.0-1' }}%</span>
-                    } @else {
-                      <span class="text-body fw-semibold">—</span>
-                    }
-                  </span>
+                  </div>
+                  <div class="rating-card__meta">
+                    <div class="rating-card__meta-item">
+                      <span class="rating-card__meta-label">{{ 'Rank' | translate }}</span>
+                      <span class="rating-card__meta-value">
+                        @if (stat.rank !== undefined && stat.rank !== null) {
+                          #{{ stat.rank | number: '1.0-0' }}
+                        } @else {
+                          —
+                        }
+                      </span>
+                    </div>
+                    <div class="rating-card__meta-item">
+                      <span class="rating-card__meta-label">{{ 'Percentile' | translate }}</span>
+                      <span class="rating-card__meta-value">
+                        @if (stat.percentile !== undefined && stat.percentile !== null) {
+                          {{ stat.percentile | number: '1.0-1' }}%
+                        } @else {
+                          —
+                        }
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             }
