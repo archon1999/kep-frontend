@@ -82,6 +82,17 @@ export default [
     }
   },
   {
+    path: 'contest/:id/statistics',
+    loadComponent: () => import('./pages/contest/contest-statistics/contest-statistics.component').then(c => c.ContestStatisticsComponent),
+    data: {
+      title: 'Contests.ContestStatistics',
+    },
+    canActivate: [ContestGuard],
+    resolve: {
+      contest: ContestResolver,
+    }
+  },
+  {
     path: 'contest/:id/standings',
     loadComponent: () => import('./pages/contest/contest-standings/contest-standings.component').then(c => c.ContestStandingsComponent),
     data: {
