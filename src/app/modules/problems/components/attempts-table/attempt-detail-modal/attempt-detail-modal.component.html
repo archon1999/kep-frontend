@@ -29,10 +29,15 @@
         <span [data-feather]="'code'"></span> {{ 'Code' | translate }}
       </a>
       <ng-template ngbNavContent>
-        <clipboard-button
-          class="attempt-code-copy"
-          [text]="attempt?.sourceCode">
-        </clipboard-button>
+<!--        <div class="d-flex justify-content-start">-->
+<!--          <button class="btn btn-outline-primary">-->
+<!--            <clipboard-button-->
+<!--              class="attempt-code-copy"-->
+<!--              [text]="attempt?.sourceCode"-->
+<!--            >-->
+<!--            </clipboard-button>-->
+<!--          </button>-->
+<!--        </div>-->
 
         <monaco-editor
           [lang]="attempt?.lang"

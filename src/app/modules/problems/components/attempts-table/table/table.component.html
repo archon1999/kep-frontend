@@ -179,10 +179,9 @@
         </td>
 
         <td *ngIf="!hideSourceCodeSize">
-          <div class="d-flex align-items-center text-nowrap text-dark">
-            <kep-icon name="code" type="duotone"/>
+          <code class="fw-medium">
             {{ attempt.sourceCodeSize }}
-          </div>
+          </code>
         </td>
 
         <td *ngIf="currentUser?.isSuperuser">

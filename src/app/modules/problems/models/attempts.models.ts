@@ -64,7 +64,7 @@ export class Attempt {
       data.contestProblem,
       data.balls,
       data.contestTime,
-      data.errorMessage || data.error_message,
+      data.errorMessage,
     );
   }
 
