@@ -8,7 +8,7 @@
       <ng-template ngbNavContent>
       </ng-template>
     </li>
-    @if (contest?.status == -1) {
+    @if (contest?.status === ContestStatus.NOT_STARTED) {
       <li ngbNavItem>
         <a class="nav-link" [routerLink]="Resources.ContestRegistrants | resourceById:contest?.id"
            [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">
@@ -18,7 +18,7 @@
         </ng-template>
       </li>
     }
-    @if (contest?.status != -1) {
+    @if (contest?.status !== ContestStatus.NOT_STARTED) {
       <li ngbNavItem>
         <a class="nav-link" [routerLink]="Resources.ContestProblems | resourceById:contest?.id"
            routerLinkActive="active">
@@ -28,7 +28,7 @@
         </ng-template>
       </li>
     }
-    @if (contest?.status != -1) {
+    @if (contest?.status !== ContestStatus.NOT_STARTED) {
       <li ngbNavItem>
         <a class="nav-link" [routerLink]="Resources.ContestAttempts | resourceById:contest?.id"
            routerLinkActive="active">
@@ -38,7 +38,7 @@
         </ng-template>
       </li>
     }
-    @if (contest?.status != -1) {
+    @if (contest?.status !== ContestStatus.NOT_STARTED) {
       <li ngbNavItem>
         <a class="nav-link" [routerLink]="Resources.ContestStandings | resourceById:contest?.id"
            routerLinkActive="active">
@@ -48,7 +48,7 @@
         </ng-template>
       </li>
     }
-    @if (contest?.status == 1 && contest?.isRated) {
+    @if (contest?.status === ContestStatus.FINISHED && contest?.isRated) {
       <li ngbNavItem>
         <a class="nav-link" [routerLink]="Resources.ContestRatingChanges | resourceById:contest?.id"
            routerLinkActive="active">
@@ -58,7 +58,7 @@
         </ng-template>
       </li>
     }
-    @if (contest?.status != -1) {
+    @if (contest?.status !== ContestStatus.NOT_STARTED) {
       <li ngbNavItem>
         <a class="nav-link" [routerLink]="Resources.ContestStatistics | resourceById:contest?.id"
            routerLinkActive="active">
@@ -68,7 +68,7 @@
         </ng-template>
       </li>
     }
-    @if (contest?.status != -1) {
+    @if (contest?.status !== ContestStatus.NOT_STARTED) {
       <li ngbNavItem>
         <a class="nav-link" [routerLink]="Resources.ContestQuestions | resourceById:contest?.id"
            routerLinkActive="active">
