@@ -44,10 +44,6 @@ export class DuelsListSectionComponent {
     return this.duels.length > 0;
   }
 
-  get showPagination(): boolean {
-    return this.total > this.pageSize;
-  }
-
   trackDuel(index: number, duel: Duel): number {
     return duel.id;
   }
