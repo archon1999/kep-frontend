@@ -2,58 +2,95 @@
   <div class="content-body">
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
-    <section class="mt-2">
-      <kep-table [loading]="!total && isLoading">
-        <ng-container header>
-          <tr>
-            <th class="text-center">#</th>
-            <th class="">{{ 'User' | translate }}</th>
-            <th container="body" ngbTooltip="{{ 'Contests.Contests' | translate }}" class="text-center">
-              <kep-icon name="contest"></kep-icon>
-            </th>
-            <th container="body" ngbTooltip="{{ 'Rating' | translate }}" class="text-center">
-              <kep-icon name="rating"></kep-icon>
-            </th>
-          </tr>
-        </ng-container>
-        <ng-container body>
-          @for (contestsRating of contestsRatingList; track contestsRating.username) {
-            <tr>
-              <td class="text-dark text-center">{{ contestsRating.rowIndex }}</td>
-              <td class="text-dark">
-                <contestant-view [user]="contestsRating"></contestant-view>
-              </td>
-              <td class="text-dark text-center">
-                <span class="badge bg-primary">
-                  {{ contestsRating.contestantsCount }}
-                </span>
-              </td>
-              <td class="text-center">
-                <span class="badge bg-{{ contestsRating.rating | contestsRatingColor }}-transparent">
-                  {{ contestsRating.rating }}
-                </span>
-              </td>
-            </tr>
+    <section class="mt-2 d-flex flex-column gap-3">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div class="d-flex flex-wrap gap-2">
+          @for (orderingKey of orderingOptions; track orderingKey) {
+            <table-ordering
+              (change)="orderingChange($event)"
+              [justifyContent]="'start'"
+              [ordering]="orderingKey"
+              [reverse]="true"
+              [value]="ordering">
+              <span
+                class="btn btn-sm"
+                [ngClass]="isOrderingActive(orderingKey) ? 'btn-primary' : 'btn-outline-primary'">
+                {{ orderingLabels[orderingKey] | translate }}
+              </span>
+            </table-ordering>
           }
-        </ng-container>
-        <ng-container pagination>
-          <div class="mb-1">
-            @if (total) {
-              <kep-pagination
-                (pageChange)="pageChange($event)"
-                (pageSizeChange)="pageSizeChange($event)"
-                [(page)]="pageNumber"
-                [collectionSize]="total"
-                [maxSize]="maxSize"
-                [pageOptions]="pageOptions"
-                [pageSize]="pageSize"
-                [disabled]="isLoading"
-                [rotate]="true">
-              </kep-pagination>
-            }
+        </div>
+
+        @if (!isLoading && total) {
+          <span class="text-muted small">{{ total }} {{ 'Users' | translate }}</span>
+        }
+      </div>
+
+      @if (isLoading) {
+        <kep-card>
+          <div class="card-body d-flex justify-content-center py-5">
+            <spinner></spinner>
           </div>
-        </ng-container>
-      </kep-table>
+        </kep-card>
+      } @else if (!contestsRatingList?.length) {
+        <kep-card>
+          <div class="card-body text-center py-5">
+            <div class="text-muted">{{ 'NoResultFound' | translate }}</div>
+          </div>
+        </kep-card>
+      } @else {
+        <div class="row g-3">
+          @for (contestsRating of contestsRatingList; track contestsRating.rowIndex) {
+            <div class="col-12 col-md-6 col-xl-4">
+              <kep-card customClass="h-100">
+                <div class="card-body d-flex flex-column gap-3">
+                  <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <span class="badge bg-primary fw-semibold text-white px-3 py-2 fs-6">{{ contestsRating.rowIndex }}</span>
+                    <contestant-view [user]="contestsRating"></contestant-view>
+                  </div>
+
+                  <div class="d-flex flex-wrap gap-2 align-items-center">
+                    <span
+                      [ngbTooltip]="'Rating' | translate"
+                      class="badge bg-{{ contestsRating.rating | contestsRatingColor }}-transparent">
+                      <contests-rating-image [size]="16" [title]="contestsRating.ratingTitle"></contests-rating-image>
+                      {{ contestsRating.rating }}
+                    </span>
+                    <span
+                      [ngbTooltip]="'MaxRating' | translate"
+                      class="badge bg-{{ contestsRating.maxRating | contestsRatingColor }}-transparent">
+                      <contests-rating-image [size]="16" [title]="contestsRating.maxRatingTitle"></contests-rating-image>
+                      {{ contestsRating.maxRating }}
+                    </span>
+                    <span
+                      [ngbTooltip]="'Contests.Contests' | translate"
+                      class="badge bg-primary-transparent d-flex align-items-center gap-1">
+                      <kep-icon name="contest" size="small-4"></kep-icon>
+                      {{ contestsRating.contestantsCount }}
+                    </span>
+                  </div>
+                </div>
+              </kep-card>
+            </div>
+          }
+        </div>
+      }
+
+      @if (total) {
+        <div class="d-flex justify-content-center">
+          <kep-pagination
+            (pageChange)="pageChange($event)"
+            (pageSizeChange)="pageSizeChange($event)"
+            [collectionSize]="total"
+            [maxSize]="maxSize"
+            [page]="pageNumber"
+            [pageOptions]="pageOptions"
+            [pageSize]="pageSize"
+            [disabled]="isLoading"
+            [rotate]="true">
+          </kep-pagination>
+        </div>
+      }
     </section>
   </div>
 </div>

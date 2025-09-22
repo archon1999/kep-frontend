@@ -6,11 +6,13 @@ import { Observable } from 'rxjs';
 import { PageResult } from '@core/common/classes/page-result';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
-import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { ContestsRating } from '@contests/models/contests-rating';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-rating',
@@ -20,16 +22,26 @@ import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
   imports: [
     CoreCommonModule,
     ContentHeaderModule,
-    KepTableComponent,
     ContestantViewModule,
     KepPaginationComponent,
     NgbTooltip,
+    TableOrderingModule,
+    KepCardComponent,
+    SpinnerComponent,
   ]
 })
 export class RatingComponent extends BaseTablePageComponent<ContestsRating> implements OnInit {
   override maxSize = 5;
-  override defaultPageSize = 20;
-  override pageOptions = [10, 20, 50];
+  override defaultPageSize = 12;
+  override pageOptions = [12, 24, 36];
+  override defaultOrdering = '-rating';
+
+  public readonly orderingOptions = ['rating', 'maxRating', 'contestantsCount'] as const;
+  public readonly orderingLabels: Record<(typeof this.orderingOptions)[number], string> = {
+    rating: 'Rating',
+    maxRating: 'MaxRating',
+    contestantsCount: 'Contests.Contests',
+  };
 
   constructor(
     public service: ContestsService,
@@ -41,16 +53,12 @@ export class RatingComponent extends BaseTablePageComponent<ContestsRating> impl
     return this.pageResult?.data;
   }
 
-  ngOnInit(): void {
-    this.loadContentHeader();
-    setTimeout(() => this.reloadPage());
+  getPage(): Observable<PageResult<ContestsRating>> | null {
+    return this.service.getContestsRating(this.pageable);
   }
 
-  getPage(): Observable<PageResult<ContestsRating>> | null {
-    return this.service.getContestsRating({
-      page: this.pageNumber,
-      pageSize: this.pageSize,
-    });
+  isOrderingActive(orderingKey: string) {
+    return this.ordering === orderingKey || this.ordering === `-${orderingKey}`;
   }
 
   protected getContentHeader(): ContentHeader {
