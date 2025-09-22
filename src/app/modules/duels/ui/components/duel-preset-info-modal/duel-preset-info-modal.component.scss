@@ -1,0 +1,17 @@
+.duel-preset-info-modal {
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  &__problem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  &__problem-symbol {
+    font-weight: 600;
+  }
+}

@@ -5,6 +5,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { RouterModule } from '@angular/router';
 import { DatePipe, NgClass, NgIf } from '@angular/common';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DuelPresetInfoModalComponent } from '@duels/ui/components/duel-preset-info-modal/duel-preset-info-modal.component';
 
 @Component({
   selector: 'duels-list-card',
@@ -30,6 +32,8 @@ export class DuelsListCardComponent {
   @Input() confirmLoading = false;
 
   @Output() confirm = new EventEmitter<void>();
+
+  constructor(private readonly modalService: NgbModal) {}
 
   get statusKey(): string {
     switch (this.duel.status) {
@@ -57,5 +61,18 @@ export class DuelsListCardComponent {
     if (!this.confirmDisabled) {
       this.confirm.emit();
     }
+  }
+
+  openPresetModal(): void {
+    if (!this.duel.duelPreset) {
+      return;
+    }
+
+    const modalRef = this.modalService.open(DuelPresetInfoModalComponent, {
+      size: 'lg',
+      centered: true,
+    });
+
+    modalRef.componentInstance.preset = this.duel.duelPreset;
   }
 }

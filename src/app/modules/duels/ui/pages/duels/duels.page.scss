@@ -4,3 +4,20 @@
   gap: 0.75rem;
   flex-wrap: wrap;
 }
+
+.duels-page__tabs {
+  margin-top: 1.5rem;
+}
+
+.duels-page__nav {
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
+}
+
+.duels-page__nav .nav-item {
+  flex: 1 1 200px;
+}
+
+.duels-page__nav .nav-link {
+  width: 100%;
+}

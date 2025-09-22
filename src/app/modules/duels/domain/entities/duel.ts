@@ -28,6 +28,7 @@ export interface Duel {
   playerFirst: DuelPlayer;
   playerSecond: DuelPlayer | null;
   problems?: Array<DuelProblem>;
+  duelPreset?: DuelPreset | null;
 }
 
 export interface DuelReadyPlayer {

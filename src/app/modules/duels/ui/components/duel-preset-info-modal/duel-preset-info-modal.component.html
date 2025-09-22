@@ -1,0 +1,44 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ 'DuelPresetDetails' | translate }}</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss()"></button>
+</div>
+<div class="modal-body duel-preset-info-modal">
+  <div class="duel-preset-info-modal__header">
+    <h5 class="duel-preset-info-modal__title mb-1">{{ preset.title }}</h5>
+    <div class="text-muted small" *ngIf="preset.category?.title">{{ preset.category.title }}</div>
+  </div>
+
+  <div class="duel-preset-info-modal__meta text-muted small mt-2">
+    <span>{{ 'Difficulty' | translate }}: {{ preset.difficultyDisplay }}</span>
+    <span>•</span>
+    <span>{{ 'Duration' | translate }}: {{ preset.duration }}</span>
+    <span *ngIf="preset.problemsCount != null">•</span>
+    <span *ngIf="preset.problemsCount != null">{{ 'Problems' | translate }}: {{ preset.problemsCount }}</span>
+  </div>
+
+  <div class="duel-preset-info-modal__type mt-3" *ngIf="preset.typeInfo?.title || preset.typeInfo?.description">
+    <div class="fw-semibold">{{ preset.typeInfo?.title }}</div>
+    <div class="text-muted small mt-1" *ngIf="preset.typeInfo?.description">{{ preset.typeInfo?.description }}</div>
+  </div>
+
+  <div class="duel-preset-info-modal__description mt-3" *ngIf="preset.description">
+    <div class="fw-semibold mb-1">{{ 'Description' | translate }}</div>
+    <p class="mb-0 text-muted">{{ preset.description }}</p>
+  </div>
+
+  <div class="duel-preset-info-modal__problems mt-3" *ngIf="preset.problems?.length">
+    <div class="fw-semibold mb-2">{{ 'Problems' | translate }}</div>
+    <ul class="list-unstyled mb-0">
+      <li *ngFor="let problem of preset.problems" class="duel-preset-info-modal__problem">
+        <span class="duel-preset-info-modal__problem-symbol">{{ problem.symbol }}</span>
+        <span class="text-muted">•</span>
+        <span class="text-muted">{{ problem.ball }}</span>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close()">
+    {{ 'Close' | translate }}
+  </button>
+</div>
