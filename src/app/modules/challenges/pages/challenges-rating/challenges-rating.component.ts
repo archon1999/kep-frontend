@@ -6,11 +6,12 @@ import { Observable } from 'rxjs';
 import { CoreCommonModule } from '@core/common.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
-import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
 import {
   ChallengesUserViewComponent
 } from '@challenges/components/challenges-user-view/challenges-user-view.component';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { ChallengesRating } from '@challenges/interfaces/challenges-rating';
 
 @Component({
@@ -23,12 +24,14 @@ import { ChallengesRating } from '@challenges/interfaces/challenges-rating';
     ChallengesUserViewComponent,
     KepPaginationComponent,
     ContentHeaderModule,
-    KepTableComponent,
     TableOrderingModule,
+    KepCardComponent,
+    NgbTooltip,
   ]
 })
 export class ChallengesRatingComponent extends BaseTablePageComponent<ChallengesRating> implements OnInit {
-  override defaultPageSize = 20;
+  override defaultPageSize = 12;
+  override pageOptions = [6, 9, 12, 24];
   override maxSize = 5;
 
   override defaultOrdering = '-rating';
@@ -38,7 +41,7 @@ export class ChallengesRatingComponent extends BaseTablePageComponent<Challenges
   }
 
   get challengesRatingList() {
-    return this.pageResult?.data;
+    return this.pageResult?.data ?? [];
   }
 
   ngOnInit() {

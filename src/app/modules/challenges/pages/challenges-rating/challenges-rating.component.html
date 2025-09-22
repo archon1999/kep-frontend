@@ -2,71 +2,116 @@
   <div class="content-body">
     <app-content-header [contentHeader]="contentHeader"/>
 
-    <section class="mt-2">
-      <kep-table [loading]="isLoading" [empty]="pageResult?.total === 0">
-        <ng-container header>
-          <tr>
-            <th>#</th>
-            <th>{{ 'User' | translate }}</th>
-            <th>
-              <table-ordering
-                [value]="ordering"
-                [justifyContent]="'start'"
-                [ordering]="'wins'"
-                [reverse]="true"
-                (change)="orderingChange($event)">
-                {{ 'Wins' | translate }}
-              </table-ordering>
-            </th>
-            <th>
-              <table-ordering
-                [value]="ordering"
-                [justifyContent]="'start'"
-                [ordering]="'draws'"
-                [reverse]="true"
-                (change)="orderingChange($event)">
-                {{ 'Draws' | translate }}
-              </table-ordering>
-            </th>
-            <th>
-              <table-ordering
-                [value]="ordering"
-                [justifyContent]="'start'"
-                [ordering]="'losses'"
-                [reverse]="true"
-                (change)="orderingChange($event)">
-                {{ 'Losses' | translate }}
-              </table-ordering>
-            </th>
-            <th>
-              <table-ordering
-                [value]="ordering"
-                [justifyContent]="'start'"
-                [ordering]="'rating'"
-                [reverse]="false"
-                (change)="orderingChange($event)">
-                <i data-feather="bar-chart"></i>
-              </table-ordering>
-            </th>
-          </tr>
-        </ng-container>
-        <ng-container body>
+    <section class="mt-2 d-flex flex-column gap-3">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div class="d-flex flex-wrap gap-2">
+          <table-ordering
+            [value]="ordering"
+            [justifyContent]="'start'"
+            [ordering]="'wins'"
+            [reverse]="true"
+            (change)="orderingChange($event)">
+            <span
+              class="btn btn-sm"
+              [ngClass]="(ordering === 'wins' || ordering === '-wins') ? 'btn-primary' : 'btn-outline-primary'">
+              {{ 'Wins' | translate }}
+            </span>
+          </table-ordering>
+          <table-ordering
+            [value]="ordering"
+            [justifyContent]="'start'"
+            [ordering]="'draws'"
+            [reverse]="true"
+            (change)="orderingChange($event)">
+            <span
+              class="btn btn-sm"
+              [ngClass]="(ordering === 'draws' || ordering === '-draws') ? 'btn-primary' : 'btn-outline-primary'">
+              {{ 'Draws' | translate }}
+            </span>
+          </table-ordering>
+          <table-ordering
+            [value]="ordering"
+            [justifyContent]="'start'"
+            [ordering]="'losses'"
+            [reverse]="true"
+            (change)="orderingChange($event)">
+            <span
+              class="btn btn-sm"
+              [ngClass]="(ordering === 'losses' || ordering === '-losses') ? 'btn-primary' : 'btn-outline-primary'">
+              {{ 'Losses' | translate }}
+            </span>
+          </table-ordering>
+          <table-ordering
+            [value]="ordering"
+            [justifyContent]="'start'"
+            [ordering]="'rating'"
+            [reverse]="false"
+            (change)="orderingChange($event)">
+            <span
+              class="btn btn-sm"
+              [ngClass]="(ordering === 'rating' || ordering === '-rating') ? 'btn-primary' : 'btn-outline-primary'">
+              <i data-feather="bar-chart"></i>
+            </span>
+          </table-ordering>
+        </div>
+
+        @if (!isLoading && total) {
+          <span class="text-muted small">{{ total }} {{ 'Users' | translate }}</span>
+        }
+      </div>
+
+      @if (isLoading) {
+        <kep-card>
+          <div class="card-body d-flex justify-content-center py-5">
+            <spinner></spinner>
+          </div>
+        </kep-card>
+      } @else if (pageResult?.total === 0) {
+        <kep-card>
+          <div class="card-body text-center py-5">
+            <div class="text-muted">{{ 'NoChallengesYet' | translate }}</div>
+          </div>
+        </kep-card>
+      } @else {
+        <div class="row g-3">
           @for (challengesRating of challengesRatingList; track challengesRating.username) {
-            <tr>
-              <td class="fw-medium">{{ challengesRating.rowIndex }}</td>
-              <td>
-                <challenges-user-view [user]="challengesRating"></challenges-user-view>
-              </td>
-              <td><span class="badge bg-success-transparent">{{ challengesRating.wins }}</span></td>
-              <td><span class="badge bg-secondary-transparent">{{ challengesRating.draws }}</span></td>
-              <td><span class="badge bg-danger-transparent">{{ challengesRating.losses }}</span></td>
-              <td>
-                <span class="badge bg-{{ challengesRating.rankTitle | challengesRankColor }}">{{ challengesRating.rating }}</span>
-              </td>
-            </tr>
+            <div class="col-12 col-md-6 col-xl-4">
+              <kep-card customClass="h-100">
+                <div class="card-body d-flex flex-column gap-3">
+                  <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <span class="badge bg-primary fw-semibold text-white px-3 py-2 fs-6">{{ challengesRating.rowIndex }}</span>
+                    <challenges-user-view
+                      [user]="challengesRating"
+                      [withRating]="true"
+                      [light]="false"></challenges-user-view>
+                  </div>
+                  <div class="d-flex flex-wrap gap-3 fs-6">
+                    <div class="text-success fw-semibold d-flex align-items-center gap-1">
+                      {{ challengesRating.wins }}
+                      <span [ngbTooltip]="'Wins' | translate">W</span>
+                    </div>
+                    <div class="text-info fw-semibold d-flex align-items-center gap-1">
+                      {{ challengesRating.draws }}
+                      <span [ngbTooltip]="'Draws' | translate">D</span>
+                    </div>
+                    <div class="text-danger fw-semibold d-flex align-items-center gap-1">
+                      {{ challengesRating.losses }}
+                      <span [ngbTooltip]="'Losses' | translate">L</span>
+                    </div>
+                    <div class="text-muted fw-semibold d-flex align-items-center gap-1">
+                      {{ challengesRating.all }}
+                      <span [ngbTooltip]="'Challenges' | translate">Σ</span>
+                    </div>
+                  </div>
+                </div>
+              </kep-card>
+            </div>
           }
-        </ng-container>
-        <ng-container pagination>
+        </div>
+      }
+
+      @if (total) {
+        <div class="d-flex justify-content-center">
           <kep-pagination
             [collectionSize]="total"
             [page]="pageNumber"
@@ -76,8 +121,8 @@
             [disabled]="isLoading"
             (pageChange)="pageChange($event)">
           </kep-pagination>
-        </ng-container>
-      </kep-table>
+        </div>
+      }
     </section>
   </div>
 </div>
