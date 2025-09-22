@@ -1,21 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Params } from '@angular/router';
+import { NavigationExtras, Params } from '@angular/router';
 import { AuthUser } from '@auth';
 import { Subject } from 'rxjs';
 import { Problem } from '@problems/models/problems.models';
 import { ProblemsApiService } from '../../services/problems-api.service';
-import { ApiService } from '@core/data-access/api.service';
 import { CoreCommonModule } from '@core/common.module';
-import { NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { ProblemDescriptionComponent } from '@problems/pages/problem/problem-description/problem-description.component';
-import { ProblemAttemptsComponent } from '@problems/pages/problem/problem-attempts/problem-attempts.component';
-import { ProblemHacksComponent } from '@problems/pages/problem/problem-hacks/problem-hacks.component';
-import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
 import { ProblemSidebarComponent } from '@problems/pages/problem/problem-sidebar/problem-sidebar.component';
 import { TourModule } from '@shared/third-part-modules/tour/tour.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
-import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { BasePageComponent } from '@core/common/classes/base-page.component';
 import { SidebarService } from '@shared/ui/sidebar/sidebar.service';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
@@ -23,6 +17,7 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
 
 import { ProblemSubmitCardComponent } from '@problems/components/problem-submit-card/problem-submit-card.component';
 import { take } from 'rxjs/operators';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-problem',
@@ -32,54 +27,41 @@ import { take } from 'rxjs/operators';
   imports: [
     CoreCommonModule,
     ContentHeaderModule,
-    NgbNavModule,
-    ProblemDescriptionComponent,
-    ProblemAttemptsComponent,
-    ProblemHacksComponent,
-    MonacoEditorModule,
     CodeEditorModule,
     ProblemSidebarComponent,
     TourModule,
     NgSelectModule,
-    MonacoEditorComponent,
     KepCardComponent,
 
     ProblemSubmitCardComponent,
     NgbTooltipModule,
+    RouterModule,
   ]
 })
 export class ProblemComponent extends BasePageComponent implements OnInit {
   public problem: Problem;
 
-  public activeId = 1;
   public studyPlanId: number;
   public contestId: number;
 
-  public submitEvent = new Subject();
-  public checkInput = '';
+  public submitEvent = new Subject<void>();
+  public readonly submitEvent$ = this.submitEvent.asObservable();
   constructor(
     public service: ProblemsApiService,
-    public api: ApiService,
     protected coreSidebarService: SidebarService,
   ) {
     super();
   }
 
   ngOnInit(): void {
-    if (this._queryParams.tab === 'hacks') {
-      this.activeId = 3;
-    } else if (this._queryParams.tab === 'attempts') {
-      this.activeId = 2;
-    }
-
     this.route.data.subscribe(({ problem }) => {
       this.problem = problem;
       this.titleService.updateTitle(this.route, {
         problemTitle: this.problem.title,
         problemId: this.problem.id
       });
-      this.checkInput = this.problem.checkInputSource;
       this.loadContentHeader();
+      this.handleInitialTab();
     });
   }
 
@@ -114,34 +96,17 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
     };
   }
 
-  activeIdChange(index: number) {
-    if (index === 1) {
-      this.updateQueryParams({ tab: null });
-    } else if (index === 2) {
-      this.updateQueryParams({ tab: 'attempts' });
-    } else if (index === 3) {
-      this.updateQueryParams({ tab: 'hacks' });
-    }
-  }
-
-  saveCheckInput() {
-    this.api.post(`problems/${ this.problem.id }/save-check-input`, { source: this.checkInput }).subscribe(
-      () => {
-        this.toastr.success('Success');
-      }, () => {
-        this.toastr.error('Error');
-      }
-    );
-  }
-
   codeEditorSidebarToggle() {
     this.coreSidebarService.getSidebarRegistry('codeEditorSidebar').toggleOpen();
   }
 
   onSubmit() {
-    console.log(4142);
-    this.activeId = 2;
-    this.submitEvent.next(null);
+    this.submitEvent.next();
+    this.navigateToChild('attempts');
+  }
+
+  onHackSubmitted() {
+    this.navigateToChild('hacks');
   }
 
   goToPreviousProblem() {
@@ -171,5 +136,34 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
     this.router.navigate(['/practice/problems/problem', problemId], {
       queryParams: this.route.snapshot.queryParams,
     });
+  }
+
+  private handleInitialTab() {
+    if (this._queryParams?.tab === 'hacks') {
+      this.navigateToChild('hacks', { replaceUrl: true });
+    } else if (this._queryParams?.tab === 'attempts') {
+      this.navigateToChild('attempts', { replaceUrl: true });
+    } else if (this._queryParams?.tab) {
+      this.updateQueryParams({ tab: null });
+    }
+  }
+
+  private navigateToChild(segment: 'attempts' | 'hacks', extras?: NavigationExtras) {
+    if (segment === 'hacks' && !this.problem?.hasCheckInput) {
+      return;
+    }
+
+    const currentPath = this.route.snapshot.firstChild?.routeConfig?.path;
+    if (currentPath !== segment) {
+      this.router.navigate([segment], {
+        relativeTo: this.route,
+        queryParamsHandling: 'merge',
+        ...(extras ?? {}),
+      });
+    }
+
+    if (this._queryParams?.tab) {
+      this.updateQueryParams({ tab: null }, { replaceUrl: true });
+    }
   }
 }
