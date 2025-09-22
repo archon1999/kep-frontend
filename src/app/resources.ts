@@ -24,7 +24,7 @@ export enum Resources {
   Challenge = '/practice/challenges/challenge/:id',
 
   Duels = '/practice/duels',
-  DuelsRating = '/practice/duels/duels-rating',
+  DuelsRating = '/practice/duels/rating',
   Duel = '/practice/duels/duel/:id',
 
   Arena = '/competitions/arena',
