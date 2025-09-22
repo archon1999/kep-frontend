@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, Renderer2, TemplateRef, } from '@angular/core';
+import { Component, ElementRef, OnInit, inject, Renderer2, TemplateRef, } from '@angular/core';
 import { Menu, NavService } from '../../services/nav.service';
 import { NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { Router, RouterOutlet } from '@angular/router';
@@ -6,6 +6,7 @@ import { HeaderComponent } from "@core/layouts/components/header/header.componen
 import { FooterComponent } from "@core/layouts/components/footer/footer.component";
 import { SidebarComponent } from "@core/layouts/components/sidebar/sidebar.component";
 import { HoverEffectSidebarDirective } from "@core/layouts/components/sidebar/directives/hover-effect-sidebar.directive";
+import { AppStateService } from "@core/services/app-state.service";
 
 @Component({
   selector: 'app-content-layout',
@@ -20,10 +21,11 @@ import { HoverEffectSidebarDirective } from "@core/layouts/components/sidebar/di
     HoverEffectSidebarDirective
   ]
 })
-export class ContentLayoutComponent {
+export class ContentLayoutComponent implements OnInit {
   lastSegment: any;
   public menuItems!: Menu[];
   private offcanvasService = inject(NgbOffcanvas);
+  private appStateService = inject(AppStateService);
 
   constructor(
     private router: Router,
@@ -41,6 +43,11 @@ export class ContentLayoutComponent {
         html?.getAttribute('data-toggled') == 'close' ? 'close' : 'close'
       );
     }
+  }
+
+  ngOnInit(): void {
+    const currentState = this.appStateService.getCurrentValue();
+    this.appStateService.updateState({...currentState});
   }
 
   openEnd(content: TemplateRef<any>) {
