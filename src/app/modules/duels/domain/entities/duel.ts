@@ -27,7 +27,6 @@ export interface Duel {
   isConfirmed?: boolean;
   playerFirst: DuelPlayer;
   playerSecond: DuelPlayer | null;
-  duelPreset: DuelPreset | null;
   problems?: Array<DuelProblem>;
 }
 
