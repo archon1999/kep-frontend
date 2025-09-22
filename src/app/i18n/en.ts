@@ -557,9 +557,8 @@ export const localeEn = {
     NoBadges: 'No badges yet',
     FirstSolves: 'First solves',
     NoFirstSolves: 'No first solves yet',
-    Records: 'Records',
-    LastAccepted: 'Last accepted',
-    MostAttemptsContestant: 'Most attempts',
+    Facts: 'Facts',
+    NoFacts: 'No facts yet',
     Verdicts: {
       Accepted: 'Accepted',
       WrongAnswer: 'Wrong answer',

@@ -67,6 +67,7 @@ export class ContestStatisticsComponent extends BasePageComponent implements OnI
   public verdictsChart: ChartOptions;
   public firstSolvesEntries: Array<{ problem: string; record: ContestStatisticsFirstSolve }> = [];
   public badges: BadgeCard[] = [];
+  public facts: string[] = [];
 
   constructor(
     private contestsService: ContestsService,
@@ -128,6 +129,7 @@ export class ContestStatisticsComponent extends BasePageComponent implements OnI
         this.buildVerdictsChart(statistics);
         this.buildFirstSolves(statistics);
         this.buildBadges(statistics);
+        this.buildFacts(statistics);
         this.isLoading = false;
         this.cdr.markForCheck();
       },
@@ -336,7 +338,7 @@ export class ContestStatisticsComponent extends BasePageComponent implements OnI
   }
 
   private buildFirstSolves(statistics: ContestStatistics) {
-    const entries = Object.entries(statistics.records.firstSolves || {});
+    const entries = Object.entries(statistics.firstSolves || {});
     this.firstSolvesEntries = entries.map(([problem, record]) => ({ problem, record })).sort(
       (a, b) => a.problem.localeCompare(b.problem)
     );
@@ -404,5 +406,9 @@ export class ContestStatisticsComponent extends BasePageComponent implements OnI
 
       this.badges.push(badgeCard);
     });
+  }
+
+  private buildFacts(statistics: ContestStatistics) {
+    this.facts = statistics.facts ?? [];
   }
 }

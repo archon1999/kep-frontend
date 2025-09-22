@@ -162,21 +162,16 @@
         <div class="col-lg-4">
           <kep-card>
             <div class="card-body d-flex flex-column gap-1">
-              <h5 class="card-title mb-1">{{ 'Contests.Records' | translate }}</h5>
-              <div class="border rounded p-1">
-                <div class="fw-semibold mb-25">{{ 'Contests.LastAccepted' | translate }}</div>
-                <contestant-view [user]="statistics.records.lastAccepted.contestant?.user" [team]="statistics.records.lastAccepted.contestant?.team"></contestant-view>
-                <div class="text-muted small mt-25">
-                  {{ 'Problem' | translate }} {{ statistics.records.lastAccepted.problem }} · {{ statistics.records.lastAccepted.time }}
-                </div>
-              </div>
-              <div class="border rounded p-1">
-                <div class="fw-semibold mb-25">{{ 'Contests.MostAttemptsContestant' | translate }}</div>
-                <contestant-view [user]="statistics.records.mostAttemptsContestant.contestant?.user" [team]="statistics.records.mostAttemptsContestant.contestant?.team"></contestant-view>
-                <div class="text-muted small mt-25">
-                  {{ 'Attempts' | translate }}: {{ statistics.records.mostAttemptsContestant.attempts | number }}
-                </div>
-              </div>
+              <h5 class="card-title mb-1">{{ 'Contests.Facts' | translate }}</h5>
+              @if (facts.length) {
+                <ul class="mb-0 ps-2">
+                  @for (fact of facts; track $index) {
+                    <li class="mb-25">{{ fact }}</li>
+                  }
+                </ul>
+              } @else {
+                <div class="text-center text-muted small py-1">{{ 'Contests.NoFacts' | translate }}</div>
+              }
             </div>
           </kep-card>
         </div>

@@ -4,8 +4,9 @@ export interface ContestStatistics {
   general: ContestStatisticsGeneral;
   timeline: ContestStatisticsTimelineEntry[];
   verdicts: ContestStatisticsVerdicts;
-  records: ContestStatisticsRecords;
+  firstSolves: Record<string, ContestStatisticsFirstSolve>;
   badges: ContestStatisticsBadges;
+  facts: string[];
 }
 
 export interface ContestStatisticsGeneral {
@@ -55,25 +56,6 @@ export interface ContestStatisticsFirstSolve {
   contestTimeSeconds: number;
   time: string;
   timestamp: string;
-}
-
-export interface ContestStatisticsRecords {
-  firstSolves: Record<string, ContestStatisticsFirstSolve>;
-  lastAccepted: ContestStatisticsLastAccepted;
-  mostAttemptsContestant: ContestStatisticsMostAttemptsContestant;
-}
-
-export interface ContestStatisticsLastAccepted {
-  contestant: ContestStatisticsContestant;
-  problem: string;
-  contestTimeSeconds: number;
-  time: string;
-  timestamp: string;
-}
-
-export interface ContestStatisticsMostAttemptsContestant {
-  contestant: ContestStatisticsContestant;
-  attempts: number;
 }
 
 export interface ContestStatisticsBadges {

@@ -555,9 +555,8 @@ export const localeUz = {
     NoBadges: 'Hozircha belgi yoʻq',
     FirstSolves: 'Birinchi yechimlar',
     NoFirstSolves: 'Birinchi yechimlar yoʻq',
-    Records: 'Rekordlar',
-    LastAccepted: 'Oxirgi qabul qilingan',
-    MostAttemptsContestant: 'Eng koʻp urinish',
+    Facts: 'Faktlar',
+    NoFacts: 'Hozircha faktlar yoʻq',
     Verdicts: {
       Accepted: 'Qabul qilindi',
       WrongAnswer: 'Notoʻgʻri javob',

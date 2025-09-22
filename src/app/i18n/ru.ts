@@ -552,9 +552,8 @@ export const localeRu = {
     NoBadges: 'Пока без бейджей',
     FirstSolves: 'Первые решения',
     NoFirstSolves: 'Нет первых решений',
-    Records: 'Рекорды',
-    LastAccepted: 'Последнее принятое',
-    MostAttemptsContestant: 'Больше всего попыток',
+    Facts: 'Факты',
+    NoFacts: 'Фактов пока нет',
     Verdicts: {
       Accepted: 'Принято',
       WrongAnswer: 'Неверный ответ',
