@@ -5,40 +5,22 @@ import { ContestTabComponent } from '@contests/pages/contest/contest-tab/contest
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { Contest } from '@contests/models/contest';
 import { ContestsService } from '@contests/contests.service';
-import {
-  ContestStatistics,
-  ContestStatisticsFirstSolve,
-  ContestStatisticsBadges,
-  ContestStatisticsContestant,
-} from '@contests/models';
+import { ContestStatistics } from '@contests/models';
 import { BasePageComponent } from '@core/common/classes/base-page.component';
-import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
-import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 import { colors as Colors } from '@core/config/colors';
-import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
-import { KepTableComponent } from "@shared/components/kep-table/kep-table.component";
-interface OverviewCard {
-  key: string;
-  label: string;
-  value: number;
-  format?: 'percent';
-  icon: string;
-  iconColor: string;
-}
-
-interface BadgeCard {
-  key: keyof ContestStatisticsBadges;
-  title: string;
-  icon: string;
-  color: string;
-  contestant: ContestStatisticsContestant | null;
-  problem?: string;
-  time?: string;
-  attempts?: number;
-  solvedProblems?: number;
-  wrongAttempts?: number;
-}
+import {
+  ContestStatisticsBadgeCard,
+  ContestStatisticsFirstSolveEntry,
+  ContestStatisticsOverviewCard,
+} from './contest-statistics.models';
+import { ContestStatisticsOverviewComponent } from './components/contest-statistics-overview/contest-statistics-overview.component';
+import { ContestStatisticsTimelineComponent } from './components/contest-statistics-timeline/contest-statistics-timeline.component';
+import { ContestStatisticsVerdictsComponent } from './components/contest-statistics-verdicts/contest-statistics-verdicts.component';
+import { ContestStatisticsProblemsComponent } from './components/contest-statistics-problems/contest-statistics-problems.component';
+import { ContestStatisticsBadgesComponent } from './components/contest-statistics-badges/contest-statistics-badges.component';
+import { ContestStatisticsFirstSolvesComponent } from './components/contest-statistics-first-solves/contest-statistics-first-solves.component';
+import { ContestStatisticsFactsComponent } from './components/contest-statistics-facts/contest-statistics-facts.component';
 
 @Component({
   selector: 'contest-statistics',
@@ -51,10 +33,13 @@ interface BadgeCard {
     ContentHeaderModule,
     ContestTabComponent,
     ContestClassesPipe,
-    KepCardComponent,
-    ApexChartModule,
-    ContestantViewModule,
-    KepTableComponent,
+    ContestStatisticsOverviewComponent,
+    ContestStatisticsTimelineComponent,
+    ContestStatisticsVerdictsComponent,
+    ContestStatisticsProblemsComponent,
+    ContestStatisticsBadgesComponent,
+    ContestStatisticsFirstSolvesComponent,
+    ContestStatisticsFactsComponent,
   ],
 })
 export class ContestStatisticsComponent extends BasePageComponent implements OnInit {
@@ -63,12 +48,12 @@ export class ContestStatisticsComponent extends BasePageComponent implements OnI
   public statistics: ContestStatistics | null = null;
   public isLoading = true;
 
-  public overviewCards: OverviewCard[] = [];
+  public overviewCards: ContestStatisticsOverviewCard[] = [];
   public timelineChart: ChartOptions;
   public problemsChart: ChartOptions;
   public verdictsChart: ChartOptions;
-  public firstSolvesEntries: Array<{ problem: string; record: ContestStatisticsFirstSolve }> = [];
-  public badges: BadgeCard[] = [];
+  public firstSolvesEntries: ContestStatisticsFirstSolveEntry[] = [];
+  public badges: ContestStatisticsBadgeCard[] = [];
   public facts: string[] = [];
 
   constructor(
@@ -347,7 +332,7 @@ export class ContestStatisticsComponent extends BasePageComponent implements OnI
   }
 
   private buildBadges(statistics: ContestStatistics) {
-    const badgeConfig: Array<Omit<BadgeCard, 'contestant' | 'problem' | 'time' | 'attempts' | 'solvedProblems' | 'wrongAttempts'>> = [
+    const badgeConfig: Array<Omit<ContestStatisticsBadgeCard, 'contestant' | 'problem' | 'time' | 'attempts' | 'solvedProblems' | 'wrongAttempts'>> = [
       {
         key: 'sniper',
         title: 'Contests.BadgeSniper',
@@ -381,7 +366,7 @@ export class ContestStatisticsComponent extends BasePageComponent implements OnI
         return;
       }
 
-      const badgeCard: BadgeCard = {
+      const badgeCard: ContestStatisticsBadgeCard = {
         ...config,
         contestant: badgeData.contestant ?? null,
       };

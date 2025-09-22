@@ -1,0 +1,12 @@
+<kep-card>
+  <div class="card-header">
+    <div class="card-title">
+      {{ 'Contests.AttemptsTimeline' | translate }}
+    </div>
+    <span class="text-muted small">{{ totalAttempts | number }} {{ 'Attempts' | translate }}</span>
+  </div>
+
+  <div class="card-body p-2">
+    <apex-chart [options]="chart"></apex-chart>
+  </div>
+</kep-card>

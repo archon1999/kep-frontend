@@ -1,0 +1,14 @@
+<kep-card>
+  <div class="card-header">
+    <div class="card-title">
+      {{ 'Contests.Facts' | translate }}
+    </div>
+  </div>
+  <div class="card-body">
+    <ul class="list-group">
+      @for (fact of facts; track $index) {
+        <li class="list-group-item">{{ fact }}</li>
+      }
+    </ul>
+  </div>
+</kep-card>
