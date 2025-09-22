@@ -1,0 +1,47 @@
+:host {
+  .attempt-code-copy {
+    position: absolute;
+    top: 165px;
+    right: 20px;
+  }
+
+  .attempt-error-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    border: 0;
+    border-radius: 0.75rem;
+    padding: 1rem;
+
+    &__icon {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 50%;
+      background: rgba(220, 53, 69, 0.12);
+      color: #dc3545;
+
+      i {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+
+    &__title {
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    &__text {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: var(--bs-font-monospace, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+  }
+}

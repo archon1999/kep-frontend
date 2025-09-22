@@ -29,6 +29,7 @@ export class Attempt {
     public contestProblem: ContestProblem,
     public balls: number,
     public contestTime: string,
+    public errorMessage?: string,
     public animationWrongState = false,
     public animationAcceptedState = false,
     public isOwner = false,
@@ -63,6 +64,7 @@ export class Attempt {
       data.contestProblem,
       data.balls,
       data.contestTime,
+      data.errorMessage || data.error_message,
     );
   }
 
@@ -91,6 +93,7 @@ export class Attempt {
       attempt.contestProblem,
       wsAttempt.balls,
       attempt.contestTime,
+      attempt.errorMessage,
     );
   }
 }

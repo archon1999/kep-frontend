@@ -129,6 +129,7 @@ export const localeEn = {
   Links: 'Links',
   ViewTest: 'ViewTest',
   Attempt: 'Attempt',
+  AttemptErrorMessage: 'Error message',
   SelectedLanguage: 'Selected language',
   User: 'User',
   View: 'View',
