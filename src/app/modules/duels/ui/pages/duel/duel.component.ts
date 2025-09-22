@@ -5,7 +5,7 @@ import { Duel, DuelProblem, DuelResults } from '@duels/domain';
 import { DuelsApiService } from '@duels/data-access';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { CoreCommonModule } from '@core/common.module';
-import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { ProblemBodyComponent } from '@problems/components/problem-body/problem-body.component';
 import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
@@ -18,6 +18,7 @@ import { takeUntil } from 'rxjs/operators';
 import { PageResult } from '@core/common/classes/page-result';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { ProblemSubmitCardComponent } from '@problems/components/problem-submit-card/problem-submit-card.component';
+import { DuelPresetInfoModalComponent } from '@duels/ui/components/duel-preset-info-modal/duel-preset-info-modal.component';
 
 @Component({
   templateUrl: './duel.component.html',
@@ -43,6 +44,7 @@ export class DuelComponent extends BaseLoadComponent<Duel> {
   public attempts: Attempt[] = [];
 
   protected readonly duelsApi = inject(DuelsApiService);
+  private readonly modalService = inject(NgbModal);
 
   get duel() {
     return this.data;
@@ -121,5 +123,18 @@ export class DuelComponent extends BaseLoadComponent<Duel> {
         this.duel.playerSecond.balls = playerSecondBalls;
       }
     });
+  }
+
+  openPresetInfoModal(): void {
+    if (!this.duel?.duelPreset) {
+      return;
+    }
+
+    const modalRef = this.modalService.open(DuelPresetInfoModalComponent, {
+      size: 'lg',
+      centered: true,
+    });
+
+    modalRef.componentInstance.preset = this.duel.duelPreset;
   }
 }

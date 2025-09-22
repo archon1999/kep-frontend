@@ -45,12 +45,14 @@ export class DuelsListWidgetComponent implements OnInit, OnChanges, OnDestroy {
   @Input() username: string | null = null;
   @Input() currentUsername: string | null = null;
   @Input() pageSize = 10;
+  @Input() my = false;
   @Input() set refreshKey(value: number) {
     if (this._refreshKey === value) {
       return;
     }
     this._refreshKey = value;
     if (this.initialized) {
+      this.page = 1;
       this.loadDuels();
     }
   }
@@ -102,11 +104,18 @@ export class DuelsListWidgetComponent implements OnInit, OnChanges, OnDestroy {
       page_size: this.pageSize,
     };
 
-    if (this.username) {
-      params['username'] = this.username;
-    }
+    const requestParams = this.my
+      ? params
+      : {
+        ...params,
+        ...(this.username ? { username: this.username } : {}),
+      };
 
-    this.duelsApi.getDuels(params)
+    const request$ = this.my
+      ? this.duelsApi.getMyDuels(requestParams)
+      : this.duelsApi.getDuels(requestParams);
+
+    request$
       .pipe(
         takeUntil(this.destroy$),
         finalize(() => {
