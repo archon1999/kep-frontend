@@ -5,6 +5,7 @@ export default [
     path: '',
     loadComponent: () => import('./pages/blog-list/blog-list.component').then(c => c.BlogListComponent),
     title: 'Blog.Blog',
+    data: { title: 'Blog.Blog' },
   },
   {
     path: 'post/:id',

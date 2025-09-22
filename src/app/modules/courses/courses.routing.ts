@@ -12,7 +12,7 @@ export default [
   {
     path: '',
     loadComponent: () => import('./pages/courses/courses.component').then(c => c.CoursesComponent),
-    data: {animation: 'courses'},
+    data: {animation: 'courses', title: 'Courses.Courses'},
     title: 'Courses.Courses',
   },
   {
@@ -40,7 +40,7 @@ export default [
   {
     path: 'course/:id/dictionary',
     loadComponent: () => import('./pages/dictionary/dictionary.component').then(c => c.DictionaryComponent),
-    data: {animation: 'course-dictionary'},
+    data: {animation: 'course-dictionary', title: 'Courses.CourseDictionary'},
     resolve: {
       courseLessons: CourseLessonsResolver,
       course: CourseResolver,
@@ -51,7 +51,7 @@ export default [
   {
     path: 'course/:id/dictionary/training',
     loadComponent: () => import('./pages/dictionary/training/training.component').then(c => c.TrainingComponent),
-    data: {animation: 'course-dictionary-training'},
+    data: {animation: 'course-dictionary-training', title: 'Courses.CourseDictionaryTraining'},
     resolve: {
       courseLessons: CourseLessonsResolver,
       course: CourseResolver,

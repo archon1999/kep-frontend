@@ -34,6 +34,7 @@ export class DictionaryComponent extends BasePageComponent implements OnInit {
       this.courseDictionary = courseDictionary;
       this.loadContentHeader();
       this.contentHeader.breadcrumb.links[1].name = this.course.title;
+      this.titleService.updateTitle(this.route, {courseTitle: this.course.title});
     });
   }
 

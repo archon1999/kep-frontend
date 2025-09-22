@@ -772,6 +772,7 @@ export const localeRu = {
       ContestStandings: 'Результаты | {{ contestTitle }} | Контест',
       ContestQuestions: 'Вопросы | {{ contestTitle }} | Контест',
       ContestRatingChanges: 'Изменения рейтингов | {{ contestTitle }} | Контест',
+      ContestOgImage: '{{ contestTitle }} | OG изображение | Контест',
       ContestsRating: 'Рейтинг | Контесты',
       ContestsProfile: 'Профиль | Контесты',
       MyContests: 'Мои контесты',
@@ -805,7 +806,11 @@ export const localeRu = {
     },
     Hackathons: {
       Hackathons: 'Хакатоны',
-      Hackathon: '{{ hackathonTitle }} | Хакатон'
+      Hackathon: '{{ hackathonTitle }} | Хакатон',
+      HackathonProjects: '{{ hackathonTitle }} | Проекты | Хакатон',
+      HackathonAttempts: '{{ hackathonTitle }} | Попытки | Хакатон',
+      HackathonStandings: '{{ hackathonTitle }} | Таблица результатов | Хакатон',
+      HackathonRegistrants: '{{ hackathonTitle }} | Участники | Хакатон'
     },
     Arena: {
       Arena: 'Арена',
@@ -824,9 +829,18 @@ export const localeRu = {
       Courses: 'Курсы',
       Course: '{{ courseTitle }} | Курс',
       CourseLesson: '{{ lessonTitle }} | {{ courseTitle }} | Курс',
+      CourseDictionary: '{{ courseTitle }} | Словарь | Курс',
+      CourseDictionaryTraining: '{{ courseTitle }} | Тренировка словаря | Курс',
     },
     Shop: {
       Shop: 'Магазин',
+    },
+    KepCover: 'KEP Cover №3',
+    Auth: {
+      Login: 'Войти',
+    },
+    Errors: {
+      Error404: 'Страница не найдена',
     },
   },
   Errors: {

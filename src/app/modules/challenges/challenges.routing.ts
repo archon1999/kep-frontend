@@ -6,6 +6,7 @@ export default [
     path: '',
     loadComponent: () => import('./pages/challenges/challenges.component').then(c => c.ChallengesComponent),
     title: 'Challenges.Challenges',
+    data: { title: 'Challenges.Challenges' },
   },
   {
     path: 'challenge/:id',
@@ -16,11 +17,13 @@ export default [
     path: 'rating',
     loadComponent: () => import('./pages/challenges-rating/challenges-rating.component').then(c => c.ChallengesRatingComponent),
     title: 'Challenges.ChallengesRating',
+    data: { title: 'Challenges.ChallengesRating' },
   },
   {
     path: 'user-statistics',
     loadComponent: () => import('./pages/user-statistics/user-statistics.component').then(c => c.UserStatisticsComponent),
     title: 'Challenges.UserStatistics',
+    data: { title: 'Challenges.UserStatistics' },
     canActivate: [AuthGuard],
   },
 ] satisfies Routes;

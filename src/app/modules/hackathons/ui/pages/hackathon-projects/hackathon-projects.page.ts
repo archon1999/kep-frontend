@@ -25,6 +25,7 @@ export class HackathonProjectsPage extends BaseLoadComponent<HackathonProject[]>
     super();
 
     this.hackathon = this.route.snapshot.data.hackathon;
+    this.titleService.updateTitle(this.route, {hackathonTitle: this.hackathon.title});
   }
 
   getData(): Observable<HackathonProject[]> {

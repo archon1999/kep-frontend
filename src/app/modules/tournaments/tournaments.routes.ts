@@ -5,6 +5,7 @@ export default [
     path: '',
     loadComponent: () => import('./ui/pages/tournaments-list/tournaments-list.page').then(m => m.TournamentsListPage),
     title: 'Tournaments.Tournaments',
+    data: { title: 'Tournaments.Tournaments' },
   },
   {
     path: 'tournament/:id',

@@ -4,7 +4,7 @@ export default [
   {
     path: '',
     loadComponent: () => import('./kepcoin.component').then(c => c.KepcoinComponent),
-    data: {animation: 'kepcoin'},
+    data: {animation: 'kepcoin', title: 'Kepcoin'},
     title: 'Kepcoin',
   },
 ] satisfies Route[];
