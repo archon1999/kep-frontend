@@ -131,7 +131,7 @@
             @for (attempt of lastAttempts; track attempt) {
               <tr>
                 <td class="ms-1">
-                  <a [routerLink]="['/practice', 'problems', 'problem', attempt.problemId]">
+                  <a [routerLink]="Resources.Problem | resourceById:attempt.problemId">
                     <span class="text-primary">{{ attempt.problemId }}. {{ attempt.problemTitle }}</span>
                   </a>
                 </td>
@@ -150,7 +150,7 @@
           </tbody>
         </table>
         <div class="card-footer text-center">
-          <button class="btn btn-primary bg-primary btn-sm round" routerLink="attempts">
+          <button class="btn btn-primary bg-primary btn-sm round" [routerLink]="Resources.Attempts">
             {{ 'AllAttempts' | translate }}
             <i data-feather="arrow-right"></i>
           </button>

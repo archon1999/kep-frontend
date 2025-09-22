@@ -1,6 +1,6 @@
 <kep-card>
   @if (!course.inThePipeline) {
-    <a class="card-img" routerLink="/learn/courses/course/{{ course.id }}">
+    <a class="card-img" [routerLink]="Resources.Course | resourceById:course.id">
       <img class="card-img-top img-fluid" src="{{ course.logo }}" alt="Course logo"/>
     </a>
   } @else {
@@ -26,7 +26,7 @@
     </div>
     <h5 class="card-title mt-2">
       @if (!course.inThePipeline) {
-        <a routerLink="/learn/courses/course/{{ course.id }}">
+        <a [routerLink]="Resources.Course | resourceById:course.id">
           {{ course.title }}
         </a>
       } @else {

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ApiService } from '@core/data-access/api.service';
 
 import { Contest } from '@contests/models/contest';
+import { Resources } from '@app/resources';
 
 @Component({
   selector: 'contest-standings-popover',
@@ -21,6 +22,8 @@ export class ContestStandingsPopoverComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  protected readonly Resources = Resources;
 
   loadContestants() {
     this.api.get(`contests/${this.contest.id}/top10-contestants`).subscribe((result: any) => {

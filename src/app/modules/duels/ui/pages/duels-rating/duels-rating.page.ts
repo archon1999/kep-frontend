@@ -10,6 +10,8 @@ import { KepTableComponent } from '@shared/components/kep-table/kep-table.compon
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
+import { ResourceByUsernamePipe } from '@shared/pipes/resource-by-username.pipe';
+import { Resources } from '@app/resources';
 
 @Component({
   selector: 'page-duels-rating',
@@ -23,6 +25,7 @@ import { UserPopoverModule } from '@shared/components/user-popover/user-popover.
     KepPaginationComponent,
     TableOrderingModule,
     UserPopoverModule,
+    ResourceByUsernamePipe,
   ]
 })
 export class DuelsRatingPage extends BaseTablePageComponent<DuelsRating> implements OnInit {
@@ -57,7 +60,7 @@ export class DuelsRatingPage extends BaseTablePageComponent<DuelsRating> impleme
           {
             name: 'Duels',
             isLink: true,
-            link: '/practice/duels',
+            link: Resources.Duels,
           },
         ],
       },

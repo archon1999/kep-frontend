@@ -103,7 +103,7 @@
           @if (contest) {
             @if (attempt?.contestProblem?.contest) {
               <a
-                [routerLink]="['/competitions', 'contests', 'contest', attempt?.contestProblem?.contest, 'problem', attempt.contestProblem.symbol]">
+                [routerLink]="Resources.ContestProblem | resourceByParams:{id: attempt?.contestProblem?.contest, symbol: attempt.contestProblem.symbol}">
                 <u class="text-primary">{{ attempt.contestProblem.symbol }}. {{ attempt.problemTitle }}</u>
               </a>
             } @else {

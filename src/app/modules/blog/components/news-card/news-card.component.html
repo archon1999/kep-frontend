@@ -1,4 +1,4 @@
-<a [routerLink]="['/learn', 'blog', 'post', blog.id]">
+<a [routerLink]="Resources.BlogPost | resourceById:blog.id">
   <kep-card customClass="overlay-card">
     <img [src]="blog.image" height="200" class="card-img"/>
 

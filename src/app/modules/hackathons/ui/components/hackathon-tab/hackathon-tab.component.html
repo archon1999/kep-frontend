@@ -7,7 +7,7 @@
     <li ngbNavItem>
       <a
         [routerLinkActiveOptions]="{exact:true}"
-        [routerLink]="['/competitions','hackathons','hackathon', hackathon?.id]"
+        [routerLink]="Resources.Hackathon | resourceById:hackathon?.id"
         class="nav-link text-center mb-0"
         routerLinkActive="active"
       >
@@ -21,7 +21,7 @@
       <li ngbNavItem>
         <a
             class="nav-link text-center mb-0"
-          [routerLink]="['/competitions','hackathons','hackathon', hackathon?.id, 'projects']"
+          [routerLink]="Resources.HackathonProjects | resourceById:hackathon?.id"
           routerLinkActive="active"
         >
           <div class="mb-2">
@@ -33,7 +33,7 @@
       <li ngbNavItem>
         <a
           class="nav-link text-center mb-0"
-          [routerLink]="['/competitions','hackathons','hackathon', hackathon?.id, 'attempts']"
+          [routerLink]="Resources.HackathonAttempts | resourceById:hackathon?.id"
           routerLinkActive="active"
         >
           <div class="mb-2">
@@ -46,7 +46,7 @@
       <li ngbNavItem>
         <a
           class="nav-link text-center mb-0"
-          [routerLink]="['/competitions','hackathons','hackathon', hackathon?.id, 'standings']"
+          [routerLink]="Resources.HackathonStandings | resourceById:hackathon?.id"
           routerLinkActive="active"
         >
           <div class="mb-2">
@@ -59,7 +59,7 @@
       <li ngbNavItem>
         <a
           class="nav-link text-center mb-0"
-          [routerLink]="['/competitions','hackathons','hackathon', hackathon?.id, 'registrants']"
+          [routerLink]="Resources.HackathonRegistrants | resourceById:hackathon?.id"
           routerLinkActive="active"
         >
           <div class="mb-2">

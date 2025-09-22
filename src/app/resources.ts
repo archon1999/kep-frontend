@@ -3,6 +3,8 @@ export enum Resources {
 
   Problems = '/practice/problems',
   Problem = '/practice/problems/problem/:id',
+  Attempt = '/practice/problems/attempts/:id',
+  StudyPlan = '/practice/problems/study-plan/:id',
 
   Attempts = '/practice/problems/attempts',
   AttemptsByUser = '/practice/problems/attempts/:username',
@@ -10,12 +12,20 @@ export enum Resources {
   Contests = '/competitions/contests',
   Contest = '/competitions/contests/contest/:id',
   ContestStandings = '/competitions/contests/contest/:id/standings',
+  ContestProblems = '/competitions/contests/contest/:id/problems',
+  ContestAttempts = '/competitions/contests/contest/:id/attempts',
+  ContestRegistrants = '/competitions/contests/contest/:id/registrants',
+  ContestRatingChanges = '/competitions/contests/contest/:id/rating-changes',
+  ContestQuestions = '/competitions/contests/contest/:id/questions',
+  ContestProblem = '/competitions/contests/contest/:id/problem/:symbol',
 
   Challenges = '/practice/challenges',
   ChallengesRating = '/practice/challenges/rating',
   Challenge = '/practice/challenges/challenge/:id',
 
   Duels = '/practice/duels',
+  DuelsRating = '/practice/duels/duels-rating',
+  Duel = '/practice/duels/duel/:id',
 
   Arena = '/competitions/arena',
   ArenaTournament = '/competitions/arena/tournament/:id',
@@ -40,6 +50,7 @@ export enum Resources {
   Courses = '/learn/courses',
   Course = '/learn/courses/course/:id',
   CourseFirstLesson = '/learn/courses/course/:id/lesson/1',
+  BlogPost = '/learn/blog/post/:id',
 
   Blog = '/learn/blog',
   Lugavar = '/learn/lugavar',
@@ -65,6 +76,7 @@ export enum Resources {
   SettingsTeams = `${Settings}/teams`,
   SettingsSystem = `${Settings}/system`,
   TeamJoin = '/teams/:id/join',
+
 }
 
 export function getResourceById(resource: Resources, id: number | string) {
@@ -73,4 +85,10 @@ export function getResourceById(resource: Resources, id: number | string) {
 
 export function getResourceByUsername(resource: Resources, username: string) {
   return resource.replace(':username', username);
+}
+
+export function getResourceByParams(resource: Resources, params: Record<string, string | number>) {
+  return Object.entries(params).reduce((result, [key, value]) => (
+    result.replace(`:${key}`, value.toString())
+  ), resource);
 }

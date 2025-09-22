@@ -15,6 +15,7 @@ import { HeaderKepcoinComponent } from "@core/layouts/components/header/kepcoin/
 import { HeaderDailyTasksComponent } from "@core/layouts/components/header/daily-tasks/header-daily-tasks.component";
 import { LanguagesComponent } from "@core/layouts/components/languages/languages.component";
 import { LogoComponent } from "@shared/components/logo/logo.component";
+import { ResourceByUsernamePipe } from '@shared/pipes/resource-by-username.pipe';
 
 @Component({
   selector: 'app-header',
@@ -31,7 +32,8 @@ import { LogoComponent } from "@shared/components/logo/logo.component";
     NgbDropdownToggle,
     NgbDropdownItem,
     LanguagesComponent,
-    LogoComponent
+    LogoComponent,
+    ResourceByUsernamePipe,
   ]
 })
 export class HeaderComponent extends BaseComponent {

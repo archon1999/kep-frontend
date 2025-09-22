@@ -7,6 +7,8 @@ import { UserPopoverModule } from "@shared/components/user-popover/user-popover.
 import { DatePipe } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import { CountUpModule } from "ngx-countup";
+import { Resources } from '@app/resources';
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 
 @Component({
   selector: 'hackathon-table',
@@ -20,9 +22,11 @@ import { CountUpModule } from "ngx-countup";
     UserPopoverModule,
     DatePipe,
     RouterLink,
-    CountUpModule
+    CountUpModule,
+    ResourceByIdPipe
   ]
 })
 export class HackathonTableComponent {
   @Input() hackathon: Hackathon;
+  protected readonly Resources = Resources;
 }

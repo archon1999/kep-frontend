@@ -111,7 +111,7 @@
           @if (contest?.status == 1 || currentUser?.isSuperuser) {
             <a
               rippleEffect
-              routerLink="/practice/problems/problem/{{ contestProblem?.problem?.id }}"
+              [routerLink]="Resources.Problem | resourceById:contestProblem?.problem?.id"
               [queryParams]="{'contest': contest?.id}"
               class="mb-4 full-width btn btn-primary">
               {{ 'Upsolve' | translate }}
@@ -140,13 +140,13 @@
                         'bg-danger-transparent': !_contestProblem.isSolved && _contestProblem.isAttempted
                       }">
                         <a
-                          [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problem', _contestProblem.symbol]">
+                          [routerLink]="Resources.ContestProblem | resourceByParams:{id: contest?.id, symbol: _contestProblem.symbol}">
                           {{ _contestProblem.symbol }}
                         </a>
                       </td>
                       <td>
                         <a
-                          [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problem', _contestProblem.symbol]">
+                          [routerLink]="Resources.ContestProblem | resourceByParams:{id: contest?.id, symbol: _contestProblem.symbol}">
                           <span class="text-primary">
                           </span>
                           {{ _contestProblem.problem.title }}

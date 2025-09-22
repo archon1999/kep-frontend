@@ -21,7 +21,7 @@
         </div>
         <div class="attempt-info" *ngIf="facts?.firstAttempt">
           <div [ngbTooltip]="tipContent" class="problem-title">
-            <a routerLink="/practice/problems/problem/{{ facts.firstAttempt.problemId }}" class="text-primary">
+            <a [routerLink]="Resources.Problem | resourceById:facts.firstAttempt.problemId" class="text-primary">
               {{ facts.firstAttempt.problemId }}. {{ facts.firstAttempt.problemTitle }}
             </a>
           </div>
@@ -51,7 +51,7 @@
         </div>
         <div class="attempt-info" *ngIf="facts?.firstAccepted">
           <div [ngbTooltip]="tipContent" class="problem-title">
-            <a routerLink="/practice/problems/problem/{{ facts.firstAccepted.problemId }}" class="text-primary">
+            <a [routerLink]="Resources.Problem | resourceById:facts.firstAccepted.problemId" class="text-primary">
               {{ facts.firstAccepted.problemId }}. {{ facts.firstAccepted.problemTitle }}
             </a>
           </div>
@@ -80,7 +80,7 @@
         </div>
         <div class="attempt-info" *ngIf="facts?.lastAttempt">
           <div [ngbTooltip]="tipContent" class="problem-title">
-            <a routerLink="/practice/problems/problem/{{ facts.lastAttempt.problemId }}" class="text-primary">
+            <a [routerLink]="Resources.Problem | resourceById:facts.lastAttempt.problemId" class="text-primary">
               {{ facts.lastAttempt.problemId }}. {{ facts.lastAttempt.problemTitle }}
             </a>
           </div>
@@ -110,7 +110,7 @@
         </div>
         <div class="attempt-info" *ngIf="facts?.lastAccepted">
           <div [ngbTooltip]="tipContent" class="problem-title">
-            <a routerLink="/practice/problems/problem/{{ facts.lastAccepted.problemId }}" class="text-primary">
+            <a [routerLink]="Resources.Problem | resourceById:facts.lastAccepted.problemId" class="text-primary">
               {{ facts.lastAccepted.problemId }}. {{ facts.lastAccepted.problemTitle }}
             </a>
           </div>
@@ -139,7 +139,7 @@
         </div>
         <div class="attempt-info" *ngIf="facts?.mostAttemptedProblem">
           <div [ngbTooltip]="tipContent" class="problem-title">
-            <a routerLink="/practice/problems/problem/{{ facts.mostAttemptedProblem.problemId }}" class="text-primary">
+            <a [routerLink]="Resources.Problem | resourceById:facts.mostAttemptedProblem.problemId" class="text-primary">
               {{ facts.mostAttemptedProblem.problemId }}. {{ facts.mostAttemptedProblem.problemTitle }}
             </a>
           </div>
@@ -164,7 +164,7 @@
         </div>
         <div class="attempt-info" *ngIf="facts?.mostAttemptedForSolveProblem">
           <div [ngbTooltip]="tipContent" class="problem-title">
-            <a routerLink="/practice/problems/problem/{{ facts.mostAttemptedForSolveProblem.problemId }}"
+            <a [routerLink]="Resources.Problem | resourceById:facts.mostAttemptedForSolveProblem.problemId"
                class="text-primary">
               {{ facts.mostAttemptedForSolveProblem.problemId }}. {{ facts.mostAttemptedForSolveProblem.problemTitle }}
             </a>

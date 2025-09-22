@@ -14,6 +14,9 @@ import { takeUntil } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { NotificationsService } from "@core/layouts/components/header/notifications/notifications.service";
 import { SimplebarAngularModule } from "simplebar-angular";
+import { Resources } from '@app/resources';
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
+import { ResourceByUsernamePipe } from '@shared/pipes/resource-by-username.pipe';
 
 interface Notification {
   id: number;
@@ -38,6 +41,8 @@ interface Notification {
     KepIconComponent,
     NgbDropdownModule,
     SimplebarAngularModule,
+    ResourceByIdPipe,
+    ResourceByUsernamePipe,
   ]
 })
 export class HeaderNotificationsComponent implements OnInit, OnDestroy {
@@ -56,6 +61,7 @@ export class HeaderNotificationsComponent implements OnInit, OnDestroy {
 
   private _intervalId: any;
   private _unsubscribeAll = new Subject();
+  protected readonly Resources = Resources;
 
   constructor(
     public notificationsService: NotificationsService,

@@ -3,6 +3,7 @@ import { bounceAnimation, shakeAnimation } from 'angular-animations';
 import { AuthService, AuthUser } from '@auth';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { HackAttempt } from '../../../models/hack-attempt.models';
+import { Resources } from '@app/resources';
 
 @Component({
   selector: 'base-table',
@@ -43,4 +44,5 @@ export class TableComponent implements OnInit {
     return item.id;
   }
 
+  protected readonly Resources = Resources;
 }

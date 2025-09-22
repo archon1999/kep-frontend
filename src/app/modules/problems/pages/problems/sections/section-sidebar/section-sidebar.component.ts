@@ -11,6 +11,7 @@ import { PageResult } from '@core/common/classes/page-result';
 import { Observable } from 'rxjs';
 import { FormsModule } from "@angular/forms";
 import { TranslatePipe } from "@ngx-translate/core";
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 
 export interface TopRating {
   username: string;
@@ -29,6 +30,7 @@ export interface TopRating {
     ContestantViewModule,
     FormsModule,
     TranslatePipe,
+    ResourceByIdPipe,
   ]
 })
 export class SectionSidebarComponent extends BaseComponent implements OnInit {

@@ -52,14 +52,14 @@
                 }
                 @case (EarnType.ContestParticipated) {
                   <span>
-                    {{ 'ContestParticipant' | translate }}: <a [routerLink]="['/competitions', 'contests', 'contest', earn.detail.contest.id]">
+                    {{ 'ContestParticipant' | translate }}: <a [routerLink]="Resources.Contest | resourceById:earn.detail.contest.id">
                     <u class="text-primary">{{ earn.detail.contest.title }}</u>
                   </a>
                   </span>
                 }
                 @case (EarnType.ArenaParticipated) {
                   <span>
-                    {{ 'ArenaParticipant' | translate }}: <a [routerLink]="['/competitions', 'arena', 'tournament', earn.detail.arena.id]">
+                    {{ 'ArenaParticipant' | translate }}: <a [routerLink]="Resources.ArenaTournament | resourceById:earn.detail.arena.id">
                     <u class="text-primary">{{ earn.detail.arena.title }}</u>
                   </a>
                   </span>

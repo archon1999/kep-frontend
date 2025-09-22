@@ -1,7 +1,7 @@
 <div class="contests-colors {{ contest | contestClasses }}">
   <ul ngbNav #navWithIcons="ngbNav" class="nav-tabs" [(activeId)]="activeId">
     <li ngbNavItem>
-      <a class="nav-link" [routerLink]="['/competitions', 'contests', 'contest', contest?.id]"
+      <a class="nav-link" [routerLink]="Resources.Contest | resourceById:contest?.id"
          [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">
         <kep-icon name="contest"></kep-icon>
         {{ 'Contests.Contest' | translate }}</a>
@@ -10,7 +10,7 @@
     </li>
     @if (contest?.status == -1) {
       <li ngbNavItem>
-        <a class="nav-link" [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'registrants']"
+        <a class="nav-link" [routerLink]="Resources.ContestRegistrants | resourceById:contest?.id"
            [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">
           <kep-icon name="users"></kep-icon>
           {{ 'Registrants' | translate }}</a>
@@ -20,7 +20,7 @@
     }
     @if (contest?.status != -1) {
       <li ngbNavItem>
-        <a class="nav-link" [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'problems']"
+        <a class="nav-link" [routerLink]="Resources.ContestProblems | resourceById:contest?.id"
            routerLinkActive="active">
           <kep-icon name="problem"></kep-icon>
           {{ 'Problems' | translate }}</a>
@@ -30,7 +30,7 @@
     }
     @if (contest?.status != -1) {
       <li ngbNavItem>
-        <a class="nav-link" [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'attempts']"
+        <a class="nav-link" [routerLink]="Resources.ContestAttempts | resourceById:contest?.id"
            routerLinkActive="active">
           <kep-icon name="attempt"></kep-icon>
           {{ 'Attempts' | translate }}</a>
@@ -40,7 +40,7 @@
     }
     @if (contest?.status != -1) {
       <li ngbNavItem>
-        <a class="nav-link" [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'standings']"
+        <a class="nav-link" [routerLink]="Resources.ContestStandings | resourceById:contest?.id"
            routerLinkActive="active">
           <kep-icon name="ranking"></kep-icon>
           {{ 'Contests.Standings' | translate }}</a>
@@ -50,7 +50,7 @@
     }
     @if (contest?.status == 1 && contest?.isRated) {
       <li ngbNavItem>
-        <a class="nav-link" [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'rating-changes']"
+        <a class="nav-link" [routerLink]="Resources.ContestRatingChanges | resourceById:contest?.id"
            routerLinkActive="active">
           <kep-icon name="rating-changes"></kep-icon>
           {{ 'Contests.RatingChanges' | translate }}</a>
@@ -60,7 +60,7 @@
     }
     @if (contest?.status != -1) {
       <li ngbNavItem>
-        <a class="nav-link" [routerLink]="['/competitions', 'contests', 'contest', contest?.id, 'questions']"
+        <a class="nav-link" [routerLink]="Resources.ContestQuestions | resourceById:contest?.id"
            routerLinkActive="active">
           <kep-icon name="question"></kep-icon>
           {{ 'Questions' | translate }}</a>

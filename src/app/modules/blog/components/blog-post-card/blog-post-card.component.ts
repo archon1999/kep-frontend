@@ -5,6 +5,8 @@ import { RouterLink } from '@angular/router';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Resources } from '@app/resources';
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 
 @Component({
   selector: 'blog-post-card',
@@ -16,10 +18,12 @@ import { TranslatePipe } from '@ngx-translate/core';
     RouterLink,
     UserPopoverModule,
     CoreDirectivesModule,
-    TranslatePipe
+    TranslatePipe,
+    ResourceByIdPipe
   ]
 })
 export class BlogPostCardComponent {
   @Input() blog: Blog;
   @Input() cardImgHeight = 250;
+  protected readonly Resources = Resources;
 }

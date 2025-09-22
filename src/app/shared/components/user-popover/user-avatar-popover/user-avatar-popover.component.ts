@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ApiService } from '@core/data-access/api.service';
 import { AuthUser } from '@auth';
+import { Resources } from '@app/resources';
 
 @Component({
   selector: 'user-avatar-popover',
@@ -22,6 +23,8 @@ export class UserAvatarPopoverComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  protected readonly Resources = Resources;
 
   loadUser() {
     if (!this.user) {

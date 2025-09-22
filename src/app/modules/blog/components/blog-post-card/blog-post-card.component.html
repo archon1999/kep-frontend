@@ -27,7 +27,7 @@
       </div>
     </div>
     <a
-      [routerLink]="['/learn', 'blog', 'post', blog.id]"
+      [routerLink]="Resources.BlogPost | resourceById:blog.id"
       class="fw-medium fs-14 text-dark mb-1">
       {{ blog.title }}
     </a>
@@ -35,7 +35,7 @@
       {{ blog.bodyShort }}
     </p>
     <a
-      [routerLink]="['/learn', 'blog', 'post', blog.id]"
+      [routerLink]="Resources.BlogPost | resourceById:blog.id"
       class="text-primary fs-14 float-end">
       {{ 'View' | translate }}
       <i class="ri-arrow-right-s-line d-inline-block rtl-icon-transform align-middle"></i>

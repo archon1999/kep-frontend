@@ -28,7 +28,7 @@
           <tr>
             <td class="text-center text-dark">
               <i [data-feather]="'contest' | iconName" [size]="20"></i>
-              <a [routerLink]="['/competitions', 'contests', 'contest', contest.id]">
+              <a [routerLink]="Resources.Contest | resourceById:contest.id">
                 {{ contest.title }}
               </a>
               <br>
@@ -71,7 +71,7 @@
                 <div>
                   <!-- <contest-standings-popover [contest]="contest"></contest-standings-popover> -->
                   <a class="btn btn-sm round"
-                     [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'standings']">
+                     [routerLink]="Resources.ContestStandings | resourceById:contest.id">
                     {{ 'Contests.Standings' | translate }}
                   </a>
                   <br>
