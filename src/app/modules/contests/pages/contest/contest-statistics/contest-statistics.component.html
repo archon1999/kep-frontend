@@ -64,11 +64,7 @@
               <h4 class="card-title mb-0">{{ 'Contests.VerdictDistribution' | translate }}</h4>
             </div>
             <div class="card-body">
-              @if (verdictChart?.series?.some(value => value > 0)) {
-                <apex-chart [options]="verdictChart"></apex-chart>
-              } @else {
-                <div class="text-center text-muted py-2">{{ 'Contests.NotAvailable' | translate }}</div>
-              }
+              <apex-chart [options]="verdictChart"></apex-chart>
             </div>
             <div class="card-footer bg-transparent border-top">
               <div class="d-flex flex-column gap-1">
