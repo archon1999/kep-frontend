@@ -7,6 +7,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DuelReadyStatusWidgetComponent } from '@duels/ui/widgets/duel-ready-status-widget/duel-ready-status-widget.component';
 import { DuelReadyPlayersWidgetComponent } from '@duels/ui/widgets/duel-ready-players-widget/duel-ready-players-widget.component';
 import { DuelsListWidgetComponent } from '@duels/ui/widgets/duels-list-widget/duels-list-widget.component';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'page-duels',
@@ -20,12 +21,14 @@ import { DuelsListWidgetComponent } from '@duels/ui/widgets/duels-list-widget/du
     DuelReadyStatusWidgetComponent,
     DuelReadyPlayersWidgetComponent,
     DuelsListWidgetComponent,
+    NgbNavModule,
   ]
 })
 export class DuelsPage extends BasePageComponent {
   readyPlayersRefreshKey = 0;
   myDuelsRefreshKey = 0;
   allDuelsRefreshKey = 0;
+  activeTab: 'my' | 'ready' | 'all' = 'my';
 
   override afterChangeCurrentUser(): void {
     this.triggerListsReload();
