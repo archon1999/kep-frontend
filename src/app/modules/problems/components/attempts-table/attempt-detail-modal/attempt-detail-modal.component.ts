@@ -55,7 +55,7 @@ export class AttemptDetailModalComponent {
     return (
       !!this.errorMessage &&
       (this.attempt.verdict === Verdicts.CompilationError ||
-        this.attempt.verdict === Verdicts.RuntimeError)
+        this.attempt.verdict === Verdicts.SyntaxError)
     );
   }
 
