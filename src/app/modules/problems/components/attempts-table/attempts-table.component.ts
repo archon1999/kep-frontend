@@ -7,17 +7,17 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  TemplateRef,
   ViewChild
 } from '@angular/core';
 import { Attempt, WSAttempt } from '../../models/attempts.models';
-import { AttemptLangs, Verdicts } from '../../constants';
+import { Verdicts } from '../../constants';
 import { ProblemsApiService } from '../../services/problems-api.service';
 import { SoundsService } from 'app/shared/services/sounds/sounds.service';
-import { FormControl, FormGroup } from '@angular/forms';
 import { BaseComponent } from '@core/common/classes/base.component';
 import { Contest } from '@contests/models/contest';
 import { WebsocketService } from '@shared/services/websocket';
+import { AttemptDetailModalComponent } from './attempt-detail-modal/attempt-detail-modal.component';
+import { take } from 'rxjs/operators';
 
 const LANG_CHANGE_EVENT = 'lang-change';
 const ATTEMPT_ADD_EVENT = 'attempt-add';
@@ -38,34 +38,10 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
   @Output() hackSubmitted = new EventEmitter<null>;
   @Output() checkFinished = new EventEmitter<Attempt>;
 
-  public selectedAttempt: Attempt | null;
-  public editorOptions = {
-    language: 'python',
-    theme: 'vs-light',
-    readOnly: true,
-  };
-
-  @ViewChild('modal') public modalRef: TemplateRef<any>;
   @ViewChild('successAudio') successAudio: ElementRef;
   @ViewChild('wrongAudio') wrongAudio: ElementRef;
 
-  public hackForm = new FormGroup({
-    input: new FormControl(''),
-    generatorSource: new FormControl(''),
-    generatorLang: new FormControl('py'),
-  });
   public successSoundName = this.soundsService.getSuccessSound();
-  public hackAvailableLanguages = [
-    AttemptLangs.PYTHON,
-    AttemptLangs.CPP,
-    AttemptLangs.C,
-    AttemptLangs.JAVA,
-    AttemptLangs.JS,
-    AttemptLangs.KOTLIN,
-    AttemptLangs.RUST,
-    AttemptLangs.HASKELL,
-    AttemptLangs.R,
-  ];
 
   public trigger = true;
   public lastUpdatedAttempt: Attempt;
@@ -133,22 +109,18 @@ export class AttemptsTableComponent extends BaseComponent implements OnInit, OnD
   openModal(attemptId: number) {
     this.service.getAttempt(attemptId).subscribe(
       (attempt: Attempt) => {
-        this.selectedAttempt = attempt;
-        this.editorOptions.language = this.selectedAttempt.getEditorLang();
-        this.modalService.open(this.modalRef, {
+        const modalRef = this.modalService.open(AttemptDetailModalComponent, {
           centered: true,
           animation: null,
           size: 'xl',
         });
-      }
-    );
-  }
-
-  hackSubmit(attemptId: number | string) {
-    this.service.hackSubmit(attemptId, this.hackForm.value).subscribe(
-      () => {
-        this.modalService.dismissAll();
-        this.hackSubmitted.next(null);
+        modalRef.componentInstance.attempt = attempt;
+        modalRef.componentInstance.contest = this.contest;
+        modalRef.componentInstance.hideSourceCodeSize = this.hideSourceCodeSize;
+        modalRef.componentInstance.hackEnabled = this.hackEnabled;
+        modalRef.componentInstance.hackSubmitted.pipe(take(1)).subscribe(() => {
+          this.hackSubmitted.next(null);
+        });
       }
     );
   }

@@ -119,6 +119,7 @@ export const localeRu = {
   UsersUnsolved: 'Не решили',
   Languages: 'Языки',
   Attempt: 'Попытка',
+  AttemptErrorMessage: 'Сообщение об ошибке',
   SelectedLanguage: 'Выбранный язык',
   View: 'Посмотреть',
   User: 'Пользователь',

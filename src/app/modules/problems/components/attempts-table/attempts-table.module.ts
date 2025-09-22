@@ -20,11 +20,13 @@ import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { ResourceByParamsPipe } from '@shared/pipes/resource-by-params.pipe';
 import { AttemptLanguageComponent } from '@shared/components/attempt-language/attempt-language.component';
 import { AttemptVerdictComponent } from '@shared/components/attempt-verdict/attempt-verdict.component';
+import { AttemptDetailModalComponent } from './attempt-detail-modal/attempt-detail-modal.component';
 
 @NgModule({
   declarations: [
     AttemptsTableComponent,
-    TableComponent
+    TableComponent,
+    AttemptDetailModalComponent
   ],
   imports: [
     CommonModule,

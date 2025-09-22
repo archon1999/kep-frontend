@@ -115,6 +115,7 @@ export const localeUz = {
   UsersUnsolved: 'Ishlamagan',
   Languages: 'Tillar',
   Attempt: 'Urinishlar',
+  AttemptErrorMessage: 'Xato xabari',
   SelectedLanguage: 'Tanlangan til',
   View: 'Koʻrish',
   User: 'Foydalanuvchi',
