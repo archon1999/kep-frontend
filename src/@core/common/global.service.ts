@@ -12,6 +12,7 @@ export class GlobalService {
   protected _unsubscribeAll = new Subject();
   protected _queryParams: any;
   protected _lastUrl: string;
+  protected _currentUrl: string;
 
   private _queryParamsSubject = new ReplaySubject<Params>(1);
   private _currentUserSubject = new ReplaySubject<AuthUser | null>(1);
@@ -44,7 +45,8 @@ export class GlobalService {
     this.router.events.subscribe(
       (event) => {
         if (event instanceof NavigationEnd) {
-          this._lastUrl = event.url;
+          this._lastUrl = this._currentUrl;
+          this._currentUrl = event.url;
         }
       }
     );

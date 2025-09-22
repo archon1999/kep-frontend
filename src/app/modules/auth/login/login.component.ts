@@ -28,15 +28,13 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
   constructor() {
     super();
-    const queryReturnUrl = this.route.snapshot.queryParams['returnUrl'];
-    const initialReturnUrl = queryReturnUrl ?? this.getLastUrl();
-    this.returnUrl = this.normalizeReturnUrl(initialReturnUrl);
+    this.returnUrl = this.normalizeReturnUrl(this.getLastUrl());
   }
 
   ngOnInit(): void {
     const queryReturnUrl = this.route.snapshot.queryParams['returnUrl'];
     if (queryReturnUrl) {
-      this.returnUrl = this.normalizeReturnUrl(queryReturnUrl);
+      this.returnUrl = this.normalizeReturnUrl(queryReturnUrl) ?? '/';
     }
   }
 
@@ -46,8 +44,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
   public getSocialLoginUrl(provider: 'google-oauth2' | 'github'): string {
     const normalizedProvider = provider.endsWith('/') ? provider : `${provider}/`;
-    const nextRoute = encodeURIComponent(this.returnUrl);
-    return `/login/${normalizedProvider}?next=${nextRoute}`;
+    return `/login/${normalizedProvider}?next=${this.returnUrl}`;
   }
 
   onSubmit() {
@@ -89,7 +86,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
     }
 
     try {
-      const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'http://localhost';
+      const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'http://kep.uz';
       const parsedUrl = new URL(sanitizedUrl, baseUrl);
       sanitizedUrl = `${parsedUrl.pathname}${parsedUrl.search}${parsedUrl.hash}`;
     } catch (e) {
