@@ -9,7 +9,7 @@ export default [
     },
   },
   {
-    path: 'duels-rating',
+    path: 'rating',
     loadComponent: () => import('./ui/pages/duels-rating/duels-rating.page').then(c => c.DuelsRatingPage),
     data: {
       title: 'Duels.DuelsRating',

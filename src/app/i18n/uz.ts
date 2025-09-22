@@ -152,7 +152,7 @@ export const localeUz = {
   Registration: 'Roʻyhatdan oʻtish',
   Registrated: 'Roʻyhatdan oʻtilgan',
   Pefomance: 'Perfomans',
-  Wins: 'gʻalabalar',
+  Wins: 'Gʻalabalar',
   Draws: 'Durranglar',
   Losses: 'Magʻlubiyatlar',
   TournamentFinish: 'Turnir yakunlandi',

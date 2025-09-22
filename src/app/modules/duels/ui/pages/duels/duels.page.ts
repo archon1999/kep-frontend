@@ -7,11 +7,15 @@ import { DuelsApiService } from '@duels/data-access';
 import { Duel, DuelPreset, DuelReadyPlayer } from '@duels/domain';
 import { PageResult } from '@core/common/classes/page-result';
 import { finalize, takeUntil } from 'rxjs/operators';
-import { NgbModal, NgbModalModule, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalModule, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, Validators } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { DuelReadyStatusCardComponent } from '@duels/ui/components/duel-ready-status-card/duel-ready-status-card.component';
-import { DuelReadyPlayersSectionComponent } from '@duels/ui/components/duel-ready-players-section/duel-ready-players-section.component';
+import {
+  DuelReadyStatusCardComponent
+} from '@duels/ui/components/duel-ready-status-card/duel-ready-status-card.component';
+import {
+  DuelReadyPlayersSectionComponent
+} from '@duels/ui/components/duel-ready-players-section/duel-ready-players-section.component';
 import { DuelsListSectionComponent } from '@duels/ui/components/duels-list-section/duels-list-section.component';
 import { DuelPresetModalComponent } from '@duels/ui/components/duel-preset-modal/duel-preset-modal.component';
 
@@ -51,7 +55,6 @@ export class DuelsPage extends BasePageComponent implements OnInit {
   confirmLoadingId: number | null = null;
   protected readonly duelsApi = inject(DuelsApiService);
   private fb = inject(FormBuilder);
-  private modalService = inject(NgbModal);
   duelForm = this.fb.group({
     presetId: [null as number | null, Validators.required],
     startTime: ['', Validators.required],
@@ -225,6 +228,7 @@ export class DuelsPage extends BasePageComponent implements OnInit {
     component.presets = this.duelPresets;
     component.loading = this.duelPresetsLoading;
     component.minDate = this.minStartTime;
+    this.cdr.detectChanges();
 
     const createSubscription = component.create.subscribe(() => this.createDuel());
 
@@ -246,7 +250,7 @@ export class DuelsPage extends BasePageComponent implements OnInit {
             modalComponent.presets = this.duelPresets;
             modalComponent.loading = this.duelPresetsLoading;
           }
-          this.cdr.markForCheck();
+          this.cdr.detectChanges();
         },
         error: () => {
           this.duelPresets = [];
@@ -256,7 +260,7 @@ export class DuelsPage extends BasePageComponent implements OnInit {
             modalComponent.presets = this.duelPresets;
             modalComponent.loading = this.duelPresetsLoading;
           }
-          this.cdr.markForCheck();
+          this.cdr.detectChanges();
         },
       });
   }

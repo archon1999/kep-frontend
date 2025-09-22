@@ -70,7 +70,6 @@ export const appConfig: ApplicationConfig = {
       closeButton: true,
     }),
     provideAppInitializer(() => inject(AuthService).getMe()),
-    provideAppInitializer(() => inject(FlatpickrI18nService)),
     { provide: APP_BASE_HREF, useValue: '/' },
     {
       provide: TitleStrategy,

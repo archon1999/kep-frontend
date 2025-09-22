@@ -15,24 +15,25 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./duel-preset-modal.component.scss'],
 })
 export class DuelPresetModalComponent {
-  private _form: FormGroup | null = null;
-
-  @Input()
-  set form(value: FormGroup | null) {
-    this._form = value;
-  }
-
-  get form(): FormGroup | null {
-    return this._form;
-  }
-
   @Input() opponent: DuelReadyPlayer | null = null;
   @Input() presets: DuelPreset[] = [];
   @Input() loading = false;
   @Input() minDate: string | Date | null = null;
   @Output() create = new EventEmitter<void>();
 
-  constructor(private readonly activeModal: NgbActiveModal) {}
+  constructor(private readonly activeModal: NgbActiveModal) {
+  }
+
+  private _form: FormGroup | null = null;
+
+  get form(): FormGroup | null {
+    return this._form;
+  }
+
+  @Input()
+  set form(value: FormGroup | null) {
+    this._form = value;
+  }
 
   get presetControl() {
     return this.form?.get('presetId');
