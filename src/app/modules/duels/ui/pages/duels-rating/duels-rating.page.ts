@@ -6,12 +6,12 @@ import { DuelsRating } from '@duels/domain';
 import { DuelsApiService } from '@duels/data-access';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
-import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
 import { UserPopoverModule } from '@shared/components/user-popover/user-popover.module';
 import { ResourceByUsernamePipe } from '@shared/pipes/resource-by-username.pipe';
 import { Resources } from '@app/resources';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
   selector: 'page-duels-rating',
@@ -21,7 +21,7 @@ import { Resources } from '@app/resources';
   imports: [
     CoreCommonModule,
     ContentHeaderModule,
-    KepTableComponent,
+    KepCardComponent,
     KepPaginationComponent,
     TableOrderingModule,
     UserPopoverModule,
