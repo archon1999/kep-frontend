@@ -92,18 +92,18 @@
                       </div>
                     </user-popover>
                   </div>
-                  <div class="d-flex flex-wrap gap-2">
-                    <div class="badge bg-success-transparent text-success d-inline-flex align-items-center gap-2 px-3 py-2">
-                      <span class="fw-semibold">{{ duelsRating.wins }}</span>
-                      <span class="text-uppercase small">{{ 'Wins' | translate }}</span>
+                  <div class="d-flex gap-2 fs-6">
+                    <div class="text-success">
+                      {{ duelsRating.wins }}
+                      <span [ngbTooltip]="'Wins' | translate">W</span>
                     </div>
-                    <div class="badge bg-secondary-transparent text-body d-inline-flex align-items-center gap-2 px-3 py-2">
-                      <span class="fw-semibold">{{ duelsRating.draws }}</span>
-                      <span class="text-uppercase small">{{ 'Draws' | translate }}</span>
+                    <div class="text-info">
+                      {{ duelsRating.draws }}
+                      <span [ngbTooltip]="'Draws' | translate">D</span>
                     </div>
-                    <div class="badge bg-danger-transparent text-danger d-inline-flex align-items-center gap-2 px-3 py-2">
-                      <span class="fw-semibold">{{ duelsRating.losses }}</span>
-                      <span class="text-uppercase small">{{ 'Losses' | translate }}</span>
+                    <div class="text-danger">
+                      {{ duelsRating.losses }}
+                      <span [ngbTooltip]="'Losses' | translate">L</span>
                     </div>
                   </div>
                 </div>

@@ -12,6 +12,7 @@ import { UserPopoverModule } from '@shared/components/user-popover/user-popover.
 import { ResourceByUsernamePipe } from '@shared/pipes/resource-by-username.pipe';
 import { Resources } from '@app/resources';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { NgbTooltip } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'page-duels-rating',
@@ -26,10 +27,12 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
     TableOrderingModule,
     UserPopoverModule,
     ResourceByUsernamePipe,
+    NgbTooltip,
   ]
 })
 export class DuelsRatingPage extends BaseTablePageComponent<DuelsRating> implements OnInit {
-  override defaultPageSize = 20;
+  override defaultPageSize = 12;
+  override pageOptions = [6, 9, 12, 24];
   override maxSize = 5;
 
   override defaultOrdering = '-wins';
