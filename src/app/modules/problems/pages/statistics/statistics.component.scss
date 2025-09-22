@@ -1,0 +1,20 @@
+:host {
+  .problems-statistics {
+    display: flex;
+    flex-direction: column;
+
+    > .row + .row {
+      margin-top: 1.5rem;
+    }
+
+    .row .row {
+      margin-top: 0;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    .problems-statistics > .row + .row {
+      margin-top: 1.25rem;
+    }
+  }
+}

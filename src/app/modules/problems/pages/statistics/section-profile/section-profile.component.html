@@ -1,109 +1,135 @@
-<div class="card">
+<kep-card [customClass]="'profile-card h-100'">
   <div class="card-body">
-    <div class="section-profile text-center">
-      <div class="avatar p-50 bg-primary">
-        <div class="avatar-content">
-          <i [data-feather]="'problem' | iconName" [size]="20"></i>
+    <div class="profile-card__hero">
+      <div class="profile-card__hero-main">
+        <div class="profile-card__avatar">
+          <i [data-feather]="'problem' | iconName"></i>
+        </div>
+
+        <div class="profile-card__hero-text">
+          <h5 class="profile-card__heading">{{ 'Problems' | translate }}</h5>
+          <p class="profile-card__subtitle">
+            {{ general.solved | number }} {{ 'Solved' | translate }}
+          </p>
+          <a
+            [routerLink]="[Resources.Attempts, username]"
+            class="btn btn-outline-light btn-sm profile-card__attempts"
+          >
+            {{ 'Attempts' | translate }}
+          </a>
         </div>
       </div>
-      <div class="font-medium-5 mt-1">
-        {{ 'Problems' | translate }}
-        <br>
-        <a
-          [routerLink]="[Resources.Attempts, username]"
-          class="btn btn-outline-primary btn-sm mt-1 attempts-link">
-          {{ 'Attempts' | translate }}
-        </a>
-        <div class="font-medium-4 mt-2">
-          <span ngbTooltip="{{ 'Solved' | translate }}">
+
+      <div class="profile-card__metrics">
+        <div class="profile-card__metric" ngbTooltip="{{ 'Solved' | translate }}">
+          <div class="profile-card__metric-icon">
             <i data-feather="check-circle"></i>
-            {{ general.solved }}
-          </span>
+          </div>
+          <div>
+            <div class="profile-card__metric-value">{{ general.solved | number }}</div>
+            <div class="profile-card__metric-label">{{ 'Solved' | translate }}</div>
+          </div>
+        </div>
 
-          <span ngbTooltip="{{ 'Rating' | translate }}">
-            <i [data-feather]="'rating' | iconName" class="ms-1"></i>
-            {{ general.rating }}
-          </span>
+        <div class="profile-card__metric" ngbTooltip="{{ 'Rating' | translate }}">
+          <div class="profile-card__metric-icon">
+            <i data-feather="trending-up"></i>
+          </div>
+          <div>
+            <div class="profile-card__metric-value">{{ general.rating | number }}</div>
+            <div class="profile-card__metric-label">{{ 'Rating' | translate }}</div>
+          </div>
+        </div>
+
+        <div class="profile-card__metric" ngbTooltip="{{ 'Rank' | translate }}">
+          <div class="profile-card__metric-icon">
+            <i data-feather="award"></i>
+          </div>
+          <div>
+            <div class="profile-card__metric-value">#{{ general.rank | number }}</div>
+            <div class="profile-card__metric-label">{{ 'Rank' | translate }}</div>
+            <div class="profile-card__metric-note">
+              {{ general.usersCount | number }} {{ 'Users' | translate }}
+            </div>
+          </div>
         </div>
       </div>
-
-      <div class="font-medium-4 mt-1">
-        <span ngbTooltip="{{ 'Rank' | translate }}">
-          <i [data-feather]="'users'" class="ms-1"></i>
-          <span class="font-medium-3">
-            {{ general.rank }}({{ general.usersCount }})
-          </span>
-        </span>
-      </div>
     </div>
 
-    <hr>
+    <div class="profile-card__content">
+      @if (langs.length) {
+        <div class="profile-card__section profile-card__section--languages">
+          <div class="profile-card__section-header">
+            <span class="profile-card__section-title">{{ 'Languages' | translate }}</span>
+          </div>
 
-    <div class="section-languages">
-      <div class="title">
-        {{ 'Languages' | translate }}
-      </div>
+          <div class="profile-card__language-list">
+            @for (data of langs; track data.lang) {
+              <div class="profile-card__language">
+                <div class="profile-card__language-header">
+                  <span class="profile-card__language-name">{{ data.langFull }}</span>
+                  <span class="profile-card__language-count">x{{ data.solved }}</span>
+                </div>
+                <div class="profile-card__progress">
+                  <div
+                    class="profile-card__progress-bar"
+                    [style.width.%]="getShare(data.solved, langMaxSolved)"
+                  ></div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
 
-      <div class="languages">
-        @for (data of langs; track data) {
-          <div class="d-flex language justify-content-between">
-            <div class="lang">
-              <span class="badge badge-{{ data.lang }}">
-                {{ data.langFull }}
+      @if (tags.length) {
+        <div class="profile-card__section profile-card__section--tags">
+          <div class="profile-card__section-header">
+            <span class="profile-card__section-title">{{ 'Tags' | translate }}</span>
+          </div>
+
+          <div class="profile-card__tag-cloud">
+            @for (tag of tags; track tag.name) {
+              <span class="profile-card__tag">
+                <span class="badge bg-light-primary text-primary">{{ tag.name }}</span>
+                <span class="profile-card__tag-count">x{{ tag.value }}</span>
               </span>
-            </div>
-            <div class="result">
-              <strong>x{{ data.solved }}</strong>
-            </div>
+            }
           </div>
-        }
-      </div>
-    </div>
+        </div>
+      }
 
-    <hr>
-
-    <div class="section-tags">
-      <div class="title">
-        {{ 'Tags' | translate }}
-      </div>
-
-      <div class="tags">
-        @for (tag of tags; track tag) {
-          <div class="tag">
-            <span class="badge badge-pill bg-primary">
-              {{ tag.name }}
-            </span>
-            x{{ tag.value }}
+      @if (topics.length) {
+        <div class="profile-card__section profile-card__section--topics">
+          <div class="profile-card__section-header">
+            <span class="profile-card__section-title">{{ 'Topics' | translate }}</span>
           </div>
-        }
-      </div>
-    </div>
 
-    <hr>
-
-    <div class="section-topics">
-      <div class="title">
-        {{ 'Topics' | translate }}
-      </div>
-
-      <div class="topics">
-        @for (topic of topics; track topic) {
-          <div class="topic d-flex justify-content-between">
-            <div class="d-flex topic-info justify-content-start">
-              <div class="topic-icon">
-                <kep-icon [name]="topic.icon"></kep-icon>
+          <div class="profile-card__topic-list">
+            @for (topic of topics; track topic.id) {
+              <div class="profile-card__topic">
+                <div class="profile-card__topic-info">
+                  <div class="profile-card__topic-icon">
+                    <kep-icon [name]="topic.icon"></kep-icon>
+                  </div>
+                  <div>
+                    <div class="profile-card__topic-name">{{ topic.topic }}</div>
+                    <div class="profile-card__topic-solved">
+                      {{ topic.solved | number }} {{ 'Problems' | translate }}
+                    </div>
+                  </div>
+                </div>
+                <div class="profile-card__progress profile-card__progress--topic">
+                  <div
+                    class="profile-card__progress-bar"
+                    [style.width.%]="getShare(topic.solved, topicMaxSolved)"
+                  ></div>
+                </div>
               </div>
-              <div class="topic-title">
-                {{ topic.topic }}
-              </div>
-            </div>
-            <div class="solved">
-              x{{ topic.solved }}
-            </div>
+            }
           </div>
-        }
-      </div>
+        </div>
+      }
     </div>
-
   </div>
-</div>
+</kep-card>
