@@ -1,48 +1,47 @@
-<kep-card>
-  @if (isLoading) {
-    <div [style.height.px]="200">
-      <spinner></spinner>
-    </div>
-  } @else {
-    <div class="card-header">
-      <div class="card-title">
-        {{ 'Activity' | translate }}
+<kep-card customClass="statistics-activity">
+  <div class="statistics-activity__header">
+    <div class="statistics-activity__title">
+      <div class="statistics-activity__icon">
+        <kep-icon name="activity"></kep-icon>
       </div>
-      <div role="group" aria-label="Basic radio toggle button group" class="btn-group">
-        <input [(ngModel)]="activityDays" (click)="activityDataUpdate(7)"  [value]="7" type="radio" name="btnradio" id="btnradio1" checked="" class="btn-check">
-        <label for="btnradio1" class="btn btn-outline-primary">7</label>
-        <input [(ngModel)]="activityDays" (click)="activityDataUpdate(14)"  [value]="14" type="radio" name="btnradio" id="btnradio2" class="btn-check">
-        <label for="btnradio2" class="btn btn-outline-primary">14</label>
-        <input [(ngModel)]="activityDays" (click)="activityDataUpdate(30)"  [value]="30" type="radio" name="btnradio" id="btnradio3" class="btn-check">
-        <label for="btnradio3" class="btn btn-outline-primary">30</label>
+      <div>
+        <div class="statistics-activity__label">{{ 'RecentActivity' | translate }}</div>
+        <div class="statistics-activity__sub">{{ 'Problems' | translate }}</div>
       </div>
     </div>
+    @if (daysOptions?.length) {
+      <div class="statistics-activity__filters">
+        @for (day of daysOptions; track day) {
+          <button
+            type="button"
+            class="btn btn-sm"
+            [class.btn-primary]="day === selectedDays"
+            [class.btn-outline-primary]="day !== selectedDays"
+            (click)="onSelectDays(day)"
+          >
+            {{ day }}
+          </button>
+        }
+      </div>
+    }
+  </div>
 
-    <div class="card-body">
-      <div class="mt-2">
-        <div class="row">
-          <div [ngClass]="{
-          'col-6': activitySolved > 0,
-          'col-12': activitySolved == 0
-        }">
-            <div class="text-center">
-              <div class="avatar bg-primary-transparent p-50 m-0 mb-1">
-                <div class="avatar-content">
-                  <kep-icon class="font-medium-3" name="check-circle"></kep-icon>
-                </div>
-              </div>
-              <h2 class="text-dark">{{ activitySolved }}</h2>
-              <p class="font-medium-1 mb-2">{{ 'Problems' | translate }}</p>
-            </div>
-          </div>
-
-          <div class="col-6">
-            @if (activityChart && activitySolved > 0) {
-              <apex-chart [options]="activityChart"/>
-            }
-          </div>
-        </div>
+  <div class="statistics-activity__body">
+    @if (isLoading) {
+      <div class="statistics-activity__loading">
+        <spinner></spinner>
       </div>
-    </div>
-  }
+    } @else {
+      <div class="statistics-activity__overview">
+        <div class="statistics-activity__count">{{ activitySolved }}</div>
+        <div class="statistics-activity__hint">{{ 'Solved' | translate }}</div>
+      </div>
+      <div class="statistics-activity__chart" *ngIf="activityChart && hasActivity">
+        <apex-chart [options]="activityChart"></apex-chart>
+      </div>
+      @if (!hasActivity) {
+        <div class="statistics-activity__empty">{{ 'NoActivity' | translate }}</div>
+      }
+    }
+  </div>
 </kep-card>

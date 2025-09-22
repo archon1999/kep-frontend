@@ -1,0 +1,99 @@
+.problems-statistics {
+  padding: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: 1.75rem;
+  }
+
+  &__subtitle {
+    color: var(--bs-secondary-color);
+    margin-bottom: 0;
+  }
+
+  &__loading,
+  &__error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 320px;
+    gap: 0.75rem;
+    color: var(--bs-secondary-color);
+  }
+
+  &__overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  &__overview-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: 1.25rem;
+    background: rgba(115, 103, 240, 0.08);
+  }
+
+  &__overview-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 1rem;
+    background: rgba(115, 103, 240, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bs-primary);
+  }
+
+  &__overview-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__overview-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  &__overview-value {
+    font-weight: 700;
+    font-size: 1.75rem;
+  }
+
+  &__overview-description {
+    color: var(--bs-secondary-color);
+    font-size: 0.85rem;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: minmax(280px, 360px) 1fr;
+    gap: 1.5rem;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 1200px) {
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}

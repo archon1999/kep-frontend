@@ -1,9 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { CoreCommonModule } from '@core/common.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { HeatmapEntry } from '@problems/models/statistics.models';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'section-heatmap',
@@ -13,84 +15,102 @@ import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-option
   imports: [
     CoreCommonModule,
     ApexChartModule,
+    KepCardComponent,
+    SpinnerComponent,
   ]
 })
-export class SectionHeatmapComponent implements OnInit {
+export class SectionHeatmapComponent implements OnChanges {
 
-  @Input() username: string;
-  @Input() chartTheme: string;
+  @Input() heatmap: HeatmapEntry[] = [];
+  @Input() availableYears: number[] = [];
+  @Input() selectedYear: number | null = null;
+  @Input() isLoading = false;
+  @Output() yearChange = new EventEmitter<number>();
 
-  public heatmap: Array<any>;
-  public heatmapYear = 0;
-  public heatmapChart: ChartOptions;
+  public heatmapChart: ChartOptions | null = null;
+  public hasData = false;
 
   constructor(
-    public statisticsService: ProblemsStatisticsService,
-    public translateService: TranslateService,
+    private translateService: TranslateService,
   ) { }
 
-  ngOnInit(): void {
-    this.heatmapUpdate(0);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['heatmap']) {
+      this.buildHeatmap();
+    }
   }
 
-  heatmapUpdate(year: number) {
-    this.heatmapYear = year;
-    const username = this.username;
-    this.statisticsService.getHeatmap(username, this.heatmapYear).subscribe((result: any) => {
-      const series = [{
-        name: this.translateService.instant('Monday'),
-        data: [],
-      }, {
-        name: this.translateService.instant('Tuesday'),
-        data: [],
-      }, {
-        name: this.translateService.instant('Wednesday'),
-        data: [],
-      }, {
-        name: this.translateService.instant('Thursday'),
-        data: [],
-      }, {
-        name: this.translateService.instant('Friday'),
-        data: [],
-      }, {
-        name: this.translateService.instant('Saturday'),
-        data: [],
-      }, {
-        name: this.translateService.instant('Sunday'),
-        data: [],
-      }];
-      for (const data of result) {
-        const date = new Date(data.date);
-        const weekday = date.getDay();
-        series[weekday].data.push({
-          x: date,
-          y: data.solved,
-        });
-      }
-      this.heatmapChart = {
-        series: series,
-        chart: {
-          height: 350,
-          type: 'heatmap',
+  onSelectYear(year: number) {
+    if (year !== this.selectedYear) {
+      this.yearChange.emit(year);
+    }
+  }
+
+  private buildHeatmap() {
+    if (!this.heatmap || this.heatmap.length === 0) {
+      this.hasData = false;
+      this.heatmapChart = null;
+      return;
+    }
+
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    const series = days.map((day) => ({
+      name: this.translateService.instant(day),
+      data: [] as Array<{ x: Date; y: number }>,
+    }));
+
+    for (const data of this.heatmap) {
+      const date = new Date(data.date);
+      const weekday = (date.getDay() + 6) % 7; // convert Sunday(0) -> 6
+      series[weekday].data.push({
+        x: date,
+        y: data.solved,
+      });
+    }
+
+    this.heatmapChart = {
+      series,
+      chart: {
+        height: 320,
+        type: 'heatmap',
+        toolbar: { show: false },
+      },
+      dataLabels: { enabled: false },
+      plotOptions: {
+        heatmap: {
+          shadeIntensity: 0.5,
+          colorScale: {
+            ranges: [
+              { from: 0, to: 0, color: '#f4f5fa' },
+              { from: 1, to: 3, color: '#c7d2fe' },
+              { from: 4, to: 7, color: '#a5b4fc' },
+              { from: 8, to: 12, color: '#818cf8' },
+              { from: 13, to: 999, color: '#4f46e5' },
+            ],
+          },
         },
-        dataLabels: {
-          enabled: false
+      },
+      xaxis: {
+        type: 'datetime',
+        labels: {
+          format: 'MMM',
         },
-        stroke: {
-          width: 1
-        },
-        xaxis: {
-          type: 'datetime',
-          labels: {
-            format: 'MMM',
-          }
-        },
-        yaxis: {
+      },
+      yaxis: {
+        labels: {
           show: false,
-        }
-      };
-      this.heatmap = result;
-    });
-  }
+        },
+      },
+      stroke: {
+        width: 2,
+      },
+      tooltip: {
+        y: {
+          formatter: (val: number) => `${val} ${this.translateService.instant('Solved')}`,
+        },
+      },
+    };
 
+    this.hasData = true;
+  }
 }

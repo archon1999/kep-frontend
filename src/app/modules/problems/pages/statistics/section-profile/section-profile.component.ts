@@ -1,29 +1,25 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AuthService } from '@auth';
-import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { GeneralInfo } from '@problems/models/statistics.models';
+import {
+  Facts,
+  GeneralInfo,
+  LangInfo,
+  TagInfo,
+  TopicInfo
+} from '@problems/models/statistics.models';
 import { getCategoryIcon } from '@problems/utils/category';
-import { Resources } from "@app/resources";
+import { Resources } from '@app/resources';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { RouterLink } from '@angular/router';
 
-interface LangInfo {
-  lang: string;
-  langFull: string;
-  solved: number;
-}
-
-interface TagInfo {
-  name: string;
-  value: number;
-}
-
-interface TopicInfo {
-  topic: string;
-  solved: number;
-  code: string;
-  id: number;
+interface TopicView extends TopicInfo {
   icon: string;
+}
+
+interface LangView extends LangInfo {
+  share: number;
 }
 
 @Component({
@@ -34,58 +30,68 @@ interface TopicInfo {
   imports: [
     CoreCommonModule,
     NgbTooltipModule,
+    KepCardComponent,
+    KepIconComponent,
+    RouterLink,
   ]
 })
-export class SectionProfileComponent implements OnInit {
+export class SectionProfileComponent implements OnChanges {
 
   @Input() username: string;
+  @Input() general: GeneralInfo | null = null;
+  @Input() langs: LangInfo[] = [];
+  @Input() tags: TagInfo[] = [];
+  @Input() topics: TopicInfo[] = [];
+  @Input() facts: Facts | null = null;
 
   public readonly Resources = Resources;
 
-  public general: GeneralInfo = {
-    solved: 0,
-    rating: 0,
-    rank: 0,
-    usersCount: 0,
-  };
+  public languages: LangView[] = [];
+  public topicsView: TopicView[] = [];
+  public tagsView: TagInfo[] = [];
+  public singleAttemptSolved = 0;
+  public singleAttemptPercentage = 0;
 
-  public langs: Array<LangInfo> = [];
-  public tags: Array<TagInfo> = [];
-  public topics: Array<TopicInfo> = [];
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['langs'] || changes['general']) {
+      this.buildLanguages();
+    }
 
-  constructor(
-    public authService: AuthService,
-    public statisticsService: ProblemsStatisticsService,
-  ) {
+    if (changes['topics']) {
+      this.buildTopics();
+    }
+
+    if (changes['tags']) {
+      this.buildTags();
+    }
+
+    if (changes['facts']) {
+      this.singleAttemptSolved = this.facts?.solvedWithSingleAttempt ?? 0;
+      this.singleAttemptPercentage = this.facts?.solvedWithSingleAttemptPercentage ?? 0;
+    }
   }
 
-  ngOnInit(): void {
-    this.statisticsService.getGeneral(this.username).subscribe(
-      (general: GeneralInfo) => {
-        this.general = general;
-      }
-    );
-
-    this.statisticsService.getByLang(this.username).subscribe(
-      (langs: Array<LangInfo>) => {
-        this.langs = langs.sort((a, b) => b.solved - a.solved);
-      }
-    );
-
-    this.statisticsService.getByTag(this.username).subscribe(
-      (tags: Array<TagInfo>) => {
-        this.tags = tags.sort((a, b) => b.value - a.value);
-      }
-    );
-
-    this.statisticsService.getByTopic(this.username).subscribe(
-      (topics: Array<TopicInfo>) => {
-        this.topics = topics.map((topic) => {
-          topic.icon = getCategoryIcon(topic.id);
-          return topic;
-        });
-      }
-    );
+  private buildLanguages() {
+    const totalSolved = this.general?.solved ?? 0;
+    const sorted = [...(this.langs || [])].sort((a, b) => b.solved - a.solved);
+    this.languages = sorted.map((lang) => ({
+      ...lang,
+      share: totalSolved ? Math.round((lang.solved / totalSolved) * 100) : 0,
+    }));
   }
 
+  private buildTopics() {
+    this.topicsView = (this.topics || [])
+      .map((topic) => ({
+        ...topic,
+        icon: getCategoryIcon(topic.id),
+      }))
+      .sort((a, b) => b.solved - a.solved);
+  }
+
+  private buildTags() {
+    this.tagsView = [...(this.tags || [])]
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 24);
+  }
 }

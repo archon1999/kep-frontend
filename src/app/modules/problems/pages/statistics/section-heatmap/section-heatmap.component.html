@@ -1,42 +1,35 @@
-<div class="card heatmap">
-  <div
-    class="card-header d-flex flex-sm-row flex-column justify-content-md-between align-items-start justify-content-start">
-    <h4 class="card-title mb-sm-0 mb-1">{{ 'Heatmap' | translate }}</h4>
-
-    <div
-      class="btn-group btn-group-toggle mt-md-0 mt-1"
-      ngbRadioGroup
-      name="radioBasic"
-      [(ngModel)]="heatmapYear"
-    >
-      <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
-        <input type="radio" (click)="heatmapUpdate(0)" name="radio_options" id="radio_option1" [value]="0" ngbButton/>
-        <span>365</span>
-      </label>
-      <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
-        <input type="radio" (click)="heatmapUpdate(2021)" name="radio_options" id="radio_option2" ngbButton
-               [value]="2021"/>
-        <span>2021</span>
-      </label>
-      <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
-        <input type="radio" (click)="heatmapUpdate(2022)" name="radio_options" id="radio_option3" ngbButton
-               [value]="2022"/>
-        <span>2022</span>
-      </label>
-      <label class="btn btn-outline-primary" ngbButtonLabel rippleEffect>
-        <input type="radio" (click)="heatmapUpdate(2023)" name="radio_options" id="radio_option4" ngbButton
-               [value]="2023"/>
-        <span>2023</span>
-      </label>
+<kep-card customClass="statistics-heatmap">
+  <div class="statistics-heatmap__header">
+    <div>
+      <div class="statistics-heatmap__title">{{ 'Heatmap' | translate }}</div>
+      <div class="statistics-heatmap__subtitle">{{ 'DailyProgress' | translate }}</div>
     </div>
-
-  </div>
-  <div class="card-body">
-    @if (heatmap) {
-      <div #heatmapChartRef>
-        <apex-chart [options]="heatmapChart">
-        </apex-chart>
+    @if (availableYears?.length) {
+      <div class="statistics-heatmap__filters">
+        @for (year of availableYears; track year) {
+          <button
+            type="button"
+            class="btn btn-sm"
+            [class.btn-primary]="year === selectedYear"
+            [class.btn-outline-primary]="year !== selectedYear"
+            (click)="onSelectYear(year)"
+          >
+            {{ year }}
+          </button>
+        }
       </div>
     }
   </div>
-</div>
+
+  <div class="statistics-heatmap__body">
+    @if (isLoading) {
+      <div class="statistics-heatmap__loading">
+        <spinner></spinner>
+      </div>
+    } @else if (heatmapChart && hasData) {
+      <apex-chart [options]="heatmapChart"></apex-chart>
+    } @else {
+      <div class="statistics-heatmap__empty">{{ 'NoData' | translate }}</div>
+    }
+  </div>
+</kep-card>

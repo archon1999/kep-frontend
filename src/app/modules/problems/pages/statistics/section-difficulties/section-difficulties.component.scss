@@ -1,56 +1,77 @@
-.card {
-  height: 250px;
+.statistics-difficulties {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 
-  .card-body {
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  &__subtitle {
+    font-size: 0.9rem;
+    color: var(--bs-secondary-color);
+  }
+
+  &__content {
     display: grid;
-    grid-template-columns: 2fr 3fr;
-  }
-}
-
-.difficulties {
-  .difficulty {
-    margin-bottom: 1rem;
-
-    .title {
-      font-weight: 400;
-    }
+    grid-template-columns: 220px 1fr;
+    gap: 1.25rem;
+    align-items: center;
   }
 
-  .swiper-slide {
-    &:nth-child(1) {
-      ::ng-deep .progress {
-        background-color: rgba(40, 199, 111, 0.12);
-      }
+  &__chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  &__item-value {
+    font-weight: 600;
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+  }
+
+  &__item-total {
+    color: var(--bs-secondary-color);
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  &__progress {
+    height: 0.5rem;
+    border-radius: 999px;
+  }
+
+  @media (max-width: 992px) {
+    &__content {
+      grid-template-columns: 1fr;
     }
 
-    &:nth-child(2) {
-      ::ng-deep .progress {
-        background-color: rgba(0, 207, 232, 0.12);
-      }
-    }
-
-    &:nth-child(3) {
-      ::ng-deep .progress {
-        background-color: rgba(67, 97, 238, 0.12);
-      }
-    }
-
-    &:nth-child(5) {
-      ::ng-deep .progress {
-        background-color: rgba(255, 159, 67, 0.12);
-      }
-    }
-
-    &:nth-child(6) {
-      ::ng-deep .progress {
-        background-color: rgba(234, 84, 85, 0.12);
-      }
-    }
-
-    &:nth-child(7) {
-      ::ng-deep .progress {
-        background-color: rgba(75, 75, 75, 0.12);
-      }
+    &__chart {
+      justify-content: flex-start;
     }
   }
 }

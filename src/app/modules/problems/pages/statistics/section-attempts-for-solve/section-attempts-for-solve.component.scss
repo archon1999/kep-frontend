@@ -1,3 +1,32 @@
-.card {
-  height: 410px;
+.statistics-attempts {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  &__subtitle {
+    font-size: 0.9rem;
+    color: var(--bs-secondary-color);
+  }
+
+  &__body {
+    min-height: 320px;
+  }
+
+  &__empty {
+    color: var(--bs-secondary-color);
+    text-align: center;
+    margin-top: 2rem;
+  }
 }

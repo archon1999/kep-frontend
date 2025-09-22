@@ -1,12 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
-import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { TranslateService } from '@ngx-translate/core';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { LastDays } from '@problems/models/statistics.models';
 
 @Component({
   selector: 'problems-activity-card',
@@ -21,76 +21,97 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
     KepCardComponent,
   ]
 })
-export class ProblemsActivityCardComponent implements OnInit {
+export class ProblemsActivityCardComponent implements OnChanges {
 
-  @Input() username: string;
+  @Input() lastDays: LastDays | null = null;
+  @Input() selectedDays = 7;
+  @Input() daysOptions: number[] = [];
+  @Input() isLoading = false;
+  @Output() daysChange = new EventEmitter<number>();
 
-  public activityDays = 7;
   public activitySolved = 0;
-  public activityChart: ChartOptions;
-
-  public isLoading = true;
+  public activityChart: ChartOptions | null = null;
 
   constructor(
-    public statisticsService: ProblemsStatisticsService,
-    public translateService: TranslateService,
+    private translateService: TranslateService,
   ) { }
 
-  ngOnInit(): void {
-    this.activityDataUpdate(this.activityDays);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['lastDays']) {
+      this.buildChart();
+    }
   }
 
-  activityDataUpdate(days: number) {
-    this.isLoading = true;
-    const username = this.username;
-    this.activityDays = days;
-    this.statisticsService.getLastDays(username, days).subscribe((result: any) => {
-      this.isLoading = false;
-      this.activitySolved = result.solved;
-      const data = [];
-      let days = 0;
-      for (const y of result.series) {
-        const dt = new Date();
-        dt.setDate(dt.getDate() - days);
-        data.push({
-          x: dt,
-          y: y,
-        });
-        days++;
-      }
-      this.activityChart = {
-        chart: {
-          type: 'line',
-          sparkline: {
-            enabled: true
-          },
-        },
-        dataLabels: {
-          enabled: false
-        },
-        xaxis: {
-          type: 'datetime',
-        },
-        stroke: {
-          curve: 'smooth',
-          width: 2
-        },
-        yaxis: {
-          labels: {
-            show: false,
-            formatter(val: number): string {
-              return val.toFixed(0);
-            }
-          }
-        },
-        series: [
-          {
-            name: this.translateService.instant('Solved'),
-            data: data,
-          }
-        ],
-      };
-    });
+  onSelectDays(days: number) {
+    if (days !== this.selectedDays) {
+      this.daysChange.emit(days);
+    }
   }
 
+  get hasActivity(): boolean {
+    return !!(this.lastDays && this.lastDays.solved > 0);
+  }
+
+  private buildChart() {
+    if (!this.lastDays) {
+      this.activitySolved = 0;
+      this.activityChart = null;
+      return;
+    }
+
+    this.activitySolved = this.lastDays.solved;
+    const data = [];
+    let offset = 0;
+    for (const value of this.lastDays.series) {
+      const dt = new Date();
+      dt.setHours(0, 0, 0, 0);
+      dt.setDate(dt.getDate() - offset);
+      data.push({
+        x: new Date(dt),
+        y: value,
+      });
+      offset++;
+    }
+
+    this.activityChart = {
+      chart: {
+        type: 'area',
+        sparkline: { enabled: true },
+      },
+      dataLabels: { enabled: false },
+      xaxis: {
+        type: 'datetime',
+      },
+      stroke: {
+        curve: 'smooth',
+        width: 2,
+      },
+      yaxis: {
+        labels: {
+          show: false,
+          formatter: (val: number) => val.toFixed(0),
+        },
+      },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.7,
+          opacityTo: 0.1,
+          stops: [0, 90, 100],
+        },
+      },
+      series: [
+        {
+          name: this.translateService.instant('Solved'),
+          data,
+        }
+      ],
+      tooltip: {
+        x: {
+          format: 'dd MMM',
+        },
+      },
+    };
+  }
 }

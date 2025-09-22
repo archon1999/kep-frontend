@@ -1,34 +1,85 @@
 @if (username) {
   <div class="content-wrapper container-xxl p-0">
     <div class="content-body">
-      <section class="mt-2">
-        <div class="row">
-          <div class="col-lg-3 col-md-6 col-sm-12">
-            <section-profile [username]="username"></section-profile>
-          </div>
-          <div class="col-lg-9 col-md-6 col-sm-12">
-            <div class="row">
-              <div class="col-lg-6 col-12">
-                <section-difficulties [username]="username"></section-difficulties>
-              </div>
-              <div class="col-lg-6 col-12">
-                <section-activity [username]="username"></section-activity>
-              </div>
-              <div class="col-12">
-                <section-heatmap [username]="username"></section-heatmap>
-              </div>
-              <div class="col-lg-6 col-12">
-                <section-facts [username]="username"></section-facts>
-              </div>
-              <div class="col-lg-6 col-12">
-                <section-attempts-for-solve [username]="username"></section-attempts-for-solve>
-              </div>
-              <div class="col-12">
-                <section-time [username]="username"></section-time>
-              </div>
-            </div>
+      <section class="problems-statistics">
+        <div class="problems-statistics__header">
+          <div>
+            <h2 class="problems-statistics__title">{{ 'Statistics' | translate }}</h2>
+            <p class="problems-statistics__subtitle">@{{ username }}</p>
           </div>
         </div>
+
+        @if (isLoading && !general) {
+          <div class="problems-statistics__loading">
+            <spinner></spinner>
+          </div>
+        } @else if (hasError) {
+          <div class="problems-statistics__error">
+            <kep-icon name="alert-triangle"></kep-icon>
+            <span>{{ 'SomethingWentWrong' | translate }}</span>
+          </div>
+        } @else {
+          <div class="problems-statistics__overview">
+            @for (card of overviewCards; track card.titleKey) {
+              <div class="problems-statistics__overview-card">
+                <div class="problems-statistics__overview-icon">
+                  <kep-icon [name]="card.icon"></kep-icon>
+                </div>
+                <div class="problems-statistics__overview-body">
+                  <div class="problems-statistics__overview-label">{{ card.titleKey | translate }}</div>
+                  <div class="problems-statistics__overview-value">{{ card.value }}</div>
+                  @if (card.description) {
+                    <div class="problems-statistics__overview-description">{{ card.description }}</div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="problems-statistics__grid">
+            <div class="problems-statistics__left" *ngIf="general">
+              <section-profile
+                [username]="username"
+                [general]="general"
+                [langs]="langs"
+                [tags]="tags"
+                [topics]="topics"
+                [facts]="facts"
+              ></section-profile>
+            </div>
+            <div class="problems-statistics__right">
+              <div class="problems-statistics__row">
+                <section-difficulties [difficulties]="difficulties"></section-difficulties>
+                <problems-activity-card
+                  [lastDays]="lastDays"
+                  [selectedDays]="selectedDays"
+                  [daysOptions]="allowedDays"
+                  [isLoading]="isLoading"
+                  (daysChange)="onDaysChange($event)"
+                ></problems-activity-card>
+              </div>
+
+              <section-heatmap
+                [heatmap]="heatmap"
+                [availableYears]="availableYears"
+                [selectedYear]="selectedYear"
+                [isLoading]="isLoading"
+                (yearChange)="onYearChange($event)"
+              ></section-heatmap>
+
+              <div class="problems-statistics__row">
+                <section-facts [facts]="facts"></section-facts>
+                <section-attempts-for-solve [numberOfAttempts]="numberOfAttempts"></section-attempts-for-solve>
+              </div>
+
+              <section-time
+                [byWeekday]="byWeekday"
+                [byMonth]="byMonth"
+                [byPeriod]="byPeriod"
+              ></section-time>
+            </div>
+          </div>
+        }
       </section>
     </div>
   </div>

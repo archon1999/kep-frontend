@@ -1,14 +1,13 @@
-<div class="card">
-  <div
-    class="card-header d-flex flex-sm-row flex-column justify-content-md-between align-items-start justify-content-start">
-    <h4 class="card-title mb-sm-0 mb-1">{{ 'NumberAttemptsSolve' | translate }}</h4>
+<kep-card class="statistics-attempts">
+  <div class="statistics-attempts__header">
+    <div class="statistics-attempts__title">{{ 'NumberAttemptsSolve' | translate }}</div>
+    <div class="statistics-attempts__subtitle">{{ 'AttemptsDistribution' | translate }}</div>
   </div>
-  <div class="card-body">
-    @if (numberOfAttemptsForSolve) {
-      <div>
-        <apex-chart [options]="numberOfAttemptsForSolveChart">
-        </apex-chart>
-      </div>
+  <div class="statistics-attempts__body">
+    @if (numberOfAttemptsForSolveChart) {
+      <apex-chart [options]="numberOfAttemptsForSolveChart"></apex-chart>
+    } @else {
+      <div class="statistics-attempts__empty">{{ 'NoData' | translate }}</div>
     }
   </div>
-</div>
+</kep-card>

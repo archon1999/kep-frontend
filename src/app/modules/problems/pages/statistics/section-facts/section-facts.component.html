@@ -1,202 +1,35 @@
-<div class="card">
-  <div class="card-header">
-    <div class="card-title">
-      {{ 'Facts' | translate }}
-    </div>
+<kep-card customClass="statistics-facts">
+  <div class="statistics-facts__header">
+    <div class="statistics-facts__title">{{ 'Highlights' | translate }}</div>
+    <div class="statistics-facts__subtitle">{{ 'KeyMoments' | translate }}</div>
   </div>
 
-  <div class="card-body">
-    <div class="facts">
-      <div class="fact d-flex justify-content-between">
-        <div class="info d-flex">
-          <div class="avatar me-1 bg-primary-transparent rounded">
-            <div class="avatar-content">
-              <i [data-feather]="'attempt' | iconName"></i>
-            </div>
+  <div class="statistics-facts__list">
+    @if (factEntries.length) {
+      @for (fact of factEntries; track fact.key) {
+        <div class="statistics-facts__item">
+          <div class="statistics-facts__icon">
+            <kep-icon [name]="fact.icon"></kep-icon>
           </div>
-
-          <div class="title">
-            {{ 'FirstAttempt' | translate }}
-          </div>
-        </div>
-        <div class="attempt-info" *ngIf="facts?.firstAttempt">
-          <div [ngbTooltip]="tipContent" class="problem-title">
-            <a [routerLink]="Resources.Problem | resourceById:facts.firstAttempt.problemId" class="text-primary">
-              {{ facts.firstAttempt.problemId }}. {{ facts.firstAttempt.problemTitle }}
-            </a>
-          </div>
-
-          <ng-template #tipContent>
-            <div class="mb-50 datetime">
-              <span class="text-success">
-                {{ facts.firstAttempt.datetime | localizedDate:'medium' }}
-              </span>
-            </div>
-            <div class="attempt-verdict" [innerHTML]="facts.firstAttempt | attemptVerdictHTML"></div>
-          </ng-template>
-        </div>
-      </div>
-
-      <div class="fact d-flex justify-content-between">
-        <div class="info d-flex">
-          <div class="avatar me-1 bg-primary-transparent rounded">
-            <div class="avatar-content">
-              <i [data-feather]="'problem' | iconName"></i>
-            </div>
-          </div>
-
-          <div class="title">
-            {{ 'FirstSolvedProblem' | translate }}
+          <div class="statistics-facts__content">
+            <div class="statistics-facts__label">{{ fact.key | translate }}</div>
+            @if (fact.problemTitle) {
+              <div class="statistics-facts__value" ngbTooltip="{{ fact.problemTitle }}">{{ fact.problemTitle }}</div>
+            }
+            @if (fact.datetime) {
+              <div class="statistics-facts__meta">{{ fact.datetime | date: 'medium' }}</div>
+            }
+            @if (fact.attempts !== undefined) {
+              <div class="statistics-facts__meta">{{ fact.attempts }} × {{ 'Attempts' | translate }}</div>
+            }
+            @if (fact.meta && !fact.datetime && fact.attempts === undefined) {
+              <div class="statistics-facts__meta">{{ fact.meta }}</div>
+            }
           </div>
         </div>
-        <div class="attempt-info" *ngIf="facts?.firstAccepted">
-          <div [ngbTooltip]="tipContent" class="problem-title">
-            <a [routerLink]="Resources.Problem | resourceById:facts.firstAccepted.problemId" class="text-primary">
-              {{ facts.firstAccepted.problemId }}. {{ facts.firstAccepted.problemTitle }}
-            </a>
-          </div>
-
-          <ng-template #tipContent>
-            <div class="datetime">
-              <span class="text-success">
-                {{ facts.firstAccepted.datetime | localizedDate:'medium' }}
-              </span>
-            </div>
-          </ng-template>
-        </div>
-      </div>
-
-      <div class="fact d-flex justify-content-between">
-        <div class="info d-flex">
-          <div class="avatar me-1 bg-primary-transparent rounded">
-            <div class="avatar-content">
-              <i [data-feather]="'attempt' | iconName"></i>
-            </div>
-          </div>
-
-          <div class="title">
-            {{ 'LastAttempt' | translate }}
-          </div>
-        </div>
-        <div class="attempt-info" *ngIf="facts?.lastAttempt">
-          <div [ngbTooltip]="tipContent" class="problem-title">
-            <a [routerLink]="Resources.Problem | resourceById:facts.lastAttempt.problemId" class="text-primary">
-              {{ facts.lastAttempt.problemId }}. {{ facts.lastAttempt.problemTitle }}
-            </a>
-          </div>
-
-          <ng-template #tipContent>
-            <div class="mb-50 datetime">
-              <span class="text-success">
-                {{ facts.lastAttempt.datetime | localizedDate:'medium' }}
-              </span>
-            </div>
-            <div class="attempt-verdict" [innerHTML]="facts.lastAttempt | attemptVerdictHTML"></div>
-          </ng-template>
-        </div>
-      </div>
-
-      <div class="fact d-flex justify-content-between">
-        <div class="info d-flex">
-          <div class="avatar me-1 bg-primary-transparent rounded">
-            <div class="avatar-content">
-              <i [data-feather]="'problem' | iconName"></i>
-            </div>
-          </div>
-
-          <div class="title">
-            {{ 'LastSolvedProblem' | translate }}
-          </div>
-        </div>
-        <div class="attempt-info" *ngIf="facts?.lastAccepted">
-          <div [ngbTooltip]="tipContent" class="problem-title">
-            <a [routerLink]="Resources.Problem | resourceById:facts.lastAccepted.problemId" class="text-primary">
-              {{ facts.lastAccepted.problemId }}. {{ facts.lastAccepted.problemTitle }}
-            </a>
-          </div>
-
-          <ng-template #tipContent>
-            <div class="datetime">
-              <span class="text-success">
-                {{ facts.lastAccepted.datetime | localizedDate:'medium' }}
-              </span>
-            </div>
-          </ng-template>
-        </div>
-      </div>
-
-      <div class="fact d-flex justify-content-between">
-        <div class="info d-flex">
-          <div class="avatar me-1 bg-primary-transparent rounded">
-            <div class="avatar-content">
-              <i [data-feather]="'attempt' | iconName"></i>
-            </div>
-          </div>
-
-          <div class="title">
-            {{ 'MostAttemptedProblem' | translate }}
-          </div>
-        </div>
-        <div class="attempt-info" *ngIf="facts?.mostAttemptedProblem">
-          <div [ngbTooltip]="tipContent" class="problem-title">
-            <a [routerLink]="Resources.Problem | resourceById:facts.mostAttemptedProblem.problemId" class="text-primary">
-              {{ facts.mostAttemptedProblem.problemId }}. {{ facts.mostAttemptedProblem.problemTitle }}
-            </a>
-          </div>
-
-          <ng-template #tipContent>
-            {{ facts.mostAttemptedProblem.attemptsCount }}
-          </ng-template>
-        </div>
-      </div>
-
-      <div class="fact d-flex justify-content-between">
-        <div class="info d-flex">
-          <div class="avatar me-1 bg-primary-transparent rounded">
-            <div class="avatar-content">
-              <i [data-feather]="'problem' | iconName"></i>
-            </div>
-          </div>
-
-          <div class="title">
-            {{ 'MostAttemptedForSolveProblem' | translate }}
-          </div>
-        </div>
-        <div class="attempt-info" *ngIf="facts?.mostAttemptedForSolveProblem">
-          <div [ngbTooltip]="tipContent" class="problem-title">
-            <a [routerLink]="Resources.Problem | resourceById:facts.mostAttemptedForSolveProblem.problemId"
-               class="text-primary">
-              {{ facts.mostAttemptedForSolveProblem.problemId }}. {{ facts.mostAttemptedForSolveProblem.problemTitle }}
-            </a>
-          </div>
-
-          <ng-template #tipContent>
-            {{ facts.mostAttemptedForSolveProblem.attemptsCount }}
-          </ng-template>
-        </div>
-      </div>
-
-      <div class="fact d-flex justify-content-between">
-        <div class="info d-flex">
-          <div class="avatar me-1 bg-primary-transparent rounded">
-            <div class="avatar-content">
-              <i [data-feather]="'attempt' | iconName"></i>
-            </div>
-          </div>
-
-          <div class="title">
-            {{ 'SolvedWithSingleAttempt' | translate }}
-          </div>
-        </div>
-        <div [ngbTooltip]="tipContent" *ngIf="facts?.solvedWithSingleAttempt">
-          <span class="badge bg-primary">
-            {{ facts.solvedWithSingleAttempt }}
-          </span>
-        </div>
-        <ng-template #tipContent>
-          {{ facts.solvedWithSingleAttemptPercentage }}%
-        </ng-template>
-      </div>
-    </div>
+      }
+    } @else {
+      <div class="statistics-facts__empty">{{ 'NoData' | translate }}</div>
+    }
   </div>
-</div>
+</kep-card>

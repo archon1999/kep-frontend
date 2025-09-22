@@ -1,9 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { colors } from '@core/config/colors';
-import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
 import { CoreCommonModule } from '@core/common.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
+import { NumberOfAttempts } from '../../../models/statistics.models';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 
 @Component({
   selector: 'section-attempts-for-solve',
@@ -13,94 +15,70 @@ import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-char
   imports: [
     CoreCommonModule,
     ApexChartModule,
+    KepCardComponent,
   ]
 })
-export class SectionAttemptsForSolveComponent implements OnInit {
+export class SectionAttemptsForSolveComponent implements OnChanges {
 
-  @Input() username: string;
-  @Input() chartTheme: any;
+  @Input() numberOfAttempts: NumberOfAttempts | null = null;
 
-  public numberOfAttemptsForSolveChart: any;
-  public numberOfAttemptsForSolve: any;
-
+  public numberOfAttemptsForSolveChart: ChartOptions | null = null;
   public solvedText: string;
   public numberOfAttemptsText: string;
 
   constructor(
-    public statisticsService: ProblemsStatisticsService,
-    public translateService: TranslateService,
-  ) { }
-
-  ngOnInit(): void {
-    this.translateService.get('Solved').subscribe(
-      (text: string) => {
-        this.solvedText = text;
-      }
-    );
-
-    this.translateService.get('NumberOfAttempts').subscribe(
-      (text: string) => {
-        this.numberOfAttemptsText = text;
-      }
-    );
-    this.numberOfAttemptsForSolveChartLoad();
+    private translateService: TranslateService,
+  ) {
+    this.translateService.get('Solved').subscribe((text) => this.solvedText = text);
+    this.translateService.get('NumberOfAttempts').subscribe((text) => this.numberOfAttemptsText = text);
   }
 
-  numberOfAttemptsForSolveChartLoad() {
-    const username = this.username;
-    const data = [];
-    const labels = [];
-    this.statisticsService.getNumberOfAttemptsForSolve(username).subscribe((result: any) => {
-      for (const A of result.chartSeries) {
-        data.push({
-          x: this.numberOfAttemptsText + ': ' + A.attemptsCount,
-          y: A.value,
-        });
-        labels.push(A.attemptsCount);
-      }
-      this.numberOfAttemptsForSolveChart = {
-        series: [{
-          name: this.solvedText,
-          data: data,
-        }],
-        chart: {
-          type: 'area',
-          height: 300,
-          zoom: {
-            enabled: false
-          },
-          toolbar: {show: false}
-        },
-        labels: labels,
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'straight'
-        },
-        xaxis: {
-          labels: {
-            show: false,
-          }
-        },
-        colors: [colors.solid.primary],
-        yaxis: {
-          opposite: true,
-          labels: {
-            formatter: function (val) {
-              return Math.trunc(val) + '%';
-            },
-          },
-          max: 100,
-        },
-        legend: {
-          horizontalAlign: 'left'
-        }
-      };
-      this.numberOfAttemptsForSolve = result;
-    });
-
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['numberOfAttempts']) {
+      this.buildChart();
+    }
   }
 
+  private buildChart() {
+    if (!this.numberOfAttempts?.chartSeries?.length) {
+      this.numberOfAttemptsForSolveChart = null;
+      return;
+    }
 
+    const data = this.numberOfAttempts.chartSeries.map((entry) => ({
+      x: `${this.numberOfAttemptsText}: ${entry.attemptsCount}`,
+      y: entry.value,
+    }));
+    const labels = this.numberOfAttempts.chartSeries.map((entry) => entry.attemptsCount);
+
+    this.numberOfAttemptsForSolveChart = {
+      series: [{
+        name: this.solvedText,
+        data,
+      }],
+      chart: {
+        type: 'area',
+        height: 320,
+        zoom: { enabled: false },
+        toolbar: { show: false },
+      },
+      labels,
+      dataLabels: { enabled: false },
+      stroke: { curve: 'smooth', width: 2 },
+      xaxis: {
+        labels: { show: false },
+      },
+      colors: [colors.solid.primary],
+      yaxis: {
+        opposite: true,
+        labels: {
+          formatter: (val: number) => `${Math.trunc(val)}%`,
+        },
+        max: 100,
+      },
+      grid: {
+        strokeDashArray: 5,
+      },
+    };
+  }
 }

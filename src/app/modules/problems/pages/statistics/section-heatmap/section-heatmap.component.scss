@@ -1,0 +1,49 @@
+.statistics-heatmap {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  &__subtitle {
+    font-size: 0.9rem;
+    color: var(--bs-secondary-color);
+  }
+
+  &__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  &__body {
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 280px;
+  }
+
+  &__empty {
+    color: var(--bs-secondary-color);
+    font-size: 0.95rem;
+  }
+}

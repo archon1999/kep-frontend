@@ -1,32 +1,19 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
-import { SwiperOptions } from 'swiper/types/swiper-options';
 import { CoreCommonModule } from '@core/common.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
-import { SwiperComponent } from '@shared/third-part-modules/swiper/swiper.component';
 import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
-import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { Difficulties } from '@problems/models/statistics.models';
 
-export interface Difficulties {
-  beginner: number;
-  allBeginner: number;
-  basic: number;
-  allBasic: number;
-  normal: number;
-  allNormal: number;
-  medium: number;
-  allMedium: number;
-  advanced: number;
-  allAdvanced: number;
-  hard: number;
-  allHard: number;
-  extremal: number;
-  allExtremal: number;
-  totalSolved: number;
-  totalProblems: number;
+interface DifficultyItem {
+  label: string;
+  solved: number;
+  total: number;
+  progress: number;
+  level: number;
 }
 
 @Component({
@@ -37,130 +24,123 @@ export interface Difficulties {
   imports: [
     CoreCommonModule,
     ApexChartModule,
-    SwiperComponent,
     NgbProgressbarModule,
     ProblemsPipesModule,
     KepCardComponent,
   ]
 })
-export class SectionDifficultiesComponent implements OnInit {
+export class SectionDifficultiesComponent implements OnChanges {
 
-  @Input() username: string;
+  @Input() difficulties: Difficulties | null = null;
 
-  public difficulties: Difficulties = {
-    beginner: 0,
-    allBeginner: 1,
-    basic: 0,
-    allBasic: 1,
-    normal: 0,
-    allNormal: 1,
-    medium: 0,
-    allMedium: 1,
-    advanced: 0,
-    allAdvanced: 1,
-    hard: 0,
-    allHard: 1,
-    extremal: 0,
-    allExtremal: 1,
-    totalSolved: 0,
-    totalProblems: 1,
-  };
-
-  public chartOptions: ChartOptions | any;
-
-  public swiperConfig: SwiperOptions = {
-    direction: 'vertical',
-    slidesPerView: 3,
-    spaceBetween: 10,
-    autoHeight: false,
-  };
+  public chartOptions: ChartOptions | null = null;
+  public completionRate = 0;
+  public difficultyItems: DifficultyItem[] = [];
 
   constructor(
-    public statisticsService: ProblemsStatisticsService,
-    public translateService: TranslateService,
+    private translateService: TranslateService,
   ) {}
 
-  ngOnInit(): void {
-    this.statisticsService.getByDifficulty(this.username).subscribe(
-      (difficulties: Difficulties) => {
-        this.difficulties = difficulties;
-        this.chartOptions = {
-          series: [100 * difficulties.totalSolved / difficulties.totalProblems],
-          chart: {
-            height: '200px',
-            type: 'radialBar',
-            toolbar: {
-              show: false,
-            }
-          },
-          plotOptions: {
-            radialBar: {
-              startAngle: -135,
-              endAngle: 225,
-              hollow: {
-                margin: 0,
-                size: '70%',
-                image: undefined,
-                position: 'front',
-                dropShadow: {
-                  enabled: true,
-                  top: 3,
-                  left: 0,
-                  blur: 4,
-                  opacity: 0.24
-                }
-              },
-              track: {
-                strokeWidth: '67%',
-                margin: 0, // margin is in pixels
-                dropShadow: {
-                  enabled: true,
-                  top: -3,
-                  left: 0,
-                  blur: 4,
-                  opacity: 0.35
-                }
-              },
-
-              dataLabels: {
-                show: true,
-                name: {
-                  offsetY: -10,
-                  show: true,
-                  color: '#888',
-                  fontSize: '17px'
-                },
-                value: {
-                  formatter: function (val) {
-                    return parseInt(val.toString(), 10).toString();
-                  },
-                  color: '#111',
-                  fontSize: '36px',
-                  show: true
-                }
-              }
-            }
-          },
-          fill: {
-            type: 'gradient',
-            gradient: {
-              shade: 'dark',
-              type: 'horizontal',
-              shadeIntensity: 0.5,
-              gradientToColors: ['#ABE5A1'],
-              inverseColors: true,
-              opacityFrom: 1,
-              opacityTo: 1,
-              stops: [0, 100]
-            }
-          },
-          stroke: {
-            lineCap: 'round'
-          },
-          labels: [this.translateService.instant('Percent')]
-        };
-      }
-    );
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['difficulties']) {
+      this.buildView();
+    }
   }
 
+  private buildView() {
+    if (!this.difficulties) {
+      this.chartOptions = null;
+      this.completionRate = 0;
+      this.difficultyItems = [];
+      return;
+    }
+
+    const diff = this.difficulties;
+    this.completionRate = diff.totalProblems
+      ? Math.round((diff.totalSolved / diff.totalProblems) * 100)
+      : 0;
+
+    this.chartOptions = {
+      series: [this.completionRate],
+      chart: {
+        height: 250,
+        type: 'radialBar',
+        toolbar: { show: false },
+      },
+      plotOptions: {
+        radialBar: {
+          startAngle: -135,
+          endAngle: 225,
+          hollow: {
+            margin: 0,
+            size: '75%',
+            dropShadow: {
+              enabled: true,
+              top: 3,
+              blur: 4,
+              opacity: 0.2,
+            },
+          },
+          track: {
+            strokeWidth: '67%',
+            dropShadow: {
+              enabled: true,
+              top: -3,
+              blur: 4,
+              opacity: 0.1,
+            },
+          },
+          dataLabels: {
+            name: {
+              show: true,
+              color: '#6E6B7B',
+              fontSize: '0.85rem',
+              offsetY: -10,
+              formatter: () => this.translateService.instant('Completion'),
+            },
+            value: {
+              formatter: (val: number) => `${Math.round(val)}%`,
+              color: '#11142D',
+              fontSize: '2.4rem',
+              show: true,
+            },
+          },
+        },
+      },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shade: 'light',
+          type: 'vertical',
+          shadeIntensity: 0.4,
+          gradientToColors: ['#28c76f'],
+          inverseColors: true,
+          opacityFrom: 1,
+          opacityTo: 1,
+          stops: [0, 100],
+        },
+      },
+      stroke: {
+        lineCap: 'round',
+      },
+      labels: [this.translateService.instant('Completion')],
+    };
+
+    this.difficultyItems = [
+      { label: 'Beginner', solved: diff.beginner, total: diff.allBeginner, level: 1, progress: this.getProgress(diff.beginner, diff.allBeginner) },
+      { label: 'Basic', solved: diff.basic, total: diff.allBasic, level: 2, progress: this.getProgress(diff.basic, diff.allBasic) },
+      { label: 'Normal', solved: diff.normal, total: diff.allNormal, level: 3, progress: this.getProgress(diff.normal, diff.allNormal) },
+      { label: 'Medium', solved: diff.medium, total: diff.allMedium, level: 4, progress: this.getProgress(diff.medium, diff.allMedium) },
+      { label: 'Advanced', solved: diff.advanced, total: diff.allAdvanced, level: 5, progress: this.getProgress(diff.advanced, diff.allAdvanced) },
+      { label: 'Hard', solved: diff.hard, total: diff.allHard, level: 6, progress: this.getProgress(diff.hard, diff.allHard) },
+      { label: 'Extremal', solved: diff.extremal, total: diff.allExtremal, level: 7, progress: this.getProgress(diff.extremal, diff.allExtremal) },
+    ];
+  }
+
+  private getProgress(solved: number, total: number): number {
+    if (!total) {
+      return 0;
+    }
+    return Math.round((solved / total) * 100);
+  }
 }

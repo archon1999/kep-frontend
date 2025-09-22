@@ -1,56 +1,34 @@
-<div class="row">
-  <div class="col-lg-4 col-12">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          {{ 'ByWeekday' | translate }}
-        </div>
-      </div>
-
-      <div class="card-body">
-        @if (byWeekdayChart) {
-          <apex-chart
-            [options]="byWeekdayChart"
-          ></apex-chart>
-        }
-      </div>
+<div class="statistics-time">
+  <kep-card class="statistics-time__card">
+    <div class="statistics-time__header">{{ 'ByWeekday' | translate }}</div>
+    <div class="statistics-time__body">
+      @if (byWeekdayChart) {
+        <apex-chart [options]="byWeekdayChart"></apex-chart>
+      } @else {
+        <div class="statistics-time__empty">{{ 'NoData' | translate }}</div>
+      }
     </div>
-  </div>
+  </kep-card>
 
-  <div class="col-lg-4 col-12">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          {{ 'ByMonth' | translate }}
-        </div>
-      </div>
-
-      <div class="card-body">
-        @if (byMonthChart) {
-          <apex-chart
-            [options]="byMonthChart"
-          ></apex-chart>
-        }
-      </div>
+  <kep-card class="statistics-time__card">
+    <div class="statistics-time__header">{{ 'ByMonth' | translate }}</div>
+    <div class="statistics-time__body">
+      @if (byMonthChart) {
+        <apex-chart [options]="byMonthChart"></apex-chart>
+      } @else {
+        <div class="statistics-time__empty">{{ 'NoData' | translate }}</div>
+      }
     </div>
-  </div>
+  </kep-card>
 
-  <div class="col-lg-4 col-12">
-    <div class="card">
-      <div class="card-header">
-        <div class="card-title">
-          {{ 'ByPeriod' | translate }}
-        </div>
-      </div>
-
-      <div class="card-body">
-        @if (byPeriodChart) {
-          <apex-chart
-            [options]="byPeriodChart"
-          ></apex-chart>
-        }
-      </div>
+  <kep-card class="statistics-time__card">
+    <div class="statistics-time__header">{{ 'ByPeriod' | translate }}</div>
+    <div class="statistics-time__body">
+      @if (byPeriodChart) {
+        <apex-chart [options]="byPeriodChart"></apex-chart>
+      } @else {
+        <div class="statistics-time__empty">{{ 'NoData' | translate }}</div>
+      }
     </div>
-
-  </div>
+  </kep-card>
 </div>
