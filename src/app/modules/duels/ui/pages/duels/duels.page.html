@@ -23,55 +23,29 @@
       </div>
 
       <div class="col-12">
-        <ul
-          ngbNav
-          #duelsNav="ngbNav"
-          class="nav nav-tabs nav-style-1 nav-fill flex-column flex-md-row"
-          [destroyOnHide]="false"
-          [(activeId)]="activeTab"
-        >
-          <li [ngbNavItem]="'my'">
-            <button ngbNavLink type="button">
-              {{ 'MyDuels' | translate }}
-            </button>
-            <ng-template ngbNavContent>
-              <duels-list-widget
-                [my]="true"
-                [currentUsername]="currentUser?.username ?? null"
-                [refreshKey]="myDuelsRefreshKey"
-                (duelConfirmed)="onDuelConfirmed()"
-              ></duels-list-widget>
-            </ng-template>
-          </li>
+        <duel-ready-players-widget
+          [currentUsername]="currentUser?.username ?? null"
+          [refreshKey]="readyPlayersRefreshKey"
+          (duelCreated)="onDuelCreated()"
+        />
+      </div>
 
-          <li [ngbNavItem]="'ready'">
-            <button ngbNavLink type="button">
-              {{ 'DuelReadyPlayersTitle' | translate }}
-            </button>
-            <ng-template ngbNavContent>
-              <duel-ready-players-widget
-                [currentUsername]="currentUser?.username ?? null"
-                [refreshKey]="readyPlayersRefreshKey"
-                (duelCreated)="onDuelCreated()"
-              ></duel-ready-players-widget>
-            </ng-template>
-          </li>
+      <div class="col-12 col-xl-6">
+        <duels-list-widget
+          [username]="currentUser?.username ?? null"
+          [currentUsername]="currentUser?.username ?? null"
+          [refreshKey]="myDuelsRefreshKey"
+          (duelConfirmed)="onDuelConfirmed()"
+        />
+      </div>
 
-          <li [ngbNavItem]="'all'">
-            <button ngbNavLink type="button">
-              {{ 'AllDuels' | translate }}
-            </button>
-            <ng-template ngbNavContent>
-              <duels-list-widget
-                titleKey="AllDuels"
-                [currentUsername]="currentUser?.username ?? null"
-                [refreshKey]="allDuelsRefreshKey"
-                (duelConfirmed)="onDuelConfirmed()"
-              ></duels-list-widget>
-            </ng-template>
-          </li>
-        </ul>
-        <div [ngbNavOutlet]="duelsNav" class="mt-3"></div>
+      <div class="col-12 col-xl-6">
+        <duels-list-widget
+          titleKey="AllDuels"
+          [currentUsername]="currentUser?.username ?? null"
+          [refreshKey]="allDuelsRefreshKey"
+          (duelConfirmed)="onDuelConfirmed()"
+        />
       </div>
     </div>
   </div>
