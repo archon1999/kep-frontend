@@ -1,0 +1,35 @@
+<kep-card>
+  <div class="card-header">
+    <div class="card-title">
+      {{ 'Contests.FirstSolves' | translate }}
+    </div>
+  </div>
+  <div class="card-body">
+    <kep-table>
+      <ng-container header>
+        <tr>
+          <th>{{ 'Problem' | translate }}</th>
+          <th>{{ 'Contests.Contestant' | translate }}</th>
+          <th class="text-end">{{ 'Time' | translate }}</th>
+        </tr>
+      </ng-container>
+      <ng-container body>
+        @if (entries.length) {
+          @for (entry of entries; track entry.problem) {
+            <tr>
+              <td class="fw-semibold py-2">{{ entry.problem }}</td>
+              <td class="py-2">
+                <contestant-view [user]="entry.record.contestant?.user" [team]="entry.record.contestant?.team"></contestant-view>
+              </td>
+              <td class="text-end text-nowrap py-2">{{ entry.record.time }}</td>
+            </tr>
+          }
+        } @else {
+          <tr>
+            <td colspan="3" class="text-center text-muted py-2">{{ 'Contests.NoFirstSolves' | translate }}</td>
+          </tr>
+        }
+      </ng-container>
+    </kep-table>
+  </div>
+</kep-card>

@@ -1,0 +1,14 @@
+<kep-card>
+  <div class="card-header">
+    <div class="card-title">
+      {{ 'Contests.ProblemAttempts' | translate }}
+    </div>
+    <span class="text-muted small">
+      {{ totalAccepted | number }}
+      {{ 'Contests.TotalAccepted' | translate }}
+    </span>
+  </div>
+  <div class="card-body">
+    <apex-chart [options]="chart"></apex-chart>
+  </div>
+</kep-card>

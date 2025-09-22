@@ -1,0 +1,46 @@
+<kep-card>
+  <div class="card-header">
+    <div class="card-title">
+      {{ 'Contests.Badges' | translate }}
+    </div>
+  </div>
+  <div class="card-body h-100 d-flex flex-column">
+    <div class="d-flex flex-column gap-2 flex-grow-1">
+      @if (badges.length) {
+        @for (badge of badges; track badge.key) {
+          <div class="border rounded p-1">
+            <div class="d-flex align-items-center">
+              <div class="avatar p-50 m-0 bg-light-{{ badge.color }} rounded">
+                <div class="avatar-content">
+                  <kep-icon [name]="badge.icon" [color]="badge.color"></kep-icon>
+                </div>
+              </div>
+              <div class="flex-grow-1">
+                <div class="fw-semibold mb-25">{{ badge.title | translate }}</div>
+                <contestant-view [user]="badge.contestant?.user" [team]="badge.contestant?.team" [imgSize]="28"></contestant-view>
+                <div class="text-muted small mt-25">
+                  @switch (badge.key) {
+                    @case ('sniper') {
+                      {{ 'Problem' | translate }} {{ badge.problem }} · {{ badge.time }}
+                    }
+                    @case ('grinder') {
+                      {{ 'Attempts' | translate }}: {{ badge.attempts | number }}
+                    }
+                    @case ('optimizer') {
+                      {{ 'Contests.BadgeOptimizerDetails' | translate:{ solved: badge.solvedProblems, wrong: badge.wrongAttempts } }}
+                    }
+                    @case ('neverGiveUp') {
+                      {{ 'Problem' | translate }} {{ badge.problem }} · {{ badge.attempts | number }} {{ 'Attempts' | translate }}
+                    }
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      } @else {
+        <div class="text-muted small">{{ 'Contests.NoBadges' | translate }}</div>
+      }
+    </div>
+  </div>
+</kep-card>

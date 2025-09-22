@@ -1,0 +1,23 @@
+<div class="row">
+  @for (card of cards; track card.key) {
+    <div class="col-sm-6 col-xl-3">
+      <kep-card>
+        <div class="card-header">
+          <div class="card-title">
+            {{ card.label | translate }}
+          </div>
+          <kep-icon [name]="card.icon" [color]="card.iconColor"></kep-icon>
+        </div>
+        <div class="card-body">
+          <h4 class="fw-bolder mt-1 mb-0">
+            @if (card.format === 'percent') {
+              {{ card.value | number:'1.0-2' }}%
+            } @else {
+              {{ card.value | number }}
+            }
+          </h4>
+        </div>
+      </kep-card>
+    </div>
+  }
+</div>
