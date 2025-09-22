@@ -15,6 +15,8 @@ import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { PeriodRatingsComponent } from '@problems/pages/rating/period-ratings/period-ratings.component';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { NgbTooltip } from "@ng-bootstrap/ng-bootstrap";
+import { ProblemDifficultyColorPipe } from "@problems/pipes/problem-difficulty-color.pipe";
 
 
 @Component({
@@ -30,11 +32,13 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
     PeriodRatingsComponent,
     KepCardComponent,
     SpinnerComponent,
+    NgbTooltip,
+    ProblemDifficultyColorPipe,
   ],
 })
 export class RatingComponent extends BaseTablePageComponent<ProblemsRating> implements OnInit {
-  override defaultPageSize = 10;
-  override pageOptions = [10, 20, 50];
+  override defaultPageSize = 12;
+  override pageOptions = [6, 9, 12, 24];
   override defaultOrdering = '-rating';
   override maxSize = 5;
 
