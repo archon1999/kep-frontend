@@ -32,6 +32,7 @@ export class HackathonPage extends BasePageComponent implements OnInit {
   constructor() {
     super();
     this.hackathon = this.route.snapshot.data.hackathon;
+    this.titleService.updateTitle(this.route, {hackathonTitle: this.hackathon.title});
   }
 
   protected getContentHeader(): ContentHeader {

@@ -6,6 +6,7 @@ export default [
     path: '',
     loadComponent: () => import('../ui/pages/hackathons-list/hackathons-list.page').then(m => m.HackathonsListPage),
     title: 'Hackathons.Hackathons',
+    data: { title: 'Hackathons.Hackathons' },
   },
   {
     path: 'hackathon/:id',

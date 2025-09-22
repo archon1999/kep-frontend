@@ -16,7 +16,7 @@ export default [
   {
     path: '',
     loadComponent: () => import('../ui/pages/users-list/users-list.page').then(c => c.UsersListPage),
-    data: {animation: 'users'},
+    data: {animation: 'users', title: 'Users.Users'},
     title: 'Users.Users',
   },
   {

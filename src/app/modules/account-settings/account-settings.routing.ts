@@ -6,6 +6,7 @@ export default [
     path: '',
     loadComponent: () => import('./account-settings.component').then(c => c.AccountSettingsComponent),
     title: 'Users.AccountSettings',
+    data: { title: 'Users.AccountSettings' },
     canActivate: [AuthGuard],
     children: [
       {

@@ -10,6 +10,8 @@ export const admin: Routes = [
           import('./error404/error404.component').then(
             (m) => m.Error404Component
           ),
+        data: { title: 'Errors.Error404' },
+        title: 'Errors.Error404'
       },
     ]
   }

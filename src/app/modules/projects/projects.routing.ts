@@ -4,6 +4,7 @@ export default [
   {
     path: '',
     loadComponent: () => import('@projects/ui/pages/projects-list/projects-list.page').then(c => c.ProjectsListPage),
+    data: { title: 'Projects.Projects' },
     title: 'Projects.Projects',
   },
   {

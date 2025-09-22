@@ -25,6 +25,7 @@ const routes: Routes = [
       dailyInterestingFact: DailyInterestingFactResolver,
     },
     title: 'Lugavar',
+    data: { title: 'Lugavar' },
   }
 ];
 

@@ -7,6 +7,7 @@ export default [
     path: '',
     component: HomeComponent,
     title: 'Home',
+    data: { title: 'Home' },
     canActivate: [AuthGuard],
   },
 ] satisfies Route[];

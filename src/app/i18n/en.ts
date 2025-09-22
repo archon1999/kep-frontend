@@ -778,6 +778,7 @@ export const localeEn = {
       ContestStandings: 'Standings | {{ contestTitle }} | Contest',
       ContestQuestions: 'Questions | {{ contestTitle }} | Contest',
       ContestRatingChanges: 'Rating changes | {{ contestTitle }} | Contest',
+      ContestOgImage: '{{ contestTitle }} | OG image | Contest',
       ContestsRating: 'Rating | Contests',
       ContestsProfile: 'Profile | Contests',
       MyContests: 'My contests',
@@ -811,7 +812,11 @@ export const localeEn = {
     },
     Hackathons: {
       Hackathons: 'Hackathons',
-      Hackathon: '{{ hackathonTitle }} | Hackathon'
+      Hackathon: '{{ hackathonTitle }} | Hackathon',
+      HackathonProjects: '{{ hackathonTitle }} | Projects | Hackathon',
+      HackathonAttempts: '{{ hackathonTitle }} | Attempts | Hackathon',
+      HackathonStandings: '{{ hackathonTitle }} | Standings | Hackathon',
+      HackathonRegistrants: '{{ hackathonTitle }} | Registrants | Hackathon'
     },
     Arena: {
       Arena: 'Arena',
@@ -830,9 +835,18 @@ export const localeEn = {
       Courses: 'Courses',
       Course: '{{ courseTitle }} | Course',
       CourseLesson: '{{ lessonTitle }} | {{ courseTitle }} | Course',
+      CourseDictionary: '{{ courseTitle }} | Dictionary | Course',
+      CourseDictionaryTraining: '{{ courseTitle }} | Dictionary training | Course',
     },
     Shop: {
       Shop: 'Shop',
+    },
+    KepCover: 'KEP Cover #3',
+    Auth: {
+      Login: 'Login',
+    },
+    Errors: {
+      Error404: 'Page not found',
     },
   },
   Errors: {

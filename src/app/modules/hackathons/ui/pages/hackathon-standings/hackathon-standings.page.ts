@@ -41,6 +41,7 @@ export class HackathonStandingsPage extends BaseLoadComponent<any> implements On
   constructor(private hackathonsApiService: HackathonsApiService) {
     super();
     this.hackathon = this.route.snapshot.data.hackathon;
+    this.titleService.updateTitle(this.route, {hackathonTitle: this.hackathon.title});
 
     interval(30000).pipe(takeUntil(this._unsubscribeAll)).subscribe(
       () => this.loadData()

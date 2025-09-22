@@ -6,6 +6,7 @@ export default [
     path: '',
     loadComponent: () => import('./pages/arena/arena.component').then(c => c.ArenaComponent),
     title: 'Arena.Arena',
+    data: { title: 'Arena.Arena' },
   },
   {
     path: 'tournament/:id',

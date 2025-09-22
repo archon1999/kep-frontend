@@ -91,6 +91,8 @@ export const routes: Routes = [
       {
         path: 'kep-cover',
         loadComponent: () => import('./modules/kep-cover-3/kep-cover-3.component').then(c => c.KepCover3Component),
+        data: { title: 'KepCover' },
+        title: 'KepCover'
       },
       {
         path: 'kepcoin',
@@ -110,12 +112,16 @@ export const routes: Routes = [
         path: 'login',
         loadComponent: () => import('@auth/login/login.component').then(c => c.LoginComponent),
         canActivate: [IsAuthenticatedGuard],
+        data: { title: 'Auth.Login' },
+        title: 'Auth.Login'
       }
     ]
   },
   {
     path: '**',
-    loadComponent: () => import('./modules/error/error404/error404.component').then(c => c.Error404Component)
+    loadComponent: () => import('./modules/error/error404/error404.component').then(c => c.Error404Component),
+    data: { title: 'Errors.Error404' },
+    title: 'Errors.Error404'
   }
 ];
 

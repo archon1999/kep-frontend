@@ -8,6 +8,7 @@ export default [
     path: '',
     loadComponent: () => import('./pages/problems/problems.component').then(c => c.ProblemsComponent),
     title: 'Problems.Problems',
+    data: { title: 'Problems.Problems' },
   },
   // {
   //   path: 'study-plan/:id',
@@ -63,13 +64,13 @@ export default [
   {
     path: 'attempts',
     loadComponent: () => import('./pages/attempts/attempts.component').then(c => c.AttemptsComponent),
-    data: {animation: 'attempts'},
+    data: {animation: 'attempts', title: 'Problems.Attempts'},
     title: 'Problems.Attempts',
   },
   {
     path: 'attempts/:username',
     loadComponent: () => import('./pages/attempts/attempts.component').then(c => c.AttemptsComponent),
-    data: {animation: 'attempts'},
+    data: {animation: 'attempts', title: 'Problems.Attempts'},
     title: 'Problems.Attempts',
   },
   // {
@@ -82,30 +83,31 @@ export default [
     path: 'statistics',
     loadComponent: () => import('./pages/statistics/statistics.component').then(c => c.StatisticsComponent),
     title: 'Problems.Statistics',
-    data: {animation: 'statistics'},
+    data: {animation: 'statistics', title: 'Problems.Statistics'},
     canActivate: [AuthGuard],
   },
   {
     path: 'rating',
     loadComponent: () => import('./pages/rating/rating.component').then(c => c.RatingComponent),
     title: 'Problems.Rating',
-    data: {animation: 'problems-rating'}
+    data: {animation: 'problems-rating', title: 'Problems.Rating'}
   },
   {
     path: 'rating/history',
     loadComponent: () => import('./pages/rating/rating-history/rating-history.component').then(c => c.RatingHistoryComponent),
     title: 'Problems.RatingHistory',
-    data: {animation: 'problems-rating-history'}
+    data: {animation: 'problems-rating-history', title: 'Problems.RatingHistory'}
   },
   {
     path: 'hacks',
     loadComponent: () => import('./pages/hack-attempts/hack-attempts.component').then(c => c.HackAttemptsComponent),
-    data: {animation: 'hack-attempts'},
+    data: {animation: 'hack-attempts', title: 'Problems.HackAttempts'},
     title: 'Problems.HackAttempts',
   },
   {
     path: ':category',
     loadComponent: () => import('./pages/problems/category/category.component').then(c => c.CategoryComponent),
     title: 'Problems.Problems',
+    data: { title: 'Problems.Problems' },
   },
 ] satisfies Route[];

@@ -7,18 +7,19 @@ export default [
   {
     path: '',
     loadComponent: () => import('./pages/contests/contests.component').then(c => c.ContestsComponent),
-    title: 'Contests.Contests'
+    title: 'Contests.Contests',
+    data: { title: 'Contests.Contests' }
   },
   {
     path: 'rating',
     loadComponent: () => import('./pages/rating/rating.component').then(c => c.RatingComponent),
-    data: {animation: 'contests-rating'},
+    data: {animation: 'contests-rating', title: 'Contests.ContestsRating'},
     title: 'Contests.ContestsRating',
   },
   {
     path: 'profile',
     loadComponent: () => import('./pages/profile/profile.component').then(c => c.ProfileComponent),
-    data: {animation: 'contests-profile'},
+    data: {animation: 'contests-profile', title: 'Contests.ContestsProfile'},
     canActivate: [AuthGuard],
     title: 'Contests.ContestsProfile',
   },
@@ -123,11 +124,12 @@ export default [
     resolve: {
       contest: ContestResolver,
     },
+    data: { title: 'Contests.ContestOgImage' },
   },
   {
     path: 'user-contests',
     loadComponent: () => import('./pages/user-contests/user-contests.component').then(c => c.UserContestsComponent),
-    data: {animation: 'user-contests'},
+    data: {animation: 'user-contests', title: 'Contests.MyContests'},
     title: 'Contests.MyContests',
   },
   {
@@ -135,6 +137,7 @@ export default [
     loadComponent: () => import('./pages/user-contests/contest-create/contest-create.component').then(c => c.ContestCreateComponent),
     data: {
       animation: 'user-contest-create',
+      title: 'Contests.CreateContest',
     },
     title: 'Contests.CreateContest',
     canActivate: [ContestCreateGuard],

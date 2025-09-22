@@ -7,6 +7,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { Contest } from '@contests/models/contest';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 import { LogoComponent } from "@shared/components/logo/logo.component";
+import { TitleService } from '@shared/services/title.service';
 
 @Component({
   selector: 'app-contest-og-image',
@@ -31,12 +32,14 @@ export class ContestOgImageComponent implements OnInit {
   constructor(
     public route: ActivatedRoute,
     public captureService: NgxCaptureService,
-    public api: ApiService
+    public api: ApiService,
+    private titleService: TitleService,
   ) { }
 
   ngOnInit(): void {
     this.route.data.subscribe(({contest}) => {
       this.contest = Contest.fromJSON(contest);
+      this.titleService.updateTitle(this.route, {contestTitle: this.contest.title});
     });
     return;
 

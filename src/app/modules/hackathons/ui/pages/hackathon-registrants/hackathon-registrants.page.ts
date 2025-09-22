@@ -30,6 +30,7 @@ export class HackathonRegistrantsPage extends BaseLoadComponent<any> implements 
     super();
 
     this.hackathon = this.route.snapshot.data.hackathon;
+    this.titleService.updateTitle(this.route, {hackathonTitle: this.hackathon.title});
   }
 
   getData(): Observable<any> {

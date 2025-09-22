@@ -5,5 +5,6 @@ export default [
     path: '',
     loadComponent: () => import('./shop.component').then(c => c.ShopComponent),
     title: 'Shop.Shop',
+    data: { title: 'Shop.Shop' },
   },
 ] satisfies Route[];

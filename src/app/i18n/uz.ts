@@ -771,6 +771,7 @@ export const localeUz = {
       ContestStandings: 'Natijalar | {{ contestTitle }} | Kontest',
       ContestQuestions: 'Savollar | {{ contestTitle }} | Kontest',
       ContestRatingChanges: 'Reyting oʻzgarishlari | {{ contestTitle }} | Kontest',
+      ContestOgImage: '{{ contestTitle }} | OG tasviri | Kontest',
       ContestsRating: 'Reyting | Kontestslar',
       ContestsProfile: 'Profil | Kontestlar',
       MyContests: 'Mening kontestlarim',
@@ -805,9 +806,13 @@ export const localeUz = {
      Tournaments: 'Turnirlar',
      Tournament: '{{ tournamentTitle }} | Turnir'
    },
-    Hackathons: {
-      Hackathons: 'Xakatonlar',
-      Hackathon: '{{ hackathonTitle }} | Xakaton'
+   Hackathons: {
+     Hackathons: 'Xakatonlar',
+      Hackathon: '{{ hackathonTitle }} | Xakaton',
+      HackathonProjects: '{{ hackathonTitle }} | Loyihalar | Xakaton',
+      HackathonAttempts: '{{ hackathonTitle }} | Urinishlar | Xakaton',
+      HackathonStandings: '{{ hackathonTitle }} | Natijalar | Xakaton',
+      HackathonRegistrants: '{{ hackathonTitle }} | Roʻyxatdan oʻtganlar | Xakaton'
     },
    Arena: {
       Arena: 'Arena',
@@ -822,13 +827,22 @@ export const localeUz = {
       Projects: 'Loyihalar',
       Project: '{{ projectTitle }} | Loyiha',
     },
-    Courses: {
-      Courses: 'Kurslar',
-      Course: '{{ courseTitle }} | Kurs',
+   Courses: {
+     Courses: 'Kurslar',
+     Course: '{{ courseTitle }} | Kurs',
       CourseLesson: '{{ lessonTitle }} | {{ courseTitle }} | Kurs',
+      CourseDictionary: '{{ courseTitle }} | Lugʻat | Kurs',
+      CourseDictionaryTraining: '{{ courseTitle }} | Lugʻat mashqi | Kurs',
+   },
+   Shop: {
+     Shop: 'Doʻkon',
+   },
+    KepCover: 'KEP Cover #3',
+    Auth: {
+      Login: 'Tizimga kirish',
     },
-    Shop: {
-      Shop: 'Doʻkon',
+    Errors: {
+      Error404: 'Sahifa topilmadi',
     },
   },
   Errors: {

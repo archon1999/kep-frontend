@@ -34,6 +34,7 @@ export class HackathonAttemptsPage extends BaseTablePageComponent<ProjectAttempt
   constructor(private repository: ProjectAttemptsRepository) {
     super();
     this.hackathon = this.route.snapshot.data.hackathon;
+    this.titleService.updateTitle(this.route, {hackathonTitle: this.hackathon.title});
 
     interval(5000).pipe(takeUntil(this._unsubscribeAll)).subscribe(
       () => this.reloadPage()

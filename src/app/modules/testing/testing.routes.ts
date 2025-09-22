@@ -4,7 +4,8 @@ export default [
   {
     path: '',
     loadComponent: () => import('@testing/ui/pages/tests-list/tests-list.page').then(m => m.TestsListPage),
-    title: 'Tests.Tests'
+    title: 'Tests.Tests',
+    data: { title: 'Tests.Tests' }
   },
   {
     path: 'test/:testId',

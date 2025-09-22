@@ -7,6 +7,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SidebarComponent } from '@courses/pages/course-lesson/sidebar/sidebar.component';
+import { TitleService } from '@shared/services/title.service';
 
 @Component({
   selector: 'app-training',
@@ -65,6 +66,7 @@ export class TrainingComponent implements OnInit {
     public route: ActivatedRoute,
     private dragulaService: DragulaService,
     public toastr: ToastrService,
+    private titleService: TitleService,
   ) {
     this.route.data.subscribe(({course, courseLessons, courseDictionary}) => {
       this.course = course;
@@ -73,6 +75,7 @@ export class TrainingComponent implements OnInit {
       });
       this.courseDictionary = courseDictionary;
       this.contentHeader.breadcrumb.links[1].name = this.course.title;
+      this.titleService.updateTitle(this.route, {courseTitle: this.course.title});
     });
   }
 
