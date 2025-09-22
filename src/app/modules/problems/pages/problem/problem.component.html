@@ -122,8 +122,6 @@
         </div>
 
         <div class="col-lg-3 col-md-12 col-sm-12">
-          <problem-sidebar [problem]="problem"></problem-sidebar>
-
           @if (isAuthenticated) {
             <problem-submit-card
               [availableLanguages]="problem.availableLanguages"
@@ -131,6 +129,8 @@
               (submitted)="onSubmit()"
             />
           }
+
+          <problem-sidebar [problem]="problem"></problem-sidebar>
         </div>
 
       </div>
