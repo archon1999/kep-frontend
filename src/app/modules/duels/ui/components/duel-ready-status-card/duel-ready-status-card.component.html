@@ -3,7 +3,7 @@
     <div>
       <h5 class="mb-1">{{ 'DuelReadyStatus' | translate }}</h5>
       <p class="text-muted mb-0">
-        {{ isReady ? ('DuelReadyDescription' | translate) : ('DuelNotReadyDescription' | translate) }}
+        {{ !isReady ? ('DuelReadyDescription' | translate) : ('DuelNotReadyDescription' | translate) }}
       </p>
     </div>
     <div class="ready-status-card__toggle d-flex align-items-center gap-2">

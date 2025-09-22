@@ -39,7 +39,7 @@ export class DuelsApiService {
   }
 
   updateReadyStatus(ready: boolean): Observable<DuelReadyStatus> {
-    return this.api.post('duels/ready-status', { ready });
+    return this.api.put('duels/ready-status', { ready });
   }
 
   getReadyPlayers(params: Record<string, any>): Observable<PageResult<DuelReadyPlayer>> {

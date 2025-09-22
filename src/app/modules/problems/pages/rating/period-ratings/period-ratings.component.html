@@ -9,7 +9,7 @@
         <kep-card>
           <div class="card-header">
             <div class="card-title">
-              {{ rating.period | uppercase | translate }}
+              {{ rating.period | titlecase | translate }}
             </div>
             <a class="btn-sm btn btn-{{ rating.color }}" routerLink="history">
               {{ 'History' | translate }}
