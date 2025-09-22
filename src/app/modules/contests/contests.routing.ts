@@ -95,6 +95,18 @@ export default [
     }
   },
   {
+    path: 'contest/:id/statistics',
+    loadComponent: () => import('./pages/contest/contest-statistics/contest-statistics.component').then(c => c.ContestStatisticsComponent),
+    data: {
+      animation: 'contest-statistics',
+      title: 'Contests.ContestStatistics',
+    },
+    canActivate: [ContestGuard],
+    resolve: {
+      contest: ContestResolver,
+    },
+  },
+  {
     path: 'contest/:id/registrants',
     loadComponent: () => import('./pages/contest/contest-registrants/contest-registrants.component').then(c => c.ContestRegistrantsComponent),
     data: {

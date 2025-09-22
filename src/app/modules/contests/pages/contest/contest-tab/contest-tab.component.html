@@ -48,6 +48,16 @@
         </ng-template>
       </li>
     }
+    @if (contest?.status != -1) {
+      <li ngbNavItem>
+        <a class="nav-link" [routerLink]="Resources.ContestStatistics | resourceById:contest?.id"
+           routerLinkActive="active">
+          <kep-icon name="statistics"></kep-icon>
+          {{ 'Contests.Statistics' | translate }}</a>
+        <ng-template ngbNavContent>
+        </ng-template>
+      </li>
+    }
     @if (contest?.status == 1 && contest?.isRated) {
       <li ngbNavItem>
         <a class="nav-link" [routerLink]="Resources.ContestRatingChanges | resourceById:contest?.id"

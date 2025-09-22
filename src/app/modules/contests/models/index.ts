@@ -10,3 +10,16 @@ export { ContestProblemInfo } from './contest-problem-info';
 export { Contest } from './contest';
 export { Contestant } from './contestant';
 export { ContestCategory } from './contest-category';
+export {
+  ContestStatisticAttemptsRecord,
+  ContestStatisticBadge,
+  ContestStatisticContestant,
+  ContestStatisticSolveRecord,
+  ContestStatisticUser,
+  ContestStatistics,
+  ContestStatisticsBadges,
+  ContestStatisticsGeneral,
+  ContestStatisticsRecords,
+  ContestStatisticsTimelinePoint,
+  ContestStatisticsVerdicts,
+} from './contest-statistics';
