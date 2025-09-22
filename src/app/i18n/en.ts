@@ -275,6 +275,7 @@ export const locale = {
     Purchase: 'Purchase',
     ArenaWinners: 'Arena winners',
     GoToArena: 'Go to Arena',
+    GoBack: 'Go back',
     Technology: 'Technology',
     Submit: 'Submit',
     Submitted: 'Submitted',
