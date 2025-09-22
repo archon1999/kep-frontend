@@ -58,6 +58,10 @@ export class DuelsApiService {
     return this.api.get('duels', params);
   }
 
+  getMyDuels(params: Record<string, any>): Observable<PageResult<Duel>> {
+    return this.api.get('duels/my', params);
+  }
+
   confirmDuel(duelId: number) {
     return this.api.post(`duels/${duelId}/confirm`);
   }

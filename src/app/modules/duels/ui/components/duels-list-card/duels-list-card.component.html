@@ -36,6 +36,15 @@
     </div>
 
     <div class="duels-list-card__actions d-flex flex-wrap justify-content-end gap-2">
+      @if (duel.duelPreset) {
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-secondary"
+          (click)="openPresetModal()"
+        >
+          {{ 'Preset' | translate }}
+        </button>
+      }
       @if (confirmAvailable) {
         <button
           type="button"

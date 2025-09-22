@@ -23,29 +23,55 @@
       </div>
 
       <div class="col-12">
-        <duel-ready-players-widget
-          [currentUsername]="currentUser?.username ?? null"
-          [refreshKey]="readyPlayersRefreshKey"
-          (duelCreated)="onDuelCreated()"
-        />
-      </div>
-
-      <div class="col-12 col-xl-6">
-        <duels-list-widget
-          [username]="currentUser?.username ?? null"
-          [currentUsername]="currentUser?.username ?? null"
-          [refreshKey]="myDuelsRefreshKey"
-          (duelConfirmed)="onDuelConfirmed()"
-        />
-      </div>
-
-      <div class="col-12 col-xl-6">
-        <duels-list-widget
-          titleKey="AllDuels"
-          [currentUsername]="currentUser?.username ?? null"
-          [refreshKey]="allDuelsRefreshKey"
-          (duelConfirmed)="onDuelConfirmed()"
-        />
+        <div class="duels-page__tabs">
+          <ul
+            [(activeId)]="activeTab"
+            ngbNav
+            #duelsTabs="ngbNav"
+            class="nav-tabs nav-style-1 nav-fill duels-page__nav"
+            [destroyOnHide]="false"
+          >
+            <li [ngbNavItem]="'my'">
+              <button ngbNavLink type="button">
+                {{ 'MyDuels' | translate }}
+              </button>
+              <ng-template ngbNavContent>
+                <duels-list-widget
+                  [my]="true"
+                  [currentUsername]="currentUser?.username ?? null"
+                  [refreshKey]="myDuelsRefreshKey"
+                  (duelConfirmed)="onDuelConfirmed()"
+                />
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="'ready'">
+              <button ngbNavLink type="button">
+                {{ 'ReadyForDuelUsers' | translate }}
+              </button>
+              <ng-template ngbNavContent>
+                <duel-ready-players-widget
+                  [currentUsername]="currentUser?.username ?? null"
+                  [refreshKey]="readyPlayersRefreshKey"
+                  (duelCreated)="onDuelCreated()"
+                />
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="'all'">
+              <button ngbNavLink type="button">
+                {{ 'AllDuels' | translate }}
+              </button>
+              <ng-template ngbNavContent>
+                <duels-list-widget
+                  titleKey="AllDuels"
+                  [currentUsername]="currentUser?.username ?? null"
+                  [refreshKey]="allDuelsRefreshKey"
+                  (duelConfirmed)="onDuelConfirmed()"
+                />
+              </ng-template>
+            </li>
+          </ul>
+          <div [ngbNavOutlet]="duelsTabs" class="mt-3"></div>
+        </div>
       </div>
     </div>
   </div>
