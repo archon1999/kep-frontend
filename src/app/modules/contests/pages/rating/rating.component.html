@@ -77,19 +77,17 @@
       }
 
       @if (total) {
-        <div class="d-flex justify-content-center">
-          <kep-pagination
-            (pageChange)="pageChange($event)"
-            (pageSizeChange)="pageSizeChange($event)"
-            [collectionSize]="total"
-            [maxSize]="maxSize"
-            [page]="pageNumber"
-            [pageOptions]="pageOptions"
-            [pageSize]="pageSize"
-            [disabled]="isLoading"
-            [rotate]="true">
-          </kep-pagination>
-        </div>
+        <kep-pagination
+          (pageChange)="pageChange($event)"
+          (pageSizeChange)="pageSizeChange($event)"
+          [collectionSize]="total"
+          [maxSize]="maxSize"
+          [page]="pageNumber"
+          [pageOptions]="pageOptions"
+          [pageSize]="pageSize"
+          [disabled]="isLoading"
+          [rotate]="true">
+        </kep-pagination>
       }
     </section>
   </div>

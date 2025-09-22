@@ -36,11 +36,11 @@ export class RatingComponent extends BaseTablePageComponent<ContestsRating> impl
   override pageOptions = [12, 24, 36];
   override defaultOrdering = '-rating';
 
-  public readonly orderingOptions = ['rating', 'maxRating', 'contestantsCount'] as const;
+  public readonly orderingOptions = ['rating', 'max_rating', 'contestants_count'] as const;
   public readonly orderingLabels: Record<(typeof this.orderingOptions)[number], string> = {
     rating: 'Rating',
-    maxRating: 'MaxRating',
-    contestantsCount: 'Contests.Contests',
+    max_rating: 'MaxRating',
+    contestants_count: 'Contests.Contests',
   };
 
   constructor(
