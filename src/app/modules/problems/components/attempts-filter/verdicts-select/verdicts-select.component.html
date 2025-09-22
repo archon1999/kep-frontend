@@ -1,9 +1,18 @@
-<ng-select
-  appendTo="body"
-  *ngIf="control"
-  [items]="verdicts"
-  [formControl]="control"
-  bindLabel="label"
-  bindValue="value"/>
+@if (control) {
+  <ng-select
+    appendTo="body"
+    [items]="verdicts"
+    [formControl]="control"
+    bindLabel="label"
+    bindValue="value"
+  />
+} @else {
+  <ng-select
+    appendTo="body"
+    [items]="verdicts"
+    bindLabel="label"
+    bindValue="value"
+  />
+}
 
 <ng-select-css></ng-select-css>
