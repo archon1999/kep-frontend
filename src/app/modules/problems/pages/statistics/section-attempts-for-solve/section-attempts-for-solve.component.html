@@ -1,14 +1,12 @@
-<div class="card">
-  <div
-    class="card-header d-flex flex-sm-row flex-column justify-content-md-between align-items-start justify-content-start">
-    <h4 class="card-title mb-sm-0 mb-1">{{ 'NumberAttemptsSolve' | translate }}</h4>
-  </div>
+<kep-card class="attempts-card">
   <div class="card-body">
-    @if (numberOfAttemptsForSolve) {
-      <div>
-        <apex-chart [options]="numberOfAttemptsForSolveChart">
-        </apex-chart>
-      </div>
+    <div class="card-header px-0 pt-0 pb-1">
+      <div class="text-uppercase text-muted fw-bold small">{{ 'NumberAttemptsSolve' | translate }}</div>
+    </div>
+    @if (numberOfAttemptsForSolveChart) {
+      <apex-chart [options]="numberOfAttemptsForSolveChart"></apex-chart>
+    } @else {
+      <div class="empty-state text-muted text-center py-3">No data</div>
     }
   </div>
-</div>
+</kep-card>

@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CoreCommonModule } from '@core/common.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
   selector: 'section-time',
@@ -12,124 +12,66 @@ import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-char
   imports: [
     CoreCommonModule,
     ApexChartModule,
+    KepCardComponent,
+    TranslateModule,
   ]
 })
-export class SectionTimeComponent implements OnInit {
+export class SectionTimeComponent implements OnChanges {
 
-  @Input() username: string;
-  @Input() chartTheme: any;
+  @Input() byWeekday: any[] = [];
+  @Input() byMonth: any[] = [];
+  @Input() byPeriod: any[] = [];
 
   public byWeekdayChart: any;
   public byMonthChart: any;
   public byPeriodChart: any;
 
   constructor(
-    public statisticsService: ProblemsStatisticsService,
     public translateService: TranslateService,
   ) { }
 
-  ngOnInit(): void {
-    this.statisticsService.getByWeekday(this.username).subscribe(
-      (result: any) => {
-        const values = [];
-        const labels = [];
-        for (const data of result) {
-          labels.push(this.translateService.instant(data.day));
-          values.push(data.solved);
-        }
-        this.byWeekdayChart = {
-          series: [
-            {
-              name: this.translateService.instant('Solved'),
-              data: values,
-            }
-          ],
-          chart: {
-            type: 'bar',
-            height: 350,
-          },
-          plotOptions: {
-            bar: {
-              horizontal: true
-            }
-          },
-          dataLabels: {
-            enabled: false
-          },
-          xaxis: {
-            categories: labels
-          }
-        };
-      }
-    );
-
-    this.statisticsService.getByMonth(this.username).subscribe(
-      (result: any) => {
-        const values = [];
-        const labels = [];
-        for (const data of result) {
-          labels.push(this.translateService.instant(data.month));
-          values.push(data.solved);
-        }
-        this.byMonthChart = {
-          series: [
-            {
-              name: this.translateService.instant('Solved'),
-              data: values,
-            }
-          ],
-          chart: {
-            type: 'bar',
-            height: 350,
-          },
-          plotOptions: {
-            bar: {
-              horizontal: true
-            }
-          },
-          dataLabels: {
-            enabled: false
-          },
-          xaxis: {
-            categories: labels
-          }
-        };
-      }
-    );
-
-    this.statisticsService.getByPeriod(this.username).subscribe(
-      (result: any) => {
-        const values = [];
-        const labels = [];
-        for (const data of result) {
-          labels.push(data.period);
-          values.push(data.solved);
-        }
-        this.byPeriodChart = {
-          series: [
-            {
-              name: this.translateService.instant('Solved'),
-              data: values,
-            }
-          ],
-          chart: {
-            type: 'bar',
-            height: 350,
-          },
-          plotOptions: {
-            bar: {
-              horizontal: true
-            }
-          },
-          dataLabels: {
-            enabled: false
-          },
-          xaxis: {
-            categories: labels
-          }
-        };
-      }
-    );
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['byWeekday']) {
+      this.byWeekdayChart = this.buildChart(this.byWeekday, (item) => this.translateService.instant(item.day));
+    }
+    if (changes['byMonth']) {
+      this.byMonthChart = this.buildChart(this.byMonth, (item) => this.translateService.instant(item.month));
+    }
+    if (changes['byPeriod']) {
+      this.byPeriodChart = this.buildChart(this.byPeriod, (item) => item.period);
+    }
   }
 
+  private buildChart(data: any[], labelFn: (item: any) => string) {
+    if (!data?.length) {
+      return null;
+    }
+
+    const values = data.map((item) => item.solved);
+    const labels = data.map(labelFn);
+
+    return {
+      series: [
+        {
+          name: this.translateService.instant('Solved'),
+          data: values,
+        }
+      ],
+      chart: {
+        type: 'bar',
+        height: 300,
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        categories: labels
+      }
+    };
+  }
 }

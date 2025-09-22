@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { CoreCommonModule } from '@core/common.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'section-heatmap',
@@ -13,84 +14,72 @@ import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-option
   imports: [
     CoreCommonModule,
     ApexChartModule,
+    KepCardComponent,
+    TranslateModule,
   ]
 })
-export class SectionHeatmapComponent implements OnInit {
+export class SectionHeatmapComponent implements OnChanges {
 
-  @Input() username: string;
-  @Input() chartTheme: string;
+  @Input() heatmap: Array<any> = [];
+  @Input() selectedYear: number | null = null;
+  @Input() availableYears: number[] = [];
+  @Output() yearChange = new EventEmitter<number>();
 
-  public heatmap: Array<any>;
-  public heatmapYear = 0;
   public heatmapChart: ChartOptions;
 
   constructor(
-    public statisticsService: ProblemsStatisticsService,
     public translateService: TranslateService,
   ) { }
 
-  ngOnInit(): void {
-    this.heatmapUpdate(0);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['heatmap']) {
+      this.buildChart();
+    }
   }
 
-  heatmapUpdate(year: number) {
-    this.heatmapYear = year;
-    const username = this.username;
-    this.statisticsService.getHeatmap(username, this.heatmapYear).subscribe((result: any) => {
-      const series = [{
-        name: this.translateService.instant('Monday'),
-        data: [],
-      }, {
-        name: this.translateService.instant('Tuesday'),
-        data: [],
-      }, {
-        name: this.translateService.instant('Wednesday'),
-        data: [],
-      }, {
-        name: this.translateService.instant('Thursday'),
-        data: [],
-      }, {
-        name: this.translateService.instant('Friday'),
-        data: [],
-      }, {
-        name: this.translateService.instant('Saturday'),
-        data: [],
-      }, {
-        name: this.translateService.instant('Sunday'),
-        data: [],
-      }];
-      for (const data of result) {
-        const date = new Date(data.date);
-        const weekday = date.getDay();
-        series[weekday].data.push({
-          x: date,
-          y: data.solved,
-        });
+  onYearChange(year: number) {
+    this.yearChange.emit(year);
+  }
+
+  private buildChart() {
+    if (!this.heatmap?.length) {
+      this.heatmapChart = null;
+      return;
+    }
+
+    const series = [
+      { name: this.translateService.instant('Sunday'), data: [] },
+      { name: this.translateService.instant('Monday'), data: [] },
+      { name: this.translateService.instant('Tuesday'), data: [] },
+      { name: this.translateService.instant('Wednesday'), data: [] },
+      { name: this.translateService.instant('Thursday'), data: [] },
+      { name: this.translateService.instant('Friday'), data: [] },
+      { name: this.translateService.instant('Saturday'), data: [] }
+    ];
+
+    for (const item of this.heatmap ?? []) {
+      const date = new Date(item.date);
+      const weekday = date.getDay();
+      const index = weekday; // Sunday = 0
+      if (series[index]) {
+        series[index].data.push({ x: date, y: item.solved });
       }
-      this.heatmapChart = {
-        series: series,
-        chart: {
-          height: 350,
-          type: 'heatmap',
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          width: 1
-        },
-        xaxis: {
-          type: 'datetime',
-          labels: {
-            format: 'MMM',
-          }
-        },
-        yaxis: {
-          show: false,
-        }
-      };
-      this.heatmap = result;
-    });
-  }
+    }
 
+    this.heatmapChart = {
+      series,
+      chart: {
+        height: 320,
+        type: 'heatmap',
+        toolbar: { show: false }
+      },
+      dataLabels: { enabled: false },
+      stroke: { width: 1 },
+      xaxis: {
+        type: 'datetime',
+        labels: { format: 'MMM' }
+      },
+      yaxis: { show: false }
+    };
+  }
 }

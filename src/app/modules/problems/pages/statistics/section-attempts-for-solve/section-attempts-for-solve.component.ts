@@ -1,9 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { colors } from '@core/config/colors';
-import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
 import { CoreCommonModule } from '@core/common.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
   selector: 'section-attempts-for-solve',
@@ -13,94 +13,83 @@ import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-char
   imports: [
     CoreCommonModule,
     ApexChartModule,
+    KepCardComponent,
+    TranslateModule,
   ]
 })
-export class SectionAttemptsForSolveComponent implements OnInit {
+export class SectionAttemptsForSolveComponent implements OnChanges {
 
-  @Input() username: string;
-  @Input() chartTheme: any;
+  @Input() numberOfAttempts: any;
 
   public numberOfAttemptsForSolveChart: any;
-  public numberOfAttemptsForSolve: any;
-
-  public solvedText: string;
-  public numberOfAttemptsText: string;
+  public solvedText = this.translateService.instant('Solved');
+  public numberOfAttemptsText = this.translateService.instant('NumberOfAttempts');
 
   constructor(
-    public statisticsService: ProblemsStatisticsService,
     public translateService: TranslateService,
   ) { }
 
-  ngOnInit(): void {
-    this.translateService.get('Solved').subscribe(
-      (text: string) => {
-        this.solvedText = text;
-      }
-    );
-
-    this.translateService.get('NumberOfAttempts').subscribe(
-      (text: string) => {
-        this.numberOfAttemptsText = text;
-      }
-    );
-    this.numberOfAttemptsForSolveChartLoad();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['numberOfAttempts'] && this.numberOfAttempts) {
+      this.buildChart();
+    }
   }
 
-  numberOfAttemptsForSolveChartLoad() {
-    const username = this.username;
+  private buildChart() {
+    if (!this.numberOfAttempts?.chartSeries?.length) {
+      this.numberOfAttemptsForSolveChart = null;
+      return;
+    }
+
     const data = [];
     const labels = [];
-    this.statisticsService.getNumberOfAttemptsForSolve(username).subscribe((result: any) => {
-      for (const A of result.chartSeries) {
-        data.push({
-          x: this.numberOfAttemptsText + ': ' + A.attemptsCount,
-          y: A.value,
-        });
-        labels.push(A.attemptsCount);
-      }
-      this.numberOfAttemptsForSolveChart = {
-        series: [{
-          name: this.solvedText,
-          data: data,
-        }],
-        chart: {
-          type: 'area',
-          height: 300,
-          zoom: {
-            enabled: false
-          },
-          toolbar: {show: false}
-        },
-        labels: labels,
-        dataLabels: {
+
+    for (const item of this.numberOfAttempts?.chartSeries ?? []) {
+      data.push({
+        x: `${this.numberOfAttemptsText}: ${item.attemptsCount}`,
+        y: item.value,
+      });
+      labels.push(item.attemptsCount);
+    }
+
+    this.numberOfAttemptsForSolveChart = {
+      series: [{
+        name: this.solvedText,
+        data: data,
+      }],
+      chart: {
+        type: 'area',
+        height: 280,
+        zoom: {
           enabled: false
         },
-        stroke: {
-          curve: 'straight'
-        },
-        xaxis: {
-          labels: {
-            show: false,
-          }
-        },
-        colors: [colors.solid.primary],
-        yaxis: {
-          opposite: true,
-          labels: {
-            formatter: function (val) {
-              return Math.trunc(val) + '%';
-            },
-          },
-          max: 100,
-        },
-        legend: {
-          horizontalAlign: 'left'
+        toolbar: {show: false}
+      },
+      labels: labels,
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: 'straight'
+      },
+      xaxis: {
+        labels: {
+          show: false,
         }
-      };
-      this.numberOfAttemptsForSolve = result;
-    });
-
+      },
+      colors: [colors.solid.primary],
+      yaxis: {
+        opposite: true,
+        labels: {
+          formatter: function (val) {
+            return Math.trunc(val) + '%';
+          },
+        },
+        max: 100,
+      },
+      legend: {
+        horizontalAlign: 'left'
+      }
+    };
   }
-
-
 }

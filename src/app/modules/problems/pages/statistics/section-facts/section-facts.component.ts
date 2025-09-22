@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
+import { Component, Input } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { Resources } from '@app/resources';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 export interface Facts {
   firstAttempt: any;
@@ -21,25 +22,10 @@ export interface Facts {
   templateUrl: './section-facts.component.html',
   styleUrls: ['./section-facts.component.scss'],
   standalone: true,
-  imports: [CoreCommonModule, NgbTooltipModule, ResourceByIdPipe],
+  imports: [CoreCommonModule, NgbTooltipModule, ResourceByIdPipe, KepCardComponent, TranslateModule],
 })
-export class SectionFactsComponent implements OnInit {
+export class SectionFactsComponent {
 
-  @Input() username: string;
-
-  public facts: Facts;
+  @Input() facts: Facts;
   protected readonly Resources = Resources;
-
-  constructor(
-    public statisticsService: ProblemsStatisticsService,
-  ) { }
-
-  ngOnInit(): void {
-    this.statisticsService.getFacts(this.username).subscribe(
-      (facts: Facts) => {
-        this.facts = facts;
-      }
-    );
-  }
-
 }

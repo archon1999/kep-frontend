@@ -1,0 +1,30 @@
+.problems-statistics {
+  .statistics-header {
+    h2 {
+      font-weight: 700;
+    }
+  }
+
+  .overview-card {
+    .card-body {
+      padding: 1rem;
+    }
+
+    .avatar {
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+    }
+  }
+}
+
+@media (max-width: 767.98px) {
+  .problems-statistics {
+    .overview-card .card-body {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+}

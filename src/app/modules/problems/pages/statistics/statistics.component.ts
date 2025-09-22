@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { SectionProfileComponent } from '@problems/pages/statistics/section-profile/section-profile.component';
 import {
@@ -13,6 +13,79 @@ import {
 } from '@problems/pages/statistics/section-attempts-for-solve/section-attempts-for-solve.component';
 import { BaseComponent } from '@core/common/classes/base.component';
 import { AuthUser } from '@auth';
+import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
+import { Subscription } from 'rxjs';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { GeneralInfo } from '@problems/models/statistics.models';
+import { Difficulties } from '@problems/pages/statistics/section-difficulties/section-difficulties.component';
+import { Facts } from '@problems/pages/statistics/section-facts/section-facts.component';
+
+interface ProblemsStatisticsMeta {
+  lastDays: number;
+  allowedLastDays: number[];
+  heatmapRange: {
+    from: string;
+    to: string;
+  };
+}
+
+interface ProblemsLastDays {
+  series: number[];
+  solved: number;
+}
+
+interface ProblemsLangStat {
+  lang: string;
+  langFull: string;
+  solved: number;
+}
+
+interface ProblemsTagStat {
+  name: string;
+  value: number;
+}
+
+interface ProblemsTopicStat {
+  topic: string;
+  solved: number;
+  code: string;
+  id: number;
+}
+
+interface ProblemsHeatmapEntry {
+  date: string;
+  solved: number;
+}
+
+interface NumberOfAttemptsStat {
+  chartSeries: Array<{ attemptsCount: number; value: number }>;
+}
+
+interface TimeDistributionEntry {
+  day?: string;
+  month?: string;
+  period?: string;
+  solved: number;
+}
+
+interface ProblemsStatisticsResponse {
+  general: GeneralInfo;
+  byDifficulty: Difficulties;
+  byTopic: ProblemsTopicStat[];
+  facts: Facts;
+  byLang: ProblemsLangStat[];
+  byTag: ProblemsTagStat[];
+  byWeekday: TimeDistributionEntry[];
+  byMonth: TimeDistributionEntry[];
+  byPeriod: TimeDistributionEntry[];
+  lastDays: ProblemsLastDays;
+  heatmap: ProblemsHeatmapEntry[];
+  numberOfAttempts: NumberOfAttemptsStat;
+  meta: ProblemsStatisticsMeta;
+}
 
 @Component({
   selector: 'app-statistics',
@@ -28,17 +101,32 @@ import { AuthUser } from '@auth';
     SectionHeatmapComponent,
     SectionFactsComponent,
     SectionTimeComponent,
-    SectionAttemptsForSolveComponent
+    SectionAttemptsForSolveComponent,
+    KepCardComponent,
+    SpinnerComponent,
+    KepIconComponent,
+    TranslateModule
   ]
 })
-export class StatisticsComponent extends BaseComponent implements OnInit {
+export class StatisticsComponent extends BaseComponent implements OnInit, OnDestroy {
   public username: string;
+  public isLoading = false;
+  public statistics: ProblemsStatisticsResponse | null = null;
+  public selectedDays: number | null = null;
+  public selectedYear: number | null = null;
+  public availableYears: number[] = [];
+  public availableDays: number[] = [];
+  public overviewCards: Array<{ titleKey: string; value: string | number; icon: string; subtitle?: string; isNumber?: boolean }> = [];
+
+  protected statisticsService = inject(ProblemsStatisticsService);
+  private statisticsSubscription: Subscription | null = null;
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(
       (params: any) => {
         if (params['username']) {
           this.username = params['username'];
+          this.loadStatistics();
         }
       }
     );
@@ -46,5 +134,120 @@ export class StatisticsComponent extends BaseComponent implements OnInit {
 
   afterChangeCurrentUser(currentUser: AuthUser) {
     this.username = currentUser.username;
+    this.loadStatistics();
+  }
+
+  ngOnDestroy() {
+    this.statisticsSubscription?.unsubscribe();
+  }
+
+  public handleDaysChange(days: number) {
+    if (days === this.selectedDays) {
+      return;
+    }
+    this.selectedDays = days;
+    this.loadStatistics();
+  }
+
+  public handleYearChange(year: number) {
+    if (year === this.selectedYear) {
+      return;
+    }
+    this.selectedYear = year;
+    this.loadStatistics();
+  }
+
+  private loadStatistics() {
+    if (!this.username) {
+      return;
+    }
+
+    const year = this.selectedYear ?? new Date().getFullYear();
+    const days = this.selectedDays ?? undefined;
+    this.selectedYear = year;
+
+    this.isLoading = true;
+    this.statisticsSubscription?.unsubscribe();
+    const params: { year: number; days?: number } = { year };
+    if (typeof days === 'number') {
+      params.days = days;
+    }
+    this.statisticsSubscription = this.statisticsService.getStatistics(this.username, params)
+      .subscribe({
+        next: (statistics: ProblemsStatisticsResponse) => {
+          this.statistics = statistics;
+          this.isLoading = false;
+          this.setupMeta(statistics.meta);
+          this.buildOverviewCards(statistics);
+        },
+        error: () => {
+          this.isLoading = false;
+        }
+      });
+  }
+
+  private setupMeta(meta: ProblemsStatisticsMeta) {
+    if (!meta) {
+      return;
+    }
+
+    this.selectedDays = meta.lastDays ?? this.selectedDays;
+    this.availableDays = meta.allowedLastDays ?? [];
+
+    const from = new Date(meta.heatmapRange?.from ?? '');
+    const to = new Date(meta.heatmapRange?.to ?? '');
+    if (!Number.isNaN(from.getFullYear()) && !Number.isNaN(to.getFullYear())) {
+      const years = new Set<number>();
+      for (let year = from.getFullYear(); year <= to.getFullYear(); year++) {
+        years.add(year);
+      }
+      this.availableYears = Array.from(years).sort((a, b) => b - a);
+    }
+
+    if (!this.selectedYear && this.availableYears.length) {
+      this.selectedYear = this.availableYears[0];
+    }
+  }
+
+  private buildOverviewCards(statistics: ProblemsStatisticsResponse) {
+    if (!statistics) {
+      this.overviewCards = [];
+      return;
+    }
+
+    const rankSubtitle = statistics.general?.usersCount
+      ? `/${statistics.general.usersCount}`
+      : '';
+
+    this.overviewCards = [
+      {
+        titleKey: 'Solved',
+        value: statistics.general?.solved ?? 0,
+        icon: 'check-circle',
+        subtitle: this.translateService.instant('Problems'),
+        isNumber: true
+      },
+      {
+        titleKey: 'Rating',
+        value: statistics.general?.rating ?? 0,
+        icon: 'rating',
+        isNumber: true
+      },
+      {
+        titleKey: 'Rank',
+        value: statistics.general?.rank ?? '-',
+        icon: 'users',
+        subtitle: rankSubtitle
+      },
+      {
+        titleKey: 'SolvedWithSingleAttempt',
+        value: statistics.facts?.solvedWithSingleAttempt ?? 0,
+        icon: 'award',
+        subtitle: statistics.facts?.solvedWithSingleAttemptPercentage
+          ? `${statistics.facts.solvedWithSingleAttemptPercentage}%`
+          : undefined,
+        isNumber: true
+      }
+    ];
   }
 }
