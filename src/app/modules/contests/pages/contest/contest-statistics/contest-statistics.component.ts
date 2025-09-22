@@ -17,6 +17,7 @@ import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-char
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 import { colors as Colors } from '@core/config/colors';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
+import { KepTableComponent } from "@shared/components/kep-table/kep-table.component";
 interface OverviewCard {
   key: string;
   label: string;
@@ -53,6 +54,7 @@ interface BadgeCard {
     KepCardComponent,
     ApexChartModule,
     ContestantViewModule,
+    KepTableComponent,
   ],
 })
 export class ContestStatisticsComponent extends BasePageComponent implements OnInit {
@@ -144,7 +146,7 @@ export class ContestStatisticsComponent extends BasePageComponent implements OnI
     this.overviewCards = [
       {
         key: 'participants',
-        label: 'Contests.Participants',
+        label: 'Contests.ContestantsCount',
         value: statistics.general.participants,
         icon: 'users',
         iconColor: 'primary',

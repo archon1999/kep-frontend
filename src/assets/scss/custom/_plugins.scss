@@ -1428,7 +1428,7 @@ html[data-theme-mode="light"] {
   &.apexcharts-yaxis-label,
   &.apexcharts-xaxis-label {
     tspan {
-      fill: #fff;
+      fill: var(--default-text-color) !important;
       font-family: var(--default-font-family);
     }
   }

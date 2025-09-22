@@ -15,77 +15,90 @@
         </div>
       </kep-card>
     } @else if (statistics) {
-      <div class="row g-2 g-lg-3">
+      <div class="row">
         @for (card of overviewCards; track card.key) {
           <div class="col-sm-6 col-xl-3">
             <kep-card>
-              <div class="card-body">
-                <div class="d-flex align-items-start justify-content-between gap-1">
-                  <div>
-                    <p class="text-muted text-uppercase fw-semibold mb-0 small">{{ card.label | translate }}</p>
-                    <h4 class="fw-bolder mt-1 mb-0">
-                      @if (card.format === 'percent') {
-                        {{ card.value | number:'1.0-2' }}%
-                      } @else {
-                        {{ card.value | number }}
-                      }
-                    </h4>
-                  </div>
-                  <div class="avatar p-50 m-0 bg-light-{{ card.iconColor }} rounded">
-                    <div class="avatar-content">
-                      <kep-icon [name]="card.icon" [color]="card.iconColor"></kep-icon>
-                    </div>
-                  </div>
+              <div class="card-header">
+                <div class="card-title">
+                  {{ card.label | translate }}
                 </div>
+                <kep-icon [name]="card.icon" [color]="card.iconColor"></kep-icon>
+              </div>
+              <div class="card-body">
+                <h4 class="fw-bolder mt-1 mb-0">
+                  @if (card.format === 'percent') {
+                    {{ card.value | number:'1.0-2' }}%
+                  } @else {
+                    {{ card.value | number }}
+                  }
+                </h4>
               </div>
             </kep-card>
           </div>
         }
       </div>
 
-      <div class="row g-2 g-lg-3 mt-0 mt-lg-2">
+      <div class="row">
         <div class="col-lg-8">
           <kep-card>
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-1">
-                <h5 class="card-title mb-0">{{ 'Contests.AttemptsTimeline' | translate }}</h5>
-                <span class="text-muted small">{{ statistics.general.attempts.total | number }} {{ 'Attempts' | translate }}</span>
+            <div class="card-header">
+              <div class="card-title">
+                {{ 'Contests.AttemptsTimeline' | translate }}
               </div>
+              <span class="text-muted small">{{ statistics.general.attempts.total | number }} {{ 'Attempts' | translate }}</span>
+            </div>
+
+            <div class="card-body p-2">
               <apex-chart [options]="timelineChart"></apex-chart>
             </div>
           </kep-card>
         </div>
         <div class="col-lg-4">
           <kep-card>
+            <div class="card-header">
+              <div class="card-title">
+                {{ 'Contests.VerdictDistribution' | translate }}
+              </div>
+            </div>
+
             <div class="card-body">
-              <h5 class="card-title mb-1">{{ 'Contests.VerdictDistribution' | translate }}</h5>
-              <apex-chart [options]="verdictsChart"></apex-chart>
+              <apex-chart [options]="verdictsChart"/>
             </div>
           </kep-card>
         </div>
       </div>
 
-      <div class="row g-2 g-lg-3 mt-0 mt-lg-2">
+      <div class="row">
         <div class="col-lg-8">
           <kep-card>
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center mb-1">
-                <h5 class="card-title mb-0">{{ 'Contests.ProblemAttempts' | translate }}</h5>
-                <span class="text-muted small">{{ statistics.general.accepted.total | number }} {{ 'Solved' | translate }}</span>
+            <div class="card-header">
+              <div class="card-title">
+                {{ 'Contests.ProblemAttempts' | translate }}
               </div>
+              <span class="text-muted small">
+                {{ statistics.general.accepted.total | number }}
+                {{ 'Contests.TotalAccepted' | translate }}
+              </span>
+            </div>
+            <div class="card-body">
               <apex-chart [options]="problemsChart"></apex-chart>
             </div>
           </kep-card>
         </div>
         <div class="col-lg-4">
           <kep-card>
+            <div class="card-header">
+              <div class="card-title">
+                {{ 'Contests.Badges' | translate }}
+              </div>
+            </div>
             <div class="card-body h-100 d-flex flex-column">
-              <h5 class="card-title mb-1">{{ 'Contests.Badges' | translate }}</h5>
-              <div class="d-flex flex-column gap-1 flex-grow-1">
+              <div class="d-flex flex-column gap-2 flex-grow-1">
                 @if (badges.length) {
                   @for (badge of badges; track badge.key) {
                     <div class="border rounded p-1">
-                      <div class="d-flex align-items-start gap-1">
+                      <div class="d-flex align-items-center">
                         <div class="avatar p-50 m-0 bg-light-{{ badge.color }} rounded">
                           <div class="avatar-content">
                             <kep-icon [name]="badge.icon" [color]="badge.color"></kep-icon>
@@ -123,29 +136,32 @@
         </div>
       </div>
 
-      <div class="row g-2 g-lg-3 mt-0 mt-lg-2">
+      <div class="row">
         <div class="col-lg-8">
           <kep-card>
+            <div class="card-header">
+              <div class="card-title">
+                {{ 'Contests.FirstSolves' | translate }}
+              </div>
+            </div>
             <div class="card-body">
-              <h5 class="card-title mb-1">{{ 'Contests.FirstSolves' | translate }}</h5>
-              <div class="table-responsive">
-                <table class="table table-sm align-middle mb-0">
-                  <thead>
+              <kep-table>
+                <ng-container header>
                   <tr>
-                    <th class="text-uppercase small text-muted">{{ 'Problem' | translate }}</th>
-                    <th class="text-uppercase small text-muted">{{ 'Contests.Contestant' | translate }}</th>
-                    <th class="text-uppercase small text-muted text-end">{{ 'Time' | translate }}</th>
+                    <th>{{ 'Problem' | translate }}</th>
+                    <th>{{ 'Contests.Contestant' | translate }}</th>
+                    <th class="text-end">{{ 'Time' | translate }}</th>
                   </tr>
-                  </thead>
-                  <tbody>
+                </ng-container>
+                <ng-container body>
                   @if (firstSolvesEntries.length) {
                     @for (entry of firstSolvesEntries; track entry.problem) {
                       <tr>
-                        <td class="fw-semibold">{{ entry.problem }}</td>
-                        <td>
+                        <td class="fw-semibold py-2">{{ entry.problem }}</td>
+                        <td class="py-2">
                           <contestant-view [user]="entry.record.contestant?.user" [team]="entry.record.contestant?.team"></contestant-view>
                         </td>
-                        <td class="text-end text-nowrap">{{ entry.record.time }}</td>
+                        <td class="text-end text-nowrap py-2">{{ entry.record.time }}</td>
                       </tr>
                     }
                   } @else {
@@ -153,25 +169,24 @@
                       <td colspan="3" class="text-center text-muted py-2">{{ 'Contests.NoFirstSolves' | translate }}</td>
                     </tr>
                   }
-                  </tbody>
-                </table>
-              </div>
+                </ng-container>
+              </kep-table>
             </div>
           </kep-card>
         </div>
         <div class="col-lg-4">
           <kep-card>
-            <div class="card-body d-flex flex-column gap-1">
-              <h5 class="card-title mb-1">{{ 'Contests.Facts' | translate }}</h5>
-              @if (facts.length) {
-                <ul class="mb-0 ps-2">
-                  @for (fact of facts; track $index) {
-                    <li class="mb-25">{{ fact }}</li>
-                  }
-                </ul>
-              } @else {
-                <div class="text-center text-muted small py-1">{{ 'Contests.NoFacts' | translate }}</div>
-              }
+            <div class="card-header">
+              <div class="card-title">
+                {{ 'Contests.Facts' | translate }}
+              </div>
+            </div>
+            <div class="card-body">
+              <ul class="list-group">
+                @for (fact of facts; track $index) {
+                  <li class="list-group-item">{{ fact }}</li>
+                }
+              </ul>
             </div>
           </kep-card>
         </div>

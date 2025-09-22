@@ -40,16 +40,6 @@
     }
     @if (contest?.status != -1) {
       <li ngbNavItem>
-        <a class="nav-link" [routerLink]="Resources.ContestStatistics | resourceById:contest?.id"
-           routerLinkActive="active">
-          <kep-icon name="statistics"></kep-icon>
-          {{ 'Statistics' | translate }}</a>
-        <ng-template ngbNavContent>
-        </ng-template>
-      </li>
-    }
-    @if (contest?.status != -1) {
-      <li ngbNavItem>
         <a class="nav-link" [routerLink]="Resources.ContestStandings | resourceById:contest?.id"
            routerLinkActive="active">
           <kep-icon name="ranking"></kep-icon>
@@ -64,6 +54,16 @@
            routerLinkActive="active">
           <kep-icon name="rating-changes"></kep-icon>
           {{ 'Contests.RatingChanges' | translate }}</a>
+        <ng-template ngbNavContent>
+        </ng-template>
+      </li>
+    }
+    @if (contest?.status != -1) {
+      <li ngbNavItem>
+        <a class="nav-link" [routerLink]="Resources.ContestStatistics | resourceById:contest?.id"
+           routerLinkActive="active">
+          <kep-icon name="statistics"></kep-icon>
+          {{ 'Statistics' | translate }}</a>
         <ng-template ngbNavContent>
         </ng-template>
       </li>

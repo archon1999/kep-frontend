@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ChartOptions } from './chart-options.type';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -25,6 +25,7 @@ export class ApexChartComponent implements OnInit, OnDestroy {
   constructor(
     protected readonly translateService: TranslateService,
     protected readonly appStateService: AppStateService,
+    protected readonly cdr: ChangeDetectorRef,
   ) {}
 
   private _options: ChartOptions;
@@ -36,12 +37,13 @@ export class ApexChartComponent implements OnInit, OnDestroy {
   @Input() set options(options: ChartOptions) {
     this._options = options;
     this.options.chart.fontFamily = this.options.chart.fontFamily || 'var(--default-font-family)';
-    this.options.colors = this.options.colors || ['var(--primary-color)'];
+    this.options.colors = this.options.colors || ['var(--primary-rgb)'];
     this.options.chart.toolbar = this.options.chart.toolbar || {show: false};
     this.options.chart.zoom = this.options.chart.zoom || {enabled: false};
     this.options.stroke = this.options.stroke || {width: 2};
     this.options.chart.locales = [ru, en, uz];
     this.options.chart.defaultLocale = 'en';
+    this.cdr.detectChanges();
   }
 
   ngOnInit(): void {
@@ -50,6 +52,7 @@ export class ApexChartComponent implements OnInit, OnDestroy {
         this.chartTheme = {
           mode: state.themeMode,
         };
+        this.cdr.detectChanges();
       }
     );
   }
