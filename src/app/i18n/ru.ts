@@ -229,6 +229,7 @@ export const localeRu = {
   AwaitingConfirmation: 'Ожидает подтверждения',
   Confirm: 'Подтвердить',
   NoDuelsYet: 'Пока нет дуэлей',
+  NoContestsRatingYet: 'Пока нет рейтинга по контестам',
   SelectDuelPreset: 'Выберите пресет дуэли',
   SelectDuelPresetDescription: 'Выберите пресет и время начала, чтобы вызвать {{ username }}.',
   FieldRequired: 'Это поле обязательно',

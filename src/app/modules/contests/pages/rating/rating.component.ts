@@ -6,11 +6,10 @@ import { Observable } from 'rxjs';
 import { PageResult } from '@core/common/classes/page-result';
 import { CoreCommonModule } from '@core/common.module';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
-import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { ContestsRating } from '@contests/models/contests-rating';
-import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
   selector: 'app-rating',
@@ -20,10 +19,9 @@ import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
   imports: [
     CoreCommonModule,
     ContentHeaderModule,
-    KepTableComponent,
     ContestantViewModule,
     KepPaginationComponent,
-    NgbTooltip,
+    KepCardComponent,
   ]
 })
 export class RatingComponent extends BaseTablePageComponent<ContestsRating> implements OnInit {

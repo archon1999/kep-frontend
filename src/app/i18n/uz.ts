@@ -230,6 +230,7 @@ export const localeUz = {
   AwaitingConfirmation: 'Tasdiqlash kutilmoqda',
   Confirm: 'Tasdiqlash',
   NoDuelsYet: 'Hozircha duellar yo\'q',
+  NoContestsRatingYet: 'Hozircha kontestlar reytingi yo\'q',
   SelectDuelPreset: 'Duel presetini tanlang',
   SelectDuelPresetDescription: '{{ username }} ni chaqirish uchun preset va boshlanish vaqtini tanlang.',
   FieldRequired: 'Bu maydon majburiy',
