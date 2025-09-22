@@ -180,6 +180,7 @@ export const locale = {
     Registrated: 'Зарегистрировано',
     ArenaWinners: 'Победители Арена',
     GoToArena: 'Перейти к Арена',
+    GoBack: 'Вернуться назад',
     Pefomance: 'Перфоманс',
     UnofficialParticipation: 'Для неофициального участия, нажмите эту кнопку',
     Wins: 'Выигрыши',

@@ -133,6 +133,7 @@ export const locale = {
     Verdict: 'Natija',
     ArenaWinners: 'Arena gʻoliblari',
     GoToArena: 'Arenaga oʻtish',
+    GoBack: 'Orqaga qaytarish',
     AllAttempts: 'Barcha urinishlar',
     NumberOfAttemptsForSolve: 'Ishlash uchun urinishlar soni',
     Time: 'Vaqt',
