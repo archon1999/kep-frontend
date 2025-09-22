@@ -17,52 +17,34 @@
 
     <div class="row">
       <div class="col-12">
-        <duel-ready-status-card
-          [isReady]="isReady"
-          [disabled]="readyStatusLoading"
-          (readyChange)="onReadyStatusChange($event)"
-        ></duel-ready-status-card>
+        <duel-ready-status-widget
+          (statusChanged)="onReadyStatusChanged($event)"
+        ></duel-ready-status-widget>
       </div>
 
       <div class="col-12">
-        <duel-ready-players-section
-          [players]="readyPlayersResult?.data ?? []"
-          [total]="readyPlayersTotal"
-          [page]="readyPlayersPage"
-          [pageSize]="readyPlayersPageSize"
-          [loading]="readyPlayersLoading"
+        <duel-ready-players-widget
           [currentUsername]="currentUser?.username ?? null"
-          (pageChange)="loadReadyPlayers($event)"
-          (challenge)="openDuelModal($event)"
+          [refreshKey]="readyPlayersRefreshKey"
+          (duelCreated)="onDuelCreated()"
         />
       </div>
 
       <div class="col-12 col-xl-6">
-        <duels-list-section
-          [duels]="duelsResult?.data ?? []"
-          [total]="duelsTotal"
-          [page]="duelsPage"
-          [pageSize]="duelsPageSize"
-          [loading]="duelsLoading"
-          [confirmLoadingId]="confirmLoadingId"
+        <duels-list-widget
+          [username]="currentUser?.username ?? null"
           [currentUsername]="currentUser?.username ?? null"
-          (pageChange)="loadDuels($event)"
-          (confirm)="confirmDuel($event)"
+          [refreshKey]="myDuelsRefreshKey"
+          (duelConfirmed)="onDuelConfirmed()"
         />
       </div>
 
       <div class="col-12 col-xl-6">
-        <duels-list-section
+        <duels-list-widget
           titleKey="AllDuels"
-          [duels]="allDuelsResult?.data ?? []"
-          [total]="allDuelsTotal"
-          [page]="allDuelsPage"
-          [pageSize]="allDuelsPageSize"
-          [loading]="allDuelsLoading"
-          [confirmLoadingId]="confirmLoadingId"
           [currentUsername]="currentUser?.username ?? null"
-          (pageChange)="loadAllDuels($event)"
-          (confirm)="confirmDuel($event)"
+          [refreshKey]="allDuelsRefreshKey"
+          (duelConfirmed)="onDuelConfirmed()"
         />
       </div>
     </div>
