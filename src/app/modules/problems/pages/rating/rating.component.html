@@ -2,91 +2,126 @@
   <div class="content-body">
     <app-content-header [contentHeader]="contentHeader"></app-content-header>
 
-    <section class="mt-2">
-      <kep-table [spinnerHeight]="'701px'" [loading]="!total && isLoading">
-        <ng-container header>
-          <tr>
-            <th>#</th>
-            <th>{{ 'User' | translate }}</th>
-            @for (difficulty of difficultyLabels; track difficulty) {
-              <th class="text-center">
-                <table-ordering
-                  (change)="orderingChange($event)"
-                  [justifyContent]="'between'"
-                  [ordering]="difficulty"
-                  [reverse]="true"
-                  [value]="ordering">
-                  {{ difficulty | titlecase | translate }}
-                </table-ordering>
-              </th>
-            }
-
-            <th class="text-center">
-              <table-ordering
-                (change)="orderingChange($event)"
-                [justifyContent]="'center'"
-                [ordering]="'solved'"
-                [reverse]="true"
-                [value]="ordering">
-                <kep-icon name="check-square"></kep-icon>
-              </table-ordering>
-            </th>
-
-            <th class="text-center">
-              <table-ordering
-                (change)="orderingChange($event)"
-                [justifyContent]="'center'"
-                [ordering]="'rating'"
-                [reverse]="true"
-                [value]="ordering">
-                <kep-icon name="rating"></kep-icon>
-              </table-ordering>
-            </th>
-          </tr>
-        </ng-container>
-        <ng-container body>
-          @for (problemsRating of problemsRatingList; track problemsRating) {
-            <tr
-              [ngClass]="{'bg-primary-transparent': currentUser?.username == problemsRating?.user?.username }">
-              <td>{{ problemsRating.rowIndex }}</td>
-              <td>
-                <contestant-view [user]="problemsRating.user"></contestant-view>
-              </td>
-              <td class="text-center text-success">{{ problemsRating.beginner }}</td>
-              <td class="text-center text-info">{{ problemsRating.basic }}</td>
-              <td class="text-center text-blue">{{ problemsRating.normal }}</td>
-              <td class="text-center text-primary">{{ problemsRating.medium }}</td>
-              <td class="text-center text-warning">{{ problemsRating.advanced }}</td>
-              <td class="text-center text-danger">{{ problemsRating.hard }}</td>
-              <td class="text-center text-dark">{{ problemsRating.extremal }}</td>
-              <td class="text-center">
-                <span class="badge bg-primary">
-                  {{ problemsRating.solved }}
-                </span>
-              </td>
-              <td class="text-center">
-                <span class="badge bg-success-transparent">
-                  {{ problemsRating.rating }}
-                </span>
-              </td>
-            </tr>
+    <section class="mt-2 d-flex flex-column gap-3">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div class="d-flex flex-wrap gap-2">
+          @for (difficulty of difficultyLabels; track difficulty) {
+            <table-ordering
+              (change)="orderingChange($event)"
+              [justifyContent]="'start'"
+              [ordering]="difficulty"
+              [reverse]="true"
+              [value]="ordering">
+              <span
+                class="btn btn-sm"
+                [ngClass]="isOrderingActive(difficulty) ? 'btn-primary' : 'btn-outline-primary'">
+                {{ difficulty | titlecase | translate }}
+              </span>
+            </table-ordering>
           }
-        </ng-container>
-        <ng-container pagination>
-          <div class="mb-1">
-            <kep-pagination
-              (pageChange)="pageChange($event)"
-              (pageSizeChange)="pageSizeChange($event)"
-              [collectionSize]="total"
-              [maxSize]="maxSize"
-              [disabled]="isLoading"
-              [pageOptions]="pageOptions"
-              [pageSize]="pageSize"
-              [page]="pageNumber">
-            </kep-pagination>
+
+          <table-ordering
+            (change)="orderingChange($event)"
+            [justifyContent]="'start'"
+            [ordering]="'solved'"
+            [reverse]="true"
+            [value]="ordering">
+            <span
+              [ngClass]="isOrderingActive('solved') ? 'btn-primary' : 'btn-outline-primary'"
+              class="btn btn-sm">
+              {{ 'Solved' | translate }}
+            </span>
+          </table-ordering>
+
+          <table-ordering
+            (change)="orderingChange($event)"
+            [justifyContent]="'start'"
+            [ordering]="'rating'"
+            [reverse]="true"
+            [value]="ordering">
+            <span
+              [ngClass]="isOrderingActive('rating') ? 'btn-primary' : 'btn-outline-primary'"
+              class="btn btn-sm">
+              {{ 'Rating' | translate }}
+            </span>
+          </table-ordering>
+        </div>
+
+        @if (!isLoading && total) {
+          <span class="text-muted small">{{ total }} {{ 'Users' | translate }}</span>
+        }
+      </div>
+
+      @if (isLoading) {
+        <kep-card>
+          <div class="card-body d-flex justify-content-center py-5">
+            <spinner></spinner>
           </div>
-        </ng-container>
-      </kep-table>
+        </kep-card>
+      } @else if (!problemsRatingList?.length) {
+        <kep-card>
+          <div class="card-body text-center py-5">
+            <div class="text-muted">{{ 'NoResultFound' | translate }}</div>
+          </div>
+        </kep-card>
+      } @else {
+        <div class="row g-3">
+          @for (problemsRating of problemsRatingList; track problemsRating.rowIndex) {
+            <div class="col-12 col-md-6 col-xl-4">
+              <kep-card customClass="h-100">
+                <div class="card-header">
+                  <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <span class="badge bg-primary fw-semibold text-white px-3 py-2 fs-6">
+                      {{ problemsRating.rowIndex }}
+                    </span>
+                    <contestant-view [user]="problemsRating.user"></contestant-view>
+                  </div>
+
+                  <div class="text-dark">
+                    <span class="me-1" ngbTooltip="{{ 'Solved' | translate }}">
+                      <kep-icon size="small-4" class="" name="check-circle"></kep-icon>
+                      {{ problemsRating.solved }}
+                    </span>
+
+                    <span ngbTooltip="{{ 'Rating' | translate }}">
+                      <kep-icon size="small-4" class="" name="rating"></kep-icon>
+                      {{ problemsRating.rating }}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="card-body d-flex flex-column gap-3">
+                  <div class="font-medium-5 mt-1">
+                    <div class="font-small-4 d-md-flex d-block justify-content-between">
+                      @for (difficulty of difficultyLabels.slice(0); track difficulty) {
+                        <div class="mt-2">
+                          <span class="text-{{ $index+1 | problemDifficultyColor }}">
+                            {{ problemsRating[difficulty] }}
+                            <span class="font-small-1">{{ difficulty | titlecase | translate }}</span>
+                          </span>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </kep-card>
+            </div>
+          }
+        </div>
+      }
+
+      @if (total) {
+        <kep-pagination
+          (pageChange)="pageChange($event)"
+          (pageSizeChange)="pageSizeChange($event)"
+          [collectionSize]="total"
+          [maxSize]="maxSize"
+          [disabled]="isLoading"
+          [pageOptions]="pageOptions"
+          [pageSize]="pageSize"
+          [page]="pageNumber">
+        </kep-pagination>
+      }
 
       <period-ratings/>
     </section>
