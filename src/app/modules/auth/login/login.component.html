@@ -13,7 +13,7 @@
           <p class="mb-4 text-muted op-7 fw-normal text-center">{{ 'LoginText' | translate }}</p>
           <div class="d-flex mb-3 justify-content-between gap-2 flex-wrap flex-lg-nowrap">
             <a
-              href="/login/google-oauth2/"
+              [attr.href]="getSocialLoginUrl('google-oauth2')"
               class="btn btn-lg btn-light-ghost border d-flex align-items-center justify-content-center flex-fill">
               <span class="avatar avatar-xs">
                 <img alt="" src="assets/images/media/apps/google.png">
@@ -21,7 +21,7 @@
               <span class="lh-1 ms-2 fs-13 text-default">{{ 'SignUpWith' | translate:{title: 'Google'} }}</span>
             </a>
             <a
-              href="/login/github/"
+              [attr.href]="getSocialLoginUrl('github')"
               class="btn btn-lg btn-light-ghost border d-flex align-items-center justify-content-center flex-fill">
               <span class="avatar avatar-xs invert-1">
                 <img alt="" src="assets/images/media/apps/github.png">
