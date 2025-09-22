@@ -1,0 +1,43 @@
+:host {
+  display: block;
+}
+
+:host ::ng-deep .apexcharts-canvas,
+:host ::ng-deep .apexcharts-svg {
+  background: transparent !important;
+}
+
+:host-context(html[data-theme-mode='light']) ::ng-deep .apexcharts-grid line,
+:host-context(html[data-theme-mode='light']) ::ng-deep .apexcharts-xaxis line,
+:host-context(html[data-theme-mode='light']) ::ng-deep .apexcharts-grid-borders line {
+  stroke: var(--default-border);
+}
+
+:host-context(html[data-theme-mode='light']) ::ng-deep .apexcharts-xaxis text,
+:host-context(html[data-theme-mode='light']) ::ng-deep .apexcharts-yaxis text,
+:host-context(html[data-theme-mode='light']) ::ng-deep .apexcharts-legend-text,
+:host-context(html[data-theme-mode='light']) ::ng-deep .apexcharts-title-text,
+:host-context(html[data-theme-mode='light']) ::ng-deep .apexcharts-subtitle-text {
+  fill: var(--default-text-color) !important;
+  color: var(--default-text-color) !important;
+}
+
+:host-context(html[data-theme-mode='light']) ::ng-deep .apexcharts-tooltip.apexcharts-theme-light {
+  background: var(--default-background) !important;
+  border: 1px solid var(--default-border) !important;
+  color: var(--default-text-color) !important;
+}
+
+:host-context(html[data-theme-mode='light']) ::ng-deep .apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-title {
+  background: var(--default-background) !important;
+  border-bottom: 1px solid var(--default-border) !important;
+  color: var(--default-text-color) !important;
+}
+
+:host-context(html[data-theme-mode='light']) ::ng-deep .apexcharts-toolbar .apexcharts-menu-icon svg,
+:host-context(html[data-theme-mode='light']) ::ng-deep .apexcharts-toolbar .apexcharts-reset-icon svg,
+:host-context(html[data-theme-mode='light']) ::ng-deep .apexcharts-toolbar .apexcharts-zoom-icon svg,
+:host-context(html[data-theme-mode='light']) ::ng-deep .apexcharts-toolbar .apexcharts-pan-icon svg,
+:host-context(html[data-theme-mode='light']) ::ng-deep .apexcharts-toolbar .apexcharts-selection-icon svg {
+  fill: var(--default-text-color);
+}
