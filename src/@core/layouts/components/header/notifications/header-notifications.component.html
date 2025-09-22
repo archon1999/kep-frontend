@@ -35,7 +35,7 @@
                         {{ notification.message }}
                       }
                       @case (2) {
-                        <a routerLink="/competitions/contests/contest/{{ notification.content.contestId }}/standings">
+                        <a [routerLink]="Resources.ContestStandings | resourceById:notification.content.contestId">
                           <strong>{{ notification.content.contestTitle }}</strong>
                           | {{ 'ContestFinishedNotification' | translate }}
                           <span
@@ -67,28 +67,28 @@
                         <img height="18" src="assets/images/icons/kepcoin.png"> {{ notification.content.kepcoin }}
                       }
                       @case (4) {
-                        <a routerLink="/practice/challenges/challenge/{{ notification.content?.challengeId }}">
+                        <a [routerLink]="Resources.Challenge | resourceById:notification.content?.challengeId">
                           {{ 'ChallengeCallAcceptedNotification' | translate }}
                         </a>
                       }
                       @case (5) {
-                        <a routerLink="/practice/challenges/challenge/{{ notification.content?.challengeId }}">
+                        <a [routerLink]="Resources.Challenge | resourceById:notification.content?.challengeId">
                           {{ 'ChallengeFinishedNotification' | translate }}
                         </a>
                       }
                       @case (6) {
-                        <a routerLink="/competitions/arena/tournament/{{ notification.content?.arena?.id }}">
+                        <a [routerLink]="Resources.ArenaTournament | resourceById:notification.content?.arena?.id">
                           <strong>{{ notification.content?.arena?.title }}</strong>
                           | {{ 'ArenaFinishedNotification' | translate }}
                         </a>
                       }
                       @case (7) {
-                        <a routerLink="/practice/duels/duel/{{ notification.content?.duel?.id }}">
+                        <a [routerLink]="Resources.Duel | resourceById:notification.content?.duel?.id">
                           {{ 'DuelStarts' | translate }}
                         </a>
                       }
                       @case (8) {
-                        <a routerLink="/users/user/{{ currentUser?.username }}/achievements">
+                        <a [routerLink]="Resources.UserProfileAchievements | resourceByUsername:currentUser?.username">
                           {{ 'NewAchievement' | translate }}
                         </a>
                       }

@@ -12,6 +12,8 @@ import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 import { KepcoinSpendSwalModule } from '@shared/components/kepcoin-spend-swal/kepcoin-spend-swal.module';
 import { StudyPlanCardModule } from '@problems/components/study-plan-card/study-plan-card.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
+import { Resources } from '@app/resources';
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 
 @Component({
   selector: 'app-study-plan',
@@ -27,6 +29,7 @@ import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-char
     KepcoinSpendSwalModule,
     StudyPlanCardModule,
     ApexChartModule,
+    ResourceByIdPipe,
   ]
 })
 export class StudyPlanComponent implements OnInit {
@@ -139,5 +142,7 @@ export class StudyPlanComponent implements OnInit {
       );
     }, 1000);
   }
+
+  protected readonly Resources = Resources;
 
 }

@@ -49,11 +49,11 @@
             </div>
           </a>
           <ul ngbDropdownMenu aria-labelledby="navbarUserDropdown" class="dropdown-menu dropdown-menu-end">
-            <a ngbDropdownItem [routerLink]="['/users', 'user', currentUser?.username]">
+            <a ngbDropdownItem [routerLink]="Resources.UserProfile | resourceByUsername:currentUser?.username">
               <kep-icon size="small-4" name="user" type="duotone"/>
               {{ 'Profile' | translate }}
             </a>
-            <a ngbDropdownItem [routerLink]="['/settings']">
+            <a ngbDropdownItem [routerLink]="[Resources.Settings]">
               <span [data-feather]="'settings'" [class]="'me-1'"></span>
               {{ 'SettingsMenu' | translate }}
             </a>

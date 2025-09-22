@@ -10,6 +10,7 @@ import { UserAvatarPopoverComponent } from './user-avatar-popover/user-avatar-po
 import { KepBadgeComponent } from '@shared/components/kep-badge/kep-badge.component';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { ResourceByUsernamePipe } from '@shared/pipes/resource-by-username.pipe';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
     NgbTooltipModule,
     KepBadgeComponent,
     KepIconComponent,
-    KepCardComponent
+    KepCardComponent,
+    ResourceByUsernamePipe
   ],
   exports: [
     UserPopoverComponent,

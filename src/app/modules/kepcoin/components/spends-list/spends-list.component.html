@@ -15,21 +15,21 @@
               @switch (spend.type) {
                 @case (SpendType.AttemptView) {
                   <span>
-                    {{ 'ViewAttempt' | translate }} <a class="text-primary" routerLink="/practice/problems/attempts/{{ spend.detail.attemptId }}">
+                    {{ 'ViewAttempt' | translate }} <a class="text-primary" [routerLink]="Resources.Attempt | resourceById:spend.detail.attemptId">
                     <u>{{ spend.detail.attemptId }}</u>
                   </a>
                   </span>
                 }
                 @case (SpendType.AttemptTestView) {
                   <span>
-                    {{ 'ViewTestAttempt' | translate }} <a class="text-primary" routerLink="/practice/problems/attempts/{{ spend.detail.attemptId }}">
+                    {{ 'ViewTestAttempt' | translate }} <a class="text-primary" [routerLink]="Resources.Attempt | resourceById:spend.detail.attemptId">
                     <u>{{ spend.detail.attemptId }}</u>
                   </a>
                   </span>
                 }
                 @case (SpendType.ProblemSolution) {
                   <span>
-                    {{ 'ViewProblemSolution' | translate }} <a class="text-primary" routerLink="/practice/problems/problem/{{ spend.detail.problemId }}">
+                    {{ 'ViewProblemSolution' | translate }} <a class="text-primary" [routerLink]="Resources.Problem | resourceById:spend.detail.problemId">
                     <u>{{ spend.detail.problemId }}. {{ spend.detail.problemTitle }}</u>
                   </a>
                   </span>
@@ -57,7 +57,7 @@
                 }
                 @case (SpendType.TestPass) {
                   <span>
-                    {{ 'PassTest' | translate }} <a class="text-primary" routerLink="/practice/tests/test/{{ spend.detail.test.id }}">
+                    {{ 'PassTest' | translate }} <a class="text-primary" [routerLink]="Resources.Test | resourceById:spend.detail.test.id">
                     <u>{{ spend.detail.test.title }}</u>
                   </a>
                   </span>

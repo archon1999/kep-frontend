@@ -60,7 +60,7 @@
                     [username]="duelsRating.user.username"
                     [avatar]="duelsRating.user.avatar">
                   </user-avatar-popover>
-                  <a [routerLink]="['/users', 'user', duelsRating.user.username]" class="fw-medium">
+                  <a [routerLink]="Resources.UserProfile | resourceByUsername:duelsRating.user.username" class="fw-medium">
                     {{ duelsRating.user.username }}
                   </a>
                 </div>

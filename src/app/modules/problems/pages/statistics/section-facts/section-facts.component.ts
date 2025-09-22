@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { Resources } from '@app/resources';
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 
 export interface Facts {
   firstAttempt: any;
@@ -19,13 +21,14 @@ export interface Facts {
   templateUrl: './section-facts.component.html',
   styleUrls: ['./section-facts.component.scss'],
   standalone: true,
-  imports: [CoreCommonModule, NgbTooltipModule],
+  imports: [CoreCommonModule, NgbTooltipModule, ResourceByIdPipe],
 })
 export class SectionFactsComponent implements OnInit {
 
   @Input() username: string;
 
   public facts: Facts;
+  protected readonly Resources = Resources;
 
   constructor(
     public statisticsService: ProblemsStatisticsService,

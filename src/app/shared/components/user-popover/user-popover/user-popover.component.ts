@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, inject, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { ApiService } from '@core/data-access/api.service';
 import { User } from "@users/domain";
+import { Resources } from '@app/resources';
 
 type RatingKey = 'skillsRating' | 'activityRating' | 'contestsRating' | 'challengesRating';
 
@@ -64,6 +65,8 @@ export class UserPopoverComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  protected readonly Resources = Resources;
 
   loadUser() {
     if (!this.user) {

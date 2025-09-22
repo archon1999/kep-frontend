@@ -13,6 +13,7 @@ import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pa
 import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
     ContestClassesPipe,
     KepTableComponent,
     KepCardComponent,
+    ResourceByIdPipe,
   ],
   exports: [
     ContestsTableComponent,

@@ -13,6 +13,7 @@ import { TableComponent } from './table/table.component';
 import { ClipboardModule } from 'app/shared/components/clipboard/clipboard.module';
 import { ProblemsPipesModule } from '../../pipes/problems-pipes.module';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/
     MonacoEditorComponent,
     ClipboardModule,
     ProblemsPipesModule,
+    ResourceByIdPipe,
   ],
   exports: [
     HackAttemptsTableComponent

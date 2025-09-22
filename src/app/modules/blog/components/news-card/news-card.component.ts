@@ -3,6 +3,8 @@ import { Blog } from '@app/modules/blog/blog.interfaces';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { RouterLink } from '@angular/router';
 import { CoreDirectivesModule } from '@shared/directives/directives.module';
+import { Resources } from '@app/resources';
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 
 @Component({
   selector: 'news-card',
@@ -13,9 +15,11 @@ import { CoreDirectivesModule } from '@shared/directives/directives.module';
   imports: [
     KepCardComponent,
     RouterLink,
-    CoreDirectivesModule
+    CoreDirectivesModule,
+    ResourceByIdPipe
   ]
 })
 export class NewsCardComponent {
   @Input() blog: Blog;
+  protected readonly Resources = Resources;
 }

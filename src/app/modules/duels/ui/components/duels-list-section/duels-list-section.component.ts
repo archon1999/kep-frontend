@@ -6,6 +6,8 @@ import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { DuelsListCardComponent } from '@duels/ui/components/duels-list-card/duels-list-card.component';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { Resources } from '@app/resources';
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 
 @Component({
   selector: 'duels-list-section',
@@ -17,6 +19,7 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
     KepPaginationComponent,
     DuelsListCardComponent,
     KepCardComponent,
+    ResourceByIdPipe,
   ],
   templateUrl: './duels-list-section.component.html',
   styleUrls: ['./duels-list-section.component.scss'],
@@ -34,6 +37,8 @@ export class DuelsListSectionComponent {
 
   @Output() pageChange = new EventEmitter<number>();
   @Output() confirm = new EventEmitter<Duel>();
+
+  protected readonly Resources = Resources;
 
   get hasDuels(): boolean {
     return this.duels.length > 0;

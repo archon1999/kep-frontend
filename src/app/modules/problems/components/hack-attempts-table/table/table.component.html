@@ -43,7 +43,7 @@
             {{ hackAttempt.attemptId }}
           </td>
           <td>
-            <a [routerLink]="['/practice', 'problems', 'problem', hackAttempt.problemId]" class="text-primary">
+            <a [routerLink]="Resources.Problem | resourceById:hackAttempt.problemId" class="text-primary">
               {{ hackAttempt.problemId }}. {{ hackAttempt.problemTitle }}
             </a>
           </td>

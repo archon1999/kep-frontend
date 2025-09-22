@@ -68,7 +68,7 @@
 
                 @if (studyPlanId) {
                   <li [ngbNavItem]="4">
-                    <a ngbNavLink routerLink="/practice/problems/study-plan/{{ studyPlanId }}">
+                    <a ngbNavLink [routerLink]="Resources.StudyPlan | resourceById:studyPlanId">
                       <span [data-feather]="'activity'"></span> {{ 'StudyPlan' | translate }}
                     </a>
                     <ng-template ngbNavContent>
@@ -79,7 +79,7 @@
 
                 @if (contestId) {
                   <li [ngbNavItem]="4">
-                    <a ngbNavLink routerLink="/competitions/contests/contest/{{ contestId }}/problems">
+                    <a ngbNavLink [routerLink]="Resources.ContestProblems | resourceById:contestId">
                       <kep-icon name="contest" color="primary" type="duotone"/>
                       {{ 'Contest' | translate }}
                     </a>

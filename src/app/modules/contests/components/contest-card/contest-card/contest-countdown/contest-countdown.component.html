@@ -36,7 +36,7 @@
     {{ 'Contests.ContestFinished' | translate }}
   </div>
   <div class="modal-footer">
-    <a [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'standings']"
+    <a [routerLink]="Resources.ContestStandings | resourceById:contest.id"
        class="btn btn-primary btn-relief" rippleEffect (click)="modal.dismiss('Cross click')">
       {{ 'Contests.Standings' | translate }}
     </a>
@@ -54,7 +54,7 @@
     {{ 'Contests.ContestStarted' | translate }}
   </div>
   <div class="modal-footer">
-    <a [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problems']"
+    <a [routerLink]="Resources.ContestProblems | resourceById:contest.id"
        class="btn btn-primary btn-relief" rippleEffect (click)="modal.dismiss('Cross click')">
       {{ 'Contests.Problems' | translate }}
     </a>

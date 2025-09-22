@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { StudyPlanCardComponent } from './study-plan-card.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import { RouterModule } from '@angular/router';
     TranslateModule,
     CommonModule,
     RouterModule,
+    ResourceByIdPipe,
   ],
   exports: [
     StudyPlanCardComponent,

@@ -38,7 +38,7 @@
 </ng-template>
 
 <a
-  [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'standings']"
+  [routerLink]="Resources.ContestStandings | resourceById:contest.id"
   [ngbPopover]="popContent"
   triggers="mouseenter:mouseleave"
   [closeDelay]="3000"

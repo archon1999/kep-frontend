@@ -17,6 +17,7 @@ import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.
 import { KepTableComponent } from '@shared/components/kep-table/kep-table.component';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
+import { ResourceByParamsPipe } from '@shared/pipes/resource-by-params.pipe';
 import { AttemptLanguageComponent } from '@shared/components/attempt-language/attempt-language.component';
 import { AttemptVerdictComponent } from '@shared/components/attempt-verdict/attempt-verdict.component';
 
@@ -45,6 +46,7 @@ import { AttemptVerdictComponent } from '@shared/components/attempt-verdict/atte
     KepTableComponent,
     KepIconComponent,
     ResourceByIdPipe,
+    ResourceByParamsPipe,
     AttemptLanguageComponent,
     AttemptLanguageComponent,
     AttemptVerdictComponent,

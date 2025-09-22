@@ -261,7 +261,7 @@
                             </div>
                           </div>
                           <div class="problem-button">
-                            <a [routerLink]="['/practice', 'problems', 'problem', problem.id]"
+                            <a [routerLink]="Resources.Problem | resourceById:problem.id"
                                [queryParams]="{'study-plan': studyPlan.id}"
                                rippleEffect class="text-white btn btn-primary btn-sm">
                               {{ 'Solve' | translate }}

@@ -62,7 +62,7 @@
 </ng-template>
 
 <a
-  [routerLink]="['/users', 'user', username]"
+  [routerLink]="Resources.UserProfile | resourceByUsername:username"
 >
   <img
     [src]="avatar"

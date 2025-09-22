@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ContestStatus } from '@contests/constants/contest-status';
 import { Contest } from '@contests/models/contest';
+import { Resources } from '@app/resources';
 
 @Component({
   selector: 'contests-table',
@@ -20,6 +21,8 @@ export class ContestsTableComponent implements OnInit, OnDestroy {
   public currentUser: AuthUser;
 
   private _unsubscribeAll = new Subject();
+
+  protected readonly Resources = Resources;
 
   constructor(
     public authService: AuthService,

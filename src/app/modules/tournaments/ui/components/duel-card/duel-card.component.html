@@ -1,4 +1,4 @@
-<a [routerLink]="['/practice', 'duels', 'duel', duel.id]" class="duel-card">
+<a [routerLink]="Resources.Duel | resourceById:duel.id" class="duel-card">
   <kep-card>
     <div class="table-responsive">
       <table class="table">

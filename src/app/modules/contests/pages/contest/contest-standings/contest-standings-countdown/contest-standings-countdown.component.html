@@ -135,7 +135,7 @@
   </div>
   <div class="modal-footer">
     <a (click)="modal.dismiss('Cross click')"
-       [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'standings']"
+       [routerLink]="Resources.ContestStandings | resourceById:contest.id"
        class="btn btn-primary btn-relief" rippleEffect>
       {{ 'Contests.Standings' | translate }}
     </a>
@@ -154,7 +154,7 @@
   </div>
   <div class="modal-footer">
     <a (click)="modal.dismiss('Cross click')"
-       [routerLink]="['/competitions', 'contests', 'contest', contest.id, 'problems']"
+       [routerLink]="Resources.ContestProblems | resourceById:contest.id"
        class="btn btn-primary btn-relief" rippleEffect>
       {{ 'Contests.Problems' | translate }}
     </a>

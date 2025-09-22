@@ -35,6 +35,8 @@ import { ContestClassesPipe } from '@contests/pipes/contest-classes.pipe';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { ProblemInfoHtmlPipe } from '@contests/pages/contest/contest-problem/problem-info-html.pipe';
 import { ProblemSubmitCardComponent } from '@problems/components/problem-submit-card/problem-submit-card.component';
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
+import { ResourceByParamsPipe } from '@shared/pipes/resource-by-params.pipe';
 
 const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
 
@@ -58,6 +60,8 @@ const CONTESTANT_RESULTS_VISIBLE_KEY = 'contestant-results-visible';
     KepCardComponent,
     ProblemInfoHtmlPipe,
     ProblemSubmitCardComponent,
+    ResourceByIdPipe,
+    ResourceByParamsPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

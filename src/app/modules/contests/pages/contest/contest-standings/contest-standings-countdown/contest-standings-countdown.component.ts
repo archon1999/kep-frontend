@@ -4,6 +4,8 @@ import { CoreCommonModule } from '@core/common.module';
 import { ContestStatus } from '@contests/constants/contest-status';
 import { Contest } from '@contests/models/contest';
 import { ScriptService } from '@shared/services/script.service';
+import { Resources } from '@app/resources';
+import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 
 const JQUERY_SCRIPT_PATH = 'https://code.jquery.com/jquery-3.7.1.min.js';
 const TWEENMAX_SCRIPT_PATH = '//cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js';
@@ -15,7 +17,7 @@ const SCRIPT_PATH = 'assets/js/contest-countdown.js';
   templateUrl: './contest-standings-countdown.component.html',
   styleUrls: ['./contest-standings-countdown.component.scss'],
   standalone: true,
-  imports: [CoreCommonModule],
+  imports: [CoreCommonModule, ResourceByIdPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ContestStandingsCountdownComponent implements OnInit {
@@ -28,6 +30,7 @@ export class ContestStandingsCountdownComponent implements OnInit {
   public minutes = 0;
   public seconds = 0;
   protected readonly ContestStatus = ContestStatus;
+  protected readonly Resources = Resources;
 
   constructor(
     private modalService: NgbModal,

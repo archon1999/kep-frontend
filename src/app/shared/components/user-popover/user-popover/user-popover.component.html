@@ -24,7 +24,7 @@
       </div>
       <div class="card-footer border-0 bg-transparent pt-0">
         <a
-          [routerLink]="['/users', 'user', username]"
+          [routerLink]="Resources.UserProfile | resourceByUsername:username"
           class="btn btn-outline-primary btn-sm w-100"
         >
           {{ 'UserPopover.ViewDetails' | translate }}
