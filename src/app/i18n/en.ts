@@ -230,6 +230,7 @@ export const localeEn = {
   AwaitingConfirmation: 'Awaiting confirmation',
   Confirm: 'Confirm',
   NoDuelsYet: 'No duels yet',
+  NoChallengesYet: 'No challenges yet',
   SelectDuelPreset: 'Select duel preset',
   SelectDuelPresetDescription: 'Choose a preset and start time to challenge {{ username }}.',
   FieldRequired: 'This field is required',
