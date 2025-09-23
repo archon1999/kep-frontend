@@ -1,4 +1,4 @@
-import { Component, Input, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, TemplateRef } from '@angular/core';
 import { Problem } from '@problems/models/problems.models';
 import { CoreCommonModule } from '@core/common.module';
 import { ProblemInfoCardComponent } from '../../../components/problem-info-card/problem-info-card.component';
@@ -36,6 +36,7 @@ export class ProblemSidebarComponent {
   constructor(
     private readonly modalService: NgbModal,
     private readonly problemsService: ProblemsApiService,
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   openStatisticsModal(content: TemplateRef<unknown>) {
@@ -43,17 +44,16 @@ export class ProblemSidebarComponent {
     this.statistics = null;
 
     this.modalService.open(content, {
-      size: 'xl',
+      size: 'md',
       scrollable: true,
     });
 
     this.problemsService.getProblemStatistics(this.problem.id)
-      .pipe(finalize(() => {
-        this.isStatisticsLoading = false;
-      }))
       .subscribe({
         next: (result: ProblemStatistics) => {
           this.statistics = result;
+          this.isStatisticsLoading = false;
+          this.cdr.detectChanges();
         },
         error: () => {
           this.statistics = null;
