@@ -29,9 +29,9 @@ export interface Difficulties {
 }
 
 @Component({
-  selector: 'section-difficulties',
-  templateUrl: './section-difficulties.component.html',
-  styleUrls: ['./section-difficulties.component.scss'],
+  selector: 'widget-difficulties',
+  templateUrl: './widget-difficulties.component.html',
+  styleUrls: ['./widget-difficulties.component.scss'],
   standalone: true,
   imports: [
     CoreCommonModule,
@@ -43,27 +43,27 @@ export interface Difficulties {
     TranslateModule,
   ]
 })
-export class SectionDifficultiesComponent implements OnChanges {
+export class WidgetDifficultiesComponent implements OnChanges {
 
   @Input() data: Difficulties;
 
   public difficulties: Difficulties = {
     beginner: 0,
-    allBeginner: 1,
+    allBeginner: 0,
     basic: 0,
-    allBasic: 1,
+    allBasic: 0,
     normal: 0,
-    allNormal: 1,
+    allNormal: 0,
     medium: 0,
-    allMedium: 1,
+    allMedium: 0,
     advanced: 0,
-    allAdvanced: 1,
+    allAdvanced: 0,
     hard: 0,
-    allHard: 1,
+    allHard: 0,
     extremal: 0,
-    allExtremal: 1,
+    allExtremal: 0,
     totalSolved: 0,
-    totalProblems: 1,
+    totalProblems: 0,
   };
 
   public chartOptions: ChartOptions | any;
@@ -89,13 +89,16 @@ export class SectionDifficultiesComponent implements OnChanges {
 
   private buildChart() {
     const diff = this.difficulties;
-    if (!diff || !diff.totalProblems) {
+    if (!diff) {
       this.chartOptions = null;
       return;
     }
 
+    const totalProblems = diff.totalProblems || 1;
+    const totalSolved = Math.min(diff.totalSolved, totalProblems);
+
     this.chartOptions = {
-      series: [100 * diff.totalSolved / diff.totalProblems],
+      series: [100 * totalSolved / totalProblems],
       chart: {
         height: '170px',
         type: 'radialBar',

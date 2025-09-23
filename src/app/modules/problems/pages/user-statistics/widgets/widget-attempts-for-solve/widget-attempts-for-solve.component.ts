@@ -6,9 +6,9 @@ import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-char
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
-  selector: 'section-attempts-for-solve',
-  templateUrl: './section-attempts-for-solve.component.html',
-  styleUrls: ['./section-attempts-for-solve.component.scss'],
+  selector: 'widget-attempts-for-solve',
+  templateUrl: './widget-attempts-for-solve.component.html',
+  styleUrls: ['./widget-attempts-for-solve.component.scss'],
   standalone: true,
   imports: [
     CoreCommonModule,
@@ -17,7 +17,7 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
     TranslateModule,
   ]
 })
-export class SectionAttemptsForSolveComponent implements OnChanges {
+export class WidgetAttemptsForSolveComponent implements OnChanges {
 
   @Input() numberOfAttempts: any;
 

@@ -19,13 +19,13 @@ export interface Facts {
 }
 
 @Component({
-  selector: 'section-facts',
-  templateUrl: './section-facts.component.html',
-  styleUrls: ['./section-facts.component.scss'],
+  selector: 'widget-facts',
+  templateUrl: './widget-facts.component.html',
+  styleUrls: ['./widget-facts.component.scss'],
   standalone: true,
   imports: [CoreCommonModule, NgbTooltipModule, ResourceByIdPipe, KepCardComponent, TranslateModule, AttemptVerdictHTMLPipe],
 })
-export class SectionFactsComponent {
+export class WidgetFactsComponent {
 
   @Input() facts: Facts;
   protected readonly Resources = Resources;

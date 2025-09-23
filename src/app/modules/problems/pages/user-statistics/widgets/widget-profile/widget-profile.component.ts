@@ -29,9 +29,9 @@ interface TopicInfo {
 }
 
 @Component({
-  selector: 'section-profile',
-  templateUrl: './section-profile.component.html',
-  styleUrls: ['./section-profile.component.scss'],
+  selector: 'widget-profile',
+  templateUrl: './widget-profile.component.html',
+  styleUrls: ['./widget-profile.component.scss'],
   standalone: true,
   imports: [
     CoreCommonModule,
@@ -42,7 +42,7 @@ interface TopicInfo {
     AttemptLanguageComponent,
   ]
 })
-export class SectionProfileComponent implements OnChanges {
+export class WidgetProfileComponent implements OnChanges {
 
   @Input() username: string;
   @Input() general: GeneralInfo;

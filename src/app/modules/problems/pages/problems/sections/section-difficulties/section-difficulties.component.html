@@ -1,0 +1,11 @@
+<ng-container *ngIf="!loading; else loadingTemplate">
+  <widget-difficulties [data]="difficulties ?? fallbackDifficulties"></widget-difficulties>
+</ng-container>
+
+<ng-template #loadingTemplate>
+  <kep-card>
+    <div class="card-body d-flex justify-content-center align-items-center difficulties-loading">
+      <spinner></spinner>
+    </div>
+  </kep-card>
+</ng-template>

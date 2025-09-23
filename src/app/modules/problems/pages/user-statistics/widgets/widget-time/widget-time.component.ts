@@ -5,9 +5,9 @@ import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-char
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
-  selector: 'section-time',
-  templateUrl: './section-time.component.html',
-  styleUrls: ['./section-time.component.scss'],
+  selector: 'widget-time',
+  templateUrl: './widget-time.component.html',
+  styleUrls: ['./widget-time.component.scss'],
   standalone: true,
   imports: [
     CoreCommonModule,
@@ -16,7 +16,7 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
     TranslateModule,
   ]
 })
-export class SectionTimeComponent implements OnChanges {
+export class WidgetTimeComponent implements OnChanges {
 
   @Input() byWeekday: any[] = [];
   @Input() byMonth: any[] = [];

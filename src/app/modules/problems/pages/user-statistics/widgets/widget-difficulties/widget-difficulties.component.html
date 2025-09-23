@@ -29,7 +29,7 @@
             </div>
             <div class="mt-2 progress-wrapper">
               <ngb-progressbar type="{{ 1 | problemDifficultyColor }}"
-                               [value]="100 * difficulties.beginner / difficulties.allBeginner"></ngb-progressbar>
+                               [value]="difficulties.allBeginner ? (100 * difficulties.beginner) / difficulties.allBeginner : 0"></ngb-progressbar>
             </div>
           </div>
         </div>
@@ -48,7 +48,7 @@
             </div>
             <div class="mt-2 progress-wrapper">
               <ngb-progressbar type="{{ 2 | problemDifficultyColor }}"
-                               [value]="100 * difficulties.basic / difficulties.allBasic"></ngb-progressbar>
+                               [value]="difficulties.allBasic ? (100 * difficulties.basic) / difficulties.allBasic : 0"></ngb-progressbar>
             </div>
           </div>
         </div>
@@ -67,7 +67,7 @@
             </div>
             <div class="mt-2 progress-wrapper">
               <ngb-progressbar type="{{ 3 | problemDifficultyColor }}"
-                               [value]="100 * difficulties.normal / difficulties.allNormal"></ngb-progressbar>
+                               [value]="difficulties.allNormal ? (100 * difficulties.normal) / difficulties.allNormal : 0"></ngb-progressbar>
             </div>
           </div>
         </div>
@@ -86,7 +86,7 @@
             </div>
             <div class="mt-2 progress-wrapper">
               <ngb-progressbar type="{{ 4 | problemDifficultyColor }}"
-                               [value]="100 * difficulties.medium / difficulties.allMedium"></ngb-progressbar>
+                               [value]="difficulties.allMedium ? (100 * difficulties.medium) / difficulties.allMedium : 0"></ngb-progressbar>
             </div>
           </div>
         </div>
@@ -105,7 +105,7 @@
             </div>
             <div class="mt-2 progress-wrapper">
               <ngb-progressbar type="{{ 5 | problemDifficultyColor }}"
-                               [value]="100 * difficulties.advanced / difficulties.allAdvanced"></ngb-progressbar>
+                               [value]="difficulties.allAdvanced ? (100 * difficulties.advanced) / difficulties.allAdvanced : 0"></ngb-progressbar>
             </div>
           </div>
         </div>
@@ -124,7 +124,7 @@
             </div>
             <div class="mt-2 progress-wrapper">
               <ngb-progressbar type="{{ 6 | problemDifficultyColor }}"
-                               [value]="100 * difficulties.hard / difficulties.allHard"></ngb-progressbar>
+                               [value]="difficulties.allHard ? (100 * difficulties.hard) / difficulties.allHard : 0"></ngb-progressbar>
             </div>
           </div>
         </div>
@@ -143,7 +143,7 @@
             </div>
             <div class="mt-2 progress-wrapper">
               <ngb-progressbar type="{{ 7 | problemDifficultyColor }}"
-                               [value]="100 * difficulties.extremal / difficulties.allExtremal"></ngb-progressbar>
+                               [value]="difficulties.allExtremal ? (100 * difficulties.extremal) / difficulties.allExtremal : 0"></ngb-progressbar>
             </div>
           </div>
         </div>
