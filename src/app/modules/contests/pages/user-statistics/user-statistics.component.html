@@ -92,7 +92,24 @@
     }
   </div>
 
-  <div class="row g-2 g-lg-3 mb-3">
+  <div class="row">
+    <div class="col-12">
+      <kep-card>
+        <div class="card-header">
+          <div class="card-title">{{ 'Contests.UserStatistics.RatingChangesHistory' | translate }}</div>
+        </div>
+        <div class="card-body p-2">
+          @if (ratingChangesChart) {
+            <apex-chart [options]="ratingChangesChart"></apex-chart>
+          } @else {
+            <div class="text-center text-muted py-4">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
+          }
+        </div>
+      </kep-card>
+    </div>
+  </div>
+
+  <div class="row">
     <div class="col-lg-6">
       <kep-card>
         <div class="card-header">
@@ -138,7 +155,9 @@
                 <div class="flex-grow-1">
                   <div class="fw-bolder">{{ card.label | translate }}</div>
                   @if (card.value) {
-                    <div class="fs-4 fw-bolder" [ngClass]="{'text-success': card.key === 'bestDelta', 'text-danger': card.key === 'worstDelta'}">{{ card.value }}</div>
+                    <div class="fs-4 fw-bolder"
+                         [ngClass]="{'text-success': card.key === 'bestDelta', 'text-danger': card.key === 'worstDelta'}">{{ card.value }}
+                    </div>
                   } @else {
                     <div class="text-muted small">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
                   }
@@ -159,29 +178,13 @@
     </div>
   </div>
 
-  <div class="row g-2 g-lg-3 mb-3">
-    <div class="col-12">
-      <kep-card>
-        <div class="card-header">
-          <div class="card-title">{{ 'Contests.UserStatistics.RatingChangesHistory' | translate }}</div>
-        </div>
-        <div class="card-body p-2">
-          @if (ratingChangesChart) {
-            <apex-chart [options]="ratingChangesChart"></apex-chart>
-          } @else {
-            <div class="text-center text-muted py-4">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
-          }
-        </div>
-      </kep-card>
-    </div>
-  </div>
-
-  <div class="row g-2 g-lg-3 mb-3">
+  <div class="row">
     <div class="col-lg-8">
       <kep-card>
         <div class="card-header">
           <div class="card-title">{{ 'Contests.AttemptsTimeline' | translate }}</div>
-          <div class="text-muted small">{{ statistics.overview.totalAttempts | number }} {{ 'Attempts' | translate }}</div>
+          <div class="text-muted small">{{ statistics.overview.totalAttempts | number }} {{ 'Attempts' | translate }}
+          </div>
         </div>
         <div class="card-body p-2">
           @if (timelineChart) {
@@ -208,7 +211,7 @@
     </div>
   </div>
 
-  <div class="row g-2 g-lg-3 mb-3">
+  <div class="row">
     <div class="col-lg-4">
       <kep-card [customClass]="'d-flex flex-column chart-card'" [cardHeight]="'360px'">
         <div class="card-header">
@@ -253,7 +256,7 @@
     </div>
   </div>
 
-  <div class="row g-2 g-lg-3 mb-3">
+  <div class="row">
     <div class="col-lg-6">
       <kep-card [customClass]="'d-flex flex-column scrollable-card'" [cardHeight]="'360px'">
         <div class="card-header">
@@ -265,14 +268,16 @@
               @for (problem of statistics.unsolvedProblems; track problem.contestId + problem.problemSymbol) {
                 <div class="d-flex flex-wrap justify-content-between align-items-center gap-1">
                   <div class="fw-bolder">{{ problem.problemSymbol }}</div>
-                  <a class="text-primary small" [routerLink]="getContestProblemLink(problem.contestId, problem.problemSymbol)">
+                  <a class="text-primary small"
+                     [routerLink]="getContestProblemLink(problem.contestId, problem.problemSymbol)">
                     {{ problem.contestTitle }}
                   </a>
                 </div>
               }
             </div>
           } @else {
-            <div class="text-center text-muted py-4">{{ 'Contests.UserStatistics.NoUnsolvedProblems' | translate }}</div>
+            <div class="text-center text-muted py-4">{{ 'Contests.UserStatistics.NoUnsolvedProblems' | translate }}
+            </div>
           }
         </div>
       </kep-card>
@@ -295,7 +300,8 @@
                   </div>
                   <div class="d-flex justify-content-between small text-muted">
                     <span>{{ attempt.attemptsCount | number }} {{ 'Attempts' | translate }}</span>
-                    <a class="text-primary" [routerLink]="getContestProblemLink(attempt.contestId, attempt.problemSymbol)">{{ attempt.contestTitle }}</a>
+                    <a class="text-primary"
+                       [routerLink]="getContestProblemLink(attempt.contestId, attempt.problemSymbol)">{{ attempt.contestTitle }}</a>
                   </div>
                 </div>
               }
