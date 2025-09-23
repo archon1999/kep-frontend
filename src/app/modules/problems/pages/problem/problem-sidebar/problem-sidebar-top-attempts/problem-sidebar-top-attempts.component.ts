@@ -1,14 +1,9 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AttemptLangs } from 'app/modules/problems/constants';
-import { Problem } from 'app/modules/problems/models/problems.models';
-import { LanguageService } from 'app/modules/problems/services/language.service';
-import { ProblemsApiService } from '@problems/services/problems-api.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { ContestantViewModule } from '@contests/components/contestant-view/contestant-view.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { ProblemTopAttempts } from '../problem-statistics.model';
 
 @Component({
   selector: 'problem-sidebar-top-attempts',
@@ -17,42 +12,31 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
   standalone: true,
   imports: [CoreCommonModule, ContestantViewModule, NgSelectModule, KepCardComponent],
 })
-export class ProblemSidebarTopAttemptsComponent implements OnInit, OnDestroy {
+export class ProblemSidebarTopAttemptsComponent implements OnChanges {
 
-  @Input() problem: Problem;
+  @Input() topAttempts: ProblemTopAttempts | null = null;
 
-  public selectedLang: string;
-  public topAttemptsOrdering = 'source_code_size';
-  public topAttempts: Array<any> = [];
+  public topAttemptsOrdering: keyof ProblemTopAttempts = 'sourceCodeSize';
+  public topAttemptsList: Array<any> = [];
 
-  private _unsubscribeAll = new Subject();
-
-  constructor(
-    public langService: LanguageService,
-    public service: ProblemsApiService,
-  ) {}
-
-  ngOnInit(): void {
-    this.langService.getLanguage().pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (lang: AttemptLangs) => {
-        this.selectedLang = lang;
-        this.topAttemptsLoad(this.topAttemptsOrdering);
-      }
-    );
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['topAttempts']) {
+      this.updateTopAttemptsList();
+    }
   }
 
-  topAttemptsLoad(ordering: string) {
+  changeOrdering(ordering: keyof ProblemTopAttempts) {
     this.topAttemptsOrdering = ordering;
-    this.service.getProblemTopAttempts(this.problem.id, ordering, this.selectedLang).subscribe(
-      (result: any) => {
-        this.topAttempts = result;
-      }
-    );
+    this.updateTopAttemptsList();
   }
 
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
-  }
+  private updateTopAttemptsList(): void {
+    if (!this.topAttempts) {
+      this.topAttemptsList = [];
+      return;
+    }
 
+    const list = this.topAttempts[this.topAttemptsOrdering];
+    this.topAttemptsList = Array.isArray(list) ? list : [];
+  }
 }
