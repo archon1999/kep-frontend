@@ -160,6 +160,23 @@
   </div>
 
   <div class="row g-2 g-lg-3 mb-3">
+    <div class="col-12">
+      <kep-card>
+        <div class="card-header">
+          <div class="card-title">{{ 'Contests.UserStatistics.RatingChangesHistory' | translate }}</div>
+        </div>
+        <div class="card-body p-2">
+          @if (ratingChangesChart) {
+            <apex-chart [options]="ratingChangesChart"></apex-chart>
+          } @else {
+            <div class="text-center text-muted py-4">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
+          }
+        </div>
+      </kep-card>
+    </div>
+  </div>
+
+  <div class="row g-2 g-lg-3 mb-3">
     <div class="col-lg-8">
       <kep-card>
         <div class="card-header">
