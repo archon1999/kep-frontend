@@ -63,6 +63,7 @@ export class ContestsUserStatisticsComponent extends BasePageComponent implement
   public highlightCards: HighlightCard[] = [];
   public contestRankCards: ContestCard[] = [];
   public contestDeltaCards: ContestCard[] = [];
+  public ratingChangesChart: ChartOptions | null = null;
   public timelineChart: ChartOptions | null = null;
   public languagesChart: ChartOptions | null = null;
   public verdictsChart: ChartOptions | null = null;
@@ -74,6 +75,7 @@ export class ContestsUserStatisticsComponent extends BasePageComponent implement
   private username: string | null = null;
   private readonly contestsService = inject(ContestsService);
   private statisticsSubscription: Subscription | null = null;
+  private ratingChangesSubscription: Subscription | null = null;
 
   afterChangeCurrentUser(currentUser: AuthUser) {
     if (!currentUser?.username) {
@@ -87,6 +89,7 @@ export class ContestsUserStatisticsComponent extends BasePageComponent implement
 
   ngOnDestroy() {
     this.statisticsSubscription?.unsubscribe();
+    this.ratingChangesSubscription?.unsubscribe();
   }
 
   protected getContentHeader(): ContentHeader {
@@ -121,6 +124,7 @@ export class ContestsUserStatisticsComponent extends BasePageComponent implement
       return;
     }
 
+    this.loadRatingChanges();
     this.isLoading = true;
     this.statisticsSubscription?.unsubscribe();
     this.statisticsSubscription = this.contestsService.getContestUserStatistics(this.username)
@@ -142,6 +146,125 @@ export class ContestsUserStatisticsComponent extends BasePageComponent implement
         error: () => {
           this.statistics = null;
           this.isLoading = false;
+          this.cdr.markForCheck();
+        }
+      });
+  }
+
+  private loadRatingChanges() {
+    if (!this.username) {
+      this.ratingChangesChart = null;
+      return;
+    }
+
+    this.ratingChangesSubscription?.unsubscribe();
+    this.ratingChangesChart = null;
+
+    this.ratingChangesSubscription = this.contestsService.getContestsRatingChanges(this.username)
+      .subscribe({
+        next: (ratingChanges: any[]) => {
+          if (!ratingChanges?.length) {
+            this.ratingChangesChart = null;
+            this.cdr.markForCheck();
+            return;
+          }
+
+          const seriesData = ratingChanges.map((ratingChange) => ({
+            x: ratingChange.contestStartDate,
+            y: ratingChange.newRating,
+          }));
+
+          this.ratingChangesChart = {
+            series: [
+              {
+                name: this.translateService.instant('Contests.UserStatistics.RatingChanges'),
+                data: seriesData,
+              }
+            ],
+            chart: {
+              type: 'area',
+              height: 360,
+              toolbar: { show: false },
+              zoom: { enabled: false },
+              events: {
+                dataPointSelection: (_event, _chartContext, config) => {
+                  const dataPointIndex = config?.dataPointIndex;
+                  if (dataPointIndex == null || dataPointIndex < 0) {
+                    return;
+                  }
+
+                  const contestId = ratingChanges[dataPointIndex]?.contestId;
+                  if (contestId) {
+                    const contestLink = this.getContestLink(contestId);
+                    this.router.navigateByUrl(contestLink);
+                  }
+                }
+              }
+            },
+            dataLabels: {
+              enabled: false,
+            },
+            stroke: {
+              curve: 'smooth',
+              width: 2,
+            },
+            markers: {
+              size: 4,
+            },
+            fill: {
+              type: 'gradient',
+              gradient: {
+                shadeIntensity: 1,
+                opacityFrom: 0.4,
+                opacityTo: 0,
+                stops: [0, 90, 100],
+              },
+            },
+            colors: [Colors.solid.primary],
+            xaxis: {
+              type: 'datetime',
+            },
+            yaxis: {
+              labels: {
+                formatter: (value: number) => Math.round(value).toString(),
+              }
+            },
+            tooltip: {
+              custom: ({ dataPointIndex }): string => {
+                const data = ratingChanges[dataPointIndex];
+                if (!data) {
+                  return '';
+                }
+
+                const deltaColor = data.delta > 0 ? 'success' : data.delta < 0 ? 'danger' : 'secondary';
+                const deltaPrefix = data.delta > 0 ? '+' : '';
+
+                return `
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="text-center mb-1">${data.contestTitle}</h4>
+                      <div class="d-flex flex-column gap-1">
+                        <div class="text-muted small">${data.contestStartDate}</div>
+                        <div class="d-flex align-items-center gap-1">
+                          <span class="badge bg-${deltaColor}-transparent">${deltaPrefix}${data.delta}</span>
+                          <span class="text-muted">#${data.rank}</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-1">
+                          <img src="assets/images/contests/ratings/${data.newRatingTitle.toLowerCase()}.png" height="20" width="20">
+                          <span class="fw-bolder">${data.newRating}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              }
+            },
+          } as ChartOptions;
+
+          this.cdr.markForCheck();
+        },
+        error: () => {
+          this.ratingChangesChart = null;
           this.cdr.markForCheck();
         }
       });

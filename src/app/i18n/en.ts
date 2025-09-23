@@ -587,6 +587,7 @@ export const localeEn = {
       Participants: '{{ total }} participants',
       ContestRanks: 'Contest ranks',
       RatingChanges: 'Rating changes',
+      RatingChangesHistory: 'Rating history',
       Languages: 'Languages',
       Tags: 'Favorite tags',
       Symbols: 'Problem symbols',

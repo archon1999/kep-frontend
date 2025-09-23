@@ -585,6 +585,7 @@ export const localeUz = {
       Participants: '{{ total }} ta ishtirokchi',
       ContestRanks: 'Kontestlardagi natijalar',
       RatingChanges: 'Reyting o‘zgarishlari',
+      RatingChangesHistory: 'Reyting o‘zgarishlari tarixi',
       Languages: 'Tillar',
       Tags: 'Taglar',
       Symbols: 'Masala belgilar',
