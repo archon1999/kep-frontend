@@ -62,6 +62,7 @@ export const localeRu = {
     Showing: 'Показано',
     Of: 'из',
   },
+  UserStatistics: 'Статистика пользователя',
   TimeLimit: 'Ограничение по времени',
   MemoryLimit: 'Ограничение по памяти',
   InputData: 'Входные данные',

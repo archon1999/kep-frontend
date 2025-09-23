@@ -1,109 +1,49 @@
-<div class="card">
-  <div class="card-body">
-    <div class="section-profile text-center">
-      <div class="avatar p-50 bg-primary">
-        <div class="avatar-content">
-          <i [data-feather]="'problem' | iconName" [size]="20"></i>
-        </div>
-      </div>
-      <div class="font-medium-5 mt-1">
-        {{ 'Problems' | translate }}
-        <br>
-        <a
-          [routerLink]="[Resources.Attempts, username]"
-          class="btn btn-outline-primary btn-sm mt-1 attempts-link">
-          {{ 'Attempts' | translate }}
-        </a>
-        <div class="font-medium-4 mt-2">
-          <span ngbTooltip="{{ 'Solved' | translate }}">
-            <i data-feather="check-circle"></i>
-            {{ general.solved }}
-          </span>
-
-          <span ngbTooltip="{{ 'Rating' | translate }}">
-            <i [data-feather]="'rating' | iconName" class="ms-1"></i>
-            {{ general.rating }}
-          </span>
-        </div>
-      </div>
-
-      <div class="font-medium-4 mt-1">
-        <span ngbTooltip="{{ 'Rank' | translate }}">
-          <i [data-feather]="'users'" class="ms-1"></i>
-          <span class="font-medium-3">
-            {{ general.rank }}({{ general.usersCount }})
-          </span>
-        </span>
-      </div>
+<kep-card class="statistics-profile-card">
+  <div class="card-header">
+    <div class="card-title">
+      {{ 'Problems' | translate }}
     </div>
 
-    <hr>
-
-    <div class="section-languages">
-      <div class="title">
-        {{ 'Languages' | translate }}
-      </div>
-
-      <div class="languages">
-        @for (data of langs; track data) {
-          <div class="d-flex language justify-content-between">
-            <div class="lang">
-              <span class="badge badge-{{ data.lang }}">
-                {{ data.langFull }}
-              </span>
-            </div>
-            <div class="result">
-              <strong>x{{ data.solved }}</strong>
-            </div>
-          </div>
-        }
-      </div>
-    </div>
-
-    <hr>
-
-    <div class="section-tags">
-      <div class="title">
-        {{ 'Tags' | translate }}
-      </div>
-
-      <div class="tags">
-        @for (tag of tags; track tag) {
-          <div class="tag">
-            <span class="badge badge-pill bg-primary">
-              {{ tag.name }}
-            </span>
-            x{{ tag.value }}
-          </div>
-        }
-      </div>
-    </div>
-
-    <hr>
-
-    <div class="section-topics">
-      <div class="title">
-        {{ 'Topics' | translate }}
-      </div>
-
-      <div class="topics">
-        @for (topic of topics; track topic) {
-          <div class="topic d-flex justify-content-between">
-            <div class="d-flex topic-info justify-content-start">
-              <div class="topic-icon">
-                <kep-icon [name]="topic.icon"></kep-icon>
-              </div>
-              <div class="topic-title">
-                {{ topic.topic }}
-              </div>
-            </div>
-            <div class="solved">
-              x{{ topic.solved }}
-            </div>
-          </div>
-        }
-      </div>
-    </div>
-
+    <a [routerLink]="[Resources.Attempts, username]" class="btn btn-primary btn-sm d-flex align-items-center gap-50">
+      <kep-icon name="activity" class="font-medium-1"></kep-icon>
+      {{ 'Attempts' | translate }}
+    </a>
   </div>
-</div>
+  <div class="card-body">
+    <div class="profile-section mt-2" *ngIf="langs?.length">
+      <div class="section-title">{{ 'Languages' | translate }}</div>
+      <ul class="list-unstyled mb-0">
+        @for (data of langs | slice:0:6; track data.lang) {
+          <li class="d-flex justify-content-between align-items-center py-25">
+            <attempt-language [lang]="data.lang" [langFull]="data.langFull"/>
+            <span class="fw-bold">×{{ data.solved }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <div class="profile-section mt-2" *ngIf="topics?.length">
+      <div class="section-title">{{ 'Topics' | translate }}</div>
+      <div class="topics-grid">
+        @for (topic of topics; track topic.id) {
+          <div class="topic-chip">
+            <kep-icon [name]="topic.icon" class="text-primary"></kep-icon>
+            <div class="topic-info">
+              <div class="title">{{ topic.topic }}</div>
+              <div class="meta text-muted">×{{ topic.solved }}</div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="profile-section mt-2" *ngIf="tags?.length">
+      <div class="section-title">{{ 'Tags' | translate }}</div>
+      <div class="tags-cloud">
+        @for (tag of tags; track tag.name) {
+          <span class="tag-pill">{{ tag.name }}<small>×{{ tag.value }}</small></span>
+        }
+      </div>
+    </div>
+  </div>
+</kep-card>

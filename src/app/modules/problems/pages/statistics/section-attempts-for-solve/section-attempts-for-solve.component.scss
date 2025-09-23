@@ -1,3 +1,11 @@
-.card {
-  height: 410px;
+.attempts-card {
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  apex-chart {
+    width: 100%;
+  }
 }

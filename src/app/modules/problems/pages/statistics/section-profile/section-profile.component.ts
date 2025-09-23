@@ -1,11 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AuthService } from '@auth';
-import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { GeneralInfo } from '@problems/models/statistics.models';
 import { getCategoryIcon } from '@problems/utils/category';
 import { Resources } from "@app/resources";
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { AttemptLanguageComponent } from "@shared/components/attempt-language/attempt-language.component";
 
 interface LangInfo {
   lang: string;
@@ -34,58 +36,36 @@ interface TopicInfo {
   imports: [
     CoreCommonModule,
     NgbTooltipModule,
+    KepCardComponent,
+    KepIconComponent,
+    TranslateModule,
+    AttemptLanguageComponent,
   ]
 })
-export class SectionProfileComponent implements OnInit {
+export class SectionProfileComponent implements OnChanges {
 
   @Input() username: string;
+  @Input() general: GeneralInfo;
+  @Input() langs: Array<LangInfo> = [];
+  @Input() tags: Array<TagInfo> = [];
+  @Input() topics: Array<TopicInfo> = [];
 
   public readonly Resources = Resources;
 
-  public general: GeneralInfo = {
-    solved: 0,
-    rating: 0,
-    rank: 0,
-    usersCount: 0,
-  };
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['langs'] && this.langs) {
+      this.langs = [...this.langs].sort((a, b) => b.solved - a.solved);
+    }
 
-  public langs: Array<LangInfo> = [];
-  public tags: Array<TagInfo> = [];
-  public topics: Array<TopicInfo> = [];
+    if (changes['tags'] && this.tags) {
+      this.tags = [...this.tags].sort((a, b) => b.value - a.value);
+    }
 
-  constructor(
-    public authService: AuthService,
-    public statisticsService: ProblemsStatisticsService,
-  ) {
+    if (changes['topics'] && this.topics) {
+      this.topics = this.topics.map((topic) => ({
+        ...topic,
+        icon: getCategoryIcon(topic.id)
+      }));
+    }
   }
-
-  ngOnInit(): void {
-    this.statisticsService.getGeneral(this.username).subscribe(
-      (general: GeneralInfo) => {
-        this.general = general;
-      }
-    );
-
-    this.statisticsService.getByLang(this.username).subscribe(
-      (langs: Array<LangInfo>) => {
-        this.langs = langs.sort((a, b) => b.solved - a.solved);
-      }
-    );
-
-    this.statisticsService.getByTag(this.username).subscribe(
-      (tags: Array<TagInfo>) => {
-        this.tags = tags.sort((a, b) => b.value - a.value);
-      }
-    );
-
-    this.statisticsService.getByTopic(this.username).subscribe(
-      (topics: Array<TopicInfo>) => {
-        this.topics = topics.map((topic) => {
-          topic.icon = getCategoryIcon(topic.id);
-          return topic;
-        });
-      }
-    );
-  }
-
 }

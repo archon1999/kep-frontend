@@ -1,0 +1,15 @@
+.heatmap-card {
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .heatmap-chart {
+    min-height: 320px;
+
+    apex-chart {
+      width: 100%;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import {
   ProblemsActivityCardComponent
@@ -15,5 +15,9 @@ import {
   ]
 })
 export class SectionActivityComponent {
-  @Input() username: string;
+  @Input() solved = 0;
+  @Input() series: number[] = [];
+  @Input() selectedDays = 7;
+  @Input() allowedDays: number[] = [];
+  @Output() daysChange = new EventEmitter<number>();
 }

@@ -53,6 +53,7 @@ export const localeUz = {
   Ok: 'OK',
   Iq: 'IQ',
   Faq: 'FAQ',
+  UserStatistics: 'Foydalanuvchi statistikasi',
   ProblemsSearchPlaceholder: 'Masala raqami yoki nomi bo‘yicha qidirish',
   NgSelect: {
     NotFound: 'Hech narsa topilmadi',

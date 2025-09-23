@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { SwiperOptions } from 'swiper/types/swiper-options';
 import { CoreCommonModule } from '@core/common.module';
 import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
@@ -41,11 +40,12 @@ export interface Difficulties {
     NgbProgressbarModule,
     ProblemsPipesModule,
     KepCardComponent,
+    TranslateModule,
   ]
 })
-export class SectionDifficultiesComponent implements OnInit {
+export class SectionDifficultiesComponent implements OnChanges {
 
-  @Input() username: string;
+  @Input() data: Difficulties;
 
   public difficulties: Difficulties = {
     beginner: 0,
@@ -76,91 +76,89 @@ export class SectionDifficultiesComponent implements OnInit {
   };
 
   constructor(
-    public statisticsService: ProblemsStatisticsService,
     public translateService: TranslateService,
-  ) {}
-
-  ngOnInit(): void {
-    this.statisticsService.getByDifficulty(this.username).subscribe(
-      (difficulties: Difficulties) => {
-        this.difficulties = difficulties;
-        this.chartOptions = {
-          series: [100 * difficulties.totalSolved / difficulties.totalProblems],
-          chart: {
-            height: '200px',
-            type: 'radialBar',
-            toolbar: {
-              show: false,
-            }
-          },
-          plotOptions: {
-            radialBar: {
-              startAngle: -135,
-              endAngle: 225,
-              hollow: {
-                margin: 0,
-                size: '70%',
-                image: undefined,
-                position: 'front',
-                dropShadow: {
-                  enabled: true,
-                  top: 3,
-                  left: 0,
-                  blur: 4,
-                  opacity: 0.24
-                }
-              },
-              track: {
-                strokeWidth: '67%',
-                margin: 0, // margin is in pixels
-                dropShadow: {
-                  enabled: true,
-                  top: -3,
-                  left: 0,
-                  blur: 4,
-                  opacity: 0.35
-                }
-              },
-
-              dataLabels: {
-                show: true,
-                name: {
-                  offsetY: -10,
-                  show: true,
-                  color: '#888',
-                  fontSize: '17px'
-                },
-                value: {
-                  formatter: function (val) {
-                    return parseInt(val.toString(), 10).toString();
-                  },
-                  color: '#111',
-                  fontSize: '36px',
-                  show: true
-                }
-              }
-            }
-          },
-          fill: {
-            type: 'gradient',
-            gradient: {
-              shade: 'dark',
-              type: 'horizontal',
-              shadeIntensity: 0.5,
-              gradientToColors: ['#ABE5A1'],
-              inverseColors: true,
-              opacityFrom: 1,
-              opacityTo: 1,
-              stops: [0, 100]
-            }
-          },
-          stroke: {
-            lineCap: 'round'
-          },
-          labels: [this.translateService.instant('Percent')]
-        };
-      }
-    );
+  ) {
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['data'] && this.data) {
+      this.difficulties = this.data;
+      this.buildChart();
+    }
+  }
+
+  private buildChart() {
+    const diff = this.difficulties;
+    if (!diff || !diff.totalProblems) {
+      this.chartOptions = null;
+      return;
+    }
+
+    this.chartOptions = {
+      series: [100 * diff.totalSolved / diff.totalProblems],
+      chart: {
+        height: '220px',
+        type: 'radialBar',
+        toolbar: {show: false}
+      },
+      plotOptions: {
+        radialBar: {
+          startAngle: -135,
+          endAngle: 225,
+          hollow: {
+            margin: 0,
+            size: '70%',
+            dropShadow: {
+              enabled: true,
+              top: 3,
+              left: 0,
+              blur: 4,
+              opacity: 0.24
+            }
+          },
+          track: {
+            strokeWidth: '67%',
+            margin: 0,
+            dropShadow: {
+              enabled: true,
+              top: -3,
+              left: 0,
+              blur: 4,
+              opacity: 0.35
+            }
+          },
+          dataLabels: {
+            show: true,
+            name: {
+              offsetY: -10,
+              show: true,
+              color: '#888',
+              fontSize: '17px'
+            },
+            value: {
+              formatter: (val: number) => parseInt(val.toString(), 10).toString(),
+              color: '#111',
+              fontSize: '34px',
+              show: true
+            }
+          }
+        }
+      },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shade: 'dark',
+          type: 'horizontal',
+          shadeIntensity: 0.5,
+          gradientToColors: ['#ABE5A1'],
+          inverseColors: true,
+          opacityFrom: 1,
+          opacityTo: 1,
+          stops: [0, 100]
+        }
+      },
+      stroke: {lineCap: 'round'},
+      labels: [this.translateService.instant('Percent')]
+    };
+  }
 }

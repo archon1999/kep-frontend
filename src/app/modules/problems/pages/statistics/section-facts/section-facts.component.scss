@@ -1,32 +1,53 @@
-@import 'bootstrap/scss/mixins';
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
-
-.card {
-  height: 410px;
-
-  @include media-breakpoint-down(sm) {
-    height: inherit;
+.facts-card {
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
   }
-}
 
-.facts {
-  .fact {
+  .facts-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .fact-item {
+    display: flex;
+    gap: 0.75rem;
     align-items: center;
-    margin-bottom: 1rem;
+    background: var(--bs-light-bg-subtle);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
 
-    .info {
-      align-items: center;
+    .fact-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
 
-      .title {
-        font-weight: 500;
+      i,
+      kep-icon {
+        font-size: 1.1rem;
       }
-
     }
 
-    .problem-title {
-      font-weight: 500;
-      text-align: right;
+    .fact-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+
+      .fact-title {
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--bs-secondary-color);
+        font-size: 0.75rem;
+      }
+
+      .fact-meta {
+        font-weight: 700;
+      }
     }
   }
 }
