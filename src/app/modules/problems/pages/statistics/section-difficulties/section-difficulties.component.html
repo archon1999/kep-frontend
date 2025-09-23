@@ -1,15 +1,16 @@
 <kep-card>
+  <div class="card-header">
+    <div class="card-title">
+      {{ 'Difficulty' | translate }}
+    </div>
+
+    <div class="text-body-secondary">{{ difficulties?.totalSolved | number }} / {{ difficulties?.totalProblems | number }}</div>
+  </div>
   <div class="card-body">
-    <div class="card-header border-0 px-0 pt-0 pb-1 d-flex align-items-center justify-content-between">
-      <div>
-        <div class="text-uppercase small text-muted fw-bold">{{ 'Difficulty' | translate }}</div>
-        <div class="text-body-secondary">{{ difficulties?.totalSolved | number }} / {{ difficulties?.totalProblems | number }}</div>
-      </div>
-      <div class="chart">
-        @if (chartOptions) {
-          <apex-chart [options]="chartOptions"></apex-chart>
-        }
-      </div>
+    <div class="text-center">
+      @if (chartOptions) {
+        <apex-chart [options]="chartOptions"></apex-chart>
+      }
     </div>
 
     <div class="difficulties mt-1">

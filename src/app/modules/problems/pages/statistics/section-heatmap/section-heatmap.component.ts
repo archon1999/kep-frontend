@@ -5,6 +5,7 @@ import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-char
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { colors } from "@core/config/colors";
 
 @Component({
   selector: 'section-heatmap',
@@ -60,7 +61,7 @@ export class SectionHeatmapComponent implements OnChanges {
     for (const item of this.heatmap ?? []) {
       const date = new Date(item.date);
       const weekday = date.getDay();
-      const index = weekday; // Sunday = 0
+      const index = weekday;
       if (series[index]) {
         series[index].data.push({ x: date, y: item.solved });
       }
@@ -73,6 +74,7 @@ export class SectionHeatmapComponent implements OnChanges {
         type: 'heatmap',
         toolbar: { show: false }
       },
+      colors: [colors.solid.primary],
       dataLabels: { enabled: false },
       stroke: { width: 1 },
       xaxis: {

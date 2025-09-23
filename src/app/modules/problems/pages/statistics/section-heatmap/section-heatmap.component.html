@@ -1,36 +1,27 @@
-<kep-card class="heatmap-card">
-  <div class="card-body">
-    <div class="card-header px-0 pt-0 pb-1 d-flex justify-content-between align-items-center flex-wrap gap-1">
-      <div>
-        <div class="text-uppercase text-muted fw-bold small">{{ 'Heatmap' | translate }}</div>
-        <div class="text-body-secondary">{{ 'Solved' | translate }}</div>
-      </div>
-      <div class="btn-group btn-group-sm" role="group" aria-label="Select year">
-        @for (year of availableYears; track year) {
-          <input
-            type="radio"
-            class="btn-check"
-            name="heatmapYear"
-            [value]="year"
-            [checked]="year === selectedYear"
-            [id]="'heatmap-' + year"
-            (change)="onYearChange(year)"
-          >
-          <label class="btn btn-outline-primary" [class.active]="year === selectedYear" [for]="'heatmap-' + year">
-            {{ year }}
-          </label>
-        }
-      </div>
+<kep-card>
+  <div class="card-header">
+    <div class="card-title">
+      {{ 'Heatmap' | translate }}
     </div>
 
-    <div class="heatmap-chart">
-      @if (heatmapChart) {
-        <apex-chart [options]="heatmapChart"></apex-chart>
-      } @else {
-        <div class="empty-state text-center py-3 text-muted">
-          No data
-        </div>
+    <div class="btn-group btn-group-sm" role="group" aria-label="Select year">
+      @for (year of availableYears; track year) {
+        <input
+          type="radio"
+          class="btn-check"
+          name="heatmapYear"
+          [value]="year"
+          [checked]="year === selectedYear"
+          [id]="'heatmap-' + year"
+          (change)="onYearChange(year)"
+        >
+        <label class="btn btn-outline-primary" [class.active]="year === selectedYear" [for]="'heatmap-' + year">
+          {{ year }}
+        </label>
       }
     </div>
+  </div>
+  <div class="card-body">
+    <apex-chart [options]="heatmapChart"/>
   </div>
 </kep-card>

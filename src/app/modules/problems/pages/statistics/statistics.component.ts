@@ -214,14 +214,7 @@ export class StatisticsComponent extends BasePageComponent implements OnInit, On
 
     const from = new Date(meta.heatmapRange?.from ?? '');
     const to = new Date(meta.heatmapRange?.to ?? '');
-    if (!Number.isNaN(from.getFullYear()) && !Number.isNaN(to.getFullYear())) {
-      const years = new Set<number>();
-      for (let year = from.getFullYear(); year <= to.getFullYear(); year++) {
-        years.add(year);
-      }
-      this.availableYears = Array.from(years).sort((a, b) => b - a);
-    }
-
+    this.availableYears = [2024, 2025];
     if (!this.selectedYear && this.availableYears.length) {
       this.selectedYear = this.availableYears[0];
     }

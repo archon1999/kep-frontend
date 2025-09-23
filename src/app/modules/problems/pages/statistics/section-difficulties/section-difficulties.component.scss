@@ -37,14 +37,3 @@ kep-card {
     }
   }
 }
-
-@media (max-width: 991.98px) {
-  kep-card {
-    .card-body {
-      .chart {
-        width: 110px;
-        margin-left: auto;
-      }
-    }
-  }
-}

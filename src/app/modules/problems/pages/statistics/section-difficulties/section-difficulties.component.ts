@@ -97,7 +97,7 @@ export class SectionDifficultiesComponent implements OnChanges {
     this.chartOptions = {
       series: [100 * diff.totalSolved / diff.totalProblems],
       chart: {
-        height: '220px',
+        height: '170px',
         type: 'radialBar',
         toolbar: {show: false}
       },

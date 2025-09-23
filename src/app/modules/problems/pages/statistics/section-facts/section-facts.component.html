@@ -1,9 +1,10 @@
 <kep-card class="facts-card">
-  <div class="card-body">
-    <div class="card-header px-0 pt-0 pb-1">
-      <div class="text-uppercase text-muted fw-bold small">{{ 'Facts' | translate }}</div>
+  <div class="card-header">
+    <div class="card-title">
+      {{ 'Facts' | translate }}
     </div>
-
+  </div>
+  <div class="card-body">
     <div class="facts-grid" *ngIf="facts">
       <div class="fact-item" *ngIf="facts.firstAttempt">
         <div class="fact-icon bg-primary-transparent">
@@ -117,7 +118,7 @@
 
       <div class="fact-item" *ngIf="facts.solvedWithSingleAttempt">
         <div class="fact-icon bg-primary-transparent">
-          <kep-icon name="check-circle"></kep-icon>
+          <kep-icon class="" name="check-circle"></kep-icon>
         </div>
         <div class="fact-content">
           <div class="fact-title">{{ 'SolvedWithSingleAttempt' | translate }}</div>

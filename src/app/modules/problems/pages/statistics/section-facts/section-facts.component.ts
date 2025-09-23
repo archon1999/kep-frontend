@@ -5,6 +5,7 @@ import { Resources } from '@app/resources';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { AttemptVerdictHTMLPipe } from "@problems/pipes/attempt-verdict-html.pipe";
 
 export interface Facts {
   firstAttempt: any;
@@ -22,7 +23,7 @@ export interface Facts {
   templateUrl: './section-facts.component.html',
   styleUrls: ['./section-facts.component.scss'],
   standalone: true,
-  imports: [CoreCommonModule, NgbTooltipModule, ResourceByIdPipe, KepCardComponent, TranslateModule],
+  imports: [CoreCommonModule, NgbTooltipModule, ResourceByIdPipe, KepCardComponent, TranslateModule, AttemptVerdictHTMLPipe],
 })
 export class SectionFactsComponent {
 

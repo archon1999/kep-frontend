@@ -1,43 +1,37 @@
 <div class="row g-1">
   <div class="col-lg-4 col-12">
-    <kep-card class="time-card">
-      <div class="card-body">
-        <div class="card-header px-0 pt-0 pb-1">
-          <div class="text-uppercase text-muted fw-bold small">{{ 'ByWeekday' | translate }}</div>
+    <kep-card>
+      <div class="card-header">
+        <div class="card-title">
+          {{ 'ByWeekday' | translate }}
         </div>
-        @if (byWeekdayChart) {
-          <apex-chart [options]="byWeekdayChart"></apex-chart>
-        } @else {
-          <div class="empty-state text-muted text-center py-2">No data</div>
-        }
+      </div>
+      <div class="card-body">
+        <apex-chart [options]="byWeekdayChart"/>
       </div>
     </kep-card>
   </div>
   <div class="col-lg-4 col-12">
-    <kep-card class="time-card">
-      <div class="card-body">
-        <div class="card-header px-0 pt-0 pb-1">
-          <div class="text-uppercase text-muted fw-bold small">{{ 'ByMonth' | translate }}</div>
+    <kep-card>
+      <div class="card-header">
+        <div class="card-title">
+          {{ 'ByMonth' | translate }}
         </div>
-        @if (byMonthChart) {
-          <apex-chart [options]="byMonthChart"></apex-chart>
-        } @else {
-          <div class="empty-state text-muted text-center py-2">No data</div>
-        }
+      </div>
+      <div class="card-body">
+        <apex-chart [options]="byMonthChart"/>
       </div>
     </kep-card>
   </div>
   <div class="col-lg-4 col-12">
-    <kep-card class="time-card">
-      <div class="card-body">
-        <div class="card-header px-0 pt-0 pb-1">
-          <div class="text-uppercase text-muted fw-bold small">{{ 'ByPeriod' | translate }}</div>
+    <kep-card>
+      <div class="card-header">
+        <div class="card-title">
+          {{ 'ByPeriod' | translate }}
         </div>
-        @if (byPeriodChart) {
-          <apex-chart [options]="byPeriodChart"></apex-chart>
-        } @else {
-          <div class="empty-state text-muted text-center py-2">No data</div>
-        }
+      </div>
+      <div class="card-body">
+        <apex-chart [options]="byPeriodChart"/>
       </div>
     </kep-card>
   </div>

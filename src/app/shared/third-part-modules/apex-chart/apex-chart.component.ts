@@ -37,7 +37,7 @@ export class ApexChartComponent implements OnInit, OnDestroy {
   @Input() set options(options: ChartOptions) {
     this._options = options;
     this.options.chart.fontFamily = this.options.chart.fontFamily || 'var(--default-font-family)';
-    this.options.colors = this.options.colors || ['var(--primary-rgb)'];
+    this.options.colors = this.options.colors || ['var(--primary)'];
     this.options.chart.toolbar = this.options.chart.toolbar || {show: false};
     this.options.chart.zoom = this.options.chart.zoom || {enabled: false};
     this.options.stroke = this.options.stroke || {width: 2};

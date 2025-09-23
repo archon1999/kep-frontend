@@ -1,12 +1,10 @@
-<kep-card class="attempts-card">
-  <div class="card-body">
-    <div class="card-header px-0 pt-0 pb-1">
-      <div class="text-uppercase text-muted fw-bold small">{{ 'NumberAttemptsSolve' | translate }}</div>
+<kep-card>
+  <div class="card-header">
+    <div class="card-title">
+      {{ 'NumberAttemptsSolve' | translate }}
     </div>
-    @if (numberOfAttemptsForSolveChart) {
-      <apex-chart [options]="numberOfAttemptsForSolveChart"></apex-chart>
-    } @else {
-      <div class="empty-state text-muted text-center py-3">No data</div>
-    }
+  </div>
+  <div class="card-body">
+    <apex-chart [options]="numberOfAttemptsForSolveChart"/>
   </div>
 </kep-card>
