@@ -40,7 +40,7 @@ export class ApexChartComponent implements OnInit, OnDestroy {
     this.options.colors = this.options.colors || ['var(--primary)'];
     this.options.chart.toolbar = this.options.chart.toolbar || {show: false};
     this.options.chart.zoom = this.options.chart.zoom || {enabled: false};
-    this.options.stroke = this.options.stroke || {width: 2};
+    this.options.stroke = this.options.stroke || {width: 1};
     this.options.chart.locales = [ru, en, uz];
     this.options.chart.defaultLocale = 'en';
     this.cdr.detectChanges();

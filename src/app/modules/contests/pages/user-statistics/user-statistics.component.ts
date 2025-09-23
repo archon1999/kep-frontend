@@ -169,7 +169,7 @@ export class ContestsUserStatisticsComponent extends BasePageComponent implement
         label: 'Contests.UserStatistics.Rank',
         icon: 'ranking',
         value: `#${general.ratingPlace}`,
-        subtitle: this.translateService.instant('Contests.UserStatistics.OutOf', { total: general.contestantsCount }),
+        subtitle: this.translateService.instant('Contests.UserStatistics.OutOf', { total: 8278 }),
       },
       {
         key: 'contestants',
@@ -416,7 +416,8 @@ export class ContestsUserStatisticsComponent extends BasePageComponent implement
         Colors.solid.secondary,
       ],
       legend: {
-        position: 'bottom',
+        position: 'right',
+        width: 100
       },
       plotOptions: {
         pie: {
@@ -465,7 +466,8 @@ export class ContestsUserStatisticsComponent extends BasePageComponent implement
         },
         colors,
         legend: {
-          position: 'bottom',
+          position: 'right',
+          width: 100
         },
         plotOptions: {
           pie: {
@@ -481,7 +483,7 @@ export class ContestsUserStatisticsComponent extends BasePageComponent implement
             }
           }
         }
-      } as unknown as ChartOptions;
+      } as ChartOptions;
     };
 
     this.tagsChart = tags.length

@@ -197,7 +197,7 @@
         <div class="card-header">
           <div class="card-title">{{ 'Contests.VerdictDistribution' | translate }}</div>
         </div>
-        <div class="card-body p-2 flex-grow-1 d-flex align-items-center justify-content-center chart-card-body">
+        <div class="card-body">
           @if (verdictsChart) {
             <apex-chart [options]="verdictsChart"></apex-chart>
           } @else {
@@ -211,7 +211,7 @@
         <div class="card-header">
           <div class="card-title">{{ 'Contests.UserStatistics.Tags' | translate }}</div>
         </div>
-        <div class="card-body p-2 flex-grow-1 d-flex align-items-center justify-content-center chart-card-body">
+        <div class="card-body">
           @if (tagsChart) {
             <apex-chart [options]="tagsChart"></apex-chart>
           } @else {
@@ -225,7 +225,7 @@
         <div class="card-header">
           <div class="card-title">{{ 'Contests.UserStatistics.Symbols' | translate }}</div>
         </div>
-        <div class="card-body p-2 flex-grow-1 d-flex align-items-center justify-content-center chart-card-body">
+        <div class="card-body">
           @if (symbolsChart) {
             <apex-chart [options]="symbolsChart"></apex-chart>
           } @else {
@@ -296,10 +296,10 @@
       <div class="card-title">{{ 'Contests.UserStatistics.WorthyOpponents' | translate }}</div>
     </div>
     <div class="card-body">
-      <div class="row g-2 g-lg-3">
+      <div class="row">
         @for (opponent of topOpponents; track opponent.opponent) {
-          <div class="col-lg-4 d-flex">
-            <kep-card [customClass]="'d-flex flex-column flex-fill opponent-card'" [cardHeight]="'360px'">
+          <div class="col-lg-4">
+            <kep-card [customClass]="'d-flex flex-column flex-fill opponent-card'" [cardHeight]="'500px'">
               <div class="card-header d-flex justify-content-between align-items-start gap-1 flex-wrap">
                 <div class="card-title mb-0">
                   {{ opponent.opponent }}
