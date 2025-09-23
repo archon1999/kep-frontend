@@ -568,7 +568,7 @@ export const localeRu = {
       CurrentRating: 'Текущий рейтинг',
       BestRating: 'Лучший рейтинг',
       Rank: 'Позиция в рейтинге',
-      TotalContestants: 'Активных участников',
+      TotalContestants: 'Количество участие',
       OutOf: 'из {{ total }} участников',
       AverageAttemptsPerProblem: 'Среднее попыток на задачу',
       SingleAttemptProblems: 'Решения с одной попытки',

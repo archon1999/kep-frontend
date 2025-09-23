@@ -573,7 +573,7 @@ export const localeEn = {
       CurrentRating: 'Current rating',
       BestRating: 'Best rating',
       Rank: 'Rating place',
-      TotalContestants: 'Active contestants',
+      TotalContestants: 'Total contestants',
       OutOf: 'of {{ total }} contestants',
       AverageAttemptsPerProblem: 'Average attempts/problem',
       SingleAttemptProblems: 'Single-attempt solves',

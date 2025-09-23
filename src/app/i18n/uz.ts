@@ -567,11 +567,11 @@ export const localeUz = {
       Other: 'Boshqa',
     },
     UserStatistics: {
-      Header: 'Musobaqa statistikasi',
+      Header: 'Kontestlar statistikasi',
       CurrentRating: 'Joriy reyting',
       BestRating: 'Eng yuqori reyting',
       Rank: 'Reytingdagi o‘rin',
-      TotalContestants: 'Faol ishtirokchilar',
+      TotalContestants: 'Kontest ishtiroklari soni',
       OutOf: '{{ total }} ta ishtirokchi orasida',
       AverageAttemptsPerProblem: 'Bir masalaga o‘rtacha urinishlar',
       SingleAttemptProblems: 'Bir urinishda yechilganlar',

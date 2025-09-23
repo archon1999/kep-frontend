@@ -177,6 +177,7 @@ export class ContestsUserStatisticsComponent extends BasePageComponent implement
         label: 'Contests.UserStatistics.TotalContestants',
         icon: 'users',
         value: this.formatNumber(general.contestantsCount),
+        subtitle: '-',
       }
     ];
   }
@@ -200,7 +201,7 @@ export class ContestsUserStatisticsComponent extends BasePageComponent implement
         key: 'averageAttempts',
         label: 'Contests.UserStatistics.AverageAttemptsPerProblem',
         icon: 'statistics',
-        value: overview.averageAttemptsPerProblem.toFixed(2),
+        value: (overview.averageAttemptsPerProblem + 1).toFixed(2),
       },
       {
         key: 'singleAttempt',

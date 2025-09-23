@@ -21,7 +21,7 @@ export default [
     loadComponent: () => import('./pages/user-statistics/user-statistics.component').then(c => c.ContestsUserStatisticsComponent),
     data: {animation: 'contests-user-statistics', title: 'Contests.ContestsUserStatistics'},
     canActivate: [AuthGuard],
-    title: 'Contests.ContestsUserStatistics',
+    title: 'Contests.UserStatistics',
   },
   {
     path: 'user-statistics',
