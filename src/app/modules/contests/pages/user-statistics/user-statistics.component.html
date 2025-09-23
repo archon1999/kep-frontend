@@ -193,57 +193,43 @@
 
   <div class="row g-2 g-lg-3 mb-3">
     <div class="col-lg-4">
-      <kep-card>
+      <kep-card [customClass]="'d-flex flex-column chart-card'" [cardHeight]="'360px'">
         <div class="card-header">
           <div class="card-title">{{ 'Contests.VerdictDistribution' | translate }}</div>
         </div>
-        <div class="card-body p-2">
+        <div class="card-body p-2 flex-grow-1 d-flex align-items-center justify-content-center chart-card-body">
           @if (verdictsChart) {
             <apex-chart [options]="verdictsChart"></apex-chart>
           } @else {
-            <div class="text-center text-muted py-4">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
+            <div class="text-center text-muted">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
           }
         </div>
       </kep-card>
     </div>
     <div class="col-lg-4">
-      <kep-card>
+      <kep-card [customClass]="'d-flex flex-column chart-card'" [cardHeight]="'360px'">
         <div class="card-header">
           <div class="card-title">{{ 'Contests.UserStatistics.Tags' | translate }}</div>
         </div>
-        <div class="card-body">
-          @if (topTags.length) {
-            <div class="d-flex flex-column gap-2">
-              @for (tag of topTags; track tag.name) {
-                <div class="d-flex justify-content-between align-items-center">
-                  <span>{{ tag.name }}</span>
-                  <span class="badge bg-light text-dark">{{ tag.solved }}</span>
-                </div>
-              }
-            </div>
+        <div class="card-body p-2 flex-grow-1 d-flex align-items-center justify-content-center chart-card-body">
+          @if (tagsChart) {
+            <apex-chart [options]="tagsChart"></apex-chart>
           } @else {
-            <div class="text-center text-muted py-4">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
+            <div class="text-center text-muted">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
           }
         </div>
       </kep-card>
     </div>
     <div class="col-lg-4">
-      <kep-card>
+      <kep-card [customClass]="'d-flex flex-column chart-card'" [cardHeight]="'360px'">
         <div class="card-header">
           <div class="card-title">{{ 'Contests.UserStatistics.Symbols' | translate }}</div>
         </div>
-        <div class="card-body">
-          @if (topSymbols.length) {
-            <div class="d-flex flex-column gap-2">
-              @for (symbol of topSymbols; track symbol.symbol) {
-                <div class="d-flex justify-content-between align-items-center">
-                  <span>{{ symbol.symbol }}</span>
-                  <span class="badge bg-light text-dark">{{ symbol.solved }}</span>
-                </div>
-              }
-            </div>
+        <div class="card-body p-2 flex-grow-1 d-flex align-items-center justify-content-center chart-card-body">
+          @if (symbolsChart) {
+            <apex-chart [options]="symbolsChart"></apex-chart>
           } @else {
-            <div class="text-center text-muted py-4">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
+            <div class="text-center text-muted">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
           }
         </div>
       </kep-card>
@@ -252,11 +238,11 @@
 
   <div class="row g-2 g-lg-3 mb-3">
     <div class="col-lg-6">
-      <kep-card>
+      <kep-card [customClass]="'d-flex flex-column scrollable-card'" [cardHeight]="'360px'">
         <div class="card-header">
           <div class="card-title">{{ 'Contests.UserStatistics.UnsolvedProblems' | translate }}</div>
         </div>
-        <div class="card-body">
+        <div class="card-body flex-grow-1 overflow-auto scrollable-card-body">
           @if (statistics.unsolvedProblems.length) {
             <div class="d-flex flex-column gap-2">
               @for (problem of statistics.unsolvedProblems; track problem.contestId + problem.problemSymbol) {
@@ -275,11 +261,11 @@
       </kep-card>
     </div>
     <div class="col-lg-6">
-      <kep-card>
+      <kep-card [customClass]="'d-flex flex-column scrollable-card'" [cardHeight]="'360px'">
         <div class="card-header">
           <div class="card-title">{{ 'Contests.UserStatistics.TopAttempts' | translate }}</div>
         </div>
-        <div class="card-body">
+        <div class="card-body flex-grow-1 overflow-auto scrollable-card-body">
           @if (statistics.topAttempts.length) {
             <div class="d-flex flex-column gap-2">
               @for (attempt of statistics.topAttempts; track attempt.contestId + attempt.problemSymbol) {
@@ -310,12 +296,12 @@
       <div class="card-title">{{ 'Contests.UserStatistics.WorthyOpponents' | translate }}</div>
     </div>
     <div class="card-body">
-      <div class="row">
+      <div class="row g-2 g-lg-3">
         @for (opponent of topOpponents; track opponent.opponent) {
-          <div class="col-lg-4">
-            <kep-card>
-              <div class="card-header">
-                <div class="card-title">
+          <div class="col-lg-4 d-flex">
+            <kep-card [customClass]="'d-flex flex-column flex-fill opponent-card'" [cardHeight]="'360px'">
+              <div class="card-header d-flex justify-content-between align-items-start gap-1 flex-wrap">
+                <div class="card-title mb-0">
                   {{ opponent.opponent }}
                 </div>
 
@@ -324,7 +310,7 @@
                 </span>
               </div>
 
-              <div class="card-body">
+              <div class="card-body flex-grow-1 overflow-auto opponent-card-body">
                 <ul class="list-group">
                   @for (contest of opponent.contests; track contest.contestId) {
                     <li class="list-group-item">

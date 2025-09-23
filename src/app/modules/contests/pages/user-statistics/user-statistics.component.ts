@@ -9,9 +9,7 @@ import {
   ContestUserStatisticsContestRanks,
   ContestUserStatisticsOpponent,
   ContestUserStatisticsResponse,
-  ContestUserStatisticsTag,
   ContestUserStatisticsTimelineEntry,
-  ContestUserStatisticsSymbol,
 } from '@contests/models';
 import { AuthUser } from '@auth';
 import { Subscription } from 'rxjs';
@@ -54,7 +52,8 @@ interface ContestCard {
   standalone: true,
   encapsulation: ViewEncapsulation.None,
   imports: [CoreCommonModule, ContentHeaderModule, KepCardComponent, ApexChartModule],
-  templateUrl: './user-statistics.component.html'
+  templateUrl: './user-statistics.component.html',
+  styleUrls: ['./user-statistics.component.scss']
 })
 export class ContestsUserStatisticsComponent extends BasePageComponent implements OnDestroy {
   public isLoading = true;
@@ -67,8 +66,8 @@ export class ContestsUserStatisticsComponent extends BasePageComponent implement
   public timelineChart: ChartOptions | null = null;
   public languagesChart: ChartOptions | null = null;
   public verdictsChart: ChartOptions | null = null;
-  public topTags: ContestUserStatisticsTag[] = [];
-  public topSymbols: ContestUserStatisticsSymbol[] = [];
+  public tagsChart: ChartOptions | null = null;
+  public symbolsChart: ChartOptions | null = null;
   public timeline: ContestUserStatisticsTimelineEntry[] = [];
   public topOpponents: ContestUserStatisticsOpponent[] = [];
 
@@ -136,7 +135,7 @@ export class ContestsUserStatisticsComponent extends BasePageComponent implement
           this.buildTimeline(statistics);
           this.buildLanguagesChart(statistics);
           this.buildVerdictsChart(statistics);
-          this.buildTopTags(statistics);
+          this.buildTagAndSymbolCharts(statistics);
           this.buildOpponents(statistics);
           this.cdr.markForCheck();
         },
@@ -379,7 +378,7 @@ export class ContestsUserStatisticsComponent extends BasePageComponent implement
       xaxis: {
         categories: languages.map(language => language.langFull),
       },
-      colors: [Colors.solid.info],
+      colors: [Colors.solid.primary],
     } as ChartOptions;
   }
 
@@ -436,9 +435,62 @@ export class ContestsUserStatisticsComponent extends BasePageComponent implement
     } as unknown as ChartOptions;
   }
 
-  private buildTopTags(statistics: ContestUserStatisticsResponse) {
-    this.topTags = (statistics.tags ?? []).slice(0, 10);
-    this.topSymbols = (statistics.symbols ?? []).slice(0, 12);
+  private buildTagAndSymbolCharts(statistics: ContestUserStatisticsResponse) {
+    const tags = (statistics.tags ?? []).slice(0, 10);
+    const symbols = (statistics.symbols ?? []).slice(0, 12);
+
+    const palette = [
+      Colors.solid.primary,
+      Colors.solid.info,
+      Colors.solid.success,
+      Colors.solid.warning,
+      Colors.solid.danger,
+      Colors.solid.secondary,
+    ];
+
+    const buildDonutChart = (labels: string[], series: number[]) => {
+      const total = series.reduce((sum, value) => sum + value, 0);
+      if (!total) {
+        return null;
+      }
+
+      const colors = labels.map((_, index) => palette[index % palette.length]);
+
+      return {
+        series: series as any,
+        labels,
+        chart: {
+          type: 'donut',
+          height: 320,
+        },
+        colors,
+        legend: {
+          position: 'bottom',
+        },
+        plotOptions: {
+          pie: {
+            donut: {
+              size: '65%',
+              labels: {
+                show: true,
+                total: {
+                  show: true,
+                  label: this.translateService.instant('Solved'),
+                }
+              }
+            }
+          }
+        }
+      } as unknown as ChartOptions;
+    };
+
+    this.tagsChart = tags.length
+      ? buildDonutChart(tags.map(tag => tag.name), tags.map(tag => tag.solved))
+      : null;
+
+    this.symbolsChart = symbols.length
+      ? buildDonutChart(symbols.map(symbol => symbol.symbol), symbols.map(symbol => symbol.solved))
+      : null;
   }
 
   private buildOpponents(statistics: ContestUserStatisticsResponse) {
