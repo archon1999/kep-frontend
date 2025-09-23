@@ -5,182 +5,73 @@
     </div>
   </div>
   <div class="card-body d-flex flex-column gap-3" *ngIf="facts">
-    <div
-      class="d-flex align-items-center gap-3 p-3 rounded-3 bg-body-tertiary"
-      *ngIf="facts.firstAttempt"
-    >
-      <div
-        class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 bg-primary-subtle text-primary"
-        style="width: 40px; height: 40px;"
-      >
-        <i class="fs-5" [data-feather]="'attempt' | iconName"></i>
-      </div>
-      <div class="flex-grow-1 d-flex flex-column gap-1">
-        <div class="text-uppercase text-secondary fw-semibold small">
-          {{ 'FirstAttempt' | translate }}
+    <ng-container *ngFor="let factItem of factItems">
+      <ng-container *ngIf="facts[factItem.key] as fact">
+        <div class="d-flex align-items-center gap-3 p-3 rounded-3 bg-body-tertiary">
+          <div
+            class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+            [ngClass]="factItem.icon.classes"
+            style="width: 40px; height: 40px;"
+          >
+            <i
+              *ngIf="factItem.icon.type === 'feather'"
+              class="fs-5"
+              [attr.data-feather]="factItem.icon.name | iconName"
+            ></i>
+            <kep-icon
+              *ngIf="factItem.icon.type === 'kep'"
+              class="fs-5"
+              [name]="factItem.icon.name"
+            ></kep-icon>
+          </div>
+          <div class="flex-grow-1 d-flex flex-column gap-1">
+            <div class="text-uppercase text-secondary fw-semibold small">
+              {{ factItem.translationKey | translate }}
+            </div>
+            <ng-container [ngSwitch]="factItem.type">
+              <ng-container *ngSwitchCase="'singleAttempt'">
+                <div class="fw-bold" [ngbTooltip]="facts.solvedWithSingleAttemptPercentage + '%'">
+                  {{ fact }}
+                </div>
+              </ng-container>
+              <ng-container *ngSwitchCase="'attempt'">
+                <a
+                  [routerLink]="Resources.Problem | resourceById: fact.problemId"
+                  class="link-primary"
+                  [ngbTooltip]="attemptTooltip"
+                >
+                  {{ fact.problemId }}. {{ fact.problemTitle }}
+                </a>
+                <ng-template #attemptTooltip>
+                  <div class="mb-1">{{ fact.datetime | localizedDate:'medium' }}</div>
+                  <div [innerHTML]="fact | attemptVerdictHTML"></div>
+                </ng-template>
+              </ng-container>
+              <ng-container *ngSwitchCase="'accepted'">
+                <a
+                  [routerLink]="Resources.Problem | resourceById: fact.problemId"
+                  class="link-primary"
+                  [ngbTooltip]="acceptedTooltip"
+                >
+                  {{ fact.problemId }}. {{ fact.problemTitle }}
+                </a>
+                <ng-template #acceptedTooltip>
+                  {{ fact.datetime | localizedDate:'medium' }}
+                </ng-template>
+              </ng-container>
+              <ng-container *ngSwitchCase="'attemptCount'">
+                <a
+                  [routerLink]="Resources.Problem | resourceById: fact.problemId"
+                  class="link-primary"
+                  [ngbTooltip]="fact.attemptsCount"
+                >
+                  {{ fact.problemId }}. {{ fact.problemTitle }}
+                </a>
+              </ng-container>
+            </ng-container>
+          </div>
         </div>
-        <a
-          [routerLink]="Resources.Problem | resourceById:facts.firstAttempt.problemId"
-          class="link-primary"
-          [ngbTooltip]="firstAttemptTooltip"
-        >
-          {{ facts.firstAttempt.problemId }}. {{ facts.firstAttempt.problemTitle }}
-        </a>
-        <ng-template #firstAttemptTooltip>
-          <div class="mb-1">{{ facts.firstAttempt.datetime | localizedDate:'medium' }}</div>
-          <div [innerHTML]="facts.firstAttempt | attemptVerdictHTML"></div>
-        </ng-template>
-      </div>
-    </div>
-
-    <div
-      class="d-flex align-items-center gap-3 p-3 rounded-3 bg-body-tertiary"
-      *ngIf="facts.firstAccepted"
-    >
-      <div
-        class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 bg-success-subtle text-success"
-        style="width: 40px; height: 40px;"
-      >
-        <i class="fs-5" [data-feather]="'problem' | iconName"></i>
-      </div>
-      <div class="flex-grow-1 d-flex flex-column gap-1">
-        <div class="text-uppercase text-secondary fw-semibold small">
-          {{ 'FirstSolvedProblem' | translate }}
-        </div>
-        <a
-          [routerLink]="Resources.Problem | resourceById:facts.firstAccepted.problemId"
-          class="link-primary"
-          [ngbTooltip]="firstAcceptedTooltip"
-        >
-          {{ facts.firstAccepted.problemId }}. {{ facts.firstAccepted.problemTitle }}
-        </a>
-        <ng-template #firstAcceptedTooltip>
-          {{ facts.firstAccepted.datetime | localizedDate:'medium' }}
-        </ng-template>
-      </div>
-    </div>
-
-    <div
-      class="d-flex align-items-center gap-3 p-3 rounded-3 bg-body-tertiary"
-      *ngIf="facts.lastAttempt"
-    >
-      <div
-        class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 bg-warning-subtle text-warning"
-        style="width: 40px; height: 40px;"
-      >
-        <i class="fs-5" [data-feather]="'attempt' | iconName"></i>
-      </div>
-      <div class="flex-grow-1 d-flex flex-column gap-1">
-        <div class="text-uppercase text-secondary fw-semibold small">
-          {{ 'LastAttempt' | translate }}
-        </div>
-        <a
-          [routerLink]="Resources.Problem | resourceById:facts.lastAttempt.problemId"
-          class="link-primary"
-          [ngbTooltip]="lastAttemptTooltip"
-        >
-          {{ facts.lastAttempt.problemId }}. {{ facts.lastAttempt.problemTitle }}
-        </a>
-        <ng-template #lastAttemptTooltip>
-          <div class="mb-1">{{ facts.lastAttempt.datetime | localizedDate:'medium' }}</div>
-          <div [innerHTML]="facts.lastAttempt | attemptVerdictHTML"></div>
-        </ng-template>
-      </div>
-    </div>
-
-    <div
-      class="d-flex align-items-center gap-3 p-3 rounded-3 bg-body-tertiary"
-      *ngIf="facts.lastAccepted"
-    >
-      <div
-        class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 bg-info-subtle text-info"
-        style="width: 40px; height: 40px;"
-      >
-        <i class="fs-5" [data-feather]="'problem' | iconName"></i>
-      </div>
-      <div class="flex-grow-1 d-flex flex-column gap-1">
-        <div class="text-uppercase text-secondary fw-semibold small">
-          {{ 'LastSolvedProblem' | translate }}
-        </div>
-        <a
-          [routerLink]="Resources.Problem | resourceById:facts.lastAccepted.problemId"
-          class="link-primary"
-          [ngbTooltip]="lastAcceptedTooltip"
-        >
-          {{ facts.lastAccepted.problemId }}. {{ facts.lastAccepted.problemTitle }}
-        </a>
-        <ng-template #lastAcceptedTooltip>
-          {{ facts.lastAccepted.datetime | localizedDate:'medium' }}
-        </ng-template>
-      </div>
-    </div>
-
-    <div
-      class="d-flex align-items-center gap-3 p-3 rounded-3 bg-body-tertiary"
-      *ngIf="facts.mostAttemptedProblem"
-    >
-      <div
-        class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 bg-danger-subtle text-danger"
-        style="width: 40px; height: 40px;"
-      >
-        <i class="fs-5" [data-feather]="'attempt' | iconName"></i>
-      </div>
-      <div class="flex-grow-1 d-flex flex-column gap-1">
-        <div class="text-uppercase text-secondary fw-semibold small">
-          {{ 'MostAttemptedProblem' | translate }}
-        </div>
-        <a
-          [routerLink]="Resources.Problem | resourceById:facts.mostAttemptedProblem.problemId"
-          class="link-primary"
-          [ngbTooltip]="facts.mostAttemptedProblem.attemptsCount"
-        >
-          {{ facts.mostAttemptedProblem.problemId }}. {{ facts.mostAttemptedProblem.problemTitle }}
-        </a>
-      </div>
-    </div>
-
-    <div
-      class="d-flex align-items-center gap-3 p-3 rounded-3 bg-body-tertiary"
-      *ngIf="facts.mostAttemptedForSolveProblem"
-    >
-      <div
-        class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 bg-secondary-subtle text-secondary"
-        style="width: 40px; height: 40px;"
-      >
-        <i class="fs-5" [data-feather]="'problem' | iconName"></i>
-      </div>
-      <div class="flex-grow-1 d-flex flex-column gap-1">
-        <div class="text-uppercase text-secondary fw-semibold small">
-          {{ 'MostAttemptedForSolveProblem' | translate }}
-        </div>
-        <a
-          [routerLink]="Resources.Problem | resourceById:facts.mostAttemptedForSolveProblem.problemId"
-          class="link-primary"
-          [ngbTooltip]="facts.mostAttemptedForSolveProblem.attemptsCount"
-        >
-          {{ facts.mostAttemptedForSolveProblem.problemId }}. {{ facts.mostAttemptedForSolveProblem.problemTitle }}
-        </a>
-      </div>
-    </div>
-
-    <div
-      class="d-flex align-items-center gap-3 p-3 rounded-3 bg-body-tertiary"
-      *ngIf="facts.solvedWithSingleAttempt"
-    >
-      <div
-        class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 bg-primary-subtle text-primary"
-        style="width: 40px; height: 40px;"
-      >
-        <kep-icon class="fs-5" name="check-circle"></kep-icon>
-      </div>
-      <div class="flex-grow-1 d-flex flex-column gap-1">
-        <div class="text-uppercase text-secondary fw-semibold small">
-          {{ 'SolvedWithSingleAttempt' | translate }}
-        </div>
-        <div class="fw-bold" [ngbTooltip]="facts.solvedWithSingleAttemptPercentage + '%'">
-          {{ facts.solvedWithSingleAttempt }}
-        </div>
-      </div>
-    </div>
+      </ng-container>
+    </ng-container>
   </div>
 </kep-card>
