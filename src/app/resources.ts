@@ -17,6 +17,7 @@ export enum Resources {
   ContestStatistics = '/competitions/contests/contest/:id/statistics',
   ContestRegistrants = '/competitions/contests/contest/:id/registrants',
   ContestRatingChanges = '/competitions/contests/contest/:id/rating-changes',
+  ContestUserStatistics = '/competitions/contests/user-statistics',
   ContestQuestions = '/competitions/contests/contest/:id/questions',
   ContestProblem = '/competitions/contests/contest/:id/problem/:symbol',
 
