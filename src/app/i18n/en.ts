@@ -54,6 +54,7 @@ export const localeEn = {
   Ok: 'OK',
   Iq: 'IQ',
   Faq: 'FAQ',
+  UserStatistics: 'User statistics',
   PROBLEMS: {
     BASIC: 'Basic',
     BEGINNER: 'Beginner',

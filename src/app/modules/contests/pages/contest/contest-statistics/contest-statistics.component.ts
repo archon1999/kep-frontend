@@ -21,6 +21,7 @@ import { ContestStatisticsProblemsComponent } from './components/contest-statist
 import { ContestStatisticsBadgesComponent } from './components/contest-statistics-badges/contest-statistics-badges.component';
 import { ContestStatisticsFirstSolvesComponent } from './components/contest-statistics-first-solves/contest-statistics-first-solves.component';
 import { ContestStatisticsFactsComponent } from './components/contest-statistics-facts/contest-statistics-facts.component';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'contest-statistics',
@@ -40,6 +41,7 @@ import { ContestStatisticsFactsComponent } from './components/contest-statistics
     ContestStatisticsBadgesComponent,
     ContestStatisticsFirstSolvesComponent,
     ContestStatisticsFactsComponent,
+    KepCardComponent,
   ],
 })
 export class ContestStatisticsComponent extends BasePageComponent implements OnInit {

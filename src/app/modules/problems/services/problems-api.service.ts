@@ -93,6 +93,10 @@ export class ProblemsApiService {
     return this.api.get('problems-rating', params);
   }
 
+  getUserProblemsRating(username: string) {
+    return this.api.get(`problems-rating/${username}`);
+  }
+
   getProblemVerdictStatistics(problemId: number) {
     return this.api.get(`problems/${problemId}/attempt-statistics/`);
   }

@@ -8,7 +8,6 @@ import { NgbProgressbarModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
-import { TranslateModule } from '@ngx-translate/core';
 
 export interface Difficulties {
   beginner: number;
@@ -78,7 +77,8 @@ export class SectionDifficultiesComponent implements OnChanges {
 
   constructor(
     public translateService: TranslateService,
-  ) {}
+  ) {
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['data'] && this.data) {
@@ -99,7 +99,7 @@ export class SectionDifficultiesComponent implements OnChanges {
       chart: {
         height: '220px',
         type: 'radialBar',
-        toolbar: { show: false }
+        toolbar: {show: false}
       },
       plotOptions: {
         radialBar: {
@@ -157,7 +157,7 @@ export class SectionDifficultiesComponent implements OnChanges {
           stops: [0, 100]
         }
       },
-      stroke: { lineCap: 'round' },
+      stroke: {lineCap: 'round'},
       labels: [this.translateService.instant('Percent')]
     };
   }

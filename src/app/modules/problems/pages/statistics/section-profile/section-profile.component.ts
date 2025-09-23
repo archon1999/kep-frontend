@@ -7,6 +7,7 @@ import { Resources } from "@app/resources";
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { AttemptLanguageComponent } from "@shared/components/attempt-language/attempt-language.component";
 
 interface LangInfo {
   lang: string;
@@ -38,6 +39,7 @@ interface TopicInfo {
     KepCardComponent,
     KepIconComponent,
     TranslateModule,
+    AttemptLanguageComponent,
   ]
 })
 export class SectionProfileComponent implements OnChanges {
@@ -56,14 +58,14 @@ export class SectionProfileComponent implements OnChanges {
     }
 
     if (changes['tags'] && this.tags) {
-      this.tags = [...this.tags].sort((a, b) => b.value - a.value).slice(0, 10);
+      this.tags = [...this.tags].sort((a, b) => b.value - a.value);
     }
 
     if (changes['topics'] && this.topics) {
       this.topics = this.topics.map((topic) => ({
         ...topic,
         icon: getCategoryIcon(topic.id)
-      })).slice(0, 6);
+      }));
     }
   }
 }
