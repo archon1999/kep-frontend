@@ -197,6 +197,7 @@ export class UserStatisticsComponent extends BasePageComponent implements OnInit
           this.isLoading = false;
           this.setupMeta(statistics.meta);
           this.buildOverviewCards(statistics);
+          this.cdr.detectChanges();
         },
         error: () => {
           this.isLoading = false;

@@ -64,6 +64,7 @@ export class ProblemsActivityCardComponent implements OnChanges {
     this.activityChart = {
       chart: {
         type: 'line',
+        height: '200px',
         sparkline: { enabled: true },
       },
       dataLabels: { enabled: false },
