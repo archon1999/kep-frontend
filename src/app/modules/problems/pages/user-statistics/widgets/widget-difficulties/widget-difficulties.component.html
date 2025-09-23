@@ -6,7 +6,7 @@
 
     <div class="text-body-secondary">{{ difficulties?.totalSolved | number }} / {{ difficulties?.totalProblems | number }}</div>
   </div>
-  <div class="card-body">
+  <div class="card-body gap-0 pt-0 pb-2">
     <div class="text-center">
       @if (chartOptions) {
         <apex-chart [options]="chartOptions"></apex-chart>
