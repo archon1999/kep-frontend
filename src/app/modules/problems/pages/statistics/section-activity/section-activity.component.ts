@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import {
   ProblemsActivityCardComponent
 } from '@problems/components/problems-activity-card/problems-activity-card.component';
+import { LastDaysStatistics } from '@problems/models/statistics.models';
 
 @Component({
   selector: 'section-activity',
@@ -15,5 +16,8 @@ import {
   ]
 })
 export class SectionActivityComponent {
-  @Input() username: string;
+  @Input() activity: LastDaysStatistics;
+  @Input() allowedDays: number[] = [];
+  @Input() days = 7;
+  @Output() daysChange = new EventEmitter<number>();
 }

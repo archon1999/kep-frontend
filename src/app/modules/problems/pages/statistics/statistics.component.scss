@@ -1,0 +1,46 @@
+.problems-statistics {
+  position: relative;
+
+  .statistics-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 320px;
+  }
+
+  .statistics-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.75);
+    z-index: 5;
+
+    .dark-layout & {
+      background-color: rgba(34, 34, 34, 0.8);
+    }
+  }
+
+  .overview-card {
+    height: 100%;
+
+    .card-label {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .card-value {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .card-subtitle {
+      font-size: 0.85rem;
+    }
+
+    .avatar {
+      border-radius: 50%;
+    }
+  }
+}

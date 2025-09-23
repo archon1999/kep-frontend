@@ -1,20 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ProblemsStatisticsService } from '../../../services/problems-statistics.service';
+import { Component, Input } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { Resources } from '@app/resources';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
-
-export interface Facts {
-  firstAttempt: any;
-  lastAttempt: any;
-  firstAccepted: any;
-  lastAccepted: any;
-  mostAttemptedProblem: any;
-  mostAttemptedForSolveProblem: any;
-  solvedWithSingleAttempt: number;
-  solvedWithSingleAttemptPercentage: number;
-}
+import { ProblemsFacts } from '@problems/models/statistics.models';
 
 @Component({
   selector: 'section-facts',
@@ -23,23 +12,8 @@ export interface Facts {
   standalone: true,
   imports: [CoreCommonModule, NgbTooltipModule, ResourceByIdPipe],
 })
-export class SectionFactsComponent implements OnInit {
+export class SectionFactsComponent {
 
-  @Input() username: string;
-
-  public facts: Facts;
+  @Input() facts: ProblemsFacts;
   protected readonly Resources = Resources;
-
-  constructor(
-    public statisticsService: ProblemsStatisticsService,
-  ) { }
-
-  ngOnInit(): void {
-    this.statisticsService.getFacts(this.username).subscribe(
-      (facts: Facts) => {
-        this.facts = facts;
-      }
-    );
-  }
-
 }

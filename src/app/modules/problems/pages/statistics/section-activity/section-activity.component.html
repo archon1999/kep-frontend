@@ -1,1 +1,6 @@
-<problems-activity-card [username]="username"></problems-activity-card>
+<problems-activity-card
+  [activity]="activity"
+  [allowedDays]="allowedDays"
+  [days]="days"
+  (daysChange)="daysChange.emit($event)"
+></problems-activity-card>
