@@ -17,6 +17,18 @@ export default [
     title: 'Contests.ContestsRating',
   },
   {
+    path: 'statistics',
+    loadComponent: () => import('./pages/user-statistics/user-statistics.component').then(c => c.ContestsUserStatisticsComponent),
+    data: {animation: 'contests-user-statistics', title: 'Contests.ContestsUserStatistics'},
+    canActivate: [AuthGuard],
+    title: 'Contests.ContestsUserStatistics',
+  },
+  {
+    path: 'user-statistics',
+    redirectTo: 'statistics',
+    pathMatch: 'full',
+  },
+  {
     path: 'profile',
     loadComponent: () => import('./pages/profile/profile.component').then(c => c.ProfileComponent),
     data: {animation: 'contests-profile', title: 'Contests.ContestsProfile'},

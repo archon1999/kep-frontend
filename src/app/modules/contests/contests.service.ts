@@ -6,7 +6,12 @@ import { Pageable } from '@core/common/classes/pageable';
 import { ContestStatus } from '@contests/constants/contest-status';
 import { ContestAttemptsFilter } from '@contests/models/contest-attempts-filter';
 import { Contest } from '@contests/models/contest';
-import { Contestant, ContestCategory, ContestStatistics } from '@contests/models';
+import {
+  Contestant,
+  ContestCategory,
+  ContestStatistics,
+  ContestUserStatisticsResponse
+} from '@contests/models';
 import { getCategoryIcon } from '@contests/utils/category-icon';
 import { PageResult } from '@core/common/classes/page-result';
 import { Attempt } from '@problems/models/attempts.models';
@@ -99,6 +104,10 @@ export class ContestsService {
 
   getContestsRating(params: Partial<Pageable>) {
     return this.api.get('contests-rating', params);
+  }
+
+  getContestUserStatistics(username: string) {
+    return this.api.get<ContestUserStatisticsResponse>(`contests-rating/${username}/statistics`);
   }
 
   getContestAttempts(params: Partial<Pageable> & { contestId: number, filter: ContestAttemptsFilter } & any) {
