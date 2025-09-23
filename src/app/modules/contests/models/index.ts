@@ -26,3 +26,21 @@ export type {
   ContestStatisticsOptimizerBadge,
   ContestStatisticsNeverGiveUpBadge,
 } from './contest-statistics';
+export type {
+  ContestUserStatistics,
+  ContestUserStatisticsGeneral,
+  ContestUserStatisticsOverview,
+  ContestUserStatisticsContestRanks,
+  ContestUserStatisticsContestDeltas,
+  ContestUserStatisticsRank,
+  ContestUserStatisticsDelta,
+  ContestUserStatisticsLanguage,
+  ContestUserStatisticsVerdict,
+  ContestUserStatisticsTag,
+  ContestUserStatisticsSymbol,
+  ContestUserStatisticsTimelineEntry,
+  ContestUserStatisticsTopAttempt,
+  ContestUserStatisticsUnsolvedProblem,
+  ContestUserStatisticsWorthyOpponent,
+  ContestUserStatisticsOpponentContest,
+} from './contest-user-statistics';

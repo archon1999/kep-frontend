@@ -1,0 +1,439 @@
+<app-content-header [contentHeader]="contentHeader" />
+
+@if (isLoading) {
+  <kep-card class="mb-1">
+    <div class="card-body d-flex justify-content-center align-items-center" [style.minHeight.px]="280">
+      <spinner></spinner>
+    </div>
+  </kep-card>
+} @else if (statistics) {
+  <div class="row g-1 g-md-2 mb-1">
+    @for (card of overviewCards; track card.title) {
+      <div class="col-12 col-sm-6 col-xl-3">
+        <kep-card class="h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-start gap-1">
+              <div class="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center" style="width: 2.75rem; height: 2.75rem;">
+                <kep-icon [name]="card.icon" [class]="'text-primary m-0'" size="medium-3"></kep-icon>
+              </div>
+              <div class="flex-grow-1">
+                <div class="text-muted text-uppercase small fw-medium">{{ card.title | translate }}</div>
+                <div class="fw-semibold fs-4">
+                  @if (card.format === 'number') {
+                    {{ card.value | number }}
+                  } @else if (card.format === 'decimal') {
+                    {{ card.value | number: '1.2-2' }}
+                  } @else {
+                    {{ card.value }}
+                  }
+                </div>
+                @if (card.subtitle) {
+                  <div class="text-muted small">{{ card.subtitle }}</div>
+                }
+              </div>
+            </div>
+          </div>
+        </kep-card>
+      </div>
+    }
+  </div>
+
+  <div class="row g-1 g-md-2 mb-1">
+    <div class="col-xl-5 col-xxl-4">
+      <kep-card class="h-100">
+        <div class="card-header border-0 pb-0">
+          <div class="card-title h5 mb-0">{{ 'Contests.Highlights' | translate }}</div>
+        </div>
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between mb-1">
+            <div>
+              <div class="text-muted small">{{ 'Settings.Username' | translate }}</div>
+              <div class="fw-semibold fs-5">{{ statistics?.general?.username }}</div>
+            </div>
+            @if (statistics?.general?.ratingTitle) {
+              <span class="badge bg-primary-subtle text-primary">{{ statistics?.general?.ratingTitle }}</span>
+            }
+          </div>
+
+          <div class="mb-2">
+            <div class="text-muted text-uppercase small fw-medium mb-1">{{ 'Contests.MostAttemptsProblem' | translate }}</div>
+            @if (highlightCards.length) {
+              @for (item of highlightCards; track item.title) {
+                <div class="border rounded p-1 mb-1 bg-light-subtle">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="fw-semibold">{{ item.meta }}</span>
+                    <span class="badge bg-light text-body">{{ item.problemSymbol }}</span>
+                  </div>
+                  <a class="text-body text-decoration-none" [routerLink]="['/competitions/contests/contest', item.contestId]">
+                    <div class="fw-semibold">{{ item.contestTitle }}</div>
+                  </a>
+                  <div class="text-muted small">{{ item.title | translate }}</div>
+                </div>
+              }
+            } @else {
+              <div class="text-muted">{{ 'Contests.NoData' | translate }}</div>
+            }
+          </div>
+
+          <div>
+            <div class="text-muted text-uppercase small fw-medium mb-1">{{ 'Contests.SolveSpeed' | translate }}</div>
+            @if (speedHighlights.length) {
+              @for (item of speedHighlights; track item.title) {
+                <div class="border rounded p-1 mb-1">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="badge bg-info-subtle text-info">{{ item.time }}</span>
+                    <span class="badge bg-light text-body">{{ item.problemSymbol }}</span>
+                  </div>
+                  <a class="text-body text-decoration-none" [routerLink]="['/competitions/contests/contest', item.contestId]">
+                    <div class="fw-semibold">{{ item.contestTitle }}</div>
+                  </a>
+                  <div class="text-muted small">{{ item.title | translate }}</div>
+                </div>
+              }
+            } @else {
+              <div class="text-muted">{{ 'Contests.NoData' | translate }}</div>
+            }
+          </div>
+        </div>
+      </kep-card>
+    </div>
+    <div class="col-xl-7 col-xxl-8">
+      <kep-card class="h-100">
+        <div class="card-header border-0 pb-0">
+          <div class="card-title h5 mb-0">{{ 'Contests.Performance' | translate }}</div>
+        </div>
+        <div class="card-body">
+          <div class="row g-1 g-md-2">
+            @for (metric of performanceCards; track metric.title) {
+              <div class="col-12 col-sm-6">
+                <div class="border rounded p-1 h-100 d-flex flex-column justify-content-between">
+                  <div class="text-muted text-uppercase small fw-medium">{{ metric.title | translate }}</div>
+                  <div class="fw-semibold fs-4">
+                    @if (metric.format === 'number') {
+                      {{ metric.value | number }}
+                    } @else if (metric.format === 'decimal') {
+                      {{ metric.value | number: '1.2-2' }}
+                    } @else {
+                      {{ metric.value }}
+                    }
+                  </div>
+                  @if (metric.subtitle) {
+                    <div class="text-muted small">{{ metric.subtitle }}</div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </kep-card>
+    </div>
+  </div>
+
+  <div class="row g-1 g-md-2 mb-1">
+    <div class="col-lg-6">
+      <kep-card class="h-100">
+        <div class="card-header border-0 pb-0">
+          <div class="card-title h5 mb-0">{{ 'Contests.ContestRanks' | translate }}</div>
+        </div>
+        <div class="card-body">
+          @if (contestRanks?.best || contestRanks?.worst) {
+            @if (contestRanks?.best) {
+              <div class="border rounded p-1 mb-1">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span class="badge bg-success-subtle text-success">{{ 'Contests.BestResult' | translate }}</span>
+                  <span class="badge bg-light text-body">{{ contestRanks.best.rank }}</span>
+                </div>
+                <a class="text-body text-decoration-none" [routerLink]="['/competitions/contests/contest', contestRanks.best.contestId]">
+                  <div class="fw-semibold">{{ contestRanks.best.contestTitle }}</div>
+                </a>
+                <div class="text-muted small">{{ 'Contests.Participants' | translate }}: {{ contestRanks.best.participantsCount }}</div>
+              </div>
+            }
+            @if (contestRanks?.worst) {
+              <div class="border rounded p-1">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span class="badge bg-danger-subtle text-danger">{{ 'Contests.WorstResult' | translate }}</span>
+                  <span class="badge bg-light text-body">{{ contestRanks.worst.rank }}</span>
+                </div>
+                <a class="text-body text-decoration-none" [routerLink]="['/competitions/contests/contest', contestRanks.worst.contestId]">
+                  <div class="fw-semibold">{{ contestRanks.worst.contestTitle }}</div>
+                </a>
+                <div class="text-muted small">{{ 'Contests.Participants' | translate }}: {{ contestRanks.worst.participantsCount }}</div>
+              </div>
+            }
+          } @else {
+            <div class="text-muted">{{ 'Contests.NoData' | translate }}</div>
+          }
+        </div>
+      </kep-card>
+    </div>
+    <div class="col-lg-6">
+      <kep-card class="h-100">
+        <div class="card-header border-0 pb-0">
+          <div class="card-title h5 mb-0">{{ 'Contests.ContestDeltas' | translate }}</div>
+        </div>
+        <div class="card-body">
+          @if (contestDeltas?.best || contestDeltas?.worst) {
+            @if (contestDeltas?.best) {
+              <div class="border rounded p-1 mb-1">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span class="badge bg-success-subtle text-success">{{ 'Contests.BestResult' | translate }}</span>
+                  <span class="badge bg-light text-body">{{ contestDeltas.best.delta > 0 ? '+' + contestDeltas.best.delta : contestDeltas.best.delta }}</span>
+                </div>
+                <a class="text-body text-decoration-none" [routerLink]="['/competitions/contests/contest', contestDeltas.best.contestId]">
+                  <div class="fw-semibold">{{ contestDeltas.best.contestTitle }}</div>
+                </a>
+                <div class="text-muted small">{{ 'Contests.Participants' | translate }}: {{ contestDeltas.best.participantsCount }}</div>
+              </div>
+            }
+            @if (contestDeltas?.worst) {
+              <div class="border rounded p-1">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span class="badge bg-danger-subtle text-danger">{{ 'Contests.WorstResult' | translate }}</span>
+                  <span class="badge bg-light text-body">{{ contestDeltas.worst.delta > 0 ? '+' + contestDeltas.worst.delta : contestDeltas.worst.delta }}</span>
+                </div>
+                <a class="text-body text-decoration-none" [routerLink]="['/competitions/contests/contest', contestDeltas.worst.contestId]">
+                  <div class="fw-semibold">{{ contestDeltas.worst.contestTitle }}</div>
+                </a>
+                <div class="text-muted small">{{ 'Contests.Participants' | translate }}: {{ contestDeltas.worst.participantsCount }}</div>
+              </div>
+            }
+          } @else {
+            <div class="text-muted">{{ 'Contests.NoData' | translate }}</div>
+          }
+        </div>
+      </kep-card>
+    </div>
+  </div>
+
+  <div class="row g-1 g-md-2 mb-1">
+    <div class="col-xl-8">
+      <kep-card class="h-100">
+        <div class="card-header border-0 pb-0">
+          <div class="card-title h5 mb-0">{{ 'Contests.AttemptsTimeline' | translate }}</div>
+        </div>
+        <div class="card-body">
+          @if (timelineChart) {
+            <apex-chart [options]="timelineChart"></apex-chart>
+          } @else {
+            <div class="text-muted">{{ 'Contests.NoData' | translate }}</div>
+          }
+        </div>
+      </kep-card>
+    </div>
+    <div class="col-xl-4">
+      <kep-card class="h-100 mb-1 mb-xl-0">
+        <div class="card-header border-0 pb-0">
+          <div class="card-title h5 mb-0">{{ 'Languages' | translate }}</div>
+        </div>
+        <div class="card-body">
+          @if (languages.length) {
+            @for (item of languages; track item.data.lang) {
+              <div class="mb-1">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-semibold">{{ item.data.langFull }}</span>
+                  <span class="text-muted">{{ item.data.attemptsCount }}</span>
+                </div>
+                <div class="progress progress-sm bg-light">
+                  <div class="progress-bar bg-primary" role="progressbar" [style.width.%]="item.percentage"></div>
+                </div>
+                <div class="text-muted small">{{ item.percentage | number: '1.0-1' }}%</div>
+              </div>
+            }
+          } @else {
+            <div class="text-muted">{{ 'Contests.NoData' | translate }}</div>
+          }
+        </div>
+      </kep-card>
+      <kep-card class="h-100">
+        <div class="card-header border-0 pb-0">
+          <div class="card-title h5 mb-0">{{ 'Contests.VerdictDistribution' | translate }}</div>
+        </div>
+        <div class="card-body">
+          @if (verdicts.length) {
+            @for (item of verdicts; track item.data.verdict) {
+              <div class="mb-1">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-semibold">{{ getVerdictTranslationKey(item.data.verdict) | translate }}</span>
+                  <span class="text-muted">{{ item.data.attemptsCount }}</span>
+                </div>
+                <div class="progress progress-sm bg-light">
+                  <div class="progress-bar bg-info" role="progressbar" [style.width.%]="item.percentage"></div>
+                </div>
+                <div class="text-muted small">{{ item.percentage | number: '1.0-1' }}%</div>
+              </div>
+            }
+          } @else {
+            <div class="text-muted">{{ 'Contests.NoData' | translate }}</div>
+          }
+        </div>
+      </kep-card>
+    </div>
+  </div>
+
+  <div class="row g-1 g-md-2 mb-1">
+    <div class="col-lg-6">
+      <kep-card class="h-100">
+        <div class="card-header border-0 pb-0">
+          <div class="card-title h5 mb-0">{{ 'Contests.TopAttempts' | translate }}</div>
+        </div>
+        <div class="card-body">
+          @if (topAttempts.length) {
+            @for (attempt of topAttempts; track attempt.contestId + '-' + attempt.problemSymbol) {
+              <div class="border rounded p-1 mb-1">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <a class="text-body text-decoration-none fw-semibold" [routerLink]="['/competitions/contests/contest', attempt.contestId]">
+                    {{ attempt.contestTitle }}
+                  </a>
+                  <span class="badge" [ngClass]="attempt.solved ? 'bg-success-subtle text-success' : 'bg-warning-subtle text-warning'">
+                    {{ attempt.problemSymbol }}
+                  </span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center text-muted small">
+                  <span>{{ 'Contests.AttemptsCount' | translate:{ count: attempt.attemptsCount } }}</span>
+                  <span>
+                    @if (attempt.solved) {
+                      {{ 'Solved' | translate }}
+                    } @else {
+                      {{ 'UsersUnsolved' | translate }}
+                    }
+                  </span>
+                </div>
+              </div>
+            }
+          } @else {
+            <div class="text-muted">{{ 'Contests.NoData' | translate }}</div>
+          }
+        </div>
+      </kep-card>
+    </div>
+    <div class="col-lg-6">
+      <kep-card class="h-100">
+        <div class="card-header border-0 pb-0">
+          <div class="card-title h5 mb-0">{{ 'Contests.UnsolvedProblems' | translate }}</div>
+        </div>
+        <div class="card-body">
+          @if (unsolvedProblems.length) {
+            @for (problem of unsolvedProblems; track problem.contestId + '-' + problem.problemSymbol) {
+              <div class="border rounded p-1 mb-1">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <a class="text-body text-decoration-none fw-semibold" [routerLink]="['/competitions/contests/contest', problem.contestId]">
+                    {{ problem.contestTitle }}
+                  </a>
+                  <span class="badge bg-danger-subtle text-danger">{{ problem.problemSymbol }}</span>
+                </div>
+                <div class="text-muted small">{{ 'UsersUnsolved' | translate }}</div>
+              </div>
+            }
+          } @else {
+            <div class="text-muted">{{ 'Contests.NoData' | translate }}</div>
+          }
+        </div>
+      </kep-card>
+    </div>
+  </div>
+
+  <div class="row g-1 g-md-2 mb-1">
+    <div class="col-lg-6">
+      <kep-card class="h-100">
+        <div class="card-header border-0 pb-0">
+          <div class="card-title h5 mb-0">{{ 'Tags' | translate }}</div>
+        </div>
+        <div class="card-body">
+          @if (tags.length) {
+            <div class="d-flex flex-wrap gap-1">
+              @for (tag of tags; track tag.name) {
+                <span class="badge bg-light text-body">{{ tag.name }} · {{ tag.solved }}</span>
+              }
+            </div>
+          } @else {
+            <div class="text-muted">{{ 'Contests.NoData' | translate }}</div>
+          }
+        </div>
+      </kep-card>
+    </div>
+    <div class="col-lg-6">
+      <kep-card class="h-100">
+        <div class="card-header border-0 pb-0">
+          <div class="card-title h5 mb-0">{{ 'Contests.Symbols' | translate }}</div>
+        </div>
+        <div class="card-body">
+          @if (symbols.length) {
+            <div class="row g-1">
+              @for (symbol of symbols; track symbol.symbol) {
+                <div class="col-6">
+                  <div class="border rounded p-1 text-center h-100">
+                    <div class="fw-semibold fs-4">{{ symbol.symbol }}</div>
+                    <div class="text-muted small">{{ 'Solved' | translate }}: {{ symbol.solved }}</div>
+                  </div>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="text-muted">{{ 'Contests.NoData' | translate }}</div>
+          }
+        </div>
+      </kep-card>
+    </div>
+  </div>
+
+  <div class="row g-1 g-md-2">
+    <div class="col-12">
+      <kep-card>
+        <div class="card-header border-0 pb-0">
+          <div class="card-title h5 mb-0">{{ 'Contests.WorthyOpponents' | translate }}</div>
+        </div>
+        <div class="card-body">
+          @if (worthyOpponents.length) {
+            @for (opponent of worthyOpponents; track opponent.opponent) {
+              <div class="border rounded p-1 mb-1">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <div class="fw-semibold">{{ opponent.opponent }}</div>
+                  <span class="badge bg-light text-body">{{ 'Contests.SharedContests' | translate:{ count: opponent.sharedCount } }}</span>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-sm align-middle mb-0">
+                    <thead>
+                      <tr class="text-muted small">
+                        <th class="fw-normal">{{ 'Contests.Contest' | translate }}</th>
+                        <th class="fw-normal text-end">{{ 'Rank' | translate }}</th>
+                        <th class="fw-normal text-end">{{ 'Contests.Points' | translate }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (contest of opponent.contests | slice:0:5; track contest.contestId) {
+                        <tr>
+                          <td>
+                            <a class="text-body text-decoration-none" [routerLink]="['/competitions/contests/contest', contest.contestId]">
+                              {{ contest.contestTitle }}
+                            </a>
+                          </td>
+                          <td class="text-end">
+                            <span class="badge bg-primary-subtle text-primary">{{ contest.userRank }}</span>
+                            <span class="text-muted mx-1">/</span>
+                            <span class="badge bg-secondary-subtle text-secondary">{{ contest.opponentRank }}</span>
+                          </td>
+                          <td class="text-end">
+                            <span class="fw-semibold">{{ contest.userPoints }}</span>
+                            <span class="text-muted mx-1">/</span>
+                            <span>{{ contest.opponentPoints }}</span>
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            }
+          } @else {
+            <div class="text-muted">{{ 'Contests.NoData' | translate }}</div>
+          }
+        </div>
+      </kep-card>
+    </div>
+  </div>
+} @else {
+  <kep-card>
+    <div class="card-body text-center text-muted">{{ 'Contests.NoData' | translate }}</div>
+  </kep-card>
+}

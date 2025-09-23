@@ -138,6 +138,13 @@ export default [
     data: { title: 'Contests.ContestOgImage' },
   },
   {
+    path: 'user-statistics',
+    loadComponent: () => import('./pages/user-statistics/user-statistics.component').then(c => c.UserStatisticsComponent),
+    data: { animation: 'contests-user-statistics', title: 'Contests.ContestsUserStatistics' },
+    title: 'Contests.ContestsUserStatistics',
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'user-contests',
     loadComponent: () => import('./pages/user-contests/user-contests.component').then(c => c.UserContestsComponent),
     data: {animation: 'user-contests', title: 'Contests.MyContests'},
