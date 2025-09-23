@@ -21,7 +21,6 @@ export interface Facts {
 @Component({
   selector: 'widget-facts',
   templateUrl: './widget-facts.component.html',
-  styleUrls: ['./widget-facts.component.scss'],
   standalone: true,
   imports: [CoreCommonModule, NgbTooltipModule, ResourceByIdPipe, KepCardComponent, TranslateModule, AttemptVerdictHTMLPipe],
 })
