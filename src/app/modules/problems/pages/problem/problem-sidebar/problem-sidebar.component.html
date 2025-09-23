@@ -2,36 +2,49 @@
   <kep-card>
     <div class="card-header">
       <div class="card-title">
-        @if (sidebarType == SidebarType.INFO) {
-          <span><i data-feather="info"></i></span>
-          {{ 'Info' | translate }}
-        } @else {
-          <span><i data-feather="bar-chart"></i></span>
-          {{ 'Statistics' | translate }}
-        }
+        <span><i data-feather="info"></i></span>
+        {{ 'Info' | translate }}
       </div>
 
       <div class="sidebar-type">
         <button
           rippleEffect
           class="btn btn-sm btn-primary bg-primary"
-          (click)="sidebarType=(sidebarType == SidebarType.INFO ? SidebarType.STATISTICS : SidebarType.INFO)">
-          @if (sidebarType == SidebarType.INFO) {
-            {{ 'Statistics' | translate }}
-          } @else {
-            {{ 'Info' | translate }}
-          }
+          (click)="openStatisticsModal(statisticsModal)">
+          {{ 'Statistics' | translate }}
         </button>
       </div>
     </div>
     <div class="card-body">
-      @if (sidebarType == SidebarType.INFO) {
-        <problem-info-card [problem]="problem"></problem-info-card>
-      } @else {
-        <problem-sidebar-statistics [problem]="problem"></problem-sidebar-statistics>
-      }
+      <problem-info-card [problem]="problem"></problem-info-card>
     </div>
   </kep-card>
-
-  <problem-sidebar-top-attempts [problem]="problem"></problem-sidebar-top-attempts>
 </div>
+
+<ng-template #statisticsModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">{{ 'Statistics' | translate }}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    @if (isStatisticsLoading) {
+      <div class="d-flex justify-content-center py-4">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">{{ 'Loading' | translate }}</span>
+        </div>
+      </div>
+    } @else if (statistics) {
+      <problem-sidebar-statistics
+        [problem]="problem"
+        [statistics]="statistics"
+      ></problem-sidebar-statistics>
+      <div class="mt-3">
+        <problem-sidebar-top-attempts [topAttempts]="statistics.topAttempts"></problem-sidebar-top-attempts>
+      </div>
+    } @else {
+      <div class="text-center text-muted py-4">
+        {{ 'NoData' | translate }}
+      </div>
+    }
+  </div>
+</ng-template>

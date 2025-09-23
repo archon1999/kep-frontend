@@ -6,10 +6,10 @@
       </div>
     </div>
 
-    <ng-select appendTo="body" [clearable]="false" (change)="topAttemptsLoad($event)" [(ngModel)]="topAttemptsOrdering">
+    <ng-select appendTo="body" [clearable]="false" (change)="changeOrdering($event)" [(ngModel)]="topAttemptsOrdering">
       <ng-option [value]="'time'">{{ 'Time' | translate }}</ng-option>
       <ng-option [value]="'memory'">{{ 'Memory' | translate }}</ng-option>
-      <ng-option [value]="'source_code_size'">{{ 'Size' | translate }}</ng-option>
+      <ng-option [value]="'sourceCodeSize'">{{ 'Size' | translate }}</ng-option>
     </ng-select>
   </div>
 
@@ -22,7 +22,7 @@
       </tr>
       </thead>
       <tbody>
-        @for (attempt of topAttempts; track $index) {
+        @for (attempt of topAttemptsList; track $index) {
           <tr>
             <td class="text-nowrap">
               <contestant-view [imgSize]="28" [user]="attempt"></contestant-view>
@@ -40,7 +40,7 @@
                       {{ attempt.memory }}
                     </span>
                   }
-                  @case ('source_code_size') {
+                  @case ('sourceCodeSize') {
                     <span class="badge bg-dark">
                       {{ attempt.sourceCodeSize }}
                     </span>
@@ -50,6 +50,11 @@
             </td>
           </tr>
         } @empty {
+          <tr>
+            <td class="text-center text-muted" colspan="2">
+              {{ 'NoData' | translate }}
+            </td>
+          </tr>
         }
       </tbody>
     </table>

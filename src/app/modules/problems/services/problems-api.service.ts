@@ -97,21 +97,8 @@ export class ProblemsApiService {
     return this.api.get(`problems-rating/${username}`);
   }
 
-  getProblemVerdictStatistics(problemId: number) {
-    return this.api.get(`problems/${problemId}/attempt-statistics/`);
-  }
-
-  getProblemLangStatistics(problemId: number) {
-    return this.api.get(`problems/${problemId}/lang-statistics/`);
-  }
-
-  getProblemTopAttempts(problemId: number, ordering: string, lang = null, page: number = 1, pageSize: number = 10) {
-    const params = {ordering, lang};
-    return this.api.get(`problems/${problemId}/top-attempts/`, params);
-  }
-
-  getAttemptsForSolveStatistics(problemId: number) {
-    return this.api.get(`problems/${problemId}/attempts-for-solve-statistics/`);
+  getProblemStatistics(problemId: number) {
+    return this.api.get(`problems/${problemId}/statistics/`);
   }
 
   getProblemSolution(problemId: number) {
