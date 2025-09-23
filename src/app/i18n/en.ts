@@ -581,7 +581,7 @@ export const localeEn = {
       FastestSolve: 'Fastest solve',
       SlowestSolve: 'Slowest solve',
       BestRank: 'Best rank',
-      ToughestRank: 'Toughest rank',
+      ToughestRank: 'Worst rank',
       BestDelta: 'Best rating change',
       WorstDelta: 'Worst rating change',
       Participants: '{{ total }} participants',

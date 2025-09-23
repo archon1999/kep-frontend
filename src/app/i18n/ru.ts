@@ -576,7 +576,7 @@ export const localeRu = {
       FastestSolve: 'Самое быстрое решение',
       SlowestSolve: 'Самое медленное решение',
       BestRank: 'Лучшая позиция',
-      ToughestRank: 'Самая сложная позиция',
+      ToughestRank: 'Самая худшая позиция',
       BestDelta: 'Лучший прирост рейтинга',
       WorstDelta: 'Худший прирост рейтинга',
       Participants: '{{ total }} участников',
