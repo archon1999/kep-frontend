@@ -38,50 +38,50 @@
 
   <div class="row">
     <div class="col-xl-4">
-      <section-profile
+      <widget-profile
         [username]="username"
         [general]="statistics.general"
         [langs]="statistics.byLang"
         [tags]="statistics.byTag"
         [topics]="statistics.byTopic"
-      ></section-profile>
+      ></widget-profile>
     </div>
     <div class="col-xl-8">
       <div class="row">
         <div class="col-12">
-          <section-activity
+          <widget-activity
             [solved]="statistics.lastDays?.solved ?? 0"
             [series]="statistics.lastDays?.series ?? []"
             [selectedDays]="selectedDays ?? statistics.meta?.lastDays ?? 7"
             [allowedDays]="availableDays?.length ? availableDays : (statistics.meta?.allowedLastDays ?? [7,14,30])"
             (daysChange)="handleDaysChange($event)"
-          ></section-activity>
+          ></widget-activity>
         </div>
         <div class="col-lg-6">
-          <section-difficulties [data]="statistics.byDifficulty"></section-difficulties>
+          <widget-difficulties [data]="statistics.byDifficulty"></widget-difficulties>
         </div>
         <div class="col-lg-6">
-          <section-facts [facts]="statistics.facts"></section-facts>
+          <widget-facts [facts]="statistics.facts"></widget-facts>
         </div>
         <div class="col-12">
-          <section-heatmap
+          <widget-heatmap
             [heatmap]="statistics.heatmap"
             [selectedYear]="selectedYear"
             [availableYears]="availableYears"
             (yearChange)="handleYearChange($event)"
-          ></section-heatmap>
+          ></widget-heatmap>
         </div>
         <div class="col-12">
-          <section-time
+          <widget-time
             [byWeekday]="statistics.byWeekday"
             [byMonth]="statistics.byMonth"
             [byPeriod]="statistics.byPeriod"
-          ></section-time>
+          ></widget-time>
         </div>
         <div class="col-12">
-          <section-attempts-for-solve
+          <widget-attempts-for-solve
             [numberOfAttempts]="statistics.numberOfAttempts"
-          ></section-attempts-for-solve>
+          ></widget-attempts-for-solve>
         </div>
       </div>
     </div>

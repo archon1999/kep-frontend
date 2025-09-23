@@ -18,7 +18,7 @@ import { ContentHeaderModule } from "@shared/ui/components/content-header/conten
 import { SectionSummaryComponent } from "@problems/pages/problems/sections/section-summary/section-summary.component";
 import {
   SectionDifficultiesComponent
-} from "@problems/pages/statistics/section-difficulties/section-difficulties.component";
+} from "@problems/pages/problems/sections/section-difficulties/section-difficulties.component";
 
 @Component({
   selector: 'app-problems',

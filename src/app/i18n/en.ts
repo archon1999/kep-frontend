@@ -792,7 +792,7 @@ export const localeEn = {
       Attempts: 'Attempts - Problems',
       Attempt: 'Attempt {{ attemptId }} - Problems',
       Profile: 'Profile - Problems',
-      Statistics: 'User statistics - Problems',
+      UserStatistics: 'User statistics - Problems',
       Rating: 'Rating - Problems',
       RatingHistory: 'Rating - History - Problems',
       RatingOverall: 'Rating - Overall - Problems',

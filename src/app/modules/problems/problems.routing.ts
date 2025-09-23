@@ -80,10 +80,10 @@ export default [
   //   canActivate: [AttemptGuard],
   // },
   {
-    path: 'statistics',
-    loadComponent: () => import('./pages/statistics/statistics.component').then(c => c.StatisticsComponent),
-    title: 'Problems.Statistics',
-    data: {animation: 'statistics', title: 'Problems.Statistics'},
+    path: 'user-statistics',
+    loadComponent: () => import('./pages/user-statistics/user-statistics.component').then(c => c.UserStatisticsComponent),
+    title: 'Problems.UserStatistics',
+    data: {animation: 'user-statistics', title: 'Problems.UserStatistics'},
     canActivate: [AuthGuard],
   },
   {

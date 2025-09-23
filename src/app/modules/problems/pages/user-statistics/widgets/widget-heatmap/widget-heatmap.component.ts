@@ -8,9 +8,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { colors } from "@core/config/colors";
 
 @Component({
-  selector: 'section-heatmap',
-  templateUrl: './section-heatmap.component.html',
-  styleUrls: ['./section-heatmap.component.scss'],
+  selector: 'widget-heatmap',
+  templateUrl: './widget-heatmap.component.html',
+  styleUrls: ['./widget-heatmap.component.scss'],
   standalone: true,
   imports: [
     CoreCommonModule,
@@ -19,7 +19,7 @@ import { colors } from "@core/config/colors";
     TranslateModule,
   ]
 })
-export class SectionHeatmapComponent implements OnChanges {
+export class WidgetHeatmapComponent implements OnChanges {
 
   @Input() heatmap: Array<any> = [];
   @Input() selectedYear: number | null = null;

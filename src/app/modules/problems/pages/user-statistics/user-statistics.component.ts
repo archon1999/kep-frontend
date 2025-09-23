@@ -1,17 +1,17 @@
 import { Component, inject, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { CoreCommonModule } from '@core/common.module';
-import { SectionProfileComponent } from '@problems/pages/statistics/section-profile/section-profile.component';
+import { WidgetProfileComponent } from '@problems/pages/user-statistics/widgets/widget-profile/widget-profile.component';
 import {
   Difficulties,
-  SectionDifficultiesComponent
-} from '@problems/pages/statistics/section-difficulties/section-difficulties.component';
-import { SectionActivityComponent } from '@problems/pages/statistics/section-activity/section-activity.component';
-import { SectionHeatmapComponent } from '@problems/pages/statistics/section-heatmap/section-heatmap.component';
-import { Facts, SectionFactsComponent } from '@problems/pages/statistics/section-facts/section-facts.component';
-import { SectionTimeComponent } from '@problems/pages/statistics/section-time/section-time.component';
+  WidgetDifficultiesComponent
+} from '@problems/pages/user-statistics/widgets/widget-difficulties/widget-difficulties.component';
+import { WidgetActivityComponent } from '@problems/pages/user-statistics/widgets/widget-activity/widget-activity.component';
+import { WidgetHeatmapComponent } from '@problems/pages/user-statistics/widgets/widget-heatmap/widget-heatmap.component';
+import { Facts, WidgetFactsComponent } from '@problems/pages/user-statistics/widgets/widget-facts/widget-facts.component';
+import { WidgetTimeComponent } from '@problems/pages/user-statistics/widgets/widget-time/widget-time.component';
 import {
-  SectionAttemptsForSolveComponent
-} from '@problems/pages/statistics/section-attempts-for-solve/section-attempts-for-solve.component';
+  WidgetAttemptsForSolveComponent
+} from '@problems/pages/user-statistics/widgets/widget-attempts-for-solve/widget-attempts-for-solve.component';
 import { AuthUser } from '@auth';
 import { ProblemsStatisticsService } from '@problems/services/problems-statistics.service';
 import { Subscription } from 'rxjs';
@@ -90,20 +90,20 @@ interface ProblemsStatisticsResponse {
 }
 
 @Component({
-  selector: 'app-statistics',
-  templateUrl: './statistics.component.html',
-  styleUrls: ['./statistics.component.scss'],
+  selector: 'app-user-statistics',
+  templateUrl: './user-statistics.component.html',
+  styleUrls: ['./user-statistics.component.scss'],
   encapsulation: ViewEncapsulation.None,
   standalone: true,
   imports: [
     CoreCommonModule,
-    SectionProfileComponent,
-    SectionDifficultiesComponent,
-    SectionActivityComponent,
-    SectionHeatmapComponent,
-    SectionFactsComponent,
-    SectionTimeComponent,
-    SectionAttemptsForSolveComponent,
+    WidgetProfileComponent,
+    WidgetDifficultiesComponent,
+    WidgetActivityComponent,
+    WidgetHeatmapComponent,
+    WidgetFactsComponent,
+    WidgetTimeComponent,
+    WidgetAttemptsForSolveComponent,
     KepCardComponent,
     SpinnerComponent,
     KepIconComponent,
@@ -111,7 +111,7 @@ interface ProblemsStatisticsResponse {
     ContentHeaderModule
   ]
 })
-export class StatisticsComponent extends BasePageComponent implements OnInit, OnDestroy {
+export class UserStatisticsComponent extends BasePageComponent implements OnInit, OnDestroy {
   public username: string;
   public isLoading = false;
   public statistics: ProblemsStatisticsResponse | null = null;

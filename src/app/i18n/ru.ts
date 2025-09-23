@@ -783,7 +783,7 @@ export const localeRu = {
       ProblemAttempts: '{{ problemId }}. {{ problemTitle }} - Попытки',
       Attempts: 'Попытки - Задачи',
       Profile: 'Профиль - Задачи',
-      Statistics: 'Статистика пользователя - Задачи',
+      UserStatistics: 'Статистика пользователя - Задачи',
       Rating: 'Рейтинг - Задачи',
       RatingHistory: 'Рейтинг - История - Задачи',
       RatingOverall: 'Рейтинг - Общий - Задачи',
