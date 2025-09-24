@@ -13,15 +13,14 @@
                 <span class="badge bg-primary-transparent">
                   {{ opponent.sharedCount }} {{ 'Contests.UserStatistics.SharedContests' | translate }}
                 </span>
-                <span class="badge bg-success-transparent text-success">
-                  {{ opponent.userWins }} {{ 'Contests.UserStatistics.UserWins' | translate }}
-                </span>
-                <span class="badge bg-danger-transparent text-danger">
-                  {{ opponent.opponentWins }} {{ 'Contests.UserStatistics.OpponentWins' | translate }}
-                </span>
               </div>
             </div>
             <div class="card-body flex-grow-1 overflow-auto opponent-card-body">
+              <div class="fw-semibold text-center mb-2 fs-4">
+                {{ opponent.userWins }}
+                vs
+                {{ opponent.opponentWins }}
+              </div>
               <ul class="list-group">
                 @for (contest of opponent.contests; track contest.contestId) {
                   <li class="list-group-item">
