@@ -2,12 +2,13 @@ import { Component, inject, Input } from '@angular/core';
 import {
   ArenaPlayerStatisticsComponent
 } from '@arena/components/arena-player-statistics/arena-player-statistics.component';
-import { Arena, ArenaPlayerStatistics } from '@arena/arena.models';
+import { Arena, ArenaPlayerStatistics, toArenaPlayerStatistics } from '@arena/arena.models';
 import { bounceOnEnterAnimation } from 'angular-animations';
 import { ArenaService } from '@arena/arena.service';
 import { BaseLoadComponent } from '@core/common';
 import { Observable } from 'rxjs';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'arena-winners',
@@ -34,6 +35,8 @@ export class ArenaWinnersComponent extends BaseLoadComponent<ArenaPlayerStatisti
   }
 
   getData(): Observable<ArenaPlayerStatistics[]> {
-    return this.service.getTop3(this.arena.id);
+    return this.service.getTop3(this.arena.id).pipe(
+      map((stats: Array<ArenaPlayerStatistics>) => stats.map(toArenaPlayerStatistics))
+    );
   }
 }
