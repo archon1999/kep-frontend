@@ -24,6 +24,7 @@ import { ContestsUserStatisticsUnsolvedProblemsComponent } from './widgets/unsol
 import { ContestsUserStatisticsTopAttemptsComponent } from './widgets/top-attempts/top-attempts.component';
 import { ContestsUserStatisticsWorthyOpponentsComponent } from './widgets/worthy-opponents/worthy-opponents.component';
 import { ContestCard, HighlightCard, StatisticCard } from './user-statistics.models';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'contests-user-statistics',
@@ -39,6 +40,7 @@ import { ContestCard, HighlightCard, StatisticCard } from './user-statistics.mod
     ContestsUserStatisticsUnsolvedProblemsComponent,
     ContestsUserStatisticsTopAttemptsComponent,
     ContestsUserStatisticsWorthyOpponentsComponent,
+    KepCardComponent,
   ],
   templateUrl: './user-statistics.component.html',
   styleUrls: ['./user-statistics.component.scss']
