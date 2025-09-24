@@ -17,16 +17,11 @@ export default [
     title: 'Contests.ContestsRating',
   },
   {
-    path: 'statistics',
+    path: 'user-statistics',
     loadComponent: () => import('./pages/user-statistics/user-statistics.component').then(c => c.ContestsUserStatisticsComponent),
     data: {animation: 'contests-user-statistics', title: 'Contests.ContestsUserStatistics'},
     canActivate: [AuthGuard],
     title: 'Contests.UserStatistics',
-  },
-  {
-    path: 'user-statistics',
-    redirectTo: 'statistics',
-    pathMatch: 'full',
   },
   {
     path: 'profile',
