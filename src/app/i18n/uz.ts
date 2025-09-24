@@ -595,6 +595,8 @@ export const localeUz = {
       Unsolved: 'Yechilmagan',
       WorthyOpponents: 'Kuchli raqiblar',
       SharedContests: 'ta umumiy musobaqa',
+      UserWins: 'ta g‘alaba',
+      OpponentWins: 'ta mag‘lubiyat',
       NoOpponents: 'Raqiblar hali yo‘q',
       NoData: 'Maʼlumotlar yo‘q',
     },

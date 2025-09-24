@@ -114,6 +114,8 @@ export interface ContestUserStatisticsOpponent {
   opponent: string;
   type: string;
   sharedCount: number;
+  userWins: number;
+  opponentWins: number;
   contests: ContestUserStatisticsOpponentContest[];
 }
 

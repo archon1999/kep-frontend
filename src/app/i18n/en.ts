@@ -597,6 +597,8 @@ export const localeEn = {
       Unsolved: 'Unsolved',
       WorthyOpponents: 'Worthy opponents',
       SharedContests: 'shared contests',
+      UserWins: 'wins',
+      OpponentWins: 'losses',
       NoOpponents: 'No notable opponents yet',
       NoData: 'No data yet',
     },
