@@ -591,6 +591,8 @@ export const localeRu = {
       Unsolved: 'Нерешена',
       WorthyOpponents: 'Достойные соперники',
       SharedContests: 'общих конкурсов',
+      UserWins: 'побед',
+      OpponentWins: 'поражений',
       NoOpponents: 'Пока нет соперников',
       NoData: 'Данных пока нет',
     },

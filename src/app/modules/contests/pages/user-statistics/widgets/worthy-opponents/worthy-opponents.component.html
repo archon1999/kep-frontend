@@ -9,9 +9,17 @@
           <kep-card [customClass]="'d-flex flex-column flex-fill opponent-card'" [cardHeight]="'500px'">
             <div class="card-header d-flex justify-content-between align-items-start gap-1 flex-wrap">
               <div class="card-title mb-0">{{ opponent.opponent }}</div>
-              <span class="badge bg-primary-transparent">
-                {{ opponent.sharedCount }} {{ 'Contests.UserStatistics.SharedContests' | translate }}
-              </span>
+              <div class="d-flex align-items-center justify-content-end gap-1 flex-wrap">
+                <span class="badge bg-primary-transparent">
+                  {{ opponent.sharedCount }} {{ 'Contests.UserStatistics.SharedContests' | translate }}
+                </span>
+                <span class="badge bg-success-transparent text-success">
+                  {{ opponent.userWins }} {{ 'Contests.UserStatistics.UserWins' | translate }}
+                </span>
+                <span class="badge bg-danger-transparent text-danger">
+                  {{ opponent.opponentWins }} {{ 'Contests.UserStatistics.OpponentWins' | translate }}
+                </span>
+              </div>
             </div>
             <div class="card-body flex-grow-1 overflow-auto opponent-card-body">
               <ul class="list-group">
