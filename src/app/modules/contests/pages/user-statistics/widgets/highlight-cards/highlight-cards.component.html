@@ -1,0 +1,29 @@
+<div class="row">
+  @for (card of cards; track card.key) {
+    <div class="col-lg-4 col-md-6">
+      <kep-card>
+        <div class="card-body">
+          <div class="d-flex align-items-start gap-2">
+            <kep-icon [name]="card.icon" class="font-large-1 text-primary"></kep-icon>
+            <div class="flex-grow-1">
+              <div class="text-muted text-uppercase small mb-1">{{ card.label | translate }}</div>
+              @if (card.valueLabel) {
+                <div class="fw-bolder">{{ card.valueLabel }}</div>
+              } @else {
+                <div class="fw-bolder">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
+              }
+              @if (card.contestLink && card.contestTitle) {
+                <a class="text-primary small d-block" [routerLink]="card.contestLink">{{ card.contestTitle }}</a>
+              } @else if (card.contestTitle) {
+                <div class="text-muted small">{{ card.contestTitle }}</div>
+              }
+              @if (card.meta) {
+                <div class="text-muted small">{{ card.meta }}</div>
+              }
+            </div>
+          </div>
+        </div>
+      </kep-card>
+    </div>
+  }
+</div>

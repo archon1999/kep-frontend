@@ -1,0 +1,30 @@
+<div class="row">
+  @for (card of cards; track card.key) {
+    <div class="{{ columnClass }}">
+      <kep-card>
+        <div class="card-header">
+          <div class="card-title">
+            <kep-icon [name]="card.icon" [ngClass]="iconClass"></kep-icon>
+            {{ card.label | translate }}
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <div class="text-muted text-uppercase small mb-1"></div>
+              <div class="fw-bolder fs-3">
+                {{ card.value }}
+                @if (valueSubtitleInline && card.subtitle) {
+                  <span class="text-muted font-small-4">({{ card.subtitle }})</span>
+                }
+              </div>
+              @if (!valueSubtitleInline && card.subtitle) {
+                <div class="text-muted small">{{ card.subtitle }}</div>
+              }
+            </div>
+          </div>
+        </div>
+      </kep-card>
+    </div>
+  }
+</div>
