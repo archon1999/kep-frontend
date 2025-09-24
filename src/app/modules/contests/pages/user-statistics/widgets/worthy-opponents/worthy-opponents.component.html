@@ -1,0 +1,54 @@
+<kep-card>
+  <div class="card-header">
+    <div class="card-title">{{ 'Contests.UserStatistics.WorthyOpponents' | translate }}</div>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      @for (opponent of opponents; track opponent.opponent) {
+        <div class="col-lg-4">
+          <kep-card [customClass]="'d-flex flex-column flex-fill opponent-card'" [cardHeight]="'500px'">
+            <div class="card-header d-flex justify-content-between align-items-start gap-1 flex-wrap">
+              <div class="card-title mb-0">{{ opponent.opponent }}</div>
+              <div class="d-flex align-items-center justify-content-end gap-1 flex-wrap">
+                <span class="badge bg-primary-transparent">
+                  {{ opponent.sharedCount }} {{ 'Contests.UserStatistics.SharedContests' | translate }}
+                </span>
+              </div>
+            </div>
+            <div class="card-body flex-grow-1 overflow-auto opponent-card-body">
+              <div class="fw-semibold text-center mb-2 fs-4">
+                {{ opponent.userWins }}
+                vs
+                {{ opponent.opponentWins }}
+              </div>
+              <ul class="list-group">
+                @for (contest of opponent.contests; track contest.contestId) {
+                  <li class="list-group-item">
+                    <a [routerLink]="getContestLink(contest.contestId)">{{ contest.contestTitle }}</a>
+                    <div>
+                      <span [ngClass]="{
+                        'text-primary': contest.userRank < contest.opponentRank,
+                        'text-secondary': contest.userRank === contest.opponentRank,
+                        'text-danger': contest.userRank > contest.opponentRank
+                      }">
+                        #{{ contest.userRank }} ({{ contest.userPoints }})
+                      </span>
+                      vs
+                      <span [ngClass]="{
+                        'text-primary': contest.userRank > contest.opponentRank,
+                        'text-secondary': contest.userRank === contest.opponentRank,
+                        'text-danger': contest.userRank < contest.opponentRank
+                      }">
+                        #{{ contest.opponentRank }} ({{ contest.opponentPoints }})
+                      </span>
+                    </div>
+                  </li>
+                }
+              </ul>
+            </div>
+          </kep-card>
+        </div>
+      }
+    </div>
+  </div>
+</kep-card>

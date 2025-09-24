@@ -40,7 +40,7 @@ export interface ArenaPlayer {
 export interface ArenaPlayerStatistics {
   username: string;
   rankTitle: string;
-  perfomance: number;
+  performance: number;
   challenges: number;
   wins: number;
   draws: number;
@@ -54,4 +54,13 @@ export interface ArenaPlayerStatistics {
 export interface ArenaStatistics {
   averageRating: number;
   challenges: number;
+}
+
+export function toArenaPlayerStatistics(data: any): ArenaPlayerStatistics {
+  const { perfomance, performance, ...rest } = data ?? {};
+
+  return {
+    ...rest,
+    performance: performance ?? perfomance,
+  } as ArenaPlayerStatistics;
 }

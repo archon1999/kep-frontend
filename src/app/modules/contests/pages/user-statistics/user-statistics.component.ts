@@ -13,45 +13,35 @@ import {
 } from '@contests/models';
 import { AuthUser } from '@auth';
 import { Subscription } from 'rxjs';
-import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
-import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-chart.module';
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 import { colors as Colors } from '@core/config/colors';
 import { Resources, getResourceById, getResourceByParams } from '@app/resources';
-
-interface StatisticCard {
-  key: string;
-  label: string;
-  icon: string;
-  value: string;
-  subtitle?: string;
-}
-
-interface HighlightCard {
-  key: string;
-  label: string;
-  icon: string;
-  contestTitle?: string;
-  contestLink?: string;
-  meta?: string;
-  valueLabel?: string;
-}
-
-interface ContestCard {
-  key: string;
-  label: string;
-  icon: string;
-  contestTitle?: string;
-  contestLink?: string;
-  value?: string;
-  subtitle?: string;
-}
+import { ContestsUserStatisticsCardsComponent } from './widgets/statistics-cards/statistics-cards.component';
+import { ContestsUserStatisticsHighlightCardsComponent } from './widgets/highlight-cards/highlight-cards.component';
+import { ContestsUserStatisticsChartCardComponent } from './widgets/chart-card/chart-card.component';
+import { ContestsUserStatisticsContestCardsComponent } from './widgets/contest-cards/contest-cards.component';
+import { ContestsUserStatisticsUnsolvedProblemsComponent } from './widgets/unsolved-problems/unsolved-problems.component';
+import { ContestsUserStatisticsTopAttemptsComponent } from './widgets/top-attempts/top-attempts.component';
+import { ContestsUserStatisticsWorthyOpponentsComponent } from './widgets/worthy-opponents/worthy-opponents.component';
+import { ContestCard, HighlightCard, StatisticCard } from './user-statistics.models';
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 
 @Component({
   selector: 'contests-user-statistics',
   standalone: true,
   encapsulation: ViewEncapsulation.None,
-  imports: [CoreCommonModule, ContentHeaderModule, KepCardComponent, ApexChartModule],
+  imports: [
+    CoreCommonModule,
+    ContentHeaderModule,
+    ContestsUserStatisticsCardsComponent,
+    ContestsUserStatisticsHighlightCardsComponent,
+    ContestsUserStatisticsChartCardComponent,
+    ContestsUserStatisticsContestCardsComponent,
+    ContestsUserStatisticsUnsolvedProblemsComponent,
+    ContestsUserStatisticsTopAttemptsComponent,
+    ContestsUserStatisticsWorthyOpponentsComponent,
+    KepCardComponent,
+  ],
   templateUrl: './user-statistics.component.html',
   styleUrls: ['./user-statistics.component.scss']
 })
@@ -71,6 +61,12 @@ export class ContestsUserStatisticsComponent extends BasePageComponent implement
   public symbolsChart: ChartOptions | null = null;
   public timeline: ContestUserStatisticsTimelineEntry[] = [];
   public topOpponents: ContestUserStatisticsOpponent[] = [];
+  public readonly contestDeltaValueClass = (card: ContestCard) =>
+    card.key === 'bestDelta'
+      ? 'text-success'
+      : card.key === 'worstDelta'
+        ? 'text-danger'
+        : null;
 
   private username: string | null = null;
   private readonly contestsService = inject(ContestsService);

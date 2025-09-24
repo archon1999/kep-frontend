@@ -1,0 +1,13 @@
+<kep-card [cardHeight]="cardHeight" [customClass]="customClass">
+  <div class="card-header">
+    <div class="card-title">{{ titleKey | translate }}</div>
+    <ng-content select="[header-extra]"></ng-content>
+  </div>
+  <div [ngClass]="bodyClass">
+    @if (chart) {
+      <apex-chart [options]="chart"></apex-chart>
+    } @else {
+      <div [ngClass]="noDataClass">{{ noDataTranslationKey | translate }}</div>
+    }
+  </div>
+</kep-card>

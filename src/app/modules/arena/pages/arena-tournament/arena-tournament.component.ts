@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Arena, ArenaPlayerStatistics, ArenaStatistics, ArenaStatus } from '../../arena.models';
+import { Arena, ArenaPlayerStatistics, ArenaStatistics, ArenaStatus, toArenaPlayerStatistics } from '../../arena.models';
 import { ArenaService } from '../../arena.service';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbAlertModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -94,7 +94,7 @@ export class ArenaTournamentComponent extends BaseComponent implements OnInit {
   loadArenaPlayerStatistics(arenaPlayerUsername: string) {
     this.service.getArenaPlayerStatistics(this.arena.id, arenaPlayerUsername).subscribe(
       (result: any) => {
-        this.arenaPlayerStatistics = result;
+        this.arenaPlayerStatistics = toArenaPlayerStatistics(result);
       }
     );
   }

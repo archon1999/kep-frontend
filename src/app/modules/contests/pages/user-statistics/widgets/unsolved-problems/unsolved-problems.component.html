@@ -1,0 +1,21 @@
+<kep-card [customClass]="'d-flex flex-column scrollable-card'" [cardHeight]="'360px'">
+  <div class="card-header">
+    <div class="card-title">{{ 'Contests.UserStatistics.UnsolvedProblems' | translate }}</div>
+  </div>
+  <div class="card-body flex-grow-1 overflow-auto scrollable-card-body">
+    @if (problems.length) {
+      <div class="d-flex flex-column gap-2">
+        @for (problem of problems; track problem.contestId + problem.problemSymbol) {
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-1">
+            <div class="fw-bolder">{{ problem.problemSymbol }}</div>
+            <a class="text-primary small" [routerLink]="getContestProblemLink(problem.contestId, problem.problemSymbol)">
+              {{ problem.contestTitle }}
+            </a>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="text-center text-muted py-4">{{ 'Contests.UserStatistics.NoUnsolvedProblems' | translate }}</div>
+    }
+  </div>
+</kep-card>

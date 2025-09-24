@@ -7,363 +7,110 @@
     </div>
   </kep-card>
 } @else if (statistics) {
-  <div class="row">
-    @for (card of generalCards; track card.key) {
-      <div class="col-sm-6 col-xl-3">
-        <kep-card>
-          <div class="card-header">
-            <div class="card-title">
-              <kep-icon [name]="card.icon"></kep-icon>
-              {{ card.label | translate }}
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start">
-              <div>
-                <div class="text-muted text-uppercase small mb-1"></div>
-                <div class="fw-bolder fs-3">{{ card.value }}</div>
-                @if (card.subtitle) {
-                  <div class="text-muted small">{{ card.subtitle }}</div>
-                }
-              </div>
-            </div>
-          </div>
-        </kep-card>
-      </div>
-    }
-  </div>
+  <contests-user-statistics-cards [cards]="generalCards"></contests-user-statistics-cards>
 
-  <div class="row">
-    @for (card of overviewCards; track card.key) {
-      <div class="col-sm-6 col-xl-3">
-        <kep-card>
-          <div class="card-header">
-            <div class="card-title text-nowrap">
-              <kep-icon [name]="card.icon" class="text-primary"></kep-icon>
-              {{ card.label | translate }}
-            </div>
+  <contests-user-statistics-cards
+    [cards]="overviewCards"
+    iconClass="text-primary"
+    [valueSubtitleInline]="true"
+  ></contests-user-statistics-cards>
 
-          </div>
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start">
-              <div>
-                <div class="text-muted text-uppercase small mb-1"></div>
-                <div class="fw-bolder fs-3">
-                  {{ card.value }}
-                  @if (card.subtitle) {
-                    <span class="text-muted font-small-4">({{ card.subtitle }})</span>
-                  }
-                </div>
-              </div>
-            </div>
-          </div>
-        </kep-card>
-      </div>
-    }
-  </div>
-
-  <div class="row">
-    @for (card of highlightCards; track card.key) {
-      <div class="col-lg-4 col-md-6">
-        <kep-card>
-          <div class="card-body">
-            <div class="d-flex align-items-start gap-2">
-              <kep-icon [name]="card.icon" class="font-large-1 text-primary"></kep-icon>
-              <div class="flex-grow-1">
-                <div class="text-muted text-uppercase small mb-1">{{ card.label | translate }}</div>
-                @if (card.valueLabel) {
-                  <div class="fw-bolder">{{ card.valueLabel }}</div>
-                } @else {
-                  <div class="fw-bolder">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
-                }
-                @if (card.contestLink && card.contestTitle) {
-                  <a class="text-primary small d-block" [routerLink]="card.contestLink">{{ card.contestTitle }}</a>
-                } @else if (card.contestTitle) {
-                  <div class="text-muted small">{{ card.contestTitle }}</div>
-                }
-                @if (card.meta) {
-                  <div class="text-muted small">{{ card.meta }}</div>
-                }
-              </div>
-            </div>
-          </div>
-        </kep-card>
-      </div>
-    }
-  </div>
+  <contests-user-statistics-highlight-cards [cards]="highlightCards"></contests-user-statistics-highlight-cards>
 
   <div class="row">
     <div class="col-12">
-      <kep-card>
-        <div class="card-header">
-          <div class="card-title">{{ 'Contests.UserStatistics.RatingChangesHistory' | translate }}</div>
-        </div>
-        <div class="card-body p-2">
-          @if (ratingChangesChart) {
-            <apex-chart [options]="ratingChangesChart"></apex-chart>
-          } @else {
-            <div class="text-center text-muted py-4">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
-          }
-        </div>
-      </kep-card>
+      <contests-user-statistics-chart-card
+        titleKey="Contests.UserStatistics.RatingChangesHistory"
+        [chart]="ratingChangesChart"
+      ></contests-user-statistics-chart-card>
     </div>
   </div>
 
   <div class="row">
     <div class="col-lg-6">
-      <kep-card>
-        <div class="card-header">
-          <div class="card-title">{{ 'Contests.UserStatistics.ContestRanks' | translate }}</div>
-        </div>
-        <div class="card-body">
-          <div class="d-flex flex-column gap-3">
-            @for (card of contestRankCards; track card.key) {
-              <div class="d-flex align-items-start gap-2">
-                <kep-icon [name]="card.icon" class="text-primary"></kep-icon>
-                <div class="flex-grow-1">
-                  <div class="fw-bolder">{{ card.label | translate }}</div>
-                  @if (card.value) {
-                    <div class="fs-4 fw-bolder">{{ card.value }}</div>
-                  } @else {
-                    <div class="text-muted small">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
-                  }
-                  @if (card.contestLink && card.contestTitle) {
-                    <a class="text-primary small d-block" [routerLink]="card.contestLink">{{ card.contestTitle }}</a>
-                  } @else if (card.contestTitle) {
-                    <div class="text-muted small">{{ card.contestTitle }}</div>
-                  }
-                  @if (card.subtitle) {
-                    <div class="text-muted small">{{ card.subtitle }}</div>
-                  }
-                </div>
-              </div>
-            }
-          </div>
-        </div>
-      </kep-card>
+      <contests-user-statistics-contest-cards
+        titleKey="Contests.UserStatistics.ContestRanks"
+        [cards]="contestRankCards"
+      ></contests-user-statistics-contest-cards>
     </div>
     <div class="col-lg-6">
-      <kep-card>
-        <div class="card-header">
-          <div class="card-title">{{ 'Contests.UserStatistics.RatingChanges' | translate }}</div>
-        </div>
-        <div class="card-body">
-          <div class="d-flex flex-column gap-3">
-            @for (card of contestDeltaCards; track card.key) {
-              <div class="d-flex align-items-start gap-2">
-                <kep-icon [name]="card.icon" class="text-primary"></kep-icon>
-                <div class="flex-grow-1">
-                  <div class="fw-bolder">{{ card.label | translate }}</div>
-                  @if (card.value) {
-                    <div class="fs-4 fw-bolder"
-                         [ngClass]="{'text-success': card.key === 'bestDelta', 'text-danger': card.key === 'worstDelta'}">{{ card.value }}
-                    </div>
-                  } @else {
-                    <div class="text-muted small">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
-                  }
-                  @if (card.contestLink && card.contestTitle) {
-                    <a class="text-primary small d-block" [routerLink]="card.contestLink">{{ card.contestTitle }}</a>
-                  } @else if (card.contestTitle) {
-                    <div class="text-muted small">{{ card.contestTitle }}</div>
-                  }
-                  @if (card.subtitle) {
-                    <div class="text-muted small">{{ card.subtitle }}</div>
-                  }
-                </div>
-              </div>
-            }
-          </div>
-        </div>
-      </kep-card>
+      <contests-user-statistics-contest-cards
+        titleKey="Contests.UserStatistics.RatingChanges"
+        [cards]="contestDeltaCards"
+        [valueClassFn]="contestDeltaValueClass"
+      ></contests-user-statistics-contest-cards>
     </div>
   </div>
 
   <div class="row">
     <div class="col-lg-8">
-      <kep-card>
-        <div class="card-header">
-          <div class="card-title">{{ 'Contests.AttemptsTimeline' | translate }}</div>
-          <div class="text-muted small">{{ statistics.overview.totalAttempts | number }} {{ 'Attempts' | translate }}
+      <contests-user-statistics-chart-card
+        titleKey="Contests.AttemptsTimeline"
+        [chart]="timelineChart"
+      >
+        <ng-container header-extra>
+          <div class="text-muted small">
+            {{ statistics.overview.totalAttempts | number }} {{ 'Attempts' | translate }}
           </div>
-        </div>
-        <div class="card-body p-2">
-          @if (timelineChart) {
-            <apex-chart [options]="timelineChart"></apex-chart>
-          } @else {
-            <div class="text-center text-muted py-4">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
-          }
-        </div>
-      </kep-card>
+        </ng-container>
+      </contests-user-statistics-chart-card>
     </div>
     <div class="col-lg-4">
-      <kep-card>
-        <div class="card-header">
-          <div class="card-title">{{ 'Contests.UserStatistics.Languages' | translate }}</div>
-        </div>
-        <div class="card-body p-2">
-          @if (languagesChart) {
-            <apex-chart [options]="languagesChart"></apex-chart>
-          } @else {
-            <div class="text-center text-muted py-4">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
-          }
-        </div>
-      </kep-card>
+      <contests-user-statistics-chart-card
+        titleKey="Contests.UserStatistics.Languages"
+        [chart]="languagesChart"
+      ></contests-user-statistics-chart-card>
     </div>
   </div>
 
   <div class="row">
     <div class="col-lg-4">
-      <kep-card [customClass]="'d-flex flex-column chart-card'" [cardHeight]="'360px'">
-        <div class="card-header">
-          <div class="card-title">{{ 'Contests.VerdictDistribution' | translate }}</div>
-        </div>
-        <div class="card-body">
-          @if (verdictsChart) {
-            <apex-chart [options]="verdictsChart"></apex-chart>
-          } @else {
-            <div class="text-center text-muted">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
-          }
-        </div>
-      </kep-card>
+      <contests-user-statistics-chart-card
+        titleKey="Contests.VerdictDistribution"
+        [chart]="verdictsChart"
+        cardHeight="360px"
+        customClass="d-flex flex-column chart-card"
+        bodyClass="card-body"
+        noDataClass="text-center text-muted"
+      ></contests-user-statistics-chart-card>
     </div>
     <div class="col-lg-4">
-      <kep-card [customClass]="'d-flex flex-column chart-card'" [cardHeight]="'360px'">
-        <div class="card-header">
-          <div class="card-title">{{ 'Contests.UserStatistics.Tags' | translate }}</div>
-        </div>
-        <div class="card-body">
-          @if (tagsChart) {
-            <apex-chart [options]="tagsChart"></apex-chart>
-          } @else {
-            <div class="text-center text-muted">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
-          }
-        </div>
-      </kep-card>
+      <contests-user-statistics-chart-card
+        titleKey="Contests.UserStatistics.Tags"
+        [chart]="tagsChart"
+        cardHeight="360px"
+        customClass="d-flex flex-column chart-card"
+        bodyClass="card-body"
+        noDataClass="text-center text-muted"
+      ></contests-user-statistics-chart-card>
     </div>
     <div class="col-lg-4">
-      <kep-card [customClass]="'d-flex flex-column chart-card'" [cardHeight]="'360px'">
-        <div class="card-header">
-          <div class="card-title">{{ 'Contests.UserStatistics.Symbols' | translate }}</div>
-        </div>
-        <div class="card-body">
-          @if (symbolsChart) {
-            <apex-chart [options]="symbolsChart"></apex-chart>
-          } @else {
-            <div class="text-center text-muted">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
-          }
-        </div>
-      </kep-card>
+      <contests-user-statistics-chart-card
+        titleKey="Contests.UserStatistics.Symbols"
+        [chart]="symbolsChart"
+        cardHeight="360px"
+        customClass="d-flex flex-column chart-card"
+        bodyClass="card-body"
+        noDataClass="text-center text-muted"
+      ></contests-user-statistics-chart-card>
     </div>
   </div>
 
   <div class="row">
     <div class="col-lg-6">
-      <kep-card [customClass]="'d-flex flex-column scrollable-card'" [cardHeight]="'360px'">
-        <div class="card-header">
-          <div class="card-title">{{ 'Contests.UserStatistics.UnsolvedProblems' | translate }}</div>
-        </div>
-        <div class="card-body flex-grow-1 overflow-auto scrollable-card-body">
-          @if (statistics.unsolvedProblems.length) {
-            <div class="d-flex flex-column gap-2">
-              @for (problem of statistics.unsolvedProblems; track problem.contestId + problem.problemSymbol) {
-                <div class="d-flex flex-wrap justify-content-between align-items-center gap-1">
-                  <div class="fw-bolder">{{ problem.problemSymbol }}</div>
-                  <a class="text-primary small"
-                     [routerLink]="getContestProblemLink(problem.contestId, problem.problemSymbol)">
-                    {{ problem.contestTitle }}
-                  </a>
-                </div>
-              }
-            </div>
-          } @else {
-            <div class="text-center text-muted py-4">{{ 'Contests.UserStatistics.NoUnsolvedProblems' | translate }}
-            </div>
-          }
-        </div>
-      </kep-card>
+      <contests-user-statistics-unsolved-problems
+        [problems]="statistics.unsolvedProblems"
+      ></contests-user-statistics-unsolved-problems>
     </div>
     <div class="col-lg-6">
-      <kep-card [customClass]="'d-flex flex-column scrollable-card'" [cardHeight]="'360px'">
-        <div class="card-header">
-          <div class="card-title">{{ 'Contests.UserStatistics.TopAttempts' | translate }}</div>
-        </div>
-        <div class="card-body flex-grow-1 overflow-auto scrollable-card-body">
-          @if (statistics.topAttempts.length) {
-            <div class="d-flex flex-column gap-2">
-              @for (attempt of statistics.topAttempts; track attempt.contestId + attempt.problemSymbol) {
-                <div class="d-flex flex-column">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="fw-bolder">{{ attempt.problemSymbol }}</div>
-                    <span class="badge" [ngClass]="attempt.solved ? 'bg-success' : 'bg-danger'">
-                      {{ attempt.solved ? ('Solved' | translate) : ('Contests.UserStatistics.Unsolved' | translate) }}
-                    </span>
-                  </div>
-                  <div class="d-flex justify-content-between small text-muted">
-                    <span>{{ attempt.attemptsCount | number }} {{ 'Attempts' | translate }}</span>
-                    <a class="text-primary"
-                       [routerLink]="getContestProblemLink(attempt.contestId, attempt.problemSymbol)">{{ attempt.contestTitle }}</a>
-                  </div>
-                </div>
-              }
-            </div>
-          } @else {
-            <div class="text-center text-muted py-4">{{ 'Contests.UserStatistics.NoData' | translate }}</div>
-          }
-        </div>
-      </kep-card>
+      <contests-user-statistics-top-attempts
+        [attempts]="statistics.topAttempts"
+      ></contests-user-statistics-top-attempts>
     </div>
   </div>
 
-  <kep-card *ngIf="topOpponents.length">
-    <div class="card-header">
-      <div class="card-title">{{ 'Contests.UserStatistics.WorthyOpponents' | translate }}</div>
-    </div>
-    <div class="card-body">
-      <div class="row">
-        @for (opponent of topOpponents; track opponent.opponent) {
-          <div class="col-lg-4">
-            <kep-card [customClass]="'d-flex flex-column flex-fill opponent-card'" [cardHeight]="'500px'">
-              <div class="card-header d-flex justify-content-between align-items-start gap-1 flex-wrap">
-                <div class="card-title mb-0">
-                  {{ opponent.opponent }}
-                </div>
-
-                <span class="badge bg-primary-transparent">
-                  {{ opponent.sharedCount }} {{ 'Contests.UserStatistics.SharedContests' | translate }}
-                </span>
-              </div>
-
-              <div class="card-body flex-grow-1 overflow-auto opponent-card-body">
-                <ul class="list-group">
-                  @for (contest of opponent.contests; track contest.contestId) {
-                    <li class="list-group-item">
-                      <a [routerLink]="getContestLink(contest.contestId)">{{ contest.contestTitle }}</a>
-
-                      <div>
-                        <span [ngClass]="{
-                          'text-primary': contest.userRank < contest.opponentRank,
-                          'text-secondary': contest.userRank == contest.opponentRank,
-                          'text-danger': contest.userRank > contest.opponentRank
-                        }">
-                          #{{ contest.userRank }} ({{ contest.userPoints }})
-                        </span>
-                        vs
-                        <span [ngClass]="{
-                          'text-primary': contest.userRank > contest.opponentRank,
-                          'text-secondary': contest.userRank == contest.opponentRank,
-                          'text-danger': contest.userRank < contest.opponentRank
-                        }">
-                          #{{ contest.opponentRank }} ({{ contest.opponentPoints }})
-                        </span>
-                      </div>
-                    </li>
-                  }
-                </ul>
-              </div>
-            </kep-card>
-          </div>
-        }
-      </div>
-    </div>
-  </kep-card>
+  <contests-user-statistics-worthy-opponents
+    *ngIf="topOpponents.length"
+    [opponents]="topOpponents"
+  ></contests-user-statistics-worthy-opponents>
 }
