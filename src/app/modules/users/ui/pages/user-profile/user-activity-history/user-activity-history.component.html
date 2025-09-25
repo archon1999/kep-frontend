@@ -1,0 +1,90 @@
+<kep-card customClass="user-activity-history-card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0">{{ 'UserActivityHistory.Title' | translate }}</h4>
+    </div>
+
+    @if (isLoading && !initialLoaded) {
+      <div class="text-center py-4">
+        <div aria-hidden="true" class="spinner-border text-primary" role="status"></div>
+        <span class="visually-hidden">Loading</span>
+      </div>
+    } @else if (loadError && !activities.length) {
+      <div class="alert alert-danger mb-0" role="alert">
+        {{ 'UserActivityHistory.Error' | translate }}
+      </div>
+    } @else if (initialLoaded && !activities.length) {
+      <p class="text-center text-muted mb-0">
+        {{ 'UserActivityHistory.Empty' | translate }}
+      </p>
+    } @else {
+      <ng-scrollbar class="user-activity-history-scroll" visibility="hover">
+        <ul class="timeline list-unstyled mb-0">
+          @for (activity of activities; track activity.id) {
+            <li>
+              <div class="timeline-time text-end">
+                <span class="time d-inline-block">{{ activity.recordedFor | date: 'HH:mm' }}</span>
+                <span class="date">{{ activity.recordedFor | date: 'EEEE' }}</span>
+              </div>
+              <div class="timeline-icon">
+                <span class="timeline-icon-circle">
+                  <i [attr.data-feather]="getIcon(activity.activityType)"></i>
+                </span>
+              </div>
+              <div class="timeline-body">
+                <div class="text-muted fw-medium mb-2">
+                  {{ activity.recordedFor | date: 'd, MMM y' }}
+                </div>
+                <kep-card [customClass]="'mt-0 ' + getCardClass(activity.activityType)">
+                  <div class="card-body">
+                    <div class="d-flex align-items-top timeline-main-content flex-wrap flex-xl-nowrap mt-0">
+                      <div class="avatar avatar-md me-3 mt-sm-0 mt-4 flex-shrink-0">
+                        <img
+                          [alt]="activity.user.username"
+                          [src]="activity.user.avatar"
+                          class="rounded img-fluid"
+                          loading="lazy"
+                        >
+                      </div>
+                      <div class="flex-fill">
+                        <div class="d-flex align-items-center">
+                          <div class="mt-sm-0 mt-2">
+                            <p class="mb-0 fs-14 fw-semibold">{{ activity.user.username }}</p>
+                            <p class="mb-0 text-muted fs-12">{{ activity.activityTypeDisplay }}</p>
+                          </div>
+                        </div>
+                        <ng-container *ngComponentOutlet="activityComponentMap[activity.activityType]; inputs: {activity: activity}"></ng-container>
+                      </div>
+                    </div>
+                  </div>
+                </kep-card>
+              </div>
+            </li>
+          }
+        </ul>
+      </ng-scrollbar>
+    }
+
+    @if (loadError && activities.length) {
+      <div class="alert alert-danger mt-3 mb-0" role="alert">
+        {{ 'UserActivityHistory.Error' | translate }}
+      </div>
+    }
+
+    @if (hasMore) {
+      <div class="timeline-loadmore-container text-center">
+        <button
+          class="btn btn-outline-primary btn-sm"
+          type="button"
+          (click)="onLoadMore()"
+          [disabled]="isLoadingMore"
+        >
+          @if (isLoadingMore) {
+            <span aria-hidden="true" class="spinner-border spinner-border-sm me-1" role="status"></span>
+          }
+          {{ 'More' | translate }}
+        </button>
+      </div>
+    }
+  </div>
+</kep-card>
