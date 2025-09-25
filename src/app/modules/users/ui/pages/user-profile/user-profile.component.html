@@ -91,6 +91,13 @@
 
         <div class="order-lg-3 order-2 col-lg-3 col-12">
           @defer (on viewport) {
+            <user-activity-history [username]="user?.username"></user-activity-history>
+          } @placeholder {
+            <div class="card" [style.height.px]="360">
+              <spinner></spinner>
+            </div>
+          }
+          @defer (on viewport) {
             <user-skills></user-skills>
           } @placeholder {
             <div class="card" [style.height.px]="400">

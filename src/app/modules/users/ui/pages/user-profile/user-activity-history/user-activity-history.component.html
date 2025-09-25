@@ -1,0 +1,100 @@
+<kep-card customClass="user-activity-history-card">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="mb-0 fw-semibold">{{ 'UserActivityHistory.Title' | translate }}</h5>
+    </div>
+
+    <div class="position-relative">
+      <div class="d-flex justify-content-center py-4" *ngIf="loading && initialLoad">
+        <spinner></spinner>
+      </div>
+
+      <ng-container *ngIf="!initialLoad || activities.length">
+        <div class="timeline mb-0">
+          <div class="container px-0">
+            <ul class="timeline list-unstyled mb-0" *ngIf="activities.length; else emptyState">
+              <li *ngFor="let activity of activities; trackBy: trackById">
+                <div class="timeline-time text-end">
+                  <span class="time d-inline-block">{{ activity.recordedFor | date:'HH:mm' }}</span>
+                  <span class="date">{{ activity.recordedFor | date:'EEEE' }}</span>
+                </div>
+                <div class="timeline-icon">
+                  <a class="timeline-icon-label" href="javascript:void(0);">{{ getIconLabel(activity) }}</a>
+                </div>
+                <div class="timeline-body">
+                  <div class="text-muted fw-medium mb-2">
+                    {{ activity.recordedFor | date:'dd, MMM yyyy' }}
+                  </div>
+                  <kep-card [customClass]="getCardClass(activity)">
+                    <div class="card-body">
+                      <div class="d-flex align-items-top timeline-main-content flex-wrap flex-xl-nowrap mt-0">
+                        <div class="avatar avatar-md me-3 mt-sm-0 mt-4 flex-shrink-0">
+                          <img [alt]="activity.user.username" [src]="activity.user.avatar" class="rounded img-fluid" loading="lazy"/>
+                        </div>
+                        <div class="flex-fill">
+                          <div class="d-flex align-items-center">
+                            <div class="mt-sm-0 mt-2 w-100">
+                              <p class="mb-0 fs-14 fw-semibold">{{ activity.user.username }}</p>
+                              <p class="mb-1 text-muted fs-13 text-uppercase">{{ activity.activityTypeDisplay }}</p>
+                              <user-activity-history-problem-attempt-summary
+                                *ngIf="getActivityType(activity) === 'problem_attempt_summary'"
+                                [activity]="activity as ProblemAttemptSummaryActivity"></user-activity-history-problem-attempt-summary>
+                              <user-activity-history-challenge-summary
+                                *ngIf="getActivityType(activity) === 'challenge_summary'"
+                                [activity]="activity as ChallengeSummaryActivity"></user-activity-history-challenge-summary>
+                              <user-activity-history-project-attempt-summary
+                                *ngIf="getActivityType(activity) === 'project_attempt_summary'"
+                                [activity]="activity as ProjectAttemptSummaryActivity"></user-activity-history-project-attempt-summary>
+                              <user-activity-history-test-pass-summary
+                                *ngIf="getActivityType(activity) === 'test_pass_summary'"
+                                [activity]="activity as TestPassSummaryActivity"></user-activity-history-test-pass-summary>
+                              <user-activity-history-contest-participation
+                                *ngIf="getActivityType(activity) === 'contest_participation'"
+                                [activity]="activity as ContestParticipationActivity"></user-activity-history-contest-participation>
+                              <user-activity-history-arena-participation
+                                *ngIf="getActivityType(activity) === 'arena_participation'"
+                                [activity]="activity as ArenaParticipationActivity"></user-activity-history-arena-participation>
+                              <user-activity-history-daily-activity
+                                *ngIf="getActivityType(activity) === 'daily_activity'"
+                                [activity]="activity as DailyActivityActivity"></user-activity-history-daily-activity>
+                              <user-activity-history-hard-problem-solved
+                                *ngIf="getActivityType(activity) === 'hard_problem_solved'"
+                                [activity]="activity as HardProblemSolvedActivity"></user-activity-history-hard-problem-solved>
+                              <user-activity-history-achievement-unlocked
+                                *ngIf="getActivityType(activity) === 'achievement_unlocked'"
+                                [activity]="activity as AchievementUnlockedActivity"></user-activity-history-achievement-unlocked>
+                              <user-activity-history-daily-task-completed
+                                *ngIf="getActivityType(activity) === 'daily_task_completed'"
+                                [activity]="activity as DailyTaskCompletedActivity"></user-activity-history-daily-task-completed>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </kep-card>
+                </div>
+              </li>
+            </ul>
+            <ng-template #emptyState>
+              <p class="text-center text-muted mb-0 py-4">{{ 'UserActivityHistory.Empty' | translate }}</p>
+            </ng-template>
+
+            <div class="text-center timeline-loadmore-container" *ngIf="hasMore">
+              <button class="btn btn-outline-primary" (click)="loadMore()" [disabled]="loading" type="button">
+                <ng-container *ngIf="!loading; else loadingLabel">
+                  {{ 'UserActivityHistory.More' | translate }}
+                </ng-container>
+              </button>
+            </div>
+            <ng-template #loadingLabel>
+              <span class="d-inline-flex align-items-center gap-2">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                {{ 'UserActivityHistory.Loading' | translate }}
+              </span>
+            </ng-template>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</kep-card>

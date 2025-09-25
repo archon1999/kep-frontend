@@ -806,6 +806,58 @@ export const localeRu = {
   SpendItem7: 'Функция тестирования при редактировании кода (полностью)',
   SpendItem8: 'Двойное изменение рейтинга на контесте (изменяется, даже если отрицательное)',
   SpendItem9: 'Сохранить рейтинг на контесте (не начисляется, если отрицательный)',
+  UserActivityHistory: {
+    Title: 'История активности',
+    Empty: 'Активность пока отсутствует.',
+    More: 'Ещё',
+    Loading: 'Загрузка...',
+    Types: {
+      ProblemAttemptSummary: {
+        Description: 'Решено {{accepted}} из {{total}} задач.'
+      },
+      ChallengeSummary: {
+        Description: 'Сводка по челленджам.',
+        Wins: 'Победы: {{value}}',
+        Draws: 'Ничьи: {{value}}',
+        Losses: 'Поражения: {{value}}'
+      },
+      ProjectAttemptSummary: {
+        Description: 'Проверено {{checked}} из {{total}} попыток по проектам.'
+      },
+      TestPassSummary: {
+        Description: 'Завершено {{completed}} из {{total}} тестов и решено {{solved}} задач.'
+      },
+      ContestParticipation: {
+        Description: 'Участие в {{title}}.',
+        Rank: 'Место: {{rank}}',
+        Rating: '{{before}} → {{after}} рейтинг',
+        RatingChange: 'Δ {{delta}}',
+        Bonus: 'Бонус: {{bonus}}',
+        NoRank: '—'
+      },
+      ArenaParticipation: {
+        Description: 'Участие в арене {{title}}.',
+        Points: 'Очки: {{points}}',
+        Rank: 'Место: {{rank}}',
+        FinishTime: 'Завершено {{time}}'
+      },
+      DailyActivity: {
+        Description: 'Ежедневная активность (+{{value}}).',
+        Note: 'Заметка: {{note}}'
+      },
+      HardProblemSolved: {
+        Description: 'Решена задача {{title}} ({{difficulty}}).',
+        Problem: 'Задача №{{id}}'
+      },
+      AchievementUnlocked: {
+        Description: '{{message}}'
+      },
+      DailyTaskCompleted: {
+        Description: 'Выполнено ежедневное задание ({{type}}).',
+        Task: '{{description}}'
+      }
+    }
+  },
   PageTitle: {
     Home: 'Главная',
     Landing: 'KEP.uz - Платформа для обучения программированию',
