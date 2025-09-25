@@ -10,6 +10,7 @@ import { KepCardComponent } from '@shared/components/kep-card/kep-card.component
 import { ResourceByUsernamePipe } from '@shared/pipes/resource-by-username.pipe';
 import { UserSkillsComponent } from "@users/ui/pages/user-profile/user-skills/user-skills.component";
 import { UserInfoComponent } from "@users/ui/pages/user-profile/user-info/user-info.component";
+import { UserActivityHistoryComponent } from "@users/ui/pages/user-profile/user-activity-history/user-activity-history.component";
 import { User } from "@users/domain";
 
 
@@ -26,6 +27,7 @@ import { User } from "@users/domain";
     NgbCollapseModule,
     UserInfoComponent,
     UserSkillsComponent,
+    UserActivityHistoryComponent,
     KepBadgeComponent,
     UserOnlineStatusComponent,
     SpinnerComponent,

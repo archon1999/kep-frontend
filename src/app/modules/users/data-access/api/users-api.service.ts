@@ -3,7 +3,7 @@ import { ApiService } from '@core/data-access/api.service';
 import { Pageable } from '@core/common/classes/pageable';
 import { Observable } from "rxjs";
 import { PageResult } from "@shared/components/table";
-import { User } from "@users/domain";
+import { User, UserActivityHistoryItem } from "@users/domain";
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +45,10 @@ export class UsersApiService {
 
   getUserWorkExperiences(username: string) {
     return this.api.get(`users/${username}/work-experiences`);
+  }
+
+  getUserActivityHistory(username: string, params?: Partial<Pageable>): Observable<PageResult<UserActivityHistoryItem>> {
+    return this.api.get(`user-activity-history/${username}`, params);
   }
 
   getUserBlog(username: string, params?: Partial<Pageable>) {
