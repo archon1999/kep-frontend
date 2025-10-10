@@ -40,8 +40,12 @@ export default [
     },
     children: [
       {
-        path: '',
+        path: 'ratings',
         loadComponent: () => import('../ui/pages/user-profile/user-ratings/user-ratings.component').then(c => c.UserRatingsComponent),
+      },
+      {
+        path: 'activity-history',
+        loadComponent: () => import('../ui/pages/user-profile/user-activity-history/user-activity-history.component').then(c => c.UserActivityHistoryComponent),
       },
       {
         path: 'blog',

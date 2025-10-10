@@ -60,6 +60,7 @@ export enum Resources {
   Users = '/users',
   UserProfile = `${Users}/user/:username`,
   UserProfileRatings = `${UserProfile}/ratings`,
+  UserProfileActivityHistory = `${UserProfile}/activity-history`,
   UserProfileBlog = `${UserProfile}/blog`,
   UserProfileAchievements = `${UserProfile}/achievements`,
 

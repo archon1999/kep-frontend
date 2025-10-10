@@ -1,9 +1,10 @@
-<kep-card customClass="user-activity-history-card">
-  <div class="card-body">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h5 class="mb-0 fw-semibold">{{ 'UserActivityHistory.Title' | translate }}</h5>
+<kep-card>
+  <div class="card-header">
+    <div class="card-title">
+      {{ 'UserActivityHistory.Title' | translate }}
     </div>
-
+  </div>
+  <div class="card-body">
     <div class="position-relative">
       <div class="d-flex justify-content-center py-4" *ngIf="loading && initialLoad">
         <spinner></spinner>
@@ -13,7 +14,7 @@
         <div class="timeline mb-0">
           <div class="container px-0">
             <ul class="timeline list-unstyled mb-0" *ngIf="activities.length; else emptyState">
-              <li *ngFor="let activity of activities; trackBy: trackById">
+              <li *ngFor="let activity of activities; trackBy: trackById" style="margin-inline-end: 0">
                 <div class="timeline-time text-end">
                   <span class="time d-inline-block">{{ activity.recordedFor | date:'HH:mm' }}</span>
                   <span class="date">{{ activity.recordedFor | date:'EEEE' }}</span>
@@ -28,9 +29,9 @@
                   <kep-card [customClass]="getCardClass(activity)">
                     <div class="card-body">
                       <div class="d-flex align-items-top timeline-main-content flex-wrap flex-xl-nowrap mt-0">
-                        <div class="avatar avatar-md me-3 mt-sm-0 mt-4 flex-shrink-0">
-                          <img [alt]="activity.user.username" [src]="activity.user.avatar" class="rounded img-fluid" loading="lazy"/>
-                        </div>
+<!--                        <div class="avatar avatar-md me-3 mt-sm-0 mt-4 flex-shrink-0">-->
+<!--                          <img [alt]="activity.user.username" [src]="activity.user.avatar" class="rounded img-fluid" loading="lazy"/>-->
+<!--                        </div>-->
                         <div class="flex-fill">
                           <div class="d-flex align-items-center">
                             <div class="mt-sm-0 mt-2 w-100">
@@ -38,34 +39,34 @@
                               <p class="mb-1 text-muted fs-13 text-uppercase">{{ activity.activityTypeDisplay }}</p>
                               <user-activity-history-problem-attempt-summary
                                 *ngIf="getActivityType(activity) === 'problem_attempt_summary'"
-                                [activity]="activity as ProblemAttemptSummaryActivity"></user-activity-history-problem-attempt-summary>
+                                [activity]="activity"></user-activity-history-problem-attempt-summary>
                               <user-activity-history-challenge-summary
                                 *ngIf="getActivityType(activity) === 'challenge_summary'"
-                                [activity]="activity as ChallengeSummaryActivity"></user-activity-history-challenge-summary>
+                                [activity]="activity"></user-activity-history-challenge-summary>
                               <user-activity-history-project-attempt-summary
                                 *ngIf="getActivityType(activity) === 'project_attempt_summary'"
-                                [activity]="activity as ProjectAttemptSummaryActivity"></user-activity-history-project-attempt-summary>
+                                [activity]="activity"></user-activity-history-project-attempt-summary>
                               <user-activity-history-test-pass-summary
                                 *ngIf="getActivityType(activity) === 'test_pass_summary'"
-                                [activity]="activity as TestPassSummaryActivity"></user-activity-history-test-pass-summary>
+                                [activity]="activity"></user-activity-history-test-pass-summary>
                               <user-activity-history-contest-participation
                                 *ngIf="getActivityType(activity) === 'contest_participation'"
-                                [activity]="activity as ContestParticipationActivity"></user-activity-history-contest-participation>
+                                [activity]="activity"></user-activity-history-contest-participation>
                               <user-activity-history-arena-participation
                                 *ngIf="getActivityType(activity) === 'arena_participation'"
-                                [activity]="activity as ArenaParticipationActivity"></user-activity-history-arena-participation>
+                                [activity]="activity"></user-activity-history-arena-participation>
                               <user-activity-history-daily-activity
                                 *ngIf="getActivityType(activity) === 'daily_activity'"
-                                [activity]="activity as DailyActivityActivity"></user-activity-history-daily-activity>
+                                [activity]="activity"></user-activity-history-daily-activity>
                               <user-activity-history-hard-problem-solved
                                 *ngIf="getActivityType(activity) === 'hard_problem_solved'"
-                                [activity]="activity as HardProblemSolvedActivity"></user-activity-history-hard-problem-solved>
+                                [activity]="activity"></user-activity-history-hard-problem-solved>
                               <user-activity-history-achievement-unlocked
                                 *ngIf="getActivityType(activity) === 'achievement_unlocked'"
-                                [activity]="activity as AchievementUnlockedActivity"></user-activity-history-achievement-unlocked>
+                                [activity]="activity"></user-activity-history-achievement-unlocked>
                               <user-activity-history-daily-task-completed
                                 *ngIf="getActivityType(activity) === 'daily_task_completed'"
-                                [activity]="activity as DailyTaskCompletedActivity"></user-activity-history-daily-task-completed>
+                                [activity]="activity"></user-activity-history-daily-task-completed>
                             </div>
                           </div>
                         </div>

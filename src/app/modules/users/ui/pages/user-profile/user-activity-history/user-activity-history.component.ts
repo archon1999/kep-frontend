@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  inject,
+  ChangeDetectorRef, OnInit
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CoreCommonModule } from '@core/common.module';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
@@ -30,6 +38,7 @@ import { UserActivityHistoryDailyActivityComponent } from './components/daily-ac
 import { UserActivityHistoryHardProblemSolvedComponent } from './components/hard-problem-solved.component';
 import { UserActivityHistoryAchievementUnlockedComponent } from './components/achievement-unlocked.component';
 import { UserActivityHistoryDailyTaskCompletedComponent } from './components/daily-task-completed.component';
+import { ActivatedRoute } from "@angular/router";
 
 interface UserActivityHistoryTypeConfig {
   cardClass: string;
@@ -59,13 +68,14 @@ interface UserActivityHistoryTypeConfig {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserActivityHistoryComponent implements OnChanges {
-  @Input() username?: string | null;
+export class UserActivityHistoryComponent implements OnInit {
+  public username: string;
 
   protected activities: UserActivityHistoryItem[] = [];
   protected loading = false;
   protected hasMore = false;
   protected initialLoad = true;
+  protected route = inject(ActivatedRoute);
 
   private readonly usersApi = inject(UsersApiService);
   private readonly pageSize = 10;
@@ -85,13 +95,12 @@ export class UserActivityHistoryComponent implements OnChanges {
     daily_task_completed: { cardClass: 'info', iconLabel: 'DT' },
   };
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['username']) {
-      this.reset();
-      if (this.username) {
-        this.loadActivities();
-      }
-    }
+  private readonly cdr = inject(ChangeDetectorRef);
+
+  ngOnInit() {
+    this.username = this.route.snapshot.parent.params.username;
+    this.reset();
+    this.loadActivities();
   }
 
   protected loadMore(): void {
@@ -129,7 +138,6 @@ export class UserActivityHistoryComponent implements OnChanges {
 
     this.usersApi
       .getUserActivityHistory(this.username, { page: pageToLoad, pageSize: this.pageSize })
-      .pipe(takeUntilDestroyed())
       .subscribe({
         next: (response: PageResult<UserActivityHistoryItem>) => {
           const data = response?.data ?? [];
@@ -158,6 +166,7 @@ export class UserActivityHistoryComponent implements OnChanges {
         complete: () => {
           this.loading = false;
           this.initialLoad = false;
+          this.cdr.detectChanges();
         },
       });
   }

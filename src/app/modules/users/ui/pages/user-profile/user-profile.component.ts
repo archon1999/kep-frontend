@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '@core/common/classes/base.component';
 import { CoreCommonModule } from '@core/common.module';
-import { NgbCollapseModule, NgbProgressbarModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbCollapseModule, NgbNav,
+  NgbNavItem,
+  NgbNavOutlet,
+  NgbProgressbarModule,
+  NgbTooltipModule
+} from '@ng-bootstrap/ng-bootstrap';
 import { NgxCountriesModule } from '@shared/third-part-modules/ngx-countries/ngx-countries.module';
 import { KepBadgeComponent } from '@shared/components/kep-badge/kep-badge.component';
 import { UserOnlineStatusComponent } from '@shared/components/user-online-status/user-online-status.component';
@@ -33,6 +39,9 @@ import { User } from "@users/domain";
     SpinnerComponent,
     KepCardComponent,
     ResourceByUsernamePipe,
+    NgbNavOutlet,
+    NgbNavItem,
+    NgbNav,
   ]
 })
 export class UserProfileComponent extends BaseComponent implements OnInit {
