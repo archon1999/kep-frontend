@@ -11,12 +11,11 @@
       </div>
 
       <div class="d-flex flex-wrap align-items-center justify-content-end gap-2">
-        <div class="form-check form-switch m-0 text-nowrap">
+        <div *ngIf="isAuthenticated" class="form-check form-switch m-0 text-nowrap">
           <input
             (change)="onFollowingToggle($event.target.checked)"
             [checked]="followingOnly"
             class="form-check-input"
-            id="contest-following-only"
             type="checkbox"
           >
           <label class="form-check-label" for="contest-following-only">

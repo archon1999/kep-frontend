@@ -534,7 +534,7 @@ export const localeEn = {
     Registered: 'Registered',
     RegisterIndividual: 'Register as an individual',
     FilterContests: 'Filtering contests',
-    FollowingOnly: 'Following only',
+    FollowingOnly: 'Followers only',
     Participated: 'Participated',
     NotParticipated: 'Did not participated',
     Problems: 'Contest problems',

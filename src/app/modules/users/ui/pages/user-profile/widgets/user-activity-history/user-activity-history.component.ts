@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, OnInit } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CoreCommonModule } from '@core/common.module';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
@@ -48,7 +47,7 @@ interface UserActivityHistoryTypeConfig {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserActivityHistoryComponent implements OnInit {
-  @Input({ required: true }) username: string;
+  @Input({required: true}) username: string;
 
   protected activities: UserActivityHistoryItem[] = [];
   protected loading = false;

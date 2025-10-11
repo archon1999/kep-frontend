@@ -532,7 +532,7 @@ export const localeUz = {
     Registered: 'Roʻyhatdan oʻtilgan',
     RegisterIndividual: 'Individual qatnashchi boʻlib',
     FilterContests: 'Kontestlarni filterlash',
-    FollowingOnly: 'Faqat kuzatayotganlar',
+    FollowingOnly: 'Faqat kuzatuvchilar',
     Participated: 'Qatnashilgan',
     NotParticipated: 'Qatnashilmagan',
     Problems: 'Kontest masalalari',
