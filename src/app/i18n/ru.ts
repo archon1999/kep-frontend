@@ -529,6 +529,7 @@ export const localeRu = {
     Registered: 'Зарегистрирован',
     RegisterIndividual: 'В качестве индивидуального участника',
     FilterContests: 'Фильтрация контестов',
+    FollowingOnly: 'Только отслеживаемые',
     Participated: 'Принял участие',
     NotParticipated: 'Не участвовал',
     Problems: 'Задачи контеста',
