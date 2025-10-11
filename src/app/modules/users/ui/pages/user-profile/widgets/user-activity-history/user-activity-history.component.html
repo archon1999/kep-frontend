@@ -22,7 +22,7 @@
                   <li style="margin-inline-end: 0">
                     <div class="timeline-time text-end">
                       <span class="time d-inline-block">{{ activity.recordedFor | date:'HH:mm' }}</span>
-                      <span class="date">{{ activity.recordedFor | date:'EEEE' }}</span>
+                      <span class="date">{{ activity.recordedFor | localizedDate:'EEEE' }}</span>
                     </div>
 
                     <div class="timeline-icon">
@@ -35,7 +35,7 @@
 
                     <div class="timeline-body">
                       <div class="text-muted fw-medium mb-2">
-                        {{ activity.recordedFor | date:'dd, MMM yyyy' }}
+                        {{ activity.recordedFor | localizedDate }}
                       </div>
 
                       <kep-card [customClass]="getCardClass(activity)">
