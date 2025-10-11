@@ -70,7 +70,7 @@ export class UserActivityHistoryComponent implements OnInit {
     arena_participation: {cardClass: 'primary', icon: 'arena'},
     daily_activity: {cardClass: 'primary', icon: 'todo'},
     hard_problem_solved: {cardClass: 'primary', icon: 'problem'},
-    achievement_unlocked: {cardClass: 'primary', icon: 'achievement'},
+    achievement_unlocked: {cardClass: 'primary', icon: 'todo'},
     daily_task_completed: {cardClass: 'primary', icon: 'todo'},
   };
 
