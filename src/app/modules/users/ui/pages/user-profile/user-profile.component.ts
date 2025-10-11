@@ -48,6 +48,7 @@ export class UserProfileComponent extends BaseLoadComponent<User> {
   public user: User | null = null;
   public toggleMenu = true;
   override loadOnInit = false;
+  public followLoading = false;
 
   private readonly usersApi = inject(UsersApiService);
   private currentUsername: string | null = null;
@@ -71,6 +72,7 @@ export class UserProfileComponent extends BaseLoadComponent<User> {
 
         this.currentUsername = username;
         this.user = null;
+        this.followLoading = false;
         this.loadData();
       });
   }
@@ -82,8 +84,58 @@ export class UserProfileComponent extends BaseLoadComponent<User> {
   }
 
   override afterLoadData(user: User): void {
-    this.user = user;
+    this.user = {
+      ...user,
+      isFollowing: user.isFollowing ?? false,
+    };
+    this.followLoading = false;
     this.currentUsername = user.username;
     this.titleService.updateTitle(this.route, {username: user.username});
+  }
+
+  get canFollow(): boolean {
+    if (!this.user || !this.isAuthenticated) {
+      return false;
+    }
+
+    return this.currentUser?.username !== this.user.username;
+  }
+
+  toggleFollow(): void {
+    if (!this.user || this.followLoading) {
+      return;
+    }
+
+    if (!this.canFollow) {
+      return;
+    }
+
+    const username = this.user.username;
+    const request$ = this.user.isFollowing
+      ? this.usersApi.unfollowUser(username)
+      : this.usersApi.followUser(username);
+
+    this.followLoading = true;
+
+    request$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe({
+        next: () => {
+          if (!this.user) {
+            return;
+          }
+
+          this.user = {
+            ...this.user,
+            isFollowing: !this.user.isFollowing,
+          };
+          this.followLoading = false;
+          this.cdr.markForCheck();
+        },
+        error: () => {
+          this.followLoading = false;
+          this.cdr.markForCheck();
+        }
+      });
   }
 }

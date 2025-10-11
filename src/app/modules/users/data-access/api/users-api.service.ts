@@ -74,6 +74,18 @@ export class UsersApiService {
     return this.api.get(`users/${username}/ratings`);
   }
 
+  getUserFollowers(username: string, params?: Partial<Pageable>) {
+    return this.api.get(`users/${username}/followers`, params);
+  }
+
+  followUser(username: string) {
+    return this.api.post(`users/${username}/follow`);
+  }
+
+  unfollowUser(username: string) {
+    return this.api.post(`users/${username}/unfollow`);
+  }
+
   getMostActiveUsers() {
     return this.api.get('users/most-active-users');
   }
