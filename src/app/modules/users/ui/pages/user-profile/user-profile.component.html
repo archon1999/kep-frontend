@@ -14,17 +14,34 @@
         <span class="avatar avatar-xxl avatar-rounded bg-info">
           <img [src]="user.avatar" alt="">
         </span>
-        <div class="mt-4 mb-3 d-flex align-items-center flex-wrap gap-3 justify-content-between">
-          <div>
-            <h5 class="fw-semibold mb-1">
+        <div class="mt-4 mb-3 d-flex align-items-start flex-column gap-2">
+          <div class="d-flex align-items-center flex-wrap gap-2">
+            <h5 class="fw-semibold mb-1 d-flex align-items-center gap-2">
               {{ user.username }}
               @if (user.streak >= 7) {
                 <kep-badge [streak]="user.streak"></kep-badge>
               }
               <user-online-status [lastSeen]="user.lastSeen" [online]="user.isOnline"></user-online-status>
             </h5>
-            <span class="d-block fw-medium text-muted mb-1">{{ user.firstName }} {{ user.lastName }}</span>
+            @if (canFollow) {
+              <button
+                type="button"
+                class="btn btn-sm btn-icon"
+                [disabled]="followLoading"
+                [ngClass]="user.isFollowing ? 'btn-warning' : 'btn-outline-warning'"
+                (click)="toggleFollow()"
+                [ngbTooltip]="user.isFollowing ? ('Unfollow' | translate) : ('Follow' | translate)"
+                aria-live="polite"
+                [attr.aria-label]="user.isFollowing ? ('Unfollow' | translate) : ('Follow' | translate)">
+                @if (followLoading) {
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                } @else {
+                  <i class="ti" [ngClass]="user.isFollowing ? 'ti-star' : 'ti-star-off'"></i>
+                }
+              </button>
+            }
           </div>
+          <span class="d-block fw-medium text-muted mb-1">{{ user.firstName }} {{ user.lastName }}</span>
         </div>
 
         <ul class="nav nav-pills justify-content-start nav-style-3">

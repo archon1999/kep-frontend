@@ -24,6 +24,10 @@ export default [
         loadComponent: () => import('../ui/pages/user-profile/tabs/ratings-tab/ratings-tab.component').then(c => c.UserRatingsTabComponent),
       },
       {
+        path: 'followers',
+        loadComponent: () => import('../ui/pages/user-profile/widgets/user-followers/user-followers.component').then(c => c.UserFollowersComponent),
+      },
+      {
         path: 'activity-history',
         loadComponent: () => import('../ui/pages/user-profile/tabs/activity-history-tab/activity-history-tab.component').then(c => c.UserActivityHistoryTabComponent),
       },

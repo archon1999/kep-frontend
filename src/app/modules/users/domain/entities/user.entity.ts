@@ -9,6 +9,7 @@ export interface User {
   balls: number;
   isOnline: boolean;
   lastSeen: string;
+  isFollowing: boolean;
   kepcoin: number;
   streak: number;
   maxStreak: number;
