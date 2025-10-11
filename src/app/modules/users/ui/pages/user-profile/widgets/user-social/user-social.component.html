@@ -4,7 +4,7 @@
       <spinner></spinner>
     </div>
   </kep-card>
-} @else if (userSocial && (userSocial.telegram || userSocial.codeforcesHandle || userSocial.github || userSocial.leetcode)) {
+} @else if (userSocial && (userSocial.telegram || userSocial.codeforcesHandle)) {
   <kep-card>
     <div class="card-body">
       <h4 class="mb-3">
@@ -36,24 +36,6 @@
               <img class="ms-1" [src]="userSocial.codeforcesBadge">
             </p>
           </a>
-        </div>
-      }
-      @if (userSocial.github) {
-        <div class="mt-2">
-          <h5 class="mb-50">
-            <i data-feather="github"></i>
-            Github:
-          </h5>
-          <a class="card-text mb-0" href="https://github.com/{{ userSocial.github }}">{{ userSocial.github }}</a>
-        </div>
-      }
-      @if (userSocial.leetcode) {
-        <div class="mt-2">
-          <h5 class="mb-50">
-            <i data-feather="link"></i>
-            LeetCode:
-          </h5>
-          <a class="card-text mb-0" href="https://leetcode.com/{{ userSocial.leetcode }}">{{ userSocial.leetcode }}</a>
         </div>
       }
     </div>

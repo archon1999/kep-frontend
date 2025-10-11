@@ -19,6 +19,7 @@ import { takeUntil } from 'rxjs/operators';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { UserRanksComponent } from './widgets/user-ranks/user-ranks.component';
 import { Resources } from '@app/resources';
+import { UserInfoComponent } from "@users/ui/pages/user-profile/widgets/user-info/user-info.component";
 
 @Component({
   selector: 'app-user-profile',
@@ -40,14 +41,13 @@ import { Resources } from '@app/resources';
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
+    UserInfoComponent,
   ]
 })
 export class UserProfileComponent extends BaseLoadComponent<User> {
   public user: User | null = null;
   public toggleMenu = true;
   override loadOnInit = false;
-
-  protected readonly Resources = Resources;
 
   private readonly usersApi = inject(UsersApiService);
   private currentUsername: string | null = null;

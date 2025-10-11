@@ -213,6 +213,4 @@ export class UserRatingsComponent extends BaseLoadComponent<{userProblemsRating:
         }
       );
   }
-
-  protected readonly Resources = Resources;
 }

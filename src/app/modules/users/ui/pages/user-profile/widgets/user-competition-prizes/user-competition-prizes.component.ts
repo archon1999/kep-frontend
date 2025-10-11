@@ -35,7 +35,7 @@ export class UserCompetitionPrizesComponent extends BaseLoadComponent<UserCompet
     this.isLoading = true;
   }
 
-  override ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if (!changes['username'] || !this.username) {
       return;
     }
