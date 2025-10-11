@@ -8,7 +8,7 @@ import { ApexChartModule } from '@shared/third-part-modules/apex-chart/apex-char
 import { ChartOptions } from '@shared/third-part-modules/apex-chart/chart-options.type';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
-import { UsersApiService } from "@app/modules/users";
+import { UsersApiService } from "@users/index";
 
 @Component({
   selector: 'users-chart-card',

@@ -1,4 +1,13 @@
-import { Route } from '@angular/router';
+import { ActivatedRouteSnapshot, ResolveFn, Route, RouterStateSnapshot } from '@angular/router';
+import { User } from "@users/domain";
+import { UsersApiService } from "@app/modules/users";
+import { inject } from "@angular/core";
+
+export const userResolver: ResolveFn<User> = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+  const usersApiService = inject(UsersApiService);
+  const username = route.paramMap.get('username')!;
+  return usersApiService.getUser(username);
+};
 
 export default [
   {
@@ -10,9 +19,9 @@ export default [
   {
     path: 'user/:username',
     loadComponent: () => import('../ui/pages/user-profile/user-profile.component').then(c => c.UserProfileComponent),
-    data: {
-      animation: 'user',
-      title: 'Users.User',
+    data: {title: 'Users.User'},
+    resolve: {
+      user: userResolver,
     },
     children: [
       {
@@ -25,15 +34,11 @@ export default [
       },
       {
         path: 'followers',
-        loadComponent: () => import('../ui/pages/user-profile/widgets/user-followers/user-followers.component').then(c => c.UserFollowersComponent),
+        loadComponent: () => import('../ui/pages/user-followers/user-followers.component').then(c => c.UserFollowersComponent),
       },
       {
         path: 'activity-history',
         loadComponent: () => import('../ui/pages/user-profile/tabs/activity-history-tab/activity-history-tab.component').then(c => c.UserActivityHistoryTabComponent),
-      },
-      {
-        path: 'blog',
-        loadComponent: () => import('../ui/pages/user-profile/widgets/user-blog/user-blog.component').then(c => c.UserBlogComponent),
       },
       {
         path: 'achievements',

@@ -330,7 +330,7 @@
 }
 
 .apexcharts-subtitle-text {
-  fill: $text-muted;
+  fill: var(--text-muted);
 }
 
 #polararea-basic {
@@ -1333,7 +1333,7 @@ html[data-theme-mode="light"] {
 }
 
 #jvm-markers-labels-group text {
-  fill: $text-muted;
+  fill: var(--text-muted);
 }
 
 /* End::Vector Maps */
@@ -1901,7 +1901,7 @@ canvas {
 }
 
 .select2-selection__clear {
-  color: $text-muted;
+  color: var(--text-muted);
 }
 
 .select2-dropdown {
@@ -2567,7 +2567,7 @@ table.dataTable > tbody > tr.selected > * {
   .swal2-html-container {
     margin: 0rem 1.6rem 0.3rem;
     font-size: 0.8rem;
-    color: $text-muted;
+    color: var(--text-muted);
   }
 
   .swal2-icon.swal2-error [class^="swal2-x-mark-line"][class$="left"] {
@@ -2597,7 +2597,7 @@ table.dataTable > tbody > tr.selected > * {
 
   .swal2-close {
     font-size: 2rem;
-    color: $text-muted;
+    color: var(--text-muted);
     opacity: 0.5;
   }
 

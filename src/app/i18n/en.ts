@@ -617,6 +617,7 @@ export const localeEn = {
     HackathonStarted: 'Hackathon started',
   },
   UserInfo: {
+    PersonalInfo: 'Personal Info',
     About: 'About',
     WasBorn: 'Was born',
     Lives: 'Lives',

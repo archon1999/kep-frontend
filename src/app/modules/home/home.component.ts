@@ -13,7 +13,7 @@ import { ContentHeader } from "@shared/ui/components/content-header/content-head
 import { ContentHeaderModule } from "@shared/ui/components/content-header/content-header.module";
 import { TranslatePipe } from "@ngx-translate/core";
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
-import { UsersChartCardComponent } from "@users/ui/components/users-chart-card/users-chart-card.component";
+import { UsersChartCardComponent } from "@app/modules/home/users-chart-card/users-chart-card.component";
 
 @Component({
   selector: 'app-home',

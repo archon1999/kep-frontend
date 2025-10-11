@@ -118,7 +118,7 @@
 
     .mail-starred {
       i {
-        color: $text-muted;
+        color: var(--text-muted);
         opacity: 0.5;
       }
 
@@ -172,7 +172,7 @@
       font-weight: 500;
 
       div {
-        color: $text-muted;
+        color: var(--text-muted);
       }
 
       &.active {

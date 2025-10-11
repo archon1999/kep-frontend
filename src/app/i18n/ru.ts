@@ -611,6 +611,7 @@ export const localeRu = {
     HackathonStarted: 'Хакатон начался',
   },
   UserInfo: {
+    PersonalInfo: 'Персональная информация',
     About: 'О себе',
     WasBorn: 'Родился',
     Lives: 'Живет',

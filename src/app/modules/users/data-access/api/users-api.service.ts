@@ -83,7 +83,7 @@ export class UsersApiService {
   }
 
   unfollowUser(username: string) {
-    return this.api.post(`users/${username}/unfollow`);
+    return this.api.delete(`users/${username}/follow`);
   }
 
   getMostActiveUsers() {

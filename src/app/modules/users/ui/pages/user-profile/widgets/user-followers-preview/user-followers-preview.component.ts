@@ -13,6 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Observable, combineLatest, of } from 'rxjs';
 import { distinctUntilChanged, filter, map, takeUntil } from 'rxjs/operators';
 import { Resources } from '@app/resources';
+import { UserPopoverModule } from "@shared/components/user-popover/user-popover.module";
 
 @Component({
   selector: 'user-followers-preview',
@@ -25,9 +26,9 @@ import { Resources } from '@app/resources';
     RouterLink,
     ResourceByUsernamePipe,
     TranslateModule,
+    UserPopoverModule,
   ],
   templateUrl: './user-followers-preview.component.html',
-  styleUrls: ['../user-followers/user-followers.component.scss']
 })
 export class UserFollowersPreviewComponent extends BaseLoadComponent<PageResult<User>> {
   public readonly Resources = Resources;

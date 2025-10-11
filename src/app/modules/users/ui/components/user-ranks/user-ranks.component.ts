@@ -1,9 +1,7 @@
 import { Component, inject, Input, ViewEncapsulation } from '@angular/core';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { CoreCommonModule } from '@core/common.module';
-import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
-import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 import { BaseLoadComponent } from "@core/common";
 import { Observable } from "rxjs";
 import { NgxSkeletonLoaderModule } from "ngx-skeleton-loader";
@@ -15,9 +13,7 @@ import { UsersApiService } from "@users/data-access";
   imports: [
     KepIconComponent,
     CoreCommonModule,
-    NgbTooltip,
     KepcoinViewModule,
-    KepCardComponent,
     NgxSkeletonLoaderModule
   ],
   templateUrl: './user-ranks.component.html',

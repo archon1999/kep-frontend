@@ -1,0 +1,16 @@
+@if (canFollow) {
+  <span
+    class="cursor-pointer"
+    (click)="toggleFollow()"
+    [ngbTooltip]="isFollowing ? ('Unfollow' | translate) : ('Follow' | translate)">
+    @if (followLoading) {
+      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    } @else {
+      @if (isFollowing) {
+        <kep-icon name="star" type="solid" color="warning"/>
+      } @else {
+        <kep-icon name="star" color="warning"/>
+      }
+    }
+  </span>
+}

@@ -615,6 +615,7 @@ export const localeUz = {
     HackathonStarted: 'Xakaton boshlandi',
   },
   UserInfo: {
+    PersonalInfo: 'Shaxsiy maʻlumot',
     About: 'Oʻzi haqida',
     WasBorn: 'Tugʻilgan',
     Lives: 'Yashaydi',

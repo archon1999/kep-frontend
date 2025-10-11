@@ -11,7 +11,7 @@ import { KepBadgeComponent } from '@shared/components/kep-badge/kep-badge.compon
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { ResourceByUsernamePipe } from '@shared/pipes/resource-by-username.pipe';
-import { UserRanksComponent } from "@users/ui/pages/user-profile/widgets/user-ranks/user-ranks.component";
+import { UserRanksComponent } from "@users/ui/components/user-ranks/user-ranks.component";
 
 @NgModule({
   declarations: [

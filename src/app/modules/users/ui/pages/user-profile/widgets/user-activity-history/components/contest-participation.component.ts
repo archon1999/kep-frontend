@@ -2,17 +2,20 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { ContestParticipationActivity } from '@users/domain';
+import { Resources } from "@app/resources";
+import { RouterLink } from "@angular/router";
+import { ResourceByIdPipe } from "@shared/pipes/resource-by-id.pipe";
 
 @Component({
   selector: 'user-activity-history-contest-participation',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslateModule, RouterLink, ResourceByIdPipe],
   template: `
-    <p class="mb-0 text-muted fs-14">
+    <a [routerLink]="Resources.ContestStandings | resourceById:activity.payload.contestId" class="mb-0 text-muted fs-13 mt-2">
       {{ 'UserActivityHistory.Types.ContestParticipation.Description' | translate: {
         title: activity.payload.contestTitle
       } }}
-    </p>
+    </a>
     <div class="d-flex flex-wrap gap-2 mt-2">
       <span class="badge bg-primary-transparent fw-medium">
         <ng-container *ngIf="activity.payload.rank !== null && activity.payload.rank !== undefined; else noRank">
@@ -61,4 +64,6 @@ export class UserActivityHistoryContestParticipationComponent {
     }
     return 'bg-secondary-transparent';
   }
+
+  protected readonly Resources = Resources;
 }

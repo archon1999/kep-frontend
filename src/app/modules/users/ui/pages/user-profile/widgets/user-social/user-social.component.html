@@ -1,49 +1,43 @@
-@if (isLoading && !userSocial) {
-  <kep-card>
-    <div class="card-body py-5 text-center">
-      <spinner></spinner>
-    </div>
-  </kep-card>
-} @else if (userSocial && (userSocial.telegram || userSocial.codeforcesHandle)) {
-  <kep-card>
-    <div class="card-body">
-      <h4 class="mb-3">
-        <i data-feather="share-2"></i>
-        {{ 'UserInfo.Social' | translate }}
-      </h4>
-      @if (userSocial.telegram) {
-        <div class="mt-2">
-          <h5 class="mb-50">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/2048px-Telegram_logo.svg.png"
-              height="16" width="16">
-            {{ 'UserInfo.Telegram' | translate }}:
-          </h5>
-          <a class="card-text mb-0" href="https://t.me/{{ userSocial.telegram }}">{{ userSocial.telegram }}</a>
+@if (!isLoading) {
+  @if (userSocial.telegram || userSocial.codeforcesHandle) {
+    <kep-card>
+      <div class="card-header">
+        <div class="card-title">
+          {{ 'Settings.SocialLinks' | translate }}
         </div>
-      }
-      @if (userSocial.codeforcesHandle) {
-        <div class="mt-2">
-          <a href="https://codeforces.com/profile/{{ userSocial.codeforcesHandle }}">
-            <h5 class="mb-50">
-              <img width="16" height="16" src="https://cdn-1.webcatalog.io/catalog/codeforces/codeforces-icon-filled.png">
-              {{ 'UserInfo.Codeforces' | translate }}:
-            </h5>
-            <p class="card-text mb-0">
-              <span class="badge bg-warning">
+      </div>
+
+      <div class="card-body p-0">
+        <ul class="list-group list-group-flush">
+          @if (userSocial.telegram) {
+            <li class="list-group-item p-3">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/2048px-Telegram_logo.svg.png"
+                height="16" width="16">
+              <span class="fw-medium mx-2">{{ 'UserInfo.Telegram' | translate }}:</span>
+              <a class="text-muted mb-0" href="https://t.me/{{ userSocial.telegram }}">
+                {{ userSocial.telegram }}
+                <kep-icon name="exit-right-corner" color="primary" size="small-4" class="ms-1"/>
+              </a>
+            </li>
+          }
+
+          @if (userSocial.codeforcesHandle) {
+            <li class="list-group-item p-3">
+              <img width="16" height="16"
+                   src="https://cdn-1.webcatalog.io/catalog/codeforces/codeforces-icon-filled.png">
+              <span class="fw-medium mx-2">{{ 'UserInfo.Codeforces' | translate }}:</span>
+
+              <a class="text-muted mb-0" href="https://codeforces.com/profile/{{ userSocial.codeforcesHandle }}">
                 {{ userSocial.codeforcesHandle }}
-              </span>
-              <img class="ms-1" [src]="userSocial.codeforcesBadge">
-            </p>
-          </a>
-        </div>
-      }
-    </div>
-  </kep-card>
+                <img class="ms-1" [src]="userSocial.codeforcesBadge">
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+    </kep-card>
+  }
 } @else {
-  <kep-card>
-    <div class="card-body py-5 text-center text-muted">
-      {{ 'NoData' | translate }}
-    </div>
-  </kep-card>
+
 }

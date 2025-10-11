@@ -167,7 +167,7 @@ button {
 .bd-example-ratios .ratio {
   display: inline-block;
   width: 10rem;
-  color: $text-muted;
+  color: var(--text-muted);
   background-color: var(--primary01);
   border: var(--default-border);
   border-radius: $default-radius;
@@ -299,7 +299,7 @@ button {
 }
 
 .figure-caption {
-  color: $text-muted;
+  color: var(--text-muted);
 }
 
 /* End:: Images & Figures */
@@ -1056,7 +1056,7 @@ button {
 }
 
 .apexcharts-title-text {
-  fill: $text-muted;
+  fill: var(--text-muted);
 }
 
 /* Start::Dashboard Apex Charts  */
@@ -1541,13 +1541,13 @@ button {
   line-height: 1rem;
   font-size: 0.6rem;
   margin-bottom: 0;
-  color: $text-muted;
+  color: var(--text-muted);
 }
 
 .timeline .timeline-time .time {
   line-height: 1.5rem;
   font-size: 1.125rem;
-  color: $text-muted;
+  color: var(--text-muted);
 }
 
 .timeline .timeline-icon {
@@ -1571,7 +1571,7 @@ button {
 }
 
 .timeline .timeline-body {
-  box-shadow: 0 1px 1rem rgba(0, 0, 0, 0.05);
+  // box-shadow: 0 1px 1rem rgba(0, 0, 0, 0.05);
   margin-inline-start: 15%;
   margin-inline-end: 15%;
   position: relative;
@@ -1666,7 +1666,7 @@ button {
     font-size: 0.688rem;
     margin-inline-start: 0.313rem;
     margin-inline-end: 0.625rem;
-    color: $text-muted;
+    color: var(--text-muted);
   }
 }
 
@@ -1763,7 +1763,7 @@ button {
 
   .filepond--root .filepond--drop-label {
     label {
-      color: $text-muted;
+      color: var(--text-muted);
     }
   }
 }

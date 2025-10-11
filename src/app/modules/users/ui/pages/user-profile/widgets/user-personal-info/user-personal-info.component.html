@@ -1,0 +1,70 @@
+@if (isLoading) {
+  <kep-card>
+    <div class="card-body">
+      <ngx-skeleton-loader
+        count="5"
+        animation="pulse"
+        appearance="line"
+        [theme]="{height: '25px', background: 'var(--skeleton-color)'}"
+      ></ngx-skeleton-loader>
+    </div>
+  </kep-card>
+} @else {
+  <kep-card>
+    <div class="card-header">
+      <div class="card-title pb-2">
+        {{ 'UserInfo.PersonalInfo' | translate }}
+      </div>
+    </div>
+
+    <div class="card-body p-0">
+      <ul class="list-group list-group-flush">
+        @if (data.user.firstName || data.user.lastName) {
+          <li class="list-group-item p-3">
+            <span class="fw-medium me-2">{{ 'FullName' | translate }}:</span>
+            <span class="text-muted">{{ data.user.firstName }} {{ data.user.lastName }}</span>
+          </li>
+        }
+
+        @if (data.userInfo.dateOfBirth) {
+          <li class="list-group-item p-3">
+            <span class="fw-medium me-2">{{ 'UserInfo.WasBorn' | translate }}:</span>
+            <span class="text-muted">{{ data.userInfo.dateOfBirth | localizedDate }}</span>
+          </li>
+        }
+
+        @if (data.userInfo.country || data.userInfo.region) {
+          <li class="list-group-item p-3">
+            <span class="fw-medium me-2">{{ 'UserInfo.Lives' | translate }}:</span>
+            <span class="text-muted">
+              <span class="me-1 fi fi-{{ data.userInfo.country }}"></span>
+              {{ data.userInfo.country | countryName }}
+              <span *ngIf="data.userInfo.region">- {{ data.userInfo.region }}</span>
+            </span>
+          </li>
+        }
+
+        @if (data.userInfo.email) {
+          <li class="list-group-item p-3">
+            <span class="fw-medium me-2">{{ 'UserInfo.Email' | translate }}:</span>
+            <span class="text-muted">{{ data.userInfo.email }}</span>
+          </li>
+        }
+
+        @if (data.userInfo.website) {
+          <li class="list-group-item p-3">
+            <span class="fw-medium me-2">{{ 'UserInfo.Website' | translate }}:</span>
+            <span class="text-muted">{{ data.userInfo.website }}</span>
+          </li>
+        }
+
+        @if (data.userInfo.dateJoined) {
+          <li class="list-group-item p-3">
+            <span class="fw-medium me-2">{{ 'UserInfo.Joined' | translate }}:</span>
+            <span class="text-muted">{{ data.userInfo.dateJoined | localizedDate }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+  </kep-card>
+}

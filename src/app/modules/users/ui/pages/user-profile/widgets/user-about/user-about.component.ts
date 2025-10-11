@@ -1,28 +1,53 @@
-import { Component } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserInfoComponent } from '../user-info/user-info.component';
-import { UserSkillsComponent } from '../user-skills/user-skills.component';
-import { UserTechnologiesComponent } from '../user-technologies/user-technologies.component';
-import { UserEducationsComponent } from '../user-educations/user-educations.component';
-import { UserWorkExperiencesComponent } from '../user-work-experiences/user-work-experiences.component';
-import { UserSocialComponent } from '../user-social/user-social.component';
-import { UserFollowersPreviewComponent } from '../user-followers-preview/user-followers-preview.component';
+import {
+  UserEducation,
+  UserInfo,
+  UsersApiService,
+  UserSkills,
+  UserTechnology,
+  UserWorkExperience
+} from "@app/modules/users";
+import { forkJoin, Observable } from "rxjs";
+import { BaseLoadComponent } from "@core/common";
+import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { TranslatePipe } from "@ngx-translate/core";
+import { NgbProgressbar } from "@ng-bootstrap/ng-bootstrap";
+import { NgxSkeletonLoaderModule } from "ngx-skeleton-loader";
+
+type UserAbout = {
+  userInfo: UserInfo;
+  userEducations: UserEducation[],
+  userWorkExperiences: UserWorkExperience[],
+  userSkills: UserSkills;
+  userTechnologies: UserTechnology[],
+}
 
 @Component({
   selector: 'user-about',
   standalone: true,
   imports: [
     CommonModule,
-    UserInfoComponent,
-    UserSkillsComponent,
-    UserTechnologiesComponent,
-    UserEducationsComponent,
-    UserWorkExperiencesComponent,
-    UserSocialComponent,
-    UserFollowersPreviewComponent,
+    KepCardComponent,
+    TranslatePipe,
+    NgbProgressbar,
+    NgxSkeletonLoaderModule,
   ],
   templateUrl: './user-about.component.html',
   styleUrl: './user-about.component.scss'
 })
-export class UserAboutComponent {
+export class UserAboutComponent extends BaseLoadComponent<UserAbout> {
+  @Input({required: true}) username: string;
+
+  private readonly usersService = inject(UsersApiService);
+
+  getData(): Observable<UserAbout> {
+    return forkJoin({
+      userInfo: this.usersService.getUserInfo(this.username),
+      userEducations: this.usersService.getUserEducations(this.username),
+      userWorkExperiences: this.usersService.getUserWorkExperiences(this.username),
+      userSkills: this.usersService.getUserSkills(this.username),
+      userTechnologies: this.usersService.getUserTechnologies(this.username),
+    });
+  }
 }

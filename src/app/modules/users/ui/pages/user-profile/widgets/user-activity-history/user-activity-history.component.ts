@@ -1,29 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  ChangeDetectorRef, OnInit
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CoreCommonModule } from '@core/common.module';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { UsersApiService } from '@app/modules/users';
-import {
-  AchievementUnlockedActivity,
-  ArenaParticipationActivity,
-  ChallengeSummaryActivity,
-  DailyActivityActivity,
-  DailyTaskCompletedActivity,
-  HardProblemSolvedActivity,
-  ProblemAttemptSummaryActivity,
-  ProjectAttemptSummaryActivity,
-  TestPassSummaryActivity,
-  ContestParticipationActivity,
-  UserActivityHistoryItem,
-  UserActivityHistoryType,
-} from '@users/domain';
+import { UserActivityHistoryItem, UserActivityHistoryType, } from '@users/domain';
 import { PageResult } from '@core/common/classes/page-result';
 import { UserActivityHistoryProblemAttemptSummaryComponent } from './components/problem-attempt-summary.component';
 import { UserActivityHistoryChallengeSummaryComponent } from './components/challenge-summary.component';
@@ -36,12 +18,10 @@ import { UserActivityHistoryHardProblemSolvedComponent } from './components/hard
 import { UserActivityHistoryAchievementUnlockedComponent } from './components/achievement-unlocked.component';
 import { UserActivityHistoryDailyTaskCompletedComponent } from './components/daily-task-completed.component';
 import { ActivatedRoute } from '@angular/router';
-import { combineLatest, of } from 'rxjs';
-import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 
 interface UserActivityHistoryTypeConfig {
   cardClass: string;
-  iconLabel: string;
+  icon: string;
 }
 
 @Component({
@@ -68,7 +48,7 @@ interface UserActivityHistoryTypeConfig {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserActivityHistoryComponent implements OnInit {
-  public username = '';
+  @Input({ required: true }) username: string;
 
   protected activities: UserActivityHistoryItem[] = [];
   protected loading = false;
@@ -82,39 +62,23 @@ export class UserActivityHistoryComponent implements OnInit {
   private totalPages = 0;
 
   private readonly typeConfig: Record<UserActivityHistoryType, UserActivityHistoryTypeConfig> = {
-    problem_attempt_summary: { cardClass: 'primary', iconLabel: 'PS' },
-    challenge_summary: { cardClass: 'secondary', iconLabel: 'CH' },
-    project_attempt_summary: { cardClass: 'info', iconLabel: 'PR' },
-    test_pass_summary: { cardClass: 'success', iconLabel: 'TS' },
-    contest_participation: { cardClass: 'warning', iconLabel: 'CT' },
-    arena_participation: { cardClass: 'danger', iconLabel: 'AR' },
-    daily_activity: { cardClass: 'primary', iconLabel: 'DA' },
-    hard_problem_solved: { cardClass: 'success', iconLabel: 'HP' },
-    achievement_unlocked: { cardClass: 'warning', iconLabel: 'AC' },
-    daily_task_completed: { cardClass: 'info', iconLabel: 'DT' },
+    problem_attempt_summary: {cardClass: 'primary', icon: 'problem'},
+    challenge_summary: {cardClass: 'primary', icon: 'challenge'},
+    project_attempt_summary: {cardClass: 'primary', icon: 'project'},
+    test_pass_summary: {cardClass: 'primary', icon: 'test'},
+    contest_participation: {cardClass: 'primary', icon: 'contest'},
+    arena_participation: {cardClass: 'primary', icon: 'arena'},
+    daily_activity: {cardClass: 'primary', icon: 'todo'},
+    hard_problem_solved: {cardClass: 'primary', icon: 'problem'},
+    achievement_unlocked: {cardClass: 'primary', icon: 'achievement'},
+    daily_task_completed: {cardClass: 'primary', icon: 'todo'},
   };
 
   private readonly cdr = inject(ChangeDetectorRef);
 
   ngOnInit() {
-    const parentParams$ = this.route.parent?.params ?? of({});
-
-    combineLatest([this.route.params, parentParams$])
-      .pipe(
-        map(([params, parentParams]) => params?.['username'] ?? parentParams?.['username']),
-        filter((username): username is string => !!username),
-        distinctUntilChanged(),
-        takeUntilDestroyed(),
-      )
-      .subscribe(username => {
-        if (username === this.username && !this.initialLoad) {
-          return;
-        }
-
-        this.username = username;
-        this.reset();
-        this.loadActivities();
-      });
+    this.reset();
+    this.loadActivities();
   }
 
   protected loadMore(): void {
@@ -125,16 +89,12 @@ export class UserActivityHistoryComponent implements OnInit {
     this.loadActivities();
   }
 
-  protected trackById(_: number, activity: UserActivityHistoryItem): number {
-    return activity.id;
-  }
-
   protected getCardClass(activity: UserActivityHistoryItem): string {
     return `mt-0 ${this.typeConfig[activity.activityType]?.cardClass ?? 'primary'}`;
   }
 
   protected getIconLabel(activity: UserActivityHistoryItem): string {
-    return this.typeConfig[activity.activityType]?.iconLabel ?? this.buildAbbreviation(activity.activityTypeDisplay);
+    return this.typeConfig[activity.activityType]?.icon ?? this.buildAbbreviation(activity.activityTypeDisplay);
   }
 
   protected getActivityType(activity: UserActivityHistoryItem): UserActivityHistoryType {
@@ -151,39 +111,29 @@ export class UserActivityHistoryComponent implements OnInit {
     this.loading = true;
 
     this.usersApi
-      .getUserActivityHistory(this.username, { page: pageToLoad, pageSize: this.pageSize })
-      .pipe(takeUntilDestroyed())
-      .subscribe({
-        next: (response: PageResult<UserActivityHistoryItem>) => {
-          const data = response?.data ?? [];
-          this.activities = [...this.activities, ...data];
+      .getUserActivityHistory(this.username, {page: pageToLoad, pageSize: this.pageSize})
+      .subscribe((response: PageResult<UserActivityHistoryItem>) => {
+        const data = response?.data ?? [];
+        this.activities = [...this.activities, ...data];
 
-          if (response?.pagesCount) {
-            this.totalPages = response.pagesCount;
-          } else if (response?.total !== undefined && response?.pageSize) {
-            this.totalPages = Math.max(1, Math.ceil(response.total / response.pageSize));
-          }
+        if (response?.pagesCount) {
+          this.totalPages = response.pagesCount;
+        } else if (response?.total !== undefined && response?.pageSize) {
+          this.totalPages = Math.max(1, Math.ceil(response.total / response.pageSize));
+        }
 
-          const currentPage = response?.page ?? pageToLoad;
-          this.nextPage = currentPage + 1;
+        const currentPage = response?.page ?? pageToLoad;
+        this.nextPage = currentPage + 1;
 
-          if (this.totalPages > 0) {
-            this.hasMore = this.nextPage <= this.totalPages;
-          } else {
-            this.hasMore = data.length === this.pageSize;
-          }
-        },
-        error: () => {
-          this.loading = false;
-          this.hasMore = false;
-          this.initialLoad = false;
-          this.cdr.detectChanges();
-        },
-        complete: () => {
-          this.loading = false;
-          this.initialLoad = false;
-          this.cdr.detectChanges();
-        },
+        if (this.totalPages > 0) {
+          this.hasMore = this.nextPage <= this.totalPages;
+        } else {
+          this.hasMore = data.length === this.pageSize;
+        }
+        this.cdr.detectChanges();
+        this.loading = false;
+        this.initialLoad = false;
+        this.cdr.detectChanges();
       });
   }
 
