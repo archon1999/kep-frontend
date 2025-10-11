@@ -145,6 +145,7 @@ export const localeEn = {
   NoNotifications: 'No notifications',
   New: 'New',
   Notifications: 'Notifications',
+  NotificationInformationTitle: 'Information',
   Copy: 'Copy',
   ArenaPauseText: 'Get started',
   ArenaStartText: 'You are participating. Wait for the next challenge!',
