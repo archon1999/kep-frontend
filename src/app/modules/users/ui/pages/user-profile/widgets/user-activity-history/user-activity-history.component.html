@@ -1,0 +1,117 @@
+<kep-card>
+  <div class="card-header">
+    <div class="card-title">
+      {{ 'UserActivityHistory.Title' | translate }}
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="position-relative">
+      @if (loading && initialLoad) {
+        <div class="d-flex justify-content-center py-4" [style.height.px]="400">
+          <spinner></spinner>
+        </div>
+      }
+
+      @if (!initialLoad || activities.length) {
+        <div class="timeline mb-0">
+          <div class="container px-0">
+            @if (activities.length) {
+              <ul class="timeline list-unstyled mb-0">
+                @for (activity of activities; track activity) {
+                  <li style="margin-inline-end: 0">
+                    <div class="timeline-time text-end">
+                      <span class="time d-inline-block">{{ activity.recordedFor | date:'HH:mm' }}</span>
+                      <span class="date">{{ activity.recordedFor | date:'EEEE' }}</span>
+                    </div>
+
+                    <div class="timeline-icon">
+                      <a class="timeline-icon-label" style="vertical-align: center">
+                        <div style="margin-top: 7%; margin-left: 4%">
+                          <kep-icon size="small-4" class="" color="primary" [name]="getIconLabel(activity)"></kep-icon>
+                        </div>
+                      </a>
+                    </div>
+
+                    <div class="timeline-body">
+                      <div class="text-muted fw-medium mb-2">
+                        {{ activity.recordedFor | date:'dd, MMM yyyy' }}
+                      </div>
+
+                      <kep-card [customClass]="getCardClass(activity)">
+                        <div class="card-body">
+                          <div class="d-flex align-items-top timeline-main-content flex-wrap flex-xl-nowrap mt-0">
+                            <div class="flex-fill">
+                              <div class="d-flex align-items-center">
+                                <div class="mt-sm-0 mt-2 w-100">
+                                  <p class="mb-0 fs-14 fw-semibold">{{ activity.user.username }}</p>
+<!--                                  <p class="mb-1 text-muted fs-13 text-uppercase">{{ activity.activityTypeDisplay }}</p>-->
+
+                                  @switch (getActivityType(activity)) {
+                                    @case ('problem_attempt_summary') {
+                                      <user-activity-history-problem-attempt-summary [activity]="activity"/>
+                                    }
+                                    @case ('challenge_summary') {
+                                      <user-activity-history-challenge-summary [activity]="activity"/>
+                                    }
+                                    @case ('project_attempt_summary') {
+                                      <user-activity-history-project-attempt-summary [activity]="activity"/>
+                                    }
+                                    @case ('test_pass_summary') {
+                                      <user-activity-history-test-pass-summary [activity]="activity"/>
+                                    }
+                                    @case ('contest_participation') {
+                                      <user-activity-history-contest-participation [activity]="activity"/>
+                                    }
+                                    @case ('arena_participation') {
+                                      <user-activity-history-arena-participation [activity]="activity"/>
+                                    }
+                                    @case ('daily_activity') {
+                                      <user-activity-history-daily-activity [activity]="activity"/>
+                                    }
+                                    @case ('hard_problem_solved') {
+                                      <user-activity-history-hard-problem-solved [activity]="activity"/>
+                                    }
+                                    @case ('achievement_unlocked') {
+                                      <user-activity-history-achievement-unlocked [activity]="activity"/>
+                                    }
+                                    @case ('daily_task_completed') {
+                                      <user-activity-history-daily-task-completed [activity]="activity"/>
+                                    }
+                                  }
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </kep-card>
+                    </div>
+                  </li>
+                }
+              </ul>
+            } @else {
+              <p class="text-center text-muted mb-0 py-4">
+                {{ 'UserActivityHistory.Empty' | translate }}
+              </p>
+            }
+
+            @if (hasMore) {
+              <div class="text-center timeline-loadmore-container">
+                <button class="btn btn-outline-primary" (click)="loadMore()" [disabled]="loading" type="button">
+                  @if (!loading) {
+                    {{ 'UserActivityHistory.More' | translate }}
+                  } @else {
+                    <span class="d-inline-flex align-items-center gap-2">
+                      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      {{ 'UserActivityHistory.Loading' | translate }}
+                    </span>
+                  }
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</kep-card>

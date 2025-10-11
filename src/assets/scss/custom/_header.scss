@@ -206,7 +206,7 @@
     list-style-type: none;
     font-size: 0.75rem;
     font-weight: 400;
-    color: $text-muted;
+    color: var(--text-muted);
     padding-inline-end: 0.938rem;
   }
 
@@ -220,7 +220,7 @@
       width: 1px;
       inset-block-start: 0.25rem;
       height: 0.625rem;
-      background-color: $text-muted;
+      background-color: var(--text-muted);
       opacity: 0.1;
     }
   }
@@ -255,7 +255,7 @@
     border-radius: 0.25rem;
 
     i {
-      color: $text-muted;
+      color: var(--text-muted);
     }
   }
 }
@@ -282,7 +282,7 @@
   position: absolute;
   top: 1.25rem;
   inset-inline-end: 1.25rem;
-  color: $text-muted;
+  color: var(--text-muted);
 }
 
 .header-profile-img {
@@ -501,7 +501,7 @@
   cursor: pointer;
   height: 0.075rem;
   width: 0.75rem;
-  background: $text-muted;
+  background: var(--text-muted);
   position: absolute;
   display: block;
   content: "";
@@ -528,7 +528,7 @@
   cursor: pointer;
   height: 0.075rem;
   width: 1rem;
-  background: $text-muted;
+  background: var(--text-muted);
   position: absolute;
   display: block;
   content: "";

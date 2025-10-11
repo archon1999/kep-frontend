@@ -3,7 +3,7 @@ import { ApiService } from '@core/data-access/api.service';
 import { Pageable } from '@core/common/classes/pageable';
 import { Observable } from "rxjs";
 import { PageResult } from "@shared/components/table";
-import { User } from "@users/domain";
+import { User, UserActivityHistoryItem } from "@users/domain";
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +47,10 @@ export class UsersApiService {
     return this.api.get(`users/${username}/work-experiences`);
   }
 
+  getUserActivityHistory(username: string, params?: Partial<Pageable>): Observable<PageResult<UserActivityHistoryItem>> {
+    return this.api.get(`user-activity-history/${username}`, params);
+  }
+
   getUserBlog(username: string, params?: Partial<Pageable>) {
     return this.api.get('blog/', {
       author: username,
@@ -68,6 +72,18 @@ export class UsersApiService {
 
   getUserRatings(username: string) {
     return this.api.get(`users/${username}/ratings`);
+  }
+
+  getUserFollowers(username: string, params?: Partial<Pageable>) {
+    return this.api.get(`users/${username}/followers`, params);
+  }
+
+  followUser(username: string) {
+    return this.api.post(`users/${username}/follow`);
+  }
+
+  unfollowUser(username: string) {
+    return this.api.delete(`users/${username}/follow`);
   }
 
   getMostActiveUsers() {

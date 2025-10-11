@@ -24,7 +24,7 @@
 }
 
 .breadcrumb-item + .breadcrumb-item::before {
-  color: $text-muted;
+  color: var(--text-muted);
 }
 
 .embedded-breadcrumb:before {

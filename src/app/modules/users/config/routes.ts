@@ -1,16 +1,13 @@
-import {
-  UserChallengesRatingResolver,
-  UserContestsRatingResolver,
-  UserEducationsResolver,
-  UserInfoResolver,
-  UserProblemsRatingResolver,
-  UserResolver,
-  UserSkillsResolver,
-  UserSocialResolver,
-  UserTechnologiesResolver,
-  UserWorkExperiencesResolver
-} from '@users/ui/users.resolver';
-import { Route } from '@angular/router';
+import { ActivatedRouteSnapshot, ResolveFn, Route, RouterStateSnapshot } from '@angular/router';
+import { User } from "@users/domain";
+import { UsersApiService } from "@app/modules/users";
+import { inject } from "@angular/core";
+
+export const userResolver: ResolveFn<User> = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+  const usersApiService = inject(UsersApiService);
+  const username = route.paramMap.get('username')!;
+  return usersApiService.getUser(username);
+};
 
 export default [
   {
@@ -22,34 +19,30 @@ export default [
   {
     path: 'user/:username',
     loadComponent: () => import('../ui/pages/user-profile/user-profile.component').then(c => c.UserProfileComponent),
-    data: {
-      animation: 'user',
-      title: 'Users.User',
-    },
+    data: {title: 'Users.User'},
     resolve: {
-      user: UserResolver,
-      userInfo: UserInfoResolver,
-      userSocial: UserSocialResolver,
-      userTechnologies: UserTechnologiesResolver,
-      userEducations: UserEducationsResolver,
-      userWorkExperiences: UserWorkExperiencesResolver,
-      userSkills: UserSkillsResolver,
-      userContestsRating: UserContestsRatingResolver,
-      userProblemsRating: UserProblemsRatingResolver,
-      userChallengesRating: UserChallengesRatingResolver,
+      user: userResolver,
     },
     children: [
       {
         path: '',
-        loadComponent: () => import('../ui/pages/user-profile/user-ratings/user-ratings.component').then(c => c.UserRatingsComponent),
+        loadComponent: () => import('../ui/pages/user-profile/tabs/about-tab/about-tab.component').then(c => c.UserAboutTabComponent),
       },
       {
-        path: 'blog',
-        loadComponent: () => import('../ui/pages/user-profile/user-blog/user-blog.component').then(c => c.UserBlogComponent),
+        path: 'ratings',
+        loadComponent: () => import('../ui/pages/user-profile/tabs/ratings-tab/ratings-tab.component').then(c => c.UserRatingsTabComponent),
+      },
+      {
+        path: 'followers',
+        loadComponent: () => import('../ui/pages/user-followers/user-followers.component').then(c => c.UserFollowersComponent),
+      },
+      {
+        path: 'activity-history',
+        loadComponent: () => import('../ui/pages/user-profile/tabs/activity-history-tab/activity-history-tab.component').then(c => c.UserActivityHistoryTabComponent),
       },
       {
         path: 'achievements',
-        loadComponent: () => import('../ui/pages/user-profile/user-achievements/user-achievements.component').then(c => c.UserAchievementsComponent),
+        loadComponent: () => import('../ui/pages/user-profile/tabs/achievements-tab/achievements-tab.component').then(c => c.UserAchievementsTabComponent),
       },
     ]
   },

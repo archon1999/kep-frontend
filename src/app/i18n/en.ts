@@ -175,6 +175,9 @@ export const localeEn = {
   Edit: 'Edit',
   NewUsers: 'New users',
   Online: 'Online',
+  Followers: 'Followers',
+  Follow: 'Follow',
+  Unfollow: 'Unfollow',
   Username: 'Username',
   Password: 'Password',
   or: 'or',
@@ -531,6 +534,7 @@ export const localeEn = {
     Registered: 'Registered',
     RegisterIndividual: 'Register as an individual',
     FilterContests: 'Filtering contests',
+    FollowingOnly: 'Followers only',
     Participated: 'Participated',
     NotParticipated: 'Did not participated',
     Problems: 'Contest problems',
@@ -617,6 +621,7 @@ export const localeEn = {
     HackathonStarted: 'Hackathon started',
   },
   UserInfo: {
+    PersonalInfo: 'Personal Info',
     About: 'About',
     WasBorn: 'Was born',
     Lives: 'Lives',
@@ -813,6 +818,58 @@ export const localeEn = {
   SpendItem7: 'Test function when editing code (completely)',
   SpendItem8: 'Double rating change in contest (even if negative, it doubles)',
   SpendItem9: 'Maintain rating in contest (not given if negative)',
+  UserActivityHistory: {
+    Title: 'Activity history',
+    Empty: 'There is no activity to display yet.',
+    More: 'More',
+    Loading: 'Loading...',
+    Types: {
+      ProblemAttemptSummary: {
+        Description: 'Solved {{accepted}} out of {{total}} problems.'
+      },
+      ChallengeSummary: {
+        Description: 'Challenge results summary.',
+        Wins: 'Wins: {{value}}',
+        Draws: 'Draws: {{value}}',
+        Losses: 'Losses: {{value}}'
+      },
+      ProjectAttemptSummary: {
+        Description: 'Checked {{checked}} of {{total}} project attempts.'
+      },
+      TestPassSummary: {
+        Description: 'Completed {{completed}} of {{total}} tests and solved {{solved}} tasks.'
+      },
+      ContestParticipation: {
+        Description: 'Participated in {{title}}.',
+        Rank: 'Rank: {{rank}}',
+        Rating: '{{before}} → {{after}} rating',
+        RatingChange: 'Δ {{delta}}',
+        Bonus: 'Bonus: {{bonus}}',
+        NoRank: 'N/A'
+      },
+      ArenaParticipation: {
+        Description: 'Joined arena {{title}}.',
+        Points: 'Points: {{points}}',
+        Rank: 'Rank: {{rank}}',
+        FinishTime: 'Finished at {{time}}'
+      },
+      DailyActivity: {
+        Description: 'Logged daily activity (+{{value}}).',
+        Note: 'Note: {{note}}'
+      },
+      HardProblemSolved: {
+        Description: 'Solved {{title}} ({{difficulty}}).',
+        Problem: 'Problem #{{id}}'
+      },
+      AchievementUnlocked: {
+        Description: '{{message}}'
+      },
+      DailyTaskCompleted: {
+        Description: 'Completed daily task ({{type}}).',
+        Task: '{{description}}'
+      }
+    }
+  },
   PageTitle: {
     Home: 'Home',
     Landing: 'KEP.uz - A platform for learning programming',

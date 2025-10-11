@@ -1,0 +1,41 @@
+@if (!isLoading && total) {
+  <kep-card>
+    <div class="card-header d-flex align-items-center justify-content-between">
+      <h5 class="card-title mb-0">{{ 'Followers' | translate }}</h5>
+      @if (total > 0) {
+        <span class="badge bg-primary-transparent text-primary fw-semibold">{{ total }}</span>
+      }
+    </div>
+    <div class="card-body p-0">
+      @if (isLoading && followers.length === 0) {
+        <div class="py-5 text-center">
+          <spinner></spinner>
+        </div>
+      } @else if (followers.length > 0) {
+        <ul class="followers-list list-unstyled mb-0">
+          @for (follower of followers; track follower.username) {
+            <li class="follower-item d-flex align-items-center gap-3 px-4 py-3">
+              <span class="avatar avatar-md avatar-rounded bg-light followers-avatar">
+                <img [src]="follower.avatar" alt="{{ follower.username }} avatar">
+              </span>
+              <div class="flex-grow-1">
+                <user-popover [username]="follower.username"/>
+                <div class="text-muted small">{{ follower.firstName }} {{ follower.lastName }}</div>
+              </div>
+            </li>
+          }
+        </ul>
+      } @else {
+        <empty-result></empty-result>
+      }
+    </div>
+    @if (canViewAll && username) {
+      <div class="card-footer border-top-0 pt-0 text-end">
+        <a class="btn btn-sm btn-primary"
+           [routerLink]="[Resources.UserProfileFollowers | resourceByUsername:username]">
+          View all followers
+        </a>
+      </div>
+    }
+  </kep-card>
+}

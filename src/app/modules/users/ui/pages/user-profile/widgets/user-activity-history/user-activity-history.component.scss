@@ -1,0 +1,38 @@
+:host {
+  display: block;
+}
+
+.user-activity-history-card {
+  margin-bottom: 1.5rem;
+}
+
+.timeline-icon-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.timeline .timeline-body kep-card {
+  display: block;
+}
+
+.timeline .timeline-body .card-body {
+  padding: 1.25rem;
+}
+
+.timeline .avatar img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+}
+
+.timeline .timeline-body .text-muted {
+  color: var(--text-muted) !important;
+}
+
+.timeline-loadmore-container button[disabled] {
+  cursor: not-allowed;
+}

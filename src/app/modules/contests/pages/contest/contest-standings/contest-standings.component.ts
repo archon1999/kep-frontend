@@ -52,6 +52,7 @@ export class ContestStandingsComponent extends BaseTablePageComponent<Contestant
   public firstLoad = true;
   public contestFilters = [];
   public selectedFilter: number;
+  public followingOnly = false;
 
   constructor(
     public service: ContestsService,
@@ -88,17 +89,19 @@ export class ContestStandingsComponent extends BaseTablePageComponent<Contestant
   }
 
   getPage() {
+    const params = this.buildContestantsParams();
+
     if (this.isAuthenticated &&
       this.pageNumber === this.defaultPageNumber &&
       this.pageSize === this.defaultPageSize &&
       this.firstLoad) {
       this.firstLoad = false;
-      return this.service.getNewContestants(this.contest.id, {filter: this.selectedFilter});
+      return this.service.getNewContestants(this.contest.id, params);
     }
     this.firstLoad = false;
     return this.service.getNewContestants(this.contest.id, {
       ...this.pageable,
-      filter: this.selectedFilter,
+      ...params,
     });
   }
 
@@ -110,8 +113,26 @@ export class ContestStandingsComponent extends BaseTablePageComponent<Contestant
     );
   }
 
+  onFollowingToggle(checked: boolean) {
+    this.followingOnly = checked;
+    this.pageNumber = 1;
+    this.reloadPage();
+  }
+
   filterChange() {
     this.pageNumber = 1;
     this.reloadPage();
+  }
+
+  private buildContestantsParams() {
+    const params: Record<string, any> = {
+      filter: this.selectedFilter,
+    };
+
+    if (this.followingOnly) {
+      params.following = true;
+    }
+
+    return params;
   }
 }

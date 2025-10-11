@@ -239,7 +239,7 @@
 
   .form-check-input:checked + .form-check-label {
     text-decoration: line-through;
-    color: $text-muted;
+    color: var(--text-muted);
   }
 }
 

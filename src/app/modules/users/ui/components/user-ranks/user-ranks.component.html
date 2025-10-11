@@ -1,0 +1,28 @@
+<div class="user-ranks-mini bars" [class.is-loading]="isLoading">
+  @if (isLoading) {
+    <ngx-skeleton-loader
+      count="4"
+      animation="pulse"
+      appearance="line"
+      [theme]="{height: '14px', 'margin-bottom': '0.5rem', background: 'var(--skeleton-color)'}"
+    ></ngx-skeleton-loader>
+  } @else {
+    @for (rank of ranks; track $index) {
+      <div class="d-flex justify-content-between align-items-center gap-2">
+        <div class="label">
+          <kep-icon color="primary" [name]="rank.icon" type="duotone"/>
+          <span>{{ rank.name | translate }}</span>
+        </div>
+        <div class="d-flex justify-content-end align-items-center gap-1">
+          <div class="value">
+            <span class="val">{{ rank.value }}</span>
+            <span class="rk">#{{ rank.rank }}</span>
+          </div>
+          <div class="bar">
+            <div class="fill" [style.width.%]="rank.percentile"></div>
+          </div>
+        </div>
+      </div>
+    }
+  }
+</div>

@@ -32,7 +32,7 @@
 }
 
 .form-text {
-  color: $text-muted;
+  color: var(--text-muted);
 }
 
 .form-control-light {
@@ -67,7 +67,7 @@
 .form-floating > .form-control:focus ~ label,
 .form-floating > .form-control:not(:placeholder-shown) ~ label,
 .form-floating > .form-select ~ label {
-  color: $text-muted;
+  color: var(--text-muted);
 }
 
 .form-floating > .form-control:not(:placeholder-shown) ~ label::after {
@@ -476,7 +476,7 @@ fieldset:disabled .btn {
     &::after {
       content: "off";
       inset-inline-end: -1.813rem;
-      color: $text-muted;
+      color: var(--text-muted);
     }
 
     &::before,
@@ -571,7 +571,7 @@ fieldset:disabled .btn {
 
         &::before,
         &::after {
-          color: $text-muted;
+          color: var(--text-muted);
         }
       }
     }
@@ -702,7 +702,7 @@ fieldset:disabled .btn {
 
 .custom-toggle-switch > label {
   &::before {
-    background: $text-muted;
+    background: var(--text-muted);
     box-shadow: inset 0px 0px 0.625rem $white-5;
     border-radius: 0.5rem;
     content: "";

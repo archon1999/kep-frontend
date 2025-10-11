@@ -1,0 +1,114 @@
+@if (isLoading) {
+  <kep-card>
+    <div class="card-body">
+      <ngx-skeleton-loader
+        count="10"
+        animation="pulse"
+        appearance="line"
+        [theme]="{height: '25px', background: 'var(--skeleton-color)'}"
+      ></ngx-skeleton-loader>
+    </div>
+  </kep-card>
+} @else {
+  <kep-card>
+    <div class="card-body p-0">
+      <ul class="list-group list-group-flush">
+
+        @if (data.userInfo.bio) {
+          <li class="list-group-item p-4">
+            <div class="fw-medium fs-5 mb-2 text-primary">{{ 'UserInfo.About' | translate }}</div>
+
+            <p class="text-muted mb-0" [innerHTML]="data.userInfo.bio">
+            </p>
+          </li>
+        }
+
+        @if (data.userSkills.algorithms || data.userSkills.dataScience || data.userSkills.python || data.userSkills.webDevelopment) {
+          <li class="list-group-item p-4">
+            <div class="fw-medium fs-5 mb-2 text-primary">{{ 'UserInfo.Skills' | translate }}</div>
+
+            <div *ngIf="data.userSkills.algorithms" class="progress-wrapper mt-2">
+              <div class="mb-1 text-muted">{{ 'Algorithms' | translate }}</div>
+              <ngb-progressbar [showValue]="true" [value]="data.userSkills.algorithms" type="primary"/>
+            </div>
+            <div *ngIf="data.userSkills.python" class="progress-wrapper mt-2">
+              <div class="mb-1 text-muted">Python</div>
+              <ngb-progressbar [showValue]="true" [value]="data.userSkills.python" type="primary"/>
+            </div>
+            <div *ngIf="data.userSkills.webDevelopment" class="progress-wrapper mt-2">
+              <div class="mb-1 text-muted">{{ 'WebDevelopment' | translate }}</div>
+              <ngb-progressbar [showValue]="true" [value]="data.userSkills.webDevelopment ?? 0" type="primary"/>
+            </div>
+            <div *ngIf="data.userSkills.webScraping" class="progress-wrapper mt-2">
+              <div class="mb-1 text-muted">{{ 'WebScraping' | translate }}</div>
+              <ngb-progressbar [showValue]="true" [value]="data.userSkills.webScraping ?? 0" type="primary"/>
+            </div>
+            <div *ngIf="data.userSkills.dataScience" class="progress-wrapper mt-2">
+              <div class="mb-1 text-muted">{{ 'DataScience' | translate }}</div>
+              <ngb-progressbar [showValue]="true" [value]="data.userSkills.dataScience" type="primary"/>
+            </div>
+          </li>
+        }
+
+        @if (data.userTechnologies.length) {
+          <li class="list-group-item p-4">
+            <div class="fw-medium fs-5 mb-2 text-primary">{{ 'UserInfo.Technologies' | translate }}</div>
+
+            <div class="user-technologies mt-2 d-flex gap-1 flex-wrap">
+              @for (technology of data.userTechnologies; track technology) {
+                <span [style.background]="technology.badgeColor" class="badge">
+                  <i class="{{ technology.devIconClass }} "></i>
+                  {{ technology.text }}
+                </span>
+              }
+            </div>
+          </li>
+        }
+
+        @if (data.userEducations.length) {
+          <li class="list-group-item p-4">
+            <div class="fw-medium fs-5 mb-2 text-primary">{{ 'UserInfo.Education' | translate }}</div>
+
+            <ul class="timeline">
+              @for (education of data.userEducations; track education) {
+                <li class="timeline-item">
+                  <span class="timeline-point timeline-point-primary timeline-point-indicator"></span>
+                  <div class="timeline-event">
+                    <h6>
+                      {{ education.organization }}
+                      <br>
+                      {{ education.degree }}
+                    </h6>
+                    <span class="timeline-event-time">{{ education.fromYear }} - {{ education.toYear }}</span>
+                  </div>
+                </li>
+              }
+            </ul>
+          </li>
+        }
+
+        @if (data.userWorkExperiences.length) {
+          <li class="list-group-item p-4">
+            <div class="fw-medium fs-5 mb-2 text-primary">{{ 'UserInfo.WorkExperience' | translate }}</div>
+
+            <ul class="timeline">
+              @for (workExperience of data.userWorkExperiences; track workExperience) {
+                <li class="timeline-item">
+                  <span class="timeline-point timeline-point-primary timeline-point-indicator"></span>
+                  <div class="timeline-event">
+                    <h6>
+                      {{ workExperience.company }}
+                      <br>
+                      {{ workExperience.jobTitle }}
+                    </h6>
+                    <span class="timeline-event-time">{{ workExperience.fromYear }} - {{ workExperience.toYear }}</span>
+                  </div>
+                </li>
+              }
+            </ul>
+          </li>
+        }
+      </ul>
+    </div>
+  </kep-card>
+}

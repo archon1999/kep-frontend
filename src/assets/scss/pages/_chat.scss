@@ -50,7 +50,7 @@
     }
 
     .nav-link {
-      color: $text-muted;
+      color: var(--text-muted);
       border-radius: 0;
 
       &.active {
@@ -101,7 +101,7 @@
         padding: 0.625rem 1.25rem;
 
         .chat-msg {
-          color: $text-muted;
+          color: var(--text-muted);
           max-width: 11.25rem;
           display: inline-block;
         }
@@ -135,7 +135,7 @@
 
           .chat-read-icon {
             i {
-              color: $text-muted;
+              color: var(--text-muted);
             }
           }
         }
@@ -179,7 +179,7 @@
         font-size: 0.813rem;
 
         .msg-sent-time {
-          color: $text-muted;
+          color: var(--text-muted);
           font-size: 0.75rem;
           font-weight: 500;
 
@@ -274,7 +274,7 @@
 
     .chat-day-label {
       text-align: center;
-      color: $text-muted;
+      color: var(--text-muted);
       margin-block-end: 2rem;
       opacity: 0.6;
       position: relative;
@@ -355,7 +355,7 @@
       padding: 1.125rem;
       justify-content: center;
       font-size: 1.125rem;
-      color: $text-muted;
+      color: var(--text-muted);
     }
   }
 

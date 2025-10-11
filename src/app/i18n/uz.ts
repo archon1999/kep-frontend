@@ -173,6 +173,9 @@ export const localeUz = {
   Ratings: 'Reytinglar',
   Edit: 'Tahrirlash',
   Online: 'Onlayn',
+  Followers: 'Kuzatuvchilar',
+  Follow: 'Kuzatish',
+  Unfollow: 'Kuzatishni bekor qilish',
   Solved: 'Ishlangan',
   NewUsers: 'Yangi foydalanuvchilar',
   Username: 'Nik',
@@ -529,6 +532,7 @@ export const localeUz = {
     Registered: 'Roʻyhatdan oʻtilgan',
     RegisterIndividual: 'Individual qatnashchi boʻlib',
     FilterContests: 'Kontestlarni filterlash',
+    FollowingOnly: 'Faqat kuzatuvchilar',
     Participated: 'Qatnashilgan',
     NotParticipated: 'Qatnashilmagan',
     Problems: 'Kontest masalalari',
@@ -615,6 +619,7 @@ export const localeUz = {
     HackathonStarted: 'Xakaton boshlandi',
   },
   UserInfo: {
+    PersonalInfo: 'Shaxsiy maʻlumot',
     About: 'Oʻzi haqida',
     WasBorn: 'Tugʻilgan',
     Lives: 'Yashaydi',
@@ -809,6 +814,58 @@ export const localeUz = {
   SpendItem7: 'Kodni tahrirlashda testlash funksiyasi (butunlayga)',
   SpendItem8: 'Kontestda ikki barobar reyting o‘zgarishi (manfiy bo‘lsa ham ikki barobar bo‘lib o‘zgaradi)',
   SpendItem9: 'Kontestda reytingni saqlab qolish (agar manfiy bo‘lsa berilmaydi)',
+  UserActivityHistory: {
+    Title: 'Faollik tarixi',
+    Empty: 'Hozircha faollik haqida maʼlumot yo‘q.',
+    More: 'Yana',
+    Loading: 'Yuklanmoqda...',
+    Types: {
+      ProblemAttemptSummary: {
+        Description: 'Jami {{total}} ta masaladan {{accepted}} tasi yechildi.'
+      },
+      ChallengeSummary: {
+        Description: 'Chellenj natijalari.',
+        Wins: 'G‘alabalar: {{value}}',
+        Draws: 'Duranglar: {{value}}',
+        Losses: 'Mag‘lubiyatlar: {{value}}'
+      },
+      ProjectAttemptSummary: {
+        Description: 'Loyiha topshiriqlarining {{total}} tasidan {{checked}} tasi tekshirildi.'
+      },
+      TestPassSummary: {
+        Description: '{{total}} ta testdan {{completed}} tasi yakunlandi va {{solved}} ta topshiriq yechildi.'
+      },
+      ContestParticipation: {
+        Description: '{{title}} musobaqasida ishtirok etdi.',
+        Rank: 'O‘rin: {{rank}}',
+        Rating: '{{before}} → {{after}} reyting',
+        RatingChange: 'Δ {{delta}}',
+        Bonus: 'Bonus: {{bonus}}',
+        NoRank: '—'
+      },
+      ArenaParticipation: {
+        Description: '{{title}} arenasi ishtirokchisi.',
+        Points: 'Ballar: {{points}}',
+        Rank: 'O‘rin: {{rank}}',
+        FinishTime: 'Tugash vaqti: {{time}}'
+      },
+      DailyActivity: {
+        Description: 'Kunlik faollik (+{{value}}).',
+        Note: 'Eslatma: {{note}}'
+      },
+      HardProblemSolved: {
+        Description: '{{title}} ({{difficulty}}) masalasi yechildi.',
+        Problem: 'Masala №{{id}}'
+      },
+      AchievementUnlocked: {
+        Description: '{{message}}'
+      },
+      DailyTaskCompleted: {
+        Description: 'Kunlik topshiriq bajarildi ({{type}}).',
+        Task: '{{description}}'
+      }
+    }
+  },
   PageTitle: {
     Home: 'Bosh sahifa',
     Landing: 'KEP.uz - Dasturlashni oʻrganish uchun platforma',

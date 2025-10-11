@@ -15,14 +15,18 @@
           </div>
 
           <div class="name">
-            <div class="full-name">
-              {{ user.firstName }} {{ user.lastName }}
+            <div class="username">
+              {{ user.username }}
+
             </div>
-            <small class="text-muted">{{ user.username }}</small>
+            <small class="text-muted">{{ user.firstName }} {{ user.lastName }}</small>
           </div>
         </div>
-      </div>
-      <div class="card-footer border-0 bg-transparent pt-0">
+
+        <div class="my-4">
+          <user-ranks [username]="username"/>
+        </div>
+
         <a
           [routerLink]="Resources.UserProfile | resourceByUsername:username"
           class="btn btn-outline-primary btn-sm w-100"
