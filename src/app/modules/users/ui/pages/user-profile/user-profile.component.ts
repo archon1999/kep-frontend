@@ -2,9 +2,7 @@ import { Component, inject } from '@angular/core';
 import { BaseLoadComponent } from '@core/common';
 import { CoreCommonModule } from '@core/common.module';
 import {
-  NgbCollapseModule, NgbNav,
-  NgbNavItem,
-  NgbNavOutlet,
+  NgbCollapseModule,
   NgbProgressbarModule,
   NgbTooltipModule
 } from '@ng-bootstrap/ng-bootstrap';
@@ -14,15 +12,13 @@ import { UserOnlineStatusComponent } from '@shared/components/user-online-status
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { ResourceByUsernamePipe } from '@shared/pipes/resource-by-username.pipe';
-import { UserSkillsComponent } from "@users/ui/pages/user-profile/user-skills/user-skills.component";
-import { UserInfoComponent } from "@users/ui/pages/user-profile/user-info/user-info.component";
-import { UserActivityHistoryComponent } from "@users/ui/pages/user-profile/user-activity-history/user-activity-history.component";
-import { User } from "@users/domain";
-import { UserRanksComponent } from "@users/ui/pages/user-profile/user-ranks/user-ranks.component";
-import { UsersApiService } from "@app/modules/users";
-import { Observable } from "rxjs";
-import { takeUntil } from "rxjs/operators";
-
+import { User } from '@users/domain';
+import { UsersApiService } from '@app/modules/users';
+import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { UserRanksComponent } from './widgets/user-ranks/user-ranks.component';
+import { Resources } from '@app/resources';
 
 @Component({
   selector: 'app-user-profile',
@@ -35,24 +31,23 @@ import { takeUntil } from "rxjs/operators";
     NgxCountriesModule,
     NgbProgressbarModule,
     NgbCollapseModule,
-    UserInfoComponent,
-    UserSkillsComponent,
-    UserActivityHistoryComponent,
     KepBadgeComponent,
     UserOnlineStatusComponent,
     SpinnerComponent,
     KepCardComponent,
     ResourceByUsernamePipe,
-    NgbNavOutlet,
-    NgbNavItem,
-    NgbNav,
     UserRanksComponent,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
   ]
 })
 export class UserProfileComponent extends BaseLoadComponent<User> {
   public user: User | null = null;
   public toggleMenu = true;
   override loadOnInit = false;
+
+  protected readonly Resources = Resources;
 
   private readonly usersApi = inject(UsersApiService);
   private currentUsername: string | null = null;

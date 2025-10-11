@@ -17,23 +17,23 @@ export default [
     children: [
       {
         path: '',
-        loadComponent: () => import('../ui/pages/user-profile/user-about/user-about.component').then(c => c.UserAboutComponent),
+        loadComponent: () => import('../ui/pages/user-profile/tabs/about-tab/about-tab.component').then(c => c.UserAboutTabComponent),
       },
       {
         path: 'ratings',
-        loadComponent: () => import('../ui/pages/user-profile/user-ratings/user-ratings.component').then(c => c.UserRatingsComponent),
+        loadComponent: () => import('../ui/pages/user-profile/tabs/ratings-tab/ratings-tab.component').then(c => c.UserRatingsTabComponent),
       },
       {
         path: 'activity-history',
-        loadComponent: () => import('../ui/pages/user-profile/user-activity-history/user-activity-history.component').then(c => c.UserActivityHistoryComponent),
+        loadComponent: () => import('../ui/pages/user-profile/tabs/activity-history-tab/activity-history-tab.component').then(c => c.UserActivityHistoryTabComponent),
       },
       {
         path: 'blog',
-        loadComponent: () => import('../ui/pages/user-profile/user-blog/user-blog.component').then(c => c.UserBlogComponent),
+        loadComponent: () => import('../ui/pages/user-profile/widgets/user-blog/user-blog.component').then(c => c.UserBlogComponent),
       },
       {
         path: 'achievements',
-        loadComponent: () => import('../ui/pages/user-profile/user-achievements/user-achievements.component').then(c => c.UserAchievementsComponent),
+        loadComponent: () => import('../ui/pages/user-profile/tabs/achievements-tab/achievements-tab.component').then(c => c.UserAchievementsTabComponent),
       },
     ]
   },

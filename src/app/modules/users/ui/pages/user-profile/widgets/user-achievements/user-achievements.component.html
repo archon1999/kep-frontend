@@ -42,4 +42,6 @@
   }
 </kep-card>
 
-<user-competition-prizes [username]="route.snapshot.parent.params.username"/>
+@if (currentUsername) {
+  <user-competition-prizes [username]="currentUsername"/>
+}

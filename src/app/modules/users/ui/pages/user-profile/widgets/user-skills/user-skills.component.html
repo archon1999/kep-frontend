@@ -1,10 +1,10 @@
-@if (isLoading || !userSkills) {
+@if (isLoading && !userSkills) {
   <kep-card>
     <div class="card-body py-5 text-center">
       <spinner></spinner>
     </div>
   </kep-card>
-} @else {
+} @else if (userSkills) {
   <kep-card>
     <div class="card-body">
       <h4 class="mb-0">
@@ -33,23 +33,10 @@
       </div>
     </div>
   </kep-card>
-
-  @if (userTechnologies.length > 0) {
-    <kep-card>
-      <div class="card-body">
-        <h4 class="mb-0">
-          <i data-feather="slack"></i>
-          {{ 'UserInfo.Technologies' | translate }}
-        </h4>
-        <div class="user-technologies mt-2 d-flex gap-1" style="flex-wrap: wrap;">
-          @for (technology of userTechnologies; track technology) {
-            <span [style.background]="technology.badgeColor" class="badge">
-              <i class="{{ technology.devIconClass }} "></i>
-              {{ technology.text }}
-            </span>
-          }
-        </div>
-      </div>
-    </kep-card>
-  }
+} @else {
+  <kep-card>
+    <div class="card-body py-5 text-center text-muted">
+      {{ 'NoData' | translate }}
+    </div>
+  </kep-card>
 }

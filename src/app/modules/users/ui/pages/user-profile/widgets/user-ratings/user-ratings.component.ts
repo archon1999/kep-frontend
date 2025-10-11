@@ -13,12 +13,12 @@ import {
   ProblemsActivityCardComponent
 } from '@problems/components/problems-activity-card/problems-activity-card.component';
 import { difficultyLabels } from '@problems/constants/difficulties.enum';
-import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
-import { UsersApiService } from "@app/modules/users";
-import { Resources } from "@app/resources";
-import { BaseLoadComponent } from "@core/common";
-import { Observable, forkJoin } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
+import { UsersApiService } from '@app/modules/users';
+import { Resources } from '@app/resources';
+import { BaseLoadComponent } from '@core/common';
+import { Observable, combineLatest, forkJoin, of } from 'rxjs';
+import { distinctUntilChanged, filter, map, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'user-ratings',
@@ -45,7 +45,7 @@ export class UserRatingsComponent extends BaseLoadComponent<{userProblemsRating:
   public contestRatingChangesChart: ChartOptions | null = null;
   public challengesRatingChangesChart: ChartOptions | null = null;
 
-  public username: string;
+  public username = '';
 
   public hasRatingsLoaded = false;
 
@@ -63,15 +63,16 @@ export class UserRatingsComponent extends BaseLoadComponent<{userProblemsRating:
   override ngOnInit(): void {
     super.ngOnInit();
 
-    this.route.params
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(params => {
-        const username = params?.['username'];
+    const parentParams$ = this.route.parent?.params ?? of({});
 
-        if (!username) {
-          return;
-        }
-
+    combineLatest([this.route.params, parentParams$])
+      .pipe(
+        takeUntil(this._unsubscribeAll),
+        map(([params, parentParams]) => params?.['username'] ?? parentParams?.['username']),
+        filter((username): username is string => !!username),
+        distinctUntilChanged(),
+      )
+      .subscribe(username => {
         const hasChanged = username !== this.username;
         this.username = username;
 
@@ -85,10 +86,11 @@ export class UserRatingsComponent extends BaseLoadComponent<{userProblemsRating:
         this.userChallengesRating = null;
         this.contestRatingChangesChart = null;
         this.challengesRatingChangesChart = null;
+        this.isLoading = true;
 
         this.loadData();
-        this.loadContestRatingChanges();
-        this.loadChallengesRatingChanges();
+        this.loadContestRatingChanges(username);
+        this.loadChallengesRatingChanges(username);
       });
   }
 
@@ -107,109 +109,109 @@ export class UserRatingsComponent extends BaseLoadComponent<{userProblemsRating:
     this.hasRatingsLoaded = true;
   }
 
-  loadContestRatingChanges() {
-    const username = this.username;
+  private loadContestRatingChanges(username: string) {
     const router = this.router;
-    this.contestsService.getContestsRatingChanges(this.username)
+    this.contestsService.getContestsRatingChanges(username)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(
         (ratingChanges: any) => {
-        const data = [];
-        for (const ratingChange of ratingChanges) {
-          data.push({
+          const data = ratingChanges.map((ratingChange: any) => ({
             x: ratingChange.contestStartDate,
             y: ratingChange.newRating,
-          });
-        }
-        this.contestRatingChangesChart = {
-          series: [{
-            name: '',
-            data: data,
-          }],
-          chart: {
-            type: 'area',
-            stacked: false,
-            height: 350,
-            events: {
-              click: function (event, chartContext, config) {
-                const contestId = ratingChanges[config.dataPointIndex].contestId;
-                router.navigate(['/competitions', 'contests', 'contest', contestId, 'standings']);
+          }));
+
+          this.contestRatingChangesChart = {
+            series: [{
+              name: '',
+              data,
+            }],
+            chart: {
+              type: 'area',
+              stacked: false,
+              height: 350,
+              events: {
+                click: function (event, chartContext, config) {
+                  const contestId = ratingChanges[config.dataPointIndex]?.contestId;
+                  if (contestId) {
+                    router.navigate(['/competitions', 'contests', 'contest', contestId, 'standings']);
+                  }
+                }
               }
-            }
-          },
-          xaxis: {
-            type: 'datetime'
-          },
-          tooltip: {
-            custom: function ({series, seriesIndex, dataPointIndex, w}): any {
-              const data = ratingChanges[dataPointIndex];
-              let deltaColor: string;
-              if (data.delta > 0) {
-                deltaColor = 'success';
-              } else if (data.delta === 0) {
-                deltaColor = 'secondary';
-              } else {
-                deltaColor = 'danger';
-              }
-              return `
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="text-center">
-                    ${data.contestTitle}
-                  </h4>
-                  <div class="d-flex">
-                    <div class="text-dark">#${data.rank}</div>
-                    <div class="text-dark ms-1">
-                      ${username}
-                      <img src="assets/images/contests/ratings/${data.newRatingTitle.toLowerCase()}.png" height=20>
-                      ${data.newRating}
+            },
+            xaxis: {
+              type: 'datetime'
+            },
+            tooltip: {
+              custom: function ({series, seriesIndex, dataPointIndex, w}): any {
+                const data = ratingChanges[dataPointIndex];
+                if (!data) {
+                  return '';
+                }
+
+                let deltaColor: string;
+                if (data.delta > 0) {
+                  deltaColor = 'success';
+                } else if (data.delta === 0) {
+                  deltaColor = 'secondary';
+                } else {
+                  deltaColor = 'danger';
+                }
+                return `
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="text-center">
+                      ${data.contestTitle}
+                    </h4>
+                    <div class="d-flex">
+                      <div class="text-dark">#${data.rank}</div>
+                      <div class="text-dark ms-1">
+                        ${username}
+                        <img src="assets/images/contests/ratings/${data.newRatingTitle.toLowerCase()}.png" height=20>
+                        ${data.newRating}
+                      </div>
+                      <span class="ms-1 badge bg-${deltaColor}-transparent">${data.delta}</span>
                     </div>
-                    <span class="ms-1 badge bg-${deltaColor}-transparent">${data.delta}</span>
                   </div>
                 </div>
-              </div>
-              `;
-            }
-          },
-        };
-      }
-    );
+                `;
+              }
+            },
+          };
+        }
+      );
   }
 
-  loadChallengesRatingChanges() {
-    this.challengesService.getRatingChanges(this.username)
+  private loadChallengesRatingChanges(username: string) {
+    this.challengesService.getRatingChanges(username)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(
-      (ratingChanges: any) => {
-        const data = [];
-        for (const ratingChange of ratingChanges) {
-          data.push({
+        (ratingChanges: any) => {
+          const data = ratingChanges.map((ratingChange: any) => ({
             x: ratingChange.date,
             y: ratingChange.value,
-          });
+          }));
+          this.challengesRatingChangesChart = {
+            series: [{
+              name: '',
+              data,
+            }],
+            chart: {
+              type: 'area',
+              stacked: false,
+              height: 350,
+              toolbar: {
+                show: false
+              },
+              zoom: {
+                enabled: false,
+              },
+            },
+            xaxis: {
+              type: 'datetime'
+            },
+          };
         }
-        this.challengesRatingChangesChart = {
-          series: [{
-            name: '',
-            data: data,
-          }],
-          chart: {
-            type: 'area',
-            stacked: false,
-            height: 350,
-            toolbar: {
-              show: false
-            },
-            zoom: {
-              enabled: false,
-            },
-          },
-          xaxis: {
-            type: 'datetime'
-          },
-        };
-      }
-    );
+      );
   }
 
   protected readonly Resources = Resources;

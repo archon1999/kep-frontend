@@ -1,9 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
-  OnChanges,
-  SimpleChanges,
   inject,
   ChangeDetectorRef, OnInit
 } from '@angular/core';
@@ -38,7 +35,9 @@ import { UserActivityHistoryDailyActivityComponent } from './components/daily-ac
 import { UserActivityHistoryHardProblemSolvedComponent } from './components/hard-problem-solved.component';
 import { UserActivityHistoryAchievementUnlockedComponent } from './components/achievement-unlocked.component';
 import { UserActivityHistoryDailyTaskCompletedComponent } from './components/daily-task-completed.component';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute } from '@angular/router';
+import { combineLatest, of } from 'rxjs';
+import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 
 interface UserActivityHistoryTypeConfig {
   cardClass: string;
@@ -69,7 +68,7 @@ interface UserActivityHistoryTypeConfig {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserActivityHistoryComponent implements OnInit {
-  public username: string;
+  public username = '';
 
   protected activities: UserActivityHistoryItem[] = [];
   protected loading = false;
@@ -98,9 +97,24 @@ export class UserActivityHistoryComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
 
   ngOnInit() {
-    this.username = this.route.snapshot.parent.params.username;
-    this.reset();
-    this.loadActivities();
+    const parentParams$ = this.route.parent?.params ?? of({});
+
+    combineLatest([this.route.params, parentParams$])
+      .pipe(
+        map(([params, parentParams]) => params?.['username'] ?? parentParams?.['username']),
+        filter((username): username is string => !!username),
+        distinctUntilChanged(),
+        takeUntilDestroyed(),
+      )
+      .subscribe(username => {
+        if (username === this.username && !this.initialLoad) {
+          return;
+        }
+
+        this.username = username;
+        this.reset();
+        this.loadActivities();
+      });
   }
 
   protected loadMore(): void {
@@ -138,6 +152,7 @@ export class UserActivityHistoryComponent implements OnInit {
 
     this.usersApi
       .getUserActivityHistory(this.username, { page: pageToLoad, pageSize: this.pageSize })
+      .pipe(takeUntilDestroyed())
       .subscribe({
         next: (response: PageResult<UserActivityHistoryItem>) => {
           const data = response?.data ?? [];
@@ -162,6 +177,7 @@ export class UserActivityHistoryComponent implements OnInit {
           this.loading = false;
           this.hasMore = false;
           this.initialLoad = false;
+          this.cdr.detectChanges();
         },
         complete: () => {
           this.loading = false;
