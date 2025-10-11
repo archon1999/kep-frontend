@@ -10,18 +10,33 @@
         {{ contest.title }}
       </div>
 
-      <ng-select
-        (change)="filterChange()"
-        [(ngModel)]="selectedFilter"
-        [clearable]="true"
-        [items]="contestFilters"
-        [ngClass.lt-md]="'d-none'"
-        [searchable]="true"
-        bindLabel="name"
-        bindValue="id"
-        placeholder="{{ 'All' | translate }}"
-        style="width: 300px;"
-      />
+      <div class="d-flex flex-wrap align-items-center justify-content-end gap-2">
+        <div class="form-check form-switch m-0 text-nowrap">
+          <input
+            (change)="onFollowingToggle($event.target.checked)"
+            [checked]="followingOnly"
+            class="form-check-input"
+            id="contest-following-only"
+            type="checkbox"
+          >
+          <label class="form-check-label" for="contest-following-only">
+            {{ 'Contests.FollowingOnly' | translate }}
+          </label>
+        </div>
+
+        <ng-select
+          (change)="filterChange()"
+          [(ngModel)]="selectedFilter"
+          [clearable]="true"
+          [items]="contestFilters"
+          [ngClass.lt-md]="'d-none'"
+          [searchable]="true"
+          bindLabel="name"
+          bindValue="id"
+          placeholder="{{ 'All' | translate }}"
+          style="width: 300px;"
+        />
+      </div>
     </div>
     <contest-tab [contest]="contest"/>
   </div>
