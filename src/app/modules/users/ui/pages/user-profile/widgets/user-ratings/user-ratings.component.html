@@ -1,0 +1,129 @@
+@if (!hasRatingsLoaded) {
+  @for (_ of [].constructor(3); track $index) {
+    <kep-card>
+      <div class="card-body py-5 text-center">
+        <spinner></spinner>
+      </div>
+    </kep-card>
+  }
+} @else {
+  <kep-card>
+    <div class="card-header">
+      <div class="card-title">
+        <div class="avatar avatar-rounded bg-primary-transparent p-2 me-2">
+          <kep-icon name="problem" class="" size="medium-2"></kep-icon>
+        </div>
+        {{ 'Problems' | translate }}
+      </div>
+
+      <div class="text-fixed-white">
+        <span class="me-1" ngbTooltip="{{ 'Solved' | translate }}">
+          <kep-icon size="small-4" name="check-circle"></kep-icon>
+          {{ userProblemsRating?.solved ?? 0 }}
+        </span>
+
+        <span ngbTooltip="{{ 'Rating' | translate }}">
+          <kep-icon size="small-4" name="rating"></kep-icon>
+          {{ userProblemsRating?.rating ?? 0 }}
+        </span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="text-center">
+        <div class="font-medium-5 mt-1">
+          <div class="font-small-4 d-md-flex d-block justify-content-between">
+            @for (difficulty of difficultyLabels; track difficulty) {
+              <div class="mt-2">
+                {{ difficulty | titlecase | translate }}
+                <br>
+                <span class="text-{{ $index+1 | problemDifficultyColor }}">{{ userProblemsRating?.[difficulty] ?? 0 }}</span>
+              </div>
+            }
+          </div>
+          <hr>
+<!--        <problems-activity-card [username]="username"></problems-activity-card>-->
+        </div>
+      </div>
+
+      <a
+        [routerLink]="[Resources.Attempts, username]"
+        class="btn btn-outline-primary btn-sm mt-1 w-100">
+        {{ 'Attempts' | translate }}
+      </a>
+    </div>
+  </kep-card>
+
+  <kep-card>
+    <div class="card-header">
+      <div class="card-title">
+        <div class="avatar avatar-rounded bg-primary-transparent p-2 me-2">
+          <kep-icon name="contests" class="" size="medium-2"></kep-icon>
+        </div>
+        {{ 'Contests.Contests' | translate }}
+      </div>
+
+      <div class="d-flex gap-1">
+        <span [ngbTooltip]="'Rating' | translate" class="badge bg-{{ userContestsRating?.rating | contestsRatingColor }}-transparent">
+          <contests-rating-image [size]="16" [title]="userContestsRating?.ratingTitle"/>
+          {{ userContestsRating?.rating ?? 0 }}
+        </span>
+        <span [ngbTooltip]="'MaxRating' | translate" class="badge bg-{{ userContestsRating?.maxRating | contestsRatingColor }}-transparent">
+          <contests-rating-image [size]="16" [title]="userContestsRating?.maxRatingTitle"/>
+          {{ userContestsRating?.maxRating ?? 0 }}
+        </span>
+        <span [ngbTooltip]="'Contests.Contests' | translate" class="badge d-md-inline-block d-none bg-primary-transparent">
+          {{ userContestsRating?.contestantsCount ?? 0 }}
+        </span>
+      </div>
+    </div>
+    <div class="card-body">
+      @if (contestRatingChangesChart && contestRatingChangesChart.series[0].data.length > 0) {
+        <apex-chart
+          [options]="contestRatingChangesChart">
+        </apex-chart>
+      }
+    </div>
+  </kep-card>
+
+  <kep-card>
+    <div class="card-header">
+      <div class="card-title">
+        <div class="avatar avatar-rounded bg-primary-transparent p-2 me-2">
+          <kep-icon name="challenges" class="" size="medium-2"></kep-icon>
+        </div>
+        {{ 'Challenges' | translate }}
+      </div>
+
+      <div class="text-{{ userChallengesRating?.rankTitle | challengesRankColor }}">
+        <span
+          class="badge badge-pill bg-{{ userChallengesRating?.rankTitle | challengesRankColor }}">
+          {{ userChallengesRating?.rankTitle }}
+        </span>
+
+        <span class="badge bg-{{ userChallengesRating?.rankTitle | challengesRankColor }}-transparent">
+          {{ userChallengesRating?.rating ?? 0 }}
+        </span>
+      </div>
+
+      <div class="text-center mt-1">
+        <div class="font-medium-4 mt-1">
+          <span class="text-success font-medium-2" ngbTooltip="{{ 'Wins' | translate }}">W</span>
+          {{ userChallengesRating?.wins ?? 0 }}
+          <span class="ms-1 text-secondary font-medium-2" ngbTooltip="{{ 'Draws' | translate }}">D</span>
+          {{ userChallengesRating?.draws ?? 0 }}
+          <span class="ms-1 text-danger font-medium-2" ngbTooltip="{{ 'Losses' | translate }}">L</span>
+          {{ userChallengesRating?.losses ?? 0 }}
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="mt-1">
+        @if (challengesRatingChangesChart && challengesRatingChangesChart.series[0].data.length > 0) {
+          <apex-chart
+            [options]="challengesRatingChangesChart">
+          </apex-chart>
+        }
+      </div>
+    </div>
+  </kep-card>
+}

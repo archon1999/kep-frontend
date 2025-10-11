@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { BaseComponent } from '@core/common/classes/base.component';
+import { Component, inject } from '@angular/core';
+import { BaseLoadComponent } from '@core/common';
 import { CoreCommonModule } from '@core/common.module';
 import {
-  NgbCollapseModule, NgbNav,
-  NgbNavItem,
-  NgbNavOutlet,
+  NgbCollapseModule,
   NgbProgressbarModule,
   NgbTooltipModule
 } from '@ng-bootstrap/ng-bootstrap';
@@ -14,12 +12,14 @@ import { UserOnlineStatusComponent } from '@shared/components/user-online-status
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { ResourceByUsernamePipe } from '@shared/pipes/resource-by-username.pipe';
-import { UserSkillsComponent } from "@users/ui/pages/user-profile/user-skills/user-skills.component";
-import { UserInfoComponent } from "@users/ui/pages/user-profile/user-info/user-info.component";
-import { UserActivityHistoryComponent } from "@users/ui/pages/user-profile/user-activity-history/user-activity-history.component";
-import { User } from "@users/domain";
-import { UserRanksComponent } from "@users/ui/pages/user-profile/user-ranks/user-ranks.component";
-
+import { User } from '@users/domain';
+import { UsersApiService } from '@app/modules/users';
+import { Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { UserRanksComponent } from './widgets/user-ranks/user-ranks.component';
+import { Resources } from '@app/resources';
+import { UserInfoComponent } from "@users/ui/pages/user-profile/widgets/user-info/user-info.component";
 
 @Component({
   selector: 'app-user-profile',
@@ -32,28 +32,58 @@ import { UserRanksComponent } from "@users/ui/pages/user-profile/user-ranks/user
     NgxCountriesModule,
     NgbProgressbarModule,
     NgbCollapseModule,
-    UserInfoComponent,
-    UserSkillsComponent,
-    UserActivityHistoryComponent,
     KepBadgeComponent,
     UserOnlineStatusComponent,
     SpinnerComponent,
     KepCardComponent,
     ResourceByUsernamePipe,
-    NgbNavOutlet,
-    NgbNavItem,
-    NgbNav,
     UserRanksComponent,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    UserInfoComponent,
   ]
 })
-export class UserProfileComponent extends BaseComponent implements OnInit {
-  public user: User;
+export class UserProfileComponent extends BaseLoadComponent<User> {
+  public user: User | null = null;
   public toggleMenu = true;
+  override loadOnInit = false;
 
-  ngOnInit(): void {
-    this.route.data.subscribe(({user}) => {
-      this.user = user;
-      this.titleService.updateTitle(this.route, {username: user.username});
-    });
+  private readonly usersApi = inject(UsersApiService);
+  private currentUsername: string | null = null;
+
+  constructor() {
+    super();
+    this.isLoading = true;
+  }
+
+  override ngOnInit(): void {
+    super.ngOnInit();
+
+    this.route.params
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(params => {
+        const username = params?.['username'];
+
+        if (!username || username === this.currentUsername) {
+          return;
+        }
+
+        this.currentUsername = username;
+        this.user = null;
+        this.loadData();
+      });
+  }
+
+  getData(): Observable<User> {
+    const username = this.currentUsername ?? this.route.snapshot.paramMap.get('username');
+
+    return this.usersApi.getUser(username!);
+  }
+
+  override afterLoadData(user: User): void {
+    this.user = user;
+    this.currentUsername = user.username;
+    this.titleService.updateTitle(this.route, {username: user.username});
   }
 }

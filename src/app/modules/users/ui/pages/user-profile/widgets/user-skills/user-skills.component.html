@@ -1,0 +1,42 @@
+@if (isLoading && !userSkills) {
+  <kep-card>
+    <div class="card-body py-5 text-center">
+      <spinner></spinner>
+    </div>
+  </kep-card>
+} @else if (userSkills) {
+  <kep-card>
+    <div class="card-body">
+      <h4 class="mb-0">
+        <i data-feather="activity"></i>
+        {{ 'UserInfo.Skills' | translate }}
+      </h4>
+      <div class="progress-wrapper mt-2">
+        <div class="mb-1">Python</div>
+        <ngb-progressbar [showValue]="true" [value]="userSkills?.python ?? 0" type="primary"></ngb-progressbar>
+      </div>
+      <div class="progress-wrapper mt-2">
+        <div class="mb-1">{{ 'WebDevelopment' | translate }}</div>
+        <ngb-progressbar [showValue]="true" [value]="userSkills?.webDevelopment ?? 0" type="primary"></ngb-progressbar>
+      </div>
+      <div class="progress-wrapper mt-2">
+        <div class="mb-1">{{ 'WebScraping' | translate }}</div>
+        <ngb-progressbar [showValue]="true" [value]="userSkills?.webScraping ?? 0" type="primary"></ngb-progressbar>
+      </div>
+      <div class="progress-wrapper mt-2">
+        <div class="mb-1">{{ 'Algorithms' | translate }}</div>
+        <ngb-progressbar [showValue]="true" [value]="userSkills?.algorithms ?? 0" type="primary"></ngb-progressbar>
+      </div>
+      <div class="progress-wrapper mt-2">
+        <div class="mb-1">{{ 'DataScience' | translate }}</div>
+        <ngb-progressbar [showValue]="true" [value]="userSkills?.dataScience ?? 0" type="primary"></ngb-progressbar>
+      </div>
+    </div>
+  </kep-card>
+} @else {
+  <kep-card>
+    <div class="card-body py-5 text-center text-muted">
+      {{ 'NoData' | translate }}
+    </div>
+  </kep-card>
+}

@@ -1,71 +1,77 @@
-<div class="card custom-card profile-card overflow-hidden">
-  <div class="profile-image">
-    <img [src]="user.coverPhoto" alt="..." class="card-img-top">
+@if (!user) {
+  <div class="card custom-card profile-card overflow-hidden">
+    <div class="card-body py-5 text-center">
+      <spinner></spinner>
+    </div>
   </div>
-  <div class="card-body p-4 pb-0 position-relative d-flex justify-content-between">
-    <div>
-      <span class="avatar avatar-xxl avatar-rounded bg-info">
-        <img [src]="user.avatar" alt="">
-      </span>
-      <div class="mt-4 mb-3 d-flex align-items-center flex-wrap gap-3 justify-content-between">
-        <div>
-          <h5 class="fw-semibold mb-1">
-            {{ user.username }}
-            @if (user.streak >= 7) {
-              <kep-badge [streak]="user.streak"></kep-badge>
-            }
-            <user-online-status [lastSeen]="user.lastSeen" [online]="user.isOnline"></user-online-status>
-          </h5>
-          <span class="d-block fw-medium text-muted mb-1">{{ user.firstName }} {{ user.lastName }}</span>
+} @else {
+  <div class="card custom-card profile-card overflow-hidden">
+    <div class="profile-image">
+      <img [src]="user.coverPhoto" alt="..." class="card-img-top">
+    </div>
+    <div class="card-body p-4 pb-0 position-relative d-flex justify-content-between">
+      <div>
+        <span class="avatar avatar-xxl avatar-rounded bg-info">
+          <img [src]="user.avatar" alt="">
+        </span>
+        <div class="mt-4 mb-3 d-flex align-items-center flex-wrap gap-3 justify-content-between">
+          <div>
+            <h5 class="fw-semibold mb-1">
+              {{ user.username }}
+              @if (user.streak >= 7) {
+                <kep-badge [streak]="user.streak"></kep-badge>
+              }
+              <user-online-status [lastSeen]="user.lastSeen" [online]="user.isOnline"></user-online-status>
+            </h5>
+            <span class="d-block fw-medium text-muted mb-1">{{ user.firstName }} {{ user.lastName }}</span>
+          </div>
         </div>
+
+        <ul class="nav nav-pills justify-content-start nav-style-3">
+          <li class="nav-item">
+            <a [routerLinkActiveOptions]="{exact: true}"
+               [routerLink]="[Resources.UserProfile | resourceByUsername:user.username]"
+               class="nav-link fw-medium"
+               routerLinkActive="active">
+              <span>{{ 'About' | translate }}</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a [routerLink]="[Resources.UserProfileRatings | resourceByUsername:user.username]"
+               class="nav-link fw-medium"
+               routerLinkActive="active">
+              <span>{{ 'Ratings' | translate }}</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a [routerLink]="[Resources.UserProfileActivityHistory | resourceByUsername:user.username]"
+               class="nav-link fw-medium"
+               routerLinkActive="active">
+              <span>{{ 'UserActivityHistory.Title' | translate }}</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a [routerLink]="[Resources.UserProfileAchievements | resourceByUsername:user.username]"
+               class="nav-link fw-medium"
+               routerLinkActive="active">
+              <span>{{ 'Achievements' | translate }}</span>
+            </a>
+          </li>
+        </ul>
       </div>
 
-      <ul class="nav nav-pills justify-content-start nav-style-3">
-        <li class="nav-item">
-          <a [routerLinkActiveOptions]="{exact: true}"
-             [routerLink]="[Resources.UserProfile | resourceByUsername:user.username]"
-             class="nav-link fw-medium"
-             routerLinkActive="active">
-            <span>{{ 'About' | translate }}</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a [routerLink]="[Resources.UserProfileRatings | resourceByUsername:user.username]"
-             class="nav-link fw-medium"
-             routerLinkActive="active">
-            <span>{{ 'Ratings' | translate }}</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a [routerLink]="[Resources.UserProfileActivityHistory | resourceByUsername:user.username]"
-             class="nav-link fw-medium"
-             routerLinkActive="active">
-            <span>{{ 'UserActivityHistory.Title' | translate }}</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a [routerLink]="[Resources.UserProfileAchievements | resourceByUsername:user.username]"
-             class="nav-link fw-medium"
-             routerLinkActive="active">
-            <span>{{ 'Achievements' | translate }}</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    <user-ranks [username]="user.username"/>
-  </div>
-</div>
-
-<section id="profile-info">
-  <div class="row">
-    <div class="col-lg-3">
-      <user-info></user-info>
-      <user-skills></user-skills>
-    </div>
-
-    <div class="col-lg-9">
-      <router-outlet/>
+      <user-ranks [username]="user.username"/>
     </div>
   </div>
-</section>
+
+  <section class="mt-4">
+    <div class="row">
+      <div class="col-lg-3">
+        <user-info/>
+      </div>
+      <div class="col-lg-9">
+        <router-outlet/>
+      </div>
+    </div>
+  </section>
+}
