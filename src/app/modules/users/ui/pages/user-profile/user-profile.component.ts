@@ -18,6 +18,7 @@ import { UserSkillsComponent } from "@users/ui/pages/user-profile/user-skills/us
 import { UserInfoComponent } from "@users/ui/pages/user-profile/user-info/user-info.component";
 import { UserActivityHistoryComponent } from "@users/ui/pages/user-profile/user-activity-history/user-activity-history.component";
 import { User } from "@users/domain";
+import { UserRanksComponent } from "@users/ui/pages/user-profile/user-ranks/user-ranks.component";
 
 
 @Component({
@@ -42,6 +43,7 @@ import { User } from "@users/domain";
     NgbNavOutlet,
     NgbNavItem,
     NgbNav,
+    UserRanksComponent,
   ]
 })
 export class UserProfileComponent extends BaseComponent implements OnInit {

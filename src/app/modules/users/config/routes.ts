@@ -40,6 +40,10 @@ export default [
     },
     children: [
       {
+        path: '',
+        loadComponent: () => import('../ui/pages/user-profile/user-about/user-about.component').then(c => c.UserAboutComponent),
+      },
+      {
         path: 'ratings',
         loadComponent: () => import('../ui/pages/user-profile/user-ratings/user-ratings.component').then(c => c.UserRatingsComponent),
       },

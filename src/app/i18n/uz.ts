@@ -810,8 +810,8 @@ export const localeUz = {
   SpendItem8: 'Kontestda ikki barobar reyting o‘zgarishi (manfiy bo‘lsa ham ikki barobar bo‘lib o‘zgaradi)',
   SpendItem9: 'Kontestda reytingni saqlab qolish (agar manfiy bo‘lsa berilmaydi)',
   UserActivityHistory: {
-    Title: 'Faoliyat tarixi',
-    Empty: 'Hozircha faoliyat maʼlumoti yo‘q.',
+    Title: 'Faollik tarixi',
+    Empty: 'Hozircha faollik haqida maʼlumot yo‘q.',
     More: 'Yana',
     Loading: 'Yuklanmoqda...',
     Types: {
