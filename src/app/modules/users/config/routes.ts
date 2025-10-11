@@ -1,15 +1,3 @@
-import {
-  UserChallengesRatingResolver,
-  UserContestsRatingResolver,
-  UserEducationsResolver,
-  UserInfoResolver,
-  UserProblemsRatingResolver,
-  UserResolver,
-  UserSkillsResolver,
-  UserSocialResolver,
-  UserTechnologiesResolver,
-  UserWorkExperiencesResolver
-} from '@users/ui/users.resolver';
 import { Route } from '@angular/router';
 
 export default [
@@ -25,18 +13,6 @@ export default [
     data: {
       animation: 'user',
       title: 'Users.User',
-    },
-    resolve: {
-      user: UserResolver,
-      userInfo: UserInfoResolver,
-      userSocial: UserSocialResolver,
-      userTechnologies: UserTechnologiesResolver,
-      userEducations: UserEducationsResolver,
-      userWorkExperiences: UserWorkExperiencesResolver,
-      userSkills: UserSkillsResolver,
-      userContestsRating: UserContestsRatingResolver,
-      userProblemsRating: UserProblemsRatingResolver,
-      userChallengesRating: UserChallengesRatingResolver,
     },
     children: [
       {

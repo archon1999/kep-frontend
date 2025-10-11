@@ -1,47 +1,55 @@
-<kep-card>
-  <div class="card-body">
-    <h4 class="mb-0">
-      <i data-feather="activity"></i>
-      {{ 'UserInfo.Skills' | translate }}
-    </h4>
-    <div class="progress-wrapper mt-2">
-      <div class="mb-1">Python</div>
-      <ngb-progressbar [showValue]="true" [value]="userSkills.python" type="primary"></ngb-progressbar>
+@if (isLoading || !userSkills) {
+  <kep-card>
+    <div class="card-body py-5 text-center">
+      <spinner></spinner>
     </div>
-    <div class="progress-wrapper mt-2">
-      <div class="mb-1">{{ 'WebDevelopment' | translate }}</div>
-      <ngb-progressbar [showValue]="true" [value]="userSkills.webDevelopment" type="primary"></ngb-progressbar>
-    </div>
-    <div class="progress-wrapper mt-2">
-      <div class="mb-1">{{ 'WebScraping' | translate }}</div>
-      <ngb-progressbar [showValue]="true" [value]="userSkills.webScraping" type="primary"></ngb-progressbar>
-    </div>
-    <div class="progress-wrapper mt-2">
-      <div class="mb-1">{{ 'Algorithms' | translate }}</div>
-      <ngb-progressbar [showValue]="true" [value]="userSkills.algorithms" type="primary"></ngb-progressbar>
-    </div>
-    <div class="progress-wrapper mt-2">
-      <div class="mb-1">{{ 'DataScience' | translate }}</div>
-      <ngb-progressbar [showValue]="true" [value]="userSkills.dataScience" type="primary"></ngb-progressbar>
-    </div>
-  </div>
-</kep-card>
-
-@if (userTechnologies.length > 0) {
+  </kep-card>
+} @else {
   <kep-card>
     <div class="card-body">
       <h4 class="mb-0">
-        <i data-feather="slack"></i>
-        {{ 'UserInfo.Technologies' | translate }}
+        <i data-feather="activity"></i>
+        {{ 'UserInfo.Skills' | translate }}
       </h4>
-      <div class="user-technologies mt-2 d-flex gap-1" style="flex-wrap: wrap;">
-        @for (technology of userTechnologies; track technology) {
-          <span [style.background]="technology.badgeColor" class="badge">
-            <i class="{{ technology.devIconClass }} "></i>
-            {{ technology.text }}
-          </span>
-        }
+      <div class="progress-wrapper mt-2">
+        <div class="mb-1">Python</div>
+        <ngb-progressbar [showValue]="true" [value]="userSkills?.python ?? 0" type="primary"></ngb-progressbar>
+      </div>
+      <div class="progress-wrapper mt-2">
+        <div class="mb-1">{{ 'WebDevelopment' | translate }}</div>
+        <ngb-progressbar [showValue]="true" [value]="userSkills?.webDevelopment ?? 0" type="primary"></ngb-progressbar>
+      </div>
+      <div class="progress-wrapper mt-2">
+        <div class="mb-1">{{ 'WebScraping' | translate }}</div>
+        <ngb-progressbar [showValue]="true" [value]="userSkills?.webScraping ?? 0" type="primary"></ngb-progressbar>
+      </div>
+      <div class="progress-wrapper mt-2">
+        <div class="mb-1">{{ 'Algorithms' | translate }}</div>
+        <ngb-progressbar [showValue]="true" [value]="userSkills?.algorithms ?? 0" type="primary"></ngb-progressbar>
+      </div>
+      <div class="progress-wrapper mt-2">
+        <div class="mb-1">{{ 'DataScience' | translate }}</div>
+        <ngb-progressbar [showValue]="true" [value]="userSkills?.dataScience ?? 0" type="primary"></ngb-progressbar>
       </div>
     </div>
   </kep-card>
+
+  @if (userTechnologies.length > 0) {
+    <kep-card>
+      <div class="card-body">
+        <h4 class="mb-0">
+          <i data-feather="slack"></i>
+          {{ 'UserInfo.Technologies' | translate }}
+        </h4>
+        <div class="user-technologies mt-2 d-flex gap-1" style="flex-wrap: wrap;">
+          @for (technology of userTechnologies; track technology) {
+            <span [style.background]="technology.badgeColor" class="badge">
+              <i class="{{ technology.devIconClass }} "></i>
+              {{ technology.text }}
+            </span>
+          }
+        </div>
+      </div>
+    </kep-card>
+  }
 }

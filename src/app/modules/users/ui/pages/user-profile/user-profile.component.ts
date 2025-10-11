@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { BaseComponent } from '@core/common/classes/base.component';
+import { Component, inject } from '@angular/core';
+import { BaseLoadComponent } from '@core/common';
 import { CoreCommonModule } from '@core/common.module';
 import {
   NgbCollapseModule, NgbNav,
@@ -19,6 +19,9 @@ import { UserInfoComponent } from "@users/ui/pages/user-profile/user-info/user-i
 import { UserActivityHistoryComponent } from "@users/ui/pages/user-profile/user-activity-history/user-activity-history.component";
 import { User } from "@users/domain";
 import { UserRanksComponent } from "@users/ui/pages/user-profile/user-ranks/user-ranks.component";
+import { UsersApiService } from "@app/modules/users";
+import { Observable } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
 
 @Component({
@@ -46,14 +49,46 @@ import { UserRanksComponent } from "@users/ui/pages/user-profile/user-ranks/user
     UserRanksComponent,
   ]
 })
-export class UserProfileComponent extends BaseComponent implements OnInit {
-  public user: User;
+export class UserProfileComponent extends BaseLoadComponent<User> {
+  public user: User | null = null;
   public toggleMenu = true;
+  override loadOnInit = false;
 
-  ngOnInit(): void {
-    this.route.data.subscribe(({user}) => {
-      this.user = user;
-      this.titleService.updateTitle(this.route, {username: user.username});
-    });
+  private readonly usersApi = inject(UsersApiService);
+  private currentUsername: string | null = null;
+
+  constructor() {
+    super();
+    this.isLoading = true;
+  }
+
+  override ngOnInit(): void {
+    super.ngOnInit();
+
+    this.route.params
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(params => {
+        const username = params?.['username'];
+
+        if (!username || username === this.currentUsername) {
+          return;
+        }
+
+        this.currentUsername = username;
+        this.user = null;
+        this.loadData();
+      });
+  }
+
+  getData(): Observable<User> {
+    const username = this.currentUsername ?? this.route.snapshot.paramMap.get('username');
+
+    return this.usersApi.getUser(username!);
+  }
+
+  override afterLoadData(user: User): void {
+    this.user = user;
+    this.currentUsername = user.username;
+    this.titleService.updateTitle(this.route, {username: user.username});
   }
 }
