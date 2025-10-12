@@ -12,7 +12,12 @@
               <span class="total-count" *ngIf="!isLoading">({{ pageResult?.total }})</span>
             </div>
             <div>
-              <input placeholder="{{ 'Search' | translate }}" class="form-control mt-md-0 mt-1">
+              <input
+                [formControl]="searchControl"
+                placeholder="{{ 'Search' | translate }}"
+                class="form-control mt-md-0 mt-1"
+                type="search"
+              >
             </div>
           </div>
         </kep-card>

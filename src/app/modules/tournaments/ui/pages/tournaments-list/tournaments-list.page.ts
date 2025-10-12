@@ -13,6 +13,8 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
 import { TournamentsApiService } from "@app/modules/tournaments/data-access/tournaments-api.service";
 import { Tournament } from "@app/modules/tournaments/domain";
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'page-tournaments',
@@ -27,17 +29,35 @@ import { Tournament } from "@app/modules/tournaments/domain";
     KepPaginationComponent,
     NgxSkeletonLoaderModule,
     KepCardComponent,
+    ReactiveFormsModule,
   ]
 })
 export class TournamentsListPage extends BaseTablePageComponent<Tournament> implements OnInit {
   protected tournamentsApiService = inject(TournamentsApiService);
+
+  public searchControl = new FormControl();
 
   get tournaments() {
     return this.pageResult?.data;
   }
 
   getPage(): Observable<PageResult<Tournament>> {
-    return this.tournamentsApiService.getTournaments();
+    return this.tournamentsApiService.getTournaments({
+      ...this.pageable,
+      title: this.searchControl.value,
+    });
+  }
+
+  override ngOnInit(): void {
+    super.ngOnInit();
+
+    this.searchControl.valueChanges.pipe(
+      takeUntil(this._unsubscribeAll),
+      debounceTime(1000),
+    ).subscribe(() => {
+      this.pageNumber = this.defaultPageNumber;
+      this.reloadPage();
+    });
   }
 
   protected getContentHeader(): ContentHeader {

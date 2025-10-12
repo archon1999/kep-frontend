@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 import { ChallengeCallCardComponent } from '@challenges/components/challenge-call-card/challenge-call-card.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
@@ -23,7 +23,7 @@ export class SectionInQueueComponent extends BaseUserComponent implements OnInit
   public challengeCalls: Array<ChallengeCall> = [];
   public challengeCallsSkeletonVisible = true;
 
-  constructor(public service: ChallengesApiService) {
+  constructor(public service: ChallengesApiService, private cdr: ChangeDetectorRef) {
     super();
   }
 
@@ -48,6 +48,7 @@ export class SectionInQueueComponent extends BaseUserComponent implements OnInit
           }
         }
         this.challengeCallsSkeletonVisible = false;
+        this.cdr.detectChanges();
       }
     );
   }
@@ -58,6 +59,7 @@ export class SectionInQueueComponent extends BaseUserComponent implements OnInit
         this.challengeCalls.splice(i, 1);
       }
     }
+    this.cdr.detectChanges();
   }
 
 }

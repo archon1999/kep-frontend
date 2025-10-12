@@ -8,8 +8,8 @@
   </div>
   <div class="card-body">
     <form [formGroup]="filterForm">
-      <div class="row">
-        <div class="col-lg-6 col-md-12 mb-2">
+      <div class="row g-2">
+        <div class="col-lg-6 col-md-12">
           <div class="mb-1">
             <input
               class="form-control"
@@ -89,7 +89,7 @@
               ngbDropdown
             >
               <button
-                [style.height.px]="38"
+                [style.height.px]="40"
                 [style.width.%]="80"
                 class="btn btn-outline-primary"
                 type="button"
@@ -97,7 +97,7 @@
                 {{ selectedTagsName || ('Tags' | translate) }}
               </button>
               <button
-                [style.height.px]="38"
+                [style.height.px]="40"
                 [style.width.%]="20"
                 class="btn btn-outline-primary dropdown-toggle-split"
                 ngbDropdownToggle

@@ -143,6 +143,7 @@ export const localeRu = {
   New: 'Новый',
   Copied: 'Скопировано',
   Notifications: 'Уведомления',
+  NotificationInformationTitle: 'Информация',
   ArenaPauseText: 'Начните участие',
   ArenaStartText: 'Вы участвуете. Ждите следующего соперника!',
   Pause: 'Остановить',

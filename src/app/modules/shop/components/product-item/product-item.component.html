@@ -1,25 +1,60 @@
 <kep-card>
-  <a class="card-img">
-    <p-galleria
-      [(value)]="product.images"
-      [circular]="true"
-      [responsiveOptions]="responsiveOptions"
-      [showItemNavigatorsOnHover]="true"
-      [showItemNavigators]="true"
-      [showThumbnailNavigators]="false"
-      [numVisible]="5"
-    >
-      <ng-template pTemplate="item" let-item>
-        <img [src]="item.url" style="width: 100%;"/>
-      </ng-template>
-      <ng-template pTemplate="thumbnail" let-item>
-        <div class="grid grid-nogutter justify-content-center">
-          <img [height]="64" [src]="item.url"/>
+  <div class="card-img">
+    @if (hasImages()) {
+      <div class="product-carousel">
+        <div class="product-carousel__viewport">
+          <button
+            type="button"
+            class="product-carousel__control product-carousel__control--prev"
+            (click)="showPreviousImage()"
+            [disabled]="!hasMultipleImages()"
+            aria-label="Previous image"
+          >
+            <span aria-hidden="true">&#10094;</span>
+          </button>
+          <img
+            class="product-carousel__image"
+            [src]="currentImageUrl"
+            [alt]="product.title"
+          />
+          <button
+            type="button"
+            class="product-carousel__control product-carousel__control--next"
+            (click)="showNextImage()"
+            [disabled]="!hasMultipleImages()"
+            aria-label="Next image"
+          >
+            <span aria-hidden="true">&#10095;</span>
+          </button>
+          @if (visibleThumbnails.length) {
+            <div
+              class="product-carousel__thumbnails"
+              [class.product-carousel__thumbnails--stacked]="(product?.images?.length ?? 0) > 3"
+            >
+              @for (thumbnail of visibleThumbnails; track thumbnail.index) {
+                <button
+                  type="button"
+                  class="product-carousel__thumbnail"
+                  [class.product-carousel__thumbnail--active]="thumbnail.index === currentImageIndex"
+                  (click)="selectImage(thumbnail.index)"
+                  [attr.aria-label]="thumbnail.image.name || product.title"
+                >
+                  <img
+                    [src]="thumbnail.image.url"
+                    [alt]="thumbnail.image.name || product.title"
+                  />
+                </button>
+              }
+            </div>
+          }
         </div>
-      </ng-template>
-    </p-galleria>
-    <!--    <img [src]="product.images[1]?.url" alt="{{ product.title }}" />-->
-  </a>
+      </div>
+    } @else {
+      <div class="product-carousel__placeholder">
+        <span>No image available</span>
+      </div>
+    }
+  </div>
 
   <div class="card-header">
     <div class="card-title text-dark">

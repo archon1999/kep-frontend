@@ -146,6 +146,7 @@ export const localeUz = {
   NoNotifications: 'Xabarnoma yoʻq',
   New: 'Yangi',
   Notifications: 'Xabarnomalar',
+  NotificationInformationTitle: 'Maʼlumot',
   ArenaPauseText: 'Musobaqani boshlash',
   ArenaStartText: 'Musobaqada ishtirok etyapsiz. Keyingi bellashuvni kuting!',
   Pause: 'Toʻxtatish',

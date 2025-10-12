@@ -72,6 +72,7 @@ export class ChallengeComponent extends BaseComponent implements OnInit, OnDestr
               playerSecondUsername: challenge.playerSecond.username,
             });
             this.updateStatus(true);
+            this.cdr.detectChanges();
           }
         );
       }
@@ -98,11 +99,13 @@ export class ChallengeComponent extends BaseComponent implements OnInit, OnDestr
       this.challenge.status = ChallengeStatus.Already;
       this.updateQuestion();
     }
+    this.cdr.detectChanges();
   }
 
   updateQuestion() {
     this.challenge.nextQuestion.question.number = this.challenge.nextQuestion.number;
     this.question = this.challenge.nextQuestion.question;
+    this.cdr.detectChanges();
   }
 
   startSweet() {
@@ -134,6 +137,7 @@ export class ChallengeComponent extends BaseComponent implements OnInit, OnDestr
     this.service.challengeStart(this.challenge.id).subscribe(
       () => {
         this.challengeUpdate().subscribe();
+        this.cdr.detectChanges();
       }
     );
   }
@@ -143,6 +147,7 @@ export class ChallengeComponent extends BaseComponent implements OnInit, OnDestr
       tap((challenge: Challenge) => {
         this.challenge = Challenge.fromJSON(challenge);
         this.updateStatus();
+        this.cdr.detectChanges();
       })
     );
   }
@@ -176,8 +181,10 @@ export class ChallengeComponent extends BaseComponent implements OnInit, OnDestr
               } else {
                 this.counter.start();
               }
+              this.cdr.detectChanges();
             }
           );
+          this.cdr.detectChanges();
         });
       }
     );
@@ -205,8 +212,10 @@ export class ChallengeComponent extends BaseComponent implements OnInit, OnDestr
             } else {
               this.counter.start();
             }
+            this.cdr.detectChanges();
           }
         );
+        this.cdr.detectChanges();
       });
     }
   }

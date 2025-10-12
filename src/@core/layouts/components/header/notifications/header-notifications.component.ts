@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { bounceAnimation } from 'angular-animations';
 import { AuthService, AuthUser } from '@auth';
 
@@ -17,10 +17,22 @@ import { SimplebarAngularModule } from "simplebar-angular";
 import { Resources } from '@app/resources';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 import { ResourceByUsernamePipe } from '@shared/pipes/resource-by-username.pipe';
+import { TranslateService } from '@ngx-translate/core';
+
+export enum NotificationType {
+  System = 1,
+  ContestRatingChanges = 2,
+  KepcoinEarn = 3,
+  ChallengeCallAccept = 4,
+  ChallengeFinished = 5,
+  ArenaFinished = 6,
+  DuelStarts = 7,
+  NewAchievement = 8,
+}
 
 interface Notification {
   id: number;
-  type: number;
+  type: NotificationType;
   message: string;
   createdNaturaltime: string;
   created: string;
@@ -57,49 +69,35 @@ export class HeaderNotificationsComponent implements OnInit, OnDestroy {
 
   protected cdr = inject(ChangeDetectorRef);
 
-  @ViewChild('notificationAudio') notificationAudio: any;
+  @ViewChild('notificationAudio') notificationAudio?: ElementRef<HTMLAudioElement>;
 
-  private _intervalId: any;
-  private _unsubscribeAll = new Subject();
+  private readonly destroy$ = new Subject<void>();
+  private initTimeoutId: ReturnType<typeof setTimeout> | null = null;
   protected readonly Resources = Resources;
+  protected readonly NotificationType = NotificationType;
 
   constructor(
     public notificationsService: NotificationsService,
     public wsService: WebsocketService,
     public authService: AuthService,
+    private translateService: TranslateService,
   ) {
   }
 
   ngOnInit(): void {
     this.updateNotifications();
-    setTimeout(() => this.init(), 2000);
+    this.initTimeoutId = setTimeout(() => this.init(), 2000);
   }
 
-  init() {
-    this.authService.currentUser.pipe(takeUntil(this._unsubscribeAll)).subscribe(
+  private init(): void {
+    this.authService.currentUser.pipe(takeUntil(this.destroy$)).subscribe(
       (user: AuthUser) => {
         if (user) {
           this.wsService.send('notification-add', user.username);
-          this.wsService.on(`notification-${user.username}`).subscribe(
-            (notification: Notification) => {
-              if (this.notifications.find(n => n.id === notification.id)) {
-                return;
-              }
-
-              if (notification.type === 1) {
-                Swal.fire({
-                  title: 'Information',
-                  html: notification.message,
-                  icon: 'info',
-                });
-              }
-              const notifications = this.notifications.reverse();
-              notifications.push(notification);
-              this.notifications = notifications.reverse();
-              this.notificationAudio.nativeElement.play();
-            }
+          this.wsService.on(`notification-${user.username}`).pipe(takeUntil(this.destroy$)).subscribe(
+            (notification: Notification) => this.handleIncomingNotification(notification),
           );
-        } else {
+        } else if (this.currentUser?.username) {
           this.wsService.send('notification-delete', this.currentUser.username);
         }
         this.currentUser = user;
@@ -107,7 +105,24 @@ export class HeaderNotificationsComponent implements OnInit, OnDestroy {
     );
   }
 
-  updateNotifications() {
+  private handleIncomingNotification(notification: Notification): void {
+    if (this.notifications.find(n => n.id === notification.id)) {
+      return;
+    }
+
+    if (notification.type === NotificationType.System) {
+      Swal.fire({
+        title: this.translateService.instant('NotificationInformationTitle'),
+        html: notification.message,
+        icon: 'info',
+      });
+    }
+
+    this.notifications = [notification, ...this.notifications];
+    this.notificationAudio?.nativeElement?.play();
+  }
+
+  updateNotifications(): void {
     this.isLoading = true;
     this.notificationsService.getNotifications(this.pageNumber, this.isAll).subscribe(
       (result: PageResult<Notification>) => {
@@ -121,42 +136,39 @@ export class HeaderNotificationsComponent implements OnInit, OnDestroy {
     );
   }
 
-  notificationClick(notification: Notification) {
+  notificationClick(notification: Notification): void {
     if (!this.isAll) {
       this.notificationsService.readNotification(notification.id).subscribe(
         (result: any) => {
           if (result.success) {
-            const index = this.notifications.findIndex((value: Notification) => value.id === notification.id);
-            if (index !== -1) {
-              this.notifications.splice(index, 1);
-            }
+            this.notifications = this.notifications.filter((value: Notification) => value.id !== notification.id);
           }
         }
       );
     }
   }
 
-  readAll() {
+  readAll(): void {
     this.notificationsService.readAllNotification().subscribe(
       (result: any) => {
         if (result.success) {
-          this.notifications.splice(0, this.notifications.length);
+          this.notifications = [];
         }
       }
     );
   }
 
-  click() {
+  click(): void {
     this.isAll = !this.isAll;
     this.notifications = [];
     this.updateNotifications();
   }
 
   ngOnDestroy(): void {
-    if (this._intervalId) {
-      clearInterval(this._intervalId);
+    if (this.initTimeoutId) {
+      clearTimeout(this.initTimeoutId);
     }
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
