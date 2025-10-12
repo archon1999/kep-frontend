@@ -1,25 +1,50 @@
 <kep-card>
-  <a class="card-img">
-    <p-galleria
-      [(value)]="product.images"
-      [circular]="true"
-      [responsiveOptions]="responsiveOptions"
-      [showItemNavigatorsOnHover]="true"
-      [showItemNavigators]="true"
-      [showThumbnailNavigators]="false"
-      [numVisible]="5"
-    >
-      <ng-template pTemplate="item" let-item>
-        <img [src]="item.url" style="width: 100%;"/>
-      </ng-template>
-      <ng-template pTemplate="thumbnail" let-item>
-        <div class="grid grid-nogutter justify-content-center">
-          <img [height]="64" [src]="item.url"/>
+  <div class="card-img">
+    @if (product.images?.length) {
+      <div class="product-carousel">
+        <button
+          type="button"
+          class="carousel-control prev"
+          (click)="showPreviousImage()"
+          [disabled]="product.images.length === 1"
+          aria-label="Previous image"
+        >
+          ‹
+        </button>
+
+        <img
+          class="carousel-image"
+          [src]="product.images[activeImageIndex]?.url"
+          [alt]="product.title"
+        />
+
+        <button
+          type="button"
+          class="carousel-control next"
+          (click)="showNextImage()"
+          [disabled]="product.images.length === 1"
+          aria-label="Next image"
+        >
+          ›
+        </button>
+      </div>
+
+      @if (product.images.length > 1) {
+        <div class="product-thumbnails">
+          @for (image of product.images; let index = $index; track image.url) {
+            <button
+              type="button"
+              class="thumbnail"
+              [class.thumbnail-active]="index === activeImageIndex"
+              (click)="selectImage(index)"
+            >
+              <img [src]="image.url" [alt]="product.title" />
+            </button>
+          }
         </div>
-      </ng-template>
-    </p-galleria>
-    <!--    <img [src]="product.images[1]?.url" alt="{{ product.title }}" />-->
-  </a>
+      }
+    }
+  </div>
 
   <div class="card-header">
     <div class="card-title text-dark">
