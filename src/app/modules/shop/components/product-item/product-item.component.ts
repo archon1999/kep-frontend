@@ -4,7 +4,7 @@ import { CoreCommonModule } from '@core/common.module';
 import { KepcoinViewModule } from '@shared/components/kepcoin-view/kepcoin-view.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { GalleriaModule } from 'primeng/galleria';
-import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
   selector: 'product-item',
@@ -37,4 +37,8 @@ export class ProductItemComponent {
       numVisible: 2
     }
   ];
+
+  get primarySizes(): string[] {
+    return this.product?.colors?.[0]?.sizes?.map(size => size.name) ?? [];
+  }
 }

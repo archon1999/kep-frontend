@@ -1,4 +1,4 @@
-<div class="content-wrapper container-xxl p-0">
+<div class="content-wrapper container-xxl p-0 shop-page">
   <div class="content-body">
     <app-content-header [contentHeader]="contentHeader"/>
 
@@ -7,13 +7,121 @@
         <spinner/>
       </div>
     } @else {
-      <div class="row">
-        @for (product of data; track product.title) {
-          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-            <product-item [product]="product"/>
+      @if (data?.length) {
+        <section class="shop-hero">
+          <div class="shop-hero__content">
+            <span class="shop-hero__eyebrow">Yangi kolleksiya 2025</span>
+            <h2 class="shop-hero__title">KEP ekotizimi uchun maxsus merchlar va gadjetlar</h2>
+            <p class="shop-hero__subtitle">
+              Jamoamiz dizaynerlari tomonidan yaratilgan mahsulotlar bilan ish unumdorligingizni oshiring.
+              Ko'ylaklar, ofis aksesuarlaridan tortib texnik gadjetlargacha bir joyda.
+            </p>
+            <div class="shop-hero__cta">
+              <a class="btn btn-hero" href="#catalog">
+                <i data-feather="shopping-cart"></i>
+                Katalogni ko'rish
+              </a>
+              <span class="hero-stats">
+                {{ trendingProducts.length }} ta trend mahsulot
+              </span>
+            </div>
           </div>
-        }
-      </div>
+
+          <div class="shop-hero__media" *ngIf="heroSlides.length">
+            <p-galleria
+              [value]="heroSlides"
+              [showThumbnails]="false"
+              [showIndicators]="true"
+              [autoPlay]="true"
+              [transitionInterval]="4200"
+              [circular]="true"
+              [containerStyle]="{ height: '100%' }"
+            >
+              <ng-template pTemplate="item" let-item>
+                <figure class="hero-slide">
+                  <img [src]="item.url" [alt]="item.title"/>
+                  <figcaption>
+                    <h5>{{ item.title }}</h5>
+                    <p>{{ item.description }}</p>
+                  </figcaption>
+                </figure>
+              </ng-template>
+            </p-galleria>
+          </div>
+        </section>
+      } @else {
+        <div class="card empty-state">
+          <div class="card-body text-center py-5">
+            <i class="bi bi-bag-x"></i>
+            <h5 class="mt-2">Hozircha mahsulotlar mavjud emas</h5>
+            <p class="text-muted">Yangi kolleksiyalar tez orada qo'shiladi. Kanalimizni kuzatib boring!</p>
+          </div>
+        </div>
+      }
+
+      @if (categories.length) {
+        <section class="shop-section">
+          <div class="section-header">
+            <div>
+              <h3>Rang kolleksiyalari</h3>
+              <p class="section-subtitle">Mashhur kombinatsiyalarni tanlang va moslashtirilgan look yarating.</p>
+            </div>
+          </div>
+          <div class="row g-3">
+            @for (category of categories; track category.title) {
+              <div class="col-xxl-2 col-xl-3 col-lg-4 col-md-4 col-sm-6">
+                <div class="category-card" [style.--category-accent]="category.accent">
+                  <span class="category-card__accent"></span>
+                  <h6>{{ category.title }}</h6>
+                  <p>{{ category.count }} ta mahsulot</p>
+                  <span class="category-card__hint">Ko'rish</span>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+      }
+
+      @if (trendingProducts.length) {
+        <section class="shop-section">
+          <div class="section-header">
+            <div>
+              <h3>🔥 Trenddagi mahsulotlar</h3>
+              <p class="section-subtitle">Jamoa tomonidan ko'p buyurtma qilingan hitlar.</p>
+            </div>
+          </div>
+          <p-carousel
+            [value]="trendingProducts"
+            [numVisible]="4"
+            [numScroll]="1"
+            [circular]="true"
+            [responsiveOptions]="carouselResponsiveOptions"
+            containerClass="trending-carousel"
+          >
+            <ng-template pTemplate="item" let-product>
+              <div class="carousel-item">
+                <product-item [product]="product"/>
+              </div>
+            </ng-template>
+          </p-carousel>
+        </section>
+      }
+
+      <section class="shop-section" id="catalog">
+        <div class="section-header">
+          <div>
+            <h3>Barcha mahsulotlar</h3>
+            <p class="section-subtitle">Kolleksiyalardan ilhomlaning va o'zingizga mos kombinatsiyani tanlang.</p>
+          </div>
+        </div>
+        <div class="row g-4">
+          @for (product of data; track product.title) {
+            <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-6 col-sm-12">
+              <product-item [product]="product"/>
+            </div>
+          }
+        </div>
+      </section>
     }
   </div>
 </div>
