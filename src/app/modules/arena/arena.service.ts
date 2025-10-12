@@ -12,7 +12,7 @@ export class ArenaService {
     public api: ApiService,
   ) { }
 
-  getArenaAll(params?: { status?: ArenaStatus } & Partial<Pageable>) {
+  getArenaAll(params?: { status?: ArenaStatus, title?: string } & Partial<Pageable>) {
     return this.api.get('arena', params);
   }
 
