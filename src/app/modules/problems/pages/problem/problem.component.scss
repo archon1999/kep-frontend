@@ -1,19 +1,170 @@
-.card .card-header {
-  padding: 1rem !important;
-  padding-bottom: 0 !important;
+.problem-header {
+  display: flex;
   align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+
+  &__nav {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  &__content {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  &__breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: rgba(var(--bs-body-color-rgb), 0.65);
+  }
+
+  &__breadcrumb-link {
+    text-decoration: none;
+    font-weight: 600;
+    color: inherit;
+  }
+
+  &__title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+
+    h1 {
+      font-size: clamp(1.5rem, 2vw + 1rem, 2.4rem);
+      margin: 0;
+    }
+  }
+
+  &__id {
+    font-weight: 600;
+    color: rgba(var(--bs-body-color-rgb), 0.65);
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    font-size: 0.85rem;
+  }
+
+  &__meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  &__meta-label {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(var(--bs-body-color-rgb), 0.55);
+    font-size: 0.72rem;
+  }
+
+  &__meta-value {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+  }
 }
 
-.problem-container {
-  height: 100%;
+.problem-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  &__tabs {
+    position: sticky;
+    top: 0;
+    background: inherit;
+    z-index: 5;
+    padding-top: 0.5rem;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    > * {
+      background: var(--bs-card-bg);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 12px 25px rgba(15, 15, 15, 0.08);
+    }
+  }
 }
 
-/* Стили для блока с кодом */
-pre {
-  background-color: #f8f9fa;
-  padding: 1rem;
-  border-radius: 0.3rem;
-  overflow-x: auto;
+.problem-nav {
+  gap: 0.5rem;
+  border-bottom: none;
+  padding-bottom: 0.5rem;
+
+  .nav-link {
+    border: none;
+    border-radius: 999px;
+    padding: 0.5rem 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+    color: rgba(var(--bs-body-color-rgb), 0.65);
+
+    &.active {
+      background: var(--bs-primary);
+      color: var(--bs-white);
+      box-shadow: 0 10px 20px rgba(var(--bs-primary-rgb), 0.3);
+    }
+  }
 }
 
-/* Дополнительные стили можно добавить по необходимости */
+.problem-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  &__upload,
+  &__signin {
+    box-shadow: 0 12px 25px rgba(15, 15, 15, 0.08);
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+}
+
+.btn-icon {
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  box-shadow: 0 6px 20px rgba(15, 15, 15, 0.08);
+}
+
+@media (max-width: 991.98px) {
+  .problem-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .problem-left__tabs {
+    position: static;
+  }
+}

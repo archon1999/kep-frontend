@@ -1,0 +1,171 @@
+<div class="workspace" [formGroup]="editorForm">
+  <div class="workspace__header">
+    <div class="workspace__header-left">
+      <div class="workspace__field">
+        <label class="workspace__label">{{ 'Language' | translate }}</label>
+        <ng-select
+          (change)="langChange($event)"
+          [clearable]="false"
+          formControlName="lang"
+        >
+          @for (language of availableLanguages; track language) {
+            <ng-option [value]="language.lang">
+              {{ language.langFull || language.lang }}
+            </ng-option>
+          }
+        </ng-select>
+      </div>
+      @if (sampleTests?.length) {
+        <div class="workspace__field">
+          <label class="workspace__label">{{ 'CodeEditor.SampleTest' | translate }}</label>
+          <ng-select
+            (change)="onSampleTestChange()"
+            [clearable]="false"
+            formControlName="testCaseNumber"
+          >
+            @for (sampleTest of sampleTests; track sampleTest; let i = $index) {
+              <ng-option [value]="i + 1">
+                {{ 'CodeEditor.SampleTest' | translate }} #{{ i + 1 }}
+              </ng-option>
+            }
+          </ng-select>
+        </div>
+      }
+    </div>
+
+    <div class="workspace__actions">
+      <div class="workspace__action-group">
+        @if (authService.currentUserValue?.permissions?.canUseCheckSamples === false) {
+          <kepcoin-spend-swal
+            (success)="checkSamples()"
+            [customContent]="true"
+            [purchaseUrl]="'problems/' + problem?.id + '/purchase-check-samples/'"
+            [value]="100"
+          >
+            <button type="button" class="btn btn-outline-dark btn-sm" [disabled]="isCheckSamples">
+              @if (isCheckSamples) {
+                <span class="spinner-border spinner-border-sm" role="status"></span>
+              }
+              {{ 'CodeEditor.CheckSamples' | translate }}
+            </button>
+          </kepcoin-spend-swal>
+        } @else {
+          <button type="button" class="btn btn-outline-dark btn-sm" (click)="checkSamples()" [disabled]="isCheckSamples">
+            @if (isCheckSamples) {
+              <span class="spinner-border spinner-border-sm" role="status"></span>
+            }
+            <i data-feather="terminal"></i>
+            <span class="ms-1">{{ 'CodeEditor.CheckSamples' | translate }}</span>
+          </button>
+        }
+
+        @if (!isSelectedLangText()) {
+          <button type="button" class="btn btn-outline-dark btn-sm" (click)="run()" [disabled]="isRunning">
+            @if (isRunning) {
+              <span class="spinner-border spinner-border-sm" role="status"></span>
+            }
+            <i data-feather="play"></i>
+            <span class="ms-1">{{ 'CodeEditor.Run' | translate }}</span>
+          </button>
+        }
+      </div>
+
+      <div class="workspace__action-group">
+        @if (answerForInputEnabled && !isSelectedLangText()) {
+          <kepcoin-spend-swal
+            (success)="answerForInput($event)"
+            [customContent]="true"
+            [purchaseUrl]="'problems/' + problem?.id + '/answer-for-input/'"
+            [requestBody]="{ input_data: editorForm.get('input').value }"
+            [value]="1"
+          >
+            <button type="button" class="btn btn-outline-primary btn-sm" [disabled]="isAnswerForInput">
+              @if (isAnswerForInput) {
+                <span class="spinner-border spinner-border-sm" role="status"></span>
+              }
+              <i data-feather="check-square"></i>
+              <span class="ms-1">{{ 'CodeEditor.AnswerForInput' | translate }}</span>
+            </button>
+          </kepcoin-spend-swal>
+        }
+
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          (click)="submit()"
+          [disabled]="isSubmitting || !submitUrl || !editorForm.valid"
+        >
+          @if (isSubmitting) {
+            <span class="spinner-border spinner-border-sm" role="status"></span>
+          }
+          <i data-feather="send"></i>
+          <span class="ms-1">{{ 'CodeEditor.Submit' | translate }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="workspace__editor">
+    <monaco-editor
+      formControlName="code"
+      [lang]="editorForm.controls.lang.value"
+      [options]="editorOptions"
+    ></monaco-editor>
+  </div>
+
+  <div class="workspace__io" [class.workspace__io--single]="isSelectedLangText()">
+    <div class="workspace__panel" *ngIf="!isSelectedLangText()">
+      <label class="workspace__label">{{ 'CodeEditor.Input' | translate }}</label>
+      <textarea class="form-control" formControlName="input" rows="4"></textarea>
+    </div>
+    <div class="workspace__panel" *ngIf="!isSelectedLangText()">
+      <label class="workspace__label">{{ 'CodeEditor.Output' | translate }}</label>
+      <textarea class="form-control" formControlName="output" rows="4" readonly></textarea>
+    </div>
+    <div class="workspace__panel" *ngIf="answerForInputEnabled && !isSelectedLangText()">
+      <label class="workspace__label">{{ 'CodeEditor.Answer' | translate }}</label>
+      <textarea class="form-control" formControlName="answer" rows="4" readonly></textarea>
+    </div>
+  </div>
+
+  <div class="workspace__results" *ngIf="checkSamplesResult?.length">
+    <h6 class="workspace__results-title">{{ 'Result' | translate }}</h6>
+    <div class="workspace__results-grid">
+      @for (result of checkSamplesResult; track result; let i = $index) {
+        <div class="workspace__result-card" [ngClass]="{
+          'workspace__result-card--accepted': result.verdict === Verdicts.Accepted,
+          'workspace__result-card--failed': result.verdict !== Verdicts.Accepted
+        }">
+          <div class="workspace__result-header">
+            <span class="workspace__result-index">TC #{{ i + 1 }}</span>
+            <span class="workspace__result-verdict">
+              {{ result.verdict | verdictShortTitle }}
+            </span>
+          </div>
+          @if (result.input) {
+            <div class="workspace__result-section">
+              <div class="workspace__result-label">{{ 'CodeEditor.Input' | translate }}</div>
+              <pre class="workspace__result-value">{{ result.input }}</pre>
+            </div>
+          }
+          @if (result.answer) {
+            <div class="workspace__result-section">
+              <div class="workspace__result-label">{{ 'CodeEditor.Answer' | translate }}</div>
+              <pre class="workspace__result-value">{{ result.answer }}</pre>
+            </div>
+          }
+          @if (result.output) {
+            <div class="workspace__result-section">
+              <div class="workspace__result-label">{{ 'CodeEditor.Output' | translate }}</div>
+              <pre class="workspace__result-value">{{ result.output }}</pre>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="workspace__spinner" *ngIf="isCheckSamples">
+    <spinner [name]="resultSpinnerName"></spinner>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="problem-layout">
+  <header class="problem-layout__header">
+    <ng-content select="[problemLayoutHeader]"></ng-content>
+  </header>
+  <div class="problem-layout__body">
+    <section class="problem-layout__column problem-layout__column--left">
+      <div class="problem-layout__scroll">
+        <ng-content select="[problemLayoutLeft]"></ng-content>
+      </div>
+    </section>
+    <aside class="problem-layout__column problem-layout__column--right">
+      <div class="problem-layout__scroll">
+        <ng-content select="[problemLayoutRight]"></ng-content>
+      </div>
+    </aside>
+  </div>
+</div>
