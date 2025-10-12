@@ -1,0 +1,187 @@
+<div
+  class="workspace"
+  [formGroup]="editorForm"
+  (keydown)="onKeyDown($event)"
+>
+  <div class="workspace__header">
+    <div class="workspace__title">
+      {{ 'CodeEditor.Editor' | translate }}
+    </div>
+    <div class="workspace__controls">
+      <div class="workspace__select">
+        <label class="workspace__label">{{ 'Language' | translate }}</label>
+        <ng-select
+          class="workspace__ng-select"
+          (change)="langChange($event)"
+          [clearable]="false"
+          [formControl]="editorForm.controls.lang"
+        >
+          @for (availableLanguage of availableLanguages; track availableLanguage) {
+            <ng-option [value]="availableLanguage.lang">
+              {{ availableLanguage.langFull || availableLanguage.lang }}
+            </ng-option>
+          }
+        </ng-select>
+      </div>
+      @if (sampleTests.length > 0) {
+        <div class="workspace__select">
+          <label class="workspace__label">{{ 'CodeEditor.SampleTest' | translate }}</label>
+          <ng-select
+            class="workspace__ng-select"
+            [clearable]="false"
+            formControlName="testCaseNumber"
+          >
+            @for (sampleTest of sampleTests; track sampleTest; let i = $index) {
+              <ng-option [value]="i + 1">
+                {{ i + 1 }}
+              </ng-option>
+            }
+          </ng-select>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="workspace__body">
+    <div class="workspace__editor">
+      <monaco-editor
+        [formControl]="editorForm.controls.code"
+        [height]="editorHeight"
+        [lang]="editorForm.controls.lang.value"
+      ></monaco-editor>
+    </div>
+    <div class="workspace__panel">
+      @if (!isSelectedLangText()) {
+        <div class="workspace__panel-section">
+          <label class="workspace__label">{{ 'CodeEditor.Input' | translate }}</label>
+          <textarea
+            class="form-control"
+            formControlName="input"
+            rows="6"
+          ></textarea>
+        </div>
+      }
+
+      @if (!isSelectedLangText()) {
+        <div class="workspace__panel-section">
+          <label class="workspace__label">{{ 'CodeEditor.Output' | translate }}</label>
+          <textarea
+            class="form-control"
+            formControlName="output"
+            rows="5"
+            readonly
+          ></textarea>
+        </div>
+      }
+
+      <div class="workspace__panel-section">
+        <label class="workspace__label">{{ 'CodeEditor.Answer' | translate }}</label>
+        <textarea
+          class="form-control"
+          formControlName="answer"
+          rows="5"
+          readonly
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="workspace__footer">
+    <div class="workspace__footer-left">
+      @if (authService.currentUserValue?.permissions?.canUseCheckSamples === false) {
+        <kepcoin-spend-swal
+          (success)="checkSamplesPurchaseSuccess()"
+          [customContent]="true"
+          [purchaseUrl]="'problems/' + problem?.id + '/purchase-check-samples/'"
+          [value]="100"
+        >
+          <button class="btn btn-outline-secondary btn-sm" type="button">
+            {{ 'CodeEditor.CheckSamples' | translate }}
+            <i data-feather="shopping-cart"></i>
+          </button>
+        </kepcoin-spend-swal>
+      } @else {
+        <button
+          (click)="checkSamples()"
+          class="btn btn-outline-secondary btn-sm"
+          [disabled]="isCheckSamples"
+          type="button"
+        >
+          @if (isCheckSamples) {
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          }
+          {{ 'CodeEditor.CheckSamples' | translate }}
+        </button>
+      }
+    </div>
+    <div class="workspace__footer-right">
+      @if (!isSelectedLangText()) {
+        <button
+          class="btn btn-outline-primary btn-sm"
+          (click)="run()"
+          [disabled]="isRunning"
+          type="button"
+        >
+          @if (isRunning) {
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          }
+          {{ 'CodeEditor.Run' | translate }}
+        </button>
+      }
+
+      @if (answerForInputEnabled) {
+        <kepcoin-spend-swal
+          (success)="answerForInput($event)"
+          [customContent]="true"
+          [purchaseUrl]="'problems/' + problem?.id + '/answer-for-input/'"
+          [requestBody]="{input_data: editorForm.get('input')?.value}"
+          [value]="1"
+        >
+          <button class="btn btn-outline-primary btn-sm" type="button">
+            @if (isAnswerForInput) {
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            }
+            {{ 'CodeEditor.AnswerForInput' | translate }}
+          </button>
+        </kepcoin-spend-swal>
+      }
+
+      @if (submitUrl) {
+        <button
+          class="btn btn-primary btn-sm"
+          (click)="submit()"
+          [disabled]="!editorForm.valid || !canSubmit"
+          type="button"
+        >
+          {{ 'CodeEditor.Submit' | translate }}
+        </button>
+      }
+    </div>
+  </div>
+
+  @if (showResultsPanel && checkSamplesResult.length > 0) {
+    <div class="workspace__results">
+      <div class="workspace__results-header">
+        <h6 class="workspace__results-title">{{ 'CodeEditor.CheckSamples' | translate }}</h6>
+        <button class="btn btn-icon btn-sm" type="button" (click)="closeResultsPanel()">
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <div class="workspace__results-body">
+        @for (result of checkSamplesResult; track trackResult($index, result); let i = $index) {
+          <div class="workspace__result-row" [class.workspace__result-row--accepted]="result.verdict === Verdicts.OK">
+            <div class="workspace__result-index">#{{ i + 1 }}</div>
+            <div class="workspace__result-content">
+              <div class="workspace__result-label">{{ 'CodeEditor.Input' | translate }}:</div>
+              <pre class="workspace__result-pre">{{ result.input }}</pre>
+              <div class="workspace__result-label">{{ 'CodeEditor.Output' | translate }}:</div>
+              <pre class="workspace__result-pre">{{ result.output }}</pre>
+              <div class="workspace__result-label">{{ 'CodeEditor.Answer' | translate }}:</div>
+              <pre class="workspace__result-pre">{{ result.answer }}</pre>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

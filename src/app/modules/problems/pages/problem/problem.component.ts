@@ -3,6 +3,7 @@ import { Params } from '@angular/router';
 import { AuthUser } from '@auth';
 import { Subject } from 'rxjs';
 import { Problem } from '@problems/models/problems.models';
+import { AttemptLangs } from '@problems/constants';
 import { ProblemsApiService } from '../../services/problems-api.service';
 import { ApiService } from '@core/data-access/api.service';
 import { CoreCommonModule } from '@core/common.module';
@@ -10,20 +11,13 @@ import { NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProblemDescriptionComponent } from '@problems/pages/problem/problem-description/problem-description.component';
 import { ProblemAttemptsComponent } from '@problems/pages/problem/problem-attempts/problem-attempts.component';
 import { ProblemHacksComponent } from '@problems/pages/problem/problem-hacks/problem-hacks.component';
-import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
-import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
 import { ProblemSidebarComponent } from '@problems/pages/problem/problem-sidebar/problem-sidebar.component';
-import { TourModule } from '@shared/third-part-modules/tour/tour.module';
-import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
-import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { BasePageComponent } from '@core/common/classes/base-page.component';
-import { SidebarService } from '@shared/ui/sidebar/sidebar.service';
-import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
-import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
-
 import { ProblemSubmitCardComponent } from '@problems/components/problem-submit-card/problem-submit-card.component';
 import { take } from 'rxjs/operators';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
+import { ProblemWorkspaceComponent } from './problem-workspace/problem-workspace.component';
+import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 
 @Component({
   selector: 'app-problem',
@@ -32,26 +26,21 @@ import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
   standalone: true,
   imports: [
     CoreCommonModule,
-    ContentHeaderModule,
     NgbNavModule,
+    NgbTooltipModule,
     ProblemDescriptionComponent,
     ProblemAttemptsComponent,
     ProblemHacksComponent,
-    MonacoEditorModule,
-    CodeEditorModule,
     ProblemSidebarComponent,
-    TourModule,
-    NgSelectModule,
-    MonacoEditorComponent,
-    KepCardComponent,
-
     ProblemSubmitCardComponent,
-    NgbTooltipModule,
+    ProblemWorkspaceComponent,
+    MonacoEditorComponent,
     ResourceByIdPipe,
   ]
 })
 export class ProblemComponent extends BasePageComponent implements OnInit {
   public problem: Problem;
+  protected readonly AttemptLangs = AttemptLangs;
 
   public activeId = 1;
   public studyPlanId: number;
@@ -62,16 +51,16 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
   constructor(
     public service: ProblemsApiService,
     public api: ApiService,
-    protected coreSidebarService: SidebarService,
   ) {
     super();
   }
 
   ngOnInit(): void {
-    if (this._queryParams.tab === 'hacks') {
-      this.activeId = 3;
-    } else if (this._queryParams.tab === 'attempts') {
+    const currentPath = this.route.snapshot.routeConfig?.path;
+    if (currentPath === 'attempts' || this._queryParams.tab === 'attempts') {
       this.activeId = 2;
+    } else if (currentPath === 'hacks' || this._queryParams.tab === 'hacks') {
+      this.activeId = 3;
     }
 
     this.route.data.subscribe(({ problem }) => {
@@ -136,12 +125,7 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
     );
   }
 
-  codeEditorSidebarToggle() {
-    this.coreSidebarService.getSidebarRegistry('codeEditorSidebar').toggleOpen();
-  }
-
   onSubmit() {
-    console.log(4142);
     this.activeId = 2;
     this.submitEvent.next(null);
   }
