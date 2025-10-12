@@ -17,9 +17,6 @@ import { TourModule } from '@shared/third-part-modules/tour/tour.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { BasePageComponent } from '@core/common/classes/base-page.component';
-import { SidebarService } from '@shared/ui/sidebar/sidebar.service';
-import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
-import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 import { ProblemSubmitCardComponent } from '@problems/components/problem-submit-card/problem-submit-card.component';
 import { take } from 'rxjs/operators';
@@ -32,7 +29,6 @@ import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
   standalone: true,
   imports: [
     CoreCommonModule,
-    ContentHeaderModule,
     NgbNavModule,
     ProblemDescriptionComponent,
     ProblemAttemptsComponent,
@@ -43,7 +39,6 @@ import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
     TourModule,
     NgSelectModule,
     MonacoEditorComponent,
-    KepCardComponent,
 
     ProblemSubmitCardComponent,
     NgbTooltipModule,
@@ -59,28 +54,32 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
 
   public submitEvent = new Subject();
   public checkInput = '';
+
+  private readonly _tabSegments: Record<number, string> = {
+    1: '',
+    2: 'attempts',
+    3: 'hacks',
+  };
+
   constructor(
     public service: ProblemsApiService,
     public api: ApiService,
-    protected coreSidebarService: SidebarService,
   ) {
     super();
   }
 
   ngOnInit(): void {
-    if (this._queryParams.tab === 'hacks') {
-      this.activeId = 3;
-    } else if (this._queryParams.tab === 'attempts') {
-      this.activeId = 2;
-    }
+    const initialTab = this.getTabId(this._queryParams?.tab as string ?? this.route.snapshot.data['defaultTab']);
+    this.activeId = initialTab;
 
-    this.route.data.subscribe(({ problem }) => {
+    this.route.data.subscribe(({ problem, defaultTab }) => {
       this.problem = problem;
       this.titleService.updateTitle(this.route, {
         problemTitle: this.problem.title,
         problemId: this.problem.id
       });
       this.checkInput = this.problem.checkInputSource;
+      this.activeId = this.getTabId(this._queryParams?.tab as string ?? defaultTab);
       this.loadContentHeader();
     });
   }
@@ -117,12 +116,10 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
   }
 
   activeIdChange(index: number) {
-    if (index === 1) {
-      this.updateQueryParams({ tab: null });
-    } else if (index === 2) {
-      this.updateQueryParams({ tab: 'attempts' });
-    } else if (index === 3) {
-      this.updateQueryParams({ tab: 'hacks' });
+    this.activeId = index;
+    const segment = this._tabSegments[index];
+    if (segment !== undefined) {
+      this.navigateToTab(segment);
     }
   }
 
@@ -136,13 +133,9 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
     );
   }
 
-  codeEditorSidebarToggle() {
-    this.coreSidebarService.getSidebarRegistry('codeEditorSidebar').toggleOpen();
-  }
-
   onSubmit() {
-    console.log(4142);
     this.activeId = 2;
+    this.navigateToTab(this._tabSegments[2]);
     this.submitEvent.next(null);
   }
 
@@ -170,8 +163,44 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
     if (!problemId || this.problem?.id === problemId) {
       return;
     }
-    this.router.navigate(['/practice/problems/problem', problemId], {
-      queryParams: this.route.snapshot.queryParams,
+    const segment = this._tabSegments[this.activeId];
+    const commands = ['/practice/problems/problem', problemId];
+    if (segment) {
+      commands.push(segment);
+    }
+    const queryParams = { ...this.route.snapshot.queryParams };
+    delete queryParams['tab'];
+    this.router.navigate(commands, {
+      queryParams,
     });
+  }
+
+  navigateToTab(segment?: string) {
+    if (!this.problem) {
+      return;
+    }
+    const commands = ['/practice/problems/problem', this.problem.id];
+    if (segment) {
+      commands.push(segment);
+    }
+    const queryParams = { ...this.route.snapshot.queryParams };
+    delete queryParams['tab'];
+    this.router.navigate(commands, {
+      queryParams,
+    });
+  }
+
+  private getTabId(tabKey?: string | null): number {
+    if (!tabKey) {
+      return 1;
+    }
+    const normalized = tabKey.toLowerCase();
+    if (normalized === 'attempts') {
+      return 2;
+    }
+    if (normalized === 'hacks') {
+      return 3;
+    }
+    return 1;
   }
 }

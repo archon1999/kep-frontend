@@ -2,9 +2,45 @@ import { Routes } from '@angular/router';
 import { ContentLayoutComponent } from '@core/layouts/content-layout/content-layout.component';
 import { AuthenticationLayoutComponent } from '@core/layouts/authentication-layout/authentication-layout.component';
 import { LandingLayoutComponent } from "@core/layouts/landing-layout/landing-layout.component";
+import { ProblemLayoutComponent } from '@core/layouts/problem-layout/problem-layout.component';
 import { IsAuthenticatedGuard } from '@auth';
+import { ProblemResolver } from '@problems/problems.resolver';
+import { ProblemGuard } from '@problems/problems.guard';
 
 export const routes: Routes = [
+  {
+    path: 'practice/problems/problem/:id',
+    component: ProblemLayoutComponent,
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./modules/problems/pages/problem/problem.component').then(c => c.ProblemComponent),
+        data: { title: 'Problems.Problem', defaultTab: 'problem' },
+        resolve: {
+          problem: ProblemResolver,
+        },
+        canActivate: [ProblemGuard],
+      },
+      {
+        path: 'attempts',
+        loadComponent: () => import('./modules/problems/pages/problem/problem.component').then(c => c.ProblemComponent),
+        data: { title: 'Problems.Problem', defaultTab: 'attempts' },
+        resolve: {
+          problem: ProblemResolver,
+        },
+        canActivate: [ProblemGuard],
+      },
+      {
+        path: 'hacks',
+        loadComponent: () => import('./modules/problems/pages/problem/problem.component').then(c => c.ProblemComponent),
+        data: { title: 'Problems.Problem', defaultTab: 'hacks' },
+        resolve: {
+          problem: ProblemResolver,
+        },
+        canActivate: [ProblemGuard],
+      },
+    ]
+  },
   {
     path: '',
     component: LandingLayoutComponent,

@@ -20,39 +20,6 @@ export default [
   //     studyPlan: StudyPlanResolver,
   //   }
   // },
-  {
-    path: 'problem/:id',
-    loadComponent: () => import('./pages/problem/problem.component').then(c => c.ProblemComponent),
-    data: {
-      title: 'Problems.Problem',
-    },
-    resolve: {
-      problem: ProblemResolver,
-    },
-    canActivate: [ProblemGuard],
-  },
-  {
-    path: 'problem/:id/attempts',
-    loadComponent: () => import('./pages/problem/problem.component').then(c => c.ProblemComponent),
-    data: {
-      title: 'Problems.Problem',
-    },
-    resolve: {
-      problem: ProblemResolver,
-    },
-    canActivate: [ProblemGuard],
-  },
-  {
-    path: 'problem/:id/hacks',
-    loadComponent: () => import('./pages/problem/problem.component').then(c => c.ProblemComponent),
-    data: {
-      title: 'Problems.Problem',
-    },
-    resolve: {
-      problem: ProblemResolver,
-    },
-    canActivate: [ProblemGuard],
-  },
   // {
   //   path: 'problem/:id/og-image',
   //   loadComponent: () => import('./pages/problem/problem-og-image/problem-og-image.component').then(c => c.ProblemOgImageComponent),

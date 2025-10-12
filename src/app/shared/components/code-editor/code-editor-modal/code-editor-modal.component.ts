@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Language, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'app/modules/problems/services/language.service';
@@ -32,7 +32,7 @@ interface CheckSamplesResultOne {
   encapsulation: ViewEncapsulation.None,
   standalone: false,
 })
-export class CodeEditorModalComponent implements OnInit {
+export class CodeEditorModalComponent implements OnInit, OnChanges {
 
   @Input() submitUrl: string;
   @Input() submitParams: any = {};
@@ -42,6 +42,7 @@ export class CodeEditorModalComponent implements OnInit {
   @Input() answerForInputEnabled = false;
   @Input() availableLanguages: Array<AvailableLanguage> = [];
   @Input() problem: Problem;
+  @Input() displayMode: 'sidebar' | 'docked' = 'sidebar';
   @Output() submittedEvent = new EventEmitter<null>();
 
   public canSubmit = true;
@@ -83,11 +84,16 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   get sidebarIsOpened() {
-    return this.coreSidebarService.getSidebarRegistry(this.sidebarName).isOpened;
+    if (this.displayMode === 'docked') {
+      return true;
+    }
+    const sidebar = this.coreSidebarService.getSidebarRegistry(this.sidebarName);
+    return sidebar ? sidebar.isOpened : false;
   }
 
   get resultSidebarIsOpened() {
-    return this.coreSidebarService.getSidebarRegistry(this.checkSamplesResultSidebarName).isOpened;
+    const sidebar = this.coreSidebarService.getSidebarRegistry(this.checkSamplesResultSidebarName);
+    return sidebar ? sidebar.isOpened : false;
   }
 
   ngOnInit(): void {
@@ -148,9 +154,17 @@ export class CodeEditorModalComponent implements OnInit {
     );
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.displayMode === 'docked' && this.availableLanguages?.length && this.problem) {
+      const codeValue = this.editorForm.get('code').value;
+      if (!codeValue) {
+        this.init();
+      }
+    }
+  }
+
   init() {
     const editorLang = this.editorForm.get('lang').value as AttemptLangs;
-    console.log(editorLang)
     const code = this.templateCodeService.get(this.uniqueName, editorLang)
       || findAvailableLang(this.availableLanguages, editorLang)?.codeTemplate
       || this.availableLanguages[0].codeTemplate;
@@ -215,7 +229,9 @@ export class CodeEditorModalComponent implements OnInit {
       return;
     }
 
-    this.toggleSidebar();
+    if (this.displayMode !== 'docked') {
+      this.toggleSidebar();
+    }
     this.canSubmit = false;
     const data = {
       sourceCode: this.editorForm.get('code').value,
@@ -238,6 +254,12 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   toggleSidebar(): void {
+    if (this.displayMode === 'docked') {
+      if (!this.editorForm.get('code').value) {
+        this.init();
+      }
+      return;
+    }
     if (!this.sidebarIsOpened) {
       this.openSidebar();
     } else {
@@ -246,6 +268,9 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   openSidebar() {
+    if (this.displayMode === 'docked') {
+      return;
+    }
     if (this.sidebarIsOpened) {
       return;
     }
@@ -254,6 +279,9 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   closeSidebar() {
+    if (this.displayMode === 'docked') {
+      return;
+    }
     if (!this.sidebarIsOpened) {
       return;
     }

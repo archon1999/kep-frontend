@@ -1,177 +1,158 @@
-<div class="content-wrapper container-xxl p-0">
-  <div class="content-body">
-    <app-content-header [contentHeader]="contentHeader">
-      <div class="btn-group" role="group">
-        <button
-          class="btn btn-primary-light btn-wave"
-          type="button"
-          (click)="goToPreviousProblem()"
-          ngbTooltip="{{ 'PreviousProblem' | translate }}"
-        >
-          <kep-icon name="left"/>
-        </button>
-        <button
-          class="btn btn-primary-light btn-wave"
-          type="button"
-          (click)="goToNextProblem()"
-          ngbTooltip="{{ 'NextProblem' | translate }}"
-        >
-          <kep-icon name="right"/>
-        </button>
+<div class="problem-page" *ngIf="problem">
+  <div class="problem-page__left">
+    <div class="problem-page__left-inner">
+      <div class="problem-page__heading">
+        <div class="problem-page__heading-info">
+          <div class="problem-page__breadcrumbs">
+            <a routerLink="/practice/problems">{{ 'Problems' | translate }}</a>
+            <span class="problem-page__breadcrumbs-separator">/</span>
+            <span>{{ problem.id }}</span>
+          </div>
+          <h1 class="problem-page__title">{{ problem.title }}</h1>
+        </div>
+        <div class="problem-page__controls">
+          <button
+            class="problem-page__control-btn btn btn-icon btn-light"
+            type="button"
+            ngbTooltip="{{ 'PreviousProblem' | translate }}"
+            (click)="goToPreviousProblem()"
+          >
+            <kep-icon name="left"></kep-icon>
+          </button>
+          <button
+            class="problem-page__control-btn btn btn-icon btn-light"
+            type="button"
+            ngbTooltip="{{ 'NextProblem' | translate }}"
+            (click)="goToNextProblem()"
+          >
+            <kep-icon name="right"></kep-icon>
+          </button>
+        </div>
       </div>
-    </app-content-header>
-    <section  class="mt-2">
-      <div class="row">
-        <div class="col-lg-9 col-md-12 col-sm-12">
-          <kep-card>
-            <div class="card-header">
-              <ul
-                #navWithIcons="ngbNav"
-                (activeIdChange)="activeIdChange($event)" [(activeId)]="activeId" [destroyOnHide]="false"
-                class="nav-tabs" ngbNav>
-                <li [ngbNavItem]="1">
-                  <a class="nav-link" ngbNavLink>
-                    <kep-icon size="small-4" color="primary" name="problem" type="duotone"/>
-                    {{ 'Problem' | translate }}
-                  </a>
-                  <ng-template ngbNavContent>
-                    <problem-description [problem]="problem"></problem-description>
-                  </ng-template>
-                </li>
 
-                <li [ngbNavItem]="2">
-                  <a class="nav-link" ngbNavLink>
-                    <kep-icon size="small-4" color="warning" name="attempt" type="duotone"/>
-                    {{ 'Attempts' | translate }}
-                  </a>
-                  <ng-template ngbNavContent>
-                    <problem-attempts
-                      (hackSubmitted)="activeId = 3;"
-                      [problem]="problem"
-                      [submitEvent]="submitEvent?.asObservable()"
-                    >
-                    </problem-attempts>
-                  </ng-template>
-                </li>
-
-                @if (problem.hasCheckInput) {
-                  <li [ngbNavItem]="3" destroyOnHide="true">
-                    <a class="nav-link" ngbNavLink>
-                      <kep-icon size="small-4" name="lock-2" color="dark" type="duotone"/>
-                      {{ 'Hacks' | translate }}
-                    </a>
-                    <ng-template ngbNavContent>
-                      <problem-hacks [problem]="problem"></problem-hacks>
-                    </ng-template>
-                  </li>
-                }
-
-                @if (studyPlanId) {
-                  <li [ngbNavItem]="4">
-                    <a ngbNavLink [routerLink]="Resources.StudyPlan | resourceById:studyPlanId">
-                      <span [data-feather]="'activity'"></span> {{ 'StudyPlan' | translate }}
-                    </a>
-                    <ng-template ngbNavContent>
-                      <problem-description [problem]="problem"></problem-description>
-                    </ng-template>
-                  </li>
-                }
-
-                @if (contestId) {
-                  <li [ngbNavItem]="4">
-                    <a ngbNavLink [routerLink]="Resources.ContestProblems | resourceById:contestId">
-                      <kep-icon name="contest" color="primary" type="duotone"/>
-                      {{ 'Contest' | translate }}
-                    </a>
-                    <ng-template ngbNavContent>
-                      <problem-description [problem]="problem"></problem-description>
-                    </ng-template>
-                  </li>
-                }
-              </ul>
-
-              @if (isAuthenticated) {
-                <button (click)="codeEditorSidebarToggle()" class="btn btn-sm btn-primary">{{ 'Submit' | translate }}
-                </button>
-              }
-            </div>
-
-            <div class="card-footer">
-              <div [ngbNavOutlet]="navWithIcons"></div>
-            </div>
-          </kep-card>
-
-          @if (currentUser?.permissions.canCreateProblems) {
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">
-                  Check input
-                </div>
-              </div>
-              <div class="card-body">
-                <monaco-editor
-                  [lang]="'py'"
-                  class="mt-1"
-                  [ngModelOptions]="{standalone: true}"
-                  [(ngModel)]="checkInput"
-                ></monaco-editor>
-                <div class="btn mt-2 btn-primary btn-sm" (click)="saveCheckInput()">Save</div>
-              </div>
-            </div>
-          }
+      <div class="problem-page__scroll">
+        <div class="problem-page__tabs">
+          <ul
+            #navWithIcons="ngbNav"
+            ngbNav
+            class="nav nav-tabs problem-page__tablist"
+            [destroyOnHide]="false"
+            [(activeId)]="activeId"
+            (activeIdChange)="activeIdChange($event)"
+          >
+            <li [ngbNavItem]="1">
+              <a ngbNavLink class="problem-page__tab-link">
+                <kep-icon size="small-4" color="primary" name="problem" type="duotone"></kep-icon>
+                {{ 'Problem' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <problem-description [problem]="problem"></problem-description>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="2">
+              <a ngbNavLink class="problem-page__tab-link">
+                <kep-icon size="small-4" color="warning" name="attempt" type="duotone"></kep-icon>
+                {{ 'Attempts' | translate }}
+              </a>
+              <ng-template ngbNavContent>
+                <problem-attempts
+                  [problem]="problem"
+                  [submitEvent]="submitEvent?.asObservable()"
+                  (hackSubmitted)="activeId = 3; navigateToTab('hacks')"
+                ></problem-attempts>
+              </ng-template>
+            </li>
+            @if (problem.hasCheckInput) {
+              <li [ngbNavItem]="3" destroyOnHide="true">
+                <a ngbNavLink class="problem-page__tab-link">
+                  <kep-icon size="small-4" name="lock-2" color="dark" type="duotone"></kep-icon>
+                  {{ 'Hacks' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <problem-hacks [problem]="problem"></problem-hacks>
+                </ng-template>
+              </li>
+            }
+            @if (studyPlanId) {
+              <li [ngbNavItem]="4">
+                <a
+                  ngbNavLink
+                  class="problem-page__tab-link"
+                  [routerLink]="Resources.StudyPlan | resourceById:studyPlanId"
+                >
+                  <span [data-feather]="'activity'"></span> {{ 'StudyPlan' | translate }}
+                </a>
+              </li>
+            }
+            @if (contestId) {
+              <li [ngbNavItem]="5">
+                <a
+                  ngbNavLink
+                  class="problem-page__tab-link"
+                  [routerLink]="Resources.ContestProblems | resourceById:contestId"
+                >
+                  <kep-icon name="contest" color="primary" type="duotone"></kep-icon>
+                  {{ 'Contest' | translate }}
+                </a>
+              </li>
+            }
+          </ul>
         </div>
 
-        <div class="col-lg-3 col-md-12 col-sm-12">
+        <div class="problem-page__content" [ngbNavOutlet]="navWithIcons"></div>
+
+        <div class="problem-page__sidebar">
           <problem-sidebar [problem]="problem"></problem-sidebar>
-
-          @if (isAuthenticated) {
-            <problem-submit-card
-              [availableLanguages]="problem.availableLanguages"
-              [submitUrl]="'problems/' + problem.id + '/submit/'"
-              (submitted)="onSubmit()"
-            />
-          }
         </div>
 
+        @if (currentUser?.permissions.canCreateProblems) {
+          <div class="problem-page__check-input card">
+            <div class="card-header">
+              <div class="card-title">Check input</div>
+            </div>
+            <div class="card-body">
+              <monaco-editor
+                [lang]="'py'"
+                class="mt-1"
+                [ngModelOptions]="{ standalone: true }"
+                [(ngModel)]="checkInput"
+              ></monaco-editor>
+              <button class="btn btn-primary btn-sm mt-2" (click)="saveCheckInput()">Save</button>
+            </div>
+          </div>
+        }
       </div>
+    </div>
+  </div>
 
-      @if (problem && isAuthenticated) {
+  <div class="problem-page__right">
+    @if (problem && isAuthenticated) {
+      <div class="problem-page__editor">
         <code-editor-modal
           [customClass]="'tour-step-2'"
+          [displayMode]="'docked'"
           [uniqueName]="'problem-' + problem.id"
           [sampleTests]="problem.sampleTests"
           [submitUrl]="'problems/' + problem.id + '/submit/'"
           [problem]="problem"
           [answerForInputEnabled]="problem.hasSolution && problem.hasCheckInput"
           [availableLanguages]="problem.availableLanguages"
-          (submittedEvent)="onSubmit()"></code-editor-modal>
-      }
-    </section>
+          (submittedEvent)="onSubmit()"
+        ></code-editor-modal>
+      </div>
+    }
+
+    @if (isAuthenticated) {
+      <div class="problem-page__file-submit">
+        <problem-submit-card
+          [availableLanguages]="problem.availableLanguages"
+          [submitUrl]="'problems/' + problem.id + '/submit/'"
+          (submitted)="onSubmit()"
+        ></problem-submit-card>
+      </div>
+    }
   </div>
 </div>
 
 <tour-css></tour-css>
 <ng-select-css></ng-select-css>
-
-<!--<div class="col-lg-6 col-md-12 col-sm-12">-->
-<!--  <kep-card>-->
-<!--    <div class="card-header p-2">-->
-<!--      <div class="card-title">-->
-<!--        <kep-icon name="square-brackets" color="primary" type="duotone"/>-->
-<!--        {{ 'Code' | translate }}-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <ng-select-->
-<!--      [appendTo]="'body'"-->
-<!--      [clearable]="false">-->
-<!--      @for (availableLanguage of problem.availableLanguages; track availableLanguage) {-->
-<!--        <ng-option-->
-<!--          [value]="availableLanguage.lang">-->
-<!--          {{ availableLanguage.langFull || availableLanguage.lang }}-->
-<!--        </ng-option>-->
-<!--      }-->
-<!--    </ng-select>-->
-<!--    <monaco-editor lang="py"/>-->
-<!--  </kep-card>-->
-<!--</div>-->
