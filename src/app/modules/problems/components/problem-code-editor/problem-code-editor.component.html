@@ -1,0 +1,245 @@
+<kep-card
+  class="problem-code-editor-card"
+  customClass="problem-code-editor-card"
+  [cardHeight]="'100%'"
+>
+  <div
+    class="problem-code-editor"
+    tabindex="0"
+    (keydown)="onKeyDown($event)"
+  >
+    <div class="problem-code-editor__header">
+      <div class="problem-code-editor__title">
+        <h5 class="mb-0">{{ 'CodeEditor.Editor' | translate }}</h5>
+        <div class="problem-code-editor__hotkeys text-muted">
+          <span>Alt + Enter</span>
+          <small>{{ 'CodeEditor.Submit' | translate }}</small>
+        </div>
+      </div>
+      <div class="problem-code-editor__selectors">
+        <div class="problem-code-editor__selector">
+          <label class="form-label">{{ 'Language' | translate }}</label>
+          <ng-select
+            [clearable]="false"
+            [formControl]="editorForm.controls.lang"
+            (change)="langChange($event)"
+          >
+            @for (availableLanguage of availableLanguages; track availableLanguage) {
+              <ng-option [value]="availableLanguage.lang">
+                {{ availableLanguage.langFull || availableLanguage.lang }}
+              </ng-option>
+            }
+          </ng-select>
+        </div>
+
+        @if (sampleTests?.length) {
+          <div class="problem-code-editor__selector">
+            <label class="form-label">{{ 'CodeEditor.SampleTest' | translate }}</label>
+            <ng-select
+              [clearable]="false"
+              [formControl]="editorForm.controls.testCaseNumber"
+              (change)="onSampleTestChange()"
+            >
+              @for (sampleTest of sampleTests; track sampleTest; let i = $index) {
+                <ng-option [value]="i + 1">
+                  TC #{{ i + 1 }}
+                </ng-option>
+              }
+            </ng-select>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="problem-code-editor__body">
+      <div class="problem-code-editor__editor">
+        <monaco-editor
+          [formControl]="editorForm.controls.code"
+          [lang]="editorForm.controls.lang.value"
+          [height]="'100%'"
+        ></monaco-editor>
+      </div>
+
+      <div class="problem-code-editor__panels">
+        <div class="problem-code-editor__panel" [class.problem-code-editor__panel--disabled]="isSelectedLangText()">
+          <div class="problem-code-editor__panel-header">
+            <h6 class="mb-0">{{ 'CodeEditor.Input' | translate }}</h6>
+          </div>
+          <textarea
+            class="form-control"
+            rows="5"
+            [readonly]="isSelectedLangText()"
+            [formControl]="editorForm.controls.input"
+          ></textarea>
+        </div>
+
+        <div class="problem-code-editor__panel">
+          <div class="problem-code-editor__panel-header">
+            <h6 class="mb-0">{{ 'CodeEditor.Output' | translate }}</h6>
+          </div>
+          <textarea
+            class="form-control"
+            rows="5"
+            readonly
+            [formControl]="editorForm.controls.output"
+          ></textarea>
+        </div>
+
+        <div class="problem-code-editor__panel">
+          <div class="problem-code-editor__panel-header d-flex align-items-center justify-content-between">
+            <h6 class="mb-0">{{ 'CodeEditor.Answer' | translate }}</h6>
+            @if (answerForInputEnabled) {
+              <kepcoin-spend-swal
+                (success)="answerForInput($event)"
+                [customContent]="true"
+                [purchaseUrl]="'problems/' + problem?.id + '/answer-for-input/'"
+                [requestBody]="{input_data: editorForm.get('input').value}"
+                [value]="1"
+              >
+                <button class="btn btn-outline-dark btn-sm" type="button">
+                  @if (isAnswerForInput) {
+                    <span class="spinner-border spinner-border-sm" role="status"></span>
+                  } @else {
+                    <i data-feather="check-square"></i>
+                  }
+                  {{ 'CodeEditor.AnswerForInput' | translate }}
+                </button>
+              </kepcoin-spend-swal>
+            }
+          </div>
+          <textarea
+            class="form-control"
+            rows="5"
+            readonly
+            [formControl]="editorForm.controls.answer"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-code-editor__actions">
+      <div class="problem-code-editor__actions-left">
+        @if (authService.currentUserValue?.permissions?.canUseCheckSamples === false) {
+          <kepcoin-spend-swal
+            (success)="checkSamplesPurchaseSuccess()"
+            [customContent]="true"
+            [purchaseUrl]="'problems/' + problem?.id + '/purchase-check-samples/'"
+            [value]="100"
+          >
+            <button class="btn btn-outline-dark" type="button">
+              {{ 'CodeEditor.CheckSamples' | translate }}
+            </button>
+          </kepcoin-spend-swal>
+        } @else {
+          <button
+            class="btn btn-outline-dark"
+            type="button"
+            (click)="checkSamples()"
+            [disabled]="isCheckSamples"
+            ngbTooltip="Alt+Z"
+          >
+            @if (isCheckSamples) {
+              <span class="spinner-border spinner-border-sm" role="status"></span>
+            } @else {
+              <i data-feather="terminal"></i>
+            }
+            {{ 'CodeEditor.CheckSamples' | translate }}
+          </button>
+        }
+
+        @if (!isSelectedLangText()) {
+          <button
+            class="btn btn-outline-dark"
+            type="button"
+            (click)="run()"
+            [disabled]="isRunning"
+            ngbTooltip="Alt+X"
+          >
+            @if (isRunning) {
+              <span class="spinner-border spinner-border-sm" role="status"></span>
+            } @else {
+              <i data-feather="play"></i>
+            }
+            {{ 'CodeEditor.Run' | translate }}
+          </button>
+        }
+      </div>
+
+      <div class="problem-code-editor__actions-right">
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="submit()"
+          [disabled]="!editorForm.valid || !canSubmit"
+          ngbTooltip="Alt+Enter"
+        >
+          <i data-feather="send"></i>
+          {{ 'CodeEditor.Submit' | translate }}
+        </button>
+      </div>
+    </div>
+
+    @if (showResultsPanel) {
+      <div class="problem-code-editor__results">
+        <div class="problem-code-editor__results-header d-flex justify-content-between align-items-center">
+          <h6 class="mb-0">{{ 'Result' | translate }}</h6>
+          <button class="btn btn-sm btn-link" type="button" (click)="showResultsPanel = false">
+            {{ 'Close' | translate }}
+          </button>
+        </div>
+        @if (isCheckSamples) {
+          <div class="problem-code-editor__results-loading">
+            <spinner></spinner>
+          </div>
+        } @else if (checkSamplesResult?.length) {
+          <div class="problem-code-editor__results-list">
+            @for (result of checkSamplesResult; track result; let i = $index) {
+              <div class="problem-code-editor__result-item" [ngClass]="{
+                'problem-code-editor__result-item--accepted': result.verdict === Verdicts.Accepted,
+                'problem-code-editor__result-item--failed': result.verdict !== Verdicts.Accepted
+              }">
+                <div class="problem-code-editor__result-header">
+                  <span class="fw-semibold">TC #{{ i + 1 }}</span>
+                  <span class="badge" [ngClass]="{
+                    'bg-success': result.verdict === Verdicts.Accepted,
+                    'bg-danger': result.verdict !== Verdicts.Accepted
+                  }">
+                    {{ result.verdict | verdictShortTitle }}
+                  </span>
+                </div>
+                @if (result.input) {
+                  <div class="problem-code-editor__result-section">
+                    <div class="problem-code-editor__result-label">{{ 'CodeEditor.Input' | translate }}</div>
+                    <pre>{{ result.input }}</pre>
+                  </div>
+                }
+                @if (result.answer) {
+                  <div class="problem-code-editor__result-section">
+                    <div class="problem-code-editor__result-label">{{ 'CodeEditor.Answer' | translate }}</div>
+                    <pre>{{ result.answer }}</pre>
+                  </div>
+                }
+                @if (result.output) {
+                  <div class="problem-code-editor__result-section">
+                    <div class="problem-code-editor__result-label">{{ 'CodeEditor.Output' | translate }}</div>
+                    <pre>{{ result.output }}</pre>
+                  </div>
+                }
+                @if (result.error) {
+                  <div class="problem-code-editor__result-section">
+                    <div class="problem-code-editor__result-label">Error</div>
+                    <pre>{{ result.error }}</pre>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="problem-code-editor__results-empty text-muted">
+            {{ 'NoData' | translate }}
+          </div>
+        }
+      </div>
+    }
+  </div>
+</kep-card>

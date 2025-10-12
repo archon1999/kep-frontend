@@ -1,0 +1,58 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.problem-detail-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: calc(100vh - var(--problem-layout-offset, 0px));
+  min-height: calc(100vh - var(--problem-layout-offset, 0px));
+}
+
+.problem-detail-layout__header,
+.problem-detail-layout__footer {
+  flex: 0 0 auto;
+}
+
+.problem-detail-layout__body {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 1rem;
+  min-height: 0;
+}
+
+.problem-detail-layout__column {
+  position: relative;
+  min-height: 0;
+}
+
+.problem-detail-layout__column-inner {
+  height: 100%;
+  overflow: auto;
+}
+
+@media (max-width: 1199.98px) {
+  .problem-detail-layout__body {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 991.98px) {
+  .problem-detail-layout {
+    height: auto;
+    min-height: 0;
+  }
+
+  .problem-detail-layout__body {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
+
+  .problem-detail-layout__column-inner {
+    max-height: none;
+    overflow: visible;
+  }
+}

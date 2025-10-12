@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Params } from '@angular/router';
 import { AuthUser } from '@auth';
 import { Subject } from 'rxjs';
@@ -6,24 +6,24 @@ import { Problem } from '@problems/models/problems.models';
 import { ProblemsApiService } from '../../services/problems-api.service';
 import { ApiService } from '@core/data-access/api.service';
 import { CoreCommonModule } from '@core/common.module';
-import { NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalModule, NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProblemDescriptionComponent } from '@problems/pages/problem/problem-description/problem-description.component';
 import { ProblemAttemptsComponent } from '@problems/pages/problem/problem-attempts/problem-attempts.component';
 import { ProblemHacksComponent } from '@problems/pages/problem/problem-hacks/problem-hacks.component';
-import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
-import { CodeEditorModule } from '@shared/components/code-editor/code-editor.module';
-import { ProblemSidebarComponent } from '@problems/pages/problem/problem-sidebar/problem-sidebar.component';
 import { TourModule } from '@shared/third-part-modules/tour/tour.module';
-import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
-import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { BasePageComponent } from '@core/common/classes/base-page.component';
-import { SidebarService } from '@shared/ui/sidebar/sidebar.service';
-import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
-
 import { ProblemSubmitCardComponent } from '@problems/components/problem-submit-card/problem-submit-card.component';
 import { take } from 'rxjs/operators';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
+import { ProblemDetailLayoutComponent } from '@problems/layouts/problem-detail-layout/problem-detail-layout.component';
+import { ProblemCodeEditorComponent } from '@problems/components/problem-code-editor/problem-code-editor.component';
+import { ProblemInfoCardComponent } from '@problems/components/problem-info-card/problem-info-card.component';
+import { ProblemsPipesModule } from '@problems/pipes/problems-pipes.module';
+import { ProblemSidebarStatisticsComponent } from '@problems/pages/problem/problem-sidebar/problem-sidebar-statistics/problem-sidebar-statistics.component';
+import { ProblemSidebarTopAttemptsComponent } from '@problems/pages/problem/problem-sidebar/problem-sidebar-top-attempts/problem-sidebar-top-attempts.component';
+import { ProblemStatistics } from '@problems/pages/problem/problem-sidebar/problem-statistics.model';
+import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 
 @Component({
   selector: 'app-problem',
@@ -32,22 +32,23 @@ import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
   standalone: true,
   imports: [
     CoreCommonModule,
-    ContentHeaderModule,
     NgbNavModule,
     ProblemDescriptionComponent,
     ProblemAttemptsComponent,
     ProblemHacksComponent,
-    MonacoEditorModule,
-    CodeEditorModule,
-    ProblemSidebarComponent,
     TourModule,
-    NgSelectModule,
-    MonacoEditorComponent,
     KepCardComponent,
-
     ProblemSubmitCardComponent,
     NgbTooltipModule,
     ResourceByIdPipe,
+    ProblemDetailLayoutComponent,
+    ProblemCodeEditorComponent,
+    ProblemInfoCardComponent,
+    ProblemsPipesModule,
+    NgbModalModule,
+    ProblemSidebarStatisticsComponent,
+    ProblemSidebarTopAttemptsComponent,
+    MonacoEditorComponent,
   ]
 })
 export class ProblemComponent extends BasePageComponent implements OnInit {
@@ -59,10 +60,13 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
 
   public submitEvent = new Subject();
   public checkInput = '';
+  public statistics: ProblemStatistics | null = null;
+  public isStatisticsLoading = false;
+
   constructor(
     public service: ProblemsApiService,
     public api: ApiService,
-    protected coreSidebarService: SidebarService,
+    private readonly modalService: NgbModal,
   ) {
     super();
   }
@@ -136,12 +140,7 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
     );
   }
 
-  codeEditorSidebarToggle() {
-    this.coreSidebarService.getSidebarRegistry('codeEditorSidebar').toggleOpen();
-  }
-
   onSubmit() {
-    console.log(4142);
     this.activeId = 2;
     this.submitEvent.next(null);
   }
@@ -172,6 +171,31 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
     }
     this.router.navigate(['/practice/problems/problem', problemId], {
       queryParams: this.route.snapshot.queryParams,
+    });
+  }
+
+  openStatisticsModal(content: TemplateRef<unknown>) {
+    if (!this.problem) {
+      return;
+    }
+
+    this.isStatisticsLoading = true;
+    this.statistics = null;
+
+    this.modalService.open(content, {
+      size: 'lg',
+      scrollable: true,
+    });
+
+    this.service.getProblemStatistics(this.problem.id).subscribe({
+      next: (result: ProblemStatistics) => {
+        this.statistics = result;
+        this.isStatisticsLoading = false;
+      },
+      error: () => {
+        this.statistics = null;
+        this.isStatisticsLoading = false;
+      }
     });
   }
 }

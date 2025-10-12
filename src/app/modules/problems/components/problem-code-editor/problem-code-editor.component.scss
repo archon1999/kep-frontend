@@ -1,0 +1,206 @@
+@import 'styles/kep-imports';
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+.problem-code-editor-card {
+  height: 100%;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.problem-code-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  height: 100%;
+}
+
+.problem-code-editor__header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}
+
+.problem-code-editor__title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.problem-code-editor__hotkeys {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.75rem;
+  line-height: 1.1;
+
+  span {
+    font-weight: 600;
+  }
+}
+
+.problem-code-editor__selectors {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+  }
+}
+
+.problem-code-editor__selector {
+  flex: 1;
+  min-width: 200px;
+}
+
+.problem-code-editor__body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-height: 0;
+}
+
+.problem-code-editor__editor {
+  flex: 1 1 auto;
+  min-height: 0;
+
+  monaco-editor {
+    display: block;
+    height: 100%;
+  }
+}
+
+.problem-code-editor__panels {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.problem-code-editor__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background-color: rgba($primary, 0.04);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  transition: background-color 0.2s ease;
+
+  textarea {
+    resize: vertical;
+  }
+
+  &--disabled {
+    opacity: 0.6;
+  }
+}
+
+.problem-code-editor__panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.problem-code-editor__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .btn {
+    min-width: 140px;
+  }
+}
+
+.problem-code-editor__actions-left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.problem-code-editor__actions-right {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.problem-code-editor__results {
+  border: 1px solid rgba($black, 0.08);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  background-color: rgba($primary, 0.02);
+  max-height: 280px;
+  overflow: auto;
+}
+
+.problem-code-editor__results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.problem-code-editor__result-item {
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid transparent;
+  background-color: $white;
+
+  @include dark-layout {
+    background-color: rgba($white, 0.05);
+  }
+
+  &--accepted {
+    border-color: rgba($success, 0.4);
+  }
+
+  &--failed {
+    border-color: rgba($danger, 0.4);
+  }
+
+  pre {
+    margin-bottom: 0;
+    font-size: 0.85rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}
+
+.problem-code-editor__result-section {
+  margin-top: 0.5rem;
+}
+
+.problem-code-editor__result-label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.problem-code-editor__results-loading,
+.problem-code-editor__results-empty {
+  padding: 1.5rem 0;
+  text-align: center;
+}
+
+@media (max-width: 767.98px) {
+  .problem-code-editor-card {
+    padding: 1rem;
+  }
+
+  .problem-code-editor__panel textarea {
+    min-height: 160px;
+  }
+}

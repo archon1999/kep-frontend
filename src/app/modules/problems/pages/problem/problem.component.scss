@@ -1,19 +1,248 @@
-.card .card-header {
-  padding: 1rem !important;
-  padding-bottom: 0 !important;
+@import 'styles/kep-imports';
+
+:host {
+  --problem-layout-offset: 5rem;
+  display: block;
+}
+
+.problem-page {
+  height: 100%;
+  padding: 1.5rem 2rem;
+
+  @include media-breakpoint-down(lg) {
+    padding: 1rem;
+  }
+}
+
+.problem-page__header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 0 0 0.5rem;
+  border-bottom: 1px solid rgba($black, 0.05);
+}
+
+.problem-page__breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.problem-page__breadcrumb-link {
+  color: $primary;
+  font-weight: 600;
+}
+
+.problem-page__breadcrumb-current {
+  font-weight: 500;
+}
+
+.problem-page__title-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @include media-breakpoint-up(lg) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+
+.problem-page__title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 960px;
+}
+
+.problem-page__title-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.problem-page__id {
+  font-weight: 700;
+  color: $primary;
+}
+
+.problem-page__title {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  font-weight: 700;
+}
+
+.problem-page__difficulty {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.problem-page__summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.problem-page__summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.problem-page__summary-label {
+  font-size: 0.85rem;
+  color: rgba($black, 0.6);
+}
+
+.problem-page__summary-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.problem-page__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.problem-page__tag {
+  background: rgba($primary, 0.08);
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.problem-page__header-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-end;
+
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .btn-group {
+    display: flex;
+  }
+
+  .btn-icon {
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.problem-page__left-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-right: 1rem;
+
+  @include media-breakpoint-down(lg) {
+    padding-right: 0;
+  }
+}
+
+.problem-page__tabs-card {
+  padding: 1.5rem;
+}
+
+.problem-page__tab-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgba($black, 0.05);
+  padding-bottom: 0.75rem;
+
+  .nav-item {
+    margin-bottom: 0;
+  }
+}
+
+.problem-page__tab-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  background: rgba($primary, 0.06);
+  color: $body-color;
+  font-weight: 600;
+
+  &.active,
+  &:hover {
+    background: $primary;
+    color: $white;
+  }
+}
+
+.problem-page__tab-content {
+  margin-top: 1.5rem;
+}
+
+.problem-page__submit-card {
+  max-width: 420px;
+}
+
+.problem-page__check-input-card {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.problem-page__check-input-header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
-.problem-container {
+.problem-page__check-input-title {
+  font-weight: 600;
+}
+
+.problem-page__check-editor {
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.problem-page__right-pane {
   height: 100%;
 }
 
-/* Стили для блока с кодом */
-pre {
-  background-color: #f8f9fa;
-  padding: 1rem;
-  border-radius: 0.3rem;
-  overflow-x: auto;
+.problem-page__signin-card {
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
-/* Дополнительные стили можно добавить по необходимости */
+.problem-page__signin {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+@media (max-width: 991.98px) {
+  :host {
+    --problem-layout-offset: 0px;
+  }
+
+  .problem-page {
+    padding: 1rem 0.75rem;
+  }
+
+  .problem-page__header {
+    border-bottom: none;
+  }
+}
