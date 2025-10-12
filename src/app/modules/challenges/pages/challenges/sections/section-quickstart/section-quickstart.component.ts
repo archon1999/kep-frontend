@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {
   NewChallengeButtonComponent
 } from '@challenges/components/new-challenge-button/new-challenge-button.component';
@@ -67,7 +67,11 @@ export class SectionQuickstartComponent extends BaseUserComponent implements OnI
     selectedChapters: [],
   };
 
-  constructor(public service: ChallengesApiService, public router: Router) {
+  constructor(
+    public service: ChallengesApiService,
+    public router: Router,
+    private cdr: ChangeDetectorRef,
+  ) {
     super();
   }
 
@@ -75,6 +79,7 @@ export class SectionQuickstartComponent extends BaseUserComponent implements OnI
     this.service.getChapters().subscribe(
       (chapters: Array<Chapter>) => {
         this.chapters = chapters;
+        this.cdr.detectChanges();
       }
     );
   }
@@ -92,6 +97,7 @@ export class SectionQuickstartComponent extends BaseUserComponent implements OnI
     ).subscribe(
       () => {
         this.newChallengeClick.emit(null);
+        this.cdr.detectChanges();
       }
     );
   }
@@ -108,11 +114,13 @@ export class SectionQuickstartComponent extends BaseUserComponent implements OnI
           if (challengeCall.timeSeconds === quickStart.timeSeconds && challengeCall.questionsCount === quickStart.questionsCount) {
             if (challengeCall.username !== this.currentUser.username) {
               this.acceptChallengeCall(challengeCall.id);
+              this.cdr.detectChanges();
               return;
             }
           }
         }
         this.newChallenge(quickStart);
+        this.cdr.detectChanges();
       }
     );
   }
@@ -128,6 +136,7 @@ export class SectionQuickstartComponent extends BaseUserComponent implements OnI
         if (result.success) {
           const challengeId = result.challengeId;
           this.router.navigateByUrl(getResourceById(Resources.Challenge, challengeId));
+          this.cdr.detectChanges();
         }
       }
     );
