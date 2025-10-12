@@ -1,0 +1,148 @@
+:host {
+  display: block;
+}
+
+.shop-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.shop-hero-card {
+  background: linear-gradient(135deg, var(--bs-primary), #4b2cc4);
+  color: var(--bs-white);
+  border: none;
+  position: relative;
+  overflow: hidden;
+
+  .card-body {
+    padding: clamp(2rem, 4vw, 2.75rem);
+  }
+
+  .hero-title {
+    font-weight: 600;
+    font-size: clamp(2rem, 3vw, 2.75rem);
+    line-height: 1.2;
+  }
+
+  .hero-description {
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 36rem;
+  }
+
+  .badge-color {
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.55);
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.2);
+  }
+
+  .label {
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.75rem;
+  }
+
+  .hero-image {
+    border-radius: 1.5rem;
+    box-shadow: 0 1.5rem 3rem rgba(15, 23, 42, 0.25);
+  }
+
+  .hero-placeholder {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.85);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    min-height: 320px;
+  }
+}
+
+.section-heading h4 {
+  font-weight: 600;
+}
+
+.shop-filters-card {
+  background: var(--bs-body-bg);
+  border: 1px solid var(--bs-border-color-translucent, rgba(0, 0, 0, 0.08));
+
+  h5 {
+    font-weight: 600;
+  }
+}
+
+.color-pill {
+  color: var(--bs-white);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 0.5rem 1rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(15, 23, 42, 0.12);
+}
+
+.size-pill {
+  background: var(--bs-body-bg);
+  border: 1px solid var(--bs-border-color);
+  color: var(--bs-body-color);
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+}
+
+.shop-grid product-item {
+  display: block;
+  height: 100%;
+}
+
+:host ::ng-deep .shop-grid product-item .card {
+  height: 100%;
+}
+
+:host ::ng-deep .shop-carousel .owl-stage-outer {
+  padding: 0.5rem 0 1.25rem;
+}
+
+:host ::ng-deep .shop-carousel .owl-dots .owl-dot span {
+  width: 12px;
+  height: 12px;
+  background: var(--bs-border-color);
+  transition: all 0.2s ease;
+}
+
+:host ::ng-deep .shop-carousel .owl-dots .owl-dot.active span,
+:host ::ng-deep .shop-carousel .owl-dots .owl-dot:hover span {
+  background: var(--bs-primary);
+  transform: scale(1.15);
+}
+
+:host ::ng-deep .hero-galleria .p-galleria-content {
+  background: transparent;
+  border: 0;
+}
+
+:host ::ng-deep .hero-galleria .p-galleria-item-nav,
+:host ::ng-deep .hero-galleria .p-galleria-thumbnail-wrapper {
+  display: none;
+}
+
+:host ::ng-deep .hero-galleria .p-galleria-indicators {
+  padding-top: 1.25rem;
+}
+
+:host ::ng-deep .hero-galleria .p-galleria-indicator button {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+:host ::ng-deep .hero-galleria .p-galleria-indicator.p-highlight button {
+  background: var(--bs-white);
+}
+
+@media (max-width: 767.98px) {
+  .shop-hero-card .card-body {
+    padding: 2rem 1.5rem;
+  }
+}

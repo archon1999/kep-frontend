@@ -7,11 +7,155 @@
         <spinner/>
       </div>
     } @else {
-      <div class="row">
-        @for (product of data; track product.title) {
-          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-            <product-item [product]="product"/>
+      <div class="shop-page">
+        @if (featuredProduct) {
+          <kep-card customClass="shop-hero-card">
+            <div class="card-body">
+              <div class="row align-items-center g-4">
+                <div class="col-12 col-lg-6">
+                  <div class="hero-eyebrow badge bg-primary-subtle text-primary mb-2">
+                    {{ 'Menu.Shop' | translate }}
+                  </div>
+                  <h2 class="hero-title mb-2">
+                    {{ featuredProduct.title }}
+                  </h2>
+                  <p class="hero-description mb-4">
+                    {{ featuredProduct.description }}
+                  </p>
+
+                  <div class="hero-meta">
+                    <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                      <kepcoin [value]="featuredProduct.kepcoin"/>
+                      @if (featuredPreviewColors.length) {
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="label text-white-50">{{ 'Color' | translate }}:</span>
+                          <div class="d-flex align-items-center gap-1">
+                            @for (color of featuredPreviewColors; track color.name) {
+                              <span class="badge badge-color" [style.background]="color.color" [attr.aria-label]="color.name"></span>
+                            }
+                          </div>
+                        </div>
+                      }
+                    </div>
+
+                    @if (featuredPreviewSizes.length) {
+                      <div class="d-flex flex-wrap align-items-center gap-2">
+                        <span class="label text-white-50">{{ 'Size' | translate }}:</span>
+                        <div class="d-flex flex-wrap gap-2">
+                          @for (size of featuredPreviewSizes; track size) {
+                            <span class="badge rounded-pill bg-white text-primary-emphasis px-3 py-2">
+                              {{ size }}
+                            </span>
+                          }
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <div class="col-12 col-lg-6">
+                  <div class="hero-galleria">
+                    @if (featuredProduct.images?.length) {
+                      <p-galleria
+                        [value]="featuredProduct.images"
+                        [showThumbnails]="false"
+                        [showIndicators]="true"
+                        [showItemNavigators]="false"
+                        [circular]="true"
+                        [autoPlay]="featuredProduct.images.length > 1"
+                        [transitionInterval]="3500"
+                      >
+                        <ng-template pTemplate="item" let-image>
+                          <img [src]="image.url" [alt]="image.name" class="img-fluid hero-image"/>
+                        </ng-template>
+                      </p-galleria>
+                    } @else {
+                      <div class="hero-placeholder">
+                        <kep-icon name="image" size="medium-4"></kep-icon>
+                        <p class="mb-0">No preview available</p>
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+          </kep-card>
+        }
+
+        @if (spotlightProducts.length) {
+          <div class="section-heading d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div>
+              <h4 class="mb-1">Spotlight collection</h4>
+              <p class="text-muted mb-0">Our latest drops and community favourites.</p>
+            </div>
           </div>
+
+          <owl-carousel-o [options]="spotlightOptions" class="shop-carousel">
+            @for (product of spotlightProducts; track product.title) {
+              <ng-template carouselSlide>
+                <div class="h-100">
+                  <product-item [product]="product"/>
+                </div>
+              </ng-template>
+            }
+          </owl-carousel-o>
+        }
+
+        @if (colorPalette.length || sizePalette.length) {
+          <kep-card customClass="shop-filters-card">
+            <div class="card-body">
+              <div class="row g-4 align-items-center">
+                @if (colorPalette.length) {
+                  <div class="col-12 col-lg-6">
+                    <h5 class="mb-2">Popular colors</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                      @for (color of colorPalette; track color.name) {
+                        <span class="badge rounded-pill color-pill" [style.background]="color.color">
+                          {{ color.name }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+                }
+
+                @if (sizePalette.length) {
+                  <div class="col-12 col-lg-6">
+                    <h5 class="mb-2">Available sizes</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                      @for (size of sizePalette; track size) {
+                        <span class="badge rounded-pill size-pill">
+                          {{ size }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </kep-card>
+        }
+
+        <div class="section-heading d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <div>
+            <h4 class="mb-1">All products</h4>
+            <p class="text-muted mb-0">Browse every item available in the KEP shop.</p>
+          </div>
+        </div>
+
+        @if (data?.length) {
+          <div class="row g-4 shop-grid">
+            @for (product of data; track product.title) {
+              <div class="col-xxl-3 col-xl-4 col-lg-4 col-md-6 col-sm-12">
+                <product-item [product]="product"/>
+              </div>
+            }
+          </div>
+        } @else {
+          <kep-card customClass="text-center">
+            <div class="card-body py-5">
+              <p class="text-muted mb-0">Merchandise is coming soon. Stay tuned!</p>
+            </div>
+          </kep-card>
         }
       </div>
     }
