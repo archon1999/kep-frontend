@@ -1,5 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { BasePageComponent } from '@core/common/classes/base-page.component';
+import { Component, OnInit } from '@angular/core';
 import { ContentHeader } from "@shared/ui/components/content-header/content-header.component";
 import { ContestsService } from '@contests/contests.service';
 import { CoreCommonModule } from '@core/common.module';
@@ -10,6 +9,12 @@ import { ContestCardModule } from '@contests/components/contest-card/contest-car
 import { ContestRegistrant } from '@contests/models/contest-registrant';
 import { Contest } from '@contests/models/contest';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { Observable } from 'rxjs';
+import { PageResult } from '@core/common/classes/page-result';
+import { BaseTablePageComponent } from '@core/common/classes/base-table-page.component';
+import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
+import { TableOrderingModule } from '@shared/components/table-ordering/table-ordering.module';
+import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 
 @Component({
   selector: 'app-contest-registrants',
@@ -23,32 +28,42 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
     ContestantViewModule,
     ContestCardModule,
     KepCardComponent,
+    KepPaginationComponent,
+    TableOrderingModule,
+    SpinnerComponent,
   ]
 })
-export class ContestRegistrantsComponent extends BasePageComponent implements OnInit {
+export class ContestRegistrantsComponent extends BaseTablePageComponent<ContestRegistrant> implements OnInit {
+  override defaultPageSize = 20;
+  override pageOptions = [20, 50, 100];
+  override defaultOrdering = '-contests_rating';
+
   public contest: Contest;
-  public registrants: ContestRegistrant[] = [];
-  public isLoading = true;
-  protected cdr = inject(ChangeDetectorRef);
+  public readonly ratingOrderingKey = 'contests_rating';
 
   constructor(public service: ContestsService) {
     super();
   }
 
   ngOnInit() {
-    this.route.data.subscribe(
-      ({contest}) => {
-        this.contest = contest;
-        this.service.getContestRegistrants(this.contest.id).subscribe(
-          registrants => {
-            this.registrants = registrants;
-            this.isLoading = false;
-            this.cdr.detectChanges();
-          }
-        );
-      }
-    );
-    this.loadContentHeader();
+    this.route.data.subscribe(({contest}) => {
+      this.contest = contest;
+      this.loadContentHeader();
+      this.updatePageParams();
+      this.reloadPage();
+    });
+  }
+
+  get registrants(): ContestRegistrant[] {
+    return this.pageResult?.data || [];
+  }
+
+  isRatingOrderingActive(): boolean {
+    return this.ordering === this.ratingOrderingKey || this.ordering === `-${this.ratingOrderingKey}`;
+  }
+
+  getPage(): Observable<PageResult<ContestRegistrant>> {
+    return this.service.getContestRegistrants(this.contest.id, this.pageable);
   }
 
   protected getContentHeader(): ContentHeader {
