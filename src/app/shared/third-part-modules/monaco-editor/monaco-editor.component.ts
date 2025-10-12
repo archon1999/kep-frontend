@@ -20,7 +20,7 @@ import { AppStateService } from "@core/services/app-state.service";
 @Component({
   selector: 'monaco-editor',
   template: `
-    <ngx-monaco-editor [style.height.px]="height" [options]="options" [(ngModel)]="value"></ngx-monaco-editor>`,
+    <ngx-monaco-editor [style.height]="heightStyle" [options]="options" [(ngModel)]="value"></ngx-monaco-editor>`,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -38,7 +38,7 @@ export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnCh
   @ViewChild(EditorComponent) editorComponent: EditorComponent;
 
   @Input() lang: AttemptLangs;
-  @Input() height = 300;
+  @Input() height: number | string = 300;
   @Input() tabSize = 4;
 
   public options = {
@@ -58,6 +58,10 @@ export class MonacoEditorComponent implements ControlValueAccessor, OnInit, OnCh
     protected languageService: LanguageService,
     protected appStateService: AppStateService,
   ) {
+  }
+
+  get heightStyle(): string {
+    return typeof this.height === 'number' ? `${this.height}px` : this.height;
   }
 
   ngOnInit() {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Language, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'app/modules/problems/services/language.service';
@@ -32,7 +32,7 @@ interface CheckSamplesResultOne {
   encapsulation: ViewEncapsulation.None,
   standalone: false,
 })
-export class CodeEditorModalComponent implements OnInit {
+export class CodeEditorModalComponent implements OnInit, OnChanges {
 
   @Input() submitUrl: string;
   @Input() submitParams: any = {};
@@ -42,6 +42,7 @@ export class CodeEditorModalComponent implements OnInit {
   @Input() answerForInputEnabled = false;
   @Input() availableLanguages: Array<AvailableLanguage> = [];
   @Input() problem: Problem;
+  @Input() layout: 'sidebar' | 'inline' = 'sidebar';
   @Output() submittedEvent = new EventEmitter<null>();
 
   public canSubmit = true;
@@ -66,6 +67,7 @@ export class CodeEditorModalComponent implements OnInit {
 
   public checkSamplesResult: Array<CheckSamplesResultOne> = [];
   protected readonly Verdicts = Verdicts;
+  public inlineResultVisible = false;
 
   constructor(
     public api: ApiService,
@@ -83,17 +85,36 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   get sidebarIsOpened() {
-    return this.coreSidebarService.getSidebarRegistry(this.sidebarName).isOpened;
+    if (this.isInlineLayout) {
+      return true;
+    }
+    const sidebar = this.coreSidebarService.getSidebarRegistry(this.sidebarName);
+    return sidebar?.isOpened ?? false;
   }
 
   get resultSidebarIsOpened() {
-    return this.coreSidebarService.getSidebarRegistry(this.checkSamplesResultSidebarName).isOpened;
+    if (this.isInlineLayout) {
+      return this.inlineResultVisible;
+    }
+    const sidebar = this.coreSidebarService.getSidebarRegistry(this.checkSamplesResultSidebarName);
+    return sidebar?.isOpened ?? false;
+  }
+
+  get isInlineLayout() {
+    return this.layout === 'inline';
+  }
+
+  get editorHeight() {
+    return this.isInlineLayout ? '100%' : 480;
   }
 
   ngOnInit(): void {
     this.langService.getLanguage().subscribe(
       (lang: string) => {
         this.editorForm.get('lang').setValue(lang);
+        if (this.isInlineLayout) {
+          this.init();
+        }
       }
     );
 
@@ -148,9 +169,21 @@ export class CodeEditorModalComponent implements OnInit {
     );
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.isInlineLayout && (changes['availableLanguages'] || changes['layout'])) {
+      this.init();
+    }
+  }
+
   init() {
-    const editorLang = this.editorForm.get('lang').value as AttemptLangs;
-    console.log(editorLang)
+    if (!this.availableLanguages?.length) {
+      return;
+    }
+    let editorLang = this.editorForm.get('lang').value as AttemptLangs;
+    if (!editorLang) {
+      editorLang = this.langService.getLanguageValue();
+      this.editorForm.get('lang').setValue(editorLang);
+    }
     const code = this.templateCodeService.get(this.uniqueName, editorLang)
       || findAvailableLang(this.availableLanguages, editorLang)?.codeTemplate
       || this.availableLanguages[0].codeTemplate;
@@ -215,7 +248,9 @@ export class CodeEditorModalComponent implements OnInit {
       return;
     }
 
-    this.toggleSidebar();
+    if (!this.isInlineLayout) {
+      this.toggleSidebar();
+    }
     this.canSubmit = false;
     const data = {
       sourceCode: this.editorForm.get('code').value,
@@ -238,6 +273,9 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   toggleSidebar(): void {
+    if (this.isInlineLayout) {
+      return;
+    }
     if (!this.sidebarIsOpened) {
       this.openSidebar();
     } else {
@@ -246,6 +284,10 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   openSidebar() {
+    if (this.isInlineLayout) {
+      this.init();
+      return;
+    }
     if (this.sidebarIsOpened) {
       return;
     }
@@ -254,6 +296,10 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   closeSidebar() {
+    if (this.isInlineLayout) {
+      this.closeResultSidebar();
+      return;
+    }
     if (!this.sidebarIsOpened) {
       return;
     }
@@ -262,6 +308,10 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   openResultSidebar() {
+    if (this.isInlineLayout) {
+      this.inlineResultVisible = true;
+      return;
+    }
     if (this.resultSidebarIsOpened) {
       return;
     }
@@ -269,6 +319,10 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   closeResultSidebar() {
+    if (this.isInlineLayout) {
+      this.inlineResultVisible = false;
+      return;
+    }
     if (!this.resultSidebarIsOpened) {
       return;
     }

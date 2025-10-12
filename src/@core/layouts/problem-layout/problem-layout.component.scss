@@ -1,0 +1,13 @@
+.problem-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bs-body-bg);
+}
+
+.problem-layout__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bs-body-bg);
+}

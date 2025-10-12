@@ -646,6 +646,7 @@ export const localeRu = {
     Test: 'Проверка',
     AnswerForInput: 'Ответ на тест',
     CheckSamples: 'Проверить на тестах',
+    NoResultsYet: 'Результатов пока нет.',
   },
   Courses: {
     Courses: 'Курсы',

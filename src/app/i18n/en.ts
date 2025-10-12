@@ -652,6 +652,7 @@ export const localeEn = {
     SampleTest: 'Sample test',
     AnswerForInput: 'Answer for input',
     CheckSamples: 'Check on samples',
+    NoResultsYet: 'No sample results yet.',
   },
   Courses: {
     Courses: 'Courses',

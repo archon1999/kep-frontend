@@ -2,6 +2,7 @@ import { Route } from '@angular/router';
 import { ProblemResolver } from "@problems/problems.resolver";
 import { ProblemGuard } from "@problems/problems.guard";
 import { AuthGuard } from "@auth";
+import { ProblemLayoutComponent } from "@core/layouts/problem-layout/problem-layout.component";
 
 export default [
   {
@@ -22,36 +23,42 @@ export default [
   // },
   {
     path: 'problem/:id',
-    loadComponent: () => import('./pages/problem/problem.component').then(c => c.ProblemComponent),
-    data: {
-      title: 'Problems.Problem',
-    },
-    resolve: {
-      problem: ProblemResolver,
-    },
-    canActivate: [ProblemGuard],
-  },
-  {
-    path: 'problem/:id/attempts',
-    loadComponent: () => import('./pages/problem/problem.component').then(c => c.ProblemComponent),
-    data: {
-      title: 'Problems.Problem',
-    },
-    resolve: {
-      problem: ProblemResolver,
-    },
-    canActivate: [ProblemGuard],
-  },
-  {
-    path: 'problem/:id/hacks',
-    loadComponent: () => import('./pages/problem/problem.component').then(c => c.ProblemComponent),
-    data: {
-      title: 'Problems.Problem',
-    },
-    resolve: {
-      problem: ProblemResolver,
-    },
-    canActivate: [ProblemGuard],
+    component: ProblemLayoutComponent,
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./pages/problem/problem.component').then(c => c.ProblemComponent),
+        data: {
+          title: 'Problems.Problem',
+        },
+        resolve: {
+          problem: ProblemResolver,
+        },
+        canActivate: [ProblemGuard],
+      },
+      {
+        path: 'attempts',
+        loadComponent: () => import('./pages/problem/problem.component').then(c => c.ProblemComponent),
+        data: {
+          title: 'Problems.Problem',
+        },
+        resolve: {
+          problem: ProblemResolver,
+        },
+        canActivate: [ProblemGuard],
+      },
+      {
+        path: 'hacks',
+        loadComponent: () => import('./pages/problem/problem.component').then(c => c.ProblemComponent),
+        data: {
+          title: 'Problems.Problem',
+        },
+        resolve: {
+          problem: ProblemResolver,
+        },
+        canActivate: [ProblemGuard],
+      },
+    ],
   },
   // {
   //   path: 'problem/:id/og-image',
