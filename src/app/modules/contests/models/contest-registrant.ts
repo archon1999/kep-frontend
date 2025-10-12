@@ -3,4 +3,5 @@ export interface ContestRegistrant {
   rating: number;
   ratingTitle: string;
   team: any;
+  rowIndex?: number;
 }

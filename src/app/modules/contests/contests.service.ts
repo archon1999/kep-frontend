@@ -15,6 +15,7 @@ import {
 import { getCategoryIcon } from '@contests/utils/category-icon';
 import { PageResult } from '@core/common/classes/page-result';
 import { Attempt } from '@problems/models/attempts.models';
+import { ContestRegistrant } from '@contests/models';
 
 @Injectable({
   providedIn: 'root'
@@ -171,8 +172,8 @@ export class ContestsService {
     return this.api.get('problems/list');
   }
 
-  getContestRegistrants(contestId: number | string) {
-    return this.api.get(`contests/${contestId}/registrants`);
+  getContestRegistrants(contestId: number | string, params: Partial<Pageable> = {}) {
+    return this.api.get<PageResult<ContestRegistrant>>(`contests/${contestId}/registrants`, params);
   }
 
   getUserContestsRating(username: string) {
