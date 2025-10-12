@@ -1,4 +1,4 @@
-<div class="content-wrapper container-xxl p-0">
+<div class="content-wrapper container-xxl p-0 shop-page">
   <div class="content-body">
     <app-content-header [contentHeader]="contentHeader"/>
 
@@ -7,13 +7,141 @@
         <spinner/>
       </div>
     } @else {
-      <div class="row">
-        @for (product of data; track product.title) {
-          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-            <product-item [product]="product"/>
+      <section class="shop-hero card gradient-sunrise">
+        <div class="hero-content">
+          <div class="hero-badge">Limited drop</div>
+          <h1 class="hero-title">Renewed KEP Shop experience</h1>
+          <p class="hero-subtitle">
+            Discover carefully curated collections, capsule drops and everyday staples designed for the creative rhythm of
+            KEP makers.
+          </p>
+
+          <div class="hero-cta">
+            <a class="btn btn-primary btn-lg" href="#featured">Explore collection</a>
+            <a class="btn btn-outline-primary btn-lg" href="#all-products">Browse all</a>
+          </div>
+
+          <div class="hero-tags">
+            <span class="hero-tag">Capsule Wardrobe</span>
+            <span class="hero-tag">Ergonomic Comfort</span>
+            <span class="hero-tag">Sustainable Fabrics</span>
+            <span class="hero-tag">Members-Only Drops</span>
+          </div>
+        </div>
+
+        @if (highlightProduct) {
+          <div class="hero-preview">
+            <div class="preview-card">
+              <img [alt]="highlightProduct?.title" [src]="highlightProduct?.images?.[0]?.url"/>
+              <div class="preview-meta">
+                <div class="preview-label">Spotlight</div>
+                <div class="preview-title">{{ highlightProduct?.title }}</div>
+                <p class="preview-description">{{ highlightProduct?.description }}</p>
+              </div>
+            </div>
           </div>
         }
-      </div>
+      </section>
+
+      <section class="shop-badges">
+        <article class="info-card">
+          <h3>Complimentary fitting</h3>
+          <p>Virtual tailor sessions help perfect sizing before your order ships.</p>
+        </article>
+        <article class="info-card">
+          <h3>48h dispatch</h3>
+          <p>Fulfilled straight from the KEP studio with tracked worldwide delivery.</p>
+        </article>
+        <article class="info-card">
+          <h3>Kepcoin rewards</h3>
+          <p>Earn bonus Kepcoins for every purchase and unlock member-only drops.</p>
+        </article>
+        <article class="info-card">
+          <h3>Flexible bundles</h3>
+          <p>Mix-and-match bundles for teams, remote hubs and event appearances.</p>
+        </article>
+      </section>
+
+      <section class="carousel-section" id="featured" *ngIf="featuredProducts.length">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Featured drops</h2>
+            <p class="section-description">Our latest limited capsule crafted with premium materials and bold silhouettes.</p>
+          </div>
+          <a class="section-action" href="#all-products">View all</a>
+        </div>
+        <p-carousel [circular]="true"
+                    [numScroll]="1"
+                    [numVisible]="3"
+                    [responsiveOptions]="carouselResponsiveOptions"
+                    [showIndicators]="false"
+                    [showNavigators]="true"
+                    [value]="featuredProducts">
+          <ng-template let-product pTemplate="item">
+            <product-item [product]="product"/>
+          </ng-template>
+        </p-carousel>
+      </section>
+
+      <section class="carousel-section twilight" *ngIf="trendingProducts.length">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Trending styles</h2>
+            <p class="section-description">Best-selling layers styled for co-working days, studio sessions and travel.</p>
+          </div>
+          <a class="section-action" href="#all-products">See more</a>
+        </div>
+        <p-carousel [circular]="true"
+                    [numScroll]="1"
+                    [numVisible]="3"
+                    [responsiveOptions]="carouselResponsiveOptions"
+                    [showIndicators]="false"
+                    [showNavigators]="true"
+                    [value]="trendingProducts">
+          <ng-template let-product pTemplate="item">
+            <product-item [product]="product"/>
+          </ng-template>
+        </p-carousel>
+      </section>
+
+      <section class="collections" *ngIf="collections.length">
+        <h2 class="section-title">Curated collections</h2>
+        <div class="collections-grid">
+          @for (collection of collections; track collection.title) {
+            <article class="collection-card" [ngClass]="collection.accent">
+              <div class="collection-copy">
+                <h3>{{ collection.title }}</h3>
+                <p>{{ collection.description }}</p>
+                <a class="collection-link" href="#all-products">Shop the edit →</a>
+              </div>
+              <div class="collection-products">
+                @for (product of collection.products; track product.title) {
+                  <div class="collection-product">
+                    <img [alt]="product.title" [src]="product.images?.[0]?.url"/>
+                    <span>{{ product.title }}</span>
+                  </div>
+                }
+              </div>
+            </article>
+          }
+        </div>
+      </section>
+
+      <section class="all-products" id="all-products" *ngIf="data?.length">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">All products</h2>
+            <p class="section-description">Browse the complete lineup and customise bundles for your team.</p>
+          </div>
+        </div>
+        <div class="row g-3 g-xl-4">
+          @for (product of data; track product.title) {
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+              <product-item [product]="product"/>
+            </div>
+          }
+        </div>
+      </section>
     }
   </div>
 </div>

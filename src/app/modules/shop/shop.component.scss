@@ -1,0 +1,367 @@
+@import 'styles/kep-imports';
+
+.shop-page {
+  display: block;
+
+  .content-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .card {
+    border-radius: 18px;
+  }
+
+  .shop-hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 2.5rem;
+    padding: clamp(2rem, 4vw, 3rem);
+    border: none;
+    box-shadow: 0 24px 45px rgba($black, 0.08);
+
+    &.gradient-sunrise {
+      background: linear-gradient(135deg, rgba($primary, 0.18), rgba($warning, 0.15)), $white;
+    }
+
+    .hero-content {
+      flex: 1 1 360px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      color: $body-color;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      background: rgba($primary, 0.1);
+      color: $primary;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.75rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.4rem, 4vw, 3.4rem);
+      font-weight: 700;
+      color: $black;
+      line-height: 1.1;
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      max-width: 540px;
+      color: rgba($black, 0.7);
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      max-width: 560px;
+    }
+
+    .hero-tag {
+      padding: 0.4rem 0.95rem;
+      border-radius: 999px;
+      background: rgba($dark, 0.04);
+      color: rgba($black, 0.75);
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .hero-preview {
+      flex: 0 1 320px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .preview-card {
+      background: $white;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 30px 60px rgba($black, 0.08);
+      max-width: 360px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+
+      img {
+        width: 100%;
+        aspect-ratio: 4 / 5;
+        object-fit: cover;
+      }
+
+      .preview-meta {
+        padding: 0 1.75rem 1.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .preview-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 600;
+        color: $primary;
+      }
+
+      .preview-title {
+        font-size: 1.35rem;
+        font-weight: 600;
+        color: $black;
+      }
+
+      .preview-description {
+        color: rgba($black, 0.65);
+        margin: 0;
+      }
+    }
+  }
+
+  .shop-badges {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+
+    .info-card {
+      background: $white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 18px 30px rgba($black, 0.05);
+      border: 1px solid rgba($primary, 0.06);
+
+      h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      p {
+        color: rgba($black, 0.6);
+        margin: 0;
+      }
+    }
+  }
+
+  .carousel-section {
+    background: $white;
+    padding: 2.5rem clamp(1.5rem, 4vw, 3rem);
+    border-radius: 24px;
+    box-shadow: 0 28px 45px rgba($black, 0.06);
+    border: 1px solid rgba($primary, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    &.twilight {
+      background: linear-gradient(145deg, rgba($primary, 0.08), rgba($info, 0.12)), $white;
+    }
+
+    .section-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: clamp(1.8rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: $black;
+    }
+
+    .section-description {
+      margin: 0.35rem 0 0;
+      max-width: 520px;
+      color: rgba($black, 0.65);
+    }
+
+    .section-action {
+      font-weight: 600;
+      color: $primary;
+    }
+
+    ::ng-deep {
+      .p-carousel-content {
+        padding-inline: 0.5rem;
+      }
+
+      .p-carousel .p-carousel-indicators {
+        display: none;
+      }
+
+      .p-carousel .p-carousel-container {
+        align-items: stretch;
+      }
+
+      .p-carousel .p-carousel-item {
+        padding: 0.75rem;
+      }
+
+      .p-carousel-next,
+      .p-carousel-prev {
+        background: $white;
+        border: 1px solid rgba($black, 0.08);
+        color: $black;
+        box-shadow: 0 14px 30px rgba($black, 0.12);
+        width: 3rem;
+        height: 3rem;
+      }
+    }
+  }
+
+  .collections {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+
+    .collections-grid {
+      display: grid;
+      gap: 1.75rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    .collection-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      min-height: 280px;
+      background: $white;
+      box-shadow: 0 24px 40px rgba($black, 0.07);
+      border: 1px solid rgba($primary, 0.05);
+
+      &.sunrise {
+        background: linear-gradient(135deg, rgba($warning, 0.2), rgba($primary, 0.1));
+      }
+
+      &.twilight {
+        background: linear-gradient(135deg, rgba($primary, 0.2), rgba($info, 0.18));
+      }
+
+      &.lagoon {
+        background: linear-gradient(135deg, rgba($info, 0.2), rgba($success, 0.18));
+      }
+
+      .collection-copy {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+
+        h3 {
+          margin: 0;
+          font-size: 1.4rem;
+          font-weight: 700;
+          color: $black;
+        }
+
+        p {
+          margin: 0;
+          color: rgba($black, 0.65);
+          max-width: 360px;
+        }
+
+        .collection-link {
+          font-weight: 600;
+          color: $black;
+        }
+      }
+
+      .collection-products {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.75rem;
+      }
+
+      .collection-product {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+        padding: 0.85rem;
+        border-radius: 16px;
+        background: rgba($white, 0.68);
+        backdrop-filter: blur(6px);
+        text-align: center;
+
+        img {
+          width: 100%;
+          border-radius: 14px;
+          aspect-ratio: 3 / 4;
+          object-fit: cover;
+        }
+
+        span {
+          font-weight: 600;
+          font-size: 0.9rem;
+          color: rgba($black, 0.8);
+        }
+      }
+    }
+  }
+
+  .all-products {
+    background: $white;
+    border-radius: 24px;
+    padding: 2.5rem clamp(1.5rem, 4vw, 3rem);
+    box-shadow: 0 28px 45px rgba($black, 0.06);
+    border: 1px solid rgba($primary, 0.05);
+
+    .section-header {
+      margin-bottom: 1.5rem;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .shop-page {
+    .shop-hero {
+      .hero-preview {
+        flex: 1 1 100%;
+        order: -1;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .shop-page {
+    .shop-hero {
+      padding: 2rem 1.75rem;
+      gap: 1.75rem;
+    }
+
+    .shop-badges .info-card {
+      padding: 1.25rem;
+    }
+
+    .carousel-section {
+      padding: 2rem 1.5rem;
+    }
+
+    .all-products {
+      padding: 2rem 1.5rem;
+    }
+  }
+}
