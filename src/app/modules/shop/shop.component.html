@@ -1,5 +1,5 @@
 <div class="content-wrapper container-xxl p-0">
-  <div class="content-body">
+  <div class="content-body shop-page">
     <app-content-header [contentHeader]="contentHeader"/>
 
     @if (isLoading) {
@@ -7,13 +7,181 @@
         <spinner/>
       </div>
     } @else {
-      <div class="row">
-        @for (product of data; track product.title) {
-          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
-            <product-item [product]="product"/>
+      @if (data?.length) {
+        <section class="hero-section card gradient-border">
+          <div class="hero-copy">
+            <p class="hero-eyebrow">KEP Marketplace</p>
+            <h2 class="hero-title">Discover limited-edition drops curated for top performers</h2>
+            <p class="hero-description">
+              Level up your setup with exclusive gear, statement apparel, and collector&apos;s pieces crafted for the KEP community.
+            </p>
+            <button type="button" class="btn btn-light btn-lg hero-action">Explore collections</button>
           </div>
+          @if (heroShowcase.length) {
+            <div class="hero-gallery">
+              @for (product of heroShowcase; track product.title) {
+                <div class="gallery-card">
+                  @if (product.images?.length) {
+                    <img [alt]="product.title" [src]="product.images[0]?.url"/>
+                  }
+                  <span class="gallery-title">{{ product.title }}</span>
+                </div>
+              }
+            </div>
+          }
+        </section>
+
+        <section class="hero-stats">
+          <div class="stat-card">
+            <span class="stat-value">{{ totalProducts }}</span>
+            <span class="stat-label">Unique pieces</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">{{ totalColorways }}</span>
+            <span class="stat-label">Color variations</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">{{ totalSizes }}</span>
+            <span class="stat-label">Size options</span>
+          </div>
+        </section>
+
+        @if (spotlightProduct) {
+          <section class="spotlight card">
+            <div class="spotlight-media">
+              @if (spotlightProduct?.images?.length) {
+                <img [alt]="spotlightProduct.title" [src]="spotlightProduct.images[0]?.url"/>
+              } @else {
+                <div class="spotlight-placeholder">{{ spotlightProduct?.title?.charAt(0) }}</div>
+              }
+            </div>
+            <div class="spotlight-info">
+              <p class="spotlight-eyebrow">Spotlight</p>
+              <h3 class="spotlight-title">{{ spotlightProduct.title }}</h3>
+              <p class="spotlight-description">{{ spotlightProduct.description }}</p>
+              <div class="spotlight-meta">
+                <div class="meta-item">
+                  <span class="meta-label">Value</span>
+                  <span class="meta-value">{{ spotlightProduct.kepcoin | number }} KEP</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Colors</span>
+                  <span class="meta-value">{{ spotlightProduct.colors?.length || 0 }}</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Sizes</span>
+                  <span class="meta-value">{{ spotlightProduct.colors?.[0]?.sizes?.length || 0 }}</span>
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary btn-lg">View variants</button>
+            </div>
+          </section>
         }
-      </div>
+
+        <section class="benefits">
+          <div class="benefit-card">
+            <h4>Curated for champions</h4>
+            <p>Hand-picked essentials and signature drops for the KEP elite.</p>
+          </div>
+          <div class="benefit-card">
+            <h4>Immersive previews</h4>
+            <p>Explore every angle with rich galleries and detailed colorways.</p>
+          </div>
+          <div class="benefit-card">
+            <h4>Earn and redeem</h4>
+            <p>Use your KEP coins to unlock premium upgrades and collectibles.</p>
+          </div>
+        </section>
+
+        @if (featuredProducts.length) {
+          <section class="carousel-section">
+            <div class="section-header">
+              <div>
+                <p class="section-eyebrow">Featured</p>
+                <h3>Trending now</h3>
+              </div>
+              <div class="carousel-controls">
+                <button type="button" class="carousel-control" aria-label="Previous" (click)="scrollCarousel(trendingCarousel, -1)">
+                  ‹
+                </button>
+                <button type="button" class="carousel-control" aria-label="Next" (click)="scrollCarousel(trendingCarousel, 1)">
+                  ›
+                </button>
+              </div>
+            </div>
+            <div class="carousel-viewport" #trendingCarousel>
+              <div class="carousel-track">
+                @for (product of featuredProducts; track product.title) {
+                  <div class="carousel-item">
+                    <product-item [product]="product"/>
+                  </div>
+                }
+              </div>
+            </div>
+          </section>
+        }
+
+        @if (newArrivals.length) {
+          <section class="carousel-section">
+            <div class="section-header">
+              <div>
+                <p class="section-eyebrow">Fresh drop</p>
+                <h3>Just arrived</h3>
+              </div>
+              <div class="carousel-controls">
+                <button type="button" class="carousel-control" aria-label="Previous" (click)="scrollCarousel(arrivalsCarousel, -1)">
+                  ‹
+                </button>
+                <button type="button" class="carousel-control" aria-label="Next" (click)="scrollCarousel(arrivalsCarousel, 1)">
+                  ›
+                </button>
+              </div>
+            </div>
+            <div class="carousel-viewport" #arrivalsCarousel>
+              <div class="carousel-track">
+                @for (product of newArrivals; track product.title) {
+                  <div class="carousel-item">
+                    <product-item [product]="product"/>
+                  </div>
+                }
+              </div>
+            </div>
+          </section>
+        }
+
+        @if (editorPicks.length) {
+          <section class="carousel-section">
+            <div class="section-header">
+              <div>
+                <p class="section-eyebrow">Editor&apos;s picks</p>
+                <h3>Curated for you</h3>
+              </div>
+              <div class="carousel-controls">
+                <button type="button" class="carousel-control" aria-label="Previous" (click)="scrollCarousel(picksCarousel, -1)">
+                  ‹
+                </button>
+                <button type="button" class="carousel-control" aria-label="Next" (click)="scrollCarousel(picksCarousel, 1)">
+                  ›
+                </button>
+              </div>
+            </div>
+            <div class="carousel-viewport" #picksCarousel>
+              <div class="carousel-track">
+                @for (product of editorPicks; track product.title) {
+                  <div class="carousel-item">
+                    <product-item [product]="product"/>
+                  </div>
+                }
+              </div>
+            </div>
+          </section>
+        }
+      } @else {
+        <div class="card empty-state">
+          <h3>No products yet</h3>
+          <p>Check back soon for new drops and limited releases.</p>
+        </div>
+      }
     }
   </div>
 </div>

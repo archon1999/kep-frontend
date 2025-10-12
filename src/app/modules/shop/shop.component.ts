@@ -22,6 +22,15 @@ import { ProductItemComponent } from '@app/modules/shop/components/product-item/
 export class ShopComponent extends BaseLoadComponent<Array<Product>> {
   protected service = inject(ShopApiService);
 
+  public featuredProducts: Product[] = [];
+  public newArrivals: Product[] = [];
+  public editorPicks: Product[] = [];
+  public spotlightProduct?: Product;
+  public heroShowcase: Product[] = [];
+  public totalProducts = 0;
+  public totalColorways = 0;
+  public totalSizes = 0;
+
   getData(): Observable<Array<Product>> {
     return this.service.getProducts();
   }
@@ -39,5 +48,31 @@ export class ShopComponent extends BaseLoadComponent<Array<Product>> {
         ]
       }
     };
+  }
+
+  protected override afterLoadData(products: Array<Product>): void {
+    const safeProducts = products ?? [];
+
+    this.totalProducts = safeProducts.length;
+    this.totalColorways = safeProducts.reduce((total, product) => total + (product.colors?.length ?? 0), 0);
+    this.totalSizes = safeProducts.reduce((total, product) => {
+      const sizes = product.colors?.flatMap((color) => color.sizes ?? []) ?? [];
+      return total + sizes.length;
+    }, 0);
+
+    this.spotlightProduct = safeProducts[0];
+    this.featuredProducts = safeProducts.slice(0, Math.min(8, safeProducts.length));
+    this.newArrivals = safeProducts.slice(-8).reverse();
+    this.editorPicks = safeProducts.slice(1, Math.min(9, safeProducts.length));
+    this.heroShowcase = safeProducts.slice(0, Math.min(3, safeProducts.length));
+  }
+
+  public scrollCarousel(container: HTMLElement | null, direction: number): void {
+    if (!container) {
+      return;
+    }
+
+    const scrollAmount = container.clientWidth * 0.8;
+    container.scrollBy({ left: scrollAmount * direction, behavior: 'smooth' });
   }
 }
