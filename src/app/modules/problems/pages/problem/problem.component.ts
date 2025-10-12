@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Params } from '@angular/router';
+import { NavigationEnd, Params } from '@angular/router';
 import { AuthUser } from '@auth';
 import { Subject } from 'rxjs';
 import { Problem } from '@problems/models/problems.models';
@@ -17,12 +17,11 @@ import { TourModule } from '@shared/third-part-modules/tour/tour.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
 import { MonacoEditorComponent } from '@shared/third-part-modules/monaco-editor/monaco-editor.component';
 import { BasePageComponent } from '@core/common/classes/base-page.component';
-import { SidebarService } from '@shared/ui/sidebar/sidebar.service';
 import { ContentHeaderModule } from '@shared/ui/components/content-header/content-header.module';
 import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 import { ProblemSubmitCardComponent } from '@problems/components/problem-submit-card/problem-submit-card.component';
-import { take } from 'rxjs/operators';
+import { filter, take, takeUntil } from 'rxjs/operators';
 import { ResourceByIdPipe } from '@shared/pipes/resource-by-id.pipe';
 
 @Component({
@@ -59,20 +58,25 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
 
   public submitEvent = new Subject();
   public checkInput = '';
+  private isSyncingActiveTab = false;
   constructor(
     public service: ProblemsApiService,
     public api: ApiService,
-    protected coreSidebarService: SidebarService,
   ) {
     super();
   }
 
   ngOnInit(): void {
-    if (this._queryParams.tab === 'hacks') {
-      this.activeId = 3;
-    } else if (this._queryParams.tab === 'attempts') {
-      this.activeId = 2;
-    }
+    this.updateActiveTabFromUrl(this.router.url, this._queryParams?.tab);
+
+    this.router.events
+      .pipe(
+        takeUntil(this._unsubscribeAll),
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+      )
+      .subscribe(event => {
+        this.updateActiveTabFromUrl(event.urlAfterRedirects, this._queryParams?.tab);
+      });
 
     this.route.data.subscribe(({ problem }) => {
       this.problem = problem;
@@ -117,13 +121,11 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
   }
 
   activeIdChange(index: number) {
-    if (index === 1) {
-      this.updateQueryParams({ tab: null });
-    } else if (index === 2) {
-      this.updateQueryParams({ tab: 'attempts' });
-    } else if (index === 3) {
-      this.updateQueryParams({ tab: 'hacks' });
+    if (this.isSyncingActiveTab) {
+      return;
     }
+
+    this.navigateToTab(index);
   }
 
   saveCheckInput() {
@@ -136,13 +138,8 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
     );
   }
 
-  codeEditorSidebarToggle() {
-    this.coreSidebarService.getSidebarRegistry('codeEditorSidebar').toggleOpen();
-  }
-
   onSubmit() {
-    console.log(4142);
-    this.activeId = 2;
+    this.navigateToTab(2);
     this.submitEvent.next(null);
   }
 
@@ -173,5 +170,45 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
     this.router.navigate(['/practice/problems/problem', problemId], {
       queryParams: this.route.snapshot.queryParams,
     });
+  }
+
+  private updateActiveTabFromUrl(url: string, tabParam?: string) {
+    let nextActiveId = 1;
+
+    if (url.includes('/hacks')) {
+      nextActiveId = 3;
+    } else if (url.includes('/attempts')) {
+      nextActiveId = 2;
+    } else if (tabParam === 'hacks') {
+      nextActiveId = 3;
+    } else if (tabParam === 'attempts') {
+      nextActiveId = 2;
+    }
+
+    if (this.activeId === nextActiveId) {
+      return;
+    }
+
+    this.isSyncingActiveTab = true;
+    this.activeId = nextActiveId;
+    setTimeout(() => (this.isSyncingActiveTab = false));
+  }
+
+  navigateToTab(index: number) {
+    if (!this.problem) {
+      return;
+    }
+
+    const commands: Array<any> = ['/practice/problems/problem', this.problem.id];
+    if (index === 2) {
+      commands.push('attempts');
+    } else if (index === 3) {
+      commands.push('hacks');
+    }
+
+    const queryParams = { ...this.route.snapshot.queryParams };
+    delete queryParams['tab'];
+
+    this.router.navigate(commands, { queryParams });
   }
 }

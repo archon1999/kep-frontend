@@ -1,9 +1,9 @@
-<div class="content-wrapper container-xxl p-0">
-  <div class="content-body">
+<div class="problem-page">
+  <div class="problem-page__header">
     <app-content-header [contentHeader]="contentHeader">
-      <div class="btn-group" role="group">
+      <div class="problem-page__switch-buttons" role="group">
         <button
-          class="btn btn-primary-light btn-wave"
+          class="btn btn-icon btn-light"
           type="button"
           (click)="goToPreviousProblem()"
           ngbTooltip="{{ 'PreviousProblem' | translate }}"
@@ -11,7 +11,7 @@
           <kep-icon name="left"/>
         </button>
         <button
-          class="btn btn-primary-light btn-wave"
+          class="btn btn-icon btn-light"
           type="button"
           (click)="goToNextProblem()"
           ngbTooltip="{{ 'NextProblem' | translate }}"
@@ -20,133 +20,132 @@
         </button>
       </div>
     </app-content-header>
-    <section  class="mt-2">
-      <div class="row">
-        <div class="col-lg-9 col-md-12 col-sm-12">
-          <kep-card>
-            <div class="card-header">
-              <ul
-                #navWithIcons="ngbNav"
-                (activeIdChange)="activeIdChange($event)" [(activeId)]="activeId" [destroyOnHide]="false"
-                class="nav-tabs" ngbNav>
-                <li [ngbNavItem]="1">
+  </div>
+
+  <div class="problem-page__body">
+    <section class="problem-page__statement">
+      <div class="problem-page__statement-scroll">
+        <problem-sidebar class="problem-page__sidebar" [problem]="problem"></problem-sidebar>
+
+        <kep-card class="problem-page__panel">
+          <div class="problem-page__tabs-header">
+            <ul
+              #navWithIcons="ngbNav"
+              class="problem-page__tabs nav-tabs"
+              ngbNav
+              [(activeId)]="activeId"
+              (activeIdChange)="activeIdChange($event)"
+              [destroyOnHide]="false"
+            >
+              <li [ngbNavItem]="1">
+                <a class="nav-link" ngbNavLink>
+                  <kep-icon size="small-4" color="primary" name="problem" type="duotone"/>
+                  {{ 'Problem' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <problem-description [problem]="problem"></problem-description>
+                </ng-template>
+              </li>
+
+              <li [ngbNavItem]="2">
+                <a class="nav-link" ngbNavLink>
+                  <kep-icon size="small-4" color="warning" name="attempt" type="duotone"/>
+                  {{ 'Attempts' | translate }}
+                </a>
+                <ng-template ngbNavContent>
+                  <problem-attempts
+                    (hackSubmitted)="navigateToTab(3)"
+                    [problem]="problem"
+                    [submitEvent]="submitEvent?.asObservable()"
+                  ></problem-attempts>
+                </ng-template>
+              </li>
+
+              @if (problem.hasCheckInput) {
+                <li [ngbNavItem]="3" destroyOnHide="true">
                   <a class="nav-link" ngbNavLink>
-                    <kep-icon size="small-4" color="primary" name="problem" type="duotone"/>
-                    {{ 'Problem' | translate }}
+                    <kep-icon size="small-4" name="lock-2" color="dark" type="duotone"/>
+                    {{ 'Hacks' | translate }}
                   </a>
                   <ng-template ngbNavContent>
-                    <problem-description [problem]="problem"></problem-description>
+                    <problem-hacks [problem]="problem"></problem-hacks>
                   </ng-template>
                 </li>
-
-                <li [ngbNavItem]="2">
-                  <a class="nav-link" ngbNavLink>
-                    <kep-icon size="small-4" color="warning" name="attempt" type="duotone"/>
-                    {{ 'Attempts' | translate }}
-                  </a>
-                  <ng-template ngbNavContent>
-                    <problem-attempts
-                      (hackSubmitted)="activeId = 3;"
-                      [problem]="problem"
-                      [submitEvent]="submitEvent?.asObservable()"
-                    >
-                    </problem-attempts>
-                  </ng-template>
-                </li>
-
-                @if (problem.hasCheckInput) {
-                  <li [ngbNavItem]="3" destroyOnHide="true">
-                    <a class="nav-link" ngbNavLink>
-                      <kep-icon size="small-4" name="lock-2" color="dark" type="duotone"/>
-                      {{ 'Hacks' | translate }}
-                    </a>
-                    <ng-template ngbNavContent>
-                      <problem-hacks [problem]="problem"></problem-hacks>
-                    </ng-template>
-                  </li>
-                }
-
-                @if (studyPlanId) {
-                  <li [ngbNavItem]="4">
-                    <a ngbNavLink [routerLink]="Resources.StudyPlan | resourceById:studyPlanId">
-                      <span [data-feather]="'activity'"></span> {{ 'StudyPlan' | translate }}
-                    </a>
-                    <ng-template ngbNavContent>
-                      <problem-description [problem]="problem"></problem-description>
-                    </ng-template>
-                  </li>
-                }
-
-                @if (contestId) {
-                  <li [ngbNavItem]="4">
-                    <a ngbNavLink [routerLink]="Resources.ContestProblems | resourceById:contestId">
-                      <kep-icon name="contest" color="primary" type="duotone"/>
-                      {{ 'Contest' | translate }}
-                    </a>
-                    <ng-template ngbNavContent>
-                      <problem-description [problem]="problem"></problem-description>
-                    </ng-template>
-                  </li>
-                }
-              </ul>
-
-              @if (isAuthenticated) {
-                <button (click)="codeEditorSidebarToggle()" class="btn btn-sm btn-primary">{{ 'Submit' | translate }}
-                </button>
               }
-            </div>
 
-            <div class="card-footer">
-              <div [ngbNavOutlet]="navWithIcons"></div>
+              @if (studyPlanId) {
+                <li class="problem-page__tabs-link">
+                  <a class="nav-link" [routerLink]="Resources.StudyPlan | resourceById:studyPlanId">
+                    <span [data-feather]="'activity'"></span>
+                    {{ 'StudyPlan' | translate }}
+                  </a>
+                </li>
+              }
+
+              @if (contestId) {
+                <li class="problem-page__tabs-link">
+                  <a class="nav-link" [routerLink]="Resources.ContestProblems | resourceById:contestId">
+                    <kep-icon name="contest" color="primary" type="duotone"/>
+                    {{ 'Contest' | translate }}
+                  </a>
+                </li>
+              }
+            </ul>
+          </div>
+
+          <div class="problem-page__tabs-content">
+            <div [ngbNavOutlet]="navWithIcons"></div>
+          </div>
+        </kep-card>
+
+        @if (currentUser?.permissions.canCreateProblems) {
+          <kep-card class="problem-page__panel">
+            <div class="problem-page__panel-title">
+              Check input
+            </div>
+            <div class="problem-page__panel-body">
+              <monaco-editor
+                [lang]="'py'"
+                class="mt-1"
+                [ngModelOptions]="{standalone: true}"
+                [(ngModel)]="checkInput"
+              ></monaco-editor>
+              <button class="btn btn-primary btn-sm mt-2" type="button" (click)="saveCheckInput()">
+                Save
+              </button>
             </div>
           </kep-card>
-
-          @if (currentUser?.permissions.canCreateProblems) {
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">
-                  Check input
-                </div>
-              </div>
-              <div class="card-body">
-                <monaco-editor
-                  [lang]="'py'"
-                  class="mt-1"
-                  [ngModelOptions]="{standalone: true}"
-                  [(ngModel)]="checkInput"
-                ></monaco-editor>
-                <div class="btn mt-2 btn-primary btn-sm" (click)="saveCheckInput()">Save</div>
-              </div>
-            </div>
-          }
-        </div>
-
-        <div class="col-lg-3 col-md-12 col-sm-12">
-          <problem-sidebar [problem]="problem"></problem-sidebar>
-
-          @if (isAuthenticated) {
-            <problem-submit-card
-              [availableLanguages]="problem.availableLanguages"
-              [submitUrl]="'problems/' + problem.id + '/submit/'"
-              (submitted)="onSubmit()"
-            />
-          }
-        </div>
-
+        }
       </div>
-
-      @if (problem && isAuthenticated) {
-        <code-editor-modal
-          [customClass]="'tour-step-2'"
-          [uniqueName]="'problem-' + problem.id"
-          [sampleTests]="problem.sampleTests"
-          [submitUrl]="'problems/' + problem.id + '/submit/'"
-          [problem]="problem"
-          [answerForInputEnabled]="problem.hasSolution && problem.hasCheckInput"
-          [availableLanguages]="problem.availableLanguages"
-          (submittedEvent)="onSubmit()"></code-editor-modal>
-      }
     </section>
+
+    <aside class="problem-page__workspace">
+      <div class="problem-page__workspace-scroll">
+        @if (problem && isAuthenticated) {
+          <code-editor-modal
+            class="problem-page__editor"
+            [customClass]="'tour-step-2'"
+            [uniqueName]="'problem-' + problem.id"
+            [sampleTests]="problem.sampleTests"
+            [submitUrl]="'problems/' + problem.id + '/submit/'"
+            [problem]="problem"
+            [answerForInputEnabled]="problem.hasSolution && problem.hasCheckInput"
+            [availableLanguages]="problem.availableLanguages"
+            [displayMode]="'inline'"
+            (submittedEvent)="onSubmit()"
+          ></code-editor-modal>
+        }
+
+        @if (isAuthenticated) {
+          <problem-submit-card
+            class="problem-page__submit-card"
+            [availableLanguages]="problem.availableLanguages"
+            [submitUrl]="'problems/' + problem.id + '/submit/'"
+            (submitted)="onSubmit()"
+          ></problem-submit-card>
+        }
+      </div>
+    </aside>
   </div>
 </div>
 

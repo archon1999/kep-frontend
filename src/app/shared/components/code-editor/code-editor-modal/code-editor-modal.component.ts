@@ -22,6 +22,7 @@ interface CheckSamplesResultOne {
   input: string;
   output: string;
   answer: string;
+  error?: string;
 }
 
 @Component({
@@ -42,6 +43,7 @@ export class CodeEditorModalComponent implements OnInit {
   @Input() answerForInputEnabled = false;
   @Input() availableLanguages: Array<AvailableLanguage> = [];
   @Input() problem: Problem;
+  @Input() displayMode: 'sidebar' | 'inline' = 'sidebar';
   @Output() submittedEvent = new EventEmitter<null>();
 
   public canSubmit = true;
@@ -65,6 +67,7 @@ export class CodeEditorModalComponent implements OnInit {
   public prevKeyCode: string;
 
   public checkSamplesResult: Array<CheckSamplesResultOne> = [];
+  public showInlineResults = false;
   protected readonly Verdicts = Verdicts;
 
   constructor(
@@ -83,17 +86,42 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   get sidebarIsOpened() {
-    return this.coreSidebarService.getSidebarRegistry(this.sidebarName).isOpened;
+    if (this.isInlineMode) {
+      return true;
+    }
+    const sidebar = this.coreSidebarService.getSidebarRegistry(this.sidebarName);
+    return sidebar ? sidebar.isOpened : false;
   }
 
   get resultSidebarIsOpened() {
-    return this.coreSidebarService.getSidebarRegistry(this.checkSamplesResultSidebarName).isOpened;
+    if (this.isInlineMode) {
+      return this.showInlineResults;
+    }
+    const sidebar = this.coreSidebarService.getSidebarRegistry(this.checkSamplesResultSidebarName);
+    return sidebar ? sidebar.isOpened : false;
+  }
+
+  get isInlineMode() {
+    return this.displayMode === 'inline';
+  }
+
+  get editorHeight() {
+    if (!this.isInlineMode) {
+      return 480;
+    }
+    if (typeof window === 'undefined') {
+      return 640;
+    }
+    return Math.max(window.innerHeight - 320, 480);
   }
 
   ngOnInit(): void {
     this.langService.getLanguage().subscribe(
       (lang: string) => {
         this.editorForm.get('lang').setValue(lang);
+        if (this.isInlineMode) {
+          this.init();
+        }
       }
     );
 
@@ -215,7 +243,9 @@ export class CodeEditorModalComponent implements OnInit {
       return;
     }
 
-    this.toggleSidebar();
+    if (!this.isInlineMode) {
+      this.toggleSidebar();
+    }
     this.canSubmit = false;
     const data = {
       sourceCode: this.editorForm.get('code').value,
@@ -238,6 +268,9 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   toggleSidebar(): void {
+    if (this.isInlineMode) {
+      return;
+    }
     if (!this.sidebarIsOpened) {
       this.openSidebar();
     } else {
@@ -246,33 +279,48 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   openSidebar() {
+    if (this.isInlineMode) {
+      this.init();
+      return;
+    }
     if (this.sidebarIsOpened) {
       return;
     }
-    this.coreSidebarService.getSidebarRegistry(this.sidebarName).toggleOpen();
+    this.coreSidebarService.getSidebarRegistry(this.sidebarName)?.toggleOpen();
     this.init();
   }
 
   closeSidebar() {
+    if (this.isInlineMode) {
+      return;
+    }
     if (!this.sidebarIsOpened) {
       return;
     }
     this.closeResultSidebar();
-    this.coreSidebarService.getSidebarRegistry(this.sidebarName).toggleOpen();
+    this.coreSidebarService.getSidebarRegistry(this.sidebarName)?.toggleOpen();
   }
 
   openResultSidebar() {
+    if (this.isInlineMode) {
+      this.showInlineResults = true;
+      return;
+    }
     if (this.resultSidebarIsOpened) {
       return;
     }
-    this.coreSidebarService.getSidebarRegistry(this.checkSamplesResultSidebarName).toggleOpen();
+    this.coreSidebarService.getSidebarRegistry(this.checkSamplesResultSidebarName)?.toggleOpen();
   }
 
   closeResultSidebar() {
+    if (this.isInlineMode) {
+      this.showInlineResults = false;
+      return;
+    }
     if (!this.resultSidebarIsOpened) {
       return;
     }
-    this.coreSidebarService.getSidebarRegistry(this.checkSamplesResultSidebarName).toggleOpen();
+    this.coreSidebarService.getSidebarRegistry(this.checkSamplesResultSidebarName)?.toggleOpen();
   }
 
   onKeyDown(event) {

@@ -1,278 +1,307 @@
-<sidebar [hideOnEsc]="true" [name]="sidebarName" class="code-editor-sidebar">
-  <a
-    (click)="toggleSidebar()"
-    class="btn-toggle d-flex align-items-center justify-content-center">
-    <i [data-feather]="'terminal'"></i>
-  </a>
-
-  <ng-scrollbar>
-    <kep-card (keydown)="onKeyDown($event)" customClass="full-height position-relative">
-      <div class="card-header">
-        <div class="card-title">
-          {{ 'CodeEditor.Editor' | translate }}
-        </div>
-
-        <div class="d-flex justify-content-between">
-          <button (click)="toggleSidebar()" aria-label="Close" class="btn-close" type="button"></button>
-        </div>
+<ng-template #editorCard>
+  <kep-card (keydown)="onKeyDown($event)" customClass="full-height position-relative">
+    <div class="card-header">
+      <div class="card-title">
+        {{ 'CodeEditor.Editor' | translate }}
       </div>
-      <hr class="mt-0 mb-50">
-      <div [formGroup]="editorForm" class="card-body">
-        <div class="row">
-          <div class="col-lg-8 col-md-7 col-12">
-            <div
-              [ngbTooltip]="editorForm.controls.code.errors | errorMessage"
-              [style.height.%]="100"
-              container="body"
-              tooltipClass="tooltip-danger"
+
+      <div class="d-flex justify-content-between align-items-center">
+        @if (!isInlineMode) {
+          <button (click)="toggleSidebar()" aria-label="Close" class="btn-close" type="button"></button>
+        }
+      </div>
+    </div>
+    <hr class="mt-0 mb-50">
+    <div [formGroup]="editorForm" class="card-body">
+      <div class="row g-2">
+        <div class="col-lg-8 col-md-7 col-12">
+          <div
+            [ngbTooltip]="editorForm.controls.code.errors | errorMessage"
+            [style.height.%]="100"
+            container="body"
+            tooltipClass="tooltip-danger"
+          >
+            <monaco-editor
+              [formControl]="editorForm.controls.code"
+              [height]="editorHeight"
+              [lang]="editorForm.controls.lang.value"
             >
-              <monaco-editor
-                [formControl]="editorForm.controls.code"
-                [height]="480"
-                [lang]="editorForm.controls.lang.value">
-              </monaco-editor>
-            </div>
+            </monaco-editor>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-5 d-none d-md-block">
+          <div class="mb-1">
+            <label class="fw-medium">{{ 'Language' | translate }}: </label>
+            <ng-select
+              (change)="langChange($event)"
+              [clearable]="false"
+              [formControl]="editorForm.controls.lang"
+            >
+              @for (availableLanguage of availableLanguages; track availableLanguage) {
+                <ng-option [value]="availableLanguage.lang">
+                  {{ availableLanguage.langFull || availableLanguage.lang }}
+                </ng-option>
+              }
+            </ng-select>
           </div>
 
-          <div class="col-lg-4 col-md-5 d-none d-md-block">
+          @if (sampleTests.length > 0) {
             <div class="mb-1">
-              <label class="fw-medium">{{ 'Language' | translate }}: </label>
+              <label class="fw-medium">{{ 'CodeEditor.SampleTest' | translate }}: </label>
               <ng-select
-                (change)="langChange($event)"
+                (change)="onSampleTestChange()"
                 [clearable]="false"
-                [formControl]="editorForm.controls.lang">
-                @for (availableLanguage of availableLanguages; track availableLanguage) {
-                  <ng-option
-                    [value]="availableLanguage.lang">
-                    {{ availableLanguage.langFull || availableLanguage.lang }}
+                formControlName="testCaseNumber"
+              >
+                @for (sampleTest of sampleTests; track sampleTest; let i = $index) {
+                  <ng-option value="{{ i + 1 }}">
+                    {{ i + 1 }}
                   </ng-option>
                 }
               </ng-select>
             </div>
+          }
 
-            @if (sampleTests.length > 0) {
-              <div class="mb-1">
-                <label class="fw-medium">{{ 'CodeEditor.SampleTest' | translate }}: </label>
-                <ng-select
-                  (change)="onSampleTestChange()"
-                  [clearable]="false"
-                  formControlName="testCaseNumber"
-                >
-                  @for (sampleTest of sampleTests; track sampleTest; let i = $index) {
-                    <ng-option
-                      value="{{ i + 1 }}">
-                      {{ i + 1 }}
-                    </ng-option>
-                  }
-                </ng-select>
-              </div>
-            }
+          @if (!isSelectedLangText()) {
+            <div class="mb-1">
+              <label class="fw-medium">{{ 'CodeEditor.Input' | translate }}:</label>
+              <textarea
+                [ngbTooltip]="editorForm.controls.input.errors | errorMessage"
+                class="form-control"
+                formControlName="input"
+                placeholder=""
+                rows="3"
+                tooltipClass="tooltip-danger"
+              ></textarea>
+            </div>
+          }
 
-            @if (!isSelectedLangText()) {
-              <div class="mb-1">
-                <label class="fw-medium">{{ 'CodeEditor.Input' | translate }}:</label>
-                <textarea
-                  [ngbTooltip]="editorForm.controls.input.errors | errorMessage"
-                  class="form-control"
-                  formControlName="input"
-                  placeholder=""
-                  rows="3"
-                  tooltipClass="tooltip-danger"
-                ></textarea>
-              </div>
-            }
+          @if (!isSelectedLangText()) {
+            <div class="mb-1">
+              <label class="fw-medium">{{ 'CodeEditor.Output' | translate }}:</label>
+              <textarea
+                class="form-control"
+                formControlName="output"
+                rows="2"
+              ></textarea>
+            </div>
+          }
 
-            @if (!isSelectedLangText()) {
-              <div class="mb-1">
-                <label class="fw-medium">{{ 'CodeEditor.Output' | translate }}:</label>
-                <textarea
-                  class="form-control"
-                  formControlName="output"
-                  rows="2"
-                ></textarea>
-              </div>
-            }
-
-            @if (!isSelectedLangText()) {
-              <div class="mb-1">
-                <label class="fw-medium">{{ 'CodeEditor.Answer' | translate }}:</label>
-                <textarea
-                  class="form-control"
-                  formControlName="answer"
-                  rows="2"
-                ></textarea>
-              </div>
-            }
-          </div>
+          @if (!isSelectedLangText()) {
+            <div class="mb-1">
+              <label class="fw-medium">{{ 'CodeEditor.Answer' | translate }}:</label>
+              <textarea
+                class="form-control"
+                formControlName="answer"
+                rows="2"
+              ></textarea>
+            </div>
+          }
         </div>
       </div>
+    </div>
 
-      <div class="card-footer d-none d-md-flex justify-content-between">
-        @if (authService.currentUserValue?.permissions?.canUseCheckSamples === false) {
-          <kepcoin-spend-swal
-            (success)="checkSamplesPurchaseSuccess()"
-            [customContent]="true"
-            [purchaseUrl]="'problems/' + problem?.id + '/purchase-check-samples/'"
-            [value]="100"
-          >
-            <div new-feature class="position-relative">
-              <button class="btn btn-glow btn-dark bg-dark">
-                {{ 'CodeEditor.CheckSamples' | translate }}
-                <i data-feather="shopping-cart"></i>
-              </button>
-            </div>
-          </kepcoin-spend-swal>
-        } @else {
+    <div class="card-footer d-none d-md-flex justify-content-between">
+      @if (authService.currentUserValue?.permissions?.canUseCheckSamples === false) {
+        <kepcoin-spend-swal
+          (success)="checkSamplesPurchaseSuccess()"
+          [customContent]="true"
+          [purchaseUrl]="'problems/' + problem?.id + '/purchase-check-samples/'"
+          [value]="100"
+        >
+          <div new-feature class="position-relative">
+            <button class="btn btn-glow btn-dark bg-dark">
+              {{ 'CodeEditor.CheckSamples' | translate }}
+              <i data-feather="shopping-cart"></i>
+            </button>
+          </div>
+        </kepcoin-spend-swal>
+      } @else {
+        <button
+          (click)="checkSamples()"
+          ngbTooltip="Alt+Z"
+          class="btn btn-glow btn-dark bg-dark me-1"
+          type="button"
+        >
+          @if (isCheckSamples) {
+            <span aria-hidden="true" class="spinner-border spinner-border-sm" role="status"></span>
+          }
+          @if (!isCheckSamples) {
+            <span><i data-feather="terminal"></i></span>
+          }
+          {{ 'CodeEditor.CheckSamples' | translate }}
+        </button>
+      }
+      <div class="d-flex">
+        @if (!isSelectedLangText()) {
           <button
-            (click)="checkSamples()"
-            ngbTooltip="Alt+Z"
+            ngbTooltip="Alt+X"
+            (click)="run()"
             class="btn btn-glow btn-dark bg-dark me-1"
-            type="button">
-            @if (isCheckSamples) {
+            type="button"
+          >
+            @if (isRunning) {
               <span aria-hidden="true" class="spinner-border spinner-border-sm" role="status"></span>
             }
-            @if (!isCheckSamples) {
+            @if (!isRunning) {
               <span><i data-feather="terminal"></i></span>
             }
-            {{ 'CodeEditor.CheckSamples' | translate }}
+            {{ 'CodeEditor.Run' | translate }}
           </button>
         }
-        <div class="d-flex">
-          @if (!isSelectedLangText()) {
-            <button
-              ngbTooltip="Alt+X"
-              (click)="run()"
-              class="btn btn-glow btn-dark bg-dark me-1"
-              type="button">
-              @if (isRunning) {
-                <span aria-hidden="true" class="spinner-border spinner-border-sm" role="status"></span>
+
+        @if (answerForInputEnabled) {
+          <kepcoin-spend-swal
+            (success)="answerForInput($event)"
+            [customContent]="true"
+            [purchaseUrl]="'problems/' + problem?.id + '/answer-for-input/'"
+            [requestBody]="{input_data: editorForm.get('input').value}"
+            [value]="1"
+          >
+            <button class="btn btn-glow btn-dark bg-dark me-1" type="button">
+              @if (isAnswerForInput) {
+                <span class="spinner-border spinner-border-sm" role="status"></span>
               }
-              @if (!isRunning) {
-                <span><i data-feather="terminal"></i></span>
+              @if (!isAnswerForInput) {
+                <span>
+                  <i data-feather="check-square"></i>
+                </span>
               }
-              {{ 'CodeEditor.Run' | translate }}
+              {{ 'CodeEditor.AnswerForInput' | translate }}
             </button>
-          }
+          </kepcoin-spend-swal>
+        }
 
-          @if (answerForInputEnabled) {
-            <kepcoin-spend-swal
-              (success)="answerForInput($event)"
-              [customContent]="true"
-              [purchaseUrl]="'problems/' + problem?.id + '/answer-for-input/'"
-              [requestBody]="{input_data: editorForm.get('input').value}"
-              [value]="1"
-            >
-              <button class="btn btn-glow btn-dark bg-dark me-1" type="button">
-                @if (isAnswerForInput) {
-                  <span
-                    class="spinner-border spinner-border-sm"
-                    role="status">
-                  </span>
-                }
-                @if (!isAnswerForInput) {
-                  <span>
-                    <i data-feather="check-square"></i>
-                  </span>
-                }
-                {{ 'CodeEditor.AnswerForInput' | translate }}
-              </button>
-            </kepcoin-spend-swal>
-          }
-
-          @if (submitUrl) {
-            <button
-              ngbTooltip="Alt+Enter"
-              (click)="submit()"
-              [disabled]="!editorForm.valid"
-              class="btn btn-glow btn-dark bg-dark"
-              type="submit">
-              <i data-feather="send"></i>
-              {{ 'CodeEditor.Submit' | translate }}
-            </button>
-          }
-        </div>
-      </div>
-
-      <div class="card-footer d-md-none d-block text-end">
         @if (submitUrl) {
           <button
             ngbTooltip="Alt+Enter"
             (click)="submit()"
             [disabled]="!editorForm.valid"
             class="btn btn-glow btn-dark bg-dark"
-            type="submit">
+            type="submit"
+          >
             <i data-feather="send"></i>
             {{ 'CodeEditor.Submit' | translate }}
           </button>
         }
       </div>
-    </kep-card>
-  </ng-scrollbar>
-</sidebar>
+    </div>
 
-<sidebar [hideOnEsc]="true" [name]="checkSamplesResultSidebarName" class="check-samples-result">
-  <ng-scrollbar autoWidthDisabled="false">
-    <div (keydown)="onKeyDown($event)" class="card results-card full-height position-relative">
-      @if (isCheckSamples) {
-        <div class="card-body" [style.height.px]="200">
-          <spinner [name]="checkSamplesResultSidebarName"></spinner>
-        </div>
-      } @else {
-        <div class="card-header">
-          <div class="card-title">
-            {{ 'Result' | translate }}
-          </div>
-        </div>
-        <hr class="mt-0 mb-0">
-        <div class="card-body">
-          <!--          <ngb-accordion [closeOthers]="false" [destroyOnHide]="false">-->
-          <!--            @for (result of checkSamplesResult; track result.input){-->
-          <!--              <ngb-panel [cardClass]="'collapse-margin'" [id]="'result' + $index">-->
-          <!--                <ng-template ngbPanelTitle>-->
-          <!--                  <div class="fw-semibold d-flex justify-content-between">-->
-          <!--                    <span>TC #{{ $index + 1 }}</span>-->
-          <!--                    <span [class]="{-->
-          <!--                      'text-success': result.verdict == Verdicts.Accepted,-->
-          <!--                      'text-danger': result.verdict != Verdicts.Accepted,-->
-          <!--                    }">{{ result.verdict | verdictShortTitle }}</span>-->
-          <!--                  </div>-->
-          <!--                </ng-template>-->
-          <!--                <ng-template ngbPanelContent>-->
-          <!--                  @if (result.input) {-->
-          <!--                    <div class="meta">-->
-          <!--                      <div class="fw-medium">Input:</div>-->
-          <!--                      <div>{{ result.input }}</div>-->
-          <!--                    </div>-->
-          <!--                  }-->
-
-          <!--                  @if (result.answer) {-->
-          <!--                    <div>-->
-          <!--                      <div class="fw-medium">Answer:</div>-->
-          <!--                      <div>{{ result.answer }}</div>-->
-          <!--                    </div>-->
-          <!--                  }-->
-
-          <!--                  @if (result.output) {-->
-          <!--                    <div>-->
-          <!--                      <div class="fw-medium">Output:</div>-->
-          <!--                      <div>{{ result.output }}</div>-->
-          <!--                    </div>-->
-          <!--                  }-->
-
-          <!--                  @if (result.error) {-->
-          <!--                    <div>-->
-          <!--                      <div class="fw-medium">Error:</div>-->
-          <!--                      <div><pre>{{ result.error }}</pre></div>-->
-          <!--                    </div>-->
-          <!--                  }-->
-          <!--                </ng-template>-->
-          <!--              </ngb-panel>-->
-          <!--            }-->
-          <!--          </ngb-accordion>-->
-        </div>
+    <div class="card-footer d-md-none d-block text-end">
+      @if (submitUrl) {
+        <button
+          ngbTooltip="Alt+Enter"
+          (click)="submit()"
+          [disabled]="!editorForm.valid"
+          class="btn btn-glow btn-dark bg-dark"
+          type="submit"
+        >
+          <i data-feather="send"></i>
+          {{ 'CodeEditor.Submit' | translate }}
+        </button>
       }
     </div>
-  </ng-scrollbar>
-</sidebar>
+  </kep-card>
+</ng-template>
+
+<ng-template #resultsCard>
+  <div (keydown)="onKeyDown($event)" class="card results-card full-height position-relative">
+    @if (isCheckSamples) {
+      <div class="card-body" [style.height.px]="200">
+        <spinner [name]="checkSamplesResultSidebarName"></spinner>
+      </div>
+    } @else {
+      <div class="card-header">
+        <div class="card-title">
+          {{ 'Result' | translate }}
+        </div>
+      </div>
+      <hr class="mt-0 mb-0">
+      <div class="card-body">
+        @if (checkSamplesResult.length === 0) {
+          <div class="text-muted small">{{ 'NoData' | translate }}</div>
+        } @else {
+          @for (result of checkSamplesResult; track result; let i = $index) {
+            <div class="mb-2 pb-1 border-bottom">
+              <div class="d-flex justify-content-between fw-semibold mb-1">
+                <span>TC #{{ i + 1 }}</span>
+                <span
+                  [class]="{
+                    'text-success': result.verdict == Verdicts.Accepted,
+                    'text-danger': result.verdict != Verdicts.Accepted
+                  }"
+                >
+                  {{ result.verdict | verdictShortTitle }}
+                </span>
+              </div>
+
+              @if (result.input) {
+                <div class="mb-50">
+                  <div class="fw-medium">{{ 'CodeEditor.Input' | translate }}:</div>
+                  <pre class="result-pre">{{ result.input }}</pre>
+                </div>
+              }
+
+              @if (result.answer) {
+                <div class="mb-50">
+                  <div class="fw-medium">{{ 'CodeEditor.Answer' | translate }}:</div>
+                  <pre class="result-pre">{{ result.answer }}</pre>
+                </div>
+              }
+
+              @if (result.output) {
+                <div class="mb-50">
+                  <div class="fw-medium">{{ 'CodeEditor.Output' | translate }}:</div>
+                  <pre class="result-pre">{{ result.output }}</pre>
+                </div>
+              }
+
+              @if (result.error) {
+                <div class="mb-50">
+                  <div class="fw-medium">{{ 'CodeEditor.Error' | translate }}:</div>
+                  <pre class="result-pre">{{ result.error }}</pre>
+                </div>
+              }
+            </div>
+          }
+        }
+      </div>
+    }
+  </div>
+</ng-template>
+
+@if (isInlineMode) {
+  <div class="code-editor-inline">
+    <ng-scrollbar class="code-editor-inline__scroll">
+      <ng-container *ngTemplateOutlet="editorCard"></ng-container>
+    </ng-scrollbar>
+
+    @if (showInlineResults || isCheckSamples) {
+      <div class="code-editor-inline__results">
+        <ng-container *ngTemplateOutlet="resultsCard"></ng-container>
+      </div>
+    }
+  </div>
+} @else {
+  <sidebar [hideOnEsc]="true" [name]="sidebarName" class="code-editor-sidebar">
+    <a
+      (click)="toggleSidebar()"
+      class="btn-toggle d-flex align-items-center justify-content-center"
+    >
+      <i [data-feather]="'terminal'"></i>
+    </a>
+
+    <ng-scrollbar>
+      <ng-container *ngTemplateOutlet="editorCard"></ng-container>
+    </ng-scrollbar>
+  </sidebar>
+
+  <sidebar [hideOnEsc]="true" [name]="checkSamplesResultSidebarName" class="check-samples-result">
+    <ng-scrollbar autoWidthDisabled="false">
+      <ng-container *ngTemplateOutlet="resultsCard"></ng-container>
+    </ng-scrollbar>
+  </sidebar>
+}
 
 <ng-select-css></ng-select-css>
