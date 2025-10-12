@@ -2,6 +2,23 @@
   <div class="problem-title">
     <h3 class="mb-2 text-dark">
       {{ problem.id }}. {{ problem.title }}
+
+      @if (isAuthenticated) {
+        <span
+          class="cursor-pointer"
+          (click)="toggleFavorite()"
+          [ngbTooltip]="problem.userInfo.isFavorite ? ('RemoveFromFavorites' | translate) : ('AddToFavorites' | translate)">
+          @if (favoriteLoading) {
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          } @else {
+            @if (problem.userInfo.isFavorite) {
+              <kep-icon name="star" type="solid" color="warning"/>
+            } @else {
+              <kep-icon name="star" color="warning"/>
+            }
+          }
+        </span>
+      }
     </h3>
   </div>
 

@@ -59,7 +59,6 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
 
   public submitEvent = new Subject();
   public checkInput = '';
-  public favoriteLoading = false;
   constructor(
     public service: ProblemsApiService,
     public api: ApiService,
@@ -115,32 +114,6 @@ export class ProblemComponent extends BasePageComponent implements OnInit {
         ]
       }
     };
-  }
-
-  toggleFavorite() {
-    if (!this.problem?.userInfo || this.favoriteLoading) {
-      return;
-    }
-
-    const isFavorite = !!this.problem.userInfo.isFavorite;
-    const request$ = isFavorite
-      ? this.service.removeProblemFromFavorites(this.problem.id)
-      : this.service.addProblemToFavorites(this.problem.id);
-
-    this.favoriteLoading = true;
-    request$.pipe(
-      finalize(() => {
-        this.favoriteLoading = false;
-        this.cdr.markForCheck();
-      })
-    ).subscribe({
-      next: () => {
-        this.problem.userInfo.isFavorite = !isFavorite;
-      },
-      error: () => {
-        this.toastr.error('Error');
-      }
-    });
   }
 
   activeIdChange(index: number) {
