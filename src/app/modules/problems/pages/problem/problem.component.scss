@@ -1,19 +1,217 @@
-.card .card-header {
-  padding: 1rem !important;
-  padding-bottom: 0 !important;
-  align-items: center;
-}
-
-.problem-container {
+:host {
+  display: block;
   height: 100%;
 }
 
-/* Стили для блока с кодом */
-pre {
-  background-color: #f8f9fa;
-  padding: 1rem;
-  border-radius: 0.3rem;
-  overflow-x: auto;
+.problem-detail {
+  display: flex;
+  gap: 1.5rem;
+  height: 100%;
+  min-height: 0;
+  padding: 1.5rem 2rem;
 }
 
-/* Дополнительные стили можно добавить по необходимости */
+.problem-detail__panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.problem-detail__panel--left {
+  flex: 1 1 55%;
+}
+
+.problem-detail__panel--right {
+  flex: 1 1 45%;
+}
+
+.problem-detail__panel-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 0.75rem;
+}
+
+.problem-detail__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  background: var(--bs-body-bg, #ffffff);
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+}
+
+.problem-detail__nav-button {
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.problem-detail__title {
+  flex: 1;
+  text-align: center;
+}
+
+.problem-detail__id {
+  font-weight: 600;
+  color: var(--bs-primary, #5a67d8);
+  display: block;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.problem-detail__name {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--bs-gray-900, #1f2937);
+}
+
+.problem-detail__meta problem-sidebar {
+  display: block;
+}
+
+.problem-detail__meta .layout-spacing {
+  margin: 0;
+}
+
+.problem-detail__meta kep-card {
+  width: 100%;
+}
+
+.problem-detail__card {
+  width: 100%;
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+  border-radius: 1rem;
+}
+
+.problem-detail__tabs {
+  padding: 1rem 1.5rem 0.5rem;
+}
+
+.problem-detail__tabs-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.problem-detail__tabs-nav .nav-link {
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--bs-gray-700, #4b5563);
+  transition: all 0.2s ease;
+}
+
+.problem-detail__tabs-nav .nav-link.active,
+.problem-detail__tabs-nav .nav-link:hover {
+  border-color: rgba(var(--bs-primary-rgb, 90, 103, 216), 0.2);
+  background: rgba(var(--bs-primary-rgb, 90, 103, 216), 0.12);
+  color: var(--bs-primary, #5a67d8);
+}
+
+.problem-detail__tab-content {
+  padding: 1rem 1.5rem 1.5rem;
+  min-height: 0;
+}
+
+.problem-detail__card-header {
+  padding: 1.25rem 1.5rem 0;
+}
+
+.problem-detail__card-body {
+  padding: 0 1.5rem 1.5rem;
+}
+
+.problem-detail__check-input {
+  height: 240px;
+}
+
+.problem-detail__workspace {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.problem-detail__workspace code-editor-modal,
+.problem-detail__workspace .code-editor-inline {
+  flex: 1;
+  min-height: 0;
+}
+
+.problem-detail__submit-card {
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+  border-radius: 1rem;
+}
+
+.problem-detail__signin {
+  margin: auto;
+  text-align: center;
+  padding: 2rem;
+  border-radius: 1rem;
+  background: var(--bs-body-bg, #ffffff);
+  box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.problem-detail__signin-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--bs-primary, #5a67d8);
+}
+
+@media (max-width: 1399.98px) {
+  .problem-detail__panel--left,
+  .problem-detail__panel--right {
+    flex-basis: 50%;
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .problem-detail {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .problem-detail {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .problem-detail__panel {
+    flex-basis: auto;
+  }
+
+  .problem-detail__panel-content {
+    overflow: visible;
+    padding-right: 0;
+  }
+
+  .problem-detail__toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .problem-detail__workspace {
+    min-height: 400px;
+  }
+}

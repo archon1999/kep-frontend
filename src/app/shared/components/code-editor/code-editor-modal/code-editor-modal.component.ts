@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Language, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from 'app/modules/problems/services/language.service';
@@ -16,6 +16,8 @@ import { AuthService } from '@auth';
 import { paramsMapper } from '@shared/utils';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { findAvailableLang } from "@problems/utils";
+import { fromEvent, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 interface CheckSamplesResultOne {
   verdict: number;
@@ -32,7 +34,7 @@ interface CheckSamplesResultOne {
   encapsulation: ViewEncapsulation.None,
   standalone: false,
 })
-export class CodeEditorModalComponent implements OnInit {
+export class CodeEditorModalComponent implements OnInit, OnDestroy {
 
   @Input() submitUrl: string;
   @Input() submitParams: any = {};
@@ -42,6 +44,7 @@ export class CodeEditorModalComponent implements OnInit {
   @Input() answerForInputEnabled = false;
   @Input() availableLanguages: Array<AvailableLanguage> = [];
   @Input() problem: Problem;
+  @Input() inline = false;
   @Output() submittedEvent = new EventEmitter<null>();
 
   public canSubmit = true;
@@ -66,6 +69,9 @@ export class CodeEditorModalComponent implements OnInit {
 
   public checkSamplesResult: Array<CheckSamplesResultOne> = [];
   protected readonly Verdicts = Verdicts;
+  public editorHeight = 480;
+
+  private destroy$ = new Subject<void>();
 
   constructor(
     public api: ApiService,
@@ -83,17 +89,28 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   get sidebarIsOpened() {
-    return this.coreSidebarService.getSidebarRegistry(this.sidebarName).isOpened;
+    if (this.inline) {
+      return true;
+    }
+    const sidebar = this.coreSidebarService.getSidebarRegistry(this.sidebarName);
+    return sidebar?.isOpened || false;
   }
 
   get resultSidebarIsOpened() {
-    return this.coreSidebarService.getSidebarRegistry(this.checkSamplesResultSidebarName).isOpened;
+    if (this.inline) {
+      return true;
+    }
+    const sidebar = this.coreSidebarService.getSidebarRegistry(this.checkSamplesResultSidebarName);
+    return sidebar?.isOpened || false;
   }
 
   ngOnInit(): void {
     this.langService.getLanguage().subscribe(
       (lang: string) => {
         this.editorForm.get('lang').setValue(lang);
+        if (this.inline) {
+          this.init();
+        }
       }
     );
 
@@ -131,26 +148,48 @@ export class CodeEditorModalComponent implements OnInit {
       }
     );
 
-    this.swipeService.swipeLeft$.subscribe(
-      (event) => {
-        if (Math.abs(event.deltaX) + event.pageX + 100 >= window.innerWidth) {
-          this.openSidebar();
+    if (this.inline) {
+      this.updateEditorHeight();
+      fromEvent(window, 'resize')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => this.updateEditorHeight());
+    } else {
+      this.swipeService.swipeLeft$.subscribe(
+        (event) => {
+          if (Math.abs(event.deltaX) + event.pageX + 100 >= window.innerWidth) {
+            this.openSidebar();
+          }
         }
-      }
-    );
+      );
 
-    this.swipeService.swipeRight$.subscribe(
-      (event) => {
-        if (Math.abs(event.deltaX) >= 100) {
-          this.closeSidebar();
+      this.swipeService.swipeRight$.subscribe(
+        (event) => {
+          if (Math.abs(event.deltaX) >= 100) {
+            this.closeSidebar();
+          }
         }
-      }
-    );
+      );
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private updateEditorHeight() {
+    if (!this.inline) {
+      return;
+    }
+    const viewportHeight = window.innerHeight || 0;
+    this.editorHeight = Math.max(viewportHeight - 280, 360);
   }
 
   init() {
+    if (!this.availableLanguages?.length) {
+      return;
+    }
     const editorLang = this.editorForm.get('lang').value as AttemptLangs;
-    console.log(editorLang)
     const code = this.templateCodeService.get(this.uniqueName, editorLang)
       || findAvailableLang(this.availableLanguages, editorLang)?.codeTemplate
       || this.availableLanguages[0].codeTemplate;
@@ -215,7 +254,9 @@ export class CodeEditorModalComponent implements OnInit {
       return;
     }
 
-    this.toggleSidebar();
+    if (!this.inline) {
+      this.toggleSidebar();
+    }
     this.canSubmit = false;
     const data = {
       sourceCode: this.editorForm.get('code').value,
@@ -238,6 +279,9 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   toggleSidebar(): void {
+    if (this.inline) {
+      return;
+    }
     if (!this.sidebarIsOpened) {
       this.openSidebar();
     } else {
@@ -246,6 +290,9 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   openSidebar() {
+    if (this.inline) {
+      return;
+    }
     if (this.sidebarIsOpened) {
       return;
     }
@@ -254,6 +301,9 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   closeSidebar() {
+    if (this.inline) {
+      return;
+    }
     if (!this.sidebarIsOpened) {
       return;
     }
@@ -262,6 +312,9 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   openResultSidebar() {
+    if (this.inline) {
+      return;
+    }
     if (this.resultSidebarIsOpened) {
       return;
     }
@@ -269,6 +322,9 @@ export class CodeEditorModalComponent implements OnInit {
   }
 
   closeResultSidebar() {
+    if (this.inline) {
+      return;
+    }
     if (!this.resultSidebarIsOpened) {
       return;
     }
@@ -298,7 +354,9 @@ export class CodeEditorModalComponent implements OnInit {
     }
     this.spinner.show(this.checkSamplesResultSidebarName);
     this.isCheckSamples = true;
-    this.openResultSidebar();
+    if (!this.inline) {
+      this.openResultSidebar();
+    }
     const data = {
       lang: this.editorForm.controls.lang.value,
       sourceCode: this.editorForm.controls.code.value,

@@ -1,0 +1,19 @@
+.problem-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bs-body-bg, #f5f7fb);
+}
+
+.problem-layout__header {
+  position: sticky;
+  top: 0;
+  z-index: 1050;
+}
+
+.problem-layout__body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--bs-gray-100, #f3f4f6);
+}
