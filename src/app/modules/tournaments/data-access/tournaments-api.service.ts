@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { ApiService } from '@core/data-access/api.service';
+import { Pageable } from '@core/common/classes/pageable';
 
 @Injectable({
   providedIn: 'root'
@@ -7,8 +8,8 @@ import { ApiService } from '@core/data-access/api.service';
 export class TournamentsApiService {
   protected api = inject(ApiService);
 
-  getTournaments() {
-    return this.api.get('tournaments');
+  getTournaments(params?: Partial<Pageable> & { title?: string }) {
+    return this.api.get('tournaments', params);
   }
 
   getTournament(tournamentId: number | string) {

@@ -11,6 +11,8 @@ import { ContentHeaderModule } from '@shared/ui/components/content-header/conten
 import { KepPaginationComponent } from '@shared/components/kep-pagination/kep-pagination.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { KepCardComponent } from "@shared/components/kep-card/kep-card.component";
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-arena',
@@ -24,9 +26,12 @@ import { KepCardComponent } from "@shared/components/kep-card/kep-card.component
     KepPaginationComponent,
     NgxSkeletonLoaderModule,
     KepCardComponent,
+    ReactiveFormsModule,
   ]
 })
 export class ArenaComponent extends BaseTablePageComponent<Arena> implements OnInit {
+
+  public searchControl = new FormControl();
 
   constructor(public service: ArenaService) {
     super();
@@ -36,8 +41,23 @@ export class ArenaComponent extends BaseTablePageComponent<Arena> implements OnI
     return this.pageResult?.data;
   }
 
+  override ngOnInit(): void {
+    super.ngOnInit();
+
+    this.searchControl.valueChanges.pipe(
+      takeUntil(this._unsubscribeAll),
+      debounceTime(1000),
+    ).subscribe(() => {
+      this.pageNumber = this.defaultPageNumber;
+      this.reloadPage();
+    });
+  }
+
   getPage(): Observable<PageResult<Arena>> {
-    return this.service.getArenaAll(this.pageable);
+    return this.service.getArenaAll({
+      ...this.pageable,
+      title: this.searchControl.value,
+    });
   }
 
   protected getContentHeader(): ContentHeader {
