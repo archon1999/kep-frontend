@@ -29,8 +29,12 @@ export class ProductItemComponent implements OnChanges {
     }
   }
 
+  private get images(): Product['images'] {
+    return this.product?.images ?? [];
+  }
+
   public showPreviousImage(): void {
-    const images = this.product?.images ?? [];
+    const images = this.images;
 
     if (images.length <= 1) {
       return;
@@ -40,7 +44,7 @@ export class ProductItemComponent implements OnChanges {
   }
 
   public showNextImage(): void {
-    const images = this.product?.images ?? [];
+    const images = this.images;
 
     if (images.length <= 1) {
       return;
@@ -50,7 +54,7 @@ export class ProductItemComponent implements OnChanges {
   }
 
   public selectImage(index: number): void {
-    const images = this.product?.images ?? [];
+    const images = this.images;
 
     if (!images.length || index === this.currentImageIndex) {
       return;
@@ -60,20 +64,41 @@ export class ProductItemComponent implements OnChanges {
   }
 
   public hasImages(): boolean {
-    return !!this.product?.images?.length;
+    return !!this.images.length;
   }
 
   public hasMultipleImages(): boolean {
-    return (this.product?.images?.length ?? 0) > 1;
+    return this.images.length > 1;
   }
 
   public get currentImageUrl(): string | undefined {
-    const images = this.product?.images ?? [];
+    const images = this.images;
 
     if (!images.length) {
       return undefined;
     }
 
     return images[this.currentImageIndex]?.url;
+  }
+
+  public get visibleThumbnails(): Array<{ index: number; image: Product['images'][number] }> {
+    const images = this.images;
+
+    if (images.length <= 1) {
+      return [];
+    }
+
+    if (images.length <= 3) {
+      return images.map((image, index) => ({ index, image }));
+    }
+
+    const total = images.length;
+    const orderedIndexes = [
+      (this.currentImageIndex - 1 + total) % total,
+      this.currentImageIndex,
+      (this.currentImageIndex + 1) % total,
+    ];
+
+    return orderedIndexes.map((index) => ({ index, image: images[index] }));
   }
 }

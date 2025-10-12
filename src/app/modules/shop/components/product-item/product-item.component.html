@@ -26,23 +26,28 @@
           >
             <span aria-hidden="true">&#10095;</span>
           </button>
+          @if (visibleThumbnails.length) {
+            <div
+              class="product-carousel__thumbnails"
+              [class.product-carousel__thumbnails--stacked]="(product?.images?.length ?? 0) > 3"
+            >
+              @for (thumbnail of visibleThumbnails; track thumbnail.index) {
+                <button
+                  type="button"
+                  class="product-carousel__thumbnail"
+                  [class.product-carousel__thumbnail--active]="thumbnail.index === currentImageIndex"
+                  (click)="selectImage(thumbnail.index)"
+                  [attr.aria-label]="thumbnail.image.name || product.title"
+                >
+                  <img
+                    [src]="thumbnail.image.url"
+                    [alt]="thumbnail.image.name || product.title"
+                  />
+                </button>
+              }
+            </div>
+          }
         </div>
-
-        @if (hasMultipleImages()) {
-          <div class="product-carousel__thumbnails">
-            @for (image of product.images; track image.url; let index = $index) {
-              <button
-                type="button"
-                class="product-carousel__thumbnail"
-                [class.product-carousel__thumbnail--active]="index === currentImageIndex"
-                (click)="selectImage(index)"
-                [attr.aria-label]="image.name || product.title"
-              >
-                <img [src]="image.url" [alt]="image.name || product.title"/>
-              </button>
-            }
-          </div>
-        }
       </div>
     } @else {
       <div class="product-carousel__placeholder">
