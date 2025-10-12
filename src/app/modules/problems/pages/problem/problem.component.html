@@ -1,6 +1,26 @@
 <div class="content-wrapper container-xxl p-0">
   <div class="content-body">
     <app-content-header [contentHeader]="contentHeader">
+      @if (isAuthenticated) {
+        <button
+          class="btn btn-primary-light btn-wave me-1 favorite-toggle"
+          type="button"
+          [disabled]="favoriteLoading"
+          (click)="toggleFavorite()"
+          [attr.aria-label]="problem?.userInfo?.isFavorite ? ('RemoveFromFavorites' | translate) : ('AddToFavorites' | translate)"
+          ngbTooltip="{{ problem?.userInfo?.isFavorite ? ('RemoveFromFavorites' | translate) : ('AddToFavorites' | translate) }}"
+        >
+          @if (favoriteLoading) {
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          } @else {
+            <kep-icon
+              name="star"
+              color="warning"
+              [type]="problem?.userInfo?.isFavorite ? 'solid' : null"
+            />
+          }
+        </button>
+      }
       <div class="btn-group" role="group">
         <button
           class="btn btn-primary-light btn-wave"

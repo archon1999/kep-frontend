@@ -4,6 +4,7 @@ import { ProblemsFilter } from '../models/problems.models';
 
 export const DEFAULT_FILTER: ProblemsFilter = {
   title: null,
+  search: null,
   tags: [],
   difficulty: null,
   status: null,
@@ -14,6 +15,7 @@ export const DEFAULT_FILTER: ProblemsFilter = {
   partialSolvable: null,
   category: null,
   ordering: null,
+  favorites: false,
 };
 
 @Injectable({

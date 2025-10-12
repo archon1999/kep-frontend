@@ -54,6 +54,9 @@ export const localeRu = {
   Iq: 'IQ',
   Faq: 'FAQ',
   ProblemsSearchPlaceholder: 'Поиск по номеру или названию задачи',
+  ProblemsFavoritesOnly: 'Избранные',
+  AddToFavorites: 'Добавить в избранное',
+  RemoveFromFavorites: 'Убрать из избранного',
   NgSelect: {
     NotFound: 'Ничего не найдено',
     Loading: 'Загрузка...',
