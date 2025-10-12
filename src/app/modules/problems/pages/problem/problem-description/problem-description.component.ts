@@ -1,9 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { NgbAccordionModule, NgbModal, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAccordionModule, NgbModal, NgbNavModule, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService, AuthUser } from '@auth';
 import { ProblemsApiService } from '@problems/services/problems-api.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { AvailableLanguage, Problem, Tag, Topic } from '../../../models/problems.models';
 import { CoreCommonModule } from '@core/common.module';
 import { NgSelectModule } from '@shared/third-part-modules/ng-select/ng-select.module';
@@ -15,6 +15,7 @@ import { AttemptLangs } from "@problems/constants";
 import { findAvailableLang } from "@problems/utils";
 import { LanguageService } from "@problems/services/language.service";
 import { UserPopoverModule } from "@shared/components/user-popover/user-popover.module";
+import { BaseComponent } from "@core/common";
 
 @Component({
   selector: 'problem-description',
@@ -31,9 +32,10 @@ import { UserPopoverModule } from "@shared/components/user-popover/user-popover.
     MonacoEditorComponent,
     KepcoinSpendSwalModule,
     UserPopoverModule,
+    NgbTooltip,
   ]
 })
-export class ProblemDescriptionComponent implements OnInit, OnDestroy {
+export class ProblemDescriptionComponent extends BaseComponent implements OnInit, OnDestroy {
 
   @Input() problem: Problem;
 
@@ -46,17 +48,17 @@ export class ProblemDescriptionComponent implements OnInit, OnDestroy {
   public selectedTopic: number;
 
   public currentUser: AuthUser;
-  private _unsubscribeAll = new Subject();
 
   public selectedLang: string;
   public selectedAvailableLang: AvailableLanguage;
 
+  public favoriteLoading = false;
+
   constructor(
-    public authService: AuthService,
     public service: ProblemsApiService,
-    public modalService: NgbModal,
     protected langService: LanguageService,
   ) {
+    super();
   }
 
   ngOnInit(): void {
@@ -152,9 +154,31 @@ export class ProblemDescriptionComponent implements OnInit, OnDestroy {
     return this.topics.find((value) => topicId === value.id);
   }
 
-  ngOnDestroy(): void {
-    this._unsubscribeAll.next(null);
-    this._unsubscribeAll.complete();
+
+  toggleFavorite() {
+    if (!this.problem?.userInfo || this.favoriteLoading) {
+      return;
+    }
+
+    const isFavorite = !!this.problem.userInfo.isFavorite;
+    const request$ = isFavorite
+      ? this.service.removeProblemFromFavorites(this.problem.id)
+      : this.service.addProblemToFavorites(this.problem.id);
+
+    this.favoriteLoading = true;
+    request$.pipe(
+      finalize(() => {
+        this.favoriteLoading = false;
+        this.cdr.markForCheck();
+      })
+    ).subscribe({
+      next: () => {
+        this.problem.userInfo.isFavorite = !isFavorite;
+      },
+      error: () => {
+        this.toastr.error('Error');
+      }
+    });
   }
 
 }

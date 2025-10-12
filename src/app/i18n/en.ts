@@ -65,6 +65,9 @@ export const localeEn = {
     EXTREMAL: 'Extremal',
   },
   ProblemsSearchPlaceholder: 'Search by problem number or title',
+  ProblemsFavoritesOnly: 'Favorites',
+  AddToFavorites: 'Add to favorites',
+  RemoveFromFavorites: 'Remove from favorites',
   NgSelect: {
     NotFound: 'No options found',
     Loading: 'Loading...',

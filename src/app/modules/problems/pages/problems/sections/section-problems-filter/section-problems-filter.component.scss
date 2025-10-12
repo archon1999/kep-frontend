@@ -1,20 +1,19 @@
 @import 'styles/kep-imports';
-//
-//.tags-dropdown {
-//  --bs-dropdown-padding-x: 0;
-//  --bs-dropdown-padding-y: 0;
-//
-//  --bs-dropdown-bg: white;
-//
-//  @include dark-layout {
-//    --bs-dropdown-bg: #{$theme-dark-card-bg};
-//  }
-//}
-//
-//.select-tags {
-//  background: white;
-//
-//  @include dark-layout {
-//    background: inherit;
-//  }
-//}
+
+.favorites-switch {
+  .form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .form-check-input {
+    cursor: pointer;
+  }
+
+  .form-check-label {
+    font-size: 0.8125rem;
+    white-space: nowrap;
+  }
+}

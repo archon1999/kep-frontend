@@ -46,6 +46,7 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
     status: new FormControl(),
     ordering: new FormControl(),
     lang: new FormControl(),
+    favorites: new FormControl(false),
   });
 
   public tags: Array<Tag> = [];
@@ -91,11 +92,21 @@ export class SectionProblemsFilterComponent extends BaseComponent implements OnI
       queryParams.tags = [queryParams.tags];
     }
 
+    if (queryParams.favorites !== undefined) {
+      queryParams.favorites = queryParams.favorites === true
+        || queryParams.favorites === 'true'
+        || queryParams.favorites === 1
+        || queryParams.favorites === '1';
+    }
+
     this.filterForm.patchValue(queryParams, {emitEvent: false});
 
     this.filterForm.valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe(
-      (filterValue: ProblemsFilter) => {
-        this.filterService.updateFilter(filterValue);
+      (filterValue: Partial<ProblemsFilter>) => {
+        this.filterService.updateFilter({
+          ...filterValue,
+          favorites: filterValue.favorites || false,
+        });
       }
     );
 

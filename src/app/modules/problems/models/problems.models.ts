@@ -5,6 +5,7 @@ export interface ProblemUserInfo {
   hasSolved: boolean;
   voteType?: number | null;
   canViewSolution?: boolean;
+  isFavorite?: boolean;
 }
 
 export interface Problem {
@@ -73,6 +74,7 @@ export interface Topic {
 
 export interface ProblemsFilter {
   title: string;
+  search?: string;
   tags: Array<number>;
   difficulty: number;
   status: number;
@@ -83,6 +85,7 @@ export interface ProblemsFilter {
   partialSolvable: boolean;
   category: Categories;
   ordering: string,
+  favorites?: boolean;
 }
 
 export interface StudyPlanDay {
