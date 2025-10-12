@@ -55,6 +55,9 @@ export const localeUz = {
   Faq: 'FAQ',
   UserStatistics: 'Foydalanuvchi statistikasi',
   ProblemsSearchPlaceholder: 'Masala raqami yoki nomi bo‘yicha qidirish',
+  ProblemsFavoritesOnly: 'Sevimlilar',
+  AddToFavorites: 'Sevimlilarga qo‘shish',
+  RemoveFromFavorites: 'Sevimlilardan olib tashlash',
   NgSelect: {
     NotFound: 'Hech narsa topilmadi',
     Loading: 'Yuklanmoqda...',

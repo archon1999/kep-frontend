@@ -28,6 +28,11 @@ export class ProblemsApiService {
       // @ts-ignore
       params.tags = params.tags.join(',');
     }
+    if (!params.favorites) {
+      delete params.favorites;
+    } else {
+      params.favorites = true;
+    }
     return this.api.get('problems', params);
   }
 
@@ -132,6 +137,14 @@ export class ProblemsApiService {
 
   problemDislike(problemId: number) {
     return this.api.post(`problems/${problemId}/dislike/`);
+  }
+
+  addProblemToFavorites(problemId: number) {
+    return this.api.post(`problems/${problemId}/add-favorites`);
+  }
+
+  removeProblemFromFavorites(problemId: number) {
+    return this.api.delete(`problems/${problemId}/delete-favorites`);
   }
 
   getTopics() {

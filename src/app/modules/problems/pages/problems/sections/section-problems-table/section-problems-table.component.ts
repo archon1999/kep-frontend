@@ -67,9 +67,11 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
       (filter: ProblemsFilter) => {
         this.pageNumber = 1;
         this.reloadPage();
-        this.updateQueryParams({
+        const filterParams = {
           ...filter,
-        }, {
+          favorites: filter.favorites ? true : null,
+        };
+        this.updateQueryParams(filterParams, {
           replaceUrl: true,
         });
       }
@@ -79,16 +81,26 @@ export class SectionProblemsTableComponent extends BaseTablePageComponent<Proble
       queryParams.tags = [queryParams.tags];
     }
 
+    if (queryParams.favorites !== undefined) {
+      queryParams.favorites = queryParams.favorites === true
+        || queryParams.favorites === 'true'
+        || queryParams.favorites === 1
+        || queryParams.favorites === '1';
+    }
+
     this.filterService.updateFilter(queryParams, false);
     setTimeout(() => this.reloadPage());
   }
 
   override getPage(): Observable<PageResult<Problem>> {
+    const filterParams = {
+      ...this.filter,
+      favorites: this.filter.favorites ? true : null,
+      ordering: this.filter.ordering || this.ordering,
+    };
+
     return this.service.getProblems({
-      ...{
-        ...this.filter,
-        ordering: this.filter.ordering || this.ordering,
-      },
+      ...filterParams,
       page: this.pageNumber,
       pageSize: this.pageSize,
     }).pipe(
