@@ -2,6 +2,7 @@ import { Component, inject, Input, ViewEncapsulation } from '@angular/core';
 import { Arena } from '@arena/arena.models';
 import { TranslateModule } from '@ngx-translate/core';
 import { KepIconComponent } from '@shared/components/kep-icon/kep-icon.component';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { DatePipe } from '@angular/common';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { ArenaService } from '@arena/arena.service';
@@ -13,6 +14,7 @@ import { LogoComponent } from "@shared/components/logo/logo.component";
   imports: [
     TranslateModule,
     KepIconComponent,
+    KepCardComponent,
     DatePipe,
     NgbTooltipModule,
     LogoComponent

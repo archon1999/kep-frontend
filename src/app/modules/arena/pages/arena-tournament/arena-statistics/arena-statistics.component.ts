@@ -2,6 +2,7 @@ import { Component, inject, Input } from '@angular/core';
 import { Arena, ArenaStatistics } from '@arena/arena.models';
 import { CoreCommonModule } from '@core/common.module';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { BaseLoadComponent } from '@core/common';
 import { Observable } from 'rxjs';
 import { ArenaService } from '@arena/arena.service';
@@ -11,7 +12,8 @@ import { ArenaService } from '@arena/arena.service';
   standalone: true,
   imports: [
     CoreCommonModule,
-    NgbTooltipModule
+    NgbTooltipModule,
+    KepCardComponent
   ],
   templateUrl: './arena-statistics.component.html',
   styleUrl: './arena-statistics.component.scss'

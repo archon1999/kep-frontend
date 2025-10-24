@@ -30,7 +30,7 @@
               </div>
             } @else {
               @if (arena.pause) {
-                <div>
+                <div class="mb-4">
                   <ngb-alert [type]="'warning'" [dismissible]="false">
                     <h4 class="alert-heading animate">
                       <ngx-skeleton-loader [count]="1" animation="progress"
@@ -44,7 +44,7 @@
                 </div>
               }
               @if (!arena.pause) {
-                <div>
+                <div class="mb-4">
                   <ngb-alert [type]="'success'" [dismissible]="false">
                     <h4 class="alert-heading animate">
                       {{ 'ArenaStartText' | translate }}
