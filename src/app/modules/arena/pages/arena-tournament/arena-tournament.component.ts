@@ -67,6 +67,8 @@ export class ArenaTournamentComponent extends BaseComponent implements OnInit {
     this.route.data.subscribe(({arena}) => {
       this.arena = arena;
       this.titleService.updateTitle(this.route, {arenaTitle: arena.title});
+      this.cdr.markForCheck();
+      this.cdr.detectChanges();
       if (this.arena.status === ArenaStatus.Already) {
         this._intervalId = setInterval(
           () => {
@@ -89,12 +91,16 @@ export class ArenaTournamentComponent extends BaseComponent implements OnInit {
 
   updateRemainingTime() {
     this.remainingTime = new Date(this.arena.finishTime).valueOf() - Date.now();
+    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 
   loadArenaPlayerStatistics(arenaPlayerUsername: string) {
     this.service.getArenaPlayerStatistics(this.arena.id, arenaPlayerUsername).subscribe(
       (result: any) => {
         this.arenaPlayerStatistics = toArenaPlayerStatistics(result);
+        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       }
     );
   }
@@ -115,12 +121,16 @@ export class ArenaTournamentComponent extends BaseComponent implements OnInit {
   arenaPause() {
     this.service.arenaPause(this.arena.id).subscribe(() => {
       this.arena.pause = true;
+      this.cdr.markForCheck();
+      this.cdr.detectChanges();
     });
   }
 
   arenaStart() {
     this.service.arenaStart(this.arena.id).subscribe(() => {
       this.arena.pause = false;
+      this.cdr.markForCheck();
+      this.cdr.detectChanges();
     });
   }
 
