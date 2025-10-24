@@ -163,6 +163,7 @@ export const localeUz = {
   Losses: 'Magʻlubiyatlar',
   TournamentFinish: 'Turnir yakunlandi',
   TournamentStarts: 'Turnir boshlanadi',
+  TournamentEnds: 'Turnir yakunlanadi',
   Rated: 'Reytingli',
   MaxRating: 'Eng yuqori reyting',
   Now: 'Hozir',

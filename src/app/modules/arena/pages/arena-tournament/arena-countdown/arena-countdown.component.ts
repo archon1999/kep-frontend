@@ -2,13 +2,15 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CountdownComponent } from '@shared/third-part-modules/countdown/countdown.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { Arena, ArenaStatus } from '@arena/arena.models';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 
 @Component({
   selector: 'arena-countdown',
   standalone: true,
   imports: [
     CountdownComponent,
-    TranslateModule
+    TranslateModule,
+    KepCardComponent
   ],
   templateUrl: './arena-countdown.component.html',
   styleUrl: './arena-countdown.component.scss'
