@@ -2,6 +2,7 @@ import { Component, inject, Input } from '@angular/core';
 import { Arena, ArenaStatus } from '@arena/arena.models';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { CoreCommonModule } from '@core/common.module';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { ArenaService } from '@arena/arena.service';
 
 @Component({
@@ -9,7 +10,8 @@ import { ArenaService } from '@arena/arena.service';
   standalone: true,
   imports: [
     NgbTooltipModule,
-    CoreCommonModule
+    CoreCommonModule,
+    KepCardComponent
   ],
   templateUrl: './arena-info.component.html',
   styleUrl: './arena-info.component.scss'

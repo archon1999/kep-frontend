@@ -163,6 +163,7 @@ export const localeEn = {
   Losses: 'Losses',
   TournamentFinish: 'Tournament is over',
   TournamentStarts: 'Tournament starts',
+  TournamentEnds: 'Tournament ends',
   Rated: 'Rated',
   Now: 'Now',
   AverageRating: 'Average rating',

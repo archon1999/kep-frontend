@@ -8,6 +8,7 @@ import { ArenaService } from '@arena/arena.service';
 import { BaseLoadComponent } from '@core/common';
 import { Observable } from 'rxjs';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { KepCardComponent } from '@shared/components/kep-card/kep-card.component';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -15,7 +16,8 @@ import { map } from 'rxjs/operators';
   standalone: true,
   imports: [
     ArenaPlayerStatisticsComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    KepCardComponent
   ],
   templateUrl: './arena-winners.component.html',
   styleUrl: './arena-winners.component.scss',

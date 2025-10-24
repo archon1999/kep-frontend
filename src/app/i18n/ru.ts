@@ -163,6 +163,7 @@ export const localeRu = {
   Losses: 'Проигрыши',
   TournamentFinish: 'Турнир завершен',
   TournamentStarts: 'Турнир начнется',
+  TournamentEnds: 'Турнир закончится',
   Rated: 'Рейтинговый',
   Now: 'Сейчас',
   AverageRating: 'Средний рейтинг',
