@@ -151,7 +151,7 @@ const DailyTasksMenu = ({ type = 'default' }: DailyTasksMenuProps) => {
 
             <Stack direction="column" spacing={1}>
               <Stack direction="row" spacing={0.75} flex={1} minWidth={0}>
-                <Typography variant="subtitle2" noWrap title={task.description}>
+                <Typography variant="subtitle2" title={task.description}>
                   {task.description}
                 </Typography>
 
