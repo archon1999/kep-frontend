@@ -54,6 +54,7 @@
     "blog": "Blog",
     "blogPost": "{{ postTitle }} - Blog",
     "kepcoin": "Kepcoin",
+    "kepcoinEarn": "Earn Kepcoin",
     "shop": "Shop",
     "userProfile": "{{ username }} - User",
     "userProfilePurchases": "{{ username }} - Purchases",

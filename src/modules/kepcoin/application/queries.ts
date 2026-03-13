@@ -31,13 +31,9 @@ export const useKepcoinSpendHistory = (page: number, pageSize: number, enabled =
   );
 
 export const useTaskCategories = (enabled = true) =>
-  useSWR<TaskCategoriesResponse>(
-    enabled ? ['kepcoin-task-categories'] : null,
-    () => repository.getTaskCategories(),
-    {
-      revalidateOnFocus: false,
-    },
-  );
+  useSWR<TaskCategoriesResponse>(enabled ? ['kepcoin-task-categories'] : null, () => repository.getTaskCategories(), {
+    revalidateOnFocus: false,
+  });
 
 export const useAccountConnections = (enabled = true) =>
   useSWR<AccountConnectionsResponse>(

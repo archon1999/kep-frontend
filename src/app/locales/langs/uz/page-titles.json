@@ -54,6 +54,7 @@
     "blog": "Blog",
     "blogPost": "{{ postTitle }} - Blog",
     "kepcoin": "Kepcoin",
+    "kepcoinEarn": "Kepcoin topish",
     "shop": "Doʻkon",
     "userProfile": "{{ username }} - Foydalanuvchi",
     "users": "Foydalanuvchilar",

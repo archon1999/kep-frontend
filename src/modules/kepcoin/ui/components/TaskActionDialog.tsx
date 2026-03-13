@@ -16,6 +16,7 @@ import { toast } from 'sonner';
 import { useAuth } from 'app/providers/AuthProvider';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
+import { setPendingTaskSlug } from '../../lib/pending-task-storage';
 import { useStartTask, useVerifyTask } from '../../application/mutations';
 import type { OneTimeTask } from '../../domain/entities/kepcoin.entity';
 
@@ -87,6 +88,7 @@ const TaskActionDialog = ({ open, task, onClose, onCompleted }: TaskActionDialog
       }
 
       if (result.actionType === 'redirect' || result.actionType === 'internal_link') {
+        setPendingTaskSlug(task.slug);
         window.location.assign(resolvedUrl);
         return;
       }

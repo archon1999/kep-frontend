@@ -41,9 +41,10 @@
       "defaultLabel": "Операция с Kepcoin"
     },
     "tasks": {
-      "title": "One-time tasks",
-      "subtitle": "Complete one-time actions across the platform and collect Kepcoin once.",
-      "empty": "No one-time tasks available right now.",
+      "title": "Kepcoin tasks",
+      "subtitle": "Complete tasks across KEP.uz and collect Kepcoin rewards here.",
+      "empty": "No tasks available right now.",
+      "goToTask": "Go to task",
       "open": "Open",
       "view": "View",
       "start": "Start",
@@ -54,9 +55,9 @@
       "blocked": "Blocked",
       "verified": "Task verified successfully",
       "alreadyCompleted": "This task has already been completed",
-      "startOpened": "Task flow opened",
+      "startOpened": "Task page opened",
       "modalSubtitle": "Complete the action, then come back and verify it.",
-      "modalHint": "Some tasks open internal pages, while account-link tasks may redirect you back automatically.",
+      "modalHint": "Some tasks open internal pages, and account connections can bring you back here automatically.",
       "description": "Task description",
       "flowTitle": "How it works",
       "flowStepStart": "1. Start the connection flow for this account.",
@@ -72,6 +73,22 @@
       "errors": {
         "startFailed": "Could not start the task flow.",
         "verifyFailed": "Could not verify the task."
+      }
+    },
+    "earnEntry": {
+      "title": "Earn Kepcoin",
+      "description": "Open the tasks page, complete actions across KEP.uz, and collect Kepcoin rewards.",
+      "action": "Earn Kepcoin"
+    },
+    "earnPage": {
+      "title": "Earn Kepcoin",
+      "subtitle": "Complete tasks across KEP.uz, connect your accounts, and verify actions to grow your Kepcoin balance.",
+      "backToKepcoin": "Back to Kepcoin",
+      "openShop": "Shop",
+      "filters": {
+        "all": "Все",
+        "completed": "Выполненные",
+        "uncompleted": "Невыполненные"
       }
     },
     "howToEarn": {
@@ -114,7 +131,7 @@
       "arenaParticipant": "Участник арены:",
       "tournamentParticipant": "Участник турнира",
       "projectTask": "Выполнена задача проекта",
-      "oneTimeTaskCompletion": "Одноразовая задача выполнена"
+      "oneTimeTaskCompletion": "Task completed"
     },
     "spendTypes": {
       "attemptView": "Просмотр попытки",
