@@ -84,7 +84,12 @@
       "title": "Kepcoin topish",
       "subtitle": "KEP.uz bo'ylab topshiriqlarni bajaring, akkauntlarni ulang va Kepcoin balansingizni oshiring.",
       "backToKepcoin": "Kepcoin sahifasi",
-      "openShop": "Do'kon"
+      "openShop": "Do'kon",
+      "filters": {
+        "all": "Hammasi",
+        "completed": "Bajarilgan",
+        "uncompleted": "Bajarilmagan"
+      }
     },
     "howToEarn": {
       "title": "Kepcoin qanday topiladi",

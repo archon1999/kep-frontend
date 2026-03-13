@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Button, Card, CardContent, Stack, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Stack, Tab, Tabs, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'app/providers/AuthProvider';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
@@ -14,16 +14,33 @@ import { cssVarRgba } from 'shared/lib/utils';
 import { resources } from 'app/routes/resources';
 import { consumePendingTaskSlug } from '../../lib/pending-task-storage';
 
+type TaskFilter = 'all' | 'completed' | 'uncompleted';
+
 const KepcoinEarnPage = () => {
   const { t } = useTranslation();
   const { refreshCurrentUser } = useAuth();
   const [selectedTaskSlug, setSelectedTaskSlug] = useState<string | null>(null);
+  const [taskFilter, setTaskFilter] = useState<TaskFilter>('all');
   const [pendingRestoreSlug, setPendingRestoreSlug] = useState<string | null>(() => consumePendingTaskSlug());
   const { mutate: reloadSummary } = useKepcoinSummary();
   const { data: taskCategoriesResponse, isLoading: isTasksLoading, mutate: reloadTasks } = useTaskCategories();
 
   const taskCategories = taskCategoriesResponse?.categories ?? [];
   const allTasks = useMemo(() => taskCategories.flatMap((category) => category.tasks), [taskCategories]);
+  const filteredCategories = useMemo(() => {
+    if (taskFilter === 'all') {
+      return taskCategories;
+    }
+
+    return taskCategories
+      .map((category) => ({
+        ...category,
+        tasks: category.tasks.filter((task) =>
+          taskFilter === 'completed' ? task.status === 'completed' : task.status !== 'completed',
+        ),
+      }))
+      .filter((category) => category.tasks.length > 0);
+  }, [taskCategories, taskFilter]);
   const selectedTask = useMemo(
     () => allTasks.find((task) => task.slug === selectedTaskSlug) ?? null,
     [allTasks, selectedTaskSlug],
@@ -130,8 +147,19 @@ const KepcoinEarnPage = () => {
             </Box>
           </Card>
 
+          <Tabs
+            value={taskFilter}
+            onChange={(_, value: TaskFilter) => setTaskFilter(value)}
+            variant="scrollable"
+            scrollButtons={false}
+          >
+            <Tab value="all" label={t('kepcoinPage.earnPage.filters.all')} />
+            <Tab value="completed" label={t('kepcoinPage.earnPage.filters.completed')} />
+            <Tab value="uncompleted" label={t('kepcoinPage.earnPage.filters.uncompleted')} />
+          </Tabs>
+
           <TaskCategoriesWidget
-            categories={taskCategories}
+            categories={filteredCategories}
             isLoading={isTasksLoading}
             onOpenTask={handleOpenTask}
           />

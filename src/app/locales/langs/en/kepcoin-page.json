@@ -84,7 +84,12 @@
       "title": "Earn Kepcoin",
       "subtitle": "Complete tasks across KEP.uz, connect your accounts, and verify actions to grow your Kepcoin balance.",
       "backToKepcoin": "Back to Kepcoin",
-      "openShop": "Shop"
+      "openShop": "Shop",
+      "filters": {
+        "all": "All",
+        "completed": "Completed",
+        "uncompleted": "Uncompleted"
+      }
     },
     "howToEarn": {
       "title": "How to Earn Kepcoin",
