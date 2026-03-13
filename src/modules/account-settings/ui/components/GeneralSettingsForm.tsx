@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Avatar,
@@ -20,14 +20,6 @@ import { useUpdateGeneralInfo } from '../../application/mutations';
 import { useAccountGeneralInfo } from '../../application/queries';
 import type { AccountGeneralInfo } from '../../domain/entities/account-settings.entity';
 
-const readFileAsDataUrl = (file: File) =>
-  new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(String(reader.result));
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-
 const COVER_PHOTO_COST = 5;
 
 const GeneralSettingsForm = () => {
@@ -41,21 +33,16 @@ const GeneralSettingsForm = () => {
 
   const [formState, setFormState] = useState<AccountGeneralInfo | null>(null);
   const [errors, setErrors] = useState<Record<string, string[]>>();
+  const [avatarPreview, setAvatarPreview] = useState<string>();
+  const [coverPreview, setCoverPreview] = useState<string>();
 
   useEffect(() => {
     if (data) {
       setFormState({ ...data });
+      setAvatarPreview(typeof data.avatar === 'string' ? data.avatar : undefined);
+      setCoverPreview(typeof data.coverPhoto === 'string' ? data.coverPhoto : undefined);
     }
   }, [data]);
-
-  const avatarPreview = useMemo(
-    () => formState?.avatar || data?.avatar,
-    [formState?.avatar, data?.avatar],
-  );
-  const coverPreview = useMemo(
-    () => formState?.coverPhoto || data?.coverPhoto,
-    [formState?.coverPhoto, data?.coverPhoto],
-  );
 
   const handleChange =
     (field: keyof AccountGeneralInfo) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -69,11 +56,31 @@ const GeneralSettingsForm = () => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    const dataUrl = await readFileAsDataUrl(file);
-    setFormState((prev) => ({ ...prev!, [field]: dataUrl }));
+    const previewUrl = URL.createObjectURL(file);
+    setFormState((prev) => ({ ...prev!, [field]: file }));
+
+    if (field === 'avatar') {
+      setAvatarPreview((prev) => {
+        if (prev?.startsWith('blob:')) URL.revokeObjectURL(prev);
+        return previewUrl;
+      });
+      return;
+    }
+
+    setCoverPreview((prev) => {
+      if (prev?.startsWith('blob:')) URL.revokeObjectURL(prev);
+      return previewUrl;
+    });
   };
 
-  const handleReset = () => setFormState(data || null);
+  const handleReset = () => {
+    if (avatarPreview?.startsWith('blob:')) URL.revokeObjectURL(avatarPreview);
+    if (coverPreview?.startsWith('blob:')) URL.revokeObjectURL(coverPreview);
+
+    setFormState(data || null);
+    setAvatarPreview(typeof data?.avatar === 'string' ? data.avatar : undefined);
+    setCoverPreview(typeof data?.coverPhoto === 'string' ? data.coverPhoto : undefined);
+  };
 
   const handleSave = async () => {
     if (!username || !formState) return;
@@ -89,6 +96,13 @@ const GeneralSettingsForm = () => {
       toast.error(t('settings.error'));
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (avatarPreview?.startsWith('blob:')) URL.revokeObjectURL(avatarPreview);
+      if (coverPreview?.startsWith('blob:')) URL.revokeObjectURL(coverPreview);
+    };
+  }, [avatarPreview, coverPreview]);
 
   return (
     <Card background={1} sx={{borderRadius: 3, outline: 'none'}}>

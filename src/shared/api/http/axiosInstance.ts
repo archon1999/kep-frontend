@@ -22,9 +22,6 @@ const getBasicAuthHeader = () => {
 
 export const instance: AxiosInstance = axios.create({
   baseURL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
   withCredentials: true,
   timeout: 10000,
 });
@@ -33,10 +30,17 @@ instance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const headers: AxiosRequestHeaders = config.headers ?? {};
     const params = config.params ?? {};
+    const isFormData = typeof FormData !== 'undefined' && config.data instanceof FormData;
 
     const djangoLanguage = djangoLanguageMap[i18n.language as keyof typeof djangoLanguageMap] ?? 'en';
     headers['Django-Language'] = djangoLanguage;
     params.django_language = djangoLanguage;
+
+    if (isFormData) {
+      delete headers['Content-Type'];
+    } else if (!headers['Content-Type']) {
+      headers['Content-Type'] = 'application/json';
+    }
 
     if (shouldUseBasicAuth) {
       const basicAuthHeader = getBasicAuthHeader();
