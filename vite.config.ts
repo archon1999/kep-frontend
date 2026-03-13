@@ -7,23 +7,23 @@ export default ({ mode }) => {
   loadEnv(mode, process.cwd(), '');
 
   return defineConfig({
+    build: {
+      sourcemap: false,
+    },
     plugins: [
       tsconfigPaths(),
       react(),
-      checker({
-        typescript: true,
-        eslint: {
-          useFlatConfig: true,
-          lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
-        },
-        overlay: {
-          initialIsOpen: false,
-        },
-      }),
+      // checker({
+      //   typescript: true,
+      //   eslint: {
+      //     useFlatConfig: true,
+      //     lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
+      //   },
+      //   overlay: {
+      //     initialIsOpen: false,
+      //   },
+      // }),
     ],
-    preview: {
-      port: 5001,
-    },
     server: {
       host: '0.0.0.0',
       port: 4200,
