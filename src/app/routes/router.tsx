@@ -12,6 +12,7 @@ import { authPaths, rootPaths } from './route-config';
 
 const Home = lazy(() => import('modules/home/ui/pages/HomePage'));
 const KepcoinPage = lazy(() => import('modules/kepcoin/ui/pages/KepcoinPage'));
+const KepcoinEarnPage = lazy(() => import('modules/kepcoin/ui/pages/KepcoinEarnPage'));
 const ShopPage = lazy(() => import('modules/shop/ui/pages/ShopPage'));
 const ProblemsListPage = lazy(() => import('modules/problems/ui/pages/ProblemsListPage'));
 const ProblemsRatingPage = lazy(() => import('modules/problems/ui/pages/ProblemsRatingPage'));
@@ -324,6 +325,11 @@ export const routes: RouteObject[] = [
             handle: { titleKey: 'pageTitles.kepcoin' },
           },
           {
+            path: resources.KepcoinEarn,
+            element: <KepcoinEarnPage />,
+            handle: { titleKey: 'pageTitles.kepcoinEarn' },
+          },
+          {
             path: resources.Calendar,
             element: <CalendarPage />,
             handle: { titleKey: 'pageTitles.calendar' },
@@ -378,6 +384,41 @@ export const routes: RouteObject[] = [
           },
           {
             path: resources.Settings,
+            element: <AccountSettingsPage />,
+            handle: { titleKey: 'pageTitles.accountSettings' },
+          },
+          {
+            path: resources.SettingsChangePassword,
+            element: <AccountSettingsPage />,
+            handle: { titleKey: 'pageTitles.accountSettings' },
+          },
+          {
+            path: resources.SettingsInformation,
+            element: <AccountSettingsPage />,
+            handle: { titleKey: 'pageTitles.accountSettings' },
+          },
+          {
+            path: resources.SettingsSocial,
+            element: <AccountSettingsPage />,
+            handle: { titleKey: 'pageTitles.accountSettings' },
+          },
+          {
+            path: resources.SettingsSkills,
+            element: <AccountSettingsPage />,
+            handle: { titleKey: 'pageTitles.accountSettings' },
+          },
+          {
+            path: resources.SettingsCareer,
+            element: <AccountSettingsPage />,
+            handle: { titleKey: 'pageTitles.accountSettings' },
+          },
+          {
+            path: resources.SettingsTeams,
+            element: <AccountSettingsPage />,
+            handle: { titleKey: 'pageTitles.accountSettings' },
+          },
+          {
+            path: resources.SettingsSystem,
             element: <AccountSettingsPage />,
             handle: { titleKey: 'pageTitles.accountSettings' },
           },

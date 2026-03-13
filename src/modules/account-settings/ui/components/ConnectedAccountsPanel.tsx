@@ -8,13 +8,8 @@ import { useStartTask } from 'modules/kepcoin/application/mutations';
 const ConnectedAccountsPanel = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
-  const canViewOneTimeTasks = Boolean(currentUser?.isSuperuser);
-  const { data, isLoading, mutate } = useAccountConnections(canViewOneTimeTasks);
+  const { data, isLoading, mutate } = useAccountConnections();
   const { trigger: startTask, isMutating } = useStartTask();
-
-  if (!canViewOneTimeTasks) {
-    return null;
-  }
 
   const resolveTaskUrl = (url?: string) => {
     if (!url) {

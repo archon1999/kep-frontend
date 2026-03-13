@@ -41,9 +41,10 @@
       "defaultLabel": "Kepcoin operatsiyasi"
     },
     "tasks": {
-      "title": "Bir martalik tasklar",
-      "subtitle": "Platformadagi bir martalik amallarni bajaring va Kepcoinni bir marta oling.",
-      "empty": "Hozircha bir martalik tasklar yo'q.",
+      "title": "Kepcoin topshiriqlari",
+      "subtitle": "KEP.uz bo'ylab topshiriqlarni bajaring va mukofotlarni shu yerda oling.",
+      "empty": "Hozircha topshiriqlar yo'q.",
+      "goToTask": "Topshiriqga o'tish",
       "open": "Ochish",
       "view": "Ko'rish",
       "start": "Boshlash",
@@ -52,12 +53,12 @@
       "completed": "Bajarilgan",
       "pending": "Kutilmoqda",
       "blocked": "Bloklangan",
-      "verified": "Task muvaffaqiyatli tasdiqlandi",
-      "alreadyCompleted": "Bu task allaqachon bajarilgan",
-      "startOpened": "Task jarayoni ochildi",
-      "modalSubtitle": "Amalni bajaring, keyin qaytib kelib taskni tekshiring.",
-      "modalHint": "Ba'zi tasklar ichki sahifani ochadi, account-link tasklar esa sizni avtomatik qaytarishi mumkin.",
-      "description": "Task tavsifi",
+      "verified": "Topshiriq muvaffaqiyatli tasdiqlandi",
+      "alreadyCompleted": "Bu topshiriq allaqachon bajarilgan",
+      "startOpened": "Topshiriq sahifasi ochildi",
+      "modalSubtitle": "Amalni bajaring, keyin qaytib kelib topshiriqni tekshiring.",
+      "modalHint": "Ba'zi topshiriqlar ichki sahifani ochadi, akkaunt ulash topshiriqlari esa sizni bu sahifaga avtomatik qaytarishi mumkin.",
+      "description": "Topshiriq tavsifi",
       "flowTitle": "Qanday ishlaydi",
       "flowStepStart": "1. Shu akkaunt uchun ulash jarayonini boshlang.",
       "flowStepVerify": "2. Ulangandan keyin reward olish uchun tekshirishni bosing.",
@@ -66,13 +67,24 @@
         "google_not_linked": "Google akkaunti hali ulanmagan.",
         "github_not_linked": "GitHub akkaunti hali ulanmagan.",
         "missing_required_provider": "Kerakli akkaunt ulanishi topilmadi.",
-        "event_not_found": "Task amali hali aniqlanmadi.",
+        "event_not_found": "Topshiriq amali hali aniqlanmadi.",
         "telegram_channel_not_subscribed": "Telegram kanal obunasi aniqlanmadi."
       },
       "errors": {
-        "startFailed": "Task jarayonini boshlab bo'lmadi.",
-        "verifyFailed": "Taskni tekshirib bo'lmadi."
+        "startFailed": "Topshiriq jarayonini boshlab bo'lmadi.",
+        "verifyFailed": "Topshiriqni tekshirib bo'lmadi."
       }
+    },
+    "earnEntry": {
+      "title": "Kepcoin topish",
+      "description": "Topshiriqlar sahifasini oching, KEP.uz ichidagi amallarni bajaring va Kepcoin mukofotlarini yig'ing.",
+      "action": "Kepcoin topish"
+    },
+    "earnPage": {
+      "title": "Kepcoin topish",
+      "subtitle": "KEP.uz bo'ylab topshiriqlarni bajaring, akkauntlarni ulang va Kepcoin balansingizni oshiring.",
+      "backToKepcoin": "Kepcoin sahifasi",
+      "openShop": "Do'kon"
     },
     "howToEarn": {
       "title": "Kepcoin qanday topiladi",
@@ -116,7 +128,7 @@
       "projectTask": "Loyiha vazifasi bajarildi",
       "newYear2026Login": "Yangi yil 2026 bonus kirishi",
       "merchRefund": "Merch qaytimi",
-      "oneTimeTaskCompletion": "Bir martalik vazifa bajarildi"
+      "oneTimeTaskCompletion": "Topshiriq bajarildi"
     },
     "spendTypes": {
       "attemptView": "Urinishni ko‘rish",

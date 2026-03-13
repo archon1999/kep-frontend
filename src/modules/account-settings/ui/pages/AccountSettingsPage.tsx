@@ -1,6 +1,7 @@
 import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TabContext } from '@mui/lab';
+import { useLocation, useNavigate } from 'react-router';
 import {
   Alert,
   Button,
@@ -26,7 +27,12 @@ import SocialLinksForm from '../components/SocialLinksForm';
 import SystemSettingsPanel from '../components/SystemSettingsPanel';
 import TeamsSection from '../components/TeamsSection';
 import TechnologiesForm from '../components/TechnologiesForm';
-import { AccountSettingsTab } from '../components/accountSettingsTabs';
+import {
+  AccountSettingsTab,
+  AccountSettingsTabValue,
+  accountSettingsTabRoutes,
+  getAccountSettingsTabValue,
+} from '../components/accountSettingsTabs';
 
 const AccountSettingsPage = () => {
   const { t } = useTranslation();
@@ -35,9 +41,11 @@ const AccountSettingsPage = () => {
   const downMd = down('md');
   const { currentUser } = useAuth();
   const { topbarHeight } = useNavContext();
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState('general');
   const [showTabList, setShowTabList] = useState(true);
+  const activeTab = getAccountSettingsTabValue(location.pathname);
 
   useEffect(() => {
     if (!downMd) {
@@ -122,7 +130,14 @@ const AccountSettingsPage = () => {
     [t],
   );
 
-  const handleTabChange = (_: SyntheticEvent, newValue: string) => setActiveTab(newValue);
+  const handleTabChange = (_: SyntheticEvent, newValue: string) => {
+    const nextTab = newValue as AccountSettingsTabValue;
+    const nextRoute = accountSettingsTabRoutes[nextTab] ?? accountSettingsTabRoutes.general;
+
+    if (location.pathname !== nextRoute) {
+      navigate(nextRoute);
+    }
+  };
 
   if (!currentUser) {
     return (

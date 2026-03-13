@@ -75,6 +75,7 @@ export const resources = {
   Calendar: '/calendar',
   Shop: '/shop',
   Kepcoin: '/kepcoin',
+  KepcoinEarn: '/kepcoin/earn',
   KepCover: '/kep-cover',
 
   Login: '/login',

@@ -54,6 +54,7 @@
     "blog": "Блог",
     "blogPost": "{{ postTitle }} - Блог",
     "kepcoin": "Kepcoin",
+    "kepcoinEarn": "Earn Kepcoin",
     "shop": "Магазин",
     "userProfile": "{{ username }} - Пользователь",
     "users": "Пользователи",
