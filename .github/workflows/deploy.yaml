@@ -27,4 +27,4 @@ jobs:
             npm run build && \
             gzipper compress ./dist && \
             rm -r /home/cpython/server/static/dist && \
-            mv /home/cpython/client/dist /home/cpython/server/static/dist
+            mv /home/cpython/client/dist /home/cpython/server/static
