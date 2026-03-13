@@ -23,6 +23,7 @@ jobs:
           script: |
             cd /home/cpython/client && \
             git pull && \
+            npm install --force && \
             npm run build && \
             gzipper compress ./dist && \
             rm -r /home/cpython/server/static/frontend && \
