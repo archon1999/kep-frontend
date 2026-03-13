@@ -3,8 +3,8 @@ export interface AccountGeneralInfo {
   firstName?: string;
   lastName?: string;
   email?: string;
-  avatar?: string;
-  coverPhoto?: string;
+  avatar?: string | File;
+  coverPhoto?: string | File;
 }
 
 export interface AccountProfileInfo {

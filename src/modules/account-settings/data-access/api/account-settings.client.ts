@@ -13,8 +13,18 @@ import type {
 export const accountSettingsApiClient = {
   getGeneralInfo: async (username: string) =>
     (await instance.get<AccountGeneralInfo>(`/api/users/${username}/general-info/`)).data,
-  updateGeneralInfo: async (username: string, payload: AccountGeneralInfo) =>
-    (await instance.post<AccountGeneralInfo>(`/api/users/${username}/general-info/`, payload)).data,
+  updateGeneralInfo: async (username: string, payload: AccountGeneralInfo) => {
+    const formData = new FormData();
+
+    formData.append('username', payload.username);
+    if (payload.firstName !== undefined) formData.append('first_name', payload.firstName);
+    if (payload.lastName !== undefined) formData.append('last_name', payload.lastName);
+    if (payload.email !== undefined) formData.append('email', payload.email);
+    if (payload.avatar instanceof File) formData.append('avatar', payload.avatar);
+    if (payload.coverPhoto instanceof File) formData.append('cover_photo', payload.coverPhoto);
+
+    return (await instance.post<AccountGeneralInfo>(`/api/users/${username}/general-info/`, formData)).data;
+  },
 
   getProfileInfo: async (username: string) =>
     (await instance.get<AccountProfileInfo>(`/api/users/${username}/info/`)).data,
