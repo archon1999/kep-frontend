@@ -436,7 +436,7 @@ export const routes: RouteObject[] = [
 ];
 
 const router = createBrowserRouter(routes, {
-  basename: import.meta.env.VITE_BASENAME || '/',
+  basename: '/',
 });
 
 export default router;

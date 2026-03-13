@@ -56,7 +56,7 @@ const CheckMailBoxDialog = ({
         >
           <IconifyIcon icon="material-symbols:close-rounded" sx={{ fontSize: 20 }} />
         </IconButton>
-        {import.meta.env.VITE_BUILD_MODE === 'production' && (
+        {import.meta.env.PROD && (
           <Alert
             severity="info"
             icon={<IconifyIcon icon="material-symbols:info-outline-rounded" />}
