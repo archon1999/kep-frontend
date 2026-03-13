@@ -1,0 +1,18 @@
+{
+  "search.recent": "So'nggi",
+  "search.clearHistory": "Tarixni tozalash",
+  "search.recentEmpty": "Hozircha oxirgi sahifalar yo'q.",
+  "search.minCharsHint": "Qidirishni boshlash uchun kamida 2 ta belgi kiriting.",
+  "search.resources": "Resurslar",
+  "search.noMatchingResources": "Mos bo'lgan bo'limlar topilmadi.",
+  "search.users": "Foydalanuvchilar",
+  "search.usersEmpty": "Foydalanuvchilar topilmadi.",
+  "search.problems": "Masalalar",
+  "search.problemsEmpty": "Masalalar topilmadi.",
+  "search.blogs": "Blog postlar",
+  "search.blogsEmpty": "Blog postlar topilmadi.",
+  "search.contests": "Kontestlar",
+  "search.contestsEmpty": "Kontestlar topilmadi.",
+  "search.noResults": "So'rov bo'yicha natijalar topilmadi.",
+  "search.loading": "Qidirilmoqda..."
+}

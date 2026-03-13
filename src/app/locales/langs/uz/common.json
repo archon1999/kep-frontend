@@ -1,0 +1,53 @@
+{
+  "home": "Bosh sahifa",
+  "kepcoin": "Kepcoin",
+  "common": {
+    "back": "Orqaga",
+    "loading": "Yuklanmoqda...",
+    "wins": "G'alabalar",
+    "draws": "Duranglar",
+    "losses": "Mag'lubiyatlar",
+    "close": "Yopish",
+    "minutesShort": "daq",
+    "searchPlaceholder": "Qidirish",
+    "dailyTasks": {
+      "title": "Kunlik vazifalar",
+      "subtitle": "Seriyani davom ettiring",
+      "tasksCount": "{{count}} ta vazifa",
+      "completed": "Bajarilgan",
+      "empty": "Hozircha kunlik vazifalar yo'q"
+    }
+  },
+  "notifications": {
+    "systemInfoTitle": "Ma'lumot",
+    "systemNotificationTitle": "Tizim bildirishi",
+    "systemNotificationOk": "OK",
+    "systemNotificationFallback": "Bildirishnoma",
+    "title": "Xabarnomalar",
+    "subtitleUnread": "Oʻqilmagan xabarnomalar",
+    "subtitleAll": "Barcha xabarnomalar",
+    "countUnread": "{{count}} o‘qilmagan",
+    "countTotal": "{{count}} ta",
+    "markAllAsRead": "Hammasini o‘qilgan deb belgilash",
+    "showAll": "Barcha xabarnomalarni ko‘rish",
+    "showUnread": "Faqat o‘qilmaganlar",
+    "empty": "Xabarnoma yoʻq",
+    "markAsRead": "O‘qilgan deb belgilash",
+    "contestFinished": "Kontest yakunlandi | Natijalar",
+    "challengeFinished": "Bellashuv yakunlandi | Natijalar",
+    "challengeCallAccepted": "Bellashuvga sʻorov qabul qilindi | Boshlash",
+    "arenaFinished": "Arena yakunlandi | Natijalar",
+    "duelStarts": "Duel boshlanadi",
+    "newAchievement": "Yangi yutuq",
+    "viewContestStandings": "Kontest natijalarini ko‘rish",
+    "goToChallenge": "Bellashuvga o‘tish",
+    "viewArenaResults": "Arena natijalarini ko‘rish",
+    "openDuel": "Duelni ochish",
+    "viewAchievements": "Yutuqlarni ko‘rish",
+    "earnedKepcoin": "{{amount}} Kepcoin olindi",
+    "kepcoinReasonBonusFromAdmin": "Admindan bonus",
+    "kepcoinReasonDaily": "Kunlik masalalar reytingi gʻolibi",
+    "kepcoinReasonWeekly": "Haftalik masalalar reytingi gʻolibi",
+    "kepcoinReasonMonthly": "Oylik masalalar reytingi gʻolibi"
+  }
+}

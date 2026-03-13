@@ -1,0 +1,60 @@
+{
+  "duels": {
+    "title": "Duels",
+    "subtitle": "Head-to-head battles with curated problem presets.",
+    "readyStatusTitle": "Duel readiness",
+    "readyDescription": "Let others know you are ready for a duel.",
+    "notReadyDescription": "Disable the status if you are not ready to play.",
+    "ready": "Ready for duels",
+    "notReady": "Not ready",
+    "readyPlayersTitle": "Ready players",
+    "readyPlayersSubtitle": "Find opponents who are waiting right now.",
+    "readyPlayerDescription": "Pick a preset to start the match.",
+    "challengeToDuel": "Challenge to duel",
+    "tab": {
+      "my": "My duels",
+      "ready": "Ready for duel users",
+      "all": "All duels"
+    },
+    "noDuels": "No duels yet",
+    "noReadyPlayers": "No ready players yet",
+    "selectPreset": "Select duel preset",
+    "selectPresetDescription": "Choose a preset and start time to challenge {{ username }}.",
+    "startTime": "Start time",
+    "preset": "Preset",
+    "presetDetails": "Preset details",
+    "presetProblemsCount": "{{count}} problems",
+    "createDuel": "Create duel",
+    "cancel": "Cancel",
+    "createdToast": "Duel created",
+    "confirmedToast": "Duel confirmed",
+    "status": {
+      "upcoming": "Upcoming",
+      "running": "In progress",
+      "finished": "Finished"
+    },
+    "awaitingConfirmation": "Awaiting confirmation",
+    "starts": "Duel starts",
+    "ends": "Duel ends",
+    "ratingTitle": "Duels rating",
+    "ratingSubtitle": "Track top duelists and their records.",
+    "record": "{{wins}}W / {{draws}}D / {{losses}}L",
+    "view": "View",
+    "confirm": "Confirm",
+    "listTitle": "Duels",
+    "error": "Something went wrong",
+    "detailTitle": "Duel - {{ first }} vs {{ second }}",
+    "scoreboard": "Scoreboard",
+    "scoreboardSubtitle": "Round-by-round progress",
+    "problem": "Problem",
+    "noProblems": "No problems yet",
+    "table": {
+      "place": "Place",
+      "username": "Username",
+      "duels": "Duels",
+      "wins": "Wins",
+      "draws": "Draws",
+      "losses": "Losses"
+    }
+  }
+}

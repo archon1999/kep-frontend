@@ -1,0 +1,16 @@
+{
+  "calendar": {
+    "title": "Calendar",
+    "subtitle": "See upcoming training slots and events on the shared calendar.",
+    "today": "Today",
+    "monthView": "Month",
+    "weekView": "Week",
+    "dayView": "Day",
+    "eventType": "Type {{type}}",
+    "loadError": "Could not load calendar events. Please try again soon.",
+    "loading": "Loading calendar events...",
+    "emptyTitle": "No events scheduled",
+    "emptySubtitle": "New training times will appear here once they are published.",
+    "untitled": "Untitled event"
+  }
+}

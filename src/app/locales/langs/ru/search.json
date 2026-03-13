@@ -1,0 +1,18 @@
+{
+  "search.recent": "Недавние",
+  "search.clearHistory": "Очистить историю",
+  "search.recentEmpty": "Недавние страницы пока отсутствуют.",
+  "search.minCharsHint": "Введите минимум 2 символа, чтобы начать поиск.",
+  "search.resources": "Разделы",
+  "search.noMatchingResources": "Подходящие разделы не найдены.",
+  "search.users": "Пользователи",
+  "search.usersEmpty": "Пользователи не найдены.",
+  "search.problems": "Задачи",
+  "search.problemsEmpty": "Задачи не найдены.",
+  "search.blogs": "Блог",
+  "search.blogsEmpty": "Посты не найдены.",
+  "search.contests": "Контесты",
+  "search.contestsEmpty": "Контесты не найдены.",
+  "search.noResults": "По вашему запросу ничего не найдено.",
+  "search.loading": "Поиск..."
+}

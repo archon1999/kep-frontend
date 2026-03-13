@@ -1,0 +1,53 @@
+{
+  "home": "Главная",
+  "kepcoin": "Кепкоин",
+  "common": {
+    "back": "Назад",
+    "loading": "Загрузка...",
+    "wins": "Победы",
+    "draws": "Ничьи",
+    "losses": "Поражения",
+    "minutesShort": "мин",
+    "searchPlaceholder": "Поиск",
+    "dailyTasks": {
+      "title": "Ежедневные задачи",
+      "subtitle": "Поддерживайте свою серию",
+      "tasksCount": "{{count}} задач",
+      "completed": "Выполнено",
+      "empty": "Ежедневных задач нет"
+    },
+    "close": "Закрыть"
+  },
+  "notifications": {
+    "systemInfoTitle": "Информация",
+    "systemNotificationTitle": "Системное уведомление",
+    "systemNotificationOk": "OK",
+    "systemNotificationFallback": "Уведомление",
+    "title": "Уведомления",
+    "subtitleUnread": "Непрочитанные уведомления",
+    "subtitleAll": "Все уведомления",
+    "countUnread": "{{count}} непрочитанных",
+    "countTotal": "{{count}} всего",
+    "markAllAsRead": "Отметить все как прочитанные",
+    "showAll": "Показать все уведомления",
+    "showUnread": "Показать только непрочитанные",
+    "empty": "Нет уведомлении",
+    "markAsRead": "Отметить как прочитанное",
+    "contestFinished": "Контест завершен | Результаты",
+    "challengeFinished": "Вызов закончен | Результаты",
+    "challengeCallAccepted": "Вызов принят | Начать",
+    "arenaFinished": "Арена закончена | Результаты",
+    "duelStarts": "Дуэль начнется",
+    "newAchievement": "Новое достижение",
+    "viewContestStandings": "Смотреть результаты контеста",
+    "goToChallenge": "Перейти к вызову",
+    "viewArenaResults": "Смотреть результаты арены",
+    "openDuel": "Открыть дуэль",
+    "viewAchievements": "Смотреть достижения",
+    "earnedKepcoin": "Получено {{amount}} Kepcoin",
+    "kepcoinReasonBonusFromAdmin": "Бонус от админа",
+    "kepcoinReasonDaily": "Победитель ежедневнего рейтинга задач",
+    "kepcoinReasonWeekly": "Победитель еженедельнего рейтинга задач",
+    "kepcoinReasonMonthly": "Победитель ежемесячнего рейтинга задач"
+  }
+}

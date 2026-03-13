@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="KEP.uz platform" />
+    <title>KEP.uz</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MBQPKFTEWV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+
+      gtag('js', new Date());
+      gtag('config', 'G-MBQPKFTEWV');
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=Spline+Sans+Mono:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+
+  <script>
+      window.MathJax = {
+          tex: {
+              inlineMath: [["\\(", "\\)"]],
+              displayMath: [["\\[", "\\]"], ["$$","$$"]],
+              processEscapes: true,
+              tags: "ams"
+          },
+          svg: {
+              scale: 1,
+              minScale: 0.5,
+              mtextInheritFont: true,
+              merrorInheritFont: true,
+              fontCache: "local"
+          }
+      };
+  </script>
+
+  <script
+    id="mathjax-script"
+    async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+  ></script>
+</html>

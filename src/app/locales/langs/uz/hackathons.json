@@ -1,0 +1,25 @@
+{
+  "hackathons": {
+    "subtitle": "Hamkorlikdagi xakatonlarda ishtirok eting va loyihani muddatida topshiring.",
+    "countLabel": "{{count}} ta xakaton",
+    "emptyTitle": "Xakatonlar hali yo‘q",
+    "emptySubtitle": "E'lon qilingach, yangi xakatonlar shu yerda paydo bo'ladi.",
+    "startsIn": "Boshlanishiga",
+    "endsIn": "Tugashiga",
+    "finished": "Xakaton yakunlandi",
+    "active": "Jarayonda",
+    "projectsCount": "{{count}} ta loyiha",
+    "participantsCount": "{{count}} ta ishtirokchi",
+    "schedule": "{{start}} — {{end}}",
+    "noSchedule": "Jadval tez orada e’lon qilinadi",
+    "overview": "Umumiy",
+    "projects": "Loyihalar",
+    "attempts": "Urinishlar",
+    "standings": "Natijalar",
+    "registrants": "Ro'yxatdan o'tganlar",
+    "register": "Roʻyhatdan oʻtish",
+    "unregister": "Ro'yxatdan o'chirish",
+    "contestant": "Ishtirokchi",
+    "points": "Ballar"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "hackathons": {
+    "subtitle": "Присоединяйтесь к совместным разработкам и сдавайте проекты вовремя.",
+    "countLabel": "{{count}} хакатонов",
+    "emptyTitle": "Хакатонов пока нет",
+    "emptySubtitle": "Скоро здесь появятся новые хакатоны.",
+    "startsIn": "Начнется через",
+    "endsIn": "Закончится через",
+    "finished": "Хакатон завершён",
+    "active": "Идёт",
+    "projectsCount": "{{count}} проектов",
+    "participantsCount": "{{count}} участников",
+    "schedule": "{{start}} — {{end}}",
+    "noSchedule": "Расписание будет объявлено позже",
+    "overview": "Обзор",
+    "projects": "Проекты",
+    "attempts": "Посылки",
+    "standings": "Рейтинг",
+    "registrants": "Участники",
+    "register": "Зарегистрироваться",
+    "unregister": "Отменить регистрацию",
+    "contestant": "Участник",
+    "points": "Баллы"
+  }
+}

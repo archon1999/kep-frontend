@@ -1,0 +1,140 @@
+{
+  "kepcoinSpend": {
+    "insufficientBalance": "Не хватает Kepcoin",
+    "confirmTitle": "Хотите купить?",
+    "confirmDescription": "Это действие нельзя будет отменить.",
+    "costLabel": "Цена",
+    "balanceLabel": "Ваш баланс",
+    "cancelAction": "Отмена",
+    "confirmAction": "Купить",
+    "success": "Покупка успешно выполнена",
+    "error": "Ошибка сервера"
+  },
+  "kepcoinPage": {
+    "youHave": "У вас {{value}} Kepcoin",
+    "balanceSubtitle": "Следите, как вы зарабатываете и тратите Kepcoin каждый день.",
+    "valueLabel": "{{value}} Kepcoin",
+    "streakStats": {
+      "current": "Текущая серия",
+      "max": "Максимальная серия"
+    },
+    "currentStreak": "Текущая серия · {{value}} дней",
+    "streakFreeze": {
+      "label": "Заморозка серии",
+      "count": "Заморозка серии · {{value}}",
+      "description": "Заморозка автоматически сохраняет ваш прогресс, если вы пропустите день и не выполните ежедневные задания.",
+      "purchaseAction": "Купить заморозку"
+    },
+    "history": {
+      "title": "История Kepcoin",
+      "tabs": {
+        "earns": "Заработки",
+        "spends": "Траты"
+      },
+      "error": "Не удалось загрузить историю Kepcoin.",
+      "retry": "Повторить",
+      "emptyTitle": "История Kepcoin пока пуста",
+      "emptySubtitle": "Выполняйте задания или участвуйте в соревнованиях, чтобы увидеть начисления и траты.",
+      "note": "Заметка: {{note}}",
+      "noDate": "Время не указано",
+      "detail": "{{base}} · {{detail}}",
+      "defaultLabel": "Операция с Kepcoin"
+    },
+    "tasks": {
+      "title": "One-time tasks",
+      "subtitle": "Complete one-time actions across the platform and collect Kepcoin once.",
+      "empty": "No one-time tasks available right now.",
+      "open": "Open",
+      "view": "View",
+      "start": "Start",
+      "verify": "Verify",
+      "close": "Close",
+      "completed": "Completed",
+      "pending": "Pending",
+      "blocked": "Blocked",
+      "verified": "Task verified successfully",
+      "alreadyCompleted": "This task has already been completed",
+      "startOpened": "Task flow opened",
+      "modalSubtitle": "Complete the action, then come back and verify it.",
+      "modalHint": "Some tasks open internal pages, while account-link tasks may redirect you back automatically.",
+      "description": "Task description",
+      "flowTitle": "How it works",
+      "flowStepStart": "1. Start the connection flow for this account.",
+      "flowStepVerify": "2. After linking is complete, click verify to receive your reward.",
+      "verifyCodes": {
+        "telegram_not_linked": "Telegram account is not linked yet.",
+        "google_not_linked": "Google account is not linked yet.",
+        "github_not_linked": "GitHub account is not linked yet.",
+        "missing_required_provider": "A required account connection is missing.",
+        "event_not_found": "Task action was not detected yet.",
+        "telegram_channel_not_subscribed": "Telegram channel subscription was not detected."
+      },
+      "errors": {
+        "startFailed": "Could not start the task flow.",
+        "verifyFailed": "Could not verify the task."
+      }
+    },
+    "howToEarn": {
+      "title": "Как заработать Kepcoin",
+      "description": "Чтобы заработать эту валюту, вам нужно внести свой вклад в развитие системы. Например, kepcoin можно заработать:",
+      "items": {
+        "dailyActivity": "Ежедневная активность",
+        "dailyTasks": "За выполнение ежедневных заданий",
+        "ratingWinner": "За победу в ежедневном, еженедельном и ежемесячном рейтинге задач",
+        "competitions": "За участие в соревнованиях",
+        "blog": "За написание блога",
+        "problemEditing": "За помощь в редактировании задач (написание решений, перевод, добавление тегов, поиск похожих задач)"
+      }
+    },
+    "howToSpend": {
+      "title": "Как потратить Kepcoin",
+      "items": {
+        "viewAttempt": "Просмотр попытки другого пользователя",
+        "viewTest": "Просмотр теста с неудачным решением",
+        "problemSolution": "Покупка решения задачи",
+        "coverPhoto": "Сменить фоновое изображение профиля",
+        "passTest": "Пройти тест",
+        "course": "Покупка курса",
+        "testFunction": "Функция тестирования при редактировании кода (полностью)",
+        "doubleRating": "Двойное изменение рейтинга на контесте (изменяется, даже если отрицательное)",
+        "keepRating": "Сохранить рейтинг на контесте (не начисляется, если отрицательный)"
+      }
+    },
+    "earnTypes": {
+      "wroteBlog": "Написан блог",
+      "wroteProblemSolution": "Написано решение задачи",
+      "loyaltyBonus": "Бонус лояльности",
+      "bonusFromAdmin": "Бонус от админа",
+      "dailyActivity": "Ежедневная активность",
+      "dailyTaskCompletion": "Ежедневное задание выполнено",
+      "dailyRatingWinner": "Победитель ежедневнего рейтинга задач",
+      "weeklyRatingWinner": "Победитель еженедельнего рейтинга задач",
+      "monthlyRatingWinner": "Победитель ежемесячнего рейтинга задач",
+      "contestParticipant": "Участник контеста",
+      "arenaParticipant": "Участник арены:",
+      "tournamentParticipant": "Участник турнира",
+      "projectTask": "Выполнена задача проекта",
+      "oneTimeTaskCompletion": "Одноразовая задача выполнена"
+    },
+    "spendTypes": {
+      "attemptView": "Просмотр попытки",
+      "attemptTestView": "Просмотр тестовой попытки",
+      "problemSolution": "Просмотр решения задачи",
+      "doubleRating": "Двойной рейтинг",
+      "coverPhoto": "Смена фоновое изображение",
+      "course": "Курс",
+      "studyPlan": "Учебный план",
+      "codeEditorTesting": "Тестирование кода",
+      "saveRating": "Сохранение рейтинга",
+      "testPass": "Пройти тест",
+      "userContestCreate": "Создать контест",
+      "project": "Проект",
+      "streakFreeze": "Заморозка",
+      "virtualContest": "Виртуальный контест",
+      "unratedContest": "Нерейтинговый контест",
+      "answerForInput": "Ответ для ввода",
+      "checkSamples": "Проверка примеров",
+      "merch": "Мерч"
+    }
+  }
+}
