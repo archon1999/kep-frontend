@@ -1,17 +1,17 @@
 {
   "blog": {
     "title": "Blog",
-    "subtitle": "Jamiyat hikoyalari, o‘quv yo‘llari va platformadagi yangiliklar.",
+    "subtitle": "Hamjamiyat hikoyalari, o'quv yo'llari va platforma yangiliklari.",
     "filtersTitle": "Maqolalarni saralash",
-    "searchPlaceholder": "Sarlavha yoki kalit so‘z bo‘yicha qidirish",
+    "searchPlaceholder": "Sarlavha yoki kalit so'z bo'yicha qidirish",
     "author": "Muallif",
     "authorPlaceholder": "Istalgan muallif",
     "orderBy": "Tartiblash",
     "orderByPlaceholder": "Dolzarblik",
     "order": {
-      "likes": "Eng ko‘p yoqtirilgan",
-      "views": "Eng ko‘p ko‘rilgan",
-      "comments": "Eng ko‘p muhokama qilingan"
+      "likes": "Eng ko'p yoqtirilgan",
+      "views": "Eng ko'p ko'rilgan",
+      "comments": "Eng ko'p muhokama qilingan"
     },
     "topics": {
       "title": "Mavzular",
@@ -23,20 +23,84 @@
     "comments": "Izohlar",
     "commentsWithCount": "Izohlar ({{count}})",
     "likes": "Like",
-    "views": "Koʻrishlar",
+    "views": "Ko'rishlar",
     "addCommentTitle": "Izoh qoldiring",
     "addCommentPlaceholder": "Fikrlaringizni hamjamiyat bilan ulashing",
     "emptyComments": {
-      "title": "Birinchi bo‘lib izoh qoldiring",
-      "subtitle": "Hali izohlar yo‘q. Suhbatni boshlang!"
+      "title": "Birinchi bo'lib izoh qoldiring",
+      "subtitle": "Hali izohlar yo'q. Suhbatni boshlang."
     },
     "actions": {
       "like": "Like",
       "share": "Ulashish",
       "submit": "Yuborish",
-      "delete": "O‘chirish"
+      "delete": "O'chirish"
     },
-    "loginToComment": "Muhokamaga qo‘shilish uchun tizimga kiring.",
-    "authNotice": "Reaksiya bildirish va suhbatga qo‘shilish uchun tizimga kiring."
+    "loginToComment": "Muhokamaga qo'shilish uchun tizimga kiring.",
+    "authNotice": "Reaksiya bildirish va suhbatga qo'shilish uchun tizimga kiring.",
+    "status": {
+      "draft": "Draft",
+      "pending": "Ko'rib chiqilmoqda",
+      "published": "Published"
+    },
+    "profile": {
+      "ownerTitle": "Mening bloglarim",
+      "ownerSubtitle": "Bu yerda draftlaringizni yaratib, tahrirlab va reviewga yuborishingiz mumkin.",
+      "publicTitle": "Nashr qilingan bloglar",
+      "publicSubtitle": "Ushbu foydalanuvchining published bloglari.",
+      "create": "Yangi blog",
+      "view": "Ko'rish",
+      "edit": "Tahrirlash",
+      "submitForReview": "Reviewga yuborish",
+      "emptyOwner": "Sizda hali bloglar yo'q.",
+      "emptyPublic": "Bu foydalanuvchida hali published blog yo'q.",
+      "reviewFlowHint": "Yangi blog avval draft sifatida saqlanadi. Tayyor bo'lgach reviewga yuboring.",
+      "reward": "+{{value}} Kepcoin"
+    },
+    "editor": {
+      "createTitle": "Blog yaratish",
+      "editTitle": "Blogni tahrirlash",
+      "draftHint": "Draft blog reviewga yuborilmaguncha faqat sizga ko'rinadi.",
+      "pendingHint": "Bu blog review jarayonida. Siz hali ham matnini yangilashingiz mumkin.",
+      "publishedHint": "Published blogni tahrirlash statusini o'zgartirmaydi.",
+      "loadError": "Editor yuklanmadi. Sahifani yangilab qayta urinib ko'ring.",
+      "safeFormattingHint": "Ruxsat etilgan formatlar: sarlavhalar, qalin, kursiv, tagi chizilgan, strike, iqtibos, code block, ro'yxatlar, link va formatni tozalash.",
+      "notFound": "So'ralgan blogni yuklab bo'lmadi.",
+      "authRequired": "Blog yaratish yoki tahrirlash uchun tizimga kirish kerak.",
+      "forbidden": "Bu blogni tahrirlashga ruxsat yoq.",
+      "fields": {
+        "title": "Sarlavha",
+        "titleHint": "Blog uchun aniq sarlavha yozing.",
+        "tags": "Teglar",
+        "tagsHint": "Har bir tegdan keyin Enter bosing.",
+        "coverImage": "Cover image",
+        "coverImageEmpty": "Blog uchun cover image yuklang.",
+        "body": "Matn",
+        "bodyPlaceholder": "Blog matnini shu yerga yozing..."
+      },
+      "actions": {
+        "saveDraft": "Draftni saqlash",
+        "submitForReview": "Reviewga yuborish",
+        "saveChanges": "O'zgarishlarni saqlash",
+        "uploadImage": "Rasm yuklash",
+        "removeImage": "Rasmni olib tashlash",
+        "backToBlogs": "Bloglarimga qaytish",
+        "cancel": "Bekor qilish"
+      },
+      "validation": {
+        "titleRequired": "Sarlavha majburiy.",
+        "bodyRequired": "Matn majburiy."
+      },
+      "statusDescription": {
+        "draft": "Draft bloglar reviewga yuborilmaguncha faqat sizga ko'rinadi.",
+        "pending": "Pending bloglar admin tekshiruvi tugaguncha kutadi.",
+        "published": "Published bloglar keyingi tahrirlardan keyin ham published bo'lib qoladi."
+      }
+    },
+    "messages": {
+      "saved": "Draft saqlandi.",
+      "updated": "Blog yangilandi.",
+      "submittedForReview": "Blog reviewga yuborildi."
+    }
   }
 }

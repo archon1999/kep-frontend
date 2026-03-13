@@ -34,12 +34,13 @@ import UserPersonalInfoCard from '../components/user-profile/UserPersonalInfoCar
 import UserRanksGrid from '../components/user-profile/UserRanksGrid';
 import UserSocialCard from '../components/user-profile/UserSocialCard';
 
-type TabKey = 'about' | 'ratings' | 'activity-history' | 'purchases' | 'achievements';
+type TabKey = 'about' | 'ratings' | 'activity-history' | 'purchases' | 'blog' | 'achievements';
 
 const getCurrentTab = (pathname: string): TabKey => {
   if (pathname.includes('/ratings')) return 'ratings';
   if (pathname.includes('/activity-history')) return 'activity-history';
   if (pathname.includes('/purchases')) return 'purchases';
+  if (pathname.includes('/blog')) return 'blog';
   if (pathname.includes('/achievements')) return 'achievements';
   return 'about';
 };
@@ -91,6 +92,11 @@ const UserProfilePage = () => {
               to: getResourceByUsername(resources.UserProfilePurchases, username),
             }
           : null,
+        {
+          value: 'blog',
+          label: t('users.profile.tabs.blog'),
+          to: getResourceByUsername(resources.UserProfileBlog, username),
+        },
         {
           value: 'achievements',
           label: t('users.profile.tabs.achievements'),

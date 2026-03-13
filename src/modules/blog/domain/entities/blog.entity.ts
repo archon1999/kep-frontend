@@ -1,6 +1,12 @@
 export interface BlogAuthor {
   username: string;
-  avatar: string;
+  avatar: string | null;
+}
+
+export enum BlogStatus {
+  Draft = 1,
+  Published = 2,
+  Pending = 3,
 }
 
 export interface BlogPost {
@@ -15,6 +21,12 @@ export interface BlogPost {
   commentsCount: number;
   tags: string[];
   created?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  status?: BlogStatus;
+  rewardValue?: number | null;
+  canEdit?: boolean;
+  canSubmit?: boolean;
 }
 
 export interface BlogComment {
@@ -25,4 +37,12 @@ export interface BlogComment {
   reply?: number | null;
   body: string;
   created?: string;
+}
+
+export interface BlogUpsertPayload {
+  title: string;
+  body: string;
+  tags: string[];
+  imageFile?: File | null;
+  removeImage?: boolean;
 }

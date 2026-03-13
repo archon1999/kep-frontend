@@ -41,7 +41,7 @@ const BlogCard = ({ post }: BlogCardProps) => {
       <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Stack direction="column" spacing={2} alignItems="start" justifyContent="space-between">
           <Stack direction="row" spacing={1.5} alignItems="center">
-            <Avatar src={post.author.avatar} alt={post.author.username} />
+            <Avatar src={post.author.avatar ?? undefined} alt={post.author.username} />
             <Stack direction="column" spacing={0.25}>
               <Typography variant="subtitle2" fontWeight={700} color="text.primary">
                 {post.author.username}

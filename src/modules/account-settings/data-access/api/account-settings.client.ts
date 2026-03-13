@@ -23,7 +23,11 @@ export const accountSettingsApiClient = {
     if (payload.avatar instanceof File) formData.append('avatar', payload.avatar);
     if (payload.coverPhoto instanceof File) formData.append('cover_photo', payload.coverPhoto);
 
-    return (await instance.post<AccountGeneralInfo>(`/api/users/${username}/general-info/`, formData)).data;
+    return (
+      await instance.post<AccountGeneralInfo>(`/api/users/${username}/general-info/`, formData, {
+        timeout: 30000,
+      })
+    ).data;
   },
 
   getProfileInfo: async (username: string) =>

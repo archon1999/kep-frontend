@@ -14,6 +14,7 @@ export interface Project {
   id: number;
   slug: string;
   title: string;
+  fileAccept: string;
   descriptionShort?: string;
   description?: string;
   tasks: ProjectTask[];

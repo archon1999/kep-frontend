@@ -1,16 +1,16 @@
 {
   "calendar": {
     "title": "Kalendar",
-    "subtitle": "Umumiy kalendarda bo'ladigan mashg'ulot va tadbirlarni ko'ring.",
+    "subtitle": "Umumiy kalendarda boʻladigan mashgʻulot va tadbirlarni koʻring.",
     "today": "Bugun",
     "monthView": "Oy",
     "weekView": "Hafta",
     "dayView": "Kun",
     "eventType": "Tur {{type}}",
-    "loadError": "Kalendar voqealarini yuklab bo'lmadi. Iltimos, keyinroq urinib ko'ring.",
+    "loadError": "Kalendar voqealarini yuklab boʻlmadi. Iltimos, keyinroq urinib koʻring.",
     "loading": "Kalendar voqealari yuklanmoqda...",
     "emptyTitle": "Hozircha voqealar yoʻq",
-    "emptySubtitle": "Yangi mashg'ulot vaqtlari shu yerda e'lon qilinadi.",
+    "emptySubtitle": "Yangi mashgʻulot vaqtlari shu yerda eʻlon qilinadi.",
     "untitled": "Nomsiz voqea"
   }
 }

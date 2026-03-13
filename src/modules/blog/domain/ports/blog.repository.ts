@@ -1,5 +1,5 @@
 import { ApiBlogListParams } from 'shared/api/orval/generated/endpoints/index.schemas';
-import { BlogComment, BlogPost } from '../entities/blog.entity';
+import { BlogComment, BlogPost, BlogUpsertPayload } from '../entities/blog.entity';
 
 export interface PageResult<T> {
   page: number;
@@ -12,8 +12,12 @@ export interface PageResult<T> {
 
 export interface BlogRepository {
   list: (params?: ApiBlogListParams) => Promise<PageResult<BlogPost>>;
+  mine: (params?: Partial<ApiBlogListParams>) => Promise<PageResult<BlogPost>>;
   getById: (id: number | string) => Promise<BlogPost>;
   getAuthors: () => Promise<string[]>;
+  create: (payload: BlogUpsertPayload) => Promise<BlogPost>;
+  update: (id: number | string, payload: BlogUpsertPayload) => Promise<BlogPost>;
+  submitForReview: (id: number | string) => Promise<BlogPost>;
   getComments: (id: number | string) => Promise<BlogComment[]>;
   createComment: (id: number | string, body: string) => Promise<void>;
   likePost: (id: number | string) => Promise<number>;

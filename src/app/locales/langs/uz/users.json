@@ -16,9 +16,9 @@
       "toggle": "Filterlar",
       "searchPlaceholder": "Qidirish",
       "username": "Foydalanuvchi nomi",
-      "usernamePlaceholder": "Login bo'yicha izlash",
+      "usernamePlaceholder": "Login boʻyicha izlash",
       "name": "Ism",
-      "namePlaceholder": "Ism yoki familiya bo'yicha qidirish",
+      "namePlaceholder": "Ism yoki familiya boʻyicha qidirish",
       "country": "Mamlakat",
       "countryPlaceholder": "Mamlakatni tanlang",
       "anyCountry": "Istalgan mamlakat",
@@ -29,7 +29,7 @@
     },
     "columns": {
       "user": "Foydalanuvchi",
-      "skills": "Ko'nikmalar",
+      "skills": "Koʻnikmalar",
       "activity": "Faollik",
       "contests": "Musobaqalar",
       "challenges": "Challenjlar",
@@ -39,7 +39,7 @@
     },
     "statistics": {
       "totalUsers": "Jami foydalanuvchilar",
-      "lastDays": "So'nggi {{count}} kunda qo'shilgan foydalanuvchilar",
+      "lastDays": "Soʻnggi {{count}} kunda qoʻshilgan foydalanuvchilar",
       "empty": "Statistika hali mavjud emas"
     },
     "popover": {
@@ -52,6 +52,7 @@
         "ratings": "Reytinglar",
         "activityHistory": "Faollik tarixi",
         "purchases": "Xaridlar",
+        "blog": "Blog",
         "achievements": "Yutuqlar"
       },
       "personal": {
@@ -68,7 +69,7 @@
       },
       "followers": {
         "title": "Obunachilar",
-        "viewAll": "Barchasini ko‘rish"
+        "viewAll": "Barchasini koʻrish"
       },
       "about": "Oʻzi haqida",
       "skills": "Koʻnikmalar",
@@ -113,7 +114,7 @@
       },
       "purchases": {
         "title": "Xaridlar tarixi",
-        "empty": "Hozircha buyurtmalaringiz yo'q.",
+        "empty": "Hozircha buyurtmalaringiz yoʻq.",
         "status": "Holat",
         "delivery": "Yetkazib berish",
         "recipient": "Qabul qiluvchi",

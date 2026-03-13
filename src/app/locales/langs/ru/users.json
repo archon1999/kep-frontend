@@ -39,7 +39,7 @@
     },
     "statistics": {
       "totalUsers": "Всего пользователей",
-      "lastDays": "Новые пользователи · последние {{count}} дней",
+      "lastDays": "Новые пользователи за последние {{count}} дней",
       "empty": "Статистика пока недоступна"
     },
     "popover": {
@@ -51,6 +51,8 @@
         "about": "О себе",
         "ratings": "Рейтинги",
         "activityHistory": "История активности",
+        "purchases": "Покупки",
+        "blog": "Блог",
         "achievements": "Достижения"
       },
       "personal": {
@@ -74,6 +76,9 @@
       "technologies": "Технологии",
       "education": "Образование",
       "workExperience": "Опыт работы",
+      "timeline": {
+        "present": "По настоящее время"
+      },
       "achievements": {
         "title": "Достижения",
         "completed": "Завершенные",
@@ -107,8 +112,30 @@
         "followTooltip": "Подписаться на пользователя",
         "unfollowTooltip": "Отписаться от пользователя"
       },
-      "timeline": {
-        "present": "По настоящее время"
+      "purchases": {
+        "title": "История покупок",
+        "empty": "У вас пока нет заказов.",
+        "status": "Статус",
+        "delivery": "Доставка",
+        "recipient": "Получатель",
+        "address": "Адрес",
+        "trackingCode": "Трек-код",
+        "adminNote": "Комментарий администратора",
+        "orderDate": "Дата заказа",
+        "size": "Размер",
+        "color": "Цвет",
+        "reviewTitle": "Оцените заказ",
+        "reviewHint": "Оставьте оценку от 1 до 5 звезд после завершения доставки.",
+        "submitReview": "Отправить отзыв",
+        "reviewSaved": "Отзыв сохранен",
+        "starsRequired": "Сначала выберите оценку.",
+        "statuses": {
+          "PENDING": "Ожидается",
+          "PROCESSING": "В обработке",
+          "SHIPPED": "Отправлен",
+          "COMPLETED": "Завершен",
+          "CANCELLED": "Отменен"
+        }
       }
     }
   }

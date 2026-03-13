@@ -110,7 +110,7 @@ const BlogPostPage = () => {
           </Typography>
 
           <Stack direction="row" alignItems="center" spacing={2}>
-            <Avatar src={post.author.avatar} alt={post.author.username} />
+            <Avatar src={post.author.avatar ?? undefined} alt={post.author.username} />
             <Stack direction="column" spacing={0.25}>
               <Typography variant="subtitle1" fontWeight={700}>
                 {post.author.username}

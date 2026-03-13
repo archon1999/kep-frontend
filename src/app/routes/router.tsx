@@ -66,9 +66,11 @@ const HackathonRegistrantsPage = lazy(() => import('modules/hackathons/ui/pages/
 const HackathonStandingsPage = lazy(() => import('modules/hackathons/ui/pages/HackathonStandingsPage'));
 const AccountSettingsPage = lazy(() => import('modules/account-settings/ui/pages/AccountSettingsPage'));
 const BlogListPage = lazy(() => import('modules/blog/ui/pages/BlogListPage'));
+const BlogEditorPage = lazy(() => import('modules/blog/ui/pages/BlogEditorPage'));
 const BlogPostPage = lazy(() => import('modules/blog/ui/pages/BlogPostPage'));
 const UserProfilePage = lazy(() => import('modules/users/ui/pages/UserProfilePage'));
 const UserProfileAboutTab = lazy(() => import('modules/users/ui/components/user-profile/UserProfileAboutTab'));
+const UserProfileBlogTab = lazy(() => import('modules/users/ui/components/user-profile/UserProfileBlogTab'));
 const UserProfileRatingsTab = lazy(() => import('modules/users/ui/components/user-profile/UserProfileRatingsTab'));
 const UserProfileActivityHistoryTab = lazy(
   () => import('modules/users/ui/components/user-profile/UserProfileActivityHistoryTab'),
@@ -139,6 +141,10 @@ export const routes: RouteObject[] = [
               {
                 path: 'purchases',
                 element: <UserProfilePurchasesTab />,
+              },
+              {
+                path: 'blog',
+                element: <UserProfileBlogTab />,
               },
               {
                 path: 'achievements',
@@ -376,6 +382,16 @@ export const routes: RouteObject[] = [
             path: resources.Blog,
             element: <BlogListPage />,
             handle: { titleKey: 'pageTitles.blog' },
+          },
+          {
+            path: resources.BlogCreate,
+            element: <BlogEditorPage />,
+            handle: { titleKey: 'pageTitles.blog' },
+          },
+          {
+            path: resources.BlogEdit,
+            element: <BlogEditorPage />,
+            handle: { titleKey: 'pageTitles.blogPost', fallbackTitleKey: 'pageTitles.blog' },
           },
           {
             path: resources.BlogPost,

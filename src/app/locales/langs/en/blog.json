@@ -28,7 +28,7 @@
     "addCommentPlaceholder": "Share your thoughts with the community",
     "emptyComments": {
       "title": "Be the first to comment",
-      "subtitle": "No comments yet. Start the conversation!"
+      "subtitle": "No comments yet. Start the conversation."
     },
     "actions": {
       "like": "Like",
@@ -37,6 +37,70 @@
       "delete": "Delete"
     },
     "loginToComment": "Log in to join the discussion.",
-    "authNotice": "Sign in to react and join the conversation."
+    "authNotice": "Sign in to react and join the conversation.",
+    "status": {
+      "draft": "Draft",
+      "pending": "Pending review",
+      "published": "Published"
+    },
+    "profile": {
+      "ownerTitle": "My blog posts",
+      "ownerSubtitle": "Create, update, and send your drafts for review from here.",
+      "publicTitle": "Published blog posts",
+      "publicSubtitle": "Published posts by this user.",
+      "create": "New blog post",
+      "view": "View",
+      "edit": "Edit",
+      "submitForReview": "Submit for review",
+      "emptyOwner": "You do not have any blog posts yet.",
+      "emptyPublic": "This user has no published blog posts yet.",
+      "reviewFlowHint": "New posts are saved as drafts first. Send them for review when they are ready.",
+      "reward": "+{{value}} Kepcoin"
+    },
+    "editor": {
+      "createTitle": "Create blog post",
+      "editTitle": "Edit blog post",
+      "draftHint": "Drafts stay private until you submit them for review.",
+      "pendingHint": "This post is under review. You can still update its content.",
+      "publishedHint": "Published posts stay published when you edit them.",
+      "loadError": "The editor could not be loaded. Refresh the page and try again.",
+      "safeFormattingHint": "Allowed formatting: headings, bold, italic, underline, strike, blockquote, code block, lists, links, and clear formatting.",
+      "notFound": "The requested blog post could not be loaded.",
+      "authRequired": "You need to be signed in to create or edit blog posts.",
+      "forbidden": "You cannot edit this blog post.",
+      "fields": {
+        "title": "Title",
+        "titleHint": "Write a clear title for your post.",
+        "tags": "Tags",
+        "tagsHint": "Press Enter after each tag.",
+        "coverImage": "Cover image",
+        "coverImageEmpty": "Upload a cover image for the post.",
+        "body": "Body",
+        "bodyPlaceholder": "Write your story here..."
+      },
+      "actions": {
+        "saveDraft": "Save draft",
+        "submitForReview": "Submit for review",
+        "saveChanges": "Save changes",
+        "uploadImage": "Upload image",
+        "removeImage": "Remove image",
+        "backToBlogs": "Back to my blogs",
+        "cancel": "Cancel"
+      },
+      "validation": {
+        "titleRequired": "Title is required.",
+        "bodyRequired": "Body is required."
+      },
+      "statusDescription": {
+        "draft": "Draft posts are visible only to you until you send them for review.",
+        "pending": "Pending posts are waiting for an admin review before publication.",
+        "published": "Published posts remain published after future edits."
+      }
+    },
+    "messages": {
+      "saved": "Draft saved.",
+      "updated": "Blog post updated.",
+      "submittedForReview": "Blog post submitted for review."
+    }
   }
 }

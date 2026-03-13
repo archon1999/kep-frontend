@@ -2,7 +2,7 @@
   "kepcoinSpend": {
     "insufficientBalance": "Kepcoin yetmaydi",
     "confirmTitle": "Sotib olasizmi?",
-    "confirmDescription": "Bu amalni qaytarib bo‘lmaydi.",
+    "confirmDescription": "Bu amalni qaytarib boʻlmaydi.",
     "costLabel": "Narxi",
     "balanceLabel": "Balansingiz",
     "cancelAction": "Bekor qilish",
@@ -12,7 +12,7 @@
   },
   "kepcoinPage": {
     "youHave": "Sizda {{value}} Kepcoin bor",
-    "balanceSubtitle": "Har kuni Kepcoin qanday yig'ilishi va sarflanishini kuzating.",
+    "balanceSubtitle": "Har kuni Kepcoin qanday yigʻilishi va sarflanishini kuzating.",
     "valueLabel": "{{value}} Kepcoin",
     "streakStats": {
       "current": "Joriy seriya",
@@ -31,22 +31,22 @@
         "earns": "Toplangan",
         "spends": "Sarflandi"
       },
-      "error": "Kepcoin tarixini yuklab bo'lmadi.",
+      "error": "Kepcoin tarixini yuklab boʻlmadi.",
       "retry": "Qayta urinish",
-      "emptyTitle": "Kepcoin tarixi hali yo'q",
-      "emptySubtitle": "Topshiriqlarni bajaring yoki musobaqalarda qatnashing va shu yerda natijalarni ko'ring.",
+      "emptyTitle": "Kepcoin tarixi hali yoʻq",
+      "emptySubtitle": "Topshiriqlarni bajaring yoki musobaqalarda qatnashing va shu yerda natijalarni koʻring.",
       "note": "Izoh: {{value}}",
-      "noDate": "Vaqt ko'rsatilmagan",
+      "noDate": "Vaqt koʻrsatilmagan",
       "detail": "{{base}} · {{detail}}",
       "defaultLabel": "Kepcoin operatsiyasi"
     },
     "tasks": {
       "title": "Kepcoin topshiriqlari",
-      "subtitle": "KEP.uz bo'ylab topshiriqlarni bajaring va mukofotlarni shu yerda oling.",
-      "empty": "Hozircha topshiriqlar yo'q.",
-      "goToTask": "Topshiriqga o'tish",
+      "subtitle": "KEP.uz boʻylab topshiriqlarni bajaring va mukofotlarni shu yerda oling.",
+      "empty": "Hozircha topshiriqlar yoʻq.",
+      "goToTask": "Topshiriqga oʻtish",
       "open": "Ochish",
-      "view": "Ko'rish",
+      "view": "Koʻrish",
       "start": "Boshlash",
       "verify": "Tekshirish",
       "close": "Yopish",
@@ -57,7 +57,7 @@
       "alreadyCompleted": "Bu topshiriq allaqachon bajarilgan",
       "startOpened": "Topshiriq sahifasi ochildi",
       "modalSubtitle": "Amalni bajaring, keyin qaytib kelib topshiriqni tekshiring.",
-      "modalHint": "Ba'zi topshiriqlar ichki sahifani ochadi, akkaunt ulash topshiriqlari esa sizni bu sahifaga avtomatik qaytarishi mumkin.",
+      "modalHint": "Baʻzi topshiriqlar ichki sahifani ochadi, akkaunt ulash topshiriqlari esa sizni bu sahifaga avtomatik qaytarishi mumkin.",
       "description": "Topshiriq tavsifi",
       "flowTitle": "Qanday ishlaydi",
       "flowStepStart": "1. Shu akkaunt uchun ulash jarayonini boshlang.",
@@ -71,20 +71,20 @@
         "telegram_channel_not_subscribed": "Telegram kanal obunasi aniqlanmadi."
       },
       "errors": {
-        "startFailed": "Topshiriq jarayonini boshlab bo'lmadi.",
-        "verifyFailed": "Topshiriqni tekshirib bo'lmadi."
+        "startFailed": "Topshiriq jarayonini boshlab boʻlmadi.",
+        "verifyFailed": "Topshiriqni tekshirib boʻlmadi."
       }
     },
     "earnEntry": {
       "title": "Kepcoin topish",
-      "description": "Topshiriqlar sahifasini oching, KEP.uz ichidagi amallarni bajaring va Kepcoin mukofotlarini yig'ing.",
+      "description": "Topshiriqlar sahifasini oching, KEP.uz ichidagi amallarni bajaring va Kepcoin mukofotlarini yigʻing.",
       "action": "Kepcoin topish"
     },
     "earnPage": {
       "title": "Kepcoin topish",
-      "subtitle": "KEP.uz bo'ylab topshiriqlarni bajaring, akkauntlarni ulang va Kepcoin balansingizni oshiring.",
+      "subtitle": "KEP.uz boʻylab topshiriqlarni bajaring, akkauntlarni ulang va Kepcoin balansingizni oshiring.",
       "backToKepcoin": "Kepcoin sahifasi",
-      "openShop": "Do'kon",
+      "openShop": "Doʻkon",
       "filters": {
         "all": "Hammasi",
         "completed": "Bajarilgan",
@@ -93,28 +93,28 @@
     },
     "howToEarn": {
       "title": "Kepcoin qanday topiladi",
-      "description": "Ushbu valyutaga ega bo‘lish uchun tizim rivojlanishiga o‘z hissangizni qo‘shishingiz kerak. Jumladan kepcoin:",
+      "description": "Ushbu valyutaga ega boʻlish uchun tizim rivojlanishiga oʻz hissangizni qoʻshishingiz kerak. Jumladan kepcoin:",
       "items": {
         "dailyActivity": "Kunlik faollik uchun",
         "dailyTasks": "Kunlik topshiriqlarni bajarganligi uchun",
-        "ratingWinner": "Kunlik, haftalik va oylik reyting g'olibi bo'lganingiz uchun",
+        "ratingWinner": "Kunlik, haftalik va oylik reyting gʻolibi boʻlganingiz uchun",
         "competitions": "Musobaqada qatnashganingiz uchun",
         "blog": "Blog yozish uchun",
-        "problemEditing": "Masalalarni tahrirlashda yordam berganlik uchun (yechim, tarjima, teglar, o'xshash masalalar)"
+        "problemEditing": "Masalalarni tahrirlashda yordam berganlik uchun (yechim, tarjima, teglar, oʻxshash masalalar)"
       }
     },
     "howToSpend": {
       "title": "Kepcoinni qanday sarflash",
       "items": {
-        "viewAttempt": "Boshqa foydalanuvchi urinishini ko‘rish",
-        "viewTest": "Yechim yiqilgan testni ko‘rish",
+        "viewAttempt": "Boshqa foydalanuvchi urinishini koʻrish",
+        "viewTest": "Yechim yiqilgan testni koʻrish",
         "problemSolution": "Masala yechimini xarid qilish",
-        "coverPhoto": "Profil orqa rasmini o‘zgartirish",
+        "coverPhoto": "Profil orqa rasmini oʻzgartirish",
         "passTest": "Testdan oʻtish",
         "course": "Kurs sotib olish",
-        "testFunction": "Kodni tahrirlashda testlash funksiyasi (to‘liq)",
-        "doubleRating": "Kontestda ikki barobar reyting o‘zgarishi (manfiy bo‘lsa ham)",
-        "keepRating": "Kontestda reytingni saqlab qolish (manfiy bo‘lsa berilmaydi)"
+        "testFunction": "Kodni tahrirlashda testlash funksiyasi (toʻliq)",
+        "doubleRating": "Kontestda ikki barobar reyting oʻzgarishi (manfiy boʻlsa ham)",
+        "keepRating": "Kontestda reytingni saqlab qolish (manfiy boʻlsa berilmaydi)"
       }
     },
     "earnTypes": {
@@ -124,9 +124,9 @@
       "bonusFromAdmin": "Admindan bonus",
       "dailyActivity": "Kunlik faollik",
       "dailyTaskCompletion": "Kunlik topshiriq bajarildi",
-      "dailyRatingWinner": "Kunlik masalalar reytingi g‘olibi",
-      "weeklyRatingWinner": "Haftalik masalalar reytingi g‘olibi",
-      "monthlyRatingWinner": "Oylik masalalar reytingi g‘olibi",
+      "dailyRatingWinner": "Kunlik masalalar reytingi gʻolibi",
+      "weeklyRatingWinner": "Haftalik masalalar reytingi gʻolibi",
+      "monthlyRatingWinner": "Oylik masalalar reytingi gʻolibi",
       "contestParticipant": "Kontest ishtirokchisi",
       "arenaParticipant": "Arena ishtirokchisi",
       "tournamentParticipant": "Turnir ishtirokchisi",
@@ -136,11 +136,11 @@
       "oneTimeTaskCompletion": "Topshiriq bajarildi"
     },
     "spendTypes": {
-      "attemptView": "Urinishni ko‘rish",
-      "attemptTestView": "Urinish testini ko‘rish",
-      "problemSolution": "Masala yechimini ko‘rish",
+      "attemptView": "Urinishni koʻrish",
+      "attemptTestView": "Urinish testini koʻrish",
+      "problemSolution": "Masala yechimini koʻrish",
       "doubleRating": "Ikki barobar reyting",
-      "coverPhoto": "Rasmni o‘zgartirish",
+      "coverPhoto": "Rasmni oʻzgartirish",
       "course": "Kurs",
       "studyPlan": "Oʻquv rejasi",
       "codeEditorTesting": "Kod muharriri testi",
