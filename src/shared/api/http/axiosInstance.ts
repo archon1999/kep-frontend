@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance, type AxiosRequestHeaders, type InternalAxiosRequestConfig } from 'axios';
 import i18n from 'app/locales/i18n.ts';
 
-const baseURL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || '';
+const baseURL = import.meta.env.VITE_API_URL || '';
 const basicAuthLogin = import.meta.env.VITE_BASIC_AUTH_LOGIN;
 const basicAuthPassword = import.meta.env.VITE_BASIC_AUTH_PASSWORD;
 const shouldUseBasicAuth = import.meta.env.DEV;
@@ -26,7 +26,7 @@ export const instance: AxiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
   withCredentials: true,
-  timeout: Number(import.meta.env.VITE_API_TIMEOUT) || 10000,
+  timeout: 10000,
 });
 
 instance.interceptors.request.use(
@@ -44,8 +44,6 @@ instance.interceptors.request.use(
       if (basicAuthHeader) {
         headers.Authorization = basicAuthHeader;
       }
-    } else {
-      // delete headers.Authorization;
     }
 
     config.headers = headers;

@@ -4,7 +4,7 @@ import checker from 'vite-plugin-checker';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default ({ mode }) => {
-  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
+  loadEnv(mode, process.cwd(), '');
 
   return defineConfig({
     plugins: [
@@ -22,18 +22,12 @@ export default ({ mode }) => {
       }),
     ],
     preview: {
-      port: Number(process.env.VITE_APP_PORT || 5001),
+      port: 5001,
     },
     server: {
       host: '0.0.0.0',
       port: 4200,
-      proxy: {
-        '/api': {
-          target: 'https://kep.uz',
-          changeOrigin: true,
-        },
-      },
     },
-    base: process.env.VITE_BASENAME || '/',
+    base: '/',
   });
 };
