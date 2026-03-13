@@ -3,7 +3,7 @@
     "title": "Kontestlar",
     "subtitle": "Dasturlash kontestlarida ishtirok eting va natijalarni jonli kuzating.",
     "searchLabel": "Kontestlarni qidirish",
-    "searchPlaceholder": "Sarlavha yoki muallif bo‘yicha qidirish",
+    "searchPlaceholder": "Sarlavha yoki muallif boʻyicha qidirish",
     "typeLabel": "Turi",
     "allTypes": "Barcha turlar",
     "categoriesLabel": "Kategoriyalar",
@@ -24,7 +24,7 @@
     },
     "statusShort": {
       "notStarted": "Boshlanmagan",
-      "live": "Bo'lib o'tyapti",
+      "live": "Boʻlib oʻtyapti",
       "finished": "Yakunlangan"
     },
     "topContestants": {
@@ -33,12 +33,12 @@
       "empty": "Gʻoliblar kontest tugagach koʻrsatiladi."
     },
     "startsLabel": "Boshlanishi {{date}}",
-    "startsUnknown": "Boshlanish vaqti tez orada eʼlon qilinadi",
+    "startsUnknown": "Boshlanish vaqti tez orada eʻlon qilinadi",
     "endsLabel": "Tugashi {{date}}",
     "type": "Format: {{type}}",
     "problems": "{{count}} ta masala",
     "registrants": {
-      "title": "Ro'yxatdan o'tganlar",
+      "title": "Roʻyxatdan oʻtganlar",
       "columns": {
         "user": "Foydalanuvchi",
         "rating": "Reyting"
@@ -51,8 +51,8 @@
     "emptySubtitle": "Yangi kontestlar tez orada qoʻshiladi.",
     "viewRating": "Kontestlar reytingi",
     "viewMyStats": "Mening kontest statistikam",
-    "register": "Ro'yxatdan o'tish",
-    "unregister": "Ro'yxatdan bekor qilish",
+    "register": "Roʻyxatdan oʻtish",
+    "unregister": "Roʻyxatdan bekor qilish",
     "statistics": {
       "title": "Kontestlar statistikasi",
       "subtitle": "{{username}} uchun reytingli kontest natijalari.",
@@ -68,17 +68,17 @@
       "totalAccepted": "Jami qabul qilingan yechimlar",
       "averageAttempts": "Bir masalaga oʻrtacha urinishlar",
       "singleAttempts": "Bir urinishda yechilganlar",
-      "mostAttemptsProblem": "Eng ko‘p urinish bo‘lgan masala",
+      "mostAttemptsProblem": "Eng koʻp urinish boʻlgan masala",
       "fastestSolve": "Eng tez yechim",
       "slowestSolve": "Eng sekin yechim",
-      "bestRank": "Eng yaxshi o‘rin",
-      "toughestRank": "Eng past o‘rin",
-      "bestDelta": "Eng katta reyting o‘sishi",
-      "worstDelta": "Eng katta reyting yo‘qotishi",
+      "bestRank": "Eng yaxshi oʻrin",
+      "toughestRank": "Eng past oʻrin",
+      "bestDelta": "Eng katta reyting oʻsishi",
+      "worstDelta": "Eng katta reyting yoʻqotishi",
       "participants": "{{total}} ta ishtirokchi",
       "attemptsTimeline": "Urinishlar dinamikasi",
       "ratingChanges": "Reyting oʻzgarishlari",
-      "ratingChangesHistory": "Reyting o‘zgarishlari tarixi",
+      "ratingChangesHistory": "Reyting oʻzgarishlari tarixi",
       "contestRanks": "Kontestlardagi natijalar",
       "languages": "Tillar",
       "verdictDistribution": "Verdiktlar taqsimoti",
@@ -86,14 +86,14 @@
       "symbols": "Masala belgilar",
       "unsolvedProblems": "Yechilmagan masalalar",
       "noUnsolvedProblems": "Kontest masalalarining barchasi yechilgan",
-      "topAttempts": "Eng ko‘p urinishlar",
+      "topAttempts": "Eng koʻp urinishlar",
       "solved": "Yechilgan",
       "unsolved": "Yechilmagan",
       "attempts": "Urinishlar",
       "attemptsCount": "{{count}} urinish",
       "worthyOpponents": "Kuchli raqiblar",
       "sharedContests": "{{count}} ta umumiy kontest",
-      "noData": "Maʼlumotlar yo‘q"
+      "noData": "Maʻlumotlar yoʻq"
     },
     "verdicts": {
       "AC": "Qabul qilindi",
@@ -142,8 +142,8 @@
       "attempts": "Urinishlar",
       "standings": "Natijalar",
       "statistics": "Statistika",
-      "registrants": "Ro'yxatdan o'tganlar",
-      "ratingChanges": "Reyting o'zgarishlari",
+      "registrants": "Roʻyxatdan oʻtganlar",
+      "ratingChanges": "Reyting oʻzgarishlari",
       "questions": "Savollar"
     },
     "unrated": "Reytingsiz",
@@ -161,12 +161,12 @@
       "finished": "Kontest yakunlandi",
       "finishedAt": "Yakun vaqti: {{date}}",
       "started": "Kontest boshlandi",
-      "startedBody": "Kontest boshlandi. Ishtirokni boshlash uchun masalalarga o‘ting.",
-      "finishedBody": "Kontest yakunlandi. Natijalarni ko‘rib chiqing."
+      "startedBody": "Kontest boshlandi. Ishtirokni boshlash uchun masalalarga oʻting.",
+      "finishedBody": "Kontest yakunlandi. Natijalarni koʻrib chiqing."
     },
     "problemsPreview": "Masalalar",
     "solvedShort": "{{solved}} ta yechildi",
-    "noProblems": "Masalalar tez orada qo'shiladi.",
+    "noProblems": "Masalalar tez orada qoʻshiladi.",
     "loading": "Yuklanmoqda...",
     "filter": {
       "title": "Filtr",
@@ -175,7 +175,7 @@
       "verdict": "Hukm",
       "anyVerdict": "Har qanday hukm",
       "onlyMe": "Faqat meniki",
-      "apply": "Qo'llash",
+      "apply": "Qoʻllash",
       "reset": "Tozalash"
     },
     "problemsTable": {
@@ -202,7 +202,7 @@
       "unrated": "Reytingsiz"
     },
     "ratingChanges": {
-      "title": "Reyting o'zgarishlari",
+      "title": "Reyting oʻzgarishlari",
       "columns": {
         "contestant": "Ishtirokchi",
         "delta": "?",
@@ -216,7 +216,7 @@
       "anyProblem": "Istalgan masala",
       "question": "Savol",
       "submit": "Yuborish",
-      "empty": "Savollar yo'q.",
+      "empty": "Savollar yoʻq.",
       "answer": "Javob"
     },
     "statisticsPage": {
@@ -227,11 +227,11 @@
       "acceptance": "Qabul qilish foizi",
       "timeline": "Urinishlar grafigi",
       "verdicts": "Hukmlar",
-      "problemAttempts": "Masalalar bo'yicha urinishlar",
+      "problemAttempts": "Masalalar boʻyicha urinishlar",
       "firstSolves": "Birinchi yechimlar",
       "badges": "Nishonlar",
       "facts": "Faktlar",
-      "noData": "Ma'lumot yo'q",
+      "noData": "Maʻlumot yoʻq",
       "attempts": "Urinishlar",
       "accepted": "Qabul qilingan",
       "noBadges": "Hozircha belgi yoʻq",
@@ -259,6 +259,6 @@
       "upsolve": "Upsolve"
     },
     "authors": "Mualliflar",
-    "registrantsLabel": "{{count}} ta ro'yxatdan o'tgan"
+    "registrantsLabel": "{{count}} ta roʻyxatdan oʻtgan"
   }
 }

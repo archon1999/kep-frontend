@@ -61,6 +61,8 @@ export const resources = {
 
   Blog: '/blog',
   Lugavar: '/lugavar',
+  BlogCreate: '/blog/new',
+  BlogEdit: '/blog/:id/edit',
   BlogPost: '/blog/:id',
 
   Users: '/users',

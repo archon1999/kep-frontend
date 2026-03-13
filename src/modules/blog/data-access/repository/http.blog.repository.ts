@@ -2,12 +2,35 @@ import { ApiBlogListParams } from 'shared/api/orval/generated/endpoints/index.sc
 import { blogApiClient } from '../api/blog.client';
 import { blogMappers, mapBlogComment, mapBlogPost, mapPageResult } from '../mappers/blog.mapper';
 import { BlogRepository } from '../../domain/ports/blog.repository';
-import { BlogPost } from '../../domain/entities/blog.entity';
+import { BlogPost, BlogUpsertPayload } from '../../domain/entities/blog.entity';
+
+const toFormData = (payload: BlogUpsertPayload) => {
+  const formData = new FormData();
+
+  formData.append('title', payload.title);
+  formData.append('body', payload.body);
+  formData.append('tags', JSON.stringify(payload.tags));
+
+  if (payload.imageFile) {
+    formData.append('image', payload.imageFile);
+  }
+
+  if (payload.removeImage) {
+    formData.append('remove_image', 'true');
+  }
+
+  return formData;
+};
 
 export class HttpBlogRepository implements BlogRepository {
   async list(params?: ApiBlogListParams) {
     const response = await blogApiClient.list(params);
     return mapPageResult<BlogPost>(response, (item) => mapBlogPost({ ...item, body: item.bodyShort ?? '' } as any));
+  }
+
+  async mine(params?: Partial<ApiBlogListParams>) {
+    const response = await blogApiClient.mine(params);
+    return mapPageResult<BlogPost>(response, (item) => mapBlogPost(item as any));
   }
 
   async getById(id: number | string) {
@@ -18,6 +41,21 @@ export class HttpBlogRepository implements BlogRepository {
   async getAuthors() {
     const response = await blogApiClient.getAuthors();
     return Array.isArray(response) ? response : [];
+  }
+
+  async create(payload: BlogUpsertPayload) {
+    const response = await blogApiClient.create(toFormData(payload));
+    return mapBlogPost(response as any);
+  }
+
+  async update(id: number | string, payload: BlogUpsertPayload) {
+    const response = await blogApiClient.update(String(id), toFormData(payload));
+    return mapBlogPost(response as any);
+  }
+
+  async submitForReview(id: number | string) {
+    const response = await blogApiClient.submitForReview(String(id));
+    return mapBlogPost(response as any);
   }
 
   async getComments(id: number | string) {

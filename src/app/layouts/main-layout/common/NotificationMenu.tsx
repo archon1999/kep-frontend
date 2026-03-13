@@ -50,6 +50,18 @@ interface NotificationContent {
   delta?: number;
   earnType?: number;
   kepcoin?: number;
+  detail?: {
+    blog?: {
+      id?: number;
+      title?: string;
+    };
+  };
+  blogId?: number;
+  blogTitle?: string;
+  blog?: {
+    id?: number;
+    title?: string;
+  };
   challengeId?: number;
   text?: string;
   arena?: {
@@ -221,6 +233,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
     (earnType?: number) => {
       const normalizedEarnType = earnType;
 
+      if (normalizedEarnType === 1) return t('notifications.kepcoinReasonBlogPublished');
       if (normalizedEarnType === 4) return t('notifications.kepcoinReasonBonusFromAdmin');
       if (normalizedEarnType === 7) return t('notifications.kepcoinReasonDaily');
       if (normalizedEarnType === 8) return t('notifications.kepcoinReasonWeekly');
@@ -292,7 +305,20 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
               ? t('notifications.earnedKepcoin', { amount })
               : t('notifications.systemNotificationFallback'));
           description =
-            typeof amount === 'number' ? t('notifications.earnedKepcoin', { amount }) : reason;
+            parsedContent.detail?.blog?.title ||
+            parsedContent.blog?.title ||
+            parsedContent.blogTitle ||
+            (typeof amount === 'number' ? t('notifications.earnedKepcoin', { amount }) : reason);
+
+          const blogId =
+            parsedContent.detail?.blog?.id ?? parsedContent.blog?.id ?? parsedContent.blogId;
+
+          if (blogId) {
+            action = {
+              label: t('notifications.openBlog'),
+              to: getResourceById(resources.BlogPost, blogId),
+            };
+          }
           break;
         }
         case ApiNotificationType.NUMBER_4: {

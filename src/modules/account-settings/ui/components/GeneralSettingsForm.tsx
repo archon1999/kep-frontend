@@ -13,6 +13,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { useSWRConfig } from 'swr';
 import { useAuth } from 'app/providers/AuthProvider';
 import { toast } from 'sonner';
 import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
@@ -25,6 +26,7 @@ const COVER_PHOTO_COST = 5;
 const GeneralSettingsForm = () => {
   const { t } = useTranslation();
   const { currentUser, refreshCurrentUser } = useAuth();
+  const { mutate: mutateCache } = useSWRConfig();
 
   const username = currentUser?.username;
   const { data, isLoading, mutate } = useAccountGeneralInfo(username);
@@ -89,6 +91,10 @@ const GeneralSettingsForm = () => {
       await trigger({ username, payload: formState });
       await mutate();
       await refreshCurrentUser();
+      await Promise.all([
+        mutateCache(['user-details', username]),
+        formState.username !== username ? mutateCache(['user-details', formState.username]) : Promise.resolve(),
+      ]);
       setErrors(undefined);
       toast.success(t('settings.saved'));
     } catch (error: any) {

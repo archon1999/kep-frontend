@@ -7,6 +7,7 @@
     "wins": "Победы",
     "draws": "Ничьи",
     "losses": "Поражения",
+    "close": "Закрыть",
     "minutesShort": "мин",
     "searchPlaceholder": "Поиск",
     "dailyTasks": {
@@ -15,8 +16,7 @@
       "tasksCount": "{{count}} задач",
       "completed": "Выполнено",
       "empty": "Ежедневных задач нет"
-    },
-    "close": "Закрыть"
+    }
   },
   "notifications": {
     "systemInfoTitle": "Информация",
@@ -31,23 +31,25 @@
     "markAllAsRead": "Отметить все как прочитанные",
     "showAll": "Показать все уведомления",
     "showUnread": "Показать только непрочитанные",
-    "empty": "Нет уведомлении",
+    "empty": "Нет уведомлений",
     "markAsRead": "Отметить как прочитанное",
     "contestFinished": "Контест завершен | Результаты",
-    "challengeFinished": "Вызов закончен | Результаты",
+    "challengeFinished": "Вызов завершен | Результаты",
     "challengeCallAccepted": "Вызов принят | Начать",
-    "arenaFinished": "Арена закончена | Результаты",
-    "duelStarts": "Дуэль начнется",
+    "arenaFinished": "Арена завершена | Результаты",
+    "duelStarts": "Дуэль начинается",
     "newAchievement": "Новое достижение",
     "viewContestStandings": "Смотреть результаты контеста",
     "goToChallenge": "Перейти к вызову",
     "viewArenaResults": "Смотреть результаты арены",
     "openDuel": "Открыть дуэль",
+    "openBlog": "Открыть блог",
     "viewAchievements": "Смотреть достижения",
     "earnedKepcoin": "Получено {{amount}} Kepcoin",
+    "kepcoinReasonBlogPublished": "Награда за опубликованный блог",
     "kepcoinReasonBonusFromAdmin": "Бонус от админа",
-    "kepcoinReasonDaily": "Победитель ежедневнего рейтинга задач",
-    "kepcoinReasonWeekly": "Победитель еженедельнего рейтинга задач",
-    "kepcoinReasonMonthly": "Победитель ежемесячнего рейтинга задач"
+    "kepcoinReasonDaily": "Победитель ежедневного рейтинга задач",
+    "kepcoinReasonWeekly": "Победитель еженедельного рейтинга задач",
+    "kepcoinReasonMonthly": "Победитель ежемесячного рейтинга задач"
   }
 }

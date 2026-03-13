@@ -15,6 +15,7 @@ import {
 import { toast } from 'sonner';
 import { projectsQueries } from '../../application/queries';
 import { Project } from '../../domain/entities/project.entity';
+import { formatProjectUploadHint, resolveProjectFileAccept } from '../lib/upload.ts';
 import ProjectInfoCard from './ProjectInfoCard.tsx';
 
 interface ProjectSidebarProps {
@@ -42,6 +43,11 @@ const ProjectSidebar = ({
   const technologyOptions = useMemo(
     () => project.availableTechnologies.map((tech) => tech.technology),
     [project.availableTechnologies],
+  );
+  const fileAccept = useMemo(() => resolveProjectFileAccept(project.fileAccept), [project.fileAccept]);
+  const fileLabel = useMemo(
+    () => (file?.name ?? `${t('projects.file')} ${formatProjectUploadHint(fileAccept)}`),
+    [file?.name, fileAccept, t],
   );
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -110,9 +116,12 @@ const ProjectSidebar = ({
                 {t('projects.file')}
               </Typography>
               <Button variant="soft" component="label" fullWidth>
-                {file?.name ?? t('projects.maxFileSize')}
-                <input type="file" hidden accept=".txt" onChange={handleFileChange} />
+                {fileLabel}
+                <input type="file" hidden accept={fileAccept} onChange={handleFileChange} />
               </Button>
+              <Typography variant="caption" color="text.secondary" sx={{ mt: 0.75, display: 'block' }}>
+                {t('projects.maxFileSize')}
+              </Typography>
             </Box>
           </Stack>
         </CardContent>

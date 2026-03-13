@@ -8,6 +8,20 @@ import { useAccountEducations } from '../../application/queries';
 import { useUpdateEducations } from '../../application/mutations';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 
+type EditableEducation = AccountEducation & {
+  _rowId: string;
+};
+
+const createRowId = () => `education-${Math.random().toString(36).slice(2, 11)}`;
+
+const toEditableEducation = (item: AccountEducation): EditableEducation => ({
+  ...item,
+  _rowId: createRowId(),
+});
+
+const toPayload = (items: EditableEducation[]): AccountEducation[] =>
+  items.map(({ _rowId: _, ...item }) => item);
+
 const EducationsForm = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
@@ -15,36 +29,42 @@ const EducationsForm = () => {
 
   const { data, isLoading, mutate } = useAccountEducations(username);
   const { trigger, isMutating } = useUpdateEducations();
-  const [items, setItems] = useState<AccountEducation[] | null>(null);
+  const [items, setItems] = useState<EditableEducation[] | null>(null);
 
   useEffect(() => {
-    if (data) setItems([...data]);
+    if (data) setItems(data.map(toEditableEducation));
   }, [data]);
 
-  const updateItem = (index: number, key: keyof AccountEducation, value: string) => {
+  const updateItem = (rowId: string, key: keyof AccountEducation, value: string) => {
     setItems((prev) => {
       if (!prev) return prev;
-      const next = [...prev];
       const numericKeys: (keyof AccountEducation)[] = ['fromYear', 'toYear'];
-      next[index] = {
-        ...next[index],
-        [key]: numericKeys.includes(key) ? Number(value) || null : value,
-      };
-      return next;
+      return prev.map((item) =>
+        item._rowId === rowId
+          ? {
+              ...item,
+              [key]: numericKeys.includes(key) ? Number(value) || null : value,
+            }
+          : item,
+      );
     });
   };
 
   const addItem = () =>
-    setItems((prev) => ([...(prev || []), { organization: '', degree: '', fromYear: null, toYear: null }]));
+    setItems((prev) => ([
+      ...(prev || []),
+      { _rowId: createRowId(), organization: '', degree: '', fromYear: null, toYear: null },
+    ]));
 
-  const removeItem = (index: number) => setItems((prev) => (prev ? prev.filter((_, i) => i !== index) : prev));
+  const removeItem = (rowId: string) =>
+    setItems((prev) => (prev ? prev.filter((item) => item._rowId !== rowId) : prev));
 
-  const handleReset = () => setItems(data ? [...data] : null);
+  const handleReset = () => setItems(data ? data.map(toEditableEducation) : null);
 
   const handleSave = async () => {
     if (!username || !items) return;
     try {
-      await trigger({ username, payload: items });
+      await trigger({ username, payload: toPayload(items) });
       await mutate();
       toast.success(t('settings.saved'));
     } catch {
@@ -58,14 +78,14 @@ const EducationsForm = () => {
       <CardContent>
         {isLoading || isMutating ? <LinearProgress sx={{ mb: 3 }} /> : null}
         <Stack direction="column" spacing={3}>
-          {items?.map((item, index) => (
-            <Grid container spacing={2} alignItems="center" key={`${item.organization}-${index}`}>
+          {items?.map((item) => (
+            <Grid container spacing={2} alignItems="center" key={item._rowId}>
               <Grid size={{ xs: 12, md: 4 }}>
                 <TextField
                   fullWidth
                   label={t('settings.organization')}
                   value={item.organization}
-                  onChange={(event) => updateItem(index, 'organization', event.target.value)}
+                  onChange={(event) => updateItem(item._rowId, 'organization', event.target.value)}
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 3 }}>
@@ -73,7 +93,7 @@ const EducationsForm = () => {
                   fullWidth
                   label={t('settings.degree')}
                   value={item.degree}
-                  onChange={(event) => updateItem(index, 'degree', event.target.value)}
+                  onChange={(event) => updateItem(item._rowId, 'degree', event.target.value)}
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 2 }}>
@@ -82,7 +102,7 @@ const EducationsForm = () => {
                   type="number"
                   label={t('settings.fromYear')}
                   value={item.fromYear ?? ''}
-                  onChange={(event) => updateItem(index, 'fromYear', event.target.value)}
+                  onChange={(event) => updateItem(item._rowId, 'fromYear', event.target.value)}
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 2 }}>
@@ -91,11 +111,11 @@ const EducationsForm = () => {
                   type="number"
                   label={t('settings.toYear')}
                   value={item.toYear ?? ''}
-                  onChange={(event) => updateItem(index, 'toYear', event.target.value)}
+                  onChange={(event) => updateItem(item._rowId, 'toYear', event.target.value)}
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 1 }}>
-                <IconButton color="error" onClick={() => removeItem(index)}>
+                <IconButton color="error" onClick={() => removeItem(item._rowId)}>
                   <IconifyIcon icon="material-symbols:delete-outline" />
                 </IconButton>
               </Grid>

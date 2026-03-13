@@ -1600,6 +1600,8 @@ export interface ProjectList {
    * @maximum 2147483647
    */
   purchaseKepcoinValue: number;
+  /** @minLength 1 */
+  readonly fileAccept?: string;
   readonly logo?: string;
 }
 
@@ -1659,6 +1661,8 @@ export interface ProjectDetail {
    * @maximum 2147483647
    */
   purchaseKepcoinValue: number;
+  /** @minLength 1 */
+  readonly fileAccept?: string;
   readonly logo?: string;
 }
 

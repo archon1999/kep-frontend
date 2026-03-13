@@ -4,7 +4,7 @@
     "subtitle": "Tayyor presetlar bilan yuzma-yuz bellashuvlar.",
     "readyStatusTitle": "Duelga tayyorgarlik",
     "readyDescription": "Duelga tayyor ekanligingizni bildiring.",
-    "notReadyDescription": "Agar hozircha duellashmoqchi bo'lmasangiz, statusni o'chiring.",
+    "notReadyDescription": "Agar hozircha duellashmoqchi boʻlmasangiz, statusni oʻchiring.",
     "ready": "Duelga tayyor",
     "notReady": "Tayyor emas",
     "readyPlayersTitle": "Tayyor ishtirokchilar",
@@ -16,13 +16,13 @@
       "ready": "Tayyor ishtirokchilar",
       "all": "Barcha duellar"
     },
-    "noDuels": "Hozircha duellar yo'q",
-    "noReadyPlayers": "Hozircha tayyor o'yinchilar yo'q",
+    "noDuels": "Hozircha duellar yoʻq",
+    "noReadyPlayers": "Hozircha tayyor oʻyinchilar yoʻq",
     "selectPreset": "Duel presetini tanlang",
     "selectPresetDescription": "{{ username }} ni chaqirish uchun preset va boshlanish vaqtini tanlang.",
     "startTime": "Boshlanish vaqti",
     "preset": "Preset",
-    "presetDetails": "Preset haqida maʼlumot",
+    "presetDetails": "Preset haqida maʻlumot",
     "presetProblemsCount": "{{count}} ta masala",
     "createDuel": "Duel yaratish",
     "cancel": "Bekor qilish",
@@ -39,22 +39,22 @@
     "ratingTitle": "Duellar reytingi",
     "ratingSubtitle": "Eng kuchli duellar natijalarini kuzating.",
     "record": "{{wins}}G / {{draws}}D / {{losses}}Y",
-    "view": "Ko'rish",
+    "view": "Koʻrish",
     "confirm": "Tasdiqlash",
     "listTitle": "Duellar",
     "error": "Xatolik yuz berdi",
     "detailTitle": "Duel - {{ first }} vs {{ second }}",
     "scoreboard": "Hisob",
-    "scoreboardSubtitle": "Masalalar bo'yicha ballar",
+    "scoreboardSubtitle": "Masalalar boʻyicha ballar",
     "problem": "Masala",
     "noProblems": "Masalalar hali yuklanmagan",
     "table": {
-      "place": "O'rin",
+      "place": "Oʻrin",
       "username": "Foydalanuvchi",
       "duels": "Duellar",
-      "wins": "G'alabalar",
+      "wins": "Gʻalabalar",
       "draws": "Duranglar",
-      "losses": "Mag'lubiyatlar"
+      "losses": "Magʻlubiyatlar"
     }
   }
 }

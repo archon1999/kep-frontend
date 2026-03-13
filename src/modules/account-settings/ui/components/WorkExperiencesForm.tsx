@@ -8,6 +8,20 @@ import { useAccountWorkExperiences } from '../../application/queries';
 import { useUpdateWorkExperiences } from '../../application/mutations';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 
+type EditableWorkExperience = AccountWorkExperience & {
+  _rowId: string;
+};
+
+const createRowId = () => `work-${Math.random().toString(36).slice(2, 11)}`;
+
+const toEditableWorkExperience = (item: AccountWorkExperience): EditableWorkExperience => ({
+  ...item,
+  _rowId: createRowId(),
+});
+
+const toPayload = (items: EditableWorkExperience[]): AccountWorkExperience[] =>
+  items.map(({ _rowId: _, ...item }) => item);
+
 const WorkExperiencesForm = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
@@ -15,36 +29,42 @@ const WorkExperiencesForm = () => {
 
   const { data, isLoading, mutate } = useAccountWorkExperiences(username);
   const { trigger, isMutating } = useUpdateWorkExperiences();
-  const [items, setItems] = useState<AccountWorkExperience[] | null>(null);
+  const [items, setItems] = useState<EditableWorkExperience[] | null>(null);
 
   useEffect(() => {
-    if (data) setItems([...data]);
+    if (data) setItems(data.map(toEditableWorkExperience));
   }, [data]);
 
-  const updateItem = (index: number, key: keyof AccountWorkExperience, value: string) => {
+  const updateItem = (rowId: string, key: keyof AccountWorkExperience, value: string) => {
     setItems((prev) => {
       if (!prev) return prev;
-      const next = [...prev];
       const numericKeys: (keyof AccountWorkExperience)[] = ['fromYear', 'toYear'];
-      next[index] = {
-        ...next[index],
-        [key]: numericKeys.includes(key) ? Number(value) || null : value,
-      };
-      return next;
+      return prev.map((item) =>
+        item._rowId === rowId
+          ? {
+              ...item,
+              [key]: numericKeys.includes(key) ? Number(value) || null : value,
+            }
+          : item,
+      );
     });
   };
 
   const addItem = () =>
-    setItems((prev) => ([...(prev || []), { company: '', jobTitle: '', fromYear: null, toYear: null }]));
+    setItems((prev) => ([
+      ...(prev || []),
+      { _rowId: createRowId(), company: '', jobTitle: '', fromYear: null, toYear: null },
+    ]));
 
-  const removeItem = (index: number) => setItems((prev) => (prev ? prev.filter((_, i) => i !== index) : prev));
+  const removeItem = (rowId: string) =>
+    setItems((prev) => (prev ? prev.filter((item) => item._rowId !== rowId) : prev));
 
-  const handleReset = () => setItems(data ? [...data] : null);
+  const handleReset = () => setItems(data ? data.map(toEditableWorkExperience) : null);
 
   const handleSave = async () => {
     if (!username || !items) return;
     try {
-      await trigger({ username, payload: items });
+      await trigger({ username, payload: toPayload(items) });
       await mutate();
       toast.success(t('settings.saved'));
     } catch {
@@ -58,14 +78,14 @@ const WorkExperiencesForm = () => {
       <CardContent>
         {isLoading || isMutating ? <LinearProgress sx={{ mb: 3 }} /> : null}
         <Stack direction="column" spacing={3}>
-          {items?.map((item, index) => (
-            <Grid container spacing={2} alignItems="center" key={`${item.company}-${index}`}>
+          {items?.map((item) => (
+            <Grid container spacing={2} alignItems="center" key={item._rowId}>
               <Grid size={{ xs: 12, md: 4 }}>
                 <TextField
                   fullWidth
                   label={t('settings.company')}
                   value={item.company}
-                  onChange={(event) => updateItem(index, 'company', event.target.value)}
+                  onChange={(event) => updateItem(item._rowId, 'company', event.target.value)}
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 3 }}>
@@ -73,7 +93,7 @@ const WorkExperiencesForm = () => {
                   fullWidth
                   label={t('settings.jobTitle')}
                   value={item.jobTitle}
-                  onChange={(event) => updateItem(index, 'jobTitle', event.target.value)}
+                  onChange={(event) => updateItem(item._rowId, 'jobTitle', event.target.value)}
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 2 }}>
@@ -82,7 +102,7 @@ const WorkExperiencesForm = () => {
                   type="number"
                   label={t('settings.fromYear')}
                   value={item.fromYear ?? ''}
-                  onChange={(event) => updateItem(index, 'fromYear', event.target.value)}
+                  onChange={(event) => updateItem(item._rowId, 'fromYear', event.target.value)}
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 2 }}>
@@ -91,11 +111,11 @@ const WorkExperiencesForm = () => {
                   type="number"
                   label={t('settings.toYear')}
                   value={item.toYear ?? ''}
-                  onChange={(event) => updateItem(index, 'toYear', event.target.value)}
+                  onChange={(event) => updateItem(item._rowId, 'toYear', event.target.value)}
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 1 }}>
-                <IconButton color="error" onClick={() => removeItem(index)}>
+                <IconButton color="error" onClick={() => removeItem(item._rowId)}>
                   <IconifyIcon icon="material-symbols:delete-outline" />
                 </IconButton>
               </Grid>

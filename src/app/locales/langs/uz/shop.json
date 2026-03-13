@@ -1,9 +1,9 @@
 {
   "shop": {
-    "title": "Do'kon",
-    "subtitle": "Kepcoinlarni KEP.uz sovg'alari va aksessuarlariga sarflang.",
-    "loadError": "Mahsulotlarni yuklab bo'lmadi. Keyinroq urinib ko'ring.",
-    "emptyTitle": "Hozircha mahsulotlar yo'q",
+    "title": "Doʻkon",
+    "subtitle": "Kepcoinlarni KEP.uz sovgʻalari va aksessuarlariga sarflang.",
+    "loadError": "Mahsulotlarni yuklab boʻlmadi. Keyinroq urinib koʻring.",
+    "emptyTitle": "Hozircha mahsulotlar yoʻq",
     "emptySubtitle": "Kepcoinlaringizni sarflash uchun tez orada qaytib keling.",
     "noImage": "Rasm mavjud emas",
     "colorLabel": "Rang",
@@ -11,8 +11,8 @@
     "kepcoinValue": "{{value}} Kepcoin",
     "rating": {
       "label": "Reyting",
-      "none": "Hozircha reyting yo'q",
-      "empty": "Reviewlar yo'q"
+      "none": "Hozircha reyting yoʻq",
+      "empty": "Reviewlar yoʻq"
     },
     "size": {
       "stock": "qolgan"
@@ -29,15 +29,15 @@
       "buy": "Xarid qilish",
       "cancel": "Bekor qilish",
       "success": "Xarid muvaffaqiyatli bajarildi",
-      "error": "Buyurtma berib bo'lmadi",
+      "error": "Buyurtma berib boʻlmadi",
       "country": "Davlat",
-      "countryUz": "O'zbekiston",
-      "countryNotice": "Hozircha faqat O'zbekiston bo'ylab mavjud, tez orada boshqa davlatlar ham qo'shiladi.",
+      "countryUz": "Oʻzbekiston",
+      "countryNotice": "Hozircha faqat Oʻzbekiston boʻylab mavjud, tez orada boshqa davlatlar ham qoʻshiladi.",
       "shippingType": "Pochta turi",
       "shippingTypeBts": "BTS",
-      "shippingTypeNotice": "Hozircha faqat BTS orqali jo'natish mumkin.",
+      "shippingTypeNotice": "Hozircha faqat BTS orqali joʻnatish mumkin.",
       "shippingTypeHint": "Pochta manziliga BTS ofisini yozing.",
-      "fullName": "To'liq ism",
+      "fullName": "Toʻliq ism",
       "phone": "Telefon raqami",
       "address": "Pochta manzili",
       "telegram": "Telegram username",
