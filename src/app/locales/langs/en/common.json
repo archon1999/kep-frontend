@@ -1,0 +1,53 @@
+{
+  "home": "Home",
+  "kepcoin": "Kepcoin",
+  "common": {
+    "back": "Back",
+    "loading": "Loading...",
+    "wins": "Wins",
+    "draws": "Draws",
+    "losses": "Losses",
+    "close": "Close",
+    "minutesShort": "min",
+    "searchPlaceholder": "Search",
+    "dailyTasks": {
+      "title": "Daily tasks",
+      "subtitle": "Keep your streak growing",
+      "tasksCount": "{{count}} tasks",
+      "completed": "Completed",
+      "empty": "No daily tasks for now"
+    }
+  },
+  "notifications": {
+    "systemInfoTitle": "Information",
+    "systemNotificationTitle": "System notification",
+    "systemNotificationOk": "OK",
+    "systemNotificationFallback": "Notification",
+    "title": "Notifications",
+    "subtitleUnread": "Unread notifications",
+    "subtitleAll": "All notifications",
+    "countUnread": "{{count}} unread",
+    "countTotal": "{{count}} total",
+    "markAllAsRead": "Mark all as read",
+    "showAll": "Show all notifications",
+    "showUnread": "Show unread only",
+    "empty": "No notifications",
+    "markAsRead": "Mark as read",
+    "contestFinished": "Contest finished | Results",
+    "challengeFinished": "Challenge finished | Results",
+    "challengeCallAccepted": "Challenge call accepted | Start",
+    "arenaFinished": "Arena finished | Results",
+    "duelStarts": "Duel starts",
+    "newAchievement": "New achievement",
+    "viewContestStandings": "View contest standings",
+    "goToChallenge": "Go to challenge",
+    "viewArenaResults": "View arena results",
+    "openDuel": "Open duel",
+    "viewAchievements": "View achievements",
+    "earnedKepcoin": "Earned {{amount}} Kepcoin",
+    "kepcoinReasonBonusFromAdmin": "Bonus from admin",
+    "kepcoinReasonDaily": "Daily problems rating winner",
+    "kepcoinReasonWeekly": "Weekly problems rating winner",
+    "kepcoinReasonMonthly": "Monthly problems rating winner"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "hackathons": {
+    "subtitle": "Join collaborative builds and ship your project before the deadline.",
+    "countLabel": "{{count}} hackathons",
+    "emptyTitle": "No hackathons yet",
+    "emptySubtitle": "Upcoming hackathons will appear here once they are announced.",
+    "startsIn": "Starts in",
+    "endsIn": "Ends in",
+    "finished": "Hackathon finished",
+    "active": "In progress",
+    "projectsCount": "{{count}} projects",
+    "participantsCount": "{{count}} participants",
+    "schedule": "{{start}} — {{end}}",
+    "noSchedule": "Schedule will be announced soon",
+    "overview": "Overview",
+    "projects": "Projects",
+    "attempts": "Attempts",
+    "standings": "Standings",
+    "registrants": "Registrants",
+    "register": "Register",
+    "unregister": "Cancel registration",
+    "contestant": "Contestant",
+    "points": "Points"
+  }
+}

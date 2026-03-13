@@ -1,0 +1,42 @@
+{
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Fresh stories from the community, learning paths, and platform updates.",
+    "filtersTitle": "Refine articles",
+    "searchPlaceholder": "Search by title or keyword",
+    "author": "Author",
+    "authorPlaceholder": "Any author",
+    "orderBy": "Order",
+    "orderByPlaceholder": "Relevance",
+    "order": {
+      "likes": "Most liked",
+      "views": "Most viewed",
+      "comments": "Most discussed"
+    },
+    "topics": {
+      "title": "Topics",
+      "technology": "Technologies",
+      "competitiveProgramming": "Competitive programming",
+      "info": "Platform updates"
+    },
+    "readMore": "Read more",
+    "comments": "Comments",
+    "commentsWithCount": "Comments ({{count}})",
+    "likes": "Likes",
+    "views": "Views",
+    "addCommentTitle": "Leave a comment",
+    "addCommentPlaceholder": "Share your thoughts with the community",
+    "emptyComments": {
+      "title": "Be the first to comment",
+      "subtitle": "No comments yet. Start the conversation!"
+    },
+    "actions": {
+      "like": "Like",
+      "share": "Share",
+      "submit": "Submit",
+      "delete": "Delete"
+    },
+    "loginToComment": "Log in to join the discussion.",
+    "authNotice": "Sign in to react and join the conversation."
+  }
+}

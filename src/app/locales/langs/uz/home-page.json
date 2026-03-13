@@ -1,0 +1,150 @@
+{
+  "homePage": {
+    "greeting": {
+      "defaultName": "Mehmon",
+      "goodMorning": "Xush kelibsiz, {{name}}!",
+      "loginPrompt": "Kiring va sayohatingizni davom ettiring.",
+      "loginCta": "Kirish",
+      "subtitle": "Kecha bo'lgan yangiliklar.",
+      "ordersCount": "Bugun sizda {{count}} ta buyurtma bor.",
+      "stats": {
+        "visitors": "Tashrif buyuruvchilar",
+        "earnings": "Daromad",
+        "orders": "Buyurtmalar"
+      },
+      "orderStatus": {
+        "processing": "Jarayonda",
+        "shipped": "Yuborildi",
+        "delivered": "Yetkazildi"
+      }
+    },
+    "ranks": {
+      "title": "Reytinglaringiz",
+      "labels": {
+        "skills": "Ko'nikmalar reytingi",
+        "activity": "Faollik reytingi",
+        "contests": "Musobaqalar",
+        "challenges": "Chaqiriqlar"
+      },
+      "info": {
+        "skillsRating": "Bu reyting platformadagi ko‘nikmalaringiz kuchini ko‘rsatadi. Reyting yechilgan masalalar soni, musobaqalar va chaqiriqlar reytingiga bog‘liq.",
+        "activityRating": "Bu reyting so‘nggi 30 kun ichidagi faolligingizni ko‘rsatadi. U to‘plangan kepcoinlar, har kuni tizimga kirish va bajarilgan kundalik vazifalarga bog‘liq.",
+        "contests": "Bu reyting musobaqalardagi kuchingizni ko‘rsatadi.",
+        "challenges": "Bu reyting chaqiriqlardagi kuchingizni ko‘rsatadi."
+      },
+      "percentile": "Siz foydalanuvchilarning {{percentile}}% dan yaxshiroqsiz"
+    },
+    "statistics": {
+      "title": "Statistika",
+      "subtitle": "O'tgan yil",
+      "changeLabel": "O'tgan yilga nisbatan",
+      "cards": {
+        "users": "Foydalanuvchilar",
+        "problems": "Masalalar",
+        "competitions": "Musobaqalar",
+        "attempts": "Urinishlar"
+      }
+    },
+    "contests": {
+      "title": "Eng so‘nggi musobaqa",
+      "viewAll": "Barcha musobaqalar",
+      "empty": "Hozircha musobaqalar mavjud emas."
+    },
+    "news": {
+      "title": "So‘nggi yangiliklar",
+      "empty": "Hozircha yangiliklar mavjud emas."
+    },
+    "posts": {
+      "title": "So'nggi blog postlar",
+      "empty": "Hozircha blog postlari mavjud emas."
+    },
+    "topUsers": {
+      "title": "Top foydalanuvchilar",
+      "subtitle": "Har bir yo'nalishdagi eng kuchli 3 ta ishtirokchi",
+      "empty": "Hozircha foydalanuvchilar topilmadi.",
+      "viewAll": "Barcha foydalanuvchilar",
+      "tabs": {
+        "contests": "Musobaqalar",
+        "skills": "Ko'nikmalar",
+        "activity": "Faollik",
+        "challenges": "Chaqiriqlar",
+        "streak": "Seriya",
+        "kepcoin": "Kepcoin"
+      }
+    },
+    "birthdays": {
+      "title": "Tug'ilgan kunlar",
+      "empty": "Yaqinlashayotgan tug'ilgan kunlar yo'q.",
+      "dateUnknown": "Sana ko'rsatilmagan"
+    },
+    "userActivity": {
+      "title": "Foydalanuvchilar faolligi",
+      "subtitle": "Oxirgi {{days}} kun",
+      "tooltipSuffix": "foydalanuvchi",
+      "changeLabel": "Oldingi davrga nisbatan",
+      "onlineNow": "Hozir onlayn",
+      "noOnlineUsers": "Hozircha hech kim onlayn emas.",
+      "totals": {
+        "new": "Yangi foydalanuvchilar",
+        "active": "Faol foydalanuvchilar"
+      },
+      "series": {
+        "newUsers": "Yangi foydalanuvchilar",
+        "activeUsers": "Faol foydalanuvchilar"
+      }
+    },
+    "activityHistory": {
+      "title": "Faollik tarixi",
+      "empty": "Hozircha faollik haqida maʼlumot yo‘q.",
+      "viewAll": "Barchasini ko‘rish",
+      "loadMore": "Yana ko‘rsatish",
+      "defaultLabel": "Faollik yangilanishi",
+      "types": {
+        "problemAttemptSummary": {
+          "description": "Jami {{total}} ta masaladan {{accepted}} tasi yechildi."
+        },
+        "challengeSummary": {
+          "description": "Chellenj natijalari.",
+          "wins": "G‘alabalar: {{value}}",
+          "draws": "Duranglar: {{value}}",
+          "losses": "Mag‘lubiyatlar: {{value}}"
+        },
+        "projectAttemptSummary": {
+          "description": "Loyiha topshiriqlarining {{total}} tasidan {{checked}} tasi tekshirildi."
+        },
+        "testPassSummary": {
+          "description": "{{total}} ta testdan {{completed}} tasi yakunlandi va {{solved}} ta topshiriq yechildi."
+        },
+        "contestParticipation": {
+          "description": "{{title}} musobaqasida ishtirok etdi.",
+          "rank": "O‘rin: {{rank}}",
+          "rating": "{{before}} → {{after}} reyting",
+          "ratingChange": "Δ {{delta}}",
+          "bonus": "Bonus: {{bonus}}",
+          "noRank": "—"
+        },
+        "arenaParticipation": {
+          "description": "{{title}} arenasi ishtirokchisi.",
+          "points": "Ballar: {{points}}",
+          "rank": "O‘rin: {{rank}}",
+          "finishTime": "Tugash vaqti: {{time}}"
+        },
+        "dailyActivity": {
+          "description": "Kunlik faollik (+{{value}}).",
+          "note": "Eslatma: {{note}}"
+        },
+        "hardProblemSolved": {
+          "description": "{{title}} ({{difficulty}}) masalasi yechildi.",
+          "problem": "Masala №{{id}}"
+        },
+        "achievementUnlocked": {
+          "description": "{{message}}"
+        },
+        "dailyTaskCompleted": {
+          "description": "Kunlik topshiriq bajarildi ({{type}}).",
+          "task": "{{description}}"
+        }
+      }
+    }
+  }
+}

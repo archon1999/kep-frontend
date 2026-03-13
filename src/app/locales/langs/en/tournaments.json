@@ -1,0 +1,22 @@
+{
+  "tournaments": {
+    "subtitle": "Compete in knockout brackets and follow live results.",
+    "countLabel": "{{count}} tournaments",
+    "emptyTitle": "No tournaments yet",
+    "emptySubtitle": "Stay tuned for upcoming tournaments.",
+    "startsOn": "Starts {{date}}",
+    "players": "{{count}} players",
+    "type": "Type: {{type}}",
+    "bracketTitle": "Knockout bracket",
+    "bracketSubtitle": "{{count}}-player elimination bracket with live duel results.",
+    "awaitingOpponent": "Awaiting opponent",
+    "awaitingWinner": "Winner of previous duel",
+    "round": {
+      "final": "Final",
+      "semifinal": "Semifinals",
+      "quarter": "Quarterfinals",
+      "generic": "1/{{value}} finals"
+    },
+    "emptyDescription": "Tournament details will appear soon."
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "homePage": {
+    "greeting": {
+      "defaultName": "Гость",
+      "goodMorning": "Добро пожаловать, {{name}}!",
+      "loginPrompt": "Войдите, чтобы продолжить путешествие.",
+      "loginCta": "Войти",
+      "subtitle": "Обновления за вчера.",
+      "ordersCount": "У вас {{count}} заказов сегодня.",
+      "stats": {
+        "visitors": "Посетители",
+        "earnings": "Заработок",
+        "orders": "Заказы"
+      },
+      "orderStatus": {
+        "processing": "В обработке",
+        "shipped": "Отправлен",
+        "delivered": "Доставлен"
+      }
+    },
+    "ranks": {
+      "title": "Ваши рейтинги",
+      "labels": {
+        "skills": "Рейтинг навыков",
+        "activity": "Рейтинг активности",
+        "contests": "Соревнования",
+        "challenges": "Челленджи"
+      },
+      "info": {
+        "skillsRating": "Этот рейтинг показывает вашу силу навыков на платформе. Он зависит от количества решённых задач, рейтинга соревнований и челленджей.",
+        "activityRating": "Этот рейтинг показывает вашу активность за последние 30 дней. Он зависит от количества заработанных Kepcoin, ежедневных входов и выполненных ежедневных заданий.",
+        "contests": "Этот рейтинг показывает вашу силу в соревнованиях.",
+        "challenges": "Этот рейтинг показывает вашу силу в челленджах."
+      },
+      "percentile": "Вы лучше, чем {{percentile}}% пользователей"
+    },
+    "statistics": {
+      "title": "Статистика",
+      "subtitle": "За прошлый год",
+      "changeLabel": "По сравнению с прошлым годом",
+      "cards": {
+        "users": "Пользователи",
+        "problems": "Задачи",
+        "competitions": "Соревнования",
+        "attempts": "Попытки"
+      }
+    },
+    "contests": {
+      "title": "Ближайшее соревнование",
+      "viewAll": "Все соревнования",
+      "empty": "Соревнований пока нет."
+    },
+    "news": {
+      "title": "Последние новости",
+      "empty": "Пока нет новостей."
+    },
+    "posts": {
+      "title": "Последние записи блога",
+      "empty": "Пока нет записей в блоге."
+    },
+    "topUsers": {
+      "title": "Топ пользователей",
+      "subtitle": "Лучшие участники в каждой категории",
+      "empty": "Пользователи пока не найдены.",
+      "viewAll": "Все пользователи",
+      "tabs": {
+        "contests": "Соревнования",
+        "skills": "Навыки",
+        "activity": "Активность",
+        "challenges": "Челленджи",
+        "streak": "Серия",
+        "kepcoin": "Kepcoin"
+      }
+    },
+    "birthdays": {
+      "title": "Дни рождения",
+      "empty": "Предстоящих дней рождения пока нет.",
+      "dateUnknown": "Дата не указана"
+    },
+    "userActivity": {
+      "title": "Активность пользователей",
+      "subtitle": "Последние {{days}} дней",
+      "tooltipSuffix": "польз.",
+      "changeLabel": "Относительно прошлого периода",
+      "onlineNow": "Сейчас онлайн",
+      "noOnlineUsers": "Пока никто не в сети.",
+      "totals": {
+        "new": "Новые пользователи",
+        "active": "Активные пользователи"
+      },
+      "series": {
+        "newUsers": "Новые пользователи",
+        "activeUsers": "Активные пользователи"
+      }
+    },
+    "activityHistory": {
+      "title": "История активности",
+      "empty": "Активность пока отсутствует.",
+      "viewAll": "Посмотреть все",
+      "loadMore": "Показать ещё",
+      "defaultLabel": "Обновление активности",
+      "types": {
+        "problemAttemptSummary": {
+          "description": "Решено {{accepted}} из {{total}} задач."
+        },
+        "challengeSummary": {
+          "description": "Сводка по челленджам.",
+          "wins": "Победы: {{value}}",
+          "draws": "Ничьи: {{value}}",
+          "losses": "Поражения: {{value}}"
+        },
+        "projectAttemptSummary": {
+          "description": "Проверено {{checked}} из {{total}} попыток по проектам."
+        },
+        "testPassSummary": {
+          "description": "Завершено {{completed}} из {{total}} тестов и решено {{solved}} задач."
+        },
+        "contestParticipation": {
+          "description": "Участие в {{title}}.",
+          "rank": "Место: {{rank}}",
+          "rating": "{{before}} → {{after}} рейтинг",
+          "ratingChange": "Δ {{delta}}",
+          "bonus": "Бонус: {{bonus}}",
+          "noRank": "—"
+        },
+        "arenaParticipation": {
+          "description": "Участие в арене {{title}}.",
+          "points": "Очки: {{points}}",
+          "rank": "Место: {{rank}}",
+          "finishTime": "Завершено {{time}}"
+        },
+        "dailyActivity": {
+          "description": "Ежедневная активность (+{{value}}).",
+          "note": "Заметка: {{note}}"
+        },
+        "hardProblemSolved": {
+          "description": "Решена задача {{title}} ({{difficulty}}).",
+          "problem": "Задача №{{id}}"
+        },
+        "achievementUnlocked": {
+          "description": "{{message}}"
+        },
+        "dailyTaskCompleted": {
+          "description": "Выполнено ежедневное задание ({{type}}).",
+          "task": "{{description}}"
+        }
+      }
+    }
+  }
+}

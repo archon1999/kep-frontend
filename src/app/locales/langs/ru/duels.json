@@ -1,0 +1,60 @@
+{
+  "duels": {
+    "title": "Дуэли",
+    "subtitle": "Личные противостояния с готовыми пресетами задач.",
+    "readyStatusTitle": "Готовность к дуэлям",
+    "readyDescription": "Дайте знать, что вы готовы к дуэли.",
+    "notReadyDescription": "Отключите статус, если пока не готовы играть.",
+    "ready": "Готов к дуэлям",
+    "notReady": "Не готов",
+    "readyPlayersTitle": "Готовые игроки",
+    "readyPlayersSubtitle": "Найдите соперников, которые ждут дуэль прямо сейчас.",
+    "readyPlayerDescription": "Выберите пресет и назначьте время дуэли.",
+    "challengeToDuel": "Вызвать на дуэль",
+    "tab": {
+      "my": "Мои дуэли",
+      "ready": "Готовые к дуэлям участники",
+      "all": "Все дуэли"
+    },
+    "noDuels": "Пока нет дуэлей",
+    "noReadyPlayers": "Пока нет готовых игроков",
+    "selectPreset": "Выберите пресет дуэли",
+    "selectPresetDescription": "Выберите пресет и время начала, чтобы вызвать {{ username }}.",
+    "startTime": "Время начала",
+    "preset": "Пресет",
+    "presetDetails": "Информация о пресете",
+    "presetProblemsCount": "{{count}} задач",
+    "createDuel": "Создать дуэль",
+    "cancel": "Отмена",
+    "createdToast": "Дуэль создана",
+    "confirmedToast": "Дуэль подтверждена",
+    "status": {
+      "upcoming": "Скоро начнется",
+      "running": "Идет",
+      "finished": "Завершена"
+    },
+    "awaitingConfirmation": "Ожидает подтверждения",
+    "starts": "Дуэль начнется",
+    "ends": "Дуэль завершится",
+    "ratingTitle": "Рейтинг дуэлей",
+    "ratingSubtitle": "Следите за сильнейшими дуэлянтами и их результатами.",
+    "record": "{{wins}}П / {{draws}}Н / {{losses}}П",
+    "view": "Открыть",
+    "confirm": "Подтвердить",
+    "listTitle": "Дуэли",
+    "error": "Что-то пошло не так",
+    "detailTitle": "Дуэль - {{ first }} vs {{ second }}",
+    "scoreboard": "Счет",
+    "scoreboardSubtitle": "Баллы по задачам",
+    "problem": "Задача",
+    "noProblems": "Задачи пока не загружены",
+    "table": {
+      "place": "Место",
+      "username": "Пользователь",
+      "duels": "Дуэлей",
+      "wins": "Победы",
+      "draws": "Ничьи",
+      "losses": "Поражения"
+    }
+  }
+}

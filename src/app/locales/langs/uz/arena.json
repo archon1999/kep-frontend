@@ -1,0 +1,60 @@
+{
+  "arena": {
+    "title": "Arena",
+    "listSubtitle": "Siz uchun {{count}} ta turnir ochiq.",
+    "listEmptySubtitle": "Arena turnirlari topilmadi.",
+    "searchPlaceholder": "Arena qidirish",
+    "status": {
+      "upcoming": "Tez orada",
+      "live": "Jonli",
+      "finished": "Yakunlandi"
+    },
+    "statusLabel": "Holat: {{status}}",
+    "minutes": "daq",
+    "questions": "Savollar",
+    "timeline": {
+      "start": "Turnir boshlanishi",
+      "finish": "Turnir yakunlanishi"
+    },
+    "now": "Hozir",
+    "about": "Arena haqida",
+    "registered": "Roʻyhatdan oʻtilgan",
+    "duration": "Bellashuv vaqti",
+    "actions": {
+      "register": "Roʻyhatdan oʻtish",
+      "nextChallenge": "Keyingi bellashuv",
+      "start": "Boshlash",
+      "pause": "Pauza"
+    },
+    "countdown": {
+      "untilStart": "Boshlanishiga",
+      "untilFinish": "Yakunlanishiga",
+      "finished": "Turnir yakunlandi"
+    },
+    "players": "Ishtirokchilar",
+    "participants": "ishtirokchi",
+    "columns": {
+      "user": "Foydalanuvchi",
+      "results": "Natijalar",
+      "points": "Ochko"
+    },
+    "challenges": "Soʻnggi bellashuvlar",
+    "noChallenges": "Hali bellashuvlar yoʻq.",
+    "statistics": "Arena statistikasi",
+    "averageRating": "Oʻrtacha reyting",
+    "totalChallenges": "Oʻtkazilgan bellashuvlar",
+    "selectPlayer": "Statistikani ko'rish uchun ishtirokchini tanlang",
+    "playerStatistics": "Ishtirokchi statistikasi",
+    "statisticsLabels": {
+      "challenges": "Bellashuvlar",
+      "wins": "Gʻalabalar",
+      "draws": "Durranglar",
+      "losses": "Magʻlubiyatlar",
+      "winRate": "Gʻalaba foizi",
+      "drawRate": "Durrang foizi",
+      "lossRate": "Magʻlubiyat foizi"
+    },
+    "opponents": "Raqiblar",
+    "winners": "Arena gʻoliblari"
+  }
+}

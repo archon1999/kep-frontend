@@ -1,0 +1,22 @@
+{
+  "tournaments": {
+    "subtitle": "Соревнуйтесь в сетке на выбывание и следите за результатами.",
+    "countLabel": "{{count}} турниров",
+    "emptyTitle": "Турниров пока нет",
+    "emptySubtitle": "Следите за анонсами новых турниров.",
+    "startsOn": "Старт {{date}}",
+    "players": "{{count}} участников",
+    "type": "Тип: {{type}}",
+    "bracketTitle": "Сетка на выбывание",
+    "bracketSubtitle": "Сетка на {{count}} участников с онлайн-результатами.",
+    "awaitingOpponent": "Ожидание соперника",
+    "awaitingWinner": "Победитель предыдущей дуэли",
+    "round": {
+      "final": "Финал",
+      "semifinal": "Полуфиналы",
+      "quarter": "Четвертьфиналы",
+      "generic": "1/{{value}} финала"
+    },
+    "emptyDescription": "Информация о турнире появится позже."
+  }
+}

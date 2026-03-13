@@ -1,0 +1,60 @@
+{
+  "arena": {
+    "title": "Арена",
+    "listSubtitle": "Доступно {{count}} турниров.",
+    "listEmptySubtitle": "Турниров арены пока нет.",
+    "searchPlaceholder": "Поиск арены",
+    "status": {
+      "upcoming": "Скоро",
+      "live": "Идет",
+      "finished": "Завершена"
+    },
+    "statusLabel": "Статус: {{status}}",
+    "minutes": "мин",
+    "questions": "Вопросы",
+    "timeline": {
+      "start": "Начало турнира",
+      "finish": "Окончание турнира"
+    },
+    "now": "Сейчас",
+    "about": "О арене",
+    "registered": "Зарегистрирован",
+    "duration": "Время на челлендж",
+    "actions": {
+      "register": "Регистрация",
+      "nextChallenge": "Следующий челлендж",
+      "start": "Старт",
+      "pause": "Пауза"
+    },
+    "countdown": {
+      "untilStart": "Старт через",
+      "untilFinish": "Завершится через",
+      "finished": "Турнир завершен"
+    },
+    "players": "Участники",
+    "participants": "участников",
+    "columns": {
+      "user": "Пользователь",
+      "results": "Результаты",
+      "points": "Очки"
+    },
+    "challenges": "Последние челленджи",
+    "noChallenges": "Пока нет сыгранных челленджей.",
+    "statistics": "Статистика арены",
+    "averageRating": "Средний рейтинг",
+    "totalChallenges": "Сыграно челленджей",
+    "selectPlayer": "Выберите участника, чтобы увидеть статистику",
+    "playerStatistics": "Статистика участника",
+    "statisticsLabels": {
+      "challenges": "Челленджи",
+      "wins": "Победы",
+      "draws": "Ничьи",
+      "losses": "Поражения",
+      "winRate": "Процент побед",
+      "drawRate": "Процент ничьих",
+      "lossRate": "Процент поражений"
+    },
+    "opponents": "Соперники",
+    "winners": "Победители арены"
+  }
+}

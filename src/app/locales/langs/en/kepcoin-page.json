@@ -1,0 +1,143 @@
+{
+  "kepcoinSpend": {
+    "insufficientBalance": "Not enough Kepcoin",
+    "confirmTitle": "Want to buy?",
+    "confirmDescription": "You won't be able to revert this!",
+    "costLabel": "Price",
+    "balanceLabel": "Your balance",
+    "cancelAction": "Cancel",
+    "confirmAction": "Purchase",
+    "success": "Purchase completed",
+    "error": "Server error"
+  },
+  "kepcoinPage": {
+    "youHave": "You have {{value}} Kepcoin",
+    "balanceSubtitle": "Track how you earn and spend Kepcoin every day.",
+    "valueLabel": "{{value}} Kepcoin",
+    "streakStats": {
+      "current": "Current streak",
+      "max": "Max streak"
+    },
+    "currentStreak": "Current streak · {{value}} days",
+    "streakFreeze": {
+      "label": "Streak freeze",
+      "count": "Streak freeze · {{value}}",
+      "description": "Freezing automatically saves your streak if you miss a day and don't complete daily tasks.",
+      "purchaseAction": "Buy freeze"
+    },
+    "history": {
+      "title": "Kepcoin activity",
+      "tabs": {
+        "earns": "Earns",
+        "spends": "Spends"
+      },
+      "error": "Could not load your Kepcoin history.",
+      "retry": "Retry",
+      "emptyTitle": "No Kepcoin history yet",
+      "emptySubtitle": "Complete tasks or enter contests to see your earns and spends here.",
+      "note": "Note: {{value}}",
+      "noDate": "Time not specified",
+      "detail": "{{base}} · {{detail}}",
+      "defaultLabel": "Kepcoin transaction"
+    },
+    "tasks": {
+      "title": "One-time tasks",
+      "subtitle": "Complete one-time actions across the platform and collect Kepcoin once.",
+      "empty": "No one-time tasks available right now.",
+      "open": "Open",
+      "view": "View",
+      "start": "Start",
+      "verify": "Verify",
+      "close": "Close",
+      "completed": "Completed",
+      "pending": "Pending",
+      "blocked": "Blocked",
+      "verified": "Task verified successfully",
+      "alreadyCompleted": "This task has already been completed",
+      "startOpened": "Task flow opened",
+      "modalSubtitle": "Complete the action, then come back and verify it.",
+      "modalHint": "Some tasks open internal pages, while account-link tasks may redirect you back automatically.",
+      "description": "Task description",
+      "flowTitle": "How it works",
+      "flowStepStart": "1. Start the connection flow for this account.",
+      "flowStepVerify": "2. After linking is complete, click verify to receive your reward.",
+      "verifyCodes": {
+        "telegram_not_linked": "Telegram account is not linked yet.",
+        "google_not_linked": "Google account is not linked yet.",
+        "github_not_linked": "GitHub account is not linked yet.",
+        "missing_required_provider": "A required account connection is missing.",
+        "event_not_found": "Task action was not detected yet.",
+        "telegram_channel_not_subscribed": "Telegram channel subscription was not detected."
+      },
+      "errors": {
+        "startFailed": "Could not start the task flow.",
+        "verifyFailed": "Could not verify the task."
+      }
+    },
+    "howToEarn": {
+      "title": "How to Earn Kepcoin",
+      "description": "To earn this currency, you need to contribute to the development of the system. For example, kepcoin:",
+      "items": {
+        "dailyActivity": "For daily activity",
+        "dailyTasks": "For completing daily tasks",
+        "ratingWinner": "For being the winner in daily, weekly, and monthly challenge ratings",
+        "competitions": "For participating in competitions",
+        "blog": "For writing a blog",
+        "problemEditing": "For helping in editing problems (writing solutions, translation, adding tags, finding similar problems)"
+      }
+    },
+    "howToSpend": {
+      "title": "How to Spend Kepcoin",
+      "items": {
+        "viewAttempt": "View another user's attempt",
+        "viewTest": "View a test with a failed solution",
+        "problemSolution": "Purchase a problem solution",
+        "coverPhoto": "Change profile cover photo",
+        "passTest": "Pass the test",
+        "course": "Purchase a course",
+        "testFunction": "Test function when editing code (completely)",
+        "doubleRating": "Double rating change in contest (even if negative, it doubles)",
+        "keepRating": "Maintain rating in contest (not given if negative)"
+      }
+    },
+    "earnTypes": {
+      "wroteBlog": "Wrote a blog",
+      "wroteProblemSolution": "Wrote problem solution",
+      "loyaltyBonus": "Loyalty bonus",
+      "bonusFromAdmin": "Bonus from admin",
+      "dailyActivity": "Daily activity",
+      "dailyTaskCompletion": "Daily task completed",
+      "dailyRatingWinner": "Daily problems rating winner",
+      "weeklyRatingWinner": "Weekly problems rating winner",
+      "monthlyRatingWinner": "Monthly problems rating winner",
+      "contestParticipant": "Contest participant",
+      "arenaParticipant": "Arena participant",
+      "tournamentParticipant": "Tournament participant",
+      "projectTask": "Project task completed",
+      "newYear2026Login": "New Year 2026 login bonus",
+      "merchRefund": "Merch refund"
+      ,
+      "oneTimeTaskCompletion": "One-time task completed"
+    },
+    "spendTypes": {
+      "attemptView": "View Attempt",
+      "attemptTestView": "View Test Attempt",
+      "problemSolution": "View Problem Solution",
+      "doubleRating": "Double rating",
+      "coverPhoto": "Change cover photo",
+      "course": "Course",
+      "studyPlan": "Study plan",
+      "codeEditorTesting": "Code editor testing",
+      "saveRating": "Save rating",
+      "testPass": "Pass the test",
+      "userContestCreate": "Create contest",
+      "project": "Project",
+      "streakFreeze": "Streak freeze",
+      "virtualContest": "Virtual contest",
+      "unratedContest": "Unrated contest",
+      "answerForInput": "Answer for input",
+      "checkSamples": "Check samples",
+      "merch": "Merch"
+    }
+  }
+}

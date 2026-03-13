@@ -1,0 +1,264 @@
+{
+  "contests": {
+    "title": "Kontestlar",
+    "subtitle": "Dasturlash kontestlarida ishtirok eting va natijalarni jonli kuzating.",
+    "searchLabel": "Kontestlarni qidirish",
+    "searchPlaceholder": "Sarlavha yoki muallif bo‘yicha qidirish",
+    "typeLabel": "Turi",
+    "allTypes": "Barcha turlar",
+    "categoriesLabel": "Kategoriyalar",
+    "allCategories": "Barcha kategoriyalar",
+    "filters": {
+      "toggle": "Filtrlar"
+    },
+    "participation": {
+      "all": "Hammasi",
+      "joined": "Roʻyhatdan oʻtgan",
+      "notJoined": "Roʻyxatdan oʻtmagan"
+    },
+    "participationLabel": "Ishtirok",
+    "status": {
+      "starts": "Boshlanishi {{date}}",
+      "live": "Jonli · yakunlanadi {{date}}",
+      "finished": "Yakunlangan {{date}}"
+    },
+    "statusShort": {
+      "notStarted": "Boshlanmagan",
+      "live": "Bo'lib o'tyapti",
+      "finished": "Yakunlangan"
+    },
+    "topContestants": {
+      "title": "Top-3 ishtirokchilar",
+      "loading": "Natijalar yuklanmoqda...",
+      "empty": "Gʻoliblar kontest tugagach koʻrsatiladi."
+    },
+    "startsLabel": "Boshlanishi {{date}}",
+    "startsUnknown": "Boshlanish vaqti tez orada eʼlon qilinadi",
+    "endsLabel": "Tugashi {{date}}",
+    "type": "Format: {{type}}",
+    "problems": "{{count}} ta masala",
+    "registrants": {
+      "title": "Ro'yxatdan o'tganlar",
+      "columns": {
+        "user": "Foydalanuvchi",
+        "rating": "Reyting"
+      }
+    },
+    "contestants": "{{count}} ta ishtirokchi",
+    "rated": "Reytingli",
+    "noDescription": "Tavsif qoʻshilmagan.",
+    "emptyTitle": "Kontestlar topilmadi",
+    "emptySubtitle": "Yangi kontestlar tez orada qoʻshiladi.",
+    "viewRating": "Kontestlar reytingi",
+    "viewMyStats": "Mening kontest statistikam",
+    "register": "Ro'yxatdan o'tish",
+    "unregister": "Ro'yxatdan bekor qilish",
+    "statistics": {
+      "title": "Kontestlar statistikasi",
+      "subtitle": "{{username}} uchun reytingli kontest natijalari.",
+      "authRequired": "Kontestlar statistikasini koʻrish uchun tizimga kiring.",
+      "loginCta": "Kirish",
+      "loading": "Statistika yuklanmoqda...",
+      "currentRating": "Joriy reyting",
+      "bestRating": "Eng yuqori reyting",
+      "rank": "Reytingdagi oʻrin",
+      "outOf": "{{ total }} ta ishtirokchi orasida",
+      "totalContestants": "Kontest ishtiroklari soni",
+      "totalAttempts": "Jami urinishlar",
+      "totalAccepted": "Jami qabul qilingan yechimlar",
+      "averageAttempts": "Bir masalaga oʻrtacha urinishlar",
+      "singleAttempts": "Bir urinishda yechilganlar",
+      "mostAttemptsProblem": "Eng ko‘p urinish bo‘lgan masala",
+      "fastestSolve": "Eng tez yechim",
+      "slowestSolve": "Eng sekin yechim",
+      "bestRank": "Eng yaxshi o‘rin",
+      "toughestRank": "Eng past o‘rin",
+      "bestDelta": "Eng katta reyting o‘sishi",
+      "worstDelta": "Eng katta reyting yo‘qotishi",
+      "participants": "{{total}} ta ishtirokchi",
+      "attemptsTimeline": "Urinishlar dinamikasi",
+      "ratingChanges": "Reyting oʻzgarishlari",
+      "ratingChangesHistory": "Reyting o‘zgarishlari tarixi",
+      "contestRanks": "Kontestlardagi natijalar",
+      "languages": "Tillar",
+      "verdictDistribution": "Verdiktlar taqsimoti",
+      "tags": "Teglar",
+      "symbols": "Masala belgilar",
+      "unsolvedProblems": "Yechilmagan masalalar",
+      "noUnsolvedProblems": "Kontest masalalarining barchasi yechilgan",
+      "topAttempts": "Eng ko‘p urinishlar",
+      "solved": "Yechilgan",
+      "unsolved": "Yechilmagan",
+      "attempts": "Urinishlar",
+      "attemptsCount": "{{count}} urinish",
+      "worthyOpponents": "Kuchli raqiblar",
+      "sharedContests": "{{count}} ta umumiy kontest",
+      "noData": "Maʼlumotlar yo‘q"
+    },
+    "verdicts": {
+      "AC": "Qabul qilindi",
+      "WA": "Notoʻgʻri javob",
+      "TLE": "Vaqt chegarasi oshdi",
+      "OTHER": "Boshqa"
+    },
+    "rating": {
+      "title": "Kontestlar reytingi",
+      "subtitle": "Reytingli kontestlardagi eng kuchli ishtirokchilarni kuzating.",
+      "ordering": {
+        "rating": "Reyting",
+        "maxRating": "Maksimal reyting",
+        "contests": "Kontestlar"
+      },
+      "columns": {
+        "place": "#",
+        "user": "Foydalanuvchi",
+        "rating": "Reyting",
+        "maxRating": "Maksimal reyting",
+        "contests": "Kontestlar"
+      },
+      "total": "{{count}} ishtirokchi",
+      "pageInfo": "Sahifa {{page}} / {{pages}}",
+      "empty": "Reyting hali shakllanmadi."
+    },
+    "typeLabels": {
+      "ACM2H": "ACM (2 soat)",
+      "ACM10M": "ACM (10 daqiqa)",
+      "ACM20M": "ACM (20 daqiqa)",
+      "Ball525": "Ball 525",
+      "Ball550": "Ball 550",
+      "LessCode": "Kamroq kod",
+      "LessLine": "Kamroq satr",
+      "OneAttempt": "Bitta urinish",
+      "IQ": "IQ testi",
+      "Ball": "Ball",
+      "DC": "DC",
+      "MultiL": "Koʻp tilli",
+      "CodeGolf": "Code golf",
+      "Exam": "Imtihon"
+    },
+    "tabs": {
+      "overview": "Umumiy",
+      "problems": "Masalalar",
+      "attempts": "Urinishlar",
+      "standings": "Natijalar",
+      "statistics": "Statistika",
+      "registrants": "Ro'yxatdan o'tganlar",
+      "ratingChanges": "Reyting o'zgarishlari",
+      "questions": "Savollar"
+    },
+    "unrated": "Reytingsiz",
+    "schedule": "Jadval",
+    "countdown": "Qoldi: {{time}}",
+    "timeLabels": {
+      "day": "Kun",
+      "hour": "Soat",
+      "minute": "Daqiqa",
+      "second": "Soniya"
+    },
+    "countdownCard": {
+      "starts": "Kontest boshlanishiga",
+      "ends": "Kontest yakunlanishiga",
+      "finished": "Kontest yakunlandi",
+      "finishedAt": "Yakun vaqti: {{date}}",
+      "started": "Kontest boshlandi",
+      "startedBody": "Kontest boshlandi. Ishtirokni boshlash uchun masalalarga o‘ting.",
+      "finishedBody": "Kontest yakunlandi. Natijalarni ko‘rib chiqing."
+    },
+    "problemsPreview": "Masalalar",
+    "solvedShort": "{{solved}} ta yechildi",
+    "noProblems": "Masalalar tez orada qo'shiladi.",
+    "loading": "Yuklanmoqda...",
+    "filter": {
+      "title": "Filtr",
+      "problem": "Masala",
+      "anyProblem": "Barcha masalalar",
+      "verdict": "Hukm",
+      "anyVerdict": "Har qanday hukm",
+      "onlyMe": "Faqat meniki",
+      "apply": "Qo'llash",
+      "reset": "Tozalash"
+    },
+    "problemsTable": {
+      "symbol": "#",
+      "title": "Sarlavha",
+      "limits": "Chegaralar",
+      "ball": "Ball",
+      "stats": "Statistika"
+    },
+    "standings": {
+      "place": "#",
+      "contestant": "Ishtirokchi",
+      "points": "Ball",
+      "penalties": "Jarimalar",
+      "delta": "?",
+      "performance": "Performance",
+      "followingOnly": "Faqat kuzatayotganlar",
+      "allFilters": "Barcha filtrlar",
+      "problemTotals": "{{solved}} yechildi / {{attempts}} urinish"
+    },
+    "contestantStatus": {
+      "official": "Rasmiy",
+      "virtual": "Virtual",
+      "unrated": "Reytingsiz"
+    },
+    "ratingChanges": {
+      "title": "Reyting o'zgarishlari",
+      "columns": {
+        "contestant": "Ishtirokchi",
+        "delta": "?",
+        "rating": "Reyting"
+      }
+    },
+    "questions": {
+      "title": "Savollar",
+      "ask": "Savol berish",
+      "problem": "Masala",
+      "anyProblem": "Istalgan masala",
+      "question": "Savol",
+      "submit": "Yuborish",
+      "empty": "Savollar yo'q.",
+      "answer": "Javob"
+    },
+    "statisticsPage": {
+      "title": "Kontest statistikasi",
+      "participants": "Ishtirokchilar",
+      "totalAttempts": "Jami urinishlar",
+      "totalAccepted": "Jami yechimlar",
+      "acceptance": "Qabul qilish foizi",
+      "timeline": "Urinishlar grafigi",
+      "verdicts": "Hukmlar",
+      "problemAttempts": "Masalalar bo'yicha urinishlar",
+      "firstSolves": "Birinchi yechimlar",
+      "badges": "Nishonlar",
+      "facts": "Faktlar",
+      "noData": "Ma'lumot yo'q",
+      "attempts": "Urinishlar",
+      "accepted": "Qabul qilingan",
+      "noBadges": "Hozircha belgi yoʻq",
+      "noFirstSolves": "Birinchi yechimlar yoʻq",
+      "badgeLabels": {
+        "sniper": "Snayper",
+        "grinder": "Grinder",
+        "optimizer": "Optimizator",
+        "neverGiveUp": "Hech qachon taslim boʻlma"
+      },
+      "badgeDetails": {
+        "sniper": "Masala {{problem}} · {{time}}",
+        "grinder": "{{attempts}} ta urinish",
+        "optimizer": "{{solved}} ta yechim · {{wrong}} ta xato urinish",
+        "neverGiveUp": "Masala {{problem}} · {{attempts}} ta urinish"
+      }
+    },
+    "problem": {
+      "description": "Tavsif",
+      "myAttempts": "Mening urinishlarim",
+      "footerTitle": "Sizning natijalaringiz",
+      "prev": "Oldingi",
+      "next": "Keyingi",
+      "contestFinished": "Kontest yakunlangan. Upsolve rejimida davom eting.",
+      "upsolve": "Upsolve"
+    },
+    "authors": "Mualliflar",
+    "registrantsLabel": "{{count}} ta ro'yxatdan o'tgan"
+  }
+}

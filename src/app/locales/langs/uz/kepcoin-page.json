@@ -1,0 +1,142 @@
+{
+  "kepcoinSpend": {
+    "insufficientBalance": "Kepcoin yetmaydi",
+    "confirmTitle": "Sotib olasizmi?",
+    "confirmDescription": "Bu amalni qaytarib bo‘lmaydi.",
+    "costLabel": "Narxi",
+    "balanceLabel": "Balansingiz",
+    "cancelAction": "Bekor qilish",
+    "confirmAction": "Sotib olish",
+    "success": "Xarid muvaffaqiyatli yakunlandi",
+    "error": "Server xatosi"
+  },
+  "kepcoinPage": {
+    "youHave": "Sizda {{value}} Kepcoin bor",
+    "balanceSubtitle": "Har kuni Kepcoin qanday yig'ilishi va sarflanishini kuzating.",
+    "valueLabel": "{{value}} Kepcoin",
+    "streakStats": {
+      "current": "Joriy seriya",
+      "max": "Maksimal seriya"
+    },
+    "currentStreak": "Joriy seriya · {{value}} kun",
+    "streakFreeze": {
+      "label": "Seriyani muzlatish",
+      "count": "Muzlatish · {{value}}",
+      "description": "Agar kunni oʻtkazib yuborsangiz va kundalik vazifalarni bajarmasangiz, muzlatish avtomatik ravishda natijani saqlaydi.",
+      "purchaseAction": "Muzlatishni sotib olish"
+    },
+    "history": {
+      "title": "Kepcoin tarixi",
+      "tabs": {
+        "earns": "Toplangan",
+        "spends": "Sarflandi"
+      },
+      "error": "Kepcoin tarixini yuklab bo'lmadi.",
+      "retry": "Qayta urinish",
+      "emptyTitle": "Kepcoin tarixi hali yo'q",
+      "emptySubtitle": "Topshiriqlarni bajaring yoki musobaqalarda qatnashing va shu yerda natijalarni ko'ring.",
+      "note": "Izoh: {{value}}",
+      "noDate": "Vaqt ko'rsatilmagan",
+      "detail": "{{base}} · {{detail}}",
+      "defaultLabel": "Kepcoin operatsiyasi"
+    },
+    "tasks": {
+      "title": "Bir martalik tasklar",
+      "subtitle": "Platformadagi bir martalik amallarni bajaring va Kepcoinni bir marta oling.",
+      "empty": "Hozircha bir martalik tasklar yo'q.",
+      "open": "Ochish",
+      "view": "Ko'rish",
+      "start": "Boshlash",
+      "verify": "Tekshirish",
+      "close": "Yopish",
+      "completed": "Bajarilgan",
+      "pending": "Kutilmoqda",
+      "blocked": "Bloklangan",
+      "verified": "Task muvaffaqiyatli tasdiqlandi",
+      "alreadyCompleted": "Bu task allaqachon bajarilgan",
+      "startOpened": "Task jarayoni ochildi",
+      "modalSubtitle": "Amalni bajaring, keyin qaytib kelib taskni tekshiring.",
+      "modalHint": "Ba'zi tasklar ichki sahifani ochadi, account-link tasklar esa sizni avtomatik qaytarishi mumkin.",
+      "description": "Task tavsifi",
+      "flowTitle": "Qanday ishlaydi",
+      "flowStepStart": "1. Shu akkaunt uchun ulash jarayonini boshlang.",
+      "flowStepVerify": "2. Ulangandan keyin reward olish uchun tekshirishni bosing.",
+      "verifyCodes": {
+        "telegram_not_linked": "Telegram akkaunti hali ulanmagan.",
+        "google_not_linked": "Google akkaunti hali ulanmagan.",
+        "github_not_linked": "GitHub akkaunti hali ulanmagan.",
+        "missing_required_provider": "Kerakli akkaunt ulanishi topilmadi.",
+        "event_not_found": "Task amali hali aniqlanmadi.",
+        "telegram_channel_not_subscribed": "Telegram kanal obunasi aniqlanmadi."
+      },
+      "errors": {
+        "startFailed": "Task jarayonini boshlab bo'lmadi.",
+        "verifyFailed": "Taskni tekshirib bo'lmadi."
+      }
+    },
+    "howToEarn": {
+      "title": "Kepcoin qanday topiladi",
+      "description": "Ushbu valyutaga ega bo‘lish uchun tizim rivojlanishiga o‘z hissangizni qo‘shishingiz kerak. Jumladan kepcoin:",
+      "items": {
+        "dailyActivity": "Kunlik faollik uchun",
+        "dailyTasks": "Kunlik topshiriqlarni bajarganligi uchun",
+        "ratingWinner": "Kunlik, haftalik va oylik reyting g'olibi bo'lganingiz uchun",
+        "competitions": "Musobaqada qatnashganingiz uchun",
+        "blog": "Blog yozish uchun",
+        "problemEditing": "Masalalarni tahrirlashda yordam berganlik uchun (yechim, tarjima, teglar, o'xshash masalalar)"
+      }
+    },
+    "howToSpend": {
+      "title": "Kepcoinni qanday sarflash",
+      "items": {
+        "viewAttempt": "Boshqa foydalanuvchi urinishini ko‘rish",
+        "viewTest": "Yechim yiqilgan testni ko‘rish",
+        "problemSolution": "Masala yechimini xarid qilish",
+        "coverPhoto": "Profil orqa rasmini o‘zgartirish",
+        "passTest": "Testdan oʻtish",
+        "course": "Kurs sotib olish",
+        "testFunction": "Kodni tahrirlashda testlash funksiyasi (to‘liq)",
+        "doubleRating": "Kontestda ikki barobar reyting o‘zgarishi (manfiy bo‘lsa ham)",
+        "keepRating": "Kontestda reytingni saqlab qolish (manfiy bo‘lsa berilmaydi)"
+      }
+    },
+    "earnTypes": {
+      "wroteBlog": "Blog yozildi",
+      "wroteProblemSolution": "Masala yechimi yozildi",
+      "loyaltyBonus": "Sodiqlik bonusi",
+      "bonusFromAdmin": "Admindan bonus",
+      "dailyActivity": "Kunlik faollik",
+      "dailyTaskCompletion": "Kunlik topshiriq bajarildi",
+      "dailyRatingWinner": "Kunlik masalalar reytingi g‘olibi",
+      "weeklyRatingWinner": "Haftalik masalalar reytingi g‘olibi",
+      "monthlyRatingWinner": "Oylik masalalar reytingi g‘olibi",
+      "contestParticipant": "Kontest ishtirokchisi",
+      "arenaParticipant": "Arena ishtirokchisi",
+      "tournamentParticipant": "Turnir ishtirokchisi",
+      "projectTask": "Loyiha vazifasi bajarildi",
+      "newYear2026Login": "Yangi yil 2026 bonus kirishi",
+      "merchRefund": "Merch qaytimi",
+      "oneTimeTaskCompletion": "Bir martalik vazifa bajarildi"
+    },
+    "spendTypes": {
+      "attemptView": "Urinishni ko‘rish",
+      "attemptTestView": "Urinish testini ko‘rish",
+      "problemSolution": "Masala yechimini ko‘rish",
+      "doubleRating": "Ikki barobar reyting",
+      "coverPhoto": "Rasmni o‘zgartirish",
+      "course": "Kurs",
+      "studyPlan": "Oʻquv rejasi",
+      "codeEditorTesting": "Kod muharriri testi",
+      "saveRating": "Reytingni saqlab qolish",
+      "testPass": "Testdan oʻtish",
+      "userContestCreate": "Kontest yaratish",
+      "project": "Loyiha",
+      "streakFreeze": "Muzlatish",
+      "virtualContest": "Virtual kontest",
+      "unratedContest": "Reytingsiz kontest",
+      "answerForInput": "Kiritish uchun javob",
+      "checkSamples": "Namunalarni tekshirish",
+      "merch": "Merch"
+    }
+  }
+}

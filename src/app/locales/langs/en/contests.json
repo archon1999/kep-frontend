@@ -1,0 +1,264 @@
+{
+  "contests": {
+    "title": "Contests",
+    "subtitle": "Join live programming contests, track standings, and get ready for the next challenge.",
+    "searchLabel": "Search contests",
+    "searchPlaceholder": "Search by title or author",
+    "typeLabel": "Type",
+    "allTypes": "All types",
+    "categoriesLabel": "Categories",
+    "allCategories": "All categories",
+    "filters": {
+      "toggle": "Filters"
+    },
+    "participation": {
+      "all": "All",
+      "joined": "Registered",
+      "notJoined": "Not registered"
+    },
+    "participationLabel": "Participation",
+    "status": {
+      "starts": "Starts {{date}}",
+      "live": "Live - ends {{date}}",
+      "finished": "Finished {{date}}"
+    },
+    "statusShort": {
+      "notStarted": "Not started",
+      "live": "In progress",
+      "finished": "Finished"
+    },
+    "topContestants": {
+      "title": "Top 3 contestants",
+      "loading": "Loading results...",
+      "empty": "Top finishers will appear once the contest is completed."
+    },
+    "startsLabel": "Starts {{date}}",
+    "startsUnknown": "Start time to be announced",
+    "endsLabel": "Ends {{date}}",
+    "type": "Format: {{type}}",
+    "problems": "{{count}} problems",
+    "registrants": {
+      "title": "Registrants",
+      "columns": {
+        "user": "User",
+        "rating": "Rating"
+      }
+    },
+    "contestants": "{{count}} contestants",
+    "rated": "Rated",
+    "noDescription": "No description provided.",
+    "emptyTitle": "No contests available",
+    "emptySubtitle": "New contests will appear here soon.",
+    "viewRating": "Contests rating",
+    "viewMyStats": "My contest stats",
+    "register": "Register",
+    "unregister": "Cancel registration",
+    "statistics": {
+      "title": "Contest performance",
+      "subtitle": "Detailed results for {{username}} across rated contests.",
+      "authRequired": "Sign in to view your contest statistics.",
+      "loginCta": "Sign in",
+      "loading": "Loading statistics...",
+      "currentRating": "Current rating",
+      "bestRating": "Best rating",
+      "rank": "Rating place",
+      "outOf": "out of {{total}} contestants",
+      "totalContestants": "Total contestants",
+      "totalAttempts": "Total attempts",
+      "totalAccepted": "Total accepted",
+      "averageAttempts": "Average attempts/problem",
+      "singleAttempts": "Single-attempt solves",
+      "mostAttemptsProblem": "Most attempts on a problem",
+      "fastestSolve": "Fastest solve",
+      "slowestSolve": "Slowest solve",
+      "bestRank": "Best rank",
+      "toughestRank": "Toughest rank",
+      "bestDelta": "Best rating change",
+      "worstDelta": "Worst rating change",
+      "participants": "{{total}} participants",
+      "attemptsTimeline": "Attempts timeline",
+      "ratingChanges": "Rating changes",
+      "ratingChangesHistory": "Rating history",
+      "contestRanks": "Contest ranks",
+      "languages": "Languages",
+      "verdictDistribution": "Verdict distribution",
+      "tags": "Favorite tags",
+      "symbols": "Problem symbols",
+      "unsolvedProblems": "Unsolved problems",
+      "noUnsolvedProblems": "All contest problems are solved",
+      "topAttempts": "Most attempts",
+      "solved": "Solved",
+      "unsolved": "Unsolved",
+      "attempts": "Attempts",
+      "attemptsCount": "{{count}} attempts",
+      "worthyOpponents": "Worthy opponents",
+      "sharedContests": "{{count}} shared contests",
+      "noData": "No data yet"
+    },
+    "verdicts": {
+      "AC": "Accepted",
+      "WA": "Wrong answer",
+      "TLE": "Time limit exceeded",
+      "OTHER": "Other"
+    },
+    "rating": {
+      "title": "Contests rating",
+      "subtitle": "See the most consistent contestants across all rated contests.",
+      "ordering": {
+        "rating": "Rating",
+        "maxRating": "Max rating",
+        "contests": "Contests"
+      },
+      "columns": {
+        "place": "#",
+        "user": "User",
+        "rating": "Rating",
+        "maxRating": "Max rating",
+        "contests": "Contests"
+      },
+      "total": "{{count}} participants",
+      "pageInfo": "Page {{page}} of {{pages}}",
+      "empty": "No contestants have a rating yet."
+    },
+    "tabs": {
+      "overview": "Overview",
+      "problems": "Problems",
+      "attempts": "Attempts",
+      "standings": "Standings",
+      "statistics": "Statistics",
+      "registrants": "Registrants",
+      "ratingChanges": "Rating changes",
+      "questions": "Questions"
+    },
+    "unrated": "Unrated",
+    "schedule": "Schedule",
+    "countdown": "Time left: {{time}}",
+    "timeLabels": {
+      "day": "Day",
+      "hour": "Hour",
+      "minute": "Minute",
+      "second": "Second"
+    },
+    "countdownCard": {
+      "starts": "Contest starts in",
+      "ends": "Contest ends in",
+      "finished": "Contest finished",
+      "finishedAt": "Finished at {{date}}",
+      "started": "Contest started",
+      "startedBody": "The contest has started. Jump to problems to compete.",
+      "finishedBody": "The contest has finished. See the standings for final results."
+    },
+    "problemsPreview": "Problems",
+    "solvedShort": "{{solved}} solved",
+    "noProblems": "Problems will appear here soon.",
+    "loading": "Loading...",
+    "filter": {
+      "title": "Filter attempts",
+      "problem": "Problem",
+      "anyProblem": "All problems",
+      "verdict": "Verdict",
+      "anyVerdict": "Any verdict",
+      "onlyMe": "Only my attempts",
+      "apply": "Apply",
+      "reset": "Reset"
+    },
+    "problemsTable": {
+      "symbol": "#",
+      "title": "Title",
+      "limits": "Limits",
+      "ball": "Ball",
+      "stats": "Stats"
+    },
+    "standings": {
+      "place": "#",
+      "contestant": "Contestant",
+      "points": "Points",
+      "penalties": "Penalties",
+      "delta": "Δ",
+      "performance": "Performance",
+      "followingOnly": "Following only",
+      "allFilters": "All filters",
+      "problemTotals": "{{solved}} solved / {{attempts}} attempts"
+    },
+    "contestantStatus": {
+      "official": "Official",
+      "virtual": "Virtual",
+      "unrated": "Unrated"
+    },
+    "ratingChanges": {
+      "title": "Rating changes",
+      "columns": {
+        "contestant": "Contestant",
+        "delta": "Δ",
+        "rating": "Rating"
+      }
+    },
+    "questions": {
+      "title": "Questions",
+      "ask": "Ask a question",
+      "problem": "Problem",
+      "anyProblem": "Any problem",
+      "question": "Question",
+      "submit": "Submit",
+      "empty": "No questions yet.",
+      "answer": "Answer"
+    },
+    "statisticsPage": {
+      "title": "Contest statistics",
+      "participants": "Participants",
+      "totalAttempts": "Total attempts",
+      "totalAccepted": "Total accepted",
+      "acceptance": "Acceptance rate",
+      "timeline": "Attempts timeline",
+      "verdicts": "Verdicts",
+      "problemAttempts": "Attempts by problem",
+      "firstSolves": "First solves",
+      "badges": "Badges",
+      "facts": "Facts",
+      "noData": "No data yet",
+      "attempts": "Attempts",
+      "accepted": "Solved",
+      "noBadges": "No badges yet",
+      "noFirstSolves": "No first solves yet",
+      "badgeLabels": {
+        "sniper": "Sniper",
+        "grinder": "Grinder",
+        "optimizer": "Optimizer",
+        "neverGiveUp": "Never give up"
+      },
+      "badgeDetails": {
+        "sniper": "Problem {{problem}} · {{time}}",
+        "grinder": "{{attempts}} attempts",
+        "optimizer": "{{solved}} solved · {{wrong}} wrong attempts",
+        "neverGiveUp": "Problem {{problem}} · {{attempts}} attempts"
+      }
+    },
+    "problem": {
+      "description": "Description",
+      "myAttempts": "My attempts",
+      "footerTitle": "Your contest results",
+      "prev": "Prev",
+      "next": "Next",
+      "contestFinished": "Contest has finished. Continue solving in upsolve mode.",
+      "upsolve": "Upsolve"
+    },
+    "typeLabels": {
+      "ACM2H": "ACM (2 hours)",
+      "ACM10M": "ACM (10 minutes)",
+      "ACM20M": "ACM (20 minutes)",
+      "Ball525": "Ball 525",
+      "Ball550": "Ball 550",
+      "LessCode": "Less code",
+      "LessLine": "Fewer lines",
+      "OneAttempt": "One attempt",
+      "IQ": "IQ test",
+      "Ball": "Ball",
+      "DC": "DC",
+      "MultiL": "Multi-language",
+      "CodeGolf": "Code golf",
+      "Exam": "Exam"
+    },
+    "authors": "Authors",
+    "registrantsLabel": "{{count}} registrations"
+  }
+}

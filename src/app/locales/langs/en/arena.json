@@ -1,0 +1,60 @@
+{
+  "arena": {
+    "title": "Arena",
+    "listSubtitle": "{{count}} tournaments are open for you.",
+    "listEmptySubtitle": "No arena tournaments found yet.",
+    "searchPlaceholder": "Search arena",
+    "status": {
+      "upcoming": "Upcoming",
+      "live": "Live",
+      "finished": "Finished"
+    },
+    "statusLabel": "Status: {{status}}",
+    "minutes": "min",
+    "questions": "Questions",
+    "timeline": {
+      "start": "Tournament starts",
+      "finish": "Tournament ends"
+    },
+    "now": "Now",
+    "about": "About arena",
+    "registered": "Registered",
+    "duration": "Time per challenge",
+    "actions": {
+      "register": "Registration",
+      "nextChallenge": "Next challenge",
+      "start": "Start",
+      "pause": "Pause"
+    },
+    "countdown": {
+      "untilStart": "Starts in",
+      "untilFinish": "Ends in",
+      "finished": "Tournament finished"
+    },
+    "players": "Participants",
+    "participants": "participants",
+    "columns": {
+      "user": "User",
+      "results": "Results",
+      "points": "Points"
+    },
+    "challenges": "Latest challenges",
+    "noChallenges": "No challenges have been played yet.",
+    "statistics": "Arena statistics",
+    "averageRating": "Average rating",
+    "totalChallenges": "Challenges played",
+    "selectPlayer": "Select a participant to see their statistics",
+    "playerStatistics": "Player statistics",
+    "statisticsLabels": {
+      "challenges": "Challenges",
+      "wins": "Wins",
+      "draws": "Draws",
+      "losses": "Losses",
+      "winRate": "Win rate",
+      "drawRate": "Draw rate",
+      "lossRate": "Loss rate"
+    },
+    "opponents": "Opponents",
+    "winners": "Arena winners"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Jamiyat hikoyalari, o‘quv yo‘llari va platformadagi yangiliklar.",
+    "filtersTitle": "Maqolalarni saralash",
+    "searchPlaceholder": "Sarlavha yoki kalit so‘z bo‘yicha qidirish",
+    "author": "Muallif",
+    "authorPlaceholder": "Istalgan muallif",
+    "orderBy": "Tartiblash",
+    "orderByPlaceholder": "Dolzarblik",
+    "order": {
+      "likes": "Eng ko‘p yoqtirilgan",
+      "views": "Eng ko‘p ko‘rilgan",
+      "comments": "Eng ko‘p muhokama qilingan"
+    },
+    "topics": {
+      "title": "Mavzular",
+      "technology": "Texnologiyalar",
+      "competitiveProgramming": "Competitive programming",
+      "info": "Platforma yangiliklari"
+    },
+    "readMore": "Batafsil",
+    "comments": "Izohlar",
+    "commentsWithCount": "Izohlar ({{count}})",
+    "likes": "Like",
+    "views": "Koʻrishlar",
+    "addCommentTitle": "Izoh qoldiring",
+    "addCommentPlaceholder": "Fikrlaringizni hamjamiyat bilan ulashing",
+    "emptyComments": {
+      "title": "Birinchi bo‘lib izoh qoldiring",
+      "subtitle": "Hali izohlar yo‘q. Suhbatni boshlang!"
+    },
+    "actions": {
+      "like": "Like",
+      "share": "Ulashish",
+      "submit": "Yuborish",
+      "delete": "O‘chirish"
+    },
+    "loginToComment": "Muhokamaga qo‘shilish uchun tizimga kiring.",
+    "authNotice": "Reaksiya bildirish va suhbatga qo‘shilish uchun tizimga kiring."
+  }
+}

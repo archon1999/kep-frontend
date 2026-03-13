@@ -1,0 +1,16 @@
+{
+  "calendar": {
+    "title": "Kalendar",
+    "subtitle": "Umumiy kalendarda bo'ladigan mashg'ulot va tadbirlarni ko'ring.",
+    "today": "Bugun",
+    "monthView": "Oy",
+    "weekView": "Hafta",
+    "dayView": "Kun",
+    "eventType": "Tur {{type}}",
+    "loadError": "Kalendar voqealarini yuklab bo'lmadi. Iltimos, keyinroq urinib ko'ring.",
+    "loading": "Kalendar voqealari yuklanmoqda...",
+    "emptyTitle": "Hozircha voqealar yoʻq",
+    "emptySubtitle": "Yangi mashg'ulot vaqtlari shu yerda e'lon qilinadi.",
+    "untitled": "Nomsiz voqea"
+  }
+}
