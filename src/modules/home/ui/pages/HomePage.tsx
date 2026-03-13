@@ -30,6 +30,10 @@ const HomePage = () => {
   return (
     <Box>
       <Grid size={12} container>
+        <Grid size={12} sx={{ display: { xs: 'block', md: 'none' } }}>
+          <ContestsSection />
+        </Grid>
+
         <Grid size={{ xs: 12, md: 6, lg: 4 }}>
           <HomeProfileSection
             displayName={displayName}
@@ -47,7 +51,9 @@ const HomePage = () => {
 
         <Grid size={{ xs: 12, md: 6, lg: 8 }} sx={{ display: 'flex' }}>
           <Stack direction="column" sx={{ width: '100%', height: '100%' }}>
-            <ContestsSection />
+            <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+              <ContestsSection />
+            </Box>
             <NewsSection />
             <Box sx={{ flexGrow: 1, width: 1, display: 'flex' }}>
               <TopUsersSection />
