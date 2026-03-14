@@ -60,27 +60,20 @@ const TaskActionDialog = ({ open, task, onClose, onCompleted }: TaskActionDialog
 
     return providerIconMap[task.slug] ?? 'solar:checklist-bold-duotone';
   }, [task]);
-  const dialogCopy = useMemo(() => {
-    const fallback = {
-      subtitle: t('kepcoinPage.tasks.modalSubtitle'),
-      hint: t('kepcoinPage.tasks.modalHint'),
-      steps: [
-        t('kepcoinPage.tasks.flowStepStart'),
-        t('kepcoinPage.tasks.flowStepVerify'),
-      ],
-      startLabel: t('kepcoinPage.tasks.start'),
-    };
 
+  const dialogCopy = useMemo(() => {
     const instructionContent = task?.instructionContent;
+    const subtitle = instructionContent?.subtitle;
+    const hint = instructionContent?.hint;
     const resolvedSteps = Array.isArray(instructionContent?.steps)
       ? instructionContent.steps.filter((step) => typeof step === 'string' && step.trim().length > 0)
       : [];
 
     return {
-      subtitle: instructionContent?.subtitle || fallback.subtitle,
-      hint: instructionContent?.hint || fallback.hint,
-      steps: resolvedSteps.length > 0 ? resolvedSteps : fallback.steps,
-      startLabel: fallback.startLabel,
+      subtitle,
+      hint,
+      steps: resolvedSteps,
+      startLabel: t('kepcoinPage.tasks.start'),
     };
   }, [task, t]);
 
@@ -159,15 +152,17 @@ const TaskActionDialog = ({ open, task, onClose, onCompleted }: TaskActionDialog
         <IconifyIcon icon={taskIcon} fontSize={26} />
         <Stack direction="column" spacing={0.5}>
           <Typography variant="h6">{task?.title}</Typography>
-          <Typography variant="body2" color="text.secondary">
-            {dialogCopy.subtitle}
-          </Typography>
+          {dialogCopy.subtitle ? (
+            <Typography variant="body2" color="text.secondary">
+              {dialogCopy.subtitle}
+            </Typography>
+          ) : null}
         </Stack>
       </DialogTitle>
 
       <DialogContent dividers>
         <Stack direction="column" spacing={2.5}>
-          <Alert severity="info">{dialogCopy.hint}</Alert>
+          {dialogCopy.hint ? <Alert severity="info">{dialogCopy.hint}</Alert> : null}
 
           <Stack direction="row" justifyContent="space-between" alignItems="center" gap={2} flexWrap="wrap">
             <KepcoinValue
@@ -186,21 +181,25 @@ const TaskActionDialog = ({ open, task, onClose, onCompleted }: TaskActionDialog
 
           <Divider />
 
-          <Stack direction="column" spacing={1}>
-            <Typography variant="subtitle2">{t('kepcoinPage.tasks.description')}</Typography>
-            <Typography variant="body2" color="text.secondary">
-              {task?.description}
-            </Typography>
-          </Stack>
-
-          <Stack direction="column" spacing={1}>
-            <Typography variant="subtitle2">{t('kepcoinPage.tasks.flowTitle')}</Typography>
-            {dialogCopy.steps.map((step) => (
-              <Typography key={step} variant="body2" color="text.secondary">
-                {step}
+          {task?.description ? (
+            <Stack direction="column" spacing={1}>
+              <Typography variant="subtitle2">{t('kepcoinPage.tasks.description')}</Typography>
+              <Typography variant="body2" color="text.secondary">
+                {task.description}
               </Typography>
-            ))}
-          </Stack>
+            </Stack>
+          ) : null}
+
+          {dialogCopy.steps.length > 0 ? (
+            <Stack direction="column" spacing={1}>
+              <Typography variant="subtitle2">{t('kepcoinPage.tasks.flowTitle')}</Typography>
+              {dialogCopy.steps.map((step) => (
+                <Typography key={step} variant="body2" color="text.secondary">
+                  {step}
+                </Typography>
+              ))}
+            </Stack>
+          ) : null}
         </Stack>
       </DialogContent>
 
