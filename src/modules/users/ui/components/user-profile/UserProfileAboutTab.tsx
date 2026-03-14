@@ -26,17 +26,14 @@ const UserProfileAboutTab = () => {
   const { username = '' } = useParams();
   const { data, isLoading } = useUserAbout(username);
 
-  const skills = data?.skills ?? {};
+  const skills = data?.skills ?? [];
   const technologies = data?.technologies ?? [];
   const educations = data?.educations ?? [];
   const workExperiences = data?.workExperiences ?? [];
   const bio = data?.profileInfo?.bio || '';
 
   const skillEntries = useMemo(
-    () =>
-      Object.entries(skills)
-        .filter(([, value]) => value !== undefined && value !== null)
-        .map(([label, value]) => ({ label, value: Number(value ?? 0) })),
+    () => skills.filter((skill) => skill.level !== undefined && skill.level !== null),
     [skills],
   );
 
@@ -122,13 +119,13 @@ const UserProfileAboutTab = () => {
 
                 <Stack direction="column" spacing={1.5}>
                   {skillEntries.map((entry) => (
-                    <Stack key={entry.label} direction="column" spacing={0.5}>
+                    <Stack key={`${entry.skillId ?? entry.name}-${entry.level}`} direction="column" spacing={0.5}>
                       <Typography variant="body2" color="text.secondary">
-                        {t(`settings.skillLabels.${entry.label}`, { defaultValue: entry.label })}
+                        {entry.name}
                       </Typography>
                       <LinearProgress
                         variant="determinate"
-                        value={entry.value}
+                        value={entry.level}
                         sx={{ height: 8, borderRadius: 2 }}
                       />
                     </Stack>

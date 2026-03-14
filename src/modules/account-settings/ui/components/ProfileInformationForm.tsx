@@ -1,10 +1,12 @@
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Button, Card, CardContent, CardHeader, Grid, LinearProgress, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'app/providers/AuthProvider';
 import { toast } from 'sonner';
 import { useUsersCountries } from 'modules/users/application/queries';
+import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
+import { getCountryLabel } from 'shared/utils/country';
 import type { AccountProfileInfo } from '../../domain/entities/account-settings.entity';
 import { useAccountProfileInfo } from '../../application/queries';
 import { useUpdateProfileInfo } from '../../application/mutations';
@@ -26,14 +28,6 @@ const ProfileInformationForm = () => {
       setFormState({ ...data });
     }
   }, [data]);
-
-  const countryNames = useMemo(() => {
-    try {
-      return new Intl.DisplayNames([i18n.language], { type: 'region' });
-    } catch {
-      return undefined;
-    }
-  }, [i18n.language]);
 
   const handleChange = (field: keyof AccountProfileInfo) => (event: ChangeEvent<HTMLInputElement>) => {
     setFormState((prev) => ({ ...prev!, [field]: event.target.value }));
@@ -110,7 +104,12 @@ const ProfileInformationForm = () => {
               >
                 {countries?.map((code) => (
                   <MenuItem key={code} value={code}>
-                    {countryNames?.of(code.toUpperCase()) || code.toUpperCase()}
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <CountryFlagIcon code={code} size={18} />
+                      <Typography component="span">
+                        {getCountryLabel(code, i18n.language) || code.toUpperCase()}
+                      </Typography>
+                    </Stack>
                   </MenuItem>
                 ))}
               </TextField>

@@ -73,12 +73,19 @@ export type TaskStatus = 'available' | 'completed' | 'blocked';
 export type TaskKind = 'provider_link' | 'internal_link' | 'external_link';
 export type ProviderType = 'telegram' | 'google-oauth2' | 'github';
 
+export interface TaskInstructionContent {
+  subtitle?: string;
+  hint?: string;
+  steps?: string[];
+}
+
 export interface OneTimeTask {
   id: number;
   slug: string;
   title: string;
   description: string;
   reward: number;
+  instructionContent?: TaskInstructionContent;
   availableFrom: string;
   actionUrl: string;
   actionLabel: string;

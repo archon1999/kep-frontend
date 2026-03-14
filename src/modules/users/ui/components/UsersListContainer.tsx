@@ -10,6 +10,7 @@ import UsersDataGrid from './UsersDataGrid';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import FilterButton from 'shared/components/common/FilterButton';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import { getCountryAlpha2, getCountryLabel } from 'shared/utils/country';
 
 const tabOrderingMap = {
   all: '-id',
@@ -80,22 +81,6 @@ const UsersListContainer = () => {
 
   const filtersOpen = Boolean(filtersAnchorEl);
 
-  const normalizeLocale = (language: string) => {
-    if (language.includes('-')) return language;
-    const match = language.match(/^(\w{2})([A-Z]{2})$/);
-
-    if (match) {
-      return `${match[1]}-${match[2]}`;
-    }
-
-    return language;
-  };
-
-  const regionNames = useMemo(
-    () => new Intl.DisplayNames([normalizeLocale(i18n.language) ?? 'en-US'], { type: 'region' }),
-    [i18n.language],
-  );
-
   const normalizeCountryCode = (code?: string) => code?.trim().toLowerCase() ?? '';
 
   const countryOptions = useMemo(() => {
@@ -109,16 +94,16 @@ const UsersListContainer = () => {
         const normalized = normalizeCountryCode(value);
         if (!normalized) return undefined;
 
-        const displayCode = normalized.toUpperCase();
+        const displayCode = getCountryAlpha2(normalized) ?? normalized.toUpperCase();
 
         return {
           value,
           code: displayCode,
-          label: regionNames.of(displayCode) ?? displayCode,
+          label: getCountryLabel(displayCode, i18n.language) ?? displayCode,
         } satisfies CountryOption;
       })
       .filter((option): option is CountryOption => Boolean(option));
-  }, [countries, regionNames]);
+  }, [countries, i18n.language]);
 
   const countryOptionsByValue = useMemo(
     () => Object.fromEntries(countryOptions.map((country) => [country.value, country])),

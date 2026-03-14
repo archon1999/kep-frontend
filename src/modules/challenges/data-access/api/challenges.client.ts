@@ -67,6 +67,10 @@ export const challengesApiClient = {
     const response = await instance.get(`/api/challenges-rating/${username}/rating-changes/`);
     return response.data;
   },
+  getUserStatistics: async (username: string) => {
+    const response = await instance.get(`/api/challenges-rating/${username}/statistics/`);
+    return response.data;
+  },
   getUserRating: async (username: string) => {
     const response = await instance.get(`/api/challenges-rating/${username}/`);
     return response.data;

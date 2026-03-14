@@ -5,6 +5,7 @@ import {
   ChallengeCall,
   ChallengeRatingChange,
   ChallengeRatingRow,
+  ChallengeUserStatistics,
 } from '../domain';
 import { PageResult } from '../domain/ports/challenges.repository.ts';
 
@@ -47,6 +48,11 @@ export const useChallengeRatingChanges = (username?: string) =>
 export const useChallengeUserRating = (username?: string) =>
   useSWR<ChallengeRatingRow | null>(username ? ['challenge-user-rating', username] : null, () =>
     challengesRepository.getUserRating(username!),
+  );
+
+export const useChallengeUserStatistics = (username?: string) =>
+  useSWR<ChallengeUserStatistics | null>(username ? ['challenge-user-statistics', username] : null, () =>
+    challengesRepository.getUserStatistics(username!),
   );
 
 export const useUserChallenges = (params?: { username?: string; page?: number; pageSize?: number }) =>

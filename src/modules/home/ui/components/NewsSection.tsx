@@ -2,7 +2,6 @@ import { PropsWithChildren, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, IconButton, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources.ts';
-import bgGradient from 'assets/images/background/1.webp';
 import type { BlogPost } from 'modules/blog/domain/entities/blog.entity';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Image from 'shared/components/base/Image';
@@ -18,6 +17,7 @@ import type { HomeNewsList } from '../../domain/entities/home.entity';
 import { Link } from 'react-router';
 
 type NewsItem = HomeNewsList['data'][number];
+const bgGradient = '/assets/images/background/1.webp';
 
 const mapTags = (tags?: string | string[] | null): string[] => {
   if (Array.isArray(tags)) {

@@ -3,7 +3,7 @@ import { Chip, ChipProps } from '@mui/material';
 import { BlogStatus } from '../../domain/entities/blog.entity';
 
 interface BlogStatusChipProps {
-  status: BlogStatus;
+  status?: BlogStatus;
   size?: ChipProps['size'];
 }
 
@@ -24,8 +24,8 @@ const BlogStatusChip = ({ status, size = 'small' }: BlogStatusChipProps) => {
 
   return (
     <Chip
-      color={statusColorMap[status] ?? 'default'}
-      label={t(statusTranslationMap[status] ?? 'blog.status.draft')}
+      color={statusColorMap[status ?? 1] ?? 'default'}
+      label={t(statusTranslationMap[status ?? 1] ?? 'blog.status.draft')}
       size={size}
       variant="outlined"
       sx={{ borderRadius: 2 }}

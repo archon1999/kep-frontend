@@ -20,6 +20,7 @@ import { getResourceByUsername, resources } from 'app/routes/resources';
 import { useCreateShopReview } from 'modules/shop/application/mutations';
 import { useShopOrders } from 'modules/shop/application/queries';
 import type { ShopOrder } from 'modules/shop/domain/entities/order.entity';
+import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
 
 const statusColorMap: Record<ShopOrder['status'], 'default' | 'warning' | 'info' | 'success' | 'error'> = {
@@ -50,6 +51,10 @@ const PurchaseCardSkeleton = () => (
     </CardContent>
   </Card>
 );
+
+const shippingTypeLabelMap: Record<ShopOrder['shippingType'], string> = {
+  BTS: 'shop.checkout.shippingTypeBts',
+};
 
 const UserProfilePurchasesTab = () => {
   const { t } = useTranslation();
@@ -151,7 +156,15 @@ const UserProfilePurchasesTab = () => {
                       {t('users.profile.purchases.orderDate')}: {formatOrderDate(order.created)}
                     </Typography>
                     <Typography variant="body2">
-                      {t('users.profile.purchases.delivery')}: {order.country} / {order.shippingType}
+                      <Stack component="span" direction="row" spacing={0.75} alignItems="center" useFlexGap>
+                        <Typography component="span" variant="body2">
+                          {t('users.profile.purchases.delivery')}:
+                        </Typography>
+                        <CountryFlagIcon code={order.country} size={18} />
+                        <Typography component="span" variant="body2">
+                          / {t(shippingTypeLabelMap[order.shippingType])}
+                        </Typography>
+                      </Stack>
                     </Typography>
                     <Typography variant="body2">
                       {t('users.profile.purchases.recipient')}: {order.fullName} ({order.phone})

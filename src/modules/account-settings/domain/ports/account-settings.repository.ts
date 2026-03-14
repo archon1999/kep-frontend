@@ -5,6 +5,7 @@ import {
   AccountSkills,
   AccountSocialLinks,
   AccountTeam,
+  SkillCatalogItem,
   AccountTechnology,
   AccountWorkExperience,
   ChangePasswordPayload,
@@ -22,6 +23,7 @@ export interface AccountSettingsRepository {
 
   getSkills(username: string): Promise<AccountSkills>;
   updateSkills(username: string, payload: AccountSkills): Promise<AccountSkills>;
+  getSkillCatalog(): Promise<SkillCatalogItem[]>;
 
   getTechnologies(username: string): Promise<AccountTechnology[]>;
   updateTechnologies(username: string, payload: AccountTechnology[]): Promise<AccountTechnology[]>;

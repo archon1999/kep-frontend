@@ -5,6 +5,7 @@ import {
   AccountSkills,
   AccountSocialLinks,
   AccountTeam,
+  SkillCatalogItem,
   AccountTechnology,
   AccountWorkExperience,
   ChangePasswordPayload,
@@ -43,6 +44,10 @@ export class HttpAccountSettingsRepository implements AccountSettingsRepository 
 
   updateSkills(username: string, payload: AccountSkills): Promise<AccountSkills> {
     return accountSettingsApiClient.updateSkills(username, payload);
+  }
+
+  getSkillCatalog(): Promise<SkillCatalogItem[]> {
+    return accountSettingsApiClient.getSkillCatalog();
   }
 
   getTechnologies(username: string): Promise<AccountTechnology[]> {

@@ -8,6 +8,7 @@ import type {
   AccountSkills,
   AccountSocialLinks,
   AccountTeam,
+  SkillCatalogItem,
   AccountTechnology,
   AccountWorkExperience,
 } from '../domain/entities/account-settings.entity';
@@ -42,6 +43,11 @@ export const useAccountSkills = (username?: string | null) =>
     () => repository.getSkills(username!),
     { revalidateOnFocus: false },
   );
+
+export const useAccountSkillCatalog = () =>
+  useSWR<SkillCatalogItem[]>(accountSettingsKeys.detail('skills-catalog'), () => repository.getSkillCatalog(), {
+    revalidateOnFocus: false,
+  });
 
 export const useAccountTechnologies = (username?: string | null) =>
   useSWR<AccountTechnology[]>(

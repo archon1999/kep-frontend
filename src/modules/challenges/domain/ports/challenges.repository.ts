@@ -5,6 +5,7 @@ import {
   ChallengeCall,
   ChallengeRatingChange,
   ChallengeRatingRow,
+  ChallengeUserStatistics,
 } from '../index.ts';
 
 export interface PageResult<T> {
@@ -41,6 +42,7 @@ export interface ChallengesRepository {
   submitAnswer: (challengeId: number, payload: ChallengeAnswerPayload) => Promise<ChallengeCheckResponse>;
   listRating: (params?: { page?: number; pageSize?: number; ordering?: string }) => Promise<PageResult<ChallengeRatingRow>>;
   listRatingChanges: (username: string) => Promise<ChallengeRatingChange[]>;
+  getUserStatistics: (username: string) => Promise<ChallengeUserStatistics | null>;
   getUserRating: (username: string) => Promise<ChallengeRatingRow | null>;
   listUserChallenges: (params: { username: string; page?: number; pageSize?: number }) => Promise<PageResult<Challenge>>;
   listChapters: () => Promise<Chapter[]>;
