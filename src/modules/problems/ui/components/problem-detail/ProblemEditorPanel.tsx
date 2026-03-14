@@ -19,7 +19,8 @@ import {
 import { alpha } from '@mui/material/styles';
 import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
-import AttemptVerdict, { VerdictKey } from 'shared/components/problems/AttemptVerdict';
+import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
+import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
 import KepIcon from 'shared/components/base/KepIcon';
 import { toast } from 'sonner';
 import {

@@ -28,7 +28,7 @@ import ProblemDescriptionSkeleton from '../components/problem-detail/ProblemDesc
 import { ProblemEditorPanel } from '../components/problem-detail/ProblemEditorPanel';
 import ProblemEditorSkeleton from '../components/problem-detail/ProblemEditorSkeleton';
 import { ProblemHeader } from '../components/problem-detail/ProblemHeader';
-import { VerdictKey } from 'shared/components/problems/AttemptVerdict';
+import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
 
 const useProblemPermissions = (permissionsRaw: any) => {
   return useMemo(() => {

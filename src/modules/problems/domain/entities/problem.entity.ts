@@ -207,11 +207,52 @@ export interface AttemptListItem {
   testCaseKepcoinValue?: number;
   created?: string;
   problemHasCheckInput?: boolean;
+  judgeSummary?: AttemptJudgeSummary;
 }
 
 export interface AttemptDetail extends AttemptListItem {
   sourceCode?: string;
   errorMessage?: string;
+}
+
+export interface AttemptJudgeSummaryTests {
+  passed: number;
+  total: number;
+}
+
+export interface AttemptJudgeSummaryGroup {
+  id: string;
+  passed: boolean;
+  passedCases: number;
+  totalCases: number;
+  score?: number;
+  maxScore?: number;
+  failedCase?: number;
+  verdict?: number;
+  cases: AttemptJudgeSummaryCase[];
+}
+
+export interface AttemptJudgeSummarySubtask {
+  id: string;
+  score: number;
+  maxScore: number;
+  passed: boolean;
+}
+
+export interface AttemptJudgeSummaryCase {
+  number: number;
+  verdict: Verdicts;
+  passed: boolean;
+}
+
+export interface AttemptJudgeSummary {
+  mode?: string;
+  score?: number;
+  maxScore?: number;
+  tests?: AttemptJudgeSummaryTests;
+  groups: AttemptJudgeSummaryGroup[];
+  subtasks: AttemptJudgeSummarySubtask[];
+  verdict?: number;
 }
 
 export interface AttemptFilterOption {

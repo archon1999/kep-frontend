@@ -37,7 +37,7 @@ import { ProblemEditorPanel } from 'modules/problems/ui/components/problem-detai
 import ProblemEditorSkeleton from 'modules/problems/ui/components/problem-detail/ProblemEditorSkeleton';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo.tsx';
-import { VerdictKey } from 'shared/components/problems/AttemptVerdict';
+import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
 import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
 import { wsService } from 'shared/services/websocket';
 import { toast } from 'sonner';
