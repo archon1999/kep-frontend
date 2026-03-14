@@ -3,8 +3,9 @@ import { defineConfig, loadEnv } from 'vite';
 import checker from 'vite-plugin-checker';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-export default ({ mode }) => {
+export default ({ mode, command }) => {
   loadEnv(mode, process.cwd(), '');
+  const isBuild = command === 'build';
 
   return defineConfig({
     build: {
@@ -13,16 +14,17 @@ export default ({ mode }) => {
     plugins: [
       tsconfigPaths(),
       react(),
-      // checker({
-      //   typescript: true,
-      //   eslint: {
-      //     useFlatConfig: true,
-      //     lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
-      //   },
-      //   overlay: {
-      //     initialIsOpen: false,
-      //   },
-      // }),
+      !isBuild &&
+        checker({
+          typescript: true,
+          eslint: {
+            useFlatConfig: true,
+            lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
+          },
+          overlay: {
+            initialIsOpen: false,
+          },
+        }),
     ],
     server: {
       host: '0.0.0.0',

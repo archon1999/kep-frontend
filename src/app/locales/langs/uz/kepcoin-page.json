@@ -73,6 +73,353 @@
       "errors": {
         "startFailed": "Topshiriq jarayonini boshlab boʻlmadi.",
         "verifyFailed": "Topshiriqni tekshirib boʻlmadi."
+      },
+      "instructionsByKind": {
+        "provider_link": {
+          "subtitle": "Kerakli akkauntni ulang, keyin qaytib kelib topshiriqni tekshiring.",
+          "hint": "Akkauntni ulash uchun yangi sahifa yoki servis ochiladi. Ulanish tugagach, KEP.uz'ga qaytib tekshirishni bosing.",
+          "steps": [
+            "1. Akkauntni ulash jarayonini boshlang.",
+            "2. Ulanish tugagach, KEP.uz'ga qayting va tekshirishni bosing."
+          ],
+          "startLabel": "Akkauntni ulash"
+        },
+        "internal_link": {
+          "subtitle": "Kerakli sahifani oching, amalni bajaring va shu yerga qayting.",
+          "hint": "Topshiriq faqat KEP.uz ichidagi kerakli amal bajarilgandan keyin tasdiqlanadi.",
+          "steps": [
+            "1. Kerakli sahifani ochib, topshiriq amalini bajaring.",
+            "2. Shu yerga qaytib, mukofotni olish uchun tekshirishni bosing."
+          ],
+          "startLabel": "Sahifani ochish"
+        },
+        "external_link": {
+          "subtitle": "Tashqi sahifani oching, kerakli amalni bajaring va shu yerda topshiriqni tekshiring.",
+          "hint": "Tashqi sahifa yangi oynada ochiladi. Amalni bajargach, KEP.uz'ga qaytib tekshirishni bosing.",
+          "steps": [
+            "1. Tashqi sahifani ochib, kerakli amalni bajaring.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ],
+          "startLabel": "Havolani ochish"
+        }
+      },
+      "instructions": {
+        "connect-telegram": {
+          "subtitle": "Telegram akkauntingizni bot orqali KEP.uz bilan ulang.",
+          "hint": "Telegram bot sahifasi ochiladi. Ulamoqchi bo'lgan akkauntdan botni ishga tushiring, keyin qaytib tekshiring.",
+          "steps": [
+            "1. Botni ochib, Telegram akkauntingizdan Start tugmasini bosing.",
+            "2. Ulanish tugagach, shu yerga qaytib tekshirishni bosing."
+          ],
+          "startLabel": "Telegramni ulash"
+        },
+        "connect-google": {
+          "subtitle": "Google akkauntingizni KEP.uz bilan ulang.",
+          "hint": "Google kirish sahifasiga yo'naltirilasiz. Ulanishni yakunlagach, shu yerga qaytib tekshiring.",
+          "steps": [
+            "1. Ulamoqchi bo'lgan Google akkaunt bilan tizimga kiring.",
+            "2. KEP.uz'ga qaytib, tekshirishni bosing."
+          ],
+          "startLabel": "Googleni ulash"
+        },
+        "connect-github": {
+          "subtitle": "GitHub akkauntingizni KEP.uz bilan ulang.",
+          "hint": "GitHub ruxsat oynasi ochiladi. Ulanishga rozilik bergach, qaytib topshiriqni tekshiring.",
+          "steps": [
+            "1. GitHub akkauntingiz bilan KEP.uz'ga ruxsat bering.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ],
+          "startLabel": "GitHub'ni ulash"
+        },
+        "complete-bio": {
+          "subtitle": "Profil bio maydonini to'ldirib saqlang.",
+          "hint": "Faqat sahifani ochish yetarli emas. Bio bo'sh bo'lmasligi va saqlanishi kerak.",
+          "steps": [
+            "1. Profil ma'lumotlari bo'limiga kirib, bio yozing.",
+            "2. O'zgarishlarni saqlab, shu yerga qaytib tekshirishni bosing."
+          ]
+        },
+        "upload-avatar": {
+          "subtitle": "Profil uchun avatar yuklang.",
+          "hint": "Haqiqiy avatar rasm yuklab, o'zgarishlarni saqlang.",
+          "steps": [
+            "1. Sozlamalarda avatar rasmini yuklang.",
+            "2. O'zgarishlarni saqlab, shu yerga qaytib tekshirishni bosing."
+          ]
+        },
+        "upload-cover-photo": {
+          "subtitle": "Profilga cover photo o'rnating.",
+          "hint": "Cover photo o'zgartirilib saqlangandan keyingina topshiriq hisoblanadi.",
+          "steps": [
+            "1. Sozlamalarda cover photo yuklang.",
+            "2. O'zgarishlarni saqlab, shu yerga qaytib tekshirishni bosing."
+          ]
+        },
+        "complete-birthday": {
+          "subtitle": "Profil sozlamalarida tug'ilgan sanani kiriting.",
+          "hint": "Tug'ilgan sana maydoni to'ldirilib saqlanishi kerak.",
+          "steps": [
+            "1. Profil ma'lumotlari bo'limiga kirib, tug'ilgan sanani kiriting.",
+            "2. O'zgarishlarni saqlab, shu yerga qaytib tekshirishni bosing."
+          ]
+        },
+        "complete-country-region": {
+          "subtitle": "Profil sozlamalarida davlat va viloyatni to'ldiring.",
+          "hint": "Topshiriq aniqlanishi uchun ikkala maydon ham saqlangan bo'lishi kerak.",
+          "steps": [
+            "1. Profil ma'lumotlari bo'limiga kirib, davlat va viloyatni kiriting.",
+            "2. O'zgarishlarni saqlab, shu yerga qaytib tekshirishni bosing."
+          ]
+        },
+        "add-three-technologies": {
+          "subtitle": "Profilga kamida uchta texnologiya qo'shing.",
+          "hint": "Topshiriq faqat 3 ta yoki undan ko'p texnologiya saqlangandan keyin hisoblanadi.",
+          "steps": [
+            "1. Ko'nikmalar bo'limida kamida 3 ta texnologiya qo'shing.",
+            "2. O'zgarishlarni saqlab, shu yerga qaytib tekshirishni bosing."
+          ]
+        },
+        "add-codeforces-handle": {
+          "subtitle": "Social bo'limida Codeforces handle kiriting.",
+          "hint": "Bo'sh bo'lmagan handle yozib, formani saqlash kerak.",
+          "steps": [
+            "1. Social bo'limiga kirib, Codeforces handle'ingizni kiriting.",
+            "2. O'zgarishlarni saqlab, shu yerga qaytib tekshirishni bosing."
+          ]
+        },
+        "add-education": {
+          "subtitle": "Profilga kamida bitta ta'lim ma'lumotini qo'shing.",
+          "hint": "Ta'lim formasi to'ldirilib saqlanishi kerak.",
+          "steps": [
+            "1. Karyera bo'limiga kirib, ta'lim ma'lumotini qo'shing.",
+            "2. O'zgarishlarni saqlab, shu yerga qaytib tekshirishni bosing."
+          ]
+        },
+        "add-work-experience": {
+          "subtitle": "Profilga kamida bitta ish tajribasi yozuvini qo'shing.",
+          "hint": "Kompaniya va lavozim maydonlarini to'ldirib saqlang.",
+          "steps": [
+            "1. Karyera bo'limiga kirib, ish tajribasi ma'lumotini qo'shing.",
+            "2. O'zgarishlarni saqlab, shu yerga qaytib tekshirishni bosing."
+          ]
+        },
+        "follow-user": {
+          "subtitle": "Platformadagi istalgan foydalanuvchiga follow bo'ling.",
+          "hint": "Users ro'yxati yoki profil sahifasidan follow amalini bajaring.",
+          "steps": [
+            "1. Users sahifasini ochib, istalgan foydalanuvchiga follow bo'ling.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "create-or-join-team": {
+          "subtitle": "Yangi jamoa yarating yoki mavjud jamoaga qo'shiling.",
+          "hint": "Jamoa yaratish ham, qo'shilish ham ushbu topshiriq uchun hisoblanadi.",
+          "steps": [
+            "1. Teams bo'limiga kirib, jamoa yarating yoki jamoaga qo'shiling.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "subscribe-telegram-channel": {
+          "subtitle": "Rasmiy KEP.uz Telegram kanaliga obuna bo'ling.",
+          "hint": "Obunani tekshirishdan oldin Telegram akkauntingiz ulangan bo'lishi kerak.",
+          "steps": [
+            "1. Telegram kanalni ochib, ulangan akkauntdan obuna bo'ling.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ],
+          "startLabel": "Kanalni ochish"
+        },
+        "first-problem-attempt": {
+          "subtitle": "Oddiy problem uchun kamida bitta urinish yuboring.",
+          "hint": "Faqat oddiy problem attempti ushbu topshiriq uchun hisoblanadi.",
+          "steps": [
+            "1. Problems bo'limini ochib, oddiy problemga urinish yuboring.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "first-problem-ac": {
+          "subtitle": "Oddiy problemda birinchi accepted natijani oling.",
+          "hint": "Faqat oddiy problem uchun accepted yechim hisoblanadi.",
+          "steps": [
+            "1. Problems bo'limini ochib, oddiy problemni accepted bilan yeching.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "register-contest": {
+          "subtitle": "Platformadagi istalgan contestga ro'yxatdan o'ting.",
+          "hint": "Topshiriq contest registratsiyasi yaratilgandan keyin hisoblanadi.",
+          "steps": [
+            "1. Contests bo'limini ochib, istalgan contestga ro'yxatdan o'ting.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "contest-first-attempt": {
+          "subtitle": "Contest davomida kamida bitta urinish yuboring.",
+          "hint": "Faqat contest ichidagi urinish ushbu topshiriq uchun hisoblanadi.",
+          "steps": [
+            "1. Contestda qatnashib, kamida bitta urinish yuboring.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "contest-first-solved-problem": {
+          "subtitle": "Contest ichida kamida bitta masalani yeching.",
+          "hint": "Buning uchun contest ichida accepted natija olish kerak.",
+          "steps": [
+            "1. Contestda qatnashib, kamida bitta masalani yeching.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "contest-solve-all-problems": {
+          "subtitle": "Bitta contestdagi barcha masalalarni yeching.",
+          "hint": "Topshiriq bitta contest ichidagi barcha masalalar yechilganda hisoblanadi.",
+          "steps": [
+            "1. Contestda qatnashib, barcha masalalarni yeching.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "contest-top-20": {
+          "subtitle": "Contestni top-20 ichida yakunlang.",
+          "hint": "Topshiriq contest reytingingiz top-20 ga kirganda hisoblanadi.",
+          "steps": [
+            "1. Contestda qatnashib, top-20 ichida yakunlang.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "contest-top-10": {
+          "subtitle": "Contestni top-10 ichida yakunlang.",
+          "hint": "Buning uchun contest yakunida top-10 ga kirishingiz kerak.",
+          "steps": [
+            "1. Contestda qatnashib, top-10 ichida yakunlang.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "contest-top-5": {
+          "subtitle": "Contestni top-5 ichida yakunlang.",
+          "hint": "Topshiriq contest reytingingiz top-5 ga kirganda hisoblanadi.",
+          "steps": [
+            "1. Contestda qatnashib, top-5 ichida yakunlang.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "contest-top-3": {
+          "subtitle": "Contestni top-3 ichida yakunlang.",
+          "hint": "Ushbu topshiriq uchun contestda top-3 o'rin olish kerak.",
+          "steps": [
+            "1. Contestda qatnashib, top-3 ichida yakunlang.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "contest-winner": {
+          "subtitle": "Contestda 1-o'rinni egallang.",
+          "hint": "Topshiriq faqat contestni g'olib sifatida yakunlaganda hisoblanadi.",
+          "steps": [
+            "1. Contestda qatnashib, 1-o'rinni oling.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "join-arena": {
+          "subtitle": "Istalgan arena eventiga qo'shiling.",
+          "hint": "Topshiriq arena registratsiyasi yaratilgandan keyin hisoblanadi.",
+          "steps": [
+            "1. Arena bo'limini ochib, istalgan arena eventiga qo'shiling.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "arena-first-match": {
+          "subtitle": "Arenada kamida bitta bellashuvni yakunlang.",
+          "hint": "Faqat haqiqiy tugallangan arena bellashuvi ushbu topshiriq uchun hisoblanadi.",
+          "steps": [
+            "1. Arenaga kirib, kamida bitta bellashuvni yakunlang.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "arena-first-win": {
+          "subtitle": "Arenada kamida bitta g'alabaga erishing.",
+          "hint": "Faqat yakunlangan g'alabali bellashuv hisoblanadi.",
+          "steps": [
+            "1. Arenada qatnashib, kamida bitta bellashuvda g'alaba qozoning.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "arena-top-20": {
+          "subtitle": "Arenani top-20 ichida yakunlang.",
+          "hint": "Topshiriq arena reytingingiz top-20 ga kirganda hisoblanadi.",
+          "steps": [
+            "1. Arenada qatnashib, top-20 ichida yakunlang.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "arena-top-10": {
+          "subtitle": "Arenani top-10 ichida yakunlang.",
+          "hint": "Buning uchun arena yakunida top-10 ga kirishingiz kerak.",
+          "steps": [
+            "1. Arenada qatnashib, top-10 ichida yakunlang.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "arena-top-5": {
+          "subtitle": "Arenani top-5 ichida yakunlang.",
+          "hint": "Topshiriq arena reytingingiz top-5 ga kirganda hisoblanadi.",
+          "steps": [
+            "1. Arenada qatnashib, top-5 ichida yakunlang.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "arena-top-3": {
+          "subtitle": "Arenani top-3 ichida yakunlang.",
+          "hint": "Ushbu topshiriq uchun arenada top-3 o'rin olish kerak.",
+          "steps": [
+            "1. Arenada qatnashib, top-3 ichida yakunlang.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "arena-winner": {
+          "subtitle": "Arenada 1-o'rinni egallang.",
+          "hint": "Topshiriq faqat arenani g'olib sifatida yakunlaganda hisoblanadi.",
+          "steps": [
+            "1. Arenada qatnashib, 1-o'rinni oling.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "complete-course-lesson-part": {
+          "subtitle": "Istalgan kurs darsining bir qismini tugating.",
+          "hint": "Dars qismi completed holatiga o'tgandan keyingina topshiriq tekshiriladi.",
+          "steps": [
+            "1. Kursni ochib, bitta dars qismini tugating.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "first-project-attempt": {
+          "subtitle": "Loyiha uchun birinchi urinishni yuboring.",
+          "hint": "Topshiriq loyiha urinish muvaffaqiyatli yuborilgandan keyin hisoblanadi.",
+          "steps": [
+            "1. Loyihani ochib, urinish yuboring.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "project-complete-one-part": {
+          "subtitle": "Loyiha urinishidagi kamida bitta qismni bajaring.",
+          "hint": "Buning uchun loyiha ichida bitta taskni yakunlash kerak.",
+          "steps": [
+            "1. Loyiha urinishini ochib, bitta qismni bajaring.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "project-complete-all-parts": {
+          "subtitle": "Loyiha urinishidagi barcha qismlarni bajaring.",
+          "hint": "Topshiriq faqat bitta urinishdagi barcha qismlar tugagach hisoblanadi.",
+          "steps": [
+            "1. Loyiha urinishini ochib, barcha qismlarni bajaring.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        },
+        "leave-order-review": {
+          "subtitle": "Buyurtmalaringizdan biriga sharh qoldiring.",
+          "hint": "Purchases sahifasidan buyurtmani tanlab, sharh yuboring.",
+          "steps": [
+            "1. Purchases sahifasini ochib, buyurtmaga sharh qoldiring.",
+            "2. Shu yerga qaytib, tekshirishni bosing."
+          ]
+        }
       }
     },
     "earnEntry": {

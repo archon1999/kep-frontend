@@ -1,6 +1,7 @@
 import { Box, BoxProps } from '@mui/material';
 import { memo } from 'react';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { getCountryAlpha2 } from 'shared/utils/country';
 import formatCountryFlag from 'shared/utils/formatCountryFlag';
 
 interface CountryFlagIconProps {
@@ -11,22 +12,8 @@ interface CountryFlagIconProps {
 
 const FLAG_ASPECT_RATIO = 3 / 4;
 
-const sanitizeCode = (code?: string) => code?.trim() ?? '';
-
-const extractAlpha2Code = (code?: string) => {
-  const sanitized = sanitizeCode(code);
-  if (!sanitized) return undefined;
-
-  const withoutFlagPrefix = sanitized.replace(/^flag:/i, '');
-  const lettersOnly = withoutFlagPrefix.replace(/[^a-z]/gi, '');
-
-  if (lettersOnly.length < 2) return undefined;
-
-  return `${lettersOnly[0]}${lettersOnly[1]}`.toUpperCase();
-};
-
 const buildFlagIconName = (code?: string) => {
-  const alpha2Code = extractAlpha2Code(code);
+  const alpha2Code = getCountryAlpha2(code);
   if (!alpha2Code) return undefined;
 
   return `flag:${alpha2Code.toLowerCase()}-4x3`;
@@ -34,7 +21,7 @@ const buildFlagIconName = (code?: string) => {
 
 const CountryFlagIcon = ({ code, size = 18, sx }: CountryFlagIconProps) => {
   const iconName = buildFlagIconName(code);
-  const alpha2Code = extractAlpha2Code(code);
+  const alpha2Code = getCountryAlpha2(code);
 
   if (!iconName && !alpha2Code) return null;
 

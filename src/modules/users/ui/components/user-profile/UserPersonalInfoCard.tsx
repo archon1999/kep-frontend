@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, Skeleton, Stack, Typography } from '@mui/material';
+import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import { useUserAbout } from '../../../application/queries';
 import KepIcon from 'shared/components/base/KepIcon';
 import { KepIconName } from 'shared/config/icons';
@@ -21,6 +22,8 @@ const UserPersonalInfoCard = ({ username }: UserPersonalInfoCardProps) => {
 
   const generalInfo = data?.generalInfo;
   const profileInfo = data?.profileInfo;
+  const locationCountry = profileInfo?.country;
+  const locationRegion = profileInfo?.region;
 
   const rows: Array<{
     label: string;
@@ -39,7 +42,7 @@ const UserPersonalInfoCard = ({ username }: UserPersonalInfoCardProps) => {
     },
     {
       label: t('users.profile.personal.lives'),
-      value: [profileInfo?.country, profileInfo?.region].filter(Boolean).join(', '),
+      value: [locationCountry, locationRegion].filter(Boolean).join(', '),
       icon: 'info' as KepIconName,
     },
     {
@@ -94,9 +97,20 @@ const UserPersonalInfoCard = ({ username }: UserPersonalInfoCardProps) => {
                 <Typography variant="body2" color="text.secondary">
                   {row.label}:
                 </Typography>
-                <Typography variant="body2" fontWeight={600}>
-                  {row.value}
-                </Typography>
+                {row.label === t('users.profile.personal.lives') ? (
+                  <Stack direction="row" spacing={0.75} alignItems="center">
+                    {locationCountry ? <CountryFlagIcon code={locationCountry} size={18} /> : null}
+                    {locationRegion ? (
+                      <Typography variant="body2" fontWeight={600}>
+                        {locationRegion}
+                      </Typography>
+                    ) : null}
+                  </Stack>
+                ) : (
+                  <Typography variant="body2" fontWeight={600}>
+                    {row.value}
+                  </Typography>
+                )}
               </Stack>
             ))}
           </Stack>

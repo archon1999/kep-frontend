@@ -24,13 +24,33 @@ export interface AccountSocialLinks {
   codeforcesBadge?: string;
 }
 
-export interface AccountSkills {
-  python?: number;
-  webDevelopment?: number;
-  webScraping?: number;
-  algorithms?: number;
-  dataScience?: number;
+export interface SkillLabels {
+  en: string;
+  ru: string;
+  uz: string;
 }
+
+export interface UserSkillItem {
+  id?: number;
+  skillId?: number;
+  slug?: string;
+  name: string;
+  labels?: SkillLabels | null;
+  isCustom: boolean;
+  level: number;
+}
+
+export interface SkillCatalogItem {
+  skillId: number;
+  slug: string;
+  name: string;
+  labels: SkillLabels;
+  nameEn: string;
+  nameRu: string;
+  nameUz: string;
+}
+
+export type AccountSkills = UserSkillItem[];
 
 export interface AccountTechnology {
   text: string;

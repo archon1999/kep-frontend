@@ -8,6 +8,7 @@ import type {
   AccountTechnology,
   AccountWorkExperience,
   ChangePasswordPayload,
+  SkillCatalogItem,
 } from '../../domain/entities/account-settings.entity';
 
 export const accountSettingsApiClient = {
@@ -44,6 +45,7 @@ export const accountSettingsApiClient = {
     (await instance.get<AccountSkills>(`/api/users/${username}/skills/`)).data,
   updateSkills: async (username: string, payload: AccountSkills) =>
     (await instance.post<AccountSkills>(`/api/users/${username}/skills/`, payload)).data,
+  getSkillCatalog: async () => (await instance.get<SkillCatalogItem[]>(`/api/skills/catalog/`)).data,
 
   getTechnologies: async (username: string) =>
     (await instance.get<AccountTechnology[]>(`/api/users/${username}/technologies/`)).data,

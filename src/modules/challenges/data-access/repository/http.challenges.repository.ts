@@ -11,11 +11,13 @@ import {
   mapChallengeRatingChange,
   mapPageResult,
 } from '../mappers/challenge.mapper.ts';
+import { mapChallengeUserStatistics } from '../mappers/challenge-statistics.mapper.ts';
 import {
   Challenge,
   ChallengeCall,
   ChallengeRatingChange,
   ChallengeRatingRow,
+  ChallengeUserStatistics,
 } from '../../domain';
 import {
   ChallengeAnswerPayload,
@@ -87,6 +89,12 @@ export class HttpChallengesRepository implements ChallengesRepository {
     const response = await challengesApiClient.getUserRating(username);
     if (!response) return null;
     return mapChallengeRating(response);
+  }
+
+  async getUserStatistics(username: string): Promise<ChallengeUserStatistics | null> {
+    const response = await challengesApiClient.getUserStatistics(username);
+    if (!response) return null;
+    return mapChallengeUserStatistics(response);
   }
 
   async listUserChallenges(params: { username: string; page?: number; pageSize?: number }): Promise<PageResult<Challenge>> {

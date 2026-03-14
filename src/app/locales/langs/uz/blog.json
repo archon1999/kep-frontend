@@ -13,12 +13,12 @@
       "views": "Eng ko'p ko'rilgan",
       "comments": "Eng ko'p muhokama qilingan"
     },
-    "topics": {
-      "title": "Mavzular",
-      "technology": "Texnologiyalar",
-      "competitiveProgramming": "Competitive programming",
-      "info": "Platforma yangiliklari"
-    },
+  "topics": {
+    "title": "Topic",
+    "technology": "Texnologiyalar",
+    "competitiveProgramming": "Competitive programming",
+    "info": "Platforma yangiliklari"
+  },
     "readMore": "Batafsil",
     "comments": "Izohlar",
     "commentsWithCount": "Izohlar ({{count}})",

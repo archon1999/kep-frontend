@@ -40,7 +40,7 @@ export const usersApiClient = {
   generalInfo: (username: string) => apiClient.apiUsersGeneralInfoRead(username) as Promise<any>,
   profileInfo: (username: string) => apiClient.apiUsersInfoRead(username) as Promise<any>,
   social: (username: string) => apiClient.apiUsersSocialRead(username) as Promise<any>,
-  skills: (username: string) => apiClient.apiUsersSkillsRead(username) as Promise<any>,
+  skills: (username: string) => instance.get(`/api/users/${username}/skills/`).then((res) => res.data),
   technologies: (username: string) => apiClient.apiUsersTechnologiesRead(username) as Promise<any>,
   educations: (username: string) => apiClient.apiUsersEducationsRead(username) as Promise<any>,
   workExperiences: (username: string) => apiClient.apiUsersWorkExperiencesRead(username) as Promise<any>,

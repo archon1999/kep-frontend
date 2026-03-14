@@ -40,13 +40,18 @@ const mapGeneralInfo = (payload: any) => ({
   coverPhoto: payload?.coverPhoto ?? payload?.cover_photo,
 });
 
-const mapSkills = (payload: any) => ({
-  python: payload?.python ?? 0,
-  webDevelopment: payload?.webDevelopment ?? payload?.web_development ?? 0,
-  webScraping: payload?.webScraping ?? payload?.web_scraping ?? 0,
-  algorithms: payload?.algorithms ?? 0,
-  dataScience: payload?.dataScience ?? payload?.data_science ?? 0,
-});
+const mapSkills = (payload: any) =>
+  Array.isArray(payload)
+    ? payload.map((item) => ({
+        id: item?.id,
+        skillId: item?.skillId ?? item?.skill_id,
+        slug: item?.slug,
+        name: item?.name ?? '',
+        labels: item?.labels ?? null,
+        isCustom: item?.isCustom ?? item?.is_custom ?? false,
+        level: item?.level ?? 0,
+      }))
+    : [];
 
 const mapTechnology = (payload: any) => ({
   text: payload?.text ?? '',

@@ -8,6 +8,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  SelectChangeEvent,
   Stack,
   TextField,
   Typography,
@@ -40,12 +41,14 @@ const BlogFilters = ({ filters, authors, onChange }: BlogFiltersProps) => {
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) =>
     onChange({ ...filters, title: event.target.value });
 
-  const handleAuthorChange = (event: any) => onChange({ ...filters, author: event.target.value ?? '' });
-  const handleOrderChange = (event: any) => onChange({ ...filters, orderBy: event.target.value ?? '' });
+  const handleAuthorChange = (event: SelectChangeEvent<string>) => onChange({ ...filters, author: event.target.value ?? '' });
+  const handleOrderChange = (event: SelectChangeEvent<string>) => onChange({ ...filters, orderBy: event.target.value ?? '' });
   const handleTopicChange = (topicKey: string) =>
     onChange({ ...filters, topic: selectedTopic === topicKey ? '' : topicKey });
 
   const selectedTopic = useMemo(() => filters.topic, [filters.topic]);
+  const renderSelectValue = (value: string, placeholder: string) =>
+    value ? <>{value}</> : <Typography color="text.secondary">{placeholder}</Typography>;
 
   return (
     <Card sx={{ borderRadius: 3 }}>
@@ -72,13 +75,13 @@ const BlogFilters = ({ filters, authors, onChange }: BlogFiltersProps) => {
         />
 
         <FormControl fullWidth>
-          <InputLabel>{t('blog.author')}</InputLabel>
+          <InputLabel shrink>{t('blog.author')}</InputLabel>
           <Select
             label={t('blog.author')}
             value={filters.author}
             onChange={handleAuthorChange}
             displayEmpty
-            renderValue={(value) => value || t('blog.authorPlaceholder')}
+            renderValue={(value) => renderSelectValue(value, t('blog.authorPlaceholder'))}
           >
             <MenuItem value="">{t('blog.authorPlaceholder')}</MenuItem>
             {authors.map((author) => (
@@ -90,13 +93,13 @@ const BlogFilters = ({ filters, authors, onChange }: BlogFiltersProps) => {
         </FormControl>
 
         <FormControl fullWidth>
-          <InputLabel>{t('blog.orderBy')}</InputLabel>
+          <InputLabel shrink>{t('blog.orderBy')}</InputLabel>
           <Select
             label={t('blog.orderBy')}
             value={filters.orderBy}
             onChange={handleOrderChange}
             displayEmpty
-            renderValue={(value) => value || t('blog.orderByPlaceholder')}
+            renderValue={(value) => renderSelectValue(value, t('blog.orderByPlaceholder'))}
           >
             <MenuItem value="">{t('blog.orderByPlaceholder')}</MenuItem>
             <MenuItem value="1">{t('blog.order.likes')}</MenuItem>
@@ -107,11 +110,11 @@ const BlogFilters = ({ filters, authors, onChange }: BlogFiltersProps) => {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <Stack direction="row" spacing={1}>
+        <Stack spacing={1.25}>
           <Typography variant="subtitle2" fontWeight={700} color="text.secondary">
             {t('blog.topics.title')}
           </Typography>
-          <Stack direction="row" spacing={1.25}>
+          <Stack direction="row" spacing={1.25} useFlexGap flexWrap="wrap">
             {topics.map((topic) => {
               const active = selectedTopic === topic.key;
 
@@ -122,6 +125,8 @@ const BlogFilters = ({ filters, authors, onChange }: BlogFiltersProps) => {
                   onClick={() => handleTopicChange(topic.key)}
                   sx={{
                     p: 1.25,
+                    minWidth: { xs: '100%', sm: 220 },
+                    flex: { xs: '1 1 100%', sm: '1 1 220px' },
                     borderRadius: 2,
                     border: '1px solid',
                     borderColor: active ? 'primary.main' : 'divider',

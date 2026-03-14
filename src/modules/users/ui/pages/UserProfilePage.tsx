@@ -26,6 +26,7 @@ import { getResourceByUsername, resources } from 'app/routes/resources';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { useAuth } from 'app/providers/AuthProvider';
 import KepIcon from 'shared/components/base/KepIcon';
+import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { useUserDetails, useUserRatings } from '../../application/queries';
 import ProfileFollowButton from '../components/user-profile/ProfileFollowButton';
@@ -212,9 +213,7 @@ const UserProfilePage = () => {
                   {userDetails?.country ? (
                     <Stack direction="row" spacing={0.5} alignItems="center">
                       <KepIcon name="info" fontSize={18} color="text.secondary" />
-                      <Typography variant="body2" color="text.secondary">
-                        {userDetails.country}
-                      </Typography>
+                      <CountryFlagIcon code={userDetails.country} size={18} />
                     </Stack>
                   ) : null}
                 </Stack>
