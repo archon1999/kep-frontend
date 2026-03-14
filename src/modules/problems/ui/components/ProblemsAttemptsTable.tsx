@@ -8,9 +8,11 @@ import { getResourceById, resources } from 'app/routes/resources';
 import UserPopover from 'modules/users/ui/components/UserPopover.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
-import AttemptVerdict, { VerdictKey } from 'shared/components/problems/AttemptVerdict';
+import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
+import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
 import { wsService } from 'shared/services/websocket';
 import AttemptDetailDialog from './AttemptDetailDialog.tsx';
+import AttemptProtocolDialog from './AttemptProtocolDialog.tsx';
 import { problemsQueries } from '../../application/queries';
 import { AttemptListItem } from '../../domain/entities/problem.entity';
 
@@ -51,7 +53,9 @@ const ProblemsAttemptsTable = ({
   const [rows, setRows] = useState<AttemptListItem[]>(attempts ?? []);
   const [lastUpdatedAttempt, setLastUpdatedAttempt] = useState<AttemptListItem | null>(null);
   const [selectedAttempt, setSelectedAttempt] = useState<AttemptListItem | null>(null);
+  const [protocolAttempt, setProtocolAttempt] = useState<AttemptListItem | null>(null);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+  const [isProtocolOpen, setIsProtocolOpen] = useState(false);
   const trackedIdsRef = useRef<number[]>([]);
 
   useEffect(() => {
@@ -63,7 +67,14 @@ const ProblemsAttemptsTable = ({
         setSelectedAttempt((prev) => (prev ? { ...prev, ...freshAttempt } : prev));
       }
     }
-  }, [attempts, selectedAttempt?.id]);
+
+    if (protocolAttempt) {
+      const freshProtocolAttempt = (attempts ?? []).find((item) => item.id === protocolAttempt.id);
+      if (freshProtocolAttempt) {
+        setProtocolAttempt((prev) => (prev ? { ...prev, ...freshProtocolAttempt } : prev));
+      }
+    }
+  }, [attempts, selectedAttempt?.id, protocolAttempt?.id]);
 
   useEffect(() => {
     const newIds = (attempts ?? []).map((attempt) => attempt.id);
@@ -130,15 +141,26 @@ const ProblemsAttemptsTable = ({
     setIsDetailOpen(true);
   }, []);
 
+  const handleOpenProtocol = useCallback((attempt: AttemptListItem) => {
+    setProtocolAttempt(attempt);
+    setIsProtocolOpen(true);
+  }, []);
+
   const handleCloseDetail = useCallback(() => {
     setIsDetailOpen(false);
     setSelectedAttempt(null);
+  }, []);
+
+  const handleCloseProtocol = useCallback(() => {
+    setIsProtocolOpen(false);
+    setProtocolAttempt(null);
   }, []);
 
   const handleAttemptUpdated = useCallback(
     (attemptId: number, changes: Partial<AttemptListItem>) => {
       setRows((prev) => prev.map((item) => (item.id === attemptId ? { ...item, ...changes } : item)));
       setSelectedAttempt((prev) => (prev && prev.id === attemptId ? { ...prev, ...changes } : prev));
+      setProtocolAttempt((prev) => (prev && prev.id === attemptId ? { ...prev, ...changes } : prev));
       onRerun?.();
     },
     [onRerun],
@@ -244,11 +266,22 @@ const ProblemsAttemptsTable = ({
         flex: 0.6,
         sortable: false,
         renderCell: ({ row }) => (
-          <AttemptVerdict
-            verdict={row.verdict as VerdictKey | undefined}
-            title={row.verdictTitle || t('problems.attempts.unknownVerdict')}
-            testCaseNumber={row.testCaseNumber}
-          />
+          <Button
+            color="inherit"
+            size="small"
+            onClick={(event) => {
+              event.stopPropagation();
+              handleOpenProtocol(row);
+            }}
+            sx={{ p: 0, minWidth: 0, textTransform: 'none' }}
+          >
+            <AttemptVerdict
+              verdict={row.verdict as VerdictKey | undefined}
+              title={row.verdictTitle || t('problems.attempts.unknownVerdict')}
+              testCaseNumber={row.testCaseNumber}
+              balls={row.balls}
+            />
+          </Button>
         ),
       },
       {
@@ -373,6 +406,11 @@ const ProblemsAttemptsTable = ({
         attempt={selectedAttempt}
         onClose={handleCloseDetail}
         onAttemptUpdated={handleAttemptUpdated}
+      />
+      <AttemptProtocolDialog
+        open={isProtocolOpen}
+        attempt={protocolAttempt}
+        onClose={handleCloseProtocol}
       />
     </>
   );

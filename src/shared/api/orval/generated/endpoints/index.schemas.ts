@@ -175,6 +175,10 @@ export interface AttemptList {
   readonly sourceCodeSize?: string;
   /** @nullable */
   balls?: number | null;
+  /** @nullable */
+  judgeSummary?: { [key: string]: unknown } | null;
+  /** @nullable */
+  judge_summary?: { [key: string]: unknown } | null;
   readonly kepcoinValue?: string;
   readonly testCaseKepcoinValue?: string;
   readonly canView?: string;
@@ -271,6 +275,10 @@ export interface AttemptDetail {
   errorMessage?: string;
   /** @nullable */
   balls?: number | null;
+  /** @nullable */
+  judgeSummary?: { [key: string]: unknown } | null;
+  /** @nullable */
+  judge_summary?: { [key: string]: unknown } | null;
   /**
    * @minimum -2147483648
    * @maximum 2147483647

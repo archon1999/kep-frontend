@@ -2,6 +2,10 @@ import { CategoryTag, ProblemList, ProblemsCategory } from 'shared/api/orval/gen
 import {
   AttemptFilterOption,
   AttemptDetail,
+  AttemptJudgeSummaryCase,
+  AttemptJudgeSummary,
+  AttemptJudgeSummaryGroup,
+  AttemptJudgeSummarySubtask,
   AttemptListItem,
   DifficultyBreakdown,
   HackAttempt,
@@ -45,6 +49,79 @@ const tryParseJson = (value: any) => {
   } catch {
     return value;
   }
+};
+
+const mapJudgeSummaryCases = (cases: any): AttemptJudgeSummaryCase[] =>
+  Array.isArray(cases)
+    ? cases.map((item: any) => ({
+        number: toNumber(item?.number),
+        verdict: toNumber(item?.verdict),
+        passed: Boolean(item?.passed),
+      }))
+    : [];
+
+const mapJudgeSummaryGroups = (groups: any): AttemptJudgeSummaryGroup[] =>
+  Array.isArray(groups)
+    ? groups.map((group: any) => ({
+        id: String(group?.id ?? ''),
+        passed: Boolean(group?.passed),
+        passedCases: toNumber(group?.passedCases ?? group?.passed_cases),
+        totalCases: toNumber(group?.totalCases ?? group?.total_cases),
+        score: toNullableNumber(group?.score),
+        maxScore: toNullableNumber(group?.maxScore ?? group?.max_score),
+        failedCase: toNullableNumber(group?.failedCase ?? group?.failed_case),
+        verdict: toNullableNumber(group?.verdict),
+        cases: mapJudgeSummaryCases(group?.cases),
+      }))
+    : [];
+
+const mapJudgeSummarySubtasks = (subtasks: any): AttemptJudgeSummarySubtask[] =>
+  Array.isArray(subtasks)
+    ? subtasks.map((subtask: any) => ({
+        id: String(subtask?.id ?? ''),
+        score: toNumber(subtask?.score),
+        maxScore: toNumber(subtask?.maxScore ?? subtask?.max_score),
+        passed: Boolean(subtask?.passed),
+      }))
+    : [];
+
+const mapJudgeSummary = (value: any): AttemptJudgeSummary | undefined => {
+  const data = tryParseJson(value);
+  if (!data || typeof data !== 'object') return undefined;
+
+  const tests = data?.tests
+    ? {
+        passed: toNumber(data.tests?.passed),
+        total: toNumber(data.tests?.total),
+      }
+    : undefined;
+
+  const groups = mapJudgeSummaryGroups(data?.groups);
+  const subtasks = mapJudgeSummarySubtasks(data?.subtasks);
+  const score = toNullableNumber(data?.score);
+  const maxScore = toNullableNumber(data?.maxScore ?? data?.max_score);
+  const verdict = toNullableNumber(data?.verdict);
+
+  if (
+    !tests &&
+    groups.length === 0 &&
+    subtasks.length === 0 &&
+    score === undefined &&
+    maxScore === undefined &&
+    verdict === undefined
+  ) {
+    return undefined;
+  }
+
+  return {
+    mode: data?.mode,
+    score,
+    maxScore,
+    tests,
+    groups,
+    subtasks,
+    verdict,
+  };
 };
 
 export const mapProblemTag = (tag: CategoryTag | ProblemTag | { id?: number | string; name?: string; category?: string }): {
@@ -271,6 +348,7 @@ export const mapAttempt = (payload: any): AttemptListItem => ({
   problemHasCheckInput: Boolean(
     payload?.problemHasCheckInput ?? payload?.problem_has_check_input ?? false,
   ),
+  judgeSummary: mapJudgeSummary(payload?.judgeSummary ?? payload?.judge_summary),
 });
 
 export const mapAttemptDetail = (payload: any): AttemptDetail => {
