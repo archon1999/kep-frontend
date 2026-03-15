@@ -37,6 +37,7 @@ const contestTypes = [
   'ACM2H',
   'ACM10M',
   'ACM20M',
+  'IOI',
   'Ball525',
   'Ball550',
   'LessCode',

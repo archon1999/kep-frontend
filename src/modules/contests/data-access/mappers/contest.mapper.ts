@@ -1,4 +1,5 @@
 import { Contest, ContestAuthor, ContestsCategory } from 'shared/api/orval/generated/endpoints/index.schemas';
+import { contestUsesRating } from '../../utils/contestType';
 import {
   ContestAuthorEntity,
   ContestCategoryEntity,
@@ -24,7 +25,7 @@ export const mapContest = (payload: Contest): ContestListItem => ({
   type: payload?.type ?? 'LessCode',
   category: payload?.category ?? 1,
   categoryTitle: payload?.categoryTitle ?? '',
-  isRated: payload?.isRated ?? false,
+  isRated: contestUsesRating(payload?.type, payload?.isRated ?? false),
   logo: payload?.logo ?? null,
   contestantsCount: payload?.contestantsCount ?? 0,
   registrantsCount: payload?.registrantsCount ?? 0,

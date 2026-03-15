@@ -577,6 +577,7 @@ export const ContestType = {
   ACM2H: 'ACM2H',
   ACM10M: 'ACM10M',
   ACM20M: 'ACM20M',
+  IOI: 'IOI',
   Ball525: 'Ball525',
   Ball550: 'Ball550',
   LessCode: 'LessCode',

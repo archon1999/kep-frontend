@@ -23,7 +23,12 @@ import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceByParams, resources } from 'app/routes/resources';
 import dayjs from 'dayjs';
-import { contestHasBalls } from 'modules/contests/utils/contestType.ts';
+import {
+  contestHasBalls,
+  contestHasPenalties,
+  contestUsesRating,
+  formatContestPoints,
+} from 'modules/contests/utils/contestType.ts';
 import { problemsQueries, useAttemptsList } from 'modules/problems/application/queries.ts';
 import { ProblemSampleTest } from 'modules/problems/domain/entities/problem.entity';
 import { AttemptsListParams } from 'modules/problems/domain/ports/problems.repository';
@@ -101,6 +106,12 @@ const ContestantResultsFooter = ({
 
   const formatResult = (info?: ContestProblemInfo | null) => {
     if (!info) return { label: '-', color: 'default' as const };
+    if (contestHasBalls(contestType as any)) {
+      if ((info.points ?? 0) > 0) {
+        return { label: formatContestPoints(info.points), color: 'primary' as const };
+      }
+      return { label: '0', color: 'default' as const };
+    }
     if (info.firstAcceptedTime) {
       return { label: '+', color: 'success' as const };
     }
@@ -132,19 +143,21 @@ const ContestantResultsFooter = ({
             isOfficial={contestant.isOfficial}
           />
           <Typography color="primary" fontWeight={600}>
-            {contestant.points}
+            {formatContestPoints(contestant.points)}
           </Typography>
-          {contestHasBalls(contestType as any) ? (
+          {contestHasPenalties(contestType as any) ? (
             <Typography>
               {`${t('contests.standings.penalties')}: ${contestant.penalties ?? 0}`}
             </Typography>
           ) : null}
-          <Chip
-            label={`${t('contests.ratingChanges.columns.delta')}: ${deltaLabel}`}
-            color={deltaColor === 'default' ? 'default' : deltaColor}
-            size="small"
-            variant="outlined"
-          />
+          {contestUsesRating(contestType as any, true) ? (
+            <Chip
+              label={`${t('contests.ratingChanges.columns.delta')}: ${deltaLabel}`}
+              color={deltaColor === 'default' ? 'default' : deltaColor}
+              size="small"
+              variant="outlined"
+            />
+          ) : null}
         </Stack>
 
         <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
