@@ -2211,11 +2211,12 @@ export const apiContestsListResponse = zod.object({
       status: zod.string().optional(),
       startTime: zod.string().optional(),
       finishTime: zod.string().optional(),
-      type: zod.enum([
-        'ACM2H',
-        'ACM10M',
-        'ACM20M',
-        'Ball525',
+    type: zod.enum([
+      'ACM2H',
+      'ACM10M',
+      'ACM20M',
+      'IOI',
+      'Ball525',
         'Ball550',
         'LessCode',
         'LessLine',
@@ -2254,11 +2255,12 @@ export const apiContestsCreateContestBodyTitleMax = 255;
 export const apiContestsCreateContestBody = zod.object({
   title: zod.string().min(1).max(apiContestsCreateContestBodyTitleMax),
   description: zod.string().nullish(),
-  type: zod.enum([
-    'ACM2H',
-    'ACM10M',
-    'ACM20M',
-    'Ball525',
+    type: zod.enum([
+      'ACM2H',
+      'ACM10M',
+      'ACM20M',
+      'IOI',
+      'Ball525',
     'Ball550',
     'LessCode',
     'LessLine',

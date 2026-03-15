@@ -17,7 +17,13 @@ import {
 } from '../../application/queries';
 import { ContestProblemEntity } from '../../domain/entities/contest-problem.entity';
 import { ContestantEntity } from '../../domain/entities/contestant.entity';
-import { contestHasBalls, contestHasPenalties, isAcmStyle } from '../../utils/contestType';
+import {
+  contestHasBalls,
+  contestHasPenalties,
+  contestUsesRating,
+  formatContestPoints,
+  isAcmStyle,
+} from '../../utils/contestType';
 import ContestPageHeader from '../components/ContestPageHeader';
 import ContestStandingsCountdown from '../components/ContestStandingsCountdown';
 import ContestantView from '../components/ContestantView';
@@ -68,16 +74,19 @@ const formatProblemResult = (contestType: ContestType | undefined, info: any) =>
   if (contestHasBalls(contestType)) {
     if (info.firstAcceptedTime) {
       return {
-        label: info.points ?? '',
+        label: formatContestPoints(info.points),
         color: 'primary' as const,
         helper: info.contestTime ?? '',
         isBest: info.theBest,
       };
     }
     if (info.points > 0) {
-      return { label: info.points, color: 'warning' as const };
+      return { label: formatContestPoints(info.points), color: 'warning' as const };
     }
-    return { label: info.points ?? '-', color: 'error' as const };
+    return {
+      label: info.points !== undefined ? formatContestPoints(info.points) : '-',
+      color: 'error' as const,
+    };
   }
 
   return { label: '-', color: 'default' as const };
@@ -244,7 +253,7 @@ const ContestStandingsPage = () => {
       },
     ];
 
-    if (contest?.isRated) {
+    if (contestUsesRating(contest?.type, contest?.isRated)) {
       base.push({
         field: 'delta',
         headerName: t('contests.standings.delta'),
@@ -414,7 +423,7 @@ const ContestStandingsPage = () => {
         title={contest?.title ?? t('contests.tabs.standings')}
         contest={contest as any}
         contestId={contestId}
-        isRated={contest?.isRated}
+        isRated={contestUsesRating(contest?.type, contest?.isRated)}
         tabsRightContent={tabsRightContent}
         showLogoOverlay
         isLoading={isContestLoading}
