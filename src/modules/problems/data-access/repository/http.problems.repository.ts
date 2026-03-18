@@ -5,34 +5,13 @@ import {
   ApiProblemsRatingListParams,
 } from 'shared/api/orval/generated/endpoints/index.schemas';
 import {
-  mapAttemptDetail,
-  mapAttempts,
-  mapCategories,
-  mapContestPreview,
-  mapDifficultyBreakdown,
-  mapLanguages,
-  mapPeriodRating,
-  mapProblemDetail,
-  mapProblemSolution,
-  mapProblemStatistics,
-  mapProblemTag,
-  mapProblemsUserStatistics,
-  mapProblemVoteResult,
-  mapProblemsRatingHistoryPage,
-  mapProblemsRatingPage,
-  mapProblemsPage,
-  mapRatingSummary,
-  mapAttemptsPage,
-  mapVerdicts,
-} from '../mappers/problems.mapper.ts';
-import { problemsApiClient } from '../api/problems.client.ts';
-import {
   AttemptDetail,
   AttemptListItem,
   PeriodRatingEntry,
   ProblemDetail,
   ProblemListItem,
   ProblemSolution,
+  ProblemSolver,
   ProblemStatistics,
   ProblemTag,
   ProblemTopic,
@@ -45,12 +24,36 @@ import {
 import {
   AttemptsListParams,
   PageResult,
+  ProblemSolversParams,
   ProblemsListParams,
   ProblemsRatingHistoryParams,
   ProblemsRatingParams,
   ProblemsRepository,
   ProblemsStatisticsParams,
 } from '../../domain/ports/problems.repository.ts';
+import { problemsApiClient } from '../api/problems.client.ts';
+import {
+  mapAttemptDetail,
+  mapAttempts,
+  mapAttemptsPage,
+  mapCategories,
+  mapContestPreview,
+  mapDifficultyBreakdown,
+  mapLanguages,
+  mapPeriodRating,
+  mapProblemDetail,
+  mapProblemSolution,
+  mapProblemSolversPage,
+  mapProblemStatistics,
+  mapProblemTag,
+  mapProblemVoteResult,
+  mapProblemsPage,
+  mapProblemsRatingHistoryPage,
+  mapProblemsRatingPage,
+  mapProblemsUserStatistics,
+  mapRatingSummary,
+  mapVerdicts,
+} from '../mappers/problems.mapper.ts';
 
 const mapFilterToApiParams = (params: ProblemsListParams): ApiProblemsListParams => {
   const { tags, status, favorites, search, ...rest } = params;
@@ -126,7 +129,7 @@ export class HttpProblemsRepository implements ProblemsRepository {
 
   async listTopics(): Promise<ProblemTopic[]> {
     const response = await problemsApiClient.listTopics();
-    const data = Array.isArray((response as any)?.data) ? (response as any).data : response ?? [];
+    const data = Array.isArray((response as any)?.data) ? (response as any).data : (response ?? []);
     return data.map((topic: any) => ({
       id: Number(topic?.id ?? 0),
       name: topic?.name ?? '',
@@ -167,6 +170,14 @@ export class HttpProblemsRepository implements ProblemsRepository {
     return mapProblemStatistics(response);
   }
 
+  async listProblemSolvers(
+    problemId: number,
+    params?: ProblemSolversParams,
+  ): Promise<PageResult<ProblemSolver>> {
+    const response = await problemsApiClient.listSolvers(problemId, params);
+    return mapProblemSolversPage(response);
+  }
+
   async saveCheckInput(problemId: number, source: string): Promise<void> {
     await problemsApiClient.saveCheckInput(problemId, { source });
   }
@@ -183,7 +194,10 @@ export class HttpProblemsRepository implements ProblemsRepository {
     return { id: (response as any)?.id };
   }
 
-  async answerForInput(problemId: number, payload: { input_data: string; sourceCode?: string; lang?: string }) {
+  async answerForInput(
+    problemId: number,
+    payload: { input_data: string; sourceCode?: string; lang?: string },
+  ) {
     const response = await problemsApiClient.answerForInput(problemId, payload);
     return { id: (response as any)?.id };
   }

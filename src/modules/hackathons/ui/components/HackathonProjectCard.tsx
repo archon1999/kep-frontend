@@ -14,7 +14,7 @@ interface HackathonProjectCardProps {
 
 const HackathonProjectCard = ({ hackathonId, project }: HackathonProjectCardProps) => {
   const { t } = useTranslation();
-  const totalPoints = getHackathonProjectPoints(project.project);
+  const totalPoints = getHackathonProjectPoints(project);
 
   return (
     <Card

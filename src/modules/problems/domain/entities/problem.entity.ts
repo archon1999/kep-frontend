@@ -323,6 +323,7 @@ export interface ProblemLanguageStatistic {
 
 export interface ProblemTopAttempt {
   username: string;
+  avatar?: string;
   ratingTitle?: string;
   time?: number;
   memory?: number;
@@ -345,6 +346,20 @@ export interface ProblemStatistics {
   languageStatistics: ProblemLanguageStatistic[];
   topAttempts: ProblemTopAttempts;
   attemptsForSolveStatistics: ProblemAttemptsForSolveStatistic[];
+}
+
+export type ProblemSolversOrdering = '-latest_solved_at' | '-rating' | 'shortest_code_size';
+
+export interface ProblemSolver {
+  userId: number;
+  username: string;
+  avatar?: string;
+  rating?: number;
+  ratingTitle?: string;
+  firstSolvedAt?: string;
+  latestSolvedAt?: string;
+  attemptsToSolve?: number;
+  shortestCodeSize?: number;
 }
 
 export interface ProblemVoteResult {

@@ -24,6 +24,7 @@ interface ProjectAttemptsTableProps {
   project: Project;
   attempts: ProjectAttempt[] | undefined;
   isLoading?: boolean;
+  scoreMode?: 'kepcoin' | 'hackathon';
   onRerun?: () => void;
 }
 
@@ -31,6 +32,7 @@ const ProjectAttemptsTable = ({
   project,
   attempts,
   isLoading,
+  scoreMode = 'kepcoin',
   onRerun,
 }: ProjectAttemptsTableProps) => {
   const { t } = useTranslation();
@@ -64,6 +66,10 @@ const ProjectAttemptsTable = ({
     const isAccepted = attempt.verdict === 1;
     const isRunning = attempt.verdict === -2;
     const isPending = attempt.verdict === -1;
+    const earnedValue = scoreMode === 'hackathon' ? attempt.hackathonPoints : attempt.kepcoins;
+    const totalValue = scoreMode === 'hackathon'
+      ? attempt.hackathonProjectPoints
+      : (project.kepcoins ?? attempt.projectKepcoins);
 
     return (
       <Stack direction="row" spacing={1} alignItems="center">
@@ -93,11 +99,11 @@ const ProjectAttemptsTable = ({
         >
           {attempt.verdictTitle}
           {isPending && attempt.taskNumber ? ` #${attempt.taskNumber}` : ''}
-          {isAccepted && attempt.kepcoins !== undefined && (
+          {isAccepted && earnedValue !== undefined && (
             <>
               {' '}
-              {attempt.kepcoins}
-              {project.kepcoins ? ` / ${project.kepcoins}` : ''}
+              {earnedValue}
+              {totalValue !== undefined ? ` / ${totalValue}` : ''}
             </>
           )}
         </Typography>

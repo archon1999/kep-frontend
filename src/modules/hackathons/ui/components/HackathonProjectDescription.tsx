@@ -10,17 +10,20 @@ import {
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import { Project } from 'modules/projects/domain/entities/project.entity';
+import { HackathonProject } from '../../domain/entities/hackathon-project.entity';
 import { getHackathonProjectPoints } from '../lib/format';
 import HackathonPointsBadge from './HackathonPointsBadge';
 
 interface HackathonProjectDescriptionProps {
-  project: Project;
-  symbol: string;
+  hackathonProject: HackathonProject;
 }
 
-const HackathonProjectDescription = ({ project, symbol }: HackathonProjectDescriptionProps) => {
+const HackathonProjectDescription = ({ hackathonProject }: HackathonProjectDescriptionProps) => {
   const { t } = useTranslation();
+  const project = hackathonProject.project;
+  const taskPointsByNumber = new Map(
+    (hackathonProject.taskPoints ?? []).map((item) => [item.taskNumber, item.points]),
+  );
 
   return (
     <Stack direction="column" spacing={3}>
@@ -46,8 +49,8 @@ const HackathonProjectDescription = ({ project, symbol }: HackathonProjectDescri
           </Typography>
 
           <Stack direction="row" spacing={1} flexWrap="wrap" rowGap={1} alignItems="center">
-            <Chip label={`${t('hackathons.projectSymbol')}: ${symbol}`} size="small" variant="outlined" />
-            <HackathonPointsBadge value={getHackathonProjectPoints(project)} color="primary" />
+            <Chip label={`${t('hackathons.projectSymbol')}: ${hackathonProject.symbol}`} size="small" variant="outlined" />
+            <HackathonPointsBadge value={getHackathonProjectPoints(hackathonProject)} color="primary" />
             <Chip label={project.levelTitle} color="success" size="small" />
           </Stack>
         </Stack>
@@ -72,7 +75,7 @@ const HackathonProjectDescription = ({ project, symbol }: HackathonProjectDescri
                   <Typography fontWeight={700}>
                     {task.number}. {task.title}
                   </Typography>
-                  <HackathonPointsBadge value={task.kepcoinValue} color="primary" />
+                  <HackathonPointsBadge value={taskPointsByNumber.get(task.number) ?? 0} color="primary" />
                 </Stack>
               </AccordionSummary>
               <AccordionDetails>

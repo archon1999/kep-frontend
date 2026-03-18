@@ -12,11 +12,7 @@ import useGridPagination from 'shared/hooks/useGridPagination';
 import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
 import { wsService } from 'shared/services/websocket';
 import { toast } from 'sonner';
-import {
-  problemsQueries,
-  useAttemptsList,
-  useProblemDetail,
-} from '../../application/queries';
+import { problemsQueries, useAttemptsList, useProblemDetail } from '../../application/queries';
 import { ProblemSampleTest } from '../../domain/entities/problem.entity';
 import { AttemptsListParams } from '../../domain/ports/problems.repository';
 import { usePersistedCode } from '../../hooks/usePersistedCode';
@@ -73,8 +69,8 @@ const ProblemDetailPage = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [activeTab, setActiveTab] = useState<'description' | 'attempts' | 'stats'>(
-    (searchParams.get('tab') as 'attempts' | 'stats') || 'description',
+  const [activeTab, setActiveTab] = useState<'description' | 'attempts' | 'stats' | 'solvers'>(
+    (searchParams.get('tab') as 'attempts' | 'stats' | 'solvers') || 'description',
   );
   const [input, setInput] = useState('');
   const [answer, setAnswer] = useState('');
@@ -228,14 +224,14 @@ const ProblemDetailPage = () => {
 
   useEffect(() => {
     const tab = searchParams.get('tab');
-    if (tab === 'attempts' || tab === 'stats') {
+    if (tab === 'attempts' || tab === 'stats' || tab === 'solvers') {
       setActiveTab(tab);
     } else {
       setActiveTab('description');
     }
   }, [searchParams]);
 
-  const handleTabChange = (value: 'description' | 'attempts' | 'stats') => {
+  const handleTabChange = (value: 'description' | 'attempts' | 'stats' | 'solvers') => {
     setActiveTab(value);
     const next = new URLSearchParams(searchParams);
     if (value === 'description') {

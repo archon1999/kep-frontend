@@ -5127,41 +5127,30 @@ export const apiHackathonsProjectsResponseSlugMax = 100;
 
 export const apiHackathonsProjectsResponseSlugRegExp = new RegExp('^[-a-zA-Z0-9_]+$');
 
-export const apiHackathonsProjectsResponse = zod.object({
-  id: zod.number().optional(),
-  title: zod.string().min(1).max(apiHackathonsProjectsResponseTitleMax),
-  slug: zod.string().min(1).max(apiHackathonsProjectsResponseSlugMax).regex(apiHackathonsProjectsResponseSlugRegExp),
-  description: zod.string().optional(),
-  startTime: zod.iso.datetime({}),
-  finishTime: zod.iso.datetime({}),
-  logo: zod.url().nullish(),
-  status: zod.number().optional(),
-  projectsCount: zod.number().optional(),
-  participantsCount: zod.number().optional(),
-  registrantsCount: zod.number().optional(),
-  isRegistered: zod.string().optional(),
-  isParticipated: zod.string().optional(),
+export const hackathonProjectTaskPointResponse = zod.object({
+  taskNumber: zod.number().optional(),
+  task_number: zod.number().optional(),
+  points: zod.number().optional(),
 });
 
-export const apiHackathonsProjectResponseTitleMax = 255;
-export const apiHackathonsProjectResponseSlugMax = 100;
-
-export const apiHackathonsProjectResponseSlugRegExp = new RegExp('^[-a-zA-Z0-9_]+$');
+export const apiHackathonsProjectsResponse = zod.object({
+  id: zod.number().optional(),
+  symbol: zod.string().min(1),
+  project: zod.any(),
+  maxPoints: zod.number().optional(),
+  max_points: zod.number().optional(),
+  taskPoints: zod.array(hackathonProjectTaskPointResponse).optional(),
+  task_points: zod.array(hackathonProjectTaskPointResponse).optional(),
+});
 
 export const apiHackathonsProjectResponse = zod.object({
   id: zod.number().optional(),
-  title: zod.string().min(1).max(apiHackathonsProjectResponseTitleMax),
-  slug: zod.string().min(1).max(apiHackathonsProjectResponseSlugMax).regex(apiHackathonsProjectResponseSlugRegExp),
-  description: zod.string().optional(),
-  startTime: zod.iso.datetime({}),
-  finishTime: zod.iso.datetime({}),
-  logo: zod.url().nullish(),
-  status: zod.number().optional(),
-  projectsCount: zod.number().optional(),
-  participantsCount: zod.number().optional(),
-  registrantsCount: zod.number().optional(),
-  isRegistered: zod.string().optional(),
-  isParticipated: zod.string().optional(),
+  symbol: zod.string().min(1),
+  project: zod.any(),
+  maxPoints: zod.number().optional(),
+  max_points: zod.number().optional(),
+  taskPoints: zod.array(hackathonProjectTaskPointResponse).optional(),
+  task_points: zod.array(hackathonProjectTaskPointResponse).optional(),
 });
 
 export const apiHackathonsProjectsSubmitBodyTitleMax = 255;
@@ -7286,6 +7275,8 @@ export const apiProjectAttemptsListResponse = zod.object({
       projectSlug: zod.string().min(1),
       projectTitle: zod.string().min(1),
       projectKepcoins: zod.string().optional(),
+      hackathonPoints: zod.string().optional(),
+      hackathonProjectPoints: zod.string().optional(),
       hackathonProject: zod.string().optional(),
       kepcoins: zod.string().optional(),
       verdict: zod.union([zod.literal(-2), zod.literal(-1), zod.literal(0), zod.literal(1)]).optional(),
@@ -7330,6 +7321,8 @@ export const apiProjectAttemptsReadResponse = zod.object({
   projectSlug: zod.string().min(1),
   projectTitle: zod.string().min(1),
   projectKepcoins: zod.string().optional(),
+  hackathonPoints: zod.string().optional(),
+  hackathonProjectPoints: zod.string().optional(),
   hackathonProject: zod.string().optional(),
   kepcoins: zod.string().optional(),
   verdict: zod.union([zod.literal(-2), zod.literal(-1), zod.literal(0), zod.literal(1)]).optional(),

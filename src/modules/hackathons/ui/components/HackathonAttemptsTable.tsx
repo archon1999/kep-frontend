@@ -152,6 +152,12 @@ const HackathonAttemptsTable = ({ attempts, isLoading, onRerun }: HackathonAttem
                 <Typography variant="body2" fontWeight={700} color={attempt.verdict === 1 ? 'success.main' : 'error.main'}>
                   {attempt.verdictTitle}
                 </Typography>
+                {attempt.verdict === 1 && attempt.hackathonPoints !== undefined ? (
+                  <Typography variant="caption" color="text.secondary">
+                    {attempt.hackathonPoints}
+                    {attempt.hackathonProjectPoints !== undefined ? ` / ${attempt.hackathonProjectPoints}` : ''}
+                  </Typography>
+                ) : null}
               </TableCell>
               <TableCell>
                 <Stack direction="row" spacing={1} color="text.secondary" alignItems="center">

@@ -1,37 +1,42 @@
-import { CategoryTag, ProblemList, ProblemsCategory } from 'shared/api/orval/generated/endpoints/index.schemas';
 import {
-  AttemptFilterOption,
+  CategoryTag,
+  ProblemList,
+  ProblemsCategory,
+} from 'shared/api/orval/generated/endpoints/index.schemas';
+import {
   AttemptDetail,
-  AttemptJudgeSummaryCase,
+  AttemptFilterOption,
   AttemptJudgeSummary,
+  AttemptJudgeSummaryCase,
   AttemptJudgeSummaryGroup,
   AttemptJudgeSummarySubtask,
   AttemptListItem,
   DifficultyBreakdown,
   PeriodRatingEntry,
-  ProblemAttemptSummary,
   ProblemAttemptStatistic,
+  ProblemAttemptSummary,
+  ProblemAttemptsForSolveStatistic,
   ProblemAvailableLanguage,
   ProblemCategory,
   ProblemDetail,
-  ProblemLanguageStatistic,
   ProblemLanguageOption,
+  ProblemLanguageStatistic,
   ProblemListItem,
-  ProblemAttemptsForSolveStatistic,
   ProblemSampleTest,
-  SimilarProblem,
   ProblemSolution,
+  ProblemSolver,
   ProblemStatistics,
   ProblemTag,
+  ProblemTopAttempt,
   ProblemTopic,
   ProblemUserInfo,
-  ProblemTopAttempt,
   ProblemUserSummary,
   ProblemVoteResult,
   ProblemsRatingHistoryEntry,
   ProblemsRatingRow,
   ProblemsRatingSummary,
   ProblemsUserStatistics,
+  SimilarProblem,
 } from '../../domain/entities/problem.entity.ts';
 import { PageResult } from '../../domain/ports/problems.repository.ts';
 
@@ -123,7 +128,9 @@ const mapJudgeSummary = (value: any): AttemptJudgeSummary | undefined => {
   };
 };
 
-export const mapProblemTag = (tag: CategoryTag | ProblemTag | { id?: number | string; name?: string; category?: string }): {
+export const mapProblemTag = (
+  tag: CategoryTag | ProblemTag | { id?: number | string; name?: string; category?: string },
+): {
   id: number;
   name: string;
   category?: string;
@@ -151,7 +158,9 @@ export const mapProblem = (problem: ProblemList): ProblemListItem => ({
   id: problem.id ?? 0,
   title: problem.title,
   difficulty: toNumber(problem.difficulty),
-  problemRating: toNullableNumber((problem as any).problemRating ?? (problem as any).problem_rating),
+  problemRating: toNullableNumber(
+    (problem as any).problemRating ?? (problem as any).problem_rating,
+  ),
   difficultyTitle: problem.difficultyTitle,
   solved: toNumber(problem.solved),
   notSolved: toNumber((problem as any).notSolved ?? (problem as any).not_solved),
@@ -193,7 +202,11 @@ export const mapProblemsPage = (payload: any): PageResult<ProblemListItem> =>
   mapPageResult(payload, (item) => mapProblem(item as ProblemList));
 
 export const mapLanguages = (response: any): ProblemLanguageOption[] => {
-  const items = Array.isArray(response?.data) ? response.data : Array.isArray(response) ? response : [];
+  const items = Array.isArray(response?.data)
+    ? response.data
+    : Array.isArray(response)
+      ? response
+      : [];
   return items.map((item: any) => ({
     lang: item.lang ?? '',
     langFull: item.langFull ?? item.lang ?? '',
@@ -211,7 +224,11 @@ export const mapCategories = (categories: ProblemsCategory[]): ProblemCategory[]
   }));
 
 export const mapAttempts = (response: any): ProblemAttemptSummary[] => {
-  const data = Array.isArray(response?.data) ? response.data : Array.isArray(response) ? response : [];
+  const data = Array.isArray(response?.data)
+    ? response.data
+    : Array.isArray(response)
+      ? response
+      : [];
   return data.map((item: any) => ({
     id: item.id ?? 0,
     problemId: item.problemId ?? 0,
@@ -241,7 +258,10 @@ export const mapContestPreview = (response: any) => {
   };
 };
 
-export const mapRatingSummary = (response: any, difficulties: DifficultyBreakdown): ProblemsRatingSummary | null => {
+export const mapRatingSummary = (
+  response: any,
+  difficulties: DifficultyBreakdown,
+): ProblemsRatingSummary | null => {
   if (!response) return null;
 
   return {
@@ -366,10 +386,13 @@ export const mapAttemptsPage = (payload: any): PageResult<AttemptListItem> =>
 
 export const mapVerdicts = (payload: any): AttemptFilterOption[] => {
   const data = Array.isArray(payload?.data) ? payload.data : Array.isArray(payload) ? payload : [];
-  const mapped = data.map((item: any): AttemptFilterOption => ({
-    label: item.label ?? item.title ?? item.verdictTitle ?? String(item.value ?? item.verdict ?? ''),
-    value: toNumber(item.value ?? item.verdict ?? item.id),
-  }));
+  const mapped = data.map(
+    (item: any): AttemptFilterOption => ({
+      label:
+        item.label ?? item.title ?? item.verdictTitle ?? String(item.value ?? item.verdict ?? ''),
+      value: toNumber(item.value ?? item.verdict ?? item.id),
+    }),
+  );
 
   return mapped.filter((item: AttemptFilterOption) => Boolean(item.label));
 };
@@ -383,13 +406,14 @@ export const mapPeriodRating = (payload: any): PeriodRatingEntry[] => {
   }));
 };
 
-export const mapRatingHistoryEntry = (
-  payload: any,
-): ProblemsRatingHistoryEntry => ({
+export const mapRatingHistoryEntry = (payload: any): ProblemsRatingHistoryEntry => ({
   username: payload?.username ?? '',
   contestsRatingTitle: payload?.contestsRatingTitle,
   type: toNumber(payload?.type) as ProblemsRatingHistoryEntry['type'],
-  result: payload?.result !== undefined && payload?.result !== null ? toNumber(payload?.result) : undefined,
+  result:
+    payload?.result !== undefined && payload?.result !== null
+      ? toNumber(payload?.result)
+      : undefined,
   date: payload?.date ?? payload?.created ?? '',
 });
 
@@ -422,7 +446,9 @@ export const mapProblemDetail = (payload: any): ProblemDetail => {
     voteType: payload?.voteType ?? payload?.vote_type ?? base.userInfo?.voteType,
     timeLimit: toNullableNumber(payload?.timeLimit ?? payload?.time_limit),
     memoryLimit: toNullableNumber(payload?.memoryLimit ?? payload?.memory_limit),
-    availableLanguages: (payload?.availableLanguages ?? []).map((lang: any) => mapAvailableLanguage(lang)),
+    availableLanguages: (payload?.availableLanguages ?? []).map((lang: any) =>
+      mapAvailableLanguage(lang),
+    ),
     hasChecker: payload?.hasChecker ?? payload?.has_checker ?? base.hasChecker,
     hasSolution:
       payload?.hasSolution !== undefined
@@ -431,13 +457,17 @@ export const mapProblemDetail = (payload: any): ProblemDetail => {
           ? Boolean(payload?.has_solution)
           : base.hasSolution,
     hasCheckInput: payload?.hasCheckInput ?? payload?.has_check_input,
-    solutionKepcoinValue: toNullableNumber(payload?.solutionKepcoinValue ?? payload?.solution_kepcoin_value),
+    solutionKepcoinValue: toNullableNumber(
+      payload?.solutionKepcoinValue ?? payload?.solution_kepcoin_value,
+    ),
     checkInputSource: payload?.checkInputSource ?? payload?.check_input_source ?? '',
     body: payload?.body ?? '',
     inputData: payload?.inputData ?? payload?.input_data ?? '',
     outputData: payload?.outputData ?? payload?.output_data ?? '',
     comment: payload?.comment ?? '',
-    sampleTests: (payload?.sampleTests ?? payload?.sample_tests ?? []).map((item: any) => mapSampleTest(item)),
+    sampleTests: (payload?.sampleTests ?? payload?.sample_tests ?? []).map((item: any) =>
+      mapSampleTest(item),
+    ),
     topics: (payload?.topics ?? []).map(
       (topic: any): ProblemTopic => ({
         id: toNumber(topic?.id),
@@ -451,7 +481,8 @@ export const mapProblemDetail = (payload: any): ProblemDetail => {
         difficulty: toNumber(problem?.difficulty),
         problemRating: toNullableNumber(problem?.problemRating ?? problem?.problem_rating),
         difficultyTitle: problem?.difficultyTitle ?? problem?.difficulty_title,
-        score: typeof problem?.score === 'number' ? problem.score : toNullableNumber(problem?.score),
+        score:
+          typeof problem?.score === 'number' ? problem.score : toNullableNumber(problem?.score),
         tags: (problem?.tags ?? []).map((tag: any) => mapProblemTag(tag)),
         topics: (problem?.topics ?? []).map(
           (topic: any): ProblemTopic => ({
@@ -488,7 +519,8 @@ const mapTopAttemptsList = (payload: any[] | undefined): ProblemTopAttempt[] =>
   (payload ?? []).map(
     (item: any): ProblemTopAttempt => ({
       username: item?.username ?? '',
-      ratingTitle: item?.ratingTitle,
+      avatar: item?.avatar ?? undefined,
+      ratingTitle: item?.ratingTitle ?? item?.rating_title,
       time: toNullableNumber(item?.time),
       memory: toNullableNumber(item?.memory),
       sourceCodeSize: toNullableNumber(item?.sourceCodeSize ?? item?.source_code_size),
@@ -523,6 +555,21 @@ export const mapProblemStatistics = (payload: any): ProblemStatistics => ({
     }),
   ),
 });
+
+export const mapProblemSolver = (payload: any): ProblemSolver => ({
+  userId: toNumber(payload?.userId ?? payload?.user_id),
+  username: payload?.username ?? '',
+  avatar: payload?.avatar ?? undefined,
+  rating: toNullableNumber(payload?.rating),
+  ratingTitle: payload?.ratingTitle ?? payload?.rating_title,
+  firstSolvedAt: payload?.firstSolvedAt ?? payload?.first_solved_at,
+  latestSolvedAt: payload?.latestSolvedAt ?? payload?.latest_solved_at,
+  attemptsToSolve: toNullableNumber(payload?.attemptsToSolve ?? payload?.attempts_to_solve),
+  shortestCodeSize: toNullableNumber(payload?.shortestCodeSize ?? payload?.shortest_code_size),
+});
+
+export const mapProblemSolversPage = (payload: any): PageResult<ProblemSolver> =>
+  mapPageResult(payload, (item) => mapProblemSolver(item));
 
 const mapFactAttempt = (fact: any) => {
   if (!fact) return null;

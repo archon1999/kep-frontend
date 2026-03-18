@@ -1,4 +1,4 @@
-import { Project } from 'modules/projects/domain/entities/project.entity';
+import { HackathonProject } from '../domain/entities/hackathon-project.entity';
 
 const normalizeLocale = (locale?: string | null) => {
   if (!locale) return undefined;
@@ -47,5 +47,7 @@ export const formatHackathonDuration = (value?: string | null) => {
   return `${String(totalHours).padStart(2, '0')}:${minutes}:${seconds}`;
 };
 
-export const getHackathonProjectPoints = (project?: Project | null) =>
-  project?.tasks?.reduce((sum, task) => sum + (task.kepcoinValue ?? 0), 0) ?? 0;
+export const getHackathonProjectPoints = (hackathonProject?: HackathonProject | null) =>
+  hackathonProject?.maxPoints
+  ?? hackathonProject?.taskPoints?.reduce((sum, task) => sum + (task.points ?? 0), 0)
+  ?? 0;

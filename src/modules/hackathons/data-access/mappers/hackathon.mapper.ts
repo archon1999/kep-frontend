@@ -2,6 +2,7 @@ import { Hackathon as HackathonDto } from 'shared/api/orval/generated/endpoints/
 import { Hackathon } from '../../domain/entities/hackathon.entity';
 import { HackathonProject, HackathonRegistrant, HackathonStanding } from '../../domain/entities/hackathon-project.entity';
 import { PageResult } from '../../domain/ports/hackathons.repository';
+import { mapProjectDetailToDomain, mapProjectListToDomain } from 'modules/projects/data-access/mappers/project.mapper';
 
 export const mapHackathon = (payload: HackathonDto): Hackathon => ({
   id: payload?.id ?? 0,
@@ -22,7 +23,12 @@ export const mapHackathon = (payload: HackathonDto): Hackathon => ({
 export const mapHackathonProject = (payload: any): HackathonProject => ({
   id: payload?.id ?? 0,
   symbol: payload?.symbol ?? '',
-  project: payload?.project,
+  project: payload?.project?.tasks ? mapProjectDetailToDomain(payload.project) : mapProjectListToDomain(payload.project),
+  maxPoints: payload?.maxPoints ?? payload?.max_points ?? 0,
+  taskPoints: (payload?.taskPoints ?? payload?.task_points ?? []).map((item: any) => ({
+    taskNumber: item?.taskNumber ?? item?.task_number ?? 0,
+    points: item?.points ?? 0,
+  })),
 });
 
 export const mapHackathonStanding = (payload: any): HackathonStanding => ({

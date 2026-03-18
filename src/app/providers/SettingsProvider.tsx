@@ -8,6 +8,7 @@ import {
   settingsReducer,
 } from 'app/reducers/SettingsReducer';
 import { Config, initialConfig } from 'app/config.ts';
+import { COLOR_GROUPS } from 'app/theme/primaryColorOverride';
 import { getItemFromStore } from 'shared/lib/utils';
 import { preferencesApiClient } from 'shared/api/preferences.client';
 
@@ -22,6 +23,21 @@ interface SettingsContextInterFace {
 export const SettingsContext = createContext({} as SettingsContextInterFace);
 
 const SettingsProvider = ({ children }: PropsWithChildren) => {
+  const storedPrimaryColor = getItemFromStore('primaryColor', undefined);
+  let primaryColor: string | null | undefined =
+    typeof storedPrimaryColor === 'string' ? storedPrimaryColor : null;
+
+  const storedThemePreset = getItemFromStore('themePreset', initialConfig.themePreset);
+  const themePreset =
+    typeof storedThemePreset === 'string' ? storedThemePreset : initialConfig.themePreset;
+
+  if (!primaryColor && themePreset) {
+    const colorGroup = COLOR_GROUPS.find((group) => group.key === themePreset);
+    if (colorGroup) {
+      primaryColor = colorGroup.main;
+    }
+  }
+
   const configState: Config = {
     ...initialConfig,
     sidenavCollapsed: getItemFromStore('sidenavCollapsed', initialConfig.sidenavCollapsed),
@@ -30,6 +46,10 @@ const SettingsProvider = ({ children }: PropsWithChildren) => {
     navigationMenuType: getItemFromStore('navigationMenuType', initialConfig.navigationMenuType),
     navColor: getItemFromStore('navColor', initialConfig.navColor),
     locale: getItemFromStore('locale', initialConfig.locale),
+    themePreset: themePreset as Config['themePreset'],
+    primaryColor,
+    fontFamily: getItemFromStore('fontFamily', initialConfig.fontFamily) as Config['fontFamily'],
+    fontSize: Number(getItemFromStore('fontSize', initialConfig.fontSize)),
   };
   const [config, configDispatch] = useReducer(settingsReducer, configState);
   const { i18n } = useTranslation();

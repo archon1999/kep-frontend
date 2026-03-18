@@ -84,6 +84,7 @@ const ProjectAttempts = ({ project, hackathonId }: ProjectAttemptsProps) => {
         project={project}
         attempts={data?.data}
         isLoading={isLoading}
+        scoreMode={hackathonId ? 'hackathon' : 'kepcoin'}
         onRerun={() => mutate()}
       />
 

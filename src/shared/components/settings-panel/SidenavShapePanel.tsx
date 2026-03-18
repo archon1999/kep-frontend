@@ -6,10 +6,12 @@ import { SET_SIDENAV_SHAPE } from 'app/reducers/SettingsReducer';
 import { SidenavType } from 'app/config.ts';
 import SettingsItem from './SettingsItem';
 import SettingsPanelRadioGroup from './SettingsPanelRadioGroup';
+import { SidenavDefaultIllustration } from './panel-illustrations/SidenavDefaultIllustration';
+import { SlimIllustration } from './panel-illustrations/SlimIllustration';
 
 const SidenavShapePanel = () => {
   const {
-    config: { sidenavType, assetsDir },
+    config: { sidenavType },
     configDispatch,
   } = useSettingsContext();
 
@@ -34,10 +36,11 @@ const SidenavShapePanel = () => {
         label={
           <SettingsItem
             label="Default"
-            image={{
-              light: `${assetsDir}/images/settings-panel/sidenav-default.webp`,
-              dark: `${assetsDir}/images/settings-panel/sidenav-default-dark.webp`,
-            }}
+            image={
+              <SidenavDefaultIllustration
+                active={!disableSidenavShapeSection && sidenavType === 'default'}
+              />
+            }
             active={!disableSidenavShapeSection && sidenavType === 'default'}
           />
         }
@@ -48,10 +51,7 @@ const SidenavShapePanel = () => {
         label={
           <SettingsItem
             label="Slim"
-            image={{
-              light: `${assetsDir}/images/settings-panel/slim.webp`,
-              dark: `${assetsDir}/images/settings-panel/slim-dark.webp`,
-            }}
+            image={<SlimIllustration active={!disableSidenavShapeSection && sidenavType === 'slim'} />}
             active={!disableSidenavShapeSection && sidenavType === 'slim'}
           />
         }
