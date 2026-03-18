@@ -40,7 +40,7 @@ const KepCoverEntryCard = ({
       <Box
         sx={{
           position: 'relative',
-          aspectRatio: '16 / 7',
+          aspectRatio: '16 / 9',
           backgroundImage: `url(${entry.coverPhoto})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
@@ -70,7 +70,6 @@ const KepCoverEntryCard = ({
             icon={<IconifyIcon icon="mdi:heart" />}
             label={entry.likesCount}
             color={entry.isLiked ? 'error' : 'default'}
-            variant={entry.isLiked ? 'filled' : 'outlined'}
           />
         </Stack>
 

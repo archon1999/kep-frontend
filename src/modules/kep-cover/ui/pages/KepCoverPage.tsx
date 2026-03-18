@@ -217,8 +217,6 @@ const KepCoverPage = () => {
         {isEntriesLoading && !entriesPage ? (
           <Box
             sx={{
-              display: 'grid',
-              gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' },
               gap: 2,
             }}
           >
@@ -228,13 +226,7 @@ const KepCoverPage = () => {
           </Box>
         ) : entries.length > 0 ? (
           <>
-            <Box
-              sx={{
-                display: 'grid',
-                gridTemplateColumns: { xs: '1fr', md: 'repeat(2, minmax(0, 1fr))' },
-                gap: 2,
-              }}
-            >
+            <Stack spacing={2}>
               {entries.map((entry, index) => (
                 <KepCoverEntryCard
                   key={entry.id}
@@ -247,7 +239,7 @@ const KepCoverPage = () => {
                   loginRequired={!currentUser}
                 />
               ))}
-            </Box>
+            </Stack>
 
             <Box ref={sentinelRef} sx={{ height: 1 }} />
 
