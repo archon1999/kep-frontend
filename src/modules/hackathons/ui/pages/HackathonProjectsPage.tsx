@@ -1,11 +1,13 @@
-import { Box, Grid, Skeleton, Stack, Typography } from '@mui/material';
+import { Box, Card, CardContent, Grid, Skeleton, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
-import ProjectCard from 'modules/projects/ui/components/ProjectCard';
 import { useHackathon, useHackathonProjects } from '../../application/queries';
 import HackathonTabs from '../components/HackathonTabs';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
+import { HackathonStatus } from '../../domain/entities/hackathon.entity';
+import HackathonPageHeader from '../components/HackathonPageHeader';
+import HackathonProjectCard from '../components/HackathonProjectCard';
 
 const HackathonProjectsPage = () => {
   const { id } = useParams();
@@ -21,19 +23,28 @@ const HackathonProjectsPage = () => {
       : undefined,
   );
 
+  const lead =
+    hackathon?.status === HackathonStatus.FINISHED
+      ? t('hackathons.projectsLockedLead')
+      : hackathon?.status === HackathonStatus.NOT_STARTED
+        ? t('hackathons.beforeStartLead')
+        : t('hackathons.projectsLead');
+
   return (
     <Box sx={responsivePagePaddingSx}>
       <Stack direction="column" spacing={3}>
         {hackathon ? <HackathonTabs hackathon={hackathon} /> : <Skeleton variant="rectangular" height={56} />}
 
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <Typography variant="h5" fontWeight={800}>
-            {t('hackathons.projects')}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {t('hackathons.projectsCount', { count: projects?.length ?? 0 })}
-          </Typography>
-        </Stack>
+        {hackathon ? (
+          <HackathonPageHeader
+            hackathon={hackathon}
+            eyebrow={hackathon.title}
+            title={t('hackathons.projects')}
+            lead={lead}
+          />
+        ) : (
+          <Skeleton variant="rounded" height={260} />
+        )}
 
         <Grid container spacing={3}>
           {isLoading
@@ -44,10 +55,25 @@ const HackathonProjectsPage = () => {
             ))
             : (projects ?? []).map((item) => (
               <Grid size={{ xs: 12, md: 6, lg: 4 }} key={item.id}>
-                <ProjectCard project={item.project} />
+                <HackathonProjectCard hackathonId={id ?? ''} project={item} />
               </Grid>
             ))}
         </Grid>
+
+        {!isLoading && (!projects || projects.length === 0) ? (
+          <Card background={1} sx={{ borderRadius: 3, outline: 'none' }}>
+            <CardContent sx={{ py: 6 }}>
+              <Stack direction="column" spacing={1} alignItems="center" textAlign="center">
+                <Typography variant="h6" fontWeight={800}>
+                  {t('hackathons.emptyTitle')}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {lead}
+                </Typography>
+              </Stack>
+            </CardContent>
+          </Card>
+        ) : null}
       </Stack>
     </Box>
   );

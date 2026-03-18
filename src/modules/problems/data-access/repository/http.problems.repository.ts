@@ -10,7 +10,6 @@ import {
   mapCategories,
   mapContestPreview,
   mapDifficultyBreakdown,
-  mapHackAttemptsPage,
   mapLanguages,
   mapPeriodRating,
   mapProblemDetail,
@@ -30,7 +29,6 @@ import { problemsApiClient } from '../api/problems.client.ts';
 import {
   AttemptDetail,
   AttemptListItem,
-  HackAttempt,
   PeriodRatingEntry,
   ProblemDetail,
   ProblemListItem,
@@ -46,7 +44,6 @@ import {
 } from '../../domain/entities/problem.entity.ts';
 import {
   AttemptsListParams,
-  HackAttemptsListParams,
   PageResult,
   ProblemsListParams,
   ProblemsRatingHistoryParams,
@@ -284,15 +281,6 @@ export class HttpProblemsRepository implements ProblemsRepository {
     await problemsApiClient.rerunAttempt(attemptId);
   }
 
-  async listHackAttempts(params: HackAttemptsListParams): Promise<PageResult<HackAttempt>> {
-    const response = await problemsApiClient.listHackAttempts(mapHackAttemptsFilter(params));
-    return mapHackAttemptsPage(response);
-  }
-
-  async rerunHackAttempt(hackAttemptId: number): Promise<void> {
-    await problemsApiClient.rerunHackAttempt(hackAttemptId);
-  }
-
   mapDifficulties(stats: unknown) {
     return mapDifficultyBreakdown(stats);
   }
@@ -332,12 +320,6 @@ const mapAttemptsFilter = (params: AttemptsListParams): ApiAttemptsListParams =>
   duel_problem: params.duelProblem,
   verdict: params.verdict !== undefined ? String(params.verdict) : undefined,
   lang: params.lang || undefined,
-  page: params.page,
-  pageSize: params.pageSize,
-});
-
-const mapHackAttemptsFilter = (params: HackAttemptsListParams) => ({
-  problem_id: params.problemId !== undefined ? String(params.problemId) : undefined,
   page: params.page,
   pageSize: params.pageSize,
 });

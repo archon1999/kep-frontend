@@ -11,10 +11,7 @@ type Props = {
   page: number;
   pageSize: number;
   loading?: boolean;
-  confirmLoadingId?: number | null;
-  currentUsername?: string | null;
   onPageChange: (page: number) => void;
-  onConfirm: (duel: Duel) => void;
   onView: (duel: Duel) => void;
 };
 
@@ -25,10 +22,7 @@ const DuelsListSection = ({
   page,
   pageSize,
   loading,
-  confirmLoadingId,
-  currentUsername,
   onPageChange,
-  onConfirm,
   onView,
 }: Props) => {
   const { t } = useTranslation();
@@ -73,25 +67,13 @@ const DuelsListSection = ({
         ) : null}
 
         {!loading &&
-          duels.map((duel) => {
-            const confirmAvailable = Boolean(
-              currentUsername &&
-                duel.isConfirmed === false &&
-                duel.playerSecond?.username &&
-                duel.playerSecond.username === currentUsername,
-            );
-
-            return (
-              <DuelsListCard
-                key={duel.id}
-                duel={duel}
-                confirmAvailable={confirmAvailable}
-                confirmLoading={confirmLoadingId === duel.id}
-                onConfirm={() => onConfirm(duel)}
-                onView={() => onView(duel)}
-              />
-            );
-          })}
+          duels.map((duel) => (
+            <DuelsListCard
+              key={duel.id}
+              duel={duel}
+              onView={() => onView(duel)}
+            />
+          ))}
       </Stack>
 
       <Grid container justifyContent="center">

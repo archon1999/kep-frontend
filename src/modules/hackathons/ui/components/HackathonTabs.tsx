@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { resources, getResourceById } from 'app/routes/resources';
-import { Hackathon, HackathonStatus } from '../../domain/entities/hackathon.entity';
+import { Hackathon } from '../../domain/entities/hackathon.entity';
 
 interface HackathonTabsProps {
   hackathon?: Hackathon;
@@ -17,41 +17,33 @@ const HackathonTabs = ({ hackathon }: HackathonTabsProps) => {
   const tabs = useMemo(() => {
     if (!hackathon) return [];
 
-    const baseTabs = [
+    return [
       {
         label: t('hackathons.overview'),
         to: getResourceById(resources.Hackathon, hackathon.id),
         icon: 'mdi:trophy-variant-outline',
       },
-    ];
-
-    if (hackathon.status !== HackathonStatus.NOT_STARTED) {
-      baseTabs.push(
-        {
-          label: t('hackathons.projects'),
-          to: getResourceById(resources.HackathonProjects, hackathon.id),
-          icon: 'mdi:clipboard-text-outline',
-        },
-        {
-          label: t('hackathons.attempts'),
-          to: getResourceById(resources.HackathonAttempts, hackathon.id),
-          icon: 'mdi:code-braces-box',
-        },
-        {
-          label: t('hackathons.standings'),
-          to: getResourceById(resources.HackathonStandings, hackathon.id),
-          icon: 'mdi:podium-gold',
-        },
-      );
-    } else {
-      baseTabs.push({
+      {
+        label: t('hackathons.projects'),
+        to: getResourceById(resources.HackathonProjects, hackathon.id),
+        icon: 'mdi:clipboard-text-outline',
+      },
+      {
+        label: t('hackathons.attempts'),
+        to: getResourceById(resources.HackathonAttempts, hackathon.id),
+        icon: 'mdi:code-braces-box',
+      },
+      {
+        label: t('hackathons.standings'),
+        to: getResourceById(resources.HackathonStandings, hackathon.id),
+        icon: 'mdi:podium-gold',
+      },
+      {
         label: t('hackathons.registrants'),
         to: getResourceById(resources.HackathonRegistrants, hackathon.id),
         icon: 'mdi:account-group-outline',
-      });
-    }
-
-    return baseTabs;
+      },
+    ];
   }, [hackathon, t]);
 
   const activeValue = useMemo(
@@ -62,8 +54,17 @@ const HackathonTabs = ({ hackathon }: HackathonTabsProps) => {
   if (!hackathon) return null;
 
   return (
-    <Box sx={{ width: '100%', overflowX: 'auto' }}>
-      <Tabs value={activeValue} variant="scrollable" scrollButtons allowScrollButtonsMobile>
+    <Box
+      sx={{
+        width: '100%',
+        overflowX: 'auto',
+        p: 0.75,
+        borderRadius: 3,
+        bgcolor: 'background.paper',
+        border: (theme) => `1px solid ${theme.palette.divider}`,
+      }}
+    >
+      <Tabs value={activeValue} variant="scrollable" scrollButtons allowScrollButtonsMobile sx={{ minHeight: 52 }}>
         {tabs.map((tab) => (
           <Tab
             key={tab.to}
@@ -73,7 +74,7 @@ const HackathonTabs = ({ hackathon }: HackathonTabsProps) => {
             icon={<IconifyIcon icon={tab.icon} />}
             component={RouterLink}
             to={tab.to}
-            sx={{ fontWeight: 700, minHeight: 56 }}
+            sx={{ fontWeight: 700, minHeight: 52, borderRadius: 2 }}
           />
         ))}
       </Tabs>

@@ -31,7 +31,6 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { apiClient } from 'shared/api/http/apiClient';
 import {
   Notification as ApiNotification,
-  NotificationType as ApiNotificationType,
   NotificationBody,
 } from 'shared/api/orval/generated/endpoints/index.schemas';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
@@ -79,15 +78,20 @@ interface NotificationContent {
 
 dayjs.extend(relativeTime);
 
-const typeIconMap: Partial<Record<ApiNotificationType, KepIconName>> = {
-  [ApiNotificationType.NUMBER_1]: 'info',
-  [ApiNotificationType.NUMBER_2]: 'rating-changes',
-  [ApiNotificationType.NUMBER_3]: 'rating',
-  [ApiNotificationType.NUMBER_4]: 'challenge',
-  [ApiNotificationType.NUMBER_5]: 'challenge',
-  [ApiNotificationType.NUMBER_6]: 'arena',
-  [ApiNotificationType.NUMBER_7]: 'duel',
-  [ApiNotificationType.NUMBER_8]: 'star',
+const typeIconMap: Partial<Record<number, KepIconName>> = {
+  1: 'info',
+  2: 'rating-changes',
+  3: 'rating',
+  4: 'challenge',
+  5: 'challenge',
+  6: 'arena',
+  7: 'duel',
+  8: 'star',
+  9: 'duel',
+  10: 'duel',
+  11: 'duel',
+  12: 'duel',
+  13: 'duel',
 };
 
 const parseContent = (content?: string): NotificationContent => {
@@ -213,7 +217,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
           return [notification, ...prevNotifications];
         });
 
-        if (notification.type === ApiNotificationType.NUMBER_1) {
+        if (Number(notification.type) === 1) {
           showSystemNotification(notification.message ?? '');
         }
 
@@ -247,7 +251,8 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
     (notification: ApiNotification): NotificationView => {
       const parsedContent = parseContent(notification.content);
       const chips: ReactNode[] = [];
-      const icon = typeIconMap[notification.type] ?? 'info';
+      const notificationType = Number(notification.type ?? 0);
+      const icon = typeIconMap[notificationType] ?? 'info';
 
       let title =
         notification.message ||
@@ -256,8 +261,8 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
       let description: string | undefined;
       let action: NotificationView['action'];
 
-      switch (notification.type) {
-        case ApiNotificationType.NUMBER_2: {
+      switch (notificationType) {
+        case 2: {
           const deltaRaw =
             typeof parsedContent.delta === 'number'
               ? parsedContent.delta
@@ -287,7 +292,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
           }
           break;
         }
-        case ApiNotificationType.NUMBER_3: {
+        case 3: {
           const amountRaw =
             typeof parsedContent.kepcoin === 'number'
               ? parsedContent.kepcoin
@@ -321,7 +326,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
           }
           break;
         }
-        case ApiNotificationType.NUMBER_4: {
+        case 4: {
           title = t('notifications.challengeCallAccepted');
           description = t('notifications.challengeCallAccepted');
 
@@ -333,7 +338,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
           }
           break;
         }
-        case ApiNotificationType.NUMBER_5: {
+        case 5: {
           title = t('notifications.challengeFinished');
           description = t('notifications.challengeFinished');
 
@@ -345,7 +350,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
           }
           break;
         }
-        case ApiNotificationType.NUMBER_6: {
+        case 6: {
           title = parsedContent.arena?.title || t('notifications.arenaFinished');
           description = t('notifications.arenaFinished');
 
@@ -357,9 +362,22 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
           }
           break;
         }
-        case ApiNotificationType.NUMBER_7: {
-          title = parsedContent.duel?.title || t('notifications.duelStarts');
-          description = t('notifications.duelStarts');
+        case 7:
+        case 11:
+        case 13: {
+          title =
+            notification.message ||
+            (notificationType === 13
+              ? t('notifications.duelReminder')
+              : notificationType === 11
+                ? t('notifications.duelAccepted')
+                : t('notifications.duelStarts'));
+          description =
+            notificationType === 13
+              ? t('notifications.duelReminder')
+              : notificationType === 11
+                ? t('notifications.duelAccepted')
+                : t('notifications.duelStarts');
 
           if (parsedContent.duel?.id) {
             action = {
@@ -369,7 +387,18 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
           }
           break;
         }
-        case ApiNotificationType.NUMBER_8: {
+        case 9:
+        case 10:
+        case 12: {
+          title = notification.message || t('notifications.duelInvitationUpdate');
+          description = t('notifications.duelInvitationUpdate');
+          action = {
+            label: t('notifications.openDuels'),
+            to: resources.Duels,
+          };
+          break;
+        }
+        case 8: {
           title = parsedContent.achievementTitle || t('notifications.newAchievement');
 
           if (currentUser?.username) {

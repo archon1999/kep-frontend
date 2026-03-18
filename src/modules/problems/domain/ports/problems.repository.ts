@@ -4,7 +4,6 @@ import {
   AttemptDetail,
   AttemptListItem,
   DifficultyBreakdown,
-  HackAttempt,
   PeriodRatingEntry,
   ProblemAttemptSummary,
   ProblemCategory,
@@ -70,12 +69,6 @@ export type ProblemsStatisticsParams = {
   days?: number;
 };
 
-export type HackAttemptsListParams = {
-  problemId?: number;
-  page?: number;
-  pageSize?: number;
-};
-
 export interface ProblemsRepository {
   getProblem(id: number): Promise<ProblemDetail>;
   getProblemNext(id: number): Promise<number | null>;
@@ -122,7 +115,5 @@ export interface ProblemsRepository {
   listVerdicts(): Promise<AttemptFilterOption[]>;
   getUserStatistics(username: string, params?: ProblemsStatisticsParams): Promise<ProblemsUserStatistics>;
   rerunAttempt(attemptId: number): Promise<void>;
-  listHackAttempts(params: HackAttemptsListParams): Promise<PageResult<HackAttempt>>;
-  rerunHackAttempt(hackAttemptId: number): Promise<void>;
   mapDifficulties(stats: unknown): DifficultyBreakdown;
 }

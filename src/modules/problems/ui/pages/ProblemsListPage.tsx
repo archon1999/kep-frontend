@@ -1,8 +1,11 @@
-import { MouseEvent, SyntheticEvent, useMemo, useState } from 'react';
+import { KeyboardEvent, MouseEvent, SyntheticEvent, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { TabContext, TabList } from '@mui/lab';
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   Button,
   Card,
@@ -27,6 +30,7 @@ import {
   TextField,
   Tooltip,
   Typography,
+  InputAdornment,
   alpha,
   useTheme,
 } from '@mui/material';
@@ -64,8 +68,8 @@ import { ProblemsListParams } from '../../domain/ports/problems.repository.ts';
 const orderingOptions = [
   { label: 'problems.orderOldest', value: 'id' },
   { label: 'problems.orderNewest', value: '-id' },
-  { label: 'problems.orderEasiest', value: 'difficulty,-solved' },
-  { label: 'problems.orderHardest', value: '-difficulty,solved' },
+  { label: 'problems.orderEasiest', value: 'problem_rating,-solved' },
+  { label: 'problems.orderHardest', value: '-problem_rating,solved' },
   { label: 'problems.orderMostSolved', value: '-solved' },
   { label: 'problems.orderLeastSolved', value: 'solved' },
 ];
@@ -302,7 +306,10 @@ interface FilterCardProps {
 
 const FilterCard = ({ languages, categories, filter, onChange }: FilterCardProps) => {
   const { t } = useTranslation();
+  const theme = useTheme();
   const [filtersAnchor, setFiltersAnchor] = useState<HTMLElement | null>(null);
+  const [tagsAnchor, setTagsAnchor] = useState<HTMLElement | null>(null);
+  const [expandedTagCategories, setExpandedTagCategories] = useState<string[]>([]);
 
   const tags = useMemo(
     () =>
@@ -311,19 +318,78 @@ const FilterCard = ({ languages, categories, filter, onChange }: FilterCardProps
       ),
     [categories],
   );
+  const groupedTags = useMemo(() => {
+    const selectedCategoryId =
+      filter.category == null ? null : String(filter.category);
+
+    return categories
+      .map((category) => ({
+        id: category.id,
+        title: category.title,
+        isFocused: selectedCategoryId != null && String(category.id) === selectedCategoryId,
+        tags: (category.tags ?? []).slice().sort((left, right) => left.name.localeCompare(right.name)),
+      }))
+      .filter((category) => category.tags.length > 0)
+      .sort((left, right) => {
+        if (left.isFocused !== right.isFocused) {
+          return left.isFocused ? -1 : 1;
+        }
+
+        return left.title.localeCompare(right.title);
+      });
+  }, [categories, filter.category]);
+
+  const handleTagsKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      setTagsAnchor((current) => (current ? null : event.currentTarget));
+    }
+  };
 
   const filtersOpen = Boolean(filtersAnchor);
+  const tagsOpen = Boolean(tagsAnchor);
   const orderingValue = filter.ordering ?? 'id';
 
   const handleFiltersToggle = (event: MouseEvent<HTMLElement>) => {
     setFiltersAnchor((current) => (current ? null : event.currentTarget));
   };
 
-  const handleFiltersClose = () => setFiltersAnchor(null);
+  const handleFiltersClose = () => {
+    setFiltersAnchor(null);
+    setTagsAnchor(null);
+  };
+
+  const handleTagsToggle = (event: MouseEvent<HTMLElement>) => {
+    setTagsAnchor((current) => (current ? null : event.currentTarget));
+  };
+
+  const handleTagsClose = () => setTagsAnchor(null);
 
   const handleOrderingChange = (_: SyntheticEvent, value: string) => {
     onChange('ordering', value as string);
   };
+
+  const tagSummary = useMemo(() => {
+    const activeTagIds = filter.tags ?? [];
+
+    if (activeTagIds.length === 0) {
+      return `${groupedTags.length} categories, ${tags.length} tags`;
+    }
+
+    const activeTagNames = activeTagIds
+      .map((tagId) => tags.find((tag) => tag.id === tagId)?.name)
+      .filter((name): name is string => Boolean(name));
+
+    if (activeTagNames.length === 0) {
+      return t('problems.appliedFilters', { count: activeTagIds.length });
+    }
+
+    if (activeTagNames.length <= 2) {
+      return activeTagNames.join(', ');
+    }
+
+    return `${activeTagNames.slice(0, 2).join(', ')} +${activeTagNames.length - 2}`;
+  }, [filter.tags, groupedTags.length, t, tags]);
 
   const activeFilters = useMemo(() => {
     const items: Array<{ key: string; label: string; onRemove: () => void }> = [];
@@ -403,6 +469,21 @@ const FilterCard = ({ languages, categories, filter, onChange }: FilterCardProps
     onChange('difficulty', undefined);
     onChange('status', undefined);
   };
+  const handleTagToggle = (tagId: number) => {
+    const activeTags = filter.tags ?? [];
+    const nextTags = activeTags.includes(tagId)
+      ? activeTags.filter((id) => id !== tagId)
+      : [...activeTags, tagId];
+
+    onChange('tags', nextTags);
+  };
+
+  const handleTagCategoryToggle =
+    (categoryId: string) => (_event: SyntheticEvent, expanded: boolean) => {
+      setExpandedTagCategories((prev) =>
+        expanded ? [...prev, categoryId] : prev.filter((item) => item !== categoryId),
+      );
+    };
 
   return (
     <>
@@ -582,41 +663,36 @@ const FilterCard = ({ languages, categories, filter, onChange }: FilterCardProps
           </TextField>
 
           <TextField
-            select
             fullWidth
             size="small"
             variant="filled"
             label={t('problems.tags')}
-            value={filter.tags ?? []}
-            onChange={(event) =>
-              onChange(
-                'tags',
-                (event.target.value as any).map((item: any) => Number(item)),
-              )
-            }
-            SelectProps={{
-              multiple: true,
-              renderValue: (selected) => (
-                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                  {(selected as number[]).map((id) => {
-                    const tag = tags.find((item) => item.id === id);
-                    return <Chip key={id} size="small" label={tag?.name ?? id} />;
-                  })}
-                </Stack>
-              ),
+            value={tagSummary}
+            onClick={handleTagsToggle}
+            onKeyDown={handleTagsKeyDown}
+            slotProps={{
+              input: {
+                readOnly: true,
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconifyIcon
+                      icon={tagsOpen ? 'mdi:chevron-up' : 'mdi:chevron-down'}
+                      color={theme.palette.text.secondary}
+                    />
+                  </InputAdornment>
+                ),
+              },
             }}
-          >
-            {tags.map((tag) => (
-              <MenuItem key={tag.id} value={tag.id}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <Typography variant="body2">{tag.name}</Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {tag.category}
-                  </Typography>
-                </Stack>
-              </MenuItem>
-            ))}
-          </TextField>
+            sx={{
+              '& .MuiInputBase-root': {
+                cursor: 'pointer',
+              },
+              '& .MuiInputBase-input': {
+                cursor: 'pointer',
+                textOverflow: 'ellipsis',
+              },
+            }}
+          />
 
           <TextField
             select
@@ -667,6 +743,153 @@ const FilterCard = ({ languages, categories, filter, onChange }: FilterCardProps
               </MenuItem>
             ))}
           </TextField>
+        </Stack>
+      </Menu>
+
+      <Menu
+        id="problems-tags-menu"
+        anchorEl={tagsAnchor}
+        open={tagsOpen}
+        onClose={handleTagsClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+        MenuListProps={{ disablePadding: true }}
+        PaperProps={{
+          sx: {
+            mt: 1,
+            width: { xs: 320, sm: 420 },
+            maxHeight: 520,
+            p: 1,
+            overflow: 'hidden',
+          },
+        }}
+      >
+        <Stack spacing={1}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            sx={{ px: 1, pt: 0.5 }}
+          >
+            <Stack spacing={0.25}>
+              <Typography variant="subtitle2" fontWeight={700}>
+                {t('problems.tags')}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                {filter.tags && filter.tags.length > 0
+                  ? t('problems.appliedFilters', { count: filter.tags.length })
+                  : `${groupedTags.length} categories, ${tags.length} tags`}
+              </Typography>
+            </Stack>
+
+            <Stack direction="row" spacing={1} alignItems="center">
+              {(filter.tags?.length ?? 0) > 0 ? (
+                <Button
+                  size="small"
+                  variant="text"
+                  color="secondary"
+                  onClick={() => onChange('tags', [])}
+                >
+                  {t('problems.clearFilters')}
+                </Button>
+              ) : null}
+              <Button size="small" variant="text" color="secondary" onClick={handleTagsClose}>
+                OK
+              </Button>
+            </Stack>
+          </Stack>
+
+          <Divider />
+
+          <Box sx={{ maxHeight: 430, overflowY: 'auto', pr: 0.25 }}>
+            <Stack spacing={1}>
+              {groupedTags.map((category) => {
+                const selectedCount = category.tags.filter((tag) =>
+                  (filter.tags ?? []).includes(tag.id),
+                ).length;
+                const categoryId = String(category.id);
+                const isExpanded = expandedTagCategories.includes(categoryId);
+
+                return (
+                  <Accordion
+                    key={category.id}
+                    expanded={isExpanded}
+                    onChange={handleTagCategoryToggle(categoryId)}
+                    sx={{
+                      border: '1px solid',
+                      borderColor: category.isFocused
+                        ? alpha(theme.palette.primary.main, 0.4)
+                        : 'divider',
+                      bgcolor: category.isFocused
+                        ? alpha(theme.palette.primary.main, 0.04)
+                        : alpha(theme.palette.background.default, 0.18),
+                    }}
+                  >
+                    <AccordionSummary>
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        width="100%"
+                        spacing={1}
+                      >
+                        <Typography variant="body2" fontWeight={700}>
+                          {category.title}
+                        </Typography>
+
+                        <Stack direction="row" spacing={0.75} alignItems="center">
+                          <Chip
+                            size="small"
+                            variant="outlined"
+                            label={category.tags.length}
+                            sx={{ minWidth: 40 }}
+                          />
+                          {selectedCount > 0 ? (
+                            <Chip size="small" color="primary" label={selectedCount} />
+                          ) : null}
+                        </Stack>
+                      </Stack>
+                    </AccordionSummary>
+
+                    <AccordionDetails sx={{ pt: 0, pb: 1.5 }}>
+                      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                        {category.tags.map((tag) => {
+                          const isActive = (filter.tags ?? []).includes(tag.id);
+
+                          return (
+                            <Chip
+                              key={tag.id}
+                              size="small"
+                              clickable
+                              onClick={() => handleTagToggle(tag.id)}
+                              label={tag.name}
+                              color={isActive ? 'primary' : 'default'}
+                              variant={isActive ? 'filled' : 'outlined'}
+                              sx={
+                                isActive
+                                  ? {
+                                      fontWeight: 600,
+                                      boxShadow: `0 8px 20px ${alpha(theme.palette.primary.main, 0.18)}`,
+                                    }
+                                  : {
+                                      bgcolor: alpha(theme.palette.background.paper, 0.82),
+                                      borderColor: alpha(theme.palette.text.primary, 0.12),
+                                      '&:hover': {
+                                        borderColor: alpha(theme.palette.primary.main, 0.32),
+                                        bgcolor: alpha(theme.palette.primary.main, 0.04),
+                                      },
+                                    }
+                              }
+                            />
+                          );
+                        })}
+                      </Stack>
+                    </AccordionDetails>
+                  </Accordion>
+                );
+              })}
+            </Stack>
+          </Box>
         </Stack>
       </Menu>
     </>

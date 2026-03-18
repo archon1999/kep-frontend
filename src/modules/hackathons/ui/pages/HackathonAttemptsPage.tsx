@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { Box, Pagination, Skeleton, Stack, Typography } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { Box, Card, CardContent, Pagination, Skeleton, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
-import { useHackathon } from '../../application/queries';
-import HackathonTabs from '../components/HackathonTabs';
 import { useProjectAttempts } from 'modules/projects/application/queries';
-import HackathonAttemptsTable from '../components/HackathonAttemptsTable';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
+import { useHackathon } from '../../application/queries';
+import HackathonAttemptsTable from '../components/HackathonAttemptsTable';
+import HackathonPageHeader from '../components/HackathonPageHeader';
+import HackathonTabs from '../components/HackathonTabs';
 
 const HackathonAttemptsPage = () => {
   const { id } = useParams();
@@ -31,27 +32,46 @@ const HackathonAttemptsPage = () => {
       <Stack direction="column" spacing={3}>
         {hackathon ? <HackathonTabs hackathon={hackathon} /> : <Skeleton variant="rectangular" height={56} />}
 
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <Typography variant="h5" fontWeight={800}>
-            {t('hackathons.attempts')}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {data?.total ?? 0} {t('projects.attempts')}
-          </Typography>
-        </Stack>
-
-        <HackathonAttemptsTable attempts={data?.data} isLoading={isLoading} onRerun={() => mutate()} />
-
-        <Box display="flex" justifyContent="flex-end">
-          <Pagination
-            shape="rounded"
-            count={data?.pagesCount ?? 0}
-            page={page}
-            onChange={(_, value) => setPage(value)}
-            disabled={!data}
-            color="primary"
+        {hackathon ? (
+          <HackathonPageHeader
+            hackathon={hackathon}
+            eyebrow={hackathon.title}
+            title={t('hackathons.attempts')}
+            lead={t('hackathons.attemptsLead')}
           />
-        </Box>
+        ) : (
+          <Skeleton variant="rounded" height={260} />
+        )}
+
+        <Card background={1} sx={{ borderRadius: 3, outline: 'none' }}>
+          <CardContent sx={{ p: { xs: 3, md: 4 } }}>
+            <Stack direction="column" spacing={3}>
+              <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" spacing={1}>
+                <Typography variant="h6" fontWeight={800}>
+                  {t('hackathons.attempts')}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {data?.total ?? 0} {t('projects.attempts')}
+                </Typography>
+              </Stack>
+
+              <Box sx={{ overflowX: 'auto' }}>
+                <HackathonAttemptsTable attempts={data?.data} isLoading={isLoading} onRerun={() => mutate()} />
+              </Box>
+
+              <Box display="flex" justifyContent="flex-end">
+                <Pagination
+                  shape="rounded"
+                  count={data?.pagesCount ?? 0}
+                  page={page}
+                  onChange={(_, value) => setPage(value)}
+                  disabled={!data}
+                  color="primary"
+                />
+              </Box>
+            </Stack>
+          </CardContent>
+        </Card>
       </Stack>
     </Box>
   );

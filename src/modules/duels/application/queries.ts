@@ -3,6 +3,7 @@ import { HttpDuelsRepository } from '../data-access/repository/http.duels.reposi
 import { DuelsListParams } from '../domain/ports/duels.repository.ts';
 import {
   Duel,
+  DuelInvitation,
   DuelPreset,
   DuelReadyPlayer,
   DuelReadyStatus,
@@ -43,9 +44,16 @@ export const useDuelPresets = (username?: string | null) =>
     duelsRepository.getDuelPresets(username ?? ''),
   );
 
+export const useDuelInvitations = (params?: { page?: number; pageSize?: number }) =>
+  useSWR<PageResult<DuelInvitation>>(
+    ['duel-invitations', params?.page, params?.pageSize],
+    () => duelsRepository.getDuelInvitations(params),
+  );
+
 export const useDuelDetail = (id?: number | string) =>
   useSWR<Duel | null>(id ? ['duel-detail', id] : null, () => duelsRepository.getDuel(id!), {
     revalidateOnFocus: false,
+    refreshInterval: 5000,
   });
 
 export const useDuelResults = (id?: number | string) =>

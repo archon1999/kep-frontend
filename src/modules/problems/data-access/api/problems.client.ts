@@ -68,7 +68,4 @@ export const problemsApiClient = {
     apiClient.apiProblemsAnswerForInput(String(problemId), payload),
   checkSampleTests: (problemId: number | string, payload: any) =>
     apiClient.apiProblemsCheckSampleTests(String(problemId), payload),
-  listHackAttempts: (params: any) => apiClient.apiHackAttemptsList(params),
-  rerunHackAttempt: (hackAttemptId: number | string) =>
-    apiClient.apiHackAttemptsRerun(String(hackAttemptId), {} as any),
 };

@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Card, CardContent, LinearProgress, Stack, Typography } from '@mui/material';
+import { Card, CardContent, Divider, LinearProgress, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { useTranslation } from 'react-i18next';
 import { Hackathon, HackathonStatus } from '../../domain/entities/hackathon.entity';
+import { formatHackathonDateTime } from '../lib/format';
 
 dayjs.extend(duration);
 
@@ -21,7 +22,7 @@ const formatDuration = (diffMs: number) => {
 };
 
 const HackathonCountdownCard = ({ hackathon }: HackathonCountdownCardProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [now, setNow] = useState(dayjs());
 
   useEffect(() => {
@@ -78,6 +79,28 @@ const HackathonCountdownCard = ({ hackathon }: HackathonCountdownCardProps) => {
             color={hackathon.status === HackathonStatus.ALREADY ? 'success' : 'warning'}
             sx={{ height: 10, borderRadius: 5 }}
           />
+
+          <Divider />
+
+          <Stack direction="column" spacing={1.25}>
+            <Stack direction="row" justifyContent="space-between" spacing={2}>
+              <Typography variant="body2" color="text.secondary">
+                {t('hackathons.startsAt')}
+              </Typography>
+              <Typography variant="body2" fontWeight={700} textAlign="right">
+                {formatHackathonDateTime(hackathon.startTime, i18n.language)}
+              </Typography>
+            </Stack>
+
+            <Stack direction="row" justifyContent="space-between" spacing={2}>
+              <Typography variant="body2" color="text.secondary">
+                {t('hackathons.endsAt')}
+              </Typography>
+              <Typography variant="body2" fontWeight={700} textAlign="right">
+                {formatHackathonDateTime(hackathon.finishTime, i18n.language)}
+              </Typography>
+            </Stack>
+          </Stack>
         </Stack>
       </CardContent>
     </Card>

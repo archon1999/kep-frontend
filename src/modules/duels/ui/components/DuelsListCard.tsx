@@ -5,9 +5,6 @@ import { Duel } from '../../domain/index.ts';
 
 type Props = {
   duel: Duel;
-  confirmAvailable?: boolean;
-  confirmLoading?: boolean;
-  onConfirm?: () => void;
   onView?: () => void;
   onShowPreset?: () => void;
 };
@@ -27,9 +24,6 @@ const statusTone = (status: Duel['status']) => {
 
 const DuelsListCard = ({
   duel,
-  confirmAvailable,
-  confirmLoading,
-  onConfirm,
   onView,
   onShowPreset,
 }: Props) => {
@@ -114,19 +108,8 @@ const DuelsListCard = ({
         </Stack>
 
         <Stack direction="row" spacing={1} justifyContent="flex-end" alignItems="center" mt={2} flexWrap="wrap">
-          {confirmAvailable ? (
-            <Button
-              variant="contained"
-              color="success"
-              size="small"
-              disabled={confirmLoading}
-              onClick={onConfirm}
-            >
-              {t('duels.confirm')}
-            </Button>
-          ) : null}
           <Button variant="outlined" size="small" onClick={onView}>
-            {t('duels.view')}
+            {t('duels.openWorkspace')}
           </Button>
         </Stack>
       </CardContent>

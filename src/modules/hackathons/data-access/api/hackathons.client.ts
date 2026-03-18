@@ -1,4 +1,5 @@
 import { apiClient } from 'shared/api';
+import { instance } from 'shared/api/http/axiosInstance.ts';
 import { ApiHackathonsList200, ApiHackathonsListParams } from 'shared/api/orval/generated/endpoints/index.schemas';
 
 export const hackathonsApiClient = {
@@ -10,5 +11,9 @@ export const hackathonsApiClient = {
   submitProject: (id: string, symbol: string, payload: any) => apiClient.apiHackathonsProjectsSubmit(id, symbol, payload),
   register: (id: string, payload: any) => apiClient.apiHackathonsRegistrationCreate(id, payload),
   unregister: (id: string) => apiClient.apiHackathonsRegistrationDelete(id),
+  getRegistrants: async (id: string) => {
+    const response = await instance.get(`/api/hackathons/${id}/registrants/`);
+    return response.data;
+  },
   getStandings: (id: string) => apiClient.apiHackathonsStandings(id),
 };

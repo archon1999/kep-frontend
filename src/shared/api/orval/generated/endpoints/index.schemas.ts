@@ -115,7 +115,6 @@ export const AttemptListVerdict = {
   NUMBER_15: 15,
   NUMBER_16: 16,
   NUMBER_17: 17,
-  NUMBER_18: 18,
 } as const;
 
 export type AttemptListLang = (typeof AttemptListLang)[keyof typeof AttemptListLang];
@@ -209,7 +208,6 @@ export const AttemptDetailVerdict = {
   NUMBER_15: 15,
   NUMBER_16: 16,
   NUMBER_17: 17,
-  NUMBER_18: 18,
 } as const;
 
 export type AttemptDetailLang = (typeof AttemptDetailLang)[keyof typeof AttemptDetailLang];
@@ -994,39 +992,6 @@ export interface Faq {
   question: string;
   /** @minLength 1 */
   answer: string;
-}
-
-export type HackAttemptVerdict = (typeof HackAttemptVerdict)[keyof typeof HackAttemptVerdict];
-
-export const HackAttemptVerdict = {
-  NUMBER_MINUS_2: -2,
-  NUMBER_MINUS_1: -1,
-  NUMBER_0: 0,
-  NUMBER_1: 1,
-  NUMBER_2: 2,
-  NUMBER_3: 3,
-  NUMBER_4: 4,
-  NUMBER_5: 5,
-} as const;
-
-export interface HackAttempt {
-  readonly id?: number;
-  attemptId: number;
-  /** @minLength 1 */
-  hackType: string;
-  /** @minLength 1 */
-  hackerUsername: string;
-  readonly hackerRatingTitle?: string;
-  /** @minLength 1 */
-  defenderUsername: string;
-  readonly defenderRatingTitle?: string;
-  problemId: number;
-  /** @minLength 1 */
-  problemTitle: string;
-  verdict?: HackAttemptVerdict;
-  /** @minLength 1 */
-  verdictTitle: string;
-  readonly created?: string;
 }
 
 export interface Hackathon {
@@ -2874,30 +2839,6 @@ export type ApiDuelsReadyUsersList200 = {
   total: number;
   pagesCount: number;
   data: ReadyUser[];
-};
-
-export type ApiHackAttemptsListParams = {
-  /**
-   * problem_id
-   */
-  problem_id?: string;
-  /**
-   * Page number
-   */
-  page?: number;
-  /**
-   * Items per page
-   */
-  pageSize?: number;
-};
-
-export type ApiHackAttemptsList200 = {
-  page: number;
-  pageSize: number;
-  count: number;
-  total: number;
-  pagesCount: number;
-  data: HackAttempt[];
 };
 
 export type ApiHackathonsListParams = {

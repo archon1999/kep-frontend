@@ -32,17 +32,11 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch';
 import { ProblemAvailableLanguage, ProblemDetail } from '../../../domain/entities/problem.entity';
 import ProblemsAttemptsTable from '../ProblemsAttemptsTable';
-import { HackAttemptsCard } from './HackAttemptsCard';
 import { ProblemBody } from './ProblemBody';
 import { ProblemFooter } from './ProblemFooter';
 import { ProblemStatisticsTab } from './ProblemStatisticsTab';
 
-type TabValue = 'description' | 'attempts' | 'hacks' | 'stats';
-
-interface HackPagination {
-  page: number;
-  pageSize: number;
-}
+type TabValue = 'description' | 'attempts' | 'stats';
 
 interface ProblemDescriptionProps {
   problem: ProblemDetail;
@@ -61,11 +55,6 @@ interface ProblemDescriptionProps {
   onAttemptsPaginationChange: (model: GridPaginationModel) => void;
   isAttemptsLoading: boolean;
   onAttemptsRefresh: () => void;
-  hackAttempts: any[];
-  hackTotal: number;
-  hackPagination: HackPagination;
-  onHackPaginationChange: (pagination: HackPagination) => void;
-  onHackRefresh: () => void;
   onFavoriteToggle: () => void;
   onLike: () => void;
   onDislike: () => void;
@@ -89,11 +78,6 @@ export const ProblemDescription = ({
   onAttemptsPaginationChange,
   isAttemptsLoading,
   onAttemptsRefresh,
-  hackAttempts,
-  hackTotal,
-  hackPagination,
-  onHackPaginationChange,
-  onHackRefresh,
   onFavoriteToggle,
   onLike,
   onDislike,
@@ -150,14 +134,6 @@ export const ProblemDescription = ({
               label={t('problems.detail.stats')}
               icon={<IconifyIcon icon="mdi:chart-bar" />}
               iconPosition="start"
-            />
-            <Tab
-              sx={{ fontWeight: 500 }}
-              value="hacks"
-              label={t('problems.detail.hacksTab')}
-              icon={<IconifyIcon icon="mdi:sword-cross" />}
-              iconPosition="start"
-              disabled={!problem?.hasCheckInput}
             />
           </Tabs>
         }
@@ -442,16 +418,6 @@ export const ProblemDescription = ({
 
         {activeTab === 'stats' ? (
           <ProblemStatisticsTab problemId={problem.id} problem={problem} />
-        ) : null}
-
-        {activeTab === 'hacks' ? (
-          <HackAttemptsCard
-            attempts={hackAttempts}
-            total={hackTotal}
-            pagination={hackPagination}
-            onPaginationChange={onHackPaginationChange}
-            onRefresh={onHackRefresh}
-          />
         ) : null}
       </CardContent>
 

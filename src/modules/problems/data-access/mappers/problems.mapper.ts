@@ -8,8 +8,6 @@ import {
   AttemptJudgeSummarySubtask,
   AttemptListItem,
   DifficultyBreakdown,
-  HackAttempt,
-  HackAttemptVerdict,
   PeriodRatingEntry,
   ProblemAttemptSummary,
   ProblemAttemptStatistic,
@@ -628,22 +626,3 @@ export const mapProblemsUserStatistics = (payload: any): ProblemsUserStatistics 
     },
   };
 };
-
-export const mapHackAttempt = (payload: any): HackAttempt => ({
-  id: toNumber(payload?.id),
-  attemptId: toNumber(payload?.attemptId ?? payload?.attempt_id),
-  hackType: payload?.hackType ?? '',
-  hackerUsername: payload?.hackerUsername ?? '',
-  hackerRatingTitle: payload?.hackerRatingTitle,
-  defenderUsername: payload?.defenderUsername ?? '',
-  defenderRatingTitle: payload?.defenderRatingTitle,
-  problemId: toNumber(payload?.problemId ?? payload?.problem_id),
-  problemTitle: payload?.problemTitle ?? '',
-  verdict:
-    payload?.verdict !== undefined ? (toNumber(payload?.verdict) as HackAttemptVerdict) : undefined,
-  verdictTitle: payload?.verdictTitle ?? '',
-  created: payload?.created,
-});
-
-export const mapHackAttemptsPage = (payload: any): PageResult<HackAttempt> =>
-  mapPageResult(payload, (item) => mapHackAttempt(item));

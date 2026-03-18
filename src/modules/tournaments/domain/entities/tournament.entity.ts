@@ -25,7 +25,7 @@ export interface TournamentStageMatch {
     status?: number;
     isConfirmed?: boolean;
     isPlayer?: string;
-    playerFirst: TournamentPlayerProfile;
+    playerFirst?: TournamentPlayerProfile;
     playerSecond?: TournamentPlayerProfile;
   };
 }

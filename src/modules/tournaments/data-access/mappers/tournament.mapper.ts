@@ -36,7 +36,7 @@ const mapDuel = (payload?: TournamentStageDuel['duel']): TournamentStageMatch['d
   status: payload?.status ?? 0,
   isConfirmed: payload?.isConfirmed,
   isPlayer: payload?.isPlayer,
-  playerFirst: mapDuelPlayer(payload?.playerFirst),
+  playerFirst: payload?.playerFirst ? mapDuelPlayer(payload.playerFirst) : undefined,
   playerSecond: payload?.playerSecond ? mapDuelPlayer(payload.playerSecond) : undefined,
 });
 

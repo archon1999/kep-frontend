@@ -14,10 +14,11 @@ import {
   Typography,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
-import { ProjectAttempt, ProjectAttemptLog } from 'modules/projects/domain/entities/project.entity';
-import { projectsQueries } from 'modules/projects/application/queries';
 import { useAuth } from 'app/providers/AuthProvider';
+import { projectsQueries } from 'modules/projects/application/queries';
+import { ProjectAttempt, ProjectAttemptLog } from 'modules/projects/domain/entities/project.entity';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { formatHackathonDateTime } from '../lib/format';
 
 interface HackathonAttemptsTableProps {
   attempts: ProjectAttempt[] | undefined;
@@ -26,7 +27,7 @@ interface HackathonAttemptsTableProps {
 }
 
 const HackathonAttemptsTable = ({ attempts, isLoading, onRerun }: HackathonAttemptsTableProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { currentUser } = useAuth();
   const [log, setLog] = useState<ProjectAttemptLog | null>(null);
   const [isLogOpen, setIsLogOpen] = useState(false);
@@ -39,6 +40,7 @@ const HackathonAttemptsTable = ({ attempts, isLoading, onRerun }: HackathonAttem
 
   const handleOpenLog = async (attemptId: number) => {
     setIsFetchingLog(true);
+
     try {
       const logData = await projectsQueries.attemptsRepository.getLog(attemptId);
       setLog(logData);
@@ -71,16 +73,26 @@ const HackathonAttemptsTable = ({ attempts, isLoading, onRerun }: HackathonAttem
             ) : null}
 
             {log.tasks?.map((task) => (
-              <Box key={`${task.taskNumber}-${task.taskTitle}`} sx={{ borderRadius: 2, border: (theme) => `1px solid ${theme.palette.divider}` }}>
+              <Box
+                key={`${task.taskNumber}-${task.taskTitle}`}
+                sx={{ borderRadius: 2, border: (theme) => `1px solid ${theme.palette.divider}` }}
+              >
                 <Stack direction="row" alignItems="center" spacing={1.5} sx={{ p: 2 }}>
-                  {task.done === true && <IconifyIcon icon="material-symbols:check-circle-outline" color="success.main" />}
-                  {task.done === false && <IconifyIcon icon="material-symbols:cancel-outline" color="error.main" />}
+                  {task.done === true ? (
+                    <IconifyIcon icon="material-symbols:check-circle-outline" color="success.main" />
+                  ) : null}
+                  {task.done === false ? (
+                    <IconifyIcon icon="material-symbols:cancel-outline" color="error.main" />
+                  ) : null}
                   <Typography fontWeight={700}>
                     {task.taskNumber}. {task.taskTitle}
                   </Typography>
                 </Stack>
                 {task.log ? (
-                  <Box component="pre" sx={{ p: 2, bgcolor: 'background.neutral', borderRadius: '0 0 12px 12px', overflow: 'auto' }}>
+                  <Box
+                    component="pre"
+                    sx={{ p: 2, bgcolor: 'background.neutral', borderRadius: '0 0 12px 12px', overflow: 'auto' }}
+                  >
                     <Typography component="div" variant="body2" dangerouslySetInnerHTML={{ __html: task.log }} />
                   </Box>
                 ) : null}
@@ -152,21 +164,16 @@ const HackathonAttemptsTable = ({ attempts, isLoading, onRerun }: HackathonAttem
                 </Stack>
               </TableCell>
               <TableCell>
-                <Stack direction="row" spacing={0.25}>
-                  <Typography variant="body2" fontWeight={600}>
-                    {attempt.created ? new Date(attempt.created).toLocaleDateString() : '—'}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {attempt.created ? new Date(attempt.created).toLocaleTimeString() : ''}
-                  </Typography>
-                </Stack>
+                <Typography variant="body2" fontWeight={600}>
+                  {formatHackathonDateTime(attempt.created, i18n.language)}
+                </Typography>
               </TableCell>
               <TableCell align="right">
                 <Stack direction="row" spacing={1} justifyContent="flex-end">
                   <Button size="small" variant="outlined" onClick={() => handleOpenLog(attempt.id)}>
                     {t('projects.log')}
                   </Button>
-                  {currentUser?.isSuperuser && (
+                  {currentUser?.isSuperuser ? (
                     <Button
                       size="small"
                       variant="outlined"
@@ -176,13 +183,13 @@ const HackathonAttemptsTable = ({ attempts, isLoading, onRerun }: HackathonAttem
                     >
                       {t('projects.rerun')}
                     </Button>
-                  )}
+                  ) : null}
                 </Stack>
               </TableCell>
             </TableRow>
           ))}
 
-          {!isLoading && (!attempts || attempts.length === 0) && (
+          {!isLoading && (!attempts || attempts.length === 0) ? (
             <TableRow>
               <TableCell colSpan={8} align="center">
                 <Typography variant="body2" color="text.secondary">
@@ -190,7 +197,7 @@ const HackathonAttemptsTable = ({ attempts, isLoading, onRerun }: HackathonAttem
                 </Typography>
               </TableCell>
             </TableRow>
-          )}
+          ) : null}
         </TableBody>
       </Table>
 

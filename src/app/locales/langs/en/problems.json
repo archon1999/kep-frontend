@@ -146,8 +146,7 @@
         "onlyPython": "Only Python allowed",
         "objectNotFound": "Object not found",
         "partial": "Partial solution",
-        "notAvailableLanguage": "Language not available",
-        "hacked": "Hacked"
+        "notAvailableLanguage": "Language not available"
       },
       "backToProblems": "Back to problems",
       "columns": {
@@ -215,7 +214,6 @@
       "submitSuccess": "Solution submitted.",
       "problemTab": "Description",
       "attemptsTab": "Attempts",
-      "hacksTab": "Hacks",
       "noProblem": "Problem not found.",
       "favorited": "In favorites",
       "favorite": "Add to favorites",
@@ -232,9 +230,7 @@
       "comment": "Comment",
       "checkInput": "Check input",
       "save": "Save",
-      "hackAttempts": "Hack attempts",
       "refresh": "Refresh",
-      "noHackAttempts": "No hack attempts yet.",
       "previous": "Previous",
       "next": "Next",
       "previousProblem": "Previous problem",
@@ -275,8 +271,6 @@
       "myAttempts": "My attempts",
       "checkInputSaved": "Check input saved",
       "error": "Something went wrong",
-      "hacker": "Hacker",
-      "defender": "Defender",
       "tagsTopics": "Tags & topics",
       "similarProblems": "Similar problems",
       "codeTab": "Code",
