@@ -1,31 +1,39 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
   Box,
+  Button,
   Card,
   CardContent,
   CardHeader,
   Chip,
   Divider,
+  FormControl,
+  InputLabel,
   LinearProgress,
+  MenuItem,
+  Select,
   Stack,
   Tab,
   Tabs,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { GridPaginationModel } from '@mui/x-data-grid';
+import { getResourceById, resources } from 'app/routes/resources';
 import { useAuth } from 'app/providers/AuthProvider';
-import { useProblemSolution } from 'modules/problems/application/queries.ts';
-import { DifficultyColor } from 'modules/problems/config/difficulty';
+import { useAttemptVerdicts, useProblemSolution } from 'modules/problems/application/queries.ts';
+import { DifficultyColor, getDifficultyColor } from 'modules/problems/config/difficulty';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch';
 import { ProblemAvailableLanguage, ProblemDetail } from '../../../domain/entities/problem.entity';
 import ProblemsAttemptsTable from '../ProblemsAttemptsTable';
-import { ProblemBody } from './ProblemBody';
 import { HackAttemptsCard } from './HackAttemptsCard';
+import { ProblemBody } from './ProblemBody';
 import { ProblemFooter } from './ProblemFooter';
 import { ProblemStatisticsTab } from './ProblemStatisticsTab';
 
@@ -43,6 +51,10 @@ interface ProblemDescriptionProps {
   onTabChange: (value: TabValue) => void;
   myAttemptsOnly: boolean;
   onToggleMyAttempts: () => void;
+  attemptsLangFilter: string;
+  onAttemptsLangFilterChange: (value: string) => void;
+  attemptsVerdictFilter: string;
+  onAttemptsVerdictFilterChange: (value: string) => void;
   attempts: any[];
   attemptsTotal: number;
   attemptsPagination: GridPaginationModel;
@@ -67,6 +79,10 @@ export const ProblemDescription = ({
   onTabChange,
   myAttemptsOnly,
   onToggleMyAttempts,
+  attemptsLangFilter,
+  onAttemptsLangFilterChange,
+  attemptsVerdictFilter,
+  onAttemptsVerdictFilterChange,
   attempts,
   attemptsTotal,
   attemptsPagination,
@@ -90,6 +106,7 @@ export const ProblemDescription = ({
     problem.id,
     solutionExpanded,
   );
+  const { data: verdictOptions = [] } = useAttemptVerdicts();
 
   return (
     <Card
@@ -164,7 +181,10 @@ export const ProblemDescription = ({
                 />
                 <Chip
                   label={`${t('problems.detail.timeLimit')}: ${
-                    selectedLanguage?.timeLimit ?? problem.timeLimit ?? problem.availableLanguages?.[0]?.timeLimit ?? 0
+                    selectedLanguage?.timeLimit ??
+                    problem.timeLimit ??
+                    problem.availableLanguages?.[0]?.timeLimit ??
+                    0
                   } ms`}
                   color="default"
                   variant="filled"
@@ -213,6 +233,84 @@ export const ProblemDescription = ({
                     ))}
                     {(problem.topics ?? []).map((topic) => (
                       <Chip key={topic.id} label={topic.name} color="info" size="medium" />
+                    ))}
+                  </Stack>
+                </AccordionDetails>
+              </Accordion>
+            ) : null}
+
+            {problem.similarProblems?.length ? (
+              <Accordion>
+                <AccordionSummary
+                  sx={{ p: 1 }}
+                  expandIcon={<IconifyIcon icon="eva:arrow-ios-downward-fill" />}
+                >
+                  <Typography fontWeight={600}>{t('problems.detail.similarProblems')}</Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ p: 2, py: 1 }}>
+                  <Stack spacing={1.25}>
+                    {problem.similarProblems.map((similarProblem) => (
+                      <Card
+                        key={similarProblem.id}
+                        component={RouterLink}
+                        to={getResourceById(resources.Problem, similarProblem.id)}
+                        variant="outlined"
+                        sx={{
+                          textDecoration: 'none',
+                          color: 'inherit',
+                          transition: 'transform 120ms ease, border-color 120ms ease',
+                          '&:hover': {
+                            transform: 'translateY(-1px)',
+                            borderColor: 'primary.main',
+                          },
+                        }}
+                      >
+                        <CardContent sx={{ '&:last-child': { pb: 2 } }}>
+                          <Stack spacing={1}>
+                            <Stack
+                              direction="row"
+                              spacing={2}
+                              alignItems="flex-start"
+                              justifyContent="space-between"
+                            >
+                              <Box>
+                                <Typography fontWeight={600}>
+                                  {similarProblem.id}. {similarProblem.title}
+                                </Typography>
+                              </Box>
+                              <IconifyIcon icon="mdi:arrow-top-right" />
+                            </Stack>
+
+                            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                              <Chip
+                                label={similarProblem.difficultyTitle}
+                                color={getDifficultyColor(similarProblem.difficulty) as any}
+                                size="small"
+                              />
+                              {similarProblem.problemRating !== undefined ? (
+                                <Chip
+                                  label={similarProblem.problemRating}
+                                  color="default"
+                                  variant="outlined"
+                                  size="small"
+                                  icon={<IconifyIcon icon="mdi:speedometer" />}
+                                />
+                              ) : null}
+                              {(similarProblem.tags ?? []).slice(0, 3).map((tag) => (
+                                <Chip key={`tag-${similarProblem.id}-${tag.id}`} label={tag.name} size="small" />
+                              ))}
+                              {(similarProblem.topics ?? []).slice(0, 2).map((topic) => (
+                                <Chip
+                                  key={`topic-${similarProblem.id}-${topic.id}`}
+                                  label={topic.name}
+                                  color="info"
+                                  size="small"
+                                />
+                              ))}
+                            </Stack>
+                          </Stack>
+                        </CardContent>
+                      </Card>
                     ))}
                   </Stack>
                 </AccordionDetails>
@@ -269,16 +367,67 @@ export const ProblemDescription = ({
 
         {activeTab === 'attempts' ? (
           <>
-            {currentUser ? (
-              <Box mb={2}>
-                <OnlyMeSwitch
-                  label={t('problems.detail.onlyMyAttempts')}
-                  checked={myAttemptsOnly}
-                  onChange={() => onToggleMyAttempts()}
-                  switchSize="medium"
-                />
-              </Box>
-            ) : null}
+            <Stack direction="row" justifyContent="space-between" alignItems="flex-start" mb={2}>
+              <Stack
+                direction={{ xs: 'column', md: 'row' }}
+                spacing={2}
+                alignItems={{ xs: 'stretch', md: 'center' }}
+                flexWrap="wrap"
+                useFlexGap
+              >
+                {currentUser ? (
+                  <OnlyMeSwitch
+                    label={t('problems.detail.onlyMyAttempts')}
+                    checked={myAttemptsOnly}
+                    onChange={() => onToggleMyAttempts()}
+                    switchSize="medium"
+                  />
+                ) : null}
+
+                <FormControl size="small" sx={{ minWidth: 180 }}>
+                  <InputLabel>{t('problems.attempts.language')}</InputLabel>
+                  <Select
+                    label={t('problems.attempts.language')}
+                    value={attemptsLangFilter}
+                    onChange={(event) => onAttemptsLangFilterChange(event.target.value)}
+                  >
+                    <MenuItem value="">{t('problems.attempts.anyLanguage')}</MenuItem>
+                    {(problem.availableLanguages ?? []).map((lang) => (
+                      <MenuItem key={lang.lang} value={lang.lang}>
+                        {lang.langFull || lang.lang}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <FormControl size="small" sx={{ minWidth: 180 }}>
+                  <InputLabel>{t('problems.attempts.verdict')}</InputLabel>
+                  <Select
+                    label={t('problems.attempts.verdict')}
+                    value={attemptsVerdictFilter}
+                    onChange={(event) => onAttemptsVerdictFilterChange(event.target.value)}
+                  >
+                    <MenuItem value="">{t('problems.attempts.anyVerdict')}</MenuItem>
+                    {verdictOptions.map((option) => (
+                      <MenuItem key={option.value} value={String(option.value)}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Stack>
+
+              <Tooltip title={t('problems.detail.refresh')}>
+                <Button
+                  variant="soft"
+                  color="neutral"
+                  onClick={onAttemptsRefresh}
+                  size="large"
+                >
+                  <IconifyIcon icon="mdi:reload" />
+                </Button>
+              </Tooltip>
+            </Stack>
             <ProblemsAttemptsTable
               attempts={attempts}
               total={attemptsTotal}

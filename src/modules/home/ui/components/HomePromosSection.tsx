@@ -1,4 +1,4 @@
-import { Paper, Skeleton } from '@mui/material';
+import { Paper } from '@mui/material';
 import { A11y, Autoplay, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useHomePromos } from '../../application/queries';
@@ -9,11 +9,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 const HomePromosSection = () => {
-  const { data: slides, isLoading } = useHomePromos();
-
-  if (isLoading && !slides) {
-    return <Skeleton variant="rounded" height={260} />;
-  }
+  const { data: slides } = useHomePromos();
 
   if (!slides?.length) {
     return null;
@@ -31,7 +27,7 @@ const HomePromosSection = () => {
             ? {
                 pauseOnMouseEnter: true,
                 disableOnInteraction: false,
-                delay: 10000,
+                delay: 5000,
               }
             : false
         }
