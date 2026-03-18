@@ -177,22 +177,19 @@ export const ProblemDescription = ({
                   variant="filled"
                   size="medium"
                 />
+                {problem.problemRating !== undefined && (
+                  <Chip
+                    label={problem.problemRating}
+                    color="default"
+                    variant="outlined"
+                    size="medium"
+                    icon={<IconifyIcon icon="mdi:speedometer" />}
+                  />
+                )}
               </Stack>
             </Stack>
 
             <ProblemBody problem={problem} />
-
-            <Box>
-              {problem.problemRating !== undefined && (
-                <Chip
-                  label={problem.problemRating}
-                  color="default"
-                  variant="outlined"
-                  size="medium"
-                  icon={<IconifyIcon icon="mdi:speedometer" />}
-                />
-              )}
-            </Box>
 
             {problem.tags?.length || problem.topics?.length ? (
               <Accordion>
