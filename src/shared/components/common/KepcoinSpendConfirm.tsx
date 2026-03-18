@@ -64,13 +64,18 @@ const KepcoinSpendConfirm = ({
   const handleConfirm = async () => {
     try {
       const response = await trigger(requestBody);
+      if (response && typeof response === 'object' && 'success' in response && response.success === false) {
+        throw new Error(String(response.message ?? response.error ?? t('kepcoinSpend.error')));
+      }
+
       toast.success(t('kepcoinSpend.success'));
       onSuccess?.(response);
       await refreshCurrentUser();
       setOpen(false);
     } catch (error: any) {
       const fallbackMessage = t('kepcoinSpend.error');
-      const message = error?.response?.data?.message ?? error?.message ?? fallbackMessage;
+      const message =
+        error?.response?.data?.message ?? error?.response?.data?.error ?? error?.message ?? fallbackMessage;
       toast.error(message);
     }
   };

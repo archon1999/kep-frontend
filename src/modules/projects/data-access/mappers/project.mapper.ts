@@ -91,6 +91,8 @@ export const mapProjectAttemptToDomain = (attempt: ProjectAttemptList): ProjectA
   projectTitle: attempt.projectTitle,
   projectKepcoins: toNumber(attempt.projectKepcoins),
   kepcoins: toNumber(attempt.kepcoins),
+  hackathonPoints: toNumber((attempt as any).hackathonPoints ?? (attempt as any).hackathon_points),
+  hackathonProjectPoints: toNumber((attempt as any).hackathonProjectPoints ?? (attempt as any).hackathon_project_points),
   verdict: attempt.verdict,
   verdictTitle: attempt.verdictTitle,
   time: attempt.time,

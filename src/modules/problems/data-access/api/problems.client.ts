@@ -1,3 +1,5 @@
+import { apiClient } from 'shared/api';
+import { axiosMutator } from 'shared/api/http/axiosMutator.ts';
 import {
   ApiAttemptsListParams,
   ApiProblemsLastContestParams,
@@ -8,7 +10,6 @@ import {
   ProblemsCategory,
   ProblemsRating,
 } from 'shared/api/orval/generated/endpoints/index.schemas';
-import { apiClient } from 'shared/api';
 
 export const problemsApiClient = {
   list: (params: ApiProblemsListParams) => apiClient.apiProblemsList(params),
@@ -18,9 +19,11 @@ export const problemsApiClient = {
   listLanguages: () => apiClient.apiProblemsLangs(),
   listCategories: () => apiClient.apiCategoriesList() as Promise<ProblemsCategory[]>,
   listMostViewed: () => apiClient.apiProblemsMostViewed(),
-  getLastContest: (params?: ApiProblemsLastContestParams) => apiClient.apiProblemsLastContest(params),
+  getLastContest: (params?: ApiProblemsLastContestParams) =>
+    apiClient.apiProblemsLastContest(params),
   listUserAttempts: (params: ApiAttemptsListParams) => apiClient.apiAttemptsList(params),
-  getUserRating: (username: string) => apiClient.apiProblemsRatingRead(username) as Promise<ProblemsRating>,
+  getUserRating: (username: string) =>
+    apiClient.apiProblemsRatingRead(username) as Promise<ProblemsRating>,
   getUserStatistics: (username: string, params?: { year?: number; days?: number }) =>
     apiClient.apiProblemsRatingProblemsStatistics(username, { params }),
   listRating: (params: ApiProblemsRatingListParams) => apiClient.apiProblemsRatingList(params),
@@ -38,11 +41,16 @@ export const problemsApiClient = {
     apiClient.apiAttemptsPurchaseTest(String(attemptId), {} as AttemptListBody),
   listAttempts: (params: ApiAttemptsListParams) => apiClient.apiAttemptsList(params),
   listVerdicts: () => apiClient.apiAttemptsVerdicts(),
-  rerunAttempt: (attemptId: number) => apiClient.apiAttemptsRerun(attemptId.toString(), {} as AttemptListBody),
-  likeProblem: (problemId: number | string) => apiClient.apiProblemsLike(String(problemId), {} as any),
-  dislikeProblem: (problemId: number | string) => apiClient.apiProblemsDislike(String(problemId), {} as any),
-  addFavorite: (problemId: number | string) => apiClient.apiProblemsAddFavorites(String(problemId), {} as any),
-  removeFavorite: (problemId: number | string) => apiClient.apiProblemsDeleteFavorites(String(problemId)),
+  rerunAttempt: (attemptId: number) =>
+    apiClient.apiAttemptsRerun(attemptId.toString(), {} as AttemptListBody),
+  likeProblem: (problemId: number | string) =>
+    apiClient.apiProblemsLike(String(problemId), {} as any),
+  dislikeProblem: (problemId: number | string) =>
+    apiClient.apiProblemsDislike(String(problemId), {} as any),
+  addFavorite: (problemId: number | string) =>
+    apiClient.apiProblemsAddFavorites(String(problemId), {} as any),
+  removeFavorite: (problemId: number | string) =>
+    apiClient.apiProblemsDeleteFavorites(String(problemId)),
   listTags: () => apiClient.apiTagsList(),
   listTopics: () => apiClient.apiProblemsTopics(),
   addTag: (problemId: number | string, tagId: number) =>
@@ -59,6 +67,10 @@ export const problemsApiClient = {
   purchaseCheckSamples: (problemId: number | string) =>
     apiClient.apiProblemsPurchaseCheckSamples(String(problemId), {} as any),
   getStatistics: (problemId: number | string) => apiClient.apiProblemsStatistics(String(problemId)),
+  listSolvers: (
+    problemId: number | string,
+    params?: { ordering?: string; page?: number; pageSize?: number },
+  ) => axiosMutator<any>({ url: `/api/problems/${problemId}/solvers/`, method: 'GET', params }),
   saveCheckInput: (problemId: number | string, payload: any) =>
     apiClient.apiProblemsSaveCheckInput(String(problemId), payload),
   submit: (problemId: number | string, payload: any) =>

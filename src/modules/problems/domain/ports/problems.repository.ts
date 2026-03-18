@@ -1,7 +1,7 @@
 import { ApiProblemsListParams } from 'shared/api/orval/generated/endpoints/index.schemas';
 import {
-  AttemptFilterOption,
   AttemptDetail,
+  AttemptFilterOption,
   AttemptListItem,
   DifficultyBreakdown,
   PeriodRatingEntry,
@@ -12,13 +12,15 @@ import {
   ProblemLanguageOption,
   ProblemListItem,
   ProblemSolution,
+  ProblemSolver,
+  ProblemSolversOrdering,
   ProblemStatistics,
   ProblemTag,
   ProblemTopic,
   ProblemVoteResult,
+  ProblemsRatingHistoryEntry,
   ProblemsRatingRow,
   ProblemsRatingSummary,
-  ProblemsRatingHistoryEntry,
   ProblemsUserStatistics,
 } from '../entities/problem.entity.ts';
 
@@ -69,6 +71,12 @@ export type ProblemsStatisticsParams = {
   days?: number;
 };
 
+export type ProblemSolversParams = {
+  ordering?: ProblemSolversOrdering;
+  page?: number;
+  pageSize?: number;
+};
+
 export interface ProblemsRepository {
   getProblem(id: number): Promise<ProblemDetail>;
   getProblemNext(id: number): Promise<number | null>;
@@ -87,17 +95,28 @@ export interface ProblemsRepository {
   purchaseSolution(problemId: number): Promise<void>;
   purchaseCheckSamples(problemId: number): Promise<void>;
   getProblemStatistics(problemId: number): Promise<ProblemStatistics>;
+  listProblemSolvers(
+    problemId: number,
+    params?: ProblemSolversParams,
+  ): Promise<PageResult<ProblemSolver>>;
   saveCheckInput(problemId: number, source: string): Promise<void>;
   submitSolution(
     problemId: number,
     payload: { sourceCode: string; lang: string; [key: string]: unknown },
   ): Promise<void>;
-  runCustomTest(payload: { sourceCode: string; lang: string; inputData: string }): Promise<{ id?: number }>;
+  runCustomTest(payload: {
+    sourceCode: string;
+    lang: string;
+    inputData: string;
+  }): Promise<{ id?: number }>;
   answerForInput(
     problemId: number,
     payload: { input_data: string; sourceCode?: string; lang?: string },
   ): Promise<{ id?: number }>;
-  checkSampleTests(problemId: number, payload: { sourceCode: string; lang: string }): Promise<{ id?: number }>;
+  checkSampleTests(
+    problemId: number,
+    payload: { sourceCode: string; lang: string },
+  ): Promise<{ id?: number }>;
   list(params: ProblemsListParams): Promise<PageResult<ProblemListItem>>;
   listLanguages(): Promise<ProblemLanguageOption[]>;
   listCategories(): Promise<ProblemCategory[]>;
@@ -107,13 +126,18 @@ export interface ProblemsRepository {
   getUserRating(username: string): Promise<ProblemsRatingSummary | null>;
   listRating(params: ProblemsRatingParams): Promise<PageResult<ProblemsRatingRow>>;
   listPeriodRating(period: 'today' | 'week' | 'month'): Promise<PeriodRatingEntry[]>;
-  listRatingHistory(params: ProblemsRatingHistoryParams): Promise<PageResult<ProblemsRatingHistoryEntry>>;
+  listRatingHistory(
+    params: ProblemsRatingHistoryParams,
+  ): Promise<PageResult<ProblemsRatingHistoryEntry>>;
   listAttempts(params: AttemptsListParams): Promise<PageResult<AttemptListItem>>;
   getAttempt(attemptId: number): Promise<AttemptDetail>;
   purchaseAttempt(attemptId: number): Promise<void>;
   purchaseAttemptTest(attemptId: number): Promise<void>;
   listVerdicts(): Promise<AttemptFilterOption[]>;
-  getUserStatistics(username: string, params?: ProblemsStatisticsParams): Promise<ProblemsUserStatistics>;
+  getUserStatistics(
+    username: string,
+    params?: ProblemsStatisticsParams,
+  ): Promise<ProblemsUserStatistics>;
   rerunAttempt(attemptId: number): Promise<void>;
   mapDifficulties(stats: unknown): DifficultyBreakdown;
 }

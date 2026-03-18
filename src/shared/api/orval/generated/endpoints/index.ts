@@ -162,6 +162,7 @@ import type {
   EmptyBody,
   Faq,
   Hackathon,
+  HackathonProjectResponse,
   InterestingFact,
   KepCoinBalance,
   KepCoverUser,
@@ -1372,16 +1373,22 @@ export const getSnippetsAPI = () => {
     return axiosMutator<Hackathon>({ url: `/api/hackathons/${id}/attempts/`, method: 'GET' }, options);
   };
 
-  const apiHackathonsProjects = (id: string, options?: SecondParameter<typeof axiosMutator<Hackathon>>) => {
-    return axiosMutator<Hackathon>({ url: `/api/hackathons/${id}/projects/`, method: 'GET' }, options);
+  const apiHackathonsProjects = (
+    id: string,
+    options?: SecondParameter<typeof axiosMutator<HackathonProjectResponse[]>>,
+  ) => {
+    return axiosMutator<HackathonProjectResponse[]>({ url: `/api/hackathons/${id}/projects/`, method: 'GET' }, options);
   };
 
   const apiHackathonsProject = (
     id: string,
     symbol: string,
-    options?: SecondParameter<typeof axiosMutator<Hackathon>>,
+    options?: SecondParameter<typeof axiosMutator<HackathonProjectResponse>>,
   ) => {
-    return axiosMutator<Hackathon>({ url: `/api/hackathons/${id}/projects/${symbol}/`, method: 'GET' }, options);
+    return axiosMutator<HackathonProjectResponse>(
+      { url: `/api/hackathons/${id}/projects/${symbol}/`, method: 'GET' },
+      options,
+    );
   };
 
   const apiHackathonsProjectsSubmit = (

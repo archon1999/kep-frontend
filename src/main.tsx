@@ -9,6 +9,7 @@ import NotistackProvider from 'app/providers/NotistackProvider';
 import SettingsPanelProvider from 'app/providers/SettingsPanelProvider';
 import SettingsProvider from 'app/providers/SettingsProvider';
 import ThemeProvider from 'app/providers/ThemeProvider';
+import VisionModeProvider from 'app/providers/VisionModeProvider';
 import router from 'app/routes/router';
 import SWRConfiguration from 'shared/services/configuration/SWRConfiguration';
 
@@ -16,17 +17,19 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <SWRConfiguration>
       <SettingsProvider>
-        <ThemeProvider>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <NotistackProvider>
-              <BreakpointsProvider>
-                <SettingsPanelProvider>
-                  <RouterProvider router={router} />
-                </SettingsPanelProvider>
-              </BreakpointsProvider>
-            </NotistackProvider>
-          </LocalizationProvider>
-        </ThemeProvider>
+        <VisionModeProvider>
+          <ThemeProvider>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <NotistackProvider>
+                <BreakpointsProvider>
+                  <SettingsPanelProvider>
+                    <RouterProvider router={router} />
+                  </SettingsPanelProvider>
+                </BreakpointsProvider>
+              </NotistackProvider>
+            </LocalizationProvider>
+          </ThemeProvider>
+        </VisionModeProvider>
       </SettingsProvider>
     </SWRConfiguration>
   </React.StrictMode>,

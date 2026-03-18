@@ -51,6 +51,8 @@ export interface ProjectAttempt {
   projectTitle: string;
   projectKepcoins?: number;
   kepcoins?: number;
+  hackathonPoints?: number;
+  hackathonProjectPoints?: number;
   verdict?: number;
   verdictTitle: string;
   time?: number;

@@ -5,7 +5,7 @@ export const parseRoutePath = (path: string) => path.split('/').pop() || '/';
 
 export const getItemFromStore = (
   key: string,
-  defaultValue?: string | boolean,
+  defaultValue?: unknown,
   store = localStorage,
 ) => {
   try {

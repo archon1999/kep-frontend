@@ -1,9 +1,19 @@
 import { PropsWithChildren } from 'react';
-import { Box, Button, Stack, Toolbar, Typography, paperClasses } from '@mui/material';
+import {
+  Box,
+  Button,
+  Chip,
+  Divider,
+  Stack,
+  Toolbar,
+  Typography,
+  paperClasses,
+} from '@mui/material';
 import Drawer from '@mui/material/Drawer';
+import { useVisionMode } from 'app/providers/VisionModeProvider';
 import { useSettingsPanelContext } from 'app/providers/SettingsPanelProvider';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
-import { RESET } from 'app/reducers/SettingsReducer';
+import { RESET, SET_PRIMARY_COLOR } from 'app/reducers/SettingsReducer';
 import { blue, green } from 'app/theme/palette/colors';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import SimpleBar from 'shared/components/base/SimpleBar';
@@ -12,8 +22,10 @@ import { cssVarRgba } from 'shared/lib/utils';
 import NavColorPanel from './NavColorPanel';
 import NavigationMenuPanel from './NavigationMenuPanel';
 import SidenavShapePanel from './SidenavShapePanel';
-import ThemeModeToggleTab from './ThemeModeToggleTab';
 import TopnavShapePanel from './TopnavShapePanel';
+import VisionModePanel from './VisionModePanel';
+import FontSettingsPanel from './font-settings/FontSettingsPanel';
+import ThemeList from './theme-preset/ThemeList';
 
 const SettingsPanel = () => {
   const {
@@ -21,6 +33,7 @@ const SettingsPanel = () => {
     configDispatch,
   } = useSettingsContext();
   const { resetTheme } = useThemeMode();
+  const { setMode } = useVisionMode();
   const {
     settingsPanelConfig: {
       openSettingPanel,
@@ -34,9 +47,9 @@ const SettingsPanel = () => {
 
   const handleReset = () => {
     resetTheme();
-    configDispatch({
-      type: RESET,
-    });
+    configDispatch({ type: RESET });
+    configDispatch({ type: SET_PRIMARY_COLOR, payload: blue[500] });
+    setMode('normal');
   };
 
   return (
@@ -119,12 +132,14 @@ const SettingsPanel = () => {
               <Stack
                 direction="column"
                 sx={{
-                  gap: 5,
+                  gap: 3,
                 }}
               >
-                <Section title="Theme Mode">
-                  <ThemeModeToggleTab />
+                <Section title="Theme" isNew>
+                  <ThemeList />
                 </Section>
+
+                <Divider sx={{ mx: -3 }} />
 
                 <Section title="Navigation Menu" disable={disableNavigationMenuSection}>
                   <NavigationMenuPanel />
@@ -140,43 +155,28 @@ const SettingsPanel = () => {
                     <TopnavShapePanel />
                   </Section>
                 )}
+
+                <Divider sx={{ mx: -3 }} />
+
                 <Section title="Nav Color" disable={disableNavColorSection}>
                   <NavColorPanel />
+                </Section>
+
+                <Divider sx={{ mx: -3 }} />
+
+                <Section title="Font" isNew>
+                  <FontSettingsPanel />
+                </Section>
+
+                <Divider sx={{ mx: -3 }} />
+
+                <Section title="Vision Mode" isNew>
+                  <VisionModePanel />
                 </Section>
               </Stack>
             </Box>
           </SimpleBar>
         </Box>
-        <Toolbar
-          sx={{
-            display: 'block',
-            borderTop: 1,
-            borderColor: 'dividerLight',
-            py: 2,
-          }}
-        >
-          <Typography
-            variant="subtitle1"
-            sx={{
-              fontWeight: 700,
-              background: `linear-gradient(92.45deg, #20DE99 -0.35%, #7DB1F5 43.54%, #5A9EF6 78.08%)`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
-            And more
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{
-              background: `linear-gradient(92.45deg, #5A9EF6 -0.35%, #7DB1F5 43.54%, #20DE99 78.91%)`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
-            Coming Soon...
-          </Typography>
-        </Toolbar>
       </Drawer>
     </div>
   );
@@ -187,8 +187,9 @@ export default SettingsPanel;
 const Section = ({
   title,
   disable,
+  isNew,
   children,
-}: PropsWithChildren<{ title: string; disable?: boolean }>) => {
+}: PropsWithChildren<{ title: string; disable?: boolean; isNew?: boolean }>) => {
   return (
     <Box
       sx={[
@@ -202,18 +203,22 @@ const Section = ({
         },
       ]}
     >
-      <Typography
-        variant="subtitle1"
-        sx={[
-          {
-            fontWeight: 700,
-            mb: 2,
-          },
-          !!disable && { mb: 1, color: 'text.disabled' },
-        ]}
-      >
-        {title}
-      </Typography>
+      <Stack direction="row" alignItems="center" sx={[{ mb: 2 }, !!disable && { mb: 1 }]}>
+        <Typography
+          variant="subtitle1"
+          sx={[
+            {
+              fontWeight: 700,
+            },
+            !!disable && { color: 'text.disabled' },
+          ]}
+        >
+          {title}
+        </Typography>
+        {isNew && (
+          <Chip size="xsmall" label="new" color="warning" sx={{ textTransform: 'capitalize', ml: 1 }} />
+        )}
+      </Stack>
       {disable && (
         <Stack direction="row" sx={{ alignItems: 'center', gap: 0.5, mb: 2, color: 'info.main' }}>
           <IconifyIcon icon="material-symbols:info-outline" sx={{ fontSize: 16 }} />

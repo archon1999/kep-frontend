@@ -19,23 +19,26 @@ const ProjectsListPage = () => {
   const { currentUser } = useAuth();
   const { data: projects, isLoading } = useProjectsList();
   const { data: attempts } = useUserProjectAttempts(currentUser?.username);
+  const visibleProjects = (projects ?? []).filter(
+    (project) => currentUser?.isSuperuser || !project.inThePipeline,
+  );
 
-  const showEmptyState = !isLoading && (!projects || projects.length === 0);
-  const progressLookup = buildProjectProgressLookup(projects ?? [], attempts);
+  const showEmptyState = !isLoading && visibleProjects.length === 0;
+  const progressLookup = buildProjectProgressLookup(visibleProjects, attempts);
   const sections = PROJECT_CATEGORY_ORDER.map((category) => ({
     category,
     meta: PROJECT_CATEGORY_META[category],
-    projects: (projects ?? []).filter((project) => getProjectCategory(project) === category),
+    projects: visibleProjects.filter((project) => getProjectCategory(project) === category),
   })).filter((section) => section.projects.length > 0);
 
-  const totalProjects = projects?.length ?? 0;
-  const startedProjects = (projects ?? []).filter(
+  const totalProjects = visibleProjects.length;
+  const startedProjects = visibleProjects.filter(
     (project) => (progressLookup[project.id]?.attemptCount ?? 0) > 0,
   ).length;
-  const completedProjects = (projects ?? []).filter(
+  const completedProjects = visibleProjects.filter(
     (project) => progressLookup[project.id]?.completed,
   ).length;
-  const rewardPool = (projects ?? []).reduce(
+  const rewardPool = visibleProjects.reduce(
     (sum, project) => sum + Number(project.kepcoins ?? 0),
     0,
   );

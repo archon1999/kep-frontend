@@ -67,7 +67,7 @@ const HackathonProjectPage = () => {
               },
               {
                 label: t('hackathons.points'),
-                value: <HackathonPointsBadge value={getHackathonProjectPoints(project)} color="primary" />,
+                value: <HackathonPointsBadge value={getHackathonProjectPoints(hackathonProject)} color="primary" />,
                 icon: 'mdi:star-circle-outline',
               },
               {
@@ -94,7 +94,7 @@ const HackathonProjectPage = () => {
               <Stack direction="column" spacing={3}>
                 <Card background={1} sx={{ borderRadius: 3, outline: 'none' }}>
                   <CardContent sx={{ p: { xs: 3, md: 4 } }}>
-                    <HackathonProjectDescription project={project} symbol={hackathonProject?.symbol ?? symbol ?? ''} />
+                    <HackathonProjectDescription hackathonProject={hackathonProject!} />
                   </CardContent>
                 </Card>
 
@@ -117,8 +117,7 @@ const HackathonProjectPage = () => {
               <HackathonCountdownCard hackathon={hackathon} />
               {project ? (
                 <HackathonProjectSidebar
-                  project={project}
-                  symbol={hackathonProject?.symbol ?? symbol ?? ''}
+                  hackathonProject={hackathonProject!}
                   hackathon={hackathon}
                   onSubmitted={() => mutate()}
                 />

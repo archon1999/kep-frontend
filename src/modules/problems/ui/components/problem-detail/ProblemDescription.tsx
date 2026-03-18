@@ -24,8 +24,8 @@ import {
   Typography,
 } from '@mui/material';
 import { GridPaginationModel } from '@mui/x-data-grid';
-import { getResourceById, resources } from 'app/routes/resources';
 import { useAuth } from 'app/providers/AuthProvider';
+import { getResourceById, resources } from 'app/routes/resources';
 import { useAttemptVerdicts, useProblemSolution } from 'modules/problems/application/queries.ts';
 import { DifficultyColor, getDifficultyColor } from 'modules/problems/config/difficulty';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
@@ -34,9 +34,10 @@ import { ProblemAvailableLanguage, ProblemDetail } from '../../../domain/entitie
 import ProblemsAttemptsTable from '../ProblemsAttemptsTable';
 import { ProblemBody } from './ProblemBody';
 import { ProblemFooter } from './ProblemFooter';
+import { ProblemSolversTab } from './ProblemSolversTab';
 import { ProblemStatisticsTab } from './ProblemStatisticsTab';
 
-type TabValue = 'description' | 'attempts' | 'stats';
+type TabValue = 'description' | 'attempts' | 'stats' | 'solvers';
 
 interface ProblemDescriptionProps {
   problem: ProblemDetail;
@@ -133,6 +134,13 @@ export const ProblemDescription = ({
               value="stats"
               label={t('problems.detail.stats')}
               icon={<IconifyIcon icon="mdi:chart-bar" />}
+              iconPosition="start"
+            />
+            <Tab
+              sx={{ fontWeight: 500 }}
+              value="solvers"
+              label={t('problems.detail.solversTab')}
+              icon={<IconifyIcon icon="mdi:account-group" />}
               iconPosition="start"
             />
           </Tabs>
@@ -270,7 +278,11 @@ export const ProblemDescription = ({
                                 />
                               ) : null}
                               {(similarProblem.tags ?? []).slice(0, 3).map((tag) => (
-                                <Chip key={`tag-${similarProblem.id}-${tag.id}`} label={tag.name} size="small" />
+                                <Chip
+                                  key={`tag-${similarProblem.id}-${tag.id}`}
+                                  label={tag.name}
+                                  size="small"
+                                />
                               ))}
                               {(similarProblem.topics ?? []).slice(0, 2).map((topic) => (
                                 <Chip
@@ -391,12 +403,7 @@ export const ProblemDescription = ({
               </Stack>
 
               <Tooltip title={t('problems.detail.refresh')}>
-                <Button
-                  variant="soft"
-                  color="neutral"
-                  onClick={onAttemptsRefresh}
-                  size="large"
-                >
+                <Button variant="soft" color="neutral" onClick={onAttemptsRefresh} size="large">
                   <IconifyIcon icon="mdi:reload" />
                 </Button>
               </Tooltip>
@@ -416,6 +423,8 @@ export const ProblemDescription = ({
         {activeTab === 'stats' ? (
           <ProblemStatisticsTab problemId={problem.id} problem={problem} />
         ) : null}
+
+        {activeTab === 'solvers' ? <ProblemSolversTab problemId={problem.id} /> : null}
       </CardContent>
 
       {activeTab === 'description' ? (

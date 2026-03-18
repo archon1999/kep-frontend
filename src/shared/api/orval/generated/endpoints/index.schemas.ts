@@ -1020,6 +1020,22 @@ export interface Hackathon {
   readonly isParticipated?: string;
 }
 
+export interface HackathonProjectTaskPoint {
+  readonly taskNumber?: number;
+  readonly task_number?: number;
+  readonly points?: number;
+}
+
+export interface HackathonProjectResponse {
+  readonly id?: number;
+  symbol: string;
+  project: ProjectList | ProjectDetail;
+  readonly maxPoints?: number;
+  readonly max_points?: number;
+  readonly taskPoints?: HackathonProjectTaskPoint[];
+  readonly task_points?: HackathonProjectTaskPoint[];
+}
+
 export interface KepCoverUser {
   readonly id?: number;
   /**
@@ -1489,6 +1505,8 @@ export interface ProjectAttemptList {
   /** @minLength 1 */
   projectTitle: string;
   readonly projectKepcoins?: string;
+  readonly hackathonPoints?: string;
+  readonly hackathonProjectPoints?: string;
   readonly hackathonProject?: string;
   readonly kepcoins?: string;
   verdict?: ProjectAttemptListVerdict;

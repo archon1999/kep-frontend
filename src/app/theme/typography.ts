@@ -1,7 +1,12 @@
 import { TypographyVariantsOptions } from '@mui/material/styles';
+import { FontFamily, initialConfig } from 'app/config.ts';
 
-const typography: TypographyVariantsOptions = {
-  fontFamily: ['Plus Jakarta Sans', 'Manrope', 'sans-serif', 'Spline Sans Mono', 'monospace'].join(','),
+const createTypography = (
+  fontFamily: FontFamily = initialConfig.fontFamily,
+  fontSize: number = initialConfig.fontSize,
+): TypographyVariantsOptions => ({
+  fontFamily: [fontFamily, 'Manrope', 'sans-serif', 'Spline Sans Mono', 'monospace'].join(','),
+  fontSize,
   h1: {
     fontWeight: 700,
     fontSize: '3rem', // 48px
@@ -69,6 +74,6 @@ const typography: TypographyVariantsOptions = {
     lineHeight: 1.2,
     textTransform: 'uppercase',
   },
-};
+});
 
-export default typography;
+export default createTypography;

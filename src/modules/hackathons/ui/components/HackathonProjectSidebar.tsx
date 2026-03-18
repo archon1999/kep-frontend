@@ -17,15 +17,14 @@ import { Link as RouterLink } from 'react-router-dom';
 import { toast } from 'sonner';
 import { getResourceById, getResourceByParams, resources } from 'app/routes/resources';
 import { projectsQueries } from 'modules/projects/application/queries';
-import { Project } from 'modules/projects/domain/entities/project.entity';
 import { Hackathon, HackathonStatus } from '../../domain/entities/hackathon.entity';
+import { HackathonProject } from '../../domain/entities/hackathon-project.entity';
 import { formatHackathonDateTime, getHackathonProjectPoints } from '../lib/format';
 import { formatProjectUploadHint, resolveProjectFileAccept } from 'modules/projects/ui/lib/upload.ts';
 import HackathonPointsBadge from './HackathonPointsBadge';
 
 interface HackathonProjectSidebarProps {
-  project: Project;
-  symbol: string;
+  hackathonProject: HackathonProject;
   hackathon?: Hackathon;
   onSubmitted?: () => void;
 }
@@ -33,12 +32,12 @@ interface HackathonProjectSidebarProps {
 const MAX_FILE_SIZE = 1024 * 1024; // 1 MB
 
 const HackathonProjectSidebar = ({
-  project,
-  symbol,
+  hackathonProject,
   hackathon,
   onSubmitted,
 }: HackathonProjectSidebarProps) => {
   const { t, i18n } = useTranslation();
+  const project = hackathonProject.project;
   const [selectedTechnology, setSelectedTechnology] = useState(project.availableTechnologies[0]?.technology ?? '');
   const [file, setFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -52,7 +51,7 @@ const HackathonProjectSidebar = ({
     () => file?.name ?? `${t('projects.file')} ${formatProjectUploadHint(fileAccept)}`,
     [file?.name, fileAccept, t],
   );
-  const totalPoints = getHackathonProjectPoints(project);
+  const totalPoints = getHackathonProjectPoints(hackathonProject);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = event.target.files?.[0];
@@ -76,7 +75,7 @@ const HackathonProjectSidebar = ({
         technology: selectedTechnology,
         file,
         hackathonId: hackathon.id,
-        projectSymbol: symbol,
+        projectSymbol: hackathonProject.symbol,
       });
       setFile(null);
       onSubmitted?.();
@@ -231,7 +230,7 @@ const HackathonProjectSidebar = ({
               <Typography variant="body2" fontWeight={700}>
                 {t('hackathons.projectSymbol')}
               </Typography>
-              <Chip label={symbol} size="small" variant="outlined" />
+              <Chip label={hackathonProject.symbol} size="small" variant="outlined" />
             </Stack>
 
             <Stack direction="row" justifyContent="space-between" spacing={1} alignItems="center">

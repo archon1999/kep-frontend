@@ -237,11 +237,6 @@ export const routes: RouteObject[] = [
             handle: { titleKey: 'pageTitles.duels' },
           },
           {
-            path: resources.Duel,
-            element: <DuelDetailPage />,
-            handle: { titleKey: 'pageTitles.duel', fallbackTitleKey: 'pageTitles.duels' },
-          },
-          {
             path: resources.DuelsRating,
             element: <DuelsRatingPage />,
             handle: { titleKey: 'pageTitles.duelsRating' },
@@ -464,6 +459,15 @@ export const routes: RouteObject[] = [
           </Suspense>
         ),
         handle: { titleKey: 'pageTitles.contestProblem', fallbackTitleKey: 'pageTitles.contests' },
+      },
+      {
+        path: resources.Duel,
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <DuelDetailPage />
+          </Suspense>
+        ),
+        handle: { titleKey: 'pageTitles.duel', fallbackTitleKey: 'pageTitles.duels' },
       },
 
       ...legacyRedirectRoutes,

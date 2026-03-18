@@ -2,6 +2,7 @@ import useSWR from 'swr';
 import { HttpProblemsRepository } from '../data-access/repository/http.problems.repository.ts';
 import {
   AttemptsListParams,
+  ProblemSolversParams,
   ProblemsListParams,
   ProblemsRatingHistoryParams,
   ProblemsRatingParams,
@@ -31,7 +32,9 @@ export const useUserProblemsAttempts = (username?: string, pageSize = 10) =>
   );
 
 export const useUserProblemsRating = (username?: string) =>
-  useSWR(username ? ['problems-user-rating', username] : null, () => problemsRepository.getUserRating(username!));
+  useSWR(username ? ['problems-user-rating', username] : null, () =>
+    problemsRepository.getUserRating(username!),
+  );
 
 export const useProblemsRating = (params: ProblemsRatingParams) =>
   useSWR(['problems-rating', params], () => problemsRepository.listRating(params));
@@ -51,7 +54,8 @@ export const useAttemptsList = (params: AttemptsListParams) =>
     revalidateOnFocus: false,
   });
 
-export const useAttemptVerdicts = () => useSWR(['attempts-verdicts'], () => problemsRepository.listVerdicts());
+export const useAttemptVerdicts = () =>
+  useSWR(['attempts-verdicts'], () => problemsRepository.listVerdicts());
 
 export const useProblemDetail = (problemId?: number) =>
   useSWR(
@@ -61,9 +65,15 @@ export const useProblemDetail = (problemId?: number) =>
   );
 
 export const useProblemStatistics = (problemId?: number) =>
+  useSWR(problemId ? ['problem-statistics', problemId] : null, () =>
+    problemsRepository.getProblemStatistics(problemId!),
+  );
+
+export const useProblemSolvers = (problemId?: number, params?: ProblemSolversParams) =>
   useSWR(
-    problemId ? ['problem-statistics', problemId] : null,
-    () => problemsRepository.getProblemStatistics(problemId!),
+    problemId ? ['problem-solvers', problemId, params] : null,
+    () => problemsRepository.listProblemSolvers(problemId!, params),
+    { keepPreviousData: true, revalidateOnFocus: false },
   );
 
 export const useProblemsUserStatistics = (username?: string, params?: ProblemsStatisticsParams) =>
@@ -74,9 +84,8 @@ export const useProblemsUserStatistics = (username?: string, params?: ProblemsSt
   );
 
 export const useProblemSolution = (problemId?: number, enabled = false) =>
-  useSWR(
-    problemId && enabled ? ['problem-solution', problemId] : null,
-    () => problemsRepository.getProblemSolution(problemId!),
+  useSWR(problemId && enabled ? ['problem-solution', problemId] : null, () =>
+    problemsRepository.getProblemSolution(problemId!),
   );
 
 export const useProblemTags = (enabled = false) =>

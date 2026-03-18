@@ -54,6 +54,7 @@ declare module '@mui/material/styles' {
     chGreen: Color;
     chOrange: Color;
     chLightBlue: Color;
+    chPurple: Color;
     dividerLight: string;
     menuDivider: string;
     vibrant: {
