@@ -278,6 +278,7 @@
       "hacker": "Hacker",
       "defender": "Defender",
       "tagsTopics": "Tags & topics",
+      "similarProblems": "Similar problems",
       "codeTab": "Code",
       "partialScoring": "Partial scoring",
       "partialScoringDescription": "This problem uses subtask-based scoring.",

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Accordion,
   AccordionDetails,
@@ -23,9 +24,10 @@ import {
   Typography,
 } from '@mui/material';
 import { GridPaginationModel } from '@mui/x-data-grid';
+import { getResourceById, resources } from 'app/routes/resources';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useAttemptVerdicts, useProblemSolution } from 'modules/problems/application/queries.ts';
-import { DifficultyColor } from 'modules/problems/config/difficulty';
+import { DifficultyColor, getDifficultyColor } from 'modules/problems/config/difficulty';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch';
 import { ProblemAvailableLanguage, ProblemDetail } from '../../../domain/entities/problem.entity';
@@ -231,6 +233,84 @@ export const ProblemDescription = ({
                     ))}
                     {(problem.topics ?? []).map((topic) => (
                       <Chip key={topic.id} label={topic.name} color="info" size="medium" />
+                    ))}
+                  </Stack>
+                </AccordionDetails>
+              </Accordion>
+            ) : null}
+
+            {problem.similarProblems?.length ? (
+              <Accordion>
+                <AccordionSummary
+                  sx={{ p: 1 }}
+                  expandIcon={<IconifyIcon icon="eva:arrow-ios-downward-fill" />}
+                >
+                  <Typography fontWeight={600}>{t('problems.detail.similarProblems')}</Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ p: 2, py: 1 }}>
+                  <Stack spacing={1.25}>
+                    {problem.similarProblems.map((similarProblem) => (
+                      <Card
+                        key={similarProblem.id}
+                        component={RouterLink}
+                        to={getResourceById(resources.Problem, similarProblem.id)}
+                        variant="outlined"
+                        sx={{
+                          textDecoration: 'none',
+                          color: 'inherit',
+                          transition: 'transform 120ms ease, border-color 120ms ease',
+                          '&:hover': {
+                            transform: 'translateY(-1px)',
+                            borderColor: 'primary.main',
+                          },
+                        }}
+                      >
+                        <CardContent sx={{ '&:last-child': { pb: 2 } }}>
+                          <Stack spacing={1}>
+                            <Stack
+                              direction="row"
+                              spacing={2}
+                              alignItems="flex-start"
+                              justifyContent="space-between"
+                            >
+                              <Box>
+                                <Typography fontWeight={600}>
+                                  {similarProblem.id}. {similarProblem.title}
+                                </Typography>
+                              </Box>
+                              <IconifyIcon icon="mdi:arrow-top-right" />
+                            </Stack>
+
+                            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                              <Chip
+                                label={similarProblem.difficultyTitle}
+                                color={getDifficultyColor(similarProblem.difficulty) as any}
+                                size="small"
+                              />
+                              {similarProblem.problemRating !== undefined ? (
+                                <Chip
+                                  label={similarProblem.problemRating}
+                                  color="default"
+                                  variant="outlined"
+                                  size="small"
+                                  icon={<IconifyIcon icon="mdi:speedometer" />}
+                                />
+                              ) : null}
+                              {(similarProblem.tags ?? []).slice(0, 3).map((tag) => (
+                                <Chip key={`tag-${similarProblem.id}-${tag.id}`} label={tag.name} size="small" />
+                              ))}
+                              {(similarProblem.topics ?? []).slice(0, 2).map((topic) => (
+                                <Chip
+                                  key={`topic-${similarProblem.id}-${topic.id}`}
+                                  label={topic.name}
+                                  color="info"
+                                  size="small"
+                                />
+                              ))}
+                            </Stack>
+                          </Stack>
+                        </CardContent>
+                      </Card>
                     ))}
                   </Stack>
                 </AccordionDetails>

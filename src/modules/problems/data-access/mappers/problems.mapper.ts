@@ -21,6 +21,7 @@ import {
   ProblemListItem,
   ProblemAttemptsForSolveStatistic,
   ProblemSampleTest,
+  SimilarProblem,
   ProblemSolution,
   ProblemStatistics,
   ProblemTag,
@@ -443,6 +444,23 @@ export const mapProblemDetail = (payload: any): ProblemDetail => {
       (topic: any): ProblemTopic => ({
         id: toNumber(topic?.id),
         name: topic?.name ?? '',
+      }),
+    ),
+    similarProblems: (payload?.similarProblems ?? payload?.similar_problems ?? []).map(
+      (problem: any): SimilarProblem => ({
+        id: toNumber(problem?.id),
+        title: problem?.title ?? '',
+        difficulty: toNumber(problem?.difficulty),
+        problemRating: toNullableNumber(problem?.problemRating ?? problem?.problem_rating),
+        difficultyTitle: problem?.difficultyTitle ?? problem?.difficulty_title,
+        score: typeof problem?.score === 'number' ? problem.score : toNullableNumber(problem?.score),
+        tags: (problem?.tags ?? []).map((tag: any) => mapProblemTag(tag)),
+        topics: (problem?.topics ?? []).map(
+          (topic: any): ProblemTopic => ({
+            id: toNumber(topic?.id),
+            name: topic?.name ?? '',
+          }),
+        ),
       }),
     ),
     image: payload?.image ?? null,

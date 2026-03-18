@@ -72,6 +72,17 @@ export interface ProblemTopic {
   name: string;
 }
 
+export interface SimilarProblem {
+  id: number;
+  title: string;
+  difficulty: number;
+  problemRating?: number;
+  difficultyTitle?: string;
+  score?: number;
+  tags: ProblemTag[];
+  topics: ProblemTopic[];
+}
+
 export interface ProblemAvailableLanguage {
   lang: AttemptLangs | string;
   langFull: string;
@@ -121,6 +132,7 @@ export interface ProblemDetail extends ProblemListItem {
   comment?: string | null;
   sampleTests: ProblemSampleTest[];
   topics: ProblemTopic[];
+  similarProblems: SimilarProblem[];
   image?: string | null;
   partialSolvable?: boolean;
 }
