@@ -91,6 +91,7 @@ export interface ProblemListItem {
   id: number;
   title: string;
   difficulty: number;
+  problemRating?: number;
   difficultyTitle?: string;
   solved?: number;
   notSolved?: number;
