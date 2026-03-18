@@ -4,38 +4,6 @@ import { SWRConfig } from 'swr';
 
 const GLOBAL_API_CACHE_TTL_MS = 5_000;
 
-function createTTLCache(ttlMs: number) {
-  const map = new Map();
-
-  return {
-    get(key: any) {
-      const item = map.get(key);
-      if (!item) return undefined;
-
-      const { value, expiresAt } = item;
-
-      if (Date.now() > expiresAt) {
-        map.delete(key);
-        return undefined;
-      }
-
-      return value;
-    },
-    set(key: any, value: any) {
-      map.set(key, {
-        value,
-        expiresAt: Date.now() + ttlMs,
-      });
-    },
-    delete(key: any) {
-      map.delete(key);
-    },
-    keys() {
-      return map.keys();
-    }
-  };
-}
-
 const SWRConfiguration = ({ children }: PropsWithChildren) => {
   return (
     <SWRConfig
@@ -43,11 +11,9 @@ const SWRConfiguration = ({ children }: PropsWithChildren) => {
         fetcher: axiosFetcher,
         dedupingInterval: GLOBAL_API_CACHE_TTL_MS,
         revalidateIfStale: true,
-        revalidateOnMount: true,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
         shouldRetryOnError: false,
-        provider: () => createTTLCache(GLOBAL_API_CACHE_TTL_MS)
       }}
     >
       {children}
