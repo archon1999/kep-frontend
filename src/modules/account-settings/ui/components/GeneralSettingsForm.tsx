@@ -22,6 +22,53 @@ import { useAccountGeneralInfo } from '../../application/queries';
 import type { AccountGeneralInfo } from '../../domain/entities/account-settings.entity';
 
 const COVER_PHOTO_COST = 5;
+const COVER_PHOTO_MAX_BYTES = 4 * 1024 * 1024;
+
+type FormErrors = Record<string, string[]>;
+
+const normalizeErrors = (rawErrorData: unknown): FormErrors | undefined => {
+  if (!rawErrorData || typeof rawErrorData !== 'object' || Array.isArray(rawErrorData)) {
+    return undefined;
+  }
+
+  const normalized = Object.entries(rawErrorData).reduce<FormErrors>((accumulator, [key, value]) => {
+    if (key === 'status' || key === 'code') {
+      return accumulator;
+    }
+
+    if (Array.isArray(value)) {
+      const messages = value.filter((item): item is string => typeof item === 'string');
+
+      if (messages.length) {
+        accumulator[key] = messages;
+      }
+      return accumulator;
+    }
+
+    if (typeof value === 'string') {
+      accumulator[key] = [value];
+    }
+
+    return accumulator;
+  }, {});
+
+  return Object.keys(normalized).length ? normalized : undefined;
+};
+
+const extractErrorMessage = (rawErrorData: unknown): string | undefined => {
+  if (!rawErrorData) return undefined;
+
+  if (typeof rawErrorData === 'string') {
+    return rawErrorData;
+  }
+
+  const normalizedErrors = normalizeErrors(rawErrorData);
+  if (normalizedErrors) {
+    return Object.values(normalizedErrors)[0]?.[0];
+  }
+
+  return undefined;
+};
 
 const GeneralSettingsForm = () => {
   const { t } = useTranslation();
@@ -34,7 +81,7 @@ const GeneralSettingsForm = () => {
   const [canChangeCoverPhoto, setCanChangeCoverPhoto] = useState(false);
 
   const [formState, setFormState] = useState<AccountGeneralInfo | null>(null);
-  const [errors, setErrors] = useState<Record<string, string[]>>();
+  const [errors, setErrors] = useState<FormErrors>();
   const [avatarPreview, setAvatarPreview] = useState<string>();
   const [coverPreview, setCoverPreview] = useState<string>();
 
@@ -58,6 +105,26 @@ const GeneralSettingsForm = () => {
     const file = event.target.files?.[0];
     if (!file) return;
 
+    setErrors((prev) => {
+      if (!prev) return prev;
+
+      const next = { ...prev };
+      delete next[field];
+      delete next.nonFieldErrors;
+      delete next.message;
+
+      return Object.keys(next).length ? next : undefined;
+    });
+
+    if (field === 'coverPhoto' && file.size > COVER_PHOTO_MAX_BYTES) {
+      const message = 'Cover photo size must be 4 MB or less.';
+
+      setErrors((prev) => ({ ...(prev || {}), coverPhoto: [message] }));
+      toast.error(message);
+      event.target.value = '';
+      return;
+    }
+
     const previewUrl = URL.createObjectURL(file);
     setFormState((prev) => ({ ...prev!, [field]: file }));
 
@@ -79,6 +146,7 @@ const GeneralSettingsForm = () => {
     if (avatarPreview?.startsWith('blob:')) URL.revokeObjectURL(avatarPreview);
     if (coverPreview?.startsWith('blob:')) URL.revokeObjectURL(coverPreview);
 
+    setErrors(undefined);
     setFormState(data || null);
     setAvatarPreview(typeof data?.avatar === 'string' ? data.avatar : undefined);
     setCoverPreview(typeof data?.coverPhoto === 'string' ? data.coverPhoto : undefined);
@@ -98,8 +166,26 @@ const GeneralSettingsForm = () => {
       setErrors(undefined);
       toast.success(t('settings.saved'));
     } catch (error: any) {
-      setErrors(error?.data);
-      toast.error(t('settings.error'));
+      const nextErrors = normalizeErrors(error?.data);
+      const fallbackMessage = error?.status === 413 ? 'Cover photo size must be 4 MB or less.' : t('settings.error');
+      const message = extractErrorMessage(error?.data) || fallbackMessage;
+
+      setErrors(() => {
+        if (error?.status === 413 && formState.coverPhoto instanceof File) {
+          return { coverPhoto: [message] };
+        }
+
+        if (nextErrors) {
+          return nextErrors;
+        }
+
+        if (formState.coverPhoto instanceof File) {
+          return { coverPhoto: [message] };
+        }
+
+        return { nonFieldErrors: [message] };
+      });
+      toast.error(message);
     }
   };
 
@@ -206,6 +292,12 @@ const GeneralSettingsForm = () => {
               ) : null}
             </Box>
           </Stack>
+
+          {errors?.nonFieldErrors?.length ? (
+            <Typography color="error" variant="body2">
+              {errors.nonFieldErrors[0]}
+            </Typography>
+          ) : null}
 
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, md: 6 }}>

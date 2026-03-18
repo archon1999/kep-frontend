@@ -50,6 +50,47 @@
       "viewAll": "View all contests",
       "empty": "No contests to display yet."
     },
+    "promos": {
+      "kepCover": {
+        "activeSubtitle": "Vote for the strongest covers, follow the live leaderboard, and open the full KEP Cover page.",
+        "upcomingSubtitle": "The next KEP Cover contest is already scheduled. Refresh your cover before voting opens.",
+        "voteLimit": "{{count}} votes per user"
+      },
+      "contest": {
+        "activeSubtitle": "A contest is live right now. Open it to solve problems, track standings, and stay inside the race.",
+        "upcomingSubtitle": "The next contest is coming up. Check the schedule and register before it starts."
+      },
+      "arena": {
+        "activeSubtitle": "An arena round is in progress now. Jump in and keep pace with the live field.",
+        "upcomingSubtitle": "A new arena round is approaching. Review the schedule and get ready for the next duel.",
+        "roundTime": "{{count}} sec per round"
+      },
+      "actions": {
+        "openKepCover": "Open KEP Cover",
+        "openContest": "Open contest",
+        "openArena": "Open arena"
+      },
+      "types": {
+        "kepCover": "KEP Cover",
+        "contest": "Contest",
+        "arena": "Arena"
+      },
+      "metrics": {
+        "participants": "Participants",
+        "voteLimit": "Vote limit",
+        "schedule": "Schedule",
+        "registrants": "Registrations",
+        "problems": "Problems",
+        "questions": "Questions",
+        "roundTime": "Round time"
+      },
+      "statuses": {
+        "active": "Live now",
+        "upcoming": "Upcoming"
+      },
+      "startsAt": "Starts {{date}}",
+      "endsAt": "Ends {{date}}"
+    },
     "news": {
       "title": "Latest news",
       "empty": "No news to display yet."

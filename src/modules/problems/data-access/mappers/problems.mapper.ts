@@ -152,6 +152,7 @@ export const mapProblem = (problem: ProblemList): ProblemListItem => ({
   id: problem.id ?? 0,
   title: problem.title,
   difficulty: toNumber(problem.difficulty),
+  problemRating: toNullableNumber((problem as any).problemRating ?? (problem as any).problem_rating),
   difficultyTitle: problem.difficultyTitle,
   solved: toNumber(problem.solved),
   notSolved: toNumber((problem as any).notSolved ?? (problem as any).not_solved),

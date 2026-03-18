@@ -1,4 +1,5 @@
 import { homeApiClient } from '../api/home.client';
+import { mapHomePromos } from '../mappers/home-promo.mapper';
 import type { HomeRepository } from '../../domain/ports/home.repository';
 import type {
   HomeListParams,
@@ -6,6 +7,7 @@ import type {
   HomeNextBirthdays,
   HomeOnlineUsers,
   HomePostsList,
+  HomePromoSourceItem,
   HomeLandingPageStatistics,
   HomeTopUsers,
   HomeUserActivityStatistics,
@@ -56,5 +58,9 @@ export class HttpHomeRepository implements HomeRepository {
 
   getLandingPageStatistics(): Promise<HomeLandingPageStatistics> {
     return homeApiClient.landingPageStatistics();
+  }
+
+  getPromos(): Promise<HomePromoSourceItem[]> {
+    return homeApiClient.promos().then(mapHomePromos);
   }
 }

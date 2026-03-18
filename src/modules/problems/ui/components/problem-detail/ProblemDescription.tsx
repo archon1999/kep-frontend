@@ -186,6 +186,18 @@ export const ProblemDescription = ({
 
             <ProblemBody problem={problem} />
 
+            <Box>
+              {problem.problemRating !== undefined && (
+                <Chip
+                  label={problem.problemRating}
+                  color="default"
+                  variant="outlined"
+                  size="medium"
+                  icon={<IconifyIcon icon="mdi:speedometer" />}
+                />
+              )}
+            </Box>
+
             {problem.tags?.length || problem.topics?.length ? (
               <Accordion>
                 <AccordionSummary

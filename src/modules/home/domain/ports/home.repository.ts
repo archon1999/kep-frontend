@@ -4,6 +4,7 @@ import type {
   HomeNextBirthdays,
   HomeOnlineUsers,
   HomePostsList,
+  HomePromoSourceItem,
   HomeLandingPageStatistics,
   HomeTopUsers,
   HomeUserActivityStatistics,
@@ -23,4 +24,5 @@ export interface HomeRepository {
   getUserActivityStatistics: () => Promise<HomeUserActivityStatistics>;
   getUserActivityHistory: (username: string, params?: HomeListParams) => Promise<HomeUserActivityHistory>;
   getLandingPageStatistics: () => Promise<HomeLandingPageStatistics>;
+  getPromos: () => Promise<HomePromoSourceItem[]>;
 }

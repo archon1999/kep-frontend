@@ -50,6 +50,47 @@
       "viewAll": "Все соревнования",
       "empty": "Соревнований пока нет."
     },
+    "promos": {
+      "kepCover": {
+        "activeSubtitle": "Голосуйте за лучшие обложки, следите за живым рейтингом и открывайте полную страницу KEP Cover.",
+        "upcomingSubtitle": "Следующий KEP Cover уже запланирован. Обновите cover photo до открытия голосования.",
+        "voteLimit": "{{count}} голосов на пользователя"
+      },
+      "contest": {
+        "activeSubtitle": "Соревнование уже идет. Откройте его, чтобы решать задачи и следить за таблицей результатов.",
+        "upcomingSubtitle": "Следующий contest скоро начнется. Проверьте расписание и зарегистрируйтесь заранее."
+      },
+      "arena": {
+        "activeSubtitle": "Раунд arena уже идет. Подключайтесь и держите темп вместе с текущими участниками.",
+        "upcomingSubtitle": "Новый раунд arena уже близко. Посмотрите расписание и подготовьтесь к следующему старту.",
+        "roundTime": "{{count}} сек на раунд"
+      },
+      "actions": {
+        "openKepCover": "Открыть KEP Cover",
+        "openContest": "Открыть contest",
+        "openArena": "Открыть arena"
+      },
+      "types": {
+        "kepCover": "KEP Cover",
+        "contest": "Contest",
+        "arena": "Arena"
+      },
+      "metrics": {
+        "participants": "Участники",
+        "voteLimit": "Лимит голосов",
+        "schedule": "Расписание",
+        "registrants": "Регистрации",
+        "problems": "Задачи",
+        "questions": "Вопросы",
+        "roundTime": "Время раунда"
+      },
+      "statuses": {
+        "active": "Идёт сейчас",
+        "upcoming": "Скоро"
+      },
+      "startsAt": "Старт {{date}}",
+      "endsAt": "Завершится {{date}}"
+    },
     "news": {
       "title": "Последние новости",
       "empty": "Пока нет новостей."
