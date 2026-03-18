@@ -65,7 +65,7 @@
     "courseLesson": "{{ lessonTitle }} - {{ courseTitle }} - Kurs",
     "courseDictionary": "{{ courseTitle }} - Lugʻat - Kurs",
     "courseDictionaryTraining": "{{ courseTitle }} - Lugʻat mashqi - Kurs",
-    "kepCover": "KEP Cover #3",
+    "kepCover": "{{ contestTitle }} - KEP Cover",
     "login": "Tizimga kirish",
     "notFound": "Sahifa topilmadi"
   }

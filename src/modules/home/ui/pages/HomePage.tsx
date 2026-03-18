@@ -11,6 +11,7 @@ import NewsSection from '../components/NewsSection.tsx';
 import TopUsersSection from '../components/TopUsersSection.tsx';
 import PostsSection from '../components/PostsSection.tsx';
 import ContestsSection from '../components/ContestsSection.tsx';
+import KepCoverAnnouncementSection from 'modules/kep-cover/ui/components/KepCoverAnnouncementSection';
 
 const HomePage = () => {
   const { currentUser } = useAuth();
@@ -29,6 +30,8 @@ const HomePage = () => {
 
   return (
     <Box>
+      <KepCoverAnnouncementSection />
+
       <Grid size={12} container>
         <Grid size={12} sx={{ display: { xs: 'block', md: 'none' } }}>
           <ContestsSection />
