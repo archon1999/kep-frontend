@@ -1,11 +1,11 @@
-import { Avatar, Box, Card, CardContent, Grid, Skeleton, Stack, Typography } from '@mui/material';
+import { Avatar, Box, Card, CardContent, Skeleton, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
-import { useHackathon, useHackathonRegistrants } from '../../application/queries';
-import HackathonTabs from '../components/HackathonTabs';
-import HackathonCountdownCard from '../components/HackathonCountdownCard';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
+import { useHackathon, useHackathonRegistrants } from '../../application/queries';
+import HackathonPageHeader from '../components/HackathonPageHeader';
+import HackathonTabs from '../components/HackathonTabs';
 
 const HackathonRegistrantsPage = () => {
   const { id } = useParams();
@@ -27,50 +27,60 @@ const HackathonRegistrantsPage = () => {
       <Stack direction="column" spacing={3}>
         {hackathon ? <HackathonTabs hackathon={hackathon} /> : <Skeleton variant="rectangular" height={56} />}
 
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 8 }}>
-            <Card background={1} sx={{ borderRadius: 3, outline: 'none' }}>
-              <CardContent>
-                <Stack direction="column" spacing={2}>
-                  <Typography variant="h6" fontWeight={800}>
-                    {t('hackathons.registrants')}
+        {hackathon ? (
+          <HackathonPageHeader
+            hackathon={hackathon}
+            eyebrow={hackathon.title}
+            title={t('hackathons.registrants')}
+            lead={t('hackathons.registrantsLead')}
+          />
+        ) : (
+          <Skeleton variant="rounded" height={260} />
+        )}
+
+        <Card background={1} sx={{ borderRadius: 3, outline: 'none' }}>
+          <CardContent sx={{ p: { xs: 3, md: 4 } }}>
+            <Stack direction="column" spacing={2}>
+              <Typography variant="h6" fontWeight={800}>
+                {t('hackathons.registrants')}
+              </Typography>
+
+              {(registrants ?? []).map((registrant, index) => (
+                <Stack
+                  key={registrant.username}
+                  direction="row"
+                  spacing={2}
+                  alignItems="center"
+                  sx={{
+                    p: 2,
+                    borderRadius: 3,
+                    bgcolor: 'background.neutral',
+                    border: (theme) => `1px solid ${theme.palette.divider}`,
+                  }}
+                >
+                  <Typography variant="subtitle2" width={32} textAlign="center">
+                    {index + 1}
                   </Typography>
-
-                  {(registrants ?? []).map((registrant, index) => (
-                    <Stack
-                      key={registrant.username}
-                      direction="row"
-                      spacing={2}
-                      alignItems="center"
-                      sx={{ p: 2, borderRadius: 2, bgcolor: 'background.neutral' }}
-                    >
-                      <Typography variant="subtitle2" width={32} textAlign="center">
-                        {index + 1}
+                  <Avatar src={registrant.userAvatar} sx={{ width: 44, height: 44 }} />
+                  <Stack direction="column" spacing={0.25}>
+                    <Typography fontWeight={700}>{registrant.username}</Typography>
+                    {registrant.userFullName ? (
+                      <Typography variant="body2" color="text.secondary">
+                        {registrant.userFullName}
                       </Typography>
-                      <Avatar src={registrant.userAvatar} sx={{ width: 40, height: 40 }} />
-                      <Stack direction="row" spacing={0.25}>
-                        <Typography fontWeight={700}>{registrant.username}</Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {registrant.userFullName}
-                        </Typography>
-                      </Stack>
-                    </Stack>
-                  ))}
-
-                  {!isLoading && (!registrants || registrants.length === 0) ? (
-                    <Typography variant="body2" color="text.secondary" textAlign="center">
-                      {t('hackathons.emptyTitle')}
-                    </Typography>
-                  ) : null}
+                    ) : null}
+                  </Stack>
                 </Stack>
-              </CardContent>
-            </Card>
-          </Grid>
+              ))}
 
-          <Grid size={{ xs: 12, md: 4 }}>
-            <HackathonCountdownCard hackathon={hackathon} />
-          </Grid>
-        </Grid>
+              {!isLoading && (!registrants || registrants.length === 0) ? (
+                <Typography variant="body2" color="text.secondary" textAlign="center" sx={{ py: 4 }}>
+                  {t('hackathons.noRegistrants')}
+                </Typography>
+              ) : null}
+            </Stack>
+          </CardContent>
+        </Card>
       </Stack>
     </Box>
   );

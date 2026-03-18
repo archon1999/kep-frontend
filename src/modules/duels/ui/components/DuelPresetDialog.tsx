@@ -126,7 +126,7 @@ const DuelPresetDialog = ({
           {t('duels.cancel')}
         </Button>
         <Button variant="contained" onClick={handleSubmit} disabled={!presetId || !startTime} color="primary">
-          {t('duels.createDuel')}
+          {t('duels.sendInvitation')}
         </Button>
       </DialogActions>
     </Dialog>

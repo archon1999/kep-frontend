@@ -32,6 +32,41 @@
     "loadingLog": "Loading log...",
     "noLog": "No log available",
     "sidebarTitle": "Project actions",
-    "projectTab": "Project"
+    "projectTab": "Project",
+    "rewardPool": "Reward pool",
+    "taskCount": "Tasks",
+    "attemptsCount": "Attempts",
+    "progressTitle": "Task progress",
+    "progressPrompt": "Progress tracking",
+    "progressHint": "Sign in to unlock personal progress",
+    "progressCompleted": "Completed",
+    "progressRewardUnit": "kepcoin earned",
+    "progressGuestHint": "Sign in to see your personal progress, started projects, and completed tracks.",
+    "cardFallback": "Choose a stack, unlock the brief, and ship the solution with your own architecture.",
+    "projectsCount": "{{count}} projects",
+    "stats": {
+      "available": "{{count}} live projects",
+      "started": "{{count}} started",
+      "completed": "{{count}} completed",
+      "rewardPool": "{{count}} total kepcoin"
+    },
+    "categories": {
+      "frontend": {
+        "title": "Frontend",
+        "subtitle": "Interfaces, interaction flows, and polished client-side behavior."
+      },
+      "backend": {
+        "title": "Backend",
+        "subtitle": "APIs, business rules, validation, and service-side architecture."
+      },
+      "python": {
+        "title": "Python Practice",
+        "subtitle": "Bots, parsers, CLI utilities, and practical scripting tasks."
+      },
+      "devops": {
+        "title": "DevOps and Forensics",
+        "subtitle": "Structured troubleshooting, incident analysis, and release discipline."
+      }
+    }
   }
 }

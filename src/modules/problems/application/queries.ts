@@ -2,7 +2,6 @@ import useSWR from 'swr';
 import { HttpProblemsRepository } from '../data-access/repository/http.problems.repository.ts';
 import {
   AttemptsListParams,
-  HackAttemptsListParams,
   ProblemsListParams,
   ProblemsRatingHistoryParams,
   ProblemsRatingParams,
@@ -85,9 +84,6 @@ export const useProblemTags = (enabled = false) =>
 
 export const useProblemTopics = (enabled = false) =>
   useSWR(enabled ? ['problem-topics'] : null, () => problemsRepository.listTopics());
-
-export const useHackAttempts = (params: HackAttemptsListParams) =>
-  useSWR(['hack-attempts', params], () => problemsRepository.listHackAttempts(params));
 
 export const problemsQueries = {
   problemsRepository,

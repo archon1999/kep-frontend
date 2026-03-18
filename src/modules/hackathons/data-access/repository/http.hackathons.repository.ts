@@ -42,7 +42,7 @@ export class HttpHackathonsRepository implements HackathonsRepository {
   }
 
   async getRegistrants(id: number | string): Promise<HackathonRegistrant[]> {
-    const result = await hackathonsApiClient.getStandings(String(id));
+    const result = await hackathonsApiClient.getRegistrants(String(id));
     return Array.isArray(result) ? result.map(mapHackathonRegistrant) : [];
   }
 

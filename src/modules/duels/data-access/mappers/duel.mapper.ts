@@ -1,5 +1,9 @@
+import { mapProblemDetail } from 'modules/problems/data-access/mappers/problems.mapper.ts';
 import {
   Duel,
+  DuelInvitation,
+  DuelInvitationProblem,
+  DuelInvitationUser,
   DuelPlayer,
   DuelPreset,
   DuelPresetProblem,
@@ -65,7 +69,10 @@ export const mapDuelProblem = (payload: any): DuelProblem => ({
   ball: toNullableNumber(payload?.ball ?? payload?.score),
   playerFirstBall: toNullableNumber(payload?.playerFirstBall ?? payload?.player_first_ball),
   playerSecondBall: toNullableNumber(payload?.playerSecondBall ?? payload?.player_second_ball),
-  problem: (payload?.problem ?? payload?.problem_detail) as any,
+  problem:
+    payload?.problem || payload?.problem_detail
+      ? mapProblemDetail(payload?.problem ?? payload?.problem_detail)
+      : undefined,
 });
 
 export const mapDuel = (payload: any): Duel => ({
@@ -75,6 +82,8 @@ export const mapDuel = (payload: any): Duel => ({
   status: (payload?.status ?? payload?.state ?? -1) as Duel['status'],
   isPlayer: Boolean(payload?.isPlayer ?? payload?.is_player ?? payload?.is_current_player),
   isConfirmed: payload?.isConfirmed ?? payload?.is_confirmed ?? undefined,
+  viewerRole: payload?.viewerRole ?? payload?.viewer_role ?? 'spectator',
+  canSubmitForDuel: Boolean(payload?.canSubmitForDuel ?? payload?.can_submit_for_duel ?? false),
   playerFirst: mapDuelPlayer(payload?.playerFirst ?? payload?.player_first ?? {}),
   playerSecond: payload?.playerSecond || payload?.player_second ? mapDuelPlayer(payload?.playerSecond ?? payload?.player_second ?? {}) : null,
   preset: payload?.preset || payload?.duelPreset ? mapDuelPreset(payload?.preset ?? payload?.duelPreset ?? {}) : null,
@@ -91,7 +100,7 @@ export const mapReadyPlayer = (payload: any): DuelReadyPlayer => ({
 });
 
 export const mapReadyStatus = (payload: any): DuelReadyStatus => ({
-  ready: Boolean(payload?.ready ?? payload?.isReady ?? payload?.is_ready ?? false),
+  ready: Boolean(payload?.ready ?? payload?.isReady ?? payload?.is_ready ?? payload?.is_ready_for_duel ?? false),
 });
 
 export const mapDuelResults = (payload: any): DuelResults => ({
@@ -111,9 +120,46 @@ export const mapDuelsRatingRow = (payload: any): DuelsRatingRow => ({
   losses: toNullableNumber(payload?.losses),
 });
 
+const mapDuelInvitationUser = (payload: any): DuelInvitationUser => ({
+  id: toNullableNumber(payload?.id),
+  username: payload?.username ?? '',
+});
+
+const mapDuelInvitationProblem = (payload: any): DuelInvitationProblem => ({
+  symbol: payload?.symbol ?? '',
+  ball: toNullableNumber(payload?.ball),
+});
+
+export const mapDuelInvitation = (payload: any): DuelInvitation => ({
+  id: toNumber(payload?.id),
+  status: toNumber(payload?.status) as DuelInvitation['status'],
+  challenger: mapDuelInvitationUser(payload?.challenger ?? {}),
+  invitee: mapDuelInvitationUser(payload?.invitee ?? {}),
+  otherUser:
+    payload?.otherUser || payload?.other_user
+      ? mapDuelInvitationUser(payload?.otherUser ?? payload?.other_user ?? {})
+      : null,
+  preset: payload?.preset ? mapDuelPreset(payload.preset) : null,
+  proposedStartTime: payload?.proposedStartTime ?? payload?.proposed_start_time ?? null,
+  actionRequiredBy:
+    payload?.actionRequiredBy || payload?.action_required_by
+      ? mapDuelInvitationUser(payload?.actionRequiredBy ?? payload?.action_required_by ?? {})
+      : null,
+  viewerRole: payload?.viewerRole ?? payload?.viewer_role ?? 'spectator',
+  problems: (payload?.problems ?? []).map(mapDuelInvitationProblem),
+  duelId: toNullableNumber(payload?.duelId ?? payload?.duel_id),
+  canAccept: Boolean(payload?.canAccept ?? payload?.can_accept ?? false),
+  canCounter: Boolean(payload?.canCounter ?? payload?.can_counter ?? false),
+  canReject: Boolean(payload?.canReject ?? payload?.can_reject ?? false),
+  requiresResponse: Boolean(payload?.requiresResponse ?? payload?.requires_response ?? false),
+  created: payload?.created,
+  updated: payload?.updated,
+});
+
 export const duelsMappers = {
   mapPageResult,
   mapDuel,
+  mapDuelInvitation,
   mapReadyPlayer,
   mapReadyStatus,
   mapDuelPreset,

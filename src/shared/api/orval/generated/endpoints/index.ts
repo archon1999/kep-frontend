@@ -54,8 +54,6 @@ import type {
   ApiDuelsReadyStatusReadParams,
   ApiDuelsReadyUsersList200,
   ApiDuelsReadyUsersListParams,
-  ApiHackAttemptsList200,
-  ApiHackAttemptsListParams,
   ApiHackathonsList200,
   ApiHackathonsListParams,
   ApiHackathonsProjectsSubmitBody,
@@ -163,7 +161,6 @@ import type {
   Empty,
   EmptyBody,
   Faq,
-  HackAttempt,
   Hackathon,
   InterestingFact,
   KepCoinBalance,
@@ -348,22 +345,6 @@ export const getSnippetsAPI = () => {
 
   const apiAttemptsFailedTest = (id: string, options?: SecondParameter<typeof axiosMutator<AttemptList>>) => {
     return axiosMutator<AttemptList>({ url: `/api/attempts/${id}/failed-test/`, method: 'GET' }, options);
-  };
-
-  const apiAttemptsHackSubmit = (
-    id: string,
-    attemptListBody: BodyType<AttemptListBody>,
-    options?: SecondParameter<typeof axiosMutator<AttemptList>>,
-  ) => {
-    return axiosMutator<AttemptList>(
-      {
-        url: `/api/attempts/${id}/hack-submit/`,
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        data: attemptListBody,
-      },
-      options,
-    );
   };
 
   const apiAttemptsPurchaseTest = (
@@ -1374,33 +1355,6 @@ export const getSnippetsAPI = () => {
 
   const apiFaqRead = (id: string, options?: SecondParameter<typeof axiosMutator<Faq>>) => {
     return axiosMutator<Faq>({ url: `/api/faq/${id}/`, method: 'GET' }, options);
-  };
-
-  const apiHackAttemptsList = (
-    params?: ApiHackAttemptsListParams,
-    options?: SecondParameter<typeof axiosMutator<ApiHackAttemptsList200>>,
-  ) => {
-    return axiosMutator<ApiHackAttemptsList200>({ url: `/api/hack-attempts/`, method: 'GET', params }, options);
-  };
-
-  const apiHackAttemptsRead = (id: string, options?: SecondParameter<typeof axiosMutator<HackAttempt>>) => {
-    return axiosMutator<HackAttempt>({ url: `/api/hack-attempts/${id}/`, method: 'GET' }, options);
-  };
-
-  const apiHackAttemptsRerun = (
-    id: string,
-    hackAttempt: BodyType<NonReadonly<HackAttempt>>,
-    options?: SecondParameter<typeof axiosMutator<HackAttempt>>,
-  ) => {
-    return axiosMutator<HackAttempt>(
-      {
-        url: `/api/hack-attempts/${id}/rerun/`,
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        data: hackAttempt,
-      },
-      options,
-    );
   };
 
   const apiHackathonsList = (
@@ -2919,7 +2873,6 @@ export const getSnippetsAPI = () => {
     apiAttemptsVerdicts,
     apiAttemptsRead,
     apiAttemptsFailedTest,
-    apiAttemptsHackSubmit,
     apiAttemptsPurchaseTest,
     apiAttemptsPurchase,
     apiAttemptsRerun,
@@ -3037,9 +2990,6 @@ export const getSnippetsAPI = () => {
     apiDuelsSubmit,
     apiFaqList,
     apiFaqRead,
-    apiHackAttemptsList,
-    apiHackAttemptsRead,
-    apiHackAttemptsRerun,
     apiHackathonsList,
     apiHackathonsRead,
     apiHackathonsAttempts,
@@ -3252,9 +3202,6 @@ export type ApiAttemptsReadResult = NonNullable<
 >;
 export type ApiAttemptsFailedTestResult = NonNullable<
   Awaited<ReturnType<ReturnType<typeof getSnippetsAPI>['apiAttemptsFailedTest']>>
->;
-export type ApiAttemptsHackSubmitResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getSnippetsAPI>['apiAttemptsHackSubmit']>>
 >;
 export type ApiAttemptsPurchaseTestResult = NonNullable<
   Awaited<ReturnType<ReturnType<typeof getSnippetsAPI>['apiAttemptsPurchaseTest']>>
@@ -3589,15 +3536,6 @@ export type ApiDuelsSubmitResult = NonNullable<
 >;
 export type ApiFaqListResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getSnippetsAPI>['apiFaqList']>>>;
 export type ApiFaqReadResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getSnippetsAPI>['apiFaqRead']>>>;
-export type ApiHackAttemptsListResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getSnippetsAPI>['apiHackAttemptsList']>>
->;
-export type ApiHackAttemptsReadResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getSnippetsAPI>['apiHackAttemptsRead']>>
->;
-export type ApiHackAttemptsRerunResult = NonNullable<
-  Awaited<ReturnType<ReturnType<typeof getSnippetsAPI>['apiHackAttemptsRerun']>>
->;
 export type ApiHackathonsListResult = NonNullable<
   Awaited<ReturnType<ReturnType<typeof getSnippetsAPI>['apiHackathonsList']>>
 >;

@@ -39,18 +39,6 @@ export enum Verdicts {
   FakeAccepted,
   PartialSolution,
   NotAvailableLanguage,
-  Hacked,
-}
-
-export enum HackAttemptVerdict {
-  InQueue = -2,
-  Testing = -1,
-  CheckerFailed = 0,
-  SuccessfulHack = 1,
-  UnsuccessfulHack = 2,
-  InvalidInput = 3,
-  GeneratorIncompilable = 4,
-  GeneratorCrashed = 5,
 }
 
 export interface ProblemTag {
@@ -357,21 +345,6 @@ export interface ProblemStatistics {
   languageStatistics: ProblemLanguageStatistic[];
   topAttempts: ProblemTopAttempts;
   attemptsForSolveStatistics: ProblemAttemptsForSolveStatistic[];
-}
-
-export interface HackAttempt {
-  id: number;
-  attemptId: number;
-  hackType: string;
-  hackerUsername: string;
-  hackerRatingTitle?: string;
-  defenderUsername: string;
-  defenderRatingTitle?: string;
-  problemId: number;
-  problemTitle: string;
-  verdict?: HackAttemptVerdict;
-  verdictTitle: string;
-  created?: string;
 }
 
 export interface ProblemVoteResult {

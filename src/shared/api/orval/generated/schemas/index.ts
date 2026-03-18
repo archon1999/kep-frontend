@@ -572,7 +572,6 @@ export const apiAttemptsListResponse = zod.object({
           zod.literal(15),
           zod.literal(16),
           zod.literal(17),
-          zod.literal(18),
         ])
         .optional(),
       verdictTitle: zod.string().min(1),
@@ -716,7 +715,6 @@ export const apiAttemptsVerdictsResponse = zod.object({
           zod.literal(15),
           zod.literal(16),
           zod.literal(17),
-          zod.literal(18),
         ])
         .optional(),
       verdictTitle: zod.string().min(1),
@@ -849,7 +847,6 @@ export const apiAttemptsReadResponse = zod.object({
       zod.literal(15),
       zod.literal(16),
       zod.literal(17),
-      zod.literal(18),
     ])
     .optional(),
   lang: zod.enum([
@@ -887,110 +884,6 @@ export const apiAttemptsReadResponse = zod.object({
     .max(apiAttemptsReadResponseProblemIndexMax)
     .optional(),
   created: zod.iso.datetime({}).optional(),
-});
-
-export const apiAttemptsHackSubmitBodyUserUsernameMax = 150;
-
-export const apiAttemptsHackSubmitBodyUserUsernameRegExp = new RegExp('^[\\w.@+-]+$');
-export const apiAttemptsHackSubmitBodyTeamNameMax = 255;
-export const apiAttemptsHackSubmitBodyTeamMembersItemRatingMin = -2147483648;
-
-export const apiAttemptsHackSubmitBodyTeamMembersItemRatingMax = 2147483647;
-export const apiAttemptsHackSubmitBodyTestCaseNumberMin = -2147483648;
-
-export const apiAttemptsHackSubmitBodyTestCaseNumberMax = 2147483647;
-export const apiAttemptsHackSubmitBodyTimeMin = 0;
-
-export const apiAttemptsHackSubmitBodyTimeMax = 2147483647;
-export const apiAttemptsHackSubmitBodyMemoryMin = 0;
-
-export const apiAttemptsHackSubmitBodyMemoryMax = 2147483647;
-
-export const apiAttemptsHackSubmitBody = zod.object({
-  user: zod.object({
-    username: zod
-      .string()
-      .min(1)
-      .max(apiAttemptsHackSubmitBodyUserUsernameMax)
-      .regex(apiAttemptsHackSubmitBodyUserUsernameRegExp)
-      .describe('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
-    rating: zod.string().optional(),
-    ratingTitle: zod.string().optional(),
-  }),
-  team: zod.object({
-    name: zod.string().min(1).max(apiAttemptsHackSubmitBodyTeamNameMax),
-    members: zod
-      .array(
-        zod.object({
-          username: zod.string().min(1),
-          rating: zod
-            .number()
-            .min(apiAttemptsHackSubmitBodyTeamMembersItemRatingMin)
-            .max(apiAttemptsHackSubmitBodyTeamMembersItemRatingMax),
-          newRating: zod.number(),
-          ratingTitle: zod.string().min(1),
-          newRatingTitle: zod.string().min(1),
-        }),
-      )
-      .optional(),
-  }),
-  problemId: zod.number(),
-  problemTitle: zod.string().min(1),
-  problemHasCheckInput: zod.boolean(),
-  verdict: zod
-    .union([
-      zod.literal(-2),
-      zod.literal(-1),
-      zod.literal(0),
-      zod.literal(1),
-      zod.literal(2),
-      zod.literal(3),
-      zod.literal(4),
-      zod.literal(5),
-      zod.literal(6),
-      zod.literal(7),
-      zod.literal(8),
-      zod.literal(9),
-      zod.literal(10),
-      zod.literal(11),
-      zod.literal(12),
-      zod.literal(13),
-      zod.literal(14),
-      zod.literal(15),
-      zod.literal(16),
-      zod.literal(17),
-      zod.literal(18),
-    ])
-    .optional(),
-  verdictTitle: zod.string().min(1),
-  lang: zod.enum([
-    'py',
-    'cpp',
-    'r',
-    'hs',
-    'kt',
-    'c',
-    'php',
-    'cs',
-    'js',
-    'java',
-    'rs',
-    'sql',
-    'html',
-    'bash',
-    'text',
-    'go',
-    'ts',
-  ]),
-  langFull: zod.string().min(1),
-  testCaseNumber: zod
-    .number()
-    .min(apiAttemptsHackSubmitBodyTestCaseNumberMin)
-    .max(apiAttemptsHackSubmitBodyTestCaseNumberMax)
-    .nullish(),
-  time: zod.number().min(apiAttemptsHackSubmitBodyTimeMin).max(apiAttemptsHackSubmitBodyTimeMax).optional(),
-  memory: zod.number().min(apiAttemptsHackSubmitBodyMemoryMin).max(apiAttemptsHackSubmitBodyMemoryMax).optional(),
-  balls: zod.number().nullish(),
 });
 
 export const apiAttemptsPurchaseTestBodyUserUsernameMax = 150;
@@ -1063,7 +956,6 @@ export const apiAttemptsPurchaseTestBody = zod.object({
       zod.literal(15),
       zod.literal(16),
       zod.literal(17),
-      zod.literal(18),
     ])
     .optional(),
   verdictTitle: zod.string().min(1),
@@ -1167,7 +1059,6 @@ export const apiAttemptsPurchaseBody = zod.object({
       zod.literal(15),
       zod.literal(16),
       zod.literal(17),
-      zod.literal(18),
     ])
     .optional(),
   verdictTitle: zod.string().min(1),
@@ -1271,7 +1162,6 @@ export const apiAttemptsRerunBody = zod.object({
       zod.literal(15),
       zod.literal(16),
       zod.literal(17),
-      zod.literal(18),
     ])
     .optional(),
   verdictTitle: zod.string().min(1),
@@ -5149,95 +5039,6 @@ export const apiFaqReadResponse = zod.object({
   id: zod.number().optional(),
   question: zod.string().min(1).max(apiFaqReadResponseQuestionMax),
   answer: zod.string().min(1),
-});
-
-export const apiHackAttemptsListQueryParams = zod.object({
-  problem_id: zod.string().optional().describe('problem_id'),
-  page: zod.number().optional().describe('Page number'),
-  pageSize: zod.number().optional().describe('Items per page'),
-});
-
-export const apiHackAttemptsListResponse = zod.object({
-  page: zod.number(),
-  pageSize: zod.number(),
-  count: zod.number(),
-  total: zod.number(),
-  pagesCount: zod.number(),
-  data: zod.array(
-    zod.object({
-      id: zod.number().optional(),
-      attemptId: zod.number(),
-      hackType: zod.string().min(1),
-      hackerUsername: zod.string().min(1),
-      hackerRatingTitle: zod.string().optional(),
-      defenderUsername: zod.string().min(1),
-      defenderRatingTitle: zod.string().optional(),
-      problemId: zod.number(),
-      problemTitle: zod.string().min(1),
-      verdict: zod
-        .union([
-          zod.literal(-2),
-          zod.literal(-1),
-          zod.literal(0),
-          zod.literal(1),
-          zod.literal(2),
-          zod.literal(3),
-          zod.literal(4),
-          zod.literal(5),
-        ])
-        .optional(),
-      verdictTitle: zod.string().min(1),
-      created: zod.iso.datetime({}).optional(),
-    }),
-  ),
-});
-
-export const apiHackAttemptsReadResponse = zod.object({
-  id: zod.number().optional(),
-  attemptId: zod.number(),
-  hackType: zod.string().min(1),
-  hackerUsername: zod.string().min(1),
-  hackerRatingTitle: zod.string().optional(),
-  defenderUsername: zod.string().min(1),
-  defenderRatingTitle: zod.string().optional(),
-  problemId: zod.number(),
-  problemTitle: zod.string().min(1),
-  verdict: zod
-    .union([
-      zod.literal(-2),
-      zod.literal(-1),
-      zod.literal(0),
-      zod.literal(1),
-      zod.literal(2),
-      zod.literal(3),
-      zod.literal(4),
-      zod.literal(5),
-    ])
-    .optional(),
-  verdictTitle: zod.string().min(1),
-  created: zod.iso.datetime({}).optional(),
-});
-
-export const apiHackAttemptsRerunBody = zod.object({
-  attemptId: zod.number(),
-  hackType: zod.string().min(1),
-  hackerUsername: zod.string().min(1),
-  defenderUsername: zod.string().min(1),
-  problemId: zod.number(),
-  problemTitle: zod.string().min(1),
-  verdict: zod
-    .union([
-      zod.literal(-2),
-      zod.literal(-1),
-      zod.literal(0),
-      zod.literal(1),
-      zod.literal(2),
-      zod.literal(3),
-      zod.literal(4),
-      zod.literal(5),
-    ])
-    .optional(),
-  verdictTitle: zod.string().min(1),
 });
 
 export const apiHackathonsListQueryParams = zod.object({

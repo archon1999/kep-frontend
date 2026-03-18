@@ -15,11 +15,10 @@ import { toast } from 'sonner';
 import {
   problemsQueries,
   useAttemptsList,
-  useHackAttempts,
   useProblemDetail,
 } from '../../application/queries';
 import { ProblemSampleTest } from '../../domain/entities/problem.entity';
-import { AttemptsListParams, HackAttemptsListParams } from '../../domain/ports/problems.repository';
+import { AttemptsListParams } from '../../domain/ports/problems.repository';
 import { usePersistedCode } from '../../hooks/usePersistedCode';
 import { useProblemLanguage } from '../../hooks/useProblemLanguage';
 import { PanelHandle } from '../components/problem-detail/PanelHandles';
@@ -74,8 +73,8 @@ const ProblemDetailPage = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [activeTab, setActiveTab] = useState<'description' | 'attempts' | 'hacks' | 'stats'>(
-    (searchParams.get('tab') as 'attempts' | 'hacks' | 'stats') || 'description',
+  const [activeTab, setActiveTab] = useState<'description' | 'attempts' | 'stats'>(
+    (searchParams.get('tab') as 'attempts' | 'stats') || 'description',
   );
   const [input, setInput] = useState('');
   const [answer, setAnswer] = useState('');
@@ -96,7 +95,6 @@ const ProblemDetailPage = () => {
   >([]);
   const [editorTab, setEditorTab] = useState<'console' | 'samples'>('console');
   const [myAttemptsOnly, setMyAttemptsOnly] = useState(true);
-  const [hackPagination, setHackPagination] = useState({ page: 0, pageSize: 10 });
   const {
     paginationModel: attemptsPagination,
     onPaginationModelChange: onAttemptsPaginationChange,
@@ -128,17 +126,6 @@ const ProblemDetailPage = () => {
       setHasLoadedOnce(true);
     }
   }, [problem?.id]);
-
-  const { data: hackAttemptsPage, mutate: mutateHackAttempts } = useHackAttempts(
-    useMemo<HackAttemptsListParams>(
-      () => ({
-        problemId: problemId || undefined,
-        page: hackPagination.page + 1,
-        pageSize: hackPagination.pageSize,
-      }),
-      [problemId, hackPagination.page, hackPagination.pageSize],
-    ),
-  );
 
   const attemptsParams = useMemo<AttemptsListParams>(
     () => ({
@@ -241,14 +228,14 @@ const ProblemDetailPage = () => {
 
   useEffect(() => {
     const tab = searchParams.get('tab');
-    if (tab === 'attempts' || tab === 'hacks' || tab === 'stats') {
+    if (tab === 'attempts' || tab === 'stats') {
       setActiveTab(tab);
     } else {
       setActiveTab('description');
     }
   }, [searchParams]);
 
-  const handleTabChange = (value: 'description' | 'attempts' | 'hacks' | 'stats') => {
+  const handleTabChange = (value: 'description' | 'attempts' | 'stats') => {
     setActiveTab(value);
     const next = new URLSearchParams(searchParams);
     if (value === 'description') {
@@ -550,11 +537,6 @@ const ProblemDetailPage = () => {
                 onAttemptsPaginationChange={onAttemptsPaginationChange}
                 isAttemptsLoading={isAttemptsLoading}
                 onAttemptsRefresh={() => mutateAttempts()}
-                hackAttempts={hackAttemptsPage?.data ?? []}
-                hackTotal={hackAttemptsPage?.total ?? 0}
-                hackPagination={hackPagination}
-                onHackPaginationChange={setHackPagination}
-                onHackRefresh={() => mutateHackAttempts()}
                 onFavoriteToggle={handleFavoriteToggle}
                 onLike={() => handleLikeDislike('like')}
                 onDislike={() => handleLikeDislike('dislike')}

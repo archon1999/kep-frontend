@@ -1,6 +1,9 @@
-import { ProblemListItem } from 'modules/problems/domain/entities/problem.entity.ts';
+import { ProblemDetail } from 'modules/problems/domain/entities/problem.entity.ts';
 
 export type DuelStatus = -1 | 0 | 1;
+export type DuelViewerRole = 'player_first' | 'player_second' | 'spectator';
+export type DuelInvitationViewerRole = 'challenger' | 'invitee' | 'spectator';
+export type DuelInvitationStatus = 1 | 2 | 3 | 4 | 5;
 
 export interface DuelPlayer {
   id: number;
@@ -15,7 +18,7 @@ export interface DuelProblem {
   ball?: number;
   playerFirstBall?: number;
   playerSecondBall?: number;
-  problem?: ProblemListItem;
+  problem?: ProblemDetail;
 }
 
 export interface DuelPresetTypeInfo {
@@ -27,6 +30,7 @@ export interface DuelPresetTypeInfo {
 
 export interface DuelPresetCategory {
   id?: number;
+  code?: string;
   title?: string;
 }
 
@@ -57,6 +61,8 @@ export interface Duel {
   status: DuelStatus;
   isPlayer?: boolean;
   isConfirmed?: boolean;
+  viewerRole?: DuelViewerRole;
+  canSubmitForDuel?: boolean;
   playerFirst: DuelPlayer;
   playerSecond?: DuelPlayer | null;
   preset?: DuelPreset | null;
@@ -79,4 +85,34 @@ export interface DuelReadyPlayer {
   wins?: number;
   draws?: number;
   losses?: number;
+}
+
+export interface DuelInvitationUser {
+  id?: number;
+  username: string;
+}
+
+export interface DuelInvitationProblem {
+  symbol: string;
+  ball?: number;
+}
+
+export interface DuelInvitation {
+  id: number;
+  status: DuelInvitationStatus;
+  challenger: DuelInvitationUser;
+  invitee: DuelInvitationUser;
+  otherUser?: DuelInvitationUser | null;
+  preset?: DuelPreset | null;
+  proposedStartTime?: string | null;
+  actionRequiredBy?: DuelInvitationUser | null;
+  viewerRole?: DuelInvitationViewerRole;
+  problems?: DuelInvitationProblem[];
+  duelId?: number | null;
+  canAccept?: boolean;
+  canCounter?: boolean;
+  canReject?: boolean;
+  requiresResponse?: boolean;
+  created?: string;
+  updated?: string;
 }

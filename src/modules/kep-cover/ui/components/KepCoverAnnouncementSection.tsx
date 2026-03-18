@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { Box, Button, Chip, Paper, Skeleton, Stack, Typography } from '@mui/material';
+import { Box, Button, Chip, Skeleton, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAuth } from 'app/providers/AuthProvider';

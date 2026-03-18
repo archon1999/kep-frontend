@@ -21,7 +21,6 @@ export enum Verdicts {
   FakeAccepted,
   PartialSolution,
   NotAvailableLanguage,
-  Hacked,
 }
 
 export type VerdictKey = Verdicts;
@@ -47,7 +46,6 @@ export const verdictColorMap: Record<VerdictKey, ChipProps['color']> = {
   [Verdicts.PartialSolution]: 'warning',
   [Verdicts.NotAvailableLanguage]: 'default',
   [Verdicts.FakeAccepted]: 'success',
-  [Verdicts.Hacked]: 'error',
 };
 
 export const verdictShortTitle: Record<VerdictKey, string> = {
@@ -71,7 +69,6 @@ export const verdictShortTitle: Record<VerdictKey, string> = {
   [Verdicts.PartialSolution]: '',
   [Verdicts.NotAvailableLanguage]: '',
   [Verdicts.FakeAccepted]: 'AC',
-  [Verdicts.Hacked]: '',
 };
 
 export const hideTestCaseFor: VerdictKey[] = [
@@ -83,7 +80,6 @@ export const hideTestCaseFor: VerdictKey[] = [
   Verdicts.OnlyPython,
   Verdicts.PartialSolution,
   Verdicts.FakeAccepted,
-  Verdicts.Hacked,
 ];
 
 export const formatBallScore = (balls?: number | null) => {

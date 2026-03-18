@@ -1,8 +1,14 @@
 import { mapAttemptsPage } from 'modules/problems/data-access/mappers/problems.mapper.ts';
 import { AttemptListItem } from 'modules/problems/domain/entities/problem.entity.ts';
-import { PageResult, DuelsListParams, DuelsRepository } from '../../domain/ports/duels.repository.ts';
+import {
+  DuelCounterPayload,
+  PageResult,
+  DuelsListParams,
+  DuelsRepository,
+} from '../../domain/ports/duels.repository.ts';
 import {
   Duel,
+  DuelInvitation,
   DuelPreset,
   DuelReadyPlayer,
   DuelReadyStatus,
@@ -12,6 +18,7 @@ import {
 import { duelsApiClient } from '../api/duels.client.ts';
 import {
   mapDuel,
+  mapDuelInvitation,
   mapDuelsRatingRow,
   mapDuelPreset,
   mapDuelResults,
@@ -36,13 +43,16 @@ export class HttpDuelsRepository implements DuelsRepository {
     return mapDuel(response);
   }
 
-  async confirmDuel(id: number): Promise<void> {
-    await duelsApiClient.confirmDuel(id);
-  }
-
   async getDuelResults(id: number | string): Promise<DuelResults> {
     const response = await duelsApiClient.getDuelResults(id);
     return mapDuelResults(response);
+  }
+
+  async submitToDuel(
+    duelId: number | string,
+    payload: { duelProblem: string; sourceCode: string; lang: string },
+  ): Promise<void> {
+    await duelsApiClient.submitToDuel(duelId, payload);
   }
 
   async getProblemAttempts(
@@ -79,9 +89,33 @@ export class HttpDuelsRepository implements DuelsRepository {
     return (data ?? []).map(mapDuelPreset);
   }
 
-  async createDuel(payload: { duelUsername: string; duelPresetId: number; startTime: string }): Promise<{ id?: number }> {
-    const response = await duelsApiClient.createDuel(payload);
-    return response;
+  async getDuelInvitations(params?: { page?: number; pageSize?: number }): Promise<PageResult<DuelInvitation>> {
+    const response = await duelsApiClient.listDuelInvitations(params);
+    return mapPageResult(response, mapDuelInvitation);
+  }
+
+  async createInvitation(payload: {
+    duelUsername: string;
+    duelPresetId: number;
+    startTime: string;
+  }): Promise<DuelInvitation> {
+    const response = await duelsApiClient.createInvitation(payload);
+    return mapDuelInvitation(response);
+  }
+
+  async acceptInvitation(id: number): Promise<DuelInvitation> {
+    const response = await duelsApiClient.acceptInvitation(id);
+    return mapDuelInvitation(response);
+  }
+
+  async rejectInvitation(id: number): Promise<DuelInvitation> {
+    const response = await duelsApiClient.rejectInvitation(id);
+    return mapDuelInvitation(response);
+  }
+
+  async counterInvitation(id: number, payload: DuelCounterPayload): Promise<DuelInvitation> {
+    const response = await duelsApiClient.counterInvitation(id, payload);
+    return mapDuelInvitation(response);
   }
 
   async getDuelsRating(params?: { page?: number; pageSize?: number; ordering?: string }): Promise<PageResult<DuelsRatingRow>> {
