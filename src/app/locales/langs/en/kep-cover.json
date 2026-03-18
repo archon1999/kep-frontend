@@ -1,0 +1,45 @@
+{
+  "kepCover": {
+    "fallbackTitle": "KEP Cover Contest",
+    "topEntries": "Top 3 covers",
+    "allEntries": "All covers",
+    "loadMore": "Load more",
+    "status": {
+      "empty": "No contest",
+      "upcoming": "Upcoming",
+      "active": "Live now",
+      "finished": "Finished"
+    },
+    "hero": {
+      "subtitle": "Users who change their cover during the contest period join automatically. Vote for the strongest covers and track the live leaderboard.",
+      "entries": "{{count}} participants",
+      "remainingVotes": "{{count}} of {{total}} votes left",
+      "signInToVote": "Sign in to vote",
+      "endsAt": "Voting closes {{date}}",
+      "finishedAt": "Finished {{date}}",
+      "readOnly": "Voting is closed. Results are shown in read-only mode."
+    },
+    "home": {
+      "live": "KEP Cover live",
+      "subtitle": "The cover contest is active right now. Open the full page to browse all covers, vote, and watch the leaderboard update.",
+      "entries": "{{count}} participants",
+      "remainingVotes": "{{count}} of {{total}} votes left",
+      "signInToVote": "Sign in to vote",
+      "endsAt": "Ends {{date}}",
+      "cta": "Open contest"
+    },
+    "actions": {
+      "like": "Vote",
+      "unlike": "Remove vote",
+      "signIn": "Sign in to vote"
+    },
+    "messages": {
+      "voteError": "Unable to update your vote."
+    },
+    "empty": {
+      "title": "No KEP Cover contest yet",
+      "subtitle": "When a contest is created, it will appear here with live standings and all submitted covers.",
+      "entries": "No covers have joined this contest yet."
+    }
+  }
+}

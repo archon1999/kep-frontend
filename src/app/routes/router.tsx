@@ -11,6 +11,7 @@ import { legacyRedirectRoutes } from './legacy-routes';
 import { authPaths, rootPaths } from './route-config';
 
 const Home = lazy(() => import('modules/home/ui/pages/HomePage'));
+const KepCoverPage = lazy(() => import('modules/kep-cover/ui/pages/KepCoverPage'));
 const KepcoinPage = lazy(() => import('modules/kepcoin/ui/pages/KepcoinPage'));
 const KepcoinEarnPage = lazy(() => import('modules/kepcoin/ui/pages/KepcoinEarnPage'));
 const ShopPage = lazy(() => import('modules/shop/ui/pages/ShopPage'));
@@ -334,6 +335,11 @@ export const routes: RouteObject[] = [
             path: resources.KepcoinEarn,
             element: <KepcoinEarnPage />,
             handle: { titleKey: 'pageTitles.kepcoinEarn' },
+          },
+          {
+            path: resources.KepCover,
+            element: <KepCoverPage />,
+            handle: { titleKey: 'pageTitles.kepCover', fallbackTitleKey: 'pageTitles.home' },
           },
           {
             path: resources.Calendar,

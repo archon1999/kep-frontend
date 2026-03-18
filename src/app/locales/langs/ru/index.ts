@@ -4,6 +4,7 @@ import challenges from './challenges.json';
 import common from './common.json';
 import hackathons from './hackathons.json';
 import homePage from './home-page.json';
+import kepCover from './kep-cover.json';
 import kepcoinPage from './kepcoin-page.json';
 import problems from './problems.json';
 import auth from './auth.json';
@@ -27,6 +28,7 @@ export const ruTranslation = {
   ...settings,
   ...arena,
   ...homePage,
+  ...kepCover,
   ...shop,
   ...auth,
   ...calendar,
