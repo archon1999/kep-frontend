@@ -1,6 +1,8 @@
 import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
 import { isCanceled, normalizeError, notifyError } from 'shared/api';
 
+const GLOBAL_API_CACHE_TTL_MS = 5_000;
+
 export const queryCache = new QueryCache({
   onError: (error, query) => {
     if (isCanceled(error)) return;
@@ -22,7 +24,7 @@ export const queryClient = new QueryClient({
   mutationCache,
   defaultOptions: {
     queries: {
-      staleTime: 60_000,
+      staleTime: GLOBAL_API_CACHE_TTL_MS,
       gcTime: 10 * 60_000,
       refetchOnWindowFocus: false,
       retry: (failureCount, error: any) => {

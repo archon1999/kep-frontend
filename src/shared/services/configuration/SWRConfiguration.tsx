@@ -2,6 +2,7 @@ import { PropsWithChildren } from 'react';
 import axiosFetcher from 'shared/services/axios/axiosFetcher';
 import { SWRConfig } from 'swr';
 
+const GLOBAL_API_CACHE_TTL_MS = 5_000;
 
 function createTTLCache(ttlMs: number) {
   const map = new Map();
@@ -40,11 +41,13 @@ const SWRConfiguration = ({ children }: PropsWithChildren) => {
     <SWRConfig
       value={{
         fetcher: axiosFetcher,
-        revalidateIfStale: false,
+        dedupingInterval: GLOBAL_API_CACHE_TTL_MS,
+        revalidateIfStale: true,
+        revalidateOnMount: true,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
         shouldRetryOnError: false,
-        provider: () => createTTLCache(1000 * 1660)
+        provider: () => createTTLCache(GLOBAL_API_CACHE_TTL_MS)
       }}
     >
       {children}
