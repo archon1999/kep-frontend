@@ -44,3 +44,5 @@ export interface HomeListParams {
   pageSize?: number;
   page?: number;
 }
+
+export * from './home-promo.entity';

@@ -21,6 +21,7 @@ import type {
 } from 'shared/api/orval/generated/endpoints/index.schemas';
 import type { HomeUserActivityStatistics } from '../../domain/entities/home.entity';
 import type { HomeLandingPageStatistics } from '../../domain/entities/home.entity.ts';
+import type { ApiHomePromoItem } from '../mappers/home-promo.mapper.ts';
 
 export const homeApiClient = {
   news: (params?: ApiNewsListParams) => apiClient.apiNewsList(params) as Promise<ApiNewsListResult>,
@@ -38,4 +39,5 @@ export const homeApiClient = {
     axiosMutator<HomeUserActivityStatistics>({ url: '/api/users/user-activity-statistics/', method: 'GET' }),
   landingPageStatistics: () =>
     apiClient.apiLandingPageStatisticsList() as unknown as Promise<HomeLandingPageStatistics>,
+  promos: () => axiosMutator<ApiHomePromoItem[]>({ url: '/api/home-promos', method: 'GET' }),
 };

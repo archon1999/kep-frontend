@@ -50,6 +50,47 @@
       "viewAll": "Barcha musobaqalar",
       "empty": "Hozircha musobaqalar mavjud emas."
     },
+    "promos": {
+      "kepCover": {
+        "activeSubtitle": "Eng kuchli coverlarga ovoz bering, live reytingni kuzating va to'liq KEP Cover sahifasini oching.",
+        "upcomingSubtitle": "Keyingi KEP Cover allaqachon rejalashtirilgan. Ovoz berish ochilishidan oldin cover photongizni yangilang.",
+        "voteLimit": "Har bir foydalanuvchiga {{count}} ta ovoz"
+      },
+      "contest": {
+        "activeSubtitle": "Musobaqa hozir davom etmoqda. Masalalarni ishlash va jadvalni kuzatish uchun uni oching.",
+        "upcomingSubtitle": "Keyingi contest yaqinlashmoqda. Jadvalni ko'rib chiqing va oldindan ro'yxatdan o'ting."
+      },
+      "arena": {
+        "activeSubtitle": "Arena raundi hozir davom etmoqda. Kirib, live ishtirokchilar bilan bir tempda boring.",
+        "upcomingSubtitle": "Yangi arena raundi yaqin. Jadvalni ko'ring va keyingi startga tayyor turing.",
+        "roundTime": "Har raundga {{count}} soniya"
+      },
+      "actions": {
+        "openKepCover": "KEP Cover'ni ochish",
+        "openContest": "Contest'ni ochish",
+        "openArena": "Arena'ni ochish"
+      },
+      "types": {
+        "kepCover": "KEP Cover",
+        "contest": "Contest",
+        "arena": "Arena"
+      },
+      "metrics": {
+        "participants": "Ishtirokchilar",
+        "voteLimit": "Ovoz limiti",
+        "schedule": "Jadval",
+        "registrants": "Ro'yxatdan o'tganlar",
+        "problems": "Masalalar",
+        "questions": "Savollar",
+        "roundTime": "Raund vaqti"
+      },
+      "statuses": {
+        "active": "Hozir davom etmoqda",
+        "upcoming": "Yaqinda"
+      },
+      "startsAt": "{{date}} da boshlanadi",
+      "endsAt": "{{date}} da tugaydi"
+    },
     "news": {
       "title": "Soʻnggi yangiliklar",
       "empty": "Hozircha yangiliklar mavjud emas."
