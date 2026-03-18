@@ -1,6 +1,5 @@
 import type { MutableRefObject } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-
 import { getItemFromStore, setItemToStore } from 'shared/lib/utils';
 
 interface UsePersistedCodeParams {
@@ -13,7 +12,7 @@ interface UsePersistedCodeResult {
   editorKey: string;
   codeRef: MutableRefObject<string>;
   hasCode: boolean;
-  persistCode: (value: string, keyOverride?: string | null, resetEditor?: boolean) => void;
+  persistCode: (value: string) => void;
 }
 
 export const usePersistedCode = ({
@@ -45,24 +44,17 @@ export const usePersistedCode = ({
   }, [storageKey, template]);
 
   const persistCode = useCallback(
-    (value: string, keyOverride?: string | null, resetEditor = false) => {
-      const keyToUse = keyOverride || storageKey;
-
+    (value: string) => {
       codeRef.current = value;
       setHasCode(Boolean(value));
       isEditedRef.current = true;
-      lastKeyRef.current = keyToUse ?? lastKeyRef.current;
-      if (keyToUse) {
-        try {
-          setItemToStore(keyToUse, JSON.stringify(value ?? ''));
-        } catch {
-          // ignore storage write errors to avoid breaking the editor
-        }
-      }
+      lastKeyRef.current = storageKey ?? lastKeyRef.current;
+      if (!storageKey) return;
 
-      if (resetEditor) {
-        setInitialCode(value);
-        setEditorKey(`${keyToUse ?? 'problem-editor'}-${Date.now()}`);
+      try {
+        setItemToStore(storageKey, JSON.stringify(value ?? ''));
+      } catch {
+        // ignore storage write errors to avoid breaking the editor
       }
     },
     [storageKey],

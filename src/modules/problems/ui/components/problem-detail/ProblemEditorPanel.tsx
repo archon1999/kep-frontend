@@ -19,15 +19,16 @@ import {
 import { alpha } from '@mui/material/styles';
 import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
+import KepIcon from 'shared/components/base/KepIcon';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
-import KepIcon from 'shared/components/base/KepIcon';
 import { toast } from 'sonner';
 import {
   AttemptLangs,
   ProblemDetail,
   ProblemSampleTest,
 } from '../../../domain/entities/problem.entity';
+import { detectPastedLanguage } from '../../../lib/detectPastedLanguage';
 import { VerticalHandle } from './PanelHandles';
 
 const getEditorLanguage = (lang: string) =>
@@ -46,7 +47,7 @@ interface ProblemEditorPanelProps {
   problem?: ProblemDetail;
   initialCode: string;
   editorKey: string;
-  onCodeChange: (value: string, langOverride?: string) => void;
+  onCodeChange: (value: string) => void;
   selectedLang: string;
   onLangChange: (value: string) => void;
   sampleTests: ProblemSampleTest[];
@@ -111,6 +112,27 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
 
   const monaco = useMonaco();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const editorRef = useRef<any>(null);
+  const monacoRef = useRef<any>(null);
+  const pendingPastedTextRef = useRef<string | null>(null);
+
+  const detectAndApplyPastedLanguage = (nextValue?: string, pastedText?: string | null) => {
+    const editor = editorRef.current;
+    if (!editor) return;
+
+    const editorValue = nextValue ?? editor.getValue();
+    const sourceForDetection = pastedText?.trim() ? pastedText : editorValue;
+    const detectedLang = detectPastedLanguage(
+      sourceForDetection,
+      problem?.availableLanguages,
+      selectedLang,
+    );
+
+    if (!detectedLang || detectedLang === selectedLang) return;
+
+    onCodeChange(editorValue);
+    onLangChange(detectedLang);
+  };
 
   useEffect(() => {
     if (monaco) {
@@ -118,14 +140,69 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
     }
   }, [monaco, editorTheme]);
 
+  useEffect(() => {
+    const editor = editorRef.current;
+    const monacoInstance = monacoRef.current ?? monaco;
+
+    if (!editor || !monacoInstance) return;
+
+    const model = editor.getModel();
+    if (!model) return;
+
+    const nextLanguage = getEditorLanguage(selectedLang);
+    if (model && typeof monacoInstance.editor?.setModelLanguage === 'function') {
+      monacoInstance.editor.setModelLanguage(model, nextLanguage);
+    }
+  }, [selectedLang, monaco]);
+
+  useEffect(() => {
+    const editor = editorRef.current;
+    if (!editor) return;
+
+    if (editor.getValue() !== initialCode) {
+      editor.setValue(initialCode);
+    }
+  }, [editorKey, initialCode]);
+
+  useEffect(() => {
+    const editor = editorRef.current;
+    if (!editor || isDisabled) return;
+
+    const domNode = editor.getDomNode?.();
+    const handleDomPaste = (event: ClipboardEvent) => {
+      pendingPastedTextRef.current = event.clipboardData?.getData('text/plain') ?? null;
+      window.setTimeout(() => {
+        detectAndApplyPastedLanguage(undefined, pendingPastedTextRef.current);
+        pendingPastedTextRef.current = null;
+      }, 0);
+    };
+
+    const subscription = editor.onDidPaste((pasteEvent: any) => {
+      window.setTimeout(() => {
+        detectAndApplyPastedLanguage(
+          editor.getValue(),
+          pasteEvent?.clipboardEvent?.clipboardData?.getData('text/plain') ??
+            pendingPastedTextRef.current,
+        );
+        pendingPastedTextRef.current = null;
+      }, 0);
+    });
+
+    domNode?.addEventListener('paste', handleDomPaste);
+
+    return () => {
+      subscription.dispose();
+      domNode?.removeEventListener('paste', handleDomPaste);
+    };
+  }, [isDisabled, onCodeChange, onLangChange, problem?.availableLanguages, selectedLang]);
+
   const handleFileUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     const extension = file.name.split('.').pop()?.toLowerCase();
     const matchedLang =
-      extension &&
-      Object.values(AttemptLangs).find((lang) => lang.toLowerCase() === extension);
+      extension && Object.values(AttemptLangs).find((lang) => lang.toLowerCase() === extension);
 
     if (!matchedLang) {
       toast.error(t('problems.detail.unsupportedFileExtension'));
@@ -141,7 +218,8 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
     }
 
     const content = await file.text();
-    onCodeChange(content, matchedLang);
+    editorRef.current?.setValue(content);
+    onCodeChange(content);
     if (matchedLang !== selectedLang) {
       onLangChange(matchedLang);
     }
@@ -221,13 +299,7 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
           bgcolor: 'background.paper',
         }}
       >
-        <Stack
-          direction="row"
-          spacing={1.5}
-          alignItems="center"
-          flexWrap="wrap"
-          useFlexGap
-        >
+        <Stack direction="row" spacing={1.5} alignItems="center" flexWrap="wrap" useFlexGap>
           <TextField
             select
             size="small"
@@ -319,12 +391,21 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
               }}
             >
               <Editor
-                key={editorKey}
                 language={getEditorLanguage(selectedLang)}
                 defaultValue={initialCode}
+                onMount={(editor, mountedMonaco) => {
+                  editorRef.current = editor;
+                  monacoRef.current = mountedMonaco;
+                }}
                 onChange={(value) => {
                   if (isDisabled || typeof value !== 'string') return;
                   onCodeChange(value ?? '');
+                  if (pendingPastedTextRef.current !== null) {
+                    window.setTimeout(() => {
+                      detectAndApplyPastedLanguage(value, pendingPastedTextRef.current);
+                      pendingPastedTextRef.current = null;
+                    }, 0);
+                  }
                 }}
                 options={{
                   minimap: { enabled: false },

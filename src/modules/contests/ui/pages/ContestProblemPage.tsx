@@ -43,6 +43,7 @@ import ProblemEditorSkeleton from 'modules/problems/ui/components/problem-detail
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo.tsx';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
+import useGridPagination from 'shared/hooks/useGridPagination';
 import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
 import { wsService } from 'shared/services/websocket';
 import { toast } from 'sonner';
@@ -61,7 +62,6 @@ import { ContestStatus } from '../../domain/entities/contest-status';
 import { ContestantEntity } from '../../domain/entities/contestant.entity';
 import { sortContestProblems } from '../../utils/sortContestProblems';
 import ContestantView from '../components/ContestantView';
-import useGridPagination from 'shared/hooks/useGridPagination';
 
 const useProblemPermissions = (permissionsRaw: any) => {
   return useMemo(() => {
@@ -360,10 +360,10 @@ const ContestProblemPage = () => {
 
   const contestCodeStorageKey = useMemo(
     () =>
-      problem?.id && selectedLang
-        ? `contest-${contest?.id ?? contestId ?? 'unknown'}-problem-${problem.id}-code-${selectedLang}`
+      problem?.id
+        ? `contest-${contest?.id ?? contestId ?? 'unknown'}-problem-${problem.id}-code`
         : null,
-    [contest?.id, contestId, problem?.id, selectedLang],
+    [contest?.id, contestId, problem?.id],
   );
 
   const { initialCode, editorKey, codeRef, hasCode, persistCode } = usePersistedCode({
@@ -596,7 +596,8 @@ const ContestProblemPage = () => {
                 size="medium"
                 sx={{
                   '& .MuiChip-label': {
-                    fontFamily: 'Roboto Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                    fontFamily:
+                      'Roboto Mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
                   },
                 }}
               />
@@ -840,18 +841,7 @@ const ContestProblemPage = () => {
                 problem={problem}
                 initialCode={initialCode}
                 editorKey={editorKey}
-                onCodeChange={(value, langOverride) => {
-                  const langToUse = langOverride || selectedLang;
-                  if (!problem?.id || !langToUse) return;
-
-                  const codeKey =
-                    langToUse === selectedLang
-                      ? contestCodeStorageKey
-                      : `contest-${contest?.id ?? contestId ?? 'unknown'}-problem-${problem.id}-code-${langToUse}`;
-
-                  const shouldResetEditor = Boolean(langOverride);
-                  persistCode(value, codeKey, shouldResetEditor);
-                }}
+                onCodeChange={persistCode}
                 selectedLang={selectedLang}
                 onLangChange={setSelectedLang}
                 sampleTests={sampleTests}

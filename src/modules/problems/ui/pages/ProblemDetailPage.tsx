@@ -2,16 +2,16 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Panel, PanelGroup } from 'react-resizable-panels';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { Box, Card, CircularProgress, LinearProgress } from '@mui/material';
-import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
+import { Box, Card, LinearProgress } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
+import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceById, resources } from 'app/routes/resources';
+import { getDifficultyColor } from 'modules/problems/config/difficulty';
+import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
+import useGridPagination from 'shared/hooks/useGridPagination';
 import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
-import { alpha } from '@mui/material/styles';
 import { wsService } from 'shared/services/websocket';
 import { toast } from 'sonner';
-import { getDifficultyColor } from 'modules/problems/config/difficulty';
-import useGridPagination from 'shared/hooks/useGridPagination';
 import {
   problemsQueries,
   useAttemptsList,
@@ -28,7 +28,6 @@ import ProblemDescriptionSkeleton from '../components/problem-detail/ProblemDesc
 import { ProblemEditorPanel } from '../components/problem-detail/ProblemEditorPanel';
 import ProblemEditorSkeleton from '../components/problem-detail/ProblemEditorSkeleton';
 import { ProblemHeader } from '../components/problem-detail/ProblemHeader';
-import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
 
 const useProblemPermissions = (permissionsRaw: any) => {
   return useMemo(() => {
@@ -87,7 +86,13 @@ const ProblemDetailPage = () => {
   const [isCheckingSamples, setIsCheckingSamples] = useState(false);
   const [isAnswering, setIsAnswering] = useState(false);
   const [checkSamplesResult, setCheckSamplesResult] = useState<
-    Array<{ verdict?: VerdictKey; verdictTitle?: string; input?: string; output?: string; answer?: string }>
+    Array<{
+      verdict?: VerdictKey;
+      verdictTitle?: string;
+      input?: string;
+      output?: string;
+      answer?: string;
+    }>
   >([]);
   const [editorTab, setEditorTab] = useState<'console' | 'samples'>('console');
   const [myAttemptsOnly, setMyAttemptsOnly] = useState(true);
@@ -96,7 +101,10 @@ const ProblemDetailPage = () => {
     paginationModel: attemptsPagination,
     onPaginationModelChange: onAttemptsPaginationChange,
     pageParams: attemptsPageParams,
+    setPaginationModel: setAttemptsPagination,
   } = useGridPagination({ initialPageSize: 10 });
+  const [attemptsLangFilter, setAttemptsLangFilter] = useState('');
+  const [attemptsVerdictFilter, setAttemptsVerdictFilter] = useState('');
 
   const {
     data: problem,
@@ -136,6 +144,8 @@ const ProblemDetailPage = () => {
     () => ({
       problemId: problemId || undefined,
       username: myAttemptsOnly ? currentUser?.username : undefined,
+      lang: attemptsLangFilter || undefined,
+      verdict: attemptsVerdictFilter ? Number(attemptsVerdictFilter) : undefined,
       page: attemptsPageParams.page,
       pageSize: attemptsPageParams.pageSize,
       ordering: '-id',
@@ -144,6 +154,8 @@ const ProblemDetailPage = () => {
       problemId,
       myAttemptsOnly,
       currentUser?.username,
+      attemptsLangFilter,
+      attemptsVerdictFilter,
       attemptsPageParams.page,
       attemptsPageParams.pageSize,
     ],
@@ -161,8 +173,8 @@ const ProblemDetailPage = () => {
   });
 
   const problemCodeStorageKey = useMemo(
-    () => (problem?.id && selectedLang ? `problem-${problem.id}-code-${selectedLang}` : null),
-    [problem?.id, selectedLang],
+    () => (problem?.id ? `problem-${problem.id}-code` : null),
+    [problem?.id],
   );
 
   const { initialCode, editorKey, codeRef, hasCode, persistCode } = usePersistedCode({
@@ -245,6 +257,16 @@ const ProblemDetailPage = () => {
       next.set('tab', value);
     }
     setSearchParams(next, { replace: true });
+  };
+
+  const handleAttemptsLangFilterChange = (value: string) => {
+    setAttemptsLangFilter(value);
+    setAttemptsPagination((prev) => ({ ...prev, page: 0 }));
+  };
+
+  const handleAttemptsVerdictFilterChange = (value: string) => {
+    setAttemptsVerdictFilter(value);
+    setAttemptsPagination((prev) => ({ ...prev, page: 0 }));
   };
 
   const handlePrev = async () => {
@@ -360,7 +382,8 @@ const ProblemDetailPage = () => {
   const selectedDifficultyColor = getDifficultyColor(problem?.difficulty);
   const canUseCheckSamples = Boolean(permissions.canUseCheckSamples || currentUser?.isSuperuser);
   const showInitialSkeleton = !hasLoadedOnce && (isProblemLoading || !problem);
-  const isRevalidating = Boolean(problem) && hasLoadedOnce && (isProblemValidating || isProblemLoading);
+  const isRevalidating =
+    Boolean(problem) && hasLoadedOnce && (isProblemValidating || isProblemLoading);
   const showAnswerForInputAction = Boolean(problem?.hasSolution && problem?.hasCheckInput);
 
   const actionStatesRef = useRef({
@@ -416,8 +439,16 @@ const ProblemDetailPage = () => {
     const handleHotkeys = (event: KeyboardEvent) => {
       if (!event.ctrlKey) return;
 
-      const { currentUser: stateUser, hasCode, isRunning, isCheckingSamples, isAnswering, isSubmitting, canUseCheckSamples: canCheckSamples, showAnswerForInputAction: canAnswer } =
-        actionStatesRef.current;
+      const {
+        currentUser: stateUser,
+        hasCode,
+        isRunning,
+        isCheckingSamples,
+        isAnswering,
+        isSubmitting,
+        canUseCheckSamples: canCheckSamples,
+        showAnswerForInputAction: canAnswer,
+      } = actionStatesRef.current;
       const { onRun, onCheckSamples, onAnswerForInput, onSubmit } = actionHandlersRef.current;
 
       if (event.key === "'" && stateUser && hasCode && !isRunning) {
@@ -495,30 +526,8 @@ const ProblemDetailPage = () => {
         }}
         aria-busy={isProblemLoading}
       >
-        {isProblemLoading ? (
+        {isProblemLoading || isRevalidating ? (
           <LinearProgress sx={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2 }} />
-        ) : null}
-
-        {isRevalidating ? (
-          <Box
-            sx={{
-              position: 'absolute',
-              inset: 0,
-              zIndex: 3,
-              bgcolor: (theme) =>
-                alpha(
-                  theme.palette.background.paper,
-                  theme.palette.mode === 'dark' ? 0.3 : 0.45,
-                ),
-              backdropFilter: 'blur(2px)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              pointerEvents: 'auto',
-            }}
-          >
-            <CircularProgress size={28} />
-          </Box>
         ) : null}
 
         <PanelGroup direction="horizontal" style={{ flex: 1, minHeight: 0 }}>
@@ -531,6 +540,10 @@ const ProblemDetailPage = () => {
                 onTabChange={handleTabChange}
                 myAttemptsOnly={myAttemptsOnly}
                 onToggleMyAttempts={() => setMyAttemptsOnly((prev) => !prev)}
+                attemptsLangFilter={attemptsLangFilter}
+                onAttemptsLangFilterChange={handleAttemptsLangFilterChange}
+                attemptsVerdictFilter={attemptsVerdictFilter}
+                onAttemptsVerdictFilterChange={handleAttemptsVerdictFilterChange}
                 attempts={attemptsPage?.data ?? []}
                 attemptsTotal={attemptsPage?.total ?? 0}
                 attemptsPagination={attemptsPagination}
@@ -560,18 +573,7 @@ const ProblemDetailPage = () => {
                 problem={problem}
                 initialCode={initialCode}
                 editorKey={editorKey}
-                onCodeChange={(value, langOverride) => {
-                  const langToUse = langOverride || selectedLang;
-                  if (!problem?.id || !langToUse) return;
-
-                  const codeKey =
-                    langToUse === selectedLang
-                      ? problemCodeStorageKey
-                      : `problem-${problem.id}-code-${langToUse}`;
-
-                  const shouldResetEditor = Boolean(langOverride);
-                  persistCode(value, codeKey, shouldResetEditor);
-                }}
+                onCodeChange={persistCode}
                 selectedLang={selectedLang}
                 onLangChange={setSelectedLang}
                 sampleTests={sampleTests}

@@ -5,27 +5,33 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Button,
   Card,
   CardContent,
   CardHeader,
   Chip,
   Divider,
+  FormControl,
+  InputLabel,
   LinearProgress,
+  MenuItem,
+  Select,
   Stack,
   Tab,
   Tabs,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { GridPaginationModel } from '@mui/x-data-grid';
 import { useAuth } from 'app/providers/AuthProvider';
-import { useProblemSolution } from 'modules/problems/application/queries.ts';
+import { useAttemptVerdicts, useProblemSolution } from 'modules/problems/application/queries.ts';
 import { DifficultyColor } from 'modules/problems/config/difficulty';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch';
 import { ProblemAvailableLanguage, ProblemDetail } from '../../../domain/entities/problem.entity';
 import ProblemsAttemptsTable from '../ProblemsAttemptsTable';
-import { ProblemBody } from './ProblemBody';
 import { HackAttemptsCard } from './HackAttemptsCard';
+import { ProblemBody } from './ProblemBody';
 import { ProblemFooter } from './ProblemFooter';
 import { ProblemStatisticsTab } from './ProblemStatisticsTab';
 
@@ -43,6 +49,10 @@ interface ProblemDescriptionProps {
   onTabChange: (value: TabValue) => void;
   myAttemptsOnly: boolean;
   onToggleMyAttempts: () => void;
+  attemptsLangFilter: string;
+  onAttemptsLangFilterChange: (value: string) => void;
+  attemptsVerdictFilter: string;
+  onAttemptsVerdictFilterChange: (value: string) => void;
   attempts: any[];
   attemptsTotal: number;
   attemptsPagination: GridPaginationModel;
@@ -67,6 +77,10 @@ export const ProblemDescription = ({
   onTabChange,
   myAttemptsOnly,
   onToggleMyAttempts,
+  attemptsLangFilter,
+  onAttemptsLangFilterChange,
+  attemptsVerdictFilter,
+  onAttemptsVerdictFilterChange,
   attempts,
   attemptsTotal,
   attemptsPagination,
@@ -90,6 +104,7 @@ export const ProblemDescription = ({
     problem.id,
     solutionExpanded,
   );
+  const { data: verdictOptions = [] } = useAttemptVerdicts();
 
   return (
     <Card
@@ -164,7 +179,10 @@ export const ProblemDescription = ({
                 />
                 <Chip
                   label={`${t('problems.detail.timeLimit')}: ${
-                    selectedLanguage?.timeLimit ?? problem.timeLimit ?? problem.availableLanguages?.[0]?.timeLimit ?? 0
+                    selectedLanguage?.timeLimit ??
+                    problem.timeLimit ??
+                    problem.availableLanguages?.[0]?.timeLimit ??
+                    0
                   } ms`}
                   color="default"
                   variant="filled"
@@ -269,16 +287,67 @@ export const ProblemDescription = ({
 
         {activeTab === 'attempts' ? (
           <>
-            {currentUser ? (
-              <Box mb={2}>
-                <OnlyMeSwitch
-                  label={t('problems.detail.onlyMyAttempts')}
-                  checked={myAttemptsOnly}
-                  onChange={() => onToggleMyAttempts()}
-                  switchSize="medium"
-                />
-              </Box>
-            ) : null}
+            <Stack direction="row" justifyContent="space-between" alignItems="flex-start" mb={2}>
+              <Stack
+                direction={{ xs: 'column', md: 'row' }}
+                spacing={2}
+                alignItems={{ xs: 'stretch', md: 'center' }}
+                flexWrap="wrap"
+                useFlexGap
+              >
+                {currentUser ? (
+                  <OnlyMeSwitch
+                    label={t('problems.detail.onlyMyAttempts')}
+                    checked={myAttemptsOnly}
+                    onChange={() => onToggleMyAttempts()}
+                    switchSize="medium"
+                  />
+                ) : null}
+
+                <FormControl size="small" sx={{ minWidth: 180 }}>
+                  <InputLabel>{t('problems.attempts.language')}</InputLabel>
+                  <Select
+                    label={t('problems.attempts.language')}
+                    value={attemptsLangFilter}
+                    onChange={(event) => onAttemptsLangFilterChange(event.target.value)}
+                  >
+                    <MenuItem value="">{t('problems.attempts.anyLanguage')}</MenuItem>
+                    {(problem.availableLanguages ?? []).map((lang) => (
+                      <MenuItem key={lang.lang} value={lang.lang}>
+                        {lang.langFull || lang.lang}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <FormControl size="small" sx={{ minWidth: 180 }}>
+                  <InputLabel>{t('problems.attempts.verdict')}</InputLabel>
+                  <Select
+                    label={t('problems.attempts.verdict')}
+                    value={attemptsVerdictFilter}
+                    onChange={(event) => onAttemptsVerdictFilterChange(event.target.value)}
+                  >
+                    <MenuItem value="">{t('problems.attempts.anyVerdict')}</MenuItem>
+                    {verdictOptions.map((option) => (
+                      <MenuItem key={option.value} value={String(option.value)}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Stack>
+
+              <Tooltip title={t('problems.detail.refresh')}>
+                <Button
+                  variant="soft"
+                  color="neutral"
+                  onClick={onAttemptsRefresh}
+                  size="large"
+                >
+                  <IconifyIcon icon="mdi:reload" />
+                </Button>
+              </Tooltip>
+            </Stack>
             <ProblemsAttemptsTable
               attempts={attempts}
               total={attemptsTotal}
