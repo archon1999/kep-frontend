@@ -3,6 +3,7 @@ import { Drawer, drawerClasses } from '@mui/material';
 import Box from '@mui/material/Box';
 import Toolbar, { ToolbarOwnProps } from '@mui/material/Toolbar';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
+import { getCanvasFrameStyles } from 'app/theme/styles/surfaceTreatments';
 import { sidenavVibrantStyle } from 'app/theme/styles/vibrantNav';
 import clsx from 'clsx';
 import VibrantBackground from 'shared/components/common/VibrantBackground';
@@ -17,7 +18,14 @@ import Topnav from './topnav';
 
 const TopnavLayout = ({ children }: PropsWithChildren) => {
   const {
-    config: { drawerWidth, navigationMenuType, topnavType, openNavbarDrawer, navColor },
+    config: {
+      drawerWidth,
+      navigationMenuType,
+      topnavType,
+      openNavbarDrawer,
+      navColor,
+      backgroundPattern,
+    },
     setConfig,
   } = useSettingsContext();
 
@@ -79,34 +87,30 @@ const TopnavLayout = ({ children }: PropsWithChildren) => {
 
           <Box
             component="main"
-            sx={[
-              {
-                flexGrow: 1,
-                p: 0,
-                height: '100vh',
-                overflow: 'auto',
-                width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
-                display: 'flex',
-                flexDirection: 'column',
-                ml: { xs: 0 },
-              },
-            ]}
+            sx={(theme) => ({
+              flexGrow: 1,
+              p: 0,
+              height: '100vh',
+              overflow: 'auto',
+              width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
+              display: 'flex',
+              flexDirection: 'column',
+              ml: { xs: 0 },
+              ...getCanvasFrameStyles(theme, backgroundPattern),
+            })}
           >
             <Toolbar variant={toolbarVarint} />
 
-            <Box sx={{ flex: 1 }}>
-              <Box
-                sx={[
-                  {
-                    height: 1,
-                    bgcolor: 'background.default',
-                  },
-                ]}
-              >
-                {children}
-              </Box>
+            <Box
+              sx={(theme) => ({
+                minHeight: theme.mixins.contentHeight(theme.mixins.topbar[topnavType]),
+                display: 'flex',
+                flexDirection: 'column',
+              })}
+            >
+              <Box sx={{ flex: '1 0 auto' }}>{children}</Box>
+              <Footer />
             </Box>
-            <Footer />
           </Box>
         </NavProvider>
       </Box>

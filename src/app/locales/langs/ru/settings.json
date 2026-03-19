@@ -100,6 +100,83 @@
       "soft": "Мягкий звон",
       "bright": "Яркий сигнал"
     },
-    "findSettingPlaceholder": "Найти настройку"
+    "findSettingPlaceholder": "Найти настройку",
+    "customizer": {
+      "toggle": "Настроить",
+      "title": "Настроить",
+      "reset": "Сбросить",
+      "new": "новое",
+      "notAvailableInLayout": "Недоступно для этого макета.",
+      "sections": {
+        "theme": "Тема",
+        "navigationMenu": "Меню навигации",
+        "sidenavShape": "Форма бокового меню",
+        "topnavShape": "Форма верхнего меню",
+        "navColor": "Цвет навигации",
+        "backgroundPattern": "Узор фона",
+        "cardStyle": "Стиль карточек",
+        "cardBackground": "Фон карточек",
+        "font": "Шрифт",
+        "visionMode": "Режим зрения"
+      },
+      "labels": {
+        "default": "Стандарт",
+        "vibrant": "Яркий",
+        "sidenav": "Боковое меню",
+        "topnav": "Верхнее меню",
+        "slim": "Узкий",
+        "stacked": "Слои",
+        "light": "Светлая",
+        "dark": "Тёмная",
+        "system": "Системная",
+        "none": "Нет",
+        "grid": "Сетка",
+        "dots": "Точки",
+        "diagonal": "Диагональ",
+        "mesh": "Сетчатый",
+        "outline": "Контур",
+        "corners": "Углы",
+        "glow": "Свечение",
+        "tint": "Оттенок",
+        "gradient": "Градиент",
+        "glass": "Стекло",
+        "primaryColor": "Основной цвет",
+        "fontSize": "Размер шрифта"
+      },
+      "themePresets": {
+        "defaultGroup": "Стандарт",
+        "defaultLight": "Светлая",
+        "defaultDark": "Тёмная",
+        "luxury": "Люкс",
+        "retro": "Ретро",
+        "arctic": "Арктика",
+        "nature": "Природа",
+        "ember": "Тлеющий",
+        "dracula": "Дракула",
+        "midnight": "Полночь"
+      },
+      "visionModes": {
+        "normal": {
+          "label": "Обычный",
+          "description": "Все цвета отображаются как обычно"
+        },
+        "protanopia": {
+          "label": "Протанопия",
+          "description": "Труднее различать красные оттенки"
+        },
+        "deuteranopia": {
+          "label": "Дейтеранопия",
+          "description": "Труднее различать зелёные оттенки"
+        },
+        "tritanopia": {
+          "label": "Тританопия",
+          "description": "Труднее различать синие оттенки"
+        },
+        "achromatopsia": {
+          "label": "Ахроматопсия",
+          "description": "Отображает только чёрный и белый"
+        }
+      }
+    }
   }
 }

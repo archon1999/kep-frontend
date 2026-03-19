@@ -1,11 +1,13 @@
 import { PropsWithChildren, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router';
 import { Box, IconButton, Paper, Skeleton, Stack, Typography } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import { getResourceById, resources } from 'app/routes/resources.ts';
 import type { BlogPost } from 'modules/blog/domain/entities/blog.entity';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Image from 'shared/components/base/Image';
-import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
+import useResolvedThemeMode from 'shared/hooks/useResolvedThemeMode';
 import { responsivePagePaddingSx } from 'shared/lib/styles.ts';
 import { cssVarRgba } from 'shared/lib/utils';
 import 'swiper/css';
@@ -14,10 +16,8 @@ import { A11y, Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import { useHomeNews } from '../../application/queries';
 import type { HomeNewsList } from '../../domain/entities/home.entity';
-import { Link } from 'react-router';
 
 type NewsItem = HomeNewsList['data'][number];
-const bgGradient = '/assets/images/background/1.webp';
 
 const mapTags = (tags?: string | string[] | null): string[] => {
   if (Array.isArray(tags)) {
@@ -39,6 +39,7 @@ const mapNewsToPost = (news: NewsItem): BlogPost => ({
   author: {
     username: news.blog.author.username,
     avatar: news.blog.author.avatar,
+    bio: '',
   },
   title: news.blog.title,
   bodyShort: news.blog.bodyShort ?? undefined,
@@ -96,39 +97,18 @@ interface CardWrapperProps extends PropsWithChildren {
 }
 
 export const CardWrapper = ({ children, sx }: CardWrapperProps) => {
-  const { mode } = useThemeMode();
+  const { isDark } = useResolvedThemeMode();
 
   return (
     <Box
       sx={(theme) => ({
-        background:
-          mode === 'light'
-            ? `
-           url(${bgGradient}) no-repeat center 100% / cover,
-           linear-gradient(
-             0deg,
-             ${cssVarRgba(theme.vars.palette.chBlue['950Channel'], 0.02)},
-             ${cssVarRgba(theme.vars.palette.chBlue['950Channel'], 0.02)}
-           ),
-           linear-gradient(
-             242.63deg,
-             ${cssVarRgba(theme.vars.palette.background.elevation1Channel, 1)} 45.75%,
-             ${cssVarRgba(theme.vars.palette.chBlue['50Channel'], 1)} 94.14%,
-             ${cssVarRgba(theme.vars.palette.chBlue['100Channel'], 1)} 140.25%
-           )`
-            : `
-           url(${bgGradient}) no-repeat center 65% / cover,
-           linear-gradient(
-             0deg,
-             ${cssVarRgba(theme.vars.palette.chBlue['950Channel'], 0.02)},
-             ${cssVarRgba(theme.vars.palette.chBlue['950Channel'], 0.02)}
-           ),
-           linear-gradient(
-             242.63deg,
-             ${cssVarRgba(theme.vars.palette.background.elevation1Channel, 1)} 45.75%,
-             ${cssVarRgba(theme.vars.palette.chBlue['50Channel'], 1)} 94.14%,
-             ${cssVarRgba(theme.vars.palette.chBlue['100Channel'], 1)} 140.25%
-           )`,
+        backgroundColor: theme.vars.palette.background.elevation1,
+        backgroundImage: [
+          `linear-gradient(142deg, ${alpha(theme.palette.background.paper, isDark ? 0.98 : 0.99)} 14%, ${alpha(theme.palette.background.default, isDark ? 0.96 : 0.92)} 100%)`,
+          `radial-gradient(circle at 16% 42%, ${alpha(theme.palette.primary.main, isDark ? 0.16 : 0.08)} 0%, transparent 24%)`,
+          `radial-gradient(circle at 86% 70%, ${alpha(theme.palette.secondary.main, isDark ? 0.14 : 0.08)} 0%, transparent 22%)`,
+          `linear-gradient(180deg, ${alpha(theme.palette.common.white, isDark ? 0.04 : 0.58)} 0%, transparent 100%)`,
+        ].join(','),
         borderRadius: theme.spacing(3),
         height: '100%',
         display: 'flex',
@@ -136,6 +116,45 @@ export const CardWrapper = ({ children, sx }: CardWrapperProps) => {
         position: 'relative',
         overflow: 'hidden',
         padding: { xs: 3, lg: 5 },
+        isolation: 'isolate',
+
+        '&::before, &::after': {
+          content: '""',
+          position: 'absolute',
+          width: { xs: 260, sm: 320, lg: 380 },
+          aspectRatio: '1 / 1',
+          borderRadius: '32%',
+          pointerEvents: 'none',
+          opacity: isDark ? 0.84 : 0.96,
+          border: `1px solid ${alpha(theme.palette.primary.main, isDark ? 0.22 : 0.12)}`,
+          backgroundImage: [
+            `radial-gradient(circle at 38% 48%, ${alpha(theme.palette.common.white, isDark ? 0.2 : 0.6)} 0%, transparent 16%)`,
+            `radial-gradient(circle at 38% 48%, ${alpha(theme.palette.primary.main, isDark ? 0.86 : 0.76)} 0%, ${alpha(theme.palette.primary.main, isDark ? 0.72 : 0.62)} 18%, ${alpha(theme.palette.secondary.main, isDark ? 0.38 : 0.22)} 30%, transparent 58%)`,
+            `radial-gradient(circle at 42% 50%, ${alpha(theme.palette.primary.light, isDark ? 0.5 : 0.38)} 0%, transparent 42%)`,
+            `repeating-linear-gradient(0deg, ${alpha(theme.palette.common.white, isDark ? 0.02 : 0.05)} 0 2px, transparent 2px 6px)`,
+            `repeating-linear-gradient(90deg, ${alpha(theme.palette.common.black, isDark ? 0.04 : 0.025)} 0 1px, transparent 1px 5px)`,
+            `linear-gradient(145deg, ${alpha(theme.palette.background.paper, isDark ? 0.24 : 0.3)} 0%, ${alpha(theme.palette.primary.main, isDark ? 0.18 : 0.1)} 100%)`,
+          ].join(','),
+          boxShadow: [
+            `0 0 0 1px ${alpha(theme.palette.common.white, isDark ? 0.04 : 0.22)} inset`,
+            `0 28px 100px -54px ${alpha(theme.palette.primary.main, isDark ? 0.76 : 0.46)}`,
+            `0 14px 40px -24px ${alpha(theme.palette.common.black, isDark ? 0.42 : 0.14)}`,
+          ].join(','),
+        },
+        '&::before': {
+          left: { xs: '-40%', sm: '-20%', lg: '-13%' },
+          top: { xs: '-12%', sm: '-20%', lg: '-18%' },
+          transform: 'rotate(-14deg)',
+        },
+        '&::after': {
+          right: { xs: '-40%', sm: '-18%', lg: '-11%' },
+          bottom: { xs: '-20%', sm: '-30%', lg: '-26%' },
+          transform: 'rotate(10deg) scale(0.98)',
+        },
+        '& > *': {
+          position: 'relative',
+          zIndex: 1,
+        },
 
         '& .swiper-pagination': {
           top: theme.spacing(1.5),

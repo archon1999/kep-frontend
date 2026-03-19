@@ -6,7 +6,16 @@ import { useSettingsContext } from './SettingsProvider';
 
 const ThemeProvider = ({ children }: PropsWithChildren) => {
   const {
-    config: { locale, themePreset, primaryColor, fontFamily, fontSize },
+    config: {
+      locale,
+      themePreset,
+      primaryColor,
+      fontFamily,
+      fontSize,
+      backgroundPattern,
+      cardStyle,
+      cardBackground,
+    },
     configDispatch,
   } = useSettingsContext();
 
@@ -22,12 +31,11 @@ const ThemeProvider = ({ children }: PropsWithChildren) => {
 
   useLayoutEffect(() => {
     const root = document.documentElement;
-    if (themePreset) {
-      root.setAttribute('data-aurora-preset', themePreset);
-    } else {
-      root.removeAttribute('data-aurora-preset');
-    }
-  }, [themePreset]);
+    root.setAttribute('data-aurora-preset', themePreset);
+    root.setAttribute('data-kep-bg-pattern', backgroundPattern);
+    root.setAttribute('data-kep-card-style', cardStyle);
+    root.setAttribute('data-kep-card-background', cardBackground);
+  }, [backgroundPattern, cardBackground, cardStyle, themePreset]);
 
   useEffect(() => {
     const observer = new MutationObserver(() => configDispatch({ type: REFRESH }));

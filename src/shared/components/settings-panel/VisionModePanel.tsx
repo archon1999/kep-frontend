@@ -1,7 +1,10 @@
 import { ChangeEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box, FormControlLabel, Radio, RadioGroup, Stack, Typography } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import { VisionMode, useVisionMode } from 'app/providers/VisionModeProvider';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import useResolvedThemeMode from 'shared/hooks/useResolvedThemeMode';
 
 interface VisionOption {
   value: VisionMode;
@@ -9,20 +12,37 @@ interface VisionOption {
   description: string;
 }
 
-const visionOptions: VisionOption[] = [
-  { value: 'normal', label: 'Normal', description: 'Shows all colors normally' },
-  { value: 'protanopia', label: 'Protanopia', description: 'Hard to see red shades' },
-  { value: 'deuteranopia', label: 'Deuteranopia', description: 'Hard to see green shades' },
-  { value: 'tritanopia', label: 'Tritanopia', description: 'Hard to see blue shades' },
-  {
-    value: 'achromatopsia',
-    label: 'Achromatopsia',
-    description: 'Shows only black and white',
-  },
-];
-
 const VisionModePanel = () => {
+  const { t } = useTranslation();
   const { mode, setMode } = useVisionMode();
+  const { isDark } = useResolvedThemeMode();
+  const visionOptions: VisionOption[] = [
+    {
+      value: 'normal',
+      label: t('settings.customizer.visionModes.normal.label'),
+      description: t('settings.customizer.visionModes.normal.description'),
+    },
+    {
+      value: 'protanopia',
+      label: t('settings.customizer.visionModes.protanopia.label'),
+      description: t('settings.customizer.visionModes.protanopia.description'),
+    },
+    {
+      value: 'deuteranopia',
+      label: t('settings.customizer.visionModes.deuteranopia.label'),
+      description: t('settings.customizer.visionModes.deuteranopia.description'),
+    },
+    {
+      value: 'tritanopia',
+      label: t('settings.customizer.visionModes.tritanopia.label'),
+      description: t('settings.customizer.visionModes.tritanopia.description'),
+    },
+    {
+      value: 'achromatopsia',
+      label: t('settings.customizer.visionModes.achromatopsia.label'),
+      description: t('settings.customizer.visionModes.achromatopsia.description'),
+    },
+  ];
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setMode(event.target.value as VisionMode);
@@ -35,6 +55,7 @@ const VisionModePanel = () => {
           <FormControlLabel
             key={option.value}
             value={option.value}
+            data-theme-mode={isDark ? 'dark' : 'light'}
             control={
               <Radio
                 checkedIcon={
@@ -80,7 +101,7 @@ const VisionModePanel = () => {
                 >
                   {option.label}
                 </Typography>
-                <Typography variant="caption" sx={{ color: 'text.disabled' }}>
+                <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                   {option.description}
                 </Typography>
               </Stack>
@@ -92,9 +113,27 @@ const VisionModePanel = () => {
               p: 1,
               borderRadius: 2,
               alignItems: 'flex-start',
-              bgcolor: mode === option.value ? 'primary.lighter' : 'background.elevation1',
+              border: (theme) =>
+                `1px solid ${alpha(
+                  mode === option.value ? theme.palette.primary.main : theme.palette.divider,
+                  mode === option.value ? (isDark ? 0.4 : 0.22) : isDark ? 0.36 : 0.72,
+                )}`,
+              bgcolor: (theme) =>
+                mode === option.value
+                  ? alpha(theme.palette.primary.main, isDark ? 0.16 : 0.08)
+                  : theme.vars.palette.background.menuElevation1,
+              backgroundImage: (theme) =>
+                isDark
+                  ? `linear-gradient(180deg, ${alpha(theme.palette.common.white, 0.045)} 0%, transparent 100%)`
+                  : `linear-gradient(180deg, ${alpha(theme.palette.common.white, 0.82)} 0%, transparent 100%)`,
+              boxShadow: (theme) =>
+                mode === option.value
+                  ? `0 14px 28px -24px ${alpha(theme.palette.primary.main, isDark ? 0.82 : 0.45)}, inset 0 1px 0 ${alpha(theme.palette.common.white, isDark ? 0.06 : 0.72)}`
+                  : isDark
+                    ? `inset 0 1px 0 ${alpha(theme.palette.common.white, 0.04)}`
+                    : `inset 0 1px 0 ${alpha(theme.palette.common.white, 0.72)}`,
               '&:hover': {
-                bgcolor: 'primary.lighter',
+                bgcolor: (theme) => alpha(theme.palette.primary.main, isDark ? 0.12 : 0.05),
               },
               '& .MuiFormControlLabel-label': {
                 flex: 1,

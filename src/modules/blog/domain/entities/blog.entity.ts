@@ -1,6 +1,13 @@
+export interface BlogTableOfContentsItem {
+  id: string;
+  text: string;
+  level: 1 | 2 | 3;
+}
+
 export interface BlogAuthor {
   username: string;
   avatar: string | null;
+  bio: string;
 }
 
 export enum BlogStatus {
@@ -15,6 +22,7 @@ export interface BlogPost {
   title: string;
   body?: string;
   bodyShort?: string;
+  tableOfContents?: BlogTableOfContentsItem[];
   image?: string | null;
   views: number;
   likesCount: number;

@@ -51,6 +51,34 @@
       "empty": "No contests to display yet."
     },
     "promos": {
+      "blogCreate": {
+        "title": "Create a blog on KEP and turn useful stories into community value.",
+        "subtitle": "Share tutorials, postmortems, and platform insights. Strong blog posts can earn Kepcoin rewards after review.",
+        "availableNow": "Available now",
+        "footerNote": "Draft first, then submit for review when the story is ready.",
+        "previewTitle": "Editor preview",
+        "previewBadge": "Suggested flow",
+        "previewHeadline": "Write a practical story, add strong tags, and ship it for review.",
+        "previewTags": {
+          "story": "Community story",
+          "reward": "Kepcoin reward",
+          "review": "Review flow"
+        },
+        "metrics": {
+          "access": {
+            "label": "Who can write",
+            "value": "Any KEP user"
+          },
+          "rewards": {
+            "label": "Reward potential",
+            "value": "Quality posts can earn Kepcoin"
+          },
+          "flow": {
+            "label": "Publishing flow",
+            "value": "Draft, review, publish"
+          }
+        }
+      },
       "kepCover": {
         "activeSubtitle": "Vote for the strongest covers, follow the live leaderboard, and open the full KEP Cover page.",
         "upcomingSubtitle": "The next KEP Cover contest is already scheduled. Refresh your cover before voting opens.",
@@ -68,12 +96,14 @@
       "actions": {
         "openKepCover": "Open KEP Cover",
         "openContest": "Open contest",
-        "openArena": "Open arena"
+        "openArena": "Open arena",
+        "startWriting": "Create a blog"
       },
       "types": {
         "kepCover": "KEP Cover",
         "contest": "Contest",
-        "arena": "Arena"
+        "arena": "Arena",
+        "blogCreate": "Community blog"
       },
       "metrics": {
         "participants": "Participants",

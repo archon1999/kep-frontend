@@ -1,10 +1,9 @@
 import { ChangeEvent, useMemo } from 'react';
 import {
-  Box,
-  Card,
-  CardContent,
-  Divider,
+  Button,
+  Chip,
   FormControl,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
@@ -27,6 +26,9 @@ interface BlogFiltersProps {
   filters: BlogFilterState;
   authors: string[];
   onChange: (filters: BlogFilterState) => void;
+  hasActiveFilters?: boolean;
+  onReset?: () => void;
+  totalPosts?: number;
 }
 
 const topics = [
@@ -35,46 +37,90 @@ const topics = [
   { key: '3', labelKey: 'blog.topics.info', icon: 'info' as const },
 ];
 
-const BlogFilters = ({ filters, authors, onChange }: BlogFiltersProps) => {
+const BlogFilters = ({
+  filters,
+  authors,
+  onChange,
+  hasActiveFilters = false,
+  onReset,
+  totalPosts,
+}: BlogFiltersProps) => {
   const { t } = useTranslation();
+
+  const selectedTopic = useMemo(() => filters.topic, [filters.topic]);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) =>
     onChange({ ...filters, title: event.target.value });
 
-  const handleAuthorChange = (event: SelectChangeEvent<string>) => onChange({ ...filters, author: event.target.value ?? '' });
-  const handleOrderChange = (event: SelectChangeEvent<string>) => onChange({ ...filters, orderBy: event.target.value ?? '' });
+  const handleAuthorChange = (event: SelectChangeEvent<string>) =>
+    onChange({ ...filters, author: event.target.value ?? '' });
+
+  const handleOrderChange = (event: SelectChangeEvent<string>) =>
+    onChange({ ...filters, orderBy: event.target.value ?? '' });
+
   const handleTopicChange = (topicKey: string) =>
     onChange({ ...filters, topic: selectedTopic === topicKey ? '' : topicKey });
 
-  const selectedTopic = useMemo(() => filters.topic, [filters.topic]);
   const renderSelectValue = (value: string, placeholder: string) =>
     value ? <>{value}</> : <Typography color="text.secondary">{placeholder}</Typography>;
 
   return (
-    <Card sx={{ borderRadius: 3 }}>
-      <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Stack direction="row" spacing={1} alignItems="center">
-          <KepIcon name="blog" fontSize={24} />
-          <Typography variant="h6" fontWeight={800}>
+    <Stack
+      spacing={2}
+      sx={{
+        p: { xs: 2, md: 3 },
+        borderRadius: 4,
+        bgcolor: 'background.paper',
+        backgroundImage: 'none',
+        border: (theme) => `1px solid ${theme.vars.palette.divider}`,
+      }}
+    >
+      <Stack
+        direction={{ xs: 'column', lg: 'row' }}
+        spacing={1.5}
+        alignItems={{ xs: 'flex-start', lg: 'center' }}
+        justifyContent="space-between"
+      >
+        <Stack spacing={0.5}>
+          <Typography variant="subtitle1" fontWeight={800}>
             {t('blog.filtersTitle')}
           </Typography>
+          {typeof totalPosts === 'number' ? (
+            <Typography variant="body2" color="text.secondary">
+              {t('blog.resultsCount', { count: totalPosts })}
+            </Typography>
+          ) : null}
         </Stack>
 
+        {hasActiveFilters && onReset ? (
+          <Button variant="text" size="small" onClick={onReset}>
+            {t('blog.clearFilters')}
+          </Button>
+        ) : null}
+      </Stack>
+
+      <Stack
+        direction={{ xs: 'column', lg: 'row' }}
+        spacing={1.5}
+        useFlexGap
+        flexWrap="wrap"
+      >
         <TextField
           value={filters.title}
           onChange={handleSearchChange}
           placeholder={t('blog.searchPlaceholder')}
           fullWidth
+          sx={{ flex: { lg: '1 1 360px' } }}
           InputProps={{
             startAdornment: (
-              <Box sx={{ display: 'inline-flex', alignItems: 'center', pr: 1, color: 'text.secondary' }}>
+              <InputAdornment position="start">
                 <KepIcon name="search" fontSize={18} />
-              </Box>
+              </InputAdornment>
             ),
           }}
         />
 
-        <FormControl fullWidth>
+        <FormControl fullWidth sx={{ flex: { lg: '0 1 220px' } }}>
           <InputLabel shrink>{t('blog.author')}</InputLabel>
           <Select
             label={t('blog.author')}
@@ -92,7 +138,7 @@ const BlogFilters = ({ filters, authors, onChange }: BlogFiltersProps) => {
           </Select>
         </FormControl>
 
-        <FormControl fullWidth>
+        <FormControl fullWidth sx={{ flex: { lg: '0 1 220px' } }}>
           <InputLabel shrink>{t('blog.orderBy')}</InputLabel>
           <Select
             label={t('blog.orderBy')}
@@ -107,47 +153,27 @@ const BlogFilters = ({ filters, authors, onChange }: BlogFiltersProps) => {
             <MenuItem value="3">{t('blog.order.comments')}</MenuItem>
           </Select>
         </FormControl>
+      </Stack>
 
-        <Divider sx={{ borderStyle: 'dashed' }} />
+      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+        {topics.map((topic) => {
+          const active = selectedTopic === topic.key;
 
-        <Stack spacing={1.25}>
-          <Typography variant="subtitle2" fontWeight={700} color="text.secondary">
-            {t('blog.topics.title')}
-          </Typography>
-          <Stack direction="row" spacing={1.25} useFlexGap flexWrap="wrap">
-            {topics.map((topic) => {
-              const active = selectedTopic === topic.key;
-
-              return (
-                <Box
-                  key={topic.key}
-                  role="button"
-                  onClick={() => handleTopicChange(topic.key)}
-                  sx={{
-                    p: 1.25,
-                    minWidth: { xs: '100%', sm: 220 },
-                    flex: { xs: '1 1 100%', sm: '1 1 220px' },
-                    borderRadius: 2,
-                    border: '1px solid',
-                    borderColor: active ? 'primary.main' : 'divider',
-                    bgcolor: active ? 'primary.main' : 'background.default',
-                    color: active ? 'primary.contrastText' : 'text.primary',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1,
-                  }}
-                >
-                  <KepIcon name={topic.icon} fontSize={22} />
-                  <Typography fontWeight={700}>{t(topic.labelKey)}</Typography>
-                </Box>
-              );
-            })}
-          </Stack>
-        </Stack>
-      </CardContent>
-    </Card>
+          return (
+            <Chip
+              key={topic.key}
+              clickable
+              icon={<KepIcon name={topic.icon} fontSize={18} />}
+              label={t(topic.labelKey)}
+              onClick={() => handleTopicChange(topic.key)}
+              color={active ? 'primary' : 'default'}
+              variant={active ? 'filled' : 'outlined'}
+              sx={{ px: 0.5, height: 36, borderRadius: 999 }}
+            />
+          );
+        })}
+      </Stack>
+    </Stack>
   );
 };
 

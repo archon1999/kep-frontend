@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Grid, Pagination, Skeleton, Stack, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router';
+import { Box, Button, Chip, Pagination, Skeleton, Stack, Typography } from '@mui/material';
+import { useAuth } from 'app/providers/AuthProvider';
+import { resources } from 'app/routes/resources';
+import KepIcon from 'shared/components/base/KepIcon';
 import useDebouncedValue from 'shared/hooks/useDebouncedValue';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { useBlogAuthors, useBlogPosts } from '../../application/queries';
@@ -18,6 +22,7 @@ const initialFilters: BlogFilterState = {
 
 const BlogListPage = () => {
   const { t } = useTranslation();
+  const { currentUser } = useAuth();
   const [filters, setFilters] = useState<BlogFilterState>(initialFilters);
   const [page, setPage] = useState(1);
   const debouncedTitle = useDebouncedValue(filters.title);
@@ -39,64 +44,154 @@ const BlogListPage = () => {
 
   const posts = postsPage?.data ?? [];
   const total = postsPage?.total ?? posts.length;
+  const [featuredPost, ...restPosts] = posts;
 
   useEffect(() => {
     setPage(1);
   }, [debouncedTitle, filters.author, filters.orderBy, filters.topic]);
 
   const handleFilterChange = (next: BlogFilterState) => setFilters(next);
+  const handleResetFilters = () => setFilters(initialFilters);
+  const hasActiveFilters = Boolean(filters.title || filters.author || filters.orderBy || filters.topic);
 
   return (
     <Box sx={responsivePagePaddingSx}>
-      <Stack direction="column" spacing={3}>
+      <Stack spacing={{ xs: 3, md: 4 }}>
         <Stack
-          direction="row"
-          alignItems="center"
+          direction={{ xs: 'column', xl: 'row' }}
+          spacing={{ xs: 2.5, md: 3 }}
+          alignItems={{ xs: 'flex-start', xl: 'flex-end' }}
           justifyContent="space-between"
-          flexWrap="wrap"
-          rowGap={1.5}
         >
-          <Stack direction="row" spacing={0.5}>
-            <Typography variant="h4" fontWeight={800}>
+          <Stack spacing={1.25} sx={{ maxWidth: 820 }}>
+            <Typography variant="overline" color="text.secondary" fontWeight={700}>
+              {t('blog.heroEyebrow')}
+            </Typography>
+            <Typography variant="h3" fontWeight={800} sx={{ letterSpacing: '-0.02em' }}>
               {t('blog.title')}
             </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 720 }}>
+              {t('blog.subtitle')}
+            </Typography>
+            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+              <Chip label={t('blog.heroHighlights.reward')} variant="outlined" />
+              <Chip label={t('blog.heroHighlights.community')} variant="outlined" />
+            </Stack>
+          </Stack>
+
+          <Stack spacing={1.25} sx={{ width: { xs: 1, xl: 'auto' }, maxWidth: 320 }}>
+            <Typography variant="body2" color="text.secondary">
+              {t(currentUser ? 'blog.heroCtaTitleAuth' : 'blog.heroCtaTitleGuest')}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {t('blog.heroCtaSubtitle')}
+            </Typography>
+            <Button
+              component={RouterLink}
+              to={resources.BlogCreate}
+              variant="contained"
+              startIcon={<KepIcon name="upload" fontSize={18} />}
+              sx={{ alignSelf: 'flex-start' }}
+            >
+              {t('blog.profile.create')}
+            </Button>
           </Stack>
         </Stack>
 
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 8 }}>
-            <Grid container spacing={2.5}>
-              {isLoading
-                ? Array.from({ length: 4 }).map((_) => (
-                    <Grid size={{ xs: 12, md: 6 }}>
-                      <Skeleton variant="rounded" height={360} />
-                    </Grid>
-                  ))
-                : posts.map((post) => (
-                    <Grid size={{ xs: 12, md: 6 }} key={post.id}>
-                      <BlogCard post={post} />
-                    </Grid>
-                  ))}
-            </Grid>
+        <BlogFilters
+          filters={filters}
+          authors={authors}
+          onChange={handleFilterChange}
+          hasActiveFilters={hasActiveFilters}
+          onReset={handleResetFilters}
+          totalPosts={total}
+        />
 
-            <Stack direction="row" alignItems="center" sx={{ mt: 3 }}>
-              {total > PAGE_SIZE ? (
-                <Pagination
-                  color="primary"
-                  count={Math.ceil(total / PAGE_SIZE)}
-                  page={page}
-                  onChange={(_, value) => setPage(value)}
-                  shape="rounded"
-                  size="large"
+        {isLoading ? (
+          <Stack spacing={2}>
+            <Skeleton variant="rounded" height={360} sx={{ borderRadius: 4 }} />
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: {
+                  xs: '1fr',
+                  md: 'repeat(2, minmax(0, 1fr))',
+                  xl: 'repeat(3, minmax(0, 1fr))',
+                },
+                gap: 2,
+              }}
+            >
+              {Array.from({ length: 3 }).map((_, index) => (
+                <Skeleton
+                  key={`blog-list-skeleton-${index}`}
+                  variant="rounded"
+                  height={320}
+                  sx={{ borderRadius: 4 }}
                 />
-              ) : null}
-            </Stack>
-          </Grid>
+              ))}
+            </Box>
+          </Stack>
+        ) : posts.length ? (
+          <Stack spacing={2}>
+            {featuredPost ? <BlogCard post={featuredPost} featured /> : null}
 
-          <Grid size={{ xs: 12, md: 4 }}>
-            <BlogFilters filters={filters} authors={authors} onChange={handleFilterChange} />
-          </Grid>
-        </Grid>
+            {restPosts.length ? (
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: {
+                    xs: '1fr',
+                    md: 'repeat(2, minmax(0, 1fr))',
+                    xl: 'repeat(3, minmax(0, 1fr))',
+                  },
+                  gap: 2,
+                }}
+              >
+                {restPosts.map((post) => (
+                  <Box key={post.id} sx={{ minWidth: 0 }}>
+                    <BlogCard post={post} />
+                  </Box>
+                ))}
+              </Box>
+            ) : null}
+          </Stack>
+        ) : (
+          <Stack
+            spacing={1.25}
+            alignItems="center"
+            sx={{
+              py: { xs: 5, md: 7 },
+              px: { xs: 2, md: 4 },
+              textAlign: 'center',
+              borderRadius: 4,
+              border: (theme) => `1px dashed ${theme.vars.palette.divider}`,
+            }}
+          >
+            <KepIcon name="blog" fontSize={36} color="rgba(15,23,42,0.35)" />
+            <Typography variant="h5" fontWeight={800}>
+              {t('blog.empty.title')}
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 560 }}>
+              {t('blog.empty.subtitle')}
+            </Typography>
+            <Button component={RouterLink} to={resources.BlogCreate} variant="contained">
+              {t('blog.profile.create')}
+            </Button>
+          </Stack>
+        )}
+
+        {total > PAGE_SIZE ? (
+          <Stack direction="row" justifyContent="center">
+            <Pagination
+              color="primary"
+              count={Math.ceil(total / PAGE_SIZE)}
+              page={page}
+              onChange={(_, value) => setPage(value)}
+              shape="rounded"
+              size="large"
+            />
+          </Stack>
+        ) : null}
       </Stack>
     </Box>
   );

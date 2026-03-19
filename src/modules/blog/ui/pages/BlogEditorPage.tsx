@@ -7,9 +7,11 @@ import {
   Box,
   Breadcrumbs,
   Button,
-  Card,
-  CardContent,
+  Chip,
   CircularProgress,
+  Divider,
+  Grid,
+  Paper,
   Stack,
   TextField,
   Typography,
@@ -30,8 +32,10 @@ import {
   useBlogUpdate,
 } from '../../application/queries';
 import { BlogPost, BlogStatus } from '../../domain/entities/blog.entity';
+import BlogArticleContent from '../components/BlogArticleContent';
 import BlogRichTextEditor from '../components/BlogRichTextEditor';
 import BlogStatusChip from '../components/BlogStatusChip';
+import { estimateBlogReadTime, prepareBlogArticle } from '../lib/article-content';
 
 const trimTags = (tags: string[]) =>
   Array.from(new Set(tags.map((tag) => tag.trim()).filter(Boolean)));
@@ -48,6 +52,7 @@ const BlogEditorPage = () => {
   const { trigger: createPost, isMutating: isCreating } = useBlogCreate();
   const { trigger: updatePost, isMutating: isUpdating } = useBlogUpdate(id);
   const { trigger: submitForReview, isMutating: isSubmitting } = useBlogSubmitForReview(id);
+
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [tags, setTags] = useState<string[]>([]);
@@ -93,7 +98,6 @@ const BlogEditorPage = () => {
     }
 
     const objectUrl = URL.createObjectURL(imageFile);
-
     setImagePreview(objectUrl);
 
     return () => {
@@ -121,6 +125,9 @@ const BlogEditorPage = () => {
 
     return t('blog.editor.draftHint');
   }, [currentStatus, t]);
+
+  const previewArticle = useMemo(() => prepareBlogArticle(body), [body]);
+  const previewReadTime = useMemo(() => estimateBlogReadTime(body), [body]);
 
   const validate = () => {
     const nextTitleError = title.trim() ? '' : t('blog.editor.validation.titleRequired');
@@ -182,7 +189,6 @@ const BlogEditorPage = () => {
     }
 
     const submittedPost = await submitForReview(persistedPost.id);
-
     setCurrentPost(submittedPost);
     await revalidateBlogData();
     toast.success(t('blog.messages.submittedForReview'));
@@ -225,7 +231,7 @@ const BlogEditorPage = () => {
   if (!isCreateMode && post && !post.canEdit) {
     return (
       <Box sx={responsivePagePaddingSx}>
-        <Stack direction="column" spacing={2}>
+        <Stack spacing={2}>
           <Alert severity="error">{t('blog.editor.forbidden')}</Alert>
           <Button
             component={RouterLink}
@@ -242,190 +248,397 @@ const BlogEditorPage = () => {
 
   return (
     <Box sx={responsivePagePaddingSx}>
-      <Stack direction="column" spacing={3}>
-        <Stack direction="column" spacing={1.5}>
-          <Breadcrumbs>
-            <RouterLink to={resources.Blog}>{t('blog.title')}</RouterLink>
-            <RouterLink to={profileBlogUrl}>{t('users.profile.tabs.blog')}</RouterLink>
-            <Typography color="text.primary">{headerTitle}</Typography>
-          </Breadcrumbs>
-
-          <Stack
-            direction={{ xs: 'column', md: 'row' }}
-            spacing={1.5}
-            alignItems={{ xs: 'flex-start', md: 'center' }}
-            justifyContent="space-between"
-          >
-            <Stack direction="column" spacing={0.5}>
-              <Typography variant="h4" fontWeight={800}>
-                {headerTitle}
+      <Stack spacing={3}>
+        <Paper
+          background={1}
+          sx={{
+            p: { xs: 3, md: 4 },
+            borderRadius: 4,
+          }}
+        >
+          <Stack spacing={2}>
+            <Breadcrumbs>
+              <Typography
+                component={RouterLink}
+                to={resources.Blog}
+                color="inherit"
+                sx={{ textDecoration: 'none' }}
+              >
+                {t('blog.title')}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {headerSubtitle}
+              <Typography
+                component={RouterLink}
+                to={profileBlogUrl}
+                color="inherit"
+                sx={{ textDecoration: 'none' }}
+              >
+                {t('users.profile.tabs.blog')}
               </Typography>
-            </Stack>
+              <Typography color="text.primary">{headerTitle}</Typography>
+            </Breadcrumbs>
 
-            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-              <BlogStatusChip status={currentStatus} size="medium" />
-              <Button component={RouterLink} to={profileBlogUrl} variant="outlined">
-                {t('blog.editor.actions.backToBlogs')}
-              </Button>
+            <Stack
+              direction={{ xs: 'column', lg: 'row' }}
+              spacing={2}
+              alignItems={{ xs: 'flex-start', lg: 'center' }}
+              justifyContent="space-between"
+            >
+              <Stack spacing={0.75} sx={{ maxWidth: 760 }}>
+                <Typography variant="overline" color="text.secondary" fontWeight={700}>
+                  {t('blog.editor.heroEyebrow')}
+                </Typography>
+                <Typography variant="h4" fontWeight={800} sx={{ letterSpacing: '-0.02em' }}>
+                  {headerTitle}
+                </Typography>
+                <Typography variant="body1" color="text.secondary">
+                  {headerSubtitle}
+                </Typography>
+              </Stack>
+
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} useFlexGap flexWrap="wrap">
+                <BlogStatusChip status={currentStatus} size="medium" />
+                <Button component={RouterLink} to={profileBlogUrl} variant="outlined">
+                  {t('blog.editor.actions.backToBlogs')}
+                </Button>
+              </Stack>
             </Stack>
           </Stack>
-        </Stack>
+        </Paper>
 
-        {!currentUser ? (
-          <Alert severity="warning">{t('blog.editor.authRequired')}</Alert>
-        ) : null}
+        {!currentUser ? <Alert severity="warning">{t('blog.editor.authRequired')}</Alert> : null}
 
-        <Alert severity={currentStatus === BlogStatus.Published ? 'success' : 'info'}>
-          {currentStatus === BlogStatus.Published
-            ? t('blog.editor.statusDescription.published')
-            : currentStatus === BlogStatus.Pending
-              ? t('blog.editor.statusDescription.pending')
-              : t('blog.editor.statusDescription.draft')}
-        </Alert>
+        <Grid container spacing={3}>
+          <Grid size={{ xs: 12, lg: 7 }}>
+            <Paper
+              background={1}
+              sx={{
+                p: { xs: 3, md: 4 },
+                borderRadius: 4,
+                height: '100%',
+              }}
+            >
+              <Stack spacing={2.5}>
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  spacing={1.25}
+                  alignItems={{ xs: 'flex-start', sm: 'center' }}
+                  justifyContent="space-between"
+                >
+                  <Stack spacing={0.25}>
+                    <Typography variant="subtitle1" fontWeight={800}>
+                      {t('blog.editor.previewTitle')}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {t('blog.editor.previewSubtitle')}
+                    </Typography>
+                  </Stack>
 
-        <Card variant="outlined">
-          <CardContent>
-            <Stack direction="column" spacing={2}>
-              <TextField
-                label={t('blog.editor.fields.title')}
-                value={title}
-                onChange={(event) => {
-                  setTitle(event.target.value);
-                  if (titleError) {
-                    setTitleError('');
-                  }
-                }}
-                fullWidth
-                error={Boolean(titleError)}
-                helperText={titleError || t('blog.editor.fields.titleHint')}
-              />
-
-              <Autocomplete
-                multiple
-                freeSolo
-                options={[]}
-                value={tags}
-                onChange={(_, value) => setTags(trimTags(value))}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={t('blog.editor.fields.tags')}
-                    helperText={t('blog.editor.fields.tagsHint')}
-                  />
-                )}
-              />
-
-              <Stack direction="column" spacing={1.25}>
-                <Typography variant="subtitle1" fontWeight={700}>
-                  {t('blog.editor.fields.coverImage')}
-                </Typography>
+                  <Chip label={t('blog.minRead', { count: previewReadTime })} variant="outlined" />
+                </Stack>
 
                 {imagePreview ? (
                   <Box
                     component="img"
                     src={imagePreview}
                     alt={title || 'blog-cover'}
-                    sx={{ width: '100%', maxHeight: 360, objectFit: 'cover', borderRadius: 3 }}
+                    sx={{
+                      width: 1,
+                      maxHeight: 340,
+                      objectFit: 'cover',
+                      borderRadius: 4,
+                    }}
                   />
                 ) : (
-                  <Box
+                  <Paper
+                    background={2}
                     sx={{
-                      border: (theme) => `1px dashed ${theme.palette.divider}`,
-                      borderRadius: 3,
                       px: 3,
                       py: 5,
+                      borderRadius: 4,
                       textAlign: 'center',
-                      color: 'text.secondary',
                     }}
                   >
-                    <Typography variant="body2">{t('blog.editor.fields.coverImageEmpty')}</Typography>
-                  </Box>
+                    <KepIcon name="upload" fontSize={28} color="rgba(15,23,42,0.35)" />
+                    <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                      {t('blog.editor.fields.coverImageEmpty')}
+                    </Typography>
+                  </Paper>
                 )}
 
-                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                  <Button
-                    variant="outlined"
-                    startIcon={<KepIcon name="upload" fontSize={18} />}
-                    onClick={() => fileInputRef.current?.click()}
-                  >
-                    {t('blog.editor.actions.uploadImage')}
-                  </Button>
-                  {imagePreview ? (
-                    <Button
-                      variant="text"
-                      color="error"
-                      startIcon={<KepIcon name="close" fontSize={18} />}
-                      onClick={handleRemoveImage}
-                    >
-                      {t('blog.editor.actions.removeImage')}
-                    </Button>
-                  ) : null}
+                <Stack spacing={1}>
+                  <Typography variant="h4" fontWeight={800} sx={{ letterSpacing: '-0.02em' }}>
+                    {title || t('blog.editor.previewPlaceholderTitle')}
+                  </Typography>
+
+                  <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                    <BlogStatusChip status={currentStatus} />
+                    {tags.map((tag) => (
+                      <Chip key={tag} label={tag} size="small" variant="outlined" />
+                    ))}
+                  </Stack>
                 </Stack>
 
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  hidden
-                  onChange={handleImageSelect}
+                <Divider />
+
+                <BlogArticleContent
+                  html={previewArticle.html}
+                  emptyMessage={t('blog.editor.previewEmpty')}
+                  sx={{
+                    '& h1': { fontSize: '1.5rem' },
+                    '& h2': { fontSize: '1.25rem' },
+                    '& h3': { fontSize: '1.1rem' },
+                    '& p, & li': { fontSize: '0.975rem' },
+                  }}
                 />
               </Stack>
-            </Stack>
-          </CardContent>
-        </Card>
+            </Paper>
+          </Grid>
 
-        <Card variant="outlined">
-          <CardContent>
-            <Stack direction="column" spacing={1.5}>
-              <Typography variant="subtitle1" fontWeight={700}>
-                {t('blog.editor.fields.body')}
-              </Typography>
-              <BlogRichTextEditor
-                value={body}
-                onChange={(nextValue) => {
-                  setBody(nextValue);
-                  if (bodyError) {
-                    setBodyError('');
-                  }
+          <Grid size={{ xs: 12, lg: 5 }}>
+            <Stack spacing={3}>
+              <Paper
+                background={1}
+                sx={{
+                  p: { xs: 3, md: 4 },
+                  borderRadius: 4,
                 }}
-                placeholder={t('blog.editor.fields.bodyPlaceholder')}
-              />
-              {bodyError ? (
-                <Typography variant="caption" color="error.main">
-                  {bodyError}
-                </Typography>
+              >
+                <Stack spacing={2}>
+                  <Stack spacing={0.25}>
+                    <Typography variant="subtitle1" fontWeight={800}>
+                      {t('blog.editor.detailsTitle')}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {t('blog.editor.detailsSubtitle')}
+                    </Typography>
+                  </Stack>
+
+                  <TextField
+                    label={t('blog.editor.fields.title')}
+                    value={title}
+                    onChange={(event) => {
+                      setTitle(event.target.value);
+                      if (titleError) {
+                        setTitleError('');
+                      }
+                    }}
+                    fullWidth
+                    error={Boolean(titleError)}
+                    helperText={titleError || t('blog.editor.fields.titleHint')}
+                  />
+
+                  <Autocomplete
+                    multiple
+                    freeSolo
+                    options={[]}
+                    value={tags}
+                    onChange={(_, value) => setTags(trimTags(value))}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={t('blog.editor.fields.tags')}
+                        helperText={t('blog.editor.fields.tagsHint')}
+                      />
+                    )}
+                  />
+                </Stack>
+              </Paper>
+
+              <Paper
+                background={1}
+                sx={{
+                  p: { xs: 3, md: 4 },
+                  borderRadius: 4,
+                }}
+              >
+                <Stack spacing={2}>
+                  <Stack spacing={0.25}>
+                    <Typography variant="subtitle1" fontWeight={800}>
+                      {t('blog.editor.coverTitle')}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {t('blog.editor.coverSubtitle')}
+                    </Typography>
+                  </Stack>
+
+                  {imagePreview ? (
+                    <Box
+                      component="img"
+                      src={imagePreview}
+                      alt={title || 'blog-cover'}
+                      sx={{
+                        width: 1,
+                        maxHeight: 240,
+                        objectFit: 'cover',
+                        borderRadius: 4,
+                      }}
+                    />
+                  ) : (
+                    <Paper
+                      background={2}
+                      sx={{
+                        px: 3,
+                        py: 4,
+                        borderRadius: 4,
+                        textAlign: 'center',
+                      }}
+                    >
+                      <Typography variant="body2" color="text.secondary">
+                        {t('blog.editor.fields.coverImageEmpty')}
+                      </Typography>
+                    </Paper>
+                  )}
+
+                  <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                    <Button
+                      variant="outlined"
+                      startIcon={<KepIcon name="upload" fontSize={18} />}
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      {t('blog.editor.actions.uploadImage')}
+                    </Button>
+                    {imagePreview ? (
+                      <Button
+                        variant="text"
+                        color="error"
+                        startIcon={<KepIcon name="close" fontSize={18} />}
+                        onClick={handleRemoveImage}
+                      >
+                        {t('blog.editor.actions.removeImage')}
+                      </Button>
+                    ) : null}
+                  </Stack>
+
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={handleImageSelect}
+                  />
+                </Stack>
+              </Paper>
+
+              <Paper
+                background={2}
+                sx={{
+                  p: { xs: 3, md: 4 },
+                  borderRadius: 4,
+                }}
+              >
+                <Stack spacing={1.25}>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <BlogStatusChip status={currentStatus} />
+                    <Typography variant="subtitle1" fontWeight={800}>
+                      {t('blog.editor.statusTitle')}
+                    </Typography>
+                  </Stack>
+
+                  <Typography variant="body2" color="text.secondary">
+                    {currentStatus === BlogStatus.Published
+                      ? t('blog.editor.statusDescription.published')
+                      : currentStatus === BlogStatus.Pending
+                        ? t('blog.editor.statusDescription.pending')
+                        : t('blog.editor.statusDescription.draft')}
+                  </Typography>
+                </Stack>
+              </Paper>
+            </Stack>
+          </Grid>
+        </Grid>
+
+        <Paper
+          background={1}
+          sx={{
+            p: { xs: 3, md: 4 },
+            borderRadius: 4,
+          }}
+        >
+          <Stack spacing={1.5}>
+            <Stack spacing={0.25}>
+              <Typography variant="subtitle1" fontWeight={800}>
+                {t('blog.editor.storyTitle')}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {t('blog.editor.storySubtitle')}
+              </Typography>
+            </Stack>
+
+            <BlogRichTextEditor
+              value={body}
+              onChange={(nextValue) => {
+                setBody(nextValue);
+                if (bodyError) {
+                  setBodyError('');
+                }
+              }}
+              placeholder={t('blog.editor.fields.bodyPlaceholder')}
+            />
+
+            {bodyError ? (
+              <Typography variant="caption" color="error.main">
+                {bodyError}
+              </Typography>
+            ) : null}
+          </Stack>
+        </Paper>
+
+        <Paper
+          background={1}
+          sx={{
+            p: { xs: 2.5, md: 3 },
+            borderRadius: 4,
+          }}
+        >
+          <Stack
+            direction={{ xs: 'column', md: 'row' }}
+            spacing={2}
+            alignItems={{ xs: 'flex-start', md: 'center' }}
+            justifyContent="space-between"
+          >
+            <Typography variant="body2" color="text.secondary">
+              {headerSubtitle}
+            </Typography>
+
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} useFlexGap flexWrap="wrap">
+              <Button
+                component={RouterLink}
+                to={profileBlogUrl}
+                variant="outlined"
+                disabled={isBusy}
+              >
+                {t('blog.editor.actions.cancel')}
+              </Button>
+
+              <Button
+                variant="contained"
+                onClick={() => handlePersist('draft')}
+                disabled={isBusy || !currentUser}
+                startIcon={
+                  isCreating || isUpdating ? (
+                    <CircularProgress color="inherit" size={18} />
+                  ) : undefined
+                }
+              >
+                {saveLabel}
+              </Button>
+
+              {currentStatus !== BlogStatus.Published && canSubmit ? (
+                <Button
+                  variant="text"
+                  color="warning"
+                  onClick={() => handlePersist('submit')}
+                  disabled={submitDisabled || !currentUser}
+                  startIcon={
+                    isSubmitting ? <CircularProgress color="inherit" size={18} /> : undefined
+                  }
+                >
+                  {t('blog.editor.actions.submitForReview')}
+                </Button>
               ) : null}
             </Stack>
-          </CardContent>
-        </Card>
-
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} justifyContent="flex-end">
-          <Button component={RouterLink} to={profileBlogUrl} variant="outlined" disabled={isBusy}>
-            {t('blog.editor.actions.cancel')}
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => handlePersist('draft')}
-            disabled={isBusy || !currentUser}
-            startIcon={isCreating || isUpdating ? <CircularProgress color="inherit" size={18} /> : undefined}
-          >
-            {saveLabel}
-          </Button>
-          {currentStatus !== BlogStatus.Published && canSubmit ? (
-            <Button
-              variant="text"
-              color="warning"
-              onClick={() => handlePersist('submit')}
-              disabled={submitDisabled || !currentUser}
-              startIcon={isSubmitting ? <CircularProgress color="inherit" size={18} /> : undefined}
-            >
-              {t('blog.editor.actions.submitForReview')}
-            </Button>
-          ) : null}
-        </Stack>
+          </Stack>
+        </Paper>
       </Stack>
     </Box>
   );

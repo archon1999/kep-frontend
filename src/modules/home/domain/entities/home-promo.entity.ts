@@ -1,4 +1,4 @@
-export type HomePromoSlideType = 'kepCover' | 'contest' | 'arena';
+export type HomePromoSlideType = 'kepCover' | 'contest' | 'arena' | 'blogCreate';
 export type HomePromoSlideStatus = 'active' | 'upcoming';
 export type HomePromoAccent = 'warning' | 'info' | 'success';
 

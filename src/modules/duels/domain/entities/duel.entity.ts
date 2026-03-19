@@ -76,6 +76,7 @@ export interface DuelResults {
 
 export interface DuelReadyStatus {
   ready: boolean;
+  readyUntil?: string | null;
 }
 
 export interface DuelReadyPlayer {
@@ -85,6 +86,8 @@ export interface DuelReadyPlayer {
   wins?: number;
   draws?: number;
   losses?: number;
+  contestsRating?: number;
+  contestsRatingTitle?: string;
 }
 
 export interface DuelInvitationUser {

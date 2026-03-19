@@ -1,25 +1,20 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useParams } from 'react-router';
+import dayjs from 'dayjs';
 import {
   Alert,
-  Avatar,
   Box,
   Button,
-  Card,
-  CardContent,
   Chip,
-  Grid,
   Pagination,
+  Paper,
   Skeleton,
   Stack,
   Typography,
 } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { getResourceById, resources } from 'app/routes/resources';
-import { mutate as globalMutate } from 'swr';
-import { toast } from 'sonner';
-import KepIcon from 'shared/components/base/KepIcon';
 import {
   blogKeys,
   useBlogPosts,
@@ -29,14 +24,12 @@ import {
 import { BlogPost } from 'modules/blog/domain/entities/blog.entity';
 import BlogCard from 'modules/blog/ui/components/BlogCard';
 import BlogStatusChip from 'modules/blog/ui/components/BlogStatusChip';
+import { mutate as globalMutate } from 'swr';
+import { toast } from 'sonner';
+import KepIcon from 'shared/components/base/KepIcon';
+import { stripBlogHtml } from 'modules/blog/ui/lib/article-content';
 
 const PAGE_SIZE = 6;
-
-const stripHtml = (html?: string) =>
-  (html ?? '')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
 
 const BlogManagementCard = ({
   post,
@@ -48,90 +41,137 @@ const BlogManagementCard = ({
   isSubmitting: boolean;
 }) => {
   const { t } = useTranslation();
-  const previewText = stripHtml(post.bodyShort ?? post.body).slice(0, 180);
+  const previewText = stripBlogHtml(post.bodyShort ?? post.body).slice(0, 180);
+  const metaDateValue = post.updatedAt ?? post.created ?? '';
+  const metaDate = metaDateValue ? dayjs(metaDateValue).format('DD MMM, YYYY') : '-';
 
   return (
-    <Card variant="outlined" sx={{ height: '100%' }}>
-      {post.image ? (
+    <Paper background={1} sx={{ p: 1, borderRadius: 4 }}>
+      <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
         <Box
-          component="img"
-          src={post.image}
-          alt={post.title}
-          sx={{ width: '100%', height: 220, objectFit: 'cover' }}
-        />
-      ) : null}
-      <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, height: '100%' }}>
-        <Stack direction="row" spacing={1.5} alignItems="center">
-          <Avatar src={post.author.avatar ?? undefined} alt={post.author.username} />
-          <Stack direction="column" spacing={0.25} flex={1}>
-            <Typography variant="subtitle2" fontWeight={700}>
-              {post.author.username}
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              {post.updatedAt ?? post.created ?? '—'}
+          sx={{
+            width: { xs: 1, md: 280 },
+            aspectRatio: '16 / 10',
+            borderRadius: 3,
+            overflow: 'hidden',
+            flexShrink: 0,
+            bgcolor: 'background.default',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {post.image ? (
+            <Box
+              component="img"
+              src={post.image}
+              alt={post.title}
+              sx={{ width: 1, height: 1, objectFit: 'cover' }}
+            />
+          ) : (
+            <KepIcon name="blog" fontSize={42} color="rgba(15,23,42,0.28)" />
+          )}
+        </Box>
+
+        <Stack spacing={1.5} sx={{ flex: 1, minWidth: 0, py: 1, pr: 1 }}>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={1}
+            alignItems={{ sm: 'center' }}
+            justifyContent="space-between"
+          >
+            <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
+              <BlogStatusChip status={post.status} />
+              {post.rewardValue ? (
+                <Chip
+                  color="warning"
+                  label={t('blog.profile.reward', { value: post.rewardValue })}
+                  size="small"
+                />
+              ) : null}
+            </Stack>
+
+            <Typography variant="caption" color="text.secondary" fontWeight={700}>
+              {metaDate}
             </Typography>
           </Stack>
-          <BlogStatusChip status={post.status} />
-        </Stack>
 
-        <Stack direction="column" spacing={1} flex={1}>
-          <Typography variant="h6" fontWeight={800}>
-            {post.title}
-          </Typography>
-
-          {previewText ? (
-            <Typography variant="body2" color="text.secondary">
-              {previewText}
+          <Stack spacing={0.75} flex={1}>
+            <Typography variant="h6" fontWeight={800} sx={{ lineClamp: 2 }}>
+              {post.title}
             </Typography>
-          ) : null}
+            {previewText ? (
+              <Typography variant="body2" color="text.secondary" sx={{ lineClamp: 3 }}>
+                {previewText}
+              </Typography>
+            ) : null}
+          </Stack>
 
           <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
             {post.tags.map((tag) => (
-              <Chip key={tag} label={tag} size="small" variant="outlined" sx={{ borderRadius: 2 }} />
+              <Chip key={tag} label={tag} size="small" variant="outlined" />
             ))}
-            {post.rewardValue ? (
-              <Chip
-                color="warning"
-                label={t('blog.profile.reward', { value: post.rewardValue })}
-                size="small"
-                sx={{ borderRadius: 2 }}
-              />
-            ) : null}
+          </Stack>
+
+          <Stack
+            direction={{ xs: 'column', lg: 'row' }}
+            spacing={1.5}
+            alignItems={{ lg: 'center' }}
+            justifyContent="space-between"
+          >
+            <Stack direction="row" spacing={1.25} alignItems="center">
+              <Stack direction="row" spacing={0.5} alignItems="center">
+                <KepIcon name="view" fontSize={16} color="rgba(15,23,42,0.58)" />
+                <Typography variant="caption" fontWeight={700} color="text.secondary">
+                  {post.views}
+                </Typography>
+              </Stack>
+              <Stack direction="row" spacing={0.5} alignItems="center">
+                <KepIcon name="comment" fontSize={16} color="rgba(15,23,42,0.58)" />
+                <Typography variant="caption" fontWeight={700} color="text.secondary">
+                  {post.commentsCount}
+                </Typography>
+              </Stack>
+              <Stack direction="row" spacing={0.5} alignItems="center">
+                <KepIcon name="like" fontSize={16} color="rgba(15,23,42,0.58)" />
+                <Typography variant="caption" fontWeight={700} color="text.secondary">
+                  {post.likesCount}
+                </Typography>
+              </Stack>
+            </Stack>
+
+            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+              <Button
+                variant="outlined"
+                component={RouterLink}
+                to={getResourceById(resources.BlogPost, post.id)}
+              >
+                {t('blog.profile.view')}
+              </Button>
+              {post.canEdit ? (
+                <Button
+                  variant="contained"
+                  component={RouterLink}
+                  to={getResourceById(resources.BlogEdit, post.id)}
+                >
+                  {t('blog.profile.edit')}
+                </Button>
+              ) : null}
+              {post.canSubmit ? (
+                <Button
+                  variant="text"
+                  color="warning"
+                  onClick={() => onSubmit(post.id)}
+                  disabled={isSubmitting}
+                >
+                  {t('blog.profile.submitForReview')}
+                </Button>
+              ) : null}
+            </Stack>
           </Stack>
         </Stack>
-
-        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-          <Button
-            variant="outlined"
-            component={RouterLink}
-            to={getResourceById(resources.BlogPost, post.id)}
-            startIcon={<KepIcon name="view" fontSize={18} />}
-          >
-            {t('blog.profile.view')}
-          </Button>
-          {post.canEdit ? (
-            <Button
-              variant="contained"
-              component={RouterLink}
-              to={getResourceById(resources.BlogEdit, post.id)}
-              startIcon={<KepIcon name="info" fontSize={18} />}
-            >
-              {t('blog.profile.edit')}
-            </Button>
-          ) : null}
-          {post.canSubmit ? (
-            <Button
-              variant="text"
-              color="warning"
-              onClick={() => onSubmit(post.id)}
-              disabled={isSubmitting}
-            >
-              {t('blog.profile.submitForReview')}
-            </Button>
-          ) : null}
-        </Stack>
-      </CardContent>
-    </Card>
+      </Stack>
+    </Paper>
   );
 };
 
@@ -178,67 +218,114 @@ const UserProfileBlogTab = () => {
   };
 
   return (
-    <Stack direction="column" spacing={2.5}>
-      <Stack
-        direction={{ xs: 'column', sm: 'row' }}
-        spacing={1.5}
-        alignItems={{ xs: 'stretch', sm: 'center' }}
-        justifyContent="space-between"
-      >
-        <Stack direction="column" spacing={0.5}>
-          <Typography variant="h6" fontWeight={800}>
-            {isOwner ? t('blog.profile.ownerTitle') : t('blog.profile.publicTitle')}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {isOwner ? t('blog.profile.ownerSubtitle') : t('blog.profile.publicSubtitle')}
-          </Typography>
+    <Stack spacing={2.5}>
+      <Paper background={1} sx={{ p: { xs: 3, md: 4 }, borderRadius: 4 }}>
+        <Stack
+          direction={{ xs: 'column', lg: 'row' }}
+          spacing={2}
+          alignItems={{ xs: 'flex-start', lg: 'center' }}
+          justifyContent="space-between"
+        >
+          <Stack spacing={0.75} sx={{ maxWidth: 720 }}>
+            <Typography variant="overline" color="text.secondary" fontWeight={700}>
+              {t(isOwner ? 'blog.profile.ownerEyebrow' : 'blog.profile.publicEyebrow')}
+            </Typography>
+            <Typography variant="h4" fontWeight={800} sx={{ letterSpacing: '-0.02em' }}>
+              {isOwner ? t('blog.profile.ownerTitle') : t('blog.profile.publicTitle')}
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              {isOwner ? t('blog.profile.ownerSubtitle') : t('blog.profile.publicSubtitle')}
+            </Typography>
+          </Stack>
+
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} useFlexGap flexWrap="wrap">
+            <Chip label={t('blog.resultsCount', { count: total })} variant="outlined" />
+            {isOwner ? (
+              <Button
+                component={RouterLink}
+                to={resources.BlogCreate}
+                variant="contained"
+                startIcon={<KepIcon name="upload" fontSize={18} />}
+              >
+                {t('blog.profile.create')}
+              </Button>
+            ) : null}
+          </Stack>
         </Stack>
+      </Paper>
 
-        {isOwner ? (
-          <Button
-            component={RouterLink}
-            to={resources.BlogCreate}
-            variant="contained"
-            startIcon={<KepIcon name="upload" fontSize={18} />}
+      {isOwner ? <Alert severity="info">{t('blog.profile.reviewFlowHint')}</Alert> : null}
+
+      {isLoading ? (
+        isOwner ? (
+          <Stack spacing={2}>
+            {Array.from({ length: 3 }).map((_, index) => (
+              <Skeleton
+                key={`blog-owner-skeleton-${index}`}
+                variant="rounded"
+                height={260}
+                sx={{ borderRadius: 4 }}
+              />
+            ))}
+          </Stack>
+        ) : (
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: {
+                xs: '1fr',
+                sm: 'repeat(2, minmax(0, 1fr))',
+                xl: 'repeat(3, minmax(0, 1fr))',
+              },
+              gap: 2,
+            }}
           >
-            {t('blog.profile.create')}
-          </Button>
-        ) : null}
-      </Stack>
-
-      {isOwner ? (
-        <Alert severity="info">{t('blog.profile.reviewFlowHint')}</Alert>
-      ) : null}
-
-      <Grid container spacing={2.5}>
-        {isLoading
-          ? Array.from({ length: 3 }).map((_, index) => (
-              <Grid key={`blog-profile-skeleton-${index}`} size={{ xs: 12, md: 6 }}>
-                <Skeleton variant="rounded" height={320} />
-              </Grid>
-            ))
-          : posts.length
-            ? posts.map((post) => (
-                <Grid key={post.id} size={{ xs: 12, md: isOwner ? 6 : 4 }}>
-                  {isOwner ? (
-                    <BlogManagementCard
-                      post={post}
-                      onSubmit={handleSubmit}
-                      isSubmitting={isSubmitting}
-                    />
-                  ) : (
-                    <BlogCard post={post} />
-                  )}
-                </Grid>
-              ))
-            : (
-                <Grid size={{ xs: 12 }}>
-                  <Alert severity="info">
-                    {isOwner ? t('blog.profile.emptyOwner') : t('blog.profile.emptyPublic')}
-                  </Alert>
-                </Grid>
-              )}
-      </Grid>
+            {Array.from({ length: 3 }).map((_, index) => (
+              <Skeleton
+                key={`blog-public-skeleton-${index}`}
+                variant="rounded"
+                height={300}
+                sx={{ borderRadius: 4 }}
+              />
+            ))}
+          </Box>
+        )
+      ) : posts.length ? (
+        isOwner ? (
+          <Stack spacing={2}>
+            {posts.map((post) => (
+              <BlogManagementCard
+                key={post.id}
+                post={post}
+                onSubmit={handleSubmit}
+                isSubmitting={isSubmitting}
+              />
+            ))}
+          </Stack>
+        ) : (
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: {
+                xs: '1fr',
+                sm: 'repeat(2, minmax(0, 1fr))',
+                xl: 'repeat(3, minmax(0, 1fr))',
+              },
+              gap: 2,
+            }}
+          >
+            {posts.map((post) => (
+              <Box key={post.id} sx={{ minWidth: 0 }}>
+                <BlogCard post={post} />
+              </Box>
+            ))}
+          </Box>
+        )
+      ) : (
+        <Alert severity="info">
+          {isOwner ? t('blog.profile.emptyOwner') : t('blog.profile.emptyPublic')}
+        </Alert>
+      )}
 
       {total > PAGE_SIZE ? (
         <Pagination

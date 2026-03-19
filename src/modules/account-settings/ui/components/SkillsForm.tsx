@@ -121,9 +121,8 @@ const SkillsForm = () => {
       await trigger({
         username,
         payload: formState.map((item) => ({
-          skillId: item.skillId,
-          name: item.isCustom ? item.name : '',
-          level: item.level,
+          ...item,
+          name: item.name.trim().replace(/\s+/g, ' '),
         })),
       });
       await mutate();

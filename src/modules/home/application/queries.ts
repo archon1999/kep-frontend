@@ -12,6 +12,7 @@ import type {
   HomeOnlineUsers,
   HomePostsList,
   HomeLandingPageStatistics,
+  HomePromoSourceItem,
   HomeTopUsers,
   HomeUserActivityStatistics,
   HomeUserActivityHistory,
@@ -127,9 +128,42 @@ export const useHomePromos = () => {
   return useHomeSWR<HomePromoSlide[]>(
     homeKeys.detail(`promos-${i18n.language}`),
     async () => {
-      const promos = await repository.getPromos();
+      const blogCreateSlide: HomePromoSlide = {
+        id: `blog-create-${i18n.language}`,
+        type: 'blogCreate',
+        status: 'active',
+        title: t('homePage.promos.blogCreate.title'),
+        subtitle: t('homePage.promos.blogCreate.subtitle'),
+        href: resources.BlogCreate,
+        ctaLabel: t('homePage.promos.actions.startWriting'),
+        accent: 'warning',
+        icon: 'mdi:notebook-edit-outline',
+        typeLabel: t('homePage.promos.types.blogCreate'),
+        metrics: [
+          {
+            label: t('homePage.promos.blogCreate.metrics.access.label'),
+            value: t('homePage.promos.blogCreate.metrics.access.value'),
+          },
+          {
+            label: t('homePage.promos.blogCreate.metrics.rewards.label'),
+            value: t('homePage.promos.blogCreate.metrics.rewards.value'),
+          },
+          {
+            label: t('homePage.promos.blogCreate.metrics.flow.label'),
+            value: t('homePage.promos.blogCreate.metrics.flow.value'),
+          },
+        ],
+      };
 
-      return promos.map((promo) => {
+      let promos: HomePromoSourceItem[] = [];
+
+      try {
+        promos = await repository.getPromos();
+      } catch {
+        promos = [];
+      }
+
+      const mappedPromos: HomePromoSlide[] = promos.map((promo): HomePromoSlide => {
         if (promo.type === 'kepCover') {
           return {
             id: `kep-cover-${promo.id}-${promo.status}`,
@@ -225,8 +259,8 @@ export const useHomePromos = () => {
               ? t('homePage.promos.arena.activeSubtitle')
               : t('homePage.promos.arena.upcomingSubtitle'),
           href: getResourceById(resources.ArenaTournament, promo.id),
-            ctaLabel: t('homePage.promos.actions.openArena'),
-            accent: 'success',
+          ctaLabel: t('homePage.promos.actions.openArena'),
+          accent: 'success',
           icon: 'mdi:sword-cross',
           typeLabel: t('homePage.promos.types.arena'),
           startTime: promo.startTime,
@@ -254,6 +288,15 @@ export const useHomePromos = () => {
           ],
         };
       });
+
+      if (!mappedPromos.length) {
+        return [blogCreateSlide];
+      }
+
+      const slides: HomePromoSlide[] = [...mappedPromos];
+      slides.splice(Math.min(2, slides.length), 0, blogCreateSlide);
+
+      return slides;
     },
   );
 };

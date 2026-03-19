@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import useSWR from 'swr';
 import { useTranslation } from 'react-i18next';
 import { Panel, PanelGroup } from 'react-resizable-panels';
 import { Link as RouterLink, useParams, useSearchParams } from 'react-router-dom';
@@ -20,10 +19,10 @@ import {
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import AppbarActionItems from 'app/layouts/main-layout/common/AppbarActionItems';
-import dayjs from 'dayjs';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceById, resources } from 'app/routes/resources';
+import dayjs from 'dayjs';
 import { problemsQueries } from 'modules/problems/application/queries.ts';
 import { AttemptsListParams } from 'modules/problems/domain/ports/problems.repository';
 import { usePersistedCode } from 'modules/problems/hooks/usePersistedCode';
@@ -41,8 +40,9 @@ import useGridPagination from 'shared/hooks/useGridPagination';
 import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
 import { wsService } from 'shared/services/websocket';
 import { toast } from 'sonner';
-import { Duel, DuelPlayer } from '../../domain/index.ts';
+import useSWR from 'swr';
 import { duelsQueries, useDuelDetail } from '../../application/queries.ts';
+import { Duel, DuelPlayer } from '../../domain/index.ts';
 
 type WorkspaceView = 'problems' | 'standings';
 type WorkspaceTab = 'description' | 'attempts';
@@ -59,15 +59,6 @@ const formatDate = (value?: string | null) => {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
   return date.toLocaleString();
-};
-
-const formatDuration = (value?: string | null) => {
-  if (!value) return '--';
-  const match = /^(\d+):(\d{2}):(\d{2})/.exec(value);
-  if (!match) return value;
-  const hours = Number(match[1]);
-  const minutes = Number(match[2]);
-  return hours ? `${hours}h ${minutes}m` : `${minutes}m`;
 };
 
 const countdown = (value?: string | null) => {
@@ -128,13 +119,18 @@ const DuelResultsFooter = ({
   duel,
   problems,
   activeSymbol,
+  view,
   onSelectProblem,
+  onChangeView,
 }: {
   duel: Duel;
   problems: DuelNavigationProblem[];
   activeSymbol?: string | null;
+  view: WorkspaceView;
   onSelectProblem: (symbol: string) => void;
+  onChangeView: (view: WorkspaceView) => void;
 }) => {
+  const { t } = useTranslation();
   const rows = getPlayerRows(duel);
 
   if (!rows.length || !problems.length) {
@@ -149,58 +145,117 @@ const DuelResultsFooter = ({
         borderTop: '1px solid',
         borderColor: 'divider',
         borderRadius: 0,
+        bgcolor: (theme) =>
+          alpha(theme.palette.background.default, theme.palette.mode === 'dark' ? 0.22 : 0.72),
       }}
     >
-      <Stack spacing={1.25}>
-        {rows.map((row) => (
+      <Stack spacing={1.5}>
+        <Stack
+          direction={{ xs: 'column', lg: 'row' }}
+          spacing={1.25}
+          justifyContent="space-between"
+          alignItems={{ xs: 'stretch', lg: 'center' }}
+        >
           <Stack
-            key={row.key}
-            direction={{ xs: 'column', lg: 'row' }}
-            spacing={1.25}
-            alignItems={{ xs: 'flex-start', lg: 'center' }}
+            direction="row"
+            spacing={0.75}
+            alignItems="center"
+            sx={(theme) => ({
+              width: 'fit-content',
+              p: 0.5,
+              borderRadius: 999,
+              border: '1px solid',
+              borderColor: theme.palette.divider,
+              bgcolor: alpha(
+                theme.palette.background.paper,
+                theme.palette.mode === 'dark' ? 0.55 : 0.9,
+              ),
+            })}
           >
-            <Stack sx={{ minWidth: { lg: 180 } }}>
-              <Typography variant="subtitle2" fontWeight={700}>
-                {row.player.username}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {row.player.ratingTitle || '--'}
-              </Typography>
-            </Stack>
-
-            <Chip
-              label={`${row.player.balls ?? 0} pts`}
-              color={row.accent}
-              variant="outlined"
+            <Button
               size="small"
-            />
-
-            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-              {problems.map((problem) => {
-                const isActive = activeSymbol === problem.symbol;
-                return (
-                  <Button
-                    key={`${row.key}-${problem.symbol}`}
-                    onClick={() => onSelectProblem(problem.symbol)}
-                    variant={isActive ? 'contained' : 'outlined'}
-                    color={row.accent}
-                    size="small"
-                    sx={{ minWidth: 62, justifyContent: 'space-between' }}
-                  >
-                    <Stack direction="row" spacing={0.75} alignItems="center">
-                      <Typography variant="caption" fontWeight={700}>
-                        {problem.symbol}
-                      </Typography>
-                      <Typography variant="caption" fontWeight={700}>
-                        {row.scoreAccessor(problem)}
-                      </Typography>
-                    </Stack>
-                  </Button>
-                );
-              })}
-            </Stack>
+              variant={view === 'problems' ? 'contained' : 'text'}
+              color="primary"
+              onClick={() => onChangeView('problems')}
+              startIcon={<IconifyIcon icon="mdi:format-list-bulleted" width={16} height={16} />}
+              sx={{ textTransform: 'none', borderRadius: 999 }}
+            >
+              {t('contests.tabs.problems')}
+            </Button>
+            <Button
+              size="small"
+              variant={view === 'standings' ? 'contained' : 'text'}
+              color="primary"
+              onClick={() => onChangeView('standings')}
+              startIcon={<IconifyIcon icon="mdi:podium" width={16} height={16} />}
+              sx={{ textTransform: 'none', borderRadius: 999 }}
+            >
+              {t('duels.standings')}
+            </Button>
           </Stack>
-        ))}
+
+          <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+            {rows.map((row) => (
+              <Chip
+                key={`${row.key}-total`}
+                label={`${row.player.username}: ${row.player.balls ?? 0}`}
+                color={row.accent}
+                variant="outlined"
+                size="small"
+              />
+            ))}
+          </Stack>
+        </Stack>
+
+        <Stack direction="row" spacing={1} sx={{ overflowX: 'auto', pb: 0.25 }}>
+          {problems.map((problem) => {
+            const isActive = activeSymbol === problem.symbol;
+
+            return (
+              <Button
+                key={problem.symbol}
+                onClick={() => onSelectProblem(problem.symbol)}
+                variant={isActive ? 'contained' : 'outlined'}
+                color={isActive ? 'primary' : 'inherit'}
+                sx={{
+                  minWidth: 150,
+                  flexShrink: 0,
+                  px: 1.5,
+                  py: 1.15,
+                  borderRadius: 2.5,
+                  textTransform: 'none',
+                  alignItems: 'stretch',
+                }}
+              >
+                <Stack spacing={0.4} alignItems="flex-start" sx={{ width: '100%' }}>
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    sx={{ width: '100%' }}
+                  >
+                    <Typography variant="subtitle2" fontWeight={800}>
+                      {problem.symbol}
+                    </Typography>
+                    <Typography variant="caption" color={isActive ? 'inherit' : 'text.secondary'}>
+                      {problem.ball ?? 0} pts
+                    </Typography>
+                  </Stack>
+
+                  {rows.map((row) => (
+                    <Typography
+                      key={`${row.key}-${problem.symbol}`}
+                      variant="caption"
+                      color={isActive ? 'inherit' : 'text.secondary'}
+                    >
+                      {row.player.username}: {row.scoreAccessor(problem)}
+                    </Typography>
+                  ))}
+                </Stack>
+              </Button>
+            );
+          })}
+        </Stack>
       </Stack>
     </Card>
   );
@@ -320,18 +375,6 @@ const DuelDetailPage = () => {
       .map((row, index) => ({ ...row, rank: index + 1 }));
   }, [duel]);
   const maxScore = standingsRows.reduce((best, row) => Math.max(best, row.total), 0);
-  const summaryRows = useMemo(() => {
-    if (!duel) return [];
-
-    const rankById = new Map(standingsRows.map((row) => [row.player.id, row.rank]));
-
-    return getPlayerRows(duel).map((row) => ({
-      ...row,
-      total: row.player.balls ?? 0,
-      rank: rankById.get(row.player.id) ?? row.order + 1,
-      isLeading: standingsRows.length > 0 && (row.player.balls ?? 0) === maxScore,
-    }));
-  }, [duel, maxScore, standingsRows]);
 
   useEffect(() => {
     setEditorTheme(themeMode.mode === 'dark' ? 'vs-dark' : 'vs');
@@ -682,7 +725,9 @@ const DuelDetailPage = () => {
 
   if (isLoading && !duel) {
     return (
-      <Box sx={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Box
+        sx={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      >
         <CircularProgress />
       </Box>
     );
@@ -696,13 +741,6 @@ const DuelDetailPage = () => {
     );
   }
 
-  const statusLabel =
-    duel.status === -1
-      ? t('duels.status.upcoming')
-      : duel.status === 1
-        ? t('duels.status.finished')
-        : t('duels.status.running');
-  const statusColor = duel.status === -1 ? 'default' : duel.status === 1 ? 'secondary' : 'success';
   const workspaceAttemptLink = activeNavigationProblem?.symbol
     ? `${getResourceById(resources.Duel, duel.id)}?view=problems&problem=${activeNavigationProblem.symbol}&tab=attempts`
     : getResourceById(resources.Duel, duel.id);
@@ -760,7 +798,11 @@ const DuelDetailPage = () => {
               {t('duels.title')}
             </Button>
 
-            <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(255,255,255,0.18)' }} />
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{ borderColor: 'rgba(255,255,255,0.18)' }}
+            />
 
             <Stack direction="row" spacing={0.5} alignItems="center">
               <Tooltip title={t('contests.problem.prev')}>
@@ -810,22 +852,6 @@ const DuelDetailPage = () => {
             </span>
           </Tooltip>
 
-          {canUseCheckSamples ? (
-            <Tooltip title={t('problems.detail.checkSamplesHotkey')}>
-              <span style={{ display: 'inline-flex' }}>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={handleCheckSamples}
-                  disabled={!currentUser || isCheckingSamples || !hasCode || isWorkspaceLocked}
-                  startIcon={<IconifyIcon icon="mdi:test-tube" width={18} height={18} />}
-                >
-                  {t('problems.detail.checkSamples')}
-                </Button>
-              </span>
-            </Tooltip>
-          ) : null}
-
           <Tooltip title={t('problems.detail.submitHotkey')}>
             <span style={{ display: 'inline-flex' }}>
               <Button
@@ -859,186 +885,6 @@ const DuelDetailPage = () => {
           <LinearProgress sx={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 2 }} />
         ) : null}
 
-        <Box
-          sx={{
-            px: { xs: 2, md: 3 },
-            pt: 2,
-            pb: 1.5,
-            borderBottom: '1px solid',
-            borderColor: 'divider',
-            bgcolor: 'background.paper',
-          }}
-        >
-          <Stack spacing={1.5}>
-            <Stack
-              direction={{ xs: 'column', xl: 'row' }}
-              spacing={2}
-              justifyContent="space-between"
-              alignItems={{ xs: 'stretch', xl: 'center' }}
-            >
-              <Stack spacing={1}>
-                <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
-                  <Typography variant="h5" fontWeight={800}>
-                    {duel.playerFirst.username} vs {duel.playerSecond?.username ?? '--'}
-                  </Typography>
-                  <Chip label={statusLabel} color={statusColor} size="small" />
-                  <Chip
-                    label={
-                      duel.canSubmitForDuel
-                        ? t('duels.submitModeDuel')
-                        : t('duels.submitModePractice')
-                    }
-                    size="small"
-                    variant="outlined"
-                  />
-                </Stack>
-
-                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                  {duel.preset ? (
-                    <Chip
-                      size="small"
-                      variant="outlined"
-                      label={`${duel.preset.title || t('duels.preset')}${duel.preset.duration ? ` | ${formatDuration(duel.preset.duration)}` : ''}`}
-                    />
-                  ) : null}
-                  <Chip
-                    size="small"
-                    variant="outlined"
-                    label={`${t('duels.starts')}: ${formatDate(duel.startTime)}`}
-                  />
-                  {duel.finishTime ? (
-                    <Chip
-                      size="small"
-                      variant="outlined"
-                      label={`${t('duels.ends')}: ${formatDate(duel.finishTime)}`}
-                    />
-                  ) : null}
-                </Stack>
-              </Stack>
-
-              <Stack
-                direction={{ xs: 'column', sm: 'row' }}
-                spacing={1.25}
-                justifyContent="flex-end"
-              >
-                {summaryRows.map((row) => (
-                  <Box
-                    key={row.key}
-                    sx={(theme) => ({
-                      minWidth: 168,
-                      px: 2,
-                      py: 1.5,
-                      borderRadius: 2.5,
-                      border: '1px solid',
-                      borderColor: row.total === maxScore
-                        ? alpha(theme.palette[row.accent].main, 0.55)
-                        : alpha(theme.palette.divider, theme.palette.mode === 'dark' ? 0.75 : 1),
-                      backgroundColor: row.total === maxScore
-                        ? alpha(theme.palette[row.accent].main, theme.palette.mode === 'dark' ? 0.16 : 0.09)
-                        : alpha(theme.palette.background.default, theme.palette.mode === 'dark' ? 0.16 : 0.5),
-                    })}
-                  >
-                    <Typography variant="caption" color="text.secondary">
-                      #{row.rank}
-                    </Typography>
-                    <Typography variant="subtitle1" fontWeight={700}>
-                      {row.player.username}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {row.player.ratingTitle || '--'}
-                    </Typography>
-                    <Typography variant="h4" fontWeight={900} color={`${row.accent}.main`}>
-                      {row.total}
-                    </Typography>
-                  </Box>
-                ))}
-              </Stack>
-            </Stack>
-
-            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-              <Button
-                onClick={() => updateSearch({ view: 'problems' })}
-                startIcon={<IconifyIcon icon="mdi:format-list-bulleted" width={18} height={18} />}
-                variant={view === 'problems' ? 'contained' : 'outlined'}
-                color="primary"
-                sx={{ textTransform: 'none' }}
-              >
-                {t('contests.tabs.problems')}
-              </Button>
-              <Button
-                onClick={() => updateSearch({ view: 'standings' })}
-                startIcon={<IconifyIcon icon="mdi:podium" width={18} height={18} />}
-                variant={view === 'standings' ? 'contained' : 'outlined'}
-                color="primary"
-                sx={{ textTransform: 'none' }}
-              >
-                {t('duels.standings')}
-              </Button>
-            </Stack>
-
-            {navigationProblems.length ? (
-              <Stack direction="row" spacing={1} sx={{ overflowX: 'auto', pb: 0.5 }}>
-                {navigationProblems.map((problem) => {
-                  const isActive = problem.symbol === activeNavigationProblem?.symbol;
-
-                  return (
-                    <Button
-                      key={problem.symbol}
-                      variant={isActive ? 'contained' : 'outlined'}
-                      color={isActive ? 'primary' : 'inherit'}
-                      onClick={() => updateSearch({ view: 'problems', symbol: problem.symbol })}
-                      sx={{
-                        minWidth: 140,
-                        flexShrink: 0,
-                        px: 1.5,
-                        py: 1.25,
-                        borderRadius: 2.5,
-                        textTransform: 'none',
-                        alignItems: 'stretch',
-                      }}
-                    >
-                      <Stack spacing={0.4} alignItems="flex-start" sx={{ width: '100%' }}>
-                        <Stack
-                          direction="row"
-                          justifyContent="space-between"
-                          alignItems="center"
-                          sx={{ width: '100%' }}
-                        >
-                          <Typography variant="subtitle2" fontWeight={800}>
-                            {problem.symbol}
-                          </Typography>
-                          <Typography
-                            variant="caption"
-                            color={isActive ? 'inherit' : 'text.secondary'}
-                          >
-                            {problem.ball ?? 0} pts
-                          </Typography>
-                        </Stack>
-
-                        <Typography variant="caption" color={isActive ? 'inherit' : 'text.secondary'}>
-                          {duel.playerFirst.username}: {problem.playerFirstBall ?? 0}
-                        </Typography>
-                        {duel.playerSecond ? (
-                          <Typography
-                            variant="caption"
-                            color={isActive ? 'inherit' : 'text.secondary'}
-                          >
-                            {duel.playerSecond.username}: {problem.playerSecondBall ?? 0}
-                          </Typography>
-                        ) : null}
-                      </Stack>
-                    </Button>
-                  );
-                })}
-              </Stack>
-            ) : (
-              <Typography variant="body2" color="text.secondary">
-                {duel.status === -1 ? t('duels.problemsHiddenUntilStart') : t('duels.noProblems')}
-              </Typography>
-            )}
-          </Stack>
-        </Box>
-
         <PanelGroup direction="horizontal" style={{ flex: 1, minHeight: 0 }}>
           <Panel defaultSize={50} minSize={35}>
             {view === 'standings' ? (
@@ -1057,9 +903,7 @@ const DuelDetailPage = () => {
                       <Typography variant="h5" fontWeight={700}>
                         {t('duels.standings')}
                       </Typography>
-                      <Typography color="text.secondary">
-                        {t('duels.standingsSubtitle')}
-                      </Typography>
+                      <Typography color="text.secondary">{t('duels.standingsSubtitle')}</Typography>
                     </Stack>
 
                     {standingsRows.map((row) => (
@@ -1067,12 +911,20 @@ const DuelDetailPage = () => {
                         key={row.key}
                         variant="outlined"
                         sx={(theme) => ({
-                          borderColor: row.total === maxScore
-                            ? alpha(theme.palette[row.accent].main, 0.45)
-                            : alpha(theme.palette.divider, theme.palette.mode === 'dark' ? 0.75 : 1),
-                          backgroundColor: row.total === maxScore
-                            ? alpha(theme.palette[row.accent].main, theme.palette.mode === 'dark' ? 0.14 : 0.06)
-                            : 'transparent',
+                          borderColor:
+                            row.total === maxScore
+                              ? alpha(theme.palette[row.accent].main, 0.45)
+                              : alpha(
+                                  theme.palette.divider,
+                                  theme.palette.mode === 'dark' ? 0.75 : 1,
+                                ),
+                          backgroundColor:
+                            row.total === maxScore
+                              ? alpha(
+                                  theme.palette[row.accent].main,
+                                  theme.palette.mode === 'dark' ? 0.14 : 0.06,
+                                )
+                              : 'transparent',
                         })}
                       >
                         <CardContent>
@@ -1104,6 +956,15 @@ const DuelDetailPage = () => {
                     ))}
                   </Stack>
                 </CardContent>
+
+                <DuelResultsFooter
+                  duel={duel}
+                  problems={navigationProblems}
+                  activeSymbol={activeNavigationProblem?.symbol}
+                  view={view}
+                  onChangeView={(nextView) => updateSearch({ view: nextView })}
+                  onSelectProblem={(symbol) => updateSearch({ symbol, view: 'problems' })}
+                />
               </Card>
             ) : activeProblem?.problem ? (
               <Card
@@ -1189,6 +1050,8 @@ const DuelDetailPage = () => {
                   duel={duel}
                   problems={navigationProblems}
                   activeSymbol={activeNavigationProblem?.symbol}
+                  view={view}
+                  onChangeView={(nextView) => updateSearch({ view: nextView })}
                   onSelectProblem={(symbol) => updateSearch({ symbol, view: 'problems' })}
                 />
               </Card>
@@ -1235,6 +1098,8 @@ const DuelDetailPage = () => {
                   duel={duel}
                   problems={navigationProblems}
                   activeSymbol={activeNavigationProblem?.symbol}
+                  view={view}
+                  onChangeView={(nextView) => updateSearch({ view: nextView })}
                   onSelectProblem={(symbol) => updateSearch({ symbol, view: 'problems' })}
                 />
               </Card>
@@ -1268,7 +1133,7 @@ const DuelDetailPage = () => {
                 checkSamplesResult={checkSamplesResult}
                 editorTab={editorTab}
                 onEditorTabChange={setEditorTab}
-                canUseCheckSamples={canUseCheckSamples}
+                canUseCheckSamples={false}
                 editorTheme={editorTheme}
               />
             ) : navigationProblems.length && duel.status !== -1 && (isLoading || isValidating) ? (
@@ -1293,9 +1158,7 @@ const DuelDetailPage = () => {
                       : t('duels.problems')}
                   </Typography>
                   <Typography color="text.secondary">
-                    {duel.status === -1
-                      ? t('duels.editorUnlockedOnStart')
-                      : t('duels.noProblems')}
+                    {duel.status === -1 ? t('duels.editorUnlockedOnStart') : t('duels.noProblems')}
                   </Typography>
                 </Stack>
               </Card>

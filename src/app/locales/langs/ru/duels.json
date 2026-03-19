@@ -5,6 +5,8 @@
     "readyStatusTitle": "Готовность к дуэлям",
     "readyDescription": "Дайте знать, что вы готовы к дуэли.",
     "notReadyDescription": "Отключите статус, если пока не готовы играть.",
+    "readyAutoReset": "Режим готовности автоматически сбрасывается через 24 часа.",
+    "readyUntilLabel": "Виден для соперников до {{time}}.",
     "ready": "Готов к дуэлям",
     "notReady": "Не готов",
     "readyPlayersTitle": "Готовые игроки",
@@ -89,6 +91,7 @@
     "table": {
       "place": "Место",
       "username": "Пользователь",
+      "contestsRating": "Рейтинг контестов",
       "duels": "Дуэлей",
       "wins": "Победы",
       "draws": "Ничьи",

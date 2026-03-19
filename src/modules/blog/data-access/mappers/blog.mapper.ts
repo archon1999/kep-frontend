@@ -1,5 +1,10 @@
 import { BlogComment as ApiBlogComment } from 'shared/api/orval/generated/endpoints/index.schemas';
-import { BlogComment, BlogPost, BlogStatus } from '../../domain/entities/blog.entity';
+import {
+  BlogComment,
+  BlogPost,
+  BlogStatus,
+  BlogTableOfContentsItem,
+} from '../../domain/entities/blog.entity';
 import { PageResult } from '../../domain/ports/blog.repository';
 
 export interface BlogApiPost {
@@ -7,6 +12,7 @@ export interface BlogApiPost {
   author?: {
     username?: string | null;
     avatar?: string | null;
+    bio?: string | null;
   } | string | null;
   title?: string | null;
   body?: string | null;
@@ -32,6 +38,8 @@ export interface BlogApiPost {
   can_edit?: boolean | null;
   canSubmit?: boolean | null;
   can_submit?: boolean | null;
+  tableOfContents?: BlogTableOfContentsItem[] | null;
+  table_of_contents?: BlogTableOfContentsItem[] | null;
 }
 
 const mapTags = (tags?: string | string[] | null): string[] => {
@@ -59,6 +67,20 @@ const normalizeStatus = (value?: number | string | null) => {
   return BlogStatus.Published;
 };
 
+const mapTableOfContents = (items?: BlogTableOfContentsItem[] | null): BlogTableOfContentsItem[] =>
+  Array.isArray(items)
+    ? items
+        .map((item) => ({
+          id: item?.id ?? '',
+          text: item?.text ?? '',
+          level: Number(item?.level) as BlogTableOfContentsItem['level'],
+        }))
+        .filter(
+          (item) =>
+            Boolean(item.id && item.text) && [1, 2, 3].includes(item.level),
+        )
+    : [];
+
 const mapBasePost = (payload: BlogApiPost): BlogPost => {
   const status = normalizeStatus(payload.status);
 
@@ -70,6 +92,7 @@ const mapBasePost = (payload: BlogApiPost): BlogPost => {
           ? payload.author
           : payload.author?.username?.trim() || 'unknown',
       avatar: typeof payload.author === 'string' ? null : payload.author?.avatar ?? null,
+      bio: typeof payload.author === 'string' ? '' : payload.author?.bio?.trim() ?? '',
     },
     title: payload.title ?? '',
     bodyShort: payload.bodyShort ?? payload.body_short ?? undefined,
@@ -96,6 +119,7 @@ const mapBasePost = (payload: BlogApiPost): BlogPost => {
 export const mapBlogPost = (payload: BlogApiPost): BlogPost => ({
   ...mapBasePost(payload),
   body: payload.body ?? undefined,
+  tableOfContents: mapTableOfContents(payload.tableOfContents ?? payload.table_of_contents),
 });
 
 export const mapPageResult = <T>(payload: any, mapItem: (item: any) => T): PageResult<T> => {

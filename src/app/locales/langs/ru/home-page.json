@@ -51,6 +51,34 @@
       "empty": "Соревнований пока нет."
     },
     "promos": {
+      "blogCreate": {
+        "title": "Создавайте блоги на KEP и превращайте полезные истории в ценность для сообщества.",
+        "subtitle": "Публикуйте tutorial, postmortem и инсайты о платформе. Сильные материалы могут получить Kepcoin после модерации.",
+        "availableNow": "Доступно сейчас",
+        "footerNote": "Сначала сохраните черновик, затем отправьте на проверку, когда материал будет готов.",
+        "previewTitle": "Превью редактора",
+        "previewBadge": "Рекомендуемый процесс",
+        "previewHeadline": "Напишите практичную историю, добавьте сильные теги и отправьте на проверку.",
+        "previewTags": {
+          "story": "История сообщества",
+          "reward": "Награда Kepcoin",
+          "review": "Проверка"
+        },
+        "metrics": {
+          "access": {
+            "label": "Кто может писать",
+            "value": "Любой пользователь KEP"
+          },
+          "rewards": {
+            "label": "Потенциал награды",
+            "value": "Качественные посты могут получить Kepcoin"
+          },
+          "flow": {
+            "label": "Поток публикации",
+            "value": "Черновик, проверка, публикация"
+          }
+        }
+      },
       "kepCover": {
         "activeSubtitle": "Голосуйте за лучшие обложки, следите за живым рейтингом и открывайте полную страницу KEP Cover.",
         "upcomingSubtitle": "Следующий KEP Cover уже запланирован. Обновите cover photo до открытия голосования.",
@@ -68,12 +96,14 @@
       "actions": {
         "openKepCover": "Открыть KEP Cover",
         "openContest": "Открыть contest",
-        "openArena": "Открыть arena"
+        "openArena": "Открыть arena",
+        "startWriting": "Создать блог"
       },
       "types": {
         "kepCover": "KEP Cover",
         "contest": "Contest",
-        "arena": "Arena"
+        "arena": "Arena",
+        "blogCreate": "Блог сообщества"
       },
       "metrics": {
         "participants": "Участники",

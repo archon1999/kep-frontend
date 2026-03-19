@@ -100,6 +100,83 @@
       "soft": "Soft chime",
       "bright": "Bright ping"
     },
-    "findSettingPlaceholder": "Find a setting"
+    "findSettingPlaceholder": "Find a setting",
+    "customizer": {
+      "toggle": "Customize",
+      "title": "Customize",
+      "reset": "Reset",
+      "new": "new",
+      "notAvailableInLayout": "Not available in this layout.",
+      "sections": {
+        "theme": "Theme",
+        "navigationMenu": "Navigation Menu",
+        "sidenavShape": "Sidenav Shape",
+        "topnavShape": "Topnav Shape",
+        "navColor": "Nav Color",
+        "backgroundPattern": "Background Pattern",
+        "cardStyle": "Card Style",
+        "cardBackground": "Card Background",
+        "font": "Font",
+        "visionMode": "Vision Mode"
+      },
+      "labels": {
+        "default": "Default",
+        "vibrant": "Vibrant",
+        "sidenav": "Sidenav",
+        "topnav": "Topnav",
+        "slim": "Slim",
+        "stacked": "Stacked",
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System",
+        "none": "None",
+        "grid": "Grid",
+        "dots": "Dots",
+        "diagonal": "Diagonal",
+        "mesh": "Mesh",
+        "outline": "Outline",
+        "corners": "Corners",
+        "glow": "Glow",
+        "tint": "Tint",
+        "gradient": "Gradient",
+        "glass": "Glass",
+        "primaryColor": "Primary Color",
+        "fontSize": "Font Size"
+      },
+      "themePresets": {
+        "defaultGroup": "Default",
+        "defaultLight": "Light",
+        "defaultDark": "Dark",
+        "luxury": "Luxury",
+        "retro": "Retro",
+        "arctic": "Arctic",
+        "nature": "Nature",
+        "ember": "Ember",
+        "dracula": "Dracula",
+        "midnight": "Midnight"
+      },
+      "visionModes": {
+        "normal": {
+          "label": "Normal",
+          "description": "Shows all colors normally"
+        },
+        "protanopia": {
+          "label": "Protanopia",
+          "description": "Hard to see red shades"
+        },
+        "deuteranopia": {
+          "label": "Deuteranopia",
+          "description": "Hard to see green shades"
+        },
+        "tritanopia": {
+          "label": "Tritanopia",
+          "description": "Hard to see blue shades"
+        },
+        "achromatopsia": {
+          "label": "Achromatopsia",
+          "description": "Shows only black and white"
+        }
+      }
+    }
   }
 }

@@ -1,5 +1,4 @@
 import { Card, CardContent, Skeleton, Stack, Typography } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 import { DuelInvitation } from '../../domain/index.ts';
 import DuelInvitationCard from './DuelInvitationCard.tsx';
 
@@ -26,13 +25,11 @@ const DuelInvitationsSection = ({
   onCounter,
   onOpen,
 }: Props) => {
-  const { t } = useTranslation();
-
   return (
     <Stack spacing={2}>
       <Typography variant="h6" fontWeight={800}>
         {title}
-        {!!invitations.length ? (
+        {invitations.length > 0 ? (
           <Typography component="span" variant="subtitle2" color="text.secondary" ml={1}>
             ({invitations.length})
           </Typography>

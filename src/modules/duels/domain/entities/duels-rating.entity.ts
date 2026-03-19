@@ -1,6 +1,8 @@
 export interface DuelsRatingUser {
   username: string;
   avatar?: string;
+  contestsRating?: number;
+  contestsRatingTitle?: string;
 }
 
 export interface DuelsRatingRow {

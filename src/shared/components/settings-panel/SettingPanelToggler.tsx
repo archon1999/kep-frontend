@@ -1,10 +1,11 @@
 import { Button, buttonClasses, useTheme } from '@mui/material';
 import { useSettingsPanelContext } from 'app/providers/SettingsPanelProvider';
+import { useTranslation } from 'react-i18next';
 import SettingsIcon from 'shared/components/icons/SettingsIcon';
 
 const SettingPanelToggler = () => {
   const { setSettingsPanelConfig } = useSettingsPanelContext();
-
+  const { t } = useTranslation();
   const theme = useTheme();
   return (
     <Button
@@ -45,7 +46,7 @@ const SettingPanelToggler = () => {
         })
       }
     >
-      Customize
+      {t('settings.customizer.toggle')}
     </Button>
   );
 };

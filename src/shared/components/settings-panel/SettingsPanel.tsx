@@ -1,4 +1,5 @@
 import { PropsWithChildren } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Button,
@@ -10,13 +11,15 @@ import {
   paperClasses,
 } from '@mui/material';
 import Drawer from '@mui/material/Drawer';
-import { useVisionMode } from 'app/providers/VisionModeProvider';
+import { alpha } from '@mui/material/styles';
 import { useSettingsPanelContext } from 'app/providers/SettingsPanelProvider';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
+import { useVisionMode } from 'app/providers/VisionModeProvider';
 import { RESET, SET_PRIMARY_COLOR } from 'app/reducers/SettingsReducer';
 import { blue, green } from 'app/theme/palette/colors';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import SimpleBar from 'shared/components/base/SimpleBar';
+import useResolvedThemeMode from 'shared/hooks/useResolvedThemeMode';
 import { useThemeMode } from 'shared/hooks/useThemeMode';
 import { cssVarRgba } from 'shared/lib/utils';
 import NavColorPanel from './NavColorPanel';
@@ -25,14 +28,19 @@ import SidenavShapePanel from './SidenavShapePanel';
 import TopnavShapePanel from './TopnavShapePanel';
 import VisionModePanel from './VisionModePanel';
 import FontSettingsPanel from './font-settings/FontSettingsPanel';
+import BackgroundPatternPanel from './surface-settings/BackgroundPatternPanel';
+import CardBackgroundPanel from './surface-settings/CardBackgroundPanel';
+import CardStylePanel from './surface-settings/CardStylePanel';
 import ThemeList from './theme-preset/ThemeList';
 
 const SettingsPanel = () => {
+  const { t } = useTranslation();
   const {
     config: { navigationMenuType },
     configDispatch,
   } = useSettingsContext();
   const { resetTheme } = useThemeMode();
+  const { isDark } = useResolvedThemeMode();
   const { setMode } = useVisionMode();
   const {
     settingsPanelConfig: {
@@ -60,10 +68,15 @@ const SettingsPanel = () => {
         onClose={() => {
           setSettingsPanelConfig({ openSettingPanel: false });
         }}
-        sx={({ zIndex }) => ({
-          zIndex: zIndex.tooltip + 1,
+        sx={(theme) => ({
+          zIndex: theme.zIndex.tooltip + 1,
           [`& .${paperClasses.root}`]: {
             width: 313,
+            backgroundColor: theme.vars.palette.background.menu,
+            backgroundImage: isDark
+              ? `linear-gradient(180deg, ${alpha(theme.palette.common.white, 0.035)} 0%, transparent 100%)`
+              : `linear-gradient(180deg, ${alpha(theme.palette.common.white, 0.86)} 0%, transparent 100%)`,
+            borderLeft: `1px solid ${alpha(theme.palette.divider, isDark ? 0.36 : 0.72)}`,
           },
         })}
       >
@@ -84,7 +97,7 @@ const SettingsPanel = () => {
               flex: 1,
             }}
           >
-            Customize
+            {t('settings.customizer.title')}
           </Typography>
           <Button
             variant="soft"
@@ -95,7 +108,7 @@ const SettingsPanel = () => {
             startIcon={<IconifyIcon icon="material-symbols:reset-settings-rounded" />}
             onClick={handleReset}
           >
-            Reset
+            {t('settings.customizer.reset')}
           </Button>
           <Button
             variant="soft"
@@ -135,42 +148,65 @@ const SettingsPanel = () => {
                   gap: 3,
                 }}
               >
-                <Section title="Theme" isNew>
+                <Section title={t('settings.customizer.sections.theme')} isNew>
                   <ThemeList />
                 </Section>
 
                 <Divider sx={{ mx: -3 }} />
 
-                <Section title="Navigation Menu" disable={disableNavigationMenuSection}>
+                <Section
+                  title={t('settings.customizer.sections.navigationMenu')}
+                  disable={disableNavigationMenuSection}
+                >
                   <NavigationMenuPanel />
                 </Section>
 
                 {navigationMenuType !== 'topnav' && (
-                  <Section title="Sidenav Shape" disable={disableSidenavShapeSection}>
+                  <Section
+                    title={t('settings.customizer.sections.sidenavShape')}
+                    disable={disableSidenavShapeSection}
+                  >
                     <SidenavShapePanel />
                   </Section>
                 )}
                 {navigationMenuType !== 'sidenav' && (
-                  <Section title="Topnav Shape" disable={disableTopShapeSection}>
+                  <Section
+                    title={t('settings.customizer.sections.topnavShape')}
+                    disable={disableTopShapeSection}
+                  >
                     <TopnavShapePanel />
                   </Section>
                 )}
 
                 <Divider sx={{ mx: -3 }} />
 
-                <Section title="Nav Color" disable={disableNavColorSection}>
-                  <NavColorPanel />
+                <Section
+                  title={t('settings.customizer.sections.navColor')}
+                  disable={disableNavColorSection}
+                >
+                  <Stack sx={{ gap: 2.5 }}>
+                    <NavColorPanel />
+                    <SubSection title={t('settings.customizer.sections.backgroundPattern')} isNew>
+                      <BackgroundPatternPanel />
+                    </SubSection>
+                    <SubSection title={t('settings.customizer.sections.cardStyle')} isNew>
+                      <CardStylePanel />
+                    </SubSection>
+                    <SubSection title={t('settings.customizer.sections.cardBackground')} isNew>
+                      <CardBackgroundPanel />
+                    </SubSection>
+                  </Stack>
                 </Section>
 
                 <Divider sx={{ mx: -3 }} />
 
-                <Section title="Font" isNew>
+                <Section title={t('settings.customizer.sections.font')} isNew>
                   <FontSettingsPanel />
                 </Section>
 
                 <Divider sx={{ mx: -3 }} />
 
-                <Section title="Vision Mode" isNew>
+                <Section title={t('settings.customizer.sections.visionMode')} isNew>
                   <VisionModePanel />
                 </Section>
               </Stack>
@@ -190,6 +226,8 @@ const Section = ({
   isNew,
   children,
 }: PropsWithChildren<{ title: string; disable?: boolean; isNew?: boolean }>) => {
+  const { t } = useTranslation();
+
   return (
     <Box
       sx={[
@@ -216,16 +254,51 @@ const Section = ({
           {title}
         </Typography>
         {isNew && (
-          <Chip size="xsmall" label="new" color="warning" sx={{ textTransform: 'capitalize', ml: 1 }} />
+          <Chip
+            size="xsmall"
+            label={t('settings.customizer.new')}
+            color="warning"
+            sx={{ textTransform: 'capitalize', ml: 1 }}
+          />
         )}
       </Stack>
       {disable && (
         <Stack direction="row" sx={{ alignItems: 'center', gap: 0.5, mb: 2, color: 'info.main' }}>
           <IconifyIcon icon="material-symbols:info-outline" sx={{ fontSize: 16 }} />
-          <Typography variant="subtitle2">Not available in this layout.</Typography>
+          <Typography variant="subtitle2">
+            {t('settings.customizer.notAvailableInLayout')}
+          </Typography>
         </Stack>
       )}
       <Box sx={[!!disable && { opacity: 0.4 }]}>{children}</Box>
+    </Box>
+  );
+};
+
+const SubSection = ({
+  title,
+  isNew,
+  children,
+}: PropsWithChildren<{ title: string; isNew?: boolean }>) => {
+  const { t } = useTranslation();
+
+  return (
+    <Box>
+      <Divider sx={{ mb: 2.5 }} />
+      <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
+        <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+          {title}
+        </Typography>
+        {isNew && (
+          <Chip
+            size="xsmall"
+            label={t('settings.customizer.new')}
+            color="warning"
+            sx={{ textTransform: 'capitalize', ml: 1 }}
+          />
+        )}
+      </Stack>
+      {children}
     </Box>
   );
 };
