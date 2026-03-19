@@ -5,6 +5,8 @@
     "readyStatusTitle": "Duelga tayyorgarlik",
     "readyDescription": "Duelga tayyor ekanligingizni bildiring.",
     "notReadyDescription": "Agar hozir duel qilmoqchi bo'lmasangiz, statusni o'chiring.",
+    "readyAutoReset": "Ready rejimi 24 soatdan keyin avtomatik o'chadi.",
+    "readyUntilLabel": "{{time}} gacha challengelar uchun ko'rinib turadi.",
     "ready": "Duelga tayyor",
     "notReady": "Tayyor emas",
     "readyPlayersTitle": "Tayyor ishtirokchilar",
@@ -89,6 +91,7 @@
     "table": {
       "place": "O'rin",
       "username": "Foydalanuvchi",
+      "contestsRating": "Contest reytingi",
       "duels": "Duellar",
       "wins": "G'alabalar",
       "draws": "Duranglar",

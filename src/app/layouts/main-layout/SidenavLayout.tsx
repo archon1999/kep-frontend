@@ -6,6 +6,7 @@ import AppBar from 'app/layouts/main-layout/app-bar';
 import Sidenav from 'app/layouts/main-layout/sidenav';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
 import { useBreakpoints } from 'app/providers/BreakpointsProvider';
+import { getCanvasFrameStyles } from 'app/theme/styles/surfaceTreatments';
 import { sidenavVibrantStyle } from 'app/theme/styles/vibrantNav';
 import clsx from 'clsx';
 import VibrantBackground from 'shared/components/common/VibrantBackground';
@@ -19,7 +20,7 @@ import SidenavDrawerContent from './sidenav/SidenavDrawerContent';
 
 const SidenavLayout = ({ children }: PropsWithChildren) => {
   const {
-    config: { drawerWidth, sidenavType, openNavbarDrawer, navColor },
+    config: { drawerWidth, sidenavType, openNavbarDrawer, navColor, backgroundPattern },
     setConfig,
   } = useSettingsContext();
   const { down } = useBreakpoints();
@@ -109,8 +110,7 @@ const SidenavLayout = ({ children }: PropsWithChildren) => {
             component="main"
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
-            sx={[
-              {
+            sx={(theme) => ({
                 flexGrow: 1,
                 p: 0,
                 height: '100vh',
@@ -118,30 +118,23 @@ const SidenavLayout = ({ children }: PropsWithChildren) => {
                 width: { xs: '100%', md: `calc(100% - ${drawerWidth}px)` },
                 display: 'flex',
                 flexDirection: 'column',
-              },
-              sidenavType === 'default' && {
-                ml: { md: `${mainDrawerWidth.collapsed}px`, lg: 0 },
-              },
-              sidenavType === 'slim' && {
-                ml: { xs: 0 },
-              },
-            ]}
+                ...getCanvasFrameStyles(theme, backgroundPattern),
+                ...(sidenavType === 'default' ? { ml: { md: `${mainDrawerWidth.collapsed}px`, lg: 0 } } : {}),
+                ...(sidenavType === 'slim' ? { ml: { xs: 0 } } : {}),
+              })}
           >
             <Toolbar variant="appbar" />
 
-            <Box sx={{ flex: 1 }}>
-              <Box
-                sx={[
-                  {
-                    height: 1,
-                    bgcolor: 'background.default',
-                  },
-                ]}
-              >
-                {children}
-              </Box>
+            <Box
+              sx={(theme) => ({
+                minHeight: theme.mixins.contentHeight(theme.mixins.topbar.default),
+                display: 'flex',
+                flexDirection: 'column',
+              })}
+            >
+              <Box sx={{ flex: '1 0 auto' }}>{children}</Box>
+              <Footer />
             </Box>
-            <Footer />
           </Box>
         </NavProvider>
       </Box>

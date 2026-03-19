@@ -3,6 +3,7 @@ import { A11y, Autoplay, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useHomePromos } from '../../application/queries';
 import HomeArenaPromoCard from './promos/HomeArenaPromoCard';
+import HomeBlogCreatePromoCard from './promos/HomeBlogCreatePromoCard';
 import HomeContestPromoCard from './promos/HomeContestPromoCard';
 import HomeKepCoverPromoCard from './promos/HomeKepCoverPromoCard';
 import 'swiper/css';
@@ -35,6 +36,7 @@ const HomePromosSection = () => {
       >
         {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
+            {slide.type === 'blogCreate' ? <HomeBlogCreatePromoCard slide={slide} /> : null}
             {slide.type === 'kepCover' ? <HomeKepCoverPromoCard slide={slide} /> : null}
             {slide.type === 'contest' ? <HomeContestPromoCard slide={slide} /> : null}
             {slide.type === 'arena' ? <HomeArenaPromoCard slide={slide} /> : null}

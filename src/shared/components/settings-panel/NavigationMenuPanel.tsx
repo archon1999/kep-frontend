@@ -4,12 +4,14 @@ import { useSettingsPanelContext } from 'app/providers/SettingsPanelProvider';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
 import { SET_NAVIGATION_MENU_TYPE } from 'app/reducers/SettingsReducer';
 import { NavigationMenuType } from 'app/config.ts';
+import { useTranslation } from 'react-i18next';
 import SettingsItem from './SettingsItem';
 import SettingsPanelRadioGroup from './SettingsPanelRadioGroup';
 import { SidenavIllustration } from './panel-illustrations/SidenavIllustration';
 import { TopnavIllustration } from './panel-illustrations/TopnavIllustration';
 
 const NavigationMenuPanel = () => {
+  const { t } = useTranslation();
   const {
     config: { navigationMenuType },
     configDispatch,
@@ -38,7 +40,7 @@ const NavigationMenuPanel = () => {
         control={<Radio />}
         label={
           <SettingsItem
-            label="Sidenav"
+            label={t('settings.customizer.labels.sidenav')}
             image={
               <SidenavIllustration
                 active={!disableNavigationMenuSection && navigationMenuType === 'sidenav'}
@@ -53,7 +55,7 @@ const NavigationMenuPanel = () => {
         control={<Radio />}
         label={
           <SettingsItem
-            label="Topnav"
+            label={t('settings.customizer.labels.topnav')}
             image={
               <TopnavIllustration
                 active={!disableNavigationMenuSection && navigationMenuType === 'topnav'}

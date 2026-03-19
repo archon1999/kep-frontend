@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, SvgIcon, SvgIconProps, Typography, typographyClasses } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
 import { rootPaths } from 'app/routes/route-config';
 
@@ -10,13 +11,17 @@ interface LogoProps extends SvgIconProps {
 
 const Logo = ({ sx, viewBox = '0 0 1000 1000', showName = true, vibrant = false, ...rest }: LogoProps) => {
   const [id, setId] = useState('kep-logo');
+  const theme = useTheme();
 
   const {
     config: { navColor },
   } = useSettingsContext();
 
+  const palette = theme.vars.palette;
   const isVibrant = vibrant && navColor === 'vibrant';
-  const color = isVibrant ? '#A641FA' : '#3385F0';
+  const color = isVibrant ? palette.secondary.main : palette.primary.main;
+  const accent = isVibrant ? palette.success.main : palette.primary.light;
+  const wordmarkTail = isVibrant ? palette.vibrant.text.secondary : palette.text.secondary;
 
   useEffect(() => {
     setId(`kep-logo-${Math.floor(Math.random() * 1000) + 1}`);
@@ -287,16 +292,16 @@ const Logo = ({ sx, viewBox = '0 0 1000 1000', showName = true, vibrant = false,
         <Typography
           sx={[
             {
-              color: 'text.main',
+              color: isVibrant ? 'vibrant.text.secondary' : 'text.primary',
               fontSize: 29.5,
               lineHeight: 1,
               margin: 1,
               marginLeft: 1,
               marginBottom: 1.5,
             },
-            navColor !== 'vibrant' && {
+            !isVibrant && {
               background: ({ vars }) =>
-                `linear-gradient(100.06deg, ${color} 6.97%, #7DB1F5 27.63%, #5A9EF6 49.36%, ${vars.palette.text.secondary} 50.11%, ${vars.palette.text.secondary} 87.87%);`,
+                `linear-gradient(100.06deg, ${color} 6.97%, ${accent} 27.63%, ${vars.palette.primary.main} 49.36%, ${wordmarkTail} 50.11%, ${wordmarkTail} 87.87%);`,
               backgroundSize: '240% 100%',
               backgroundPosition: ({ direction }) => (direction === 'rtl' ? 'left' : 'right'),
               WebkitBackgroundClip: 'text',

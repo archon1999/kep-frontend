@@ -100,6 +100,83 @@
       "soft": "Yumshoq chinqiriq",
       "bright": "Yorqin signal"
     },
-    "findSettingPlaceholder": "Sozlamani topish"
+    "findSettingPlaceholder": "Sozlamani topish",
+    "customizer": {
+      "toggle": "Moslash",
+      "title": "Moslash",
+      "reset": "Qayta tiklash",
+      "new": "yangi",
+      "notAvailableInLayout": "Bu layoutda mavjud emas.",
+      "sections": {
+        "theme": "Tema",
+        "navigationMenu": "Navigatsiya menyusi",
+        "sidenavShape": "Yon menyu shakli",
+        "topnavShape": "Yuqori menyu shakli",
+        "navColor": "Navigatsiya rangi",
+        "backgroundPattern": "Fon naqshi",
+        "cardStyle": "Karta uslubi",
+        "cardBackground": "Karta foni",
+        "font": "Shrift",
+        "visionMode": "Ko‘rish rejimi"
+      },
+      "labels": {
+        "default": "Standart",
+        "vibrant": "Jonli",
+        "sidenav": "Yon menyu",
+        "topnav": "Yuqori menyu",
+        "slim": "Yupqa",
+        "stacked": "Qavatli",
+        "light": "Yorug‘",
+        "dark": "Qorong‘i",
+        "system": "Tizim",
+        "none": "Yo‘q",
+        "grid": "To‘r",
+        "dots": "Nuqtalar",
+        "diagonal": "Diagonal",
+        "mesh": "To‘qima",
+        "outline": "Kontur",
+        "corners": "Burchaklar",
+        "glow": "Yaltirash",
+        "tint": "Tus",
+        "gradient": "Gradient",
+        "glass": "Shisha",
+        "primaryColor": "Asosiy rang",
+        "fontSize": "Shrift o‘lchami"
+      },
+      "themePresets": {
+        "defaultGroup": "Standart",
+        "defaultLight": "Yorug‘",
+        "defaultDark": "Qorong‘i",
+        "luxury": "Lyuks",
+        "retro": "Retro",
+        "arctic": "Arktika",
+        "nature": "Tabiat",
+        "ember": "Cho‘g‘",
+        "dracula": "Drakula",
+        "midnight": "Yarim tun"
+      },
+      "visionModes": {
+        "normal": {
+          "label": "Oddiy",
+          "description": "Barcha ranglarni odatdagidek ko‘rsatadi"
+        },
+        "protanopia": {
+          "label": "Protanopiya",
+          "description": "Qizil tuslarni ko‘rish qiyinlashadi"
+        },
+        "deuteranopia": {
+          "label": "Deyteranopiya",
+          "description": "Yashil tuslarni ko‘rish qiyinlashadi"
+        },
+        "tritanopia": {
+          "label": "Tritanopiya",
+          "description": "Ko‘k tuslarni ko‘rish qiyinlashadi"
+        },
+        "achromatopsia": {
+          "label": "Axromatopsiya",
+          "description": "Faqat qora va oq ranglarda ko‘rsatadi"
+        }
+      }
+    }
   }
 }

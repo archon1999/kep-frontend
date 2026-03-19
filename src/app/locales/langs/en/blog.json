@@ -1,8 +1,18 @@
 {
   "blog": {
     "title": "Blog",
+    "heroEyebrow": "Community stories",
     "subtitle": "Fresh stories from the community, learning paths, and platform updates.",
+    "heroHighlights": {
+      "reward": "High-quality posts can earn Kepcoin",
+      "community": "Publish guides, stories, and platform insights"
+    },
+    "heroCtaTitleAuth": "Write your next post",
+    "heroCtaTitleGuest": "Start writing on KEP",
+    "heroCtaSubtitle": "Draft your article, submit it for review, and share it with the community.",
     "filtersTitle": "Refine articles",
+    "resultsCount": "{{count}} posts",
+    "clearFilters": "Clear filters",
     "searchPlaceholder": "Search by title or keyword",
     "author": "Author",
     "authorPlaceholder": "Any author",
@@ -20,6 +30,8 @@
       "info": "Platform updates"
     },
     "readMore": "Read more",
+    "minRead": "{{count}} min read",
+    "creatorLabel": "Community creator",
     "comments": "Comments",
     "commentsWithCount": "Comments ({{count}})",
     "likes": "Likes",
@@ -29,6 +41,22 @@
     "emptyComments": {
       "title": "Be the first to comment",
       "subtitle": "No comments yet. Start the conversation."
+    },
+    "articleActionsTitle": "Join the conversation",
+    "articleActionsSubtitle": "React to the post, share it with your friends, or jump straight to the discussion.",
+    "tableOfContents": "Table of contents",
+    "aboutAuthor": "About the author",
+    "authorSectionSubtitle": "Browse more posts from this creator and follow their writing on KEP.",
+    "authorSectionAction": "View author's blog",
+    "moreFromCreator": "More from this creator",
+    "moreFromCreatorSubtitle": "Continue with related posts from the same author.",
+    "moreBlogs": "More blogs to explore",
+    "moreBlogsSubtitle": "Fresh picks from the wider KEP blog feed.",
+    "asideTitle": "Keep exploring",
+    "asideSubtitle": "Open the author page to discover more posts and draft your own story next.",
+    "empty": {
+      "title": "No blog posts matched your filters",
+      "subtitle": "Try adjusting the search criteria or create a new story for the community."
     },
     "actions": {
       "like": "Like",
@@ -44,8 +72,10 @@
       "published": "Published"
     },
     "profile": {
+      "ownerEyebrow": "Creator workspace",
       "ownerTitle": "My blog posts",
       "ownerSubtitle": "Create, update, and send your drafts for review from here.",
+      "publicEyebrow": "Published stories",
       "publicTitle": "Published blog posts",
       "publicSubtitle": "Published posts by this user.",
       "create": "New blog post",
@@ -58,6 +88,7 @@
       "reward": "+{{value}} Kepcoin"
     },
     "editor": {
+      "heroEyebrow": "Blog workspace",
       "createTitle": "Create blog post",
       "editTitle": "Edit blog post",
       "draftHint": "Drafts stay private until you submit them for review.",
@@ -78,6 +109,17 @@
         "body": "Body",
         "bodyPlaceholder": "Write your story here..."
       },
+      "previewTitle": "Live preview",
+      "previewSubtitle": "See how the post will look before it is published.",
+      "previewPlaceholderTitle": "Your blog title will appear here",
+      "previewEmpty": "Start writing to see your story preview here.",
+      "detailsTitle": "Post details",
+      "detailsSubtitle": "Set the main title and tags that help readers discover your article.",
+      "coverTitle": "Cover image",
+      "coverSubtitle": "Use a strong visual to make the article stand out in the feed.",
+      "statusTitle": "Publication status",
+      "storyTitle": "Write the story",
+      "storySubtitle": "Focus on a clear, useful narrative. You can save as draft and submit when it is ready.",
       "actions": {
         "saveDraft": "Save draft",
         "submitForReview": "Submit for review",
@@ -100,7 +142,8 @@
     "messages": {
       "saved": "Draft saved.",
       "updated": "Blog post updated.",
-      "submittedForReview": "Blog post submitted for review."
+      "submittedForReview": "Blog post submitted for review.",
+      "linkCopied": "Blog link copied."
     }
   }
 }

@@ -1,6 +1,7 @@
 import { PaperProps, Theme, paperClasses } from '@mui/material';
 import { Components } from '@mui/material/styles';
 import { blue, grey } from 'app/theme/palette/colors';
+import { coreSurfacePaperClassName, getSurfaceStyles } from 'app/theme/styles/surfaceTreatments';
 
 declare module '@mui/material' {
   interface PaperPropsVariantOverrides {
@@ -66,6 +67,18 @@ const Paper: Components<Omit<Theme, 'components'>>['MuiPaper'] = {
     }),
     rounded: {
       borderRadius: 8,
+    },
+    root: ({ theme, ownerState }) => {
+      const isCoreSurface =
+        ownerState.background !== undefined ||
+        (typeof ownerState.className === 'string' &&
+          ownerState.className.includes(coreSurfacePaperClassName));
+
+      if (!isCoreSurface) {
+        return {};
+      }
+
+      return getSurfaceStyles(theme, Number(ownerState.elevation ?? 3));
     },
   },
 };

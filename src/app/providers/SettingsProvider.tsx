@@ -50,6 +50,15 @@ const SettingsProvider = ({ children }: PropsWithChildren) => {
     primaryColor,
     fontFamily: getItemFromStore('fontFamily', initialConfig.fontFamily) as Config['fontFamily'],
     fontSize: Number(getItemFromStore('fontSize', initialConfig.fontSize)),
+    backgroundPattern: getItemFromStore(
+      'backgroundPattern',
+      initialConfig.backgroundPattern,
+    ) as Config['backgroundPattern'],
+    cardStyle: getItemFromStore('cardStyle', initialConfig.cardStyle) as Config['cardStyle'],
+    cardBackground: getItemFromStore(
+      'cardBackground',
+      initialConfig.cardBackground,
+    ) as Config['cardBackground'],
   };
   const [config, configDispatch] = useReducer(settingsReducer, configState);
   const { i18n } = useTranslation();

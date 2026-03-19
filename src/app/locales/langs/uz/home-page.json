@@ -51,6 +51,34 @@
       "empty": "Hozircha musobaqalar mavjud emas."
     },
     "promos": {
+      "blogCreate": {
+        "title": "KEP'da blog yarating va foydali hikoyalarni hamjamiyat qiymatiga aylantiring.",
+        "subtitle": "Tutorial, postmortem va platforma insightlarini ulashing. Kuchli bloglar reviewdan keyin Kepcoin reward olishi mumkin.",
+        "availableNow": "Hozir mavjud",
+        "footerNote": "Avval draft yarating, keyin tayyor bo'lganda reviewga yuboring.",
+        "previewTitle": "Editor preview",
+        "previewBadge": "Tavsiya etilgan jarayon",
+        "previewHeadline": "Amaliy hikoya yozing, kuchli teglar qo'shing va reviewga yuboring.",
+        "previewTags": {
+          "story": "Hamjamiyat hikoyasi",
+          "reward": "Kepcoin reward",
+          "review": "Tekshiruv"
+        },
+        "metrics": {
+          "access": {
+            "label": "Kim yozishi mumkin",
+            "value": "Har qanday KEP foydalanuvchisi"
+          },
+          "rewards": {
+            "label": "Reward imkoniyati",
+            "value": "Sifatli bloglar Kepcoin olishi mumkin"
+          },
+          "flow": {
+            "label": "Nashr oqimi",
+            "value": "Draft, tekshiruv, publish"
+          }
+        }
+      },
       "kepCover": {
         "activeSubtitle": "Eng kuchli coverlarga ovoz bering, live reytingni kuzating va to'liq KEP Cover sahifasini oching.",
         "upcomingSubtitle": "Keyingi KEP Cover allaqachon rejalashtirilgan. Ovoz berish ochilishidan oldin cover photongizni yangilang.",
@@ -68,12 +96,14 @@
       "actions": {
         "openKepCover": "KEP Cover'ni ochish",
         "openContest": "Contest'ni ochish",
-        "openArena": "Arena'ni ochish"
+        "openArena": "Arena'ni ochish",
+        "startWriting": "Blog yaratish"
       },
       "types": {
         "kepCover": "KEP Cover",
         "contest": "Contest",
-        "arena": "Arena"
+        "arena": "Arena",
+        "blogCreate": "Hamjamiyat blogi"
       },
       "metrics": {
         "participants": "Ishtirokchilar",

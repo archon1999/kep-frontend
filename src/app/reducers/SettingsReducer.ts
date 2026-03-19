@@ -1,4 +1,7 @@
 import {
+  BackgroundPattern,
+  CardBackground,
+  CardStyle,
   Config,
   FontFamily,
   NavColor,
@@ -25,6 +28,9 @@ export const SET_THEME_PRESET = 'SET_THEME_PRESET';
 export const SET_PRIMARY_COLOR = 'SET_PRIMARY_COLOR';
 export const SET_FONT_FAMILY = 'SET_FONT_FAMILY';
 export const SET_FONT_SIZE = 'SET_FONT_SIZE';
+export const SET_BACKGROUND_PATTERN = 'SET_BACKGROUND_PATTERN';
+export const SET_CARD_STYLE = 'SET_CARD_STYLE';
+export const SET_CARD_BACKGROUND = 'SET_CARD_BACKGROUND';
 
 //Action ts type
 export type ACTIONTYPE =
@@ -40,7 +46,10 @@ export type ACTIONTYPE =
   | { type: typeof SET_THEME_PRESET; payload: ThemePreset }
   | { type: typeof SET_PRIMARY_COLOR; payload: string | null }
   | { type: typeof SET_FONT_FAMILY; payload: FontFamily }
-  | { type: typeof SET_FONT_SIZE; payload: number };
+  | { type: typeof SET_FONT_SIZE; payload: number }
+  | { type: typeof SET_BACKGROUND_PATTERN; payload: BackgroundPattern }
+  | { type: typeof SET_CARD_STYLE; payload: CardStyle }
+  | { type: typeof SET_CARD_BACKGROUND; payload: CardBackground };
 
 export const settingsReducer = (state: Config, action: ACTIONTYPE) => {
   let updatedState: Partial<Config> = {};
@@ -142,6 +151,24 @@ export const settingsReducer = (state: Config, action: ACTIONTYPE) => {
       };
       break;
     }
+    case SET_BACKGROUND_PATTERN: {
+      updatedState = {
+        backgroundPattern: action.payload,
+      };
+      break;
+    }
+    case SET_CARD_STYLE: {
+      updatedState = {
+        cardStyle: action.payload,
+      };
+      break;
+    }
+    case SET_CARD_BACKGROUND: {
+      updatedState = {
+        cardBackground: action.payload,
+      };
+      break;
+    }
     case RESET:
       updatedState = {
         ...initialConfig,
@@ -168,6 +195,9 @@ export const settingsReducer = (state: Config, action: ACTIONTYPE) => {
         'primaryColor',
         'fontFamily',
         'fontSize',
+        'backgroundPattern',
+        'cardStyle',
+        'cardBackground',
       ].includes(key)
     ) {
       setItemToStore(key, String(updatedState[key as keyof Config]));

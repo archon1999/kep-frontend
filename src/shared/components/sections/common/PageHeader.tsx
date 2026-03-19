@@ -1,6 +1,7 @@
 import { JSX, PropsWithChildren } from 'react';
 import { Paper, Stack, SxProps, Typography } from '@mui/material';
 import { useBreakpoints } from 'app/providers/BreakpointsProvider';
+import { coreSurfacePaperClassName } from 'app/theme/styles/surfaceTreatments';
 import PageBreadcrumb, { PageBreadcrumbItem } from './PageBreadcrumb';
 
 interface PageHeaderProps {
@@ -15,7 +16,7 @@ const PageHeader = ({ title, breadcrumb, actionComponent, sx }: PropsWithChildre
   const downLg = down('lg');
 
   return (
-    <Paper sx={{ px: { xs: 3, md: 5 }, py: 3 }}>
+    <Paper className={coreSurfacePaperClassName} sx={{ px: { xs: 3, md: 5 }, py: 3 }}>
       <Stack
         sx={{
           gap: 2,

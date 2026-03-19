@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Collapse,
   IconButton,
@@ -10,8 +11,9 @@ import {
 } from '@mui/material';
 import { ThemePreset } from 'app/config.ts';
 import { allPalettes } from 'app/theme/palettes';
-import { useThemeMode } from 'shared/hooks/useThemeMode';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import useResolvedThemeMode from 'shared/hooks/useResolvedThemeMode';
+import { useThemeMode } from 'shared/hooks/useThemeMode';
 import PrimaryColorPicker from './PrimaryColorPicker';
 import ThemeListItem from './ThemeListItem';
 import { ThemeRadio, themeListRowSx } from './ThemeRadio';
@@ -36,7 +38,9 @@ const organizeThemes = () => {
 };
 
 const ThemeList = ({ variant = 'default' }: ThemeListProps) => {
+  const { t } = useTranslation();
   const { setThemePreset, setThemeMode, themePreset, mode } = useThemeMode();
+  const { isDark } = useResolvedThemeMode();
   const [isDefaultSectionOpen, setIsDefaultSectionOpen] = useState(true);
   const isSystemSelected = mode === 'system';
 
@@ -79,11 +83,16 @@ const ThemeList = ({ variant = 'default' }: ThemeListProps) => {
           dense
           disablePadding
         >
-          <ListItemButton dense selected={isDefaultThemeActive} onClick={() => handleThemeChange('default-light')} sx={themeListRowSx(variant)}>
+          <ListItemButton
+            dense
+            selected={isDefaultThemeActive}
+            onClick={() => handleThemeChange('default-light')}
+            sx={themeListRowSx(variant, false, isDark)}
+          >
             <ListItemIcon>
               <ThemeRadio checked={isDefaultThemeActive} />
             </ListItemIcon>
-            <ListItemText primary="Default" />
+            <ListItemText primary={t('settings.customizer.themePresets.defaultGroup')} />
           </ListItemButton>
         </ListItem>
 
@@ -111,11 +120,16 @@ const ThemeList = ({ variant = 'default' }: ThemeListProps) => {
             ))}
 
             <ListItem disablePadding sx={{ alignItems: 'center' }}>
-              <ListItemButton dense selected={isSystemSelected} onClick={handleSystemThemeSelect} sx={themeListRowSx(variant, true)}>
+              <ListItemButton
+                dense
+                selected={isSystemSelected}
+                onClick={handleSystemThemeSelect}
+                sx={themeListRowSx(variant, true, isDark)}
+              >
                 <ListItemIcon>
                   <ThemeRadio checked={isSystemSelected} />
                 </ListItemIcon>
-                <ListItemText primary="System" />
+                <ListItemText primary={t('settings.customizer.labels.system')} />
               </ListItemButton>
               <IconifyIcon
                 icon="material-symbols:monitor-outline-rounded"

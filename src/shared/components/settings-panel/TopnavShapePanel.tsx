@@ -3,6 +3,7 @@ import { FormControlLabel, Radio } from '@mui/material';
 import { useSettingsPanelContext } from 'app/providers/SettingsPanelProvider';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
 import { TopnavType } from 'app/config.ts';
+import { useTranslation } from 'react-i18next';
 import SettingsItem from './SettingsItem';
 import SettingsPanelRadioGroup from './SettingsPanelRadioGroup';
 import { TopnavDefaultIllustration } from './panel-illustrations/TopnavDefaultIllustration';
@@ -10,6 +11,7 @@ import { TopnavSlimIllustration } from './panel-illustrations/TopnavSlimIllustra
 import { TopnavStackedIllustration } from './panel-illustrations/TopnavStackedIllustration';
 
 const TopnavShapePanel = () => {
+  const { t } = useTranslation();
   const {
     config: { topnavType },
     setConfig,
@@ -32,7 +34,7 @@ const TopnavShapePanel = () => {
         control={<Radio />}
         label={
           <SettingsItem
-            label="Default"
+            label={t('settings.customizer.labels.default')}
             image={<TopnavDefaultIllustration active={!disableTopShapeSection && topnavType === 'default'} />}
             active={!disableTopShapeSection && topnavType === 'default'}
           />
@@ -43,7 +45,7 @@ const TopnavShapePanel = () => {
         control={<Radio />}
         label={
           <SettingsItem
-            label="Slim"
+            label={t('settings.customizer.labels.slim')}
             image={<TopnavSlimIllustration active={!disableTopShapeSection && topnavType === 'slim'} />}
             active={!disableTopShapeSection && topnavType === 'slim'}
           />
@@ -54,7 +56,7 @@ const TopnavShapePanel = () => {
         control={<Radio />}
         label={
           <SettingsItem
-            label="Stacked"
+            label={t('settings.customizer.labels.stacked')}
             image={
               <TopnavStackedIllustration active={!disableTopShapeSection && topnavType === 'stacked'} />
             }

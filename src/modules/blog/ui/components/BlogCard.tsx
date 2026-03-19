@@ -1,96 +1,209 @@
+import dayjs from 'dayjs';
 import { Link as RouterLink } from 'react-router';
-import { Avatar, Box, Card, CardActionArea, CardContent, Chip, Divider, Stack, Typography } from '@mui/material';
-import { BlogPost } from '../../domain/entities/blog.entity';
+import {
+  Box,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Chip,
+  Stack,
+  Typography,
+  cardMediaClasses,
+} from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { getResourceById, resources } from 'app/routes/resources';
 import KepIcon from 'shared/components/base/KepIcon';
-import { useTranslation } from 'react-i18next';
+import { cssVarRgba } from 'shared/lib/utils';
+import { BlogPost } from '../../domain/entities/blog.entity';
+import { estimateBlogReadTime, stripBlogHtml } from '../lib/article-content';
 
 interface BlogCardProps {
   post: BlogPost;
+  featured?: boolean;
+  variant?: 'default' | 'horizontal';
 }
 
-const BlogStat = ({ icon, value, label }: { icon: Parameters<typeof KepIcon>[0]['name']; value: number; label: string }) => (
-  <Stack direction="row" spacing={0.5} alignItems="center" sx={{ color: 'text.secondary' }}>
-    <KepIcon name={icon} fontSize={18} />
-    <Typography variant="caption" fontWeight={600} color="text.primary">
+const StatPill = ({
+  icon,
+  value,
+}: {
+  icon: Parameters<typeof KepIcon>[0]['name'];
+  value: number;
+}) => (
+  <Stack direction="row" spacing={0.5} alignItems="center">
+    <KepIcon name={icon} fontSize={15} color="rgba(15,23,42,0.58)" />
+    <Typography variant="caption" fontWeight={700} color="text.secondary">
       {value}
-    </Typography>
-    <Typography variant="caption" color="text.secondary">
-      {label}
     </Typography>
   </Stack>
 );
 
-const BlogCard = ({ post }: BlogCardProps) => {
+const MediaFallback = ({ featured = false }: { featured?: boolean }) => (
+  <Box
+    sx={(theme) => ({
+      width: 1,
+      height: 1,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: `linear-gradient(135deg, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.12)}, ${cssVarRgba(theme.vars.palette.info.mainChannel, 0.08)} 55%, ${cssVarRgba(theme.vars.palette.common.whiteChannel, 0.72)})`,
+    })}
+  >
+    <KepIcon name="blog" fontSize={featured ? 54 : 42} color="rgba(15,23,42,0.24)" />
+  </Box>
+);
+
+const BlogCard = ({ post, featured = false, variant = 'default' }: BlogCardProps) => {
   const { t } = useTranslation();
   const blogUrl = getResourceById(resources.BlogPost, post.id);
+  const previewText = stripBlogHtml(post.bodyShort ?? post.body);
+  const excerpt = previewText.slice(0, featured ? 220 : variant === 'horizontal' ? 150 : 120);
+  const metaDate = post.publishedAt ?? post.created ?? post.updatedAt ?? '';
+  const readTime = estimateBlogReadTime(post.bodyShort ?? post.body);
+  const primaryTag = post.tags[0];
+  const isHorizontal = variant === 'horizontal' || featured;
 
   return (
-    <Card sx={{ height: '100%', borderRadius: 3, overflow: 'hidden', bgcolor: 'none' }}>
-      <CardActionArea component={RouterLink} to={blogUrl} sx={{ display: 'block' }}>
-        {post.image ? (
-          <Box
-            component="img"
-            src={post.image}
-            alt={post.title}
-            sx={{ width: '100%', height: 240, objectFit: 'cover' }}
-          />
-        ) : null}
+    <Card
+      background={1}
+      sx={{
+        height: 1,
+        borderRadius: 4,
+        p: 1,
+        outline: 0,
+        overflow: 'hidden',
+        backgroundImage: 'none',
+        transition: 'background-color 0.2s ease, transform 0.2s ease',
+        '&:hover': {
+          bgcolor: 'background.elevation1',
+          transform: 'translateY(-2px)',
+        },
+        [`&:hover .${cardMediaClasses.img}`]: {
+          transform: 'scale(1.04)',
+        },
+      }}
+    >
+      <CardActionArea
+        component={RouterLink}
+        to={blogUrl}
+        sx={{
+          height: 1,
+          borderRadius: 3,
+          display: 'flex',
+          alignItems: 'stretch',
+          flexDirection: isHorizontal ? { xs: 'column', md: 'row' } : 'column',
+        }}
+      >
+        <Box
+          sx={{
+            width: isHorizontal ? { xs: 1, md: featured ? '47%' : 300 } : 1,
+            maxWidth: isHorizontal ? { md: featured ? 'unset' : 320 } : 'unset',
+            aspectRatio: featured ? '16 / 10' : '16 / 10',
+            borderRadius: 3,
+            overflow: 'hidden',
+            flexShrink: 0,
+            bgcolor: 'background.default',
+          }}
+        >
+          {post.image ? (
+            <CardMedia
+              component="img"
+              image={post.image}
+              alt={post.title}
+              sx={{
+                width: 1,
+                height: 1,
+                objectFit: 'cover',
+                transition: 'transform 0.4s ease',
+              }}
+            />
+          ) : (
+            <MediaFallback featured={featured} />
+          )}
+        </Box>
+
+        <CardContent
+          sx={{
+            flex: 1,
+            minWidth: 0,
+            px: { xs: 0.5, md: isHorizontal ? 2.5 : 0.5 },
+            py: { xs: 2, md: '14px !important' },
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            gap: 1.5,
+          }}
+        >
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={1}
+            alignItems={{ sm: 'center' }}
+            justifyContent="space-between"
+          >
+            <Typography variant="subtitle2" fontWeight={700} sx={{ minWidth: 0 }}>
+              {post.author.username}
+            </Typography>
+            {metaDate ? (
+              <Typography variant="caption" color="text.secondary" fontWeight={600}>
+                {dayjs(metaDate).format('DD MMM, YYYY')}
+              </Typography>
+            ) : null}
+          </Stack>
+
+          <Stack spacing={0.75} flex={1}>
+            <Typography
+              variant={featured ? 'h4' : 'h6'}
+              fontWeight={800}
+              sx={{
+                lineHeight: 1.15,
+                letterSpacing: '-0.02em',
+                lineClamp: featured ? 3 : 2,
+              }}
+            >
+              {post.title}
+            </Typography>
+
+            {excerpt ? (
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{
+                  lineClamp: featured ? 4 : 3,
+                  maxWidth: featured ? 620 : 'unset',
+                }}
+              >
+                {excerpt}
+              </Typography>
+            ) : null}
+          </Stack>
+
+          <Stack spacing={1.25}>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={1}
+              alignItems={{ sm: 'center' }}
+              justifyContent="space-between"
+            >
+              <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
+                {primaryTag ? <Chip label={primaryTag} size="small" /> : null}
+                <Typography variant="caption" color="text.secondary" fontWeight={600}>
+                  {t('blog.minRead', { count: readTime })}
+                </Typography>
+              </Stack>
+
+              <Stack direction="row" spacing={1.25} alignItems="center">
+                <StatPill icon="comment" value={post.commentsCount} />
+                <StatPill icon="like" value={post.likesCount} />
+              </Stack>
+            </Stack>
+
+            <Typography variant="body2" color="primary.main" fontWeight={700}>
+              {t('blog.readMore')}
+            </Typography>
+          </Stack>
+        </CardContent>
       </CardActionArea>
-
-      <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Stack direction="column" spacing={2} alignItems="start" justifyContent="space-between">
-          <Stack direction="row" spacing={1.5} alignItems="center">
-            <Avatar src={post.author.avatar ?? undefined} alt={post.author.username} />
-            <Stack direction="column" spacing={0.25}>
-              <Typography variant="subtitle2" fontWeight={700} color="text.primary">
-                {post.author.username}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {post.created}
-              </Typography>
-            </Stack>
-          </Stack>
-
-          <Stack direction="row" spacing={1.5} divider={<Divider flexItem orientation="vertical" sx={{ borderStyle: 'dashed' }} />}>
-            <BlogStat icon="comment" value={post.commentsCount} label={t('blog.comments')} />
-            <BlogStat icon="like" value={post.likesCount} label={t('blog.likes')} />
-            <BlogStat icon="view" value={post.views} label={t('blog.views')} />
-          </Stack>
-        </Stack>
-
-        <Stack direction="column" spacing={1.25}>
-          <Typography
-            component={RouterLink}
-            to={blogUrl}
-            variant="h6"
-            sx={{ textDecoration: 'none', color: 'text.primary', fontWeight: 800 }}
-          >
-            {post.title}
-          </Typography>
-
-          {post.tags.length ? (
-            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-              {post.tags.map((tag) => (
-                <Chip key={tag} label={tag} size="small" variant="outlined" sx={{ borderRadius: 2 }} />
-              ))}
-            </Stack>
-          ) : null}
-        </Stack>
-
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
-          <Typography
-            component={RouterLink}
-            to={blogUrl}
-            variant="body2"
-            color="primary"
-            sx={{ fontWeight: 700, display: 'inline-flex', gap: 0.5, alignItems: 'center', textDecoration: 'none' }}
-          >
-            {t('blog.readMore')}
-            <KepIcon name="view" fontSize={18} />
-          </Typography>
-        </Stack>
-      </CardContent>
     </Card>
   );
 };

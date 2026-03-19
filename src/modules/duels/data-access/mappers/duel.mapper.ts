@@ -97,10 +97,13 @@ export const mapReadyPlayer = (payload: any): DuelReadyPlayer => ({
   wins: toNullableNumber(payload?.wins),
   draws: toNullableNumber(payload?.draws),
   losses: toNullableNumber(payload?.losses),
+  contestsRating: toNullableNumber(payload?.contestsRating ?? payload?.contests_rating),
+  contestsRatingTitle: payload?.contestsRatingTitle ?? payload?.contests_rating_title ?? '',
 });
 
 export const mapReadyStatus = (payload: any): DuelReadyStatus => ({
   ready: Boolean(payload?.ready ?? payload?.isReady ?? payload?.is_ready ?? payload?.is_ready_for_duel ?? false),
+  readyUntil: payload?.readyUntil ?? payload?.ready_until ?? payload?.duelReadyUntil ?? payload?.duel_ready_until ?? null,
 });
 
 export const mapDuelResults = (payload: any): DuelResults => ({
@@ -113,6 +116,18 @@ export const mapDuelsRatingRow = (payload: any): DuelsRatingRow => ({
   user: {
     username: payload?.user?.username ?? payload?.username ?? '',
     avatar: payload?.user?.avatar ?? payload?.avatar ?? '',
+    contestsRating: toNullableNumber(
+      payload?.user?.contestsRating
+        ?? payload?.user?.contests_rating
+        ?? payload?.contestsRating
+        ?? payload?.contests_rating,
+    ),
+    contestsRatingTitle:
+      payload?.user?.contestsRatingTitle
+      ?? payload?.user?.contests_rating_title
+      ?? payload?.contestsRatingTitle
+      ?? payload?.contests_rating_title
+      ?? '',
   },
   duels: toNullableNumber(payload?.duels ?? payload?.count),
   wins: toNullableNumber(payload?.wins),

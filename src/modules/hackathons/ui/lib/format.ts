@@ -1,4 +1,4 @@
-import { HackathonProject } from '../domain/entities/hackathon-project.entity';
+import { HackathonProject } from '../../domain/entities/hackathon-project.entity';
 
 const normalizeLocale = (locale?: string | null) => {
   if (!locale) return undefined;

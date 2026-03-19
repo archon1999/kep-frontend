@@ -5,6 +5,8 @@
     "readyStatusTitle": "Duel readiness",
     "readyDescription": "Let others know you are ready for a duel.",
     "notReadyDescription": "Disable the status if you are not ready to play.",
+    "readyAutoReset": "Ready mode resets automatically after 24 hours.",
+    "readyUntilLabel": "Visible to challengers until {{time}}.",
     "ready": "Ready for duels",
     "notReady": "Not ready",
     "readyPlayersTitle": "Ready players",
@@ -89,6 +91,7 @@
     "table": {
       "place": "Place",
       "username": "Username",
+      "contestsRating": "Contests rating",
       "duels": "Duels",
       "wins": "Wins",
       "draws": "Draws",
