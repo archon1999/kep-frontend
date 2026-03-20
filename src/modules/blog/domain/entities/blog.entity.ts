@@ -47,6 +47,11 @@ export interface BlogComment {
   created?: string;
 }
 
+export interface BlogTopic {
+  id: number;
+  title: string;
+}
+
 export interface BlogUpsertPayload {
   title: string;
   body: string;

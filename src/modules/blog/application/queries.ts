@@ -3,7 +3,7 @@ import useSWRMutation from 'swr/mutation';
 import { createKeyFactory } from 'shared/api';
 import { ApiBlogListParams } from 'shared/api/orval/generated/endpoints/index.schemas';
 import { blogRepository } from '../data-access/repository/http.blog.repository';
-import { BlogComment, BlogPost, BlogUpsertPayload } from '../domain/entities/blog.entity';
+import { BlogComment, BlogPost, BlogTopic, BlogUpsertPayload } from '../domain/entities/blog.entity';
 import { PageResult } from '../domain/ports/blog.repository';
 
 export const blogKeys = createKeyFactory('blog');
@@ -27,6 +27,9 @@ export const useBlogPost = (id?: string) =>
 
 export const useBlogAuthors = () =>
   useSWR<string[]>(blogKeys.detail('authors'), () => blogRepository.getAuthors(), { suspense: false });
+
+export const useBlogTopics = () =>
+  useSWR<BlogTopic[]>(blogKeys.detail('topics'), () => blogRepository.getTopics(), { suspense: false });
 
 export const useBlogCreate = () =>
   useSWRMutation(blogKeys.detail('create'), (_, { arg }: { arg: BlogUpsertPayload }) =>

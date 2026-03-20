@@ -1,19 +1,22 @@
-import { ChangeEvent, useMemo } from 'react';
+import { ChangeEvent, MouseEvent, SyntheticEvent, useMemo, useState } from 'react';
+import { Link as RouterLink } from 'react-router';
+import { TabContext, TabList } from '@mui/lab';
 import {
+  Box,
   Button,
-  Chip,
-  FormControl,
   InputAdornment,
-  InputLabel,
+  Menu,
   MenuItem,
-  Select,
-  SelectChangeEvent,
   Stack,
+  Tab,
   TextField,
   Typography,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import FilterButton from 'shared/components/common/FilterButton';
 import KepIcon from 'shared/components/base/KepIcon';
+import StyledTextField from 'shared/components/styled/StyledTextField';
+import { BlogTopic } from '../../domain/entities/blog.entity';
 
 export interface BlogFilterState {
   title: string;
@@ -25,155 +28,238 @@ export interface BlogFilterState {
 interface BlogFiltersProps {
   filters: BlogFilterState;
   authors: string[];
+  topics: BlogTopic[];
   onChange: (filters: BlogFilterState) => void;
   hasActiveFilters?: boolean;
   onReset?: () => void;
   totalPosts?: number;
+  createHref?: string;
+  createLabel?: string;
 }
-
-const topics = [
-  { key: '1', labelKey: 'blog.topics.technology', icon: 'learn' as const },
-  { key: '2', labelKey: 'blog.topics.competitiveProgramming', icon: 'challenge' as const },
-  { key: '3', labelKey: 'blog.topics.info', icon: 'info' as const },
-];
 
 const BlogFilters = ({
   filters,
   authors,
+  topics,
   onChange,
   hasActiveFilters = false,
   onReset,
   totalPosts,
+  createHref,
+  createLabel,
 }: BlogFiltersProps) => {
   const { t } = useTranslation();
+  const [filtersAnchorEl, setFiltersAnchorEl] = useState<null | HTMLElement>(null);
+  const filtersOpen = Boolean(filtersAnchorEl);
 
-  const selectedTopic = useMemo(() => filters.topic, [filters.topic]);
+  const advancedFiltersCount = useMemo(
+    () => [filters.author, filters.orderBy].filter(Boolean).length,
+    [filters.author, filters.orderBy],
+  );
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) =>
     onChange({ ...filters, title: event.target.value });
 
-  const handleAuthorChange = (event: SelectChangeEvent<string>) =>
-    onChange({ ...filters, author: event.target.value ?? '' });
+  const handleTopicChange = (_: SyntheticEvent, topic: string) =>
+    onChange({ ...filters, topic });
 
-  const handleOrderChange = (event: SelectChangeEvent<string>) =>
-    onChange({ ...filters, orderBy: event.target.value ?? '' });
+  const handleFiltersToggle = (event: MouseEvent<HTMLButtonElement>) => {
+    if (filtersOpen) {
+      setFiltersAnchorEl(null);
+    } else {
+      setFiltersAnchorEl(event.currentTarget);
+    }
+  };
 
-  const handleTopicChange = (topicKey: string) =>
-    onChange({ ...filters, topic: selectedTopic === topicKey ? '' : topicKey });
+  const handleFiltersClose = () => setFiltersAnchorEl(null);
 
-  const renderSelectValue = (value: string, placeholder: string) =>
-    value ? <>{value}</> : <Typography color="text.secondary">{placeholder}</Typography>;
+  const handleSelectChange =
+    (field: 'author' | 'orderBy') => (event: ChangeEvent<HTMLInputElement>) =>
+      onChange({ ...filters, [field]: event.target.value ?? '' });
 
   return (
-    <Stack
-      spacing={2}
-      sx={{
-        p: { xs: 2, md: 3 },
-        borderRadius: 4,
-        bgcolor: 'background.paper',
-        backgroundImage: 'none',
-        border: (theme) => `1px solid ${theme.vars.palette.divider}`,
-      }}
-    >
-      <Stack
-        direction={{ xs: 'column', lg: 'row' }}
-        spacing={1.5}
-        alignItems={{ xs: 'flex-start', lg: 'center' }}
-        justifyContent="space-between"
-      >
-        <Stack spacing={0.5}>
-          <Typography variant="subtitle1" fontWeight={800}>
-            {t('blog.filtersTitle')}
-          </Typography>
-          {typeof totalPosts === 'number' ? (
-            <Typography variant="body2" color="text.secondary">
-              {t('blog.resultsCount', { count: totalPosts })}
-            </Typography>
-          ) : null}
+    <TabContext value={filters.topic}>
+      <Stack spacing={1.5}>
+        <Stack
+          sx={{
+            gap: 2,
+            alignItems: { lg: 'center' },
+            justifyContent: 'space-between',
+            flexDirection: { xs: 'column', lg: 'row' },
+          }}
+        >
+          <Box sx={{ minWidth: 0, width: { xs: 1, lg: 'auto' } }}>
+            <TabList
+              onChange={handleTopicChange}
+              aria-label="blog topics"
+              variant="scrollable"
+              scrollButtons
+              allowScrollButtonsMobile
+              sx={{
+                minHeight: 0,
+                '& .MuiTabs-indicator': { display: 'none' },
+                '& .MuiTab-root': {
+                  minHeight: 0,
+                  minWidth: 'fit-content',
+                  mr: 1,
+                  px: 2,
+                  py: 1.25,
+                  borderRadius: 999,
+                  textTransform: 'none',
+                  border: (theme) => `1px solid ${theme.vars.palette.divider}`,
+                  backgroundColor: 'background.paper',
+                  fontWeight: 700,
+                  color: 'text.primary',
+                },
+                '& .Mui-selected': {
+                  color: 'primary.main !important',
+                  borderColor: 'primary.main',
+                  backgroundColor: (theme) => theme.vars.palette.primary.softBg,
+                },
+              }}
+            >
+              <Tab
+                key="all"
+                value=""
+                label={t('blog.topics.all', { defaultValue: 'All' })}
+                sx={{ whiteSpace: 'nowrap' }}
+              />
+              {topics.map((topic) => (
+                <Tab
+                  key={topic.id}
+                  value={String(topic.id)}
+                  label={topic.title}
+                  sx={{ whiteSpace: 'nowrap' }}
+                />
+              ))}
+            </TabList>
+          </Box>
+
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={1}
+            sx={{ width: { xs: 1, lg: 'auto' } }}
+          >
+            <FilterButton
+              id="blog-filters-button"
+              onClick={handleFiltersToggle}
+              aria-haspopup="true"
+              aria-expanded={filtersOpen ? 'true' : undefined}
+              aria-controls={filtersOpen ? 'blog-filters-menu' : undefined}
+              label={t('blog.filtersTitle')}
+              badgeContent={advancedFiltersCount}
+            />
+
+            <StyledTextField
+              type="search"
+              fullWidth
+              value={filters.title}
+              onChange={handleSearchChange}
+              placeholder={t('common.searchPlaceholder')}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <KepIcon name="search" fontSize={18} />
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              sx={{
+                maxWidth: { sm: 240, md: 280 },
+                flexGrow: { xs: 1, sm: 0 },
+              }}
+            />
+
+            {createHref && createLabel ? (
+              <Button
+                component={RouterLink}
+                to={createHref}
+                variant="contained"
+                startIcon={<KepIcon name="upload" fontSize={18} />}
+              >
+                {createLabel}
+              </Button>
+            ) : null}
+          </Stack>
         </Stack>
 
-        {hasActiveFilters && onReset ? (
-          <Button variant="text" size="small" onClick={onReset}>
-            {t('blog.clearFilters')}
-          </Button>
+        {typeof totalPosts === 'number' ? (
+          <Typography variant="body2" color="text.secondary">
+            {t('blog.resultsCount', { count: totalPosts })}
+          </Typography>
         ) : null}
-      </Stack>
 
-      <Stack
-        direction={{ xs: 'column', lg: 'row' }}
-        spacing={1.5}
-        useFlexGap
-        flexWrap="wrap"
-      >
-        <TextField
-          value={filters.title}
-          onChange={handleSearchChange}
-          placeholder={t('blog.searchPlaceholder')}
-          fullWidth
-          sx={{ flex: { lg: '1 1 360px' } }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <KepIcon name="search" fontSize={18} />
-              </InputAdornment>
-            ),
+        <Menu
+          id="blog-filters-menu"
+          anchorEl={filtersAnchorEl}
+          open={filtersOpen}
+          onClose={handleFiltersClose}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          MenuListProps={{ disablePadding: true }}
+          PaperProps={{
+            sx: {
+              p: 2,
+              width: 320,
+            },
           }}
-        />
+        >
+          <Stack direction="column" spacing={2}>
+            <Stack direction="row" alignItems="center" justifyContent="space-between">
+              <Typography variant="subtitle2" fontWeight={700} color="text.secondary">
+                {t('blog.filtersTitle')}
+              </Typography>
+              {hasActiveFilters && onReset ? (
+                <Button size="small" color="secondary" onClick={onReset}>
+                  {t('blog.clearFilters')}
+                </Button>
+              ) : null}
+            </Stack>
 
-        <FormControl fullWidth sx={{ flex: { lg: '0 1 220px' } }}>
-          <InputLabel shrink>{t('blog.author')}</InputLabel>
-          <Select
-            label={t('blog.author')}
-            value={filters.author}
-            onChange={handleAuthorChange}
-            displayEmpty
-            renderValue={(value) => renderSelectValue(value, t('blog.authorPlaceholder'))}
-          >
-            <MenuItem value="">{t('blog.authorPlaceholder')}</MenuItem>
-            {authors.map((author) => (
-              <MenuItem key={author} value={author}>
-                {author}
+            <TextField
+              select
+              variant="filled"
+              fullWidth
+              label={t('blog.author')}
+              value={filters.author}
+              onChange={handleSelectChange('author')}
+              slotProps={{ inputLabel: { shrink: true } }}
+            >
+              <MenuItem value="">
+                <Typography variant="body2" color="text.secondary">
+                  {t('blog.authorPlaceholder')}
+                </Typography>
               </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+              {authors.map((author) => (
+                <MenuItem key={author} value={author}>
+                  {author}
+                </MenuItem>
+              ))}
+            </TextField>
 
-        <FormControl fullWidth sx={{ flex: { lg: '0 1 220px' } }}>
-          <InputLabel shrink>{t('blog.orderBy')}</InputLabel>
-          <Select
-            label={t('blog.orderBy')}
-            value={filters.orderBy}
-            onChange={handleOrderChange}
-            displayEmpty
-            renderValue={(value) => renderSelectValue(value, t('blog.orderByPlaceholder'))}
-          >
-            <MenuItem value="">{t('blog.orderByPlaceholder')}</MenuItem>
-            <MenuItem value="1">{t('blog.order.likes')}</MenuItem>
-            <MenuItem value="2">{t('blog.order.views')}</MenuItem>
-            <MenuItem value="3">{t('blog.order.comments')}</MenuItem>
-          </Select>
-        </FormControl>
+            <TextField
+              select
+              variant="filled"
+              fullWidth
+              label={t('blog.orderBy')}
+              value={filters.orderBy}
+              onChange={handleSelectChange('orderBy')}
+              slotProps={{ inputLabel: { shrink: true } }}
+            >
+              <MenuItem value="">
+                <Typography variant="body2" color="text.secondary">
+                  {t('blog.orderByPlaceholder')}
+                </Typography>
+              </MenuItem>
+              <MenuItem value="1">{t('blog.order.likes')}</MenuItem>
+              <MenuItem value="2">{t('blog.order.views')}</MenuItem>
+              <MenuItem value="3">{t('blog.order.comments')}</MenuItem>
+            </TextField>
+          </Stack>
+        </Menu>
       </Stack>
-
-      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-        {topics.map((topic) => {
-          const active = selectedTopic === topic.key;
-
-          return (
-            <Chip
-              key={topic.key}
-              clickable
-              icon={<KepIcon name={topic.icon} fontSize={18} />}
-              label={t(topic.labelKey)}
-              onClick={() => handleTopicChange(topic.key)}
-              color={active ? 'primary' : 'default'}
-              variant={active ? 'filled' : 'outlined'}
-              sx={{ px: 0.5, height: 36, borderRadius: 999 }}
-            />
-          );
-        })}
-      </Stack>
-    </Stack>
+    </TabContext>
   );
 };
 

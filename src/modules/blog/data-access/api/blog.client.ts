@@ -14,6 +14,7 @@ import { BlogApiPost } from '../mappers/blog.mapper';
 export const blogApiClient = {
   list: (params?: ApiBlogListParams) => apiClient.apiBlogList(params) as Promise<ApiBlogList200>,
   getAuthors: (params?: ApiBlogAllAuthorsParams) => apiClient.apiBlogAllAuthors(params) as Promise<ApiBlogAllAuthors200>,
+  getTopics: async () => (await instance.get('/api/blog/topics/')).data as Array<{ id: number; title: string }>,
   getById: (id: string) => apiClient.apiBlogRead(id) as Promise<BlogDetail>,
   mine: async (params?: Partial<ApiBlogListParams>) =>
     (await instance.get('/api/blog/mine/', { params })).data as ApiBlogList200 | BlogApiPost[],

@@ -127,6 +127,7 @@
     },
     "posts": {
       "title": "Latest blog posts",
+      "viewAll": "View all blog",
       "empty": "No blog posts to display yet."
     },
     "topUsers": {

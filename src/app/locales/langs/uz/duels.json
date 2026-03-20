@@ -21,7 +21,7 @@
     "noDuels": "Hozircha duellar yo'q",
     "noReadyPlayers": "Hozircha tayyor o'yinchilar yo'q",
     "selectPreset": "Duel presetini tanlang",
-    "selectPresetDescription": "{{ username }} ni chaqirish uchun preset va boshlanish vaqtini tanlang.",
+    "selectPresetDescription": "{{ username }} ni duel uchun preset va boshlanish vaqtini tanlang.",
     "startTime": "Boshlanish vaqti",
     "preset": "Preset",
     "presetDetails": "Preset haqida ma'lumot",

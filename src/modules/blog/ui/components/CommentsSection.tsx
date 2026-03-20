@@ -1,7 +1,19 @@
 import { useMemo, useState } from 'react';
-import { Box, Button, Card, CardContent, Divider, Stack, TextField, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import {
+  Avatar,
+  Button,
+  Box,
+  Divider,
+  Drawer,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+  drawerClasses,
+} from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepIcon from 'shared/components/base/KepIcon';
 import { BlogComment } from '../../domain/entities/blog.entity';
 
@@ -11,9 +23,21 @@ interface CommentsSectionProps {
   onLike: (commentId: number) => Promise<void>;
   onDelete: (commentId: number) => Promise<void>;
   onSubmit: (body: string) => Promise<void>;
+  isDrawer?: boolean;
+  open?: boolean;
+  onClose?: () => void;
 }
 
-const CommentsSection = ({ comments, isLoading, onLike, onDelete, onSubmit }: CommentsSectionProps) => {
+const CommentsSection = ({
+  comments,
+  isLoading,
+  onLike,
+  onDelete,
+  onSubmit,
+  isDrawer = false,
+  open = false,
+  onClose,
+}: CommentsSectionProps) => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
   const [body, setBody] = useState('');
@@ -28,44 +52,48 @@ const CommentsSection = ({ comments, isLoading, onLike, onDelete, onSubmit }: Co
     setBody('');
   };
 
-  return (
-    <Stack direction="column" spacing={2.5}>
-      <Stack direction="row" spacing={1} alignItems="center">
-        <KepIcon name="comment" fontSize={22} />
-        <Typography variant="h6" fontWeight={800}>
+  const commentsContent = (
+    <Stack direction="column" spacing={4}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        spacing={2}
+      >
+        <Typography variant="h6" fontWeight={700}>
           {t('blog.commentsWithCount', { count: comments?.length ?? 0 })}
         </Typography>
+
+        {isDrawer ? (
+          <Button color="neutral" shape="circle" onClick={onClose}>
+            <IconifyIcon icon="material-symbols:close-rounded" fontSize={22} />
+          </Button>
+        ) : null}
       </Stack>
 
       {showEmptyState ? (
-        <Card sx={{ borderRadius: 3 }}>
-          <CardContent>
-            <Typography variant="subtitle1" fontWeight={700}>
-              {t('blog.emptyComments.title')}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-              {t('blog.emptyComments.subtitle')}
-            </Typography>
-          </CardContent>
-        </Card>
+        <Typography variant="body2" color="text.secondary">
+          {t('blog.emptyComments.subtitle')}
+        </Typography>
       ) : null}
 
-      <Stack direction="column" spacing={1.5}>
+      <Stack direction="column" divider={<Divider />}>
         {sortedComments.map((comment) => (
-          <Card key={comment.id} sx={{ borderRadius: 3 }}>
-            <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-              <Stack direction="row" justifyContent="space-between" alignItems="center">
-                <Stack direction="row" spacing={1.25} alignItems="center">
-                  <Box
-                    component="img"
+          <Box key={comment.id} sx={{ py: 2.5 }}>
+            <Stack spacing={1.5}>
+              <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
+                <Stack direction="row" spacing={1.5} alignItems="center">
+                  <Avatar
                     src={comment.userAvatar}
                     alt={comment.username}
-                    sx={{ width: 36, height: 36, borderRadius: '50%', objectFit: 'cover' }}
+                    sx={{ width: 40, height: 40 }}
                   />
-                  <Stack direction="column" spacing={0.25}>
+
+                  <Stack spacing={0.25}>
                     <Typography variant="subtitle2" fontWeight={700}>
                       {comment.username}
                     </Typography>
+
                     {comment.created ? (
                       <Typography variant="caption" color="text.secondary">
                         {comment.created}
@@ -74,22 +102,21 @@ const CommentsSection = ({ comments, isLoading, onLike, onDelete, onSubmit }: Co
                   </Stack>
                 </Stack>
 
-                <Stack direction="row" spacing={1} alignItems="center">
+                <Stack direction="row" spacing={0.5} alignItems="center" flexWrap="wrap" useFlexGap>
                   <Button
                     size="small"
-                    variant="outlined"
+                    color="neutral"
                     onClick={() => onLike(comment.id)}
-                    startIcon={<KepIcon name="like" fontSize={18} />}
+                    startIcon={<KepIcon name="like" fontSize={16} />}
                   >
                     {comment.likes || t('blog.actions.like')}
                   </Button>
+
                   {currentUser?.isSuperuser ? (
                     <Button
                       size="small"
                       color="error"
-                      variant="outlined"
                       onClick={() => onDelete(comment.id)}
-                      startIcon={<KepIcon name="close" fontSize={18} />}
                     >
                       {t('blog.actions.delete')}
                     </Button>
@@ -97,21 +124,30 @@ const CommentsSection = ({ comments, isLoading, onLike, onDelete, onSubmit }: Co
                 </Stack>
               </Stack>
 
-              <Divider sx={{ borderStyle: 'dashed' }} />
-
-              <Typography dangerouslySetInnerHTML={{__html: comment.body}} variant="body2" sx={{ whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>
-              </Typography>
-            </CardContent>
-          </Card>
+              <Typography
+                dangerouslySetInnerHTML={{ __html: comment.body }}
+                variant="body2"
+                sx={{
+                  color: 'text.secondary',
+                  lineHeight: 1.8,
+                  whiteSpace: 'pre-wrap',
+                  '& p': {
+                    my: 0,
+                  },
+                }}
+              />
+            </Stack>
+          </Box>
         ))}
       </Stack>
 
       {currentUser ? (
-        <Card sx={{ borderRadius: 3 }}>
-          <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Paper background={1} elevation={0} sx={{ p: 3, borderRadius: 4 }}>
+          <Stack direction="column" spacing={2}>
             <Typography variant="subtitle1" fontWeight={700}>
               {t('blog.addCommentTitle')}
             </Typography>
+
             <TextField
               multiline
               minRows={3}
@@ -119,13 +155,14 @@ const CommentsSection = ({ comments, isLoading, onLike, onDelete, onSubmit }: Co
               onChange={(event) => setBody(event.target.value)}
               placeholder={t('blog.addCommentPlaceholder')}
             />
+
             <Stack direction="row" justifyContent="flex-end">
               <Button variant="contained" onClick={handleSubmit} disabled={!body.trim()}>
                 {t('blog.actions.submit')}
               </Button>
             </Stack>
-          </CardContent>
-        </Card>
+          </Stack>
+        </Paper>
       ) : (
         <Typography variant="body2" color="text.secondary">
           {t('blog.loginToComment')}
@@ -133,6 +170,27 @@ const CommentsSection = ({ comments, isLoading, onLike, onDelete, onSubmit }: Co
       )}
     </Stack>
   );
+
+  if (isDrawer) {
+    return (
+      <Drawer
+        open={open}
+        onClose={onClose}
+        anchor="right"
+        sx={{
+          [`& .${drawerClasses.paper}`]: {
+            width: { xs: 1, md: 480 },
+            overflowX: 'hidden',
+            p: { xs: 3, md: 5 },
+          },
+        }}
+      >
+        {commentsContent}
+      </Drawer>
+    );
+  }
+
+  return <Box>{commentsContent}</Box>;
 };
 
 export default CommentsSection;

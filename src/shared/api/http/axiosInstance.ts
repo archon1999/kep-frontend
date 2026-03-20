@@ -1,16 +1,10 @@
 import axios, { type AxiosInstance, type AxiosRequestHeaders, type InternalAxiosRequestConfig } from 'axios';
-import i18n from 'app/locales/i18n.ts';
+import { getStoredLocale, toBackendLanguage } from 'app/locales/locale.ts';
 
 const baseURL = import.meta.env.VITE_API_URL || '';
 const basicAuthLogin = import.meta.env.VITE_BASIC_AUTH_LOGIN;
 const basicAuthPassword = import.meta.env.VITE_BASIC_AUTH_PASSWORD;
 const shouldUseBasicAuth = import.meta.env.DEV;
-
-const djangoLanguageMap: Record<string, 'en' | 'ru' | 'uz'> = {
-  enUS: 'en',
-  ruRU: 'ru',
-  uzUZ: 'uz',
-};
 
 const getBasicAuthHeader = () => {
   if (!basicAuthLogin || !basicAuthPassword) return null;
@@ -32,7 +26,9 @@ instance.interceptors.request.use(
     const params = config.params ?? {};
     const isFormData = typeof FormData !== 'undefined' && config.data instanceof FormData;
 
-    const djangoLanguage = djangoLanguageMap[i18n.language as keyof typeof djangoLanguageMap] ?? 'en';
+    const locale = getStoredLocale();
+    const djangoLanguage = toBackendLanguage(locale);
+    headers['Accept-Language'] = locale;
     headers['Django-Language'] = djangoLanguage;
     params.django_language = djangoLanguage;
 

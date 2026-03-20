@@ -1,5 +1,6 @@
 import { Dispatch, PropsWithChildren, createContext, use, useEffect, useReducer, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSWRConfig } from 'swr';
 import {
   ACTIONTYPE,
   COLLAPSE_NAVBAR,
@@ -8,6 +9,7 @@ import {
   settingsReducer,
 } from 'app/reducers/SettingsReducer';
 import { Config, initialConfig } from 'app/config.ts';
+import { toBackendLanguage, toI18nLanguage } from 'app/locales/locale';
 import { COLOR_GROUPS } from 'app/theme/primaryColorOverride';
 import { getItemFromStore } from 'shared/lib/utils';
 import { preferencesApiClient } from 'shared/api/preferences.client';
@@ -62,6 +64,7 @@ const SettingsProvider = ({ children }: PropsWithChildren) => {
   };
   const [config, configDispatch] = useReducer(settingsReducer, configState);
   const { i18n } = useTranslation();
+  const { mutate } = useSWRConfig();
 
   const setConfig = (payload: Partial<Config>) => {
     configDispatch({
@@ -91,25 +94,30 @@ const SettingsProvider = ({ children }: PropsWithChildren) => {
   const prevLocaleRef = useRef(config.locale);
 
   useEffect(() => {
-    const language = config.locale.split('-')[0].toLowerCase();
-    const localeCode = config.locale.split('-').join('');
+    const nextLocale = config.locale;
+    const nextLanguage = toBackendLanguage(nextLocale);
+    const nextI18nLanguage = toI18nLanguage(nextLocale);
 
-    i18n.changeLanguage(localeCode);
+    const syncLanguage = async () => {
+      await i18n.changeLanguage(nextI18nLanguage);
 
-    if (prevLocaleRef.current !== config.locale) {
-      prevLocaleRef.current = config.locale;
+      if (prevLocaleRef.current === nextLocale) {
+        return;
+      }
 
-      const updateLanguagePreference = async () => {
-        try {
-          await preferencesApiClient.setLanguage(language);
-        } catch (error) {
-          console.error('Failed to update language preference', error);
-        }
-      };
+      prevLocaleRef.current = nextLocale;
 
-      void updateLanguagePreference();
-    }
-  }, [config.locale, i18n]);
+      try {
+        await preferencesApiClient.setLanguage(nextLanguage);
+      } catch (error) {
+        console.error('Failed to update language preference', error);
+      }
+
+      await mutate(() => true, undefined, { revalidate: true });
+    };
+
+    void syncLanguage();
+  }, [config.locale, i18n, mutate]);
 
   return (
     <SettingsContext

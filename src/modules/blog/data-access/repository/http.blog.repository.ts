@@ -2,7 +2,7 @@ import { ApiBlogListParams } from 'shared/api/orval/generated/endpoints/index.sc
 import { blogApiClient } from '../api/blog.client';
 import { blogMappers, mapBlogComment, mapBlogPost, mapPageResult } from '../mappers/blog.mapper';
 import { BlogRepository } from '../../domain/ports/blog.repository';
-import { BlogPost, BlogUpsertPayload } from '../../domain/entities/blog.entity';
+import { BlogPost, BlogTopic, BlogUpsertPayload } from '../../domain/entities/blog.entity';
 
 const toFormData = (payload: BlogUpsertPayload) => {
   const formData = new FormData();
@@ -41,6 +41,18 @@ export class HttpBlogRepository implements BlogRepository {
   async getAuthors() {
     const response = await blogApiClient.getAuthors();
     return Array.isArray(response) ? response : [];
+  }
+
+  async getTopics() {
+    const response = await blogApiClient.getTopics();
+    return Array.isArray(response)
+      ? response
+          .map((topic) => ({
+            id: Number(topic.id ?? 0),
+            title: topic.title ?? '',
+          }))
+          .filter((topic) => topic.id > 0 && topic.title)
+      : [];
   }
 
   async create(payload: BlogUpsertPayload) {

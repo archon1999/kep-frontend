@@ -1,44 +1,53 @@
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, DragEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useNavigate, useParams } from 'react-router';
 import {
   Alert,
   Autocomplete,
   Box,
-  Breadcrumbs,
   Button,
+  Checkbox,
   Chip,
   CircularProgress,
   Divider,
+  Fade,
   Grid,
+  MenuItem,
   Paper,
   Stack,
-  TextField,
   Typography,
+  inputBaseClasses,
 } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceById, getResourceByUsername, resources } from 'app/routes/resources';
 import { mutate as globalMutate } from 'swr';
 import { toast } from 'sonner';
-import KepIcon from 'shared/components/base/KepIcon';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 import PageLoader from 'shared/components/loading/PageLoader';
+import StyledTextField from 'shared/components/styled/StyledTextField';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
+import { cssVarRgba } from 'shared/lib/utils';
 import {
   blogKeys,
   useBlogCreate,
   useBlogPost,
   useBlogSubmitForReview,
+  useBlogTopics,
   useBlogUpdate,
 } from '../../application/queries';
-import { BlogPost, BlogStatus } from '../../domain/entities/blog.entity';
+import { BlogPost, BlogStatus, BlogTopic } from '../../domain/entities/blog.entity';
 import BlogArticleContent from '../components/BlogArticleContent';
 import BlogRichTextEditor from '../components/BlogRichTextEditor';
-import BlogStatusChip from '../components/BlogStatusChip';
-import { estimateBlogReadTime, prepareBlogArticle } from '../lib/article-content';
+import { prepareBlogArticle } from '../lib/article-content';
 
 const trimTags = (tags: string[]) =>
-  Array.from(new Set(tags.map((tag) => tag.trim()).filter(Boolean)));
+  Array.from(new Set(tags.map((tag) => tag.trim()).filter(Boolean))).slice(0, 10);
+
+const THUMBNAIL_HELPER =
+  'Images should be in JPEG or PNG format, up to 15MB in size. A 16:9 aspect ratio is required, with 3000×3000 pixels recommended for high resolution.';
+
+const LABEL_SX = { mb: 1, fontWeight: 700 } as const;
 
 const BlogEditorPage = () => {
   const { t } = useTranslation();
@@ -49,13 +58,20 @@ const BlogEditorPage = () => {
   const isCreateMode = !id;
 
   const { data: post, isLoading } = useBlogPost(id);
+  const { data: topicOptions = [] } = useBlogTopics();
   const { trigger: createPost, isMutating: isCreating } = useBlogCreate();
   const { trigger: updatePost, isMutating: isUpdating } = useBlogUpdate(id);
   const { trigger: submitForReview, isMutating: isSubmitting } = useBlogSubmitForReview(id);
 
   const [title, setTitle] = useState('');
+  const [subtitle, setSubtitle] = useState('');
   const [body, setBody] = useState('');
   const [tags, setTags] = useState<string[]>([]);
+  const [selectedTopics, setSelectedTopics] = useState<BlogTopic[]>([]);
+  const [canonicalLink, setCanonicalLink] = useState('');
+  const [accessibility, setAccessibility] = useState('public');
+  const [language, setLanguage] = useState('english');
+  const [targetAudience, setTargetAudience] = useState('all');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [removeImage, setRemoveImage] = useState(false);
@@ -63,6 +79,7 @@ const BlogEditorPage = () => {
   const [bodyError, setBodyError] = useState('');
   const [hasInitialized, setHasInitialized] = useState(false);
   const [currentPost, setCurrentPost] = useState<BlogPost | null>(null);
+  const [isEditingStory, setIsEditingStory] = useState(false);
 
   const isBusy = isCreating || isUpdating || isSubmitting;
   const profileBlogUrl = currentUser?.username
@@ -114,7 +131,7 @@ const BlogEditorPage = () => {
       ? t('blog.editor.actions.saveDraft')
       : t('blog.editor.actions.saveChanges');
 
-  const headerTitle = isCreateMode ? t('blog.editor.createTitle') : t('blog.editor.editTitle');
+  const headerTitle = isCreateMode ? 'Blog Details' : t('blog.editor.editTitle');
   const headerSubtitle = useMemo(() => {
     if (currentStatus === BlogStatus.Published) {
       return t('blog.editor.publishedHint');
@@ -127,7 +144,6 @@ const BlogEditorPage = () => {
   }, [currentStatus, t]);
 
   const previewArticle = useMemo(() => prepareBlogArticle(body), [body]);
-  const previewReadTime = useMemo(() => estimateBlogReadTime(body), [body]);
 
   const validate = () => {
     const nextTitleError = title.trim() ? '' : t('blog.editor.validation.titleRequired');
@@ -195,15 +211,22 @@ const BlogEditorPage = () => {
     navigate(profileBlogUrl);
   };
 
-  const handleImageSelect = (event: ChangeEvent<HTMLInputElement>) => {
-    const nextFile = event.target.files?.[0] ?? null;
-
-    if (!nextFile) {
+  const attachImage = (file: File | null) => {
+    if (!file) {
       return;
     }
 
-    setImageFile(nextFile);
+    setImageFile(file);
     setRemoveImage(false);
+  };
+
+  const handleImageSelect = (event: ChangeEvent<HTMLInputElement>) => {
+    attachImage(event.target.files?.[0] ?? null);
+  };
+
+  const handleImageDrop = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    attachImage(event.dataTransfer.files?.[0] ?? null);
   };
 
   const handleRemoveImage = () => {
@@ -246,401 +269,573 @@ const BlogEditorPage = () => {
     );
   }
 
-  return (
-    <Box sx={responsivePagePaddingSx}>
-      <Stack spacing={3}>
+  const storyEditor = (
+    <Box sx={{ ...responsivePagePaddingSx, maxWidth: 960, mx: 'auto' }}>
+      <Stack
+        direction="column"
+        sx={{
+          gap: 2,
+          minHeight: '70vh',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Stack direction="column" gap={3}>
+          <StyledTextField
+            fullWidth
+            value={title}
+            onChange={(event) => {
+              setTitle(event.target.value);
+              if (titleError) {
+                setTitleError('');
+              }
+            }}
+            placeholder="Title"
+            error={Boolean(titleError)}
+            helperText={titleError || undefined}
+            slotProps={{
+              htmlInput: {
+                maxLength: 75,
+              },
+            }}
+            sx={{
+              [`& .${inputBaseClasses.root}`]: {
+                bgcolor: 'transparent',
+                px: 0,
+                py: 0,
+              },
+              [`& .${inputBaseClasses.input}`]: {
+                px: '0 !important',
+                py: '0 !important',
+                fontSize: { xs: 34, md: 40 },
+                fontWeight: 700,
+                lineHeight: 1.1,
+              },
+            }}
+          />
+
+          <StyledTextField
+            fullWidth
+            multiline
+            minRows={2}
+            value={subtitle}
+            onChange={(event) => setSubtitle(event.target.value)}
+            placeholder="Subtitle"
+            slotProps={{
+              htmlInput: {
+                maxLength: 140,
+              },
+            }}
+            sx={{
+              [`.${inputBaseClasses.root}`]: {
+                bgcolor: 'transparent',
+                p: 0,
+              },
+              [`& .${inputBaseClasses.input}`]: {
+                px: '0 !important',
+                fontSize: 20,
+                fontWeight: 500,
+              },
+            }}
+          />
+
+          <BlogRichTextEditor
+            value={body}
+            onChange={(nextValue) => {
+              setBody(nextValue);
+              if (bodyError) {
+                setBodyError('');
+              }
+            }}
+            placeholder="Write your story..."
+          />
+
+          {bodyError ? (
+            <Typography variant="caption" color="error.main">
+              {bodyError}
+            </Typography>
+          ) : null}
+        </Stack>
+
         <Paper
           background={1}
+          elevation={0}
           sx={{
-            p: { xs: 3, md: 4 },
-            borderRadius: 4,
+            p: 2,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            gap: 1,
           }}
         >
-          <Stack spacing={2}>
-            <Breadcrumbs>
-              <Typography
-                component={RouterLink}
-                to={resources.Blog}
-                color="inherit"
-                sx={{ textDecoration: 'none' }}
-              >
-                {t('blog.title')}
-              </Typography>
-              <Typography
-                component={RouterLink}
-                to={profileBlogUrl}
-                color="inherit"
-                sx={{ textDecoration: 'none' }}
-              >
-                {t('users.profile.tabs.blog')}
-              </Typography>
-              <Typography color="text.primary">{headerTitle}</Typography>
-            </Breadcrumbs>
+          <Button color="neutral" onClick={() => setIsEditingStory(false)} disabled={isBusy}>
+            Cancel
+          </Button>
 
-            <Stack
-              direction={{ xs: 'column', lg: 'row' }}
-              spacing={2}
-              alignItems={{ xs: 'flex-start', lg: 'center' }}
-              justifyContent="space-between"
-            >
-              <Stack spacing={0.75} sx={{ maxWidth: 760 }}>
-                <Typography variant="overline" color="text.secondary" fontWeight={700}>
-                  {t('blog.editor.heroEyebrow')}
-                </Typography>
-                <Typography variant="h4" fontWeight={800} sx={{ letterSpacing: '-0.02em' }}>
-                  {headerTitle}
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  {headerSubtitle}
-                </Typography>
-              </Stack>
-
-              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} useFlexGap flexWrap="wrap">
-                <BlogStatusChip status={currentStatus} size="medium" />
-                <Button component={RouterLink} to={profileBlogUrl} variant="outlined">
-                  {t('blog.editor.actions.backToBlogs')}
-                </Button>
-              </Stack>
-            </Stack>
-          </Stack>
+          <Button
+            variant="contained"
+            onClick={() => setIsEditingStory(false)}
+            disabled={isBusy}
+            sx={{ minWidth: 200 }}
+          >
+            Save
+          </Button>
         </Paper>
+      </Stack>
+    </Box>
+  );
+
+  const mainContent = (
+    <Box sx={{ ...responsivePagePaddingSx, maxWidth: 1280, mx: 'auto' }}>
+      <Stack spacing={{ xs: 3, md: 5 }}>
+        <Typography variant="h4">{headerTitle}</Typography>
 
         {!currentUser ? <Alert severity="warning">{t('blog.editor.authRequired')}</Alert> : null}
 
-        <Grid container spacing={3}>
+        <Grid container columnSpacing={3} rowSpacing={5}>
           <Grid size={{ xs: 12, lg: 7 }}>
-            <Paper
-              background={1}
-              sx={{
-                p: { xs: 3, md: 4 },
-                borderRadius: 4,
-                height: '100%',
-              }}
-            >
-              <Stack spacing={2.5}>
-                <Stack
-                  direction={{ xs: 'column', sm: 'row' }}
-                  spacing={1.25}
-                  alignItems={{ xs: 'flex-start', sm: 'center' }}
-                  justifyContent="space-between"
+            <Stack direction="column" height={1}>
+              <Stack
+                direction="row"
+                sx={{ gap: 1, alignItems: 'center', justifyContent: 'space-between', mb: 1 }}
+              >
+                <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
+                  Preview
+                </Typography>
+
+                <Button
+                  onClick={() => setIsEditingStory(true)}
+                  variant="soft"
+                  color="neutral"
+                  size="small"
+                  startIcon={
+                    <IconifyIcon icon="material-symbols:edit-outline-rounded" fontSize={18} />
+                  }
                 >
-                  <Stack spacing={0.25}>
-                    <Typography variant="subtitle1" fontWeight={800}>
-                      {t('blog.editor.previewTitle')}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {t('blog.editor.previewSubtitle')}
-                    </Typography>
-                  </Stack>
-
-                  <Chip label={t('blog.minRead', { count: previewReadTime })} variant="outlined" />
-                </Stack>
-
-                {imagePreview ? (
-                  <Box
-                    component="img"
-                    src={imagePreview}
-                    alt={title || 'blog-cover'}
-                    sx={{
-                      width: 1,
-                      maxHeight: 340,
-                      objectFit: 'cover',
-                      borderRadius: 4,
-                    }}
-                  />
-                ) : (
-                  <Paper
-                    background={2}
-                    sx={{
-                      px: 3,
-                      py: 5,
-                      borderRadius: 4,
-                      textAlign: 'center',
-                    }}
-                  >
-                    <KepIcon name="upload" fontSize={28} color="rgba(15,23,42,0.35)" />
-                    <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                      {t('blog.editor.fields.coverImageEmpty')}
-                    </Typography>
-                  </Paper>
-                )}
-
-                <Stack spacing={1}>
-                  <Typography variant="h4" fontWeight={800} sx={{ letterSpacing: '-0.02em' }}>
-                    {title || t('blog.editor.previewPlaceholderTitle')}
-                  </Typography>
-
-                  <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                    <BlogStatusChip status={currentStatus} />
-                    {tags.map((tag) => (
-                      <Chip key={tag} label={tag} size="small" variant="outlined" />
-                    ))}
-                  </Stack>
-                </Stack>
-
-                <Divider />
-
-                <BlogArticleContent
-                  html={previewArticle.html}
-                  emptyMessage={t('blog.editor.previewEmpty')}
-                  sx={{
-                    '& h1': { fontSize: '1.5rem' },
-                    '& h2': { fontSize: '1.25rem' },
-                    '& h3': { fontSize: '1.1rem' },
-                    '& p, & li': { fontSize: '0.975rem' },
-                  }}
-                />
+                  Write Story
+                </Button>
               </Stack>
-            </Paper>
-          </Grid>
-
-          <Grid size={{ xs: 12, lg: 5 }}>
-            <Stack spacing={3}>
-              <Paper
-                background={1}
-                sx={{
-                  p: { xs: 3, md: 4 },
-                  borderRadius: 4,
-                }}
-              >
-                <Stack spacing={2}>
-                  <Stack spacing={0.25}>
-                    <Typography variant="subtitle1" fontWeight={800}>
-                      {t('blog.editor.detailsTitle')}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {t('blog.editor.detailsSubtitle')}
-                    </Typography>
-                  </Stack>
-
-                  <TextField
-                    label={t('blog.editor.fields.title')}
-                    value={title}
-                    onChange={(event) => {
-                      setTitle(event.target.value);
-                      if (titleError) {
-                        setTitleError('');
-                      }
-                    }}
-                    fullWidth
-                    error={Boolean(titleError)}
-                    helperText={titleError || t('blog.editor.fields.titleHint')}
-                  />
-
-                  <Autocomplete
-                    multiple
-                    freeSolo
-                    options={[]}
-                    value={tags}
-                    onChange={(_, value) => setTags(trimTags(value))}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label={t('blog.editor.fields.tags')}
-                        helperText={t('blog.editor.fields.tagsHint')}
-                      />
-                    )}
-                  />
-                </Stack>
-              </Paper>
 
               <Paper
                 background={1}
+                elevation={0}
                 sx={{
-                  p: { xs: 3, md: 4 },
-                  borderRadius: 4,
+                  width: 1,
+                  minHeight: { xs: 400, lg: 560 },
+                  flex: 1,
+                  borderRadius: 2,
+                  p: 3,
                 }}
               >
-                <Stack spacing={2}>
-                  <Stack spacing={0.25}>
-                    <Typography variant="subtitle1" fontWeight={800}>
-                      {t('blog.editor.coverTitle')}
+                <Stack direction="column" gap={2} sx={{ overflowWrap: 'anywhere', flexWrap: 'wrap' }}>
+                  {title ? (
+                    <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                      {title}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {t('blog.editor.coverSubtitle')}
-                    </Typography>
-                  </Stack>
+                  ) : null}
 
-                  {imagePreview ? (
-                    <Box
-                      component="img"
-                      src={imagePreview}
-                      alt={title || 'blog-cover'}
+                  {subtitle ? (
+                    <Typography variant="h6" sx={{ color: 'text.secondary', fontWeight: 500 }}>
+                      {subtitle}
+                    </Typography>
+                  ) : null}
+
+                  {(title || subtitle) && body ? <Divider sx={{ my: 2 }} /> : null}
+
+                  {body ? (
+                    <BlogArticleContent
+                      html={previewArticle.html}
                       sx={{
-                        width: 1,
-                        maxHeight: 240,
-                        objectFit: 'cover',
-                        borderRadius: 4,
+                        '& h1, & h2, & h3, & h4, & h5, & h6': {
+                          mb: 2,
+                          mt: 3,
+                          fontWeight: 700,
+                        },
+                        '& p, & li': {
+                          color: 'text.secondary',
+                          lineHeight: 1.8,
+                        },
+                        '& img': {
+                          maxWidth: '100%',
+                          height: 'auto',
+                          borderRadius: 1,
+                          my: 2,
+                        },
                       }}
                     />
                   ) : (
-                    <Paper
-                      background={2}
-                      sx={{
-                        px: 3,
-                        py: 4,
-                        borderRadius: 4,
-                        textAlign: 'center',
-                      }}
-                    >
-                      <Typography variant="body2" color="text.secondary">
-                        {t('blog.editor.fields.coverImageEmpty')}
-                      </Typography>
-                    </Paper>
+                    <Typography variant="body1" color="text.secondary">
+                      No content yet. Click <strong>&quot;Write Story&quot;</strong> to start writing.
+                    </Typography>
                   )}
-
-                  <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                    <Button
-                      variant="outlined"
-                      startIcon={<KepIcon name="upload" fontSize={18} />}
-                      onClick={() => fileInputRef.current?.click()}
-                    >
-                      {t('blog.editor.actions.uploadImage')}
-                    </Button>
-                    {imagePreview ? (
-                      <Button
-                        variant="text"
-                        color="error"
-                        startIcon={<KepIcon name="close" fontSize={18} />}
-                        onClick={handleRemoveImage}
-                      >
-                        {t('blog.editor.actions.removeImage')}
-                      </Button>
-                    ) : null}
-                  </Stack>
-
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    hidden
-                    onChange={handleImageSelect}
-                  />
                 </Stack>
               </Paper>
 
-              <Paper
-                background={2}
-                sx={{
-                  p: { xs: 3, md: 4 },
-                  borderRadius: 4,
-                }}
-              >
-                <Stack spacing={1.25}>
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <BlogStatusChip status={currentStatus} />
-                    <Typography variant="subtitle1" fontWeight={800}>
-                      {t('blog.editor.statusTitle')}
+              {bodyError ? (
+                <Typography variant="caption" color="error.main" sx={{ mt: 1, ml: 1 }}>
+                  {bodyError}
+                </Typography>
+              ) : null}
+            </Stack>
+          </Grid>
+
+          <Grid size={{ xs: 12, lg: 5 }}>
+            <Stack direction="column" spacing={3}>
+              <Box>
+                <Typography variant="subtitle2" fontWeight={700} sx={LABEL_SX}>
+                  Title
+                </Typography>
+
+                <StyledTextField
+                  fullWidth
+                  value={title}
+                  onChange={(event) => {
+                    setTitle(event.target.value);
+                    if (titleError) {
+                      setTitleError('');
+                    }
+                  }}
+                  placeholder="Title"
+                  error={Boolean(titleError)}
+                  helperText={titleError || undefined}
+                  slotProps={{
+                    htmlInput: {
+                      maxLength: 75,
+                    },
+                  }}
+                />
+
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  display="block"
+                  textAlign="right"
+                  mt={0.5}
+                  mr={1.5}
+                >
+                  {title.length}/75
+                </Typography>
+              </Box>
+
+              <Box>
+                <Typography variant="subtitle2" fontWeight={700} sx={LABEL_SX}>
+                  Sub-text
+                </Typography>
+
+                <StyledTextField
+                  fullWidth
+                  multiline
+                  rows={3}
+                  value={subtitle}
+                  onChange={(event) => setSubtitle(event.target.value)}
+                  placeholder="Write the sub-text"
+                  slotProps={{
+                    htmlInput: {
+                      maxLength: 140,
+                    },
+                  }}
+                  sx={{ [`.${inputBaseClasses.root}`]: { p: 0 } }}
+                />
+
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  display="block"
+                  textAlign="right"
+                  mt={0.5}
+                  mr={1.5}
+                >
+                  {subtitle.length}/140
+                </Typography>
+              </Box>
+
+              <Box>
+                <Typography variant="subtitle2" fontWeight={700} sx={LABEL_SX}>
+                  Thumbnail
+                </Typography>
+
+                <Paper
+                  component="button"
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  onDragOver={(event: DragEvent<HTMLButtonElement>) => event.preventDefault()}
+                  onDrop={(event: DragEvent<HTMLButtonElement>) =>
+                    handleImageDrop(event as unknown as DragEvent<HTMLDivElement>)
+                  }
+                  sx={(theme) => ({
+                    width: 1,
+                    minHeight: { xs: 90, md: 72 },
+                    borderRadius: 2,
+                    border: `1px dashed ${theme.vars.palette.divider}`,
+                    bgcolor: 'background.elevation2',
+                    px: 2,
+                    py: 2.25,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    cursor: 'pointer',
+                    boxShadow: 'none',
+                    transition: 'border-color 0.2s ease, background-color 0.2s ease',
+                    '&:hover': {
+                      borderColor: theme.vars.palette.primary.main,
+                      bgcolor: cssVarRgba(theme.vars.palette.primary.mainChannel, 0.06),
+                    },
+                  })}
+                >
+                  <Stack direction="row" spacing={1.25} alignItems="center" flexWrap="wrap" useFlexGap>
+                    <IconifyIcon
+                      icon="material-symbols:add-photo-alternate-outline-rounded"
+                      fontSize={24}
+                    />
+                    <Typography variant="body1" color="text.secondary">
+                      {imagePreview ? 'Replace selected image' : 'Drag & Drop files here'}
+                    </Typography>
+                    <Typography variant="body1" color="primary.main">
+                      or browse from device
                     </Typography>
                   </Stack>
+                </Paper>
 
-                  <Typography variant="body2" color="text.secondary">
-                    {currentStatus === BlogStatus.Published
-                      ? t('blog.editor.statusDescription.published')
-                      : currentStatus === BlogStatus.Pending
-                        ? t('blog.editor.statusDescription.pending')
-                        : t('blog.editor.statusDescription.draft')}
+                <Stack direction="row" spacing={1} alignItems="flex-start" sx={{ mt: 2 }}>
+                  <IconifyIcon
+                    icon="material-symbols:info-outline-rounded"
+                    fontSize={18}
+                    color="info.main"
+                    style={{ marginTop: 3 }}
+                  />
+                  <Typography variant="body2" color="info.main">
+                    {THUMBNAIL_HELPER}
                   </Typography>
                 </Stack>
-              </Paper>
+
+                {imagePreview ? (
+                  <Button
+                    size="small"
+                    color="error"
+                    onClick={handleRemoveImage}
+                    sx={{ mt: 1, px: 0 }}
+                  >
+                    Remove image
+                  </Button>
+                ) : null}
+
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={handleImageSelect}
+                />
+              </Box>
+
+              <Box>
+                <Typography variant="subtitle2" fontWeight={700} sx={LABEL_SX}>
+                  Topics
+                </Typography>
+
+                <Autocomplete
+                  multiple
+                  options={topicOptions}
+                  value={selectedTopics}
+                  onChange={(_, value) => setSelectedTopics(value)}
+                  disableCloseOnSelect
+                  getOptionLabel={(option) => option.title}
+                  isOptionEqualToValue={(option, value) => option.id === value.id}
+                  renderTags={(value, getTagProps) =>
+                    value.map((option, index) => (
+                      <Chip
+                        {...getTagProps({ index })}
+                        key={option.id}
+                        label={option.title}
+                        size="small"
+                      />
+                    ))
+                  }
+                  renderInput={(params) => <StyledTextField {...params} placeholder="Select" />}
+                  renderOption={(props, option, { selected }) => (
+                    <li {...props} key={option.id}>
+                      <Checkbox checked={selected} sx={{ mr: 1 }} />
+                      {option.title}
+                    </li>
+                  )}
+                />
+              </Box>
+
+              <Box>
+                <Typography variant="subtitle2" fontWeight={700} sx={LABEL_SX}>
+                  Canonical link
+                </Typography>
+
+                <StyledTextField
+                  fullWidth
+                  value={canonicalLink}
+                  onChange={(event) => setCanonicalLink(event.target.value)}
+                  placeholder="Link"
+                />
+              </Box>
+
+              <Box>
+                <Typography variant="subtitle2" fontWeight={700} sx={LABEL_SX}>
+                  Tags
+                </Typography>
+
+                <Autocomplete
+                  multiple
+                  freeSolo
+                  options={[]}
+                  value={tags}
+                  onChange={(_, value) => setTags(trimTags(value))}
+                  renderTags={(value, getTagProps) =>
+                    value.map((option, index) => (
+                      <Chip
+                        {...getTagProps({ index })}
+                        key={`${option}-${index}`}
+                        label={option}
+                        size="small"
+                      />
+                    ))
+                  }
+                  renderInput={(params) => (
+                    <StyledTextField
+                      {...params}
+                      placeholder={tags.length === 0 ? 'Type and press Enter' : ''}
+                    />
+                  )}
+                />
+
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  display="flex"
+                  alignItems="center"
+                  gap={0.5}
+                  mt={0.5}
+                  mx={1.5}
+                >
+                  <IconifyIcon icon="material-symbols:info-outline" fontSize={14} />
+                  Limit of 10
+                </Typography>
+              </Box>
+
+              <Grid container spacing={1}>
+                <Grid size={6}>
+                  <Typography variant="subtitle2" fontWeight={700} sx={LABEL_SX}>
+                    Accessibility
+                  </Typography>
+
+                  <StyledTextField
+                    select
+                    fullWidth
+                    value={accessibility}
+                    onChange={(event) => setAccessibility(event.target.value)}
+                  >
+                    <MenuItem value="public">Public</MenuItem>
+                    <MenuItem value="private">Private</MenuItem>
+                  </StyledTextField>
+                </Grid>
+
+                <Grid size={6}>
+                  <Typography variant="subtitle2" fontWeight={700} sx={LABEL_SX}>
+                    Language
+                  </Typography>
+
+                  <StyledTextField
+                    select
+                    fullWidth
+                    value={language}
+                    onChange={(event) => setLanguage(event.target.value)}
+                  >
+                    <MenuItem value="english">English</MenuItem>
+                    <MenuItem value="uzbek">Uzbek</MenuItem>
+                    <MenuItem value="russian">Russian</MenuItem>
+                  </StyledTextField>
+                </Grid>
+              </Grid>
+
+              <Box>
+                <Typography variant="subtitle2" fontWeight={700} sx={LABEL_SX}>
+                  Target audience
+                </Typography>
+
+                <StyledTextField
+                  select
+                  fullWidth
+                  value={targetAudience}
+                  onChange={(event) => setTargetAudience(event.target.value)}
+                >
+                  <MenuItem value="all">All</MenuItem>
+                  <MenuItem value="children">Children</MenuItem>
+                  <MenuItem value="adults">Adults</MenuItem>
+                </StyledTextField>
+              </Box>
             </Stack>
           </Grid>
         </Grid>
 
         <Paper
           background={1}
+          elevation={0}
           sx={{
-            p: { xs: 3, md: 4 },
-            borderRadius: 4,
+            p: { xs: 1.5, sm: 2 },
+            display: 'flex',
+            alignItems: { xs: 'flex-start', md: 'center' },
+            justifyContent: 'space-between',
+            gap: 2,
+            flexDirection: { xs: 'column', md: 'row' },
           }}
         >
-          <Stack spacing={1.5}>
-            <Stack spacing={0.25}>
-              <Typography variant="subtitle1" fontWeight={800}>
-                {t('blog.editor.storyTitle')}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {t('blog.editor.storySubtitle')}
-              </Typography>
-            </Stack>
+          <Typography variant="body2" color="text.secondary">
+            {headerSubtitle}
+          </Typography>
 
-            <BlogRichTextEditor
-              value={body}
-              onChange={(nextValue) => {
-                setBody(nextValue);
-                if (bodyError) {
-                  setBodyError('');
-                }
-              }}
-              placeholder={t('blog.editor.fields.bodyPlaceholder')}
-            />
+          <Stack direction="row" sx={{ gap: 1, alignItems: 'center', flexWrap: 'wrap' }}>
+            <Button
+              component={RouterLink}
+              to={profileBlogUrl}
+              color="neutral"
+              disabled={isBusy}
+            >
+              Cancel
+            </Button>
 
-            {bodyError ? (
-              <Typography variant="caption" color="error.main">
-                {bodyError}
-              </Typography>
-            ) : null}
-          </Stack>
-        </Paper>
+            <Button
+              variant="soft"
+              color="neutral"
+              onClick={() => handlePersist('draft')}
+              disabled={isBusy || !currentUser}
+              startIcon={
+                isCreating || isUpdating ? <CircularProgress color="inherit" size={18} /> : undefined
+              }
+            >
+              {saveLabel}
+            </Button>
 
-        <Paper
-          background={1}
-          sx={{
-            p: { xs: 2.5, md: 3 },
-            borderRadius: 4,
-          }}
-        >
-          <Stack
-            direction={{ xs: 'column', md: 'row' }}
-            spacing={2}
-            alignItems={{ xs: 'flex-start', md: 'center' }}
-            justifyContent="space-between"
-          >
-            <Typography variant="body2" color="text.secondary">
-              {headerSubtitle}
-            </Typography>
-
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} useFlexGap flexWrap="wrap">
-              <Button
-                component={RouterLink}
-                to={profileBlogUrl}
-                variant="outlined"
-                disabled={isBusy}
-              >
-                {t('blog.editor.actions.cancel')}
-              </Button>
-
+            {currentStatus !== BlogStatus.Published && canSubmit ? (
               <Button
                 variant="contained"
-                onClick={() => handlePersist('draft')}
-                disabled={isBusy || !currentUser}
-                startIcon={
-                  isCreating || isUpdating ? (
-                    <CircularProgress color="inherit" size={18} />
-                  ) : undefined
-                }
+                onClick={() => handlePersist('submit')}
+                disabled={submitDisabled || !currentUser}
+                startIcon={isSubmitting ? <CircularProgress color="inherit" size={18} /> : undefined}
               >
-                {saveLabel}
+                Submit for Review
               </Button>
-
-              {currentStatus !== BlogStatus.Published && canSubmit ? (
-                <Button
-                  variant="text"
-                  color="warning"
-                  onClick={() => handlePersist('submit')}
-                  disabled={submitDisabled || !currentUser}
-                  startIcon={
-                    isSubmitting ? <CircularProgress color="inherit" size={18} /> : undefined
-                  }
-                >
-                  {t('blog.editor.actions.submitForReview')}
-                </Button>
-              ) : null}
-            </Stack>
+            ) : null}
           </Stack>
         </Paper>
       </Stack>
     </Box>
+  );
+
+  return (
+    <>
+      <Fade in={!isEditingStory}>
+        <Box sx={{ display: isEditingStory ? 'none' : 'block' }}>{mainContent}</Box>
+      </Fade>
+
+      <Fade in={isEditingStory}>
+        <Box sx={{ display: !isEditingStory ? 'none' : 'block' }}>{storyEditor}</Box>
+      </Fade>
+    </>
   );
 };
 

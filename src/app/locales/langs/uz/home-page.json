@@ -24,13 +24,13 @@
         "skills": "Koʻnikmalar reytingi",
         "activity": "Faollik reytingi",
         "contests": "Musobaqalar",
-        "challenges": "Chaqiriqlar"
+        "challenges": "Bellashuvlar"
       },
       "info": {
-        "skillsRating": "Bu reyting platformadagi koʻnikmalaringiz kuchini koʻrsatadi. Reyting yechilgan masalalar soni, musobaqalar va chaqiriqlar reytingiga bogʻliq.",
+        "skillsRating": "Bu reyting platformadagi koʻnikmalaringiz kuchini koʻrsatadi. Reyting yechilgan masalalar soni, musobaqalar va bellashuvlar reytingiga bogʻliq.",
         "activityRating": "Bu reyting soʻnggi 30 kun ichidagi faolligingizni koʻrsatadi. U toʻplangan kepcoinlar, har kuni tizimga kirish va bajarilgan kundalik vazifalarga bogʻliq.",
         "contests": "Bu reyting musobaqalardagi kuchingizni koʻrsatadi.",
-        "challenges": "Bu reyting chaqiriqlardagi kuchingizni koʻrsatadi."
+        "challenges": "Bu reyting bellashuvlardagi kuchingizni koʻrsatadi."
       },
       "percentile": "Siz foydalanuvchilarning {{percentile}}% dan yaxshiroqsiz"
     },
@@ -53,7 +53,7 @@
     "promos": {
       "blogCreate": {
         "title": "KEP'da blog yarating va foydali hikoyalarni hamjamiyat qiymatiga aylantiring.",
-        "subtitle": "Tutorial, postmortem va platforma insightlarini ulashing. Kuchli bloglar reviewdan keyin Kepcoin reward olishi mumkin.",
+        "subtitle": "Foydali materiallar, yangiliklar va platforma bo'yicha ma'lumotlar ulashing. Kuchli bloglar reviewdan keyin Kepcoin reward olishi mumkin.",
         "availableNow": "Hozir mavjud",
         "footerNote": "Avval draft yarating, keyin tayyor bo'lganda reviewga yuboring.",
         "previewTitle": "Editor preview",
@@ -127,6 +127,7 @@
     },
     "posts": {
       "title": "Soʻnggi blog postlar",
+      "viewAll": "Barcha bloglarni ko'rish",
       "empty": "Hozircha blog postlari mavjud emas."
     },
     "topUsers": {
@@ -138,7 +139,7 @@
         "contests": "Musobaqalar",
         "skills": "Koʻnikmalar",
         "activity": "Faollik",
-        "challenges": "Chaqiriqlar",
+        "challenges": "Bellashuvlar",
         "streak": "Seriya",
         "kepcoin": "Kepcoin"
       }
