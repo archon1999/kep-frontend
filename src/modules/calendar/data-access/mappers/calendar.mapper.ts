@@ -1,5 +1,5 @@
-import { CalendarEvent } from 'shared/api/orval/generated/endpoints/index.schemas';
-import { CalendarEventEntity } from '../../domain/entities/calendar-event.entity';
+import type { CalendarEvent } from 'shared/api/orval/generated/endpoints/index.schemas';
+import type { CalendarEventEntity } from '../../domain';
 
 export const mapCalendarEventDtoToEntity = (
   event: CalendarEvent,

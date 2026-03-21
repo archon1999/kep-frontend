@@ -12,9 +12,8 @@ import {
 import { initialConfig } from 'app/config.ts';
 import Splash from 'shared/components/loading/Splash';
 import { removeItemFromStore } from 'shared/lib/utils';
-import { useCurrentUser } from 'modules/authentication/application/queries';
-import { useLogOutUser } from 'modules/authentication/application/mutations';
-import type { AuthUser } from 'modules/authentication/domain/entities/auth.entity';
+import { useCurrentUser, useLogOutUser } from 'modules/authentication/application';
+import type { AuthUser } from 'modules/authentication/domain';
 
 interface AuthContextInterface {
   currentUser: AuthUser | null;

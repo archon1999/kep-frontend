@@ -1,10 +1,9 @@
 import useSWR from 'swr';
-import { CalendarEventEntity } from '../domain/entities/calendar-event.entity';
-import { HttpCalendarRepository } from '../data-access/repository/http.calendar.repository';
-
-const repository = new HttpCalendarRepository();
+import { calendarRepository } from '../data-access';
+import { calendarKeys } from './keys';
+import type { CalendarEventEntity } from '../domain';
 
 export const useCalendarEvents = () =>
-  useSWR<CalendarEventEntity[]>(['calendar-events'], () => repository.getEvents(), {
+  useSWR<CalendarEventEntity[]>(calendarKeys.detail('events'), () => calendarRepository.getEvents(), {
     suspense: false,
   });

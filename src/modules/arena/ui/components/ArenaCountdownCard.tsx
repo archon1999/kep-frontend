@@ -1,24 +1,20 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Card, CardContent, LinearProgress, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
 import { useTranslation } from 'react-i18next';
 import { Arena, ArenaStatus } from '../../domain/entities/arena.entity.ts';
-
-dayjs.extend(duration);
 
 interface ArenaCountdownCardProps {
   arena?: Arena;
 }
 
 const formatDuration = (diffMs: number) => {
-  const d = dayjs.duration(Math.max(diffMs, 0));
-  const days = String(d.days()).padStart(2, '0');
-  const hours = String(d.hours()).padStart(2, '0');
-  const minutes = String(d.minutes()).padStart(2, '0');
-  const seconds = String(d.seconds()).padStart(2, '0');
+  const totalSeconds = Math.max(Math.floor(diffMs / 1000), 0);
+  const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+  const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+  const seconds = String(totalSeconds % 60).padStart(2, '0');
 
-  return `${days}:${hours}:${minutes}:${seconds}`;
+  return `${hours}:${minutes}:${seconds}`;
 };
 
 const ArenaCountdownCard = ({ arena }: ArenaCountdownCardProps) => {

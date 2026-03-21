@@ -1,5 +1,5 @@
 import { mainDrawerWidth } from 'shared/lib/constants.ts';
-import type { LoginPayload } from 'modules/authentication/domain/entities/auth.entity';
+import type { LoginPayload } from 'modules/authentication/domain';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 export type ThemePreset =

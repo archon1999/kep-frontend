@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Alert, Box, Button, Divider, Link, Stack, TextField, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import type { LoginPayload } from 'modules/authentication/domain/entities/auth.entity';
+import type { LoginPayload } from 'modules/authentication/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import PasswordTextField from 'shared/components/common/PasswordTextField';
 import * as yup from 'yup';

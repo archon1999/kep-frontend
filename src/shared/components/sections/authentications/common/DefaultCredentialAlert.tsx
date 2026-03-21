@@ -1,6 +1,6 @@
 import { Alert, Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import type { LoginPayload } from 'modules/authentication/domain/entities/auth.entity';
+import type { LoginPayload } from 'modules/authentication/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 
 interface DefaultCredentialAlertProps {

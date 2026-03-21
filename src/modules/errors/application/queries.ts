@@ -1,9 +1,7 @@
 import { useMemo } from 'react';
-import { StaticErrorsRepository } from '../data-access/repository/static.errors.repository';
-import type { ErrorPageContent } from '../domain/entities/error-page.entity';
-
-const repository = new StaticErrorsRepository();
+import { errorsRepository } from '../data-access';
+import type { ErrorPageContent } from '../domain';
 
 export const useNotFoundContent = (): ErrorPageContent => {
-  return useMemo(() => repository.getNotFoundContent(), []);
+  return useMemo(() => errorsRepository.getNotFoundContent(), []);
 };

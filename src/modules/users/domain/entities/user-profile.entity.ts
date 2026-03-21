@@ -6,7 +6,7 @@ import {
   AccountSocialLinks,
   AccountTechnology,
   AccountWorkExperience,
-} from 'modules/account-settings/domain/entities/account-settings.entity';
+} from 'modules/account-settings/domain';
 import { UsersListItem } from './user.entity';
 
 export type UserProfileAbout = {
