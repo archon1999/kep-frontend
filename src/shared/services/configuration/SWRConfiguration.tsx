@@ -1,4 +1,5 @@
 import { PropsWithChildren } from 'react';
+import { redirectDetailRouteToNotFound } from 'shared/lib/detailRouteNotFound';
 import axiosFetcher from 'shared/services/axios/axiosFetcher';
 import { SWRConfig } from 'swr';
 
@@ -10,6 +11,9 @@ const SWRConfiguration = ({ children }: PropsWithChildren) => {
       value={{
         fetcher: axiosFetcher,
         dedupingInterval: GLOBAL_API_CACHE_TTL_MS,
+        onError: (error) => {
+          redirectDetailRouteToNotFound(error);
+        },
         revalidateIfStale: true,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,

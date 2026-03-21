@@ -1,14 +1,16 @@
-import { Suspense, lazy, type ReactNode } from 'react';
+import { type ReactNode, Suspense, lazy } from 'react';
 import { Outlet, RouteObject, createBrowserRouter, useLocation } from 'react-router';
 import App from 'app/App.tsx';
 import AuthLayout from 'app/layouts/auth-layout';
 import DefaultAuthLayout from 'app/layouts/auth-layout/DefaultAuthLayout';
 import MainLayout from 'app/layouts/main-layout';
+import Page403 from 'modules/errors/ui/pages/Page403';
 import Page404 from 'modules/errors/ui/pages/Page404';
-import PageLoader from 'shared/components/loading/PageLoader';
+import RouteErrorPage from 'modules/errors/ui/pages/RouteErrorPage';
 import AuthGuard from 'shared/components/guard/AuthGuard';
-import { resources } from './resources';
+import PageLoader from 'shared/components/loading/PageLoader';
 import { legacyRedirectRoutes } from './legacy-routes';
+import { resources } from './resources';
 import { authPaths, rootPaths } from './route-config';
 
 const Home = lazy(() => import('modules/home/ui/pages/HomePage'));
@@ -17,11 +19,17 @@ const KepcoinPage = lazy(() => import('modules/kepcoin/ui/pages/KepcoinPage'));
 const KepcoinEarnPage = lazy(() => import('modules/kepcoin/ui/pages/KepcoinEarnPage'));
 const ShopPage = lazy(() => import('modules/shop/ui/pages/ShopPage'));
 const ProblemsListPage = lazy(() => import('modules/problems/ui/pages/ProblemsListPage'));
+const StudyPlansPage = lazy(() => import('modules/problems/ui/pages/StudyPlansPage'));
+const StudyPlanPage = lazy(() => import('modules/problems/ui/pages/StudyPlanPage'));
 const ProblemsRatingPage = lazy(() => import('modules/problems/ui/pages/ProblemsRatingPage'));
-const ProblemsRatingHistoryPage = lazy(() => import('modules/problems/ui/pages/ProblemsRatingHistoryPage'));
+const ProblemsRatingHistoryPage = lazy(
+  () => import('modules/problems/ui/pages/ProblemsRatingHistoryPage'),
+);
 const ProblemsAttemptsPage = lazy(() => import('modules/problems/ui/pages/ProblemsAttemptsPage'));
 const ProblemDetailPage = lazy(() => import('modules/problems/ui/pages/ProblemDetailPage'));
-const ProblemsUserStatisticsPage = lazy(() => import('modules/problems/ui/pages/ProblemsUserStatisticsPage'));
+const ProblemsUserStatisticsPage = lazy(
+  () => import('modules/problems/ui/pages/ProblemsUserStatisticsPage'),
+);
 const UsersListPage = lazy(() => import('modules/users/ui/pages/UsersListPage'));
 const ProjectsListPage = lazy(() => import('modules/projects/ui/pages/ProjectsListPage'));
 const ProjectDetailPage = lazy(() => import('modules/projects/ui/pages/ProjectDetailPage'));
@@ -31,7 +39,9 @@ const TestPassPage = lazy(() => import('modules/testing/ui/pages/TestPassPage'))
 const ChallengesListPage = lazy(() => import('modules/challenges/ui/pages/ChallengesListPage'));
 const ChallengeDetailPage = lazy(() => import('modules/challenges/ui/pages/ChallengeDetailPage'));
 const ChallengesRatingPage = lazy(() => import('modules/challenges/ui/pages/ChallengesRatingPage'));
-const ChallengeUserStatisticsPage = lazy(() => import('modules/challenges/ui/pages/UserStatisticsPage'));
+const ChallengeUserStatisticsPage = lazy(
+  () => import('modules/challenges/ui/pages/UserStatisticsPage'),
+);
 const DuelsListPage = lazy(() => import('modules/duels/ui/pages/DuelsListPage'));
 const DuelsRatingPage = lazy(() => import('modules/duels/ui/pages/DuelsRatingPage'));
 const DuelDetailPage = lazy(() => import('modules/duels/ui/pages/DuelDetailPage'));
@@ -46,9 +56,7 @@ const ContestPage = lazy(() => import('modules/contests/ui/pages/ContestPage'));
 const ContestProblemsPage = lazy(() => import('modules/contests/ui/pages/ContestProblemsPage'));
 const ContestProblemPage = lazy(() => import('modules/contests/ui/pages/ContestProblemPage'));
 const ContestAttemptsPage = lazy(() => import('modules/contests/ui/pages/ContestAttemptsPage'));
-const ContestStatisticsPage = lazy(
-  () => import('modules/contests/ui/pages/ContestStatisticsPage'),
-);
+const ContestStatisticsPage = lazy(() => import('modules/contests/ui/pages/ContestStatisticsPage'));
 const ContestStandingsPage = lazy(() => import('modules/contests/ui/pages/ContestStandingsPage'));
 const ContestRegistrantsPage = lazy(
   () => import('modules/contests/ui/pages/ContestRegistrantsPage'),
@@ -61,19 +69,35 @@ const TournamentsListPage = lazy(() => import('modules/tournaments/ui/pages/Tour
 const TournamentPage = lazy(() => import('modules/tournaments/ui/pages/TournamentPage'));
 const HackathonsListPage = lazy(() => import('modules/hackathons/ui/pages/HackathonsListPage'));
 const HackathonPage = lazy(() => import('modules/hackathons/ui/pages/HackathonPage'));
-const HackathonProjectsPage = lazy(() => import('modules/hackathons/ui/pages/HackathonProjectsPage'));
+const HackathonProjectsPage = lazy(
+  () => import('modules/hackathons/ui/pages/HackathonProjectsPage'),
+);
 const HackathonProjectPage = lazy(() => import('modules/hackathons/ui/pages/HackathonProjectPage'));
-const HackathonAttemptsPage = lazy(() => import('modules/hackathons/ui/pages/HackathonAttemptsPage'));
-const HackathonRegistrantsPage = lazy(() => import('modules/hackathons/ui/pages/HackathonRegistrantsPage'));
-const HackathonStandingsPage = lazy(() => import('modules/hackathons/ui/pages/HackathonStandingsPage'));
-const AccountSettingsPage = lazy(() => import('modules/account-settings/ui/pages/AccountSettingsPage'));
+const HackathonAttemptsPage = lazy(
+  () => import('modules/hackathons/ui/pages/HackathonAttemptsPage'),
+);
+const HackathonRegistrantsPage = lazy(
+  () => import('modules/hackathons/ui/pages/HackathonRegistrantsPage'),
+);
+const HackathonStandingsPage = lazy(
+  () => import('modules/hackathons/ui/pages/HackathonStandingsPage'),
+);
+const AccountSettingsPage = lazy(
+  () => import('modules/account-settings/ui/pages/AccountSettingsPage'),
+);
 const BlogListPage = lazy(() => import('modules/blog/ui/pages/BlogListPage'));
 const BlogEditorPage = lazy(() => import('modules/blog/ui/pages/BlogEditorPage'));
 const BlogPostPage = lazy(() => import('modules/blog/ui/pages/BlogPostPage'));
 const UserProfilePage = lazy(() => import('modules/users/ui/pages/UserProfilePage'));
-const UserProfileAboutTab = lazy(() => import('modules/users/ui/components/user-profile/UserProfileAboutTab'));
-const UserProfileBlogTab = lazy(() => import('modules/users/ui/components/user-profile/UserProfileBlogTab'));
-const UserProfileRatingsTab = lazy(() => import('modules/users/ui/components/user-profile/UserProfileRatingsTab'));
+const UserProfileAboutTab = lazy(
+  () => import('modules/users/ui/components/user-profile/UserProfileAboutTab'),
+);
+const UserProfileBlogTab = lazy(
+  () => import('modules/users/ui/components/user-profile/UserProfileBlogTab'),
+);
+const UserProfileRatingsTab = lazy(
+  () => import('modules/users/ui/components/user-profile/UserProfileRatingsTab'),
+);
 const UserProfileActivityHistoryTab = lazy(
   () => import('modules/users/ui/components/user-profile/UserProfileActivityHistoryTab'),
 );
@@ -87,6 +111,7 @@ const UserProfileAchievementsTab = lazy(
 const CalendarPage = lazy(() => import('modules/calendar/ui/pages/CalendarPage'));
 
 const Login = lazy(() => import('modules/authentication/ui/pages/LoginPage'));
+const IS_PROD = import.meta.env.PROD;
 
 const withAuthGuard = (element: ReactNode) => <AuthGuard>{element}</AuthGuard>;
 
@@ -103,6 +128,7 @@ export const SuspenseOutlet = () => {
 export const routes: RouteObject[] = [
   {
     element: <App />,
+    errorElement: IS_PROD ? <RouteErrorPage /> : undefined,
     children: [
       {
         path: '/',
@@ -160,6 +186,16 @@ export const routes: RouteObject[] = [
             path: resources.Problems,
             element: <ProblemsListPage />,
             handle: { titleKey: 'pageTitles.problems' },
+          },
+          {
+            path: resources.StudyPlans,
+            element: <StudyPlansPage />,
+            handle: { titleKey: 'pageTitles.studyPlans' },
+          },
+          {
+            path: resources.StudyPlan,
+            element: <StudyPlanPage />,
+            handle: { titleKey: 'pageTitles.studyPlan', fallbackTitleKey: 'pageTitles.studyPlans' },
           },
           {
             path: resources.ProblemsRating,
@@ -252,7 +288,10 @@ export const routes: RouteObject[] = [
           {
             path: resources.ArenaTournament,
             element: <ArenaDetailPage />,
-            handle: { titleKey: 'pageTitles.arenaTournament', fallbackTitleKey: 'pageTitles.arena' },
+            handle: {
+              titleKey: 'pageTitles.arenaTournament',
+              fallbackTitleKey: 'pageTitles.arena',
+            },
           },
           {
             path: resources.Contests,
@@ -277,37 +316,58 @@ export const routes: RouteObject[] = [
           {
             path: resources.ContestProblems,
             element: <ContestProblemsPage />,
-            handle: { titleKey: 'pageTitles.contestProblems', fallbackTitleKey: 'pageTitles.contests' },
+            handle: {
+              titleKey: 'pageTitles.contestProblems',
+              fallbackTitleKey: 'pageTitles.contests',
+            },
           },
           {
             path: resources.ContestAttempts,
             element: <ContestAttemptsPage />,
-            handle: { titleKey: 'pageTitles.contestAttempts', fallbackTitleKey: 'pageTitles.contests' },
+            handle: {
+              titleKey: 'pageTitles.contestAttempts',
+              fallbackTitleKey: 'pageTitles.contests',
+            },
           },
           {
             path: resources.ContestStatistics,
             element: <ContestStatisticsPage />,
-            handle: { titleKey: 'pageTitles.contestStatistics', fallbackTitleKey: 'pageTitles.contests' },
+            handle: {
+              titleKey: 'pageTitles.contestStatistics',
+              fallbackTitleKey: 'pageTitles.contests',
+            },
           },
           {
             path: resources.ContestStandings,
             element: <ContestStandingsPage />,
-            handle: { titleKey: 'pageTitles.contestStandings', fallbackTitleKey: 'pageTitles.contests' },
+            handle: {
+              titleKey: 'pageTitles.contestStandings',
+              fallbackTitleKey: 'pageTitles.contests',
+            },
           },
           {
             path: resources.ContestRegistrants,
             element: <ContestRegistrantsPage />,
-            handle: { titleKey: 'pageTitles.contestRegistrants', fallbackTitleKey: 'pageTitles.contests' },
+            handle: {
+              titleKey: 'pageTitles.contestRegistrants',
+              fallbackTitleKey: 'pageTitles.contests',
+            },
           },
           {
             path: resources.ContestRatingChanges,
             element: <ContestRatingChangesPage />,
-            handle: { titleKey: 'pageTitles.contestRatingChanges', fallbackTitleKey: 'pageTitles.contests' },
+            handle: {
+              titleKey: 'pageTitles.contestRatingChanges',
+              fallbackTitleKey: 'pageTitles.contests',
+            },
           },
           {
             path: resources.ContestQuestions,
             element: <ContestQuestionsPage />,
-            handle: { titleKey: 'pageTitles.contestQuestions', fallbackTitleKey: 'pageTitles.contests' },
+            handle: {
+              titleKey: 'pageTitles.contestQuestions',
+              fallbackTitleKey: 'pageTitles.contests',
+            },
           },
           {
             path: resources.Tournaments,
@@ -317,7 +377,10 @@ export const routes: RouteObject[] = [
           {
             path: resources.Tournament,
             element: <TournamentPage />,
-            handle: { titleKey: 'pageTitles.tournament', fallbackTitleKey: 'pageTitles.tournaments' },
+            handle: {
+              titleKey: 'pageTitles.tournament',
+              fallbackTitleKey: 'pageTitles.tournaments',
+            },
           },
           {
             path: resources.Shop,
@@ -357,17 +420,26 @@ export const routes: RouteObject[] = [
           {
             path: resources.HackathonProjects,
             element: <HackathonProjectsPage />,
-            handle: { titleKey: 'pageTitles.hackathonProjects', fallbackTitleKey: 'pageTitles.hackathons' },
+            handle: {
+              titleKey: 'pageTitles.hackathonProjects',
+              fallbackTitleKey: 'pageTitles.hackathons',
+            },
           },
           {
             path: resources.HackathonProject,
             element: <HackathonProjectPage />,
-            handle: { titleKey: 'pageTitles.hackathonProject', fallbackTitleKey: 'pageTitles.hackathons' },
+            handle: {
+              titleKey: 'pageTitles.hackathonProject',
+              fallbackTitleKey: 'pageTitles.hackathons',
+            },
           },
           {
             path: resources.HackathonAttempts,
             element: <HackathonAttemptsPage />,
-            handle: { titleKey: 'pageTitles.hackathonAttempts', fallbackTitleKey: 'pageTitles.hackathons' },
+            handle: {
+              titleKey: 'pageTitles.hackathonAttempts',
+              fallbackTitleKey: 'pageTitles.hackathons',
+            },
           },
           {
             path: resources.HackathonRegistrants,
@@ -380,7 +452,10 @@ export const routes: RouteObject[] = [
           {
             path: resources.HackathonStandings,
             element: <HackathonStandingsPage />,
-            handle: { titleKey: 'pageTitles.hackathonStandings', fallbackTitleKey: 'pageTitles.hackathons' },
+            handle: {
+              titleKey: 'pageTitles.hackathonStandings',
+              fallbackTitleKey: 'pageTitles.hackathons',
+            },
           },
           {
             path: resources.Blog,
@@ -494,6 +569,18 @@ export const routes: RouteObject[] = [
             ],
           },
         ],
+      },
+
+      {
+        path: resources.Forbidden,
+        element: <Page403 />,
+        handle: { titleKey: 'pageTitles.forbidden' },
+      },
+
+      {
+        path: resources.NotFound,
+        element: <Page404 />,
+        handle: { titleKey: 'pageTitles.notFound' },
       },
 
       {

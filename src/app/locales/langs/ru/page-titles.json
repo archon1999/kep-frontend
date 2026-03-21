@@ -67,6 +67,8 @@
     "courseDictionaryTraining": "{{ courseTitle }} - РўСЂРµРЅРёСЂРѕРІРєР° СЃР»РѕРІР°СЂСЏ - РљСѓСЂСЃ",
     "kepCover": "{{ contestTitle }} - KEP Cover",
     "login": "Р’РѕР№С‚Рё",
-    "notFound": "РЎС‚СЂР°РЅРёС†Р° РЅРµ РЅР°Р№РґРµРЅР°"
+    "notFound": "РЎС‚СЂР°РЅРёС†Р° РЅРµ РЅР°Р№РґРµРЅР°",
+    "forbidden": "\u0414\u043e\u0441\u0442\u0443\u043f \u0437\u0430\u043f\u0440\u0435\u0449\u0435\u043d",
+    "studyPlans": "Учебные планы - Задачи"
   }
 }

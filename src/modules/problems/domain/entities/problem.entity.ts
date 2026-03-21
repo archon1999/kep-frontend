@@ -298,6 +298,46 @@ export interface ProblemsRatingSummary {
   difficulties: DifficultyBreakdown;
 }
 
+export interface StudyPlanListItem {
+  id: number;
+  code?: string;
+  title: string;
+  descriptionShort: string;
+  icon?: string | null;
+  themeColor?: string;
+  themeColorSecondary?: string;
+  daysCount?: number;
+  problemsCount?: number;
+  isPurchased?: boolean;
+  solvedCount?: number;
+  progressPercent?: number;
+}
+
+export interface StudyPlanDayProblem {
+  id: number;
+  title: string;
+  difficulty: number;
+  difficultyTitle?: string;
+  tags: ProblemTag[];
+  likesCount?: number;
+  dislikesCount?: number;
+  userInfo?: Pick<ProblemUserInfo, 'hasSolved' | 'hasAttempted'>;
+}
+
+export interface StudyPlanDay {
+  day: number;
+  title: string;
+  description: string;
+  problems: StudyPlanDayProblem[];
+}
+
+export interface StudyPlanDetail extends StudyPlanListItem {
+  description: string;
+  kepcoinValue: number;
+  statistics: DifficultyBreakdown;
+  days: StudyPlanDay[];
+}
+
 export interface ProblemSolutionCode {
   lang: string;
   code: string;

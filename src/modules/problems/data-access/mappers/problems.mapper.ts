@@ -36,6 +36,10 @@ import {
   ProblemsRatingRow,
   ProblemsRatingSummary,
   ProblemsUserStatistics,
+  StudyPlanDay,
+  StudyPlanDayProblem,
+  StudyPlanDetail,
+  StudyPlanListItem,
   SimilarProblem,
 } from '../../domain/entities/problem.entity.ts';
 import { PageResult } from '../../domain/ports/problems.repository.ts';
@@ -304,6 +308,58 @@ export const mapDifficultyBreakdown = (stats: any): DifficultyBreakdown => {
     allExtremal: totals.allExtremal,
     totalSolved,
     totalProblems,
+  };
+};
+
+const mapStudyPlanDayProblem = (payload: any): StudyPlanDayProblem => ({
+  id: toNumber(payload?.id),
+  title: payload?.title ?? '',
+  difficulty: toNumber(payload?.difficulty),
+  difficultyTitle: payload?.difficultyTitle ?? payload?.difficulty_title,
+  tags: (payload?.tags ?? []).map((tag: any) => mapProblemTag(tag)),
+  likesCount: toNullableNumber(payload?.likesCount ?? payload?.likes_count),
+  dislikesCount: toNullableNumber(payload?.dislikesCount ?? payload?.dislikes_count),
+  userInfo: {
+    hasSolved: Boolean(payload?.hasSolved ?? payload?.has_solved),
+    hasAttempted: Boolean(payload?.hasAttempted ?? payload?.has_attempted),
+  },
+});
+
+const mapStudyPlanDay = (payload: any): StudyPlanDay => ({
+  day: toNumber(payload?.day),
+  title: payload?.title ?? '',
+  description: payload?.description ?? '',
+  problems: Array.isArray(payload?.problems)
+    ? payload.problems.map((problem: any) => mapStudyPlanDayProblem(problem))
+    : [],
+});
+
+export const mapStudyPlanListItem = (payload: any): StudyPlanListItem => ({
+  id: toNumber(payload?.id),
+  code: payload?.code ?? undefined,
+  title: payload?.title ?? '',
+  descriptionShort: payload?.descriptionShort ?? payload?.description_short ?? '',
+  icon: payload?.icon ?? null,
+  themeColor: payload?.themeColor ?? payload?.theme_color ?? undefined,
+  themeColorSecondary:
+    payload?.themeColorSecondary ?? payload?.theme_color_secondary ?? undefined,
+  daysCount: toNullableNumber(payload?.daysCount ?? payload?.days_count),
+  problemsCount: toNullableNumber(payload?.problemsCount ?? payload?.problems_count),
+  isPurchased: toOptionalBoolean(payload?.isPurchased ?? payload?.is_purchased),
+  solvedCount: toNullableNumber(payload?.solvedCount ?? payload?.solved_count),
+  progressPercent: toNullableNumber(payload?.progressPercent ?? payload?.progress_percent),
+});
+
+export const mapStudyPlanDetail = (payload: any): StudyPlanDetail => {
+  const statistics = tryParseJson(payload?.statistics);
+  const days = tryParseJson(payload?.days);
+
+  return {
+    ...mapStudyPlanListItem(payload),
+    description: payload?.description ?? '',
+    kepcoinValue: toNumber(payload?.kepcoinValue ?? payload?.kepcoin_value),
+    statistics: mapDifficultyBreakdown(statistics ?? {}),
+    days: Array.isArray(days) ? days.map((item: any) => mapStudyPlanDay(item)) : [],
   };
 };
 

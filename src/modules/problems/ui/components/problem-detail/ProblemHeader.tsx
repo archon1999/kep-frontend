@@ -3,14 +3,15 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button, Divider, IconButton, Stack, Tooltip } from '@mui/material';
 import AppbarActionItems from 'app/layouts/main-layout/common/AppbarActionItems';
 import { useAuth } from 'app/providers/AuthProvider';
+import { getResourceById, resources } from 'app/routes/resources';
 import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import Logo from 'shared/components/common/Logo';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import { resources } from 'app/routes/resources';
 import { ProblemDetail } from '../../../domain/entities/problem.entity';
 
 interface ProblemHeaderProps {
   navColor?: string;
+  studyPlanId?: number | null;
   onPrev: () => void;
   onNext: () => void;
   canNavigate: boolean;
@@ -33,6 +34,7 @@ interface ProblemHeaderProps {
 
 export const ProblemHeader = ({
   navColor,
+  studyPlanId,
   onPrev,
   onNext,
   canNavigate,
@@ -76,6 +78,18 @@ export const ProblemHeader = ({
         <Logo showName={false} />
         <Divider orientation="vertical" flexItem />
         <Stack direction="row">
+          {studyPlanId ? (
+            <Button
+              component={RouterLink}
+              to={getResourceById(resources.StudyPlan, studyPlanId)}
+              variant="text"
+              color="secondary"
+              startIcon={<IconifyIcon icon="mdi:map-outline" />}
+              sx={{ textTransform: 'none' }}
+            >
+              {t('problems.studyPlans.pageTitle')}
+            </Button>
+          ) : null}
           <Button
             component={RouterLink}
             to={resources.Problems}

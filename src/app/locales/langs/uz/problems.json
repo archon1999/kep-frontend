@@ -350,6 +350,154 @@
         "fridayShort": "Ju",
         "saturdayShort": "Sha"
       }
+    },
+    "studyPlans": {
+      "title": "O'quv rejalari",
+      "subtitle": "Katta masalalar bo'limini aniq va bosqichma-bosqich yo'lga aylantiradigan tayyor o'quv rejalari.",
+      "pageTitle": "O'quv rejalari",
+      "pageIntroTitle": "Tartibli mashq",
+      "pageIntro": "Har bir o'quv rejasi masalalarni izchil trekka yig'adi, foydalanuvchi nimadan boshlashni taxmin qilmaydi.",
+      "backToProblems": "Masalalarga qaytish",
+      "backToPlans": "O'quv rejalariga qaytish",
+      "navButton": "Hammasini ko'rish",
+      "cardLabel": "O'quv rejasi",
+      "purchased": "Ochilgan",
+      "daysCount": "{{count}} kun",
+      "problemsCount": "{{count}} masala",
+      "lockedTitle": "Bu o'quv rejasi hozircha yopiq",
+      "lockedDescription": "Kunma-kun yo'l va tavsiya qilingan tartibni ko'rish uchun o'quv rejasi ochilishi kerak.",
+      "metaTitle": "O'quv rejasi haqida",
+      "priceLabel": "Ochish narxi",
+      "purchase": "O'quv rejasini ochish",
+      "otherPlans": "Boshqa o'quv rejalari",
+      "progressTitle": "O'quv rejasi progressi",
+      "progressSubtitle": "{{total}} ta masaladan {{solved}} tasi yechilgan",
+      "completed": "Bajarilgan",
+      "trackTitle": "Kunma-kun o'quv rejasi",
+      "trackSubtitle": "O'quv rejasi bo'yicha tartib bilan yuring yoki hozirgi tempingizga mos kunga o'ting.",
+      "trackLockedSubtitle": "O'quv rejasi ochilgandan keyin kunlar va masalalar ro'yxati shu yerda ko'rinadi.",
+      "lockedProblemsNotice": "Kunlik masalalar ro'yxatini ko'rish uchun o'quv rejasi ochilishi kerak.",
+      "dayLabel": "{{day}}-kun",
+      "solve": "Ishlash",
+      "likesLabel": "{{count}} лайк",
+      "dislikesLabel": "{{count}} дизлайк"
+    },
+    "recommendation": {
+      "title": "Menga mos yo'lni tavsiya et",
+      "cta": "Menga mosini tavsiya et",
+      "openPlan": "O'quv rejasini ochish",
+      "applyProblems": "Masalalarga qo'llash",
+      "planSuggestion": "Hozir sizga eng mos o'quv rejasi: {{title}}.",
+      "questions": {
+        "persona": "Hozirgi holatingizga eng yaqin variant qaysi?",
+        "personaSubtitle": "Boshlovchilar uchun savollar kamroq bo'ladi. Tajribangiz bo'lsa, aniqroq tavsiya uchun biroz ko'proq so'raymiz.",
+        "language": "Asosan qaysi tilda mashq qilasiz?",
+        "languageSubtitle": "Tavsiyalar siz ishlatadigan tilga mos bo'lishi uchun shu ma'lumotdan foydalanamiz.",
+        "beginnerGoal": "Avvalo sizga nima kerak?",
+        "beginnerPace": "Boshlanish tempi qanday bo'lsin?",
+        "interviewLevel": "Interview tayyorgarligida qaysi daraja sizga yaqinroq?",
+        "interviewTopic": "Qaysi pattern ko'proq mustahkamlashni talab qiladi?",
+        "contestLevel": "Kontest tajribangiz qanchalik?",
+        "contestFocus": "Navbatdagi mashq qanday ko'rinishda bo'lsin?",
+        "contestWeakness": "Qaysi yo'nalish sizni ko'proq sekinlashtiryapti?",
+        "contestFormat": "Qaysi formatga ko'proq urg'u beraylik?"
+      },
+      "personas": {
+        "beginner": "Endi boshlayapman",
+        "beginnerHint": "Kam savol, yengilroq start va tezroq moslashish.",
+        "interview": "LeetCode yoki interview masalalari ishlayman",
+        "interviewHint": "Patternlarga tayangan, tartibli va o'rtacha tempdagi mashq.",
+        "contest": "Kontest yoki olimpiada uslubida ishlayman",
+        "contestHint": "Tajriba va qiynalayotgan yo'nalishlarga qarab chuqurroq yo'naltiramiz."
+      },
+      "languages": {
+        "python": "Python",
+        "cpp": "C++",
+        "java": "Java"
+      },
+      "beginnerGoals": {
+        "syntax": "Sintaksis va ishonch",
+        "syntaxHint": "Yengilroq masalalar va tez-tez kichik yutuqlar.",
+        "problemSolving": "Masala yechish asoslari",
+        "problemSolvingHint": "Oddiy patternlar va biroz ko'proq xilma-xillik bilan start."
+      },
+      "pace": {
+        "light": "Yengil",
+        "steady": "Barqaror",
+        "focused": "Jadal"
+      },
+      "interviewLevels": {
+        "easy": "Ko'proq easy",
+        "medium": "Easy va medium oralig'i",
+        "mixed": "Medium va stretch"
+      },
+      "interviewTopics": {
+        "arrays": "Array va string",
+        "binarySearch": "Binary search",
+        "graphs": "Graf",
+        "dp": "DP"
+      },
+      "contestLevels": {
+        "starter": "Bir nechta kontest ishlaganman",
+        "regular": "Doimiy ishlayman",
+        "advanced": "Yaxshi contest bazam bor"
+      },
+      "contestFocus": {
+        "mixed": "Aralash ladder",
+        "upsolve": "Upsolve",
+        "topic": "Topic mustahkamlash"
+      },
+      "contestWeakness": {
+        "greedy": "Greedy",
+        "graphs": "Graf",
+        "dp": "DP",
+        "math": "Matematika"
+      },
+      "contestFormats": {
+        "short": "Qisqa roundlar",
+        "virtual": "Virtual kontest",
+        "hard": "Qiyin single masalalar"
+      },
+      "results": {
+        "beginnerTitle": "Boshlovchi o'quv rejasi tanlandi",
+        "beginnerSyntaxSubtitle": "Dastlabki qadamlar yengilroq, tushunarliroq va ishonch yig'ishga qaratiladi.",
+        "beginnerProblemSolvingSubtitle": "Birinchi pack faqat sintaksis emas, asosiy patternlarni ham qamrab oladi.",
+        "interviewTitle": "Interview practice o'quv rejasi tanlandi",
+        "interviewSubtitle": "Sizga yechilmagan masalalar ustuvor bo'lgan easy-to-medium ladder beriladi.",
+        "contestTitle": "Contest growth o'quv rejasi tanlandi",
+        "contestSubtitle": "Keyingi pack hozirgi comfort band atrofidagi yechilmagan masalalarga og'adi.",
+        "contestUpsolveSubtitle": "Keyingi pack upsolve uchun qiyinroq yechilmagan masalalarga og'adi."
+      },
+      "answerLabels": {
+        "beginner": "Boshlovchi",
+        "interview": "Interview",
+        "contest": "Contest",
+        "py": "Python",
+        "cpp": "C++",
+        "java": "Java",
+        "syntax": "Sintaksis",
+        "problem-solving": "Masala yechish",
+        "light": "Yengil temp",
+        "steady": "Barqaror temp",
+        "focused": "Jadal temp",
+        "easy": "Easy",
+        "medium": "Medium",
+        "mixed": "Aralash",
+        "arrays": "Array",
+        "binary-search": "Binary search",
+        "graphs": "Graf",
+        "dp": "DP",
+        "starter": "Boshlang'ich",
+        "regular": "Doimiy",
+        "advanced": "Kuchli",
+        "upsolve": "Upsolve",
+        "topic": "Topic",
+        "greedy": "Greedy",
+        "math": "Matematika",
+        "short": "Qisqa round",
+        "virtual": "Virtual",
+        "hard": "Qiyin single"
+      }
     }
   }
 }

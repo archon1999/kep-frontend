@@ -11,6 +11,7 @@ export interface DuelPlayer {
   ratingTitle: string;
   status?: DuelStatus | null;
   balls?: number;
+  penalty?: number;
 }
 
 export interface DuelProblem {

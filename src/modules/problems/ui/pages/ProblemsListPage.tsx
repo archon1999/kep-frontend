@@ -15,6 +15,7 @@ import {
   Divider,
   FormControlLabel,
   Grid,
+  InputAdornment,
   LinearProgress,
   List,
   ListItemButton,
@@ -30,7 +31,6 @@ import {
   TextField,
   Tooltip,
   Typography,
-  InputAdornment,
   alpha,
   useTheme,
 } from '@mui/material';
@@ -47,6 +47,7 @@ import {
   useProblemCategories,
   useProblemLanguages,
   useProblemsList,
+  useStudyPlans,
   useUserProblemsAttempts,
   useUserProblemsRating,
 } from '../../application/queries.ts';
@@ -64,6 +65,8 @@ import {
   ProblemListItem,
 } from '../../domain/entities/problem.entity.ts';
 import { ProblemsListParams } from '../../domain/ports/problems.repository.ts';
+import StudyPlanAdvisorDialog from '../components/StudyPlanAdvisorDialog.tsx';
+import StudyPlansShowcase from '../components/StudyPlansShowcase.tsx';
 
 const orderingOptions = [
   { label: 'problems.orderOldest', value: 'id' },
@@ -94,10 +97,12 @@ const ProblemsListPage = () => {
 
   const [filter, setFilter] = useState<ProblemsListParams>(initialFilter);
   const [activeTab, setActiveTab] = useState('lastContest');
+  const [isAdvisorOpen, setIsAdvisorOpen] = useState(false);
 
   const { data: problemsPage, isLoading: isProblemsLoading } = useProblemsList(filter);
   const { data: languages } = useProblemLanguages();
   const { data: categories } = useProblemCategories();
+  const { data: studyPlans } = useStudyPlans();
   const { data: mostViewed, isLoading: isMostViewedLoading } = useMostViewedProblems();
   const { data: lastContest, isLoading: isLastContestLoading } = useLastContestProblems();
   const { data: attempts, isLoading: isAttemptsLoading } = useUserProblemsAttempts(
@@ -125,6 +130,14 @@ const ProblemsListPage = () => {
 
   const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilter((prev) => ({ ...prev, pageSize: Number(event.target.value), page: 1 }));
+  };
+
+  const handleAdvisorApply = (patch: Partial<ProblemsListParams>) => {
+    setFilter((prev) => ({
+      ...prev,
+      ...patch,
+      page: 1,
+    }));
   };
 
   const toggleTag = (tagId: number) => {
@@ -245,6 +258,7 @@ const ProblemsListPage = () => {
               categories={categories ?? []}
               filter={filter}
               onChange={handleFilterChange}
+              onOpenAdvisor={() => setIsAdvisorOpen(true)}
             />
           </Grid>
           <Grid size={{ xs: 12, md: 8 }}>
@@ -273,6 +287,8 @@ const ProblemsListPage = () => {
                 />
               )}
 
+              {currentUser && studyPlans?.length && <StudyPlansShowcase studyPlans={studyPlans} />}
+
               <TabsCard
                 activeTab={activeTab}
                 onTabChange={setActiveTab}
@@ -293,6 +309,13 @@ const ProblemsListPage = () => {
           </Grid>
         </Grid>
       </Box>
+
+      <StudyPlanAdvisorDialog
+        open={isAdvisorOpen}
+        onClose={() => setIsAdvisorOpen(false)}
+        studyPlans={studyPlans ?? []}
+        onApplyFilters={handleAdvisorApply}
+      />
     </Stack>
   );
 };
@@ -302,9 +325,16 @@ interface FilterCardProps {
   categories: ProblemCategory[];
   filter: ProblemsListParams;
   onChange: <K extends keyof ProblemsListParams>(key: K, value: ProblemsListParams[K]) => void;
+  onOpenAdvisor: () => void;
 }
 
-const FilterCard = ({ languages, categories, filter, onChange }: FilterCardProps) => {
+const FilterCard = ({
+  languages,
+  categories,
+  filter,
+  onChange,
+  onOpenAdvisor,
+}: FilterCardProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const [filtersAnchor, setFiltersAnchor] = useState<HTMLElement | null>(null);
@@ -319,15 +349,16 @@ const FilterCard = ({ languages, categories, filter, onChange }: FilterCardProps
     [categories],
   );
   const groupedTags = useMemo(() => {
-    const selectedCategoryId =
-      filter.category == null ? null : String(filter.category);
+    const selectedCategoryId = filter.category == null ? null : String(filter.category);
 
     return categories
       .map((category) => ({
         id: category.id,
         title: category.title,
         isFocused: selectedCategoryId != null && String(category.id) === selectedCategoryId,
-        tags: (category.tags ?? []).slice().sort((left, right) => left.name.localeCompare(right.name)),
+        tags: (category.tags ?? [])
+          .slice()
+          .sort((left, right) => left.name.localeCompare(right.name)),
       }))
       .filter((category) => category.tags.length > 0)
       .sort((left, right) => {
@@ -511,6 +542,15 @@ const FilterCard = ({ languages, categories, filter, onChange }: FilterCardProps
               spacing={1.25}
               alignItems={{ sm: 'center' }}
             >
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<IconifyIcon icon="mdi:star-four-points-circle-outline" />}
+                onClick={onOpenAdvisor}
+                sx={{ whiteSpace: 'nowrap' }}
+              >
+                {t('problems.recommendation.cta')}
+              </Button>
               <FilterButton
                 id="problems-filters-button"
                 onClick={handleFiltersToggle}

@@ -62,6 +62,7 @@ export const mapDuelPlayer = (payload: any): DuelPlayer => ({
   ratingTitle: payload?.ratingTitle ?? payload?.rating_title ?? '',
   status: (payload?.status ?? payload?.playerStatus ?? null) as DuelPlayer['status'],
   balls: toNullableNumber(payload?.balls ?? payload?.score),
+  penalty: toNullableNumber(payload?.penalty),
 });
 
 export const mapDuelProblem = (payload: any): DuelProblem => ({

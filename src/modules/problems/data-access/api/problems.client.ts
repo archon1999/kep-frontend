@@ -18,6 +18,10 @@ export const problemsApiClient = {
   getProblemPrev: (id: number | string) => apiClient.apiProblemsPrev(String(id)),
   listLanguages: () => apiClient.apiProblemsLangs(),
   listCategories: () => apiClient.apiCategoriesList() as Promise<ProblemsCategory[]>,
+  listStudyPlans: () => apiClient.apiStudyPlansList(),
+  getStudyPlan: (id: number | string) => apiClient.apiStudyPlansRead(String(id)),
+  purchaseStudyPlan: (id: number | string) =>
+    apiClient.apiStudyPlansPurchase(String(id), {} as any),
   listMostViewed: () => apiClient.apiProblemsMostViewed(),
   getLastContest: (params?: ApiProblemsLastContestParams) =>
     apiClient.apiProblemsLastContest(params),

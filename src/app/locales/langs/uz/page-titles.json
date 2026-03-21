@@ -12,6 +12,7 @@
     "problemsRating": "Reyting - Masalalar",
     "problemsRatingHistory": "Reyting - Tarix - Masalalar",
     "problemsRatingOverall": "Reyting - Umumiy - Masalalar",
+    "studyPlans": "O'quv rejalari - Masalalar",
     "studyPlan": "{{ studyPlanTitle }} - Oʻquv rejasi - Masalalar",
     "projects": "Loyihalar",
     "project": "{{ projectTitle }} - Loyiha",
@@ -67,6 +68,7 @@
     "courseDictionaryTraining": "{{ courseTitle }} - Lugʻat mashqi - Kurs",
     "kepCover": "{{ contestTitle }} - KEP Cover",
     "login": "Tizimga kirish",
-    "notFound": "Sahifa topilmadi"
+    "notFound": "Sahifa topilmadi",
+    "forbidden": "Kirish taqiqlangan"
   }
 }

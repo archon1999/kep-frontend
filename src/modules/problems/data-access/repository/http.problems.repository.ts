@@ -20,6 +20,8 @@ import {
   ProblemsRatingRow,
   ProblemsRatingSummary,
   ProblemsUserStatistics,
+  StudyPlanDetail,
+  StudyPlanListItem,
 } from '../../domain/entities/problem.entity.ts';
 import {
   AttemptsListParams,
@@ -52,6 +54,8 @@ import {
   mapProblemsRatingPage,
   mapProblemsUserStatistics,
   mapRatingSummary,
+  mapStudyPlanDetail,
+  mapStudyPlanListItem,
   mapVerdicts,
 } from '../mappers/problems.mapper.ts';
 
@@ -119,6 +123,21 @@ export class HttpProblemsRepository implements ProblemsRepository {
 
   async removeFavorite(id: number): Promise<void> {
     await problemsApiClient.removeFavorite(id);
+  }
+
+  async listStudyPlans(): Promise<StudyPlanListItem[]> {
+    const response = await problemsApiClient.listStudyPlans();
+    const data = Array.isArray((response as any)?.data) ? (response as any).data : response;
+    return (data ?? []).map((item: any) => mapStudyPlanListItem(item));
+  }
+
+  async getStudyPlan(id: number): Promise<StudyPlanDetail> {
+    const response = await problemsApiClient.getStudyPlan(id);
+    return mapStudyPlanDetail(response);
+  }
+
+  async purchaseStudyPlan(id: number): Promise<void> {
+    await problemsApiClient.purchaseStudyPlan(id);
   }
 
   async listTags(): Promise<ProblemTag[]> {

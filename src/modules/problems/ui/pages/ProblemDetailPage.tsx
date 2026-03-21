@@ -68,6 +68,8 @@ const ProblemDetailPage = () => {
   const problemId = Number(params.id);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const studyPlanIdParam = Number(searchParams.get('study-plan'));
+  const studyPlanId = Number.isNaN(studyPlanIdParam) ? null : studyPlanIdParam;
 
   const [activeTab, setActiveTab] = useState<'description' | 'attempts' | 'stats' | 'solvers'>(
     (searchParams.get('tab') as 'attempts' | 'stats' | 'solvers') || 'description',
@@ -256,7 +258,11 @@ const ProblemDetailPage = () => {
     if (!problem?.id) return;
     const prevId = await problemsQueries.problemsRepository.getProblemPrev(problem.id);
     if (prevId) {
-      navigate(getResourceById(resources.Problem, prevId));
+      navigate(
+        `${getResourceById(resources.Problem, prevId)}${
+          studyPlanId ? `?study-plan=${studyPlanId}` : ''
+        }`,
+      );
     }
   };
 
@@ -264,7 +270,11 @@ const ProblemDetailPage = () => {
     if (!problem?.id) return;
     const nextId = await problemsQueries.problemsRepository.getProblemNext(problem.id);
     if (nextId) {
-      navigate(getResourceById(resources.Problem, nextId));
+      navigate(
+        `${getResourceById(resources.Problem, nextId)}${
+          studyPlanId ? `?study-plan=${studyPlanId}` : ''
+        }`,
+      );
     }
   };
 
@@ -479,6 +489,7 @@ const ProblemDetailPage = () => {
       }}
     >
       <ProblemHeader
+        studyPlanId={studyPlanId}
         onPrev={handlePrev}
         onNext={handleNext}
         canNavigate={Boolean(problem?.id)}

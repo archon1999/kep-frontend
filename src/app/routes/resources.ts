@@ -1,7 +1,10 @@
 export const resources = {
   Home: '/',
+  NotFound: '/404',
+  Forbidden: '/403',
 
   Problems: '/problems',
+  StudyPlans: '/problems/study-plans',
   Problem: '/problems/:id',
   ProblemsRating: '/problems/rating',
   ProblemsRatingHistory: '/problems/rating/history',

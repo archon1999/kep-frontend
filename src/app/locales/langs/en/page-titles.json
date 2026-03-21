@@ -12,6 +12,7 @@
     "problemsRating": "Rating - Problems",
     "problemsRatingHistory": "Rating - History - Problems",
     "problemsRatingOverall": "Rating - Overall - Problems",
+    "studyPlans": "Study plans - Problems",
     "studyPlan": "{{ studyPlanTitle }} - Study plan - Problems",
     "projects": "Projects",
     "project": "{{ projectTitle }} - Project",
@@ -68,6 +69,7 @@
     "courseDictionaryTraining": "{{ courseTitle }} - Dictionary training - Course",
     "kepCover": "{{ contestTitle }} - KEP Cover",
     "login": "Login",
-    "notFound": "Page not found"
+    "notFound": "Page not found",
+    "forbidden": "Access denied"
   }
 }

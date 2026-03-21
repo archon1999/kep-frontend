@@ -20,6 +20,17 @@ export const useProblemLanguages = () =>
 export const useProblemCategories = () =>
   useSWR(['problems-categories'], () => problemsRepository.listCategories());
 
+export const useStudyPlans = () =>
+  useSWR(['study-plans'], () => problemsRepository.listStudyPlans(), {
+    revalidateOnFocus: false,
+  });
+
+export const useStudyPlan = (studyPlanId?: number) =>
+  useSWR(studyPlanId ? ['study-plan', studyPlanId] : null, () => problemsRepository.getStudyPlan(studyPlanId!), {
+    keepPreviousData: true,
+    revalidateOnFocus: false,
+  });
+
 export const useMostViewedProblems = () =>
   useSWR(['problems-most-viewed'], () => problemsRepository.listMostViewed());
 

@@ -372,6 +372,154 @@
         "fridayShort": "Fri",
         "saturdayShort": "Sat"
       }
+    },
+    "studyPlans": {
+      "title": "Study plans",
+      "subtitle": "Curated tracks that turn a huge problemset into a focused path.",
+      "pageTitle": "Study plans",
+      "pageIntroTitle": "Structured practice",
+      "pageIntro": "Each plan groups problems into a consistent track so new users do not need to guess where to start.",
+      "backToProblems": "Back to problems",
+      "backToPlans": "Back to study plans",
+      "navButton": "See all",
+      "cardLabel": "Study plan",
+      "purchased": "Unlocked",
+      "daysCount": "{{count}} days",
+      "problemsCount": "{{count}} problems",
+      "lockedTitle": "This track is locked",
+      "lockedDescription": "Unlock the study plan to open the day-by-day path and the recommended problem order.",
+      "metaTitle": "Track overview",
+      "priceLabel": "Unlock cost",
+      "purchase": "Unlock study plan",
+      "otherPlans": "More study plans",
+      "progressTitle": "Track progress",
+      "progressSubtitle": "{{solved}} solved out of {{total}} problems",
+      "completed": "Completed",
+      "trackTitle": "Day-by-day track",
+      "trackSubtitle": "Follow the plan in order or jump to the day that matches your current pace.",
+      "trackLockedSubtitle": "Problems and daily structure will appear here after the plan is unlocked.",
+      "lockedProblemsNotice": "Unlock this study plan to see the daily problem list.",
+      "dayLabel": "Day {{day}}",
+      "solve": "Solve",
+      "likesLabel": "{{count}} likes",
+      "dislikesLabel": "{{count}} dislikes"
+    },
+    "recommendation": {
+      "title": "Recommend me a path",
+      "cta": "Recommend me",
+      "openPlan": "Open study plan",
+      "applyProblems": "Apply to problemset",
+      "planSuggestion": "Best matching study plan right now: {{title}}.",
+      "questions": {
+        "persona": "Which mode describes you best right now?",
+        "personaSubtitle": "We keep the survey short for beginners and ask a bit more only when you already have practice.",
+        "language": "Which language do you want to practice in?",
+        "languageSubtitle": "We use this to keep recommendations realistic for your current workflow.",
+        "beginnerGoal": "What do you need first?",
+        "beginnerPace": "How intensive should the start be?",
+        "interviewLevel": "Which interview level feels closest to you?",
+        "interviewTopic": "Which pattern needs the most repetition?",
+        "contestLevel": "How much contest experience do you have?",
+        "contestFocus": "What kind of practice do you want next?",
+        "contestWeakness": "Which area slows you down most?",
+        "contestFormat": "Which format should we bias toward?"
+      },
+      "personas": {
+        "beginner": "I am just starting",
+        "beginnerHint": "Short path, very few questions, and an easier first ladder.",
+        "interview": "I solve LeetCode / interview tasks",
+        "interviewHint": "Pattern-driven practice with medium pacing.",
+        "contest": "I solve contests / olympiad-style problems",
+        "contestHint": "More detailed branching based on experience and weaknesses."
+      },
+      "languages": {
+        "python": "Python",
+        "cpp": "C++",
+        "java": "Java"
+      },
+      "beginnerGoals": {
+        "syntax": "Syntax and confidence",
+        "syntaxHint": "Prioritize easier problems and repetitive wins.",
+        "problemSolving": "Problem-solving basics",
+        "problemSolvingHint": "Start with simple patterns and slightly more variety."
+      },
+      "pace": {
+        "light": "Light",
+        "steady": "Steady",
+        "focused": "Focused"
+      },
+      "interviewLevels": {
+        "easy": "Mostly easy",
+        "medium": "Easy to medium",
+        "mixed": "Medium with stretch"
+      },
+      "interviewTopics": {
+        "arrays": "Arrays and strings",
+        "binarySearch": "Binary search",
+        "graphs": "Graphs",
+        "dp": "Dynamic programming"
+      },
+      "contestLevels": {
+        "starter": "A few contests",
+        "regular": "Regular practice",
+        "advanced": "Strong contest background"
+      },
+      "contestFocus": {
+        "mixed": "Mixed ladder",
+        "upsolve": "Upsolving",
+        "topic": "Topic strengthening"
+      },
+      "contestWeakness": {
+        "greedy": "Greedy",
+        "graphs": "Graphs",
+        "dp": "DP",
+        "math": "Math"
+      },
+      "contestFormats": {
+        "short": "Short rounds",
+        "virtual": "Virtual contests",
+        "hard": "Hard singles"
+      },
+      "results": {
+        "beginnerTitle": "Starter track selected",
+        "beginnerSyntaxSubtitle": "We keep the first steps lighter, easier, and more confidence-oriented.",
+        "beginnerProblemSolvingSubtitle": "We tilt the first pack toward core patterns instead of only syntax drills.",
+        "interviewTitle": "Interview practice track selected",
+        "interviewSubtitle": "You will get an easier-to-medium ladder with unsolved problems prioritized.",
+        "contestTitle": "Contest growth track selected",
+        "contestSubtitle": "We bias the next pack toward unsolved tasks around your current contest comfort band.",
+        "contestUpsolveSubtitle": "We bias the next pack toward unsolved harder tasks so you can upsolve with intent."
+      },
+      "answerLabels": {
+        "beginner": "Beginner",
+        "interview": "Interview",
+        "contest": "Contest",
+        "py": "Python",
+        "cpp": "C++",
+        "java": "Java",
+        "syntax": "Syntax",
+        "problem-solving": "Problem solving",
+        "light": "Light pace",
+        "steady": "Steady pace",
+        "focused": "Focused pace",
+        "easy": "Easy",
+        "medium": "Medium",
+        "mixed": "Mixed",
+        "arrays": "Arrays",
+        "binary-search": "Binary search",
+        "graphs": "Graphs",
+        "dp": "DP",
+        "starter": "Starter contests",
+        "regular": "Regular contests",
+        "advanced": "Advanced contests",
+        "upsolve": "Upsolving",
+        "topic": "Topic focus",
+        "greedy": "Greedy",
+        "math": "Math",
+        "short": "Short rounds",
+        "virtual": "Virtual contests",
+        "hard": "Hard singles"
+      }
     }
   }
 }

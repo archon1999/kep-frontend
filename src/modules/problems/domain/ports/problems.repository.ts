@@ -22,6 +22,8 @@ import {
   ProblemsRatingRow,
   ProblemsRatingSummary,
   ProblemsUserStatistics,
+  StudyPlanDetail,
+  StudyPlanListItem,
 } from '../entities/problem.entity.ts';
 
 export interface PageResult<T> {
@@ -85,6 +87,9 @@ export interface ProblemsRepository {
   dislikeProblem(id: number): Promise<ProblemVoteResult>;
   addFavorite(id: number): Promise<ProblemVoteResult>;
   removeFavorite(id: number): Promise<void>;
+  listStudyPlans(): Promise<StudyPlanListItem[]>;
+  getStudyPlan(id: number): Promise<StudyPlanDetail>;
+  purchaseStudyPlan(id: number): Promise<void>;
   listTags(): Promise<ProblemTag[]>;
   listTopics(): Promise<ProblemTopic[]>;
   addTag(problemId: number, tagId: number): Promise<void>;
