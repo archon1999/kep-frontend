@@ -1,6 +1,6 @@
 import useSWR from 'swr';
-import { HttpUsersRepository } from '../data-access/repository/http.users.repository';
 import { HttpUserProfileRepository } from '../data-access/repository/http.user-profile.repository';
+import { HttpUsersRepository } from '../data-access/repository/http.users.repository';
 import {
   UserAchievement,
   UserCompetitionPrize,
@@ -38,16 +38,24 @@ export const useUsersChartStatistics = () =>
   });
 
 export const useUserDetails = (username?: string | null) =>
-  useSWR<UserDetails>(username ? ['user-details', username] : null, () => repository.getUser(username!), {
-    keepPreviousData: true,
-    revalidateOnFocus: false,
-  });
+  useSWR<UserDetails>(
+    username ? ['user-details', username] : null,
+    () => repository.getUser(username!),
+    {
+      keepPreviousData: true,
+      revalidateOnFocus: false,
+    },
+  );
 
 export const useUserRatings = (username?: string | null) =>
-  useSWR<UserRatings>(username ? ['user-ratings', username] : null, () => repository.getUserRatings(username!), {
-    keepPreviousData: true,
-    revalidateOnFocus: false,
-  });
+  useSWR<UserRatings>(
+    username ? ['user-ratings', username] : null,
+    () => repository.getUserRatings(username!),
+    {
+      keepPreviousData: true,
+      revalidateOnFocus: false,
+    },
+  );
 
 export const useUserAbout = (username?: string | null) =>
   useSWR<UserProfileAbout | undefined>(
@@ -84,5 +92,5 @@ export const useUserFollowers = (
   useSWR<UserFollowersPreview>(
     username ? ['user-followers', username, params?.page, params?.pageSize] : null,
     () => profileRepository.getFollowers(username!, params),
-    { revalidateOnFocus: false },
+    { keepPreviousData: true, revalidateOnFocus: false },
   );

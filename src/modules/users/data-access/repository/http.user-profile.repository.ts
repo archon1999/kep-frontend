@@ -1,5 +1,3 @@
-import { mapApiUserToDomain } from '../mappers/user.mapper';
-import { usersApiClient } from '../api/users.client';
 import {
   UserAchievement,
   UserCompetitionPrize,
@@ -8,6 +6,8 @@ import {
   UserSocialLinks,
 } from '../../domain/entities/user-profile.entity';
 import { UserProfileRepository } from '../../domain/ports/user-profile.repository';
+import { usersApiClient } from '../api/users.client';
+import { mapApiUserToDomain } from '../mappers/user.mapper';
 
 const toNumber = (value: unknown): number | null => {
   if (typeof value === 'number') {
@@ -102,7 +102,20 @@ const mapCompetitionPrize = (payload: any): UserCompetitionPrize => ({
 const mapFollowers = (payload: any): UserFollowersPreview => {
   const data = (payload?.data ?? []).map(mapApiUserToDomain);
   const total = payload?.total ?? payload?.count ?? data.length;
-  return { data, total };
+  const page = payload?.page ?? 1;
+  const pageSize = payload?.pageSize ?? data.length;
+  const count = payload?.count ?? data.length;
+  const pagesCount =
+    payload?.pagesCount ?? (pageSize > 0 ? Math.max(1, Math.ceil(total / pageSize)) : 1);
+
+  return {
+    page,
+    pageSize,
+    count,
+    pagesCount,
+    data,
+    total,
+  };
 };
 
 export class HttpUserProfileRepository implements UserProfileRepository {
@@ -123,9 +136,7 @@ export class HttpUserProfileRepository implements UserProfileRepository {
       skills: skills ? mapSkills(skills) : undefined,
       technologies: Array.isArray(technologies) ? technologies.map(mapTechnology) : [],
       educations: Array.isArray(educations) ? educations.map(mapEducation) : [],
-      workExperiences: Array.isArray(workExperiences)
-        ? workExperiences.map(mapWorkExperience)
-        : [],
+      workExperiences: Array.isArray(workExperiences) ? workExperiences.map(mapWorkExperience) : [],
     };
   }
 

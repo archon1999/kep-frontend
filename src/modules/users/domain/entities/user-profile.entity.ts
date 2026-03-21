@@ -48,6 +48,10 @@ export type UserCompetitionPrize = {
 };
 
 export type UserFollowersPreview = {
+  page: number;
+  pageSize: number;
+  count: number;
+  pagesCount: number;
   data: UsersListItem[];
   total: number;
 };
