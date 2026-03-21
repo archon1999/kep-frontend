@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router';
-import { Alert, Avatar, Box, Card, Chip, Grid, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
+import { Alert, Avatar, Box, Card, Grid, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceById, resources } from 'app/routes/resources.ts';
@@ -20,11 +20,13 @@ import ArenaCountdownCard from '../components/ArenaCountdownCard.tsx';
 import ArenaInfoCard from '../components/ArenaInfoCard.tsx';
 import ArenaPlayerStatisticsDialog from '../components/ArenaPlayerStatisticsDialog.tsx';
 import ArenaPlayersTable from '../components/ArenaPlayersTable.tsx';
+import ArenaQueueBanner from '../components/ArenaQueueBanner.tsx';
 import ArenaStatisticsCard from '../components/ArenaStatisticsCard.tsx';
 import ArenaWinnersCard from '../components/ArenaWinnersCard.tsx';
 
 
 const PLAYERS_PAGE_SIZE = 10;
+const CHALLENGES_PAGE_SIZE = 10;
 
 const ArenaDetailPage = () => {
   const { id } = useParams();
@@ -36,6 +38,7 @@ const ArenaDetailPage = () => {
   const [selectedUsername, setSelectedUsername] = useState<string | undefined>();
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
   const [transitionBanner, setTransitionBanner] = useState<{ severity: 'info' | 'success'; message: string } | null>(null);
+  const [challengesPage, setChallengesPage] = useState(1);
 
   const { data: arena, isLoading: isArenaLoading, mutate: mutateArena } = useArenaDetails(id, {
     refreshInterval: 30000,
@@ -52,7 +55,10 @@ const ArenaDetailPage = () => {
     [playersPage],
   );
 
-  const challengesFilters = useMemo(() => ({ page: 1, pageSize: 6 }), []);
+  const challengesFilters = useMemo(
+    () => ({ page: challengesPage, pageSize: CHALLENGES_PAGE_SIZE }),
+    [challengesPage],
+  );
   const liveRefreshOptions = useMemo(
     () => ({
       refreshInterval: 30000,
@@ -125,7 +131,7 @@ const ArenaDetailPage = () => {
     if (!id) return;
     const result = await arenaQueries.arenaRepository.loadNextChallenge(id);
     if (result?.challengeId) {
-      navigate(getResourceById(resources.Challenge, result.challengeId));
+      navigate(`${getResourceById(resources.Challenge, result.challengeId)}?arena=${id}`);
     }
   }, [id, navigate]);
 
@@ -142,7 +148,8 @@ const ArenaDetailPage = () => {
   useArenaLivePolling({
     arena,
     nextChallengeId: nextChallenge?.challengeId,
-    onAutoOpenChallenge: (challengeId) => navigate(getResourceById(resources.Challenge, challengeId)),
+    onAutoOpenChallenge: (challengeId) =>
+      navigate(`${getResourceById(resources.Challenge, challengeId)}?arena=${id}`),
     onStatusTransition: (status) => {
       const message =
         status === ArenaStatus.Already ? t('arena.transition.started') : t('arena.transition.finished');
@@ -162,16 +169,7 @@ const ArenaDetailPage = () => {
   });
 
   const headerTitle = useMemo(() => arena?.title ?? t('arena.title'), [arena?.title, t]);
-  const statusLabel = useMemo(() => t(`arena.status.${stateContent.statusKey}`), [stateContent.statusKey, t]);
-  const questionTimeLabel = useMemo(
-    () =>
-      arena?.questionTimeType === 2
-        ? t('arena.questionTimeType.all')
-        : t('arena.questionTimeType.one'),
-    [arena?.questionTimeType, t],
-  );
   const chapterPreview = useMemo(() => arena?.chapters?.slice(0, 4) ?? [], [arena?.chapters]);
-  const extraChaptersCount = Math.max((arena?.chapters?.length ?? 0) - chapterPreview.length, 0);
 
   return (
     <Box sx={responsivePagePaddingSx}>
@@ -209,9 +207,8 @@ const ArenaDetailPage = () => {
               </Stack>
 
               {chapterPreview.map((chapter) => (
-                <Tooltip title={chapter.title}>
+                <Tooltip key={chapter.id} title={chapter.title}>
                   <Avatar
-                    key={chapter.id}
                     src={chapter.icon}
                     alt={chapter.title}
                     sx={{ width: 36, height: 36, border: '1px solid', borderColor: 'divider' }}
@@ -240,8 +237,6 @@ const ArenaDetailPage = () => {
                   loginHref={loginHref}
                   onRegister={handleRegister}
                   onUnregister={handleUnregister}
-                  onNextChallenge={handleNextChallenge}
-                  onPauseToggle={handlePauseToggle}
                 />
                 <ArenaStatisticsCard arena={arena} stats={statistics} titleKey={stateContent.insightsTitleKey} />
               </Stack>
@@ -250,6 +245,12 @@ const ArenaDetailPage = () => {
             <Grid size={{ xs: 12, md: 8 }}>
               <Stack direction="column" spacing={3}>
                 {stateContent.isFinished ? <ArenaWinnersCard topPlayers={topPlayers} /> : null}
+                <ArenaQueueBanner
+                  arena={arena}
+                  currentChallengeId={nextChallenge?.challengeId}
+                  onOpenCurrentChallenge={handleNextChallenge}
+                  onPauseToggle={handlePauseToggle}
+                />
                 <ArenaPlayersTable
                   data={players}
                   loading={isPlayersLoading}
@@ -262,7 +263,12 @@ const ArenaDetailPage = () => {
                   status={arena.status}
                 />
                 {!stateContent.isUpcoming ? (
-                  <ArenaChallengesList data={challenges} loading={isChallengesLoading} />
+                  <ArenaChallengesList
+                    data={challenges}
+                    loading={isChallengesLoading}
+                    page={challenges?.page ?? challengesPage}
+                    onPageChange={setChallengesPage}
+                  />
                 ) : null}
               </Stack>
             </Grid>

@@ -2,9 +2,21 @@ import { instance } from 'shared/api/http/axiosInstance.ts';
 import { ArenaStatus } from '../../domain/entities/arena.entity';
 import { ArenaChallengesFilters, ArenaListFilters, ArenaPlayersFilters } from '../../domain/ports/arena.repository';
 
+const withPaginationParams = <T extends { pageSize?: number } | undefined>(filters?: T) => {
+  if (!filters) return undefined;
+
+  const params: Record<string, unknown> = { ...filters };
+  if (filters.pageSize != null) {
+    params.page_size = filters.pageSize;
+    delete params.pageSize;
+  }
+
+  return params;
+};
+
 export const arenaApiClient = {
   list: async (filters?: ArenaListFilters) => {
-    const response = await instance.get('/api/arena/', { params: filters });
+    const response = await instance.get('/api/arena/', { params: withPaginationParams(filters) });
     return response.data;
   },
   getArena: async (arenaId: number | string) => {
@@ -32,12 +44,14 @@ export const arenaApiClient = {
     return response.data;
   },
   listPlayers: async (arenaId: number | string, filters?: ArenaPlayersFilters) => {
-    const params = { ...filters, arena_id: arenaId };
+    const params = { ...withPaginationParams(filters), arena_id: arenaId };
     const response = await instance.get('/api/arena-players/', { params });
     return response.data;
   },
   listChallenges: async (arenaId: number | string, filters?: ArenaChallengesFilters) => {
-    const response = await instance.get(`/api/arena/${arenaId}/last-challenges/`, { params: filters });
+    const response = await instance.get(`/api/arena/${arenaId}/last-challenges/`, {
+      params: withPaginationParams(filters),
+    });
     return response.data;
   },
   playerStatistics: async (arenaId: number | string, username: string) => {

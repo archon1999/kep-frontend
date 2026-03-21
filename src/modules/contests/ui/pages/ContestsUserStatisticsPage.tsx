@@ -818,33 +818,6 @@ const ContestsUserStatisticsPage = () => {
   );
 
   const renderContent = () => {
-    if (!username) {
-      return (
-        <Card variant="outlined" sx={{ borderRadius: 3 }}>
-          <CardContent>
-            <Stack direction="column" spacing={2}>
-              <Typography variant="h5" fontWeight={800}>
-                {t('contests.statistics.title')}
-              </Typography>
-              <Typography variant="body1" color="text.secondary">
-                {t('contests.statistics.authRequired')}
-              </Typography>
-              <Stack direction="row" spacing={1}>
-                <Button
-                  component={RouterLink}
-                  to={resources.Login}
-                  variant="contained"
-                  color="primary"
-                >
-                  {t('contests.statistics.loginCta')}
-                </Button>
-              </Stack>
-            </Stack>
-          </CardContent>
-        </Card>
-      );
-    }
-
     if (isLoading) {
       return (
         <Card variant="outlined" sx={{ borderRadius: 3 }}>

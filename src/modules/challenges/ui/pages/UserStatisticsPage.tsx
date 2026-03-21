@@ -742,24 +742,6 @@ const UserStatisticsPage = () => {
     [navigate],
   );
 
-  if (!username) {
-    return (
-      <Stack direction="column" spacing={4}>
-        <PageHeader
-          title={t('challenges.statisticsTitle')}
-          breadcrumb={[
-            { label: t('home'), url: '/' },
-            { label: t('challenges.title'), url: resources.Challenges },
-            { label: t('challenges.statisticsTitle'), active: true },
-          ]}
-        />
-        <Box sx={responsivePagePaddingSx}>
-          <Typography variant="body1">{t('challenges.authRequired')}</Typography>
-        </Box>
-      </Stack>
-    );
-  }
-
   return (
     <Stack direction="column">
       <PageHeader

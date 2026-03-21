@@ -96,6 +96,11 @@
     "transition": {
       "started": "Arena has started. Live standings and challenges are now updating automatically.",
       "finished": "Arena has finished. Final standings and winners are now available."
+    },
+    "queue": {
+      "paused": "Queue is paused. Start it when you're ready for the next pairing.",
+      "active": "Queue is running. New arena challenges will open here automatically.",
+      "finishingSoon": "Less than two minutes remain. Finish your current arena challenge if you have one."
     }
   }
 }

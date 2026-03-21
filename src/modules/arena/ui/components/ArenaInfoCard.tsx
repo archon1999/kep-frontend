@@ -11,8 +11,6 @@ interface ArenaInfoCardProps {
   loginHref: string;
   onRegister?: () => Promise<void>;
   onUnregister?: () => Promise<void>;
-  onNextChallenge?: () => Promise<void>;
-  onPauseToggle?: () => Promise<void>;
   isLoadingAction?: boolean;
 }
 
@@ -33,8 +31,6 @@ const ArenaInfoCard = ({
   loginHref,
   onRegister,
   onUnregister,
-  onNextChallenge,
-  onPauseToggle,
   isLoadingAction,
 }: ArenaInfoCardProps) => {
   const { t } = useTranslation();
@@ -92,6 +88,10 @@ const ArenaInfoCard = ({
       );
     }
 
+    if (isOngoing && isRegistered) {
+      return null;
+    }
+
     if (!isRegistered) {
       return (
         <Button
@@ -107,45 +107,7 @@ const ArenaInfoCard = ({
       );
     }
 
-    if (arena.pause) {
-      return (
-        <Button
-          fullWidth
-          color="success"
-          variant="contained"
-          onClick={onPauseToggle}
-          disabled={isLoadingAction}
-          startIcon={<IconifyIcon icon="mdi:play-circle-outline" />}
-        >
-          {t('arena.actions.start')}
-        </Button>
-      );
-    }
-
-    return (
-      <Stack direction="column" spacing={1.25}>
-        <Button
-          fullWidth
-          color="success"
-          variant="contained"
-          onClick={onNextChallenge}
-          disabled={isLoadingAction}
-          startIcon={<IconifyIcon icon="mdi:lightning-bolt-outline" />}
-        >
-          {t('arena.actions.nextChallenge')}
-        </Button>
-        <Button
-          fullWidth
-          color="warning"
-          variant="outlined"
-          onClick={onPauseToggle}
-          disabled={isLoadingAction}
-          startIcon={<IconifyIcon icon="mdi:pause-circle-outline" />}
-        >
-          {t('arena.actions.pause')}
-        </Button>
-      </Stack>
-    );
+    return null;
   };
 
   return (

@@ -388,23 +388,6 @@ const ProblemsUserStatisticsPage = () => {
     [locale],
   );
 
-  if (!username) {
-    return (
-      <Stack spacing={3}>
-        <PageHeader
-          title={t('problems.statisticsPage.title')}
-          breadcrumb={[
-            { label: t('problems.title'), url: resources.Problems },
-            { label: t('contests.tabs.statistics'), active: true },
-          ]}
-        />
-        <Box sx={{ px: { xs: 3, md: 5 } }}>
-          <Typography variant="body1">{t('problems.statisticsPage.authRequired')}</Typography>
-        </Box>
-      </Stack>
-    );
-  }
-
   return (
     <Stack spacing={3}>
       <PageHeader

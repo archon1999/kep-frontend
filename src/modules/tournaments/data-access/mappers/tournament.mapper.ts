@@ -6,14 +6,14 @@ import {
   TournamentStage,
   TournamentStageDuel,
 } from 'shared/api/orval/generated/endpoints/index.schemas';
-import {
+import type {
+  PageResult,
   TournamentDetailEntity,
   TournamentListItem,
   TournamentPlayerProfile,
   TournamentStageInfo,
   TournamentStageMatch,
-} from '../../domain/entities/tournament.entity';
-import { PageResult } from '../../domain/ports/tournaments.repository';
+} from '../../domain';
 
 const mapTournamentPlayer = (payload?: TournamentPlayer): TournamentPlayerProfile => ({
   id: payload?.id ?? 0,

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams, useSearchParams } from 'react-router';
 import {
+  Avatar,
   Box,
   Button,
   Card,
@@ -59,6 +60,9 @@ const ChallengeDetailPage = () => {
 
   const questionCardRef = useRef<ChallengeQuestionCardHandle>(null);
   const timerStartedRef = useRef(false);
+  const finishHandledRef = useRef(false);
+  const blurCheckTimeoutRef = useRef<ReturnType<typeof window.setTimeout> | null>(null);
+  const suppressBlurUntilRef = useRef(0);
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [timerRunning, setTimerRunning] = useState(false);
   const [startDialogOpen, setStartDialogOpen] = useState(false);
@@ -69,6 +73,7 @@ const ChallengeDetailPage = () => {
     () => challenge?.nextQuestion?.question,
     [challenge?.nextQuestion?.question],
   );
+  const blurProtectionActive = challenge?.status === ChallengeStatus.Already && Boolean(question);
 
   useEffect(() => {
     if (!challenge || challenge.status !== ChallengeStatus.Already || !question) {
@@ -110,16 +115,117 @@ const ChallengeDetailPage = () => {
   }, [timerRunning, secondsLeft, challenge?.questionTimeType]);
 
   useEffect(() => {
-    const handleBlur = () => {
-      if (!challenge?.nextQuestion?.question || challenge.status === ChallengeStatus.Finished) {
-        return;
-      }
-      setBlurDialogOpen(true);
+    if (!challenge) return;
+
+    if (challenge.status === ChallengeStatus.NotStarted) {
+      setStartDialogOpen(true);
+      finishHandledRef.current = false;
+      return;
+    }
+
+    setStartDialogOpen(false);
+  }, [challenge?.id, challenge?.status]);
+
+  useEffect(() => {
+    if (!challenge || challenge.status !== ChallengeStatus.Finished) {
+      finishHandledRef.current = false;
+      return;
+    }
+
+    if (finishHandledRef.current) return;
+    finishHandledRef.current = true;
+
+    if (arenaId) {
+      navigate(resources.ArenaTournament.replace(':id', arenaId), { replace: true });
+      return;
+    }
+
+    setFinishDialogOpen(true);
+  }, [arenaId, challenge, navigate]);
+
+  useEffect(() => {
+    const markTransientBlur = () => {
+      suppressBlurUntilRef.current = Date.now() + 800;
     };
 
-    window.addEventListener('blur', handleBlur);
-    return () => window.removeEventListener('blur', handleBlur);
-  }, [challenge]);
+    window.addEventListener('dragstart', markTransientBlur, true);
+    window.addEventListener('dragenter', markTransientBlur, true);
+    window.addEventListener('dragover', markTransientBlur, true);
+    window.addEventListener('dragend', markTransientBlur, true);
+    window.addEventListener('drop', markTransientBlur, true);
+
+    return () => {
+      window.removeEventListener('dragstart', markTransientBlur, true);
+      window.removeEventListener('dragenter', markTransientBlur, true);
+      window.removeEventListener('dragover', markTransientBlur, true);
+      window.removeEventListener('dragend', markTransientBlur, true);
+      window.removeEventListener('drop', markTransientBlur, true);
+    };
+  }, []);
+
+  useEffect(() => {
+    const clearPendingBlurCheck = () => {
+      if (blurCheckTimeoutRef.current != null) {
+        window.clearTimeout(blurCheckTimeoutRef.current);
+        blurCheckTimeoutRef.current = null;
+      }
+    };
+
+    if (!blurProtectionActive) {
+      clearPendingBlurCheck();
+      setBlurDialogOpen(false);
+      return;
+    }
+
+    const scheduleBlurCheck = () => {
+      clearPendingBlurCheck();
+
+      blurCheckTimeoutRef.current = window.setTimeout(() => {
+        blurCheckTimeoutRef.current = null;
+
+        if (Date.now() < suppressBlurUntilRef.current) {
+          return;
+        }
+
+        const pageHidden = document.visibilityState === 'hidden';
+        const pageFocused = document.hasFocus();
+
+        if (!pageHidden && pageFocused) {
+          return;
+        }
+
+        setBlurDialogOpen(true);
+      }, 150);
+    };
+
+    const handleWindowBlur = () => {
+      scheduleBlurCheck();
+    };
+
+    const handleWindowFocus = () => {
+      clearPendingBlurCheck();
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        scheduleBlurCheck();
+        return;
+      }
+
+      clearPendingBlurCheck();
+    };
+
+    window.addEventListener('blur', handleWindowBlur);
+    window.addEventListener('focus', handleWindowFocus);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      clearPendingBlurCheck();
+      window.removeEventListener('blur', handleWindowBlur);
+      window.removeEventListener('focus', handleWindowFocus);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [blurProtectionActive]);
 
   const handleStart = async () => {
     if (!challenge) return;
@@ -178,121 +284,125 @@ const ChallengeDetailPage = () => {
   }
 
   const showQuestion = challenge.status === ChallengeStatus.Already && question;
+  const hideBackgroundContent = challenge.status === ChallengeStatus.NotStarted;
   const timerModeLabel =
     challenge.questionTimeType === ChallengeQuestionTimeType.TimeToOne
       ? t('challenges.timer.perQuestion')
       : t('challenges.timer.wholeChallenge');
 
   return (
-    <Box sx={responsivePagePaddingSx}>
-      <Stack spacing={3} direction="column">
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 3 }}>
-            <ChallengeResultsCard challenge={challenge} />
-          </Grid>
+    <Box
+      sx={{
+        ...responsivePagePaddingSx,
+        minHeight: hideBackgroundContent ? '70vh' : undefined,
+      }}
+    >
+      {!hideBackgroundContent ? (
+        <Stack spacing={3} direction="column">
+          <Grid container spacing={3}>
+            <Grid size={{ xs: 12, md: 3 }}>
+              <ChallengeResultsCard challenge={challenge} />
+            </Grid>
 
-          <Grid size={{ xs: 12, md: 6 }}>
-            {showQuestion ? (
-              <ChallengeQuestionCard
-                ref={questionCardRef}
-                question={question}
-                onSubmit={handleSubmit}
-                disabled={submitting}
-                isSubmitting={submitting}
-              />
-            ) : (
-              <Card variant="outlined" sx={{ height: '100%' }}>
-                <CardContent>
-                  <Stack spacing={2}>
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <KepIcon name="challenge-time" fontSize={20} color="primary.main" />
-                      <Typography variant="subtitle1" fontWeight={700}>
+            <Grid size={{ xs: 12, md: 6 }}>
+              {showQuestion ? (
+                <ChallengeQuestionCard
+                  ref={questionCardRef}
+                  question={question}
+                  onSubmit={handleSubmit}
+                  disabled={submitting}
+                  isSubmitting={submitting}
+                />
+              ) : (
+                <Card variant="outlined" sx={{ height: '100%' }}>
+                  <CardContent>
+                    <Stack spacing={2}>
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <KepIcon name="challenge-time" fontSize={20} color="primary.main" />
+                        <Typography variant="subtitle1" fontWeight={700}>
+                          {challenge.status === ChallengeStatus.Finished
+                            ? t('challenges.statusFinished')
+                            : t('challenges.statusNotStarted')}
+                        </Typography>
+                      </Stack>
+                      <Typography variant="body2" color="text.secondary">
                         {challenge.status === ChallengeStatus.Finished
-                          ? t('challenges.statusFinished')
-                          : t('challenges.statusNotStarted')}
+                          ? t('challenges.finishedDescription')
+                          : t('challenges.waitingForStart')}
                       </Typography>
                     </Stack>
-                    <Typography variant="body2" color="text.secondary">
-                      {challenge.status === ChallengeStatus.Finished
-                        ? t('challenges.finishedDescription')
-                        : t('challenges.waitingForStart')}
-                    </Typography>
-                    {challenge.status === ChallengeStatus.NotStarted ? (
-                      <Button
-                        variant="contained"
-                        onClick={handleStart}
-                        disabled={starting}
-                        sx={{ alignSelf: 'flex-start' }}
-                      >
-                        {t('challenges.start')}
-                      </Button>
-                    ) : null}
-                  </Stack>
-                </CardContent>
-              </Card>
-            )}
-          </Grid>
+                  </CardContent>
+                </Card>
+              )}
+            </Grid>
 
-          <Grid size={{ xs: 12, md: 3 }}>
-            <Stack direction="column" spacing={2} height="100%">
-              <ChallengeCountdown
-                secondsLeft={secondsLeft}
-                totalSeconds={challenge.timeSeconds}
-                mode={challenge.questionTimeType}
-              />
-            </Stack>
+            <Grid size={{ xs: 12, md: 3 }}>
+              <Stack direction="column" spacing={2} height="100%">
+                <ChallengeCountdown
+                  secondsLeft={secondsLeft}
+                  totalSeconds={challenge.timeSeconds}
+                  mode={challenge.questionTimeType}
+                />
+              </Stack>
+            </Grid>
           </Grid>
-        </Grid>
-      </Stack>
+        </Stack>
+      ) : null}
 
       <Dialog
         open={startDialogOpen}
-        onClose={() => setStartDialogOpen(false)}
+        onClose={() => undefined}
+        disableEscapeKeyDown
         fullWidth
         maxWidth="sm"
+        slotProps={{
+          backdrop: {
+            sx: {
+              backgroundColor: 'rgba(10, 16, 24, 0.72)',
+              backdropFilter: 'blur(6px)',
+            },
+          },
+        }}
       >
-        <DialogTitle>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <KepIcon name="challenge-time" fontSize={20} color="primary.main" />
-            <Typography variant="h6">{t('challenges.startDialogTitle')}</Typography>
-          </Stack>
-        </DialogTitle>
-        <DialogContent dividers>
-          <Stack spacing={2}>
-            <Typography variant="body2" color="text.secondary">
-              {t('challenges.startDialogSubtitle')}
-            </Typography>
-            <Stack
-              direction="row"
-              spacing={1}
-              justifyContent="space-between"
-              alignItems="center"
-              flexWrap="wrap"
-              useFlexGap
-            >
+        <DialogContent sx={{ py: 4 }}>
+          <Stack spacing={2.5}>
+            <Stack direction="column" spacing={1} alignItems="center" textAlign="center">
+              <Avatar sx={{ width: 56, height: 56, bgcolor: 'primary.lighter', color: 'primary.main' }}>
+                <KepIcon name="challenge-time" fontSize={24} color="primary.main" />
+              </Avatar>
+              <Typography variant="h5" fontWeight={900}>
+                {t('challenges.startDialogTitle')}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {t('challenges.startDialogSubtitle')}
+              </Typography>
+            </Stack>
+
+            <Stack direction="row" spacing={1} justifyContent="center" flexWrap="wrap" useFlexGap>
+              <Chip
+                label={challenge.rated ? t('challenges.rated') : t('challenges.unrated')}
+                variant="outlined"
+              />
+              <Chip label={t('challenges.timeLimitShort', { seconds: challenge.timeSeconds })} />
+              <Chip label={t('challenges.questionsCount', { count: challenge.questionsCount })} />
+              <Chip label={timerModeLabel} />
+            </Stack>
+
+            <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
               <ChallengeUserChip player={challenge.playerFirst} />
               <Typography variant="h6" fontWeight={900} color="primary.main">
                 VS
               </Typography>
               <ChallengeUserChip player={challenge.playerSecond} align="right" />
             </Stack>
-            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-              <Chip
-                label={challenge.rated ? t('challenges.rated') : t('challenges.unrated')}
-                variant="outlined"
-              />
-              <Chip label={t('challenges.questionsCount', { count: challenge.questionsCount })} />
-              <Chip label={t('challenges.timeLimitShort', { seconds: challenge.timeSeconds })} />
-              <Chip label={timerModeLabel} />
+
+            <Stack direction="row" justifyContent="center">
+              <Button variant="contained" onClick={handleStart} disabled={starting}>
+                {t('challenges.start')}
+              </Button>
             </Stack>
           </Stack>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setStartDialogOpen(false)}>{t('common.close')}</Button>
-          <Button variant="contained" onClick={handleStart} disabled={starting}>
-            {t('challenges.start')}
-          </Button>
-        </DialogActions>
       </Dialog>
 
       <Dialog open={finishDialogOpen} onClose={handleStayOnPage} fullWidth maxWidth="md">

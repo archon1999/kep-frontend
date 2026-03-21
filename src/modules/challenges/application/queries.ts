@@ -30,8 +30,13 @@ export const useChallengesList = (params?: {
   );
 
 export const useChallengeDetail = (challengeId?: string) =>
-  useSWR<Challenge>(challengeId ? ['challenge-detail', challengeId] : null, () =>
-    challengesRepository.getChallenge(challengeId!),
+  useSWR<Challenge>(
+    challengeId ? ['challenge-detail', challengeId] : null,
+    () => challengesRepository.getChallenge(challengeId!),
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
   );
 
 export const useChallengesRating = (params?: { page?: number; pageSize?: number; ordering?: string }) =>

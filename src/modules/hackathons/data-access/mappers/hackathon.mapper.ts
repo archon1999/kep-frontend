@@ -1,8 +1,6 @@
-import { Hackathon as HackathonDto } from 'shared/api/orval/generated/endpoints/index.schemas';
-import { Hackathon } from '../../domain/entities/hackathon.entity';
-import { HackathonProject, HackathonRegistrant, HackathonStanding } from '../../domain/entities/hackathon-project.entity';
-import { PageResult } from '../../domain/ports/hackathons.repository';
 import { mapProjectDetailToDomain, mapProjectListToDomain } from 'modules/projects/data-access/mappers/project.mapper';
+import type { Hackathon as HackathonDto } from 'shared/api/orval/generated/endpoints/index.schemas';
+import type { Hackathon, HackathonProject, HackathonRegistrant, HackathonStanding, PageResult } from '../../domain';
 
 export const mapHackathon = (payload: HackathonDto): Hackathon => ({
   id: payload?.id ?? 0,

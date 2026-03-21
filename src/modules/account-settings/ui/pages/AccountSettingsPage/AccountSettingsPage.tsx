@@ -3,16 +3,12 @@ import { useTranslation } from 'react-i18next';
 import { TabContext } from '@mui/lab';
 import { useLocation, useNavigate } from 'react-router';
 import {
-  Alert,
-  Button,
-  Container,
   Divider,
   Drawer,
   Paper,
   Stack,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useAuth } from 'app/providers/AuthProvider';
 import { useBreakpoints } from 'app/providers/BreakpointsProvider';
 import { useNavContext } from 'app/layouts/main-layout/NavProvider';
 import SimpleBar from 'shared/components/base/SimpleBar.tsx';
@@ -35,13 +31,13 @@ import {
   accountSettingsTabRoutes,
   getAccountSettingsTabValue,
 } from 'modules/account-settings/ui/shared';
+import { Container } from '@mui/system';
 
 const AccountSettingsPage = () => {
   const { t } = useTranslation();
   const { down } = useBreakpoints();
   const theme = useTheme();
   const downMd = down('md');
-  const { currentUser } = useAuth();
   const { topbarHeight } = useNavContext();
   const location = useLocation();
   const navigate = useNavigate();
@@ -140,19 +136,6 @@ const AccountSettingsPage = () => {
       navigate(nextRoute);
     }
   };
-
-  if (!currentUser) {
-    return (
-      <Container sx={{ py: 4 }}>
-        <Alert
-          severity="info"
-          action={<Button href="/authentication/login">{t('pageTitles.login')}</Button>}
-        >
-          {t('settings.loginRequired')}
-        </Alert>
-      </Container>
-    );
-  }
 
   return (
     <Paper background={1}>

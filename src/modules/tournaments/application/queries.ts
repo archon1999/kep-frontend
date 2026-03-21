@@ -1,20 +1,24 @@
-import useSWR from 'swr';
-import { ApiTournamentsListParams } from 'shared/api/orval/generated/endpoints/index.schemas';
-import { HttpTournamentsRepository } from '../data-access/repository/http.tournaments.repository';
-import { TournamentDetailEntity, TournamentListItem } from '../domain/entities/tournament.entity';
-import { PageResult } from '../domain/ports/tournaments.repository';
+import useSWR, { type SWRConfiguration } from 'swr';
+import type { ApiTournamentsListParams } from 'shared/api/orval/generated/endpoints/index.schemas';
+import { tournamentsRepository } from '../data-access';
+import type { PageResult, TournamentDetailEntity, TournamentListItem } from '../domain';
+import { tournamentsKeys } from './keys';
 
-const tournamentsRepository = new HttpTournamentsRepository();
-
-export const useTournamentsList = (params?: ApiTournamentsListParams) =>
+export const useTournamentsList = (
+  params?: ApiTournamentsListParams,
+  config?: SWRConfiguration<PageResult<TournamentListItem>>,
+) =>
   useSWR<PageResult<TournamentListItem>>(
-    ['tournaments-list', params?.page, params?.pageSize],
+    tournamentsKeys.list(params as Record<string, unknown> | undefined),
     () => tournamentsRepository.list(params),
+    {
+      suspense: false,
+      ...config,
+    },
   );
 
-export const useTournament = (id?: string) =>
-  useSWR<TournamentDetailEntity>(id ? ['tournament', id] : null, () => tournamentsRepository.getById(id!));
-
-export const tournamentsQueries = {
-  tournamentsRepository,
-};
+export const useTournament = (id?: string, config?: SWRConfiguration<TournamentDetailEntity>) =>
+  useSWR<TournamentDetailEntity>(id ? tournamentsKeys.detail(id) : null, () => tournamentsRepository.getById(id!), {
+    suspense: false,
+    ...config,
+  });

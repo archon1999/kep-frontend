@@ -96,6 +96,11 @@
     "transition": {
       "started": "Arena boshlandi. Jonli natijalar va bellashuvlar avtomatik yangilanmoqda.",
       "finished": "Arena yakunlandi. Final natijalar va g'oliblar tayyor."
+    },
+    "queue": {
+      "paused": "Navbat pauzada. Keyingi juftlikka tayyor bo'lsangiz uni boshlang.",
+      "active": "Navbat ishlayapti. Yangi arena bellashuvlari shu yerdan avtomatik ochiladi.",
+      "finishingSoon": "Arena tugashiga ikki daqiqadan kam qoldi. Agar joriy bellashuvingiz bo'lsa, uni yakunlang."
     }
   }
 }

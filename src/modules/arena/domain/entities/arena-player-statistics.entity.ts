@@ -1,5 +1,7 @@
 export interface ArenaPlayerStatistics {
   username: string;
+  avatar?: string;
+  rating: number;
   rankTitle: string;
   performance: number;
   challenges: number;
@@ -9,5 +11,11 @@ export interface ArenaPlayerStatistics {
   winRate: number;
   drawRate: number;
   lossRate: number;
-  opponents: Array<{ username: string; result: number }>;
+  opponents: Array<{
+    username: string;
+    avatar?: string;
+    rankTitle?: string;
+    rating?: number;
+    result: number;
+  }>;
 }

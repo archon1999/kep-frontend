@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, type ReactNode } from 'react';
 import { Outlet, RouteObject, createBrowserRouter, useLocation } from 'react-router';
 import App from 'app/App.tsx';
 import AuthLayout from 'app/layouts/auth-layout';
@@ -6,6 +6,7 @@ import DefaultAuthLayout from 'app/layouts/auth-layout/DefaultAuthLayout';
 import MainLayout from 'app/layouts/main-layout';
 import Page404 from 'modules/errors/ui/pages/Page404';
 import PageLoader from 'shared/components/loading/PageLoader';
+import AuthGuard from 'shared/components/guard/AuthGuard';
 import { resources } from './resources';
 import { legacyRedirectRoutes } from './legacy-routes';
 import { authPaths, rootPaths } from './route-config';
@@ -86,6 +87,8 @@ const UserProfileAchievementsTab = lazy(
 const CalendarPage = lazy(() => import('modules/calendar/ui/pages/CalendarPage'));
 
 const Login = lazy(() => import('modules/authentication/ui/pages/LoginPage'));
+
+const withAuthGuard = (element: ReactNode) => <AuthGuard>{element}</AuthGuard>;
 
 export const SuspenseOutlet = () => {
   const location = useLocation();
@@ -170,7 +173,7 @@ export const routes: RouteObject[] = [
           },
           {
             path: resources.ProblemsUserStatistics,
-            element: <ProblemsUserStatisticsPage />,
+            element: withAuthGuard(<ProblemsUserStatisticsPage />),
             handle: { titleKey: 'pageTitles.problemsStats' },
           },
           {
@@ -228,7 +231,7 @@ export const routes: RouteObject[] = [
           },
           {
             path: resources.ChallengesUserStatistics,
-            element: <ChallengeUserStatisticsPage />,
+            element: withAuthGuard(<ChallengeUserStatisticsPage />),
             handle: { titleKey: 'pageTitles.challengesStats' },
           },
           {
@@ -263,7 +266,7 @@ export const routes: RouteObject[] = [
           },
           {
             path: resources.ContestsUserStatistics,
-            element: <ContestsUserStatisticsPage />,
+            element: withAuthGuard(<ContestsUserStatisticsPage />),
             handle: { titleKey: 'pageTitles.contestsStats' },
           },
           {
@@ -386,12 +389,12 @@ export const routes: RouteObject[] = [
           },
           {
             path: resources.BlogCreate,
-            element: <BlogEditorPage />,
+            element: withAuthGuard(<BlogEditorPage />),
             handle: { titleKey: 'pageTitles.blog' },
           },
           {
             path: resources.BlogEdit,
-            element: <BlogEditorPage />,
+            element: withAuthGuard(<BlogEditorPage />),
             handle: { titleKey: 'pageTitles.blogPost', fallbackTitleKey: 'pageTitles.blog' },
           },
           {
@@ -401,42 +404,42 @@ export const routes: RouteObject[] = [
           },
           {
             path: resources.Settings,
-            element: <AccountSettingsPage />,
+            element: withAuthGuard(<AccountSettingsPage />),
             handle: { titleKey: 'pageTitles.accountSettings' },
           },
           {
             path: resources.SettingsChangePassword,
-            element: <AccountSettingsPage />,
+            element: withAuthGuard(<AccountSettingsPage />),
             handle: { titleKey: 'pageTitles.accountSettings' },
           },
           {
             path: resources.SettingsInformation,
-            element: <AccountSettingsPage />,
+            element: withAuthGuard(<AccountSettingsPage />),
             handle: { titleKey: 'pageTitles.accountSettings' },
           },
           {
             path: resources.SettingsSocial,
-            element: <AccountSettingsPage />,
+            element: withAuthGuard(<AccountSettingsPage />),
             handle: { titleKey: 'pageTitles.accountSettings' },
           },
           {
             path: resources.SettingsSkills,
-            element: <AccountSettingsPage />,
+            element: withAuthGuard(<AccountSettingsPage />),
             handle: { titleKey: 'pageTitles.accountSettings' },
           },
           {
             path: resources.SettingsCareer,
-            element: <AccountSettingsPage />,
+            element: withAuthGuard(<AccountSettingsPage />),
             handle: { titleKey: 'pageTitles.accountSettings' },
           },
           {
             path: resources.SettingsTeams,
-            element: <AccountSettingsPage />,
+            element: withAuthGuard(<AccountSettingsPage />),
             handle: { titleKey: 'pageTitles.accountSettings' },
           },
           {
             path: resources.SettingsSystem,
-            element: <AccountSettingsPage />,
+            element: withAuthGuard(<AccountSettingsPage />),
             handle: { titleKey: 'pageTitles.accountSettings' },
           },
         ],

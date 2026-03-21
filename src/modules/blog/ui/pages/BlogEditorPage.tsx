@@ -649,8 +649,6 @@ const BlogEditorPage = () => {
       <Stack spacing={{ xs: 3, md: 5 }}>
         <Typography variant="h4">{headerTitle}</Typography>
 
-        {!currentUser ? <Alert severity="warning">{t('blog.editor.authRequired')}</Alert> : null}
-
         <Grid container columnSpacing={3} rowSpacing={5}>
           <Grid size={{ xs: 12, lg: 7 }}>
             <Stack direction="column" height={1}>
@@ -1039,7 +1037,7 @@ const BlogEditorPage = () => {
               variant="soft"
               color="neutral"
               onClick={() => handlePersist('draft')}
-              disabled={isBusy || !currentUser}
+              disabled={isBusy}
               startIcon={
                 isCreating || isUpdating ? <CircularProgress color="inherit" size={18} /> : undefined
               }
@@ -1051,7 +1049,7 @@ const BlogEditorPage = () => {
               <Button
                 variant="contained"
                 onClick={() => handlePersist('submit')}
-                disabled={submitDisabled || !currentUser}
+                disabled={submitDisabled}
                 startIcon={isSubmitting ? <CircularProgress color="inherit" size={18} /> : undefined}
               >
                 {t('blog.editor.actions.submitForReview')}

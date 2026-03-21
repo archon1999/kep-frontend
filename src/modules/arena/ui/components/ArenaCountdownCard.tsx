@@ -20,21 +20,15 @@ const formatDuration = (diffMs: number) => {
 const ArenaCountdownCard = ({ arena }: ArenaCountdownCardProps) => {
   const { t } = useTranslation();
   const [now, setNow] = useState(dayjs());
-  const [upcomingTotalMs, setUpcomingTotalMs] = useState(1);
 
   useEffect(() => {
     const timer = setInterval(() => setNow(dayjs()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    if (!arena || arena.status !== ArenaStatus.NotStarted) return;
-    setUpcomingTotalMs(Math.max(dayjs(arena.startTime).diff(dayjs()), 1));
-  }, [arena?.id, arena?.startTime, arena?.status]);
-
-  const { label, progress, timerLabel } = useMemo(() => {
+  const { label, progress, timerLabel, showProgress } = useMemo(() => {
     if (!arena) {
-      return { label: '', progress: 0, timerLabel: '00:00:00' };
+      return { label: '', progress: 0, timerLabel: '00:00:00', showProgress: false };
     }
 
     if (arena.status === ArenaStatus.NotStarted) {
@@ -42,8 +36,9 @@ const ArenaCountdownCard = ({ arena }: ArenaCountdownCardProps) => {
       const remaining = start.diff(now, 'millisecond');
       return {
         label: t('arena.countdown.untilStart'),
-        progress: Math.min(100, Math.max(0, 100 - (remaining / upcomingTotalMs) * 100)),
+        progress: 0,
         timerLabel: formatDuration(remaining),
+        showProgress: false,
       };
     }
 
@@ -56,6 +51,7 @@ const ArenaCountdownCard = ({ arena }: ArenaCountdownCardProps) => {
         label: t('arena.countdown.untilFinish'),
         progress: Math.min(100, Math.max(0, 100 - (remaining / total) * 100)),
         timerLabel: formatDuration(remaining),
+        showProgress: true,
       };
     }
 
@@ -63,8 +59,9 @@ const ArenaCountdownCard = ({ arena }: ArenaCountdownCardProps) => {
       label: t('arena.countdown.finished'),
       progress: 100,
       timerLabel: '00:00:00',
+      showProgress: true,
     };
-  }, [arena, now, t, upcomingTotalMs]);
+  }, [arena, now, t]);
 
   return (
     <Card sx={{ outline: 'none', borderRadius: 3 }} background={1}>
@@ -76,12 +73,14 @@ const ArenaCountdownCard = ({ arena }: ArenaCountdownCardProps) => {
           <Typography variant="h4" fontWeight={800} color="text.primary">
             {timerLabel}
           </Typography>
-          <LinearProgress
-            value={progress}
-            variant="determinate"
-            color={arena?.status === ArenaStatus.Already ? 'success' : 'warning'}
-            sx={{ height: 10, borderRadius: 5 }}
-          />
+          {showProgress ? (
+            <LinearProgress
+              value={progress}
+              variant="determinate"
+              color={arena?.status === ArenaStatus.Already ? 'success' : 'warning'}
+              sx={{ height: 10, borderRadius: 5 }}
+            />
+          ) : null}
         </Stack>
       </CardContent>
     </Card>

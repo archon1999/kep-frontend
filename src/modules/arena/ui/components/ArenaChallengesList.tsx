@@ -1,4 +1,4 @@
-import { Card, CardContent, Grid, Skeleton, Stack, Typography } from '@mui/material';
+import { Card, CardContent, Grid, Pagination, Skeleton, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import ChallengeCard from 'modules/challenges/ui/components/ChallengeCard.tsx';
 import { Challenge, ChallengePlayer, ChallengeQuestionTimeType, ChallengeStatus } from 'modules/challenges/domain';
@@ -8,6 +8,8 @@ import { PageResult } from '../../domain/ports/arena.repository.ts';
 interface ArenaChallengesListProps {
   data?: PageResult<ArenaChallenge>;
   loading?: boolean;
+  page: number;
+  onPageChange: (page: number) => void;
 }
 
 const mapArenaChallengeToChallenge = (challenge: ArenaChallenge): Challenge => {
@@ -36,7 +38,7 @@ const mapArenaChallengeToChallenge = (challenge: ArenaChallenge): Challenge => {
   };
 };
 
-const ArenaChallengesList = ({ data, loading }: ArenaChallengesListProps) => {
+const ArenaChallengesList = ({ data, loading, page, onPageChange }: ArenaChallengesListProps) => {
   const { t } = useTranslation();
 
   const challenges = data?.data?.map(mapArenaChallengeToChallenge) ?? [];
@@ -67,6 +69,16 @@ const ArenaChallengesList = ({ data, loading }: ArenaChallengesListProps) => {
             </Typography>
           </CardContent>
         </Card>
+      ) : null}
+      {data?.pagesCount && data.pagesCount > 1 ? (
+        <Stack direction="column" alignItems="center">
+          <Pagination
+            color="warning"
+            count={data.pagesCount}
+            page={page}
+            onChange={(_, value) => onPageChange(value)}
+          />
+        </Stack>
       ) : null}
     </Stack>
   );
