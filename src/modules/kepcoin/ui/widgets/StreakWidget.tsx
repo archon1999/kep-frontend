@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Card, CardContent, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Card, CardContent, Skeleton, Stack, Typography } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import KepcoinValue from 'shared/components/common/KepcoinValue.tsx';
+import KepcoinValue from 'shared/components/common/KepcoinValue';
 import Streak from 'shared/components/rating/Streak';
-import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 
 interface StreakWidgetProps {
@@ -22,101 +22,122 @@ const StreakWidget = ({
   maxStreak = 0,
   streakFreeze = 0,
   isLoading,
-  onPurchaseStreakFreeze,
 }: StreakWidgetProps) => {
   const { t } = useTranslation();
 
-  const renderStat = (label: string, content: ReactNode, tooltip?: string, action?: ReactNode) => {
-    const node = (
-      <Stack direction="row" spacing={0.75} minWidth={160}>
-        <Typography variant="caption" color="text.secondary" textTransform="uppercase">
-          {label}
-        </Typography>
-        {action ? (
-          <Stack direction="row" spacing={1.25} alignItems="center" justifyContent="space-between" flexWrap="wrap">
-            {content}
-            {action}
-          </Stack>
-        ) : (
-          content
-        )}
-      </Stack>
-    );
-
-    if (tooltip) {
-      return (
-        <Tooltip title={tooltip} arrow>
-          {node}
-        </Tooltip>
-      );
-    }
-
-    return node;
-  };
-
-  const streakFreezeAction = (
-    <KepcoinSpendConfirm
-      value={10}
-      purchaseUrl="/api/purchase-streak-freeze"
-      onSuccess={onPurchaseStreakFreeze}
-      disabled={isLoading}
+  const renderMetric = (
+    label: string,
+    content: ReactNode,
+    tone: 'warning' | 'info' = 'warning',
+  ) => (
+    <Box
+      sx={{
+        flex: 1,
+        p: 2,
+        borderRadius: 4,
+        bgcolor: (theme) =>
+          alpha(tone === 'warning' ? theme.palette.warning.main : theme.palette.info.main, 0.08),
+        border: (theme) =>
+          `1px solid ${alpha(
+            tone === 'warning' ? theme.palette.warning.main : theme.palette.info.main,
+            0.14,
+          )}`,
+      }}
     >
-      <Button
-        size="small"
-        variant="contained"
-        disabled={isLoading}
-        sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}
-      >
-        {t('kepcoinPage.streakFreeze.purchaseAction')}
-        <KepcoinValue value={10} iconSize={16} textVariant="caption" fontWeight={700} />
-      </Button>
-    </KepcoinSpendConfirm>
+      <Typography variant="caption" color="text.secondary" textTransform="uppercase">
+        {label}
+      </Typography>
+      <Box mt={1}>{content}</Box>
+    </Box>
   );
 
   return (
-    <Card>
+    <Card
+      sx={{
+        borderRadius: 5,
+        border: (theme) => `1px solid ${alpha(theme.palette.warning.main, 0.14)}`,
+        boxShadow: '0 24px 50px rgba(18, 28, 45, 0.08)',
+      }}
+    >
       <CardContent sx={responsivePagePaddingSx}>
-        <Stack direction="column" spacing={3}>
-          {isLoading ? (
-            <Skeleton variant="text" width={240} height={48} />
-          ) : (
-            <Typography variant="h3" fontWeight={700}>
-              <Stack direction="row" spacing={1}>
-                You have <KepcoinValue iconSize={32} textVariant="h3" value={balance}></KepcoinValue>
-              </Stack>
-            </Typography>
-          )}
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} flexWrap="nowrap">
-            {renderStat(
+        <Stack spacing={3}>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            justifyContent="space-between"
+            alignItems={{ xs: 'flex-start', sm: 'center' }}
+            gap={2}
+          >
+            <Stack spacing={0.75}>
+              <Typography variant="caption" color="text.secondary" textTransform="uppercase">
+                {t('kepcoinSpend.balanceLabel')}
+              </Typography>
+              {isLoading ? (
+                <Skeleton variant="rounded" width={132} height={42} />
+              ) : (
+                <KepcoinValue
+                  value={balance}
+                  iconSize={28}
+                  textVariant="h4"
+                  fontWeight={800}
+                  color="text.primary"
+                />
+              )}
+            </Stack>
+
+            <Stack direction="row" spacing={1} alignItems="center" color="text.secondary">
+              <IconifyIcon icon="solar:shield-check-line-duotone" fontSize={20} color="info.main" />
+              <Typography variant="body2" color="inherit">
+                {t('kepcoinPage.hero.freezeTitle')}
+              </Typography>
+            </Stack>
+          </Stack>
+
+          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+            {renderMetric(
               t('kepcoinPage.streakStats.current'),
               isLoading ? (
-                <Skeleton variant="rounded" width={140} height={32} />
+                <Skeleton variant="rounded" width={110} height={36} />
               ) : (
-                <Streak streak={streak} maxStreak={maxStreak} iconSize={22} spacing={0.75} />
+                <Streak
+                  streak={streak}
+                  maxStreak={maxStreak}
+                  iconSize={24}
+                  textVariant="h5"
+                  fontWeight={800}
+                />
               ),
             )}
-            {renderStat(
+            {renderMetric(
               t('kepcoinPage.streakStats.max'),
               isLoading ? (
-                <Skeleton variant="rounded" width={140} height={32} />
+                <Skeleton variant="rounded" width={110} height={36} />
               ) : (
-                <Streak streak={maxStreak} maxStreak={maxStreak} iconSize={22} spacing={0.75} />
+                <Streak
+                  streak={maxStreak}
+                  maxStreak={maxStreak}
+                  iconSize={24}
+                  textVariant="h5"
+                  fontWeight={800}
+                />
               ),
             )}
-            {renderStat(
-              t('kepcoinPage.streakFreeze.label'),
+            {renderMetric(
+              t('kepcoinPage.hero.statLabels.freeze'),
               isLoading ? (
-                <Skeleton variant="text" width={200} />
+                <Skeleton variant="rounded" width={74} height={36} />
               ) : (
-                <Stack direction="row" spacing={0.75} alignItems="center">
-                  <IconifyIcon icon="solar:snowflake-line-duotone" fontSize={20} color="info.main" />
-                  <Typography variant="body2" fontWeight={600} color="text.primary">
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <IconifyIcon
+                    icon="solar:snowflake-line-duotone"
+                    fontSize={22}
+                    color="info.main"
+                  />
+                  <Typography variant="h5" fontWeight={800}>
                     {streakFreeze}
                   </Typography>
                 </Stack>
               ),
-              t('kepcoinPage.streakFreeze.description'),
-              streakFreezeAction,
+              'info',
             )}
           </Stack>
         </Stack>

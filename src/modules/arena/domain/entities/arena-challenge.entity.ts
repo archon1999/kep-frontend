@@ -1,5 +1,6 @@
 export interface ArenaChallengePlayer {
   username: string;
+  avatar?: string;
   rankTitle: string;
   rating: number;
   result: number;
@@ -13,5 +14,6 @@ export interface ArenaChallenge {
   finished: string | null;
   questionsCount: number;
   timeSeconds: number;
+  questionTimeType?: number;
   rated: boolean;
 }

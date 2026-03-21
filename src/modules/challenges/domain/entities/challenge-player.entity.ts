@@ -1,5 +1,6 @@
 export interface ChallengePlayer {
   username: string;
+  avatar?: string;
   result: number;
   results: number[];
   rating: number;

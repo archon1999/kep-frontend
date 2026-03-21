@@ -91,6 +91,8 @@
       "heroEyebrow": "Blog kabineti",
       "createTitle": "Blog yaratish",
       "editTitle": "Blogni tahrirlash",
+      "translationLabel": "Til",
+      "translationHint": "Blogning UZ, RU va EN variantlarini to'ldirish uchun tablarni almashtiring.",
       "draftHint": "Draft blog reviewga yuborilmaguncha faqat sizga ko'rinadi.",
       "pendingHint": "Bu blog review jarayonida. Siz hali ham matnini yangilashingiz mumkin.",
       "publishedHint": "Published blogni tahrirlash statusini o'zgartirmaydi.",
@@ -101,18 +103,39 @@
       "forbidden": "Bu blogni tahrirlashga ruxsat yo'q.",
       "fields": {
         "title": "Sarlavha",
+        "titlePlaceholder": "Sarlavha",
         "titleHint": "Blog uchun aniq sarlavha yozing.",
+        "subText": "Qisqa matn",
+        "subTextPlaceholder": "Qisqa tavsif yozing",
         "tags": "Teglar",
         "tagsHint": "Har bir tegdan keyin Enter bosing.",
+        "tagsPlaceholder": "Yozing va Enter bosing",
+        "tagsLimit": "Maksimum 10 ta",
         "coverImage": "Cover rasmi",
         "coverImageEmpty": "Blog uchun cover rasmi yuklang.",
+        "coverImageDrop": "Faylni shu yerga tashlang",
+        "coverImageBrowse": "yoki qurilmadan tanlang",
+        "coverImageReplace": "Tanlangan rasmni almashtiring",
+        "coverImageHelper": "Rasm JPEG yoki PNG formatda, 15MB gacha bo'lishi kerak. Eng yaxshi natija uchun 16:9 nisbat tavsiya qilinadi.",
+        "topics": "Topiklar",
+        "topicsPlaceholder": "Tanlang",
+        "canonicalLink": "Canonical link",
+        "canonicalLinkPlaceholder": "Havola",
+        "language": "Til",
+        "languageOptions": {
+          "uz": "O'zbek",
+          "ru": "Rus",
+          "en": "Ingliz"
+        },
         "body": "Matn",
         "bodyPlaceholder": "Blog matnini shu yerga yozing..."
       },
+      "previewLabel": "Ko'rinish",
       "previewTitle": "Jonli preview",
       "previewSubtitle": "Blog nashr qilinishidan oldin qanday ko'rinishini shu yerda ko'ring.",
       "previewPlaceholderTitle": "Blog sarlavhasi shu yerda chiqadi",
       "previewEmpty": "Preview ko'rish uchun yozishni boshlang.",
+      "previewEmptyState": "Hozircha kontent yo'q. Yozishni boshlash uchun \"Hikoyani yozish\" ni bosing.",
       "detailsTitle": "Post tafsilotlari",
       "detailsSubtitle": "O'quvchilar topishi uchun asosiy sarlavha va teglarni kiriting.",
       "coverTitle": "Cover rasmi",
@@ -124,6 +147,7 @@
         "saveDraft": "Draftni saqlash",
         "submitForReview": "Reviewga yuborish",
         "saveChanges": "O'zgarishlarni saqlash",
+        "writeStory": "Hikoyani yozish",
         "uploadImage": "Rasm yuklash",
         "removeImage": "Rasmni olib tashlash",
         "backToBlogs": "Bloglarimga qaytish",
@@ -131,7 +155,8 @@
       },
       "validation": {
         "titleRequired": "Sarlavha majburiy.",
-        "bodyRequired": "Matn majburiy."
+        "bodyRequired": "Matn majburiy.",
+        "translationRequired": "Kamida bitta tilda sarlavha va matn bo'lishi kerak."
       },
       "statusDescription": {
         "draft": "Qoralama bloglar reviewga yuborilmaguncha faqat sizga ko'rinadi.",
@@ -143,6 +168,8 @@
       "saved": "Draft saqlandi.",
       "updated": "Blog yangilandi.",
       "submittedForReview": "Blog reviewga yuborildi.",
+      "saveFailed": "Blogni saqlab bo'lmadi.",
+      "submitFailed": "Blogni reviewga yuborib bo'lmadi.",
       "linkCopied": "Blog havolasi nusxalandi."
     }
   }

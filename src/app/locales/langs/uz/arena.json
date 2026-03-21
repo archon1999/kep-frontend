@@ -1,8 +1,8 @@
 {
   "arena": {
     "title": "Arena",
-    "listSubtitle": "Siz uchun {{count}} ta turnir ochiq.",
-    "listEmptySubtitle": "Arena turnirlari topilmadi.",
+    "listSubtitle": "Siz uchun {{count}} ta arena ochiq.",
+    "listEmptySubtitle": "Hozircha arena topilmadi.",
     "searchPlaceholder": "Arena qidirish",
     "status": {
       "upcoming": "Tez orada",
@@ -13,48 +13,89 @@
     "minutes": "daq",
     "questions": "Savollar",
     "timeline": {
-      "start": "Turnir boshlanishi",
-      "finish": "Turnir yakunlanishi"
+      "start": "Arena boshlanishi",
+      "finish": "Arena yakunlanishi"
     },
     "now": "Hozir",
     "about": "Arena haqida",
-    "registered": "Roʻyhatdan oʻtilgan",
-    "duration": "Bellashuv vaqti",
+    "registered": "Ro'yxatdan o'tilgan",
+    "duration": "Har bellashuv vaqti",
+    "questionTimeType": {
+      "label": "Savol vaqti turi",
+      "one": "Time to one",
+      "all": "Time to all"
+    },
     "actions": {
-      "register": "Roʻyhatdan oʻtish",
-      "nextChallenge": "Keyingi bellashuv",
-      "start": "Boshlash",
-      "pause": "Pauza"
+      "register": "Arena'ga qo'shilish",
+      "unregister": "Ro'yxatdan chiqish",
+      "nextChallenge": "Joriy bellashuvni ochish",
+      "start": "Navbatni boshlash",
+      "pause": "Navbatni pauza qilish",
+      "login": "Qo'shilish uchun kiring"
     },
     "countdown": {
       "untilStart": "Boshlanishiga",
       "untilFinish": "Yakunlanishiga",
-      "finished": "Turnir yakunlandi"
+      "finished": "Arena yakunlandi"
     },
-    "players": "Ishtirokchilar",
+    "players": "Natijalar",
     "participants": "ishtirokchi",
     "columns": {
+      "rank": "O'rin",
       "user": "Foydalanuvchi",
+      "rating": "Reyting",
       "results": "Natijalar",
-      "points": "Ochko"
+      "points": "Ochko",
+      "buchholz": "Buxgols"
     },
-    "challenges": "Soʻnggi bellashuvlar",
-    "noChallenges": "Hali bellashuvlar yoʻq.",
+    "challenges": "So'nggi bellashuvlar",
+    "noChallenges": "Hali bellashuvlar yo'q.",
     "statistics": "Arena statistikasi",
-    "averageRating": "Oʻrtacha reyting",
-    "totalChallenges": "Oʻtkazilgan bellashuvlar",
-    "selectPlayer": "Statistikani koʻrish uchun ishtirokchini tanlang",
+    "averageRating": "O'rtacha reyting",
+    "totalChallenges": "Jami bellashuvlar",
+    "selectPlayer": "Statistikani ko'rish uchun ishtirokchini tanlang",
     "playerStatistics": "Ishtirokchi statistikasi",
     "statisticsLabels": {
       "challenges": "Bellashuvlar",
-      "wins": "Gʻalabalar",
+      "wins": "G'alabalar",
       "draws": "Durranglar",
-      "losses": "Magʻlubiyatlar",
-      "winRate": "Gʻalaba foizi",
+      "losses": "Mag'lubiyatlar",
+      "winRate": "G'alaba foizi",
       "drawRate": "Durrang foizi",
-      "lossRate": "Magʻlubiyat foizi"
+      "lossRate": "Mag'lubiyat foizi"
     },
     "opponents": "Raqiblar",
-    "winners": "Arena gʻoliblari"
+    "winners": "Arena g'oliblari",
+    "winnerStats": {
+      "wins": "G'alaba: {{count}}",
+      "draws": "Durrang: {{count}}",
+      "losses": "Mag'lubiyat: {{count}}"
+    },
+    "winnersPlace": "{{place}}-o'rin",
+    "performanceShort": "Perf",
+    "previewLabel": "Arena boshlanishidan oldin",
+    "liveLabel": "Arena jonli",
+    "finishedLabel": "Arena final",
+    "chaptersLabel": "Bo'limlar",
+    "stateDescriptions": {
+      "upcoming": "Arena hali boshlanmagan. Hozir ro'yxatdan o'ting va boshlanishigacha ro'yxatdan chiqishingiz mumkin.",
+      "ongoing": "Arena davom etmoqda. Navbatga kiring, avtomatik juftlaning va seriyani ushlab turing.",
+      "finished": "Arena yakunlandi. Final natijalar, g'oliblar va so'nggi bellashuvlarni ko'ring."
+    },
+    "insights": {
+      "upcomingTitle": "Arena boshlanishidan oldin",
+      "liveTitle": "Jonli arena",
+      "finishedTitle": "Yakuniy arena natijalari",
+      "participants": "Ro'yxatdan o'tganlar soni",
+      "longestWinStreak": "Eng uzun g'alabalar seriyasi",
+      "highestPerformance": "Eng yuqori performance",
+      "highestWinRate": "Eng yuqori g'alaba nisbati",
+      "noLeader": "Hali yetarli ma'lumot yo'q",
+      "minChallenges": "Kamida {{count}} ta bellashuv"
+    },
+    "transition": {
+      "started": "Arena boshlandi. Jonli natijalar va bellashuvlar avtomatik yangilanmoqda.",
+      "finished": "Arena yakunlandi. Final natijalar va g'oliblar tayyor."
+    }
   }
 }

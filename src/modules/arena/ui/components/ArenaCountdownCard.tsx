@@ -13,21 +13,28 @@ interface ArenaCountdownCardProps {
 
 const formatDuration = (diffMs: number) => {
   const d = dayjs.duration(Math.max(diffMs, 0));
+  const days = String(d.days()).padStart(2, '0');
   const hours = String(d.hours()).padStart(2, '0');
   const minutes = String(d.minutes()).padStart(2, '0');
   const seconds = String(d.seconds()).padStart(2, '0');
 
-  return `${hours}:${minutes}:${seconds}`;
+  return `${days}:${hours}:${minutes}:${seconds}`;
 };
 
 const ArenaCountdownCard = ({ arena }: ArenaCountdownCardProps) => {
   const { t } = useTranslation();
   const [now, setNow] = useState(dayjs());
+  const [upcomingTotalMs, setUpcomingTotalMs] = useState(1);
 
   useEffect(() => {
     const timer = setInterval(() => setNow(dayjs()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    if (!arena || arena.status !== ArenaStatus.NotStarted) return;
+    setUpcomingTotalMs(Math.max(dayjs(arena.startTime).diff(dayjs()), 1));
+  }, [arena?.id, arena?.startTime, arena?.status]);
 
   const { label, progress, timerLabel } = useMemo(() => {
     if (!arena) {
@@ -36,11 +43,10 @@ const ArenaCountdownCard = ({ arena }: ArenaCountdownCardProps) => {
 
     if (arena.status === ArenaStatus.NotStarted) {
       const start = dayjs(arena.startTime);
-      const total = start.diff(dayjs(arena.startTime).subtract(arena.timeSeconds, 'second'), 'millisecond');
       const remaining = start.diff(now, 'millisecond');
       return {
         label: t('arena.countdown.untilStart'),
-        progress: Math.min(100, Math.max(0, 100 - (remaining / total) * 100)),
+        progress: Math.min(100, Math.max(0, 100 - (remaining / upcomingTotalMs) * 100)),
         timerLabel: formatDuration(remaining),
       };
     }
@@ -62,7 +68,7 @@ const ArenaCountdownCard = ({ arena }: ArenaCountdownCardProps) => {
       progress: 100,
       timerLabel: '00:00:00',
     };
-  }, [arena, now, t]);
+  }, [arena, now, t, upcomingTotalMs]);
 
   return (
     <Card sx={{ outline: 'none', borderRadius: 3 }} background={1}>

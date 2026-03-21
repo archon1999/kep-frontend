@@ -20,8 +20,9 @@ export interface Arena {
   finishNaturaltime: string;
   timeSeconds: number;
   questionsCount: number;
-  isRegistrated: boolean;
-  pause: boolean;
+  questionTimeType: number;
+  isRegistrated: boolean | null;
+  pause: boolean | null;
   winner: unknown;
   chapters: ArenaChapter[];
 }

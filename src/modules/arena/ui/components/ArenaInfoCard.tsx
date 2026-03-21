@@ -1,14 +1,18 @@
 import { ReactNode } from 'react';
 import { Button, Card, CardContent, Chip, Divider, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
+import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import { Arena, ArenaStatus } from '../../domain/entities/arena.entity.ts';
 
 interface ArenaInfoCardProps {
   arena: Arena;
+  loginHref: string;
   onRegister?: () => Promise<void>;
+  onUnregister?: () => Promise<void>;
   onNextChallenge?: () => Promise<void>;
+  onPauseToggle?: () => Promise<void>;
   isLoadingAction?: boolean;
 }
 
@@ -24,13 +28,71 @@ const InfoRow = ({ label, value, icon }: { label: string; value: ReactNode; icon
   </Stack>
 );
 
-const ArenaInfoCard = ({ arena, onRegister, onNextChallenge, isLoadingAction }: ArenaInfoCardProps) => {
+const ArenaInfoCard = ({
+  arena,
+  loginHref,
+  onRegister,
+  onUnregister,
+  onNextChallenge,
+  onPauseToggle,
+  isLoadingAction,
+}: ArenaInfoCardProps) => {
   const { t } = useTranslation();
+  const isGuest = arena.isRegistrated === null;
+  const isRegistered = Boolean(arena.isRegistrated);
+  const isUpcoming = arena.status === ArenaStatus.NotStarted;
+  const isOngoing = arena.status === ArenaStatus.Already;
+  const isFinished = arena.status === ArenaStatus.Finished;
 
-  const renderAction = () => {
-    if (arena.status === ArenaStatus.Finished) return null;
+  const renderActions = () => {
+    if (isFinished) return null;
 
-    if (!arena.isRegistrated) {
+    if (isGuest) {
+      return (
+        <Button
+          fullWidth
+          color="warning"
+          variant="contained"
+          component={RouterLink}
+          to={loginHref}
+          startIcon={<IconifyIcon icon="mdi:login-variant" />}
+        >
+          {t('arena.actions.login')}
+        </Button>
+      );
+    }
+
+    if (isUpcoming) {
+      if (!isRegistered) {
+        return (
+          <Button
+            fullWidth
+            color="warning"
+            variant="contained"
+            onClick={onRegister}
+            disabled={isLoadingAction}
+            startIcon={<IconifyIcon icon="mdi:ticket-confirmation-outline" />}
+          >
+            {t('arena.actions.register')}
+          </Button>
+        );
+      }
+
+      return (
+        <Button
+          fullWidth
+          color="error"
+          variant="outlined"
+          onClick={onUnregister}
+          disabled={isLoadingAction}
+          startIcon={<IconifyIcon icon="mdi:close-circle-outline" />}
+        >
+          {t('arena.actions.unregister')}
+        </Button>
+      );
+    }
+
+    if (!isRegistered) {
       return (
         <Button
           fullWidth
@@ -45,8 +107,23 @@ const ArenaInfoCard = ({ arena, onRegister, onNextChallenge, isLoadingAction }: 
       );
     }
 
-    if (arena.status === ArenaStatus.Already) {
+    if (arena.pause) {
       return (
+        <Button
+          fullWidth
+          color="success"
+          variant="contained"
+          onClick={onPauseToggle}
+          disabled={isLoadingAction}
+          startIcon={<IconifyIcon icon="mdi:play-circle-outline" />}
+        >
+          {t('arena.actions.start')}
+        </Button>
+      );
+    }
+
+    return (
+      <Stack direction="column" spacing={1.25}>
         <Button
           fullWidth
           color="success"
@@ -57,10 +134,18 @@ const ArenaInfoCard = ({ arena, onRegister, onNextChallenge, isLoadingAction }: 
         >
           {t('arena.actions.nextChallenge')}
         </Button>
-      );
-    }
-
-    return null;
+        <Button
+          fullWidth
+          color="warning"
+          variant="outlined"
+          onClick={onPauseToggle}
+          disabled={isLoadingAction}
+          startIcon={<IconifyIcon icon="mdi:pause-circle-outline" />}
+        >
+          {t('arena.actions.pause')}
+        </Button>
+      </Stack>
+    );
   };
 
   return (
@@ -68,30 +153,19 @@ const ArenaInfoCard = ({ arena, onRegister, onNextChallenge, isLoadingAction }: 
       <CardContent sx={{ p: 3 }}>
         <Stack direction="column" spacing={2}>
           <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
-            <Stack direction="column" spacing={0.5}>
+            <Stack direction="column" spacing={0.75}>
               <Typography variant="h5" fontWeight={800} color="text.primary">
                 {t('arena.about')}
               </Typography>
-              <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
-                <Chip
-                  label={t('arena.statusLabel', { status: t(`arena.status.${arena.status === ArenaStatus.Already ? 'live' : arena.status === ArenaStatus.Finished ? 'finished' : 'upcoming'}`) })}
-                  color={arena.status === ArenaStatus.Already ? 'success' : arena.status === ArenaStatus.Finished ? 'default' : 'warning'}
-                  variant={arena.status === ArenaStatus.Already ? 'filled' : 'outlined'}
-                  size="small"
-                />
-                {arena.chapters?.map((chapter) => (
-                  <Chip key={chapter.id} label={chapter.title} size="small" variant="soft" color="primary" />
-                ))}
-              </Stack>
             </Stack>
-            {arena.isRegistrated && (
+            {isRegistered && !isFinished ? (
               <Chip
                 color="success"
                 variant="soft"
                 label={t('arena.registered')}
                 icon={<IconifyIcon icon="mdi:check-circle-outline" fontSize={18} />}
               />
-            )}
+            ) : null}
           </Stack>
 
           <Divider />
@@ -109,9 +183,18 @@ const ArenaInfoCard = ({ arena, onRegister, onNextChallenge, isLoadingAction }: 
             />
             <InfoRow label={t('arena.duration')} value={`${arena.timeSeconds}s`} icon="mdi:timer-outline" />
             <InfoRow label={t('arena.questions')} value={arena.questionsCount} icon="mdi:help-circle-outline" />
+            <InfoRow
+              label={t('arena.questionTimeType.label')}
+              value={
+                arena.questionTimeType === 2
+                  ? t('arena.questionTimeType.all')
+                  : t('arena.questionTimeType.one')
+              }
+              icon="mdi:clock-fast"
+            />
           </Stack>
 
-          {renderAction()}
+          {renderActions()}
         </Stack>
       </CardContent>
     </Card>

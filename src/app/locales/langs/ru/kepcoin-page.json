@@ -14,6 +14,33 @@
     "youHave": "У вас {{value}} Kepcoin",
     "balanceSubtitle": "Следите, как вы зарабатываете и тратите Kepcoin каждый день.",
     "valueLabel": "{{value}} Kepcoin",
+    "hero": {
+      "eyebrow": "Kepcoin кошелек",
+      "title": "Баланс",
+      "subtitle": "Управляйте балансом, серией и следующими полезными unlock'ами из одного дашборда.",
+      "balanceCaption": "Здесь в одном месте видны ваш баланс, запас серии и самые полезные способы использовать Kepcoin.",
+      "goalEyebrow": "Следующая цель",
+      "goalReadyTitle": "Streak Freeze уже готов",
+      "goalPendingTitle": "Еще {{value}} Kepcoin",
+      "goalReadySubtitle": "Используйте запас, чтобы не потерять серию в загруженный день.",
+      "goalPendingSubtitle": "Небольшой запас помогает сохранить ритм, когда график становится плотнее.",
+      "statLabels": {
+        "streak": "Текущая серия",
+        "maxStreak": "Лучшая серия",
+        "freeze": "Запас freeze"
+      },
+      "freezeTitle": "Защита серии",
+      "freezeSubtitle": "Если вы пропустите день, Streak Freeze сохранит вашу серию.",
+      "freezeNeedMore": "Нужно ещё {{value}} Kepcoin",
+      "freezeReady": "Баланса хватает для заморозки"
+    },
+    "streakCard": {
+      "eyebrow": "Daily rhythm",
+      "title": "Держите серию горячей",
+      "subtitle": "Собирайте маленькие ежедневные награды и сохраняйте ритм через Streak Freeze, когда это нужно.",
+      "balanceLabel": "Баланс",
+      "freezeTitle": "Защита серии"
+    },
     "streakStats": {
       "current": "Текущая серия",
       "max": "Максимальная серия"
@@ -26,6 +53,7 @@
       "purchaseAction": "Купить заморозку"
     },
     "history": {
+      "subtitle": "Здесь собираются все начисления и траты, чтобы вы быстро понимали источник баланса и его расход.",
       "title": "История Kepcoin",
       "tabs": {
         "earns": "Заработки",
@@ -38,7 +66,8 @@
       "note": "Заметка: {{note}}",
       "noDate": "Время не указано",
       "detail": "{{base}} · {{detail}}",
-      "defaultLabel": "Операция с Kepcoin"
+      "defaultLabel": "Операция с Kepcoin",
+      "notePrefix": "Примечание"
     },
     "tasks": {
       "title": "Kepcoin tasks",
@@ -447,7 +476,7 @@
         "ratingWinner": "За победу в ежедневном, еженедельном и ежемесячном рейтинге задач",
         "competitions": "За участие в соревнованиях",
         "blog": "За написание блога",
-        "problemEditing": "За помощь в редактировании задач (написание решений, перевод, добавление тегов, поиск похожих задач)"
+        "oneTimeTasks": "За одноразовые задания"
       }
     },
     "howToSpend": {
@@ -460,8 +489,53 @@
         "passTest": "Пройти тест",
         "course": "Покупка курса",
         "testFunction": "Функция тестирования при редактировании кода (полностью)",
-        "doubleRating": "Двойное изменение рейтинга на контесте (изменяется, даже если отрицательное)",
-        "keepRating": "Сохранить рейтинг на контесте (не начисляется, если отрицательный)"
+        "merch": "Мерч магазина"
+      }
+    },
+    "earnBoard": {
+      "title": "Быстрые способы заработать сегодня",
+      "subtitle": "Самые стабильные источники Kepcoin с лучшей повторяемой выгодой.",
+      "items": {
+        "daily": {
+          "title": "Ежедневный ритм",
+          "description": "Ежедневные визиты, активность и маленькие победы дают устойчивый рост."
+        },
+        "tasks": {
+          "title": "Быстрые onboarding-задачи",
+          "description": "Заполнение профиля, привязка аккаунтов и короткие внутренние задачи дают самый быстрый старт."
+        },
+        "competitive": {
+          "title": "Буст от контестов и арены",
+          "description": "Больше усилий, выше награда. Рейтинги и соревнования могут быстро поднять баланс."
+        },
+        "community": {
+          "title": "Контент и contribution",
+          "description": "Блоги, решения и улучшения материалов дают наибольшую долгосрочную ценность."
+        }
+      }
+    },
+    "spendBoard": {
+      "title": "Можно открыть уже сейчас",
+      "subtitle": "Полезные возможности, которые доступны с вашим текущим балансом.",
+      "ready": "Готово",
+      "needMore": "Нужно еще {{value}}",
+      "items": {
+        "freeze": {
+          "title": "Streak Freeze",
+          "description": "Сохраните серию, если нужно пропустить один день."
+        },
+        "cover": {
+          "title": "Cover photo",
+          "description": "Быстро освежите профиль и сделайте его более личным."
+        },
+        "tests": {
+          "title": "Просмотр упавшего теста",
+          "description": "Быстрее поймите ошибку и отправьте следующий сабмит точнее."
+        },
+        "double": {
+          "title": "Double rating",
+          "description": "Сыграйте в риск-награду на контесте, когда нужен большой скачок."
+        }
       }
     },
     "earnTypes": {
@@ -499,6 +573,20 @@
       "answerForInput": "Ответ для ввода",
       "checkSamples": "Проверка примеров",
       "merch": "Мерч"
+    },
+    "actions": {
+      "openDailyTasks": "Daily tasks",
+      "openRating": "Рейтинг",
+      "openArena": "Arena",
+      "openContests": "Контесты",
+      "writeBlog": "Новый блог",
+      "openOneTimeTasks": "Задания",
+      "openAttempts": "Попытки",
+      "openTests": "Тесты",
+      "openProblems": "Задачи",
+      "openKepCover": "Kep Cover",
+      "openSettings": "Настройки",
+      "openShop": "Магазин"
     }
   }
 }

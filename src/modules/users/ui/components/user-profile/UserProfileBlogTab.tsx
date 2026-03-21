@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useParams } from 'react-router';
 import dayjs from 'dayjs';
 import {
-  Alert,
   Box,
   Button,
   Chip,
@@ -212,49 +211,63 @@ const UserProfileBlogTab = () => {
   }, [username, isOwner]);
 
   const handleSubmit = async (postId: number) => {
-    await submitForReview(postId);
-    await globalMutate((key) => Array.isArray(key) && key[0] === blogKeys.all[0]);
-    toast.success(t('blog.messages.submittedForReview'));
+    try {
+      await submitForReview(postId);
+      await globalMutate((key) => Array.isArray(key) && key[0] === blogKeys.all[0]);
+      toast.success(t('blog.messages.submittedForReview'));
+    } catch {
+      toast.error(t('blog.messages.submitFailed'));
+    }
   };
 
   return (
     <Stack spacing={2.5}>
-      <Paper background={1} sx={{ p: { xs: 3, md: 4 }, borderRadius: 4 }}>
+      {isOwner ? (
         <Stack
-          direction={{ xs: 'column', lg: 'row' }}
-          spacing={2}
-          alignItems={{ xs: 'flex-start', lg: 'center' }}
+          direction="row"
           justifyContent="space-between"
+          alignItems="center"
         >
-          <Stack spacing={0.75} sx={{ maxWidth: 720 }}>
-            <Typography variant="overline" color="text.secondary" fontWeight={700}>
-              {t(isOwner ? 'blog.profile.ownerEyebrow' : 'blog.profile.publicEyebrow')}
-            </Typography>
-            <Typography variant="h4" fontWeight={800} sx={{ letterSpacing: '-0.02em' }}>
-              {isOwner ? t('blog.profile.ownerTitle') : t('blog.profile.publicTitle')}
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              {isOwner ? t('blog.profile.ownerSubtitle') : t('blog.profile.publicSubtitle')}
-            </Typography>
-          </Stack>
+          <Typography variant="h4" fontWeight={800} sx={{ letterSpacing: '-0.02em' }}>
+            Bloglar{' '}
+            <Box component="sup" sx={{ fontSize: '0.5em', fontWeight: 500, color: 'text.secondary' }}>
+              ({total})
+            </Box>
+          </Typography>
 
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} useFlexGap flexWrap="wrap">
-            <Chip label={t('blog.resultsCount', { count: total })} variant="outlined" />
-            {isOwner ? (
-              <Button
-                component={RouterLink}
-                to={resources.BlogCreate}
-                variant="contained"
-                startIcon={<KepIcon name="upload" fontSize={18} />}
-              >
-                {t('blog.profile.create')}
-              </Button>
-            ) : null}
-          </Stack>
+          <Button
+            component={RouterLink}
+            to={resources.BlogCreate}
+            variant="contained"
+            startIcon={<KepIcon name="upload" fontSize={18} />}
+          >
+            {t('blog.profile.create')}
+          </Button>
         </Stack>
-      </Paper>
+      ) : (
+        <Paper background={1} sx={{ p: { xs: 3, md: 4 }, borderRadius: 4 }}>
+          <Stack
+            direction={{ xs: 'column', lg: 'row' }}
+            spacing={2}
+            alignItems={{ xs: 'flex-start', lg: 'center' }}
+            justifyContent="space-between"
+          >
+            <Stack spacing={0.75} sx={{ maxWidth: 720 }}>
+              <Typography variant="overline" color="text.secondary" fontWeight={700}>
+                {t('blog.profile.publicEyebrow')}
+              </Typography>
+              <Typography variant="h4" fontWeight={800} sx={{ letterSpacing: '-0.02em' }}>
+                {t('blog.profile.publicTitle')}
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                {t('blog.profile.publicSubtitle')}
+              </Typography>
+            </Stack>
 
-      {isOwner ? <Alert severity="info">{t('blog.profile.reviewFlowHint')}</Alert> : null}
+            <Chip label={t('blog.resultsCount', { count: total })} variant="outlined" />
+          </Stack>
+        </Paper>
+      )}
 
       {isLoading ? (
         isOwner ? (

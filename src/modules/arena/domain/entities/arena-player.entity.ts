@@ -1,9 +1,11 @@
 export interface ArenaPlayer {
-  rowIndex: number;
   username: string;
+  avatar?: string;
   rankTitle: string;
-  rating: string;
+  rating: number;
+  rank?: number | null;
   points: number;
+  buchholzCoefficient: number;
   streak: boolean;
   results: number[];
   isBot: boolean;

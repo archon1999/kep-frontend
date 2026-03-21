@@ -215,23 +215,40 @@ const BlogRichTextEditor = ({ value, onChange, placeholder }: BlogRichTextEditor
         <Box
           sx={{
             border: (theme) => `1px solid ${theme.palette.divider}`,
-            borderRadius: 3,
+            borderRadius: 4,
             overflow: 'hidden',
             bgcolor: 'background.paper',
             '& .ql-toolbar.ql-snow': {
               border: 0,
               borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+              px: 2,
+              py: 1.5,
+              bgcolor: 'background.paper',
             },
             '& .ql-container.ql-snow': {
               border: 0,
-              minHeight: 320,
+              minHeight: 360,
               fontFamily: 'inherit',
             },
             '& .ql-editor': {
-              minHeight: 320,
+              minHeight: 360,
               fontFamily: 'inherit',
               fontSize: 16,
               lineHeight: 1.75,
+              p: 3,
+            },
+            '& .ql-editor.ql-blank::before': {
+              left: 24,
+              right: 24,
+              color: 'text.secondary',
+              fontStyle: 'normal',
+              opacity: 0.72,
+            },
+            '& .ql-toolbar button:hover .ql-stroke, & .ql-toolbar button.ql-active .ql-stroke': {
+              stroke: (theme) => theme.vars.palette.primary.main,
+            },
+            '& .ql-toolbar button:hover .ql-fill, & .ql-toolbar button.ql-active .ql-fill': {
+              fill: (theme) => theme.vars.palette.primary.main,
             },
           }}
         >

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Avatar,
   Box,
@@ -13,12 +14,11 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import UserPopover from 'modules/users/ui/components/UserPopover';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
-import { useTranslation } from 'react-i18next';
 import { ArenaPlayer } from '../../domain/entities/arena-player.entity.ts';
-import { PageResult } from '../../domain/ports/arena.repository.ts';
 import { ArenaStatus } from '../../domain/entities/arena.entity.ts';
+import { PageResult } from '../../domain/ports/arena.repository.ts';
 
 interface ArenaPlayersTableProps {
   data?: PageResult<ArenaPlayer>;
@@ -32,6 +32,13 @@ interface ArenaPlayersTableProps {
   status?: ArenaStatus;
 }
 
+const resultColor = (value: number) => {
+  if (value === 3) return 'warning.dark';
+  if (value === 2) return 'success.dark';
+  if (value === 1) return 'text.secondary';
+  return 'error.main';
+};
+
 const ArenaPlayersTable = ({
   data,
   loading,
@@ -44,9 +51,10 @@ const ArenaPlayersTable = ({
   status,
 }: ArenaPlayersTableProps) => {
   const { t } = useTranslation();
+  const isUpcoming = status === ArenaStatus.NotStarted;
 
   const handleSelect = (player: ArenaPlayer) => {
-    if (onSelectPlayer) {
+    if (!isUpcoming && onSelectPlayer) {
       onSelectPlayer(player);
     }
   };
@@ -57,115 +65,130 @@ const ArenaPlayersTable = ({
         <Typography variant="h6" fontWeight={800}>
           {t('arena.players')}
         </Typography>
-        {data?.total ? (
-          <Chip size="small" color="warning" label={`${data.total} ${t('arena.participants')}`} />
-        ) : null}
       </Stack>
 
       <TableContainer background={1} component={Paper} sx={{ outline: 'none', borderRadius: 3 }}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell width={60}>#</TableCell>
+              {!isUpcoming ? <TableCell width={72}>{t('arena.columns.rank')}</TableCell> : null}
               <TableCell>{t('arena.columns.user')}</TableCell>
-              <TableCell align="right">{t('arena.columns.results')}</TableCell>
-              <TableCell align="center">{t('arena.columns.points')}</TableCell>
+              {isUpcoming ? <TableCell align="right">{t('arena.columns.rating')}</TableCell> : null}
+              {!isUpcoming ? (
+                <TableCell align="right">{t('arena.columns.results')}</TableCell>
+              ) : null}
+              {!isUpcoming ? (
+                <TableCell align="right">{t('arena.columns.points')}</TableCell>
+              ) : null}
+              {!isUpcoming ? (
+                <TableCell align="right">{t('arena.columns.buchholz')}</TableCell>
+              ) : null}
             </TableRow>
           </TableHead>
           <TableBody>
             {loading
               ? Array.from({ length: pageSize }).map((_, idx) => (
                   <TableRow key={idx}>
-                    <TableCell colSpan={4}>
-                      <Box sx={{ height: 48, bgcolor: 'background.default', borderRadius: 2 }} />
+                    <TableCell colSpan={isUpcoming ? 2 : 5}>
+                      <Box sx={{ height: 52, bgcolor: 'background.default', borderRadius: 2 }} />
                     </TableCell>
                   </TableRow>
                 ))
-              : data?.data?.map((player) => (
-                  <TableRow
-                    key={player.username}
-                    hover
-                    onClick={() => handleSelect(player)}
-                    sx={{
-                      cursor: 'pointer',
-                      backgroundColor:
-                        player.username === selectedUsername
-                          ? 'action.hover'
-                          : player.username === currentUsername
-                            ? 'warning.lighter'
-                            : undefined,
-                    }}
-                  >
-                    <TableCell>{player.rowIndex}</TableCell>
-                    <TableCell>
-                      <Stack direction="row" spacing={1.5} alignItems="center">
-                        <Avatar>{player.username[0]?.toUpperCase()}</Avatar>
-                        <Stack direction="column" spacing={0.25}>
-                          <Typography fontWeight={700}>{player.username}</Typography>
-                          <Stack direction="row" spacing={0.75} alignItems="center">
-                            <ChallengesRatingChip title={player.rankTitle} size="small" />
-                            <Typography variant="caption" color="text.secondary">
-                              {player.rating}
-                            </Typography>
+              : data?.data?.map((player) => {
+                  const isCurrentUser = player.username === currentUsername;
+                  const isSelected = player.username === selectedUsername;
+
+                  return (
+                    <TableRow
+                      key={player.username}
+                      hover={!isUpcoming}
+                      onClick={() => handleSelect(player)}
+                      sx={{
+                        cursor: !isUpcoming && onSelectPlayer ? 'pointer' : 'default',
+                        backgroundColor: isCurrentUser ? 'warning.lighter' : undefined,
+                        '& td': {
+                          borderColor: isSelected ? 'warning.light' : undefined,
+                        },
+                      }}
+                    >
+                      {!isUpcoming && (
+                        <TableCell align="center">
+                          <Typography fontWeight={700} fontSize={20} color="primary">
+                            {player.rank}
+                          </Typography>
+                        </TableCell>
+                      )}
+                      <TableCell>
+                        <UserPopover username={player.username} avatar={player.avatar}>
+                          <Stack direction="row" spacing={1.5} alignItems="center">
+                            <Avatar src={player.avatar} alt={player.username}>
+                              {player.username[0]?.toUpperCase()}
+                            </Avatar>
+                            <Stack direction="column" spacing={0.25} minWidth={0}>
+                              <Typography fontWeight={700} noWrap>
+                                {player.username}
+                              </Typography>
+                              <Stack direction="row" spacing={0.75} alignItems="center">
+                                <ChallengesRatingChip title={player.rankTitle} size="small" />
+                                <Typography variant="caption" color="text.secondary">
+                                  {player.rating}
+                                </Typography>
+                              </Stack>
+                            </Stack>
                           </Stack>
-                        </Stack>
-                      </Stack>
-                    </TableCell>
-                    <TableCell align="right">
-                      <Stack direction="row" spacing={0.5} justifyContent="flex-end" flexWrap="wrap">
-                        {player.results.map((result, idx) => (
-                          <Box
-                            key={`${player.username}-result-${idx}`}
-                            sx={{
-                              minWidth: 28,
-                              height: 24,
-                              borderRadius: 1,
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              fontSize: 12,
-                              fontWeight: 700,
-                              color:
-                                result === 3
-                                  ? 'warning.darker'
-                                  : result === 2
-                                    ? 'success.darker'
-                                    : result === 1
-                                      ? 'text.secondary'
-                                      : 'error.dark',
-                              bgcolor:
-                                result === 3
-                                  ? 'warning.lighter'
-                                  : result === 2
-                                    ? 'success.lighter'
-                                    : result === 1
-                                      ? 'background.neutral'
-                                      : 'error.lighter',
-                              border: '1px solid',
-                              borderColor:
-                                result === 1 ? 'divider' : result === 3 ? 'warning.light' : result === 2 ? 'success.light' : 'error.light',
-                            }}
-                          >
-                            {result}
-                          </Box>
-                        ))}
-                      </Stack>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Chip
-                        color="warning"
-                        size="small"
-                        variant="filled"
-                        label={player.points}
-                        icon={
-                          player.streak && status === ArenaStatus.Already ? (
-                            <IconifyIcon icon="mdi:fire" color="error.main" fontSize={16} />
-                          ) : undefined
-                        }
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))}
+                        </UserPopover>
+                      </TableCell>
+                      {isUpcoming ? (
+                        <TableCell align="right">
+                          <Typography fontFamily="monospace" fontWeight={700}>
+                            {player.rating}
+                          </Typography>
+                        </TableCell>
+                      ) : null}
+                      {!isUpcoming ? (
+                        <TableCell align="right">
+                          {player.results.length ? (
+                            <Stack
+                              direction="row"
+                              spacing={0.75}
+                              justifyContent="flex-end"
+                              flexWrap="wrap"
+                            >
+                              {player.results.map((result, idx) => (
+                                <Typography
+                                  key={`${player.username}-result-${idx}`}
+                                  fontFamily="monospace"
+                                  fontWeight={700}
+                                  color={resultColor(result)}
+                                >
+                                  {result}
+                                </Typography>
+                              ))}
+                            </Stack>
+                          ) : (
+                            <Typography variant="body2" color="text.secondary">
+                              -
+                            </Typography>
+                          )}
+                        </TableCell>
+                      ) : null}
+                      {!isUpcoming ? (
+                        <TableCell align="right">
+                          <Typography fontFamily="monospace" fontWeight={800} color="warning.dark">
+                            {player.points}
+                          </Typography>
+                        </TableCell>
+                      ) : null}
+                      {!isUpcoming ? (
+                        <TableCell align="right">
+                          <Typography fontFamily="monospace" fontWeight={700} color="info.dark">
+                            {player.buchholzCoefficient}
+                          </Typography>
+                        </TableCell>
+                      ) : null}
+                    </TableRow>
+                  );
+                })}
           </TableBody>
         </Table>
       </TableContainer>

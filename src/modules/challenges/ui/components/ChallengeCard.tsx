@@ -21,10 +21,14 @@ const ChallengeCard = ({ challenge }: ChallengeCardProps) => {
   };
 
   return (
-    <Card variant="outlined" background={0}>
+    <Card variant="outlined">
       <Stack spacing={1.5} direction="column" paddingX={2} paddingY={1}>
         <Stack direction="row" spacing={2} justifyContent="space-between">
-          <UserPopover sx={{ width: 200 }} username={challenge.playerFirst.username}>
+          <UserPopover
+            sx={{ width: 200 }}
+            username={challenge.playerFirst.username}
+            avatar={challenge.playerFirst.avatar}
+          >
             <ChallengeUserChip
               player={challenge.playerFirst}
               highlight={challenge.playerFirst.result > challenge.playerSecond.result}
@@ -52,7 +56,11 @@ const ChallengeCard = ({ challenge }: ChallengeCardProps) => {
               </Typography>
             </Stack>
           </Box>
-          <UserPopover sx={{ width: 200 }} username={challenge.playerSecond.username}>
+          <UserPopover
+            sx={{ width: 200 }}
+            username={challenge.playerSecond.username}
+            avatar={challenge.playerSecond.avatar}
+          >
             <Stack width={1} justifyContent="flex-end">
               <ChallengeUserChip
                 player={challenge.playerSecond}

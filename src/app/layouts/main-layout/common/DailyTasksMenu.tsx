@@ -1,4 +1,5 @@
 import { MouseEvent, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Avatar,
   Box,
@@ -12,13 +13,13 @@ import {
   Typography,
   paperClasses,
 } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { alpha } from '@mui/material/styles';
 import { useAuth } from 'app/providers/AuthProvider';
-import axiosFetcher from 'shared/services/axios/axiosFetcher';
-import useSWR from 'swr';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
 import Streak from 'shared/components/rating/Streak';
+import axiosFetcher from 'shared/services/axios/axiosFetcher';
+import useSWR from 'swr';
 
 enum DailyTaskType {
   Problem = 1,
@@ -42,7 +43,8 @@ type DailyTasksResponse = {
 };
 
 interface DailyTasksMenuProps {
-  type?: 'default' | 'slim';
+  type?: 'default' | 'slim' | 'action';
+  label?: string;
 }
 
 const taskIconMap: Record<DailyTaskType, string> = {
@@ -51,7 +53,7 @@ const taskIconMap: Record<DailyTaskType, string> = {
   [DailyTaskType.Challenge]: 'material-symbols:flag-rounded',
 };
 
-const DailyTasksMenu = ({ type = 'default' }: DailyTasksMenuProps) => {
+const DailyTasksMenu = ({ type = 'default', label }: DailyTasksMenuProps) => {
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const { currentUser } = useAuth();
@@ -84,9 +86,7 @@ const DailyTasksMenu = ({ type = 'default' }: DailyTasksMenuProps) => {
 
   const streakValue = data?.streak ?? 0;
   const maxStreak = data?.maxStreak ?? 0;
-  const progress = dailyTasks.length
-    ? Math.round((completedTasks / dailyTasks.length) * 100)
-    : 0;
+  const progress = dailyTasks.length ? Math.round((completedTasks / dailyTasks.length) * 100) : 0;
   const open = Boolean(anchorEl);
 
   const renderTasks = () => {
@@ -120,8 +120,16 @@ const DailyTasksMenu = ({ type = 'default' }: DailyTasksMenuProps) => {
 
     if (!dailyTasks.length) {
       return (
-        <Stack direction="row" alignItems="center" justifyContent="center" spacing={1.25} sx={{ py: 4 }}>
-          <Avatar sx={{ bgcolor: 'background.level1', color: 'text.secondary', width: 48, height: 48 }}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="center"
+          spacing={1.25}
+          sx={{ py: 4 }}
+        >
+          <Avatar
+            sx={{ bgcolor: 'background.level1', color: 'text.secondary', width: 48, height: 48 }}
+          >
             <IconifyIcon icon="material-symbols:checklist-rounded" />
           </Avatar>
           <Typography variant="body2" color="text.secondary">
@@ -174,7 +182,12 @@ const DailyTasksMenu = ({ type = 'default' }: DailyTasksMenuProps) => {
                     color="success"
                     variant="soft"
                     label={t('common.dailyTasks.completed')}
-                    icon={<IconifyIcon icon="material-symbols:check-circle-rounded" sx={{ fontSize: 16 }} />}
+                    icon={
+                      <IconifyIcon
+                        icon="material-symbols:check-circle-rounded"
+                        sx={{ fontSize: 16 }}
+                      />
+                    }
                   />
                 ) : (
                   <Chip
@@ -195,13 +208,39 @@ const DailyTasksMenu = ({ type = 'default' }: DailyTasksMenuProps) => {
   return (
     <>
       <Button
-        color="neutral"
-        variant={type === 'default' ? 'soft' : 'text'}
+        color={type === 'action' ? 'primary' : 'neutral'}
+        variant={type === 'default' ? 'soft' : type === 'action' ? 'outlined' : 'text'}
         size={type === 'slim' ? 'small' : 'medium'}
         onClick={handleOpen}
-        sx={{ px: 1.5 }}
+        sx={
+          type === 'action'
+            ? {
+                px: 1.5,
+                py: 0.75,
+                borderRadius: 999,
+                textTransform: 'none',
+                fontWeight: 700,
+                borderColor: (theme) => alpha(theme.palette.primary.main, 0.24),
+                bgcolor: (theme) => alpha(theme.palette.primary.main, 0.04),
+              }
+            : { px: 1.5 }
+        }
       >
-        <Streak streak={streakValue} maxStreak={maxStreak} iconSize={type === 'slim' ? 18 : 22} spacing={0.75} />
+        {type === 'action' ? (
+          <Stack direction="row" spacing={0.75} alignItems="center">
+            <IconifyIcon icon="material-symbols:checklist-rounded" />
+            <Typography variant="button" color="inherit" sx={{ textTransform: 'none' }}>
+              {label ?? t('common.dailyTasks.title')}
+            </Typography>
+          </Stack>
+        ) : (
+          <Streak
+            streak={streakValue}
+            maxStreak={maxStreak}
+            iconSize={type === 'slim' ? 18 : 22}
+            spacing={0.75}
+          />
+        )}
       </Button>
 
       <Popover
@@ -226,7 +265,12 @@ const DailyTasksMenu = ({ type = 'default' }: DailyTasksMenuProps) => {
           },
         }}
       >
-        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ px: 2, pt: 2, pb: 1 }}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{ px: 2, pt: 2, pb: 1 }}
+        >
           <Box>
             <Typography variant="h6">{t('common.dailyTasks.title')}</Typography>
             <Typography variant="caption" color="text.secondary">
@@ -257,7 +301,13 @@ const DailyTasksMenu = ({ type = 'default' }: DailyTasksMenuProps) => {
             </Typography>
           </Stack>
         </Stack>
-        { progress > 0 && <LinearProgress variant="determinate" value={progress} sx={{ height: 20, borderRadius: 999, mx: 2, mb: 2 }} /> }
+        {progress > 0 && (
+          <LinearProgress
+            variant="determinate"
+            value={progress}
+            sx={{ height: 20, borderRadius: 999, mx: 2, mb: 2 }}
+          />
+        )}
       </Popover>
     </>
   );

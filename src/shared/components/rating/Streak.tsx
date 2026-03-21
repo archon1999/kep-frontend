@@ -1,4 +1,4 @@
-import { Box, Stack, StackProps, Typography } from '@mui/material';
+import { Box, Stack, StackProps, Typography, TypographyProps } from '@mui/material';
 import fire1 from 'shared/assets/images/icons/fire-1.webp';
 import fire2 from 'shared/assets/images/icons/fire-2.webp';
 import fire3 from 'shared/assets/images/icons/fire-3.webp';
@@ -21,6 +21,9 @@ interface StreakProps extends StackProps {
   maxStreak?: number | null;
   iconSize?: number;
   fallback?: string;
+  textVariant?: TypographyProps['variant'];
+  fontWeight?: TypographyProps['fontWeight'];
+  color?: TypographyProps['color'];
 }
 
 const Streak = ({
@@ -28,6 +31,9 @@ const Streak = ({
   maxStreak,
   iconSize = 20,
   fallback = '--',
+  textVariant = 'body2',
+  fontWeight = 700,
+  color = 'text.primary',
   spacing = 0.75,
   alignItems = 'center',
   direction = 'row',
@@ -46,7 +52,7 @@ const Streak = ({
         alt="Daily streak"
         sx={{ width: iconSize, height: iconSize }}
       />
-      <Typography variant="body2" fontWeight={700} color="text.primary">
+      <Typography variant={textVariant} fontWeight={fontWeight} color={color}>
         {displayValue}
       </Typography>
     </Stack>

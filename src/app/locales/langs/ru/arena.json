@@ -1,8 +1,8 @@
 {
   "arena": {
     "title": "Арена",
-    "listSubtitle": "Доступно {{count}} турниров.",
-    "listEmptySubtitle": "Турниров арены пока нет.",
+    "listSubtitle": "Для вас открыто {{count}} арен.",
+    "listEmptySubtitle": "Пока арен не найдено.",
     "searchPlaceholder": "Поиск арены",
     "status": {
       "upcoming": "Скоро",
@@ -13,37 +13,47 @@
     "minutes": "мин",
     "questions": "Вопросы",
     "timeline": {
-      "start": "Начало турнира",
-      "finish": "Окончание турнира"
+      "start": "Начало арены",
+      "finish": "Окончание арены"
     },
     "now": "Сейчас",
-    "about": "О арене",
-    "registered": "Зарегистрирован",
-    "duration": "Время на челлендж",
+    "about": "Об арене",
+    "registered": "Вы зарегистрированы",
+    "duration": "Время на один челлендж",
+    "questionTimeType": {
+      "label": "Тип времени на вопрос",
+      "one": "Time to one",
+      "all": "Time to all"
+    },
     "actions": {
-      "register": "Регистрация",
-      "nextChallenge": "Следующий челлендж",
-      "start": "Старт",
-      "pause": "Пауза"
+      "register": "Присоединиться",
+      "unregister": "Отменить регистрацию",
+      "nextChallenge": "Открыть текущий челлендж",
+      "start": "Войти в очередь",
+      "pause": "Пауза очереди",
+      "login": "Войдите, чтобы участвовать"
     },
     "countdown": {
-      "untilStart": "Старт через",
-      "untilFinish": "Завершится через",
-      "finished": "Турнир завершен"
+      "untilStart": "До старта",
+      "untilFinish": "До завершения",
+      "finished": "Арена завершена"
     },
-    "players": "Участники",
+    "players": "Таблица",
     "participants": "участников",
     "columns": {
+      "rank": "Место",
       "user": "Пользователь",
+      "rating": "Рейтинг",
       "results": "Результаты",
-      "points": "Очки"
+      "points": "Очки",
+      "buchholz": "Бухгольц"
     },
     "challenges": "Последние челленджи",
-    "noChallenges": "Пока нет сыгранных челленджей.",
+    "noChallenges": "Челленджей пока не было.",
     "statistics": "Статистика арены",
     "averageRating": "Средний рейтинг",
-    "totalChallenges": "Сыграно челленджей",
-    "selectPlayer": "Выберите участника, чтобы увидеть статистику",
+    "totalChallenges": "Всего челленджей",
+    "selectPlayer": "Выберите участника, чтобы посмотреть статистику",
     "playerStatistics": "Статистика участника",
     "statisticsLabels": {
       "challenges": "Челленджи",
@@ -55,6 +65,37 @@
       "lossRate": "Процент поражений"
     },
     "opponents": "Соперники",
-    "winners": "Победители арены"
+    "winners": "Победители арены",
+    "winnerStats": {
+      "wins": "Победы: {{count}}",
+      "draws": "Ничьи: {{count}}",
+      "losses": "Поражения: {{count}}"
+    },
+    "winnersPlace": "{{place}} место",
+    "performanceShort": "Perf",
+    "previewLabel": "Превью арены",
+    "liveLabel": "Арена в эфире",
+    "finishedLabel": "Финал арены",
+    "chaptersLabel": "Разделы",
+    "stateDescriptions": {
+      "upcoming": "Арена еще не началась. Зарегистрируйтесь заранее, при необходимости можно отменить регистрацию до старта.",
+      "ongoing": "Арена идет. Входите в очередь, автоматически получайте пару и удерживайте серию побед.",
+      "finished": "Арена завершена. Посмотрите итоговую таблицу, победителей и последние челленджи."
+    },
+    "insights": {
+      "upcomingTitle": "Превью арены",
+      "liveTitle": "Live-обзор арены",
+      "finishedTitle": "Итоговый обзор арены",
+      "participants": "Зарегистрированные участники",
+      "longestWinStreak": "Самая длинная серия побед",
+      "highestPerformance": "Лучший performance",
+      "highestWinRate": "Лучший процент побед",
+      "noLeader": "Пока нет подходящих данных",
+      "minChallenges": "Минимум {{count}} челленджа"
+    },
+    "transition": {
+      "started": "Арена началась. Таблица и челленджи теперь обновляются автоматически.",
+      "finished": "Арена завершилась. Итоговая таблица и победители готовы."
+    }
   }
 }

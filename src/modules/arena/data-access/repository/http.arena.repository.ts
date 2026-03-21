@@ -15,14 +15,33 @@ import {
 } from '../../domain/ports/arena.repository.ts';
 
 const mapArena = (data: any): Arena => ({
-  ...data,
+  id: data?.id ?? 0,
+  title: data?.title ?? '',
   status: data?.status as ArenaStatus,
+  startTime: data?.startTime ?? data?.start_time ?? '',
+  finishTime: data?.finishTime ?? data?.finish_time ?? '',
+  startNaturaltime: data?.startNaturaltime ?? data?.start_naturaltime ?? '',
+  finishNaturaltime: data?.finishNaturaltime ?? data?.finish_naturaltime ?? '',
+  timeSeconds: data?.timeSeconds ?? data?.time_seconds ?? 0,
+  questionsCount: data?.questionsCount ?? data?.questions_count ?? 0,
+  questionTimeType: data?.questionTimeType ?? data?.question_time_type ?? 1,
+  isRegistrated: data?.isRegistrated ?? data?.is_registrated ?? null,
+  pause: data?.pause ?? null,
+  winner: data?.winner ?? null,
   chapters: data?.chapters ?? [],
 });
 
 const mapArenaPlayer = (data: any): ArenaPlayer => ({
-  ...data,
+  username: data?.username ?? '',
+  avatar: data?.avatar ?? undefined,
+  rankTitle: data?.rankTitle ?? data?.rank_title ?? '',
+  rating: data?.rating ?? 0,
+  rank: data?.rank ?? null,
+  points: data?.points ?? 0,
+  buchholzCoefficient: data?.buchholzCoefficient ?? data?.buchholz_coefficient ?? 0,
+  streak: Boolean(data?.streak),
   results: data?.results ?? [],
+  isBot: Boolean(data?.isBot ?? data?.is_bot),
 });
 
 const mapArenaChallenge = (data: any): ArenaChallenge => {
@@ -34,10 +53,12 @@ const mapArenaChallenge = (data: any): ArenaChallenge => {
     finished: data?.finished ?? data?.finished_at ?? null,
     questionsCount: data?.questionsCount ?? data?.questions_count ?? 0,
     timeSeconds: data?.timeSeconds ?? data?.time_seconds ?? 0,
+    questionTimeType: data?.questionTimeType ?? data?.question_time_type ?? 1,
     rated: data?.rated ?? data?.is_rated ?? false,
     playerFirst: {
       ...playerFirst,
       username: playerFirst?.username ?? playerFirst?.user_name ?? '',
+      avatar: playerFirst?.avatar ?? undefined,
       rankTitle: playerFirst?.rankTitle ?? playerFirst?.rank_title ?? playerFirst?.title ?? '',
       rating: playerFirst?.rating ?? 0,
       result: playerFirst?.result ?? 0,
@@ -46,6 +67,7 @@ const mapArenaChallenge = (data: any): ArenaChallenge => {
     playerSecond: {
       ...playerSecond,
       username: playerSecond?.username ?? playerSecond?.user_name ?? '',
+      avatar: playerSecond?.avatar ?? undefined,
       rankTitle: playerSecond?.rankTitle ?? playerSecond?.rank_title ?? playerSecond?.title ?? '',
       rating: playerSecond?.rating ?? 0,
       result: playerSecond?.result ?? 0,
@@ -67,6 +89,10 @@ export class HttpArenaRepository implements ArenaRepository {
 
   async register(arenaId: number | string): Promise<void> {
     await arenaApiClient.register(arenaId);
+  }
+
+  async unregister(arenaId: number | string): Promise<void> {
+    await arenaApiClient.unregister(arenaId);
   }
 
   async pause(arenaId: number | string): Promise<void> {
@@ -107,8 +133,12 @@ export class HttpArenaRepository implements ArenaRepository {
   async getArenaStatistics(arenaId: number | string): Promise<ArenaStatistics> {
     const data = await arenaApiClient.statistics(arenaId);
     return {
+      participants: data?.participants ?? 0,
       averageRating: data?.averageRating ?? data?.average_rating ?? 0,
       challenges: data?.challenges ?? 0,
+      longestWinStreak: data?.longestWinStreak ?? data?.longest_win_streak ?? null,
+      highestPerformance: data?.highestPerformance ?? data?.highest_performance ?? null,
+      highestWinRate: data?.highestWinRate ?? data?.highest_win_rate ?? null,
     };
   }
 }

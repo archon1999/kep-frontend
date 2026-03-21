@@ -14,6 +14,33 @@
     "youHave": "You have {{value}} Kepcoin",
     "balanceSubtitle": "Track how you earn and spend Kepcoin every day.",
     "valueLabel": "{{value}} Kepcoin",
+    "hero": {
+      "eyebrow": "Kepcoin wallet",
+      "title": "Balance",
+      "subtitle": "Manage your balance, streak, and next best unlocks from one premium dashboard.",
+      "balanceCaption": "See your balance, streak reserve, and the most useful ways to use Kepcoin in one place.",
+      "goalEyebrow": "Next goal",
+      "goalReadyTitle": "Streak Freeze is ready",
+      "goalPendingTitle": "{{value}} Kepcoin to go",
+      "goalReadySubtitle": "Use your reserve to protect the streak on a busy day.",
+      "goalPendingSubtitle": "A small reserve helps you keep momentum when the schedule gets tight.",
+      "statLabels": {
+        "streak": "Current streak",
+        "maxStreak": "Best streak",
+        "freeze": "Freeze reserve"
+      },
+      "freezeTitle": "Protect the streak",
+      "freezeSubtitle": "If you miss a day, Streak Freeze keeps the streak alive.",
+      "freezeNeedMore": "Need {{value}} more Kepcoin",
+      "freezeReady": "You have enough balance to freeze"
+    },
+    "streakCard": {
+      "eyebrow": "Daily rhythm",
+      "title": "Keep your streak warm",
+      "subtitle": "Stack small daily rewards and keep the rhythm alive with Streak Freeze when needed.",
+      "balanceLabel": "Balance",
+      "freezeTitle": "Protect the streak"
+    },
     "streakStats": {
       "current": "Current streak",
       "max": "Max streak"
@@ -27,6 +54,7 @@
     },
     "history": {
       "title": "Kepcoin activity",
+      "subtitle": "Every earn and spend lands here, so you can quickly see where your balance came from and where it went.",
       "tabs": {
         "earns": "Earns",
         "spends": "Spends"
@@ -38,7 +66,8 @@
       "note": "Note: {{value}}",
       "noDate": "Time not specified",
       "detail": "{{base}} · {{detail}}",
-      "defaultLabel": "Kepcoin transaction"
+      "defaultLabel": "Kepcoin transaction",
+      "notePrefix": "Note"
     },
     "tasks": {
       "title": "Kepcoin tasks",
@@ -319,10 +348,7 @@
         "join-arena": {
           "subtitle": "Register for any arena event.",
           "hint": "The task is counted after your arena registration is created.",
-          "steps": [
-            "1. Open arena and join any arena event.",
-            "2. Return here and click verify."
-          ]
+          "steps": ["1. Open arena and join any arena event.", "2. Return here and click verify."]
         },
         "arena-first-match": {
           "subtitle": "Play at least one arena match.",
@@ -335,10 +361,7 @@
         "arena-first-win": {
           "subtitle": "Win at least one arena match.",
           "hint": "Only a completed winning match is counted.",
-          "steps": [
-            "1. Join an arena and win one match.",
-            "2. Return here and click verify."
-          ]
+          "steps": ["1. Join an arena and win one match.", "2. Return here and click verify."]
         },
         "arena-top-20": {
           "subtitle": "Finish an arena in the top 20.",
@@ -391,10 +414,7 @@
         "first-project-attempt": {
           "subtitle": "Submit your first project attempt.",
           "hint": "The task is counted after a project attempt is sent successfully.",
-          "steps": [
-            "1. Open a project and submit an attempt.",
-            "2. Return here and click verify."
-          ]
+          "steps": ["1. Open a project and submit an attempt.", "2. Return here and click verify."]
         },
         "project-complete-one-part": {
           "subtitle": "Complete at least one part of a project attempt.",
@@ -447,7 +467,7 @@
         "ratingWinner": "For being the winner in daily, weekly, and monthly challenge ratings",
         "competitions": "For participating in competitions",
         "blog": "For writing a blog",
-        "problemEditing": "For helping in editing problems (writing solutions, translation, adding tags, finding similar problems)"
+        "oneTimeTasks": "For one-time tasks"
       }
     },
     "howToSpend": {
@@ -460,8 +480,53 @@
         "passTest": "Pass the test",
         "course": "Purchase a course",
         "testFunction": "Test function when editing code (completely)",
-        "doubleRating": "Double rating change in contest (even if negative, it doubles)",
-        "keepRating": "Maintain rating in contest (not given if negative)"
+        "merch": "Shop merch"
+      }
+    },
+    "earnBoard": {
+      "title": "Fast ways to earn today",
+      "subtitle": "The most reliable Kepcoin sources with the best repeat value.",
+      "items": {
+        "daily": {
+          "title": "Daily rhythm",
+          "description": "Daily visits, activity, and small wins create steady growth."
+        },
+        "tasks": {
+          "title": "Quick onboarding tasks",
+          "description": "Profile setup, account linking, and short internal tasks are the fastest start."
+        },
+        "competitive": {
+          "title": "Contest and arena boost",
+          "description": "Higher effort, bigger rewards. Ratings and competitions can spike your balance quickly."
+        },
+        "community": {
+          "title": "Content and contribution",
+          "description": "Blogs, solutions, and editorial improvements carry the highest long-term value."
+        }
+      }
+    },
+    "spendBoard": {
+      "title": "Ready to unlock now",
+      "subtitle": "Useful perks you can open with your current balance.",
+      "ready": "Ready",
+      "needMore": "Need {{value}} more",
+      "items": {
+        "freeze": {
+          "title": "Streak Freeze",
+          "description": "Protect your streak if you need to skip a day."
+        },
+        "cover": {
+          "title": "Cover photo",
+          "description": "Refresh your profile with a quick personal upgrade."
+        },
+        "tests": {
+          "title": "Failed test view",
+          "description": "See what broke faster and make your next submit more precise."
+        },
+        "double": {
+          "title": "Double rating",
+          "description": "Play a higher risk-reward move in contests when you want a bigger jump."
+        }
       }
     },
     "earnTypes": {
@@ -479,8 +544,7 @@
       "tournamentParticipant": "Tournament participant",
       "projectTask": "Project task completed",
       "newYear2026Login": "New Year 2026 login bonus",
-      "merchRefund": "Merch refund"
-      ,
+      "merchRefund": "Merch refund",
       "oneTimeTaskCompletion": "Task completed"
     },
     "spendTypes": {
@@ -502,6 +566,20 @@
       "answerForInput": "Answer for input",
       "checkSamples": "Check samples",
       "merch": "Merch"
+    },
+    "actions": {
+      "openDailyTasks": "Daily tasks",
+      "openRating": "Rating",
+      "openArena": "Arena",
+      "openContests": "Contests",
+      "writeBlog": "New blog",
+      "openOneTimeTasks": "Tasks",
+      "openAttempts": "Attempts",
+      "openTests": "Tests",
+      "openProblems": "Problems",
+      "openKepCover": "Kep Cover",
+      "openSettings": "Settings",
+      "openShop": "Shop"
     }
   }
 }

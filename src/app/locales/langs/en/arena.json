@@ -1,8 +1,8 @@
 {
   "arena": {
     "title": "Arena",
-    "listSubtitle": "{{count}} tournaments are open for you.",
-    "listEmptySubtitle": "No arena tournaments found yet.",
+    "listSubtitle": "{{count}} arena events are open for you.",
+    "listEmptySubtitle": "No arena events found yet.",
     "searchPlaceholder": "Search arena",
     "status": {
       "upcoming": "Upcoming",
@@ -13,30 +13,40 @@
     "minutes": "min",
     "questions": "Questions",
     "timeline": {
-      "start": "Tournament starts",
-      "finish": "Tournament ends"
+      "start": "Arena starts",
+      "finish": "Arena ends"
     },
     "now": "Now",
     "about": "About arena",
     "registered": "Registered",
     "duration": "Time per challenge",
+    "questionTimeType": {
+      "label": "Question timing",
+      "one": "Time to one",
+      "all": "Time to all"
+    },
     "actions": {
-      "register": "Registration",
-      "nextChallenge": "Next challenge",
-      "start": "Start",
-      "pause": "Pause"
+      "register": "Join arena",
+      "unregister": "Cancel registration",
+      "nextChallenge": "Open current challenge",
+      "start": "Start queue",
+      "pause": "Pause queue",
+      "login": "Log in to join"
     },
     "countdown": {
       "untilStart": "Starts in",
       "untilFinish": "Ends in",
-      "finished": "Tournament finished"
+      "finished": "Arena finished"
     },
-    "players": "Participants",
+    "players": "Standings",
     "participants": "participants",
     "columns": {
+      "rank": "Rank",
       "user": "User",
+      "rating": "Rating",
       "results": "Results",
-      "points": "Points"
+      "points": "Points",
+      "buchholz": "Buchholz"
     },
     "challenges": "Latest challenges",
     "noChallenges": "No challenges have been played yet.",
@@ -55,6 +65,37 @@
       "lossRate": "Loss rate"
     },
     "opponents": "Opponents",
-    "winners": "Arena winners"
+    "winners": "Arena winners",
+    "winnerStats": {
+      "wins": "Wins: {{count}}",
+      "draws": "Draws: {{count}}",
+      "losses": "Losses: {{count}}"
+    },
+    "winnersPlace": "Place {{place}}",
+    "performanceShort": "Perf",
+    "previewLabel": "Arena preview",
+    "liveLabel": "Arena live",
+    "finishedLabel": "Arena final",
+    "chaptersLabel": "Chapters",
+    "stateDescriptions": {
+      "upcoming": "Register now and get ready for the arena start. You can cancel registration until the start time.",
+      "ongoing": "The arena is running. Join the queue, get paired automatically, and keep your streak alive.",
+      "finished": "The arena is over. Explore the final standings, winners, and latest battles."
+    },
+    "insights": {
+      "upcomingTitle": "Arena preview",
+      "liveTitle": "Live arena insights",
+      "finishedTitle": "Final arena insights",
+      "participants": "Registered participants",
+      "longestWinStreak": "Longest win streak",
+      "highestPerformance": "Highest performance",
+      "highestWinRate": "Best win rate",
+      "noLeader": "No qualified player yet",
+      "minChallenges": "Min. {{count}} challenges"
+    },
+    "transition": {
+      "started": "Arena has started. Live standings and challenges are now updating automatically.",
+      "finished": "Arena has finished. Final standings and winners are now available."
+    }
   }
 }

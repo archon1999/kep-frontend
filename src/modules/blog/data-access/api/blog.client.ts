@@ -22,7 +22,9 @@ export const blogApiClient = {
   update: async (id: string, payload: FormData) =>
     (await instance.patch(`/api/blog/${id}/`, payload)).data as BlogApiPost,
   submitForReview: async (id: string) =>
-    (await instance.post(`/api/blog/${id}/submit-for-review/`, {})).data as BlogApiPost,
+    (
+      await instance.post(`/api/blog/${id}/submit-for-review/`, {}, { timeout: 30000 })
+    ).data as BlogApiPost,
   getComments: (id: string) => apiClient.apiBlogComments(id) as unknown as Promise<ApiBlogCommentsList200>,
   createComment: (id: string, payload: Partial<BlogComment>) => apiClient.apiBlogCreateComment(id, payload as any),
   likePost: (id: string) => apiClient.apiBlogLike(id, {} as any),

@@ -34,6 +34,7 @@ export interface ArenaRepository {
   listArenas: (filters?: ArenaListFilters) => Promise<PageResult<Arena>>;
   getArena: (arenaId: number | string) => Promise<Arena>;
   register: (arenaId: number | string) => Promise<void>;
+  unregister: (arenaId: number | string) => Promise<void>;
   pause: (arenaId: number | string) => Promise<void>;
   start: (arenaId: number | string) => Promise<void>;
   loadNextChallenge: (arenaId: number | string) => Promise<{ challengeId?: number } | undefined>;

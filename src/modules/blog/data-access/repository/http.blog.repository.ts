@@ -7,9 +7,29 @@ import { BlogPost, BlogTopic, BlogUpsertPayload } from '../../domain/entities/bl
 const toFormData = (payload: BlogUpsertPayload) => {
   const formData = new FormData();
 
-  formData.append('title', payload.title);
-  formData.append('body', payload.body);
+  formData.append(
+    'translations',
+    JSON.stringify({
+      uz: {
+        title: payload.translations.uz.title,
+        sub_text: payload.translations.uz.subtitle,
+        body: payload.translations.uz.body,
+      },
+      ru: {
+        title: payload.translations.ru.title,
+        sub_text: payload.translations.ru.subtitle,
+        body: payload.translations.ru.body,
+      },
+      en: {
+        title: payload.translations.en.title,
+        sub_text: payload.translations.en.subtitle,
+        body: payload.translations.en.body,
+      },
+    }),
+  );
   formData.append('tags', JSON.stringify(payload.tags));
+  formData.append('topics', JSON.stringify(payload.topicIds));
+  formData.append('canonical_link', payload.canonicalLink);
 
   if (payload.imageFile) {
     formData.append('image', payload.imageFile);

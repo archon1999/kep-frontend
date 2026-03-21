@@ -4,8 +4,17 @@ import {
   BlogPost,
   BlogStatus,
   BlogTableOfContentsItem,
+  BlogTopic,
+  BlogTranslations,
+  BlogTranslationLocale,
 } from '../../domain/entities/blog.entity';
 import { PageResult } from '../../domain/ports/blog.repository';
+
+interface BlogApiTranslationFields {
+  title?: string | null;
+  sub_text?: string | null;
+  body?: string | null;
+}
 
 export interface BlogApiPost {
   id?: number | string;
@@ -15,6 +24,8 @@ export interface BlogApiPost {
     bio?: string | null;
   } | string | null;
   title?: string | null;
+  subText?: string | null;
+  sub_text?: string | null;
   body?: string | null;
   bodyShort?: string | null;
   body_short?: string | null;
@@ -40,7 +51,19 @@ export interface BlogApiPost {
   can_submit?: boolean | null;
   tableOfContents?: BlogTableOfContentsItem[] | null;
   table_of_contents?: BlogTableOfContentsItem[] | null;
+  canonicalLink?: string | null;
+  canonical_link?: string | null;
+  topics?: Array<{ id?: number | string | null; title?: string | null }> | null;
+  translations?: Partial<Record<BlogTranslationLocale, BlogApiTranslationFields>> | null;
 }
+
+const BLOG_TRANSLATION_LOCALES: BlogTranslationLocale[] = ['uz', 'ru', 'en'];
+
+const buildEmptyTranslations = (): BlogTranslations => ({
+  uz: { title: '', subtitle: '', body: '' },
+  ru: { title: '', subtitle: '', body: '' },
+  en: { title: '', subtitle: '', body: '' },
+});
 
 const mapTags = (tags?: string | string[] | null): string[] => {
   if (Array.isArray(tags)) {
@@ -75,11 +98,33 @@ const mapTableOfContents = (items?: BlogTableOfContentsItem[] | null): BlogTable
           text: item?.text ?? '',
           level: Number(item?.level) as BlogTableOfContentsItem['level'],
         }))
-        .filter(
-          (item) =>
-            Boolean(item.id && item.text) && [1, 2, 3].includes(item.level),
-        )
+        .filter((item) => Boolean(item.id && item.text) && [1, 2, 3].includes(item.level))
     : [];
+
+const mapTopics = (topics?: BlogApiPost['topics']): BlogTopic[] =>
+  Array.isArray(topics)
+    ? topics
+        .map((topic) => ({
+          id: Number(topic?.id ?? 0),
+          title: topic?.title ?? '',
+        }))
+        .filter((topic) => topic.id > 0 && Boolean(topic.title))
+    : [];
+
+const mapTranslations = (payload: BlogApiPost): BlogTranslations => {
+  const translations = buildEmptyTranslations();
+
+  BLOG_TRANSLATION_LOCALES.forEach((locale) => {
+    const localePayload = payload.translations?.[locale];
+    translations[locale] = {
+      title: localePayload?.title ?? '',
+      subtitle: localePayload?.sub_text ?? '',
+      body: localePayload?.body ?? '',
+    };
+  });
+
+  return translations;
+};
 
 const mapBasePost = (payload: BlogApiPost): BlogPost => {
   const status = normalizeStatus(payload.status);
@@ -95,12 +140,16 @@ const mapBasePost = (payload: BlogApiPost): BlogPost => {
       bio: typeof payload.author === 'string' ? '' : payload.author?.bio?.trim() ?? '',
     },
     title: payload.title ?? '',
+    subtitle: payload.subText ?? payload.sub_text ?? undefined,
     bodyShort: payload.bodyShort ?? payload.body_short ?? undefined,
     image: payload.image ?? null,
     views: payload.views ?? 0,
     likesCount: payload.likesCount ?? payload.likes_count ?? 0,
     commentsCount: payload.commentsCount ?? payload.comments_count ?? 0,
     tags: mapTags(payload.tags),
+    topics: mapTopics(payload.topics),
+    canonicalLink: payload.canonicalLink ?? payload.canonical_link ?? undefined,
+    translations: mapTranslations(payload),
     created: payload.created ?? undefined,
     updatedAt: payload.updatedAt ?? payload.updated_at ?? payload.updated ?? undefined,
     publishedAt: payload.publishedAt ?? payload.published_at ?? undefined,

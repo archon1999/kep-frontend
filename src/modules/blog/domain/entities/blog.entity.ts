@@ -10,6 +10,16 @@ export interface BlogAuthor {
   bio: string;
 }
 
+export type BlogTranslationLocale = 'uz' | 'ru' | 'en';
+
+export interface BlogTranslationFields {
+  title: string;
+  subtitle: string;
+  body: string;
+}
+
+export type BlogTranslations = Record<BlogTranslationLocale, BlogTranslationFields>;
+
 export enum BlogStatus {
   Draft = 1,
   Published = 2,
@@ -20,6 +30,7 @@ export interface BlogPost {
   id: number;
   author: BlogAuthor;
   title: string;
+  subtitle?: string;
   body?: string;
   bodyShort?: string;
   tableOfContents?: BlogTableOfContentsItem[];
@@ -28,6 +39,9 @@ export interface BlogPost {
   likesCount: number;
   commentsCount: number;
   tags: string[];
+  topics: BlogTopic[];
+  canonicalLink?: string;
+  translations?: BlogTranslations;
   created?: string;
   updatedAt?: string;
   publishedAt?: string;
@@ -53,9 +67,10 @@ export interface BlogTopic {
 }
 
 export interface BlogUpsertPayload {
-  title: string;
-  body: string;
+  translations: BlogTranslations;
   tags: string[];
+  topicIds: number[];
+  canonicalLink: string;
   imageFile?: File | null;
   removeImage?: boolean;
 }

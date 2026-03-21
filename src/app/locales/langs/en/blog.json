@@ -91,6 +91,8 @@
       "heroEyebrow": "Blog workspace",
       "createTitle": "Create blog post",
       "editTitle": "Edit blog post",
+      "translationLabel": "Language",
+      "translationHint": "Switch between UZ, RU, and EN to fill all versions of the post.",
       "draftHint": "Drafts stay private until you submit them for review.",
       "pendingHint": "This post is under review. You can still update its content.",
       "publishedHint": "Published posts stay published when you edit them.",
@@ -101,18 +103,39 @@
       "forbidden": "You cannot edit this blog post.",
       "fields": {
         "title": "Title",
+        "titlePlaceholder": "Title",
         "titleHint": "Write a clear title for your post.",
+        "subText": "Sub-text",
+        "subTextPlaceholder": "Write the sub-text",
         "tags": "Tags",
         "tagsHint": "Press Enter after each tag.",
+        "tagsPlaceholder": "Type and press Enter",
+        "tagsLimit": "Limit of 10",
         "coverImage": "Cover image",
         "coverImageEmpty": "Upload a cover image for the post.",
+        "coverImageDrop": "Drag & Drop files here",
+        "coverImageBrowse": "or browse from device",
+        "coverImageReplace": "Replace selected image",
+        "coverImageHelper": "Images should be in JPEG or PNG format, up to 15MB in size. A 16:9 aspect ratio is recommended for the best result.",
+        "topics": "Topics",
+        "topicsPlaceholder": "Select",
+        "canonicalLink": "Canonical link",
+        "canonicalLinkPlaceholder": "Link",
+        "language": "Language",
+        "languageOptions": {
+          "uz": "Uzbek",
+          "ru": "Russian",
+          "en": "English"
+        },
         "body": "Body",
         "bodyPlaceholder": "Write your story here..."
       },
+      "previewLabel": "Preview",
       "previewTitle": "Live preview",
       "previewSubtitle": "See how the post will look before it is published.",
       "previewPlaceholderTitle": "Your blog title will appear here",
       "previewEmpty": "Start writing to see your story preview here.",
+      "previewEmptyState": "No content yet. Click \"Write Story\" to start writing.",
       "detailsTitle": "Post details",
       "detailsSubtitle": "Set the main title and tags that help readers discover your article.",
       "coverTitle": "Cover image",
@@ -124,6 +147,7 @@
         "saveDraft": "Save draft",
         "submitForReview": "Submit for review",
         "saveChanges": "Save changes",
+        "writeStory": "Write Story",
         "uploadImage": "Upload image",
         "removeImage": "Remove image",
         "backToBlogs": "Back to my blogs",
@@ -131,7 +155,8 @@
       },
       "validation": {
         "titleRequired": "Title is required.",
-        "bodyRequired": "Body is required."
+        "bodyRequired": "Body is required.",
+        "translationRequired": "At least one language needs both a title and a body."
       },
       "statusDescription": {
         "draft": "Draft posts are visible only to you until you send them for review.",
@@ -143,6 +168,8 @@
       "saved": "Draft saved.",
       "updated": "Blog post updated.",
       "submittedForReview": "Blog post submitted for review.",
+      "saveFailed": "Could not save the blog post.",
+      "submitFailed": "Could not submit the blog post for review.",
       "linkCopied": "Blog link copied."
     }
   }

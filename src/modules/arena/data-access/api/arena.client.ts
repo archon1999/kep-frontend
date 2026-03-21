@@ -15,6 +15,10 @@ export const arenaApiClient = {
     const response = await instance.post(`/api/arena/${arenaId}/registration/`);
     return response.data;
   },
+  unregister: async (arenaId: number | string) => {
+    const response = await instance.delete(`/api/arena/${arenaId}/registration/`);
+    return response.data;
+  },
   pause: async (arenaId: number | string) => {
     const response = await instance.post(`/api/arena/${arenaId}/pause/`);
     return response.data;
@@ -34,7 +38,7 @@ export const arenaApiClient = {
   },
   listChallenges: async (arenaId: number | string, filters?: ArenaChallengesFilters) => {
     const response = await instance.get(`/api/arena/${arenaId}/last-challenges/`, { params: filters });
-    return response;
+    return response.data;
   },
   playerStatistics: async (arenaId: number | string, username: string) => {
     const response = await instance.get(`/api/arena/${arenaId}/arena-player-statistics/`, { params: { username } });

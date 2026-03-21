@@ -13,6 +13,7 @@ interface ArenaChallengesListProps {
 const mapArenaChallengeToChallenge = (challenge: ArenaChallenge): Challenge => {
   const mapPlayer = (player?: ArenaChallenge['playerFirst']): ChallengePlayer => ({
     username: player?.username ?? '-',
+    avatar: player?.avatar,
     result: player?.result ?? 0,
     results: player?.results ?? [],
     rating: player?.rating ?? 0,
@@ -30,7 +31,7 @@ const mapArenaChallengeToChallenge = (challenge: ArenaChallenge): Challenge => {
     questionsCount: challenge.questionsCount,
     timeSeconds: challenge.timeSeconds,
     rated: Boolean(challenge.rated),
-    questionTimeType: ChallengeQuestionTimeType.TimeToAll,
+    questionTimeType: challenge.questionTimeType ?? ChallengeQuestionTimeType.TimeToAll,
     status: challenge.finished ? ChallengeStatus.Finished : ChallengeStatus.Already,
   };
 };

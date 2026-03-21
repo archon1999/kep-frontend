@@ -12,12 +12,13 @@ import {
   Divider,
   Fade,
   Grid,
+  InputBase,
   MenuItem,
   Paper,
   Stack,
   Typography,
-  inputBaseClasses,
 } from '@mui/material';
+import { toBackendLanguage } from 'app/locales/locale.ts';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceById, getResourceByUsername, resources } from 'app/routes/resources';
@@ -36,26 +37,249 @@ import {
   useBlogTopics,
   useBlogUpdate,
 } from '../../application/queries';
-import { BlogPost, BlogStatus, BlogTopic } from '../../domain/entities/blog.entity';
+import {
+  BlogPost,
+  BlogStatus,
+  BlogTopic,
+  BlogTranslations,
+  BlogTranslationFields,
+  BlogTranslationLocale,
+} from '../../domain/entities/blog.entity';
 import BlogArticleContent from '../components/BlogArticleContent';
 import BlogRichTextEditor from '../components/BlogRichTextEditor';
-import { prepareBlogArticle } from '../lib/article-content';
+import { normalizeBlogHtml, prepareBlogArticle, stripBlogHtml } from '../lib/article-content';
+
+const BLOG_TRANSLATION_LOCALES: BlogTranslationLocale[] = ['uz', 'ru', 'en'];
+const LABEL_SX = { mb: 1, fontWeight: 700 } as const;
+
+type TranslationErrors = Record<BlogTranslationLocale, { title: string; body: string }>;
 
 const trimTags = (tags: string[]) =>
   Array.from(new Set(tags.map((tag) => tag.trim()).filter(Boolean))).slice(0, 10);
 
-const THUMBNAIL_HELPER =
-  'Images should be in JPEG or PNG format, up to 15MB in size. A 16:9 aspect ratio is required, with 3000×3000 pixels recommended for high resolution.';
+const createEmptyTranslations = (): BlogTranslations => ({
+  uz: { title: '', subtitle: '', body: '' },
+  ru: { title: '', subtitle: '', body: '' },
+  en: { title: '', subtitle: '', body: '' },
+});
 
-const LABEL_SX = { mb: 1, fontWeight: 700 } as const;
+const createEmptyTranslationErrors = (): TranslationErrors => ({
+  uz: { title: '', body: '' },
+  ru: { title: '', body: '' },
+  en: { title: '', body: '' },
+});
+
+const hasVisibleBody = (value?: string | null) => Boolean(stripBlogHtml(value));
+
+const hasTranslationContent = (translation: BlogTranslationFields) =>
+  Boolean(translation.title.trim() || translation.subtitle.trim() || hasVisibleBody(translation.body));
+
+const hasCompleteTranslation = (translation: BlogTranslationFields) =>
+  Boolean(translation.title.trim() && hasVisibleBody(translation.body));
+
+const pickInitialLocale = (
+  translations: BlogTranslations,
+  preferredLocale: BlogTranslationLocale,
+) => {
+  if (hasTranslationContent(translations[preferredLocale])) {
+    return preferredLocale;
+  }
+
+  return BLOG_TRANSLATION_LOCALES.find((locale) => hasTranslationContent(translations[locale])) ?? 'uz';
+};
+
+const mergePostTranslations = (
+  post: BlogPost | null | undefined,
+  preferredLocale: BlogTranslationLocale,
+) => {
+  const nextTranslations = createEmptyTranslations();
+
+  BLOG_TRANSLATION_LOCALES.forEach((locale) => {
+    nextTranslations[locale] = {
+      title: post?.translations?.[locale]?.title ?? '',
+      subtitle: post?.translations?.[locale]?.subtitle ?? '',
+      body: post?.translations?.[locale]?.body ?? '',
+    };
+  });
+
+  if (
+    post &&
+    !BLOG_TRANSLATION_LOCALES.some((locale) => hasTranslationContent(nextTranslations[locale])) &&
+    (post.title || post.subtitle || post.body)
+  ) {
+    nextTranslations[preferredLocale] = {
+      title: post.title ?? '',
+      subtitle: post.subtitle ?? '',
+      body: post.body ?? '',
+    };
+  }
+
+  return nextTranslations;
+};
+
+const getMutationErrorMessage = (error: unknown, fallback: string) => {
+  if (!error || typeof error !== 'object') {
+    return fallback;
+  }
+
+  const apiError = error as {
+    data?: unknown;
+  };
+
+  if (typeof apiError.data === 'string' && apiError.data.trim()) {
+    return apiError.data;
+  }
+
+  if (apiError.data && typeof apiError.data === 'object') {
+    const values = Object.values(apiError.data as Record<string, unknown>);
+    const firstValue = values[0];
+
+    if (Array.isArray(firstValue) && typeof firstValue[0] === 'string') {
+      return firstValue[0];
+    }
+
+    if (typeof firstValue === 'string' && firstValue.trim()) {
+      return firstValue;
+    }
+  }
+
+  return fallback;
+};
+
+interface TranslationLocaleSelectProps {
+  activeLocale: BlogTranslationLocale;
+  onChange: (locale: BlogTranslationLocale) => void;
+  translations: BlogTranslations;
+}
+
+const TranslationLocaleSelect = ({
+  activeLocale,
+  onChange,
+  translations,
+}: TranslationLocaleSelectProps) => {
+  const { t } = useTranslation();
+
+  return (
+    <Stack
+      spacing={1}
+    >
+      <Typography variant="subtitle2" fontWeight={700}>
+        {t('blog.editor.translationLabel')}
+      </Typography>
+
+      <StyledTextField
+        select
+        size="small"
+        value={activeLocale}
+        onChange={(event) => onChange(event.target.value as BlogTranslationLocale)}
+      >
+        {BLOG_TRANSLATION_LOCALES.map((locale) => (
+          <MenuItem key={locale} value={locale}>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Box
+                sx={(theme) => ({
+                  width: 7,
+                  height: 7,
+                  borderRadius: '50%',
+                  bgcolor: hasTranslationContent(translations[locale])
+                    ? theme.vars.palette.success.main
+                    : cssVarRgba(theme.vars.palette.text.primaryChannel, 0.22),
+                })}
+              />
+              <span>{t(`blog.editor.fields.languageOptions.${locale}`)}</span>
+            </Stack>
+          </MenuItem>
+        ))}
+      </StyledTextField>
+    </Stack>
+  );
+};
+
+interface EditorialFieldProps {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+  maxLength: number;
+  multiline?: boolean;
+  minRows?: number;
+  error?: string;
+}
+
+const EditorialField = ({
+  label,
+  value,
+  onChange,
+  placeholder,
+  maxLength,
+  multiline = false,
+  minRows = 1,
+  error,
+}: EditorialFieldProps) => (
+  <Stack spacing={1}>
+    <Typography variant="subtitle2" fontWeight={700}>
+      {label}
+    </Typography>
+
+    <Box
+      sx={(theme) => ({
+        borderBottom: `1px solid ${cssVarRgba(theme.vars.palette.text.primaryChannel, 0.12)}`,
+        pb: 1.25,
+        transition: 'border-color 0.2s ease',
+        '&:focus-within': {
+          borderColor: theme.vars.palette.primary.main,
+        },
+      })}
+    >
+      <InputBase
+        fullWidth
+        multiline={multiline}
+        minRows={minRows}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        placeholder={placeholder}
+        inputProps={{ maxLength, 'aria-label': label }}
+        sx={(theme) => ({
+          alignItems: 'flex-start',
+          color: 'text.primary',
+          caretColor: theme.vars.palette.primary.main,
+          '& input, & textarea': {
+            p: 0,
+            fontWeight: multiline ? 500 : 700,
+            fontSize: multiline ? { xs: 24, md: 28 } : { xs: 40, md: 52 },
+            lineHeight: multiline ? 1.35 : 1.05,
+            letterSpacing: multiline ? '-0.01em' : '-0.03em',
+            '&::placeholder': {
+              color: cssVarRgba(theme.vars.palette.text.primaryChannel, 0.32),
+              opacity: 1,
+            },
+            '&::selection': {
+              backgroundColor: cssVarRgba(theme.vars.palette.primary.mainChannel, 0.24),
+            },
+          },
+          '& textarea': {
+            resize: 'none',
+          },
+        })}
+      />
+    </Box>
+
+    {error ? (
+      <Typography variant="caption" color="error.main">
+        {error}
+      </Typography>
+    ) : null}
+  </Stack>
+);
 
 const BlogEditorPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams();
   const { currentUser } = useAuth();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const isCreateMode = !id;
+  const appLocale = toBackendLanguage(i18n.resolvedLanguage) as BlogTranslationLocale;
 
   const { data: post, isLoading } = useBlogPost(id);
   const { data: topicOptions = [] } = useBlogTopics();
@@ -63,20 +287,15 @@ const BlogEditorPage = () => {
   const { trigger: updatePost, isMutating: isUpdating } = useBlogUpdate(id);
   const { trigger: submitForReview, isMutating: isSubmitting } = useBlogSubmitForReview(id);
 
-  const [title, setTitle] = useState('');
-  const [subtitle, setSubtitle] = useState('');
-  const [body, setBody] = useState('');
+  const [translations, setTranslations] = useState<BlogTranslations>(createEmptyTranslations());
+  const [translationErrors, setTranslationErrors] = useState<TranslationErrors>(createEmptyTranslationErrors());
+  const [activeLocale, setActiveLocale] = useState<BlogTranslationLocale>(appLocale);
   const [tags, setTags] = useState<string[]>([]);
   const [selectedTopics, setSelectedTopics] = useState<BlogTopic[]>([]);
   const [canonicalLink, setCanonicalLink] = useState('');
-  const [accessibility, setAccessibility] = useState('public');
-  const [language, setLanguage] = useState('english');
-  const [targetAudience, setTargetAudience] = useState('all');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [removeImage, setRemoveImage] = useState(false);
-  const [titleError, setTitleError] = useState('');
-  const [bodyError, setBodyError] = useState('');
   const [hasInitialized, setHasInitialized] = useState(false);
   const [currentPost, setCurrentPost] = useState<BlogPost | null>(null);
   const [isEditingStory, setIsEditingStory] = useState(false);
@@ -93,7 +312,10 @@ const BlogEditorPage = () => {
 
   useEffect(() => {
     if (isCreateMode) {
-      setHasInitialized(true);
+      if (!hasInitialized) {
+        setActiveLocale(appLocale);
+        setHasInitialized(true);
+      }
       return;
     }
 
@@ -101,13 +323,16 @@ const BlogEditorPage = () => {
       return;
     }
 
-    setTitle(post.title);
-    setBody(post.body ?? '');
+    const nextTranslations = mergePostTranslations(post, appLocale);
+    setTranslations(nextTranslations);
+    setActiveLocale(pickInitialLocale(nextTranslations, appLocale));
     setTags(post.tags);
+    setSelectedTopics(post.topics ?? []);
+    setCanonicalLink(post.canonicalLink ?? '');
     setImagePreview(post.image ?? null);
     setCurrentPost(post);
     setHasInitialized(true);
-  }, [hasInitialized, isCreateMode, post]);
+  }, [appLocale, hasInitialized, isCreateMode, post]);
 
   useEffect(() => {
     if (!imageFile) {
@@ -130,8 +355,7 @@ const BlogEditorPage = () => {
     currentStatus === BlogStatus.Draft
       ? t('blog.editor.actions.saveDraft')
       : t('blog.editor.actions.saveChanges');
-
-  const headerTitle = isCreateMode ? 'Blog Details' : t('blog.editor.editTitle');
+  const headerTitle = isCreateMode ? t('blog.editor.createTitle') : t('blog.editor.editTitle');
   const headerSubtitle = useMemo(() => {
     if (currentStatus === BlogStatus.Published) {
       return t('blog.editor.publishedHint');
@@ -143,16 +367,58 @@ const BlogEditorPage = () => {
     return t('blog.editor.draftHint');
   }, [currentStatus, t]);
 
-  const previewArticle = useMemo(() => prepareBlogArticle(body), [body]);
+  const activeTranslation = translations[activeLocale];
+  const titleError = translationErrors[activeLocale].title;
+  const bodyError = translationErrors[activeLocale].body;
+  const previewArticle = useMemo(
+    () => prepareBlogArticle(activeTranslation.body),
+    [activeTranslation.body],
+  );
+
+  const updateActiveTranslation = (patch: Partial<BlogTranslationFields>) => {
+    setTranslations((prev) => ({
+      ...prev,
+      [activeLocale]: {
+        ...prev[activeLocale],
+        ...patch,
+      },
+    }));
+  };
+
+  const clearLocaleError = (locale: BlogTranslationLocale, field: 'title' | 'body') => {
+    setTranslationErrors((prev) => ({
+      ...prev,
+      [locale]: {
+        ...prev[locale],
+        [field]: '',
+      },
+    }));
+  };
 
   const validate = () => {
-    const nextTitleError = title.trim() ? '' : t('blog.editor.validation.titleRequired');
-    const nextBodyError = body.trim() ? '' : t('blog.editor.validation.bodyRequired');
+    const nextErrors = createEmptyTranslationErrors();
+    const hasValidLocale = BLOG_TRANSLATION_LOCALES.some((locale) =>
+      hasCompleteTranslation(translations[locale]),
+    );
 
-    setTitleError(nextTitleError);
-    setBodyError(nextBodyError);
+    if (hasValidLocale) {
+      setTranslationErrors(nextErrors);
+      return true;
+    }
 
-    return !nextTitleError && !nextBodyError;
+    const localeToHighlight =
+      BLOG_TRANSLATION_LOCALES.find((locale) => hasTranslationContent(translations[locale])) ??
+      activeLocale;
+    const translation = translations[localeToHighlight];
+
+    nextErrors[localeToHighlight] = {
+      title: translation.title.trim() ? '' : t('blog.editor.validation.titleRequired'),
+      body: hasVisibleBody(translation.body) ? '' : t('blog.editor.validation.bodyRequired'),
+    };
+
+    setActiveLocale(localeToHighlight);
+    setTranslationErrors(nextErrors);
+    return false;
   };
 
   const revalidateBlogData = async () => {
@@ -160,55 +426,83 @@ const BlogEditorPage = () => {
   };
 
   const buildPayload = () => ({
-    title: title.trim(),
-    body,
+    translations: BLOG_TRANSLATION_LOCALES.reduce((acc, locale) => {
+      acc[locale] = {
+        title: translations[locale].title.trim(),
+        subtitle: translations[locale].subtitle.trim(),
+        body: normalizeBlogHtml(translations[locale].body),
+      };
+      return acc;
+    }, createEmptyTranslations()),
     tags: trimTags(tags),
+    topicIds: selectedTopics.map((topic) => topic.id),
+    canonicalLink: canonicalLink.trim(),
     imageFile,
     removeImage: removeImage && !imageFile,
   });
 
+  const syncEditorStateFromPost = (nextPost: BlogPost) => {
+    const nextTranslations = mergePostTranslations(nextPost, appLocale);
+    setTranslations(nextTranslations);
+    setCurrentPost(nextPost);
+    setTags(nextPost.tags);
+    setSelectedTopics(nextPost.topics ?? []);
+    setCanonicalLink(nextPost.canonicalLink ?? '');
+    setImagePreview(nextPost.image ?? null);
+  };
+
   const handlePersist = async (mode: 'draft' | 'submit') => {
     if (!validate()) {
+      toast.error(t('blog.editor.validation.translationRequired'));
       return;
     }
 
-    const payload = buildPayload();
-    let persistedPost = effectivePost;
+    try {
+      const payload = buildPayload();
+      let persistedPost = effectivePost;
 
-    if (isCreateMode) {
-      persistedPost = await createPost(payload);
-      setCurrentPost(persistedPost);
-      await revalidateBlogData();
+      if (isCreateMode) {
+        persistedPost = await createPost(payload);
+        syncEditorStateFromPost(persistedPost);
+        await revalidateBlogData();
 
-      if (mode === 'draft') {
-        toast.success(t('blog.messages.saved'));
-        navigate(getResourceById(resources.BlogEdit, persistedPost.id), { replace: true });
+        if (mode === 'draft') {
+          toast.success(t('blog.messages.saved'));
+          navigate(getResourceById(resources.BlogEdit, persistedPost.id), { replace: true });
+          return;
+        }
+      } else if (id) {
+        persistedPost = await updatePost(payload);
+        syncEditorStateFromPost(persistedPost);
+        await revalidateBlogData();
+
+        if (mode === 'draft') {
+          toast.success(
+            currentStatus === BlogStatus.Published
+              ? t('blog.messages.updated')
+              : t('blog.messages.saved'),
+          );
+          return;
+        }
+      }
+
+      if (!persistedPost) {
         return;
       }
-    } else if (id) {
-      persistedPost = await updatePost(payload);
-      setCurrentPost(persistedPost);
+
+      const submittedPost = await submitForReview(persistedPost.id);
+      syncEditorStateFromPost(submittedPost);
       await revalidateBlogData();
-
-      if (mode === 'draft') {
-        toast.success(
-          currentStatus === BlogStatus.Published
-            ? t('blog.messages.updated')
-            : t('blog.messages.saved'),
-        );
-        return;
-      }
+      toast.success(t('blog.messages.submittedForReview'));
+      navigate(profileBlogUrl);
+    } catch (error) {
+      toast.error(
+        getMutationErrorMessage(
+          error,
+          mode === 'submit' ? t('blog.messages.submitFailed') : t('blog.messages.saveFailed'),
+        ),
+      );
     }
-
-    if (!persistedPost) {
-      return;
-    }
-
-    const submittedPost = await submitForReview(persistedPost.id);
-    setCurrentPost(submittedPost);
-    await revalidateBlogData();
-    toast.success(t('blog.messages.submittedForReview'));
-    navigate(profileBlogUrl);
   };
 
   const attachImage = (file: File | null) => {
@@ -270,83 +564,49 @@ const BlogEditorPage = () => {
   }
 
   const storyEditor = (
-    <Box sx={{ ...responsivePagePaddingSx, maxWidth: 960, mx: 'auto' }}>
-      <Stack
-        direction="column"
-        sx={{
-          gap: 2,
-          minHeight: '70vh',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Stack direction="column" gap={3}>
-          <StyledTextField
-            fullWidth
-            value={title}
-            onChange={(event) => {
-              setTitle(event.target.value);
+    <Box sx={{ ...responsivePagePaddingSx, maxWidth: 1040, mx: 'auto' }}>
+      <Stack spacing={3}>
+        <TranslationLocaleSelect
+          activeLocale={activeLocale}
+          onChange={setActiveLocale}
+          translations={translations}
+        />
+
+        <Stack spacing={3.5}>
+          <EditorialField
+            label={t('blog.editor.fields.title')}
+            value={activeTranslation.title}
+            onChange={(value) => {
+              updateActiveTranslation({ title: value });
               if (titleError) {
-                setTitleError('');
+                clearLocaleError(activeLocale, 'title');
               }
             }}
-            placeholder="Title"
-            error={Boolean(titleError)}
-            helperText={titleError || undefined}
-            slotProps={{
-              htmlInput: {
-                maxLength: 75,
-              },
-            }}
-            sx={{
-              [`& .${inputBaseClasses.root}`]: {
-                bgcolor: 'transparent',
-                px: 0,
-                py: 0,
-              },
-              [`& .${inputBaseClasses.input}`]: {
-                px: '0 !important',
-                py: '0 !important',
-                fontSize: { xs: 34, md: 40 },
-                fontWeight: 700,
-                lineHeight: 1.1,
-              },
-            }}
+            placeholder={t('blog.editor.fields.titlePlaceholder')}
+            maxLength={75}
+            error={titleError}
           />
 
-          <StyledTextField
-            fullWidth
+          <EditorialField
+            label={t('blog.editor.fields.subText')}
+            value={activeTranslation.subtitle}
+            onChange={(value) => updateActiveTranslation({ subtitle: value })}
+            placeholder={t('blog.editor.fields.subTextPlaceholder')}
+            maxLength={140}
             multiline
             minRows={2}
-            value={subtitle}
-            onChange={(event) => setSubtitle(event.target.value)}
-            placeholder="Subtitle"
-            slotProps={{
-              htmlInput: {
-                maxLength: 140,
-              },
-            }}
-            sx={{
-              [`.${inputBaseClasses.root}`]: {
-                bgcolor: 'transparent',
-                p: 0,
-              },
-              [`& .${inputBaseClasses.input}`]: {
-                px: '0 !important',
-                fontSize: 20,
-                fontWeight: 500,
-              },
-            }}
           />
 
           <BlogRichTextEditor
-            value={body}
+            key={activeLocale}
+            value={activeTranslation.body}
             onChange={(nextValue) => {
-              setBody(nextValue);
+              updateActiveTranslation({ body: nextValue });
               if (bodyError) {
-                setBodyError('');
+                clearLocaleError(activeLocale, 'body');
               }
             }}
-            placeholder="Write your story..."
+            placeholder={t('blog.editor.fields.bodyPlaceholder')}
           />
 
           {bodyError ? (
@@ -368,7 +628,7 @@ const BlogEditorPage = () => {
           }}
         >
           <Button color="neutral" onClick={() => setIsEditingStory(false)} disabled={isBusy}>
-            Cancel
+            {t('blog.editor.actions.cancel')}
           </Button>
 
           <Button
@@ -377,7 +637,7 @@ const BlogEditorPage = () => {
             disabled={isBusy}
             sx={{ minWidth: 200 }}
           >
-            Save
+            {t('blog.editor.actions.saveChanges')}
           </Button>
         </Paper>
       </Stack>
@@ -399,7 +659,7 @@ const BlogEditorPage = () => {
                 sx={{ gap: 1, alignItems: 'center', justifyContent: 'space-between', mb: 1 }}
               >
                 <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                  Preview
+                  {t('blog.editor.previewLabel')}
                 </Typography>
 
                 <Button
@@ -411,7 +671,7 @@ const BlogEditorPage = () => {
                     <IconifyIcon icon="material-symbols:edit-outline-rounded" fontSize={18} />
                   }
                 >
-                  Write Story
+                  {t('blog.editor.actions.writeStory')}
                 </Button>
               </Stack>
 
@@ -427,21 +687,38 @@ const BlogEditorPage = () => {
                 }}
               >
                 <Stack direction="column" gap={2} sx={{ overflowWrap: 'anywhere', flexWrap: 'wrap' }}>
-                  {title ? (
+                  {imagePreview ? (
+                    <Box
+                      component="img"
+                      src={imagePreview}
+                      alt={activeTranslation.title || t('blog.editor.fields.coverImage')}
+                      sx={{
+                        width: 1,
+                        aspectRatio: '16 / 9',
+                        objectFit: 'cover',
+                        borderRadius: 2,
+                        mb: 1,
+                      }}
+                    />
+                  ) : null}
+
+                  {activeTranslation.title ? (
                     <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                      {title}
+                      {activeTranslation.title}
                     </Typography>
                   ) : null}
 
-                  {subtitle ? (
+                  {activeTranslation.subtitle ? (
                     <Typography variant="h6" sx={{ color: 'text.secondary', fontWeight: 500 }}>
-                      {subtitle}
+                      {activeTranslation.subtitle}
                     </Typography>
                   ) : null}
 
-                  {(title || subtitle) && body ? <Divider sx={{ my: 2 }} /> : null}
+                  {(activeTranslation.title || activeTranslation.subtitle) && hasVisibleBody(activeTranslation.body) ? (
+                    <Divider sx={{ my: 2 }} />
+                  ) : null}
 
-                  {body ? (
+                  {hasVisibleBody(activeTranslation.body) ? (
                     <BlogArticleContent
                       html={previewArticle.html}
                       sx={{
@@ -464,7 +741,7 @@ const BlogEditorPage = () => {
                     />
                   ) : (
                     <Typography variant="body1" color="text.secondary">
-                      No content yet. Click <strong>&quot;Write Story&quot;</strong> to start writing.
+                      {t('blog.editor.previewEmptyState')}
                     </Typography>
                   )}
                 </Stack>
@@ -480,21 +757,27 @@ const BlogEditorPage = () => {
 
           <Grid size={{ xs: 12, lg: 5 }}>
             <Stack direction="column" spacing={3}>
+              <TranslationLocaleSelect
+                activeLocale={activeLocale}
+                onChange={setActiveLocale}
+                translations={translations}
+              />
+
               <Box>
                 <Typography variant="subtitle2" fontWeight={700} sx={LABEL_SX}>
-                  Title
+                  {t('blog.editor.fields.title')}
                 </Typography>
 
                 <StyledTextField
                   fullWidth
-                  value={title}
+                  value={activeTranslation.title}
                   onChange={(event) => {
-                    setTitle(event.target.value);
+                    updateActiveTranslation({ title: event.target.value });
                     if (titleError) {
-                      setTitleError('');
+                      clearLocaleError(activeLocale, 'title');
                     }
                   }}
-                  placeholder="Title"
+                  placeholder={t('blog.editor.fields.titlePlaceholder')}
                   error={Boolean(titleError)}
                   helperText={titleError || undefined}
                   slotProps={{
@@ -512,28 +795,27 @@ const BlogEditorPage = () => {
                   mt={0.5}
                   mr={1.5}
                 >
-                  {title.length}/75
+                  {activeTranslation.title.length}/75
                 </Typography>
               </Box>
 
               <Box>
                 <Typography variant="subtitle2" fontWeight={700} sx={LABEL_SX}>
-                  Sub-text
+                  {t('blog.editor.fields.subText')}
                 </Typography>
 
                 <StyledTextField
                   fullWidth
                   multiline
                   rows={3}
-                  value={subtitle}
-                  onChange={(event) => setSubtitle(event.target.value)}
-                  placeholder="Write the sub-text"
+                  value={activeTranslation.subtitle}
+                  onChange={(event) => updateActiveTranslation({ subtitle: event.target.value })}
+                  placeholder={t('blog.editor.fields.subTextPlaceholder')}
                   slotProps={{
                     htmlInput: {
                       maxLength: 140,
                     },
                   }}
-                  sx={{ [`.${inputBaseClasses.root}`]: { p: 0 } }}
                 />
 
                 <Typography
@@ -544,13 +826,13 @@ const BlogEditorPage = () => {
                   mt={0.5}
                   mr={1.5}
                 >
-                  {subtitle.length}/140
+                  {activeTranslation.subtitle.length}/140
                 </Typography>
               </Box>
 
               <Box>
                 <Typography variant="subtitle2" fontWeight={700} sx={LABEL_SX}>
-                  Thumbnail
+                  {t('blog.editor.fields.coverImage')}
                 </Typography>
 
                 <Paper
@@ -588,10 +870,12 @@ const BlogEditorPage = () => {
                       fontSize={24}
                     />
                     <Typography variant="body1" color="text.secondary">
-                      {imagePreview ? 'Replace selected image' : 'Drag & Drop files here'}
+                      {imagePreview
+                        ? t('blog.editor.fields.coverImageReplace')
+                        : t('blog.editor.fields.coverImageDrop')}
                     </Typography>
                     <Typography variant="body1" color="primary.main">
-                      or browse from device
+                      {t('blog.editor.fields.coverImageBrowse')}
                     </Typography>
                   </Stack>
                 </Paper>
@@ -604,7 +888,7 @@ const BlogEditorPage = () => {
                     style={{ marginTop: 3 }}
                   />
                   <Typography variant="body2" color="info.main">
-                    {THUMBNAIL_HELPER}
+                    {t('blog.editor.fields.coverImageHelper')}
                   </Typography>
                 </Stack>
 
@@ -615,7 +899,7 @@ const BlogEditorPage = () => {
                     onClick={handleRemoveImage}
                     sx={{ mt: 1, px: 0 }}
                   >
-                    Remove image
+                    {t('blog.editor.actions.removeImage')}
                   </Button>
                 ) : null}
 
@@ -630,7 +914,7 @@ const BlogEditorPage = () => {
 
               <Box>
                 <Typography variant="subtitle2" fontWeight={700} sx={LABEL_SX}>
-                  Topics
+                  {t('blog.editor.fields.topics')}
                 </Typography>
 
                 <Autocomplete
@@ -651,7 +935,12 @@ const BlogEditorPage = () => {
                       />
                     ))
                   }
-                  renderInput={(params) => <StyledTextField {...params} placeholder="Select" />}
+                  renderInput={(params) => (
+                    <StyledTextField
+                      {...params}
+                      placeholder={selectedTopics.length === 0 ? t('blog.editor.fields.topicsPlaceholder') : ''}
+                    />
+                  )}
                   renderOption={(props, option, { selected }) => (
                     <li {...props} key={option.id}>
                       <Checkbox checked={selected} sx={{ mr: 1 }} />
@@ -663,20 +952,20 @@ const BlogEditorPage = () => {
 
               <Box>
                 <Typography variant="subtitle2" fontWeight={700} sx={LABEL_SX}>
-                  Canonical link
+                  {t('blog.editor.fields.canonicalLink')}
                 </Typography>
 
                 <StyledTextField
                   fullWidth
                   value={canonicalLink}
                   onChange={(event) => setCanonicalLink(event.target.value)}
-                  placeholder="Link"
+                  placeholder={t('blog.editor.fields.canonicalLinkPlaceholder')}
                 />
               </Box>
 
               <Box>
                 <Typography variant="subtitle2" fontWeight={700} sx={LABEL_SX}>
-                  Tags
+                  {t('blog.editor.fields.tags')}
                 </Typography>
 
                 <Autocomplete
@@ -698,7 +987,7 @@ const BlogEditorPage = () => {
                   renderInput={(params) => (
                     <StyledTextField
                       {...params}
-                      placeholder={tags.length === 0 ? 'Type and press Enter' : ''}
+                      placeholder={tags.length === 0 ? t('blog.editor.fields.tagsPlaceholder') : ''}
                     />
                   )}
                 />
@@ -713,60 +1002,8 @@ const BlogEditorPage = () => {
                   mx={1.5}
                 >
                   <IconifyIcon icon="material-symbols:info-outline" fontSize={14} />
-                  Limit of 10
+                  {t('blog.editor.fields.tagsLimit')}
                 </Typography>
-              </Box>
-
-              <Grid container spacing={1}>
-                <Grid size={6}>
-                  <Typography variant="subtitle2" fontWeight={700} sx={LABEL_SX}>
-                    Accessibility
-                  </Typography>
-
-                  <StyledTextField
-                    select
-                    fullWidth
-                    value={accessibility}
-                    onChange={(event) => setAccessibility(event.target.value)}
-                  >
-                    <MenuItem value="public">Public</MenuItem>
-                    <MenuItem value="private">Private</MenuItem>
-                  </StyledTextField>
-                </Grid>
-
-                <Grid size={6}>
-                  <Typography variant="subtitle2" fontWeight={700} sx={LABEL_SX}>
-                    Language
-                  </Typography>
-
-                  <StyledTextField
-                    select
-                    fullWidth
-                    value={language}
-                    onChange={(event) => setLanguage(event.target.value)}
-                  >
-                    <MenuItem value="english">English</MenuItem>
-                    <MenuItem value="uzbek">Uzbek</MenuItem>
-                    <MenuItem value="russian">Russian</MenuItem>
-                  </StyledTextField>
-                </Grid>
-              </Grid>
-
-              <Box>
-                <Typography variant="subtitle2" fontWeight={700} sx={LABEL_SX}>
-                  Target audience
-                </Typography>
-
-                <StyledTextField
-                  select
-                  fullWidth
-                  value={targetAudience}
-                  onChange={(event) => setTargetAudience(event.target.value)}
-                >
-                  <MenuItem value="all">All</MenuItem>
-                  <MenuItem value="children">Children</MenuItem>
-                  <MenuItem value="adults">Adults</MenuItem>
-                </StyledTextField>
               </Box>
             </Stack>
           </Grid>
@@ -795,7 +1032,7 @@ const BlogEditorPage = () => {
               color="neutral"
               disabled={isBusy}
             >
-              Cancel
+              {t('blog.editor.actions.cancel')}
             </Button>
 
             <Button
@@ -817,7 +1054,7 @@ const BlogEditorPage = () => {
                 disabled={submitDisabled || !currentUser}
                 startIcon={isSubmitting ? <CircularProgress color="inherit" size={18} /> : undefined}
               >
-                Submit for Review
+                {t('blog.editor.actions.submitForReview')}
               </Button>
             ) : null}
           </Stack>

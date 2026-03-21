@@ -131,7 +131,7 @@ const UserProfilePage = () => {
     <Stack direction="column" spacing={3} sx={responsivePagePaddingSx}>
       <Card>
         <Box
-          sx={{ position: 'relative', height: { xs: 180, sm: 260, md: 400, lg: 500 }, bgcolor: 'background.neutral' }}
+          sx={{ position: 'relative', bgcolor: 'background.neutral' }}
         >
           {coverPhoto ? (
             <Box
