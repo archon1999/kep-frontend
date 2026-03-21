@@ -17,7 +17,7 @@ export const useArenaLivePolling = ({
   onRefreshTick,
 }: UseArenaLivePollingProps) => {
   const previousStatusRef = useRef<ArenaStatus | undefined>(arena?.status);
-  const openedChallengeRef = useRef<number | undefined>();
+  const openedChallengeRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     if (arena?.status == null) return;

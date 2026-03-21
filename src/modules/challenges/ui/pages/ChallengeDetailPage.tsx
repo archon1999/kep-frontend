@@ -61,7 +61,7 @@ const ChallengeDetailPage = () => {
   const questionCardRef = useRef<ChallengeQuestionCardHandle>(null);
   const timerStartedRef = useRef(false);
   const finishHandledRef = useRef(false);
-  const blurCheckTimeoutRef = useRef<ReturnType<typeof window.setTimeout> | null>(null);
+  const blurCheckTimeoutRef = useRef<number | null>(null);
   const suppressBlurUntilRef = useRef(0);
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [timerRunning, setTimerRunning] = useState(false);

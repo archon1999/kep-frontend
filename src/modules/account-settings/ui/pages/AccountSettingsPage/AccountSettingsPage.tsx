@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { TabContext } from '@mui/lab';
 import { useLocation, useNavigate } from 'react-router';
 import {
+  Container,
   Divider,
   Drawer,
   Paper,
@@ -31,7 +32,6 @@ import {
   accountSettingsTabRoutes,
   getAccountSettingsTabValue,
 } from 'modules/account-settings/ui/shared';
-import { Container } from '@mui/system';
 
 const AccountSettingsPage = () => {
   const { t } = useTranslation();

@@ -10,6 +10,11 @@
     "close": "Закрыть",
     "minutesShort": "мин",
     "searchPlaceholder": "Поиск",
+    "pagination": {
+      "previous": "Назад",
+      "next": "Далее",
+      "displayedRows": "Показано <range>{{from}}-{{to}}</range> из <total>{{count}}</total>"
+    },
     "dailyTasks": {
       "title": "Ежедневные задачи",
       "subtitle": "Поддерживайте свою серию",

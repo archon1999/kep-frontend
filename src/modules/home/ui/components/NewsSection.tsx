@@ -38,16 +38,18 @@ const mapNewsToPost = (news: NewsItem): BlogPost => ({
   id: Number(news.blog.id ?? 0),
   author: {
     username: news.blog.author.username,
-    avatar: news.blog.author.avatar,
+    avatar: news.blog.author.avatar ?? null,
     bio: '',
   },
   title: news.blog.title,
+  body: '',
   bodyShort: news.blog.bodyShort ?? undefined,
   image: news.blog.image ?? null,
   views: news.blog.views ?? 0,
   likesCount: news.blog.likesCount ?? 0,
   commentsCount: news.blog.commentsCount ?? 0,
   tags: mapTags(news.blog.tags),
+  topics: [],
   created: news.blog.created,
 });
 

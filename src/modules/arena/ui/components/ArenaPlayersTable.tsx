@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import {
   Avatar,
   Box,
-  Chip,
   Pagination,
   Paper,
   Stack,

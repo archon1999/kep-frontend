@@ -31,6 +31,17 @@ interface BlogCardProps {
   sx?: SxProps<Theme>;
 }
 
+const mergeSx = (base: SxProps<Theme>, extra?: SxProps<Theme>): SxProps<Theme> => {
+  if (extra == null) {
+    return base;
+  }
+
+  const baseEntries = Array.isArray(base) ? base : [base];
+  const extraEntries = Array.isArray(extra) ? extra : [extra];
+
+  return [...baseEntries, ...extraEntries] as SxProps<Theme>;
+};
+
 const StatPill = ({
   icon,
   value,
@@ -132,7 +143,7 @@ const BlogCard = ({
 
     return (
       <Card
-        sx={{
+        sx={mergeSx({
           position: 'relative',
           borderRadius: 4,
           overflow: 'hidden',
@@ -145,8 +156,7 @@ const BlogCard = ({
             transform: 'scale(1.05)',
             filter: 'brightness(1)',
           },
-          ...sx,
-        }}
+        }, sx)}
       >
         <CardActionArea
           component={RouterLink}
@@ -279,7 +289,7 @@ const BlogCard = ({
   if (isHome) {
     return (
       <Card
-        sx={(theme) => ({
+        sx={mergeSx((theme) => ({
           height: 1,
           borderRadius: 5,
           overflow: 'hidden',
@@ -298,8 +308,7 @@ const BlogCard = ({
           [`&:hover .${cardMediaClasses.img}`]: {
             transform: 'scale(1.04)',
           },
-          ...sx,
-        })}
+        }), sx)}
       >
         <CardActionArea
           component={RouterLink}
@@ -401,7 +410,7 @@ const BlogCard = ({
 
   return (
     <Card
-      sx={(theme) => ({
+      sx={mergeSx((theme) => ({
         height: 1,
         borderRadius: 4.5,
         p: 1,
@@ -421,8 +430,7 @@ const BlogCard = ({
         [`&:hover .${cardMediaClasses.img}`]: {
           transform: 'scale(1.04)',
         },
-        ...sx,
-      })}
+      }), sx)}
     >
       <CardActionArea
         component={RouterLink}

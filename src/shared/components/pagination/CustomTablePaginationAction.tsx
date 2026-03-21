@@ -1,5 +1,6 @@
 import { MouseEvent, useCallback, useMemo } from 'react';
 import { Box, Button, Pagination, Stack, TablePaginationOwnProps, buttonClasses } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 
 export interface CustomTablePaginationActionProps extends TablePaginationOwnProps {
@@ -17,6 +18,7 @@ const CustomTablePaginationAction = ({
   onPrevClick,
   showFullPagination,
 }: CustomTablePaginationActionProps) => {
+  const { t } = useTranslation();
   const totalPages = useMemo(() => Math.max(1, Math.ceil(count / rowsPerPage) || 1), [count, rowsPerPage]);
   const isFirstPage = page === 0;
   const isLastPage = page >= totalPages - 1;
@@ -57,6 +59,7 @@ const CustomTablePaginationAction = ({
         variant="text"
         color="primary"
         size="small"
+        aria-label={t('common.pagination.previous')}
         startIcon={
           <IconifyIcon icon="material-symbols:chevron-left-rounded" sx={{ fontSize: '18px !important' }} />
         }
@@ -71,7 +74,7 @@ const CustomTablePaginationAction = ({
         }}
       >
         <Box component="span" sx={{ display: { xs: 'none', sm: 'inline-block' } }}>
-          Previous
+          {t('common.pagination.previous')}
         </Box>
       </Button>
 
@@ -95,6 +98,7 @@ const CustomTablePaginationAction = ({
         variant="text"
         color="primary"
         size="small"
+        aria-label={t('common.pagination.next')}
         endIcon={
           <IconifyIcon icon="material-symbols:chevron-right-rounded" sx={{ fontSize: '18px !important' }} />
         }
@@ -106,7 +110,7 @@ const CustomTablePaginationAction = ({
         }}
       >
         <Box component="span" sx={{ display: { xs: 'none', sm: 'inline-block' } }}>
-          Next
+          {t('common.pagination.next')}
         </Box>
       </Button>
     </Stack>

@@ -10,6 +10,11 @@
     "close": "Yopish",
     "minutesShort": "daq",
     "searchPlaceholder": "Qidirish",
+    "pagination": {
+      "previous": "Oldingi",
+      "next": "Keyingi",
+      "displayedRows": "<total>{{count}}</total> tadan <range>{{from}}-{{to}}</range> tasi ko'rsatilmoqda"
+    },
     "dailyTasks": {
       "title": "Kunlik vazifalar",
       "subtitle": "Seriyani davom ettiring",

@@ -1,4 +1,4 @@
-import { Avatar, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
 import { ChallengePlayer } from '../../domain';
 

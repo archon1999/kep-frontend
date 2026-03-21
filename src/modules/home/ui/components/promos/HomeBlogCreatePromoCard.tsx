@@ -94,14 +94,14 @@ const HomeBlogCreatePromoCard = ({ slide }: { slide: HomePromoSlide }) => {
             </Stack>
 
             <Card
-              sx={(theme) => ({
+              sx={{
                 width: { xs: '100%', lg: 320 },
                 flexShrink: 0,
                 p: 2.25,
                 borderRadius: 3,
                 backdropFilter: 'blur(10px)',
                 boxShadow: '0 18px 42px rgba(15,23,42,0.08)',
-              })}
+              }}
             >
               <Stack spacing={2}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">

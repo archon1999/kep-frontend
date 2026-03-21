@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import FilterButton from 'shared/components/common/FilterButton';
 import KepIcon from 'shared/components/base/KepIcon';
 import StyledTextField from 'shared/components/styled/StyledTextField';
+import { cssVarRgba } from 'shared/lib/utils';
 import { BlogTopic } from '../../domain/entities/blog.entity';
 
 export interface BlogFilterState {
@@ -114,7 +115,8 @@ const BlogFilters = ({
                 '& .Mui-selected': {
                   color: 'primary.main !important',
                   borderColor: 'primary.main',
-                  backgroundColor: (theme) => theme.vars.palette.primary.softBg,
+                  backgroundColor: (theme) =>
+                    cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08),
                 },
               }}
             >

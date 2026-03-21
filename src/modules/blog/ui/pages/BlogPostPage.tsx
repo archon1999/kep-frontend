@@ -23,7 +23,6 @@ import dayjs from 'dayjs';
 import { SwiperSlide } from 'swiper/react';
 import Swiper from 'shared/components/base/Swiper';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import KepIcon from 'shared/components/base/KepIcon';
 import PageLoader from 'shared/components/loading/PageLoader';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { cssVarRgba } from 'shared/lib/utils';
@@ -535,10 +534,10 @@ const BlogPostPage = () => {
                 >
                   <Stack sx={{ alignItems: 'center' }}>
                     <Button ref={navigationPrevRef} variant="soft" color="neutral" sx={{ mr: 1 }}>
-                      <KepIcon name="left-arrow" fontSize={18} />
+                      <IconifyIcon icon="material-symbols:chevron-left-rounded" fontSize={18} />
                     </Button>
                     <Button ref={navigationNextRef} variant="soft" color="neutral" sx={{ mr: 2 }}>
-                      <KepIcon name="right-arrow" fontSize={18} />
+                      <IconifyIcon icon="material-symbols:chevron-right-rounded" fontSize={18} />
                     </Button>
                   </Stack>
 

@@ -2,7 +2,7 @@ import { ApiBlogListParams } from 'shared/api/orval/generated/endpoints/index.sc
 import { blogApiClient } from '../api/blog.client';
 import { blogMappers, mapBlogComment, mapBlogPost, mapPageResult } from '../mappers/blog.mapper';
 import { BlogRepository } from '../../domain/ports/blog.repository';
-import { BlogPost, BlogTopic, BlogUpsertPayload } from '../../domain/entities/blog.entity';
+import { BlogPost, BlogUpsertPayload } from '../../domain/entities/blog.entity';
 
 const toFormData = (payload: BlogUpsertPayload) => {
   const formData = new FormData();
