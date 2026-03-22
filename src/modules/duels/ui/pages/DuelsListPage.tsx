@@ -5,14 +5,9 @@ import {
   Card,
   CardContent,
   Chip,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Stack,
   Tab,
   Tabs,
-  TextField,
   Typography,
   useTheme,
 } from '@mui/material';
@@ -20,34 +15,33 @@ import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import { useAuth } from 'app/providers/AuthProvider.tsx';
+import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceById, resources } from 'app/routes/resources.ts';
 import PageHeader from 'shared/components/sections/common/PageHeader.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { cssVarRgba } from 'shared/lib/utils.ts';
-import DuelReadyStatusCard from '../components/DuelReadyStatusCard.tsx';
-import DuelReadyPlayersSection from '../components/DuelReadyPlayersSection.tsx';
+import {
+  useAcceptDuelCall,
+  useCancelDuelCall,
+  useConfirmDuelCall,
+  useCounterDuelCall,
+  useCreateDuelCall,
+  useRejectDuelCall,
+} from '../../application/mutations.ts';
+import {
+  useDuelCalls,
+  useDuelPresets,
+  useDuelTypes,
+  useDuelsList,
+} from '../../application/queries.ts';
+import { DuelInvitation } from '../../domain/index.ts';
+import DuelCallComposerCard from '../components/DuelCallComposerCard.tsx';
+import DuelCallScheduleDialog from '../components/DuelCallScheduleDialog.tsx';
 import DuelInvitationsSection from '../components/DuelInvitationsSection.tsx';
 import DuelsListSection from '../components/DuelsListSection.tsx';
-import {
-  useDuelInvitations,
-  useDuelPresets,
-  useDuelsList,
-  useReadyPlayers,
-  useReadyStatus,
-} from '../../application/queries.ts';
-import {
-  useAcceptInvitation,
-  useCounterInvitation,
-  useCreateInvitation,
-  useRejectInvitation,
-  useUpdateReadyStatus,
-} from '../../application/mutations.ts';
-import { DuelInvitation, DuelReadyPlayer } from '../../domain/index.ts';
-import DuelPresetDialog from '../components/DuelPresetDialog.tsx';
 
-type DuelsTab = 'my' | 'ready' | 'all';
+type DuelsTab = 'queue' | 'needs_response' | 'my_calls' | 'history';
 
 const formatDateInput = (date: Date) => {
   const pad = (value: number) => value.toString().padStart(2, '0');
@@ -67,58 +61,65 @@ const toBackendDate = (value: string) => {
 };
 
 const tabSubtitleMap: Record<DuelsTab, string> = {
-  my: 'duels.incomingInvitations',
-  ready: 'duels.readyPlayersSubtitle',
-  all: 'duels.subtitle',
+  queue: 'duels.queueSubtitle',
+  needs_response: 'duels.needsResponseSubtitle',
+  my_calls: 'duels.myCallsSubtitle',
+  history: 'duels.historySubtitle',
 };
 
 const DuelsListPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const theme = useTheme();
-  const { currentUser } = useAuth();
+  useDocumentTitle('pageTitles.duels');
 
   const [activeTab, setActiveTab] = useState<DuelsTab | null>(null);
-  const [myPage, setMyPage] = useState(1);
-  const [allPage, setAllPage] = useState(1);
-  const [readyPage, setReadyPage] = useState(1);
-  const [invitationActionKey, setInvitationActionKey] = useState<string | null>(null);
-  const [counterInvitationTarget, setCounterInvitationTarget] = useState<DuelInvitation | null>(null);
-  const [counterStartTime, setCounterStartTime] = useState('');
+  const [myDuelsPage, setMyDuelsPage] = useState(1);
+  const [allDuelsPage, setAllDuelsPage] = useState(1);
+  const [selectedPresetId, setSelectedPresetId] = useState('');
+  const [selectedTypeId, setSelectedTypeId] = useState('');
+  const [actionLoadingKey, setActionLoadingKey] = useState<string | null>(null);
+  const [scheduleDialogState, setScheduleDialogState] = useState<{
+    mode: 'accept' | 'counter';
+    invitation: DuelInvitation | null;
+  }>({ mode: 'accept', invitation: null });
+  const [scheduleValue, setScheduleValue] = useState('');
 
-  const pageSize = 10;
-  const readyPageSize = 12;
+  const pageSize = 8;
 
-  const { data: readyStatus, mutate: mutateReadyStatus } = useReadyStatus();
-  const { trigger: toggleReady, isMutating: isTogglingReady } = useUpdateReadyStatus();
-
-  const { data: readyPlayersPage, mutate: mutateReadyPlayers } = useReadyPlayers({
-    page: readyPage,
-    pageSize: readyPageSize,
-  });
-
-  const { data: myDuels, mutate: mutateMyDuels } = useDuelsList({
-    my: true,
-    page: myPage,
-    pageSize,
-  });
-  const { data: invitationsPage, mutate: mutateInvitations } = useDuelInvitations({
+  const { data: queueCallsPage, mutate: mutateQueueCalls } = useDuelCalls({
+    scope: 'queue',
     page: 1,
     pageSize: 20,
   });
-  const { data: allDuels, mutate: mutateAllDuels } = useDuelsList({
-    page: allPage,
+  const { data: needsResponsePage, mutate: mutateNeedsResponse } = useDuelCalls({
+    scope: 'needs_response',
+    page: 1,
+    pageSize: 20,
+  });
+  const { data: myCallsPage, mutate: mutateMyCalls } = useDuelCalls({
+    scope: 'mine',
+    page: 1,
+    pageSize: 20,
+  });
+  const { data: myDuels, mutate: mutateMyDuels } = useDuelsList({
+    my: true,
+    page: myDuelsPage,
     pageSize,
   });
+  const { data: allDuels, mutate: mutateAllDuels } = useDuelsList({
+    page: allDuelsPage,
+    pageSize,
+  });
+  const { data: presets = [] } = useDuelPresets();
+  const { data: duelTypes = [] } = useDuelTypes();
 
-  const { trigger: createInvitation, isMutating: isCreatingInvitation } = useCreateInvitation();
-  const { trigger: acceptInvitation } = useAcceptInvitation();
-  const { trigger: rejectInvitation } = useRejectInvitation();
-  const { trigger: counterInvitation, isMutating: isCounteringInvitation } = useCounterInvitation();
-
-  const [selectedOpponent, setSelectedOpponent] = useState<DuelReadyPlayer | null>(null);
-  const isPresetDialogOpen = Boolean(selectedOpponent);
-  const { data: presets = [], isLoading: isPresetsLoading } = useDuelPresets(selectedOpponent?.username ?? null);
+  const { trigger: createDuelCall, isMutating: isCreatingCall } = useCreateDuelCall();
+  const { trigger: acceptDuelCall, isMutating: isAccepting } = useAcceptDuelCall();
+  const { trigger: confirmDuelCall } = useConfirmDuelCall();
+  const { trigger: rejectDuelCall } = useRejectDuelCall();
+  const { trigger: cancelDuelCall } = useCancelDuelCall();
+  const { trigger: counterDuelCall, isMutating: isCountering } = useCounterDuelCall();
 
   const minStartTime = useMemo(() => {
     const start = new Date();
@@ -126,151 +127,177 @@ const DuelsListPage = () => {
     start.setSeconds(0, 0);
     return formatDateInput(start);
   }, []);
-  const defaultStartTime = minStartTime;
+
+  const queueCalls = queueCallsPage?.data ?? [];
+  const needsResponseCalls = needsResponsePage?.data ?? [];
+  const myCalls = myCallsPage?.data ?? [];
 
   useEffect(() => {
-    if (activeTab !== null || myDuels === undefined) {
+    if (!selectedPresetId && presets.length) {
+      setSelectedPresetId(String(presets[0]?.id ?? ''));
+    }
+  }, [presets, selectedPresetId]);
+
+  useEffect(() => {
+    if (!selectedTypeId && duelTypes.length) {
+      setSelectedTypeId(String(duelTypes[0]?.id ?? ''));
+    }
+  }, [duelTypes, selectedTypeId]);
+
+  useEffect(() => {
+    if (activeTab !== null || myDuels === undefined || needsResponsePage === undefined) {
       return;
     }
 
-    setActiveTab((myDuels?.total ?? 0) > 0 ? 'my' : 'ready');
-  }, [activeTab, myDuels]);
-
-  const resolvedActiveTab: DuelsTab = activeTab ?? ((myDuels?.total ?? 0) > 0 ? 'my' : 'ready');
-
-  const incomingInvitations = useMemo(
-    () => (invitationsPage?.data ?? []).filter((invitation) => invitation.viewerRole === 'invitee'),
-    [invitationsPage?.data],
-  );
-  const outgoingInvitations = useMemo(
-    () => (invitationsPage?.data ?? []).filter((invitation) => invitation.viewerRole === 'challenger'),
-    [invitationsPage?.data],
-  );
-
-  const summaryCards = useMemo(
-    () => [
-      {
-        label: t('duels.myDuelsSection'),
-        value: myDuels?.total ?? 0,
-        icon: 'mdi:sword-cross',
-        color: 'primary',
-      },
-      {
-        label: t('duels.incomingInvitations'),
-        value: incomingInvitations.length,
-        icon: 'mdi:email-fast-outline',
-        color: 'warning',
-      },
-      {
-        label: t('duels.readyPlayersTitle'),
-        value: readyPlayersPage?.total ?? 0,
-        icon: 'mdi:account-group-outline',
-        color: 'success',
-      },
-    ],
-    [incomingInvitations.length, myDuels?.total, readyPlayersPage?.total, t],
-  );
-
-  const handleToggleReady = async (value: boolean) => {
-    try {
-      const updatedStatus = await toggleReady(value);
-      await mutateReadyStatus(updatedStatus, { revalidate: false });
-      await mutateReadyPlayers();
-
-      if (value) {
-        setActiveTab('ready');
-      }
-    } catch {
-      toast.error(t('duels.error'));
+    if ((needsResponsePage?.total ?? 0) > 0) {
+      setActiveTab('needs_response');
+      return;
     }
+
+    setActiveTab((myDuels?.total ?? 0) > 0 ? 'history' : 'queue');
+  }, [activeTab, myDuels, needsResponsePage]);
+
+  const resolvedActiveTab: DuelsTab =
+    activeTab ??
+    ((needsResponsePage?.total ?? 0) > 0 ? 'needs_response' : (myDuels?.total ?? 0) > 0 ? 'history' : 'queue');
+
+  const refreshAll = async () => {
+    await Promise.all([
+      mutateQueueCalls(),
+      mutateNeedsResponse(),
+      mutateMyCalls(),
+      mutateMyDuels(),
+      mutateAllDuels(),
+    ]);
   };
 
-  const handleCreateDuel = async (payload: { presetId: number; startTime: string }) => {
-    if (!selectedOpponent) return;
+  const summaryCards = [
+    {
+      label: t('duels.openQueue'),
+      value: queueCallsPage?.total ?? 0,
+      icon: 'mdi:broadcast',
+      color: theme.vars.palette.primary.mainChannel,
+    },
+    {
+      label: t('duels.needsMyResponse'),
+      value: needsResponsePage?.total ?? 0,
+      icon: 'mdi:message-badge-outline',
+      color: theme.vars.palette.warning.mainChannel,
+    },
+    {
+      label: t('duels.myDuelsSection'),
+      value: myDuels?.total ?? 0,
+      icon: 'mdi:sword-cross',
+      color: theme.vars.palette.success.mainChannel,
+    },
+  ];
+
+  const openScheduleDialog = (mode: 'accept' | 'counter', invitation: DuelInvitation) => {
+    setScheduleDialogState({ mode, invitation });
+    setScheduleValue(
+      invitation.proposedStartTime
+        ? formatDateInput(new Date(invitation.proposedStartTime))
+        : minStartTime,
+    );
+  };
+
+  const closeScheduleDialog = () => {
+    setScheduleDialogState({ mode: 'accept', invitation: null });
+    setScheduleValue(minStartTime);
+  };
+
+  const handleCreateCall = async () => {
+    if (!selectedPresetId || !selectedTypeId) return;
+
     try {
-      await createInvitation({
-        duelUsername: selectedOpponent.username,
-        duelPresetId: payload.presetId,
-        startTime: toBackendDate(payload.startTime),
+      await createDuelCall({
+        duelPresetId: Number(selectedPresetId),
+        duelTypeId: Number(selectedTypeId),
       });
-      toast.success(t('duels.invitationSentToast'));
-      setSelectedOpponent(null);
-      await Promise.all([mutateReadyPlayers(), mutateInvitations(), mutateMyDuels(), mutateAllDuels()]);
+      toast.success(t('duels.callCreatedToast'));
+      setActiveTab('my_calls');
+      await refreshAll();
     } catch {
       toast.error(t('duels.error'));
     }
   };
 
-  const handleAccept = async (invitation: DuelInvitation) => {
+  const handleScheduleSubmit = async () => {
+    const invitation = scheduleDialogState.invitation;
+    if (!invitation || !scheduleValue) return;
+
     try {
-      setInvitationActionKey(`accept-${invitation.id}`);
-      const updatedInvitation = await acceptInvitation(invitation.id);
-      await Promise.all([mutateInvitations(), mutateMyDuels(), mutateAllDuels(), mutateReadyPlayers()]);
-      toast.success(t('duels.acceptedToast'));
+      if (scheduleDialogState.mode === 'accept') {
+        setActionLoadingKey(`accept-${invitation.id}`);
+        await acceptDuelCall({
+          id: invitation.id,
+          payload: { proposedStartTime: toBackendDate(scheduleValue) },
+        });
+        toast.success(t('duels.acceptedToast'));
+      } else {
+        setActionLoadingKey(`counter-${invitation.id}`);
+        await counterDuelCall({
+          id: invitation.id,
+          payload: { proposedStartTime: toBackendDate(scheduleValue) },
+        });
+        toast.success(t('duels.counteredToast'));
+      }
+
+      closeScheduleDialog();
+      await refreshAll();
+    } catch {
+      toast.error(t('duels.error'));
+    } finally {
+      setActionLoadingKey(null);
+    }
+  };
+
+  const handleConfirm = async (invitation: DuelInvitation) => {
+    try {
+      setActionLoadingKey(`confirm-${invitation.id}`);
+      const updatedInvitation = await confirmDuelCall(invitation.id);
+      toast.success(t('duels.confirmedToast'));
+      await refreshAll();
+
       if (updatedInvitation?.duelId) {
         navigate(getResourceById(resources.Duel, updatedInvitation.duelId));
       }
     } catch {
       toast.error(t('duels.error'));
     } finally {
-      setInvitationActionKey(null);
+      setActionLoadingKey(null);
     }
   };
 
   const handleReject = async (invitation: DuelInvitation) => {
     try {
-      setInvitationActionKey(`reject-${invitation.id}`);
-      await rejectInvitation(invitation.id);
-      await Promise.all([mutateInvitations(), mutateMyDuels(), mutateAllDuels(), mutateReadyPlayers()]);
+      setActionLoadingKey(`reject-${invitation.id}`);
+      await rejectDuelCall(invitation.id);
       toast.success(t('duels.rejectedToast'));
+      await refreshAll();
     } catch {
       toast.error(t('duels.error'));
     } finally {
-      setInvitationActionKey(null);
+      setActionLoadingKey(null);
     }
   };
 
-  const openCounterDialog = (invitation: DuelInvitation) => {
-    setCounterInvitationTarget(invitation);
-    setCounterStartTime(
-      invitation.proposedStartTime
-        ? formatDateInput(new Date(invitation.proposedStartTime))
-        : defaultStartTime,
-    );
-  };
-
-  const closeCounterDialog = () => {
-    setCounterInvitationTarget(null);
-    setCounterStartTime(defaultStartTime);
-  };
-
-  const handleCounter = async () => {
-    if (!counterInvitationTarget || !counterStartTime) return;
+  const handleCancel = async (invitation: DuelInvitation) => {
     try {
-      setInvitationActionKey(`counter-${counterInvitationTarget.id}`);
-      await counterInvitation({
-        id: counterInvitationTarget.id,
-        payload: { startTime: toBackendDate(counterStartTime) },
-      });
-      await Promise.all([mutateInvitations(), mutateReadyPlayers()]);
-      toast.success(t('duels.counteredToast'));
-      closeCounterDialog();
+      setActionLoadingKey(`cancel-${invitation.id}`);
+      await cancelDuelCall(invitation.id);
+      toast.success(t('duels.cancelledToast'));
+      await refreshAll();
     } catch {
       toast.error(t('duels.error'));
     } finally {
-      setInvitationActionKey(null);
+      setActionLoadingKey(null);
     }
   };
 
   const handleView = (duelId: number) => {
     navigate(getResourceById(resources.Duel, duelId));
   };
-
-  const openPresetDialog = (player: DuelReadyPlayer) => {
-    setSelectedOpponent(player);
-  };
-
-  const closePresetDialog = () => setSelectedOpponent(null);
 
   return (
     <Stack direction="column">
@@ -323,7 +350,7 @@ const DuelsListPage = () => {
                         {t('duels.title')}
                       </Typography>
                       <Typography variant="body1" sx={{ opacity: 0.84, maxWidth: 620 }}>
-                        {t('duels.subtitle')}
+                        {t('duels.queueHeroDescription')}
                       </Typography>
                     </Stack>
 
@@ -361,11 +388,15 @@ const DuelsListPage = () => {
             </Grid>
 
             <Grid size={{ xs: 12, lg: 5 }}>
-              <DuelReadyStatusCard
-                ready={readyStatus?.ready ?? false}
-                readyUntil={readyStatus?.readyUntil}
-                loading={isTogglingReady}
-                onToggle={handleToggleReady}
+              <DuelCallComposerCard
+                presets={presets}
+                duelTypes={duelTypes}
+                selectedPresetId={selectedPresetId}
+                selectedTypeId={selectedTypeId}
+                disabled={isCreatingCall}
+                onPresetChange={setSelectedPresetId}
+                onTypeChange={setSelectedTypeId}
+                onSubmit={handleCreateCall}
               />
             </Grid>
           </Grid>
@@ -406,9 +437,10 @@ const DuelsListPage = () => {
                     },
                   }}
                 >
-                  <Tab value="my" label={t('duels.tab.my')} />
-                  <Tab value="ready" label={t('duels.tab.ready')} />
-                  <Tab value="all" label={t('duels.tab.all')} />
+                  <Tab value="queue" label={t('duels.tab.queue')} />
+                  <Tab value="needs_response" label={t('duels.tab.needsResponse')} />
+                  <Tab value="my_calls" label={t('duels.tab.myCalls')} />
+                  <Tab value="history" label={t('duels.tab.history')} />
                 </Tabs>
                 <Typography variant="body2" color="text.secondary" sx={{ px: 1 }}>
                   {t(tabSubtitleMap[resolvedActiveTab])}
@@ -417,124 +449,95 @@ const DuelsListPage = () => {
             </Box>
 
             <CardContent sx={{ p: { xs: 2, md: 3 } }}>
-              {resolvedActiveTab === 'my' ? (
-                <Stack spacing={3}>
-                  <Grid container spacing={2.5}>
-                    <Grid size={{ xs: 12, xl: 6 }}>
-                      <DuelInvitationsSection
-                        title={t('duels.incomingInvitations')}
-                        invitations={incomingInvitations}
-                        loading={!invitationsPage}
-                        emptyText={t('duels.noIncomingInvitations')}
-                        actionLoadingKey={invitationActionKey}
-                        onAccept={handleAccept}
-                        onReject={handleReject}
-                        onCounter={openCounterDialog}
-                        onOpen={(invitation) => invitation.duelId && handleView(invitation.duelId)}
-                      />
-                    </Grid>
-                    <Grid size={{ xs: 12, xl: 6 }}>
-                      <DuelInvitationsSection
-                        title={t('duels.outgoingInvitations')}
-                        invitations={outgoingInvitations}
-                        loading={!invitationsPage}
-                        emptyText={t('duels.noOutgoingInvitations')}
-                        actionLoadingKey={invitationActionKey}
-                        onAccept={handleAccept}
-                        onReject={handleReject}
-                        onCounter={openCounterDialog}
-                        onOpen={(invitation) => invitation.duelId && handleView(invitation.duelId)}
-                      />
-                    </Grid>
-                  </Grid>
+              {resolvedActiveTab === 'queue' ? (
+                <DuelInvitationsSection
+                  title={t('duels.openQueue')}
+                  invitations={queueCalls}
+                  loading={!queueCallsPage}
+                  emptyText={t('duels.noQueueCalls')}
+                  actionLoadingKey={actionLoadingKey}
+                  onAccept={(invitation) => openScheduleDialog('accept', invitation)}
+                  onConfirm={handleConfirm}
+                  onReject={handleReject}
+                  onCancel={handleCancel}
+                  onCounter={(invitation) => openScheduleDialog('counter', invitation)}
+                  onOpen={(invitation) => invitation.duelId && handleView(invitation.duelId)}
+                />
+              ) : null}
 
+              {resolvedActiveTab === 'needs_response' ? (
+                <DuelInvitationsSection
+                  title={t('duels.needsMyResponse')}
+                  invitations={needsResponseCalls}
+                  loading={!needsResponsePage}
+                  emptyText={t('duels.noNeedsResponseCalls')}
+                  actionLoadingKey={actionLoadingKey}
+                  onAccept={(invitation) => openScheduleDialog('accept', invitation)}
+                  onConfirm={handleConfirm}
+                  onReject={handleReject}
+                  onCancel={handleCancel}
+                  onCounter={(invitation) => openScheduleDialog('counter', invitation)}
+                  onOpen={(invitation) => invitation.duelId && handleView(invitation.duelId)}
+                />
+              ) : null}
+
+              {resolvedActiveTab === 'my_calls' ? (
+                <DuelInvitationsSection
+                  title={t('duels.myCallsTitle')}
+                  invitations={myCalls}
+                  loading={!myCallsPage}
+                  emptyText={t('duels.noMyCalls')}
+                  actionLoadingKey={actionLoadingKey}
+                  onAccept={(invitation) => openScheduleDialog('accept', invitation)}
+                  onConfirm={handleConfirm}
+                  onReject={handleReject}
+                  onCancel={handleCancel}
+                  onCounter={(invitation) => openScheduleDialog('counter', invitation)}
+                  onOpen={(invitation) => invitation.duelId && handleView(invitation.duelId)}
+                />
+              ) : null}
+
+              {resolvedActiveTab === 'history' ? (
+                <Stack spacing={3}>
                   <DuelsListSection
                     title={t('duels.myDuelsSection')}
                     duels={myDuels?.data ?? []}
                     total={myDuels?.total ?? 0}
-                    page={myPage}
+                    page={myDuelsPage}
                     pageSize={pageSize}
                     loading={!myDuels}
-                    onPageChange={setMyPage}
+                    onPageChange={setMyDuelsPage}
+                    onView={(duel) => handleView(duel.id)}
+                  />
+
+                  <DuelsListSection
+                    title={t('duels.recentDuelsSection')}
+                    duels={allDuels?.data ?? []}
+                    total={allDuels?.total ?? 0}
+                    page={allDuelsPage}
+                    pageSize={pageSize}
+                    loading={!allDuels}
+                    onPageChange={setAllDuelsPage}
                     onView={(duel) => handleView(duel.id)}
                   />
                 </Stack>
-              ) : null}
-
-              {resolvedActiveTab === 'ready' ? (
-                <DuelReadyPlayersSection
-                  players={readyPlayersPage?.data ?? []}
-                  total={readyPlayersPage?.total ?? 0}
-                  page={readyPage}
-                  pageSize={readyPageSize}
-                  loading={!readyPlayersPage}
-                  currentUsername={currentUser?.username}
-                  onPageChange={setReadyPage}
-                  onChallenge={openPresetDialog}
-                />
-              ) : null}
-
-              {resolvedActiveTab === 'all' ? (
-                <DuelsListSection
-                  title={t('duels.tab.all')}
-                  duels={allDuels?.data ?? []}
-                  total={allDuels?.total ?? 0}
-                  page={allPage}
-                  pageSize={pageSize}
-                  loading={!allDuels}
-                  onPageChange={setAllPage}
-                  onView={(duel) => handleView(duel.id)}
-                />
               ) : null}
             </CardContent>
           </Card>
         </Stack>
       </Box>
 
-      <DuelPresetDialog
-        open={isPresetDialogOpen}
-        presets={presets ?? []}
-        loading={isPresetsLoading || isCreatingInvitation}
-        opponent={selectedOpponent}
+      <DuelCallScheduleDialog
+        open={Boolean(scheduleDialogState.invitation)}
+        mode={scheduleDialogState.mode}
+        invitation={scheduleDialogState.invitation}
+        value={scheduleValue}
         minStartTime={minStartTime}
-        defaultStartTime={defaultStartTime}
-        onClose={closePresetDialog}
-        onSubmit={handleCreateDuel}
+        loading={isAccepting || isCountering}
+        onChange={setScheduleValue}
+        onClose={closeScheduleDialog}
+        onSubmit={handleScheduleSubmit}
       />
-
-      <Dialog open={Boolean(counterInvitationTarget)} onClose={closeCounterDialog} maxWidth="xs" fullWidth>
-        <DialogTitle>{t('duels.suggestNewTime')}</DialogTitle>
-        <DialogContent>
-          <Stack spacing={2} mt={1}>
-            <Typography variant="body2" color="text.secondary">
-              {t('duels.suggestNewTimeDescription', {
-                username: counterInvitationTarget?.otherUser?.username ?? '',
-              })}
-            </Typography>
-            <TextField
-              label={t('duels.startTime')}
-              type="datetime-local"
-              value={counterStartTime}
-              onChange={(event) => setCounterStartTime(event.target.value)}
-              inputProps={{ min: minStartTime }}
-              fullWidth
-            />
-          </Stack>
-        </DialogContent>
-        <DialogActions sx={{ px: 3, pb: 2 }}>
-          <Button variant="text" color="inherit" onClick={closeCounterDialog}>
-            {t('duels.cancel')}
-          </Button>
-          <Button
-            variant="contained"
-            onClick={handleCounter}
-            disabled={!counterStartTime || isCounteringInvitation}
-            sx={{ borderRadius: 999 }}
-          >
-            {t('duels.sendCounterOffer')}
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Stack>
   );
 };

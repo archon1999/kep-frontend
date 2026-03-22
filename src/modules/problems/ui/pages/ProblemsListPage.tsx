@@ -90,6 +90,37 @@ const initialFilter: ProblemsListParams = {
   tags: [],
 };
 
+const formatProblemRatingBand = (
+  min?: string,
+  max?: string,
+) => {
+  if (min && max) {
+    return `${min}-${max}`;
+  }
+  if (min) {
+    return `${min}+`;
+  }
+  if (max) {
+    return `<= ${max}`;
+  }
+  return '';
+};
+
+const advisorManagedFilterKeys = [
+  'category',
+  'tags',
+  'lang',
+  'exclusive_lang',
+  'difficulty',
+  'status',
+  'ordering',
+  'problem_rating_min',
+  'problem_rating_max',
+  'has_solution',
+  'has_checker',
+  'partial_solvable',
+] as const;
+
 const ProblemsListPage = () => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -133,11 +164,28 @@ const ProblemsListPage = () => {
   };
 
   const handleAdvisorApply = (patch: Partial<ProblemsListParams>) => {
-    setFilter((prev) => ({
-      ...prev,
-      ...patch,
-      page: 1,
-    }));
+    setFilter((prev) => {
+      const next: ProblemsListParams = {
+        ...prev,
+        page: 1,
+      };
+
+      advisorManagedFilterKeys.forEach((key) => {
+        if (key === 'tags') {
+          next.tags = [];
+          return;
+        }
+
+        delete next[key];
+      });
+
+      return {
+        ...next,
+        ...patch,
+        tags: patch.tags ?? [],
+        page: 1,
+      };
+    });
   };
 
   const toggleTag = (tagId: number) => {
@@ -314,6 +362,7 @@ const ProblemsListPage = () => {
         open={isAdvisorOpen}
         onClose={() => setIsAdvisorOpen(false)}
         studyPlans={studyPlans ?? []}
+        currentFilters={filter}
         onApplyFilters={handleAdvisorApply}
       />
     </Stack>
@@ -435,6 +484,17 @@ const FilterCard = ({
       });
     }
 
+    if (filter.exclusive_lang) {
+      const langTitle =
+        languages.find((item) => item.lang === filter.exclusive_lang)?.langFull ??
+        filter.exclusive_lang.toUpperCase();
+      items.push({
+        key: 'exclusive-lang',
+        label: `${t('problems.language')}: ${langTitle} (${t('problems.recommendation.exclusiveOnly')})`,
+        onRemove: () => onChange('exclusive_lang', undefined),
+      });
+    }
+
     if (filter.favorites) {
       items.push({
         key: 'favorites',
@@ -489,16 +549,60 @@ const FilterCard = ({
       });
     }
 
+    if (filter.problem_rating_min || filter.problem_rating_max) {
+      items.push({
+        key: 'problem-rating-band',
+        label: `Problem rating: ${formatProblemRatingBand(
+          filter.problem_rating_min,
+          filter.problem_rating_max,
+        )}`,
+        onRemove: () => {
+          onChange('problem_rating_min', undefined);
+          onChange('problem_rating_max', undefined);
+        },
+      });
+    }
+
+    if (filter.has_solution === 'true') {
+      items.push({
+        key: 'has-solution',
+        label: t('problems.withSolution'),
+        onRemove: () => onChange('has_solution', undefined),
+      });
+    }
+
+    if (filter.has_checker === 'true') {
+      items.push({
+        key: 'has-checker',
+        label: t('problems.withChecker'),
+        onRemove: () => onChange('has_checker', undefined),
+      });
+    }
+
+    if (filter.partial_solvable === 'false') {
+      items.push({
+        key: 'partial-scorable',
+        label: t('problems.withoutPartialScoring'),
+        onRemove: () => onChange('partial_solvable', undefined),
+      });
+    }
+
     return items;
   }, [categories, filter, languages, onChange, t, tags]);
 
   const handleClearFilters = () => {
     onChange('lang', undefined);
+    onChange('exclusive_lang', undefined);
     onChange('favorites', undefined);
     onChange('category', undefined);
     onChange('tags', []);
     onChange('difficulty', undefined);
     onChange('status', undefined);
+    onChange('problem_rating_min', undefined);
+    onChange('problem_rating_max', undefined);
+    onChange('has_solution', undefined);
+    onChange('has_checker', undefined);
+    onChange('partial_solvable', undefined);
   };
   const handleTagToggle = (tagId: number) => {
     const activeTags = filter.tags ?? [];

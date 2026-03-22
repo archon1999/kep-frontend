@@ -20,6 +20,7 @@ import {
   ProblemsRatingRow,
   ProblemsRatingSummary,
   ProblemsUserStatistics,
+  RecommendationResolveResponse,
   StudyPlanDetail,
   StudyPlanListItem,
 } from '../../domain/entities/problem.entity.ts';
@@ -27,6 +28,7 @@ import {
   AttemptsListParams,
   PageResult,
   ProblemSolversParams,
+  RecommendationResolveParams,
   ProblemsListParams,
   ProblemsRatingHistoryParams,
   ProblemsRatingParams,
@@ -49,6 +51,7 @@ import {
   mapProblemStatistics,
   mapProblemTag,
   mapProblemVoteResult,
+  mapRecommendationResolveResponse,
   mapProblemsPage,
   mapProblemsRatingHistoryPage,
   mapProblemsRatingPage,
@@ -61,8 +64,8 @@ import {
 
 const mapFilterToApiParams = (params: ProblemsListParams): ApiProblemsListParams => {
   const { tags, status, favorites, search, ...rest } = params;
-  const apiParams: ApiProblemsListParams = {
-    ...rest,
+  const apiParams = {
+    ...(rest as Record<string, unknown>),
   };
 
   if (status === 1) {
@@ -87,7 +90,7 @@ const mapFilterToApiParams = (params: ProblemsListParams): ApiProblemsListParams
     apiParams.search = search;
   }
 
-  return apiParams;
+  return apiParams as ApiProblemsListParams;
 };
 
 export class HttpProblemsRepository implements ProblemsRepository {
@@ -138,6 +141,13 @@ export class HttpProblemsRepository implements ProblemsRepository {
 
   async purchaseStudyPlan(id: number): Promise<void> {
     await problemsApiClient.purchaseStudyPlan(id);
+  }
+
+  async resolveRecommendation(
+    payload: RecommendationResolveParams,
+  ): Promise<RecommendationResolveResponse> {
+    const response = await problemsApiClient.resolveRecommendation(payload);
+    return mapRecommendationResolveResponse(response);
   }
 
   async listTags(): Promise<ProblemTag[]> {

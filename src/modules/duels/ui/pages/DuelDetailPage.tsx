@@ -33,6 +33,7 @@ import { ProblemBody } from 'modules/problems/ui/components/problem-detail/Probl
 import ProblemDescriptionSkeleton from 'modules/problems/ui/components/problem-detail/ProblemDescriptionSkeleton';
 import { ProblemEditorPanel } from 'modules/problems/ui/components/problem-detail/ProblemEditorPanel';
 import ProblemEditorSkeleton from 'modules/problems/ui/components/problem-detail/ProblemEditorSkeleton';
+import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo.tsx';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
@@ -115,6 +116,9 @@ const getPlayerRows = (duel: Duel) =>
     scoreAccessor: (problem: DuelNavigationProblem) => number;
   }>;
 
+const getPlayerDisplayName = (player?: DuelPlayer | null) =>
+  player?.displayName || player?.username || '--';
+
 const DuelResultsFooter = ({
   duel,
   problems,
@@ -195,13 +199,13 @@ const DuelResultsFooter = ({
           </Stack>
 
           <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-            {rows.map((row) => (
-              <Chip
-                key={`${row.key}-total`}
-                label={`${row.player.username}: ${row.player.balls ?? 0}`}
-                color={row.accent}
-                variant="outlined"
-                size="small"
+                {rows.map((row) => (
+                  <Chip
+                    key={`${row.key}-total`}
+                    label={`${getPlayerDisplayName(row.player)}: ${row.player.balls ?? 0}`}
+                    color={row.accent}
+                    variant="outlined"
+                    size="small"
               />
             ))}
           </Stack>
@@ -242,15 +246,15 @@ const DuelResultsFooter = ({
                     </Typography>
                   </Stack>
 
-                  {rows.map((row) => (
-                    <Typography
-                      key={`${row.key}-${problem.symbol}`}
-                      variant="caption"
-                      color={isActive ? 'inherit' : 'text.secondary'}
-                    >
-                      {row.player.username}: {row.scoreAccessor(problem)}
-                    </Typography>
-                  ))}
+                    {rows.map((row) => (
+                      <Typography
+                        key={`${row.key}-${problem.symbol}`}
+                        variant="caption"
+                        color={isActive ? 'inherit' : 'text.secondary'}
+                      >
+                      {getPlayerDisplayName(row.player)}: {row.scoreAccessor(problem)}
+                      </Typography>
+                    ))}
                 </Stack>
               </Button>
             );
@@ -804,6 +808,54 @@ const DuelDetailPage = () => {
               sx={{ borderColor: 'rgba(255,255,255,0.18)' }}
             />
 
+            <Stack
+              direction={{ xs: 'column', md: 'row' }}
+              spacing={1}
+              alignItems={{ xs: 'flex-start', md: 'center' }}
+              sx={{ minWidth: 0 }}
+            >
+              <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
+                <Stack direction="row" spacing={0.75} alignItems="center">
+                  {duel.playerFirst.ratingTitle ? (
+                    <ContestsRatingChip title={duel.playerFirst.ratingTitle} imgSize={20} />
+                  ) : null}
+                  <Typography variant="subtitle2" fontWeight={800} noWrap>
+                    {getPlayerDisplayName(duel.playerFirst)}
+                  </Typography>
+                  {duel.playerFirst.isBot ? (
+                    <Chip size="small" color="secondary" variant="outlined" label="BOT" />
+                  ) : null}
+                </Stack>
+
+                <Typography variant="body2" color="text.secondary">
+                  vs
+                </Typography>
+
+                {duel.playerSecond ? (
+                  <Stack direction="row" spacing={0.75} alignItems="center">
+                    {duel.playerSecond.ratingTitle ? (
+                      <ContestsRatingChip title={duel.playerSecond.ratingTitle} imgSize={20} />
+                    ) : null}
+                    <Typography variant="subtitle2" fontWeight={800} noWrap>
+                      {getPlayerDisplayName(duel.playerSecond)}
+                    </Typography>
+                    {duel.playerSecond.isBot ? (
+                      <Chip size="small" color="secondary" variant="outlined" label="BOT" />
+                    ) : null}
+                  </Stack>
+                ) : null}
+              </Stack>
+
+              {duel.duelType?.title ? (
+                <Chip
+                  size="small"
+                  color="primary"
+                  variant="outlined"
+                  label={duel.duelType.title}
+                />
+              ) : null}
+            </Stack>
+
             <Stack direction="row" spacing={0.5} alignItems="center">
               <Tooltip title={t('contests.problem.prev')}>
                 <span style={{ display: 'inline-flex' }}>
@@ -938,8 +990,11 @@ const DuelDetailPage = () => {
                             >
                               <Typography fontWeight={800}>#{row.rank}</Typography>
                               <Typography variant="subtitle1" fontWeight={700}>
-                                {row.player.username}
+                                {getPlayerDisplayName(row.player)}
                               </Typography>
+                              {row.player.isBot ? (
+                                <Chip size="small" color="secondary" variant="outlined" label="BOT" />
+                              ) : null}
                               <Typography variant="body2" color="text.secondary">
                                 {row.player.ratingTitle || '--'}
                               </Typography>

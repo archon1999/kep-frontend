@@ -1,9 +1,10 @@
 import { instance } from 'shared/api/http/axiosInstance.ts';
 import {
+  DuelAcceptPayload,
   DuelCounterPayload,
   DuelCreatePayload,
+  DuelCallsParams,
   DuelsListParams,
-  ReadyPlayersParams,
 } from '../../domain/ports/duels.repository.ts';
 
 const mapListParams = (params?: DuelsListParams) => ({
@@ -51,55 +52,52 @@ export const duelsApiClient = {
     });
     return response.data;
   },
-  getReadyStatus: async () => {
-    const response = await instance.get('/api/duels/ready-status/');
+  listDuelPresets: async () => {
+    const response = await instance.get('/api/duels/duel-presets/');
     return response.data;
   },
-  updateReadyStatus: async (ready: boolean) => {
-    const response = await instance.put('/api/duels/ready-status/', { ready });
+  listDuelTypes: async () => {
+    const response = await instance.get('/api/duel-types/');
     return response.data;
   },
-  listReadyPlayers: async (params?: ReadyPlayersParams) => {
-    const response = await instance.get('/api/duels/ready-users/', {
+  listDuelCalls: async (params?: DuelCallsParams) => {
+    const response = await instance.get('/api/duel-calls/', {
       params: {
         page: params?.page,
         page_size: params?.pageSize,
+        scope: params?.scope,
       },
     });
     return response.data;
   },
-  listDuelPresets: async (username: string) => {
-    const response = await instance.get('/api/duels/duel-presets/', { params: { username } });
-    return response.data;
-  },
-  listDuelInvitations: async (params?: { page?: number; pageSize?: number }) => {
-    const response = await instance.get('/api/duel-invitations/', {
-      params: {
-        page: params?.page,
-        page_size: params?.pageSize,
-      },
+  createDuelCall: async (payload: DuelCreatePayload) => {
+    const response = await instance.post('/api/duel-calls/', {
+      preset_id: payload.duelPresetId,
+      duel_type_id: payload.duelTypeId,
     });
     return response.data;
   },
-  createInvitation: async (payload: DuelCreatePayload) => {
-    const response = await instance.post('/api/duel-invitations/', {
-      duel_username: payload.duelUsername,
-      duel_preset: payload.duelPresetId,
-      proposed_start_time: payload.startTime,
+  acceptDuelCall: async (id: number | string, payload: DuelAcceptPayload) => {
+    const response = await instance.post(`/api/duel-calls/${id}/accept/`, {
+      proposed_start_time: payload.proposedStartTime,
     });
     return response.data;
   },
-  acceptInvitation: async (id: number | string) => {
-    const response = await instance.post(`/api/duel-invitations/${id}/accept/`, {});
+  confirmDuelCall: async (id: number | string) => {
+    const response = await instance.post(`/api/duel-calls/${id}/confirm/`, {});
     return response.data;
   },
-  rejectInvitation: async (id: number | string) => {
-    const response = await instance.post(`/api/duel-invitations/${id}/reject/`, {});
+  rejectDuelCall: async (id: number | string) => {
+    const response = await instance.post(`/api/duel-calls/${id}/reject/`, {});
     return response.data;
   },
-  counterInvitation: async (id: number | string, payload: DuelCounterPayload) => {
-    const response = await instance.post(`/api/duel-invitations/${id}/counter/`, {
-      proposed_start_time: payload.startTime,
+  cancelDuelCall: async (id: number | string) => {
+    const response = await instance.post(`/api/duel-calls/${id}/cancel/`, {});
+    return response.data;
+  },
+  counterDuelCall: async (id: number | string, payload: DuelCounterPayload) => {
+    const response = await instance.post(`/api/duel-calls/${id}/counter/`, {
+      proposed_start_time: payload.proposedStartTime,
     });
     return response.data;
   },

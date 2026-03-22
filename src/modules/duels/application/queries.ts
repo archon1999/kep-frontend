@@ -1,12 +1,11 @@
 import useSWR from 'swr';
 import { HttpDuelsRepository } from '../data-access/repository/http.duels.repository.ts';
-import { DuelsListParams } from '../domain/ports/duels.repository.ts';
+import { DuelCallsParams, DuelsListParams } from '../domain/ports/duels.repository.ts';
 import {
   Duel,
   DuelInvitation,
   DuelPreset,
-  DuelReadyPlayer,
-  DuelReadyStatus,
+  DuelTypeInfo,
   DuelResults,
   DuelsRatingRow,
 } from '../domain/index.ts';
@@ -28,26 +27,20 @@ export const useDuelsRating = (params?: { page?: number; pageSize?: number; orde
     () => duelsRepository.getDuelsRating(params),
   );
 
-export const useReadyStatus = () =>
-  useSWR<DuelReadyStatus>('duels-ready-status', () => duelsRepository.getReadyStatus(), {
-    revalidateOnFocus: false,
-  });
-
-export const useReadyPlayers = (params?: { page?: number; pageSize?: number }) =>
-  useSWR<PageResult<DuelReadyPlayer>>(
-    ['duels-ready-players', params?.page, params?.pageSize],
-    () => duelsRepository.getReadyPlayers(params),
+export const useDuelPresets = () =>
+  useSWR<DuelPreset[]>('duel-presets', () =>
+    duelsRepository.getDuelPresets(),
   );
 
-export const useDuelPresets = (username?: string | null) =>
-  useSWR<DuelPreset[]>(username ? ['duel-presets', username] : null, () =>
-    duelsRepository.getDuelPresets(username ?? ''),
+export const useDuelTypes = () =>
+  useSWR<DuelTypeInfo[]>('duel-types', () =>
+    duelsRepository.getDuelTypes(),
   );
 
-export const useDuelInvitations = (params?: { page?: number; pageSize?: number }) =>
+export const useDuelCalls = (params?: DuelCallsParams) =>
   useSWR<PageResult<DuelInvitation>>(
-    ['duel-invitations', params?.page, params?.pageSize],
-    () => duelsRepository.getDuelInvitations(params),
+    ['duel-calls', params?.scope, params?.page, params?.pageSize],
+    () => duelsRepository.getDuelCalls(params),
   );
 
 export const useDuelDetail = (id?: number | string) =>

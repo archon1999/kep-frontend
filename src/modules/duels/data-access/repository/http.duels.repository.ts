@@ -1,6 +1,8 @@
 import { mapAttemptsPage } from 'modules/problems/data-access/mappers/problems.mapper.ts';
 import { AttemptListItem } from 'modules/problems/domain/entities/problem.entity.ts';
 import {
+  DuelAcceptPayload,
+  DuelCallsParams,
   DuelCounterPayload,
   PageResult,
   DuelsListParams,
@@ -10,8 +12,7 @@ import {
   Duel,
   DuelInvitation,
   DuelPreset,
-  DuelReadyPlayer,
-  DuelReadyStatus,
+  DuelTypeInfo,
   DuelResults,
   DuelsRatingRow,
 } from '../../domain/index.ts';
@@ -22,9 +23,8 @@ import {
   mapDuelsRatingRow,
   mapDuelPreset,
   mapDuelResults,
+  mapDuelTypeInfo,
   mapPageResult,
-  mapReadyPlayer,
-  mapReadyStatus,
 } from '../mappers/duel.mapper.ts';
 
 export class HttpDuelsRepository implements DuelsRepository {
@@ -68,53 +68,53 @@ export class HttpDuelsRepository implements DuelsRepository {
     } satisfies PageResult<AttemptListItem>;
   }
 
-  async getReadyStatus(): Promise<DuelReadyStatus> {
-    const response = await duelsApiClient.getReadyStatus();
-    return mapReadyStatus(response);
-  }
-
-  async updateReadyStatus(ready: boolean): Promise<DuelReadyStatus> {
-    const response = await duelsApiClient.updateReadyStatus(ready);
-    return mapReadyStatus(response);
-  }
-
-  async getReadyPlayers(params?: { page?: number; pageSize?: number }): Promise<PageResult<DuelReadyPlayer>> {
-    const response = await duelsApiClient.listReadyPlayers(params);
-    return mapPageResult(response, mapReadyPlayer);
-  }
-
-  async getDuelPresets(username: string): Promise<DuelPreset[]> {
-    const response = await duelsApiClient.listDuelPresets(username);
+  async getDuelPresets(): Promise<DuelPreset[]> {
+    const response = await duelsApiClient.listDuelPresets();
     const data = Array.isArray(response?.data) ? response.data : response;
     return (data ?? []).map(mapDuelPreset);
   }
 
-  async getDuelInvitations(params?: { page?: number; pageSize?: number }): Promise<PageResult<DuelInvitation>> {
-    const response = await duelsApiClient.listDuelInvitations(params);
+  async getDuelTypes(): Promise<DuelTypeInfo[]> {
+    const response = await duelsApiClient.listDuelTypes();
+    const data = Array.isArray(response?.data) ? response.data : response;
+    return (data ?? []).map(mapDuelTypeInfo);
+  }
+
+  async getDuelCalls(params?: DuelCallsParams): Promise<PageResult<DuelInvitation>> {
+    const response = await duelsApiClient.listDuelCalls(params);
     return mapPageResult(response, mapDuelInvitation);
   }
 
-  async createInvitation(payload: {
-    duelUsername: string;
+  async createDuelCall(payload: {
     duelPresetId: number;
-    startTime: string;
+    duelTypeId: number;
   }): Promise<DuelInvitation> {
-    const response = await duelsApiClient.createInvitation(payload);
+    const response = await duelsApiClient.createDuelCall(payload);
     return mapDuelInvitation(response);
   }
 
-  async acceptInvitation(id: number): Promise<DuelInvitation> {
-    const response = await duelsApiClient.acceptInvitation(id);
+  async acceptDuelCall(id: number, payload: DuelAcceptPayload): Promise<DuelInvitation> {
+    const response = await duelsApiClient.acceptDuelCall(id, payload);
     return mapDuelInvitation(response);
   }
 
-  async rejectInvitation(id: number): Promise<DuelInvitation> {
-    const response = await duelsApiClient.rejectInvitation(id);
+  async confirmDuelCall(id: number): Promise<DuelInvitation> {
+    const response = await duelsApiClient.confirmDuelCall(id);
     return mapDuelInvitation(response);
   }
 
-  async counterInvitation(id: number, payload: DuelCounterPayload): Promise<DuelInvitation> {
-    const response = await duelsApiClient.counterInvitation(id, payload);
+  async rejectDuelCall(id: number): Promise<DuelInvitation> {
+    const response = await duelsApiClient.rejectDuelCall(id);
+    return mapDuelInvitation(response);
+  }
+
+  async cancelDuelCall(id: number): Promise<DuelInvitation> {
+    const response = await duelsApiClient.cancelDuelCall(id);
+    return mapDuelInvitation(response);
+  }
+
+  async counterDuelCall(id: number, payload: DuelCounterPayload): Promise<DuelInvitation> {
+    const response = await duelsApiClient.counterDuelCall(id, payload);
     return mapDuelInvitation(response);
   }
 

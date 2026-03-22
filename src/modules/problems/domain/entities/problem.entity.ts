@@ -338,6 +338,78 @@ export interface StudyPlanDetail extends StudyPlanListItem {
   days: StudyPlanDay[];
 }
 
+export interface RecommendationProgress {
+  answered: number;
+  total: number;
+  percent: number;
+}
+
+export interface RecommendationProfile {
+  mode: string;
+  track?: string | null;
+  confidence: string;
+  dominantCategory?: string | null;
+  inferredLanguage?: string | null;
+  inferredLevel?: string | null;
+  implicitAnswers: Record<string, string>;
+}
+
+export interface RecommendationQuestionOption {
+  id: string;
+  label: string;
+  helper?: string | null;
+}
+
+export interface RecommendationQuestion {
+  id: string;
+  title: string;
+  subtitle?: string | null;
+  options: RecommendationQuestionOption[];
+}
+
+export interface RecommendationFilterPatch {
+  category?: string;
+  tags?: number[];
+  lang?: string;
+  exclusive_lang?: string;
+  difficulty?: string;
+  status?: number;
+  ordering?: string;
+  problem_rating_min?: string;
+  problem_rating_max?: string;
+  has_solution?: string;
+  has_checker?: string;
+  partial_solvable?: string;
+}
+
+export interface RecommendationResultOption {
+  title: string;
+  subtitle: string;
+  filterPatch: RecommendationFilterPatch;
+}
+
+export interface RecommendationQuestionState {
+  status: 'question';
+  progress: RecommendationProgress;
+  profile: RecommendationProfile;
+  question: RecommendationQuestion;
+}
+
+export interface RecommendationResultState {
+  status: 'result';
+  progress: RecommendationProgress;
+  profile: RecommendationProfile;
+  why: string;
+  primary: RecommendationResultOption;
+  alternatives: RecommendationResultOption[];
+  suggestedStudyPlanId?: number | null;
+  directProblemId?: number | null;
+}
+
+export type RecommendationResolveResponse =
+  | RecommendationQuestionState
+  | RecommendationResultState;
+
 export interface ProblemSolutionCode {
   lang: string;
   code: string;

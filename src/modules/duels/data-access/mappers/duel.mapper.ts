@@ -7,10 +7,8 @@ import {
   DuelPlayer,
   DuelPreset,
   DuelPresetProblem,
-  DuelPresetTypeInfo,
+  DuelTypeInfo,
   DuelProblem,
-  DuelReadyPlayer,
-  DuelReadyStatus,
   DuelResults,
   DuelsRatingRow,
 } from '../../domain/index.ts';
@@ -35,7 +33,7 @@ const mapPresetProblem = (payload: any): DuelPresetProblem => ({
   ball: toNullableNumber(payload?.ball),
 });
 
-const mapPresetTypeInfo = (payload: any): DuelPresetTypeInfo => ({
+export const mapDuelTypeInfo = (payload: any): DuelTypeInfo => ({
   id: payload?.id,
   code: payload?.code,
   title: payload?.title,
@@ -45,7 +43,7 @@ const mapPresetTypeInfo = (payload: any): DuelPresetTypeInfo => ({
 export const mapDuelPreset = (payload: any): DuelPreset => ({
   id: payload?.id,
   type: payload?.type,
-  typeInfo: mapPresetTypeInfo(payload?.typeInfo ?? payload?.type_info ?? {}),
+  typeInfo: payload?.typeInfo || payload?.type_info ? mapDuelTypeInfo(payload?.typeInfo ?? payload?.type_info ?? {}) : undefined,
   difficulty: toNullableNumber(payload?.difficulty),
   difficultyDisplay: payload?.difficultyDisplay ?? payload?.difficulty_display,
   title: payload?.title,
@@ -59,6 +57,9 @@ export const mapDuelPreset = (payload: any): DuelPreset => ({
 export const mapDuelPlayer = (payload: any): DuelPlayer => ({
   id: toNumber(payload?.id),
   username: payload?.username ?? '',
+  displayName: payload?.displayName ?? payload?.display_name ?? payload?.username ?? '',
+  isBot: Boolean(payload?.isBot ?? payload?.is_bot ?? false),
+  contestsRating: toNullableNumber(payload?.contestsRating ?? payload?.contests_rating),
   ratingTitle: payload?.ratingTitle ?? payload?.rating_title ?? '',
   status: (payload?.status ?? payload?.playerStatus ?? null) as DuelPlayer['status'],
   balls: toNullableNumber(payload?.balls ?? payload?.score),
@@ -88,23 +89,8 @@ export const mapDuel = (payload: any): Duel => ({
   playerFirst: mapDuelPlayer(payload?.playerFirst ?? payload?.player_first ?? {}),
   playerSecond: payload?.playerSecond || payload?.player_second ? mapDuelPlayer(payload?.playerSecond ?? payload?.player_second ?? {}) : null,
   preset: payload?.preset || payload?.duelPreset ? mapDuelPreset(payload?.preset ?? payload?.duelPreset ?? {}) : null,
+  duelType: payload?.duelType || payload?.duel_type ? mapDuelTypeInfo(payload?.duelType ?? payload?.duel_type ?? {}) : null,
   problems: (payload?.problems ?? []).map(mapDuelProblem),
-});
-
-export const mapReadyPlayer = (payload: any): DuelReadyPlayer => ({
-  username: payload?.username ?? '',
-  fullName: payload?.fullName ?? payload?.full_name ?? '',
-  avatar: payload?.avatar ?? '',
-  wins: toNullableNumber(payload?.wins),
-  draws: toNullableNumber(payload?.draws),
-  losses: toNullableNumber(payload?.losses),
-  contestsRating: toNullableNumber(payload?.contestsRating ?? payload?.contests_rating),
-  contestsRatingTitle: payload?.contestsRatingTitle ?? payload?.contests_rating_title ?? '',
-});
-
-export const mapReadyStatus = (payload: any): DuelReadyStatus => ({
-  ready: Boolean(payload?.ready ?? payload?.isReady ?? payload?.is_ready ?? payload?.is_ready_for_duel ?? false),
-  readyUntil: payload?.readyUntil ?? payload?.ready_until ?? payload?.duelReadyUntil ?? payload?.duel_ready_until ?? null,
 });
 
 export const mapDuelResults = (payload: any): DuelResults => ({
@@ -139,6 +125,11 @@ export const mapDuelsRatingRow = (payload: any): DuelsRatingRow => ({
 const mapDuelInvitationUser = (payload: any): DuelInvitationUser => ({
   id: toNullableNumber(payload?.id),
   username: payload?.username ?? '',
+  displayName: payload?.displayName ?? payload?.display_name ?? payload?.username ?? '',
+  avatar: payload?.avatar ?? null,
+  contestsRating: toNullableNumber(payload?.contestsRating ?? payload?.contests_rating),
+  contestsRatingTitle: payload?.contestsRatingTitle ?? payload?.contests_rating_title ?? '',
+  isBot: Boolean(payload?.isBot ?? payload?.is_bot ?? false),
 });
 
 const mapDuelInvitationProblem = (payload: any): DuelInvitationProblem => ({
@@ -150,12 +141,16 @@ export const mapDuelInvitation = (payload: any): DuelInvitation => ({
   id: toNumber(payload?.id),
   status: toNumber(payload?.status) as DuelInvitation['status'],
   challenger: mapDuelInvitationUser(payload?.challenger ?? {}),
-  invitee: mapDuelInvitationUser(payload?.invitee ?? {}),
+  invitee: payload?.invitee ? mapDuelInvitationUser(payload?.invitee ?? {}) : null,
   otherUser:
     payload?.otherUser || payload?.other_user
       ? mapDuelInvitationUser(payload?.otherUser ?? payload?.other_user ?? {})
       : null,
   preset: payload?.preset ? mapDuelPreset(payload.preset) : null,
+  duelType:
+    payload?.duelType || payload?.duel_type
+      ? mapDuelTypeInfo(payload?.duelType ?? payload?.duel_type ?? {})
+      : null,
   proposedStartTime: payload?.proposedStartTime ?? payload?.proposed_start_time ?? null,
   actionRequiredBy:
     payload?.actionRequiredBy || payload?.action_required_by
@@ -164,9 +159,16 @@ export const mapDuelInvitation = (payload: any): DuelInvitation => ({
   viewerRole: payload?.viewerRole ?? payload?.viewer_role ?? 'spectator',
   problems: (payload?.problems ?? []).map(mapDuelInvitationProblem),
   duelId: toNullableNumber(payload?.duelId ?? payload?.duel_id),
+  isBot: Boolean(payload?.isBot ?? payload?.is_bot ?? false),
   canAccept: Boolean(payload?.canAccept ?? payload?.can_accept ?? false),
+  acceptDisabledReason:
+    payload?.acceptDisabledReason ?? payload?.accept_disabled_reason ?? null,
+  canConfirm: Boolean(payload?.canConfirm ?? payload?.can_confirm ?? false),
+  confirmDisabledReason:
+    payload?.confirmDisabledReason ?? payload?.confirm_disabled_reason ?? null,
   canCounter: Boolean(payload?.canCounter ?? payload?.can_counter ?? false),
   canReject: Boolean(payload?.canReject ?? payload?.can_reject ?? false),
+  canCancel: Boolean(payload?.canCancel ?? payload?.can_cancel ?? false),
   requiresResponse: Boolean(payload?.requiresResponse ?? payload?.requires_response ?? false),
   created: payload?.created,
   updated: payload?.updated,
@@ -176,9 +178,8 @@ export const duelsMappers = {
   mapPageResult,
   mapDuel,
   mapDuelInvitation,
-  mapReadyPlayer,
-  mapReadyStatus,
   mapDuelPreset,
+  mapDuelTypeInfo,
   mapDuelResults,
   mapDuelsRatingRow,
 };

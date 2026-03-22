@@ -1,6 +1,7 @@
 import useSWRMutation from 'swr/mutation';
 import { HttpDuelsRepository } from '../data-access/repository/http.duels.repository.ts';
 import {
+  DuelAcceptPayload,
   DuelCounterPayload,
   DuelCreatePayload,
 } from '../domain/ports/duels.repository.ts';
@@ -8,33 +9,42 @@ import { duelsQueries } from './queries.ts';
 
 const duelsRepository = new HttpDuelsRepository();
 
-export const useUpdateReadyStatus = () =>
-  useSWRMutation('duels-ready-status', (_key, { arg }: { arg: boolean }) =>
-    duelsRepository.updateReadyStatus(arg),
+export const useCreateDuelCall = () =>
+  useSWRMutation('duel-calls-create', (_key, { arg }: { arg: DuelCreatePayload }) =>
+    duelsRepository.createDuelCall(arg),
   );
 
-export const useCreateInvitation = () =>
-  useSWRMutation('duel-invitations-create', (_key, { arg }: { arg: DuelCreatePayload }) =>
-    duelsRepository.createInvitation(arg),
-  );
-
-export const useAcceptInvitation = () =>
-  useSWRMutation('duel-invitations-accept', (_key, { arg }: { arg: number }) =>
-    duelsRepository.acceptInvitation(arg),
-  );
-
-export const useRejectInvitation = () =>
-  useSWRMutation('duel-invitations-reject', (_key, { arg }: { arg: number }) =>
-    duelsRepository.rejectInvitation(arg),
-  );
-
-export const useCounterInvitation = () =>
+export const useAcceptDuelCall = () =>
   useSWRMutation(
-    'duel-invitations-counter',
+    'duel-calls-accept',
+    (
+      _key,
+      { arg }: { arg: { id: number; payload: DuelAcceptPayload } },
+    ) => duelsRepository.acceptDuelCall(arg.id, arg.payload),
+  );
+
+export const useConfirmDuelCall = () =>
+  useSWRMutation('duel-calls-confirm', (_key, { arg }: { arg: number }) =>
+    duelsRepository.confirmDuelCall(arg),
+  );
+
+export const useRejectDuelCall = () =>
+  useSWRMutation('duel-calls-reject', (_key, { arg }: { arg: number }) =>
+    duelsRepository.rejectDuelCall(arg),
+  );
+
+export const useCancelDuelCall = () =>
+  useSWRMutation('duel-calls-cancel', (_key, { arg }: { arg: number }) =>
+    duelsRepository.cancelDuelCall(arg),
+  );
+
+export const useCounterDuelCall = () =>
+  useSWRMutation(
+    'duel-calls-counter',
     (
       _key,
       { arg }: { arg: { id: number; payload: DuelCounterPayload } },
-    ) => duelsRepository.counterInvitation(arg.id, arg.payload),
+    ) => duelsRepository.counterDuelCall(arg.id, arg.payload),
   );
 
 export const duelsMutations = {

@@ -22,6 +22,12 @@ export const problemsApiClient = {
   getStudyPlan: (id: number | string) => apiClient.apiStudyPlansRead(String(id)),
   purchaseStudyPlan: (id: number | string) =>
     apiClient.apiStudyPlansPurchase(String(id), {} as any),
+  resolveRecommendation: (payload: any) =>
+    axiosMutator<any>({
+      url: '/api/problems/recommendation/resolve/',
+      method: 'POST',
+      data: payload,
+    }),
   listMostViewed: () => apiClient.apiProblemsMostViewed(),
   getLastContest: (params?: ApiProblemsLastContestParams) =>
     apiClient.apiProblemsLastContest(params),

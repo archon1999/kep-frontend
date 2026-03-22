@@ -9,7 +9,9 @@ type Props = {
   emptyText: string;
   actionLoadingKey?: string | null;
   onAccept?: (invitation: DuelInvitation) => void;
+  onConfirm?: (invitation: DuelInvitation) => void;
   onReject?: (invitation: DuelInvitation) => void;
+  onCancel?: (invitation: DuelInvitation) => void;
   onCounter?: (invitation: DuelInvitation) => void;
   onOpen?: (invitation: DuelInvitation) => void;
 };
@@ -21,7 +23,9 @@ const DuelInvitationsSection = ({
   emptyText,
   actionLoadingKey,
   onAccept,
+  onConfirm,
   onReject,
+  onCancel,
   onCounter,
   onOpen,
 }: Props) => {
@@ -67,7 +71,9 @@ const DuelInvitationsSection = ({
             invitation={invitation}
             actionLoadingKey={actionLoadingKey}
             onAccept={onAccept ? () => onAccept(invitation) : undefined}
+            onConfirm={onConfirm ? () => onConfirm(invitation) : undefined}
             onReject={onReject ? () => onReject(invitation) : undefined}
+            onCancel={onCancel ? () => onCancel(invitation) : undefined}
             onCounter={onCounter ? () => onCounter(invitation) : undefined}
             onOpen={onOpen ? () => onOpen(invitation) : undefined}
           />

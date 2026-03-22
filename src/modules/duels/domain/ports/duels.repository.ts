@@ -3,8 +3,7 @@ import {
   Duel,
   DuelInvitation,
   DuelPreset,
-  DuelReadyPlayer,
-  DuelReadyStatus,
+  DuelTypeInfo,
   DuelResults,
   DuelsRatingRow,
 } from '../index.ts';
@@ -25,19 +24,25 @@ export interface DuelsListParams {
   ordering?: string;
 }
 
-export interface ReadyPlayersParams {
+export type DuelCallScope = 'queue' | 'needs_response' | 'mine' | 'all';
+
+export interface DuelCallsParams {
   page?: number;
   pageSize?: number;
+  scope?: DuelCallScope;
 }
 
 export interface DuelCreatePayload {
-  duelUsername: string;
   duelPresetId: number;
-  startTime: string;
+  duelTypeId: number;
+}
+
+export interface DuelAcceptPayload {
+  proposedStartTime: string;
 }
 
 export interface DuelCounterPayload {
-  startTime: string;
+  proposedStartTime: string;
 }
 
 export interface DuelsRepository {
@@ -51,16 +56,15 @@ export interface DuelsRepository {
     payload: { duelProblem: string; sourceCode: string; lang: string },
   ) => Promise<void>;
 
-  getReadyStatus: () => Promise<DuelReadyStatus>;
-  updateReadyStatus: (ready: boolean) => Promise<DuelReadyStatus>;
-  getReadyPlayers: (params?: ReadyPlayersParams) => Promise<PageResult<DuelReadyPlayer>>;
-
-  getDuelPresets: (username: string) => Promise<DuelPreset[]>;
-  getDuelInvitations: (params?: { page?: number; pageSize?: number }) => Promise<PageResult<DuelInvitation>>;
-  createInvitation: (payload: DuelCreatePayload) => Promise<DuelInvitation>;
-  acceptInvitation: (id: number) => Promise<DuelInvitation>;
-  rejectInvitation: (id: number) => Promise<DuelInvitation>;
-  counterInvitation: (id: number, payload: DuelCounterPayload) => Promise<DuelInvitation>;
+  getDuelPresets: () => Promise<DuelPreset[]>;
+  getDuelTypes: () => Promise<DuelTypeInfo[]>;
+  getDuelCalls: (params?: DuelCallsParams) => Promise<PageResult<DuelInvitation>>;
+  createDuelCall: (payload: DuelCreatePayload) => Promise<DuelInvitation>;
+  acceptDuelCall: (id: number, payload: DuelAcceptPayload) => Promise<DuelInvitation>;
+  confirmDuelCall: (id: number) => Promise<DuelInvitation>;
+  rejectDuelCall: (id: number) => Promise<DuelInvitation>;
+  cancelDuelCall: (id: number) => Promise<DuelInvitation>;
+  counterDuelCall: (id: number, payload: DuelCounterPayload) => Promise<DuelInvitation>;
 
   getDuelsRating: (params?: { page?: number; pageSize?: number; ordering?: string }) => Promise<PageResult<DuelsRatingRow>>;
 }

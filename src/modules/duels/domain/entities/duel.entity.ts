@@ -3,11 +3,21 @@ import { ProblemDetail } from 'modules/problems/domain/entities/problem.entity.t
 export type DuelStatus = -1 | 0 | 1;
 export type DuelViewerRole = 'player_first' | 'player_second' | 'spectator';
 export type DuelInvitationViewerRole = 'challenger' | 'invitee' | 'spectator';
-export type DuelInvitationStatus = 1 | 2 | 3 | 4 | 5;
+export type DuelInvitationStatus = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+
+export interface DuelTypeInfo {
+  id?: number;
+  code?: string;
+  title?: string;
+  description?: string;
+}
 
 export interface DuelPlayer {
   id: number;
   username: string;
+  displayName?: string;
+  isBot?: boolean;
+  contestsRating?: number;
   ratingTitle: string;
   status?: DuelStatus | null;
   balls?: number;
@@ -44,7 +54,7 @@ export interface DuelPresetProblem {
 export interface DuelPreset {
   id?: number;
   type?: string;
-  typeInfo?: DuelPresetTypeInfo;
+  typeInfo?: DuelTypeInfo;
   difficulty?: number;
   difficultyDisplay?: string;
   title?: string;
@@ -67,6 +77,7 @@ export interface Duel {
   playerFirst: DuelPlayer;
   playerSecond?: DuelPlayer | null;
   preset?: DuelPreset | null;
+  duelType?: DuelTypeInfo | null;
   problems?: DuelProblem[];
 }
 
@@ -94,6 +105,11 @@ export interface DuelReadyPlayer {
 export interface DuelInvitationUser {
   id?: number;
   username: string;
+  displayName?: string;
+  avatar?: string | null;
+  contestsRating?: number;
+  contestsRatingTitle?: string;
+  isBot?: boolean;
 }
 
 export interface DuelInvitationProblem {
@@ -105,17 +121,23 @@ export interface DuelInvitation {
   id: number;
   status: DuelInvitationStatus;
   challenger: DuelInvitationUser;
-  invitee: DuelInvitationUser;
+  invitee?: DuelInvitationUser | null;
   otherUser?: DuelInvitationUser | null;
   preset?: DuelPreset | null;
+  duelType?: DuelTypeInfo | null;
   proposedStartTime?: string | null;
   actionRequiredBy?: DuelInvitationUser | null;
   viewerRole?: DuelInvitationViewerRole;
   problems?: DuelInvitationProblem[];
   duelId?: number | null;
+  isBot?: boolean;
   canAccept?: boolean;
+  acceptDisabledReason?: string | null;
+  canConfirm?: boolean;
+  confirmDisabledReason?: string | null;
   canCounter?: boolean;
   canReject?: boolean;
+  canCancel?: boolean;
   requiresResponse?: boolean;
   created?: string;
   updated?: string;

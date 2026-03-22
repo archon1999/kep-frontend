@@ -3,6 +3,7 @@ import { HttpProblemsRepository } from '../data-access/repository/http.problems.
 import {
   AttemptsListParams,
   ProblemSolversParams,
+  RecommendationResolveParams,
   ProblemsListParams,
   ProblemsRatingHistoryParams,
   ProblemsRatingParams,
@@ -24,6 +25,16 @@ export const useStudyPlans = () =>
   useSWR(['study-plans'], () => problemsRepository.listStudyPlans(), {
     revalidateOnFocus: false,
   });
+
+export const useRecommendationResolve = (payload?: RecommendationResolveParams) =>
+  useSWR(
+    payload ? ['problems-recommendation-resolve', payload] : null,
+    () => problemsRepository.resolveRecommendation(payload!),
+    {
+      keepPreviousData: true,
+      revalidateOnFocus: false,
+    },
+  );
 
 export const useStudyPlan = (studyPlanId?: number) =>
   useSWR(studyPlanId ? ['study-plan', studyPlanId] : null, () => problemsRepository.getStudyPlan(studyPlanId!), {

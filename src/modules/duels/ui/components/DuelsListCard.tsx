@@ -1,6 +1,7 @@
 import { Button, Card, CardContent, Chip, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import UserPopover from 'modules/users/ui/components/UserPopover.tsx';
+import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import { Duel } from '../../domain/index.ts';
 
 type Props = {
@@ -22,6 +23,42 @@ const statusTone = (status: Duel['status']) => {
   return { color: 'secondary' as const, label: 'duels.status.finished' };
 };
 
+const DuelParticipantLabel = ({
+  username,
+  displayName,
+  contestsRating,
+  isBot,
+  ratingTitle,
+}: {
+  username: string;
+  displayName?: string;
+  contestsRating?: number;
+  isBot?: boolean;
+  ratingTitle?: string;
+}) => (
+  <Stack spacing={0.3}>
+    <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap" useFlexGap>
+      <Typography variant="subtitle1" fontWeight={800}>
+        {displayName || username}
+      </Typography>
+      {isBot ? <Chip size="small" label="BOT" color="secondary" variant="outlined" /> : null}
+    </Stack>
+    <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap" useFlexGap>
+      {(ratingTitle || typeof contestsRating === 'number') ? (
+        <>
+          <ContestsRatingChip title={ratingTitle} imgSize={20} />
+          <Typography variant="caption" color="text.secondary">
+            {typeof contestsRating === 'number' ? contestsRating : '--'}
+          </Typography>
+        </>
+      ) : null}
+      <Typography variant="caption" color="text.secondary">
+        @{username}
+      </Typography>
+    </Stack>
+  </Stack>
+);
+
 const DuelsListCard = ({
   duel,
   onView,
@@ -37,18 +74,26 @@ const DuelsListCard = ({
           <Stack spacing={1}>
             <Stack direction="row" spacing={1.5} alignItems="center" flexWrap="wrap">
               <UserPopover username={duel.playerFirst.username}>
-                <Typography variant="subtitle1" fontWeight={800}>
-                  {duel.playerFirst.username}
-                </Typography>
+                <DuelParticipantLabel
+                  username={duel.playerFirst.username}
+                  displayName={duel.playerFirst.displayName}
+                  contestsRating={duel.playerFirst.contestsRating}
+                  isBot={duel.playerFirst.isBot}
+                  ratingTitle={duel.playerFirst.ratingTitle}
+                />
               </UserPopover>
               <Typography variant="body2" color="text.secondary">
                 vs
               </Typography>
               {duel.playerSecond ? (
                 <UserPopover username={duel.playerSecond.username}>
-                  <Typography variant="subtitle1" fontWeight={800}>
-                    {duel.playerSecond.username}
-                  </Typography>
+                  <DuelParticipantLabel
+                    username={duel.playerSecond.username}
+                    displayName={duel.playerSecond.displayName}
+                    contestsRating={duel.playerSecond.contestsRating}
+                    isBot={duel.playerSecond.isBot}
+                    ratingTitle={duel.playerSecond.ratingTitle}
+                  />
                 </UserPopover>
               ) : (
                 <Chip label="BYE" size="small" variant="outlined" />
@@ -91,6 +136,9 @@ const DuelsListCard = ({
                   onClick={onShowPreset}
                   clickable={Boolean(onShowPreset)}
                 />
+              ) : null}
+              {duel.duelType?.title ? (
+                <Chip label={duel.duelType.title} size="small" color="primary" variant="outlined" />
               ) : null}
             </Stack>
           </Stack>

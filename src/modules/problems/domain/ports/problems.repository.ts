@@ -18,6 +18,7 @@ import {
   ProblemTag,
   ProblemTopic,
   ProblemVoteResult,
+  RecommendationResolveResponse,
   ProblemsRatingHistoryEntry,
   ProblemsRatingRow,
   ProblemsRatingSummary,
@@ -39,6 +40,9 @@ export type ProblemsListParams = Omit<ApiProblemsListParams, 'tags' | 'favorites
   tags?: number[];
   search?: string;
   favorites?: boolean;
+  exclusive_lang?: string;
+  problem_rating_min?: string;
+  problem_rating_max?: string;
 };
 
 export type ProblemsRatingParams = {
@@ -73,6 +77,11 @@ export type ProblemsStatisticsParams = {
   days?: number;
 };
 
+export type RecommendationResolveParams = {
+  answers: Record<string, string>;
+  currentFilters?: Partial<ProblemsListParams>;
+};
+
 export type ProblemSolversParams = {
   ordering?: ProblemSolversOrdering;
   page?: number;
@@ -90,6 +99,9 @@ export interface ProblemsRepository {
   listStudyPlans(): Promise<StudyPlanListItem[]>;
   getStudyPlan(id: number): Promise<StudyPlanDetail>;
   purchaseStudyPlan(id: number): Promise<void>;
+  resolveRecommendation(
+    payload: RecommendationResolveParams,
+  ): Promise<RecommendationResolveResponse>;
   listTags(): Promise<ProblemTag[]>;
   listTopics(): Promise<ProblemTopic[]>;
   addTag(problemId: number, tagId: number): Promise<void>;

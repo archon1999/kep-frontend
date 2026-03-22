@@ -32,6 +32,13 @@ import {
   ProblemUserInfo,
   ProblemUserSummary,
   ProblemVoteResult,
+  RecommendationFilterPatch,
+  RecommendationProfile,
+  RecommendationProgress,
+  RecommendationQuestion,
+  RecommendationQuestionOption,
+  RecommendationResolveResponse,
+  RecommendationResultOption,
   ProblemsRatingHistoryEntry,
   ProblemsRatingRow,
   ProblemsRatingSummary,
@@ -360,6 +367,92 @@ export const mapStudyPlanDetail = (payload: any): StudyPlanDetail => {
     kepcoinValue: toNumber(payload?.kepcoinValue ?? payload?.kepcoin_value),
     statistics: mapDifficultyBreakdown(statistics ?? {}),
     days: Array.isArray(days) ? days.map((item: any) => mapStudyPlanDay(item)) : [],
+  };
+};
+
+const mapRecommendationProgress = (payload: any): RecommendationProgress => ({
+  answered: toNumber(payload?.answered),
+  total: toNumber(payload?.total),
+  percent: toNumber(payload?.percent),
+});
+
+const mapRecommendationProfile = (payload: any): RecommendationProfile => ({
+  mode: payload?.mode ?? 'guest',
+  track: payload?.track ?? null,
+  confidence: payload?.confidence ?? 'low',
+  dominantCategory: payload?.dominantCategory ?? payload?.dominant_category ?? null,
+  inferredLanguage: payload?.inferredLanguage ?? payload?.inferred_language ?? null,
+  inferredLevel: payload?.inferredLevel ?? payload?.inferred_level ?? null,
+  implicitAnswers: (payload?.implicitAnswers ?? payload?.implicit_answers ?? {}) as Record<
+    string,
+    string
+  >,
+});
+
+const mapRecommendationQuestionOption = (payload: any): RecommendationQuestionOption => ({
+  id: String(payload?.id ?? ''),
+  label: payload?.label ?? '',
+  helper: payload?.helper ?? undefined,
+});
+
+const mapRecommendationQuestion = (payload: any): RecommendationQuestion => ({
+  id: String(payload?.id ?? ''),
+  title: payload?.title ?? '',
+  subtitle: payload?.subtitle ?? undefined,
+  options: Array.isArray(payload?.options)
+    ? payload.options.map((option: any) => mapRecommendationQuestionOption(option))
+    : [],
+});
+
+const mapRecommendationFilterPatch = (payload: any): RecommendationFilterPatch => ({
+  category: payload?.category ?? undefined,
+  tags: Array.isArray(payload?.tags) ? payload.tags.map((value: any) => toNumber(value)) : undefined,
+  lang: payload?.lang ?? undefined,
+  exclusive_lang: payload?.exclusive_lang ?? undefined,
+  difficulty: payload?.difficulty ?? undefined,
+  problem_rating_min:
+    payload?.problem_rating_min === undefined || payload?.problem_rating_min === null
+      ? undefined
+      : String(payload?.problem_rating_min),
+  problem_rating_max:
+    payload?.problem_rating_max === undefined || payload?.problem_rating_max === null
+      ? undefined
+      : String(payload?.problem_rating_max),
+  status: payload?.status === undefined || payload?.status === null ? undefined : toNumber(payload?.status),
+  ordering: payload?.ordering ?? undefined,
+  has_solution: payload?.has_solution ?? undefined,
+  has_checker: payload?.has_checker ?? undefined,
+  partial_solvable: payload?.partial_solvable ?? undefined,
+});
+
+const mapRecommendationResultOption = (payload: any): RecommendationResultOption => ({
+  title: payload?.title ?? '',
+  subtitle: payload?.subtitle ?? '',
+  filterPatch: mapRecommendationFilterPatch(payload?.filterPatch ?? payload?.filter_patch),
+});
+
+export const mapRecommendationResolveResponse = (payload: any): RecommendationResolveResponse => {
+  if ((payload?.status ?? '') === 'result') {
+    return {
+      status: 'result',
+      progress: mapRecommendationProgress(payload?.progress ?? {}),
+      profile: mapRecommendationProfile(payload?.profile ?? {}),
+      why: payload?.why ?? '',
+      primary: mapRecommendationResultOption(payload?.primary ?? {}),
+      alternatives: Array.isArray(payload?.alternatives)
+        ? payload.alternatives.map((item: any) => mapRecommendationResultOption(item))
+        : [],
+      suggestedStudyPlanId:
+        payload?.suggestedStudyPlanId ?? payload?.suggested_study_plan_id ?? undefined,
+      directProblemId: payload?.directProblemId ?? payload?.direct_problem_id ?? undefined,
+    };
+  }
+
+  return {
+    status: 'question',
+    progress: mapRecommendationProgress(payload?.progress ?? {}),
+    profile: mapRecommendationProfile(payload?.profile ?? {}),
+    question: mapRecommendationQuestion(payload?.question ?? {}),
   };
 };
 

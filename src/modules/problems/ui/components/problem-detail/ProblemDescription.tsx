@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import {
@@ -32,6 +32,7 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch';
 import { ProblemAvailableLanguage, ProblemDetail } from '../../../domain/entities/problem.entity';
 import ProblemsAttemptsTable from '../ProblemsAttemptsTable';
+import MathJaxView from '../../../../../shared/components/base/MathJaxView.tsx';
 import { ProblemBody } from './ProblemBody';
 import { ProblemFooter } from './ProblemFooter';
 import { ProblemSolversTab } from './ProblemSolversTab';
@@ -87,11 +88,61 @@ export const ProblemDescription = ({
   const { t } = useTranslation();
   const { currentUser } = useAuth();
   const [solutionExpanded, setSolutionExpanded] = useState(false);
+  const [selectedSolutionLang, setSelectedSolutionLang] = useState('');
   const { data: solution, isLoading: isSolutionLoading } = useProblemSolution(
     problem.id,
     solutionExpanded,
   );
   const { data: verdictOptions = [] } = useAttemptVerdicts();
+  const solutionLanguageOrder = useMemo(
+    () =>
+      new Map(
+        (problem.availableLanguages ?? []).map((language, index) => [language.lang, index] as const),
+      ),
+    [problem.availableLanguages],
+  );
+  const orderedSolutionCodes = useMemo(
+    () =>
+      [...(solution?.codes ?? [])].sort(
+        (left, right) =>
+          (solutionLanguageOrder.get(left.lang) ?? Number.MAX_SAFE_INTEGER) -
+          (solutionLanguageOrder.get(right.lang) ?? Number.MAX_SAFE_INTEGER),
+      ),
+    [solution?.codes, solutionLanguageOrder],
+  );
+  const solutionLanguageLabels = useMemo(
+    () =>
+      new Map(
+        (problem.availableLanguages ?? []).map((language) => [
+          language.lang,
+          language.langFull || language.lang,
+        ]),
+      ),
+    [problem.availableLanguages],
+  );
+  const activeSolutionCode = useMemo(
+    () => orderedSolutionCodes.find((code) => code.lang === selectedSolutionLang) ?? orderedSolutionCodes[0],
+    [orderedSolutionCodes, selectedSolutionLang],
+  );
+
+  useEffect(() => {
+    if (!orderedSolutionCodes.length) {
+      if (selectedSolutionLang) {
+        setSelectedSolutionLang('');
+      }
+      return;
+    }
+
+    const fallbackLang = orderedSolutionCodes[0].lang;
+    const nextLang =
+      selectedLanguage?.lang && orderedSolutionCodes.some((code) => code.lang === selectedLanguage.lang)
+        ? selectedLanguage.lang
+        : fallbackLang;
+
+    if (nextLang !== selectedSolutionLang) {
+      setSelectedSolutionLang(nextLang);
+    }
+  }, [orderedSolutionCodes, selectedLanguage?.lang, selectedSolutionLang]);
 
   return (
     <Card
@@ -314,30 +365,71 @@ export const ProblemDescription = ({
                   {isSolutionLoading ? (
                     <LinearProgress />
                   ) : solution ? (
-                    <Stack direction="row" spacing={2}>
-                      <Typography dangerouslySetInnerHTML={{ __html: solution.solution }} />
-                      {solution.codes.map((code) => (
-                        <Card key={code.lang} variant="outlined">
-                          <CardContent>
-                            <Typography variant="subtitle2" gutterBottom>
-                              {code.lang}
-                            </Typography>
-                            <Box
-                              sx={{
-                                fontFamily: 'monospace',
-                                whiteSpace: 'pre-wrap',
-                                p: 1.5,
-                                borderRadius: 1,
-                                bgcolor: 'background.paper',
-                                border: '1px solid',
-                                borderColor: 'divider',
-                              }}
+                    <Stack spacing={2}>
+                      <MathJaxView rawHtml={solution.solution} />
+
+                      {orderedSolutionCodes.length ? (
+                        <Stack spacing={1.5}>
+                          <FormControl size="small" sx={{ display: { xs: 'flex', sm: 'none' } }}>
+                            <InputLabel>{t('problems.attempts.language')}</InputLabel>
+                            <Select
+                              label={t('problems.attempts.language')}
+                              value={activeSolutionCode?.lang ?? ''}
+                              onChange={(event) => setSelectedSolutionLang(event.target.value)}
                             >
-                              {code.code}
-                            </Box>
-                          </CardContent>
-                        </Card>
-                      ))}
+                              {orderedSolutionCodes.map((code) => (
+                                <MenuItem key={code.lang} value={code.lang}>
+                                  {solutionLanguageLabels.get(code.lang) || code.lang}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+
+                          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                            <Tabs
+                              value={activeSolutionCode?.lang ?? false}
+                              onChange={(_, value) => setSelectedSolutionLang(value)}
+                              variant="scrollable"
+                              scrollButtons="auto"
+                            >
+                              {orderedSolutionCodes.map((code) => (
+                                <Tab
+                                  key={code.lang}
+                                  value={code.lang}
+                                  label={solutionLanguageLabels.get(code.lang) || code.lang}
+                                />
+                              ))}
+                            </Tabs>
+                          </Box>
+
+                          {activeSolutionCode ? (
+                            <Card variant="outlined">
+                              <CardContent>
+                                <Typography variant="subtitle2" gutterBottom>
+                                  {solutionLanguageLabels.get(activeSolutionCode.lang) ||
+                                    activeSolutionCode.lang}
+                                </Typography>
+                                <Box
+                                  component="pre"
+                                  sx={{
+                                    m: 0,
+                                    overflowX: 'auto',
+                                    whiteSpace: 'pre',
+                                    fontFamily: 'monospace',
+                                    p: 2,
+                                    borderRadius: 1,
+                                    bgcolor: 'background.paper',
+                                    border: '1px solid',
+                                    borderColor: 'divider',
+                                  }}
+                                >
+                                  {activeSolutionCode.code}
+                                </Box>
+                              </CardContent>
+                            </Card>
+                          ) : null}
+                        </Stack>
+                      ) : null}
                     </Stack>
                   ) : (
                     <Typography color="text.secondary">
