@@ -41,6 +41,7 @@ export type ProblemsListParams = Omit<ApiProblemsListParams, 'tags' | 'favorites
   search?: string;
   favorites?: boolean;
   exclusive_lang?: string;
+  competitive_langs_only?: string;
   problem_rating_min?: string;
   problem_rating_max?: string;
 };

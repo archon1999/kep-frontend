@@ -111,6 +111,7 @@ const advisorManagedFilterKeys = [
   'tags',
   'lang',
   'exclusive_lang',
+  'competitive_langs_only',
   'difficulty',
   'status',
   'ordering',

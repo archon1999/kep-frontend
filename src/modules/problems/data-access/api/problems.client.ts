@@ -12,7 +12,14 @@ import {
 } from 'shared/api/orval/generated/endpoints/index.schemas';
 
 export const problemsApiClient = {
-  list: (params: ApiProblemsListParams) => apiClient.apiProblemsList(params),
+  // Keep problems listing on a raw axios path so newly added filter params are not
+  // blocked by stale generated query param typings.
+  list: (params: ApiProblemsListParams | Record<string, unknown>) =>
+    axiosMutator<any>({
+      url: '/api/problems/',
+      method: 'GET',
+      params,
+    }),
   getProblem: (id: number | string) => apiClient.apiProblemsRead(String(id)),
   getProblemNext: (id: number | string) => apiClient.apiProblemsNext(String(id)),
   getProblemPrev: (id: number | string) => apiClient.apiProblemsPrev(String(id)),

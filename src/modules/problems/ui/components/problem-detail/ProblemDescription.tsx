@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
+import Editor from '@monaco-editor/react';
 import {
   Accordion,
   AccordionDetails,
@@ -30,7 +31,12 @@ import { useAttemptVerdicts, useProblemSolution } from 'modules/problems/applica
 import { DifficultyColor, getDifficultyColor } from 'modules/problems/config/difficulty';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch';
-import { ProblemAvailableLanguage, ProblemDetail } from '../../../domain/entities/problem.entity';
+import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
+import {
+  AttemptLangs,
+  ProblemAvailableLanguage,
+  ProblemDetail,
+} from '../../../domain/entities/problem.entity';
 import ProblemsAttemptsTable from '../ProblemsAttemptsTable';
 import MathJaxView from '../../../../../shared/components/base/MathJaxView.tsx';
 import { ProblemBody } from './ProblemBody';
@@ -39,6 +45,18 @@ import { ProblemSolversTab } from './ProblemSolversTab';
 import { ProblemStatisticsTab } from './ProblemStatisticsTab';
 
 type TabValue = 'description' | 'attempts' | 'stats' | 'solvers';
+
+const getEditorLanguage = (lang: string) =>
+  ({
+    [AttemptLangs.PYTHON]: 'python',
+    [AttemptLangs.KOTLIN]: 'kotlin',
+    [AttemptLangs.CSHARP]: 'csharp',
+    [AttemptLangs.JS]: 'javascript',
+    [AttemptLangs.TS]: 'typescript',
+    [AttemptLangs.RUST]: 'rust',
+  })[lang] ||
+  lang ||
+  'javascript';
 
 interface ProblemDescriptionProps {
   problem: ProblemDetail;
@@ -85,13 +103,15 @@ export const ProblemDescription = ({
   onDislike,
   selectedLanguage,
 }: ProblemDescriptionProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const themeMode = useThemeMode();
   const { currentUser } = useAuth();
   const [solutionExpanded, setSolutionExpanded] = useState(false);
   const [selectedSolutionLang, setSelectedSolutionLang] = useState('');
   const { data: solution, isLoading: isSolutionLoading } = useProblemSolution(
     problem.id,
     solutionExpanded,
+    i18n.resolvedLanguage || i18n.language,
   );
   const { data: verdictOptions = [] } = useAttemptVerdicts();
   const solutionLanguageOrder = useMemo(
@@ -410,20 +430,31 @@ export const ProblemDescription = ({
                                     activeSolutionCode.lang}
                                 </Typography>
                                 <Box
-                                  component="pre"
                                   sx={{
-                                    m: 0,
-                                    overflowX: 'auto',
-                                    whiteSpace: 'pre',
-                                    fontFamily: 'monospace',
-                                    p: 2,
                                     borderRadius: 1,
-                                    bgcolor: 'background.paper',
                                     border: '1px solid',
                                     borderColor: 'divider',
+                                    overflow: 'hidden',
                                   }}
                                 >
-                                  {activeSolutionCode.code}
+                                  <Editor
+                                    key={`solution-code-${problem.id}-${activeSolutionCode.lang}`}
+                                    height="320px"
+                                    language={getEditorLanguage(activeSolutionCode.lang)}
+                                    theme={themeMode.mode === 'dark' ? 'vs-dark' : 'vs'}
+                                    value={activeSolutionCode.code}
+                                    options={{
+                                      readOnly: true,
+                                      domReadOnly: true,
+                                      minimap: { enabled: false },
+                                      scrollBeyondLastLine: false,
+                                      automaticLayout: true,
+                                      wordWrap: 'on',
+                                      lineNumbersMinChars: 3,
+                                      padding: { top: 12, bottom: 12 },
+                                      renderLineHighlight: 'none',
+                                    }}
+                                  />
                                 </Box>
                               </CardContent>
                             </Card>

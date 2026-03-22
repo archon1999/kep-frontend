@@ -372,6 +372,7 @@ export interface RecommendationFilterPatch {
   tags?: number[];
   lang?: string;
   exclusive_lang?: string;
+  competitive_langs_only?: string;
   difficulty?: string;
   status?: number;
   ordering?: string;

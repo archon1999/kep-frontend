@@ -105,8 +105,8 @@ export const useProblemsUserStatistics = (username?: string, params?: ProblemsSt
     { revalidateOnFocus: false },
   );
 
-export const useProblemSolution = (problemId?: number, enabled = false) =>
-  useSWR(problemId && enabled ? ['problem-solution', problemId] : null, () =>
+export const useProblemSolution = (problemId?: number, enabled = false, localeKey?: string) =>
+  useSWR(problemId && enabled ? ['problem-solution', problemId, localeKey ?? 'default'] : null, () =>
     problemsRepository.getProblemSolution(problemId!),
   );
 

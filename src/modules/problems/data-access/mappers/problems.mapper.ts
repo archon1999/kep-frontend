@@ -408,21 +408,30 @@ const mapRecommendationFilterPatch = (payload: any): RecommendationFilterPatch =
   category: payload?.category ?? undefined,
   tags: Array.isArray(payload?.tags) ? payload.tags.map((value: any) => toNumber(value)) : undefined,
   lang: payload?.lang ?? undefined,
-  exclusive_lang: payload?.exclusive_lang ?? undefined,
+  exclusive_lang: payload?.exclusive_lang ?? payload?.exclusiveLang ?? undefined,
+  competitive_langs_only:
+    payload?.competitive_langs_only ?? payload?.competitiveLangsOnly ?? undefined,
   difficulty: payload?.difficulty ?? undefined,
   problem_rating_min:
-    payload?.problem_rating_min === undefined || payload?.problem_rating_min === null
-      ? undefined
+    payload?.problem_rating_min === undefined ||
+    payload?.problem_rating_min === null
+      ? payload?.problemRatingMin === undefined || payload?.problemRatingMin === null
+        ? undefined
+        : String(payload?.problemRatingMin)
       : String(payload?.problem_rating_min),
   problem_rating_max:
-    payload?.problem_rating_max === undefined || payload?.problem_rating_max === null
-      ? undefined
+    payload?.problem_rating_max === undefined ||
+    payload?.problem_rating_max === null
+      ? payload?.problemRatingMax === undefined || payload?.problemRatingMax === null
+        ? undefined
+        : String(payload?.problemRatingMax)
       : String(payload?.problem_rating_max),
-  status: payload?.status === undefined || payload?.status === null ? undefined : toNumber(payload?.status),
+  status:
+    payload?.status === undefined || payload?.status === null ? undefined : toNumber(payload?.status),
   ordering: payload?.ordering ?? undefined,
-  has_solution: payload?.has_solution ?? undefined,
-  has_checker: payload?.has_checker ?? undefined,
-  partial_solvable: payload?.partial_solvable ?? undefined,
+  has_solution: payload?.has_solution ?? payload?.hasSolution ?? undefined,
+  has_checker: payload?.has_checker ?? payload?.hasChecker ?? undefined,
+  partial_solvable: payload?.partial_solvable ?? payload?.partialSolvable ?? undefined,
 });
 
 const mapRecommendationResultOption = (payload: any): RecommendationResultOption => ({
