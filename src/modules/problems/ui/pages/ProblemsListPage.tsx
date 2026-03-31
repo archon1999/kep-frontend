@@ -41,6 +41,14 @@ import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import FilterButton from 'shared/components/common/FilterButton.tsx';
 import CustomTablePaginationAction from 'shared/components/pagination/CustomTablePaginationAction.tsx';
 import PageHeader from 'shared/components/sections/common/PageHeader.tsx';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import {
+  booleanFlagParam,
+  enumParam,
+  numberArrayParam,
+  numberParam,
+  stringParam,
+} from 'shared/lib/queryParams';
 import {
   useLastContestProblems,
   useMostViewedProblems,
@@ -90,6 +98,104 @@ const initialFilter: ProblemsListParams = {
   tags: [],
 };
 
+type ProblemsListQueryState = {
+  activeTab: 'lastContest' | 'attempts' | 'mostViewed';
+  search: string;
+  ordering: string;
+  page: number;
+  pageSize: number;
+  tags: number[];
+  favorites: boolean;
+  category: string;
+  lang: string;
+  exclusive_lang: string;
+  competitive_langs_only: string;
+  difficulty: string;
+  status?: number;
+  problem_rating_min: string;
+  problem_rating_max: string;
+  has_solution: string;
+  has_checker: string;
+  partial_solvable: string;
+};
+
+const problemsListQueryDefaults: ProblemsListQueryState = {
+  activeTab: 'lastContest',
+  search: '',
+  ordering: initialFilter.ordering ?? 'id',
+  page: initialFilter.page ?? 1,
+  pageSize: initialFilter.pageSize ?? 20,
+  tags: [],
+  favorites: false,
+  category: '',
+  lang: '',
+  exclusive_lang: '',
+  competitive_langs_only: '',
+  difficulty: '',
+  status: undefined,
+  problem_rating_min: '',
+  problem_rating_max: '',
+  has_solution: '',
+  has_checker: '',
+  partial_solvable: '',
+};
+
+const buildProblemsListFilter = (state: ProblemsListQueryState): ProblemsListParams => ({
+  ordering: state.ordering || initialFilter.ordering,
+  page: state.page,
+  pageSize: state.pageSize,
+  tags: state.tags,
+  search: state.search || undefined,
+  favorites: state.favorites || undefined,
+  category: state.category || undefined,
+  lang: state.lang || undefined,
+  exclusive_lang: state.exclusive_lang || undefined,
+  competitive_langs_only: state.competitive_langs_only || undefined,
+  difficulty: state.difficulty || undefined,
+  status: state.status,
+  problem_rating_min: state.problem_rating_min || undefined,
+  problem_rating_max: state.problem_rating_max || undefined,
+  has_solution: state.has_solution || undefined,
+  has_checker: state.has_checker || undefined,
+  partial_solvable: state.partial_solvable || undefined,
+});
+
+const normalizeProblemsListValue = <K extends keyof ProblemsListParams>(
+  key: K,
+  value: ProblemsListParams[K],
+): ProblemsListQueryState[keyof ProblemsListQueryState] => {
+  if (key === 'tags') {
+    return Array.isArray(value) ? [...value] : [];
+  }
+
+  if (key === 'favorites') {
+    return Boolean(value);
+  }
+
+  if (key === 'status') {
+    return typeof value === 'number' ? value : undefined;
+  }
+
+  if (
+    key === 'search' ||
+    key === 'ordering' ||
+    key === 'category' ||
+    key === 'lang' ||
+    key === 'exclusive_lang' ||
+    key === 'competitive_langs_only' ||
+    key === 'difficulty' ||
+    key === 'problem_rating_min' ||
+    key === 'problem_rating_max' ||
+    key === 'has_solution' ||
+    key === 'has_checker' ||
+    key === 'partial_solvable'
+  ) {
+    return value == null ? '' : String(value);
+  }
+
+  return value as ProblemsListQueryState[keyof ProblemsListQueryState];
+};
+
 const formatProblemRatingBand = (
   min?: string,
   max?: string,
@@ -126,9 +232,107 @@ const ProblemsListPage = () => {
   const { t } = useTranslation();
   const theme = useTheme();
   const { currentUser } = useAuth();
-
-  const [filter, setFilter] = useState<ProblemsListParams>(initialFilter);
-  const [activeTab, setActiveTab] = useState('lastContest');
+  const { state: routeState, setField: setRouteField, patchState: patchRouteState } =
+    useRouteQueryState<ProblemsListQueryState>({
+      defaults: problemsListQueryDefaults,
+      schema: {
+        activeTab: {
+          ...enumParam(['lastContest', 'attempts', 'mostViewed'] as const),
+          param: 'tab',
+        },
+        search: {
+          ...stringParam(),
+          param: 'search',
+        },
+        ordering: {
+          ...stringParam(),
+          param: 'ordering',
+        },
+        page: {
+          ...numberParam({ min: 1 }),
+          param: 'page',
+        },
+        pageSize: {
+          ...numberParam({ min: 1 }),
+          param: 'pageSize',
+        },
+        tags: {
+          ...numberArrayParam({ min: 1 }),
+          param: 'tags',
+        },
+        favorites: {
+          ...booleanFlagParam(),
+          param: 'favorites',
+        },
+        category: {
+          ...stringParam(),
+          param: 'category',
+        },
+        lang: {
+          ...stringParam(),
+          param: 'lang',
+        },
+        exclusive_lang: {
+          ...stringParam(),
+          param: 'exclusive_lang',
+        },
+        competitive_langs_only: {
+          ...stringParam(),
+          param: 'competitive_langs_only',
+        },
+        difficulty: {
+          ...stringParam(),
+          param: 'difficulty',
+        },
+        status: {
+          ...numberParam(),
+          param: 'status',
+        },
+        problem_rating_min: {
+          ...stringParam(),
+          param: 'problem_rating_min',
+        },
+        problem_rating_max: {
+          ...stringParam(),
+          param: 'problem_rating_max',
+        },
+        has_solution: {
+          ...stringParam(),
+          param: 'has_solution',
+        },
+        has_checker: {
+          ...stringParam(),
+          param: 'has_checker',
+        },
+        partial_solvable: {
+          ...stringParam(),
+          param: 'partial_solvable',
+        },
+      },
+      historyByKey: {
+        activeTab: 'push',
+        page: 'push',
+        pageSize: 'push',
+      },
+      pageResetKeys: [
+        'search',
+        'ordering',
+        'tags',
+        'favorites',
+        'category',
+        'lang',
+        'exclusive_lang',
+        'competitive_langs_only',
+        'difficulty',
+        'status',
+        'problem_rating_min',
+        'problem_rating_max',
+        'has_solution',
+        'has_checker',
+        'partial_solvable',
+      ],
+    });
+  const filter = useMemo(() => buildProblemsListFilter(routeState), [routeState]);
   const [isAdvisorOpen, setIsAdvisorOpen] = useState(false);
 
   const { data: problemsPage, isLoading: isProblemsLoading } = useProblemsList(filter);
@@ -153,48 +357,61 @@ const ProblemsListPage = () => {
     key: K,
     value: ProblemsListParams[K],
   ) => {
-    setFilter((prev) => ({ ...prev, [key]: value, page: 1 }));
+    setRouteField(
+      key as keyof ProblemsListQueryState,
+      normalizeProblemsListValue(key, value) as never,
+    );
   };
 
   const handlePageChange = (_: unknown, page: number) => {
-    setFilter((prev) => ({ ...prev, page: page + 1 }));
+    setRouteField('page', page + 1);
   };
 
   const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilter((prev) => ({ ...prev, pageSize: Number(event.target.value), page: 1 }));
+    patchRouteState(
+      {
+        pageSize: Number(event.target.value),
+        page: 1,
+      },
+      { history: 'push', resetPages: false },
+    );
   };
 
   const handleAdvisorApply = (patch: Partial<ProblemsListParams>) => {
-    setFilter((prev) => {
-      const next: ProblemsListParams = {
-        ...prev,
-        page: 1,
-      };
+    patchRouteState(
+      () => {
+        const nextPatch: Partial<ProblemsListQueryState> = {
+          page: 1,
+        };
 
-      advisorManagedFilterKeys.forEach((key) => {
-        if (key === 'tags') {
-          next.tags = [];
-          return;
-        }
+        advisorManagedFilterKeys.forEach((key) => {
+          nextPatch[key as keyof ProblemsListQueryState] =
+            problemsListQueryDefaults[key as keyof ProblemsListQueryState];
+        });
 
-        delete next[key];
-      });
+        (
+          Object.entries(patch) as Array<
+            [keyof ProblemsListParams, ProblemsListParams[keyof ProblemsListParams]]
+          >
+        ).forEach(([key, value]) => {
+          nextPatch[key as keyof ProblemsListQueryState] =
+            normalizeProblemsListValue(key, value) as never;
+        });
 
-      return {
-        ...next,
-        ...patch,
-        tags: patch.tags ?? [],
-        page: 1,
-      };
-    });
+        nextPatch.tags = patch.tags ?? [];
+
+        return nextPatch;
+      },
+      { resetPages: false },
+    );
   };
 
   const toggleTag = (tagId: number) => {
-    setFilter((prev) => {
+    patchRouteState((prev) => {
       const currentTags = prev.tags ?? [];
       const hasTag = currentTags.includes(tagId);
       const nextTags = hasTag ? currentTags.filter((id) => id !== tagId) : [...currentTags, tagId];
-      return { ...prev, tags: nextTags, page: 1 };
+      return { tags: nextTags };
     });
   };
 
@@ -339,8 +556,8 @@ const ProblemsListPage = () => {
               {currentUser && studyPlans?.length && <StudyPlansShowcase studyPlans={studyPlans} />}
 
               <TabsCard
-                activeTab={activeTab}
-                onTabChange={setActiveTab}
+                activeTab={routeState.activeTab}
+                onTabChange={(value) => setRouteField('activeTab', value as never)}
                 attempts={{
                   isLoading: isAttemptsLoading,
                   items: attempts ?? [],

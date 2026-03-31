@@ -1,4 +1,4 @@
-import { MouseEvent, useMemo, useState } from 'react';
+import { MouseEvent, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import {
@@ -22,6 +22,8 @@ import UserPopover from 'modules/users/ui/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { stringParam } from 'shared/lib/queryParams';
 import { ProblemSolver, ProblemSolversOrdering } from '../../../domain/entities/problem.entity';
 
 interface ProblemSolversTabProps {
@@ -84,9 +86,26 @@ const SummaryCard = ({
 
 export const ProblemSolversTab = ({ problemId }: ProblemSolversTabProps) => {
   const { t } = useTranslation();
-  const [ordering, setOrdering] = useState<ProblemSolversOrdering>('-latest_solved_at');
+  const { state, setField } = useRouteQueryState({
+    defaults: {
+      ordering: '-latest_solved_at',
+    },
+    schema: {
+      ordering: {
+        ...stringParam(),
+        param: 'solversOrdering',
+      },
+    },
+  });
+  const ordering = state.ordering as ProblemSolversOrdering;
   const { paginationModel, onPaginationModelChange, pageParams, setPaginationModel } =
-    useGridPagination({ initialPageSize: 10 });
+    useGridPagination({
+      initialPageSize: 10,
+      querySync: {
+        pageKey: 'solversPage',
+        pageSizeKey: 'solversPageSize',
+      },
+    });
 
   const { data, isLoading } = useProblemSolvers(problemId, {
     ordering,
@@ -216,7 +235,7 @@ export const ProblemSolversTab = ({ problemId }: ProblemSolversTabProps) => {
       return;
     }
 
-    setOrdering(value);
+    setField('ordering', value);
     setPaginationModel((prev: GridPaginationModel) => ({ ...prev, page: 0 }));
   };
 

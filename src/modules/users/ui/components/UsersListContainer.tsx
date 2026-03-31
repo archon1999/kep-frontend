@@ -10,6 +10,8 @@ import UsersDataGrid from './UsersDataGrid';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import FilterButton from 'shared/components/common/FilterButton';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { enumParam, stringParam } from 'shared/lib/queryParams';
 import { getCountryAlpha2, getCountryLabel } from 'shared/utils/country';
 
 const tabOrderingMap = {
@@ -40,32 +42,96 @@ type FiltersState = {
   ageTo: string;
 };
 
-const defaultFilters: FiltersState = {
-  search: '',
-  country: '',
-  ageFrom: '',
-  ageTo: '',
-};
-
 type CountryOption = {
   value: string;
   code: string;
   label: string;
 };
 
+const orderingFieldMap = Object.fromEntries(
+  Object.entries(sortFieldMap).map(([field, ordering]) => [ordering, field]),
+) as Record<string, string>;
+
+type UsersListQueryState = FiltersState & {
+  tabValue: TabValue;
+  ordering: string;
+};
+
 const UsersListContainer = () => {
   const { t, i18n } = useTranslation();
-  const [tabValue, setTabValue] = useState<TabValue>('skills');
+  const { state, setField, resetState } = useRouteQueryState<UsersListQueryState>({
+    defaults: {
+      tabValue: 'skills',
+      search: '',
+      country: '',
+      ageFrom: '',
+      ageTo: '',
+      ordering: '',
+    },
+    schema: {
+      tabValue: {
+        ...enumParam(['all', 'skills', 'activity', 'contests', 'challenges'] as const),
+        param: 'tab',
+      },
+      search: {
+        ...stringParam(),
+        param: 'search',
+      },
+      country: {
+        ...stringParam(),
+        param: 'country',
+      },
+      ageFrom: {
+        ...stringParam(),
+        param: 'ageFrom',
+      },
+      ageTo: {
+        ...stringParam(),
+        param: 'ageTo',
+      },
+      ordering: {
+        ...stringParam(),
+        param: 'ordering',
+      },
+    },
+    historyByKey: {
+      tabValue: 'push',
+    },
+  });
+  const filters = useMemo(
+    () => ({
+      search: state.search,
+      country: state.country,
+      ageFrom: state.ageFrom,
+      ageTo: state.ageTo,
+    }),
+    [state.ageFrom, state.ageTo, state.country, state.search],
+  );
   const [filtersAnchorEl, setFiltersAnchorEl] = useState<null | HTMLElement>(null);
-  const [filters, setFilters] = useState<FiltersState>({ ...defaultFilters });
   const [debouncedFilters, setDebouncedFilters] = useState(filters);
   const {
     paginationModel,
     onPaginationModelChange,
     pageParams,
     setPaginationModel,
-  } = useGridPagination({ initialPageSize: 10 });
-  const [sortModel, setSortModel] = useState<GridSortModel>([]);
+  } = useGridPagination({
+    initialPageSize: 10,
+    querySync: {
+      pageKey: 'page',
+      pageSizeKey: 'pageSize',
+    },
+  });
+  const sortModel = useMemo<GridSortModel>(() => {
+    if (!state.ordering) {
+      return [];
+    }
+
+    const isDescending = state.ordering.startsWith('-');
+    const orderingField = isDescending ? state.ordering.slice(1) : state.ordering;
+    const field = orderingFieldMap[orderingField] ?? orderingField;
+
+    return [{ field, sort: isDescending ? 'desc' : 'asc' }];
+  }, [state.ordering]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => setDebouncedFilters(filters), 500);
@@ -118,8 +184,8 @@ const UsersListContainer = () => {
       return `${currentSort.sort === 'desc' ? '-' : ''}${orderingField}`;
     }
 
-    return tabOrderingMap[tabValue];
-  }, [sortModel, tabValue]);
+    return tabOrderingMap[state.tabValue];
+  }, [sortModel, state.tabValue]);
 
   const queryParams = useMemo(
     () => ({
@@ -145,12 +211,14 @@ const UsersListContainer = () => {
   const rowCount = data?.total ?? 0;
 
   const handleTabChange = (_: SyntheticEvent, value: TabValue) => {
-    setTabValue(value);
-    setSortModel([]);
+    setField('tabValue', value);
+    setField('ordering', '');
+    setPaginationModel((prev) => ({ ...prev, page: 0 }));
   };
 
   const handleFilterChange = (field: keyof FiltersState) => (event: ChangeEvent<HTMLInputElement>) => {
-    setFilters((prev) => ({ ...prev, [field]: event.target.value }));
+    setField(field, event.target.value);
+    setPaginationModel((prev) => ({ ...prev, page: 0 }));
   };
 
   const handleFiltersToggle = (event: MouseEvent<HTMLButtonElement>) => {
@@ -164,10 +232,22 @@ const UsersListContainer = () => {
   const handleFiltersClose = () => setFiltersAnchorEl(null);
 
   const handleClearFilters = () => {
-    setFilters(() => ({ ...defaultFilters }));
+    resetState(['search', 'country', 'ageFrom', 'ageTo']);
+    setPaginationModel((prev) => ({ ...prev, page: 0 }));
   };
 
-  const handleSortModelChange = (model: GridSortModel) => setSortModel(model);
+  const handleSortModelChange = (model: GridSortModel) => {
+    const currentSort = model[0];
+
+    if (!currentSort) {
+      setField('ordering', '');
+      return;
+    }
+
+    const orderingField = sortFieldMap[currentSort.field] ?? currentSort.field;
+    const orderingPrefix = currentSort.sort === 'desc' ? '-' : '';
+    setField('ordering', `${orderingPrefix}${orderingField}`);
+  };
 
   const columnLabels = {
     user: t('users.columns.user'),
@@ -182,7 +262,7 @@ const UsersListContainer = () => {
   } as const;
 
   return (
-    <TabContext value={tabValue}>
+    <TabContext value={state.tabValue}>
       <Stack
         sx={{
           gap: 2,

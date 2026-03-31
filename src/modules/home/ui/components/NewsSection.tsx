@@ -105,12 +105,6 @@ export const CardWrapper = ({ children, sx }: CardWrapperProps) => {
     <Box
       sx={(theme) => ({
         backgroundColor: theme.vars.palette.background.elevation1,
-        backgroundImage: [
-          `linear-gradient(142deg, ${alpha(theme.palette.background.paper, isDark ? 0.98 : 0.99)} 14%, ${alpha(theme.palette.background.default, isDark ? 0.96 : 0.92)} 100%)`,
-          `radial-gradient(circle at 16% 42%, ${alpha(theme.palette.primary.main, isDark ? 0.16 : 0.08)} 0%, transparent 24%)`,
-          `radial-gradient(circle at 86% 70%, ${alpha(theme.palette.secondary.main, isDark ? 0.14 : 0.08)} 0%, transparent 22%)`,
-          `linear-gradient(180deg, ${alpha(theme.palette.common.white, isDark ? 0.04 : 0.58)} 0%, transparent 100%)`,
-        ].join(','),
         borderRadius: theme.spacing(3),
         height: '100%',
         display: 'flex',

@@ -1,10 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router';
 import { Box, Button, Pagination, Skeleton, Stack, Typography } from '@mui/material';
 import { resources } from 'app/routes/resources';
 import KepIcon from 'shared/components/base/KepIcon';
 import useDebouncedValue from 'shared/hooks/useDebouncedValue';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { numberParam, stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { useBlogAuthors, useBlogPosts, useBlogTopics } from '../../application/queries';
 import BlogCard from '../components/BlogCard';
@@ -77,20 +79,59 @@ const editorialCardLayouts = [
 
 const BlogListPage = () => {
   const { t } = useTranslation();
-  const [filters, setFilters] = useState<BlogFilterState>(initialFilters);
-  const [page, setPage] = useState(1);
+  const { state, patchState, resetState, setField } = useRouteQueryState({
+    defaults: {
+      ...initialFilters,
+      page: 1,
+    },
+    schema: {
+      title: {
+        ...stringParam(),
+        param: 'title',
+      },
+      author: {
+        ...stringParam(),
+        param: 'author',
+      },
+      orderBy: {
+        ...stringParam(),
+        param: 'orderBy',
+      },
+      topic: {
+        ...stringParam(),
+        param: 'topic',
+      },
+      page: {
+        ...numberParam({ min: 1 }),
+        param: 'page',
+      },
+    },
+    historyByKey: {
+      page: 'push',
+    },
+    pageResetKeys: ['title', 'author', 'orderBy', 'topic'],
+  });
+  const filters = useMemo<BlogFilterState>(
+    () => ({
+      title: state.title,
+      author: state.author,
+      orderBy: state.orderBy,
+      topic: state.topic,
+    }),
+    [state.author, state.orderBy, state.title, state.topic],
+  );
   const debouncedTitle = useDebouncedValue(filters.title);
 
   const listParams = useMemo(
     () => ({
-      page,
+      page: state.page,
       pageSize: PAGE_SIZE,
       title: debouncedTitle || undefined,
       author: filters.author || undefined,
       order_by: filters.orderBy || undefined,
       topic: filters.topic || undefined,
     }),
-    [page, debouncedTitle, filters.author, filters.orderBy, filters.topic],
+    [debouncedTitle, filters.author, filters.orderBy, filters.topic, state.page],
   );
 
   const { data: postsPage, isLoading } = useBlogPosts(listParams);
@@ -100,12 +141,8 @@ const BlogListPage = () => {
   const posts = postsPage?.data ?? [];
   const total = postsPage?.total ?? posts.length;
 
-  useEffect(() => {
-    setPage(1);
-  }, [debouncedTitle, filters.author, filters.orderBy, filters.topic]);
-
-  const handleFilterChange = (next: BlogFilterState) => setFilters(next);
-  const handleResetFilters = () => setFilters(initialFilters);
+  const handleFilterChange = (next: BlogFilterState) => patchState(next);
+  const handleResetFilters = () => resetState(['title', 'author', 'orderBy', 'topic', 'page']);
   const hasActiveFilters = Boolean(
     filters.title || filters.author || filters.orderBy || filters.topic,
   );
@@ -210,8 +247,8 @@ const BlogListPage = () => {
             <Pagination
               color="primary"
               count={Math.ceil(total / PAGE_SIZE)}
-              page={page}
-              onChange={(_, value) => setPage(value)}
+              page={state.page}
+              onChange={(_, value) => setField('page', value)}
               shape="rounded"
               size="large"
             />

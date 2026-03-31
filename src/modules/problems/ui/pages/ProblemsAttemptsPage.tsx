@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
   Autocomplete,
   Avatar,
@@ -25,6 +25,8 @@ import FilterButton from 'shared/components/common/FilterButton';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import StyledTextField from 'shared/components/styled/StyledTextField';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import useSWR from 'swr';
 import { problemsQueries, useAttemptVerdicts, useAttemptsList, useProblemLanguages } from '../../application/queries';
@@ -43,23 +45,46 @@ const ProblemsAttemptsPage = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
   const params = useParams<{ username?: string }>();
-  const [searchParams] = useSearchParams();
   const [filtersAnchorEl, setFiltersAnchorEl] = useState<null | HTMLElement>(null);
-
-  const initialFilter: AttemptsFilterState = {
-    username: params.username ?? searchParams.get('username') ?? '',
-    problemId: searchParams.get('problemId') ?? '',
-    verdict: searchParams.get('verdict') ?? '',
-    lang: searchParams.get('lang') ?? '',
-  };
-
-  const [filter, setFilter] = useState<AttemptsFilterState>(initialFilter);
+  const { state: filter, patchState: patchFilterState, resetState: resetFilterState } =
+    useRouteQueryState<AttemptsFilterState>({
+      defaults: {
+        username: params.username ?? '',
+        problemId: '',
+        verdict: '',
+        lang: '',
+      },
+      schema: {
+        username: {
+          ...stringParam(),
+          param: 'username',
+        },
+        problemId: {
+          ...stringParam(),
+          param: 'problemId',
+        },
+        verdict: {
+          ...stringParam(),
+          param: 'verdict',
+        },
+        lang: {
+          ...stringParam(),
+          param: 'lang',
+        },
+      },
+    });
   const {
     paginationModel,
     onPaginationModelChange,
     pageParams,
     setPaginationModel,
-  } = useGridPagination({ initialPageSize: 20 });
+  } = useGridPagination({
+    initialPageSize: 20,
+    querySync: {
+      pageKey: 'page',
+      pageSizeKey: 'pageSize',
+    },
+  });
   const [problemInput, setProblemInput] = useState('');
   const [userInput, setUserInput] = useState('');
 
@@ -89,12 +114,12 @@ const ProblemsAttemptsPage = () => {
     key: K,
     value: AttemptsFilterState[K],
   ) => {
-    setFilter((prev) => ({ ...prev, [key]: value }));
+    patchFilterState({ [key]: value } as Partial<AttemptsFilterState>);
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
   };
 
   const handleReset = () => {
-    setFilter({ username: '', problemId: '', verdict: '', lang: '' });
+    resetFilterState(['username', 'problemId', 'verdict', 'lang']);
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
   };
 

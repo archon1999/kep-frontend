@@ -17,7 +17,12 @@ const ContestPage = () => {
   const { t } = useTranslation();
 
   const { data: contest, mutate: mutateContest, isLoading: isContestLoading } = useContest(contestId);
-  const { data: contestProblems, isLoading: problemsLoading } = useContestProblems(contestId);
+  const canLoadContestProblems = Boolean(contest && contest.statusCode !== ContestStatus.NotStarted);
+  const { data: contestProblems, isLoading: problemsLoading } = useContestProblems(
+    contestId,
+    undefined,
+    canLoadContestProblems,
+  );
   const [isRegistrationLoading, setIsRegistrationLoading] = useState(false);
   useDocumentTitle(
     contest?.title ? 'pageTitles.contest' : undefined,
@@ -28,9 +33,9 @@ const ContestPage = () => {
       : undefined,
   );
 
-  const showProblemsPreview = contest ? contest.statusCode !== ContestStatus.NotStarted : true;
+  const showProblemsPreview = canLoadContestProblems;
   const canRegister = contest ? contest.statusCode !== ContestStatus.Finished : false;
-  const isPreviewLoading = isContestLoading || problemsLoading;
+  const isPreviewLoading = isContestLoading || (canLoadContestProblems && problemsLoading);
 
   const handleRegistrationToggle = useCallback(async () => {
     if (!contestId || !contest) return;

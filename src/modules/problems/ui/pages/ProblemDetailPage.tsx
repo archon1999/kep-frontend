@@ -23,6 +23,8 @@ import ProblemDescriptionSkeleton from '../components/problem-detail/ProblemDesc
 import { ProblemEditorPanel } from '../components/problem-detail/ProblemEditorPanel';
 import ProblemEditorSkeleton from '../components/problem-detail/ProblemEditorSkeleton';
 import { ProblemHeader } from '../components/problem-detail/ProblemHeader';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { booleanFlagParam, enumParam, stringParam } from 'shared/lib/queryParams';
 
 const useProblemPermissions = (permissionsRaw: any) => {
   return useMemo(() => {
@@ -67,13 +69,39 @@ const ProblemDetailPage = () => {
   const params = useParams<{ id: string }>();
   const problemId = Number(params.id);
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const studyPlanIdParam = Number(searchParams.get('study-plan'));
   const studyPlanId = Number.isNaN(studyPlanIdParam) ? null : studyPlanIdParam;
-
-  const [activeTab, setActiveTab] = useState<'description' | 'attempts' | 'stats' | 'solvers'>(
-    (searchParams.get('tab') as 'attempts' | 'stats' | 'solvers') || 'description',
-  );
+  const { state: routeState, setField: setRouteField } = useRouteQueryState({
+    defaults: {
+      activeTab: 'description' as 'description' | 'attempts' | 'stats' | 'solvers',
+      attemptsLang: '',
+      attemptsVerdict: '',
+      allAttempts: false,
+    },
+    schema: {
+      activeTab: {
+        ...enumParam(['description', 'attempts', 'stats', 'solvers'] as const),
+        param: 'tab',
+      },
+      attemptsLang: {
+        ...stringParam(),
+        param: 'attemptsLang',
+      },
+      attemptsVerdict: {
+        ...stringParam(),
+        param: 'attemptsVerdict',
+      },
+      allAttempts: {
+        ...booleanFlagParam(),
+        param: 'allAttempts',
+      },
+    },
+    historyByKey: {
+      activeTab: 'push',
+    },
+  });
+  const activeTab = routeState.activeTab;
   const [input, setInput] = useState('');
   const [answer, setAnswer] = useState('');
   const [output, setOutput] = useState('');
@@ -92,15 +120,21 @@ const ProblemDetailPage = () => {
     }>
   >([]);
   const [editorTab, setEditorTab] = useState<'console' | 'samples'>('console');
-  const [myAttemptsOnly, setMyAttemptsOnly] = useState(true);
+  const myAttemptsOnly = !routeState.allAttempts;
   const {
     paginationModel: attemptsPagination,
     onPaginationModelChange: onAttemptsPaginationChange,
     pageParams: attemptsPageParams,
     setPaginationModel: setAttemptsPagination,
-  } = useGridPagination({ initialPageSize: 10 });
-  const [attemptsLangFilter, setAttemptsLangFilter] = useState('');
-  const [attemptsVerdictFilter, setAttemptsVerdictFilter] = useState('');
+  } = useGridPagination({
+    initialPageSize: 10,
+    querySync: {
+      pageKey: 'attemptsPage',
+      pageSizeKey: 'attemptsPageSize',
+    },
+  });
+  const attemptsLangFilter = routeState.attemptsLang;
+  const attemptsVerdictFilter = routeState.attemptsVerdict;
 
   const {
     data: problem,
@@ -224,33 +258,17 @@ const ProblemDetailPage = () => {
     return () => unsubscribers.forEach((off) => off());
   }, [t]);
 
-  useEffect(() => {
-    const tab = searchParams.get('tab');
-    if (tab === 'attempts' || tab === 'stats' || tab === 'solvers') {
-      setActiveTab(tab);
-    } else {
-      setActiveTab('description');
-    }
-  }, [searchParams]);
-
   const handleTabChange = (value: 'description' | 'attempts' | 'stats' | 'solvers') => {
-    setActiveTab(value);
-    const next = new URLSearchParams(searchParams);
-    if (value === 'description') {
-      next.delete('tab');
-    } else {
-      next.set('tab', value);
-    }
-    setSearchParams(next, { replace: true });
+    setRouteField('activeTab', value);
   };
 
   const handleAttemptsLangFilterChange = (value: string) => {
-    setAttemptsLangFilter(value);
+    setRouteField('attemptsLang', value);
     setAttemptsPagination((prev) => ({ ...prev, page: 0 }));
   };
 
   const handleAttemptsVerdictFilterChange = (value: string) => {
-    setAttemptsVerdictFilter(value);
+    setRouteField('attemptsVerdict', value);
     setAttemptsPagination((prev) => ({ ...prev, page: 0 }));
   };
 
@@ -287,12 +305,7 @@ const ProblemDetailPage = () => {
         lang: selectedLang,
       });
       toast.success(t('problems.detail.submitSuccess'));
-      setActiveTab('attempts');
-      setSearchParams((prev) => {
-        const next = new URLSearchParams(prev);
-        next.set('tab', 'attempts');
-        return next;
-      });
+      setRouteField('activeTab', 'attempts');
       mutateAttempts();
     } catch (error: any) {
       const message =
@@ -533,7 +546,10 @@ const ProblemDetailPage = () => {
                 activeTab={activeTab}
                 onTabChange={handleTabChange}
                 myAttemptsOnly={myAttemptsOnly}
-                onToggleMyAttempts={() => setMyAttemptsOnly((prev) => !prev)}
+                onToggleMyAttempts={() => {
+                  setRouteField('allAttempts', myAttemptsOnly);
+                  setAttemptsPagination((prev) => ({ ...prev, page: 0 }));
+                }}
                 attemptsLangFilter={attemptsLangFilter}
                 onAttemptsLangFilterChange={handleAttemptsLangFilterChange}
                 attemptsVerdictFilter={attemptsVerdictFilter}

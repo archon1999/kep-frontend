@@ -6,6 +6,8 @@ import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceById, resources } from 'app/routes/resources.ts';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { numberParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { toast } from 'sonner';
 import { useArenaLivePolling } from '../../application/hooks/useArenaLivePolling.ts';
@@ -38,7 +40,20 @@ const ArenaDetailPage = () => {
   const [selectedUsername, setSelectedUsername] = useState<string | undefined>();
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
   const [transitionBanner, setTransitionBanner] = useState<{ severity: 'info' | 'success'; message: string } | null>(null);
-  const [challengesPage, setChallengesPage] = useState(1);
+  const { state, setField } = useRouteQueryState({
+    defaults: {
+      challengesPage: 1,
+    },
+    schema: {
+      challengesPage: {
+        ...numberParam({ min: 1 }),
+        param: 'challengesPage',
+      },
+    },
+    historyByKey: {
+      challengesPage: 'push',
+    },
+  });
 
   const { data: arena, isLoading: isArenaLoading, mutate: mutateArena } = useArenaDetails(id, {
     refreshInterval: 30000,
@@ -56,8 +71,8 @@ const ArenaDetailPage = () => {
   );
 
   const challengesFilters = useMemo(
-    () => ({ page: challengesPage, pageSize: CHALLENGES_PAGE_SIZE }),
-    [challengesPage],
+    () => ({ page: state.challengesPage, pageSize: CHALLENGES_PAGE_SIZE }),
+    [state.challengesPage],
   );
   const liveRefreshOptions = useMemo(
     () => ({
@@ -266,8 +281,8 @@ const ArenaDetailPage = () => {
                   <ArenaChallengesList
                     data={challenges}
                     loading={isChallengesLoading}
-                    page={challenges?.page ?? challengesPage}
-                    onPageChange={setChallengesPage}
+                    page={challenges?.page ?? state.challengesPage}
+                    onPageChange={(value) => setField('challengesPage', value)}
                   />
                 ) : null}
               </Stack>

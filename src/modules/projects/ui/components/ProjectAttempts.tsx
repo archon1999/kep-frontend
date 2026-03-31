@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Pagination, Stack } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch.tsx';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { booleanFlagParam, numberParam } from 'shared/lib/queryParams';
 import { wsService } from 'shared/services/websocket';
 import { useProjectAttempts } from '../../application/queries';
 import { Project } from '../../domain/entities/project.entity';
@@ -16,14 +18,33 @@ interface ProjectAttemptsProps {
 const ProjectAttempts = ({ project, hackathonId }: ProjectAttemptsProps) => {
   const { t, i18n } = useTranslation();
   const { currentUser } = useAuth();
-  const [page, setPage] = useState(1);
-  const [showMine, setShowMine] = useState(!!currentUser);
+  const { state, setField } = useRouteQueryState({
+    defaults: {
+      page: 1,
+      showMine: Boolean(currentUser),
+    },
+    schema: {
+      page: {
+        ...numberParam({ min: 1 }),
+        param: 'attemptsPage',
+      },
+      showMine: {
+        ...booleanFlagParam(),
+        param: 'myAttempts',
+      },
+    },
+    historyByKey: {
+      page: 'push',
+    },
+  });
+  const page = state.page;
+  const showMine = state.showMine;
 
   useEffect(() => {
     if (!currentUser) {
-      setShowMine(false);
+      setField('showMine', false);
     }
-  }, [currentUser]);
+  }, [currentUser, setField]);
 
   const { data, isLoading, mutate } = useProjectAttempts(project.id, {
     page,
@@ -62,12 +83,12 @@ const ProjectAttempts = ({ project, hackathonId }: ProjectAttemptsProps) => {
   }, [attemptIds, mutate]);
 
   const handlePageChange = (_: any, value: number) => {
-    setPage(value);
+    setField('page', value);
   };
 
   const handleToggleMine = () => {
-    setPage(1);
-    setShowMine((prev) => !prev);
+    setField('showMine', !showMine);
+    setField('page', 1);
   };
 
   return (

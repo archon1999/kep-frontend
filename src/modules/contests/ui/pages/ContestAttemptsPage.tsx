@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { Box, Button, Card, CardContent, Grid, MenuItem, Select, Stack, Typography } from '@mui/material';
@@ -7,6 +7,8 @@ import { useAuth } from 'app/providers/AuthProvider';
 import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch';
 import { getResourceByParams, resources } from 'app/routes/resources';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { booleanFlagParam, stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import ProblemsAttemptsTable from 'modules/problems/ui/components/ProblemsAttemptsTable.tsx';
 import { AttemptsListParams } from 'modules/problems/domain/ports/problems.repository';
@@ -14,6 +16,7 @@ import { useAttemptVerdicts, useAttemptsList } from 'modules/problems/applicatio
 import ContestCountdownCard from '../components/ContestCountdownCard';
 import { useContest, useContestProblems } from '../../application/queries';
 import { ContestProblemEntity } from '../../domain/entities/contest-problem.entity';
+import { ContestStatus } from '../../domain/entities/contest-status';
 import ContestPageHeader from '../components/ContestPageHeader';
 
 interface AttemptsFilterState {
@@ -29,7 +32,12 @@ const ContestAttemptsPage = () => {
   const { t } = useTranslation();
 
   const { data: contest, isLoading: isContestLoading } = useContest(contestId);
-  const { data: contestProblems = [] } = useContestProblems(contestId);
+  const canLoadContestProblems = Boolean(contest && contest.statusCode !== ContestStatus.NotStarted);
+  const { data: contestProblems = [] } = useContestProblems(
+    contestId,
+    undefined,
+    canLoadContestProblems,
+  );
   const { data: verdictOptions = [] } = useAttemptVerdicts();
   useDocumentTitle(
     contest?.title ? 'pageTitles.contestAttempts' : undefined,
@@ -40,18 +48,41 @@ const ContestAttemptsPage = () => {
       : undefined,
   );
 
-  const [filter, setFilter] = useState<AttemptsFilterState>({
-    contestProblem: '',
-    verdict: '',
-    userOnly: false,
-  });
+  const { state: filter, patchState: patchFilterState, resetState: resetFilterState } =
+    useRouteQueryState<AttemptsFilterState>({
+      defaults: {
+        contestProblem: '',
+        verdict: '',
+        userOnly: false,
+      },
+      schema: {
+        contestProblem: {
+          ...stringParam(),
+          param: 'contestProblem',
+        },
+        verdict: {
+          ...stringParam(),
+          param: 'verdict',
+        },
+        userOnly: {
+          ...booleanFlagParam(),
+          param: 'onlyMe',
+        },
+      },
+    });
 
   const {
     paginationModel,
     onPaginationModelChange,
     pageParams: paginationParams,
     setPaginationModel,
-  } = useGridPagination({ initialPageSize: 20 });
+  } = useGridPagination({
+    initialPageSize: 20,
+    querySync: {
+      pageKey: 'page',
+      pageSizeKey: 'pageSize',
+    },
+  });
 
   const requestParams = useMemo<AttemptsListParams>(() => {
     const verdictNumber = filter.verdict ? Number(filter.verdict) : NaN;
@@ -69,12 +100,12 @@ const ContestAttemptsPage = () => {
   const { data: attemptsPage, isLoading, mutate } = useAttemptsList(requestParams);
 
   const handleFilterChange = <K extends keyof AttemptsFilterState>(key: K, value: AttemptsFilterState[K]) => {
-    setFilter((prev) => ({ ...prev, [key]: value }));
+    patchFilterState({ [key]: value } as Partial<AttemptsFilterState>);
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
   };
 
   const handleReset = () => {
-    setFilter({ contestProblem: '', verdict: '', userOnly: false });
+    resetFilterState();
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
   };
 

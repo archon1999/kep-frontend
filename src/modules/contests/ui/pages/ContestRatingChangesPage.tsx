@@ -25,7 +25,13 @@ const ContestRatingChangesPage = () => {
     paginationModel,
     onPaginationModelChange,
     pageParams,
-  } = useGridPagination({ initialPageSize: 20 });
+  } = useGridPagination({
+    initialPageSize: 20,
+    querySync: {
+      pageKey: 'page',
+      pageSizeKey: 'pageSize',
+    },
+  });
 
   const columns: GridColDef<ContestantEntity>[] = useMemo(
     () => [

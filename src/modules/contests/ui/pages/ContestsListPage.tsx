@@ -26,6 +26,8 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo';
 import FilterButton from 'shared/components/common/FilterButton';
 import useDebouncedValue from 'shared/hooks/useDebouncedValue';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { enumParam, numberParam, stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { cssVarRgba } from 'shared/lib/utils';
 import ContestCard from '../components/ContestCard';
@@ -53,39 +55,75 @@ const contestTypes = [
 
 const DEFAULT_PAGE_SIZE = 6;
 
+type ContestListQueryState = {
+  page: number;
+  title: string;
+  category?: number;
+  type?: string;
+  participation: 'all' | 'joined' | 'notJoined';
+};
+
 const ContestsListPage = () => {
   const { t } = useTranslation();
   const { data: categories } = useContestCategories();
   const { currentUser } = useAuth();
 
-  const [page, setPage] = useState(1);
-  const [filters, setFilters] = useState({
-    title: '',
-    category: undefined as number | undefined,
-    type: undefined as string | undefined,
-    participation: 'all' as 'all' | 'joined' | 'notJoined',
+  const { state, setField } = useRouteQueryState<ContestListQueryState>({
+    defaults: {
+      page: 1,
+      title: '',
+      category: undefined,
+      type: undefined,
+      participation: 'all',
+    },
+    schema: {
+      page: {
+        ...numberParam({ min: 1 }),
+        param: 'page',
+      },
+      title: {
+        ...stringParam(),
+        param: 'title',
+      },
+      category: {
+        ...numberParam({ min: 1 }),
+        param: 'category',
+      },
+      type: {
+        ...stringParam(),
+        param: 'type',
+      },
+      participation: {
+        ...enumParam(['all', 'joined', 'notJoined'] as const),
+        param: 'participation',
+      },
+    },
+    historyByKey: {
+      page: 'push',
+    },
+    pageResetKeys: ['title', 'category', 'type', 'participation'],
   });
   const [filtersAnchorEl, setFiltersAnchorEl] = useState<null | HTMLElement>(null);
 
-  const debouncedTitle = useDebouncedValue(filters.title, 400);
+  const debouncedTitle = useDebouncedValue(state.title, 400);
 
   const filtersOpen = Boolean(filtersAnchorEl);
 
   const queryParams = useMemo(
     () => ({
-      page,
+      page: state.page,
       pageSize: DEFAULT_PAGE_SIZE,
       title: debouncedTitle || undefined,
-      category: filters.category ? String(filters.category) : undefined,
-      type: filters.type,
+      category: state.category ? String(state.category) : undefined,
+      type: state.type,
       is_participated:
-        filters.participation === 'joined'
+        state.participation === 'joined'
           ? '1'
-          : filters.participation === 'notJoined'
+          : state.participation === 'notJoined'
             ? '0'
             : undefined,
     }),
-    [debouncedTitle, filters.category, filters.participation, filters.type, page],
+    [debouncedTitle, state.category, state.page, state.participation, state.type],
   );
 
   const { data: pageResult, isLoading } = useContestsList(queryParams);
@@ -97,19 +135,16 @@ const ContestsListPage = () => {
   );
 
   const handleCategory = (id?: number) => {
-    setFilters((prev) => ({ ...prev, category: id }));
-    setPage(1);
+    setField('category', id);
   };
 
   const handleTypeChange = (value?: string) => {
-    setFilters((prev) => ({ ...prev, type: value || undefined }));
-    setPage(1);
+    setField('type', value || undefined);
   };
 
   const handleParticipationChange = (_: any, value: 'all' | 'joined' | 'notJoined') => {
     if (!value) return;
-    setFilters((prev) => ({ ...prev, participation: value }));
-    setPage(1);
+    setField('participation', value);
   };
 
   const handleFiltersToggle = (event: MouseEvent<HTMLButtonElement>) => {
@@ -223,8 +258,8 @@ const ContestsListPage = () => {
         >
           <Stack direction="column" spacing={2}>
             <TextField
-              value={filters.title}
-              onChange={(event) => setFilters((prev) => ({ ...prev, title: event.target.value }))}
+              value={state.title}
+              onChange={(event) => setField('title', event.target.value)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -241,7 +276,7 @@ const ContestsListPage = () => {
               <InputLabel>{t('contests.typeLabel')}</InputLabel>
               <Select
                 label={t('contests.typeLabel')}
-                value={filters.type ?? ''}
+                value={state.type ?? ''}
                 onChange={(event) => handleTypeChange(event.target.value || undefined)}
               >
                 <MenuItem value="">
@@ -259,7 +294,7 @@ const ContestsListPage = () => {
               <InputLabel>{t('contests.categoriesLabel')}</InputLabel>
               <Select
                 label={t('contests.categoriesLabel')}
-                value={filters.category ? String(filters.category) : ''}
+                value={state.category ? String(state.category) : ''}
                 onChange={(event) => handleCategory(event.target.value ? Number(event.target.value) : undefined)}
                 renderValue={(value) => {
                   const numericValue = Number(value);
@@ -317,7 +352,7 @@ const ContestsListPage = () => {
               </Typography>
               <ToggleButtonGroup
                 color="primary"
-                value={filters.participation}
+                value={state.participation}
                 onChange={handleParticipationChange}
                 size="small"
                 fullWidth
@@ -368,8 +403,8 @@ const ContestsListPage = () => {
               <Stack direction="row" justifyContent="center">
                 <Pagination
                   count={pageResult.pagesCount}
-                  page={page}
-                  onChange={(_, value) => setPage(value)}
+                  page={state.page}
+                  onChange={(_, value) => setField('page', value)}
                   color="primary"
                   shape="rounded"
                 />

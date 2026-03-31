@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Panel, PanelGroup } from 'react-resizable-panels';
-import { Link as RouterLink, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -44,6 +44,8 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo.tsx';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { enumParam } from 'shared/lib/queryParams';
 import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
 import { wsService } from 'shared/services/websocket';
 import { toast } from 'sonner';
@@ -62,6 +64,8 @@ import { ContestStatus } from '../../domain/entities/contest-status';
 import { ContestantEntity } from '../../domain/entities/contestant.entity';
 import { sortContestProblems } from '../../utils/sortContestProblems';
 import ContestantView from '../components/ContestantView';
+
+type ContestProblemTab = 'description' | 'attempts';
 
 const useProblemPermissions = (permissionsRaw: any) => {
   return useMemo(() => {
@@ -222,12 +226,21 @@ const ContestProblemPage = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   const themeMode = useThemeMode();
-  const [searchParams, setSearchParams] = useSearchParams();
   const permissions = useProblemPermissions(currentUser?.permissions);
-
-  const [activeTab, setActiveTab] = useState<'description' | 'attempts'>(
-    (searchParams.get('tab') as 'attempts') || 'description',
-  );
+  const { state, setField } = useRouteQueryState<{ activeTab: ContestProblemTab }>({
+    defaults: {
+      activeTab: 'description',
+    },
+    schema: {
+      activeTab: {
+        ...enumParam(['description', 'attempts'] as const),
+        param: 'tab',
+      },
+    },
+    historyByKey: {
+      activeTab: 'push',
+    },
+  });
   const [input, setInput] = useState('');
   const [answer, setAnswer] = useState('');
   const [output, setOutput] = useState('');
@@ -253,7 +266,13 @@ const ContestProblemPage = () => {
     paginationModel: attemptsPagination,
     onPaginationModelChange: onAttemptsPaginationChange,
     pageParams: attemptsPageParams,
-  } = useGridPagination({ initialPageSize: 10 });
+  } = useGridPagination({
+    initialPageSize: 10,
+    querySync: {
+      pageKey: 'attemptsPage',
+      pageSizeKey: 'attemptsPageSize',
+    },
+  });
   const [timeLeft, setTimeLeft] = useState<string>('');
   const actionStatesRef = useRef({
     currentUser,
@@ -462,12 +481,7 @@ const ContestProblemPage = () => {
         lang: selectedLang,
       });
       toast.success(t('problems.detail.submitSuccess'));
-      setActiveTab('attempts');
-      setSearchParams((prev) => {
-        const next = new URLSearchParams(prev);
-        next.set('tab', 'attempts');
-        return next;
-      });
+      setField('activeTab', 'attempts');
       await Promise.all([mutateAttempts(), mutateContestProblems(), mutateContestant()]);
     } catch (error: any) {
       const message =
@@ -742,15 +756,8 @@ const ContestProblemPage = () => {
               >
                 <CardContent sx={{ flex: 1, minHeight: 0, overflowY: 'auto', p: 0 }}>
                   <Tabs
-                    value={activeTab}
-                    onChange={(_, value) => {
-                      setActiveTab(value);
-                      setSearchParams((prev) => {
-                        const next = new URLSearchParams(prev);
-                        next.set('tab', value);
-                        return next;
-                      });
-                    }}
+                    value={state.activeTab}
+                    onChange={(_, value) => setField('activeTab', value as ContestProblemTab)}
                     variant="scrollable"
                     scrollButtons="auto"
                     textColor="primary"
@@ -777,7 +784,7 @@ const ContestProblemPage = () => {
                   <Divider />
 
                   <Box sx={{ p: 3 }}>
-                    {activeTab === 'description' ? (
+                    {state.activeTab === 'description' ? (
                       <Stack direction="column" spacing={2}>
                         <Stack direction="column" spacing={1} flexWrap="wrap">
                           <Typography variant="h5" fontWeight={700}>
@@ -802,7 +809,7 @@ const ContestProblemPage = () => {
                       </Stack>
                     ) : null}
 
-                    {activeTab === 'attempts' ? (
+                    {state.activeTab === 'attempts' ? (
                       <ProblemsAttemptsTable
                         attempts={attemptsPage?.data ?? []}
                         total={attemptsPage?.total ?? 0}

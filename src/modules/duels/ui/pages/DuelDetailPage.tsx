@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Panel, PanelGroup } from 'react-resizable-panels';
-import { Link as RouterLink, useParams, useSearchParams } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -38,6 +38,8 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo.tsx';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { enumParam, stringParam } from 'shared/lib/queryParams';
 import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
 import { wsService } from 'shared/services/websocket';
 import { toast } from 'sonner';
@@ -47,6 +49,11 @@ import { Duel, DuelPlayer } from '../../domain/index.ts';
 
 type WorkspaceView = 'problems' | 'standings';
 type WorkspaceTab = 'description' | 'attempts';
+type DuelDetailQueryState = {
+  view: WorkspaceView;
+  activeTab: WorkspaceTab;
+  problem: string;
+};
 
 interface DuelNavigationProblem {
   symbol: string;
@@ -272,7 +279,32 @@ const DuelDetailPage = () => {
   const permissions = useProblemPermissions(currentUser?.permissions);
   const { id } = useParams<{ id: string }>();
   const duelId = Number(id);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { state: routeState, patchState, setField } = useRouteQueryState<DuelDetailQueryState>({
+    defaults: {
+      view: 'problems',
+      activeTab: 'description',
+      problem: '',
+    },
+    schema: {
+      view: {
+        ...enumParam(['problems', 'standings'] as const),
+        param: 'view',
+      },
+      activeTab: {
+        ...enumParam(['description', 'attempts'] as const),
+        param: 'tab',
+      },
+      problem: {
+        ...stringParam(),
+        param: 'problem',
+      },
+    },
+    historyByKey: {
+      view: 'push',
+      activeTab: 'push',
+      problem: 'push',
+    },
+  });
   const [timerText, setTimerText] = useState('');
   const [selectedSampleIndex, setSelectedSampleIndex] = useState(0);
   const [input, setInput] = useState('');
@@ -312,7 +344,13 @@ const DuelDetailPage = () => {
     paginationModel: attemptsPagination,
     onPaginationModelChange: onAttemptsPaginationChange,
     pageParams: attemptsPageParams,
-  } = useGridPagination({ initialPageSize: 10 });
+  } = useGridPagination({
+    initialPageSize: 10,
+    querySync: {
+      pageKey: 'attemptsPage',
+      pageSizeKey: 'attemptsPageSize',
+    },
+  });
 
   const {
     data: duel,
@@ -332,9 +370,8 @@ const DuelDetailPage = () => {
   );
 
   const problems = duel?.problems ?? [];
-  const view: WorkspaceView = searchParams.get('view') === 'standings' ? 'standings' : 'problems';
-  const activeTab: WorkspaceTab =
-    searchParams.get('tab') === 'attempts' ? 'attempts' : 'description';
+  const view = routeState.view;
+  const activeTab = routeState.activeTab;
   const navigationProblems = useMemo<DuelNavigationProblem[]>(() => {
     if (problems.length) {
       return problems.map((problem) => ({
@@ -352,7 +389,7 @@ const DuelDetailPage = () => {
         ball: problem.ball,
       }));
   }, [duel?.preset?.problems, problems]);
-  const currentSymbol = searchParams.get('problem');
+  const currentSymbol = routeState.problem || null;
   const activeNavigationProblem =
     navigationProblems.find((problem) => problem.symbol === currentSymbol) ??
     navigationProblems[0] ??
@@ -389,12 +426,8 @@ const DuelDetailPage = () => {
     if (currentSymbol && navigationProblems.some((problem) => problem.symbol === currentSymbol)) {
       return;
     }
-    const next = new URLSearchParams(searchParams);
-    next.set('problem', navigationProblems[0].symbol);
-    next.set('tab', activeTab);
-    next.set('view', view);
-    setSearchParams(next, { replace: true });
-  }, [activeTab, currentSymbol, navigationProblems, searchParams, setSearchParams, view]);
+    setField('problem', navigationProblems[0].symbol, { history: 'replace' });
+  }, [currentSymbol, navigationProblems, setField]);
 
   useEffect(() => {
     if (!duel) return;
@@ -521,16 +554,11 @@ const DuelDetailPage = () => {
     tab?: WorkspaceTab;
     symbol?: string | null;
   }) => {
-    const next = new URLSearchParams(searchParams);
-    next.set('view', values.view ?? view);
-    next.set('tab', values.tab ?? activeTab);
-    const nextSymbol = values.symbol ?? activeNavigationProblem?.symbol;
-    if (nextSymbol) {
-      next.set('problem', nextSymbol);
-    } else {
-      next.delete('problem');
-    }
-    setSearchParams(next, { replace: true });
+    patchState((prev) => ({
+      view: values.view ?? prev.view,
+      activeTab: values.tab ?? prev.activeTab,
+      problem: values.symbol ?? activeNavigationProblem?.symbol ?? prev.problem,
+    }));
   };
 
   const handleSubmit = async () => {

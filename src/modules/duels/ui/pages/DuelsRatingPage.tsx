@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Avatar, Box, Card, CardContent, LinearProgress, Stack, Typography, useTheme } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import {
@@ -14,6 +14,8 @@ import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx'
 import PageHeader from 'shared/components/sections/common/PageHeader.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { cssVarRgba } from 'shared/lib/utils.ts';
 import { useDuelsRating } from '../../application/queries.ts';
@@ -25,6 +27,10 @@ const orderingFieldMap: Record<string, string> = {
   losses: 'losses',
 };
 
+const sortFieldByOrdering = Object.fromEntries(
+  Object.entries(orderingFieldMap).map(([field, ordering]) => [ordering, field]),
+) as Record<string, string>;
+
 const DuelsRatingPage = () => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -33,17 +39,35 @@ const DuelsRatingPage = () => {
     paginationModel,
     onPaginationModelChange,
     pageParams: { page, pageSize },
-  } = useGridPagination({ initialPageSize: 12 });
-  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'wins', sort: 'desc' }]);
+  } = useGridPagination({
+    initialPageSize: 12,
+    querySync: {
+      pageKey: 'page',
+      pageSizeKey: 'pageSize',
+    },
+  });
+  const { state, setField } = useRouteQueryState({
+    defaults: {
+      ordering: '-wins',
+    },
+    schema: {
+      ordering: {
+        ...stringParam(),
+        param: 'ordering',
+      },
+    },
+  });
 
-  const ordering = useMemo(() => {
-    const currentSort = sortModel[0];
-    if (!currentSort) return '-wins';
+  const sortModel = useMemo<GridSortModel>(() => {
+    const ordering = state.ordering || '-wins';
+    const isDescending = ordering.startsWith('-');
+    const orderingField = isDescending ? ordering.slice(1) : ordering;
+    const field = sortFieldByOrdering[orderingField] ?? 'wins';
 
-    const orderingField = orderingFieldMap[currentSort.field] ?? 'wins';
-    const prefix = currentSort.sort === 'asc' ? '' : '-';
-    return `${prefix}${orderingField}`;
-  }, [sortModel]);
+    return [{ field, sort: isDescending ? 'desc' : 'asc' }];
+  }, [state.ordering]);
+
+  const ordering = state.ordering || '-wins';
 
   const { data: ratingPage, isLoading } = useDuelsRating({ page, pageSize, ordering });
 
@@ -290,9 +314,18 @@ const DuelsRatingPage = () => {
               paginationMode="server"
               sortingMode="server"
               sortModel={sortModel}
-              onSortModelChange={(model) =>
-                setSortModel(model.length ? [model[0]] : [{ field: 'wins', sort: 'desc' }])
-              }
+              onSortModelChange={(model) => {
+                const currentSort = model[0];
+
+                if (!currentSort) {
+                  setField('ordering', '-wins');
+                  return;
+                }
+
+                const orderingField = orderingFieldMap[currentSort.field] ?? 'wins';
+                const prefix = currentSort.sort === 'asc' ? '' : '-';
+                setField('ordering', `${prefix}${orderingField}`);
+              }}
               pageSizeOptions={[12]}
               disableColumnMenu
               disableColumnFilter

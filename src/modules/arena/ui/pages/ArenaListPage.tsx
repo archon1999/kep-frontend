@@ -1,6 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Card, CardContent, Pagination, Skeleton, Stack, Typography } from '@mui/material';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { numberParam } from 'shared/lib/queryParams';
 import { useArenasList } from '../../application/queries.ts';
 import ArenaListCard from '../components/ArenaListCard.tsx';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
@@ -9,10 +11,23 @@ import Logo from 'shared/components/common/Logo';
 
 const ArenaListPage = () => {
   const { t } = useTranslation();
-  const [page, setPage] = useState(1);
+  const { state, setField } = useRouteQueryState({
+    defaults: {
+      page: 1,
+    },
+    schema: {
+      page: {
+        ...numberParam({ min: 1 }),
+        param: 'page',
+      },
+    },
+    historyByKey: {
+      page: 'push',
+    },
+  });
 
   const { data, isLoading } = useArenasList({
-    page,
+    page: state.page,
     pageSize: 6,
     status: undefined,
   });
@@ -79,8 +94,8 @@ const ArenaListPage = () => {
             <Pagination
               color="warning"
               count={pagesCount}
-              page={page}
-              onChange={(_, value) => setPage(value)}
+              page={state.page}
+              onChange={(_, value) => setField('page', value)}
             />
           </Stack>
         ) : null}

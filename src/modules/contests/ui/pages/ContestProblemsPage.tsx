@@ -7,6 +7,7 @@ import { responsivePagePaddingSx } from 'shared/lib/styles';
 import KepIcon from 'shared/components/base/KepIcon';
 import ContestCountdownCard from '../components/ContestCountdownCard';
 import { useContest, useContestProblems } from '../../application/queries';
+import { ContestStatus } from '../../domain/entities/contest-status';
 import { contestHasBalls } from '../../utils/contestType';
 import ContestPageHeader from '../components/ContestPageHeader';
 
@@ -16,7 +17,12 @@ const ContestProblemsPage = () => {
   const { t } = useTranslation();
 
   const { data: contest, isLoading: isContestLoading } = useContest(contestId);
-  const { data: problems = [], isLoading } = useContestProblems(contestId);
+  const canLoadContestProblems = Boolean(contest && contest.statusCode !== ContestStatus.NotStarted);
+  const { data: problems = [], isLoading } = useContestProblems(
+    contestId,
+    undefined,
+    canLoadContestProblems,
+  );
   useDocumentTitle(
     contest?.title ? 'pageTitles.contestProblems' : undefined,
     contest?.title
@@ -26,7 +32,7 @@ const ContestProblemsPage = () => {
       : undefined,
   );
 
-  const isProblemsLoading = isContestLoading || isLoading;
+  const isProblemsLoading = isContestLoading || (canLoadContestProblems && isLoading);
 
   return (
     <Stack spacing={3} sx={responsivePagePaddingSx}>

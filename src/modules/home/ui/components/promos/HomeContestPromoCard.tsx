@@ -16,7 +16,6 @@ const HomeContestPromoCard = ({ slide }: { slide: HomePromoSlide }) => {
       sx={(theme) => ({
         position: 'relative',
         overflow: 'hidden',
-        borderRadius: 4,
         background: `linear-gradient(135deg, ${cssVarRgba(theme.vars.palette.success.mainChannel, 0.08)}, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08)})`,
         '& .swiper-pagination': {
           bottom: 0,
@@ -142,63 +141,11 @@ const HomeContestPromoCard = ({ slide }: { slide: HomePromoSlide }) => {
               </Stack>
 
               <Stack direction="row" spacing={1.5} alignItems="center" flexWrap="wrap" useFlexGap>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <KepIcon name="users" fontSize={18} />
-                  <Typography variant="body2" color="text.primary" fontWeight={700}>
-                    {t('contests.contestants', { count: slide.contestantsCount ?? 0 })}
-                  </Typography>
-                </Stack>
-
                 <Button component={RouterLink} to={slide.href} variant="contained" color={paletteColor}>
                   {slide.ctaLabel}
                 </Button>
               </Stack>
             </Stack>
-
-            <Box sx={{ width: { xs: '100%', lg: 290 }, flexShrink: 0 }}>
-              <Paper
-                sx={(theme) => ({
-                  position: 'relative',
-                  minHeight: 188,
-                  borderRadius: 3,
-                  overflow: 'hidden',
-                  background: `linear-gradient(180deg, ${cssVarRgba(theme.vars.palette.success.mainChannel, 0.14)}, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08)})`,
-                })}
-              >
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    inset: 0,
-                    backgroundImage: slide.logo ? `url(${slide.logo})` : undefined,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    opacity: slide.logo ? 0.18 : 1,
-                  }}
-                />
-
-                <Stack
-                  justifyContent="space-between"
-                  sx={{ position: 'relative', height: '100%', minHeight: 188, p: 2.25 }}
-                >
-                  <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
-                    <Chip label={slide.typeLabel} size="small" color={paletteColor} variant="filled" />
-                    <KepIcon name="contest" fontSize={34} />
-                  </Stack>
-
-                  <Stack spacing={1}>
-                    <Typography variant="body2" color="text.secondary">
-                      {slide.status === 'active' ? t('homePage.promos.statuses.active') : t('homePage.promos.statuses.upcoming')}
-                    </Typography>
-                    <Typography variant="h6" fontWeight={900}>
-                      {t('contests.problems', { count: slide.problemsCount ?? 0 })}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {t('contests.registrantsLabel', { count: slide.registrantsCount ?? 0 })}
-                    </Typography>
-                  </Stack>
-                </Stack>
-              </Paper>
-            </Box>
           </Stack>
         </Stack>
       </CardContent>

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -30,6 +30,8 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepIcon from 'shared/components/base/KepIcon';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import PageHeader from 'shared/components/sections/common/PageHeader';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { numberParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { useProblemsRatingHistory } from '../../application/queries';
 import {
@@ -54,28 +56,44 @@ const historyPageSize = 10;
 const ProblemsRatingHistoryPage = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
-
-  const [pagesByType, setPagesByType] = useState<Record<ProblemsRatingHistoryType, number>>({
-    1: 1,
-    2: 1,
-    3: 1,
+  const { state, setField } = useRouteQueryState({
+    defaults: {
+      dailyPage: 1,
+      weeklyPage: 1,
+      monthlyPage: 1,
+    },
+    schema: {
+      dailyPage: {
+        ...numberParam({ min: 1 }),
+        param: 'dailyPage',
+      },
+      weeklyPage: {
+        ...numberParam({ min: 1 }),
+        param: 'weeklyPage',
+      },
+      monthlyPage: {
+        ...numberParam({ min: 1 }),
+        param: 'monthlyPage',
+      },
+    },
+    historyByKey: {
+      dailyPage: 'push',
+      weeklyPage: 'push',
+      monthlyPage: 'push',
+    },
   });
 
-  const dailyPage = pagesByType[1];
-  const weeklyPage = pagesByType[2];
-  const monthlyPage = pagesByType[3];
-
   const dailyParams = useMemo(
-    () => ({ type: 1, page: dailyPage, pageSize: historyPageSize }),
-    [dailyPage],
+    () => ({ type: 1, page: state.dailyPage, pageSize: historyPageSize }),
+    [state.dailyPage],
   );
   const weeklyParams = useMemo(
-    () => ({ type: 2, page: weeklyPage, pageSize: historyPageSize }),
-    [weeklyPage],
+    () => ({ type: 2, page: state.weeklyPage, pageSize: historyPageSize }),
+    [state.weeklyPage],
   );
   const monthlyParams = useMemo(
-    () => ({ type: 3, page: monthlyPage, pageSize: historyPageSize }),
-    [monthlyPage],
+    () => ({ type: 3, page: state.monthlyPage, pageSize: historyPageSize }),
+    [state.monthlyPage],
   );
 
   const dailyHistory = useProblemsRatingHistory(dailyParams);
@@ -118,24 +136,34 @@ const ProblemsRatingHistoryPage = () => {
       config: ratingHistoryConfigs[0],
       history: dailyHistory,
       best: dailyBest,
-      page: pagesByType[1],
+      page: state.dailyPage,
     },
     {
       config: ratingHistoryConfigs[1],
       history: weeklyHistory,
       best: weeklyBest,
-      page: pagesByType[2],
+      page: state.weeklyPage,
     },
     {
       config: ratingHistoryConfigs[2],
       history: monthlyHistory,
       best: monthlyBest,
-      page: pagesByType[3],
+      page: state.monthlyPage,
     },
   ];
 
   const handlePageChange = (type: ProblemsRatingHistoryType, page: number) => {
-    setPagesByType((prev) => ({ ...prev, [type]: page }));
+    if (type === 1) {
+      setField('dailyPage', page);
+      return;
+    }
+
+    if (type === 2) {
+      setField('weeklyPage', page);
+      return;
+    }
+
+    setField('monthlyPage', page);
   };
 
   return (

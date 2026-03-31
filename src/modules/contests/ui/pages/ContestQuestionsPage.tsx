@@ -30,7 +30,12 @@ const ContestQuestionsPage = () => {
   const { t } = useTranslation();
 
   const { data: contest, isLoading: isContestLoading } = useContest(contestId);
-  const { data: contestProblems = [] } = useContestProblems(contestId);
+  const canLoadContestProblems = Boolean(contest && contest.statusCode !== ContestStatus.NotStarted);
+  const { data: contestProblems = [] } = useContestProblems(
+    contestId,
+    undefined,
+    canLoadContestProblems,
+  );
   useDocumentTitle(
     contest?.title ? 'pageTitles.contestQuestions' : undefined,
     contest?.title

@@ -1,8 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import { Box, Card, CardContent, CardHeader, CircularProgress, Grid, Tab, Tabs } from '@mui/material';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { numberParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { useProjectDetails } from '../../application/queries';
 import ProjectAttempts from '../components/ProjectAttempts.tsx';
@@ -13,7 +15,20 @@ import ProjectSidebar from '../components/ProjectSidebar.tsx';
 const ProjectDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState(0);
+  const { state, setField } = useRouteQueryState({
+    defaults: {
+      activeTab: 0,
+    },
+    schema: {
+      activeTab: {
+        ...numberParam({ min: 0, max: 1 }),
+        param: 'tab',
+      },
+    },
+    historyByKey: {
+      activeTab: 'push',
+    },
+  });
   const { data: project, isLoading, mutate } = useProjectDetails(slug);
 
   useDocumentTitle(
@@ -34,7 +49,7 @@ const ProjectDetailPage = () => {
   );
 
   const handleSubmitted = () => {
-    setActiveTab(1);
+    setField('activeTab', 1);
     mutate();
   };
 
@@ -63,8 +78,8 @@ const ProjectDetailPage = () => {
               sx={{ mb: 0 }}
               title={
                 <Tabs
-                  value={activeTab}
-                  onChange={(_, value) => setActiveTab(value)}
+                  value={state.activeTab}
+                  onChange={(_, value) => setField('activeTab', value)}
                   variant="scrollable"
                   allowScrollButtonsMobile
                   sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
@@ -76,8 +91,8 @@ const ProjectDetailPage = () => {
               }
             />
             <CardContent>
-              {activeTab === 0 && <ProjectDescription project={project} />}
-              {activeTab === 1 && <ProjectAttempts project={project} />}
+              {state.activeTab === 0 && <ProjectDescription project={project} />}
+              {state.activeTab === 1 && <ProjectAttempts project={project} />}
             </CardContent>
           </Card>
         </Grid>

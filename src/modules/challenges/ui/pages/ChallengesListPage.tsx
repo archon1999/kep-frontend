@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { Box, Button, Card, CardContent, Divider, Stack, Tab, Tabs, Typography } from '@mui/material';
@@ -28,6 +27,8 @@ import ChallengesQueueTab from '../components/ChallengesQueueTab.tsx';
 import ChallengesQuickStartTab from '../components/ChallengesQuickStartTab.tsx';
 import ChallengesRatingPreviewCard from '../components/ChallengesRatingPreviewCard.tsx';
 import ChallengesArenaWinnersCard from '../components/ChallengesArenaWinnersCard.tsx';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { booleanFlagParam, enumParam, numberParam } from 'shared/lib/queryParams';
 
 type ChallengesTab = 'quickstart' | 'queue' | 'history';
 
@@ -38,23 +39,52 @@ const quickStarts = [
   { timeSeconds: 30, questionsCount: 6 },
 ];
 
+type ChallengesListQueryState = {
+  page: number;
+  activeTab: ChallengesTab;
+  onlyMine: boolean;
+};
+
 const ChallengesListPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   useDocumentTitle('pageTitles.challenges');
 
-  const [page, setPage] = useState(1);
+  const { state, setField } = useRouteQueryState<ChallengesListQueryState>({
+    defaults: {
+      page: 1,
+      activeTab: 'queue',
+      onlyMine: false,
+    },
+    schema: {
+      page: {
+        ...numberParam({ min: 1 }),
+        param: 'page',
+      },
+      activeTab: {
+        ...enumParam(['quickstart', 'queue', 'history'] as const),
+        param: 'tab',
+      },
+      onlyMine: {
+        ...booleanFlagParam(),
+        param: 'onlyMine',
+      },
+    },
+    historyByKey: {
+      page: 'push',
+      activeTab: 'push',
+    },
+    pageResetKeys: ['activeTab', 'onlyMine'],
+  });
   const pageSize = 7;
-  const [activeTab, setActiveTab] = useState<ChallengesTab>('queue');
-  const [showOnlyMine, setShowOnlyMine] = useState(false);
 
   const { data: calls, isLoading: isCallsLoading, mutate: mutateCalls } = useChallengeCalls();
   const normalizedCalls = extractList<ChallengeCall>(calls);
   const { data: challengesPage, isLoading: isChallengesLoading } = useChallengesList({
-    page,
+    page: state.page,
     pageSize,
-    username: showOnlyMine && currentUser ? currentUser.username : undefined,
+    username: state.onlyMine && currentUser ? currentUser.username : undefined,
   });
   const { data: ratingPreview, isLoading: isRatingLoading } = useChallengesRating({
     page: 1,
@@ -83,7 +113,7 @@ const ChallengesListPage = () => {
 
     await createCall(payload);
     await mutateCalls();
-    setActiveTab('queue');
+    setField('activeTab', 'queue');
     toast.success(t('challenges.callCreatedToast'));
   };
 
@@ -117,11 +147,10 @@ const ChallengesListPage = () => {
   };
 
   const handleToggleOnlyMine = (checked: boolean) => {
-    setShowOnlyMine(checked);
-    setPage(1);
+    setField('onlyMine', checked);
   };
 
-  const handlePageChange = (value: number) => setPage(value);
+  const handlePageChange = (value: number) => setField('page', value);
 
   return (
     <Box sx={responsivePagePaddingSx}>
@@ -158,7 +187,7 @@ const ChallengesListPage = () => {
                 <Button
                   variant="text"
                   startIcon={<KepIcon name="challenge-time" fontSize={18} />}
-                  onClick={() => setActiveTab('quickstart')}
+                  onClick={() => setField('activeTab', 'quickstart')}
                 >
                   {t('challenges.quickStartTitle')}
                 </Button>
@@ -207,8 +236,8 @@ const ChallengesListPage = () => {
         <Card variant="outlined" sx={{ borderRadius: 3 }}>
           <CardContent sx={{ pb: 0 }}>
             <Tabs
-              value={activeTab}
-              onChange={(_, value) => setActiveTab(value)}
+              value={state.activeTab}
+              onChange={(_, value) => setField('activeTab', value)}
               variant="scrollable"
               scrollButtons="auto"
             >
@@ -219,7 +248,7 @@ const ChallengesListPage = () => {
           </CardContent>
           <Divider />
           <Box sx={{ p: { xs: 2, md: 3 } }}>
-            {activeTab === 'quickstart' && (
+            {state.activeTab === 'quickstart' && (
               <ChallengesQuickStartTab
                 quickStarts={quickStarts}
                 chapters={chapters}
@@ -229,7 +258,7 @@ const ChallengesListPage = () => {
                 onCreateCustom={handleCreate}
               />
             )}
-            {activeTab === 'queue' && (
+            {state.activeTab === 'queue' && (
               <ChallengesQueueTab
                 calls={normalizedCalls}
                 isLoading={isCallsLoading}
@@ -238,13 +267,13 @@ const ChallengesListPage = () => {
                 onRemoved={mutateCalls}
               />
             )}
-            {activeTab === 'history' && (
+            {state.activeTab === 'history' && (
               <ChallengesHistoryTab
                 challengesPage={challengesPage}
                 isLoading={isChallengesLoading}
-                page={page}
+                page={state.page}
                 onPageChange={handlePageChange}
-                showOnlyMine={showOnlyMine}
+                showOnlyMine={state.onlyMine}
                 onToggleOnlyMine={handleToggleOnlyMine}
                 isAuthenticated={Boolean(currentUser)}
               />

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar, Box, Stack, Typography } from '@mui/material';
 import {
@@ -12,6 +12,8 @@ import UserPopover from 'modules/users/ui/components/UserPopover.tsx';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { useChallengesRating } from '../../application/queries.ts';
 
@@ -21,15 +23,34 @@ const ChallengesRatingPage = () => {
     paginationModel,
     onPaginationModelChange,
     pageParams: { page, pageSize },
-  } = useGridPagination({ initialPageSize: 10 });
-  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'rating', sort: 'desc' }]);
+  } = useGridPagination({
+    initialPageSize: 10,
+    querySync: {
+      pageKey: 'page',
+      pageSizeKey: 'pageSize',
+    },
+  });
+  const { state, setField } = useRouteQueryState({
+    defaults: {
+      ordering: '-rating',
+    },
+    schema: {
+      ordering: {
+        ...stringParam(),
+        param: 'ordering',
+      },
+    },
+  });
 
-  const ordering = useMemo(() => {
-    if (!sortModel.length) return '-rating';
-    const [{ field, sort }] = sortModel;
-    const prefix = sort === 'asc' ? '' : '-';
-    return `${prefix}${field}`;
-  }, [sortModel]);
+  const sortModel = useMemo<GridSortModel>(() => {
+    const ordering = state.ordering || '-rating';
+    const isDescending = ordering.startsWith('-');
+    const field = isDescending ? ordering.slice(1) : ordering;
+
+    return [{ field, sort: isDescending ? 'desc' : 'asc' }];
+  }, [state.ordering]);
+
+  const ordering = state.ordering || '-rating';
 
   const { data: ratingPage, isLoading } = useChallengesRating({ page, pageSize, ordering });
 
@@ -152,9 +173,17 @@ const ChallengesRatingPage = () => {
           paginationModel={paginationModel}
           onPaginationModelChange={onPaginationModelChange}
           sortModel={sortModel}
-          onSortModelChange={(model) =>
-            setSortModel(model.length ? model : [{ field: 'rating', sort: 'desc' }])
-          }
+          onSortModelChange={(model) => {
+            const currentSort = model[0];
+
+            if (!currentSort) {
+              setField('ordering', '-rating');
+              return;
+            }
+
+            const prefix = currentSort.sort === 'asc' ? '' : '-';
+            setField('ordering', `${prefix}${currentSort.field}`);
+          }}
           loading={isLoading}
           pageSizeOptions={[10, 20, 50]}
           disableColumnFilter

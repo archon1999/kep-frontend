@@ -91,6 +91,7 @@ const ContestPageHeader = ({
               direction={{ xs: 'column', md: 'row' }}
               spacing={1.5}
               alignItems={{ xs: 'flex-start', md: 'center' }}
+              sx={{ width: '100%', minWidth: 0 }}
             >
               <ContestTabs contestId={resolvedContestId} status={status} isRated={rated} />
               {tabsRightContent ? (

@@ -75,9 +75,10 @@ export const useContest = (contestId?: number | string, options?: SWRConfigurati
 export const useContestProblems = (
   contestId?: number | string,
   options?: SWRConfiguration,
+  enabled = true,
 ) =>
   useSWR<ContestProblemEntity[]>(
-    contestId ? ['contest-problems', contestId] : null,
+    contestId && enabled ? ['contest-problems', contestId] : null,
     () => contestsRepository.getProblems(contestId!),
     options,
   );

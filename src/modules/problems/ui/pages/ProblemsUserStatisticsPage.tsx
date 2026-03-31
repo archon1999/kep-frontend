@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -31,7 +31,9 @@ import KepIcon from 'shared/components/base/KepIcon';
 import ReactEchart from 'shared/components/base/ReactEchart';
 import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
 import PageHeader from 'shared/components/sections/common/PageHeader';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { getColor } from 'shared/lib/echart-utils';
+import { numberParam } from 'shared/lib/queryParams';
 import { useProblemsUserStatistics } from '../../application/queries';
 import { difficultyColorByKey, difficultyOptions } from '../../config/difficulty';
 import {
@@ -321,8 +323,25 @@ const ProblemsUserStatisticsPage = () => {
   const { t, i18n } = useTranslation();
   const { currentUser } = useAuth();
   const theme = useTheme();
-  const [selectedYear, setSelectedYear] = useState<number>();
-  const [selectedDays, setSelectedDays] = useState<number>();
+  const { state, setField } = useRouteQueryState<{
+    selectedYear?: number;
+    selectedDays?: number;
+  }>({
+    defaults: {
+      selectedYear: undefined,
+      selectedDays: undefined,
+    },
+    schema: {
+      selectedYear: {
+        ...numberParam(),
+        param: 'year',
+      },
+      selectedDays: {
+        ...numberParam({ min: 1 }),
+        param: 'days',
+      },
+    },
+  });
 
   const locale = useMemo(() => {
     const lang = i18n.language || 'en';
@@ -334,8 +353,8 @@ const ProblemsUserStatisticsPage = () => {
 
   const username = currentUser?.username;
   const statisticsParams = useMemo(
-    () => ({ year: selectedYear, days: selectedDays }),
-    [selectedYear, selectedDays],
+    () => ({ year: state.selectedYear, days: state.selectedDays }),
+    [state.selectedDays, state.selectedYear],
   );
   const { data: statistics, isLoading } = useProblemsUserStatistics(username, statisticsParams);
 
@@ -349,8 +368,8 @@ const ProblemsUserStatisticsPage = () => {
     [statistics?.lastDays?.series, t],
   );
   const heatmapOption = useMemo(
-    () => buildHeatmapOption(statistics, selectedYear, theme.vars, t),
-    [statistics, selectedYear, theme.vars, t],
+    () => buildHeatmapOption(statistics, state.selectedYear, theme.vars, t),
+    [state.selectedYear, statistics, theme.vars, t],
   );
   const weekdayOption = useMemo(
     () => buildBarOption(statistics?.byWeekday ?? [], t),
@@ -371,14 +390,14 @@ const ProblemsUserStatisticsPage = () => {
 
   useEffect(() => {
     if (!statistics) return;
-    if (selectedDays === undefined && statistics.meta?.lastDays) {
-      setSelectedDays(statistics.meta.lastDays);
+    if (state.selectedDays === undefined && statistics.meta?.lastDays) {
+      setField('selectedDays', statistics.meta.lastDays);
     }
-    if (!selectedYear) {
+    if (!state.selectedYear) {
       const years = buildYears(statistics);
-      setSelectedYear(years[0] ?? dayjs().year());
+      setField('selectedYear', years[0] ?? dayjs().year());
     }
-  }, [selectedDays, selectedYear, statistics]);
+  }, [setField, state.selectedDays, state.selectedYear, statistics]);
 
   const numberFormatter = useMemo(
     () =>
@@ -550,12 +569,12 @@ const ProblemsUserStatisticsPage = () => {
                       <CardHeader
                         title={t('problems.statisticsPage.activity.title')}
                         action={
-                          <ToggleButtonGroup
-                            size="small"
-                            exclusive
-                            value={selectedDays}
-                            onChange={(_, value) => value && setSelectedDays(value)}
-                          >
+                            <ToggleButtonGroup
+                              size="small"
+                              exclusive
+                              value={state.selectedDays}
+                              onChange={(_, value) => value && setField('selectedDays', value)}
+                            >
                             {availableDays.map((option) => (
                               <ToggleButton value={option} key={option}>
                                 {option}
@@ -628,12 +647,12 @@ const ProblemsUserStatisticsPage = () => {
                       <CardHeader
                         title={t('problems.statisticsPage.heatmap.title')}
                         action={
-                          <ToggleButtonGroup
-                            size="small"
-                            exclusive
-                            value={selectedYear}
-                            onChange={(_, value) => value && setSelectedYear(value)}
-                          >
+                            <ToggleButtonGroup
+                              size="small"
+                              exclusive
+                              value={state.selectedYear}
+                              onChange={(_, value) => value && setField('selectedYear', value)}
+                            >
                             {availableYears.map((year) => (
                               <ToggleButton value={year} key={year}>
                                 {year}

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { Box, Chip, FormControl, Link, MenuItem, Select, Stack, Switch, Tooltip, Typography } from '@mui/material';
@@ -8,6 +8,8 @@ import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { ContestType } from 'shared/api/orval/generated/endpoints/index.schemas';
 import { getResourceByParams, resources } from 'app/routes/resources';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { booleanFlagParam, stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import {
   useContest,
@@ -16,6 +18,7 @@ import {
   useContestStandings,
 } from '../../application/queries';
 import { ContestProblemEntity } from '../../domain/entities/contest-problem.entity';
+import { ContestStatus } from '../../domain/entities/contest-status';
 import { ContestantEntity } from '../../domain/entities/contestant.entity';
 import {
   contestHasBalls,
@@ -103,9 +106,10 @@ const ContestStandingsPage = () => {
   const { data: contest, isLoading: isContestLoading } = useContest(contestId, {
     refreshInterval,
   });
+  const canLoadContestProblems = Boolean(contest && contest.statusCode !== ContestStatus.NotStarted);
   const { data: contestProblems = [] } = useContestProblems(contestId, {
     refreshInterval,
-  });
+  }, canLoadContestProblems);
   const { data: contestFilters = [] } = useContestFilters(contestId);
   useDocumentTitle(
     contest?.title ? 'pageTitles.contestStandings' : undefined,
@@ -121,9 +125,31 @@ const ContestStandingsPage = () => {
     onPaginationModelChange,
     pageParams,
     setPaginationModel,
-  } = useGridPagination({ initialPageSize: 20 });
-  const [selectedFilter, setSelectedFilter] = useState<string>('');
-  const [followingOnly, setFollowingOnly] = useState(false);
+  } = useGridPagination({
+    initialPageSize: 20,
+    querySync: {
+      pageKey: 'page',
+      pageSizeKey: 'pageSize',
+    },
+  });
+  const { state, setField } = useRouteQueryState({
+    defaults: {
+      selectedFilter: '',
+      followingOnly: false,
+    },
+    schema: {
+      selectedFilter: {
+        ...stringParam(),
+        param: 'filter',
+      },
+      followingOnly: {
+        ...booleanFlagParam(),
+        param: 'following',
+      },
+    },
+  });
+  const selectedFilter = state.selectedFilter;
+  const followingOnly = state.followingOnly;
 
   const { data: standings, isLoading } = useContestStandings(
     contestId,
@@ -153,7 +179,7 @@ const ContestStandingsPage = () => {
           size="small"
           checked={followingOnly}
           onChange={(_, checked) => {
-            setFollowingOnly(checked);
+            setField('followingOnly', checked);
             setPaginationModel((prev) => ({ ...prev, page: 0 }));
           }}
         />
@@ -170,7 +196,7 @@ const ContestStandingsPage = () => {
           value={selectedFilter}
           disabled={!contestFilters.length}
           onChange={(event) => {
-            setSelectedFilter(event.target.value);
+            setField('selectedFilter', event.target.value);
             setPaginationModel((prev) => ({ ...prev, page: 0 }));
           }}
           displayEmpty

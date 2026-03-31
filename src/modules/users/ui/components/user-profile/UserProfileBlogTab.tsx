@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useParams } from 'react-router';
 import dayjs from 'dayjs';
@@ -27,6 +27,8 @@ import BlogStatusChip from 'modules/blog/ui/components/BlogStatusChip';
 import { mutate as globalMutate } from 'swr';
 import { toast } from 'sonner';
 import KepIcon from 'shared/components/base/KepIcon';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { numberParam } from 'shared/lib/queryParams';
 import { stripBlogHtml } from 'modules/blog/ui/lib/article-content';
 
 const PAGE_SIZE = 6;
@@ -180,23 +182,36 @@ const UserProfileBlogTab = () => {
   const { username = '' } = useParams();
   const { currentUser } = useAuth();
   const isOwner = currentUser?.username === username;
-  const [page, setPage] = useState(1);
+  const { state, setField } = useRouteQueryState({
+    defaults: {
+      page: 1,
+    },
+    schema: {
+      page: {
+        ...numberParam({ min: 1 }),
+        param: 'blogPage',
+      },
+    },
+    historyByKey: {
+      page: 'push',
+    },
+  });
   const { trigger: submitForReview, isMutating: isSubmitting } = useBlogSubmitForReview();
 
   const listParams = useMemo(
     () => ({
-      page,
+      page: state.page,
       pageSize: PAGE_SIZE,
       author: username || undefined,
     }),
-    [page, username],
+    [state.page, username],
   );
 
   const { data: publicPosts, isLoading: isPublicLoading } = useBlogPosts(isOwner ? null : listParams);
   const { data: myPosts, isLoading: isOwnerLoading } = useMyBlogPosts(
     isOwner
       ? {
-          page,
+          page: state.page,
           pageSize: PAGE_SIZE,
         }
       : null,
@@ -208,8 +223,8 @@ const UserProfileBlogTab = () => {
   const isLoading = isOwner ? isOwnerLoading : isPublicLoading;
 
   useEffect(() => {
-    setPage(1);
-  }, [username, isOwner]);
+    setField('page', 1);
+  }, [isOwner, setField, username]);
 
   const handleSubmit = async (postId: number) => {
     try {
@@ -345,8 +360,8 @@ const UserProfileBlogTab = () => {
         <Pagination
           color="primary"
           count={Math.ceil(total / PAGE_SIZE)}
-          page={page}
-          onChange={(_, value) => setPage(value)}
+          page={state.page}
+          onChange={(_, value) => setField('page', value)}
           shape="rounded"
           size="large"
         />

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -33,7 +33,9 @@ import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { getResourceById, resources } from 'app/routes/resources';
 import ReactEchart from 'shared/components/base/ReactEchart.tsx';
 import PageHeader from 'shared/components/sections/common/PageHeader';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { getColor } from 'shared/lib/echart-utils';
+import { numberParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { useChallengeUserStatistics, useUserChallenges } from '../../application/queries.ts';
 import type {
@@ -371,19 +373,39 @@ const UserStatisticsPage = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const username = currentUser?.username;
-  const [page, setPage] = useState(1);
-  const [selectedYear, setSelectedYear] = useState<number>();
+  const { state, setField } = useRouteQueryState<{
+    page: number;
+    selectedYear?: number;
+  }>({
+    defaults: {
+      page: 1,
+      selectedYear: undefined,
+    },
+    schema: {
+      page: {
+        ...numberParam({ min: 1 }),
+        param: 'page',
+      },
+      selectedYear: {
+        ...numberParam(),
+        param: 'year',
+      },
+    },
+    historyByKey: {
+      page: 'push',
+    },
+  });
   const pageSize = 10;
 
   const { data: statistics, isLoading: isStatisticsLoading } = useChallengeUserStatistics(username);
   const { data: lastChallenges, isLoading: isChallengesLoading } = useUserChallenges({
     username: username ?? '',
-    page,
+    page: state.page,
     pageSize,
   });
 
   const availableYears = useMemo(() => buildYears(statistics), [statistics]);
-  const activeYear = selectedYear ?? availableYears[0];
+  const activeYear = state.selectedYear ?? availableYears[0];
   const primaryColor = getColor(theme.vars.palette.primary.main);
   const successColor = getColor(theme.vars.palette.success.main);
   const errorColor = getColor(theme.vars.palette.error.main);
@@ -830,7 +852,7 @@ const UserStatisticsPage = () => {
                   <ChartCard title={t('challenges.statisticsPage.activity.title', { defaultValue: 'Recent activity' })} option={activityOption} emptyText={t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' })} />
                 </Grid>
                 <Grid size={{ xs: 12, lg: 4 }}>
-                  <ChartCard title={t('challenges.statisticsPage.activity.heatmap', { defaultValue: 'Activity heatmap' })} option={heatmapOption} emptyText={t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' })} height={280} extra={availableYears.length ? <ToggleButtonGroup size="small" exclusive value={activeYear} onChange={(_, value) => value && setSelectedYear(value)}>{availableYears.map((year) => <ToggleButton key={year} value={year}>{year}</ToggleButton>)}</ToggleButtonGroup> : null} />
+                  <ChartCard title={t('challenges.statisticsPage.activity.heatmap', { defaultValue: 'Activity heatmap' })} option={heatmapOption} emptyText={t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' })} height={280} extra={availableYears.length ? <ToggleButtonGroup size="small" exclusive value={activeYear} onChange={(_, value) => value && setField('selectedYear', value)}>{availableYears.map((year) => <ToggleButton key={year} value={year}>{year}</ToggleButton>)}</ToggleButtonGroup> : null} />
                 </Grid>
                 <Grid size={{ xs: 12, lg: 6 }}>
                   <ChartCard title={t('challenges.statisticsPage.activity.weekdays', { defaultValue: 'Weekday activity' })} option={weekdayOption} emptyText={t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' })} height={280} />
@@ -981,7 +1003,7 @@ const UserStatisticsPage = () => {
                   <Stack spacing={1.5}>
                     {(lastChallenges?.data ?? []).map((challenge) => <ChallengeCard key={challenge.id} challenge={challenge} />)}
                     {!isChallengesLoading && !lastChallenges?.data?.length ? <Typography variant="body2" color="text.secondary">{t('challenges.noChallenges')}</Typography> : null}
-                    {(lastChallenges?.pagesCount ?? 0) > 1 ? <Box display="flex" justifyContent="flex-end"><Pagination color="primary" shape="rounded" page={page} count={lastChallenges?.pagesCount ?? 0} onChange={(_, value) => setPage(value)} /></Box> : null}
+                    {(lastChallenges?.pagesCount ?? 0) > 1 ? <Box display="flex" justifyContent="flex-end"><Pagination color="primary" shape="rounded" page={state.page} count={lastChallenges?.pagesCount ?? 0} onChange={(_, value) => setField('page', value)} /></Box> : null}
                   </Stack>
                 </CardContent>
               </Card>

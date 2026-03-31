@@ -1,4 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { numberParam } from 'shared/lib/queryParams';
 import { Arena, ArenaStatus } from '../../domain/entities/arena.entity.ts';
 
 export const useArenaStandingsPage = (arena?: Arena) => {
@@ -6,18 +8,27 @@ export const useArenaStandingsPage = (arena?: Arena) => {
     () => Boolean(arena?.isRegistrated) && arena?.status !== ArenaStatus.NotStarted,
     [arena?.isRegistrated, arena?.status],
   );
-  const [page, setPage] = useState<number | undefined>(shouldAutoJumpToSelf ? undefined : 1);
-
-  useEffect(() => {
-    setPage(shouldAutoJumpToSelf ? undefined : 1);
-  }, [arena?.id, arena?.status, shouldAutoJumpToSelf]);
+  const { state, setField } = useRouteQueryState({
+    defaults: {
+      playersPage: shouldAutoJumpToSelf ? undefined : 1,
+    },
+    schema: {
+      playersPage: {
+        ...numberParam({ min: 1 }),
+        param: 'playersPage',
+      },
+    },
+    historyByKey: {
+      playersPage: 'push',
+    },
+  });
 
   return {
-    playersPage: page,
-    setPlayersPage: (value: number) => setPage(value),
+    playersPage: state.playersPage,
+    setPlayersPage: (value: number) => setField('playersPage', value),
     resetPlayersPage: () => {
       if (shouldAutoJumpToSelf) {
-        setPage(undefined);
+        setField('playersPage', undefined);
       }
     },
     shouldAutoJumpToSelf,

@@ -19,6 +19,8 @@ import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceById, resources } from 'app/routes/resources.ts';
 import PageHeader from 'shared/components/sections/common/PageHeader.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { enumParam, numberParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { cssVarRgba } from 'shared/lib/utils.ts';
 import {
@@ -42,6 +44,12 @@ import DuelInvitationsSection from '../components/DuelInvitationsSection.tsx';
 import DuelsListSection from '../components/DuelsListSection.tsx';
 
 type DuelsTab = 'queue' | 'needs_response' | 'my_calls' | 'history';
+
+type DuelsListQueryState = {
+  activeTab: DuelsTab | '';
+  myDuelsPage: number;
+  allDuelsPage: number;
+};
 
 const formatDateInput = (date: Date) => {
   const pad = (value: number) => value.toString().padStart(2, '0');
@@ -73,9 +81,32 @@ const DuelsListPage = () => {
   const theme = useTheme();
   useDocumentTitle('pageTitles.duels');
 
-  const [activeTab, setActiveTab] = useState<DuelsTab | null>(null);
-  const [myDuelsPage, setMyDuelsPage] = useState(1);
-  const [allDuelsPage, setAllDuelsPage] = useState(1);
+  const { state, setField } = useRouteQueryState<DuelsListQueryState>({
+    defaults: {
+      activeTab: '',
+      myDuelsPage: 1,
+      allDuelsPage: 1,
+    },
+    schema: {
+      activeTab: {
+        ...enumParam(['queue', 'needs_response', 'my_calls', 'history'] as const),
+        param: 'tab',
+      },
+      myDuelsPage: {
+        ...numberParam({ min: 1 }),
+        param: 'myPage',
+      },
+      allDuelsPage: {
+        ...numberParam({ min: 1 }),
+        param: 'recentPage',
+      },
+    },
+    historyByKey: {
+      activeTab: 'push',
+      myDuelsPage: 'push',
+      allDuelsPage: 'push',
+    },
+  });
   const [selectedPresetId, setSelectedPresetId] = useState('');
   const [selectedTypeId, setSelectedTypeId] = useState('');
   const [actionLoadingKey, setActionLoadingKey] = useState<string | null>(null);
@@ -104,11 +135,11 @@ const DuelsListPage = () => {
   });
   const { data: myDuels, mutate: mutateMyDuels } = useDuelsList({
     my: true,
-    page: myDuelsPage,
+    page: state.myDuelsPage,
     pageSize,
   });
   const { data: allDuels, mutate: mutateAllDuels } = useDuelsList({
-    page: allDuelsPage,
+    page: state.allDuelsPage,
     pageSize,
   });
   const { data: presets = [] } = useDuelPresets();
@@ -144,21 +175,8 @@ const DuelsListPage = () => {
     }
   }, [duelTypes, selectedTypeId]);
 
-  useEffect(() => {
-    if (activeTab !== null || myDuels === undefined || needsResponsePage === undefined) {
-      return;
-    }
-
-    if ((needsResponsePage?.total ?? 0) > 0) {
-      setActiveTab('needs_response');
-      return;
-    }
-
-    setActiveTab((myDuels?.total ?? 0) > 0 ? 'history' : 'queue');
-  }, [activeTab, myDuels, needsResponsePage]);
-
   const resolvedActiveTab: DuelsTab =
-    activeTab ??
+    state.activeTab ||
     ((needsResponsePage?.total ?? 0) > 0 ? 'needs_response' : (myDuels?.total ?? 0) > 0 ? 'history' : 'queue');
 
   const refreshAll = async () => {
@@ -215,7 +233,7 @@ const DuelsListPage = () => {
         duelTypeId: Number(selectedTypeId),
       });
       toast.success(t('duels.callCreatedToast'));
-      setActiveTab('my_calls');
+      setField('activeTab', 'my_calls');
       await refreshAll();
     } catch {
       toast.error(t('duels.error'));
@@ -422,7 +440,7 @@ const DuelsListPage = () => {
               <Stack spacing={1}>
                 <Tabs
                   value={resolvedActiveTab}
-                  onChange={(_, value) => setActiveTab(value)}
+                  onChange={(_, value) => setField('activeTab', value)}
                   variant="scrollable"
                   scrollButtons="auto"
                   sx={{
@@ -503,10 +521,10 @@ const DuelsListPage = () => {
                     title={t('duels.myDuelsSection')}
                     duels={myDuels?.data ?? []}
                     total={myDuels?.total ?? 0}
-                    page={myDuelsPage}
+                    page={state.myDuelsPage}
                     pageSize={pageSize}
                     loading={!myDuels}
-                    onPageChange={setMyDuelsPage}
+                    onPageChange={(value) => setField('myDuelsPage', value)}
                     onView={(duel) => handleView(duel.id)}
                   />
 
@@ -514,10 +532,10 @@ const DuelsListPage = () => {
                     title={t('duels.recentDuelsSection')}
                     duels={allDuels?.data ?? []}
                     total={allDuels?.total ?? 0}
-                    page={allDuelsPage}
+                    page={state.allDuelsPage}
                     pageSize={pageSize}
                     loading={!allDuels}
-                    onPageChange={setAllDuelsPage}
+                    onPageChange={(value) => setField('allDuelsPage', value)}
                     onView={(duel) => handleView(duel.id)}
                   />
                 </Stack>

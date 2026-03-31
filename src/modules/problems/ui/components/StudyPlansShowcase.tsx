@@ -16,7 +16,7 @@ type StudyPlansShowcaseProps = {
   highlightedPlanId?: number | null;
 };
 
-const StudyPlansShowcase = ({ studyPlans, highlightedPlanId }: StudyPlansShowcaseProps) => {
+const StudyPlansShowcase = ({ studyPlans, highlightedPlanId: _highlightedPlanId }: StudyPlansShowcaseProps) => {
   const { t } = useTranslation();
 
   if (studyPlans.length === 0) {

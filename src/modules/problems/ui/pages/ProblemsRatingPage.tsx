@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import {
@@ -21,6 +21,8 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepIcon from 'shared/components/base/KepIcon';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { cssVarRgba } from 'shared/lib/utils';
 import { useProblemsPeriodRating, useProblemsRating } from '../../application/queries';
@@ -41,6 +43,10 @@ const sortFieldMap: Record<string, string> = {
   extremal: 'extremal',
 };
 
+const orderingFieldMap = Object.fromEntries(
+  Object.entries(sortFieldMap).map(([field, ordering]) => [ordering, field]),
+) as Record<string, string>;
+
 const ProblemsRatingPage = () => {
   const { t } = useTranslation();
 
@@ -48,19 +54,34 @@ const ProblemsRatingPage = () => {
     paginationModel,
     onPaginationModelChange,
     pageParams: { page, pageSize },
-  } = useGridPagination();
-  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'rating', sort: 'desc' }]);
+  } = useGridPagination({
+    querySync: {
+      pageKey: 'page',
+      pageSizeKey: 'pageSize',
+    },
+  });
+  const { state, setField } = useRouteQueryState({
+    defaults: {
+      ordering: '-rating',
+    },
+    schema: {
+      ordering: {
+        ...stringParam(),
+        param: 'ordering',
+      },
+    },
+  });
 
-  const ordering = useMemo(() => {
-    const currentSort = sortModel[0];
+  const sortModel = useMemo<GridSortModel>(() => {
+    const normalizedOrdering = state.ordering || '-rating';
+    const isDescending = normalizedOrdering.startsWith('-');
+    const orderingField = isDescending ? normalizedOrdering.slice(1) : normalizedOrdering;
+    const field = orderingFieldMap[orderingField] ?? 'rating';
 
-    if (!currentSort) return '-rating';
+    return [{ field, sort: isDescending ? 'desc' : 'asc' }];
+  }, [state.ordering]);
 
-    const orderingField = sortFieldMap[currentSort.field] ?? currentSort.field;
-    const orderingPrefix = currentSort.sort === 'desc' ? '-' : '';
-
-    return `${orderingPrefix}${orderingField}`;
-  }, [sortModel]);
+  const ordering = state.ordering || '-rating';
 
   const {
     data: ratingPage,
@@ -75,7 +96,19 @@ const ProblemsRatingPage = () => {
   const rows = ratingPage?.data ?? [];
   const rowCount = ratingPage?.total ?? 0;
 
-  const handleSortModelChange = (model: GridSortModel) => setSortModel(model.slice(0, 1));
+  const handleSortModelChange = (model: GridSortModel) => {
+    const currentSort = model[0];
+
+    if (!currentSort) {
+      setField('ordering', '-rating');
+      return;
+    }
+
+    const orderingField = sortFieldMap[currentSort.field] ?? currentSort.field;
+    const orderingPrefix = currentSort.sort === 'desc' ? '-' : '';
+
+    setField('ordering', `${orderingPrefix}${orderingField}`);
+  };
 
   const labels = useMemo(
     () => ({

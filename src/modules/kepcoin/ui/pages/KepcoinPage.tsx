@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button, Card, CardContent, Grid, Skeleton, Stack, Typography } from '@mui/material';
@@ -10,6 +10,8 @@ import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
 import Logo from 'shared/components/common/Logo';
 import Streak from 'shared/components/rating/Streak';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { enumParam, numberParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { cssVarRgba } from 'shared/lib/utils';
 import {
@@ -104,8 +106,30 @@ const HeroStatCard = ({ label, icon, tone, isLoading, value }: HeroStatCardProps
 
 const KepcoinPage = () => {
   const { t } = useTranslation();
-  const [view, setView] = useState<HistoryView>('earns');
-  const [page, setPage] = useState(1);
+  const { state, setField } = useRouteQueryState<{
+    view: HistoryView;
+    page: number;
+  }>({
+    defaults: {
+      view: 'earns',
+      page: 1,
+    },
+    schema: {
+      view: {
+        ...enumParam(['earns', 'spends'] as const),
+        param: 'view',
+      },
+      page: {
+        ...numberParam({ min: 1 }),
+        param: 'page',
+      },
+    },
+    historyByKey: {
+      view: 'push',
+      page: 'push',
+    },
+    pageResetKeys: ['view'],
+  });
 
   const { data: summary, isLoading: isSummaryLoading, mutate: reloadSummary } = useKepcoinSummary();
   const {
@@ -113,30 +137,30 @@ const KepcoinPage = () => {
     isLoading: isEarnHistoryLoading,
     error: earnError,
     mutate: reloadEarn,
-  } = useKepcoinEarnHistory(page, PAGE_SIZE, view === 'earns');
+  } = useKepcoinEarnHistory(state.page, PAGE_SIZE, state.view === 'earns');
   const {
     data: spendHistory,
     isLoading: isSpendHistoryLoading,
     error: spendError,
     mutate: reloadSpend,
-  } = useKepcoinSpendHistory(page, PAGE_SIZE, view === 'spends');
+  } = useKepcoinSpendHistory(state.page, PAGE_SIZE, state.view === 'spends');
 
-  const activeHistory = view === 'earns' ? earnHistory : spendHistory;
-  const isHistoryLoading = view === 'earns' ? isEarnHistoryLoading : isSpendHistoryLoading;
-  const historyError = view === 'earns' ? earnError : spendError;
-  const retryHistory = view === 'earns' ? reloadEarn : reloadSpend;
+  const activeHistory = state.view === 'earns' ? earnHistory : spendHistory;
+  const isHistoryLoading =
+    state.view === 'earns' ? isEarnHistoryLoading : isSpendHistoryLoading;
+  const historyError = state.view === 'earns' ? earnError : spendError;
+  const retryHistory = state.view === 'earns' ? reloadEarn : reloadSpend;
 
   const handleViewChange = (_: unknown, nextView: HistoryView | null) => {
-    if (!nextView || nextView === view) {
+    if (!nextView || nextView === state.view) {
       return;
     }
 
-    setView(nextView);
-    setPage(1);
+    setField('view', nextView);
   };
 
   const handlePageChange = (_: unknown, nextPage: number) => {
-    setPage(nextPage);
+    setField('page', nextPage);
   };
 
   const historyItems = activeHistory?.items ?? [];
@@ -446,13 +470,13 @@ const KepcoinPage = () => {
 
       <Grid size={{ xs: 12, lg: 7 }}>
         <KepcoinActivityWidget
-          view={view}
+          view={state.view}
           onViewChange={handleViewChange}
           isLoading={isHistoryLoading}
           error={historyError}
           historyItems={historyItems}
           pagesCount={pagesCount}
-          page={page}
+          page={state.page}
           onPageChange={handlePageChange}
           onRetry={retryHistory}
         />

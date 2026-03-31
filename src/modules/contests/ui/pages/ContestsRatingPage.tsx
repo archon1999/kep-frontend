@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LinearProgress, Stack, Typography } from '@mui/material';
 import {
@@ -12,6 +12,8 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { useContestsRating } from '../../application/queries';
 import { ContestRatingRow } from '../../domain/entities/contest-rating.entity';
@@ -25,25 +27,45 @@ const orderingFieldMap: Record<string, string> = {
   contestants_count: 'contestants_count',
 };
 
+const sortFieldByOrdering = Object.fromEntries(
+  Object.entries(orderingFieldMap).map(([field, ordering]) => [ordering, field]),
+) as Record<string, string>;
+
 const ContestsRatingPage = () => {
   const { t } = useTranslation();
   const {
     paginationModel,
     onPaginationModelChange,
     pageParams: { page, pageSize },
-  } = useGridPagination({ initialPageSize: 10 });
-  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'rating', sort: 'desc' }]);
+  } = useGridPagination({
+    initialPageSize: 10,
+    querySync: {
+      pageKey: 'page',
+      pageSizeKey: 'pageSize',
+    },
+  });
+  const { state, setField } = useRouteQueryState({
+    defaults: {
+      ordering: '-rating',
+    },
+    schema: {
+      ordering: {
+        ...stringParam(),
+        param: 'ordering',
+      },
+    },
+  });
 
-  const ordering = useMemo(() => {
-    const currentSort = sortModel[0];
+  const sortModel = useMemo<GridSortModel>(() => {
+    const ordering = state.ordering || '-rating';
+    const isDescending = ordering.startsWith('-');
+    const orderingField = isDescending ? ordering.slice(1) : ordering;
+    const field = sortFieldByOrdering[orderingField] ?? 'rating';
 
-    if (!currentSort) return '-rating';
+    return [{ field, sort: isDescending ? 'desc' : 'asc' }];
+  }, [state.ordering]);
 
-    const orderingField = orderingFieldMap[currentSort.field] ?? 'rating';
-    const prefix = currentSort.sort === 'asc' ? '' : '-';
-
-    return `${prefix}${orderingField}`;
-  }, [sortModel]);
+  const ordering = state.ordering || '-rating';
 
   const { data: ratingPage, isLoading } = useContestsRating({
     page,
@@ -153,7 +175,16 @@ const ContestsRatingPage = () => {
   );
 
   const handleSortModelChange = (model: GridSortModel) => {
-    setSortModel(model.length ? [model[0]] : [{ field: 'rating', sort: 'desc' }]);
+    const currentSort = model[0];
+
+    if (!currentSort) {
+      setField('ordering', '-rating');
+      return;
+    }
+
+    const orderingField = orderingFieldMap[currentSort.field] ?? 'rating';
+    const prefix = currentSort.sort === 'asc' ? '' : '-';
+    setField('ordering', `${prefix}${orderingField}`);
   };
 
   return (

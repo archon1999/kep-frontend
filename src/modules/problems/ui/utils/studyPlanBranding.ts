@@ -6,7 +6,6 @@ import mathLogo from 'shared/assets/study-plans/math-cp.svg';
 import implementationLogo from 'shared/assets/study-plans/implementation.svg';
 import contestLogo from 'shared/assets/study-plans/contest.svg';
 import olympiadLogo from 'shared/assets/study-plans/olympiad.svg';
-import { dark } from '@mui/material/styles/createPalette';
 
 type StudyPlanBrandingInput = {
   code?: string;

@@ -111,7 +111,15 @@ const ContestTabs = ({ contestId, status, isRated }: ContestTabsProps) => {
   }, [location.pathname, visibleTabs]);
 
   return (
-    <Box sx={{ borderBottom: '1px solid', borderColor: 'divider' }}>
+    <Box
+      sx={{
+        borderBottom: '1px solid',
+        borderColor: 'divider',
+        width: { xs: '100%', md: 'auto' },
+        minWidth: 0,
+        flex: 1,
+      }}
+    >
       <Tabs
         value={activeTab}
         onChange={(_, value) => {
@@ -123,6 +131,10 @@ const ContestTabs = ({ contestId, status, isRated }: ContestTabsProps) => {
         variant="scrollable"
         scrollButtons="auto"
         allowScrollButtonsMobile
+        sx={{
+          width: '100%',
+          minWidth: 0,
+        }}
       >
         {visibleTabs.map((tab) => (
           <Tab
