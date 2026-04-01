@@ -56,6 +56,15 @@ const Footer = () => {
             Powered by
           </Typography>
 
+          <Tooltip title="Aurora" arrow>
+            <Box
+              component="img"
+              src="/aurora.svg"
+              alt="Aurora"
+              sx={{ width: 22, height: 22, display: 'inline-flex' }}
+            />
+          </Tooltip>
+
           {techIcons.map(({ icon, label }) => (
             <Tooltip key={icon} title={label} arrow>
               <Box component="span" sx={{ display: 'inline-flex' }}>

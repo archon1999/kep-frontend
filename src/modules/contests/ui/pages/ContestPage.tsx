@@ -61,6 +61,7 @@ const ContestPage = () => {
     const isRegistered = Boolean(contest.userInfo?.isRegistered);
     return (
       <Button
+        fullWidth
         variant="contained"
         color={isRegistered ? 'error' : 'primary'}
         onClick={handleRegistrationToggle}
@@ -77,7 +78,6 @@ const ContestPage = () => {
         title={contest?.title ?? t('contests.tabs.overview')}
         contest={contest}
         contestId={contestId}
-        tabsRightContent={registrationCta ?? (isContestLoading ? <Box /> : null)}
         isLoading={isContestLoading}
       />
 
@@ -99,10 +99,12 @@ const ContestPage = () => {
         </Grid>
 
         <Grid size={{ xs: 12, md: 4 }}>
-          <ContestCountdownCard contest={contest} isLoading={isContestLoading} />
+          <Stack spacing={3}>
+            <ContestCountdownCard contest={contest} isLoading={isContestLoading} />
 
-          {showProblemsPreview ? (
-            <Box mt={3}>
+            {registrationCta ? <Box>{registrationCta}</Box> : null}
+
+            {showProblemsPreview ? (
               <Card variant="outlined" sx={{ borderRadius: 3 }}>
                 <CardContent>
                   <Stack spacing={1.5}>
@@ -171,8 +173,8 @@ const ContestPage = () => {
                   </Stack>
                 </CardContent>
               </Card>
-            </Box>
-          ) : null}
+            ) : null}
+          </Stack>
         </Grid>
       </Grid>
     </Stack>

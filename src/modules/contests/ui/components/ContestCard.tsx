@@ -5,6 +5,7 @@ import { getResourceById, resources } from 'app/routes/resources';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import KepIcon from 'shared/components/base/KepIcon';
+import { cssVarRgba } from 'shared/lib/utils';
 import ContestTopContestants from './ContestTopContestants';
 import { useContestTopContestants } from '../../application/queries';
 import { ContestListItem } from '../../domain/entities/contest.entity';
@@ -44,19 +45,20 @@ const ContestCard = ({ contest }: ContestCardProps) => {
 
   return (
     <Card
-      sx={{
+      sx={(theme) => ({
         borderRadius: 3,
         position: 'relative',
         overflow: 'hidden',
-        background: 'linear-gradient(135deg, rgba(0, 255, 190, 0.05), rgba(86, 112, 255, 0.06))',
-      }}
+        border: '1px solid',
+        borderColor: cssVarRgba(theme.vars.palette.primary.mainChannel, 0.12),
+        background: `linear-gradient(135deg, ${cssVarRgba(theme.vars.palette.success.mainChannel, 0.08)}, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.12)} 58%, ${cssVarRgba(theme.vars.palette.primary.lightChannel, 0.08)})`,
+      })}
     >
       <Box
-        sx={{
+        sx={(theme) => ({
           position: 'absolute',
           inset: 0,
-          background:
-            'radial-gradient(circle at 15% 20%, rgba(0, 255, 190, 0.12), transparent 35%)',
+          background: `radial-gradient(circle at 14% 18%, ${cssVarRgba(theme.vars.palette.success.mainChannel, 0.16)}, transparent 34%), radial-gradient(circle at 85% 14%, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.14)}, transparent 28%)`,
           '&::after': contest.logo
             ? {
                 content: '""',
@@ -69,7 +71,7 @@ const ContestCard = ({ contest }: ContestCardProps) => {
                 filter: 'saturate(0.6)',
               }
             : undefined,
-        }}
+        })}
       />
 
       <CardActionArea
