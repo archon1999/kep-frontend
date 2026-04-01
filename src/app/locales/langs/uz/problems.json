@@ -41,10 +41,10 @@
       "user": "Foydalanuvchi",
       "language": "Til",
       "anyLanguage": "Istalgan til",
-      "verdict": "Natija",
-      "anyVerdict": "Istalgan natija",
+      "verdict": "Verdikt",
+      "anyVerdict": "Istalgan verdikt",
       "empty": "Urinishlar topilmadi.",
-      "unknownVerdict": "Nomaʻlum natija",
+      "unknownVerdict": "Nomaʻlum verdikt",
       "backToProblems": "Masalalarga qaytish",
       "columns": {
         "id": "ID",
@@ -52,7 +52,7 @@
         "lang": "Til",
         "user": "Foydalanuvchi",
         "problem": "Masala",
-        "verdict": "Natija",
+        "verdict": "Verdikt",
         "time": "Vaqt",
         "memory": "Xotira",
         "size": "Hajm"

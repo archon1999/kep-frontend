@@ -187,12 +187,14 @@ const ContestCard = ({ contest }: ContestCardProps) => {
                 </Typography>
               </Stack>
 
-              <Stack direction="row" spacing={1} alignItems="center">
-                <KepIcon name="users" fontSize={18} />
-                <Typography variant="body2" color="text.primary" fontWeight={700}>
-                  {t('contests.contestants', { count: contest.contestantsCount })}
-                </Typography>
-              </Stack>
+              {!isUpcoming ? (
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <KepIcon name="users" fontSize={18} />
+                  <Typography variant="body2" color="text.primary" fontWeight={700}>
+                    {t('contests.contestants', { count: contest.contestantsCount })}
+                  </Typography>
+                </Stack>
+              ) : null}
             </Stack>
           </Stack>
         </Stack>

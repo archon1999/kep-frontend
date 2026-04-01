@@ -143,9 +143,9 @@
       "overview": "Обзор",
       "problems": "Задачи",
       "attempts": "Попытки",
-      "standings": "Итоги",
+      "standings": "Результаты",
       "statistics": "Статистика",
-      "registrants": "Участники",
+      "registrants": "Зарегистрированные",
       "ratingChanges": "Изменения рейтинга",
       "questions": "Вопросы"
     },
@@ -165,7 +165,7 @@
       "finishedAt": "Завершился {{date}}",
       "started": "Контест начался",
       "startedBody": "Контест начался. Перейдите к задачам, чтобы продолжить участие.",
-      "finishedBody": "Контест завершен. Откройте итоги, чтобы увидеть результаты."
+      "finishedBody": "Контест завершен. Откройте результаты, чтобы увидеть результаты."
     },
     "problemsPreview": "Задачи",
     "solvedShort": "{{solved}} решено",
@@ -262,6 +262,6 @@
       "upsolve": "Апсолв"
     },
     "authors": "Авторы",
-    "registrantsLabel": "{{count}} зарегистрировавшихся"
+    "registrantsLabel": "{{count}} зарегистрированных"
   }
 }

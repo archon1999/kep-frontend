@@ -17,7 +17,7 @@
     "projects": "Loyihalar",
     "attempts": "Urinishlar",
     "standings": "Natijalar",
-    "registrants": "Ro'yxatdan o'tganlar",
+    "registrants": "Ro'yhatdan o'tganlar",
     "register": "Ro'yxatdan o'tish",
     "unregister": "Ro'yxatdan chiqish",
     "contestant": "Ishtirokchi",
@@ -40,9 +40,9 @@
     "projectsLockedLead": "Hackathon tugagach, loyihalar ko'rish uchun qoladi, lekin yangi hackathon submitlar bloklanadi.",
     "attemptsLead": "Bu yerda faqat hackathon vaqtida yuborilgan urinishlar ko'rsatiladi.",
     "standingsLead": "Natijalar faqat hackathon ichida yuborilgan valid va tekshirilgan yechimlardan qayta hisoblanadi.",
-    "registrantsLead": "Bu yerda shu hackathonga ro'yxatdan o'tgan barcha ishtirokchilar ko'rsatiladi.",
+    "registrantsLead": "Bu yerda shu hackathonga ro'yhatdan o'tgan barcha ishtirokchilar ko'rsatiladi.",
     "beforeStartLead": "Hackathon hali boshlanmagan. Loyihalarni ko'rib chiqib, stackni tayyorlab qo'ysangiz bo'ladi.",
-    "noRegistrants": "Hali hech kim ro'yxatdan o'tmagan.",
+    "noRegistrants": "Hali hech kim ro'yhatdan o'tmagan.",
     "status": "Holat"
   }
 }

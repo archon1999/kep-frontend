@@ -258,18 +258,18 @@
           "startLabel": "Kanalni ochish"
         },
         "first-problem-attempt": {
-          "subtitle": "Oddiy problem uchun kamida bitta urinish yuboring.",
-          "hint": "Faqat oddiy problem attempti ushbu topshiriq uchun hisoblanadi.",
+          "subtitle": "Oddiy masala uchun kamida bitta urinish yuboring.",
+          "hint": "Faqat oddiy masala urinishi ushbu topshiriq uchun hisoblanadi.",
           "steps": [
-            "1. Problems bo'limini ochib, oddiy problemga urinish yuboring.",
+            "1. Masalalar bo'limini ochib, oddiy masalaga urinish yuboring.",
             "2. Shu yerga qaytib, tekshirishni bosing."
           ]
         },
         "first-problem-ac": {
-          "subtitle": "Oddiy problemda birinchi accepted natijani oling.",
-          "hint": "Faqat oddiy problem uchun accepted yechim hisoblanadi.",
+          "subtitle": "Oddiy masalada birinchi accepted yechimni oling.",
+          "hint": "Faqat oddiy masala uchun accepted yechim hisoblanadi.",
           "steps": [
-            "1. Problems bo'limini ochib, oddiy problemni accepted bilan yeching.",
+            "1. Masalalar bo'limini ochib, oddiy masalani accepted bilan yeching.",
             "2. Shu yerga qaytib, tekshirishni bosing."
           ]
         },
