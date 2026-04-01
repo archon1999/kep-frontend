@@ -1171,6 +1171,90 @@ const Problem2286Body: FC<CustomProblemBodyProps> = () => {
   );
 };
 
+const Problem2293Body: FC<CustomProblemBodyProps> = ({ problem }) => {
+  const formula = 'f(a,b,c)=a^2+b^2+c^2+2ab+2bc+2ca-(a+b+c)^2+c';
+  const storageKey = 'problem-2293-formula-progress';
+  const loadKey = 'problem-2293-formula-load';
+  const [visibleChar, setVisibleChar] = useState(formula[0]);
+
+  useEffect(() => {
+    const loadMarker = `${problem.id}-${performance.timeOrigin}`;
+    const seenLoadMarker = sessionStorage.getItem(loadKey);
+    const currentIndex = Number(localStorage.getItem(storageKey) ?? '0');
+
+    if (seenLoadMarker === loadMarker) {
+      const safeIndex = ((currentIndex % formula.length) + formula.length) % formula.length;
+      setVisibleChar(formula[safeIndex]);
+      return;
+    }
+
+    const nextIndex = ((currentIndex + 1) % formula.length + formula.length) % formula.length;
+    localStorage.setItem(storageKey, String(nextIndex));
+    sessionStorage.setItem(loadKey, loadMarker);
+    setVisibleChar(formula[nextIndex]);
+  }, []);
+
+  return (
+    <Box
+      sx={{
+        mt: 2,
+        p: 2,
+        borderRadius: 2,
+        bgcolor: 'background.level1',
+        border: '1px solid',
+        borderColor: 'divider',
+        fontFamily: 'monospace',
+        fontSize: { xs: 18, md: 22 },
+        letterSpacing: '0.04em',
+        wordBreak: 'break-all',
+      }}
+    >
+      {visibleChar}
+    </Box>
+  );
+};
+
+const Problem2294Body: FC<CustomProblemBodyProps> = () => {
+  const { i18n } = useTranslation();
+  const [stage, setStage] = useState(0);
+
+  useEffect(() => {
+    const first = window.setTimeout(() => setStage(1), 10_000);
+    const second = window.setTimeout(() => setStage(2), 40_000);
+    return () => {
+      window.clearTimeout(first);
+      window.clearTimeout(second);
+    };
+  }, []);
+
+  if (stage === 0) {
+    return null;
+  }
+
+  const lang = (i18n as any)?.language ?? 'en';
+  let firstText = '';
+  let secondText = '';
+  if (lang.startsWith('uz')) {
+    firstText = "1-aprel hazilingizni tayyorlab qo'ygan bo'lsangiz, shu yerga yozing.";
+    secondText = "Yozadigan matningiz uzunligi kamida 20 ta belgidan iborat bo'lsin.";
+  } else if (lang.startsWith('ru')) {
+    firstText =
+      '\u0415\u0441\u043b\u0438 \u0432\u044b \u0443\u0436\u0435 \u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u0438\u043b\u0438 \u0441\u0432\u043e\u044e \u043f\u0435\u0440\u0432\u043e\u0430\u043f\u0440\u0435\u043b\u044c\u0441\u043a\u0443\u044e \u0448\u0443\u0442\u043a\u0443, \u043d\u0430\u043f\u0438\u0448\u0438\u0442\u0435 \u0435\u0451 \u0441\u044e\u0434\u0430.';
+    secondText =
+      '\u0414\u043b\u0438\u043d\u0430 \u0442\u0435\u043a\u0441\u0442\u0430 \u0434\u043e\u043b\u0436\u043d\u0430 \u0431\u044b\u0442\u044c \u043d\u0435 \u043c\u0435\u043d\u044c\u0448\u0435 20 \u0441\u0438\u043c\u0432\u043e\u043b\u043e\u0432.';
+  } else {
+    firstText = 'If you already prepared your April Fools joke, write it here.';
+    secondText = 'The text length must be at least 20 characters.';
+  }
+
+  return (
+    <Stack direction="column" spacing={1.5} sx={{ mt: 1 }}>
+      <Typography>{firstText}</Typography>
+      {stage >= 2 ? <Typography>{secondText}</Typography> : null}
+    </Stack>
+  );
+};
+
 const CUSTOM_COMPONENTS: Record<number, FC<CustomProblemBodyProps>> = {
   1615: Problem1615Body,
   1623: Problem1623Body,
@@ -1280,6 +1364,8 @@ const CUSTOM_COMPONENTS: Record<number, FC<CustomProblemBodyProps>> = {
   1954: Problem1954Body,
   1966: Problem1966Body,
   2286: Problem2286Body,
+  2293: Problem2293Body,
+  2294: Problem2294Body,
 };
 
 export const CustomProblemBody = ({ problem }: CustomProblemBodyProps) => {
