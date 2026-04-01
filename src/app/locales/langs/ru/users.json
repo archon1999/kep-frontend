@@ -32,7 +32,7 @@
       "skills": "Навыки",
       "activity": "Активность",
       "contests": "Контесты",
-      "challenges": "Челленджи",
+      "challenges": "Вызовы",
       "streak": "Серия",
       "kepcoin": "Kepcoin",
       "lastSeen": "Был(а) в сети"
@@ -87,7 +87,7 @@
         "empty": "Достижений пока нет."
       },
       "prizes": {
-        "title": "Призы в соревнованиях",
+        "title": "Призы в контестах",
         "empty": "Призов пока нет."
       },
       "ratings": {
@@ -104,7 +104,7 @@
         "overview": "Обзор рейтингов",
         "skillsRating": "Рейтинг навыков",
         "activityRating": "Рейтинг активности",
-        "challengeRank": "Звание в челленджах"
+        "challengeRank": "Звание в вызовах"
       },
       "actions": {
         "follow": "Подписаться",

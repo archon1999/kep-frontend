@@ -445,7 +445,7 @@
       "contestLevels": {
         "starter": "Bir nechta kontest ishlaganman",
         "regular": "Doimiy ishlayman",
-        "advanced": "Yaxshi contest bazam bor"
+        "advanced": "Yaxshi kontest bazam bor"
       },
       "contestFocus": {
         "mixed": "Aralash ladder",
@@ -469,14 +469,14 @@
         "beginnerProblemSolvingSubtitle": "Birinchi pack faqat sintaksis emas, asosiy patternlarni ham qamrab oladi.",
         "interviewTitle": "Interview practice o'quv rejasi tanlandi",
         "interviewSubtitle": "Sizga yechilmagan masalalar ustuvor bo'lgan easy-to-medium ladder beriladi.",
-        "contestTitle": "Contest growth o'quv rejasi tanlandi",
+        "contestTitle": "Kontest growth o'quv rejasi tanlandi",
         "contestSubtitle": "Keyingi pack hozirgi comfort band atrofidagi yechilmagan masalalarga og'adi.",
         "contestUpsolveSubtitle": "Keyingi pack upsolve uchun qiyinroq yechilmagan masalalarga og'adi."
       },
       "answerLabels": {
         "beginner": "Boshlovchi",
         "interview": "Interview",
-        "contest": "Contest",
+        "contest": "Kontest",
         "py": "Python",
         "cpp": "C++",
         "java": "Java",

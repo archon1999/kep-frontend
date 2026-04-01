@@ -62,7 +62,7 @@
       "error": "Kepcoin tarixini yuklab bo'lmadi.",
       "retry": "Qayta urinish",
       "emptyTitle": "Kepcoin tarixi hali yo'q",
-      "emptySubtitle": "Topshiriqlarni bajaring yoki musobaqalarda qatnashing va shu yerda natijalarni ko'ring.",
+      "emptySubtitle": "Topshiriqlarni bajaring yoki kontestlarda qatnashing va shu yerda natijalarni ko'ring.",
       "note": "Izoh: {{value}}",
       "noDate": "Vaqt koʻrsatilmagan",
       "detail": "{{base}} · {{detail}}",
@@ -274,74 +274,74 @@
           ]
         },
         "register-contest": {
-          "subtitle": "Platformadagi istalgan contestga ro'yxatdan o'ting.",
-          "hint": "Topshiriq contest registratsiyasi yaratilgandan keyin hisoblanadi.",
+          "subtitle": "Platformadagi istalgan kontestga ro'yxatdan o'ting.",
+          "hint": "Topshiriq kontest registratsiyasi yaratilgandan keyin hisoblanadi.",
           "steps": [
-            "1. Contests bo'limini ochib, istalgan contestga ro'yxatdan o'ting.",
+            "1. Kontestlar bo'limini ochib, istalgan kontestga ro'yxatdan o'ting.",
             "2. Shu yerga qaytib, tekshirishni bosing."
           ]
         },
         "contest-first-attempt": {
-          "subtitle": "Contest davomida kamida bitta urinish yuboring.",
-          "hint": "Faqat contest ichidagi urinish ushbu topshiriq uchun hisoblanadi.",
+          "subtitle": "Kontest davomida kamida bitta urinish yuboring.",
+          "hint": "Faqat kontest ichidagi urinish ushbu topshiriq uchun hisoblanadi.",
           "steps": [
-            "1. Contestda qatnashib, kamida bitta urinish yuboring.",
+            "1. Kontestda qatnashib, kamida bitta urinish yuboring.",
             "2. Shu yerga qaytib, tekshirishni bosing."
           ]
         },
         "contest-first-solved-problem": {
-          "subtitle": "Contest ichida kamida bitta masalani yeching.",
-          "hint": "Buning uchun contest ichida accepted natija olish kerak.",
+          "subtitle": "Kontest ichida kamida bitta masalani yeching.",
+          "hint": "Buning uchun kontest ichida accepted natija olish kerak.",
           "steps": [
-            "1. Contestda qatnashib, kamida bitta masalani yeching.",
+            "1. Kontestda qatnashib, kamida bitta masalani yeching.",
             "2. Shu yerga qaytib, tekshirishni bosing."
           ]
         },
         "contest-solve-all-problems": {
-          "subtitle": "Bitta contestdagi barcha masalalarni yeching.",
-          "hint": "Topshiriq bitta contest ichidagi barcha masalalar yechilganda hisoblanadi.",
+          "subtitle": "Bitta kontestdagi barcha masalalarni yeching.",
+          "hint": "Topshiriq bitta kontest ichidagi barcha masalalar yechilganda hisoblanadi.",
           "steps": [
-            "1. Contestda qatnashib, barcha masalalarni yeching.",
+            "1. Kontestda qatnashib, barcha masalalarni yeching.",
             "2. Shu yerga qaytib, tekshirishni bosing."
           ]
         },
         "contest-top-20": {
-          "subtitle": "Contestni top-20 ichida yakunlang.",
-          "hint": "Topshiriq contest reytingingiz top-20 ga kirganda hisoblanadi.",
+          "subtitle": "Kontestni top-20 ichida yakunlang.",
+          "hint": "Topshiriq kontest reytingingiz top-20 ga kirganda hisoblanadi.",
           "steps": [
-            "1. Contestda qatnashib, top-20 ichida yakunlang.",
+            "1. Kontestda qatnashib, top-20 ichida yakunlang.",
             "2. Shu yerga qaytib, tekshirishni bosing."
           ]
         },
         "contest-top-10": {
-          "subtitle": "Contestni top-10 ichida yakunlang.",
-          "hint": "Buning uchun contest yakunida top-10 ga kirishingiz kerak.",
+          "subtitle": "Kontestni top-10 ichida yakunlang.",
+          "hint": "Buning uchun kontest yakunida top-10 ga kirishingiz kerak.",
           "steps": [
-            "1. Contestda qatnashib, top-10 ichida yakunlang.",
+            "1. Kontestda qatnashib, top-10 ichida yakunlang.",
             "2. Shu yerga qaytib, tekshirishni bosing."
           ]
         },
         "contest-top-5": {
-          "subtitle": "Contestni top-5 ichida yakunlang.",
-          "hint": "Topshiriq contest reytingingiz top-5 ga kirganda hisoblanadi.",
+          "subtitle": "Kontestni top-5 ichida yakunlang.",
+          "hint": "Topshiriq kontest reytingingiz top-5 ga kirganda hisoblanadi.",
           "steps": [
-            "1. Contestda qatnashib, top-5 ichida yakunlang.",
+            "1. Kontestda qatnashib, top-5 ichida yakunlang.",
             "2. Shu yerga qaytib, tekshirishni bosing."
           ]
         },
         "contest-top-3": {
-          "subtitle": "Contestni top-3 ichida yakunlang.",
-          "hint": "Ushbu topshiriq uchun contestda top-3 o'rin olish kerak.",
+          "subtitle": "Kontestni top-3 ichida yakunlang.",
+          "hint": "Ushbu topshiriq uchun kontestda top-3 o'rin olish kerak.",
           "steps": [
-            "1. Contestda qatnashib, top-3 ichida yakunlang.",
+            "1. Kontestda qatnashib, top-3 ichida yakunlang.",
             "2. Shu yerga qaytib, tekshirishni bosing."
           ]
         },
         "contest-winner": {
-          "subtitle": "Contestda 1-o'rinni egallang.",
-          "hint": "Topshiriq faqat contestni g'olib sifatida yakunlaganda hisoblanadi.",
+          "subtitle": "Kontestda 1-o'rinni egallang.",
+          "hint": "Topshiriq faqat kontestni g'olib sifatida yakunlaganda hisoblanadi.",
           "steps": [
-            "1. Contestda qatnashib, 1-o'rinni oling.",
+            "1. Kontestda qatnashib, 1-o'rinni oling.",
             "2. Shu yerga qaytib, tekshirishni bosing."
           ]
         },
@@ -474,7 +474,7 @@
         "dailyActivity": "Kunlik faollik uchun",
         "dailyTasks": "Kunlik topshiriqlarni bajarganligi uchun",
         "ratingWinner": "Kunlik, haftalik va oylik reyting g'olibi bo'lganingiz uchun",
-        "competitions": "Musobaqada qatnashganingiz uchun",
+        "competitions": "Kontestda qatnashganingiz uchun",
         "blog": "Blog yozish uchun",
         "oneTimeTasks": "Bir martalik topshiriqlar"
       }
@@ -506,7 +506,7 @@
         },
         "competitive": {
           "title": "Kontest va arena boost",
-          "description": "Yuqori effort, katta reward. Reyting va musobaqalar balansni tez oshiradi."
+          "description": "Yuqori effort, katta reward. Reyting va kontestlar balansni tez oshiradi."
         },
         "community": {
           "title": "Kontent va contribution",

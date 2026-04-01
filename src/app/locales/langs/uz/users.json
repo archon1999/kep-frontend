@@ -31,8 +31,8 @@
       "user": "Foydalanuvchi",
       "skills": "Koʻnikmalar",
       "activity": "Faollik",
-      "contests": "Musobaqalar",
-      "challenges": "Challenjlar",
+      "contests": "Kontestlar",
+      "challenges": "Bellashuvlar",
       "streak": "Seriya",
       "kepcoin": "Kepcoin",
       "lastSeen": "Oxirgi faollik"
@@ -87,7 +87,7 @@
         "empty": "Hozircha yutuqlar mavjud emas."
       },
       "prizes": {
-        "title": "Musobaqa sovrinlari",
+        "title": "Kontest sovrinlari",
         "empty": "Hozircha sovrinlar yoʻq."
       },
       "ratings": {

@@ -23,13 +23,13 @@
       "labels": {
         "skills": "Koʻnikmalar reytingi",
         "activity": "Faollik reytingi",
-        "contests": "Musobaqalar",
+        "contests": "Kontestlar",
         "challenges": "Bellashuvlar"
       },
       "info": {
-        "skillsRating": "Bu reyting platformadagi koʻnikmalaringiz kuchini koʻrsatadi. Reyting yechilgan masalalar soni, musobaqalar va bellashuvlar reytingiga bogʻliq.",
+        "skillsRating": "Bu reyting platformadagi koʻnikmalaringiz kuchini koʻrsatadi. Reyting yechilgan masalalar soni, kontestlar va bellashuvlar reytingiga bogʻliq.",
         "activityRating": "Bu reyting soʻnggi 30 kun ichidagi faolligingizni koʻrsatadi. U toʻplangan kepcoinlar, har kuni tizimga kirish va bajarilgan kundalik vazifalarga bogʻliq.",
-        "contests": "Bu reyting musobaqalardagi kuchingizni koʻrsatadi.",
+        "contests": "Bu reyting kontestlardagi kuchingizni koʻrsatadi.",
         "challenges": "Bu reyting bellashuvlardagi kuchingizni koʻrsatadi."
       },
       "percentile": "Siz foydalanuvchilarning {{percentile}}% dan yaxshiroqsiz"
@@ -46,9 +46,9 @@
       }
     },
     "contests": {
-      "title": "Eng soʻnggi musobaqa",
-      "viewAll": "Barcha musobaqalar",
-      "empty": "Hozircha musobaqalar mavjud emas."
+      "title": "Eng soʻnggi kontest",
+      "viewAll": "Barcha kontestlar",
+      "empty": "Hozircha kontestlar mavjud emas."
     },
     "promos": {
       "blogCreate": {
@@ -85,8 +85,8 @@
         "voteLimit": "Har bir foydalanuvchiga {{count}} ta ovoz"
       },
       "contest": {
-        "activeSubtitle": "Musobaqa hozir davom etmoqda. Masalalarni ishlash va jadvalni kuzatish uchun uni oching.",
-        "upcomingSubtitle": "Keyingi contest yaqinlashmoqda. Musobaqani oching va oldindan ro'yxatdan o'ting."
+        "activeSubtitle": "Kontest hozir davom etmoqda. Masalalarni ishlash va jadvalni kuzatish uchun uni oching.",
+        "upcomingSubtitle": "Keyingi kontest yaqinlashmoqda. Kontestni oching va oldindan ro'yxatdan o'ting."
       },
       "arena": {
         "activeSubtitle": "Arena raundi hozir davom etmoqda. Kirib, live ishtirokchilar bilan bir tempda boring.",
@@ -95,13 +95,13 @@
       },
       "actions": {
         "openKepCover": "KEP Cover'ni ochish",
-        "openContest": "Contest'ni ochish",
+        "openContest": "Kontestni ochish",
         "openArena": "Arena'ni ochish",
         "startWriting": "Blog yaratish"
       },
       "types": {
         "kepCover": "KEP Cover",
-        "contest": "Contest",
+        "contest": "Kontest",
         "arena": "Arena",
         "blogCreate": "Hamjamiyat blogi"
       },
@@ -136,7 +136,7 @@
       "empty": "Hozircha foydalanuvchilar topilmadi.",
       "viewAll": "Barcha foydalanuvchilar",
       "tabs": {
-        "contests": "Musobaqalar",
+        "contests": "Kontestlar",
         "skills": "Koʻnikmalar",
         "activity": "Faollik",
         "challenges": "Bellashuvlar",
@@ -176,7 +176,7 @@
           "description": "Jami {{total}} ta masaladan {{accepted}} tasi yechildi."
         },
         "challengeSummary": {
-          "description": "Chellenj natijalari.",
+          "description": "Bellashuv natijalari.",
           "wins": "Gʻalabalar: {{value}}",
           "draws": "Duranglar: {{value}}",
           "losses": "Magʻlubiyatlar: {{value}}"
@@ -188,7 +188,7 @@
           "description": "{{total}} ta testdan {{completed}} tasi yakunlandi va {{solved}} ta topshiriq yechildi."
         },
         "contestParticipation": {
-          "description": "{{title}} musobaqasida ishtirok etdi.",
+          "description": "{{title}} kontestida ishtirok etdi.",
           "rank": "Oʻrin: {{rank}}",
           "rating": "{{before}} → {{after}} reyting",
           "ratingChange": "Δ {{delta}}",
