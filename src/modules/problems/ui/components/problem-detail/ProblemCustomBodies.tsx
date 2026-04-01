@@ -1172,7 +1172,7 @@ const Problem2286Body: FC<CustomProblemBodyProps> = () => {
 };
 
 const Problem2293Body: FC<CustomProblemBodyProps> = ({ problem }) => {
-  const formula = 'f(a,b,c)=a^2+b^2+c^2+2ab+2bc+2ca-(a+b+c)^2+c';
+  const formula = 'f(a,b,c)=a^2+b^2+c^2+2ab+2bc+2ca';
   const storageKey = 'problem-2293-formula-progress';
   const loadKey = 'problem-2293-formula-load';
   const [visibleChar, setVisibleChar] = useState(formula[0]);
