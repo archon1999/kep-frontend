@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { FC, KeyboardEvent, MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Editor from '@monaco-editor/react';
 import {
@@ -1018,6 +1018,159 @@ getNextMonth(date) # 2023-03-01`}
   );
 };
 
+const Problem2286Body: FC<CustomProblemBodyProps> = () => {
+  const hashAnswer = (value: string) => {
+    let hash = 5381;
+    for (const char of value) {
+      hash = ((hash << 5) + hash + char.charCodeAt(0)) | 0;
+    }
+    return hash;
+  };
+
+  const rows = [
+    { length: 4, hash: 2089540408, start: 5 },
+    { length: 8, hash: -153221092, start: 3 },
+    { length: 8, hash: -256650921, start: 4 },
+    { length: 11, hash: 1888577220, start: 0 },
+    { length: 7, hash: -386565492, start: 5 },
+  ];
+  const columnCount = 12;
+  const [values, setValues] = useState(() => rows.map(({ length }) => Array(length).fill('')));
+  const inputRefs = useRef<Array<Array<HTMLInputElement | null>>>([]);
+
+  const getRowState = (rowIndex: number) => {
+    const normalized = values[rowIndex].join('');
+    if (!normalized) return 'idle';
+    if (normalized.length === rows[rowIndex].length && hashAnswer(normalized) === rows[rowIndex].hash) {
+      return 'correct';
+    }
+    return 'wrong';
+  };
+
+  const focusCell = (rowIndex: number, cellIndex: number) => {
+    inputRefs.current[rowIndex]?.[cellIndex]?.focus();
+  };
+
+  const handleChange = (rowIndex: number, cellIndex: number, rawValue: string) => {
+    const nextChar = rawValue.slice(-1).toUpperCase().replace(/[^A-Z]/g, '');
+    setValues((current) => {
+      const next = current.map((row) => [...row]);
+      next[rowIndex][cellIndex] = nextChar;
+      return next;
+    });
+    if (nextChar && cellIndex + 1 < rows[rowIndex].length) {
+      window.requestAnimationFrame(() => focusCell(rowIndex, cellIndex + 1));
+    }
+  };
+
+  const handleKeyDown = (rowIndex: number, cellIndex: number, event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Backspace' && !values[rowIndex][cellIndex] && cellIndex > 0) {
+      window.requestAnimationFrame(() => focusCell(rowIndex, cellIndex - 1));
+    }
+    if (event.key === 'ArrowLeft' && cellIndex > 0) {
+      event.preventDefault();
+      focusCell(rowIndex, cellIndex - 1);
+    }
+    if (event.key === 'ArrowRight' && cellIndex + 1 < rows[rowIndex].length) {
+      event.preventDefault();
+      focusCell(rowIndex, cellIndex + 1);
+    }
+  };
+
+  return (
+    <Box sx={{ mt: 2, overflowX: 'auto' }}>
+      <Box sx={{ overflowX: 'auto' }}>
+        <Box
+          sx={{
+            minWidth: 540,
+            display: 'grid',
+            gap: 0.75,
+          }}
+        >
+          {rows.map((row, rowIndex) => {
+            const rowState = getRowState(rowIndex);
+            return (
+              <Box
+                key={`row-${rowIndex}`}
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`,
+                  gap: 0.75,
+                }}
+              >
+                {Array.from({ length: columnCount }).map((_, columnIndex) => {
+                  const letterIndex = columnIndex - row.start;
+                  const hasLetter = letterIndex >= 0 && letterIndex < row.length;
+                  const borderColor = !hasLetter
+                    ? 'transparent'
+                    : rowState === 'correct'
+                      ? 'success.main'
+                      : rowState === 'wrong'
+                        ? 'error.main'
+                        : 'divider';
+                  const backgroundColor = !hasLetter
+                    ? 'transparent'
+                    : rowState === 'correct'
+                      ? 'success.light'
+                      : 'background.level1';
+
+                  return (
+                    <Box
+                      key={`row-${rowIndex}-${columnIndex}`}
+                      sx={{
+                        aspectRatio: '1 / 1',
+                        minHeight: 38,
+                        borderRadius: 1.25,
+                        border: hasLetter ? '2px solid' : '1px dashed transparent',
+                        borderColor,
+                        bgcolor: backgroundColor,
+                        overflow: 'hidden',
+                      }}
+                    >
+                      {hasLetter ? (
+                        <Box
+                          component="input"
+                          ref={(element: HTMLInputElement | null) => {
+                            if (!inputRefs.current[rowIndex]) {
+                              inputRefs.current[rowIndex] = [];
+                            }
+                            inputRefs.current[rowIndex][letterIndex] = element;
+                          }}
+                          value={values[rowIndex][letterIndex] ?? ''}
+                          onChange={(event) => handleChange(rowIndex, letterIndex, event.target.value)}
+                          onKeyDown={(event: KeyboardEvent<HTMLInputElement>) =>
+                            handleKeyDown(rowIndex, letterIndex, event)
+                          }
+                          inputMode="text"
+                          maxLength={1}
+                          spellCheck={false}
+                          autoComplete="off"
+                          sx={{
+                            width: '100%',
+                            height: '100%',
+                            border: 0,
+                            outline: 0,
+                            textAlign: 'center',
+                            bgcolor: 'transparent',
+                            color: 'text.primary',
+                            fontSize: 18,
+                            fontWeight: 800,
+                            textTransform: 'uppercase',
+                          }}
+                        />
+                      ) : null}
+                    </Box>
+                  );
+                })}
+              </Box>
+            );
+          })}
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
 const CUSTOM_COMPONENTS: Record<number, FC<CustomProblemBodyProps>> = {
   1615: Problem1615Body,
   1623: Problem1623Body,
@@ -1126,6 +1279,7 @@ const CUSTOM_COMPONENTS: Record<number, FC<CustomProblemBodyProps>> = {
   1953: Problem1953Body,
   1954: Problem1954Body,
   1966: Problem1966Body,
+  2286: Problem2286Body,
 };
 
 export const CustomProblemBody = ({ problem }: CustomProblemBodyProps) => {
