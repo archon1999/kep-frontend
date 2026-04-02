@@ -141,7 +141,7 @@ const UsersListContainer = () => {
 
   useEffect(() => {
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
-  }, [debouncedFilters, tabValue]);
+  }, [debouncedFilters, setPaginationModel, state.tabValue]);
 
   const { data: countries } = useUsersCountries();
 

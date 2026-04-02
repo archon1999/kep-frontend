@@ -41,6 +41,20 @@ interface AttemptsFilterState {
   lang: string;
 }
 
+type ProblemOption = {
+  id: number;
+  title: string;
+};
+
+type UserOption = {
+  username: string;
+  fullName: string;
+  avatar?: string;
+};
+
+const EMPTY_PROBLEM_OPTIONS: ProblemOption[] = [];
+const EMPTY_USER_OPTIONS: UserOption[] = [];
+
 const ProblemsAttemptsPage = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
@@ -134,7 +148,7 @@ const ProblemsAttemptsPage = () => {
       pageSize: 10,
       ordering: 'id',
     });
-    return pageResult.data.map((item): { id: number; title: string } => ({
+    return pageResult.data.map((item): ProblemOption => ({
       id: item.id,
       title: item.title,
     }));
@@ -147,18 +161,18 @@ const ProblemsAttemptsPage = () => {
       pageSize: 10,
       search: term || undefined,
     });
-    return (response?.data ?? []).map((item) => ({
+    return (response?.data ?? []).map((item): UserOption => ({
       username: item.username ?? '',
       fullName: `${item.firstName ?? ''} ${item.lastName ?? ''}`.trim(),
       avatar: item.avatar ?? (item as any).photo,
     }));
   };
 
-  const { data: problemOptions = [] } = useSWR(
+  const { data: problemOptions = EMPTY_PROBLEM_OPTIONS } = useSWR(
     ['attempts-problem-options', problemInput],
     problemSuggestionsFetcher,
   );
-  const { data: userOptions = [] } = useSWR(
+  const { data: userOptions = EMPTY_USER_OPTIONS } = useSWR(
     ['attempts-user-options', userInput],
     userSuggestionsFetcher,
   );
@@ -244,8 +258,14 @@ const ProblemsAttemptsPage = () => {
           <Autocomplete
             options={problemOptions}
             value={selectedProblem}
-            onChange={(_, value) => handleFilterChange('problemId', value ? String(value.id) : '')}
-            onInputChange={(_, value) => setProblemInput(value)}
+            onChange={(_, value) => {
+              setProblemInput(value ? `${value.id}. ${value.title}`.trim() : '');
+              handleFilterChange('problemId', value ? String(value.id) : '');
+            }}
+            onInputChange={(_, value, reason) => {
+              if (reason === 'reset') return;
+              setProblemInput(value);
+            }}
             getOptionLabel={(option) => `${option.id}. ${option.title}`.trim()}
             filterOptions={(opts) => opts}
             renderOption={(props, option) => (
@@ -273,8 +293,14 @@ const ProblemsAttemptsPage = () => {
           <Autocomplete
             options={userOptions}
             value={selectedUser}
-            onChange={(_, value) => handleFilterChange('username', value?.username ?? '')}
-            onInputChange={(_, value) => setUserInput(value)}
+            onChange={(_, value) => {
+              setUserInput(value?.username ?? '');
+              handleFilterChange('username', value?.username ?? '');
+            }}
+            onInputChange={(_, value, reason) => {
+              if (reason === 'reset') return;
+              setUserInput(value);
+            }}
             getOptionLabel={(option) =>
               option.fullName ? `${option.username} (${option.fullName})` : option.username
             }
