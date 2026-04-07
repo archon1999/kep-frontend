@@ -17,8 +17,9 @@ const KepcoinMenu = ({ type = 'default' }: KepcoinMenuProps) => {
   const [todayStats, setTodayStats] = useState<TodayKepCoin | null>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const { currentUser, setCurrentUser } = useAuth();
+  const isAuthenticated = Boolean(currentUser?.username);
   const { data: fetchedBalance, mutate: mutateBalance } = useSWR<KepCoinBalance>(
-    ['/api/my-kepcoin', { method: 'get' }],
+    isAuthenticated ? ['/api/my-kepcoin', { method: 'get' }] : null,
     axiosFetcher,
     {
       shouldRetryOnError: false,
@@ -27,7 +28,7 @@ const KepcoinMenu = ({ type = 'default' }: KepcoinMenuProps) => {
   );
 
   const { trigger: fetchTodayStats, isMutating: loadingToday } = useSWRMutation(
-    ['/api/today-kepcoin', { method: 'get' }],
+    isAuthenticated ? ['/api/today-kepcoin', { method: 'get' }] : null,
     axiosFetcher,
     {
       throwOnError: false,
@@ -45,6 +46,11 @@ const KepcoinMenu = ({ type = 'default' }: KepcoinMenuProps) => {
 
   const handleOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+
+    if (!isAuthenticated) {
+      setTodayStats(null);
+      return;
+    }
 
     fetchTodayStats()
       .then((data) => setTodayStats(data ?? null))
