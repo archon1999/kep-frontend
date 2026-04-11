@@ -90,14 +90,16 @@ const ChallengeCallCard = ({ challengeCall, onAccepted, onRemoved }: ChallengeCa
                 {t('challenges.deleteCall')}
               </Button>
             ) : null}
-            <Button
-              variant="contained"
-              size="small"
-              onClick={handleAccept}
-              disabled={isAccepting}
-            >
-              {t('challenges.acceptCall')}
-            </Button>
+            {!isOwner ? (
+              <Button
+                variant="contained"
+                size="small"
+                onClick={handleAccept}
+                disabled={isAccepting}
+              >
+                {t('challenges.acceptCall')}
+              </Button>
+            ) : null}
           </Stack>
         </Stack>
       </CardContent>
