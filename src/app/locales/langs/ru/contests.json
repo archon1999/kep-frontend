@@ -36,6 +36,13 @@
     "startsUnknown": "Время старта будет объявлено",
     "endsLabel": "Финиш {{date}}",
     "type": "Формат: {{type}}",
+    "typeInfo": {
+      "title": "Формат контеста",
+      "scoringBalls": "Балльная система",
+      "scoringAcm": "1 AC = 1 очко",
+      "penaltyEnabled": "Штрафы включены",
+      "penaltyDisabled": "Без штрафов"
+    },
     "problems": "{{count}} задач",
     "registrants": {
       "title": "Зарегистрированные",

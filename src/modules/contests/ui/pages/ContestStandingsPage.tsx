@@ -5,7 +5,6 @@ import { Box, Chip, FormControl, Link, MenuItem, Select, Stack, Switch, Tooltip,
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
-import { ContestType } from 'shared/api/orval/generated/endpoints/index.schemas';
 import { getResourceByParams, resources } from 'app/routes/resources';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
@@ -21,79 +20,15 @@ import { ContestProblemEntity } from '../../domain/entities/contest-problem.enti
 import { ContestStatus } from '../../domain/entities/contest-status';
 import { ContestantEntity } from '../../domain/entities/contestant.entity';
 import {
-  contestHasBalls,
   contestHasPenalties,
   contestUsesRating,
   formatContestPoints,
-  isAcmStyle,
 } from '../../utils/contestType';
 import ContestPageHeader from '../components/ContestPageHeader';
 import ContestStandingsCountdown from '../components/ContestStandingsCountdown';
 import ContestantView from '../components/ContestantView';
+import ContestantProblemResultCell from '../components/ContestantProblemResultCell';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
-
-const formatProblemResult = (contestType: ContestType | undefined, info: any) => {
-  if (!info) {
-    return { label: '-', color: 'default' as const, helper: '' };
-  }
-
-  if (isAcmStyle(contestType)) {
-    if (info.firstAcceptedTime) {
-      const attempts = info.attemptsCount > 0 ? `+${info.attemptsCount}` : '+';
-      return {
-        label: attempts,
-        color: 'success' as const,
-        helper: info.contestTime ?? '',
-        isBest: info.theBest,
-      };
-    }
-    if (info.attemptsCount > 0) {
-      return { label: `-${info.attemptsCount}`, color: 'error' as const };
-    }
-    return { label: '-', color: 'default' as const };
-  }
-
-  if (contestType === ContestType.LessCode || contestType === ContestType.DC) {
-    if (info.firstAcceptedTime) {
-      return { label: `${info.points}`, color: 'success' as const, isBest: info.theBest };
-    }
-    return { label: '-', color: 'error' as const };
-  }
-
-  if (contestType === ContestType.LessLine) {
-    if (info.firstAcceptedTime) {
-      return { label: `${info.points}/10`, color: 'primary' as const, isBest: info.theBest };
-    }
-    return { label: '-', color: 'error' as const };
-  }
-
-  if (contestType === ContestType.MultiL) {
-    if (info.firstAcceptedTime) {
-      return { label: `${info.points}/10`, color: 'info' as const, isBest: info.theBest };
-    }
-    return { label: '-', color: 'error' as const };
-  }
-
-  if (contestHasBalls(contestType)) {
-    if (info.firstAcceptedTime) {
-      return {
-        label: formatContestPoints(info.points),
-        color: 'primary' as const,
-        helper: info.contestTime ?? '',
-        isBest: info.theBest,
-      };
-    }
-    if (info.points > 0) {
-      return { label: formatContestPoints(info.points), color: 'warning' as const };
-    }
-    return {
-      label: info.points !== undefined ? formatContestPoints(info.points) : '-',
-      color: 'error' as const,
-    };
-  }
-
-  return { label: '-', color: 'default' as const };
-};
 
 const ContestStandingsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -267,9 +202,9 @@ const ContestStandingsPage = () => {
         renderCell: ({ row }) => (
           <Stack direction="row" spacing={0.5} alignItems="center">
             <Typography variant="body2" fontWeight={800} color="primary.main">
-              {row.points ?? '—'}
+              {row.points === undefined || row.points === null ? '-' : formatContestPoints(row.points)}
             </Typography>
-            {contestHasPenalties(contest?.type) ? (
+            {contestHasPenalties(contest?.type, contest?.typeInfo) ? (
               <Typography variant="caption" color="error.main">
                 ({row.penalties ?? 0})
               </Typography>
@@ -399,49 +334,20 @@ const ContestStandingsPage = () => {
         renderCell: ({ row }) => {
           const info =
             row.problemsInfo?.find((item) => item.problemSymbol === problem.symbol) ?? null;
-          const result = formatProblemResult(contest?.type, info);
           return (
-            info && (
-              <Stack spacing={0.25} alignItems="center" width="100%">
-                {result.isBest && (
-                  <Stack
-                    spacing={0.25}
-                    justifyContent="center"
-                    alignItems="center"
-                    bgcolor="success.lighter"
-                    sx={{ borderRadius: 2, py: 0.5, px: 0.75 }}
-                  >
-                    <Typography variant="subtitle2" color={result.color}>
-                      {result.label}
-                    </Typography>
-                    {result.helper ? (
-                      <Typography variant="overline" fontWeight={500}>
-                        {result.helper}
-                      </Typography>
-                    ) : null}
-                  </Stack>
-                )}
-                {!result.isBest && (
-                  <>
-                    <Typography variant="subtitle2" color={result.color}>
-                      {result.label}
-                    </Typography>
-                    {result.helper ? (
-                      <Typography variant="overline" fontWeight={500}>
-                        {result.helper}
-                      </Typography>
-                    ) : null}
-                  </>
-                )}
-              </Stack>
-            )
+            <ContestantProblemResultCell
+              contestType={contest?.type}
+              typeInfo={contest?.typeInfo}
+              info={info}
+              problem={problem}
+            />
           );
         },
       }),
     );
 
     return [...base, ...problemColumns];
-  }, [contest?.id, contest?.isRated, contest?.type, contestId, contestProblems, problemMap, t]);
+  }, [contest?.id, contest?.isRated, contest?.type, contest?.typeInfo, contestId, contestProblems, problemMap, t]);
 
   return (
     <Stack spacing={3} sx={responsivePagePaddingSx}>

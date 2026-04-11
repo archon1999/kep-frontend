@@ -9,6 +9,7 @@ import { cssVarRgba } from 'shared/lib/utils';
 import ContestTopContestants from './ContestTopContestants';
 import { useContestTopContestants } from '../../application/queries';
 import { ContestListItem } from '../../domain/entities/contest.entity';
+import { getContestTypeTitle } from '../../utils/contestType';
 
 dayjs.extend(duration);
 
@@ -147,7 +148,7 @@ const ContestCard = ({ contest }: ContestCardProps) => {
               <Stack direction="row" spacing={1} alignItems="center">
                 <KepIcon name="competition" fontSize={18} />
                 <Typography variant="body2" color="text.secondary">
-                  {t('contests.type', { type: contest.type })}
+                  {t('contests.type', { type: getContestTypeTitle(contest.type, contest.typeInfo) })}
                 </Typography>
               </Stack>
 

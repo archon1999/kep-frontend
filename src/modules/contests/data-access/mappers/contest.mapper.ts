@@ -6,6 +6,7 @@ import {
   ContestListItem,
   ContestTopContestant,
   ContestTopContestantTeamMember,
+  ContestTypeInfo,
 } from '../../domain/entities/contest.entity';
 import { ContestRatingRow } from '../../domain/entities/contest-rating.entity';
 import { PageResult } from '../../domain/ports/contests.repository';
@@ -15,6 +16,21 @@ const mapAuthor = (payload?: ContestAuthor): ContestAuthorEntity => ({
   ratingTitle: payload?.ratingTitle ?? undefined,
 });
 
+const mapContestTypeInfo = (payload: any): ContestTypeInfo | null => {
+  if (!payload) return null;
+
+  const code = payload?.code ?? '';
+  if (!code) return null;
+
+  return {
+    code,
+    title: payload?.title ?? code,
+    description: payload?.description ?? null,
+    hasBalls: Boolean(payload?.hasBalls ?? payload?.has_balls ?? false),
+    hasPenalties: Boolean(payload?.hasPenalties ?? payload?.has_penalties ?? false),
+  };
+};
+
 export const mapContest = (payload: Contest): ContestListItem => ({
   id: payload?.id ?? 0,
   title: payload?.title ?? '',
@@ -23,6 +39,7 @@ export const mapContest = (payload: Contest): ContestListItem => ({
   startTime: payload?.startTime ?? undefined,
   finishTime: payload?.finishTime ?? undefined,
   type: payload?.type ?? 'LessCode',
+  typeInfo: mapContestTypeInfo((payload as any)?.typeInfo ?? (payload as any)?.type_info),
   category: payload?.category ?? 1,
   categoryTitle: payload?.categoryTitle ?? '',
   isRated: contestUsesRating(payload?.type, payload?.isRated ?? false),

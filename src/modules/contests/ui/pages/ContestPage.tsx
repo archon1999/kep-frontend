@@ -9,6 +9,7 @@ import ContestCountdownCard from '../components/ContestCountdownCard';
 import { contestsQueries, useContest, useContestProblems } from '../../application/queries';
 import ContestCard from '../components/ContestCard';
 import ContestPageHeader from '../components/ContestPageHeader';
+import ContestTypeInfoCard from '../components/ContestTypeInfoCard';
 import { ContestStatus } from '../../domain/entities/contest-status';
 
 const ContestPage = () => {
@@ -101,6 +102,8 @@ const ContestPage = () => {
         <Grid size={{ xs: 12, md: 4 }}>
           <Stack spacing={3}>
             <ContestCountdownCard contest={contest} isLoading={isContestLoading} />
+
+            {contest ? <ContestTypeInfoCard contest={contest} /> : null}
 
             {registrationCta ? <Box>{registrationCta}</Box> : null}
 

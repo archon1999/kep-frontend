@@ -132,8 +132,8 @@ const ContestProblemsPage = () => {
                     </Stack>
 
                     <Stack direction="row" spacing={1} alignItems="center" flexShrink={0}>
-                      {contestHasBalls(contest?.type) && (
-                        <Chip label={problem.ball ?? '˘?"'} size="small" variant="outlined" />
+                      {contestHasBalls(contest?.type, contest?.typeInfo) && (
+                        <Chip label={problem.ball ?? '-'} size="small" variant="outlined" />
                       )}
                       <Stack direction="row" spacing={1}>
                         <Chip
