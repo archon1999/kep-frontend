@@ -53,25 +53,28 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     }
   }, [data]);
 
+  const resolvedCurrentUser = currentUser ?? data ?? null;
+
   const refreshCurrentUser = useCallback(() => mutate(), [mutate]);
 
   const signout = useCallback(async () => {
     await logoutUser().catch(() => {});
     setCurrentUser(null);
+    await mutate(null, { revalidate: false });
     removeItemFromStore('current_user');
-  }, [logoutUser]);
+  }, [logoutUser, mutate]);
 
   const contextValue = useMemo(
     () => ({
-      currentUser,
+      currentUser: resolvedCurrentUser,
       setCurrentUser,
       refreshCurrentUser,
       signout,
     }),
-    [currentUser, refreshCurrentUser, signout],
+    [resolvedCurrentUser, refreshCurrentUser, signout],
   );
 
-  if (isLoading && !currentUser) {
+  if (isLoading && !resolvedCurrentUser) {
     return <Splash />;
   }
 

@@ -14,7 +14,7 @@ export interface MenuItem {
   items?: MenuItem[];
 }
 
-const sitemap: MenuItem[] = [
+export const clientMenu: MenuItem[] = [
   {
     name: 'Home',
     key: 'menu.home',
@@ -187,4 +187,38 @@ const sitemap: MenuItem[] = [
   },
 ];
 
-export default sitemap;
+export const adminMenu: MenuItem[] = [
+  {
+    name: 'Problems',
+    path: resources.AdminProblems,
+    pathName: 'admin-problems',
+    selectionPrefix: resources.AdminProblems,
+    icon: 'mdi:code-tags',
+    active: true,
+  },
+  {
+    name: 'Contests',
+    path: resources.AdminContests,
+    pathName: 'admin-contests',
+    selectionPrefix: resources.AdminContests,
+    icon: 'mdi:podium-gold',
+    active: true,
+  },
+  {
+    name: 'Users',
+    path: resources.AdminUsers,
+    pathName: 'admin-users',
+    selectionPrefix: resources.AdminUsers,
+    icon: 'mdi:account-multiple-outline',
+    active: true,
+  },
+  {
+    name: 'Back to site',
+    path: resources.Home,
+    pathName: 'admin-back-to-site',
+    icon: 'material-symbols:arrow-back-rounded',
+    active: true,
+  },
+];
+
+export default clientMenu;

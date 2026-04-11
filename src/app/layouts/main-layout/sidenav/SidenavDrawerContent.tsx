@@ -4,9 +4,9 @@ import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import Toolbar from '@mui/material/Toolbar';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
-import sitemap from 'app/routes/sitemap';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo';
+import NavLogoLabel from '../common/NavLogoLabel';
 import { useNavContext } from '../NavProvider';
 import NavItem from './NavItem';
 import SidenavSimpleBar from './SidenavSimpleBar';
@@ -21,7 +21,7 @@ const SidenavDrawerContent = ({ variant = 'permanent' }: SidenavDrawerContentPro
     setConfig,
   } = useSettingsContext();
 
-  const { sidenavAppbarVariant } = useNavContext();
+  const { menuItems, sidenavAppbarVariant } = useNavContext();
 
   const expanded = useMemo(
     () => variant === 'temporary' || (variant === 'permanent' && !sidenavCollapsed),
@@ -58,7 +58,10 @@ const SidenavDrawerContent = ({ variant = 'permanent' }: SidenavDrawerContentPro
         >
           {(navigationMenuType === 'sidenav' || variant === 'temporary') && (
             <>
-              <Logo showName={expanded} />
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Logo showName={expanded} />
+                {expanded && <NavLogoLabel />}
+              </Box>
               <IconButton sx={{ mt: 1, display: { md: 'none' } }} onClick={toggleNavbarDrawer}>
                 <IconifyIcon icon="material-symbols:left-panel-close-outline" fontSize={20} />
               </IconButton>
@@ -90,7 +93,7 @@ const SidenavDrawerContent = ({ variant = 'permanent' }: SidenavDrawerContentPro
                 gap: '2px',
               }}
             >
-              {sitemap.map((item) => (
+              {menuItems.map((item) => (
                 <NavItem key={item.pathName} item={item} level={0} />
               ))}
             </List>

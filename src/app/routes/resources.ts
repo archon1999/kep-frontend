@@ -3,6 +3,17 @@ export const resources = {
   NotFound: '/404',
   Forbidden: '/403',
 
+  Admin: '/admin',
+  AdminProblems: '/admin/problems',
+  AdminProblemCreate: '/admin/problems/new',
+  AdminProblemEdit: '/admin/problems/:id',
+  AdminContests: '/admin/contests',
+  AdminContestCreate: '/admin/contests/new',
+  AdminContestEdit: '/admin/contests/:id',
+  AdminUsers: '/admin/users',
+  AdminUserCreate: '/admin/users/new',
+  AdminUserEdit: '/admin/users/:id',
+
   Problems: '/problems',
   StudyPlans: '/problems/study-plans',
   Problem: '/problems/:id',

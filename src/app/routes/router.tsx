@@ -1,5 +1,5 @@
 import { type ReactNode, Suspense, lazy } from 'react';
-import { Outlet, RouteObject, createBrowserRouter, useLocation } from 'react-router';
+import { Navigate, Outlet, RouteObject, createBrowserRouter, useLocation } from 'react-router';
 import App from 'app/App.tsx';
 import AuthLayout from 'app/layouts/auth-layout';
 import DefaultAuthLayout from 'app/layouts/auth-layout/DefaultAuthLayout';
@@ -8,10 +8,12 @@ import Page403 from 'modules/errors/ui/pages/Page403';
 import Page404 from 'modules/errors/ui/pages/Page404';
 import RouteErrorPage from 'modules/errors/ui/pages/RouteErrorPage';
 import AuthGuard from 'shared/components/guard/AuthGuard';
+import SuperuserGuard from 'shared/components/guard/SuperuserGuard';
 import PageLoader from 'shared/components/loading/PageLoader';
 import { legacyRedirectRoutes } from './legacy-routes';
 import { resources } from './resources';
 import { authPaths, rootPaths } from './route-config';
+import { adminMenu } from './sitemap';
 
 const Home = lazy(() => import('modules/home/ui/pages/HomePage'));
 const KepCoverPage = lazy(() => import('modules/kep-cover/ui/pages/KepCoverPage'));
@@ -109,6 +111,20 @@ const UserProfileAchievementsTab = lazy(
 );
 
 const CalendarPage = lazy(() => import('modules/calendar/ui/pages/CalendarPage'));
+const AdminProblemsListPage = lazy(
+  () => import('modules/admin/problems/ui/pages/AdminProblemsListPage'),
+);
+const AdminProblemFormPage = lazy(
+  () => import('modules/admin/problems/ui/pages/AdminProblemFormPage'),
+);
+const AdminContestsListPage = lazy(
+  () => import('modules/admin/contests/ui/pages/AdminContestsListPage'),
+);
+const AdminContestFormPage = lazy(
+  () => import('modules/admin/contests/ui/pages/AdminContestFormPage'),
+);
+const AdminUsersListPage = lazy(() => import('modules/admin/users/ui/pages/AdminUsersListPage'));
+const AdminUserFormPage = lazy(() => import('modules/admin/users/ui/pages/AdminUserFormPage'));
 
 const Login = lazy(() => import('modules/authentication/ui/pages/LoginPage'));
 const IS_PROD = import.meta.env.PROD;
@@ -130,6 +146,58 @@ export const routes: RouteObject[] = [
     element: <App />,
     errorElement: IS_PROD ? <RouteErrorPage /> : undefined,
     children: [
+      {
+        path: resources.Admin,
+        element: (
+          <SuperuserGuard>
+            <MainLayout menuItems={adminMenu} navLabel="Admin">
+              <SuspenseOutlet />
+            </MainLayout>
+          </SuperuserGuard>
+        ),
+        children: [
+          {
+            index: true,
+            element: <Navigate to={resources.AdminProblems} replace />,
+          },
+          {
+            path: 'problems',
+            element: <AdminProblemsListPage />,
+          },
+          {
+            path: 'problems/new',
+            element: <AdminProblemFormPage />,
+          },
+          {
+            path: 'problems/:id',
+            element: <AdminProblemFormPage />,
+          },
+          {
+            path: 'contests',
+            element: <AdminContestsListPage />,
+          },
+          {
+            path: 'contests/new',
+            element: <AdminContestFormPage />,
+          },
+          {
+            path: 'contests/:id',
+            element: <AdminContestFormPage />,
+          },
+          {
+            path: 'users',
+            element: <AdminUsersListPage />,
+          },
+          {
+            path: 'users/new',
+            element: <AdminUserFormPage />,
+          },
+          {
+            path: 'users/:id',
+            element: <AdminUserFormPage />,
+          },
+        ],
+      },
       {
         path: '/',
         element: (

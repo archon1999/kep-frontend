@@ -9,6 +9,7 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo';
 import VibrantBackground from 'shared/components/common/VibrantBackground';
 import AppbarActionItems from '../common/AppbarActionItems';
+import NavLogoLabel from '../common/NavLogoLabel';
 import { SearchBoxButton } from '../common/search-box/SearchBox';
 import TopnavItems from './TopnavItems';
 
@@ -62,6 +63,7 @@ const TopnavSlim = ({ sx }: TopnavSlimProps) => {
           </IconButton>
 
           <Logo showName={false} sx={{ height: 24, width: 15 }} />
+          <NavLogoLabel compact />
         </Box>
 
         <Stack

@@ -7,6 +7,7 @@ import Sidenav from 'app/layouts/main-layout/sidenav';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
 import { getCanvasFrameStyles } from 'app/theme/styles/surfaceTreatments';
 import { sidenavVibrantStyle } from 'app/theme/styles/vibrantNav';
+import { clientMenu, MenuItem } from 'app/routes/sitemap';
 import clsx from 'clsx';
 import VibrantBackground from 'shared/components/common/VibrantBackground';
 import { mainDrawerWidth } from 'shared/lib/constants';
@@ -18,7 +19,12 @@ import Topnav from './topnav';
 import TopNavStacked from './topnav/TopNavStacked';
 import TopnavSlim from './topnav/TopnavSlim';
 
-const MainLayout = ({ children }: PropsWithChildren) => {
+interface MainLayoutProps {
+  menuItems?: MenuItem[];
+  navLabel?: string;
+}
+
+const MainLayout = ({ children, menuItems = clientMenu, navLabel }: PropsWithChildren<MainLayoutProps>) => {
   const {
     config: {
       drawerWidth,
@@ -58,7 +64,7 @@ const MainLayout = ({ children }: PropsWithChildren) => {
         })}
         sx={{ display: 'flex', zIndex: 1, position: 'relative' }}
       >
-        <NavProvider>
+        <NavProvider menuItems={menuItems} navLabel={navLabel}>
           {navigationMenuType === 'sidenav' && (
             <>
               <AppBar />
