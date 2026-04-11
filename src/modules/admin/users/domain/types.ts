@@ -1,24 +1,26 @@
 export interface AdminUser {
   id: number;
   username: string;
-  first_name?: string;
-  last_name?: string;
+  firstName?: string;
+  lastName?: string;
   email?: string;
-  is_active: boolean;
-  is_staff: boolean;
-  is_superuser: boolean;
+  isActive: boolean;
+  isStaff: boolean;
+  isSuperuser: boolean;
+  skillsRating: number | string;
+  activityRating: number | string;
   kepcoin: number;
   streak: number;
-  max_streak: number;
-  last_seen?: string;
-  can_create_problems: boolean;
-  can_change_problem_similar: boolean;
-  can_change_problem_tags: boolean;
-  can_use_check_samples: boolean;
+  maxStreak: number;
+  lastSeen?: string;
+  canCreateProblems: boolean;
+  canChangeProblemSimilar: boolean;
+  canChangeProblemTags: boolean;
+  canUseCheckSamples: boolean;
 }
 
-export type AdminUserPayload = Omit<AdminUser, 'id' | 'last_seen'> & {
+export type AdminUserPayload = Omit<AdminUser, 'id' | 'lastSeen'> & {
   id?: number;
-  last_seen?: string;
+  lastSeen?: string;
   password?: string;
 };

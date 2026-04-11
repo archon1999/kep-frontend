@@ -1,7 +1,9 @@
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Alert,
   Autocomplete,
+  Box,
   Button,
   CircularProgress,
   FormControlLabel,
@@ -9,12 +11,15 @@ import {
   Stack,
   Switch,
   TextField,
+  Typography,
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { resources } from 'app/routes/resources';
 import AdminFormPageLayout from 'modules/admin/shared/ui/AdminFormPageLayout';
 import AdminFormSection from 'modules/admin/shared/ui/AdminFormSection';
-import { toNumberOrNull, toOptionalNumber } from 'modules/admin/shared/ui/formUtils';
+import AdminLanguageTabs, { AdminLanguageCode } from 'modules/admin/shared/ui/AdminLanguageTabs';
+import { AdminAutocompleteOption, UsersAutocomplete } from 'modules/admin/shared/ui/AdminResourceAutocomplete';
+import { toNumberOrNull } from 'modules/admin/shared/ui/formUtils';
 import RichTextEditor from 'shared/components/form/RichTextEditor';
 import { useAdminProblem, useAdminProblemMeta } from '../../application/queries';
 import { problemsAdminClient } from '../../data-access/problemsAdminClient';
@@ -22,61 +27,72 @@ import { AdminProblemAvailableLanguage, AdminProblemPayload, AdminProblemSampleT
 
 const emptyProblem: AdminProblemPayload = {
   title: '',
-  title_uz: '',
-  title_en: '',
-  title_ru: '',
-  body_uz: '',
-  body_en: '',
-  body_ru: '',
-  input_data_uz: '',
-  input_data_en: '',
-  input_data_ru: '',
-  output_data_uz: '',
-  output_data_en: '',
-  output_data_ru: '',
-  comment_uz: '',
-  comment_en: '',
-  comment_ru: '',
+  titleUz: '',
+  titleEn: '',
+  titleRu: '',
+  bodyUz: '',
+  bodyEn: '',
+  bodyRu: '',
+  inputDataUz: '',
+  inputDataEn: '',
+  inputDataRu: '',
+  outputDataUz: '',
+  outputDataEn: '',
+  outputDataRu: '',
+  commentUz: '',
+  commentEn: '',
+  commentRu: '',
   difficulty: 1,
-  problem_rating: null,
-  time_limit: 1000,
-  memory_limit: 256,
+  problemRating: null,
+  timeLimit: 1000,
+  memoryLimit: 256,
   hidden: true,
-  partial_solvable: false,
-  has_checker: true,
-  has_check_input: false,
-  sample_tests: [],
-  available_languages: [],
+  partialSolvable: false,
+  hasChecker: true,
+  hasCheckInput: false,
+  sampleTests: [],
+  availableLanguages: [],
   tags: [],
   topics: [],
 };
 
-const languageLabels = [
-  { code: 'uz', label: 'Uzbek' },
-  { code: 'en', label: 'English' },
-  { code: 'ru', label: 'Russian' },
+const translatedRichTextGroups = [
+  { prefix: 'body', labelKey: 'body' },
+  { prefix: 'inputData', labelKey: 'input' },
+  { prefix: 'outputData', labelKey: 'output' },
+  { prefix: 'comment', labelKey: 'comment' },
 ] as const;
 
-const translatedRichTextGroups = [
-  { prefix: 'body', label: 'Body' },
-  { prefix: 'input_data', label: 'Input' },
-  { prefix: 'output_data', label: 'Output' },
-  { prefix: 'comment', label: 'Comment' },
-] as const;
+const languageFieldSuffix: Record<AdminLanguageCode, 'Uz' | 'En' | 'Ru'> = {
+  uz: 'Uz',
+  en: 'En',
+  ru: 'Ru',
+};
+
+const buildUserOption = (id?: number, username?: string): AdminAutocompleteOption | null =>
+  id
+    ? {
+        id,
+        username: username || `#${id}`,
+      }
+    : null;
 
 const AdminProblemFormPage = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const isEdit = Boolean(id);
   const navigate = useNavigate();
   const { data: problem, isLoading } = useAdminProblem(id);
   const { data: meta } = useAdminProblemMeta();
   const [form, setForm] = useState<AdminProblemPayload>(emptyProblem);
+  const [selectedAuthor, setSelectedAuthor] = useState<AdminAutocompleteOption | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (problem) {
       setForm(problem);
+      setSelectedAuthor(buildUserOption(problem.author, problem.authorUsername));
     }
   }, [problem]);
 
@@ -109,6 +125,11 @@ const AdminProblemFormPage = () => {
       setForm((prev) => ({ ...prev, [field]: Number(event.target.value) }));
     };
 
+  const handleAuthorChange = (author: AdminAutocompleteOption | null) => {
+    setSelectedAuthor(author);
+    setField('author', author?.id);
+  };
+
   const updateSampleTest = (
     index: number,
     field: keyof AdminProblemSampleTest,
@@ -116,7 +137,7 @@ const AdminProblemFormPage = () => {
   ) => {
     setForm((prev) => ({
       ...prev,
-      sample_tests: prev.sample_tests.map((sampleTest, currentIndex) =>
+      sampleTests: prev.sampleTests.map((sampleTest, currentIndex) =>
         currentIndex === index ? { ...sampleTest, [field]: value } : sampleTest,
       ),
     }));
@@ -125,14 +146,14 @@ const AdminProblemFormPage = () => {
   const addSampleTest = () => {
     setForm((prev) => ({
       ...prev,
-      sample_tests: [...prev.sample_tests, { input: '', output: '' }],
+      sampleTests: [...prev.sampleTests, { input: '', output: '' }],
     }));
   };
 
   const removeSampleTest = (index: number) => {
     setForm((prev) => ({
       ...prev,
-      sample_tests: prev.sample_tests.filter((_, currentIndex) => currentIndex !== index),
+      sampleTests: prev.sampleTests.filter((_, currentIndex) => currentIndex !== index),
     }));
   };
 
@@ -143,7 +164,7 @@ const AdminProblemFormPage = () => {
   ) => {
     setForm((prev) => ({
       ...prev,
-      available_languages: prev.available_languages.map((availableLanguage, currentIndex) =>
+      availableLanguages: prev.availableLanguages.map((availableLanguage, currentIndex) =>
         currentIndex === index ? { ...availableLanguage, [field]: value } : availableLanguage,
       ),
     }));
@@ -152,9 +173,15 @@ const AdminProblemFormPage = () => {
   const addAvailableLanguage = () => {
     setForm((prev) => ({
       ...prev,
-      available_languages: [
-        ...prev.available_languages,
-        { lang: meta?.languages[0]?.value ?? 'py', time_limit: null, memory_limit: null, code_template: '', code_golf: null },
+      availableLanguages: [
+        ...prev.availableLanguages,
+        {
+          lang: meta?.languages[0]?.value ?? 'py',
+          timeLimit: null,
+          memoryLimit: null,
+          codeTemplate: '',
+          codeGolf: null,
+        },
       ],
     }));
   };
@@ -162,25 +189,25 @@ const AdminProblemFormPage = () => {
   const removeAvailableLanguage = (index: number) => {
     setForm((prev) => ({
       ...prev,
-      available_languages: prev.available_languages.filter((_, currentIndex) => currentIndex !== index),
+      availableLanguages: prev.availableLanguages.filter((_, currentIndex) => currentIndex !== index),
     }));
   };
 
   const buildPayload = () => {
-    const title = form.title || form.title_uz || form.title_en || form.title_ru || '';
+    const title = form.title || form.titleUz || form.titleEn || form.titleRu || '';
 
     return {
       ...form,
       title,
       author: form.author || undefined,
-      problem_rating: toNumberOrNull(form.problem_rating),
-      time_limit: toNumberOrNull(form.time_limit),
-      memory_limit: toNumberOrNull(form.memory_limit),
-      available_languages: form.available_languages.map((availableLanguage) => ({
+      problemRating: toNumberOrNull(form.problemRating),
+      timeLimit: toNumberOrNull(form.timeLimit),
+      memoryLimit: toNumberOrNull(form.memoryLimit),
+      availableLanguages: form.availableLanguages.map((availableLanguage) => ({
         ...availableLanguage,
-        time_limit: toNumberOrNull(availableLanguage.time_limit),
-        memory_limit: toNumberOrNull(availableLanguage.memory_limit),
-        code_golf: toNumberOrNull(availableLanguage.code_golf),
+        timeLimit: toNumberOrNull(availableLanguage.timeLimit),
+        memoryLimit: toNumberOrNull(availableLanguage.memoryLimit),
+        codeGolf: toNumberOrNull(availableLanguage.codeGolf),
       })),
     } satisfies AdminProblemPayload;
   };
@@ -189,7 +216,7 @@ const AdminProblemFormPage = () => {
     const payload = buildPayload();
 
     if (!payload.title) {
-      setError('Title is required.');
+      setError(t('admin.form.validation.problemTitleRequired'));
       return;
     }
 
@@ -211,12 +238,54 @@ const AdminProblemFormPage = () => {
   };
 
   const handleDelete = async () => {
-    if (!id || !window.confirm(`Delete problem #${id}?`)) {
+    if (!id || !window.confirm(t('admin.problems.confirmDelete', { id }))) {
       return;
     }
 
     await problemsAdminClient.remove(id);
     navigate(resources.AdminProblems);
+  };
+
+  const renderTranslationFields = (language: AdminLanguageCode) => {
+    const titleField = `title${languageFieldSuffix[language]}` as keyof AdminProblemPayload;
+
+    return (
+      <Stack spacing={3}>
+        <TextField
+          label={t('admin.form.fields.localizedTitle', {
+            language: t(`admin.form.languages.${language}`),
+          })}
+          value={(form[titleField] as string | undefined) ?? ''}
+          onChange={(event) => setField(titleField, event.target.value as never)}
+          fullWidth
+        />
+
+        {translatedRichTextGroups.map((group) => {
+          const field = `${group.prefix}${languageFieldSuffix[language]}` as keyof AdminProblemPayload;
+
+          return (
+            <Box key={field}>
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                {t(`admin.form.richText.${group.labelKey}`)}
+              </Typography>
+              <RichTextEditor
+                value={(form[field] as string | undefined) ?? ''}
+                onChange={(value) => setField(field, value as never)}
+                placeholder={t('admin.form.placeholders.localizedRichText', {
+                  field: t(`admin.form.richText.${group.labelKey}`).toLowerCase(),
+                  language: t(`admin.form.languages.${language}`),
+                })}
+                minHeight={180}
+                compact
+                enableMathJax
+                mathJaxPromptText={t('admin.form.prompts.mathJax')}
+                mathJaxPreviewLabel={t('admin.form.fields.mathJaxPreview')}
+              />
+            </Box>
+          );
+        })}
+      </Stack>
+    );
   };
 
   if (isEdit && isLoading && !problem) {
@@ -229,226 +298,238 @@ const AdminProblemFormPage = () => {
 
   return (
     <AdminFormPageLayout
-      title={isEdit ? `Edit problem #${id}` : 'Create problem'}
+      title={isEdit ? t('admin.problems.editTitle', { id }) : t('admin.problems.createTitle')}
       listPath={resources.AdminProblems}
       isEdit={isEdit}
       isSaving={isSaving}
       onSave={handleSave}
       onDelete={handleDelete}
-    >
-      <Stack spacing={3}>
-        {error ? <Alert severity="error">{error}</Alert> : null}
-
-        <AdminFormSection title="Core">
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-            <TextField label="Fallback title" value={form.title ?? ''} onChange={handleStringField('title')} fullWidth />
+      sidebarTitle={t('admin.form.sections.problemSettings')}
+      sidebar={
+        <Stack spacing={2.5}>
+          <TextField
+            label={t('admin.form.fields.fallbackTitle')}
+            value={form.title ?? ''}
+            onChange={handleStringField('title')}
+            fullWidth
+          />
+          <UsersAutocomplete
+            value={selectedAuthor}
+            onChange={handleAuthorChange}
+            label={t('admin.form.fields.author')}
+            placeholder={t('admin.form.placeholders.username')}
+          />
+          <TextField
+            select
+            label={t('admin.form.fields.difficulty')}
+            value={form.difficulty}
+            onChange={handleRequiredNumberField('difficulty')}
+            fullWidth
+          >
+            {(meta?.difficulties ?? []).map((difficulty) => (
+              <MenuItem key={difficulty.value} value={difficulty.value}>
+                {difficulty.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            label={t('admin.form.fields.problemRating')}
+            type="number"
+            value={form.problemRating ?? ''}
+            onChange={handleNumberField('problemRating')}
+            fullWidth
+          />
+          <Stack direction={{ xs: 'column', sm: 'row', lg: 'column' }} spacing={2}>
             <TextField
-              label="Author ID"
+              label={t('admin.form.fields.timeLimit')}
               type="number"
-              value={form.author ?? ''}
-              onChange={(event) => setField('author', toOptionalNumber(event.target.value))}
+              value={form.timeLimit ?? ''}
+              onChange={handleNumberField('timeLimit')}
+              fullWidth
+            />
+            <TextField
+              label={t('admin.form.fields.memoryLimit')}
+              type="number"
+              value={form.memoryLimit ?? ''}
+              onChange={handleNumberField('memoryLimit')}
               fullWidth
             />
           </Stack>
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-            <TextField
-              select
-              label="Difficulty"
-              value={form.difficulty}
-              onChange={handleRequiredNumberField('difficulty')}
-              fullWidth
-            >
-              {(meta?.difficulties ?? []).map((difficulty) => (
-                <MenuItem key={difficulty.value} value={difficulty.value}>
-                  {difficulty.label}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              label="Problem rating"
-              type="number"
-              value={form.problem_rating ?? ''}
-              onChange={handleNumberField('problem_rating')}
-              fullWidth
-            />
-            <TextField
-              label="Time limit"
-              type="number"
-              value={form.time_limit ?? ''}
-              onChange={handleNumberField('time_limit')}
-              fullWidth
-            />
-            <TextField
-              label="Memory limit"
-              type="number"
-              value={form.memory_limit ?? ''}
-              onChange={handleNumberField('memory_limit')}
-              fullWidth
-            />
-          </Stack>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <Stack spacing={0.5}>
             <FormControlLabel
               control={<Switch checked={form.hidden} onChange={(event) => setField('hidden', event.target.checked)} />}
-              label="Hidden"
+              label={t('admin.form.fields.hidden')}
             />
             <FormControlLabel
               control={
                 <Switch
-                  checked={form.partial_solvable}
-                  onChange={(event) => setField('partial_solvable', event.target.checked)}
+                  checked={form.partialSolvable}
+                  onChange={(event) => setField('partialSolvable', event.target.checked)}
                 />
               }
-              label="Partial solvable"
+              label={t('admin.form.fields.partialSolvable')}
             />
             <FormControlLabel
               control={
-                <Switch checked={form.has_checker} onChange={(event) => setField('has_checker', event.target.checked)} />
+                <Switch checked={form.hasChecker} onChange={(event) => setField('hasChecker', event.target.checked)} />
               }
-              label="Has checker"
+              label={t('admin.form.fields.hasChecker')}
             />
             <FormControlLabel
               control={
                 <Switch
-                  checked={form.has_check_input}
-                  onChange={(event) => setField('has_check_input', event.target.checked)}
+                  checked={form.hasCheckInput}
+                  onChange={(event) => setField('hasCheckInput', event.target.checked)}
                 />
               }
-              label="Has check input"
+              label={t('admin.form.fields.hasCheckInput')}
             />
           </Stack>
-        </AdminFormSection>
+        </Stack>
+      }
+    >
+      {error ? <Alert severity="error">{error}</Alert> : null}
 
-        <AdminFormSection title="Translations">
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-            {languageLabels.map((language) => (
-              <TextField
-                key={language.code}
-                label={`${language.label} title`}
-                value={(form[`title_${language.code}`] as string | undefined) ?? ''}
-                onChange={(event) => setField(`title_${language.code}` as keyof AdminProblemPayload, event.target.value as never)}
-                fullWidth
-              />
-            ))}
-          </Stack>
-          {languageLabels.map((language) => (
-            <Stack key={language.code} spacing={2}>
-              {translatedRichTextGroups.map((group) => {
-                const field = `${group.prefix}_${language.code}` as keyof AdminProblemPayload;
+      <AdminFormSection
+        title={t('admin.form.sections.translations')}
+        subheader={t('admin.form.subheaders.problemTranslations')}
+      >
+        <AdminLanguageTabs>{renderTranslationFields}</AdminLanguageTabs>
+      </AdminFormSection>
 
-                return (
-                  <RichTextEditor
-                    key={field}
-                    value={(form[field] as string | undefined) ?? ''}
-                    onChange={(value) => setField(field, value as never)}
-                    placeholder={`${language.label} ${group.label.toLowerCase()}`}
-                    minHeight={180}
-                  />
-                );
-              })}
+      <AdminFormSection title={t('admin.form.sections.tagsTopics')}>
+        <Autocomplete
+          multiple
+          options={meta?.tags ?? []}
+          value={selectedTags}
+          getOptionLabel={(option) => option.name}
+          onChange={(_, value) => setField('tags', value.map((tag) => tag.id))}
+          renderInput={(params) => <TextField {...params} label={t('admin.form.fields.tags')} />}
+        />
+        <Autocomplete
+          multiple
+          options={meta?.topics ?? []}
+          value={selectedTopics}
+          getOptionLabel={(option) => option.name}
+          onChange={(_, value) => setField('topics', value.map((topic) => topic.id))}
+          renderInput={(params) => <TextField {...params} label={t('admin.form.fields.topics')} />}
+        />
+      </AdminFormSection>
+
+      <AdminFormSection title={t('admin.form.sections.sampleTests')}>
+        {form.sampleTests.map((sampleTest, index) => (
+          <Box
+            key={index}
+            sx={{
+              p: 2,
+              border: 1,
+              borderColor: 'divider',
+              borderRadius: 1,
+            }}
+          >
+            <Stack spacing={2}>
+              <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+                <Typography variant="subtitle2">
+                  {t('admin.form.fields.sampleTestNumber', { count: index + 1 })}
+                </Typography>
+                <Button color="error" variant="soft" onClick={() => removeSampleTest(index)}>
+                  {t('admin.actions.remove')}
+                </Button>
+              </Stack>
+              <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+                <TextField
+                  label={t('admin.form.fields.input')}
+                  value={sampleTest.input}
+                  onChange={(event) => updateSampleTest(index, 'input', event.target.value)}
+                  multiline
+                  minRows={4}
+                  fullWidth
+                />
+                <TextField
+                  label={t('admin.form.fields.output')}
+                  value={sampleTest.output}
+                  onChange={(event) => updateSampleTest(index, 'output', event.target.value)}
+                  multiline
+                  minRows={4}
+                  fullWidth
+                />
+              </Stack>
             </Stack>
-          ))}
-        </AdminFormSection>
+          </Box>
+        ))}
+        <Button variant="soft" onClick={addSampleTest}>
+          {t('admin.actions.addSampleTest')}
+        </Button>
+      </AdminFormSection>
 
-        <AdminFormSection title="Tags and Topics">
-          <Autocomplete
-            multiple
-            options={meta?.tags ?? []}
-            value={selectedTags}
-            getOptionLabel={(option) => option.name}
-            onChange={(_, value) => setField('tags', value.map((tag) => tag.id))}
-            renderInput={(params) => <TextField {...params} label="Tags" />}
-          />
-          <Autocomplete
-            multiple
-            options={meta?.topics ?? []}
-            value={selectedTopics}
-            getOptionLabel={(option) => option.name}
-            onChange={(_, value) => setField('topics', value.map((topic) => topic.id))}
-            renderInput={(params) => <TextField {...params} label="Topics" />}
-          />
-        </AdminFormSection>
-
-        <AdminFormSection title="Sample Tests">
-          {form.sample_tests.map((sampleTest, index) => (
-            <Stack key={index} direction={{ xs: 'column', md: 'row' }} spacing={2}>
+      <AdminFormSection title={t('admin.form.sections.availableLanguages')}>
+        {form.availableLanguages.map((availableLanguage, index) => (
+          <Box
+            key={index}
+            sx={{
+              p: 2,
+              border: 1,
+              borderColor: 'divider',
+              borderRadius: 1,
+            }}
+          >
+            <Stack spacing={2}>
+              <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2}>
+                <Typography variant="subtitle2">
+                  {t('admin.form.fields.languageNumber', { count: index + 1 })}
+                </Typography>
+                <Button color="error" variant="soft" onClick={() => removeAvailableLanguage(index)}>
+                  {t('admin.actions.remove')}
+                </Button>
+              </Stack>
+              <Stack direction={{ xs: 'column', lg: 'row' }} spacing={2}>
+                <TextField
+                  select
+                  label={t('admin.form.fields.language')}
+                  value={availableLanguage.lang}
+                  onChange={(event) => updateAvailableLanguage(index, 'lang', event.target.value)}
+                  sx={{ minWidth: 180 }}
+                >
+                  {(meta?.languages ?? []).map((language) => (
+                    <MenuItem key={language.value} value={language.value}>
+                      {language.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <TextField
+                  label={t('admin.form.fields.timeLimit')}
+                  type="number"
+                  value={availableLanguage.timeLimit ?? ''}
+                  onChange={(event) => updateAvailableLanguage(index, 'timeLimit', toNumberOrNull(event.target.value))}
+                />
+                <TextField
+                  label={t('admin.form.fields.memoryLimit')}
+                  type="number"
+                  value={availableLanguage.memoryLimit ?? ''}
+                  onChange={(event) => updateAvailableLanguage(index, 'memoryLimit', toNumberOrNull(event.target.value))}
+                />
+                <TextField
+                  label={t('admin.form.fields.codeGolf')}
+                  type="number"
+                  value={availableLanguage.codeGolf ?? ''}
+                  onChange={(event) => updateAvailableLanguage(index, 'codeGolf', toNumberOrNull(event.target.value))}
+                />
+              </Stack>
               <TextField
-                label={`Input #${index + 1}`}
-                value={sampleTest.input}
-                onChange={(event) => updateSampleTest(index, 'input', event.target.value)}
+                label={t('admin.form.fields.codeTemplate')}
+                value={availableLanguage.codeTemplate ?? ''}
+                onChange={(event) => updateAvailableLanguage(index, 'codeTemplate', event.target.value)}
                 multiline
-                minRows={4}
+                minRows={3}
                 fullWidth
               />
-              <TextField
-                label={`Output #${index + 1}`}
-                value={sampleTest.output}
-                onChange={(event) => updateSampleTest(index, 'output', event.target.value)}
-                multiline
-                minRows={4}
-                fullWidth
-              />
-              <Button color="error" variant="soft" onClick={() => removeSampleTest(index)}>
-                Remove
-              </Button>
             </Stack>
-          ))}
-          <Button variant="soft" onClick={addSampleTest}>
-            Add sample test
-          </Button>
-        </AdminFormSection>
-
-        <AdminFormSection title="Available Languages">
-          {form.available_languages.map((availableLanguage, index) => (
-            <Stack key={index} direction={{ xs: 'column', lg: 'row' }} spacing={2}>
-              <TextField
-                select
-                label="Language"
-                value={availableLanguage.lang}
-                onChange={(event) => updateAvailableLanguage(index, 'lang', event.target.value)}
-                sx={{ minWidth: 180 }}
-              >
-                {(meta?.languages ?? []).map((language) => (
-                  <MenuItem key={language.value} value={language.value}>
-                    {language.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                label="Time limit"
-                type="number"
-                value={availableLanguage.time_limit ?? ''}
-                onChange={(event) => updateAvailableLanguage(index, 'time_limit', toNumberOrNull(event.target.value))}
-              />
-              <TextField
-                label="Memory limit"
-                type="number"
-                value={availableLanguage.memory_limit ?? ''}
-                onChange={(event) => updateAvailableLanguage(index, 'memory_limit', toNumberOrNull(event.target.value))}
-              />
-              <TextField
-                label="Code golf"
-                type="number"
-                value={availableLanguage.code_golf ?? ''}
-                onChange={(event) => updateAvailableLanguage(index, 'code_golf', toNumberOrNull(event.target.value))}
-              />
-              <TextField
-                label="Code template"
-                value={availableLanguage.code_template ?? ''}
-                onChange={(event) => updateAvailableLanguage(index, 'code_template', event.target.value)}
-                multiline
-                minRows={2}
-                fullWidth
-              />
-              <Button color="error" variant="soft" onClick={() => removeAvailableLanguage(index)}>
-                Remove
-              </Button>
-            </Stack>
-          ))}
-          <Button variant="soft" onClick={addAvailableLanguage}>
-            Add language
-          </Button>
-        </AdminFormSection>
-      </Stack>
+          </Box>
+        ))}
+        <Button variant="soft" onClick={addAvailableLanguage}>
+          {t('admin.actions.addLanguage')}
+        </Button>
+      </AdminFormSection>
     </AdminFormPageLayout>
   );
 };

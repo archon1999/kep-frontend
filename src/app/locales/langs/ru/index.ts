@@ -1,4 +1,5 @@
 import arena from './arena.json';
+import admin from './admin.json';
 import calendar from './calendar.json';
 import challenges from './challenges.json';
 import common from './common.json';
@@ -22,6 +23,7 @@ import tournaments from './tournaments.json';
 import contests from './contests.json';
 
 export const ruTranslation = {
+  ...admin,
   ...common,
   ...menu,
   ...pageTitles,

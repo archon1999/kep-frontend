@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Alert, Box, LinearProgress, Stack, Typography } from '@mui/material';
+import MathJaxView from 'shared/components/base/MathJaxView';
 
 declare global {
   interface Window {
@@ -14,6 +15,10 @@ interface QuillInstance {
   };
   on: (eventName: string, handler: () => void) => void;
   off?: (eventName: string, handler: () => void) => void;
+  getLength?: () => number;
+  getSelection?: (focus?: boolean) => { index: number; length: number } | null;
+  insertText?: (index: number, text: string, source?: string) => void;
+  setSelection?: (index: number, length?: number, source?: string) => void;
 }
 
 interface QuillConstructor {
@@ -35,6 +40,10 @@ interface RichTextEditorProps {
   loadErrorText?: string;
   hintText?: string;
   minHeight?: number;
+  compact?: boolean;
+  enableMathJax?: boolean;
+  mathJaxPromptText?: string;
+  mathJaxPreviewLabel?: string;
 }
 
 const QUILL_SCRIPT_URL = 'https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js';
@@ -45,6 +54,14 @@ const QUILL_TOOLBAR = [
   ['blockquote', 'code-block'],
   [{ list: 'ordered' }, { list: 'bullet' }],
   ['link'],
+  ['clean'],
+];
+const QUILL_MATHJAX_TOOLBAR = [
+  [{ header: [1, 2, 3, false] }],
+  ['bold', 'italic', 'underline', 'strike'],
+  ['blockquote', 'code-block'],
+  [{ list: 'ordered' }, { list: 'bullet' }],
+  ['link', 'mathjax'],
   ['clean'],
 ];
 const QUILL_FORMATS = [
@@ -140,6 +157,10 @@ const RichTextEditor = ({
   loadErrorText = 'Editor failed to load.',
   hintText,
   minHeight = 360,
+  compact = false,
+  enableMathJax = false,
+  mathJaxPromptText = 'MathJax formula',
+  mathJaxPreviewLabel = 'MathJax preview',
 }: RichTextEditorProps) => {
   const hostRef = useRef<HTMLDivElement | null>(null);
   const quillRef = useRef<QuillInstance | null>(null);
@@ -161,14 +182,44 @@ const RichTextEditor = ({
           return;
         }
 
+        const quillHolder: { current: QuillInstance | null } = { current: null };
+        const toolbar = enableMathJax
+          ? {
+              container: QUILL_MATHJAX_TOOLBAR,
+              handlers: {
+                mathjax: () => {
+                  const quill = quillHolder.current;
+
+                  if (!quill) {
+                    return;
+                  }
+
+                  const expression = window.prompt(mathJaxPromptText);
+
+                  if (!expression?.trim()) {
+                    return;
+                  }
+
+                  const selection = quill.getSelection?.(true);
+                  const index = selection?.index ?? Math.max((quill.getLength?.() ?? 1) - 1, 0);
+                  const snippet = `\\(${expression.trim()}\\)`;
+
+                  quill.insertText?.(index, snippet, 'user');
+                  quill.setSelection?.(index + snippet.length, 0, 'user');
+                },
+              },
+            }
+          : QUILL_TOOLBAR;
+
         const quill = new Quill(hostRef.current, {
           theme: 'snow',
           modules: {
-            toolbar: QUILL_TOOLBAR,
+            toolbar,
           },
           formats: QUILL_FORMATS,
           placeholder,
         });
+        quillHolder.current = quill;
 
         quill.clipboard.dangerouslyPasteHTML(normalizeEditorHtml(value));
         handler = () => {
@@ -197,7 +248,7 @@ const RichTextEditor = ({
 
       quillRef.current = null;
     };
-  }, [placeholder]);
+  }, [enableMathJax, mathJaxPromptText, placeholder]);
 
   useEffect(() => {
     const quill = quillRef.current;
@@ -229,8 +280,8 @@ const RichTextEditor = ({
             '& .ql-toolbar.ql-snow': {
               border: 0,
               borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
-              px: 2,
-              py: 1.5,
+              px: compact ? 1.25 : 2,
+              py: compact ? 1 : 1.5,
               bgcolor: 'background.paper',
             },
             '& .ql-container.ql-snow': {
@@ -241,16 +292,22 @@ const RichTextEditor = ({
             '& .ql-editor': {
               minHeight,
               fontFamily: 'inherit',
-              fontSize: 16,
-              lineHeight: 1.75,
-              p: 3,
+              fontSize: compact ? 14 : 16,
+              lineHeight: compact ? 1.65 : 1.75,
+              p: compact ? 2 : 3,
             },
             '& .ql-editor.ql-blank::before': {
-              left: 24,
-              right: 24,
+              left: compact ? 16 : 24,
+              right: compact ? 16 : 24,
               color: 'text.secondary',
               fontStyle: 'normal',
               opacity: 0.72,
+            },
+            '& .ql-toolbar button.ql-mathjax::after': {
+              content: '"fx"',
+              fontSize: 12,
+              fontWeight: 800,
+              lineHeight: '24px',
             },
             '& .ql-toolbar button:hover .ql-stroke, & .ql-toolbar button.ql-active .ql-stroke': {
               stroke: (theme) => theme.vars.palette.primary.main,
@@ -263,6 +320,27 @@ const RichTextEditor = ({
           <Box ref={hostRef} />
         </Box>
       )}
+      {enableMathJax && value ? (
+        <Box>
+          <Typography variant="caption" color="text.secondary">
+            {mathJaxPreviewLabel}
+          </Typography>
+          <Box
+            sx={{
+              mt: 0.75,
+              p: compact ? 1.5 : 2,
+              border: 1,
+              borderColor: 'divider',
+              borderRadius: 1,
+              bgcolor: 'background.paper',
+              fontSize: compact ? 14 : 16,
+              lineHeight: compact ? 1.65 : 1.75,
+            }}
+          >
+            <MathJaxView rawHtml={value} />
+          </Box>
+        </Box>
+      ) : null}
       {hintText ? (
         <Typography variant="caption" color="text.secondary">
           {hintText}

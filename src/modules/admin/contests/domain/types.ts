@@ -2,8 +2,8 @@ import { AdminChoiceOption } from 'modules/admin/shared/domain/types';
 
 export interface AdminContestProblem {
   id?: number;
-  problem_id: number;
-  problem_title?: string;
+  problemId: number;
+  problemTitle?: string;
   symbol: string;
   ball: number;
   delta?: number | null;
@@ -12,33 +12,33 @@ export interface AdminContestProblem {
 export interface AdminContest {
   id: number;
   creator?: number;
-  creator_username?: string;
+  creatorUsername?: string;
   title: string;
   description?: string;
-  description_uz?: string;
-  description_en?: string;
-  description_ru?: string;
-  start_time: string;
-  finish_time: string;
+  descriptionUz?: string;
+  descriptionEn?: string;
+  descriptionRu?: string;
+  startTime: string;
+  finishTime: string;
   type: string;
   category: number;
-  participation_type: number;
-  is_rated: boolean;
+  participationType: number;
+  isRated: boolean;
   private: boolean;
-  private_link?: string | null;
+  privateLink?: string | null;
   problems: AdminContestProblem[];
-  logo_url?: string | null;
-  og_image_url?: string | null;
+  logoUrl?: string | null;
+  ogImageUrl?: string | null;
   created?: string;
 }
 
 export type AdminContestPayload = Omit<
   AdminContest,
-  'id' | 'creator_username' | 'logo_url' | 'og_image_url' | 'created'
+  'id' | 'creatorUsername' | 'logoUrl' | 'ogImageUrl' | 'created'
 >;
 
 export interface AdminContestMeta {
   types: AdminChoiceOption<string>[];
   categories: AdminChoiceOption<number>[];
-  participation_types: AdminChoiceOption<number>[];
+  participationTypes: AdminChoiceOption<number>[];
 }

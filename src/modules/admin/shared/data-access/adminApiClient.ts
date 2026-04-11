@@ -1,61 +1,89 @@
 import { axiosMutator } from 'shared/api/http/axiosMutator';
-import { normalizeAdminApiResponse, normalizeAdminPaginatedResponse } from './caseMapper';
-import { AdminListParams, AdminPaginatedResponse } from '../domain/types';
+import {
+  AdminBatchPayload,
+  AdminBatchResponse,
+  AdminListParams,
+  AdminListParamValue,
+  AdminPaginatedResponse,
+} from '../domain/types';
 
-const toApiListParams = (params?: AdminListParams) => ({
-  page: params?.page,
-  page_size: params?.pageSize,
-  ordering: params?.ordering,
-  search: params?.search || undefined,
-});
+const toApiParamValue = (value: AdminListParamValue) => {
+  if (value === null || value === undefined || value === '') {
+    return undefined;
+  }
+
+  if (Array.isArray(value)) {
+    return value.length > 0 ? value.join(',') : undefined;
+  }
+
+  return value;
+};
+
+const toApiListParams = (params?: AdminListParams) =>
+  Object.entries(params ?? {}).reduce<Record<string, AdminListParamValue>>((result, [key, value]) => {
+    const apiValue = toApiParamValue(value);
+
+    if (apiValue !== undefined) {
+      result[key] = apiValue;
+    }
+
+    return result;
+  }, {});
 
 export const adminApiClient = {
   list: async <T>(resource: string, params?: AdminListParams) => {
-    const response = await axiosMutator<AdminPaginatedResponse<unknown>>({
+    return axiosMutator<AdminPaginatedResponse<T>>({
       url: `/api/admin/${resource}/`,
       method: 'GET',
       params: toApiListParams(params),
     });
-
-    return normalizeAdminPaginatedResponse<T>(response);
   },
-  read: async <T>(resource: string, id: number | string) => {
-    const response = await axiosMutator<unknown>({
+  read: <T>(resource: string, id: number | string) =>
+    axiosMutator<T>({
       url: `/api/admin/${resource}/${id}/`,
       method: 'GET',
-    });
-
-    return normalizeAdminApiResponse<T>(response);
-  },
-  create: async <T, TPayload>(resource: string, payload: TPayload) => {
-    const response = await axiosMutator<unknown>({
+    }),
+  create: <T, TPayload>(resource: string, payload: TPayload) =>
+    axiosMutator<T>({
       url: `/api/admin/${resource}/`,
       method: 'POST',
       data: payload,
-    });
-
-    return normalizeAdminApiResponse<T>(response);
-  },
-  update: async <T, TPayload>(resource: string, id: number | string, payload: TPayload) => {
-    const response = await axiosMutator<unknown>({
+    }),
+  update: <T, TPayload>(resource: string, id: number | string, payload: TPayload) =>
+    axiosMutator<T>({
       url: `/api/admin/${resource}/${id}/`,
       method: 'PATCH',
       data: payload,
-    });
-
-    return normalizeAdminApiResponse<T>(response);
-  },
+    }),
   remove: (resource: string, id: number | string) =>
     axiosMutator<void>({
       url: `/api/admin/${resource}/${id}/`,
       method: 'DELETE',
     }),
-  meta: async <T>(resource: string) => {
-    const response = await axiosMutator<unknown>({
+  batch: async <TAction extends string>(
+    resource: string,
+    payload: AdminBatchPayload<TAction>,
+  ) => {
+    return axiosMutator<AdminBatchResponse>({
+      url: `/api/admin/${resource}/batch/`,
+      method: 'POST',
+      data: payload,
+    });
+  },
+  meta: <T>(resource: string) =>
+    axiosMutator<T>({
       url: `/api/admin/${resource}/meta/`,
       method: 'GET',
-    });
-
-    return normalizeAdminApiResponse<T>(response);
-  },
+    }),
+  action: <T, TPayload>(
+    resource: string,
+    id: number | string,
+    actionName: string,
+    payload: TPayload,
+  ) =>
+    axiosMutator<T>({
+      url: `/api/admin/${resource}/${id}/${actionName}/`,
+      method: 'POST',
+      data: payload,
+    }),
 };

@@ -384,9 +384,13 @@ const ProblemsListPage = () => {
           page: 1,
         };
 
+        const mutablePatch = nextPatch as Record<
+          keyof ProblemsListQueryState,
+          ProblemsListQueryState[keyof ProblemsListQueryState] | undefined
+        >;
+
         advisorManagedFilterKeys.forEach((key) => {
-          nextPatch[key as keyof ProblemsListQueryState] =
-            problemsListQueryDefaults[key as keyof ProblemsListQueryState];
+          mutablePatch[key] = problemsListQueryDefaults[key];
         });
 
         (
@@ -394,7 +398,7 @@ const ProblemsListPage = () => {
             [keyof ProblemsListParams, ProblemsListParams[keyof ProblemsListParams]]
           >
         ).forEach(([key, value]) => {
-          nextPatch[key as keyof ProblemsListQueryState] =
+          mutablePatch[key as keyof ProblemsListQueryState] =
             normalizeProblemsListValue(key, value) as never;
         });
 
@@ -770,7 +774,7 @@ const FilterCard = ({
     if (filter.problem_rating_min || filter.problem_rating_max) {
       items.push({
         key: 'problem-rating-band',
-        label: `Problem rating: ${formatProblemRatingBand(
+        label: `${t('problems.problemRating')}: ${formatProblemRatingBand(
           filter.problem_rating_min,
           filter.problem_rating_max,
         )}`,
@@ -1077,6 +1081,31 @@ const FilterCard = ({
               </MenuItem>
             ))}
           </TextField>
+
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.25}>
+            <TextField
+              fullWidth
+              type="number"
+              size="small"
+              variant="filled"
+              label={t('problems.problemRatingFrom')}
+              value={filter.problem_rating_min ?? ''}
+              onChange={(event) =>
+                onChange('problem_rating_min', event.target.value || undefined)
+              }
+            />
+            <TextField
+              fullWidth
+              type="number"
+              size="small"
+              variant="filled"
+              label={t('problems.problemRatingTo')}
+              value={filter.problem_rating_max ?? ''}
+              onChange={(event) =>
+                onChange('problem_rating_max', event.target.value || undefined)
+              }
+            />
+          </Stack>
 
           <TextField
             select

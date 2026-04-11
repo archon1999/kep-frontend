@@ -1,4 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert, CircularProgress, FormControlLabel, Stack, Switch, TextField } from '@mui/material';
 import { useNavigate, useParams } from 'react-router';
 import { resources } from 'app/routes/resources';
@@ -11,24 +12,27 @@ import { AdminUserPayload } from '../../domain/types';
 
 const emptyUser: AdminUserPayload = {
   username: '',
-  first_name: '',
-  last_name: '',
+  firstName: '',
+  lastName: '',
   email: '',
-  is_active: true,
-  is_staff: false,
-  is_superuser: false,
+  isActive: true,
+  isStaff: false,
+  isSuperuser: false,
+  skillsRating: 0,
+  activityRating: 0,
   kepcoin: 0,
   streak: 0,
-  max_streak: 0,
-  last_seen: '',
-  can_create_problems: false,
-  can_change_problem_similar: false,
-  can_change_problem_tags: false,
-  can_use_check_samples: false,
+  maxStreak: 0,
+  lastSeen: '',
+  canCreateProblems: false,
+  canChangeProblemSimilar: false,
+  canChangeProblemTags: false,
+  canUseCheckSamples: false,
   password: '',
 };
 
 const AdminUserFormPage = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const isEdit = Boolean(id);
   const navigate = useNavigate();
@@ -41,7 +45,7 @@ const AdminUserFormPage = () => {
     if (user) {
       setForm({
         ...user,
-        last_seen: toDateTimeLocal(user.last_seen),
+        lastSeen: toDateTimeLocal(user.lastSeen),
         password: '',
       });
     }
@@ -64,10 +68,10 @@ const AdminUserFormPage = () => {
   const buildPayload = () => {
     const payload: AdminUserPayload = {
       ...form,
-      first_name: form.first_name ?? '',
-      last_name: form.last_name ?? '',
+      firstName: form.firstName ?? '',
+      lastName: form.lastName ?? '',
       email: form.email ?? '',
-      last_seen: form.last_seen ? fromDateTimeLocal(form.last_seen) : undefined,
+      lastSeen: form.lastSeen ? fromDateTimeLocal(form.lastSeen) : undefined,
       password: form.password || undefined,
     };
 
@@ -82,12 +86,12 @@ const AdminUserFormPage = () => {
     const payload = buildPayload();
 
     if (!payload.username) {
-      setError('Username is required.');
+      setError(t('admin.form.validation.usernameRequired'));
       return;
     }
 
     if (!isEdit && !payload.password) {
-      setError('Password is required for a new user.');
+      setError(t('admin.form.validation.passwordRequired'));
       return;
     }
 
@@ -109,7 +113,7 @@ const AdminUserFormPage = () => {
   };
 
   const handleDelete = async () => {
-    if (!id || !window.confirm(`Delete user ${form.username || id}?`)) {
+    if (!id || !window.confirm(t('admin.users.confirmDelete', { username: form.username || id }))) {
       return;
     }
 
@@ -127,118 +131,164 @@ const AdminUserFormPage = () => {
 
   return (
     <AdminFormPageLayout
-      title={isEdit ? `Edit user #${id}` : 'Create user'}
+      title={isEdit ? t('admin.users.editTitle', { id }) : t('admin.users.createTitle')}
       listPath={resources.AdminUsers}
       isEdit={isEdit}
       isSaving={isSaving}
       onSave={handleSave}
       onDelete={handleDelete}
-    >
-      <Stack spacing={3}>
-        {error ? <Alert severity="error">{error}</Alert> : null}
-
-        <AdminFormSection title="Identity">
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-            <TextField label="Username" value={form.username} onChange={handleStringField('username')} fullWidth />
-            <TextField
-              label={isEdit ? 'New password' : 'Password'}
-              type="password"
-              value={form.password ?? ''}
-              onChange={handleStringField('password')}
-              fullWidth
-            />
-          </Stack>
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-            <TextField label="First name" value={form.first_name ?? ''} onChange={handleStringField('first_name')} fullWidth />
-            <TextField label="Last name" value={form.last_name ?? ''} onChange={handleStringField('last_name')} fullWidth />
-            <TextField label="Email" value={form.email ?? ''} onChange={handleStringField('email')} fullWidth />
-          </Stack>
+      sidebarTitle={t('admin.form.sections.userSettings')}
+      sidebar={
+        <Stack spacing={2.5}>
           <TextField
-            label="Last seen"
-            type="datetime-local"
-            value={form.last_seen ?? ''}
-            onChange={handleStringField('last_seen')}
-            slotProps={{ inputLabel: { shrink: true } }}
+            label={t('admin.form.fields.username')}
+            value={form.username}
+            onChange={handleStringField('username')}
+            fullWidth
           />
-        </AdminFormSection>
-
-        <AdminFormSection title="Status">
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <TextField
+            label={isEdit ? t('admin.form.fields.newPassword') : t('admin.form.fields.password')}
+            type="password"
+            value={form.password ?? ''}
+            onChange={handleStringField('password')}
+            fullWidth
+          />
+          <Stack spacing={0.5}>
             <FormControlLabel
-              control={<Switch checked={form.is_active} onChange={(event) => setField('is_active', event.target.checked)} />}
-              label="Active"
+              control={<Switch checked={form.isActive} onChange={(event) => setField('isActive', event.target.checked)} />}
+              label={t('admin.form.fields.active')}
             />
             <FormControlLabel
-              control={<Switch checked={form.is_staff} onChange={(event) => setField('is_staff', event.target.checked)} />}
-              label="Staff"
+              control={<Switch checked={form.isStaff} onChange={(event) => setField('isStaff', event.target.checked)} />}
+              label={t('admin.form.fields.staff')}
             />
             <FormControlLabel
               control={
                 <Switch
-                  checked={form.is_superuser}
-                  onChange={(event) => setField('is_superuser', event.target.checked)}
+                  checked={form.isSuperuser}
+                  onChange={(event) => setField('isSuperuser', event.target.checked)}
                 />
               }
-              label="Superuser"
+              label={t('admin.form.fields.superuser')}
             />
           </Stack>
-        </AdminFormSection>
+        </Stack>
+      }
+    >
+      {error ? <Alert severity="error">{error}</Alert> : null}
 
-        <AdminFormSection title="Counters">
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-            <TextField label="Kepcoin" type="number" value={form.kepcoin} onChange={handleNumberField('kepcoin')} fullWidth />
-            <TextField label="Streak" type="number" value={form.streak} onChange={handleNumberField('streak')} fullWidth />
-            <TextField
-              label="Max streak"
-              type="number"
-              value={form.max_streak}
-              onChange={handleNumberField('max_streak')}
-              fullWidth
-            />
-          </Stack>
-        </AdminFormSection>
+      <AdminFormSection title={t('admin.form.sections.identity')}>
+        <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+          <TextField
+            label={t('admin.form.fields.firstName')}
+            value={form.firstName ?? ''}
+            onChange={handleStringField('firstName')}
+            fullWidth
+          />
+          <TextField
+            label={t('admin.form.fields.lastName')}
+            value={form.lastName ?? ''}
+            onChange={handleStringField('lastName')}
+            fullWidth
+          />
+          <TextField
+            label={t('admin.form.fields.email')}
+            value={form.email ?? ''}
+            onChange={handleStringField('email')}
+            fullWidth
+          />
+        </Stack>
+        <TextField
+          label={t('admin.form.fields.lastSeen')}
+          type="datetime-local"
+          value={form.lastSeen ?? ''}
+          onChange={handleStringField('lastSeen')}
+          slotProps={{ inputLabel: { shrink: true } }}
+        />
+      </AdminFormSection>
 
-        <AdminFormSection title="Problem Permissions">
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={form.can_create_problems}
-                  onChange={(event) => setField('can_create_problems', event.target.checked)}
-                />
-              }
-              label="Can create problems"
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={form.can_change_problem_similar}
-                  onChange={(event) => setField('can_change_problem_similar', event.target.checked)}
-                />
-              }
-              label="Can change similar"
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={form.can_change_problem_tags}
-                  onChange={(event) => setField('can_change_problem_tags', event.target.checked)}
-                />
-              }
-              label="Can change tags"
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={form.can_use_check_samples}
-                  onChange={(event) => setField('can_use_check_samples', event.target.checked)}
-                />
-              }
-              label="Can use check samples"
-            />
-          </Stack>
-        </AdminFormSection>
-      </Stack>
+      <AdminFormSection title={t('admin.form.sections.counters')}>
+        <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+          <TextField
+            label={t('admin.form.fields.kepcoin')}
+            type="number"
+            value={form.kepcoin}
+            onChange={handleNumberField('kepcoin')}
+            fullWidth
+          />
+          <TextField
+            label={t('admin.form.fields.streak')}
+            type="number"
+            value={form.streak}
+            onChange={handleNumberField('streak')}
+            fullWidth
+          />
+          <TextField
+            label={t('admin.form.fields.maxStreak')}
+            type="number"
+            value={form.maxStreak}
+            onChange={handleNumberField('maxStreak')}
+            fullWidth
+          />
+        </Stack>
+        <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+          <TextField
+            label={t('admin.form.fields.skillsRating')}
+            type="number"
+            value={form.skillsRating}
+            onChange={handleNumberField('skillsRating')}
+            fullWidth
+          />
+          <TextField
+            label={t('admin.form.fields.activityRating')}
+            type="number"
+            value={form.activityRating}
+            onChange={handleNumberField('activityRating')}
+            fullWidth
+          />
+        </Stack>
+      </AdminFormSection>
+
+      <AdminFormSection title={t('admin.form.sections.problemPermissions')}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} flexWrap="wrap" spacing={2}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={form.canCreateProblems}
+                onChange={(event) => setField('canCreateProblems', event.target.checked)}
+              />
+            }
+            label={t('admin.form.fields.canCreateProblems')}
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={form.canChangeProblemSimilar}
+                onChange={(event) => setField('canChangeProblemSimilar', event.target.checked)}
+              />
+            }
+            label={t('admin.form.fields.canChangeSimilar')}
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={form.canChangeProblemTags}
+                onChange={(event) => setField('canChangeProblemTags', event.target.checked)}
+              />
+            }
+            label={t('admin.form.fields.canChangeTags')}
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={form.canUseCheckSamples}
+                onChange={(event) => setField('canUseCheckSamples', event.target.checked)}
+              />
+            }
+            label={t('admin.form.fields.canUseCheckSamples')}
+          />
+        </Stack>
+      </AdminFormSection>
     </AdminFormPageLayout>
   );
 };
