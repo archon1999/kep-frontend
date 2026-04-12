@@ -1,17 +1,19 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Card, CardContent, Pagination, Skeleton, Stack, Typography } from '@mui/material';
+import Logo from 'shared/components/common/Logo';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { numberParam } from 'shared/lib/queryParams';
-import { useArenasList } from '../../application/queries.ts';
-import ArenaListCard from '../components/ArenaListCard.tsx';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { cssVarRgba } from 'shared/lib/utils';
-import Logo from 'shared/components/common/Logo';
+import { useArenasList } from '../../application/queries.ts';
+import ArenaListCard from '../components/ArenaListCard.tsx';
 
 const ArenaListPage = () => {
   const { t } = useTranslation();
-  const { state, setField } = useRouteQueryState({
+  const { state, setField } = useRouteQueryState<{
+    page: number;
+  }>({
     defaults: {
       page: 1,
     },
@@ -55,14 +57,21 @@ const ArenaListPage = () => {
             background: `linear-gradient(135deg, ${cssVarRgba(theme.vars.palette.warning.lightChannel, 0.08)}, ${cssVarRgba(theme.vars.palette.warning.mainChannel, 0.06)})`,
           })}
         >
-          <CardContent sx={{ p: { xs: 3, md: 4 } }}>
-            <Stack direction="column" spacing={1.25}>
-              <Typography variant="h4" fontWeight={800}>
-                {t('arena.title')}
-              </Typography>
-              <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 720 }}>
-                {subtitle}
-              </Typography>
+          <CardContent sx={{ p: { xs: 3, md: 4 }, position: 'relative', zIndex: 1 }}>
+            <Stack
+              direction={{ xs: 'column', lg: 'row' }}
+              spacing={2}
+              alignItems={{ xs: 'stretch', lg: 'center' }}
+              justifyContent="space-between"
+            >
+              <Stack direction="column" spacing={1.25}>
+                <Typography variant="h4" fontWeight={800}>
+                  {t('arena.title')}
+                </Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 720 }}>
+                  {subtitle}
+                </Typography>
+              </Stack>
             </Stack>
           </CardContent>
 
@@ -80,8 +89,10 @@ const ArenaListPage = () => {
         </Card>
 
         {isLoading
-          ? Array.from({ length: 6 }).map((_) => <Skeleton variant="rounded" height={200} />)
-          : arenas.map((arena) => <ArenaListCard arena={arena} />)}
+          ? Array.from({ length: 6 }).map((_, index) => (
+              <Skeleton key={index} variant="rounded" height={200} />
+            ))
+          : arenas.map((arena) => <ArenaListCard key={arena.id} arena={arena} />)}
 
         {!isLoading && arenas.length === 0 ? (
           <Typography variant="body2" color="text.secondary">

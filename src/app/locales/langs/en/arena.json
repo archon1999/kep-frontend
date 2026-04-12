@@ -40,9 +40,10 @@
     },
     "players": "Standings",
     "participants": "participants",
+    "participantsTitle": "Participants",
     "columns": {
       "rank": "Rank",
-      "user": "User",
+      "user": "Player",
       "rating": "Rating",
       "results": "Results",
       "points": "Points",

@@ -1,11 +1,10 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router';
-import { Alert, Avatar, Box, Card, Grid, Skeleton, Stack, Tooltip, Typography } from '@mui/material';
+import { Alert, Box, Grid, Skeleton, Stack } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceById, resources } from 'app/routes/resources.ts';
-import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { numberParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
@@ -183,57 +182,9 @@ const ArenaDetailPage = () => {
     },
   });
 
-  const headerTitle = useMemo(() => arena?.title ?? t('arena.title'), [arena?.title, t]);
-  const chapterPreview = useMemo(() => arena?.chapters?.slice(0, 4) ?? [], [arena?.chapters]);
-
   return (
     <Box sx={responsivePagePaddingSx}>
       <Stack direction="column" spacing={3}>
-        <Card
-          sx={{
-            borderRadius: 4,
-            p: { xs: 2.5, md: 3 },
-            background: stateContent.isOngoing
-              ? 'linear-gradient(135deg, rgba(46,125,50,0.18), rgba(255,193,7,0.12))'
-              : stateContent.isFinished
-                ? 'linear-gradient(135deg, rgba(255,193,7,0.18), rgba(84,110,122,0.10))'
-                : 'linear-gradient(120deg, rgba(255,193,7,0.16), rgba(33,150,243,0.08))',
-          }}
-          background={1}
-        >
-          <Stack direction="column" spacing={2.5}>
-            <Stack
-              direction={{ xs: 'column', md: 'row' }}
-              spacing={2}
-              alignItems={{ xs: 'flex-start', md: 'center' }}
-              justifyContent="space-between"
-            >
-              <Stack direction="row" spacing={1.5} alignItems="center">
-                <IconifyIcon
-                  icon={stateContent.isFinished ? 'mdi:trophy-award' : 'mdi:sword-cross'}
-                  color="warning.main"
-                  fontSize={34}
-                />
-                <Stack direction="column" spacing={0.5}>
-                  <Typography variant="h4" fontWeight={900}>
-                    {headerTitle}
-                  </Typography>
-                </Stack>
-              </Stack>
-
-              {chapterPreview.map((chapter) => (
-                <Tooltip key={chapter.id} title={chapter.title}>
-                  <Avatar
-                    src={chapter.icon}
-                    alt={chapter.title}
-                    sx={{ width: 36, height: 36, border: '1px solid', borderColor: 'divider' }}
-                  />
-                </Tooltip>
-              ))}
-            </Stack>
-          </Stack>
-        </Card>
-
         {transitionBanner ? <Alert severity={transitionBanner.severity}>{transitionBanner.message}</Alert> : null}
 
         {isArenaLoading || !arena ? (
@@ -243,51 +194,54 @@ const ArenaDetailPage = () => {
             <Skeleton variant="rounded" height={200} />
           </Stack>
         ) : (
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 4 }}>
-              <Stack direction="column" spacing={3}>
-                <ArenaCountdownCard arena={arena} />
-                <ArenaInfoCard
-                  arena={arena}
-                  loginHref={loginHref}
-                  onRegister={handleRegister}
-                  onUnregister={handleUnregister}
-                />
-                <ArenaStatisticsCard arena={arena} stats={statistics} titleKey={stateContent.insightsTitleKey} />
-              </Stack>
-            </Grid>
+          <>
+            <ArenaCountdownCard arena={arena} />
 
-            <Grid size={{ xs: 12, md: 8 }}>
-              <Stack direction="column" spacing={3}>
-                {stateContent.isFinished ? <ArenaWinnersCard topPlayers={topPlayers} /> : null}
-                <ArenaQueueBanner
-                  arena={arena}
-                  currentChallengeId={nextChallenge?.challengeId}
-                  onOpenCurrentChallenge={handleNextChallenge}
-                  onPauseToggle={handlePauseToggle}
-                />
-                <ArenaPlayersTable
-                  data={players}
-                  loading={isPlayersLoading}
-                  page={players?.page ?? playersPage ?? 1}
-                  pageSize={PLAYERS_PAGE_SIZE}
-                  onPageChange={setPlayersPage}
-                  onSelectPlayer={handleSelectPlayer}
-                  selectedUsername={selectedUsername}
-                  currentUsername={currentUser?.username}
-                  status={arena.status}
-                />
-                {!stateContent.isUpcoming ? (
-                  <ArenaChallengesList
-                    data={challenges}
-                    loading={isChallengesLoading}
-                    page={challenges?.page ?? state.challengesPage}
-                    onPageChange={(value) => setField('challengesPage', value)}
+            <Grid container spacing={3}>
+              <Grid size={{ xs: 12, md: 4 }}>
+                <Stack direction="column" spacing={3}>
+                  <ArenaInfoCard
+                    arena={arena}
+                    loginHref={loginHref}
+                    onRegister={handleRegister}
+                    onUnregister={handleUnregister}
                   />
-                ) : null}
-              </Stack>
+                  <ArenaStatisticsCard arena={arena} stats={statistics} titleKey={stateContent.insightsTitleKey} />
+                </Stack>
+              </Grid>
+
+              <Grid size={{ xs: 12, md: 8 }}>
+                <Stack direction="column" spacing={3}>
+                  {stateContent.isFinished ? <ArenaWinnersCard topPlayers={topPlayers} /> : null}
+                  <ArenaQueueBanner
+                    arena={arena}
+                    currentChallengeId={nextChallenge?.challengeId}
+                    onOpenCurrentChallenge={handleNextChallenge}
+                    onPauseToggle={handlePauseToggle}
+                  />
+                  <ArenaPlayersTable
+                    data={players}
+                    loading={isPlayersLoading}
+                    page={players?.page ?? playersPage ?? 1}
+                    pageSize={PLAYERS_PAGE_SIZE}
+                    onPageChange={setPlayersPage}
+                    onSelectPlayer={handleSelectPlayer}
+                    selectedUsername={selectedUsername}
+                    currentUsername={currentUser?.username}
+                    status={arena.status}
+                  />
+                  {!stateContent.isUpcoming ? (
+                    <ArenaChallengesList
+                      data={challenges}
+                      loading={isChallengesLoading}
+                      page={challenges?.page ?? state.challengesPage}
+                      onPageChange={(value) => setField('challengesPage', value)}
+                    />
+                  ) : null}
+                </Stack>
+              </Grid>
             </Grid>
-          </Grid>
+          </>
         )}
 
         <ArenaPlayerStatisticsDialog

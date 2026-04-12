@@ -40,9 +40,10 @@
     },
     "players": "Таблица",
     "participants": "участников",
+    "participantsTitle": "Участники",
     "columns": {
       "rank": "Место",
-      "user": "Пользователь",
+      "user": "Игрок",
       "rating": "Рейтинг",
       "results": "Результаты",
       "points": "Очки",

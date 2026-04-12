@@ -44,8 +44,9 @@ export const arenaApiClient = {
     return response.data;
   },
   listPlayers: async (arenaId: number | string, filters?: ArenaPlayersFilters) => {
-    const params = { ...withPaginationParams(filters), arena_id: arenaId };
-    const response = await instance.get('/api/arena-players/', { params });
+    const response = await instance.get(`/api/arena/${arenaId}/players/`, {
+      params: withPaginationParams(filters),
+    });
     return response.data;
   },
   listChallenges: async (arenaId: number | string, filters?: ArenaChallengesFilters) => {

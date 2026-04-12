@@ -40,9 +40,10 @@
     },
     "players": "Natijalar",
     "participants": "ishtirokchi",
+    "participantsTitle": "Ishtirokchilar",
     "columns": {
       "rank": "O'rin",
-      "user": "Foydalanuvchi",
+      "user": "O'yinchi",
       "rating": "Reyting",
       "results": "Natijalar",
       "points": "Ochko",
