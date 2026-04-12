@@ -156,9 +156,6 @@ const ArenaCountdownCard = ({ arena }: ArenaCountdownCardProps) => {
                       sx={(theme) => ({
                         width: 36,
                         height: 36,
-                        border: '1px solid',
-                        borderColor: 'divider',
-                        backgroundColor: alpha(theme.palette.background.paper, 0.5),
                       })}
                     />
                   </Tooltip>
@@ -204,7 +201,7 @@ const ArenaCountdownCard = ({ arena }: ArenaCountdownCardProps) => {
                 color={color}
                 sx={(theme) => ({
                   width: '100%',
-                  minWidth: { md: 340 },
+                  minWidth: { md: 300 },
                   height: 8,
                   borderRadius: 1,
                   backgroundColor: alpha(theme.palette[color].main, 0.16),

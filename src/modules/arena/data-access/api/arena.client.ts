@@ -1,22 +1,15 @@
 import { instance } from 'shared/api/http/axiosInstance.ts';
-import { ArenaStatus } from '../../domain/entities/arena.entity';
-import { ArenaChallengesFilters, ArenaListFilters, ArenaPlayersFilters } from '../../domain/ports/arena.repository';
-
-const withPaginationParams = <T extends { pageSize?: number } | undefined>(filters?: T) => {
-  if (!filters) return undefined;
-
-  const params: Record<string, unknown> = { ...filters };
-  if (filters.pageSize != null) {
-    params.page_size = filters.pageSize;
-    delete params.pageSize;
-  }
-
-  return params;
-};
+import {
+  ArenaChallengesFilters,
+  ArenaListFilters,
+  ArenaPlayersFilters,
+} from '../../domain/ports/arena.repository';
 
 export const arenaApiClient = {
   list: async (filters?: ArenaListFilters) => {
-    const response = await instance.get('/api/arena/', { params: withPaginationParams(filters) });
+    const response = await instance.get('/api/arena/', {
+      params: filters,
+    });
     return response.data;
   },
   getArena: async (arenaId: number | string) => {
@@ -45,18 +38,20 @@ export const arenaApiClient = {
   },
   listPlayers: async (arenaId: number | string, filters?: ArenaPlayersFilters) => {
     const response = await instance.get(`/api/arena/${arenaId}/players/`, {
-      params: withPaginationParams(filters),
+      params: filters,
     });
     return response.data;
   },
   listChallenges: async (arenaId: number | string, filters?: ArenaChallengesFilters) => {
     const response = await instance.get(`/api/arena/${arenaId}/last-challenges/`, {
-      params: withPaginationParams(filters),
+      params: filters,
     });
     return response.data;
   },
   playerStatistics: async (arenaId: number | string, username: string) => {
-    const response = await instance.get(`/api/arena/${arenaId}/arena-player-statistics/`, { params: { username } });
+    const response = await instance.get(`/api/arena/${arenaId}/arena-player-statistics/`, {
+      params: { username },
+    });
     return response.data;
   },
   topPlayers: async (arenaId: number | string) => {
@@ -68,9 +63,3 @@ export const arenaApiClient = {
     return response.data;
   },
 };
-
-export const statusOptions: { label: string; value: ArenaStatus }[] = [
-  { label: 'Not started', value: ArenaStatus.NotStarted },
-  { label: 'Live', value: ArenaStatus.Already },
-  { label: 'Finished', value: ArenaStatus.Finished },
-];

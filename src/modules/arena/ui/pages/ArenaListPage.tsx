@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Card, CardContent, Pagination, Skeleton, Stack, Typography } from '@mui/material';
 import Logo from 'shared/components/common/Logo';
@@ -30,46 +29,29 @@ const ArenaListPage = () => {
 
   const { data, isLoading } = useArenasList({
     page: state.page,
-    pageSize: 6,
-    status: undefined,
+    pageSize: 7,
   });
 
   const arenas = data?.data ?? [];
   const pagesCount = data?.pagesCount ?? 0;
-
-  const subtitle = useMemo(
-    () =>
-      arenas.length
-        ? t('arena.listSubtitle', { count: data?.total ?? arenas.length })
-        : t('arena.listEmptySubtitle'),
-    [arenas.length, data?.total, t],
-  );
 
   return (
     <Box sx={responsivePagePaddingSx}>
       <Stack direction="column" spacing={3}>
         <Card
           sx={(theme) => ({
-            position: 'relative',
-            overflow: 'hidden',
             borderRadius: 3,
-            bgcolor: 'background.paper',
             background: `linear-gradient(135deg, ${cssVarRgba(theme.vars.palette.warning.lightChannel, 0.08)}, ${cssVarRgba(theme.vars.palette.warning.mainChannel, 0.06)})`,
           })}
         >
-          <CardContent sx={{ p: { xs: 3, md: 4 }, position: 'relative', zIndex: 1 }}>
-            <Stack
-              direction={{ xs: 'column', lg: 'row' }}
-              spacing={2}
-              alignItems={{ xs: 'stretch', lg: 'center' }}
-              justifyContent="space-between"
-            >
+          <CardContent sx={{ p: { xs: 3, md: 4 } }}>
+            <Stack>
               <Stack direction="column" spacing={1.25}>
                 <Typography variant="h4" fontWeight={800}>
                   {t('arena.title')}
                 </Typography>
                 <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 720 }}>
-                  {subtitle}
+                  {t('arena.listSubtitle', { count: data?.total ?? arenas.length })}
                 </Typography>
               </Stack>
             </Stack>
@@ -89,18 +71,10 @@ const ArenaListPage = () => {
         </Card>
 
         {isLoading
-          ? Array.from({ length: 6 }).map((_, index) => (
-              <Skeleton key={index} variant="rounded" height={200} />
-            ))
+          ? Array.from({ length: 6 }).map(() => <Skeleton variant="rounded" height={108} />)
           : arenas.map((arena) => <ArenaListCard key={arena.id} arena={arena} />)}
 
-        {!isLoading && arenas.length === 0 ? (
-          <Typography variant="body2" color="text.secondary">
-            {t('arena.listEmptySubtitle')}
-          </Typography>
-        ) : null}
-
-        {pagesCount > 1 ? (
+        {pagesCount > 1 && (
           <Stack direction="column" alignItems="center">
             <Pagination
               color="warning"
@@ -109,7 +83,7 @@ const ArenaListPage = () => {
               onChange={(_, value) => setField('page', value)}
             />
           </Stack>
-        ) : null}
+        )}
       </Stack>
     </Box>
   );

@@ -128,7 +128,7 @@ const ArenaPlayersTable = ({
               : data?.data?.map((player) => {
                   const isCurrentUser = player.username === currentUsername;
                   const isSelected = player.username === selectedUsername;
-                  const highlight = isOngoing ? topPlayerHighlight(player.rank) : undefined;
+                  const highlight = !isUpcoming ? topPlayerHighlight(player.rank) : undefined;
 
                   return (
                     <TableRow
