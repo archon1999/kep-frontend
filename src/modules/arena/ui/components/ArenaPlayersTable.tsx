@@ -11,6 +11,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import UserPopover from 'modules/users/ui/components/UserPopover';
@@ -82,7 +83,6 @@ const ArenaPlayersTable = ({
 }: ArenaPlayersTableProps) => {
   const { t } = useTranslation();
   const isUpcoming = status === ArenaStatus.NotStarted;
-  const isOngoing = status === ArenaStatus.Already;
 
   const handleSelect = (player: ArenaPlayer) => {
     if (!isUpcoming && onSelectPlayer) {
@@ -112,7 +112,20 @@ const ArenaPlayersTable = ({
                 <TableCell align="right">{t('arena.columns.points')}</TableCell>
               ) : null}
               {!isUpcoming ? (
-                <TableCell align="right">{t('arena.columns.buchholz')}</TableCell>
+                <TableCell align="right">
+                  <Tooltip arrow title={t('arena.columns.buchholzDescription')}>
+                    <Box
+                      component="span"
+                      sx={{
+                        borderBottom: '1px dotted',
+                        borderColor: 'text.secondary',
+                        cursor: 'help',
+                      }}
+                    >
+                      {t('arena.columns.buchholz')}
+                    </Box>
+                  </Tooltip>
+                </TableCell>
               ) : null}
             </TableRow>
           </TableHead>

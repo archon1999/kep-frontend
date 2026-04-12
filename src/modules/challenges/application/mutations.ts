@@ -1,6 +1,12 @@
 import useSWRMutation from 'swr/mutation';
 import { HttpChallengesRepository } from '../data-access/repository/http.challenges.repository.ts';
-import { ChallengeAnswerPayload, ChallengeCheckResponse, ChallengeStartResponse } from '../domain/ports/challenges.repository.ts';
+import {
+  ChallengeAntiCheatPenaltyPayload,
+  ChallengeAntiCheatPenaltyResponse,
+  ChallengeAnswerPayload,
+  ChallengeCheckResponse,
+  ChallengeStartResponse,
+} from '../domain/ports/challenges.repository.ts';
 import { challengesQueries } from './queries.ts';
 
 const challengesRepository = new HttpChallengesRepository();
@@ -33,6 +39,16 @@ export const useSubmitChallengeAnswer = () =>
     string,
     { challengeId: number; payload: ChallengeAnswerPayload }
   >('submit-challenge-answer', (_, { arg }) => challengesRepository.submitAnswer(arg.challengeId, arg.payload));
+
+export const useApplyChallengeAntiCheatPenalty = () =>
+  useSWRMutation<
+    ChallengeAntiCheatPenaltyResponse,
+    Error,
+    string,
+    { challengeId: number; payload: ChallengeAntiCheatPenaltyPayload }
+  >('apply-challenge-anti-cheat-penalty', (_, { arg }) =>
+    challengesRepository.applyAntiCheatPenalty(arg.challengeId, arg.payload),
+  );
 
 export const challengesMutations = {
   challengesRepository,

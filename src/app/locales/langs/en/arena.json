@@ -47,10 +47,13 @@
       "rating": "Rating",
       "results": "Results",
       "points": "Points",
-      "buchholz": "Buchholz"
+      "buchholz": "Buchholz",
+      "buchholzDescription": "Sum of the points scored by your opponents. Higher Buchholz means you played stronger opponents."
     },
     "challenges": "Latest challenges",
+    "liveChallenges": "Live challenges",
     "noChallenges": "No challenges have been played yet.",
+    "noLiveChallenges": "No live challenges right now.",
     "statistics": "Arena statistics",
     "averageRating": "Average rating",
     "totalChallenges": "Challenges played",

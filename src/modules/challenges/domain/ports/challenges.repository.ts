@@ -31,6 +31,20 @@ export interface ChallengeCheckResponse {
   success: boolean;
 }
 
+export type ChallengePenaltyReason = 'blur' | 'route_leave' | 'pagehide' | 'reconcile';
+
+export interface ChallengeAntiCheatPenaltyPayload {
+  questionNumber: number;
+  reason?: ChallengePenaltyReason;
+}
+
+export interface ChallengeAntiCheatPenaltyResponse {
+  success: boolean;
+  penalized: boolean;
+  remainingTimeSeconds: number;
+  nextQuestionNumber: number;
+}
+
 export interface ChallengesRepository {
   getChallengeCalls: () => Promise<ChallengeCall[]>;
   createChallengeCall: (payload: { timeSeconds: number; questionsCount: number; chapters?: number[] }) => Promise<void>;
@@ -40,6 +54,7 @@ export interface ChallengesRepository {
   getChallenge: (challengeId: number | string) => Promise<Challenge>;
   startChallenge: (challengeId: number) => Promise<void>;
   submitAnswer: (challengeId: number, payload: ChallengeAnswerPayload) => Promise<ChallengeCheckResponse>;
+  applyAntiCheatPenalty: (challengeId: number, payload: ChallengeAntiCheatPenaltyPayload) => Promise<ChallengeAntiCheatPenaltyResponse>;
   listRating: (params?: { page?: number; pageSize?: number; ordering?: string }) => Promise<PageResult<ChallengeRatingRow>>;
   listRatingChanges: (username: string) => Promise<ChallengeRatingChange[]>;
   getUserStatistics: (username: string) => Promise<ChallengeUserStatistics | null>;
