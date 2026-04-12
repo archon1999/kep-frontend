@@ -12,7 +12,7 @@ import { toast } from 'sonner';
 import { useArenaLivePolling } from '../../application/hooks/useArenaLivePolling.ts';
 import { useArenaStandingsPage } from '../../application/hooks/useArenaStandingsPage.ts';
 import { useArenaStateContent } from '../../application/hooks/useArenaStateContent.ts';
-import { useArenaChallenges, useArenaDetails, useArenaNextChallenge, useArenaPlayerStatistics, useArenaPlayers, useArenaStatistics, useArenaTopPlayers } from '../../application/queries.ts';
+import { useArenaChallenges, useArenaDetails, useArenaLiveChallenges, useArenaNextChallenge, useArenaPlayerStatistics, useArenaPlayers, useArenaStatistics, useArenaTopPlayers } from '../../application/queries.ts';
 import { arenaQueries } from '../../application/queries.ts';
 import { ArenaPlayer } from '../../domain/entities/arena-player.entity.ts';
 import { ArenaStatus } from '../../domain/entities/arena.entity.ts';
@@ -73,9 +73,20 @@ const ArenaDetailPage = () => {
     () => ({ page: state.challengesPage, pageSize: CHALLENGES_PAGE_SIZE }),
     [state.challengesPage],
   );
+  const liveChallengesFilters = useMemo(
+    () => ({ page: 1, pageSize: CHALLENGES_PAGE_SIZE }),
+    [],
+  );
   const liveRefreshOptions = useMemo(
     () => ({
       refreshInterval: 30000,
+      revalidateOnFocus: true,
+    }),
+    [],
+  );
+  const liveChallengesRefreshOptions = useMemo(
+    () => ({
+      refreshInterval: 5000,
       revalidateOnFocus: true,
     }),
     [],
@@ -88,6 +99,11 @@ const ArenaDetailPage = () => {
     isLoading: isChallengesLoading,
     mutate: mutateChallenges,
   } = useArenaChallenges(stateContent.isUpcoming ? undefined : id, challengesFilters, liveRefreshOptions);
+  const {
+    data: liveChallenges,
+    isLoading: isLiveChallengesLoading,
+    mutate: mutateLiveChallenges,
+  } = useArenaLiveChallenges(stateContent.isOngoing ? id : undefined, liveChallengesFilters, liveChallengesRefreshOptions);
   const { data: topPlayers, mutate: mutateTopPlayers } = useArenaTopPlayers(stateContent.isFinished ? id : undefined, liveRefreshOptions);
   const { data: statistics, mutate: mutateStatistics } = useArenaStatistics(id, liveRefreshOptions);
   const {
@@ -115,10 +131,11 @@ const ArenaDetailPage = () => {
       mutatePlayers(),
       mutateStatistics(),
       stateContent.isUpcoming ? Promise.resolve(undefined) : mutateChallenges(),
+      stateContent.isOngoing ? mutateLiveChallenges() : Promise.resolve(undefined),
       stateContent.isFinished ? mutateTopPlayers() : Promise.resolve(undefined),
       stateContent.isOngoing ? mutateNextChallenge() : Promise.resolve(undefined),
     ]);
-  }, [mutateArena, mutateChallenges, mutateNextChallenge, mutatePlayers, mutateStatistics, mutateTopPlayers, stateContent.isFinished, stateContent.isOngoing, stateContent.isUpcoming]);
+  }, [mutateArena, mutateChallenges, mutateLiveChallenges, mutateNextChallenge, mutatePlayers, mutateStatistics, mutateTopPlayers, stateContent.isFinished, stateContent.isOngoing, stateContent.isUpcoming]);
 
   const handleSelectPlayer = useCallback(
     (player: ArenaPlayer) => {
@@ -231,12 +248,27 @@ const ArenaDetailPage = () => {
                     status={arena.status}
                   />
                   {!stateContent.isUpcoming ? (
-                    <ArenaChallengesList
-                      data={challenges}
-                      loading={isChallengesLoading}
-                      page={challenges?.page ?? state.challengesPage}
-                      onPageChange={(value) => setField('challengesPage', value)}
-                    />
+                    <>
+                      {stateContent.isOngoing ? (
+                        <ArenaChallengesList
+                          data={liveChallenges}
+                          loading={isLiveChallengesLoading}
+                          page={liveChallenges?.page ?? 1}
+                          onPageChange={() => undefined}
+                          titleKey="arena.liveChallenges"
+                          emptyKey="arena.noLiveChallenges"
+                          currentUsername={currentUser?.username}
+                          showPagination={false}
+                        />
+                      ) : null}
+                      <ArenaChallengesList
+                        data={challenges}
+                        loading={isChallengesLoading}
+                        page={challenges?.page ?? state.challengesPage}
+                        onPageChange={(value) => setField('challengesPage', value)}
+                        currentUsername={currentUser?.username}
+                      />
+                    </>
                   ) : null}
                 </Stack>
               </Grid>

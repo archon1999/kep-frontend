@@ -276,6 +276,7 @@ const ChallengesListPage = () => {
                 showOnlyMine={state.onlyMine}
                 onToggleOnlyMine={handleToggleOnlyMine}
                 isAuthenticated={Boolean(currentUser)}
+                currentUsername={currentUser?.username}
               />
             )}
           </Box>

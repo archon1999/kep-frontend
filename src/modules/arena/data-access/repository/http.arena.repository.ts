@@ -120,6 +120,14 @@ export class HttpArenaRepository implements ArenaRepository {
     return mapPageResult(data, mapArenaChallenge);
   }
 
+  async listLiveChallenges(
+    arenaId: number | string,
+    filters?: ArenaChallengesFilters,
+  ): Promise<PageResult<ArenaChallenge>> {
+    const data = await arenaApiClient.listLiveChallenges(arenaId, filters);
+    return mapPageResult(data, mapArenaChallenge);
+  }
+
   async getPlayerStatistics(arenaId: number | string, username: string): Promise<ArenaPlayerStatistics> {
     const data = await arenaApiClient.playerStatistics(arenaId, username);
     return mapArenaPlayerStatistics(data);

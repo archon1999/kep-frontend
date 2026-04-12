@@ -49,6 +49,22 @@ export const useArenaChallenges = (
     },
   );
 
+export const useArenaLiveChallenges = (
+  arenaId?: string | number,
+  filters?: ArenaChallengesFilters,
+  options?: SWRConfiguration,
+) =>
+  useSWR(
+    arenaId ? ['arena-live-challenges', arenaId, filters] : null,
+    () => arenaRepository.listLiveChallenges(arenaId!, filters),
+    {
+      keepPreviousData: true,
+      refreshInterval: 5000,
+      revalidateOnFocus: true,
+      ...options,
+    },
+  );
+
 export const useArenaPlayerStatistics = (arenaId?: string | number, username?: string) =>
   useSWR<ArenaPlayerStatistics>(
     arenaId && username ? ['arena-player-statistics', arenaId, username] : null,

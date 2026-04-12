@@ -48,6 +48,12 @@ export const arenaApiClient = {
     });
     return response.data;
   },
+  listLiveChallenges: async (arenaId: number | string, filters?: ArenaChallengesFilters) => {
+    const response = await instance.get(`/api/arena/${arenaId}/live-challenges/`, {
+      params: filters,
+    });
+    return response.data;
+  },
   playerStatistics: async (arenaId: number | string, username: string) => {
     const response = await instance.get(`/api/arena/${arenaId}/arena-player-statistics/`, {
       params: { username },

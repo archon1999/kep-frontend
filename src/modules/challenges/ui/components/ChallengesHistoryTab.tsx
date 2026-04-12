@@ -13,6 +13,7 @@ type ChallengesHistoryTabProps = {
   showOnlyMine: boolean;
   onToggleOnlyMine: (checked: boolean) => void;
   isAuthenticated: boolean;
+  currentUsername?: string;
 };
 
 const ChallengesHistoryTab = ({
@@ -23,6 +24,7 @@ const ChallengesHistoryTab = ({
   showOnlyMine,
   onToggleOnlyMine,
   isAuthenticated,
+  currentUsername,
 }: ChallengesHistoryTabProps) => {
   const { t } = useTranslation();
   const challenges = challengesPage?.data ?? [];
@@ -54,7 +56,7 @@ const ChallengesHistoryTab = ({
               <Skeleton key={index} variant="rectangular" height={140} sx={{ borderRadius: 2 }} />
             ))
           : challenges.map((challenge) => (
-              <ChallengeCard key={challenge.id} challenge={challenge} />
+              <ChallengeCard key={challenge.id} challenge={challenge} currentUsername={currentUsername} />
             ))}
 
         {!isLoading && !challenges.length && (

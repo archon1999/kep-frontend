@@ -40,6 +40,7 @@ export interface ArenaRepository {
   loadNextChallenge: (arenaId: number | string) => Promise<{ challengeId?: number } | undefined>;
   listPlayers: (arenaId: number | string, filters?: ArenaPlayersFilters) => Promise<PageResult<ArenaPlayer>>;
   listChallenges: (arenaId: number | string, filters?: ArenaChallengesFilters) => Promise<PageResult<ArenaChallenge>>;
+  listLiveChallenges: (arenaId: number | string, filters?: ArenaChallengesFilters) => Promise<PageResult<ArenaChallenge>>;
   getPlayerStatistics: (
     arenaId: number | string,
     username: string,
