@@ -50,6 +50,13 @@
       "completed": "{{count}} completed",
       "rewardPool": "{{count}} total kepcoin"
     },
+    "headerMetrics": {
+      "available": "Live projects",
+      "started": "Started",
+      "completed": "Completed",
+      "rewardPool": "Kepcoin pool",
+      "averageProgress": "Average progress"
+    },
     "categories": {
       "frontend": {
         "title": "Frontend",

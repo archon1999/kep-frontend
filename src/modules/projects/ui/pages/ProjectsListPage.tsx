@@ -1,17 +1,21 @@
 import { useTranslation } from 'react-i18next';
+import { Box, Card, CardContent, Chip, Grid, Skeleton, Stack, Typography } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
-import { Box, Chip, Grid, Skeleton, Stack, Typography } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
+import kepcoinImage from 'shared/assets/images/icons/kepcoin.png';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import Logo from 'shared/components/common/Logo';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { useProjectsList, useUserProjectAttempts } from '../../application/queries';
 import ProjectCard from '../components/ProjectCard.tsx';
 import {
-  buildProjectProgressLookup,
-  getProjectCategory,
   PROJECT_CATEGORY_META,
   PROJECT_CATEGORY_ORDER,
+  buildProjectProgressLookup,
+  getProjectCategory,
 } from '../lib/project-listing';
+
+const projectCardGridSize = { xs: 12, lg: 6 };
 
 const ProjectsListPage = () => {
   const { t } = useTranslation();
@@ -42,68 +46,155 @@ const ProjectsListPage = () => {
     (sum, project) => sum + Number(project.kepcoins ?? 0),
     0,
   );
+  const projectsWithProgress = visibleProjects.filter((project) => progressLookup[project.id]);
+  const averageProgress = projectsWithProgress.length
+    ? Math.round(
+        projectsWithProgress.reduce(
+          (sum, project) => sum + (progressLookup[project.id]?.progressPercent ?? 0),
+          0,
+        ) / projectsWithProgress.length,
+      )
+    : 0;
+
+  const headerStats = [
+    {
+      icon: 'mdi:shape-outline',
+      value: totalProjects,
+      label: t('projects.headerMetrics.available'),
+      color: '#ff8a00',
+    },
+    {
+      icon: 'mdi:chart-timeline-variant',
+      value: startedProjects,
+      label: t('projects.headerMetrics.started'),
+      color: '#00a7b5',
+    },
+    {
+      icon: 'mdi:check-decagram',
+      value: completedProjects,
+      label: t('projects.headerMetrics.completed'),
+      color: '#2f9e44',
+    },
+    {
+      image: kepcoinImage,
+      value: rewardPool,
+      label: t('projects.headerMetrics.rewardPool'),
+      color: '#d9480f',
+    },
+  ];
 
   return (
     <Box sx={responsivePagePaddingSx}>
       <Stack spacing={4}>
-        <Box
+        <Card
           sx={{
             position: 'relative',
             overflow: 'hidden',
-            borderRadius: 6,
-            p: { xs: 3, md: 4 },
-            border: `1px solid ${alpha('#ff8a00', 0.18)}`,
-            background: `
-              radial-gradient(circle at top right, ${alpha('#ff8a00', 0.18)} 0%, transparent 26%),
-              radial-gradient(circle at bottom left, ${alpha('#00a7b5', 0.16)} 0%, transparent 28%),
-              linear-gradient(135deg, ${alpha(theme.palette.background.paper, 0.98)} 0%, ${alpha('#f7f0e3', 0.7)} 100%)
-            `,
+            borderRadius: 3,
+            border: 'none',
+            boxShadow: 'none',
+            background: `linear-gradient(135deg, ${alpha(theme.palette.primary.light, theme.palette.mode === 'dark' ? 0.2 : 0.12)}, ${alpha(theme.palette.info.main, theme.palette.mode === 'dark' ? 0.12 : 0.08)})`,
           }}
         >
-          <Stack spacing={3} sx={{ position: 'relative' }}>
-            <Stack spacing={1}>
-              <Typography
-                variant="h3"
-                fontWeight={900}
-                sx={{ letterSpacing: '-0.04em', maxWidth: 760 }}
+          <CardContent sx={{ p: { xs: 3, md: 4 }, position: 'relative', zIndex: 1 }}>
+            <Stack
+              sx={{
+                rowGap: 2.5,
+                columnGap: { lg: 3, xl: 5 },
+                flexDirection: { xs: 'column', lg: 'row' },
+                alignItems: { lg: 'center' },
+              }}
+            >
+              <Box>
+                <Typography variant="h4" fontWeight={900} sx={{ mb: 1 }}>
+                  {t('projects.title')}
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary" sx={{ maxWidth: 620 }}>
+                  {t('projects.subtitle')}
+                </Typography>
+              </Box>
+
+              <Stack
+                sx={{
+                  flex: 1,
+                  gap: { xs: 2, md: 3 },
+                  justifyContent: 'space-between',
+                  flexDirection: { xs: 'column', md: 'row' },
+                  flexWrap: 'wrap',
+                }}
               >
-                {t('projects.title')}
-              </Typography>
-              <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 720 }}>
-                {t('projects.subtitle')}
-              </Typography>
-            </Stack>
+                {headerStats.map((stat) => (
+                  <Stack
+                    key={stat.label}
+                    direction="row"
+                    spacing={1}
+                    alignItems="center"
+                    sx={{ minWidth: 150 }}
+                  >
+                    <Box
+                      sx={{
+                        width: 34,
+                        height: 34,
+                        borderRadius: '50%',
+                        bgcolor: alpha(stat.color, theme.palette.mode === 'dark' ? 0.18 : 0.12),
+                        color: stat.color,
+                        display: 'grid',
+                        placeItems: 'center',
+                        flexShrink: 0,
+                      }}
+                    >
+                      {'image' in stat ? (
+                        <Box
+                          component="img"
+                          src={stat.image}
+                          alt={stat.label}
+                          sx={{ width: 21, height: 21 }}
+                        />
+                      ) : (
+                        <IconifyIcon icon={stat.icon} width={17} />
+                      )}
+                    </Box>
+                    <Box>
+                      <Typography variant="h5" fontWeight={800}>
+                        {stat.value}
+                      </Typography>
+                      <Typography variant="body2" fontWeight={600} color="text.secondary">
+                        {stat.label}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                ))}
 
-            <Stack direction="row" spacing={1.25} flexWrap="wrap" useFlexGap>
-              <Chip
-                icon={<IconifyIcon icon="mdi:shape-outline" width={18} />}
-                label={t('projects.stats.available', { count: totalProjects })}
-                sx={{ px: 0.75, py: 2.25, borderRadius: 999, bgcolor: alpha('#ff8a00', 0.12), fontWeight: 800 }}
-              />
-              <Chip
-                icon={<IconifyIcon icon="mdi:chart-timeline-variant" width={18} />}
-                label={t('projects.stats.started', { count: startedProjects })}
-                sx={{ px: 0.75, py: 2.25, borderRadius: 999, bgcolor: alpha('#00a7b5', 0.12), fontWeight: 800 }}
-              />
-              <Chip
-                icon={<IconifyIcon icon="mdi:check-decagram" width={18} />}
-                label={t('projects.stats.completed', { count: completedProjects })}
-                sx={{ px: 0.75, py: 2.25, borderRadius: 999, bgcolor: alpha('#2f9e44', 0.12), fontWeight: 800 }}
-              />
-              <Chip
-                icon={<IconifyIcon icon="mdi:star-four-points-circle" width={18} />}
-                label={t('projects.stats.rewardPool', { count: rewardPool })}
-                sx={{ px: 0.75, py: 2.25, borderRadius: 999, bgcolor: alpha('#d9480f', 0.12), fontWeight: 800 }}
-              />
+                <Chip
+                  icon={<IconifyIcon icon="mdi:progress-check" width={18} />}
+                  label={`${averageProgress}% ${t('projects.headerMetrics.averageProgress')}`}
+                  sx={{
+                    alignSelf: { xs: 'flex-start', md: 'center' },
+                    borderRadius: 999,
+                    bgcolor: alpha(
+                      theme.palette.primary.main,
+                      theme.palette.mode === 'dark' ? 0.18 : 0.1,
+                    ),
+                    color: 'primary.main',
+                    fontWeight: 900,
+                  }}
+                />
+              </Stack>
             </Stack>
+          </CardContent>
 
-            {!currentUser ? (
-              <Typography variant="body2" color="text.secondary">
-                {t('projects.progressGuestHint')}
-              </Typography>
-            ) : null}
-          </Stack>
-        </Box>
+          <Box
+            sx={{
+              position: 'absolute',
+              right: { xs: -28, md: 24 },
+              bottom: { xs: -36, md: -20 },
+              opacity: theme.palette.mode === 'dark' ? 0.06 : 0.08,
+              pointerEvents: 'none',
+            }}
+          >
+            <Logo sx={{ width: { xs: 200, md: 280 }, height: { xs: 200, md: 280 } }} />
+          </Box>
+        </Card>
 
         {showEmptyState ? (
           <Box
@@ -125,8 +216,8 @@ const ProjectsListPage = () => {
         ) : isLoading ? (
           <Grid container spacing={3}>
             {Array.from({ length: 6 }).map((_, idx) => (
-              <Grid size={{ xs: 12, md: 6, xl: 4 }} key={idx}>
-                <Skeleton variant="rounded" height={420} sx={{ borderRadius: 5 }} />
+              <Grid size={projectCardGridSize} key={idx}>
+                <Skeleton variant="rounded" height={260} sx={{ borderRadius: 5 }} />
               </Grid>
             ))}
           </Grid>
@@ -156,7 +247,7 @@ const ProjectsListPage = () => {
                     </Box>
 
                     <Box>
-                      <Typography variant="h5" fontWeight={900} sx={{ letterSpacing: '-0.03em' }}>
+                      <Typography variant="h5" fontWeight={900}>
                         {t(section.meta.labelKey)}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
@@ -178,7 +269,7 @@ const ProjectsListPage = () => {
 
                 <Grid container spacing={3}>
                   {section.projects.map((project) => (
-                    <Grid size={{ xs: 12, md: 6, xl: 4 }} key={project.id}>
+                    <Grid size={projectCardGridSize} key={project.id}>
                       <ProjectCard
                         project={project}
                         category={section.category}
