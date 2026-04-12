@@ -3,6 +3,7 @@ import { ArenaPlayer } from '../entities/arena-player.entity';
 import { ArenaPlayerStatistics } from '../entities/arena-player-statistics.entity';
 import { ArenaStatistics } from '../entities/arena-statistics.entity';
 import { ArenaChallenge } from '../entities/arena-challenge.entity';
+import { ArenaHighlight } from '../entities/arena-highlight.entity';
 
 export interface PageResult<T> {
   page: number;
@@ -47,4 +48,5 @@ export interface ArenaRepository {
   ) => Promise<ArenaPlayerStatistics>;
   getTopPlayers: (arenaId: number | string) => Promise<ArenaPlayerStatistics[]>;
   getArenaStatistics: (arenaId: number | string) => Promise<ArenaStatistics>;
+  getArenaHighlight: (arenaId: number | string) => Promise<ArenaHighlight>;
 }

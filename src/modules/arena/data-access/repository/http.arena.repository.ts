@@ -7,6 +7,11 @@ import { ArenaPlayerStatistics } from '../../domain/entities/arena-player-statis
 import { ArenaStatistics } from '../../domain/entities/arena-statistics.entity.ts';
 import { ArenaChallenge } from '../../domain/entities/arena-challenge.entity.ts';
 import {
+  ArenaHighlight,
+  ArenaHighlightKind,
+  ArenaHighlightTone,
+} from '../../domain/entities/arena-highlight.entity.ts';
+import {
   ArenaChallengesFilters,
   ArenaListFilters,
   ArenaPlayersFilters,
@@ -75,6 +80,23 @@ const mapArenaChallenge = (data: any): ArenaChallenge => {
     },
   };
 };
+
+const arenaHighlightKinds: ArenaHighlightKind[] = ['achievement', 'fact', 'statistic'];
+const arenaHighlightTones: ArenaHighlightTone[] = ['success', 'info', 'warning'];
+
+const isArenaHighlightKind = (value: unknown): value is ArenaHighlightKind =>
+  typeof value === 'string' && arenaHighlightKinds.includes(value as ArenaHighlightKind);
+
+const isArenaHighlightTone = (value: unknown): value is ArenaHighlightTone =>
+  typeof value === 'string' && arenaHighlightTones.includes(value as ArenaHighlightTone);
+
+const mapArenaHighlight = (data: any): ArenaHighlight => ({
+  key: data?.key ?? 'arena_highlight',
+  kind: isArenaHighlightKind(data?.kind) ? data.kind : 'fact',
+  tone: isArenaHighlightTone(data?.tone) ? data.tone : 'info',
+  title: data?.title ?? '',
+  message: data?.message ?? '',
+});
 
 export class HttpArenaRepository implements ArenaRepository {
   async listArenas(filters?: ArenaListFilters): Promise<PageResult<Arena>> {
@@ -148,5 +170,10 @@ export class HttpArenaRepository implements ArenaRepository {
       highestPerformance: data?.highestPerformance ?? data?.highest_performance ?? null,
       highestWinRate: data?.highestWinRate ?? data?.highest_win_rate ?? null,
     };
+  }
+
+  async getArenaHighlight(arenaId: number | string): Promise<ArenaHighlight> {
+    const data = await arenaApiClient.highlight(arenaId);
+    return mapArenaHighlight(data);
   }
 }

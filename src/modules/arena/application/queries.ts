@@ -10,8 +10,10 @@ import {
 import { Arena } from '../domain/entities/arena.entity.ts';
 import { ArenaPlayerStatistics } from '../domain/entities/arena-player-statistics.entity.ts';
 import { ArenaStatistics } from '../domain/entities/arena-statistics.entity.ts';
+import { ArenaHighlight } from '../domain/entities/arena-highlight.entity.ts';
 
 const arenaRepository: ArenaRepository = new HttpArenaRepository();
+const ARENA_HIGHLIGHT_REFRESH_INTERVAL_MS = 60000;
 
 export const useArenasList = (filters?: ArenaListFilters) =>
   useSWR(filters ? ['arena-list', filters] : ['arena-list'], () => arenaRepository.listArenas(filters), {
@@ -86,6 +88,17 @@ export const useArenaStatistics = (
     arenaId ? ['arena-statistics', arenaId] : null,
     () => arenaRepository.getArenaStatistics(arenaId!),
     options,
+  );
+
+export const useArenaHighlight = (arenaId?: string | number, options?: SWRConfiguration) =>
+  useSWR<ArenaHighlight>(
+    arenaId ? ['arena-highlight', arenaId] : null,
+    () => arenaRepository.getArenaHighlight(arenaId!),
+    {
+      refreshInterval: ARENA_HIGHLIGHT_REFRESH_INTERVAL_MS,
+      revalidateOnFocus: true,
+      ...options,
+    },
   );
 
 export const useArenaNextChallenge = (arenaId?: string | number, enabled = false) =>

@@ -68,4 +68,8 @@ export const arenaApiClient = {
     const response = await instance.get(`/api/arena/${arenaId}/statistics/`);
     return response.data;
   },
+  highlight: async (arenaId: number | string) => {
+    const response = await instance.get(`/api/arena/${arenaId}/highlight/`);
+    return response.data;
+  },
 };

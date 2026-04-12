@@ -4,10 +4,13 @@ import { Avatar, Box, Card, CardContent, LinearProgress, Stack, Tooltip, Typogra
 import { alpha } from '@mui/material/styles';
 import dayjs from 'dayjs';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import { ArenaHighlight } from '../../domain/entities/arena-highlight.entity.ts';
 import { Arena, ArenaStatus } from '../../domain/entities/arena.entity.ts';
+import ArenaHighlightBanner from './ArenaHighlightBanner.tsx';
 
 interface ArenaCountdownCardProps {
   arena?: Arena;
+  highlight?: ArenaHighlight;
 }
 
 interface CountdownView {
@@ -54,7 +57,7 @@ const TimeSegment = ({ value }: { value: string }) => (
   </Box>
 );
 
-const ArenaCountdownCard = ({ arena }: ArenaCountdownCardProps) => {
+const ArenaCountdownCard = ({ arena, highlight }: ArenaCountdownCardProps) => {
   const { t } = useTranslation();
   const [now, setNow] = useState(dayjs());
 
@@ -134,7 +137,7 @@ const ArenaCountdownCard = ({ arena }: ArenaCountdownCardProps) => {
           alignItems={{ xs: 'stretch', md: 'center' }}
           justifyContent="space-between"
         >
-          <Stack direction="column" spacing={1.5} minWidth={0}>
+          <Stack direction="column" spacing={1.5} sx={{ flex: { md: 1 }, minWidth: 0 }}>
             <Stack direction="row" spacing={1.5} alignItems="center" minWidth={0}>
               <IconifyIcon
                 icon={arena?.status === ArenaStatus.Finished ? 'mdi:trophy-award' : 'mdi:sword-cross'}
@@ -153,10 +156,10 @@ const ArenaCountdownCard = ({ arena }: ArenaCountdownCardProps) => {
                     <Avatar
                       src={chapter.icon}
                       alt={chapter.title}
-                      sx={(theme) => ({
+                      sx={{
                         width: 36,
                         height: 36,
-                      })}
+                      }}
                     />
                   </Tooltip>
                 ))}
@@ -164,7 +167,14 @@ const ArenaCountdownCard = ({ arena }: ArenaCountdownCardProps) => {
             ) : null}
           </Stack>
 
-          <Stack direction="column" spacing={1.5} alignItems={{ xs: 'stretch', md: 'flex-end' }}>
+          <ArenaHighlightBanner highlight={highlight} />
+
+          <Stack
+            direction="column"
+            spacing={1.5}
+            alignItems={{ xs: 'stretch', md: 'flex-end' }}
+            sx={{ flex: { md: 1 }, minWidth: 0 }}
+          >
             <Typography variant="subtitle2" fontWeight={800} color="text.secondary" textAlign={{ md: 'right' }}>
               {label}
             </Typography>

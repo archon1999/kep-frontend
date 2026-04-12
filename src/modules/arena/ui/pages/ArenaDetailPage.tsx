@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router';
 import { Alert, Box, Grid, Skeleton, Stack } from '@mui/material';
@@ -12,8 +12,19 @@ import { toast } from 'sonner';
 import { useArenaLivePolling } from '../../application/hooks/useArenaLivePolling.ts';
 import { useArenaStandingsPage } from '../../application/hooks/useArenaStandingsPage.ts';
 import { useArenaStateContent } from '../../application/hooks/useArenaStateContent.ts';
-import { useArenaChallenges, useArenaDetails, useArenaLiveChallenges, useArenaNextChallenge, useArenaPlayerStatistics, useArenaPlayers, useArenaStatistics, useArenaTopPlayers } from '../../application/queries.ts';
+import {
+  useArenaChallenges,
+  useArenaDetails,
+  useArenaHighlight,
+  useArenaLiveChallenges,
+  useArenaNextChallenge,
+  useArenaPlayerStatistics,
+  useArenaPlayers,
+  useArenaStatistics,
+  useArenaTopPlayers,
+} from '../../application/queries.ts';
 import { arenaQueries } from '../../application/queries.ts';
+import { ArenaHighlight } from '../../domain/entities/arena-highlight.entity.ts';
 import { ArenaPlayer } from '../../domain/entities/arena-player.entity.ts';
 import { ArenaStatus } from '../../domain/entities/arena.entity.ts';
 import ArenaChallengesList from '../components/ArenaChallengesList.tsx';
@@ -28,6 +39,7 @@ import ArenaWinnersCard from '../components/ArenaWinnersCard.tsx';
 
 const PLAYERS_PAGE_SIZE = 10;
 const CHALLENGES_PAGE_SIZE = 10;
+const HIGHLIGHT_VISIBLE_MS = 30000;
 
 const ArenaDetailPage = () => {
   const { id } = useParams();
@@ -39,6 +51,8 @@ const ArenaDetailPage = () => {
   const [selectedUsername, setSelectedUsername] = useState<string | undefined>();
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
   const [transitionBanner, setTransitionBanner] = useState<{ severity: 'info' | 'success'; message: string } | null>(null);
+  const [visibleHighlight, setVisibleHighlight] = useState<ArenaHighlight | undefined>();
+  const [highlightRefreshTick, setHighlightRefreshTick] = useState(0);
   const { state, setField } = useRouteQueryState({
     defaults: {
       challengesPage: 1,
@@ -91,6 +105,12 @@ const ArenaDetailPage = () => {
     }),
     [],
   );
+  const highlightRefreshOptions = useMemo(
+    () => ({
+      onSuccess: () => setHighlightRefreshTick((value) => value + 1),
+    }),
+    [],
+  );
 
   const { data: players, isLoading: isPlayersLoading, mutate: mutatePlayers } = useArenaPlayers(id, playersFilters, liveRefreshOptions);
   const { data: playerStatistics, isLoading: isStatisticsLoading } = useArenaPlayerStatistics(id, selectedUsername);
@@ -106,6 +126,7 @@ const ArenaDetailPage = () => {
   } = useArenaLiveChallenges(stateContent.isOngoing ? id : undefined, liveChallengesFilters, liveChallengesRefreshOptions);
   const { data: topPlayers, mutate: mutateTopPlayers } = useArenaTopPlayers(stateContent.isFinished ? id : undefined, liveRefreshOptions);
   const { data: statistics, mutate: mutateStatistics } = useArenaStatistics(id, liveRefreshOptions);
+  const { data: arenaHighlight } = useArenaHighlight(stateContent.isOngoing ? id : undefined, highlightRefreshOptions);
   const {
     data: nextChallenge,
     mutate: mutateNextChallenge,
@@ -199,6 +220,17 @@ const ArenaDetailPage = () => {
     },
   });
 
+  useEffect(() => {
+    if (!stateContent.isOngoing || !arenaHighlight) {
+      setVisibleHighlight(undefined);
+      return undefined;
+    }
+
+    setVisibleHighlight(arenaHighlight);
+    const timer = window.setTimeout(() => setVisibleHighlight(undefined), HIGHLIGHT_VISIBLE_MS);
+    return () => window.clearTimeout(timer);
+  }, [arenaHighlight, highlightRefreshTick, stateContent.isOngoing]);
+
   return (
     <Box sx={responsivePagePaddingSx}>
       <Stack direction="column" spacing={3}>
@@ -212,7 +244,7 @@ const ArenaDetailPage = () => {
           </Stack>
         ) : (
           <>
-            <ArenaCountdownCard arena={arena} />
+            <ArenaCountdownCard arena={arena} highlight={visibleHighlight} />
 
             <Grid container spacing={3}>
               <Grid size={{ xs: 12, md: 4 }}>
