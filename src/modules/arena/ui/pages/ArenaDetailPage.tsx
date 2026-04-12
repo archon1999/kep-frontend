@@ -244,7 +244,7 @@ const ArenaDetailPage = () => {
           </Stack>
         ) : (
           <>
-            <ArenaCountdownCard arena={arena} highlight={visibleHighlight} />
+            <ArenaCountdownCard arena={arena} />
 
             <Grid container spacing={3}>
               <Grid size={{ xs: 12, md: 4 }}>
@@ -255,7 +255,12 @@ const ArenaDetailPage = () => {
                     onRegister={handleRegister}
                     onUnregister={handleUnregister}
                   />
-                  <ArenaStatisticsCard arena={arena} stats={statistics} titleKey={stateContent.insightsTitleKey} />
+                  <ArenaStatisticsCard
+                    arena={arena}
+                    stats={statistics}
+                    highlight={visibleHighlight}
+                    titleKey={stateContent.insightsTitleKey}
+                  />
                 </Stack>
               </Grid>
 

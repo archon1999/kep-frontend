@@ -1,16 +1,23 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar, Box, Card, CardContent, LinearProgress, Stack, Tooltip, Typography } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Card,
+  CardContent,
+  LinearProgress,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import dayjs from 'dayjs';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import { ArenaHighlight } from '../../domain/entities/arena-highlight.entity.ts';
 import { Arena, ArenaStatus } from '../../domain/entities/arena.entity.ts';
-import ArenaHighlightBanner from './ArenaHighlightBanner.tsx';
 
 interface ArenaCountdownCardProps {
   arena?: Arena;
-  highlight?: ArenaHighlight;
 }
 
 interface CountdownView {
@@ -57,7 +64,7 @@ const TimeSegment = ({ value }: { value: string }) => (
   </Box>
 );
 
-const ArenaCountdownCard = ({ arena, highlight }: ArenaCountdownCardProps) => {
+const ArenaCountdownCard = ({ arena }: ArenaCountdownCardProps) => {
   const { t } = useTranslation();
   const [now, setNow] = useState(dayjs());
 
@@ -140,7 +147,9 @@ const ArenaCountdownCard = ({ arena, highlight }: ArenaCountdownCardProps) => {
           <Stack direction="column" spacing={1.5} sx={{ flex: { md: 1 }, minWidth: 0 }}>
             <Stack direction="row" spacing={1.5} alignItems="center" minWidth={0}>
               <IconifyIcon
-                icon={arena?.status === ArenaStatus.Finished ? 'mdi:trophy-award' : 'mdi:sword-cross'}
+                icon={
+                  arena?.status === ArenaStatus.Finished ? 'mdi:trophy-award' : 'mdi:sword-cross'
+                }
                 color="warning.main"
                 fontSize={34}
               />
@@ -167,15 +176,18 @@ const ArenaCountdownCard = ({ arena, highlight }: ArenaCountdownCardProps) => {
             ) : null}
           </Stack>
 
-          <ArenaHighlightBanner highlight={highlight} />
-
           <Stack
             direction="column"
             spacing={1.5}
             alignItems={{ xs: 'stretch', md: 'flex-end' }}
             sx={{ flex: { md: 1 }, minWidth: 0 }}
           >
-            <Typography variant="subtitle2" fontWeight={800} color="text.secondary" textAlign={{ md: 'right' }}>
+            <Typography
+              variant="subtitle2"
+              fontWeight={800}
+              color="text.secondary"
+              textAlign={{ md: 'right' }}
+            >
               {label}
             </Typography>
             <Stack
@@ -210,8 +222,7 @@ const ArenaCountdownCard = ({ arena, highlight }: ArenaCountdownCardProps) => {
                 variant="determinate"
                 color={color}
                 sx={(theme) => ({
-                  width: '100%',
-                  minWidth: { md: 300 },
+                  width: { md: 300 },
                   height: 8,
                   borderRadius: 1,
                   backgroundColor: alpha(theme.palette[color].main, 0.16),

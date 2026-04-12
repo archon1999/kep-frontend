@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { TestPassQuestion } from '../types';
+import MathJaxView from 'shared/components/base/MathJaxView.tsx';
 
 interface QuestionHeaderProps {
   question: TestPassQuestion;
@@ -11,12 +12,7 @@ const QuestionHeader = ({ question }: QuestionHeaderProps) => (
     {/*  {question.number}.*/}
     {/*</Typography>*/}
     {question.body ? (
-      <Typography
-        variant="h6"
-        fontWeight={700}
-        component="div"
-        dangerouslySetInnerHTML={{ __html: question.body }}
-      />
+      <MathJaxView rawHtml={question.body}/>
     ) : (
       <Typography variant="h6" fontWeight={700}>
         {question.text}

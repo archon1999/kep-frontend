@@ -1,15 +1,19 @@
-import { Card, CardContent, Divider, Grid, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { Card, CardContent, Divider, Grid, Stack, Typography } from '@mui/material';
+import { ArenaHighlight } from 'modules/arena/domain/entities/arena-highlight.entity.ts';
+import ArenaHighlightBanner from 'modules/arena/ui/components/ArenaHighlightBanner.tsx';
 import UserPopover from 'modules/users/ui/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
-import { Arena } from '../../domain/entities/arena.entity.ts';
-import { ArenaStatistics } from '../../domain/entities/arena-statistics.entity.ts';
 import { useArenaInsights } from '../../application/hooks/useArenaInsights.ts';
+import { ArenaStatistics } from '../../domain/entities/arena-statistics.entity.ts';
+import { Arena } from '../../domain/entities/arena.entity.ts';
+
 
 interface ArenaStatisticsCardProps {
   arena?: Arena;
   stats?: ArenaStatistics;
   titleKey?: string;
+  highlight?: ArenaHighlight;
 }
 
 const OverviewStat = ({ label, value, icon }: { label: string; value: string | number; icon: string }) => (
@@ -26,7 +30,12 @@ const OverviewStat = ({ label, value, icon }: { label: string; value: string | n
   </Stack>
 );
 
-const ArenaStatisticsCard = ({ arena, stats, titleKey = 'arena.statistics' }: ArenaStatisticsCardProps) => {
+const ArenaStatisticsCard = ({
+  arena,
+  stats,
+  highlight,
+  titleKey = 'arena.statistics',
+}: ArenaStatisticsCardProps) => {
   const { t } = useTranslation();
   const { summaryItems, leaders, showLeaders } = useArenaInsights(arena, stats, t);
 
@@ -37,6 +46,8 @@ const ArenaStatisticsCard = ({ arena, stats, titleKey = 'arena.statistics' }: Ar
           <Typography variant="h6" fontWeight={800}>
             {t(titleKey)}
           </Typography>
+
+          <ArenaHighlightBanner highlight={highlight} />
 
           <Grid container spacing={1.5}>
             {summaryItems.map((item) => (
@@ -61,9 +72,7 @@ const ArenaStatisticsCard = ({ arena, stats, titleKey = 'arena.statistics' }: Ar
                   >
                     <Stack direction="row" spacing={1} alignItems="center" minWidth={0}>
                       <IconifyIcon icon={leader.icon} color="warning.main" fontSize={20} />
-                      <Typography variant="body1">
-                        {leader.label}
-                      </Typography>
+                      <Typography variant="body1">{leader.label}</Typography>
                     </Stack>
 
                     {leader.value?.username ? (

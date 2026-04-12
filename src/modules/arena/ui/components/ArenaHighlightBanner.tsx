@@ -48,23 +48,20 @@ const ArenaHighlightBanner = ({ highlight }: ArenaHighlightBannerProps) => {
         px: { xs: 1.5, sm: 2 },
         py: 1.25,
         borderRadius: 1,
-        border: '1px solid',
-        borderColor: alpha(theme.palette[color].main, 0.32),
         background: alpha(theme.palette[color].main, 0.1),
       })}
     >
       <Stack direction="row" spacing={1.25} alignItems="flex-start" minWidth={0}>
         <Box
           sx={(theme) => ({
-            width: 34,
-            height: 34,
+            width: 32,
+            height: 32,
             borderRadius: 1,
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
             flex: '0 0 auto',
             color: theme.palette[color].main,
-            backgroundColor: alpha(theme.palette[color].main, 0.14),
           })}
         >
           <IconifyIcon icon={getHighlightIcon(highlight)} fontSize={22} />
@@ -72,8 +69,7 @@ const ArenaHighlightBanner = ({ highlight }: ArenaHighlightBannerProps) => {
         <Stack direction="column" spacing={0.25} minWidth={0}>
           {highlight.title ? (
             <Typography
-              variant="overline"
-              fontWeight={900}
+              fontWeight={600}
               color={`${color}.main`}
               sx={{ letterSpacing: 0, lineHeight: 1.25 }}
             >
