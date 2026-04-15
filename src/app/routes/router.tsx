@@ -40,7 +40,7 @@ const ChallengesListPage = lazy(() => import('modules/challenges/ui/pages/Challe
 const ChallengeDetailPage = lazy(() => import('modules/challenges/ui/pages/ChallengeDetailPage'));
 const ChallengesRatingPage = lazy(() => import('modules/challenges/ui/pages/ChallengesRatingPage'));
 const ChallengeUserStatisticsPage = lazy(
-  () => import('modules/challenges/ui/pages/UserStatisticsPage'),
+  () => import('modules/challenges/ui/pages/ChallengesUserStatisticsPage'),
 );
 const DuelsListPage = lazy(() => import('modules/duels/ui/pages/DuelsListPage'));
 const DuelsRatingPage = lazy(() => import('modules/duels/ui/pages/DuelsRatingPage'));
