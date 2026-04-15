@@ -90,6 +90,12 @@ const mapCompetitionPrize = (payload: any): UserCompetitionPrize => ({
   prizeType: payload?.prizeType ?? payload?.prize_type ?? 'MONEY',
   moneyValue: toNumber(payload?.moneyValue ?? payload?.money_value),
   kepcoinValue: toNumber(payload?.kepcoinValue ?? payload?.kepcoin_value),
+  telegramStarsValue: toNumber(
+    payload?.telegramStarsValue ??
+      payload?.telegram_stars_value ??
+      payload?.starsValue ??
+      payload?.stars_value,
+  ),
   currency: payload?.currency,
   competitionType: payload?.competitionType ?? payload?.competition_type ?? 'CONTEST',
   competitionId: payload?.competitionId ?? payload?.competition_id ?? 0,
