@@ -12,6 +12,7 @@ type EditableWorkExperience = AccountWorkExperience & {
 };
 
 const createRowId = () => `work-${Math.random().toString(36).slice(2, 11)}`;
+const yearInputProps = { min: 1970, max: 2026 };
 
 const toEditableWorkExperience = (item: AccountWorkExperience): EditableWorkExperience => ({
   ...item,
@@ -102,6 +103,7 @@ const WorkExperiencesForm = () => {
                   label={t('settings.fromYear')}
                   value={item.fromYear ?? ''}
                   onChange={(event) => updateItem(item._rowId, 'fromYear', event.target.value)}
+                  inputProps={yearInputProps}
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 2 }}>
@@ -111,6 +113,7 @@ const WorkExperiencesForm = () => {
                   label={t('settings.toYear')}
                   value={item.toYear ?? ''}
                   onChange={(event) => updateItem(item._rowId, 'toYear', event.target.value)}
+                  inputProps={yearInputProps}
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 1 }}>
