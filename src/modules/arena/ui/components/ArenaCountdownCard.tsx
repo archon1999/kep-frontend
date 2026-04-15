@@ -13,7 +13,6 @@ import {
 import { alpha } from '@mui/material/styles';
 import dayjs from 'dayjs';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
-import { ArenaHighlight } from '../../domain/entities/arena-highlight.entity.ts';
 import { Arena, ArenaStatus } from '../../domain/entities/arena.entity.ts';
 
 interface ArenaCountdownCardProps {
