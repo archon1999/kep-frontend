@@ -17,6 +17,7 @@ import type { AuthUser } from 'modules/authentication/domain';
 
 interface AuthContextInterface {
   currentUser: AuthUser | null;
+  isAuthLoading: boolean;
   setCurrentUser: Dispatch<SetStateAction<AuthUser | null>>;
   refreshCurrentUser: () => Promise<AuthUser | null | undefined>;
   signout: () => Promise<void>;
@@ -64,14 +65,18 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     removeItemFromStore('current_user');
   }, [logoutUser, mutate]);
 
+  const isAuthLoading =
+    currentUser === null && (isLoading || (data !== undefined && data !== null));
+
   const contextValue = useMemo(
     () => ({
       currentUser: resolvedCurrentUser,
+      isAuthLoading,
       setCurrentUser,
       refreshCurrentUser,
       signout,
     }),
-    [resolvedCurrentUser, refreshCurrentUser, signout],
+    [resolvedCurrentUser, isAuthLoading, refreshCurrentUser, signout],
   );
 
   if (isLoading && !resolvedCurrentUser) {

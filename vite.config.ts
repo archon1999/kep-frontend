@@ -26,6 +26,14 @@ export default ({ mode, command }) => {
           },
         }),
     ],
+    resolve: {
+      alias: {
+        'react-router-dom': 'react-router',
+      },
+    },
+    optimizeDeps: {
+      include: ['@hookform/resolvers/yup', 'react-hook-form', 'yup'],
+    },
     server: {
       host: '0.0.0.0',
       port: 4200,

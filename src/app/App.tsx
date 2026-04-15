@@ -16,6 +16,25 @@ import {
 
 const normalizeTitle = (title: string, fallback: string) =>
   title.replace(/ - KEP\.uz$/, '') || fallback;
+const SPLASH_MIN_VISIBLE_MS = 1400;
+const SPLASH_FADE_MS = 420;
+
+const hideInitialSplash = () => {
+  const splash = document.getElementById('loading-bg');
+  if (!splash) return undefined;
+
+  const splashStartedAt = (window as Window & { __kepSplashStartedAt?: number })
+    .__kepSplashStartedAt;
+  const elapsedMs = Date.now() - (splashStartedAt ?? Date.now());
+  const remainingMs = Math.max(SPLASH_MIN_VISIBLE_MS - elapsedMs, 0);
+
+  const timeoutId = window.setTimeout(() => {
+    splash.classList.add('kep-splash-hidden');
+    window.setTimeout(() => splash.remove(), SPLASH_FADE_MS);
+  }, remainingMs);
+
+  return () => window.clearTimeout(timeoutId);
+};
 
 const App = () => {
   const { pathname, search, hash } = useLocation();
@@ -29,6 +48,7 @@ const App = () => {
 
   useEffect(() => {
     applyThemeToggleEffectStyle(getStoredThemeToggleEffect());
+    return hideInitialSplash();
   }, []);
 
   useEffect(() => {
