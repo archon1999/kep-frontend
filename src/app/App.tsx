@@ -9,8 +9,13 @@ import SettingsPanel from 'shared/components/settings-panel/SettingsPanel.tsx';
 import useIcons from 'shared/hooks/useIcons.tsx';
 import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
 import { addRecentPage } from 'shared/lib/recent-pages.ts';
+import {
+  applyThemeToggleEffectStyle,
+  getStoredThemeToggleEffect,
+} from 'shared/lib/themeToggleEffects.ts';
 
-const normalizeTitle = (title: string, fallback: string) => title.replace(/ - KEP\.uz$/, '') || fallback;
+const normalizeTitle = (title: string, fallback: string) =>
+  title.replace(/ - KEP\.uz$/, '') || fallback;
 
 const App = () => {
   const { pathname, search, hash } = useLocation();
@@ -21,6 +26,10 @@ const App = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+
+  useEffect(() => {
+    applyThemeToggleEffectStyle(getStoredThemeToggleEffect());
+  }, []);
 
   useEffect(() => {
     const fullPath = `${pathname}${search}${hash}`;

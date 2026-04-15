@@ -10,10 +10,9 @@ import {
   useState,
 } from 'react';
 import { initialConfig } from 'app/config.ts';
-import Splash from 'shared/components/loading/Splash';
-import { removeItemFromStore } from 'shared/lib/utils';
 import { useCurrentUser, useLogOutUser } from 'modules/authentication/application';
 import type { AuthUser } from 'modules/authentication/domain';
+import { removeItemFromStore } from 'shared/lib/utils';
 
 interface AuthContextInterface {
   currentUser: AuthUser | null;
@@ -23,6 +22,25 @@ interface AuthContextInterface {
 }
 
 const avatar = (index: number) => `${initialConfig.assetsDir}/images/avatar/${index}.webp`;
+const SPLASH_MIN_VISIBLE_MS = 1400;
+const SPLASH_FADE_MS = 420;
+
+const hideInitialSplash = () => {
+  const splash = document.getElementById('loading-bg');
+  if (!splash) return undefined;
+
+  const splashStartedAt = (window as Window & { __kepSplashStartedAt?: number })
+    .__kepSplashStartedAt;
+  const elapsedMs = Date.now() - (splashStartedAt ?? Date.now());
+  const remainingMs = Math.max(SPLASH_MIN_VISIBLE_MS - elapsedMs, 0);
+
+  const timeoutId = window.setTimeout(() => {
+    splash.classList.add('kep-splash-hidden');
+    window.setTimeout(() => splash.remove(), SPLASH_FADE_MS);
+  }, remainingMs);
+
+  return () => window.clearTimeout(timeoutId);
+};
 
 export const demoUser: AuthUser = {
   id: 0,
@@ -53,6 +71,11 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (isLoading) return undefined;
+    return hideInitialSplash();
+  }, [isLoading]);
+
   const refreshCurrentUser = useCallback(() => mutate(), [mutate]);
 
   const signout = useCallback(async () => {
@@ -72,7 +95,7 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
   );
 
   if (isLoading && !currentUser) {
-    return <Splash />;
+    return null;
   }
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

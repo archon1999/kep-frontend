@@ -70,6 +70,7 @@
     "sounds": "Звуки",
     "successSound": "Успешный",
     "homeSound": "Домашний",
+    "themeToggleEffect": "Эффект переключения темы",
     "openNavigation": "Открыть навигацию",
     "loginRequired": "Войдите, чтобы управлять настройками аккаунта.",
     "linkCopied": "Ссылка скопирована",
@@ -98,7 +99,17 @@
     "sound": {
       "none": "Без звука",
       "soft": "Мягкий звон",
-      "bright": "Яркий сигнал"
+      "bright": "Яркий сигнал",
+      "success": {
+        "default": "По умолчанию",
+        "rickRoll": "Rick Roll",
+        "noSound": "Без звука"
+      }
+    },
+    "themeToggleEffects": {
+      "polygon": "Полигон",
+      "animeGirl": "Anime girl",
+      "none": "Нет"
     },
     "findSettingPlaceholder": "Найти настройку",
     "customizer": {
