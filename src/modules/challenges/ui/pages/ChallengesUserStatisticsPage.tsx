@@ -367,7 +367,7 @@ const buildWinRateOption = (
   } satisfies EChartsCoreOption;
 };
 
-const UserStatisticsPage = () => {
+const ChallengesUserStatisticsPage = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
   const theme = useTheme();
@@ -1015,4 +1015,4 @@ const UserStatisticsPage = () => {
   );
 };
 
-export default UserStatisticsPage;
+export default ChallengesUserStatisticsPage;
