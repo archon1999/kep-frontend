@@ -70,6 +70,7 @@
     "sounds": "Tovushlar",
     "successSound": "Muvaffaqiyat tovushi",
     "homeSound": "Bosh sahifa tovushi",
+    "themeToggleEffect": "Tema almashish effekti",
     "openNavigation": "Navigatsiyani ochish",
     "loginRequired": "Hisob sozlamalarini boshqarish uchun tizimga kiring.",
     "linkCopied": "Havola nusxalandi",
@@ -98,7 +99,17 @@
     "sound": {
       "none": "Tovushsiz",
       "soft": "Yumshoq chinqiriq",
-      "bright": "Yorqin signal"
+      "bright": "Yorqin signal",
+      "success": {
+        "default": "Standart",
+        "rickRoll": "Rick Roll",
+        "noSound": "Tovushsiz"
+      }
+    },
+    "themeToggleEffects": {
+      "polygon": "Polygon",
+      "animeGirl": "Anime girl",
+      "none": "Yo'q"
     },
     "findSettingPlaceholder": "Sozlamani topish",
     "customizer": {

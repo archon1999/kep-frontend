@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { Outlet } from 'react-router';
-import Splash from 'shared/components/loading/Splash';
+import PageLoader from 'shared/components/loading/PageLoader';
 import useSettingsPanelMountEffect from 'shared/hooks/useSettingsPanelMountEffect';
 
 const AuthLayout = () => {
@@ -11,7 +11,7 @@ const AuthLayout = () => {
     disableNavColorSection: true,
   });
   return (
-    <Suspense fallback={<Splash />}>
+    <Suspense fallback={<PageLoader sx={{ minHeight: '100vh' }} />}>
       <Outlet />
     </Suspense>
   );

@@ -70,6 +70,7 @@
     "sounds": "Sounds",
     "successSound": "Success",
     "homeSound": "Home",
+    "themeToggleEffect": "Theme Toggle Effect",
     "openNavigation": "Open navigation",
     "loginRequired": "Please sign in to manage your account settings.",
     "linkCopied": "Link copied",
@@ -98,7 +99,17 @@
     "sound": {
       "none": "No sound",
       "soft": "Soft chime",
-      "bright": "Bright ping"
+      "bright": "Bright ping",
+      "success": {
+        "default": "Default",
+        "rickRoll": "Rick Roll",
+        "noSound": "No sound"
+      }
+    },
+    "themeToggleEffects": {
+      "polygon": "Polygon",
+      "animeGirl": "Anime girl",
+      "none": "None"
     },
     "findSettingPlaceholder": "Find a setting",
     "customizer": {

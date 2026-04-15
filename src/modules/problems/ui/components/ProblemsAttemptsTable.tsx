@@ -1,7 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
-import { Button, Chip, IconButton, Paper, Tooltip, Typography, alpha, useTheme } from '@mui/material';
+import {
+  Button,
+  Chip,
+  IconButton,
+  Paper,
+  Tooltip,
+  Typography,
+  alpha,
+  useTheme,
+} from '@mui/material';
 import { DataGrid, GridColDef, GridPaginationModel } from '@mui/x-data-grid';
 import { useAuth } from 'app/providers/AuthProvider';
 import { getResourceById, resources } from 'app/routes/resources';
@@ -10,11 +19,12 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
+import { playSuccessSound } from 'shared/lib/soundSettings';
 import { wsService } from 'shared/services/websocket';
+import { problemsQueries } from '../../application/queries';
+import { AttemptListItem, Verdicts } from '../../domain/entities/problem.entity';
 import AttemptDetailDialog from './AttemptDetailDialog.tsx';
 import AttemptProtocolDialog from './AttemptProtocolDialog.tsx';
-import { problemsQueries } from '../../application/queries';
-import { AttemptListItem } from '../../domain/entities/problem.entity';
 
 interface ProblemsAttemptsTableProps {
   attempts: AttemptListItem[];
@@ -57,9 +67,12 @@ const ProblemsAttemptsTable = ({
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isProtocolOpen, setIsProtocolOpen] = useState(false);
   const trackedIdsRef = useRef<number[]>([]);
+  const rowsRef = useRef<AttemptListItem[]>(attempts ?? []);
 
   useEffect(() => {
-    setRows(attempts ?? []);
+    const nextRows = attempts ?? [];
+    rowsRef.current = nextRows;
+    setRows(nextRows);
 
     if (selectedAttempt) {
       const freshAttempt = (attempts ?? []).find((item) => item.id === selectedAttempt.id);
@@ -99,38 +112,39 @@ const ProblemsAttemptsTable = ({
 
   useEffect(() => {
     const unsubscribe = wsService.on<AttemptUpdatePayload>('attempt-update', (payload) => {
-      let updatedAttempt: AttemptListItem | any = null;
+      const currentAttempt = rowsRef.current.find((attempt) => attempt.id === payload.id);
+      if (!currentAttempt) return;
 
-      setRows((prev) => {
-        const index = prev.findIndex((attempt) => attempt.id === payload.id);
-        if (index === -1) return prev;
+      const updatedAttempt: AttemptListItem = {
+        ...currentAttempt,
+        verdict: payload.verdict,
+        verdictTitle: payload.verdictTitle,
+        testCaseNumber: payload.testCaseNumber,
+        time: payload.time ?? undefined,
+        memory: payload.memory ?? undefined,
+        balls: payload.balls ?? undefined,
+      };
 
-        const nextAttempt: AttemptListItem = {
-          ...prev[index],
-          verdict: payload.verdict,
-          verdictTitle: payload.verdictTitle,
-          testCaseNumber: payload.testCaseNumber,
-          time: payload.time ?? undefined,
-          memory: payload.memory ?? undefined,
-          balls: payload.balls ?? undefined,
-        };
+      rowsRef.current = rowsRef.current.map((attempt) =>
+        attempt.id === payload.id ? updatedAttempt : attempt,
+      );
+      setRows(rowsRef.current);
 
-        updatedAttempt = nextAttempt;
+      const isAcceptedVerdict =
+        payload.verdict === Verdicts.Accepted ||
+        updatedAttempt.verdictTitle.toLowerCase() === 'accepted';
 
-        const nextAttempts = [...prev];
-        nextAttempts[index] = nextAttempt;
-        return nextAttempts;
-      });
-
-      if (updatedAttempt) {
-        if (currentUser?.username && updatedAttempt.user?.username === currentUser.username) {
-          setLastUpdatedAttempt(updatedAttempt);
-        }
-
-        setSelectedAttempt((prev) =>
-          prev && prev.id === updatedAttempt?.id ? { ...prev, ...updatedAttempt } : prev,
-        );
+      if (isAcceptedVerdict && updatedAttempt.canView !== false) {
+        playSuccessSound();
       }
+
+      if (currentUser?.username && updatedAttempt.user?.username === currentUser.username) {
+        setLastUpdatedAttempt(updatedAttempt);
+      }
+
+      setSelectedAttempt((prev) =>
+        prev && prev.id === updatedAttempt.id ? { ...prev, ...updatedAttempt } : prev,
+      );
     });
 
     return unsubscribe;
@@ -158,9 +172,15 @@ const ProblemsAttemptsTable = ({
 
   const handleAttemptUpdated = useCallback(
     (attemptId: number, changes: Partial<AttemptListItem>) => {
-      setRows((prev) => prev.map((item) => (item.id === attemptId ? { ...item, ...changes } : item)));
-      setSelectedAttempt((prev) => (prev && prev.id === attemptId ? { ...prev, ...changes } : prev));
-      setProtocolAttempt((prev) => (prev && prev.id === attemptId ? { ...prev, ...changes } : prev));
+      setRows((prev) =>
+        prev.map((item) => (item.id === attemptId ? { ...item, ...changes } : item)),
+      );
+      setSelectedAttempt((prev) =>
+        prev && prev.id === attemptId ? { ...prev, ...changes } : prev,
+      );
+      setProtocolAttempt((prev) =>
+        prev && prev.id === attemptId ? { ...prev, ...changes } : prev,
+      );
       onRerun?.();
     },
     [onRerun],
@@ -247,10 +267,7 @@ const ProblemsAttemptsTable = ({
         renderCell: ({ row }) => (
           <Typography
             component={RouterLink}
-        to={
-          getProblemLink?.(row) ??
-          getResourceById(resources.Problem, row.problemId)
-        }
+            to={getProblemLink?.(row) ?? getResourceById(resources.Problem, row.problemId)}
             sx={{ textDecoration: 'none', color: 'text.primary', fontWeight: 500 }}
           >
             {row.contestProblemSymbol
@@ -374,14 +391,15 @@ const ProblemsAttemptsTable = ({
         disableColumnFilter
         sx={{
           mb: 2,
-          '& .MuiDataGrid-row--hovered': { backgroundColor: alpha(theme.palette.primary.main, 0.04) },
+          '& .MuiDataGrid-row--hovered': {
+            backgroundColor: alpha(theme.palette.primary.main, 0.04),
+          },
         }}
         getRowId={(row) => row.id}
       />
 
       {lastUpdatedAttempt && (
         <Paper
-          elevation={8}
           sx={{
             position: 'fixed',
             right: 24,

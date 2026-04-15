@@ -1,77 +1,120 @@
 import { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, FormControl, InputLabel, LinearProgress, MenuItem, Select, Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  FormControl,
+  InputLabel,
+  LinearProgress,
+  MenuItem,
+  Select,
+  Stack,
+} from '@mui/material';
+import {
+  SUCCESS_SOUND_STORAGE_KEY,
+  SYSTEM_SETTINGS_STORAGE_KEY,
+  SuccessSound,
+  isSuccessSound,
+  playSuccessSound,
+  setStoredSuccessSound,
+  successSoundOptions,
+} from 'shared/lib/soundSettings';
+import {
+  ThemeToggleEffect,
+  applyThemeToggleEffectStyle,
+  getStoredThemeToggleEffect,
+  isThemeToggleEffect,
+  setStoredThemeToggleEffect,
+  themeToggleEffectOptions,
+} from 'shared/lib/themeToggleEffects';
 
-const sounds = [
-  { value: 'none', labelKey: 'settings.sound.none', frequency: null },
-  { value: 'soft', labelKey: 'settings.sound.soft', frequency: 500 },
-  { value: 'bright', labelKey: 'settings.sound.bright', frequency: 900 },
-];
-
-const playTone = (frequency: number) => {
-  const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-  if (!AudioContext) return;
-  const ctx = new AudioContext();
-  const oscillator = ctx.createOscillator();
-  oscillator.frequency.value = frequency;
-  oscillator.connect(ctx.destination);
-  oscillator.start();
-  setTimeout(() => {
-    oscillator.stop();
-    ctx.close();
-  }, 160);
+const getInitialSuccessSound = (value: unknown): SuccessSound => {
+  if (isSuccessSound(value)) return value;
+  return value === 'none' ? 'No sound' : 'No sound';
 };
-
-const STORAGE_KEY = 'account-settings-system';
 
 const SystemSettingsPanel = () => {
   const { t } = useTranslation();
-  const [successSound, setSuccessSound] = useState('none');
-  const [homeSound, setHomeSound] = useState('none');
+  const [successSound, setSuccessSound] = useState<SuccessSound>('No sound');
+  const [themeToggleEffect, setThemeToggleEffect] = useState<ThemeToggleEffect>('polygon');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
+    const saved = localStorage.getItem(SYSTEM_SETTINGS_STORAGE_KEY);
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        setSuccessSound(parsed.successSound || 'none');
-        setHomeSound(parsed.homeSound || 'none');
+        setSuccessSound(getInitialSuccessSound(parsed.successSound));
+        setThemeToggleEffect(
+          isThemeToggleEffect(parsed.themeToggleEffect)
+            ? parsed.themeToggleEffect
+            : getStoredThemeToggleEffect(),
+        );
       } catch {
-        setSuccessSound('none');
-        setHomeSound('none');
+        setSuccessSound('No sound');
+        setThemeToggleEffect(getStoredThemeToggleEffect());
       }
+    } else {
+      const legacySuccessSound = localStorage.getItem(SUCCESS_SOUND_STORAGE_KEY);
+      setSuccessSound(getInitialSuccessSound(legacySuccessSound));
+      setThemeToggleEffect(getStoredThemeToggleEffect());
     }
     setIsLoading(false);
   }, []);
 
   useEffect(() => {
     if (isLoading) return;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ successSound, homeSound }));
-  }, [successSound, homeSound, isLoading]);
+    localStorage.setItem(
+      SYSTEM_SETTINGS_STORAGE_KEY,
+      JSON.stringify({ successSound, themeToggleEffect }),
+    );
+    setStoredSuccessSound(successSound);
+    setStoredThemeToggleEffect(themeToggleEffect);
+    applyThemeToggleEffectStyle(themeToggleEffect);
+  }, [successSound, themeToggleEffect, isLoading]);
 
-  const renderSelect = (
-    label: string,
-    value: string,
-    onChange: (value: string) => void,
-  ) => (
+  const renderSuccessSoundSelect = () => (
     <FormControl fullWidth>
-      <InputLabel>{label}</InputLabel>
+      <InputLabel>{t('settings.successSound')}</InputLabel>
       <Select
-        label={label}
-        value={value}
+        label={t('settings.successSound')}
+        value={successSound}
         onChange={(event) => {
           const selected = event.target.value;
-          onChange(selected);
-          const selectedSound = sounds.find((sound) => sound.value === selected);
-          if (selectedSound?.frequency) {
-            playTone(selectedSound.frequency);
-          }
+          if (!isSuccessSound(selected)) return;
+
+          setSuccessSound(selected);
+          playSuccessSound(selected);
         }}
       >
-        {sounds.map((sound) => (
+        {successSoundOptions.map((sound) => (
           <MenuItem key={sound.value} value={sound.value}>
             {t(sound.labelKey)}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
+
+  const renderThemeToggleEffectSelect = () => (
+    <FormControl fullWidth>
+      <InputLabel>{t('settings.themeToggleEffect')}</InputLabel>
+      <Select
+        label={t('settings.themeToggleEffect')}
+        value={themeToggleEffect}
+        onChange={(event) => {
+          const selected = event.target.value;
+          if (!isThemeToggleEffect(selected)) return;
+
+          setThemeToggleEffect(selected);
+          setStoredThemeToggleEffect(selected);
+          applyThemeToggleEffectStyle(selected);
+        }}
+      >
+        {themeToggleEffectOptions.map((effect) => (
+          <MenuItem key={effect.value} value={effect.value}>
+            {t(effect.labelKey)}
           </MenuItem>
         ))}
       </Select>
@@ -84,8 +127,8 @@ const SystemSettingsPanel = () => {
       <CardContent>
         {isLoading ? <LinearProgress sx={{ mb: 3 }} /> : null}
         <Stack direction="column" spacing={3}>
-          {renderSelect(t('settings.successSound'), successSound, setSuccessSound)}
-          {renderSelect(t('settings.homeSound'), homeSound, setHomeSound)}
+          {renderSuccessSoundSelect()}
+          {renderThemeToggleEffectSelect()}
         </Stack>
       </CardContent>
     </Card>
