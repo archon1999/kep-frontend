@@ -102,29 +102,32 @@ const TechnologiesForm = () => {
                   />
                 </Grid>
                 <Grid size={{ xs: 12, md: 2 }}>
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <Box
-                      component="span"
-                      sx={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 1,
-                        px: 1.5,
-                        py: 0.75,
-                        borderRadius: 999,
-                        bgcolor: item.badgeColor,
-                        color: 'common.white',
-                        width: '100%',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <i className={item.devIconClass} />
-                      <Typography variant="body2">{item.text || t('settings.preview')}</Typography>
-                    </Box>
+                  <Box sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'flex-end' } }}>
                     <IconButton color="error" onClick={() => removeItem(index)} aria-label={t('settings.delete')}>
                       <IconifyIcon icon="material-symbols:delete-outline" />
                     </IconButton>
-                  </Stack>
+                  </Box>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <Box
+                    component="span"
+                    sx={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 1,
+                      maxWidth: 1,
+                      px: 1.5,
+                      py: 0.75,
+                      borderRadius: 999,
+                      bgcolor: item.badgeColor,
+                      color: 'common.white',
+                    }}
+                  >
+                    <i className={item.devIconClass} />
+                    <Typography variant="body2" noWrap>
+                      {item.text || t('settings.preview')}
+                    </Typography>
+                  </Box>
                 </Grid>
               </Grid>
             </Box>

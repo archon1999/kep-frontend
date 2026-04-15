@@ -11,6 +11,7 @@ import SettingsProvider from 'app/providers/SettingsProvider';
 import ThemeProvider from 'app/providers/ThemeProvider';
 import VisionModeProvider from 'app/providers/VisionModeProvider';
 import router from 'app/routes/router';
+import 'devicon/devicon.min.css';
 import { AppErrorBoundary } from 'modules/errors/ui';
 import SWRConfiguration from 'shared/services/configuration/SWRConfiguration';
 
