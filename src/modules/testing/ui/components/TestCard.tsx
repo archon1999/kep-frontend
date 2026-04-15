@@ -43,7 +43,6 @@ const TestCard = ({ test }: Props) => {
                 width: 48,
                 height: 48,
                 borderRadius: 2,
-                bgcolor: 'background.default',
                 overflow: 'hidden',
                 flexShrink: 0,
               }}
@@ -52,7 +51,7 @@ const TestCard = ({ test }: Props) => {
                 component="img"
                 src={test.chapter.icon}
                 alt="chapter"
-                sx={{ width: 1, height: 1, objectFit: 'cover', display: 'block' }}
+                sx={{ width: 1, height: 1, objectFit: 'contain', display: 'block' }}
               />
             </Box>
             <Typography variant="body2" color="text.secondary">
