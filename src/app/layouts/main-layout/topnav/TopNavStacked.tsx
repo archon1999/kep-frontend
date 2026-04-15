@@ -8,6 +8,7 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo';
 import VibrantBackground from 'shared/components/common/VibrantBackground';
 import AppbarActionItems from '../common/AppbarActionItems';
+import NavLogoLabel from '../common/NavLogoLabel';
 import SearchBox from '../common/search-box/SearchBox';
 import TopnavItems from './TopnavItems';
 
@@ -60,6 +61,7 @@ const TopNavStacked = () => {
               <IconifyIcon icon="material-symbols:menu-rounded" sx={{ fontSize: 20 }} />
             </IconButton>
             <Logo showName={upSm} />
+            {upSm && <NavLogoLabel />}
           </Box>
 
           {upMd && (

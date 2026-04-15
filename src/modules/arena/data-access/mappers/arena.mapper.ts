@@ -8,7 +8,7 @@ export const mapArenaPlayerStatistics = (data: any): ArenaPlayerStatistics => {
     username: rest.username ?? '',
     avatar: rest.avatar ?? undefined,
     rating: safeNumber(rest.rating),
-    rankTitle: rest.rankTitle ?? rest.rank_title ?? '',
+    rankTitle: rest.rankTitle ?? '',
     performance: safeNumber(performance ?? perfomance),
     challenges: safeNumber(rest.challenges),
     wins: safeNumber(rest.wins),
@@ -17,14 +17,6 @@ export const mapArenaPlayerStatistics = (data: any): ArenaPlayerStatistics => {
     winRate: safeNumber(rest.winRate ?? rest.win_rate),
     drawRate: safeNumber(rest.drawRate ?? rest.draw_rate),
     lossRate: safeNumber(rest.lossRate ?? rest.loss_rate),
-    opponents: Array.isArray(rest.opponents)
-      ? rest.opponents.map((opponent: any) => ({
-          username: opponent?.username ?? '',
-          avatar: opponent?.avatar ?? undefined,
-          rankTitle: opponent?.rankTitle ?? opponent?.rank_title ?? '',
-          rating: safeNumber(opponent?.rating),
-          result: safeNumber(opponent?.result ?? opponent?.status),
-        }))
-      : [],
+    opponents: rest.opponents,
   };
 };

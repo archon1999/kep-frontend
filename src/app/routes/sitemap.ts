@@ -14,7 +14,7 @@ export interface MenuItem {
   items?: MenuItem[];
 }
 
-const sitemap: MenuItem[] = [
+export const clientMenu: MenuItem[] = [
   {
     name: 'Home',
     key: 'menu.home',
@@ -187,4 +187,127 @@ const sitemap: MenuItem[] = [
   },
 ];
 
-export default sitemap;
+export const adminMenu: MenuItem[] = [
+  {
+    name: 'Problems',
+    key: 'admin.groups.problems',
+    path: resources.AdminProblems,
+    pathName: 'admin-problems',
+    selectionPrefix: resources.AdminProblems,
+    icon: 'mdi:code-tags',
+    active: true,
+    items: [
+      {
+        name: 'Problems',
+        key: 'admin.problems.title',
+        path: resources.AdminProblems,
+        pathName: 'admin-problems-list',
+        icon: 'mdi:code-tags',
+        active: true,
+      },
+      {
+        name: 'Attempts',
+        key: 'admin.resources.problemAttempts.title',
+        path: resources.AdminProblemAttempts,
+        pathName: 'admin-problem-attempts',
+        selectionPrefix: resources.AdminProblemAttempts,
+        icon: 'mdi:source-branch',
+        active: true,
+      },
+      {
+        name: 'Chapters',
+        key: 'admin.resources.problemChapters.title',
+        path: resources.AdminProblemChapters,
+        pathName: 'admin-problem-chapters',
+        selectionPrefix: resources.AdminProblemChapters,
+        icon: 'mdi:book-open-page-variant-outline',
+        active: true,
+      },
+      {
+        name: 'Tags',
+        key: 'admin.resources.problemTags.title',
+        path: resources.AdminProblemTags,
+        pathName: 'admin-problem-tags',
+        selectionPrefix: resources.AdminProblemTags,
+        icon: 'mdi:tag-multiple-outline',
+        active: true,
+      },
+    ],
+  },
+  {
+    name: 'Contests',
+    key: 'admin.groups.contests',
+    path: resources.AdminContests,
+    pathName: 'admin-contests',
+    selectionPrefix: resources.AdminContests,
+    icon: 'mdi:podium-gold',
+    active: true,
+    items: [
+      {
+        name: 'Contests',
+        key: 'admin.contests.title',
+        path: resources.AdminContests,
+        pathName: 'admin-contests-list',
+        icon: 'mdi:podium-gold',
+        active: true,
+      },
+      {
+        name: 'Contest questions',
+        key: 'admin.resources.contestQuestions.title',
+        path: resources.AdminContestQuestions,
+        pathName: 'admin-contest-questions',
+        selectionPrefix: resources.AdminContestQuestions,
+        icon: 'mdi:comment-question-outline',
+        active: true,
+      },
+      {
+        name: 'Contest types',
+        key: 'admin.resources.contestTypes.title',
+        path: resources.AdminContestTypes,
+        pathName: 'admin-contest-types',
+        selectionPrefix: resources.AdminContestTypes,
+        icon: 'mdi:shape-outline',
+        active: true,
+      },
+      {
+        name: 'Filters',
+        key: 'admin.resources.contestFilters.title',
+        path: resources.AdminContestFilters,
+        pathName: 'admin-contest-filters',
+        selectionPrefix: resources.AdminContestFilters,
+        icon: 'mdi:filter-variant',
+        active: true,
+      },
+    ],
+  },
+  {
+    name: 'Users',
+    key: 'admin.groups.users',
+    path: resources.AdminUsers,
+    pathName: 'admin-users',
+    selectionPrefix: resources.AdminUsers,
+    icon: 'mdi:account-multiple-outline',
+    active: true,
+    items: [
+      {
+        name: 'Users',
+        key: 'admin.users.title',
+        path: resources.AdminUsers,
+        pathName: 'admin-users-list',
+        icon: 'mdi:account-multiple-outline',
+        active: true,
+      },
+      {
+        name: 'Teams',
+        key: 'admin.resources.teams.title',
+        path: resources.AdminTeams,
+        pathName: 'admin-teams',
+        selectionPrefix: resources.AdminTeams,
+        icon: 'mdi:account-group-outline',
+        active: true,
+      },
+    ],
+  },
+];
+
+export default clientMenu;

@@ -1,21 +1,21 @@
-import { useMemo } from 'react';
+import { type ReactNode, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 import { Link as RouterLink } from 'react-router-dom';
 import {
+  Avatar,
+  Box,
   Button,
   Card,
   CardContent,
   Chip,
   Divider,
-  Grid,
-  LinearProgress,
   Skeleton,
   Stack,
   Tooltip,
   Typography,
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { alpha, useTheme } from '@mui/material/styles';
 import { getResourceById, getResourceByUsername, resources } from 'app/routes/resources';
 import dayjs from 'dayjs';
 import { LineChart } from 'echarts/charts';
@@ -33,12 +33,13 @@ import KepIcon from 'shared/components/base/KepIcon';
 import ReactEchart from 'shared/components/base/ReactEchart';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
+import { KepIconName } from 'shared/config/icons';
 import { getColor } from 'shared/lib/echart-utils';
 import { useUserRatings } from '../../../application/queries';
 
 echarts.use([GridComponent, TooltipComponent, LineChart, CanvasRenderer]);
 
-const integerAxisLabelFormatter = (value: number) => Math.round(value).toString();
+const integerAxisLabelFormatter = (value: number | string) => Math.round(Number(value)).toString();
 
 const withPadding = (values: number[]) => {
   if (!values.length) return [0, 0];
@@ -48,6 +49,99 @@ const withPadding = (values: number[]) => {
   const padding = range * 0.1;
   return [Math.max(0, min - padding), max + padding];
 };
+
+const formatDelta = (delta?: number) => {
+  if (delta === undefined) return undefined;
+  return delta > 0 ? `+${delta}` : `${delta}`;
+};
+
+const RatingHeader = ({
+  icon,
+  title,
+  children,
+}: {
+  icon: KepIconName;
+  title: string;
+  children?: ReactNode;
+}) => (
+  <Box
+    sx={(theme) => ({
+      px: 2,
+      py: 1.5,
+      borderBottom: 1,
+      borderColor: 'divider',
+      background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.14)}, ${alpha(
+        theme.palette.primary.main,
+        0.04,
+      )})`,
+    })}
+  >
+    <Stack
+      direction={{ xs: 'column', sm: 'row' }}
+      spacing={1.25}
+      alignItems={{ xs: 'flex-start', sm: 'center' }}
+      justifyContent="space-between"
+    >
+      <Stack direction="row" spacing={1.25} alignItems="center">
+        <Avatar
+          variant="rounded"
+          sx={(theme) => ({
+            width: 40,
+            height: 40,
+            borderRadius: '8px',
+            bgcolor: alpha(theme.palette.primary.main, 0.14),
+            color: 'primary.main',
+          })}
+        >
+          <KepIcon name={icon} fontSize={24} />
+        </Avatar>
+        <Typography variant="h6" fontWeight={800}>
+          {title}
+        </Typography>
+      </Stack>
+
+      {children ? (
+        <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap" useFlexGap>
+          {children}
+        </Stack>
+      ) : null}
+    </Stack>
+  </Box>
+);
+
+const LoadingCard = () => (
+  <Card variant="outlined" sx={{ borderRadius: '8px' }}>
+    <CardContent sx={{ py: 5 }}>
+      <Stack direction="column" spacing={1.5} alignItems="center">
+        <Skeleton variant="circular" width={42} height={42} />
+        <Skeleton variant="text" width="42%" />
+        <Skeleton variant="rounded" width="78%" height={18} />
+      </Stack>
+    </CardContent>
+  </Card>
+);
+
+const StatBadge = ({
+  icon,
+  label,
+  color = 'primary',
+}: {
+  icon?: KepIconName;
+  label: ReactNode;
+  color?: 'primary' | 'info' | 'success' | 'warning' | 'error' | 'default';
+}) => (
+  <Chip
+    size="small"
+    color={color}
+    variant="outlined"
+    label={
+      <Stack direction="row" spacing={0.5} alignItems="center">
+        {icon ? <KepIcon name={icon} fontSize={14} /> : null}
+        <span>{label}</span>
+      </Stack>
+    }
+  />
+);
 
 const UserProfileRatingsTab = () => {
   const { t } = useTranslation();
@@ -65,35 +159,50 @@ const UserProfileRatingsTab = () => {
     useChallengeRatingChanges(username);
 
   const contestsRating = userRatings?.contestsRating;
+  const emptyValue = t('users.emptyValue');
 
-  const difficultyEntries = useMemo(() => {
-    const difficulties = problemsRating?.difficulties;
-    if (!difficulties) return [];
-    return difficultyOptions
-      .map((option) => {
-        const totalKey =
-          `all${option.key.charAt(0).toUpperCase()}${option.key.slice(1)}` as keyof typeof difficulties;
-        return {
-          key: option.key,
-          value: difficulties[option.key],
-          total: difficulties[totalKey],
-          color: difficultyColorByKey[option.key],
-        };
-      })
-      .filter((entry) => (entry.value ?? 0) > 0 || (entry.total ?? 0) > 0);
-  }, [problemsRating?.difficulties]);
-
-  const contestRatingOption = useMemo(() => {
+  const sortedContestChanges = useMemo(() => {
     const changes = contestRatingChanges ?? [];
-    if (!changes.length) return null;
-
-    const sorted = [...changes].sort(
+    return [...changes].sort(
       (a, b) =>
         dayjs(a.contestStartDate ?? a.contestTitle ?? '').valueOf() -
         dayjs(b.contestStartDate ?? b.contestTitle ?? '').valueOf(),
     );
+  }, [contestRatingChanges]);
 
-    const values = sorted.map((item) => Number(item.newRating ?? 0));
+  const sortedChallengeChanges = useMemo(() => {
+    const changes = challengeRatingChanges ?? [];
+    return [...changes].sort((a, b) => dayjs(a.date).valueOf() - dayjs(b.date).valueOf());
+  }, [challengeRatingChanges]);
+
+  const difficultyEntries = useMemo(() => {
+    const difficulties = problemsRating?.difficulties;
+    if (!difficulties) return [];
+
+    return difficultyOptions.map((option) => ({
+      key: option.key,
+      value: difficulties[option.key] ?? 0,
+      color: difficultyColorByKey[option.key],
+    }));
+  }, [problemsRating?.difficulties]);
+
+  const contestMaxChange = useMemo(() => {
+    if (!sortedContestChanges.length) return undefined;
+    return sortedContestChanges.reduce((best, item) =>
+      Number(item.newRating ?? 0) > Number(best.newRating ?? 0) ? item : best,
+    );
+  }, [sortedContestChanges]);
+
+  const contestLatestChange = sortedContestChanges[sortedContestChanges.length - 1];
+  const contestLatestRating = contestsRating?.value ?? contestLatestChange?.newRating;
+  const contestLatestTitle = contestsRating?.title ?? contestLatestChange?.newRatingTitle;
+  const contestMaxRating = contestMaxChange?.newRating;
+  const contestMaxTitle = contestMaxChange?.newRatingTitle ?? contestLatestTitle;
+
+  const contestRatingOption = useMemo(() => {
+    if (!sortedContestChanges.length) return null;
+
+    const values = sortedContestChanges.map((item) => Number(item.newRating ?? 0));
     const [min, max] = withPadding(values);
 
     return {
@@ -101,11 +210,25 @@ const UserProfileRatingsTab = () => {
       grid: { left: 8, right: 12, top: 12, bottom: 12, containLabel: true },
       tooltip: {
         trigger: 'axis',
-        valueFormatter: (value: number) => value?.toString?.() ?? '',
+        formatter: (params: any) => {
+          const point = params?.[0]?.data;
+          const change = sortedContestChanges[params?.[0]?.dataIndex];
+          if (!change) return '';
+
+          const delta = formatDelta(change.delta);
+          return [
+            change.contestTitle ?? '',
+            `#${change.rank ?? emptyValue}`,
+            `${username}: ${point?.value ?? emptyValue}`,
+            delta ? `${t('users.profile.ratings.rating')}: ${delta}` : '',
+          ]
+            .filter(Boolean)
+            .join('<br />');
+        },
       },
       xAxis: {
         type: 'category',
-        data: sorted.map((item) =>
+        data: sortedContestChanges.map((item) =>
           item.contestStartDate
             ? dayjs(item.contestStartDate).format('DD MMM')
             : (item.contestTitle ?? ''),
@@ -132,24 +255,20 @@ const UserProfileRatingsTab = () => {
           showSymbol: true,
           symbolSize: 8,
           lineStyle: { width: 3 },
-          areaStyle: { opacity: 0.18 },
-          data: sorted.map((item) => ({
+          areaStyle: { opacity: 0.2 },
+          data: sortedContestChanges.map((item) => ({
             value: item.newRating ?? 0,
             contestId: item.contestId,
-            rank: item.rank,
-            delta: item.delta,
           })),
         },
       ],
     };
-  }, [contestRatingChanges, theme.vars.palette]);
+  }, [emptyValue, sortedContestChanges, t, theme.vars.palette, username]);
 
   const challengeRatingOption = useMemo(() => {
-    const changes = challengeRatingChanges ?? [];
-    if (!changes.length) return null;
+    if (!sortedChallengeChanges.length) return null;
 
-    const sorted = [...changes].sort((a, b) => dayjs(a.date).valueOf() - dayjs(b.date).valueOf());
-    const values = sorted.map((item) => Number(item.value ?? 0));
+    const values = sortedChallengeChanges.map((item) => Number(item.value ?? 0));
     const [min, max] = withPadding(values);
 
     return {
@@ -158,7 +277,7 @@ const UserProfileRatingsTab = () => {
       tooltip: { trigger: 'axis' },
       xAxis: {
         type: 'category',
-        data: sorted.map((item) => dayjs(item.date).format('DD MMM')),
+        data: sortedChallengeChanges.map((item) => dayjs(item.date).format('DD MMM')),
         axisLabel: { color: getColor(theme.vars.palette.text.secondary) },
         axisTick: { show: false },
         axisLine: { lineStyle: { color: getColor(theme.vars.palette.divider) } },
@@ -181,12 +300,12 @@ const UserProfileRatingsTab = () => {
           showSymbol: true,
           symbolSize: 8,
           lineStyle: { width: 3 },
-          areaStyle: { opacity: 0.18 },
-          data: sorted.map((item) => item.value ?? 0),
+          areaStyle: { opacity: 0.2 },
+          data: sortedChallengeChanges.map((item) => item.value ?? 0),
         },
       ],
     };
-  }, [challengeRatingChanges, theme.vars.palette]);
+  }, [sortedChallengeChanges, theme.vars.palette]);
 
   const contestChartEvents = useMemo(
     () => ({
@@ -200,326 +319,156 @@ const UserProfileRatingsTab = () => {
     [navigate],
   );
 
-  const contestMaxRating = useMemo(() => {
-    if (!contestRatingChanges?.length) return undefined;
-    return Math.max(...contestRatingChanges.map((item) => Number(item.newRating ?? 0)));
-  }, [contestRatingChanges]);
+  const isMainLoading = isProblemsLoading || isRatingsLoading || isChallengesLoading;
 
-  const contestLatestRating =
-    contestsRating?.value ?? contestRatingChanges?.[contestRatingChanges.length - 1]?.newRating;
+  if (isMainLoading) {
+    return (
+      <Stack direction="column" spacing={2}>
+        {Array.from({ length: 3 }).map((_, index) => (
+          <LoadingCard key={index} />
+        ))}
+      </Stack>
+    );
+  }
 
   return (
     <Stack direction="column" spacing={2}>
-      <Grid container spacing={2}>
-        <Grid size={{ xs: 12 }}>
-          <Card variant="outlined" sx={{ height: '100%', borderRadius: 3 }}>
-            <CardContent>
-              <Stack direction="column" spacing={2}>
-                <Stack
-                  direction="row"
-                  spacing={1.5}
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <KepIcon name="problems" fontSize={22} color="primary.main" />
-                    <Typography variant="h6" fontWeight={800}>
-                      {t('problems.title')}
-                    </Typography>
-                  </Stack>
-                  <Chip
-                    size="small"
-                    color="primary"
-                    label={`${t('users.profile.ratings.solved')}: ${problemsRating?.solved ?? 0}`}
-                    variant="outlined"
-                  />
-                </Stack>
+      <Card variant="outlined" sx={{ borderRadius: '8px', overflow: 'hidden' }}>
+        <RatingHeader icon="problem" title={t('problems.title')}>
+          <Tooltip title={t('users.profile.ratings.solved')} arrow>
+            <span>
+              <StatBadge icon="check" label={problemsRating?.solved ?? 0} color="success" />
+            </span>
+          </Tooltip>
+          <Tooltip title={t('users.profile.ratings.rating')} arrow>
+            <span>
+              <StatBadge icon="rating" label={problemsRating?.rating ?? 0} />
+            </span>
+          </Tooltip>
+        </RatingHeader>
 
-                {isProblemsLoading ? (
-                  <Stack direction="column" spacing={1.5}>
-                    <Skeleton variant="text" width="60%" />
-                    <Skeleton variant="rectangular" height={22} />
-                    <Skeleton variant="rectangular" height={22} />
-                    <Skeleton variant="rectangular" height={80} />
-                  </Stack>
-                ) : problemsRating ? (
-                  <Stack direction="column" spacing={1.5}>
-                    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                      <Chip
-                        size="small"
-                        color="primary"
-                        label={`${t('users.profile.ratings.rating')}: ${problemsRating.rating ?? '¢?"'}`}
-                        variant="outlined"
-                      />
-                      <Chip
-                        size="small"
-                        label={`${t('users.profile.ratings.rank')}: #${problemsRating.rank ?? '¢?"'}`}
-                        variant="outlined"
-                      />
-                      {problemsRating.difficulties?.totalProblems ? (
-                        <Chip
-                          size="small"
-                          label={t('problems.difficultyOverview', {
-                            solved: problemsRating.difficulties.totalSolved,
-                            total: problemsRating.difficulties.totalProblems,
-                          })}
-                          variant="outlined"
-                        />
-                      ) : null}
-                    </Stack>
+        <CardContent>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: {
+                xs: 'repeat(2, minmax(0, 1fr))',
+                sm: 'repeat(4, minmax(0, 1fr))',
+                md: `repeat(${Math.max(difficultyEntries.length, 1)}, minmax(0, 1fr))`,
+              },
+              gap: 1.5,
+              textAlign: 'center',
+            }}
+          >
+            {difficultyEntries.map((difficulty) => (
+              <Box key={difficulty.key}>
+                <Typography variant="caption" color="text.secondary" fontWeight={700}>
+                  {t(`problems.difficulty.${difficulty.key}` as const)}
+                </Typography>
+                <Typography variant="h6" color={`${difficulty.color}.main`} fontWeight={800}>
+                  {difficulty.value}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
 
-                    <Stack direction="column" spacing={1}>
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <KepIcon name="difficulty" fontSize={18} color="text.secondary" />
-                        <Typography variant="subtitle2" color="text.secondary">
-                          {t('problems.difficultyBreakdown')}
-                        </Typography>
-                      </Stack>
+          <Divider sx={{ my: 2 }} />
 
-                      <Stack direction="column" spacing={1}>
-                        {difficultyEntries.map((entry) => {
-                          const percent = entry.total
-                            ? Math.min(100, (entry.value / entry.total) * 100)
-                            : 0;
-                          return (
-                            <Stack key={entry.key} direction="column" spacing={0.5}>
-                              <Stack
-                                direction="row"
-                                spacing={1}
-                                justifyContent="space-between"
-                                alignItems="center"
-                              >
-                                <Typography variant="body2" color="text.secondary">
-                                  {t(`problems.difficulty.${entry.key}` as const)}
-                                </Typography>
-                                <Typography variant="caption" color="text.secondary">
-                                  {entry.value ?? 0}/{entry.total ?? 0}
-                                </Typography>
-                              </Stack>
-                              <LinearProgress
-                                variant="determinate"
-                                value={percent}
-                                sx={{
-                                  height: 8,
-                                  borderRadius: 999,
-                                }}
-                              />
-                            </Stack>
-                          );
-                        })}
-                      </Stack>
-                    </Stack>
+          <Button
+            component={RouterLink}
+            to={getResourceByUsername(resources.AttemptsByUser, username)}
+            variant="outlined"
+            color="primary"
+            size="small"
+            fullWidth
+          >
+            {t('problems.attempts.title')}
+          </Button>
+        </CardContent>
+      </Card>
 
-                    <Divider />
-
-                    <Button
-                      component={RouterLink}
-                      to={getResourceByUsername(resources.AttemptsByUser, username)}
-                      variant="contained"
-                      color="primary"
-                      size="small"
-                      sx={{ alignSelf: 'flex-start' }}
-                    >
-                      {t('problems.attempts.title')}
-                    </Button>
-                  </Stack>
-                ) : (
-                  <Typography variant="body2" color="text.secondary">
-                    {t('users.emptyValue')}
-                  </Typography>
-                )}
+      <Card variant="outlined" sx={{ borderRadius: '8px', overflow: 'hidden' }}>
+        <RatingHeader icon="contests" title={t('contests.title')}>
+          <Chip
+            size="small"
+            variant="outlined"
+            label={
+              <Stack direction="row" spacing={0.5} alignItems="center">
+                <ContestsRatingChip title={contestLatestTitle} imgSize={16} />
+                <span>{contestLatestRating ?? 0}</span>
               </Stack>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid size={{ xs: 12 }}>
-          <Card variant="outlined" sx={{ height: '100%', borderRadius: 3 }}>
-            <CardContent>
-              <Stack direction="column" spacing={2}>
-                <Stack
-                  direction="row"
-                  spacing={1.5}
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <KepIcon name="contests" fontSize={22} color="primary.main" />
-                    <Typography variant="h6" fontWeight={800}>
-                      {t('contests.title')}
-                    </Typography>
-                  </Stack>
-                  {contestsRating?.title ? (
-                    <ContestsRatingChip title={contestsRating.title} imgSize={28} withTitle />
-                  ) : null}
-                </Stack>
-
-                {isRatingsLoading ? (
-                  <Stack direction="column" spacing={1.25}>
-                    <Skeleton variant="text" width="70%" />
-                    <Skeleton variant="rectangular" height={18} />
-                    <Skeleton variant="rectangular" height={120} />
-                  </Stack>
-                ) : contestsRating ? (
-                  <Stack direction="column" spacing={1.5}>
-                    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                      <Chip
-                        size="small"
-                        color="primary"
-                        label={`${t('users.profile.ratings.rating')}: ${contestLatestRating ?? '¢?"'}`}
-                        variant="outlined"
-                      />
-                      {contestMaxRating ? (
-                        <Chip
-                          size="small"
-                          label={`${t('users.profile.ratings.maxRating')}: ${contestMaxRating}`}
-                          variant="outlined"
-                        />
-                      ) : null}
-                      {contestsRating.rank !== undefined ? (
-                        <Chip size="small" label={`#${contestsRating.rank}`} variant="outlined" />
-                      ) : null}
-                      {contestsRating.percentile !== undefined ? (
-                        <Chip
-                          size="small"
-                          label={t('users.profile.ratings.percentile', {
-                            value: contestsRating.percentile,
-                          })}
-                          variant="outlined"
-                        />
-                      ) : null}
-                    </Stack>
-
-                    <Stack direction="column" spacing={1}>
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <KepIcon name="rating-changes" fontSize={18} color="text.secondary" />
-                        <Typography variant="subtitle2" color="text.secondary">
-                          {t('contests.statistics.ratingChangesHistory')}
-                        </Typography>
-                      </Stack>
-
-                      {isContestChangesLoading ? (
-                        <Skeleton variant="rectangular" height={160} />
-                      ) : contestRatingOption ? (
-                        <ReactEchart
-                          echarts={echarts}
-                          option={contestRatingOption}
-                          onEvents={contestChartEvents}
-                          sx={{ height: 200 }}
-                        />
-                      ) : (
-                        <Typography variant="body2" color="text.secondary">
-                          {t('users.profile.ratings.noHistory')}
-                        </Typography>
-                      )}
-                    </Stack>
-                  </Stack>
-                ) : (
-                  <Typography variant="body2" color="text.secondary">
-                    {t('users.emptyValue')}
-                  </Typography>
-                )}
+            }
+          />
+          <Chip
+            size="small"
+            variant="outlined"
+            label={
+              <Stack direction="row" spacing={0.5} alignItems="center">
+                <ContestsRatingChip title={contestMaxTitle} imgSize={16} />
+                <span>{contestMaxRating ?? 0}</span>
               </Stack>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
+            }
+          />
+          <StatBadge label={sortedContestChanges.length} />
+        </RatingHeader>
 
-      <Grid container spacing={2}>
-        <Grid size={{ xs: 12 }}>
-          <Card variant="outlined" sx={{ height: '100%', borderRadius: 3 }}>
-            <CardContent>
-              <Stack direction="column" spacing={1.5}>
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <KepIcon name="challenges" fontSize={22} color="warning.main" />
-                    <Typography variant="h6" fontWeight={800}>
-                      {t('challenges.title')}
-                    </Typography>
-                  </Stack>
-                  {challengesRating?.rankTitle ? (
-                    <ChallengesRatingChip title={challengesRating.rankTitle} />
-                  ) : null}
-                </Stack>
+        <CardContent>
+          {isContestChangesLoading ? (
+            <Skeleton variant="rectangular" height={260} />
+          ) : contestRatingOption ? (
+            <ReactEchart
+              echarts={echarts}
+              option={contestRatingOption}
+              onEvents={contestChartEvents}
+              sx={{ height: 300 }}
+            />
+          ) : (
+            <Typography variant="body2" color="text.secondary">
+              {t('users.profile.ratings.noHistory')}
+            </Typography>
+          )}
+        </CardContent>
+      </Card>
 
-                {isChallengesLoading ? (
-                  <Stack direction="column" spacing={1.25}>
-                    <Skeleton variant="text" width="60%" />
-                    <Skeleton variant="rectangular" height={18} />
-                    <Skeleton variant="rectangular" height={18} />
-                  </Stack>
-                ) : challengesRating ? (
-                  <Stack direction="column" spacing={1.5}>
-                    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                      <Chip
-                        size="small"
-                        color="warning"
-                        label={`${t('users.profile.ratings.rating')}: ${challengesRating.rating}`}
-                        variant="outlined"
-                      />
-                      <Chip
-                        size="small"
-                        label={t('users.profile.ratings.games', { total: challengesRating.all })}
-                        variant="outlined"
-                      />
-                    </Stack>
+      <Card variant="outlined" sx={{ borderRadius: '8px', overflow: 'hidden' }}>
+        <RatingHeader icon="challenges" title={t('challenges.title')}>
+          <ChallengesRatingChip title={challengesRating?.rankTitle} />
+          <ChallengesRatingChip
+            title={challengesRating?.rankTitle}
+            rating={challengesRating?.rating ?? 0}
+          />
+        </RatingHeader>
 
-                    <Stack
-                      direction="row"
-                      spacing={1}
-                      alignItems="center"
-                      flexWrap="wrap"
-                      useFlexGap
-                    >
-                      <Tooltip title={t('users.profile.ratings.wins')} arrow>
-                        <Chip label={`W ${challengesRating.wins}`} size="small" color="success" />
-                      </Tooltip>
-                      <Tooltip title={t('users.profile.ratings.draws')} arrow>
-                        <Chip label={`D ${challengesRating.draws}`} size="small" color="default" />
-                      </Tooltip>
-                      <Tooltip title={t('users.profile.ratings.losses')} arrow>
-                        <Chip label={`L ${challengesRating.losses}`} size="small" color="error" />
-                      </Tooltip>
-                    </Stack>
+        <CardContent>
+          <Stack direction="row" spacing={1.5} justifyContent="center" sx={{ mb: 2 }}>
+            <Tooltip title={t('users.profile.ratings.wins')} arrow>
+              <Typography variant="h6" color="success.main" fontWeight={800}>
+                W {challengesRating?.wins ?? 0}
+              </Typography>
+            </Tooltip>
+            <Tooltip title={t('users.profile.ratings.draws')} arrow>
+              <Typography variant="h6" color="text.secondary" fontWeight={800}>
+                D {challengesRating?.draws ?? 0}
+              </Typography>
+            </Tooltip>
+            <Tooltip title={t('users.profile.ratings.losses')} arrow>
+              <Typography variant="h6" color="error.main" fontWeight={800}>
+                L {challengesRating?.losses ?? 0}
+              </Typography>
+            </Tooltip>
+          </Stack>
 
-                    <Stack direction="column" spacing={1}>
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <KepIcon name="rating-changes" fontSize={18} color="text.secondary" />
-                        <Typography variant="subtitle2" color="text.secondary">
-                          {t('challenges.ratingChanges')}
-                        </Typography>
-                      </Stack>
-
-                      {isChallengeChangesLoading ? (
-                        <Skeleton variant="rectangular" height={160} />
-                      ) : challengeRatingOption ? (
-                        <ReactEchart
-                          echarts={echarts}
-                          option={challengeRatingOption}
-                          sx={{ height: 200 }}
-                        />
-                      ) : (
-                        <Typography variant="body2" color="text.secondary">
-                          {t('users.profile.ratings.noHistory')}
-                        </Typography>
-                      )}
-                    </Stack>
-                  </Stack>
-                ) : (
-                  <Typography variant="body2" color="text.secondary">
-                    {t('users.emptyValue')}
-                  </Typography>
-                )}
-              </Stack>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
+          {isChallengeChangesLoading ? (
+            <Skeleton variant="rectangular" height={260} />
+          ) : challengeRatingOption ? (
+            <ReactEchart echarts={echarts} option={challengeRatingOption} sx={{ height: 300 }} />
+          ) : (
+            <Typography variant="body2" color="text.secondary">
+              {t('users.profile.ratings.noHistory')}
+            </Typography>
+          )}
+        </CardContent>
+      </Card>
     </Stack>
   );
 };

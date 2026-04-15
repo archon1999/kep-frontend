@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams, useSearchParams } from 'react-router';
+import { useBlocker, useNavigate, useParams, useSearchParams } from 'react-router';
 import {
   Avatar,
   Box,
@@ -24,9 +24,15 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import KepIcon from 'shared/components/base/KepIcon.tsx';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { toast } from 'sonner';
-import { useStartChallenge, useSubmitChallengeAnswer } from '../../application/mutations.ts';
+import {
+  useApplyChallengeAntiCheatPenalty,
+  useStartChallenge,
+  useSubmitChallengeAnswer,
+} from '../../application/mutations.ts';
 import { useChallengeDetail } from '../../application/queries.ts';
+import { sendChallengeAntiCheatPenaltyKeepalive } from '../../data-access/api/challenges.client.ts';
 import { ChallengeQuestionTimeType, ChallengeStatus } from '../../domain';
+import { ChallengePenaltyReason } from '../../domain/ports/challenges.repository.ts';
 import ChallengeCountdown from '../components/ChallengeCountdown.tsx';
 import ChallengeQuestionCard, {
   ChallengeQuestionCardHandle,
@@ -35,6 +41,39 @@ import ChallengeResultsCard from '../components/ChallengeResultsCard.tsx';
 import ChallengeUserChip from '../components/ChallengeUserChip.tsx';
 
 dayjs.extend(relativeTime);
+
+const PENDING_ANTI_CHEAT_PENALTY_KEY = 'challenge-anti-cheat-penalty';
+
+interface PendingAntiCheatPenalty {
+  challengeId: number;
+  questionNumber: number;
+  reason: ChallengePenaltyReason;
+}
+
+const getPendingAntiCheatPenalty = (): PendingAntiCheatPenalty | null => {
+  try {
+    const raw = sessionStorage.getItem(PENDING_ANTI_CHEAT_PENALTY_KEY);
+    if (!raw) return null;
+
+    const parsed = JSON.parse(raw) as Partial<PendingAntiCheatPenalty>;
+    const challengeId = Number(parsed.challengeId);
+    const questionNumber = Number(parsed.questionNumber);
+
+    if (!challengeId || !questionNumber) return null;
+
+    return {
+      challengeId,
+      questionNumber,
+      reason: parsed.reason ?? 'reconcile',
+    };
+  } catch {
+    return null;
+  }
+};
+
+const setPendingAntiCheatPenalty = (penalty: PendingAntiCheatPenalty) => {
+  sessionStorage.setItem(PENDING_ANTI_CHEAT_PENALTY_KEY, JSON.stringify(penalty));
+};
 
 const ChallengeDetailPage = () => {
   const { id } = useParams();
@@ -46,6 +85,7 @@ const ChallengeDetailPage = () => {
   const { data: challenge, isLoading, mutate } = useChallengeDetail(id);
   const { trigger: startChallenge, isMutating: starting } = useStartChallenge();
   const { trigger: submitAnswer, isMutating: submitting } = useSubmitChallengeAnswer();
+  const { trigger: applyAntiCheatPenalty } = useApplyChallengeAntiCheatPenalty();
   useDocumentTitle(
     challenge?.playerFirst?.username && challenge?.playerSecond?.username
       ? 'pageTitles.challenge'
@@ -59,10 +99,11 @@ const ChallengeDetailPage = () => {
   );
 
   const questionCardRef = useRef<ChallengeQuestionCardHandle>(null);
-  const timerStartedRef = useRef(false);
   const finishHandledRef = useRef(false);
   const blurCheckTimeoutRef = useRef<number | null>(null);
   const suppressBlurUntilRef = useRef(0);
+  const penaltyInFlightRef = useRef<string | null>(null);
+  const reconciledPenaltyRef = useRef<string | null>(null);
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [timerRunning, setTimerRunning] = useState(false);
   const [startDialogOpen, setStartDialogOpen] = useState(false);
@@ -75,26 +116,87 @@ const ChallengeDetailPage = () => {
   );
   const blurProtectionActive = challenge?.status === ChallengeStatus.Already && Boolean(question);
 
+  const getActiveAntiCheatPenalty = useCallback(
+    (reason: ChallengePenaltyReason): PendingAntiCheatPenalty | null => {
+      if (!challenge || challenge.status !== ChallengeStatus.Already || !question) return null;
+      if (!challenge.nextQuestion?.number) return null;
+
+      return {
+        challengeId: challenge.id,
+        questionNumber: challenge.nextQuestion.number,
+        reason,
+      };
+    },
+    [challenge, question],
+  );
+
+  const runAntiCheatPenalty = useCallback(
+    async (
+      reason: ChallengePenaltyReason,
+      options?: { notify?: boolean; penalty?: PendingAntiCheatPenalty },
+    ) => {
+      const penalty = options?.penalty ?? getActiveAntiCheatPenalty(reason);
+      if (!penalty) return false;
+
+      const key = `${penalty.challengeId}:${penalty.questionNumber}`;
+      if (penaltyInFlightRef.current === key) return false;
+
+      penaltyInFlightRef.current = key;
+
+      try {
+        const result = await applyAntiCheatPenalty({
+          challengeId: penalty.challengeId,
+          payload: {
+            questionNumber: penalty.questionNumber,
+            reason: options?.penalty ? penalty.reason : reason,
+          },
+        });
+
+        if (result?.penalized && options?.notify !== false) {
+          toast.error(t('challenges.blurError'));
+          setBlurDialogOpen(true);
+        }
+
+        await mutate();
+        return Boolean(result?.penalized);
+      } catch {
+        return false;
+      } finally {
+        if (penaltyInFlightRef.current === key) {
+          penaltyInFlightRef.current = null;
+        }
+      }
+    },
+    [applyAntiCheatPenalty, getActiveAntiCheatPenalty, mutate, t],
+  );
+
+  const routeBlocker = useBlocker(({ currentLocation, nextLocation }) => (
+    blurProtectionActive
+    && (
+      currentLocation.pathname !== nextLocation.pathname
+      || currentLocation.search !== nextLocation.search
+    )
+  ));
+
   useEffect(() => {
     if (!challenge || challenge.status !== ChallengeStatus.Already || !question) {
       setTimerRunning(false);
-      timerStartedRef.current = false;
       return;
     }
 
     if (challenge.questionTimeType === ChallengeQuestionTimeType.TimeToOne) {
       setSecondsLeft(challenge.timeSeconds);
       setTimerRunning(true);
-    } else if (!timerStartedRef.current) {
-      setSecondsLeft(challenge.timeSeconds);
+    } else {
+      setSecondsLeft(challenge.remainingTimeSeconds ?? challenge.timeSeconds);
       setTimerRunning(true);
-      timerStartedRef.current = true;
     }
   }, [
     challenge?.id,
     challenge?.status,
     challenge?.nextQuestion?.number,
     challenge?.questionTimeType,
+    challenge?.remainingTimeSeconds,
     challenge?.timeSeconds,
     question,
   ]);
@@ -194,7 +296,7 @@ const ChallengeDetailPage = () => {
           return;
         }
 
-        setBlurDialogOpen(true);
+        void runAntiCheatPenalty('blur');
       }, 150);
     };
 
@@ -225,7 +327,57 @@ const ChallengeDetailPage = () => {
       window.removeEventListener('focus', handleWindowFocus);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [blurProtectionActive]);
+  }, [blurProtectionActive, runAntiCheatPenalty]);
+
+  useEffect(() => {
+    if (!blurProtectionActive) return;
+
+    const handlePageHide = () => {
+      const penalty = getActiveAntiCheatPenalty('pagehide');
+      if (!penalty) return;
+
+      setPendingAntiCheatPenalty(penalty);
+      sendChallengeAntiCheatPenaltyKeepalive(penalty.challengeId, {
+        questionNumber: penalty.questionNumber,
+        reason: penalty.reason,
+      });
+    };
+
+    window.addEventListener('pagehide', handlePageHide);
+
+    return () => {
+      window.removeEventListener('pagehide', handlePageHide);
+    };
+  }, [blurProtectionActive, getActiveAntiCheatPenalty]);
+
+  useEffect(() => {
+    if (!challenge) return;
+
+    const pending = getPendingAntiCheatPenalty();
+    if (!pending || pending.challengeId !== challenge.id) return;
+
+    const key = `${pending.challengeId}:${pending.questionNumber}`;
+    if (reconciledPenaltyRef.current === key) return;
+
+    reconciledPenaltyRef.current = key;
+    sessionStorage.removeItem(PENDING_ANTI_CHEAT_PENALTY_KEY);
+    void runAntiCheatPenalty('reconcile', {
+      notify: false,
+      penalty: {
+        ...pending,
+        reason: 'reconcile',
+      },
+    });
+  }, [challenge, runAntiCheatPenalty]);
+
+  useEffect(() => {
+    if (routeBlocker.state !== 'blocked') return;
+
+    void (async () => {
+      await runAntiCheatPenalty('route_leave', { notify: false });
+      routeBlocker.proceed();
+    })();
+  }, [routeBlocker, runAntiCheatPenalty]);
 
   const handleStart = async () => {
     if (!challenge) return;
@@ -405,7 +557,7 @@ const ChallengeDetailPage = () => {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={finishDialogOpen} onClose={handleStayOnPage} fullWidth maxWidth="md">
+      <Dialog open={finishDialogOpen} onClose={handleStayOnPage} fullWidth maxWidth="sm">
         <DialogTitle>
           <Stack direction="row" spacing={1} alignItems="center">
             <KepIcon name="challenge" fontSize={20} color="success.main" />
@@ -413,12 +565,7 @@ const ChallengeDetailPage = () => {
           </Stack>
         </DialogTitle>
         <DialogContent dividers>
-          <Stack spacing={2}>
-            <Typography variant="body2" color="text.secondary">
-              {t('challenges.finishedDescription')}
-            </Typography>
-            <ChallengeResultsCard challenge={challenge} />
-          </Stack>
+          <ChallengeResultsCard challenge={challenge} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleStayOnPage}>{t('common.close')}</Button>

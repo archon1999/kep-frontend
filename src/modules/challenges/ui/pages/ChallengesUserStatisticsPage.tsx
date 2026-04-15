@@ -1001,7 +1001,7 @@ const ChallengesUserStatisticsPage = () => {
                 <CardHeader title={t('challenges.lastChallenges')} />
                 <CardContent>
                   <Stack spacing={1.5}>
-                    {(lastChallenges?.data ?? []).map((challenge) => <ChallengeCard key={challenge.id} challenge={challenge} />)}
+                    {(lastChallenges?.data ?? []).map((challenge) => <ChallengeCard key={challenge.id} challenge={challenge} currentUsername={username} />)}
                     {!isChallengesLoading && !lastChallenges?.data?.length ? <Typography variant="body2" color="text.secondary">{t('challenges.noChallenges')}</Typography> : null}
                     {(lastChallenges?.pagesCount ?? 0) > 1 ? <Box display="flex" justifyContent="flex-end"><Pagination color="primary" shape="rounded" page={state.page} count={lastChallenges?.pagesCount ?? 0} onChange={(_, value) => setField('page', value)} /></Box> : null}
                   </Stack>

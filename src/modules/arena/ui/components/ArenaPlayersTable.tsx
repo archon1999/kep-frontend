@@ -11,6 +11,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import UserPopover from 'modules/users/ui/components/UserPopover';
@@ -38,6 +39,37 @@ const resultColor = (value: number) => {
   return 'error.main';
 };
 
+const topPlayerHighlight = (rank?: number | null) => {
+  if (rank === 1) {
+    return {
+      backgroundColor: 'rgba(255, 193, 7, 0.18)',
+      hoverBackgroundColor: 'rgba(255, 193, 7, 0.26)',
+      borderColor: 'rgba(255, 193, 7, 0.58)',
+      rankColor: 'warning.dark',
+    };
+  }
+
+  if (rank === 2) {
+    return {
+      backgroundColor: 'rgba(158, 158, 158, 0.16)',
+      hoverBackgroundColor: 'rgba(158, 158, 158, 0.24)',
+      borderColor: 'rgba(158, 158, 158, 0.48)',
+      rankColor: 'text.secondary',
+    };
+  }
+
+  if (rank === 3) {
+    return {
+      backgroundColor: 'rgba(205, 127, 50, 0.16)',
+      hoverBackgroundColor: 'rgba(205, 127, 50, 0.24)',
+      borderColor: 'rgba(205, 127, 50, 0.48)',
+      rankColor: '#A46122',
+    };
+  }
+
+  return undefined;
+};
+
 const ArenaPlayersTable = ({
   data,
   loading,
@@ -62,7 +94,7 @@ const ArenaPlayersTable = ({
     <Stack direction="column" spacing={2}>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Typography variant="h6" fontWeight={800}>
-          {t('arena.players')}
+          {isUpcoming ? t('arena.participantsTitle') : t('arena.players')}
         </Typography>
       </Stack>
 
@@ -80,7 +112,20 @@ const ArenaPlayersTable = ({
                 <TableCell align="right">{t('arena.columns.points')}</TableCell>
               ) : null}
               {!isUpcoming ? (
-                <TableCell align="right">{t('arena.columns.buchholz')}</TableCell>
+                <TableCell align="right">
+                  <Tooltip arrow title={t('arena.columns.buchholzDescription')}>
+                    <Box
+                      component="span"
+                      sx={{
+                        borderBottom: '1px dotted',
+                        borderColor: 'text.secondary',
+                        cursor: 'help',
+                      }}
+                    >
+                      {t('arena.columns.buchholz')}
+                    </Box>
+                  </Tooltip>
+                </TableCell>
               ) : null}
             </TableRow>
           </TableHead>
@@ -96,6 +141,7 @@ const ArenaPlayersTable = ({
               : data?.data?.map((player) => {
                   const isCurrentUser = player.username === currentUsername;
                   const isSelected = player.username === selectedUsername;
+                  const highlight = !isUpcoming ? topPlayerHighlight(player.rank) : undefined;
 
                   return (
                     <TableRow
@@ -104,15 +150,35 @@ const ArenaPlayersTable = ({
                       onClick={() => handleSelect(player)}
                       sx={{
                         cursor: !isUpcoming && onSelectPlayer ? 'pointer' : 'default',
-                        backgroundColor: isCurrentUser ? 'warning.lighter' : undefined,
+                        backgroundColor:
+                          highlight?.backgroundColor ??
+                          (isCurrentUser ? 'warning.lighter' : undefined),
+                        '&:hover': highlight
+                          ? {
+                              backgroundColor: highlight.hoverBackgroundColor,
+                            }
+                          : undefined,
+                        '&.MuiTableRow-hover:hover': highlight
+                          ? {
+                              backgroundColor: highlight.hoverBackgroundColor,
+                            }
+                          : undefined,
                         '& td': {
-                          borderColor: isSelected ? 'warning.light' : undefined,
+                          borderColor: isSelected ? 'warning.light' : highlight?.borderColor,
+                        },
+                        '& td:first-of-type': {
+                          borderLeft: highlight ? '4px solid' : undefined,
+                          borderLeftColor: highlight?.borderColor,
                         },
                       }}
                     >
                       {!isUpcoming && (
                         <TableCell align="center">
-                          <Typography fontWeight={700} fontSize={20} color="primary">
+                          <Typography
+                            fontWeight={700}
+                            fontSize={20}
+                            color={highlight?.rankColor ?? 'primary'}
+                          >
                             {player.rank}
                           </Typography>
                         </TableCell>

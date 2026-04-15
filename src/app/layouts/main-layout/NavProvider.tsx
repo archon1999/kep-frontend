@@ -13,7 +13,7 @@ import { Breakpoint, ToolbarOwnProps, useTheme } from '@mui/material';
 import { useBreakpoints } from 'app/providers/BreakpointsProvider';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
 import { COLLAPSE_NAVBAR, EXPAND_NAVBAR } from 'app/reducers/SettingsReducer';
-import { MenuItem } from 'app/routes/sitemap';
+import { clientMenu, MenuItem } from 'app/routes/sitemap';
 import { mainDrawerWidth } from 'shared/lib/constants';
 
 interface NavContextInterface {
@@ -23,11 +23,18 @@ interface NavContextInterface {
   sidenavAppbarVariant: ToolbarOwnProps['variant'];
   topbarHeight: Partial<Record<Breakpoint, number>>;
   sidenavCollapsed: boolean;
+  menuItems: MenuItem[];
+  navLabel?: string;
 }
 
 const NavContext = createContext({} as NavContextInterface);
 
-const NavProvider = ({ children }: PropsWithChildren) => {
+interface NavProviderProps {
+  menuItems?: MenuItem[];
+  navLabel?: string;
+}
+
+const NavProvider = ({ children, menuItems = clientMenu, navLabel }: PropsWithChildren<NavProviderProps>) => {
   const [openItems, setOpenItems] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [responsievSidenavCollapsed, setResponsiveSidenavCollapsed] = useState(false);
@@ -136,6 +143,8 @@ const NavProvider = ({ children }: PropsWithChildren) => {
         sidenavAppbarVariant,
         topbarHeight,
         sidenavCollapsed,
+        menuItems,
+        navLabel,
       }}
     >
       {loaded && children}

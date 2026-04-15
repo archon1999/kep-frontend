@@ -10,6 +10,7 @@ export interface Challenge {
   finished: string | null;
   questionsCount: number;
   timeSeconds: number;
+  remainingTimeSeconds: number;
   rated: boolean;
   questionTimeType: ChallengeQuestionTimeType;
   nextQuestion?: ChallengeQuestion;

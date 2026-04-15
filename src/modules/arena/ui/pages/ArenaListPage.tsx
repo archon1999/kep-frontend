@@ -1,17 +1,18 @@
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Card, CardContent, Pagination, Skeleton, Stack, Typography } from '@mui/material';
+import Logo from 'shared/components/common/Logo';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { numberParam } from 'shared/lib/queryParams';
-import { useArenasList } from '../../application/queries.ts';
-import ArenaListCard from '../components/ArenaListCard.tsx';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { cssVarRgba } from 'shared/lib/utils';
-import Logo from 'shared/components/common/Logo';
+import { useArenasList } from '../../application/queries.ts';
+import ArenaListCard from '../components/ArenaListCard.tsx';
 
 const ArenaListPage = () => {
   const { t } = useTranslation();
-  const { state, setField } = useRouteQueryState({
+  const { state, setField } = useRouteQueryState<{
+    page: number;
+  }>({
     defaults: {
       page: 1,
     },
@@ -28,41 +29,31 @@ const ArenaListPage = () => {
 
   const { data, isLoading } = useArenasList({
     page: state.page,
-    pageSize: 6,
-    status: undefined,
+    pageSize: 7,
   });
 
   const arenas = data?.data ?? [];
   const pagesCount = data?.pagesCount ?? 0;
-
-  const subtitle = useMemo(
-    () =>
-      arenas.length
-        ? t('arena.listSubtitle', { count: data?.total ?? arenas.length })
-        : t('arena.listEmptySubtitle'),
-    [arenas.length, data?.total, t],
-  );
 
   return (
     <Box sx={responsivePagePaddingSx}>
       <Stack direction="column" spacing={3}>
         <Card
           sx={(theme) => ({
-            position: 'relative',
-            overflow: 'hidden',
             borderRadius: 3,
-            bgcolor: 'background.paper',
             background: `linear-gradient(135deg, ${cssVarRgba(theme.vars.palette.warning.lightChannel, 0.08)}, ${cssVarRgba(theme.vars.palette.warning.mainChannel, 0.06)})`,
           })}
         >
           <CardContent sx={{ p: { xs: 3, md: 4 } }}>
-            <Stack direction="column" spacing={1.25}>
-              <Typography variant="h4" fontWeight={800}>
-                {t('arena.title')}
-              </Typography>
-              <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 720 }}>
-                {subtitle}
-              </Typography>
+            <Stack>
+              <Stack direction="column" spacing={1.25}>
+                <Typography variant="h4" fontWeight={800}>
+                  {t('arena.title')}
+                </Typography>
+                <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 720 }}>
+                  {t('arena.listSubtitle', { count: data?.total ?? arenas.length })}
+                </Typography>
+              </Stack>
             </Stack>
           </CardContent>
 
@@ -80,16 +71,10 @@ const ArenaListPage = () => {
         </Card>
 
         {isLoading
-          ? Array.from({ length: 6 }).map((_) => <Skeleton variant="rounded" height={200} />)
-          : arenas.map((arena) => <ArenaListCard arena={arena} />)}
+          ? Array.from({ length: 6 }).map(() => <Skeleton variant="rounded" height={108} />)
+          : arenas.map((arena) => <ArenaListCard key={arena.id} arena={arena} />)}
 
-        {!isLoading && arenas.length === 0 ? (
-          <Typography variant="body2" color="text.secondary">
-            {t('arena.listEmptySubtitle')}
-          </Typography>
-        ) : null}
-
-        {pagesCount > 1 ? (
+        {pagesCount > 1 && (
           <Stack direction="column" alignItems="center">
             <Pagination
               color="warning"
@@ -98,7 +83,7 @@ const ArenaListPage = () => {
               onChange={(_, value) => setField('page', value)}
             />
           </Stack>
-        ) : null}
+        )}
       </Stack>
     </Box>
   );

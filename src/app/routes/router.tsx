@@ -1,5 +1,5 @@
 import { type ReactNode, Suspense, lazy } from 'react';
-import { Outlet, RouteObject, createBrowserRouter, useLocation } from 'react-router';
+import { Navigate, Outlet, RouteObject, createBrowserRouter, useLocation } from 'react-router';
 import App from 'app/App.tsx';
 import AuthLayout from 'app/layouts/auth-layout';
 import DefaultAuthLayout from 'app/layouts/auth-layout/DefaultAuthLayout';
@@ -8,10 +8,12 @@ import Page403 from 'modules/errors/ui/pages/Page403';
 import Page404 from 'modules/errors/ui/pages/Page404';
 import RouteErrorPage from 'modules/errors/ui/pages/RouteErrorPage';
 import AuthGuard from 'shared/components/guard/AuthGuard';
+import SuperuserGuard from 'shared/components/guard/SuperuserGuard';
 import PageLoader from 'shared/components/loading/PageLoader';
 import { legacyRedirectRoutes } from './legacy-routes';
 import { resources } from './resources';
 import { authPaths, rootPaths } from './route-config';
+import { adminMenu } from './sitemap';
 
 const Home = lazy(() => import('modules/home/ui/pages/HomePage'));
 const KepCoverPage = lazy(() => import('modules/kep-cover/ui/pages/KepCoverPage'));
@@ -109,6 +111,58 @@ const UserProfileAchievementsTab = lazy(
 );
 
 const CalendarPage = lazy(() => import('modules/calendar/ui/pages/CalendarPage'));
+const AdminProblemsListPage = lazy(
+  () => import('modules/admin/problems/ui/pages/AdminProblemsListPage'),
+);
+const AdminProblemFormPage = lazy(
+  () => import('modules/admin/problems/ui/pages/AdminProblemFormPage'),
+);
+const AdminProblemAttemptsListPage = lazy(
+  () => import('modules/admin/problems/ui/pages/AdminProblemAttemptsListPage'),
+);
+const AdminProblemAttemptFormPage = lazy(
+  () => import('modules/admin/problems/ui/pages/AdminProblemAttemptFormPage'),
+);
+const AdminProblemChaptersListPage = lazy(
+  () => import('modules/admin/problems/ui/pages/AdminProblemChaptersListPage'),
+);
+const AdminProblemChapterFormPage = lazy(
+  () => import('modules/admin/problems/ui/pages/AdminProblemChapterFormPage'),
+);
+const AdminProblemTagsListPage = lazy(
+  () => import('modules/admin/problems/ui/pages/AdminProblemTagsListPage'),
+);
+const AdminProblemTagFormPage = lazy(
+  () => import('modules/admin/problems/ui/pages/AdminProblemTagFormPage'),
+);
+const AdminContestsListPage = lazy(
+  () => import('modules/admin/contests/ui/pages/AdminContestsListPage'),
+);
+const AdminContestFormPage = lazy(
+  () => import('modules/admin/contests/ui/pages/AdminContestFormPage'),
+);
+const AdminContestQuestionsListPage = lazy(
+  () => import('modules/admin/contests/ui/pages/AdminContestQuestionsListPage'),
+);
+const AdminContestQuestionFormPage = lazy(
+  () => import('modules/admin/contests/ui/pages/AdminContestQuestionFormPage'),
+);
+const AdminContestTypesListPage = lazy(
+  () => import('modules/admin/contests/ui/pages/AdminContestTypesListPage'),
+);
+const AdminContestTypeFormPage = lazy(
+  () => import('modules/admin/contests/ui/pages/AdminContestTypeFormPage'),
+);
+const AdminContestFiltersListPage = lazy(
+  () => import('modules/admin/contests/ui/pages/AdminContestFiltersListPage'),
+);
+const AdminContestFilterFormPage = lazy(
+  () => import('modules/admin/contests/ui/pages/AdminContestFilterFormPage'),
+);
+const AdminUsersListPage = lazy(() => import('modules/admin/users/ui/pages/AdminUsersListPage'));
+const AdminUserFormPage = lazy(() => import('modules/admin/users/ui/pages/AdminUserFormPage'));
+const AdminTeamsListPage = lazy(() => import('modules/admin/users/ui/pages/AdminTeamsListPage'));
+const AdminTeamFormPage = lazy(() => import('modules/admin/users/ui/pages/AdminTeamFormPage'));
 
 const Login = lazy(() => import('modules/authentication/ui/pages/LoginPage'));
 const IS_PROD = import.meta.env.PROD;
@@ -130,6 +184,172 @@ export const routes: RouteObject[] = [
     element: <App />,
     errorElement: IS_PROD ? <RouteErrorPage /> : undefined,
     children: [
+      {
+        path: resources.Admin,
+        element: (
+          <SuperuserGuard>
+            <MainLayout menuItems={adminMenu}>
+              <SuspenseOutlet />
+            </MainLayout>
+          </SuperuserGuard>
+        ),
+        children: [
+          {
+            index: true,
+            element: <Navigate to={resources.AdminProblems} replace />,
+          },
+          {
+            path: 'problems',
+            element: <AdminProblemsListPage />,
+            handle: { titleKey: 'pageTitles.adminProblems' },
+          },
+          {
+            path: 'problems/new',
+            element: <AdminProblemFormPage />,
+            handle: { titleKey: 'pageTitles.adminProblemCreate' },
+          },
+          {
+            path: 'problems/attempts',
+            element: <AdminProblemAttemptsListPage />,
+            handle: { titleKey: 'pageTitles.adminProblemAttempts' },
+          },
+          {
+            path: 'problems/attempts/new',
+            element: <AdminProblemAttemptFormPage />,
+            handle: { titleKey: 'pageTitles.adminProblemAttemptCreate' },
+          },
+          {
+            path: 'problems/attempts/:id',
+            element: <AdminProblemAttemptFormPage />,
+            handle: { titleKey: 'pageTitles.adminProblemAttemptEdit' },
+          },
+          {
+            path: 'problems/chapters',
+            element: <AdminProblemChaptersListPage />,
+            handle: { titleKey: 'pageTitles.adminProblemChapters' },
+          },
+          {
+            path: 'problems/chapters/new',
+            element: <AdminProblemChapterFormPage />,
+            handle: { titleKey: 'pageTitles.adminProblemChapterCreate' },
+          },
+          {
+            path: 'problems/chapters/:id',
+            element: <AdminProblemChapterFormPage />,
+            handle: { titleKey: 'pageTitles.adminProblemChapterEdit' },
+          },
+          {
+            path: 'problems/tags',
+            element: <AdminProblemTagsListPage />,
+            handle: { titleKey: 'pageTitles.adminProblemTags' },
+          },
+          {
+            path: 'problems/tags/new',
+            element: <AdminProblemTagFormPage />,
+            handle: { titleKey: 'pageTitles.adminProblemTagCreate' },
+          },
+          {
+            path: 'problems/tags/:id',
+            element: <AdminProblemTagFormPage />,
+            handle: { titleKey: 'pageTitles.adminProblemTagEdit' },
+          },
+          {
+            path: 'problems/:id',
+            element: <AdminProblemFormPage />,
+            handle: { titleKey: 'pageTitles.adminProblemEdit' },
+          },
+          {
+            path: 'contests',
+            element: <AdminContestsListPage />,
+            handle: { titleKey: 'pageTitles.adminContests' },
+          },
+          {
+            path: 'contests/new',
+            element: <AdminContestFormPage />,
+            handle: { titleKey: 'pageTitles.adminContestCreate' },
+          },
+          {
+            path: 'contests/questions',
+            element: <AdminContestQuestionsListPage />,
+            handle: { titleKey: 'pageTitles.adminContestQuestions' },
+          },
+          {
+            path: 'contests/questions/new',
+            element: <AdminContestQuestionFormPage />,
+            handle: { titleKey: 'pageTitles.adminContestQuestionCreate' },
+          },
+          {
+            path: 'contests/questions/:id',
+            element: <AdminContestQuestionFormPage />,
+            handle: { titleKey: 'pageTitles.adminContestQuestionEdit' },
+          },
+          {
+            path: 'contests/types',
+            element: <AdminContestTypesListPage />,
+            handle: { titleKey: 'pageTitles.adminContestTypes' },
+          },
+          {
+            path: 'contests/types/new',
+            element: <AdminContestTypeFormPage />,
+            handle: { titleKey: 'pageTitles.adminContestTypeCreate' },
+          },
+          {
+            path: 'contests/types/:id',
+            element: <AdminContestTypeFormPage />,
+            handle: { titleKey: 'pageTitles.adminContestTypeEdit' },
+          },
+          {
+            path: 'contests/filters',
+            element: <AdminContestFiltersListPage />,
+            handle: { titleKey: 'pageTitles.adminContestFilters' },
+          },
+          {
+            path: 'contests/filters/new',
+            element: <AdminContestFilterFormPage />,
+            handle: { titleKey: 'pageTitles.adminContestFilterCreate' },
+          },
+          {
+            path: 'contests/filters/:id',
+            element: <AdminContestFilterFormPage />,
+            handle: { titleKey: 'pageTitles.adminContestFilterEdit' },
+          },
+          {
+            path: 'contests/:id',
+            element: <AdminContestFormPage />,
+            handle: { titleKey: 'pageTitles.adminContestEdit' },
+          },
+          {
+            path: 'users',
+            element: <AdminUsersListPage />,
+            handle: { titleKey: 'pageTitles.adminUsers' },
+          },
+          {
+            path: 'users/new',
+            element: <AdminUserFormPage />,
+            handle: { titleKey: 'pageTitles.adminUserCreate' },
+          },
+          {
+            path: 'users/teams',
+            element: <AdminTeamsListPage />,
+            handle: { titleKey: 'pageTitles.adminTeams' },
+          },
+          {
+            path: 'users/teams/new',
+            element: <AdminTeamFormPage />,
+            handle: { titleKey: 'pageTitles.adminTeamCreate' },
+          },
+          {
+            path: 'users/teams/:id',
+            element: <AdminTeamFormPage />,
+            handle: { titleKey: 'pageTitles.adminTeamEdit' },
+          },
+          {
+            path: 'users/:id',
+            element: <AdminUserFormPage />,
+            handle: { titleKey: 'pageTitles.adminUserEdit' },
+          },
+        ],
+      },
       {
         path: '/',
         element: (

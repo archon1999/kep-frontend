@@ -36,6 +36,13 @@
     "startsUnknown": "Start time to be announced",
     "endsLabel": "Ends {{date}}",
     "type": "Format: {{type}}",
+    "typeInfo": {
+      "title": "Contest format",
+      "scoringBalls": "Ball scoring",
+      "scoringAcm": "1 AC = 1 point",
+      "penaltyEnabled": "Penalty enabled",
+      "penaltyDisabled": "No penalty"
+    },
     "problems": "{{count}} problems",
     "registrants": {
       "title": "Registrants",

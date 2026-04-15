@@ -78,7 +78,7 @@ const ArenaInfoCard = ({
         <Button
           fullWidth
           color="error"
-          variant="outlined"
+          variant="soft"
           onClick={onUnregister}
           disabled={isLoadingAction}
           startIcon={<IconifyIcon icon="mdi:close-circle-outline" />}

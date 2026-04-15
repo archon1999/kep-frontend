@@ -34,7 +34,7 @@ const chipSoftVariants: ComponentsVariants['MuiChip'] = chipColors.map((color) =
 
     return {
       background: cssVarRgba(theme.vars.palette[color].mainChannel, 0.15),
-      border: `1px solid ${cssVarRgba(theme.vars.palette[color].mainChannel, 0.25)}`,
+      border: 'none',
       color: theme.vars.palette[color].dark,
       [`&.${chipClasses.clickable}`]: {
         '&:hover': {
@@ -60,7 +60,7 @@ chipSoftVariants.push({
     return {
       background: theme.vars.palette.background.elevation2,
       color: theme.vars.palette.neutral.dark,
-      border: `1px solid ${theme.vars.palette.background.elevation3}`,
+      border: 'none',
       [`&.${chipClasses.clickable}`]: {
         '&:hover': {
           background: theme.vars.palette.background.elevation3,

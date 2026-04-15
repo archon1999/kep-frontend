@@ -3,7 +3,7 @@ import { Button, Card, CardContent, Chip, Divider, Stack, Typography } from '@mu
 import { useTranslation } from 'react-i18next';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { ChallengeCall } from '../../domain';
+import { ChallengeCall, ChallengeQuestionTimeType } from '../../domain';
 import { useAcceptChallengeCall, useDeleteChallengeCall } from '../../application/mutations.ts';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
@@ -29,6 +29,9 @@ const ChallengeCallCard = ({ challengeCall, onAccepted, onRemoved }: ChallengeCa
   const { trigger: deleteCall, isMutating: isDeleting } = useDeleteChallengeCall();
 
   const isOwner = useMemo(() => currentUser?.username === challengeCall.username, [challengeCall.username, currentUser?.username]);
+  const timerModeLabel = challengeCall.questionTimeType === ChallengeQuestionTimeType.TimeToAll
+    ? t('challenges.timer.wholeChallenge')
+    : t('challenges.timer.perQuestion');
 
   const handleAccept = async () => {
     const result = await acceptChallenge(challengeCall.id);
@@ -63,6 +66,7 @@ const ChallengeCallCard = ({ challengeCall, onAccepted, onRemoved }: ChallengeCa
             <Stack spacing={0.5} direction="column">
               <Typography variant="subtitle2">{formatDuration(challengeCall.timeSeconds)}</Typography>
             </Stack>
+            <Chip size="small" label={timerModeLabel} variant="outlined" />
             {challengeCall.chapters?.length ? (
               <Stack spacing={0.5} direction="column">
                 <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap>
@@ -90,14 +94,16 @@ const ChallengeCallCard = ({ challengeCall, onAccepted, onRemoved }: ChallengeCa
                 {t('challenges.deleteCall')}
               </Button>
             ) : null}
-            <Button
-              variant="contained"
-              size="small"
-              onClick={handleAccept}
-              disabled={isAccepting}
-            >
-              {t('challenges.acceptCall')}
-            </Button>
+            {!isOwner ? (
+              <Button
+                variant="contained"
+                size="small"
+                onClick={handleAccept}
+                disabled={isAccepting}
+              >
+                {t('challenges.acceptCall')}
+              </Button>
+            ) : null}
           </Stack>
         </Stack>
       </CardContent>

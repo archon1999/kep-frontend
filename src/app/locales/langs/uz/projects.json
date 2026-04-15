@@ -50,6 +50,13 @@
       "completed": "{{count}} ta tugallangan",
       "rewardPool": "{{count}} jami kepcoin"
     },
+    "headerMetrics": {
+      "available": "Aktiv loyihalar",
+      "started": "Boshlangan",
+      "completed": "Tugallangan",
+      "rewardPool": "Kepcoin fondi",
+      "averageProgress": "O'rtacha progress"
+    },
     "categories": {
       "frontend": {
         "title": "Frontend",

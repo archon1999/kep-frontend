@@ -7,7 +7,7 @@
     },
     "tabs": {
       "all": "Eng yangi foydalanuvchilar",
-      "skills": "Eng yaxshi foydalanuvchilar",
+      "skills": "Eng kuchli foydalanuvchilar",
       "activity": "Faollik reytingi",
       "contests": "Kontestlar reytingi",
       "challenges": "Top Kepcoin"
@@ -87,7 +87,7 @@
         "empty": "Hozircha yutuqlar mavjud emas."
       },
       "prizes": {
-        "title": "Kontest sovrinlari",
+        "title": "Musobaqa sovrinlari",
         "empty": "Hozircha sovrinlar yoʻq."
       },
       "ratings": {

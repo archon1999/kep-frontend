@@ -10,6 +10,10 @@ interface ArenaChallengesListProps {
   loading?: boolean;
   page: number;
   onPageChange: (page: number) => void;
+  titleKey?: string;
+  emptyKey?: string;
+  currentUsername?: string;
+  showPagination?: boolean;
 }
 
 const mapArenaChallengeToChallenge = (challenge: ArenaChallenge): Challenge => {
@@ -38,7 +42,16 @@ const mapArenaChallengeToChallenge = (challenge: ArenaChallenge): Challenge => {
   };
 };
 
-const ArenaChallengesList = ({ data, loading, page, onPageChange }: ArenaChallengesListProps) => {
+const ArenaChallengesList = ({
+  data,
+  loading,
+  page,
+  onPageChange,
+  titleKey = 'arena.challenges',
+  emptyKey = 'arena.noChallenges',
+  currentUsername,
+  showPagination = true,
+}: ArenaChallengesListProps) => {
   const { t } = useTranslation();
 
   const challenges = data?.data?.map(mapArenaChallengeToChallenge) ?? [];
@@ -46,7 +59,7 @@ const ArenaChallengesList = ({ data, loading, page, onPageChange }: ArenaChallen
   return (
     <Stack direction="column" spacing={2}>
       <Typography variant="h6" fontWeight={800}>
-        {t('arena.challenges')}
+        {t(titleKey)}
       </Typography>
       <Grid container spacing={2}>
         {loading
@@ -57,7 +70,7 @@ const ArenaChallengesList = ({ data, loading, page, onPageChange }: ArenaChallen
             ))
           : challenges.map((challenge) => (
               <Grid key={challenge.id} size={{ xs: 12, md: 6 }}>
-                <ChallengeCard challenge={challenge} />
+                <ChallengeCard challenge={challenge} currentUsername={currentUsername} />
               </Grid>
             ))}
       </Grid>
@@ -65,12 +78,12 @@ const ArenaChallengesList = ({ data, loading, page, onPageChange }: ArenaChallen
         <Card sx={{ outline: 'none', borderRadius: 3 }} background={1}>
           <CardContent>
             <Typography variant="body2" color="text.secondary">
-              {t('arena.noChallenges')}
+              {t(emptyKey)}
             </Typography>
           </CardContent>
         </Card>
       ) : null}
-      {data?.pagesCount && data.pagesCount > 1 ? (
+      {showPagination && data?.pagesCount && data.pagesCount > 1 ? (
         <Stack direction="column" alignItems="center">
           <Pagination
             color="warning"

@@ -60,6 +60,7 @@ import {
   ContestProblemEntity,
   ContestProblemInfo,
 } from '../../domain/entities/contest-problem.entity';
+import { ContestTypeInfo } from '../../domain/entities/contest.entity';
 import { ContestStatus } from '../../domain/entities/contest-status';
 import { ContestantEntity } from '../../domain/entities/contestant.entity';
 import { sortContestProblems } from '../../utils/sortContestProblems';
@@ -97,10 +98,12 @@ const ContestantResultsFooter = ({
   contestant,
   contestProblems,
   contestType,
+  contestTypeInfo,
 }: {
   contestant?: ContestantEntity | null;
   contestProblems: ContestProblemEntity[];
   contestType?: string;
+  contestTypeInfo?: ContestTypeInfo | null;
 }) => {
   const { t } = useTranslation();
 
@@ -110,7 +113,7 @@ const ContestantResultsFooter = ({
 
   const formatResult = (info?: ContestProblemInfo | null) => {
     if (!info) return { label: '-', color: 'default' as const };
-    if (contestHasBalls(contestType as any)) {
+    if (contestHasBalls(contestType as any, contestTypeInfo)) {
       if ((info.points ?? 0) > 0) {
         return { label: formatContestPoints(info.points), color: 'primary' as const };
       }
@@ -149,7 +152,7 @@ const ContestantResultsFooter = ({
           <Typography color="primary" fontWeight={600}>
             {formatContestPoints(contestant.points)}
           </Typography>
-          {contestHasPenalties(contestType as any) ? (
+          {contestHasPenalties(contestType as any, contestTypeInfo) ? (
             <Typography>
               {`${t('contests.standings.penalties')}: ${contestant.penalties ?? 0}`}
             </Typography>
@@ -833,6 +836,7 @@ const ContestProblemPage = () => {
                   contestant={contestant}
                   contestProblems={sortedProblems}
                   contestType={contest?.type}
+                  contestTypeInfo={contest?.typeInfo}
                 />
               </Card>
             ) : (

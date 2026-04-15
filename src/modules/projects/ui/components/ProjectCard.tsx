@@ -1,27 +1,18 @@
 import { useState } from 'react';
-import { alpha, useTheme } from '@mui/material/styles';
-import {
-  Box,
-  Button,
-  Card,
-  Chip,
-  Divider,
-  LinearProgress,
-  Stack,
-  Typography,
-} from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
-import { resources, getResourceByParams } from 'app/routes/resources';
-import KepcoinValue from 'shared/components/common/KepcoinValue';
+import { Box, Button, Card, Chip, LinearProgress, Stack, Typography } from '@mui/material';
+import { SxProps, Theme, alpha, useTheme } from '@mui/material/styles';
+import { getResourceByParams, resources } from 'app/routes/resources';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import KepcoinValue from 'shared/components/common/KepcoinValue';
 import { projectsQueries } from '../../application/queries';
 import { Project } from '../../domain/entities/project.entity';
 import {
-  getProjectTaskCount,
   PROJECT_CATEGORY_META,
   ProjectCategoryKey,
   ProjectProgressSummary,
+  getProjectTaskCount,
   stripProjectDescription,
 } from '../lib/project-listing';
 
@@ -32,6 +23,17 @@ interface ProjectCardProps {
   showTrackedProgress?: boolean;
   onPurchased?: (project: Project) => void;
 }
+
+const mergeSx = (base: SxProps<Theme>, extra?: SxProps<Theme>): SxProps<Theme> => {
+  if (extra == null) {
+    return base;
+  }
+
+  const baseEntries = Array.isArray(base) ? base : [base];
+  const extraEntries = Array.isArray(extra) ? extra : [extra];
+
+  return [...baseEntries, ...extraEntries] as SxProps<Theme>;
+};
 
 const ProjectCard = ({
   project,
@@ -50,10 +52,12 @@ const ProjectCard = ({
   const totalKepcoins = Number(progress?.totalKepcoins ?? project.kepcoins ?? 0);
   const earnedKepcoins = Number(progress?.earnedKepcoins ?? 0);
   const progressPercent = Number(progress?.progressPercent ?? 0);
-  const attemptCount = progress?.attemptCount ?? 0;
   const taskCount = getProjectTaskCount(project);
   const isCompleted = Boolean(progress?.completed);
-  const displayTags = (project.tags ?? []).slice(0, 3);
+  const projectUrl = getResourceByParams(resources.Project, {
+    id: project.slug,
+    slug: project.slug,
+  });
 
   const handlePurchase = async () => {
     if (isPurchased) return;
@@ -68,312 +72,235 @@ const ProjectCard = ({
     }
   };
 
+  const renderLogo = () => (
+    <Box
+      sx={{
+        width: 56,
+        height: 56,
+        borderRadius: 2,
+        p: 0.75,
+        bgcolor: alpha(theme.palette.background.paper, 0.9),
+        border: `1px solid ${alpha(categoryMeta.accent, 0.18)}`,
+        boxShadow: `0 18px 30px -24px ${alpha(categoryMeta.accent, 0.7)}`,
+        display: 'grid',
+        placeItems: 'center',
+        flexShrink: 0,
+      }}
+    >
+      {project.logo ? (
+        <Box
+          component="img"
+          src={project.logo}
+          alt={project.title}
+          sx={{ width: '100%', height: '100%', objectFit: 'contain' }}
+        />
+      ) : (
+        <IconifyIcon icon={categoryMeta.icon} width={28} color={categoryMeta.accent} />
+      )}
+    </Box>
+  );
+
+  const renderActionButton = (sx?: SxProps<Theme>) => {
+    const sharedSx: SxProps<Theme> = mergeSx(
+      {
+        py: 1,
+        px: 2,
+        borderRadius: 2,
+        fontWeight: 900,
+        whiteSpace: 'nowrap',
+        flexShrink: 0,
+      },
+      sx,
+    );
+
+    if (isPurchased) {
+      return (
+        <Button
+          component={RouterLink}
+          to={projectUrl}
+          endIcon={<IconifyIcon icon="mdi:arrow-top-right" />}
+          sx={mergeSx(
+            {
+              color: theme.palette.common.white,
+              background: `linear-gradient(135deg, ${categoryMeta.accent} 0%, ${alpha(categoryMeta.accent, 0.72)} 100%)`,
+              boxShadow: `0 18px 34px -20px ${alpha(categoryMeta.accent, 0.85)}`,
+            },
+            sharedSx,
+          )}
+        >
+          {t('projects.view')}
+        </Button>
+      );
+    }
+
+    return (
+      <Button
+        onClick={handlePurchase}
+        disabled={isPurchasing}
+        startIcon={<IconifyIcon icon="mdi:cart-plus" />}
+        sx={mergeSx(
+          {
+            color: theme.palette.text.primary,
+            bgcolor: alpha(theme.palette.background.paper, 0.88),
+            border: `1px solid ${alpha(categoryMeta.accent, 0.2)}`,
+            '&:hover': {
+              bgcolor: theme.palette.background.paper,
+            },
+          },
+          sharedSx,
+        )}
+      >
+        {t('projects.purchase')}
+        <KepcoinValue value={project.purchaseKepcoinValue} iconSize={16} sx={{ ml: 1 }} />
+      </Button>
+    );
+  };
+
+  const renderProgressStatus = () => (
+    <Typography variant="subtitle2" fontWeight={900}>
+      {showTrackedProgress
+        ? isCompleted
+          ? t('projects.progressCompleted')
+          : `${earnedKepcoins}/${totalKepcoins || project.kepcoins || 0} ${t('projects.progressRewardUnit')}`
+        : t('projects.progressHint')}
+    </Typography>
+  );
+
+  const renderProgressPanel = () => (
+    <Box
+      sx={{
+        p: 1.5,
+        borderRadius: 2,
+        bgcolor:
+          theme.palette.mode === 'dark'
+            ? alpha(theme.palette.common.white, 0.06)
+            : alpha(theme.palette.background.paper, 0.72),
+        border: `1px solid ${alpha(categoryMeta.accent, 0.12)}`,
+      }}
+    >
+      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
+        <Box minWidth={0}>
+          <Typography variant="caption" color="text.secondary">
+            {showTrackedProgress ? t('projects.progressTitle') : t('projects.progressPrompt')}
+          </Typography>
+          {renderProgressStatus()}
+        </Box>
+
+        <Box
+          sx={{
+            minWidth: 56,
+            px: 1.25,
+            py: 0.75,
+            borderRadius: 2,
+            textAlign: 'center',
+            bgcolor: isCompleted
+              ? alpha(theme.palette.success.main, 0.12)
+              : alpha(categoryMeta.accent, 0.12),
+            color: isCompleted ? theme.palette.success.main : categoryMeta.accent,
+          }}
+        >
+          <Typography variant="subtitle2" fontWeight={900}>
+            {showTrackedProgress ? `${progressPercent}%` : '--'}
+          </Typography>
+        </Box>
+      </Stack>
+
+      <LinearProgress
+        variant="determinate"
+        value={showTrackedProgress ? progressPercent : 0}
+        sx={{
+          mt: 1.5,
+          height: 8,
+          borderRadius: 999,
+          bgcolor: alpha(theme.palette.text.primary, 0.08),
+          '& .MuiLinearProgress-bar': {
+            borderRadius: 999,
+            background: `linear-gradient(90deg, ${categoryMeta.accent} 0%, ${categoryMeta.softAccent} 100%)`,
+          },
+        }}
+      />
+    </Box>
+  );
+
+  const titleSx: SxProps<Theme> = {
+    lineHeight: 1.08,
+    overflowWrap: 'anywhere',
+  };
+
   return (
     <Card
       sx={{
-        position: 'relative',
-        overflow: 'hidden',
         height: 1,
-        borderRadius: 5,
-        border: `1px solid ${alpha(categoryMeta.accent, 0.18)}`,
-        background: `linear-gradient(180deg, ${alpha(theme.palette.background.paper, 0.98)} 0%, ${alpha(categoryMeta.softAccent, 0.09)} 100%)`,
-        boxShadow: `0 28px 80px -50px ${alpha(categoryMeta.accent, 0.55)}`,
-        transition: 'transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease',
+        p: { xs: 2, sm: 3 },
+        borderRadius: 2,
+        border: `1px solid ${alpha(categoryMeta.accent, 0.16)}`,
+        background: alpha(theme.palette.background.paper, 0.98),
+        boxShadow: 'none',
+        transition: 'background-color 180ms ease, border-color 180ms ease, transform 180ms ease',
         '&:hover': {
-          transform: 'translateY(-8px)',
-          boxShadow: `0 36px 90px -44px ${alpha(categoryMeta.accent, 0.7)}`,
-          borderColor: alpha(categoryMeta.accent, 0.35),
+          transform: 'translateY(-4px)',
+          bgcolor: alpha(categoryMeta.accent, 0.04),
+          borderColor: alpha(categoryMeta.accent, 0.28),
         },
       }}
     >
-      <Box
-        sx={{
-          position: 'absolute',
-          inset: 0,
-          background: `
-            radial-gradient(circle at top right, ${alpha(categoryMeta.accent, 0.24)} 0%, transparent 28%),
-            radial-gradient(circle at bottom left, ${alpha(categoryMeta.softAccent, 0.28)} 0%, transparent 24%)
-          `,
-          pointerEvents: 'none',
-        }}
-      />
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ height: 1 }}>
+        {renderLogo()}
 
-      <Stack sx={{ position: 'relative', height: 1, p: 3 }} spacing={2.5}>
-        <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
-          <Chip
-            icon={<IconifyIcon icon={categoryMeta.icon} width={16} />}
-            label={t(categoryMeta.labelKey)}
-            size="small"
+        <Stack spacing={1.5} flex={1} minWidth={0}>
+          <Stack spacing={0.75}>
+            <Typography variant="h6" fontWeight={900} sx={titleSx}>
+              {project.title}
+            </Typography>
+            <Stack direction="row" spacing={1.25} flexWrap="wrap" useFlexGap>
+              <Typography variant="subtitle2" fontWeight={700} color="text.secondary">
+                {t(categoryMeta.labelKey)}
+              </Typography>
+              <Typography variant="subtitle2" color="text.secondary">
+                {project.levelTitle}
+              </Typography>
+              <Typography variant="subtitle2" color="text.secondary">
+                {taskCount} {t('projects.tasks').toLowerCase()}
+              </Typography>
+            </Stack>
+          </Stack>
+
+          <Typography
+            variant="body2"
+            color="text.secondary"
             sx={{
-              bgcolor: alpha(categoryMeta.accent, 0.12),
-              color: categoryMeta.accent,
-              fontWeight: 800,
-              borderRadius: 999,
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
             }}
-          />
-          <Chip
-            label={project.levelTitle}
-            size="small"
-            sx={{
-              bgcolor: alpha(theme.palette.text.primary, 0.06),
-              fontWeight: 700,
-              borderRadius: 999,
-            }}
-          />
+          >
+            {description || t('projects.cardFallback')}
+          </Typography>
+
+          <Box sx={{ mt: 'auto' }}>{renderProgressPanel()}</Box>
+        </Stack>
+
+        <Stack
+          spacing={1.5}
+          alignItems={{ xs: 'stretch', sm: 'flex-end' }}
+          justifyContent="space-between"
+          minWidth={{ sm: 150 }}
+        >
           <Chip
             label={project.fileAccept.toUpperCase()}
             size="small"
             variant="outlined"
-            sx={{
-              borderColor: alpha(categoryMeta.accent, 0.22),
-              color: theme.palette.text.secondary,
-              borderRadius: 999,
-            }}
+            sx={{ borderRadius: 2, borderColor: alpha(categoryMeta.accent, 0.24) }}
           />
-        </Stack>
-
-        <Stack direction="row" spacing={2} alignItems="flex-start">
-          <Box flex={1}>
-            <Typography
-              variant="h5"
-              fontWeight={900}
-              sx={{
-                lineHeight: 1.05,
-                letterSpacing: '-0.03em',
-              }}
-            >
-              {project.title}
-            </Typography>
-
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{
-                mt: 1.25,
-                display: '-webkit-box',
-                WebkitLineClamp: 3,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-                minHeight: 60,
-              }}
-            >
-              {description || t('projects.cardFallback')}
-            </Typography>
-          </Box>
-
-          <Box
-            sx={{
-              width: 74,
-              height: 74,
-              borderRadius: 4,
-              p: 1.25,
-              bgcolor: alpha(theme.palette.common.white, 0.88),
-              border: `1px solid ${alpha(categoryMeta.accent, 0.18)}`,
-              boxShadow: `0 18px 30px -24px ${alpha(categoryMeta.accent, 0.7)}`,
-              display: 'grid',
-              placeItems: 'center',
-              flexShrink: 0,
-            }}
-          >
-            {project.logo ? (
-              <Box
-                component="img"
-                src={project.logo}
-                alt={project.title}
-                sx={{ width: '100%', height: '100%', objectFit: 'contain' }}
-              />
-            ) : (
-              <IconifyIcon icon={categoryMeta.icon} width={34} color={categoryMeta.accent} />
-            )}
-          </Box>
-        </Stack>
-
-        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-          <Box
-            sx={{
-              flex: '1 1 160px',
-              minWidth: 0,
-              borderRadius: 3,
-              px: 1.5,
-              py: 1.25,
-              bgcolor: alpha(categoryMeta.accent, 0.08),
-            }}
-          >
-            <Typography variant="caption" color="text.secondary">
-              {t('projects.rewardPool')}
-            </Typography>
-            <KepcoinValue
-              value={project.kepcoins}
-              iconSize={18}
-              textVariant="subtitle2"
-              fontWeight={900}
-              sx={{ mt: 0.5 }}
-            />
-          </Box>
-
-          <Box
-            sx={{
-              flex: '1 1 120px',
-              minWidth: 0,
-              borderRadius: 3,
-              px: 1.5,
-              py: 1.25,
-              bgcolor: alpha(theme.palette.text.primary, 0.04),
-            }}
-          >
-            <Typography variant="caption" color="text.secondary">
-              {t('projects.taskCount')}
-            </Typography>
-            <Typography variant="subtitle2" fontWeight={900} sx={{ mt: 0.5 }}>
-              {taskCount}
-            </Typography>
-          </Box>
-
-          <Box
-            sx={{
-              flex: '1 1 120px',
-              minWidth: 0,
-              borderRadius: 3,
-              px: 1.5,
-              py: 1.25,
-              bgcolor: alpha(theme.palette.text.primary, 0.04),
-            }}
-          >
-            <Typography variant="caption" color="text.secondary">
-              {t('projects.attemptsCount')}
-            </Typography>
-            <Typography variant="subtitle2" fontWeight={900} sx={{ mt: 0.5 }}>
-              {attemptCount}
-            </Typography>
-          </Box>
-        </Stack>
-
-        <Box
-          sx={{
-            p: 2,
-            borderRadius: 4,
-            bgcolor: alpha(theme.palette.common.white, 0.55),
-            border: `1px solid ${alpha(categoryMeta.accent, 0.12)}`,
-          }}
-        >
-          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
-            <Box>
-              <Typography variant="caption" color="text.secondary">
-                {showTrackedProgress ? t('projects.progressTitle') : t('projects.progressPrompt')}
-              </Typography>
-              <Typography variant="subtitle2" fontWeight={900}>
-                {showTrackedProgress
-                  ? isCompleted
-                    ? t('projects.progressCompleted')
-                    : `${earnedKepcoins}/${totalKepcoins || project.kepcoins || 0} ${t('projects.progressRewardUnit')}`
-                  : t('projects.progressHint')}
-              </Typography>
-            </Box>
-
-            <Box
-              sx={{
-                minWidth: 68,
-                px: 1.25,
-                py: 0.75,
-                borderRadius: 999,
-                textAlign: 'center',
-                bgcolor: isCompleted
-                  ? alpha(theme.palette.success.main, 0.12)
-                  : alpha(categoryMeta.accent, 0.12),
-                color: isCompleted ? theme.palette.success.main : categoryMeta.accent,
-              }}
-            >
-              <Typography variant="subtitle2" fontWeight={900}>
-                {showTrackedProgress ? `${progressPercent}%` : '--'}
-              </Typography>
-            </Box>
-          </Stack>
-
-          <LinearProgress
-            variant="determinate"
-            value={showTrackedProgress ? progressPercent : 0}
-            sx={{
-              mt: 1.5,
-              height: 10,
-              borderRadius: 999,
-              bgcolor: alpha(theme.palette.text.primary, 0.08),
-              '& .MuiLinearProgress-bar': {
-                borderRadius: 999,
-                background: `linear-gradient(90deg, ${categoryMeta.accent} 0%, ${categoryMeta.softAccent} 100%)`,
-              },
-            }}
+          <KepcoinValue
+            value={project.kepcoins}
+            iconSize={18}
+            textVariant="subtitle1"
+            fontWeight={900}
           />
-        </Box>
-
-        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-          {project.availableTechnologies.map((technology) => (
-            <Chip
-              key={technology.technology}
-              label={technology.technology}
-              size="small"
-              variant="outlined"
-              sx={{
-                borderRadius: 999,
-                borderColor: alpha(categoryMeta.accent, 0.18),
-                bgcolor: alpha(theme.palette.background.paper, 0.75),
-              }}
-            />
-          ))}
-          {displayTags.map((tag) => (
-            <Chip
-              key={tag}
-              label={`#${tag}`}
-              size="small"
-              sx={{
-                borderRadius: 999,
-                bgcolor: alpha(theme.palette.text.primary, 0.05),
-                color: 'text.secondary',
-              }}
-            />
-          ))}
+          {renderActionButton()}
         </Stack>
-
-        <Divider sx={{ borderColor: alpha(categoryMeta.accent, 0.12) }} />
-
-        {isPurchased ? (
-          <Button
-            fullWidth
-            component={RouterLink}
-            to={getResourceByParams(resources.Project, { id: project.slug, slug: project.slug })}
-            endIcon={<IconifyIcon icon="mdi:arrow-top-right" />}
-            sx={{
-              py: 1.35,
-              borderRadius: 999,
-              fontWeight: 900,
-              color: theme.palette.common.white,
-              background: `linear-gradient(135deg, ${categoryMeta.accent} 0%, ${alpha(categoryMeta.accent, 0.72)} 100%)`,
-              boxShadow: `0 18px 34px -20px ${alpha(categoryMeta.accent, 0.85)}`,
-            }}
-          >
-            {t('projects.view')}
-          </Button>
-        ) : (
-          <Button
-            fullWidth
-            onClick={handlePurchase}
-            disabled={isPurchasing}
-            startIcon={<IconifyIcon icon="mdi:cart-plus" />}
-            sx={{
-              py: 1.35,
-              borderRadius: 999,
-              fontWeight: 900,
-              color: theme.palette.text.primary,
-              bgcolor: alpha(theme.palette.common.white, 0.88),
-              border: `1px solid ${alpha(categoryMeta.accent, 0.2)}`,
-              '&:hover': {
-                bgcolor: alpha(theme.palette.common.white, 1),
-              },
-            }}
-          >
-            {t('projects.purchase')}
-            <KepcoinValue value={project.purchaseKepcoinValue} iconSize={16} sx={{ ml: 1 }} />
-          </Button>
-        )}
       </Stack>
     </Card>
   );

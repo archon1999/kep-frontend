@@ -29,7 +29,6 @@ import {
   TablePagination,
   Tabs,
   TextField,
-  Tooltip,
   Typography,
   alpha,
   useTheme,
@@ -59,12 +58,7 @@ import {
   useUserProblemsAttempts,
   useUserProblemsRating,
 } from '../../application/queries.ts';
-import {
-  difficultyColorByKey,
-  difficultyOptions,
-  getDifficultyColor,
-  getDifficultyLabelKey,
-} from '../../config/difficulty';
+import { difficultyColorByKey, difficultyOptions } from '../../config/difficulty';
 import {
   DifficultyBreakdown,
   ProblemAttemptSummary,
@@ -73,6 +67,7 @@ import {
   ProblemListItem,
 } from '../../domain/entities/problem.entity.ts';
 import { ProblemsListParams } from '../../domain/ports/problems.repository.ts';
+import ProblemListCard from '../components/ProblemListCard.tsx';
 import StudyPlanAdvisorDialog from '../components/StudyPlanAdvisorDialog.tsx';
 import StudyPlansShowcase from '../components/StudyPlansShowcase.tsx';
 
@@ -196,10 +191,7 @@ const normalizeProblemsListValue = <K extends keyof ProblemsListParams>(
   return value as ProblemsListQueryState[keyof ProblemsListQueryState];
 };
 
-const formatProblemRatingBand = (
-  min?: string,
-  max?: string,
-) => {
+const formatProblemRatingBand = (min?: string, max?: string) => {
   if (min && max) {
     return `${min}-${max}`;
   }
@@ -230,108 +222,110 @@ const advisorManagedFilterKeys = [
 
 const ProblemsListPage = () => {
   const { t } = useTranslation();
-  const theme = useTheme();
   const { currentUser } = useAuth();
-  const { state: routeState, setField: setRouteField, patchState: patchRouteState } =
-    useRouteQueryState<ProblemsListQueryState>({
-      defaults: problemsListQueryDefaults,
-      schema: {
-        activeTab: {
-          ...enumParam(['lastContest', 'attempts', 'mostViewed'] as const),
-          param: 'tab',
-        },
-        search: {
-          ...stringParam(),
-          param: 'search',
-        },
-        ordering: {
-          ...stringParam(),
-          param: 'ordering',
-        },
-        page: {
-          ...numberParam({ min: 1 }),
-          param: 'page',
-        },
-        pageSize: {
-          ...numberParam({ min: 1 }),
-          param: 'pageSize',
-        },
-        tags: {
-          ...numberArrayParam({ min: 1 }),
-          param: 'tags',
-        },
-        favorites: {
-          ...booleanFlagParam(),
-          param: 'favorites',
-        },
-        category: {
-          ...stringParam(),
-          param: 'category',
-        },
-        lang: {
-          ...stringParam(),
-          param: 'lang',
-        },
-        exclusive_lang: {
-          ...stringParam(),
-          param: 'exclusive_lang',
-        },
-        competitive_langs_only: {
-          ...stringParam(),
-          param: 'competitive_langs_only',
-        },
-        difficulty: {
-          ...stringParam(),
-          param: 'difficulty',
-        },
-        status: {
-          ...numberParam(),
-          param: 'status',
-        },
-        problem_rating_min: {
-          ...stringParam(),
-          param: 'problem_rating_min',
-        },
-        problem_rating_max: {
-          ...stringParam(),
-          param: 'problem_rating_max',
-        },
-        has_solution: {
-          ...stringParam(),
-          param: 'has_solution',
-        },
-        has_checker: {
-          ...stringParam(),
-          param: 'has_checker',
-        },
-        partial_solvable: {
-          ...stringParam(),
-          param: 'partial_solvable',
-        },
+  const {
+    state: routeState,
+    setField: setRouteField,
+    patchState: patchRouteState,
+  } = useRouteQueryState<ProblemsListQueryState>({
+    defaults: problemsListQueryDefaults,
+    schema: {
+      activeTab: {
+        ...enumParam(['lastContest', 'attempts', 'mostViewed'] as const),
+        param: 'tab',
       },
-      historyByKey: {
-        activeTab: 'push',
-        page: 'push',
-        pageSize: 'push',
+      search: {
+        ...stringParam(),
+        param: 'search',
       },
-      pageResetKeys: [
-        'search',
-        'ordering',
-        'tags',
-        'favorites',
-        'category',
-        'lang',
-        'exclusive_lang',
-        'competitive_langs_only',
-        'difficulty',
-        'status',
-        'problem_rating_min',
-        'problem_rating_max',
-        'has_solution',
-        'has_checker',
-        'partial_solvable',
-      ],
-    });
+      ordering: {
+        ...stringParam(),
+        param: 'ordering',
+      },
+      page: {
+        ...numberParam({ min: 1 }),
+        param: 'page',
+      },
+      pageSize: {
+        ...numberParam({ min: 1 }),
+        param: 'pageSize',
+      },
+      tags: {
+        ...numberArrayParam({ min: 1 }),
+        param: 'tags',
+      },
+      favorites: {
+        ...booleanFlagParam(),
+        param: 'favorites',
+      },
+      category: {
+        ...stringParam(),
+        param: 'category',
+      },
+      lang: {
+        ...stringParam(),
+        param: 'lang',
+      },
+      exclusive_lang: {
+        ...stringParam(),
+        param: 'exclusive_lang',
+      },
+      competitive_langs_only: {
+        ...stringParam(),
+        param: 'competitive_langs_only',
+      },
+      difficulty: {
+        ...stringParam(),
+        param: 'difficulty',
+      },
+      status: {
+        ...numberParam(),
+        param: 'status',
+      },
+      problem_rating_min: {
+        ...stringParam(),
+        param: 'problem_rating_min',
+      },
+      problem_rating_max: {
+        ...stringParam(),
+        param: 'problem_rating_max',
+      },
+      has_solution: {
+        ...stringParam(),
+        param: 'has_solution',
+      },
+      has_checker: {
+        ...stringParam(),
+        param: 'has_checker',
+      },
+      partial_solvable: {
+        ...stringParam(),
+        param: 'partial_solvable',
+      },
+    },
+    historyByKey: {
+      activeTab: 'push',
+      page: 'push',
+      pageSize: 'push',
+    },
+    pageResetKeys: [
+      'search',
+      'ordering',
+      'tags',
+      'favorites',
+      'category',
+      'lang',
+      'exclusive_lang',
+      'competitive_langs_only',
+      'difficulty',
+      'status',
+      'problem_rating_min',
+      'problem_rating_max',
+      'has_solution',
+      'has_checker',
+      'partial_solvable',
+    ],
+  });
   const filter = useMemo(() => buildProblemsListFilter(routeState), [routeState]);
   const [isAdvisorOpen, setIsAdvisorOpen] = useState(false);
 
@@ -384,9 +378,13 @@ const ProblemsListPage = () => {
           page: 1,
         };
 
+        const mutablePatch = nextPatch as Record<
+          keyof ProblemsListQueryState,
+          ProblemsListQueryState[keyof ProblemsListQueryState] | undefined
+        >;
+
         advisorManagedFilterKeys.forEach((key) => {
-          nextPatch[key as keyof ProblemsListQueryState] =
-            problemsListQueryDefaults[key as keyof ProblemsListQueryState];
+          mutablePatch[key] = problemsListQueryDefaults[key];
         });
 
         (
@@ -394,8 +392,10 @@ const ProblemsListPage = () => {
             [keyof ProblemsListParams, ProblemsListParams[keyof ProblemsListParams]]
           >
         ).forEach(([key, value]) => {
-          nextPatch[key as keyof ProblemsListQueryState] =
-            normalizeProblemsListValue(key, value) as never;
+          mutablePatch[key as keyof ProblemsListQueryState] = normalizeProblemsListValue(
+            key,
+            value,
+          ) as never;
         });
 
         nextPatch.tags = patch.tags ?? [];
@@ -404,73 +404,6 @@ const ProblemsListPage = () => {
       },
       { resetPages: false },
     );
-  };
-
-  const toggleTag = (tagId: number) => {
-    patchRouteState((prev) => {
-      const currentTags = prev.tags ?? [];
-      const hasTag = currentTags.includes(tagId);
-      const nextTags = hasTag ? currentTags.filter((id) => id !== tagId) : [...currentTags, tagId];
-      return { tags: nextTags };
-    });
-  };
-
-  const renderDifficultyBadge = (problem: ProblemListItem) => {
-    const color = getDifficultyColor(problem.difficulty);
-    const labelKey = getDifficultyLabelKey(problem.difficulty);
-
-    return (
-      <Chip
-        size="small"
-        label={problem.difficultyTitle || (labelKey ? t(labelKey) : '')}
-        color={color}
-        variant="outlined"
-      />
-    );
-  };
-
-  const renderProblemBadges = (problem: ProblemListItem) => (
-    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-      {problem.hasSolution && (
-        <Chip size="small" color="success" label={t('problems.solution')} variant="outlined" />
-      )}
-      {!problem.hasChecker && (
-        <Chip
-          size="small"
-          color="warning"
-          label={t('problems.checkerMissing')}
-          variant="outlined"
-        />
-      )}
-      {problem.hidden && (
-        <Chip size="small" color="info" label={t('problems.hidden')} variant="outlined" />
-      )}
-    </Stack>
-  );
-
-  const renderTags = (problem: ProblemListItem) => (
-    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-      {problem.tags.map((tag) => (
-        <Chip
-          key={`${problem.id}-${tag.id}`}
-          size="small"
-          label={tag.name}
-          onClick={() => toggleTag(tag.id)}
-          color="primary"
-          variant="outlined"
-        />
-      ))}
-    </Stack>
-  );
-
-  const getRowBackground = (problem: ProblemListItem) => {
-    if (problem.userInfo?.hasSolved) {
-      return alpha(theme.palette.success.main, 0.12);
-    }
-    if (problem.userInfo?.hasAttempted) {
-      return alpha(theme.palette.error.main, 0.06);
-    }
-    return undefined;
   };
 
   return (
@@ -536,10 +469,6 @@ const ProblemsListPage = () => {
                 total={total}
                 onPageChange={handlePageChange}
                 onRowsPerPageChange={handleRowsPerPageChange}
-                renderDifficultyBadge={renderDifficultyBadge}
-                renderProblemBadges={renderProblemBadges}
-                renderTags={renderTags}
-                getRowBackground={getRowBackground}
               />
             </Stack>
           </Grid>
@@ -770,7 +699,7 @@ const FilterCard = ({
     if (filter.problem_rating_min || filter.problem_rating_max) {
       items.push({
         key: 'problem-rating-band',
-        label: `Problem rating: ${formatProblemRatingBand(
+        label: `${t('problems.problemRating')}: ${formatProblemRatingBand(
           filter.problem_rating_min,
           filter.problem_rating_max,
         )}`,
@@ -1078,6 +1007,27 @@ const FilterCard = ({
             ))}
           </TextField>
 
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.25}>
+            <TextField
+              fullWidth
+              type="number"
+              size="small"
+              variant="filled"
+              label={t('problems.problemRatingFrom')}
+              value={filter.problem_rating_min ?? ''}
+              onChange={(event) => onChange('problem_rating_min', event.target.value || undefined)}
+            />
+            <TextField
+              fullWidth
+              type="number"
+              size="small"
+              variant="filled"
+              label={t('problems.problemRatingTo')}
+              value={filter.problem_rating_max ?? ''}
+              onChange={(event) => onChange('problem_rating_max', event.target.value || undefined)}
+            />
+          </Stack>
+
           <TextField
             select
             fullWidth
@@ -1265,10 +1215,6 @@ interface ProblemsListProps {
   total: number;
   onPageChange: (event: unknown, page: number) => void;
   onRowsPerPageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  renderDifficultyBadge: (problem: ProblemListItem) => React.ReactNode;
-  renderProblemBadges: (problem: ProblemListItem) => React.ReactNode;
-  renderTags: (problem: ProblemListItem) => React.ReactNode;
-  getRowBackground: (problem: ProblemListItem) => string | undefined;
 }
 
 const ProblemsList = ({
@@ -1278,92 +1224,15 @@ const ProblemsList = ({
   total,
   onPageChange,
   onRowsPerPageChange,
-  renderDifficultyBadge,
 }: ProblemsListProps) => {
   const { t } = useTranslation();
-  const theme = useTheme();
-
-  const renderStatusIcon = (problem: ProblemListItem) => {
-    if (problem.userInfo?.hasSolved) {
-      return (
-        <Tooltip title={t('problems.statusSolved')}>
-          <IconifyIcon
-            icon="mdi:check-circle"
-            width={20}
-            height={20}
-            color={theme.palette.success.main}
-          />
-        </Tooltip>
-      );
-    }
-
-    if (problem.userInfo?.hasAttempted) {
-      return (
-        <Tooltip title={t('problems.statusUnsolved')}>
-          <IconifyIcon
-            icon="mdi:close-circle"
-            width={20}
-            height={20}
-            color={theme.palette.error.main}
-          />
-        </Tooltip>
-      );
-    }
-
-    return (
-      <IconifyIcon icon="mdi:minus-circle-outline" width={20} height={20} color="transparent" />
-    );
-  };
-
-  const renderSolvedBadges = (problem: ProblemListItem) => {
-    const solved = problem.solved ?? 0;
-    const notSolved = problem.notSolved ?? Math.max((problem.attemptsCount ?? 0) - solved, 0);
-
-    return (
-      <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
-        <Stack direction="row" spacing={0.75} alignItems="center">
-          <IconifyIcon
-            icon="mdi:user-check"
-            width={18}
-            height={18}
-            color={theme.palette.success.main}
-          />
-          <Typography variant="body2" fontWeight={700}>
-            {solved}
-          </Typography>
-        </Stack>
-
-        <Divider
-          orientation="vertical"
-          flexItem
-          sx={{ borderColor: alpha(theme.palette.text.primary, 0.08), minHeight: 24 }}
-        />
-
-        <Stack direction="row" spacing={0.75} alignItems="center">
-          <IconifyIcon
-            icon="mdi:user-minus"
-            width={18}
-            height={18}
-            color={theme.palette.error.main}
-          />
-          <Typography
-            variant="body2"
-            fontWeight={700}
-            color={notSolved > 0 ? 'error.main' : 'text.secondary'}
-          >
-            {notSolved}
-          </Typography>
-        </Stack>
-      </Stack>
-    );
-  };
 
   return (
     <>
       {isLoading ? (
         <Stack direction="column" spacing={1.5}>
           {Array.from({ length: 5 }).map((_, idx) => (
-            <Skeleton key={idx} variant="rounded" height={90} />
+            <Skeleton key={idx} variant="rounded" height={104} />
           ))}
         </Stack>
       ) : problems.length === 0 ? (
@@ -1377,56 +1246,9 @@ const ProblemsList = ({
         </Box>
       ) : (
         <Stack direction="column" spacing={1.25}>
-          {problems.map((problem) => {
-            return (
-              <Card
-                key={problem.id}
-                component={RouterLink}
-                to={getResourceById(resources.Problem, problem.id)}
-                sx={{
-                  display: 'block',
-                  textDecoration: 'none',
-                  p: 2,
-                  borderRadius: 3,
-                  border: '1px solid',
-                  borderColor: 'divider',
-                  transition: 'transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease',
-                  '&:hover': {
-                    transform: 'translateY(-2px)',
-                    boxShadow: theme.shadows[4],
-                    borderColor: alpha(theme.palette.primary.main, 0.25),
-                  },
-                }}
-              >
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  spacing={1.5}
-                >
-                  <Stack
-                    direction="row"
-                    spacing={1.5}
-                    alignItems="flex-start"
-                    justifyContent="space-between"
-                  >
-                    <Stack direction="row" spacing={1.25} alignItems="center" flex={1}>
-                      {renderStatusIcon(problem)}
-
-                      <Stack direction="column" spacing={0.25} minWidth={0}>
-                        <Typography variant="subtitle1" fontWeight={600} color="text.primary">
-                          {problem.id}. {problem.title}
-                        </Typography>
-                        {renderSolvedBadges(problem)}
-                      </Stack>
-                    </Stack>
-                  </Stack>
-
-                  {renderDifficultyBadge(problem)}
-                </Stack>
-              </Card>
-            );
-          })}
+          {problems.map((problem) => (
+            <ProblemListCard key={problem.id} problem={problem} />
+          ))}
         </Stack>
       )}
 

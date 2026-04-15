@@ -90,6 +90,8 @@ const WinnerStats = ({ player }: { player: ArenaPlayerStatistics }) => {
 };
 
 const ArenaWinnersCard = ({ topPlayers }: ArenaWinnersCardProps) => {
+  const { t } = useTranslation();
+
   if (!topPlayers || topPlayers.length === 0) return null;
 
   const podiumPlayers = [topPlayers[1], topPlayers[0], topPlayers[2]];
@@ -106,38 +108,44 @@ const ArenaWinnersCard = ({ topPlayers }: ArenaWinnersCardProps) => {
       background={1}
     >
       <CardContent sx={{ p: { xs: 2, md: 3 } }}>
-        <Box
-          sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-            gap: { xs: 1, md: 2 },
-            alignItems: 'start',
-            textAlign: 'center',
-          }}
-        >
-          {podiumPlayers.map((player, index) => (
-            <Box
-              key={index}
-              sx={{
-                mt: placeOffsets[index],
-                animation: `${podiumBounce} 900ms cubic-bezier(0.22, 1, 0.36, 1) both`,
-                animationDelay: placeDelays[index],
-              }}
-            >
-              {player ? (
-                <Stack direction="column" spacing={1.25} alignItems="center">
-                  <Box
-                    component="img"
-                    src={placeImages[index]}
-                    alt={`place-${index + 1}`}
-                    sx={{ width: { xs: 60, md: 90 }, height: { xs: 60, md: 90 }, objectFit: 'contain' }}
-                  />
-                  <WinnerStats player={player} />
-                </Stack>
-              ) : null}
-            </Box>
-          ))}
-        </Box>
+        <Stack direction="column" spacing={2.5}>
+          <Typography variant="h6" fontWeight={800}>
+            {t('arena.winners')}
+          </Typography>
+
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+              gap: { xs: 1, md: 2 },
+              alignItems: 'start',
+              textAlign: 'center',
+            }}
+          >
+            {podiumPlayers.map((player, index) => (
+              <Box
+                key={index}
+                sx={{
+                  mt: placeOffsets[index],
+                  animation: `${podiumBounce} 900ms cubic-bezier(0.22, 1, 0.36, 1) both`,
+                  animationDelay: placeDelays[index],
+                }}
+              >
+                {player ? (
+                  <Stack direction="column" spacing={1.25} alignItems="center">
+                    <Box
+                      component="img"
+                      src={placeImages[index]}
+                      alt={`place-${index + 1}`}
+                      sx={{ width: { xs: 60, md: 90 }, height: { xs: 60, md: 90 }, objectFit: 'contain' }}
+                    />
+                    <WinnerStats player={player} />
+                  </Stack>
+                ) : null}
+              </Box>
+            ))}
+          </Box>
+        </Stack>
       </CardContent>
     </Card>
   );

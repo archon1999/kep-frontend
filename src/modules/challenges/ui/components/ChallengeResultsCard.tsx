@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, Chip, Divider, Stack, Typography } from '@mui/material';
+import { Card, CardContent, Divider, Stack, Typography } from '@mui/material';
+import KepIcon from 'shared/components/base/KepIcon.tsx';
 import ChallengeChip, { ChallengeChipTone } from 'shared/components/challenges/ChallengeChip.tsx';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
 import { Challenge, ChallengeStatus } from '../../domain';
@@ -15,7 +16,27 @@ const mapResultTone = (value: number): ChallengeChipTone => {
   return 'loss';
 };
 
-const formatDelta = (delta: number) => (delta > 0 ? `+${delta}` : delta);
+const formatDelta = (delta: number) => (delta > 0 ? `+${delta}` : String(delta));
+
+const getDeltaColor = (delta: number) => {
+  if (delta > 0) return 'success.main';
+  if (delta < 0) return 'error.main';
+  return 'text.secondary';
+};
+
+const RatingDelta = ({ delta }: { delta: number }) => (
+  <Stack
+    direction="row"
+    spacing={0.5}
+    alignItems="center"
+    sx={{ color: getDeltaColor(delta) }}
+  >
+    <KepIcon name="delta" fontSize={15} color="inherit" />
+    <Typography variant="caption" fontWeight={700} color="inherit">
+      {formatDelta(delta)}
+    </Typography>
+  </Stack>
+);
 
 const ChallengeResultsCard = ({ challenge }: ChallengeResultsCardProps) => {
   const { t } = useTranslation();
@@ -71,28 +92,7 @@ const ChallengeResultsCard = ({ challenge }: ChallengeResultsCardProps) => {
                   rating={challenge.playerFirst.rating}
                 />
                 {isFinished ? (
-                  <>
-                    <Chip
-                      size="small"
-                      variant="soft"
-                      color="success"
-                      label={`${t('challenges.newRating')}: ${challenge.playerFirst.newRating}`}
-                    />
-                    <Chip
-                      size="small"
-                      variant="outlined"
-                      color={
-                        challenge.playerFirst.delta > 0
-                          ? 'success'
-                          : challenge.playerFirst.delta < 0
-                            ? 'error'
-                            : 'default'
-                      }
-                      label={t('challenges.delta', {
-                        value: formatDelta(challenge.playerFirst.delta),
-                      })}
-                    />
-                  </>
+                  <RatingDelta delta={challenge.playerFirst.delta} />
                 ) : null}
               </Stack>
             </Stack>
@@ -129,14 +129,6 @@ const ChallengeResultsCard = ({ challenge }: ChallengeResultsCardProps) => {
                   {challenge.playerSecond.result}
                 </Typography>
               </Stack>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <Chip
-                  size="small"
-                  label={challenge.rated ? t('challenges.rated') : t('challenges.unrated')}
-                  variant="outlined"
-                  color="success"
-                />
-              </Stack>
             </Stack>
 
             <Divider
@@ -170,28 +162,7 @@ const ChallengeResultsCard = ({ challenge }: ChallengeResultsCardProps) => {
                 />
 
                 {isFinished ? (
-                  <>
-                    <Chip
-                      size="small"
-                      variant="soft"
-                      color="success"
-                      label={`${t('challenges.newRating')}: ${challenge.playerSecond.newRating}`}
-                    />
-                    <Chip
-                      size="small"
-                      variant="outlined"
-                      color={
-                        challenge.playerSecond.delta > 0
-                          ? 'success'
-                          : challenge.playerSecond.delta < 0
-                            ? 'error'
-                            : 'default'
-                      }
-                      label={t('challenges.delta', {
-                        value: formatDelta(challenge.playerSecond.delta),
-                      })}
-                    />
-                  </>
+                  <RatingDelta delta={challenge.playerSecond.delta} />
                 ) : null}
               </Stack>
             </Stack>

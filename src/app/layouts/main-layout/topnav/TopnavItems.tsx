@@ -1,10 +1,11 @@
 import { MouseEvent, useEffect, useMemo, useState } from 'react';
 import { NavLink, useLocation } from 'react-router';
 import { Button, Stack } from '@mui/material';
-import sitemap, { MenuItem } from 'app/routes/sitemap';
+import { MenuItem } from 'app/routes/sitemap';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { useNavContext } from '../NavProvider';
 import NavitemPopover from './NavItemPopover';
 
 interface TopnavItemsProps {
@@ -16,6 +17,7 @@ const TopnavItems = ({ type = 'default' }: TopnavItemsProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [selectedMenu, setSelectedMenu] = useState<null | MenuItem>(null);
   const { pathname } = useLocation();
+  const { menuItems } = useNavContext();
 
   const isMenuActive = useMemo(() => {
     const checkLink = (item: MenuItem): boolean => {
@@ -42,7 +44,7 @@ const TopnavItems = ({ type = 'default' }: TopnavItemsProps) => {
       className="nav-items"
       direction="row"
     >
-      {sitemap.map((menu) => {
+      {menuItems.map((menu) => {
         const buttonLinkProps =
           !menu.items && menu.path
             ? ({ component: NavLink, to: menu.path } as const)

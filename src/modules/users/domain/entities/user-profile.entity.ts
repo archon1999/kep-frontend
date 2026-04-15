@@ -31,7 +31,12 @@ export type UserAchievement = {
 };
 
 export type UserCompetitionPrizeCurrency = 'SUM' | 'DOLLAR' | 'TON';
-export type UserCompetitionPrizeType = 'MONEY' | 'TELEGRAM_PREMIUM' | 'KEPCOIN' | 'MERCH';
+export type UserCompetitionPrizeType =
+  | 'MONEY'
+  | 'TELEGRAM_PREMIUM'
+  | 'TELEGRAM_STARS'
+  | 'KEPCOIN'
+  | 'MERCH';
 export type UserCompetitionPrizeCompetitionType = 'CONTEST' | 'ARENA' | 'TOURNAMENT' | 'CUP';
 
 export type UserCompetitionPrize = {
@@ -39,6 +44,7 @@ export type UserCompetitionPrize = {
   prizeType: UserCompetitionPrizeType;
   moneyValue: number | null;
   kepcoinValue: number | null;
+  telegramStarsValue?: number | null;
   currency: UserCompetitionPrizeCurrency;
   competitionType: UserCompetitionPrizeCompetitionType;
   competitionId: number;

@@ -50,6 +50,13 @@
       "completed": "{{count}} завершено",
       "rewardPool": "{{count}} kepcoin всего"
     },
+    "headerMetrics": {
+      "available": "Активные проекты",
+      "started": "Начато",
+      "completed": "Завершено",
+      "rewardPool": "Фонд kepcoin",
+      "averageProgress": "Средний прогресс"
+    },
     "categories": {
       "frontend": {
         "title": "Frontend",

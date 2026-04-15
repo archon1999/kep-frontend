@@ -1,4 +1,5 @@
 import { instance } from 'shared/api/http/axiosInstance.ts';
+import { getStoredLocale, toBackendLanguage } from 'app/locales/locale.ts';
 
 export interface ChallengeListParams {
   page?: number;
@@ -7,6 +8,58 @@ export interface ChallengeListParams {
   arenaId?: number;
   ordering?: string;
 }
+
+export type ChallengePenaltyReason = 'blur' | 'route_leave' | 'pagehide' | 'reconcile';
+
+export interface ChallengeAntiCheatPenaltyBody {
+  questionNumber: number;
+  reason?: ChallengePenaltyReason;
+}
+
+const baseURL = import.meta.env.VITE_API_URL || '';
+const basicAuthLogin = import.meta.env.VITE_BASIC_AUTH_LOGIN;
+const basicAuthPassword = import.meta.env.VITE_BASIC_AUTH_PASSWORD;
+const shouldUseBasicAuth = import.meta.env.DEV;
+
+const getBasicAuthHeader = () => {
+  if (!basicAuthLogin || !basicAuthPassword) return null;
+
+  return `Basic ${btoa(`${basicAuthLogin}:${basicAuthPassword}`)}`;
+};
+
+const buildPenaltyBody = (body: ChallengeAntiCheatPenaltyBody) => ({
+  question_number: body.questionNumber,
+  reason: body.reason,
+});
+
+const buildPenaltyUrl = (challengeId: number | string) =>
+  `${baseURL}/api/challenges/${challengeId}/anti-cheat-penalty/`;
+
+export const sendChallengeAntiCheatPenaltyKeepalive = (
+  challengeId: number | string,
+  body: ChallengeAntiCheatPenaltyBody,
+) => {
+  const locale = getStoredLocale();
+  const djangoLanguage = toBackendLanguage(locale);
+  const headers: Record<string, string> = {
+    'Accept-Language': locale,
+    'Content-Type': 'application/json',
+    'Django-Language': djangoLanguage,
+  };
+  const basicAuthHeader = shouldUseBasicAuth ? getBasicAuthHeader() : null;
+
+  if (basicAuthHeader) {
+    headers.Authorization = basicAuthHeader;
+  }
+
+  fetch(buildPenaltyUrl(challengeId), {
+    method: 'POST',
+    credentials: 'include',
+    keepalive: true,
+    headers,
+    body: JSON.stringify(buildPenaltyBody(body)),
+  }).catch(() => undefined);
+};
 
 export const challengesApiClient = {
   getChallengeCalls: async () => {
@@ -51,6 +104,13 @@ export const challengesApiClient = {
   },
   submitAnswer: async (challengeId: number, body: { answer: unknown; finish?: boolean }) => {
     const response = await instance.post(`/api/challenges/${challengeId}/check-answer/`, body);
+    return response.data;
+  },
+  applyAntiCheatPenalty: async (challengeId: number, body: ChallengeAntiCheatPenaltyBody) => {
+    const response = await instance.post(
+      `/api/challenges/${challengeId}/anti-cheat-penalty/`,
+      buildPenaltyBody(body),
+    );
     return response.data;
   },
   listRating: async (params?: ChallengeListParams) => {

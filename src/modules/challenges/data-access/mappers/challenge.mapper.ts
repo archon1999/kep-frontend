@@ -47,6 +47,7 @@ export const mapChallenge = (payload: any): Challenge => {
     finished: payload?.finished ?? payload?.finished_at ?? null,
     questionsCount: payload?.questionsCount ?? payload?.questions_count ?? payload?.questions?.length ?? 0,
     timeSeconds: payload?.timeSeconds ?? payload?.time_seconds ?? 0,
+    remainingTimeSeconds: payload?.remainingTimeSeconds ?? payload?.remaining_time_seconds ?? payload?.timeSeconds ?? payload?.time_seconds ?? 0,
     rated: Boolean(payload?.rated ?? payload?.is_rated ?? false),
     questionTimeType: (payload?.questionTimeType ?? payload?.question_time_type ?? ChallengeQuestionTimeType.TimeToOne) as ChallengeQuestionTimeType,
     nextQuestion: payload?.nextQuestion ? mapChallengeQuestion(payload?.nextQuestion) : undefined,
@@ -83,6 +84,7 @@ export const mapChallengeCall = (payload: any): ChallengeCall => ({
   rankTitle: payload?.rankTitle ?? payload?.rank_title ?? '',
   timeSeconds: payload?.timeSeconds ?? payload?.time_seconds ?? 0,
   questionsCount: payload?.questionsCount ?? payload?.questions_count ?? 0,
+  questionTimeType: (payload?.questionTimeType ?? payload?.question_time_type ?? ChallengeQuestionTimeType.TimeToOne) as ChallengeQuestionTimeType,
   chapters: payload?.chapters ?? [],
   created: payload?.created ?? payload?.created_at ?? '',
 });

@@ -60,6 +60,7 @@ export const legacyRedirectRoutes: RouteObject[] = [
 
   { path: '/competitions/arena', element: <LegacyRedirect to={resources.Arena} /> },
   { path: '/competitions/arena/tournament/:id', element: <LegacyRedirect to={resources.ArenaTournament} /> },
+  { path: '/arena/tournament/:id', element: <LegacyRedirect to={resources.ArenaTournament} /> },
 
   { path: '/competitions/tournaments', element: <LegacyRedirect to={resources.Tournaments} /> },
   { path: '/competitions/tournaments/tournament/:id', element: <LegacyRedirect to={resources.Tournament} /> },

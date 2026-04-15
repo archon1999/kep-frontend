@@ -1,0 +1,347 @@
+import { getResourceById, resources } from 'app/routes/resources';
+import type { AdminSimpleResourceConfig } from './AdminSimpleResourcePages';
+
+const deleteBatchAction = (confirmKey: string) => ({
+  action: 'delete',
+  labelKey: 'admin.actions.delete',
+  icon: 'mdi:delete-outline',
+  color: 'error' as const,
+  confirmKey,
+});
+
+export const adminProblemAttemptsConfig: AdminSimpleResourceConfig = {
+  resource: 'problems/attempts',
+  metaResource: 'problems/attempts',
+  listPath: resources.AdminProblemAttempts,
+  createPath: resources.AdminProblemAttemptCreate,
+  editPath: resources.AdminProblemAttemptEdit,
+  titleKey: 'admin.resources.problemAttempts.title',
+  createTitleKey: 'admin.resources.problemAttempts.createTitle',
+  editTitleKey: 'admin.resources.problemAttempts.editTitle',
+  searchPlaceholderKey: 'admin.resources.problemAttempts.searchPlaceholder',
+  selectedLabelKey: 'admin.resources.problemAttempts.selected',
+  confirmDeleteKey: 'admin.resources.problemAttempts.confirmDelete',
+  sidebarTitleKey: 'admin.resources.problemAttempts.settings',
+  defaultValues: {
+    problem: null,
+    user: null,
+    team: null,
+    contestTime: '',
+    verdict: -2,
+    lang: 'py',
+    testCaseNumber: null,
+    time: null,
+    memory: null,
+    sourceCode: '',
+    errorMessage: '',
+    isSimulated: false,
+    balls: null,
+    judgeSummary: '',
+    problemIndex: null,
+  },
+  columns: [
+    { field: 'id', labelKey: 'admin.columns.id', type: 'editLink', width: 90 },
+    {
+      field: 'problemTitle',
+      labelKey: 'admin.form.fields.problem',
+      minWidth: 240,
+      flex: 1,
+      clientPath: (row) => (row.problem ? getResourceById(resources.Problem, row.problem) : undefined),
+    },
+    { field: 'userUsername', labelKey: 'admin.columns.user', type: 'user', width: 170, sortable: false },
+    { field: 'verdictLabel', labelKey: 'admin.form.fields.verdict', type: 'chip', width: 190 },
+    { field: 'langLabel', labelKey: 'admin.form.fields.language', type: 'chip', width: 150 },
+    { field: 'time', labelKey: 'admin.form.fields.time', type: 'number', width: 120 },
+    { field: 'memory', labelKey: 'admin.form.fields.memory', type: 'number', width: 120 },
+    { field: 'created', labelKey: 'admin.columns.created', type: 'dateTime', width: 180 },
+  ],
+  filters: [
+    { name: 'verdict', labelKey: 'admin.form.fields.verdict', kind: 'select', choicesKey: 'verdicts', valueType: 'number' },
+    { name: 'lang', labelKey: 'admin.form.fields.language', kind: 'select', choicesKey: 'languages' },
+    { name: 'problem', labelKey: 'admin.form.fields.problem', kind: 'problem' },
+    { name: 'user', labelKey: 'admin.columns.user', kind: 'user' },
+  ],
+  batchActions: [
+    {
+      action: 'queue',
+      labelKey: 'admin.actions.queue',
+      icon: 'mdi:tray-arrow-down',
+    },
+    deleteBatchAction('admin.resources.problemAttempts.confirmBatchDelete'),
+  ],
+  rowActions: (row, { t, runBatchAction }) => [
+    {
+      label: t('admin.actions.queue'),
+      icon: 'mdi:tray-arrow-down',
+      onClick: () =>
+        runBatchAction([row.id], {
+          action: 'queue',
+          labelKey: 'admin.actions.queue',
+          icon: 'mdi:tray-arrow-down',
+        }),
+    },
+  ],
+  fields: [
+    { name: 'problem', labelKey: 'admin.form.fields.problem', kind: 'problem', section: 'sidebar', labelField: 'problemTitle', required: true },
+    { name: 'user', labelKey: 'admin.columns.user', kind: 'user', section: 'sidebar', usernameField: 'userUsername' },
+    { name: 'team', labelKey: 'admin.form.fields.team', kind: 'team', section: 'sidebar', labelField: 'teamName', nullable: true },
+    { name: 'verdict', labelKey: 'admin.form.fields.verdict', kind: 'select', section: 'sidebar', choicesKey: 'verdicts', valueType: 'number' },
+    { name: 'lang', labelKey: 'admin.form.fields.language', kind: 'select', section: 'sidebar', choicesKey: 'languages' },
+    { name: 'time', labelKey: 'admin.form.fields.time', kind: 'number', section: 'sidebar', nullable: true },
+    { name: 'memory', labelKey: 'admin.form.fields.memory', kind: 'number', section: 'sidebar', nullable: true },
+    { name: 'balls', labelKey: 'admin.form.fields.ball', kind: 'number', section: 'sidebar', nullable: true },
+    { name: 'testCaseNumber', labelKey: 'admin.form.fields.testCaseNumber', kind: 'number', section: 'sidebar', nullable: true },
+    { name: 'isSimulated', labelKey: 'admin.form.fields.simulated', kind: 'checkbox', section: 'sidebar' },
+    { name: 'contestTime', labelKey: 'admin.form.fields.contestTime', kind: 'text' },
+    { name: 'problemIndex', labelKey: 'admin.form.fields.problemIndex', kind: 'number', nullable: true },
+    { name: 'sourceCode', labelKey: 'admin.form.fields.sourceCode', kind: 'textarea', minRows: 8 },
+    { name: 'errorMessage', labelKey: 'admin.form.fields.errorMessage', kind: 'textarea', minRows: 4 },
+    { name: 'judgeSummary', labelKey: 'admin.form.fields.judgeSummary', kind: 'textarea', minRows: 4 },
+  ],
+};
+
+export const adminProblemChaptersConfig: AdminSimpleResourceConfig = {
+  resource: 'problems/chapters',
+  listPath: resources.AdminProblemChapters,
+  createPath: resources.AdminProblemChapterCreate,
+  editPath: resources.AdminProblemChapterEdit,
+  titleKey: 'admin.resources.problemChapters.title',
+  createTitleKey: 'admin.resources.problemChapters.createTitle',
+  editTitleKey: 'admin.resources.problemChapters.editTitle',
+  searchPlaceholderKey: 'admin.resources.problemChapters.searchPlaceholder',
+  selectedLabelKey: 'admin.resources.problemChapters.selected',
+  confirmDeleteKey: 'admin.resources.problemChapters.confirmDelete',
+  sidebarTitleKey: 'admin.resources.problemChapters.settings',
+  defaultValues: { title: '', titleUz: '', titleEn: '', titleRu: '' },
+  columns: [
+    { field: 'id', labelKey: 'admin.columns.id', type: 'editLink', width: 90 },
+    { field: 'title', labelKey: 'admin.columns.title', minWidth: 260, flex: 1 },
+    { field: 'created', labelKey: 'admin.columns.created', type: 'dateTime', width: 180 },
+    { field: 'updated', labelKey: 'admin.columns.updated', type: 'dateTime', width: 180 },
+  ],
+  batchActions: [deleteBatchAction('admin.resources.problemChapters.confirmBatchDelete')],
+  fields: [],
+  translatedFields: [
+    { baseName: 'title', fallbackName: 'title', labelKey: 'admin.form.fields.localizedTitle', kind: 'text' },
+  ],
+};
+
+export const adminProblemTagsConfig: AdminSimpleResourceConfig = {
+  resource: 'problems/tags',
+  listPath: resources.AdminProblemTags,
+  createPath: resources.AdminProblemTagCreate,
+  editPath: resources.AdminProblemTagEdit,
+  titleKey: 'admin.resources.problemTags.title',
+  createTitleKey: 'admin.resources.problemTags.createTitle',
+  editTitleKey: 'admin.resources.problemTags.editTitle',
+  searchPlaceholderKey: 'admin.resources.problemTags.searchPlaceholder',
+  selectedLabelKey: 'admin.resources.problemTags.selected',
+  confirmDeleteKey: 'admin.resources.problemTags.confirmDelete',
+  sidebarTitleKey: 'admin.resources.problemTags.settings',
+  defaultValues: { name: '', nameUz: '', nameEn: '', nameRu: '' },
+  columns: [
+    { field: 'id', labelKey: 'admin.columns.id', type: 'editLink', width: 90 },
+    { field: 'name', labelKey: 'admin.columns.name', minWidth: 260, flex: 1 },
+  ],
+  batchActions: [deleteBatchAction('admin.resources.problemTags.confirmBatchDelete')],
+  fields: [],
+  translatedFields: [
+    { baseName: 'name', fallbackName: 'name', labelKey: 'admin.form.fields.localizedName', kind: 'text' },
+  ],
+};
+
+export const adminContestQuestionsConfig: AdminSimpleResourceConfig = {
+  resource: 'contests/questions',
+  metaResource: 'contests/questions',
+  listPath: resources.AdminContestQuestions,
+  createPath: resources.AdminContestQuestionCreate,
+  editPath: resources.AdminContestQuestionEdit,
+  titleKey: 'admin.resources.contestQuestions.title',
+  createTitleKey: 'admin.resources.contestQuestions.createTitle',
+  editTitleKey: 'admin.resources.contestQuestions.editTitle',
+  searchPlaceholderKey: 'admin.resources.contestQuestions.searchPlaceholder',
+  selectedLabelKey: 'admin.resources.contestQuestions.selected',
+  confirmDeleteKey: 'admin.resources.contestQuestions.confirmDelete',
+  sidebarTitleKey: 'admin.resources.contestQuestions.settings',
+  defaultValues: {
+    contest: null,
+    status: 0,
+    user: null,
+    question: '',
+    answer: '',
+  },
+  columns: [
+    { field: 'id', labelKey: 'admin.columns.id', type: 'editLink', width: 90 },
+    {
+      field: 'contestTitle',
+      labelKey: 'admin.contests.title',
+      minWidth: 240,
+      flex: 1,
+      clientPath: (row) => (row.contest ? getResourceById(resources.Contest, row.contest) : undefined),
+    },
+    { field: 'userUsername', labelKey: 'admin.columns.user', type: 'user', width: 170, sortable: false },
+    { field: 'statusLabel', labelKey: 'admin.form.fields.status', type: 'chip', width: 140 },
+    { field: 'question', labelKey: 'admin.form.fields.question', minWidth: 260, flex: 1 },
+    { field: 'created', labelKey: 'admin.columns.created', type: 'dateTime', width: 180 },
+  ],
+  filters: [
+    { name: 'status', labelKey: 'admin.form.fields.status', kind: 'select', choicesKey: 'statuses', valueType: 'number' },
+    { name: 'contest', labelKey: 'admin.form.fields.contest', kind: 'contest' },
+    { name: 'user', labelKey: 'admin.columns.user', kind: 'user' },
+  ],
+  batchActions: [
+    { action: 'markViewed', labelKey: 'admin.actions.markViewed', icon: 'mdi:eye-outline' },
+    { action: 'markAnswered', labelKey: 'admin.actions.markAnswered', icon: 'mdi:message-check-outline' },
+    { action: 'markRejected', labelKey: 'admin.actions.markRejected', icon: 'mdi:message-alert-outline', color: 'warning' },
+    deleteBatchAction('admin.resources.contestQuestions.confirmBatchDelete'),
+  ],
+  rowActions: (row, { t, runBatchAction }) => [
+    {
+      label: t('admin.actions.markViewed'),
+      icon: 'mdi:eye-outline',
+      onClick: () =>
+        runBatchAction([row.id], {
+          action: 'markViewed',
+          labelKey: 'admin.actions.markViewed',
+          icon: 'mdi:eye-outline',
+        }),
+    },
+    {
+      label: t('admin.actions.markAnswered'),
+      icon: 'mdi:message-check-outline',
+      onClick: () =>
+        runBatchAction([row.id], {
+          action: 'markAnswered',
+          labelKey: 'admin.actions.markAnswered',
+          icon: 'mdi:message-check-outline',
+        }),
+    },
+    {
+      label: t('admin.actions.markRejected'),
+      icon: 'mdi:message-alert-outline',
+      onClick: () =>
+        runBatchAction([row.id], {
+          action: 'markRejected',
+          labelKey: 'admin.actions.markRejected',
+          icon: 'mdi:message-alert-outline',
+        }),
+    },
+  ],
+  fields: [
+    { name: 'contest', labelKey: 'admin.form.fields.contest', kind: 'contest', section: 'sidebar', labelField: 'contestTitle', required: true },
+    { name: 'user', labelKey: 'admin.columns.user', kind: 'user', section: 'sidebar', usernameField: 'userUsername', required: true },
+    { name: 'status', labelKey: 'admin.form.fields.status', kind: 'select', section: 'sidebar', choicesKey: 'statuses', valueType: 'number' },
+    { name: 'question', labelKey: 'admin.form.fields.question', kind: 'textarea', minRows: 5, required: true },
+    { name: 'answer', labelKey: 'admin.form.fields.answer', kind: 'richText', minHeight: 240 },
+  ],
+};
+
+export const adminContestTypesConfig: AdminSimpleResourceConfig = {
+  resource: 'contests/types',
+  listPath: resources.AdminContestTypes,
+  createPath: resources.AdminContestTypeCreate,
+  editPath: resources.AdminContestTypeEdit,
+  titleKey: 'admin.resources.contestTypes.title',
+  createTitleKey: 'admin.resources.contestTypes.createTitle',
+  editTitleKey: 'admin.resources.contestTypes.editTitle',
+  searchPlaceholderKey: 'admin.resources.contestTypes.searchPlaceholder',
+  selectedLabelKey: 'admin.resources.contestTypes.selected',
+  confirmDeleteKey: 'admin.resources.contestTypes.confirmDelete',
+  sidebarTitleKey: 'admin.resources.contestTypes.settings',
+  defaultValues: {
+    code: '',
+    title: '',
+    titleUz: '',
+    titleEn: '',
+    titleRu: '',
+    description: '',
+    descriptionUz: '',
+    descriptionEn: '',
+    descriptionRu: '',
+    hasBalls: false,
+    hasPenalties: false,
+  },
+  columns: [
+    { field: 'id', labelKey: 'admin.columns.id', type: 'editLink', width: 90 },
+    { field: 'code', labelKey: 'admin.form.fields.code', type: 'chip', width: 130 },
+    { field: 'title', labelKey: 'admin.columns.title', minWidth: 260, flex: 1 },
+    { field: 'hasBalls', labelKey: 'admin.form.fields.hasBalls', type: 'boolean', width: 130 },
+    { field: 'hasPenalties', labelKey: 'admin.form.fields.hasPenalties', type: 'boolean', width: 150 },
+  ],
+  filters: [
+    { name: 'hasBalls', labelKey: 'admin.form.fields.hasBalls', kind: 'nullableBoolean' },
+    { name: 'hasPenalties', labelKey: 'admin.form.fields.hasPenalties', kind: 'nullableBoolean' },
+  ],
+  batchActions: [deleteBatchAction('admin.resources.contestTypes.confirmBatchDelete')],
+  fields: [
+    { name: 'code', labelKey: 'admin.form.fields.code', kind: 'text', section: 'sidebar', required: true },
+    { name: 'hasBalls', labelKey: 'admin.form.fields.hasBalls', kind: 'checkbox', section: 'sidebar' },
+    { name: 'hasPenalties', labelKey: 'admin.form.fields.hasPenalties', kind: 'checkbox', section: 'sidebar' },
+  ],
+  translatedFields: [
+    { baseName: 'title', fallbackName: 'title', labelKey: 'admin.form.fields.localizedTitle', kind: 'text' },
+    { baseName: 'description', fallbackName: 'description', labelKey: 'admin.form.fields.description', kind: 'richText', minHeight: 220 },
+  ],
+};
+
+export const adminContestFiltersConfig: AdminSimpleResourceConfig = {
+  resource: 'contests/filters',
+  listPath: resources.AdminContestFilters,
+  createPath: resources.AdminContestFilterCreate,
+  editPath: resources.AdminContestFilterEdit,
+  titleKey: 'admin.resources.contestFilters.title',
+  createTitleKey: 'admin.resources.contestFilters.createTitle',
+  editTitleKey: 'admin.resources.contestFilters.editTitle',
+  searchPlaceholderKey: 'admin.resources.contestFilters.searchPlaceholder',
+  selectedLabelKey: 'admin.resources.contestFilters.selected',
+  confirmDeleteKey: 'admin.resources.contestFilters.confirmDelete',
+  sidebarTitleKey: 'admin.resources.contestFilters.settings',
+  defaultValues: { name: '', nameUz: '', nameEn: '', nameRu: '', order: 0 },
+  columns: [
+    { field: 'id', labelKey: 'admin.columns.id', type: 'editLink', width: 90 },
+    { field: 'name', labelKey: 'admin.columns.name', minWidth: 260, flex: 1 },
+    { field: 'order', labelKey: 'admin.form.fields.order', type: 'number', width: 120 },
+  ],
+  batchActions: [deleteBatchAction('admin.resources.contestFilters.confirmBatchDelete')],
+  fields: [
+    { name: 'order', labelKey: 'admin.form.fields.order', kind: 'number', section: 'sidebar' },
+  ],
+  translatedFields: [
+    { baseName: 'name', fallbackName: 'name', labelKey: 'admin.form.fields.localizedName', kind: 'text' },
+  ],
+};
+
+export const adminTeamsConfig: AdminSimpleResourceConfig = {
+  resource: 'users/teams',
+  listPath: resources.AdminTeams,
+  createPath: resources.AdminTeamCreate,
+  editPath: resources.AdminTeamEdit,
+  titleKey: 'admin.resources.teams.title',
+  createTitleKey: 'admin.resources.teams.createTitle',
+  editTitleKey: 'admin.resources.teams.editTitle',
+  searchPlaceholderKey: 'admin.resources.teams.searchPlaceholder',
+  selectedLabelKey: 'admin.resources.teams.selected',
+  confirmDeleteKey: 'admin.resources.teams.confirmDelete',
+  sidebarTitleKey: 'admin.resources.teams.settings',
+  defaultValues: {
+    name: '',
+    code: '',
+    creater: null,
+  },
+  columns: [
+    { field: 'id', labelKey: 'admin.columns.id', type: 'editLink', width: 90 },
+    { field: 'name', labelKey: 'admin.columns.name', minWidth: 260, flex: 1 },
+    { field: 'code', labelKey: 'admin.form.fields.code', type: 'chip', width: 150 },
+    { field: 'createrUsername', labelKey: 'admin.columns.creator', type: 'user', width: 170, sortable: false },
+    { field: 'usersCount', labelKey: 'admin.columns.members', type: 'number', width: 130 },
+  ],
+  filters: [
+    { name: 'creater', labelKey: 'admin.columns.creator', kind: 'user' },
+  ],
+  batchActions: [deleteBatchAction('admin.resources.teams.confirmBatchDelete')],
+  fields: [
+    { name: 'name', labelKey: 'admin.columns.name', kind: 'text', section: 'sidebar', required: true },
+    { name: 'code', labelKey: 'admin.form.fields.code', kind: 'text', section: 'sidebar', omitWhenEmpty: true },
+    { name: 'creater', labelKey: 'admin.columns.creator', kind: 'user', section: 'sidebar', usernameField: 'createrUsername' },
+  ],
+};

@@ -5,6 +5,14 @@ export interface ContestAuthorEntity {
   ratingTitle?: string;
 }
 
+export interface ContestTypeInfo {
+  code: ContestType | string;
+  title: string;
+  description?: string | null;
+  hasBalls: boolean;
+  hasPenalties: boolean;
+}
+
 export interface ContestListItem {
   id: number;
   title: string;
@@ -13,6 +21,7 @@ export interface ContestListItem {
   startTime?: string;
   finishTime?: string;
   type: ContestType;
+  typeInfo?: ContestTypeInfo | null;
   category: ContestCategory;
   categoryTitle: string;
   isRated?: boolean;

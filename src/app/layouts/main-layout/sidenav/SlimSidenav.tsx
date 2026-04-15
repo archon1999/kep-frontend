@@ -6,10 +6,10 @@ import Drawer, { drawerClasses } from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import Toolbar from '@mui/material/Toolbar';
 import { useSettingsContext } from 'app/providers/SettingsProvider';
-import sitemap from 'app/routes/sitemap';
 import { sidenavVibrantStyle } from 'app/theme/styles/vibrantNav';
 import Logo from 'shared/components/common/Logo';
 import VibrantBackground from 'shared/components/common/VibrantBackground';
+import NavLogoLabel from '../common/NavLogoLabel';
 import { useNavContext } from '../NavProvider';
 import SidenavSimpleBar from './SidenavSimpleBar';
 import SlimNavItem from './SlimNavItem';
@@ -18,7 +18,7 @@ const SlimSidenav = () => {
   const {
     config: { sidenavCollapsed, drawerWidth, navColor, navigationMenuType },
   } = useSettingsContext();
-  const { sidenavAppbarVariant } = useNavContext();
+  const { menuItems, sidenavAppbarVariant } = useNavContext();
 
   const drawer = (
     <>
@@ -34,7 +34,12 @@ const SlimSidenav = () => {
             },
           ]}
         >
-          {navigationMenuType === 'sidenav' && <Logo showName={false} />}
+          {navigationMenuType === 'sidenav' && (
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.75 }}>
+              <Logo showName={false} />
+              <NavLogoLabel compact />
+            </Box>
+          )}
         </Toolbar>
         <Box
           sx={{
@@ -65,10 +70,10 @@ const SlimSidenav = () => {
                   gap: '2px',
                 }}
               >
-                {sitemap.map((item, index) => (
+                {menuItems.map((item, index) => (
                   <Fragment key={item.pathName}>
                     <SlimNavItem item={item} level={0} />
-                    {index !== sitemap.length - 1 && <Divider sx={{ my: 1.5 }} />}
+                    {index !== menuItems.length - 1 && <Divider sx={{ my: 1.5 }} />}
                   </Fragment>
                 ))}
               </List>
