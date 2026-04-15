@@ -557,7 +557,7 @@ const ChallengeDetailPage = () => {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={finishDialogOpen} onClose={handleStayOnPage} fullWidth maxWidth="md">
+      <Dialog open={finishDialogOpen} onClose={handleStayOnPage} fullWidth maxWidth="sm">
         <DialogTitle>
           <Stack direction="row" spacing={1} alignItems="center">
             <KepIcon name="challenge" fontSize={20} color="success.main" />
@@ -565,12 +565,7 @@ const ChallengeDetailPage = () => {
           </Stack>
         </DialogTitle>
         <DialogContent dividers>
-          <Stack spacing={2}>
-            <Typography variant="body2" color="text.secondary">
-              {t('challenges.finishedDescription')}
-            </Typography>
-            <ChallengeResultsCard challenge={challenge} />
-          </Stack>
+          <ChallengeResultsCard challenge={challenge} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleStayOnPage}>{t('common.close')}</Button>
