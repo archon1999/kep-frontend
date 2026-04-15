@@ -70,7 +70,7 @@ export const resources = {
   Duel: '/duels/:id',
 
   Arena: '/arena',
-  ArenaTournament: '/arena/tournament/:id',
+  ArenaTournament: '/arena/:id',
 
   Tournaments: '/tournaments',
   Tournament: '/tournaments/:id',
