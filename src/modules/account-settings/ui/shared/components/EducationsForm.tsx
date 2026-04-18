@@ -80,7 +80,7 @@ const EducationsForm = () => {
         <Stack direction="column" spacing={3}>
           {items?.map((item) => (
             <Grid container spacing={2} alignItems="center" key={item._rowId}>
-              <Grid size={{ xs: 12, md: 4 }}>
+              <Grid size={{ xs: 12, md: 3 }}>
                 <TextField
                   fullWidth
                   label={t('settings.organization')}
@@ -96,7 +96,7 @@ const EducationsForm = () => {
                   onChange={(event) => updateItem(item._rowId, 'degree', event.target.value)}
                 />
               </Grid>
-              <Grid size={{ xs: 12, md: 2 }}>
+              <Grid size={{ xs: 12, md: 2.5 }}>
                 <TextField
                   fullWidth
                   type="number"
@@ -106,7 +106,7 @@ const EducationsForm = () => {
                   inputProps={yearInputProps}
                 />
               </Grid>
-              <Grid size={{ xs: 12, md: 2 }}>
+              <Grid size={{ xs: 12, md: 2.5 }}>
                 <TextField
                   fullWidth
                   type="number"
