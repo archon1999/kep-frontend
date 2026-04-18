@@ -178,6 +178,10 @@ export class AccountSettingsRepositoryImpl implements AccountSettingsRepository 
     return mapAccountTeamFromApi(data);
   }
 
+  async deleteTeam(code: string): Promise<void> {
+    await instance.delete(`/api/user-teams/${code}/`);
+  }
+
   async refreshTeamCode(code: string): Promise<AccountTeam> {
     const { data } = await instance.post<AccountTeam>(`/api/user-teams/${code}/refresh-code/`);
     return mapAccountTeamFromApi(data);
