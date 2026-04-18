@@ -21,6 +21,7 @@ import { resources } from 'app/routes/resources';
 import dayjs from 'dayjs';
 import { BarChart, HeatmapChart, LineChart } from 'echarts/charts';
 import {
+  CalendarComponent,
   GridComponent,
   LegendComponent,
   TooltipComponent,
@@ -50,6 +51,7 @@ import {
 } from '../../domain/entities/problem.entity';
 
 echarts.use([
+  CalendarComponent,
   GridComponent,
   TooltipComponent,
   LegendComponent,
@@ -248,35 +250,53 @@ const buildHeatmapOption = (
     t('problems.statisticsPage.weekday.saturdayShort'),
   ];
 
-  const data = statistics.heatmap.map((entry) => {
-    const date = dayjs(entry.date);
-    return [date.valueOf(), date.day(), entry.solved ?? 0];
-  });
+  const data = statistics.heatmap.map((entry) => [entry.date, entry.solved ?? 0]);
+  const range =
+    statistics.meta?.heatmapRange?.from && statistics.meta?.heatmapRange?.to
+      ? [statistics.meta.heatmapRange.from, statistics.meta.heatmapRange.to]
+      : [statistics.heatmap[0]?.date, statistics.heatmap[statistics.heatmap.length - 1]?.date];
 
   if (!data.length) return null;
 
-  const maxValue = Math.max(...data.map((item) => item[2] as number), 1);
+  const maxValue = Math.max(...data.map((item) => item[1] as number), 1);
 
   return {
     tooltip: {
       position: 'top',
       formatter: (params: any) => {
         const date = dayjs(params.value[0]).format('YYYY-MM-DD');
-        return `${date}: ${params.value[2]}`;
+        return `${date}: ${params.value[1]}`;
       },
     },
-    grid: { left: 10, right: 10, top: 12, bottom: 52 },
-    xAxis: {
-      type: 'time',
-      splitNumber: 12,
-      axisLabel: { formatter: '{MMM}', hideOverlap: true },
-      splitLine: { show: false },
-    },
-    yAxis: {
-      type: 'category',
-      data: weekdayLabels,
-      axisLine: { show: false },
-      axisTick: { show: false },
+    calendar: {
+      top: 0,
+      left: 60,
+      right: 18,
+      bottom: 52,
+      range,
+      cellSize: ['auto', 24],
+      splitLine: {
+        show: true,
+        lineStyle: {
+          color: getColor(themeVars.palette.text.secondary),
+          width: 0.5,
+        },
+      },
+      itemStyle: {
+        borderWidth: 0,
+      },
+      yearLabel: { show: false },
+      monthLabel: {
+        margin: 14,
+        color: getColor(themeVars.palette.text.secondary),
+        formatter: (value: string) => dayjs(value).format('MMM'),
+      },
+      dayLabel: {
+        firstDay: 0,
+        margin: 14,
+        color: getColor(themeVars.palette.text.secondary),
+        nameMap: weekdayLabels,
+      },
     },
     visualMap: {
       min: 0,
@@ -296,7 +316,20 @@ const buildHeatmapOption = (
     series: [
       {
         type: 'heatmap',
+        coordinateSystem: 'calendar',
         data,
+        itemStyle: {
+          borderRadius: 4,
+          borderWidth: 1,
+          borderColor: getColor(themeVars.palette.background.paper),
+        },
+        emphasis: {
+          itemStyle: {
+            borderRadius: 4,
+            borderWidth: 1,
+            borderColor: getColor(themeVars.palette.background.paper),
+          },
+        },
       },
     ],
   };
