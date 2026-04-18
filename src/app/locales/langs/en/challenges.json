@@ -81,7 +81,9 @@
     "lastChallenges": "Latest challenges",
     "timer": {
       "perQuestion": "Per-question timer",
-      "wholeChallenge": "Challenge timer"
+      "perQuestionShort": "Per Q",
+      "wholeChallenge": "Challenge timer",
+      "wholeChallengeShort": "Total"
     },
     "arenaWinners": "Arena winners",
     "arenaWinnersSubtitle": "See who topped recent arenas.",

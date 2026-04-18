@@ -76,7 +76,9 @@
     "lastChallenges": "Soʻngi bellashuvlar",
     "timer": {
       "perQuestion": "Savol taymeri",
-      "wholeChallenge": "Bellashuv taymeri"
+      "perQuestionShort": "Savol",
+      "wholeChallenge": "Bellashuv taymeri",
+      "wholeChallengeShort": "Umumiy"
     },
     "arenaWinners": "Arena gʻoliblari",
     "arenaWinnersSubtitle": "Soʻnggi arenalardagi gʻoliblar.",

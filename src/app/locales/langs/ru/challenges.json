@@ -76,7 +76,9 @@
     "lastChallenges": "Последние вызовы",
     "timer": {
       "perQuestion": "Таймер вопроса",
-      "wholeChallenge": "Таймер вызова"
+      "perQuestionShort": "По вопр.",
+      "wholeChallenge": "Таймер вызова",
+      "wholeChallengeShort": "Общий"
     },
     "arenaWinners": "Победители арены",
     "arenaWinnersSubtitle": "Лучшие игроки последних арен.",

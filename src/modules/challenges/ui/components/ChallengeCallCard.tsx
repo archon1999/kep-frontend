@@ -1,13 +1,22 @@
 import { useMemo } from 'react';
-import { Button, Card, CardContent, Chip, Divider, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import {
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Divider,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
+import { useAuth } from 'app/providers/AuthProvider.tsx';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { ChallengeCall, ChallengeQuestionTimeType } from '../../domain';
-import { useAcceptChallengeCall, useDeleteChallengeCall } from '../../application/mutations.ts';
-import { useAuth } from 'app/providers/AuthProvider.tsx';
-import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
 import UserPopover from 'modules/users/ui/components/UserPopover.tsx';
+import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
+import { useAcceptChallengeCall, useDeleteChallengeCall } from '../../application/mutations.ts';
+import { ChallengeCall, ChallengeQuestionTimeType } from '../../domain';
 
 dayjs.extend(relativeTime);
 
@@ -28,10 +37,18 @@ const ChallengeCallCard = ({ challengeCall, onAccepted, onRemoved }: ChallengeCa
   const { trigger: acceptChallenge, isMutating: isAccepting } = useAcceptChallengeCall();
   const { trigger: deleteCall, isMutating: isDeleting } = useDeleteChallengeCall();
 
-  const isOwner = useMemo(() => currentUser?.username === challengeCall.username, [challengeCall.username, currentUser?.username]);
-  const timerModeLabel = challengeCall.questionTimeType === ChallengeQuestionTimeType.TimeToAll
-    ? t('challenges.timer.wholeChallenge')
-    : t('challenges.timer.perQuestion');
+  const isOwner = useMemo(
+    () => currentUser?.username === challengeCall.username,
+    [challengeCall.username, currentUser?.username],
+  );
+  const timerModeTooltip =
+    challengeCall.questionTimeType === ChallengeQuestionTimeType.TimeToAll
+      ? t('challenges.timer.wholeChallenge')
+      : t('challenges.timer.perQuestion');
+  const timerModeLabel =
+    challengeCall.questionTimeType === ChallengeQuestionTimeType.TimeToAll
+      ? t('challenges.timer.wholeChallengeShort')
+      : t('challenges.timer.perQuestionShort');
 
   const handleAccept = async () => {
     const result = await acceptChallenge(challengeCall.id);
@@ -49,7 +66,9 @@ const ChallengeCallCard = ({ challengeCall, onAccepted, onRemoved }: ChallengeCa
         <Stack spacing={1.5} direction="column">
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Stack spacing={1} direction="row">
-              <ChallengesRatingChip title={challengeCall.rankTitle || t('challenges.rankUnknown')} />
+              <ChallengesRatingChip
+                title={challengeCall.rankTitle || t('challenges.rankUnknown')}
+              />
 
               <UserPopover username={challengeCall.username}>
                 <Typography variant="subtitle1" fontWeight={700}>
@@ -64,9 +83,13 @@ const ChallengeCallCard = ({ challengeCall, onAccepted, onRemoved }: ChallengeCa
               <Typography variant="subtitle2">{challengeCall.questionsCount}</Typography>
             </Stack>
             <Stack spacing={0.5} direction="column">
-              <Typography variant="subtitle2">{formatDuration(challengeCall.timeSeconds)}</Typography>
+              <Typography variant="subtitle2">
+                {formatDuration(challengeCall.timeSeconds)}
+              </Typography>
             </Stack>
-            <Chip size="small" label={timerModeLabel} variant="outlined" />
+            <Tooltip title={timerModeTooltip} arrow>
+              <Chip size="small" label={timerModeLabel} variant="outlined" />
+            </Tooltip>
             {challengeCall.chapters?.length ? (
               <Stack spacing={0.5} direction="column">
                 <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap>
