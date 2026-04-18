@@ -19,6 +19,7 @@ export const accountSettingsTabRoutes = {
   skills: resources.SettingsSkills,
   career: resources.SettingsCareer,
   teams: resources.SettingsTeams,
+  notifications: resources.SettingsNotifications,
   system: resources.SettingsSystem,
 } as const;
 

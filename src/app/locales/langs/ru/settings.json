@@ -100,6 +100,10 @@
       "algorithms": "Алгоритмы",
       "dataScience": "Data science"
     },
+    "enabled": "\u0412\u043a\u043b\u044e\u0447\u0435\u043d\u043e",
+    "disabled": "\u0412\u044b\u043a\u043b\u044e\u0447\u0435\u043d\u043e",
+    "botNotifications": "\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f \u0432 \u0431\u043e\u0442\u0435",
+    "botNotificationsSubtitle": "\u0412\u043a\u043b\u044e\u0447\u0430\u0439\u0442\u0435 \u0438\u043b\u0438 \u043e\u0442\u043a\u043b\u044e\u0447\u0430\u0439\u0442\u0435 \u0443\u0432\u0435\u0434\u043e\u043c\u043b\u0435\u043d\u0438\u044f \u0438\u0437 Telegram-\u0431\u043e\u0442\u0430.",
     "sound": {
       "none": "Без звука",
       "soft": "Мягкий звон",

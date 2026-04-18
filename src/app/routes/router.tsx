@@ -733,6 +733,11 @@ export const routes: RouteObject[] = [
             handle: { titleKey: 'pageTitles.accountSettings' },
           },
           {
+            path: resources.SettingsNotifications,
+            element: withAuthGuard(<AccountSettingsPage />),
+            handle: { titleKey: 'pageTitles.accountSettings' },
+          },
+          {
             path: resources.SettingsSystem,
             element: withAuthGuard(<AccountSettingsPage />),
             handle: { titleKey: 'pageTitles.accountSettings' },

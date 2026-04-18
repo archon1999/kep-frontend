@@ -41,6 +41,12 @@ export const mapAccountGeneralInfoToApiFormData = (payload: AccountGeneralInfo):
   if (payload.firstName !== undefined) formData.append('first_name', payload.firstName);
   if (payload.lastName !== undefined) formData.append('last_name', payload.lastName);
   if (payload.email !== undefined) formData.append('email', payload.email);
+  if (payload.telegramNotificationsEnabled !== undefined) {
+    formData.append(
+      'telegram_notifications_enabled',
+      String(payload.telegramNotificationsEnabled),
+    );
+  }
   if (payload.avatar instanceof File) formData.append('avatar', payload.avatar);
   if (payload.coverPhoto instanceof File) formData.append('cover_photo', payload.coverPhoto);
 

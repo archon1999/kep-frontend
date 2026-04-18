@@ -3,6 +3,7 @@ export { default as CareerSection } from './CareerSection.tsx';
 export { default as ConnectedAccountsPanel } from './ConnectedAccountsPanel.tsx';
 export { default as EducationsForm } from './EducationsForm.tsx';
 export { default as GeneralSettingsForm } from './GeneralSettingsForm.tsx';
+export { default as NotificationsSettingsPanel } from './NotificationsSettingsPanel.tsx';
 export { default as PasswordForm } from './PasswordForm.tsx';
 export { default as ProfileInformationForm } from './ProfileInformationForm.tsx';
 export { default as SideTabList } from './SideTabList.tsx';

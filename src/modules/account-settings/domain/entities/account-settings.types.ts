@@ -5,6 +5,7 @@ export interface AccountGeneralInfo {
   email?: string;
   avatar?: string | File;
   coverPhoto?: string | File;
+  telegramNotificationsEnabled?: boolean;
 }
 
 export interface AccountProfileInfo {
