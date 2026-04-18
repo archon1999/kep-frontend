@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, SyntheticEvent, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, MouseEvent, SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { TabContext, TabList } from '@mui/lab';
 import { Box, Button, InputAdornment, Menu, MenuItem, Stack, Tab, TextField, Typography } from '@mui/material';
 import { GridSortModel } from '@mui/x-data-grid';
@@ -109,6 +109,7 @@ const UsersListContainer = () => {
   );
   const [filtersAnchorEl, setFiltersAnchorEl] = useState<null | HTMLElement>(null);
   const [debouncedFilters, setDebouncedFilters] = useState(filters);
+  const didMountRef = useRef(false);
   const {
     paginationModel,
     onPaginationModelChange,
@@ -140,6 +141,11 @@ const UsersListContainer = () => {
   }, [filters]);
 
   useEffect(() => {
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      return;
+    }
+
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
   }, [debouncedFilters, setPaginationModel, state.tabValue]);
 
