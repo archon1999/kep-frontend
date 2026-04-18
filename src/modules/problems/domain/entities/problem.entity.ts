@@ -407,9 +407,7 @@ export interface RecommendationResultState {
   directProblemId?: number | null;
 }
 
-export type RecommendationResolveResponse =
-  | RecommendationQuestionState
-  | RecommendationResultState;
+export type RecommendationResolveResponse = RecommendationQuestionState | RecommendationResultState;
 
 export interface ProblemSolutionCode {
   lang: string;
@@ -549,6 +547,23 @@ export interface ProblemsStatisticsMeta {
     from?: string;
     to?: string;
   };
+}
+
+export type ProblemsStatisticsActivityMeta = Pick<
+  ProblemsStatisticsMeta,
+  'lastDays' | 'allowedLastDays'
+>;
+
+export type ProblemsStatisticsHeatmapMeta = Pick<ProblemsStatisticsMeta, 'heatmapRange'>;
+
+export interface ProblemsUserStatisticsActivity {
+  lastDays: { series: number[]; solved: number };
+  meta: ProblemsStatisticsActivityMeta;
+}
+
+export interface ProblemsUserStatisticsHeatmap {
+  heatmap: ProblemsStatisticsHeatmapEntry[];
+  meta: ProblemsStatisticsHeatmapMeta;
 }
 
 export interface ProblemsUserStatistics {

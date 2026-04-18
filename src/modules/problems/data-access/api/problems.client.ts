@@ -43,6 +43,18 @@ export const problemsApiClient = {
     apiClient.apiProblemsRatingRead(username) as Promise<ProblemsRating>,
   getUserStatistics: (username: string, params?: { year?: number; days?: number }) =>
     apiClient.apiProblemsRatingProblemsStatistics(username, { params }),
+  getUserStatisticsActivity: (username: string, params?: { days?: number }) =>
+    axiosMutator<any>({
+      url: `/api/problems-rating/${username}/statistics/activity/`,
+      method: 'GET',
+      params,
+    }),
+  getUserStatisticsHeatmap: (username: string, params?: { year?: number }) =>
+    axiosMutator<any>({
+      url: `/api/problems-rating/${username}/statistics/heatmap/`,
+      method: 'GET',
+      params,
+    }),
   listRating: (params: ApiProblemsRatingListParams) => apiClient.apiProblemsRatingList(params),
   listRatingHistory: (params: ApiProblemsRatingHistoryListParams) =>
     apiClient.apiProblemsRatingHistoryList(params),

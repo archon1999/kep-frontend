@@ -18,11 +18,13 @@ import {
   ProblemTag,
   ProblemTopic,
   ProblemVoteResult,
-  RecommendationResolveResponse,
   ProblemsRatingHistoryEntry,
   ProblemsRatingRow,
   ProblemsRatingSummary,
   ProblemsUserStatistics,
+  ProblemsUserStatisticsActivity,
+  ProblemsUserStatisticsHeatmap,
+  RecommendationResolveResponse,
   StudyPlanDetail,
   StudyPlanListItem,
 } from '../entities/problem.entity.ts';
@@ -156,6 +158,14 @@ export interface ProblemsRepository {
     username: string,
     params?: ProblemsStatisticsParams,
   ): Promise<ProblemsUserStatistics>;
+  getUserStatisticsActivity(
+    username: string,
+    params?: Pick<ProblemsStatisticsParams, 'days'>,
+  ): Promise<ProblemsUserStatisticsActivity>;
+  getUserStatisticsHeatmap(
+    username: string,
+    params?: Pick<ProblemsStatisticsParams, 'year'>,
+  ): Promise<ProblemsUserStatisticsHeatmap>;
   rerunAttempt(attemptId: number): Promise<void>;
   mapDifficulties(stats: unknown): DifficultyBreakdown;
 }

@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -7,6 +7,8 @@ import {
   CardHeader,
   Chip,
   LinearProgress,
+  MenuItem,
+  Select,
   Stack,
   ToggleButton,
   ToggleButtonGroup,
@@ -33,12 +35,18 @@ import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { getColor } from 'shared/lib/echart-utils';
-import { numberParam } from 'shared/lib/queryParams';
-import { useProblemsUserStatistics } from '../../application/queries';
+import { numberParam, stringParam } from 'shared/lib/queryParams';
+import {
+  useProblemsUserStatistics,
+  useProblemsUserStatisticsActivity,
+  useProblemsUserStatisticsHeatmap,
+} from '../../application/queries';
 import { difficultyColorByKey, difficultyOptions } from '../../config/difficulty';
 import {
   ProblemsStatisticsAttemptsChartEntry,
   ProblemsUserStatistics,
+  ProblemsUserStatisticsActivity,
+  ProblemsUserStatisticsHeatmap,
 } from '../../domain/entities/problem.entity';
 
 echarts.use([
@@ -51,6 +59,12 @@ echarts.use([
   LineChart,
   CanvasRenderer,
 ]);
+
+const DEFAULT_ACTIVITY_DAYS = 7;
+const DEFAULT_HEATMAP_FILTER = 'recent';
+const HEATMAP_START_YEAR = 2021;
+const ACTIVITY_DAY_OPTIONS = [3, 7, 14, 30] as const;
+const chartContentSx = { p: 0, '&:last-child': { pb: 0 } };
 
 const OverviewCard = ({
   icon,
@@ -163,19 +177,26 @@ const FactsCard = ({ statistics }: { statistics: ProblemsUserStatistics | undefi
   );
 };
 
-const buildYears = (statistics?: ProblemsUserStatistics) => {
-  const years = new Set<number>();
-  const range = statistics?.meta?.heatmapRange;
-  if (range?.from) years.add(dayjs(range.from).year());
-  if (range?.to) years.add(dayjs(range.to).year());
-  (statistics?.heatmap ?? []).forEach((item) => {
-    if (item?.date) years.add(dayjs(item.date).year());
-  });
-
-  return Array.from(years).sort((a, b) => b - a);
-};
-
 const integerAxisLabelFormatter = (value: number) => Math.round(value).toString();
+
+const buildHeatmapFilterOptions = (
+  currentYear: number,
+  t: (key: string, params?: any) => string,
+) => [
+  {
+    value: DEFAULT_HEATMAP_FILTER,
+    label: t('problems.statisticsPage.heatmap.last365Days', {
+      defaultValue: 'Last 365 days',
+    }),
+  },
+  ...Array.from(
+    { length: Math.max(0, currentYear - HEATMAP_START_YEAR + 1) },
+    (_, index) => currentYear - index,
+  ).map((year) => ({
+    value: String(year),
+    label: String(year),
+  })),
+];
 
 const buildActivityOption = (
   series: number[],
@@ -190,13 +211,20 @@ const buildActivityOption = (
 
   return {
     tooltip: { trigger: 'axis' },
-    xAxis: { type: 'time' },
-    yAxis: { type: 'value', minInterval: 1, axisLabel: { formatter: integerAxisLabelFormatter } },
+    grid: { left: 20, right: 12, top: 24, bottom: 24, containLabel: true },
+    xAxis: { type: 'time', boundaryGap: false, axisLabel: { hideOverlap: true } },
+    yAxis: {
+      type: 'value',
+      minInterval: 1,
+      axisLabel: { formatter: integerAxisLabelFormatter },
+    },
     series: [
       {
         type: 'line',
         smooth: true,
-        areaStyle: {},
+        showSymbol: false,
+        lineStyle: { width: 3 },
+        areaStyle: { opacity: 0.18 },
         data: points,
         name: t('problems.statisticsPage.activity.seriesLabel'),
       },
@@ -205,12 +233,11 @@ const buildActivityOption = (
 };
 
 const buildHeatmapOption = (
-  statistics: ProblemsUserStatistics | undefined,
-  year: number | undefined,
+  statistics: ProblemsUserStatisticsHeatmap | undefined,
   themeVars: any,
   t: (key: string, params?: any) => string,
 ): EChartsCoreOption | null => {
-  if (!statistics?.heatmap?.length || !year) return null;
+  if (!statistics?.heatmap?.length) return null;
   const weekdayLabels = [
     t('problems.statisticsPage.weekday.sundayShort'),
     t('problems.statisticsPage.weekday.mondayShort'),
@@ -221,12 +248,10 @@ const buildHeatmapOption = (
     t('problems.statisticsPage.weekday.saturdayShort'),
   ];
 
-  const data = statistics.heatmap
-    .filter((entry) => dayjs(entry.date).year() === year)
-    .map((entry) => {
-      const date = dayjs(entry.date);
-      return [date.valueOf(), date.day(), entry.solved ?? 0];
-    });
+  const data = statistics.heatmap.map((entry) => {
+    const date = dayjs(entry.date);
+    return [date.valueOf(), date.day(), entry.solved ?? 0];
+  });
 
   if (!data.length) return null;
 
@@ -240,15 +265,18 @@ const buildHeatmapOption = (
         return `${date}: ${params.value[2]}`;
       },
     },
-    grid: { left: 16, right: 16, top: 10, bottom: 36 },
+    grid: { left: 10, right: 10, top: 12, bottom: 52 },
     xAxis: {
       type: 'time',
       splitNumber: 12,
-      axisLabel: { formatter: '{MMM}' },
+      axisLabel: { formatter: '{MMM}', hideOverlap: true },
+      splitLine: { show: false },
     },
     yAxis: {
       type: 'category',
       data: weekdayLabels,
+      axisLine: { show: false },
+      axisTick: { show: false },
     },
     visualMap: {
       min: 0,
@@ -256,7 +284,7 @@ const buildHeatmapOption = (
       calculable: false,
       orient: 'horizontal',
       left: 'center',
-      bottom: 0,
+      bottom: 8,
       inRange: {
         color: [
           getColor(themeVars.palette.background.paper),
@@ -282,13 +310,21 @@ const buildBarOption = (
 
   return {
     tooltip: { trigger: 'axis' },
+    grid: { left: 16, right: 12, top: 20, bottom: 12, containLabel: true },
     xAxis: { type: 'value', minInterval: 1, axisLabel: { formatter: integerAxisLabelFormatter } },
-    yAxis: { type: 'category', data: data.map((item) => item.label) },
+    yAxis: {
+      type: 'category',
+      data: data.map((item) => item.label),
+      axisLine: { show: false },
+      axisTick: { show: false },
+    },
     series: [
       {
         type: 'bar',
         data: data.map((item) => item.solved),
         name: t('problems.statisticsPage.solved'),
+        barMaxWidth: 22,
+        itemStyle: { borderRadius: [0, 6, 6, 0] },
       },
     ],
   };
@@ -301,6 +337,7 @@ const buildAttemptsOption = (
 
   return {
     tooltip: { trigger: 'axis' },
+    grid: { left: 20, right: 12, top: 20, bottom: 20, containLabel: true },
     xAxis: { type: 'category', data: data.map((item) => item.attemptsCount), boundaryGap: false },
     yAxis: {
       type: 'value',
@@ -312,7 +349,8 @@ const buildAttemptsOption = (
       {
         type: 'line',
         smooth: true,
-        areaStyle: {},
+        showSymbol: false,
+        areaStyle: { opacity: 0.18 },
         data: data.map((item) => item.value),
       },
     ],
@@ -324,17 +362,17 @@ const ProblemsUserStatisticsPage = () => {
   const { currentUser } = useAuth();
   const theme = useTheme();
   const { state, setField } = useRouteQueryState<{
-    selectedYear?: number;
+    selectedHeatmap?: string;
     selectedDays?: number;
   }>({
     defaults: {
-      selectedYear: undefined,
-      selectedDays: undefined,
+      selectedHeatmap: DEFAULT_HEATMAP_FILTER,
+      selectedDays: DEFAULT_ACTIVITY_DAYS,
     },
     schema: {
-      selectedYear: {
-        ...numberParam(),
-        param: 'year',
+      selectedHeatmap: {
+        ...stringParam(),
+        param: 'heatmap',
       },
       selectedDays: {
         ...numberParam({ min: 1 }),
@@ -352,24 +390,69 @@ const ProblemsUserStatisticsPage = () => {
   }, [i18n.language]);
 
   const username = currentUser?.username;
-  const statisticsParams = useMemo(
-    () => ({ year: state.selectedYear, days: state.selectedDays }),
-    [state.selectedDays, state.selectedYear],
-  );
-  const { data: statistics, isLoading } = useProblemsUserStatistics(username, statisticsParams);
+  const heatmapFilterOptions = useMemo(() => buildHeatmapFilterOptions(dayjs().year(), t), [t]);
+  const selectedHeatmapFilter = heatmapFilterOptions.some(
+    (option) => option.value === state.selectedHeatmap,
+  )
+    ? (state.selectedHeatmap ?? DEFAULT_HEATMAP_FILTER)
+    : DEFAULT_HEATMAP_FILTER;
+  const selectedHeatmapYear =
+    selectedHeatmapFilter === DEFAULT_HEATMAP_FILTER ? undefined : Number(selectedHeatmapFilter);
 
-  const availableYears = useMemo(() => buildYears(statistics), [statistics]);
-  const availableDays = statistics?.meta?.allowedLastDays?.length
-    ? statistics.meta.allowedLastDays
-    : [7, 14, 30];
+  const { data: statistics, isLoading } = useProblemsUserStatistics(username);
+  const { data: activityResponse } = useProblemsUserStatisticsActivity(
+    username,
+    state.selectedDays ?? DEFAULT_ACTIVITY_DAYS,
+  );
+  const { data: heatmapResponse } = useProblemsUserStatisticsHeatmap(username, selectedHeatmapYear);
+
+  const defaultActivityData = useMemo<ProblemsUserStatisticsActivity | undefined>(
+    () =>
+      statistics
+        ? {
+            lastDays: statistics.lastDays,
+            meta: {
+              lastDays: statistics.meta?.lastDays,
+              allowedLastDays: statistics.meta?.allowedLastDays?.length
+                ? statistics.meta.allowedLastDays
+                : [...ACTIVITY_DAY_OPTIONS],
+            },
+          }
+        : undefined,
+    [statistics],
+  );
+
+  const defaultHeatmapData = useMemo<ProblemsUserStatisticsHeatmap | undefined>(
+    () =>
+      statistics
+        ? {
+            heatmap: statistics.heatmap,
+            meta: {
+              heatmapRange: statistics.meta?.heatmapRange,
+            },
+          }
+        : undefined,
+    [statistics],
+  );
+
+  const activityStatistics =
+    activityResponse ??
+    (state.selectedDays === DEFAULT_ACTIVITY_DAYS ? defaultActivityData : undefined);
+  const heatmapStatistics =
+    heatmapResponse ??
+    (selectedHeatmapFilter === DEFAULT_HEATMAP_FILTER ? defaultHeatmapData : undefined);
+
+  const availableDays = activityStatistics?.meta?.allowedLastDays?.length
+    ? activityStatistics.meta.allowedLastDays
+    : [...ACTIVITY_DAY_OPTIONS];
 
   const activityOption = useMemo(
-    () => buildActivityOption(statistics?.lastDays?.series ?? [], t),
-    [statistics?.lastDays?.series, t],
+    () => buildActivityOption(activityStatistics?.lastDays?.series ?? [], t),
+    [activityStatistics?.lastDays?.series, t],
   );
   const heatmapOption = useMemo(
-    () => buildHeatmapOption(statistics, state.selectedYear, theme.vars, t),
-    [state.selectedYear, statistics, theme.vars, t],
+    () => buildHeatmapOption(heatmapStatistics, theme.vars, t),
+    [heatmapStatistics, theme.vars, t],
   );
   const weekdayOption = useMemo(
     () => buildBarOption(statistics?.byWeekday ?? [], t),
@@ -387,17 +470,6 @@ const ProblemsUserStatisticsPage = () => {
     () => buildAttemptsOption(statistics?.numberOfAttempts?.chartSeries ?? []),
     [statistics?.numberOfAttempts?.chartSeries],
   );
-
-  useEffect(() => {
-    if (!statistics) return;
-    if (state.selectedDays === undefined && statistics.meta?.lastDays) {
-      setField('selectedDays', statistics.meta.lastDays);
-    }
-    if (!state.selectedYear) {
-      const years = buildYears(statistics);
-      setField('selectedYear', years[0] ?? dayjs().year());
-    }
-  }, [setField, state.selectedDays, state.selectedYear, statistics]);
 
   const numberFormatter = useMemo(
     () =>
@@ -569,12 +641,12 @@ const ProblemsUserStatisticsPage = () => {
                       <CardHeader
                         title={t('problems.statisticsPage.activity.title')}
                         action={
-                            <ToggleButtonGroup
-                              size="small"
-                              exclusive
-                              value={state.selectedDays}
-                              onChange={(_, value) => value && setField('selectedDays', value)}
-                            >
+                          <ToggleButtonGroup
+                            size="small"
+                            exclusive
+                            value={state.selectedDays ?? DEFAULT_ACTIVITY_DAYS}
+                            onChange={(_, value) => value && setField('selectedDays', value)}
+                          >
                             {availableDays.map((option) => (
                               <ToggleButton value={option} key={option}>
                                 {option}
@@ -583,7 +655,7 @@ const ProblemsUserStatisticsPage = () => {
                           </ToggleButtonGroup>
                         }
                       />
-                      <CardContent sx={{ pt: 0 }}>
+                      <CardContent sx={chartContentSx}>
                         {activityOption ? (
                           <ReactEchart
                             echarts={echarts}
@@ -647,21 +719,21 @@ const ProblemsUserStatisticsPage = () => {
                       <CardHeader
                         title={t('problems.statisticsPage.heatmap.title')}
                         action={
-                            <ToggleButtonGroup
-                              size="small"
-                              exclusive
-                              value={state.selectedYear}
-                              onChange={(_, value) => value && setField('selectedYear', value)}
-                            >
-                            {availableYears.map((year) => (
-                              <ToggleButton value={year} key={year}>
-                                {year}
-                              </ToggleButton>
+                          <Select
+                            size="small"
+                            value={selectedHeatmapFilter}
+                            onChange={(event) => setField('selectedHeatmap', event.target.value)}
+                            sx={{ minWidth: 170 }}
+                          >
+                            {heatmapFilterOptions.map((option) => (
+                              <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                              </MenuItem>
                             ))}
-                          </ToggleButtonGroup>
+                          </Select>
                         }
                       />
-                      <CardContent sx={{ pt: 0 }}>
+                      <CardContent sx={chartContentSx}>
                         {heatmapOption ? (
                           <ReactEchart
                             echarts={echarts}
@@ -678,7 +750,7 @@ const ProblemsUserStatisticsPage = () => {
 
                     <Card variant="outlined">
                       <CardHeader title={t('problems.statisticsPage.time.title')} />
-                      <CardContent sx={{ pt: 0 }}>
+                      <CardContent sx={chartContentSx}>
                         <Grid container spacing={1}>
                           <Grid size={{ xs: 12, lg: 4 }}>
                             {weekdayOption ? (
@@ -725,7 +797,7 @@ const ProblemsUserStatisticsPage = () => {
 
                     <Card variant="outlined">
                       <CardHeader title={t('problems.statisticsPage.attempts.title')} />
-                      <CardContent sx={{ pt: 0 }}>
+                      <CardContent sx={chartContentSx}>
                         {attemptsChartOption ? (
                           <ReactEchart
                             echarts={echarts}
