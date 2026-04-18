@@ -1,6 +1,8 @@
 import useSWRMutation from 'swr/mutation';
 import { HttpChallengesRepository } from '../data-access/repository/http.challenges.repository.ts';
 import {
+  ChessMovePayload,
+  ChessMoveResponse,
   ChallengeAntiCheatPenaltyPayload,
   ChallengeAntiCheatPenaltyResponse,
   ChallengeAnswerPayload,
@@ -39,6 +41,14 @@ export const useSubmitChallengeAnswer = () =>
     string,
     { challengeId: number; payload: ChallengeAnswerPayload }
   >('submit-challenge-answer', (_, { arg }) => challengesRepository.submitAnswer(arg.challengeId, arg.payload));
+
+export const useSubmitChessMove = () =>
+  useSWRMutation<
+    ChessMoveResponse,
+    Error,
+    string,
+    { challengeId: number; payload: ChessMovePayload }
+  >('submit-chess-move', (_, { arg }) => challengesRepository.submitChessMove(arg.challengeId, arg.payload));
 
 export const useApplyChallengeAntiCheatPenalty = () =>
   useSWRMutation<

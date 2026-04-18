@@ -20,6 +20,8 @@ import {
   ChallengeUserStatistics,
 } from '../../domain';
 import {
+  ChessMovePayload,
+  ChessMoveResponse,
   ChallengeAntiCheatPenaltyPayload,
   ChallengeAntiCheatPenaltyResponse,
   ChallengeAnswerPayload,
@@ -74,6 +76,18 @@ export class HttpChallengesRepository implements ChallengesRepository {
     });
     return {
       success: Boolean(response?.success ?? response?.ok ?? response?.isCorrect),
+    };
+  }
+
+  async submitChessMove(challengeId: number, payload: ChessMovePayload): Promise<ChessMoveResponse> {
+    const response = await challengesApiClient.submitChessMove(challengeId, payload);
+    return {
+      status: response?.status ?? 'failed',
+      success: Boolean(response?.success),
+      replyMove: response?.replyMove ?? response?.reply_move,
+      nextQuestionNumber: response?.nextQuestionNumber ?? response?.next_question_number ?? 0,
+      mistakesUsed: response?.mistakesUsed ?? response?.mistakes_used ?? 0,
+      challengeFinished: Boolean(response?.challengeFinished ?? response?.challenge_finished),
     };
   }
 

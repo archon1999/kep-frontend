@@ -37,7 +37,9 @@
     "questionsCount": "{{count}} questions",
     "answerCorrect": "Correct",
     "answerWrong": "Wrong",
+    "timeExpired": "Time is over.",
     "answerPending": "Pending",
+    "answerNotPlayed": "Not played / ended early",
     "detailTitle": "Challenge details",
     "detailSubtitle": "Last update {{time}}",
     "startDialogTitle": "Ready to start?",
@@ -88,6 +90,18 @@
     "arenaWinners": "Arena winners",
     "arenaWinnersSubtitle": "See who topped recent arenas.",
     "viewArena": "Go to arena",
-    "noArenas": "No arena history yet."
+    "noArenas": "No arena history yet.",
+    "chessPuzzle": {
+      "rating": "Rating {{rating}}",
+      "findBestMove": "Find the best continuation.",
+      "promotionTitle": "Choose promotion",
+      "promotionSubtitle": "Select the piece for this move.",
+      "pieces": {
+        "q": "Queen",
+        "r": "Rook",
+        "b": "Bishop",
+        "n": "Knight"
+      }
+    }
   }
 }

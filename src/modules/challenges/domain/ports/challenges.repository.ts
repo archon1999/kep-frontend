@@ -31,6 +31,24 @@ export interface ChallengeCheckResponse {
   success: boolean;
 }
 
+export interface ChessMovePayload {
+  questionNumber: number;
+  playedLine: string[];
+  forceFail?: boolean;
+  finish?: boolean;
+}
+
+export type ChessMoveStatus = 'in_progress' | 'solved' | 'failed' | 'finished';
+
+export interface ChessMoveResponse {
+  status: ChessMoveStatus;
+  success: boolean;
+  replyMove?: string;
+  nextQuestionNumber: number;
+  mistakesUsed: number;
+  challengeFinished: boolean;
+}
+
 export type ChallengePenaltyReason = 'blur' | 'route_leave' | 'pagehide' | 'reconcile';
 
 export interface ChallengeAntiCheatPenaltyPayload {
@@ -54,6 +72,7 @@ export interface ChallengesRepository {
   getChallenge: (challengeId: number | string) => Promise<Challenge>;
   startChallenge: (challengeId: number) => Promise<void>;
   submitAnswer: (challengeId: number, payload: ChallengeAnswerPayload) => Promise<ChallengeCheckResponse>;
+  submitChessMove: (challengeId: number, payload: ChessMovePayload) => Promise<ChessMoveResponse>;
   applyAntiCheatPenalty: (challengeId: number, payload: ChallengeAntiCheatPenaltyPayload) => Promise<ChallengeAntiCheatPenaltyResponse>;
   listRating: (params?: { page?: number; pageSize?: number; ordering?: string }) => Promise<PageResult<ChallengeRatingRow>>;
   listRatingChanges: (username: string) => Promise<ChallengeRatingChange[]>;

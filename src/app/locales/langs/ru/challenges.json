@@ -37,7 +37,9 @@
     "questionsCount": "{{count}} вопросов",
     "answerCorrect": "Верно",
     "answerWrong": "Неверно",
+    "timeExpired": "Время вышло.",
     "answerPending": "Ожидание",
+    "answerNotPlayed": "Не сыграно / закончено раньше",
     "detailTitle": "Детали вызова",
     "detailSubtitle": "Последнее обновление {{time}}",
     "statusFinished": "Завершён",
@@ -84,6 +86,18 @@
     "arenaWinnersSubtitle": "Лучшие игроки последних арен.",
     "viewArena": "Перейти к арене",
     "noArenas": "Истории арен пока нет.",
+    "chessPuzzle": {
+      "rating": "Рейтинг {{rating}}",
+      "findBestMove": "Найдите лучшее продолжение.",
+      "promotionTitle": "Выберите превращение",
+      "promotionSubtitle": "Выберите фигуру для этого хода.",
+      "pieces": {
+        "q": "Ферзь",
+        "r": "Ладья",
+        "b": "Слон",
+        "n": "Конь"
+      }
+    },
     "perQuestionResults": "Результаты по вопросам",
     "startDialogSubtitle": "Проверьте соперников и нажмите старт, когда будете готовы.",
     "startDialogTitle": "Готовы начать?",

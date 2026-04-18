@@ -1,4 +1,12 @@
-import { Chapter, Question, QuestionOption, QuestionType, Test, TestPass } from '../../domain';
+import {
+  Chapter,
+  ChessPuzzlePayload,
+  Question,
+  QuestionOption,
+  QuestionType,
+  Test,
+  TestPass,
+} from '../../domain';
 import { FinishTestResponse, PageResult, StartTestResponse, TestResultRow } from '../../domain/ports/testing.repository.ts';
 
 const normalizeOption = (option: any): QuestionOption => ({
@@ -8,6 +16,24 @@ const normalizeOption = (option: any): QuestionOption => ({
   optionSecondary: option?.optionSecondary ?? option?.option_secondary ?? option?.value ?? '',
   selected: option?.selected ?? false,
 });
+
+const normalizeChessPuzzlePayload = (payload: any): ChessPuzzlePayload => ({
+  puzzleId: payload?.puzzleId ?? payload?.puzzle_id ?? '',
+  fen: payload?.fen ?? '',
+  initialMove: payload?.initialMove ?? payload?.initial_move ?? '',
+  orientation: payload?.orientation === 'black' ? 'black' : 'white',
+  rating: Number(payload?.rating ?? 0),
+  themes: Array.isArray(payload?.themes) ? payload.themes.map((theme: unknown) => String(theme)) : [],
+});
+
+const normalizeQuestionPayload = (question: any) => {
+  if (!question?.payload) return undefined;
+  if (question?.type === QuestionType.ChessPuzzle) {
+    return normalizeChessPuzzlePayload(question.payload);
+  }
+
+  return question.payload;
+};
 
 export const mapQuestion = (question: any): Question => ({
   id: question?.id,
@@ -20,6 +46,7 @@ export const mapQuestion = (question: any): Question => ({
   input: question?.input ?? '',
   answered: question?.answered ?? false,
   chapter: question?.chapter ? normalizeChapter(question.chapter) : undefined,
+  payload: normalizeQuestionPayload(question),
 });
 
 const normalizeChapter = (chapter: any): Chapter => ({

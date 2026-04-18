@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { Box, Button, Card, CardContent, Divider, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Question, QuestionType } from 'modules/testing/domain';
@@ -12,12 +12,19 @@ import CodeInputQuestion from 'modules/testing/ui/pages/test-pass/components/Cod
 import ConformityQuestion from 'modules/testing/ui/pages/test-pass/components/ConformityQuestion.tsx';
 import OrderingQuestion from 'modules/testing/ui/pages/test-pass/components/OrderingQuestion.tsx';
 import ClassificationQuestion from 'modules/testing/ui/pages/test-pass/components/ClassificationQuestion.tsx';
+import ChessPuzzleQuestion, { ChessPuzzleQuestionHandle } from './ChessPuzzleQuestion.tsx';
+import {
+  ChessMovePayload,
+  ChessMoveResponse,
+} from '../../domain/ports/challenges.repository.ts';
 
 interface ChallengeQuestionCardProps {
   question?: Question;
   disabled?: boolean;
   isSubmitting?: boolean;
   onSubmit?: (payload: { answer: unknown; isFinish?: boolean }) => void;
+  onChessMove?: (payload: ChessMovePayload) => Promise<ChessMoveResponse | undefined>;
+  onChessResolved?: (response: ChessMoveResponse) => Promise<void> | void;
 }
 
 export interface ChallengeQuestionCardHandle {
@@ -51,12 +58,13 @@ const buildChallengeAnswer = (
 };
 
 const ChallengeQuestionCard = forwardRef<ChallengeQuestionCardHandle, ChallengeQuestionCardProps>(
-  ({ question, onSubmit, disabled, isSubmitting }, ref) => {
+  ({ question, onSubmit, disabled, isSubmitting, onChessMove, onChessResolved }, ref) => {
   const { t } = useTranslation();
   const [questionStates, setQuestionStates] = useState<Record<number, QuestionState>>({});
+  const chessQuestionRef = useRef<ChessPuzzleQuestionHandle>(null);
 
   useEffect(() => {
-    if (!question) return;
+    if (!question || question.type === QuestionType.ChessPuzzle) return;
     setQuestionStates((prev) => ({
       ...prev,
       [question.id]: buildInitialState(question as TestPassQuestion),
@@ -78,6 +86,13 @@ const ChallengeQuestionCard = forwardRef<ChallengeQuestionCardHandle, ChallengeQ
 
   const handleSubmit = (options?: { isFinish?: boolean; force?: boolean }) => {
     if (!question) return;
+    if (question.type === QuestionType.ChessPuzzle) {
+      if (options?.force) {
+        chessQuestionRef.current?.forceFail();
+      }
+      return;
+    }
+
     const { answer, isEmpty } = buildChallengeAnswer(question, currentQuestionState);
 
     if (isEmpty && !options?.force) return;
@@ -223,6 +238,17 @@ const ChallengeQuestionCard = forwardRef<ChallengeQuestionCardHandle, ChallengeQ
           />
         );
       }
+      case QuestionType.ChessPuzzle:
+        return (
+          <ChessPuzzleQuestion
+            ref={chessQuestionRef}
+            question={question}
+            disabled={disabled}
+            isSubmitting={isSubmitting}
+            onMove={onChessMove}
+            onResolved={onChessResolved}
+          />
+        );
       default:
         return null;
     }
@@ -262,16 +288,18 @@ const ChallengeQuestionCard = forwardRef<ChallengeQuestionCardHandle, ChallengeQ
 
           {renderQuestion()}
 
-          <Box display="flex" justifyContent="flex-end">
-            <Button
-              variant="contained"
-              onClick={() => handleSubmit()}
-              disabled={disabled || isSubmitting}
-              sx={{ minWidth: 160 }}
-            >
-              {isSubmitting ? t('common.loading') : t('challenges.submitAnswer')}
-            </Button>
-          </Box>
+          {question.type !== QuestionType.ChessPuzzle ? (
+            <Box display="flex" justifyContent="flex-end">
+              <Button
+                variant="contained"
+                onClick={() => handleSubmit()}
+                disabled={disabled || isSubmitting}
+                sx={{ minWidth: 160 }}
+              >
+                {isSubmitting ? t('common.loading') : t('challenges.submitAnswer')}
+              </Button>
+            </Box>
+          ) : null}
         </Stack>
       </CardContent>
     </Card>

@@ -16,6 +16,11 @@ const mapResultTone = (value: number): ChallengeChipTone => {
   return 'loss';
 };
 
+const getResultLabel = (value: number, isFinished: boolean) => {
+  if (value !== -1) return undefined;
+  return isFinished ? '-' : '...';
+};
+
 const formatDelta = (delta: number) => (delta > 0 ? `+${delta}` : String(delta));
 
 const getDeltaColor = (delta: number) => {
@@ -62,6 +67,12 @@ const ChallengeResultsCard = ({ challenge }: ChallengeResultsCardProps) => {
     if (value > opponent) return 'success.main';
     if (value < opponent) return 'error.main';
     return 'text.secondary';
+  };
+
+  const getResultTitle = (value: number) => {
+    if (value === 1) return t('challenges.answerCorrect');
+    if (value === 0) return t('challenges.answerWrong');
+    return isFinished ? t('challenges.answerNotPlayed') : t('challenges.answerPending');
   };
 
   return (
@@ -182,26 +193,16 @@ const ChallengeResultsCard = ({ challenge }: ChallengeResultsCardProps) => {
                 >
                   <ChallengeChip
                     tone={mapResultTone(result.first)}
-                    title={
-                      result.first === 1
-                        ? t('challenges.answerCorrect')
-                        : result.first === -1
-                          ? t('challenges.statusDraw')
-                          : t('challenges.answerWrong')
-                    }
+                    label={getResultLabel(result.first, isFinished)}
+                    title={getResultTitle(result.first)}
                   />
                   <Typography variant="caption" fontWeight={700}>
                     #{index + 1}
                   </Typography>
                   <ChallengeChip
                     tone={mapResultTone(result.second)}
-                    title={
-                      result.second === 1
-                        ? t('challenges.answerCorrect')
-                        : result.second === -1
-                          ? t('challenges.statusDraw')
-                          : t('challenges.answerWrong')
-                    }
+                    label={getResultLabel(result.second, isFinished)}
+                    title={getResultTitle(result.second)}
                   />
                 </Stack>
               ))}

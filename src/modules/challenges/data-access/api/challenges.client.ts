@@ -16,6 +16,13 @@ export interface ChallengeAntiCheatPenaltyBody {
   reason?: ChallengePenaltyReason;
 }
 
+export interface ChessMoveBody {
+  questionNumber: number;
+  playedLine: string[];
+  forceFail?: boolean;
+  finish?: boolean;
+}
+
 const baseURL = import.meta.env.VITE_API_URL || '';
 const basicAuthLogin = import.meta.env.VITE_BASIC_AUTH_LOGIN;
 const basicAuthPassword = import.meta.env.VITE_BASIC_AUTH_PASSWORD;
@@ -30,6 +37,13 @@ const getBasicAuthHeader = () => {
 const buildPenaltyBody = (body: ChallengeAntiCheatPenaltyBody) => ({
   question_number: body.questionNumber,
   reason: body.reason,
+});
+
+const buildChessMoveBody = (body: ChessMoveBody) => ({
+  question_number: body.questionNumber,
+  played_line: body.playedLine,
+  force_fail: body.forceFail ?? false,
+  finish: body.finish ?? false,
 });
 
 const buildPenaltyUrl = (challengeId: number | string) =>
@@ -104,6 +118,13 @@ export const challengesApiClient = {
   },
   submitAnswer: async (challengeId: number, body: { answer: unknown; finish?: boolean }) => {
     const response = await instance.post(`/api/challenges/${challengeId}/check-answer/`, body);
+    return response.data;
+  },
+  submitChessMove: async (challengeId: number, body: ChessMoveBody) => {
+    const response = await instance.post(
+      `/api/challenges/${challengeId}/chess-move/`,
+      buildChessMoveBody(body),
+    );
     return response.data;
   },
   applyAntiCheatPenalty: async (challengeId: number, body: ChallengeAntiCheatPenaltyBody) => {

@@ -21,18 +21,24 @@ import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { resources } from 'app/routes/resources';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { QuestionType } from 'modules/testing/domain';
 import KepIcon from 'shared/components/base/KepIcon.tsx';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { toast } from 'sonner';
 import {
   useApplyChallengeAntiCheatPenalty,
   useStartChallenge,
+  useSubmitChessMove,
   useSubmitChallengeAnswer,
 } from '../../application/mutations.ts';
 import { useChallengeDetail } from '../../application/queries.ts';
 import { sendChallengeAntiCheatPenaltyKeepalive } from '../../data-access/api/challenges.client.ts';
 import { ChallengeQuestionTimeType, ChallengeStatus } from '../../domain';
-import { ChallengePenaltyReason } from '../../domain/ports/challenges.repository.ts';
+import {
+  ChessMovePayload,
+  ChessMoveResponse,
+  ChallengePenaltyReason,
+} from '../../domain/ports/challenges.repository.ts';
 import ChallengeCountdown from '../components/ChallengeCountdown.tsx';
 import ChallengeQuestionCard, {
   ChallengeQuestionCardHandle,
@@ -85,6 +91,7 @@ const ChallengeDetailPage = () => {
   const { data: challenge, isLoading, mutate } = useChallengeDetail(id);
   const { trigger: startChallenge, isMutating: starting } = useStartChallenge();
   const { trigger: submitAnswer, isMutating: submitting } = useSubmitChallengeAnswer();
+  const { trigger: submitChessMove, isMutating: submittingChess } = useSubmitChessMove();
   const { trigger: applyAntiCheatPenalty } = useApplyChallengeAntiCheatPenalty();
   useDocumentTitle(
     challenge?.playerFirst?.username && challenge?.playerSecond?.username
@@ -100,6 +107,7 @@ const ChallengeDetailPage = () => {
 
   const questionCardRef = useRef<ChallengeQuestionCardHandle>(null);
   const finishHandledRef = useRef(false);
+  const timeExpiredHandledRef = useRef(false);
   const blurCheckTimeoutRef = useRef<number | null>(null);
   const suppressBlurUntilRef = useRef(0);
   const penaltyInFlightRef = useRef<string | null>(null);
@@ -179,6 +187,10 @@ const ChallengeDetailPage = () => {
   ));
 
   useEffect(() => {
+    timeExpiredHandledRef.current = false;
+  }, [challenge?.id]);
+
+  useEffect(() => {
     if (!challenge || challenge.status !== ChallengeStatus.Already || !question) {
       setTimerRunning(false);
       return;
@@ -201,6 +213,49 @@ const ChallengeDetailPage = () => {
     question,
   ]);
 
+  const handleTimeExpired = useCallback(async () => {
+    if (
+      !challenge
+      || challenge.status !== ChallengeStatus.Already
+      || !question
+      || timeExpiredHandledRef.current
+    ) {
+      return;
+    }
+
+    timeExpiredHandledRef.current = true;
+    setTimerRunning(false);
+    toast.error(t('challenges.timeExpired'));
+
+    try {
+      if (question.type === QuestionType.ChessPuzzle) {
+        const questionNumber = challenge.nextQuestion?.number ?? question.number;
+        if (!questionNumber) return;
+
+        await submitChessMove({
+          challengeId: challenge.id,
+          payload: {
+            questionNumber,
+            playedLine: [],
+            finish: true,
+          },
+        });
+      } else {
+        await submitAnswer({
+          challengeId: challenge.id,
+          payload: {
+            answer: null,
+            isFinish: true,
+          },
+        });
+      }
+
+      await mutate();
+    } catch {
+      timeExpiredHandledRef.current = false;
+    }
+  }, [challenge, mutate, question, submitAnswer, submitChessMove, t]);
+
   useEffect(() => {
     if (!timerRunning || secondsLeft <= 0) return;
     const interval = setInterval(() => setSecondsLeft((prev) => Math.max(prev - 1, 0)), 1000);
@@ -209,12 +264,25 @@ const ChallengeDetailPage = () => {
 
   useEffect(() => {
     if (!timerRunning || secondsLeft > 0) return;
+
+    if (challenge?.questionTimeType === ChallengeQuestionTimeType.TimeToAll) {
+      void handleTimeExpired();
+      return;
+    }
+
     setTimerRunning(false);
-    questionCardRef.current?.submit({
-      isFinish: challenge?.questionTimeType === ChallengeQuestionTimeType.TimeToAll,
-      force: true,
-    });
-  }, [timerRunning, secondsLeft, challenge?.questionTimeType]);
+    questionCardRef.current?.submit({ force: true });
+  }, [timerRunning, secondsLeft, challenge?.questionTimeType, handleTimeExpired]);
+
+  useEffect(() => {
+    if (!challenge || challenge.status !== ChallengeStatus.Already) return;
+
+    const interval = window.setInterval(() => {
+      void mutate();
+    }, 5000);
+
+    return () => window.clearInterval(interval);
+  }, [challenge?.id, challenge?.status, mutate]);
 
   useEffect(() => {
     if (!challenge) return;
@@ -399,6 +467,17 @@ const ChallengeDetailPage = () => {
     await mutate();
   };
 
+  const handleChessMove = async (
+    payload: ChessMovePayload,
+  ): Promise<ChessMoveResponse | undefined> => {
+    if (!challenge) return undefined;
+    return submitChessMove({ challengeId: challenge.id, payload });
+  };
+
+  const handleChessResolved = async () => {
+    await mutate();
+  };
+
   const goBack = () => {
     if (arenaId) {
       navigate(resources.ArenaTournament.replace(':id', arenaId));
@@ -462,8 +541,10 @@ const ChallengeDetailPage = () => {
                   ref={questionCardRef}
                   question={question}
                   onSubmit={handleSubmit}
-                  disabled={submitting}
-                  isSubmitting={submitting}
+                  onChessMove={handleChessMove}
+                  onChessResolved={handleChessResolved}
+                  disabled={submitting || submittingChess}
+                  isSubmitting={submitting || submittingChess}
                 />
               ) : (
                 <Card variant="outlined" sx={{ height: '100%' }}>
