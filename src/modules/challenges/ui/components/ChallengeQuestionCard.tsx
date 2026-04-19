@@ -13,18 +13,14 @@ import ConformityQuestion from 'modules/testing/ui/pages/test-pass/components/Co
 import OrderingQuestion from 'modules/testing/ui/pages/test-pass/components/OrderingQuestion.tsx';
 import ClassificationQuestion from 'modules/testing/ui/pages/test-pass/components/ClassificationQuestion.tsx';
 import ChessPuzzleQuestion, { ChessPuzzleQuestionHandle } from './ChessPuzzleQuestion.tsx';
-import {
-  ChessMovePayload,
-  ChessMoveResponse,
-} from '../../domain/ports/challenges.repository.ts';
 
 interface ChallengeQuestionCardProps {
+  challengeId?: number;
+  questionNumber?: number;
   question?: Question;
   disabled?: boolean;
   isSubmitting?: boolean;
-  onSubmit?: (payload: { answer: unknown; isFinish?: boolean }) => void;
-  onChessMove?: (payload: ChessMovePayload) => Promise<ChessMoveResponse | undefined>;
-  onChessResolved?: (response: ChessMoveResponse) => Promise<void> | void;
+  onSubmit?: (payload: { answer: unknown; isFinish?: boolean; forceFail?: boolean }) => Promise<void> | void;
 }
 
 export interface ChallengeQuestionCardHandle {
@@ -58,7 +54,7 @@ const buildChallengeAnswer = (
 };
 
 const ChallengeQuestionCard = forwardRef<ChallengeQuestionCardHandle, ChallengeQuestionCardProps>(
-  ({ question, onSubmit, disabled, isSubmitting, onChessMove, onChessResolved }, ref) => {
+  ({ challengeId, questionNumber, question, onSubmit, disabled, isSubmitting }, ref) => {
   const { t } = useTranslation();
   const [questionStates, setQuestionStates] = useState<Record<number, QuestionState>>({});
   const chessQuestionRef = useRef<ChessPuzzleQuestionHandle>(null);
@@ -242,11 +238,12 @@ const ChallengeQuestionCard = forwardRef<ChallengeQuestionCardHandle, ChallengeQ
         return (
           <ChessPuzzleQuestion
             ref={chessQuestionRef}
+            challengeId={challengeId}
+            questionNumber={questionNumber}
             question={question}
             disabled={disabled}
             isSubmitting={isSubmitting}
-            onMove={onChessMove}
-            onResolved={onChessResolved}
+            onSubmit={onSubmit}
           />
         );
       default:

@@ -1,8 +1,10 @@
-import { Avatar, Card, CardContent, Chip, Divider, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { Avatar, Box, Divider, Skeleton, Stack, Typography } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import UserPopover from 'modules/users/ui/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import ChallengeChip, { ChallengeChipTone } from 'shared/components/challenges/ChallengeChip.tsx';
+import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
 import { ArenaPlayerStatistics } from '../../domain/entities/arena-player-statistics.entity.ts';
 
 interface ArenaPlayerStatisticsCardProps {
@@ -11,30 +13,55 @@ interface ArenaPlayerStatisticsCardProps {
   username?: string;
 }
 
-const StatisticItem = ({
+const OverviewStat = ({
+  icon,
   label,
   value,
-  color = 'text.primary',
+  valueColor = 'text.primary',
+  iconColor = 'warning.main',
 }: {
+  icon: string;
   label: string;
   value: string | number;
-  color?: string;
+  valueColor?: string;
+  iconColor?: string;
 }) => (
-  <Stack direction="column" spacing={0.5}>
-    <Typography variant="caption" color="text.secondary">
-      {label}
-    </Typography>
-    <Typography fontWeight={800} color={color}>
+  <Stack
+    spacing={1}
+    sx={{
+      minHeight: 92,
+      p: 1.5,
+      borderRadius: 2,
+      bgcolor: 'background.default',
+      justifyContent: 'space-between',
+    }}
+  >
+    <Stack direction="row" spacing={1} alignItems="center" minWidth={0}>
+      <IconifyIcon icon={icon} color={iconColor} fontSize={18} />
+      <Typography variant="body2" color="text.secondary" noWrap>
+        {label}
+      </Typography>
+    </Stack>
+    <Typography variant="h5" fontWeight={800} color={valueColor} sx={{ lineHeight: 1.1 }}>
       {value}
     </Typography>
   </Stack>
 );
+
+const buildOpponentMeta = (rankTitle?: string, rating?: number) => {
+  const parts = [rankTitle, typeof rating === 'number' ? String(rating) : undefined].filter(
+    Boolean,
+  );
+  return parts.join(' / ');
+};
 
 const getToneFromScore = (score: number): ChallengeChipTone => {
   if (score > 0) return 'win';
   if (score === 0) return 'draw';
   return 'loss';
 };
+
+const getInitial = (value: string) => value.trim().charAt(0).toUpperCase() || 'P';
 
 const ArenaPlayerStatisticsCard = ({
   statistics,
@@ -46,7 +73,7 @@ const ArenaPlayerStatisticsCard = ({
     username: statistics?.username || username || '',
     avatar: statistics?.avatar,
     rating: statistics?.rating ?? 0,
-    rankTitle: statistics?.rankTitle || t('challenges.rankUnknown'),
+    rankTitle: statistics?.rankTitle || '',
     performance: statistics?.performance ?? 0,
     challenges: statistics?.challenges ?? 0,
     wins: statistics?.wins ?? 0,
@@ -60,170 +87,217 @@ const ArenaPlayerStatisticsCard = ({
 
   if (loading) {
     return (
-      <Card sx={{ borderRadius: 3 }}>
-        <CardContent>
-          <Stack direction="column" spacing={2}>
-            <Skeleton variant="text" width="40%" />
-            <Skeleton variant="rounded" height={80} />
-            <Skeleton variant="rounded" height={120} />
-          </Stack>
-        </CardContent>
-      </Card>
+      <Stack direction="column" spacing={1.5}>
+        <Skeleton variant="rounded" height={132} />
+        <Skeleton variant="rounded" height={108} />
+        <Skeleton variant="rounded" height={188} />
+      </Stack>
     );
   }
 
-  if (!statistics && !username) {
-    return (
-      <Card sx={{ borderRadius: 3 }}>
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            {t('arena.selectPlayer')}
+  const playerMeta = buildOpponentMeta(statistics?.rankTitle, statistics?.rating);
+  const headerContent = (
+    <Stack direction="row" spacing={1.5} alignItems="center" minWidth={0}>
+      <Avatar
+        src={safeStats.avatar}
+        sx={(theme) => ({
+          width: 36,
+          height: 36,
+          bgcolor: alpha(theme.palette.warning.main, 0.14),
+          color: 'warning.dark',
+          fontWeight: 800,
+        })}
+      >
+        {getInitial(safeStats.username)}
+      </Avatar>
+      <Stack direction="column" spacing={0.75} minWidth={0}>
+        <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
+          <Typography variant="h5" fontWeight={900} sx={{ lineHeight: 1.1 }}>
+            {safeStats.username || username || t('arena.selectPlayer')}
           </Typography>
-        </CardContent>
-      </Card>
-    );
-  }
+          {safeStats.rankTitle ? <ChallengesRatingChip title={safeStats.rankTitle} /> : null}
+        </Stack>
+        {playerMeta ? (
+          <Typography variant="body1" color="text.secondary">
+            {playerMeta}
+          </Typography>
+        ) : null}
+      </Stack>
+    </Stack>
+  );
 
   return (
-    <Card sx={{ outline: 'none', borderRadius: 3 }} background={1}>
-      <CardContent sx={{ p: 3 }}>
-        <Stack direction="column" spacing={2.5}>
-          <Paper
-            variant="outlined"
+    <Stack direction="column" spacing={3}>
+      <Box
+        sx={(theme) => ({
+          p: { xs: 2, sm: 2.5 },
+          borderRadius: 3,
+          border: '1px solid',
+          borderColor: alpha(theme.palette.warning.main, 0.16),
+          background: `linear-gradient(135deg, ${alpha(theme.palette.warning.main, 0.08)} 0%, ${theme.palette.background.paper} 72%)`,
+        })}
+      >
+        <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} justifyContent="space-between">
+          {safeStats.username ? (
+            <UserPopover username={safeStats.username} avatar={safeStats.avatar}>
+              {headerContent}
+            </UserPopover>
+          ) : (
+            headerContent
+          )}
+
+          <Box
             sx={{
-              p: 2,
-              borderRadius: 3,
-              background:
-                'linear-gradient(135deg, rgba(255,193,7,0.12), rgba(255,255,255,0.9) 55%)',
+              display: 'grid',
+              gap: 1.25,
+              width: '100%',
+              gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+              maxWidth: { md: 280 },
             }}
           >
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="space-between">
-              <UserPopover username={safeStats.username || username || ''} avatar={safeStats.avatar}>
-                <Stack direction="row" spacing={1.5} alignItems="center">
-                  <Avatar
-                    src={safeStats.avatar}
-                    sx={{
-                      width: 64,
-                      height: 64,
-                      bgcolor: 'warning.lighter',
-                      color: 'warning.darker',
-                      fontWeight: 800,
-                    }}
-                  >
-                    {safeStats.username.charAt(0).toUpperCase() || 'P'}
-                  </Avatar>
-                  <Stack direction="column" spacing={0.35}>
-                    <Typography variant="overline" color="text.secondary">
-                      {t('arena.playerStatistics')}
-                    </Typography>
-                    <Typography variant="h6" fontWeight={900}>
-                      {safeStats.username || username || t('arena.selectPlayer')}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {safeStats.rankTitle}
-                    </Typography>
+            <OverviewStat
+              icon="mdi:chart-line"
+              label={t('arena.performanceShort')}
+              value={safeStats.performance}
+              valueColor="warning.dark"
+            />
+            <OverviewStat
+              icon="mdi:star-circle-outline"
+              label={t('arena.columns.rating')}
+              value={safeStats.rating}
+              iconColor="info.main"
+              valueColor="info.dark"
+            />
+          </Box>
+        </Stack>
+      </Box>
+
+      <Box
+        sx={{
+          display: 'grid',
+          gap: 1.5,
+          gridTemplateColumns: {
+            xs: 'repeat(2, minmax(0, 1fr))',
+            md: 'repeat(4, minmax(0, 1fr))',
+            lg: 'repeat(7, minmax(0, 1fr))',
+          },
+        }}
+      >
+        <OverviewStat
+          icon="mdi:sword-cross"
+          label={t('arena.statisticsLabels.challenges')}
+          value={safeStats.challenges}
+        />
+        <OverviewStat
+          icon="mdi:trophy-outline"
+          label={t('arena.statisticsLabels.wins')}
+          value={safeStats.wins}
+          iconColor="success.main"
+          valueColor="success.dark"
+        />
+        <OverviewStat
+          icon="mdi:handshake-outline"
+          label={t('arena.statisticsLabels.draws')}
+          value={safeStats.draws}
+          iconColor="text.secondary"
+          valueColor="text.secondary"
+        />
+        <OverviewStat
+          icon="mdi:close-circle-outline"
+          label={t('arena.statisticsLabels.losses')}
+          value={safeStats.losses}
+          iconColor="error.main"
+          valueColor="error.main"
+        />
+        <OverviewStat
+          icon="mdi:trending-up"
+          label={t('arena.statisticsLabels.winRate')}
+          value={`${safeStats.winRate}%`}
+          iconColor="success.main"
+          valueColor="success.dark"
+        />
+        <OverviewStat
+          icon="mdi:swap-horizontal"
+          label={t('arena.statisticsLabels.drawRate')}
+          value={`${safeStats.drawRate}%`}
+          iconColor="text.secondary"
+          valueColor="text.secondary"
+        />
+        <OverviewStat
+          icon="mdi:trending-down"
+          label={t('arena.statisticsLabels.lossRate')}
+          value={`${safeStats.lossRate}%`}
+          iconColor="error.main"
+          valueColor="error.main"
+        />
+      </Box>
+
+      {safeStats.opponents.length ? (
+        <Stack direction="column" spacing={1.5}>
+          <Divider />
+          <Stack direction="row" spacing={1} alignItems="center">
+            <IconifyIcon icon="mdi:account-group-outline" color="warning.main" fontSize={20} />
+            <Typography variant="h6" fontWeight={800}>
+              {t('arena.opponents')}
+            </Typography>
+          </Stack>
+
+          <Stack direction="column" spacing={1}>
+            {safeStats.opponents.map((opponent) => {
+              const opponentMeta = buildOpponentMeta(opponent.rankTitle, opponent.rating);
+              const rowContent = (
+                <Stack
+                  direction="row"
+                  spacing={1.5}
+                  alignItems="center"
+                  justifyContent="space-between"
+                  sx={{
+                    p: 1.5,
+                    borderRadius: 2,
+                    bgcolor: 'background.default',
+                  }}
+                >
+                  <Stack direction="row" spacing={1.25} alignItems="center" minWidth={0}>
+                    <Avatar src={opponent.avatar} sx={{ width: 44, height: 44 }}>
+                      {getInitial(opponent.username)}
+                    </Avatar>
+                    <Stack direction="column" spacing={0.35} minWidth={0}>
+                      <Stack
+                        direction="row"
+                        spacing={0.75}
+                        alignItems="center"
+                        flexWrap="wrap"
+                        useFlexGap
+                      >
+                        <Typography fontWeight={800} noWrap>
+                          {opponent.username}
+                        </Typography>
+                      </Stack>
+                    </Stack>
+                  </Stack>
+
+                  <Stack direction="row" spacing={1} alignItems="center" flex="0 0 auto">
+                    <ChallengeChip tone={getToneFromScore(opponent.result)} />
                   </Stack>
                 </Stack>
-              </UserPopover>
+              );
 
-              <Stack
-                direction={{ xs: 'row', sm: 'column' }}
-                spacing={1.25}
-                justifyContent="space-between"
-                alignItems={{ xs: 'center', sm: 'flex-end' }}
-              >
-                <StatisticItem
-                  label={t('arena.performanceShort')}
-                  value={safeStats.performance}
-                  color="warning.dark"
-                />
-                <StatisticItem
-                  label={t('arena.columns.rating')}
-                  value={safeStats.rating}
-                  color="info.dark"
-                />
-              </Stack>
-            </Stack>
-          </Paper>
-
-          <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-            <ChallengeChip tone="win" label={`W ${safeStats.wins}`} sx={{ minWidth: 68 }} />
-            <ChallengeChip tone="draw" label={`D ${safeStats.draws}`} sx={{ minWidth: 68 }} />
-            <ChallengeChip tone="loss" label={`L ${safeStats.losses}`} sx={{ minWidth: 68 }} />
-            <Chip
-              variant="outlined"
-              color="warning"
-              icon={<IconifyIcon icon="mdi:swords" fontSize={18} />}
-              label={`${t('arena.statisticsLabels.challenges')}: ${safeStats.challenges}`}
-            />
+              return (
+                <Box key={`${safeStats.username}-${opponent.username}`}>
+                  {opponent.username ? (
+                    <UserPopover username={opponent.username} avatar={opponent.avatar}>
+                      {rowContent}
+                    </UserPopover>
+                  ) : (
+                    rowContent
+                  )}
+                </Box>
+              );
+            })}
           </Stack>
-
-          <Stack direction="row" spacing={1.5} flexWrap="wrap" useFlexGap>
-            <Paper variant="outlined" sx={{ p: 1.5, minWidth: 120, borderRadius: 2 }}>
-              <StatisticItem
-                label={t('arena.statisticsLabels.winRate')}
-                value={`${safeStats.winRate}%`}
-                color="success.dark"
-              />
-            </Paper>
-            <Paper variant="outlined" sx={{ p: 1.5, minWidth: 120, borderRadius: 2 }}>
-              <StatisticItem
-                label={t('arena.statisticsLabels.drawRate')}
-                value={`${safeStats.drawRate}%`}
-                color="text.secondary"
-              />
-            </Paper>
-            <Paper variant="outlined" sx={{ p: 1.5, minWidth: 120, borderRadius: 2 }}>
-              <StatisticItem
-                label={t('arena.statisticsLabels.lossRate')}
-                value={`${safeStats.lossRate}%`}
-                color="error.main"
-              />
-            </Paper>
-          </Stack>
-
-          {safeStats.opponents.length ? (
-            <Stack direction="column" spacing={1}>
-              <Divider />
-              <Typography variant="subtitle2" color="text.secondary">
-                {t('arena.opponents')}
-              </Typography>
-              <Stack direction="column" spacing={1}>
-                {safeStats.opponents.map((opponent) => (
-                  <Paper
-                    key={`${safeStats.username}-${opponent.username}`}
-                    variant="outlined"
-                    sx={{ p: 1.25, borderRadius: 2 }}
-                  >
-                    <Stack
-                      direction="row"
-                      spacing={1.25}
-                      alignItems="center"
-                      justifyContent="space-between"
-                    >
-                      <UserPopover username={opponent.username} avatar={opponent.avatar}>
-                        <Stack direction="row" spacing={1.25} alignItems="center">
-                          <Avatar src={opponent.avatar} sx={{ width: 36, height: 36 }}>
-                            {opponent.username.charAt(0).toUpperCase()}
-                          </Avatar>
-                          <Stack direction="column" spacing={0.25}>
-                            <Typography fontWeight={700}>{opponent.username}</Typography>
-                            <Typography variant="caption" color="text.secondary">
-                              {opponent.rankTitle} {opponent.rating ?? 0}
-                            </Typography>
-                          </Stack>
-                        </Stack>
-                      </UserPopover>
-                      <ChallengeChip tone={getToneFromScore(opponent.result)} />
-                    </Stack>
-                  </Paper>
-                ))}
-              </Stack>
-            </Stack>
-          ) : null}
         </Stack>
-      </CardContent>
-    </Card>
+      ) : null}
+    </Stack>
   );
 };
 

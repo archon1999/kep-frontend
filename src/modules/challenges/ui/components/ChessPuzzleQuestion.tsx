@@ -1,4 +1,12 @@
-import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from 'react';
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Chessboard } from 'react-chessboard';
 import { useTranslation } from 'react-i18next';
 import {
@@ -14,11 +22,14 @@ import { Chess, Move, Square } from 'chess.js';
 import { ChessPuzzlePayload, Question, QuestionType } from 'modules/testing/domain';
 import QuestionHeader from 'modules/testing/ui/pages/test-pass/components/QuestionHeader.tsx';
 import { TestPassQuestion } from 'modules/testing/ui/pages/test-pass/types.ts';
-import { toast } from 'sonner';
+import { ChessChallengeResult } from '../../domain/ports/challenges.repository.ts';
 import {
-  ChessMovePayload,
-  ChessMoveResponse,
-} from '../../domain/ports/challenges.repository.ts';
+  clearChessPuzzleProgress,
+  getChessPuzzleProgressKey,
+  readChessPuzzleProgress,
+  writeChessPuzzleProgress,
+} from '../lib/chessPuzzleProgress.ts';
+import { decodeChessSolutionBlob } from '../lib/chessPuzzleSolution.ts';
 
 type PromotionPiece = 'q' | 'r' | 'b' | 'n';
 
@@ -29,11 +40,16 @@ interface PendingPromotionMove {
 }
 
 interface ChessPuzzleQuestionProps {
+  challengeId?: number;
+  questionNumber?: number;
   question: Question;
   disabled?: boolean;
   isSubmitting?: boolean;
-  onMove?: (payload: ChessMovePayload) => Promise<ChessMoveResponse | undefined>;
-  onResolved?: (response: ChessMoveResponse) => Promise<void> | void;
+  onSubmit?: (payload: {
+    answer: unknown;
+    isFinish?: boolean;
+    forceFail?: boolean;
+  }) => Promise<void> | void;
 }
 
 export interface ChessPuzzleQuestionHandle {
@@ -59,102 +75,219 @@ const buildPuzzleGame = (payload: ChessPuzzlePayload, playedLine: string[]) => {
 };
 
 const ChessPuzzleQuestion = forwardRef<ChessPuzzleQuestionHandle, ChessPuzzleQuestionProps>(
-  ({ question, disabled, isSubmitting, onMove, onResolved }, ref) => {
+  ({ challengeId, questionNumber, question, disabled, isSubmitting, onSubmit }, ref) => {
     const { t } = useTranslation();
     const puzzle = useMemo<ChessPuzzlePayload | null>(() => {
       if (question.type !== QuestionType.ChessPuzzle || !question.payload) return null;
       return question.payload as ChessPuzzlePayload;
     }, [question.payload, question.type]);
+    const solutionMoves = useMemo(() => {
+      if (!puzzle?.solutionBlob || !puzzle.puzzleId) return [];
+
+      return decodeChessSolutionBlob({
+        questionId: question.id,
+        puzzleId: puzzle.puzzleId,
+        solutionBlob: puzzle.solutionBlob,
+        solutionCipher: puzzle.solutionCipher,
+      });
+    }, [puzzle?.puzzleId, puzzle?.solutionBlob, puzzle?.solutionCipher, question.id]);
+    const storageKey = useMemo(() => {
+      if (!challengeId || !questionNumber) return null;
+      return getChessPuzzleProgressKey(challengeId, questionNumber);
+    }, [challengeId, questionNumber]);
+
     const [position, setPosition] = useState('');
     const [playedLine, setPlayedLine] = useState<string[]>([]);
+    const [pendingResult, setPendingResult] = useState<ChessChallengeResult | null>(null);
+    const [pendingForceFail, setPendingForceFail] = useState(false);
     const [pendingPromotion, setPendingPromotion] = useState<PendingPromotionMove | null>(null);
     const [isSending, setIsSending] = useState(false);
 
+    const playedLineRef = useRef<string[]>([]);
+    const retryAttemptedRef = useRef(false);
+
+    const syncBoard = useCallback(
+      (line: string[]) => {
+        if (!puzzle) return;
+        const chess = buildPuzzleGame(puzzle, line);
+        playedLineRef.current = line;
+        setPlayedLine(line);
+        setPosition(chess.fen());
+      },
+      [puzzle],
+    );
+
+    const persistProgress = useCallback(
+      (options: {
+        line: string[];
+        result?: ChessChallengeResult | null;
+        finalLine?: string[];
+        forceFail?: boolean;
+      }) => {
+        if (!storageKey) return;
+
+        writeChessPuzzleProgress(storageKey, {
+          playedLine: options.line,
+          pendingResult: options.result ?? null,
+          finalPlayedLine: options.finalLine,
+          forceFail: options.forceFail,
+        });
+      },
+      [storageKey],
+    );
+
+    const clearProgress = useCallback(() => {
+      if (!storageKey) return;
+      clearChessPuzzleProgress(storageKey);
+    }, [storageKey]);
+
+    const submitResolvedAnswer = useCallback(
+      async (result: ChessChallengeResult, line: string[], forceFail = false) => {
+        if (!onSubmit) return;
+
+        setIsSending(true);
+        try {
+          await onSubmit({
+            answer: {
+              playedLine: line,
+              result,
+            },
+            forceFail,
+          });
+
+          clearProgress();
+          setPendingResult(null);
+          setPendingForceFail(false);
+        } finally {
+          setIsSending(false);
+        }
+      },
+      [clearProgress, onSubmit],
+    );
+
+    const finalizeResult = useCallback(
+      async (result: ChessChallengeResult, line: string[], options?: { forceFail?: boolean }) => {
+        const shouldForceFail = Boolean(options?.forceFail);
+
+        syncBoard(line);
+        setPendingPromotion(null);
+        setPendingResult(result);
+        setPendingForceFail(shouldForceFail);
+        persistProgress({
+          line,
+          result,
+          finalLine: line,
+          forceFail: shouldForceFail,
+        });
+
+        try {
+          await submitResolvedAnswer(result, line, shouldForceFail);
+        } catch {
+          // Keep local state for retry after connectivity recovers.
+        }
+      },
+      [persistProgress, submitResolvedAnswer, syncBoard],
+    );
+
     useEffect(() => {
+      retryAttemptedRef.current = false;
+
       if (!puzzle) {
         setPosition('');
         setPlayedLine([]);
+        setPendingResult(null);
+        setPendingForceFail(false);
         setPendingPromotion(null);
         return;
       }
 
-      const chess = buildPuzzleGame(puzzle, []);
-      setPosition(chess.fen());
-      setPlayedLine([]);
+      const storedProgress = storageKey ? readChessPuzzleProgress(storageKey) : null;
+      const restoredLine = storedProgress?.pendingResult
+        ? (storedProgress.finalPlayedLine ?? storedProgress.playedLine)
+        : (storedProgress?.playedLine ?? []);
+
+      syncBoard(restoredLine);
+      setPendingResult(storedProgress?.pendingResult ?? null);
+      setPendingForceFail(Boolean(storedProgress?.forceFail));
       setPendingPromotion(null);
-    }, [puzzle, question.id]);
+    }, [puzzle, question.id, storageKey, syncBoard]);
 
-    const canInteract = Boolean(puzzle) && !disabled && !isSubmitting && !isSending;
-    const boardPosition = puzzle ? position || buildPuzzleGame(puzzle, []).fen() : '';
+    useEffect(() => {
+      if (!pendingResult || !onSubmit || isSending || isSubmitting) return;
 
-    const restorePosition = (line: string[]) => {
+      const retrySubmission = () => {
+        if (isSending || isSubmitting) return;
+
+        void submitResolvedAnswer(pendingResult, playedLineRef.current, pendingForceFail).catch(
+          () => undefined,
+        );
+      };
+
+      if (!retryAttemptedRef.current) {
+        retryAttemptedRef.current = true;
+        retrySubmission();
+      }
+
+      window.addEventListener('online', retrySubmission);
+      return () => {
+        window.removeEventListener('online', retrySubmission);
+      };
+    }, [isSending, isSubmitting, onSubmit, pendingForceFail, pendingResult, submitResolvedAnswer]);
+
+    const canInteract =
+      Boolean(puzzle) &&
+      solutionMoves.length > 0 &&
+      !disabled &&
+      !isSubmitting &&
+      !isSending &&
+      !pendingResult;
+    const boardPosition = puzzle ? position || buildPuzzleGame(puzzle, playedLine).fen() : '';
+
+    const handleMoveResolution = async (move: string) => {
       if (!puzzle) return;
-      const chess = buildPuzzleGame(puzzle, line);
-      setPlayedLine(line);
-      setPosition(chess.fen());
-    };
 
-    const handleResolved = async (response: ChessMoveResponse) => {
-      if (response.replyMove) {
-        await new Promise((resolve) => window.setTimeout(resolve, 250));
+      const nextLine = [...playedLineRef.current, move];
+      syncBoard(nextLine);
+
+      if (nextLine.join('|') !== solutionMoves.slice(0, nextLine.length).join('|')) {
+        await finalizeResult('failed', nextLine);
+        return;
       }
 
-      if (response.success) {
-        toast.success(t('challenges.answerCorrect'));
-      } else if (response.status !== 'in_progress') {
-        toast.error(t('challenges.answerWrong'));
+      if (nextLine.length === solutionMoves.length) {
+        await finalizeResult('solved', nextLine);
+        return;
       }
 
-      await onResolved?.(response);
-    };
+      const replyMove = solutionMoves[nextLine.length];
+      if (!replyMove) {
+        await finalizeResult('solved', nextLine);
+        return;
+      }
 
-    const submitMove = async (line: string[]) => {
-      if (!onMove) return;
+      const continuedLine = [...nextLine, replyMove];
+      syncBoard(continuedLine);
+      persistProgress({ line: continuedLine });
 
-      setIsSending(true);
-      try {
-        const response = await onMove({
-          questionNumber: question.number,
-          playedLine: line,
-        });
-
-        if (!response) return;
-
-        if (response.replyMove && puzzle) {
-          const nextLine = [...line, response.replyMove];
-          restorePosition(nextLine);
-          if (response.status === 'in_progress') {
-            return;
-          }
-        }
-
-        if (response.status !== 'in_progress') {
-          await handleResolved(response);
-        }
-      } catch {
-        restorePosition(playedLine);
-      } finally {
-        setIsSending(false);
+      if (continuedLine.length === solutionMoves.length) {
+        await finalizeResult('solved', continuedLine);
       }
     };
 
     const commitMove = async (from: Square, to: Square, promotion?: PromotionPiece) => {
       if (!puzzle) return;
 
-      const chess = buildPuzzleGame(puzzle, playedLine);
+      const chess = buildPuzzleGame(puzzle, playedLineRef.current);
       const move = chess.move({ from, to, promotion });
       if (!move) return;
 
-      const nextLine = [...playedLine, buildUciMove(move)];
-      setPlayedLine(nextLine);
-      setPosition(chess.fen());
-      await submitMove(nextLine);
+      await handleMoveResolution(buildUciMove(move));
     };
 
     const handlePieceDrop = (sourceSquare: Square, targetSquare: Square) => {
       if (!puzzle || !canInteract) return false;
 
-      const chess = buildPuzzleGame(puzzle, playedLine);
+      const chess = buildPuzzleGame(puzzle, playedLineRef.current);
       const legalMoves = chess
         .moves({ square: sourceSquare, verbose: true })
         .filter((move) => move.to === targetSquare);
@@ -182,25 +315,10 @@ const ChessPuzzleQuestion = forwardRef<ChessPuzzleQuestionHandle, ChessPuzzleQue
       return true;
     };
 
-    const handleForceFail = async () => {
-      if (!canInteract || !onMove) return;
-
-      setIsSending(true);
-      try {
-        const response = await onMove({
-          questionNumber: question.number,
-          playedLine,
-          forceFail: true,
-        });
-
-        if (!response) return;
-        await handleResolved(response);
-      } catch {
-        restorePosition(playedLine);
-      } finally {
-        setIsSending(false);
-      }
-    };
+    const handleForceFail = useCallback(async () => {
+      if (!puzzle || pendingResult) return;
+      await finalizeResult('failed', playedLineRef.current, { forceFail: true });
+    }, [finalizeResult, pendingResult, puzzle]);
 
     useImperativeHandle(ref, () => ({
       forceFail: () => {
@@ -218,8 +336,6 @@ const ChessPuzzleQuestion = forwardRef<ChessPuzzleQuestionHandle, ChessPuzzleQue
 
     return (
       <Stack spacing={2}>
-        <QuestionHeader question={question as TestPassQuestion} />
-
         <Stack spacing={1} alignItems="center">
           <Chessboard
             options={{
@@ -239,9 +355,11 @@ const ChessPuzzleQuestion = forwardRef<ChessPuzzleQuestionHandle, ChessPuzzleQue
             }}
           />
 
-          <Typography variant="body2" color="text.secondary">
-            {isSending ? t('common.loading') : t('challenges.chessPuzzle.findBestMove')}
-          </Typography>
+          <Typography
+            dangerouslySetInnerHTML={{ __html: question.body }}
+            variant="body2"
+            color="text.secondary"
+          />
         </Stack>
 
         <Dialog

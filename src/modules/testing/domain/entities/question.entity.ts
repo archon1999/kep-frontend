@@ -16,6 +16,8 @@ export interface ChessPuzzlePayload {
   orientation: 'white' | 'black';
   rating: number;
   themes: string[];
+  solutionBlob?: string;
+  solutionCipher?: string;
 }
 
 export interface Question {

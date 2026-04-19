@@ -17,9 +17,17 @@ export interface PageResult<T> {
   data: T[];
 }
 
+export type ChessChallengeResult = 'solved' | 'failed';
+
+export interface ChessChallengeAnswer {
+  playedLine: string[];
+  result: ChessChallengeResult;
+}
+
 export interface ChallengeAnswerPayload {
-  answer: unknown;
+  answer: unknown | ChessChallengeAnswer;
   isFinish?: boolean;
+  forceFail?: boolean;
 }
 
 export interface ChallengeStartResponse {

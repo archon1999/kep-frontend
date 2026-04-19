@@ -20,6 +20,7 @@ import {
   ChallengeUserStatistics,
 } from '../../domain';
 import {
+  ChessChallengeAnswer,
   ChessMovePayload,
   ChessMoveResponse,
   ChallengeAntiCheatPenaltyPayload,
@@ -34,6 +35,23 @@ import { Chapter } from 'modules/testing/domain/entities/chapter.entity.ts';
 import { Question } from 'modules/testing/domain/entities/question.entity.ts';
 
 export class HttpChallengesRepository implements ChallengesRepository {
+  private mapChallengeAnswer(answer: ChallengeAnswerPayload['answer']): unknown {
+    const chessAnswer = answer as Partial<ChessChallengeAnswer> | null;
+
+    if (
+      chessAnswer
+      && Array.isArray(chessAnswer.playedLine)
+      && typeof chessAnswer.result === 'string'
+    ) {
+      return {
+        played_line: chessAnswer.playedLine,
+        result: chessAnswer.result,
+      };
+    }
+
+    return answer;
+  }
+
   async getChallengeCalls(): Promise<ChallengeCall[]> {
     const result = await challengesApiClient.getChallengeCalls();
     return extractList(result).map(mapChallengeCall);
@@ -71,8 +89,9 @@ export class HttpChallengesRepository implements ChallengesRepository {
 
   async submitAnswer(challengeId: number, payload: ChallengeAnswerPayload): Promise<ChallengeCheckResponse> {
     const response = await challengesApiClient.submitAnswer(challengeId, {
-      answer: payload.answer,
+      answer: this.mapChallengeAnswer(payload.answer),
       finish: payload.isFinish,
+      force_fail: payload.forceFail,
     });
     return {
       success: Boolean(response?.success ?? response?.ok ?? response?.isCorrect),

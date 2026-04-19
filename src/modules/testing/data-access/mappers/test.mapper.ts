@@ -24,6 +24,8 @@ const normalizeChessPuzzlePayload = (payload: any): ChessPuzzlePayload => ({
   orientation: payload?.orientation === 'black' ? 'black' : 'white',
   rating: Number(payload?.rating ?? 0),
   themes: Array.isArray(payload?.themes) ? payload.themes.map((theme: unknown) => String(theme)) : [],
+  solutionBlob: payload?.solutionBlob ?? payload?.solution_blob ?? '',
+  solutionCipher: payload?.solutionCipher ?? payload?.solution_cipher ?? '',
 });
 
 const normalizeQuestionPayload = (question: any) => {

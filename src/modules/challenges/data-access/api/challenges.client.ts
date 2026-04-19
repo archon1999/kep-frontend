@@ -116,7 +116,10 @@ export const challengesApiClient = {
     const response = await instance.post(`/api/challenges/${challengeId}/start/`);
     return response.data;
   },
-  submitAnswer: async (challengeId: number, body: { answer: unknown; finish?: boolean }) => {
+  submitAnswer: async (
+    challengeId: number,
+    body: { answer: unknown; finish?: boolean; force_fail?: boolean },
+  ) => {
     const response = await instance.post(`/api/challenges/${challengeId}/check-answer/`, body);
     return response.data;
   },
