@@ -167,6 +167,7 @@ export class HttpArenaRepository implements ArenaRepository {
       averageRating: data?.averageRating ?? data?.average_rating ?? 0,
       challenges: data?.challenges ?? 0,
       longestWinStreak: data?.longestWinStreak ?? data?.longest_win_streak ?? null,
+      mostChallengesPlayed: data?.mostChallengesPlayed ?? data?.most_challenges_played ?? null,
       highestPerformance: data?.highestPerformance ?? data?.highest_performance ?? null,
       highestWinRate: data?.highestWinRate ?? data?.highest_win_rate ?? null,
     };

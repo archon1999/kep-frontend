@@ -50,7 +50,7 @@
       "buchholz": "Бухгольц",
       "buchholzDescription": "Сумма очков, набранных вашими соперниками. Чем выше Бухгольц, тем сильнее были соперники."
     },
-    "challenges": "Последние вызовы",
+    "challenges": "Завершенные вызовы",
     "liveChallenges": "Текущие вызовы",
     "noChallenges": "Вызовов пока не было.",
     "noLiveChallenges": "Сейчас нет текущих вызовов.",
@@ -92,6 +92,7 @@
       "finishedTitle": "Итоговый обзор арены",
       "participants": "Зарегистрированные участники",
       "longestWinStreak": "Самая длинная серия побед",
+      "mostChallengesPlayed": "Больше всего сыгранных вызовов",
       "highestPerformance": "Лучший перфоманс",
       "highestWinRate": "Лучший процент побед",
       "noLeader": "Пока нет подходящих данных",

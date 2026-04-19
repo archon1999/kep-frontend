@@ -50,7 +50,7 @@
       "buchholz": "Buxgols",
       "buchholzDescription": "Raqiblaringiz to'plagan ochkolar yig'indisi. Buxgols yuqoriroq bo'lsa, kuchliroq raqiblarga qarshi o'ynagansiz."
     },
-    "challenges": "So'nggi bellashuvlar",
+    "challenges": "Yakunlangan bellashuvlar",
     "liveChallenges": "Jonli bellashuvlar",
     "noChallenges": "Hali bellashuvlar yo'q.",
     "noLiveChallenges": "Hozircha jonli bellashuvlar yo'q.",
@@ -92,6 +92,7 @@
       "finishedTitle": "Yakuniy arena natijalari",
       "participants": "Ishtirokchilar soni",
       "longestWinStreak": "Eng uzun g'alabalar seriyasi",
+      "mostChallengesPlayed": "Eng ko'p bellashuv qatnashgan ishtirokchi",
       "highestPerformance": "Eng yuqori performance",
       "highestWinRate": "Eng yuqori g'alaba nisbati",
       "noLeader": "Hali yetarli ma'lumot yo'q",

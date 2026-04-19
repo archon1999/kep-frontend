@@ -17,5 +17,7 @@ export interface ArenaPlayerStatistics {
     rankTitle?: string;
     rating?: number;
     result: number;
+    playerScore: number;
+    opponentScore: number;
   }>;
 }

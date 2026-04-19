@@ -61,6 +61,12 @@ const getToneFromScore = (score: number): ChallengeChipTone => {
   return 'loss';
 };
 
+const getScoreColor = (score: number, opponentScore: number) => {
+  if (score > opponentScore) return 'success.main';
+  if (score < opponentScore) return 'error.main';
+  return 'text.secondary';
+};
+
 const getInitial = (value: string) => value.trim().charAt(0).toUpperCase() || 'P';
 
 const ArenaPlayerStatisticsCard = ({
@@ -244,7 +250,6 @@ const ArenaPlayerStatisticsCard = ({
 
           <Stack direction="column" spacing={1}>
             {safeStats.opponents.map((opponent) => {
-              const opponentMeta = buildOpponentMeta(opponent.rankTitle, opponent.rating);
               const rowContent = (
                 <Stack
                   direction="row"
@@ -277,6 +282,25 @@ const ArenaPlayerStatisticsCard = ({
                   </Stack>
 
                   <Stack direction="row" spacing={1} alignItems="center" flex="0 0 auto">
+                    <Stack direction="row" spacing={0.75} alignItems="center">
+                      <Typography
+                        variant="body1"
+                        fontWeight={800}
+                        color={getScoreColor(opponent.playerScore, opponent.opponentScore)}
+                      >
+                        {opponent.playerScore}
+                      </Typography>
+                      <Typography variant="body2" fontWeight={700} color="text.secondary">
+                        :
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        fontWeight={800}
+                        color={getScoreColor(opponent.opponentScore, opponent.playerScore)}
+                      >
+                        {opponent.opponentScore}
+                      </Typography>
+                    </Stack>
                     <ChallengeChip tone={getToneFromScore(opponent.result)} />
                   </Stack>
                 </Stack>

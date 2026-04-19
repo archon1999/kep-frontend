@@ -9,6 +9,7 @@ export interface ArenaStatistics {
   averageRating: number;
   challenges: number;
   longestWinStreak?: ArenaStatisticsLeader | null;
+  mostChallengesPlayed?: ArenaStatisticsLeader | null;
   highestPerformance?: ArenaStatisticsLeader | null;
   highestWinRate?: ArenaStatisticsLeader | null;
 }
