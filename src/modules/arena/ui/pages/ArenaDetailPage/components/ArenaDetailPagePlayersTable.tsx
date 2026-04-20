@@ -14,7 +14,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import UserPopover from 'modules/users/ui/components/UserPopover';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
 import { ArenaPlayer } from 'modules/arena/domain/entities/arena-player.entity.ts';
 import { ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';

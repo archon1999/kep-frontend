@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, Divider, Grid, Stack, Typography } from '@mui/material';
 import { ArenaHighlight } from 'modules/arena/domain/entities/arena-highlight.entity.ts';
-import UserPopover from 'modules/users/ui/components/UserPopover';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import { useArenaInsights } from 'modules/arena/application/hooks/useArenaInsights.ts';
 import { ArenaStatistics } from 'modules/arena/domain/entities/arena-statistics.entity.ts';

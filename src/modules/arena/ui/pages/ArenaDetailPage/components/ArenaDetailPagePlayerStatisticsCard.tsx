@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Avatar, Box, Divider, Skeleton, Stack, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import UserPopover from 'modules/users/ui/components/UserPopover';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import ChallengeChip, { ChallengeChipTone } from 'shared/components/challenges/ChallengeChip.tsx';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Avatar, Stack, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridPaginationModel, GridValidRowModel } from '@mui/x-data-grid';
 import { useTranslation } from 'react-i18next';
-import UserPopover from 'modules/users/ui/components/UserPopover.tsx';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 
 export type DuelsRatingPageTableRow = GridValidRowModel & {

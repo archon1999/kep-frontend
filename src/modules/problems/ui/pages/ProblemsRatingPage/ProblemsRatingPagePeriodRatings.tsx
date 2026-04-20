@@ -1,7 +1,7 @@
 import { Box, Card, CardContent, Chip, Skeleton, Stack, Typography, useTheme } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
-import UserPopover from 'modules/users/ui/components/UserPopover';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { cssVarRgba } from 'shared/lib/utils';

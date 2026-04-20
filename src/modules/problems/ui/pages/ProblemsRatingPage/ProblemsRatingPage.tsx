@@ -29,7 +29,7 @@ import { useProblemsPeriodRating, useProblemsRating } from 'modules/problems/app
 import { difficultyOptions } from 'modules/problems/config/difficulty';
 import ProblemsRatingDataGrid from 'modules/problems/ui/shared/components/ProblemsRatingDataGrid';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
-import UserPopover from 'modules/users/ui/components/UserPopover';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import ProblemsRatingPagePeriodRatings from './ProblemsRatingPagePeriodRatings.tsx';
 
 const sortFieldMap: Record<string, string> = {

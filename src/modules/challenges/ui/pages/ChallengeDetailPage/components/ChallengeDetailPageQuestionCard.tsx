@@ -2,16 +2,16 @@ import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState }
 import { Box, Button, Card, CardContent, Divider, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Question, QuestionType } from 'modules/testing/domain';
-import { buildInitialState } from 'modules/testing/ui/pages/test-pass/utils.ts';
-import { buildAnswerResult } from 'modules/testing/ui/pages/test-pass/answers.ts';
-import { QuestionState, TestPassQuestion } from 'modules/testing/ui/pages/test-pass/types.ts';
-import SingleChoiceQuestion from 'modules/testing/ui/pages/test-pass/components/SingleChoiceQuestion.tsx';
-import MultipleChoiceQuestion from 'modules/testing/ui/pages/test-pass/components/MultipleChoiceQuestion.tsx';
-import TextInputQuestion from 'modules/testing/ui/pages/test-pass/components/TextInputQuestion.tsx';
-import CodeInputQuestion from 'modules/testing/ui/pages/test-pass/components/CodeInputQuestion.tsx';
-import ConformityQuestion from 'modules/testing/ui/pages/test-pass/components/ConformityQuestion.tsx';
-import OrderingQuestion from 'modules/testing/ui/pages/test-pass/components/OrderingQuestion.tsx';
-import ClassificationQuestion from 'modules/testing/ui/pages/test-pass/components/ClassificationQuestion.tsx';
+import { buildInitialState } from 'modules/testing/ui/pages/TestPassPage/utils.ts';
+import { buildAnswerResult } from 'modules/testing/ui/pages/TestPassPage/answers.ts';
+import { QuestionState, TestPassQuestion } from 'modules/testing/ui/pages/TestPassPage/types.ts';
+import SingleChoiceQuestion from 'modules/testing/ui/pages/TestPassPage/components/SingleChoiceQuestion.tsx';
+import MultipleChoiceQuestion from 'modules/testing/ui/pages/TestPassPage/components/MultipleChoiceQuestion.tsx';
+import TextInputQuestion from 'modules/testing/ui/pages/TestPassPage/components/TextInputQuestion.tsx';
+import CodeInputQuestion from 'modules/testing/ui/pages/TestPassPage/components/CodeInputQuestion.tsx';
+import ConformityQuestion from 'modules/testing/ui/pages/TestPassPage/components/ConformityQuestion.tsx';
+import OrderingQuestion from 'modules/testing/ui/pages/TestPassPage/components/OrderingQuestion.tsx';
+import ClassificationQuestion from 'modules/testing/ui/pages/TestPassPage/components/ClassificationQuestion.tsx';
 import ChallengeDetailPageChessPuzzleQuestion, {
   ChallengeDetailPageChessPuzzleQuestionHandle,
 } from './ChallengeDetailPageChessPuzzleQuestion.tsx';

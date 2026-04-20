@@ -18,7 +18,7 @@ import {
   useDeleteChallengeCall,
 } from 'modules/challenges/application/mutations.ts';
 import { ChallengeCall, ChallengeQuestionTimeType } from 'modules/challenges/domain';
-import UserPopover from 'modules/users/ui/components/UserPopover.tsx';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
 
 dayjs.extend(relativeTime);

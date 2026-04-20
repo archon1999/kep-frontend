@@ -17,7 +17,7 @@ import {
 import { DataGrid, GridColDef, GridRowSelectionModel, GridSortModel } from '@mui/x-data-grid';
 import { Link as RouterLink, useNavigate, useParams } from 'react-router';
 import { getResourceById } from 'app/routes/resources';
-import UserPopover from 'modules/users/ui/components/UserPopover';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import RichTextEditor from 'shared/components/form/RichTextEditor';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import { adminApiClient } from '../data-access/adminApiClient';

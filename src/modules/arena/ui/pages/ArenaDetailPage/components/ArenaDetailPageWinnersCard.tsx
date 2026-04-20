@@ -1,7 +1,7 @@
 import { keyframes } from '@emotion/react';
 import { Box, Card, CardContent, Stack, Tooltip, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import UserPopover from 'modules/users/ui/components/UserPopover';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import firstPlaceImage from 'shared/assets/images/icons/arena-first-place.png';

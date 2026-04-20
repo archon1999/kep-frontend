@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar, Box, Skeleton, Stack, Typography } from '@mui/material';
-import UserPopover from 'modules/users/ui/components/UserPopover';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import { ContestTopContestant } from 'modules/contests/domain/entities/contest.entity';
 

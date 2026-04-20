@@ -7,7 +7,7 @@ import {
   GridSortModel,
   GridValidRowModel,
 } from '@mui/x-data-grid';
-import UserPopover from 'modules/users/ui/components/UserPopover.tsx';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
 
 export type ChallengesRatingPageRow = GridValidRowModel & {

@@ -9,7 +9,7 @@ import {
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import { difficultyColorByKey, difficultyOptions } from 'modules/problems/config/difficulty';
 import { ProblemsRatingRow } from 'modules/problems/domain/entities/problem.entity';
-import UserPopover from 'modules/users/ui/components/UserPopover.tsx';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 
 export type ProblemsRatingDataGridLabels = {
   rank: string;

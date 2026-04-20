@@ -25,7 +25,7 @@ import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
 import dayjs from 'dayjs';
 import { Link as RouterLink } from 'react-router-dom';
-import UserPopover from 'modules/users/ui/components/UserPopover';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepIcon from 'shared/components/base/KepIcon';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';

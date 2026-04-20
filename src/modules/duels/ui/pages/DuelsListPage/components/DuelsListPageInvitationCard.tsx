@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import UserPopover from 'modules/users/ui/components/UserPopover.tsx';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import { DuelInvitation, DuelInvitationUser } from 'modules/duels/domain/index.ts';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';

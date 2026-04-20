@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Grid, Stack, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
-import UserPopover from 'modules/users/ui/components/UserPopover.tsx';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import { ApiContestsRegistrantsListOrdering } from 'shared/api/orval/generated/endpoints/index.schemas';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import useGridPagination from 'shared/hooks/useGridPagination';

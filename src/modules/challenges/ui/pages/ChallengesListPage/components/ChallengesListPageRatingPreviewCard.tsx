@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import { resources } from 'app/routes/resources';
 import { ChallengeRatingRow } from 'modules/challenges/domain';
 import { PageResult } from 'modules/challenges/domain/ports/challenges.repository.ts';
-import UserPopover from 'modules/users/ui/components/UserPopover.tsx';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
 
 type ChallengesListPageRatingPreviewCardProps = {

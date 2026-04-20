@@ -1,6 +1,6 @@
 import { Button, Card, CardContent, Chip, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import UserPopover from 'modules/users/ui/components/UserPopover.tsx';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import { Duel } from 'modules/duels/domain/index.ts';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 

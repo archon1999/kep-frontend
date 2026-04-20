@@ -20,7 +20,7 @@ import {
 import { useAuth } from 'app/providers/AuthProvider';
 import { useBreakpoints } from 'app/providers/BreakpointsProvider.tsx';
 import { getResourceById, resources } from 'app/routes/resources';
-import UserPopover from 'modules/users/ui/components/UserPopover';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import KepcoinValue from 'shared/components/common/KepcoinValue';

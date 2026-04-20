@@ -2,7 +2,7 @@ import { Box, Card, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Challenge } from 'modules/challenges/domain';
-import UserPopover from 'modules/users/ui/components/UserPopover.tsx';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import ChallengeUserChip from './ChallengeUserChip.tsx';
 
 dayjs.extend(relativeTime);

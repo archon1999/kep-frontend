@@ -92,22 +92,22 @@ const BlogEditorPage = lazy(() => import('modules/blog/ui/pages/BlogEditorPage')
 const BlogPostPage = lazy(() => import('modules/blog/ui/pages/BlogPostPage'));
 const UserProfilePage = lazy(() => import('modules/users/ui/pages/UserProfilePage'));
 const UserProfileAboutTab = lazy(
-  () => import('modules/users/ui/components/user-profile/UserProfileAboutTab'),
+  () => import('modules/users/ui/pages/UserProfilePage/components/user-profile/UserProfileAboutTab'),
 );
 const UserProfileBlogTab = lazy(
-  () => import('modules/users/ui/components/user-profile/UserProfileBlogTab'),
+  () => import('modules/users/ui/pages/UserProfilePage/components/user-profile/UserProfileBlogTab'),
 );
 const UserProfileRatingsTab = lazy(
-  () => import('modules/users/ui/components/user-profile/UserProfileRatingsTab'),
+  () => import('modules/users/ui/pages/UserProfilePage/components/user-profile/UserProfileRatingsTab'),
 );
 const UserProfileActivityHistoryTab = lazy(
-  () => import('modules/users/ui/components/user-profile/UserProfileActivityHistoryTab'),
+  () => import('modules/users/ui/pages/UserProfilePage/components/user-profile/UserProfileActivityHistoryTab'),
 );
 const UserProfilePurchasesTab = lazy(
-  () => import('modules/users/ui/components/user-profile/UserProfilePurchasesTab'),
+  () => import('modules/users/ui/pages/UserProfilePage/components/user-profile/UserProfilePurchasesTab'),
 );
 const UserProfileAchievementsTab = lazy(
-  () => import('modules/users/ui/components/user-profile/UserProfileAchievementsTab'),
+  () => import('modules/users/ui/pages/UserProfilePage/components/user-profile/UserProfileAchievementsTab'),
 );
 
 const CalendarPage = lazy(() => import('modules/calendar/ui/pages/CalendarPage'));

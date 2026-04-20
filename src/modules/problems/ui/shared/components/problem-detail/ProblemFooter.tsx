@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Avatar, Box, Button, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import UserPopover from 'modules/users/ui/components/UserPopover';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import { ProblemDetail } from 'modules/problems/domain/entities/problem.entity';
 
 interface ProblemFooterProps {

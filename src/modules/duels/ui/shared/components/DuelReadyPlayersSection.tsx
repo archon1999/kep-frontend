@@ -15,7 +15,7 @@ import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import { cssVarRgba } from 'shared/lib/utils.ts';
-import UserPopover from 'modules/users/ui/components/UserPopover.tsx';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import { DuelReadyPlayer } from 'modules/duels/domain/index.ts';
 
 type Props = {

@@ -18,7 +18,7 @@ import { DataGrid, GridColDef, GridPaginationModel } from '@mui/x-data-grid';
 import { getResourceByUsername, resources } from 'app/routes/resources';
 import dayjs from 'dayjs';
 import { useProblemSolvers } from 'modules/problems/application/queries.ts';
-import UserPopover from 'modules/users/ui/components/UserPopover';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import useGridPagination from 'shared/hooks/useGridPagination';

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Stack, StackProps, Tooltip, Typography } from '@mui/material';
-import UserPopover from 'modules/users/ui/components/UserPopover';
+import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import KepIcon from 'shared/components/base/KepIcon';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
