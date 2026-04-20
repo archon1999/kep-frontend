@@ -11,8 +11,8 @@ import {
   useDuelCalls,
 } from 'modules/duels/application/queries.ts';
 import { DuelInvitation } from 'modules/duels/domain/index.ts';
-import DuelsListPageScheduleDialog from './dialogs/DuelsListPageScheduleDialog.tsx';
-import DuelsListPageWaitingRoomCard from './components/DuelsListPageWaitingRoomCard.tsx';
+import DuelScheduleDialog from './dialogs/DuelScheduleDialog.tsx';
+import DuelWaitingRoomCard from './components/DuelWaitingRoomCard.tsx';
 
 const DuelsListPageWaitingRoomTab = () => {
   const { t } = useTranslation();
@@ -120,7 +120,7 @@ const DuelsListPageWaitingRoomTab = () => {
           {!loading &&
             invitations.map((invitation) => (
               <Grid size={{ xs: 12, sm: 6, lg: 4, xl: 3 }}>
-                <DuelsListPageWaitingRoomCard
+                <DuelWaitingRoomCard
                   invitation={invitation}
                   actionLoadingKey={actionLoadingKey}
                   onAccept={() => setSelectedInvitation(invitation)}
@@ -131,7 +131,7 @@ const DuelsListPageWaitingRoomTab = () => {
         </Grid>
       </Stack>
 
-      <DuelsListPageScheduleDialog
+      <DuelScheduleDialog
         open={Boolean(selectedInvitation)}
         mode="accept"
         invitation={selectedInvitation}

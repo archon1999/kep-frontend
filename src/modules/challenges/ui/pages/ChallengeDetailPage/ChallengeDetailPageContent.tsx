@@ -5,18 +5,18 @@ import Grid from '@mui/material/Grid';
 import { Question } from 'modules/testing/domain';
 import { Challenge, ChallengeStatus } from 'modules/challenges/domain';
 import KepIcon from 'shared/components/base/KepIcon.tsx';
-import ChallengeDetailPageCountdown from './components/ChallengeDetailPageCountdown.tsx';
-import ChallengeDetailPageQuestionCard, {
-  ChallengeDetailPageQuestionCardHandle,
-} from './components/ChallengeDetailPageQuestionCard.tsx';
-import ChallengeDetailPageResultsCard from './components/ChallengeDetailPageResultsCard.tsx';
+import ChallengeCountdown from './components/ChallengeCountdown.tsx';
+import ChallengeQuestionCard, {
+  QuestionCardHandle,
+} from './components/ChallengeQuestionCard.tsx';
+import ChallengeResultsCard from './components/ChallengeResultsCard.tsx';
 
 type ChallengeDetailPageContentProps = {
   challenge: Challenge;
   hideBackgroundContent: boolean;
   showQuestion: boolean;
   question?: Question;
-  questionCardRef: RefObject<ChallengeDetailPageQuestionCardHandle | null>;
+  questionCardRef: RefObject<QuestionCardHandle | null>;
   onSubmit: (payload: {
     answer: unknown;
     isFinish?: boolean;
@@ -46,12 +46,12 @@ const ChallengeDetailPageContent = ({
     <Stack spacing={3} direction="column">
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 3 }}>
-          <ChallengeDetailPageResultsCard challenge={challenge} />
+          <ChallengeResultsCard challenge={challenge} />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6 }}>
           {showQuestion && question ? (
-            <ChallengeDetailPageQuestionCard
+            <ChallengeQuestionCard
               ref={questionCardRef}
               challengeId={challenge.id}
               questionNumber={challenge.nextQuestion?.number}
@@ -85,7 +85,7 @@ const ChallengeDetailPageContent = ({
 
         <Grid size={{ xs: 12, md: 3 }}>
           <Stack direction="column" spacing={2} height="100%">
-            <ChallengeDetailPageCountdown
+            <ChallengeCountdown
               secondsLeft={secondsLeft}
               totalSeconds={challenge.timeSeconds}
               mode={challenge.questionTimeType}

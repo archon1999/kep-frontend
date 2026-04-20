@@ -19,10 +19,10 @@ import { ChallengePenaltyReason } from 'modules/challenges/domain/ports/challeng
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { toast } from 'sonner';
 import ChallengeDetailPageContent from './ChallengeDetailPageContent.tsx';
-import { ChallengeDetailPageQuestionCardHandle } from './components/ChallengeDetailPageQuestionCard.tsx';
-import ChallengeDetailPageBlurDialog from './dialogs/ChallengeDetailPageBlurDialog.tsx';
-import ChallengeDetailPageFinishDialog from './dialogs/ChallengeDetailPageFinishDialog.tsx';
-import ChallengeDetailPageStartDialog from './dialogs/ChallengeDetailPageStartDialog.tsx';
+import { QuestionCardHandle } from './components/ChallengeQuestionCard.tsx';
+import ChallengeBlurDialog from './dialogs/ChallengeBlurDialog.tsx';
+import ChallengeFinishDialog from './dialogs/ChallengeFinishDialog.tsx';
+import ChallengeStartDialog from './dialogs/ChallengeStartDialog.tsx';
 import { clearChallengeChessProgress } from './lib/chessPuzzleProgress.ts';
 
 dayjs.extend(relativeTime);
@@ -83,7 +83,7 @@ const ChallengeDetailPage = () => {
       : undefined,
   );
 
-  const questionCardRef = useRef<ChallengeDetailPageQuestionCardHandle>(null);
+  const questionCardRef = useRef<QuestionCardHandle>(null);
   const finishHandledRef = useRef(false);
   const timeExpiredHandledRef = useRef(false);
   const blurCheckTimeoutRef = useRef<number | null>(null);
@@ -508,7 +508,7 @@ const ChallengeDetailPage = () => {
         secondsLeft={secondsLeft}
       />
 
-      <ChallengeDetailPageStartDialog
+      <ChallengeStartDialog
         open={startDialogOpen}
         challenge={challenge}
         timerModeLabel={timerModeLabel}
@@ -516,14 +516,14 @@ const ChallengeDetailPage = () => {
         onStart={handleStart}
       />
 
-      <ChallengeDetailPageFinishDialog
+      <ChallengeFinishDialog
         open={finishDialogOpen}
         challenge={challenge}
         onClose={handleStayOnPage}
         onBackToList={handleFinishClose}
       />
 
-      <ChallengeDetailPageBlurDialog open={blurDialogOpen} onClose={handleBlurDialogClose} />
+      <ChallengeBlurDialog open={blurDialogOpen} onClose={handleBlurDialogClose} />
     </Box>
   );
 };

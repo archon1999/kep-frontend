@@ -65,7 +65,7 @@ import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
 import { ContestantEntity } from 'modules/contests/domain/entities/contestant.entity';
 import { sortContestProblems } from 'modules/contests/utils/sortContestProblems';
 import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
-import ContestProblemPageContestantResultsFooter from './components/ContestProblemPageContestantResultsFooter.tsx';
+import ContestantResultsFooter from './components/ContestantResultsFooter.tsx';
 
 type ContestProblemTab = 'description' | 'attempts';
 
@@ -833,7 +833,7 @@ const ContestProblemPage = () => {
                   </Box>
                 </CardContent>
 
-                <ContestProblemPageContestantResultsFooter
+                <ContestantResultsFooter
                   contestant={contestant}
                   contestProblems={sortedProblems}
                   contestType={contest?.type}

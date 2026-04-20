@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate, useParams } from 'react-router';
-import { Box } from '@mui/material';
+import { Alert, Box, Grid, Skeleton, Stack } from '@mui/material';
 import { toast } from 'sonner';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
@@ -10,24 +10,27 @@ import { useArenaLivePolling } from 'modules/arena/application/hooks/useArenaLiv
 import { useArenaStandingsPage } from 'modules/arena/application/hooks/useArenaStandingsPage.ts';
 import { useArenaStateContent } from 'modules/arena/application/hooks/useArenaStateContent.ts';
 import {
-  arenaQueries,
   useArenaChallenges,
   useArenaDetails,
   useArenaHighlight,
   useArenaLiveChallenges,
   useArenaNextChallenge,
-  useArenaPlayerStatistics,
   useArenaPlayers,
   useArenaStatistics,
   useArenaTopPlayers,
 } from 'modules/arena/application/queries.ts';
 import { ArenaHighlight } from 'modules/arena/domain/entities/arena-highlight.entity.ts';
-import { ArenaPlayer } from 'modules/arena/domain/entities/arena-player.entity.ts';
 import { ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { numberParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
-import ArenaDetailPageContent from './ArenaDetailPageContent.tsx';
+import ArenaChallengesList from './components/ArenaChallengesList.tsx';
+import ArenaCountdownCard from './components/ArenaCountdownCard.tsx';
+import ArenaInfoCard from './components/ArenaInfoCard.tsx';
+import ArenaPlayersTable from './components/ArenaPlayersTable.tsx';
+import ArenaQueueBanner from './components/ArenaQueueBanner.tsx';
+import ArenaStatisticsCard from './components/ArenaStatisticsCard.tsx';
+import ArenaWinnersCard from './components/ArenaWinnersCard.tsx';
 
 const PLAYERS_PAGE_SIZE = 10;
 const CHALLENGES_PAGE_SIZE = 10;
@@ -40,8 +43,6 @@ const ArenaDetailPage = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
 
-  const [selectedUsername, setSelectedUsername] = useState<string | undefined>();
-  const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
   const [transitionBanner, setTransitionBanner] = useState<{
     severity: 'info' | 'success';
     message: string;
@@ -107,10 +108,6 @@ const ArenaDetailPage = () => {
     id,
     playersFilters,
     liveRefreshOptions,
-  );
-  const { data: playerStatistics, isLoading: isStatisticsLoading } = useArenaPlayerStatistics(
-    id,
-    selectedUsername,
   );
   const {
     data: challenges,
@@ -184,45 +181,6 @@ const ArenaDetailPage = () => {
     stateContent.isUpcoming,
   ]);
 
-  const handleSelectPlayer = useCallback(
-    (player: ArenaPlayer) => {
-      if (stateContent.isUpcoming) return;
-      setSelectedUsername(player.username);
-      setIsStatsModalOpen(true);
-    },
-    [stateContent.isUpcoming],
-  );
-
-  const handleRegister = useCallback(async () => {
-    if (!id) return;
-    await arenaQueries.arenaRepository.register(id);
-    await revalidateArenaSections();
-  }, [id, revalidateArenaSections]);
-
-  const handleUnregister = useCallback(async () => {
-    if (!id) return;
-    await arenaQueries.arenaRepository.unregister(id);
-    await revalidateArenaSections();
-  }, [id, revalidateArenaSections]);
-
-  const handleNextChallenge = useCallback(async () => {
-    if (!id) return;
-    const result = await arenaQueries.arenaRepository.loadNextChallenge(id);
-    if (result?.challengeId) {
-      navigate(`${getResourceById(resources.Challenge, result.challengeId)}?arena=${id}`);
-    }
-  }, [id, navigate]);
-
-  const handlePauseToggle = useCallback(async () => {
-    if (!id || !arena) return;
-    if (arena.pause) {
-      await arenaQueries.arenaRepository.start(id);
-    } else {
-      await arenaQueries.arenaRepository.pause(id);
-    }
-    await revalidateArenaSections();
-  }, [arena, id, revalidateArenaSections]);
-
   useArenaLivePolling({
     arena,
     nextChallengeId: nextChallenge?.challengeId,
@@ -261,41 +219,84 @@ const ArenaDetailPage = () => {
 
   return (
     <Box sx={responsivePagePaddingSx}>
-      <ArenaDetailPageContent
-        arena={arena}
-        isArenaLoading={isArenaLoading}
-        transitionBanner={transitionBanner}
-        loginHref={loginHref}
-        isUpcoming={stateContent.isUpcoming}
-        isOngoing={stateContent.isOngoing}
-        isFinished={stateContent.isFinished}
-        insightsTitleKey={stateContent.insightsTitleKey}
-        statistics={statistics}
-        visibleHighlight={visibleHighlight}
-        topPlayers={topPlayers}
-        nextChallengeId={nextChallenge?.challengeId}
-        players={players}
-        isPlayersLoading={isPlayersLoading}
-        playersPage={playersPage ?? 1}
-        currentUsername={currentUser?.username}
-        selectedUsername={selectedUsername}
-        onPlayersPageChange={setPlayersPage}
-        onSelectPlayer={handleSelectPlayer}
-        onRegister={handleRegister}
-        onUnregister={handleUnregister}
-        onOpenCurrentChallenge={handleNextChallenge}
-        onPauseToggle={handlePauseToggle}
-        liveChallenges={liveChallenges}
-        isLiveChallengesLoading={isLiveChallengesLoading}
-        challenges={challenges}
-        challengesPage={state.challengesPage}
-        isChallengesLoading={isChallengesLoading}
-        onChallengesPageChange={(value) => setField('challengesPage', value)}
-        isStatsModalOpen={isStatsModalOpen}
-        onCloseStatsModal={() => setIsStatsModalOpen(false)}
-        playerStatistics={playerStatistics}
-        isStatisticsLoading={isStatisticsLoading}
-      />
+      <Stack direction="column" spacing={3}>
+        {transitionBanner ? <Alert severity={transitionBanner.severity}>{transitionBanner.message}</Alert> : null}
+
+        {isArenaLoading || !arena ? (
+          <Stack direction="column" spacing={2}>
+            <Skeleton variant="rounded" height={200} />
+            <Skeleton variant="rounded" height={200} />
+            <Skeleton variant="rounded" height={200} />
+          </Stack>
+        ) : (
+          <>
+            <ArenaCountdownCard arena={arena} />
+
+            <Grid container spacing={3}>
+              <Grid size={{ xs: 12, md: 4 }}>
+                <Stack direction="column" spacing={3}>
+                  <ArenaInfoCard
+                    arena={arena}
+                    loginHref={loginHref}
+                    onChanged={revalidateArenaSections}
+                  />
+                  <ArenaStatisticsCard
+                    arena={arena}
+                    stats={statistics}
+                    highlight={visibleHighlight}
+                    titleKey={stateContent.insightsTitleKey}
+                  />
+                </Stack>
+              </Grid>
+
+              <Grid size={{ xs: 12, md: 8 }}>
+                <Stack direction="column" spacing={3}>
+                  {stateContent.isFinished ? <ArenaWinnersCard topPlayers={topPlayers} /> : null}
+                  <ArenaQueueBanner
+                    arena={arena}
+                    arenaId={id}
+                    currentChallengeId={nextChallenge?.challengeId}
+                    onChanged={revalidateArenaSections}
+                  />
+                  <ArenaPlayersTable
+                    arenaId={id}
+                    data={players}
+                    loading={isPlayersLoading}
+                    page={players?.page ?? playersPage ?? 1}
+                    pageSize={PLAYERS_PAGE_SIZE}
+                    onPageChange={setPlayersPage}
+                    currentUsername={currentUser?.username}
+                    status={arena.status}
+                  />
+                  {!stateContent.isUpcoming ? (
+                    <>
+                      {stateContent.isOngoing ? (
+                        <ArenaChallengesList
+                          data={liveChallenges}
+                          loading={isLiveChallengesLoading}
+                          page={liveChallenges?.page ?? 1}
+                          onPageChange={() => undefined}
+                          titleKey="arena.liveChallenges"
+                          emptyKey="arena.noLiveChallenges"
+                          currentUsername={currentUser?.username}
+                          showPagination={false}
+                        />
+                      ) : null}
+                      <ArenaChallengesList
+                        data={challenges}
+                        loading={isChallengesLoading}
+                        page={challenges?.page ?? state.challengesPage}
+                        onPageChange={(value) => setField('challengesPage', value)}
+                        currentUsername={currentUser?.username}
+                      />
+                    </>
+                  ) : null}
+                </Stack>
+              </Grid>
+            </Grid>
+          </>
+        )}
+      </Stack>
     </Box>
   );
 };

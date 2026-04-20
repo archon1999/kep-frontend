@@ -3,11 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Logo from 'shared/components/common/Logo';
 import { cssVarRgba } from 'shared/lib/utils';
 
-type Props = {
-  total: number;
-};
-
-const ArenaListPageHeroCard = ({ total }: Props) => {
+const ArenaListPageHeroCard = () => {
   const { t } = useTranslation();
 
   return (
@@ -23,7 +19,10 @@ const ArenaListPageHeroCard = ({ total }: Props) => {
             {t('arena.title')}
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 720 }}>
-            {t('arena.listSubtitle', { count: total })}
+            {t('arena.listHeroSubtitle', {
+              defaultValue:
+                'Jump into short live arenas, race through rotating challenges, and climb the standings while the round is still moving.',
+            })}
           </Typography>
         </Stack>
       </CardContent>

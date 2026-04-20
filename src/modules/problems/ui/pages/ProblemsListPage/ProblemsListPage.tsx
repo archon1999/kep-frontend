@@ -67,11 +67,11 @@ import {
   ProblemListItem,
 } from 'modules/problems/domain/entities/problem.entity.ts';
 import { ProblemsListParams } from 'modules/problems/domain/ports/problems.repository.ts';
-import ProblemsListPageDifficultiesCard from './components/ProblemsListPageDifficultiesCard.tsx';
-import ProblemsListPageProblemsList from './components/ProblemsListPageProblemsList.tsx';
-import ProblemsListPageTabsCard from './components/ProblemsListPageTabsCard.tsx';
-import StudyPlanAdvisorDialog from './dialogs/ProblemsListPageStudyPlanAdvisorDialog.tsx';
-import StudyPlansShowcase from './components/ProblemsListPageStudyPlansShowcase.tsx';
+import ProblemDifficultiesCard from './components/ProblemDifficultiesCard.tsx';
+import ProblemList from './components/ProblemList.tsx';
+import ProblemTabsCard from './components/ProblemTabsCard.tsx';
+import ProblemStudyPlanAdvisorDialog from './dialogs/ProblemStudyPlanAdvisorDialog.tsx';
+import ProblemStudyPlansShowcase from './components/ProblemStudyPlansShowcase.tsx';
 
 const orderingOptions = [
   { label: 'problems.orderOldest', value: 'id' },
@@ -464,7 +464,7 @@ const ProblemsListPage = () => {
           </Grid>
           <Grid size={{ xs: 12, md: 8 }}>
             <Stack direction="column" spacing={3}>
-              <ProblemsListPageProblemsList
+              <ProblemList
                 problems={problems}
                 isLoading={isProblemsLoading}
                 filter={filter}
@@ -478,15 +478,15 @@ const ProblemsListPage = () => {
           <Grid size={{ xs: 12, md: 4 }}>
             <Stack direction="column" spacing={3}>
               {currentUser && (
-                <ProblemsListPageDifficultiesCard
+                <ProblemDifficultiesCard
                   difficulties={rating?.difficulties}
                   isLoading={isSummaryLoading}
                 />
               )}
 
-              {currentUser && studyPlans?.length && <StudyPlansShowcase studyPlans={studyPlans} />}
+              {currentUser && studyPlans?.length && <ProblemStudyPlansShowcase studyPlans={studyPlans} />}
 
-              <ProblemsListPageTabsCard
+              <ProblemTabsCard
                 activeTab={routeState.activeTab}
                 onTabChange={(value) => setRouteField('activeTab', value as never)}
                 attempts={{
@@ -507,7 +507,7 @@ const ProblemsListPage = () => {
         </Grid>
       </Box>
 
-      <StudyPlanAdvisorDialog
+      <ProblemStudyPlanAdvisorDialog
         open={isAdvisorOpen}
         onClose={() => setIsAdvisorOpen(false)}
         studyPlans={studyPlans ?? []}

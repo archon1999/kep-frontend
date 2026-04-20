@@ -9,7 +9,7 @@ import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx'
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { stringParam } from 'shared/lib/queryParams';
-import { mapDuelsRatingPageTableRows } from './DuelsRatingPage.mapper.ts';
+import { mapDuelsRatingPageTableRows } from 'modules/duels/data-access/mappers/duels-rating-page.mapper.ts';
 
 const DuelsRatingPageTable = () => {
   const { t } = useTranslation();
@@ -18,7 +18,6 @@ const DuelsRatingPageTable = () => {
     onPaginationModelChange,
     pageParams: { page, pageSize },
   } = useGridPagination({
-    initialPageSize: 12,
     querySync: {
       pageKey: 'page',
       pageSizeKey: 'pageSize',

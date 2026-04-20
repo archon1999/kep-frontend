@@ -1,5 +1,5 @@
-import DuelsListPageListSection from './components/DuelsListPageListSection.tsx';
+import DuelListSection from './components/DuelListSection.tsx';
 
-const DuelsListPageHistoryTab = () => <DuelsListPageListSection />;
+const DuelsListPageHistoryTab = () => <DuelListSection />;
 
 export default DuelsListPageHistoryTab;

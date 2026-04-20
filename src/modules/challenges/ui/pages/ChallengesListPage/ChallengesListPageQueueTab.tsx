@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Button, Card, CardContent, Grid, Skeleton, Stack, Typography } from '@mui/material';
 import { ChallengeCall } from 'modules/challenges/domain';
-import ChallengesListPageCallCard from './components/ChallengesListPageCallCard.tsx';
+import ChallengeCallCard from './components/ChallengeCallCard.tsx';
 
 type ChallengesListPageQueueTabProps = {
   calls?: ChallengeCall[];
@@ -45,7 +45,7 @@ const ChallengesListPageQueueTab = ({
             ))
           : safeCalls.map((call) => (
               <Grid key={call.id} size={{ xs: 12, sm: 6, lg: 3 }}>
-                <ChallengesListPageCallCard
+                <ChallengeCallCard
                   challengeCall={call}
                   onAccepted={onAccepted}
                   onRemoved={onRemoved}

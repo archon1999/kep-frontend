@@ -14,7 +14,7 @@ import {
   useDuelPresets,
   useDuelTypes,
 } from 'modules/duels/application/queries.ts';
-import DuelsListPageCreateCallDialog from './dialogs/DuelsListPageCreateCallDialog.tsx';
+import DuelCreateCallDialog from './dialogs/DuelCreateCallDialog.tsx';
 
 type HeroQueryState = {
   activeTab: 'my_duels' | 'waiting_room' | 'history' | '';
@@ -93,7 +93,7 @@ const DuelsListPageHeroCard = () => {
         </Stack>
       </Card>
 
-      <DuelsListPageCreateCallDialog
+      <DuelCreateCallDialog
         open={isCreateDialogOpen}
         presets={presets}
         duelTypes={duelTypes}

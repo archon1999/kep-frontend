@@ -1,13 +1,18 @@
+import { useEffect, useMemo, useState } from 'react';
 import { Box, Button, Chip, Divider, Stack, Tooltip, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import AppbarActionItems from 'app/layouts/main-layout/common/AppbarActionItems';
 import { resources } from 'app/routes/resources';
+import {
+  Duel,
+  DuelDetailPageNavigationProblem,
+} from 'modules/duels/domain/index.ts';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo.tsx';
-import { Duel } from 'modules/duels/domain/index.ts';
-import { DuelDetailPageNavigationProblem } from './DuelDetailPage.models.ts';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { stringParam } from 'shared/lib/queryParams';
 
 export type DuelDetailPageHeaderProps = {
   duel: Duel;
@@ -22,6 +27,94 @@ export type DuelDetailPageHeaderProps = {
   onRun: () => void;
   onSubmit: () => void;
   onSelectProblem: (symbol: string) => void;
+};
+
+type UseDuelDetailPageHeaderStateParams = {
+  duel?: Duel | null;
+  navigationProblems: DuelDetailPageNavigationProblem[];
+};
+
+const countdown = (value?: string | null) => {
+  if (!value) return '';
+  const target = new Date(value).getTime();
+  if (Number.isNaN(target)) return '';
+
+  const seconds = Math.max(0, Math.floor((target - Date.now()) / 1000));
+  const hours = String(Math.floor(seconds / 3600)).padStart(2, '0');
+  const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+  const rest = String(seconds % 60).padStart(2, '0');
+  return `${hours}:${minutes}:${rest}`;
+};
+
+export const useDuelDetailPageHeaderState = ({
+  duel,
+  navigationProblems,
+}: UseDuelDetailPageHeaderStateParams) => {
+  const { t } = useTranslation();
+  const { state, setField } = useRouteQueryState<{ problem: string }>({
+    defaults: {
+      problem: '',
+    },
+    schema: {
+      problem: {
+        ...stringParam(),
+        param: 'problem',
+      },
+    },
+    historyByKey: {
+      problem: 'push',
+    },
+  });
+  const [timerText, setTimerText] = useState('');
+
+  const currentIndex = useMemo(
+    () => navigationProblems.findIndex((problem) => problem.symbol === state.problem),
+    [navigationProblems, state.problem],
+  );
+  const prevProblem = currentIndex > 0 ? navigationProblems[currentIndex - 1] : null;
+  const nextProblem =
+    currentIndex >= 0 && currentIndex < navigationProblems.length - 1
+      ? navigationProblems[currentIndex + 1]
+      : null;
+
+  useEffect(() => {
+    if (!duel) {
+      setTimerText('');
+      return;
+    }
+
+    if (duel.status === 1) {
+      setTimerText(t('duels.status.finished'));
+      return;
+    }
+
+    const target = duel.status === -1 ? duel.startTime : duel.finishTime;
+    if (!target) {
+      setTimerText('');
+      return;
+    }
+
+    const render = () => {
+      const prefix = duel.status === -1 ? t('duels.startsIn') : t('duels.timeLeft');
+      setTimerText(`${prefix}: ${countdown(target)}`);
+    };
+
+    render();
+    const interval = window.setInterval(render, 1000);
+    return () => window.clearInterval(interval);
+  }, [duel, t]);
+
+  if (!duel) {
+    return null;
+  }
+
+  return {
+    duel,
+    timerText,
+    prevProblem,
+    nextProblem,
+    onSelectProblem: (symbol: string) => setField('problem', symbol),
+  };
 };
 
 const DuelDetailPageHeader = ({
