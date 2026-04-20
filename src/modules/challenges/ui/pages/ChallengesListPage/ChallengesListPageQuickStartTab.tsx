@@ -18,7 +18,7 @@ import { Chapter } from 'modules/testing/domain/entities/chapter.entity.ts';
 
 type QuickStartPreset = { timeSeconds: number; questionsCount: number };
 
-type ChallengesQuickStartTabProps = {
+type ChallengesListPageQuickStartTabProps = {
   quickStarts: QuickStartPreset[];
   chapters?: Chapter[];
   isCreating: boolean;
@@ -27,14 +27,14 @@ type ChallengesQuickStartTabProps = {
   onCreateCustom: (payload: { timeSeconds: number; questionsCount: number; chapters?: number[] }) => void | Promise<void>;
 };
 
-const ChallengesQuickStartTab = ({
+const ChallengesListPageQuickStartTab = ({
   quickStarts,
   chapters,
   isCreating,
   isAccepting,
   onQuickStart,
   onCreateCustom,
-}: ChallengesQuickStartTabProps) => {
+}: ChallengesListPageQuickStartTabProps) => {
   const { t } = useTranslation();
   const [customCall, setCustomCall] = useState({
     timeSeconds: 40,
@@ -196,4 +196,4 @@ const ChallengesQuickStartTab = ({
   );
 };
 
-export default ChallengesQuickStartTab;
+export default ChallengesListPageQuickStartTab;

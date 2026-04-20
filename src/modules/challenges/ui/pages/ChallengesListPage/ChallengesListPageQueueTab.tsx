@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { Button, Card, CardContent, Grid, Skeleton, Stack, Typography } from '@mui/material';
-import { ChallengeCall } from '../../domain';
-import ChallengeCallCard from './ChallengeCallCard.tsx';
+import { ChallengeCall } from 'modules/challenges/domain';
+import ChallengesListPageCallCard from './components/ChallengesListPageCallCard.tsx';
 
-type ChallengesQueueTabProps = {
+type ChallengesListPageQueueTabProps = {
   calls?: ChallengeCall[];
   isLoading: boolean;
   onRefresh: () => void;
@@ -11,13 +11,13 @@ type ChallengesQueueTabProps = {
   onRemoved: () => void;
 };
 
-const ChallengesQueueTab = ({
+const ChallengesListPageQueueTab = ({
   calls,
   isLoading,
   onRefresh,
   onAccepted,
   onRemoved,
-}: ChallengesQueueTabProps) => {
+}: ChallengesListPageQueueTabProps) => {
   const { t } = useTranslation();
   const safeCalls = Array.isArray(calls) ? calls : [];
 
@@ -45,7 +45,7 @@ const ChallengesQueueTab = ({
             ))
           : safeCalls.map((call) => (
               <Grid key={call.id} size={{ xs: 12, sm: 6, lg: 3 }}>
-                <ChallengeCallCard
+                <ChallengesListPageCallCard
                   challengeCall={call}
                   onAccepted={onAccepted}
                   onRemoved={onRemoved}
@@ -68,4 +68,4 @@ const ChallengesQueueTab = ({
   );
 };
 
-export default ChallengesQueueTab;
+export default ChallengesListPageQueueTab;

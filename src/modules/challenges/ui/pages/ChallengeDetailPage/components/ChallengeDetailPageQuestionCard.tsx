@@ -12,9 +12,11 @@ import CodeInputQuestion from 'modules/testing/ui/pages/test-pass/components/Cod
 import ConformityQuestion from 'modules/testing/ui/pages/test-pass/components/ConformityQuestion.tsx';
 import OrderingQuestion from 'modules/testing/ui/pages/test-pass/components/OrderingQuestion.tsx';
 import ClassificationQuestion from 'modules/testing/ui/pages/test-pass/components/ClassificationQuestion.tsx';
-import ChessPuzzleQuestion, { ChessPuzzleQuestionHandle } from './ChessPuzzleQuestion.tsx';
+import ChallengeDetailPageChessPuzzleQuestion, {
+  ChallengeDetailPageChessPuzzleQuestionHandle,
+} from './ChallengeDetailPageChessPuzzleQuestion.tsx';
 
-interface ChallengeQuestionCardProps {
+interface ChallengeDetailPageQuestionCardProps {
   challengeId?: number;
   questionNumber?: number;
   question?: Question;
@@ -23,7 +25,7 @@ interface ChallengeQuestionCardProps {
   onSubmit?: (payload: { answer: unknown; isFinish?: boolean; forceFail?: boolean }) => Promise<void> | void;
 }
 
-export interface ChallengeQuestionCardHandle {
+export interface ChallengeDetailPageQuestionCardHandle {
   submit: (options?: { isFinish?: boolean; force?: boolean }) => void;
 }
 
@@ -53,11 +55,14 @@ const buildChallengeAnswer = (
   }
 };
 
-const ChallengeQuestionCard = forwardRef<ChallengeQuestionCardHandle, ChallengeQuestionCardProps>(
+const ChallengeDetailPageQuestionCard = forwardRef<
+  ChallengeDetailPageQuestionCardHandle,
+  ChallengeDetailPageQuestionCardProps
+>(
   ({ challengeId, questionNumber, question, onSubmit, disabled, isSubmitting }, ref) => {
-  const { t } = useTranslation();
-  const [questionStates, setQuestionStates] = useState<Record<number, QuestionState>>({});
-  const chessQuestionRef = useRef<ChessPuzzleQuestionHandle>(null);
+    const { t } = useTranslation();
+    const [questionStates, setQuestionStates] = useState<Record<number, QuestionState>>({});
+    const chessQuestionRef = useRef<ChallengeDetailPageChessPuzzleQuestionHandle>(null);
 
   useEffect(() => {
     if (!question || question.type === QuestionType.ChessPuzzle) return;
@@ -236,7 +241,7 @@ const ChallengeQuestionCard = forwardRef<ChallengeQuestionCardHandle, ChallengeQ
       }
       case QuestionType.ChessPuzzle:
         return (
-          <ChessPuzzleQuestion
+          <ChallengeDetailPageChessPuzzleQuestion
             ref={chessQuestionRef}
             challengeId={challengeId}
             questionNumber={questionNumber}
@@ -303,4 +308,4 @@ const ChallengeQuestionCard = forwardRef<ChallengeQuestionCardHandle, ChallengeQ
   );
 });
 
-export default ChallengeQuestionCard;
+export default ChallengeDetailPageQuestionCard;

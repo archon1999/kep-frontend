@@ -13,14 +13,17 @@ import {
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import {
+  useAcceptChallengeCall,
+  useDeleteChallengeCall,
+} from 'modules/challenges/application/mutations.ts';
+import { ChallengeCall, ChallengeQuestionTimeType } from 'modules/challenges/domain';
 import UserPopover from 'modules/users/ui/components/UserPopover.tsx';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
-import { useAcceptChallengeCall, useDeleteChallengeCall } from '../../application/mutations.ts';
-import { ChallengeCall, ChallengeQuestionTimeType } from '../../domain';
 
 dayjs.extend(relativeTime);
 
-interface ChallengeCallCardProps {
+interface ChallengesListPageCallCardProps {
   challengeCall: ChallengeCall;
   onAccepted?: (challengeId?: number) => void;
   onRemoved?: () => void;
@@ -30,7 +33,11 @@ const formatDuration = (seconds: number) => {
   return `${seconds}s`;
 };
 
-const ChallengeCallCard = ({ challengeCall, onAccepted, onRemoved }: ChallengeCallCardProps) => {
+const ChallengesListPageCallCard = ({
+  challengeCall,
+  onAccepted,
+  onRemoved,
+}: ChallengesListPageCallCardProps) => {
   dayjs.extend(relativeTime);
   const { t } = useTranslation();
   const { currentUser } = useAuth();
@@ -134,4 +141,4 @@ const ChallengeCallCard = ({ challengeCall, onAccepted, onRemoved }: ChallengeCa
   );
 };
 
-export default ChallengeCallCard;
+export default ChallengesListPageCallCard;

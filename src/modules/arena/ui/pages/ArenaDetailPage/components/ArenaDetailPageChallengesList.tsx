@@ -1,6 +1,6 @@
 import { Card, CardContent, Grid, Pagination, Skeleton, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import ChallengeCard from 'modules/challenges/ui/components/ChallengeCard.tsx';
+import ChallengeCard from 'modules/challenges/ui/shared/components/ChallengeCard.tsx';
 import { Challenge, ChallengePlayer, ChallengeQuestionTimeType, ChallengeStatus } from 'modules/challenges/domain';
 import { ArenaChallenge } from 'modules/arena/domain/entities/arena-challenge.entity.ts';
 import { PageResult } from 'modules/arena/domain/ports/arena.repository.ts';

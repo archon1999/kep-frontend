@@ -1,48 +1,29 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useBlocker, useNavigate, useParams, useSearchParams } from 'react-router';
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Stack,
-  Typography,
-} from '@mui/material';
-import Grid from '@mui/material/Grid';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { resources } from 'app/routes/resources';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { QuestionType } from 'modules/testing/domain';
-import KepIcon from 'shared/components/base/KepIcon.tsx';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
-import { toast } from 'sonner';
 import {
   useApplyChallengeAntiCheatPenalty,
   useStartChallenge,
   useSubmitChallengeAnswer,
-} from '../../application/mutations.ts';
-import { useChallengeDetail } from '../../application/queries.ts';
-import { sendChallengeAntiCheatPenaltyKeepalive } from '../../data-access/api/challenges.client.ts';
-import { ChallengeQuestionTimeType, ChallengeStatus } from '../../domain';
-import {
-  ChallengePenaltyReason,
-} from '../../domain/ports/challenges.repository.ts';
-import ChallengeCountdown from '../components/ChallengeCountdown.tsx';
-import ChallengeQuestionCard, {
-  ChallengeQuestionCardHandle,
-} from '../components/ChallengeQuestionCard.tsx';
-import ChallengeResultsCard from '../components/ChallengeResultsCard.tsx';
-import ChallengeUserChip from '../components/ChallengeUserChip.tsx';
-import { clearChallengeChessProgress } from '../lib/chessPuzzleProgress.ts';
+} from 'modules/challenges/application/mutations.ts';
+import { useChallengeDetail } from 'modules/challenges/application/queries.ts';
+import { sendChallengeAntiCheatPenaltyKeepalive } from 'modules/challenges/data-access/api/challenges.client.ts';
+import { ChallengeQuestionTimeType, ChallengeStatus } from 'modules/challenges/domain';
+import { ChallengePenaltyReason } from 'modules/challenges/domain/ports/challenges.repository.ts';
+import { responsivePagePaddingSx } from 'shared/lib/styles';
+import { toast } from 'sonner';
+import ChallengeDetailPageContent from './ChallengeDetailPageContent.tsx';
+import { ChallengeDetailPageQuestionCardHandle } from './components/ChallengeDetailPageQuestionCard.tsx';
+import ChallengeDetailPageBlurDialog from './dialogs/ChallengeDetailPageBlurDialog.tsx';
+import ChallengeDetailPageFinishDialog from './dialogs/ChallengeDetailPageFinishDialog.tsx';
+import ChallengeDetailPageStartDialog from './dialogs/ChallengeDetailPageStartDialog.tsx';
+import { clearChallengeChessProgress } from './lib/chessPuzzleProgress.ts';
 
 dayjs.extend(relativeTime);
 
@@ -102,7 +83,7 @@ const ChallengeDetailPage = () => {
       : undefined,
   );
 
-  const questionCardRef = useRef<ChallengeQuestionCardHandle>(null);
+  const questionCardRef = useRef<ChallengeDetailPageQuestionCardHandle>(null);
   const finishHandledRef = useRef(false);
   const timeExpiredHandledRef = useRef(false);
   const blurCheckTimeoutRef = useRef<number | null>(null);
@@ -516,152 +497,33 @@ const ChallengeDetailPage = () => {
         minHeight: hideBackgroundContent ? '70vh' : undefined,
       }}
     >
-      {!hideBackgroundContent ? (
-        <Stack spacing={3} direction="column">
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 3 }}>
-              <ChallengeResultsCard challenge={challenge} />
-            </Grid>
+      <ChallengeDetailPageContent
+        challenge={challenge}
+        hideBackgroundContent={hideBackgroundContent}
+        showQuestion={Boolean(showQuestion)}
+        question={question}
+        questionCardRef={questionCardRef}
+        onSubmit={handleSubmit}
+        submitting={submitting}
+        secondsLeft={secondsLeft}
+      />
 
-            <Grid size={{ xs: 12, md: 6 }}>
-              {showQuestion ? (
-                <ChallengeQuestionCard
-                  ref={questionCardRef}
-                  challengeId={challenge.id}
-                  questionNumber={challenge.nextQuestion?.number}
-                  question={question}
-                  onSubmit={handleSubmit}
-                  disabled={submitting}
-                  isSubmitting={submitting}
-                />
-              ) : (
-                <Card variant="outlined" sx={{ height: '100%' }}>
-                  <CardContent>
-                    <Stack spacing={2}>
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <KepIcon name="challenge-time" fontSize={20} color="primary.main" />
-                        <Typography variant="subtitle1" fontWeight={700}>
-                          {challenge.status === ChallengeStatus.Finished
-                            ? t('challenges.statusFinished')
-                            : t('challenges.statusNotStarted')}
-                        </Typography>
-                      </Stack>
-                      <Typography variant="body2" color="text.secondary">
-                        {challenge.status === ChallengeStatus.Finished
-                          ? t('challenges.finishedDescription')
-                          : t('challenges.waitingForStart')}
-                      </Typography>
-                    </Stack>
-                  </CardContent>
-                </Card>
-              )}
-            </Grid>
-
-            <Grid size={{ xs: 12, md: 3 }}>
-              <Stack direction="column" spacing={2} height="100%">
-                <ChallengeCountdown
-                  secondsLeft={secondsLeft}
-                  totalSeconds={challenge.timeSeconds}
-                  mode={challenge.questionTimeType}
-                />
-              </Stack>
-            </Grid>
-          </Grid>
-        </Stack>
-      ) : null}
-
-      <Dialog
+      <ChallengeDetailPageStartDialog
         open={startDialogOpen}
-        onClose={() => undefined}
-        disableEscapeKeyDown
-        fullWidth
-        maxWidth="sm"
-        slotProps={{
-          backdrop: {
-            sx: {
-              backgroundColor: 'rgba(10, 16, 24, 0.72)',
-              backdropFilter: 'blur(6px)',
-            },
-          },
-        }}
-      >
-        <DialogContent sx={{ py: 4 }}>
-          <Stack spacing={2.5}>
-            <Stack direction="column" spacing={1} alignItems="center" textAlign="center">
-              <Avatar sx={{ width: 56, height: 56, bgcolor: 'primary.lighter', color: 'primary.main' }}>
-                <KepIcon name="challenge-time" fontSize={24} color="primary.main" />
-              </Avatar>
-              <Typography variant="h5" fontWeight={900}>
-                {t('challenges.startDialogTitle')}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {t('challenges.startDialogSubtitle')}
-              </Typography>
-            </Stack>
+        challenge={challenge}
+        timerModeLabel={timerModeLabel}
+        starting={starting}
+        onStart={handleStart}
+      />
 
-            <Stack direction="row" spacing={1} justifyContent="center" flexWrap="wrap" useFlexGap>
-              <Chip
-                label={challenge.rated ? t('challenges.rated') : t('challenges.unrated')}
-                variant="outlined"
-              />
-              <Chip label={t('challenges.timeLimitShort', { seconds: challenge.timeSeconds })} />
-              <Chip label={t('challenges.questionsCount', { count: challenge.questionsCount })} />
-              <Chip label={timerModeLabel} />
-            </Stack>
+      <ChallengeDetailPageFinishDialog
+        open={finishDialogOpen}
+        challenge={challenge}
+        onClose={handleStayOnPage}
+        onBackToList={handleFinishClose}
+      />
 
-            <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
-              <ChallengeUserChip player={challenge.playerFirst} />
-              <Typography variant="h6" fontWeight={900} color="primary.main">
-                VS
-              </Typography>
-              <ChallengeUserChip player={challenge.playerSecond} align="right" />
-            </Stack>
-
-            <Stack direction="row" justifyContent="center">
-              <Button variant="contained" onClick={handleStart} disabled={starting}>
-                {t('challenges.start')}
-              </Button>
-            </Stack>
-          </Stack>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={finishDialogOpen} onClose={handleStayOnPage} fullWidth maxWidth="sm">
-        <DialogTitle>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <KepIcon name="challenge" fontSize={20} color="success.main" />
-            <Typography variant="h6">{t('challenges.finishDialogTitle')}</Typography>
-          </Stack>
-        </DialogTitle>
-        <DialogContent dividers>
-          <ChallengeResultsCard challenge={challenge} />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleStayOnPage}>{t('common.close')}</Button>
-          <Button variant="contained" onClick={handleFinishClose}>
-            {t('challenges.backToList')}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog open={blurDialogOpen} onClose={handleBlurDialogClose} fullWidth maxWidth="sm">
-        <DialogTitle>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <KepIcon name="challenge" fontSize={20} color="error.main" />
-            <Typography variant="h6">{t('challenges.blurError')}</Typography>
-          </Stack>
-        </DialogTitle>
-        <DialogContent dividers>
-          <Typography variant="body2" color="text.secondary">
-            {t('challenges.blurError')}
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" onClick={handleBlurDialogClose}>
-            {t('common.close')}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <ChallengeDetailPageBlurDialog open={blurDialogOpen} onClose={handleBlurDialogClose} />
     </Box>
   );
 };

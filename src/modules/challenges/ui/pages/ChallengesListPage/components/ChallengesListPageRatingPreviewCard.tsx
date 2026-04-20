@@ -3,20 +3,20 @@ import { useNavigate } from 'react-router';
 import { Button, Card, CardContent, Skeleton, Stack, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import { resources } from 'app/routes/resources';
+import { ChallengeRatingRow } from 'modules/challenges/domain';
+import { PageResult } from 'modules/challenges/domain/ports/challenges.repository.ts';
 import UserPopover from 'modules/users/ui/components/UserPopover.tsx';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
-import { ChallengeRatingRow } from '../../domain';
-import { PageResult } from '../../domain/ports/challenges.repository.ts';
 
-type ChallengesRatingPreviewCardProps = {
+type ChallengesListPageRatingPreviewCardProps = {
   ratingPreview?: PageResult<ChallengeRatingRow>;
   isLoading: boolean;
 };
 
-const ChallengesRatingPreviewCard = ({
+const ChallengesListPageRatingPreviewCard = ({
   ratingPreview,
   isLoading,
-}: ChallengesRatingPreviewCardProps) => {
+}: ChallengesListPageRatingPreviewCardProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -41,7 +41,7 @@ const ChallengesRatingPreviewCard = ({
                 <Skeleton key={index} variant="rectangular" height={52} sx={{ borderRadius: 2 }} />
               ))
             : (ratingPreview?.data ?? []).map((row, index) => (
-                <Card background={0}>
+                <Card key={row.username} background={0}>
                   <Stack paddingX={2} paddingY={1} direction="row">
                     <Stack width={1} direction="row" spacing={1.25} alignItems="center">
                       <Typography variant="body2" fontWeight={600}>
@@ -81,4 +81,4 @@ const ChallengesRatingPreviewCard = ({
   );
 };
 
-export default ChallengesRatingPreviewCard;
+export default ChallengesListPageRatingPreviewCard;

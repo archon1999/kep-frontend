@@ -20,7 +20,7 @@ import {
 } from '@mui/material';
 import { Chess, Move, Square } from 'chess.js';
 import { ChessPuzzlePayload, Question, QuestionType } from 'modules/testing/domain';
-import { ChessChallengeResult } from '../../domain/ports/challenges.repository.ts';
+import { ChessChallengeResult } from 'modules/challenges/domain/ports/challenges.repository.ts';
 import {
   clearChessPuzzleProgress,
   getChessPuzzleProgressKey,
@@ -37,7 +37,7 @@ interface PendingPromotionMove {
   options: PromotionPiece[];
 }
 
-interface ChessPuzzleQuestionProps {
+interface ChallengeDetailPageChessPuzzleQuestionProps {
   challengeId?: number;
   questionNumber?: number;
   question: Question;
@@ -50,7 +50,7 @@ interface ChessPuzzleQuestionProps {
   }) => Promise<void> | void;
 }
 
-export interface ChessPuzzleQuestionHandle {
+export interface ChallengeDetailPageChessPuzzleQuestionHandle {
   forceFail: () => void;
 }
 
@@ -91,7 +91,10 @@ const getUniqueNextSolutionMove = (solutionLines: string[][], playedLine: string
   return candidateMoves.length === 1 ? candidateMoves[0] : null;
 };
 
-const ChessPuzzleQuestion = forwardRef<ChessPuzzleQuestionHandle, ChessPuzzleQuestionProps>(
+const ChallengeDetailPageChessPuzzleQuestion = forwardRef<
+  ChallengeDetailPageChessPuzzleQuestionHandle,
+  ChallengeDetailPageChessPuzzleQuestionProps
+>(
   ({ challengeId, questionNumber, question, disabled, isSubmitting, onSubmit }, ref) => {
     const { t } = useTranslation();
     const puzzle = useMemo<ChessPuzzlePayload | null>(() => {
@@ -414,4 +417,4 @@ const ChessPuzzleQuestion = forwardRef<ChessPuzzleQuestionHandle, ChessPuzzleQue
   },
 );
 
-export default ChessPuzzleQuestion;
+export default ChallengeDetailPageChessPuzzleQuestion;

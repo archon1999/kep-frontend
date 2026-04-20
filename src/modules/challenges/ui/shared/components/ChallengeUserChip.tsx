@@ -1,6 +1,6 @@
 import { Stack, Typography } from '@mui/material';
+import { ChallengePlayer } from 'modules/challenges/domain';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
-import { ChallengePlayer } from '../../domain';
 
 interface ChallengeUserChipProps {
   player: ChallengePlayer;

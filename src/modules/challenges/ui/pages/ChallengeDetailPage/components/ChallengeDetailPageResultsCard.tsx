@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, Divider, Stack, Typography } from '@mui/material';
+import { Challenge, ChallengeStatus } from 'modules/challenges/domain';
+import ChallengeUserChip from 'modules/challenges/ui/shared/components/ChallengeUserChip.tsx';
 import KepIcon from 'shared/components/base/KepIcon.tsx';
 import ChallengeChip, { ChallengeChipTone } from 'shared/components/challenges/ChallengeChip.tsx';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
-import { Challenge, ChallengeStatus } from '../../domain';
-import ChallengeUserChip from './ChallengeUserChip.tsx';
 
-interface ChallengeResultsCardProps {
+interface ChallengeDetailPageResultsCardProps {
   challenge: Challenge;
 }
 
@@ -43,7 +43,7 @@ const RatingDelta = ({ delta }: { delta: number }) => (
   </Stack>
 );
 
-const ChallengeResultsCard = ({ challenge }: ChallengeResultsCardProps) => {
+const ChallengeDetailPageResultsCard = ({ challenge }: ChallengeDetailPageResultsCardProps) => {
   const { t } = useTranslation();
   const isFinished = challenge.status === ChallengeStatus.Finished;
   const perQuestionResults = Array.from({ length: challenge.questionsCount }, (_, index) => ({
@@ -214,4 +214,4 @@ const ChallengeResultsCard = ({ challenge }: ChallengeResultsCardProps) => {
   );
 };
 
-export default ChallengeResultsCard;
+export default ChallengeDetailPageResultsCard;

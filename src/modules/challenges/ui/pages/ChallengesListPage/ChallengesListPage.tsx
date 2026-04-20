@@ -1,34 +1,34 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-import { Box, Button, Card, CardContent, Divider, Stack, Tab, Tabs, Typography } from '@mui/material';
-import Grid from '@mui/material/Grid';
+import { Box, Card, CardContent, Divider, Stack, Tab, Tabs } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceById, resources } from 'app/routes/resources';
 import { authPaths } from 'app/routes/route-config';
-import { useArenasList } from 'modules/arena/application/queries.ts';
-import { ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
-import KepIcon from 'shared/components/base/KepIcon';
-import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
-import { toast } from 'sonner';
-import { useAcceptChallengeCall, useCreateChallengeCall } from '../../application/mutations.ts';
+import {
+  useAcceptChallengeCall,
+  useCreateChallengeCall,
+} from 'modules/challenges/application/mutations.ts';
 import {
   useChallengeCalls,
   useChallengeChapters,
   useChallengeUserRating,
   useChallengesList,
   useChallengesRating,
-} from '../../application/queries.ts';
-import { extractList } from '../../data-access/mappers/challenge.mapper.ts';
-import { ChallengeCall } from '../../domain';
-import ChallengesHistoryTab from '../components/ChallengesHistoryTab.tsx';
-import ChallengesQueueTab from '../components/ChallengesQueueTab.tsx';
-import ChallengesQuickStartTab from '../components/ChallengesQuickStartTab.tsx';
-import ChallengesRatingPreviewCard from '../components/ChallengesRatingPreviewCard.tsx';
-import ChallengesArenaWinnersCard from '../components/ChallengesArenaWinnersCard.tsx';
+} from 'modules/challenges/application/queries.ts';
+import { extractList } from 'modules/challenges/data-access/mappers/challenge.mapper.ts';
+import { ChallengeCall } from 'modules/challenges/domain';
+import { useArenasList } from 'modules/arena/application/queries.ts';
+import { ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
+import { responsivePagePaddingSx } from 'shared/lib/styles';
+import { toast } from 'sonner';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { booleanFlagParam, enumParam, numberParam } from 'shared/lib/queryParams';
+import ChallengesListPageHeroCard from './ChallengesListPageHeroCard.tsx';
+import ChallengesListPageHistoryTab from './ChallengesListPageHistoryTab.tsx';
+import ChallengesListPageInsightsSection from './ChallengesListPageInsightsSection.tsx';
+import ChallengesListPageQueueTab from './ChallengesListPageQueueTab.tsx';
+import ChallengesListPageQuickStartTab from './ChallengesListPageQuickStartTab.tsx';
 
 type ChallengesTab = 'quickstart' | 'queue' | 'history';
 
@@ -155,83 +155,10 @@ const ChallengesListPage = () => {
   return (
     <Box sx={responsivePagePaddingSx}>
       <Stack spacing={4} direction="column">
-        <Card
-          sx={{
-            borderRadius: 4,
-            p: { xs: 2.5, md: 3 },
-            background: 'linear-gradient(120deg, rgba(25,118,210,0.08), rgba(0,171,85,0.12))',
-            border: '1px solid',
-            borderColor: 'primary.lighter',
-          }}
-        >
-          <Stack
-            direction={{ xs: 'column', md: 'row' }}
-            spacing={3}
-            alignItems={{ xs: 'flex-start', md: 'center' }}
-            justifyContent="space-between"
-          >
-            <Stack spacing={1.5} direction="column">
-              <Stack direction="row" spacing={1} alignItems="center">
-                <KepIcon name="challenges" fontSize={30} color="primary.main" />
-                <Typography variant="h4" fontWeight={800}>
-                  {t('challenges.title')}
-                </Typography>
-              </Stack>
-              <Typography variant="body1" color="text.secondary">
-                {t('challenges.subtitle')}
-              </Typography>
-            </Stack>
-
-            <Stack>
-              <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                <Button
-                  variant="text"
-                  startIcon={<KepIcon name="challenge-time" fontSize={18} />}
-                  onClick={() => setField('activeTab', 'quickstart')}
-                >
-                  {t('challenges.quickStartTitle')}
-                </Button>
-                <Button
-                  variant="text"
-                  startIcon={<KepIcon name="ranking" fontSize={18} />}
-                  onClick={() => navigate(resources.ChallengesRating)}
-                >
-                  {t('challenges.viewRating')}
-                </Button>
-                <Button
-                  variant="text"
-                  startIcon={<KepIcon name="statistics" fontSize={18} />}
-                  onClick={() => navigate(resources.ChallengesUserStatistics)}
-                >
-                  {t('challenges.statisticsTitle')}
-                </Button>
-              </Stack>
-
-              {userRating && (
-                <>
-                  <Stack direction="row" spacing={1} justifyContent="flex-end" alignItems="center">
-                    <Typography variant="h3" fontWeight={800}>
-                      {userRating.rating}
-                    </Typography>
-                    <ChallengesRatingChip title={userRating.rankTitle} />
-                    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                      <Typography color="success">
-                        {userRating.wins}W
-                      </Typography>
-                      <Typography color="textSecondary">
-                        {userRating.draws}D
-                      </Typography>
-                      <Typography color="error">
-                        {userRating.losses}L
-                      </Typography>
-                    </Stack>
-
-                  </Stack>
-                </>
-              )}
-            </Stack>
-          </Stack>
-        </Card>
+        <ChallengesListPageHeroCard
+          userRating={userRating}
+          onOpenQuickStart={() => setField('activeTab', 'quickstart')}
+        />
 
         <Card variant="outlined" sx={{ borderRadius: 3 }}>
           <CardContent sx={{ pb: 0 }}>
@@ -249,7 +176,7 @@ const ChallengesListPage = () => {
           <Divider />
           <Box sx={{ p: { xs: 2, md: 3 } }}>
             {state.activeTab === 'quickstart' && (
-              <ChallengesQuickStartTab
+              <ChallengesListPageQuickStartTab
                 quickStarts={quickStarts}
                 chapters={chapters}
                 isCreating={isCreating}
@@ -259,7 +186,7 @@ const ChallengesListPage = () => {
               />
             )}
             {state.activeTab === 'queue' && (
-              <ChallengesQueueTab
+              <ChallengesListPageQueueTab
                 calls={normalizedCalls}
                 isLoading={isCallsLoading}
                 onRefresh={mutateCalls}
@@ -268,7 +195,7 @@ const ChallengesListPage = () => {
               />
             )}
             {state.activeTab === 'history' && (
-              <ChallengesHistoryTab
+              <ChallengesListPageHistoryTab
                 challengesPage={challengesPage}
                 isLoading={isChallengesLoading}
                 page={state.page}
@@ -282,15 +209,12 @@ const ChallengesListPage = () => {
           </Box>
         </Card>
 
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <ChallengesRatingPreviewCard ratingPreview={ratingPreview} isLoading={isRatingLoading} />
-          </Grid>
-
-          <Grid size={{ xs: 12, md: 6 }}>
-            <ChallengesArenaWinnersCard arenas={arenas} isLoading={isArenasLoading} />
-          </Grid>
-        </Grid>
+        <ChallengesListPageInsightsSection
+          ratingPreview={ratingPreview}
+          isRatingLoading={isRatingLoading}
+          arenas={arenas}
+          isArenasLoading={isArenasLoading}
+        />
       </Stack>
     </Box>
   );

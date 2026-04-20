@@ -12,7 +12,10 @@ type ChallengesArenaWinnersCardProps = {
   isLoading: boolean;
 };
 
-const ChallengesArenaWinnersCard = ({ arenas, isLoading }: ChallengesArenaWinnersCardProps) => {
+const ChallengesListPageArenaWinnersCard = ({
+  arenas,
+  isLoading,
+}: ChallengesArenaWinnersCardProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -40,7 +43,7 @@ const ChallengesArenaWinnersCard = ({ arenas, isLoading }: ChallengesArenaWinner
             : (arenas?.data ?? []).map((arena) => {
                 const winner: any = arena.winner ?? {};
                 return (
-                  <Card background={0}>
+                  <Card key={arena.id} background={0}>
                     <Stack
                       paddingX={2}
                       paddingY={1.5}
@@ -89,4 +92,4 @@ const ChallengesArenaWinnersCard = ({ arenas, isLoading }: ChallengesArenaWinner
     </Card>
   );
 };
-export default ChallengesArenaWinnersCard;
+export default ChallengesListPageArenaWinnersCard;

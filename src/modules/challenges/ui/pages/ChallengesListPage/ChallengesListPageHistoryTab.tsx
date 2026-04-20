@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { Box, Pagination, Skeleton, Stack, Typography } from '@mui/material';
+import { Challenge } from 'modules/challenges/domain';
+import { PageResult } from 'modules/challenges/domain/ports/challenges.repository.ts';
 import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch.tsx';
-import { Challenge } from '../../domain';
-import { PageResult } from '../../domain/ports/challenges.repository.ts';
-import ChallengeCard from './ChallengeCard.tsx';
+import ChallengeCard from 'modules/challenges/ui/shared/components/ChallengeCard.tsx';
 
-type ChallengesHistoryTabProps = {
+type ChallengesListPageHistoryTabProps = {
   challengesPage?: PageResult<Challenge>;
   isLoading: boolean;
   page: number;
@@ -16,7 +16,7 @@ type ChallengesHistoryTabProps = {
   currentUsername?: string;
 };
 
-const ChallengesHistoryTab = ({
+const ChallengesListPageHistoryTab = ({
   challengesPage,
   isLoading,
   page,
@@ -25,7 +25,7 @@ const ChallengesHistoryTab = ({
   onToggleOnlyMine,
   isAuthenticated,
   currentUsername,
-}: ChallengesHistoryTabProps) => {
+}: ChallengesListPageHistoryTabProps) => {
   const { t } = useTranslation();
   const challenges = challengesPage?.data ?? [];
   const showSkeleton = isLoading && !challenges.length;
@@ -81,4 +81,4 @@ const ChallengesHistoryTab = ({
   );
 };
 
-export default ChallengesHistoryTab;
+export default ChallengesListPageHistoryTab;
