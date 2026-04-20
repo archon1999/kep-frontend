@@ -34,12 +34,12 @@ import { ProblemSampleTest } from 'modules/problems/domain/entities/problem.enti
 import { AttemptsListParams } from 'modules/problems/domain/ports/problems.repository';
 import { usePersistedCode } from 'modules/problems/hooks/usePersistedCode';
 import { useProblemLanguage } from 'modules/problems/hooks/useProblemLanguage';
-import ProblemsAttemptsTable from 'modules/problems/ui/components/ProblemsAttemptsTable.tsx';
-import { PanelHandle } from 'modules/problems/ui/components/problem-detail/PanelHandles';
-import { ProblemBody } from 'modules/problems/ui/components/problem-detail/ProblemBody';
-import ProblemDescriptionSkeleton from 'modules/problems/ui/components/problem-detail/ProblemDescriptionSkeleton';
-import { ProblemEditorPanel } from 'modules/problems/ui/components/problem-detail/ProblemEditorPanel';
-import ProblemEditorSkeleton from 'modules/problems/ui/components/problem-detail/ProblemEditorSkeleton';
+import ProblemsAttemptsTable from 'modules/problems/ui/shared/components/ProblemsAttemptsTable.tsx';
+import { PanelHandle } from 'modules/problems/ui/shared/components/problem-detail/PanelHandles';
+import { ProblemBody } from 'modules/problems/ui/shared/components/problem-detail/ProblemBody';
+import ProblemDescriptionSkeleton from 'modules/problems/ui/shared/components/problem-detail/ProblemDescriptionSkeleton';
+import { ProblemEditorPanel } from 'modules/problems/ui/shared/components/problem-detail/ProblemEditorPanel';
+import ProblemEditorSkeleton from 'modules/problems/ui/shared/components/problem-detail/ProblemEditorSkeleton';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo.tsx';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';

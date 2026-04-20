@@ -10,7 +10,7 @@ import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { booleanFlagParam, stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
-import ProblemsAttemptsTable from 'modules/problems/ui/components/ProblemsAttemptsTable.tsx';
+import ProblemsAttemptsTable from 'modules/problems/ui/shared/components/ProblemsAttemptsTable.tsx';
 import { AttemptsListParams } from 'modules/problems/domain/ports/problems.repository';
 import { useAttemptVerdicts, useAttemptsList } from 'modules/problems/application/queries';
 import { useContest, useContestProblems } from 'modules/contests/application/queries';
