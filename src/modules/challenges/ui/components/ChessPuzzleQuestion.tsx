@@ -20,8 +20,6 @@ import {
 } from '@mui/material';
 import { Chess, Move, Square } from 'chess.js';
 import { ChessPuzzlePayload, Question, QuestionType } from 'modules/testing/domain';
-import QuestionHeader from 'modules/testing/ui/pages/test-pass/components/QuestionHeader.tsx';
-import { TestPassQuestion } from 'modules/testing/ui/pages/test-pass/types.ts';
 import { ChessChallengeResult } from '../../domain/ports/challenges.repository.ts';
 import {
   clearChessPuzzleProgress,
@@ -74,6 +72,25 @@ const buildPuzzleGame = (payload: ChessPuzzlePayload, playedLine: string[]) => {
   return chess;
 };
 
+const getMatchingSolutionLines = (solutionLines: string[][], playedLine: string[]) =>
+  solutionLines.filter((solutionLine) =>
+    solutionLine.slice(0, playedLine.length).join('|') === playedLine.join('|'));
+
+const hasFullSolutionMatch = (solutionLines: string[][], playedLine: string[]) =>
+  solutionLines.some((solutionLine) => solutionLine.join('|') === playedLine.join('|'));
+
+const getUniqueNextSolutionMove = (solutionLines: string[][], playedLine: string[]) => {
+  const candidateMoves = Array.from(
+    new Set(
+      solutionLines
+        .filter((solutionLine) => solutionLine.length > playedLine.length)
+        .map((solutionLine) => solutionLine[playedLine.length]),
+    ),
+  );
+
+  return candidateMoves.length === 1 ? candidateMoves[0] : null;
+};
+
 const ChessPuzzleQuestion = forwardRef<ChessPuzzleQuestionHandle, ChessPuzzleQuestionProps>(
   ({ challengeId, questionNumber, question, disabled, isSubmitting, onSubmit }, ref) => {
     const { t } = useTranslation();
@@ -81,7 +98,7 @@ const ChessPuzzleQuestion = forwardRef<ChessPuzzleQuestionHandle, ChessPuzzleQue
       if (question.type !== QuestionType.ChessPuzzle || !question.payload) return null;
       return question.payload as ChessPuzzlePayload;
     }, [question.payload, question.type]);
-    const solutionMoves = useMemo(() => {
+    const solutionLines = useMemo(() => {
       if (!puzzle?.solutionBlob || !puzzle.puzzleId) return [];
 
       return decodeChessSolutionBlob({
@@ -236,7 +253,7 @@ const ChessPuzzleQuestion = forwardRef<ChessPuzzleQuestionHandle, ChessPuzzleQue
 
     const canInteract =
       Boolean(puzzle) &&
-      solutionMoves.length > 0 &&
+      solutionLines.length > 0 &&
       !disabled &&
       !isSubmitting &&
       !isSending &&
@@ -248,20 +265,21 @@ const ChessPuzzleQuestion = forwardRef<ChessPuzzleQuestionHandle, ChessPuzzleQue
 
       const nextLine = [...playedLineRef.current, move];
       syncBoard(nextLine);
+      persistProgress({ line: nextLine });
 
-      if (nextLine.join('|') !== solutionMoves.slice(0, nextLine.length).join('|')) {
+      const matchingLines = getMatchingSolutionLines(solutionLines, nextLine);
+      if (!matchingLines.length) {
         await finalizeResult('failed', nextLine);
         return;
       }
 
-      if (nextLine.length === solutionMoves.length) {
+      if (hasFullSolutionMatch(matchingLines, nextLine)) {
         await finalizeResult('solved', nextLine);
         return;
       }
 
-      const replyMove = solutionMoves[nextLine.length];
+      const replyMove = getUniqueNextSolutionMove(matchingLines, nextLine);
       if (!replyMove) {
-        await finalizeResult('solved', nextLine);
         return;
       }
 
@@ -269,7 +287,7 @@ const ChessPuzzleQuestion = forwardRef<ChessPuzzleQuestionHandle, ChessPuzzleQue
       syncBoard(continuedLine);
       persistProgress({ line: continuedLine });
 
-      if (continuedLine.length === solutionMoves.length) {
+      if (hasFullSolutionMatch(matchingLines, continuedLine)) {
         await finalizeResult('solved', continuedLine);
       }
     };

@@ -6,8 +6,11 @@ import {
 } from './chessPuzzleSolution.ts';
 
 test('decodeChessSolutionBlob restores xor1-obfuscated chess solution', () => {
-  const solutionMoves = ['g1f3', 'b8c6', 'f3e5'];
-  const solutionBlob = encodeChessSolutionBlob(42, 'puzzle-42', solutionMoves);
+  const solutionLines = [
+    ['g1f3', 'b8c6', 'f3e5'],
+    ['d2d4', 'd7d5', 'c2c4'],
+  ];
+  const solutionBlob = encodeChessSolutionBlob(42, 'puzzle-42', solutionLines);
 
   assert.deepEqual(
     decodeChessSolutionBlob({
@@ -16,12 +19,12 @@ test('decodeChessSolutionBlob restores xor1-obfuscated chess solution', () => {
       solutionBlob,
       solutionCipher: 'xor1',
     }),
-    solutionMoves,
+    solutionLines,
   );
 });
 
 test('decodeChessSolutionBlob rejects unsupported cipher values', () => {
-  const solutionBlob = encodeChessSolutionBlob(7, 'puzzle-7', ['e2e4']);
+  const solutionBlob = encodeChessSolutionBlob(7, 'puzzle-7', [['e2e4']]);
 
   assert.deepEqual(
     decodeChessSolutionBlob({

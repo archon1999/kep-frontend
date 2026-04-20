@@ -62,9 +62,9 @@ const xorBytes = (input: Uint8Array, key: Uint8Array) => {
 export const encodeChessSolutionBlob = (
   questionId: number,
   puzzleId: string,
-  solutionMoves: string[],
+  solutionLines: string[][],
 ) => {
-  const payload = textEncoder.encode(JSON.stringify(solutionMoves));
+  const payload = textEncoder.encode(JSON.stringify(solutionLines));
   return encodeBase64Url(xorBytes(payload, buildSolutionKey(questionId, puzzleId)));
 };
 
@@ -82,7 +82,7 @@ export const decodeChessSolutionBlob = (options: {
   } = options;
 
   if (!solutionBlob || solutionCipher !== CHESS_SOLUTION_CIPHER) {
-    return [] as string[];
+    return [] as string[][];
   }
 
   try {
@@ -96,7 +96,13 @@ export const decodeChessSolutionBlob = (options: {
       return [];
     }
 
-    return parsed.map((move) => String(move));
+    return parsed
+      .map((line) =>
+        Array.isArray(line)
+          ? line.map((move) => String(move))
+          : [],
+      )
+      .filter((line) => line.length > 0);
   } catch {
     return [];
   }
