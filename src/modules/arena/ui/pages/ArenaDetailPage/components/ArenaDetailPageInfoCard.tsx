@@ -4,9 +4,9 @@ import dayjs from 'dayjs';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
-import { Arena, ArenaStatus } from '../../domain/entities/arena.entity.ts';
+import { Arena, ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
 
-interface ArenaInfoCardProps {
+interface ArenaDetailPageInfoCardProps {
   arena: Arena;
   loginHref: string;
   onRegister?: () => Promise<void>;
@@ -26,13 +26,13 @@ const InfoRow = ({ label, value, icon }: { label: string; value: ReactNode; icon
   </Stack>
 );
 
-const ArenaInfoCard = ({
+const ArenaDetailPageInfoCard = ({
   arena,
   loginHref,
   onRegister,
   onUnregister,
   isLoadingAction,
-}: ArenaInfoCardProps) => {
+}: ArenaDetailPageInfoCardProps) => {
   const { t } = useTranslation();
   const isGuest = arena.isRegistrated === null;
   const isRegistered = Boolean(arena.isRegistrated);
@@ -163,4 +163,4 @@ const ArenaInfoCard = ({
   );
 };
 
-export default ArenaInfoCard;
+export default ArenaDetailPageInfoCard;

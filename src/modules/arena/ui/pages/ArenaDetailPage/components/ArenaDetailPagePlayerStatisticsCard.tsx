@@ -5,9 +5,9 @@ import UserPopover from 'modules/users/ui/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import ChallengeChip, { ChallengeChipTone } from 'shared/components/challenges/ChallengeChip.tsx';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
-import { ArenaPlayerStatistics } from '../../domain/entities/arena-player-statistics.entity.ts';
+import { ArenaPlayerStatistics } from 'modules/arena/domain/entities/arena-player-statistics.entity.ts';
 
-interface ArenaPlayerStatisticsCardProps {
+interface ArenaDetailPagePlayerStatisticsCardProps {
   statistics?: ArenaPlayerStatistics;
   loading?: boolean;
   username?: string;
@@ -69,11 +69,11 @@ const getScoreColor = (score: number, opponentScore: number) => {
 
 const getInitial = (value: string) => value.trim().charAt(0).toUpperCase() || 'P';
 
-const ArenaPlayerStatisticsCard = ({
+const ArenaDetailPagePlayerStatisticsCard = ({
   statistics,
   loading,
   username,
-}: ArenaPlayerStatisticsCardProps) => {
+}: ArenaDetailPagePlayerStatisticsCardProps) => {
   const { t } = useTranslation();
   const safeStats = {
     username: statistics?.username || username || '',
@@ -325,4 +325,4 @@ const ArenaPlayerStatisticsCard = ({
   );
 };
 
-export default ArenaPlayerStatisticsCard;
+export default ArenaDetailPagePlayerStatisticsCard;

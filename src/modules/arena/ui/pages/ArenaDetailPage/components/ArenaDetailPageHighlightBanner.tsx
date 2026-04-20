@@ -1,9 +1,9 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
-import { ArenaHighlight } from '../../domain/entities/arena-highlight.entity.ts';
+import { ArenaHighlight } from 'modules/arena/domain/entities/arena-highlight.entity.ts';
 
-interface ArenaHighlightBannerProps {
+interface ArenaDetailPageHighlightBannerProps {
   highlight?: ArenaHighlight;
 }
 
@@ -30,7 +30,7 @@ const highlightIconByKind: Record<ArenaHighlight['kind'], string> = {
 const getHighlightIcon = (highlight: ArenaHighlight) =>
   highlightIconByKey[highlight.key] ?? highlightIconByKind[highlight.kind];
 
-const ArenaHighlightBanner = ({ highlight }: ArenaHighlightBannerProps) => {
+const ArenaDetailPageHighlightBanner = ({ highlight }: ArenaDetailPageHighlightBannerProps) => {
   if (!highlight || (!highlight.title && !highlight.message)) {
     return null;
   }
@@ -98,4 +98,4 @@ const ArenaHighlightBanner = ({ highlight }: ArenaHighlightBannerProps) => {
   );
 };
 
-export default ArenaHighlightBanner;
+export default ArenaDetailPageHighlightBanner;

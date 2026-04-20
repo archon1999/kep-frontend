@@ -2,10 +2,10 @@ import { Card, CardContent, Grid, Pagination, Skeleton, Stack, Typography } from
 import { useTranslation } from 'react-i18next';
 import ChallengeCard from 'modules/challenges/ui/components/ChallengeCard.tsx';
 import { Challenge, ChallengePlayer, ChallengeQuestionTimeType, ChallengeStatus } from 'modules/challenges/domain';
-import { ArenaChallenge } from '../../domain/entities/arena-challenge.entity.ts';
-import { PageResult } from '../../domain/ports/arena.repository.ts';
+import { ArenaChallenge } from 'modules/arena/domain/entities/arena-challenge.entity.ts';
+import { PageResult } from 'modules/arena/domain/ports/arena.repository.ts';
 
-interface ArenaChallengesListProps {
+interface ArenaDetailPageChallengesListProps {
   data?: PageResult<ArenaChallenge>;
   loading?: boolean;
   page: number;
@@ -42,7 +42,7 @@ const mapArenaChallengeToChallenge = (challenge: ArenaChallenge): Challenge => {
   };
 };
 
-const ArenaChallengesList = ({
+const ArenaDetailPageChallengesList = ({
   data,
   loading,
   page,
@@ -51,7 +51,7 @@ const ArenaChallengesList = ({
   emptyKey = 'arena.noChallenges',
   currentUsername,
   showPagination = true,
-}: ArenaChallengesListProps) => {
+}: ArenaDetailPageChallengesListProps) => {
   const { t } = useTranslation();
 
   const challenges = data?.data?.map(mapArenaChallengeToChallenge) ?? [];
@@ -97,4 +97,4 @@ const ArenaChallengesList = ({
   );
 };
 
-export default ArenaChallengesList;
+export default ArenaDetailPageChallengesList;

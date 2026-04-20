@@ -16,11 +16,11 @@ import {
 } from '@mui/material';
 import UserPopover from 'modules/users/ui/components/UserPopover';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
-import { ArenaPlayer } from '../../domain/entities/arena-player.entity.ts';
-import { ArenaStatus } from '../../domain/entities/arena.entity.ts';
-import { PageResult } from '../../domain/ports/arena.repository.ts';
+import { ArenaPlayer } from 'modules/arena/domain/entities/arena-player.entity.ts';
+import { ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
+import { PageResult } from 'modules/arena/domain/ports/arena.repository.ts';
 
-interface ArenaPlayersTableProps {
+interface ArenaDetailPagePlayersTableProps {
   data?: PageResult<ArenaPlayer>;
   loading?: boolean;
   page: number;
@@ -70,7 +70,7 @@ const topPlayerHighlight = (rank?: number | null) => {
   return undefined;
 };
 
-const ArenaPlayersTable = ({
+const ArenaDetailPagePlayersTable = ({
   data,
   loading,
   page,
@@ -80,7 +80,7 @@ const ArenaPlayersTable = ({
   selectedUsername,
   currentUsername,
   status,
-}: ArenaPlayersTableProps) => {
+}: ArenaDetailPagePlayersTableProps) => {
   const { t } = useTranslation();
   const isUpcoming = status === ArenaStatus.NotStarted;
 
@@ -272,4 +272,4 @@ const ArenaPlayersTable = ({
   );
 };
 
-export default ArenaPlayersTable;
+export default ArenaDetailPagePlayersTable;

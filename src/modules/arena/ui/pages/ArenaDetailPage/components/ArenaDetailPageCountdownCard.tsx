@@ -13,9 +13,9 @@ import {
 import { alpha } from '@mui/material/styles';
 import dayjs from 'dayjs';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
-import { Arena, ArenaStatus } from '../../domain/entities/arena.entity.ts';
+import { Arena, ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
 
-interface ArenaCountdownCardProps {
+interface ArenaDetailPageCountdownCardProps {
   arena?: Arena;
 }
 
@@ -63,7 +63,7 @@ const TimeSegment = ({ value }: { value: string }) => (
   </Box>
 );
 
-const ArenaCountdownCard = ({ arena }: ArenaCountdownCardProps) => {
+const ArenaDetailPageCountdownCard = ({ arena }: ArenaDetailPageCountdownCardProps) => {
   const { t } = useTranslation();
   const [now, setNow] = useState(dayjs());
 
@@ -238,4 +238,4 @@ const ArenaCountdownCard = ({ arena }: ArenaCountdownCardProps) => {
   );
 };
 
-export default ArenaCountdownCard;
+export default ArenaDetailPageCountdownCard;

@@ -7,9 +7,9 @@ import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import firstPlaceImage from 'shared/assets/images/icons/arena-first-place.png';
 import secondPlaceImage from 'shared/assets/images/icons/arena-second-place.png';
 import thirdPlaceImage from 'shared/assets/images/icons/arena-third-place.png';
-import { ArenaPlayerStatistics } from '../../domain/entities/arena-player-statistics.entity.ts';
+import { ArenaPlayerStatistics } from 'modules/arena/domain/entities/arena-player-statistics.entity.ts';
 
-interface ArenaWinnersCardProps {
+interface ArenaDetailPageWinnersCardProps {
   topPlayers?: ArenaPlayerStatistics[];
 }
 
@@ -89,7 +89,7 @@ const WinnerStats = ({ player }: { player: ArenaPlayerStatistics }) => {
   );
 };
 
-const ArenaWinnersCard = ({ topPlayers }: ArenaWinnersCardProps) => {
+const ArenaDetailPageWinnersCard = ({ topPlayers }: ArenaDetailPageWinnersCardProps) => {
   const { t } = useTranslation();
 
   if (!topPlayers || topPlayers.length === 0) return null;
@@ -151,4 +151,4 @@ const ArenaWinnersCard = ({ topPlayers }: ArenaWinnersCardProps) => {
   );
 };
 
-export default ArenaWinnersCard;
+export default ArenaDetailPageWinnersCard;

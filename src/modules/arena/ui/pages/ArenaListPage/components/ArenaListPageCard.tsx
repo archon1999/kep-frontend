@@ -6,7 +6,7 @@ import { getResourceById, resources } from 'app/routes/resources';
 import dayjs from 'dayjs';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import { cssVarRgba } from 'shared/lib/utils';
-import { Arena, ArenaStatus } from '../../domain/entities/arena.entity.ts';
+import { Arena, ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
 
 
 const formatCountdownDuration = (diffMs: number) => {
@@ -24,11 +24,11 @@ const getStatusColor = (status: ArenaStatus) => {
   return 'warning';
 };
 
-interface ArenaListCardProps {
+interface ArenaListPageCardProps {
   arena: Arena;
 }
 
-const ArenaListCard = ({ arena }: ArenaListCardProps) => {
+const ArenaListPageCard = ({ arena }: ArenaListPageCardProps) => {
   const { t } = useTranslation();
   const [now, setNow] = useState(() => dayjs());
   const statusColor = getStatusColor(arena.status);
@@ -236,4 +236,4 @@ const ArenaListCard = ({ arena }: ArenaListCardProps) => {
   );
 };
 
-export default ArenaListCard;
+export default ArenaListPageCard;

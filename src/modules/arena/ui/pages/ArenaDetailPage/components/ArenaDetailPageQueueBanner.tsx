@@ -2,9 +2,9 @@ import { Alert, Button, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
-import { Arena, ArenaStatus } from '../../domain/entities/arena.entity.ts';
+import { Arena, ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
 
-interface ArenaQueueBannerProps {
+interface ArenaDetailPageQueueBannerProps {
   arena?: Arena;
   currentChallengeId?: number;
   onOpenCurrentChallenge?: () => Promise<void>;
@@ -13,12 +13,12 @@ interface ArenaQueueBannerProps {
 
 const ENDING_SOON_MS = 2 * 60 * 1000;
 
-const ArenaQueueBanner = ({
+const ArenaDetailPageQueueBanner = ({
   arena,
   currentChallengeId,
   onOpenCurrentChallenge,
   onPauseToggle,
-}: ArenaQueueBannerProps) => {
+}: ArenaDetailPageQueueBannerProps) => {
   const { t } = useTranslation();
 
   if (!arena || arena.status !== ArenaStatus.Already || !arena.isRegistrated) {
@@ -87,4 +87,4 @@ const ArenaQueueBanner = ({
   );
 };
 
-export default ArenaQueueBanner;
+export default ArenaDetailPageQueueBanner;

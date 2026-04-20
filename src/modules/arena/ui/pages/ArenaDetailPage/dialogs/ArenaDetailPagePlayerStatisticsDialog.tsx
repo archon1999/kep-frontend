@@ -1,20 +1,16 @@
 import { useTranslation } from 'react-i18next';
 import {
-  Box,
   Dialog,
   DialogContent,
   DialogTitle,
   IconButton,
   Stack,
-  Typography,
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
-import UserPopover from 'modules/users/ui/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
-import { ArenaPlayerStatistics } from '../../domain/entities/arena-player-statistics.entity.ts';
-import ArenaPlayerStatisticsCard from './ArenaPlayerStatisticsCard.tsx';
+import { ArenaPlayerStatistics } from 'modules/arena/domain/entities/arena-player-statistics.entity.ts';
+import ArenaDetailPagePlayerStatisticsCard from '../components/ArenaDetailPagePlayerStatisticsCard.tsx';
 
-interface ArenaPlayerStatisticsDialogProps {
+interface ArenaDetailPagePlayerStatisticsDialogProps {
   open: boolean;
   onClose: () => void;
   statistics?: ArenaPlayerStatistics;
@@ -22,13 +18,13 @@ interface ArenaPlayerStatisticsDialogProps {
   username?: string;
 }
 
-const ArenaPlayerStatisticsDialog = ({
+const ArenaDetailPagePlayerStatisticsDialog = ({
   open,
   onClose,
   statistics,
   loading,
   username,
-}: ArenaPlayerStatisticsDialogProps) => {
+}: ArenaDetailPagePlayerStatisticsDialogProps) => {
   const { t } = useTranslation();
 
   return (
@@ -49,10 +45,14 @@ const ArenaPlayerStatisticsDialog = ({
         </Stack>
       </DialogTitle>
       <DialogContent>
-        <ArenaPlayerStatisticsCard statistics={statistics} loading={loading} username={username} />
+        <ArenaDetailPagePlayerStatisticsCard
+          statistics={statistics}
+          loading={loading}
+          username={username}
+        />
       </DialogContent>
     </Dialog>
   );
 };
 
-export default ArenaPlayerStatisticsDialog;
+export default ArenaDetailPagePlayerStatisticsDialog;

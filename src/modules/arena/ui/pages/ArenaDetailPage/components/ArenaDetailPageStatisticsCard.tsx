@@ -1,15 +1,15 @@
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, Divider, Grid, Stack, Typography } from '@mui/material';
 import { ArenaHighlight } from 'modules/arena/domain/entities/arena-highlight.entity.ts';
-import ArenaHighlightBanner from 'modules/arena/ui/components/ArenaHighlightBanner.tsx';
 import UserPopover from 'modules/users/ui/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
-import { useArenaInsights } from '../../application/hooks/useArenaInsights.ts';
-import { ArenaStatistics } from '../../domain/entities/arena-statistics.entity.ts';
-import { Arena } from '../../domain/entities/arena.entity.ts';
+import { useArenaInsights } from 'modules/arena/application/hooks/useArenaInsights.ts';
+import { ArenaStatistics } from 'modules/arena/domain/entities/arena-statistics.entity.ts';
+import { Arena } from 'modules/arena/domain/entities/arena.entity.ts';
+import ArenaDetailPageHighlightBanner from './ArenaDetailPageHighlightBanner.tsx';
 
 
-interface ArenaStatisticsCardProps {
+interface ArenaDetailPageStatisticsCardProps {
   arena?: Arena;
   stats?: ArenaStatistics;
   titleKey?: string;
@@ -30,12 +30,12 @@ const OverviewStat = ({ label, value, icon }: { label: string; value: string | n
   </Stack>
 );
 
-const ArenaStatisticsCard = ({
+const ArenaDetailPageStatisticsCard = ({
   arena,
   stats,
   highlight,
   titleKey = 'arena.statistics',
-}: ArenaStatisticsCardProps) => {
+}: ArenaDetailPageStatisticsCardProps) => {
   const { t } = useTranslation();
   const { summaryItems, leaders, showLeaders } = useArenaInsights(arena, stats, t);
 
@@ -47,7 +47,7 @@ const ArenaStatisticsCard = ({
             {t(titleKey)}
           </Typography>
 
-          <ArenaHighlightBanner highlight={highlight} />
+          <ArenaDetailPageHighlightBanner highlight={highlight} />
 
           <Grid container spacing={1.5}>
             {summaryItems.map((item) => (
@@ -103,4 +103,4 @@ const ArenaStatisticsCard = ({
   );
 };
 
-export default ArenaStatisticsCard;
+export default ArenaDetailPageStatisticsCard;
