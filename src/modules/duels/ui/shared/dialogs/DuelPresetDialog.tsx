@@ -21,7 +21,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import { cssVarRgba } from 'shared/lib/utils.ts';
-import { DuelPreset, DuelReadyPlayer } from '../../domain/index.ts';
+import { DuelPreset, DuelReadyPlayer } from 'modules/duels/domain/index.ts';
 
 type Props = {
   open: boolean;

@@ -1,9 +1,12 @@
 import { Card, CardContent, Skeleton, Stack, Typography } from '@mui/material';
-import { DuelInvitation } from '../../domain/index.ts';
-import DuelInvitationCard from './DuelInvitationCard.tsx';
+import { ReactNode } from 'react';
+import { DuelInvitation } from 'modules/duels/domain/index.ts';
+import DuelsListPageInvitationCard from './DuelsListPageInvitationCard.tsx';
 
 type Props = {
-  title: string;
+  title?: string;
+  description?: string;
+  actionSlot?: ReactNode;
   invitations: DuelInvitation[];
   loading?: boolean;
   emptyText: string;
@@ -16,8 +19,10 @@ type Props = {
   onOpen?: (invitation: DuelInvitation) => void;
 };
 
-const DuelInvitationsSection = ({
+const DuelsListPageInvitationsSection = ({
   title,
+  description,
+  actionSlot,
   invitations,
   loading,
   emptyText,
@@ -31,14 +36,36 @@ const DuelInvitationsSection = ({
 }: Props) => {
   return (
     <Stack spacing={2}>
-      <Typography variant="h6" fontWeight={800}>
-        {title}
-        {invitations.length > 0 ? (
-          <Typography component="span" variant="subtitle2" color="text.secondary" ml={1}>
-            ({invitations.length})
-          </Typography>
-        ) : null}
-      </Typography>
+      {title || description || actionSlot ? (
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems={{ xs: 'flex-start', sm: 'center' }}
+          spacing={2}
+          flexWrap="wrap"
+          useFlexGap
+        >
+          <Stack spacing={0.4}>
+            {title ? (
+              <Typography variant="h6" fontWeight={800}>
+                {title}
+                {invitations.length > 0 ? (
+                  <Typography component="span" variant="subtitle2" color="text.secondary" ml={1}>
+                    ({invitations.length})
+                  </Typography>
+                ) : null}
+              </Typography>
+            ) : null}
+            {description ? (
+              <Typography variant="body2" color="text.secondary">
+                {description}
+              </Typography>
+            ) : null}
+          </Stack>
+
+          {actionSlot}
+        </Stack>
+      ) : null}
 
       {loading
         ? Array.from({ length: 2 }).map((_, index) => (
@@ -66,7 +93,7 @@ const DuelInvitationsSection = ({
 
       {!loading &&
         invitations.map((invitation) => (
-          <DuelInvitationCard
+          <DuelsListPageInvitationCard
             key={invitation.id}
             invitation={invitation}
             actionLoadingKey={actionLoadingKey}
@@ -82,4 +109,4 @@ const DuelInvitationsSection = ({
   );
 };
 
-export default DuelInvitationsSection;
+export default DuelsListPageInvitationsSection;

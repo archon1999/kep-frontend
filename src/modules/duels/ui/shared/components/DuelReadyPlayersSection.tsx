@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import { cssVarRgba } from 'shared/lib/utils.ts';
 import UserPopover from 'modules/users/ui/components/UserPopover.tsx';
-import { DuelReadyPlayer } from '../../domain/index.ts';
+import { DuelReadyPlayer } from 'modules/duels/domain/index.ts';
 
 type Props = {
   players: DuelReadyPlayer[];

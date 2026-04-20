@@ -1,8 +1,8 @@
 import { Button, Card, CardContent, Chip, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import UserPopover from 'modules/users/ui/components/UserPopover.tsx';
+import { Duel } from 'modules/duels/domain/index.ts';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
-import { Duel } from '../../domain/index.ts';
 
 type Props = {
   duel: Duel;
@@ -59,7 +59,7 @@ const DuelParticipantLabel = ({
   </Stack>
 );
 
-const DuelsListCard = ({
+const DuelsListPageListCard = ({
   duel,
   onView,
   onShowPreset,
@@ -165,4 +165,4 @@ const DuelsListCard = ({
   );
 };
 
-export default DuelsListCard;
+export default DuelsListPageListCard;
