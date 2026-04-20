@@ -2,44 +2,12 @@ import { Button, Card, Chip, Stack, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import { Duel, DuelPlayer } from 'modules/duels/domain/index.ts';
-
-export type DuelDetailPageWorkspaceView = 'problems' | 'standings';
-
-export interface DuelDetailPageNavigationProblem {
-  symbol: string;
-  ball?: number;
-  playerFirstBall?: number;
-  playerSecondBall?: number;
-}
-
-export interface DuelDetailPagePlayerRow {
-  key: string;
-  order: number;
-  accent: 'primary' | 'secondary';
-  player: DuelPlayer;
-  scoreAccessor: (problem: DuelDetailPageNavigationProblem) => number;
-}
-
-export const getDuelDetailPagePlayerRows = (duel: Duel): DuelDetailPagePlayerRow[] =>
-  [
-    {
-      key: 'player_first',
-      order: 0,
-      accent: 'primary' as const,
-      player: duel.playerFirst,
-      scoreAccessor: (problem: DuelDetailPageNavigationProblem) => problem.playerFirstBall ?? 0,
-    },
-    duel.playerSecond
-      ? {
-          key: 'player_second',
-          order: 1,
-          accent: 'secondary' as const,
-          player: duel.playerSecond,
-          scoreAccessor: (problem: DuelDetailPageNavigationProblem) => problem.playerSecondBall ?? 0,
-        }
-      : null,
-  ].filter(Boolean) as DuelDetailPagePlayerRow[];
+import { Duel } from 'modules/duels/domain/index.ts';
+import {
+  DuelDetailPageNavigationProblem,
+  DuelDetailPageWorkspaceView,
+  getDuelDetailPagePlayerRows,
+} from '../DuelDetailPage.models.ts';
 
 type Props = {
   duel: Duel;

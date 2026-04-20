@@ -7,9 +7,9 @@ import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx'
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo.tsx';
 import { Duel } from 'modules/duels/domain/index.ts';
-import { DuelDetailPageNavigationProblem } from './components/DuelDetailPageResultsFooter.tsx';
+import { DuelDetailPageNavigationProblem } from './DuelDetailPage.models.ts';
 
-type Props = {
+export type DuelDetailPageHeaderProps = {
   duel: Duel;
   timerText: string;
   prevProblem: DuelDetailPageNavigationProblem | null;
@@ -37,7 +37,7 @@ const DuelDetailPageHeader = ({
   onRun,
   onSubmit,
   onSelectProblem,
-}: Props) => {
+}: DuelDetailPageHeaderProps) => {
   const { t } = useTranslation();
 
   return (

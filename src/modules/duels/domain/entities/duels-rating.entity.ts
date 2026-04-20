@@ -13,3 +13,16 @@ export interface DuelsRatingRow {
   draws?: number;
   losses?: number;
 }
+
+export interface DuelsRatingPageTableRow {
+  id: string;
+  username: string;
+  avatar?: string;
+  contestsRating?: number;
+  contestsRatingTitle?: string;
+  duels: number;
+  wins: number;
+  draws: number;
+  losses: number;
+  rowIndex: number;
+}

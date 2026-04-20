@@ -12,32 +12,24 @@ import { ProblemEditorPanel } from 'modules/problems/ui/shared/components/proble
 import ProblemEditorSkeleton from 'modules/problems/ui/shared/components/problem-detail/ProblemEditorSkeleton';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import DuelDetailPageResultsFooter, {
+import DuelDetailPageResultsFooter from './components/DuelDetailPageResultsFooter.tsx';
+import {
   DuelDetailPageNavigationProblem,
+  DuelDetailPageStandingRow,
+  DuelDetailPageWorkspaceTab,
   DuelDetailPageWorkspaceView,
-} from './components/DuelDetailPageResultsFooter.tsx';
+} from './DuelDetailPage.models.ts';
 
-type WorkspaceTab = 'description' | 'attempts';
-
-type StandingRow = {
-  key: string;
-  order: number;
-  accent: 'primary' | 'secondary';
-  player: DuelPlayer;
-  total: number;
-  rank: number;
-};
-
-type Props = {
+export type DuelDetailPageWorkspaceProps = {
   duel: Duel;
   isLoading: boolean;
   isValidating: boolean;
   view: DuelDetailPageWorkspaceView;
-  activeTab: WorkspaceTab;
+  activeTab: DuelDetailPageWorkspaceTab;
   navigationProblems: DuelDetailPageNavigationProblem[];
   activeNavigationProblem: DuelDetailPageNavigationProblem | null;
   activeProblem: DuelProblem | null;
-  standingsRows: StandingRow[];
+  standingsRows: DuelDetailPageStandingRow[];
   maxScore: number;
   isAuthenticated: boolean;
   attempts: any[];
@@ -48,7 +40,7 @@ type Props = {
   workspaceAttemptLink: string;
   onRefreshAttempts: () => void;
   onChangeView: (view: DuelDetailPageWorkspaceView) => void;
-  onChangeTab: (tab: WorkspaceTab) => void;
+  onChangeTab: (tab: DuelDetailPageWorkspaceTab) => void;
   onSelectProblem: (symbol: string) => void;
   initialCode: string;
   editorKey: string;
@@ -134,7 +126,7 @@ const DuelDetailPageWorkspace = ({
   editorTab,
   onEditorTabChange,
   editorTheme,
-}: Props) => {
+}: DuelDetailPageWorkspaceProps) => {
   const { t } = useTranslation();
 
   return (

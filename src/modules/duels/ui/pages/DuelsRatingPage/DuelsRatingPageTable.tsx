@@ -1,38 +1,46 @@
 import { useMemo } from 'react';
 import { Avatar, Stack, Typography } from '@mui/material';
-import { DataGrid, GridColDef, GridPaginationModel, GridValidRowModel } from '@mui/x-data-grid';
+import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useTranslation } from 'react-i18next';
+import { useDuelsRating } from 'modules/duels/application/queries.ts';
+import { DuelsRatingPageTableRow } from 'modules/duels/domain/index.ts';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
+import useGridPagination from 'shared/hooks/useGridPagination';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { stringParam } from 'shared/lib/queryParams';
+import { mapDuelsRatingPageTableRows } from './DuelsRatingPage.mapper.ts';
 
-export type DuelsRatingPageTableRow = GridValidRowModel & {
-  username: string;
-  avatar?: string;
-  contestsRating?: number;
-  contestsRatingTitle?: string;
-  duels: number;
-  wins: number;
-  draws: number;
-  losses: number;
-  rowIndex: number;
-};
-
-type Props = {
-  rows: DuelsRatingPageTableRow[];
-  total: number;
-  loading: boolean;
-  paginationModel: GridPaginationModel;
-  onPaginationModelChange: (model: GridPaginationModel) => void;
-};
-
-const DuelsRatingPageTable = ({
-  rows,
-  total,
-  loading,
-  paginationModel,
-  onPaginationModelChange,
-}: Props) => {
+const DuelsRatingPageTable = () => {
   const { t } = useTranslation();
+  const {
+    paginationModel,
+    onPaginationModelChange,
+    pageParams: { page, pageSize },
+  } = useGridPagination({
+    initialPageSize: 12,
+    querySync: {
+      pageKey: 'page',
+      pageSizeKey: 'pageSize',
+    },
+  });
+  const { state } = useRouteQueryState({
+    defaults: {
+      ordering: '-wins',
+    },
+    schema: {
+      ordering: {
+        ...stringParam(),
+        param: 'ordering',
+      },
+    },
+  });
+  const ordering = state.ordering || '-wins';
+  const { data: ratingPage, isLoading } = useDuelsRating({ page, pageSize, ordering });
+  const rows = useMemo(
+    () => mapDuelsRatingPageTableRows(ratingPage?.data ?? [], { page, pageSize }),
+    [page, pageSize, ratingPage?.data],
+  );
 
   const columns: GridColDef<DuelsRatingPageTableRow>[] = useMemo(
     () => [
@@ -118,10 +126,10 @@ const DuelsRatingPageTable = ({
     <DataGrid
       autoHeight
       disableRowSelectionOnClick
-      loading={loading}
+      loading={isLoading}
       rows={rows}
       columns={columns}
-      rowCount={total}
+      rowCount={ratingPage?.total ?? rows.length}
       paginationModel={paginationModel}
       onPaginationModelChange={onPaginationModelChange}
       paginationMode="server"
