@@ -11,8 +11,9 @@ import 'swiper/css/pagination';
 
 const HomePromosSection = () => {
   const { data: slides } = useHomePromos();
+  const visibleSlides = slides?.filter((slide) => slide.type !== 'blogCreate');
 
-  if (!slides?.length) {
+  if (!visibleSlides?.length) {
     return null;
   }
 
@@ -24,7 +25,7 @@ const HomePromosSection = () => {
         autoHeight
         pagination={{ clickable: true }}
         autoplay={
-          slides.length > 1
+          visibleSlides.length > 1
             ? {
                 pauseOnMouseEnter: true,
                 disableOnInteraction: false,
@@ -32,9 +33,9 @@ const HomePromosSection = () => {
               }
             : false
         }
-        loop={slides.length > 1}
+        loop={visibleSlides.length > 1}
       >
-        {slides.map((slide) => (
+        {visibleSlides.map((slide) => (
           <SwiperSlide key={slide.id}>
             {slide.type === 'blogCreate' ? <HomeBlogCreatePromoCard slide={slide} /> : null}
             {slide.type === 'kepCover' ? <HomeKepCoverPromoCard slide={slide} /> : null}
