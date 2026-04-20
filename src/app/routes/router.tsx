@@ -1,12 +1,98 @@
-import { type ReactNode, Suspense, lazy } from 'react';
+import { type ReactNode, Suspense } from 'react';
 import { Navigate, Outlet, RouteObject, createBrowserRouter, useLocation } from 'react-router';
 import App from 'app/App.tsx';
 import AuthLayout from 'app/layouts/auth-layout';
 import DefaultAuthLayout from 'app/layouts/auth-layout/DefaultAuthLayout';
 import MainLayout from 'app/layouts/main-layout';
-import Page403 from 'modules/errors/ui/pages/Page403';
-import Page404 from 'modules/errors/ui/pages/Page404';
-import RouteErrorPage from 'modules/errors/ui/pages/RouteErrorPage';
+import { AccountSettingsPage } from 'modules/account-settings/ui/pages';
+import {
+  AdminContestFilterFormPage,
+  AdminContestFiltersListPage,
+  AdminContestFormPage,
+  AdminContestQuestionFormPage,
+  AdminContestQuestionsListPage,
+  AdminContestTypeFormPage,
+  AdminContestTypesListPage,
+  AdminContestsListPage,
+} from 'modules/admin/contests/ui/pages';
+import {
+  AdminProblemAttemptFormPage,
+  AdminProblemAttemptsListPage,
+  AdminProblemChapterFormPage,
+  AdminProblemChaptersListPage,
+  AdminProblemFormPage,
+  AdminProblemTagFormPage,
+  AdminProblemTagsListPage,
+  AdminProblemsListPage,
+} from 'modules/admin/problems/ui/pages';
+import {
+  AdminTeamFormPage,
+  AdminTeamsListPage,
+  AdminUserFormPage,
+  AdminUsersListPage,
+} from 'modules/admin/users/ui/pages';
+import { ArenaDetailPage, ArenaListPage } from 'modules/arena/ui/pages';
+import { LoginPage } from 'modules/authentication/ui/pages';
+import { BlogEditorPage, BlogListPage, BlogPostPage } from 'modules/blog/ui/pages';
+import { CalendarPage } from 'modules/calendar/ui/pages';
+import {
+  ChallengeDetailPage,
+  ChallengesListPage,
+  ChallengesRatingPage,
+  ChallengesUserStatisticsPage,
+} from 'modules/challenges/ui/pages';
+import {
+  ContestAttemptsPage,
+  ContestPage,
+  ContestProblemPage,
+  ContestProblemsPage,
+  ContestQuestionsPage,
+  ContestRatingChangesPage,
+  ContestRegistrantsPage,
+  ContestStandingsPage,
+  ContestStatisticsPage,
+  ContestsListPage,
+  ContestsRatingPage,
+  ContestsUserStatisticsPage,
+} from 'modules/contests/ui/pages';
+import { DuelDetailPage, DuelsListPage, DuelsRatingPage } from 'modules/duels/ui/pages';
+import { Page403, Page404, RouteErrorPage } from 'modules/errors/ui/pages';
+import {
+  HackathonAttemptsPage,
+  HackathonPage,
+  HackathonProjectPage,
+  HackathonProjectsPage,
+  HackathonRegistrantsPage,
+  HackathonStandingsPage,
+  HackathonsListPage,
+} from 'modules/hackathons/ui/pages';
+import { HomePage } from 'modules/home/ui/pages';
+import { KepCoverPage } from 'modules/kep-cover/ui/pages';
+import { KepcoinEarnPage, KepcoinPage } from 'modules/kepcoin/ui/pages';
+import {
+  ProblemDetailPage,
+  ProblemsAttemptsPage,
+  ProblemsListPage,
+  ProblemsRatingHistoryPage,
+  ProblemsRatingPage,
+  ProblemsUserStatisticsPage,
+  StudyPlanPage,
+  StudyPlansPage,
+} from 'modules/problems/ui/pages';
+import { ProjectDetailPage, ProjectsListPage } from 'modules/projects/ui/pages';
+import { ShopPage } from 'modules/shop/ui/pages';
+import { TestDetailPage, TestPassPage, TestsListPage } from 'modules/testing/ui/pages';
+import { TournamentPage, TournamentsListPage } from 'modules/tournaments/ui/pages';
+import {
+  UserProfileAboutTab,
+  UserProfileAchievementsTab,
+  UserProfileActivityHistoryTab,
+  UserProfileBlogTab,
+  UserProfilePage,
+  UserProfilePurchasesTab,
+  UserProfileRatingsTab,
+  UsersListPage,
+} from 'modules/users/ui/pages';
 import AuthGuard from 'shared/components/guard/AuthGuard';
 import SuperuserGuard from 'shared/components/guard/SuperuserGuard';
 import PageLoader from 'shared/components/loading/PageLoader';
@@ -15,159 +101,12 @@ import { resources } from './resources';
 import { authPaths, rootPaths } from './route-config';
 import { adminMenu } from './sitemap';
 
-const Home = lazy(() => import('modules/home/ui/pages/HomePage'));
-const KepCoverPage = lazy(() => import('modules/kep-cover/ui/pages/KepCoverPage'));
-const KepcoinPage = lazy(() => import('modules/kepcoin/ui/pages/KepcoinPage'));
-const KepcoinEarnPage = lazy(() => import('modules/kepcoin/ui/pages/KepcoinEarnPage'));
-const ShopPage = lazy(() => import('modules/shop/ui/pages/ShopPage'));
-const ProblemsListPage = lazy(() => import('modules/problems/ui/pages/ProblemsListPage'));
-const StudyPlansPage = lazy(() => import('modules/problems/ui/pages/StudyPlansPage'));
-const StudyPlanPage = lazy(() => import('modules/problems/ui/pages/StudyPlanPage'));
-const ProblemsRatingPage = lazy(() => import('modules/problems/ui/pages/ProblemsRatingPage'));
-const ProblemsRatingHistoryPage = lazy(
-  () => import('modules/problems/ui/pages/ProblemsRatingHistoryPage'),
-);
-const ProblemsAttemptsPage = lazy(() => import('modules/problems/ui/pages/ProblemsAttemptsPage'));
-const ProblemDetailPage = lazy(() => import('modules/problems/ui/pages/ProblemDetailPage'));
-const ProblemsUserStatisticsPage = lazy(
-  () => import('modules/problems/ui/pages/ProblemsUserStatisticsPage'),
-);
-const UsersListPage = lazy(() => import('modules/users/ui/pages/UsersListPage'));
-const ProjectsListPage = lazy(() => import('modules/projects/ui/pages/ProjectsListPage'));
-const ProjectDetailPage = lazy(() => import('modules/projects/ui/pages/ProjectDetailPage'));
-const TestsListPage = lazy(() => import('modules/testing/ui/pages/TestsListPage'));
-const TestDetailPage = lazy(() => import('modules/testing/ui/pages/TestDetailPage'));
-const TestPassPage = lazy(() => import('modules/testing/ui/pages/TestPassPage'));
-const ChallengesListPage = lazy(() => import('modules/challenges/ui/pages/ChallengesListPage'));
-const ChallengeDetailPage = lazy(() => import('modules/challenges/ui/pages/ChallengeDetailPage'));
-const ChallengesRatingPage = lazy(() => import('modules/challenges/ui/pages/ChallengesRatingPage'));
-const ChallengeUserStatisticsPage = lazy(
-  () => import('modules/challenges/ui/pages/ChallengesUserStatisticsPage'),
-);
-const DuelsListPage = lazy(() => import('modules/duels/ui/pages/DuelsListPage'));
-const DuelsRatingPage = lazy(() => import('modules/duels/ui/pages/DuelsRatingPage'));
-const DuelDetailPage = lazy(() => import('modules/duels/ui/pages/DuelDetailPage'));
-const ArenaListPage = lazy(() => import('modules/arena/ui/pages/ArenaListPage'));
-const ArenaDetailPage = lazy(() => import('modules/arena/ui/pages/ArenaDetailPage'));
-const ContestsListPage = lazy(() => import('modules/contests/ui/pages/ContestsListPage'));
-const ContestsRatingPage = lazy(() => import('modules/contests/ui/pages/ContestsRatingPage'));
-const ContestsUserStatisticsPage = lazy(
-  () => import('modules/contests/ui/pages/ContestsUserStatisticsPage'),
-);
-const ContestPage = lazy(() => import('modules/contests/ui/pages/ContestPage'));
-const ContestProblemsPage = lazy(() => import('modules/contests/ui/pages/ContestProblemsPage'));
-const ContestProblemPage = lazy(() => import('modules/contests/ui/pages/ContestProblemPage'));
-const ContestAttemptsPage = lazy(() => import('modules/contests/ui/pages/ContestAttemptsPage'));
-const ContestStatisticsPage = lazy(() => import('modules/contests/ui/pages/ContestStatisticsPage'));
-const ContestStandingsPage = lazy(() => import('modules/contests/ui/pages/ContestStandingsPage'));
-const ContestRegistrantsPage = lazy(
-  () => import('modules/contests/ui/pages/ContestRegistrantsPage'),
-);
-const ContestRatingChangesPage = lazy(
-  () => import('modules/contests/ui/pages/ContestRatingChangesPage'),
-);
-const ContestQuestionsPage = lazy(() => import('modules/contests/ui/pages/ContestQuestionsPage'));
-const TournamentsListPage = lazy(() => import('modules/tournaments/ui/pages/TournamentsListPage'));
-const TournamentPage = lazy(() => import('modules/tournaments/ui/pages/TournamentPage'));
-const HackathonsListPage = lazy(() => import('modules/hackathons/ui/pages/HackathonsListPage'));
-const HackathonPage = lazy(() => import('modules/hackathons/ui/pages/HackathonPage'));
-const HackathonProjectsPage = lazy(
-  () => import('modules/hackathons/ui/pages/HackathonProjectsPage'),
-);
-const HackathonProjectPage = lazy(() => import('modules/hackathons/ui/pages/HackathonProjectPage'));
-const HackathonAttemptsPage = lazy(
-  () => import('modules/hackathons/ui/pages/HackathonAttemptsPage'),
-);
-const HackathonRegistrantsPage = lazy(
-  () => import('modules/hackathons/ui/pages/HackathonRegistrantsPage'),
-);
-const HackathonStandingsPage = lazy(
-  () => import('modules/hackathons/ui/pages/HackathonStandingsPage'),
-);
-const AccountSettingsPage = lazy(
-  () => import('modules/account-settings/ui/pages/AccountSettingsPage'),
-);
-const BlogListPage = lazy(() => import('modules/blog/ui/pages/BlogListPage'));
-const BlogEditorPage = lazy(() => import('modules/blog/ui/pages/BlogEditorPage'));
-const BlogPostPage = lazy(() => import('modules/blog/ui/pages/BlogPostPage'));
-const UserProfilePage = lazy(() => import('modules/users/ui/pages/UserProfilePage'));
-const UserProfileAboutTab = lazy(
-  () => import('modules/users/ui/pages/UserProfilePage/components/user-profile/UserProfileAboutTab'),
-);
-const UserProfileBlogTab = lazy(
-  () => import('modules/users/ui/pages/UserProfilePage/components/user-profile/UserProfileBlogTab'),
-);
-const UserProfileRatingsTab = lazy(
-  () => import('modules/users/ui/pages/UserProfilePage/components/user-profile/UserProfileRatingsTab'),
-);
-const UserProfileActivityHistoryTab = lazy(
-  () => import('modules/users/ui/pages/UserProfilePage/components/user-profile/UserProfileActivityHistoryTab'),
-);
-const UserProfilePurchasesTab = lazy(
-  () => import('modules/users/ui/pages/UserProfilePage/components/user-profile/UserProfilePurchasesTab'),
-);
-const UserProfileAchievementsTab = lazy(
-  () => import('modules/users/ui/pages/UserProfilePage/components/user-profile/UserProfileAchievementsTab'),
-);
-
-const CalendarPage = lazy(() => import('modules/calendar/ui/pages/CalendarPage'));
-const AdminProblemsListPage = lazy(
-  () => import('modules/admin/problems/ui/pages/AdminProblemsListPage'),
-);
-const AdminProblemFormPage = lazy(
-  () => import('modules/admin/problems/ui/pages/AdminProblemFormPage'),
-);
-const AdminProblemAttemptsListPage = lazy(
-  () => import('modules/admin/problems/ui/pages/AdminProblemAttemptsListPage'),
-);
-const AdminProblemAttemptFormPage = lazy(
-  () => import('modules/admin/problems/ui/pages/AdminProblemAttemptFormPage'),
-);
-const AdminProblemChaptersListPage = lazy(
-  () => import('modules/admin/problems/ui/pages/AdminProblemChaptersListPage'),
-);
-const AdminProblemChapterFormPage = lazy(
-  () => import('modules/admin/problems/ui/pages/AdminProblemChapterFormPage'),
-);
-const AdminProblemTagsListPage = lazy(
-  () => import('modules/admin/problems/ui/pages/AdminProblemTagsListPage'),
-);
-const AdminProblemTagFormPage = lazy(
-  () => import('modules/admin/problems/ui/pages/AdminProblemTagFormPage'),
-);
-const AdminContestsListPage = lazy(
-  () => import('modules/admin/contests/ui/pages/AdminContestsListPage'),
-);
-const AdminContestFormPage = lazy(
-  () => import('modules/admin/contests/ui/pages/AdminContestFormPage'),
-);
-const AdminContestQuestionsListPage = lazy(
-  () => import('modules/admin/contests/ui/pages/AdminContestQuestionsListPage'),
-);
-const AdminContestQuestionFormPage = lazy(
-  () => import('modules/admin/contests/ui/pages/AdminContestQuestionFormPage'),
-);
-const AdminContestTypesListPage = lazy(
-  () => import('modules/admin/contests/ui/pages/AdminContestTypesListPage'),
-);
-const AdminContestTypeFormPage = lazy(
-  () => import('modules/admin/contests/ui/pages/AdminContestTypeFormPage'),
-);
-const AdminContestFiltersListPage = lazy(
-  () => import('modules/admin/contests/ui/pages/AdminContestFiltersListPage'),
-);
-const AdminContestFilterFormPage = lazy(
-  () => import('modules/admin/contests/ui/pages/AdminContestFilterFormPage'),
-);
-const AdminUsersListPage = lazy(() => import('modules/admin/users/ui/pages/AdminUsersListPage'));
-const AdminUserFormPage = lazy(() => import('modules/admin/users/ui/pages/AdminUserFormPage'));
-const AdminTeamsListPage = lazy(() => import('modules/admin/users/ui/pages/AdminTeamsListPage'));
-const AdminTeamFormPage = lazy(() => import('modules/admin/users/ui/pages/AdminTeamFormPage'));
-
-const Login = lazy(() => import('modules/authentication/ui/pages/LoginPage'));
 const IS_PROD = import.meta.env.PROD;
 
 const withAuthGuard = (element: ReactNode) => <AuthGuard>{element}</AuthGuard>;
+const withSuspense = (element: ReactNode) => (
+  <Suspense fallback={<PageLoader />}>{element}</Suspense>
+);
 
 export const SuspenseOutlet = () => {
   const location = useLocation();
@@ -360,7 +299,7 @@ export const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <Home />,
+            element: <HomePage />,
             handle: { titleKey: 'pageTitles.home' },
           },
           {
@@ -487,7 +426,7 @@ export const routes: RouteObject[] = [
           },
           {
             path: resources.ChallengesUserStatistics,
-            element: withAuthGuard(<ChallengeUserStatisticsPage />),
+            element: withAuthGuard(<ChallengesUserStatisticsPage />),
             handle: { titleKey: 'pageTitles.challengesStats' },
           },
           {
@@ -747,29 +686,17 @@ export const routes: RouteObject[] = [
 
       {
         path: resources.Problem,
-        element: (
-          <Suspense fallback={<PageLoader />}>
-            <ProblemDetailPage />
-          </Suspense>
-        ),
+        element: withSuspense(<ProblemDetailPage />),
         handle: { titleKey: 'pageTitles.problem', fallbackTitleKey: 'pageTitles.problems' },
       },
       {
         path: resources.ContestProblem,
-        element: (
-          <Suspense fallback={<PageLoader />}>
-            <ContestProblemPage />
-          </Suspense>
-        ),
+        element: withSuspense(<ContestProblemPage />),
         handle: { titleKey: 'pageTitles.contestProblem', fallbackTitleKey: 'pageTitles.contests' },
       },
       {
         path: resources.Duel,
-        element: (
-          <Suspense fallback={<PageLoader />}>
-            <DuelDetailPage />
-          </Suspense>
-        ),
+        element: withSuspense(<DuelDetailPage />),
         handle: { titleKey: 'pageTitles.duel', fallbackTitleKey: 'pageTitles.duels' },
       },
 
@@ -788,7 +715,7 @@ export const routes: RouteObject[] = [
             children: [
               {
                 path: authPaths.login,
-                element: <Login />,
+                element: <LoginPage />,
                 handle: { titleKey: 'pageTitles.login' },
               },
             ],

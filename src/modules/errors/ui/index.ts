@@ -1,3 +1,2 @@
-export { default as Page404 } from './pages/Page404';
-export { default as RouteErrorPage } from './pages/RouteErrorPage';
+export * from './pages';
 export { default as AppErrorBoundary } from './shared/components/AppErrorBoundary';
