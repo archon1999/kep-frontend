@@ -1,4 +1,4 @@
-import { Box, Stack, StackProps, Typography } from '@mui/material';
+import { Box, Stack, StackProps, Tooltip, Typography } from '@mui/material';
 import { useMemo } from 'react';
 
 const ratingImages = import.meta.glob('../../assets/images/contests/ratings/*.png', {
@@ -42,7 +42,7 @@ const ContestsRatingChip = ({ title, imgSize = 24, withTitle = false, ...stackPr
     return null;
   }
 
-  return (
+  const content = (
     <Stack direction="row" spacing={0.75} alignItems="center" {...stackProps}>
       {imageSrc ? (
         <Box
@@ -58,6 +58,12 @@ const ContestsRatingChip = ({ title, imgSize = 24, withTitle = false, ...stackPr
         </Typography>
       ) : null}
     </Stack>
+  );
+
+  return (
+    <Tooltip title={title ?? ''} arrow>
+      {content}
+    </Tooltip>
   );
 };
 
