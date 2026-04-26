@@ -113,16 +113,6 @@ const ContestantView = ({
       );
     }
 
-    if (resolvedVirtual) {
-      icons.push(
-        <Tooltip key="virtual" title={t('contests.contestantStatus.virtual')}>
-          <Stack direction="row" alignItems="center">
-            <KepIcon name="virtual" fontSize={18} sx={{ color: 'info.main' }} />
-          </Stack>
-        </Tooltip>,
-      );
-    }
-
     if (!icons.length) return null;
 
     return (
@@ -176,7 +166,31 @@ const ContestantView = ({
         color={textColor ? undefined : 'text.primary'}
         sx={nameColorSx}
       >
-        {username || '—'}
+        {username ? (
+          <>
+            {username}
+            {resolvedVirtual ? (
+              <Tooltip title={t('contests.contestantStatus.virtualContestant')}>
+                <Typography
+                  component="sup"
+                  variant="caption"
+                  color="primary.main"
+                  sx={{
+                    ml: 0.25,
+                    cursor: 'help',
+                    fontSize: '0.7em',
+                    lineHeight: 0,
+                    verticalAlign: 'super',
+                  }}
+                >
+                  #
+                </Typography>
+              </Tooltip>
+            ) : null}
+          </>
+        ) : (
+          '—'
+        )}
       </Typography>
       {fullName ? (
         <Typography variant="caption" color="text.secondary" noWrap>

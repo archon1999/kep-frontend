@@ -60,6 +60,8 @@
     "viewMyStats": "Mening kontest statistikam",
     "register": "Roʻyxatdan oʻtish",
     "unregister": "Roʻyxatdan bekor qilish",
+    "purchaseVirtualContest": "Virtual kontest sotib olish",
+    "startVirtualContest": "Virtual kontestni boshlash",
     "statistics": {
       "title": "Kontestlar statistikasi",
       "subtitle": "{{username}} uchun reytingli kontest natijalari.",
@@ -201,12 +203,14 @@
       "delta": "?",
       "performance": "Performance",
       "followingOnly": "Faqat kuzatayotganlar",
+      "officialOnly": "Faqat rasmiy",
       "allFilters": "Barcha filtrlar",
       "problemTotals": "{{solved}} yechildi / {{attempts}} urinish"
     },
     "contestantStatus": {
       "official": "Rasmiy",
       "virtual": "Virtual",
+      "virtualContestant": "Virtual contestant",
       "unrated": "Reytingsiz"
     },
     "ratingChanges": {

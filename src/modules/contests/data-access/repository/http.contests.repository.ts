@@ -102,10 +102,11 @@ export class HttpContestsRepository implements ContestsRepository {
   ): Promise<PageResult<ContestantEntity>> {
     const result = await contestsApiClient.getStandings(contestId, {
       page: params?.page,
-      pageSize: params?.pageSize,
+      page_size: params?.pageSize,
       filter: params?.filter !== null ? params?.filter?.toString() : undefined,
       following: params?.following ? 'true' : undefined,
-    });
+      official: params?.official ? 'true' : undefined,
+    } as any);
     return mapContestantsPage(result);
   }
 
@@ -156,6 +157,14 @@ export class HttpContestsRepository implements ContestsRepository {
     payload: { contestProblem: string; sourceCode: string; lang: string },
   ): Promise<void> {
     await contestsApiClient.submitSolution(contestId, payload);
+  }
+
+  async purchaseVirtualContest(contestId: number | string): Promise<void> {
+    await contestsApiClient.purchaseVirtualContest(contestId);
+  }
+
+  async startVirtualContest(contestId: number | string): Promise<void> {
+    await contestsApiClient.startVirtualContest(contestId);
   }
 
   async register(contestId: number | string, teamId?: number): Promise<ContestDetail> {

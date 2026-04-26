@@ -116,6 +116,7 @@ export const useContestStandings = (
           params?.pageSize,
           params?.filter,
           params?.following,
+          params?.official,
         ]
       : null,
     () => contestsRepository.standings(contestId!, params),

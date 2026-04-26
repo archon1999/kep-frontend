@@ -57,6 +57,8 @@ export interface ContestsRepository {
     contestId: number | string,
     payload: { contestProblem: string; sourceCode: string; lang: string },
   ) => Promise<void>;
+  purchaseVirtualContest: (contestId: number | string) => Promise<void>;
+  startVirtualContest: (contestId: number | string) => Promise<void>;
   register: (contestId: number | string, teamId?: number) => Promise<ContestDetail>;
   cancelRegistration: (contestId: number | string) => Promise<ContestDetail>;
 }
@@ -66,6 +68,7 @@ export interface ContestStandingsParams {
   pageSize?: number;
   filter?: number | string | null;
   following?: boolean;
+  official?: boolean;
 }
 
 export interface ContestRegistrantsParams {

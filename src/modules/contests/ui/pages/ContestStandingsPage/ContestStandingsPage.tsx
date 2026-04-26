@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { Box, Chip, FormControl, Link, MenuItem, Select, Stack, Switch, Tooltip, Typography } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
@@ -71,6 +72,7 @@ const ContestStandingsPage = () => {
     defaults: {
       selectedFilter: '',
       followingOnly: false,
+      officialOnly: false,
     },
     schema: {
       selectedFilter: {
@@ -81,10 +83,15 @@ const ContestStandingsPage = () => {
         ...booleanFlagParam(),
         param: 'following',
       },
+      officialOnly: {
+        ...booleanFlagParam(),
+        param: 'official',
+      },
     },
   });
   const selectedFilter = state.selectedFilter;
   const followingOnly = state.followingOnly;
+  const officialOnly = state.officialOnly;
 
   const { data: standings, isLoading } = useContestStandings(
     contestId,
@@ -93,6 +100,7 @@ const ContestStandingsPage = () => {
       pageSize: pageParams.pageSize,
       filter: selectedFilter || null,
       following: followingOnly,
+      official: officialOnly,
     },
     refreshInterval,
   );
@@ -120,6 +128,20 @@ const ContestStandingsPage = () => {
         />
         <Typography variant="body2" fontWeight={600}>
           {t('contests.standings.followingOnly')}
+        </Typography>
+      </Stack>
+
+      <Stack direction="row" spacing={1} alignItems="center">
+        <Switch
+          size="small"
+          checked={officialOnly}
+          onChange={(_, checked) => {
+            setField('officialOnly', checked);
+            setPaginationModel((prev) => ({ ...prev, page: 0 }));
+          }}
+        />
+        <Typography variant="body2" fontWeight={600}>
+          {t('contests.standings.officialOnly')}
         </Typography>
       </Stack>
 
@@ -170,11 +192,12 @@ const ContestStandingsPage = () => {
             </Typography>
           </Stack>
         ),
-        renderCell: ({ row }) => (
-          <Typography variant="body2" fontWeight={700}>
-            {row.rank ?? '—'}
-          </Typography>
-        ),
+        renderCell: ({ row }) =>
+          row.rowType === 'upsolve' ? null : (
+            <Typography variant="body2" fontWeight={700}>
+              {row.rank ?? '—'}
+            </Typography>
+          ),
       },
       {
         field: 'username',
@@ -183,14 +206,16 @@ const ContestStandingsPage = () => {
         flex: 1.2,
         sortable: false,
         renderCell: ({ row }) => (
-          <ContestantView
-            contestant={row}
-            imgSize={28}
-            isVirtual={row.isVirtual}
-            isUnrated={row.isUnrated}
-            isOfficial={row.isOfficial}
-            showCountry
-          />
+          <Stack direction="row" spacing={1} alignItems="center" minWidth={0}>
+            <ContestantView
+              contestant={row}
+              imgSize={28}
+              isVirtual={row.isVirtual}
+              isUnrated={row.isUnrated}
+              isOfficial={row.isOfficial}
+              showCountry
+            />
+          </Stack>
         ),
       },
       {
@@ -204,7 +229,7 @@ const ContestStandingsPage = () => {
             <Typography variant="body2" fontWeight={800} color="primary.main">
               {row.points === undefined || row.points === null ? '-' : formatContestPoints(row.points)}
             </Typography>
-            {contestHasPenalties(contest?.type, contest?.typeInfo) ? (
+            {row.rowType !== 'upsolve' && contestHasPenalties(contest?.type, contest?.typeInfo) ? (
               <Typography variant="caption" color="error.main">
                 ({row.penalties ?? 0})
               </Typography>
@@ -224,6 +249,14 @@ const ContestStandingsPage = () => {
         headerAlign: 'center',
         sortable: false,
         renderCell: ({ row }) => {
+          if (row.rowType === 'upsolve' || row.isVirtual) {
+            return (
+              <Typography variant="body2" color="text.secondary">
+                —
+              </Typography>
+            );
+          }
+
           const deltaValue = row.delta ?? 0;
           const deltaLabel = `${deltaValue > 0 ? '+' : ''}${deltaValue}`;
 
@@ -252,16 +285,21 @@ const ContestStandingsPage = () => {
         align: 'center',
         headerAlign: 'center',
         sortable: false,
-        renderCell: ({ row }) => (
-          <Stack direction="row" spacing={0.75} alignItems="center">
-            <Typography variant="body2" fontWeight={700}>
-              {row.performance ?? '—'}
+        renderCell: ({ row }) =>
+          row.rowType === 'upsolve' || row.isVirtual ? (
+            <Typography variant="body2" color="text.secondary">
+              —
             </Typography>
-            {row.performanceTitle ? (
-              <ContestsRatingChip title={row.performanceTitle} imgSize={22} />
-            ) : null}
-          </Stack>
-        ),
+          ) : (
+            <Stack direction="row" spacing={0.75} alignItems="center">
+              <Typography variant="body2" fontWeight={700}>
+                {row.performance ?? '—'}
+              </Typography>
+              {row.performanceTitle ? (
+                <ContestsRatingChip title={row.performanceTitle} imgSize={22} />
+              ) : null}
+            </Stack>
+          ),
       });
     }
 
@@ -340,6 +378,7 @@ const ContestStandingsPage = () => {
               typeInfo={contest?.typeInfo}
               info={info}
               problem={problem}
+              rowType={row.rowType}
             />
           );
         },
@@ -377,10 +416,18 @@ const ContestStandingsPage = () => {
         paginationModel={paginationModel}
         onPaginationModelChange={onPaginationModelChange}
         pageSizeOptions={[10, 20, 50, 100]}
-        getRowId={(row) => `${row.username}-${row.virtualTime ?? ''}`}
+        getRowId={(row) => `${row.rowType ?? 'official'}-${row.id ?? row.username}-${row.virtualTime ?? ''}`}
         getRowClassName={({ row }) =>
-          row.username === currentUser?.username ? 'MuiDataGrid-row--current' : ''
+          [
+            row.username === currentUser?.username ? 'MuiDataGrid-row--current' : '',
+            row.rowType === 'upsolve' ? 'MuiDataGrid-row--upsolve' : '',
+          ].filter(Boolean).join(' ')
         }
+        sx={(theme) => ({
+          '& .MuiDataGrid-row--upsolve': {
+            bgcolor: alpha(theme.palette.info.main, theme.palette.mode === 'dark' ? 0.12 : 0.06),
+          },
+        })}
       />
     </Stack>
   );

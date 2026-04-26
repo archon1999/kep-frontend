@@ -137,6 +137,7 @@ const ContestAttemptsPage = () => {
             isLoading={isLoading}
             onRerun={() => mutate()}
             showProblemColumn
+            showContestTimeSubmitted
             getProblemLink={(attempt) =>
               getResourceByParams(resources.ContestProblem, {
                 id: contest?.id ?? contestId ?? '',

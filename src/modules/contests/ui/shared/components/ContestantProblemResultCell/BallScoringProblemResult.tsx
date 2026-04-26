@@ -3,7 +3,7 @@ import { emptyResult, solvedResult } from './helpers';
 import ProblemResultLayout from './ProblemResultLayout';
 import type { ContestantProblemResultProps } from './types';
 
-const BallScoringProblemResult = ({ contestType, typeInfo, info }: ContestantProblemResultProps) => {
+const BallScoringProblemResult = ({ contestType, typeInfo, info, rowType }: ContestantProblemResultProps) => {
   if (!info) return null;
 
   if (contestHasBalls(contestType, typeInfo)) {
@@ -21,6 +21,10 @@ const BallScoringProblemResult = ({ contestType, typeInfo, info }: ContestantPro
           result={{ label: formatContestPoints(info.points), color: 'warning' }}
         />
       );
+    }
+
+    if (rowType === 'upsolve' && info.attemptsCount > 0) {
+      return <ProblemResultLayout result={{ label: `-${info.attemptsCount}`, color: 'error' }} />;
     }
 
     return (

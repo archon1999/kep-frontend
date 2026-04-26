@@ -14,12 +14,15 @@ export interface ContestantTeam {
 }
 
 export interface ContestantEntity {
+  id?: number;
+  rowType?: 'official' | 'upsolve';
   username: string;
   userFullName?: string;
   team?: ContestantTeam | null;
   type?: number;
   problemsInfo: ContestProblemInfo[];
   points?: number;
+  solvedCount?: number;
   penalties?: number;
   rank?: number;
   rating?: number;

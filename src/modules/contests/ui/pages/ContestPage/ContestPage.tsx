@@ -1,9 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, Card, CardContent, Grid, Skeleton, Stack } from '@mui/material';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
-import { resources } from 'app/routes/resources';
+import { getResourceByParams, resources } from 'app/routes/resources';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { contestsQueries, useContest, useContestProblems } from 'modules/contests/application/queries';
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
@@ -17,6 +17,7 @@ const ContestPage = () => {
   const { id } = useParams<{ id: string }>();
   const contestId = id ? Number(id) : undefined;
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const { data: contest, mutate: mutateContest, isLoading: isContestLoading } = useContest(contestId);
   const canLoadContestProblems = Boolean(contest && contest.statusCode !== ContestStatus.NotStarted);
@@ -26,6 +27,7 @@ const ContestPage = () => {
     canLoadContestProblems,
   );
   const [isRegistrationLoading, setIsRegistrationLoading] = useState(false);
+  const [isVirtualLoading, setIsVirtualLoading] = useState(false);
   useDocumentTitle(
     contest?.title ? 'pageTitles.contest' : undefined,
     contest?.title
@@ -74,6 +76,47 @@ const ContestPage = () => {
     );
   }, [canRegister, contest, handleRegistrationToggle, isRegistrationLoading, t]);
 
+  const handlePurchaseVirtualContest = useCallback(async () => {
+    if (!contest) return;
+    setIsVirtualLoading(true);
+    try {
+      await contestsQueries.contestsRepository.purchaseVirtualContest(contest.id);
+      await mutateContest();
+    } finally {
+      setIsVirtualLoading(false);
+    }
+  }, [contest, mutateContest]);
+
+  const handleStartVirtualContest = useCallback(async () => {
+    if (!contest) return;
+    setIsVirtualLoading(true);
+    try {
+      await contestsQueries.contestsRepository.startVirtualContest(contest.id);
+      await mutateContest();
+      navigate(getResourceByParams(resources.ContestProblems, { id: contest.id }));
+    } finally {
+      setIsVirtualLoading(false);
+    }
+  }, [contest, mutateContest, navigate]);
+
+  const virtualContestCta = useMemo(() => {
+    if (!contest || contest.statusCode !== ContestStatus.Finished) return null;
+
+    const availableStarts = contest.userInfo?.virtualContestAvailable ?? 0;
+    const canStart = availableStarts > 0;
+    return (
+      <Button
+        fullWidth
+        variant="contained"
+        color={canStart ? 'primary' : 'secondary'}
+        onClick={canStart ? handleStartVirtualContest : handlePurchaseVirtualContest}
+        disabled={isVirtualLoading}
+      >
+        {canStart ? t('contests.startVirtualContest') : t('contests.purchaseVirtualContest')}
+      </Button>
+    );
+  }, [contest, handlePurchaseVirtualContest, handleStartVirtualContest, isVirtualLoading, t]);
+
   return (
     <Stack spacing={3} sx={responsivePagePaddingSx}>
       <ContestPageHeader
@@ -107,6 +150,7 @@ const ContestPage = () => {
             {contest ? <ContestTypeInfoCard contest={contest} /> : null}
 
             {registrationCta ? <Box>{registrationCta}</Box> : null}
+            {virtualContestCta ? <Box>{virtualContestCta}</Box> : null}
 
             {showProblemsPreview ? (
               <ContestPageProblemsPreviewCard

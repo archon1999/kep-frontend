@@ -13,6 +13,7 @@ export interface ContestantProblemResultProps {
   typeInfo?: ContestTypeInfo | null;
   info?: ContestProblemInfo | null;
   problem?: ContestProblemEntity;
+  rowType?: 'official' | 'upsolve';
 }
 
 export interface ProblemResultView {

@@ -33,6 +33,8 @@ export const mapContestant = (
       : 0;
 
   return {
+    id: payload?.id !== undefined ? toNumber(payload.id) : undefined,
+    rowType: payload?.rowType ?? payload?.row_type ?? 'official',
     username: payload?.username ?? payload?.user?.username ?? '',
     userFullName:
       payload?.userFullName ??
@@ -43,6 +45,10 @@ export const mapContestant = (
     type: payload?.type ?? payload?.contestant_type,
     problemsInfo: (payload?.problemsInfo ?? payload?.problems_info ?? []).map(mapContestProblemInfo),
     points: payload?.points !== undefined ? toNumber(payload.points) : undefined,
+    solvedCount:
+      payload?.solvedCount !== undefined || payload?.solved_count !== undefined
+        ? toNumber(payload?.solvedCount ?? payload?.solved_count)
+        : undefined,
     penalties: payload?.penalties !== undefined ? toNumber(payload.penalties) : undefined,
     rank: payload?.rank !== undefined ? toNumber(payload.rank) : undefined,
     rating: payload?.rating !== undefined ? toNumber(payload.rating) : undefined,

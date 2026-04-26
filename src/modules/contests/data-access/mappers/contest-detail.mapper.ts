@@ -13,6 +13,9 @@ const mapContestUserInfo = (payload: any): ContestUserInfo => ({
   virtualContestPurchased: Boolean(
     payload?.virtualContestPurchased ?? payload?.virtual_contest_purchased ?? false,
   ),
+  virtualContestAvailable: Number(
+    payload?.virtualContestAvailable ?? payload?.virtual_contest_available ?? 0,
+  ),
   unratedContestPurchased: Boolean(
     payload?.unratedContestPurchased ?? payload?.unrated_contest_purchased ?? false,
   ),

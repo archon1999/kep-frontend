@@ -60,6 +60,8 @@
     "viewMyStats": "My contest stats",
     "register": "Register",
     "unregister": "Cancel registration",
+    "purchaseVirtualContest": "Purchase virtual contest",
+    "startVirtualContest": "Start virtual contest",
     "statistics": {
       "title": "Contest performance",
       "subtitle": "Detailed results for {{username}} across rated contests.",
@@ -184,12 +186,14 @@
       "delta": "Δ",
       "performance": "Performance",
       "followingOnly": "Following only",
+      "officialOnly": "Official only",
       "allFilters": "All filters",
       "problemTotals": "{{solved}} solved / {{attempts}} attempts"
     },
     "contestantStatus": {
       "official": "Official",
       "virtual": "Virtual",
+      "virtualContestant": "Virtual contestant",
       "unrated": "Unrated"
     },
     "ratingChanges": {

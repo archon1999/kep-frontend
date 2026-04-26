@@ -34,6 +34,7 @@ interface ProblemsAttemptsTableProps {
   isLoading?: boolean;
   onRerun?: () => void;
   showProblemColumn?: boolean;
+  showContestTimeSubmitted?: boolean;
   getProblemLink?: (attempt: AttemptListItem) => string;
 }
 
@@ -55,6 +56,7 @@ const ProblemsAttemptsTable = ({
   isLoading,
   onRerun,
   showProblemColumn = true,
+  showContestTimeSubmitted = false,
   getProblemLink,
 }: ProblemsAttemptsTableProps) => {
   const { t, i18n } = useTranslation();
@@ -234,7 +236,15 @@ const ProblemsAttemptsTable = ({
         minWidth: 150,
         flex: 0.8,
         sortable: false,
-        renderCell: ({ row }) => <Chip label={formatDateTime(row.created)}></Chip>,
+        renderCell: ({ row }) => (
+          <Chip
+            label={
+              showContestTimeSubmitted && row.contestTime
+                ? row.contestTime
+                : formatDateTime(row.created)
+            }
+          />
+        ),
       },
       {
         field: 'lang',
@@ -364,6 +374,7 @@ const ProblemsAttemptsTable = ({
     return baseColumns;
   }, [
     currentUser?.isSuperuser,
+    showContestTimeSubmitted,
     showProblemColumn,
     t,
     formatDateTime,

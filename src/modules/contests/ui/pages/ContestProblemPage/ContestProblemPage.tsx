@@ -23,12 +23,6 @@ import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceByParams, resources } from 'app/routes/resources';
 import dayjs from 'dayjs';
-import {
-  contestHasBalls,
-  contestHasPenalties,
-  contestUsesRating,
-  formatContestPoints,
-} from 'modules/contests/utils/contestType.ts';
 import { problemsQueries, useAttemptsList } from 'modules/problems/application/queries.ts';
 import { ProblemSampleTest } from 'modules/problems/domain/entities/problem.entity';
 import { AttemptsListParams } from 'modules/problems/domain/ports/problems.repository';
@@ -56,15 +50,8 @@ import {
   useContestProblems,
 } from 'modules/contests/application/queries';
 import { contestsQueries } from 'modules/contests/application/queries.ts';
-import {
-  ContestProblemEntity,
-  ContestProblemInfo,
-} from 'modules/contests/domain/entities/contest-problem.entity';
-import { ContestTypeInfo } from 'modules/contests/domain/entities/contest.entity';
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
-import { ContestantEntity } from 'modules/contests/domain/entities/contestant.entity';
 import { sortContestProblems } from 'modules/contests/utils/sortContestProblems';
-import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
 import ContestantResultsFooter from './components/ContestantResultsFooter.tsx';
 
 type ContestProblemTab = 'description' | 'attempts';
@@ -93,133 +80,6 @@ const useProblemPermissions = (permissionsRaw: any) => {
       ),
     };
   }, [permissionsRaw]);
-};
-
-const ContestantResultsFooter = ({
-  contestant,
-  contestProblems,
-  contestType,
-  contestTypeInfo,
-}: {
-  contestant?: ContestantEntity | null;
-  contestProblems: ContestProblemEntity[];
-  contestType?: string;
-  contestTypeInfo?: ContestTypeInfo | null;
-}) => {
-  const { t } = useTranslation();
-
-  if (!contestant) {
-    return null;
-  }
-
-  const formatResult = (info?: ContestProblemInfo | null) => {
-    if (!info) return { label: '-', color: 'default' as const };
-    if (contestHasBalls(contestType as any, contestTypeInfo)) {
-      if ((info.points ?? 0) > 0) {
-        return { label: formatContestPoints(info.points), color: 'primary' as const };
-      }
-      return { label: '0', color: 'default' as const };
-    }
-    if (info.firstAcceptedTime) {
-      return { label: '+', color: 'success' as const };
-    }
-    if (info.attemptsCount > 0) {
-      return { label: `-${info.attemptsCount}`, color: 'error' as const };
-    }
-    return { label: '-', color: 'default' as const };
-  };
-
-  const delta = contestant.delta ?? 0;
-  const deltaColor = delta > 0 ? 'success' : delta < 0 ? 'error' : 'default';
-  const deltaLabel = delta ? `${delta > 0 ? '+' : ''}${delta}` : '0';
-
-  return (
-    <Card
-      sx={{
-        px: 2.5,
-        py: 2,
-      }}
-    >
-      <Stack spacing={1.25}>
-        <Stack direction="row" spacing={1.5} alignItems="center" flexWrap="wrap" useFlexGap>
-          <Typography fontWeight={600}>#{contestant.rank}</Typography>
-          <ContestantView
-            contestant={contestant}
-            imgSize={28}
-            isVirtual={contestant.isVirtual}
-            isUnrated={contestant.isUnrated}
-            isOfficial={contestant.isOfficial}
-          />
-          <Typography color="primary" fontWeight={600}>
-            {formatContestPoints(contestant.points)}
-          </Typography>
-          {contestHasPenalties(contestType as any, contestTypeInfo) ? (
-            <Typography>
-              {`${t('contests.standings.penalties')}: ${contestant.penalties ?? 0}`}
-            </Typography>
-          ) : null}
-          {contestUsesRating(contestType as any, true) ? (
-            <Chip
-              label={`${t('contests.ratingChanges.columns.delta')}: ${deltaLabel}`}
-              color={deltaColor === 'default' ? 'default' : deltaColor}
-              size="small"
-              variant="outlined"
-            />
-          ) : null}
-        </Stack>
-
-        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-          {contestProblems.map((problem) => {
-            const info =
-              contestant.problemsInfo?.find((item) => item.problemSymbol === problem.symbol) ??
-              null;
-            const result = formatResult(info);
-            return (
-              <Stack
-                direction="row"
-                spacing={1}
-                alignItems="center"
-                key={problem.symbol}
-                sx={(theme) => ({
-                  borderRadius: 1.5,
-                  px: 1.25,
-                  py: 0.75,
-                  border: '1px solid',
-                  borderColor:
-                    result.color === 'default'
-                      ? alpha(theme.palette.divider, theme.palette.mode === 'dark' ? 0.6 : 1)
-                      : alpha(theme.palette[result.color].main, 0.6),
-                  backgroundColor:
-                    result.color === 'default'
-                      ? alpha(
-                          theme.palette.common.white,
-                          theme.palette.mode === 'dark' ? 0.04 : 0.02,
-                        )
-                      : alpha(
-                          theme.palette[result.color].main,
-                          theme.palette.mode === 'dark' ? 0.16 : 0.1,
-                        ),
-                  minWidth: 54,
-                })}
-              >
-                <Typography variant="caption" fontWeight={700} color="text.secondary">
-                  {problem.symbol}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  fontWeight={700}
-                  color={result.color === 'default' ? 'text.primary' : `${result.color}.main`}
-                  sx={{ lineHeight: 1.2 }}
-                >
-                  {result.label}
-                </Typography>
-              </Stack>
-            );
-          })}
-        </Stack>
-      </Stack>
-    </Card>
-  );
 };
 
 const ContestProblemPage = () => {
@@ -283,7 +143,7 @@ const ContestProblemPage = () => {
     hasCode: false,
     isRunning,
     isSubmitting,
-    isContestFinished: false,
+    isContestLocked: false,
   });
   const actionHandlersRef = useRef({
     onRun: () => {},
@@ -304,7 +164,7 @@ const ContestProblemPage = () => {
   const { data: contestant, mutate: mutateContestant } = useContestContestant(contestId, {
     refreshInterval: 30000,
   });
-  const isContestFinished = contest?.statusCode === ContestStatus.Finished;
+  const isContestLocked = contest?.statusCode === ContestStatus.NotStarted;
 
   const problem = contestProblem?.problem;
   const upsolveHref = problem?.id
@@ -474,7 +334,7 @@ const ContestProblemPage = () => {
       !selectedLang ||
       !codeRef.current ||
       isSubmitting ||
-      isContestFinished
+      isContestLocked
     )
       return;
     setIsSubmitting(true);
@@ -497,7 +357,7 @@ const ContestProblemPage = () => {
   };
 
   const handleRun = async () => {
-    if (!problem?.id || !selectedLang || !codeRef.current || isRunning || isContestFinished) return;
+    if (!problem?.id || !selectedLang || !codeRef.current || isRunning || isContestLocked) return;
     setIsRunning(true);
     setOutput('');
     const response = await problemsQueries.problemsRepository.runCustomTest({
@@ -512,7 +372,7 @@ const ContestProblemPage = () => {
   };
 
   const handleCheckSamples = async () => {
-    if (!problem?.id || !selectedLang || !codeRef.current || isCheckingSamples || isContestFinished)
+    if (!problem?.id || !selectedLang || !codeRef.current || isCheckingSamples || isContestLocked)
       return;
     setIsCheckingSamples(true);
     setCheckSamplesResult([]);
@@ -537,9 +397,9 @@ const ContestProblemPage = () => {
       hasCode,
       isRunning,
       isSubmitting,
-      isContestFinished,
+      isContestLocked,
     };
-  }, [currentUser, hasCode, isContestFinished, isRunning, isSubmitting]);
+  }, [currentUser, hasCode, isContestLocked, isRunning, isSubmitting]);
 
   useEffect(() => {
     actionHandlersRef.current = {
@@ -554,7 +414,7 @@ const ContestProblemPage = () => {
       const handlers = actionHandlersRef.current;
 
       if (event.ctrlKey && event.key === "'") {
-        if (state.currentUser && state.hasCode && !state.isRunning && !state.isContestFinished) {
+        if (state.currentUser && state.hasCode && !state.isRunning && !state.isContestLocked) {
           event.preventDefault();
           handlers.onRun();
         }
@@ -567,7 +427,7 @@ const ContestProblemPage = () => {
         state.currentUser &&
         state.hasCode &&
         !state.isSubmitting &&
-        !state.isContestFinished
+        !state.isContestLocked
       ) {
         event.preventDefault();
         handlers.onSubmit();
@@ -683,7 +543,7 @@ const ContestProblemPage = () => {
                   variant="outlined"
                   color="primary"
                   onClick={handleRun}
-                  disabled={!currentUser || isRunning || !hasCode || isContestFinished}
+                  disabled={!currentUser || isRunning || !hasCode || isContestLocked}
                   startIcon={<IconifyIcon icon="mdi:play-circle-outline" width={20} height={20} />}
                 >
                   {t('problems.detail.run')}
@@ -697,7 +557,7 @@ const ContestProblemPage = () => {
                   variant="contained"
                   color="primary"
                   onClick={handleSubmit}
-                  disabled={!currentUser || isSubmitting || !hasCode || isContestFinished}
+                  disabled={!currentUser || isSubmitting || !hasCode || isContestLocked}
                   startIcon={<IconifyIcon icon="mdi:send-outline" width={18} height={18} />}
                 >
                   {t('problems.detail.submit')}
@@ -822,6 +682,7 @@ const ContestProblemPage = () => {
                         isLoading={isAttemptsLoading}
                         onRerun={() => mutateAttempts()}
                         showProblemColumn={false}
+                        showContestTimeSubmitted
                         getProblemLink={(attempt) =>
                           getResourceByParams(resources.ContestProblem, {
                             id: contest?.id ?? contestId ?? '',
@@ -874,7 +735,7 @@ const ContestProblemPage = () => {
                 onEditorTabChange={setEditorTab}
                 canUseCheckSamples={canUseCheckSamples}
                 editorTheme={editorTheme}
-                isDisabled={isContestFinished}
+                isDisabled={false}
                 upsolveHref={upsolveHref}
               />
             ) : (
