@@ -1,8 +1,7 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { Link as RouterLink, useParams, useSearchParams } from 'react-router-dom';
 import { Box, Chip, FormControl, Link, MenuItem, Select, Stack, Switch, Tooltip, Typography } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
@@ -36,6 +35,7 @@ const ContestStandingsPage = () => {
   const contestId = id ? Number(id) : undefined;
   const { t } = useTranslation();
   const { currentUser } = useAuth();
+  const [searchParams] = useSearchParams();
 
   const refreshInterval = 30000;
 
@@ -106,7 +106,26 @@ const ContestStandingsPage = () => {
   );
 
   const contestants = standings?.data ?? [];
-  const total = standings?.total ?? 0;
+  const rowCountRef = useRef(0);
+  const total = useMemo(() => {
+    if (standings?.total !== undefined) {
+      rowCountRef.current = standings.total;
+    }
+
+    return rowCountRef.current;
+  }, [standings?.total]);
+
+  useEffect(() => {
+    if (searchParams.has('page') || !standings?.page || standings.page === pageParams.page) {
+      return;
+    }
+
+    setPaginationModel((prev) => ({
+      ...prev,
+      page: Math.max(standings.page - 1, 0),
+    }));
+  }, [pageParams.page, searchParams, setPaginationModel, standings?.page]);
+
   const problemMap = useMemo(
     () => new Map(contestProblems.map((problem) => [problem.symbol, problem])),
     [contestProblems],
@@ -418,16 +437,8 @@ const ContestStandingsPage = () => {
         pageSizeOptions={[10, 20, 50, 100]}
         getRowId={(row) => `${row.rowType ?? 'official'}-${row.id ?? row.username}-${row.virtualTime ?? ''}`}
         getRowClassName={({ row }) =>
-          [
-            row.username === currentUser?.username ? 'MuiDataGrid-row--current' : '',
-            row.rowType === 'upsolve' ? 'MuiDataGrid-row--upsolve' : '',
-          ].filter(Boolean).join(' ')
+          row.username === currentUser?.username ? 'MuiDataGrid-row--current' : ''
         }
-        sx={(theme) => ({
-          '& .MuiDataGrid-row--upsolve': {
-            bgcolor: alpha(theme.palette.info.main, theme.palette.mode === 'dark' ? 0.12 : 0.06),
-          },
-        })}
       />
     </Stack>
   );
