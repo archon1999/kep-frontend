@@ -1,0 +1,110 @@
+{
+  "arena": {
+    "title": "Arena",
+    "listSubtitle": "Siz uchun {{count}} ta arena ochiq.",
+    "listEmptySubtitle": "Hozircha arena topilmadi.",
+    "searchPlaceholder": "Arena qidirish",
+    "status": {
+      "upcoming": "Tez orada",
+      "live": "Jonli",
+      "finished": "Yakunlandi"
+    },
+    "statusLabel": "Holat: {{status}}",
+    "minutes": "daq",
+    "questions": "Savollar",
+    "timeline": {
+      "start": "Arena boshlanishi",
+      "finish": "Arena yakunlanishi"
+    },
+    "now": "Hozir",
+    "about": "Arena haqida",
+    "registered": "Ro'yxatdan o'tilgan",
+    "duration": "Har bellashuv vaqti",
+    "questionTimeType": {
+      "label": "Savol vaqti turi",
+      "one": "Time to one",
+      "all": "Time to all"
+    },
+    "actions": {
+      "register": "Arena'ga qo'shilish",
+      "unregister": "Ro'yxatdan chiqish",
+      "nextChallenge": "Joriy bellashuvni ochish",
+      "start": "Navbatni boshlash",
+      "pause": "Navbatni pauza qilish",
+      "login": "Qo'shilish uchun kiring"
+    },
+    "countdown": {
+      "untilStart": "Boshlanishiga",
+      "untilFinish": "Yakunlanishiga",
+      "finished": "Arena yakunlandi"
+    },
+    "players": "Natijalar",
+    "participants": "ishtirokchi",
+    "participantsTitle": "Ishtirokchilar",
+    "columns": {
+      "rank": "O'rin",
+      "user": "O'yinchi",
+      "rating": "Reyting",
+      "results": "Natijalar",
+      "points": "Ochko",
+      "buchholz": "Buxgols",
+      "buchholzDescription": "Raqiblaringiz to'plagan ochkolar yig'indisi. Buxgols yuqoriroq bo'lsa, kuchliroq raqiblarga qarshi o'ynagansiz."
+    },
+    "challenges": "So'nggi bellashuvlar",
+    "liveChallenges": "Jonli bellashuvlar",
+    "noChallenges": "Hali bellashuvlar yo'q.",
+    "noLiveChallenges": "Hozircha jonli bellashuvlar yo'q.",
+    "statistics": "Arena statistikasi",
+    "averageRating": "O'rtacha reyting",
+    "totalChallenges": "Jami bellashuvlar",
+    "selectPlayer": "Statistikani ko'rish uchun ishtirokchini tanlang",
+    "playerStatistics": "Ishtirokchi statistikasi",
+    "statisticsLabels": {
+      "challenges": "Bellashuvlar",
+      "wins": "G'alabalar",
+      "draws": "Durranglar",
+      "losses": "Mag'lubiyatlar",
+      "winRate": "G'alaba foizi",
+      "drawRate": "Durrang foizi",
+      "lossRate": "Mag'lubiyat foizi"
+    },
+    "opponents": "Raqiblar",
+    "winners": "Arena g'oliblari",
+    "winnerStats": {
+      "wins": "G'alaba: {{count}}",
+      "draws": "Durrang: {{count}}",
+      "losses": "Mag'lubiyat: {{count}}"
+    },
+    "winnersPlace": "{{place}}-o'rin",
+    "performanceShort": "Perf",
+    "previewLabel": "Arena boshlanishidan oldin",
+    "liveLabel": "Arena jonli",
+    "finishedLabel": "Arena final",
+    "chaptersLabel": "Bo'limlar",
+    "stateDescriptions": {
+      "upcoming": "Arena hali boshlanmagan. Hozir ro'yxatdan o'ting va boshlanishigacha ro'yxatdan chiqishingiz mumkin.",
+      "ongoing": "Arena davom etmoqda. Navbatga kiring, avtomatik juftlaning va seriyani ushlab turing.",
+      "finished": "Arena yakunlandi. Final natijalar, g'oliblar va so'nggi bellashuvlarni ko'ring."
+    },
+    "insights": {
+      "upcomingTitle": "Arena boshlanishidan oldin",
+      "liveTitle": "Jonli arena",
+      "finishedTitle": "Yakuniy arena natijalari",
+      "participants": "Ishtirokchilar soni",
+      "longestWinStreak": "Eng uzun g'alabalar seriyasi",
+      "highestPerformance": "Eng yuqori performance",
+      "highestWinRate": "Eng yuqori g'alaba nisbati",
+      "noLeader": "Hali yetarli ma'lumot yo'q",
+      "minChallenges": "Kamida {{count}} ta bellashuv"
+    },
+    "transition": {
+      "started": "Arena boshlandi. Jonli natijalar va bellashuvlar avtomatik yangilanmoqda.",
+      "finished": "Arena yakunlandi. Final natijalar va g'oliblar tayyor."
+    },
+    "queue": {
+      "paused": "Navbat pauzada. Keyingi juftlikka tayyor bo'lsangiz uni boshlang.",
+      "active": "Navbat ishlayapti. Yangi arena bellashuvlari shu yerdan avtomatik ochiladi.",
+      "finishingSoon": "Arena tugashiga ikki daqiqadan kam qoldi. Agar joriy bellashuvingiz bo'lsa, uni yakunlang."
+    }
+  }
+}

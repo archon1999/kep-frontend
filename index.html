@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="KEP.uz platform" />
+    <title>KEP.uz</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MBQPKFTEWV"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+
+      gtag('js', new Date());
+      gtag('config', 'G-MBQPKFTEWV');
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=Spline+Sans+Mono:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      window.__kepSplashStartedAt = Date.now();
+
+      (function () {
+        var defaultPrimaryColor = '#3d7cf4';
+        var darkPresets = ['default-dark', 'dracula', 'midnight', 'ember'];
+        var presetColors = {
+          'default-light': '#3d7cf4',
+          'default-dark': '#63a6ff',
+          luxury: '#c4a15a',
+          retro: '#ef6f6c',
+          arctic: '#2aa7c9',
+          nature: '#28a66a',
+          ember: '#f97316',
+          dracula: '#bd93f9',
+          midnight: '#7dd3fc',
+        };
+
+        var readValue = function (key, fallback) {
+          try {
+            var value = localStorage.getItem(key);
+            if (value === null) return fallback;
+
+            try {
+              return JSON.parse(value);
+            } catch (error) {
+              return value;
+            }
+          } catch (error) {
+            return fallback;
+          }
+        };
+
+        var storedMode = readValue('kep-mode', 'system');
+        var themePreset = readValue('themePreset', 'default-light');
+        var primaryColor = readValue(
+          'primaryColor',
+          presetColors[themePreset] || defaultPrimaryColor,
+        );
+        var prefersDark =
+          window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var resolvedMode = storedMode === 'system' ? (prefersDark ? 'dark' : 'light') : storedMode;
+
+        if (storedMode !== 'dark' && storedMode !== 'light' && storedMode !== 'system') {
+          resolvedMode = darkPresets.indexOf(themePreset) >= 0 ? 'dark' : 'light';
+        }
+
+        document.documentElement.setAttribute('data-kep-color-scheme', resolvedMode);
+        document.documentElement.setAttribute('data-kep-preload-mode', resolvedMode);
+        document.documentElement.style.setProperty(
+          '--kep-splash-primary',
+          typeof primaryColor === 'string' && primaryColor ? primaryColor : defaultPrimaryColor,
+        );
+      })();
+    </script>
+    <style id="toggle-effect-style"></style>
+    <style>
+      #loading-bg {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        overflow: hidden !important;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            circle at 50% 44%,
+            color-mix(in srgb, var(--kep-splash-primary) 16%, transparent),
+            transparent 32%
+          ),
+          #f8fbff;
+        opacity: 1;
+        transition:
+          opacity 360ms ease,
+          visibility 360ms ease;
+      }
+
+      html[data-kep-preload-mode='dark'] #loading-bg {
+        background:
+          radial-gradient(
+            circle at 50% 44%,
+            color-mix(in srgb, var(--kep-splash-primary) 20%, transparent),
+            transparent 34%
+          ),
+          #0f1014;
+      }
+
+      #loading-bg.kep-splash-hidden {
+        visibility: hidden;
+        opacity: 0;
+      }
+
+      #loading-bg svg {
+        width: 128px;
+        height: 128px;
+        filter: drop-shadow(
+          0 24px 60px color-mix(in srgb, var(--kep-splash-primary) 30%, transparent)
+        );
+      }
+
+      @keyframes animate-svg-fill-primary {
+        0% {
+          fill: transparent;
+        }
+
+        100% {
+          fill: var(--kep-splash-primary);
+        }
+      }
+
+      @keyframes animate-svg-fill-accent {
+        0% {
+          fill: transparent;
+        }
+
+        100% {
+          fill: color-mix(in srgb, var(--kep-splash-primary) 28%, #ab2a2a);
+        }
+      }
+
+      .svg-elem-1 {
+        animation: animate-svg-fill-primary 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 0.2s both;
+      }
+
+      .svg-elem-2 {
+        animation: animate-svg-fill-primary 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 0.4s both;
+      }
+
+      .svg-elem-3 {
+        animation: animate-svg-fill-primary 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 0.6s both;
+      }
+
+      .svg-elem-4 {
+        animation: animate-svg-fill-primary 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 0.8s both;
+      }
+
+      .svg-elem-5 {
+        animation: animate-svg-fill-primary 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 1s both;
+      }
+
+      .svg-elem-6 {
+        animation: animate-svg-fill-primary 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 1.2s both;
+      }
+
+      .svg-elem-7 {
+        animation: animate-svg-fill-accent 0.7s cubic-bezier(0.785, 0.135, 0.15, 0.86) 1.4s both;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="loading-bg" aria-hidden="true">
+      <svg
+        fill="none"
+        height="128"
+        viewBox="0 0 356 356"
+        width="128"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g filter="url(#filter0_b_718_8504)">
+          <g clip-path="url(#clip0_718_8504)">
+            <path
+              class="svg-elem-1"
+              d="M240.67 98.1566L143.085 195.741L107.6 195.741L107.6 160.256L205.184 62.6715L240.67 62.6715L240.67 98.1566Z"
+              fill="#4949DE"
+            ></path>
+            <path
+              class="svg-elem-2"
+              d="M196.242 53.8725L36.5584 213.556L18.8159 195.813L18.8159 160.328L160.757 18.3873L196.242 18.3873L196.242 36.1299L196.242 53.8725Z"
+              fill="#4949DE"
+            ></path>
+            <path
+              class="svg-elem-3"
+              d="M240.672 62.6713L338.028 160.381L338.028 195.512L302.543 195.512L205.187 99.6505L205.187 62.6713L240.672 62.6713Z"
+              fill="#4949DE"
+            ></path>
+            <path
+              class="svg-elem-4"
+              d="M338.257 195.743L276.158 257.842L240.673 257.842L240.673 222.356L302.772 160.257L338.257 160.257L338.257 195.743Z"
+              fill="#4949DE"
+            ></path>
+            <path
+              class="svg-elem-5"
+              d="M196.314 142.513L276.156 222.355L276.156 257.84L239.923 257.84L160.829 177.998L196.314 142.513Z"
+              fill="#4949DE"
+            ></path>
+            <path
+              class="svg-elem-6"
+              d="M160.828 337.675L18.887 195.735L18.8871 160.25L54.3722 160.25L196.313 302.19L196.313 337.675L160.828 337.675Z"
+              fill="#4949DE"
+            ></path>
+          </g>
+        </g>
+        <defs>
+          <filter
+            color-interpolation-filters="sRGB"
+            filterUnits="userSpaceOnUse"
+            height="597"
+            id="filter0_b_718_8504"
+            width="597"
+            x="-120.5"
+            y="-120.5"
+          >
+            <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+            <feGaussianBlur in="BackgroundImageFix" stdDeviation="60.25"></feGaussianBlur>
+            <feComposite
+              in2="SourceAlpha"
+              operator="in"
+              result="effect1_backgroundBlur_718_8504"
+            ></feComposite>
+            <feBlend
+              in="SourceGraphic"
+              in2="effect1_backgroundBlur_718_8504"
+              mode="normal"
+              result="shape"
+            ></feBlend>
+          </filter>
+          <clipPath id="clip0_718_8504">
+            <rect
+              class="svg-elem-7"
+              height="356"
+              rx="160"
+              transform="rotate(90 356 0)"
+              width="356"
+              x="356"
+            ></rect>
+          </clipPath>
+        </defs>
+      </svg>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [
+          ['\\[', '\\]'],
+          ['$$', '$$'],
+        ],
+        processEscapes: true,
+        tags: 'ams',
+      },
+      svg: {
+        scale: 1,
+        minScale: 0.5,
+        mtextInheritFont: true,
+        merrorInheritFont: true,
+        fontCache: 'local',
+      },
+    };
+  </script>
+
+  <script
+    id="mathjax-script"
+    async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+  ></script>
+</html>

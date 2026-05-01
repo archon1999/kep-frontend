@@ -1,0 +1,29 @@
+{
+  "tournaments": {
+    "subtitle": "Knockout turnirlarida bellashing va natijalarni kuzating.",
+    "countLabel": "{{count}} ta turnir",
+    "emptyTitle": "Hozircha turnirlar yoʻq",
+    "emptySubtitle": "Yaqinlashayotgan turnirlar shu yerda paydo boʻladi.",
+    "startsOn": "Boshlanishi {{date}}",
+    "players": "{{count}} ta ishtirokchi",
+    "type": "Turi: {{type}}",
+    "bracketTitle": "Knockout braket",
+    "bracketSubtitle": "{{count}} ishtirokchi uchun yakuniy bosqichlarga oʻtuvchi setka.",
+    "awaitingOpponent": "Raqib kutilmoqda",
+    "awaitingWinner": "Oldingi duel gʻolibi",
+    "matchNumber": "{{number}}-duel",
+    "matchFinished": "Natija tayyor",
+    "matchPending": "Kutilmoqda",
+    "unsupportedMessage": "Braket faqat 16 yoki 32 ishtirokchi uchun chiziladi.",
+    "unsupportedHint": "Birinchi bosqich duel juftliklari yoki ishtirokchilar soni tayyor bo‘lgach, to‘liq knockout daraxt shu yerda ko‘rinadi.",
+    "round": {
+      "roundOf32": "1/16 final",
+      "roundOf16": "1/8 final",
+      "final": "Final",
+      "semifinal": "Yarim final",
+      "quarter": "Chorak final",
+      "generic": "1/{{value}} final"
+    },
+    "emptyDescription": "Turnir tafsilotlari tez orada paydo boʻladi."
+  }
+}

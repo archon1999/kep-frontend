@@ -1,0 +1,142 @@
+{
+  "users": {
+    "title": "Users",
+    "actions": {
+      "export": "Export",
+      "invite": "Invite user"
+    },
+    "tabs": {
+      "all": "Newest Users",
+      "skills": "Top Users",
+      "activity": "Top activity",
+      "contests": "Top contests",
+      "challenges": "Top Kepcoin"
+    },
+    "filters": {
+      "toggle": "Filters",
+      "searchPlaceholder": "Search",
+      "username": "Username",
+      "usernamePlaceholder": "Filter by username",
+      "name": "Name",
+      "namePlaceholder": "Search by first or last name",
+      "country": "Country",
+      "countryPlaceholder": "Choose a country",
+      "anyCountry": "Any country",
+      "ageFrom": "Age from",
+      "ageTo": "Age to",
+      "agePlaceholder": "--",
+      "clear": "Clear"
+    },
+    "columns": {
+      "user": "User",
+      "skills": "Skills",
+      "activity": "Activity",
+      "contests": "Contests",
+      "challenges": "Challenges",
+      "streak": "Streak",
+      "kepcoin": "Kepcoin",
+      "lastSeen": "Last seen"
+    },
+    "statistics": {
+      "totalUsers": "Total users",
+      "lastDays": "New users in last {{count}} days",
+      "empty": "User statistics are not available yet"
+    },
+    "popover": {
+      "viewDetails": "View user details"
+    },
+    "emptyValue": "—",
+    "profile": {
+      "tabs": {
+        "about": "About",
+        "ratings": "Ratings",
+        "activityHistory": "Activity history",
+        "purchases": "Purchases",
+        "blog": "Blog",
+        "achievements": "Achievements"
+      },
+      "personal": {
+        "title": "Personal info",
+        "fullName": "Full name",
+        "wasBorn": "Was born",
+        "lives": "Lives",
+        "email": "Email",
+        "website": "Website",
+        "joined": "Joined"
+      },
+      "social": {
+        "title": "Social links"
+      },
+      "followers": {
+        "title": "Followers",
+        "viewAll": "View all"
+      },
+      "about": "About",
+      "skills": "Skills",
+      "technologies": "Technologies",
+      "education": "Education",
+      "workExperience": "Work experience",
+      "timeline": {
+        "present": "Present"
+      },
+      "achievements": {
+        "title": "Achievements",
+        "completed": "Completed",
+        "notCompleted": "Not completed",
+        "all": "All",
+        "empty": "No achievements yet."
+      },
+      "prizes": {
+        "title": "Competition prizes",
+        "empty": "No prizes yet."
+      },
+      "ratings": {
+        "solved": "Solved",
+        "rating": "Rating",
+        "rank": "Rank",
+        "percentile": "Percentile: {{value}}",
+        "wins": "Wins",
+        "draws": "Draws",
+        "losses": "Losses",
+        "maxRating": "Max rating",
+        "noHistory": "No rating history yet.",
+        "games": "{{total}} games",
+        "overview": "Ratings overview",
+        "skillsRating": "Skills rating",
+        "activityRating": "Activity rating",
+        "challengeRank": "Challenge rank"
+      },
+      "actions": {
+        "follow": "Follow",
+        "unfollow": "Unfollow",
+        "followTooltip": "Follow user",
+        "unfollowTooltip": "Unfollow user"
+      },
+      "purchases": {
+        "title": "Purchase history",
+        "empty": "You have not placed any orders yet.",
+        "status": "Status",
+        "delivery": "Delivery",
+        "recipient": "Recipient",
+        "address": "Address",
+        "trackingCode": "Tracking code",
+        "adminNote": "Admin note",
+        "orderDate": "Ordered",
+        "size": "Size",
+        "color": "Color",
+        "reviewTitle": "Rate this order",
+        "reviewHint": "Leave a 1-5 star rating after delivery is completed.",
+        "submitReview": "Submit review",
+        "reviewSaved": "Review saved",
+        "starsRequired": "Choose a star rating first.",
+        "statuses": {
+          "PENDING": "Pending",
+          "PROCESSING": "Processing",
+          "SHIPPED": "Shipped",
+          "COMPLETED": "Completed",
+          "CANCELLED": "Cancelled"
+        }
+      }
+    }
+  }
+}

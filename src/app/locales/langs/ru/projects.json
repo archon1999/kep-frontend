@@ -1,0 +1,79 @@
+{
+  "projects": {
+    "title": "Проекты",
+    "subtitle": "Выберите проект и отправьте решение на доступной технологии.",
+    "emptyTitle": "Проекты не найдены",
+    "emptySubtitle": "Загляните позже за новыми заданиями.",
+    "view": "Просмотр",
+    "purchase": "Купить",
+    "levelLabel": "Уровень: {{level}}",
+    "tasks": "Задачи",
+    "technologies": "Технологии",
+    "info": "Информация",
+    "level": "Уровень",
+    "kepcoinReward": "Награда Kepcoin",
+    "submit": "Отправить",
+    "technology": "Технология",
+    "file": "Файл",
+    "maxFileSize": "Макс. размер 1 МБ",
+    "submitSuccess": "Решение отправлено",
+    "attempts": "Попытки",
+    "myAttempts": "Мои попытки",
+    "id": "ID",
+    "submitted": "Отправлено",
+    "user": "Пользователь",
+    "project": "Проект",
+    "verdict": "Вердикт",
+    "timeMemory": "Время/Память",
+    "log": "Лог",
+    "rerun": "Перезапустить",
+    "noAttempts": "Попыток нет",
+    "attemptLog": "Лог попытки",
+    "loadingLog": "Загрузка лога...",
+    "noLog": "Лог недоступен",
+    "sidebarTitle": "Действия с проектом",
+    "projectTab": "Проект",
+    "rewardPool": "Фонд наград",
+    "taskCount": "Задач",
+    "attemptsCount": "Попыток",
+    "progressTitle": "Прогресс по задачам",
+    "progressPrompt": "Отслеживание прогресса",
+    "progressHint": "Войдите, чтобы открыть личный прогресс",
+    "progressCompleted": "Завершено",
+    "progressRewardUnit": "kepcoin заработано",
+    "progressGuestHint": "Войдите, чтобы видеть личный прогресс, начатые проекты и завершенные треки.",
+    "cardFallback": "Выберите стек, откройте бриф и отправьте решение со своей архитектурой.",
+    "projectsCount": "{{count}} проектов",
+    "stats": {
+      "available": "{{count}} активных проектов",
+      "started": "{{count}} начато",
+      "completed": "{{count}} завершено",
+      "rewardPool": "{{count}} kepcoin всего"
+    },
+    "headerMetrics": {
+      "available": "Активные проекты",
+      "started": "Начато",
+      "completed": "Завершено",
+      "rewardPool": "Фонд kepcoin",
+      "averageProgress": "Средний прогресс"
+    },
+    "categories": {
+      "frontend": {
+        "title": "Frontend",
+        "subtitle": "Интерфейсы, пользовательские сценарии и аккуратное клиентское поведение."
+      },
+      "backend": {
+        "title": "Backend",
+        "subtitle": "API, бизнес-логика, валидация и серверная архитектура."
+      },
+      "python": {
+        "title": "Практика Python",
+        "subtitle": "Боты, парсеры, CLI-утилиты и практические скриптовые задачи."
+      },
+      "devops": {
+        "title": "DevOps и форензика",
+        "subtitle": "Структурированная диагностика, разбор инцидентов и дисциплина релизов."
+      }
+    }
+  }
+}

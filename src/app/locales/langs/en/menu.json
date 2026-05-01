@@ -1,0 +1,24 @@
+{
+  "menu": {
+    "home": "Home",
+    "practice": "Practice",
+    "battles": "Battles",
+    "competitions": "Competitions",
+    "learn": "Learn",
+    "blog": "Blog",
+    "users": "Users",
+    "problems": "Problems",
+    "challenges": "Challenges",
+    "duels": "Duels",
+    "projects": "Projects",
+    "tests": "Tests",
+    "contests": "Contests",
+    "arena": "Arena",
+    "tournaments": "Tournaments",
+    "hackathons": "Hackathons",
+    "kepcoin": "Kepcoin",
+    "calendar": "Calendar",
+    "shop": "Shop",
+    "account": "Account"
+  }
+}

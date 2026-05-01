@@ -1,27 +1,27 @@
-# KEP.uz
+# Getting Started with Aurora
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.2.
+This document will guide you on how to get started with the Aurora theme.
 
-## Development server
+## Running in Local Environment
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+This project is scaffolded using Vite.
 
-## Code scaffolding
+- Install Node.js if you do not already have it installed on your machine.
+- Open the “Aurora” directory with your cmd or terminal and run “npm i”
+- This command will download all the necessary dependencies for the Aurora theme in the node_modules directory.
+- Run “npm run dev”. A local web server will start at http://localhost:3000.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Creating a Production Build
 
-## Build
+After you've done your customization and are ready to build, follow these steps:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- Run “npm run build” command in your project directory to make the Production build.
 
-## Running unit tests
+This will create an optimized production build by compiling, merging, and minifying all the source files as necessary and will put them in the dist/ folder.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+To run the production build locally, run the following commands:
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```shell
+ npm install -g serve
+ serve -s build
+```

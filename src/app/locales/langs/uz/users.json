@@ -1,0 +1,142 @@
+{
+  "users": {
+    "title": "Foydalanuvchilar",
+    "actions": {
+      "export": "Eksport",
+      "invite": "Foydalanuvchini taklif qilish"
+    },
+    "tabs": {
+      "all": "Eng yangi foydalanuvchilar",
+      "skills": "Eng kuchli foydalanuvchilar",
+      "activity": "Faollik reytingi",
+      "contests": "Kontestlar reytingi",
+      "challenges": "Top Kepcoin"
+    },
+    "filters": {
+      "toggle": "Filterlar",
+      "searchPlaceholder": "Qidirish",
+      "username": "Foydalanuvchi nomi",
+      "usernamePlaceholder": "Login boʻyicha izlash",
+      "name": "Ism",
+      "namePlaceholder": "Ism yoki familiya boʻyicha qidirish",
+      "country": "Mamlakat",
+      "countryPlaceholder": "Mamlakatni tanlang",
+      "anyCountry": "Istalgan mamlakat",
+      "ageFrom": "Yosh dan",
+      "ageTo": "Yosh gacha",
+      "agePlaceholder": "--",
+      "clear": "Tozalash"
+    },
+    "columns": {
+      "user": "Foydalanuvchi",
+      "skills": "Koʻnikmalar",
+      "activity": "Faollik",
+      "contests": "Kontestlar",
+      "challenges": "Bellashuvlar",
+      "streak": "Seriya",
+      "kepcoin": "Kepcoin",
+      "lastSeen": "Oxirgi faollik"
+    },
+    "statistics": {
+      "totalUsers": "Jami foydalanuvchilar",
+      "lastDays": "Soʻnggi {{count}} kunda qoʻshilgan foydalanuvchilar",
+      "empty": "Statistika hali mavjud emas"
+    },
+    "popover": {
+      "viewDetails": "Profilni koʻrish"
+    },
+    "emptyValue": "—",
+    "profile": {
+      "tabs": {
+        "about": "Oʻzi haqida",
+        "ratings": "Reytinglar",
+        "activityHistory": "Faollik tarixi",
+        "purchases": "Xaridlar",
+        "blog": "Blog",
+        "achievements": "Yutuqlar"
+      },
+      "personal": {
+        "title": "Shaxsiy maʻlumot",
+        "fullName": "Toʻliq ismi",
+        "wasBorn": "Tugʻilgan",
+        "lives": "Yashaydi",
+        "email": "Elektron manzil",
+        "website": "Veb-sayt",
+        "joined": "Roʻyhatdan oʻtgan"
+      },
+      "social": {
+        "title": "Ijtimoiy havolalar"
+      },
+      "followers": {
+        "title": "Obunachilar",
+        "viewAll": "Barchasini koʻrish"
+      },
+      "about": "Oʻzi haqida",
+      "skills": "Koʻnikmalar",
+      "technologies": "Texnologiyalar",
+      "education": "Taʻlim",
+      "workExperience": "Ish tajribasi",
+      "timeline": {
+        "present": "Hozirgacha"
+      },
+      "achievements": {
+        "title": "Yutuqlar",
+        "completed": "Bajarilgan",
+        "notCompleted": "Bajarilmagan",
+        "all": "Hammasi",
+        "empty": "Hozircha yutuqlar mavjud emas."
+      },
+      "prizes": {
+        "title": "Musobaqa sovrinlari",
+        "empty": "Hozircha sovrinlar yoʻq."
+      },
+      "ratings": {
+        "solved": "Yechilgan",
+        "rating": "Reyting",
+        "rank": "Oʻrni",
+        "percentile": "Foiz: {{value}}",
+        "wins": "Gʻalabalar",
+        "draws": "Duranglar",
+        "losses": "Magʻlubiyatlar",
+        "maxRating": "Eng yuqori reyting",
+        "noHistory": "Reyting tarixi hali yo\\'q.",
+        "games": "{{total}} ta o\\'yin",
+        "overview": "Reytinglar sharhi",
+        "skillsRating": "Ko\\'nikmalar reytingi",
+        "activityRating": "Faollik reytingi",
+        "challengeRank": "Bellashuv unvoni"
+      },
+      "actions": {
+        "follow": "Obuna boʻlish",
+        "unfollow": "Obunani bekor qilish",
+        "followTooltip": "Foydalanuvchiga obuna boʻlish",
+        "unfollowTooltip": "Obunani bekor qilish"
+      },
+      "purchases": {
+        "title": "Xaridlar tarixi",
+        "empty": "Hozircha buyurtmalaringiz yoʻq.",
+        "status": "Holat",
+        "delivery": "Yetkazib berish",
+        "recipient": "Qabul qiluvchi",
+        "address": "Manzil",
+        "trackingCode": "Trek kodi",
+        "adminNote": "Admin izohi",
+        "orderDate": "Buyurtma sanasi",
+        "size": "Razmer",
+        "color": "Rang",
+        "reviewTitle": "Buyurtmani baholang",
+        "reviewHint": "Yetkazib berish tugagach 1-5 yulduz bilan baho qoldiring.",
+        "submitReview": "Review yuborish",
+        "reviewSaved": "Review saqlandi",
+        "starsRequired": "Avval yulduzlardan birini tanlang.",
+        "statuses": {
+          "PENDING": "Kutilmoqda",
+          "PROCESSING": "Jarayonda",
+          "SHIPPED": "Yuborildi",
+          "COMPLETED": "Yakunlandi",
+          "CANCELLED": "Bekor qilindi"
+        }
+      }
+    }
+  }
+}

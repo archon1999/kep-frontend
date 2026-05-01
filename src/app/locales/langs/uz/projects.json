@@ -1,0 +1,79 @@
+{
+  "projects": {
+    "title": "Loyihalar",
+    "subtitle": "Loyihani tanlab, ruxsat etilgan texnologiya bilan yechim yuboring.",
+    "emptyTitle": "Loyihalar topilmadi",
+    "emptySubtitle": "Yangi topshiriqlar tez orada paydo boʻladi.",
+    "view": "Koʻrish",
+    "purchase": "Sotib olish",
+    "levelLabel": "Daraja: {{level}}",
+    "tasks": "Topshiriqlar",
+    "technologies": "Texnologiyalar",
+    "info": "Maʻlumot",
+    "level": "Daraja",
+    "kepcoinReward": "Kepcoin mukofoti",
+    "submit": "Yuborish",
+    "technology": "Texnologiya",
+    "file": "Fayl",
+    "maxFileSize": "Maksimal hajm 1mb",
+    "submitSuccess": "Yechim yuborildi",
+    "attempts": "Urinishlar",
+    "myAttempts": "Mening urinishlarim",
+    "id": "ID",
+    "submitted": "Yuborilgan vaqt",
+    "user": "Foydalanuvchi",
+    "project": "Loyiha",
+    "verdict": "Verdikt",
+    "timeMemory": "Vaqt/Xotira",
+    "log": "Log",
+    "rerun": "Qayta ishga tushirish",
+    "noAttempts": "Hozircha urinishlar yoʻq",
+    "attemptLog": "Urinish jurnali",
+    "loadingLog": "Jurnal yuklanmoqda...",
+    "noLog": "Log mavjud emas",
+    "sidebarTitle": "Loyiha amallari",
+    "projectTab": "Loyiha",
+    "rewardPool": "Mukofot fondi",
+    "taskCount": "Tasklar",
+    "attemptsCount": "Urinishlar",
+    "progressTitle": "Bajarilish progressi",
+    "progressPrompt": "Progress kuzatuvi",
+    "progressHint": "Shaxsiy progressni korish uchun tizimga kiring",
+    "progressCompleted": "Tugallangan",
+    "progressRewardUnit": "kepcoin yigildi",
+    "progressGuestHint": "Tizimga kirganingizdan keyin shaxsiy progress, boshlangan loyihalar va tugallangan tracklar korinadi.",
+    "cardFallback": "Stackni tanlang, briefni oching va yechimni oz arxitekturangiz bilan topshiring.",
+    "projectsCount": "{{count}} ta loyiha",
+    "stats": {
+      "available": "{{count}} ta aktiv loyiha",
+      "started": "{{count}} ta boshlangan",
+      "completed": "{{count}} ta tugallangan",
+      "rewardPool": "{{count}} jami kepcoin"
+    },
+    "headerMetrics": {
+      "available": "Aktiv loyihalar",
+      "started": "Boshlangan",
+      "completed": "Tugallangan",
+      "rewardPool": "Kepcoin fondi",
+      "averageProgress": "O'rtacha progress"
+    },
+    "categories": {
+      "frontend": {
+        "title": "Frontend",
+        "subtitle": "Interfeys, interaction va client-side tajriba yonalishi."
+      },
+      "backend": {
+        "title": "Backend",
+        "subtitle": "API, business logic, validatsiya va server arxitekturasi."
+      },
+      "python": {
+        "title": "Python amaliyoti",
+        "subtitle": "Bot, parser, CLI utility va amaliy script loyihalari."
+      },
+      "devops": {
+        "title": "DevOps va forensics",
+        "subtitle": "Troubleshooting, incident tahlili va release intizomi."
+      }
+    }
+  }
+}

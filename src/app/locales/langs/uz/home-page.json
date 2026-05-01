@@ -1,0 +1,222 @@
+{
+  "homePage": {
+    "greeting": {
+      "defaultName": "Mehmon",
+      "goodMorning": "Xush kelibsiz, {{name}}!",
+      "loginPrompt": "Kiring va sayohatingizni davom ettiring.",
+      "loginCta": "Kirish",
+      "subtitle": "Kecha boʻlgan yangiliklar.",
+      "ordersCount": "Bugun sizda {{count}} ta buyurtma bor.",
+      "stats": {
+        "visitors": "Tashrif buyuruvchilar",
+        "earnings": "Daromad",
+        "orders": "Buyurtmalar"
+      },
+      "orderStatus": {
+        "processing": "Jarayonda",
+        "shipped": "Yuborildi",
+        "delivered": "Yetkazildi"
+      }
+    },
+    "ranks": {
+      "title": "Reytinglaringiz",
+      "labels": {
+        "skills": "Koʻnikmalar reytingi",
+        "activity": "Faollik reytingi",
+        "contests": "Kontestlar",
+        "challenges": "Bellashuvlar"
+      },
+      "info": {
+        "skillsRating": "Bu reyting platformadagi koʻnikmalaringiz kuchini koʻrsatadi. Reyting yechilgan masalalar soni, kontestlar va bellashuvlar reytingiga bogʻliq.",
+        "activityRating": "Bu reyting soʻnggi 30 kun ichidagi faolligingizni koʻrsatadi. U toʻplangan kepcoinlar, har kuni tizimga kirish va bajarilgan kundalik vazifalarga bogʻliq.",
+        "contests": "Bu reyting kontestlardagi kuchingizni koʻrsatadi.",
+        "challenges": "Bu reyting bellashuvlardagi kuchingizni koʻrsatadi."
+      },
+      "percentile": "Siz foydalanuvchilarning {{percentile}}% dan yaxshiroqsiz"
+    },
+    "statistics": {
+      "title": "Statistika",
+      "subtitle": "Oʻtgan yil",
+      "changeLabel": "Oʻtgan yilga nisbatan",
+      "cards": {
+        "users": "Foydalanuvchilar",
+        "problems": "Masalalar",
+        "competitions": "Musobaqalar",
+        "attempts": "Urinishlar"
+      }
+    },
+    "contests": {
+      "title": "Eng soʻnggi kontest",
+      "viewAll": "Barcha kontestlar",
+      "empty": "Hozircha kontestlar mavjud emas."
+    },
+    "promos": {
+      "blogCreate": {
+        "title": "KEP'da blog yarating va foydali hikoyalarni hamjamiyat qiymatiga aylantiring.",
+        "subtitle": "Foydali materiallar, yangiliklar va platforma bo'yicha ma'lumotlar ulashing. Kuchli bloglar reviewdan keyin Kepcoin reward olishi mumkin.",
+        "availableNow": "Hozir mavjud",
+        "footerNote": "Avval draft yarating, keyin tayyor bo'lganda reviewga yuboring.",
+        "previewTitle": "Editor preview",
+        "previewBadge": "Tavsiya etilgan jarayon",
+        "previewHeadline": "Amaliy hikoya yozing, kuchli teglar qo'shing va reviewga yuboring.",
+        "previewTags": {
+          "story": "Hamjamiyat hikoyasi",
+          "reward": "Kepcoin reward",
+          "review": "Tekshiruv"
+        },
+        "metrics": {
+          "access": {
+            "label": "Kim yozishi mumkin",
+            "value": "Har qanday KEP foydalanuvchisi"
+          },
+          "rewards": {
+            "label": "Reward imkoniyati",
+            "value": "Sifatli bloglar Kepcoin olishi mumkin"
+          },
+          "flow": {
+            "label": "Nashr oqimi",
+            "value": "Draft, tekshiruv, publish"
+          }
+        }
+      },
+      "kepCover": {
+        "activeSubtitle": "Eng kuchli coverlarga ovoz bering, live reytingni kuzating va to'liq KEP Cover sahifasini oching.",
+        "upcomingSubtitle": "Keyingi KEP Cover allaqachon rejalashtirilgan. Ovoz berish ochilishidan oldin cover photongizni yangilang.",
+        "voteLimit": "Har bir foydalanuvchiga {{count}} ta ovoz"
+      },
+      "contest": {
+        "activeSubtitle": "Kontest hozir davom etmoqda. Masalalarni ishlash va jadvalni kuzatish uchun uni oching.",
+        "upcomingSubtitle": "Keyingi kontest yaqinlashmoqda. Kontestni oching va oldindan ro'yxatdan o'ting."
+      },
+      "arena": {
+        "activeSubtitle": "Arena raundi hozir davom etmoqda. Kirib, live ishtirokchilar bilan bir tempda boring.",
+        "upcomingSubtitle": "Yangi arena raundi yaqin. Jadvalni ko'ring va keyingi startga tayyor turing.",
+        "roundTime": "Har raundga {{count}} soniya"
+      },
+      "actions": {
+        "openKepCover": "KEP Cover'ni ochish",
+        "openContest": "Kontestni ochish",
+        "openArena": "Arena'ni ochish",
+        "startWriting": "Blog yaratish"
+      },
+      "types": {
+        "kepCover": "KEP Cover",
+        "contest": "Kontest",
+        "arena": "Arena",
+        "blogCreate": "Hamjamiyat blogi"
+      },
+      "metrics": {
+        "participants": "Ishtirokchilar",
+        "voteLimit": "Ovoz limiti",
+        "schedule": "Jadval",
+        "registrants": "Ro'yhatdan o'tganlar",
+        "problems": "Masalalar",
+        "questions": "Savollar",
+        "roundTime": "Raund vaqti"
+      },
+      "statuses": {
+        "active": "Hozir davom etmoqda",
+        "upcoming": "Yaqinda"
+      },
+      "startsAt": "{{date}} da boshlanadi",
+      "endsAt": "{{date}} da tugaydi"
+    },
+    "news": {
+      "title": "Soʻnggi yangiliklar",
+      "empty": "Hozircha yangiliklar mavjud emas."
+    },
+    "posts": {
+      "title": "Soʻnggi blog postlar",
+      "viewAll": "Barcha bloglarni ko'rish",
+      "empty": "Hozircha blog postlari mavjud emas."
+    },
+    "topUsers": {
+      "title": "Top foydalanuvchilar",
+      "subtitle": "Har bir yoʻnalishdagi eng kuchli 3 ta ishtirokchi",
+      "empty": "Hozircha foydalanuvchilar topilmadi.",
+      "viewAll": "Barcha foydalanuvchilar",
+      "tabs": {
+        "contests": "Kontestlar",
+        "skills": "Koʻnikmalar",
+        "activity": "Faollik",
+        "challenges": "Bellashuvlar",
+        "streak": "Seriya",
+        "kepcoin": "Kepcoin"
+      }
+    },
+    "birthdays": {
+      "title": "Tugʻilgan kunlar",
+      "empty": "Yaqinlashayotgan tugʻilgan kunlar yoʻq.",
+      "dateUnknown": "Sana koʻrsatilmagan"
+    },
+    "userActivity": {
+      "title": "Foydalanuvchilar faolligi",
+      "subtitle": "Oxirgi {{days}} kun",
+      "tooltipSuffix": "foydalanuvchi",
+      "changeLabel": "Oldingi davrga nisbatan",
+      "onlineNow": "Hozir onlayn",
+      "noOnlineUsers": "Hozircha hech kim onlayn emas.",
+      "totals": {
+        "new": "Yangi foydalanuvchilar",
+        "active": "Faol foydalanuvchilar"
+      },
+      "series": {
+        "newUsers": "Yangi foydalanuvchilar",
+        "activeUsers": "Faol foydalanuvchilar"
+      }
+    },
+    "activityHistory": {
+      "title": "Faollik tarixi",
+      "empty": "Hozircha faollik haqida maʻlumot yoʻq.",
+      "viewAll": "Barchasini koʻrish",
+      "loadMore": "Yana koʻrsatish",
+      "defaultLabel": "Faollik yangilanishi",
+      "types": {
+        "problemAttemptSummary": {
+          "description": "Jami {{total}} ta masaladan {{accepted}} tasi yechildi."
+        },
+        "challengeSummary": {
+          "description": "Bellashuv natijalari.",
+          "wins": "Gʻalabalar: {{value}}",
+          "draws": "Duranglar: {{value}}",
+          "losses": "Magʻlubiyatlar: {{value}}"
+        },
+        "projectAttemptSummary": {
+          "description": "Loyiha topshiriqlarining {{total}} tasidan {{checked}} tasi tekshirildi."
+        },
+        "testPassSummary": {
+          "description": "{{total}} ta testdan {{completed}} tasi yakunlandi va {{solved}} ta topshiriq yechildi."
+        },
+        "contestParticipation": {
+          "description": "{{title}} kontestida ishtirok etdi.",
+          "rank": "Oʻrin: {{rank}}",
+          "rating": "{{before}} → {{after}} reyting",
+          "ratingChange": "Δ {{delta}}",
+          "bonus": "Bonus: {{bonus}}",
+          "noRank": "—"
+        },
+        "arenaParticipation": {
+          "description": "{{title}} arenasi ishtirokchisi.",
+          "points": "Ballar: {{points}}",
+          "rank": "Oʻrin: {{rank}}",
+          "finishTime": "Tugash vaqti: {{time}}"
+        },
+        "dailyActivity": {
+          "description": "Kunlik faollik (+{{value}}).",
+          "note": "Eslatma: {{note}}"
+        },
+        "hardProblemSolved": {
+          "description": "{{title}} ({{difficulty}}) masalasi yechildi.",
+          "problem": "Masala №{{id}}"
+        },
+        "achievementUnlocked": {
+          "description": "{{message}}"
+        },
+        "dailyTaskCompleted": {
+          "description": "Kunlik topshiriq bajarildi ({{type}}).",
+          "task": "{{description}}"
+        }
+      }
+    }
+  }
+}

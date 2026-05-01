@@ -1,0 +1,142 @@
+{
+  "users": {
+    "title": "Пользователи",
+    "actions": {
+      "export": "Экспорт",
+      "invite": "Пригласить пользователя"
+    },
+    "tabs": {
+      "all": "Новые пользователи",
+      "skills": "Топ пользователей",
+      "activity": "Рейтинг активности",
+      "contests": "Рейтинг контестов",
+      "challenges": "Топ Kepcoin"
+    },
+    "filters": {
+      "toggle": "Фильтры",
+      "searchPlaceholder": "Поиск",
+      "username": "Логин",
+      "usernamePlaceholder": "Фильтр по логину",
+      "name": "Имя",
+      "namePlaceholder": "Поиск по имени или фамилии",
+      "country": "Страна",
+      "countryPlaceholder": "Выберите страну",
+      "anyCountry": "Любая страна",
+      "ageFrom": "Возраст от",
+      "ageTo": "Возраст до",
+      "agePlaceholder": "--",
+      "clear": "Сбросить"
+    },
+    "columns": {
+      "user": "Пользователь",
+      "skills": "Навыки",
+      "activity": "Активность",
+      "contests": "Контесты",
+      "challenges": "Вызовы",
+      "streak": "Серия",
+      "kepcoin": "Kepcoin",
+      "lastSeen": "Был(а) в сети"
+    },
+    "statistics": {
+      "totalUsers": "Всего пользователей",
+      "lastDays": "Новые пользователи за последние {{count}} дней",
+      "empty": "Статистика пока недоступна"
+    },
+    "popover": {
+      "viewDetails": "Подробнее о пользователе"
+    },
+    "emptyValue": "—",
+    "profile": {
+      "tabs": {
+        "about": "О себе",
+        "ratings": "Рейтинги",
+        "activityHistory": "История активности",
+        "purchases": "Покупки",
+        "blog": "Блог",
+        "achievements": "Достижения"
+      },
+      "personal": {
+        "title": "Персональная информация",
+        "fullName": "Полное имя",
+        "wasBorn": "Родился",
+        "lives": "Живет",
+        "email": "Электронная почта",
+        "website": "Веб-сайт",
+        "joined": "Дата регистрации"
+      },
+      "social": {
+        "title": "Социальные ссылки"
+      },
+      "followers": {
+        "title": "Подписчики",
+        "viewAll": "Смотреть всех"
+      },
+      "about": "О себе",
+      "skills": "Навыки",
+      "technologies": "Технологии",
+      "education": "Образование",
+      "workExperience": "Опыт работы",
+      "timeline": {
+        "present": "По настоящее время"
+      },
+      "achievements": {
+        "title": "Достижения",
+        "completed": "Завершенные",
+        "notCompleted": "Незавершенные",
+        "all": "Все",
+        "empty": "Достижений пока нет."
+      },
+      "prizes": {
+        "title": "Призы в контестах",
+        "empty": "Призов пока нет."
+      },
+      "ratings": {
+        "solved": "Решено",
+        "rating": "Рейтинг",
+        "rank": "Место",
+        "percentile": "Перцентиль: {{value}}",
+        "wins": "Победы",
+        "draws": "Ничьи",
+        "losses": "Поражения",
+        "maxRating": "Максимальный рейтинг",
+        "noHistory": "История рейтинга пока отсутствует.",
+        "games": "{{total}} игр",
+        "overview": "Обзор рейтингов",
+        "skillsRating": "Рейтинг навыков",
+        "activityRating": "Рейтинг активности",
+        "challengeRank": "Звание в вызовах"
+      },
+      "actions": {
+        "follow": "Подписаться",
+        "unfollow": "Отписаться",
+        "followTooltip": "Подписаться на пользователя",
+        "unfollowTooltip": "Отписаться от пользователя"
+      },
+      "purchases": {
+        "title": "История покупок",
+        "empty": "У вас пока нет заказов.",
+        "status": "Статус",
+        "delivery": "Доставка",
+        "recipient": "Получатель",
+        "address": "Адрес",
+        "trackingCode": "Трек-код",
+        "adminNote": "Комментарий администратора",
+        "orderDate": "Дата заказа",
+        "size": "Размер",
+        "color": "Цвет",
+        "reviewTitle": "Оцените заказ",
+        "reviewHint": "Оставьте оценку от 1 до 5 звезд после завершения доставки.",
+        "submitReview": "Отправить отзыв",
+        "reviewSaved": "Отзыв сохранен",
+        "starsRequired": "Сначала выберите оценку.",
+        "statuses": {
+          "PENDING": "Ожидается",
+          "PROCESSING": "В обработке",
+          "SHIPPED": "Отправлен",
+          "COMPLETED": "Завершен",
+          "CANCELLED": "Отменен"
+        }
+      }
+    }
+  }
+}

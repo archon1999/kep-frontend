@@ -1,0 +1,110 @@
+{
+  "arena": {
+    "title": "Arena",
+    "listSubtitle": "{{count}} arena events are open for you.",
+    "listEmptySubtitle": "No arena events found yet.",
+    "searchPlaceholder": "Search arena",
+    "status": {
+      "upcoming": "Upcoming",
+      "live": "Live",
+      "finished": "Finished"
+    },
+    "statusLabel": "Status: {{status}}",
+    "minutes": "min",
+    "questions": "Questions",
+    "timeline": {
+      "start": "Arena starts",
+      "finish": "Arena ends"
+    },
+    "now": "Now",
+    "about": "About arena",
+    "registered": "Registered",
+    "duration": "Time per challenge",
+    "questionTimeType": {
+      "label": "Question timing",
+      "one": "Time to one",
+      "all": "Time to all"
+    },
+    "actions": {
+      "register": "Join arena",
+      "unregister": "Cancel registration",
+      "nextChallenge": "Open current challenge",
+      "start": "Start queue",
+      "pause": "Pause queue",
+      "login": "Log in to join"
+    },
+    "countdown": {
+      "untilStart": "Starts in",
+      "untilFinish": "Ends in",
+      "finished": "Arena finished"
+    },
+    "players": "Standings",
+    "participants": "participants",
+    "participantsTitle": "Participants",
+    "columns": {
+      "rank": "Rank",
+      "user": "Player",
+      "rating": "Rating",
+      "results": "Results",
+      "points": "Points",
+      "buchholz": "Buchholz",
+      "buchholzDescription": "Sum of the points scored by your opponents. Higher Buchholz means you played stronger opponents."
+    },
+    "challenges": "Latest challenges",
+    "liveChallenges": "Live challenges",
+    "noChallenges": "No challenges have been played yet.",
+    "noLiveChallenges": "No live challenges right now.",
+    "statistics": "Arena statistics",
+    "averageRating": "Average rating",
+    "totalChallenges": "Challenges played",
+    "selectPlayer": "Select a participant to see their statistics",
+    "playerStatistics": "Player statistics",
+    "statisticsLabels": {
+      "challenges": "Challenges",
+      "wins": "Wins",
+      "draws": "Draws",
+      "losses": "Losses",
+      "winRate": "Win rate",
+      "drawRate": "Draw rate",
+      "lossRate": "Loss rate"
+    },
+    "opponents": "Opponents",
+    "winners": "Arena winners",
+    "winnerStats": {
+      "wins": "Wins: {{count}}",
+      "draws": "Draws: {{count}}",
+      "losses": "Losses: {{count}}"
+    },
+    "winnersPlace": "Place {{place}}",
+    "performanceShort": "Perf",
+    "previewLabel": "Arena preview",
+    "liveLabel": "Arena live",
+    "finishedLabel": "Arena final",
+    "chaptersLabel": "Chapters",
+    "stateDescriptions": {
+      "upcoming": "Register now and get ready for the arena start. You can cancel registration until the start time.",
+      "ongoing": "The arena is running. Join the queue, get paired automatically, and keep your streak alive.",
+      "finished": "The arena is over. Explore the final standings, winners, and latest battles."
+    },
+    "insights": {
+      "upcomingTitle": "Arena preview",
+      "liveTitle": "Live arena insights",
+      "finishedTitle": "Final arena insights",
+      "participants": "Registered participants",
+      "longestWinStreak": "Longest win streak",
+      "highestPerformance": "Highest performance",
+      "highestWinRate": "Best win rate",
+      "noLeader": "No qualified player yet",
+      "minChallenges": "Min. {{count}} challenges"
+    },
+    "transition": {
+      "started": "Arena has started. Live standings and challenges are now updating automatically.",
+      "finished": "Arena has finished. Final standings and winners are now available."
+    },
+    "queue": {
+      "paused": "Queue is paused. Start it when you're ready for the next pairing.",
+      "active": "Queue is running. New arena challenges will open here automatically.",
+      "finishingSoon": "Less than two minutes remain. Finish your current arena challenge if you have one."
+    }
+  }
+}

@@ -1,0 +1,585 @@
+{
+  "kepcoinSpend": {
+    "insufficientBalance": "Not enough Kepcoin",
+    "confirmTitle": "Want to buy?",
+    "confirmDescription": "You won't be able to revert this!",
+    "costLabel": "Price",
+    "balanceLabel": "Your balance",
+    "cancelAction": "Cancel",
+    "confirmAction": "Purchase",
+    "success": "Purchase completed",
+    "error": "Server error"
+  },
+  "kepcoinPage": {
+    "youHave": "You have {{value}} Kepcoin",
+    "balanceSubtitle": "Track how you earn and spend Kepcoin every day.",
+    "valueLabel": "{{value}} Kepcoin",
+    "hero": {
+      "eyebrow": "Kepcoin wallet",
+      "title": "Balance",
+      "subtitle": "Manage your balance, streak, and next best unlocks from one premium dashboard.",
+      "balanceCaption": "See your balance, streak reserve, and the most useful ways to use Kepcoin in one place.",
+      "goalEyebrow": "Next goal",
+      "goalReadyTitle": "Streak Freeze is ready",
+      "goalPendingTitle": "{{value}} Kepcoin to go",
+      "goalReadySubtitle": "Use your reserve to protect the streak on a busy day.",
+      "goalPendingSubtitle": "A small reserve helps you keep momentum when the schedule gets tight.",
+      "statLabels": {
+        "streak": "Current streak",
+        "maxStreak": "Best streak",
+        "freeze": "Freeze reserve"
+      },
+      "freezeTitle": "Protect the streak",
+      "freezeSubtitle": "If you miss a day, Streak Freeze keeps the streak alive.",
+      "freezeNeedMore": "Need {{value}} more Kepcoin",
+      "freezeReady": "You have enough balance to freeze"
+    },
+    "streakCard": {
+      "eyebrow": "Daily rhythm",
+      "title": "Keep your streak warm",
+      "subtitle": "Stack small daily rewards and keep the rhythm alive with Streak Freeze when needed.",
+      "balanceLabel": "Balance",
+      "freezeTitle": "Protect the streak"
+    },
+    "streakStats": {
+      "current": "Current streak",
+      "max": "Max streak"
+    },
+    "currentStreak": "Current streak · {{value}} days",
+    "streakFreeze": {
+      "label": "Streak freeze",
+      "count": "Streak freeze · {{value}}",
+      "description": "Freezing automatically saves your streak if you miss a day and don't complete daily tasks.",
+      "purchaseAction": "Buy freeze"
+    },
+    "history": {
+      "title": "Kepcoin activity",
+      "subtitle": "Every earn and spend lands here, so you can quickly see where your balance came from and where it went.",
+      "tabs": {
+        "earns": "Earns",
+        "spends": "Spends"
+      },
+      "error": "Could not load your Kepcoin history.",
+      "retry": "Retry",
+      "emptyTitle": "No Kepcoin history yet",
+      "emptySubtitle": "Complete tasks or enter contests to see your earns and spends here.",
+      "note": "Note: {{value}}",
+      "noDate": "Time not specified",
+      "detail": "{{base}} · {{detail}}",
+      "defaultLabel": "Kepcoin transaction",
+      "notePrefix": "Note"
+    },
+    "tasks": {
+      "title": "Kepcoin tasks",
+      "subtitle": "Complete tasks across KEP.uz and collect Kepcoin rewards here.",
+      "empty": "No tasks available right now.",
+      "goToTask": "Go to task",
+      "open": "Open",
+      "view": "View",
+      "start": "Start",
+      "verify": "Verify",
+      "close": "Close",
+      "completed": "Completed",
+      "pending": "Pending",
+      "blocked": "Blocked",
+      "verified": "Task verified successfully",
+      "alreadyCompleted": "This task has already been completed",
+      "startOpened": "Task page opened",
+      "modalSubtitle": "Complete the action, then come back and verify it.",
+      "modalHint": "Some tasks open internal pages, and account connections can bring you back here automatically.",
+      "description": "Task description",
+      "flowTitle": "How it works",
+      "flowStepStart": "1. Start the connection flow for this account.",
+      "flowStepVerify": "2. After linking is complete, click verify to receive your reward.",
+      "verifyCodes": {
+        "telegram_not_linked": "Telegram account is not linked yet.",
+        "google_not_linked": "Google account is not linked yet.",
+        "github_not_linked": "GitHub account is not linked yet.",
+        "missing_required_provider": "A required account connection is missing.",
+        "event_not_found": "Task action was not detected yet.",
+        "telegram_channel_not_subscribed": "Telegram channel subscription was not detected."
+      },
+      "errors": {
+        "startFailed": "Could not start the task flow.",
+        "verifyFailed": "Could not verify the task."
+      },
+      "instructionsByKind": {
+        "provider_link": {
+          "subtitle": "Connect the required account, then return here to verify the task.",
+          "hint": "A new page or service will open for account linking. After the connection is completed, come back and click verify.",
+          "steps": [
+            "1. Start the account connection flow.",
+            "2. Complete the connection, return to KEP.uz, and click verify."
+          ],
+          "startLabel": "Connect account"
+        },
+        "internal_link": {
+          "subtitle": "Open the related page, complete the action, then come back here.",
+          "hint": "This task is verified only after the required action is completed on KEP.uz.",
+          "steps": [
+            "1. Open the required page and complete the action.",
+            "2. Return here and click verify to receive your reward."
+          ],
+          "startLabel": "Open page"
+        },
+        "external_link": {
+          "subtitle": "Open the external page, complete the action, then verify the task here.",
+          "hint": "The external page opens in a new tab. After you finish the action, return to KEP.uz and verify it.",
+          "steps": [
+            "1. Open the external page and complete the required action.",
+            "2. Return here and click verify."
+          ],
+          "startLabel": "Open link"
+        }
+      },
+      "instructions": {
+        "connect-telegram": {
+          "subtitle": "Connect your Telegram account to KEP.uz through the bot.",
+          "hint": "A Telegram bot page will open. Start the bot from the account you want to connect, then return and verify.",
+          "steps": [
+            "1. Open the bot and press Start from your Telegram account.",
+            "2. After the account is connected, return here and click verify."
+          ],
+          "startLabel": "Connect Telegram"
+        },
+        "connect-google": {
+          "subtitle": "Connect your Google account to KEP.uz.",
+          "hint": "You will be redirected to Google sign-in. Complete the connection, then come back here to verify.",
+          "steps": [
+            "1. Sign in with the Google account you want to connect.",
+            "2. Return to KEP.uz and click verify."
+          ],
+          "startLabel": "Connect Google"
+        },
+        "connect-github": {
+          "subtitle": "Connect your GitHub account to KEP.uz.",
+          "hint": "You will be redirected to GitHub authorization. After the connection is approved, return and verify the task.",
+          "steps": [
+            "1. Authorize KEP.uz with your GitHub account.",
+            "2. Return here and click verify."
+          ],
+          "startLabel": "Connect GitHub"
+        },
+        "complete-bio": {
+          "subtitle": "Fill in your profile bio and save it.",
+          "hint": "The bio must be non-empty. Simply opening the page is not enough.",
+          "steps": [
+            "1. Open profile information settings and write your bio.",
+            "2. Save the changes, return here, and click verify."
+          ]
+        },
+        "upload-avatar": {
+          "subtitle": "Upload a profile avatar in settings.",
+          "hint": "Use a real avatar image and save the changes before verifying.",
+          "steps": [
+            "1. Open settings and upload your avatar.",
+            "2. Save the changes, return here, and click verify."
+          ]
+        },
+        "upload-cover-photo": {
+          "subtitle": "Set a cover photo for your profile.",
+          "hint": "The task is counted after the cover photo is updated and saved.",
+          "steps": [
+            "1. Open settings and upload a cover photo.",
+            "2. Save the changes, return here, and click verify."
+          ]
+        },
+        "complete-birthday": {
+          "subtitle": "Add your date of birth in profile settings.",
+          "hint": "The birthday field must be filled in and saved.",
+          "steps": [
+            "1. Open profile information settings and enter your date of birth.",
+            "2. Save the changes, return here, and click verify."
+          ]
+        },
+        "complete-country-region": {
+          "subtitle": "Fill in both your country and region in profile settings.",
+          "hint": "Both fields must be saved for this task to be detected.",
+          "steps": [
+            "1. Open profile information settings and fill in country and region.",
+            "2. Save the changes, return here, and click verify."
+          ]
+        },
+        "add-three-technologies": {
+          "subtitle": "Add at least three technologies to your profile.",
+          "hint": "This task is counted only after three or more technologies are saved.",
+          "steps": [
+            "1. Open skills settings and add at least three technologies.",
+            "2. Save the changes, return here, and click verify."
+          ]
+        },
+        "add-codeforces-handle": {
+          "subtitle": "Add your Codeforces handle in social settings.",
+          "hint": "Enter a non-empty handle and save the form.",
+          "steps": [
+            "1. Open social settings and enter your Codeforces handle.",
+            "2. Save the changes, return here, and click verify."
+          ]
+        },
+        "add-education": {
+          "subtitle": "Add at least one education entry to your profile.",
+          "hint": "Fill in the education form and save it before verifying.",
+          "steps": [
+            "1. Open the career section and add an education entry.",
+            "2. Save the changes, return here, and click verify."
+          ]
+        },
+        "add-work-experience": {
+          "subtitle": "Add at least one work experience entry to your profile.",
+          "hint": "Fill in the company and role fields, then save the form.",
+          "steps": [
+            "1. Open the career section and add a work experience entry.",
+            "2. Save the changes, return here, and click verify."
+          ]
+        },
+        "follow-user": {
+          "subtitle": "Follow any user on the platform.",
+          "hint": "Open a user profile or the users list and use the follow action.",
+          "steps": [
+            "1. Open the users page and follow any user.",
+            "2. Return here and click verify."
+          ]
+        },
+        "create-or-join-team": {
+          "subtitle": "Create a new team or join an existing one.",
+          "hint": "Either creating a team or joining one counts for this task.",
+          "steps": [
+            "1. Open the teams section and create or join a team.",
+            "2. Return here and click verify."
+          ]
+        },
+        "subscribe-telegram-channel": {
+          "subtitle": "Subscribe to the official KEP.uz Telegram channel.",
+          "hint": "Your Telegram account must already be connected before the subscription can be verified.",
+          "steps": [
+            "1. Open the Telegram channel and subscribe from your connected account.",
+            "2. Return here and click verify."
+          ],
+          "startLabel": "Open channel"
+        },
+        "first-problem-attempt": {
+          "subtitle": "Submit a normal problem attempt on KEP.uz.",
+          "hint": "Only a regular problem attempt is counted for this task.",
+          "steps": [
+            "1. Open problems and submit an attempt for a regular problem.",
+            "2. Return here and click verify."
+          ]
+        },
+        "first-problem-ac": {
+          "subtitle": "Get your first accepted solution on a regular problem.",
+          "hint": "Only an accepted solution on a regular problem is counted.",
+          "steps": [
+            "1. Open problems and solve a regular problem with an accepted solution.",
+            "2. Return here and click verify."
+          ]
+        },
+        "register-contest": {
+          "subtitle": "Register for any contest on the platform.",
+          "hint": "The task is counted after your contest registration is created.",
+          "steps": [
+            "1. Open contests and register for any contest.",
+            "2. Return here and click verify."
+          ]
+        },
+        "contest-first-attempt": {
+          "subtitle": "Make at least one attempt during a contest.",
+          "hint": "Only a contest attempt counts for this task.",
+          "steps": [
+            "1. Join a contest and submit at least one attempt.",
+            "2. Return here and click verify."
+          ]
+        },
+        "contest-first-solved-problem": {
+          "subtitle": "Solve at least one contest problem.",
+          "hint": "You need an accepted solution inside a contest.",
+          "steps": [
+            "1. Participate in a contest and solve one problem.",
+            "2. Return here and click verify."
+          ]
+        },
+        "contest-solve-all-problems": {
+          "subtitle": "Solve every problem in a contest.",
+          "hint": "This task is counted after all problems in one contest are solved.",
+          "steps": [
+            "1. Participate in a contest and solve all its problems.",
+            "2. Return here and click verify."
+          ]
+        },
+        "contest-top-20": {
+          "subtitle": "Finish a contest in the top 20.",
+          "hint": "The result is counted when your contest rank reaches the top 20.",
+          "steps": [
+            "1. Participate in a contest and finish in the top 20.",
+            "2. Return here and click verify."
+          ]
+        },
+        "contest-top-10": {
+          "subtitle": "Finish a contest in the top 10.",
+          "hint": "You need to improve your final contest rank to the top 10.",
+          "steps": [
+            "1. Participate in a contest and finish in the top 10.",
+            "2. Return here and click verify."
+          ]
+        },
+        "contest-top-5": {
+          "subtitle": "Finish a contest in the top 5.",
+          "hint": "This task is counted when your contest rank reaches the top 5.",
+          "steps": [
+            "1. Participate in a contest and finish in the top 5.",
+            "2. Return here and click verify."
+          ]
+        },
+        "contest-top-3": {
+          "subtitle": "Finish a contest in the top 3.",
+          "hint": "You need to reach a top-3 placement in a contest.",
+          "steps": [
+            "1. Participate in a contest and finish in the top 3.",
+            "2. Return here and click verify."
+          ]
+        },
+        "contest-winner": {
+          "subtitle": "Win a contest and take 1st place.",
+          "hint": "This task is counted only if you finish the contest in 1st place.",
+          "steps": [
+            "1. Participate in a contest and finish in 1st place.",
+            "2. Return here and click verify."
+          ]
+        },
+        "join-arena": {
+          "subtitle": "Register for any arena event.",
+          "hint": "The task is counted after your arena registration is created.",
+          "steps": ["1. Open arena and join any arena event.", "2. Return here and click verify."]
+        },
+        "arena-first-match": {
+          "subtitle": "Play at least one arena match.",
+          "hint": "You need to complete a real arena match for this task to count.",
+          "steps": [
+            "1. Join an arena and complete at least one match.",
+            "2. Return here and click verify."
+          ]
+        },
+        "arena-first-win": {
+          "subtitle": "Win at least one arena match.",
+          "hint": "Only a completed winning match is counted.",
+          "steps": ["1. Join an arena and win one match.", "2. Return here and click verify."]
+        },
+        "arena-top-20": {
+          "subtitle": "Finish an arena in the top 20.",
+          "hint": "The task is counted after your arena rank reaches the top 20.",
+          "steps": [
+            "1. Participate in an arena and finish in the top 20.",
+            "2. Return here and click verify."
+          ]
+        },
+        "arena-top-10": {
+          "subtitle": "Finish an arena in the top 10.",
+          "hint": "You need to improve your arena rank to the top 10.",
+          "steps": [
+            "1. Participate in an arena and finish in the top 10.",
+            "2. Return here and click verify."
+          ]
+        },
+        "arena-top-5": {
+          "subtitle": "Finish an arena in the top 5.",
+          "hint": "The task is counted after your arena rank reaches the top 5.",
+          "steps": [
+            "1. Participate in an arena and finish in the top 5.",
+            "2. Return here and click verify."
+          ]
+        },
+        "arena-top-3": {
+          "subtitle": "Finish an arena in the top 3.",
+          "hint": "You need to reach a top-3 placement in an arena.",
+          "steps": [
+            "1. Participate in an arena and finish in the top 3.",
+            "2. Return here and click verify."
+          ]
+        },
+        "arena-winner": {
+          "subtitle": "Win an arena and take 1st place.",
+          "hint": "This task is counted only if you finish the arena in 1st place.",
+          "steps": [
+            "1. Participate in an arena and finish in 1st place.",
+            "2. Return here and click verify."
+          ]
+        },
+        "complete-course-lesson-part": {
+          "subtitle": "Complete any lesson part inside a course.",
+          "hint": "The lesson part must be marked as completed before the task can be verified.",
+          "steps": [
+            "1. Open a course and complete one lesson part.",
+            "2. Return here and click verify."
+          ]
+        },
+        "first-project-attempt": {
+          "subtitle": "Submit your first project attempt.",
+          "hint": "The task is counted after a project attempt is sent successfully.",
+          "steps": ["1. Open a project and submit an attempt.", "2. Return here and click verify."]
+        },
+        "project-complete-one-part": {
+          "subtitle": "Complete at least one part of a project attempt.",
+          "hint": "You need to finish one project task inside an attempt.",
+          "steps": [
+            "1. Open a project attempt and complete one part.",
+            "2. Return here and click verify."
+          ]
+        },
+        "project-complete-all-parts": {
+          "subtitle": "Complete all parts of a project attempt.",
+          "hint": "This task is counted only after every part in one project attempt is completed.",
+          "steps": [
+            "1. Open a project attempt and complete all parts.",
+            "2. Return here and click verify."
+          ]
+        },
+        "leave-order-review": {
+          "subtitle": "Leave a review for one of your orders.",
+          "hint": "Open your purchases, choose an order, and submit a review.",
+          "steps": [
+            "1. Open your purchases page and leave a review for an order.",
+            "2. Return here and click verify."
+          ]
+        }
+      }
+    },
+    "earnEntry": {
+      "title": "Earn Kepcoin",
+      "description": "Open the tasks page, complete actions across KEP.uz, and collect Kepcoin rewards.",
+      "action": "Earn Kepcoin"
+    },
+    "earnPage": {
+      "title": "Earn Kepcoin",
+      "subtitle": "Complete tasks across KEP.uz, connect your accounts, and verify actions to grow your Kepcoin balance.",
+      "backToKepcoin": "Back to Kepcoin",
+      "openShop": "Shop",
+      "filters": {
+        "all": "All",
+        "completed": "Completed",
+        "uncompleted": "Uncompleted"
+      }
+    },
+    "howToEarn": {
+      "title": "How to Earn Kepcoin",
+      "description": "To earn this currency, you need to contribute to the development of the system. For example, kepcoin:",
+      "items": {
+        "dailyActivity": "For daily activity",
+        "dailyTasks": "For completing daily tasks",
+        "ratingWinner": "For being the winner in daily, weekly, and monthly challenge ratings",
+        "competitions": "For participating in competitions",
+        "blog": "For writing a blog",
+        "oneTimeTasks": "For one-time tasks"
+      }
+    },
+    "howToSpend": {
+      "title": "How to Spend Kepcoin",
+      "items": {
+        "viewAttempt": "View another user's attempt",
+        "viewTest": "View a test with a failed solution",
+        "problemSolution": "Purchase a problem solution",
+        "coverPhoto": "Change profile cover photo",
+        "passTest": "Pass the test",
+        "course": "Purchase a course",
+        "testFunction": "Test function when editing code (completely)",
+        "merch": "Shop merch"
+      }
+    },
+    "earnBoard": {
+      "title": "Fast ways to earn today",
+      "subtitle": "The most reliable Kepcoin sources with the best repeat value.",
+      "items": {
+        "daily": {
+          "title": "Daily rhythm",
+          "description": "Daily visits, activity, and small wins create steady growth."
+        },
+        "tasks": {
+          "title": "Quick onboarding tasks",
+          "description": "Profile setup, account linking, and short internal tasks are the fastest start."
+        },
+        "competitive": {
+          "title": "Contest and arena boost",
+          "description": "Higher effort, bigger rewards. Ratings and competitions can spike your balance quickly."
+        },
+        "community": {
+          "title": "Content and contribution",
+          "description": "Blogs, solutions, and editorial improvements carry the highest long-term value."
+        }
+      }
+    },
+    "spendBoard": {
+      "title": "Ready to unlock now",
+      "subtitle": "Useful perks you can open with your current balance.",
+      "ready": "Ready",
+      "needMore": "Need {{value}} more",
+      "items": {
+        "freeze": {
+          "title": "Streak Freeze",
+          "description": "Protect your streak if you need to skip a day."
+        },
+        "cover": {
+          "title": "Cover photo",
+          "description": "Refresh your profile with a quick personal upgrade."
+        },
+        "tests": {
+          "title": "Failed test view",
+          "description": "See what broke faster and make your next submit more precise."
+        },
+        "double": {
+          "title": "Double rating",
+          "description": "Play a higher risk-reward move in contests when you want a bigger jump."
+        }
+      }
+    },
+    "earnTypes": {
+      "wroteBlog": "Wrote a blog",
+      "wroteProblemSolution": "Wrote problem solution",
+      "loyaltyBonus": "Loyalty bonus",
+      "bonusFromAdmin": "Bonus from admin",
+      "dailyActivity": "Daily activity",
+      "dailyTaskCompletion": "Daily task completed",
+      "dailyRatingWinner": "Daily problems rating winner",
+      "weeklyRatingWinner": "Weekly problems rating winner",
+      "monthlyRatingWinner": "Monthly problems rating winner",
+      "contestParticipant": "Contest participant",
+      "arenaParticipant": "Arena participant",
+      "tournamentParticipant": "Tournament participant",
+      "projectTask": "Project task completed",
+      "newYear2026Login": "New Year 2026 login bonus",
+      "merchRefund": "Merch refund",
+      "oneTimeTaskCompletion": "Task completed"
+    },
+    "spendTypes": {
+      "attemptView": "View Attempt",
+      "attemptTestView": "View Test Attempt",
+      "problemSolution": "View Problem Solution",
+      "doubleRating": "Double rating",
+      "coverPhoto": "Change cover photo",
+      "course": "Course",
+      "studyPlan": "Study plan",
+      "codeEditorTesting": "Code editor testing",
+      "saveRating": "Save rating",
+      "testPass": "Pass the test",
+      "userContestCreate": "Create contest",
+      "project": "Project",
+      "streakFreeze": "Streak freeze",
+      "virtualContest": "Virtual contest",
+      "unratedContest": "Unrated contest",
+      "answerForInput": "Answer for input",
+      "checkSamples": "Check samples",
+      "merch": "Merch"
+    },
+    "actions": {
+      "openDailyTasks": "Daily tasks",
+      "openRating": "Rating",
+      "openArena": "Arena",
+      "openContests": "Contests",
+      "writeBlog": "New blog",
+      "openOneTimeTasks": "Tasks",
+      "openAttempts": "Attempts",
+      "openTests": "Tests",
+      "openProblems": "Problems",
+      "openKepCover": "Kep Cover",
+      "openSettings": "Settings",
+      "openShop": "Shop"
+    }
+  }
+}

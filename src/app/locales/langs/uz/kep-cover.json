@@ -1,0 +1,45 @@
+{
+  "kepCover": {
+    "fallbackTitle": "KEP Cover kontesti",
+    "topEntries": "Top-3 cover",
+    "allEntries": "Barcha coverlar",
+    "loadMore": "Yana yuklash",
+    "status": {
+      "empty": "Kontest yo'q",
+      "upcoming": "Tez orada",
+      "active": "Hozir davom etmoqda",
+      "finished": "Yakunlangan"
+    },
+    "hero": {
+      "subtitle": "Kontest oralig'ida cover photo almashtirgan foydalanuvchilar avtomatik qo'shiladi. Eng kuchli coverlarga ovoz bering va live reytingni kuzating.",
+      "entries": "{{count}} ishtirokchi",
+      "remainingVotes": "{{total}} tadan {{count}} ta ovoz qoldi",
+      "signInToVote": "Ovoz berish uchun tizimga kiring",
+      "endsAt": "Ovoz berish {{date}} da yopiladi",
+      "finishedAt": "{{date}} da yakunlangan",
+      "readOnly": "Ovoz berish yopilgan. Natijalar faqat ko'rish rejimida."
+    },
+    "home": {
+      "live": "KEP Cover live",
+      "subtitle": "Cover kontesti hozir faol. Barcha coverlarni ko'rish, ovoz berish va top yangilanishini kuzatish uchun to'liq sahifani oching.",
+      "entries": "{{count}} ishtirokchi",
+      "remainingVotes": "{{total}} tadan {{count}} ta ovoz qoldi",
+      "signInToVote": "Ovoz berish uchun tizimga kiring",
+      "endsAt": "{{date}} gacha",
+      "cta": "Kontestni ochish"
+    },
+    "actions": {
+      "like": "Ovoz berish",
+      "unlike": "Ovozni bekor qilish",
+      "signIn": "Ovoz berish uchun kirish"
+    },
+    "messages": {
+      "voteError": "Ovoz yangilanmadi."
+    },
+    "empty": {
+      "title": "Hali KEP Cover kontesti yaratilmagan",
+      "subtitle": "Kontest yaratilgach, shu yerda live natijalar va barcha qatnashayotgan coverlar chiqadi.",
+      "entries": "Hozircha bu kontestda coverlar yo'q."
+    }
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "arena": {
+    "title": "Арена",
+    "listSubtitle": "Для вас открыто {{count}} арен.",
+    "listEmptySubtitle": "Пока арен не найдено.",
+    "searchPlaceholder": "Поиск арены",
+    "status": {
+      "upcoming": "Скоро",
+      "live": "Идет",
+      "finished": "Завершена"
+    },
+    "statusLabel": "Статус: {{status}}",
+    "minutes": "мин",
+    "questions": "Вопросы",
+    "timeline": {
+      "start": "Начало арены",
+      "finish": "Окончание арены"
+    },
+    "now": "Сейчас",
+    "about": "Об арене",
+    "registered": "Вы зарегистрированы",
+    "duration": "Время на один вызов",
+    "questionTimeType": {
+      "label": "Тип времени на вопрос",
+      "one": "Time to one",
+      "all": "Time to all"
+    },
+    "actions": {
+      "register": "Присоединиться",
+      "unregister": "Отменить регистрацию",
+      "nextChallenge": "Открыть текущий вызов",
+      "start": "Войти в очередь",
+      "pause": "Пауза очереди",
+      "login": "Войдите, чтобы участвовать"
+    },
+    "countdown": {
+      "untilStart": "До старта",
+      "untilFinish": "До завершения",
+      "finished": "Арена завершена"
+    },
+    "players": "Таблица",
+    "participants": "участников",
+    "participantsTitle": "Участники",
+    "columns": {
+      "rank": "Место",
+      "user": "Игрок",
+      "rating": "Рейтинг",
+      "results": "Результаты",
+      "points": "Очки",
+      "buchholz": "Бухгольц",
+      "buchholzDescription": "Сумма очков, набранных вашими соперниками. Чем выше Бухгольц, тем сильнее были соперники."
+    },
+    "challenges": "Последние вызовы",
+    "liveChallenges": "Текущие вызовы",
+    "noChallenges": "Вызовов пока не было.",
+    "noLiveChallenges": "Сейчас нет текущих вызовов.",
+    "statistics": "Статистика арены",
+    "averageRating": "Средний рейтинг",
+    "totalChallenges": "Всего вызовов",
+    "selectPlayer": "Выберите участника, чтобы посмотреть статистику",
+    "playerStatistics": "Статистика участника",
+    "statisticsLabels": {
+      "challenges": "Вызовы",
+      "wins": "Победы",
+      "draws": "Ничьи",
+      "losses": "Поражения",
+      "winRate": "Процент побед",
+      "drawRate": "Процент ничьих",
+      "lossRate": "Процент поражений"
+    },
+    "opponents": "Соперники",
+    "winners": "Победители арены",
+    "winnerStats": {
+      "wins": "Победы: {{count}}",
+      "draws": "Ничьи: {{count}}",
+      "losses": "Поражения: {{count}}"
+    },
+    "winnersPlace": "{{place}} место",
+    "performanceShort": "Perf",
+    "previewLabel": "Превью арены",
+    "liveLabel": "Арена в эфире",
+    "finishedLabel": "Финал арены",
+    "chaptersLabel": "Разделы",
+    "stateDescriptions": {
+      "upcoming": "Арена еще не началась. Зарегистрируйтесь заранее, при необходимости можно отменить регистрацию до старта.",
+      "ongoing": "Арена идет. Входите в очередь, автоматически получайте пару и удерживайте серию побед.",
+      "finished": "Арена завершена. Посмотрите итоговую таблицу, победителей и последние вызовы."
+    },
+    "insights": {
+      "upcomingTitle": "Превью арены",
+      "liveTitle": "Live-обзор арены",
+      "finishedTitle": "Итоговый обзор арены",
+      "participants": "Зарегистрированные участники",
+      "longestWinStreak": "Самая длинная серия побед",
+      "highestPerformance": "Лучший перфоманс",
+      "highestWinRate": "Лучший процент побед",
+      "noLeader": "Пока нет подходящих данных",
+      "minChallenges": "Минимум {{count}} вызовов"
+    },
+    "transition": {
+      "started": "Арена началась. Таблица и вызовы теперь обновляются автоматически.",
+      "finished": "Арена завершилась. Итоговая таблица и победители готовы."
+    },
+    "queue": {
+      "paused": "Очередь на паузе. Запустите ее, когда будете готовы к следующей паре.",
+      "active": "Очередь работает. Новые вызовы арены будут автоматически открываться здесь.",
+      "finishingSoon": "До конца арены осталось меньше двух минут. Завершите текущий вызов арены, если он у вас есть."
+    }
+  }
+}

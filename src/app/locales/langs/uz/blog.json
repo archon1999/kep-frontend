@@ -1,0 +1,176 @@
+{
+  "blog": {
+    "title": "Blog",
+    "heroEyebrow": "Hamjamiyat hikoyalari",
+    "subtitle": "Hamjamiyat hikoyalari, o'quv yo'llari va platforma yangiliklari.",
+    "heroHighlights": {
+      "reward": "Sifatli bloglar Kepcoin olishi mumkin",
+      "community": "Qo'llanma, hikoya va platforma insightlarini ulashing"
+    },
+    "heroCtaTitleAuth": "Keyingi blogingizni yozing",
+    "heroCtaTitleGuest": "KEP'da blog yozishni boshlang",
+    "heroCtaSubtitle": "Avval draft yarating, reviewga yuboring va hamjamiyat bilan ulashing.",
+    "filtersTitle": "Maqolalarni saralash",
+    "resultsCount": "{{count}} ta blog",
+    "clearFilters": "Filtrlarni tozalash",
+    "searchPlaceholder": "Sarlavha yoki kalit so'z bo'yicha qidirish",
+    "author": "Muallif",
+    "authorPlaceholder": "Istalgan muallif",
+    "orderBy": "Tartiblash",
+    "orderByPlaceholder": "Dolzarblik",
+    "order": {
+      "likes": "Eng ko'p yoqtirilgan",
+      "views": "Eng ko'p ko'rilgan",
+      "comments": "Eng ko'p muhokama qilingan"
+    },
+    "topics": {
+      "title": "Mavzular",
+      "technology": "Texnologiyalar",
+      "competitiveProgramming": "Sport dasturlash",
+      "info": "Platforma yangiliklari"
+    },
+    "readMore": "Batafsil",
+    "minRead": "{{count}} daqiqa o'qish",
+    "creatorLabel": "Hamjamiyat muallifi",
+    "comments": "Izohlar",
+    "commentsWithCount": "Izohlar ({{count}})",
+    "likes": "Like",
+    "views": "Ko'rishlar",
+    "addCommentTitle": "Izoh qoldiring",
+    "addCommentPlaceholder": "Fikrlaringizni hamjamiyat bilan ulashing",
+    "emptyComments": {
+      "title": "Birinchi bo'lib izoh qoldiring",
+      "subtitle": "Hali izohlar yo'q. Suhbatni boshlang."
+    },
+    "articleActionsTitle": "Muhokamaga qo'shiling",
+    "articleActionsSubtitle": "Postga reaksiya bildiring, ulashing yoki darhol izohlarga o'ting.",
+    "tableOfContents": "Mundarija",
+    "aboutAuthor": "Muallif haqida",
+    "authorSectionSubtitle": "Muallifning boshqa postlarini ko'ring va KEP'dagi yozuvlarini kuzating.",
+    "authorSectionAction": "Muallif blogini ko'rish",
+    "moreFromCreator": "Shu muallifdan yana",
+    "moreFromCreatorSubtitle": "Xuddi shu muallifning tegishli postlari.",
+    "moreBlogs": "Yana bloglar",
+    "moreBlogsSubtitle": "KEP blog lentasidan yana bir nechta tavsiya.",
+    "asideTitle": "Davom ettiring",
+    "asideSubtitle": "Muallif sahifasini oching yoki keyingi blogingizni yozishni boshlang.",
+    "empty": {
+      "title": "Filtrlarga mos blog topilmadi",
+      "subtitle": "Qidiruvni o'zgartirib ko'ring yoki hamjamiyat uchun yangi blog yarating."
+    },
+    "actions": {
+      "like": "Yoqtirish",
+      "share": "Ulashish",
+      "submit": "Yuborish",
+      "delete": "O'chirish"
+    },
+    "loginToComment": "Muhokamaga qo'shilish uchun tizimga kiring.",
+    "authNotice": "Reaksiya bildirish va suhbatga qo'shilish uchun tizimga kiring.",
+    "status": {
+      "draft": "Qoralama",
+      "pending": "Ko'rib chiqilmoqda",
+      "published": "Nashr qilingan"
+    },
+    "profile": {
+      "ownerEyebrow": "Muallif kabineti",
+      "ownerTitle": "Mening bloglarim",
+      "ownerSubtitle": "Bu yerda draftlaringizni yaratib, tahrirlab va reviewga yuborishingiz mumkin.",
+      "publicEyebrow": "Nashr qilingan hikoyalar",
+      "publicTitle": "Nashr qilingan bloglar",
+      "publicSubtitle": "Ushbu foydalanuvchining nashr qilingan bloglari.",
+      "create": "Yangi blog",
+      "view": "Ko'rish",
+      "edit": "Tahrirlash",
+      "submitForReview": "Reviewga yuborish",
+      "emptyOwner": "Sizda hali bloglar yo'q.",
+      "emptyPublic": "Bu foydalanuvchida hali published blog yo'q.",
+      "reviewFlowHint": "Yangi blog avval draft sifatida saqlanadi. Tayyor bo'lgach reviewga yuboring.",
+      "reward": "+{{value}} Kepcoin"
+    },
+    "editor": {
+      "heroEyebrow": "Blog kabineti",
+      "createTitle": "Blog yaratish",
+      "editTitle": "Blogni tahrirlash",
+      "translationLabel": "Til",
+      "translationHint": "Blogning UZ, RU va EN variantlarini to'ldirish uchun tablarni almashtiring.",
+      "draftHint": "Draft blog reviewga yuborilmaguncha faqat sizga ko'rinadi.",
+      "pendingHint": "Bu blog review jarayonida. Siz hali ham matnini yangilashingiz mumkin.",
+      "publishedHint": "Published blogni tahrirlash statusini o'zgartirmaydi.",
+      "loadError": "Editor yuklanmadi. Sahifani yangilab qayta urinib ko'ring.",
+      "safeFormattingHint": "Ruxsat etilgan formatlar: sarlavhalar, qalin, kursiv, tagi chizilgan, strike, iqtibos, code block, ro'yxatlar, link va formatni tozalash.",
+      "notFound": "So'ralgan blogni yuklab bo'lmadi.",
+      "authRequired": "Blog yaratish yoki tahrirlash uchun tizimga kirish kerak.",
+      "forbidden": "Bu blogni tahrirlashga ruxsat yo'q.",
+      "fields": {
+        "title": "Sarlavha",
+        "titlePlaceholder": "Sarlavha",
+        "titleHint": "Blog uchun aniq sarlavha yozing.",
+        "subText": "Qisqa matn",
+        "subTextPlaceholder": "Qisqa tavsif yozing",
+        "tags": "Teglar",
+        "tagsHint": "Har bir tegdan keyin Enter bosing.",
+        "tagsPlaceholder": "Yozing va Enter bosing",
+        "tagsLimit": "Maksimum 10 ta",
+        "coverImage": "Cover rasmi",
+        "coverImageEmpty": "Blog uchun cover rasmi yuklang.",
+        "coverImageDrop": "Faylni shu yerga tashlang",
+        "coverImageBrowse": "yoki qurilmadan tanlang",
+        "coverImageReplace": "Tanlangan rasmni almashtiring",
+        "coverImageHelper": "Rasm JPEG yoki PNG formatda, 15MB gacha bo'lishi kerak. Eng yaxshi natija uchun 16:9 nisbat tavsiya qilinadi.",
+        "topics": "Topiklar",
+        "topicsPlaceholder": "Tanlang",
+        "canonicalLink": "Canonical link",
+        "canonicalLinkPlaceholder": "Havola",
+        "language": "Til",
+        "languageOptions": {
+          "uz": "O'zbek",
+          "ru": "Rus",
+          "en": "Ingliz"
+        },
+        "body": "Matn",
+        "bodyPlaceholder": "Blog matnini shu yerga yozing..."
+      },
+      "previewLabel": "Ko'rinish",
+      "previewTitle": "Jonli preview",
+      "previewSubtitle": "Blog nashr qilinishidan oldin qanday ko'rinishini shu yerda ko'ring.",
+      "previewPlaceholderTitle": "Blog sarlavhasi shu yerda chiqadi",
+      "previewEmpty": "Preview ko'rish uchun yozishni boshlang.",
+      "previewEmptyState": "Hozircha kontent yo'q. Yozishni boshlash uchun \"Hikoyani yozish\" ni bosing.",
+      "detailsTitle": "Post tafsilotlari",
+      "detailsSubtitle": "O'quvchilar topishi uchun asosiy sarlavha va teglarni kiriting.",
+      "coverTitle": "Cover rasmi",
+      "coverSubtitle": "Lentada ajralib turishi uchun kuchli vizual tanlang.",
+      "statusTitle": "Nashr holati",
+      "storyTitle": "Hikoyani yozing",
+      "storySubtitle": "Aniq va foydali matn yozing. Tayyor bo'lgach draft saqlab, reviewga yuborishingiz mumkin.",
+      "actions": {
+        "saveDraft": "Draftni saqlash",
+        "submitForReview": "Reviewga yuborish",
+        "saveChanges": "O'zgarishlarni saqlash",
+        "writeStory": "Hikoyani yozish",
+        "uploadImage": "Rasm yuklash",
+        "removeImage": "Rasmni olib tashlash",
+        "backToBlogs": "Bloglarimga qaytish",
+        "cancel": "Bekor qilish"
+      },
+      "validation": {
+        "titleRequired": "Sarlavha majburiy.",
+        "bodyRequired": "Matn majburiy.",
+        "translationRequired": "Kamida bitta tilda sarlavha va matn bo'lishi kerak."
+      },
+      "statusDescription": {
+        "draft": "Qoralama bloglar reviewga yuborilmaguncha faqat sizga ko'rinadi.",
+        "pending": "Pending bloglar admin tekshiruvi tugaguncha kutadi.",
+        "published": "Nashr qilingan bloglar keyingi tahrirlardan keyin ham nashr qilingan holatda qoladi."
+      }
+    },
+    "messages": {
+      "saved": "Draft saqlandi.",
+      "updated": "Blog yangilandi.",
+      "submittedForReview": "Blog reviewga yuborildi.",
+      "saveFailed": "Blogni saqlab bo'lmadi.",
+      "submitFailed": "Blogni reviewga yuborib bo'lmadi.",
+      "linkCopied": "Blog havolasi nusxalandi."
+    }
+  }
+}

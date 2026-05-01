@@ -1,0 +1,208 @@
+import {
+  BackgroundPattern,
+  CardBackground,
+  CardStyle,
+  Config,
+  FontFamily,
+  NavColor,
+  NavigationMenuType,
+  SidenavType,
+  SupportedLocales,
+  ThemePreset,
+  initialConfig,
+} from 'app/config.ts';
+import { mainDrawerWidth } from 'shared/lib/constants';
+import { setItemToStore } from 'shared/lib/utils';
+
+//Action types
+export const SET_CONFIG = 'SET_CONFIG';
+export const REFRESH = 'REFRESH';
+export const RESET = 'RESET';
+export const COLLAPSE_NAVBAR = 'COLLAPSE_NAVBAR';
+export const EXPAND_NAVBAR = 'EXPAND_NAVBAR';
+export const SET_SIDENAV_SHAPE = 'SET_SIDENAV_SHAPE';
+export const SET_NAVIGATION_MENU_TYPE = 'SET_NAVIGATION_MENU_TYPE';
+export const SET_NAV_COLOR = 'SET_NAV_COLOR';
+export const SET_LOCALE = 'SET_LOCALE';
+export const SET_THEME_PRESET = 'SET_THEME_PRESET';
+export const SET_PRIMARY_COLOR = 'SET_PRIMARY_COLOR';
+export const SET_FONT_FAMILY = 'SET_FONT_FAMILY';
+export const SET_FONT_SIZE = 'SET_FONT_SIZE';
+export const SET_BACKGROUND_PATTERN = 'SET_BACKGROUND_PATTERN';
+export const SET_CARD_STYLE = 'SET_CARD_STYLE';
+export const SET_CARD_BACKGROUND = 'SET_CARD_BACKGROUND';
+
+//Action ts type
+export type ACTIONTYPE =
+  | { type: typeof SET_CONFIG; payload: Partial<Config> }
+  | { type: typeof REFRESH }
+  | { type: typeof COLLAPSE_NAVBAR }
+  | { type: typeof EXPAND_NAVBAR }
+  | { type: typeof SET_NAVIGATION_MENU_TYPE; payload: NavigationMenuType }
+  | { type: typeof SET_SIDENAV_SHAPE; payload: SidenavType }
+  | { type: typeof SET_NAV_COLOR; payload: NavColor }
+  | { type: typeof RESET }
+  | { type: typeof SET_LOCALE; payload: SupportedLocales }
+  | { type: typeof SET_THEME_PRESET; payload: ThemePreset }
+  | { type: typeof SET_PRIMARY_COLOR; payload: string | null }
+  | { type: typeof SET_FONT_FAMILY; payload: FontFamily }
+  | { type: typeof SET_FONT_SIZE; payload: number }
+  | { type: typeof SET_BACKGROUND_PATTERN; payload: BackgroundPattern }
+  | { type: typeof SET_CARD_STYLE; payload: CardStyle }
+  | { type: typeof SET_CARD_BACKGROUND; payload: CardBackground };
+
+export const settingsReducer = (state: Config, action: ACTIONTYPE) => {
+  let updatedState: Partial<Config> = {};
+
+  switch (action.type) {
+    case SET_CONFIG: {
+      updatedState = action.payload;
+      break;
+    }
+    case COLLAPSE_NAVBAR: {
+      updatedState = {
+        sidenavCollapsed: true,
+        drawerWidth: mainDrawerWidth.collapsed,
+      };
+      break;
+    }
+    case EXPAND_NAVBAR: {
+      updatedState = {
+        sidenavCollapsed: false,
+        drawerWidth: mainDrawerWidth.full,
+      };
+      break;
+    }
+    case SET_LOCALE: {
+      updatedState = {
+        locale: action.payload,
+      };
+      break;
+    }
+    case SET_NAVIGATION_MENU_TYPE: {
+      switch (action.payload) {
+        case 'sidenav': {
+          updatedState = {
+            navigationMenuType: 'sidenav',
+            drawerWidth: mainDrawerWidth.full,
+          };
+          break;
+        }
+        case 'topnav': {
+          updatedState = {
+            navigationMenuType: 'topnav',
+            sidenavCollapsed: false,
+            drawerWidth: mainDrawerWidth.full,
+          };
+          break;
+        }
+      }
+      break;
+    }
+    case SET_SIDENAV_SHAPE: {
+      switch (action.payload) {
+        case 'default': {
+          updatedState = {
+            sidenavType: 'default',
+            sidenavCollapsed: false,
+            drawerWidth: mainDrawerWidth.full,
+          };
+          break;
+        }
+        case 'slim': {
+          updatedState = {
+            sidenavType: 'slim',
+            sidenavCollapsed: false,
+            drawerWidth: mainDrawerWidth.slim,
+          };
+          break;
+        }
+      }
+      break;
+    }
+    case SET_NAV_COLOR: {
+      const { payload } = action;
+      updatedState = {
+        navColor: payload,
+      };
+      break;
+    }
+    case SET_THEME_PRESET: {
+      updatedState = {
+        themePreset: action.payload,
+      };
+      break;
+    }
+    case SET_PRIMARY_COLOR: {
+      updatedState = {
+        primaryColor: action.payload,
+      };
+      break;
+    }
+    case SET_FONT_FAMILY: {
+      updatedState = {
+        fontFamily: action.payload,
+      };
+      break;
+    }
+    case SET_FONT_SIZE: {
+      updatedState = {
+        fontSize: action.payload,
+      };
+      break;
+    }
+    case SET_BACKGROUND_PATTERN: {
+      updatedState = {
+        backgroundPattern: action.payload,
+      };
+      break;
+    }
+    case SET_CARD_STYLE: {
+      updatedState = {
+        cardStyle: action.payload,
+      };
+      break;
+    }
+    case SET_CARD_BACKGROUND: {
+      updatedState = {
+        cardBackground: action.payload,
+      };
+      break;
+    }
+    case RESET:
+      updatedState = {
+        ...initialConfig,
+      };
+      break;
+    case REFRESH:
+      return {
+        ...state,
+      };
+    default:
+      return state;
+  }
+  Object.keys(updatedState).forEach((key) => {
+    if (
+      [
+        'themeMode',
+        'sidenavCollapsed',
+        'sidenavType',
+        'navigationMenuType',
+        'topnavType',
+        'navColor',
+        'locale',
+        'themePreset',
+        'primaryColor',
+        'fontFamily',
+        'fontSize',
+        'backgroundPattern',
+        'cardStyle',
+        'cardBackground',
+      ].includes(key)
+    ) {
+      setItemToStore(key, String(updatedState[key as keyof Config]));
+    }
+  });
+
+  return { ...state, ...updatedState };
+};

@@ -1,0 +1,222 @@
+{
+  "homePage": {
+    "greeting": {
+      "defaultName": "Guest",
+      "goodMorning": "Welcome, {{name}}!",
+      "loginPrompt": "Sign in to continue your journey.",
+      "loginCta": "Login",
+      "subtitle": "Updates from yesterday.",
+      "ordersCount": "You have {{count}} orders today.",
+      "stats": {
+        "visitors": "Visitors",
+        "earnings": "Earnings",
+        "orders": "Orders"
+      },
+      "orderStatus": {
+        "processing": "Processing",
+        "shipped": "Shipped",
+        "delivered": "Delivered"
+      }
+    },
+    "ranks": {
+      "title": "Your ranks",
+      "labels": {
+        "skills": "Skills rating",
+        "activity": "Activity rating",
+        "contests": "Contests",
+        "challenges": "Challenges"
+      },
+      "info": {
+        "skillsRating": "This rating shows your skill strength in the platform. The rating depends on the number of solved problems, on the rating of contests and challenges.",
+        "activityRating": "This rating shows your activity over the last 30 days. It depends on the number of Kepcoin earned, daily logins and completed daily tasks.",
+        "contests": "This rating shows your strength in competitions.",
+        "challenges": "This rating shows your strength in challenges."
+      },
+      "percentile": "You are better than {{percentile}}% of users"
+    },
+    "statistics": {
+      "title": "Statistics",
+      "subtitle": "Last year",
+      "changeLabel": "Since last year",
+      "cards": {
+        "users": "Users",
+        "problems": "Problems",
+        "competitions": "Competitions",
+        "attempts": "Attempts"
+      }
+    },
+    "contests": {
+      "title": "Featured contest",
+      "viewAll": "View all contests",
+      "empty": "No contests to display yet."
+    },
+    "promos": {
+      "blogCreate": {
+        "title": "Create a blog on KEP and turn useful stories into community value.",
+        "subtitle": "Share tutorials, postmortems, and platform insights. Strong blog posts can earn Kepcoin rewards after review.",
+        "availableNow": "Available now",
+        "footerNote": "Draft first, then submit for review when the story is ready.",
+        "previewTitle": "Editor preview",
+        "previewBadge": "Suggested flow",
+        "previewHeadline": "Write a practical story, add strong tags, and ship it for review.",
+        "previewTags": {
+          "story": "Community story",
+          "reward": "Kepcoin reward",
+          "review": "Review flow"
+        },
+        "metrics": {
+          "access": {
+            "label": "Who can write",
+            "value": "Any KEP user"
+          },
+          "rewards": {
+            "label": "Reward potential",
+            "value": "Quality posts can earn Kepcoin"
+          },
+          "flow": {
+            "label": "Publishing flow",
+            "value": "Draft, review, publish"
+          }
+        }
+      },
+      "kepCover": {
+        "activeSubtitle": "Vote for the strongest covers, follow the live leaderboard, and open the full KEP Cover page.",
+        "upcomingSubtitle": "The next KEP Cover contest is already scheduled. Refresh your cover before voting opens.",
+        "voteLimit": "{{count}} votes per user"
+      },
+      "contest": {
+        "activeSubtitle": "A contest is live right now. Open it to solve problems, track standings, and stay inside the race.",
+        "upcomingSubtitle": "The next contest is coming up. Check the schedule and register before it starts."
+      },
+      "arena": {
+        "activeSubtitle": "An arena round is in progress now. Jump in and keep pace with the live field.",
+        "upcomingSubtitle": "A new arena round is approaching. Review the schedule and get ready for the next duel.",
+        "roundTime": "{{count}} sec per round"
+      },
+      "actions": {
+        "openKepCover": "Open KEP Cover",
+        "openContest": "Open contest",
+        "openArena": "Open arena",
+        "startWriting": "Create a blog"
+      },
+      "types": {
+        "kepCover": "KEP Cover",
+        "contest": "Contest",
+        "arena": "Arena",
+        "blogCreate": "Community blog"
+      },
+      "metrics": {
+        "participants": "Participants",
+        "voteLimit": "Vote limit",
+        "schedule": "Schedule",
+        "registrants": "Registrations",
+        "problems": "Problems",
+        "questions": "Questions",
+        "roundTime": "Round time"
+      },
+      "statuses": {
+        "active": "Live now",
+        "upcoming": "Upcoming"
+      },
+      "startsAt": "Starts {{date}}",
+      "endsAt": "Ends {{date}}"
+    },
+    "news": {
+      "title": "Latest news",
+      "empty": "No news to display yet."
+    },
+    "posts": {
+      "title": "Latest blog posts",
+      "viewAll": "View all blog",
+      "empty": "No blog posts to display yet."
+    },
+    "topUsers": {
+      "title": "Top users",
+      "subtitle": "Best performers in every category",
+      "empty": "No users to display yet.",
+      "viewAll": "View all users",
+      "tabs": {
+        "contests": "Contests",
+        "skills": "Skills",
+        "activity": "Activity",
+        "challenges": "Challenges",
+        "streak": "Streak",
+        "kepcoin": "Kepcoin"
+      }
+    },
+    "birthdays": {
+      "title": "Birthdays",
+      "empty": "No upcoming birthdays yet.",
+      "dateUnknown": "Date to be announced"
+    },
+    "userActivity": {
+      "title": "User activity",
+      "subtitle": "Last {{days}} days",
+      "tooltipSuffix": "users",
+      "changeLabel": "Since last period",
+      "onlineNow": "Online now",
+      "noOnlineUsers": "No users online yet.",
+      "totals": {
+        "new": "New users",
+        "active": "Active users"
+      },
+      "series": {
+        "newUsers": "New users",
+        "activeUsers": "Active users"
+      }
+    },
+    "activityHistory": {
+      "title": "Activity history",
+      "empty": "There is no activity to display yet.",
+      "viewAll": "View all",
+      "loadMore": "Load more",
+      "defaultLabel": "Activity update",
+      "types": {
+        "problemAttemptSummary": {
+          "description": "Solved {{accepted}} out of {{total}} problems."
+        },
+        "challengeSummary": {
+          "description": "Challenge results summary.",
+          "wins": "Wins: {{value}}",
+          "draws": "Draws: {{value}}",
+          "losses": "Losses: {{value}}"
+        },
+        "projectAttemptSummary": {
+          "description": "Checked {{checked}} of {{total}} project attempts."
+        },
+        "testPassSummary": {
+          "description": "Completed {{completed}} of {{total}} tests and solved {{solved}} tasks."
+        },
+        "contestParticipation": {
+          "description": "Participated in {{title}}.",
+          "rank": "Rank: {{rank}}",
+          "rating": "{{before}} → {{after}} rating",
+          "ratingChange": "Δ {{delta}}",
+          "bonus": "Bonus: {{bonus}}",
+          "noRank": "N/A"
+        },
+        "arenaParticipation": {
+          "description": "Joined arena {{title}}.",
+          "points": "Points: {{points}}",
+          "rank": "Rank: {{rank}}",
+          "finishTime": "Finished at {{time}}"
+        },
+        "dailyActivity": {
+          "description": "Logged daily activity (+{{value}}).",
+          "note": "Note: {{note}}"
+        },
+        "hardProblemSolved": {
+          "description": "Solved {{title}} ({{difficulty}}).",
+          "problem": "Problem #{{id}}"
+        },
+        "achievementUnlocked": {
+          "description": "{{message}}"
+        },
+        "dailyTaskCompleted": {
+          "description": "Completed daily task ({{type}}).",
+          "task": "{{description}}"
+        }
+      }
+    }
+  }
+}

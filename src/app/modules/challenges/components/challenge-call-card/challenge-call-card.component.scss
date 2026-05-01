@@ -1,7 +1,0 @@
-@import 'styles/kep-imports';
-
-.bg-challenge-call {
-  @include dark-layout {
-    background: rgba($primary, 0.5);
-  }
-}

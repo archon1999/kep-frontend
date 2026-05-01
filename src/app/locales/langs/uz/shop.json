@@ -1,0 +1,49 @@
+{
+  "shop": {
+    "title": "Doʻkon",
+    "subtitle": "Kepcoinlarni KEP.uz sovgʻalari va aksessuarlariga sarflang.",
+    "loadError": "Mahsulotlarni yuklab boʻlmadi. Keyinroq urinib koʻring.",
+    "emptyTitle": "Hozircha mahsulotlar yoʻq",
+    "emptySubtitle": "Kepcoinlaringizni sarflash uchun tez orada qaytib keling.",
+    "noImage": "Rasm mavjud emas",
+    "colorLabel": "Rang",
+    "sizeLabel": "Razmer",
+    "kepcoinValue": "{{value}} Kepcoin",
+    "rating": {
+      "label": "Reyting",
+      "none": "Hozircha reyting yoʻq",
+      "empty": "Reviewlar yoʻq"
+    },
+    "size": {
+      "stock": "qolgan"
+    },
+    "totalStock": "{{count}} dona qolgan",
+    "noVariants": "Variantlar mavjud emas",
+    "buyNow": "Xarid qilish",
+    "variant": {
+      "caption": "{{color}} / {{size}}"
+    },
+    "checkout": {
+      "title": "Xaridni tasdiqlang",
+      "price": "Narxi",
+      "buy": "Xarid qilish",
+      "cancel": "Bekor qilish",
+      "success": "Xarid muvaffaqiyatli bajarildi",
+      "error": "Buyurtma berib boʻlmadi",
+      "country": "Davlat",
+      "countryUz": "Oʻzbekiston",
+      "countryNotice": "Hozircha faqat Oʻzbekiston boʻylab mavjud, tez orada boshqa davlatlar ham qoʻshiladi.",
+      "shippingType": "Pochta turi",
+      "shippingTypeBts": "BTS",
+      "shippingTypeNotice": "Hozircha faqat BTS orqali joʻnatish mumkin.",
+      "shippingTypeHint": "Pochta manziliga BTS ofisini yozing.",
+      "fullName": "Toʻliq ism",
+      "phone": "Telefon raqami",
+      "address": "Pochta manzili",
+      "telegram": "Telegram username",
+      "noVariant": "Xarid qilishdan oldin variantni tanlang",
+      "outOfStock": "Tanlangan variant qolmagan",
+      "insufficientBalance": "Bu mahsulot uchun Kepcoin yetarli emas"
+    }
+  }
+}
