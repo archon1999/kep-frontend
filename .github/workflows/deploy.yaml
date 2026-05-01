@@ -1,30 +1,60 @@
-name: Deploy to Remote Server
+name: Frontend CI/CD
 
 on:
   push:
     branches:
+      - develop
       - production
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Set up SSH
-        uses: appleboy/ssh-action@v0.1.1
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: |
+          npm config set fetch-retries 5
+          npm config set fetch-retry-mintimeout 20000
+          npm config set fetch-retry-maxtimeout 120000
+          npm config set fetch-timeout 600000
+          npm ci --legacy-peer-deps --no-audit --no-fund
+
+      - name: Build
+        run: npm run build
+
+  deploy-production:
+    if: github.ref_name == 'production'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy frontend to production
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
-            cd /home/cpython/client && \
-            git pull && \
-            npm install --force && \
-            npm run build && \
-            gzipper compress ./dist && \
-            rm -r /home/cpython/server/static/dist && \
-            mv /home/cpython/client/dist /home/cpython/server/static
+            set -e
+            cd /home/KEP.uz
+            git -C frontend fetch origin production
+            git -C frontend checkout production
+            git -C frontend pull --ff-only origin production
+            cd /home/KEP.uz/frontend
+            npm config set fetch-retries 5
+            npm config set fetch-retry-mintimeout 20000
+            npm config set fetch-retry-maxtimeout 120000
+            npm config set fetch-timeout 600000
+            npm ci --legacy-peer-deps --no-audit --no-fund
+            npm run build
+            cd /home/KEP.uz/backend
+            docker compose up -d --build frontend
+            docker image prune -f
