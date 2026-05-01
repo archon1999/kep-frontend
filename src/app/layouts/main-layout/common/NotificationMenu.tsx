@@ -42,6 +42,34 @@ import { KepIconName } from 'shared/config/icons';
 import { wsService } from 'shared/services/websocket';
 
 const NOTIFICATIONS_PAGE_SIZE = 5;
+type NotificationsResponse =
+  | Awaited<ReturnType<typeof apiClient.apiNotificationsList>>
+  | Awaited<ReturnType<typeof apiClient.apiNotificationsAllList>>;
+
+const notificationsRequestCache = new Map<string, Promise<NotificationsResponse>>();
+
+const getNotificationsRequestKey = (pageNumber: number, showAll: boolean) =>
+  `${showAll ? 'all' : 'unread'}:${pageNumber}:${NOTIFICATIONS_PAGE_SIZE}`;
+
+const loadNotifications = (pageNumber: number, showAll: boolean) => {
+  const requestKey = getNotificationsRequestKey(pageNumber, showAll);
+  const cachedRequest = notificationsRequestCache.get(requestKey);
+
+  if (cachedRequest) {
+    return cachedRequest;
+  }
+
+  const params = { page: pageNumber, pageSize: NOTIFICATIONS_PAGE_SIZE };
+  const request = (
+    showAll ? apiClient.apiNotificationsAllList(params) : apiClient.apiNotificationsList(params)
+  ).finally(() => {
+    notificationsRequestCache.delete(requestKey);
+  });
+
+  notificationsRequestCache.set(requestKey, request);
+
+  return request;
+};
 
 interface NotificationContent {
   contestId?: number;
@@ -137,6 +165,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
   const [systemNotificationMessage, setSystemNotificationMessage] = useState('');
   const showAllRef = useRef(showAll);
   const { t } = useTranslation();
+  const currentUsername = currentUser?.username;
 
   const open = Boolean(anchorEl);
 
@@ -150,39 +179,52 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
     setAnchorEl(null);
   };
 
-  const fetchNotifications = useCallback(async () => {
-    setIsLoading(true);
-
-    if (!currentUser) {
-      setNotifications([]);
-      setTotal(0);
-      setPagesCount(0);
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      const params = { page: pageNumber, pageSize: NOTIFICATIONS_PAGE_SIZE };
-      const response = showAll
-        ? await apiClient.apiNotificationsAllList(params)
-        : await apiClient.apiNotificationsList(params);
-
-      setNotifications(response.data ?? []);
-      setTotal(response.total ?? 0);
-      setPagesCount(response.pagesCount ?? 0);
-      setPageNumber(response.page ?? 1);
-    } catch {
-      setNotifications([]);
-      setPagesCount(0);
-      setTotal(0);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [currentUser, pageNumber, showAll]);
-
   useEffect(() => {
-    fetchNotifications();
-  }, [fetchNotifications]);
+    if (!currentUsername) {
+      setNotifications([]);
+      setTotal(0);
+      setPagesCount(0);
+      setIsLoading(false);
+      return undefined;
+    }
+
+    let isActive = true;
+
+    const fetchNotifications = async () => {
+      setIsLoading(true);
+
+      try {
+        const response = await loadNotifications(pageNumber, showAll);
+
+        if (!isActive) {
+          return;
+        }
+
+        setNotifications(response.data ?? []);
+        setTotal(response.total ?? 0);
+        setPagesCount(response.pagesCount ?? 0);
+        setPageNumber(response.page ?? 1);
+      } catch {
+        if (!isActive) {
+          return;
+        }
+
+        setNotifications([]);
+        setPagesCount(0);
+        setTotal(0);
+      } finally {
+        if (isActive) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    void fetchNotifications();
+
+    return () => {
+      isActive = false;
+    };
+  }, [currentUsername, pageNumber, showAll]);
 
   useEffect(() => {
     showAllRef.current = showAll;
@@ -198,7 +240,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
   );
 
   useEffect(() => {
-    const username = currentUser?.username;
+    const username = currentUsername;
 
     if (!username) return undefined;
 
@@ -231,7 +273,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
       wsService.send('notification-delete', username);
       unsubscribe();
     };
-  }, [currentUser?.username, showSystemNotification]);
+  }, [currentUsername, showSystemNotification]);
 
   const getKepcoinReason = useCallback(
     (earnType?: number) => {
@@ -401,10 +443,10 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
         case 8: {
           title = parsedContent.achievementTitle || t('notifications.newAchievement');
 
-          if (currentUser?.username) {
+          if (currentUsername) {
             action = {
               label: t('notifications.viewAchievements'),
-              to: getResourceByUsername(resources.UserProfileAchievements, currentUser.username),
+              to: getResourceByUsername(resources.UserProfileAchievements, currentUsername),
             };
           }
           break;
@@ -420,7 +462,7 @@ const NotificationMenu = ({ type = 'default' }: NotificationMenuProps) => {
 
       return { title, description, action, chips, icon };
     },
-    [currentUser?.username, getKepcoinReason, t],
+    [currentUsername, getKepcoinReason, t],
   );
 
   const handleMarkRead = async (notificationId?: number) => {

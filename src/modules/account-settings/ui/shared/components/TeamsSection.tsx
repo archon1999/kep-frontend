@@ -16,7 +16,13 @@ import {
   Typography,
 } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
-import { useAccountTeams, useCreateTeam, useJoinTeam, useRefreshTeamCode } from 'modules/account-settings/application';
+import {
+  useAccountTeams,
+  useCreateTeam,
+  useDeleteTeam,
+  useJoinTeam,
+  useRefreshTeamCode,
+} from 'modules/account-settings/application';
 import type { AccountTeam } from 'modules/account-settings/domain';
 import { toast } from 'sonner';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
@@ -28,18 +34,19 @@ const TeamsSection = () => {
   const { data, isLoading, mutate } = useAccountTeams();
   const { trigger: createTeam, isMutating: isCreating } = useCreateTeam();
   const { trigger: joinTeam, isMutating: isJoining } = useJoinTeam();
+  const { trigger: deleteTeam, isMutating: isDeleting } = useDeleteTeam();
   const { trigger: refreshCode, isMutating: isRefreshing } = useRefreshTeamCode();
 
   const [teamName, setTeamName] = useState('');
   const [joinCode, setJoinCode] = useState('');
 
-  const isBusy = isCreating || isJoining || isRefreshing;
+  const isBusy = isCreating || isJoining || isRefreshing || isDeleting;
 
   useEffect(() => {
     if (!isBusy) {
       mutate();
     }
-  }, [isBusy]);
+  }, [isBusy, mutate]);
 
   const isCreator = (team: AccountTeam) => currentUser?.username === team.createrUsername;
 
@@ -60,6 +67,16 @@ const TeamsSection = () => {
     if (!joinCode.trim()) return;
     await joinTeam(joinCode.trim());
     setJoinCode('');
+    await mutate();
+  };
+
+  const handleDeleteTeam = async (team: AccountTeam) => {
+    if (!window.confirm(t('settings.confirmDeleteTeam', { name: team.name }))) {
+      return;
+    }
+
+    await deleteTeam(team.code);
+    toast.success(t('settings.teamDeleted'));
     await mutate();
   };
 
@@ -98,14 +115,25 @@ const TeamsSection = () => {
               {t('settings.linkToJoin')}
             </Button>
             {isCreator(team) ? (
-              <Button
-                size="small"
-                startIcon={<IconifyIcon icon="material-symbols:refresh-rounded" />}
-                onClick={() => handleRefreshCode(team.code)}
-                disabled={isRefreshing}
-              >
-                {t('settings.refreshLink')}
-              </Button>
+              <>
+                <Button
+                  size="small"
+                  startIcon={<IconifyIcon icon="material-symbols:refresh-rounded" />}
+                  onClick={() => handleRefreshCode(team.code)}
+                  disabled={isBusy}
+                >
+                  {t('settings.refreshLink')}
+                </Button>
+                <Button
+                  size="small"
+                  color="error"
+                  startIcon={<IconifyIcon icon="material-symbols:delete-outline" />}
+                  onClick={() => handleDeleteTeam(team)}
+                  disabled={isBusy}
+                >
+                  {t('settings.deleteTeam')}
+                </Button>
+              </>
             ) : null}
           </Stack>
         </CardActions>

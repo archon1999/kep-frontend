@@ -62,6 +62,8 @@
     "unregister": "Отменить регистрацию",
     "register": "Зарегистрироваться",
     "unregister": "Отменить регистрацию",
+    "purchaseVirtualContest": "Buy virtual contest",
+    "startVirtualContest": "Start virtual contest",
     "statistics": {
       "title": "Результаты в контестах",
       "subtitle": "Подробные итоги {{username}} по рейтинговым контестам.",
@@ -204,11 +206,13 @@
       "performance": "Результативность",
       "followingOnly": "Только за кем слежу",
       "allFilters": "Все фильтры",
+      "officialOnly": "Only official",
       "problemTotals": "{{solved}} решено / {{attempts}} попыток"
     },
     "contestantStatus": {
       "official": "Официально",
       "virtual": "Виртуально",
+      "virtualContestant": "Virtual contestant",
       "unrated": "Вне рейтинга"
     },
     "ratingChanges": {

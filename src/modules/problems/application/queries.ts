@@ -3,11 +3,11 @@ import { HttpProblemsRepository } from '../data-access/repository/http.problems.
 import {
   AttemptsListParams,
   ProblemSolversParams,
-  RecommendationResolveParams,
   ProblemsListParams,
   ProblemsRatingHistoryParams,
   ProblemsRatingParams,
   ProblemsStatisticsParams,
+  RecommendationResolveParams,
 } from '../domain/ports/problems.repository.ts';
 
 const problemsRepository = new HttpProblemsRepository();
@@ -37,10 +37,14 @@ export const useRecommendationResolve = (payload?: RecommendationResolveParams) 
   );
 
 export const useStudyPlan = (studyPlanId?: number) =>
-  useSWR(studyPlanId ? ['study-plan', studyPlanId] : null, () => problemsRepository.getStudyPlan(studyPlanId!), {
-    keepPreviousData: true,
-    revalidateOnFocus: false,
-  });
+  useSWR(
+    studyPlanId ? ['study-plan', studyPlanId] : null,
+    () => problemsRepository.getStudyPlan(studyPlanId!),
+    {
+      keepPreviousData: true,
+      revalidateOnFocus: false,
+    },
+  );
 
 export const useMostViewedProblems = () =>
   useSWR(['problems-most-viewed'], () => problemsRepository.listMostViewed());
@@ -105,9 +109,24 @@ export const useProblemsUserStatistics = (username?: string, params?: ProblemsSt
     { revalidateOnFocus: false },
   );
 
+export const useProblemsUserStatisticsActivity = (username?: string, days?: number) =>
+  useSWR(
+    username ? ['problems-user-statistics-activity', username, days] : null,
+    () => problemsRepository.getUserStatisticsActivity(username!, { days }),
+    { keepPreviousData: true, revalidateOnFocus: false },
+  );
+
+export const useProblemsUserStatisticsHeatmap = (username?: string, year?: number) =>
+  useSWR(
+    username ? ['problems-user-statistics-heatmap', username, year ?? 'recent'] : null,
+    () => problemsRepository.getUserStatisticsHeatmap(username!, { year }),
+    { keepPreviousData: true, revalidateOnFocus: false },
+  );
+
 export const useProblemSolution = (problemId?: number, enabled = false, localeKey?: string) =>
-  useSWR(problemId && enabled ? ['problem-solution', problemId, localeKey ?? 'default'] : null, () =>
-    problemsRepository.getProblemSolution(problemId!),
+  useSWR(
+    problemId && enabled ? ['problem-solution', problemId, localeKey ?? 'default'] : null,
+    () => problemsRepository.getProblemSolution(problemId!),
   );
 
 export const useProblemTags = (enabled = false) =>

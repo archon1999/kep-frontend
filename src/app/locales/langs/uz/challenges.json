@@ -37,7 +37,9 @@
     "questionsCount": "{{count}} ta savol",
     "answerCorrect": "Toʻgʻri",
     "answerWrong": "Notoʻgʻri",
+    "timeExpired": "Vaqt tugadi.",
     "answerPending": "Kutilmoqda",
+    "answerNotPlayed": "O‘ynalmadi / erta tugadi",
     "detailTitle": "Bellashuv tafsilotlari",
     "detailSubtitle": "Oxirgi yangilanish {{time}}",
     "statusFinished": "Yakunlangan",
@@ -76,12 +78,26 @@
     "lastChallenges": "Soʻngi bellashuvlar",
     "timer": {
       "perQuestion": "Savol taymeri",
-      "wholeChallenge": "Bellashuv taymeri"
+      "perQuestionShort": "Savol",
+      "wholeChallenge": "Bellashuv taymeri",
+      "wholeChallengeShort": "Umumiy"
     },
     "arenaWinners": "Arena gʻoliblari",
     "arenaWinnersSubtitle": "Soʻnggi arenalardagi gʻoliblar.",
     "viewArena": "Arenaga oʻtish",
     "noArenas": "Arena tarixi yoʻq.",
+    "chessPuzzle": {
+      "rating": "Reyting {{rating}}",
+      "findBestMove": "Eng yaxshi davomni toping.",
+      "promotionTitle": "Promosiyani tanlang",
+      "promotionSubtitle": "Bu yurish uchun figura tanlang.",
+      "pieces": {
+        "q": "Vazir",
+        "r": "Rux",
+        "b": "Fil",
+        "n": "Ot"
+      }
+    },
     "perQuestionResults": "Savol boʻyicha natijalar",
     "startDialogSubtitle": "Raqiblarni koʻrib chiqing va tayyor boʻlsangiz boshlang.",
     "startDialogTitle": "Bellashuvni boshlaymizmi?",

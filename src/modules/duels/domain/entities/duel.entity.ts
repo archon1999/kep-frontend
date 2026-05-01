@@ -15,7 +15,6 @@ export interface DuelTypeInfo {
 export interface DuelPlayer {
   id: number;
   username: string;
-  displayName?: string;
   isBot?: boolean;
   contestsRating?: number;
   ratingTitle: string;
@@ -105,7 +104,6 @@ export interface DuelReadyPlayer {
 export interface DuelInvitationUser {
   id?: number;
   username: string;
-  displayName?: string;
   avatar?: string | null;
   contestsRating?: number;
   contestsRatingTitle?: string;

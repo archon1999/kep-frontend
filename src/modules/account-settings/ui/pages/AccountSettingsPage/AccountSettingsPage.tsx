@@ -17,6 +17,7 @@ import {
   AccountTabPanel,
   CareerSection,
   GeneralSettingsForm,
+  NotificationsSettingsPanel,
   PasswordForm,
   ProfileInformationForm,
   SideTabList,
@@ -118,6 +119,14 @@ const AccountSettingsPage = () => {
       },
       {
         id: 8,
+        value: 'notifications',
+        label: t('notifications.title'),
+        icon: 'material-symbols:notifications-outline',
+        panelIcon: 'material-symbols:notifications-outline',
+        render: <NotificationsSettingsPanel />,
+      },
+      {
+        id: 9,
         value: 'system',
         label: t('settings.system'),
         icon: 'material-symbols:settings-outline',

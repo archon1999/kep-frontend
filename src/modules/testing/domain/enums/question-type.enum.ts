@@ -6,4 +6,6 @@ export enum QuestionType {
   Ordering = 5,
   Classification = 6,
   CodeInput = 7,
+  Problem = 8,
+  ChessPuzzle = 9,
 }

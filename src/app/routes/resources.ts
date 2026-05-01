@@ -123,6 +123,7 @@ export const resources = {
   SettingsSkills: '/settings/skills',
   SettingsCareer: '/settings/career',
   SettingsTeams: '/settings/teams',
+  SettingsNotifications: '/settings/notifications',
   SettingsSystem: '/settings/system',
   TeamJoin: '/teams/:id/join',
 } as const;

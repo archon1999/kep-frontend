@@ -39,5 +39,6 @@ export interface AccountSettingsRepository {
   getTeams(): Promise<AccountTeam[]>;
   createTeam(name: string): Promise<AccountTeam>;
   joinTeam(code: string): Promise<AccountTeam>;
+  deleteTeam(code: string): Promise<void>;
   refreshTeamCode(code: string): Promise<AccountTeam>;
 }

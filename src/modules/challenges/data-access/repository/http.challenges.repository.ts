@@ -20,6 +20,9 @@ import {
   ChallengeUserStatistics,
 } from '../../domain';
 import {
+  ChessChallengeAnswer,
+  ChessMovePayload,
+  ChessMoveResponse,
   ChallengeAntiCheatPenaltyPayload,
   ChallengeAntiCheatPenaltyResponse,
   ChallengeAnswerPayload,
@@ -32,6 +35,23 @@ import { Chapter } from 'modules/testing/domain/entities/chapter.entity.ts';
 import { Question } from 'modules/testing/domain/entities/question.entity.ts';
 
 export class HttpChallengesRepository implements ChallengesRepository {
+  private mapChallengeAnswer(answer: ChallengeAnswerPayload['answer']): unknown {
+    const chessAnswer = answer as Partial<ChessChallengeAnswer> | null;
+
+    if (
+      chessAnswer
+      && Array.isArray(chessAnswer.playedLine)
+      && typeof chessAnswer.result === 'string'
+    ) {
+      return {
+        played_line: chessAnswer.playedLine,
+        result: chessAnswer.result,
+      };
+    }
+
+    return answer;
+  }
+
   async getChallengeCalls(): Promise<ChallengeCall[]> {
     const result = await challengesApiClient.getChallengeCalls();
     return extractList(result).map(mapChallengeCall);
@@ -69,11 +89,24 @@ export class HttpChallengesRepository implements ChallengesRepository {
 
   async submitAnswer(challengeId: number, payload: ChallengeAnswerPayload): Promise<ChallengeCheckResponse> {
     const response = await challengesApiClient.submitAnswer(challengeId, {
-      answer: payload.answer,
+      answer: this.mapChallengeAnswer(payload.answer),
       finish: payload.isFinish,
+      force_fail: payload.forceFail,
     });
     return {
       success: Boolean(response?.success ?? response?.ok ?? response?.isCorrect),
+    };
+  }
+
+  async submitChessMove(challengeId: number, payload: ChessMovePayload): Promise<ChessMoveResponse> {
+    const response = await challengesApiClient.submitChessMove(challengeId, payload);
+    return {
+      status: response?.status ?? 'failed',
+      success: Boolean(response?.success),
+      replyMove: response?.replyMove ?? response?.reply_move,
+      nextQuestionNumber: response?.nextQuestionNumber ?? response?.next_question_number ?? 0,
+      mistakesUsed: response?.mistakesUsed ?? response?.mistakes_used ?? 0,
+      challengeFinished: Boolean(response?.challengeFinished ?? response?.challenge_finished),
     };
   }
 

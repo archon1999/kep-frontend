@@ -9,6 +9,17 @@ export interface QuestionOption {
   selected?: boolean;
 }
 
+export interface ChessPuzzlePayload {
+  puzzleId: string;
+  fen: string;
+  initialMove: string;
+  orientation: 'white' | 'black';
+  rating: number;
+  themes: string[];
+  solutionBlob?: string;
+  solutionCipher?: string;
+}
+
 export interface Question {
   id: number;
   number: number;
@@ -20,4 +31,5 @@ export interface Question {
   input?: string;
   answered?: boolean;
   chapter?: Chapter;
+  payload?: ChessPuzzlePayload | Record<string, unknown>;
 }

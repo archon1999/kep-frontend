@@ -11,7 +11,7 @@ import {
   HackathonPointsBadge,
   HackathonTabs,
 } from 'modules/hackathons/ui/shared';
-import ProjectAttempts from 'modules/projects/ui/components/ProjectAttempts';
+import ProjectAttempts from 'modules/projects/ui/pages/ProjectDetailPage/components/ProjectAttempts';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import HackathonProjectDescription from './components/HackathonProjectDescription';
 import HackathonProjectSidebar from './components/HackathonProjectSidebar';

@@ -27,7 +27,7 @@ export const contestsApiClient = {
   getProblem: (id: number | string, symbol: string) =>
     apiClient.apiContestsProblem(String(id), { params: { symbol } }) as Promise<any>,
   getStandings: (id: number | string, params?: ApiContestsNewContestantsListParams) =>
-    apiClient.apiContestsNewContestantsList(String(id), params) as Promise<any>,
+    apiClient.apiContestsNewContestantsList(String(id), params as any) as Promise<any>,
   getFilters: (id: number | string) => apiClient.apiContestsFilters(String(id)) as Promise<any>,
   getContestants: (id: number | string) => apiClient.apiContestsContestants(String(id)) as Promise<any>,
   getRegistrants: (id: number | string, params?: ApiContestsRegistrantsListParams) =>
@@ -44,5 +44,13 @@ export const contestsApiClient = {
   submitSolution: (
     id: number | string,
     payload: { contestProblem: string; sourceCode: string; lang: string },
-  ) => apiClient.apiContestsSubmit(String(id), payload as any),
+  ) => apiClient.apiContestsSubmit(String(id), {
+    contest_problem: payload.contestProblem,
+    source_code: payload.sourceCode,
+    lang: payload.lang,
+  } as any),
+  purchaseVirtualContest: (id: number | string) =>
+    apiClient.apiContestsPurchaseVirtualContest(String(id), {} as any) as Promise<any>,
+  startVirtualContest: (id: number | string) =>
+    apiClient.apiContestsVirtualContestStart(String(id), {} as any) as Promise<any>,
 };

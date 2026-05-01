@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { GridPaginationModel } from '@mui/x-data-grid';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { gridPaginationToPageParams } from 'shared/lib/pagination';
@@ -22,42 +22,75 @@ const useGridPagination = ({
   initialPageSize = 10,
   querySync,
 }: UseGridPaginationOptions = {}) => {
+  const querySyncEnabled = Boolean(querySync);
+  const pageKey = querySync?.pageKey ?? 'page';
+  const pageSizeKey = querySync?.pageSizeKey ?? 'pageSize';
+  const pageHistory = querySync?.historyByKey?.page ?? 'push';
+  const pageSizeHistory = querySync?.historyByKey?.pageSize ?? 'push';
   const [localPaginationModel, setLocalPaginationModel] = useState<GridPaginationModel>({
     page: initialPage,
     pageSize: initialPageSize,
   });
-  const { state: urlPaginationState, patchState: patchUrlPaginationState } = useRouteQueryState({
-    enabled: Boolean(querySync),
-    defaults: {
+  const queryDefaults = useMemo(
+    () => ({
       page: initialPage + 1,
       pageSize: initialPageSize,
-    },
-    schema: {
+    }),
+    [initialPage, initialPageSize],
+  );
+  const querySchema = useMemo(
+    () => ({
       page: {
         ...numberParam({ min: 1 }),
-        param: querySync?.pageKey ?? 'page',
+        param: pageKey,
       },
       pageSize: {
         ...numberParam({ min: 1 }),
-        param: querySync?.pageSizeKey ?? 'pageSize',
+        param: pageSizeKey,
       },
-    },
-    historyByKey: {
-      page: querySync?.historyByKey?.page ?? 'push',
-      pageSize: querySync?.historyByKey?.pageSize ?? 'push',
-    },
+    }),
+    [pageKey, pageSizeKey],
+  );
+  const queryHistoryByKey = useMemo(
+    () => ({
+      page: pageHistory,
+      pageSize: pageSizeHistory,
+    }),
+    [pageHistory, pageSizeHistory],
+  );
+  const { state: urlPaginationState, patchState: patchUrlPaginationState } = useRouteQueryState({
+    enabled: querySyncEnabled,
+    defaults: queryDefaults,
+    schema: querySchema,
+    historyByKey: queryHistoryByKey,
   });
 
   const paginationModel = useMemo(
     () =>
-      querySync
+      querySyncEnabled
         ? {
             page: Math.max((urlPaginationState.page ?? 1) - 1, 0),
             pageSize: urlPaginationState.pageSize ?? initialPageSize,
           }
         : localPaginationModel,
-    [initialPageSize, localPaginationModel, querySync, urlPaginationState.page, urlPaginationState.pageSize],
+    [
+      initialPageSize,
+      localPaginationModel,
+      querySyncEnabled,
+      urlPaginationState.page,
+      urlPaginationState.pageSize,
+    ],
   );
+  const paginationModelRef = useRef(paginationModel);
+  const patchUrlPaginationStateRef = useRef(patchUrlPaginationState);
+
+  useEffect(() => {
+    paginationModelRef.current = paginationModel;
+  }, [paginationModel]);
+
+  useEffect(() => {
+    patchUrlPaginationStateRef.current = patchUrlPaginationState;
+  }, [patchUrlPaginationState]);
 
   const pageParams = useMemo(
     () => gridPaginationToPageParams(paginationModel),
@@ -66,8 +99,8 @@ const useGridPagination = ({
 
   const handlePaginationModelChange = useCallback(
     (model: GridPaginationModel) => {
-      if (querySync) {
-        patchUrlPaginationState(
+      if (querySyncEnabled) {
+        patchUrlPaginationStateRef.current(
           {
             page: model.page + 1,
             pageSize: model.pageSize,
@@ -79,7 +112,7 @@ const useGridPagination = ({
 
       setLocalPaginationModel(model);
     },
-    [patchUrlPaginationState, querySync],
+    [querySyncEnabled],
   );
 
   const setPaginationModel = useCallback(
@@ -88,11 +121,11 @@ const useGridPagination = ({
         | GridPaginationModel
         | ((prevModel: GridPaginationModel) => GridPaginationModel),
     ) => {
-      if (querySync) {
+      if (querySyncEnabled) {
         const resolvedModel =
-          typeof nextModel === 'function' ? nextModel(paginationModel) : nextModel;
+          typeof nextModel === 'function' ? nextModel(paginationModelRef.current) : nextModel;
 
-        patchUrlPaginationState(
+        patchUrlPaginationStateRef.current(
           {
             page: resolvedModel.page + 1,
             pageSize: resolvedModel.pageSize,
@@ -104,7 +137,7 @@ const useGridPagination = ({
 
       setLocalPaginationModel(nextModel);
     },
-    [paginationModel, patchUrlPaginationState, querySync],
+    [querySyncEnabled],
   );
 
   return {

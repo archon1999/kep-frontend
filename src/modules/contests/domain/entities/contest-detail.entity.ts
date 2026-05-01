@@ -8,6 +8,7 @@ export interface ContestUserInfo {
   doubleRatingPurchased?: boolean;
   saveRatingPurchased?: boolean;
   virtualContestPurchased?: boolean;
+  virtualContestAvailable?: number;
   unratedContestPurchased?: boolean;
 }
 

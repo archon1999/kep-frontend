@@ -32,6 +32,12 @@ import {
   ProblemUserInfo,
   ProblemUserSummary,
   ProblemVoteResult,
+  ProblemsRatingHistoryEntry,
+  ProblemsRatingRow,
+  ProblemsRatingSummary,
+  ProblemsUserStatistics,
+  ProblemsUserStatisticsActivity,
+  ProblemsUserStatisticsHeatmap,
   RecommendationFilterPatch,
   RecommendationProfile,
   RecommendationProgress,
@@ -39,15 +45,11 @@ import {
   RecommendationQuestionOption,
   RecommendationResolveResponse,
   RecommendationResultOption,
-  ProblemsRatingHistoryEntry,
-  ProblemsRatingRow,
-  ProblemsRatingSummary,
-  ProblemsUserStatistics,
+  SimilarProblem,
   StudyPlanDay,
   StudyPlanDayProblem,
   StudyPlanDetail,
   StudyPlanListItem,
-  SimilarProblem,
 } from '../../domain/entities/problem.entity.ts';
 import { PageResult } from '../../domain/ports/problems.repository.ts';
 
@@ -348,8 +350,7 @@ export const mapStudyPlanListItem = (payload: any): StudyPlanListItem => ({
   descriptionShort: payload?.descriptionShort ?? payload?.description_short ?? '',
   icon: payload?.icon ?? null,
   themeColor: payload?.themeColor ?? payload?.theme_color ?? undefined,
-  themeColorSecondary:
-    payload?.themeColorSecondary ?? payload?.theme_color_secondary ?? undefined,
+  themeColorSecondary: payload?.themeColorSecondary ?? payload?.theme_color_secondary ?? undefined,
   daysCount: toNullableNumber(payload?.daysCount ?? payload?.days_count),
   problemsCount: toNullableNumber(payload?.problemsCount ?? payload?.problems_count),
   isPurchased: toOptionalBoolean(payload?.isPurchased ?? payload?.is_purchased),
@@ -406,28 +407,30 @@ const mapRecommendationQuestion = (payload: any): RecommendationQuestion => ({
 
 const mapRecommendationFilterPatch = (payload: any): RecommendationFilterPatch => ({
   category: payload?.category ?? undefined,
-  tags: Array.isArray(payload?.tags) ? payload.tags.map((value: any) => toNumber(value)) : undefined,
+  tags: Array.isArray(payload?.tags)
+    ? payload.tags.map((value: any) => toNumber(value))
+    : undefined,
   lang: payload?.lang ?? undefined,
   exclusive_lang: payload?.exclusive_lang ?? payload?.exclusiveLang ?? undefined,
   competitive_langs_only:
     payload?.competitive_langs_only ?? payload?.competitiveLangsOnly ?? undefined,
   difficulty: payload?.difficulty ?? undefined,
   problem_rating_min:
-    payload?.problem_rating_min === undefined ||
-    payload?.problem_rating_min === null
+    payload?.problem_rating_min === undefined || payload?.problem_rating_min === null
       ? payload?.problemRatingMin === undefined || payload?.problemRatingMin === null
         ? undefined
         : String(payload?.problemRatingMin)
       : String(payload?.problem_rating_min),
   problem_rating_max:
-    payload?.problem_rating_max === undefined ||
-    payload?.problem_rating_max === null
+    payload?.problem_rating_max === undefined || payload?.problem_rating_max === null
       ? payload?.problemRatingMax === undefined || payload?.problemRatingMax === null
         ? undefined
         : String(payload?.problemRatingMax)
       : String(payload?.problem_rating_max),
   status:
-    payload?.status === undefined || payload?.status === null ? undefined : toNumber(payload?.status),
+    payload?.status === undefined || payload?.status === null
+      ? undefined
+      : toNumber(payload?.status),
   ordering: payload?.ordering ?? undefined,
   has_solution: payload?.has_solution ?? payload?.hasSolution ?? undefined,
   has_checker: payload?.has_checker ?? payload?.hasChecker ?? undefined,
@@ -750,13 +753,58 @@ const mapTimeEntry = (item: any) => ({
   solved: toNumber(item?.solved ?? item?.value),
 });
 
+const mapHeatmapRange = (meta: any) => {
+  const heatmapRange = meta?.heatmapRange ?? meta?.heatmap_range;
+  if (!heatmapRange) return undefined;
+
+  return {
+    from: heatmapRange.from ?? heatmapRange?.from_date,
+    to: heatmapRange.to ?? heatmapRange?.to_date,
+  };
+};
+
+export const mapProblemsUserStatisticsActivity = (payload: any): ProblemsUserStatisticsActivity => {
+  const lastDays = payload?.lastDays ?? payload?.last_days ?? {};
+  const meta = payload?.meta ?? {};
+  const metaLastDays = meta?.lastDays ?? meta?.last_days;
+
+  return {
+    lastDays: {
+      series: Array.isArray(lastDays?.series)
+        ? lastDays.series.map((value: any) => toNumber(value))
+        : [],
+      solved: toNumber(lastDays?.solved),
+    },
+    meta: {
+      lastDays:
+        metaLastDays === undefined || metaLastDays === null ? undefined : toNumber(metaLastDays),
+      allowedLastDays: (meta?.allowedLastDays ?? meta?.allowed_last_days ?? [])
+        .map((item: any) => toNumber(item))
+        .filter((item: number) => item > 0),
+    },
+  };
+};
+
+export const mapProblemsUserStatisticsHeatmap = (payload: any): ProblemsUserStatisticsHeatmap => {
+  const meta = payload?.meta ?? {};
+
+  return {
+    heatmap: (payload?.heatmap ?? []).map((item: any) => ({
+      date: item?.date ?? item?.day ?? '',
+      solved: toNumber(item?.solved ?? item?.value),
+    })),
+    meta: {
+      heatmapRange: mapHeatmapRange(meta),
+    },
+  };
+};
+
 export const mapProblemsUserStatistics = (payload: any): ProblemsUserStatistics => {
   const general = payload?.general ?? payload ?? {};
   const meta = payload?.meta ?? {};
-  const lastDays = payload?.lastDays ?? payload?.last_days ?? {};
   const attemptsRaw = payload?.numberOfAttempts ?? payload?.number_of_attempts ?? {};
-  const heatmapRange = meta?.heatmapRange ?? meta?.heatmap_range;
-  const metaLastDays = meta?.lastDays ?? meta?.last_days;
+  const activity = mapProblemsUserStatisticsActivity(payload);
+  const heatmap = mapProblemsUserStatisticsHeatmap(payload);
 
   return {
     general: {
@@ -798,16 +846,8 @@ export const mapProblemsUserStatistics = (payload: any): ProblemsUserStatistics 
     byWeekday: (payload?.byWeekday ?? []).map(mapTimeEntry),
     byMonth: (payload?.byMonth ?? []).map(mapTimeEntry),
     byPeriod: (payload?.byPeriod ?? []).map(mapTimeEntry),
-    lastDays: {
-      series: Array.isArray(lastDays?.series)
-        ? lastDays.series.map((value: any) => toNumber(value))
-        : [],
-      solved: toNumber(lastDays?.solved),
-    },
-    heatmap: (payload?.heatmap ?? []).map((item: any) => ({
-      date: item?.date ?? item?.day ?? '',
-      solved: toNumber(item?.solved ?? item?.value),
-    })),
+    lastDays: activity.lastDays,
+    heatmap: heatmap.heatmap,
     numberOfAttempts: {
       chartSeries: (attemptsRaw?.chartSeries ?? attemptsRaw?.chart_series ?? []).map(
         (item: any) => ({
@@ -817,17 +857,8 @@ export const mapProblemsUserStatistics = (payload: any): ProblemsUserStatistics 
       ),
     },
     meta: {
-      lastDays:
-        metaLastDays === undefined || metaLastDays === null ? undefined : toNumber(metaLastDays),
-      allowedLastDays: (meta?.allowedLastDays ?? meta?.allowed_last_days ?? [])
-        .map((item: any) => toNumber(item))
-        .filter((item: number) => item > 0),
-      heatmapRange: heatmapRange
-        ? {
-            from: heatmapRange.from ?? heatmapRange?.from_date,
-            to: heatmapRange.to ?? heatmapRange?.to_date,
-          }
-        : undefined,
+      ...activity.meta,
+      ...heatmap.meta,
     },
   };
 };

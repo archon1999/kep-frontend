@@ -53,6 +53,12 @@ export const useArenaInsights = (arena: Arena | undefined, stats: ArenaStatistic
             icon: 'mdi:fire',
           },
           {
+            key: 'mostChallengesPlayed',
+            label: t('arena.insights.mostChallengesPlayed'),
+            value: stats?.mostChallengesPlayed ?? null,
+            icon: 'mdi:sword-cross',
+          },
+          {
             key: 'highestPerformance',
             label: t('arena.insights.highestPerformance'),
             value: stats?.highestPerformance ?? null,

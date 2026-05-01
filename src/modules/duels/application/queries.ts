@@ -43,6 +43,10 @@ export const useDuelCalls = (params?: DuelCallsParams) =>
     () => duelsRepository.getDuelCalls(params),
   );
 
+export const isDuelsCollectionCacheKey = (key: unknown) =>
+  Array.isArray(key) &&
+  ['duel-calls', 'duels-my', 'duels-list'].includes(String(key[0]));
+
 export const useDuelDetail = (id?: number | string) =>
   useSWR<Duel | null>(id ? ['duel-detail', id] : null, () => duelsRepository.getDuel(id!), {
     revalidateOnFocus: false,

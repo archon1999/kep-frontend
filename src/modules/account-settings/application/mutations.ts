@@ -67,6 +67,11 @@ export const useJoinTeam = (): Mutator<AccountTeam, string> =>
     accountSettingsRepository.joinTeam(arg),
   );
 
+export const useDeleteTeam = (): Mutator<void, string> =>
+  useSWRMutation(accountSettingsKeys.detail('teams-delete'), (_, { arg }) =>
+    accountSettingsRepository.deleteTeam(arg),
+  );
+
 export const useRefreshTeamCode = (): Mutator<AccountTeam, string> =>
   useSWRMutation(accountSettingsKeys.detail('teams-refresh'), (_, { arg }) =>
     accountSettingsRepository.refreshTeamCode(arg),

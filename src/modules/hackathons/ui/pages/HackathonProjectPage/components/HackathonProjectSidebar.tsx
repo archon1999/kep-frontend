@@ -23,7 +23,7 @@ import {
   getHackathonProjectPoints,
   HackathonPointsBadge,
 } from 'modules/hackathons/ui/shared';
-import { formatProjectUploadHint, resolveProjectFileAccept } from 'modules/projects/ui/lib/upload.ts';
+import { formatProjectUploadHint, resolveProjectFileAccept } from 'modules/projects/ui/shared/lib/upload.ts';
 
 interface HackathonProjectSidebarProps {
   hackathonProject: HackathonProject;

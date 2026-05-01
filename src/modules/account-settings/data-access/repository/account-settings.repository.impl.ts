@@ -33,6 +33,9 @@ import {
   mapChangePasswordPayloadToApi,
 } from '../mappers';
 
+const resolveListResponse = <T>(data: T[] | Record<string, never>, fallback: T[]): T[] =>
+  Array.isArray(data) ? data : fallback;
+
 export class AccountSettingsRepositoryImpl implements AccountSettingsRepository {
   async getGeneralInfo(username: string): Promise<AccountGeneralInfo> {
     const { data } = await instance.get<AccountGeneralInfo>(`/api/users/${username}/general-info/`);
@@ -89,12 +92,13 @@ export class AccountSettingsRepositoryImpl implements AccountSettingsRepository 
   }
 
   async updateSkills(username: string, payload: AccountSkills): Promise<AccountSkills> {
-    const { data } = await instance.post<AccountSkills>(
+    const requestPayload = mapAccountSkillsToApi(payload);
+    const { data } = await instance.post<AccountSkills | Record<string, never>>(
       `/api/users/${username}/skills/`,
-      mapAccountSkillsToApi(payload),
+      requestPayload,
     );
 
-    return mapAccountSkillsFromApi(data);
+    return mapAccountSkillsFromApi(resolveListResponse(data, requestPayload));
   }
 
   async getSkillCatalog(): Promise<SkillCatalogItem[]> {
@@ -111,12 +115,13 @@ export class AccountSettingsRepositoryImpl implements AccountSettingsRepository 
     username: string,
     payload: AccountTechnology[],
   ): Promise<AccountTechnology[]> {
-    const { data } = await instance.post<AccountTechnology[]>(
+    const requestPayload = mapAccountTechnologyListToApi(payload);
+    const { data } = await instance.post<AccountTechnology[] | Record<string, never>>(
       `/api/users/${username}/technologies/`,
-      mapAccountTechnologyListToApi(payload),
+      requestPayload,
     );
 
-    return mapAccountTechnologyListFromApi(data);
+    return mapAccountTechnologyListFromApi(resolveListResponse(data, requestPayload));
   }
 
   async getEducations(username: string): Promise<AccountEducation[]> {
@@ -128,12 +133,13 @@ export class AccountSettingsRepositoryImpl implements AccountSettingsRepository 
     username: string,
     payload: AccountEducation[],
   ): Promise<AccountEducation[]> {
-    const { data } = await instance.post<AccountEducation[]>(
+    const requestPayload = mapAccountEducationListToApi(payload);
+    const { data } = await instance.post<AccountEducation[] | Record<string, never>>(
       `/api/users/${username}/educations/`,
-      mapAccountEducationListToApi(payload),
+      requestPayload,
     );
 
-    return mapAccountEducationListFromApi(data);
+    return mapAccountEducationListFromApi(resolveListResponse(data, requestPayload));
   }
 
   async getWorkExperiences(username: string): Promise<AccountWorkExperience[]> {
@@ -148,12 +154,13 @@ export class AccountSettingsRepositoryImpl implements AccountSettingsRepository 
     username: string,
     payload: AccountWorkExperience[],
   ): Promise<AccountWorkExperience[]> {
-    const { data } = await instance.post<AccountWorkExperience[]>(
+    const requestPayload = mapAccountWorkExperienceListToApi(payload);
+    const { data } = await instance.post<AccountWorkExperience[] | Record<string, never>>(
       `/api/users/${username}/work-experiences/`,
-      mapAccountWorkExperienceListToApi(payload),
+      requestPayload,
     );
 
-    return mapAccountWorkExperienceListFromApi(data);
+    return mapAccountWorkExperienceListFromApi(resolveListResponse(data, requestPayload));
   }
 
   async changePassword(username: string, payload: ChangePasswordPayload): Promise<void> {
@@ -176,6 +183,10 @@ export class AccountSettingsRepositoryImpl implements AccountSettingsRepository 
   async joinTeam(code: string): Promise<AccountTeam> {
     const { data } = await instance.post<AccountTeam>(`/api/user-teams/${code}/join/`);
     return mapAccountTeamFromApi(data);
+  }
+
+  async deleteTeam(code: string): Promise<void> {
+    await instance.delete(`/api/user-teams/${code}/`);
   }
 
   async refreshTeamCode(code: string): Promise<AccountTeam> {

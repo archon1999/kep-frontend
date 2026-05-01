@@ -20,6 +20,8 @@ import {
   ProblemsRatingRow,
   ProblemsRatingSummary,
   ProblemsUserStatistics,
+  ProblemsUserStatisticsActivity,
+  ProblemsUserStatisticsHeatmap,
   RecommendationResolveResponse,
   StudyPlanDetail,
   StudyPlanListItem,
@@ -28,12 +30,12 @@ import {
   AttemptsListParams,
   PageResult,
   ProblemSolversParams,
-  RecommendationResolveParams,
   ProblemsListParams,
   ProblemsRatingHistoryParams,
   ProblemsRatingParams,
   ProblemsRepository,
   ProblemsStatisticsParams,
+  RecommendationResolveParams,
 } from '../../domain/ports/problems.repository.ts';
 import { problemsApiClient } from '../api/problems.client.ts';
 import {
@@ -51,12 +53,14 @@ import {
   mapProblemStatistics,
   mapProblemTag,
   mapProblemVoteResult,
-  mapRecommendationResolveResponse,
   mapProblemsPage,
   mapProblemsRatingHistoryPage,
   mapProblemsRatingPage,
   mapProblemsUserStatistics,
+  mapProblemsUserStatisticsActivity,
+  mapProblemsUserStatisticsHeatmap,
   mapRatingSummary,
+  mapRecommendationResolveResponse,
   mapStudyPlanDetail,
   mapStudyPlanListItem,
   mapVerdicts,
@@ -278,6 +282,22 @@ export class HttpProblemsRepository implements ProblemsRepository {
   ): Promise<ProblemsUserStatistics> {
     const response = await problemsApiClient.getUserStatistics(username, params);
     return mapProblemsUserStatistics(response);
+  }
+
+  async getUserStatisticsActivity(
+    username: string,
+    params?: Pick<ProblemsStatisticsParams, 'days'>,
+  ): Promise<ProblemsUserStatisticsActivity> {
+    const response = await problemsApiClient.getUserStatisticsActivity(username, params);
+    return mapProblemsUserStatisticsActivity(response);
+  }
+
+  async getUserStatisticsHeatmap(
+    username: string,
+    params?: Pick<ProblemsStatisticsParams, 'year'>,
+  ): Promise<ProblemsUserStatisticsHeatmap> {
+    const response = await problemsApiClient.getUserStatisticsHeatmap(username, params);
+    return mapProblemsUserStatisticsHeatmap(response);
   }
 
   async listRating(params: ProblemsRatingParams): Promise<PageResult<ProblemsRatingRow>> {
