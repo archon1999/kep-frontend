@@ -406,7 +406,7 @@ export const routes: RouteObject[] = [
           },
           {
             path: resources.TestPass,
-            element: <TestPassPage />,
+            element: withAuthGuard(<TestPassPage />),
             handle: { titleKey: 'pageTitles.testPass', fallbackTitleKey: 'pageTitles.tests' },
           },
           {
@@ -548,12 +548,12 @@ export const routes: RouteObject[] = [
           },
           {
             path: resources.Kepcoin,
-            element: <KepcoinPage />,
+            element: withAuthGuard(<KepcoinPage />),
             handle: { titleKey: 'pageTitles.kepcoin' },
           },
           {
             path: resources.KepcoinEarn,
-            element: <KepcoinEarnPage />,
+            element: withAuthGuard(<KepcoinEarnPage />),
             handle: { titleKey: 'pageTitles.kepcoinEarn' },
           },
           {

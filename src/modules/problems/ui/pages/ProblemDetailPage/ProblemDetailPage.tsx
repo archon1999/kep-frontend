@@ -24,6 +24,7 @@ import { ProblemEditorPanel } from 'modules/problems/ui/shared/components/proble
 import ProblemEditorSkeleton from 'modules/problems/ui/shared/components/problem-detail/ProblemEditorSkeleton';
 import { ProblemHeader } from 'modules/problems/ui/shared/components/problem-detail/ProblemHeader';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { booleanFlagParam, enumParam, stringParam } from 'shared/lib/queryParams';
 
 const useProblemPermissions = (permissionsRaw: any) => {
@@ -55,6 +56,7 @@ const useProblemPermissions = (permissionsRaw: any) => {
 const ProblemDetailPage = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
+  const redirectToLogin = useLoginRedirect();
   const themeMode = useThemeMode();
   const permissions = useProblemPermissions(currentUser?.permissions);
   const [editorTheme, setEditorTheme] = useState<'vs' | 'vs-dark'>(
@@ -297,6 +299,11 @@ const ProblemDetailPage = () => {
   };
 
   const handleSubmit = async () => {
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     if (!problem?.id || !selectedLang || !codeRef.current || isSubmitting) return;
     setIsSubmitting(true);
     try {
@@ -317,6 +324,11 @@ const ProblemDetailPage = () => {
   };
 
   const handleRun = async () => {
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     if (!problem?.id || !selectedLang || !codeRef.current || isRunning) return;
     setIsRunning(true);
     setOutput('');
@@ -332,6 +344,11 @@ const ProblemDetailPage = () => {
   };
 
   const handleCheckSamples = async () => {
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     if (!problem?.id || !selectedLang || !codeRef.current || isCheckingSamples) return;
     setIsCheckingSamples(true);
     setCheckSamplesResult([]);
@@ -346,6 +363,11 @@ const ProblemDetailPage = () => {
   };
 
   const handleAnswerForInput = async (payload?: any) => {
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     if (!problem?.id || isAnswering) return;
     setIsAnswering(true);
     const id = payload?.id;
@@ -366,6 +388,11 @@ const ProblemDetailPage = () => {
   };
 
   const handleFavoriteToggle = async () => {
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     if (!problem?.id) return;
     if (problem.userInfo?.isFavorite) {
       await problemsQueries.problemsRepository.removeFavorite(problem.id);
@@ -376,6 +403,11 @@ const ProblemDetailPage = () => {
   };
 
   const handleLikeDislike = async (type: 'like' | 'dislike') => {
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     if (!problem?.id) return;
     if (type === 'like') {
       await problemsQueries.problemsRepository.likeProblem(problem.id);

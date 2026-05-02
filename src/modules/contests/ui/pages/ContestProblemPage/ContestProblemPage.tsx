@@ -41,6 +41,7 @@ import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { enumParam } from 'shared/lib/queryParams';
 import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
+import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { wsService } from 'shared/services/websocket';
 import { toast } from 'sonner';
 import {
@@ -88,6 +89,7 @@ const ContestProblemPage = () => {
   const problemSymbol = symbol;
   const { t } = useTranslation();
   const { currentUser } = useAuth();
+  const redirectToLogin = useLoginRedirect();
   const navigate = useNavigate();
   const themeMode = useThemeMode();
   const permissions = useProblemPermissions(currentUser?.permissions);
@@ -328,6 +330,11 @@ const ContestProblemPage = () => {
   };
 
   const handleSubmit = async () => {
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     if (
       !contest?.id ||
       !problemSymbol ||
@@ -357,6 +364,11 @@ const ContestProblemPage = () => {
   };
 
   const handleRun = async () => {
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     if (!problem?.id || !selectedLang || !codeRef.current || isRunning || isContestLocked) return;
     setIsRunning(true);
     setOutput('');
@@ -372,6 +384,11 @@ const ContestProblemPage = () => {
   };
 
   const handleCheckSamples = async () => {
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     if (!problem?.id || !selectedLang || !codeRef.current || isCheckingSamples || isContestLocked)
       return;
     setIsCheckingSamples(true);
@@ -543,7 +560,7 @@ const ContestProblemPage = () => {
                   variant="outlined"
                   color="primary"
                   onClick={handleRun}
-                  disabled={!currentUser || isRunning || !hasCode || isContestLocked}
+                  disabled={isRunning || !hasCode || isContestLocked}
                   startIcon={<IconifyIcon icon="mdi:play-circle-outline" width={20} height={20} />}
                 >
                   {t('problems.detail.run')}
@@ -557,7 +574,7 @@ const ContestProblemPage = () => {
                   variant="contained"
                   color="primary"
                   onClick={handleSubmit}
-                  disabled={!currentUser || isSubmitting || !hasCode || isContestLocked}
+                  disabled={isSubmitting || !hasCode || isContestLocked}
                   startIcon={<IconifyIcon icon="mdi:send-outline" width={18} height={18} />}
                 >
                   {t('problems.detail.submit')}

@@ -96,7 +96,7 @@ export const redirectDetailRouteToNotFound = (error: unknown, pathname?: string)
 
   isRedirecting = true;
 
-  void router.navigate(getDetailRouteErrorResource(errorStatus), { replace: true }).finally(() => {
+  void router.navigate(getDetailRouteErrorResource(errorStatus)).finally(() => {
     isRedirecting = false;
   });
 

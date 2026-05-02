@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { getResourceByUsername, resources } from 'app/routes/resources';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { useLoginHref } from 'shared/lib/authRedirect';
 import { cssVarRgba } from 'shared/lib/utils';
 import type { KepCoverEntry } from 'modules/kep-cover/domain/entities/kep-cover.entity';
 
@@ -27,6 +28,7 @@ const KepCoverEntryCard = ({
   loginRequired = false,
 }: KepCoverEntryCardProps) => {
   const { t } = useTranslation();
+  const loginHref = useLoginHref();
   const fullName = [entry.user.firstName, entry.user.lastName].filter(Boolean).join(' ');
 
   return (
@@ -104,7 +106,7 @@ const KepCoverEntryCard = ({
 
       <Stack spacing={1.5} sx={{ p: 2.25 }}>
         {loginRequired && isVotingOpen ? (
-          <Button component={RouterLink} to={resources.Login} variant="outlined">
+          <Button component={RouterLink} to={loginHref} variant="outlined">
             {t('kepCover.actions.signIn')}
           </Button>
         ) : (

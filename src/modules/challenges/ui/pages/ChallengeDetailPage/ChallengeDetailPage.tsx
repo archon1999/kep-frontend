@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useBlocker, useNavigate, useParams, useSearchParams } from 'react-router';
 import { Box, CircularProgress, Typography } from '@mui/material';
+import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { resources } from 'app/routes/resources';
 import dayjs from 'dayjs';
@@ -16,6 +17,7 @@ import { useChallengeDetail } from 'modules/challenges/application/queries.ts';
 import { sendChallengeAntiCheatPenaltyKeepalive } from 'modules/challenges/data-access/api/challenges.client.ts';
 import { ChallengeQuestionTimeType, ChallengeStatus } from 'modules/challenges/domain';
 import { ChallengePenaltyReason } from 'modules/challenges/domain/ports/challenges.repository.ts';
+import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { toast } from 'sonner';
 import ChallengeDetailPageContent from './ChallengeDetailPageContent.tsx';
@@ -66,6 +68,8 @@ const ChallengeDetailPage = () => {
   const arenaId = searchParams.get('arena');
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { currentUser } = useAuth();
+  const redirectToLogin = useLoginRedirect();
 
   const { data: challenge, isLoading, mutate } = useChallengeDetail(id);
   const { trigger: startChallenge, isMutating: starting } = useStartChallenge();
@@ -427,6 +431,11 @@ const ChallengeDetailPage = () => {
 
   const handleStart = async () => {
     if (!challenge) return;
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     await startChallenge(challenge.id);
     await mutate();
     setStartDialogOpen(false);

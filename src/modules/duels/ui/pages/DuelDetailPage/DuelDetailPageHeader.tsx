@@ -122,7 +122,6 @@ const DuelDetailPageHeader = ({
   timerText,
   prevProblem,
   nextProblem,
-  hasCurrentUser,
   hasCode,
   isRunning,
   isSubmitting,
@@ -262,7 +261,7 @@ const DuelDetailPageHeader = ({
               variant="outlined"
               color="primary"
               onClick={onRun}
-              disabled={!hasCurrentUser || isRunning || !hasCode || isWorkspaceLocked}
+              disabled={isRunning || !hasCode || isWorkspaceLocked}
               startIcon={<IconifyIcon icon="mdi:play-circle-outline" width={20} height={20} />}
             >
               {t('problems.detail.run')}
@@ -276,7 +275,7 @@ const DuelDetailPageHeader = ({
               variant="contained"
               color="primary"
               onClick={onSubmit}
-              disabled={!hasCurrentUser || isSubmitting || !hasCode || isWorkspaceLocked}
+              disabled={isSubmitting || !hasCode || isWorkspaceLocked}
               startIcon={<IconifyIcon icon="mdi:send-outline" width={18} height={18} />}
             >
               {t('problems.detail.submit')}

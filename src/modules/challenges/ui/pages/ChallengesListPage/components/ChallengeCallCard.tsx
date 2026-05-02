@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
+import { useLoginRedirect } from 'shared/lib/authRedirect';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import {
@@ -41,6 +42,7 @@ const ChallengeCallCard = ({
   dayjs.extend(relativeTime);
   const { t } = useTranslation();
   const { currentUser } = useAuth();
+  const redirectToLogin = useLoginRedirect();
   const { trigger: acceptChallenge, isMutating: isAccepting } = useAcceptChallengeCall();
   const { trigger: deleteCall, isMutating: isDeleting } = useDeleteChallengeCall();
 
@@ -58,6 +60,11 @@ const ChallengeCallCard = ({
       : t('challenges.timer.perQuestionShort');
 
   const handleAccept = async () => {
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     const result = await acceptChallenge(challengeCall.id);
     onAccepted?.(result?.challengeId);
   };

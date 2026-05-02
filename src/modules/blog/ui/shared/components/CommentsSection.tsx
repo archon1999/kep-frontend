@@ -15,6 +15,8 @@ import {
 import { useAuth } from 'app/providers/AuthProvider';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepIcon from 'shared/components/base/KepIcon';
+import { Link as RouterLink } from 'react-router-dom';
+import { useLoginHref, useLoginRedirect } from 'shared/lib/authRedirect';
 import { BlogComment } from 'modules/blog/domain/entities/blog.entity';
 
 interface CommentsSectionProps {
@@ -40,6 +42,8 @@ const CommentsSection = ({
 }: CommentsSectionProps) => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
+  const redirectToLogin = useLoginRedirect();
+  const loginHref = useLoginHref();
   const [body, setBody] = useState('');
 
   const showEmptyState = !isLoading && (!comments || comments.length === 0);
@@ -47,9 +51,23 @@ const CommentsSection = ({
   const sortedComments = useMemo(() => comments ?? [], [comments]);
 
   const handleSubmit = async () => {
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     if (!body.trim()) return;
     await onSubmit(body.trim());
     setBody('');
+  };
+
+  const handleLike = async (commentId: number) => {
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
+    await onLike(commentId);
   };
 
   const commentsContent = (
@@ -106,7 +124,7 @@ const CommentsSection = ({
                   <Button
                     size="small"
                     color="neutral"
-                    onClick={() => onLike(comment.id)}
+                    onClick={() => handleLike(comment.id)}
                     startIcon={<KepIcon name="like" fontSize={16} />}
                   >
                     {comment.likes || t('blog.actions.like')}
@@ -164,9 +182,14 @@ const CommentsSection = ({
           </Stack>
         </Paper>
       ) : (
-        <Typography variant="body2" color="text.secondary">
-          {t('blog.loginToComment')}
-        </Typography>
+        <Stack direction="row" alignItems="center" spacing={1.5}>
+          <Typography variant="body2" color="text.secondary">
+            {t('blog.loginToComment')}
+          </Typography>
+          <Button component={RouterLink} to={loginHref} variant="outlined" size="small">
+            {t('auth.login')}
+          </Button>
+        </Stack>
       )}
     </Stack>
   );

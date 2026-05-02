@@ -26,6 +26,7 @@ import PageHeader from 'shared/components/sections/common/PageHeader';
 import StyledTextField from 'shared/components/styled/StyledTextField';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import useSWR from 'swr';
@@ -58,6 +59,7 @@ const EMPTY_USER_OPTIONS: UserOption[] = [];
 const ProblemsAttemptsPage = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
+  const redirectToLogin = useLoginRedirect();
   const params = useParams<{ username?: string }>();
   const [filtersAnchorEl, setFiltersAnchorEl] = useState<null | HTMLElement>(null);
   const { state: filter, patchState: patchFilterState, resetState: resetFilterState } =
@@ -214,10 +216,12 @@ const ProblemsAttemptsPage = () => {
               label={t('problems.attempts.onlyMy')}
               checked={isOnlyMyAttempts}
               onChange={(_, checked) => {
-                if (!currentUser?.username) return;
+                if (!currentUser?.username) {
+                  redirectToLogin();
+                  return;
+                }
                 handleFilterChange('username', checked ? currentUser.username : '');
               }}
-              disabled={!currentUser?.username}
             />
 
             <Tooltip title={t('problems.attempts.refresh')}>

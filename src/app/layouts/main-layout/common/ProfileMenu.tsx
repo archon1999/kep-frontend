@@ -22,6 +22,7 @@ import { authPaths } from 'app/routes/route-config';
 import { getResourceByUsername, resources } from 'app/routes/resources';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import StatusAvatar from 'shared/components/base/StatusAvatar';
+import { useLoginHref } from 'shared/lib/authRedirect';
 
 interface ProfileMenuProps {
   type?: 'default' | 'slim';
@@ -39,6 +40,7 @@ const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
   const { up } = useBreakpoints();
   const upSm = up('sm');
   const { currentUser, signout } = useAuth();
+  const loginHref = useLoginHref();
 
   // Demo user data used for development purposes
   const user = useMemo(() => currentUser || demoUser, [currentUser]);
@@ -51,8 +53,8 @@ const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
     () =>
       currentUser
         ? getResourceByUsername(resources.UserProfile, user.username)
-        : authPaths.login,
-    [currentUser, user.username],
+        : loginHref,
+    [currentUser, loginHref, user.username],
   );
 
   const open = Boolean(anchorEl);
@@ -184,7 +186,7 @@ const ProfileMenu = ({ type = 'default' }: ProfileMenuProps) => {
               Logout
             </ProfileMenuItem>
           ) : (
-            <ProfileMenuItem href={authPaths.login} icon="material-symbols:login-rounded">
+            <ProfileMenuItem href={loginHref} icon="material-symbols:login-rounded">
               Sign In
             </ProfileMenuItem>
           )}

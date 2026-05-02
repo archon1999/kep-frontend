@@ -44,10 +44,15 @@ const LoginPage = () => {
   }, []);
 
   const returnUrl = useMemo(() => {
-    const searchParamUrl = searchParams.get('returnUrl');
-    const state = location.state as { from?: { pathname?: string } } | null;
+    const searchParamUrl = searchParams.get('returnUrl') ?? searchParams.get('next');
+    const state = location.state as {
+      from?: { pathname?: string; search?: string; hash?: string };
+    } | null;
+    const stateUrl = state?.from?.pathname
+      ? `${state.from.pathname}${state.from.search ?? ''}${state.from.hash ?? ''}`
+      : null;
 
-    return normalizeReturnUrl(searchParamUrl ?? state?.from?.pathname ?? null);
+    return normalizeReturnUrl(searchParamUrl ?? stateUrl);
   }, [location.state, normalizeReturnUrl, searchParams]);
 
   const handleLogin = async (data: LoginFormValues) => {
@@ -78,7 +83,7 @@ const LoginPage = () => {
     (provider: 'google-oauth2' | 'github') => {
       const normalizedProvider = provider.endsWith('/') ? provider : `${provider}/`;
 
-      return `/login/${normalizedProvider}?next=${returnUrl}`;
+      return `/login/${normalizedProvider}?next=${encodeURIComponent(returnUrl)}`;
     },
     [returnUrl],
   );

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { Alert, Box, Grid, Skeleton, Stack } from '@mui/material';
 import { toast } from 'sonner';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
@@ -22,6 +22,7 @@ import {
 import { ArenaHighlight } from 'modules/arena/domain/entities/arena-highlight.entity.ts';
 import { ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { useLoginHref } from 'shared/lib/authRedirect';
 import { numberParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import ArenaChallengesList from './components/ArenaChallengesList.tsx';
@@ -38,10 +39,10 @@ const HIGHLIGHT_VISIBLE_MS = 30000;
 
 const ArenaDetailPage = () => {
   const { id } = useParams();
-  const { pathname, search } = useLocation();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { currentUser } = useAuth();
+  const loginHref = useLoginHref();
 
   const [transitionBanner, setTransitionBanner] = useState<{
     severity: 'info' | 'success';
@@ -151,11 +152,6 @@ const ArenaDetailPage = () => {
           arenaTitle: arena.title,
         }
       : undefined,
-  );
-
-  const loginHref = useMemo(
-    () => `${resources.Login}?next=${encodeURIComponent(`${pathname}${search}`)}`,
-    [pathname, search],
   );
 
   const revalidateArenaSections = useCallback(async () => {

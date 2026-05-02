@@ -31,6 +31,7 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
+import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { enumParam, stringParam } from 'shared/lib/queryParams';
 import { wsService } from 'shared/services/websocket';
 import DuelResultsFooter from './components/DuelResultsFooter.tsx';
@@ -168,6 +169,7 @@ export const useDuelDetailPageWorkspaceState = ({
 }: UseDuelDetailPageWorkspaceStateParams): DuelDetailPageWorkspaceState => {
   const { t } = useTranslation();
   const themeMode = useThemeMode();
+  const redirectToLogin = useLoginRedirect();
   const permissions = useProblemPermissions(currentUser?.permissions);
   const { state: routeState, patchState, setField } = useRouteQueryState<DuelDetailQueryState>({
     defaults: {
@@ -401,6 +403,11 @@ export const useDuelDetailPageWorkspaceState = ({
   };
 
   const handleSubmit = async () => {
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     if (
       !activeProblem?.problem?.id ||
       !selectedLang ||
@@ -443,6 +450,11 @@ export const useDuelDetailPageWorkspaceState = ({
   };
 
   const handleRun = async () => {
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     if (
       !activeProblem?.problem?.id ||
       !selectedLang ||
@@ -480,6 +492,11 @@ export const useDuelDetailPageWorkspaceState = ({
   };
 
   const handleCheckSamples = async () => {
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     if (
       !activeProblem?.problem?.id ||
       !selectedLang ||

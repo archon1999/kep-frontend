@@ -2,9 +2,11 @@ import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, Card, CardContent, Grid, Skeleton, Stack } from '@mui/material';
+import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceByParams, resources } from 'app/routes/resources';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
+import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { contestsQueries, useContest, useContestProblems } from 'modules/contests/application/queries';
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
 import ContestCard from 'modules/contests/ui/shared/components/ContestCard';
@@ -18,6 +20,8 @@ const ContestPage = () => {
   const contestId = id ? Number(id) : undefined;
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
+  const redirectToLogin = useLoginRedirect();
 
   const { data: contest, mutate: mutateContest, isLoading: isContestLoading } = useContest(contestId);
   const canLoadContestProblems = Boolean(contest && contest.statusCode !== ContestStatus.NotStarted);
@@ -43,6 +47,11 @@ const ContestPage = () => {
 
   const handleRegistrationToggle = useCallback(async () => {
     if (!contestId || !contest) return;
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     setIsRegistrationLoading(true);
     try {
       if (contest.userInfo?.isRegistered && contest.statusCode === ContestStatus.Already) {
@@ -58,7 +67,7 @@ const ContestPage = () => {
     } finally {
       setIsRegistrationLoading(false);
     }
-  }, [contest, contestId, mutateContest]);
+  }, [contest, contestId, currentUser, mutateContest, redirectToLogin]);
 
   const registrationCta = useMemo(() => {
     if (!canRegister || !contest) return null;
@@ -78,6 +87,11 @@ const ContestPage = () => {
 
   const handlePurchaseVirtualContest = useCallback(async () => {
     if (!contest) return;
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     setIsVirtualLoading(true);
     try {
       await contestsQueries.contestsRepository.purchaseVirtualContest(contest.id);
@@ -85,10 +99,15 @@ const ContestPage = () => {
     } finally {
       setIsVirtualLoading(false);
     }
-  }, [contest, mutateContest]);
+  }, [contest, currentUser, mutateContest, redirectToLogin]);
 
   const handleStartVirtualContest = useCallback(async () => {
     if (!contest) return;
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     setIsVirtualLoading(true);
     try {
       await contestsQueries.contestsRepository.startVirtualContest(contest.id);
@@ -97,7 +116,7 @@ const ContestPage = () => {
     } finally {
       setIsVirtualLoading(false);
     }
-  }, [contest, mutateContest, navigate]);
+  }, [contest, currentUser, mutateContest, navigate, redirectToLogin]);
 
   const virtualContestCta = useMemo(() => {
     if (!contest || contest.statusCode !== ContestStatus.Finished) return null;

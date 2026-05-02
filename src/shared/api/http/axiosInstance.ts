@@ -1,10 +1,17 @@
 import axios, { type AxiosInstance, type AxiosRequestHeaders, type InternalAxiosRequestConfig } from 'axios';
 import { getStoredLocale, toBackendLanguage } from 'app/locales/locale.ts';
+import { apiEndpoints } from 'app/routes/route-config';
+import { getCurrentReturnUrl, getLoginRedirectPath } from 'shared/lib/authRedirect';
 
 const baseURL = import.meta.env.VITE_API_URL || '';
 const basicAuthLogin = import.meta.env.VITE_BASIC_AUTH_LOGIN;
 const basicAuthPassword = import.meta.env.VITE_BASIC_AUTH_PASSWORD;
 const shouldUseBasicAuth = import.meta.env.DEV;
+const authBootstrapEndpoints = new Set([
+  apiEndpoints.profile,
+  apiEndpoints.login,
+  apiEndpoints.logout,
+]);
 
 const getBasicAuthHeader = () => {
   if (!basicAuthLogin || !basicAuthPassword) return null;
@@ -56,11 +63,27 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (response) => response,
-  (error) =>
-    Promise.reject({
+  (error) => {
+    const status = error.response?.status;
+    const requestUrl = error.config?.url ?? '';
+    const pathname = requestUrl.startsWith('http')
+      ? new URL(requestUrl).pathname
+      : requestUrl.split('?')[0];
+    const shouldRedirectToLogin =
+      status === 401 &&
+      typeof window !== 'undefined' &&
+      !window.location.pathname.startsWith(apiEndpoints.login.replace('/api', '').replace(/\/$/, '')) &&
+      !authBootstrapEndpoints.has(pathname);
+
+    if (shouldRedirectToLogin) {
+      window.location.assign(getLoginRedirectPath(getCurrentReturnUrl()));
+    }
+
+    return Promise.reject({
       status: error.response?.status,
       data: error.response?.data || error.message,
-    }),
+    });
+  },
 );
 
 export default instance;

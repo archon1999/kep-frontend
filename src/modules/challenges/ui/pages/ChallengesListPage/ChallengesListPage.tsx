@@ -4,7 +4,6 @@ import { Box, Card, CardContent, Divider, Stack, Tab, Tabs } from '@mui/material
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceById, resources } from 'app/routes/resources';
-import { authPaths } from 'app/routes/route-config';
 import {
   useAcceptChallengeCall,
   useCreateChallengeCall,
@@ -23,6 +22,7 @@ import { ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { toast } from 'sonner';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { booleanFlagParam, enumParam, numberParam } from 'shared/lib/queryParams';
 import ChallengesListPageHeroCard from './ChallengesListPageHeroCard.tsx';
 import ChallengesListPageHistoryTab from './ChallengesListPageHistoryTab.tsx';
@@ -49,6 +49,7 @@ const ChallengesListPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { currentUser } = useAuth();
+  const redirectToLogin = useLoginRedirect();
   useDocumentTitle('pageTitles.challenges');
 
   const { state, setField } = useRouteQueryState<ChallengesListQueryState>({
@@ -107,7 +108,7 @@ const ChallengesListPage = () => {
     chapters?: number[];
   }) => {
     if (!currentUser) {
-      navigate(authPaths.login);
+      redirectToLogin();
       return;
     }
 
@@ -119,7 +120,7 @@ const ChallengesListPage = () => {
 
   const handleQuickStart = async (payload: { timeSeconds: number; questionsCount: number }) => {
     if (!currentUser) {
-      navigate(authPaths.login);
+      redirectToLogin();
       return;
     }
 

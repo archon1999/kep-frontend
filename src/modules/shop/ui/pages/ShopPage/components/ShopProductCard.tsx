@@ -17,6 +17,7 @@ import {
 import { useAuth } from 'app/providers/AuthProvider';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
+import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { ShopProduct } from 'modules/shop/domain/entities/product.entity';
 import ShopCheckoutModal from './ShopCheckoutModal';
 
@@ -28,6 +29,7 @@ interface ShopProductCardProps {
 const ShopProductCard = ({ product, onPurchaseSuccess }: ShopProductCardProps) => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
+  const redirectToLogin = useLoginRedirect();
   const colors = product.colors.length ? product.colors : [];
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const selectedColor = colors[selectedColorIndex] ?? colors[0];
@@ -41,10 +43,10 @@ const ShopProductCard = ({ product, onPurchaseSuccess }: ShopProductCardProps) =
   const selectedSize = sizes[selectedSizeIndex];
   const hasMultipleImages = colorImages.length > 1;
   const hasEnoughBalance = (currentUser?.kepcoin ?? 0) >= product.kepcoin;
-  const buyDisabled = !selectedSize?.isAvailable || !hasEnoughBalance;
+  const buyDisabled = !selectedSize?.isAvailable || (Boolean(currentUser) && !hasEnoughBalance);
   const buyDisabledReason = !selectedSize?.isAvailable
     ? t('shop.checkout.outOfStock')
-    : !hasEnoughBalance
+    : currentUser && !hasEnoughBalance
       ? t('shop.checkout.insufficientBalance')
       : '';
 
@@ -81,6 +83,15 @@ const ShopProductCard = ({ product, onPurchaseSuccess }: ShopProductCardProps) =
 
   const handlePurchaseSuccess = async () => {
     await onPurchaseSuccess();
+  };
+
+  const handleBuyClick = () => {
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
+    setIsCheckoutOpen(true);
   };
 
   return (
@@ -251,7 +262,7 @@ const ShopProductCard = ({ product, onPurchaseSuccess }: ShopProductCardProps) =
 
           <Button
             variant="contained"
-            onClick={() => setIsCheckoutOpen(true)}
+            onClick={handleBuyClick}
             disabled={buyDisabled || !selectedSize}
           >
             {t('shop.buyNow')}

@@ -7,6 +7,7 @@ import { getResourceById, resources } from 'app/routes/resources';
 import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import Logo from 'shared/components/common/Logo';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { ProblemDetail } from 'modules/problems/domain/entities/problem.entity';
 
 interface ProblemHeaderProps {
@@ -56,6 +57,16 @@ export const ProblemHeader = ({
 }: ProblemHeaderProps) => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
+  const redirectToLogin = useLoginRedirect();
+
+  const requireAuth = (handler: () => void) => () => {
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
+    handler();
+  };
 
   return (
     <Box
@@ -128,8 +139,8 @@ export const ProblemHeader = ({
           <span>
             <IconButton
               color="primary"
-              onClick={onRun}
-              disabled={!currentUser || isRunning || !hasCode}
+              onClick={requireAuth(onRun)}
+              disabled={isRunning || !hasCode}
               size="large"
             >
               <IconifyIcon icon="mdi:play-circle-outline" width={22} height={22} />
@@ -142,8 +153,8 @@ export const ProblemHeader = ({
             <span>
               <IconButton
                 color="secondary"
-                onClick={onCheckSamples}
-                disabled={!currentUser || isCheckingSamples || !hasCode}
+                onClick={requireAuth(onCheckSamples)}
+                disabled={isCheckingSamples || !hasCode}
                 size="large"
               >
                 <IconifyIcon icon="mdi:check-all" width={22} height={22} />
@@ -156,10 +167,9 @@ export const ProblemHeader = ({
               <KepcoinSpendConfirm
                 value={100}
                 purchaseUrl={`/api/problems/${problemId}/purchase-check-samples/`}
-                disabled={!currentUser}
                 onSuccess={onRefreshProblem}
               >
-                <IconButton color="secondary" disabled={!currentUser} size="large">
+                <IconButton color="secondary" size="large">
                   <IconifyIcon icon="mdi:check-all" width={22} height={22} />
                 </IconButton>
               </KepcoinSpendConfirm>
@@ -179,9 +189,8 @@ export const ProblemHeader = ({
                 purchaseUrl={`/api/problems/${problem?.id}/answer-for-input/`}
                 requestBody={{ input_data: inputValue }}
                 onSuccess={onAnswerForInput}
-                disabled={!currentUser}
               >
-                <IconButton color="info" disabled={!currentUser || isAnswering} size="large">
+                <IconButton color="info" disabled={isAnswering} size="large">
                   <IconifyIcon icon="mdi:chat-question-outline" width={22} height={22} />
                 </IconButton>
               </KepcoinSpendConfirm>
@@ -194,8 +203,8 @@ export const ProblemHeader = ({
             <Button
               variant="contained"
               color="primary"
-              onClick={onSubmit}
-              disabled={!currentUser || isSubmitting || !hasCode}
+              onClick={requireAuth(onSubmit)}
+              disabled={isSubmitting || !hasCode}
               sx={{ minWidth: 44, px: 1 }}
             >
               <IconifyIcon icon="mdi:send-outline" width={18} height={18} />

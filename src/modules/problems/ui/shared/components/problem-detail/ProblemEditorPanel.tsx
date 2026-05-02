@@ -19,6 +19,7 @@ import {
 import { alpha } from '@mui/material/styles';
 import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
+import { useLoginHref } from 'shared/lib/authRedirect';
 import KepIcon from 'shared/components/base/KepIcon';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
@@ -106,6 +107,7 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
   } = props;
   const { currentUser } = useAuth();
   const { t } = useTranslation();
+  const loginHref = useLoginHref();
   const selectedLanguageInfo = problem?.availableLanguages?.find(
     (lang) => lang.lang === selectedLang,
   );
@@ -241,7 +243,7 @@ export const ProblemEditorPanel = (props: ProblemEditorPanelProps) => {
             <Typography color="text.secondary" mb={2}>
               {t('problems.detail.signInSubtitle')}
             </Typography>
-            <Button component={RouterLink} to={resources.Login} variant="contained">
+            <Button component={RouterLink} to={loginHref} variant="contained">
               {t('auth.login')}
             </Button>
           </CardContent>

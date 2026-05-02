@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react';
 import { Navigate, useLocation } from 'react-router';
 import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
-import { authPaths } from 'app/routes/route-config';
+import { getLoginRedirectTo, getReturnUrlFromLocation } from 'shared/lib/authRedirect';
 
 const SuperuserGuard = ({ children }: PropsWithChildren) => {
   const { currentUser } = useAuth();
@@ -13,17 +13,14 @@ const SuperuserGuard = ({ children }: PropsWithChildren) => {
   }
 
   if (currentUser) {
-    return <Navigate to={resources.Forbidden} replace />;
+    return <Navigate to={resources.Forbidden} />;
   }
 
-  const returnUrl = `${location.pathname}${location.search}${location.hash}`;
+  const returnUrl = getReturnUrlFromLocation(location);
 
   return (
     <Navigate
-      to={{
-        pathname: authPaths.login,
-        search: `?returnUrl=${encodeURIComponent(returnUrl)}`,
-      }}
+      to={getLoginRedirectTo(returnUrl)}
       replace
       state={{ from: location }}
     />

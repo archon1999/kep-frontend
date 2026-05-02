@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import useSWRMutation from 'swr/mutation';
 import { useAuth } from 'app/providers/AuthProvider';
+import { useLoginRedirect } from 'shared/lib/authRedirect';
 import KepcoinValue from './KepcoinValue';
 import axiosFetcher from 'shared/services/axios/axiosFetcher';
 
@@ -36,6 +37,7 @@ const KepcoinSpendConfirm = ({
 }: KepcoinSpendConfirmProps) => {
   const { t } = useTranslation();
   const { currentUser, refreshCurrentUser } = useAuth();
+  const redirectToLogin = useLoginRedirect();
 
   const [open, setOpen] = useState(false);
 
@@ -45,6 +47,11 @@ const KepcoinSpendConfirm = ({
   const userBalance = useMemo(() => currentUser?.kepcoin ?? 0, [currentUser?.kepcoin]);
 
   const handleTriggerClick = () => {
+    if (!currentUser) {
+      redirectToLogin();
+      return;
+    }
+
     if (disabled) return;
 
     if (userBalance < value) {
@@ -84,7 +91,7 @@ const KepcoinSpendConfirm = ({
     <>
       <ButtonBase
         onClick={handleTriggerClick}
-        disabled={disabled}
+        disabled={disabled && Boolean(currentUser)}
         sx={{
           borderRadius: 1,
           width: 'fit-content',

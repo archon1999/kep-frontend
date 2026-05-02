@@ -1,8 +1,8 @@
 import { PropsWithChildren } from 'react';
 import { Navigate, useLocation } from 'react-router';
 import { useAuth } from 'app/providers/AuthProvider';
-import { authPaths } from 'app/routes/route-config';
 import PageLoader from 'shared/components/loading/PageLoader';
+import { getLoginRedirectTo, getReturnUrlFromLocation } from 'shared/lib/authRedirect';
 
 const AuthGurad = ({ children }: PropsWithChildren) => {
   const { currentUser, isAuthLoading } = useAuth();
@@ -16,14 +16,11 @@ const AuthGurad = ({ children }: PropsWithChildren) => {
     return children;
   }
 
-  const returnUrl = `${location.pathname}${location.search}${location.hash}`;
+  const returnUrl = getReturnUrlFromLocation(location);
 
   return (
     <Navigate
-      to={{
-        pathname: authPaths.login,
-        search: `?returnUrl=${encodeURIComponent(returnUrl)}`,
-      }}
+      to={getLoginRedirectTo(returnUrl)}
       replace
       state={{ from: location }}
     />

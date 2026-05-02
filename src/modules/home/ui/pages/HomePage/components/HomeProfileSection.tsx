@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { Button, Divider, Paper, Stack, Typography } from '@mui/material';
-import { authPaths } from 'app/routes/route-config';
 import dayjs from 'dayjs';
+import { useLoginHref } from 'shared/lib/authRedirect';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import type { HomeUserActivityHistory, HomeUserRatings } from 'modules/home/domain/entities/home.entity';
 import HomeActivityHistory from './HomeActivityHistory';
@@ -35,6 +35,7 @@ const HomeProfileSection = ({
   onLoadMoreActivityHistory,
 }: GreetingCardProps) => {
   const { t } = useTranslation();
+  const loginHref = useLoginHref();
   const todayLabel = useMemo(() => dayjs().format('dddd, MMM DD, YYYY'), []);
 
   return (
@@ -73,7 +74,7 @@ const HomeProfileSection = ({
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                 {t('homePage.greeting.loginPrompt')}
               </Typography>
-              <Button component={RouterLink} to={authPaths.login} size="small" variant="contained">
+              <Button component={RouterLink} to={loginHref} size="small" variant="contained">
                 {t('homePage.greeting.loginCta')}
               </Button>
             </Stack>
