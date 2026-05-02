@@ -15,6 +15,7 @@ import {
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceByParams, resources } from 'app/routes/resources';
+import { Page404 } from 'modules/errors/ui/pages';
 import {
   contestsQueries,
   useContest,
@@ -30,6 +31,7 @@ import KepIcon from 'shared/components/base/KepIcon';
 import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
+import { isNotFoundError } from 'shared/lib/detailRouteNotFound';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import ContestPageProblemsPreviewCard from './ContestPageProblemsPreviewCard.tsx';
 
@@ -47,6 +49,7 @@ const ContestPage = () => {
     data: contest,
     mutate: mutateContest,
     isLoading: isContestLoading,
+    error: contestError,
   } = useContest(contestId);
   const canLoadContestProblems = Boolean(
     contest && contest.statusCode !== ContestStatus.NotStarted,
@@ -220,6 +223,10 @@ const ContestPage = () => {
       </Button>
     );
   }, [contest, handleStartVirtualContest, isVirtualLoading, mutateContest, t]);
+
+  if (isNotFoundError(contestError)) {
+    return <Page404 />;
+  }
 
   return (
     <Stack spacing={3} sx={responsivePagePaddingSx}>

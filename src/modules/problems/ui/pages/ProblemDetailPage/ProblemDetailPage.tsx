@@ -6,6 +6,7 @@ import { Box, Card, LinearProgress } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceById, resources } from 'app/routes/resources';
+import { Page404 } from 'modules/errors/ui/pages';
 import { getDifficultyColor } from 'modules/problems/config/difficulty';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
 import useGridPagination from 'shared/hooks/useGridPagination';
@@ -25,6 +26,7 @@ import ProblemEditorSkeleton from 'modules/problems/ui/shared/components/problem
 import { ProblemHeader } from 'modules/problems/ui/shared/components/problem-detail/ProblemHeader';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
+import { isNotFoundError } from 'shared/lib/detailRouteNotFound';
 import { booleanFlagParam, enumParam, stringParam } from 'shared/lib/queryParams';
 
 const useProblemPermissions = (permissionsRaw: any) => {
@@ -142,6 +144,7 @@ const ProblemDetailPage = () => {
     data: problem,
     isLoading: isProblemLoading,
     isValidating: isProblemValidating,
+    error: problemError,
     mutate: mutateProblem,
   } = useProblemDetail(Number.isNaN(problemId) ? undefined : problemId);
 
@@ -522,6 +525,10 @@ const ProblemDetailPage = () => {
     window.addEventListener('keydown', handleHotkeys);
     return () => window.removeEventListener('keydown', handleHotkeys);
   }, []);
+
+  if (isNotFoundError(problemError)) {
+    return <Page404 />;
+  }
 
   return (
     <Box

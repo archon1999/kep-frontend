@@ -1,13 +1,11 @@
 import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
 import { isCanceled, normalizeError, notifyError } from 'shared/api';
-import { redirectDetailRouteToNotFound } from 'shared/lib/detailRouteNotFound';
 
 const GLOBAL_API_CACHE_TTL_MS = 5_000;
 
 export const queryCache = new QueryCache({
   onError: (error, query) => {
     if (isCanceled(error)) return;
-    if (redirectDetailRouteToNotFound(error)) return;
     if (query.meta?.silentError) return;
     notifyError(normalizeError(error));
   },
