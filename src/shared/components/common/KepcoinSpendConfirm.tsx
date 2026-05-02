@@ -1,4 +1,5 @@
 import { ReactNode, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   ButtonBase,
@@ -10,21 +11,21 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
-import useSWRMutation from 'swr/mutation';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
-import KepcoinValue from './KepcoinValue';
 import axiosFetcher from 'shared/services/axios/axiosFetcher';
+import { toast } from 'sonner';
+import useSWRMutation from 'swr/mutation';
+import KepcoinValue from './KepcoinValue';
 
 interface KepcoinSpendConfirmProps {
   value: number;
   purchaseUrl: string;
   requestBody?: Record<string, unknown>;
-  onSuccess?: (response: unknown) => void;
+  onSuccess?: (response: unknown) => void | Promise<void>;
   children?: ReactNode;
   disabled?: boolean;
+  fullWidth?: boolean;
 }
 
 const KepcoinSpendConfirm = ({
@@ -34,6 +35,7 @@ const KepcoinSpendConfirm = ({
   onSuccess,
   children,
   disabled = false,
+  fullWidth = false,
 }: KepcoinSpendConfirmProps) => {
   const { t } = useTranslation();
   const { currentUser, refreshCurrentUser } = useAuth();
@@ -71,18 +73,26 @@ const KepcoinSpendConfirm = ({
   const handleConfirm = async () => {
     try {
       const response = await trigger(requestBody);
-      if (response && typeof response === 'object' && 'success' in response && response.success === false) {
+      if (
+        response &&
+        typeof response === 'object' &&
+        'success' in response &&
+        response.success === false
+      ) {
         throw new Error(String(response.message ?? response.error ?? t('kepcoinSpend.error')));
       }
 
       toast.success(t('kepcoinSpend.success'));
-      onSuccess?.(response);
+      await onSuccess?.(response);
       await refreshCurrentUser();
       setOpen(false);
     } catch (error: any) {
       const fallbackMessage = t('kepcoinSpend.error');
       const message =
-        error?.response?.data?.message ?? error?.response?.data?.error ?? error?.message ?? fallbackMessage;
+        error?.response?.data?.message ??
+        error?.response?.data?.error ??
+        error?.message ??
+        fallbackMessage;
       toast.error(message);
     }
   };
@@ -94,12 +104,19 @@ const KepcoinSpendConfirm = ({
         disabled={disabled && Boolean(currentUser)}
         sx={{
           borderRadius: 1,
-          width: 'fit-content',
+          width: fullWidth ? 1 : 'fit-content',
           px: children ? 0 : 1,
           py: children ? 0 : 0.75,
         }}
       >
-        {children ?? <KepcoinValue value={formattedValue} iconSize={16} textVariant="caption" fontWeight={600} />}
+        {children ?? (
+          <KepcoinValue
+            value={formattedValue}
+            iconSize={16}
+            textVariant="caption"
+            fontWeight={600}
+          />
+        )}
       </ButtonBase>
 
       <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
@@ -112,14 +129,24 @@ const KepcoinSpendConfirm = ({
               <Typography variant="body2" color="text.secondary">
                 {t('kepcoinSpend.costLabel')}
               </Typography>
-              <KepcoinValue value={formattedValue} iconSize={20} textVariant="body2" fontWeight={700} />
+              <KepcoinValue
+                value={formattedValue}
+                iconSize={20}
+                textVariant="body2"
+                fontWeight={700}
+              />
             </Stack>
 
             <Stack direction="row" alignItems="center" justifyContent="space-between">
               <Typography variant="body2" color="text.secondary">
                 {t('kepcoinSpend.balanceLabel')}
               </Typography>
-              <KepcoinValue value={userBalance.toLocaleString()} iconSize={20} textVariant="body2" fontWeight={700} />
+              <KepcoinValue
+                value={userBalance.toLocaleString()}
+                iconSize={20}
+                textVariant="body2"
+                fontWeight={700}
+              />
             </Stack>
           </Stack>
         </DialogContent>

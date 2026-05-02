@@ -4,10 +4,10 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button, Card, Chip, LinearProgress, Stack, Typography } from '@mui/material';
 import { SxProps, Theme, alpha, useTheme } from '@mui/material/styles';
 import { getResourceByParams, resources } from 'app/routes/resources';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
-import KepcoinValue from 'shared/components/common/KepcoinValue';
-import { projectsQueries } from 'modules/projects/application/queries';
 import { Project } from 'modules/projects/domain/entities/project.entity';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
+import KepcoinValue from 'shared/components/common/KepcoinValue';
 import {
   PROJECT_CATEGORY_META,
   ProjectCategoryKey,
@@ -44,7 +44,6 @@ const ProjectCard = ({
 }: ProjectCardProps) => {
   const { t } = useTranslation();
   const theme = useTheme();
-  const [isPurchasing, setIsPurchasing] = useState(false);
   const [isPurchased, setIsPurchased] = useState(project.purchased);
 
   const categoryMeta = PROJECT_CATEGORY_META[category];
@@ -59,17 +58,11 @@ const ProjectCard = ({
     slug: project.slug,
   });
 
-  const handlePurchase = async () => {
+  const handlePurchaseSuccess = () => {
     if (isPurchased) return;
 
-    try {
-      setIsPurchasing(true);
-      const purchasedProject = await projectsQueries.projectsRepository.purchase(project.slug);
-      setIsPurchased(true);
-      onPurchased?.(purchasedProject);
-    } finally {
-      setIsPurchasing(false);
-    }
+    setIsPurchased(true);
+    onPurchased?.({ ...project, purchased: true });
   };
 
   const renderLogo = () => (
@@ -134,25 +127,29 @@ const ProjectCard = ({
     }
 
     return (
-      <Button
-        onClick={handlePurchase}
-        disabled={isPurchasing}
-        startIcon={<IconifyIcon icon="mdi:cart-plus" />}
-        sx={mergeSx(
-          {
-            color: theme.palette.text.primary,
-            bgcolor: alpha(theme.palette.background.paper, 0.88),
-            border: `1px solid ${alpha(categoryMeta.accent, 0.2)}`,
-            '&:hover': {
-              bgcolor: theme.palette.background.paper,
-            },
-          },
-          sharedSx,
-        )}
+      <KepcoinSpendConfirm
+        value={project.purchaseKepcoinValue}
+        purchaseUrl={`/api/projects/${project.slug}/purchase/`}
+        onSuccess={handlePurchaseSuccess}
       >
-        {t('projects.purchase')}
-        <KepcoinValue value={project.purchaseKepcoinValue} iconSize={16} sx={{ ml: 1 }} />
-      </Button>
+        <Button
+          startIcon={<IconifyIcon icon="mdi:cart-plus" />}
+          sx={mergeSx(
+            {
+              color: theme.palette.text.primary,
+              bgcolor: alpha(theme.palette.background.paper, 0.88),
+              border: `1px solid ${alpha(categoryMeta.accent, 0.2)}`,
+              '&:hover': {
+                bgcolor: theme.palette.background.paper,
+              },
+            },
+            sharedSx,
+          )}
+        >
+          {t('projects.purchase')}
+          <KepcoinValue value={project.purchaseKepcoinValue} iconSize={16} sx={{ ml: 1 }} />
+        </Button>
+      </KepcoinSpendConfirm>
     );
   };
 

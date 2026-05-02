@@ -13,7 +13,11 @@ import ContestCard from 'modules/contests/ui/shared/components/ContestCard';
 import ContestCountdownCard from 'modules/contests/ui/shared/components/ContestCountdownCard';
 import ContestPageHeader from 'modules/contests/ui/shared/components/ContestPageHeader';
 import ContestTypeInfoCard from 'modules/contests/ui/shared/components/ContestTypeInfoCard';
+import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
+import KepcoinValue from 'shared/components/common/KepcoinValue';
 import ContestPageProblemsPreviewCard from './ContestPageProblemsPreviewCard.tsx';
+
+const VIRTUAL_CONTEST_COST = 5;
 
 const ContestPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -85,22 +89,6 @@ const ContestPage = () => {
     );
   }, [canRegister, contest, handleRegistrationToggle, isRegistrationLoading, t]);
 
-  const handlePurchaseVirtualContest = useCallback(async () => {
-    if (!contest) return;
-    if (!currentUser) {
-      redirectToLogin();
-      return;
-    }
-
-    setIsVirtualLoading(true);
-    try {
-      await contestsQueries.contestsRepository.purchaseVirtualContest(contest.id);
-      await mutateContest();
-    } finally {
-      setIsVirtualLoading(false);
-    }
-  }, [contest, currentUser, mutateContest, redirectToLogin]);
-
   const handleStartVirtualContest = useCallback(async () => {
     if (!contest) return;
     if (!currentUser) {
@@ -123,18 +111,39 @@ const ContestPage = () => {
 
     const availableStarts = contest.userInfo?.virtualContestAvailable ?? 0;
     const canStart = availableStarts > 0;
+    if (!canStart) {
+      return (
+        <KepcoinSpendConfirm
+          value={VIRTUAL_CONTEST_COST}
+          purchaseUrl={`/api/contests/${contest.id}/purchase-virtual-contest/`}
+          onSuccess={async () => {
+            await mutateContest();
+          }}
+          disabled={isVirtualLoading}
+          fullWidth
+        >
+          <Button fullWidth variant="contained" color="secondary" disabled={isVirtualLoading}>
+            <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
+              <span>{t('contests.purchaseVirtualContest')}</span>
+              <KepcoinValue value={VIRTUAL_CONTEST_COST} iconSize={16} color="inherit" />
+            </Stack>
+          </Button>
+        </KepcoinSpendConfirm>
+      );
+    }
+
     return (
       <Button
         fullWidth
         variant="contained"
-        color={canStart ? 'primary' : 'secondary'}
-        onClick={canStart ? handleStartVirtualContest : handlePurchaseVirtualContest}
+        color="primary"
+        onClick={handleStartVirtualContest}
         disabled={isVirtualLoading}
       >
-        {canStart ? t('contests.startVirtualContest') : t('contests.purchaseVirtualContest')}
+        {t('contests.startVirtualContest')}
       </Button>
     );
-  }, [contest, handlePurchaseVirtualContest, handleStartVirtualContest, isVirtualLoading, t]);
+  }, [contest, handleStartVirtualContest, isVirtualLoading, mutateContest, t]);
 
   return (
     <Stack spacing={3} sx={responsivePagePaddingSx}>

@@ -1,10 +1,12 @@
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
+  DialogContentText,
   DialogTitle,
   MenuItem,
   Stack,
@@ -12,17 +14,14 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
-
 import { useAuth } from 'app/providers/AuthProvider';
+import { useCreateShopOrder } from 'modules/shop/application/mutations';
+import { CreateShopOrderPayload } from 'modules/shop/domain/entities/order.entity';
+import { ShopProductColor, ShopProductSize } from 'modules/shop/domain/entities/product.entity';
 import { useUserSocial } from 'modules/users/application/queries';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
-
-import { CreateShopOrderPayload } from 'modules/shop/domain/entities/order.entity';
-import { ShopProductColor, ShopProductSize } from 'modules/shop/domain/entities/product.entity';
-import { useCreateShopOrder } from 'modules/shop/application/mutations';
+import { toast } from 'sonner';
 
 const PHONE_RE = /^(?:\+?998)?\d{9}$/;
 
@@ -89,6 +88,7 @@ const ShopCheckoutModal = ({
     telegram_username: social?.telegram?.replace('@', '') ?? '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [pendingPayload, setPendingPayload] = useState<CreateShopOrderPayload | null>(null);
 
   const hasEnoughBalance = (currentUser?.kepcoin ?? 0) >= price;
   const canSubmit =
@@ -102,6 +102,7 @@ const ShopCheckoutModal = ({
   useEffect(() => {
     if (!open) {
       setErrors({});
+      setPendingPayload(null);
       return;
     }
 
@@ -119,7 +120,7 @@ const ShopCheckoutModal = ({
       setErrors((prev) => ({ ...prev, [field]: '' }));
     };
 
-  const handleConfirm = async () => {
+  const handleSubmitClick = () => {
     if (!variant) return;
 
     try {
@@ -128,10 +129,24 @@ const ShopCheckoutModal = ({
         variant_id: variant.variantId,
         phone: normalizeUzPhone(formState.phone),
       };
-      await trigger(payload);
+      setPendingPayload(payload);
+    } catch {
+      setErrors((prev) => ({
+        ...prev,
+        phone: t('shop.checkout.invalidPhone', 'Invalid phone number'),
+      }));
+    }
+  };
+
+  const handleConfirmPurchase = async () => {
+    if (!pendingPayload) return;
+
+    try {
+      await trigger(pendingPayload);
       await refreshCurrentUser();
       toast.success(t('shop.checkout.success'));
       await onSuccess();
+      setPendingPayload(null);
       onClose();
     } catch (error: any) {
       if (error?.data) {
@@ -141,6 +156,7 @@ const ShopCheckoutModal = ({
             return acc;
           }, {}),
         );
+        setPendingPayload(null);
         return;
       }
       toast.error(t('shop.checkout.error'));
@@ -172,128 +188,169 @@ const ShopCheckoutModal = ({
   );
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
-      <DialogTitle>{t('shop.checkout.title')}</DialogTitle>
-      <DialogContent>
-        <Stack spacing={2} mt={1}>
-          <Typography variant="subtitle1" fontWeight={600}>
-            {productTitle}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {color?.name} / {variant?.name}
-          </Typography>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Typography variant="caption">{t('shop.checkout.price')}</Typography>
-            <KepcoinValue value={price} textVariant="subtitle2" />
-          </Stack>
+    <>
+      <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
+        <DialogTitle>{t('shop.checkout.title')}</DialogTitle>
+        <DialogContent>
+          <Stack spacing={2} mt={1}>
+            <Typography variant="subtitle1" fontWeight={600}>
+              {productTitle}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {color?.name} / {variant?.name}
+            </Typography>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Typography variant="caption">{t('shop.checkout.price')}</Typography>
+              <KepcoinValue value={price} textVariant="subtitle2" />
+            </Stack>
 
-          <Box
-            sx={{
-              display: 'grid',
-              gap: 2,
-              gridTemplateColumns: {
-                xs: '1fr',
-                sm: 'repeat(2, minmax(0, 1fr))',
-              },
-            }}
-          >
-            <Box>
-              <TextField
-                label={t('shop.checkout.country')}
-                value={formState.country}
-                onChange={handleChange('country')}
-                fullWidth
-                select
-                disabled
-                slotProps={{
-                  inputLabel: {
-                    shrink: true,
-                  },
-                }}
-              >
-                <MenuItem value="UZB">{t('shop.checkout.countryUz')}</MenuItem>
-              </TextField>
-              {renderTooltipIcon(t('shop.checkout.countryNotice'))}
+            <Box
+              sx={{
+                display: 'grid',
+                gap: 2,
+                gridTemplateColumns: {
+                  xs: '1fr',
+                  sm: 'repeat(2, minmax(0, 1fr))',
+                },
+              }}
+            >
+              <Box>
+                <TextField
+                  label={t('shop.checkout.country')}
+                  value={formState.country}
+                  onChange={handleChange('country')}
+                  fullWidth
+                  select
+                  disabled
+                  slotProps={{
+                    inputLabel: {
+                      shrink: true,
+                    },
+                  }}
+                >
+                  <MenuItem value="UZB">{t('shop.checkout.countryUz')}</MenuItem>
+                </TextField>
+                {renderTooltipIcon(t('shop.checkout.countryNotice'))}
+              </Box>
+              <Box>
+                <TextField
+                  label={t('shop.checkout.shippingType')}
+                  value={formState.shipping_type}
+                  onChange={handleChange('shipping_type')}
+                  fullWidth
+                  select
+                  disabled
+                  slotProps={{
+                    inputLabel: {
+                      shrink: true,
+                    },
+                  }}
+                >
+                  <MenuItem value="BTS">{t('shop.checkout.shippingTypeBts')}</MenuItem>
+                </TextField>
+                {renderTooltipIcon(t('shop.checkout.shippingTypeHint'))}
+              </Box>
+              <Box sx={{ gridColumn: { xs: 'auto', sm: '1 / -1' } }}>
+                <TextField
+                  label={t('shop.checkout.fullName')}
+                  value={formState.full_name}
+                  onChange={handleChange('full_name')}
+                  fullWidth
+                  error={Boolean(errors.full_name)}
+                  helperText={errors.full_name}
+                />
+              </Box>
+              <Box sx={{ gridColumn: { xs: 'auto', sm: '1 / -1' } }}>
+                <TextField
+                  label={t('shop.checkout.phone')}
+                  value={formState.phone}
+                  onChange={handleChange('phone')}
+                  fullWidth
+                  error={Boolean(errors.phone)}
+                  helperText={errors.phone}
+                />
+              </Box>
+              <Box sx={{ gridColumn: { xs: 'auto', sm: '1 / -1' } }}>
+                <TextField
+                  label={t('shop.checkout.address')}
+                  value={formState.address}
+                  onChange={handleChange('address')}
+                  fullWidth
+                  error={Boolean(errors.address)}
+                  helperText={errors.address}
+                />
+              </Box>
+              <Box sx={{ gridColumn: { xs: 'auto', sm: '1 / -1' } }}>
+                <TextField
+                  label={t('shop.checkout.telegram')}
+                  value={formState.telegram_username}
+                  onChange={handleChange('telegram_username')}
+                  fullWidth
+                  error={Boolean(errors.telegram_username)}
+                  helperText={errors.telegram_username}
+                />
+              </Box>
             </Box>
-            <Box>
-              <TextField
-                label={t('shop.checkout.shippingType')}
-                value={formState.shipping_type}
-                onChange={handleChange('shipping_type')}
-                fullWidth
-                select
-                disabled
-                slotProps={{
-                  inputLabel: {
-                    shrink: true,
-                  },
-                }}
-              >
-                <MenuItem value="BTS">{t('shop.checkout.shippingTypeBts')}</MenuItem>
-              </TextField>
-              {renderTooltipIcon(t('shop.checkout.shippingTypeHint'))}
-            </Box>
-            <Box sx={{ gridColumn: { xs: 'auto', sm: '1 / -1' } }}>
-              <TextField
-                label={t('shop.checkout.fullName')}
-                value={formState.full_name}
-                onChange={handleChange('full_name')}
-                fullWidth
-                error={Boolean(errors.full_name)}
-                helperText={errors.full_name}
-              />
-            </Box>
-            <Box sx={{ gridColumn: { xs: 'auto', sm: '1 / -1' } }}>
-              <TextField
-                label={t('shop.checkout.phone')}
-                value={formState.phone}
-                onChange={handleChange('phone')}
-                fullWidth
-                error={Boolean(errors.phone)}
-                helperText={errors.phone}
-              />
-            </Box>
-            <Box sx={{ gridColumn: { xs: 'auto', sm: '1 / -1' } }}>
-              <TextField
-                label={t('shop.checkout.address')}
-                value={formState.address}
-                onChange={handleChange('address')}
-                fullWidth
-                error={Boolean(errors.address)}
-                helperText={errors.address}
-              />
-            </Box>
-            <Box sx={{ gridColumn: { xs: 'auto', sm: '1 / -1' } }}>
-              <TextField
-                label={t('shop.checkout.telegram')}
-                value={formState.telegram_username}
-                onChange={handleChange('telegram_username')}
-                fullWidth
-                error={Boolean(errors.telegram_username)}
-                helperText={errors.telegram_username}
-              />
-            </Box>
+          </Stack>
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 3 }}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Typography variant="caption" color="text.secondary">
+              {disabledReason}
+            </Typography>
           </Box>
-        </Stack>
-      </DialogContent>
-      <DialogActions sx={{ px: 3, pb: 3 }}>
-        <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="caption" color="text.secondary">
-            {disabledReason}
-          </Typography>
-        </Box>
-        <Button onClick={onClose} color="inherit" disabled={isMutating}>
-          {t('shop.checkout.cancel')}
-        </Button>
-        <Button
-          onClick={handleConfirm}
-          variant="contained"
-          disabled={!canSubmit || isMutating || Boolean(disabledReason)}
-        >
-          {t('shop.checkout.buy')}
-        </Button>
-      </DialogActions>
-    </Dialog>
+          <Button onClick={onClose} color="inherit" disabled={isMutating}>
+            {t('shop.checkout.cancel')}
+          </Button>
+          <Button
+            onClick={handleSubmitClick}
+            variant="contained"
+            disabled={!canSubmit || isMutating || Boolean(disabledReason)}
+          >
+            {t('shop.checkout.buy')}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={Boolean(pendingPayload)}
+        onClose={() => !isMutating && setPendingPayload(null)}
+        fullWidth
+        maxWidth="xs"
+      >
+        <DialogTitle>{t('kepcoinSpend.confirmTitle')}</DialogTitle>
+        <DialogContent>
+          <Stack spacing={2}>
+            <DialogContentText>{t('kepcoinSpend.confirmDescription')}</DialogContentText>
+            <Stack direction="row" alignItems="center" justifyContent="space-between">
+              <Typography variant="body2" color="text.secondary">
+                {t('shop.checkout.price')}
+              </Typography>
+              <KepcoinValue value={price} iconSize={20} textVariant="body2" fontWeight={700} />
+            </Stack>
+            <Stack direction="row" alignItems="center" justifyContent="space-between">
+              <Typography variant="body2" color="text.secondary">
+                {t('kepcoinSpend.balanceLabel')}
+              </Typography>
+              <KepcoinValue
+                value={(currentUser?.kepcoin ?? 0).toLocaleString()}
+                iconSize={20}
+                textVariant="body2"
+                fontWeight={700}
+              />
+            </Stack>
+          </Stack>
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={() => setPendingPayload(null)} color="inherit" disabled={isMutating}>
+            {t('kepcoinSpend.cancelAction')}
+          </Button>
+          <Button onClick={handleConfirmPurchase} variant="contained" disabled={isMutating}>
+            {t('kepcoinSpend.confirmAction')}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
 
