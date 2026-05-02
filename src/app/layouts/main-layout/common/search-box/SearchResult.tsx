@@ -28,18 +28,13 @@ import { HttpUsersRepository } from 'modules/users/data-access/repository/http.u
 import { HttpProblemsRepository } from 'modules/problems/data-access/repository/http.problems.repository';
 import { HttpContestsRepository } from 'modules/contests/data-access/repository/http.contests.repository';
 import { HttpBlogRepository } from 'modules/blog/data-access/repository/http.blog.repository';
-import { UsersListItem } from 'modules/users/domain/entities/user.entity';
-import { ProblemListItem } from 'modules/problems/domain/entities/problem.entity';
-import { ContestListItem } from 'modules/contests/domain/entities/contest.entity';
-import { BlogPost } from 'modules/blog/domain/entities/blog.entity';
+import type { UsersListItem } from 'modules/users/domain/entities/user.entity';
+import type { ProblemListItem } from 'modules/problems/domain/entities/problem.entity';
+import type { ContestListItem } from 'modules/contests/domain/entities/contest.entity';
+import type { BlogPost } from 'modules/blog/domain/entities/blog.entity';
 import { useDebouncedValue } from 'shared/hooks/useDebouncedValue';
 import { clearRecentPages, getRecentPages, RecentPage } from 'shared/lib/recent-pages';
 import type { TFunction } from 'i18next';
-
-const usersRepository = new HttpUsersRepository();
-const problemsRepository = new HttpProblemsRepository();
-const contestsRepository = new HttpContestsRepository();
-const blogRepository = new HttpBlogRepository();
 
 type ResourceResult = {
   path: string;
@@ -64,6 +59,10 @@ const SearchResult = ({ handleClose }: { handleClose: () => void }) => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [recentPages, setRecentPages] = useState<RecentPage[]>([]);
+  const usersRepository = useMemo(() => new HttpUsersRepository(), []);
+  const problemsRepository = useMemo(() => new HttpProblemsRepository(), []);
+  const contestsRepository = useMemo(() => new HttpContestsRepository(), []);
+  const blogRepository = useMemo(() => new HttpBlogRepository(), []);
 
   const debouncedQuery = useDebouncedValue(searchQuery.trim(), 300);
   const canSearch = debouncedQuery.length >= 2;
