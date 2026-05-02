@@ -27,7 +27,9 @@ const AttemptVerdict = ({
     verdict !== undefined && verdictColorMap[verdict] ? verdictColorMap[verdict] : 'default';
   const shortTitleRaw = verdict !== undefined ? verdictShortTitle[verdict as VerdictKey] : '';
   const ballLabel = useMemo(() => formatBallsLabel(balls), [balls]);
-  const shortTitle = verdict === Verdicts.PartialSolution ? ballLabel : shortTitleRaw;
+  const fallbackTitle = title.trim() ? title.trim().slice(0, 3).toUpperCase() : '?';
+  const shortTitle =
+    verdict === Verdicts.PartialSolution ? (ballLabel ?? shortTitleRaw) : shortTitleRaw;
   const showTestCase =
     typeof testCaseNumber === 'number' &&
     testCaseNumber > 0 &&
@@ -36,8 +38,8 @@ const AttemptVerdict = ({
   const label = useMemo(() => {
     const parts = [shortTitle];
     if (showTestCase) parts.push(`#${testCaseNumber}`);
-    return parts.join(' ').trim();
-  }, [shortTitle, ballLabel, showTestCase, testCaseNumber, verdict]);
+    return parts.join(' ').trim() || fallbackTitle;
+  }, [shortTitle, fallbackTitle, showTestCase, testCaseNumber]);
 
   return (
     <Tooltip title={title}>

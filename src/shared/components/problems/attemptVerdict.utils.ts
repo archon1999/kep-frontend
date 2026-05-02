@@ -63,11 +63,11 @@ export const verdictShortTitle: Record<VerdictKey, string> = {
   [Verdicts.CommandExecutingError]: 'CEE',
   [Verdicts.IdlenessLimitExceeded]: 'IL',
   [Verdicts.SyntaxError]: 'SE',
-  [Verdicts.CheckerNotFound]: '',
-  [Verdicts.OnlyPython]: '',
-  [Verdicts.ObjectNotFound]: '',
-  [Verdicts.PartialSolution]: '',
-  [Verdicts.NotAvailableLanguage]: '',
+  [Verdicts.CheckerNotFound]: 'CNF',
+  [Verdicts.OnlyPython]: 'PY',
+  [Verdicts.ObjectNotFound]: 'ONF',
+  [Verdicts.PartialSolution]: 'PS',
+  [Verdicts.NotAvailableLanguage]: 'NAL',
   [Verdicts.FakeAccepted]: 'AC',
 };
 
