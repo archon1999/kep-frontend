@@ -34,13 +34,18 @@ import {
   contestHasPenalties,
   contestUsesRating,
   formatContestPoints,
+  isAcmStyle,
 } from 'modules/contests/ui/shared/utils/contestType';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { booleanFlagParam, stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import ContestantResultsDialog from './ContestantResultsDialog';
+
+const getStandingsRowId = (row: ContestantEntity) =>
+  `${row.rowType ?? 'official'}-${row.id ?? row.username}-${row.virtualTime ?? ''}`;
 
 const ContestStandingsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -123,6 +128,34 @@ const ContestStandingsPage = () => {
   const contestants = standings?.data ?? [];
   const selectedContestantId =
     selectedContestant?.rowType !== 'upsolve' ? selectedContestant?.id : undefined;
+  const acmScoreGroupRowClasses = useMemo(() => {
+    const rowClasses = new Map<string, string>();
+
+    if (!isAcmStyle(contest?.type)) {
+      return rowClasses;
+    }
+
+    let lastPoints: string | null = null;
+    let groupIndex = -1;
+
+    contestants.forEach((contestant) => {
+      if (contestant.rowType === 'upsolve') {
+        return;
+      }
+
+      const points = formatContestPoints(contestant.points);
+      if (points !== lastPoints) {
+        groupIndex += 1;
+        lastPoints = points;
+      }
+
+      if (groupIndex % 2 === 1) {
+        rowClasses.set(getStandingsRowId(contestant), 'MuiDataGrid-row--scoreGroupMuted');
+      }
+    });
+
+    return rowClasses;
+  }, [contest?.type, contestants]);
   const rowCountRef = useRef(0);
   const total = useMemo(() => {
     if (standings?.total !== undefined) {
@@ -286,6 +319,21 @@ const ContestStandingsPage = () => {
         align: 'center',
         headerAlign: 'center',
         sortable: false,
+        renderHeader: () => (
+          <Tooltip title={t('contests.standings.delta')} arrow>
+            <Box
+              component="span"
+              sx={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'text.primary',
+              }}
+            >
+              <IconifyIcon icon="mdi:delta" fontSize={20} />
+            </Box>
+          </Tooltip>
+        ),
         renderCell: ({ row }) => {
           if (row.rowType === 'upsolve' || row.isVirtual) {
             return (
@@ -470,22 +518,30 @@ const ContestStandingsPage = () => {
 
           setSelectedContestant(row);
         }}
-        getRowId={(row) =>
-          `${row.rowType ?? 'official'}-${row.id ?? row.username}-${row.virtualTime ?? ''}`
-        }
+        getRowId={getStandingsRowId}
         getRowClassName={({ row }) =>
           [
             row.username === currentUser?.username ? 'MuiDataGrid-row--current' : '',
+            acmScoreGroupRowClasses.get(getStandingsRowId(row)) ?? '',
             row.rowType !== 'upsolve' && row.id ? 'MuiDataGrid-row--clickable' : '',
           ]
             .filter(Boolean)
             .join(' ')
         }
-        sx={{
+        sx={(theme) => ({
+          '& .MuiDataGrid-row--scoreGroupMuted': {
+            bgcolor: '#f7f7f7',
+            ...theme.applyStyles('dark', {
+              bgcolor: '#111418',
+            }),
+          },
+          '& .MuiDataGrid-row:hover': {
+            bgcolor: 'primary.lighter',
+          },
           '& .MuiDataGrid-row--clickable': {
             cursor: 'pointer',
           },
-        }}
+        })}
       />
 
       <ContestantResultsDialog
