@@ -1,7 +1,17 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box, Button, Card, CardContent, Grid, Skeleton, Stack } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Grid,
+  Skeleton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceByParams, resources } from 'app/routes/resources';
@@ -9,12 +19,14 @@ import {
   contestsQueries,
   useContest,
   useContestProblems,
+  useContestStatisticsSummary,
 } from 'modules/contests/application/queries';
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
 import ContestCard from 'modules/contests/ui/shared/components/ContestCard';
 import ContestCountdownCard from 'modules/contests/ui/shared/components/ContestCountdownCard';
 import ContestPageHeader from 'modules/contests/ui/shared/components/ContestPageHeader';
 import ContestTypeInfoCard from 'modules/contests/ui/shared/components/ContestTypeInfoCard';
+import KepIcon from 'shared/components/base/KepIcon';
 import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
@@ -26,7 +38,7 @@ const VIRTUAL_CONTEST_COST = 5;
 const ContestPage = () => {
   const { id } = useParams<{ id: string }>();
   const contestId = id ? Number(id) : undefined;
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const redirectToLogin = useLoginRedirect();
@@ -44,6 +56,8 @@ const ContestPage = () => {
     undefined,
     canLoadContestProblems,
   );
+  const { data: statisticsSummary, isLoading: isStatisticsSummaryLoading } =
+    useContestStatisticsSummary(contestId);
   const [isRegistrationLoading, setIsRegistrationLoading] = useState(false);
   const [isVirtualLoading, setIsVirtualLoading] = useState(false);
   useDocumentTitle('pageTitles.contest', { contestTitle: contest?.title });
@@ -51,6 +65,64 @@ const ContestPage = () => {
   const showProblemsPreview = canLoadContestProblems;
   const canRegister = contest ? contest.statusCode !== ContestStatus.Finished : false;
   const isPreviewLoading = isContestLoading || (canLoadContestProblems && problemsLoading);
+  const resolvedLocale = useMemo(() => {
+    const normalized = (i18n.language || '').replace('_', '-');
+    try {
+      const [canonical] = Intl.getCanonicalLocales(normalized || []);
+      return canonical || undefined;
+    } catch {
+      return undefined;
+    }
+  }, [i18n.language]);
+  const integerFormatter = useMemo(
+    () => new Intl.NumberFormat(resolvedLocale, { maximumFractionDigits: 0 }),
+    [resolvedLocale],
+  );
+  const percentFormatter = useMemo(
+    () => new Intl.NumberFormat(resolvedLocale, { maximumFractionDigits: 2 }),
+    [resolvedLocale],
+  );
+  const overviewKpis = useMemo(
+    () => [
+      {
+        key: 'participants',
+        icon: 'users',
+        label: t('contests.statisticsPage.participants'),
+        value:
+          statisticsSummary?.participants !== undefined
+            ? integerFormatter.format(statisticsSummary.participants)
+            : null,
+      },
+      {
+        key: 'attempts',
+        icon: 'attempts',
+        label: t('contests.statisticsPage.totalAttempts'),
+        value:
+          statisticsSummary?.attempts?.total !== undefined
+            ? integerFormatter.format(statisticsSummary.attempts.total)
+            : null,
+      },
+      {
+        key: 'accepted',
+        icon: 'verdict',
+        label: t('contests.statisticsPage.totalAccepted'),
+        value:
+          statisticsSummary?.accepted?.total !== undefined
+            ? integerFormatter.format(statisticsSummary.accepted.total)
+            : null,
+      },
+      {
+        key: 'acceptance',
+        icon: 'statistics',
+        label: t('contests.statisticsPage.acceptance'),
+        value:
+          statisticsSummary?.acceptanceRate !== undefined
+            ? `${percentFormatter.format(statisticsSummary.acceptanceRate)}%`
+            : null,
+      },
+    ],
+    [integerFormatter, percentFormatter, statisticsSummary, t],
+  );
 
   const handleRegistrationToggle = useCallback(async () => {
     if (!contestId || !contest) return;
@@ -160,19 +232,59 @@ const ContestPage = () => {
 
       <Grid container spacing={3}>
         <Grid size={{ xs: 12, md: 8 }}>
-          {contest ? (
-            <ContestCard contest={contest} />
-          ) : (
-            <Card variant="outlined" sx={{ borderRadius: 3 }}>
-              <CardContent>
-                <Stack spacing={1.5}>
-                  <Skeleton height={32} width="60%" />
-                  <Skeleton height={18} width="90%" />
-                  <Skeleton height={18} width="80%" />
-                </Stack>
-              </CardContent>
-            </Card>
-          )}
+          <Stack spacing={3}>
+            {contest ? (
+              <ContestCard contest={contest} />
+            ) : (
+              <Card variant="outlined" sx={{ borderRadius: 3 }}>
+                <CardContent>
+                  <Stack spacing={1.5}>
+                    <Skeleton height={32} width="60%" />
+                    <Skeleton height={18} width="90%" />
+                    <Skeleton height={18} width="80%" />
+                  </Stack>
+                </CardContent>
+              </Card>
+            )}
+
+            <Grid container spacing={2}>
+              {overviewKpis.map((item) => (
+                <Grid size={{ xs: 6 }} key={item.key}>
+                  <Card variant="outlined" sx={{ borderRadius: 2, height: '100%' }}>
+                    <CardContent
+                      sx={{ p: { xs: 1.5, sm: 2 }, '&:last-child': { pb: { xs: 1.5, sm: 2 } } }}
+                    >
+                      <Stack direction="row" spacing={1.25} alignItems="center">
+                        <Avatar
+                          sx={{
+                            width: 38,
+                            height: 38,
+                            bgcolor: 'primary.lighter',
+                            color: 'primary.main',
+                            flexShrink: 0,
+                          }}
+                        >
+                          <KepIcon name={item.icon as any} fontSize={18} />
+                        </Avatar>
+                        <Stack spacing={0.25} minWidth={0}>
+                          <Typography variant="caption" color="text.secondary" noWrap>
+                            {item.label}
+                          </Typography>
+                          {isStatisticsSummaryLoading || item.value === null ? (
+                            <Skeleton width={64} height={28} />
+                          ) : (
+                            <Typography variant="h6" fontWeight={800} noWrap>
+                              {item.value}
+                            </Typography>
+                          )}
+                        </Stack>
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Stack>
         </Grid>
 
         <Grid size={{ xs: 12, md: 4 }}>

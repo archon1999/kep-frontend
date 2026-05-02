@@ -1,31 +1,40 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { Stack, Typography } from '@mui/material';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { Box, Stack, Tooltip, Typography } from '@mui/material';
+import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
-import useGridPagination from 'shared/hooks/useGridPagination';
-import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { useContest, useContestContestants } from 'modules/contests/application/queries';
 import { ContestantEntity } from 'modules/contests/domain/entities/contestant.entity';
+import { ContestContestantsParams } from 'modules/contests/domain/ports/contests.repository';
 import ContestPageHeader from 'modules/contests/ui/shared/components/ContestPageHeader';
 import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
+import useGridPagination from 'shared/hooks/useGridPagination';
+import { responsivePagePaddingSx } from 'shared/lib/styles';
+
+const getContestantsOrdering = (sortModel: GridSortModel): ContestContestantsParams['ordering'] => {
+  const sort = sortModel[0];
+  if (!sort?.sort || (sort.field !== 'rank' && sort.field !== 'delta')) {
+    return undefined;
+  }
+
+  return sort.sort === 'desc' ? `-${sort.field}` : sort.field;
+};
 
 const ContestRatingChangesPage = () => {
   const { id } = useParams<{ id: string }>();
   const contestId = id ? Number(id) : undefined;
   const { t } = useTranslation();
+  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'rank', sort: 'asc' }]);
+  const ordering = getContestantsOrdering(sortModel);
 
   const { data: contest, isLoading: isContestLoading } = useContest(contestId);
-  const { data: contestants = [], isLoading } = useContestContestants(contestId);
+  const { data: contestants = [], isLoading } = useContestContestants(contestId, { ordering });
   useDocumentTitle(contest?.title, { contestTitle: contest?.title });
 
-  const {
-    paginationModel,
-    onPaginationModelChange,
-    pageParams,
-  } = useGridPagination({
+  const { paginationModel, onPaginationModelChange, pageParams } = useGridPagination({
     initialPageSize: 20,
     querySync: {
       pageKey: 'page',
@@ -40,6 +49,7 @@ const ContestRatingChangesPage = () => {
         headerName: '#',
         minWidth: 70,
         flex: 0.3,
+        sortable: true,
         renderCell: ({ row }) => (
           <Typography variant="body2" fontWeight={700}>
             {row.rank ?? '—'}
@@ -51,6 +61,7 @@ const ContestRatingChangesPage = () => {
         headerName: t('contests.ratingChanges.columns.contestant'),
         minWidth: 200,
         flex: 1.2,
+        sortable: false,
         renderCell: ({ row }) => (
           <ContestantView
             contestant={row}
@@ -68,6 +79,7 @@ const ContestRatingChangesPage = () => {
         flex: 0.6,
         align: 'center',
         headerAlign: 'center',
+        sortable: false,
         renderCell: ({ row }) => (
           <Typography color="primary" variant="body2" fontWeight={700}>
             {row.points ?? '—'}
@@ -81,19 +93,37 @@ const ContestRatingChangesPage = () => {
         flex: 0.6,
         align: 'center',
         headerAlign: 'center',
+        sortable: true,
+        renderHeader: () => (
+          <Tooltip title={t('contests.ratingChanges.columns.delta')} arrow>
+            <Box
+              component="span"
+              sx={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'text.primary',
+              }}
+            >
+              <IconifyIcon icon="mdi:delta" fontSize={20} />
+            </Box>
+          </Tooltip>
+        ),
         renderCell: ({ row }) => (
           <Typography
             variant="body2"
             fontWeight={700}
             color={
-              row.delta && row.delta > 0
+              row.delta !== undefined && row.delta !== null && row.delta > 0
                 ? 'success.main'
-                : row.delta && row.delta < 0
+                : row.delta !== undefined && row.delta !== null && row.delta < 0
                   ? 'error.main'
                   : 'text.primary'
             }
           >
-            {row.delta ? `${row.delta > 0 ? '+' : ''}${row.delta}` : '—'}
+            {row.delta !== undefined && row.delta !== null
+              ? `${row.delta > 0 ? '+' : ''}${row.delta}`
+              : '—'}
           </Typography>
         ),
       },
@@ -102,6 +132,7 @@ const ContestRatingChangesPage = () => {
         headerName: t('contests.ratingChanges.columns.rating'),
         minWidth: 200,
         flex: 0.9,
+        sortable: false,
         renderCell: ({ row }) => (
           <Stack direction="row" spacing={1} alignItems="center">
             {row.rating ? (
@@ -156,6 +187,10 @@ const ContestRatingChangesPage = () => {
         rows={paginatedRows}
         columns={columns}
         loading={isLoading}
+        sortingMode="server"
+        sortModel={sortModel}
+        onSortModelChange={setSortModel}
+        sortingOrder={['asc', 'desc']}
         rowCount={contestants.length}
         paginationMode="client"
         paginationModel={paginationModel}

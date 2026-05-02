@@ -9,7 +9,10 @@ import { ContestProblemEntity } from '../domain/entities/contest-problem.entity'
 import { ContestQuestion } from '../domain/entities/contest-question.entity';
 import { ContestRatingRow } from '../domain/entities/contest-rating.entity';
 import { ContestRegistrant } from '../domain/entities/contest-registrant.entity';
-import { ContestStatistics } from '../domain/entities/contest-statistics.entity';
+import {
+  ContestStatistics,
+  ContestStatisticsGeneral,
+} from '../domain/entities/contest-statistics.entity';
 import {
   ContestRatingChange,
   ContestUserStatistics,
@@ -25,6 +28,7 @@ import {
   ContestantTimeline,
 } from '../domain/entities/contestant.entity';
 import {
+  ContestContestantsParams,
   ContestRegistrantsParams,
   ContestStandingsParams,
   PageResult,
@@ -162,9 +166,19 @@ export const useContestStatistics = (contestId?: number | string) =>
     contestsRepository.statistics(contestId!),
   );
 
-export const useContestContestants = (contestId?: number | string) =>
-  useSWR<ContestantEntity[]>(contestId ? ['contest-contestants', contestId] : null, () =>
-    contestsRepository.contestants(contestId!),
+export const useContestStatisticsSummary = (contestId?: number | string) =>
+  useSWR<ContestStatisticsGeneral>(
+    contestId ? ['contest-statistics-summary', contestId] : null,
+    () => contestsRepository.statisticsSummary(contestId!),
+  );
+
+export const useContestContestants = (
+  contestId?: number | string,
+  params?: ContestContestantsParams,
+) =>
+  useSWR<ContestantEntity[]>(
+    contestId ? ['contest-contestants', contestId, params?.ordering] : null,
+    () => contestsRepository.contestants(contestId!, params),
   );
 
 export const contestsQueries = {

@@ -12,6 +12,7 @@ import { ContestStatistics } from '../../domain/entities/contest-statistics.enti
 import { ContestCategoryEntity, ContestListItem } from '../../domain/entities/contest.entity';
 import { ContestFilter, ContestantEntity } from '../../domain/entities/contestant.entity';
 import {
+  ContestContestantsParams,
   ContestRegistrantsParams,
   ContestStandingsParams,
   ContestsRepository,
@@ -24,6 +25,7 @@ import { mapContestQuestions } from '../mappers/contest-questions.mapper';
 import {
   mapContestRatingChange,
   mapContestStatistics,
+  mapContestStatisticsGeneral,
   mapContestUserStatistics,
 } from '../mappers/contest-statistics.mapper';
 import {
@@ -121,8 +123,13 @@ export class HttpContestsRepository implements ContestsRepository {
     return mapContestFilters(result);
   }
 
-  async contestants(contestId: number | string): Promise<ContestantEntity[]> {
-    const result = await contestsApiClient.getContestants(contestId);
+  async contestants(
+    contestId: number | string,
+    params?: ContestContestantsParams,
+  ): Promise<ContestantEntity[]> {
+    const result = await contestsApiClient.getContestants(contestId, {
+      ordering: params?.ordering,
+    });
     const contestants = Array.isArray(result) ? result : ((result as any)?.contestants ?? []);
     return mapContestantList(contestants);
   }
@@ -156,6 +163,11 @@ export class HttpContestsRepository implements ContestsRepository {
   async statistics(contestId: number | string): Promise<ContestStatistics> {
     const result = await contestsApiClient.getStatistics(contestId);
     return mapContestStatistics(result);
+  }
+
+  async statisticsSummary(contestId: number | string) {
+    const result = await contestsApiClient.getStatisticsSummary(contestId);
+    return mapContestStatisticsGeneral(result);
   }
 
   async submitSolution(

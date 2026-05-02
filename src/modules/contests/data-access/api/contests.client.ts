@@ -36,8 +36,12 @@ export const contestsApiClient = {
       method: 'GET',
     }),
   getFilters: (id: number | string) => apiClient.apiContestsFilters(String(id)) as Promise<any>,
-  getContestants: (id: number | string) =>
-    apiClient.apiContestsContestants(String(id)) as Promise<any>,
+  getContestants: (id: number | string, params?: { ordering?: string }) =>
+    axiosMutator<any>({
+      url: `/api/contests/${id}/contestants/`,
+      method: 'GET',
+      params,
+    }),
   getRegistrants: (id: number | string, params?: ApiContestsRegistrantsListParams) =>
     apiClient.apiContestsRegistrantsList(String(id), params) as Promise<any>,
   getQuestions: (id: number | string) => apiClient.apiContestsQuestions(String(id)) as Promise<any>,
@@ -49,6 +53,11 @@ export const contestsApiClient = {
     apiClient.apiContestsNewQuestion(String(id), payload as any),
   getStatistics: (id: number | string) =>
     apiClient.apiContestsStatistics(String(id)) as Promise<any>,
+  getStatisticsSummary: (id: number | string) =>
+    axiosMutator<any>({
+      url: `/api/contests/${id}/statistics-summary/`,
+      method: 'GET',
+    }),
   submitSolution: (
     id: number | string,
     payload: { contestProblem: string; sourceCode: string; lang: string },

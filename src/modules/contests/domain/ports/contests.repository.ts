@@ -8,7 +8,7 @@ import { ContestProblemEntity } from '../entities/contest-problem.entity';
 import { ContestQuestion } from '../entities/contest-question.entity';
 import { ContestRatingRow } from '../entities/contest-rating.entity';
 import { ContestRegistrant } from '../entities/contest-registrant.entity';
-import { ContestStatistics } from '../entities/contest-statistics.entity';
+import { ContestStatistics, ContestStatisticsGeneral } from '../entities/contest-statistics.entity';
 import {
   ContestRatingChange,
   ContestUserStatistics,
@@ -46,7 +46,10 @@ export interface ContestsRepository {
     contestantId: number | string,
   ) => Promise<ContestantTimeline>;
   filters: (contestId: number | string) => Promise<ContestFilter[]>;
-  contestants: (contestId: number | string) => Promise<ContestantEntity[]>;
+  contestants: (
+    contestId: number | string,
+    params?: ContestContestantsParams,
+  ) => Promise<ContestantEntity[]>;
   registrants: (
     contestId: number | string,
     params?: ContestRegistrantsParams,
@@ -57,6 +60,7 @@ export interface ContestsRepository {
     payload: { problem?: string | null; question: string },
   ) => Promise<void>;
   statistics: (contestId: number | string) => Promise<ContestStatistics>;
+  statisticsSummary: (contestId: number | string) => Promise<ContestStatisticsGeneral>;
   submitSolution: (
     contestId: number | string,
     payload: { contestProblem: string; sourceCode: string; lang: string },
@@ -73,6 +77,10 @@ export interface ContestStandingsParams {
   filter?: number | string | null;
   following?: boolean;
   official?: boolean;
+}
+
+export interface ContestContestantsParams {
+  ordering?: 'rank' | '-rank' | 'delta' | '-delta';
 }
 
 export interface ContestRegistrantsParams {

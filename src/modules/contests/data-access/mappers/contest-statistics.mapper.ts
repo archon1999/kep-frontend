@@ -1,4 +1,13 @@
 import {
+  ContestStatistics,
+  ContestStatisticsBadgeEntry,
+  ContestStatisticsContestant,
+  ContestStatisticsFirstSolve,
+  ContestStatisticsSummary,
+  ContestStatisticsTimelineEntry,
+  ContestStatisticsVerdicts,
+} from '../../domain/entities/contest-statistics.entity';
+import {
   ContestRatingChange,
   ContestUserStatistics,
   ContestUserStatisticsContestDeltaEntry,
@@ -18,15 +27,6 @@ import {
   ContestUserStatisticsUnsolvedProblem,
   ContestUserStatisticsVerdict,
 } from '../../domain/entities/contest-user-statistics.entity';
-import {
-  ContestStatistics,
-  ContestStatisticsBadgeEntry,
-  ContestStatisticsContestant,
-  ContestStatisticsFirstSolve,
-  ContestStatisticsSummary,
-  ContestStatisticsTimelineEntry,
-  ContestStatisticsVerdicts,
-} from '../../domain/entities/contest-statistics.entity';
 import { ContestantTeamMember } from '../../domain/entities/contestant.entity';
 
 const toNumber = (value: any): number => {
@@ -204,8 +204,11 @@ export const mapContestRatingChange = (payload: any): ContestRatingChange => ({
     payload?.title ??
     payload?.contest?.title ??
     '',
-  newRating: toNumber(payload?.newRating ?? payload?.new_rating ?? payload?.rating ?? payload?.value),
-  newRatingTitle: payload?.newRatingTitle ?? payload?.new_rating_title ?? payload?.ratingTitle ?? '',
+  newRating: toNumber(
+    payload?.newRating ?? payload?.new_rating ?? payload?.rating ?? payload?.value,
+  ),
+  newRatingTitle:
+    payload?.newRatingTitle ?? payload?.new_rating_title ?? payload?.ratingTitle ?? '',
   delta: toNumber(payload?.delta ?? payload?.ratingDelta ?? payload?.change ?? payload?.diff),
   rank: toNumber(payload?.rank ?? payload?.contest_rank ?? payload?.place ?? payload?.position),
 });
@@ -235,6 +238,15 @@ const mapStatisticsContestant = (payload: any): ContestStatisticsContestant => (
 const mapStatisticsSummary = (payload: any): ContestStatisticsSummary => ({
   total: toNumber(payload?.total ?? payload?.count),
   byProblem: payload?.byProblem ?? payload?.by_problem ?? payload?.problems ?? {},
+});
+
+export const mapContestStatisticsGeneral = (payload: any) => ({
+  participants: toNumber(
+    payload?.participants ?? payload?.participantsCount ?? payload?.participants_count,
+  ),
+  attempts: mapStatisticsSummary(payload?.attempts ?? {}),
+  accepted: mapStatisticsSummary(payload?.accepted ?? {}),
+  acceptanceRate: toNumber(payload?.acceptanceRate ?? payload?.acceptance_rate),
 });
 
 const mapStatisticsVerdicts = (payload: any): ContestStatisticsVerdicts => ({
@@ -277,22 +289,7 @@ const mapStatisticsBadges = (payload: any) => ({
 });
 
 export const mapContestStatistics = (payload: any): ContestStatistics => ({
-  general: {
-    participants: toNumber(
-      payload?.general?.participants ??
-        payload?.participants ??
-        payload?.general?.participantsCount ??
-        payload?.general?.participants_count,
-    ),
-    attempts: mapStatisticsSummary(payload?.general?.attempts ?? payload?.attempts ?? {}),
-    accepted: mapStatisticsSummary(payload?.general?.accepted ?? payload?.accepted ?? {}),
-    acceptanceRate: toNumber(
-      payload?.general?.acceptanceRate ??
-        payload?.general?.acceptance_rate ??
-        payload?.acceptanceRate ??
-        payload?.acceptance_rate,
-    ),
-  },
+  general: mapContestStatisticsGeneral(payload?.general ?? payload),
   timeline: (payload?.timeline ?? []).map(mapStatisticsTimelineEntry),
   verdicts: mapStatisticsVerdicts(payload?.verdicts ?? {}),
   firstSolves: Object.entries(payload?.firstSolves ?? payload?.first_solves ?? {}).reduce<
@@ -307,4 +304,5 @@ export const mapContestStatistics = (payload: any): ContestStatistics => ({
 
 export const contestDetailsStatisticsMappers = {
   mapContestStatistics,
+  mapContestStatisticsGeneral,
 };
