@@ -1,17 +1,19 @@
 import { apiClient } from 'shared/api';
+import { axiosMutator } from 'shared/api/http/axiosMutator';
 import {
   ApiContestsList200,
   ApiContestsListParams,
+  ApiContestsNewContestantsListParams,
   ApiContestsRatingList200,
   ApiContestsRatingListParams,
-  ApiContestsNewContestantsListParams,
   ApiContestsRegistrantsListParams,
-  ContestsRatingDetail,
   ContestsCategory,
+  ContestsRatingDetail,
 } from 'shared/api/orval/generated/endpoints/index.schemas';
 
 export const contestsApiClient = {
-  list: (params?: ApiContestsListParams) => apiClient.apiContestsList(params) as Promise<ApiContestsList200>,
+  list: (params?: ApiContestsListParams) =>
+    apiClient.apiContestsList(params) as Promise<ApiContestsList200>,
   categories: () => apiClient.apiContestsCategoriesList() as Promise<ContestsCategory[]>,
   rating: (params?: ApiContestsRatingListParams) =>
     apiClient.apiContestsRatingList(params) as Promise<ApiContestsRatingList200>,
@@ -28,27 +30,34 @@ export const contestsApiClient = {
     apiClient.apiContestsProblem(String(id), { params: { symbol } }) as Promise<any>,
   getStandings: (id: number | string, params?: ApiContestsNewContestantsListParams) =>
     apiClient.apiContestsNewContestantsList(String(id), params as any) as Promise<any>,
+  getContestantTimeline: (contestId: number | string, contestantId: number | string) =>
+    axiosMutator<any>({
+      url: `/api/contests/${contestId}/new-contestants/${contestantId}/timeline`,
+      method: 'GET',
+    }),
   getFilters: (id: number | string) => apiClient.apiContestsFilters(String(id)) as Promise<any>,
-  getContestants: (id: number | string) => apiClient.apiContestsContestants(String(id)) as Promise<any>,
+  getContestants: (id: number | string) =>
+    apiClient.apiContestsContestants(String(id)) as Promise<any>,
   getRegistrants: (id: number | string, params?: ApiContestsRegistrantsListParams) =>
     apiClient.apiContestsRegistrantsList(String(id), params) as Promise<any>,
   getQuestions: (id: number | string) => apiClient.apiContestsQuestions(String(id)) as Promise<any>,
   register: (id: number | string, payload?: Record<string, unknown>) =>
     apiClient.apiContestsRegistrationCreate(String(id), (payload ?? {}) as any),
-  cancelRegistration: (id: number | string) => apiClient.apiContestsCancelRegistration(String(id)) as Promise<any>,
-  submitQuestion: (
-    id: number | string,
-    payload: { problem?: string | null; question: string },
-  ) => apiClient.apiContestsNewQuestion(String(id), payload as any),
-  getStatistics: (id: number | string) => apiClient.apiContestsStatistics(String(id)) as Promise<any>,
+  cancelRegistration: (id: number | string) =>
+    apiClient.apiContestsCancelRegistration(String(id)) as Promise<any>,
+  submitQuestion: (id: number | string, payload: { problem?: string | null; question: string }) =>
+    apiClient.apiContestsNewQuestion(String(id), payload as any),
+  getStatistics: (id: number | string) =>
+    apiClient.apiContestsStatistics(String(id)) as Promise<any>,
   submitSolution: (
     id: number | string,
     payload: { contestProblem: string; sourceCode: string; lang: string },
-  ) => apiClient.apiContestsSubmit(String(id), {
-    contest_problem: payload.contestProblem,
-    source_code: payload.sourceCode,
-    lang: payload.lang,
-  } as any),
+  ) =>
+    apiClient.apiContestsSubmit(String(id), {
+      contest_problem: payload.contestProblem,
+      source_code: payload.sourceCode,
+      lang: payload.lang,
+    } as any),
   purchaseVirtualContest: (id: number | string) =>
     apiClient.apiContestsPurchaseVirtualContest(String(id), {} as any) as Promise<any>,
   startVirtualContest: (id: number | string) =>

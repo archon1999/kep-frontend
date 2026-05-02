@@ -211,7 +211,20 @@
       "followingOnly": "Только за кем слежу",
       "allFilters": "Все фильтры",
       "officialOnly": "Only official",
-      "problemTotals": "{{solved}} решено / {{attempts}} попыток"
+      "problemTotals": "{{solved}} решено / {{attempts}} попыток",
+      "contestantResults": "Результаты участника",
+      "progressChart": "Решенные задачи по времени",
+      "problem": "Задача",
+      "solved": "решено",
+      "attempts": "Попытки",
+      "compareWith": "Сравнить с",
+      "comparePlaceholder": "Поиск участника",
+      "noContestantsFound": "Участники не найдены",
+      "rankMetric": "Место",
+      "pointsMetric": "Очки",
+      "penaltiesMetric": "Штраф",
+      "primaryContestant": "Основной",
+      "comparisonContestant": "Сравнение"
     },
     "contestantStatus": {
       "official": "Официально",

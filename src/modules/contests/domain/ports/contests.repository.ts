@@ -3,19 +3,19 @@ import {
   ApiContestsRatingListParams,
   ApiContestsRegistrantsListOrdering,
 } from 'shared/api/orval/generated/endpoints/index.schemas';
-import { ContestCategoryEntity, ContestListItem } from '../entities/contest.entity';
 import { ContestDetail } from '../entities/contest-detail.entity';
 import { ContestProblemEntity } from '../entities/contest-problem.entity';
 import { ContestQuestion } from '../entities/contest-question.entity';
 import { ContestRatingRow } from '../entities/contest-rating.entity';
+import { ContestRegistrant } from '../entities/contest-registrant.entity';
+import { ContestStatistics } from '../entities/contest-statistics.entity';
 import {
   ContestRatingChange,
   ContestUserStatistics,
 } from '../entities/contest-user-statistics.entity';
-import { ContestStatistics } from '../entities/contest-statistics.entity';
-import { ContestantEntity, ContestFilter } from '../entities/contestant.entity';
-import { ContestRegistrant } from '../entities/contest-registrant.entity';
+import { ContestCategoryEntity, ContestListItem } from '../entities/contest.entity';
 import { ContestTopContestant } from '../entities/contest.entity';
+import { ContestFilter, ContestantEntity, ContestantTimeline } from '../entities/contestant.entity';
 
 export interface PageResult<T> {
   page: number;
@@ -41,6 +41,10 @@ export interface ContestsRepository {
     contestId: number | string,
     params?: ContestStandingsParams,
   ) => Promise<PageResult<ContestantEntity>>;
+  contestantTimeline: (
+    contestId: number | string,
+    contestantId: number | string,
+  ) => Promise<ContestantTimeline>;
   filters: (contestId: number | string) => Promise<ContestFilter[]>;
   contestants: (contestId: number | string) => Promise<ContestantEntity[]>;
   registrants: (

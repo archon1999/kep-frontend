@@ -1,15 +1,16 @@
+import { sortContestProblems } from 'modules/contests/ui/shared/utils/sortContestProblems';
 import {
   ApiContestsListParams,
   ApiContestsRatingListParams,
 } from 'shared/api/orval/generated/endpoints/index.schemas';
-import { ContestCategoryEntity, ContestListItem } from '../../domain/entities/contest.entity';
 import { ContestDetail } from '../../domain/entities/contest-detail.entity';
 import { ContestProblemEntity } from '../../domain/entities/contest-problem.entity';
 import { ContestQuestion } from '../../domain/entities/contest-question.entity';
 import { ContestRatingRow } from '../../domain/entities/contest-rating.entity';
-import { ContestStatistics } from '../../domain/entities/contest-statistics.entity';
-import { ContestantEntity, ContestFilter } from '../../domain/entities/contestant.entity';
 import { ContestRegistrant } from '../../domain/entities/contest-registrant.entity';
+import { ContestStatistics } from '../../domain/entities/contest-statistics.entity';
+import { ContestCategoryEntity, ContestListItem } from '../../domain/entities/contest.entity';
+import { ContestFilter, ContestantEntity } from '../../domain/entities/contestant.entity';
 import {
   ContestRegistrantsParams,
   ContestStandingsParams,
@@ -18,6 +19,13 @@ import {
 } from '../../domain/ports/contests.repository';
 import { contestsApiClient } from '../api/contests.client';
 import { mapContestDetail } from '../mappers/contest-detail.mapper';
+import { mapContestProblem } from '../mappers/contest-problem.mapper';
+import { mapContestQuestions } from '../mappers/contest-questions.mapper';
+import {
+  mapContestRatingChange,
+  mapContestStatistics,
+  mapContestUserStatistics,
+} from '../mappers/contest-statistics.mapper';
 import {
   mapCategory,
   mapContest,
@@ -25,21 +33,14 @@ import {
   mapContestTopContestant,
   mapPageResult,
 } from '../mappers/contest.mapper';
-import { mapContestProblem } from '../mappers/contest-problem.mapper';
 import {
-  mapContestRatingChange,
-  mapContestStatistics,
-  mapContestUserStatistics,
-} from '../mappers/contest-statistics.mapper';
-import {
-  mapContestant,
-  mapContestantList,
-  mapContestantsPage,
   mapContestFilters,
   mapContestRegistrant,
+  mapContestant,
+  mapContestantList,
+  mapContestantTimeline,
+  mapContestantsPage,
 } from '../mappers/contestant.mapper';
-import { mapContestQuestions } from '../mappers/contest-questions.mapper';
-import { sortContestProblems } from 'modules/contests/ui/shared/utils/sortContestProblems';
 
 export class HttpContestsRepository implements ContestsRepository {
   async list(params?: ApiContestsListParams): Promise<PageResult<ContestListItem>> {
@@ -92,7 +93,7 @@ export class HttpContestsRepository implements ContestsRepository {
 
   async top3Contestants(contestId: number | string) {
     const result = await contestsApiClient.top3Contestants(contestId);
-    const contestants = Array.isArray(result) ? result : (result as any)?.contestants ?? [];
+    const contestants = Array.isArray(result) ? result : ((result as any)?.contestants ?? []);
     return contestants.map(mapContestTopContestant);
   }
 
@@ -110,6 +111,11 @@ export class HttpContestsRepository implements ContestsRepository {
     return mapContestantsPage(result);
   }
 
+  async contestantTimeline(contestId: number | string, contestantId: number | string) {
+    const result = await contestsApiClient.getContestantTimeline(contestId, contestantId);
+    return mapContestantTimeline(result);
+  }
+
   async filters(contestId: number | string): Promise<ContestFilter[]> {
     const result = await contestsApiClient.getFilters(contestId);
     return mapContestFilters(result);
@@ -117,7 +123,7 @@ export class HttpContestsRepository implements ContestsRepository {
 
   async contestants(contestId: number | string): Promise<ContestantEntity[]> {
     const result = await contestsApiClient.getContestants(contestId);
-    const contestants = Array.isArray(result) ? result : (result as any)?.contestants ?? [];
+    const contestants = Array.isArray(result) ? result : ((result as any)?.contestants ?? []);
     return mapContestantList(contestants);
   }
 

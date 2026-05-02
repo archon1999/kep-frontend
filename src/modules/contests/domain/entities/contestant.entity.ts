@@ -2,6 +2,7 @@ import { ContestProblemInfo } from './contest-problem.entity';
 
 export interface ContestantTeamMember {
   username?: string;
+  avatar?: string | null;
   rating?: number;
   ratingTitle?: string;
   newRating?: number;
@@ -17,6 +18,7 @@ export interface ContestantEntity {
   id?: number;
   rowType?: 'official' | 'upsolve';
   username: string;
+  avatar?: string | null;
   userFullName?: string;
   team?: ContestantTeam | null;
   type?: number;
@@ -48,4 +50,19 @@ export interface ContestantEntity {
 export interface ContestFilter {
   id: number | string;
   name: string;
+}
+
+export interface ContestantProgressPoint {
+  contestTimeSeconds: number;
+  contestTime: string;
+  solvedCount: number;
+  attemptsCount: number;
+  problemSymbol?: string | null;
+  verdict?: number | null;
+}
+
+export interface ContestantTimeline {
+  contestant: ContestantEntity;
+  durationSeconds: number;
+  points: ContestantProgressPoint[];
 }

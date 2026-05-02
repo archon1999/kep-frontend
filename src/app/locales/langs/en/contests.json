@@ -192,7 +192,20 @@
       "followingOnly": "Following only",
       "officialOnly": "Official only",
       "allFilters": "All filters",
-      "problemTotals": "{{solved}} solved / {{attempts}} attempts"
+      "problemTotals": "{{solved}} solved / {{attempts}} attempts",
+      "contestantResults": "Contestant results",
+      "progressChart": "Solved problems over time",
+      "problem": "Problem",
+      "solved": "solved",
+      "attempts": "Attempts",
+      "compareWith": "Compare with",
+      "comparePlaceholder": "Search contestant",
+      "noContestantsFound": "No contestants found",
+      "rankMetric": "Rank",
+      "pointsMetric": "Points",
+      "penaltiesMetric": "Penalties",
+      "primaryContestant": "Primary",
+      "comparisonContestant": "Comparison"
     },
     "contestantStatus": {
       "official": "Official",

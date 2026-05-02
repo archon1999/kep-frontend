@@ -19,7 +19,11 @@ import {
   ContestListItem,
   ContestTopContestant,
 } from '../domain/entities/contest.entity';
-import { ContestFilter, ContestantEntity } from '../domain/entities/contestant.entity';
+import {
+  ContestFilter,
+  ContestantEntity,
+  ContestantTimeline,
+} from '../domain/entities/contestant.entity';
 import {
   ContestRegistrantsParams,
   ContestStandingsParams,
@@ -123,6 +127,18 @@ export const useContestStandings = (
       : null,
     () => contestsRepository.standings(contestId!, params),
     refreshInterval ? { refreshInterval } : undefined,
+  );
+
+export const useContestContestantTimeline = (
+  contestId?: number | string,
+  contestantId?: number | string,
+  enabled = true,
+) =>
+  useSWR<ContestantTimeline>(
+    contestId && contestantId && enabled
+      ? ['contest-contestant-timeline', contestId, contestantId]
+      : null,
+    () => contestsRepository.contestantTimeline(contestId!, contestantId!),
   );
 
 export const useContestRegistrants = (

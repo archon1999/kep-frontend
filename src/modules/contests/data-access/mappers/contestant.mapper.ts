@@ -1,5 +1,12 @@
-import { ContestantEntity, ContestantTeam, ContestantTeamMember, ContestFilter } from '../../domain/entities/contestant.entity';
 import { ContestRegistrant } from '../../domain/entities/contest-registrant.entity';
+import {
+  ContestFilter,
+  ContestantEntity,
+  ContestantProgressPoint,
+  ContestantTeam,
+  ContestantTeamMember,
+  ContestantTimeline,
+} from '../../domain/entities/contestant.entity';
 import { mapContestProblemInfo } from './contest-problem.mapper';
 import { mapPageResult } from './contest.mapper';
 
@@ -10,6 +17,7 @@ const toNumber = (value: any): number => {
 
 const mapTeamMember = (payload: any): ContestantTeamMember => ({
   username: payload?.username ?? payload?.user ?? '',
+  avatar: payload?.avatar ?? payload?.user?.avatar ?? null,
   rating: payload?.rating !== undefined ? toNumber(payload.rating) : undefined,
   ratingTitle: payload?.ratingTitle ?? payload?.rating_title ?? undefined,
   newRating: payload?.newRating !== undefined ? toNumber(payload.newRating) : undefined,
@@ -36,6 +44,7 @@ export const mapContestant = (
     id: payload?.id !== undefined ? toNumber(payload.id) : undefined,
     rowType: payload?.rowType ?? payload?.row_type ?? 'official',
     username: payload?.username ?? payload?.user?.username ?? '',
+    avatar: payload?.avatar ?? payload?.user?.avatar ?? null,
     userFullName:
       payload?.userFullName ??
       payload?.user_full_name ??
@@ -43,7 +52,9 @@ export const mapContestant = (
       payload?.user?.fullName,
     team: payload?.team ? mapTeam(payload.team) : null,
     type: payload?.type ?? payload?.contestant_type,
-    problemsInfo: (payload?.problemsInfo ?? payload?.problems_info ?? []).map(mapContestProblemInfo),
+    problemsInfo: (payload?.problemsInfo ?? payload?.problems_info ?? []).map(
+      mapContestProblemInfo,
+    ),
     points: payload?.points !== undefined ? toNumber(payload.points) : undefined,
     solvedCount:
       payload?.solvedCount !== undefined || payload?.solved_count !== undefined
@@ -73,7 +84,9 @@ export const mapContestant = (
     isVirtual: payload?.isVirtual ?? payload?.virtual ?? false,
     isUnrated: payload?.isUnrated ?? payload?.unrated ?? false,
     isOfficial:
-      payload?.isOfficial !== undefined ? Boolean(payload?.isOfficial) : payload?.official ?? undefined,
+      payload?.isOfficial !== undefined
+        ? Boolean(payload?.isOfficial)
+        : (payload?.official ?? undefined),
     virtualTime: payload?.virtualTime ?? payload?.virtual_time ?? null,
     country: payload?.country ?? payload?.user?.country ?? undefined,
     rowIndex:
@@ -103,6 +116,21 @@ export const mapContestFilters = (payload: any): ContestFilter[] => {
   if (!Array.isArray(list)) return [];
   return list.map(mapContestFilter);
 };
+
+export const mapContestantProgressPoint = (payload: any): ContestantProgressPoint => ({
+  contestTimeSeconds: toNumber(payload?.contestTimeSeconds ?? payload?.contest_time_seconds),
+  contestTime: payload?.contestTime ?? payload?.contest_time ?? '00:00',
+  solvedCount: toNumber(payload?.solvedCount ?? payload?.solved_count),
+  attemptsCount: toNumber(payload?.attemptsCount ?? payload?.attempts_count),
+  problemSymbol: payload?.problemSymbol ?? payload?.problem_symbol ?? null,
+  verdict: payload?.verdict ?? null,
+});
+
+export const mapContestantTimeline = (payload: any): ContestantTimeline => ({
+  contestant: mapContestant(payload?.contestant ?? {}),
+  durationSeconds: toNumber(payload?.durationSeconds ?? payload?.duration_seconds),
+  points: (payload?.points ?? []).map(mapContestantProgressPoint),
+});
 
 export const mapContestRegistrant = (
   payload: any,

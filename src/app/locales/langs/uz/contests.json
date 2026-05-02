@@ -209,7 +209,20 @@
       "followingOnly": "Faqat kuzatayotganlar",
       "officialOnly": "Faqat rasmiy",
       "allFilters": "Barcha filtrlar",
-      "problemTotals": "{{solved}} yechildi / {{attempts}} urinish"
+      "problemTotals": "{{solved}} yechildi / {{attempts}} urinish",
+      "contestantResults": "Ishtirokchi natijalari",
+      "progressChart": "Vaqt bo'yicha yechilgan masalalar",
+      "problem": "Masala",
+      "solved": "yechildi",
+      "attempts": "Urinishlar",
+      "compareWith": "Solishtirish",
+      "comparePlaceholder": "Ishtirokchini qidirish",
+      "noContestantsFound": "Ishtirokchi topilmadi",
+      "rankMetric": "O'rin",
+      "pointsMetric": "Ball",
+      "penaltiesMetric": "Jarima",
+      "primaryContestant": "Asosiy",
+      "comparisonContestant": "Solishtirilayotgan"
     },
     "contestantStatus": {
       "official": "Rasmiy",

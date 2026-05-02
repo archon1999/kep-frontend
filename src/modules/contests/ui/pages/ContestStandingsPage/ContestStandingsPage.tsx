@@ -1,15 +1,22 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useParams, useSearchParams } from 'react-router-dom';
-import { Box, Chip, FormControl, Link, MenuItem, Select, Stack, Switch, Tooltip, Typography } from '@mui/material';
+import {
+  Box,
+  Chip,
+  FormControl,
+  Link,
+  MenuItem,
+  Select,
+  Stack,
+  Switch,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceByParams, resources } from 'app/routes/resources';
-import useGridPagination from 'shared/hooks/useGridPagination';
-import useRouteQueryState from 'shared/hooks/useRouteQueryState';
-import { booleanFlagParam, stringParam } from 'shared/lib/queryParams';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
 import {
   useContest,
   useContestFilters,
@@ -19,16 +26,21 @@ import {
 import { ContestProblemEntity } from 'modules/contests/domain/entities/contest-problem.entity';
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
 import { ContestantEntity } from 'modules/contests/domain/entities/contestant.entity';
+import ContestPageHeader from 'modules/contests/ui/shared/components/ContestPageHeader';
+import ContestStandingsCountdown from 'modules/contests/ui/shared/components/ContestStandingsCountdown';
+import ContestantProblemResultCell from 'modules/contests/ui/shared/components/ContestantProblemResultCell';
+import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
 import {
   contestHasPenalties,
   contestUsesRating,
   formatContestPoints,
 } from 'modules/contests/ui/shared/utils/contestType';
-import ContestPageHeader from 'modules/contests/ui/shared/components/ContestPageHeader';
-import ContestStandingsCountdown from 'modules/contests/ui/shared/components/ContestStandingsCountdown';
-import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
-import ContestantProblemResultCell from 'modules/contests/ui/shared/components/ContestantProblemResultCell';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
+import useGridPagination from 'shared/hooks/useGridPagination';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { booleanFlagParam, stringParam } from 'shared/lib/queryParams';
+import { responsivePagePaddingSx } from 'shared/lib/styles';
+import ContestantResultsDialog from './ContestantResultsDialog';
 
 const ContestStandingsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -36,16 +48,23 @@ const ContestStandingsPage = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
   const [searchParams] = useSearchParams();
+  const [selectedContestant, setSelectedContestant] = useState<ContestantEntity | null>(null);
 
   const refreshInterval = 30000;
 
   const { data: contest, isLoading: isContestLoading } = useContest(contestId, {
     refreshInterval,
   });
-  const canLoadContestProblems = Boolean(contest && contest.statusCode !== ContestStatus.NotStarted);
-  const { data: contestProblems = [] } = useContestProblems(contestId, {
-    refreshInterval,
-  }, canLoadContestProblems);
+  const canLoadContestProblems = Boolean(
+    contest && contest.statusCode !== ContestStatus.NotStarted,
+  );
+  const { data: contestProblems = [] } = useContestProblems(
+    contestId,
+    {
+      refreshInterval,
+    },
+    canLoadContestProblems,
+  );
   const { data: contestFilters = [] } = useContestFilters(contestId);
   useDocumentTitle(
     contest?.title ? 'pageTitles.contestStandings' : undefined,
@@ -56,18 +75,14 @@ const ContestStandingsPage = () => {
       : undefined,
   );
 
-  const {
-    paginationModel,
-    onPaginationModelChange,
-    pageParams,
-    setPaginationModel,
-  } = useGridPagination({
-    initialPageSize: 20,
-    querySync: {
-      pageKey: 'page',
-      pageSizeKey: 'pageSize',
-    },
-  });
+  const { paginationModel, onPaginationModelChange, pageParams, setPaginationModel } =
+    useGridPagination({
+      initialPageSize: 20,
+      querySync: {
+        pageKey: 'page',
+        pageSizeKey: 'pageSize',
+      },
+    });
   const { state, setField } = useRouteQueryState({
     defaults: {
       selectedFilter: '',
@@ -106,6 +121,8 @@ const ContestStandingsPage = () => {
   );
 
   const contestants = standings?.data ?? [];
+  const selectedContestantId =
+    selectedContestant?.rowType !== 'upsolve' ? selectedContestant?.id : undefined;
   const rowCountRef = useRef(0);
   const total = useMemo(() => {
     if (standings?.total !== undefined) {
@@ -246,7 +263,9 @@ const ContestStandingsPage = () => {
         renderCell: ({ row }) => (
           <Stack direction="row" spacing={0.5} alignItems="center">
             <Typography variant="body2" fontWeight={800} color="primary.main">
-              {row.points === undefined || row.points === null ? '-' : formatContestPoints(row.points)}
+              {row.points === undefined || row.points === null
+                ? '-'
+                : formatContestPoints(row.points)}
             </Typography>
             {row.rowType !== 'upsolve' && contestHasPenalties(contest?.type, contest?.typeInfo) ? (
               <Typography variant="caption" color="error.main">
@@ -405,7 +424,16 @@ const ContestStandingsPage = () => {
     );
 
     return [...base, ...problemColumns];
-  }, [contest?.id, contest?.isRated, contest?.type, contest?.typeInfo, contestId, contestProblems, problemMap, t]);
+  }, [
+    contest?.id,
+    contest?.isRated,
+    contest?.type,
+    contest?.typeInfo,
+    contestId,
+    contestProblems,
+    problemMap,
+    t,
+  ]);
 
   return (
     <Stack spacing={3} sx={responsivePagePaddingSx}>
@@ -435,10 +463,38 @@ const ContestStandingsPage = () => {
         paginationModel={paginationModel}
         onPaginationModelChange={onPaginationModelChange}
         pageSizeOptions={[10, 20, 50, 100]}
-        getRowId={(row) => `${row.rowType ?? 'official'}-${row.id ?? row.username}-${row.virtualTime ?? ''}`}
-        getRowClassName={({ row }) =>
-          row.username === currentUser?.username ? 'MuiDataGrid-row--current' : ''
+        onRowClick={({ row }) => {
+          if (row.rowType === 'upsolve' || !row.id) {
+            return;
+          }
+
+          setSelectedContestant(row);
+        }}
+        getRowId={(row) =>
+          `${row.rowType ?? 'official'}-${row.id ?? row.username}-${row.virtualTime ?? ''}`
         }
+        getRowClassName={({ row }) =>
+          [
+            row.username === currentUser?.username ? 'MuiDataGrid-row--current' : '',
+            row.rowType !== 'upsolve' && row.id ? 'MuiDataGrid-row--clickable' : '',
+          ]
+            .filter(Boolean)
+            .join(' ')
+        }
+        sx={{
+          '& .MuiDataGrid-row--clickable': {
+            cursor: 'pointer',
+          },
+        }}
+      />
+
+      <ContestantResultsDialog
+        open={Boolean(selectedContestantId)}
+        onClose={() => setSelectedContestant(null)}
+        contestId={contestId}
+        contestantId={selectedContestantId}
+        contestant={selectedContestant}
+        showPenalties={contestHasPenalties(contest?.type, contest?.typeInfo)}
       />
     </Stack>
   );
