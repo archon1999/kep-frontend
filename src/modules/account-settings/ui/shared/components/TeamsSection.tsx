@@ -8,6 +8,11 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Grid,
   LinearProgress,
   Stack,
@@ -24,8 +29,8 @@ import {
   useRefreshTeamCode,
 } from 'modules/account-settings/application';
 import type { AccountTeam } from 'modules/account-settings/domain';
-import { toast } from 'sonner';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import { toast } from 'sonner';
 
 const TeamsSection = () => {
   const { t } = useTranslation();
@@ -39,6 +44,7 @@ const TeamsSection = () => {
 
   const [teamName, setTeamName] = useState('');
   const [joinCode, setJoinCode] = useState('');
+  const [pendingDeleteTeam, setPendingDeleteTeam] = useState<AccountTeam | null>(null);
 
   const isBusy = isCreating || isJoining || isRefreshing || isDeleting;
 
@@ -70,13 +76,14 @@ const TeamsSection = () => {
     await mutate();
   };
 
-  const handleDeleteTeam = async (team: AccountTeam) => {
-    if (!window.confirm(t('settings.confirmDeleteTeam', { name: team.name }))) {
+  const handleConfirmDeleteTeam = async () => {
+    if (!pendingDeleteTeam) {
       return;
     }
 
-    await deleteTeam(team.code);
+    await deleteTeam(pendingDeleteTeam.code);
     toast.success(t('settings.teamDeleted'));
+    setPendingDeleteTeam(null);
     await mutate();
   };
 
@@ -128,7 +135,7 @@ const TeamsSection = () => {
                   size="small"
                   color="error"
                   startIcon={<IconifyIcon icon="material-symbols:delete-outline" />}
-                  onClick={() => handleDeleteTeam(team)}
+                  onClick={() => setPendingDeleteTeam(team)}
                   disabled={isBusy}
                 >
                   {t('settings.deleteTeam')}
@@ -142,46 +149,79 @@ const TeamsSection = () => {
   );
 
   return (
-    <Card sx={{ outline: 'none', borderRadius: 3 }} background={1}>
-      <CardHeader title={t('settings.teams')} />
-      <CardContent>
-        {(isLoading || isBusy) && <LinearProgress sx={{ mb: 3 }} />}
-        <Grid container spacing={3}>
-          <Grid size={{ xs: 12, md: 12 }}>
-            <Stack direction="column" spacing={2}>
-              {data?.length ? (
-                data.map(renderTeamCard)
-              ) : (
-                <Typography color="text.secondary">{t('settings.noTeams')}</Typography>
-              )}
-            </Stack>
-          </Grid>
-          <Grid size={{ xs: 12, md: 12 }}>
-            <Stack direction="column" spacing={2}>
-              <Typography variant="h6">{t('settings.createTeam')}</Typography>
-              <TextField
-                label={t('settings.teamName')}
-                value={teamName}
-                onChange={(event) => setTeamName(event.target.value)}
-              />
-              <Button variant="contained" onClick={handleCreateTeam} disabled={!teamName.trim()}>
-                {t('settings.create')}
-              </Button>
+    <>
+      <Card sx={{ outline: 'none', borderRadius: 3 }} background={1}>
+        <CardHeader title={t('settings.teams')} />
+        <CardContent>
+          {(isLoading || isBusy) && <LinearProgress sx={{ mb: 3 }} />}
+          <Grid container spacing={3}>
+            <Grid size={{ xs: 12, md: 12 }}>
+              <Stack direction="column" spacing={2}>
+                {data?.length ? (
+                  data.map(renderTeamCard)
+                ) : (
+                  <Typography color="text.secondary">{t('settings.noTeams')}</Typography>
+                )}
+              </Stack>
+            </Grid>
+            <Grid size={{ xs: 12, md: 12 }}>
+              <Stack direction="column" spacing={2}>
+                <Typography variant="h6">{t('settings.createTeam')}</Typography>
+                <TextField
+                  label={t('settings.teamName')}
+                  value={teamName}
+                  onChange={(event) => setTeamName(event.target.value)}
+                />
+                <Button variant="contained" onClick={handleCreateTeam} disabled={!teamName.trim()}>
+                  {t('settings.create')}
+                </Button>
 
-              <Typography variant="h6">{t('settings.joinTeam')}</Typography>
-              <TextField
-                label={t('settings.teamCodeLabel')}
-                value={joinCode}
-                onChange={(event) => setJoinCode(event.target.value)}
-              />
-              <Button variant="outlined" onClick={handleJoinTeam} disabled={!joinCode.trim()}>
-                {t('settings.join')}
-              </Button>
-            </Stack>
+                <Typography variant="h6">{t('settings.joinTeam')}</Typography>
+                <TextField
+                  label={t('settings.teamCodeLabel')}
+                  value={joinCode}
+                  onChange={(event) => setJoinCode(event.target.value)}
+                />
+                <Button variant="outlined" onClick={handleJoinTeam} disabled={!joinCode.trim()}>
+                  {t('settings.join')}
+                </Button>
+              </Stack>
+            </Grid>
           </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+
+      <Dialog
+        open={Boolean(pendingDeleteTeam)}
+        onClose={() => {
+          if (!isDeleting) {
+            setPendingDeleteTeam(null);
+          }
+        }}
+        maxWidth="xs"
+        fullWidth
+      >
+        <DialogTitle>{t('settings.deleteTeam')}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {t('settings.confirmDeleteTeam', { name: pendingDeleteTeam?.name ?? '' })}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setPendingDeleteTeam(null)} disabled={isDeleting}>
+            {t('settings.cancel')}
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => void handleConfirmDeleteTeam()}
+            disabled={isDeleting}
+          >
+            {t('settings.deleteTeam')}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
 

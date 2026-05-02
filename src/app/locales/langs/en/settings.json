@@ -82,6 +82,7 @@
     "teamName": "Name",
     "createTeam": "Create team",
     "delete": "Delete",
+    "cancel": "Cancel",
     "deleteTeam": "Delete team",
     "confirmDeleteTeam": "Delete team \"{{name}}\"?",
     "teamDeleted": "Team deleted",

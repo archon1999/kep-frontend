@@ -78,6 +78,7 @@
     "teamName": "Название",
     "createTeam": "Создать команду",
     "delete": "Удалить",
+    "cancel": "Отмена",
     "deleteTeam": "Удалить команду",
     "confirmDeleteTeam": "Удалить команду \"{{name}}\"?",
     "teamDeleted": "Команда удалена",

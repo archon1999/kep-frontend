@@ -82,6 +82,7 @@
     "teamName": "Nomi",
     "createTeam": "Jamoa yaratish",
     "delete": "O'chirish",
+    "cancel": "Bekor qilish",
     "deleteTeam": "Jamoani o'chirish",
     "confirmDeleteTeam": "\"{{name}}\" jamoasi o'chirilsinmi?",
     "teamDeleted": "Jamoa o'chirildi",

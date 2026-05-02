@@ -10,9 +10,9 @@ import {
   Switch,
   Typography,
 } from '@mui/material';
-import { toast } from 'sonner';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { useAccountGeneralInfo, useUpdateGeneralInfo } from 'modules/account-settings/application';
+import { toast } from 'sonner';
 
 const NotificationsSettingsPanel = () => {
   const { t } = useTranslation();
@@ -27,9 +27,7 @@ const NotificationsSettingsPanel = () => {
     setTelegramNotificationsEnabled(generalInfo.telegramNotificationsEnabled);
   }, [generalInfo?.telegramNotificationsEnabled]);
 
-  const handleTelegramNotificationsChange = async (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleTelegramNotificationsChange = async (event: ChangeEvent<HTMLInputElement>) => {
     if (!username || !generalInfo) return;
 
     const nextValue = event.target.checked;
@@ -74,13 +72,14 @@ const NotificationsSettingsPanel = () => {
             </Typography>
           </Stack>
           <FormControlLabel
-            control={(
+            sx={{ m: 0, flexShrink: 0, gap: 1 }}
+            control={
               <Switch
                 checked={telegramNotificationsEnabled}
                 onChange={handleTelegramNotificationsChange}
                 disabled={!username || isLoading || isMutating}
               />
-            )}
+            }
             label={telegramNotificationsEnabled ? t('settings.enabled') : t('settings.disabled')}
           />
         </Stack>

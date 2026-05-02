@@ -1,13 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import {
-  Avatar,
-  Button,
-  Chip,
-  Dialog,
-  DialogContent,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Avatar, Box, Button, Chip, Dialog, DialogContent, Stack, Typography } from '@mui/material';
 import { Challenge } from 'modules/challenges/domain';
 import ChallengeUserChip from 'modules/challenges/ui/shared/components/ChallengeUserChip.tsx';
 import KepIcon from 'shared/components/base/KepIcon.tsx';
@@ -48,7 +40,9 @@ const ChallengeStartDialog = ({
       <DialogContent sx={{ py: 4 }}>
         <Stack spacing={2.5}>
           <Stack direction="column" spacing={1} alignItems="center" textAlign="center">
-            <Avatar sx={{ width: 56, height: 56, bgcolor: 'primary.lighter', color: 'primary.main' }}>
+            <Avatar
+              sx={{ width: 56, height: 56, bgcolor: 'primary.lighter', color: 'primary.main' }}
+            >
               <KepIcon name="challenge-time" fontSize={24} color="primary.main" />
             </Avatar>
             <Typography variant="h5" fontWeight={900}>
@@ -69,13 +63,29 @@ const ChallengeStartDialog = ({
             <Chip label={timerModeLabel} />
           </Stack>
 
-          <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
-            <ChallengeUserChip player={challenge.playerFirst} />
-            <Typography variant="h6" fontWeight={900} color="primary.main">
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'minmax(0, 1fr) auto minmax(0, 1fr)',
+              alignItems: 'center',
+              columnGap: 2,
+            }}
+          >
+            <Box sx={{ minWidth: 0 }}>
+              <ChallengeUserChip player={challenge.playerFirst} />
+            </Box>
+            <Typography
+              variant="h6"
+              fontWeight={900}
+              color="primary.main"
+              sx={{ justifySelf: 'center' }}
+            >
               VS
             </Typography>
-            <ChallengeUserChip player={challenge.playerSecond} align="right" />
-          </Stack>
+            <Box sx={{ minWidth: 0 }}>
+              <ChallengeUserChip player={challenge.playerSecond} align="right" />
+            </Box>
+          </Box>
 
           <Stack direction="row" justifyContent="center">
             <Button variant="contained" onClick={() => void onStart()} disabled={starting}>
