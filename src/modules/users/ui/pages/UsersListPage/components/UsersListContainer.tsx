@@ -1,18 +1,37 @@
-import { ChangeEvent, MouseEvent, SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
-import { TabContext, TabList } from '@mui/lab';
-import { Box, Button, InputAdornment, Menu, MenuItem, Stack, Tab, TextField, Typography } from '@mui/material';
-import { GridSortModel } from '@mui/x-data-grid';
+import {
+  ChangeEvent,
+  MouseEvent,
+  SyntheticEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useTranslation } from 'react-i18next';
+import { TabContext, TabList } from '@mui/lab';
+import {
+  Box,
+  Button,
+  InputAdornment,
+  Menu,
+  MenuItem,
+  Stack,
+  Tab,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { GridSortModel } from '@mui/x-data-grid';
 import { useUsersCountries, useUsersList } from 'modules/users/application/queries';
-import StyledTextField from 'shared/components/styled/StyledTextField';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import UsersDataGrid from './UsersDataGrid';
+import AppliedFilters from 'shared/components/common/AppliedFilters';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import FilterButton from 'shared/components/common/FilterButton';
+import StyledTextField from 'shared/components/styled/StyledTextField';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { enumParam, stringParam } from 'shared/lib/queryParams';
 import { getCountryAlpha2, getCountryLabel } from 'shared/utils/country';
+import UsersDataGrid from './UsersDataGrid';
 
 const tabOrderingMap = {
   all: '-id',
@@ -110,18 +129,14 @@ const UsersListContainer = () => {
   const [filtersAnchorEl, setFiltersAnchorEl] = useState<null | HTMLElement>(null);
   const [debouncedFilters, setDebouncedFilters] = useState(filters);
   const didMountRef = useRef(false);
-  const {
-    paginationModel,
-    onPaginationModelChange,
-    pageParams,
-    setPaginationModel,
-  } = useGridPagination({
-    initialPageSize: 10,
-    querySync: {
-      pageKey: 'page',
-      pageSizeKey: 'pageSize',
-    },
-  });
+  const { paginationModel, onPaginationModelChange, pageParams, setPaginationModel } =
+    useGridPagination({
+      initialPageSize: 10,
+      querySync: {
+        pageKey: 'page',
+        pageSizeKey: 'pageSize',
+      },
+    });
   const sortModel = useMemo<GridSortModel>(() => {
     if (!state.ordering) {
       return [];
@@ -209,9 +224,46 @@ const UsersListContainer = () => {
   const { data, isLoading, isValidating } = useUsersList(queryParams);
 
   const hasActiveFilters = useMemo(
-    () => Boolean(filters.search || filters.country || filters.ageFrom || filters.ageTo),
-    [filters],
+    () => Boolean(filters.country || filters.ageFrom || filters.ageTo),
+    [filters.ageFrom, filters.ageTo, filters.country],
   );
+
+  const activeFilters = useMemo(() => {
+    const items: Array<{ key: string; label: string; onRemove: () => void }> = [];
+
+    if (filters.country) {
+      const selectedCountry = countryOptionsByValue[filters.country];
+      items.push({
+        key: 'country',
+        label: `${t('users.filters.country')}: ${selectedCountry?.label ?? filters.country}`,
+        onRemove: () => setField('country', ''),
+      });
+    }
+
+    if (filters.ageFrom || filters.ageTo) {
+      const label =
+        filters.ageFrom && filters.ageTo
+          ? `${filters.ageFrom}-${filters.ageTo}`
+          : filters.ageFrom
+            ? `${filters.ageFrom}+`
+            : `<= ${filters.ageTo}`;
+      items.push({
+        key: 'age',
+        label: `${t('users.filters.ageFrom').replace(/\s+\S+$/, '')}: ${label}`,
+        onRemove: () => resetState(['ageFrom', 'ageTo']),
+      });
+    }
+
+    return items;
+  }, [
+    countryOptionsByValue,
+    filters.ageFrom,
+    filters.ageTo,
+    filters.country,
+    resetState,
+    setField,
+    t,
+  ]);
 
   const rows = useMemo(() => data?.data ?? [], [data?.data]);
   const rowCount = data?.total ?? 0;
@@ -222,10 +274,11 @@ const UsersListContainer = () => {
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
   };
 
-  const handleFilterChange = (field: keyof FiltersState) => (event: ChangeEvent<HTMLInputElement>) => {
-    setField(field, event.target.value);
-    setPaginationModel((prev) => ({ ...prev, page: 0 }));
-  };
+  const handleFilterChange =
+    (field: keyof FiltersState) => (event: ChangeEvent<HTMLInputElement>) => {
+      setField(field, event.target.value);
+      setPaginationModel((prev) => ({ ...prev, page: 0 }));
+    };
 
   const handleFiltersToggle = (event: MouseEvent<HTMLButtonElement>) => {
     if (filtersOpen) {
@@ -238,7 +291,7 @@ const UsersListContainer = () => {
   const handleFiltersClose = () => setFiltersAnchorEl(null);
 
   const handleClearFilters = () => {
-    resetState(['search', 'country', 'ageFrom', 'ageTo']);
+    resetState(['country', 'ageFrom', 'ageTo']);
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
   };
 
@@ -294,7 +347,8 @@ const UsersListContainer = () => {
             aria-haspopup="true"
             aria-expanded={filtersOpen ? 'true' : undefined}
             aria-controls={filtersOpen ? 'users-filters-menu' : undefined}
-            label={t('users.filters.toggle')}
+            label={t('problems.filters')}
+            badgeContent={activeFilters.length}
           />
           <StyledTextField
             id="search-box"
@@ -320,6 +374,15 @@ const UsersListContainer = () => {
         </Stack>
       </Stack>
 
+      <Box sx={{ mb: activeFilters.length ? 3 : 0 }}>
+        <AppliedFilters
+          filters={activeFilters}
+          summaryLabel={t('problems.appliedFilters', { count: activeFilters.length })}
+          clearLabel={t('problems.clearFilters')}
+          onClear={handleClearFilters}
+        />
+      </Box>
+
       <Menu
         id="users-filters-menu"
         anchorEl={filtersAnchorEl}
@@ -338,10 +401,15 @@ const UsersListContainer = () => {
         <Stack direction="column" spacing={2}>
           <Stack direction="row" alignItems="center" justifyContent="space-between">
             <Typography variant="subtitle2" fontWeight={700} color="text.secondary">
-              {t('users.filters.toggle')}
+              {t('problems.filters')}
             </Typography>
-            <Button size="small" color="secondary" onClick={handleClearFilters} disabled={!hasActiveFilters}>
-              {t('users.filters.clear')}
+            <Button
+              size="small"
+              color="secondary"
+              onClick={handleClearFilters}
+              disabled={!hasActiveFilters}
+            >
+              {t('problems.clearFilters')}
             </Button>
           </Stack>
           <TextField

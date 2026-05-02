@@ -1,4 +1,4 @@
-import { contestHasBalls } from 'modules/contests/utils/contestType';
+import { contestHasBalls } from 'modules/contests/ui/shared/utils/contestType';
 import AcmStyleProblemResult from './AcmStyleProblemResult';
 import BallScoringProblemResult from './BallScoringProblemResult';
 import resultComponents from './registry';

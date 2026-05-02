@@ -1,26 +1,30 @@
-import useSWR, { SWRConfiguration } from 'swr';
 import {
   ApiContestsListParams,
   ApiContestsRatingListParams,
 } from 'shared/api/orval/generated/endpoints/index.schemas';
+import useSWR, { SWRConfiguration } from 'swr';
 import { HttpContestsRepository } from '../data-access/repository/http.contests.repository';
-import { ContestCategoryEntity, ContestListItem, ContestTopContestant } from '../domain/entities/contest.entity';
+import { ContestDetail } from '../domain/entities/contest-detail.entity';
+import { ContestProblemEntity } from '../domain/entities/contest-problem.entity';
+import { ContestQuestion } from '../domain/entities/contest-question.entity';
 import { ContestRatingRow } from '../domain/entities/contest-rating.entity';
+import { ContestRegistrant } from '../domain/entities/contest-registrant.entity';
+import { ContestStatistics } from '../domain/entities/contest-statistics.entity';
 import {
   ContestRatingChange,
   ContestUserStatistics,
 } from '../domain/entities/contest-user-statistics.entity';
 import {
+  ContestCategoryEntity,
+  ContestListItem,
+  ContestTopContestant,
+} from '../domain/entities/contest.entity';
+import { ContestFilter, ContestantEntity } from '../domain/entities/contestant.entity';
+import {
   ContestRegistrantsParams,
   ContestStandingsParams,
   PageResult,
 } from '../domain/ports/contests.repository';
-import { ContestDetail } from '../domain/entities/contest-detail.entity';
-import { ContestProblemEntity } from '../domain/entities/contest-problem.entity';
-import { ContestantEntity, ContestFilter } from '../domain/entities/contestant.entity';
-import { ContestRegistrant } from '../domain/entities/contest-registrant.entity';
-import { ContestQuestion } from '../domain/entities/contest-question.entity';
-import { ContestStatistics } from '../domain/entities/contest-statistics.entity';
 
 const contestsRepository = new HttpContestsRepository();
 
@@ -32,6 +36,7 @@ const listKey = (params?: ApiContestsListParams) => [
   params?.category,
   params?.type,
   params?.is_participated,
+  params?.is_registered,
   params?.is_rated,
 ];
 
@@ -54,15 +59,13 @@ export const useContestUserStatistics = (username?: string) =>
   );
 
 export const useContestRatingChanges = (username?: string) =>
-  useSWR<ContestRatingChange[]>(
-    username ? ['contest-rating-changes', username] : null,
-    () => contestsRepository.ratingChanges(username!),
+  useSWR<ContestRatingChange[]>(username ? ['contest-rating-changes', username] : null, () =>
+    contestsRepository.ratingChanges(username!),
   );
 
 export const useContestTopContestants = (contestId?: number | string, enabled = true) =>
-  useSWR<ContestTopContestant[]>(
-    contestId && enabled ? ['contest-top3', contestId] : null,
-    () => contestsRepository.top3Contestants(contestId!),
+  useSWR<ContestTopContestant[]>(contestId && enabled ? ['contest-top3', contestId] : null, () =>
+    contestsRepository.top3Contestants(contestId!),
   );
 
 export const useContest = (contestId?: number | string, options?: SWRConfiguration) =>
@@ -97,9 +100,8 @@ export const useContestContestant = (contestId?: number | string, options?: SWRC
   );
 
 export const useContestFilters = (contestId?: number | string) =>
-  useSWR<ContestFilter[]>(
-    contestId ? ['contest-filters', contestId] : null,
-    () => contestsRepository.filters(contestId!),
+  useSWR<ContestFilter[]>(contestId ? ['contest-filters', contestId] : null, () =>
+    contestsRepository.filters(contestId!),
   );
 
 export const useContestStandings = (
@@ -128,7 +130,9 @@ export const useContestRegistrants = (
   params?: ContestRegistrantsParams,
 ) =>
   useSWR<PageResult<ContestRegistrant>>(
-    contestId ? ['contest-registrants', contestId, params?.page, params?.pageSize, params?.ordering] : null,
+    contestId
+      ? ['contest-registrants', contestId, params?.page, params?.pageSize, params?.ordering]
+      : null,
     () => contestsRepository.registrants(contestId!, params),
   );
 

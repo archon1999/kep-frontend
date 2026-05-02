@@ -1,4 +1,4 @@
-import { contestHasBalls, formatContestPoints } from 'modules/contests/utils/contestType';
+import { contestHasBalls, formatContestPoints } from 'modules/contests/ui/shared/utils/contestType';
 import { emptyResult, solvedResult } from './helpers';
 import ProblemResultLayout from './ProblemResultLayout';
 import type { ContestantProblemResultProps } from './types';

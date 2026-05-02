@@ -1,22 +1,24 @@
 import { MouseEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button, Card, CardContent, Stack, Typography } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 import { resources } from 'app/routes/resources';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import Logo from 'shared/components/common/Logo';
 import FilterButton from 'shared/components/common/FilterButton';
+import Logo from 'shared/components/common/Logo';
 import { cssVarRgba } from 'shared/lib/utils';
 
 interface ContestsListPageHeroCardProps {
   canViewMyStats: boolean;
   filtersOpen: boolean;
+  activeFiltersCount: number;
   onToggleFilters: (event: MouseEvent<HTMLButtonElement>) => void;
 }
 
 const ContestsListPageHeroCard = ({
   canViewMyStats,
   filtersOpen,
+  activeFiltersCount,
   onToggleFilters,
 }: ContestsListPageHeroCardProps) => {
   const { t } = useTranslation();
@@ -82,7 +84,8 @@ const ContestsListPageHeroCard = ({
                 aria-haspopup="true"
                 aria-expanded={filtersOpen ? 'true' : undefined}
                 aria-controls={filtersOpen ? 'contests-filters-menu' : undefined}
-                label={t('contests.filters.toggle')}
+                label={t('problems.filters')}
+                badgeContent={activeFiltersCount}
                 sx={{ alignSelf: { xs: 'stretch', sm: 'flex-start' } }}
               />
             </Stack>

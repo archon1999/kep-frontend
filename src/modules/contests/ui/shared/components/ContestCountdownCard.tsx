@@ -1,27 +1,27 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
   Button,
   Card,
   CardContent,
   Chip,
-  Skeleton,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Skeleton,
   Stack,
   Typography,
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
+import { getResourceByParams, resources } from 'app/routes/resources';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { Link as RouterLink } from 'react-router-dom';
-import { getResourceByParams, resources } from 'app/routes/resources';
-import KepIcon from 'shared/components/base/KepIcon';
 import { ContestDetail } from 'modules/contests/domain/entities/contest-detail.entity';
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
+import KepIcon from 'shared/components/base/KepIcon';
+import { cssVarRgba } from 'shared/lib/utils';
 
 dayjs.extend(duration);
 
@@ -74,7 +74,7 @@ const ContestCountdownCard = ({ contest, isLoading = false }: ContestCountdownCa
     if (contest && !isLoadedOnce) {
       setIsLoadedOnce(true);
     }
-  }, [contest?.id, contest?.statusCode, contest?.startTime, contest?.finishTime]);
+  }, [contest, isLoadedOnce]);
 
   const startDate = contest?.startTime ? dayjs(contest.startTime) : null;
   const finishDate = contest?.finishTime ? dayjs(contest.finishTime) : null;
@@ -192,8 +192,8 @@ const ContestCountdownCard = ({ contest, isLoading = false }: ContestCountdownCa
           overflow: 'hidden',
           borderRadius: 3,
           color: theme.palette.text.primary,
-          background: `linear-gradient(150deg, ${alpha(theme.palette.primary.main, 0.08)}, ${alpha(theme.palette.secondary.main, 0.08)})`,
-          borderColor: alpha(theme.palette.primary.main, 0.16),
+          background: `linear-gradient(135deg, ${cssVarRgba(theme.vars.palette.primary.lightChannel, 0.12)}, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.08)} 58%, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.04)})`,
+          borderColor: cssVarRgba(theme.vars.palette.primary.mainChannel, 0.12),
         })}
       >
         {contest?.logo ? (
@@ -201,7 +201,6 @@ const ContestCountdownCard = ({ contest, isLoading = false }: ContestCountdownCa
             sx={{
               position: 'absolute',
               inset: 0,
-              // backgroundImage: `url(${contest.logo})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               opacity: 0.08,
@@ -213,10 +212,8 @@ const ContestCountdownCard = ({ contest, isLoading = false }: ContestCountdownCa
           sx={(theme) => ({
             position: 'absolute',
             inset: 0,
-            background:
-              theme.palette.mode === 'dark'
-                ? 'linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.1) 100%)'
-                : 'linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%)',
+            pointerEvents: 'none',
+            background: `radial-gradient(circle at 14% 18%, ${cssVarRgba(theme.vars.palette.primary.lightChannel, 0.16)}, transparent 34%), radial-gradient(circle at 85% 14%, ${cssVarRgba(theme.vars.palette.primary.mainChannel, 0.12)}, transparent 28%)`,
           })}
         />
         <CardContent sx={{ position: 'relative', zIndex: 1 }}>
@@ -247,7 +244,8 @@ const ContestCountdownCard = ({ contest, isLoading = false }: ContestCountdownCa
                   variant="filled"
                   sx={{
                     color: statusChip.color === 'default' ? 'text.primary' : '#fff',
-                    backgroundColor: statusChip.color === 'default' ? 'background.paper' : undefined,
+                    backgroundColor:
+                      statusChip.color === 'default' ? 'background.paper' : undefined,
                     fontWeight: 700,
                   }}
                 />

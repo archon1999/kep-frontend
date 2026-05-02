@@ -1,4 +1,4 @@
-import { ContestProblemEntity } from '../domain/entities/contest-problem.entity';
+import { ContestProblemEntity } from '../../../domain/entities/contest-problem.entity.ts';
 
 export const sortContestProblems = (problems: ContestProblemEntity[]) => {
   return [...problems].sort((a, b) => {

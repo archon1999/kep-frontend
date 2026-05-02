@@ -5,9 +5,11 @@ import { Box, Button, Card, CardContent, Grid, Skeleton, Stack } from '@mui/mate
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceByParams, resources } from 'app/routes/resources';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
-import { useLoginRedirect } from 'shared/lib/authRedirect';
-import { contestsQueries, useContest, useContestProblems } from 'modules/contests/application/queries';
+import {
+  contestsQueries,
+  useContest,
+  useContestProblems,
+} from 'modules/contests/application/queries';
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
 import ContestCard from 'modules/contests/ui/shared/components/ContestCard';
 import ContestCountdownCard from 'modules/contests/ui/shared/components/ContestCountdownCard';
@@ -15,6 +17,8 @@ import ContestPageHeader from 'modules/contests/ui/shared/components/ContestPage
 import ContestTypeInfoCard from 'modules/contests/ui/shared/components/ContestTypeInfoCard';
 import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
+import { useLoginRedirect } from 'shared/lib/authRedirect';
+import { responsivePagePaddingSx } from 'shared/lib/styles';
 import ContestPageProblemsPreviewCard from './ContestPageProblemsPreviewCard.tsx';
 
 const VIRTUAL_CONTEST_COST = 5;
@@ -27,8 +31,14 @@ const ContestPage = () => {
   const { currentUser } = useAuth();
   const redirectToLogin = useLoginRedirect();
 
-  const { data: contest, mutate: mutateContest, isLoading: isContestLoading } = useContest(contestId);
-  const canLoadContestProblems = Boolean(contest && contest.statusCode !== ContestStatus.NotStarted);
+  const {
+    data: contest,
+    mutate: mutateContest,
+    isLoading: isContestLoading,
+  } = useContest(contestId);
+  const canLoadContestProblems = Boolean(
+    contest && contest.statusCode !== ContestStatus.NotStarted,
+  );
   const { data: contestProblems, isLoading: problemsLoading } = useContestProblems(
     contestId,
     undefined,
@@ -36,14 +46,7 @@ const ContestPage = () => {
   );
   const [isRegistrationLoading, setIsRegistrationLoading] = useState(false);
   const [isVirtualLoading, setIsVirtualLoading] = useState(false);
-  useDocumentTitle(
-    contest?.title ? 'pageTitles.contest' : undefined,
-    contest?.title
-      ? {
-          contestTitle: contest.title,
-        }
-      : undefined,
-  );
+  useDocumentTitle('pageTitles.contest', { contestTitle: contest?.title });
 
   const showProblemsPreview = canLoadContestProblems;
   const canRegister = contest ? contest.statusCode !== ContestStatus.Finished : false;
@@ -111,6 +114,7 @@ const ContestPage = () => {
 
     const availableStarts = contest.userInfo?.virtualContestAvailable ?? 0;
     const canStart = availableStarts > 0;
+
     if (!canStart) {
       return (
         <KepcoinSpendConfirm

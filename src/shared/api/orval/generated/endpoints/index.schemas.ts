@@ -2485,6 +2485,10 @@ export type ApiContestsListParams = {
    */
   is_participated?: string;
   /**
+   * is_registered
+   */
+  is_registered?: string;
+  /**
    * is_rated
    */
   is_rated?: string;

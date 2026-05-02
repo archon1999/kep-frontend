@@ -23,7 +23,7 @@ import {
   contestHasPenalties,
   contestUsesRating,
   formatContestPoints,
-} from 'modules/contests/utils/contestType';
+} from 'modules/contests/ui/shared/utils/contestType';
 import ContestPageHeader from 'modules/contests/ui/shared/components/ContestPageHeader';
 import ContestStandingsCountdown from 'modules/contests/ui/shared/components/ContestStandingsCountdown';
 import ContestantView from 'modules/contests/ui/shared/components/ContestantView';

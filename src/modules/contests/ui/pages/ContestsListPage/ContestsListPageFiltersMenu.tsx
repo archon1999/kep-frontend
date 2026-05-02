@@ -1,5 +1,18 @@
-import { Menu, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography, ToggleButton, ToggleButtonGroup, InputAdornment } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import {
+  Button,
+  FormControl,
+  InputAdornment,
+  InputLabel,
+  Menu,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from '@mui/material';
 import { ContestCategoryEntity } from 'modules/contests/domain/entities/contest.entity';
 import KepIcon from 'shared/components/base/KepIcon';
 
@@ -9,15 +22,17 @@ interface ContestsListPageFiltersMenuProps {
   title: string;
   category?: number;
   type?: string;
-  participation: 'all' | 'joined' | 'notJoined';
+  participation: 'all' | 'participated' | 'registered';
   categories?: ContestCategoryEntity[];
   contestTypes: readonly string[];
   totalContestsCount?: number;
+  hasActiveFilters: boolean;
   onClose: () => void;
+  onClear: () => void;
   onTitleChange: (value: string) => void;
   onCategoryChange: (value?: number) => void;
   onTypeChange: (value?: string) => void;
-  onParticipationChange: (value: 'all' | 'joined' | 'notJoined') => void;
+  onParticipationChange: (value: 'all' | 'participated' | 'registered') => void;
 }
 
 const ContestsListPageFiltersMenu = ({
@@ -30,7 +45,9 @@ const ContestsListPageFiltersMenu = ({
   categories,
   contestTypes,
   totalContestsCount,
+  hasActiveFilters,
   onClose,
+  onClear,
   onTitleChange,
   onCategoryChange,
   onTypeChange,
@@ -81,6 +98,21 @@ const ContestsListPageFiltersMenu = ({
       }}
     >
       <Stack direction="column" spacing={2}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Typography variant="subtitle2" fontWeight={700}>
+            {t('problems.filters')}
+          </Typography>
+          <Button
+            size="small"
+            variant="text"
+            color="secondary"
+            onClick={onClear}
+            disabled={!hasActiveFilters}
+          >
+            {t('problems.clearFilters')}
+          </Button>
+        </Stack>
+
         <TextField
           value={title}
           onChange={(event) => onTitleChange(event.target.value)}
@@ -93,10 +125,11 @@ const ContestsListPageFiltersMenu = ({
           }}
           label={t('contests.searchLabel')}
           size="small"
+          variant="filled"
           fullWidth
         />
 
-        <FormControl fullWidth size="small">
+        <FormControl fullWidth size="small" variant="filled">
           <InputLabel>{t('contests.typeLabel')}</InputLabel>
           <Select
             label={t('contests.typeLabel')}
@@ -114,7 +147,7 @@ const ContestsListPageFiltersMenu = ({
           </Select>
         </FormControl>
 
-        <FormControl fullWidth size="small">
+        <FormControl fullWidth size="small" variant="filled">
           <InputLabel>{t('contests.categoriesLabel')}</InputLabel>
           <Select
             label={t('contests.categoriesLabel')}
@@ -154,7 +187,7 @@ const ContestsListPageFiltersMenu = ({
           <ToggleButtonGroup
             color="primary"
             value={participation}
-            onChange={(_, value: 'all' | 'joined' | 'notJoined' | null) => {
+            onChange={(_, value: 'all' | 'participated' | 'registered' | null) => {
               if (value) {
                 onParticipationChange(value);
               }
@@ -164,8 +197,10 @@ const ContestsListPageFiltersMenu = ({
             sx={{ width: 1 }}
           >
             <ToggleButton value="all">{t('contests.participation.all')}</ToggleButton>
-            <ToggleButton value="joined">{t('contests.participation.joined')}</ToggleButton>
-            <ToggleButton value="notJoined">{t('contests.participation.notJoined')}</ToggleButton>
+            <ToggleButton value="participated">
+              {t('contests.participation.participated')}
+            </ToggleButton>
+            <ToggleButton value="registered">{t('contests.participation.registered')}</ToggleButton>
           </ToggleButtonGroup>
         </Stack>
       </Stack>

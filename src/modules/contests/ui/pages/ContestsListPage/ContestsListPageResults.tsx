@@ -1,5 +1,5 @@
-import { Box, Grid, Pagination, Skeleton, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { Box, Grid, Pagination, Skeleton, Stack, Typography } from '@mui/material';
 import { ContestListItem } from 'modules/contests/domain/entities/contest.entity';
 import ContestCard from 'modules/contests/ui/shared/components/ContestCard';
 

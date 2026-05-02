@@ -39,7 +39,7 @@ import {
   mapContestRegistrant,
 } from '../mappers/contestant.mapper';
 import { mapContestQuestions } from '../mappers/contest-questions.mapper';
-import { sortContestProblems } from '../../utils/sortContestProblems';
+import { sortContestProblems } from 'modules/contests/ui/shared/utils/sortContestProblems';
 
 export class HttpContestsRepository implements ContestsRepository {
   async list(params?: ApiContestsListParams): Promise<PageResult<ContestListItem>> {

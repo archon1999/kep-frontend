@@ -13,8 +13,8 @@
     },
     "participation": {
       "all": "Все",
-      "joined": "Зарегистрирован",
-      "notJoined": "Не зарегистрирован"
+      "participated": "Участвовал",
+      "registered": "Зарегистрирован"
     },
     "participationLabel": "Участие",
     "status": {
@@ -38,8 +38,10 @@
     "type": "Формат: {{type}}",
     "typeInfo": {
       "title": "Формат контеста",
+      "scoringTitle": "Подсчёт",
       "scoringBalls": "Балльная система",
-      "scoringAcm": "1 AC = 1 очко",
+      "scoringAcm": "По числу решённых задач",
+      "penaltyTitle": "Штраф",
       "penaltyEnabled": "Штрафы включены",
       "penaltyDisabled": "Без штрафов"
     },
@@ -57,7 +59,7 @@
     "emptyTitle": "Контесты не найдены",
     "emptySubtitle": "Новые контесты появятся здесь позже.",
     "viewRating": "Рейтинг контестов",
-    "viewMyStats": "Моя статистика контестов",
+    "viewMyStats": "Моя статистика",
     "register": "Зарегистрироваться",
     "unregister": "Отменить регистрацию",
     "register": "Зарегистрироваться",
@@ -178,7 +180,9 @@
     },
     "problemsPreview": "Задачи",
     "solvedShort": "{{solved}} решено",
+    "unsolvedShort": "{{unsolved}} не решено",
     "noProblems": "Задачи скоро появятся здесь.",
+    "view": "Смотреть",
     "loading": "Загрузка...",
     "filter": {
       "title": "Фильтр попыток",

@@ -1,5 +1,5 @@
 import { Contest, ContestAuthor, ContestsCategory } from 'shared/api/orval/generated/endpoints/index.schemas';
-import { contestUsesRating } from '../../utils/contestType';
+import { contestUsesRating } from 'modules/contests/ui/shared/utils/contestType';
 import {
   ContestAuthorEntity,
   ContestCategoryEntity,

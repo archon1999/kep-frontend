@@ -4,6 +4,10 @@ import { useParams } from 'react-router-dom';
 import { Grid, Stack, Typography } from '@mui/material';
 import { DataGrid, GridColDef, GridSortModel } from '@mui/x-data-grid';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
+import { useContest, useContestRegistrants } from 'modules/contests/application/queries';
+import { ContestRegistrant } from 'modules/contests/domain/entities/contest-registrant.entity';
+import ContestCountdownCard from 'modules/contests/ui/shared/components/ContestCountdownCard';
+import ContestPageHeader from 'modules/contests/ui/shared/components/ContestPageHeader';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import { ApiContestsRegistrantsListOrdering } from 'shared/api/orval/generated/endpoints/index.schemas';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
@@ -11,10 +15,6 @@ import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
-import { useContest, useContestRegistrants } from 'modules/contests/application/queries';
-import { ContestRegistrant } from 'modules/contests/domain/entities/contest-registrant.entity';
-import ContestCountdownCard from 'modules/contests/ui/shared/components/ContestCountdownCard';
-import ContestPageHeader from 'modules/contests/ui/shared/components/ContestPageHeader';
 
 const ContestRegistrantsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,11 +24,7 @@ const ContestRegistrantsPage = () => {
   const { data: contest, isLoading: isContestLoading } = useContest(contestId);
   useDocumentTitle(contest?.title, { contestTitle: contest?.title });
 
-  const {
-    paginationModel,
-    onPaginationModelChange,
-    pageParams,
-  } = useGridPagination({
+  const { paginationModel, onPaginationModelChange, pageParams } = useGridPagination({
     initialPageSize: 20,
     querySync: {
       pageKey: 'page',
@@ -49,14 +45,25 @@ const ContestRegistrantsPage = () => {
   const ordering = state.ordering as ApiContestsRegistrantsListOrdering;
   const sortModel = useMemo<GridSortModel>(() => {
     if (
+      ordering === ApiContestsRegistrantsListOrdering.id ||
+      ordering === ApiContestsRegistrantsListOrdering['-id']
+    ) {
+      return [
+        {
+          field: 'rowIndex',
+          sort: ordering === ApiContestsRegistrantsListOrdering.id ? 'asc' : 'desc',
+        },
+      ];
+    }
+
+    if (
       ordering === ApiContestsRegistrantsListOrdering.contests_rating ||
       ordering === ApiContestsRegistrantsListOrdering['-contests_rating']
     ) {
       return [
         {
           field: 'rating',
-          sort:
-            ordering === ApiContestsRegistrantsListOrdering.contests_rating ? 'asc' : 'desc',
+          sort: ordering === ApiContestsRegistrantsListOrdering.contests_rating ? 'asc' : 'desc',
         },
       ];
     }
@@ -85,6 +92,7 @@ const ContestRegistrantsPage = () => {
         headerName: '#',
         minWidth: 70,
         flex: 0.3,
+        sortable: true,
         renderCell: ({ row }) => (
           <Typography variant="body2" fontWeight={700}>
             {row.rowIndex ?? '—'}
@@ -141,6 +149,15 @@ const ContestRegistrantsPage = () => {
     }
 
     const { field, sort } = model[0];
+    if (field === 'rowIndex') {
+      setField(
+        'ordering',
+        sort === 'asc'
+          ? ApiContestsRegistrantsListOrdering.id
+          : ApiContestsRegistrantsListOrdering['-id'],
+      );
+      return;
+    }
     if (field === 'rating') {
       setField(
         'ordering',

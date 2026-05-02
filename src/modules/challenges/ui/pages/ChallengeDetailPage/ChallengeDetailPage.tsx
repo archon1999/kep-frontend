@@ -104,7 +104,8 @@ const ChallengeDetailPage = () => {
     () => challenge?.nextQuestion?.question,
     [challenge?.nextQuestion?.question],
   );
-  const blurProtectionActive = challenge?.status === ChallengeStatus.Already && Boolean(question);
+  const hasActiveQuestion = Boolean(question);
+  const blurProtectionActive = challenge?.status === ChallengeStatus.Already && hasActiveQuestion;
 
   const getActiveAntiCheatPenalty = useCallback(
     (reason: ChallengePenaltyReason): PendingAntiCheatPenalty | null => {
@@ -173,7 +174,7 @@ const ChallengeDetailPage = () => {
   }, [challenge?.id]);
 
   useEffect(() => {
-    if (!challenge || challenge.status !== ChallengeStatus.Already || !question) {
+    if (!challenge || challenge.status !== ChallengeStatus.Already || !hasActiveQuestion) {
       setTimerRunning(false);
       return;
     }
@@ -192,7 +193,7 @@ const ChallengeDetailPage = () => {
     challenge?.questionTimeType,
     challenge?.remainingTimeSeconds,
     challenge?.timeSeconds,
-    question,
+    hasActiveQuestion,
   ]);
 
   useEffect(() => {

@@ -1,5 +1,5 @@
-import { ContestType } from 'shared/api/orval/generated/endpoints/index.schemas';
-import { ContestTypeInfo } from '../domain/entities/contest.entity';
+import { ContestType } from 'shared/api/orval/generated/endpoints/index.schemas.ts';
+import { ContestTypeInfo } from '../../../domain/entities/contest.entity.ts';
 
 type ContestTypeValue = ContestType | string | ContestTypeInfo | null | undefined;
 

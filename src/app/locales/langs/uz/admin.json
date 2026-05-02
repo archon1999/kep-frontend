@@ -159,7 +159,7 @@
         "privateLink": "Private link",
         "code": "Kod",
         "hasBalls": "Ball bor",
-        "hasPenalties": "Penalty bor",
+        "hasPenalties": "Jarima bor",
         "order": "Tartib",
         "contestProblemNumber": "Kontest masalasi #{{ count }}",
         "problemId": "Masala ID",

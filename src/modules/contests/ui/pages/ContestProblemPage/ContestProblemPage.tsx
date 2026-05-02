@@ -52,7 +52,7 @@ import {
 } from 'modules/contests/application/queries';
 import { contestsQueries } from 'modules/contests/application/queries.ts';
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
-import { sortContestProblems } from 'modules/contests/utils/sortContestProblems';
+import { sortContestProblems } from 'modules/contests/ui/shared/utils/sortContestProblems';
 import ContestantResultsFooter from './components/ContestantResultsFooter.tsx';
 
 type ContestProblemTab = 'description' | 'attempts';

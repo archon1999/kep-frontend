@@ -12,7 +12,7 @@ import {
   contestHasPenalties,
   contestUsesRating,
   formatContestPoints,
-} from 'modules/contests/utils/contestType.ts';
+} from 'modules/contests/ui/shared/utils/contestType.ts';
 import ContestantView from 'modules/contests/ui/shared/components/ContestantView';
 
 interface ContestantResultsFooterProps {

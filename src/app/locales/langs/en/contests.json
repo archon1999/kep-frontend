@@ -13,8 +13,8 @@
     },
     "participation": {
       "all": "All",
-      "joined": "Registered",
-      "notJoined": "Not registered"
+      "participated": "Participated",
+      "registered": "Registered"
     },
     "participationLabel": "Participation",
     "status": {
@@ -38,8 +38,10 @@
     "type": "Format: {{type}}",
     "typeInfo": {
       "title": "Contest format",
+      "scoringTitle": "Scoring",
       "scoringBalls": "Ball scoring",
-      "scoringAcm": "1 AC = 1 point",
+      "scoringAcm": "Solved problems count",
+      "penaltyTitle": "Penalty",
       "penaltyEnabled": "Penalty enabled",
       "penaltyDisabled": "No penalty"
     },
@@ -57,7 +59,7 @@
     "emptyTitle": "No contests available",
     "emptySubtitle": "New contests will appear here soon.",
     "viewRating": "Contests rating",
-    "viewMyStats": "My contest stats",
+    "viewMyStats": "My stats",
     "register": "Register",
     "unregister": "Cancel registration",
     "purchaseVirtualContest": "Purchase virtual contest",
@@ -159,7 +161,9 @@
     },
     "problemsPreview": "Problems",
     "solvedShort": "{{solved}} solved",
+    "unsolvedShort": "{{unsolved}} unsolved",
     "noProblems": "Problems will appear here soon.",
+    "view": "View",
     "loading": "Loading...",
     "filter": {
       "title": "Filter attempts",

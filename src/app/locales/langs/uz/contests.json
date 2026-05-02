@@ -13,8 +13,8 @@
     },
     "participation": {
       "all": "Hammasi",
-      "joined": "Roʻyhatdan oʻtgan",
-      "notJoined": "Roʻyhatdan oʻtmagan"
+      "participated": "Ishtirok etgan",
+      "registered": "Roʻyhatdan oʻtgan"
     },
     "participationLabel": "Ishtirok",
     "status": {
@@ -38,10 +38,12 @@
     "type": "Format: {{type}}",
     "typeInfo": {
       "title": "Kontest formati",
+      "scoringTitle": "Hisoblash",
       "scoringBalls": "Balli tizim",
-      "scoringAcm": "1 AC = 1 point",
-      "penaltyEnabled": "Penalty bor",
-      "penaltyDisabled": "Penalty yo'q"
+      "scoringAcm": "Yechilgan masalalar soni",
+      "penaltyTitle": "Jarima",
+      "penaltyEnabled": "Jarima bor",
+      "penaltyDisabled": "Jarima yo'q"
     },
     "problems": "{{count}} ta masala",
     "registrants": {
@@ -57,7 +59,7 @@
     "emptyTitle": "Kontestlar topilmadi",
     "emptySubtitle": "Yangi kontestlar tez orada qoʻshiladi.",
     "viewRating": "Kontestlar reytingi",
-    "viewMyStats": "Mening kontest statistikam",
+    "viewMyStats": "Mening statistikam",
     "register": "Roʻyxatdan oʻtish",
     "unregister": "Roʻyxatdan bekor qilish",
     "purchaseVirtualContest": "Virtual kontest sotib olish",
@@ -176,7 +178,9 @@
     },
     "problemsPreview": "Masalalar",
     "solvedShort": "{{solved}} ta yechildi",
+    "unsolvedShort": "{{unsolved}} ta yechilmagan",
     "noProblems": "Masalalar tez orada qoʻshiladi.",
+    "view": "Ko'rish",
     "loading": "Yuklanmoqda...",
     "filter": {
       "title": "Filtr",

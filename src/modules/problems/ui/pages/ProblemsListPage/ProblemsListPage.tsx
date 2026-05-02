@@ -8,26 +8,16 @@ import {
   AccordionSummary,
   Box,
   Button,
-  Card,
-  CardContent,
-  CardHeader,
   Chip,
   Divider,
   FormControlLabel,
   Grid,
   InputAdornment,
-  LinearProgress,
-  List,
-  ListItemButton,
-  ListItemText,
   Menu,
   MenuItem,
-  Skeleton,
   Stack,
   Switch,
   Tab,
-  TablePagination,
-  Tabs,
   TextField,
   Typography,
   alpha,
@@ -35,19 +25,7 @@ import {
 } from '@mui/material';
 import SearchTextField from 'app/layouts/main-layout/common/search-box/SearchTextField.tsx';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
-import { getResourceById, resources } from 'app/routes/resources.ts';
-import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
-import FilterButton from 'shared/components/common/FilterButton.tsx';
-import CustomTablePaginationAction from 'shared/components/pagination/CustomTablePaginationAction.tsx';
-import PageHeader from 'shared/components/sections/common/PageHeader.tsx';
-import useRouteQueryState from 'shared/hooks/useRouteQueryState';
-import {
-  booleanFlagParam,
-  enumParam,
-  numberArrayParam,
-  numberParam,
-  stringParam,
-} from 'shared/lib/queryParams';
+import { resources } from 'app/routes/resources.ts';
 import {
   useLastContestProblems,
   useMostViewedProblems,
@@ -58,20 +36,29 @@ import {
   useUserProblemsAttempts,
   useUserProblemsRating,
 } from 'modules/problems/application/queries.ts';
-import { difficultyColorByKey, difficultyOptions } from 'modules/problems/config/difficulty';
+import { difficultyOptions } from 'modules/problems/config/difficulty';
 import {
-  DifficultyBreakdown,
-  ProblemAttemptSummary,
   ProblemCategory,
   ProblemLanguageOption,
-  ProblemListItem,
 } from 'modules/problems/domain/entities/problem.entity.ts';
 import { ProblemsListParams } from 'modules/problems/domain/ports/problems.repository.ts';
+import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import AppliedFilters from 'shared/components/common/AppliedFilters.tsx';
+import FilterButton from 'shared/components/common/FilterButton.tsx';
+import PageHeader from 'shared/components/sections/common/PageHeader.tsx';
+import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import {
+  booleanFlagParam,
+  enumParam,
+  numberArrayParam,
+  numberParam,
+  stringParam,
+} from 'shared/lib/queryParams';
 import ProblemDifficultiesCard from './components/ProblemDifficultiesCard.tsx';
 import ProblemList from './components/ProblemList.tsx';
+import ProblemStudyPlansShowcase from './components/ProblemStudyPlansShowcase.tsx';
 import ProblemTabsCard from './components/ProblemTabsCard.tsx';
 import ProblemStudyPlanAdvisorDialog from './dialogs/ProblemStudyPlanAdvisorDialog.tsx';
-import ProblemStudyPlansShowcase from './components/ProblemStudyPlansShowcase.tsx';
 
 const orderingOptions = [
   { label: 'problems.orderOldest', value: 'id' },
@@ -359,6 +346,29 @@ const ProblemsListPage = () => {
     );
   };
 
+  const handleFilterPatch = (patch: Partial<ProblemsListParams>) => {
+    patchRouteState(() => {
+      const nextPatch: Partial<ProblemsListQueryState> = {};
+      const mutablePatch = nextPatch as Record<
+        keyof ProblemsListQueryState,
+        ProblemsListQueryState[keyof ProblemsListQueryState] | undefined
+      >;
+
+      (
+        Object.entries(patch) as Array<
+          [keyof ProblemsListParams, ProblemsListParams[keyof ProblemsListParams]]
+        >
+      ).forEach(([key, value]) => {
+        mutablePatch[key as keyof ProblemsListQueryState] = normalizeProblemsListValue(
+          key,
+          value,
+        ) as never;
+      });
+
+      return nextPatch;
+    });
+  };
+
   const handlePageChange = (_: unknown, page: number) => {
     setRouteField('page', page + 1);
   };
@@ -459,6 +469,7 @@ const ProblemsListPage = () => {
               categories={categories ?? []}
               filter={filter}
               onChange={handleFilterChange}
+              onPatch={handleFilterPatch}
               onOpenAdvisor={() => setIsAdvisorOpen(true)}
             />
           </Grid>
@@ -484,7 +495,9 @@ const ProblemsListPage = () => {
                 />
               )}
 
-              {currentUser && studyPlans?.length && <ProblemStudyPlansShowcase studyPlans={studyPlans} />}
+              {currentUser && studyPlans?.length && (
+                <ProblemStudyPlansShowcase studyPlans={studyPlans} />
+              )}
 
               <ProblemTabsCard
                 activeTab={routeState.activeTab}
@@ -523,6 +536,7 @@ interface FilterCardProps {
   categories: ProblemCategory[];
   filter: ProblemsListParams;
   onChange: <K extends keyof ProblemsListParams>(key: K, value: ProblemsListParams[K]) => void;
+  onPatch: (patch: Partial<ProblemsListParams>) => void;
   onOpenAdvisor: () => void;
 }
 
@@ -531,6 +545,7 @@ const FilterCard = ({
   categories,
   filter,
   onChange,
+  onPatch,
   onOpenAdvisor,
 }: FilterCardProps) => {
   const { t } = useTranslation();
@@ -705,10 +720,7 @@ const FilterCard = ({
           filter.problem_rating_min,
           filter.problem_rating_max,
         )}`,
-        onRemove: () => {
-          onChange('problem_rating_min', undefined);
-          onChange('problem_rating_max', undefined);
-        },
+        onRemove: () => onPatch({ problem_rating_min: undefined, problem_rating_max: undefined }),
       });
     }
 
@@ -737,21 +749,23 @@ const FilterCard = ({
     }
 
     return items;
-  }, [categories, filter, languages, onChange, t, tags]);
+  }, [categories, filter, languages, onChange, onPatch, t, tags]);
 
   const handleClearFilters = () => {
-    onChange('lang', undefined);
-    onChange('exclusive_lang', undefined);
-    onChange('favorites', undefined);
-    onChange('category', undefined);
-    onChange('tags', []);
-    onChange('difficulty', undefined);
-    onChange('status', undefined);
-    onChange('problem_rating_min', undefined);
-    onChange('problem_rating_max', undefined);
-    onChange('has_solution', undefined);
-    onChange('has_checker', undefined);
-    onChange('partial_solvable', undefined);
+    onPatch({
+      lang: undefined,
+      exclusive_lang: undefined,
+      favorites: undefined,
+      category: undefined,
+      tags: [],
+      difficulty: undefined,
+      status: undefined,
+      problem_rating_min: undefined,
+      problem_rating_max: undefined,
+      has_solution: undefined,
+      has_checker: undefined,
+      partial_solvable: undefined,
+    });
   };
   const handleTagToggle = (tagId: number) => {
     const activeTags = filter.tags ?? [];
@@ -823,26 +837,12 @@ const FilterCard = ({
           </Stack>
         </TabContext>
 
-        {activeFilters.length > 0 && (
-          <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap alignItems="center">
-            <Typography variant="body2" color="text.secondary">
-              {t('problems.appliedFilters', { count: activeFilters.length })}
-            </Typography>
-            {activeFilters.map((item) => (
-              <Chip
-                key={item.key}
-                size="small"
-                label={item.label}
-                onDelete={item.onRemove}
-                color="primary"
-                variant="outlined"
-              />
-            ))}
-            <Button variant="text" size="small" color="secondary" onClick={handleClearFilters}>
-              {t('problems.clearFilters')}
-            </Button>
-          </Stack>
-        )}
+        <AppliedFilters
+          filters={activeFilters}
+          summaryLabel={t('problems.appliedFilters', { count: activeFilters.length })}
+          clearLabel={t('problems.clearFilters')}
+          onClear={handleClearFilters}
+        />
       </Stack>
 
       <Menu

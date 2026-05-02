@@ -8,7 +8,7 @@ import KepIcon from 'shared/components/base/KepIcon';
 import { useContest, useContestProblems } from 'modules/contests/application/queries';
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
 import ContestCountdownCard from 'modules/contests/ui/shared/components/ContestCountdownCard';
-import { contestHasBalls } from 'modules/contests/utils/contestType';
+import { contestHasBalls } from 'modules/contests/ui/shared/utils/contestType';
 import ContestPageHeader from 'modules/contests/ui/shared/components/ContestPageHeader';
 
 const ContestProblemsPage = () => {
