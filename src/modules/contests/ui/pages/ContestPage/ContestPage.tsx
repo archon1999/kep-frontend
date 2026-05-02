@@ -15,7 +15,6 @@ import {
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceByParams, resources } from 'app/routes/resources';
-import { Page404 } from 'modules/errors/ui/pages';
 import {
   contestsQueries,
   useContest,
@@ -27,6 +26,7 @@ import ContestCard from 'modules/contests/ui/shared/components/ContestCard';
 import ContestCountdownCard from 'modules/contests/ui/shared/components/ContestCountdownCard';
 import ContestPageHeader from 'modules/contests/ui/shared/components/ContestPageHeader';
 import ContestTypeInfoCard from 'modules/contests/ui/shared/components/ContestTypeInfoCard';
+import { Page404 } from 'modules/errors/ui/pages';
 import KepIcon from 'shared/components/base/KepIcon';
 import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
@@ -66,6 +66,7 @@ const ContestPage = () => {
   useDocumentTitle('pageTitles.contest', { contestTitle: contest?.title });
 
   const showProblemsPreview = canLoadContestProblems;
+  const showStatisticsSummary = canLoadContestProblems;
   const canRegister = contest ? contest.statusCode !== ContestStatus.Finished : false;
   const isPreviewLoading = isContestLoading || (canLoadContestProblems && problemsLoading);
   const resolvedLocale = useMemo(() => {
@@ -254,43 +255,48 @@ const ContestPage = () => {
               </Card>
             )}
 
-            <Grid container spacing={2}>
-              {overviewKpis.map((item) => (
-                <Grid size={{ xs: 6 }} key={item.key}>
-                  <Card variant="outlined" sx={{ borderRadius: 2, height: '100%' }}>
-                    <CardContent
-                      sx={{ p: { xs: 1.5, sm: 2 }, '&:last-child': { pb: { xs: 1.5, sm: 2 } } }}
-                    >
-                      <Stack direction="row" spacing={1.25} alignItems="center">
-                        <Avatar
-                          sx={{
-                            width: 38,
-                            height: 38,
-                            bgcolor: 'primary.lighter',
-                            color: 'primary.main',
-                            flexShrink: 0,
-                          }}
-                        >
-                          <KepIcon name={item.icon as any} fontSize={18} />
-                        </Avatar>
-                        <Stack spacing={0.25} minWidth={0}>
-                          <Typography variant="caption" color="text.secondary" noWrap>
-                            {item.label}
-                          </Typography>
-                          {isStatisticsSummaryLoading || item.value === null ? (
-                            <Skeleton width={64} height={28} />
-                          ) : (
-                            <Typography variant="h6" fontWeight={800} noWrap>
-                              {item.value}
+            {showStatisticsSummary ? (
+              <Grid container spacing={2}>
+                {overviewKpis.map((item) => (
+                  <Grid size={{ xs: 6 }} key={item.key}>
+                    <Card variant="outlined" sx={{ borderRadius: 2, height: '100%' }}>
+                      <CardContent
+                        sx={{
+                          p: { xs: 1.5, sm: 2 },
+                          '&:last-child': { pb: { xs: 1.5, sm: 2 } },
+                        }}
+                      >
+                        <Stack direction="row" spacing={1.25} alignItems="center">
+                          <Avatar
+                            sx={{
+                              width: 38,
+                              height: 38,
+                              bgcolor: 'primary.lighter',
+                              color: 'primary.main',
+                              flexShrink: 0,
+                            }}
+                          >
+                            <KepIcon name={item.icon as any} fontSize={18} />
+                          </Avatar>
+                          <Stack spacing={0.25} minWidth={0}>
+                            <Typography variant="caption" color="text.secondary" noWrap>
+                              {item.label}
                             </Typography>
-                          )}
+                            {isStatisticsSummaryLoading || item.value === null ? (
+                              <Skeleton width={64} height={28} />
+                            ) : (
+                              <Typography variant="h6" fontWeight={800} noWrap>
+                                {item.value}
+                              </Typography>
+                            )}
+                          </Stack>
                         </Stack>
-                      </Stack>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+            ) : null}
           </Stack>
         </Grid>
 
