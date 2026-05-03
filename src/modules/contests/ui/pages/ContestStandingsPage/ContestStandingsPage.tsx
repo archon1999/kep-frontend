@@ -50,6 +50,9 @@ import ContestantResultsDialog from './ContestantResultsDialog';
 const getStandingsRowId = (row: ContestantEntity) =>
   `${row.rowType ?? 'official'}-${row.id ?? row.username}-${row.virtualTime ?? ''}`;
 
+const getPerformanceLabel = (row: ContestantEntity) =>
+  row.rank === 1 ? '∞' : (row.performance ?? '—');
+
 const ContestStandingsPage = () => {
   const { id } = useParams<{ id: string }>();
   const contestId = id ? Number(id) : undefined;
@@ -477,7 +480,7 @@ const ContestStandingsPage = () => {
           ) : (
             <Stack direction="row" spacing={0.75} alignItems="center">
               <Typography variant="body2" fontWeight={700}>
-                {row.performance ?? '—'}
+                {getPerformanceLabel(row)}
               </Typography>
               {row.performanceTitle ? (
                 <ContestsRatingChip title={row.performanceTitle} imgSize={22} />
