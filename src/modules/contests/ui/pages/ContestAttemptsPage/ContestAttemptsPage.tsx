@@ -138,6 +138,7 @@ const ContestAttemptsPage = () => {
             onRerun={() => mutate()}
             showProblemColumn
             showContestTimeSubmitted
+            disableLockedAttemptDetails
             getProblemLink={(attempt) =>
               getResourceByParams(resources.ContestProblem, {
                 id: contest?.id ?? contestId ?? '',

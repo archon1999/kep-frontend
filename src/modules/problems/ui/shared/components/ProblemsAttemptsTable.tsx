@@ -35,6 +35,7 @@ interface ProblemsAttemptsTableProps {
   onRerun?: () => void;
   showProblemColumn?: boolean;
   showContestTimeSubmitted?: boolean;
+  disableLockedAttemptDetails?: boolean;
   getProblemLink?: (attempt: AttemptListItem) => string;
 }
 
@@ -57,6 +58,7 @@ const ProblemsAttemptsTable = ({
   onRerun,
   showProblemColumn = true,
   showContestTimeSubmitted = false,
+  disableLockedAttemptDetails = false,
   getProblemLink,
 }: ProblemsAttemptsTableProps) => {
   const { t, i18n } = useTranslation();
@@ -194,6 +196,11 @@ const ProblemsAttemptsTable = ({
     return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
   }, []);
 
+  const canOpenAttemptDetail = useCallback(
+    (attempt: AttemptListItem) => !disableLockedAttemptDetails || attempt.canView !== false,
+    [disableLockedAttemptDetails],
+  );
+
   const handleRerun = useCallback(
     async (attemptId: number) => {
       await problemsQueries.problemsRepository.rerunAttempt(attemptId);
@@ -211,24 +218,29 @@ const ProblemsAttemptsTable = ({
         flex: 0.4,
         sortable: false,
         headerAlign: 'center',
-        renderCell: ({ row }) => (
-          <Button
-            color="primary"
-            size="small"
-            onClick={(event) => {
-              event.stopPropagation();
-              handleOpenDetail(row);
-            }}
-            sx={{
-              fontWeight: 700,
-              textTransform: 'none',
-              minWidth: 0,
-              p: 0,
-            }}
-          >
-            #{row.id}
-          </Button>
-        ),
+        renderCell: ({ row }) =>
+          canOpenAttemptDetail(row) ? (
+            <Button
+              color="primary"
+              size="small"
+              onClick={(event) => {
+                event.stopPropagation();
+                handleOpenDetail(row);
+              }}
+              sx={{
+                fontWeight: 700,
+                textTransform: 'none',
+                minWidth: 0,
+                p: 0,
+              }}
+            >
+              #{row.id}
+            </Button>
+          ) : (
+            <Typography variant="body2" color="text.secondary" fontWeight={700}>
+              #{row.id}
+            </Typography>
+          ),
       },
       {
         field: 'created',
@@ -378,6 +390,7 @@ const ProblemsAttemptsTable = ({
     showProblemColumn,
     t,
     formatDateTime,
+    canOpenAttemptDetail,
     handleOpenDetail,
     handleRerun,
     getProblemLink,

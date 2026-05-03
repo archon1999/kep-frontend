@@ -360,7 +360,7 @@ const AttemptDetailDialog = ({
             )}
           </Box>
 
-          {shouldShowTestSection && (shouldShowTestPurchase || canViewTest) ? (
+          {!isContestAttempt && shouldShowTestSection && (shouldShowTestPurchase || canViewTest) ? (
             <Box
               sx={{
                 p: 2,
