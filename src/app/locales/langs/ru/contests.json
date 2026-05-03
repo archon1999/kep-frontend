@@ -206,7 +206,7 @@
       "contestant": "Участник",
       "points": "Очки",
       "penalties": "Штрафы",
-      "delta": "Δ",
+      "delta": "Изменение рейтинга",
       "performance": "Результативность",
       "followingOnly": "Только за кем слежу",
       "allFilters": "Все фильтры",
@@ -236,7 +236,7 @@
       "title": "Изменения рейтинга",
       "columns": {
         "contestant": "Участник",
-        "delta": "Δ",
+        "delta": "Изменение рейтинга",
         "rating": "Рейтинг"
       }
     },

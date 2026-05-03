@@ -204,7 +204,7 @@
       "contestant": "Ishtirokchi",
       "points": "Ball",
       "penalties": "Jarimalar",
-      "delta": "?",
+      "delta": "Reyting o'zgarishi",
       "performance": "Performance",
       "followingOnly": "Faqat kuzatayotganlar",
       "officialOnly": "Faqat rasmiy",
@@ -234,7 +234,7 @@
       "title": "Reyting oʻzgarishlari",
       "columns": {
         "contestant": "Ishtirokchi",
-        "delta": "?",
+        "delta": "Reyting o'zgarishi",
         "rating": "Reyting"
       }
     },

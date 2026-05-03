@@ -187,7 +187,7 @@
       "contestant": "Contestant",
       "points": "Points",
       "penalties": "Penalties",
-      "delta": "Δ",
+      "delta": "Rating change",
       "performance": "Performance",
       "followingOnly": "Following only",
       "officialOnly": "Official only",
@@ -217,7 +217,7 @@
       "title": "Rating changes",
       "columns": {
         "contestant": "Contestant",
-        "delta": "Δ",
+        "delta": "Rating change",
         "rating": "Rating"
       }
     },
