@@ -214,6 +214,7 @@ export interface AttemptListItem {
 export interface AttemptDetail extends AttemptListItem {
   sourceCode?: string;
   errorMessage?: string;
+  previousAttemptId?: number;
 }
 
 export interface AttemptJudgeSummaryTests {

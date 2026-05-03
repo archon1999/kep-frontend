@@ -539,6 +539,7 @@ export const mapAttemptDetail = (payload: any): AttemptDetail => {
     ...base,
     sourceCode: payload?.sourceCode ?? payload?.source_code ?? '',
     errorMessage: payload?.errorMessage ?? payload?.error_message ?? '',
+    previousAttemptId: toNullableNumber(payload?.previousAttemptId ?? payload?.previous_attempt_id),
   };
 };
 
@@ -801,7 +802,6 @@ export const mapProblemsUserStatisticsHeatmap = (payload: any): ProblemsUserStat
 
 export const mapProblemsUserStatistics = (payload: any): ProblemsUserStatistics => {
   const general = payload?.general ?? payload ?? {};
-  const meta = payload?.meta ?? {};
   const attemptsRaw = payload?.numberOfAttempts ?? payload?.number_of_attempts ?? {};
   const activity = mapProblemsUserStatisticsActivity(payload);
   const heatmap = mapProblemsUserStatisticsHeatmap(payload);

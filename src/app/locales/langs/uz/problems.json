@@ -96,7 +96,12 @@
         "failedTestDescription": "Ushbu urinishdagi oʻtmagan testni koʻring.",
         "viewTest": "Testni koʻish",
         "purchaseTest": "Testni sotib olish",
-        "testUnavailable": "Test faqat oʻzingizning urinishlaringiz uchun mavjud."
+        "testUnavailable": "Test faqat oʻzingizning urinishlaringiz uchun mavjud.",
+        "compare": "Solishtirish",
+        "compareTitle": "#{{id}} urinishni solishtirish",
+        "previousAttempt": "Oldingi urinish",
+        "currentAttempt": "Hozirgi urinish",
+        "invalidAttemptId": "To'g'ri urinish ID kiriting."
       }
     },
     "emptyTitle": "Masalalar topilmadi",

@@ -202,7 +202,12 @@
         "failedTestDescription": "Open the failed test input for this submission.",
         "viewTest": "View failed test",
         "purchaseTest": "Purchase failed test",
-        "testUnavailable": "Failed test is available only for your own submissions."
+        "testUnavailable": "Failed test is available only for your own submissions.",
+        "compare": "Compare",
+        "compareTitle": "Compare attempt #{{id}}",
+        "previousAttempt": "Previous attempt",
+        "currentAttempt": "Current attempt",
+        "invalidAttemptId": "Enter a valid attempt ID."
       }
     },
     "detail": {
