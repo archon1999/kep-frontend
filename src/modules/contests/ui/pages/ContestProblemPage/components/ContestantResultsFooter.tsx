@@ -1,6 +1,7 @@
-import { useTranslation } from 'react-i18next';
+import { Link as RouterLink } from 'react-router-dom';
 import { Card, Chip, Stack, Typography } from '@mui/material';
 import { alpha } from '@mui/material/styles';
+import { getResourceByParams, resources } from 'app/routes/resources';
 import {
   ContestProblemEntity,
   ContestProblemInfo,
@@ -18,18 +19,20 @@ import ContestantView from 'modules/contests/ui/shared/components/ContestantView
 interface ContestantResultsFooterProps {
   contestant?: ContestantEntity | null;
   contestProblems: ContestProblemEntity[];
+  contestId?: number;
   contestType?: string;
   contestTypeInfo?: ContestTypeInfo | null;
+  isRated?: boolean;
 }
 
 const ContestantResultsFooter = ({
   contestant,
   contestProblems,
+  contestId,
   contestType,
   contestTypeInfo,
+  isRated,
 }: ContestantResultsFooterProps) => {
-  const { t } = useTranslation();
-
   if (!contestant) {
     return null;
   }
@@ -51,6 +54,14 @@ const ContestantResultsFooter = ({
     return { label: '-', color: 'default' as const };
   };
 
+  const hasRank = contestant.rank !== undefined && contestant.rank !== null && contestant.rank > 0;
+  const hasPoints = contestant.points !== undefined && contestant.points !== null;
+  const showPenalties =
+    contestant.rowType !== 'upsolve' && contestHasPenalties(contestType as any, contestTypeInfo);
+  const showDelta =
+    contestUsesRating(contestType as any, isRated) &&
+    contestant.rowType !== 'upsolve' &&
+    !contestant.isVirtual;
   const delta = contestant.delta ?? 0;
   const deltaColor = delta > 0 ? 'success' : delta < 0 ? 'error' : 'default';
   const deltaLabel = delta ? `${delta > 0 ? '+' : ''}${delta}` : '0';
@@ -64,7 +75,7 @@ const ContestantResultsFooter = ({
     >
       <Stack spacing={1.25}>
         <Stack direction="row" spacing={1.5} alignItems="center" flexWrap="wrap" useFlexGap>
-          <Typography fontWeight={600}>#{contestant.rank}</Typography>
+          {hasRank ? <Typography fontWeight={600}>#{contestant.rank}</Typography> : null}
           <ContestantView
             contestant={contestant}
             imgSize={28}
@@ -72,21 +83,28 @@ const ContestantResultsFooter = ({
             isUnrated={contestant.isUnrated}
             isOfficial={contestant.isOfficial}
           />
-          <Typography color="primary" fontWeight={600}>
-            {formatContestPoints(contestant.points)}
-          </Typography>
-          {contestHasPenalties(contestType as any, contestTypeInfo) ? (
-            <Typography>
-              {`${t('contests.standings.penalties')}: ${contestant.penalties ?? 0}`}
+          <Stack direction="row" spacing={0.5} alignItems="center">
+            <Typography variant="body2" fontWeight={800} color="primary.main">
+              {hasPoints ? formatContestPoints(contestant.points) : '-'}
             </Typography>
-          ) : null}
-          {contestUsesRating(contestType as any, true) ? (
+            {showPenalties ? (
+              <Typography variant="caption" color="error.main">
+                ({contestant.penalties ?? 0})
+              </Typography>
+            ) : null}
+          </Stack>
+          {showDelta ? (
             <Chip
-              label={`${t('contests.ratingChanges.columns.delta')}: ${deltaLabel}`}
+              label={deltaLabel}
               color={deltaColor === 'default' ? 'default' : deltaColor}
               size="small"
               variant="outlined"
             />
+          ) : null}
+          {contestUsesRating(contestType as any, isRated) && contestant.isVirtual ? (
+            <Typography variant="body2" color="text.secondary">
+              —
+            </Typography>
           ) : null}
         </Stack>
 
@@ -96,13 +114,23 @@ const ContestantResultsFooter = ({
               contestant.problemsInfo?.find((item) => item.problemSymbol === problem.symbol) ??
               null;
             const result = formatResult(info);
+            const problemHref = contestId
+              ? getResourceByParams(resources.ContestProblem, {
+                  id: contestId,
+                  symbol: problem.symbol,
+                })
+              : undefined;
             return (
               <Stack
+                component={problemHref ? RouterLink : 'div'}
+                to={problemHref}
                 direction="row"
                 spacing={1}
                 alignItems="center"
                 key={problem.symbol}
                 sx={(theme) => ({
+                  textDecoration: 'none',
+                  color: 'inherit',
                   borderRadius: 1.5,
                   px: 1.25,
                   py: 0.75,
@@ -122,6 +150,13 @@ const ContestantResultsFooter = ({
                           theme.palette.mode === 'dark' ? 0.16 : 0.1,
                         ),
                   minWidth: 54,
+                  transition: theme.transitions.create(['border-color', 'background-color']),
+                  '&:hover': problemHref
+                    ? {
+                        borderColor: alpha(theme.palette.primary.main, 0.7),
+                        backgroundColor: alpha(theme.palette.primary.main, 0.1),
+                      }
+                    : undefined,
                 })}
               >
                 <Typography variant="caption" fontWeight={700} color="text.secondary">

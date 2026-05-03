@@ -10,6 +10,7 @@ import {
   Chip,
   CircularProgress,
   Divider,
+  IconButton,
   LinearProgress,
   Stack,
   Tab,
@@ -172,6 +173,7 @@ const ContestProblemPage = () => {
   const upsolveHref = problem?.id
     ? getResourceByParams(resources.Problem, { id: problem.id })
     : undefined;
+  const canOpenOriginalProblem = contest?.statusCode === ContestStatus.Finished && upsolveHref;
   const sampleTests: ProblemSampleTest[] = problem?.sampleTests ?? [];
   useDocumentTitle(contest?.title && problem?.title, {
     contestTitle: contest?.title,
@@ -498,26 +500,48 @@ const ContestProblemPage = () => {
               />
             ) : null}
 
-            <Button
-              component={RouterLink}
-              to={getResourceByParams(resources.ContestProblems, { id: contestId ?? '' })}
-              startIcon={<IconifyIcon icon="mdi:format-list-bulleted" width={18} height={18} />}
-              variant="text"
-              color="primary"
-              sx={{ textTransform: 'none' }}
-            >
-              {t('contests.tabs.problems')}
-            </Button>
-            <Button
-              component={RouterLink}
-              to={getResourceByParams(resources.ContestStandings, { id: contestId ?? '' })}
-              startIcon={<IconifyIcon icon="mdi:podium" width={18} height={18} />}
-              variant="text"
-              color="primary"
-              sx={{ textTransform: 'none' }}
-            >
-              {t('contests.tabs.standings')}
-            </Button>
+            <Tooltip title={t('contests.tabs.problems')}>
+              <Button
+                component={RouterLink}
+                to={getResourceByParams(resources.ContestProblems, { id: contestId ?? '' })}
+                startIcon={<IconifyIcon icon="mdi:format-list-bulleted" width={18} height={18} />}
+                variant="text"
+                color="primary"
+                sx={{
+                  textTransform: 'none',
+                  minWidth: { xs: 40, lg: 64 },
+                  px: { xs: 1, lg: 1.5 },
+                  '& .MuiButton-startIcon': {
+                    mr: { xs: 0, lg: 1 },
+                  },
+                }}
+              >
+                <Box component="span" sx={{ display: { xs: 'none', lg: 'inline' } }}>
+                  {t('contests.tabs.problems')}
+                </Box>
+              </Button>
+            </Tooltip>
+            <Tooltip title={t('contests.tabs.standings')}>
+              <Button
+                component={RouterLink}
+                to={getResourceByParams(resources.ContestStandings, { id: contestId ?? '' })}
+                startIcon={<IconifyIcon icon="mdi:podium" width={18} height={18} />}
+                variant="text"
+                color="primary"
+                sx={{
+                  textTransform: 'none',
+                  minWidth: { xs: 40, lg: 64 },
+                  px: { xs: 1, lg: 1.5 },
+                  '& .MuiButton-startIcon': {
+                    mr: { xs: 0, lg: 1 },
+                  },
+                }}
+              >
+                <Box component="span" sx={{ display: { xs: 'none', lg: 'inline' } }}>
+                  {t('contests.tabs.standings')}
+                </Box>
+              </Button>
+            </Tooltip>
             <Divider
               orientation="vertical"
               flexItem
@@ -542,6 +566,13 @@ const ContestProblemPage = () => {
                   endIcon={<IconifyIcon icon="mdi:chevron-right" width={18} height={18} />}
                 />
               </Tooltip>
+              {canOpenOriginalProblem ? (
+                <Tooltip title={t('contests.problem.openOriginal')}>
+                  <IconButton component={RouterLink} to={upsolveHref} color="primary" size="small">
+                    <IconifyIcon icon="mdi:open-in-new" width={18} height={18} />
+                  </IconButton>
+                </Tooltip>
+              ) : null}
             </Stack>
           </Stack>
         </Stack>
@@ -714,8 +745,10 @@ const ContestProblemPage = () => {
                 <ContestantResultsFooter
                   contestant={contestant}
                   contestProblems={sortedProblems}
+                  contestId={contest?.id ?? contestId}
                   contestType={contest?.type}
                   contestTypeInfo={contest?.typeInfo}
+                  isRated={contest?.isRated}
                 />
               </Card>
             ) : (

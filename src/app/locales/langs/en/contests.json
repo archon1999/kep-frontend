@@ -267,6 +267,7 @@
       "footerTitle": "Your contest results",
       "prev": "Prev",
       "next": "Next",
+      "openOriginal": "Open problem",
       "contestFinished": "Contest has finished. Continue solving in upsolve mode.",
       "upsolve": "Upsolve"
     },
