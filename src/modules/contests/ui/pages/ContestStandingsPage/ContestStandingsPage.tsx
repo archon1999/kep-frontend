@@ -1,15 +1,17 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useParams, useSearchParams } from 'react-router-dom';
 import {
   Box,
+  Button,
   Chip,
-  FormControl,
+  FormControlLabel,
   Link,
+  Menu,
   MenuItem,
-  Select,
   Stack,
   Switch,
+  TextField,
   Tooltip,
   Typography,
 } from '@mui/material';
@@ -37,6 +39,7 @@ import {
   isAcmStyle,
 } from 'modules/contests/ui/shared/utils/contestType';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import FilterButton from 'shared/components/common/FilterButton';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
@@ -54,6 +57,7 @@ const ContestStandingsPage = () => {
   const { currentUser } = useAuth();
   const [searchParams] = useSearchParams();
   const [selectedContestant, setSelectedContestant] = useState<ContestantEntity | null>(null);
+  const [filtersAnchor, setFiltersAnchor] = useState<HTMLElement | null>(null);
 
   const refreshInterval = 30000;
 
@@ -112,6 +116,11 @@ const ContestStandingsPage = () => {
   const selectedFilter = state.selectedFilter;
   const followingOnly = state.followingOnly;
   const officialOnly = state.officialOnly;
+  const filtersOpen = Boolean(filtersAnchor);
+  const activeFiltersCount = useMemo(
+    () => Number(Boolean(selectedFilter)) + Number(followingOnly) + Number(officialOnly),
+    [followingOnly, officialOnly, selectedFilter],
+  );
 
   const { data: standings, isLoading } = useContestStandings(
     contestId,
@@ -180,70 +189,159 @@ const ContestStandingsPage = () => {
     () => new Map(contestProblems.map((problem) => [problem.symbol, problem])),
     [contestProblems],
   );
+
+  const handleFiltersToggle = (event: MouseEvent<HTMLElement>) => {
+    setFiltersAnchor((current) => (current ? null : event.currentTarget));
+  };
+
+  const handleFiltersClose = () => {
+    setFiltersAnchor(null);
+  };
+
+  const resetStandingsPage = () => {
+    setPaginationModel((prev) => ({ ...prev, page: 0 }));
+  };
+
+  const handleClearFilters = () => {
+    setField('followingOnly', false);
+    setField('officialOnly', false);
+    setField('selectedFilter', '');
+    resetStandingsPage();
+  };
+
   const tabsRightContent = (
-    <Stack
-      direction={{ xs: 'column', sm: 'row' }}
-      spacing={1.5}
-      alignItems={{ xs: 'flex-start', sm: 'center' }}
-    >
-      <Stack direction="row" spacing={1} alignItems="center">
-        <Switch
-          size="small"
-          checked={followingOnly}
-          onChange={(_, checked) => {
-            setField('followingOnly', checked);
-            setPaginationModel((prev) => ({ ...prev, page: 0 }));
-          }}
-        />
-        <Typography variant="body2" fontWeight={600}>
-          {t('contests.standings.followingOnly')}
-        </Typography>
-      </Stack>
+    <>
+      <FilterButton
+        id="contest-standings-filters-button"
+        onClick={handleFiltersToggle}
+        label={t('contests.filters.toggle')}
+        badgeContent={activeFiltersCount}
+        aria-haspopup="true"
+        aria-expanded={filtersOpen ? 'true' : undefined}
+        aria-controls={filtersOpen ? 'contest-standings-filters-menu' : undefined}
+      />
 
-      <Stack direction="row" spacing={1} alignItems="center">
-        <Switch
-          size="small"
-          checked={officialOnly}
-          onChange={(_, checked) => {
-            setField('officialOnly', checked);
-            setPaginationModel((prev) => ({ ...prev, page: 0 }));
-          }}
-        />
-        <Typography variant="body2" fontWeight={600}>
-          {t('contests.standings.officialOnly')}
-        </Typography>
-      </Stack>
+      <Menu
+        id="contest-standings-filters-menu"
+        anchorEl={filtersAnchor}
+        open={filtersOpen}
+        onClose={handleFiltersClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        MenuListProps={{ disablePadding: true }}
+        PaperProps={{
+          sx: {
+            p: 2.5,
+            width: { xs: 300, sm: 380 },
+          },
+        }}
+      >
+        <Stack direction="column" spacing={2.25}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <Stack direction="row" spacing={1} alignItems="center">
+              <IconifyIcon icon="mdi:tune-variant" width={20} height={20} />
+              <Typography variant="subtitle2" fontWeight={700}>
+                {t('contests.filters.toggle')}
+              </Typography>
+            </Stack>
+            <Button
+              size="small"
+              variant="text"
+              color="secondary"
+              disabled={activeFiltersCount === 0}
+              onClick={handleClearFilters}
+            >
+              {t('contests.filter.reset')}
+            </Button>
+          </Stack>
 
-      <FormControl size="small" sx={{ minWidth: 200 }}>
-        <Select
-          variant="standard"
-          labelId="contest-standings-filter-select"
-          label={t('contests.standings.allFilters')}
-          value={selectedFilter}
-          disabled={!contestFilters.length}
-          onChange={(event) => {
-            setField('selectedFilter', event.target.value);
-            setPaginationModel((prev) => ({ ...prev, page: 0 }));
-          }}
-          displayEmpty
-          renderValue={(value) =>
-            value
-              ? (contestFilters.find((f) => String(f.id) === String(value))?.name ??
-                t('contests.standings.allFilters'))
-              : t('contests.standings.allFilters')
-          }
-        >
-          <MenuItem value="">
-            <Typography variant="body2">{t('contests.standings.allFilters')}</Typography>
-          </MenuItem>
-          {contestFilters.map((filter) => (
-            <MenuItem key={filter.id} value={String(filter.id)}>
-              {filter.name}
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            sx={{
+              px: 1.5,
+              py: 1,
+              borderRadius: 2,
+              border: '1px solid',
+              borderColor: 'divider',
+            }}
+          >
+            <Typography variant="body2" fontWeight={600}>
+              {t('contests.standings.followingOnly')}
+            </Typography>
+            <FormControlLabel
+              control={
+                <Switch
+                  size="small"
+                  checked={followingOnly}
+                  onChange={(_, checked) => {
+                    setField('followingOnly', checked);
+                    resetStandingsPage();
+                  }}
+                />
+              }
+              label=""
+              sx={{ m: 0 }}
+            />
+          </Stack>
+
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            sx={{
+              px: 1.5,
+              py: 1,
+              borderRadius: 2,
+              border: '1px solid',
+              borderColor: 'divider',
+            }}
+          >
+            <Typography variant="body2" fontWeight={600}>
+              {t('contests.standings.officialOnly')}
+            </Typography>
+            <FormControlLabel
+              control={
+                <Switch
+                  size="small"
+                  checked={officialOnly}
+                  onChange={(_, checked) => {
+                    setField('officialOnly', checked);
+                    resetStandingsPage();
+                  }}
+                />
+              }
+              label=""
+              sx={{ m: 0 }}
+            />
+          </Stack>
+
+          <TextField
+            select
+            fullWidth
+            variant="filled"
+            size="small"
+            label={t('contests.standings.allFilters')}
+            value={selectedFilter}
+            disabled={!contestFilters.length}
+            onChange={(event) => {
+              setField('selectedFilter', event.target.value);
+              resetStandingsPage();
+            }}
+          >
+            <MenuItem value="">
+              <Typography variant="body2">{t('contests.standings.allFilters')}</Typography>
             </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </Stack>
+            {contestFilters.map((filter) => (
+              <MenuItem key={filter.id} value={String(filter.id)}>
+                {filter.name}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Stack>
+      </Menu>
+    </>
   );
 
   const columns: GridColDef<ContestantEntity>[] = useMemo(() => {
