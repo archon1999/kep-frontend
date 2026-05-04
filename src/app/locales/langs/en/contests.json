@@ -32,6 +32,10 @@
       "loading": "Loading results...",
       "empty": "Top finishers will appear once the contest is completed."
     },
+    "topRating": {
+      "title": "Top 10",
+      "viewAll": "View all"
+    },
     "startsLabel": "Starts {{date}}",
     "startsUnknown": "Start time to be announced",
     "endsLabel": "Ends {{date}}",

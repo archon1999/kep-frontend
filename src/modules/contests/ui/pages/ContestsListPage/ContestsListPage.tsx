@@ -1,6 +1,6 @@
 import { MouseEvent, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Stack } from '@mui/material';
+import { Box, Grid, Stack } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useContestCategories, useContestsList } from 'modules/contests/application/queries';
 import AppliedFilters from 'shared/components/common/AppliedFilters';
@@ -11,6 +11,7 @@ import { responsivePagePaddingSx } from 'shared/lib/styles';
 import ContestsListPageFiltersMenu from './ContestsListPageFiltersMenu.tsx';
 import ContestsListPageHeroCard from './ContestsListPageHeroCard.tsx';
 import ContestsListPageResults from './ContestsListPageResults.tsx';
+import ContestsListTopRatingCard from './ContestsListTopRatingCard.tsx';
 
 const contestTypes = [
   'ACM2H',
@@ -211,15 +212,22 @@ const ContestsListPage = () => {
           onClear={handleClearFilters}
         />
 
-        <ContestsListPageResults
-          contests={contests}
-          isLoading={isLoading}
-          showEmptyState={showEmptyState}
-          page={state.page}
-          pagesCount={pageResult?.pagesCount ?? 0}
-          skeletonCount={DEFAULT_PAGE_SIZE}
-          onPageChange={(value) => setField('page', value)}
-        />
+        <Grid container spacing={3} alignItems="flex-start">
+          <Grid size={{ xs: 12, md: 9 }}>
+            <ContestsListPageResults
+              contests={contests}
+              isLoading={isLoading}
+              showEmptyState={showEmptyState}
+              page={state.page}
+              pagesCount={pageResult?.pagesCount ?? 0}
+              skeletonCount={DEFAULT_PAGE_SIZE}
+              onPageChange={(value) => setField('page', value)}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, md: 3 }}>
+            <ContestsListTopRatingCard />
+          </Grid>
+        </Grid>
       </Stack>
     </Box>
   );

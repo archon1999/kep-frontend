@@ -32,6 +32,10 @@
       "loading": "Natijalar yuklanmoqda...",
       "empty": "Gʻoliblar kontest tugagach koʻrsatiladi."
     },
+    "topRating": {
+      "title": "Top-10",
+      "viewAll": "Barchasini ko'rish"
+    },
     "startsLabel": "Boshlanishi {{date}}",
     "startsUnknown": "Boshlanish vaqti tez orada eʻlon qilinadi",
     "endsLabel": "Tugashi {{date}}",
