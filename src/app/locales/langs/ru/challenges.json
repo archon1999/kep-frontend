@@ -74,6 +74,14 @@
     "currentRank": "Текущий рейтинг",
     "delta": "Изменение: {{value}}",
     "ratingChanges": "Изменения рейтинга",
+    "ratingChangesTooltip": {
+      "challenge": "Вызов #{{id}}",
+      "date": "Дата",
+      "rating": "Рейтинг",
+      "delta": "Изменение",
+      "opponent": "Соперник",
+      "score": "Счет"
+    },
     "noChanges": "Изменений пока нет.",
     "lastChallenges": "Последние вызовы",
     "timer": {

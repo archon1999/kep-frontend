@@ -74,6 +74,14 @@
     "currentRank": "Joriy reyting",
     "delta": "Oʻzgarish: {{value}}",
     "ratingChanges": "Reyting oʻzgarishlari",
+    "ratingChangesTooltip": {
+      "challenge": "Bellashuv #{{id}}",
+      "date": "Sana",
+      "rating": "Reyting",
+      "delta": "O'zgarish",
+      "opponent": "Raqib",
+      "score": "Hisob"
+    },
     "noChanges": "Oʻzgarishlar yoʻq.",
     "lastChallenges": "Soʻngi bellashuvlar",
     "timer": {

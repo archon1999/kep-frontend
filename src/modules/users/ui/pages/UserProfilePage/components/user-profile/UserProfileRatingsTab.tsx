@@ -15,41 +15,23 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { alpha, useTheme } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles';
 import { getResourceByUsername, resources } from 'app/routes/resources';
 import dayjs from 'dayjs';
-import { LineChart } from 'echarts/charts';
-import { GridComponent, TooltipComponent } from 'echarts/components';
-import * as echarts from 'echarts/core';
-import { CanvasRenderer } from 'echarts/renderers';
 import {
   useChallengeRatingChanges,
   useChallengeUserRating,
 } from 'modules/challenges/application/queries';
+import ChallengeRatingChangesChartCard from 'modules/challenges/ui/shared/components/ChallengeRatingChangesChartCard';
 import { useContestRatingChanges } from 'modules/contests/application/queries';
 import ContestRatingChangesChartCard from 'modules/contests/ui/shared/components/ContestRatingChangesChartCard';
 import { useUserProblemsRating } from 'modules/problems/application/queries';
 import { difficultyColorByKey, difficultyOptions } from 'modules/problems/config/difficulty';
 import KepIcon from 'shared/components/base/KepIcon';
-import ReactEchart from 'shared/components/base/ReactEchart';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import { KepIconName } from 'shared/config/icons';
-import { getColor } from 'shared/lib/echart-utils';
 import { useUserRatings } from 'modules/users/application/queries';
-
-echarts.use([GridComponent, TooltipComponent, LineChart, CanvasRenderer]);
-
-const integerAxisLabelFormatter = (value: number | string) => Math.round(Number(value)).toString();
-
-const withPadding = (values: number[]) => {
-  if (!values.length) return [0, 0];
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-  const range = Math.max(1, max - min);
-  const padding = range * 0.1;
-  return [Math.max(0, min - padding), max + padding];
-};
 
 const RatingHeader = ({
   icon,
@@ -142,7 +124,6 @@ const StatBadge = ({
 const UserProfileRatingsTab = () => {
   const { t } = useTranslation();
   const { username = '' } = useParams();
-  const theme = useTheme();
 
   const { data: userRatings, isLoading: isRatingsLoading } = useUserRatings(username);
   const { data: problemsRating, isLoading: isProblemsLoading } = useUserProblemsRating(username);
@@ -192,48 +173,6 @@ const UserProfileRatingsTab = () => {
   const contestLatestTitle = contestsRating?.title ?? contestLatestChange?.newRatingTitle;
   const contestMaxRating = contestMaxChange?.newRating;
   const contestMaxTitle = contestMaxChange?.newRatingTitle ?? contestLatestTitle;
-
-  const challengeRatingOption = useMemo(() => {
-    if (!sortedChallengeChanges.length) return null;
-
-    const values = sortedChallengeChanges.map((item) => Number(item.value ?? 0));
-    const [min, max] = withPadding(values);
-
-    return {
-      color: [getColor(theme.vars.palette.warning.main)],
-      grid: { left: 8, right: 12, top: 12, bottom: 12, containLabel: true },
-      tooltip: { trigger: 'axis' },
-      xAxis: {
-        type: 'category',
-        data: sortedChallengeChanges.map((item) => dayjs(item.date).format('DD MMM')),
-        axisLabel: { color: getColor(theme.vars.palette.text.secondary) },
-        axisTick: { show: false },
-        axisLine: { lineStyle: { color: getColor(theme.vars.palette.divider) } },
-      },
-      yAxis: {
-        type: 'value',
-        min,
-        max,
-        axisLabel: {
-          color: getColor(theme.vars.palette.text.secondary),
-          formatter: integerAxisLabelFormatter,
-        },
-        splitLine: { lineStyle: { color: getColor(theme.vars.palette.divider) } },
-        minInterval: 1,
-      },
-      series: [
-        {
-          type: 'line',
-          smooth: true,
-          showSymbol: true,
-          symbolSize: 8,
-          lineStyle: { width: 3 },
-          areaStyle: { opacity: 0.2 },
-          data: sortedChallengeChanges.map((item) => item.value ?? 0),
-        },
-      ],
-    };
-  }, [sortedChallengeChanges, theme.vars.palette]);
 
   const isMainLoading = isProblemsLoading || isRatingsLoading || isChallengesLoading;
 
@@ -368,45 +307,48 @@ const UserProfileRatingsTab = () => {
         />
       )}
 
-      <Card variant="outlined" sx={{ borderRadius: '8px', overflow: 'hidden' }}>
-        <RatingHeader icon="challenges" title={t('challenges.title')}>
-          <ChallengesRatingChip title={challengesRating?.rankTitle} />
-          <ChallengesRatingChip
-            title={challengesRating?.rankTitle}
-            rating={challengesRating?.rating ?? 0}
-          />
-        </RatingHeader>
+      {isChallengeChangesLoading ? (
+        <Card variant="outlined" sx={{ borderRadius: '8px', overflow: 'hidden' }}>
+          <RatingHeader icon="challenges" title={t('challenges.title')}>
+            <ChallengesRatingChip title={challengesRating?.rankTitle} />
+            <ChallengesRatingChip
+              title={challengesRating?.rankTitle}
+              rating={challengesRating?.rating ?? 0}
+            />
+            <StatBadge
+              label={`${challengesRating?.wins ?? 0}W ${challengesRating?.draws ?? 0}D ${
+                challengesRating?.losses ?? 0
+              }L`}
+            />
+          </RatingHeader>
 
-        <CardContent>
-          <Stack direction="row" spacing={1.5} justifyContent="center" sx={{ mb: 2 }}>
-            <Tooltip title={t('users.profile.ratings.wins')} arrow>
-              <Typography variant="h6" color="success.main" fontWeight={800}>
-                W {challengesRating?.wins ?? 0}
-              </Typography>
-            </Tooltip>
-            <Tooltip title={t('users.profile.ratings.draws')} arrow>
-              <Typography variant="h6" color="text.secondary" fontWeight={800}>
-                D {challengesRating?.draws ?? 0}
-              </Typography>
-            </Tooltip>
-            <Tooltip title={t('users.profile.ratings.losses')} arrow>
-              <Typography variant="h6" color="error.main" fontWeight={800}>
-                L {challengesRating?.losses ?? 0}
-              </Typography>
-            </Tooltip>
-          </Stack>
-
-          {isChallengeChangesLoading ? (
+          <CardContent>
             <Skeleton variant="rectangular" height={260} />
-          ) : challengeRatingOption ? (
-            <ReactEchart echarts={echarts} option={challengeRatingOption} sx={{ height: 300 }} />
-          ) : (
-            <Typography variant="body2" color="text.secondary">
-              {t('users.profile.ratings.noHistory')}
-            </Typography>
-          )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      ) : (
+        <ChallengeRatingChangesChartCard
+          title={t('challenges.title')}
+          changes={challengeRatingChanges}
+          emptyText={t('users.profile.ratings.noHistory')}
+          height={300}
+          extra={
+            <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap" useFlexGap>
+              <ChallengesRatingChip title={challengesRating?.rankTitle} />
+              <ChallengesRatingChip
+                title={challengesRating?.rankTitle}
+                rating={challengesRating?.rating ?? 0}
+              />
+              <StatBadge
+                label={`${challengesRating?.wins ?? 0}W ${challengesRating?.draws ?? 0}D ${
+                  challengesRating?.losses ?? 0
+                }L`}
+              />
+              <StatBadge label={sortedChallengeChanges.length} />
+            </Stack>
+          }
+        />
+      )}
     </Stack>
   );
 };

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -42,6 +42,7 @@ import type {
   ChallengeUserStatistics,
 } from 'modules/challenges/domain';
 import { ChallengeQuestionTimeType } from 'modules/challenges/domain';
+import ChallengeRatingChangesChartCard from 'modules/challenges/ui/shared/components/ChallengeRatingChangesChartCard';
 import ChallengeCard from 'modules/challenges/ui/shared/components/ChallengeCard.tsx';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
@@ -73,15 +74,6 @@ const buildYears = (statistics?: ChallengeUserStatistics | null) => {
     if (entry.date) years.add(dayjs(entry.date).year());
   });
   return Array.from(years).sort((a, b) => b - a);
-};
-
-const withPadding = (series: number[]): [number, number] => {
-  if (!series.length) return [0, 0];
-  const min = Math.min(...series);
-  const max = Math.max(...series);
-  const range = max - min || 1;
-  const padding = Math.max(4, range * 0.1);
-  return [Math.floor(min - padding), Math.ceil(max + padding)];
 };
 
 const getResultColor = (result: string) => {
@@ -256,7 +248,6 @@ const ChallengesUserStatisticsPage = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
   const theme = useTheme();
-  const navigate = useNavigate();
   const username = currentUser?.username;
   const { state, setField } = useRouteQueryState<{
     page: number;
@@ -299,74 +290,6 @@ const ChallengesUserStatisticsPage = () => {
   const neutralColor = getColor(theme.vars.palette.text.disabled);
   const axisLabelColor = getColor(theme.vars.palette.text.secondary);
   const dividerColor = getColor(theme.vars.palette.divider);
-
-  const ratingHistory = useMemo(
-    () =>
-      [...(statistics?.ratingHistory ?? [])].sort(
-        (a, b) => dayjs(a.finishedAt ?? 0).valueOf() - dayjs(b.finishedAt ?? 0).valueOf(),
-      ),
-    [statistics?.ratingHistory],
-  );
-
-  const ratingChartOption = useMemo(() => {
-    if (!ratingHistory.length) return null;
-    const values = ratingHistory.map((item) => item.ratingAfter);
-    const [min, max] = withPadding(values);
-
-    return {
-      color: [primaryColor],
-      grid: { left: 8, right: 8, top: 16, bottom: 12, containLabel: true },
-      tooltip: {
-        trigger: 'axis',
-        formatter: (params: any) => {
-          const point = params?.[0]?.data;
-          if (!point) return '';
-          return [
-            `<strong>${dayjs(point.finishedAt).format('YYYY-MM-DD HH:mm')}</strong>`,
-            `${t('challenges.statisticsPage.opponent', { defaultValue: 'Opponent' })}: ${point.opponentUsername} (${point.opponentRating})`,
-            `${t('challenges.statisticsPage.ratingAfter', { defaultValue: 'Rating' })}: ${point.value}`,
-            `${t('challenges.statisticsPage.deltaShort', { defaultValue: 'Delta' })}: ${point.delta > 0 ? '+' : ''}${point.delta}`,
-            `${t('challenges.statisticsPage.score', { defaultValue: 'Score' })}: ${point.userScore}:${point.opponentScore}`,
-          ].join('<br/>');
-        },
-      },
-      xAxis: {
-        type: 'category',
-        data: ratingHistory.map((item) => dayjs(item.finishedAt).format('DD MMM')),
-        axisLabel: { color: axisLabelColor },
-        axisTick: { show: false },
-        axisLine: { lineStyle: { color: neutralColor } },
-      },
-      yAxis: {
-        type: 'value',
-        min,
-        max,
-        minInterval: 1,
-        axisLabel: { color: axisLabelColor, formatter: integerAxisLabelFormatter },
-        splitLine: { lineStyle: { color: dividerColor } },
-      },
-      series: [
-        {
-          type: 'line',
-          smooth: true,
-          areaStyle: { opacity: 0.18 },
-          showSymbol: true,
-          symbolSize: 8,
-          lineStyle: { width: 3 },
-          data: ratingHistory.map((item) => ({
-            value: item.ratingAfter,
-            finishedAt: item.finishedAt,
-            delta: item.delta,
-            opponentUsername: item.opponentUsername,
-            opponentRating: item.opponentRating,
-            userScore: item.userScore,
-            opponentScore: item.opponentScore,
-            challengeId: item.challengeId,
-          })),
-        },
-      ],
-    } satisfies EChartsCoreOption;
-  }, [axisLabelColor, dividerColor, neutralColor, primaryColor, ratingHistory, t]);
 
   const resultsDonutOption = useMemo(() => {
     const results = statistics?.results;
@@ -639,16 +562,6 @@ const ChallengesUserStatisticsPage = () => {
 
   const chapters = (statistics?.distribution?.byChapter ?? []).slice(0, 10);
 
-  const ratingChartEvents = useMemo(
-    () => ({
-      click: (params: any) => {
-        const challengeId = params?.data?.challengeId;
-        if (challengeId) navigate(getResourceById(resources.Challenge, challengeId));
-      },
-    }),
-    [navigate],
-  );
-
   return (
     <Stack direction="column">
       <PageHeader
@@ -688,7 +601,7 @@ const ChallengesUserStatisticsPage = () => {
 
               <Grid container spacing={3}>
                 <Grid size={{ xs: 12, lg: 8 }}>
-                  <ChallengesUserStatisticsPageChartCard title={t('challenges.statisticsPage.ratingHistory', { defaultValue: 'Rating history' })} option={ratingChartOption} emptyText={t('challenges.noChanges')} onEvents={ratingChartEvents} extra={statistics.general?.ratingPlace ? <Chip label={t('challenges.statisticsPage.rankPlace', { defaultValue: 'Rank #{{value}}', value: statistics.general.ratingPlace })} size="small" color="primary" variant="soft" /> : null} />
+                  <ChallengeRatingChangesChartCard title={t('challenges.statisticsPage.ratingHistory', { defaultValue: 'Rating history' })} changes={statistics.ratingHistory} emptyText={t('challenges.noChanges')} extra={statistics.general?.ratingPlace ? <Chip label={t('challenges.statisticsPage.rankPlace', { defaultValue: 'Rank #{{value}}', value: statistics.general.ratingPlace })} size="small" color="primary" variant="soft" /> : null} />
                 </Grid>
                 <Grid size={{ xs: 12, lg: 4 }}>
                   <Card variant="outlined" sx={{ height: '100%' }}>

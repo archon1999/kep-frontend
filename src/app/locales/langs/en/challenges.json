@@ -79,6 +79,14 @@
     "currentRank": "Current rating",
     "delta": "Change: {{value}}",
     "ratingChanges": "Rating changes",
+    "ratingChangesTooltip": {
+      "challenge": "Challenge #{{id}}",
+      "date": "Date",
+      "rating": "Rating",
+      "delta": "Delta",
+      "opponent": "Opponent",
+      "score": "Score"
+    },
     "noChanges": "No rating changes yet.",
     "lastChallenges": "Latest challenges",
     "timer": {
