@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -13,9 +13,8 @@ import {
   Typography,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
-import { BarChart, LineChart, PieChart } from 'echarts/charts';
+import { BarChart, PieChart } from 'echarts/charts';
 import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components';
 import * as echarts from 'echarts/core';
 import type { EChartsCoreOption } from 'echarts/core';
@@ -32,11 +31,10 @@ import {
   useContestRatingChanges,
   useContestUserStatistics,
 } from 'modules/contests/application/queries';
-import ReactEchart, { type ReactEchartProps } from 'shared/components/base/ReactEchart';
-import KepIcon from 'shared/components/base/KepIcon';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import { getColor } from 'shared/lib/echart-utils';
 import type { KepIconName } from 'shared/config/icons';
+import ContestRatingChangesChartCard from '../../shared/components/ContestRatingChangesChartCard';
 import ContestsUserStatisticsPageChartCard from './ContestsUserStatisticsPageChartCard.tsx';
 import ContestsUserStatisticsPageHighlightCard, {
   type ContestsUserStatisticsPageHighlightCardProps,
@@ -48,149 +46,13 @@ import ContestsUserStatisticsPageStatCard, {
   type ContestsUserStatisticsPageStatCardProps,
 } from './ContestsUserStatisticsPageStatCard.tsx';
 
-echarts.use([GridComponent, TooltipComponent, LegendComponent, LineChart, BarChart, PieChart, CanvasRenderer]);
+echarts.use([GridComponent, TooltipComponent, LegendComponent, BarChart, PieChart, CanvasRenderer]);
 
 const integerAxisLabelFormatter = (value: number) => Math.round(value).toString();
-
-interface StatCardProps {
-  icon: KepIconName;
-  label: string;
-  value?: string;
-  subtitle?: string;
-  highlight?: boolean;
-  valueColor?: string;
-}
-
-const StatCard = ({ icon, label, value, subtitle, highlight, valueColor }: StatCardProps) => (
-  <Card
-    variant="outlined"
-    sx={(theme) => ({
-      height: '100%',
-      borderRadius: 3,
-      background: highlight
-        ? `linear-gradient(135deg, ${getColor(theme.vars.palette.primary.light)}20, ${getColor(
-            theme.vars.palette.primary.main,
-          )}12)`
-        : undefined,
-    })}
-  >
-    <CardContent sx={{ height: '100%' }}>
-      <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
-        <Stack direction="column" spacing={0.75} flex={1} minWidth={0}>
-          <Typography variant="subtitle2" color="text.secondary">
-            {label}
-          </Typography>
-          <Typography variant="h5" fontWeight={800} color={valueColor ?? 'text.primary'}>
-            {value ?? '—'}
-          </Typography>
-          {subtitle ? (
-            <Typography variant="body2" color="text.secondary">
-              {subtitle}
-            </Typography>
-          ) : null}
-        </Stack>
-        <KepIcon name={icon} fontSize={26} />
-      </Stack>
-    </CardContent>
-  </Card>
-);
-
-interface HighlightCardProps {
-  icon: KepIconName;
-  label: string;
-  valueLabel?: string;
-  meta?: string;
-  contestTitle?: string;
-  contestLink?: string;
-}
-
-const HighlightCard = ({
-  icon,
-  label,
-  valueLabel,
-  meta,
-  contestTitle,
-  contestLink,
-}: HighlightCardProps) => (
-  <Card variant="outlined" sx={{ height: '100%', borderRadius: 3 }}>
-    <CardContent>
-      <Stack direction="row" spacing={2} alignItems="flex-start">
-        <KepIcon name={icon} fontSize={26} className="text-primary" />
-        <Stack direction="column" spacing={0.5} flex={1} minWidth={0}>
-          <Typography variant="subtitle2" color="text.secondary">
-            {label}
-          </Typography>
-          <Typography variant="h6" fontWeight={800}>
-            {valueLabel ?? '—'}
-          </Typography>
-          {contestTitle ? (
-            contestLink ? (
-              <Button
-                component={RouterLink}
-                to={contestLink}
-                size="small"
-                variant="text"
-                sx={{ px: 0, justifyContent: 'flex-start' }}
-              >
-                {contestTitle}
-              </Button>
-            ) : (
-              <Typography variant="body2" color="text.secondary">
-                {contestTitle}
-              </Typography>
-            )
-          ) : null}
-          {meta ? (
-            <Typography variant="body2" color="text.secondary">
-              {meta}
-            </Typography>
-          ) : null}
-        </Stack>
-      </Stack>
-    </CardContent>
-  </Card>
-);
-
-interface ChartCardProps {
-  title: string;
-  option: EChartsCoreOption | null;
-  height?: number;
-  emptyText: string;
-  onEvents?: ReactEchartProps['onEvents'];
-  extra?: React.ReactNode;
-}
-
-const ChartCard = ({ title, option, height = 320, emptyText, onEvents, extra }: ChartCardProps) => (
-  <Card variant="outlined" sx={{ height: '100%', borderRadius: 3 }}>
-    <CardContent sx={{ height: '100%' }}>
-      <Stack direction="column" spacing={2} sx={{ height: '100%' }}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
-          <Typography variant="subtitle1" fontWeight={700}>
-            {title}
-          </Typography>
-          {extra}
-        </Stack>
-        {option ? (
-          <ReactEchart
-            echarts={echarts}
-            option={option}
-            style={{ width: '100%', height }}
-            onEvents={onEvents}
-          />
-        ) : (
-          <Typography variant="body2" color="text.secondary">
-            {emptyText}
-          </Typography>
-        )}
-      </Stack>
-    </CardContent>
-  </Card>
-);
 
 const ContestsUserStatisticsPage = () => {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
-  const navigate = useNavigate();
   const { currentUser } = useAuth();
 
   const username = currentUser?.username;
@@ -564,92 +426,6 @@ const ContestsUserStatisticsPage = () => {
     return createDonutOption(data);
   }, [createDonutOption, statistics?.symbols]);
 
-  const withPadding = (series: number[]): [number, number] => {
-    if (!series.length) return [0, 0];
-    const min = Math.min(...series);
-    const max = Math.max(...series);
-    const range = max - min || 1;
-    const padding = range * 0.1;
-    return [Math.max(0, min - padding), max + padding];
-  };
-
-  const ratingChangesOption = useMemo(() => {
-    const changes = ratingChanges ?? [];
-    if (!changes.length) return null;
-
-    const sorted = [...changes].sort(
-      (a, b) =>
-        dayjs(a.contestStartDate ?? a.contestTitle ?? '').valueOf() -
-        dayjs(b.contestStartDate ?? b.contestTitle ?? '').valueOf(),
-    );
-    const labels = sorted.map((item) =>
-      item.contestStartDate ? dayjs(item.contestStartDate).format('DD MMM') : item.contestTitle ?? '',
-    );
-    const values = sorted.map((item) => item.newRating ?? 0);
-    const [min, max] = withPadding(values);
-
-    return {
-      color: [primaryColor],
-      grid: { left: 8, right: 8, top: 16, bottom: 12, containLabel: true },
-      tooltip: {
-        trigger: 'axis',
-        valueFormatter: (value: number) => numberFormatter.format(value ?? 0),
-      },
-      xAxis: {
-        type: 'category',
-        data: labels,
-        axisLabel: { color: axisLabelColor },
-        axisTick: { show: false },
-        axisLine: { lineStyle: { color: neutralColor } },
-      },
-      yAxis: {
-        type: 'value',
-        min,
-        max,
-        axisLabel: { color: axisLabelColor, formatter: integerAxisLabelFormatter },
-        splitLine: { lineStyle: { color: neutralColor } },
-        minInterval: 1,
-      },
-      series: [
-        {
-          type: 'line',
-          data: sorted.map((item) => ({
-            value: item.newRating ?? 0,
-            contestId: item.contestId,
-            delta: item.delta,
-            rank: item.rank,
-            contestTitle: item.contestTitle,
-            date: item.contestStartDate,
-          })),
-          smooth: true,
-          showSymbol: true,
-          symbolSize: 8,
-          areaStyle: {
-            opacity: 0.2,
-          },
-          lineStyle: { width: 3 },
-        },
-      ],
-    } satisfies EChartsCoreOption;
-  }, [axisLabelColor, neutralColor, numberFormatter, primaryColor, ratingChanges]);
-
-  const handleRatingPointClick = useCallback(
-    (params: any) => {
-      const contestId = params?.data?.contestId;
-      if (contestId) {
-        navigate(getResourceById(resources.Contest, contestId));
-      }
-    },
-    [navigate],
-  );
-
-  const ratingChartEvents = useMemo(
-    () => ({
-      click: handleRatingPointClick,
-    }),
-    [handleRatingPointClick],
-  );
-
   const renderAttemptsList = (
     attempts: ContestUserStatisticsTopAttempt[],
     emptyText: string,
@@ -890,12 +666,12 @@ const ContestsUserStatisticsPage = () => {
           ))}
         </Grid>
 
-        <ContestsUserStatisticsPageChartCard
+        <ContestRatingChangesChartCard
           title={t('contests.statistics.ratingChangesHistory')}
-          option={ratingChangesOption}
+          changes={ratingChanges}
+          username={username}
           emptyText={t('contests.statistics.noData')}
-          height={320}
-          onEvents={ratingChartEvents}
+          height={360}
         />
 
         <Grid container spacing={2}>

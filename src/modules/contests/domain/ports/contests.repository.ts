@@ -77,6 +77,7 @@ export interface ContestStandingsParams {
   filter?: number | string | null;
   following?: boolean;
   official?: boolean;
+  participant?: string;
 }
 
 export interface ContestContestantsParams {

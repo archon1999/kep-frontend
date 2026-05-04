@@ -109,6 +109,7 @@ export class HttpContestsRepository implements ContestsRepository {
       filter: params?.filter !== null ? params?.filter?.toString() : undefined,
       following: params?.following ? 'true' : undefined,
       official: params?.official ? 'true' : undefined,
+      participant: params?.participant,
     } as any);
     return mapContestantsPage(result);
   }

@@ -219,6 +219,12 @@
         "contestant": "Contestant",
         "delta": "Rating change",
         "rating": "Rating"
+      },
+      "tooltip": {
+        "date": "Date",
+        "delta": "Change",
+        "rank": "Rank",
+        "openStandings": "Open in standings"
       }
     },
     "questions": {

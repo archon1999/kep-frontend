@@ -236,6 +236,12 @@
         "contestant": "Ishtirokchi",
         "delta": "Reyting o'zgarishi",
         "rating": "Reyting"
+      },
+      "tooltip": {
+        "date": "Sana",
+        "delta": "O'zgarish",
+        "rank": "O'rin",
+        "openStandings": "Standingsda ochish"
       }
     },
     "questions": {

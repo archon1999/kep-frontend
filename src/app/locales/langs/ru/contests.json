@@ -238,6 +238,12 @@
         "contestant": "Участник",
         "delta": "Изменение рейтинга",
         "rating": "Рейтинг"
+      },
+      "tooltip": {
+        "date": "Дата",
+        "delta": "Изменение",
+        "rank": "Место",
+        "openStandings": "Открыть в результатах"
       }
     },
     "questions": {

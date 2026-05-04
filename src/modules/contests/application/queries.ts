@@ -127,6 +127,7 @@ export const useContestStandings = (
           params?.filter,
           params?.following,
           params?.official,
+          params?.participant,
         ]
       : null,
     () => contestsRepository.standings(contestId!, params),

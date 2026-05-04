@@ -15,7 +15,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, useGridApiRef } from '@mui/x-data-grid';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceByParams, resources } from 'app/routes/resources';
@@ -53,14 +53,48 @@ const getStandingsRowId = (row: ContestantEntity) =>
 const getPerformanceLabel = (row: ContestantEntity) =>
   row.rank === 1 ? '∞' : (row.performance ?? '—');
 
+const decodeRouteParam = (value?: string) => {
+  if (!value) {
+    return undefined;
+  }
+
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+};
+
+const normalizeUsername = (value?: string | null) => value?.trim().toLowerCase() ?? '';
+
+const contestantMatchesUsername = (row: ContestantEntity, normalizedUsername: string) => {
+  if (!normalizedUsername) {
+    return false;
+  }
+
+  if (normalizeUsername(row.username) === normalizedUsername) {
+    return true;
+  }
+
+  return Boolean(
+    row.team?.members?.some(
+      (member) => normalizeUsername(member.username) === normalizedUsername,
+    ),
+  );
+};
+
 const ContestStandingsPage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id, username: participantParam } = useParams<{ id: string; username?: string }>();
   const contestId = id ? Number(id) : undefined;
   const { t } = useTranslation();
   const { currentUser } = useAuth();
   const [searchParams] = useSearchParams();
   const [selectedContestant, setSelectedContestant] = useState<ContestantEntity | null>(null);
   const [filtersAnchor, setFiltersAnchor] = useState<HTMLElement | null>(null);
+  const dataGridApiRef = useGridApiRef();
+  const focusedParticipantRef = useRef<string | null>(null);
+  const participantUsername = useMemo(() => decodeRouteParam(participantParam), [participantParam]);
+  const normalizedParticipantUsername = normalizeUsername(participantUsername);
 
   const refreshInterval = 30000;
 
@@ -124,20 +158,42 @@ const ContestStandingsPage = () => {
     () => Number(Boolean(selectedFilter)) + Number(followingOnly) + Number(officialOnly),
     [followingOnly, officialOnly, selectedFilter],
   );
+  const shouldAutoLocateParticipant =
+    Boolean(participantUsername) &&
+    !searchParams.has('page') &&
+    !searchParams.has('pageSize');
 
   const { data: standings, isLoading } = useContestStandings(
     contestId,
     {
-      page: pageParams.page,
-      pageSize: pageParams.pageSize,
+      page: shouldAutoLocateParticipant ? undefined : pageParams.page,
+      pageSize: shouldAutoLocateParticipant ? undefined : pageParams.pageSize,
       filter: selectedFilter || null,
       following: followingOnly,
       official: officialOnly,
+      participant: participantUsername,
     },
     refreshInterval,
   );
 
   const contestants = standings?.data ?? [];
+  const participantTarget = useMemo(() => {
+    if (!normalizedParticipantUsername) {
+      return null;
+    }
+
+    const rowIndex = contestants.findIndex((contestant) =>
+      contestantMatchesUsername(contestant, normalizedParticipantUsername),
+    );
+    if (rowIndex < 0) {
+      return null;
+    }
+
+    return {
+      rowId: getStandingsRowId(contestants[rowIndex]),
+      rowIndex,
+    };
+  }, [contestants, normalizedParticipantUsername]);
   const selectedContestantId =
     selectedContestant?.rowType !== 'upsolve' ? selectedContestant?.id : undefined;
   const acmScoreGroupRowClasses = useMemo(() => {
@@ -187,6 +243,34 @@ const ContestStandingsPage = () => {
       page: Math.max(standings.page - 1, 0),
     }));
   }, [pageParams.page, searchParams, setPaginationModel, standings?.page]);
+
+  useEffect(() => {
+    if (!participantTarget || isLoading) {
+      return;
+    }
+
+    const focusKey = `${contestId ?? ''}-${participantTarget.rowId}-${standings?.page ?? ''}`;
+    if (focusedParticipantRef.current === focusKey) {
+      return;
+    }
+    focusedParticipantRef.current = focusKey;
+
+    const animationFrame = window.requestAnimationFrame(() => {
+      dataGridApiRef.current.scrollToIndexes({ rowIndex: participantTarget.rowIndex });
+      dataGridApiRef.current.setCellFocus(participantTarget.rowId, 'username');
+
+      const rowElement = Array.from(
+        document.querySelectorAll<HTMLElement>('[role="row"][data-id]'),
+      ).find((element) => element.getAttribute('data-id') === participantTarget.rowId);
+
+      rowElement?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    });
+
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, [contestId, dataGridApiRef, isLoading, participantTarget, standings?.page]);
 
   const problemMap = useMemo(
     () => new Map(contestProblems.map((problem) => [problem.symbol, problem])),
@@ -599,6 +683,7 @@ const ContestStandingsPage = () => {
       {contest ? <ContestStandingsCountdown contest={contest} /> : null}
 
       <DataGrid
+        apiRef={dataGridApiRef}
         autoHeight
         rowHeight={72}
         disableColumnMenu
@@ -623,6 +708,9 @@ const ContestStandingsPage = () => {
         getRowClassName={({ row }) =>
           [
             row.username === currentUser?.username ? 'MuiDataGrid-row--current' : '',
+            participantTarget?.rowId === getStandingsRowId(row)
+              ? 'MuiDataGrid-row--participantTarget'
+              : '',
             acmScoreGroupRowClasses.get(getStandingsRowId(row)) ?? '',
             row.rowType !== 'upsolve' && row.id ? 'MuiDataGrid-row--clickable' : '',
           ]
@@ -641,6 +729,24 @@ const ContestStandingsPage = () => {
           },
           '& .MuiDataGrid-row--clickable': {
             cursor: 'pointer',
+          },
+          '& .MuiDataGrid-row--participantTarget': {
+            bgcolor: 'warning.lighter',
+            outline: '2px solid',
+            outlineColor: 'warning.main',
+            outlineOffset: -2,
+            animation: 'participantTargetPulse 1.6s ease-in-out 2',
+            ...theme.applyStyles('dark', {
+              bgcolor: 'rgba(255, 193, 7, 0.16)',
+            }),
+          },
+          '@keyframes participantTargetPulse': {
+            '0%, 100%': {
+              boxShadow: 'inset 0 0 0 0 rgba(255, 193, 7, 0)',
+            },
+            '50%': {
+              boxShadow: 'inset 0 0 0 999px rgba(255, 193, 7, 0.12)',
+            },
           },
         })}
       />

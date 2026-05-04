@@ -505,6 +505,14 @@ export const routes: RouteObject[] = [
             },
           },
           {
+            path: resources.ContestStandingsParticipant,
+            element: <ContestStandingsPage />,
+            handle: {
+              titleKey: 'pageTitles.contestStandings',
+              fallbackTitleKey: 'pageTitles.contests',
+            },
+          },
+          {
             path: resources.ContestRegistrants,
             element: <ContestRegistrantsPage />,
             handle: {

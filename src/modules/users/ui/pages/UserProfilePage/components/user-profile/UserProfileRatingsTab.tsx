@@ -1,6 +1,6 @@
 import { type ReactNode, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   Avatar,
@@ -16,7 +16,7 @@ import {
   Typography,
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
-import { getResourceById, getResourceByUsername, resources } from 'app/routes/resources';
+import { getResourceByUsername, resources } from 'app/routes/resources';
 import dayjs from 'dayjs';
 import { LineChart } from 'echarts/charts';
 import { GridComponent, TooltipComponent } from 'echarts/components';
@@ -27,6 +27,7 @@ import {
   useChallengeUserRating,
 } from 'modules/challenges/application/queries';
 import { useContestRatingChanges } from 'modules/contests/application/queries';
+import ContestRatingChangesChartCard from 'modules/contests/ui/shared/components/ContestRatingChangesChartCard';
 import { useUserProblemsRating } from 'modules/problems/application/queries';
 import { difficultyColorByKey, difficultyOptions } from 'modules/problems/config/difficulty';
 import KepIcon from 'shared/components/base/KepIcon';
@@ -48,11 +49,6 @@ const withPadding = (values: number[]) => {
   const range = Math.max(1, max - min);
   const padding = range * 0.1;
   return [Math.max(0, min - padding), max + padding];
-};
-
-const formatDelta = (delta?: number) => {
-  if (delta === undefined) return undefined;
-  return delta > 0 ? `+${delta}` : `${delta}`;
 };
 
 const RatingHeader = ({
@@ -146,7 +142,6 @@ const StatBadge = ({
 const UserProfileRatingsTab = () => {
   const { t } = useTranslation();
   const { username = '' } = useParams();
-  const navigate = useNavigate();
   const theme = useTheme();
 
   const { data: userRatings, isLoading: isRatingsLoading } = useUserRatings(username);
@@ -159,7 +154,6 @@ const UserProfileRatingsTab = () => {
     useChallengeRatingChanges(username);
 
   const contestsRating = userRatings?.contestsRating;
-  const emptyValue = t('users.emptyValue');
 
   const sortedContestChanges = useMemo(() => {
     const changes = contestRatingChanges ?? [];
@@ -198,72 +192,6 @@ const UserProfileRatingsTab = () => {
   const contestLatestTitle = contestsRating?.title ?? contestLatestChange?.newRatingTitle;
   const contestMaxRating = contestMaxChange?.newRating;
   const contestMaxTitle = contestMaxChange?.newRatingTitle ?? contestLatestTitle;
-
-  const contestRatingOption = useMemo(() => {
-    if (!sortedContestChanges.length) return null;
-
-    const values = sortedContestChanges.map((item) => Number(item.newRating ?? 0));
-    const [min, max] = withPadding(values);
-
-    return {
-      color: [getColor(theme.vars.palette.primary.main)],
-      grid: { left: 8, right: 12, top: 12, bottom: 12, containLabel: true },
-      tooltip: {
-        trigger: 'axis',
-        formatter: (params: any) => {
-          const point = params?.[0]?.data;
-          const change = sortedContestChanges[params?.[0]?.dataIndex];
-          if (!change) return '';
-
-          const delta = formatDelta(change.delta);
-          return [
-            change.contestTitle ?? '',
-            `#${change.rank ?? emptyValue}`,
-            `${username}: ${point?.value ?? emptyValue}`,
-            delta ? `${t('users.profile.ratings.rating')}: ${delta}` : '',
-          ]
-            .filter(Boolean)
-            .join('<br />');
-        },
-      },
-      xAxis: {
-        type: 'category',
-        data: sortedContestChanges.map((item) =>
-          item.contestStartDate
-            ? dayjs(item.contestStartDate).format('DD MMM')
-            : (item.contestTitle ?? ''),
-        ),
-        axisLabel: { color: getColor(theme.vars.palette.text.secondary) },
-        axisTick: { show: false },
-        axisLine: { lineStyle: { color: getColor(theme.vars.palette.divider) } },
-      },
-      yAxis: {
-        type: 'value',
-        min,
-        max,
-        axisLabel: {
-          color: getColor(theme.vars.palette.text.secondary),
-          formatter: integerAxisLabelFormatter,
-        },
-        splitLine: { lineStyle: { color: getColor(theme.vars.palette.divider) } },
-        minInterval: 1,
-      },
-      series: [
-        {
-          type: 'line',
-          smooth: true,
-          showSymbol: true,
-          symbolSize: 8,
-          lineStyle: { width: 3 },
-          areaStyle: { opacity: 0.2 },
-          data: sortedContestChanges.map((item) => ({
-            value: item.newRating ?? 0,
-            contestId: item.contestId,
-          })),
-        },
-      ],
-    };
-  }, [emptyValue, sortedContestChanges, t, theme.vars.palette, username]);
 
   const challengeRatingOption = useMemo(() => {
     if (!sortedChallengeChanges.length) return null;
@@ -306,18 +234,6 @@ const UserProfileRatingsTab = () => {
       ],
     };
   }, [sortedChallengeChanges, theme.vars.palette]);
-
-  const contestChartEvents = useMemo(
-    () => ({
-      click: (params: any) => {
-        const contestId = params?.data?.contestId;
-        if (contestId) {
-          navigate(getResourceById(resources.ContestStandings, contestId));
-        }
-      },
-    }),
-    [navigate],
-  );
 
   const isMainLoading = isProblemsLoading || isRatingsLoading || isChallengesLoading;
 
@@ -387,48 +303,70 @@ const UserProfileRatingsTab = () => {
         </CardContent>
       </Card>
 
-      <Card variant="outlined" sx={{ borderRadius: '8px', overflow: 'hidden' }}>
-        <RatingHeader icon="contests" title={t('contests.title')}>
-          <Chip
-            size="small"
-            variant="outlined"
-            label={
-              <Stack direction="row" spacing={0.5} alignItems="center">
-                <ContestsRatingChip title={contestLatestTitle} imgSize={16} />
-                <span>{contestLatestRating ?? 0}</span>
-              </Stack>
-            }
-          />
-          <Chip
-            size="small"
-            variant="outlined"
-            label={
-              <Stack direction="row" spacing={0.5} alignItems="center">
-                <ContestsRatingChip title={contestMaxTitle} imgSize={16} />
-                <span>{contestMaxRating ?? 0}</span>
-              </Stack>
-            }
-          />
-          <StatBadge label={sortedContestChanges.length} />
-        </RatingHeader>
-
-        <CardContent>
-          {isContestChangesLoading ? (
-            <Skeleton variant="rectangular" height={260} />
-          ) : contestRatingOption ? (
-            <ReactEchart
-              echarts={echarts}
-              option={contestRatingOption}
-              onEvents={contestChartEvents}
-              sx={{ height: 300 }}
+      {isContestChangesLoading ? (
+        <Card variant="outlined" sx={{ borderRadius: '8px', overflow: 'hidden' }}>
+          <RatingHeader icon="contests" title={t('contests.title')}>
+            <Chip
+              size="small"
+              variant="outlined"
+              label={
+                <Stack direction="row" spacing={0.5} alignItems="center">
+                  <ContestsRatingChip title={contestLatestTitle} imgSize={16} />
+                  <span>{contestLatestRating ?? 0}</span>
+                </Stack>
+              }
             />
-          ) : (
-            <Typography variant="body2" color="text.secondary">
-              {t('users.profile.ratings.noHistory')}
-            </Typography>
-          )}
-        </CardContent>
-      </Card>
+            <Chip
+              size="small"
+              variant="outlined"
+              label={
+                <Stack direction="row" spacing={0.5} alignItems="center">
+                  <ContestsRatingChip title={contestMaxTitle} imgSize={16} />
+                  <span>{contestMaxRating ?? 0}</span>
+                </Stack>
+              }
+            />
+            <StatBadge label={sortedContestChanges.length} />
+          </RatingHeader>
+
+          <CardContent>
+            <Skeleton variant="rectangular" height={260} />
+          </CardContent>
+        </Card>
+      ) : (
+        <ContestRatingChangesChartCard
+          title={t('contests.title')}
+          changes={contestRatingChanges}
+          username={username}
+          emptyText={t('users.profile.ratings.noHistory')}
+          height={300}
+          extra={
+            <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap" useFlexGap>
+              <Chip
+                size="small"
+                variant="outlined"
+                label={
+                  <Stack direction="row" spacing={0.5} alignItems="center">
+                    <ContestsRatingChip title={contestLatestTitle} imgSize={16} />
+                    <span>{contestLatestRating ?? 0}</span>
+                  </Stack>
+                }
+              />
+              <Chip
+                size="small"
+                variant="outlined"
+                label={
+                  <Stack direction="row" spacing={0.5} alignItems="center">
+                    <ContestsRatingChip title={contestMaxTitle} imgSize={16} />
+                    <span>{contestMaxRating ?? 0}</span>
+                  </Stack>
+                }
+              />
+              <StatBadge label={sortedContestChanges.length} />
+            </Stack>
+          }
+        />
+      )}
 
       <Card variant="outlined" sx={{ borderRadius: '8px', overflow: 'hidden' }}>
         <RatingHeader icon="challenges" title={t('challenges.title')}>
