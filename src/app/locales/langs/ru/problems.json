@@ -130,7 +130,7 @@
       "extremal": "Экстремальный"
     },
     "lastAttempts": "Последние попытки",
-    "lastContestProblems": "Задачи последнего контеста",
+    "lastContestProblems": "Последний контест",
     "mostViewed": "Популярные",
     "noAttempts": "Пока нет попыток.",
     "noLastContest": "Нет данных по последнему контесту.",
@@ -139,6 +139,7 @@
     "allLanguagesLabel": "Все языки",
     "ratingButton": "Рейтинг задач",
     "attemptsButton": "Попытки",
+    "pickOne": "Выбрать одну",
     "solvedCount": "{{count}} решено",
     "unsolvedCount": "{{count}} нерешено",
     "rating": {

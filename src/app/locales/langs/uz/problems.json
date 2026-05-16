@@ -130,7 +130,7 @@
       "extremal": "Juda qiyin"
     },
     "lastAttempts": "Ohirgi urinishlar",
-    "lastContestProblems": "Soʻngi kontest masalalari",
+    "lastContestProblems": "So'nggi kontest",
     "mostViewed": "Koʻp koʻrilgan",
     "noAttempts": "Hozircha urinishlar yoʻq.",
     "noLastContest": "Soʻnggi kontest boʻyicha maʻlumot yoʻq.",
@@ -139,6 +139,7 @@
     "allLanguagesLabel": "Barcha tillar",
     "ratingButton": "Masalalar reytingi",
     "attemptsButton": "Urinishlar",
+    "pickOne": "Bittasini tanlash",
     "solvedCount": "{{count}} yechildi",
     "unsolvedCount": "{{count}} yechilmagan",
     "rating": {

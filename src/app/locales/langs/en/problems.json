@@ -60,7 +60,7 @@
       "extremal": "Extremal"
     },
     "lastAttempts": "Last attempts",
-    "lastContestProblems": "Last contest problems",
+    "lastContestProblems": "Last contest",
     "mostViewed": "Most viewed",
     "noAttempts": "No attempts yet.",
     "noLastContest": "No contest data available.",
@@ -69,6 +69,7 @@
     "allLanguagesLabel": "All languages",
     "ratingButton": "Problems rating",
     "attemptsButton": "Attempts",
+    "pickOne": "Pick one",
     "solvedCount": "{{count}} solved",
     "unsolvedCount": "{{count}} unsolved",
     "rating": {
