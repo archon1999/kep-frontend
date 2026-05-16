@@ -1,7 +1,9 @@
-import { ReactNode, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, Stack, Typography } from '@mui/material';
+import { Skeleton, Typography, useMediaQuery } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
+import { getResourceByParams, resources } from 'app/routes/resources';
+import dayjs from 'dayjs';
 import { LineChart } from 'echarts/charts';
 import {
   GridComponent,
@@ -13,9 +15,7 @@ import {
 import * as echarts from 'echarts/core';
 import type { EChartsCoreOption } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
-import dayjs from 'dayjs';
-import { getResourceByParams, resources } from 'app/routes/resources';
-import type { ContestRatingChange } from 'modules/contests/domain/entities/contest-user-statistics.entity';
+import { useContestRatingChanges } from 'modules/contests/application/queries';
 import ReactEchart from 'shared/components/base/ReactEchart';
 import {
   CONTESTS_RATING_LEVELS,
@@ -34,13 +34,9 @@ echarts.use([
   CanvasRenderer,
 ]);
 
-interface ContestRatingChangesChartCardProps {
-  title: string;
-  changes?: ContestRatingChange[];
+interface ContestRatingChangesChartProps {
   username?: string;
-  emptyText: string;
   height?: number;
-  extra?: ReactNode;
 }
 
 interface RatingChartPoint {
@@ -58,6 +54,38 @@ const AXIS_MIN_RATING = 0;
 const DAY_MS = 24 * 60 * 60 * 1000;
 const MONTH_MS = 30 * DAY_MS;
 const YEAR_MS = 365 * DAY_MS;
+const CONTESTS_RATING_BACKGROUND_COLORS: Record<'light' | 'dark', Record<string, string>> = {
+  light: {
+    NEOFIT: '#CCCCCC',
+    RITOR: '#77FF77',
+    LIKTOR: '#77DDBB',
+    LEGAT: '#AAAAFF',
+    MASTER: '#FF77FF',
+    MAGISTR: '#FFCC88',
+    PRETOR: '#FFBB55',
+    ARCHON: '#FF7777',
+    POLEMARCH: '#FF3333',
+    MALIK: '#DD0000',
+    MAYAR: '#CC0000',
+    VALAR: '#BB0000',
+    RIDWAN: '#AA0000',
+  },
+  dark: {
+    NEOFIT: '#3D4248',
+    RITOR: '#174A2A',
+    LIKTOR: '#14524E',
+    LEGAT: '#262A63',
+    MASTER: '#55205E',
+    MAGISTR: '#5E4422',
+    PRETOR: '#684018',
+    ARCHON: '#663030',
+    POLEMARCH: '#6B1D1D',
+    MALIK: '#631717',
+    MAYAR: '#581414',
+    VALAR: '#4E1111',
+    RIDWAN: '#451010',
+  },
+};
 
 const escapeHtml = (value: unknown) =>
   String(value ?? '')
@@ -110,10 +138,23 @@ const getDateAxisConfig = (minTime: number, maxTime: number) => {
   };
 };
 
+const getYearDateAxisConfig = (minTime: number, maxTime: number) => {
+  const years = Math.max(1, Math.ceil(dayjs(maxTime).diff(dayjs(minTime), 'year', true)));
+
+  return {
+    interval: YEAR_MS,
+    splitNumber: years,
+    format: 'YYYY',
+  };
+};
+
 const formatDelta = (delta?: number) => {
   if (delta === undefined || delta === null) return '-';
   return `${delta > 0 ? '+' : ''}${delta}`;
 };
+
+const getContestRatingBackgroundColor = (title: string, mode: 'light' | 'dark') =>
+  CONTESTS_RATING_BACKGROUND_COLORS[mode][title] ?? CONTESTS_RATING_BACKGROUND_COLORS[mode].NEOFIT;
 
 const getStandingsParticipantPath = (contestId?: number, username?: string) => {
   if (!contestId || !username) {
@@ -130,8 +171,7 @@ const getSupportedNumberLocale = (language?: string) => {
   const normalized = language?.trim().replace(/_/g, '-');
   const languageRegion = normalized?.replace(
     /^([a-zA-Z]{2})([A-Z]{2})$/,
-    (_, languageCode: string, regionCode: string) =>
-      `${languageCode.toLowerCase()}-${regionCode}`,
+    (_, languageCode: string, regionCode: string) => `${languageCode.toLowerCase()}-${regionCode}`,
   );
   const fallbackLanguage = normalized?.slice(0, 2).toLowerCase();
   const candidates = [languageRegion, normalized, fallbackLanguage];
@@ -153,25 +193,18 @@ const getSupportedNumberLocale = (language?: string) => {
   return undefined;
 };
 
-const ContestRatingChangesChartCard = ({
-  title,
-  changes,
-  username,
-  height = 360,
-  emptyText,
-  extra,
-}: ContestRatingChangesChartCardProps) => {
+const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChangesChartProps) => {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
-  const numberLocale = useMemo(
-    () => getSupportedNumberLocale(i18n.language),
-    [i18n.language],
-  );
+  const isDownSm = useMediaQuery(theme.breakpoints.down('sm'));
+  const { data: changes, isLoading } = useContestRatingChanges(username);
+  const numberLocale = useMemo(() => getSupportedNumberLocale(i18n.language), [i18n.language]);
 
   const numberFormatter = useMemo(
     () =>
       new Intl.NumberFormat(numberLocale, {
         maximumFractionDigits: 0,
+        useGrouping: false,
       }),
     [numberLocale],
   );
@@ -180,10 +213,7 @@ const ContestRatingChangesChartCard = ({
     () =>
       [...(changes ?? [])]
         .filter((change) => change.newRating !== undefined && change.contestStartDate)
-        .sort(
-          (a, b) =>
-            dayjs(a.contestStartDate).valueOf() - dayjs(b.contestStartDate).valueOf(),
-        ),
+        .sort((a, b) => dayjs(a.contestStartDate).valueOf() - dayjs(b.contestStartDate).valueOf()),
     [changes],
   );
 
@@ -196,6 +226,7 @@ const ContestRatingChangesChartCard = ({
     const axisMinRating = getAxisMinRating(ratings);
     const axisMaxRating = getAxisMaxRating(ratings);
     const axisLabelColor = getColor(theme.vars.palette.text.secondary);
+    const axisTextColor = getColor(theme.vars.palette.text.primary);
     const textColor = getColor(theme.vars.palette.text.primary);
     const dividerColor = getColor(theme.vars.palette.divider);
     const paperColor = getColor(theme.vars.palette.background.paper);
@@ -204,7 +235,9 @@ const ContestRatingChangesChartCard = ({
     const times = chartData.map((change) => dayjs(change.contestStartDate).valueOf());
     const minTime = Math.min(...times);
     const maxTime = Math.max(...times);
-    const dateAxisConfig = getDateAxisConfig(minTime, maxTime);
+    const dateAxisConfig = isDownSm
+      ? getYearDateAxisConfig(minTime, maxTime)
+      : getDateAxisConfig(minTime, maxTime);
 
     const ratingRanges = CONTESTS_RATING_LEVELS.map((level, index) => {
       const nextLevel = CONTESTS_RATING_LEVELS[index + 1];
@@ -217,31 +250,6 @@ const ContestRatingChangesChartCard = ({
         visualTo: rangeTo,
       };
     }).filter(({ from, to }) => from < to);
-
-    const rich = CONTESTS_RATING_LEVELS.reduce<Record<string, Record<string, unknown>>>(
-      (acc, level) => {
-        const key = level.title.toLowerCase();
-        const imageSrc = getContestsRatingImageSrc(level.title);
-
-        acc[`${key}Icon`] = imageSrc
-          ? {
-              width: 18,
-              height: 18,
-              align: 'center',
-              backgroundColor: { image: imageSrc },
-            }
-          : { width: 0, height: 0 };
-        acc[`${key}Text`] = {
-          color: level.color,
-          fontSize: 10,
-          fontWeight: 700,
-          lineHeight: 14,
-        };
-
-        return acc;
-      },
-      {},
-    );
 
     const points: RatingChartPoint[] = chartData.map((change) => {
       const rating = change.newRating ?? AXIS_MIN_RATING;
@@ -260,7 +268,7 @@ const ContestRatingChangesChartCard = ({
     });
 
     return {
-      grid: { left: 44, right: 4, top: 18, bottom: 24, containLabel: true },
+      grid: { left: 0, right: 0, top: 8, bottom: 24, containLabel: true },
       tooltip: {
         trigger: 'item',
         confine: false,
@@ -338,9 +346,7 @@ const ContestRatingChangesChartCard = ({
                         <path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
                         <path d="M14 11a5 5 0 0 0-7.07 0l-3 3A5 5 0 0 0 11 21.07l1.71-1.71"></path>
                       </svg>
-                      <span>${escapeHtml(
-                      t('contests.ratingChanges.tooltip.openStandings'),
-                    )}</span>
+                      <span>${escapeHtml(t('contests.ratingChanges.tooltip.openStandings'))}</span>
                     </a>`
                   : ''
               }
@@ -370,9 +376,9 @@ const ContestRatingChangesChartCard = ({
         maxInterval: dateAxisConfig.interval,
         splitNumber: dateAxisConfig.splitNumber,
         axisLabel: {
-          color: axisLabelColor,
-          formatter: (value: number | string) =>
-            dayjs(Number(value)).format(dateAxisConfig.format),
+          color: axisTextColor,
+          hideOverlap: true,
+          formatter: (value: number | string) => dayjs(Number(value)).format(dateAxisConfig.format),
         },
         axisLine: { lineStyle: { color: dividerColor } },
         axisTick: { show: false },
@@ -384,8 +390,8 @@ const ContestRatingChangesChartCard = ({
         max: axisMaxRating,
         minInterval: 1,
         axisLabel: {
-          color: axisLabelColor,
-          formatter: (value: number | string) => numberFormatter.format(Number(value)),
+          color: axisTextColor,
+          formatter: (value: number | string) => String(Math.round(Number(value))),
         },
         axisLine: { lineStyle: { color: dividerColor } },
         axisTick: { show: false },
@@ -420,7 +426,7 @@ const ContestRatingChangesChartCard = ({
               {
                 yAxis: from,
                 itemStyle: {
-                  color: alpha(level.color, theme.palette.mode === 'dark' ? 0.14 : 0.08),
+                  color: getContestRatingBackgroundColor(level.title, theme.palette.mode),
                 },
               },
               { yAxis: to },
@@ -429,69 +435,45 @@ const ContestRatingChangesChartCard = ({
           markLine: {
             silent: true,
             symbol: 'none',
-            lineStyle: { width: 1, type: 'dashed', opacity: 0.55 },
+            lineStyle: { width: 1, type: 'solid', opacity: 1 },
             label: {
-              show: true,
-              position: 'insideStartTop',
-              distance: [0, 8],
-              formatter: (params: any) => {
-                const level = CONTESTS_RATING_LEVELS.find(
-                  (item) => item.min === params?.data?.yAxis,
-                );
-                if (!level) return '';
-                const key = level.title.toLowerCase();
-                return `{${key}Icon|}\n{${key}Text|${level.title}}`;
-              },
-              rich,
+              show: false,
             },
             data: CONTESTS_RATING_LEVELS.filter(
               (level) => level.min >= axisMinRating && level.min <= axisMaxRating,
             ).map((level) => ({
               yAxis: level.min,
-              lineStyle: { color: level.color },
+              lineStyle: { color: alpha(level.color, 0.1) },
             })),
           },
         },
       ],
     } satisfies EChartsCoreOption;
-  }, [chartData, numberFormatter, t, theme, username]);
+  }, [chartData, isDownSm, numberFormatter, t, theme, username]);
+
+  if (isLoading) {
+    return <Skeleton variant="rectangular" height={height} />;
+  }
+
+  if (!option) {
+    return (
+      <Typography variant="body2" color="text.secondary">
+        {t('contests.statistics.noData')}
+      </Typography>
+    );
+  }
 
   return (
-    <Card variant="outlined" sx={{ height: '100%', borderRadius: 3, overflow: 'visible' }}>
-      <CardContent
-        sx={{
-          height: '100%',
-          overflow: 'visible',
-          p: { xs: 1.25, sm: 1.5 },
-          '&:last-child': { pb: { xs: 1.25, sm: 1.5 } },
-        }}
-      >
-        <Stack direction="column" spacing={1.25} sx={{ height: '100%', overflow: 'visible' }}>
-          <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
-            <Typography variant="subtitle1" fontWeight={700}>
-              {title}
-            </Typography>
-            {extra}
-          </Stack>
-          {option ? (
-            <ReactEchart
-              echarts={echarts}
-              option={option}
-              style={{ width: '100%', height, overflow: 'visible' }}
-              sx={{
-                overflow: 'visible',
-                '& > div': { overflow: 'visible !important' },
-              }}
-            />
-          ) : (
-            <Typography variant="body2" color="text.secondary">
-              {emptyText}
-            </Typography>
-          )}
-        </Stack>
-      </CardContent>
-    </Card>
+    <ReactEchart
+      echarts={echarts}
+      option={option}
+      style={{ width: '100%', height, overflow: 'visible' }}
+      sx={{
+        overflow: 'visible',
+        '& > div': { overflow: 'visible !important' },
+      }}
+    />
   );
 };
 
-export default ContestRatingChangesChartCard;
+export default ContestRatingChangesChart;

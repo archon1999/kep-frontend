@@ -3,89 +3,34 @@ import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 import { Link as RouterLink } from 'react-router-dom';
 import {
-  Avatar,
   Box,
   Button,
   Card,
   CardContent,
   Chip,
   Divider,
+  Paper,
   Skeleton,
   Stack,
   Tooltip,
   Typography,
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import { getResourceByUsername, resources } from 'app/routes/resources';
 import dayjs from 'dayjs';
 import {
   useChallengeRatingChanges,
   useChallengeUserRating,
 } from 'modules/challenges/application/queries';
-import ChallengeRatingChangesChartCard from 'modules/challenges/ui/shared/components/ChallengeRatingChangesChartCard';
+import ChallengeRatingChangesChart from 'modules/challenges/ui/shared/components/ChallengeRatingChangesChart';
 import { useContestRatingChanges } from 'modules/contests/application/queries';
-import ContestRatingChangesChartCard from 'modules/contests/ui/shared/components/ContestRatingChangesChartCard';
+import ContestRatingChangesChart from 'modules/contests/ui/shared/components/ContestRatingChangesChart';
 import { useUserProblemsRating } from 'modules/problems/application/queries';
 import { difficultyColorByKey, difficultyOptions } from 'modules/problems/config/difficulty';
+import { useUserRatings } from 'modules/users/application/queries';
 import KepIcon from 'shared/components/base/KepIcon';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import { KepIconName } from 'shared/config/icons';
-import { useUserRatings } from 'modules/users/application/queries';
-
-const RatingHeader = ({
-  icon,
-  title,
-  children,
-}: {
-  icon: KepIconName;
-  title: string;
-  children?: ReactNode;
-}) => (
-  <Box
-    sx={(theme) => ({
-      px: 2,
-      py: 1.5,
-      borderBottom: 1,
-      borderColor: 'divider',
-      background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.14)}, ${alpha(
-        theme.palette.primary.main,
-        0.04,
-      )})`,
-    })}
-  >
-    <Stack
-      direction={{ xs: 'column', sm: 'row' }}
-      spacing={1.25}
-      alignItems={{ xs: 'flex-start', sm: 'center' }}
-      justifyContent="space-between"
-    >
-      <Stack direction="row" spacing={1.25} alignItems="center">
-        <Avatar
-          variant="rounded"
-          sx={(theme) => ({
-            width: 40,
-            height: 40,
-            borderRadius: '8px',
-            bgcolor: alpha(theme.palette.primary.main, 0.14),
-            color: 'primary.main',
-          })}
-        >
-          <KepIcon name={icon} fontSize={24} />
-        </Avatar>
-        <Typography variant="h6" fontWeight={800}>
-          {title}
-        </Typography>
-      </Stack>
-
-      {children ? (
-        <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap" useFlexGap>
-          {children}
-        </Stack>
-      ) : null}
-    </Stack>
-  </Box>
-);
 
 const LoadingCard = () => (
   <Card variant="outlined" sx={{ borderRadius: '8px' }}>
@@ -111,7 +56,7 @@ const StatBadge = ({
   <Chip
     size="small"
     color={color}
-    variant="outlined"
+    variant="soft"
     label={
       <Stack direction="row" spacing={0.5} alignItems="center">
         {icon ? <KepIcon name={icon} fontSize={14} /> : null}
@@ -119,6 +64,150 @@ const StatBadge = ({
       </Stack>
     }
   />
+);
+
+const ContestHeaderMetrics = ({
+  currentTitle,
+  currentRating,
+  maxTitle,
+  maxRating,
+  currentLabel,
+  maxLabel,
+}: {
+  currentTitle?: string;
+  currentRating: ReactNode;
+  maxTitle?: string;
+  maxRating: ReactNode;
+  currentLabel: string;
+  maxLabel: string;
+}) => {
+  const currentIcon = <ContestsRatingChip title={currentTitle} imgSize={16} />;
+  const maxIcon = <ContestsRatingChip title={maxTitle} imgSize={16} />;
+
+  return (
+    <Stack
+      direction="row"
+      spacing={0.75}
+      alignItems="center"
+      flexWrap="wrap"
+      useFlexGap
+      divider={<Divider orientation="vertical" flexItem />}
+    >
+      {[
+        { label: currentLabel, value: currentRating, icon: currentIcon },
+        { label: maxLabel, value: maxRating, icon: maxIcon },
+      ].map((metric) => (
+        <Tooltip key={metric.label} title={metric.label} arrow>
+          <span>
+            <Chip
+              size="small"
+              variant="soft"
+              label={
+                <Stack direction="row" spacing={0.5} alignItems="center">
+                  {metric.icon}
+                  <Typography component="span" variant="caption" color="text.secondary">
+                    {metric.label}
+                  </Typography>
+                  <strong>{metric.value}</strong>
+                </Stack>
+              }
+            />
+          </span>
+        </Tooltip>
+      ))}
+    </Stack>
+  );
+};
+
+const ChallengeHeaderMetrics = ({
+  currentRankTitle,
+  maxRankTitle,
+  currentRating,
+  maxRating,
+  wins,
+  draws,
+  losses,
+  currentLabel,
+  maxLabel,
+}: {
+  currentRankTitle?: string | null;
+  maxRankTitle?: string | null;
+  currentRating: number;
+  maxRating: number;
+  wins: number;
+  draws: number;
+  losses: number;
+  currentLabel: string;
+  maxLabel: string;
+}) => (
+  <Stack direction={{ xs: 'column', lg: 'row' }} spacing={2} alignItems="center">
+    <Stack direction="row" spacing={1} alignItems="center">
+      <Typography component="span" color="success.main" fontWeight={500}>
+        {wins}W
+      </Typography>
+      <Typography component="span" color="text.secondary" fontWeight={500}>
+        {draws}D
+      </Typography>
+      <Typography component="span" color="error.main" fontWeight={500}>
+        {losses}L
+      </Typography>
+    </Stack>
+    <Stack
+      divider={<Divider orientation="vertical" flexItem />}
+      direction="row"
+      spacing={0.75}
+      flexWrap="wrap"
+      useFlexGap
+      alignItems="center"
+    >
+      <Stack direction="row" spacing={0.5}>
+        <Tooltip title={currentLabel} arrow>
+          <span>
+            <ChallengesRatingChip title={currentRankTitle} />
+          </span>
+        </Tooltip>
+        <Tooltip title={currentLabel} arrow>
+          <span>
+            <Chip
+              size="small"
+              variant="soft"
+              label={
+                <Stack direction="row" spacing={0.5} alignItems="center">
+                  <Typography component="span" variant="caption" color="text.secondary">
+                    {currentLabel}
+                  </Typography>
+                  <strong>{currentRating}</strong>
+                </Stack>
+              }
+            />
+          </span>
+        </Tooltip>
+      </Stack>
+      <Stack direction="row" spacing={0.5}>
+        <Tooltip title={maxLabel} arrow>
+          <span>
+            <ChallengesRatingChip title={maxRankTitle} />
+          </span>
+        </Tooltip>
+        <Tooltip title={maxLabel} arrow>
+          <span>
+            <Chip
+              size="small"
+              variant="soft"
+              label={
+                <Stack direction="row" spacing={0.5} alignItems="center">
+                  <Typography component="span" variant="caption" color="text.secondary">
+                    {maxLabel}
+                  </Typography>
+                  <strong>{maxRating}</strong>
+                </Stack>
+              }
+            />
+          </span>
+        </Tooltip>
+      </Stack>
+    </Stack>
+  </Stack>
 );
 
 const UserProfileRatingsTab = () => {
@@ -129,10 +218,8 @@ const UserProfileRatingsTab = () => {
   const { data: problemsRating, isLoading: isProblemsLoading } = useUserProblemsRating(username);
   const { data: challengesRating, isLoading: isChallengesLoading } =
     useChallengeUserRating(username);
-  const { data: contestRatingChanges, isLoading: isContestChangesLoading } =
-    useContestRatingChanges(username);
-  const { data: challengeRatingChanges, isLoading: isChallengeChangesLoading } =
-    useChallengeRatingChanges(username);
+  const { data: contestRatingChanges } = useContestRatingChanges(username);
+  const { data: challengeRatingChanges } = useChallengeRatingChanges(username);
 
   const contestsRating = userRatings?.contestsRating;
 
@@ -168,11 +255,18 @@ const UserProfileRatingsTab = () => {
     );
   }, [sortedContestChanges]);
 
-  const contestLatestChange = sortedContestChanges[sortedContestChanges.length - 1];
-  const contestLatestRating = contestsRating?.value ?? contestLatestChange?.newRating;
-  const contestLatestTitle = contestsRating?.title ?? contestLatestChange?.newRatingTitle;
-  const contestMaxRating = contestMaxChange?.newRating;
+  const challengeMaxRating = useMemo(() => {
+    if (!sortedChallengeChanges.length) return undefined;
+    return Math.max(...sortedChallengeChanges.map((change) => change.value));
+  }, [sortedChallengeChanges]);
+
+  const contestLatestRating = contestsRating?.value ?? 0;
+  const contestLatestTitle = contestsRating?.title;
+  const contestMaxRating = contestMaxChange?.newRating ?? contestLatestRating;
   const contestMaxTitle = contestMaxChange?.newRatingTitle ?? contestLatestTitle;
+  const challengeCurrentRating = challengesRating?.rating ?? 0;
+  const challengeCurrentTitle = challengesRating?.rankTitle;
+  const challengeMaxRatingValue = challengeMaxRating ?? challengeCurrentRating;
 
   const isMainLoading = isProblemsLoading || isRatingsLoading || isChallengesLoading;
 
@@ -188,167 +282,121 @@ const UserProfileRatingsTab = () => {
 
   return (
     <Stack direction="column" spacing={2}>
-      <Card variant="outlined" sx={{ borderRadius: '8px', overflow: 'hidden' }}>
-        <RatingHeader icon="problem" title={t('problems.title')}>
-          <Tooltip title={t('users.profile.ratings.solved')} arrow>
-            <span>
-              <StatBadge icon="check" label={problemsRating?.solved ?? 0} color="success" />
-            </span>
-          </Tooltip>
-          <Tooltip title={t('users.profile.ratings.rating')} arrow>
-            <span>
-              <StatBadge icon="rating" label={problemsRating?.rating ?? 0} />
-            </span>
-          </Tooltip>
-        </RatingHeader>
+      <Stack direction="column" spacing={2}>
+        <Paper
+          background={1}
+          sx={{
+            p: 2,
+            borderRadius: 4,
+            outline: 0,
+          }}
+        >
+          <Stack direction="row" mb={3} justifyContent="space-between">
+            <Typography variant="h6">{t('problems.title')}</Typography>
+            <Stack alignItems="center" direction="row" spacing={1}>
+              <Tooltip title={t('users.profile.ratings.solved')} arrow>
+                <span>
+                  <StatBadge icon="check" label={problemsRating?.solved ?? 0} color="success" />
+                </span>
+              </Tooltip>
+              <Tooltip title={t('users.profile.ratings.rating')} arrow>
+                <span>
+                  <StatBadge icon="rating" label={problemsRating?.rating ?? 0} />
+                </span>
+              </Tooltip>
+              <Button
+                component={RouterLink}
+                to={getResourceByUsername(resources.AttemptsByUser, username)}
+                variant="text"
+                color="primary"
+                size="small"
+                sx={{ flexShrink: 0 }}
+              >
+                {t('problems.attempts.title')}
+              </Button>
+            </Stack>
+          </Stack>
 
-        <CardContent>
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: {
-                xs: 'repeat(2, minmax(0, 1fr))',
-                sm: 'repeat(4, minmax(0, 1fr))',
-                md: `repeat(${Math.max(difficultyEntries.length, 1)}, minmax(0, 1fr))`,
-              },
-              gap: 1.5,
-              textAlign: 'center',
-            }}
-          >
-            {difficultyEntries.map((difficulty) => (
-              <Box key={difficulty.key}>
-                <Typography variant="caption" color="text.secondary" fontWeight={700}>
-                  {t(`problems.difficulty.${difficulty.key}` as const)}
-                </Typography>
-                <Typography variant="h6" color={`${difficulty.color}.main`} fontWeight={800}>
-                  {difficulty.value}
-                </Typography>
+          <Stack direction="column">
+            <Stack direction="column" spacing={1.5} sx={{ minWidth: 0 }}>
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: {
+                    xs: 'repeat(2, minmax(0, 1fr))',
+                    sm: 'repeat(4, minmax(0, 1fr))',
+                    md: `repeat(${Math.max(difficultyEntries.length, 1)}, minmax(0, 1fr))`,
+                  },
+                  gap: 1.5,
+                  textAlign: 'center',
+                }}
+              >
+                {difficultyEntries.map((difficulty) => (
+                  <Box key={difficulty.key}>
+                    <Typography variant="caption" fontWeight={500}>
+                      {t(`problems.difficulty.${difficulty.key}` as const)}
+                    </Typography>
+                    <Typography variant="h6" color={`${difficulty.color}.main`} fontWeight={800}>
+                      {difficulty.value}
+                    </Typography>
+                  </Box>
+                ))}
               </Box>
-            ))}
-          </Box>
+            </Stack>
+          </Stack>
+        </Paper>
+      </Stack>
 
-          <Divider sx={{ my: 2 }} />
-
-          <Button
-            component={RouterLink}
-            to={getResourceByUsername(resources.AttemptsByUser, username)}
-            variant="outlined"
-            color="primary"
-            size="small"
-            fullWidth
-          >
-            {t('problems.attempts.title')}
-          </Button>
+      <Card variant="outlined" sx={{ borderRadius: 3, overflow: 'visible' }}>
+        <CardContent
+          sx={{
+            overflow: 'visible',
+            p: 2,
+          }}
+        >
+          <Stack direction="column" spacing={1.25} sx={{ overflow: 'visible' }}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
+              <Typography variant="h6">{t('contests.title')}</Typography>
+              <ContestHeaderMetrics
+                currentTitle={contestLatestTitle}
+                currentRating={contestLatestRating}
+                maxTitle={contestMaxTitle}
+                maxRating={contestMaxRating}
+                currentLabel={t('users.profile.ratings.rating')}
+                maxLabel={t('users.profile.ratings.maxRating')}
+              />
+            </Stack>
+            <ContestRatingChangesChart username={username} height={300} />
+          </Stack>
         </CardContent>
       </Card>
 
-      {isContestChangesLoading ? (
-        <Card variant="outlined" sx={{ borderRadius: '8px', overflow: 'hidden' }}>
-          <RatingHeader icon="contests" title={t('contests.title')}>
-            <Chip
-              size="small"
-              variant="outlined"
-              label={
-                <Stack direction="row" spacing={0.5} alignItems="center">
-                  <ContestsRatingChip title={contestLatestTitle} imgSize={16} />
-                  <span>{contestLatestRating ?? 0}</span>
-                </Stack>
-              }
-            />
-            <Chip
-              size="small"
-              variant="outlined"
-              label={
-                <Stack direction="row" spacing={0.5} alignItems="center">
-                  <ContestsRatingChip title={contestMaxTitle} imgSize={16} />
-                  <span>{contestMaxRating ?? 0}</span>
-                </Stack>
-              }
-            />
-            <StatBadge label={sortedContestChanges.length} />
-          </RatingHeader>
-
-          <CardContent>
-            <Skeleton variant="rectangular" height={260} />
-          </CardContent>
-        </Card>
-      ) : (
-        <ContestRatingChangesChartCard
-          title={t('contests.title')}
-          changes={contestRatingChanges}
-          username={username}
-          emptyText={t('users.profile.ratings.noHistory')}
-          height={300}
-          extra={
-            <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap" useFlexGap>
-              <Chip
-                size="small"
-                variant="outlined"
-                label={
-                  <Stack direction="row" spacing={0.5} alignItems="center">
-                    <ContestsRatingChip title={contestLatestTitle} imgSize={16} />
-                    <span>{contestLatestRating ?? 0}</span>
-                  </Stack>
-                }
+      <Card variant="outlined" sx={{ borderRadius: 3, overflow: 'visible' }}>
+        <CardContent
+          sx={{
+            overflow: 'visible',
+            p: 2,
+          }}
+        >
+          <Stack direction="column" spacing={1.25} sx={{ overflow: 'visible' }}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
+              <Typography variant="h6">{t('challenges.title')}</Typography>
+              <ChallengeHeaderMetrics
+                currentRankTitle={challengeCurrentTitle}
+                maxRankTitle={challengeCurrentTitle}
+                currentRating={challengeCurrentRating}
+                maxRating={challengeMaxRatingValue}
+                wins={challengesRating?.wins ?? 0}
+                draws={challengesRating?.draws ?? 0}
+                losses={challengesRating?.losses ?? 0}
+                currentLabel={t('users.profile.ratings.rating')}
+                maxLabel={t('users.profile.ratings.maxRating')}
               />
-              <Chip
-                size="small"
-                variant="outlined"
-                label={
-                  <Stack direction="row" spacing={0.5} alignItems="center">
-                    <ContestsRatingChip title={contestMaxTitle} imgSize={16} />
-                    <span>{contestMaxRating ?? 0}</span>
-                  </Stack>
-                }
-              />
-              <StatBadge label={sortedContestChanges.length} />
             </Stack>
-          }
-        />
-      )}
-
-      {isChallengeChangesLoading ? (
-        <Card variant="outlined" sx={{ borderRadius: '8px', overflow: 'hidden' }}>
-          <RatingHeader icon="challenges" title={t('challenges.title')}>
-            <ChallengesRatingChip title={challengesRating?.rankTitle} />
-            <ChallengesRatingChip
-              title={challengesRating?.rankTitle}
-              rating={challengesRating?.rating ?? 0}
-            />
-            <StatBadge
-              label={`${challengesRating?.wins ?? 0}W ${challengesRating?.draws ?? 0}D ${
-                challengesRating?.losses ?? 0
-              }L`}
-            />
-          </RatingHeader>
-
-          <CardContent>
-            <Skeleton variant="rectangular" height={260} />
-          </CardContent>
-        </Card>
-      ) : (
-        <ChallengeRatingChangesChartCard
-          title={t('challenges.title')}
-          changes={challengeRatingChanges}
-          emptyText={t('users.profile.ratings.noHistory')}
-          height={300}
-          extra={
-            <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap" useFlexGap>
-              <ChallengesRatingChip title={challengesRating?.rankTitle} />
-              <ChallengesRatingChip
-                title={challengesRating?.rankTitle}
-                rating={challengesRating?.rating ?? 0}
-              />
-              <StatBadge
-                label={`${challengesRating?.wins ?? 0}W ${challengesRating?.draws ?? 0}D ${
-                  challengesRating?.losses ?? 0
-                }L`}
-              />
-              <StatBadge label={sortedChallengeChanges.length} />
-            </Stack>
-          }
-        />
-      )}
+            <ChallengeRatingChangesChart username={username} height={300} />
+          </Stack>
+        </CardContent>
+      </Card>
     </Stack>
   );
 };

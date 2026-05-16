@@ -56,20 +56,23 @@
         "achievements": "Yutuqlar"
       },
       "personal": {
+        "sectionTitle": "Shaxsiy",
         "title": "Shaxsiy maʻlumot",
         "fullName": "Toʻliq ismi",
         "wasBorn": "Tugʻilgan",
         "lives": "Yashaydi",
         "email": "Elektron manzil",
         "website": "Veb-sayt",
-        "joined": "Roʻyhatdan oʻtgan"
+        "joined": "Roʻyhatdan oʻtgan",
+        "telegram": "Telegram",
+        "codeforces": "Codeforces"
       },
       "social": {
         "title": "Ijtimoiy havolalar"
       },
       "followers": {
         "title": "Obunachilar",
-        "viewAll": "Barchasini koʻrish"
+        "viewAll": "Barchasi"
       },
       "about": "Oʻzi haqida",
       "skills": "Koʻnikmalar",

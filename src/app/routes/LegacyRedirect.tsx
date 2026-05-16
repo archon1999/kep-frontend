@@ -15,14 +15,16 @@ const LegacyRedirect = ({ to, mapParams }: LegacyRedirectProps) => {
   ) as Record<string, string | number>;
 
   const targetPath = generatePath(to, normalizedParams);
+  const [pathnameWithSearch, targetHash] = targetPath.split('#');
+  const [pathname, targetSearch] = pathnameWithSearch.split('?');
 
   return (
     <Navigate
       replace
       to={{
-        pathname: targetPath,
-        search: location.search,
-        hash: location.hash,
+        pathname,
+        search: targetSearch ? `?${targetSearch}` : location.search,
+        hash: targetHash ? `#${targetHash}` : location.hash,
       }}
     />
   );

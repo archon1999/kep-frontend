@@ -1,11 +1,20 @@
-import { Card, CardContent, Stack } from '@mui/material';
 import { useParams } from 'react-router';
-import HomeActivityHistory from 'modules/home/ui/pages/HomePage/components/HomeActivityHistory';
+import { Card, CardContent, Stack } from '@mui/material';
 import { useUserActivityHistory } from 'modules/home/application/queries';
+import HomeActivityHistory from 'modules/home/ui/pages/HomePage/components/HomeActivityHistory';
 
-const UserProfileActivityHistoryTab = () => {
+interface UserProfileActivityHistoryTabProps {
+  showTitle?: boolean;
+}
+
+const UserProfileActivityHistoryTab = ({
+  showTitle = true,
+}: UserProfileActivityHistoryTabProps) => {
   const { username = '' } = useParams();
-  const { data, isLoading, isLoadingMore, hasMore, loadMore } = useUserActivityHistory(username, 20);
+  const { data, isLoading, isLoadingMore, hasMore, loadMore } = useUserActivityHistory(
+    username,
+    20,
+  );
 
   return (
     <Card variant="outlined">
@@ -19,6 +28,7 @@ const UserProfileActivityHistoryTab = () => {
             isLoadingMore={isLoadingMore}
             hasMore={hasMore}
             onLoadMore={loadMore}
+            showTitle={showTitle}
           />
         </Stack>
       </CardContent>

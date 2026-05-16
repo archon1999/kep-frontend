@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
@@ -13,28 +14,24 @@ import {
   Typography,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
+import { useAuth } from 'app/providers/AuthProvider';
+import { getResourceById, getResourceByParams, resources } from 'app/routes/resources';
 import { BarChart, PieChart } from 'echarts/charts';
 import { GridComponent, LegendComponent, TooltipComponent } from 'echarts/components';
 import * as echarts from 'echarts/core';
 import type { EChartsCoreOption } from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
-import { useAuth } from 'app/providers/AuthProvider';
-import { getResourceById, getResourceByParams, resources } from 'app/routes/resources';
+import { useContestUserStatistics } from 'modules/contests/application/queries';
 import {
   ContestUserStatisticsContestDeltaEntry,
   ContestUserStatisticsContestRankEntry,
   ContestUserStatisticsTopAttempt,
   ContestUserStatisticsUnsolvedProblem,
 } from 'modules/contests/domain/entities/contest-user-statistics.entity';
-import {
-  useContestRatingChanges,
-  useContestUserStatistics,
-} from 'modules/contests/application/queries';
 import PageHeader from 'shared/components/sections/common/PageHeader';
-import { getColor } from 'shared/lib/echart-utils';
 import type { KepIconName } from 'shared/config/icons';
-import ContestRatingChangesChartCard from '../../shared/components/ContestRatingChangesChartCard';
+import { getColor } from 'shared/lib/echart-utils';
+import ContestRatingChangesChart from '../../shared/components/ContestRatingChangesChart';
 import ContestsUserStatisticsPageChartCard from './ContestsUserStatisticsPageChartCard.tsx';
 import ContestsUserStatisticsPageHighlightCard, {
   type ContestsUserStatisticsPageHighlightCardProps,
@@ -57,7 +54,6 @@ const ContestsUserStatisticsPage = () => {
 
   const username = currentUser?.username;
   const { data: statistics, isLoading } = useContestUserStatistics(username);
-  const { data: ratingChanges } = useContestRatingChanges(username);
 
   const numberFormatter = useMemo(
     () =>
@@ -426,10 +422,7 @@ const ContestsUserStatisticsPage = () => {
     return createDonutOption(data);
   }, [createDonutOption, statistics?.symbols]);
 
-  const renderAttemptsList = (
-    attempts: ContestUserStatisticsTopAttempt[],
-    emptyText: string,
-  ) => (
+  const renderAttemptsList = (attempts: ContestUserStatisticsTopAttempt[], emptyText: string) => (
     <Stack direction="column" spacing={1.5}>
       {attempts.map((attempt) => (
         <Stack
@@ -444,9 +437,7 @@ const ContestsUserStatisticsPage = () => {
             </Typography>
             <Chip
               label={
-                attempt.solved
-                  ? t('contests.statistics.solved')
-                  : t('contests.statistics.unsolved')
+                attempt.solved ? t('contests.statistics.solved') : t('contests.statistics.unsolved')
               }
               size="small"
               color={attempt.solved ? 'success' : 'error'}
@@ -530,7 +521,12 @@ const ContestsUserStatisticsPage = () => {
             sx={{ height: '100%', minHeight: 360, borderRadius: 3, display: 'flex' }}
           >
             <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, flex: 1 }}>
-              <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="flex-start"
+                spacing={1}
+              >
                 <Typography variant="subtitle1" fontWeight={800}>
                   {opponent.opponent}
                 </Typography>
@@ -666,13 +662,23 @@ const ContestsUserStatisticsPage = () => {
           ))}
         </Grid>
 
-        <ContestRatingChangesChartCard
-          title={t('contests.statistics.ratingChangesHistory')}
-          changes={ratingChanges}
-          username={username}
-          emptyText={t('contests.statistics.noData')}
-          height={360}
-        />
+        <Card variant="outlined" sx={{ height: '100%', borderRadius: 3, overflow: 'visible' }}>
+          <CardContent
+            sx={{
+              height: '100%',
+              overflow: 'visible',
+              p: { xs: 1.25, sm: 1.5 },
+              '&:last-child': { pb: { xs: 1.25, sm: 1.5 } },
+            }}
+          >
+            <Stack direction="column" spacing={1.25} sx={{ height: '100%', overflow: 'visible' }}>
+              <Typography variant="subtitle1" fontWeight={700}>
+                {t('contests.statistics.ratingChangesHistory')}
+              </Typography>
+              <ContestRatingChangesChart username={username} height={360} />
+            </Stack>
+          </CardContent>
+        </Card>
 
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 6 }}>
@@ -800,9 +806,7 @@ const ContestsUserStatisticsPage = () => {
           { label: t('contests.tabs.statistics'), active: true },
         ]}
       />
-      <Box sx={{ flex: 1, px: { xs: 3, md: 5 }, pb: { xs: 4, md: 6 } }}>
-        {renderContent()}
-      </Box>
+      <Box sx={{ flex: 1, px: { xs: 3, md: 5 }, pb: { xs: 4, md: 6 } }}>{renderContent()}</Box>
     </Stack>
   );
 };

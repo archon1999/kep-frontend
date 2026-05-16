@@ -1,61 +1,831 @@
-import { Suspense, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
-  Outlet,
-  Link as RouterLink,
-  useLocation,
-  useNavigate,
-  useNavigation,
-  useParams,
-} from 'react-router';
+  ReactElement,
+  ReactNode,
+  SyntheticEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link as RouterLink, useLocation, useNavigate, useParams } from 'react-router';
+import { TabContext, TabList } from '@mui/lab';
 import {
   Avatar,
-  Badge,
   Box,
-  Card,
-  CardContent,
-  CircularProgress,
+  Button,
+  Chip,
+  Container,
+  Dialog,
+  DialogContent,
   Grid,
-  Skeleton,
+  LinearProgress,
+  Link,
+  Paper,
+  PaperProps,
   Stack,
+  SxProps,
   Tab,
-  Tabs,
+  Theme,
+  Tooltip,
   Typography,
+  tabScrollButtonClasses,
+  tabsClasses,
 } from '@mui/material';
-import { getResourceByUsername, resources } from 'app/routes/resources';
-import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
+import { useNavContext } from 'app/layouts/main-layout/NavProvider';
 import { useAuth } from 'app/providers/AuthProvider';
+import { useBreakpoints } from 'app/providers/BreakpointsProvider';
+import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
+import { getResourceByUsername, resources } from 'app/routes/resources';
+import { HashLinkBehavior } from 'app/theme/components/Link';
+import dayjs from 'dayjs';
+import {
+  useUserAbout,
+  useUserDetails,
+  useUserRatings,
+  useUserSocial,
+} from 'modules/users/application/queries';
+import {
+  UserProfileAbout,
+  UserSocialLinks,
+} from 'modules/users/domain/entities/user-profile.entity';
+import {
+  UserDetails,
+  UserRatingInfo,
+  UserRatings,
+} from 'modules/users/domain/entities/user.entity';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepIcon from 'shared/components/base/KepIcon';
+import StatusAvatar from 'shared/components/base/StatusAvatar';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
-import { responsivePagePaddingSx } from 'shared/lib/styles';
-import { useUserDetails, useUserRatings } from 'modules/users/application/queries';
+import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip';
+import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
+import ScrollSpy, { useScrollSpyContext } from 'shared/components/scroll-spy';
+import ScrollSpyContent from 'shared/components/scroll-spy/ScrollSpyContent';
+import ScrollSpyNavItem from 'shared/components/scroll-spy/ScrollSpyNavItem';
+import { KepIconName } from 'shared/config/icons';
 import ProfileFollowButton from './components/user-profile/ProfileFollowButton';
 import UserFollowersCard from './components/user-profile/UserFollowersCard';
-import UserPersonalInfoCard from './components/user-profile/UserPersonalInfoCard';
-import UserRanksGrid from './components/user-profile/UserRanksGrid';
-import UserSocialCard from './components/user-profile/UserSocialCard';
+import UserProfileAchievementsTab from './components/user-profile/UserProfileAchievementsTab';
+import UserProfileActivityHistoryTab from './components/user-profile/UserProfileActivityHistoryTab';
+import UserProfilePurchasesTab from './components/user-profile/UserProfilePurchasesTab';
+import UserProfileRatingsTab from './components/user-profile/UserProfileRatingsTab';
 
-type TabKey = 'about' | 'ratings' | 'activity-history' | 'purchases' | 'blog' | 'achievements';
+type TabValue = 'about' | 'ratings' | 'activity-history' | 'purchases' | 'achievements';
 
-const getCurrentTab = (pathname: string): TabKey => {
-  if (pathname.includes('/ratings')) return 'ratings';
-  if (pathname.includes('/activity-history')) return 'activity-history';
-  if (pathname.includes('/purchases')) return 'purchases';
-  if (pathname.includes('/blog')) return 'blog';
-  if (pathname.includes('/achievements')) return 'achievements';
-  return 'about';
+const formatDate = (value?: string | Date | null) => {
+  if (!value) return undefined;
+  const parsed = dayjs(value);
+  return parsed.isValid() ? parsed.format('MMM DD, YYYY') : undefined;
 };
 
-const UserProfilePage = () => {
+const formatYearRange = (
+  fromYear?: number | null,
+  toYear?: number | null,
+  presentText = 'Present',
+) => {
+  if (!fromYear && !toYear) return undefined;
+  return `${fromYear ?? '...'} - ${toYear ?? presentText}`;
+};
+
+const normalizeTelegramHandle = (handle?: string) => handle?.replace(/^@+/, '').trim();
+
+const hashToTabValue = (hash: string, tabs: Array<{ value: TabValue }>) => {
+  const hashValue = hash.replace('#', '') as TabValue;
+  return tabs.some((tab) => tab.value === hashValue) ? hashValue : undefined;
+};
+
+type OverviewRow = {
+  label: string;
+  value?: ReactNode;
+};
+
+const PersonalProfileSection = ({
+  about,
+  social,
+  username,
+}: {
+  about?: UserProfileAbout;
+  social?: UserSocialLinks;
+  username: string;
+}) => {
   const { t } = useTranslation();
-  const { username = '' } = useParams();
+  const generalInfo = about?.generalInfo;
+  const profileInfo = about?.profileInfo;
+  const workExperiences = about?.workExperiences ?? [];
+  const educations = about?.educations ?? [];
+  const skills = about?.skills ?? [];
+  const technologies = about?.technologies ?? [];
+  const bio = profileInfo?.bio || '';
+  const telegramHandle = normalizeTelegramHandle(social?.telegram);
+  const locationText = [profileInfo?.country, profileInfo?.region].filter(Boolean).join(', ');
+  const codeforcesHandle = social?.codeforcesHandle?.trim();
+
+  const overviewRows: OverviewRow[] = [
+    {
+      label: t('users.profile.personal.fullName'),
+      value: [generalInfo?.firstName, generalInfo?.lastName].filter(Boolean).join(' '),
+    },
+    {
+      label: t('users.profile.personal.lives'),
+      value: locationText ? (
+        <Stack direction="row" spacing={0.75} alignItems="center" sx={{ minWidth: 0 }}>
+          <CountryFlagIcon code={profileInfo?.country} size={20} />
+          <Typography
+            component="span"
+            sx={{ fontSize: 18, lineHeight: 1.35, fontWeight: 700, overflowWrap: 'anywhere' }}
+          >
+            {locationText}
+          </Typography>
+        </Stack>
+      ) : undefined,
+    },
+    {
+      label: t('users.profile.personal.wasBorn'),
+      value: formatDate(profileInfo?.dateOfBirth),
+    },
+    {
+      label: t('users.profile.personal.email'),
+      value: profileInfo?.email,
+    },
+    {
+      label: t('users.profile.personal.website'),
+      value: profileInfo?.website,
+    },
+    {
+      label: t('users.profile.personal.joined'),
+      value: formatDate(profileInfo?.dateJoined),
+    },
+    {
+      label: t('users.profile.personal.telegram'),
+      value: telegramHandle ? (
+        <Link
+          href={`https://t.me/${telegramHandle}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          underline="hover"
+          sx={{ fontSize: 18, lineHeight: 1.35, fontWeight: 700, overflowWrap: 'anywhere' }}
+        >
+          {telegramHandle}
+        </Link>
+      ) : undefined,
+    },
+    {
+      label: t('users.profile.personal.codeforces'),
+      value: codeforcesHandle ? (
+        <Stack direction="row" spacing={0.75} alignItems="center" flexWrap="wrap" useFlexGap>
+          <Link
+            href={`https://codeforces.com/profile/${codeforcesHandle}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            underline="hover"
+            sx={{ fontSize: 18, lineHeight: 1.35, fontWeight: 700, overflowWrap: 'anywhere' }}
+          >
+            {codeforcesHandle}
+          </Link>
+          {social?.codeforcesBadge ? (
+            <Box
+              component="img"
+              src={social.codeforcesBadge}
+              alt={codeforcesHandle}
+              sx={{ height: 20, maxWidth: 120, objectFit: 'contain' }}
+            />
+          ) : null}
+        </Stack>
+      ) : undefined,
+    },
+  ].filter((row) => Boolean(row.value));
+
+  return (
+    <Grid container columns={24} spacing={{ xs: 2, md: 5 }}>
+      <Grid size={{ xs: 24, md: 15 }}>
+        <Stack direction="column" gap={4} sx={{ py: 3 }}>
+          {bio ? (
+            <Stack direction="column" gap={1.5}>
+              <Typography variant="h6">{t('users.profile.about')}</Typography>
+              <Typography
+                dangerouslySetInnerHTML={{ __html: bio }}
+                color="text.secondary"
+                sx={{ fontSize: 18, lineHeight: 1.4 }}
+              />
+            </Stack>
+          ) : null}
+
+          {skills.length ? (
+            <Stack direction="column" gap={1.5}>
+              <Typography sx={{ fontSize: 20, lineHeight: 1.25, fontWeight: 700 }}>
+                {t('users.profile.skills')}
+              </Typography>
+              <Stack direction="row" gap={1} flexWrap="wrap" useFlexGap>
+                {skills.map((skill) => (
+                  <Paper
+                    key={`${skill.slug ?? skill.name}-${skill.level}`}
+                    background={1}
+                    sx={{
+                      p: 1.25,
+                      borderRadius: 2,
+                      outline: 0,
+                      minWidth: { xs: '100%', sm: 180 },
+                      flex: { xs: '1 1 100%', sm: '0 1 220px' },
+                    }}
+                  >
+                    <Stack direction="column" gap={0.75}>
+                      <Typography variant="body2" fontWeight={700} noWrap>
+                        {skill.name}
+                      </Typography>
+                      <Tooltip title={`${Math.min(100, Math.max(0, skill.level))}%`} arrow>
+                        <LinearProgress
+                          variant="determinate"
+                          value={Math.min(100, Math.max(0, skill.level))}
+                          sx={{ height: 6, borderRadius: 1 }}
+                        />
+                      </Tooltip>
+                    </Stack>
+                  </Paper>
+                ))}
+              </Stack>
+            </Stack>
+          ) : null}
+
+          {technologies.length ? (
+            <Stack direction="column" gap={1.5}>
+              <Typography sx={{ fontSize: 20, lineHeight: 1.25, fontWeight: 700 }}>
+                {t('users.profile.technologies')}
+              </Typography>
+              <Stack direction="row" gap={1} flexWrap="wrap" useFlexGap>
+                {technologies.map((technology) => (
+                  <Chip
+                    key={`${technology.text}-${technology.devIconClass}`}
+                    icon={
+                      technology.devIconClass ? (
+                        <Box
+                          component="i"
+                          className={technology.devIconClass}
+                          sx={{ fontSize: 16 }}
+                        />
+                      ) : undefined
+                    }
+                    label={technology.text}
+                    size="small"
+                    sx={{
+                      bgcolor: technology.badgeColor || 'background.elevation2',
+                      border: 0,
+                      color: 'common.white',
+                      '& .MuiChip-icon': { color: 'inherit' },
+                    }}
+                  />
+                ))}
+              </Stack>
+            </Stack>
+          ) : null}
+
+          <TimelineList
+            title={t('users.profile.workExperience')}
+            emptyText={t('users.emptyValue')}
+            items={workExperiences.map((work) => ({
+              title: work.company,
+              subtitle: work.jobTitle,
+              period: formatYearRange(
+                work.fromYear,
+                work.toYear,
+                t('users.profile.timeline.present'),
+              ),
+              fallbackIcon: 'project',
+            }))}
+          />
+
+          <TimelineList
+            title={t('users.profile.education')}
+            emptyText={t('users.emptyValue')}
+            items={educations.map((education) => ({
+              title: education.organization,
+              subtitle: education.degree,
+              period: formatYearRange(
+                education.fromYear,
+                education.toYear,
+                t('users.profile.timeline.present'),
+              ),
+              fallbackIcon: 'learn',
+            }))}
+          />
+        </Stack>
+      </Grid>
+
+      <Grid size={{ xs: 24, md: 9 }}>
+        <Stack direction="column" gap={2}>
+          <Paper
+            background={1}
+            sx={{ p: { xs: 3, md: 4 }, borderRadius: 4, outline: 0, height: '100%' }}
+          >
+            <Stack direction="column" gap={3}>
+              {overviewRows.length ? (
+                overviewRows.map((row) => (
+                  <Stack key={row.label} direction="column" gap={0.75}>
+                    <Typography
+                      color="text.secondary"
+                      sx={{ fontSize: 15, lineHeight: 1.35, fontWeight: 400 }}
+                    >
+                      {row.label}
+                    </Typography>
+                    {typeof row.value === 'string' || typeof row.value === 'number' ? (
+                      <Typography
+                        sx={{
+                          fontSize: 16,
+                          lineHeight: 1.35,
+                          fontWeight: 600,
+                          overflowWrap: 'anywhere',
+                        }}
+                      >
+                        {row.value}
+                      </Typography>
+                    ) : (
+                      row.value
+                    )}
+                  </Stack>
+                ))
+              ) : (
+                <Typography variant="body2" color="text.secondary">
+                  {t('users.emptyValue')}
+                </Typography>
+              )}
+            </Stack>
+          </Paper>
+          <UserFollowersCard username={username} />
+        </Stack>
+      </Grid>
+    </Grid>
+  );
+};
+
+const TimelineList = ({
+  title,
+  emptyText,
+  items,
+}: {
+  title: string;
+  emptyText: string;
+  items: Array<{ title?: string; subtitle?: string; period?: string; fallbackIcon: KepIconName }>;
+}) => (
+  <Stack direction="column" gap={2.5}>
+    <Typography sx={{ fontSize: 20, lineHeight: 1.25, fontWeight: 700 }}>{title}</Typography>
+
+    {items.length ? (
+      items.map((item, index) => (
+        <Stack key={`${item.title}-${index}`} direction="row" gap={2.5} alignItems="flex-start">
+          <Avatar
+            sx={{
+              width: 48,
+              height: 48,
+              bgcolor: 'background.elevation2',
+              color: 'text.secondary',
+              flexShrink: 0,
+            }}
+          >
+            <KepIcon name={item.fallbackIcon} fontSize={26} />
+          </Avatar>
+          <Stack direction="column" gap={0.5}>
+            <Typography sx={{ fontSize: 15, lineHeight: 1.35, fontWeight: 700 }}>
+              {item.title}
+            </Typography>
+            {item.subtitle ? (
+              <Typography color="text.secondary" sx={{ fontSize: 14, lineHeight: 1.35 }}>
+                {item.subtitle}
+              </Typography>
+            ) : null}
+            {item.period ? (
+              <Typography
+                color="text.secondary"
+                sx={{ fontSize: 14, lineHeight: 1.35, fontWeight: 700 }}
+              >
+                {item.period}
+              </Typography>
+            ) : null}
+          </Stack>
+        </Stack>
+      ))
+    ) : (
+      <Typography variant="body2" color="text.secondary">
+        {emptyText}
+      </Typography>
+    )}
+  </Stack>
+);
+
+const ratingConfig: Array<{ key: keyof UserRatings; labelKey: string; icon: KepIconName }> = [
+  { key: 'skillsRating', labelKey: 'users.columns.skills', icon: 'rating' },
+  { key: 'activityRating', labelKey: 'users.columns.activity', icon: 'todo' },
+  { key: 'contestsRating', labelKey: 'users.columns.contests', icon: 'contests' },
+  { key: 'challengesRating', labelKey: 'users.columns.challenges', icon: 'challenges' },
+];
+
+const getRatingValue = (
+  ratings?: UserRatings,
+  key?: keyof UserRatings,
+): UserRatingInfo | undefined => {
+  if (!ratings || !key) return undefined;
+  return ratings[key];
+};
+
+const CompactRatingsGrid = ({
+  ratings,
+  isLoading,
+}: {
+  ratings?: UserRatings;
+  isLoading?: boolean;
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+        gap: 1,
+      }}
+    >
+      {ratingConfig.map(({ key, labelKey, icon }) => {
+        const stat = getRatingValue(ratings, key);
+        const titleChip =
+          key === 'contestsRating' ? (
+            <ContestsRatingChip title={stat?.title} imgSize={16} />
+          ) : key === 'challengesRating' ? (
+            <ChallengesRatingChip title={stat?.title} />
+          ) : null;
+
+        return (
+          <Paper
+            key={key}
+            background={2}
+            sx={{ p: 1.25, borderRadius: 2, outline: 0, minWidth: 0 }}
+          >
+            <Stack direction="row" spacing={0.75} alignItems="center" sx={{ minWidth: 0 }}>
+              <KepIcon name={icon} fontSize={16} color="primary.main" />
+              <Typography variant="caption" color="text.secondary" noWrap>
+                {t(labelKey)}
+              </Typography>
+            </Stack>
+            <Stack
+              direction="row"
+              spacing={0.75}
+              alignItems="center"
+              flexWrap="wrap"
+              useFlexGap
+              sx={{ mt: 0.5 }}
+            >
+              {titleChip}
+              <Typography variant="subtitle1" fontWeight={800}>
+                {isLoading ? '...' : (stat?.value ?? t('users.emptyValue'))}
+              </Typography>
+              {stat?.rank !== undefined ? (
+                <Typography variant="caption" color="text.secondary">
+                  #{stat.rank}
+                </Typography>
+              ) : null}
+            </Stack>
+          </Paper>
+        );
+      })}
+    </Box>
+  );
+};
+
+interface ProfileSummaryProps extends PaperProps {
+  username: string;
+  userDetails?: UserDetails;
+  userRatings?: UserRatings;
+  isRatingsLoading?: boolean;
+}
+
+const ProfileSummary = ({
+  username,
+  userDetails,
+  userRatings,
+  isRatingsLoading,
+  sx,
+  ...rest
+}: ProfileSummaryProps) => {
+  const { t } = useTranslation();
+  const displayName = [userDetails?.firstName, userDetails?.lastName].filter(Boolean).join(' ');
+  const name = displayName || userDetails?.username || username;
+  const statusTooltip = userDetails?.isOnline
+    ? t('homePage.userActivity.onlineNow')
+    : userDetails?.lastSeen
+      ? `${t('users.columns.lastSeen')}: ${userDetails.lastSeen}`
+      : t('users.columns.lastSeen');
+
+  return (
+    <Paper
+      background={1}
+      {...rest}
+      sx={{ outline: 0, p: { xs: 2, sm: 3 }, borderRadius: 4, ...sx }}
+    >
+      <Stack
+        direction={{ xs: 'column', lg: 'row' }}
+        gap={3}
+        sx={{
+          justifyContent: 'space-between',
+          alignItems: { xs: 'stretch', lg: 'center' },
+        }}
+      >
+        <Stack
+          gap={2}
+          sx={{
+            flexDirection: { xs: 'column', sm: 'row' },
+            alignItems: { xs: 'center', sm: 'center' },
+            minWidth: 0,
+            flex: 1,
+          }}
+        >
+          <Tooltip title={statusTooltip} arrow>
+            <Box component="span" sx={{ display: 'inline-flex', flexShrink: 0 }}>
+              <StatusAvatar
+                status={userDetails?.isOnline ? 'online' : 'offline'}
+                src={userDetails?.avatar}
+                alt={username}
+                sx={{ width: 80, height: 80 }}
+              >
+                {username.slice(0, 1).toUpperCase()}
+              </StatusAvatar>
+            </Box>
+          </Tooltip>
+          <Stack
+            direction="column"
+            gap={0.5}
+            sx={{
+              minWidth: 0,
+              flex: { sm: 1 },
+              width: { xs: '100%', sm: 'auto' },
+              alignItems: { xs: 'center', sm: 'flex-start' },
+            }}
+          >
+            <Stack
+              direction="row"
+              gap={1.5}
+              sx={{
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                justifyContent: { xs: 'center', sm: 'flex-start' },
+              }}
+            >
+              <Typography variant="h5" sx={{ minWidth: 0, overflowWrap: 'anywhere' }}>
+                {name}
+              </Typography>
+              <ProfileFollowButton
+                username={username}
+                isFollowing={Boolean(userDetails?.isFollowing)}
+              />
+            </Stack>
+            <Stack
+              gap={2}
+              sx={{
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                justifyContent: { xs: 'center', sm: 'flex-start' },
+              }}
+            >
+              <Typography
+                variant="subtitle2"
+                sx={{ fontWeight: 400, color: 'text.secondary', textWrap: 'nowrap' }}
+              >
+                {userDetails?.username || username}
+              </Typography>
+              {userDetails?.streak ? (
+                <Typography
+                  variant="subtitle2"
+                  sx={{ fontWeight: 400, color: 'text.secondary', textWrap: 'nowrap' }}
+                >
+                  {t('users.columns.streak')}: {userDetails.streak}
+                </Typography>
+              ) : null}
+            </Stack>
+          </Stack>
+        </Stack>
+        <Box sx={{ width: { xs: 1, lg: 360 }, flexShrink: 0 }}>
+          <CompactRatingsGrid ratings={userRatings} isLoading={isRatingsLoading} />
+        </Box>
+      </Stack>
+    </Paper>
+  );
+};
+
+interface PanelWrapperProps {
+  title: string;
+  children: ReactElement;
+  editTo?: string;
+  sx?: SxProps<Theme>;
+}
+
+const PanelWrapper = ({ title, children, editTo, sx }: PanelWrapperProps) => (
+  <Stack direction="column" gap={3} sx={{ ...sx }}>
+    <Paper background={2} sx={{ px: 2, py: 1, borderRadius: 2, outline: 0 }}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+          {title}
+        </Typography>
+        {editTo ? (
+          <Button
+            component={RouterLink}
+            to={editTo}
+            shape="square"
+            variant="text"
+            color="neutral"
+            size="small"
+          >
+            <IconifyIcon icon="material-symbols:edit-outline" sx={{ fontSize: 22 }} />
+          </Button>
+        ) : null}
+      </Stack>
+    </Paper>
+
+    {children}
+  </Stack>
+);
+
+const ProfileTabsInner = ({
+  about,
+  social,
+  isOwner,
+  username,
+}: {
+  about?: UserProfileAbout;
+  social?: UserSocialLinks;
+  isOwner: boolean;
+  username: string;
+}) => {
+  const { t } = useTranslation();
+  const { down } = useBreakpoints();
+  const isDownSm = down('sm');
+  const tabsRef = useRef<HTMLDivElement>(null);
+  const { topbarHeight } = useNavContext();
+  const { activeElemId } = useScrollSpyContext();
   const location = useLocation();
   const navigate = useNavigate();
-  const navigation = useNavigation();
-  const { currentUser } = useAuth();
 
+  const tabData = useMemo(
+    () =>
+      [
+        {
+          value: 'about' as const,
+          label: t('users.profile.personal.sectionTitle', { defaultValue: 'Personal' }),
+          panel: <PersonalProfileSection about={about} social={social} username={username} />,
+          editTo: isOwner ? resources.SettingsInformation : undefined,
+        },
+        {
+          value: 'ratings' as const,
+          label: t('users.profile.tabs.ratings'),
+          panel: <UserProfileRatingsTab />,
+        },
+        {
+          value: 'activity-history' as const,
+          label: t('users.profile.tabs.activityHistory'),
+          panel: <UserProfileActivityHistoryTab showTitle={false} />,
+        },
+        {
+          value: 'achievements' as const,
+          label: t('users.profile.tabs.achievements'),
+          panel: <UserProfileAchievementsTab showTitle={false} />,
+        },
+        isOwner
+          ? {
+              value: 'purchases' as const,
+              label: t('users.profile.tabs.purchases'),
+              panel: <UserProfilePurchasesTab />,
+            }
+          : null,
+      ].filter(Boolean) as Array<{
+        value: TabValue;
+        label: string;
+        panel: ReactElement;
+        editTo?: string;
+      }>,
+    [about, isOwner, social, t],
+  );
+
+  const [activeTab, setActiveTab] = useState<TabValue>(
+    () => hashToTabValue(location.hash, tabData) || 'about',
+  );
+
+  const handleTabChange = (_event: SyntheticEvent, newValue: TabValue) => {
+    setActiveTab(newValue);
+  };
+
+  useEffect(() => {
+    const hashTab = hashToTabValue(location.hash, tabData);
+
+    if (!hashTab) {
+      if (location.hash === '#purchases' && !isOwner) {
+        navigate(getResourceByUsername(resources.UserProfile, username), { replace: true });
+      }
+      return;
+    }
+
+    setActiveTab(hashTab);
+    window.requestAnimationFrame(() => {
+      document.getElementById(hashTab)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }, [isOwner, location.hash, navigate, tabData, username]);
+
+  useEffect(() => {
+    if (
+      activeElemId &&
+      activeTab !== activeElemId &&
+      tabData.some((item) => item.value === activeElemId)
+    ) {
+      const nextTab = activeElemId as TabValue;
+      setActiveTab(nextTab);
+      const nextHash = `#${nextTab}`;
+      if (window.location.hash !== nextHash) {
+        window.history.replaceState(null, '', `${location.pathname}${location.search}${nextHash}`);
+      }
+    }
+  }, [activeElemId, activeTab, location.pathname, location.search, tabData]);
+
+  return (
+    <Paper sx={{ outline: 0, bgcolor: 'transparent', boxShadow: 'none' }}>
+      <TabContext value={activeTab}>
+        <Box
+          ref={tabsRef}
+          sx={{
+            position: 'sticky',
+            zIndex: 10,
+            mb: 3,
+            top: topbarHeight,
+            bgcolor: 'background.paper',
+          }}
+        >
+          <ScrollSpyNavItem>
+            <TabList
+              variant={isDownSm ? 'scrollable' : 'standard'}
+              scrollButtons
+              allowScrollButtonsMobile
+              onChange={handleTabChange}
+              aria-label="profile tabs"
+              centered={isDownSm ? false : true}
+              sx={{
+                py: 1,
+                [`& .${tabsClasses.list}`]: { gap: 0, justifyContent: 'flex-start' },
+                [`& .${tabScrollButtonClasses.disabled}`]: { opacity: '0.3 !important' },
+              }}
+            >
+              {tabData.map(({ value, label }) => (
+                <Tab
+                  LinkComponent={HashLinkBehavior}
+                  href={`#${value}`}
+                  key={value}
+                  value={value}
+                  label={label}
+                />
+              ))}
+            </TabList>
+          </ScrollSpyNavItem>
+        </Box>
+      </TabContext>
+
+      <Stack direction="column" spacing={5} sx={{ mb: 7 }}>
+        {tabData.map(({ value, label, panel, editTo }) => (
+          <ScrollSpyContent
+            key={value}
+            id={value}
+            sx={(theme) => ({
+              scrollMarginTop: theme.mixins.topOffset(topbarHeight, 75, true),
+            })}
+          >
+            <PanelWrapper title={label} editTo={editTo}>
+              {panel}
+            </PanelWrapper>
+          </ScrollSpyContent>
+        ))}
+      </Stack>
+    </Paper>
+  );
+};
+
+const ProfileTabsSection = ({
+  about,
+  social,
+  isOwner,
+  username,
+}: {
+  about?: UserProfileAbout;
+  social?: UserSocialLinks;
+  isOwner: boolean;
+  username: string;
+}) => (
+  <ScrollSpy offset={500}>
+    <ProfileTabsInner about={about} social={social} isOwner={isOwner} username={username} />
+  </ScrollSpy>
+);
+
+const UserProfilePage = () => {
+  const { username = '' } = useParams();
+  const { currentUser } = useAuth();
   const { data: userDetails } = useUserDetails(username);
   const { data: userRatings, isLoading: isRatingsLoading } = useUserRatings(username);
+  const { data: about } = useUserAbout(username);
+  const { data: social } = useUserSocial(username);
+  const [isCoverPreviewOpen, setIsCoverPreviewOpen] = useState(false);
+  const isOwner = currentUser?.username === username;
+
   useDocumentTitle(
     userDetails?.username || username ? 'pageTitles.userProfile' : undefined,
     userDetails?.username || username
@@ -65,234 +835,85 @@ const UserProfilePage = () => {
       : undefined,
   );
 
-  const currentTab = getCurrentTab(location.pathname);
-  const isOwner = currentUser?.username === username;
-
-  const tabs = useMemo(
-    () =>
-      [
-        {
-          value: 'about',
-          label: t('users.profile.tabs.about'),
-          to: getResourceByUsername(resources.UserProfile, username),
-        },
-        {
-          value: 'ratings',
-          label: t('users.profile.tabs.ratings'),
-          to: getResourceByUsername(resources.UserProfileRatings, username),
-        },
-        {
-          value: 'activity-history',
-          label: t('users.profile.tabs.activityHistory'),
-          to: getResourceByUsername(resources.UserProfileActivityHistory, username),
-        },
-        isOwner
-          ? {
-              value: 'purchases' as const,
-              label: t('users.profile.tabs.purchases'),
-              to: getResourceByUsername(resources.UserProfilePurchases, username),
-            }
-          : null,
-        {
-          value: 'blog',
-          label: t('users.profile.tabs.blog'),
-          to: getResourceByUsername(resources.UserProfileBlog, username),
-        },
-        {
-          value: 'achievements',
-          label: t('users.profile.tabs.achievements'),
-          to: getResourceByUsername(resources.UserProfileAchievements, username),
-        },
-      ].filter(Boolean) as Array<{ value: TabKey; label: string; to: string }>,
-    [isOwner, t, username],
-  );
-
-  const displayName = useMemo(() => {
-    const firstName = userDetails?.firstName ?? '';
-    const lastName = userDetails?.lastName ?? '';
-    return [firstName, lastName].filter(Boolean).join(' ');
-  }, [userDetails?.firstName, userDetails?.lastName]);
-
-  const coverPhoto = userDetails?.coverPhoto;
-  const avatar = userDetails?.avatar;
-  const isOnline = userDetails?.isOnline;
-
-  const isTabLoading =
-    navigation.state === 'loading' && navigation.location?.pathname.startsWith(`/users/${username}`);
-
-  const handleTabChange = (_: React.SyntheticEvent, newValue: TabKey) => {
-    const next = tabs.find((tab) => tab.value === newValue);
-    if (next) {
-      navigate(next.to);
-    }
-  };
-
   return (
-    <Stack direction="column" spacing={3} sx={responsivePagePaddingSx}>
-      <Card>
+    <Paper sx={{ height: 1, p: { xs: 2, md: 5 } }}>
+      <Container maxWidth="md" disableGutters>
         <Box
-          sx={{ position: 'relative', bgcolor: 'background.neutral' }}
+          component="figure"
+          onClick={() => userDetails?.coverPhoto && setIsCoverPreviewOpen(true)}
+          sx={{ m: 0, position: 'relative', height: 200, borderRadius: 6, overflow: 'hidden' }}
         >
-          {coverPhoto ? (
+          {userDetails?.coverPhoto ? (
             <Box
               component="img"
-              src={coverPhoto}
-              alt="cover"
-              sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              src={userDetails.coverPhoto}
+              alt={userDetails.username || username}
+              sx={{ height: 1, width: 1, objectFit: 'cover', cursor: 'zoom-in' }}
             />
           ) : (
-            <Skeleton variant="rectangular" width="100%" height="100%" />
+            <Box sx={{ height: 1, width: 1, bgcolor: 'background.elevation2' }} />
           )}
-
-          <Box
-            sx={{
-              position: 'absolute',
-              left: { xs: 10, sm: 16 },
-              bottom: -36,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 2,
-            }}
-          >
-            <Badge
-              overlap="circular"
-              variant="dot"
-              color={isOnline ? 'success' : 'default'}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          {isOwner ? (
+            <Button
+              component={RouterLink}
+              to={resources.Settings}
+              shape="square"
+              variant="soft"
+              color="neutral"
+              onClick={(event) => event.stopPropagation()}
+              sx={({ spacing }) => ({ position: 'absolute', top: spacing(3), right: spacing(3) })}
             >
-              {avatar ? (
-                <Avatar
-                  alt={username}
-                  src={avatar}
-                  sx={{ width: 88, height: 88, border: '3px solid white' }}
-                />
-              ) : (
-                <Skeleton variant="circular" width={88} height={88} />
-              )}
-            </Badge>
-          </Box>
+              <IconifyIcon icon="material-symbols:edit-outline" sx={{ fontSize: 18 }} />
+            </Button>
+          ) : null}
         </Box>
 
-        <CardContent sx={{ pt: 6, pb: 3 }}>
-          <Grid container spacing={3} alignItems="center">
-            <Grid size={{ xs: 12, md: 7 }}>
-              <Stack direction="column" spacing={1.5}>
-                <Stack direction="column" spacing={1.5} flexWrap="wrap">
-                  <Stack direction="row" spacing={1.5}>
-                    <Typography variant="h5" fontWeight={700}>
-                      {userDetails?.username ?? username}
-                    </Typography>
-                    <ProfileFollowButton
-                      username={username}
-                      isFollowing={Boolean((userDetails as any)?.isFollowing)}
-                    />
-                  </Stack>
+        <Box sx={{ px: { xs: 1, sm: 4, md: 5 }, mt: -2.25, position: 'relative', zIndex: 1 }}>
+          <ProfileSummary
+            username={username}
+            userDetails={userDetails}
+            userRatings={userRatings}
+            isRatingsLoading={isRatingsLoading}
+            sx={{ mb: 2 }}
+          />
+          <ProfileTabsSection about={about} social={social} isOwner={isOwner} username={username} />
+        </Box>
+      </Container>
 
-                  {displayName && (
-                    <Typography variant="body2" color="text.secondary">
-                      {displayName}
-                    </Typography>
-                  )}
-                  {userDetails?.streak ? (
-                    <Stack direction="row" spacing={0.5} alignItems="center">
-                      <KepIcon name="streak" fontSize={16} color="warning.main" />
-                      <Typography variant="body2" fontWeight={600} color="warning.main">
-                        {userDetails.streak}
-                      </Typography>
-                    </Stack>
-                  ) : null}
-                </Stack>
-
-                <Stack direction="row" spacing={1} flexWrap="wrap" alignItems="center">
-                  <Stack direction="row" spacing={0.5} alignItems="center">
-                    <KepIcon name="challenge-time" fontSize={18} color="text.secondary" />
-                    <Typography variant="body2" color="text.secondary">
-                      {t('users.columns.lastSeen')}: {userDetails?.lastSeen ?? '—'}
-                    </Typography>
-                  </Stack>
-                  {userDetails?.country ? (
-                    <Stack direction="row" spacing={0.5} alignItems="center">
-                      <KepIcon name="info" fontSize={18} color="text.secondary" />
-                      <CountryFlagIcon code={userDetails.country} size={18} />
-                    </Stack>
-                  ) : null}
-                </Stack>
-              </Stack>
-            </Grid>
-
-            <Grid size={{ xs: 12, md: 5 }}>
-              <UserRanksGrid ratings={userRatings} isLoading={isRatingsLoading} />
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
-
-      <Grid container spacing={3}>
-        <Grid size={{ xs: 12, md: 3 }}>
-          <Stack direction="column" spacing={2}>
-            <UserPersonalInfoCard username={username} />
-            <UserSocialCard username={username} />
-            <UserFollowersCard username={username} />
-          </Stack>
-        </Grid>
-
-        <Grid size={{ xs: 12, md: 9 }}>
-          <Card sx={{ position: 'relative' }}>
-            {isTabLoading ? (
-              <Box
-                sx={{
-                  position: 'absolute',
-                  inset: 0,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  bgcolor: 'background.paper',
-                  opacity: 0.8,
-                  zIndex: 1,
-                }}
-              >
-                <CircularProgress size={28} />
-              </Box>
-            ) : null}
-            <CardContent>
-              <Tabs
-                value={currentTab}
-                onChange={handleTabChange}
-                variant="scrollable"
-                allowScrollButtonsMobile
-                aria-busy={isTabLoading}
-              >
-                {tabs.map((tab) => (
-                  <Tab
-                    key={tab.value}
-                    value={tab.value}
-                    label={tab.label}
-                    component={RouterLink}
-                    to={tab.to}
-                    disabled={isTabLoading}
-                  />
-                ))}
-              </Tabs>
-            </CardContent>
-            <Suspense
-              fallback={
-                <CardContent>
-                  <Stack direction="row" spacing={2}>
-                    <Skeleton variant="rectangular" height={160} />
-                    <Skeleton variant="rounded" height={32} />
-                    <Skeleton variant="rounded" height={24} />
-                  </Stack>
-                </CardContent>
-              }
-            >
-              <CardContent sx={{ opacity: isTabLoading ? 0.4 : 1 }}>
-                <Outlet />
-              </CardContent>
-            </Suspense>
-          </Card>
-        </Grid>
-      </Grid>
-    </Stack>
+      <Dialog
+        open={isCoverPreviewOpen}
+        onClose={() => setIsCoverPreviewOpen(false)}
+        maxWidth="lg"
+        slotProps={{
+          paper: {
+            sx: {
+              width: 'fit-content',
+              maxWidth: 'calc(100vw - 32px)',
+              bgcolor: 'transparent',
+              boxShadow: 'none',
+            },
+          },
+        }}
+      >
+        <DialogContent sx={{ p: 0, bgcolor: 'transparent', overflow: 'hidden' }}>
+          {userDetails?.coverPhoto ? (
+            <Box
+              component="img"
+              src={userDetails.coverPhoto}
+              alt={userDetails.username || username}
+              sx={{
+                display: 'block',
+                maxWidth: 'calc(100vw - 32px)',
+                maxHeight: '85vh',
+                width: 'auto',
+                height: 'auto',
+                borderRadius: 2,
+              }}
+            />
+          ) : null}
+        </DialogContent>
+      </Dialog>
+    </Paper>
   );
 };
 

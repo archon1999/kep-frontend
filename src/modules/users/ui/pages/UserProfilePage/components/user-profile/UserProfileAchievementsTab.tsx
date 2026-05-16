@@ -17,16 +17,16 @@ import {
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import { getResourceById, resources } from 'app/routes/resources';
-import kepcoinImage from 'shared/assets/images/icons/kepcoin.png';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
-import KepIcon from 'shared/components/base/KepIcon';
-import { KepIconName } from 'shared/config/icons';
 import { useUserAchievements, useUserCompetitionPrizes } from 'modules/users/application/queries';
 import {
   UserAchievement,
   UserCompetitionPrize,
   UserCompetitionPrizeCurrency,
 } from 'modules/users/domain/entities/user-profile.entity';
+import kepcoinImage from 'shared/assets/images/icons/kepcoin.png';
+import IconifyIcon from 'shared/components/base/IconifyIcon';
+import KepIcon from 'shared/components/base/KepIcon';
+import { KepIconName } from 'shared/config/icons';
 
 type FilterKey = 'completed' | 'notCompleted' | 'all';
 type ToneColor = 'primary' | 'secondary' | 'warning' | 'success' | 'info';
@@ -197,7 +197,7 @@ const getPrizeRoute = (prize: UserCompetitionPrize) => {
   return getResourceById(resources.Tournament, prize.competitionId);
 };
 
-const AchievementTimelineCard = ({ item, index }: { item: UserAchievement; index: number }) => {
+const AchievementBadgeCard = ({ item }: { item: UserAchievement }) => {
   const tone = getAchievementTone(item);
   const progress = getAchievementProgress(item);
   const isDone = Boolean(item.userResult?.done);
@@ -207,66 +207,48 @@ const AchievementTimelineCard = ({ item, index }: { item: UserAchievement; index
       variant="outlined"
       sx={(theme) => ({
         height: '100%',
-        borderRadius: 1,
+        borderRadius: 3,
         borderColor: alpha(theme.palette[tone.color].main, 0.24),
-        borderLeft: '4px solid',
-        borderLeftColor: isDone ? theme.palette.success.main : theme.palette.warning.main,
-        bgcolor: alpha(theme.palette[tone.color].main, 0.04),
+        opacity: isDone ? 1 : 0.68,
+        bgcolor: isDone
+          ? alpha(theme.palette.success.main, 0.08)
+          : alpha(theme.palette.background.paper, 0.72),
       })}
     >
-      <CardContent sx={{ height: '100%', p: 2, '&:last-child': { pb: 2 } }}>
-        <Stack direction="column" spacing={1.25} sx={{ height: '100%' }}>
-          <Stack direction="row" spacing={1.25} alignItems="flex-start">
-            <Box
-              sx={(theme) => ({
-                width: 42,
-                height: 42,
-                borderRadius: 1,
-                display: 'grid',
-                placeItems: 'center',
-                bgcolor: alpha(theme.palette[tone.color].main, 0.12),
-                border: '1px solid',
-                borderColor: alpha(theme.palette[tone.color].main, 0.2),
-                flexShrink: 0,
-              })}
-            >
-              <KepIcon name={tone.icon} fontSize={22} color={`${tone.color}.main`} />
-            </Box>
-
-            <Stack direction="column" spacing={0.5} sx={{ minWidth: 0, flex: 1 }}>
-              <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between">
-                <Typography variant="subtitle2" fontWeight={800} sx={{ overflowWrap: 'anywhere' }}>
-                  {item.title}
-                </Typography>
-                <Chip size="small" variant="outlined" label={`#${index + 1}`} />
-              </Stack>
-            </Stack>
-          </Stack>
-
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ overflowWrap: 'anywhere', flexGrow: 1 }}
+      <CardContent sx={{ height: '100%', p: 2.25, '&:last-child': { pb: 2.25 } }}>
+        <Stack direction="column" spacing={1.5} alignItems="center" textAlign="center">
+          <Box
+            sx={(theme) => ({
+              width: 70,
+              height: 70,
+              borderRadius: '50%',
+              display: 'grid',
+              placeItems: 'center',
+              bgcolor: alpha(theme.palette[tone.color].main, 0.14),
+              boxShadow: `inset 0 0 0 8px ${alpha(theme.palette[tone.color].main, 0.08)}`,
+            })}
           >
-            {item.description}
-          </Typography>
+            <KepIcon name={tone.icon} fontSize={34} color={`${tone.color}.main`} />
+          </Box>
 
-          <Stack direction="column" spacing={0.75}>
-            <Stack direction="row" spacing={1} alignItems="center" justifyContent="space-between">
-              <Typography variant="caption" color="text.secondary">
-                {item.userResult?.progress ?? 0}/{item.totalProgress ?? 0}
-              </Typography>
-              <Typography variant="caption" fontWeight={800}>
-                {progress}%
-              </Typography>
+          <Stack direction="column" spacing={0.5} sx={{ minWidth: 0 }}>
+            <Stack direction="row" spacing={0.75} alignItems="center" justifyContent="center">
+              <Chip size="small" variant="outlined" label={`${progress}%`} />
             </Stack>
-            <LinearProgress
-              variant="determinate"
-              value={progress}
-              color={tone.color}
-              sx={{ height: 7, borderRadius: 1 }}
-            />
+            <Typography variant="subtitle1" fontWeight={900} sx={{ overflowWrap: 'anywhere' }}>
+              {item.title}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ overflowWrap: 'anywhere' }}>
+              {item.description}
+            </Typography>
           </Stack>
+
+          <LinearProgress
+            variant="determinate"
+            value={progress}
+            color={tone.color}
+            sx={{ width: 1, height: 7, borderRadius: 1 }}
+          />
         </Stack>
       </CardContent>
     </Card>
@@ -380,7 +362,11 @@ const PrizeSpotlightCard = ({ prize, index }: { prize: UserCompetitionPrize; ind
   );
 };
 
-const UserProfileAchievementsTab = () => {
+interface UserProfileAchievementsTabProps {
+  showTitle?: boolean;
+}
+
+const UserProfileAchievementsTab = ({ showTitle = true }: UserProfileAchievementsTabProps) => {
   const { t } = useTranslation();
   const { username = '' } = useParams();
   const [filter, setFilter] = useState<FilterKey>('completed');
@@ -398,7 +384,7 @@ const UserProfileAchievementsTab = () => {
       return (
         <Grid container spacing={1.5}>
           {Array.from({ length: 4 }).map((_, index) => (
-            <Grid key={index} size={{ xs: 12, sm: 6, lg: 3 }}>
+            <Grid key={index} size={{ xs: 12, sm: 6, lg: 4 }}>
               <Skeleton variant="rectangular" height={190} />
             </Grid>
           ))}
@@ -416,9 +402,9 @@ const UserProfileAchievementsTab = () => {
 
     return (
       <Grid container spacing={1.5}>
-        {filtered.map((item, index) => (
-          <Grid key={item.id} size={{ xs: 12, sm: 6, lg: 3 }}>
-            <AchievementTimelineCard item={item} index={index} />
+        {filtered.map((item) => (
+          <Grid key={item.id} size={{ xs: 12, sm: 6, lg: 4 }}>
+            <AchievementBadgeCard item={item} />
           </Grid>
         ))}
       </Grid>
@@ -470,9 +456,11 @@ const UserProfileAchievementsTab = () => {
               flexWrap="wrap"
               useFlexGap
             >
-              <Typography variant="h6" fontWeight={800}>
-                {t('users.profile.achievements.title')}
-              </Typography>
+              {showTitle ? (
+                <Typography variant="h6" fontWeight={800}>
+                  {t('users.profile.achievements.title')}
+                </Typography>
+              ) : null}
               <ToggleButtonGroup
                 exclusive
                 size="small"

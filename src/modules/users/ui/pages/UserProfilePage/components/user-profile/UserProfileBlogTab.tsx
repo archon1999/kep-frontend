@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink, useParams } from 'react-router';
-import dayjs from 'dayjs';
 import {
   Alert,
   Box,
@@ -15,6 +14,7 @@ import {
 } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { getResourceById, resources } from 'app/routes/resources';
+import dayjs from 'dayjs';
 import {
   blogKeys,
   useBlogPosts,
@@ -24,12 +24,12 @@ import {
 import { BlogPost } from 'modules/blog/domain/entities/blog.entity';
 import BlogCard from 'modules/blog/ui/shared/components/BlogCard';
 import BlogStatusChip from 'modules/blog/ui/shared/components/BlogStatusChip';
-import { mutate as globalMutate } from 'swr';
-import { toast } from 'sonner';
+import { stripBlogHtml } from 'modules/blog/ui/shared/lib/article-content';
 import KepIcon from 'shared/components/base/KepIcon';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { numberParam } from 'shared/lib/queryParams';
-import { stripBlogHtml } from 'modules/blog/ui/shared/lib/article-content';
+import { toast } from 'sonner';
+import { mutate as globalMutate } from 'swr';
 
 const PAGE_SIZE = 6;
 
@@ -207,7 +207,9 @@ const UserProfileBlogTab = () => {
     [state.page, username],
   );
 
-  const { data: publicPosts, isLoading: isPublicLoading } = useBlogPosts(isOwner ? null : listParams);
+  const { data: publicPosts, isLoading: isPublicLoading } = useBlogPosts(
+    isOwner ? null : listParams,
+  );
   const { data: myPosts, isLoading: isOwnerLoading } = useMyBlogPosts(
     isOwner
       ? {
@@ -239,14 +241,13 @@ const UserProfileBlogTab = () => {
   return (
     <Stack spacing={2.5}>
       {isOwner ? (
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography variant="h4" fontWeight={800} sx={{ letterSpacing: '-0.02em' }}>
-            Bloglar{' '}
-            <Box component="sup" sx={{ fontSize: '0.5em', fontWeight: 500, color: 'text.secondary' }}>
+            {t('blog.profile.ownerTitle')}{' '}
+            <Box
+              component="sup"
+              sx={{ fontSize: '0.5em', fontWeight: 500, color: 'text.secondary' }}
+            >
               ({total})
             </Box>
           </Typography>
@@ -260,7 +261,7 @@ const UserProfileBlogTab = () => {
             {t('blog.profile.create')}
           </Button>
         </Stack>
-      ) : (
+      ) : !isLoading && posts.length ? (
         <Paper background={1} sx={{ p: { xs: 3, md: 4 }, borderRadius: 4 }}>
           <Stack
             direction={{ xs: 'column', lg: 'row' }}
@@ -283,7 +284,7 @@ const UserProfileBlogTab = () => {
             <Chip label={t('blog.resultsCount', { count: total })} variant="outlined" />
           </Stack>
         </Paper>
-      )}
+      ) : null}
 
       {isLoading ? (
         isOwner ? (

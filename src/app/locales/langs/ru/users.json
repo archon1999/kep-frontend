@@ -62,7 +62,10 @@
         "lives": "Живет",
         "email": "Электронная почта",
         "website": "Веб-сайт",
-        "joined": "Дата регистрации"
+        "joined": "Дата регистрации",
+        "sectionTitle": "Личное",
+        "telegram": "Telegram",
+        "codeforces": "Codeforces"
       },
       "social": {
         "title": "Социальные ссылки"

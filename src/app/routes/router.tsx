@@ -84,13 +84,7 @@ import { ShopPage } from 'modules/shop/ui/pages';
 import { TestDetailPage, TestPassPage, TestsListPage } from 'modules/testing/ui/pages';
 import { TournamentPage, TournamentsListPage } from 'modules/tournaments/ui/pages';
 import {
-  UserProfileAboutTab,
-  UserProfileAchievementsTab,
-  UserProfileActivityHistoryTab,
-  UserProfileBlogTab,
   UserProfilePage,
-  UserProfilePurchasesTab,
-  UserProfileRatingsTab,
   UsersListPage,
 } from 'modules/users/ui/pages';
 import AuthGuard from 'shared/components/guard/AuthGuard';
@@ -319,32 +313,6 @@ export const routes: RouteObject[] = [
               titleKey: 'pageTitles.userProfile',
               fallbackTitleKey: 'pageTitles.users',
             },
-            children: [
-              {
-                index: true,
-                element: <UserProfileAboutTab />,
-              },
-              {
-                path: 'ratings',
-                element: <UserProfileRatingsTab />,
-              },
-              {
-                path: 'activity-history',
-                element: <UserProfileActivityHistoryTab />,
-              },
-              {
-                path: 'purchases',
-                element: <UserProfilePurchasesTab />,
-              },
-              {
-                path: 'blog',
-                element: <UserProfileBlogTab />,
-              },
-              {
-                path: 'achievements',
-                element: <UserProfileAchievementsTab />,
-              },
-            ],
           },
           {
             path: resources.Problems,

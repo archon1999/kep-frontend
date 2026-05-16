@@ -119,6 +119,23 @@ export const legacyRedirectRoutes: RouteObject[] = [
     element: <LegacyRedirect to={resources.UserProfileFollowers} />,
   },
   {
+    path: '/users/:username/ratings',
+    element: <LegacyRedirect to={resources.UserProfileRatings} />,
+  },
+  {
+    path: '/users/:username/activity-history',
+    element: <LegacyRedirect to={resources.UserProfileActivityHistory} />,
+  },
+  {
+    path: '/users/:username/purchases',
+    element: <LegacyRedirect to={resources.UserProfilePurchases} />,
+  },
+  { path: '/users/:username/blog', element: <LegacyRedirect to={resources.UserProfileBlog} /> },
+  {
+    path: '/users/:username/achievements',
+    element: <LegacyRedirect to={resources.UserProfileAchievements} />,
+  },
+  {
     path: '/users/user/:username/ratings',
     element: <LegacyRedirect to={resources.UserProfileRatings} />,
   },

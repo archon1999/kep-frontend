@@ -56,13 +56,16 @@
         "achievements": "Achievements"
       },
       "personal": {
+        "sectionTitle": "Personal",
         "title": "Personal info",
         "fullName": "Full name",
         "wasBorn": "Was born",
         "lives": "Lives",
         "email": "Email",
         "website": "Website",
-        "joined": "Joined"
+        "joined": "Joined",
+        "telegram": "Telegram",
+        "codeforces": "Codeforces"
       },
       "social": {
         "title": "Social links"

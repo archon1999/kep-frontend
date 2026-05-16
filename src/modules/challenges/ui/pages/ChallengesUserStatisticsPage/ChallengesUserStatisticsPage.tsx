@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -18,6 +18,8 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTheme } from '@mui/material/styles';
+import { useAuth } from 'app/providers/AuthProvider.tsx';
+import { getResourceById, resources } from 'app/routes/resources';
 import dayjs from 'dayjs';
 import { BarChart, HeatmapChart, LineChart, PieChart } from 'echarts/charts';
 import {
@@ -29,8 +31,6 @@ import {
 import type { EChartsCoreOption } from 'echarts/core';
 import * as echarts from 'echarts/core';
 import { CanvasRenderer } from 'echarts/renderers';
-import { useAuth } from 'app/providers/AuthProvider.tsx';
-import { getResourceById, resources } from 'app/routes/resources';
 import {
   useChallengeUserStatistics,
   useUserChallenges,
@@ -42,8 +42,8 @@ import type {
   ChallengeUserStatistics,
 } from 'modules/challenges/domain';
 import { ChallengeQuestionTimeType } from 'modules/challenges/domain';
-import ChallengeRatingChangesChartCard from 'modules/challenges/ui/shared/components/ChallengeRatingChangesChartCard';
 import ChallengeCard from 'modules/challenges/ui/shared/components/ChallengeCard.tsx';
+import ChallengeRatingChangesChart from 'modules/challenges/ui/shared/components/ChallengeRatingChangesChart';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { getColor } from 'shared/lib/echart-utils';
@@ -83,39 +83,57 @@ const getResultColor = (result: string) => {
 };
 
 const getDifficultyLabel = (difficulty: number, t: ReturnType<typeof useTranslation>['t']) => {
-  if (difficulty === 1) return t('challenges.statisticsPage.difficulty.easy', { defaultValue: 'Easy' });
-  if (difficulty === 2) return t('challenges.statisticsPage.difficulty.medium', { defaultValue: 'Medium' });
-  if (difficulty === 3) return t('challenges.statisticsPage.difficulty.hard', { defaultValue: 'Hard' });
+  if (difficulty === 1)
+    return t('challenges.statisticsPage.difficulty.easy', { defaultValue: 'Easy' });
+  if (difficulty === 2)
+    return t('challenges.statisticsPage.difficulty.medium', { defaultValue: 'Medium' });
+  if (difficulty === 3)
+    return t('challenges.statisticsPage.difficulty.hard', { defaultValue: 'Hard' });
   return t('challenges.statisticsPage.unknown', { defaultValue: 'Unknown' });
 };
 
 const getQuestionTypeLabel = (questionType: number, t: ReturnType<typeof useTranslation>['t']) => {
   switch (questionType) {
     case 1:
-      return t('challenges.statisticsPage.questionTypes.singleChoice', { defaultValue: 'Single choice' });
+      return t('challenges.statisticsPage.questionTypes.singleChoice', {
+        defaultValue: 'Single choice',
+      });
     case 2:
-      return t('challenges.statisticsPage.questionTypes.multipleChoice', { defaultValue: 'Multiple choice' });
+      return t('challenges.statisticsPage.questionTypes.multipleChoice', {
+        defaultValue: 'Multiple choice',
+      });
     case 3:
       return t('challenges.statisticsPage.questionTypes.textInput', { defaultValue: 'Text input' });
     case 4:
-      return t('challenges.statisticsPage.questionTypes.conformity', { defaultValue: 'Conformity' });
+      return t('challenges.statisticsPage.questionTypes.conformity', {
+        defaultValue: 'Conformity',
+      });
     case 5:
       return t('challenges.statisticsPage.questionTypes.ordering', { defaultValue: 'Ordering' });
     case 6:
-      return t('challenges.statisticsPage.questionTypes.classification', { defaultValue: 'Classification' });
+      return t('challenges.statisticsPage.questionTypes.classification', {
+        defaultValue: 'Classification',
+      });
     case 7:
-      return t('challenges.statisticsPage.questionTypes.codeInput', { defaultValue: 'Custom checker' });
+      return t('challenges.statisticsPage.questionTypes.codeInput', {
+        defaultValue: 'Custom checker',
+      });
     case 8:
-      return t('challenges.statisticsPage.questionTypes.problem', { defaultValue: 'Coding problem' });
+      return t('challenges.statisticsPage.questionTypes.problem', {
+        defaultValue: 'Coding problem',
+      });
     default:
       return t('challenges.statisticsPage.unknown', { defaultValue: 'Unknown' });
   }
 };
 
 const getBucketLabel = (bucket: string | undefined, t: ReturnType<typeof useTranslation>['t']) => {
-  if (bucket === 'higher') return t('challenges.statisticsPage.buckets.higher', { defaultValue: 'Higher rated' });
-  if (bucket === 'same') return t('challenges.statisticsPage.buckets.same', { defaultValue: 'Same rated' });
-  if (bucket === 'lower') return t('challenges.statisticsPage.buckets.lower', { defaultValue: 'Lower rated' });
+  if (bucket === 'higher')
+    return t('challenges.statisticsPage.buckets.higher', { defaultValue: 'Higher rated' });
+  if (bucket === 'same')
+    return t('challenges.statisticsPage.buckets.same', { defaultValue: 'Same rated' });
+  if (bucket === 'lower')
+    return t('challenges.statisticsPage.buckets.lower', { defaultValue: 'Lower rated' });
   return t('challenges.statisticsPage.unknown', { defaultValue: 'Unknown' });
 };
 
@@ -123,7 +141,8 @@ type ChallengeStatisticsRecordEntry =
   | NonNullable<NonNullable<ChallengeUserStatistics['records']>['biggestGain']>
   | NonNullable<NonNullable<ChallengeUserStatistics['records']>['bestVictory']>;
 
-const formatDateTimeSafe = (value?: string | null) => (value ? dayjs(value).format('YYYY-MM-DD HH:mm') : '-');
+const formatDateTimeSafe = (value?: string | null) =>
+  value ? dayjs(value).format('YYYY-MM-DD HH:mm') : '-';
 const formatScoreSafe = (entry?: { userScore?: number; opponentScore?: number } | null) =>
   entry ? `${entry.userScore ?? 0}:${entry.opponentScore ?? 0}` : '-';
 
@@ -176,13 +195,23 @@ const renderOpponentListSafe = (items: ChallengeStatisticsOpponentRow[], emptyTe
   }
 
   return items.map((item) => (
-    <Stack key={item.username} spacing={0.5} sx={{ p: 1.5, borderRadius: 2, bgcolor: 'action.hover' }}>
+    <Stack
+      key={item.username}
+      spacing={0.5}
+      sx={{ p: 1.5, borderRadius: 2, bgcolor: 'action.hover' }}
+    >
       <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
         <Typography variant="subtitle2">{item.username}</Typography>
-        <Chip label={`${item.wins}-${item.draws}-${item.losses}`} size="small" variant="soft" color="primary" />
+        <Chip
+          label={`${item.wins}-${item.draws}-${item.losses}`}
+          size="small"
+          variant="soft"
+          color="primary"
+        />
       </Stack>
       <Typography variant="caption" color="text.secondary">
-        {item.count} matches | avg {Math.round(item.averageOpponentRating)} | {formatDateTimeSafe(item.lastPlayedAt)}
+        {item.count} matches | avg {Math.round(item.averageOpponentRating)} |{' '}
+        {formatDateTimeSafe(item.lastPlayedAt)}
       </Typography>
     </Stack>
   ));
@@ -240,7 +269,9 @@ const buildWinRateOption = (
       data: items.map((item) => item.label),
       axisLabel: { color: axisLabelColor },
     },
-    series: [{ type: 'bar', itemStyle: { borderRadius: 6 }, data: items.map((item) => item.winRate) }],
+    series: [
+      { type: 'bar', itemStyle: { borderRadius: 6 }, data: items.map((item) => item.winRate) },
+    ],
   } satisfies EChartsCoreOption;
 };
 
@@ -311,14 +342,31 @@ const ChallengesUserStatisticsPage = () => {
           label: { show: false },
           labelLine: { show: false },
           data: [
-            { name: t('challenges.statisticsPage.results.win', { defaultValue: 'Wins' }), value: results.wins },
-            { name: t('challenges.statisticsPage.results.draw', { defaultValue: 'Draws' }), value: results.draws },
-            { name: t('challenges.statisticsPage.results.loss', { defaultValue: 'Losses' }), value: results.losses },
+            {
+              name: t('challenges.statisticsPage.results.win', { defaultValue: 'Wins' }),
+              value: results.wins,
+            },
+            {
+              name: t('challenges.statisticsPage.results.draw', { defaultValue: 'Draws' }),
+              value: results.draws,
+            },
+            {
+              name: t('challenges.statisticsPage.results.loss', { defaultValue: 'Losses' }),
+              value: results.losses,
+            },
           ],
         },
       ],
     } satisfies EChartsCoreOption;
-  }, [axisLabelColor, errorColor, infoColor, statistics?.results, successColor, t, theme.vars.palette.background.paper]);
+  }, [
+    axisLabelColor,
+    errorColor,
+    infoColor,
+    statistics?.results,
+    successColor,
+    t,
+    theme.vars.palette.background.paper,
+  ]);
 
   const ratingBucketOption = useMemo(() => {
     const opponents = statistics?.opponents;
@@ -348,7 +396,11 @@ const ChallengesUserStatisticsPage = () => {
         {
           type: 'bar',
           itemStyle: { borderRadius: 6 },
-          data: [opponents.vsHigherRated.count, opponents.vsSameRated.count, opponents.vsLowerRated.count],
+          data: [
+            opponents.vsHigherRated.count,
+            opponents.vsSameRated.count,
+            opponents.vsLowerRated.count,
+          ],
         },
       ],
     } satisfies EChartsCoreOption;
@@ -374,7 +426,14 @@ const ChallengesUserStatisticsPage = () => {
         axisLabel: { color: axisLabelColor, formatter: integerAxisLabelFormatter },
         splitLine: { lineStyle: { color: dividerColor } },
       },
-      series: [{ type: 'line', smooth: true, areaStyle: { opacity: 0.16 }, data: activity.map((item) => item.count) }],
+      series: [
+        {
+          type: 'line',
+          smooth: true,
+          areaStyle: { opacity: 0.16 },
+          data: activity.map((item) => item.count),
+        },
+      ],
     } satisfies EChartsCoreOption;
   }, [axisLabelColor, dividerColor, neutralColor, primaryColor, statistics?.activity?.last30Days]);
 
@@ -404,7 +463,9 @@ const ChallengesUserStatisticsPage = () => {
           t('challenges.statisticsPage.weekday.sun', { defaultValue: 'Sun' }),
         ],
       },
-      series: [{ type: 'bar', itemStyle: { borderRadius: 6 }, data: buckets.map((item) => item.count) }],
+      series: [
+        { type: 'bar', itemStyle: { borderRadius: 6 }, data: buckets.map((item) => item.count) },
+      ],
     } satisfies EChartsCoreOption;
   }, [axisLabelColor, dividerColor, infoColor, statistics?.activity?.byWeekday, t]);
 
@@ -428,12 +489,20 @@ const ChallengesUserStatisticsPage = () => {
         axisLabel: { color: axisLabelColor, formatter: integerAxisLabelFormatter },
         splitLine: { lineStyle: { color: dividerColor } },
       },
-      series: [{ type: 'bar', itemStyle: { borderRadius: [6, 6, 0, 0] }, data: buckets.map((item) => item.count) }],
+      series: [
+        {
+          type: 'bar',
+          itemStyle: { borderRadius: [6, 6, 0, 0] },
+          data: buckets.map((item) => item.count),
+        },
+      ],
     } satisfies EChartsCoreOption;
   }, [axisLabelColor, dividerColor, neutralColor, statistics?.activity?.byHour, warningColor]);
 
   const heatmapOption = useMemo(() => {
-    const entries = (statistics?.activity?.heatmap ?? []).filter((item) => activeYear && dayjs(item.date).year() === activeYear);
+    const entries = (statistics?.activity?.heatmap ?? []).filter(
+      (item) => activeYear && dayjs(item.date).year() === activeYear,
+    );
     if (!entries.length || !activeYear) return null;
     const weekdayLabels = [
       t('challenges.statisticsPage.weekday.mon', { defaultValue: 'Mon' }),
@@ -453,7 +522,8 @@ const ChallengesUserStatisticsPage = () => {
     return {
       tooltip: {
         position: 'top',
-        formatter: (params: any) => `${dayjs(params?.value?.[0]).format('YYYY-MM-DD')}: ${params?.value?.[2] ?? 0}`,
+        formatter: (params: any) =>
+          `${dayjs(params?.value?.[0]).format('YYYY-MM-DD')}: ${params?.value?.[2] ?? 0}`,
       },
       grid: { left: 16, right: 16, top: 12, bottom: 42 },
       xAxis: {
@@ -480,12 +550,25 @@ const ChallengesUserStatisticsPage = () => {
       },
       series: [{ type: 'heatmap', data }],
     } satisfies EChartsCoreOption;
-  }, [activeYear, axisLabelColor, neutralColor, statistics?.activity?.heatmap, t, theme.vars.palette.background.paper, theme.vars.palette.primary.light, theme.vars.palette.primary.main]);
+  }, [
+    activeYear,
+    axisLabelColor,
+    neutralColor,
+    statistics?.activity?.heatmap,
+    t,
+    theme.vars.palette.background.paper,
+    theme.vars.palette.primary.light,
+    theme.vars.palette.primary.main,
+  ]);
 
   const timeControlOption = useMemo(
     () =>
       buildWinRateOption(
-        (statistics?.formats?.byTimeControl ?? []).map((item) => ({ label: item.label, winRate: item.winRate, count: item.count })),
+        (statistics?.formats?.byTimeControl ?? []).map((item) => ({
+          label: item.label,
+          winRate: item.winRate,
+          count: item.count,
+        })),
         primaryColor,
         axisLabelColor,
         dividerColor,
@@ -498,7 +581,10 @@ const ChallengesUserStatisticsPage = () => {
     () =>
       buildWinRateOption(
         (statistics?.formats?.byQuestionTimeType ?? []).map((item) => ({
-          label: item.questionTimeType === ChallengeQuestionTimeType.TimeToOne ? t('challenges.timer.perQuestion') : t('challenges.timer.wholeChallenge'),
+          label:
+            item.questionTimeType === ChallengeQuestionTimeType.TimeToOne
+              ? t('challenges.timer.perQuestion')
+              : t('challenges.timer.wholeChallenge'),
           winRate: item.winRate,
           count: item.count,
         })),
@@ -545,19 +631,59 @@ const ChallengesUserStatisticsPage = () => {
           },
           label: { show: false },
           labelLine: { show: false },
-          data: rows.map((item) => ({ name: getQuestionTypeLabel(item.questionType, t), value: item.seen })),
+          data: rows.map((item) => ({
+            name: getQuestionTypeLabel(item.questionType, t),
+            value: item.seen,
+          })),
         },
       ],
     } satisfies EChartsCoreOption;
-  }, [axisLabelColor, errorColor, infoColor, neutralColor, primaryColor, statistics?.distribution?.byQuestionType, successColor, t, theme.vars.palette.background.paper, warningColor]);
+  }, [
+    axisLabelColor,
+    errorColor,
+    infoColor,
+    neutralColor,
+    primaryColor,
+    statistics?.distribution?.byQuestionType,
+    successColor,
+    t,
+    theme.vars.palette.background.paper,
+    warningColor,
+  ]);
 
   const highlights = [
-    { title: t('challenges.statisticsPage.records.biggestGain', { defaultValue: 'Biggest gain' }), entry: statistics?.records?.biggestGain, tone: 'success' as const },
-    { title: t('challenges.statisticsPage.records.biggestDrop', { defaultValue: 'Biggest drop' }), entry: statistics?.records?.biggestDrop, tone: 'error' as const },
-    { title: t('challenges.statisticsPage.records.bestVictory', { defaultValue: 'Best victory' }), entry: statistics?.records?.bestVictory, tone: 'success' as const },
-    { title: t('challenges.statisticsPage.records.worstDefeat', { defaultValue: 'Worst defeat' }), entry: statistics?.records?.worstDefeat, tone: 'error' as const },
-    { title: t('challenges.statisticsPage.records.mostDominantWin', { defaultValue: 'Most dominant win' }), entry: statistics?.records?.mostDominantWin, tone: 'success' as const },
-    { title: t('challenges.statisticsPage.records.closestLoss', { defaultValue: 'Closest loss' }), entry: statistics?.records?.mostPainfulLoss, tone: 'error' as const },
+    {
+      title: t('challenges.statisticsPage.records.biggestGain', { defaultValue: 'Biggest gain' }),
+      entry: statistics?.records?.biggestGain,
+      tone: 'success' as const,
+    },
+    {
+      title: t('challenges.statisticsPage.records.biggestDrop', { defaultValue: 'Biggest drop' }),
+      entry: statistics?.records?.biggestDrop,
+      tone: 'error' as const,
+    },
+    {
+      title: t('challenges.statisticsPage.records.bestVictory', { defaultValue: 'Best victory' }),
+      entry: statistics?.records?.bestVictory,
+      tone: 'success' as const,
+    },
+    {
+      title: t('challenges.statisticsPage.records.worstDefeat', { defaultValue: 'Worst defeat' }),
+      entry: statistics?.records?.worstDefeat,
+      tone: 'error' as const,
+    },
+    {
+      title: t('challenges.statisticsPage.records.mostDominantWin', {
+        defaultValue: 'Most dominant win',
+      }),
+      entry: statistics?.records?.mostDominantWin,
+      tone: 'success' as const,
+    },
+    {
+      title: t('challenges.statisticsPage.records.closestLoss', { defaultValue: 'Closest loss' }),
+      entry: statistics?.records?.mostPainfulLoss,
+      tone: 'error' as const,
+    },
   ];
 
   const chapters = (statistics?.distribution?.byChapter ?? []).slice(0, 10);
@@ -586,35 +712,150 @@ const ChallengesUserStatisticsPage = () => {
             <>
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12, md: 6, xl: 3 }}>
-                  <ChallengesUserStatisticsPageOverviewCard label={t('challenges.statisticsPage.cards.currentRating', { defaultValue: 'Current rating' })} value={String(Math.round(statistics.general?.currentRating ?? 0))} subtitle={statistics.general?.rankTitle} tone="primary" />
+                  <ChallengesUserStatisticsPageOverviewCard
+                    label={t('challenges.statisticsPage.cards.currentRating', {
+                      defaultValue: 'Current rating',
+                    })}
+                    value={String(Math.round(statistics.general?.currentRating ?? 0))}
+                    subtitle={statistics.general?.rankTitle}
+                    tone="primary"
+                  />
                 </Grid>
                 <Grid size={{ xs: 12, md: 6, xl: 3 }}>
-                  <ChallengesUserStatisticsPageOverviewCard label={t('challenges.statisticsPage.cards.bestRating', { defaultValue: 'Best rating' })} value={String(Math.round(statistics.general?.bestRating ?? 0))} subtitle={formatDateTimeSafe(statistics.general?.bestRatingAt)} tone="success" />
+                  <ChallengesUserStatisticsPageOverviewCard
+                    label={t('challenges.statisticsPage.cards.bestRating', {
+                      defaultValue: 'Best rating',
+                    })}
+                    value={String(Math.round(statistics.general?.bestRating ?? 0))}
+                    subtitle={formatDateTimeSafe(statistics.general?.bestRatingAt)}
+                    tone="success"
+                  />
                 </Grid>
                 <Grid size={{ xs: 12, md: 6, xl: 3 }}>
-                  <ChallengesUserStatisticsPageOverviewCard label={t('challenges.statisticsPage.cards.totalChallenges', { defaultValue: 'Total challenges' })} value={String(statistics.general?.totalChallenges ?? 0)} subtitle={t('challenges.statisticsPage.cards.ratedSplit', { defaultValue: '{{rated}} rated / {{unrated}} unrated', rated: statistics.general?.ratedChallenges ?? 0, unrated: statistics.general?.unratedChallenges ?? 0 })} />
+                  <ChallengesUserStatisticsPageOverviewCard
+                    label={t('challenges.statisticsPage.cards.totalChallenges', {
+                      defaultValue: 'Total challenges',
+                    })}
+                    value={String(statistics.general?.totalChallenges ?? 0)}
+                    subtitle={t('challenges.statisticsPage.cards.ratedSplit', {
+                      defaultValue: '{{rated}} rated / {{unrated}} unrated',
+                      rated: statistics.general?.ratedChallenges ?? 0,
+                      unrated: statistics.general?.unratedChallenges ?? 0,
+                    })}
+                  />
                 </Grid>
                 <Grid size={{ xs: 12, md: 6, xl: 3 }}>
-                  <ChallengesUserStatisticsPageOverviewCard label={t('challenges.statisticsPage.cards.solveRate', { defaultValue: 'Solve rate' })} value={toPercent(statistics.results?.solveRate)} subtitle={t('challenges.statisticsPage.cards.winRateSubtitle', { defaultValue: 'Win rate {{value}}', value: toPercent(statistics.results?.winRate) })} />
+                  <ChallengesUserStatisticsPageOverviewCard
+                    label={t('challenges.statisticsPage.cards.solveRate', {
+                      defaultValue: 'Solve rate',
+                    })}
+                    value={toPercent(statistics.results?.solveRate)}
+                    subtitle={t('challenges.statisticsPage.cards.winRateSubtitle', {
+                      defaultValue: 'Win rate {{value}}',
+                      value: toPercent(statistics.results?.winRate),
+                    })}
+                  />
                 </Grid>
               </Grid>
 
               <Grid container spacing={3}>
                 <Grid size={{ xs: 12, lg: 8 }}>
-                  <ChallengeRatingChangesChartCard title={t('challenges.statisticsPage.ratingHistory', { defaultValue: 'Rating history' })} changes={statistics.ratingHistory} emptyText={t('challenges.noChanges')} extra={statistics.general?.ratingPlace ? <Chip label={t('challenges.statisticsPage.rankPlace', { defaultValue: 'Rank #{{value}}', value: statistics.general.ratingPlace })} size="small" color="primary" variant="soft" /> : null} />
+                  <Card
+                    variant="outlined"
+                    sx={{ height: '100%', borderRadius: 3, overflow: 'visible' }}
+                  >
+                    <CardContent
+                      sx={{
+                        height: '100%',
+                        overflow: 'visible',
+                        p: { xs: 1.25, sm: 1.5 },
+                        '&:last-child': { pb: { xs: 1.25, sm: 1.5 } },
+                      }}
+                    >
+                      <Stack
+                        direction="column"
+                        spacing={1.25}
+                        sx={{ height: '100%', overflow: 'visible' }}
+                      >
+                        <Stack
+                          direction="row"
+                          justifyContent="space-between"
+                          alignItems="center"
+                          spacing={1}
+                        >
+                          <Typography variant="subtitle1" fontWeight={700}>
+                            {t('challenges.statisticsPage.ratingHistory', {
+                              defaultValue: 'Rating history',
+                            })}
+                          </Typography>
+                          {statistics.general?.ratingPlace ? (
+                            <Chip
+                              label={t('challenges.statisticsPage.rankPlace', {
+                                defaultValue: 'Rank #{{value}}',
+                                value: statistics.general.ratingPlace,
+                              })}
+                              size="small"
+                              color="primary"
+                              variant="soft"
+                            />
+                          ) : null}
+                        </Stack>
+                        <ChallengeRatingChangesChart username={username} />
+                      </Stack>
+                    </CardContent>
+                  </Card>
                 </Grid>
                 <Grid size={{ xs: 12, lg: 4 }}>
                   <Card variant="outlined" sx={{ height: '100%' }}>
-                    <CardHeader title={t('challenges.statisticsPage.ratingSummary', { defaultValue: 'Rating summary' })} />
+                    <CardHeader
+                      title={t('challenges.statisticsPage.ratingSummary', {
+                        defaultValue: 'Rating summary',
+                      })}
+                    />
                     <CardContent>
                       <Stack spacing={1.25}>
-                        <Stack direction="row" justifyContent="space-between"><Typography variant="body2" color="text.secondary">{t('challenges.statisticsPage.playersCount', { defaultValue: 'Players in rating' })}</Typography><Typography variant="subtitle2">{statistics.general?.playersCount ?? 0}</Typography></Stack>
-                        <Stack direction="row" justifyContent="space-between"><Typography variant="body2" color="text.secondary">{t('challenges.statisticsPage.lowestRating', { defaultValue: 'Lowest rating' })}</Typography><Typography variant="subtitle2" color="error.main">{Math.round(statistics.general?.worstRating ?? 0)}</Typography></Stack>
-                        <Typography variant="caption" color="text.secondary">{formatDateTimeSafe(statistics.general?.worstRatingAt)}</Typography>
+                        <Stack direction="row" justifyContent="space-between">
+                          <Typography variant="body2" color="text.secondary">
+                            {t('challenges.statisticsPage.playersCount', {
+                              defaultValue: 'Players in rating',
+                            })}
+                          </Typography>
+                          <Typography variant="subtitle2">
+                            {statistics.general?.playersCount ?? 0}
+                          </Typography>
+                        </Stack>
+                        <Stack direction="row" justifyContent="space-between">
+                          <Typography variant="body2" color="text.secondary">
+                            {t('challenges.statisticsPage.lowestRating', {
+                              defaultValue: 'Lowest rating',
+                            })}
+                          </Typography>
+                          <Typography variant="subtitle2" color="error.main">
+                            {Math.round(statistics.general?.worstRating ?? 0)}
+                          </Typography>
+                        </Stack>
+                        <Typography variant="caption" color="text.secondary">
+                          {formatDateTimeSafe(statistics.general?.worstRatingAt)}
+                        </Typography>
                         <Divider />
                         <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                          <Chip size="small" variant="outlined" label={t('challenges.statisticsPage.botSplit', { defaultValue: '{{human}} human / {{bot}} bot', human: statistics.general?.humanChallenges ?? 0, bot: statistics.general?.botChallenges ?? 0 })} />
-                          <Chip size="small" variant="outlined" label={t('challenges.statisticsPage.arenaChallenges', { defaultValue: '{{count}} arena challenges', count: statistics.general?.arenaChallenges ?? 0 })} />
+                          <Chip
+                            size="small"
+                            variant="outlined"
+                            label={t('challenges.statisticsPage.botSplit', {
+                              defaultValue: '{{human}} human / {{bot}} bot',
+                              human: statistics.general?.humanChallenges ?? 0,
+                              bot: statistics.general?.botChallenges ?? 0,
+                            })}
+                          />
+                          <Chip
+                            size="small"
+                            variant="outlined"
+                            label={t('challenges.statisticsPage.arenaChallenges', {
+                              defaultValue: '{{count}} arena challenges',
+                              count: statistics.general?.arenaChallenges ?? 0,
+                            })}
+                          />
                         </Stack>
                       </Stack>
                     </CardContent>
@@ -624,61 +865,243 @@ const ChallengesUserStatisticsPage = () => {
 
               <Grid container spacing={3}>
                 <Grid size={{ xs: 12, lg: 4 }}>
-                  <ChallengesUserStatisticsPageChartCard title={t('challenges.statisticsPage.performance.title', { defaultValue: 'Result split' })} option={resultsDonutOption} emptyText={t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' })} height={280} />
+                  <ChallengesUserStatisticsPageChartCard
+                    title={t('challenges.statisticsPage.performance.title', {
+                      defaultValue: 'Result split',
+                    })}
+                    option={resultsDonutOption}
+                    emptyText={t('challenges.statisticsPage.noData', {
+                      defaultValue: 'No data yet.',
+                    })}
+                    height={280}
+                  />
                 </Grid>
                 <Grid size={{ xs: 12, lg: 4 }}>
                   <Card variant="outlined" sx={{ height: '100%' }}>
-                    <CardHeader title={t('challenges.statisticsPage.performance.solveSummary', { defaultValue: 'Question performance' })} />
+                    <CardHeader
+                      title={t('challenges.statisticsPage.performance.solveSummary', {
+                        defaultValue: 'Question performance',
+                      })}
+                    />
                     <CardContent>
                       <Stack spacing={1.25}>
-                        <Stack direction="row" justifyContent="space-between"><Typography variant="body2" color="text.secondary">{t('challenges.statisticsPage.questionsSolved', { defaultValue: 'Solved questions' })}</Typography><Typography variant="subtitle2">{statistics.results?.questionsSolved ?? 0} / {statistics.results?.questionsSeen ?? 0}</Typography></Stack>
-                        <LinearProgress variant="determinate" value={statistics.results?.solveRate ?? 0} color="success" sx={{ height: 8, borderRadius: 1 }} />
-                        <Stack direction="row" justifyContent="space-between"><Typography variant="body2" color="text.secondary">{t('challenges.statisticsPage.averageSolved', { defaultValue: 'Average solved per challenge' })}</Typography><Typography variant="subtitle2">{statistics.results?.averageSolvedPerChallenge ?? 0}</Typography></Stack>
-                        <Stack direction="row" justifyContent="space-between"><Typography variant="body2" color="text.secondary">{t('challenges.statisticsPage.perfectChallenges', { defaultValue: 'Perfect challenges' })}</Typography><Typography variant="subtitle2">{statistics.results?.perfectChallenges ?? 0}</Typography></Stack>
-                        <Stack direction="row" justifyContent="space-between"><Typography variant="body2" color="text.secondary">{t('challenges.statisticsPage.cleanSweepWins', { defaultValue: 'Clean sweep wins' })}</Typography><Typography variant="subtitle2">{statistics.results?.cleanSweepWins ?? 0}</Typography></Stack>
+                        <Stack direction="row" justifyContent="space-between">
+                          <Typography variant="body2" color="text.secondary">
+                            {t('challenges.statisticsPage.questionsSolved', {
+                              defaultValue: 'Solved questions',
+                            })}
+                          </Typography>
+                          <Typography variant="subtitle2">
+                            {statistics.results?.questionsSolved ?? 0} /{' '}
+                            {statistics.results?.questionsSeen ?? 0}
+                          </Typography>
+                        </Stack>
+                        <LinearProgress
+                          variant="determinate"
+                          value={statistics.results?.solveRate ?? 0}
+                          color="success"
+                          sx={{ height: 8, borderRadius: 1 }}
+                        />
+                        <Stack direction="row" justifyContent="space-between">
+                          <Typography variant="body2" color="text.secondary">
+                            {t('challenges.statisticsPage.averageSolved', {
+                              defaultValue: 'Average solved per challenge',
+                            })}
+                          </Typography>
+                          <Typography variant="subtitle2">
+                            {statistics.results?.averageSolvedPerChallenge ?? 0}
+                          </Typography>
+                        </Stack>
+                        <Stack direction="row" justifyContent="space-between">
+                          <Typography variant="body2" color="text.secondary">
+                            {t('challenges.statisticsPage.perfectChallenges', {
+                              defaultValue: 'Perfect challenges',
+                            })}
+                          </Typography>
+                          <Typography variant="subtitle2">
+                            {statistics.results?.perfectChallenges ?? 0}
+                          </Typography>
+                        </Stack>
+                        <Stack direction="row" justifyContent="space-between">
+                          <Typography variant="body2" color="text.secondary">
+                            {t('challenges.statisticsPage.cleanSweepWins', {
+                              defaultValue: 'Clean sweep wins',
+                            })}
+                          </Typography>
+                          <Typography variant="subtitle2">
+                            {statistics.results?.cleanSweepWins ?? 0}
+                          </Typography>
+                        </Stack>
                       </Stack>
                     </CardContent>
                   </Card>
                 </Grid>
                 <Grid size={{ xs: 12, lg: 4 }}>
-                  <ChallengesUserStatisticsPageChartCard title={t('challenges.statisticsPage.performance.opponentBuckets', { defaultValue: 'Opponent buckets' })} option={ratingBucketOption} emptyText={t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' })} height={280} extra={<Chip size="small" variant="soft" color="info" label={t('challenges.statisticsPage.avgOpponent', { defaultValue: 'Avg {{value}}', value: Math.round(statistics.opponents?.averageOpponentRating ?? 0) })} />} />
+                  <ChallengesUserStatisticsPageChartCard
+                    title={t('challenges.statisticsPage.performance.opponentBuckets', {
+                      defaultValue: 'Opponent buckets',
+                    })}
+                    option={ratingBucketOption}
+                    emptyText={t('challenges.statisticsPage.noData', {
+                      defaultValue: 'No data yet.',
+                    })}
+                    height={280}
+                    extra={
+                      <Chip
+                        size="small"
+                        variant="soft"
+                        color="info"
+                        label={t('challenges.statisticsPage.avgOpponent', {
+                          defaultValue: 'Avg {{value}}',
+                          value: Math.round(statistics.opponents?.averageOpponentRating ?? 0),
+                        })}
+                      />
+                    }
+                  />
                 </Grid>
               </Grid>
 
               <Grid container spacing={3}>
                 <Grid size={{ xs: 12, lg: 8 }}>
-                  <ChallengesUserStatisticsPageChartCard title={t('challenges.statisticsPage.activity.title', { defaultValue: 'Recent activity' })} option={activityOption} emptyText={t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' })} />
+                  <ChallengesUserStatisticsPageChartCard
+                    title={t('challenges.statisticsPage.activity.title', {
+                      defaultValue: 'Recent activity',
+                    })}
+                    option={activityOption}
+                    emptyText={t('challenges.statisticsPage.noData', {
+                      defaultValue: 'No data yet.',
+                    })}
+                  />
                 </Grid>
                 <Grid size={{ xs: 12, lg: 4 }}>
-                  <ChallengesUserStatisticsPageChartCard title={t('challenges.statisticsPage.activity.heatmap', { defaultValue: 'Activity heatmap' })} option={heatmapOption} emptyText={t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' })} height={280} extra={availableYears.length ? <ToggleButtonGroup size="small" exclusive value={activeYear} onChange={(_, value) => value && setField('selectedYear', value)}>{availableYears.map((year) => <ToggleButton key={year} value={year}>{year}</ToggleButton>)}</ToggleButtonGroup> : null} />
+                  <ChallengesUserStatisticsPageChartCard
+                    title={t('challenges.statisticsPage.activity.heatmap', {
+                      defaultValue: 'Activity heatmap',
+                    })}
+                    option={heatmapOption}
+                    emptyText={t('challenges.statisticsPage.noData', {
+                      defaultValue: 'No data yet.',
+                    })}
+                    height={280}
+                    extra={
+                      availableYears.length ? (
+                        <ToggleButtonGroup
+                          size="small"
+                          exclusive
+                          value={activeYear}
+                          onChange={(_, value) => value && setField('selectedYear', value)}
+                        >
+                          {availableYears.map((year) => (
+                            <ToggleButton key={year} value={year}>
+                              {year}
+                            </ToggleButton>
+                          ))}
+                        </ToggleButtonGroup>
+                      ) : null
+                    }
+                  />
                 </Grid>
                 <Grid size={{ xs: 12, lg: 6 }}>
-                  <ChallengesUserStatisticsPageChartCard title={t('challenges.statisticsPage.activity.weekdays', { defaultValue: 'Weekday activity' })} option={weekdayOption} emptyText={t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' })} height={280} />
+                  <ChallengesUserStatisticsPageChartCard
+                    title={t('challenges.statisticsPage.activity.weekdays', {
+                      defaultValue: 'Weekday activity',
+                    })}
+                    option={weekdayOption}
+                    emptyText={t('challenges.statisticsPage.noData', {
+                      defaultValue: 'No data yet.',
+                    })}
+                    height={280}
+                  />
                 </Grid>
                 <Grid size={{ xs: 12, lg: 6 }}>
-                  <ChallengesUserStatisticsPageChartCard title={t('challenges.statisticsPage.activity.hours', { defaultValue: 'Hour activity' })} option={hourOption} emptyText={t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' })} height={280} />
+                  <ChallengesUserStatisticsPageChartCard
+                    title={t('challenges.statisticsPage.activity.hours', {
+                      defaultValue: 'Hour activity',
+                    })}
+                    option={hourOption}
+                    emptyText={t('challenges.statisticsPage.noData', {
+                      defaultValue: 'No data yet.',
+                    })}
+                    height={280}
+                  />
                 </Grid>
               </Grid>
 
               <Grid container spacing={3}>
-                <Grid size={{ xs: 12, lg: 4 }}><ChallengesUserStatisticsPageChartCard title={t('challenges.statisticsPage.formats.timeControl', { defaultValue: 'By time control' })} option={timeControlOption} emptyText={t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' })} height={260} /></Grid>
-                <Grid size={{ xs: 12, lg: 4 }}><ChallengesUserStatisticsPageChartCard title={t('challenges.statisticsPage.formats.timerMode', { defaultValue: 'By timer mode' })} option={questionTimeTypeOption} emptyText={t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' })} height={260} /></Grid>
-                <Grid size={{ xs: 12, lg: 4 }}><ChallengesUserStatisticsPageChartCard title={t('challenges.statisticsPage.formats.questionCount', { defaultValue: 'By question count' })} option={questionsCountOption} emptyText={t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' })} height={260} /></Grid>
+                <Grid size={{ xs: 12, lg: 4 }}>
+                  <ChallengesUserStatisticsPageChartCard
+                    title={t('challenges.statisticsPage.formats.timeControl', {
+                      defaultValue: 'By time control',
+                    })}
+                    option={timeControlOption}
+                    emptyText={t('challenges.statisticsPage.noData', {
+                      defaultValue: 'No data yet.',
+                    })}
+                    height={260}
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, lg: 4 }}>
+                  <ChallengesUserStatisticsPageChartCard
+                    title={t('challenges.statisticsPage.formats.timerMode', {
+                      defaultValue: 'By timer mode',
+                    })}
+                    option={questionTimeTypeOption}
+                    emptyText={t('challenges.statisticsPage.noData', {
+                      defaultValue: 'No data yet.',
+                    })}
+                    height={260}
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, lg: 4 }}>
+                  <ChallengesUserStatisticsPageChartCard
+                    title={t('challenges.statisticsPage.formats.questionCount', {
+                      defaultValue: 'By question count',
+                    })}
+                    option={questionsCountOption}
+                    emptyText={t('challenges.statisticsPage.noData', {
+                      defaultValue: 'No data yet.',
+                    })}
+                    height={260}
+                  />
+                </Grid>
               </Grid>
 
               <Grid container spacing={3}>
                 <Grid size={{ xs: 12, lg: 6 }}>
                   <Card variant="outlined" sx={{ height: '100%' }}>
-                    <CardHeader title={t('challenges.statisticsPage.knowledge.difficulty', { defaultValue: 'Difficulty breakdown' })} />
+                    <CardHeader
+                      title={t('challenges.statisticsPage.knowledge.difficulty', {
+                        defaultValue: 'Difficulty breakdown',
+                      })}
+                    />
                     <CardContent>
                       <Stack spacing={1.5}>
                         {(statistics.distribution?.byDifficulty ?? []).map((item) => {
-                          const percent = item.seen ? Math.round((item.solved * 100) / item.seen) : 0;
-                          const color = item.difficulty === 1 ? 'success' : item.difficulty === 2 ? 'warning' : 'error';
+                          const percent = item.seen
+                            ? Math.round((item.solved * 100) / item.seen)
+                            : 0;
+                          const color =
+                            item.difficulty === 1
+                              ? 'success'
+                              : item.difficulty === 2
+                                ? 'warning'
+                                : 'error';
                           return (
                             <Stack key={item.difficulty} spacing={0.5}>
-                              <Stack direction="row" justifyContent="space-between"><Typography variant="body2">{getDifficultyLabel(item.difficulty, t)}</Typography><Typography variant="body2" color="text.secondary">{item.solved} / {item.seen} ({percent}%)</Typography></Stack>
-                              <LinearProgress variant="determinate" value={percent} color={color as any} sx={{ height: 8, borderRadius: 1 }} />
+                              <Stack direction="row" justifyContent="space-between">
+                                <Typography variant="body2">
+                                  {getDifficultyLabel(item.difficulty, t)}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                  {item.solved} / {item.seen} ({percent}%)
+                                </Typography>
+                              </Stack>
+                              <LinearProgress
+                                variant="determinate"
+                                value={percent}
+                                color={color as any}
+                                sx={{ height: 8, borderRadius: 1 }}
+                              />
                             </Stack>
                           );
                         })}
@@ -686,20 +1109,56 @@ const ChallengesUserStatisticsPage = () => {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid size={{ xs: 12, lg: 6 }}><ChallengesUserStatisticsPageChartCard title={t('challenges.statisticsPage.knowledge.questionTypes', { defaultValue: 'Question types' })} option={questionTypeOption} emptyText={t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' })} height={280} /></Grid>
+                <Grid size={{ xs: 12, lg: 6 }}>
+                  <ChallengesUserStatisticsPageChartCard
+                    title={t('challenges.statisticsPage.knowledge.questionTypes', {
+                      defaultValue: 'Question types',
+                    })}
+                    option={questionTypeOption}
+                    emptyText={t('challenges.statisticsPage.noData', {
+                      defaultValue: 'No data yet.',
+                    })}
+                    height={280}
+                  />
+                </Grid>
                 <Grid size={{ xs: 12 }}>
-                  <Card variant="outlined"><CardHeader title={t('challenges.statisticsPage.knowledge.topChapters', { defaultValue: 'Top chapters' })} /><CardContent><Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>{chapters.map((chapter: ChallengeStatisticsChapterRow) => <Chip key={chapter.chapterId} label={`${chapter.title} (${chapter.solved}/${chapter.seen})`} variant="soft" color="primary" size="small" />)}</Stack></CardContent></Card>
+                  <Card variant="outlined">
+                    <CardHeader
+                      title={t('challenges.statisticsPage.knowledge.topChapters', {
+                        defaultValue: 'Top chapters',
+                      })}
+                    />
+                    <CardContent>
+                      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                        {chapters.map((chapter: ChallengeStatisticsChapterRow) => (
+                          <Chip
+                            key={chapter.chapterId}
+                            label={`${chapter.title} (${chapter.solved}/${chapter.seen})`}
+                            variant="soft"
+                            color="primary"
+                            size="small"
+                          />
+                        ))}
+                      </Stack>
+                    </CardContent>
+                  </Card>
                 </Grid>
               </Grid>
 
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12, lg: 6 }}>
                   <Card variant="outlined" sx={{ height: '100%' }}>
-                    <CardHeader title={t('challenges.statisticsPage.records.title', { defaultValue: 'Records' })} />
+                    <CardHeader
+                      title={t('challenges.statisticsPage.records.title', {
+                        defaultValue: 'Records',
+                      })}
+                    />
                     <CardContent>
                       <Grid container spacing={2}>
                         {highlights.map((item) => {
-                          const link = item.entry?.challengeId ? getResourceById(resources.Challenge, item.entry.challengeId) : undefined;
+                          const link = item.entry?.challengeId
+                            ? getResourceById(resources.Challenge, item.entry.challengeId)
+                            : undefined;
                           const subtitle =
                             getRecordSubtitle(item.entry) ??
                             t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' });
@@ -722,12 +1181,18 @@ const ChallengesUserStatisticsPage = () => {
                 </Grid>
                 <Grid size={{ xs: 12, lg: 6 }}>
                   <Card variant="outlined" sx={{ height: '100%' }}>
-                    <CardHeader title={t('challenges.statisticsPage.records.streaks', { defaultValue: 'Streaks' })} />
+                    <CardHeader
+                      title={t('challenges.statisticsPage.records.streaks', {
+                        defaultValue: 'Streaks',
+                      })}
+                    />
                     <CardContent>
                       <Grid container spacing={2}>
                         <Grid size={{ xs: 12, md: 6 }}>
                           <ChallengesUserStatisticsPageRecordCard
-                            title={t('challenges.statisticsPage.records.longestWinStreak', { defaultValue: 'Longest win streak' })}
+                            title={t('challenges.statisticsPage.records.longestWinStreak', {
+                              defaultValue: 'Longest win streak',
+                            })}
                             value={t('challenges.statisticsPage.streakCount', {
                               defaultValue: '{{count}} challenges',
                               count: statistics.records?.longestWinStreak.count ?? 0,
@@ -741,7 +1206,9 @@ const ChallengesUserStatisticsPage = () => {
                         </Grid>
                         <Grid size={{ xs: 12, md: 6 }}>
                           <ChallengesUserStatisticsPageRecordCard
-                            title={t('challenges.statisticsPage.records.currentWinStreak', { defaultValue: 'Current win streak' })}
+                            title={t('challenges.statisticsPage.records.currentWinStreak', {
+                              defaultValue: 'Current win streak',
+                            })}
                             value={t('challenges.statisticsPage.streakCount', {
                               defaultValue: '{{count}} challenges',
                               count: statistics.records?.currentWinStreak.count ?? 0,
@@ -755,7 +1222,9 @@ const ChallengesUserStatisticsPage = () => {
                         </Grid>
                         <Grid size={{ xs: 12, md: 6 }}>
                           <ChallengesUserStatisticsPageRecordCard
-                            title={t('challenges.statisticsPage.records.longestLossStreak', { defaultValue: 'Longest loss streak' })}
+                            title={t('challenges.statisticsPage.records.longestLossStreak', {
+                              defaultValue: 'Longest loss streak',
+                            })}
                             value={t('challenges.statisticsPage.streakCount', {
                               defaultValue: '{{count}} challenges',
                               count: statistics.records?.longestLossStreak.count ?? 0,
@@ -769,7 +1238,9 @@ const ChallengesUserStatisticsPage = () => {
                         </Grid>
                         <Grid size={{ xs: 12, md: 6 }}>
                           <ChallengesUserStatisticsPageRecordCard
-                            title={t('challenges.statisticsPage.records.currentLossStreak', { defaultValue: 'Current loss streak' })}
+                            title={t('challenges.statisticsPage.records.currentLossStreak', {
+                              defaultValue: 'Current loss streak',
+                            })}
                             value={t('challenges.statisticsPage.streakCount', {
                               defaultValue: '{{count}} challenges',
                               count: statistics.records?.currentLossStreak.count ?? 0,
@@ -788,20 +1259,147 @@ const ChallengesUserStatisticsPage = () => {
               </Grid>
 
               <Grid container spacing={3}>
-                <Grid size={{ xs: 12, lg: 4 }}><Card variant="outlined" sx={{ height: '100%' }}><CardHeader title={t('challenges.statisticsPage.opponents.summary', { defaultValue: 'Opponent summary' })} /><CardContent><Stack spacing={1.5}><Stack direction="row" justifyContent="space-between"><Typography variant="body2" color="text.secondary">{t('challenges.statisticsPage.avgOpponent', { defaultValue: 'Average opponent rating' })}</Typography><Typography variant="subtitle2">{Math.round(statistics.opponents?.averageOpponentRating ?? 0)}</Typography></Stack>{[statistics.opponents?.vsHigherRated, statistics.opponents?.vsSameRated, statistics.opponents?.vsLowerRated].map((bucket) => <Stack key={bucket?.bucket} spacing={0.5}><Stack direction="row" justifyContent="space-between"><Typography variant="body2">{getBucketLabel(bucket?.bucket, t)}</Typography><Typography variant="body2" color="text.secondary">{bucket?.wins ?? 0}-{bucket?.draws ?? 0}-{bucket?.losses ?? 0}</Typography></Stack><LinearProgress variant="determinate" value={bucket?.winRate ?? 0} sx={{ height: 8, borderRadius: 1 }} /></Stack>)}</Stack></CardContent></Card></Grid>
-                <Grid size={{ xs: 12, lg: 4 }}><Card variant="outlined" sx={{ height: '100%' }}><CardHeader title={t('challenges.statisticsPage.opponents.mostPlayed', { defaultValue: 'Most played opponents' })} /><CardContent><Stack spacing={1.25}>{renderOpponentListSafe(statistics.opponents?.mostPlayedOpponents ?? [], t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' }))}</Stack></CardContent></Card></Grid>
-                <Grid size={{ xs: 12, lg: 4 }}><Card variant="outlined" sx={{ height: '100%' }}><CardHeader title={t('challenges.statisticsPage.opponents.rivals', { defaultValue: 'Rivals' })} /><CardContent><Stack spacing={1.25}>{renderOpponentListSafe(statistics.opponents?.rivals ?? [], t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' }))}</Stack></CardContent></Card></Grid>
-                <Grid size={{ xs: 12, lg: 6 }}><Card variant="outlined" sx={{ height: '100%' }}><CardHeader title={t('challenges.statisticsPage.opponents.bestVictories', { defaultValue: 'Best victories' })} /><CardContent><Stack spacing={1.25}>{renderRecordListSafe(statistics.opponents?.bestVictories ?? [], t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' }))}</Stack></CardContent></Card></Grid>
-                <Grid size={{ xs: 12, lg: 6 }}><Card variant="outlined" sx={{ height: '100%' }}><CardHeader title={t('challenges.statisticsPage.opponents.worstDefeats', { defaultValue: 'Worst defeats' })} /><CardContent><Stack spacing={1.25}>{renderRecordListSafe(statistics.opponents?.worstDefeats ?? [], t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' }))}</Stack></CardContent></Card></Grid>
+                <Grid size={{ xs: 12, lg: 4 }}>
+                  <Card variant="outlined" sx={{ height: '100%' }}>
+                    <CardHeader
+                      title={t('challenges.statisticsPage.opponents.summary', {
+                        defaultValue: 'Opponent summary',
+                      })}
+                    />
+                    <CardContent>
+                      <Stack spacing={1.5}>
+                        <Stack direction="row" justifyContent="space-between">
+                          <Typography variant="body2" color="text.secondary">
+                            {t('challenges.statisticsPage.avgOpponent', {
+                              defaultValue: 'Average opponent rating',
+                            })}
+                          </Typography>
+                          <Typography variant="subtitle2">
+                            {Math.round(statistics.opponents?.averageOpponentRating ?? 0)}
+                          </Typography>
+                        </Stack>
+                        {[
+                          statistics.opponents?.vsHigherRated,
+                          statistics.opponents?.vsSameRated,
+                          statistics.opponents?.vsLowerRated,
+                        ].map((bucket) => (
+                          <Stack key={bucket?.bucket} spacing={0.5}>
+                            <Stack direction="row" justifyContent="space-between">
+                              <Typography variant="body2">
+                                {getBucketLabel(bucket?.bucket, t)}
+                              </Typography>
+                              <Typography variant="body2" color="text.secondary">
+                                {bucket?.wins ?? 0}-{bucket?.draws ?? 0}-{bucket?.losses ?? 0}
+                              </Typography>
+                            </Stack>
+                            <LinearProgress
+                              variant="determinate"
+                              value={bucket?.winRate ?? 0}
+                              sx={{ height: 8, borderRadius: 1 }}
+                            />
+                          </Stack>
+                        ))}
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid size={{ xs: 12, lg: 4 }}>
+                  <Card variant="outlined" sx={{ height: '100%' }}>
+                    <CardHeader
+                      title={t('challenges.statisticsPage.opponents.mostPlayed', {
+                        defaultValue: 'Most played opponents',
+                      })}
+                    />
+                    <CardContent>
+                      <Stack spacing={1.25}>
+                        {renderOpponentListSafe(
+                          statistics.opponents?.mostPlayedOpponents ?? [],
+                          t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' }),
+                        )}
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid size={{ xs: 12, lg: 4 }}>
+                  <Card variant="outlined" sx={{ height: '100%' }}>
+                    <CardHeader
+                      title={t('challenges.statisticsPage.opponents.rivals', {
+                        defaultValue: 'Rivals',
+                      })}
+                    />
+                    <CardContent>
+                      <Stack spacing={1.25}>
+                        {renderOpponentListSafe(
+                          statistics.opponents?.rivals ?? [],
+                          t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' }),
+                        )}
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid size={{ xs: 12, lg: 6 }}>
+                  <Card variant="outlined" sx={{ height: '100%' }}>
+                    <CardHeader
+                      title={t('challenges.statisticsPage.opponents.bestVictories', {
+                        defaultValue: 'Best victories',
+                      })}
+                    />
+                    <CardContent>
+                      <Stack spacing={1.25}>
+                        {renderRecordListSafe(
+                          statistics.opponents?.bestVictories ?? [],
+                          t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' }),
+                        )}
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid size={{ xs: 12, lg: 6 }}>
+                  <Card variant="outlined" sx={{ height: '100%' }}>
+                    <CardHeader
+                      title={t('challenges.statisticsPage.opponents.worstDefeats', {
+                        defaultValue: 'Worst defeats',
+                      })}
+                    />
+                    <CardContent>
+                      <Stack spacing={1.25}>
+                        {renderRecordListSafe(
+                          statistics.opponents?.worstDefeats ?? [],
+                          t('challenges.statisticsPage.noData', { defaultValue: 'No data yet.' }),
+                        )}
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                </Grid>
               </Grid>
 
               <Card variant="outlined">
                 <CardHeader title={t('challenges.lastChallenges')} />
                 <CardContent>
                   <Stack spacing={1.5}>
-                    {(lastChallenges?.data ?? []).map((challenge) => <ChallengeCard key={challenge.id} challenge={challenge} currentUsername={username} />)}
-                    {!isChallengesLoading && !lastChallenges?.data?.length ? <Typography variant="body2" color="text.secondary">{t('challenges.noChallenges')}</Typography> : null}
-                    {(lastChallenges?.pagesCount ?? 0) > 1 ? <Box display="flex" justifyContent="flex-end"><Pagination color="primary" shape="rounded" page={state.page} count={lastChallenges?.pagesCount ?? 0} onChange={(_, value) => setField('page', value)} /></Box> : null}
+                    {(lastChallenges?.data ?? []).map((challenge) => (
+                      <ChallengeCard
+                        key={challenge.id}
+                        challenge={challenge}
+                        currentUsername={username}
+                      />
+                    ))}
+                    {!isChallengesLoading && !lastChallenges?.data?.length ? (
+                      <Typography variant="body2" color="text.secondary">
+                        {t('challenges.noChallenges')}
+                      </Typography>
+                    ) : null}
+                    {(lastChallenges?.pagesCount ?? 0) > 1 ? (
+                      <Box display="flex" justifyContent="flex-end">
+                        <Pagination
+                          color="primary"
+                          shape="rounded"
+                          page={state.page}
+                          count={lastChallenges?.pagesCount ?? 0}
+                          onChange={(_, value) => setField('page', value)}
+                        />
+                      </Box>
+                    ) : null}
                   </Stack>
                 </CardContent>
               </Card>

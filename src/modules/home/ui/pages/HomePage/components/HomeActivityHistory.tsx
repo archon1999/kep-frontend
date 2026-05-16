@@ -29,6 +29,7 @@ interface HomeActivityHistoryProps {
   onLoadMore?: () => void;
   hasMore?: boolean;
   isLoadingMore?: boolean;
+  showTitle?: boolean;
 }
 
 type ActivityType = HomeUserActivityHistoryItem['activityType'];
@@ -248,6 +249,7 @@ const HomeActivityHistory = ({
   onLoadMore,
   hasMore = false,
   isLoadingMore = false,
+  showTitle = true,
 }: HomeActivityHistoryProps) => {
   const { t } = useTranslation();
   const activities = history?.data ?? [];
@@ -255,9 +257,11 @@ const HomeActivityHistory = ({
 
   return (
     <Stack direction="column" spacing={2}>
-      <Typography variant="h6" fontWeight={600}>
-        {t('homePage.activityHistory.title')}
-      </Typography>
+      {showTitle ? (
+        <Typography variant="h6" fontWeight={600}>
+          {t('homePage.activityHistory.title')}
+        </Typography>
+      ) : null}
 
       <Box
         sx={{
@@ -400,7 +404,12 @@ const HomeActivityHistory = ({
 
       {!isLoading && activities.length > 0 && hasMore ? (
         <Box display="flex" justifyContent="center">
-          <LoadingButton variant="outlined" size="small" loading={isLoadingMore} onClick={onLoadMore}>
+          <LoadingButton
+            variant="outlined"
+            size="small"
+            loading={isLoadingMore}
+            onClick={onLoadMore}
+          >
             {t('homePage.activityHistory.loadMore')}
           </LoadingButton>
         </Box>

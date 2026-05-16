@@ -39,6 +39,24 @@ const ScrollSpy = ({ children, offset: globalOffset }: PropsWithChildren<ScrollS
   const sectionRefs = useRef<SectionRef>({});
   const lastScrollTopRef = useRef(0);
 
+  const getScrollRoot = () => {
+    const firstSection = Object.values(sectionRefs.current).find((item) => item.element)?.element;
+    let parent = firstSection?.parentElement;
+
+    while (parent && parent !== document.body) {
+      const styles = window.getComputedStyle(parent);
+      const canScroll = /(auto|scroll|overlay)/.test(`${styles.overflow}${styles.overflowY}`);
+
+      if (canScroll && parent.scrollHeight > parent.clientHeight) {
+        return parent;
+      }
+
+      parent = parent.parentElement;
+    }
+
+    return window;
+  };
+
   const isInView = ({
     element,
     offset,
@@ -67,15 +85,26 @@ const ScrollSpy = ({ children, offset: globalOffset }: PropsWithChildren<ScrollS
     }
 
     const rect = element.getBoundingClientRect();
+    const scrollRoot = getScrollRoot();
+    const rootRect =
+      scrollRoot instanceof Window
+        ? { top: 0, height: window.innerHeight }
+        : scrollRoot.getBoundingClientRect();
+    const rootTop = rootRect.top;
+    const rootHeight = rootRect.height;
 
     return (
-      (rect.top >= 0 && rect.top <= window.innerHeight - topOffset) ||
-      (rect.bottom >= bottomOffset && rect.bottom <= window.innerHeight - topOffset)
+      (rect.top >= rootTop && rect.top <= rootTop + rootHeight - topOffset) ||
+      (rect.bottom >= rootTop + bottomOffset && rect.bottom <= rootTop + rootHeight - topOffset)
     );
   };
 
   const spy = useCallback(() => {
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const scrollRoot = getScrollRoot();
+    const scrollTop =
+      scrollRoot instanceof Window
+        ? window.scrollY || document.documentElement.scrollTop
+        : scrollRoot.scrollTop;
 
     let toUp = false;
     if (scrollTop > lastScrollTopRef.current) {
@@ -104,10 +133,13 @@ const ScrollSpy = ({ children, offset: globalOffset }: PropsWithChildren<ScrollS
   }, [globalOffset]);
 
   useEffect(() => {
+    const scrollRoot = getScrollRoot();
     spy();
-    window.addEventListener('scroll', spy);
+    scrollRoot.addEventListener('scroll', spy, { passive: true });
+    window.addEventListener('resize', spy);
     return () => {
-      window.removeEventListener('scroll', spy);
+      scrollRoot.removeEventListener('scroll', spy);
+      window.removeEventListener('resize', spy);
     };
   }, [spy]);
 

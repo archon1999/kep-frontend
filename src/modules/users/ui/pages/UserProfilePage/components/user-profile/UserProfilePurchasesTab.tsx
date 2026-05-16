@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import {
   Alert,
   Box,
@@ -16,7 +16,6 @@ import {
 } from '@mui/material';
 import { toast } from 'sonner';
 import { useAuth } from 'app/providers/AuthProvider';
-import { getResourceByUsername, resources } from 'app/routes/resources';
 import { useCreateShopReview } from 'modules/shop/application/mutations';
 import { useShopOrders } from 'modules/shop/application/queries';
 import type { ShopOrder } from 'modules/shop/domain/entities/order.entity';
@@ -69,7 +68,7 @@ const UserProfilePurchasesTab = () => {
   const emptyState = useMemo(() => !isLoading && !orders?.length && !error, [error, isLoading, orders]);
 
   if (!isOwner) {
-    return <Navigate to={getResourceByUsername(resources.UserProfile, username)} replace />;
+    return null;
   }
 
   const handleReviewSubmit = async (orderId: number) => {

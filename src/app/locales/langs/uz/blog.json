@@ -83,7 +83,7 @@
       "edit": "Tahrirlash",
       "submitForReview": "Reviewga yuborish",
       "emptyOwner": "Sizda hali bloglar yo'q.",
-      "emptyPublic": "Bu foydalanuvchida hali published blog yo'q.",
+      "emptyPublic": "Bu foydalanuvchida hali nashr qilingan blog yo'q.",
       "reviewFlowHint": "Yangi blog avval draft sifatida saqlanadi. Tayyor bo'lgach reviewga yuboring.",
       "reward": "+{{value}} Kepcoin"
     },
@@ -95,7 +95,7 @@
       "translationHint": "Blogning UZ, RU va EN variantlarini to'ldirish uchun tablarni almashtiring.",
       "draftHint": "Draft blog reviewga yuborilmaguncha faqat sizga ko'rinadi.",
       "pendingHint": "Bu blog review jarayonida. Siz hali ham matnini yangilashingiz mumkin.",
-      "publishedHint": "Published blogni tahrirlash statusini o'zgartirmaydi.",
+      "publishedHint": "Nashr qilingan blogni tahrirlash statusini o'zgartirmaydi.",
       "loadError": "Editor yuklanmadi. Sahifani yangilab qayta urinib ko'ring.",
       "safeFormattingHint": "Ruxsat etilgan formatlar: sarlavhalar, qalin, kursiv, tagi chizilgan, strike, iqtibos, code block, ro'yxatlar, link va formatni tozalash.",
       "notFound": "So'ralgan blogni yuklab bo'lmadi.",
