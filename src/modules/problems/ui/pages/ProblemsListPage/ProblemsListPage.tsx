@@ -422,10 +422,6 @@ const ProblemsListPage = () => {
     <Stack direction="column" spacing={4} height={1}>
       <PageHeader
         title={t('problems.title2')}
-        breadcrumb={[
-          { label: t('home'), url: '/' },
-          { label: t('problems.title'), active: true },
-        ]}
         actionComponent={
           <Stack direction="row" flexWrap="wrap" justifyContent="flex-end">
             <Button

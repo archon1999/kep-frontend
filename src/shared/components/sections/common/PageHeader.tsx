@@ -6,12 +6,17 @@ import PageBreadcrumb, { PageBreadcrumbItem } from './PageBreadcrumb';
 
 interface PageHeaderProps {
   title: string;
-  breadcrumb: PageBreadcrumbItem[];
+  breadcrumb?: PageBreadcrumbItem[];
   actionComponent?: JSX.Element;
   sx?: SxProps;
 }
 
-const PageHeader = ({ title, breadcrumb, actionComponent, sx }: PropsWithChildren<PageHeaderProps>) => {
+const PageHeader = ({
+  title,
+  breadcrumb,
+  actionComponent,
+  sx,
+}: PropsWithChildren<PageHeaderProps>) => {
   const { down } = useBreakpoints();
   const downLg = down('lg');
 
@@ -27,7 +32,7 @@ const PageHeader = ({ title, breadcrumb, actionComponent, sx }: PropsWithChildre
         }}
       >
         <div>
-          <PageBreadcrumb items={breadcrumb} sx={{ mb: 1 }} />
+          {breadcrumb?.length ? <PageBreadcrumb items={breadcrumb} sx={{ mb: 1 }} /> : null}
           <Typography variant="h4" sx={[downLg && { fontSize: 'h5.fontSize' }]}>
             {title}
           </Typography>
