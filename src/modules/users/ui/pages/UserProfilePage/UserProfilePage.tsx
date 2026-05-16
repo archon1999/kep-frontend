@@ -65,6 +65,7 @@ import ScrollSpy, { useScrollSpyContext } from 'shared/components/scroll-spy';
 import ScrollSpyContent from 'shared/components/scroll-spy/ScrollSpyContent';
 import ScrollSpyNavItem from 'shared/components/scroll-spy/ScrollSpyNavItem';
 import { KepIconName } from 'shared/config/icons';
+import { getCountryLabel } from 'shared/utils/country';
 import ProfileFollowButton from './components/user-profile/ProfileFollowButton';
 import UserFollowersCard from './components/user-profile/UserFollowersCard';
 import UserProfileAchievementsTab from './components/user-profile/UserProfileAchievementsTab';
@@ -110,7 +111,7 @@ const PersonalProfileSection = ({
   social?: UserSocialLinks;
   username: string;
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const generalInfo = about?.generalInfo;
   const profileInfo = about?.profileInfo;
   const workExperiences = about?.workExperiences ?? [];
@@ -119,7 +120,8 @@ const PersonalProfileSection = ({
   const technologies = about?.technologies ?? [];
   const bio = profileInfo?.bio || '';
   const telegramHandle = normalizeTelegramHandle(social?.telegram);
-  const locationText = [profileInfo?.country, profileInfo?.region].filter(Boolean).join(', ');
+  const countryLabel = getCountryLabel(profileInfo?.country, i18n.language);
+  const locationText = [countryLabel, profileInfo?.region].filter(Boolean).join(', ');
   const codeforcesHandle = social?.codeforcesHandle?.trim();
 
   const overviewRows: OverviewRow[] = [
