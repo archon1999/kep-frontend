@@ -130,6 +130,18 @@
       "viewAll": "Barcha bloglarni ko'rish",
       "empty": "Hozircha blog postlari mavjud emas."
     },
+    "updates": {
+      "title": "Tizimdagi o'zgarishlar",
+      "pageTitle": "Tizimdagi o'zgarishlar",
+      "viewAll": "Barcha o'zgarishlar",
+      "empty": "Hozircha tizim o'zgarishlari mavjud emas.",
+      "likes": "{{count}} like",
+      "like": "Like bosish",
+      "loginToLike": "Like bosish uchun tizimga kiring",
+      "noImage": "Screenshot keyin qo'shiladi",
+      "navigatorTitle": "Sahifa bo'yicha",
+      "loadMore": "Yana ko'rsatish"
+    },
     "topUsers": {
       "title": "Top foydalanuvchilar",
       "subtitle": "Har bir yoʻnalishdagi eng kuchli 3 ta ishtirokchi",

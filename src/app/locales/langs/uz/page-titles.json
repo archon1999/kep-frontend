@@ -2,6 +2,7 @@
   "pageTitles": {
     "home": "Bosh sahifa",
     "landing": "KEP.uz - Dasturlashni oʻrganish uchun platforma",
+    "updates": "Tizimdagi o'zgarishlar",
     "calendar": "Kalendar",
     "problems": "Masalalar",
     "problem": "{{ problemId }}. {{ problemTitle }} - Masala",

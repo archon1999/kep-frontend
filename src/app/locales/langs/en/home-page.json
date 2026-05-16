@@ -130,6 +130,18 @@
       "viewAll": "View all blog",
       "empty": "No blog posts to display yet."
     },
+    "updates": {
+      "title": "System updates",
+      "pageTitle": "System updates",
+      "viewAll": "View all updates",
+      "empty": "No system updates to display yet.",
+      "likes": "{{count}} likes",
+      "like": "Like update",
+      "loginToLike": "Login to like updates",
+      "noImage": "Screenshot will be added",
+      "navigatorTitle": "On this page",
+      "loadMore": "Load more"
+    },
     "topUsers": {
       "title": "Top users",
       "subtitle": "Best performers in every category",

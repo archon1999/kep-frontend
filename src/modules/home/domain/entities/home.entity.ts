@@ -45,4 +45,31 @@ export interface HomeListParams {
   page?: number;
 }
 
+export interface HomePageResult<T> {
+  page: number;
+  pageSize: number;
+  count: number;
+  total: number;
+  pagesCount: number;
+  data: T[];
+}
+
+export interface HomeSystemUpdate {
+  id: number;
+  title: string;
+  description: string;
+  date: string;
+  updateType: 'new' | 'update';
+  image: string | null;
+  likesCount: number;
+  isLiked: boolean;
+}
+
+export type HomeSystemUpdatesList = HomePageResult<HomeSystemUpdate>;
+
+export interface HomeSystemUpdateLikeResult {
+  likesCount: number;
+  isLiked: boolean;
+}
+
 export * from './home-promo.entity';

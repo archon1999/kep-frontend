@@ -5,6 +5,8 @@ import type {
   HomeOnlineUsers,
   HomePostsList,
   HomePromoSourceItem,
+  HomeSystemUpdateLikeResult,
+  HomeSystemUpdatesList,
   HomeLandingPageStatistics,
   HomeTopUsers,
   HomeUserActivityStatistics,
@@ -25,4 +27,6 @@ export interface HomeRepository {
   getUserActivityHistory: (username: string, params?: HomeListParams) => Promise<HomeUserActivityHistory>;
   getLandingPageStatistics: () => Promise<HomeLandingPageStatistics>;
   getPromos: () => Promise<HomePromoSourceItem[]>;
+  getSystemUpdates: (params?: HomeListParams) => Promise<HomeSystemUpdatesList>;
+  likeSystemUpdate: (id: number) => Promise<HomeSystemUpdateLikeResult>;
 }

@@ -19,8 +19,12 @@ import type {
   ApiUsersOnlineParams,
   ApiUsersTopRatingParams,
 } from 'shared/api/orval/generated/endpoints/index.schemas';
-import type { HomeUserActivityStatistics } from '../../domain/entities/home.entity';
-import type { HomeLandingPageStatistics } from '../../domain/entities/home.entity.ts';
+import type {
+  HomeLandingPageStatistics,
+  HomeSystemUpdateLikeResult,
+  HomeSystemUpdatesList,
+  HomeUserActivityStatistics,
+} from '../../domain/entities/home.entity.ts';
 import type { ApiHomePromoItem } from '../mappers/home-promo.mapper.ts';
 
 export const homeApiClient = {
@@ -40,4 +44,11 @@ export const homeApiClient = {
   landingPageStatistics: () =>
     apiClient.apiLandingPageStatisticsList() as unknown as Promise<HomeLandingPageStatistics>,
   promos: () => axiosMutator<ApiHomePromoItem[]>({ url: '/api/home-promos', method: 'GET' }),
+  systemUpdates: (params?: { page?: number; pageSize?: number }) =>
+    axiosMutator<HomeSystemUpdatesList>({ url: '/api/system-updates', method: 'GET', params }),
+  likeSystemUpdate: (id: number) =>
+    axiosMutator<HomeSystemUpdateLikeResult>({
+      url: `/api/system-updates/${id}/like`,
+      method: 'POST',
+    }),
 };

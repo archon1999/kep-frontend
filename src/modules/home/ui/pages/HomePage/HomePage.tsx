@@ -9,7 +9,7 @@ import { useAuth } from 'app/providers/AuthProvider';
 import { useUserActivityHistory, useUserRatings } from 'modules/home/application/queries';
 import NewsSection from './components/NewsSection.tsx';
 import TopUsersSection from './components/TopUsersSection.tsx';
-import PostsSection from './components/PostsSection.tsx';
+import UpdatesSection from './components/UpdatesSection.tsx';
 import ContestsSection from './components/ContestsSection.tsx';
 import HomePromosSection from './components/HomePromosSection';
 
@@ -71,7 +71,7 @@ const HomePage = () => {
         </Grid>
 
         <Grid size={{ xs: 12, lg: 8 }}>
-          <PostsSection />
+          <UpdatesSection />
         </Grid>
 
         <Grid size={12}>

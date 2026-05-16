@@ -1,5 +1,6 @@
 export const resources = {
   Home: '/',
+  Updates: '/updates',
   NotFound: '/404',
   Forbidden: '/403',
 

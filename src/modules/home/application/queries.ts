@@ -19,6 +19,7 @@ import type {
   HomeUserRatings,
   HomeUsersChart,
   HomePromoSlide,
+  HomeSystemUpdatesList,
 } from '../domain/entities/home.entity';
 
 const repository = new HttpHomeRepository();
@@ -36,6 +37,65 @@ export const useHomeNews = (pageSize = 3) =>
 
 export const useHomePosts = (pageSize = 6) =>
   useHomeSWR<HomePostsList>(homeKeys.detail(`posts-${pageSize}`), () => repository.getPosts(mapListParams(pageSize)));
+
+export const useHomeUpdates = (pageSize = 4) =>
+  useHomeSWR<HomeSystemUpdatesList>(homeKeys.detail(`system-updates-${pageSize}`), () =>
+    repository.getSystemUpdates(mapListParams(pageSize)),
+  );
+
+export const useSystemUpdates = (pageSize = 10) => {
+  type UpdatesKey = readonly ['home', 'system-updates', number, number];
+
+  const {
+    data,
+    isLoading,
+    isValidating,
+    size,
+    setSize,
+    mutate,
+  } = useSWRInfinite<HomeSystemUpdatesList>(
+    (pageIndex: number, previousPageData: HomeSystemUpdatesList | null) => {
+      if (previousPageData && pageIndex >= previousPageData.pagesCount) {
+        return null;
+      }
+
+      return ['home', 'system-updates', pageSize, pageIndex + 1] as const;
+    },
+    ([, , pageSizeParam, page]: UpdatesKey) =>
+      repository.getSystemUpdates({
+        page,
+        pageSize: pageSizeParam,
+      }),
+    { suspense: false },
+  );
+
+  const pages = data ?? [];
+  const mergedPage = pages.length
+    ? {
+        ...pages[pages.length - 1],
+        data: pages.flatMap((pageItem) => pageItem.data),
+      }
+    : null;
+
+  const lastPage = pages[pages.length - 1];
+  const hasMore = Boolean(lastPage && lastPage.page < lastPage.pagesCount);
+  const isLoadingMore = isValidating && pages.length < size;
+
+  const loadMore = () => {
+    if (hasMore) {
+      setSize((current: number) => current + 1);
+    }
+  };
+
+  return {
+    data: mergedPage,
+    isLoading,
+    isLoadingMore,
+    hasMore,
+    loadMore,
+    mutate,
+  };
+};
 
 export const useTopUsers = (pageSize = 3) =>
   useHomeSWR<HomeTopUsers>(homeKeys.detail(`top-users-${pageSize}`), () => repository.getTopUsers(mapListParams(pageSize)));
@@ -128,33 +188,6 @@ export const useHomePromos = () => {
   return useHomeSWR<HomePromoSlide[]>(
     homeKeys.detail(`promos-${i18n.language}`),
     async () => {
-      const blogCreateSlide: HomePromoSlide = {
-        id: `blog-create-${i18n.language}`,
-        type: 'blogCreate',
-        status: 'active',
-        title: t('homePage.promos.blogCreate.title'),
-        subtitle: t('homePage.promos.blogCreate.subtitle'),
-        href: resources.BlogCreate,
-        ctaLabel: t('homePage.promos.actions.startWriting'),
-        accent: 'warning',
-        icon: 'mdi:notebook-edit-outline',
-        typeLabel: t('homePage.promos.types.blogCreate'),
-        metrics: [
-          {
-            label: t('homePage.promos.blogCreate.metrics.access.label'),
-            value: t('homePage.promos.blogCreate.metrics.access.value'),
-          },
-          {
-            label: t('homePage.promos.blogCreate.metrics.rewards.label'),
-            value: t('homePage.promos.blogCreate.metrics.rewards.value'),
-          },
-          {
-            label: t('homePage.promos.blogCreate.metrics.flow.label'),
-            value: t('homePage.promos.blogCreate.metrics.flow.value'),
-          },
-        ],
-      };
-
       let promos: HomePromoSourceItem[] = [];
 
       try {
@@ -289,14 +322,11 @@ export const useHomePromos = () => {
         };
       });
 
-      if (!mappedPromos.length) {
-        return [blogCreateSlide];
-      }
-
-      const slides: HomePromoSlide[] = [...mappedPromos];
-      slides.splice(Math.min(2, slides.length), 0, blogCreateSlide);
-
-      return slides;
+      return mappedPromos;
     },
   );
+};
+
+export const homeQueries = {
+  repository,
 };

@@ -8,6 +8,8 @@ import type {
   HomeOnlineUsers,
   HomePostsList,
   HomePromoSourceItem,
+  HomeSystemUpdateLikeResult,
+  HomeSystemUpdatesList,
   HomeLandingPageStatistics,
   HomeTopUsers,
   HomeUserActivityStatistics,
@@ -62,5 +64,16 @@ export class HttpHomeRepository implements HomeRepository {
 
   getPromos(): Promise<HomePromoSourceItem[]> {
     return homeApiClient.promos().then(mapHomePromos);
+  }
+
+  getSystemUpdates(params?: HomeListParams): Promise<HomeSystemUpdatesList> {
+    return homeApiClient.systemUpdates({
+      page: params?.page,
+      pageSize: params?.pageSize,
+    });
+  }
+
+  likeSystemUpdate(id: number): Promise<HomeSystemUpdateLikeResult> {
+    return homeApiClient.likeSystemUpdate(id);
   }
 }

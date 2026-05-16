@@ -66,7 +66,7 @@ import {
   HackathonStandingsPage,
   HackathonsListPage,
 } from 'modules/hackathons/ui/pages';
-import { HomePage } from 'modules/home/ui/pages';
+import { HomePage, UpdatesPage } from 'modules/home/ui/pages';
 import { KepCoverPage } from 'modules/kep-cover/ui/pages';
 import { KepcoinEarnPage, KepcoinPage } from 'modules/kepcoin/ui/pages';
 import {
@@ -301,6 +301,11 @@ export const routes: RouteObject[] = [
             index: true,
             element: <HomePage />,
             handle: { titleKey: 'pageTitles.home' },
+          },
+          {
+            path: resources.Updates,
+            element: <UpdatesPage />,
+            handle: { titleKey: 'pageTitles.updates' },
           },
           {
             path: resources.Users,
