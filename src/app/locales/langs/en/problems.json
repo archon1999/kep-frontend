@@ -6,6 +6,7 @@
     "filterTitle": "Filter",
     "filters": "Filters",
     "appliedFilters": "{{count}} filters applied",
+    "clear": "Clear",
     "clearFilters": "Clear filters",
     "searchPlaceholder": "Search problems",
     "resultsCount": "Problems: {{count}}",

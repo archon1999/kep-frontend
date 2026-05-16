@@ -1,30 +1,12 @@
-import { KeyboardEvent, MouseEvent, SyntheticEvent, useMemo, useState } from 'react';
+import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { TabContext, TabList } from '@mui/lab';
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Button,
-  Chip,
-  Divider,
-  FormControlLabel,
-  Grid,
-  InputAdornment,
-  Menu,
-  MenuItem,
-  Stack,
-  Switch,
-  Tab,
-  TextField,
-  Typography,
-  alpha,
-  useTheme,
-} from '@mui/material';
+import { Box, Button, Grid, Stack, Tab } from '@mui/material';
+import { useNavContext } from 'app/layouts/main-layout/NavProvider';
 import SearchTextField from 'app/layouts/main-layout/common/search-box/SearchTextField.tsx';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
+import { useBreakpoints } from 'app/providers/BreakpointsProvider.tsx';
 import { resources } from 'app/routes/resources.ts';
 import {
   useLastContestProblems,
@@ -55,6 +37,9 @@ import {
   stringParam,
 } from 'shared/lib/queryParams';
 import ProblemDifficultiesCard from './components/ProblemDifficultiesCard.tsx';
+import ProblemsFilterDrawer, {
+  problemStatusOptions,
+} from './components/ProblemsFilterDrawer.tsx';
 import ProblemList from './components/ProblemList.tsx';
 import ProblemStudyPlansShowcase from './components/ProblemStudyPlansShowcase.tsx';
 import ProblemTabsCard from './components/ProblemTabsCard.tsx';
@@ -69,11 +54,7 @@ const orderingOptions = [
   { label: 'problems.orderLeastSolved', value: 'solved' },
 ];
 
-const statusOptions = [
-  { label: 'problems.statusUnknown', value: 3, icon: 'mdi:minus', color: 'warning.main' },
-  { label: 'problems.statusSolved', value: 1, icon: 'mdi:check', color: 'success.main' },
-  { label: 'problems.statusUnsolved', value: 2, icon: 'mdi:close', color: 'error.main' },
-];
+const filterDrawerWidth = 280;
 
 const initialFilter: ProblemsListParams = {
   ordering: 'id',
@@ -317,6 +298,11 @@ const ProblemsListPage = () => {
   });
   const filter = useMemo(() => buildProblemsListFilter(routeState), [routeState]);
   const [isAdvisorOpen, setIsAdvisorOpen] = useState(false);
+  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
+  const { up } = useBreakpoints();
+  const { topbarHeight } = useNavContext();
+  const upXl = up('xl');
+  const upSm = up('sm');
 
   const { data: problemsPage, isLoading: isProblemsLoading } = useProblemsList(filter);
   const { data: languages } = useProblemLanguages();
@@ -418,112 +404,163 @@ const ProblemsListPage = () => {
     );
   };
 
+  const closeFilterDrawer = () => setIsFilterDrawerOpen(false);
+  const toggleFilterDrawer = () => setIsFilterDrawerOpen((prev) => !prev);
+
+  useEffect(() => setIsFilterDrawerOpen(false), [upXl]);
+
   return (
-    <Stack direction="column" spacing={4} height={1}>
-      <PageHeader
-        title={t('problems.title2')}
-        actionComponent={
-          <Stack direction="row" flexWrap="wrap" justifyContent="flex-end">
-            <Button
-              component={RouterLink}
-              to={resources.ProblemsRating}
-              variant="text"
-              color="primary"
-              startIcon={<IconifyIcon icon="mdi:chart-line" />}
-            >
-              {t('problems.ratingButton')}
-            </Button>
-            <Button
-              component={RouterLink}
-              to={resources.Attempts}
-              variant="text"
-              color="primary"
-              startIcon={<IconifyIcon icon="mdi:target" />}
-            >
-              {t('problems.attemptsButton')}
-            </Button>
-            {currentUser ? (
-              <Button
-                component={RouterLink}
-                to={resources.ProblemsUserStatistics}
-                variant="text"
-                color="primary"
-                startIcon={<IconifyIcon icon="mdi:chart-bar" />}
-              >
-                {t('problems.statisticsPage.title')}
-              </Button>
-            ) : null}
-          </Stack>
-        }
+    <Box
+      sx={(theme) => ({
+        display: 'flex',
+        height: theme.mixins.contentHeight(
+          topbarHeight,
+          (upSm ? theme.mixins.footer.sm : theme.mixins.footer.xs) + 1,
+        ),
+      })}
+    >
+      <ProblemsFilterDrawer
+        open={isFilterDrawerOpen}
+        handleClose={closeFilterDrawer}
+        drawerWidth={filterDrawerWidth}
+        languages={languages ?? []}
+        categories={categories ?? []}
+        filter={filter}
+        onChange={handleFilterChange}
+        onPatch={handleFilterPatch}
       />
 
-      <Box sx={{ flex: 1, px: { xs: 3, md: 5 }, pb: { xs: 5, md: 6 } }}>
-        <Grid container spacing={3}>
-          <Grid size={12}>
-            <FilterCard
-              languages={languages ?? []}
-              categories={categories ?? []}
-              filter={filter}
-              onChange={handleFilterChange}
-              onPatch={handleFilterPatch}
-              onOpenAdvisor={() => setIsAdvisorOpen(true)}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, md: 8 }}>
-            <Stack direction="column" spacing={3}>
-              <ProblemList
-                problems={problems}
-                isLoading={isProblemsLoading}
-                filter={filter}
-                total={total}
-                onPageChange={handlePageChange}
-                onRowsPerPageChange={handleRowsPerPageChange}
-              />
-            </Stack>
-          </Grid>
+      <Box
+        sx={({ transitions }) => ({
+          display: 'flex',
+          flexDirection: 'column',
+          flexGrow: 1,
+          minWidth: 0,
+          minHeight: 0,
+          overflowY: 'auto',
+          marginLeft: { xl: `-${filterDrawerWidth}px` },
+          transition: transitions.create('margin', {
+            easing: transitions.easing.sharp,
+            duration: transitions.duration.leavingScreen,
+          }),
+          ...(isFilterDrawerOpen && {
+            transition: transitions.create('margin', {
+              easing: transitions.easing.easeOut,
+              duration: transitions.duration.enteringScreen,
+            }),
+            marginLeft: 0,
+          }),
+        })}
+      >
+        <Stack direction="column" spacing={4} height={1}>
+          <PageHeader
+            title={t('problems.title2')}
+            actionComponent={
+              <Stack direction="row" flexWrap="wrap" justifyContent="flex-end">
+                <Button
+                  component={RouterLink}
+                  to={resources.ProblemsRating}
+                  variant="text"
+                  color="primary"
+                  startIcon={<IconifyIcon icon="mdi:chart-line" />}
+                >
+                  {t('problems.ratingButton')}
+                </Button>
+                <Button
+                  component={RouterLink}
+                  to={resources.Attempts}
+                  variant="text"
+                  color="primary"
+                  startIcon={<IconifyIcon icon="mdi:target" />}
+                >
+                  {t('problems.attemptsButton')}
+                </Button>
+                {currentUser ? (
+                  <Button
+                    component={RouterLink}
+                    to={resources.ProblemsUserStatistics}
+                    variant="text"
+                    color="primary"
+                    startIcon={<IconifyIcon icon="mdi:chart-bar" />}
+                  >
+                    {t('problems.statisticsPage.title')}
+                  </Button>
+                ) : null}
+              </Stack>
+            }
+          />
 
-          <Grid size={{ xs: 12, md: 4 }}>
-            <Stack direction="column" spacing={3}>
-              {currentUser && (
-                <ProblemDifficultiesCard
-                  difficulties={rating?.difficulties}
-                  isLoading={isSummaryLoading}
+          <Box sx={{ flex: 1, px: { xs: 3, md: 5 }, pb: { xs: 5, md: 6 } }}>
+            <Grid container spacing={3}>
+              <Grid size={12}>
+                <FilterCard
+                  languages={languages ?? []}
+                  categories={categories ?? []}
+                  filter={filter}
+                  filtersOpen={isFilterDrawerOpen}
+                  onToggleFilters={toggleFilterDrawer}
+                  onChange={handleFilterChange}
+                  onPatch={handleFilterPatch}
+                  onOpenAdvisor={() => setIsAdvisorOpen(true)}
                 />
-              )}
+              </Grid>
+              <Grid size={{ xs: 12, md: 8 }}>
+                <Stack direction="column" spacing={3}>
+                  <ProblemList
+                    problems={problems}
+                    isLoading={isProblemsLoading}
+                    filter={filter}
+                    total={total}
+                    onPageChange={handlePageChange}
+                    onRowsPerPageChange={handleRowsPerPageChange}
+                  />
+                </Stack>
+              </Grid>
 
-              {currentUser && studyPlans?.length && (
-                <ProblemStudyPlansShowcase studyPlans={studyPlans} />
-              )}
+              <Grid size={{ xs: 12, md: 4 }}>
+                <Stack direction="column" spacing={3}>
+                  {currentUser && (
+                    <ProblemDifficultiesCard
+                      difficulties={rating?.difficulties}
+                      isLoading={isSummaryLoading}
+                    />
+                  )}
 
-              <ProblemTabsCard
-                activeTab={routeState.activeTab}
-                onTabChange={(value) => setRouteField('activeTab', value as never)}
-                attempts={{
-                  isLoading: isAttemptsLoading,
-                  items: attempts ?? [],
-                }}
-                lastContest={{
-                  isLoading: isLastContestLoading,
-                  data: lastContest,
-                }}
-                mostViewed={{
-                  isLoading: isMostViewedLoading,
-                  items: mostViewed ?? [],
-                }}
-              />
-            </Stack>
-          </Grid>
-        </Grid>
+                  {currentUser && studyPlans?.length && (
+                    <ProblemStudyPlansShowcase studyPlans={studyPlans} />
+                  )}
+
+                  <ProblemTabsCard
+                    activeTab={routeState.activeTab}
+                    onTabChange={(value) => setRouteField('activeTab', value as never)}
+                    attempts={{
+                      isLoading: isAttemptsLoading,
+                      items: attempts ?? [],
+                    }}
+                    lastContest={{
+                      isLoading: isLastContestLoading,
+                      data: lastContest,
+                    }}
+                    mostViewed={{
+                      isLoading: isMostViewedLoading,
+                      items: mostViewed ?? [],
+                    }}
+                  />
+                </Stack>
+              </Grid>
+            </Grid>
+          </Box>
+
+          <ProblemStudyPlanAdvisorDialog
+            open={isAdvisorOpen}
+            onClose={() => setIsAdvisorOpen(false)}
+            studyPlans={studyPlans ?? []}
+            currentFilters={filter}
+            onApplyFilters={handleAdvisorApply}
+          />
+        </Stack>
       </Box>
-
-      <ProblemStudyPlanAdvisorDialog
-        open={isAdvisorOpen}
-        onClose={() => setIsAdvisorOpen(false)}
-        studyPlans={studyPlans ?? []}
-        currentFilters={filter}
-        onApplyFilters={handleAdvisorApply}
-      />
-    </Stack>
+    </Box>
   );
 };
 
@@ -531,6 +568,8 @@ interface FilterCardProps {
   languages: ProblemLanguageOption[];
   categories: ProblemCategory[];
   filter: ProblemsListParams;
+  filtersOpen: boolean;
+  onToggleFilters: () => void;
   onChange: <K extends keyof ProblemsListParams>(key: K, value: ProblemsListParams[K]) => void;
   onPatch: (patch: Partial<ProblemsListParams>) => void;
   onOpenAdvisor: () => void;
@@ -540,15 +579,13 @@ const FilterCard = ({
   languages,
   categories,
   filter,
+  filtersOpen,
+  onToggleFilters,
   onChange,
   onPatch,
   onOpenAdvisor,
 }: FilterCardProps) => {
   const { t } = useTranslation();
-  const theme = useTheme();
-  const [filtersAnchor, setFiltersAnchor] = useState<HTMLElement | null>(null);
-  const [tagsAnchor, setTagsAnchor] = useState<HTMLElement | null>(null);
-  const [expandedTagCategories, setExpandedTagCategories] = useState<string[]>([]);
 
   const tags = useMemo(
     () =>
@@ -557,79 +594,12 @@ const FilterCard = ({
       ),
     [categories],
   );
-  const groupedTags = useMemo(() => {
-    const selectedCategoryId = filter.category == null ? null : String(filter.category);
 
-    return categories
-      .map((category) => ({
-        id: category.id,
-        title: category.title,
-        isFocused: selectedCategoryId != null && String(category.id) === selectedCategoryId,
-        tags: (category.tags ?? [])
-          .slice()
-          .sort((left, right) => left.name.localeCompare(right.name)),
-      }))
-      .filter((category) => category.tags.length > 0)
-      .sort((left, right) => {
-        if (left.isFocused !== right.isFocused) {
-          return left.isFocused ? -1 : 1;
-        }
-
-        return left.title.localeCompare(right.title);
-      });
-  }, [categories, filter.category]);
-
-  const handleTagsKeyDown = (event: KeyboardEvent<HTMLElement>) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      setTagsAnchor((current) => (current ? null : event.currentTarget));
-    }
-  };
-
-  const filtersOpen = Boolean(filtersAnchor);
-  const tagsOpen = Boolean(tagsAnchor);
   const orderingValue = filter.ordering ?? 'id';
-
-  const handleFiltersToggle = (event: MouseEvent<HTMLElement>) => {
-    setFiltersAnchor((current) => (current ? null : event.currentTarget));
-  };
-
-  const handleFiltersClose = () => {
-    setFiltersAnchor(null);
-    setTagsAnchor(null);
-  };
-
-  const handleTagsToggle = (event: MouseEvent<HTMLElement>) => {
-    setTagsAnchor((current) => (current ? null : event.currentTarget));
-  };
-
-  const handleTagsClose = () => setTagsAnchor(null);
 
   const handleOrderingChange = (_: SyntheticEvent, value: string) => {
     onChange('ordering', value as string);
   };
-
-  const tagSummary = useMemo(() => {
-    const activeTagIds = filter.tags ?? [];
-
-    if (activeTagIds.length === 0) {
-      return `${groupedTags.length} categories, ${tags.length} tags`;
-    }
-
-    const activeTagNames = activeTagIds
-      .map((tagId) => tags.find((tag) => tag.id === tagId)?.name)
-      .filter((name): name is string => Boolean(name));
-
-    if (activeTagNames.length === 0) {
-      return t('problems.appliedFilters', { count: activeTagIds.length });
-    }
-
-    if (activeTagNames.length <= 2) {
-      return activeTagNames.join(', ');
-    }
-
-    return `${activeTagNames.slice(0, 2).join(', ')} +${activeTagNames.length - 2}`;
-  }, [filter.tags, groupedTags.length, t, tags]);
 
   const activeFilters = useMemo(() => {
     const items: Array<{ key: string; label: string; onRemove: () => void }> = [];
@@ -701,7 +671,9 @@ const FilterCard = ({
     }
 
     if (filter.status != null) {
-      const statusLabel = statusOptions.find((option) => option.value === filter.status)?.label;
+      const statusLabel = problemStatusOptions.find(
+        (option) => option.value === filter.status,
+      )?.label;
       items.push({
         key: 'status',
         label: `${t('problems.status')}: ${statusLabel ? t(statusLabel) : filter.status}`,
@@ -763,21 +735,6 @@ const FilterCard = ({
       partial_solvable: undefined,
     });
   };
-  const handleTagToggle = (tagId: number) => {
-    const activeTags = filter.tags ?? [];
-    const nextTags = activeTags.includes(tagId)
-      ? activeTags.filter((id) => id !== tagId)
-      : [...activeTags, tagId];
-
-    onChange('tags', nextTags);
-  };
-
-  const handleTagCategoryToggle =
-    (categoryId: string) => (_event: SyntheticEvent, expanded: boolean) => {
-      setExpandedTagCategories((prev) =>
-        expanded ? [...prev, categoryId] : prev.filter((item) => item !== categoryId),
-      );
-    };
 
   return (
     <>
@@ -816,12 +773,12 @@ const FilterCard = ({
               </Button>
               <FilterButton
                 id="problems-filters-button"
-                onClick={handleFiltersToggle}
+                onClick={onToggleFilters}
                 label={t('problems.filters')}
                 badgeContent={activeFilters.length}
                 aria-haspopup="true"
                 aria-expanded={filtersOpen ? 'true' : undefined}
-                aria-controls={filtersOpen ? 'problems-filters-menu' : undefined}
+                aria-controls={filtersOpen ? 'problems-filters-drawer' : undefined}
               />
               <SearchTextField
                 sx={{ minWidth: 100 }}
@@ -840,368 +797,6 @@ const FilterCard = ({
           onClear={handleClearFilters}
         />
       </Stack>
-
-      <Menu
-        id="problems-filters-menu"
-        anchorEl={filtersAnchor}
-        open={filtersOpen}
-        onClose={handleFiltersClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        MenuListProps={{ disablePadding: true }}
-        PaperProps={{
-          sx: {
-            p: 2.5,
-            width: { xs: 320, sm: 420 },
-          },
-        }}
-      >
-        <Stack direction="column" spacing={2.5}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Stack direction="row" spacing={1} alignItems="center">
-              <IconifyIcon icon="mdi:tune-variant" width={20} height={20} />
-              <Typography variant="subtitle2" fontWeight={700}>
-                {t('problems.filters')}
-              </Typography>
-            </Stack>
-            <Button size="small" variant="text" color="secondary" onClick={handleClearFilters}>
-              {t('problems.clearFilters')}
-            </Button>
-          </Stack>
-
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{
-              px: 1.5,
-              py: 1,
-              borderRadius: 2,
-              border: '1px solid',
-              borderColor: 'divider',
-            }}
-          >
-            <Typography variant="body2" fontWeight={600}>
-              {t('problems.favoritesOnly')}
-            </Typography>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={Boolean(filter.favorites)}
-                  onChange={(_, checked) => onChange('favorites', checked)}
-                  size="small"
-                />
-              }
-              label=""
-              sx={{ m: 0 }}
-            />
-          </Stack>
-
-          <TextField
-            select
-            fullWidth
-            variant="filled"
-            size="small"
-            label={t('problems.language')}
-            value={filter.lang ?? ''}
-            onChange={(event) =>
-              onChange(
-                'lang',
-                event.target.value === '' ? undefined : (event.target.value as string),
-              )
-            }
-          >
-            <MenuItem value="">{t('problems.allLanguages')}</MenuItem>
-            {languages.map((item) => (
-              <MenuItem key={item.lang} value={item.lang}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <Typography variant="body2">{item.langFull}</Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {item.lang.toUpperCase()}
-                  </Typography>
-                </Stack>
-              </MenuItem>
-            ))}
-          </TextField>
-
-          <TextField
-            select
-            fullWidth
-            size="small"
-            label={t('problems.category')}
-            value={filter.category ?? ''}
-            variant="filled"
-            onChange={(event) =>
-              onChange(
-                'category',
-                event.target.value === '' ? undefined : String(event.target.value),
-              )
-            }
-          >
-            <MenuItem value="">{t('problems.allCategories')}</MenuItem>
-            {categories.map((category) => (
-              <MenuItem key={category.id} value={category.id}>
-                <Stack direction="row" spacing={1} alignItems="center" width="100%">
-                  <Typography variant="body2">{category.title}</Typography>
-                  <Typography variant="caption" color="text.secondary" sx={{ marginLeft: 'auto' }}>
-                    {category.problemsCount ?? 0}
-                  </Typography>
-                </Stack>
-              </MenuItem>
-            ))}
-          </TextField>
-
-          <TextField
-            fullWidth
-            size="small"
-            variant="filled"
-            label={t('problems.tags')}
-            value={tagSummary}
-            onClick={handleTagsToggle}
-            onKeyDown={handleTagsKeyDown}
-            slotProps={{
-              input: {
-                readOnly: true,
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconifyIcon
-                      icon={tagsOpen ? 'mdi:chevron-up' : 'mdi:chevron-down'}
-                      color={theme.palette.text.secondary}
-                    />
-                  </InputAdornment>
-                ),
-              },
-            }}
-            sx={{
-              '& .MuiInputBase-root': {
-                cursor: 'pointer',
-              },
-              '& .MuiInputBase-input': {
-                cursor: 'pointer',
-                textOverflow: 'ellipsis',
-              },
-            }}
-          />
-
-          <TextField
-            select
-            fullWidth
-            size="small"
-            label={t('problems.difficultyLabel')}
-            value={filter.difficulty ?? ''}
-            variant="filled"
-            onChange={(event) =>
-              onChange(
-                'difficulty',
-                event.target.value === '' ? undefined : String(event.target.value),
-              )
-            }
-          >
-            <MenuItem value="">{t('problems.allDifficulties')}</MenuItem>
-            {difficultyOptions.map((item) => (
-              <MenuItem key={item.value} value={item.value}>
-                {t(item.label)}
-              </MenuItem>
-            ))}
-          </TextField>
-
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.25}>
-            <TextField
-              fullWidth
-              type="number"
-              size="small"
-              variant="filled"
-              label={t('problems.problemRatingFrom')}
-              value={filter.problem_rating_min ?? ''}
-              onChange={(event) => onChange('problem_rating_min', event.target.value || undefined)}
-            />
-            <TextField
-              fullWidth
-              type="number"
-              size="small"
-              variant="filled"
-              label={t('problems.problemRatingTo')}
-              value={filter.problem_rating_max ?? ''}
-              onChange={(event) => onChange('problem_rating_max', event.target.value || undefined)}
-            />
-          </Stack>
-
-          <TextField
-            select
-            fullWidth
-            size="small"
-            label={t('problems.status')}
-            value={filter.status != null ? String(filter.status) : ''}
-            variant="filled"
-            onChange={(event) => {
-              const value = event.target.value;
-              onChange('status', value === '' ? undefined : Number(value));
-            }}
-          >
-            <MenuItem value="">{t('problems.allStatuses')}</MenuItem>
-            {statusOptions.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <IconifyIcon
-                    icon={option.icon}
-                    width={18}
-                    height={18}
-                    color={option.color as string}
-                  />
-                  <Typography variant="body2">{t(option.label)}</Typography>
-                </Stack>
-              </MenuItem>
-            ))}
-          </TextField>
-        </Stack>
-      </Menu>
-
-      <Menu
-        id="problems-tags-menu"
-        anchorEl={tagsAnchor}
-        open={tagsOpen}
-        onClose={handleTagsClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-        MenuListProps={{ disablePadding: true }}
-        PaperProps={{
-          sx: {
-            mt: 1,
-            width: { xs: 320, sm: 420 },
-            maxHeight: 520,
-            p: 1,
-            overflow: 'hidden',
-          },
-        }}
-      >
-        <Stack spacing={1}>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{ px: 1, pt: 0.5 }}
-          >
-            <Stack spacing={0.25}>
-              <Typography variant="subtitle2" fontWeight={700}>
-                {t('problems.tags')}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {filter.tags && filter.tags.length > 0
-                  ? t('problems.appliedFilters', { count: filter.tags.length })
-                  : `${groupedTags.length} categories, ${tags.length} tags`}
-              </Typography>
-            </Stack>
-
-            <Stack direction="row" spacing={1} alignItems="center">
-              {(filter.tags?.length ?? 0) > 0 ? (
-                <Button
-                  size="small"
-                  variant="text"
-                  color="secondary"
-                  onClick={() => onChange('tags', [])}
-                >
-                  {t('problems.clearFilters')}
-                </Button>
-              ) : null}
-              <Button size="small" variant="text" color="secondary" onClick={handleTagsClose}>
-                OK
-              </Button>
-            </Stack>
-          </Stack>
-
-          <Divider />
-
-          <Box sx={{ maxHeight: 430, overflowY: 'auto', pr: 0.25 }}>
-            <Stack spacing={1}>
-              {groupedTags.map((category) => {
-                const selectedCount = category.tags.filter((tag) =>
-                  (filter.tags ?? []).includes(tag.id),
-                ).length;
-                const categoryId = String(category.id);
-                const isExpanded = expandedTagCategories.includes(categoryId);
-
-                return (
-                  <Accordion
-                    key={category.id}
-                    expanded={isExpanded}
-                    onChange={handleTagCategoryToggle(categoryId)}
-                    sx={{
-                      border: '1px solid',
-                      borderColor: category.isFocused
-                        ? alpha(theme.palette.primary.main, 0.4)
-                        : 'divider',
-                      bgcolor: category.isFocused
-                        ? alpha(theme.palette.primary.main, 0.04)
-                        : alpha(theme.palette.background.default, 0.18),
-                    }}
-                  >
-                    <AccordionSummary>
-                      <Stack
-                        direction="row"
-                        alignItems="center"
-                        justifyContent="space-between"
-                        width="100%"
-                        spacing={1}
-                      >
-                        <Typography variant="body2" fontWeight={700}>
-                          {category.title}
-                        </Typography>
-
-                        <Stack direction="row" spacing={0.75} alignItems="center">
-                          <Chip
-                            size="small"
-                            variant="outlined"
-                            label={category.tags.length}
-                            sx={{ minWidth: 40 }}
-                          />
-                          {selectedCount > 0 ? (
-                            <Chip size="small" color="primary" label={selectedCount} />
-                          ) : null}
-                        </Stack>
-                      </Stack>
-                    </AccordionSummary>
-
-                    <AccordionDetails sx={{ pt: 0, pb: 1.5 }}>
-                      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                        {category.tags.map((tag) => {
-                          const isActive = (filter.tags ?? []).includes(tag.id);
-
-                          return (
-                            <Chip
-                              key={tag.id}
-                              size="small"
-                              clickable
-                              onClick={() => handleTagToggle(tag.id)}
-                              label={tag.name}
-                              color={isActive ? 'primary' : 'default'}
-                              variant={isActive ? 'filled' : 'outlined'}
-                              sx={
-                                isActive
-                                  ? {
-                                      fontWeight: 600,
-                                      boxShadow: `0 8px 20px ${alpha(theme.palette.primary.main, 0.18)}`,
-                                    }
-                                  : {
-                                      bgcolor: alpha(theme.palette.background.paper, 0.82),
-                                      borderColor: alpha(theme.palette.text.primary, 0.12),
-                                      '&:hover': {
-                                        borderColor: alpha(theme.palette.primary.main, 0.32),
-                                        bgcolor: alpha(theme.palette.primary.main, 0.04),
-                                      },
-                                    }
-                              }
-                            />
-                          );
-                        })}
-                      </Stack>
-                    </AccordionDetails>
-                  </Accordion>
-                );
-              })}
-            </Stack>
-          </Box>
-        </Stack>
-      </Menu>
     </>
   );
 };

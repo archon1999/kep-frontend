@@ -6,6 +6,7 @@
     "filterTitle": "Фильтр",
     "filters": "Фильтры",
     "appliedFilters": "Выбрано фильтров: {{count}}",
+    "clear": "Очистить",
     "clearFilters": "Сбросить фильтры",
     "searchPlaceholder": "Поиск задач",
     "orderBy": "Сортировка",

@@ -6,6 +6,7 @@
     "filterTitle": "Filtr",
     "filters": "Filtrlar",
     "appliedFilters": "{{count}} ta filtr tanlandi",
+    "clear": "Tozalash",
     "clearFilters": "Filtrlarni tozalash",
     "searchPlaceholder": "Masala raqami yoki nomi boʻyicha qidirish",
     "orderBy": "Saralash",
