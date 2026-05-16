@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect } from 'react';
 import { Outlet, useLocation } from 'react-router';
-import AuthProvider from 'app/providers/AuthProvider.tsx';
+import AuthProvider, { useAuth } from 'app/providers/AuthProvider.tsx';
 import DocumentTitleProvider from 'app/providers/DocumentTitleProvider.tsx';
 import { useSettingsContext } from 'app/providers/SettingsProvider.tsx';
 import { REFRESH } from 'app/reducers/SettingsReducer.ts';
@@ -36,6 +36,18 @@ const hideInitialSplash = () => {
   return () => window.clearTimeout(timeoutId);
 };
 
+const InitialSplashController = () => {
+  const { isAuthLoading } = useAuth();
+
+  useEffect(() => {
+    if (isAuthLoading) return undefined;
+
+    return hideInitialSplash();
+  }, [isAuthLoading]);
+
+  return null;
+};
+
 const App = () => {
   const { pathname, search, hash } = useLocation();
   const { mode } = useThemeMode();
@@ -48,7 +60,6 @@ const App = () => {
 
   useEffect(() => {
     applyThemeToggleEffectStyle(getStoredThemeToggleEffect());
-    return hideInitialSplash();
   }, []);
 
   useEffect(() => {
@@ -67,6 +78,7 @@ const App = () => {
 
   return (
     <AuthProvider>
+      <InitialSplashController />
       <DocumentTitleProvider>
         <Outlet />
         <SettingsPanel />

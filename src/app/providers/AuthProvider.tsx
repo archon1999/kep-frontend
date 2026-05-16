@@ -10,7 +10,6 @@ import {
   useState,
 } from 'react';
 import { initialConfig } from 'app/config.ts';
-import Splash from 'shared/components/loading/Splash';
 import { removeItemFromStore } from 'shared/lib/utils';
 import { useCurrentUser, useLogOutUser } from 'modules/authentication/application';
 import type { AuthUser } from 'modules/authentication/domain';
@@ -78,10 +77,6 @@ const AuthProvider = ({ children }: PropsWithChildren) => {
     }),
     [resolvedCurrentUser, isAuthLoading, refreshCurrentUser, signout],
   );
-
-  if (isLoading && !resolvedCurrentUser) {
-    return <Splash />;
-  }
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 };
