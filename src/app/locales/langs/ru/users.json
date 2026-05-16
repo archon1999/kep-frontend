@@ -25,6 +25,10 @@
       "ageFrom": "Возраст от",
       "ageTo": "Возраст до",
       "agePlaceholder": "--",
+      "age": "Age",
+      "hasCountry": "Country is set",
+      "hasCodeforces": "Codeforces rating exists",
+      "hasTelegram": "Telegram account exists",
       "clear": "Сбросить"
     },
     "columns": {

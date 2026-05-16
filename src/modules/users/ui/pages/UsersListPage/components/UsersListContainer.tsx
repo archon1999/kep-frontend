@@ -1,6 +1,5 @@
 import {
   ChangeEvent,
-  MouseEvent,
   SyntheticEvent,
   useEffect,
   useMemo,
@@ -11,27 +10,29 @@ import { useTranslation } from 'react-i18next';
 import { TabContext, TabList } from '@mui/lab';
 import {
   Box,
-  Button,
   InputAdornment,
-  Menu,
-  MenuItem,
   Stack,
   Tab,
-  TextField,
-  Typography,
 } from '@mui/material';
 import { GridSortModel } from '@mui/x-data-grid';
 import { useUsersCountries, useUsersList } from 'modules/users/application/queries';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import AppliedFilters from 'shared/components/common/AppliedFilters';
-import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import FilterButton from 'shared/components/common/FilterButton';
+import {
+  DEFAULT_FILTER_DRAWER_WIDTH,
+  FilterDrawerLayout,
+  useFilterDrawer,
+} from 'shared/components/common/FilterDrawer';
+import PageHeader from 'shared/components/sections/common/PageHeader';
 import StyledTextField from 'shared/components/styled/StyledTextField';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
-import { enumParam, stringParam } from 'shared/lib/queryParams';
+import { booleanFlagParam, enumParam, stringParam } from 'shared/lib/queryParams';
 import { getCountryAlpha2, getCountryLabel } from 'shared/utils/country';
 import UsersDataGrid from './UsersDataGrid';
+import UsersHeaderStatistics from './UsersHeaderStatistics';
+import UsersListFilterDrawer, { CountryOption } from './UsersListFilterDrawer';
 
 const tabOrderingMap = {
   all: '-id',
@@ -59,13 +60,13 @@ type FiltersState = {
   country: string;
   ageFrom: string;
   ageTo: string;
+  hasCountry: boolean;
+  hasCodeforces: boolean;
+  hasTelegram: boolean;
 };
 
-type CountryOption = {
-  value: string;
-  code: string;
-  label: string;
-};
+const AGE_RANGE: [number, number] = [0, 100];
+const filterDrawerWidth = DEFAULT_FILTER_DRAWER_WIDTH;
 
 const orderingFieldMap = Object.fromEntries(
   Object.entries(sortFieldMap).map(([field, ordering]) => [ordering, field]),
@@ -85,6 +86,9 @@ const UsersListContainer = () => {
       country: '',
       ageFrom: '',
       ageTo: '',
+      hasCountry: false,
+      hasCodeforces: false,
+      hasTelegram: false,
       ordering: '',
     },
     schema: {
@@ -108,6 +112,18 @@ const UsersListContainer = () => {
         ...stringParam(),
         param: 'ageTo',
       },
+      hasCountry: {
+        ...booleanFlagParam(),
+        param: 'hasCountry',
+      },
+      hasCodeforces: {
+        ...booleanFlagParam(),
+        param: 'hasCodeforces',
+      },
+      hasTelegram: {
+        ...booleanFlagParam(),
+        param: 'hasTelegram',
+      },
       ordering: {
         ...stringParam(),
         param: 'ordering',
@@ -123,10 +139,21 @@ const UsersListContainer = () => {
       country: state.country,
       ageFrom: state.ageFrom,
       ageTo: state.ageTo,
+      hasCountry: state.hasCountry,
+      hasCodeforces: state.hasCodeforces,
+      hasTelegram: state.hasTelegram,
     }),
-    [state.ageFrom, state.ageTo, state.country, state.search],
+    [
+      state.ageFrom,
+      state.ageTo,
+      state.country,
+      state.hasCodeforces,
+      state.hasCountry,
+      state.hasTelegram,
+      state.search,
+    ],
   );
-  const [filtersAnchorEl, setFiltersAnchorEl] = useState<null | HTMLElement>(null);
+  const filterDrawer = useFilterDrawer();
   const [debouncedFilters, setDebouncedFilters] = useState(filters);
   const didMountRef = useRef(false);
   const { paginationModel, onPaginationModelChange, pageParams, setPaginationModel } =
@@ -165,8 +192,6 @@ const UsersListContainer = () => {
   }, [debouncedFilters, setPaginationModel, state.tabValue]);
 
   const { data: countries } = useUsersCountries();
-
-  const filtersOpen = Boolean(filtersAnchorEl);
 
   const normalizeCountryCode = (code?: string) => code?.trim().toLowerCase() ?? '';
 
@@ -217,6 +242,9 @@ const UsersListContainer = () => {
       country: debouncedFilters.country || undefined,
       ageFrom: debouncedFilters.ageFrom ? Number(debouncedFilters.ageFrom) : undefined,
       ageTo: debouncedFilters.ageTo ? Number(debouncedFilters.ageTo) : undefined,
+      hasCountry: debouncedFilters.hasCountry || undefined,
+      hasCodeforces: debouncedFilters.hasCodeforces || undefined,
+      hasTelegram: debouncedFilters.hasTelegram || undefined,
     }),
     [pageParams.page, pageParams.pageSize, ordering, debouncedFilters],
   );
@@ -224,8 +252,23 @@ const UsersListContainer = () => {
   const { data, isLoading, isValidating } = useUsersList(queryParams);
 
   const hasActiveFilters = useMemo(
-    () => Boolean(filters.country || filters.ageFrom || filters.ageTo),
-    [filters.ageFrom, filters.ageTo, filters.country],
+    () =>
+      Boolean(
+        filters.country ||
+          filters.ageFrom ||
+          filters.ageTo ||
+          filters.hasCountry ||
+          filters.hasCodeforces ||
+          filters.hasTelegram,
+      ),
+    [
+      filters.ageFrom,
+      filters.ageTo,
+      filters.country,
+      filters.hasCodeforces,
+      filters.hasCountry,
+      filters.hasTelegram,
+    ],
   );
 
   const activeFilters = useMemo(() => {
@@ -254,12 +297,39 @@ const UsersListContainer = () => {
       });
     }
 
+    if (filters.hasCountry) {
+      items.push({
+        key: 'hasCountry',
+        label: t('users.filters.hasCountry'),
+        onRemove: () => setField('hasCountry', false),
+      });
+    }
+
+    if (filters.hasCodeforces) {
+      items.push({
+        key: 'hasCodeforces',
+        label: t('users.filters.hasCodeforces'),
+        onRemove: () => setField('hasCodeforces', false),
+      });
+    }
+
+    if (filters.hasTelegram) {
+      items.push({
+        key: 'hasTelegram',
+        label: t('users.filters.hasTelegram'),
+        onRemove: () => setField('hasTelegram', false),
+      });
+    }
+
     return items;
   }, [
     countryOptionsByValue,
     filters.ageFrom,
     filters.ageTo,
     filters.country,
+    filters.hasCodeforces,
+    filters.hasCountry,
+    filters.hasTelegram,
     resetState,
     setField,
     t,
@@ -280,18 +350,14 @@ const UsersListContainer = () => {
       setPaginationModel((prev) => ({ ...prev, page: 0 }));
     };
 
-  const handleFiltersToggle = (event: MouseEvent<HTMLButtonElement>) => {
-    if (filtersOpen) {
-      setFiltersAnchorEl(null);
-    } else {
-      setFiltersAnchorEl(event.currentTarget);
-    }
+  const handleClearFilters = () => {
+    resetState(['country', 'ageFrom', 'ageTo', 'hasCountry', 'hasCodeforces', 'hasTelegram']);
+    setPaginationModel((prev) => ({ ...prev, page: 0 }));
   };
 
-  const handleFiltersClose = () => setFiltersAnchorEl(null);
-
-  const handleClearFilters = () => {
-    resetState(['country', 'ageFrom', 'ageTo']);
+  const handleAgeRangeChange = (value: [number, number]) => {
+    setField('ageFrom', value[0] === AGE_RANGE[0] ? '' : String(value[0]));
+    setField('ageTo', value[1] === AGE_RANGE[1] ? '' : String(value[1]));
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
   };
 
@@ -320,185 +386,132 @@ const UsersListContainer = () => {
     emptyValue: t('users.emptyValue'),
   } as const;
 
+  const ageRange = useMemo<[number, number]>(
+    () => [
+      filters.ageFrom ? Number(filters.ageFrom) : AGE_RANGE[0],
+      filters.ageTo ? Number(filters.ageTo) : AGE_RANGE[1],
+    ],
+    [filters.ageFrom, filters.ageTo],
+  );
+
   return (
-    <TabContext value={state.tabValue}>
-      <Stack
-        sx={{
-          gap: 2,
-          mb: 4,
-          alignItems: { md: 'center' },
-          justifyContent: 'space-between',
-          flexDirection: { xs: 'column', sm: 'row' },
-        }}
-      >
-        <Box sx={{ order: { xs: 1, sm: 0 } }}>
-          <TabList onChange={handleTabChange} aria-label="users list tab">
-            <Tab label={t('users.tabs.all')} value="all" />
-            <Tab label={t('users.tabs.skills')} value="skills" />
-            <Tab label={t('users.tabs.activity')} value="activity" />
-            <Tab label={t('users.tabs.contests')} value="contests" />
-            <Tab label={t('users.tabs.challenges')} value="challenges" />
-          </TabList>
-        </Box>
-        <Stack sx={{ gap: 1 }} direction={{ xs: 'column', sm: 'row' }}>
-          <FilterButton
-            id="users-filters-button"
-            onClick={handleFiltersToggle}
-            aria-haspopup="true"
-            aria-expanded={filtersOpen ? 'true' : undefined}
-            aria-controls={filtersOpen ? 'users-filters-menu' : undefined}
-            label={t('problems.filters')}
-            badgeContent={activeFilters.length}
-          />
-          <StyledTextField
-            id="search-box"
-            type="search"
-            fullWidth
-            value={filters.search}
-            onChange={handleFilterChange('search')}
-            placeholder={t('users.filters.searchPlaceholder')}
-            slotProps={{
-              input: {
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <IconifyIcon icon="material-symbols:search-rounded" fontSize={20} />
-                  </InputAdornment>
-                ),
-              },
-            }}
-            sx={{
-              maxWidth: { sm: 240, md: 280 },
-              flexGrow: { xs: 1, sm: 0 },
-            }}
-          />
-        </Stack>
-      </Stack>
-
-      <Box sx={{ mb: activeFilters.length ? 3 : 0 }}>
-        <AppliedFilters
-          filters={activeFilters}
-          summaryLabel={t('problems.appliedFilters', { count: activeFilters.length })}
-          clearLabel={t('problems.clearFilters')}
+    <FilterDrawerLayout
+      open={filterDrawer.open}
+      drawerWidth={filterDrawerWidth}
+      drawer={
+        <UsersListFilterDrawer
+          open={filterDrawer.open}
+          handleClose={filterDrawer.close}
+          drawerWidth={filterDrawerWidth}
+          country={filters.country}
+          ageRange={ageRange}
+          hasCountry={filters.hasCountry}
+          hasCodeforces={filters.hasCodeforces}
+          hasTelegram={filters.hasTelegram}
+          countryOptions={countryOptions}
+          countryOptionsByValue={countryOptionsByValue}
+          hasActiveFilters={hasActiveFilters}
           onClear={handleClearFilters}
+          onCountryChange={handleFilterChange('country')}
+          onAgeRangeChange={handleAgeRangeChange}
+          onHasCountryChange={(checked) => {
+            setField('hasCountry', checked);
+            setPaginationModel((prev) => ({ ...prev, page: 0 }));
+          }}
+          onHasCodeforcesChange={(checked) => {
+            setField('hasCodeforces', checked);
+            setPaginationModel((prev) => ({ ...prev, page: 0 }));
+          }}
+          onHasTelegramChange={(checked) => {
+            setField('hasTelegram', checked);
+            setPaginationModel((prev) => ({ ...prev, page: 0 }));
+          }}
         />
-      </Box>
-
-      <Menu
-        id="users-filters-menu"
-        anchorEl={filtersAnchorEl}
-        open={filtersOpen}
-        onClose={handleFiltersClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        MenuListProps={{ disablePadding: true }}
-        PaperProps={{
-          sx: {
-            p: 2,
-            width: 300,
-          },
-        }}
-      >
-        <Stack direction="column" spacing={2}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Typography variant="subtitle2" fontWeight={700} color="text.secondary">
-              {t('problems.filters')}
-            </Typography>
-            <Button
-              size="small"
-              color="secondary"
-              onClick={handleClearFilters}
-              disabled={!hasActiveFilters}
+      }
+    >
+      <Stack direction="column" height={1} spacing={4}>
+        <PageHeader
+          title={t('users.title')}
+          sx={{ alignItems: { sm: 'center' } }}
+          actionComponent={<UsersHeaderStatistics />}
+        />
+        <Box sx={{ flex: 1, px: { xs: 3, md: 5 } }}>
+          <TabContext value={state.tabValue}>
+            <Stack
+              sx={{
+                gap: 2,
+                mb: 4,
+                alignItems: { md: 'center' },
+                justifyContent: 'space-between',
+                flexDirection: { xs: 'column', sm: 'row' },
+              }}
             >
-              {t('problems.clearFilters')}
-            </Button>
-          </Stack>
-          <TextField
-            select
-            variant="filled"
-            fullWidth
-            label={t('users.filters.country')}
-            value={filters.country}
-            onChange={handleFilterChange('country')}
-            placeholder={t('users.filters.countryPlaceholder')}
-            slotProps={{ inputLabel: { shrink: true } }}
-            SelectProps={{
-              displayEmpty: true,
-              renderValue: (value) => {
-                const selectedValue = (value as string) || '';
+              <Box sx={{ order: { xs: 1, sm: 0 } }}>
+                <TabList onChange={handleTabChange} aria-label="users list tab">
+                  <Tab label={t('users.tabs.all')} value="all" />
+                  <Tab label={t('users.tabs.skills')} value="skills" />
+                  <Tab label={t('users.tabs.activity')} value="activity" />
+                  <Tab label={t('users.tabs.contests')} value="contests" />
+                  <Tab label={t('users.tabs.challenges')} value="challenges" />
+                </TabList>
+              </Box>
+              <Stack sx={{ gap: 1 }} direction={{ xs: 'column', sm: 'row' }}>
+                <FilterButton
+                  id="users-filters-button"
+                  onClick={filterDrawer.toggle}
+                  aria-haspopup="true"
+                  aria-expanded={filterDrawer.open ? 'true' : undefined}
+                  aria-controls={filterDrawer.open ? 'users-filters-drawer' : undefined}
+                  label={t('problems.filters')}
+                  badgeContent={activeFilters.length}
+                />
+                <StyledTextField
+                  id="search-box"
+                  type="search"
+                  fullWidth
+                  value={filters.search}
+                  onChange={handleFilterChange('search')}
+                  placeholder={t('users.filters.searchPlaceholder')}
+                  slotProps={{
+                    input: {
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <IconifyIcon icon="material-symbols:search-rounded" fontSize={20} />
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                  sx={{
+                    maxWidth: { sm: 240, md: 280 },
+                    flexGrow: { xs: 1, sm: 0 },
+                  }}
+                />
+              </Stack>
+            </Stack>
 
-                if (!selectedValue) {
-                  return (
-                    <Typography variant="body2" color="text.secondary">
-                      {t('users.filters.anyCountry')}
-                    </Typography>
-                  );
-                }
+            <Box sx={{ mb: activeFilters.length ? 3 : 0 }}>
+              <AppliedFilters
+                filters={activeFilters}
+                summaryLabel={t('problems.appliedFilters', { count: activeFilters.length })}
+                clearLabel={t('problems.clearFilters')}
+                onClear={handleClearFilters}
+              />
+            </Box>
 
-                const selectedOption = countryOptionsByValue[selectedValue];
-                const label = selectedOption?.label ?? selectedValue;
-
-                return (
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <CountryFlagIcon code={selectedOption?.code ?? selectedValue} size={20} />
-                    <Typography variant="body2" component="span" noWrap>
-                      {label}
-                    </Typography>
-                  </Stack>
-                );
-              },
-            }}
-          >
-            <MenuItem value="">
-              <Typography variant="body2" color="text.secondary">
-                {t('users.filters.anyCountry')}
-              </Typography>
-            </MenuItem>
-            {countryOptions.map((country) => (
-              <MenuItem key={country.value} value={country.value}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <CountryFlagIcon code={country.code} size={20} />
-                  <Typography variant="body2" component="span" noWrap>
-                    {country.label}
-                  </Typography>
-                </Stack>
-              </MenuItem>
-            ))}
-          </TextField>
-
-          <Stack direction="row" spacing={1.5} alignItems="flex-end">
-            <TextField
-              fullWidth
-              variant="filled"
-              type="number"
-              label={t('users.filters.ageFrom')}
-              value={filters.ageFrom}
-              onChange={handleFilterChange('ageFrom')}
-              placeholder={t('users.filters.agePlaceholder')}
+            <UsersDataGrid
+              rows={rows}
+              rowCount={rowCount}
+              loading={isLoading || isValidating}
+              paginationModel={paginationModel}
+              onPaginationModelChange={onPaginationModelChange}
+              sortModel={sortModel}
+              onSortModelChange={handleSortModelChange}
+              columnLabels={columnLabels}
             />
-            <TextField
-              fullWidth
-              variant="filled"
-              type="number"
-              label={t('users.filters.ageTo')}
-              value={filters.ageTo}
-              onChange={handleFilterChange('ageTo')}
-              placeholder={t('users.filters.agePlaceholder')}
-            />
-          </Stack>
-        </Stack>
-      </Menu>
-
-      <UsersDataGrid
-        rows={rows}
-        rowCount={rowCount}
-        loading={isLoading || isValidating}
-        paginationModel={paginationModel}
-        onPaginationModelChange={onPaginationModelChange}
-        sortModel={sortModel}
-        onSortModelChange={handleSortModelChange}
-        columnLabels={columnLabels}
-      />
-    </TabContext>
+          </TabContext>
+        </Box>
+      </Stack>
+    </FilterDrawerLayout>
   );
 };
 

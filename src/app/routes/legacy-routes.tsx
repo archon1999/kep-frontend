@@ -10,6 +10,7 @@ export const legacyRedirectRoutes: RouteObject[] = [
   { path: '/practice/problems/study-plan/:id', element: <LegacyRedirect to={resources.StudyPlan} /> },
   { path: '/practice/problems/attempts', element: <LegacyRedirect to={resources.Attempts} /> },
   { path: '/practice/problems/attempts/:username', element: <LegacyRedirect to={resources.AttemptsByUser} /> },
+  { path: '/problems/attempts/:username', element: <LegacyRedirect to={resources.AttemptsByUser} /> },
 
   { path: '/competitions/contests', element: <LegacyRedirect to={resources.Contests} /> },
   { path: '/competitions/contests/contest/:id', element: <LegacyRedirect to={resources.Contest} /> },

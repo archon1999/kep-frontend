@@ -1,6 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
 import { Box, Button, Stack, Tooltip } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
@@ -23,9 +22,10 @@ import {
 import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import useGridPagination from 'shared/hooks/useGridPagination';
+import useDebouncedValue from 'shared/hooks/useDebouncedValue';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
-import { stringParam } from 'shared/lib/queryParams';
+import { enumParam, stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import useSWR from 'swr';
 import ProblemsAttemptsFilterDrawer from './components/ProblemsAttemptsFilterDrawer.tsx';
@@ -35,6 +35,8 @@ export interface AttemptsFilterState {
   problemId: string;
   verdict: string;
   lang: string;
+  testCaseNumber: string;
+  testCaseNumberOperator: 'lt' | 'exact' | 'gt';
 }
 
 export type ProblemOption = {
@@ -56,7 +58,6 @@ const ProblemsAttemptsPage = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
   const redirectToLogin = useLoginRedirect();
-  const params = useParams<{ username?: string }>();
   const filterDrawer = useFilterDrawer();
   const {
     state: filter,
@@ -64,10 +65,12 @@ const ProblemsAttemptsPage = () => {
     resetState: resetFilterState,
   } = useRouteQueryState<AttemptsFilterState>({
     defaults: {
-      username: params.username ?? '',
+      username: '',
       problemId: '',
       verdict: '',
       lang: '',
+      testCaseNumber: '',
+      testCaseNumberOperator: 'exact',
     },
     schema: {
       username: {
@@ -86,6 +89,14 @@ const ProblemsAttemptsPage = () => {
         ...stringParam(),
         param: 'lang',
       },
+      testCaseNumber: {
+        ...stringParam(),
+        param: 'testCaseNumber',
+      },
+      testCaseNumberOperator: {
+        ...enumParam(['lt', 'exact', 'gt'] as const),
+        param: 'testCaseNumberOperator',
+      },
     },
   });
   const { paginationModel, onPaginationModelChange, pageParams, setPaginationModel } =
@@ -98,16 +109,24 @@ const ProblemsAttemptsPage = () => {
     });
   const [problemInput, setProblemInput] = useState('');
   const [userInput, setUserInput] = useState('');
+  const [selectedProblemOption, setSelectedProblemOption] = useState<ProblemOption | null>(null);
+  const [testCaseNumberInput, setTestCaseNumberInput] = useState(filter.testCaseNumber);
+  const debouncedTestCaseNumber = useDebouncedValue(testCaseNumberInput, 1000);
 
   const requestParams = useMemo<AttemptsListParams>(() => {
     const problemId = filter.problemId.trim() ? Number(filter.problemId) : NaN;
     const verdict = filter.verdict.trim() ? Number(filter.verdict) : NaN;
+    const testCaseNumber = filter.testCaseNumber.trim() ? Number(filter.testCaseNumber) : NaN;
 
     return {
       username: filter.username || undefined,
       problemId: Number.isNaN(problemId) ? undefined : problemId,
       verdict: Number.isNaN(verdict) ? undefined : verdict,
       lang: filter.lang || undefined,
+      testCaseNumber: Number.isNaN(testCaseNumber) ? undefined : testCaseNumber,
+      testCaseNumberOperator: Number.isNaN(testCaseNumber)
+        ? undefined
+        : filter.testCaseNumberOperator,
       page: pageParams.page,
       pageSize: pageParams.pageSize,
       ordering: '-id',
@@ -130,9 +149,29 @@ const ProblemsAttemptsPage = () => {
   };
 
   const handleReset = () => {
-    resetFilterState(['username', 'problemId', 'verdict', 'lang']);
+    resetFilterState([
+      'username',
+      'problemId',
+      'verdict',
+      'lang',
+      'testCaseNumber',
+      'testCaseNumberOperator',
+    ]);
+    setSelectedProblemOption(null);
+    setTestCaseNumberInput('');
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
   };
+
+  useEffect(() => {
+    setTestCaseNumberInput(filter.testCaseNumber);
+  }, [filter.testCaseNumber]);
+
+  useEffect(() => {
+    if (debouncedTestCaseNumber === filter.testCaseNumber) return;
+
+    patchFilterState({ testCaseNumber: debouncedTestCaseNumber });
+    setPaginationModel((prev) => ({ ...prev, page: 0 }));
+  }, [debouncedTestCaseNumber, filter.testCaseNumber, patchFilterState, setPaginationModel]);
 
   const isOnlyMyAttempts = Boolean(
     currentUser?.username && filter.username === currentUser.username,
@@ -142,6 +181,7 @@ const ProblemsAttemptsPage = () => {
     Boolean(filter.problemId),
     Boolean(filter.verdict),
     Boolean(filter.lang),
+    Boolean(filter.testCaseNumber),
   ].filter(Boolean).length;
   const hasActiveFilters = activeFilterCount > 0;
 
@@ -189,13 +229,16 @@ const ProblemsAttemptsPage = () => {
   const selectedProblem = useMemo(
     () =>
       problemOptions.find((option) => String(option.id) === filter.problemId) ??
+      (selectedProblemOption && String(selectedProblemOption.id) === filter.problemId
+        ? selectedProblemOption
+        : null) ??
       (filter.problemId
         ? {
             id: Number(filter.problemId),
             title: `${filter.problemId}`,
           }
         : null),
-    [problemOptions, filter.problemId],
+    [filter.problemId, problemOptions, selectedProblemOption],
   );
 
   const selectedUser = useMemo(() => {
@@ -225,9 +268,12 @@ const ProblemsAttemptsPage = () => {
           userOptions={userOptions}
           selectedProblem={selectedProblem}
           selectedUser={selectedUser}
+          testCaseNumberInput={testCaseNumberInput}
           hasActiveFilters={hasActiveFilters}
           onChange={handleFilterChange}
+          onTestCaseNumberInputChange={setTestCaseNumberInput}
           onClear={handleReset}
+          setSelectedProblemOption={setSelectedProblemOption}
           setProblemInput={setProblemInput}
           setUserInput={setUserInput}
         />

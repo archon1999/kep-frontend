@@ -47,6 +47,8 @@
       "anyLanguage": "Любой язык",
       "verdict": "Вердикт",
       "anyVerdict": "Любой вердикт",
+      "testCaseNumber": "Номер теста",
+      "testCaseNumberOperator": "Условие",
       "empty": "Попыток не найдено.",
       "unknownVerdict": "Неизвестный вердикт",
       "backToProblems": "Назад к задачам",

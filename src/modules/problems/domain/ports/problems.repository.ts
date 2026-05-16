@@ -71,6 +71,8 @@ export type AttemptsListParams = {
   duelProblem?: string;
   verdict?: number;
   lang?: string;
+  testCaseNumber?: number;
+  testCaseNumberOperator?: 'lt' | 'exact' | 'gt';
   page?: number;
   pageSize?: number;
 };

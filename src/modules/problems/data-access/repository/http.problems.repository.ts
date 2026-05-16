@@ -383,6 +383,8 @@ const mapAttemptsFilter = (params: AttemptsListParams): ApiAttemptsListParams =>
   duel_problem: params.duelProblem,
   verdict: params.verdict !== undefined ? String(params.verdict) : undefined,
   lang: params.lang || undefined,
+  test_case_number: params.testCaseNumber !== undefined ? String(params.testCaseNumber) : undefined,
+  test_case_number_operator: params.testCaseNumberOperator,
   page: params.page,
   pageSize: params.pageSize,
 });

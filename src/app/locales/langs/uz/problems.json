@@ -47,6 +47,8 @@
       "anyLanguage": "Istalgan til",
       "verdict": "Verdikt",
       "anyVerdict": "Istalgan verdikt",
+      "testCaseNumber": "Test raqami",
+      "testCaseNumberOperator": "Shart",
       "empty": "Urinishlar topilmadi.",
       "unknownVerdict": "Nomaʻlum verdikt",
       "backToProblems": "Masalalarga qaytish",

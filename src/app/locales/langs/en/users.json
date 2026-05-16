@@ -22,9 +22,13 @@
       "country": "Country",
       "countryPlaceholder": "Choose a country",
       "anyCountry": "Any country",
+      "age": "Age",
       "ageFrom": "Age from",
       "ageTo": "Age to",
       "agePlaceholder": "--",
+      "hasCountry": "Country is set",
+      "hasCodeforces": "Codeforces rating exists",
+      "hasTelegram": "Telegram account exists",
       "clear": "Clear"
     },
     "columns": {

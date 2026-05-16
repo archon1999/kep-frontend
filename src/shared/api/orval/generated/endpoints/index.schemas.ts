@@ -474,7 +474,8 @@ export interface ChallengePlayer {
   delta?: string;
 }
 
-export type ChallengeQuestionTimeType = (typeof ChallengeQuestionTimeType)[keyof typeof ChallengeQuestionTimeType];
+export type ChallengeQuestionTimeType =
+  (typeof ChallengeQuestionTimeType)[keyof typeof ChallengeQuestionTimeType];
 
 export const ChallengeQuestionTimeType = {
   NUMBER_1: 1,
@@ -602,7 +603,8 @@ export const ContestCategory = {
   NUMBER_8: 8,
 } as const;
 
-export type ContestParticipationType = (typeof ContestParticipationType)[keyof typeof ContestParticipationType];
+export type ContestParticipationType =
+  (typeof ContestParticipationType)[keyof typeof ContestParticipationType];
 
 export const ContestParticipationType = {
   NUMBER_1: 1,
@@ -661,7 +663,8 @@ export interface ContestantProblemInfo {
   readonly contestTime?: string;
 }
 
-export type ContestContestantType = (typeof ContestContestantType)[keyof typeof ContestContestantType];
+export type ContestContestantType =
+  (typeof ContestContestantType)[keyof typeof ContestContestantType];
 
 export const ContestContestantType = {
   NUMBER_1: 1,
@@ -1071,7 +1074,8 @@ export interface KepCoverUser {
   readonly likesCount?: string;
 }
 
-export type UserKepcoinEarnEarnType = (typeof UserKepcoinEarnEarnType)[keyof typeof UserKepcoinEarnEarnType];
+export type UserKepcoinEarnEarnType =
+  (typeof UserKepcoinEarnEarnType)[keyof typeof UserKepcoinEarnEarnType];
 
 export const UserKepcoinEarnEarnType = {
   NUMBER_1: 1,
@@ -1207,7 +1211,8 @@ export interface Notification {
   readonly createdNaturaltime?: string;
 }
 
-export type ProblemsRatingHistoryType = (typeof ProblemsRatingHistoryType)[keyof typeof ProblemsRatingHistoryType];
+export type ProblemsRatingHistoryType =
+  (typeof ProblemsRatingHistoryType)[keyof typeof ProblemsRatingHistoryType];
 
 export const ProblemsRatingHistoryType = {
   NUMBER_1: 1,
@@ -1280,7 +1285,8 @@ export interface ProblemTag {
   readonly name?: string;
 }
 
-export type ProblemListDifficulty = (typeof ProblemListDifficulty)[keyof typeof ProblemListDifficulty];
+export type ProblemListDifficulty =
+  (typeof ProblemListDifficulty)[keyof typeof ProblemListDifficulty];
 
 export const ProblemListDifficulty = {
   NUMBER_1: 1,
@@ -1379,7 +1385,8 @@ export interface ProblemTopic {
   name: string;
 }
 
-export type ProblemDetailDifficulty = (typeof ProblemDetailDifficulty)[keyof typeof ProblemDetailDifficulty];
+export type ProblemDetailDifficulty =
+  (typeof ProblemDetailDifficulty)[keyof typeof ProblemDetailDifficulty];
 
 export const ProblemDetailDifficulty = {
   NUMBER_1: 1,
@@ -1471,7 +1478,8 @@ export interface Product {
   readonly colors?: string;
 }
 
-export type ProjectAttemptListVerdict = (typeof ProjectAttemptListVerdict)[keyof typeof ProjectAttemptListVerdict];
+export type ProjectAttemptListVerdict =
+  (typeof ProjectAttemptListVerdict)[keyof typeof ProjectAttemptListVerdict];
 
 export const ProjectAttemptListVerdict = {
   NUMBER_MINUS_2: -2,
@@ -2208,6 +2216,14 @@ export type ApiAttemptsListParams = {
    * lang
    */
   lang?: string;
+  /**
+   * test_case_number
+   */
+  test_case_number?: string;
+  /**
+   * test_case_number_operator
+   */
+  test_case_number_operator?: string;
   /**
    * Page number
    */
@@ -3709,7 +3725,8 @@ export type ApiProjectAttemptsList200 = {
   data: ProjectAttemptList[];
 };
 
-export type ApiProjectsSubmitBodyLevel = (typeof ApiProjectsSubmitBodyLevel)[keyof typeof ApiProjectsSubmitBodyLevel];
+export type ApiProjectsSubmitBodyLevel =
+  (typeof ApiProjectsSubmitBodyLevel)[keyof typeof ApiProjectsSubmitBodyLevel];
 
 export const ApiProjectsSubmitBodyLevel = {
   NUMBER_1: 1,
@@ -4059,6 +4076,18 @@ export type ApiUsersListParams = {
    * age_to
    */
   age_to?: string;
+  /**
+   * has_country
+   */
+  has_country?: string;
+  /**
+   * has_codeforces
+   */
+  has_codeforces?: string;
+  /**
+   * has_telegram
+   */
+  has_telegram?: string;
   /**
    * email
    */

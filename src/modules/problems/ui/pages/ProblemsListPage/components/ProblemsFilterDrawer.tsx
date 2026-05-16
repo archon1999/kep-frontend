@@ -235,7 +235,6 @@ const ProblemsFilterDrawerContent = ({
     <FilterDrawer
       id="problems-filters-drawer"
       open={open}
-      title={t('problems.filterTitle')}
       onClose={handleClose}
       drawerWidth={drawerWidth}
       hasActiveFilters={hasActiveFilters}

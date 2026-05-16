@@ -22,9 +22,13 @@
       "country": "Mamlakat",
       "countryPlaceholder": "Mamlakatni tanlang",
       "anyCountry": "Istalgan mamlakat",
+      "age": "Yosh",
       "ageFrom": "Yosh dan",
       "ageTo": "Yosh gacha",
       "agePlaceholder": "--",
+      "hasCountry": "Davlat belgilangan",
+      "hasCodeforces": "CF rating mavjud",
+      "hasTelegram": "Telegram akkaunt mavjud",
       "clear": "Tozalash"
     },
     "columns": {

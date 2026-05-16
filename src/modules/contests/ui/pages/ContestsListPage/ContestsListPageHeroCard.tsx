@@ -1,4 +1,3 @@
-import { MouseEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button, Card, CardContent, Stack, Typography } from '@mui/material';
@@ -12,7 +11,7 @@ interface ContestsListPageHeroCardProps {
   canViewMyStats: boolean;
   filtersOpen: boolean;
   activeFiltersCount: number;
-  onToggleFilters: (event: MouseEvent<HTMLButtonElement>) => void;
+  onToggleFilters: () => void;
 }
 
 const ContestsListPageHeroCard = ({
@@ -83,7 +82,7 @@ const ContestsListPageHeroCard = ({
                 onClick={onToggleFilters}
                 aria-haspopup="true"
                 aria-expanded={filtersOpen ? 'true' : undefined}
-                aria-controls={filtersOpen ? 'contests-filters-menu' : undefined}
+                aria-controls={filtersOpen ? 'contests-filters-drawer' : undefined}
                 label={t('problems.filters')}
                 badgeContent={activeFiltersCount}
                 sx={{ alignSelf: { xs: 'stretch', sm: 'flex-start' } }}

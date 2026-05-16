@@ -133,6 +133,8 @@
       "anyLanguage": "Any language",
       "verdict": "Verdict",
       "anyVerdict": "Any verdict",
+      "testCaseNumber": "Test number",
+      "testCaseNumberOperator": "Condition",
       "empty": "No attempts found.",
       "unknownVerdict": "Unknown verdict",
       "verdictTitles": {

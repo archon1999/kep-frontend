@@ -6,6 +6,8 @@ import {
   ProblemLanguageOption,
 } from 'modules/problems/domain/entities/problem.entity.ts';
 import FilterDrawer from 'shared/components/common/FilterDrawer.tsx';
+import AttemptVerdict from 'shared/components/problems/AttemptVerdict.tsx';
+import type { VerdictKey } from 'shared/components/problems/attemptVerdict.utils.ts';
 import StyledTextField from 'shared/components/styled/StyledTextField.tsx';
 import type { AttemptsFilterState, ProblemOption, UserOption } from '../ProblemsAttemptsPage.tsx';
 
@@ -20,12 +22,21 @@ interface ProblemsAttemptsFilterDrawerProps {
   userOptions: UserOption[];
   selectedProblem: ProblemOption | null;
   selectedUser: UserOption | null;
+  testCaseNumberInput: string;
   hasActiveFilters: boolean;
   onChange: <K extends keyof AttemptsFilterState>(key: K, value: AttemptsFilterState[K]) => void;
+  onTestCaseNumberInputChange: (value: string) => void;
   onClear: () => void;
+  setSelectedProblemOption: Dispatch<SetStateAction<ProblemOption | null>>;
   setProblemInput: Dispatch<SetStateAction<string>>;
   setUserInput: Dispatch<SetStateAction<string>>;
 }
+
+const testCaseNumberOperators = [
+  { value: 'lt', label: '<' },
+  { value: 'exact', label: '=' },
+  { value: 'gt', label: '>' },
+] as const;
 
 const ProblemsAttemptsFilterDrawer = ({
   open,
@@ -38,19 +49,22 @@ const ProblemsAttemptsFilterDrawer = ({
   userOptions,
   selectedProblem,
   selectedUser,
+  testCaseNumberInput,
   hasActiveFilters,
   onChange,
+  onTestCaseNumberInputChange,
   onClear,
+  setSelectedProblemOption,
   setProblemInput,
   setUserInput,
 }: ProblemsAttemptsFilterDrawerProps) => {
   const { t } = useTranslation();
+  const selectedVerdict = verdictOptions.find((option) => String(option.value) === filter.verdict);
 
   return (
     <FilterDrawer
       id="attempts-filters-drawer"
       open={open}
-      title={t('problems.filterTitle')}
       onClose={handleClose}
       drawerWidth={drawerWidth}
       hasActiveFilters={hasActiveFilters}
@@ -62,6 +76,7 @@ const ProblemsAttemptsFilterDrawer = ({
           options={problemOptions}
           value={selectedProblem}
           onChange={(_, value) => {
+            setSelectedProblemOption(value);
             setProblemInput(value ? `${value.id}. ${value.title}`.trim() : '');
             onChange('problemId', value ? String(value.id) : '');
           }}
@@ -82,11 +97,7 @@ const ProblemsAttemptsFilterDrawer = ({
             </li>
           )}
           renderInput={(params) => (
-            <StyledTextField
-              {...params}
-              label={t('problems.attempts.problem')}
-              placeholder="1234"
-            />
+            <StyledTextField {...params} label={t('problems.attempts.problem')} />
           )}
           isOptionEqualToValue={(option, value) => option.id === value.id}
           blurOnSelect
@@ -112,7 +123,7 @@ const ProblemsAttemptsFilterDrawer = ({
             <li {...props} key={option.username}>
               <Stack direction="row" spacing={1} alignItems="center">
                 <Avatar src={option.avatar} alt={option.username} sx={{ width: 28, height: 28 }} />
-                <Stack direction="row" spacing={0.25}>
+                <Stack direction="column" spacing={0}>
                   <Typography variant="body2" fontWeight={700}>
                     {option.username}
                   </Typography>
@@ -126,11 +137,7 @@ const ProblemsAttemptsFilterDrawer = ({
             </li>
           )}
           renderInput={(params) => (
-            <StyledTextField
-              {...params}
-              label={t('problems.attempts.user')}
-              placeholder="username"
-            />
+            <StyledTextField {...params} label={t('problems.attempts.user')} />
           )}
           isOptionEqualToValue={(option, value) => option.username === value.username}
           blurOnSelect
@@ -161,14 +168,65 @@ const ProblemsAttemptsFilterDrawer = ({
           value={filter.verdict}
           fullWidth
           onChange={(event) => onChange('verdict', event.target.value)}
+          SelectProps={{
+            renderValue: () =>
+              selectedVerdict ? (
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <AttemptVerdict
+                    verdict={selectedVerdict.value as VerdictKey}
+                    title={selectedVerdict.label}
+                    size="small"
+                  />
+                  <Typography variant="body2">{selectedVerdict.label}</Typography>
+                </Stack>
+              ) : (
+                t('problems.attempts.anyVerdict')
+              ),
+          }}
         >
           <MenuItem value="">{t('problems.attempts.anyVerdict')}</MenuItem>
           {verdictOptions.map((option) => (
             <MenuItem key={option.value} value={String(option.value)}>
-              {option.label}
+              <Stack direction="row" spacing={1} alignItems="center">
+                <AttemptVerdict
+                  verdict={option.value as VerdictKey}
+                  title={option.label}
+                  size="small"
+                />
+                <Typography variant="body2">{option.label}</Typography>
+              </Stack>
             </MenuItem>
           ))}
         </StyledTextField>
+
+        <Stack direction="row" spacing={1} alignItems="flex-end">
+          <StyledTextField
+            select
+            label={t('problems.attempts.testCaseNumberOperator')}
+            value={filter.testCaseNumberOperator}
+            sx={{ width: 88, flexShrink: 0 }}
+            onChange={(event) =>
+              onChange(
+                'testCaseNumberOperator',
+                event.target.value as AttemptsFilterState['testCaseNumberOperator'],
+              )
+            }
+          >
+            {testCaseNumberOperators.map((operator) => (
+              <MenuItem key={operator.value} value={operator.value}>
+                {operator.label}
+              </MenuItem>
+            ))}
+          </StyledTextField>
+          <StyledTextField
+            type="number"
+            label={t('problems.attempts.testCaseNumber')}
+            value={testCaseNumberInput}
+            fullWidth
+            disabledSpinButton
+            onChange={(event) => onTestCaseNumberInputChange(event.target.value)}
+          />
+        </Stack>
       </Stack>
     </FilterDrawer>
   );

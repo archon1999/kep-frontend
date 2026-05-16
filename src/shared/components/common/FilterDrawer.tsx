@@ -16,6 +16,7 @@ import {
   formControlLabelClasses,
   styled,
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { useNavContext } from 'app/layouts/main-layout/NavProvider';
 import { useBreakpoints } from 'app/providers/BreakpointsProvider.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
@@ -97,7 +98,7 @@ export const FilterDrawerLayout = ({
 export interface FilterDrawerProps {
   id: string;
   open: boolean;
-  title: ReactNode;
+  title?: ReactNode;
   onClose: () => void;
   children: ReactNode;
   drawerWidth?: number;
@@ -117,15 +118,17 @@ const FilterDrawer = ({
   hasActiveFilters = false,
   onClear,
 }: FilterDrawerProps) => {
+  const { t } = useTranslation();
   const { up } = useBreakpoints();
   const { topbarHeight } = useNavContext();
   const upXl = up('xl');
   const upSm = up('sm');
   const showClear = hasActiveFilters && Boolean(onClear);
+  const resolvedTitle = title ?? t('problems.filters');
   const drawerContent = (
     <Box id={id} component="aside" sx={{ px: 3, py: 2 }}>
       <Stack direction="row" alignItems="center" sx={{ justifyContent: 'space-between', mb: 2 }}>
-        <Typography variant="h6">{title}</Typography>
+        <Typography variant="h6">{resolvedTitle}</Typography>
         <Stack direction="row" alignItems="center" spacing={0.5}>
           {showClear ? (
             <Button size="small" variant="text" color="secondary" onClick={onClear}>

@@ -1,14 +1,19 @@
-import { MouseEvent, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Grid, Stack } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useContestCategories, useContestsList } from 'modules/contests/application/queries';
 import AppliedFilters from 'shared/components/common/AppliedFilters';
+import {
+  DEFAULT_FILTER_DRAWER_WIDTH,
+  FilterDrawerLayout,
+  useFilterDrawer,
+} from 'shared/components/common/FilterDrawer';
 import useDebouncedValue from 'shared/hooks/useDebouncedValue';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { enumParam, numberParam, stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
-import ContestsListPageFiltersMenu from './ContestsListPageFiltersMenu.tsx';
+import ContestsListPageFilterDrawer from './ContestsListPageFilterDrawer.tsx';
 import ContestsListPageHeroCard from './ContestsListPageHeroCard.tsx';
 import ContestsListPageResults from './ContestsListPageResults.tsx';
 import ContestsListTopRatingCard from './ContestsListTopRatingCard.tsx';
@@ -32,6 +37,7 @@ const contestTypes = [
 ] as const;
 
 const DEFAULT_PAGE_SIZE = 6;
+const filterDrawerWidth = DEFAULT_FILTER_DRAWER_WIDTH;
 
 type ContestListQueryState = {
   page: number;
@@ -45,6 +51,7 @@ const ContestsListPage = () => {
   const { t } = useTranslation();
   const { data: categories } = useContestCategories();
   const { currentUser } = useAuth();
+  const filterDrawer = useFilterDrawer();
 
   const { state, setField, patchState } = useRouteQueryState<ContestListQueryState>({
     defaults: {
@@ -81,11 +88,8 @@ const ContestsListPage = () => {
     },
     pageResetKeys: ['title', 'category', 'type', 'participation'],
   });
-  const [filtersAnchorEl, setFiltersAnchorEl] = useState<null | HTMLElement>(null);
 
   const debouncedTitle = useDebouncedValue(state.title, 400);
-
-  const filtersOpen = Boolean(filtersAnchorEl);
 
   const queryParams = useMemo(
     () => ({
@@ -165,30 +169,15 @@ const ContestsListPage = () => {
     setField('type', value || undefined);
   };
 
-  const handleFiltersToggle = (event: MouseEvent<HTMLButtonElement>) => {
-    if (filtersOpen) {
-      setFiltersAnchorEl(null);
-      return;
-    }
-
-    setFiltersAnchorEl(event.currentTarget);
-  };
-
-  const handleFiltersClose = () => setFiltersAnchorEl(null);
-
   return (
-    <Box sx={responsivePagePaddingSx}>
-      <Stack direction="column" spacing={3}>
-        <ContestsListPageHeroCard
-          canViewMyStats={Boolean(currentUser)}
-          filtersOpen={filtersOpen}
-          activeFiltersCount={activeFilters.length}
-          onToggleFilters={handleFiltersToggle}
-        />
-
-        <ContestsListPageFiltersMenu
-          anchorEl={filtersAnchorEl}
-          open={filtersOpen}
+    <FilterDrawerLayout
+      open={filterDrawer.open}
+      drawerWidth={filterDrawerWidth}
+      drawer={
+        <ContestsListPageFilterDrawer
+          open={filterDrawer.open}
+          handleClose={filterDrawer.close}
+          drawerWidth={filterDrawerWidth}
           title={state.title}
           category={state.category}
           type={state.type}
@@ -196,7 +185,6 @@ const ContestsListPage = () => {
           categories={categories}
           contestTypes={contestTypes}
           totalContestsCount={totalContestsCount}
-          onClose={handleFiltersClose}
           onClear={handleClearFilters}
           hasActiveFilters={activeFilters.length > 0}
           onTitleChange={(value) => setField('title', value)}
@@ -204,32 +192,43 @@ const ContestsListPage = () => {
           onTypeChange={handleTypeChange}
           onParticipationChange={(value) => setField('participation', value)}
         />
+      }
+    >
+      <Box sx={responsivePagePaddingSx}>
+        <Stack direction="column" spacing={3}>
+          <ContestsListPageHeroCard
+            canViewMyStats={Boolean(currentUser)}
+            filtersOpen={filterDrawer.open}
+            activeFiltersCount={activeFilters.length}
+            onToggleFilters={filterDrawer.toggle}
+          />
 
-        <AppliedFilters
-          filters={activeFilters}
-          summaryLabel={t('problems.appliedFilters', { count: activeFilters.length })}
-          clearLabel={t('problems.clearFilters')}
-          onClear={handleClearFilters}
-        />
+          <AppliedFilters
+            filters={activeFilters}
+            summaryLabel={t('problems.appliedFilters', { count: activeFilters.length })}
+            clearLabel={t('problems.clearFilters')}
+            onClear={handleClearFilters}
+          />
 
-        <Grid container spacing={3} alignItems="flex-start">
-          <Grid size={{ xs: 12, md: 9 }}>
-            <ContestsListPageResults
-              contests={contests}
-              isLoading={isLoading}
-              showEmptyState={showEmptyState}
-              page={state.page}
-              pagesCount={pageResult?.pagesCount ?? 0}
-              skeletonCount={DEFAULT_PAGE_SIZE}
-              onPageChange={(value) => setField('page', value)}
-            />
+          <Grid container spacing={3} alignItems="flex-start">
+            <Grid size={{ xs: 12, md: 9 }}>
+              <ContestsListPageResults
+                contests={contests}
+                isLoading={isLoading}
+                showEmptyState={showEmptyState}
+                page={state.page}
+                pagesCount={pageResult?.pagesCount ?? 0}
+                skeletonCount={DEFAULT_PAGE_SIZE}
+                onPageChange={(value) => setField('page', value)}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 3 }}>
+              <ContestsListTopRatingCard />
+            </Grid>
           </Grid>
-          <Grid size={{ xs: 12, md: 3 }}>
-            <ContestsListTopRatingCard />
-          </Grid>
-        </Grid>
-      </Stack>
-    </Box>
+        </Stack>
+      </Box>
+    </FilterDrawerLayout>
   );
 };
 

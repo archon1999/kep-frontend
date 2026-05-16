@@ -14,7 +14,10 @@ const LegacyRedirect = ({ to, mapParams }: LegacyRedirectProps) => {
     Object.entries(mappedParams).filter(([, value]) => value !== undefined),
   ) as Record<string, string | number>;
 
-  const targetPath = generatePath(to, normalizedParams);
+  const targetPath = Object.entries(normalizedParams).reduce(
+    (result, [key, value]) => result.replaceAll(`:${key}`, encodeURIComponent(value.toString())),
+    generatePath(to, normalizedParams),
+  );
   const [pathnameWithSearch, targetHash] = targetPath.split('#');
   const [pathname, targetSearch] = pathnameWithSearch.split('?');
 

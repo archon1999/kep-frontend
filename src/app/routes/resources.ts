@@ -45,7 +45,7 @@ export const resources = {
   StudyPlan: '/problems/study-plan/:id',
 
   Attempts: '/problems/attempts',
-  AttemptsByUser: '/problems/attempts/:username',
+  AttemptsByUser: '/problems/attempts?username=:username',
   ProblemsUserStatistics: '/problems/user-statistics',
 
   Contests: '/contests',

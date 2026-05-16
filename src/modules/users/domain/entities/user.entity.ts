@@ -67,6 +67,9 @@ export interface UsersListRequest {
   country?: string;
   ageFrom?: number;
   ageTo?: number;
+  hasCountry?: boolean;
+  hasCodeforces?: boolean;
+  hasTelegram?: boolean;
 }
 
 export interface UsersChartStatistics {

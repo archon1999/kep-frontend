@@ -26,6 +26,9 @@ export class HttpUsersRepository implements UsersRepository {
       country: params.country,
       age_from: params.ageFrom ? String(params.ageFrom) : undefined,
       age_to: params.ageTo ? String(params.ageTo) : undefined,
+      has_country: params.hasCountry ? 'true' : undefined,
+      has_codeforces: params.hasCodeforces ? 'true' : undefined,
+      has_telegram: params.hasTelegram ? 'true' : undefined,
     });
 
     return mapApiUsersListToDomain(response);

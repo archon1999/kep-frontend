@@ -350,11 +350,6 @@ export const routes: RouteObject[] = [
             handle: { titleKey: 'pageTitles.problemsAttempts' },
           },
           {
-            path: resources.AttemptsByUser,
-            element: <ProblemsAttemptsPage />,
-            handle: { titleKey: 'pageTitles.problemsAttempts' },
-          },
-          {
             path: resources.Projects,
             element: <ProjectsListPage />,
             handle: { titleKey: 'pageTitles.projects' },
