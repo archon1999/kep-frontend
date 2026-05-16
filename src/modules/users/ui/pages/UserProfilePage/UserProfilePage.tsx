@@ -60,6 +60,7 @@ import StatusAvatar from 'shared/components/base/StatusAvatar';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
+import Streak from 'shared/components/rating/Streak';
 import ScrollSpy, { useScrollSpyContext } from 'shared/components/scroll-spy';
 import ScrollSpyContent from 'shared/components/scroll-spy/ScrollSpyContent';
 import ScrollSpyNavItem from 'shared/components/scroll-spy/ScrollSpyNavItem';
@@ -590,12 +591,15 @@ const ProfileSummary = ({
                 {userDetails?.username || username}
               </Typography>
               {userDetails?.streak ? (
-                <Typography
-                  variant="subtitle2"
-                  sx={{ fontWeight: 400, color: 'text.secondary', textWrap: 'nowrap' }}
-                >
-                  {t('users.columns.streak')}: {userDetails.streak}
-                </Typography>
+                <Streak
+                  streak={userDetails.streak}
+                  maxStreak={userDetails.maxStreak}
+                  iconSize={18}
+                  textVariant="subtitle2"
+                  fontWeight={400}
+                  color="text.secondary"
+                  spacing={0.5}
+                />
               ) : null}
             </Stack>
           </Stack>
