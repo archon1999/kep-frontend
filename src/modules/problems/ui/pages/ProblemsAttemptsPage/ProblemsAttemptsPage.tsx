@@ -1,53 +1,48 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import {
-  Autocomplete,
-  Avatar,
-  Box,
-  Button,
-  Chip,
-  FormControl,
-  InputLabel,
-  Menu,
-  MenuItem,
-  Select,
-  Stack,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Stack, Tooltip } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
+import {
+  problemsQueries,
+  useAttemptVerdicts,
+  useAttemptsList,
+  useProblemLanguages,
+} from 'modules/problems/application/queries';
+import type { AttemptsListParams } from 'modules/problems/domain/ports/problems.repository';
+import ProblemsAttemptsTable from 'modules/problems/ui/shared/components/ProblemsAttemptsTable.tsx';
 import { usersApiClient } from 'modules/users/data-access/api/users.client';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch';
 import FilterButton from 'shared/components/common/FilterButton';
+import {
+  DEFAULT_FILTER_DRAWER_WIDTH,
+  FilterDrawerLayout,
+  useFilterDrawer,
+} from 'shared/components/common/FilterDrawer';
+import OnlyMeSwitch from 'shared/components/common/OnlyMeSwitch';
 import PageHeader from 'shared/components/sections/common/PageHeader';
-import StyledTextField from 'shared/components/styled/StyledTextField';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import useSWR from 'swr';
-import { problemsQueries, useAttemptVerdicts, useAttemptsList, useProblemLanguages } from 'modules/problems/application/queries';
-import { AttemptsListParams } from 'modules/problems/domain/ports/problems.repository';
-import ProblemsAttemptsTable from 'modules/problems/ui/shared/components/ProblemsAttemptsTable.tsx';
+import ProblemsAttemptsFilterDrawer from './components/ProblemsAttemptsFilterDrawer.tsx';
 
-
-interface AttemptsFilterState {
+export interface AttemptsFilterState {
   username: string;
   problemId: string;
   verdict: string;
   lang: string;
 }
 
-type ProblemOption = {
+export type ProblemOption = {
   id: number;
   title: string;
 };
 
-type UserOption = {
+export type UserOption = {
   username: string;
   fullName: string;
   avatar?: string;
@@ -55,52 +50,52 @@ type UserOption = {
 
 const EMPTY_PROBLEM_OPTIONS: ProblemOption[] = [];
 const EMPTY_USER_OPTIONS: UserOption[] = [];
+const filterDrawerWidth = DEFAULT_FILTER_DRAWER_WIDTH;
 
 const ProblemsAttemptsPage = () => {
   const { t } = useTranslation();
   const { currentUser } = useAuth();
   const redirectToLogin = useLoginRedirect();
   const params = useParams<{ username?: string }>();
-  const [filtersAnchorEl, setFiltersAnchorEl] = useState<null | HTMLElement>(null);
-  const { state: filter, patchState: patchFilterState, resetState: resetFilterState } =
-    useRouteQueryState<AttemptsFilterState>({
-      defaults: {
-        username: params.username ?? '',
-        problemId: '',
-        verdict: '',
-        lang: '',
-      },
-      schema: {
-        username: {
-          ...stringParam(),
-          param: 'username',
-        },
-        problemId: {
-          ...stringParam(),
-          param: 'problemId',
-        },
-        verdict: {
-          ...stringParam(),
-          param: 'verdict',
-        },
-        lang: {
-          ...stringParam(),
-          param: 'lang',
-        },
-      },
-    });
+  const filterDrawer = useFilterDrawer();
   const {
-    paginationModel,
-    onPaginationModelChange,
-    pageParams,
-    setPaginationModel,
-  } = useGridPagination({
-    initialPageSize: 20,
-    querySync: {
-      pageKey: 'page',
-      pageSizeKey: 'pageSize',
+    state: filter,
+    patchState: patchFilterState,
+    resetState: resetFilterState,
+  } = useRouteQueryState<AttemptsFilterState>({
+    defaults: {
+      username: params.username ?? '',
+      problemId: '',
+      verdict: '',
+      lang: '',
+    },
+    schema: {
+      username: {
+        ...stringParam(),
+        param: 'username',
+      },
+      problemId: {
+        ...stringParam(),
+        param: 'problemId',
+      },
+      verdict: {
+        ...stringParam(),
+        param: 'verdict',
+      },
+      lang: {
+        ...stringParam(),
+        param: 'lang',
+      },
     },
   });
+  const { paginationModel, onPaginationModelChange, pageParams, setPaginationModel } =
+    useGridPagination({
+      initialPageSize: 20,
+      querySync: {
+        pageKey: 'page',
+        pageSizeKey: 'pageSize',
+      },
+    });
   const [problemInput, setProblemInput] = useState('');
   const [userInput, setUserInput] = useState('');
 
@@ -139,8 +134,16 @@ const ProblemsAttemptsPage = () => {
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
   };
 
-  const filtersOpen = Boolean(filtersAnchorEl);
-  const isOnlyMyAttempts = Boolean(currentUser?.username && filter.username === currentUser.username);
+  const isOnlyMyAttempts = Boolean(
+    currentUser?.username && filter.username === currentUser.username,
+  );
+  const activeFilterCount = [
+    Boolean(filter.username && filter.username !== currentUser?.username),
+    Boolean(filter.problemId),
+    Boolean(filter.verdict),
+    Boolean(filter.lang),
+  ].filter(Boolean).length;
+  const hasActiveFilters = activeFilterCount > 0;
 
   const problemSuggestionsFetcher = async ([, search]: [string, string]) => {
     const term = (search ?? '').trim();
@@ -150,10 +153,12 @@ const ProblemsAttemptsPage = () => {
       pageSize: 10,
       ordering: 'id',
     });
-    return pageResult.data.map((item): ProblemOption => ({
-      id: item.id,
-      title: item.title,
-    }));
+    return pageResult.data.map(
+      (item): ProblemOption => ({
+        id: item.id,
+        title: item.title,
+      }),
+    );
   };
 
   const userSuggestionsFetcher = async ([, search]: [string, string]) => {
@@ -163,11 +168,13 @@ const ProblemsAttemptsPage = () => {
       pageSize: 10,
       search: term || undefined,
     });
-    return (response?.data ?? []).map((item): UserOption => ({
-      username: item.username ?? '',
-      fullName: `${item.firstName ?? ''} ${item.lastName ?? ''}`.trim(),
-      avatar: item.avatar ?? (item as any).photo,
-    }));
+    return (response?.data ?? []).map(
+      (item): UserOption => ({
+        username: item.username ?? '',
+        fullName: `${item.firstName ?? ''} ${item.lastName ?? ''}`.trim(),
+        avatar: item.avatar ?? (item as any).photo,
+      }),
+    );
   };
 
   const { data: problemOptions = EMPTY_PROBLEM_OPTIONS } = useSWR(
@@ -203,193 +210,80 @@ const ProblemsAttemptsPage = () => {
   }, [userOptions, filter.username]);
 
   return (
-    <Stack direction="column" spacing={3}>
-      <PageHeader
-        title={t('problems.attempts.title')}
-        breadcrumb={[
-          { label: t('problems.title'), url: resources.Problems },
-          { label: t('problems.attempts.title'), active: true },
-        ]}
-        actionComponent={
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
-            <OnlyMeSwitch
-              label={t('problems.attempts.onlyMy')}
-              checked={isOnlyMyAttempts}
-              onChange={(_, checked) => {
-                if (!currentUser?.username) {
-                  redirectToLogin();
-                  return;
-                }
-                handleFilterChange('username', checked ? currentUser.username : '');
-              }}
-            />
+    <FilterDrawerLayout
+      open={filterDrawer.open}
+      drawerWidth={filterDrawerWidth}
+      drawer={
+        <ProblemsAttemptsFilterDrawer
+          open={filterDrawer.open}
+          handleClose={filterDrawer.close}
+          drawerWidth={filterDrawerWidth}
+          filter={filter}
+          languages={languages ?? []}
+          verdictOptions={verdictOptions ?? []}
+          problemOptions={problemOptions}
+          userOptions={userOptions}
+          selectedProblem={selectedProblem}
+          selectedUser={selectedUser}
+          hasActiveFilters={hasActiveFilters}
+          onChange={handleFilterChange}
+          onClear={handleReset}
+          setProblemInput={setProblemInput}
+          setUserInput={setUserInput}
+        />
+      }
+    >
+      <Stack direction="column" spacing={3} height={1}>
+        <PageHeader
+          title={t('problems.attempts.title')}
+          breadcrumb={[
+            { label: t('problems.title'), url: resources.Problems },
+            { label: t('problems.attempts.title'), active: true },
+          ]}
+          actionComponent={
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
+              <OnlyMeSwitch
+                label={t('problems.attempts.onlyMy')}
+                checked={isOnlyMyAttempts}
+                onChange={(_, checked) => {
+                  if (!currentUser?.username) {
+                    redirectToLogin();
+                    return;
+                  }
+                  handleFilterChange('username', checked ? currentUser.username : '');
+                }}
+              />
 
-            <Tooltip title={t('problems.attempts.refresh')}>
-              <Button variant="soft" color="neutral" onClick={() => mutate()}>
-                <IconifyIcon icon="mdi:reload" width={18} height={18} />
-              </Button>
-            </Tooltip>
-            <FilterButton
-              id="attempts-filters-button"
-              onClick={(event) => setFiltersAnchorEl(event.currentTarget)}
-              aria-haspopup="true"
-              aria-expanded={filtersOpen ? 'true' : undefined}
-              aria-controls={filtersOpen ? 'attempts-filters-menu' : undefined}
-              label={t('problems.filterTitle')}
-            />
-            {((filter.username && filter.username !== currentUser?.username) || filter.problemId || filter.verdict || filter.lang) && (
-              <Tooltip title={t('problems.attempts.clear')}>
-                <Button variant="outlined" color="error" size="small" onClick={handleReset}>
-                  <IconifyIcon icon="mdi:close" width={18} height={18} />
+              <Tooltip title={t('problems.attempts.refresh')}>
+                <Button variant="soft" color="neutral" onClick={() => mutate()}>
+                  <IconifyIcon icon="mdi:reload" width={18} height={18} />
                 </Button>
               </Tooltip>
-            )}
-          </Stack>
-        }
-      />
-
-      <Menu
-        id="attempts-filters-menu"
-        anchorEl={filtersAnchorEl}
-        open={filtersOpen}
-        onClose={() => setFiltersAnchorEl(null)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        MenuListProps={{ disablePadding: true }}
-        PaperProps={{ sx: { p: 2, width: 360 } }}
-      >
-        <Stack direction="column" spacing={2}>
-          <Autocomplete
-            options={problemOptions}
-            value={selectedProblem}
-            onChange={(_, value) => {
-              setProblemInput(value ? `${value.id}. ${value.title}`.trim() : '');
-              handleFilterChange('problemId', value ? String(value.id) : '');
-            }}
-            onInputChange={(_, value, reason) => {
-              if (reason === 'reset') return;
-              setProblemInput(value);
-            }}
-            getOptionLabel={(option) => `${option.id}. ${option.title}`.trim()}
-            filterOptions={(opts) => opts}
-            renderOption={(props, option) => (
-              <li {...props} key={option.id}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <Typography variant="body2" fontWeight={700}>
-                    {option.id}
-                  </Typography>
-                  <Typography variant="body2">{option.title}</Typography>
-                </Stack>
-              </li>
-            )}
-            renderInput={(params) => (
-              <StyledTextField
-                {...params}
-                label={t('problems.attempts.problem')}
-                placeholder="1234"
+              <FilterButton
+                id="attempts-filters-button"
+                onClick={filterDrawer.toggle}
+                aria-haspopup="true"
+                aria-expanded={filterDrawer.open ? 'true' : undefined}
+                aria-controls={filterDrawer.open ? 'attempts-filters-drawer' : undefined}
+                label={t('problems.filterTitle')}
+                badgeContent={activeFilterCount}
               />
-            )}
-            isOptionEqualToValue={(option, value) => option.id === value.id}
-            blurOnSelect
-            clearOnBlur={false}
-          />
-
-          <Autocomplete
-            options={userOptions}
-            value={selectedUser}
-            onChange={(_, value) => {
-              setUserInput(value?.username ?? '');
-              handleFilterChange('username', value?.username ?? '');
-            }}
-            onInputChange={(_, value, reason) => {
-              if (reason === 'reset') return;
-              setUserInput(value);
-            }}
-            getOptionLabel={(option) =>
-              option.fullName ? `${option.username} (${option.fullName})` : option.username
-            }
-            filterOptions={(opts) => opts}
-            renderOption={(props, option) => (
-              <li {...props} key={option.username}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <Avatar
-                    src={option.avatar}
-                    alt={option.username}
-                    sx={{ width: 28, height: 28 }}
-                  />
-                  <Stack direction="row" spacing={0.25}>
-                    <Typography variant="body2" fontWeight={700}>
-                      {option.username}
-                    </Typography>
-                    {option.fullName ? (
-                      <Typography variant="caption" color="text.secondary">
-                        {option.fullName}
-                      </Typography>
-                    ) : null}
-                  </Stack>
-                </Stack>
-              </li>
-            )}
-            renderInput={(params) => (
-              <StyledTextField
-                {...params}
-                label={t('problems.attempts.user')}
-                placeholder="username"
-              />
-            )}
-            isOptionEqualToValue={(option, value) => option.username === value.username}
-            blurOnSelect
-            clearOnBlur={false}
-          />
-
-          <FormControl fullWidth size="small">
-            <InputLabel>{t('problems.attempts.language')}</InputLabel>
-            <Select
-              label={t('problems.attempts.language')}
-              value={filter.lang}
-              onChange={(event) => handleFilterChange('lang', event.target.value)}
-            >
-              <MenuItem value="">{t('problems.attempts.anyLanguage')}</MenuItem>
-              {(languages ?? []).map((lang) => (
-                <MenuItem key={lang.lang} value={lang.lang}>
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <Chip label={lang.lang.toUpperCase()} size="small" />
-                    <Typography variant="body2">{lang.langFull}</Typography>
-                  </Stack>
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl fullWidth size="small">
-            <InputLabel>{t('problems.attempts.verdict')}</InputLabel>
-            <Select
-              label={t('problems.attempts.verdict')}
-              value={filter.verdict}
-              onChange={(event) => handleFilterChange('verdict', event.target.value)}
-            >
-              <MenuItem value="">{t('problems.attempts.anyVerdict')}</MenuItem>
-              {(verdictOptions ?? []).map((option) => (
-                <MenuItem key={option.value} value={String(option.value)}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Stack>
-      </Menu>
-
-      <Box sx={{...responsivePagePaddingSx, py: {md: 0}}}>
-        <ProblemsAttemptsTable
-          attempts={attempts}
-          total={total}
-          paginationModel={paginationModel}
-          onPaginationChange={onPaginationModelChange}
-          isLoading={isLoading}
-          onRerun={() => mutate()}
+            </Stack>
+          }
         />
-      </Box>
-    </Stack>
+
+        <Box sx={{ ...responsivePagePaddingSx, py: { md: 0 } }}>
+          <ProblemsAttemptsTable
+            attempts={attempts}
+            total={total}
+            paginationModel={paginationModel}
+            onPaginationChange={onPaginationModelChange}
+            isLoading={isLoading}
+            onRerun={() => mutate()}
+          />
+        </Box>
+      </Stack>
+    </FilterDrawerLayout>
   );
 };
 

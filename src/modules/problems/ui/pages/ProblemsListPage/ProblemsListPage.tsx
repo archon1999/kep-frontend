@@ -1,12 +1,10 @@
-import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
+import { SyntheticEvent, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { TabContext, TabList } from '@mui/lab';
 import { Box, Button, Grid, Stack, Tab } from '@mui/material';
-import { useNavContext } from 'app/layouts/main-layout/NavProvider';
 import SearchTextField from 'app/layouts/main-layout/common/search-box/SearchTextField.tsx';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
-import { useBreakpoints } from 'app/providers/BreakpointsProvider.tsx';
 import { resources } from 'app/routes/resources.ts';
 import {
   useLastContestProblems,
@@ -27,6 +25,11 @@ import { ProblemsListParams } from 'modules/problems/domain/ports/problems.repos
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 import AppliedFilters from 'shared/components/common/AppliedFilters.tsx';
 import FilterButton from 'shared/components/common/FilterButton.tsx';
+import {
+  DEFAULT_FILTER_DRAWER_WIDTH,
+  FilterDrawerLayout,
+  useFilterDrawer,
+} from 'shared/components/common/FilterDrawer.tsx';
 import PageHeader from 'shared/components/sections/common/PageHeader.tsx';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import {
@@ -37,12 +40,10 @@ import {
   stringParam,
 } from 'shared/lib/queryParams';
 import ProblemDifficultiesCard from './components/ProblemDifficultiesCard.tsx';
-import ProblemsFilterDrawer, {
-  problemStatusOptions,
-} from './components/ProblemsFilterDrawer.tsx';
 import ProblemList from './components/ProblemList.tsx';
 import ProblemStudyPlansShowcase from './components/ProblemStudyPlansShowcase.tsx';
 import ProblemTabsCard from './components/ProblemTabsCard.tsx';
+import ProblemsFilterDrawer, { problemStatusOptions } from './components/ProblemsFilterDrawer.tsx';
 import ProblemStudyPlanAdvisorDialog from './dialogs/ProblemStudyPlanAdvisorDialog.tsx';
 
 const orderingOptions = [
@@ -54,7 +55,7 @@ const orderingOptions = [
   { label: 'problems.orderLeastSolved', value: 'solved' },
 ];
 
-const filterDrawerWidth = 280;
+const filterDrawerWidth = DEFAULT_FILTER_DRAWER_WIDTH;
 
 const initialFilter: ProblemsListParams = {
   ordering: 'id',
@@ -298,11 +299,7 @@ const ProblemsListPage = () => {
   });
   const filter = useMemo(() => buildProblemsListFilter(routeState), [routeState]);
   const [isAdvisorOpen, setIsAdvisorOpen] = useState(false);
-  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
-  const { up } = useBreakpoints();
-  const { topbarHeight } = useNavContext();
-  const upXl = up('xl');
-  const upSm = up('sm');
+  const filterDrawer = useFilterDrawer();
 
   const { data: problemsPage, isLoading: isProblemsLoading } = useProblemsList(filter);
   const { data: languages } = useProblemLanguages();
@@ -404,163 +401,131 @@ const ProblemsListPage = () => {
     );
   };
 
-  const closeFilterDrawer = () => setIsFilterDrawerOpen(false);
-  const toggleFilterDrawer = () => setIsFilterDrawerOpen((prev) => !prev);
-
-  useEffect(() => setIsFilterDrawerOpen(false), [upXl]);
-
   return (
-    <Box
-      sx={(theme) => ({
-        display: 'flex',
-        height: theme.mixins.contentHeight(
-          topbarHeight,
-          (upSm ? theme.mixins.footer.sm : theme.mixins.footer.xs) + 1,
-        ),
-      })}
+    <FilterDrawerLayout
+      open={filterDrawer.open}
+      drawerWidth={filterDrawerWidth}
+      drawer={
+        <ProblemsFilterDrawer
+          open={filterDrawer.open}
+          handleClose={filterDrawer.close}
+          drawerWidth={filterDrawerWidth}
+          languages={languages ?? []}
+          categories={categories ?? []}
+          filter={filter}
+          onChange={handleFilterChange}
+          onPatch={handleFilterPatch}
+        />
+      }
     >
-      <ProblemsFilterDrawer
-        open={isFilterDrawerOpen}
-        handleClose={closeFilterDrawer}
-        drawerWidth={filterDrawerWidth}
-        languages={languages ?? []}
-        categories={categories ?? []}
-        filter={filter}
-        onChange={handleFilterChange}
-        onPatch={handleFilterPatch}
-      />
-
-      <Box
-        sx={({ transitions }) => ({
-          display: 'flex',
-          flexDirection: 'column',
-          flexGrow: 1,
-          minWidth: 0,
-          minHeight: 0,
-          overflowY: 'auto',
-          marginLeft: { xl: `-${filterDrawerWidth}px` },
-          transition: transitions.create('margin', {
-            easing: transitions.easing.sharp,
-            duration: transitions.duration.leavingScreen,
-          }),
-          ...(isFilterDrawerOpen && {
-            transition: transitions.create('margin', {
-              easing: transitions.easing.easeOut,
-              duration: transitions.duration.enteringScreen,
-            }),
-            marginLeft: 0,
-          }),
-        })}
-      >
-        <Stack direction="column" spacing={4} height={1}>
-          <PageHeader
-            title={t('problems.title2')}
-            actionComponent={
-              <Stack direction="row" flexWrap="wrap" justifyContent="flex-end">
+      <Stack direction="column" spacing={4} height={1}>
+        <PageHeader
+          title={t('problems.title2')}
+          actionComponent={
+            <Stack direction="row" flexWrap="wrap" justifyContent="flex-end">
+              <Button
+                component={RouterLink}
+                to={resources.ProblemsRating}
+                variant="text"
+                color="primary"
+                startIcon={<IconifyIcon icon="mdi:chart-line" />}
+              >
+                {t('problems.ratingButton')}
+              </Button>
+              <Button
+                component={RouterLink}
+                to={resources.Attempts}
+                variant="text"
+                color="primary"
+                startIcon={<IconifyIcon icon="mdi:target" />}
+              >
+                {t('problems.attemptsButton')}
+              </Button>
+              {currentUser ? (
                 <Button
                   component={RouterLink}
-                  to={resources.ProblemsRating}
+                  to={resources.ProblemsUserStatistics}
                   variant="text"
                   color="primary"
-                  startIcon={<IconifyIcon icon="mdi:chart-line" />}
+                  startIcon={<IconifyIcon icon="mdi:chart-bar" />}
                 >
-                  {t('problems.ratingButton')}
+                  {t('problems.statisticsPage.title')}
                 </Button>
-                <Button
-                  component={RouterLink}
-                  to={resources.Attempts}
-                  variant="text"
-                  color="primary"
-                  startIcon={<IconifyIcon icon="mdi:target" />}
-                >
-                  {t('problems.attemptsButton')}
-                </Button>
-                {currentUser ? (
-                  <Button
-                    component={RouterLink}
-                    to={resources.ProblemsUserStatistics}
-                    variant="text"
-                    color="primary"
-                    startIcon={<IconifyIcon icon="mdi:chart-bar" />}
-                  >
-                    {t('problems.statisticsPage.title')}
-                  </Button>
-                ) : null}
-              </Stack>
-            }
-          />
+              ) : null}
+            </Stack>
+          }
+        />
 
-          <Box sx={{ flex: 1, px: { xs: 3, md: 5 }, pb: { xs: 5, md: 6 } }}>
-            <Grid container spacing={3}>
-              <Grid size={12}>
-                <FilterCard
-                  languages={languages ?? []}
-                  categories={categories ?? []}
-                  filter={filter}
-                  filtersOpen={isFilterDrawerOpen}
-                  onToggleFilters={toggleFilterDrawer}
-                  onChange={handleFilterChange}
-                  onPatch={handleFilterPatch}
-                  onOpenAdvisor={() => setIsAdvisorOpen(true)}
-                />
-              </Grid>
-              <Grid size={{ xs: 12, md: 8 }}>
-                <Stack direction="column" spacing={3}>
-                  <ProblemList
-                    problems={problems}
-                    isLoading={isProblemsLoading}
-                    filter={filter}
-                    total={total}
-                    onPageChange={handlePageChange}
-                    onRowsPerPageChange={handleRowsPerPageChange}
-                  />
-                </Stack>
-              </Grid>
-
-              <Grid size={{ xs: 12, md: 4 }}>
-                <Stack direction="column" spacing={3}>
-                  {currentUser && (
-                    <ProblemDifficultiesCard
-                      difficulties={rating?.difficulties}
-                      isLoading={isSummaryLoading}
-                    />
-                  )}
-
-                  {currentUser && studyPlans?.length && (
-                    <ProblemStudyPlansShowcase studyPlans={studyPlans} />
-                  )}
-
-                  <ProblemTabsCard
-                    activeTab={routeState.activeTab}
-                    onTabChange={(value) => setRouteField('activeTab', value as never)}
-                    attempts={{
-                      isLoading: isAttemptsLoading,
-                      items: attempts ?? [],
-                    }}
-                    lastContest={{
-                      isLoading: isLastContestLoading,
-                      data: lastContest,
-                    }}
-                    mostViewed={{
-                      isLoading: isMostViewedLoading,
-                      items: mostViewed ?? [],
-                    }}
-                  />
-                </Stack>
-              </Grid>
+        <Box sx={{ flex: 1, px: { xs: 3, md: 5 }, pb: { xs: 5, md: 6 } }}>
+          <Grid container spacing={3}>
+            <Grid size={12}>
+              <FilterCard
+                languages={languages ?? []}
+                categories={categories ?? []}
+                filter={filter}
+                filtersOpen={filterDrawer.open}
+                onToggleFilters={filterDrawer.toggle}
+                onChange={handleFilterChange}
+                onPatch={handleFilterPatch}
+                onOpenAdvisor={() => setIsAdvisorOpen(true)}
+              />
             </Grid>
-          </Box>
+            <Grid size={{ xs: 12, md: 8 }}>
+              <Stack direction="column" spacing={3}>
+                <ProblemList
+                  problems={problems}
+                  isLoading={isProblemsLoading}
+                  filter={filter}
+                  total={total}
+                  onPageChange={handlePageChange}
+                  onRowsPerPageChange={handleRowsPerPageChange}
+                />
+              </Stack>
+            </Grid>
 
-          <ProblemStudyPlanAdvisorDialog
-            open={isAdvisorOpen}
-            onClose={() => setIsAdvisorOpen(false)}
-            studyPlans={studyPlans ?? []}
-            currentFilters={filter}
-            onApplyFilters={handleAdvisorApply}
-          />
-        </Stack>
-      </Box>
-    </Box>
+            <Grid size={{ xs: 12, md: 4 }}>
+              <Stack direction="column" spacing={3}>
+                {currentUser && (
+                  <ProblemDifficultiesCard
+                    difficulties={rating?.difficulties}
+                    isLoading={isSummaryLoading}
+                  />
+                )}
+
+                {currentUser && studyPlans?.length && (
+                  <ProblemStudyPlansShowcase studyPlans={studyPlans} />
+                )}
+
+                <ProblemTabsCard
+                  activeTab={routeState.activeTab}
+                  onTabChange={(value) => setRouteField('activeTab', value as never)}
+                  attempts={{
+                    isLoading: isAttemptsLoading,
+                    items: attempts ?? [],
+                  }}
+                  lastContest={{
+                    isLoading: isLastContestLoading,
+                    data: lastContest,
+                  }}
+                  mostViewed={{
+                    isLoading: isMostViewedLoading,
+                    items: mostViewed ?? [],
+                  }}
+                />
+              </Stack>
+            </Grid>
+          </Grid>
+        </Box>
+
+        <ProblemStudyPlanAdvisorDialog
+          open={isAdvisorOpen}
+          onClose={() => setIsAdvisorOpen(false)}
+          studyPlans={studyPlans ?? []}
+          currentFilters={filter}
+          onApplyFilters={handleAdvisorApply}
+        />
+      </Stack>
+    </FilterDrawerLayout>
   );
 };
 

@@ -6,30 +6,17 @@ import {
   AccordionSummary,
   Box,
   Button,
-  Checkbox,
   Chip,
   Divider,
-  Drawer,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  FormLabel,
   InputAdornment,
   Menu,
   MenuItem,
-  Slider,
   Stack,
   Typography,
   alpha,
-  checkboxClasses,
-  drawerClasses,
-  formControlLabelClasses,
   formLabelClasses,
-  styled,
   useTheme,
 } from '@mui/material';
-import { useNavContext } from 'app/layouts/main-layout/NavProvider';
-import { useBreakpoints } from 'app/providers/BreakpointsProvider.tsx';
 import { difficultyOptions } from 'modules/problems/config/difficulty';
 import {
   ProblemCategory,
@@ -37,6 +24,10 @@ import {
 } from 'modules/problems/domain/entities/problem.entity.ts';
 import { ProblemsListParams } from 'modules/problems/domain/ports/problems.repository.ts';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import FilterDrawer, {
+  FilterFieldset,
+  FilterRangeField,
+} from 'shared/components/common/FilterDrawer.tsx';
 import StyledTextField from 'shared/components/styled/StyledTextField.tsx';
 
 export const problemStatusOptions = [
@@ -72,13 +63,11 @@ const ProblemsFilterDrawer = ({
   onChange,
   onPatch,
 }: ProblemsFilterDrawerProps) => {
-  const { up } = useBreakpoints();
-  const { topbarHeight } = useNavContext();
-  const upXl = up('xl');
-  const upSm = up('sm');
-  const drawerContent = (
+  return (
     <ProblemsFilterDrawerContent
+      open={open}
       handleClose={handleClose}
+      drawerWidth={drawerWidth}
       languages={languages}
       categories={categories}
       filter={filter}
@@ -86,69 +75,14 @@ const ProblemsFilterDrawer = ({
       onPatch={onPatch}
     />
   );
-
-  return (
-    <>
-      {upXl ? (
-        <Drawer
-          variant="persistent"
-          open={open}
-          sx={(theme) => ({
-            flexShrink: 0,
-            display: { xs: 'none', xl: 'block' },
-            [`& .${drawerClasses.paper}`]: {
-              position: 'sticky',
-              zIndex: 'unset',
-              top: theme.mixins.topOffset(topbarHeight),
-              height: theme.mixins.contentHeight(
-                topbarHeight,
-                (upSm ? theme.mixins.footer.sm : theme.mixins.footer.xs) + 1,
-              ),
-              border: 0,
-              overflowY: 'auto',
-              width: drawerWidth,
-              outline: `1px solid ${theme.vars.palette.divider}`,
-              bgcolor: theme.vars.palette.background.elevation1,
-            },
-          })}
-        >
-          {drawerContent}
-        </Drawer>
-      ) : (
-        <Drawer
-          variant="temporary"
-          open={open}
-          onClose={handleClose}
-          ModalProps={{
-            disableAutoFocus: true,
-            disableEnforceFocus: true,
-            disableRestoreFocus: true,
-          }}
-          disablePortal
-          sx={(theme) => ({
-            display: { xs: 'block', xl: 'none' },
-            [`& .${drawerClasses.paper}`]: {
-              top: theme.mixins.topOffset(topbarHeight),
-              height: theme.mixins.contentHeight(topbarHeight),
-              width: drawerWidth,
-              border: 0,
-              zIndex: theme.zIndex.drawer,
-              outline: `1px solid ${theme.vars.palette.divider}`,
-              bgcolor: theme.vars.palette.background.elevation1,
-            },
-          })}
-        >
-          {drawerContent}
-        </Drawer>
-      )}
-    </>
-  );
 };
 
-type ProblemFilterDrawerContentProps = Omit<ProblemsFilterDrawerProps, 'open' | 'drawerWidth'>;
+type ProblemFilterDrawerContentProps = ProblemsFilterDrawerProps;
 
 const ProblemsFilterDrawerContent = ({
+  open,
   handleClose,
+  drawerWidth,
   languages,
   categories,
   filter,
@@ -226,19 +160,19 @@ const ProblemsFilterDrawerContent = ({
 
   const hasActiveFilters = Boolean(
     filter.lang ||
-      filter.exclusive_lang ||
-      filter.favorites ||
-      filter.category ||
-      (filter.tags?.length ?? 0) > 0 ||
-      filter.difficulty ||
-      filter.status != null ||
-      filter.has_solution === 'true' ||
-      filter.has_checker === 'true' ||
-      filter.partial_solvable === 'false' ||
-      (Number(filter.problem_rating_min) > problemRatingRange.min &&
-        Number.isFinite(Number(filter.problem_rating_min))) ||
-      (Number(filter.problem_rating_max) < problemRatingRange.max &&
-        Number.isFinite(Number(filter.problem_rating_max))),
+    filter.exclusive_lang ||
+    filter.favorites ||
+    filter.category ||
+    (filter.tags?.length ?? 0) > 0 ||
+    filter.difficulty ||
+    filter.status != null ||
+    filter.has_solution === 'true' ||
+    filter.has_checker === 'true' ||
+    filter.partial_solvable === 'false' ||
+    (Number(filter.problem_rating_min) > problemRatingRange.min &&
+      Number.isFinite(Number(filter.problem_rating_min))) ||
+    (Number(filter.problem_rating_max) < problemRatingRange.max &&
+      Number.isFinite(Number(filter.problem_rating_max))),
   );
 
   const handleClearFilters = () => {
@@ -298,21 +232,16 @@ const ProblemsFilterDrawerContent = ({
   };
 
   return (
-    <Box id="problems-filters-drawer" component="aside" sx={{ px: 3, py: 2 }}>
-      <Stack direction="row" alignItems="center" sx={{ justifyContent: 'space-between', mb: 2 }}>
-        <Typography variant="h6">{t('problems.filterTitle')}</Typography>
-        <Stack direction="row" alignItems="center" spacing={0.5}>
-          {hasActiveFilters ? (
-            <Button size="small" variant="text" color="secondary" onClick={handleClearFilters}>
-              {t('problems.clear')}
-            </Button>
-          ) : null}
-          <Button shape="circle" color="neutral" onClick={handleClose}>
-            <IconifyIcon icon="material-symbols:close-rounded" sx={{ fontSize: 20 }} />
-          </Button>
-        </Stack>
-      </Stack>
-
+    <FilterDrawer
+      id="problems-filters-drawer"
+      open={open}
+      title={t('problems.filterTitle')}
+      onClose={handleClose}
+      drawerWidth={drawerWidth}
+      hasActiveFilters={hasActiveFilters}
+      clearLabel={t('problems.clear')}
+      onClear={handleClearFilters}
+    >
       <Stack direction="column" gap={1}>
         <StyledTextField
           select
@@ -465,12 +394,10 @@ const ProblemsFilterDrawerContent = ({
             {
               label: t('problems.withoutPartialScoring'),
               checked: filter.partial_solvable === 'false',
-              onChange: (checked) =>
-                onChange('partial_solvable', checked ? 'false' : undefined),
+              onChange: (checked) => onChange('partial_solvable', checked ? 'false' : undefined),
             },
           ]}
         />
-
       </Stack>
 
       <Menu
@@ -619,103 +546,8 @@ const ProblemsFilterDrawerContent = ({
           </Box>
         </Stack>
       </Menu>
-    </Box>
+    </FilterDrawer>
   );
 };
-
-interface FilterFieldsetProps {
-  label: string;
-  options: {
-    label: string;
-    checked: boolean;
-    onChange: (checked: boolean) => void;
-  }[];
-}
-
-const FilterFieldset = ({ label, options }: FilterFieldsetProps) => {
-  return (
-    <FormControl component="fieldset" variant="standard" sx={{ px: 2 }}>
-      <StyledFormLabel>{label}</StyledFormLabel>
-      <FormGroup sx={{ pl: 2 }}>
-        {options.map((option) => (
-          <StyledFormControlLabel
-            key={option.label}
-            control={
-              <Checkbox
-                checked={option.checked}
-                onChange={(event) => option.onChange(event.target.checked)}
-                name={option.label}
-              />
-            }
-            label={option.label}
-          />
-        ))}
-      </FormGroup>
-    </FormControl>
-  );
-};
-
-interface FilterRangeFieldProps {
-  label: string;
-  range: [number, number];
-  step: number;
-  value: [number, number];
-  onChange: (event: Event, value: number | number[]) => void;
-  valueText: (value: number) => string;
-}
-
-const FilterRangeField = ({
-  label,
-  range,
-  step,
-  value,
-  onChange,
-  valueText,
-}: FilterRangeFieldProps) => {
-  return (
-    <FormControl component="fieldset" variant="standard" sx={{ px: 2 }}>
-      <StyledFormLabel>{label}</StyledFormLabel>
-      <FormGroup>
-        <Slider
-          value={value}
-          min={range[0]}
-          max={range[1]}
-          step={step}
-          onChange={onChange}
-          valueLabelDisplay="auto"
-          valueLabelFormat={valueText}
-          getAriaValueText={valueText}
-          sx={{ mx: 0 }}
-        />
-        <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            {valueText(range[0])}
-          </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            {valueText(range[1])}
-          </Typography>
-        </Stack>
-      </FormGroup>
-    </FormControl>
-  );
-};
-
-const StyledFormLabel = styled(FormLabel)(({ theme: { typography, vars, spacing } }) => ({
-  fontSize: typography.caption.fontSize,
-  fontWeight: 500,
-  lineHeight: '14px',
-  color: vars.palette.text.primary,
-  paddingTop: spacing(1),
-  paddingBottom: spacing(1),
-}));
-
-const StyledFormControlLabel = styled(FormControlLabel)(({ theme: { typography, spacing } }) => ({
-  [`& .${formControlLabelClasses.label}`]: {
-    fontSize: typography.caption.fontSize,
-    alignSelf: 'center',
-    marginTop: '0 !important',
-  },
-  [`& .${checkboxClasses.root}`]: { padding: spacing(0.875), alignSelf: 'center' },
-}));
 
 export default ProblemsFilterDrawer;
