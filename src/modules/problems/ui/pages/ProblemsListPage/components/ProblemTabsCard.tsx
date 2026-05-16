@@ -11,7 +11,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { getResourceById, resources } from 'app/routes/resources.ts';
+import { getResourceById, getResourceByParams, resources } from 'app/routes/resources.ts';
 import {
   ProblemAttemptSummary,
   ProblemListItem,
@@ -239,7 +239,10 @@ const ProblemTabsCard = ({
     }
 
     const rows = (lastContest.data.problems ?? []).map((problem: any) => ({
-      href: getResourceById(resources.Problem, problem.id),
+      href: getResourceByParams(resources.ContestProblem, {
+        id: lastContest.data.id,
+        symbol: problem.symbol,
+      }),
       key: problem.id,
       symbol: problem.symbol,
       title: problem.title,
