@@ -32,6 +32,7 @@ import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { useThemeMode } from 'shared/hooks/useThemeMode.tsx';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
+import { formatCalendarDateTime } from 'shared/lib/dateTime';
 import { enumParam, stringParam } from 'shared/lib/queryParams';
 import { wsService } from 'shared/services/websocket';
 import DuelResultsFooter from './components/DuelResultsFooter.tsx';
@@ -135,9 +136,7 @@ export type DuelDetailPageWorkspaceState = {
 
 const formatDuelDetailPageDate = (value?: string | null) => {
   if (!value) return '--';
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  return date.toLocaleString();
+  return formatCalendarDateTime(value, value);
 };
 
 const useProblemPermissions = (permissionsRaw: unknown) =>

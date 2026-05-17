@@ -11,8 +11,8 @@ import {
   Typography,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import dayjs from 'dayjs';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import { diffDateTime, formatCountdownClock } from 'shared/lib/dateTime';
 import { Arena, ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
 
 interface CountdownCardProps {
@@ -26,15 +26,6 @@ interface CountdownView {
   showProgress: boolean;
   color: 'warning' | 'success' | 'info';
 }
-
-const formatDuration = (diffMs: number) => {
-  const totalSeconds = Math.max(Math.floor(diffMs / 1000), 0);
-  const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
-  const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
-  const seconds = String(totalSeconds % 60).padStart(2, '0');
-
-  return `${hours}:${minutes}:${seconds}`;
-};
 
 const TimeSegment = ({ value }: { value: string }) => (
   <Box
@@ -65,10 +56,10 @@ const TimeSegment = ({ value }: { value: string }) => (
 
 const ArenaCountdownCard = ({ arena }: CountdownCardProps) => {
   const { t } = useTranslation();
-  const [now, setNow] = useState(dayjs());
+  const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
-    const timer = setInterval(() => setNow(dayjs()), 1000);
+    const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -84,26 +75,23 @@ const ArenaCountdownCard = ({ arena }: CountdownCardProps) => {
     }
 
     if (arena.status === ArenaStatus.NotStarted) {
-      const start = dayjs(arena.startTime);
-      const remaining = start.diff(now, 'millisecond');
+      const remaining = diffDateTime(arena.startTime, now, 'millisecond');
       return {
         label: t('arena.countdown.untilStart'),
         progress: 0,
-        timerLabel: formatDuration(remaining),
+        timerLabel: formatCountdownClock(remaining),
         showProgress: false,
         color: 'warning',
       };
     }
 
     if (arena.status === ArenaStatus.Already) {
-      const finish = dayjs(arena.finishTime);
-      const start = dayjs(arena.startTime);
-      const total = finish.diff(start, 'millisecond');
-      const remaining = finish.diff(now, 'millisecond');
+      const total = diffDateTime(arena.finishTime, arena.startTime, 'millisecond');
+      const remaining = diffDateTime(arena.finishTime, now, 'millisecond');
       return {
         label: t('arena.countdown.untilFinish'),
         progress: Math.min(100, Math.max(0, 100 - (remaining / total) * 100)),
-        timerLabel: formatDuration(remaining),
+        timerLabel: formatCountdownClock(remaining),
         showProgress: true,
         color: 'success',
       };

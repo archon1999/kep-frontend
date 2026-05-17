@@ -14,7 +14,6 @@ import {
 } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { getResourceById, resources } from 'app/routes/resources';
-import dayjs from 'dayjs';
 import {
   blogKeys,
   useBlogPosts,
@@ -27,6 +26,7 @@ import BlogStatusChip from 'modules/blog/ui/shared/components/BlogStatusChip';
 import { stripBlogHtml } from 'modules/blog/ui/shared/lib/article-content';
 import KepIcon from 'shared/components/base/KepIcon';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { formatDateTime } from 'shared/lib/dateTime';
 import { numberParam } from 'shared/lib/queryParams';
 import { toast } from 'sonner';
 import { mutate as globalMutate } from 'swr';
@@ -45,7 +45,7 @@ const BlogManagementCard = ({
   const { t } = useTranslation();
   const previewText = stripBlogHtml(post.bodyShort ?? post.body).slice(0, 180);
   const metaDateValue = post.updatedAt ?? post.created ?? '';
-  const metaDate = metaDateValue ? dayjs(metaDateValue).format('DD MMM, YYYY') : '-';
+  const metaDate = formatDateTime(metaDateValue, 'compactDate');
 
   return (
     <Paper background={1} sx={{ p: 1, borderRadius: 4 }}>

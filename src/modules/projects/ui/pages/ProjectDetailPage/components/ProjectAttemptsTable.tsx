@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { formatDateTime } from 'shared/lib/dateTime';
 import { projectsQueries } from 'modules/projects/application/queries';
 import { Project, ProjectAttempt, ProjectAttemptLog } from 'modules/projects/domain/entities/project.entity';
 
@@ -208,10 +209,10 @@ const ProjectAttemptsTable = ({
                 <TableCell>
                   <Stack direction="row" spacing={0.25}>
                     <Typography variant="body2" fontWeight={600}>
-                      {attempt.created ? new Date(attempt.created).toLocaleDateString() : '—'}
+                      {formatDateTime(attempt.created, 'compactDate', '--')}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
-                      {attempt.created ? new Date(attempt.created).toLocaleTimeString() : ''}
+                      {formatDateTime(attempt.created, 'time', '')}
                     </Typography>
                   </Stack>
                 </TableCell>

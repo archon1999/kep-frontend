@@ -47,10 +47,15 @@ import {
 import AdminRowActions, { AdminRowActionItem } from './AdminRowActions';
 import TextField from './AdminTextField';
 import { formatAdminEditTitle, getAdminResourceTitle } from '../utils/editTitle';
-import { fromDateTimeLocal, toDateTimeLocal, toNumberOrNull } from '../utils/formUtils';
+import { toNumberOrNull } from '../utils/formUtils';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import dayjs from 'dayjs';
 import { getOrderingFromSortModel } from '../utils/gridSorting';
+import {
+  formatDateTimeLocalInputValue,
+  formatDateTimePickerValue,
+  parseDateTimePickerValue,
+  toBackendUtcDateTime,
+} from 'shared/lib/dateTime';
 
 type AdminSimpleRow = {
   id: number | string;
@@ -271,7 +276,7 @@ const toPayloadFieldValue = (value: any, field: AdminFormFieldConfig) => {
     return field.nullable ? toNumberOrNull(value) : Number(value || 0);
   }
   if (field.kind === 'dateTime') {
-    return value ? fromDateTimeLocal(value) : null;
+    return value ? toBackendUtcDateTime(value) : null;
   }
   if (isAutocompleteFieldKind(field.kind)) {
     return value || null;
@@ -542,7 +547,7 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
       onChange: (value: AdminAutocompleteOption | null) =>
         setFilters((prev) => ({ ...prev, [filter.name]: value })),
       label: t(filter.labelKey),
-      placeholder: t('admin.searchPlaceholder'),
+      placeholder: '',
     };
 
     if (filter.kind === 'problem') {
@@ -607,6 +612,7 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
     return (
       <TextField
         key={filter.name}
+        placeholder=""
         type={filter.kind === 'number' ? 'number' : 'text'}
         label={t(filter.labelKey)}
         value={filters[filter.name] ?? ''}
@@ -665,6 +671,8 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
   ) : null;
   const filtersId = `admin-${config.resource.replace(/[^a-z0-9]+/gi, '-')}`;
 
+  const isGridLoading = isLoading || (isValidating && !data);
+
   return (
     <AdminListPageLayout
       title={t(config.titleKey)}
@@ -722,7 +730,7 @@ const AdminSimpleResourceListPage = ({ config }: AdminSimpleResourcePageProps) =
         autoHeight
         rows={data?.data ?? []}
         rowCount={data?.total ?? 0}
-        loading={isLoading || isValidating}
+        loading={isGridLoading}
         slots={{ loadingOverlay: AdminDataGridSkeletonLoadingOverlay }}
         columns={columns}
         paginationModel={paginationModel}
@@ -772,7 +780,7 @@ const AdminSimpleResourceFormPage = ({ config }: AdminSimpleResourcePageProps) =
 
       config.fields.forEach((field) => {
         if (field.kind === 'dateTime') {
-          nextForm[field.name] = toDateTimeLocal(data[field.name]);
+          nextForm[field.name] = formatDateTimeLocalInputValue(data[field.name]);
         }
       });
 
@@ -946,15 +954,16 @@ const AdminSimpleResourceFormPage = ({ config }: AdminSimpleResourcePageProps) =
 
     if (field.kind === 'dateTime') {
       const fieldValue = getFieldValue(form, field);
-      const fieldValueAsDate = typeof fieldValue === 'string' ? dayjs(fieldValue) : null;
+      const fieldValueAsDate =
+        typeof fieldValue === 'string' ? parseDateTimePickerValue(fieldValue) : null;
 
       return (
         <DateTimePicker
           key={field.name}
           label={t(field.labelKey)}
-          value={fieldValueAsDate?.isValid() ? fieldValueAsDate : null}
+          value={fieldValueAsDate}
           onChange={(value) =>
-            setField(field.name, value ? value.format('YYYY-MM-DDTHH:mm') : '')
+            setField(field.name, formatDateTimePickerValue(value))
           }
           slotProps={{
             textField: {

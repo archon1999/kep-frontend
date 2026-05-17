@@ -10,13 +10,11 @@ import {
   Typography,
 } from '@mui/material';
 import { Notification } from 'app/types/notification';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import Image from 'shared/components/base/Image';
+import { formatRelativeTime } from 'shared/lib/dateTime';
 import NotificationActionMenu from './NotificationActionMenu';
 import NotificationListItemAvatar from './NotificationListItemAvatar';
 
-dayjs.extend(relativeTime);
 interface NotificationListProps {
   title: string;
   notifications: Notification[];
@@ -138,7 +136,7 @@ const NotificationList = ({
                       color: 'text.secondary',
                     }}
                   >
-                    {dayjs(notification.createdAt).fromNow()}
+                    {formatRelativeTime(notification.createdAt)}
                   </Typography>
                 </Box>
               </Stack>

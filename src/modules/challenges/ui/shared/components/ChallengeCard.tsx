@@ -1,11 +1,7 @@
 import { Box, Card, Stack, Typography } from '@mui/material';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { Challenge } from 'modules/challenges/domain';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import ChallengeUserChip from './ChallengeUserChip.tsx';
-
-dayjs.extend(relativeTime);
 
 interface ChallengeCardProps {
   challenge: Challenge;
@@ -13,7 +9,6 @@ interface ChallengeCardProps {
 }
 
 const ChallengeCard = ({ challenge, currentUsername }: ChallengeCardProps) => {
-  dayjs.extend(relativeTime);
   const currentUsernameLower = currentUsername?.toLowerCase();
   const isPlayerFirstCurrent = Boolean(
     currentUsernameLower && challenge.playerFirst.username.toLowerCase() === currentUsernameLower,

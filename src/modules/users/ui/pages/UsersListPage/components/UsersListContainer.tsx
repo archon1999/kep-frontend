@@ -468,6 +468,7 @@ const UsersListContainer = () => {
                 <StyledTextField
                   id="search-box"
                   type="search"
+                  variant="filled"
                   fullWidth
                   value={filters.search}
                   onChange={handleFilterChange('search')}

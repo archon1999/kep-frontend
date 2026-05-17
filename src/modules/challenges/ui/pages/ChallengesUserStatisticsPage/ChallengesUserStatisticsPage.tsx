@@ -20,7 +20,6 @@ import Grid from '@mui/material/Grid';
 import { useTheme } from '@mui/material/styles';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { getResourceById, resources } from 'app/routes/resources';
-import dayjs from 'dayjs';
 import { BarChart, HeatmapChart, LineChart, PieChart } from 'echarts/charts';
 import {
   GridComponent,
@@ -46,6 +45,13 @@ import ChallengeCard from 'modules/challenges/ui/shared/components/ChallengeCard
 import ChallengeRatingChangesChart from 'modules/challenges/ui/shared/components/ChallengeRatingChangesChart';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import {
+  formatDateTime,
+  formatMachineDateTime,
+  getDateTimeValue,
+  getDateWeekday,
+  getDateYear,
+} from 'shared/lib/dateTime';
 import { getColor } from 'shared/lib/echart-utils';
 import { numberParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
@@ -71,7 +77,8 @@ const toPercent = (value?: number) => `${Math.round(value ?? 0)}%`;
 const buildYears = (statistics?: ChallengeUserStatistics | null) => {
   const years = new Set<number>();
   (statistics?.activity?.heatmap ?? []).forEach((entry) => {
-    if (entry.date) years.add(dayjs(entry.date).year());
+    const year = getDateYear(entry.date);
+    if (year) years.add(year);
   });
   return Array.from(years).sort((a, b) => b - a);
 };
@@ -142,7 +149,7 @@ type ChallengeStatisticsRecordEntry =
   | NonNullable<NonNullable<ChallengeUserStatistics['records']>['bestVictory']>;
 
 const formatDateTimeSafe = (value?: string | null) =>
-  value ? dayjs(value).format('YYYY-MM-DD HH:mm') : '-';
+  formatMachineDateTime(value, 'isoDateTimeMinute');
 const formatScoreSafe = (entry?: { userScore?: number; opponentScore?: number } | null) =>
   entry ? `${entry.userScore ?? 0}:${entry.opponentScore ?? 0}` : '-';
 
@@ -415,7 +422,7 @@ const ChallengesUserStatisticsPage = () => {
       tooltip: { trigger: 'axis' },
       xAxis: {
         type: 'category',
-        data: activity.map((item) => dayjs(item.date).format('DD MMM')),
+        data: activity.map((item) => formatDateTime(item.date, 'dayMonth')),
         axisLabel: { color: axisLabelColor, interval: 4 },
         axisTick: { show: false },
         axisLine: { lineStyle: { color: neutralColor } },
@@ -501,7 +508,7 @@ const ChallengesUserStatisticsPage = () => {
 
   const heatmapOption = useMemo(() => {
     const entries = (statistics?.activity?.heatmap ?? []).filter(
-      (item) => activeYear && dayjs(item.date).year() === activeYear,
+      (item) => activeYear && getDateYear(item.date) === activeYear,
     );
     if (!entries.length || !activeYear) return null;
     const weekdayLabels = [
@@ -514,8 +521,8 @@ const ChallengesUserStatisticsPage = () => {
       t('challenges.statisticsPage.weekday.sun', { defaultValue: 'Sun' }),
     ];
     const data = entries.map((item) => {
-      const date = dayjs(item.date);
-      return [date.valueOf(), date.day() === 0 ? 6 : date.day() - 1, item.count];
+      const day = getDateWeekday(item.date);
+      return [getDateTimeValue(item.date), day === 0 ? 6 : day - 1, item.count];
     });
     const maxValue = Math.max(...entries.map((item) => item.count), 1);
 
@@ -523,7 +530,9 @@ const ChallengesUserStatisticsPage = () => {
       tooltip: {
         position: 'top',
         formatter: (params: any) =>
-          `${dayjs(params?.value?.[0]).format('YYYY-MM-DD')}: ${params?.value?.[2] ?? 0}`,
+          `${formatMachineDateTime(params?.value?.[0], 'isoDate')}: ${
+            params?.value?.[2] ?? 0
+          }`,
       },
       grid: { left: 16, right: 16, top: 12, bottom: 42 },
       xAxis: {

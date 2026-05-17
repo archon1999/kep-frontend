@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { Skeleton, Typography, useMediaQuery } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 import { getResourceByParams, resources } from 'app/routes/resources';
-import dayjs from 'dayjs';
 import { LineChart } from 'echarts/charts';
 import {
   GridComponent,
@@ -22,7 +21,14 @@ import {
   getContestsRatingImageSrc,
   getContestsRatingLevelByRating,
 } from 'shared/components/rating/contestsRating';
+import {
+  diffDateTime,
+  formatDateTime,
+  formatDateTimePattern,
+  getDateTimeValue,
+} from 'shared/lib/dateTime';
 import { getColor } from 'shared/lib/echart-utils';
+import { createNumberFormatter } from 'shared/lib/numberFormat';
 
 echarts.use([
   GridComponent,
@@ -112,8 +118,8 @@ const getAxisMinRating = (ratings: number[]) =>
   Math.max(AXIS_MIN_RATING, Math.floor((Math.min(...ratings) - 100) / 100) * 100);
 
 const getDateAxisConfig = (minTime: number, maxTime: number) => {
-  const years = dayjs(maxTime).diff(dayjs(minTime), 'year', true);
-  const months = Math.max(1, dayjs(maxTime).diff(dayjs(minTime), 'month'));
+  const years = diffDateTime(maxTime, minTime, 'year', true);
+  const months = Math.max(1, diffDateTime(maxTime, minTime, 'month'));
 
   if (years > 4) {
     return {
@@ -139,7 +145,7 @@ const getDateAxisConfig = (minTime: number, maxTime: number) => {
 };
 
 const getYearDateAxisConfig = (minTime: number, maxTime: number) => {
-  const years = Math.max(1, Math.ceil(dayjs(maxTime).diff(dayjs(minTime), 'year', true)));
+  const years = Math.max(1, Math.ceil(diffDateTime(maxTime, minTime, 'year', true)));
 
   return {
     interval: YEAR_MS,
@@ -167,53 +173,25 @@ const getStandingsParticipantPath = (contestId?: number, username?: string) => {
   });
 };
 
-const getSupportedNumberLocale = (language?: string) => {
-  const normalized = language?.trim().replace(/_/g, '-');
-  const languageRegion = normalized?.replace(
-    /^([a-zA-Z]{2})([A-Z]{2})$/,
-    (_, languageCode: string, regionCode: string) => `${languageCode.toLowerCase()}-${regionCode}`,
-  );
-  const fallbackLanguage = normalized?.slice(0, 2).toLowerCase();
-  const candidates = [languageRegion, normalized, fallbackLanguage];
-
-  for (const candidate of candidates) {
-    if (!candidate) {
-      continue;
-    }
-
-    try {
-      if (Intl.NumberFormat.supportedLocalesOf(candidate).length > 0) {
-        return candidate;
-      }
-    } catch {
-      // Ignore invalid app locale aliases such as "enUS"; Intl will use the default locale.
-    }
-  }
-
-  return undefined;
-};
-
 const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChangesChartProps) => {
   const { t, i18n } = useTranslation();
   const theme = useTheme();
   const isDownSm = useMediaQuery(theme.breakpoints.down('sm'));
   const { data: changes, isLoading } = useContestRatingChanges(username);
-  const numberLocale = useMemo(() => getSupportedNumberLocale(i18n.language), [i18n.language]);
-
   const numberFormatter = useMemo(
     () =>
-      new Intl.NumberFormat(numberLocale, {
+      createNumberFormatter({
         maximumFractionDigits: 0,
         useGrouping: false,
-      }),
-    [numberLocale],
+      }, i18n.language),
+    [i18n.language],
   );
 
   const chartData = useMemo(
     () =>
       [...(changes ?? [])]
         .filter((change) => change.newRating !== undefined && change.contestStartDate)
-        .sort((a, b) => dayjs(a.contestStartDate).valueOf() - dayjs(b.contestStartDate).valueOf()),
+        .sort((a, b) => getDateTimeValue(a.contestStartDate) - getDateTimeValue(b.contestStartDate)),
     [changes],
   );
 
@@ -232,7 +210,7 @@ const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChan
     const paperColor = getColor(theme.vars.palette.background.paper);
     const shadowColor = getColor(theme.vars.palette.common.black);
     const primaryColor = getColor(theme.vars.palette.primary.main);
-    const times = chartData.map((change) => dayjs(change.contestStartDate).valueOf());
+    const times = chartData.map((change) => getDateTimeValue(change.contestStartDate));
     const minTime = Math.min(...times);
     const maxTime = Math.max(...times);
     const dateAxisConfig = isDownSm
@@ -256,7 +234,7 @@ const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChan
       const level = getContestsRatingLevelByRating(rating);
 
       return {
-        value: [dayjs(change.contestStartDate).valueOf(), rating],
+        value: [getDateTimeValue(change.contestStartDate), rating],
         contestId: change.contestId,
         contestTitle: change.contestTitle,
         contestStartDate: change.contestStartDate,
@@ -323,7 +301,7 @@ const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChan
                 <span style="color:${axisLabelColor};">${escapeHtml(
                   t('contests.ratingChanges.tooltip.date'),
                 )}</span>
-                <strong>${dayjs(point.contestStartDate).format('DD MMM YYYY')}</strong>
+                <strong>${formatDateTime(point.contestStartDate, 'compactDateNoComma')}</strong>
                 <span style="color:${axisLabelColor};">${escapeHtml(
                   t('contests.ratingChanges.tooltip.delta'),
                 )}</span>
@@ -378,7 +356,8 @@ const ContestRatingChangesChart = ({ username, height = 360 }: ContestRatingChan
         axisLabel: {
           color: axisTextColor,
           hideOverlap: true,
-          formatter: (value: number | string) => dayjs(Number(value)).format(dateAxisConfig.format),
+          formatter: (value: number | string) =>
+            formatDateTimePattern(Number(value), dateAxisConfig.format),
         },
         axisLine: { lineStyle: { color: dividerColor } },
         axisTick: { show: false },

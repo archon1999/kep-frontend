@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { Button, Divider, Paper, Stack, Typography } from '@mui/material';
-import dayjs from 'dayjs';
 import { useLoginHref } from 'shared/lib/authRedirect';
+import { formatDateTime } from 'shared/lib/dateTime';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import type { HomeUserActivityHistory, HomeUserRatings } from 'modules/home/domain/entities/home.entity';
 import HomeActivityHistory from './HomeActivityHistory';
@@ -36,7 +36,7 @@ const HomeProfileSection = ({
 }: GreetingCardProps) => {
   const { t } = useTranslation();
   const loginHref = useLoginHref();
-  const todayLabel = useMemo(() => dayjs().format('dddd, MMM DD, YYYY'), []);
+  const todayLabel = useMemo(() => formatDateTime(new Date(), 'weekdayFullDate'), []);
 
   return (
     <Paper background={1} sx={{ height: '100%' }}>

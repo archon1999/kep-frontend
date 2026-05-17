@@ -2,29 +2,25 @@ import { useMemo, useRef, useState } from 'react';
 import { DatesSetArg, EventInput } from '@fullcalendar/core/index.js';
 import ReactFullCalendar from '@fullcalendar/react';
 import { Alert, Box, CircularProgress, Stack, Typography } from '@mui/material';
-import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@mui/material/styles';
 import { useCalendarEvents } from 'modules/calendar/application';
 import type { CalendarEventEntity } from 'modules/calendar/domain';
 import FullCalendar from 'shared/components/base/FullCalendar';
+import { formatDateRange, formatDateTime } from 'shared/lib/dateTime';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import CalendarToolbar, { CalendarView } from './components/CalendarToolbar';
 
 const formatRangeLabel = (start: Date, end: Date, view: CalendarView) => {
-  const startDate = dayjs(start);
-  const endDate = dayjs(end);
-
   if (view === 'timeGridDay') {
-    return startDate.format('MMMM D, YYYY');
+    return formatDateTime(start, 'fullDate');
   }
 
   if (view === 'timeGridWeek') {
-    const adjustedEnd = endDate.subtract(1, 'day');
-    return `${startDate.format('MMM D')} – ${adjustedEnd.format('MMM D, YYYY')}`;
+    return formatDateRange(start, end);
   }
 
-  return startDate.format('MMMM YYYY');
+  return formatDateTime(start, 'monthYear');
 };
 
 const mapToEventInput = (
@@ -46,7 +42,7 @@ const CalendarPage = () => {
   const { data: events, isLoading, error } = useCalendarEvents();
   const calendarRef = useRef<ReactFullCalendar | null>(null);
   const [view, setView] = useState<CalendarView>('dayGridMonth');
-  const [rangeLabel, setRangeLabel] = useState<string>(dayjs().format('MMMM YYYY'));
+  const [rangeLabel, setRangeLabel] = useState<string>(formatDateTime(new Date(), 'monthYear'));
   const theme = useTheme();
 
   const eventColors = useMemo<Record<number, string>>(
@@ -168,3 +164,4 @@ const CalendarPage = () => {
 };
 
 export default CalendarPage;
+

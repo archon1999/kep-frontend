@@ -14,8 +14,8 @@ import {
 } from '@mui/material';
 import { SxProps, Theme } from '@mui/material/styles';
 import { getResourceById, resources } from 'app/routes/resources';
-import dayjs from 'dayjs';
 import KepIcon from 'shared/components/base/KepIcon';
+import { formatDateTimeOrOriginal } from 'shared/lib/dateTime';
 import { cssVarRgba, formatNumber } from 'shared/lib/utils';
 import { BlogPost } from 'modules/blog/domain/entities/blog.entity';
 import { estimateBlogReadTime, stripBlogHtml } from 'modules/blog/ui/shared/lib/article-content';
@@ -70,7 +70,7 @@ const StatPill = ({
 const formatMetaDate = (value?: string) => {
   if (!value) return '';
 
-  return dayjs(value).isValid() ? dayjs(value).format('DD MMM, YYYY') : value;
+  return formatDateTimeOrOriginal(value, 'compactDate');
 };
 
 const MediaFallback = ({

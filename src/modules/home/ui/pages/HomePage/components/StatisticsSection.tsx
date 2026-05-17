@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import { useLandingPageStatistics } from 'modules/home/application/queries.ts';
 import type { HomeStatisticKey } from 'modules/home/domain/entities/home.entity.ts';
+import { createNumberFormatter } from 'shared/lib/numberFormat';
 import { responsivePagePaddingSx } from 'shared/lib/styles.ts';
 
 type StatisticEntry = {
@@ -47,7 +48,7 @@ const StatisticsSection = () => {
 
   const valueFormatter = useMemo(
     () =>
-      new Intl.NumberFormat(undefined, {
+      createNumberFormatter({
         maximumFractionDigits: 0,
       }),
     [],
@@ -55,7 +56,7 @@ const StatisticsSection = () => {
 
   const percentFormatter = useMemo(
     () =>
-      new Intl.NumberFormat(undefined, {
+      createNumberFormatter({
         minimumFractionDigits: 1,
         maximumFractionDigits: 1,
         signDisplay: 'always',

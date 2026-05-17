@@ -35,6 +35,9 @@ const StyledTextField = styled(
     '&.MuiInputLabel-sizeLarge': {
       marginLeft: theme.spacing(2.5),
     },
+    [`&.${inputLabelClasses.outlined}.${inputLabelClasses.shrink}`]: {
+      transform: `translateY(${theme.spacing(1.3)}) translateX(${theme.spacing(-0.4)}) !important`,
+    },
     [`&.${inputLabelClasses.sizeSmall}`]: {
       marginLeft: theme.spacing(1.5),
     },

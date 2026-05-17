@@ -1,4 +1,4 @@
-import { Theme, checkboxClasses, formControlLabelClasses, radioClasses } from '@mui/material';
+import { Theme, formControlLabelClasses, radioClasses } from '@mui/material';
 import { Components } from '@mui/material/styles';
 
 const FormControlLabel: Components<Omit<Theme, 'components'>>['MuiFormControlLabel'] = {

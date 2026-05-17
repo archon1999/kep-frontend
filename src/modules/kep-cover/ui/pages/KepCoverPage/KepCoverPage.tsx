@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { LoadingButton } from '@mui/lab';
 import { Alert, Box, Chip, Paper, Skeleton, Stack, Typography } from '@mui/material';
-import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
+import { formatDateTime } from 'shared/lib/dateTime';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { cssVarRgba } from 'shared/lib/utils';
 import { kepCoverQueries, useKepCoverEntries, useKepCoverSummary } from 'modules/kep-cover/application/queries';
@@ -137,10 +137,10 @@ const KepCoverPage = () => {
                 <Typography variant="body2" color="text.secondary">
                   {summary.status === 'active'
                     ? t('kepCover.hero.endsAt', {
-                        date: summary.endTime ? dayjs(summary.endTime).format('DD MMM, HH:mm') : '-',
+                        date: formatDateTime(summary.endTime, 'compactDateTime'),
                       })
                     : t('kepCover.hero.finishedAt', {
-                        date: summary.endTime ? dayjs(summary.endTime).format('DD MMM, HH:mm') : '-',
+                        date: formatDateTime(summary.endTime, 'compactDateTime'),
                       })}
                 </Typography>
               </Stack>

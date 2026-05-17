@@ -1,7 +1,7 @@
-import dayjs from 'dayjs';
 import { Card, CardContent, Chip, Divider, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import type { TournamentDetailEntity } from 'modules/tournaments/domain';
+import { formatDateTime } from 'shared/lib/dateTime';
 
 interface TournamentInfoCardProps {
   tournament: TournamentDetailEntity;
@@ -9,7 +9,6 @@ interface TournamentInfoCardProps {
 
 const TournamentInfoCard = ({ tournament }: TournamentInfoCardProps) => {
   const { t } = useTranslation();
-  const start = tournament.startTime ? dayjs(tournament.startTime) : null;
 
   return (
     <Card background={1} sx={{ borderRadius: 3 }}>
@@ -24,7 +23,9 @@ const TournamentInfoCard = ({ tournament }: TournamentInfoCardProps) => {
           </Stack>
 
           <Typography variant="body2" color="text.secondary">
-            {t('tournaments.startsOn', { date: start ? start.format('DD MMM, HH:mm') : '-' })}
+            {t('tournaments.startsOn', {
+              date: formatDateTime(tournament.startTime, 'compactDateTime'),
+            })}
           </Typography>
 
           <Divider />

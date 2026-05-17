@@ -21,6 +21,7 @@ import { ShopProductColor, ShopProductSize } from 'modules/shop/domain/entities/
 import { useUserSocial } from 'modules/users/application/queries';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
+import { formatInteger } from 'shared/lib/numberFormat';
 import { toast } from 'sonner';
 
 const PHONE_RE = /^(?:\+?998)?\d{9}$/;
@@ -333,7 +334,7 @@ const ShopCheckoutModal = ({
                 {t('kepcoinSpend.balanceLabel')}
               </Typography>
               <KepcoinValue
-                value={(currentUser?.kepcoin ?? 0).toLocaleString()}
+                value={formatInteger(currentUser?.kepcoin ?? 0)}
                 iconSize={20}
                 textVariant="body2"
                 fontWeight={700}

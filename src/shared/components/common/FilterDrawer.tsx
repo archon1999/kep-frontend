@@ -102,6 +102,7 @@ export interface FilterDrawerProps {
   onClose: () => void;
   children: ReactNode;
   drawerWidth?: number;
+  temporary?: boolean;
   clearLabel?: ReactNode;
   hasActiveFilters?: boolean;
   onClear?: () => void;
@@ -114,6 +115,7 @@ const FilterDrawer = ({
   onClose,
   children,
   drawerWidth = DEFAULT_FILTER_DRAWER_WIDTH,
+  temporary = false,
   clearLabel,
   hasActiveFilters = false,
   onClear,
@@ -123,6 +125,7 @@ const FilterDrawer = ({
   const { topbarHeight } = useNavContext();
   const upXl = up('xl');
   const upSm = up('sm');
+  const persistent = upXl && !temporary;
   const showClear = hasActiveFilters && Boolean(onClear);
   const resolvedTitle = title ?? t('problems.filters');
   const drawerContent = (
@@ -147,7 +150,7 @@ const FilterDrawer = ({
 
   return (
     <>
-      {upXl ? (
+      {persistent ? (
         <Drawer
           variant="persistent"
           open={open}
@@ -184,7 +187,7 @@ const FilterDrawer = ({
           }}
           disablePortal
           sx={(theme) => ({
-            display: { xs: 'block', xl: 'none' },
+            display: temporary ? 'block' : { xs: 'block', xl: 'none' },
             [`& .${drawerClasses.paper}`]: {
               top: theme.mixins.topOffset(topbarHeight),
               height: theme.mixins.contentHeight(topbarHeight),

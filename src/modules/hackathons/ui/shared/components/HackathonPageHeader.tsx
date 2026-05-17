@@ -28,7 +28,7 @@ const HackathonPageHeader = ({
   action,
   stats,
 }: HackathonPageHeaderProps) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   if (!hackathon) return null;
 
@@ -60,12 +60,12 @@ const HackathonPageHeader = ({
       },
       {
         label: t('hackathons.startsAt'),
-        value: formatHackathonDateTime(hackathon.startTime, i18n.language),
+        value: formatHackathonDateTime(hackathon.startTime),
         icon: 'mdi:calendar-start',
       },
       {
         label: t('hackathons.endsAt'),
-        value: formatHackathonDateTime(hackathon.finishTime, i18n.language),
+        value: formatHackathonDateTime(hackathon.finishTime),
         icon: 'mdi:calendar-end',
       },
     ];

@@ -21,6 +21,8 @@ import { useShopOrders } from 'modules/shop/application/queries';
 import type { ShopOrder } from 'modules/shop/domain/entities/order.entity';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
+import { formatCalendarDateTime } from 'shared/lib/dateTime';
+import { formatInteger } from 'shared/lib/numberFormat';
 
 const statusColorMap: Record<ShopOrder['status'], 'default' | 'warning' | 'info' | 'success' | 'error'> = {
   PENDING: 'warning',
@@ -30,14 +32,7 @@ const statusColorMap: Record<ShopOrder['status'], 'default' | 'warning' | 'info'
   CANCELLED: 'error',
 };
 
-const formatOrderDate = (value: string) =>
-  new Intl.DateTimeFormat('uz-UZ', {
-    year: 'numeric',
-    month: 'short',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(new Date(value));
+const formatOrderDate = (value: string) => formatCalendarDateTime(value);
 
 const PurchaseCardSkeleton = () => (
   <Card variant="outlined">
@@ -143,7 +138,7 @@ const UserProfilePurchasesTab = () => {
                       color={statusColorMap[order.status]}
                       label={t(`users.profile.purchases.statuses.${order.status}`)}
                     />
-                    <KepcoinValue value={order.kepcoinValue.toLocaleString()} />
+                    <KepcoinValue value={formatInteger(order.kepcoinValue)} />
                   </Stack>
                 </Stack>
 

@@ -2,8 +2,8 @@ import { createKeyFactory } from 'shared/api';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import { useTranslation } from 'react-i18next';
-import dayjs from 'dayjs';
 import { getResourceById, resources } from 'app/routes/resources';
+import { formatDateTime } from 'shared/lib/dateTime';
 import { HttpHomeRepository } from '../data-access/repository/http.home.repository';
 import type {
   HomeListParams,
@@ -30,7 +30,8 @@ const useHomeSWR = <T>(key: readonly unknown[] | null, fetcher: () => Promise<T>
 
 const mapListParams = (pageSize?: number): HomeListParams => ({ pageSize });
 
-const formatDate = (value: string | null | undefined) => (value ? dayjs(value).format('DD MMM, HH:mm') : '-');
+const formatDate = (value: string | null | undefined) =>
+  formatDateTime(value, 'compactDateTime');
 
 export const useHomeNews = (pageSize = 3) =>
   useHomeSWR<HomeNewsList>(homeKeys.detail(`news-${pageSize}`), () => repository.getNews(mapListParams(pageSize)));

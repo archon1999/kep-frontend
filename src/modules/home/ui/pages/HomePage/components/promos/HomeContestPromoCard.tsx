@@ -2,10 +2,10 @@ import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button, Card, CardContent, Chip, Stack, Typography } from '@mui/material';
-import dayjs from 'dayjs';
 import type { HomePromoSlide } from 'modules/home/domain/entities/home-promo.entity';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepIcon from 'shared/components/base/KepIcon';
+import { formatDateTime } from 'shared/lib/dateTime';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { cssVarRgba } from 'shared/lib/utils';
 
@@ -147,11 +147,15 @@ const ContestPromoContent = ({
       <Stack spacing={1.5} sx={{ width: { lg: 290 } }}>
         <TimeBox
           label={meta.startLabel}
-          value={slide.startTime ? dayjs(slide.startTime).format('DD MMM, HH:mm') : '-'}
+          value={
+            <>
+              {formatDateTime(slide.startTime, 'compactDateTime')} - {formatDateTime(slide.endTime, 'compactDateTime')}
+            </>
+          }
         />
         <TimeBox
-          label={t('contests.problemsPreview')}
-          value={t('contests.problems', { count: slide.problemsCount ?? 0 })}
+          label={t('homePage.promos.metrics.registrants')}
+          value={slide.registrantsCount ?? 0}
         />
         <Button
           component={RouterLink}

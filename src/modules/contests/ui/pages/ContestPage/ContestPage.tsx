@@ -32,6 +32,7 @@ import KepcoinSpendConfirm from 'shared/components/common/KepcoinSpendConfirm';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
 import { isNotFoundError } from 'shared/lib/detailRouteNotFound';
+import { createNumberFormatter, normalizeNumberLocale } from 'shared/lib/numberFormat';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import ContestPageProblemsPreviewCard from './ContestPageProblemsPreviewCard.tsx';
 
@@ -69,21 +70,13 @@ const ContestPage = () => {
   const showStatisticsSummary = canLoadContestProblems;
   const canRegister = contest ? contest.statusCode !== ContestStatus.Finished : false;
   const isPreviewLoading = isContestLoading || (canLoadContestProblems && problemsLoading);
-  const resolvedLocale = useMemo(() => {
-    const normalized = (i18n.language || '').replace('_', '-');
-    try {
-      const [canonical] = Intl.getCanonicalLocales(normalized || []);
-      return canonical || undefined;
-    } catch {
-      return undefined;
-    }
-  }, [i18n.language]);
+  const resolvedLocale = useMemo(() => normalizeNumberLocale(i18n.language), [i18n.language]);
   const integerFormatter = useMemo(
-    () => new Intl.NumberFormat(resolvedLocale, { maximumFractionDigits: 0 }),
+    () => createNumberFormatter({ maximumFractionDigits: 0 }, resolvedLocale),
     [resolvedLocale],
   );
   const percentFormatter = useMemo(
-    () => new Intl.NumberFormat(resolvedLocale, { maximumFractionDigits: 2 }),
+    () => createNumberFormatter({ maximumFractionDigits: 2 }, resolvedLocale),
     [resolvedLocale],
   );
   const overviewKpis = useMemo(

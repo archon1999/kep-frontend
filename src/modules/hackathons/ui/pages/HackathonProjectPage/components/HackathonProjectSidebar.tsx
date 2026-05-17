@@ -38,7 +38,7 @@ const HackathonProjectSidebar = ({
   hackathon,
   onSubmitted,
 }: HackathonProjectSidebarProps) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const project = hackathonProject.project;
   const { trigger: submitHackathonProject, isMutating: isSubmitting } = useSubmitHackathonProject();
   const [selectedTechnology, setSelectedTechnology] = useState(project.availableTechnologies[0]?.technology ?? '');
@@ -154,8 +154,8 @@ const HackathonProjectSidebar = ({
                 {t('hackathons.submissionWindow')}
               </Typography>
               <Typography variant="body2" fontWeight={700}>
-                {formatHackathonDateTime(hackathon.startTime, i18n.language)} -{' '}
-                {formatHackathonDateTime(hackathon.finishTime, i18n.language)}
+                {formatHackathonDateTime(hackathon.startTime)} -{' '}
+                {formatHackathonDateTime(hackathon.finishTime)}
               </Typography>
             </Stack>
           </CardContent>

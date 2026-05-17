@@ -19,6 +19,7 @@ import IconifyIcon from 'shared/components/base/IconifyIcon';
 import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
 import AttemptVerdict from 'shared/components/problems/AttemptVerdict';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
+import { formatCalendarDateTime } from 'shared/lib/dateTime';
 import { playSuccessSound } from 'shared/lib/soundSettings';
 import { wsService } from 'shared/services/websocket';
 import { problemsQueries } from 'modules/problems/application/queries';
@@ -192,8 +193,7 @@ const ProblemsAttemptsTable = ({
 
   const formatDateTime = useCallback((value?: string) => {
     if (!value) return '--';
-    const date = new Date(value);
-    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+    return formatCalendarDateTime(value, value);
   }, []);
 
   const canOpenAttemptDetail = useCallback(

@@ -3,20 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router';
 import { Avatar, Box, Card, CardActionArea, CardContent, Chip, Divider, Stack, Tooltip, Typography } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources';
-import dayjs from 'dayjs';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import { diffDateTime, formatCountdownClock, formatDateTime } from 'shared/lib/dateTime';
 import { cssVarRgba } from 'shared/lib/utils';
 import { Arena, ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
-
-
-const formatCountdownDuration = (diffMs: number) => {
-  const totalSeconds = Math.max(Math.floor(diffMs / 1000), 0);
-  const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
-  const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
-  const seconds = String(totalSeconds % 60).padStart(2, '0');
-
-  return `${hours}:${minutes}:${seconds}`;
-};
 
 const getStatusColor = (status: ArenaStatus) => {
   if (status === ArenaStatus.Already) return 'success';
@@ -30,7 +20,7 @@ interface ArenaListCardProps {
 
 const ArenaListCard = ({ arena }: ArenaListCardProps) => {
   const { t } = useTranslation();
-  const [now, setNow] = useState(() => dayjs());
+  const [now, setNow] = useState(() => Date.now());
   const statusColor = getStatusColor(arena.status);
   const isLive = arena.status === ArenaStatus.Already;
   const isUpcoming = arena.status === ArenaStatus.NotStarted;
@@ -39,7 +29,7 @@ const ArenaListCard = ({ arena }: ArenaListCardProps) => {
   useEffect(() => {
     if (!isUpcoming && !isLive) return undefined;
 
-    const timer = setInterval(() => setNow(dayjs()), 1000);
+    const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
   }, [isLive, isUpcoming]);
 
@@ -59,7 +49,7 @@ const ArenaListCard = ({ arena }: ArenaListCardProps) => {
     if (isUpcoming) {
       return {
         label: t('arena.countdown.untilStart'),
-        value: formatCountdownDuration(dayjs(arena.startTime).diff(now, 'millisecond')),
+        value: formatCountdownClock(diffDateTime(arena.startTime, now, 'millisecond')),
         icon: 'mdi:calendar-clock',
         color: 'warning.main',
       };
@@ -68,7 +58,7 @@ const ArenaListCard = ({ arena }: ArenaListCardProps) => {
     if (isLive) {
       return {
         label: t('arena.countdown.untilFinish'),
-        value: formatCountdownDuration(dayjs(arena.finishTime).diff(now, 'millisecond')),
+        value: formatCountdownClock(diffDateTime(arena.finishTime, now, 'millisecond')),
         icon: 'mdi:timer-sand',
         color: 'success.main',
       };
@@ -212,7 +202,7 @@ const ArenaListCard = ({ arena }: ArenaListCardProps) => {
                   {t('arena.timeline.start')}
                 </Typography>
                 <Typography variant="subtitle2" fontWeight={900}>
-                  {dayjs(arena.startTime).format('DD MMM, HH:mm')}
+                  {formatDateTime(arena.startTime, 'compactDateTime')}
                 </Typography>
               </Stack>
               <Divider

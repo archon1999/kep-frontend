@@ -10,6 +10,8 @@ const SearchTextField = ({ slotProps, ...rest }: TextFieldProps) => {
   return (
     <StyledTextField
       id="search-box"
+      type="search"
+      variant="filled"
       placeholder={t('common.searchPlaceholder')}
       sx={{
         minWidth: 348,

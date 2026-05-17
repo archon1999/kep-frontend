@@ -154,6 +154,7 @@ const BlogFilters = ({
 
             <StyledTextField
               type="search"
+              variant="filled"
               fullWidth
               value={filters.title}
               onChange={handleSearchChange}

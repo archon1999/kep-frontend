@@ -1,6 +1,7 @@
 import { Box, Card, CardContent, Chip, LinearProgress, Stack, Switch, Typography, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import { formatDateTime } from 'shared/lib/dateTime';
 import { cssVarRgba } from 'shared/lib/utils.ts';
 
 type Props = {
@@ -13,15 +14,7 @@ type Props = {
 const formatReadyUntil = (value?: string | null) => {
   if (!value) return null;
 
-  const parsedDate = new Date(value);
-  if (Number.isNaN(parsedDate.getTime())) return null;
-
-  return new Intl.DateTimeFormat(undefined, {
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(parsedDate);
+  return formatDateTime(value, 'compactDateTime', '') || null;
 };
 
 const DuelReadyStatusCard = ({ ready, readyUntil, loading, onToggle }: Props) => {

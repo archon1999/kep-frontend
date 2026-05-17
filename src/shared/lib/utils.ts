@@ -1,5 +1,12 @@
-import dayjs from 'dayjs';
 import ts, { transpile } from 'typescript';
+import { formatDateTime, subtractFromNow } from './dateTime';
+import {
+  formatCurrency,
+  getCurrencySymbol as getFormattedCurrencySymbol,
+  numberFormat as formatLocalizedNumber,
+  NumberFormatLocale,
+  NumberFormatOptions,
+} from './numberFormat';
 
 export const parseRoutePath = (path: string) => path.split('/').pop() || '/';
 
@@ -56,34 +63,18 @@ export const getPastDates = (duration: 'week' | 'month' | 'year' | number): Date
 
 export const getPreviousMonths = (length: number = 12) => {
   return Array.from({ length }, (_, i) =>
-    dayjs()
-      .subtract(i + 1, 'month')
-      .format('MMMM'),
+    formatDateTime(subtractFromNow(i + 1, 'month'), 'monthLong'),
   ).reverse();
 };
 
 export const currencyFormat = (
   amount: number,
-  locale: Intl.LocalesArgument = 'en-US',
-  options: Intl.NumberFormatOptions = {},
-) => {
-  return new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency: 'usd',
-    maximumFractionDigits: 2,
-    ...options,
-  }).format(amount);
-};
+  locale: NumberFormatLocale = 'en-US',
+  options: NumberFormatOptions = {},
+) => formatCurrency(amount, locale, options);
 
-export const getCurrencySymbol = (currency: string, locale: Intl.LocalesArgument = 'en-US') => {
-  const parts = new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency: currency,
-  })
-    .formatToParts(0)
-    .find((x) => x.type === 'currency');
-  return parts ? parts.value : '$';
-};
+export const getCurrencySymbol = (currency: string, locale: NumberFormatLocale = 'en-US') =>
+  getFormattedCurrencySymbol(currency, locale);
 
 export const getNumbersInRange = (startAt: number, endAt: number) => {
   return [...Array(endAt + 1 - startAt).keys()].map((i) => i + startAt);
@@ -91,14 +82,11 @@ export const getNumbersInRange = (startAt: number, endAt: number) => {
 
 export const numberFormat = (
   number: number,
-  locale: Intl.LocalesArgument = 'en-US',
-  options: Intl.NumberFormatOptions = {
+  locale: NumberFormatLocale = 'en-US',
+  options: NumberFormatOptions = {
     notation: 'standard',
   },
-) =>
-  new Intl.NumberFormat(locale, {
-    ...options,
-  }).format(number);
+) => formatLocalizedNumber(number, locale, options);
 
 /* Get Random Number */
 export const getRandomNumber = (min: number, max: number) => {

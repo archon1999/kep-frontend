@@ -27,7 +27,7 @@ interface HackathonAttemptsTableProps {
 }
 
 const HackathonAttemptsTable = ({ attempts, isLoading, onRerun }: HackathonAttemptsTableProps) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { currentUser } = useAuth();
   const { trigger: fetchHackathonAttemptLog } = useHackathonAttemptLog();
   const { trigger: rerunHackathonAttempt, isMutating: isRerunning } = useRerunHackathonAttempt();
@@ -173,7 +173,7 @@ const HackathonAttemptsTable = ({ attempts, isLoading, onRerun }: HackathonAttem
               </TableCell>
               <TableCell>
                 <Typography variant="body2" fontWeight={600}>
-                  {formatHackathonDateTime(attempt.created, i18n.language)}
+                  {formatHackathonDateTime(attempt.created)}
                 </Typography>
               </TableCell>
               <TableCell align="right">

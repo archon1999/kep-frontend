@@ -13,6 +13,7 @@ dayjs.extend(relativeTime);
 
 export type DateTimeInput = ConfigType | null | undefined;
 export type SupportedDateLocale = 'en-US' | 'ru-RU' | 'uz-UZ';
+export type DateTimePickerValue = Dayjs | null;
 
 type DateTimeFallback = string;
 
@@ -37,6 +38,7 @@ const USER_FACING_FORMATS = {
   activityDateTime: 'MMM DD, YYYY HH:mm',
   monthYear: 'MMMM YYYY',
   monthLong: 'MMMM',
+  dayMonth: 'DD MMM',
   monthDay: 'MMM D',
   monthDayYear: 'MMM D, YYYY',
   longMonthDay: 'MMMM D',
@@ -112,6 +114,12 @@ export const formatMachineDateTime = (
   format: MachineDateTimeFormat = 'isoDateTimeMinute',
   fallback: DateTimeFallback = DEFAULT_EMPTY_VALUE,
 ) => formatWithPattern(value, MACHINE_FORMATS[format], fallback);
+
+export const formatDateTimePattern = (
+  value: DateTimeInput,
+  pattern: string,
+  fallback: DateTimeFallback = DEFAULT_EMPTY_VALUE,
+) => formatWithPattern(value, pattern, fallback);
 
 export const formatDateTimeOrOriginal = (
   value: string | null | undefined,
@@ -194,6 +202,14 @@ export const formatDateTimeLocalInputValue = (
   return parsed.format('YYYY-MM-DDTHH:mm');
 };
 
+export const parseDateTimePickerValue = (value?: DateTimeInput): DateTimePickerValue =>
+  toDateTime(value);
+
+export const formatDateTimePickerValue = (
+  value: DateTimePickerValue,
+  fallback: DateTimeFallback = INVALID_EMPTY_VALUE,
+) => formatDateTimeLocalInputValue(value, fallback);
+
 export const toBackendOffsetDateTime = (value: string) => {
   const parsed = toDateTime(value);
   if (!parsed) return value;
@@ -201,11 +217,24 @@ export const toBackendOffsetDateTime = (value: string) => {
   return parsed.format('YYYY-MM-DDTHH:mm:ssZ');
 };
 
-export const formatCountdownClock = (diffMs: number) => {
+export const toBackendUtcDateTime = (value: string) => {
+  const parsed = toDateTime(value);
+  if (!parsed) return INVALID_EMPTY_VALUE;
+
+  return parsed.toDate().toISOString();
+};
+
+export const getCountdownParts = (diffMs: number) => {
   const totalSeconds = Math.max(0, Math.floor(diffMs / 1000));
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
+
+  return { hours, minutes, seconds };
+};
+
+export const formatCountdownClock = (diffMs: number) => {
+  const { hours, minutes, seconds } = getCountdownParts(diffMs);
 
   return `${hours.toString().padStart(2, '0')}:${minutes
     .toString()
@@ -244,10 +273,18 @@ export const isAfterNow = (value?: DateTimeInput) => {
 
 export const getDateYear = (value?: DateTimeInput) => toDateTime(value)?.year();
 
+export const getDateWeekday = (value?: DateTimeInput) => toDateTime(value)?.day() ?? 0;
+
 export const getCurrentYear = () => dayjs().year();
 
 export const subtractFromNow = (amount: number, unit: ManipulateType) =>
   dayjs().subtract(amount, unit).toDate();
+
+export const addDateTime = (value: DateTimeInput, amount: number, unit: ManipulateType) =>
+  toDateTime(value)?.add(amount, unit) ?? null;
+
+export const subtractDateTime = (value: DateTimeInput, amount: number, unit: ManipulateType) =>
+  toDateTime(value)?.subtract(amount, unit) ?? null;
 
 export const formatDateRange = (
   start: DateTimeInput,

@@ -1,6 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Button, Card, CardContent, CardHeader, Grid, LinearProgress, MenuItem, Stack, TextField, Typography } from '@mui/material';
-import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { useAccountProfileInfo, useUpdateProfileInfo } from 'modules/account-settings/application';
@@ -8,6 +7,7 @@ import type { AccountProfileInfo } from 'modules/account-settings/domain';
 import { toast } from 'sonner';
 import { useUsersCountries } from 'modules/users/application/queries.ts';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon.tsx';
+import { formatDateInputValue } from 'shared/lib/dateTime';
 import { getCountryLabel } from 'shared/utils/country.ts';
 
 const ProfileInformationForm = () => {
@@ -34,7 +34,7 @@ const ProfileInformationForm = () => {
 
   const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setFormState((prev) => ({ ...prev!, dateOfBirth: value ? dayjs(value).format('YYYY-MM-DD') : '' }));
+    setFormState((prev) => ({ ...prev!, dateOfBirth: formatDateInputValue(value) }));
   };
 
   const handleReset = () => setFormState(data || null);
@@ -74,7 +74,7 @@ const ProfileInformationForm = () => {
                 fullWidth
                 type="date"
                 label={t('settings.birthDate')}
-                value={formState?.dateOfBirth ? dayjs(formState.dateOfBirth).format('YYYY-MM-DD') : ''}
+                value={formatDateInputValue(formState?.dateOfBirth)}
                 onChange={handleDateChange}
                 InputLabelProps={{ shrink: true }}
                 error={Boolean(errors?.dateOfBirth?.length)}

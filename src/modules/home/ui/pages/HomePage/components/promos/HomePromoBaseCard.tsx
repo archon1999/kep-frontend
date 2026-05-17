@@ -1,8 +1,8 @@
-import dayjs from 'dayjs';
 import { Box, Button, Chip, Paper, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { formatDateTime } from 'shared/lib/dateTime';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { cssVarRgba } from 'shared/lib/utils';
 import type { HomePromoSlide } from 'modules/home/domain/entities/home-promo.entity';
@@ -18,8 +18,10 @@ const HomePromoBaseCard = ({ slide }: { slide: HomePromoSlide }) => {
   const paletteColor = accentColorMap[slide.accent];
   const dateLabel =
     slide.status === 'active'
-      ? t('homePage.promos.endsAt', { date: slide.endTime ? dayjs(slide.endTime).format('DD MMM, HH:mm') : '-' })
-      : t('homePage.promos.startsAt', { date: slide.startTime ? dayjs(slide.startTime).format('DD MMM, HH:mm') : '-' });
+      ? t('homePage.promos.endsAt', { date: formatDateTime(slide.endTime, 'compactDateTime') })
+      : t('homePage.promos.startsAt', {
+          date: formatDateTime(slide.startTime, 'compactDateTime'),
+        });
 
   return (
     <Box

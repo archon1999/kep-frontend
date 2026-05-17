@@ -31,6 +31,7 @@ import {
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import type { KepIconName } from 'shared/config/icons';
 import { getColor } from 'shared/lib/echart-utils';
+import { createNumberFormatter } from 'shared/lib/numberFormat';
 import ContestRatingChangesChart from '../../shared/components/ContestRatingChangesChart';
 import ContestsUserStatisticsPageChartCard from './ContestsUserStatisticsPageChartCard.tsx';
 import ContestsUserStatisticsPageHighlightCard, {
@@ -57,9 +58,9 @@ const ContestsUserStatisticsPage = () => {
 
   const numberFormatter = useMemo(
     () =>
-      new Intl.NumberFormat(undefined, {
+      createNumberFormatter({
         maximumFractionDigits: 2,
-      }),
+      }, i18n.language),
     [i18n.language],
   );
 

@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
+import { formatInteger } from 'shared/lib/numberFormat';
 import axiosFetcher from 'shared/services/axios/axiosFetcher';
 import { toast } from 'sonner';
 import useSWRMutation from 'swr/mutation';
@@ -45,7 +46,7 @@ const KepcoinSpendConfirm = ({
 
   const { trigger, isMutating } = useSWRMutation([purchaseUrl, { method: 'post' }], axiosFetcher);
 
-  const formattedValue = useMemo(() => value.toLocaleString(), [value]);
+  const formattedValue = useMemo(() => formatInteger(value), [value]);
   const userBalance = useMemo(() => currentUser?.kepcoin ?? 0, [currentUser?.kepcoin]);
 
   const handleTriggerClick = () => {
@@ -142,7 +143,7 @@ const KepcoinSpendConfirm = ({
                 {t('kepcoinSpend.balanceLabel')}
               </Typography>
               <KepcoinValue
-                value={userBalance.toLocaleString()}
+                value={formatInteger(userBalance)}
                 iconSize={20}
                 textVariant="body2"
                 fontWeight={700}

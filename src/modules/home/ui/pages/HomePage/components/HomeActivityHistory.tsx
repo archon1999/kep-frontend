@@ -10,7 +10,6 @@ import {
   TimelineSeparator,
 } from '@mui/lab';
 import { Box, Paper, Skeleton, Stack, Typography } from '@mui/material';
-import dayjs from 'dayjs';
 import { TFunction } from 'i18next';
 import type {
   HomeUserActivityHistory,
@@ -18,6 +17,7 @@ import type {
 } from 'modules/home/domain/entities/home.entity.ts';
 import KepIcon from 'shared/components/base/KepIcon';
 import type { KepIconName } from 'shared/config/icons';
+import { formatDateTime } from 'shared/lib/dateTime';
 
 const SKELETON_ITEMS = 3;
 
@@ -172,7 +172,7 @@ const getActivityTexts = (
       const points = parseNumber(payload.points);
       const rank = parseNumber(payload.rank);
       const finishTime = parseString(payload.finishTime)
-        ? dayjs(payload.finishTime as string).format('MMM DD, YYYY HH:mm')
+        ? formatDateTime(payload.finishTime as string, 'activityDateTime')
         : undefined;
       return {
         primary: t('homePage.activityHistory.types.arenaParticipation.description', {
@@ -322,7 +322,7 @@ const HomeActivityHistory = ({
             {activities.map((activity, index) => {
               const texts = getActivityTexts(activity, t);
               const icon = ACTIVITY_ICON_MAP[activity.activityType];
-              const recordedAt = dayjs(activity.recordedFor);
+              const recordedAt = activity.recordedFor;
               const label =
                 activity.activityTypeDisplay ||
                 activity.user?.username ||
@@ -337,10 +337,10 @@ const HomeActivityHistory = ({
                 >
                   <TimelineOppositeContent>
                     <Typography variant="h6" fontWeight={600}>
-                      {recordedAt.format('HH:mm')}
+                      {formatDateTime(recordedAt, 'time')}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
-                      {recordedAt.format('dddd')}
+                      {formatDateTime(recordedAt, 'weekday')}
                     </Typography>
                   </TimelineOppositeContent>
 
@@ -376,7 +376,7 @@ const HomeActivityHistory = ({
                     >
                       <Stack direction="column" spacing={0.75}>
                         <Typography variant="caption" color="text.secondary">
-                          {recordedAt.format('MMM DD, YYYY')}
+                          {formatDateTime(recordedAt, 'profileDate')}
                         </Typography>
 
                         <Typography variant="subtitle2" fontWeight={600}>

@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import TabPanel from '@mui/lab/TabPanel';
 import { Button, Divider, dividerClasses, listItemClasses } from '@mui/material';
 import { DatewiseNotification, Notification } from 'app/types/notification';
-import dayjs from 'dayjs';
 import NotificationList from 'shared/components/sections/notification/NotificationList';
+import { isToday } from 'shared/lib/dateTime';
 
 interface NotificationTabPanelProps {
   value: string;
@@ -19,7 +19,7 @@ const NotificationTabPanel = ({ value, notificationsData }: NotificationTabPanel
   useEffect(() => {
     const datewiseNotification = notificationsData.reduce(
       (acc: DatewiseNotification, val) => {
-        if (dayjs().diff(dayjs(val.createdAt), 'days') === 0) {
+        if (isToday(val.createdAt)) {
           acc.today.push(val);
         } else {
           acc.older.push(val);

@@ -3,26 +3,28 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router';
 import { Box, Card, CardActionArea, Chip, Divider, LinearProgress, Stack, Typography } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
 import { useContestTopContestants } from 'modules/contests/application/queries';
 import { ContestListItem } from 'modules/contests/domain/entities/contest.entity';
 import { getContestTypeTitle } from 'modules/contests/ui/shared/utils/contestType';
 import KepIcon from 'shared/components/base/KepIcon';
 import { KepIconName } from 'shared/config/icons';
+import {
+  DateTimeInput,
+  diffDateTime,
+  formatDateTime,
+  isAfterNow,
+  isBeforeNow,
+} from 'shared/lib/dateTime';
 import { cssVarRgba } from 'shared/lib/utils';
 import ContestTopContestants from './ContestTopContestants';
-
-
-dayjs.extend(duration);
 
 interface ContestCardProps {
   contest: ContestListItem;
 }
 
 interface ContestCardMeta {
-  startDate: dayjs.Dayjs | null;
-  finishDate: dayjs.Dayjs | null;
+  startDate: DateTimeInput;
+  finishDate: DateTimeInput;
   isFinished: boolean;
   isUpcoming: boolean;
   isOngoing: boolean;
@@ -136,10 +138,10 @@ const ContestDurationProgress = ({ meta }: { meta: ContestCardMeta }) => {
       />
       <Stack direction="row" justifyContent="space-between" spacing={2}>
         <Typography variant="caption" color="text.secondary" fontWeight={700}>
-          {meta.startDate.format('DD MMM, HH:mm')}
+          {formatDateTime(meta.startDate, 'compactDateTime')}
         </Typography>
         <Typography variant="caption" color="text.secondary" fontWeight={700}>
-          {meta.finishDate.format('DD MMM, HH:mm')}
+          {formatDateTime(meta.finishDate, 'compactDateTime')}
         </Typography>
       </Stack>
     </Stack>
@@ -149,12 +151,11 @@ const ContestDurationProgress = ({ meta }: { meta: ContestCardMeta }) => {
 const ContestCard = ({ contest }: ContestCardProps) => {
   const { t } = useTranslation();
 
-  const startDate = contest.startTime ? dayjs(contest.startTime) : null;
-  const finishDate = contest.finishTime ? dayjs(contest.finishTime) : null;
-  const now = dayjs();
+  const startDate = contest.startTime;
+  const finishDate = contest.finishTime;
 
-  const isFinished = finishDate ? now.isAfter(finishDate) : false;
-  const isUpcoming = startDate ? now.isBefore(startDate) : false;
+  const isFinished = finishDate ? isBeforeNow(finishDate) : false;
+  const isUpcoming = startDate ? isAfterNow(startDate) : false;
   const isOngoing = !isFinished && !isUpcoming;
 
   const { data: topContestants, isLoading: isTopContestantsLoading } = useContestTopContestants(
@@ -164,7 +165,7 @@ const ContestCard = ({ contest }: ContestCardProps) => {
 
   const progress =
     startDate && finishDate
-      ? clamp((now.diff(startDate) / Math.max(finishDate.diff(startDate), 1)) * 100)
+      ? clamp((diffDateTime(Date.now(), startDate) / Math.max(diffDateTime(finishDate, startDate), 1)) * 100)
       : 0;
 
   const meta: ContestCardMeta = {
@@ -270,7 +271,9 @@ const ContestCard = ({ contest }: ContestCardProps) => {
                 icon="challenge-time"
                 label={
                   meta.startDate
-                    ? t('contests.startsLabel', { date: meta.startDate.format('DD MMM, HH:mm') })
+                    ? t('contests.startsLabel', {
+                        date: formatDateTime(meta.startDate, 'compactDateTime'),
+                      })
                     : t('contests.startsUnknown')
                 }
               />
@@ -278,7 +281,7 @@ const ContestCard = ({ contest }: ContestCardProps) => {
                 <DateLine
                   icon="challenge-time"
                   label={t('contests.endsLabel', {
-                    date: meta.finishDate.format('DD MMM, HH:mm'),
+                    date: formatDateTime(meta.finishDate, 'compactDateTime'),
                   })}
                 />
               ) : null}

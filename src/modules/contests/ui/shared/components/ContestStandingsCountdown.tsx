@@ -13,11 +13,11 @@ import {
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
-import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { getResourceByParams, resources } from 'app/routes/resources';
 import { ContestDetail } from 'modules/contests/domain/entities/contest-detail.entity';
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
+import { getCountdownParts, getDateTimeValue } from 'shared/lib/dateTime';
 
 interface ContestStandingsCountdownProps {
   contest?: ContestDetail | null;
@@ -68,14 +68,14 @@ const TimeUnit = ({ label, value }: { label: string; value: number }) => {
 
 const ContestStandingsCountdown = ({ contest }: ContestStandingsCountdownProps) => {
   const { t } = useTranslation();
-  const [now, setNow] = useState(dayjs());
+  const [now, setNow] = useState(Date.now());
   const [phase, setPhase] = useState<ContestStatus | null>(contest?.statusCode ?? null);
   const [activeModal, setActiveModal] = useState<'start' | 'finish' | null>(null);
   const prevPhaseRef = useRef<ContestStatus | null>(null);
   const initializedRef = useRef(false);
 
   useEffect(() => {
-    const timer = setInterval(() => setNow(dayjs()), 1000);
+    const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -89,8 +89,8 @@ const ContestStandingsCountdown = ({ contest }: ContestStandingsCountdownProps) 
     setPhase(contest?.statusCode ?? null);
   }, [contest?.id, contest?.statusCode, contest?.startTime, contest?.finishTime]);
 
-  const startDate = contest?.startTime ? dayjs(contest.startTime) : null;
-  const finishDate = contest?.finishTime ? dayjs(contest.finishTime) : null;
+  const startDate = contest?.startTime;
+  const finishDate = contest?.finishTime;
 
   const safePhase = phase ?? ContestStatus.NotStarted;
 
@@ -100,22 +100,20 @@ const ContestStandingsCountdown = ({ contest }: ContestStandingsCountdownProps) 
     return null;
   }, [finishDate, safePhase, startDate]);
 
-  const remainingSeconds = targetDate ? Math.max(Math.floor(targetDate.diff(now) / 1000), 0) : 0;
-  const hours = Math.floor(remainingSeconds / 3600);
-  const minutes = Math.floor((remainingSeconds % 3600) / 60);
-  const seconds = remainingSeconds % 60;
+  const remainingMs = targetDate ? Math.max(getDateTimeValue(targetDate) - now, 0) : 0;
+  const { hours, minutes, seconds } = getCountdownParts(remainingMs);
 
   useEffect(() => {
     if (!targetDate || phase === null) return;
 
-    if (remainingSeconds <= 0) {
+    if (remainingMs <= 0) {
       if (safePhase === ContestStatus.NotStarted) {
         setPhase(ContestStatus.Already);
       } else if (safePhase === ContestStatus.Already) {
         setPhase(ContestStatus.Finished);
       }
     }
-  }, [remainingSeconds, phase, safePhase, targetDate]);
+  }, [remainingMs, phase, safePhase, targetDate]);
 
   useEffect(() => {
     if (phase === null) return;

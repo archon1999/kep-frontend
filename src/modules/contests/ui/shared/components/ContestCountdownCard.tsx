@@ -16,14 +16,15 @@ import {
   Typography,
 } from '@mui/material';
 import { getResourceByParams, resources } from 'app/routes/resources';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
 import { ContestDetail } from 'modules/contests/domain/entities/contest-detail.entity';
 import { ContestStatus } from 'modules/contests/domain/entities/contest-status';
 import KepIcon from 'shared/components/base/KepIcon';
+import {
+  formatDateTime,
+  getCountdownParts,
+  getDateTimeValue,
+} from 'shared/lib/dateTime';
 import { cssVarRgba } from 'shared/lib/utils';
-
-dayjs.extend(duration);
 
 interface ContestCountdownCardProps {
   contest?: ContestDetail | null;
@@ -58,14 +59,14 @@ const CountdownTile = ({ value, label }: { value: string; label: string }) => (
 const ContestCountdownCard = ({ contest, isLoading = false }: ContestCountdownCardProps) => {
   const { t } = useTranslation();
   const [isLoadedOnce, setIsLoadedOnce] = useState(Boolean(contest));
-  const [now, setNow] = useState(dayjs());
+  const [now, setNow] = useState(Date.now());
   const [phase, setPhase] = useState<CountdownPhase | null>(contest?.statusCode ?? null);
   const [activeModal, setActiveModal] = useState<'start' | 'finish' | null>(null);
   const prevPhaseRef = useRef<CountdownPhase | null>(null);
   const initializedRef = useRef(false);
 
   useEffect(() => {
-    const timer = setInterval(() => setNow(dayjs()), 1000);
+    const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -76,8 +77,8 @@ const ContestCountdownCard = ({ contest, isLoading = false }: ContestCountdownCa
     }
   }, [contest, isLoadedOnce]);
 
-  const startDate = contest?.startTime ? dayjs(contest.startTime) : null;
-  const finishDate = contest?.finishTime ? dayjs(contest.finishTime) : null;
+  const startDate = contest?.startTime;
+  const finishDate = contest?.finishTime;
 
   const safePhase = phase ?? ContestStatus.NotStarted;
 
@@ -87,11 +88,8 @@ const ContestCountdownCard = ({ contest, isLoading = false }: ContestCountdownCa
     return null;
   }, [finishDate, safePhase, startDate]);
 
-  const diffMs = targetDate ? Math.max(targetDate.diff(now), 0) : 0;
-  const time = dayjs.duration(diffMs);
-  const totalHours = Math.floor(time.asHours());
-  const minutes = time.minutes();
-  const seconds = time.seconds();
+  const diffMs = targetDate ? Math.max(getDateTimeValue(targetDate) - now, 0) : 0;
+  const { hours: totalHours, minutes, seconds } = getCountdownParts(diffMs);
 
   useEffect(() => {
     if (!targetDate || phase === null) return;
@@ -158,10 +156,12 @@ const ContestCountdownCard = ({ contest, isLoading = false }: ContestCountdownCa
 
   const helperLabel = useMemo(() => {
     if (safePhase === ContestStatus.NotStarted && startDate) {
-      return t('contests.startsLabel', { date: startDate.format('DD MMM, HH:mm') });
+      return t('contests.startsLabel', { date: formatDateTime(startDate, 'compactDateTime') });
     }
     if (finishDate) {
-      return t('contests.countdownCard.finishedAt', { date: finishDate.format('DD MMM, HH:mm') });
+      return t('contests.countdownCard.finishedAt', {
+        date: formatDateTime(finishDate, 'compactDateTime'),
+      });
     }
     return null;
   }, [finishDate, safePhase, startDate, t]);

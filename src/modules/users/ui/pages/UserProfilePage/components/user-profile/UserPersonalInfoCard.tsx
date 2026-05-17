@@ -1,19 +1,18 @@
-import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, Skeleton, Stack, Typography } from '@mui/material';
 import CountryFlagIcon from 'shared/components/common/CountryFlagIcon';
 import { useUserAbout } from 'modules/users/application/queries';
 import KepIcon from 'shared/components/base/KepIcon';
 import { KepIconName } from 'shared/config/icons';
+import { formatDateTime } from 'shared/lib/dateTime';
 
 type UserPersonalInfoCardProps = {
   username: string;
 };
 
 const formatDate = (value?: string | Date | null) => {
-  if (!value) return undefined;
-  const parsed = dayjs(value);
-  return parsed.isValid() ? parsed.format('MMM DD, YYYY') : undefined;
+  const formatted = formatDateTime(value, 'profileDate', '');
+  return formatted || undefined;
 };
 
 const UserPersonalInfoCard = ({ username }: UserPersonalInfoCardProps) => {

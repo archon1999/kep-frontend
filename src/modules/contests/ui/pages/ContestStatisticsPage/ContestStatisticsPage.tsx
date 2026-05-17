@@ -11,6 +11,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 import ReactEchart from 'shared/components/base/ReactEchart';
 import KepIcon from 'shared/components/base/KepIcon';
 import { getColor } from 'shared/lib/echart-utils';
+import { createNumberFormatter, normalizeNumberLocale } from 'shared/lib/numberFormat';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { useContest, useContestStatistics } from 'modules/contests/application/queries';
@@ -49,29 +50,21 @@ const ContestStatisticsPage = () => {
   const totalAccepted = statistics?.general?.accepted?.total;
   const acceptanceRate = statistics?.general?.acceptanceRate;
 
-  const resolvedLocale = useMemo(() => {
-    const normalized = (i18n.language || '').replace('_', '-');
-    try {
-      const [canonical] = Intl.getCanonicalLocales(normalized || []);
-      return canonical || undefined;
-    } catch {
-      return undefined;
-    }
-  }, [i18n.language]);
+  const resolvedLocale = useMemo(() => normalizeNumberLocale(i18n.language), [i18n.language]);
 
   const integerFormatter = useMemo(
     () =>
-      new Intl.NumberFormat(resolvedLocale, {
+      createNumberFormatter({
         maximumFractionDigits: 0,
-      }),
+      }, resolvedLocale),
     [resolvedLocale],
   );
 
   const percentFormatter = useMemo(
     () =>
-      new Intl.NumberFormat(resolvedLocale, {
+      createNumberFormatter({
         maximumFractionDigits: 2,
-      }),
+      }, resolvedLocale),
     [resolvedLocale],
   );
 

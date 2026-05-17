@@ -38,7 +38,6 @@ import { useBreakpoints } from 'app/providers/BreakpointsProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceByUsername, resources } from 'app/routes/resources';
 import { HashLinkBehavior } from 'app/theme/components/Link';
-import dayjs from 'dayjs';
 import {
   useUserAbout,
   useUserDetails,
@@ -65,6 +64,7 @@ import ScrollSpy, { useScrollSpyContext } from 'shared/components/scroll-spy';
 import ScrollSpyContent from 'shared/components/scroll-spy/ScrollSpyContent';
 import ScrollSpyNavItem from 'shared/components/scroll-spy/ScrollSpyNavItem';
 import { KepIconName } from 'shared/config/icons';
+import { formatDateTime } from 'shared/lib/dateTime';
 import { getCountryLabel } from 'shared/utils/country';
 import ProfileFollowButton from './components/user-profile/ProfileFollowButton';
 import UserFollowersCard from './components/user-profile/UserFollowersCard';
@@ -76,9 +76,8 @@ import UserProfileRatingsTab from './components/user-profile/UserProfileRatingsT
 type TabValue = 'about' | 'ratings' | 'activity-history' | 'purchases' | 'achievements';
 
 const formatDate = (value?: string | Date | null) => {
-  if (!value) return undefined;
-  const parsed = dayjs(value);
-  return parsed.isValid() ? parsed.format('MMM DD, YYYY') : undefined;
+  const formatted = formatDateTime(value, 'profileDate', '');
+  return formatted || undefined;
 };
 
 const formatYearRange = (

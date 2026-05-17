@@ -1,10 +1,10 @@
-import dayjs from 'dayjs';
 import { Avatar, Box, Card, CardActionArea, CardContent, Chip, Stack, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { getResourceById, resources } from 'app/routes/resources';
 import type { TournamentListItem } from 'modules/tournaments/domain';
 import KepIcon from 'shared/components/base/KepIcon';
+import { formatDateTime } from 'shared/lib/dateTime';
 
 interface TournamentCardProps {
   tournament: TournamentListItem;
@@ -12,7 +12,6 @@ interface TournamentCardProps {
 
 const TournamentCard = ({ tournament }: TournamentCardProps) => {
   const { t } = useTranslation();
-  const startDate = tournament.startTime ? dayjs(tournament.startTime) : null;
 
   return (
     <Card
@@ -60,7 +59,9 @@ const TournamentCard = ({ tournament }: TournamentCardProps) => {
                 {tournament.title}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {t('tournaments.startsOn', { date: startDate ? startDate.format('DD MMM, HH:mm') : '-' })}
+                {t('tournaments.startsOn', {
+                  date: formatDateTime(tournament.startTime, 'compactDateTime'),
+                })}
               </Typography>
             </Stack>
             <Chip label={t('tournaments.players', { count: tournament.playersCount })} color="primary" size="small" />

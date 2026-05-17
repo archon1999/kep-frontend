@@ -7,6 +7,7 @@ import useSWR from 'swr';
 import useSWRMutation from 'swr/mutation';
 import axiosFetcher from 'shared/services/axios/axiosFetcher';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
+import { formatInteger } from 'shared/lib/numberFormat';
 import { wsService } from 'shared/services/websocket';
 
 interface KepcoinMenuProps {
@@ -58,7 +59,7 @@ const KepcoinMenu = ({ type = 'default' }: KepcoinMenuProps) => {
   };
 
   const open = Boolean(anchorEl);
-  const formattedBalance = balance === null ? '--' : balance.toLocaleString();
+  const formattedBalance = balance === null ? '--' : formatInteger(balance);
 
   useEffect(() => {
     if (!currentUser?.username) return undefined;

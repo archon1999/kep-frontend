@@ -1,5 +1,3 @@
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import {
   Box,
   Button,
@@ -17,8 +15,7 @@ import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import { DuelInvitation, DuelInvitationUser } from 'modules/duels/domain/index.ts';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
-
-dayjs.extend(relativeTime);
+import { formatCalendarDateTime, formatRelativeTime } from 'shared/lib/dateTime';
 
 type Props = {
   invitation: DuelInvitation;
@@ -33,9 +30,7 @@ type Props = {
 
 const formatDate = (value?: string | null) => {
   if (!value) return '--';
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  return date.toLocaleString();
+  return formatCalendarDateTime(value, value);
 };
 
 const callStatusMeta = (status: DuelInvitation['status']) => {
@@ -174,7 +169,7 @@ const DuelInvitationCard = ({
     ?.map((problem) => `${problem.symbol}${problem.ball ? ` ${problem.ball}` : ''}`)
     .join(' · ');
   const waitingFor = invitation.actionRequiredBy?.displayName || invitation.actionRequiredBy?.username;
-  const createdRelative = invitation.created ? dayjs(invitation.created).fromNow() : null;
+  const createdRelative = formatRelativeTime(invitation.created, '');
   const creator = invitation.challenger;
   const claimant = invitation.invitee ?? null;
   const shouldShowAccept = invitation.status === 1 && invitation.viewerRole !== 'challenger';

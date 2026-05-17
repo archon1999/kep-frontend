@@ -32,15 +32,17 @@ import {
   ProblemsAutocomplete,
   UsersAutocomplete,
 } from 'modules/admin/shared/ui/AdminResourceAutocomplete';
-import {
-  fromDateTimeLocal,
-  toDateTimeLocal,
-} from 'modules/admin/shared/utils/formUtils';
 import AdminRichTextEditor from 'modules/admin/shared/ui/AdminRichTextEditor';
 import { useAdminContest, useAdminContestMeta } from 'modules/admin/contests/application/queries';
 import { contestsAdminClient } from 'modules/admin/contests/data-access/contestsAdminClient';
 import { AdminContestPayload, AdminContestProblem } from 'modules/admin/contests/domain/types';
-import dayjs from 'dayjs';
+import {
+  DateTimePickerValue,
+  formatDateTimeLocalInputValue,
+  formatDateTimePickerValue,
+  parseDateTimePickerValue,
+  toBackendUtcDateTime,
+} from 'shared/lib/dateTime';
 
 const emptyContest: AdminContestPayload = {
   title: '',
@@ -147,8 +149,8 @@ const AdminContestFormPage = () => {
         ...emptyContest,
         ...contest,
         problems: normalizedProblems,
-        startTime: toDateTimeLocal(contestAny.startTime ?? contestAny.start_time),
-        finishTime: toDateTimeLocal(contestAny.finishTime ?? contestAny.finish_time),
+        startTime: formatDateTimeLocalInputValue(contestAny.startTime ?? contestAny.start_time),
+        finishTime: formatDateTimeLocalInputValue(contestAny.finishTime ?? contestAny.finish_time),
         participationType: contestAny.participationType ?? contestAny.participation_type,
         privateLink: contestAny.privateLink ?? contestAny.private_link ?? null,
         descriptionUz: normalizedDescriptionUz,
@@ -184,20 +186,12 @@ const AdminContestFormPage = () => {
       setForm((prev) => ({ ...prev, [field]: Number(event.target.value) }));
     };
 
-  const parseDateTimeValue = (value?: string) => {
-    if (!value) {
-      return null;
-    }
+  const parseDateTimeValue = (value?: string) => parseDateTimePickerValue(value);
 
-    const parsed = dayjs(value);
-
-    return parsed.isValid() ? parsed : null;
-  };
-
-  const handleDateTimeField = (field: keyof AdminContestPayload) => (value: dayjs.Dayjs | null) => {
+  const handleDateTimeField = (field: keyof AdminContestPayload) => (value: DateTimePickerValue) => {
     setForm((prev) => ({
       ...prev,
-      [field]: value ? value.format('YYYY-MM-DDTHH:mm') : '',
+      [field]: formatDateTimePickerValue(value),
     }));
   };
 
@@ -237,8 +231,8 @@ const AdminContestFormPage = () => {
     ({
       ...form,
       creator: form.creator || undefined,
-      startTime: fromDateTimeLocal(form.startTime),
-      finishTime: fromDateTimeLocal(form.finishTime),
+      startTime: toBackendUtcDateTime(form.startTime),
+      finishTime: toBackendUtcDateTime(form.finishTime),
       privateLink: form.privateLink || null,
       problems: form.problems.map((contestProblem) => ({
         problemId: Number(contestProblem.problemId),

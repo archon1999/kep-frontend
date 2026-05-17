@@ -1,32 +1,20 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Card, CardContent, Divider, LinearProgress, Stack, Typography } from '@mui/material';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
 import { useTranslation } from 'react-i18next';
 import { type Hackathon, HackathonStatus } from 'modules/hackathons/domain';
+import { diffDateTime, formatCountdownClock } from 'shared/lib/dateTime';
 import { formatHackathonDateTime } from '../helpers/format';
-
-dayjs.extend(duration);
 
 interface HackathonCountdownCardProps {
   hackathon?: Hackathon;
 }
 
-const formatDuration = (diffMs: number) => {
-  const d = dayjs.duration(Math.max(diffMs, 0));
-  const hours = String(Math.floor(d.asHours())).padStart(2, '0');
-  const minutes = String(d.minutes()).padStart(2, '0');
-  const seconds = String(d.seconds()).padStart(2, '0');
-
-  return `${hours}:${minutes}:${seconds}`;
-};
-
 const HackathonCountdownCard = ({ hackathon }: HackathonCountdownCardProps) => {
-  const { t, i18n } = useTranslation();
-  const [now, setNow] = useState(dayjs());
+  const { t } = useTranslation();
+  const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
-    const timer = setInterval(() => setNow(dayjs()), 1000);
+    const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -35,26 +23,23 @@ const HackathonCountdownCard = ({ hackathon }: HackathonCountdownCardProps) => {
       return { label: '', progress: 0, timerLabel: '00:00:00' };
     }
 
-    const start = dayjs(hackathon.startTime);
-    const finish = dayjs(hackathon.finishTime);
-
-    if (hackathon.status === HackathonStatus.NOT_STARTED || start.isAfter(now)) {
-      const total = finish.diff(start, 'millisecond');
-      const remaining = start.diff(now, 'millisecond');
+    if (hackathon.status === HackathonStatus.NOT_STARTED || diffDateTime(hackathon.startTime, now) > 0) {
+      const total = diffDateTime(hackathon.finishTime, hackathon.startTime, 'millisecond');
+      const remaining = diffDateTime(hackathon.startTime, now, 'millisecond');
       return {
         label: t('hackathons.startsIn'),
         progress: total ? Math.min(100, Math.max(0, 100 - (remaining / total) * 100)) : 0,
-        timerLabel: formatDuration(remaining),
+        timerLabel: formatCountdownClock(remaining),
       };
     }
 
-    if (hackathon.status === HackathonStatus.ALREADY && finish.isAfter(now)) {
-      const total = finish.diff(start, 'millisecond');
-      const remaining = finish.diff(now, 'millisecond');
+    if (hackathon.status === HackathonStatus.ALREADY && diffDateTime(hackathon.finishTime, now) > 0) {
+      const total = diffDateTime(hackathon.finishTime, hackathon.startTime, 'millisecond');
+      const remaining = diffDateTime(hackathon.finishTime, now, 'millisecond');
       return {
         label: t('hackathons.endsIn'),
         progress: total ? Math.min(100, Math.max(0, 100 - (remaining / total) * 100)) : 0,
-        timerLabel: formatDuration(remaining),
+        timerLabel: formatCountdownClock(remaining),
       };
     }
 
@@ -88,7 +73,7 @@ const HackathonCountdownCard = ({ hackathon }: HackathonCountdownCardProps) => {
                 {t('hackathons.startsAt')}
               </Typography>
               <Typography variant="body2" fontWeight={700} textAlign="right">
-                {formatHackathonDateTime(hackathon.startTime, i18n.language)}
+                {formatHackathonDateTime(hackathon.startTime)}
               </Typography>
             </Stack>
 
@@ -97,7 +82,7 @@ const HackathonCountdownCard = ({ hackathon }: HackathonCountdownCardProps) => {
                 {t('hackathons.endsAt')}
               </Typography>
               <Typography variant="body2" fontWeight={700} textAlign="right">
-                {formatHackathonDateTime(hackathon.finishTime, i18n.language)}
+                {formatHackathonDateTime(hackathon.finishTime)}
               </Typography>
             </Stack>
           </Stack>

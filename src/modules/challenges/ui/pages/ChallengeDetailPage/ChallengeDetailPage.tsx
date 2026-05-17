@@ -5,8 +5,6 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { resources } from 'app/routes/resources';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { QuestionType } from 'modules/testing/domain';
 import {
   useApplyChallengeAntiCheatPenalty,
@@ -26,8 +24,6 @@ import ChallengeBlurDialog from './dialogs/ChallengeBlurDialog.tsx';
 import ChallengeFinishDialog from './dialogs/ChallengeFinishDialog.tsx';
 import ChallengeStartDialog from './dialogs/ChallengeStartDialog.tsx';
 import { clearChallengeChessProgress } from './lib/chessPuzzleProgress.ts';
-
-dayjs.extend(relativeTime);
 
 const PENDING_ANTI_CHEAT_PENALTY_KEY = 'challenge-anti-cheat-penalty';
 

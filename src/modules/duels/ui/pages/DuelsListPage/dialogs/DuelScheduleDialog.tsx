@@ -11,6 +11,7 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DuelInvitation } from 'modules/duels/domain/index.ts';
+import { formatDateTimeLocalInputValue, toBackendOffsetDateTime } from 'shared/lib/dateTime';
 
 type Props = {
   open: boolean;
@@ -19,23 +20,6 @@ type Props = {
   loading?: boolean;
   onClose: () => void;
   onSubmit: (value: string) => void;
-};
-
-const formatDateInput = (date: Date) => {
-  const pad = (value: number) => value.toString().padStart(2, '0');
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-};
-
-const toBackendDate = (value: string) => {
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  const pad = (num: number) => num.toString().padStart(2, '0');
-  const local = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
-  const offset = -date.getTimezoneOffset();
-  const sign = offset >= 0 ? '+' : '-';
-  const offsetHours = pad(Math.floor(Math.abs(offset) / 60));
-  const offsetMinutes = pad(Math.abs(offset) % 60);
-  return `${local}${sign}${offsetHours}:${offsetMinutes}`;
 };
 
 const DuelScheduleDialog = ({
@@ -53,14 +37,14 @@ const DuelScheduleDialog = ({
     const start = new Date();
     start.setMinutes(start.getMinutes() + 5);
     start.setSeconds(0, 0);
-    return formatDateInput(start);
+    return formatDateTimeLocalInputValue(start);
   }, []);
 
   useEffect(() => {
     if (!open) return;
     setValue(
       invitation?.proposedStartTime
-        ? formatDateInput(new Date(invitation.proposedStartTime))
+        ? formatDateTimeLocalInputValue(invitation.proposedStartTime)
         : minStartTime,
     );
   }, [invitation?.proposedStartTime, minStartTime, open]);
@@ -98,7 +82,7 @@ const DuelScheduleDialog = ({
         </Button>
         <Button
           variant="contained"
-          onClick={() => onSubmit(toBackendDate(value))}
+          onClick={() => onSubmit(toBackendOffsetDateTime(value))}
           disabled={!value || loading}
           sx={{ borderRadius: 999 }}
         >

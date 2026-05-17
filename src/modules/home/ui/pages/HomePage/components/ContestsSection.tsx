@@ -12,17 +12,13 @@ import {
   Typography,
 } from '@mui/material';
 import { getResourceById, resources } from 'app/routes/resources';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
 import { useContestsList } from 'modules/contests/application/queries';
 import { ContestListItem } from 'modules/contests/domain/entities/contest.entity';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepIcon from 'shared/components/base/KepIcon';
+import { formatDateTime, isAfterNow, isBeforeNow } from 'shared/lib/dateTime';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { cssVarRgba } from 'shared/lib/utils';
-
-
-dayjs.extend(duration);
 
 interface HomeContestCardProps {
   contest: ContestListItem;
@@ -31,18 +27,14 @@ interface HomeContestCardProps {
 const HomeContestCard = ({ contest }: HomeContestCardProps) => {
   const { t } = useTranslation();
 
-  const startDate = contest.startTime ? dayjs(contest.startTime) : null;
-  const finishDate = contest.finishTime ? dayjs(contest.finishTime) : null;
-  const now = dayjs();
-
-  const isFinished = finishDate ? now.isAfter(finishDate) : false;
-  const isUpcoming = startDate ? now.isBefore(startDate) : false;
+  const isFinished = isBeforeNow(contest.finishTime);
+  const isUpcoming = isAfterNow(contest.startTime);
 
   const statusLabel = isFinished
-    ? t('contests.status.finished', { date: finishDate ? finishDate.format('DD MMM, HH:mm') : '—' })
+    ? t('contests.status.finished', { date: formatDateTime(contest.finishTime, 'compactDateTime') })
     : isUpcoming
-      ? t('contests.status.starts', { date: startDate ? startDate.format('DD MMM, HH:mm') : '—' })
-      : t('contests.status.live', { date: finishDate ? finishDate.format('DD MMM, HH:mm') : '—' });
+      ? t('contests.status.starts', { date: formatDateTime(contest.startTime, 'compactDateTime') })
+      : t('contests.status.live', { date: formatDateTime(contest.finishTime, 'compactDateTime') });
 
   const statusColor: 'success' | 'warning' | 'default' = isFinished
     ? 'default'
@@ -122,8 +114,10 @@ const HomeContestCard = ({ contest }: HomeContestCardProps) => {
             <Stack direction="row" spacing={1} alignItems="center">
               <KepIcon name="challenge-time" fontSize={18} />
               <Typography variant="body2" color="text.secondary">
-                {startDate
-                  ? t('contests.startsLabel', { date: startDate.format('DD MMM, HH:mm') })
+                {contest.startTime
+                  ? t('contests.startsLabel', {
+                      date: formatDateTime(contest.startTime, 'compactDateTime'),
+                    })
                   : t('contests.startsUnknown')}
               </Typography>
             </Stack>

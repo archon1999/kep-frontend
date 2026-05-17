@@ -16,7 +16,6 @@ import {
   Typography,
 } from '@mui/material';
 import { getResourceByUsername, resources } from 'app/routes/resources';
-import dayjs from 'dayjs';
 import {
   useChallengeRatingChanges,
   useChallengeUserRating,
@@ -31,6 +30,7 @@ import KepIcon from 'shared/components/base/KepIcon';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import { KepIconName } from 'shared/config/icons';
+import { getDateTimeValue } from 'shared/lib/dateTime';
 
 const LoadingCard = () => (
   <Card variant="outlined" sx={{ borderRadius: '8px' }}>
@@ -227,14 +227,14 @@ const UserProfileRatingsTab = () => {
     const changes = contestRatingChanges ?? [];
     return [...changes].sort(
       (a, b) =>
-        dayjs(a.contestStartDate ?? a.contestTitle ?? '').valueOf() -
-        dayjs(b.contestStartDate ?? b.contestTitle ?? '').valueOf(),
+        getDateTimeValue(a.contestStartDate ?? a.contestTitle ?? '') -
+        getDateTimeValue(b.contestStartDate ?? b.contestTitle ?? ''),
     );
   }, [contestRatingChanges]);
 
   const sortedChallengeChanges = useMemo(() => {
     const changes = challengeRatingChanges ?? [];
-    return [...changes].sort((a, b) => dayjs(a.date).valueOf() - dayjs(b.date).valueOf());
+    return [...changes].sort((a, b) => getDateTimeValue(a.date) - getDateTimeValue(b.date));
   }, [challengeRatingChanges]);
 
   const difficultyEntries = useMemo(() => {

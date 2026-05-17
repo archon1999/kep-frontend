@@ -1,9 +1,9 @@
 import { ChangeEvent, Fragment, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { Box, Button, Checkbox, FormControlLabel, Link, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import dayjs from 'dayjs';
 import StyledTextField from 'shared/components/styled/StyledTextField';
 import useCountdown from 'shared/hooks/useCountdown';
+import { formatOtpTimer } from 'shared/lib/dateTime';
 
 const totalInputLength = 6;
 
@@ -118,7 +118,7 @@ const TwoFAForm = () => {
                 ml: 0.5,
               }}
             >
-              Send again {otpSent && <>in {dayjs(time * 1000).format('m:ss')} s</>}
+              Send again {otpSent && <>in {formatOtpTimer(time)} s</>}
             </Link>
           </Typography>
         </Grid>

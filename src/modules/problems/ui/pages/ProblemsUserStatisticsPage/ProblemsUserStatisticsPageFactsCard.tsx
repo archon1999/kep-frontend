@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, Stack, Typography } from '@mui/material';
-import dayjs from 'dayjs';
 import KepIcon from 'shared/components/base/KepIcon';
+import { formatMachineDateTime } from 'shared/lib/dateTime';
 import { ProblemsUserStatistics } from 'modules/problems/domain/entities/problem.entity';
 
 interface ProblemsUserStatisticsPageFactsCardProps {
@@ -65,7 +65,7 @@ const ProblemsUserStatisticsPageFactsCard = ({
                   </Typography>
                   {fact.datetime ? (
                     <Typography variant="caption" color="text.secondary">
-                      {dayjs(fact.datetime).format('YYYY-MM-DD HH:mm')}
+                      {formatMachineDateTime(fact.datetime, 'isoDateTimeMinute')}
                     </Typography>
                   ) : null}
                   {fact.attemptsCount ? (

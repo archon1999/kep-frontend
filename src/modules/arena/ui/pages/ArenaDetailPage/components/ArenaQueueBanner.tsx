@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Alert, Button, Stack, Typography } from '@mui/material';
-import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { getResourceById, resources } from 'app/routes/resources.ts';
 import { arenaQueries } from 'modules/arena/application/queries.ts';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import { diffDateTime } from 'shared/lib/dateTime';
 import { Arena, ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
 
 interface QueueBannerProps {
@@ -32,7 +32,7 @@ const ArenaQueueBanner = ({
     return null;
   }
 
-  const isEndingSoon = dayjs(arena.finishTime).diff(dayjs()) <= ENDING_SOON_MS;
+  const isEndingSoon = diffDateTime(arena.finishTime, undefined, 'millisecond') <= ENDING_SOON_MS;
 
   const handleOpenCurrentChallenge = async () => {
     if (!arenaId) return;

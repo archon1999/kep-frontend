@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { Alert, Box, LinearProgress, Stack, Typography } from '@mui/material';
-import MathJaxView from 'shared/components/base/MathJaxView';
+import * as katex from 'katex';
+import 'katex/dist/katex.min.css';
 
 declare global {
   interface Window {
     Quill?: QuillConstructor;
+    katex?: typeof katex;
   }
 }
 
@@ -17,6 +19,7 @@ interface QuillInstance {
   off?: (eventName: string, handler: () => void) => void;
   getLength?: () => number;
   getSelection?: (focus?: boolean) => { index: number; length: number } | null;
+  insertEmbed?: (index: number, type: string, value: unknown, source?: string) => void;
   insertText?: (index: number, text: string, source?: string) => void;
   setSelection?: (index: number, length?: number, source?: string) => void;
 }
@@ -36,14 +39,12 @@ interface QuillConstructor {
 interface RichTextEditorProps {
   value: string;
   onChange: (value: string) => void;
-  placeholder?: string;
   loadErrorText?: string;
   hintText?: string;
   minHeight?: number;
   compact?: boolean;
   enableMathJax?: boolean;
   mathJaxPromptText?: string;
-  mathJaxPreviewLabel?: string;
 }
 
 const QUILL_SCRIPT_URL = 'https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js';
@@ -75,6 +76,7 @@ const QUILL_FORMATS = [
   'list',
   'bullet',
   'link',
+  'formula',
 ];
 
 let quillLoaderPromise: Promise<QuillConstructor> | null = null;
@@ -93,6 +95,8 @@ const ensureQuillLoaded = () => {
   if (typeof window === 'undefined') {
     return Promise.reject(new Error('Window is unavailable'));
   }
+
+  window.katex = katex;
 
   if (window.Quill) {
     return Promise.resolve(window.Quill);
@@ -153,14 +157,12 @@ const ensureQuillLoaded = () => {
 const RichTextEditor = ({
   value,
   onChange,
-  placeholder,
   loadErrorText = 'Editor failed to load.',
   hintText,
   minHeight = 360,
   compact = false,
   enableMathJax = false,
   mathJaxPromptText = 'MathJax formula',
-  mathJaxPreviewLabel = 'MathJax preview',
 }: RichTextEditorProps) => {
   const hostRef = useRef<HTMLDivElement | null>(null);
   const quillRef = useRef<QuillInstance | null>(null);
@@ -202,10 +204,9 @@ const RichTextEditor = ({
 
                   const selection = quill.getSelection?.(true);
                   const index = selection?.index ?? Math.max((quill.getLength?.() ?? 1) - 1, 0);
-                  const snippet = `\\(${expression.trim()}\\)`;
-
-                  quill.insertText?.(index, snippet, 'user');
-                  quill.setSelection?.(index + snippet.length, 0, 'user');
+                  quill.insertEmbed?.(index, 'formula', expression.trim(), 'user');
+                  quill.insertText?.(index + 1, ' ', 'user');
+                  quill.setSelection?.(index + 2, 0, 'user');
                 },
               },
             }
@@ -217,7 +218,6 @@ const RichTextEditor = ({
             toolbar,
           },
           formats: QUILL_FORMATS,
-          placeholder,
         });
         quillHolder.current = quill;
 
@@ -248,7 +248,7 @@ const RichTextEditor = ({
 
       quillRef.current = null;
     };
-  }, [enableMathJax, mathJaxPromptText, placeholder]);
+  }, [enableMathJax, mathJaxPromptText]);
 
   useEffect(() => {
     const quill = quillRef.current;
@@ -309,6 +309,9 @@ const RichTextEditor = ({
               fontWeight: 800,
               lineHeight: '24px',
             },
+            '& .ql-editor .ql-formula': {
+              cursor: 'text',
+            },
             '& .ql-toolbar button:hover .ql-stroke, & .ql-toolbar button.ql-active .ql-stroke': {
               stroke: (theme) => theme.vars.palette.primary.main,
             },
@@ -320,27 +323,6 @@ const RichTextEditor = ({
           <Box ref={hostRef} />
         </Box>
       )}
-      {enableMathJax && value ? (
-        <Box>
-          <Typography variant="caption" color="text.secondary">
-            {mathJaxPreviewLabel}
-          </Typography>
-          <Box
-            sx={{
-              mt: 0.75,
-              p: compact ? 1.5 : 2,
-              border: 1,
-              borderColor: 'divider',
-              borderRadius: 1,
-              bgcolor: 'background.paper',
-              fontSize: compact ? 14 : 16,
-              lineHeight: compact ? 1.65 : 1.75,
-            }}
-          >
-            <MathJaxView rawHtml={value} />
-          </Box>
-        </Box>
-      ) : null}
       {hintText ? (
         <Typography variant="caption" color="text.secondary">
           {hintText}

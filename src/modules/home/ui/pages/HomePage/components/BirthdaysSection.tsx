@@ -6,7 +6,7 @@ import Paper from '@mui/material/Paper';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import dayjs from 'dayjs';
+import { formatDateTime } from 'shared/lib/dateTime';
 import { responsivePagePaddingSx } from 'shared/lib/styles.ts';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import { useNextBirthdays } from 'modules/home/application/queries';
@@ -30,7 +30,7 @@ const getDisplayName = (user: NextBirthdayUser) => {
 };
 
 const BirthdaysSection = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { data, isLoading } = useNextBirthdays();
 
   const birthdays = useMemo(() => {
@@ -52,15 +52,15 @@ const BirthdaysSection = () => {
           return t('homePage.birthdays.dateUnknown');
         }
 
-        const parsed = dayjs(birthday);
+        const formatted = formatDateTime(birthday, 'longMonthDay', '');
 
-        if (!parsed.isValid()) {
+        if (!formatted) {
           return t('homePage.birthdays.dateUnknown');
         }
 
-        return parsed.locale(i18n.language).format('MMMM D');
+        return formatted;
       },
-    [i18n.language, t],
+    [t],
   );
 
   return (

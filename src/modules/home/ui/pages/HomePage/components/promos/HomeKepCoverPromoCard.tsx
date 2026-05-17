@@ -1,9 +1,9 @@
-import dayjs from 'dayjs';
 import { Box, Button, Chip, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
+import { formatDateTime } from 'shared/lib/dateTime';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { cssVarRgba } from 'shared/lib/utils';
 import type { HomePromoSlide } from 'modules/home/domain/entities/home-promo.entity';
@@ -60,10 +60,10 @@ const HomeKepCoverPromoCard = ({ slide }: { slide: HomePromoSlide }) => {
               <Typography variant="body2" color="text.secondary">
                 {slide.status === 'active'
                   ? t('kepCover.home.endsAt', {
-                      date: slide.endTime ? dayjs(slide.endTime).format('DD MMM, HH:mm') : '-',
+                      date: formatDateTime(slide.endTime, 'compactDateTime'),
                     })
                   : t('homePage.promos.startsAt', {
-                      date: slide.startTime ? dayjs(slide.startTime).format('DD MMM, HH:mm') : '-',
+                      date: formatDateTime(slide.startTime, 'compactDateTime'),
                     })}
               </Typography>
             </Stack>

@@ -14,9 +14,9 @@ import {
   Typography,
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
-import dayjs from 'dayjs';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepcoinValue from 'shared/components/common/KepcoinValue';
+import { formatDateTime } from 'shared/lib/dateTime';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import {
   KepcoinEarnHistoryItem,
@@ -258,7 +258,7 @@ const KepcoinActivityWidget = ({
               {historyItems.map((item, index) => {
                 const isEarn = view === 'earns';
                 const happenedAt = item.happenedAt
-                  ? dayjs(item.happenedAt).format('DD MMM YYYY, HH:mm')
+                  ? formatDateTime(item.happenedAt, 'compactDateTimeNoComma')
                   : null;
 
                 return (

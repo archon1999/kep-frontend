@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Button, Card, CardContent, Chip, Divider, Stack, Typography } from '@mui/material';
-import dayjs from 'dayjs';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { diffDateTime, formatDateTime } from 'shared/lib/dateTime';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { cssVarRgba } from 'shared/lib/utils';
 import type { HomePromoSlide } from 'modules/home/domain/entities/home-promo.entity';
@@ -14,7 +14,7 @@ const HomeArenaPromoCard = ({ slide }: { slide: HomePromoSlide }) => {
     slide.status === 'active' ? t('arena.status.live') : t('arena.status.upcoming');
   const durationMinutes =
     slide.startTime && slide.endTime
-      ? Math.max(dayjs(slide.endTime).diff(dayjs(slide.startTime), 'minute'), 0)
+      ? Math.max(diffDateTime(slide.endTime, slide.startTime, 'minute'), 0)
       : 0;
 
   return (
@@ -131,7 +131,7 @@ const HomeArenaPromoCard = ({ slide }: { slide: HomePromoSlide }) => {
                   {t('arena.timeline.start')}
                 </Typography>
                 <Typography fontWeight={800}>
-                  {slide.startTime ? dayjs(slide.startTime).format('DD MMM, HH:mm') : '-'}
+                  {formatDateTime(slide.startTime, 'compactDateTime')}
                 </Typography>
               </Card>
 
@@ -146,7 +146,7 @@ const HomeArenaPromoCard = ({ slide }: { slide: HomePromoSlide }) => {
                   {t('arena.timeline.finish')}
                 </Typography>
                 <Typography fontWeight={800}>
-                  {slide.endTime ? dayjs(slide.endTime).format('DD MMM, HH:mm') : '-'}
+                  {formatDateTime(slide.endTime, 'compactDateTime')}
                 </Typography>
               </Card>
             </Stack>

@@ -1,13 +1,10 @@
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { Avatar, Box, Card, CardActionArea, CardContent, Chip, Stack, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { getResourceById, resources } from 'app/routes/resources';
 import { type Hackathon, HackathonStatus } from 'modules/hackathons/domain';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
-
-dayjs.extend(relativeTime);
+import { formatDateTime, formatRelativeTime, isAfterNow, isBeforeNow } from 'shared/lib/dateTime';
 
 interface HackathonCardProps {
   hackathon: Hackathon;
@@ -16,21 +13,18 @@ interface HackathonCardProps {
 const HackathonCard = ({ hackathon }: HackathonCardProps) => {
   const { t } = useTranslation();
 
-  const startTime = hackathon.startTime ? dayjs(hackathon.startTime) : null;
-  const finishTime = hackathon.finishTime ? dayjs(hackathon.finishTime) : null;
-
   const statusLabel = (() => {
-    if (hackathon.status === HackathonStatus.FINISHED || (finishTime && finishTime.isBefore(dayjs()))) {
+    if (hackathon.status === HackathonStatus.FINISHED || isBeforeNow(hackathon.finishTime)) {
       return t('hackathons.finished');
     }
 
-    if (hackathon.status === HackathonStatus.NOT_STARTED || (startTime && startTime.isAfter(dayjs()))) {
-      const timeLabel = startTime ? startTime.fromNow() : '';
+    if (hackathon.status === HackathonStatus.NOT_STARTED || isAfterNow(hackathon.startTime)) {
+      const timeLabel = formatRelativeTime(hackathon.startTime, '');
       return `${t('hackathons.startsIn')} ${timeLabel}`.trim();
     }
 
-    if (finishTime) {
-      return `${t('hackathons.endsIn')} ${finishTime.fromNow()}`;
+    if (hackathon.finishTime) {
+      return `${t('hackathons.endsIn')} ${formatRelativeTime(hackathon.finishTime)}`;
     }
 
     return t('hackathons.active');
@@ -108,10 +102,10 @@ const HackathonCard = ({ hackathon }: HackathonCardProps) => {
             <Stack direction="row" spacing={1} alignItems="center">
               <IconifyIcon icon="mdi:calendar-clock" width={18} />
               <Typography variant="body2" color="text.secondary">
-                {startTime
+                {hackathon.startTime
                   ? t('hackathons.schedule', {
-                    start: startTime.format('DD MMM, HH:mm'),
-                    end: finishTime ? finishTime.format('DD MMM, HH:mm') : '',
+                    start: formatDateTime(hackathon.startTime, 'compactDateTime'),
+                    end: formatDateTime(hackathon.finishTime, 'compactDateTime', ''),
                   })
                   : t('hackathons.noSchedule')}
               </Typography>

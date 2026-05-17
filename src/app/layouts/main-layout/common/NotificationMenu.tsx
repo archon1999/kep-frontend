@@ -26,8 +26,6 @@ import {
 } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider';
 import { getResourceById, getResourceByUsername, resources } from 'app/routes/resources';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { apiClient } from 'shared/api/http/apiClient';
 import {
   Notification as ApiNotification,
@@ -39,6 +37,7 @@ import SimpleBar from 'shared/components/base/SimpleBar';
 import KepcoinValue from 'shared/components/common/KepcoinValue.tsx';
 import OutlinedBadge from 'shared/components/styled/OutlinedBadge';
 import { KepIconName } from 'shared/config/icons';
+import { formatRelativeTime } from 'shared/lib/dateTime';
 import { wsService } from 'shared/services/websocket';
 
 const NOTIFICATIONS_PAGE_SIZE = 5;
@@ -104,8 +103,6 @@ interface NotificationContent {
   [key: string]: unknown;
 }
 
-dayjs.extend(relativeTime);
-
 const typeIconMap: Partial<Record<number, KepIconName>> = {
   1: 'info',
   2: 'rating-changes',
@@ -138,7 +135,7 @@ const parseContent = (content?: string): NotificationContent => {
 
 const getNotificationMeta = (notification: ApiNotification): string =>
   notification.createdNaturaltime ||
-  (notification.created ? dayjs(notification.created).fromNow() : 'Just now');
+  formatRelativeTime(notification.created, 'Just now');
 
 interface NotificationView {
   title: string;

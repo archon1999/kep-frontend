@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { Button, Card, CardContent, Chip, Stack, Tooltip, Typography } from '@mui/material';
-import dayjs from 'dayjs';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import { DuelInvitation } from 'modules/duels/domain/index.ts';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
+import { formatRelativeTime } from 'shared/lib/dateTime';
 
 type Props = {
   invitation: DuelInvitation;
@@ -15,7 +15,7 @@ type Props = {
 const DuelWaitingRoomCard = ({ invitation, actionLoadingKey, onAccept, onCancel }: Props) => {
   const { t } = useTranslation();
   const creator = invitation.challenger;
-  const createdRelative = invitation.created ? dayjs(invitation.created).fromNow() : null;
+  const createdRelative = formatRelativeTime(invitation.created, '');
   const isLoading =
     actionLoadingKey === `accept-${invitation.id}` ||
     actionLoadingKey === `cancel-${invitation.id}`;

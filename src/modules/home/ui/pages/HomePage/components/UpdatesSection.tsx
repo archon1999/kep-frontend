@@ -1,11 +1,11 @@
 import { Box, Button, Paper, Skeleton, Stack, Typography } from '@mui/material';
-import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router';
 import { resources } from 'app/routes/resources.ts';
 import { useHomeUpdates } from 'modules/home/application/queries';
 import SystemUpdateLikeButton from 'modules/home/ui/shared/components/SystemUpdateLikeButton';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { formatDateTime } from 'shared/lib/dateTime';
 import { responsivePagePaddingSx } from 'shared/lib/styles.ts';
 
 const UpdatesSection = () => {
@@ -107,7 +107,7 @@ const UpdatesSection = () => {
                       justifyContent="space-between"
                     >
                       <Typography variant="body2" color="text.disabled" fontWeight={700}>
-                        {dayjs(update.date).format('DD MMM, YYYY')}
+                        {formatDateTime(update.date, 'compactDate')}
                       </Typography>
                       <SystemUpdateLikeButton update={update} onChanged={() => mutate()} />
                     </Stack>

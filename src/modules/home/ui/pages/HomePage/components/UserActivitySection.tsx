@@ -10,7 +10,6 @@ import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
-import dayjs from 'dayjs';
 import { LineChart } from 'echarts/charts';
 import { GridComponent, TooltipComponent } from 'echarts/components';
 import * as echarts from 'echarts/core';
@@ -19,6 +18,8 @@ import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import ReactEchart from 'shared/components/base/ReactEchart';
 import { getColor } from 'shared/lib/echart-utils';
+import { formatDateTime } from 'shared/lib/dateTime';
+import { createNumberFormatter } from 'shared/lib/numberFormat';
 import { getPastDates } from 'shared/lib/utils';
 import { useOnlineUsers, useUserActivityStatistics } from 'modules/home/application/queries';
 import type { HomeOnlineUsers } from 'modules/home/domain/entities/home.entity';
@@ -76,7 +77,7 @@ const UserActivitySection = () => {
 
   const numberFormatter = useMemo(
     () =>
-      new Intl.NumberFormat(undefined, {
+      createNumberFormatter({
         maximumFractionDigits: 0,
       }),
     [],
@@ -84,7 +85,7 @@ const UserActivitySection = () => {
 
   const percentFormatter = useMemo(
     () =>
-      new Intl.NumberFormat(undefined, {
+      createNumberFormatter({
         minimumFractionDigits: 1,
         maximumFractionDigits: 1,
         signDisplay: 'always',
@@ -101,7 +102,9 @@ const UserActivitySection = () => {
 
   const createChartOptions = useMemo(
     () => (series: number[], color: string) => {
-      const labels = getPastDates(series.length).map((date) => dayjs(date).format('MMM DD'));
+      const labels = getPastDates(series.length).map((date) =>
+        formatDateTime(date, 'monthDay'),
+      );
       const [min, max] = withPadding(series);
 
       return {

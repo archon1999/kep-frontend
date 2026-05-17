@@ -23,7 +23,6 @@ import AppbarActionItems from 'app/layouts/main-layout/common/AppbarActionItems'
 import { useAuth } from 'app/providers/AuthProvider';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceByParams, resources } from 'app/routes/resources';
-import dayjs from 'dayjs';
 import { problemsQueries, useAttemptsList } from 'modules/problems/application/queries.ts';
 import { ProblemSampleTest } from 'modules/problems/domain/entities/problem.entity';
 import { AttemptsListParams } from 'modules/problems/domain/ports/problems.repository';
@@ -38,6 +37,7 @@ import ProblemEditorSkeleton from 'modules/problems/ui/shared/components/problem
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import Logo from 'shared/components/common/Logo.tsx';
 import { VerdictKey } from 'shared/components/problems/attemptVerdict.utils';
+import { diffDateTime, formatCountdownClock } from 'shared/lib/dateTime';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { enumParam } from 'shared/lib/queryParams';
@@ -194,21 +194,12 @@ const ContestProblemPage = () => {
     }
 
     const update = () => {
-      const diffSeconds = dayjs(contest.finishTime).diff(dayjs(), 'second');
-      if (diffSeconds <= 0) {
+      const diffMs = diffDateTime(contest.finishTime, undefined, 'millisecond');
+      if (diffMs <= 0) {
         setTimeLeft('');
         return;
       }
-      const hours = Math.floor(diffSeconds / 3600)
-        .toString()
-        .padStart(2, '0');
-      const minutes = Math.floor((diffSeconds % 3600) / 60)
-        .toString()
-        .padStart(2, '0');
-      const seconds = Math.floor(diffSeconds % 60)
-        .toString()
-        .padStart(2, '0');
-      setTimeLeft(`${hours}:${minutes}:${seconds}`);
+      setTimeLeft(formatCountdownClock(diffMs));
     };
 
     update();

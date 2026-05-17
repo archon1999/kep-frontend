@@ -18,7 +18,6 @@ import Grid from '@mui/material/Grid';
 import { useTheme } from '@mui/material/styles';
 import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
-import dayjs from 'dayjs';
 import { BarChart, HeatmapChart, LineChart } from 'echarts/charts';
 import {
   CalendarComponent,
@@ -35,7 +34,14 @@ import ReactEchart from 'shared/components/base/ReactEchart';
 import AttemptLanguage from 'shared/components/problems/AttemptLanguage';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import {
+  formatMachineDateTime,
+  getCurrentYear,
+  getDateTimeValue,
+  subtractFromNow,
+} from 'shared/lib/dateTime';
 import { getColor } from 'shared/lib/echart-utils';
+import { createNumberFormatter } from 'shared/lib/numberFormat';
 import { numberParam, stringParam } from 'shared/lib/queryParams';
 import {
   useProblemsUserStatistics,
@@ -97,8 +103,8 @@ const buildActivityOption = (
   if (!series?.length) return null;
 
   const points = series.map((value, idx) => {
-    const date = dayjs().subtract(series.length - 1 - idx, 'day');
-    return [date.valueOf(), value];
+    const date = subtractFromNow(series.length - 1 - idx, 'day');
+    return [getDateTimeValue(date), value];
   });
 
   return {
@@ -154,7 +160,7 @@ const buildHeatmapOption = (
     tooltip: {
       position: 'top',
       formatter: (params: any) => {
-        const date = dayjs(params.value[0]).format('YYYY-MM-DD');
+        const date = formatMachineDateTime(params.value[0], 'isoDate');
         return `${date}: ${params.value[1]}`;
       },
     },
@@ -179,7 +185,7 @@ const buildHeatmapOption = (
       monthLabel: {
         margin: 14,
         color: getColor(themeVars.palette.text.secondary),
-        formatter: (value: string) => dayjs(value).format('MMM'),
+        formatter: (value: string) => formatMachineDateTime(value, 'monthShort'),
       },
       dayLabel: {
         firstDay: 0,
@@ -304,16 +310,8 @@ const ProblemsUserStatisticsPage = () => {
     },
   });
 
-  const locale = useMemo(() => {
-    const lang = i18n.language || 'en';
-    if (/^[a-z]{2}[A-Z]{2}$/.test(lang)) {
-      return `${lang.slice(0, 2)}-${lang.slice(2)}`;
-    }
-    return lang.replace('_', '-') || 'en';
-  }, [i18n.language]);
-
   const username = currentUser?.username;
-  const heatmapFilterOptions = useMemo(() => buildHeatmapFilterOptions(dayjs().year(), t), [t]);
+  const heatmapFilterOptions = useMemo(() => buildHeatmapFilterOptions(getCurrentYear(), t), [t]);
   const selectedHeatmapFilter = heatmapFilterOptions.some(
     (option) => option.value === state.selectedHeatmap,
   )
@@ -396,10 +394,10 @@ const ProblemsUserStatisticsPage = () => {
 
   const numberFormatter = useMemo(
     () =>
-      new Intl.NumberFormat(locale, {
+      createNumberFormatter({
         maximumFractionDigits: 2,
-      }),
-    [locale],
+      }, i18n.language),
+    [i18n.language],
   );
 
   return (

@@ -8,11 +8,17 @@ import AdminFormSection from 'modules/admin/shared/ui/AdminFormSection';
 import TextField from 'modules/admin/shared/ui/AdminTextField';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { formatAdminEditTitle } from 'modules/admin/shared/utils/editTitle';
-import { fromDateTimeLocal, toDateTimeLocal, toNumberOrNull } from 'modules/admin/shared/utils/formUtils';
+import { toNumberOrNull } from 'modules/admin/shared/utils/formUtils';
 import { useAdminUser } from 'modules/admin/users/application/queries';
 import { usersAdminClient } from 'modules/admin/users/data-access/usersAdminClient';
 import { AdminUserPayload } from 'modules/admin/users/domain/types';
-import dayjs from 'dayjs';
+import {
+  DateTimePickerValue,
+  formatDateTimeLocalInputValue,
+  formatDateTimePickerValue,
+  parseDateTimePickerValue,
+  toBackendUtcDateTime,
+} from 'shared/lib/dateTime';
 
 const emptyUser: AdminUserPayload = {
   username: '',
@@ -49,7 +55,7 @@ const AdminUserFormPage = () => {
     if (user) {
       setForm({
         ...user,
-        lastSeen: toDateTimeLocal(user.lastSeen),
+        lastSeen: formatDateTimeLocalInputValue(user.lastSeen),
         password: '',
       });
     }
@@ -69,20 +75,12 @@ const AdminUserFormPage = () => {
       setForm((prev) => ({ ...prev, [field]: toNumberOrNull(event.target.value) ?? 0 }));
     };
 
-  const parseDateTimeValue = (value?: string) => {
-    if (!value) {
-      return null;
-    }
+  const parseDateTimeValue = (value?: string) => parseDateTimePickerValue(value);
 
-    const parsed = dayjs(value);
-
-    return parsed.isValid() ? parsed : null;
-  };
-
-  const handleDateTimeField = (field: keyof AdminUserPayload) => (value: dayjs.Dayjs | null) => {
+  const handleDateTimeField = (field: keyof AdminUserPayload) => (value: DateTimePickerValue) => {
     setForm((prev) => ({
       ...prev,
-      [field]: value ? value.format('YYYY-MM-DDTHH:mm') : '',
+      [field]: formatDateTimePickerValue(value),
     }));
   };
 
@@ -92,7 +90,7 @@ const AdminUserFormPage = () => {
       firstName: form.firstName ?? '',
       lastName: form.lastName ?? '',
       email: form.email ?? '',
-      lastSeen: form.lastSeen ? fromDateTimeLocal(form.lastSeen) : undefined,
+      lastSeen: form.lastSeen ? toBackendUtcDateTime(form.lastSeen) : undefined,
       password: form.password || undefined,
     };
 

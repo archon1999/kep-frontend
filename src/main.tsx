@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import 'app/locales/i18n';
 import BreakpointsProvider from 'app/providers/BreakpointsProvider';
 import NotistackProvider from 'app/providers/NotistackProvider';
@@ -13,6 +11,7 @@ import VisionModeProvider from 'app/providers/VisionModeProvider';
 import router from 'app/routes/router';
 import 'devicon/devicon.min.css';
 import { AppErrorBoundary } from 'modules/errors/ui';
+import { DateTimeLocalizationProvider } from 'shared/lib/dateTime';
 import SWRConfiguration from 'shared/services/configuration/SWRConfiguration';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -22,7 +21,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <SettingsProvider>
           <VisionModeProvider>
             <ThemeProvider>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateTimeLocalizationProvider>
                 <NotistackProvider>
                   <BreakpointsProvider>
                     <SettingsPanelProvider>
@@ -30,7 +29,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                     </SettingsPanelProvider>
                   </BreakpointsProvider>
                 </NotistackProvider>
-              </LocalizationProvider>
+              </DateTimeLocalizationProvider>
             </ThemeProvider>
           </VisionModeProvider>
         </SettingsProvider>

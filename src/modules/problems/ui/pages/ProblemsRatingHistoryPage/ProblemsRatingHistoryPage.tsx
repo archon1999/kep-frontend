@@ -23,7 +23,6 @@ import Grid from '@mui/material/Grid';
 import { Palette } from '@mui/material/styles';
 import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
-import dayjs from 'dayjs';
 import { Link as RouterLink } from 'react-router-dom';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
@@ -31,6 +30,7 @@ import KepIcon from 'shared/components/base/KepIcon';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { formatDateTime, formatMachineDateTime } from 'shared/lib/dateTime';
 import { numberParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { useProblemsRatingHistory } from 'modules/problems/application/queries';
@@ -385,7 +385,7 @@ const BestResultCard = ({
       </Stack>
 
       <Typography variant="caption" color="text.secondary">
-        {dayjs(result.date).format('MMM D, YYYY')}
+        {formatDateTime(result.date, 'monthDayYear')}
       </Typography>
     </Stack>
   );
@@ -453,7 +453,7 @@ const HistoryTable = ({
                         size="small"
                         variant="outlined"
                         color={color}
-                        label={dayjs(row.date).format('DD/MM/YYYY')}
+                        label={formatMachineDateTime(row.date, 'slashDate')}
                       />
                     </TableCell>
                     <TableCell>

@@ -3,18 +3,16 @@ import { useTranslation } from 'react-i18next';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import { Duel } from 'modules/duels/domain/index.ts';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip.tsx';
+import { formatCalendarDateTime } from 'shared/lib/dateTime';
 
 type Props = {
   duel: Duel;
   onView?: () => void;
   onShowPreset?: () => void;
 };
-
 const formatDate = (value?: string | null) => {
   if (!value) return '—';
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  return date.toLocaleString();
+  return formatCalendarDateTime(value, value);
 };
 
 const statusTone = (status: Duel['status']) => {

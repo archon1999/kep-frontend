@@ -1,9 +1,9 @@
-import dayjs from 'dayjs';
 import { Box, Button, Chip, Skeleton, Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAuth } from 'app/providers/AuthProvider';
 import { resources } from 'app/routes/resources';
+import { formatDateTime } from 'shared/lib/dateTime';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { cssVarRgba } from 'shared/lib/utils';
 import { useKepCoverSummary } from 'modules/kep-cover/application/queries';
@@ -45,7 +45,7 @@ const KepCoverAnnouncementSection = () => {
               <Chip label={t('kepCover.home.live')} color="warning" variant="filled" />
               <Typography variant="body2" color="text.secondary">
                 {t('kepCover.home.endsAt', {
-                  date: data.endTime ? dayjs(data.endTime).format('DD MMM, HH:mm') : '-',
+                  date: formatDateTime(data.endTime, 'compactDateTime'),
                 })}
               </Typography>
             </Stack>

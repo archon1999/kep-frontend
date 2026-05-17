@@ -1,35 +1,8 @@
 import type { HackathonProject } from 'modules/hackathons/domain';
+import { formatCalendarDateTime } from 'shared/lib/dateTime';
 
-const normalizeLocale = (locale?: string | null) => {
-  if (!locale) return undefined;
-  if (locale.includes('-')) return locale;
-
-  const match = locale.match(/^([a-z]{2,3})([A-Z]{2})$/);
-  if (!match) return locale;
-
-  return `${match[1]}-${match[2]}`;
-};
-
-export const formatHackathonDateTime = (value?: string | null, locale?: string) => {
-  if (!value) return '-';
-
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
-    return value;
-  }
-
-  try {
-    return new Intl.DateTimeFormat(normalizeLocale(locale), {
-      dateStyle: 'medium',
-      timeStyle: 'short',
-    }).format(date);
-  } catch {
-    return new Intl.DateTimeFormat(undefined, {
-      dateStyle: 'medium',
-      timeStyle: 'short',
-    }).format(date);
-  }
-};
+export const formatHackathonDateTime = (value?: string | null) =>
+  formatCalendarDateTime(value);
 
 export const formatHackathonDuration = (value?: string | null) => {
   if (!value) return null;

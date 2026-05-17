@@ -2,8 +2,6 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Skeleton, Typography, useMediaQuery } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
-import { normalizeSupportedLocale } from 'app/locales/locale';
-import dayjs from 'dayjs';
 import { LineChart } from 'echarts/charts';
 import {
   GridComponent,
@@ -22,7 +20,14 @@ import {
   CHALLENGES_RATING_LEVELS,
   getChallengesRatingLevelByRating,
 } from 'shared/components/rating/challengesRating';
+import {
+  diffDateTime,
+  formatDateTime,
+  formatDateTimePattern,
+  getDateTimeValue,
+} from 'shared/lib/dateTime';
 import { getColor } from 'shared/lib/echart-utils';
+import { createNumberFormatter } from 'shared/lib/numberFormat';
 
 echarts.use([
   GridComponent,
@@ -117,8 +122,8 @@ const getAxisMaxRating = (ratings: number[]) => {
 };
 
 const getDateAxisConfig = (minTime: number, maxTime: number) => {
-  const years = dayjs(maxTime).diff(dayjs(minTime), 'year', true);
-  const months = Math.max(1, dayjs(maxTime).diff(dayjs(minTime), 'month'));
+  const years = diffDateTime(maxTime, minTime, 'year', true);
+  const months = Math.max(1, diffDateTime(maxTime, minTime, 'month'));
 
   if (years > 4) {
     return {
@@ -144,7 +149,7 @@ const getDateAxisConfig = (minTime: number, maxTime: number) => {
 };
 
 const getYearDateAxisConfig = (minTime: number, maxTime: number) => {
-  const years = Math.max(1, Math.ceil(dayjs(maxTime).diff(dayjs(minTime), 'year', true)));
+  const years = Math.max(1, Math.ceil(diffDateTime(maxTime, minTime, 'year', true)));
 
   return {
     interval: YEAR_MS,
@@ -187,14 +192,13 @@ const ChallengeRatingChangesChart = ({
   const isDownSm = useMediaQuery(theme.breakpoints.down('sm'));
   const { data: changes, isLoading } = useChallengeRatingChanges(username);
 
-  const numberLocale = useMemo(() => normalizeSupportedLocale(i18n.language), [i18n.language]);
   const numberFormatter = useMemo(
     () =>
-      new Intl.NumberFormat(numberLocale, {
+      createNumberFormatter({
         maximumFractionDigits: 0,
         useGrouping: false,
-      }),
-    [numberLocale],
+      }, i18n.language),
+    [i18n.language],
   );
 
   const chartData = useMemo(
@@ -208,7 +212,7 @@ const ChallengeRatingChangesChart = ({
             change.rating !== null &&
             Number.isFinite(Number(change.rating)),
         )
-        .sort((a, b) => dayjs(a.date).valueOf() - dayjs(b.date).valueOf()),
+        .sort((a, b) => getDateTimeValue(a.date) - getDateTimeValue(b.date)),
     [changes],
   );
 
@@ -227,7 +231,7 @@ const ChallengeRatingChangesChart = ({
     const paperColor = getColor(theme.vars.palette.background.paper);
     const shadowColor = getColor(theme.vars.palette.common.black);
     const primaryColor = getColor(theme.vars.palette.primary.main);
-    const times = chartData.map((change) => dayjs(change.date).valueOf());
+    const times = chartData.map((change) => getDateTimeValue(change.date));
     const minTime = Math.min(...times);
     const maxTime = Math.max(...times);
     const dateAxisConfig = isDownSm
@@ -251,7 +255,7 @@ const ChallengeRatingChangesChart = ({
       const level = getChallengesRatingLevelByRating(rating);
 
       return {
-        value: [dayjs(change.date).valueOf(), rating],
+        value: [getDateTimeValue(change.date), rating],
         challengeId: change.challengeId,
         finishedAt: change.date,
         delta: change.delta,
@@ -320,7 +324,7 @@ const ChallengeRatingChangesChart = ({
                 <span style="color:${axisLabelColor};">${escapeHtml(
                   t('challenges.ratingChangesTooltip.date', { defaultValue: 'Date' }),
                 )}</span>
-                <strong>${dayjs(point.finishedAt).format('DD MMM YYYY')}</strong>
+                <strong>${formatDateTime(point.finishedAt, 'compactDateNoComma')}</strong>
                 <span style="color:${axisLabelColor};">${escapeHtml(
                   t('challenges.ratingChangesTooltip.rating', { defaultValue: 'Rating' }),
                 )}</span>
@@ -384,7 +388,8 @@ const ChallengeRatingChangesChart = ({
         axisLabel: {
           color: axisTextColor,
           hideOverlap: true,
-          formatter: (value: number | string) => dayjs(Number(value)).format(dateAxisConfig.format),
+          formatter: (value: number | string) =>
+            formatDateTimePattern(Number(value), dateAxisConfig.format),
         },
         axisLine: { lineStyle: { color: dividerColor } },
         axisTick: { show: false },

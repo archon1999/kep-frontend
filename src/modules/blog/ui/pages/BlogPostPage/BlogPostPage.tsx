@@ -19,11 +19,11 @@ import {
 } from '@mui/material';
 import { useDocumentTitle } from 'app/providers/DocumentTitleProvider';
 import { getResourceByUsername, resources } from 'app/routes/resources';
-import dayjs from 'dayjs';
 import { SwiperSlide } from 'swiper/react';
 import Swiper from 'shared/components/base/Swiper';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import PageLoader from 'shared/components/loading/PageLoader';
+import { formatDateTimeOrOriginal } from 'shared/lib/dateTime';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
 import { cssVarRgba } from 'shared/lib/utils';
 import { toast } from 'sonner';
@@ -88,7 +88,7 @@ const useActiveHeading = (headings: BlogArticleHeading[]) => {
 const formatMetaDate = (value?: string) => {
   if (!value) return '';
 
-  return dayjs(value).isValid() ? dayjs(value).format('DD MMM, YYYY') : value;
+  return formatDateTimeOrOriginal(value, 'compactDate');
 };
 
 const BlogPostPage = () => {

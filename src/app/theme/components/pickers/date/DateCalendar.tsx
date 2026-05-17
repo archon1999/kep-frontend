@@ -9,6 +9,7 @@ import {
   yearCalendarClasses,
 } from '@mui/x-date-pickers';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
+import { addDateTime, formatDateTime, subtractDateTime } from 'shared/lib/dateTime';
 
 declare module '@mui/material/styles' {
   interface ComponentNameToClassKey {
@@ -33,8 +34,9 @@ const DateCalendar: Components<Omit<Theme, 'components'>>['MuiDateCalendar'] = {
       calendarHeader: (props) => {
         const { currentMonth, onMonthChange, onViewChange, view } = props;
 
-        const selectNextMonth = () => onMonthChange(currentMonth.add(1, 'month'));
-        const selectPreviousMonth = () => onMonthChange(currentMonth.subtract(1, 'month'));
+        const selectNextMonth = () => onMonthChange(addDateTime(currentMonth, 1, 'month') ?? currentMonth);
+        const selectPreviousMonth = () =>
+          onMonthChange(subtractDateTime(currentMonth, 1, 'month') ?? currentMonth);
         const toggleYearView = () => {
           if (onViewChange) {
             const nextView: DateView = view === 'day' ? 'year' : 'day';
@@ -54,7 +56,7 @@ const DateCalendar: Components<Omit<Theme, 'components'>>['MuiDateCalendar'] = {
               onClick={toggleYearView}
               sx={{ fontWeight: 600 }}
             >
-              {currentMonth.format('MMMM YYYY')}
+              {formatDateTime(currentMonth, 'monthYear')}
             </Button>
 
             <Button shape="square" color="neutral" onClick={selectNextMonth}>

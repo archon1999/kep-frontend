@@ -27,6 +27,7 @@ import kepcoinImage from 'shared/assets/images/icons/kepcoin.png';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepIcon from 'shared/components/base/KepIcon';
 import { KepIconName } from 'shared/config/icons';
+import { formatLocalizedNumber } from 'shared/lib/numberFormat';
 
 type FilterKey = 'completed' | 'notCompleted' | 'all';
 type ToneColor = 'primary' | 'secondary' | 'warning' | 'success' | 'info';
@@ -57,9 +58,9 @@ const filterAchievements = (achievements: UserAchievement[], filter: FilterKey) 
 const formatNumber = (value: number | null | undefined) => {
   if (value === null || value === undefined) return '';
 
-  return new Intl.NumberFormat('en-US', {
+  return formatLocalizedNumber(value, {
     maximumFractionDigits: Number.isInteger(value) ? 0 : 2,
-  }).format(value);
+  }, 'en-US');
 };
 
 const formatMoney = (value: number | null, currency: UserCompetitionPrizeCurrency) => {

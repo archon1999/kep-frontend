@@ -16,13 +16,13 @@ import {
 import Grid from '@mui/material/Grid';
 import { DataGrid, GridColDef, GridPaginationModel } from '@mui/x-data-grid';
 import { getResourceByUsername, resources } from 'app/routes/resources';
-import dayjs from 'dayjs';
 import { useProblemSolvers } from 'modules/problems/application/queries.ts';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import IconifyIcon from 'shared/components/base/IconifyIcon';
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
+import { formatMachineDateTime } from 'shared/lib/dateTime';
 import { stringParam } from 'shared/lib/queryParams';
 import { ProblemSolver, ProblemSolversOrdering } from 'modules/problems/domain/entities/problem.entity';
 
@@ -41,7 +41,7 @@ const formatDateTime = (value?: string) => {
     return '--';
   }
 
-  return dayjs(value).format('YYYY-MM-DD HH:mm');
+  return formatMachineDateTime(value, 'isoDateTimeMinute');
 };
 
 const SummaryCard = ({

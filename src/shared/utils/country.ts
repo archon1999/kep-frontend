@@ -1,4 +1,5 @@
 import uzCountryLabels from 'shared/utils/countryLabels.uz';
+import { getRegionDisplayName } from 'shared/lib/displayNames';
 
 const normalizeLocale = (locale?: string) => {
   if (!locale) return 'en-US';
@@ -56,10 +57,5 @@ export const getCountryLabel = (code?: string, locale?: string): string | undefi
     return uzCountryLabels[alpha2Code];
   }
 
-  try {
-    const regionNames = new Intl.DisplayNames([normalizedLocale], { type: 'region' });
-    return regionNames.of(alpha2Code) ?? alpha2Code;
-  } catch {
-    return alpha2Code;
-  }
+  return getRegionDisplayName(alpha2Code, normalizedLocale);
 };

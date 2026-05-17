@@ -16,7 +16,6 @@ import {
   listItemTextClasses,
 } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { HashLinkBehavior } from 'app/theme/components/Link';
@@ -30,6 +29,7 @@ import ScrollSpy from 'shared/components/scroll-spy';
 import ScrollSpyContent from 'shared/components/scroll-spy/ScrollSpyContent';
 import ScrollSpyNavItem from 'shared/components/scroll-spy/ScrollSpyNavItem';
 import useHashScrollIntoView from 'shared/hooks/useHashScrollIntoView';
+import { formatDateTime, formatMachineDateTime } from 'shared/lib/dateTime';
 
 type UpdateGroup = {
   date: string;
@@ -43,13 +43,13 @@ const groupUpdatesByDate = (updates: HomeSystemUpdate[]): UpdateGroup[] => {
   const groups = new Map<string, HomeSystemUpdate[]>();
 
   updates.forEach((update) => {
-    const date = dayjs(update.date).format('YYYY-MM-DD');
+    const date = formatMachineDateTime(update.date, 'isoDate');
     groups.set(date, [...(groups.get(date) ?? []), update]);
   });
 
   return Array.from(groups.entries()).map(([date, items]) => ({
     date,
-    dateLabel: dayjs(date).format('DD MMMM, YYYY'),
+    dateLabel: formatDateTime(date, 'fullDate'),
     items,
   }));
 };

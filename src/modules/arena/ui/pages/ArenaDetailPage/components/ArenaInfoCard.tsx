@@ -1,10 +1,10 @@
 import { ReactNode, useState } from 'react';
 import { Button, Card, CardContent, Chip, Divider, Stack, Typography } from '@mui/material';
-import dayjs from 'dayjs';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
+import { formatDateTime } from 'shared/lib/dateTime';
 import { arenaQueries } from 'modules/arena/application/queries.ts';
 import { Arena, ArenaStatus } from 'modules/arena/domain/entities/arena.entity.ts';
 
@@ -166,12 +166,12 @@ const ArenaInfoCard = ({
           <Stack direction="column" spacing={2}>
             <InfoRow
               label={t('arena.timeline.start')}
-              value={dayjs(arena.startTime).format('DD MMM YYYY, HH:mm')}
+              value={formatDateTime(arena.startTime, 'compactDateTimeNoComma')}
               icon="mdi:calendar-start"
             />
             <InfoRow
               label={t('arena.timeline.finish')}
-              value={dayjs(arena.finishTime).format('DD MMM YYYY, HH:mm')}
+              value={formatDateTime(arena.finishTime, 'compactDateTimeNoComma')}
               icon="mdi:calendar-end"
             />
             <InfoRow label={t('arena.duration')} value={`${arena.timeSeconds}s`} icon="mdi:timer-outline" />

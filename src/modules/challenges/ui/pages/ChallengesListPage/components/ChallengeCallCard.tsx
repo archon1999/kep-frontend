@@ -12,8 +12,6 @@ import {
 } from '@mui/material';
 import { useAuth } from 'app/providers/AuthProvider.tsx';
 import { useLoginRedirect } from 'shared/lib/authRedirect';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import {
   useAcceptChallengeCall,
   useDeleteChallengeCall,
@@ -21,8 +19,6 @@ import {
 import { ChallengeCall, ChallengeQuestionTimeType } from 'modules/challenges/domain';
 import UserPopover from 'modules/users/ui/shared/components/UserPopover.tsx';
 import ChallengesRatingChip from 'shared/components/rating/ChallengesRatingChip.tsx';
-
-dayjs.extend(relativeTime);
 
 interface CallCardProps {
   challengeCall: ChallengeCall;
@@ -39,7 +35,6 @@ const ChallengeCallCard = ({
   onAccepted,
   onRemoved,
 }: CallCardProps) => {
-  dayjs.extend(relativeTime);
   const { t } = useTranslation();
   const { currentUser } = useAuth();
   const redirectToLogin = useLoginRedirect();
