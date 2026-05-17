@@ -126,6 +126,7 @@ const AdminProblemsListPage = () => {
 
   const { data, isLoading, isValidating, mutate } = useAdminProblems(queryParams);
   const { data: meta } = useAdminProblemMeta();
+  const isGridLoading = isLoading || (isValidating && !data?.data);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => setSearch(event.target.value);
 
@@ -462,7 +463,7 @@ const AdminProblemsListPage = () => {
         getOptionLabel={(option) => option.label}
         onChange={(_, value) => setSelectedDifficulties(value.map((difficulty) => difficulty.value))}
         renderInput={(params) => (
-          <TextField {...params} fullWidth label={t('admin.filters.difficulty')} />
+          <TextField {...params} fullWidth label={t('admin.filters.difficulty')} placeholder="" />
         )}
       />
 
@@ -479,7 +480,7 @@ const AdminProblemsListPage = () => {
         value={authorFilter}
         onChange={setAuthorFilter}
         label={t('admin.filters.author')}
-        placeholder={t('admin.form.placeholders.username')}
+        placeholder={''}
       />
 
       <Stack
@@ -584,7 +585,7 @@ const AdminProblemsListPage = () => {
         autoHeight
         rows={data?.data ?? []}
         rowCount={data?.total ?? 0}
-        loading={isLoading || isValidating}
+        loading={isGridLoading}
         slots={{ loadingOverlay: AdminDataGridSkeletonLoadingOverlay }}
         columns={columns}
         paginationModel={paginationModel}

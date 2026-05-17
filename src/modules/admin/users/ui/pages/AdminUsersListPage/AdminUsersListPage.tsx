@@ -101,6 +101,7 @@ const AdminUsersListPage = () => {
   );
 
   const { data, isLoading, isValidating, mutate } = useAdminUsers(queryParams);
+  const isGridLoading = isLoading || (isValidating && !data?.data);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => setSearch(event.target.value);
 
@@ -462,7 +463,7 @@ const AdminUsersListPage = () => {
         autoHeight
         rows={data?.data ?? []}
         rowCount={data?.total ?? 0}
-        loading={isLoading || isValidating}
+        loading={isGridLoading}
         slots={{ loadingOverlay: AdminDataGridSkeletonLoadingOverlay }}
         columns={columns}
         paginationModel={paginationModel}
