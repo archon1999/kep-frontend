@@ -57,6 +57,7 @@ export const mapDuelPreset = (payload: any): DuelPreset => ({
 export const mapDuelPlayer = (payload: any): DuelPlayer => ({
   id: toNumber(payload?.id),
   username: payload?.username ?? '',
+  displayName: payload?.displayName ?? payload?.display_name,
   isBot: Boolean(payload?.isBot ?? payload?.is_bot ?? false),
   contestsRating: toNullableNumber(payload?.contestsRating ?? payload?.contests_rating),
   ratingTitle: payload?.ratingTitle ?? payload?.rating_title ?? '',
@@ -124,6 +125,7 @@ export const mapDuelsRatingRow = (payload: any): DuelsRatingRow => ({
 const mapDuelInvitationUser = (payload: any): DuelInvitationUser => ({
   id: toNullableNumber(payload?.id),
   username: payload?.username ?? '',
+  displayName: payload?.displayName ?? payload?.display_name,
   avatar: payload?.avatar ?? null,
   contestsRating: toNullableNumber(payload?.contestsRating ?? payload?.contests_rating),
   contestsRatingTitle: payload?.contestsRatingTitle ?? payload?.contests_rating_title ?? '',

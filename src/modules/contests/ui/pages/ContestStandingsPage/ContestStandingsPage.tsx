@@ -256,8 +256,13 @@ const ContestStandingsPage = () => {
     focusedParticipantRef.current = focusKey;
 
     const animationFrame = window.requestAnimationFrame(() => {
-      dataGridApiRef.current.scrollToIndexes({ rowIndex: participantTarget.rowIndex });
-      dataGridApiRef.current.setCellFocus(participantTarget.rowId, 'username');
+      const api = dataGridApiRef.current;
+      if (!api) {
+        return;
+      }
+
+      api.scrollToIndexes({ rowIndex: participantTarget.rowIndex });
+      api.setCellFocus(participantTarget.rowId, 'username');
 
       const rowElement = Array.from(
         document.querySelectorAll<HTMLElement>('[role="row"][data-id]'),

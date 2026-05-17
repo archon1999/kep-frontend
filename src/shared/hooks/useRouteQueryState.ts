@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { QueryHistoryMode, QueryParamConfig } from 'shared/lib/queryParams';
 
-type QueryStateRecord = Record<string, unknown>;
+type QueryStateRecord = object;
 
 type UpdateOptions = {
   history?: QueryHistoryMode;
@@ -171,7 +171,7 @@ const useRouteQueryState = <TState extends QueryStateRecord>({
       value: TState[TKey],
       options?: UpdateOptions,
     ) => {
-      patchState({ [key]: value } as Partial<TState>, options);
+      patchState({ [key]: value } as unknown as Partial<TState>, options);
     },
     [patchState],
   );

@@ -36,6 +36,7 @@ const mapArenaChallengeToChallenge = (challenge: ArenaChallenge): Challenge => {
     finished: challenge.finished,
     questionsCount: challenge.questionsCount,
     timeSeconds: challenge.timeSeconds,
+    remainingTimeSeconds: challenge.timeSeconds,
     rated: Boolean(challenge.rated),
     questionTimeType: challenge.questionTimeType ?? ChallengeQuestionTimeType.TimeToAll,
     status: challenge.finished ? ChallengeStatus.Finished : ChallengeStatus.Already,

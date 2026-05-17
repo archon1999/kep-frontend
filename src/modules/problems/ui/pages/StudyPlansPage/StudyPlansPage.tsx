@@ -29,15 +29,17 @@ const StudyPlansPage = () => {
       <Box sx={{ px: { xs: 3, md: 5 }, pb: { xs: 5, md: 6 } }}>
         <Stack spacing={3}>
           <Grid container spacing={3}>
-            {(isLoading ? Array.from({ length: 3 }) : studyPlans ?? []).map((studyPlan, index) => (
-              <Grid key={isLoading ? `study-plan-skeleton-${index}` : studyPlan.id} size={{ xs: 12, md: 6, xl: 4 }}>
-                {isLoading ? (
+            {isLoading
+              ? Array.from({ length: 3 }).map((_, index) => (
+                  <Grid key={`study-plan-skeleton-${index}`} size={{ xs: 12, md: 6, xl: 4 }}>
                   <Skeleton variant="rounded" height={280} />
-                ) : (
-                  <StudyPlanCard studyPlan={studyPlan} />
-                )}
-              </Grid>
-            ))}
+                  </Grid>
+                ))
+              : (studyPlans ?? []).map((studyPlan) => (
+                  <Grid key={studyPlan.id} size={{ xs: 12, md: 6, xl: 4 }}>
+                    <StudyPlanCard studyPlan={studyPlan} />
+                  </Grid>
+                ))}
           </Grid>
         </Stack>
       </Box>

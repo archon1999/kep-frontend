@@ -133,16 +133,16 @@ export const resources = {
 export type Resource = keyof typeof resources;
 export type ResourceValue = (typeof resources)[Resource];
 
-export function getResourceById(resource: ResourceValue, id: number | string) {
+export function getResourceById(resource: string, id: number | string) {
   return resource.replace(':id', id.toString());
 }
 
-export function getResourceByUsername(resource: ResourceValue, username: string) {
+export function getResourceByUsername(resource: string, username: string) {
   return resource.replace(':username', username);
 }
 
 export function getResourceByParams(
-  resource: ResourceValue,
+  resource: string,
   params: Record<string, string | number>,
 ) {
   return Object.entries(params).reduce(

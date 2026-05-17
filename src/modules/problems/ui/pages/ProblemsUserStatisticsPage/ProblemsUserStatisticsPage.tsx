@@ -45,7 +45,6 @@ import {
 import { difficultyColorByKey, difficultyOptions } from 'modules/problems/config/difficulty';
 import {
   ProblemsStatisticsAttemptsChartEntry,
-  ProblemsUserStatistics,
   ProblemsUserStatisticsActivity,
   ProblemsUserStatisticsHeatmap,
 } from 'modules/problems/domain/entities/problem.entity';

@@ -14,7 +14,7 @@ import { ContestRatingRow } from 'modules/contests/domain/entities/contest-ratin
 import { ContestStatisticsContestant } from 'modules/contests/domain/entities/contest-statistics.entity';
 
 type ContestantLike = Partial<ContestantEntity> &
-  Partial<ContestStatisticsContestant> &
+  Omit<Partial<ContestStatisticsContestant>, 'avatar'> &
   Partial<ContestRatingRow>;
 
 interface ContestantViewProps extends Omit<StackProps, 'children'> {

@@ -20,7 +20,7 @@ import { getResourceById, resources } from 'app/routes/resources';
 import MathJaxView from 'shared/components/base/MathJaxView.tsx';
 import { useStudyPlan } from 'modules/problems/application/queries.ts';
 import { difficultyOptions, getDifficultyColor } from 'modules/problems/config/difficulty.ts';
-import type { StudyPlanDetail } from 'modules/problems/domain/entities/problem.entity.ts';
+import type { DifficultyBreakdown, StudyPlanDetail } from 'modules/problems/domain/entities/problem.entity.ts';
 import { getStudyPlanBranding } from 'modules/problems/ui/shared/utils/studyPlanBranding.ts';
 import IconifyIcon from 'shared/components/base/IconifyIcon.tsx';
 
@@ -109,7 +109,7 @@ const StudyPlanPage = () => {
                 <StudyPlanProgressCard
                   solvedPercent={solvedPercent}
                   problemsCount={studyPlan?.problemsCount ?? 0}
-                  statistics={studyPlan?.statistics}
+                  statistics={studyPlan?.statistics ?? null}
                   accentColor={branding.accentColor}
                   borderColor={branding.borderColor}
                   progressTrackColor={branding.progressTrackColor}
@@ -193,10 +193,7 @@ const StudyPlanHero = ({ studyPlan, isLoading }: StudyPlanHeroProps) => {
 type StudyPlanProgressCardProps = {
   solvedPercent: number;
   problemsCount: number;
-  statistics: {
-    totalSolved: number;
-    [key: string]: number;
-  };
+  statistics: DifficultyBreakdown | null;
   accentColor: string;
   borderColor: string;
   progressTrackColor: string;
@@ -229,7 +226,7 @@ const StudyPlanProgressCard = ({
             <Typography variant="h6">{t('problems.studyPlans.progressTitle')}</Typography>
             <Typography variant="body2" color="text.secondary" mt={0.5}>
               {t('problems.studyPlans.progressSubtitle', {
-                solved: statistics.totalSolved ?? 0,
+                solved: statistics?.totalSolved ?? 0,
                 total: problemsCount,
               })}
             </Typography>
@@ -257,9 +254,10 @@ const StudyPlanProgressCard = ({
 
           <Stack spacing={1.5}>
             {difficultyOptions.map((difficulty) => {
-              const solved = statistics[difficulty.key] ?? 0;
-              const total =
-                statistics[`all${difficulty.key[0].toUpperCase()}${difficulty.key.slice(1)}`] ?? 0;
+              const key = difficulty.key as keyof DifficultyBreakdown;
+              const totalKey = `all${difficulty.key[0].toUpperCase()}${difficulty.key.slice(1)}` as keyof DifficultyBreakdown;
+              const solved = statistics?.[key] ?? 0;
+              const total = statistics?.[totalKey] ?? 0;
               if (!total) return null;
 
               return (

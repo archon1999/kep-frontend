@@ -2,34 +2,21 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import {
-  Box,
   Button,
-  Card,
-  CardContent,
-  Chip,
   LinearProgress,
-  Skeleton,
   Stack,
-  Typography,
-  useTheme,
 } from '@mui/material';
-import Grid from '@mui/material/Grid';
-import { Palette } from '@mui/material/styles';
 import { GridSortModel } from '@mui/x-data-grid';
 import { resources } from 'app/routes/resources';
-import IconifyIcon from 'shared/components/base/IconifyIcon';
 import KepIcon from 'shared/components/base/KepIcon';
 import PageHeader from 'shared/components/sections/common/PageHeader';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { stringParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
-import { cssVarRgba } from 'shared/lib/utils';
-import { useProblemsPeriodRating, useProblemsRating } from 'modules/problems/application/queries';
+import { useProblemsRating } from 'modules/problems/application/queries';
 import { difficultyOptions } from 'modules/problems/config/difficulty';
 import ProblemsRatingDataGrid from 'modules/problems/ui/shared/components/ProblemsRatingDataGrid';
-import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
-import UserPopover from 'modules/users/ui/shared/components/UserPopover';
 import ProblemsRatingPagePeriodRatings from './ProblemsRatingPagePeriodRatings.tsx';
 
 const sortFieldMap: Record<string, string> = {

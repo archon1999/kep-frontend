@@ -1,4 +1,4 @@
-import { FC, KeyboardEvent, MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, FC, KeyboardEvent, MouseEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Editor from '@monaco-editor/react';
 import {
@@ -1137,7 +1137,9 @@ const Problem2286Body: FC<CustomProblemBodyProps> = () => {
                             inputRefs.current[rowIndex][letterIndex] = element;
                           }}
                           value={values[rowIndex][letterIndex] ?? ''}
-                          onChange={(event) => handleChange(rowIndex, letterIndex, event.target.value)}
+                          onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                            handleChange(rowIndex, letterIndex, event.target.value)
+                          }
                           onKeyDown={(event: KeyboardEvent<HTMLInputElement>) =>
                             handleKeyDown(rowIndex, letterIndex, event)
                           }

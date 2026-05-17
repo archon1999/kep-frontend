@@ -13,8 +13,14 @@ import { ApiContestsRegistrantsListOrdering } from 'shared/api/orval/generated/e
 import ContestsRatingChip from 'shared/components/rating/ContestsRatingChip';
 import useGridPagination from 'shared/hooks/useGridPagination';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
-import { stringParam } from 'shared/lib/queryParams';
+import { enumParam } from 'shared/lib/queryParams';
 import { responsivePagePaddingSx } from 'shared/lib/styles';
+
+type ContestRegistrantsQueryState = {
+  ordering: ApiContestsRegistrantsListOrdering;
+};
+
+const registrantsOrderingValues = Object.values(ApiContestsRegistrantsListOrdering);
 
 const ContestRegistrantsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -31,18 +37,18 @@ const ContestRegistrantsPage = () => {
       pageSizeKey: 'pageSize',
     },
   });
-  const { state, setField } = useRouteQueryState({
+  const { state, setField } = useRouteQueryState<ContestRegistrantsQueryState>({
     defaults: {
       ordering: ApiContestsRegistrantsListOrdering['-contests_rating'],
     },
     schema: {
       ordering: {
-        ...stringParam(),
+        ...enumParam(registrantsOrderingValues),
         param: 'ordering',
       },
     },
   });
-  const ordering = state.ordering as ApiContestsRegistrantsListOrdering;
+  const ordering = state.ordering;
   const sortModel = useMemo<GridSortModel>(() => {
     if (
       ordering === ApiContestsRegistrantsListOrdering.id ||

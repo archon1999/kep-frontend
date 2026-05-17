@@ -138,7 +138,7 @@ const SolvedRatioBar = ({
           height: 10,
           overflow: 'hidden',
           borderRadius: 999,
-          bgcolor: theme.vars.palette.background.neutral,
+          bgcolor: 'background.neutral',
           boxShadow: `inset 0 1px 3px ${cssVarRgba(theme.vars.palette.grey['500Channel'], 0.28)}`,
           cursor: 'help',
         })}

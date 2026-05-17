@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { Button, Card, Stack, Typography } from '@mui/material';
 import { useSWRConfig } from 'swr';
-import { getResourceById, resources } from 'app/routes/resources.ts';
+import { resources } from 'app/routes/resources.ts';
 import useRouteQueryState from 'shared/hooks/useRouteQueryState';
 import { enumParam } from 'shared/lib/queryParams';
 import KepIcon from 'shared/components/base/KepIcon';

@@ -64,8 +64,8 @@ export type DuelDetailPageWorkspaceProps = {
   selectedLang: string;
   onLangChange: (value: string) => void;
   selectedLanguage?: {
-    timeLimit?: number;
-    memoryLimit?: number;
+    timeLimit?: number | null;
+    memoryLimit?: number | null;
   } | null;
   selectedSampleIndex: number;
   onSampleChange: (value: number) => void;

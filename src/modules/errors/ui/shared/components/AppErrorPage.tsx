@@ -1,7 +1,7 @@
 import { Alert, Box, Button, Stack, Typography, alpha } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useStaleClientContent, useUnexpectedErrorContent } from 'modules/errors/application';
-import type { AppErrorKind } from '../shared/utils/app-error';
+import type { AppErrorKind } from '../utils/app-error';
 
 interface AppErrorPageProps {
   kind: AppErrorKind;

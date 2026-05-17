@@ -377,7 +377,7 @@ const ChallengeChessPuzzleQuestion = forwardRef<
           />
 
           <Typography
-            dangerouslySetInnerHTML={{ __html: question.body }}
+            dangerouslySetInnerHTML={{ __html: question.body ?? '' }}
             variant="body2"
             color="text.secondary"
           />
